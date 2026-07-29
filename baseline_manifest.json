@@ -1,16 +1,20 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "NeoEng-D-Trace",
   "baseline_date": "2026-07-29",
   "hash_algorithm": "sha256",
+  "canonicalization": {
+    "utf8_text_line_endings": "LF",
+    "binary_files": "raw"
+  },
   "files": {
     ".github/ISSUE_TEMPLATE/falha_confirmada.md": {
-      "sha256": "cd25c974f8f2961e4b4723923082738ebd48830b5cc92b6354622ce7c693c60f",
-      "size": 713
+      "sha256": "4a6200259ed383b675572777b039ca51adcf6e23a619b58617a382dea6a132be",
+      "size": 662
     },
     ".github/pull_request_template.md": {
-      "sha256": "fdcb303ff5f0bfcd559f14d9d90942359fc4a18b6de0dea1d72ecf93e6513daa",
-      "size": 1198
+      "sha256": "73fd40d717e46d095da7d58c7f589cefb329d6df971912cf635c81a52ff2f4c4",
+      "size": 1152
     },
     ".github/workflows/ci.yml": {
       "sha256": "85bb28276aa6af8e2fde9bc8feeb87e6f0df952c66fec49f6bfa008ae9c4ffb6",
@@ -177,8 +181,8 @@
       "size": 2923
     },
     "docs/evidence/README.md": {
-      "sha256": "499615ccdf4bebd7b15842c6b0feec2671487af3bd893cbaffa52a21fc7954d3",
-      "size": 781
+      "sha256": "258c17860c7d63336f9b104ff0247bf90a0efc961ff531c2bd706f309ac8f143",
+      "size": 735
     },
     "docs/INVENTARIO_LOCALIZACAO_0_6N1.md": {
       "sha256": "8a3f3122fbe4e20c65e2f2d24adc74dab62fa89b66b7499e4658a725c953fee3",
@@ -189,8 +193,8 @@
       "size": 5569
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "36c4bf28aae103e0b9f162d3344c1fb4319a5df086616d6e975d2998f3c4f43c",
-      "size": 2493
+      "sha256": "d7d7c017b5e0327e78af54ab04487e6177ed5235986e8df53db5e348d2cc8718",
+      "size": 2468
     },
     "docs/phase-7-exporters.md": {
       "sha256": "99aecb50a1824e05467009aa05da9877b9d88a5470610ada302d4e117cbd731d",
@@ -209,8 +213,8 @@
       "size": 10092
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "4913522ac8b2242be84cdfe4fbe1314e5635583e4c8e0f55fc8c8964c0065973",
-      "size": 3142
+      "sha256": "efbe4b5a2be56048744ab6630360cf01878461414c7ee6bce982c04d3ee7ec9b",
+      "size": 3068
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "a249193d59bf9d30b64c5f3a62f89fbecfed21bc7145d85f19db69d982b2754a",
@@ -229,8 +233,8 @@
       "size": 19169
     },
     "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md": {
-      "sha256": "9bed75e45c87bc6aed829a47473bbdb92c5d42c6e6a12e9332741a6e29c4d709",
-      "size": 1761
+      "sha256": "b702af34dbc7cceeb811ab684bf776c7c0e83704705c9edef3b7b6e308b27da4",
+      "size": 1720
     },
     "docs/VALIDACAO_0_5_2F2.md": {
       "sha256": "1ef5491db4deed67ae8eaa11a105359dc70b8044b186814e79b9d71cf975d4f6",
@@ -329,8 +333,8 @@
       "size": 2444
     },
     "quality/legacy_tests/.gitattributes": {
-      "sha256": "d8bcb4dc46a46891baf403eb125f5c0c17d277f226f1cbccbb26ef5f37ff4fb8",
-      "size": 19
+      "sha256": "7cc827f37c9ab615a99bd76a8e623ee789fa23bcba50b5be60b3c39927c5d4a8",
+      "size": 18
     },
     "quality/legacy_tests/manifest.json": {
       "sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
@@ -805,8 +809,8 @@
       "size": 1659
     },
     "tools/baseline_integrity.py": {
-      "sha256": "befb3f3e0a8f9b10bd84f974efb155f0ab1ada38ec1ab5594e7f94ca65351a2a",
-      "size": 4297
+      "sha256": "f40f4ac85024d2c6a2e9192f9f0633ea46fd5b272c6cc20fef48fa117b8f1816",
+      "size": 5378
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",
