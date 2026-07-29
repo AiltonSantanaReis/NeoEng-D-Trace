@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Generate or verify the NeoEng-D-Trace source baseline manifest."""
+"""Generate or verify the NeoEng-D-Trace source baseline manifest.
+
+Text files that are valid UTF-8 are hashed with canonical LF line endings so
+that the same Git content produces the same manifest on Windows and Linux.
+Binary files are hashed byte-for-byte without transformation.
+"""
 
 from __future__ import annotations
 
@@ -50,27 +55,44 @@ def iter_source_files() -> Iterable[Path]:
         yield path
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+def canonical_bytes(path: Path) -> bytes:
+    """Return deterministic bytes for hashing on every supported platform."""
+
+    raw = path.read_bytes()
+    if b"\x00" in raw:
+        return raw
+
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return raw
+
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return normalized.encode("utf-8")
+
+
+def sha256_bytes(content: bytes) -> str:
+    return hashlib.sha256(content).hexdigest()
 
 
 def build_manifest() -> dict[str, object]:
-    files = {
-        path.relative_to(ROOT).as_posix(): {
-            "sha256": sha256(path),
-            "size": path.stat().st_size,
+    files: dict[str, dict[str, object]] = {}
+    for path in iter_source_files():
+        content = canonical_bytes(path)
+        files[path.relative_to(ROOT).as_posix()] = {
+            "sha256": sha256_bytes(content),
+            "size": len(content),
         }
-        for path in iter_source_files()
-    }
+
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "project": "NeoEng-D-Trace",
         "baseline_date": "2026-07-29",
         "hash_algorithm": "sha256",
+        "canonicalization": {
+            "utf8_text_line_endings": "LF",
+            "binary_files": "raw",
+        },
         "files": files,
     }
 
@@ -111,16 +133,24 @@ def verify_manifest() -> int:
     if not MANIFEST_PATH.is_file():
         print("baseline_manifest.json is missing")
         return 2
+
     forbidden = find_forbidden_paths()
     expected = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     actual = build_manifest()
     expected_files = expected.get("files", {})
     actual_files = actual["files"]
-    if forbidden or expected_files != actual_files:
+    expected_metadata = {key: value for key, value in expected.items() if key != "files"}
+    actual_metadata = {key: value for key, value in actual.items() if key != "files"}
+
+    if forbidden or expected != actual:
         if forbidden:
             print("Forbidden paths detected:")
             for item in forbidden:
                 print(f"  - {item}")
+        if expected_metadata != actual_metadata:
+            print("Manifest metadata differs from the current integrity contract")
+            print(f"Expected metadata: {expected_metadata}")
+            print(f"Actual metadata:   {actual_metadata}")
         expected_keys = set(expected_files)
         actual_keys = set(actual_files)
         for item in sorted(expected_keys - actual_keys):
@@ -131,6 +161,7 @@ def verify_manifest() -> int:
             if expected_files[item] != actual_files[item]:
                 print(f"Changed: {item}")
         return 1
+
     print(f"Baseline verified: {len(actual_files)} files")
     return 0
 
