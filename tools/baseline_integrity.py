@@ -4,6 +4,10 @@
 Text files that are valid UTF-8 are hashed with canonical LF line endings so
 that the same Git content produces the same manifest on Windows and Linux.
 Binary files are hashed byte-for-byte without transformation.
+
+When Git is available, the manifest covers tracked files plus new unignored
+files. Local ignored content such as ``.venv`` and caches is excluded, while
+forbidden content already tracked by Git remains a hard failure.
 """
 
 from __future__ import annotations
@@ -11,8 +15,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import subprocess
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Sequence
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "baseline_manifest.json"
@@ -43,16 +49,64 @@ FORBIDDEN_SUFFIXES = {".pyc", ".pyo", ".backup", ".tmp", ".rar"}
 FORBIDDEN_TOP_LEVEL_DIRS = {"backup", "backups", ".venv", "venv", "env"}
 
 
-def iter_source_files() -> Iterable[Path]:
+def _git_paths(arguments: Sequence[str]) -> list[Path] | None:
+    """Return repository-relative paths from ``git ls-files``.
+
+    ``None`` means Git is unavailable or ``ROOT`` is not a Git work tree. An
+    empty list is a valid result and must not trigger the filesystem fallback.
+    """
+
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(ROOT), "ls-files", "-z", *arguments],
+            check=False,
+            capture_output=True,
+        )
+    except OSError:
+        return None
+
+    if result.returncode != 0:
+        return None
+
+    paths: list[Path] = []
+    for raw_path in result.stdout.split(b"\0"):
+        if not raw_path:
+            continue
+        paths.append(Path(os.fsdecode(raw_path)))
+    return paths
+
+
+def _is_ignored(relative: Path) -> bool:
+    return (
+        any(part in IGNORED_DIRS for part in relative.parts)
+        or relative.name in IGNORED_FILES
+    )
+
+
+def _filesystem_source_files() -> Iterable[Path]:
     for path in sorted(ROOT.rglob("*")):
         if not path.is_file():
             continue
         relative = path.relative_to(ROOT)
-        if any(part in IGNORED_DIRS for part in relative.parts):
-            continue
-        if relative.name in IGNORED_FILES:
+        if _is_ignored(relative):
             continue
         yield path
+
+
+def iter_source_files() -> Iterable[Path]:
+    """Yield files relevant to the repository integrity contract."""
+
+    repository_paths = _git_paths(("--cached", "--others", "--exclude-standard"))
+    if repository_paths is None:
+        yield from _filesystem_source_files()
+        return
+
+    for relative in sorted(set(repository_paths), key=lambda item: item.as_posix()):
+        if _is_ignored(relative):
+            continue
+        path = ROOT / relative
+        if path.is_file():
+            yield path
 
 
 def canonical_bytes(path: Path) -> bytes:
@@ -97,18 +151,38 @@ def build_manifest() -> dict[str, object]:
     }
 
 
+def _is_forbidden(relative: Path) -> bool:
+    top_level = relative.parts[0] if relative.parts else ""
+    return (
+        top_level in FORBIDDEN_TOP_LEVEL_DIRS
+        or relative.suffix.lower() in FORBIDDEN_SUFFIXES
+    )
+
+
 def find_forbidden_paths() -> list[str]:
+    """Return forbidden paths that are part of the tracked source tree.
+
+    Ignored local directories are intentionally allowed. If Git metadata is
+    unavailable, a conservative filesystem scan is used while still excluding
+    normal local development directories such as ``.venv``.
+    """
+
+    tracked_paths = _git_paths(("--cached",))
+    if tracked_paths is not None:
+        return sorted(
+            relative.as_posix()
+            for relative in set(tracked_paths)
+            if _is_forbidden(relative)
+        )
+
     problems: list[str] = []
-    for name in sorted(FORBIDDEN_TOP_LEVEL_DIRS):
-        if (ROOT / name).exists():
-            problems.append(name)
     for path in ROOT.rglob("*"):
         if not path.is_file():
             continue
         relative = path.relative_to(ROOT)
-        if ".git" in relative.parts:
+        if any(part in IGNORED_DIRS for part in relative.parts):
             continue
-        if path.suffix.lower() in FORBIDDEN_SUFFIXES:
+        if _is_forbidden(relative):
             problems.append(relative.as_posix())
     return sorted(set(problems))
 
@@ -116,7 +190,7 @@ def find_forbidden_paths() -> list[str]:
 def write_manifest() -> int:
     forbidden = find_forbidden_paths()
     if forbidden:
-        print("Refusing to create a baseline with forbidden paths:")
+        print("Refusing to create a baseline with forbidden tracked paths:")
         for item in forbidden:
             print(f"  - {item}")
         return 2
@@ -144,7 +218,7 @@ def verify_manifest() -> int:
 
     if forbidden or expected != actual:
         if forbidden:
-            print("Forbidden paths detected:")
+            print("Forbidden tracked paths detected:")
             for item in forbidden:
                 print(f"  - {item}")
         if expected_metadata != actual_metadata:
