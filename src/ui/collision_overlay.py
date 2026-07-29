@@ -4,9 +4,10 @@ Collision Overlay for Canvas View
 Draws physics collision shapes and collision indicators on the canvas.
 """
 
-from typing import Dict, List, Tuple, Optional, Any
-from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QFont
-from PySide6.QtCore import QPointF
+from typing import Any, Dict, List, Optional, Tuple
+
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QBrush, QColor, QFont, QPainter, QPen
 
 
 class CollisionOverlay:
@@ -36,7 +37,7 @@ class CollisionOverlay:
             return
 
         painter.save()
-        
+
         # Aplica transformação da câmera (Mundo -> Tela)
         painter.translate(pan[0], pan[1])
         painter.scale(zoom, zoom)
@@ -63,7 +64,7 @@ class CollisionOverlay:
             # Pen Cosmética: Mantém espessura visual de 2px independente do zoom
             pen = QPen(color.darker(150), 2)
             pen.setCosmetic(True)
-            
+
             painter.setPen(pen)
             painter.setBrush(QBrush(color))
 
@@ -75,7 +76,7 @@ class CollisionOverlay:
             outline_pen = QPen(QColor(0, 0, 0), 1)
             outline_pen.setCosmetic(True)
             painter.setPen(outline_pen)
-            painter.setBrush(QBrush()) # No fill
+            painter.setBrush(QBrush())  # No fill
             painter.drawPolygon(points)
 
             # Label do ID
@@ -86,8 +87,7 @@ class CollisionOverlay:
                 # Offset ajustado pelo zoom para não ficar colado
                 offset = 5.0 / zoom
                 painter.drawText(
-                    QPointF(label_x + offset, label_y - offset), 
-                    str(shape_id)[:8]
+                    QPointF(label_x + offset, label_y - offset), str(shape_id)[:8]
                 )
 
     def _draw_collision_indicators(self, painter: QPainter):
@@ -121,11 +121,8 @@ class CollisionOverlay:
                 pen = QPen(self.collision_colors["mtv"], 3)
                 pen.setCosmetic(True)
                 painter.setPen(pen)
-                
-                painter.drawLine(
-                    QPointF(start_x, start_y), 
-                    QPointF(end_x, end_y)
-                )
+
+                painter.drawLine(QPointF(start_x, start_y), QPointF(end_x, end_y))
 
                 self._draw_arrowhead(painter, start_x, start_y, end_x, end_y)
 
@@ -173,7 +170,7 @@ class CollisionOverlay:
 
         # Ajusta tamanho da seta relativo ao comprimento se for muito pequeno
         arrow_size = size
-        
+
         # Coordenadas da ponta da seta
         ax1 = end_x - dx * arrow_size + px * arrow_size * 0.5
         ay1 = end_y - dy * arrow_size + py * arrow_size * 0.5
@@ -181,9 +178,9 @@ class CollisionOverlay:
         ay2 = end_y - dy * arrow_size - py * arrow_size * 0.5
 
         painter.setBrush(QBrush(self.collision_colors["mtv"]))
-        
+
         # Remove pen para a ponta ficar sólida
         painter.setPen(Qt.PenStyle.NoPen)
-        
+
         points = [QPointF(end_x, end_y), QPointF(ax1, ay1), QPointF(ax2, ay2)]
         painter.drawPolygon(points)
