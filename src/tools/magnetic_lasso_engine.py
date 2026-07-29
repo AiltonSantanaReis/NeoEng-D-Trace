@@ -201,12 +201,12 @@ def build_edge_features(
     gy = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)
     magnitude = cv2.magnitude(gx, gy)
 
-    positive = magnitude[magnitude > 0]
+    positive = np.asarray(magnitude[magnitude > 0], dtype=np.float32)
     scale = float(np.percentile(positive, 98.5)) if positive.size else 1.0
     scale = max(scale / sensitivity, 1e-6)
     sobel = np.clip(magnitude * (255.0 / scale), 0.0, 255.0).astype(np.uint8)
 
-    median = float(np.median(blurred))
+    median = float(np.median(np.asarray(blurred, dtype=np.float32)))
     low = int(max(0.0, (0.66 / sensitivity) * median))
     high = int(min(255.0, (1.33 / max(sensitivity, 1e-6)) * median + 24.0))
     if high <= low:
@@ -250,7 +250,8 @@ def snap_to_edge(
     if edge.ndim != 2 or edge.size == 0:
         return int(round(float(point[0]))), int(round(float(point[1])))
 
-    x, y = clamp_point(point, edge.shape)
+    edge_shape = (int(edge.shape[0]), int(edge.shape[1]))
+    x, y = clamp_point(point, edge_shape)
     radius = max(0, int(radius))
     if radius == 0:
         return x, y
@@ -832,7 +833,8 @@ def path_edge_adherence(
     if edge.ndim != 2 or edge.size == 0:
         return 0.0
     values = []
+    edge_shape = (int(edge.shape[0]), int(edge.shape[1]))
     for point in path:
-        x, y = clamp_point(point, edge.shape)
+        x, y = clamp_point(point, edge_shape)
         values.append(float(edge[y, x]) / 255.0)
     return float(np.mean(values)) if values else 0.0

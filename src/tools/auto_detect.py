@@ -257,8 +257,9 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
             eps = max(1.0, 0.01 * peri)
             approx = cv2.approxPolyDP(contour, eps, True)
             simplified_points_int = [
-                (int(p[0][0]), int(p[0][1])) for p in approx
-            ]  # type: ignore
+                (int(x), int(y))
+                for x, y in np.asarray(approx, dtype=np.int32).reshape(-1, 2).tolist()
+            ]
         else:
             # curvature_adaptive_simplify expects Sequence[Any] (the contour)
             simplified_points_int = curvature_adaptive_simplify(
@@ -273,8 +274,11 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
         if decompose_convex:
             convex_hull = cv2.convexHull(contour)
             simplified_points_int = [
-                (int(p[0][0]), int(p[0][1])) for p in convex_hull
-            ]  # type: ignore
+                (int(x), int(y))
+                for x, y in np.asarray(convex_hull, dtype=np.int32)
+                .reshape(-1, 2)
+                .tolist()
+            ]
 
         polygon_points = [(int(x), int(y)) for x, y in simplified_points_int]
         x, y, w, h = cv2.boundingRect(contour)
@@ -369,8 +373,9 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
             continue
 
         points_float = [
-            (float(point[0][0]), float(point[0][1])) for point in contour
-        ]  # type: ignore
+            (float(x), float(y))
+            for x, y in np.asarray(contour, dtype=np.float32).reshape(-1, 2).tolist()
+        ]
 
         if chaikin_iterations > 0:
             points_float = chaikin_smooth(points_float, iterations=chaikin_iterations)

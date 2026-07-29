@@ -565,8 +565,8 @@
       "size": 111
     },
     "src/tools/auto_detect.py": {
-      "sha256": "dec23c6a1c7055f10f073efda49286768f4ec949a1b6b4ced59763b665ae10af",
-      "size": 16277
+      "sha256": "42b47233e34ed2eb82f926c63aabe714ad0aa3d4c7818db1996df0751dcb693a",
+      "size": 16426
     },
     "src/tools/base_tool.py": {
       "sha256": "22f4c3c72a44122d05ea9cbc0fcf81c0f983242ddce44c647687229de7bbf177",
@@ -597,8 +597,8 @@
       "size": 46827
     },
     "src/tools/magnetic_lasso_engine.py": {
-      "sha256": "432f940165678b51568082e3ac675c66b9c917fc7afc5e9ee554dc44c217f3f6",
-      "size": 29337
+      "sha256": "47bcb4126a55484d49e6c5c5445b6cd2ee05d25415cfeacd7f5177f3bb3a15c1",
+      "size": 29513
     },
     "src/tools/mask_utils.py": {
       "sha256": "9b1810390cfd18aa45ac08cc93e4e5d092c9bd51d5d06e515d825b86bc72a7fd",
@@ -689,8 +689,8 @@
       "size": 2770
     },
     "src/utils/selection_tools.py": {
-      "sha256": "8f348987287bae1fc745be2c31a701ba7449ef619a94c5897462f8f6ee1f2885",
-      "size": 2678
+      "sha256": "dc6b869e43ba061b2ea774f5828b8423a8d2a86e8cd562b08d02defefd2399ea",
+      "size": 2725
     },
     "tests/__init__.py": {
       "sha256": "89588b0c2be9d872060e78aa68ccf95f94ca27ea6bcb79a43509d66c296c73ce",

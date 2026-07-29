@@ -50,10 +50,9 @@ def mask_to_polygon(mask: np.ndarray, approx_dp: float = 1.0) -> List[Tuple[int,
     # Convert numpy array (N, 1, 2) back to list of tuples
     poly: List[Tuple[int, int]] = []
     if c is not None:
-        for p in c:
-            px = int(p[0][0])
-            py = int(p[0][1])
-            poly.append((px, py))
+        contour_points = np.asarray(c, dtype=np.int32).reshape(-1, 2)
+        for px, py in contour_points.tolist():
+            poly.append((int(px), int(py)))
 
     return poly
 
