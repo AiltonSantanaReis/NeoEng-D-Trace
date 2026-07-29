@@ -19,31 +19,23 @@ def test_attempt_repair_duplicates_and_colinear():
 
 def test_scene_add_object_auto_repair_toggle():
     s = scene.Scene()
-    # This polygon contains a consecutive duplicate but is typically valid
-    # (our validation heuristics accept it), so add_object should succeed
-    # even with auto_repair disabled.
     poly = [(0, 0), (0, 0), (40, 0), (40, 40), (0, 40)]
+
+    with pytest.raises(ValueError, match="Invalid polygon"):
+        s.add_object("test_obj_dup", poly)
+
+    assert "test_obj_dup" not in s.objects
+
+    s.set_auto_repair(True)
     s.add_object("test_obj_dup", poly)
+
     assert "test_obj_dup" in s.objects
-
-    # For a self-intersecting polygon (bow-tie), behavior depends on
-    # whether repair heuristics (or shapely) can fix it. We assert the
-    # following property: enabling auto_repair must not make the result
-    # worse — after enabling it we should be able to add the polygon
-    # (if it was previously rejected).
-    bow = [(0, 0), (30, 30), (0, 30), (30, 0)]
-    s2 = scene.Scene()
-    raised_before = False
-    try:
-        s2.add_object("maybe_bow", bow)
-    except ValueError:
-        raised_before = True
-
-    s2.set_auto_repair(True)
-    # After enabling auto_repair we should be able to add or still be fine
-    # (i.e., no exception should propagate)
-    s2.add_object("maybe_bow", bow)
-    assert "maybe_bow" in s2.objects
+    repaired = s.objects["test_obj_dup"].polygon
+    assert scene._validate_polygon(repaired) is True
+    assert all(
+        repaired[index] != repaired[(index + 1) % len(repaired)]
+        for index in range(len(repaired))
+    )
 
 
 def test_attempt_repair_self_intersection():

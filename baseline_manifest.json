@@ -769,8 +769,8 @@
       "size": 2182
     },
     "tests/test_scene_repair.py": {
-      "sha256": "cac6eca754cd3858d10ea158764c4adbdd9ccb84215b4ccc618659fd61ce24f3",
-      "size": 2293
+      "sha256": "bdd56cf0c9780da16d3961044e4026a7f1933a75a11659503dda014f34ed667f",
+      "size": 1774
     },
     "tests/test_single_source_tree.py": {
       "sha256": "16521e4b9e7899cf0e6ba3402310bf4ccbacc49fe163c0903f0148a158a097ee",
