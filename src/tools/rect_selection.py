@@ -3,9 +3,10 @@
 Rectangle selection tool for rectangular selections.
 """
 
-from PySide6.QtGui import QMouseEvent, QPainter, QPen, QColor
+from PySide6.QtCore import QPointF, QRectF, Qt
+from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen
 from PySide6.QtWidgets import QMenu
-from PySide6.QtCore import Qt, QPointF, QRectF
+
 from .base_tool import BaseTool
 
 
@@ -18,7 +19,7 @@ class RectSelectionTool(BaseTool):
     def __init__(self, canvas_view):
         super().__init__(canvas_view)
         self._start_point = None  # Image coordinates
-        self._end_point = None    # Image coordinates
+        self._end_point = None  # Image coordinates
         self._is_selecting = False
 
         self.current_lang = "en"
@@ -124,19 +125,19 @@ class RectSelectionTool(BaseTool):
             return
 
         # Transform to screen coordinates
-        # Since CanvasView resets transform before calling overlay, 
+        # Since CanvasView resets transform before calling overlay,
         # we need to apply the image transform
         transform = self.canvas_view.get_transform()
-        
+
         painter.save()
         painter.setTransform(transform, combine=True)
 
         x1, y1 = self._start_point
         x2, y2 = self._end_point
-        
+
         width = x2 - x1
         height = y2 - y1
-        
+
         # Use cosmetic pen for consistent thickness regardless of zoom
         pen = QPen(QColor(0, 120, 255), 2)
         pen.setCosmetic(True)
@@ -145,21 +146,19 @@ class RectSelectionTool(BaseTool):
 
         # Draw in image space (transform handles the rest)
         painter.drawRect(QRectF(x1, y1, width, height))
-        
+
         painter.restore()
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46;
             margin: 5px 0; }
-        """
-        )
+        """)
 
         act_cancel = menu.addAction(
             self.translations[self.current_lang]["cancel_selection"]
@@ -177,17 +176,11 @@ class RectSelectionTool(BaseTool):
         menu.exec(event.globalPos())
 
     def undo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.undo(self.canvas_view.model)
 
     def redo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
 
     def cancel(self):

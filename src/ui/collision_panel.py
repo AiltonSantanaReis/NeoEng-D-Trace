@@ -3,18 +3,19 @@
 Collision Panel for Physics Testing
 """
 
-from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QPushButton,
-    QLabel,
-    QTextEdit,
-    QGroupBox,
-    QMessageBox,
-)
-from PySide6.QtCore import Signal
-from typing import List, Dict
 import json
+from typing import Dict, List
+
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import (
+    QGroupBox,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class CollisionPanel(QWidget):
@@ -55,9 +56,7 @@ class CollisionPanel(QWidget):
         self.export_btn.clicked.connect(self._on_export_collisions)
         button_layout.addWidget(self.export_btn)
 
-        self.auto_gen_btn = QPushButton(
-            "🤖 Auto-Generate from Scene Objects"
-        )
+        self.auto_gen_btn = QPushButton("🤖 Auto-Generate from Scene Objects")
         self.auto_gen_btn.setToolTip(
             "Generate collision shapes from current scene polygons"
         )
@@ -120,8 +119,9 @@ class CollisionPanel(QWidget):
             self.results_text.setPlainText("No collision results.")
             return
 
-        results_text = f"Collision Test Results " \
-                       f"({len(self.collision_results)} tests):\n\n"
+        results_text = (
+            f"Collision Test Results " f"({len(self.collision_results)} tests):\n\n"
+        )
 
         collision_count = 0
         for i, result in enumerate(self.collision_results):
@@ -138,20 +138,20 @@ class CollisionPanel(QWidget):
                 if mtv:
                     results_text += f"   MTV: ({mtv[0]:.2f}, {mtv[1]:.2f})\n"
 
-        results_text += f"\nSummary: {collision_count} collisions detected " \
-                        f"out of {len(self.collision_results)} tests."
+        results_text += (
+            f"\nSummary: {collision_count} collisions detected "
+            f"out of {len(self.collision_results)} tests."
+        )
         self.results_text.setPlainText(results_text)
 
     def _on_batch_test(self):
         if not self.physics_manager:
-            QMessageBox.warning(
-                self, "Error", "Physics manager not available."
-            )
+            QMessageBox.warning(self, "Error", "Physics manager not available.")
             return
 
         # Sincroniza Physics Manager com Scene shapes se necessário
         if not self.physics_manager.objects and self.scene.collision_shapes:
-             self._on_auto_generate()
+            self._on_auto_generate()
 
         if not self.physics_manager.objects:
             QMessageBox.information(
@@ -198,9 +198,7 @@ class CollisionPanel(QWidget):
                 "collision_shapes": self.scene.collision_shapes,
                 "collision_results": self.collision_results,
                 "statistics": (
-                    self.physics_manager.get_stats()
-                    if self.physics_manager
-                    else {}
+                    self.physics_manager.get_stats() if self.physics_manager else {}
                 ),
             }
 
@@ -232,16 +230,18 @@ class CollisionPanel(QWidget):
                     # Converte para float para física
                     shape = [(float(x), float(y)) for x, y in obj.polygon]
                     collision_shapes[obj_id] = shape
-                    
+
                     # REGISTRA NO PHYSICS MANAGER (CRÍTICO)
                     if self.physics_manager:
                         self.physics_manager.register(obj_id, shape)
-                    
+
                     count += 1
 
             if count == 0:
                 QMessageBox.information(
-                    self, "Info", "No valid polygons found in scene to generate collision shapes."
+                    self,
+                    "Info",
+                    "No valid polygons found in scene to generate collision shapes.",
                 )
                 return
 
@@ -257,6 +257,4 @@ class CollisionPanel(QWidget):
             self.auto_generate_requested.emit()
 
         except Exception as e:
-            QMessageBox.critical(
-                self, "Error", f"Auto-generation failed: {str(e)}"
-            )
+            QMessageBox.critical(self, "Error", f"Auto-generation failed: {str(e)}")

@@ -1,7 +1,7 @@
 import json
 import logging
-from pathlib import Path
 import threading
+from pathlib import Path
 
 import pytest
 
@@ -19,10 +19,7 @@ from src.core.validation_events import (
 
 
 def _read_jsonl(path: Path):
-    return [
-        json.loads(line)
-        for line in path.read_text(encoding="utf-8").splitlines()
-    ]
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
 
 
 def test_validation_session_flushes_structured_events_and_truthful_summary(tmp_path):
@@ -76,8 +73,6 @@ def test_validation_session_captures_warning_without_duplicate_root_route(tmp_pa
     assert warnings[0]["status"] == "WARNING"
 
 
-
-
 def test_explicit_validation_event_suppresses_duplicate_python_log(tmp_path):
     output = tmp_path / "deduplicated-error.jsonl"
     start_validation_session(output)
@@ -93,6 +88,7 @@ def test_explicit_validation_event_suppresses_duplicate_python_log(tmp_path):
     assert len([row for row in rows if row["event"] == "controlled.failure"]) == 1
     assert not [row for row in rows if row["event"] == "python.log"]
     assert rows[-1]["details"]["failure_count"] == 1
+
 
 def test_validation_session_captures_unhandled_thread_exception(tmp_path, monkeypatch):
     output = tmp_path / "thread-exception.jsonl"
@@ -110,13 +106,12 @@ def test_validation_session_captures_unhandled_thread_exception(tmp_path, monkey
         stop_validation_session(exit_code=0)
 
     rows = _read_jsonl(output)
-    failure = next(
-        row for row in rows if row["event"] == "unhandled.thread_exception"
-    )
+    failure = next(row for row in rows if row["event"] == "unhandled.thread_exception")
     assert failure["status"] == "UNHANDLED_EXCEPTION"
     assert failure["details"]["error_type"] == "RuntimeError"
     assert failure["details"]["thread_name"] == "validation-worker"
     assert rows[-1]["status"] == "FAILURE"
+
 
 def test_validation_output_is_session_scoped_and_rejects_escape(tmp_path):
     output = tmp_path / "manual-validation.jsonl"

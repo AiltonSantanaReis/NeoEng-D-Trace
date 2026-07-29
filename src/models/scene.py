@@ -3,11 +3,12 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Tuple, Dict, Optional, Callable, Any
-import uuid
 import json
 import os
 import time
+import uuid
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
 from src.core.logger import logger
 from src.core.validation_events import (
     elapsed_ms,
@@ -97,7 +98,9 @@ def _has_self_intersections(points: List[Tuple[int, int]]) -> bool:
     return False
 
 
-def _remove_close_duplicates(points: List[Tuple[float, float]], tol: float = 1.0) -> List[Tuple[float, float]]:
+def _remove_close_duplicates(
+    points: List[Tuple[float, float]], tol: float = 1.0
+) -> List[Tuple[float, float]]:
     """Remove pontos repetidos ou muito próximos sucessivos."""
     if not points:
         return []
@@ -117,7 +120,9 @@ def _remove_close_duplicates(points: List[Tuple[float, float]], tol: float = 1.0
     return out
 
 
-def _remove_colinear(points: List[Tuple[float, float]], tol: float = 1e-6) -> List[Tuple[float, float]]:
+def _remove_colinear(
+    points: List[Tuple[float, float]], tol: float = 1e-6
+) -> List[Tuple[float, float]]:
     """Remove vértices colineares consecutivos (simplificação básica)."""
     if len(points) < 3:
         return points
@@ -141,7 +146,9 @@ def _remove_colinear(points: List[Tuple[float, float]], tol: float = 1e-6) -> Li
     return out
 
 
-def _attempt_repair(points: List[Tuple[int, int]]) -> Tuple[List[Tuple[int, int]], bool]:
+def _attempt_repair(
+    points: List[Tuple[int, int]],
+) -> Tuple[List[Tuple[int, int]], bool]:
     """Try to repair a polygon returning (new_points, repaired_flag).
 
     Repairs attempted:
@@ -205,9 +212,7 @@ def _lines_intersect(
     def ccw(a, b, c):
         return (c[1] - a[1]) * (b[0] - a[0]) > (b[1] - a[1]) * (c[0] - a[0])
 
-    return ccw(p1, p3, p4) != ccw(p2, p3, p4) and ccw(p1, p2, p3) != ccw(
-        p1, p2, p4
-    )
+    return ccw(p1, p3, p4) != ccw(p2, p3, p4) and ccw(p1, p2, p3) != ccw(p1, p2, p4)
 
 
 class Layer:
@@ -270,9 +275,7 @@ class Scene:
         self.auto_repair = False
 
         # create default layer
-        default = Layer(
-            id="layer_default", name="Default", visible=True, locked=False
-        )
+        default = Layer(id="layer_default", name="Default", visible=True, locked=False)
         self.layers.append(default)
 
     # subscription
@@ -379,7 +382,9 @@ class Scene:
                 polygon = repaired
             else:
                 # Provide detailed logging for debugging, but raise the error so callers must handle it.
-                logger.warning(f"Invalid polygon for object {oid}; auto_repair={'enabled' if self.auto_repair else 'disabled'}")
+                logger.warning(
+                    f"Invalid polygon for object {oid}; auto_repair={'enabled' if self.auto_repair else 'disabled'}"
+                )
                 raise ValueError("Invalid polygon")
         if oid in self.objects:
             logger.warning(f"Object id {oid} already exists, skipping")
@@ -457,13 +462,9 @@ class Scene:
 
         # Se tiver colisão, atualiza também
         if oid in self.collision_shapes:
-            self.collision_shapes[oid] = [
-                (float(p[0]), float(p[1])) for p in polygon
-            ]
+            self.collision_shapes[oid] = [(float(p[0]), float(p[1])) for p in polygon]
 
-        logger.debug(
-            f"Updated polygon for object {oid} with {len(polygon)} vertices"
-        )
+        logger.debug(f"Updated polygon for object {oid} with {len(polygon)} vertices")
         self._notify()
 
     def select_object(self, oid: Optional[str]):
@@ -564,7 +565,7 @@ class Scene:
     # --- Persistence ---
     def save_project(self, path: str):
         try:
-            from typing import Dict, Any
+            from typing import Any, Dict
 
             data: Dict[str, Any] = {
                 "layers": [],
@@ -611,7 +612,7 @@ class Scene:
             if not os.path.exists(path):
                 raise FileNotFoundError(path)
             with open(path, "r", encoding="utf-8") as f:
-                from typing import Dict, Any
+                from typing import Any, Dict
 
                 data: Dict[str, Any] = json.load(f)
 
@@ -654,8 +655,7 @@ class Scene:
             for oid in data.get("collisions", []):
                 if oid in self.objects:
                     self.collision_shapes[oid] = [
-                        (float(p[0]), float(p[1]))
-                        for p in self.objects[oid].polygon
+                        (float(p[0]), float(p[1])) for p in self.objects[oid].polygon
                     ]
 
             self._notify()

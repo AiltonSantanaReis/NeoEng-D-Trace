@@ -3,11 +3,12 @@ import pytest
 pytest.importorskip("PySide6")
 
 from unittest.mock import Mock
+
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 
 from src.tools.base_tool import BaseTool
-from src.tools.pen_tool import PenTool, BezierNode
+from src.tools.pen_tool import BezierNode, PenTool
 from src.tools.polygonal_lasso import PolygonalLassoTool
 
 

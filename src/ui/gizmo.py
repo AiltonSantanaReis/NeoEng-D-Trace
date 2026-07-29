@@ -1,6 +1,6 @@
 # src/ui/gizmo.py
-from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QPolygonF, QFont
-from PySide6.QtCore import Qt, QPointF
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPolygonF
 
 
 class TransformGizmo:
@@ -32,7 +32,7 @@ class TransformGizmo:
         self.color_y = QColor(60, 255, 60)  # Verde
         self.color_center = QColor(255, 255, 255)  # Branco
         self.color_hover = QColor(255, 255, 0)  # Amarelo
-        self.color_dimmed = QColor(100, 100, 100, 150) # Cor para eixos inativos
+        self.color_dimmed = QColor(100, 100, 100, 150)  # Cor para eixos inativos
 
     def set_screen_position(self, pos: QPointF):
         """Atualiza a posição onde o gizmo será desenhado na tela."""
@@ -52,20 +52,16 @@ class TransformGizmo:
             return self.CENTER
 
         # Tolerância para clicar nas linhas
-        hit_width = 15.0 
+        hit_width = 15.0
 
         # 2. Teste Eixo X (Horizontal para direita)
         # Mouse deve estar entre 0 e Length no X, e perto de 0 no Y
-        if (0 <= dx <= self.arm_length + self.arrow_size) and (
-            abs(dy) <= hit_width
-        ):
+        if (0 <= dx <= self.arm_length + self.arrow_size) and (abs(dy) <= hit_width):
             return self.AXIS_X
 
         # 3. Teste Eixo Y (Vertical para baixo/cima dependendo da coord)
         # Assumindo Y+ para baixo (padrão Qt Widget)
-        if (0 <= dy <= self.arm_length + self.arrow_size) and (
-            abs(dx) <= hit_width
-        ):
+        if (0 <= dy <= self.arm_length + self.arrow_size) and (abs(dx) <= hit_width):
             return self.AXIS_Y
 
         return self.NONE
@@ -88,18 +84,20 @@ class TransformGizmo:
         # Se um eixo está ativo, o outro fica apagado (dimmed)
         opacity_x = 1.0
         opacity_y = 1.0
-        
+
         if self.active_axis != self.NONE:
-            if self.active_axis == self.AXIS_X: opacity_y = 0.3
-            if self.active_axis == self.AXIS_Y: opacity_x = 0.3
+            if self.active_axis == self.AXIS_X:
+                opacity_y = 0.3
+            if self.active_axis == self.AXIS_Y:
+                opacity_x = 0.3
 
         # --- EIXO X (Vermelho) ---
         is_hover_x = (self.hover_axis == self.AXIS_X) or (
             self.active_axis == self.AXIS_X
         )
         color_x = self.color_hover if is_hover_x else self.color_x
-        if opacity_x < 1.0: 
-            color_x = QColor(color_x) # Clone to modify alpha
+        if opacity_x < 1.0:
+            color_x = QColor(color_x)  # Clone to modify alpha
             color_x.setAlphaF(opacity_x)
 
         pen_x = QPen(color_x, 3)
@@ -129,7 +127,7 @@ class TransformGizmo:
             self.active_axis == self.AXIS_Y
         )
         color_y = self.color_hover if is_hover_y else self.color_y
-        if opacity_y < 1.0: 
+        if opacity_y < 1.0:
             color_y = QColor(color_y)
             color_y.setAlphaF(opacity_y)
 
@@ -169,8 +167,8 @@ class TransformGizmo:
         # Borda e Texto
         painter.setPen(QPen(color_c, 2))
         painter.setBrush(Qt.BrushStyle.NoBrush)
-        painter.drawEllipse(-15, -15, 30, 30) # Circle outline
-        
+        painter.drawEllipse(-15, -15, 30, 30)  # Circle outline
+
         painter.setPen(color_c)
         painter.setFont(QFont("Arial", 12, QFont.Bold))
         # Centraliza texto (aprox)

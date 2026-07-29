@@ -3,7 +3,8 @@
 Export Preview Dialog for NeoEng-D-Trace.
 """
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 from PIL import Image
 
 # Importação robusta para compatibilidade entre versões do Pillow
@@ -12,22 +13,22 @@ try:
 except ImportError:
     from PIL import ImageQt
 
-from PySide6.QtWidgets import (
-    QDialog,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-    QSlider,
-    QCheckBox,
-    QPushButton,
-    QGroupBox,
-    QScrollArea,
-    QFrame,
-    QFileDialog,
-    QMessageBox,
-)
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import (
+    QCheckBox,
+    QDialog,
+    QFileDialog,
+    QFrame,
+    QGroupBox,
+    QHBoxLayout,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QSlider,
+    QVBoxLayout,
+)
 
 
 class ExportPreviewDialog(QDialog):
@@ -134,9 +135,7 @@ class ExportPreviewDialog(QDialog):
         # Antialias checkbox
         self.antialias_checkbox = QCheckBox()
         self.antialias_checkbox.setChecked(True)
-        self.antialias_checkbox.stateChanged.connect(
-            self._on_antialias_changed
-        )
+        self.antialias_checkbox.stateChanged.connect(self._on_antialias_changed)
 
         controls_layout.addWidget(self.zoom_text_label)
         controls_layout.addWidget(self.zoom_slider)
@@ -167,7 +166,6 @@ class ExportPreviewDialog(QDialog):
 
         layout.addLayout(buttons_layout)
         self.update_language(self.current_lang)
-
 
     def update_language(self, lang: str):
         self.current_lang = lang if lang in self.TRANSLATIONS else "en"
@@ -232,7 +230,9 @@ class ExportPreviewDialog(QDialog):
     def _update_metadata_display(self):
         """Update the metadata display label."""
         if not self.metadata:
-            self.metadata_label.setText(self.TRANSLATIONS[self.current_lang]["no_metadata"])
+            self.metadata_label.setText(
+                self.TRANSLATIONS[self.current_lang]["no_metadata"]
+            )
             return
 
         lines = []
@@ -336,8 +336,7 @@ def export_preview_headless(
                 lines.append(f"Pivot: ({pivot[0]:.1f}, {pivot[1]:.1f})")
             elif isinstance(pivot, dict):
                 lines.append(
-                    f"Pivot: ({pivot.get('x', 0):.3f}, "
-                    f"{pivot.get('y', 0):.3f})"
+                    f"Pivot: ({pivot.get('x', 0):.3f}, " f"{pivot.get('y', 0):.3f})"
                 )
 
         y = 10

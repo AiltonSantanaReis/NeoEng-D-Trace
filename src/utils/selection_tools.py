@@ -3,9 +3,10 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Tuple, Optional
-import numpy as np
+from typing import List, Optional, Tuple
+
 import cv2
+import numpy as np
 
 
 def polygon_to_mask(
@@ -21,7 +22,7 @@ def polygon_to_mask(
         mask = np.zeros((h, w), dtype=np.uint8)
     else:
         mask.fill(0)  # Clear the mask for reuse
-        
+
     if polygon:
         # Convert list of tuples to numpy array of shape (N, 1, 2)
         pts = np.array(polygon, dtype=np.int32)
@@ -31,15 +32,11 @@ def polygon_to_mask(
     return mask
 
 
-def mask_to_polygon(
-    mask: np.ndarray, approx_dp: float = 1.0
-) -> List[Tuple[int, int]]:
+def mask_to_polygon(mask: np.ndarray, approx_dp: float = 1.0) -> List[Tuple[int, int]]:
     """
     Finds the largest polygon contour in a binary mask.
     """
-    contours, _ = cv2.findContours(
-        mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
-    )
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if not contours:
         return []
 
@@ -72,9 +69,7 @@ def expand_contract_polygon(
 
     # Kernel size must be odd
     kernel_size = abs(delta) * 2 + 1
-    kernel = cv2.getStructuringElement(
-        cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
-    )
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
 
     processed_mask: np.ndarray
     if delta > 0:

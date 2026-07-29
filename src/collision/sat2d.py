@@ -6,9 +6,11 @@ Implementation preserved in the single ``src`` source tree.
 # Unified SAT implementation backed by src.physics.sat2d.
 # This module provides numpy-based interface for compatibility
 
-from ..physics.sat2d import sat_polygon_vs_polygon
+from typing import Optional, Tuple
+
 import numpy as np
-from typing import Tuple, Optional
+
+from ..physics.sat2d import sat_polygon_vs_polygon
 
 Array2D = np.ndarray  # Nx2
 

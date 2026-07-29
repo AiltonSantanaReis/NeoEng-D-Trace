@@ -9,7 +9,8 @@ Implements ear clipping algorithm for polygon triangulation and
 optional convex decomposition.
 """
 
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
+
 import numpy as np
 
 try:
@@ -77,9 +78,7 @@ def is_point_in_triangle(
 
     # Helper function to compute cross product (z-component)
     def cross_product(p1, p2, p3):
-        return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (
-            p3[0] - p1[0]
-        )
+        return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
 
     # Check if point is on the same side of all edges
     # For a triangle ABC and point P, P should be on the same side of AB as C,
@@ -206,8 +205,7 @@ def ear_clipping_triangulation(
             # No ear found - polygon might be degenerate or
             # have issues
             raise ValueError(
-                "No ear found in polygon - may not be simple or "
-                "may be degenerate"
+                "No ear found in polygon - may not be simple or " "may be degenerate"
             )
 
     # Add the final triangle
@@ -215,7 +213,6 @@ def ear_clipping_triangulation(
         triangles.append(verts.copy())
 
     return triangles
-
 
 
 def is_convex_polygon(
@@ -230,9 +227,7 @@ def is_convex_polygon(
         a = polygon[index - 1]
         b = polygon[index]
         c = polygon[(index + 1) % len(polygon)]
-        cross = (b[0] - a[0]) * (c[1] - b[1]) - (b[1] - a[1]) * (
-            c[0] - b[0]
-        )
+        cross = (b[0] - a[0]) * (c[1] - b[1]) - (b[1] - a[1]) * (c[0] - b[0])
         if abs(cross) <= epsilon:
             continue
         current_sign = 1 if cross > 0 else -1
@@ -242,6 +237,7 @@ def is_convex_polygon(
             return False
 
     return turn_sign != 0
+
 
 def merge_triangles_to_convex(
     triangles: List[List[Tuple[float, float]]],
@@ -261,9 +257,7 @@ def merge_triangles_to_convex(
         return []
 
     # Start with triangles as initial polygons
-    polygons = [
-        list(t) for t in triangles
-    ]
+    polygons = [list(t) for t in triangles]
 
     # Simple greedy merging: repeatedly merge pairs that share an edge
     # and result <=8 vertices

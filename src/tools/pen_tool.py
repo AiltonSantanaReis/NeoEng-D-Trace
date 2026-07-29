@@ -4,10 +4,12 @@ Pen tool for drawing curves using Bézier splines.
 """
 
 import math
-from typing import List, Tuple, Optional
-from PySide6.QtGui import QMouseEvent, QPainter, QPen, QColor, QPolygonF
+from typing import List, Optional, Tuple
+
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QMenu
-from PySide6.QtCore import Qt, QPointF
+
 from .base_tool import BaseTool
 
 
@@ -79,9 +81,7 @@ class PenTool(BaseTool):
             },
         }
 
-    def on_mouse_press(
-        self, event: QMouseEvent, position: Tuple[float, float]
-    ):
+    def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
             x, y = position
             click_point = (x, y)
@@ -117,16 +117,12 @@ class PenTool(BaseTool):
 
         self.canvas_view.update()
 
-    def on_mouse_release(
-        self, event: QMouseEvent, position: Tuple[float, float]
-    ):
+    def on_mouse_release(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
             self._selected_handle = None
             self._is_placing_handle = False
 
-    def on_double_click(
-        self, event: QMouseEvent, position: Tuple[float, float]
-    ):
+    def on_double_click(self, event: QMouseEvent, position: Tuple[float, float]):
         if len(self._nodes) >= 2:
             self.commit_selection()
             self._nodes = []
@@ -256,7 +252,7 @@ class PenTool(BaseTool):
         # Setup transform to draw in Image Space
         transform = self.canvas_view.get_transform()
         zoom = self.get_canvas_zoom()
-        
+
         painter.save()
         painter.setTransform(transform, combine=True)
 
@@ -283,13 +279,9 @@ class PenTool(BaseTool):
         for node in self._nodes:
             # Handles lines
             if node.handle_in != node.anchor:
-                painter.drawLine(
-                    QPointF(*node.anchor), QPointF(*node.handle_in)
-                )
+                painter.drawLine(QPointF(*node.anchor), QPointF(*node.handle_in))
             if node.handle_out != node.anchor:
-                painter.drawLine(
-                    QPointF(*node.anchor), QPointF(*node.handle_out)
-                )
+                painter.drawLine(QPointF(*node.anchor), QPointF(*node.handle_out))
 
             painter.setBrush(QColor(200, 200, 200))
 
@@ -311,21 +303,19 @@ class PenTool(BaseTool):
         for node in self._nodes:
             pt = QPointF(*node.anchor)
             painter.drawEllipse(pt, anchor_radius, anchor_radius)
-            
+
         painter.restore()
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46;
             margin: 5px 0; }
-        """
-        )
+        """)
 
         act_cancel = menu.addAction(
             self.translations[self.current_lang]["cancel_selection"]
@@ -343,17 +333,11 @@ class PenTool(BaseTool):
         menu.exec(event.globalPos())
 
     def undo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.undo(self.canvas_view.model)
 
     def redo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
 
     def cancel(self):

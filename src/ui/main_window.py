@@ -1,37 +1,39 @@
 # src/ui/main_window.py
-from PySide6.QtWidgets import (
-    QMainWindow,
-    QToolBar,
-    QFileDialog,
-    QMessageBox,
-    QSplitter,
-    QMenu,
-    QPushButton,
-)
-from PySide6.QtGui import QAction, QShortcut, QKeySequence
-from PySide6.QtCore import Qt
 import os
 import time
 
-# Imports dos componentes da UI
-from src.ui.side_panel import SidePanel
-from src.ui.canvas_view import CanvasView
-from src.ui.export_dialog import ExportDialog
-from src.ui.groups_panel import GroupsPanel
-from src.ui.tool_palette import ToolPalette
-from src.ui.mask_viewer import MaskViewerDialog
-from src.ui.collision_panel import CollisionPanel
-from src.ui.collision_overlay import CollisionOverlay
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction, QKeySequence, QShortcut
+from PySide6.QtWidgets import (
+    QFileDialog,
+    QMainWindow,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QSplitter,
+    QToolBar,
+)
 
-# Imports de Lógica e Física
-from src.physics.physics_manager import PhysicsManager
+from src.core.app_identity import build_window_title
 from src.core.logger import logger
 from src.core.validation_events import (
     elapsed_ms,
     record_validation_event,
     record_validation_exception,
 )
-from src.core.app_identity import build_window_title
+
+# Imports de Lógica e Física
+from src.physics.physics_manager import PhysicsManager
+from src.ui.canvas_view import CanvasView
+from src.ui.collision_overlay import CollisionOverlay
+from src.ui.collision_panel import CollisionPanel
+from src.ui.export_dialog import ExportDialog
+from src.ui.groups_panel import GroupsPanel
+from src.ui.mask_viewer import MaskViewerDialog
+
+# Imports dos componentes da UI
+from src.ui.side_panel import SidePanel
+from src.ui.tool_palette import ToolPalette
 
 
 class MainWindow(QMainWindow):
@@ -101,19 +103,11 @@ class MainWindow(QMainWindow):
 
         # Adiciona menu de exportação de colisão
         export_menu = QMenu(self)
-        self.act_export_collision_json = QAction(
-            "Export Collision (JSON)", self
-        )
-        self.act_export_collision_json.triggered.connect(
-            self.export_collision_json
-        )
+        self.act_export_collision_json = QAction("Export Collision (JSON)", self)
+        self.act_export_collision_json.triggered.connect(self.export_collision_json)
         export_menu.addAction(self.act_export_collision_json)
-        self.act_export_collision_txt = QAction(
-            "Export Collision (TXT)", self
-        )
-        self.act_export_collision_txt.triggered.connect(
-            self.export_collision_txt
-        )
+        self.act_export_collision_txt = QAction("Export Collision (TXT)", self)
+        self.act_export_collision_txt.triggered.connect(self.export_collision_txt)
         export_menu.addAction(self.act_export_collision_txt)
         self.export_collision_button = QPushButton("Export Collision", self)
         self.export_collision_button.setMenu(export_menu)
@@ -135,9 +129,7 @@ class MainWindow(QMainWindow):
 
         # Conexão Física -> UI
         self.collision_panel.set_physics_manager(self.physics_manager)
-        self.collision_panel.batch_test_requested.connect(
-            self._on_collision_batch_test
-        )
+        self.collision_panel.batch_test_requested.connect(self._on_collision_batch_test)
         self.collision_panel.export_collisions_requested.connect(
             self._on_collision_export
         )
@@ -162,7 +154,6 @@ class MainWindow(QMainWindow):
         self.act_100 = QAction("1:1 Pixel", self)
         self.act_100.triggered.connect(lambda: self.canvas.set_zoom(1.0))
         self.nav_toolbar.addAction(self.act_100)
-
 
         self.nav_toolbar.addSeparator()
 
@@ -199,8 +190,7 @@ class MainWindow(QMainWindow):
         self.focus_button.setFlat(True)
         self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.focus_button.setStyleSheet(
-            "QPushButton:pressed { background-color: transparent; "
-            "border: none; }"
+            "QPushButton:pressed { background-color: transparent; " "border: none; }"
         )
         self.focus_button.clicked.connect(self._focus_selected)
         self.nav_toolbar.addWidget(self.focus_button)
@@ -310,8 +300,7 @@ class MainWindow(QMainWindow):
                 "select_object": "Selecione um objeto na lista primeiro.",
                 "error": "Erro",
                 "failed_open_image": "Falha ao abrir imagem: ",
-                "failed_mask_viewer": "Falha ao abrir "
-                "Visualizador de Máscara: ",
+                "failed_mask_viewer": "Falha ao abrir " "Visualizador de Máscara: ",
                 "language": "Idioma",
                 "english": "Inglês",
                 "portuguese": "Português",
@@ -433,9 +422,7 @@ class MainWindow(QMainWindow):
         self.collision_overlay_action = QAction("Collision Overlay", self)
         self.collision_overlay_action.setCheckable(True)
         self.collision_overlay_action.setChecked(False)
-        self.collision_overlay_action.triggered.connect(
-            self._toggle_collision_overlay
-        )
+        self.collision_overlay_action.triggered.connect(self._toggle_collision_overlay)
         self.view_menu.addAction(self.collision_overlay_action)
 
     def set_language(self, lang):
@@ -445,9 +432,7 @@ class MainWindow(QMainWindow):
         try:
             self.current_lang = lang if lang in self.translations else "en"
             self.update_language()
-            expected_title = build_window_title(
-                self.current_lang, self._document_name
-            )
+            expected_title = build_window_title(self.current_lang, self._document_name)
             applied = (
                 self.current_lang in self.translations
                 and self.windowTitle() == expected_title
@@ -475,9 +460,7 @@ class MainWindow(QMainWindow):
         if self.current_lang not in self.translations:
             self.current_lang = "en"
         t = self.translations[self.current_lang]
-        self.setWindowTitle(
-            build_window_title(self.current_lang, self._document_name)
-        )
+        self.setWindowTitle(build_window_title(self.current_lang, self._document_name))
 
         self.act_open.setText(t["open_image"])
         self.act_export.setText(t["export"])
@@ -525,9 +508,8 @@ class MainWindow(QMainWindow):
             and hasattr(self.canvas._tool, "update_language")
         ):
             self.canvas._tool.update_language(self.current_lang)
-        if (
-            self._mask_viewer_dialog is not None
-            and hasattr(self._mask_viewer_dialog, "update_language")
+        if self._mask_viewer_dialog is not None and hasattr(
+            self._mask_viewer_dialog, "update_language"
         ):
             self._mask_viewer_dialog.update_language(self.current_lang)
 
@@ -542,9 +524,7 @@ class MainWindow(QMainWindow):
         self.act_english.triggered.connect(lambda: self.set_language("en"))
         self.act_portuguese.triggered.connect(lambda: self.set_language("pt"))
         menu.exec(
-            self.language_button.mapToGlobal(
-                self.language_button.rect().bottomLeft()
-            )
+            self.language_button.mapToGlobal(self.language_button.rect().bottomLeft())
         )
 
     def set_last_folder(self, folder):
@@ -614,8 +594,7 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(
                 self,
                 self.translations[self.current_lang]["error"],
-                self.translations[self.current_lang]["failed_open_image"]
-                + str(exc),
+                self.translations[self.current_lang]["failed_open_image"] + str(exc),
             )
 
     def open_export(self):
@@ -669,8 +648,7 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(
                 self,
                 self.translations[self.current_lang]["error"],
-                self.translations[self.current_lang]["failed_mask_viewer"]
-                + str(e),
+                self.translations[self.current_lang]["failed_mask_viewer"] + str(e),
             )
 
     def _toggle_collision_overlay(self):

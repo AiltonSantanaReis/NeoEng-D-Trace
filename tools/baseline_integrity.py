@@ -213,7 +213,9 @@ def verify_manifest() -> int:
     actual = build_manifest()
     expected_files = expected.get("files", {})
     actual_files = actual["files"]
-    expected_metadata = {key: value for key, value in expected.items() if key != "files"}
+    expected_metadata = {
+        key: value for key, value in expected.items() if key != "files"
+    }
     actual_metadata = {key: value for key, value in actual.items() if key != "files"}
 
     if forbidden or expected != actual:

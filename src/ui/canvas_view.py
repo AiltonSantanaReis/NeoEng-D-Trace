@@ -1,25 +1,28 @@
 from __future__ import annotations
-# src/ui/canvas_view.py
-from typing import Callable, List, Optional, Tuple
+
 from dataclasses import dataclass
 
-from PySide6.QtWidgets import QWidget, QMenu, QMessageBox, QPushButton
+# src/ui/canvas_view.py
+from typing import Callable, List, Optional, Tuple
+
+from PySide6.QtCore import QObject, QPointF, QRunnable, Qt, QThreadPool, Signal
 from PySide6.QtGui import (
-    QPainter,
-    QImage,
-    QMouseEvent,
-    QWheelEvent,
+    QBrush,
     QColor,
+    QFont,
+    QImage,
+    QKeyEvent,
+    QMouseEvent,
+    QPainter,
     QPen,
     QPolygonF,
     QTransform,
-    QFont,
-    QBrush,
-    QKeyEvent,
+    QWheelEvent,
 )
-from PySide6.QtCore import Qt, QPointF, QThreadPool, QRunnable, Signal, QObject
+from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QWidget
 
 from src.core.logger import logger
+
 # Proteção de importação caso ViewProcessor não esteja implementado ainda
 try:
     from src.core.view_processor import ViewProcessor
@@ -52,7 +55,7 @@ class XrayWorker(QRunnable):
     def run(self):
         if not ViewProcessor:
             return
-            
+
         # Simulate progress for demonstration
         self.signals.progress.emit(10)
         if self._cancelled:
@@ -67,7 +70,7 @@ class XrayWorker(QRunnable):
                 xray_mode = 2
             elif self.mode == CanvasView.VIEW_XRAY_3:
                 xray_mode = 3
-            
+
             qimage = ViewProcessor.generate_xray(self.image_array, xray_mode)
         except Exception as e:
             logger.error(f"XRay generation failed: {e}")
@@ -144,7 +147,7 @@ class CanvasView(QWidget):
         self._pen_poly = QPen(QColor(0, 255, 0), 2)
         self._pen_poly.setCosmetic(True)
         self._brush_poly = QColor(0, 255, 0, 50)
-        
+
         self._pen_selected = QPen(QColor(255, 100, 100), 3)
         self._pen_selected.setCosmetic(True)
         self._brush_selected = QColor(255, 100, 100, 60)
@@ -188,16 +191,14 @@ class CanvasView(QWidget):
         clicked_obj_id = self._find_object_at(img_pt)
 
         menu = QMenu(self)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46;
             margin: 5px 0; }
-        """
-        )
+        """)
 
         if clicked_obj_id:
             label = menu.addAction(f"Selected: {clicked_obj_id[:8]}...")
@@ -205,9 +206,7 @@ class CanvasView(QWidget):
             menu.addSeparator()
 
             act_focus = menu.addAction("🔍 Focus Object")
-            act_focus.triggered.connect(
-                lambda: self.focus_on_object(clicked_obj_id)
-            )
+            act_focus.triggered.connect(lambda: self.focus_on_object(clicked_obj_id))
 
             # Física
             has_physics = hasattr(
@@ -219,16 +218,12 @@ class CanvasView(QWidget):
                 else "Enable Physics Collision"
             )
             act_phys = menu.addAction(f"⚛️ {phys_txt}")
-            act_phys.triggered.connect(
-                lambda: self._toggle_physics(clicked_obj_id)
-            )
+            act_phys.triggered.connect(lambda: self._toggle_physics(clicked_obj_id))
 
             menu.addSeparator()
 
             act_del = menu.addAction("❌ Delete Object")
-            act_del.triggered.connect(
-                lambda: self._delete_object(clicked_obj_id)
-            )
+            act_del.triggered.connect(lambda: self._delete_object(clicked_obj_id))
 
             menu.addSeparator()
 
@@ -272,6 +267,7 @@ class CanvasView(QWidget):
         # Tenta importar o comando dinamicamente
         try:
             from src.core.commands import ToggleCollisionCommand
+
             if hasattr(self.model, "cmd") and self.model.cmd:
                 self.model.cmd.execute(ToggleCollisionCommand(oid), self.model)
                 self.update()
@@ -283,13 +279,14 @@ class CanvasView(QWidget):
         if hasattr(self.model, "set_object_collision"):
             curr = self.model.has_collision(oid)
             self.model.set_object_collision(oid, not curr)
-        
+
         self.update()
 
     def _delete_object(self, oid: str):
         # Tenta importar o comando dinamicamente
         try:
             from src.core.commands import DeleteObjectCommand
+
             if hasattr(self.model, "cmd") and self.model.cmd:
                 self.model.cmd.execute(DeleteObjectCommand(oid), self.model)
                 self.update()
@@ -308,7 +305,7 @@ class CanvasView(QWidget):
     def _distance_to_last_point(self, x: int, y: int) -> float:
         """Calculate distance from (x, y) to the last point in current polygon."""
         if not self._current_polygon:
-            return float('inf')
+            return float("inf")
         last_x, last_y = self._current_polygon[-1]
         return ((x - last_x) ** 2 + (y - last_y) ** 2) ** 0.5
 
@@ -318,7 +315,7 @@ class CanvasView(QWidget):
         if obj:
             # Arredonda para inteiro para manter consistência de pixel
             new_poly = [(int(p[0] + dx), int(p[1] + dy)) for p in obj.polygon]
-            
+
             # Se tivermos um comando de movimento, o ideal seria usá-lo,
             # mas para gizmo em tempo real, atualização direta é mais performática.
             # O 'commit' do movimento deve ocorrer no mouseRelease.
@@ -336,6 +333,7 @@ class CanvasView(QWidget):
             # Tenta usar comando
             try:
                 from src.core.commands import ClearSceneCommand
+
                 if hasattr(self.model, "cmd") and self.model.cmd:
                     self.model.cmd.execute(ClearSceneCommand(), self.model)
                     self._after_clean()
@@ -378,6 +376,7 @@ class CanvasView(QWidget):
         self._flash_color = color
         self.update()
         from PySide6.QtCore import QTimer
+
         QTimer.singleShot(duration, lambda: self._clear_flash())
 
     def _clear_flash(self):
@@ -438,7 +437,7 @@ class CanvasView(QWidget):
     def update_image(self):
         if not ViewProcessor:
             return
-            
+
         img = getattr(self.model, "image", None)
         if img is None:
             self._qimage_lit = None
@@ -449,11 +448,11 @@ class CanvasView(QWidget):
             self.gizmo_toggle.setChecked(False)
             self.update()
             return
-        
+
         # Lazy load gizmo se disponível
         if self.gizmo is None and TransformGizmo:
             self.gizmo = TransformGizmo()
-            
+
         self._qimage_lit = ViewProcessor.to_qimage(img)
         self._qimage_xray_1 = None
         self._qimage_xray_2 = None
@@ -530,7 +529,12 @@ class CanvasView(QWidget):
         pos = event.position()
 
         # 1. Lógica do Gizmo (Se não estiver em preview)
-        if not self._preview_mode and self._qimage_lit and self._gizmo_enabled and self.gizmo:
+        if (
+            not self._preview_mode
+            and self._qimage_lit
+            and self._gizmo_enabled
+            and self.gizmo
+        ):
             center_screen = self._get_image_center_screen()
             if center_screen:
                 self.gizmo.set_screen_position(center_screen)
@@ -576,9 +580,12 @@ class CanvasView(QWidget):
                     self.model.select_object(clicked_id)
                 self.update()
             else:
-                self.model.select_object(None) # Deseleciona
+                self.model.select_object(None)  # Deseleciona
                 # Check if this point is far enough from the last point to avoid duplicates
-                if not self._current_polygon or self._distance_to_last_point(ix, iy) >= 5:
+                if (
+                    not self._current_polygon
+                    or self._distance_to_last_point(ix, iy) >= 5
+                ):
                     self._current_polygon.append((ix, iy))
                 self.update()
 
@@ -594,12 +601,12 @@ class CanvasView(QWidget):
                             self,
                             "Invalid Polygon",
                             "The polygon you drew is invalid. It may have self-intersections, "
-                            "be too small, or have other geometric issues. Please try drawing a simpler shape."
+                            "be too small, or have other geometric issues. Please try drawing a simpler shape.",
                         )
                 self._current_polygon = []
                 self.update()
             else:
-                super().mousePressEvent(event) # Context Menu
+                super().mousePressEvent(event)  # Context Menu
 
     def mouseMoveEvent(self, event: QMouseEvent):
         pos = event.position()
@@ -613,21 +620,31 @@ class CanvasView(QWidget):
                 # Move Objeto
                 dx = delta_screen.x() / self._zoom
                 dy = delta_screen.y() / self._zoom
-                if self.gizmo.active_axis == TransformGizmo.AXIS_X: dy = 0
-                if self.gizmo.active_axis == TransformGizmo.AXIS_Y: dx = 0
+                if self.gizmo.active_axis == TransformGizmo.AXIS_X:
+                    dy = 0
+                if self.gizmo.active_axis == TransformGizmo.AXIS_Y:
+                    dx = 0
                 self._move_selected_object(dx, dy)
             else:
                 # Pan via Gizmo
                 dx, dy = delta_screen.x(), delta_screen.y()
-                if self.gizmo.active_axis == TransformGizmo.AXIS_X: dy = 0
-                if self.gizmo.active_axis == TransformGizmo.AXIS_Y: dx = 0
+                if self.gizmo.active_axis == TransformGizmo.AXIS_X:
+                    dy = 0
+                if self.gizmo.active_axis == TransformGizmo.AXIS_Y:
+                    dx = 0
                 self._pan += QPointF(dx, dy)
-            
+
             self.update()
             return
 
         # 2. Hover do Gizmo
-        if not self._preview_mode and self._qimage_lit and self._gizmo_enabled and self.gizmo and not self._dragging:
+        if (
+            not self._preview_mode
+            and self._qimage_lit
+            and self._gizmo_enabled
+            and self.gizmo
+            and not self._dragging
+        ):
             center_screen = self._get_image_center_screen()
             if center_screen:
                 self.gizmo.set_screen_position(center_screen)
@@ -661,11 +678,10 @@ class CanvasView(QWidget):
             self._dragging = False
             self.setCursor(Qt.CursorShape.ArrowCursor)
             return
-            
+
         ix, iy = self.widget_to_image(event.position())
         if self._tool and self._tool.on_mouse_release:
             self._tool.on_mouse_release(event, (ix, iy))
-
 
     def request_tool_undo(self) -> bool:
         """Give the active tool first chance to consume Undo."""
@@ -710,7 +726,7 @@ class CanvasView(QWidget):
                     self,
                     "Invalid Polygon",
                     "The polygon you drew is invalid. It may have self-intersections, "
-                    "be too small, or have other geometric issues. Please try drawing a simpler shape."
+                    "be too small, or have other geometric issues. Please try drawing a simpler shape.",
                 )
         self._current_polygon = []
         self.update()
@@ -729,11 +745,23 @@ class CanvasView(QWidget):
         if self._view_mode == self.VIEW_LIT:
             img = self._qimage_lit
         elif self._view_mode == self.VIEW_XRAY_1:
-            img = self._qimage_xray_1 if self._qimage_xray_1 is not None else self._qimage_lit
+            img = (
+                self._qimage_xray_1
+                if self._qimage_xray_1 is not None
+                else self._qimage_lit
+            )
         elif self._view_mode == self.VIEW_XRAY_2:
-            img = self._qimage_xray_2 if self._qimage_xray_2 is not None else self._qimage_lit
+            img = (
+                self._qimage_xray_2
+                if self._qimage_xray_2 is not None
+                else self._qimage_lit
+            )
         elif self._view_mode == self.VIEW_XRAY_3:
-            img = self._qimage_xray_3 if self._qimage_xray_3 is not None else self._qimage_lit
+            img = (
+                self._qimage_xray_3
+                if self._qimage_xray_3 is not None
+                else self._qimage_lit
+            )
         elif self._view_mode == self.VIEW_COLLISION:
             img = self._qimage_lit  # Use lit image for collision view
 
@@ -760,7 +788,7 @@ class CanvasView(QWidget):
         if not self._preview_mode:
             self._draw_hud(painter)
             # self._draw_axis_gizmo(painter)
-            
+
             # Gizmo Interativo
             if self._qimage_lit and self._gizmo_enabled and self.gizmo:
                 center_screen = self._get_image_center_screen()
@@ -795,7 +823,7 @@ class CanvasView(QWidget):
 
     def _draw_scene_objects(self, painter: QPainter):
         selected_oid = getattr(self.model, "selected_id", None)
-        
+
         # Otimização: Itera apenas objetos visíveis se possível, mas aqui iteramos tudo
         for oid, obj in getattr(self.model, "objects", {}).items():
             poly = getattr(obj, "polygon", [])
@@ -832,8 +860,7 @@ class CanvasView(QWidget):
         painter.drawRect(0, 0, self.width(), header_height)
 
         modes = {0: "LIT", 1: "X-RAY 1", 2: "X-RAY 2", 3: "X-RAY 3", 4: "COLLISION"}
-        txt = (f"VIEW: {modes.get(self._view_mode, '?')} | "
-               f"ZOOM: {self._zoom:.2f}x")
+        txt = f"VIEW: {modes.get(self._view_mode, '?')} | " f"ZOOM: {self._zoom:.2f}x"
         painter.setPen(QColor(0, 255, 255))
         painter.setFont(QFont("Consolas", 10, QFont.Bold))
         font_metrics = painter.fontMetrics()
@@ -848,14 +875,14 @@ class CanvasView(QWidget):
         size = 40
         gizmo_x = (self.width() - size) // 2
         gizmo_y = 30
-        
+
         # X axis
         painter.setPen(QPen(QColor(255, 0, 0), 2))
         painter.drawLine(gizmo_x, gizmo_y, gizmo_x + size, gizmo_y)
         # Y axis
         painter.setPen(QPen(QColor(0, 255, 0), 2))
         painter.drawLine(gizmo_x, gizmo_y, gizmo_x, gizmo_y + size)
-        
+
         # Botão C (Center)
         painter.setPen(QPen(QColor(192, 192, 192), 2))
         painter.setBrush(QColor(128, 128, 128))
@@ -863,13 +890,11 @@ class CanvasView(QWidget):
         painter.setPen(QColor(255, 255, 255))
         painter.setFont(QFont("Arial", 10, QFont.Bold))
         painter.drawText(gizmo_x - 4, gizmo_y + 4, "C")
-        
+
         painter.restore()
 
     def update_language(self, lang):
         self.current_lang = lang
-        self.gizmo_toggle.setText(
-            self.translations[self.current_lang]["gizmo"]
-        )
+        self.gizmo_toggle.setText(self.translations[self.current_lang]["gizmo"])
         if self._tool and self._tool.update_language:
             self._tool.update_language(lang)

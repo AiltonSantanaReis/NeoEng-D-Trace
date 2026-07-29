@@ -3,7 +3,8 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Optional, Tuple, Any, Dict
+from typing import Any, Dict, List, Optional, Tuple
+
 from src.core.logger import logger
 
 
@@ -345,9 +346,7 @@ class RemoveFromGroupCommand(Command):
 
 
 class AddPolygonCommand(Command):
-    def __init__(
-        self, polygon: List[Tuple[int, int]], layer_id: Optional[str] = None
-    ):
+    def __init__(self, polygon: List[Tuple[int, int]], layer_id: Optional[str] = None):
         self.polygon = [tuple(p) for p in polygon]
         self.layer_id = layer_id
         self.object_id: Optional[str] = None

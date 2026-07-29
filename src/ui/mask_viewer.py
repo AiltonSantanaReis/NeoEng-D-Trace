@@ -3,36 +3,36 @@
 Mask Viewer widget with pan/zoom capabilities for visualizing images and masks.
 """
 
-import numpy as np
 import logging
-from typing import Optional, Tuple, Callable
+from typing import Callable, Optional, Tuple
 
+import numpy as np
+from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, Signal
+from PySide6.QtGui import (
+    QColor,
+    QImage,
+    QKeyEvent,
+    QMouseEvent,
+    QPainter,
+    QPen,
+    QPolygonF,
+    QWheelEvent,
+)
 from PySide6.QtWidgets import (
-    QWidget,
-    QMessageBox,
+    QCheckBox,
+    QComboBox,
     QDialog,
-    QVBoxLayout,
-    QHBoxLayout,
+    QDoubleSpinBox,
     QGroupBox,
+    QHBoxLayout,
     QLabel,
+    QMessageBox,
     QPushButton,
     QSlider,
     QSpinBox,
-    QDoubleSpinBox,
-    QCheckBox,
-    QComboBox,
     QToolBar,
-)
-from PySide6.QtCore import Qt, QPointF, QRectF, Signal, QThread, QObject
-from PySide6.QtGui import (
-    QPainter,
-    QImage,
-    QMouseEvent,
-    QWheelEvent,
-    QKeyEvent,
-    QColor,
-    QPen,
-    QPolygonF,
+    QVBoxLayout,
+    QWidget,
 )
 
 logger = logging.getLogger(__name__)
@@ -146,7 +146,7 @@ class MaskViewer(QWidget):
         # Image state
         self._image: Optional[np.ndarray] = None
         self._qimage_cache: Optional[QImage] = None
-        
+
         # Overlay Polygons (Visualization)
         self._overlay_polygons = []
         self._selected_polygon_index = -1  # Index of selected polygon, -1 for none
@@ -186,7 +186,9 @@ class MaskViewer(QWidget):
     def _find_polygon_at(self, image_point: QPointF) -> int:
         """Find the index of the polygon containing the given image point."""
         for i, poly_data in enumerate(self._overlay_polygons):
-            polygon = poly_data.get("polygon") if isinstance(poly_data, dict) else poly_data
+            polygon = (
+                poly_data.get("polygon") if isinstance(poly_data, dict) else poly_data
+            )
             if polygon and len(polygon) >= 3:
                 qpoints = [QPointF(float(p[0]), float(p[1])) for p in polygon]
                 qpoly = QPolygonF(qpoints)
@@ -199,7 +201,7 @@ class MaskViewer(QWidget):
         self._image = image.copy() if image is not None else None
         self._qimage_cache = None  # Invalidate cache
         self.update()
-    
+
     def get_numpy_image(self) -> Optional[np.ndarray]:
         """Get the current image as numpy array."""
         return self._image.copy() if self._image is not None else None
@@ -234,9 +236,7 @@ class MaskViewer(QWidget):
         """Return the current ``(zoom, pan_x, pan_y)`` transform."""
         return self._zoom, self._pan_x, self._pan_y
 
-    def set_view_transform(
-        self, zoom: float, pan_x: float, pan_y: float
-    ) -> None:
+    def set_view_transform(self, zoom: float, pan_x: float, pan_y: float) -> None:
         """Set zoom and pan atomically while preserving zoom limits."""
         self._zoom = max(self._min_zoom, min(self._max_zoom, float(zoom)))
         self._pan_x = float(pan_x)
@@ -258,7 +258,9 @@ class MaskViewer(QWidget):
                 # Preencher completamente a tela (sem margem)
                 zoom_x = widget_width / img_width
                 zoom_y = widget_height / img_height
-                self._zoom = max(zoom_x, zoom_y)  # Usar o maior para preencher completamente
+                self._zoom = max(
+                    zoom_x, zoom_y
+                )  # Usar o maior para preencher completamente
 
                 # Centralizar a imagem
                 self._pan_x = (widget_width - img_width * self._zoom) / 2
@@ -295,7 +297,7 @@ class MaskViewer(QWidget):
     # Event handling
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.MiddleButton or (
-            event.button() == Qt.MouseButton.LeftButton 
+            event.button() == Qt.MouseButton.LeftButton
             and event.modifiers() & Qt.KeyboardModifier.ShiftModifier
         ):
             self._panning = True
@@ -305,24 +307,24 @@ class MaskViewer(QWidget):
             self.setCursor(Qt.CursorShape.ClosedHandCursor)
             event.accept()
         elif event.button() == Qt.MouseButton.LeftButton:
-             if (not self._suppress_tool_events and self.tool_handler is not None):
-                 if self.tool_handler(event):
-                     event.accept()
-                     return
-             
-             # Check for polygon selection
-             if self._image is not None:
-                 image_pos = self.view_to_image(event.position())
-                 polygon_index = self._find_polygon_at(QPointF(*image_pos))
-                 self.set_selected_polygon_index(polygon_index)
-                 if polygon_index >= 0:
-                     event.accept()
-                     return
-             
-             if self._image is not None:
-                 image_pos = self.view_to_image(event.position())
-                 self.imageClicked.emit(QPointF(*image_pos))
-             event.accept()
+            if not self._suppress_tool_events and self.tool_handler is not None:
+                if self.tool_handler(event):
+                    event.accept()
+                    return
+
+            # Check for polygon selection
+            if self._image is not None:
+                image_pos = self.view_to_image(event.position())
+                polygon_index = self._find_polygon_at(QPointF(*image_pos))
+                self.set_selected_polygon_index(polygon_index)
+                if polygon_index >= 0:
+                    event.accept()
+                    return
+
+            if self._image is not None:
+                image_pos = self.view_to_image(event.position())
+                self.imageClicked.emit(QPointF(*image_pos))
+            event.accept()
         else:
             super().mousePressEvent(event)
 
@@ -357,7 +359,7 @@ class MaskViewer(QWidget):
 
         self.zoom_by(factor, event.position())
         event.accept()
-        
+
     def keyPressEvent(self, event: QKeyEvent):
         if event.key() == Qt.Key.Key_R:
             self.reset_view()
@@ -385,35 +387,45 @@ class MaskViewer(QWidget):
             painter.save()
             painter.translate(self._pan_x, self._pan_y)
             painter.scale(self._zoom, self._zoom)
-            
+
             # Draw Image
             painter.drawImage(0, 0, qimage)
-            
+
             # Draw Overlay Polygons
             if self._overlay_polygons:
                 for i, poly_data in enumerate(self._overlay_polygons):
                     # Handle both dict and object formats
-                    polygon = poly_data.get("polygon") if isinstance(poly_data, dict) else poly_data
-                    
+                    polygon = (
+                        poly_data.get("polygon")
+                        if isinstance(poly_data, dict)
+                        else poly_data
+                    )
+
                     if polygon and len(polygon) >= 3:
                         # Convert points to QPointF
                         qpoints = [QPointF(float(p[0]), float(p[1])) for p in polygon]
                         qpoly = QPolygonF(qpoints)
-                        
+
                         # Set style based on selection
                         if i == self._selected_polygon_index:
-                            pen = QPen(QColor(255, 255, 0), 3)  # Yellow outline for selected
+                            pen = QPen(
+                                QColor(255, 255, 0), 3
+                            )  # Yellow outline for selected
                             pen.setCosmetic(True)
                             painter.setPen(pen)
-                            painter.setBrush(QColor(255, 255, 0, 80))  # Semi-transparent yellow fill
+                            painter.setBrush(
+                                QColor(255, 255, 0, 80)
+                            )  # Semi-transparent yellow fill
                         else:
                             pen = QPen(QColor(0, 255, 0), 2)  # Green outline
                             pen.setCosmetic(True)
                             painter.setPen(pen)
-                            painter.setBrush(QColor(0, 255, 0, 50))  # Semi-transparent green fill
-                        
+                            painter.setBrush(
+                                QColor(0, 255, 0, 50)
+                            )  # Semi-transparent green fill
+
                         painter.drawPolygon(qpoly)
-            
+
             painter.restore()
 
     def _get_qimage(self) -> Optional[QImage]:
@@ -433,7 +445,7 @@ class MaskViewer(QWidget):
                 rgb = self._image
 
             height, width = rgb.shape[:2]
-            
+
             if len(rgb.shape) == 2:
                 fmt = QImage.Format.Format_Grayscale8
                 step = rgb.strides[0]
@@ -780,7 +792,9 @@ class MaskViewerDialog(QDialog):
             ("curvature_factor", 0.1, 2.0, 1.0),
         ]
         for param_name, min_val, max_val, default in advanced_params:
-            self._add_parameter_row(advanced_layout, param_name, min_val, max_val, default)
+            self._add_parameter_row(
+                advanced_layout, param_name, min_val, max_val, default
+            )
         self.advanced_widget.setVisible(False)
         layout.addWidget(self.advanced_widget)
 
@@ -796,7 +810,9 @@ class MaskViewerDialog(QDialog):
             widget = QSpinBox()
         widget.setRange(minimum, maximum)
         widget.setValue(default)
-        widget.valueChanged.connect(lambda value, p=name: self._on_param_changed(p, value))
+        widget.valueChanged.connect(
+            lambda value, p=name: self._on_param_changed(p, value)
+        )
         self.param_widgets[name] = widget
         row.addWidget(widget)
         parent_layout.addLayout(row)
@@ -881,7 +897,9 @@ class MaskViewerDialog(QDialog):
         self.viewer.set_zoom(value / 100.0)
 
     def _on_pan_changed(self, *_args):
-        self.viewer.set_pan(float(self.pan_x_spin.value()), float(self.pan_y_spin.value()))
+        self.viewer.set_pan(
+            float(self.pan_x_spin.value()), float(self.pan_y_spin.value())
+        )
 
     def _selected_preset_id(self):
         preset_id = self.preset_combo.currentData()
@@ -919,7 +937,9 @@ class MaskViewerDialog(QDialog):
 
     def _update_layer_overlays(self):
         enabled_layers = [
-            layer for layer, checkbox in self.layer_checkboxes.items() if checkbox.isChecked()
+            layer
+            for layer, checkbox in self.layer_checkboxes.items()
+            if checkbox.isChecked()
         ]
         self._layer_overlays = {layer: True for layer in enabled_layers}
         self.viewer.update()
@@ -936,7 +956,9 @@ class MaskViewerDialog(QDialog):
     def _run_detection(self):
         image = getattr(self.scene, "image", None)
         if image is None:
-            QMessageBox.warning(self, self.t["no_image_title"], self.t["no_image_message"])
+            QMessageBox.warning(
+                self, self.t["no_image_title"], self.t["no_image_message"]
+            )
             return
         self.detect_button.setEnabled(False)
         self.detect_button.setText(self.t["processing"])
@@ -990,7 +1012,11 @@ class MaskViewerDialog(QDialog):
 
             added_count = 0
             for index, poly_data in enumerate(self._last_polygons):
-                polygon = poly_data.get("polygon") if isinstance(poly_data, dict) else poly_data
+                polygon = (
+                    poly_data.get("polygon")
+                    if isinstance(poly_data, dict)
+                    else poly_data
+                )
                 if polygon and len(polygon) >= 3:
                     command = AddPolygonCommand(polygon)
                     if hasattr(self.scene, "cmd") and self.scene.cmd:

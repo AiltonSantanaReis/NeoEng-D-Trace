@@ -1,6 +1,7 @@
 # tests/test_scene_repair.py
-from src.models import scene
 import pytest
+
+from src.models import scene
 
 
 def test_attempt_repair_duplicates_and_colinear():
@@ -8,7 +9,9 @@ def test_attempt_repair_duplicates_and_colinear():
     pts = [(0, 0), (0, 0), (40.0, 0.0), (20.0, 0.0), (40.0, 40.0), (0, 40.0)]
 
     repaired, flag = scene._attempt_repair(pts)
-    assert flag is True, "Attempt repair should flag True for trivial duplicates/colinear"
+    assert (
+        flag is True
+    ), "Attempt repair should flag True for trivial duplicates/colinear"
     assert scene._validate_polygon(repaired) is True, "Repaired polygon must validate"
     # Repaired polygon should have at least 3 vertices
     assert len(repaired) >= 3

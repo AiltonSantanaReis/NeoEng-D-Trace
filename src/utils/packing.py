@@ -3,7 +3,7 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Optional, Any
+from typing import Any, List, Optional
 
 
 class Rect:
@@ -36,9 +36,7 @@ class Packer:
         self.free: List[Rect] = [Rect(0, 0, w, h)]
         self.used: List[Rect] = []
 
-    def insert(
-        self, wid: int, hei: int, id: Optional[Any] = None
-    ) -> Optional[Rect]:
+    def insert(self, wid: int, hei: int, id: Optional[Any] = None) -> Optional[Rect]:
         """
         Try to insert a rectangle of size (wid, hei).
         Returns the placed Rect or None if no space.
@@ -63,7 +61,8 @@ class Packer:
                             fr.x + wid + self.padding,
                             fr.y,
                             fr.w - wid - self.padding,
-                            hei + self.padding, # Extend padding to match row height logic
+                            hei
+                            + self.padding,  # Extend padding to match row height logic
                         )
                     )
 
@@ -79,5 +78,5 @@ class Packer:
                     )
 
                 return node
-        
+
         return None

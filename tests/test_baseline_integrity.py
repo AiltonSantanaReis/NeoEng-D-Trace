@@ -22,7 +22,9 @@ def _init_repository(root: Path) -> None:
     _git(root, "config", "user.email", "integrity@example.invalid")
 
 
-def test_local_ignored_venv_does_not_block_manifest(monkeypatch, tmp_path: Path) -> None:
+def test_local_ignored_venv_does_not_block_manifest(
+    monkeypatch, tmp_path: Path
+) -> None:
     _init_repository(tmp_path)
     (tmp_path / ".gitignore").write_text(".venv/\n", encoding="utf-8")
     (tmp_path / "app.py").write_text("print('ok')\n", encoding="utf-8")

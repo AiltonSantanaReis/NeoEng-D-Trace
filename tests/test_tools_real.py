@@ -1,13 +1,17 @@
+import sys
+
 import pytest
+from PySide6.QtWidgets import QApplication
+
 from src.models.scene import Scene
 from src.ui.canvas_view import CanvasView
-from PySide6.QtWidgets import QApplication
-import sys
+
 
 @pytest.fixture(scope="module")
 def qt_app():
     app = QApplication.instance() or QApplication(sys.argv)
     yield app
+
 
 def test_pen_tool_real(qt_app):
     scene = Scene()
@@ -20,6 +24,7 @@ def test_pen_tool_real(qt_app):
     oid = list(scene.objects.keys())[0]
     assert len(scene.objects[oid].polygon) == 4
 
+
 def test_lasso_tool_real(qt_app):
     scene = Scene()
     canvas = CanvasView(scene)
@@ -31,6 +36,7 @@ def test_lasso_tool_real(qt_app):
     oid = list(scene.objects.keys())[0]
     assert len(scene.objects[oid].polygon) == 4
 
+
 def test_polygon_edit_tool_real(qt_app):
     scene = Scene()
     canvas = CanvasView(scene)
@@ -40,6 +46,7 @@ def test_polygon_edit_tool_real(qt_app):
     # Simula edição: move um vértice
     scene.objects[oid].polygon[1] = (60, 0)
     assert scene.objects[oid].polygon[1] == (60, 0)
+
 
 def test_selection_tool_real(qt_app):
     scene = Scene()
@@ -52,6 +59,7 @@ def test_selection_tool_real(qt_app):
     canvas.model.select_object("poly2")
     assert canvas.model.selected_id == "poly2"
 
+
 def test_rect_selection_tool_real(qt_app):
     scene = Scene()
     canvas = CanvasView(scene)
@@ -63,11 +71,21 @@ def test_rect_selection_tool_real(qt_app):
     oid = list(scene.objects.keys())[0]
     assert len(scene.objects[oid].polygon) == 4
 
+
 def test_ellipse_selection_tool_real(qt_app):
     scene = Scene()
     canvas = CanvasView(scene)
     # Simula seleção elíptica (aproximação por polígono)
-    ellipse_poly = [(30, 10), (50, 20), (60, 40), (50, 60), (30, 70), (10, 60), (0, 40), (10, 20)]
+    ellipse_poly = [
+        (30, 10),
+        (50, 20),
+        (60, 40),
+        (50, 60),
+        (30, 70),
+        (10, 60),
+        (0, 40),
+        (10, 20),
+    ]
     scene.set_auto_repair(True)
     canvas.model.add_polygon(list(ellipse_poly))
     assert len(scene.objects) == 1

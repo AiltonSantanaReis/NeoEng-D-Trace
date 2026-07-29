@@ -8,7 +8,8 @@ Godot export profile for NeoEng-D-Trace.
 Handles formatting of metadata for Godot Engine (AtlasTexture style).
 """
 
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -37,15 +38,12 @@ def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
     # Godot Offset: Distance from center to pivot
     # Note: Godot usually treats offset as the drawing offset to align the sprite.
     # If pivot is the anchor point, the offset is typically (Pivot - Center).
-    offset = {
-        "x": px - center_x, 
-        "y": py - center_y
-    }
+    offset = {"x": px - center_x, "y": py - center_y}
 
     return {
         "name": meta.get("id", "sprite"),
         "rect": rect,
         "offset": offset,
-        # Godot 4+ might prefer a 'region' key instead of 'rect', 
+        # Godot 4+ might prefer a 'region' key instead of 'rect',
         # but 'rect' is standard for generic JSON parsers in Godot.
     }

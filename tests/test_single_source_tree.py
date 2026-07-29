@@ -25,7 +25,10 @@ def test_runtime_has_no_imports_from_removed_namespace() -> None:
                 names.append(node.module)
             elif isinstance(node, ast.Import):
                 names.extend(alias.name for alias in node.names)
-            if any(name == "neoeng_d_trace" or name.startswith("neoeng_d_trace.") for name in names):
+            if any(
+                name == "neoeng_d_trace" or name.startswith("neoeng_d_trace.")
+                for name in names
+            ):
                 violations.append(str(path.relative_to(ROOT)))
     assert violations == []
 

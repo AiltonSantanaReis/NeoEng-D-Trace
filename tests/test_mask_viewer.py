@@ -1,13 +1,17 @@
-import pytest
-from src.ui.mask_viewer import MaskViewer
-from PySide6.QtWidgets import QApplication
-import numpy as np
 import sys
+
+import numpy as np
+import pytest
+from PySide6.QtWidgets import QApplication
+
+from src.ui.mask_viewer import MaskViewer
+
 
 @pytest.fixture(scope="module")
 def qt_app():
     app = QApplication.instance() or QApplication(sys.argv)
     yield app
+
 
 def test_mask_viewer_center_and_fill(qt_app):
     # Cria uma imagem sintética (mask)

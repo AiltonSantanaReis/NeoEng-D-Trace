@@ -1,26 +1,26 @@
 # src/ui/side_panel.py
-from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QListWidget,
-    QPushButton,
-    QFileDialog,
-    QHBoxLayout,
-    QMessageBox,
-    QInputDialog,
-    QSlider,
-    QLabel,
-    QGroupBox,
-)
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
+    QFileDialog,
+    QGroupBox,
+    QHBoxLayout,
+    QInputDialog,
+    QLabel,
+    QListWidget,
+    QMessageBox,
+    QPushButton,
+    QSlider,
+    QVBoxLayout,
+    QWidget,
+)
 
+from src.core.logger import logger
+from src.core.validation_events import object_token, record_validation_event
 from src.utils.selection_tools import (
     expand_contract_polygon,
     invert_selection,
     polygon_to_mask,
 )
-from src.core.logger import logger
-from src.core.validation_events import object_token, record_validation_event
 
 
 class SidePanel(QWidget):
@@ -44,13 +44,11 @@ class SidePanel(QWidget):
         self.btn_physics = QPushButton("Physics: OFF")
         self.btn_physics.setCheckable(True)
         # Estilo para destacar quando ativo (Azul)
-        self.btn_physics.setStyleSheet(
-            """
+        self.btn_physics.setStyleSheet("""
             QPushButton { background-color: #3c3c3c; color: #aaaaaa; }
             QPushButton:checked { background-color: #007acc; color: white;
             border: 1px solid #0099ff; font-weight: bold; }
-        """
-        )
+        """)
 
         self.slider_label = QLabel("Expand/Contract: 0 px")
         self.slider = QSlider(Qt.Horizontal)
@@ -277,7 +275,7 @@ class SidePanel(QWidget):
             # Tenta usar comando para Undo/Redo
             try:
                 from src.core.commands import ToggleCollisionCommand
-                
+
                 if hasattr(self.scene, "cmd") and self.scene.cmd:
                     self.scene.cmd.execute(ToggleCollisionCommand(oid), self.scene)
                     return
@@ -288,13 +286,12 @@ class SidePanel(QWidget):
             curr = self.scene.has_collision(oid)
             self.scene.set_object_collision(oid, not curr)
             self.canvas.update()
-            
+
         except Exception as e:
             QMessageBox.critical(
                 self,
                 self.translations[self.current_lang]["error"],
-                self.translations[self.current_lang]["physics_toggle_error"]
-                + str(e),
+                self.translations[self.current_lang]["physics_toggle_error"] + str(e),
             )
 
     def _on_delete(self):
@@ -308,11 +305,11 @@ class SidePanel(QWidget):
         )
         if resp != QMessageBox.StandardButton.Yes:
             return
-        
+
         # Tenta usar comando para Undo/Redo
         try:
             from src.core.commands import DeleteObjectCommand
-            
+
             if hasattr(self.scene, "cmd") and self.scene.cmd:
                 self.scene.cmd.execute(DeleteObjectCommand(oid), self.scene)
                 return
@@ -344,9 +341,7 @@ class SidePanel(QWidget):
             self.scene.objects[new] = self.scene.objects.pop(oid)
             self.scene.objects[new].id = new
             if oid in self.scene.collision_shapes:
-                self.scene.collision_shapes[new] = (
-                    self.scene.collision_shapes.pop(oid)
-                )
+                self.scene.collision_shapes[new] = self.scene.collision_shapes.pop(oid)
             self.scene._notify()
         except Exception as e:
             QMessageBox.critical(
@@ -354,8 +349,8 @@ class SidePanel(QWidget):
             )
 
     def _on_export(self):
-        import numpy as np
         import cv2
+        import numpy as np
         from PIL import Image
 
         oid, obj = self._get_selected_obj()
@@ -507,18 +502,12 @@ class SidePanel(QWidget):
         if path:
             logger.info("Export sprite: Extracting masked sprite")
             try:
-                img = extract_masked_sprite(
-                    self.scene.image, obj.polygon, padding=4
-                )
+                img = extract_masked_sprite(self.scene.image, obj.polygon, padding=4)
                 logger.info("Export sprite: Sprite extracted, saving")
                 save_sprite(img, path)
-                logger.info(
-                    f"Export sprite: Sprite saved successfully to {path}"
-                )
+                logger.info(f"Export sprite: Sprite saved successfully to {path}")
             except Exception as e:
-                logger.error(
-                    f"Export sprite: Failed to export sprite for {oid}: {e}"
-                )
+                logger.error(f"Export sprite: Failed to export sprite for {oid}: {e}")
                 QMessageBox.critical(
                     self, self.translations[self.current_lang]["error"], str(e)
                 )

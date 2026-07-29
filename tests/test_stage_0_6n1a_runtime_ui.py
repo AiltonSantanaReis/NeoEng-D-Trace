@@ -91,7 +91,10 @@ def test_mask_viewer_is_bilingual_and_language_change_preserves_view(qt_app):
     dialog = MaskViewerDialog(scene, lang="pt")
     dialog.viewer.set_view_transform(1.75, 12.0, -8.0)
 
-    assert dialog.windowTitle() == "Visualizador de Máscara - Raio-X de Detecção Automática"
+    assert (
+        dialog.windowTitle()
+        == "Visualizador de Máscara - Raio-X de Detecção Automática"
+    )
     assert dialog.detect_button.text() == "Detectar Polígonos"
     assert dialog.preset_combo.itemData(0) == "Basic"
     assert dialog.preset_combo.itemText(0) == "Básico"
@@ -172,6 +175,7 @@ def test_magnetic_preview_returns_immediately_and_completes_in_worker(qt_app):
     assert tool._preview_path == [(109, 20), (109, 130)]
     canvas.close()
 
+
 def test_magnetic_confirmed_segment_also_runs_outside_gui_thread(qt_app):
     image = np.zeros((160, 220), dtype=np.uint8)
     image[:, 110:] = 255
@@ -205,4 +209,3 @@ def test_magnetic_confirmed_segment_also_runs_outside_gui_thread(qt_app):
     assert tool._anchors[-1] == (109, 130)
     assert tool._segment_pending is False
     canvas.close()
-

@@ -15,8 +15,12 @@ def test_setup_logging_is_idempotent_and_disables_app_propagation():
     try:
         setup_logging("INFO")
         setup_logging("INFO")
-        root_owned = [h for h in root.handlers if getattr(h, "_neoeng_d_trace_owned", False)]
-        app_owned = [h for h in app_logger.handlers if getattr(h, "_neoeng_d_trace_owned", False)]
+        root_owned = [
+            h for h in root.handlers if getattr(h, "_neoeng_d_trace_owned", False)
+        ]
+        app_owned = [
+            h for h in app_logger.handlers if getattr(h, "_neoeng_d_trace_owned", False)
+        ]
         assert len(root_owned) == 1
         assert len(app_owned) == 1
         assert app_logger.propagate is False

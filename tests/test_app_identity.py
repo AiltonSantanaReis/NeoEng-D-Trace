@@ -22,7 +22,6 @@ from src.core.app_identity import (
 )
 from src.core.logger import logger
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -86,9 +85,7 @@ def test_runtime_identity_surfaces_do_not_embed_legacy_brand():
 
 
 def test_gltf_exporter_uses_central_generator_constant():
-    source = (ROOT / "src/exporters/gltf_exporter.py").read_text(
-        encoding="utf-8-sig"
-    )
+    source = (ROOT / "src/exporters/gltf_exporter.py").read_text(encoding="utf-8-sig")
     assert "generator=GLTF_GENERATOR" in source
     assert 'generator="NeoEng-D-Trace' not in source
 
