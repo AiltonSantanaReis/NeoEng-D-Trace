@@ -119,7 +119,7 @@ class TransformGizmo:
         painter.drawPolygon(arrow_x)
 
         # Label X
-        painter.setFont(QFont("Arial", 10, QFont.Bold))
+        painter.setFont(QFont("Arial", 10, QFont.Weight.Bold))
         painter.drawText(int(self.arm_length + 20), 5, "X")
 
         # --- EIXO Y (Verde) ---
@@ -170,7 +170,7 @@ class TransformGizmo:
         painter.drawEllipse(-15, -15, 30, 30)  # Circle outline
 
         painter.setPen(color_c)
-        painter.setFont(QFont("Arial", 12, QFont.Bold))
+        painter.setFont(QFont("Arial", 12, QFont.Weight.Bold))
         # Centraliza texto (aprox)
         painter.drawText(-6, 5, "C")
 

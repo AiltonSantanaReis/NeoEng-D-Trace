@@ -4,11 +4,12 @@ Mask Viewer widget with pan/zoom capabilities for visualizing images and masks.
 """
 
 import logging
-from typing import Callable, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, Signal
 from PySide6.QtGui import (
+    QAction,
     QColor,
     QImage,
     QKeyEvent,
@@ -618,15 +619,15 @@ class MaskViewerDialog(QDialog):
 
         self.resize(1200, 800)
         self.viewer = MaskViewer(self)
-        self._last_polygons = []
+        self._last_polygons: List[Any] = []
         self._thread = None
         self._worker = None
         self._current_mask = None
-        self._layer_overlays = {}
-        self.param_widgets = {}
-        self.param_labels = {}
-        self.layer_checkboxes = {}
-        self.preset_actions = {}
+        self._layer_overlays: Dict[str, bool] = {}
+        self.param_widgets: Dict[str, QSpinBox | QDoubleSpinBox] = {}
+        self.param_labels: Dict[str, QLabel] = {}
+        self.layer_checkboxes: Dict[str, QCheckBox] = {}
+        self.preset_actions: Dict[str, QAction] = {}
 
         self._setup_ui()
         self.update_language(self.current_lang)

@@ -477,8 +477,8 @@
       "size": 14822
     },
     "src/core/config.py": {
-      "sha256": "1b125be651ff9cc7e7077f7a027772f993040bf6686358f52522a48187b491c1",
-      "size": 4707
+      "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
+      "size": 4905
     },
     "src/core/logger.py": {
       "sha256": "8f2252fbc3a8406cf1166860070f30b434ef39d90b6291ed879d7e4ab3e3cd67",
@@ -497,8 +497,8 @@
       "size": 7524
     },
     "src/exporters/gltf_exporter.py": {
-      "sha256": "616d014684b2529ea96a1943be7ebbb25b69e7167fa836e3ebae521a8a569c30",
-      "size": 14325
+      "sha256": "92a0dbae576fef32e8398aa7e6ce6addad363d4a71ccdd3e1bfd0655bc089110",
+      "size": 14373
     },
     "src/exporters/json_exporter.py": {
       "sha256": "af57de352e3209210092d49ad38fa79a180e026718694e7950219e696dc01ea5",
@@ -653,8 +653,8 @@
       "size": 12085
     },
     "src/ui/gizmo.py": {
-      "sha256": "0da49127c5b4ab468b95b291688a03508d21d39401e8e5c426349c2841b507a9",
-      "size": 6066
+      "sha256": "198b61b0ab878956ac3bbeb43dbc1b18f412c7f79934325a183f986a602982af",
+      "size": 6080
     },
     "src/ui/groups_panel.py": {
       "sha256": "8ab5ba502ec870cb6fd414d8bfc490c138f3a20d8586b2fa143f057803e4fef6",
@@ -669,8 +669,8 @@
       "size": 26498
     },
     "src/ui/mask_viewer.py": {
-      "sha256": "d778b621cebd6fa621d1cf883bbf7e97cd5d913d5c241b68f65f94ac5d55e8e4",
-      "size": 39392
+      "sha256": "53af859b172e00f80b8b0bf2fd136918c35f2bf935ce087476865c25f2a40d3e",
+      "size": 39549
     },
     "src/ui/side_panel.py": {
       "sha256": "748ef36825a5c122d150f36ee341b059f7ce3e1ce3755d344c9ca6577ada9177",

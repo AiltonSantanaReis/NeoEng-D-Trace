@@ -7,27 +7,33 @@ import json
 import os
 import shutil
 import tempfile
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from src.core.logger import logger
 
-try:
+if TYPE_CHECKING:
     from pydantic import BaseModel, Field, ValidationError
+else:
+    try:
+        from pydantic import BaseModel, Field, ValidationError
 
-    HAS_PYDANTIC = True
-except ImportError:
-    HAS_PYDANTIC = False
+        HAS_PYDANTIC = True
+    except ImportError:
+        HAS_PYDANTIC = False
 
-    # Fallback dummy classes se pydantic não estiver instalado
-    class BaseModel:
-        def dict(self):
-            return self.__dict__
+        # Fallback runtime para ambientes sem Pydantic.
+        class BaseModel:
+            def dict(self):
+                return self.__dict__
 
-        def model_dump(self):
-            return self.__dict__
+            def model_dump(self):
+                return self.__dict__
 
-    def Field(default=None, **kwargs):
-        return default
+        class ValidationError(Exception):
+            pass
+
+        def Field(default=None, **kwargs):
+            return default
 
 
 class ExportProfile(BaseModel):

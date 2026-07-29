@@ -93,8 +93,8 @@ def export_scene_to_gltf(
             continue
 
         # Flatten triangles into positions and indices
-        positions = []
-        indices = []
+        positions: List[float] = []
+        indices: List[int] = []
         # Calculate current vertex offset relative to the LOCAL mesh
         # We are creating a new primitive for each object, so indices start at 0 for this mesh
         # BUT we are pushing everything to a single global buffer.
@@ -119,8 +119,8 @@ def export_scene_to_gltf(
         # Start index for this object in the global list
         start_vertex_index = len(all_positions) // 3
 
-        local_positions = []
-        local_indices = []
+        local_positions: List[float] = []
+        local_indices: List[int] = []
 
         for tri in triangles:
             if len(tri) < 3:
