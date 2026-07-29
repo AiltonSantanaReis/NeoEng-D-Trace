@@ -1,0 +1,25 @@
+# Matriz de Riscos de Estabilização
+
+| ID | Severidade | Risco confirmado | Impacto | Evidência exigida para encerramento |
+|---|---|---|---|---|
+| R-001 | P0 | Persistência incompleta do projeto | Perda silenciosa de dados | Testes de round-trip completos, migração e falha de gravação |
+| R-002 | P0 | Ausência do ciclo Abrir/Salvar completo na UI | Trabalho não persistido | Testes UI e ponta a ponta no Windows |
+| R-003 | P0 | Cobertura insuficiente de UI e ferramentas | Regressões não detectadas | Inventário de controles e testes positivos/negativos |
+| R-004 | P1 | Undo/Redo incompleto | Edição irreversível ou estado incorreto | Invariante executar/undo/redo por operação |
+| R-005 | P1 | Exportação de colisão inconsistente | Falso sucesso e arquivo ausente | Arquivo criado, reaberto e validado |
+| R-006 | P1 | CLI pode retornar sucesso sem concluir operação | Automação não confiável | Matriz de argumentos, códigos de saída e outputs |
+| R-007 | P1 | Bézier provisório e geometrias inválidas | Forma exportada incorretamente | Testes matemáticos, degenerados e propriedades |
+| R-008 | P1 | APIs duplicadas ou parcialmente implementadas | Comportamento contraditório | Contrato único e testes de compatibilidade |
+| R-009 | P1 | CI apenas Linux/offscreen | Falhas Windows não detectadas | Job `windows-latest` e testes PySide6 reais |
+| R-010 | P1 | Dependências transitivas sem lockfile | Builds não reproduzíveis | Instalação limpa a partir de lockfile |
+| R-011 | P2 | Módulos grandes e acoplados ao Qt | Retrabalho e dificuldade de teste | Refatoração posterior protegida por caracterização |
+| R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
+
+## Severidades
+
+- **P0:** risco de perda de dados, corrupção, segurança grave ou impossibilidade de confiar no produto. Bloqueia qualquer release e novas funcionalidades.
+- **P1:** falha funcional importante, automação falsa ou regressão relevante. Bloqueia avanço da área afetada.
+- **P2:** dívida técnica ou risco moderado com mitigação conhecida. Deve ser planejado e medido.
+- **P3:** melhoria sem impacto material imediato. Não pode substituir correções P0/P1.
+
+A matriz deve ser atualizada quando um risco for descoberto, reclassificado ou encerrado. Encerramento exige referência ao commit, testes e relatório de evidência.
