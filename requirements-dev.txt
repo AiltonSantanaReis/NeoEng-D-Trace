@@ -1,7 +1,7 @@
-# Ferramentas usadas pelo baseline Python 3.11.
-pytest==9.0.1
-pytest-cov==7.0.0
-black>=25.1,<27
-isort>=6.0,<8
-flake8>=7.1,<9
-mypy>=1.15,<2
+# Ferramentas de validação reproduzíveis para Python 3.11.
+pytest==9.1.1
+pytest-cov==7.1.0
+black==26.5.1
+isort==8.0.1
+flake8==7.3.0
+mypy==2.3.0
