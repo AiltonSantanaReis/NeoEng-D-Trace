@@ -1,0 +1,875 @@
+from __future__ import annotations
+# src/ui/canvas_view.py
+from typing import Callable, List, Optional, Tuple
+from dataclasses import dataclass
+
+from PySide6.QtWidgets import QWidget, QMenu, QMessageBox, QPushButton
+from PySide6.QtGui import (
+    QPainter,
+    QImage,
+    QMouseEvent,
+    QWheelEvent,
+    QColor,
+    QPen,
+    QPolygonF,
+    QTransform,
+    QFont,
+    QBrush,
+    QKeyEvent,
+)
+from PySide6.QtCore import Qt, QPointF, QThreadPool, QRunnable, Signal, QObject
+
+from src.core.logger import logger
+# Proteção de importação caso ViewProcessor não esteja implementado ainda
+try:
+    from src.core.view_processor import ViewProcessor
+except ImportError:
+    ViewProcessor = None
+
+# Tenta importar o Gizmo, mas define fallback se não existir
+try:
+    from src.ui.gizmo import TransformGizmo
+except ImportError:
+    TransformGizmo = None
+
+
+class XrayWorkerSignals(QObject):
+    finished = Signal(QImage, int)  # QImage and mode
+    progress = Signal(int)  # Progresso da geração do raio-x
+
+
+class XrayWorker(QRunnable):
+    def __init__(self, image_array, mode):
+        super().__init__()
+        self.image_array = image_array.copy() if image_array is not None else None
+        self.mode = mode
+        self.signals = XrayWorkerSignals()
+        self._cancelled = False
+
+    def cancel(self):
+        self._cancelled = True
+
+    def run(self):
+        if not ViewProcessor:
+            return
+            
+        # Simulate progress for demonstration
+        self.signals.progress.emit(10)
+        if self._cancelled:
+            return
+
+        try:
+            # Map view modes to xray modes
+            xray_mode = 1  # default
+            if self.mode == CanvasView.VIEW_XRAY_1:
+                xray_mode = 1
+            elif self.mode == CanvasView.VIEW_XRAY_2:
+                xray_mode = 2
+            elif self.mode == CanvasView.VIEW_XRAY_3:
+                xray_mode = 3
+            
+            qimage = ViewProcessor.generate_xray(self.image_array, xray_mode)
+        except Exception as e:
+            logger.error(f"XRay generation failed: {e}")
+            return
+
+        self.signals.progress.emit(90)
+        if self._cancelled:
+            return
+
+        self.signals.progress.emit(100)
+        self.signals.finished.emit(qimage, self.mode)
+
+
+@dataclass
+class ToolInterface:
+    on_mouse_press: Optional[Callable] = None
+    on_mouse_move: Optional[Callable] = None
+    on_mouse_release: Optional[Callable] = None
+    on_double_click: Optional[Callable] = None
+    on_cancel: Optional[Callable] = None
+    on_key_press: Optional[Callable] = None
+    on_undo: Optional[Callable] = None
+    on_redo: Optional[Callable] = None
+    draw_overlay: Optional[Callable] = None
+    update_language: Optional[Callable] = None
+
+
+class CanvasView(QWidget):
+    VIEW_LIT = 0
+    VIEW_XRAY_1 = 1  # Sobel gradients
+    VIEW_XRAY_2 = 2  # Canny edges
+    VIEW_XRAY_3 = 3  # Laplacian edges
+    VIEW_COLLISION = 4
+
+    def _get_image_center_screen(self):
+        # Coloca o gizmo fora da imagem, um pouco acima do canto inferior esquerdo
+        w = self.width()
+        h = self.height()
+        # Margem de 20px da esquerda e 120px do fundo
+        return QPointF(20, h - 120)
+
+    def __init__(self, model, parent=None):
+        super().__init__(parent)
+        self.model = model
+        self._view_mode = self.VIEW_LIT
+        self._qimage_lit = None
+        self._qimage_xray_1 = None
+        self._qimage_xray_2 = None
+        self._qimage_xray_3 = None
+        self._zoom = 1.0
+        self._pan = QPointF(0.0, 0.0)
+        self._dragging = False
+        self._last_mouse = QPointF()
+
+        # Flags de Estado
+        self._preview_mode = False  # Modo de exportação (esconde UI helpers)
+
+        # --- Configurações Críticas de Interação ---
+        self.setMouseTracking(True)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.DefaultContextMenu)
+        self.setMinimumSize(400, 300)
+
+        # Gizmo System
+        self.gizmo = None  # Lazy loaded
+        self._gizmo_active = False
+        self._gizmo_start_mouse = QPointF()
+        self._gizmo_enabled = False
+
+        self._tool = None
+        self._current_polygon = []
+
+        # Estilos de Desenho
+        self._pen_poly = QPen(QColor(0, 255, 0), 2)
+        self._pen_poly.setCosmetic(True)
+        self._brush_poly = QColor(0, 255, 0, 50)
+        
+        self._pen_selected = QPen(QColor(255, 100, 100), 3)
+        self._pen_selected.setCosmetic(True)
+        self._brush_selected = QColor(255, 100, 100, 60)
+
+        self._pen_preview = QPen(QColor(0, 255, 255), 2)
+        self._pen_preview.setCosmetic(True)
+
+        self._collision_overlay = None
+        self._temp_mask = None
+        self._flash_color = None
+        self.current_lang = "en"
+        self.translations = {"en": {"gizmo": "Gizmo"}, "pt": {"gizmo": "Eixo"}}
+
+        # Gizmo Toggle Button
+        self.gizmo_toggle = QPushButton(
+            self.translations[self.current_lang]["gizmo"], self
+        )
+        self.gizmo_toggle.setCheckable(True)
+        self.gizmo_toggle.setChecked(False)
+        self.gizmo_toggle.clicked.connect(self._toggle_gizmo)
+        self.gizmo_toggle.setGeometry(10, 50, 80, 30)
+
+        self.threadpool = QThreadPool()
+
+        if hasattr(self.model, "subscribe"):
+            self.model.subscribe(self.update_image)
+
+        if getattr(self.model, "image", None) is not None:
+            self.update_image()
+
+    def contextMenuEvent(self, event):
+        if self._tool or len(self._current_polygon) > 0:
+            return
+
+        pos = event.pos()
+        transform_inv, ok = self.get_transform().inverted()
+        if not ok:
+            return
+        img_pt = transform_inv.map(QPointF(pos))
+
+        clicked_obj_id = self._find_object_at(img_pt)
+
+        menu = QMenu(self)
+        menu.setStyleSheet(
+            """
+            QMenu { background-color: #2d2d30; color: #e6e6e6;
+            border: 1px solid #3f3f46; }
+            QMenu::item { padding: 5px 20px; }
+            QMenu::item:selected { background-color: #2a6f97; }
+            QMenu::separator { height: 1px; background: #3f3f46;
+            margin: 5px 0; }
+        """
+        )
+
+        if clicked_obj_id:
+            label = menu.addAction(f"Selected: {clicked_obj_id[:8]}...")
+            label.setEnabled(False)
+            menu.addSeparator()
+
+            act_focus = menu.addAction("🔍 Focus Object")
+            act_focus.triggered.connect(
+                lambda: self.focus_on_object(clicked_obj_id)
+            )
+
+            # Física
+            has_physics = hasattr(
+                self.model, "has_collision"
+            ) and self.model.has_collision(clicked_obj_id)
+            phys_txt = (
+                "Disable Physics Collision"
+                if has_physics
+                else "Enable Physics Collision"
+            )
+            act_phys = menu.addAction(f"⚛️ {phys_txt}")
+            act_phys.triggered.connect(
+                lambda: self._toggle_physics(clicked_obj_id)
+            )
+
+            menu.addSeparator()
+
+            act_del = menu.addAction("❌ Delete Object")
+            act_del.triggered.connect(
+                lambda: self._delete_object(clicked_obj_id)
+            )
+
+            menu.addSeparator()
+
+        act_fit = menu.addAction("Fit Image (F)")
+        act_fit.triggered.connect(self.fit_to_window)
+
+        act_100 = menu.addAction("Zoom 100%")
+        act_100.triggered.connect(lambda: self.set_zoom(1.0))
+
+        menu.addSeparator()
+
+        act_clean = menu.addAction("🗑️ Clean All Polygons")
+        act_clean.triggered.connect(self.clean_all)
+
+        menu.exec(event.globalPos())
+
+    def _find_object_at(self, point: QPointF) -> Optional[str]:
+        objects = getattr(self.model, "objects", {})
+        for oid, obj in reversed(list(objects.items())):
+            poly = getattr(obj, "polygon", [])
+            if len(poly) < 3:
+                continue
+            poly_float = [QPointF(float(p[0]), float(p[1])) for p in poly]
+            qpoly = QPolygonF(poly_float)
+            if qpoly.containsPoint(point, Qt.FillRule.OddEvenFill):
+                return oid
+        return None
+
+    def center_on_object(self, oid: str):
+        obj = self.model.objects.get(oid)
+        if obj and obj.polygon:
+            self.center_on_polygon(obj.polygon, margin=50)
+
+    def focus_on_object(self, oid: str):
+        obj = self.model.objects.get(oid)
+        if obj and obj.polygon:
+            self.center_on_polygon(obj.polygon, margin=50)
+            self.flash_effect(QColor(0, 255, 255, 100), 300)
+
+    def _toggle_physics(self, oid: str):
+        # Tenta importar o comando dinamicamente
+        try:
+            from src.core.commands import ToggleCollisionCommand
+            if hasattr(self.model, "cmd") and self.model.cmd:
+                self.model.cmd.execute(ToggleCollisionCommand(oid), self.model)
+                self.update()
+                return
+        except ImportError:
+            pass
+
+        # Fallback manual se o comando não existir
+        if hasattr(self.model, "set_object_collision"):
+            curr = self.model.has_collision(oid)
+            self.model.set_object_collision(oid, not curr)
+        
+        self.update()
+
+    def _delete_object(self, oid: str):
+        # Tenta importar o comando dinamicamente
+        try:
+            from src.core.commands import DeleteObjectCommand
+            if hasattr(self.model, "cmd") and self.model.cmd:
+                self.model.cmd.execute(DeleteObjectCommand(oid), self.model)
+                self.update()
+                return
+        except ImportError:
+            pass
+
+        # Fallback
+        self.model.remove_object(oid)
+        self.update()
+
+    def _toggle_gizmo(self):
+        self._gizmo_enabled = self.gizmo_toggle.isChecked()
+        self.update()
+
+    def _distance_to_last_point(self, x: int, y: int) -> float:
+        """Calculate distance from (x, y) to the last point in current polygon."""
+        if not self._current_polygon:
+            return float('inf')
+        last_x, last_y = self._current_polygon[-1]
+        return ((x - last_x) ** 2 + (y - last_y) ** 2) ** 0.5
+
+    def _move_selected_object(self, dx, dy):
+        sid = self.model.selected_id
+        obj = self.model.objects.get(sid)
+        if obj:
+            # Arredonda para inteiro para manter consistência de pixel
+            new_poly = [(int(p[0] + dx), int(p[1] + dy)) for p in obj.polygon]
+            
+            # Se tivermos um comando de movimento, o ideal seria usá-lo,
+            # mas para gizmo em tempo real, atualização direta é mais performática.
+            # O 'commit' do movimento deve ocorrer no mouseRelease.
+            self.model.update_polygon(sid, new_poly)
+
+    def clean_all(self):
+        res = QMessageBox.question(
+            self,
+            "Clean Scene",
+            "Are you sure you want to remove ALL polygons? This supports Undo.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+        )
+
+        if res == QMessageBox.StandardButton.Yes:
+            # Tenta usar comando
+            try:
+                from src.core.commands import ClearSceneCommand
+                if hasattr(self.model, "cmd") and self.model.cmd:
+                    self.model.cmd.execute(ClearSceneCommand(), self.model)
+                    self._after_clean()
+                    return
+            except ImportError:
+                pass
+
+            # Fallback manual
+            self.model.objects.clear()
+            if hasattr(self.model, "collision_shapes"):
+                self.model.collision_shapes.clear()
+            if hasattr(self.model, "_notify"):
+                self.model._notify()
+            self._after_clean()
+
+    def _after_clean(self):
+        self.clear_temp_mask()
+        self._current_polygon = []
+        self._flash_color = None
+        # self.flash_effect(QColor(255, 0, 0, 50), 400)
+        self.update()
+
+    # --- Métodos de Visualização e Utilitários ---
+    def fit_to_window(self):
+        img = getattr(self.model, "image", None)
+        if img is None:
+            return
+        h, w = img.shape[:2]
+        if w == 0 or h == 0:
+            return
+        scale_x = self.width() / w
+        scale_y = self.height() / h
+        self._zoom = min(scale_x, scale_y) * 0.95
+        new_pan_x = (self.width() - w * self._zoom) / 2.0
+        new_pan_y = (self.height() - h * self._zoom) / 2.0
+        self._pan = QPointF(new_pan_x, new_pan_y)
+        self.update()
+
+    def flash_effect(self, color: QColor, duration: int = 300):
+        self._flash_color = color
+        self.update()
+        from PySide6.QtCore import QTimer
+        QTimer.singleShot(duration, lambda: self._clear_flash())
+
+    def _clear_flash(self):
+        self._flash_color = None
+        self.update()
+
+    def center_on_polygon(self, polygon: list, margin: int = 50):
+        if not polygon:
+            return
+        xs = [p[0] for p in polygon]
+        ys = [p[1] for p in polygon]
+        min_x, max_x = min(xs), max(xs)
+        min_y, max_y = min(ys), max(ys)
+        obj_width = max_x - min_x
+        obj_height = max_y - min_y
+        cx = (min_x + max_x) / 2
+        cy = (min_y + max_y) / 2
+
+        view_w = self.width() - 2 * margin
+        view_h = self.height() - 2 * margin
+
+        if obj_width > 0 and obj_height > 0:
+            scale_x = view_w / obj_width
+            scale_y = view_h / obj_height
+            new_zoom = min(scale_x, scale_y) * 0.9
+            self._zoom = max(0.01, min(new_zoom, 10.0))
+
+        pan_x = (self.width() / 2) - (cx * self._zoom)
+        pan_y = (self.height() / 2) - (cy * self._zoom)
+        self._pan = QPointF(pan_x, pan_y)
+        self.update()
+
+    def set_view_mode(self, mode: int):
+        self._view_mode = mode
+        # Inicia worker de XRay se necessário
+        if (mode >= self.VIEW_XRAY_1 and mode <= self.VIEW_XRAY_3) and ViewProcessor:
+            img = getattr(self.model, "image", None)
+            if img is not None:
+                # Check if we already have this xray mode cached
+                cache_attr = f"_qimage_xray_{mode}"
+                if getattr(self, cache_attr, None) is None:
+                    worker = XrayWorker(img, mode)
+                    worker.signals.finished.connect(self._on_xray_finished)
+                    self.threadpool.start(worker)
+        self.update()
+
+    def _on_xray_finished(self, qimage: QImage, mode: int):
+        cache_attr = f"_qimage_xray_{mode}"
+        setattr(self, cache_attr, qimage)
+        self.update()
+
+    def toggle_xray(self):
+        if self._view_mode == self.VIEW_LIT:
+            self.set_view_mode(self.VIEW_XRAY_1)
+        else:
+            self.set_view_mode(self.VIEW_LIT)
+
+    def update_image(self):
+        if not ViewProcessor:
+            return
+            
+        img = getattr(self.model, "image", None)
+        if img is None:
+            self._qimage_lit = None
+            self._qimage_xray_1 = None
+            self._qimage_xray_2 = None
+            self._qimage_xray_3 = None
+            self._gizmo_enabled = False
+            self.gizmo_toggle.setChecked(False)
+            self.update()
+            return
+        
+        # Lazy load gizmo se disponível
+        if self.gizmo is None and TransformGizmo:
+            self.gizmo = TransformGizmo()
+            
+        self._qimage_lit = ViewProcessor.to_qimage(img)
+        self._qimage_xray_1 = None
+        self._qimage_xray_2 = None
+        self._qimage_xray_3 = None
+        self._gizmo_enabled = True
+        self.gizmo_toggle.setChecked(True)
+        self.update()
+
+    def get_transform(self) -> QTransform:
+        t = QTransform()
+        t.translate(self._pan.x(), self._pan.y())
+        t.scale(self._zoom, self._zoom)
+        return t
+
+    def widget_to_image(self, pos: QPointF) -> Tuple[int, int]:
+        t = self.get_transform()
+        inv, ok = t.inverted()
+        if ok:
+            pt = inv.map(pos)
+            return int(pt.x()), int(pt.y())
+        return 0, 0
+
+    def image_to_widget(self, x: float, y: float) -> QPointF:
+        return self.get_transform().map(QPointF(x, y))
+
+    def set_zoom(self, zoom: float):
+        if 0.01 < zoom < 100.0:
+            self._zoom = zoom
+            self.update()
+
+    def get_zoom(self) -> float:
+        """Retorna o nível de zoom atual."""
+        return self._zoom
+
+    def set_tool(self, tool):
+        if self._tool and self._tool.on_cancel:
+            self._tool.on_cancel()
+        self._tool = tool
+        self.update()
+
+    def set_collision_overlay(self, overlay):
+        self._collision_overlay = overlay
+
+    def show_temp_mask(self, mask):
+        self._temp_mask = mask
+        self.update()
+
+    def clear_temp_mask(self):
+        self._temp_mask = None
+        self.update()
+
+    def set_preview_mode(self, mode: bool):
+        """Ativa/Desativa modo de preview (para exportação)."""
+        self._preview_mode = mode
+        # Esconde/Mostra botão do gizmo
+        self.gizmo_toggle.setVisible(not mode)
+        self.update()
+
+    # --- Eventos de Input ---
+    def wheelEvent(self, event: QWheelEvent):
+        delta = event.angleDelta().y()
+        factor = 1.15 if delta > 0 else 1 / 1.15
+        t = self.get_transform()
+        inv, _ = t.inverted()
+        mouse_in_img = inv.map(event.position())
+        self._zoom *= factor
+        self._zoom = max(0.01, min(self._zoom, 50.0))
+        new_pan_x = event.position().x() - mouse_in_img.x() * self._zoom
+        new_pan_y = event.position().y() - mouse_in_img.y() * self._zoom
+        self._pan = QPointF(new_pan_x, new_pan_y)
+        self.update()
+
+    def mousePressEvent(self, event: QMouseEvent):
+        pos = event.position()
+
+        # 1. Lógica do Gizmo (Se não estiver em preview)
+        if not self._preview_mode and self._qimage_lit and self._gizmo_enabled and self.gizmo:
+            center_screen = self._get_image_center_screen()
+            if center_screen:
+                self.gizmo.set_screen_position(center_screen)
+
+            hit = self.gizmo.hit_test(pos)
+            if hit != TransformGizmo.NONE:
+                self.gizmo.active_axis = hit
+                self._gizmo_active = True
+                self._gizmo_start_mouse = pos
+                return
+
+        # 2. Reset de Visão (Botão Gizmo "C")
+        # if not self._preview_mode:
+        #     size = 40
+        #     gizmo_x = (self.width() - size) // 2
+        #     gizmo_y = 30
+        #     dx = event.position().x() - gizmo_x
+        #     dy = event.position().y() - gizmo_y
+        #     if dx * dx + dy * dy <= 64:
+        #         self.fit_to_window()
+        #         return
+
+        # 3. Pan (Botão do Meio)
+        if event.button() == Qt.MouseButton.MiddleButton:
+            self._dragging = True
+            self._last_mouse = pos
+            self.setCursor(Qt.CursorShape.ClosedHandCursor)
+            return
+
+        ix, iy = self.widget_to_image(pos)
+
+        # 4. Tool Ativa
+        if self._tool and self._tool.on_mouse_press:
+            self._tool.on_mouse_press(event, (ix, iy))
+            self.update()
+            return
+
+        # 5. Seleção de Objeto (Clique Esquerdo)
+        if event.button() == Qt.MouseButton.LeftButton:
+            clicked_id = self._find_object_at(QPointF(ix, iy))
+            if clicked_id:
+                if hasattr(self.model, "select_object"):
+                    self.model.select_object(clicked_id)
+                self.update()
+            else:
+                self.model.select_object(None) # Deseleciona
+                # Check if this point is far enough from the last point to avoid duplicates
+                if not self._current_polygon or self._distance_to_last_point(ix, iy) >= 5:
+                    self._current_polygon.append((ix, iy))
+                self.update()
+
+        # 6. Menu / Cancelar (Clique Direito)
+        if event.button() == Qt.MouseButton.RightButton:
+            if len(self._current_polygon) > 0:
+                if len(self._current_polygon) >= 3:
+                    try:
+                        self.model.add_polygon(list(self._current_polygon))
+                    except ValueError as e:
+                        logger.warning(f"Failed to create polygon: {e}")
+                        QMessageBox.warning(
+                            self,
+                            "Invalid Polygon",
+                            "The polygon you drew is invalid. It may have self-intersections, "
+                            "be too small, or have other geometric issues. Please try drawing a simpler shape."
+                        )
+                self._current_polygon = []
+                self.update()
+            else:
+                super().mousePressEvent(event) # Context Menu
+
+    def mouseMoveEvent(self, event: QMouseEvent):
+        pos = event.position()
+
+        # 1. Movimento via Gizmo
+        if self._gizmo_active and self.gizmo and not self._preview_mode:
+            delta_screen = pos - self._gizmo_start_mouse
+            self._gizmo_start_mouse = pos
+
+            if self.model.selected_id:
+                # Move Objeto
+                dx = delta_screen.x() / self._zoom
+                dy = delta_screen.y() / self._zoom
+                if self.gizmo.active_axis == TransformGizmo.AXIS_X: dy = 0
+                if self.gizmo.active_axis == TransformGizmo.AXIS_Y: dx = 0
+                self._move_selected_object(dx, dy)
+            else:
+                # Pan via Gizmo
+                dx, dy = delta_screen.x(), delta_screen.y()
+                if self.gizmo.active_axis == TransformGizmo.AXIS_X: dy = 0
+                if self.gizmo.active_axis == TransformGizmo.AXIS_Y: dx = 0
+                self._pan += QPointF(dx, dy)
+            
+            self.update()
+            return
+
+        # 2. Hover do Gizmo
+        if not self._preview_mode and self._qimage_lit and self._gizmo_enabled and self.gizmo and not self._dragging:
+            center_screen = self._get_image_center_screen()
+            if center_screen:
+                self.gizmo.set_screen_position(center_screen)
+                if self.gizmo.update_hover(pos):
+                    self.update()
+
+        # 3. Pan Manual
+        if self._dragging:
+            delta = pos - self._last_mouse
+            self._last_mouse = pos
+            self._pan += delta
+            self.update()
+            return
+
+        # 4. Tool
+        ix, iy = self.widget_to_image(pos)
+        if self._tool and self._tool.on_mouse_move:
+            self._tool.on_mouse_move(event, (ix, iy))
+        self.update()
+
+    def mouseReleaseEvent(self, event: QMouseEvent):
+        if self._gizmo_active:
+            self._gizmo_active = False
+            if self.gizmo:
+                self.gizmo.active_axis = TransformGizmo.NONE
+            self.update()
+            # Aqui seria o local para commitar o Undo do movimento do gizmo
+            return
+
+        if self._dragging:
+            self._dragging = False
+            self.setCursor(Qt.CursorShape.ArrowCursor)
+            return
+            
+        ix, iy = self.widget_to_image(event.position())
+        if self._tool and self._tool.on_mouse_release:
+            self._tool.on_mouse_release(event, (ix, iy))
+
+
+    def request_tool_undo(self) -> bool:
+        """Give the active tool first chance to consume Undo."""
+        if self._tool and self._tool.on_undo:
+            try:
+                return bool(self._tool.on_undo())
+            except Exception as exc:
+                logger.error(f"Tool undo failed: {exc}")
+        return False
+
+    def request_tool_redo(self) -> bool:
+        """Give the active tool first chance to consume Redo."""
+        if self._tool and self._tool.on_redo:
+            try:
+                return bool(self._tool.on_redo())
+            except Exception as exc:
+                logger.error(f"Tool redo failed: {exc}")
+        return False
+
+    def keyPressEvent(self, event: QKeyEvent):
+        if self._tool and self._tool.on_key_press:
+            try:
+                if self._tool.on_key_press(event):
+                    event.accept()
+                    self.update()
+                    return
+            except Exception as exc:
+                logger.error(f"Tool key handler failed: {exc}")
+        super().keyPressEvent(event)
+
+    def mouseDoubleClickEvent(self, event: QMouseEvent):
+        ix, iy = self.widget_to_image(event.position())
+        if self._tool and self._tool.on_double_click:
+            self._tool.on_double_click(event, (ix, iy))
+            return
+        if len(self._current_polygon) >= 3:
+            try:
+                self.model.add_polygon(list(self._current_polygon))
+            except ValueError as e:
+                logger.warning(f"Failed to create polygon: {e}")
+                QMessageBox.warning(
+                    self,
+                    "Invalid Polygon",
+                    "The polygon you drew is invalid. It may have self-intersections, "
+                    "be too small, or have other geometric issues. Please try drawing a simpler shape."
+                )
+        self._current_polygon = []
+        self.update()
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        painter.fillRect(self.rect(), QColor(30, 30, 30))
+
+        # 1. Transformação para Mundo
+        t = self.get_transform()
+        painter.setTransform(t)
+
+        # Desenha Imagem
+        img = None
+        if self._view_mode == self.VIEW_LIT:
+            img = self._qimage_lit
+        elif self._view_mode == self.VIEW_XRAY_1:
+            img = self._qimage_xray_1 if self._qimage_xray_1 is not None else self._qimage_lit
+        elif self._view_mode == self.VIEW_XRAY_2:
+            img = self._qimage_xray_2 if self._qimage_xray_2 is not None else self._qimage_lit
+        elif self._view_mode == self.VIEW_XRAY_3:
+            img = self._qimage_xray_3 if self._qimage_xray_3 is not None else self._qimage_lit
+        elif self._view_mode == self.VIEW_COLLISION:
+            img = self._qimage_lit  # Use lit image for collision view
+
+        if img and self._view_mode != self.VIEW_COLLISION:
+            painter.drawImage(0, 0, img)
+            if not self._preview_mode:
+                self._draw_grid(painter, img.width(), img.height())
+        elif self._view_mode == self.VIEW_COLLISION and img:
+            painter.drawImage(0, 0, img)
+            if not self._preview_mode:
+                self._draw_grid(painter, img.width(), img.height())
+        elif self._qimage_lit is None:
+            # Placeholder se não houver imagem
+            painter.setPen(QColor(80, 80, 80))
+            painter.drawRect(0, 0, 1000, 800)
+
+        # Desenha Objetos da Cena
+        self._draw_scene_objects(painter)
+
+        # --- Camada de Tela (Interface) ---
+        painter.setTransform(QTransform())
+
+        # Header Info (Apenas se não for preview)
+        if not self._preview_mode:
+            self._draw_hud(painter)
+            # self._draw_axis_gizmo(painter)
+            
+            # Gizmo Interativo
+            if self._qimage_lit and self._gizmo_enabled and self.gizmo:
+                center_screen = self._get_image_center_screen()
+                if center_screen:
+                    self.gizmo.set_screen_position(center_screen)
+                    self.gizmo.draw(painter)
+
+        # Overlays de Ferramenta
+        if self._tool and self._tool.draw_overlay:
+            painter.save()
+            self._tool.draw_overlay(painter)
+            painter.restore()
+
+        # Polígono Manual em Construção (Transformado)
+        if self._current_polygon:
+            painter.setTransform(t)
+            painter.setPen(self._pen_preview)
+            pts = [QPointF(float(p[0]), float(p[1])) for p in self._current_polygon]
+            painter.drawPolyline(QPolygonF(pts))
+            painter.setTransform(QTransform())
+
+        # Overlay de Colisão (Se existir)
+        if self._collision_overlay and not self._preview_mode:
+            self._collision_overlay.draw(
+                painter, self._zoom, (self._pan.x(), self._pan.y())
+            )
+
+        if self._flash_color:
+            painter.fillRect(self.rect(), self._flash_color)
+
+        painter.end()
+
+    def _draw_scene_objects(self, painter: QPainter):
+        selected_oid = getattr(self.model, "selected_id", None)
+        
+        # Otimização: Itera apenas objetos visíveis se possível, mas aqui iteramos tudo
+        for oid, obj in getattr(self.model, "objects", {}).items():
+            poly = getattr(obj, "polygon", [])
+            if len(poly) > 1:
+                # Estilo
+                if oid == selected_oid:
+                    painter.setPen(self._pen_selected)
+                    painter.setBrush(self._brush_selected)
+                else:
+                    painter.setPen(self._pen_poly)
+                    painter.setBrush(self._brush_poly)
+
+                qpoly = QPolygonF([QPointF(x, y) for x, y in poly])
+                painter.drawPolygon(qpoly)
+
+    def _draw_grid(self, painter: QPainter, w: int, h: int):
+        # Grid leve para referência
+        step = 64
+        painter.setPen(QPen(QColor(255, 255, 255, 30), 1))
+        # Linhas Verticais
+        for x in range(0, w, step):
+            painter.drawLine(x, 0, x, h)
+        # Linhas Horizontais
+        for y in range(0, h, step):
+            painter.drawLine(0, y, w, y)
+        # Borda
+        painter.setPen(QPen(QColor(255, 255, 0, 100), 2))
+        painter.drawRect(0, 0, w, h)
+
+    def _draw_hud(self, painter):
+        header_height = 45
+        painter.setBrush(QColor(20, 20, 20, 200))
+        painter.setPen(QPen(QColor(150, 150, 150), 2))
+        painter.drawRect(0, 0, self.width(), header_height)
+
+        modes = {0: "LIT", 1: "X-RAY 1", 2: "X-RAY 2", 3: "X-RAY 3", 4: "COLLISION"}
+        txt = (f"VIEW: {modes.get(self._view_mode, '?')} | "
+               f"ZOOM: {self._zoom:.2f}x")
+        painter.setPen(QColor(0, 255, 255))
+        painter.setFont(QFont("Consolas", 10, QFont.Bold))
+        font_metrics = painter.fontMetrics()
+        text_width = font_metrics.horizontalAdvance(txt)
+        center_x = (self.width() - text_width) // 2
+        painter.drawText(center_x, 28, txt)
+
+    def _draw_axis_gizmo(self, painter):
+        # Pequeno helper visual no topo
+        painter.save()
+        painter.setTransform(QTransform())
+        size = 40
+        gizmo_x = (self.width() - size) // 2
+        gizmo_y = 30
+        
+        # X axis
+        painter.setPen(QPen(QColor(255, 0, 0), 2))
+        painter.drawLine(gizmo_x, gizmo_y, gizmo_x + size, gizmo_y)
+        # Y axis
+        painter.setPen(QPen(QColor(0, 255, 0), 2))
+        painter.drawLine(gizmo_x, gizmo_y, gizmo_x, gizmo_y + size)
+        
+        # Botão C (Center)
+        painter.setPen(QPen(QColor(192, 192, 192), 2))
+        painter.setBrush(QColor(128, 128, 128))
+        painter.drawEllipse(gizmo_x - 8, gizmo_y - 8, 16, 16)
+        painter.setPen(QColor(255, 255, 255))
+        painter.setFont(QFont("Arial", 10, QFont.Bold))
+        painter.drawText(gizmo_x - 4, gizmo_y + 4, "C")
+        
+        painter.restore()
+
+    def update_language(self, lang):
+        self.current_lang = lang
+        self.gizmo_toggle.setText(
+            self.translations[self.current_lang]["gizmo"]
+        )
+        if self._tool and self._tool.update_language:
+            self._tool.update_language(lang)

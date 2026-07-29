@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "purpose": "Immutable snapshots of historical tests for regression reconciliation.",
+  "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+  "source_branch": "feature/physics-ui",
+  "total_files": 24,
+  "total_tests": 196,
+  "groups": {
+    "non-qt": 113,
+    "qt": 83
+  },
+  "files": [
+    {
+      "path": "tests/test_auto_detect_basic.py",
+      "source_path": "tests/test_auto_detect_basic.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "c3db012104800f2f0be21dfd381d161c7255f8e2",
+      "sha256_lf": "b50aeb0e2437a6693d013014d73aff26be3a5f47994e4e86b53f9e9c2a610ede",
+      "test_count": 8,
+      "test_names": [
+        "test_detect_square",
+        "test_detect_circle",
+        "test_detect_two_touching_rectangles",
+        "test_filter_small_areas",
+        "test_downscale_parameter",
+        "test_rdp_simplification",
+        "test_empty_image",
+        "test_invalid_mode"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "cv2",
+        "numpy",
+        "pytest",
+        "src.tools.auto_detect"
+      ]
+    },
+    {
+      "path": "tests/test_auto_detect_enhanced.py",
+      "source_path": "tests/test_auto_detect_enhanced.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "b9d7e90799fd9b5b6bd2cb5437233ce177628c05",
+      "sha256_lf": "4af7223857b0caabb5a616d7a136f3d73a0b8ef70f1f533c1c9c8b3ad50e1b93",
+      "test_count": 6,
+      "test_names": [
+        "test_detect_jagged_leaf_high_fidelity",
+        "test_hole_preservation",
+        "test_chaikin_smoothing_option",
+        "test_bezier_fitting_option",
+        "test_conservative_morphological_ops",
+        "test_no_downscale_by_default"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "cv2",
+        "numpy",
+        "src.tools.auto_detect",
+        "time",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_auto_detect_integration.py",
+      "source_path": "tests/test_auto_detect_integration.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "574f0b18a8fcd23841f329fbed5be6004576904f",
+      "sha256_lf": "35b7ea87930826aabaf919840dd0e1de0e2d861cc814df0151e6dbe4f173a90d",
+      "test_count": 7,
+      "test_names": [
+        "test_detect_and_create_objects_basic",
+        "test_detect_and_create_objects_preview_mode",
+        "test_create_object_command_undo_redo",
+        "test_detect_and_create_with_custom_layer",
+        "test_detect_and_create_batch_operations",
+        "test_detect_and_create_objects_error_handling",
+        "test_integration_with_command_manager"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "numpy",
+        "pytest",
+        "src.core.commands",
+        "src.models.scene",
+        "src.tools.auto_detect"
+      ]
+    },
+    {
+      "path": "tests/test_auto_detect_perfect.py",
+      "source_path": "tests/test_auto_detect_perfect.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "86e00668c8fe6b05171aaa5be0d3c57139a8f1c6",
+      "sha256_lf": "c487bdfe650bd8fc54d2326e70d93ab343f29da44d452254605164589dcddc94",
+      "test_count": 9,
+      "test_names": [
+        "test_detect_circle_iou_accuracy",
+        "test_detect_touching_rectangles_separation",
+        "test_detect_ring_with_hole",
+        "test_convex_decomposition_effect",
+        "test_deterministic_output",
+        "test_curvature_factor_parameter",
+        "test_min_area_filtering_precision",
+        "test_empty_and_edge_cases",
+        "test_downscale_consistency"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "cv2",
+        "numpy",
+        "pytest",
+        "src.tools.auto_detect",
+        "time"
+      ]
+    },
+    {
+      "path": "tests/test_broadphase.py",
+      "source_path": "tests/test_broadphase.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "9d2e1e99e5a35da93e7bcfecdc3d4452bd951c93",
+      "sha256_lf": "9f234468a2f6cd8ebb8dcc4fec9974fd80e68337753e1825da2392692e3a6d32",
+      "test_count": 14,
+      "test_names": [
+        "test_aabb_creation",
+        "test_aabb_overlap",
+        "test_uniform_grid_insert",
+        "test_uniform_grid_query",
+        "test_uniform_grid_update",
+        "test_uniform_grid_remove",
+        "test_uniform_grid_get_all_pairs",
+        "test_register_object",
+        "test_batch_test_no_collisions",
+        "test_batch_test_with_collisions",
+        "test_update_position",
+        "test_query_collisions",
+        "test_unregister_object",
+        "test_get_stats"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "pytest",
+        "src.physics.broadphase",
+        "src.physics.physics_manager"
+      ]
+    },
+    {
+      "path": "tests/test_commands_layers.py",
+      "source_path": "tests/test_commands_layers.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "5b36821d05d1313ea353290227e62057889c5d22",
+      "sha256_lf": "ba45d682c2683f23487a83727942c9622d5a4d702186a6fd17b7bcb875f4d5c8",
+      "test_count": 2,
+      "test_names": [
+        "test_create_and_remove_layer_command",
+        "test_toggle_lock"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "src.core.commands",
+        "src.models.scene",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_convex_decomp.py",
+      "source_path": "tests/test_convex_decomp.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "59382047eddeeff7e5e198fa36cc0364d7f9fe65",
+      "sha256_lf": "0f62e65dad5a7a20f7e7ca6b240731ed5faddaee3b50444c85fc8aefcdbcce6d",
+      "test_count": 19,
+      "test_names": [
+        "test_polygon_area_triangle",
+        "test_polygon_area_rectangle",
+        "test_polygon_area_empty",
+        "test_polygon_area_single_point",
+        "test_point_in_triangle_inside",
+        "test_point_in_triangle_outside",
+        "test_point_in_triangle_vertex",
+        "test_point_in_triangle_edge",
+        "test_is_ear_convex_vertex",
+        "test_is_ear_concave_vertex",
+        "test_ear_clipping_triangle",
+        "test_ear_clipping_quadrilateral",
+        "test_ear_clipping_concave_l_shape",
+        "test_convex_decompose_triangle",
+        "test_convex_decompose_l_shape",
+        "test_convex_decompose_empty_polygon",
+        "test_convex_decompose_single_point",
+        "test_convex_decompose_two_points",
+        "test_area_preservation_complex_polygon"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "math",
+        "pytest",
+        "src.physics.convex_decomp"
+      ]
+    },
+    {
+      "path": "tests/test_edge_utils.py",
+      "source_path": "tests/test_edge_utils.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "707d84e9f91c05ce6bf06340257371dcd2f65215",
+      "sha256_lf": "4931508ffde07b64d126a15e154b734f780f518ca1ac80925e23b609235da857",
+      "test_count": 8,
+      "test_names": [
+        "test_normalize_array",
+        "test_sobel_magnitude",
+        "test_log_response",
+        "test_multi_scale_edges_basic",
+        "test_multi_scale_edges_custom_scales",
+        "test_multi_scale_edges_custom_weights",
+        "test_multi_scale_edges_weights_mismatch",
+        "test_rgb_input_handling"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "numpy",
+        "pytest",
+        "src.tools.edge_utils"
+      ]
+    },
+    {
+      "path": "tests/test_expand_contract_command.py",
+      "source_path": "tests/test_expand_contract_command.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "8eee182a4e8067d08ed8b9748fc2317f521bbdf5",
+      "sha256_lf": "b6d4500da636dac5b6cff059e0b9e0004a15fcc361aab10c382e0828e7b6b736",
+      "test_count": 1,
+      "test_names": [
+        "test_expand_contract_undo_redo"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "src.core.commands",
+        "src.models.scene",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_export_preview.py",
+      "source_path": "tests/test_export_preview.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "59c147d359b62b96afea329d9cf359cf61df296a",
+      "sha256_lf": "7624bab23a125bd3e5f660487bb896910b68a33743a38bb795731c6f97aee186",
+      "test_count": 2,
+      "test_names": [
+        "test_export_preview_headless",
+        "test_export_preview_dialog_headless"
+      ],
+      "group": "qt",
+      "imports": [
+        "PIL",
+        "PySide6.QtCore",
+        "PySide6.QtWidgets",
+        "os",
+        "src.ui.export_preview",
+        "tempfile",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_exporters.py",
+      "source_path": "tests/test_exporters.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "68a6b959d0104576e6a70eff55204b1535ec987b",
+      "sha256_lf": "05dcddc8fb1d58c202ed744f5f82e1347b5bff2e32753c8c82fb5c2163b94e32",
+      "test_count": 12,
+      "test_names": [
+        "test_extract_masked_sprite_alpha_mask",
+        "test_extract_masked_sprite_trim_padding",
+        "test_export_scene_metadata_profiles",
+        "test_pack_sprites_no_overlap",
+        "test_atlas_multi_atlas",
+        "test_save_atomic",
+        "test_export_sprite",
+        "test_export_metadata_generic",
+        "test_export_metadata_unity",
+        "test_export_metadata_godot",
+        "test_export_metadata_phaser",
+        "test_atlas_rotation"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "PIL",
+        "numpy",
+        "os",
+        "src.exporters.atlas_exporter",
+        "src.exporters.json_exporter",
+        "src.exporters.sprite_exporter",
+        "src.models.scene",
+        "tempfile",
+        "unittest",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_groups.py",
+      "source_path": "tests/test_groups.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "55293ea4cbdc79b3499fdef7895f55fc634827d7",
+      "sha256_lf": "f4942a64fa5dd3b000f05d088566b7007815a35471d2dc127421b7b2ada06cf3",
+      "test_count": 2,
+      "test_names": [
+        "test_create_and_remove_group",
+        "test_add_remove_member"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "src.core.commands",
+        "src.models.scene",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_handle_command.py",
+      "source_path": "tests/test_handle_command.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "de0bdfca35e0dd2a77fe6b4da20012e3a4a93043",
+      "sha256_lf": "fb6f2d94c8e448a4fd839fddf6d8d65cc61d9e871c2043a3eb863c3176824937",
+      "test_count": 1,
+      "test_names": [
+        "test_handle_move_undo_redo"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "src.core.commands",
+        "src.models.scene",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_lasso.py",
+      "source_path": "tests/test_lasso.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "9cd8aba18b57cbfb271bf7dadbfcbb66c4fafe1d",
+      "sha256_lf": "a664fc2dbfcdab1d036e4ae19b8c531e00229213a0ba403c64136c10494b9444",
+      "test_count": 7,
+      "test_names": [
+        "test_initialization",
+        "test_rdp_simplify",
+        "test_mouse_press_starts_drawing",
+        "test_mouse_move_adds_points_with_distance_threshold",
+        "test_mouse_release_commits_selection",
+        "test_interface_returns_tool_interface",
+        "test_draw_overlay_renders_points"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtGui",
+        "pytest",
+        "src.tools.lasso_tool",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_magnetic_lasso.py",
+      "source_path": "tests/test_magnetic_lasso.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "1731ac991b0a66ecb92a8b63819b78871a9a0ab6",
+      "sha256_lf": "62c37b710d7797e776321a1919ea1db5ea2edf7fa9b6e06483251a9a25a6acc9",
+      "test_count": 15,
+      "test_names": [
+        "test_sobel_edge_detection",
+        "test_dijkstra_pathfinding_simple",
+        "test_dijkstra_pathfinding_no_path",
+        "test_initialization",
+        "test_get_image_array",
+        "test_compute_edge_map",
+        "test_mouse_press_adds_anchor",
+        "test_mouse_press_computes_path_between_anchors",
+        "test_mouse_move_updates_preview",
+        "test_double_click_closes_selection",
+        "test_commit_selection_converts_to_integers",
+        "test_cancel_clears_state",
+        "test_interface_returns_tool_interface",
+        "test_draw_overlay_renders_paths_and_anchors",
+        "test_compute_magnetic_path_with_edge_map"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtGui",
+        "numpy",
+        "pytest",
+        "src.tools.magnetic_lasso",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_mask_utils_curvature.py",
+      "source_path": "tests/test_mask_utils_curvature.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "f9ab2ffe9d24cb583f8bdbde88c8e04bbc2387d6",
+      "sha256_lf": "13df379dc7ca6d94424d4eb1e0bdc57c10c0bb469e9a3c82bc4f549188ff5da2",
+      "test_count": 7,
+      "test_names": [
+        "test_straight_line_preservation",
+        "test_high_curvature_preservation",
+        "test_circle_contour",
+        "test_minimal_contour",
+        "test_empty_and_small_contours",
+        "test_parameter_effects",
+        "test_curvature_computation"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "numpy",
+        "pytest",
+        "src.tools.mask_utils"
+      ]
+    },
+    {
+      "path": "tests/test_mask_viewer.py",
+      "source_path": "tests/test_mask_viewer.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "01d0ef65700cb8432e97c8dfcf04155b49858d31",
+      "sha256_lf": "f22a5f5b3b0f948caab2d50573fb284799ea7a4f619b8275cdfe2999e2a29c21",
+      "test_count": 9,
+      "test_names": [
+        "test_import_and_api",
+        "test_numpy_image_handling",
+        "test_zoom_limits",
+        "test_zoom_by",
+        "test_coordinate_transforms",
+        "test_pan_transform",
+        "test_reset_view",
+        "test_signals",
+        "test_tool_handler_integration"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtWidgets",
+        "numpy",
+        "src.ui.mask_viewer",
+        "sys",
+        "unittest",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_pen_tool.py",
+      "source_path": "tests/test_pen_tool.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "1db0e981cb3152e113242a6b8a464f8d51446636",
+      "sha256_lf": "d3e3cd998f7fa410614cd5f45ee219fa946ed259f81459f4488f8cf3672a768b",
+      "test_count": 19,
+      "test_names": [
+        "test_bezier_point",
+        "test_bezier_curve",
+        "test_initialization",
+        "test_initialization",
+        "test_place_anchor_first",
+        "test_place_anchor_second",
+        "test_get_anchor_at_point",
+        "test_get_handle_at_point",
+        "test_generate_curve_points_single_node",
+        "test_generate_curve_points_two_nodes",
+        "test_commit_selection_valid",
+        "test_commit_selection_invalid",
+        "test_mouse_press_place_anchor",
+        "test_mouse_press_select_handle",
+        "test_mouse_move_drag_handle",
+        "test_double_click_commit",
+        "test_cancel",
+        "test_draw_overlay_no_nodes",
+        "test_draw_overlay_with_nodes"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtGui",
+        "pytest",
+        "src.tools.pen_tool",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_polygonal_lasso.py",
+      "source_path": "tests/test_polygonal_lasso.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "b81f83042d920c0061c59075cf705df62b1f9c13",
+      "sha256_lf": "3b7ea63800178df0fff7031a7dec967ce97319365be1fe1b9e728d1af0329b31",
+      "test_count": 10,
+      "test_names": [
+        "test_initialization",
+        "test_mouse_press_adds_vertex",
+        "test_mouse_move_updates_preview",
+        "test_double_click_commits_selection_with_enough_vertices",
+        "test_double_click_ignores_insufficient_vertices",
+        "test_commit_selection_converts_to_integers",
+        "test_cancel_clears_state",
+        "test_interface_returns_tool_interface",
+        "test_draw_overlay_renders_vertices_and_edges",
+        "test_draw_overlay_no_vertices"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtGui",
+        "pytest",
+        "src.tools.polygonal_lasso",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_rect_ellipse.py",
+      "source_path": "tests/test_rect_ellipse.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "82c6627c29f060686b64fd89368ec4a927e9258a",
+      "sha256_lf": "34a89a546ce7303961554b40ed4c51fd8a06289b107556a9a8d508fde96720d8",
+      "test_count": 14,
+      "test_names": [
+        "test_initialization",
+        "test_mouse_press_starts_selection",
+        "test_mouse_move_updates_bounds",
+        "test_mouse_move_with_shift_constrains_to_square",
+        "test_mouse_release_commits_selection",
+        "test_cancel_clears_state",
+        "test_interface_returns_tool_interface",
+        "test_initialization",
+        "test_mouse_press_starts_selection",
+        "test_mouse_move_updates_radii",
+        "test_mouse_move_with_shift_constrains_to_circle",
+        "test_mouse_release_commits_selection",
+        "test_cancel_clears_state",
+        "test_interface_returns_tool_interface"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtGui",
+        "math",
+        "pytest",
+        "src.tools.ellipse_selection",
+        "src.tools.rect_selection",
+        "unittest.mock"
+      ]
+    },
+    {
+      "path": "tests/test_sat2d.py",
+      "source_path": "tests/test_sat2d.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "a26463d2256160a1f086289707f83cb88586d89c",
+      "sha256_lf": "29868066bff1e5b31573dd6d7b9f23b9f88d8b814283d22e369f1ae894825c39",
+      "test_count": 13,
+      "test_names": [
+        "test_project_empty_polygon",
+        "test_project_single_vertex",
+        "test_project_rectangle_on_axis",
+        "test_project_rectangle_on_y_axis",
+        "test_polygon_edges_rectangle",
+        "test_polygon_edges_triangle",
+        "test_sat_rectangle_vs_rectangle_no_collision",
+        "test_sat_rectangle_vs_rectangle_collision",
+        "test_sat_triangle_vs_rectangle_no_collision",
+        "test_sat_triangle_vs_rectangle_collision",
+        "test_sat_empty_polygons",
+        "test_sat_single_empty_polygon",
+        "test_sat_identical_rectangles"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "pytest",
+        "src.physics.sat2d"
+      ]
+    },
+    {
+      "path": "tests/test_scene_layers.py",
+      "source_path": "tests/test_scene_layers.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "cecba0435420b3eda12ce5997be1ff2f3ff25137",
+      "sha256_lf": "b00dd1ed12a1566fccfc688f1d74dc8f15f5105166aaf9bc02b6bcd289969285",
+      "test_count": 2,
+      "test_names": [
+        "test_create_remove_layer",
+        "test_render_list_respects_visibility"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "src.models.scene",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_smoothing.py",
+      "source_path": "tests/test_smoothing.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "4301e346ae92b3faba03c209bcaa4096cb46e109",
+      "sha256_lf": "8aa54b813ef4090479729cb3f312bfea766679f5ed9c77a5331935d41f0faadc",
+      "test_count": 2,
+      "test_names": [
+        "test_chaikin",
+        "test_catmull_to_bezier"
+      ],
+      "group": "non-qt",
+      "imports": [
+        "src.tools.smoothing",
+        "unittest"
+      ]
+    },
+    {
+      "path": "tests/test_tools_integrated.py",
+      "source_path": "tests/test_tools_integrated.py",
+      "source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+      "git_blob_sha1": "43de04152b8e1af240a40f368358289cb1063ba6",
+      "sha256_lf": "635fff615623f37ad46b05ac9ecf5fcd606077ce4fa6057e35e9b51be41ab9c5",
+      "test_count": 7,
+      "test_names": [
+        "test_lasso_tool_with_commands",
+        "test_polygonal_lasso_with_commands",
+        "test_pen_tool_with_commands",
+        "test_rect_tool_with_commands",
+        "test_ellipse_tool_with_commands",
+        "test_multiple_operations_undo_redo",
+        "test_magnetic_lasso_with_commands"
+      ],
+      "group": "qt",
+      "imports": [
+        "PySide6.QtCore",
+        "PySide6.QtGui",
+        "pytest",
+        "src.core.commands",
+        "src.tools.ellipse_selection",
+        "src.tools.lasso_tool",
+        "src.tools.magnetic_lasso",
+        "src.tools.pen_tool",
+        "src.tools.polygonal_lasso",
+        "src.tools.rect_selection",
+        "unittest.mock"
+      ]
+    }
+  ]
+}

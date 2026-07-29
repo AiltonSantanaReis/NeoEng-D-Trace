@@ -1,0 +1,25 @@
+teste_historico,quantidade,grupo,resultado_auditoria,cobertura_atual_relacionada,classificacao,acao
+test_auto_detect_basic.py,8,non-qt,8 aprovados,test_auto_detect.py,parcial,"preservar e migrar casos de formas, min_area, downscale e modo inválido"
+test_auto_detect_enhanced.py,6,non-qt,6 aprovados,test_auto_detect.py,parcial,"preservar opções de buraco, smoothing, Bézier e morfologia"
+test_auto_detect_integration.py,7,non-qt,7 aprovados,test_auto_detect.py; test_full_behavior.py,parcial,"migrar undo/redo, layer customizada, preview e batch"
+test_auto_detect_perfect.py,9,non-qt,9 aprovados,test_auto_detect.py,parcial,"preservar IoU, determinismo, separação, buracos e consistência"
+test_broadphase.py,14,non-qt,14 aprovados,test_broadphase_sap.py; test_physics_core.py,parcial,preservar UniformGrid e PhysicsManager além do SAP
+test_commands_layers.py,2,non-qt,2 aprovados,test_full_behavior.py,parcial,migrar comandos específicos de layer e lock
+test_convex_decomp.py,19,non-qt,18 aprovados; 1 falhou,nenhum equivalente completo,investigar,fixture L-shape histórica é inválida por auto-interseção; criar fixture válida
+test_edge_utils.py,8,non-qt,7 aprovados; 1 falhou,nenhum equivalente atual,mudança de contrato,decidir e documentar float32 versus float64
+test_expand_contract_command.py,1,non-qt,1 aprovado,test_full_behavior.py,parcial,manter teste explícito de execute/undo/redo
+test_export_preview.py,2,qt,pendente Windows,nenhum equivalente atual,não validado,executar no Windows e preservar preview headless
+test_exporters.py,12,non-qt,8 aprovados; 4 falharam,test_export.py,regressão parcial confirmada,rotação é provável melhoria; dispatch Godot/Unity/Phaser foi perdido e precisa de correção protegida
+test_groups.py,2,non-qt,2 aprovados,test_full_behavior.py,parcial,"migrar criação, remoção e membros de grupo"
+test_handle_command.py,1,non-qt,1 falhou,nenhum equivalente atual,fixture inválida,substituir polígono colinear por fixture válida sem perder undo/redo
+test_lasso.py,7,qt,pendente Windows,test_tools_real.py,parcial,"executar eventos, threshold, commit, interface e overlay"
+test_magnetic_lasso.py,15,qt,pendente Windows,nenhum equivalente suficiente,não validado,"executar Sobel, Dijkstra, anchors, preview, cancelamento e overlay"
+test_mask_utils_curvature.py,7,non-qt,6 aprovados; 1 falhou,nenhum equivalente atual,investigar,definir limite de preservação de curvatura e métrica geométrica
+test_mask_viewer.py,9,qt,pendente Windows,test_mask_viewer.py,cobertura insuficiente,"teste atual cobre 1 fluxo; preservar zoom, pan, sinais e ferramentas"
+test_pen_tool.py,19,qt,pendente Windows,test_tools_real.py; test_view_modes_and_tools.py,cobertura insuficiente,"preservar Bézier, handles, commit, cancelamento e overlay"
+test_polygonal_lasso.py,10,qt,pendente Windows,nenhum equivalente suficiente,não validado,"preservar eventos, commit, cancelamento e overlay"
+test_rect_ellipse.py,14,qt,pendente Windows,test_tools_real.py,cobertura insuficiente,"preservar Shift, bounds/radii, commit e cancelamento"
+test_sat2d.py,13,non-qt,bloqueado na coleta,test_physics_core.py,mudança de API,decidir aliases project/polygon_edges e contrato para polígonos vazios
+test_scene_layers.py,2,non-qt,2 aprovados,test_full_behavior.py,parcial,manter visibilidade e render list explícitos
+test_smoothing.py,2,non-qt,2 aprovados,nenhum equivalente atual,sem substituto,promover testes Chaikin e Catmull/Bézier à suíte oficial
+test_tools_integrated.py,7,qt,pendente Windows,test_tools_real.py; test_full_behavior.py,parcial,executar integração completa com CommandManager

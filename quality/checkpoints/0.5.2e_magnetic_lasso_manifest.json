@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "checkpoint": "0.5.2E",
+  "scope": "files affected by Etapa 0.5.2F",
+  "files": [
+    {
+      "path": "src/tools/base_tool.py",
+      "sha256": "9cc7cc499a46e51c9d700e507566a608a78c50224d75a21e2ea4a8f2dde53953",
+      "size": 5591
+    },
+    {
+      "path": "src/tools/magnetic_lasso.py",
+      "sha256": "3365491ca9d483074fa03e973de3497fcaa57fb29b32b5e56074f47ad7d81be6",
+      "size": 12349
+    },
+    {
+      "path": "src/ui/canvas_view.py",
+      "sha256": "e8a05e8a8dc243f3cf6c0ac43ee78cb000308ec56a13ffc9aba6ae7ab5d5bef0",
+      "size": 30266
+    },
+    {
+      "path": "src/ui/main_window.py",
+      "sha256": "5070631daba9c3d40e3cef6aa6b6a5014210b71b8d92a9ab095b33a2a0c91feb",
+      "size": 21187
+    },
+    {
+      "path": "src/ui/tool_palette.py",
+      "sha256": "4638469361bfc2cd6dbae01f2ffb4f45c20db61d6c0f95ecf407ff7dd3e48fa7",
+      "size": 10858
+    }
+  ]
+}

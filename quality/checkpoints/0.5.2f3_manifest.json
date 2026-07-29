@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "checkpoint": "0.5.2F3",
+  "files": [
+    {
+      "path": "src/tools/magnetic_lasso.py",
+      "sha256": "9ccc36bccb7c6b931f334d475c0f2aee53f819c23a2263bdaec2b720fda7b93b",
+      "size": 27124
+    },
+    {
+      "path": "src/tools/magnetic_lasso_engine.py",
+      "sha256": "d222d7f3d625c123a6e9ba60228f0978417f314fc64189eed1f94d4ff003e1a8",
+      "size": 24088
+    },
+    {
+      "path": "tests/test_magnetic_lasso_engine.py",
+      "sha256": "ffd80376ad15c74d0cae839bbb53fe01765641c140bc028a54e374f30d1072c2",
+      "size": 6279
+    },
+    {
+      "path": "tests/test_stage_0_5_2f_ui.py",
+      "sha256": "71431ba02b36aff0fb64d10a1ea971fcfcd7621a969cd68750778172ff1b1da2",
+      "size": 6722
+    }
+  ]
+}

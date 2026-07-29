@@ -1,0 +1,58 @@
+# Python environments
+.venv/
+venv/
+env/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# Test and coverage output
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Local application state
+/config.json
+/config.json.corrupted
+/*.corrupted
+/test.json
+*.log
+*.tmp
+
+# Generated exports and local samples
+/*.glb
+/*.gltf
+/*.bin
+/*.rar
+/*.zip
+
+# Generated audit/context files
+/project_context.txt
+/report_api_locations.json
+/tests_compat_report.json
+
+# Local snapshots and accidental backups
+/backup/
+/backups/
+*.backup
+*.py.backup
+
+# IDE and OS metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini

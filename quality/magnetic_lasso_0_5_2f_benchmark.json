@@ -1,0 +1,13 @@
+{
+  "circle_balanced": {
+    "elapsed_seconds": 0.285056,
+    "points": 67,
+    "mean_radius_error_pixels": 1.5216170144283636,
+    "edge_adherence_0_to_1": 0.7957857769973659
+  },
+  "large_downscaled": {
+    "elapsed_seconds": 0.553974,
+    "points": 121,
+    "edge_adherence_0_to_1": 0.8667314859828233
+  }
+}

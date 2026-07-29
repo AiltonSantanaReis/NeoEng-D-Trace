@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "checkpoint": "0.5.2F",
+  "scope": "magnetic lasso functional stage",
+  "files": [
+    {
+      "path": "src/tools/base_tool.py",
+      "sha256": "151a0b3883679f4d09b31c50c1f67457887f2c76cdebb65980c1b6960714b0a5",
+      "size": 5927
+    },
+    {
+      "path": "src/tools/magnetic_lasso.py",
+      "sha256": "ff15927c18858d7c2069c35385d0982dfb202ddc9ec93833de7bb337edb1fff3",
+      "size": 25130
+    },
+    {
+      "path": "src/ui/canvas_view.py",
+      "sha256": "c26e9b7d560e1532161b6a2df14fe1f0de35bf4a7e23383abfd6d36828a0cfb7",
+      "size": 31472
+    },
+    {
+      "path": "src/ui/main_window.py",
+      "sha256": "72fc7d7596a980ec19ec1745f668bd62851e5a0878078ffad6439aed85f57408",
+      "size": 21429
+    },
+    {
+      "path": "src/ui/tool_palette.py",
+      "sha256": "c1296610ae85e8c5cb2fbea1f8b4a11719799e8924e65007088a70646a1a670e",
+      "size": 11772
+    },
+    {
+      "path": "src/tools/magnetic_lasso_engine.py",
+      "sha256": "54bb4474d2a99ba05bd211046a79e6d6ed199e4e2a422566ea297092e080b18f",
+      "size": 19467
+    },
+    {
+      "path": "tests/test_magnetic_lasso_engine.py",
+      "sha256": "ea2a4fa9ff14423732649ff7a413257de6e321b414157601e9a986c1a9380b88",
+      "size": 4236
+    },
+    {
+      "path": "tests/test_stage_0_5_2f_ui.py",
+      "sha256": "d5caa5f5530ca17af81bd1fe29d85fe0329cd9295f4f981406f37d84a4a0fda4",
+      "size": 4066
+    },
+    {
+      "path": "docs/CHECKPOINT_ETAPA_0_5_2E.md",
+      "sha256": "ee5b8094cbfa8a8b7605a1103c8952807f64054730f860c6710570a81748c613",
+      "size": 840
+    },
+    {
+      "path": "docs/ETAPA_0_5_2F_LACO_MAGNETICO_FUNCIONAL.md",
+      "sha256": "808cd02f9fbb239b33a4c59fa3c83bcc63000837a26b96c1e4fc7e080ce9301d",
+      "size": 2743
+    },
+    {
+      "path": "docs/PLANO_ROLLBACK_ETAPA_0_5_2F.md",
+      "sha256": "f14611419707d46b8cee61054e2058ca69b82c15c25eb95fcf2c24700f957267",
+      "size": 1001
+    },
+    {
+      "path": "docs/VALIDACAO_ETAPA_0_5_2F.md",
+      "sha256": "784d43c3680125952ac7daf4700b3bfa8013695e6d56815e253137659dee2261",
+      "size": 1850
+    },
+    {
+      "path": "quality/magnetic_lasso_0_5_2f_benchmark.json",
+      "sha256": "90329cf6ce63ca98ec48863cf4ee8d34c336ed001db0b952d3f8ff57dfbdb4e4",
+      "size": 311
+    },
+    {
+      "path": "quality/checkpoints/0.5.2e_magnetic_lasso_manifest.json",
+      "sha256": "4c7e776d418b8d517ba6231bee7409f7b5e747e077cdb7e84faccec0e5a02d8e",
+      "size": 901
+    }
+  ]
+}

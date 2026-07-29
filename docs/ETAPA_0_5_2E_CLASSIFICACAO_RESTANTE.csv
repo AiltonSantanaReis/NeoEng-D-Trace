@@ -1,0 +1,10 @@
+item,classificacao,decisao,justificativa
+decomposição convexa,regressão confirmada,corrigida,merge côncavo era aceito como convexo
+laço poligonal: limpeza pós-duplo clique,regressão confirmada,corrigida,estado não era limpo após sucesso
+laço poligonal: dois vértices,mudança de UX segura,corrigida,duplo clique não apaga trabalho incompleto
+zoom Mock/inválido,robustez,corrigida,fallback numérico sem mudar CanvasView real
+simplificação circular,comportamento configurável,opção adicionada,padrão 0.5.2D mantido; min_points é opt-in
+Sobel float32,contrato atual,mantido,não há evidência para duplicar memória com float64
+atlas rotacionado,melhoria legítima,mantido,teste histórico esperava limitação antiga
+alça com pontos colineares,fixture inválida,não alterado,Scene rejeita polígono degenerado corretamente
+mocks de CommandManager,fixture inválida,não alterado,Mock altera semântica de hasattr/cmd

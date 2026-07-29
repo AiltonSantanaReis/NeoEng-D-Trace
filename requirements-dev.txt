@@ -1,0 +1,7 @@
+# Ferramentas usadas pelo baseline Python 3.11.
+pytest==9.0.1
+pytest-cov==7.0.0
+black>=25.1,<27
+isort>=6.0,<8
+flake8>=7.1,<9
+mypy>=1.15,<2

@@ -1,0 +1,20 @@
+teste,grupo,resultado,classificacao,evidencia,decisao
+test_convex_decomp.py::test_convex_decompose_l_shape,non-qt,falha,fixture histórica inválida,A sequência contém arestas sobrepostas no eixo x=0; não alterar decompositor até criar fixture simples válida,pendente
+test_edge_utils.py::test_sobel_magnitude,non-qt,falha,mudança de contrato de dtype,float32 reduz memória; benchmark de precisão e desempenho necessário antes de escolher contrato,pendente
+test_exporters.py::test_atlas_rotation,non-qt,falha,melhoria confirmada,O atlas atual rotaciona e acomoda os sprites em uma página; preservar o recurso e substituir a expectativa histórica,teste obsoleto
+test_exporters.py::test_export_metadata_godot,non-qt,falha,regressão confirmada,Formatador Godot existente estava desconectado do dispatcher,corrigido 0.5.2B
+test_exporters.py::test_export_metadata_unity,non-qt,falha,regressão confirmada,Formatador Unity existente estava desconectado do dispatcher,corrigido 0.5.2B
+test_exporters.py::test_export_metadata_phaser,non-qt,falha,regressão confirmada,Formatador Phaser existente estava desconectado do dispatcher,corrigido 0.5.2B
+test_handle_command.py::test_handle_move_undo_redo,non-qt,falha,fixture histórica inválida,O objeto usa três pontos colineares e é rejeitado corretamente como polígono inválido,adaptar teste
+test_mask_utils_curvature.py::test_circle_contour,non-qt,falha,critério insuficiente,Quantidade de vértices não mede erro geométrico; criar tolerância radial/Hausdorff,pendente
+test_sat2d.py,non-qt,erro de coleta,regressão de API pública,project e polygon_edges desapareceram; geometria vazia deixou de retornar não colisão,corrigido 0.5.2B
+test_magnetic_lasso.py::test_draw_overlay_renders_paths_and_anchors,qt,falha,mock incompatível,Mock.get_zoom() retorna Mock em vez de float; CanvasView real retorna float,adaptar teste
+test_mask_viewer.py::test_import_and_api,qt,falha,regressão confirmada,set/get_view_transform foram removidos,corrigido 0.5.2B
+test_mask_viewer.py::test_coordinate_transforms,qt,falha,regressão confirmada,image_to_view deixou de aceitar tupla,corrigido 0.5.2B
+test_mask_viewer.py::test_reset_view,qt,falha,mudança de contrato intencional atual,Teste ativo atual exige preenchimento da área; não restaurar ajuste contido sem decisão de UX,teste histórico obsoleto
+test_pen_tool.py (5 casos de zoom),qt,falha,mock incompatível,Mock.get_zoom() retorna Mock; não há evidência de falha com CanvasView real,adaptar teste
+test_polygonal_lasso.py::test_double_click_commits_selection_with_enough_vertices,qt,falha,regressão provável de estado,commit_selection não limpa vértices no caminho de duplo clique,validar interação real
+test_polygonal_lasso.py::test_double_click_ignores_insufficient_vertices,qt,falha,mudança de UX não aprovada,Implementação cancela com menos de três pontos; histórico preservava os pontos,decisão de produto
+test_polygonal_lasso.py::test_draw_overlay_renders_vertices_and_edges,qt,falha,mock incompatível,image_to_widget é Mock e retorna Mock não indexável,adaptar teste
+test_tools_integrated.py::test_rect_tool_with_commands,qt,falha,fixture Mock ambígua,"hasattr(Mock, cmd) é sempre verdadeiro e desvia para um CommandManager inexistente",adaptar teste
+test_tools_integrated.py::test_multiple_operations_undo_redo,qt,falha,efeito da fixture Mock,Falha derivada do mesmo desvio artificial do retângulo,adaptar teste

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "checkpoint": "0.5.2D",
+  "status": "validated-manually-on-windows",
+  "base_files": [
+    {
+      "path": "src/tools/base_tool.py",
+      "sha256": "b80a88cf25913bee5a47ee65b275395cb7337d1d0f70c1e0a2bbb24394bb8c13",
+      "size": 3362
+    },
+    {
+      "path": "src/tools/pen_tool.py",
+      "sha256": "4dd168db1ede4ba7581b83a7b7152f61ea51afa0e3b573dbc63c6cedc800cbc1",
+      "size": 12134
+    },
+    {
+      "path": "src/tools/magnetic_lasso.py",
+      "sha256": "526d7a802e819441f9513144a4146a6d6421edea45d9ff2e13819164fb3ac1af",
+      "size": 12354
+    },
+    {
+      "path": "src/tools/polygonal_lasso.py",
+      "sha256": "4d8fc9662c0bb70f59359c3bb68c9180f77090d9846d8885c4090c37c1b7d255",
+      "size": 8484
+    },
+    {
+      "path": "src/physics/convex_decomp.py",
+      "sha256": "d92bcc9852cdf9770b0b7fa6b039d97096ade4149646e7dd7b56df08b825200c",
+      "size": 9857
+    },
+    {
+      "path": "src/tools/mask_utils.py",
+      "sha256": "1174ef102a52f897fdc19b1ad8f0398b99d29eb9145072c012c838ea2d43f6d8",
+      "size": 11306
+    }
+  ],
+  "paths_absent_in_checkpoint": [
+    "tests/test_stage_0_5_2e_core.py",
+    "tests/test_stage_0_5_2e_ui.py",
+    "quality/checkpoints/0.5.2d_manifest.json",
+    "quality/checkpoints/0.5.2e_manifest.json",
+    "docs/CHECKPOINT_ETAPA_0_5_2D.md",
+    "docs/ETAPA_0_5_2E_RECONCILIACAO.md",
+    "docs/PLANO_ROLLBACK_ETAPA_0_5_2E.md",
+    "docs/ETAPA_0_5_2E_CLASSIFICACAO_RESTANTE.csv",
+    "docs/VALIDACAO_ETAPA_0_5_2E.md"
+  ]
+}

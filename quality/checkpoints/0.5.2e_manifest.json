@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "checkpoint": "0.5.2E",
+  "files": [
+    {
+      "path": "src/tools/base_tool.py",
+      "sha256": "9cc7cc499a46e51c9d700e507566a608a78c50224d75a21e2ea4a8f2dde53953",
+      "size": 5591
+    },
+    {
+      "path": "src/tools/pen_tool.py",
+      "sha256": "e849e5ebcf701ccfb73c72623a4836ba327cf0cd9b61f5ec636a2ff23a38cfcb",
+      "size": 12119
+    },
+    {
+      "path": "src/tools/magnetic_lasso.py",
+      "sha256": "3365491ca9d483074fa03e973de3497fcaa57fb29b32b5e56074f47ad7d81be6",
+      "size": 12349
+    },
+    {
+      "path": "src/tools/polygonal_lasso.py",
+      "sha256": "34803a6019d9ee6e8410c54b48a6f26e5802db4129b7fe6590abefa0d3bb5b55",
+      "size": 9189
+    },
+    {
+      "path": "src/physics/convex_decomp.py",
+      "sha256": "502ff30bc2bb7b792faef4597cea32a5e49d11ce3633cfd5e8e25c3a8b102e06",
+      "size": 10885
+    },
+    {
+      "path": "src/tools/mask_utils.py",
+      "sha256": "5c919ff855a4f9eabadcb66be1194f9d1ccde52b7bfdf63ef3be11c53a4df5a5",
+      "size": 11641
+    },
+    {
+      "path": "tests/test_stage_0_5_2e_core.py",
+      "sha256": "8124149979ad5b39660a5dcdc55271313ab09d084ed93f468c82c25fce516c2c",
+      "size": 2689
+    },
+    {
+      "path": "tests/test_stage_0_5_2e_ui.py",
+      "sha256": "38d598ecfbdf4459226970b9639fb97f2fdd0e59ecab20755602d0bf944f97d9",
+      "size": 2110
+    },
+    {
+      "path": "quality/checkpoints/0.5.2d_manifest.json",
+      "sha256": "74ddac804a9e2db3b8b92725dc7ddbaa020e8f28effa0eae31404b234ec5f306",
+      "size": 1499
+    },
+    {
+      "path": "docs/CHECKPOINT_ETAPA_0_5_2D.md",
+      "sha256": "9e9f92f59c77e7173ed407798be9469462be97f5de854fe6892a0aacfa7dbb22",
+      "size": 803
+    },
+    {
+      "path": "docs/ETAPA_0_5_2E_RECONCILIACAO.md",
+      "sha256": "0f393c25745d7508009446b607ca7759099685fc17baba96153d06b0f0439337",
+      "size": 1646
+    },
+    {
+      "path": "docs/PLANO_ROLLBACK_ETAPA_0_5_2E.md",
+      "sha256": "359ce64489cbd6a77ab2e83474aab472158fbdefe2f5d8b9229c3eba1c7bc174",
+      "size": 816
+    },
+    {
+      "path": "docs/ETAPA_0_5_2E_CLASSIFICACAO_RESTANTE.csv",
+      "sha256": "e9d882f31c708e453e8b9e7d114d31a8a0877b3e8fa309e1f93de592de102e91",
+      "size": 939
+    },
+    {
+      "path": "docs/VALIDACAO_ETAPA_0_5_2E.md",
+      "sha256": "874112595af2687d866d045c9e4d12fda779d12aab1717308d12de8f775e68fa",
+      "size": 1761
+    }
+  ]
+}

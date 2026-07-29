@@ -1,0 +1,265 @@
+status_git,caminho,classificacao,risco,acao_obrigatoria
+ M,CHANGELOG.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+ M,README.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+ D,SYNTAX_FIXES.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+ M,__pycache__/app.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,__pycache__/integration_test.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,__pycache__/integration_test.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,__pycache__/test_comprehensive_all_functions.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,__pycache__/test_maskviewer_fixed.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,__pycache__/test_safe_demo.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,__pycache__/test_safe_demo.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,app.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ D,bench/auto_detect_bench.py,codigo_fonte_excluido,Alto,"Recuperar do histórico e verificar funcionalidade exclusiva, chamadas dinâmicas e substituto equivalente."
+ D,bench/benchmark_results.csv,artefato_gerado,Baixo,Preservar como evidência histórica; não versionar no baseline limpo.
+ M,config.json,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+ D,integration_test.py,codigo_fonte_excluido,Alto,"Recuperar do histórico e verificar funcionalidade exclusiva, chamadas dinâmicas e substituto equivalente."
+ D,mask_viewer_test.log,artefato_gerado,Baixo,Preservar como evidência histórica; não versionar no baseline limpo.
+ D,physics_demo.py,backup_ou_demo_excluido,Médio,Arquivar fora do código ativo e comparar com a implementação atual antes de qualquer remoção definitiva.
+ D,polygontool_full_test.log,artefato_gerado,Baixo,Preservar como evidência histórica; não versionar no baseline limpo.
+ M,pyproject.toml,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+ M,pytest.ini,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+ M,src/collision/__pycache__/sat2d.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,src/collision/__pycache__/sat2d.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/collision/sat2d.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/core/__pycache__/commands.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/core/__pycache__/commands.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/core/__pycache__/config.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/core/__pycache__/logger.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/core/__pycache__/logger.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/core/commands.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/core/config.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/core/logger.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/__pycache__/atlas_exporter.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/__pycache__/atlas_exporter.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/__pycache__/json_exporter.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/__pycache__/json_exporter.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/__pycache__/sprite_exporter.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/__pycache__/sprite_exporter.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/atlas_exporter.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/json_exporter.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/profiles/__pycache__/generic.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/profiles/__pycache__/godot.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/profiles/__pycache__/phaser.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/profiles/__pycache__/unity.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/exporters/profiles/generic.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/profiles/godot.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/profiles/phaser.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/profiles/unity.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/exporters/sprite_exporter.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/models/__pycache__/scene.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/models/__pycache__/scene.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/models/scene.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/physics/__pycache__/broadphase.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/broadphase.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/convex_decomp.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/convex_decomp.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/physics_manager.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/physics_manager.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/sat2d.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/__pycache__/sat2d.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/physics/broadphase.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/physics/convex_decomp.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/physics/physics_manager.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/physics/sat2d.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/__init__.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/__pycache__/__init__.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/__init__.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/auto_detect.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/auto_detect.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/base_tool.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/base_tool.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/edge_utils.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/edge_utils.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/ellipse_selection.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/ellipse_selection.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/lasso.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/lasso.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/lasso_tool.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/lasso_tool.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/magnetic_lasso.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/magnetic_lasso.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/mask_utils.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/mask_utils.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/pen_tool.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/pen_tool.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/polygonal_lasso.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/polygonal_lasso.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/rect_selection.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/rect_selection.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/smoothing.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/__pycache__/smoothing.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/tools/auto_detect.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/base_tool.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/edge_utils.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/ellipse_selection.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/lasso.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/lasso_tool.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/magnetic_lasso.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ D,src/tools/magnetic_lasso_backup.py,backup_ou_demo_excluido,Médio,Arquivar fora do código ativo e comparar com a implementação atual antes de qualquer remoção definitiva.
+ M,src/tools/mask_utils.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/pen_tool.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/polygonal_lasso.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/tools/rect_selection.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ D,src/tools/rect_tool.py,codigo_fonte_excluido,Alto,"Recuperar do histórico e verificar funcionalidade exclusiva, chamadas dinâmicas e substituto equivalente."
+ M,src/tools/smoothing.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/__pycache__/canvas_view.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/canvas_view.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/collision_overlay.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/collision_panel.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/export_dialog.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/export_preview.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/groups_panel.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/layers_panel.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/main_window.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/mask_viewer.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/mask_viewer.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/side_panel.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/__pycache__/tool_palette.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/ui/canvas_view.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ D,src/ui/canvas_view_backup_2025-11-28.py,backup_ou_demo_excluido,Médio,Arquivar fora do código ativo e comparar com a implementação atual antes de qualquer remoção definitiva.
+ M,src/ui/collision_overlay.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/collision_panel.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/export_dialog.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/export_preview.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/groups_panel.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/layers_panel.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/main_window.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/mask_viewer.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/side_panel.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/theme_qss.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/ui/tool_palette.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/utils/__pycache__/packing.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/utils/__pycache__/selection_tools.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,src/utils/packing.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ M,src/utils/selection_tools.py,codigo_fonte_modificado,Alto,Preservar exatamente o estado atual. Criar teste de caracterização antes de refatorar ou substituir.
+ D,syntax_fix_demo.py,backup_ou_demo_excluido,Médio,Arquivar fora do código ativo e comparar com a implementação atual antes de qualquer remoção definitiva.
+ D,test_safe_demo.py,backup_ou_demo_excluido,Médio,Arquivar fora do código ativo e comparar com a implementação atual antes de qualquer remoção definitiva.
+ D,tests/__pycache__/test_auto_detect_basic.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_basic.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_enhanced.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_enhanced.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_integration.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_integration.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_perfect.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_perfect.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_auto_detect_perfect.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_broadphase.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_broadphase.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_commands_layers.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_commands_layers.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_commands_layers.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_commands_layers.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,tests/__pycache__/test_convex_decomp.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_convex_decomp.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_edge_utils.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_edge_utils.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_edge_utils.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_expand_contract_command.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_expand_contract_command.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_expand_contract_command.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_export_preview.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_export_preview.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_export_preview.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_exporters.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_exporters.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_exporters.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_groups.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_groups.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_groups.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_handle_command.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_handle_command.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_handle_command.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_lasso.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_lasso.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_magnetic_lasso.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_magnetic_lasso.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_mask_utils_curvature.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_mask_utils_curvature.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,tests/__pycache__/test_mask_viewer.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_mask_viewer.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ M,tests/__pycache__/test_mask_viewer.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_pen_tool.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_pen_tool.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_polygonal_lasso.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_polygonal_lasso.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_rect_ellipse.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_rect_ellipse.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_sat2d.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_sat2d.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_sat2d.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_sat2d.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_scene_layers.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_scene_layers.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_scene_layers.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_scene_layers.cpython-311.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_smoothing.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_smoothing.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_smoothing.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_tools_integrated.cpython-310-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_tools_integrated.cpython-310.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/__pycache__/test_tools_integrated.cpython-311-pytest-9.0.1.pyc,cache_compilado,Baixo,Preservar apenas no ZIP/bundle histórico; remover do versionamento somente no baseline limpo.
+ D,tests/test_auto_detect_basic.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_auto_detect_enhanced.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_auto_detect_integration.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_auto_detect_perfect.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_broadphase.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_commands_layers.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_convex_decomp.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_edge_utils.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_expand_contract_command.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_export_preview.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_exporters.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_groups.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_handle_command.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_lasso.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_magnetic_lasso.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_mask_utils_curvature.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ M,tests/test_mask_viewer.py,outro,Médio,"Investigar finalidade e dependências antes de decidir inclusão, arquivo ou exclusão."
+ D,tests/test_pen_tool.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_polygonal_lasso.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_rect_ellipse.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_sat2d.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_scene_layers.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_smoothing.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tests/test_tools_integrated.py,teste_legado_excluido,Alto,"Recuperar do bundle para área de caracterização, executar e decidir entre manter, adaptar ou substituir. Não descartar."
+ D,tools/bench_packer.py,codigo_fonte_excluido,Alto,"Recuperar do histórico e verificar funcionalidade exclusiva, chamadas dinâmicas e substituto equivalente."
+??,.github/,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+??,.gitignore,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+??,bench/benchmark_convex_decomp.py,benchmark_novo,Médio,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,bench/benchmark_gltf_export.py,benchmark_novo,Médio,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,bench/benchmark_triangulation.py,benchmark_novo,Médio,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,bench/run_benchmarks.py,benchmark_novo,Médio,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,config.example.json,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+??,docs/AUDITORIA_TECNICA_2026-07-27.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/DEFINICAO_DO_PRODUTO.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/ESTRATEGIA_GITHUB.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/MATRIZ_FUNCIONALIDADES.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/PLANO_DE_DESENVOLVIMENTO.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/PLANO_RENOMEACAO.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/POLITICA_NAO_REGRESSAO.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,docs/VALIDACAO_ETAPA_0.md,documentacao,Baixo,Revisar contra o código e incluir quando não fizer afirmações não validadas.
+??,mypy.ini,configuracao,Médio,"Revisar dados pessoais, versões, caminhos e efeito no build/testes antes de consolidar."
+??,pack_for_ai.py,outro,Médio,"Investigar finalidade e dependências antes de decidir inclusão, arquivo ou exclusão."
+??,src/__init__.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/collision/__init__.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/core/view_processor.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/exporters/gltf_exporter.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/exporters/profiles/__init__.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/models/__init__.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/physics/__init__.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/tools/collision_brush_tool.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/tools/polygon_edit_tool.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/tools/selection_tool.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/ui/__init__.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,src/ui/gizmo.py,codigo_fonte_novo,Alto,"Preservar. Validar sintaxe, importação, integração e cobertura antes de consolidar no baseline."
+??,test_gui_interaction.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,test_physics_core.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/__init__.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_auto_detect.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_broadphase_sap.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_export.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_full_behavior.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_scene_repair.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_tools_real.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
+??,tests/test_view_modes_and_tools.py,teste_novo_nao_rastreado,Médio,Preservar e validar. Mapear quais requisitos cobre e quais testes legados substitui.
