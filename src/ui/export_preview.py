@@ -5,14 +5,7 @@ Export Preview Dialog for NeoEng-D-Trace.
 
 from typing import Any, Dict, Optional
 
-from PIL import Image
-
-# Importação robusta para compatibilidade entre versões do Pillow
-try:
-    from PIL.ImageQt import ImageQt
-except ImportError:
-    from PIL import ImageQt
-
+from PIL import Image, ImageQt
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
@@ -217,12 +210,7 @@ class ExportPreviewDialog(QDialog):
             )
 
         # Convert to QPixmap
-        # Nota: ImageQt.ImageQt é uma classe wrapper, não uma função estática em algumas versões
-        if hasattr(ImageQt, "ImageQt"):
-            qt_image = ImageQt.ImageQt(scaled)
-        else:
-            # Fallback for Pillow versions that expose the class directly.
-            qt_image = ImageQt(scaled)
+        qt_image = ImageQt.ImageQt(scaled)
 
         pixmap = QPixmap.fromImage(qt_image)
         self.preview_label.setPixmap(pixmap)

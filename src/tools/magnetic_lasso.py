@@ -7,7 +7,7 @@ import hashlib
 import math
 import time
 import weakref
-from typing import List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 from PySide6.QtCore import QObject, QPointF, QRunnable, Qt, QThreadPool, Signal, Slot
@@ -275,10 +275,10 @@ class MagneticLassoTool(BaseTool):
         # with headless contracts and external adapters.
         self._path_pool = _MAGNETIC_PATH_POOL
         self._path_bridge = _MagneticPathBridge(self)
-        self._path_workers = {}
+        self._path_workers: Dict[int, _MagneticPathWorker] = {}
         self._active_path_request: Optional[int] = None
-        self._queued_preview_request = None
-        self._queued_action_request = None
+        self._queued_preview_request: Optional[Dict[str, Any]] = None
+        self._queued_action_request: Optional[Dict[str, Any]] = None
         self._next_path_request_id = 0
         self._state_revision = 0
         self._segment_pending = False

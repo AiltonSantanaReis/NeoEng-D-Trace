@@ -309,7 +309,7 @@ def main() -> int:
                 )
                 record_validation_exception("application.state.saved", exc)
 
-        win.closeEvent = lambda event: (on_close(), event.accept())
+        app.aboutToQuit.connect(on_close)
         exit_code = int(app.exec())
         record_validation_event(
             "application.closed",

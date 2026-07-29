@@ -493,8 +493,8 @@
       "size": 8858
     },
     "src/exporters/atlas_exporter.py": {
-      "sha256": "e0719bf767c77a95d1e8ef343a3a9b0ce7decddcec9bba81a9bea9c3b1fafe81",
-      "size": 7524
+      "sha256": "29bd9cc55c7a41d947cee9750714ca4683f368ee37325fe153ee3497398d8ad7",
+      "size": 7816
     },
     "src/exporters/gltf_exporter.py": {
       "sha256": "92a0dbae576fef32e8398aa7e6ce6addad363d4a71ccdd3e1bfd0655bc089110",
@@ -529,8 +529,8 @@
       "size": 7018
     },
     "src/launcher.py": {
-      "sha256": "2a2b07bdfdac8d174a4814c4476a3d548b807f156a4f0745ae5e7933bbfa691a",
-      "size": 11041
+      "sha256": "6c2f5443a790dc235c7811050299951ddee308dbd3609df61558857541ff34b2",
+      "size": 11015
     },
     "src/models/__init__.py": {
       "sha256": "48f9350985d4e4973cc9c548d8e8b5ce9582a9c314cf8dd139cc7cbf7e0eec44",
@@ -573,8 +573,8 @@
       "size": 5927
     },
     "src/tools/collision_brush_tool.py": {
-      "sha256": "30cb446c53b260b0e661e39567c090ef096fe6f139da3f78ce50b282c47c2eb8",
-      "size": 16440
+      "sha256": "08e401bb81c819d0086e5d42824dbff7cabc9c32246e0e11d81cb5dc8cfabc1c",
+      "size": 16411
     },
     "src/tools/edge_utils.py": {
       "sha256": "e38a3bf7aba7202902dd80b9e63e02ce70f0ec5f6309715e1faf9718ee19d591",
@@ -593,8 +593,8 @@
       "size": 5789
     },
     "src/tools/magnetic_lasso.py": {
-      "sha256": "808b91081d17ce4b9a9443dc7484caaae5aa16fb4f3680b081bc08204f8f6cd8",
-      "size": 46732
+      "sha256": "9188b3c591a25d0c4b862d78d96899c904fce92bb21d00088aaa8786a6e6c368",
+      "size": 46827
     },
     "src/tools/magnetic_lasso_engine.py": {
       "sha256": "432f940165678b51568082e3ac675c66b9c917fc7afc5e9ee554dc44c217f3f6",
@@ -633,8 +633,8 @@
       "size": 28
     },
     "src/ui/canvas_view.py": {
-      "sha256": "55e360b5ea6ba7691e7b96af485aefe7505bea9ac1d0a669ecad69474dc5e89c",
-      "size": 31644
+      "sha256": "82f2b969e85f7eb16031d9d5f52f2de1dd2f5b2d1027a7eadf897b0160139894",
+      "size": 31952
     },
     "src/ui/collision_overlay.py": {
       "sha256": "99c467248ef104530bf8f8bc49ceb2ae7150cf2a24e608e76979da3ce01cb89e",
@@ -649,8 +649,8 @@
       "size": 34879
     },
     "src/ui/export_preview.py": {
-      "sha256": "eb31061c03c3ca484ad06387a8b1b8903d673dbdfe4372ab5e25098471a02199",
-      "size": 12085
+      "sha256": "0d849585e5f2e9c3b020975134bf60f5c84d78ed80958ecffd451c4850a6f4d6",
+      "size": 11659
     },
     "src/ui/gizmo.py": {
       "sha256": "198b61b0ab878956ac3bbeb43dbc1b18f412c7f79934325a183f986a602982af",

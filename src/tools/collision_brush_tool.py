@@ -96,10 +96,8 @@ class CollisionBrushTool(BaseTool):
                         )
         elif event.button() == Qt.MouseButton.RightButton:
             if self.moving or self.scaling:
-                if self.scaling:
-                    self._show_scale_menu(
-                        self.scaling_oid, event.globalPos()
-                    )  # type: ignore
+                if self.scaling and self.scaling_oid is not None:
+                    self._show_scale_menu(self.scaling_oid, event.globalPos())
                 else:
                     self.moving = False
                     self.moving_oid = None

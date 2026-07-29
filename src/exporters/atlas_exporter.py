@@ -6,7 +6,8 @@ Implementation preserved in the single ``src`` source tree.
 import json
 import os
 import tempfile
-from typing import Any, Dict, Iterable, List, Tuple
+from types import SimpleNamespace
+from typing import Any, Dict, Iterable, List, Optional, Protocol, Tuple, cast
 
 from PIL import Image
 
@@ -19,6 +20,13 @@ except ImportError:
     HAS_PACKER = False
 
 from src.core.logger import logger
+
+
+class _AtlasNode(Protocol):
+    x: int
+    y: int
+    w: int
+    h: int
 
 
 def _deterministic_sort(
@@ -73,7 +81,7 @@ def pack_sprites_to_atlas(
         for img, meta_dict in list(remaining_items):
             w, h = img.width, img.height
             name = meta_dict["name"]
-            node = None
+            node: Optional[_AtlasNode] = None
             rotated = False
 
             if HAS_PACKER:
@@ -88,7 +96,10 @@ def pack_sprites_to_atlas(
             else:
                 # Simple Shelf logic fallback
                 if x + w <= max_w - padding and y + h <= max_h - padding:
-                    node = type("obj", (object,), {"x": x, "y": y, "w": w, "h": h})
+                    node = cast(
+                        _AtlasNode,
+                        SimpleNamespace(x=x, y=y, w=w, h=h),
+                    )
                     x += w + padding
                     row_h = max(row_h, h)
                     # Wrap to new row
@@ -104,7 +115,10 @@ def pack_sprites_to_atlas(
                     row_h = 0
 
                 if y + h <= max_h - padding and x + w <= max_w - padding:
-                    node = type("obj", (object,), {"x": x, "y": y, "w": w, "h": h})
+                    node = cast(
+                        _AtlasNode,
+                        SimpleNamespace(x=x, y=y, w=w, h=h),
+                    )
                     x += w + padding
                     row_h = max(row_h, h)
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 # src/ui/canvas_view.py
-from typing import Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 from PySide6.QtCore import QObject, QPointF, QRunnable, Qt, QThreadPool, Signal
 from PySide6.QtGui import (
@@ -24,16 +24,22 @@ from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QWidget
 from src.core.logger import logger
 
 # Proteção de importação caso ViewProcessor não esteja implementado ainda
+VIEW_PROCESSOR_CLASS: Optional[type[Any]]
 try:
-    from src.core.view_processor import ViewProcessor
+    from src.core.view_processor import ViewProcessor as _ViewProcessor
+
+    VIEW_PROCESSOR_CLASS = _ViewProcessor
 except ImportError:
-    ViewProcessor = None
+    VIEW_PROCESSOR_CLASS = None
 
 # Tenta importar o Gizmo, mas define fallback se não existir
+TRANSFORM_GIZMO_CLASS: Optional[type[Any]]
 try:
-    from src.ui.gizmo import TransformGizmo
+    from src.ui.gizmo import TransformGizmo as _TransformGizmo
+
+    TRANSFORM_GIZMO_CLASS = _TransformGizmo
 except ImportError:
-    TransformGizmo = None
+    TRANSFORM_GIZMO_CLASS = None
 
 
 class XrayWorkerSignals(QObject):
@@ -53,7 +59,7 @@ class XrayWorker(QRunnable):
         self._cancelled = True
 
     def run(self):
-        if not ViewProcessor:
+        if VIEW_PROCESSOR_CLASS is None:
             return
 
         # Simulate progress for demonstration
@@ -71,7 +77,7 @@ class XrayWorker(QRunnable):
             elif self.mode == CanvasView.VIEW_XRAY_3:
                 xray_mode = 3
 
-            qimage = ViewProcessor.generate_xray(self.image_array, xray_mode)
+            qimage = VIEW_PROCESSOR_CLASS.generate_xray(self.image_array, xray_mode)
         except Exception as e:
             logger.error(f"XRay generation failed: {e}")
             return
@@ -412,7 +418,9 @@ class CanvasView(QWidget):
     def set_view_mode(self, mode: int):
         self._view_mode = mode
         # Inicia worker de XRay se necessário
-        if (mode >= self.VIEW_XRAY_1 and mode <= self.VIEW_XRAY_3) and ViewProcessor:
+        if (
+            mode >= self.VIEW_XRAY_1 and mode <= self.VIEW_XRAY_3
+        ) and VIEW_PROCESSOR_CLASS is not None:
             img = getattr(self.model, "image", None)
             if img is not None:
                 # Check if we already have this xray mode cached
@@ -435,7 +443,7 @@ class CanvasView(QWidget):
             self.set_view_mode(self.VIEW_LIT)
 
     def update_image(self):
-        if not ViewProcessor:
+        if VIEW_PROCESSOR_CLASS is None:
             return
 
         img = getattr(self.model, "image", None)
@@ -450,10 +458,10 @@ class CanvasView(QWidget):
             return
 
         # Lazy load gizmo se disponível
-        if self.gizmo is None and TransformGizmo:
-            self.gizmo = TransformGizmo()
+        if self.gizmo is None and TRANSFORM_GIZMO_CLASS is not None:
+            self.gizmo = TRANSFORM_GIZMO_CLASS()
 
-        self._qimage_lit = ViewProcessor.to_qimage(img)
+        self._qimage_lit = VIEW_PROCESSOR_CLASS.to_qimage(img)
         self._qimage_xray_1 = None
         self._qimage_xray_2 = None
         self._qimage_xray_3 = None
@@ -540,7 +548,7 @@ class CanvasView(QWidget):
                 self.gizmo.set_screen_position(center_screen)
 
             hit = self.gizmo.hit_test(pos)
-            if hit != TransformGizmo.NONE:
+            if hit != self.gizmo.NONE:
                 self.gizmo.active_axis = hit
                 self._gizmo_active = True
                 self._gizmo_start_mouse = pos
@@ -620,17 +628,17 @@ class CanvasView(QWidget):
                 # Move Objeto
                 dx = delta_screen.x() / self._zoom
                 dy = delta_screen.y() / self._zoom
-                if self.gizmo.active_axis == TransformGizmo.AXIS_X:
+                if self.gizmo.active_axis == self.gizmo.AXIS_X:
                     dy = 0
-                if self.gizmo.active_axis == TransformGizmo.AXIS_Y:
+                if self.gizmo.active_axis == self.gizmo.AXIS_Y:
                     dx = 0
                 self._move_selected_object(dx, dy)
             else:
                 # Pan via Gizmo
                 dx, dy = delta_screen.x(), delta_screen.y()
-                if self.gizmo.active_axis == TransformGizmo.AXIS_X:
+                if self.gizmo.active_axis == self.gizmo.AXIS_X:
                     dy = 0
-                if self.gizmo.active_axis == TransformGizmo.AXIS_Y:
+                if self.gizmo.active_axis == self.gizmo.AXIS_Y:
                     dx = 0
                 self._pan += QPointF(dx, dy)
 
@@ -669,7 +677,7 @@ class CanvasView(QWidget):
         if self._gizmo_active:
             self._gizmo_active = False
             if self.gizmo:
-                self.gizmo.active_axis = TransformGizmo.NONE
+                self.gizmo.active_axis = self.gizmo.NONE
             self.update()
             # Aqui seria o local para commitar o Undo do movimento do gizmo
             return
