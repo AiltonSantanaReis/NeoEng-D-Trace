@@ -17,8 +17,8 @@
       "size": 1152
     },
     ".github/workflows/ci.yml": {
-      "sha256": "a52cd1078c54702d3d6406c6456733bf4e4f4764ae305e92c974e2980c9f51ff",
-      "size": 2167
+      "sha256": "c211b7af63d7bc4331e7ee5cd5d1ef93fe23886b1fea6bf69bc9feac40a8be59",
+      "size": 5699
     },
     ".gitignore": {
       "sha256": "1a28442e581d24e19e5181edc36c45871e038dec77b2b56bf75330fc6515b3b0",
@@ -304,9 +304,13 @@
       "sha256": "39920af28b9288218c08285a72747afe78c4bb17a1b57eaa98c96331ddcfb548",
       "size": 2768
     },
+    "poetry.lock": {
+      "sha256": "43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86",
+      "size": 130767
+    },
     "pyproject.toml": {
-      "sha256": "064e18e7cb743eb00e75c7e628e2fbee1c35ef330cbb61ac18dd85628bf8205b",
-      "size": 873
+      "sha256": "9e02ed28aa9377c89e4580421a3f9a2b08273724f8744f09688cf19ab5edb6cc",
+      "size": 880
     },
     "pytest.ini": {
       "sha256": "48d54e665b5d68023029f8418dad0acb68910cfd5bd3382934eccf4a9d3bd662",
