@@ -25,9 +25,19 @@ from .core.app_identity import (
 __version__ = APP_VERSION
 
 __all__ = [
-    "APP_AUTHOR", "APP_DISPLAY_NAME", "APP_ID", "APP_NAME",
-    "APP_UI_EDITION", "APP_VERSION", "CONFIG_DIR_NAME", "GLTF_GENERATOR",
-    "LEGACY_APP_NAMES", "LOGGER_NAME", "PROJECT_FORMAT_ID",
-    "PROJECT_FORMAT_VERSION", "build_window_title", "normalize_language",
+    "APP_AUTHOR",
+    "APP_DISPLAY_NAME",
+    "APP_ID",
+    "APP_NAME",
+    "APP_UI_EDITION",
+    "APP_VERSION",
+    "CONFIG_DIR_NAME",
+    "GLTF_GENERATOR",
+    "LEGACY_APP_NAMES",
+    "LOGGER_NAME",
+    "PROJECT_FORMAT_ID",
+    "PROJECT_FORMAT_VERSION",
+    "build_window_title",
+    "normalize_language",
     "__version__",
 ]

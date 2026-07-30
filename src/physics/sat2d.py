@@ -3,8 +3,9 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
+from typing import List, Optional, Tuple
+
 import numpy as np
-from typing import Tuple, List, Optional
 
 
 def project(
@@ -34,15 +35,11 @@ def polygon_edges(
     edges: List[Tuple[float, float]] = []
     for index, first in enumerate(polygon):
         second = polygon[(index + 1) % len(polygon)]
-        edges.append(
-            (float(second[0] - first[0]), float(second[1] - first[1]))
-        )
+        edges.append((float(second[0] - first[0]), float(second[1] - first[1])))
     return edges
 
 
-def project_polygon(
-    axis: np.ndarray, verts: np.ndarray
-) -> Tuple[float, float]:
+def project_polygon(axis: np.ndarray, verts: np.ndarray) -> Tuple[float, float]:
     """
     Projeta um polígono 2D em um eixo e retorna o intervalo escalar [min, max].
 
@@ -55,9 +52,7 @@ def project_polygon(
     return float(np.min(dots)), float(np.max(dots))
 
 
-def overlap_intervals(
-    a_min: float, a_max: float, b_min: float, b_max: float
-) -> float:
+def overlap_intervals(a_min: float, a_max: float, b_min: float, b_max: float) -> float:
     """
     Retorna a sobreposição entre [a_min, a_max] e [b_min, b_max].
     Valor > 0 indica interseção; 0 ou negativo -> sem interseção.

@@ -1,9 +1,9 @@
 # src/tools/polygon_edit_tool.py
 from typing import List, Optional, Tuple
 
-from PySide6.QtCore import QPointF, Qt, QRectF
+from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
-from PySide6.QtWidgets import QMessageBox, QMenu
+from PySide6.QtWidgets import QMenu, QMessageBox
 
 from src.tools.base_tool import BaseTool
 
@@ -47,8 +47,8 @@ class PolygonEditTool(BaseTool):
             else:
                 self.drag_start_pos = QPointF(pos[0], pos[1])
                 # Find polygon and vertex under cursor
-                self.selected_polygon_id, self.selected_vertex = (
-                    self.find_vertex_at(pos)
+                self.selected_polygon_id, self.selected_vertex = self.find_vertex_at(
+                    pos
                 )
                 if self.selected_polygon_id is None:
                     # Select polygon if no vertex found
@@ -79,9 +79,9 @@ class PolygonEditTool(BaseTool):
                     and self.selected_polygon_id
                     in self.canvas_view.model.collision_shapes
                 ):
-                    self.canvas_view.model.collision_shapes[
-                        self.selected_polygon_id
-                    ][self.selected_vertex] = (float(pos[0]), float(pos[1]))
+                    self.canvas_view.model.collision_shapes[self.selected_polygon_id][
+                        self.selected_vertex
+                    ] = (float(pos[0]), float(pos[1]))
                 self.canvas_view.model._notify()
         self.canvas_view.update()
 
@@ -97,16 +97,14 @@ class PolygonEditTool(BaseTool):
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46;
             margin: 5px 0; }
-        """
-        )
+        """)
 
         # Check what's selected
         has_selection = self.selected_polygon_id is not None or bool(
@@ -122,25 +120,17 @@ class PolygonEditTool(BaseTool):
             if has_vertex:
                 # Vertex-specific actions
                 act_move_vertex = menu.addAction("Move Vertex")
-                act_move_vertex.triggered.connect(
-                    lambda: self.set_mode("move_vertex")
-                )
+                act_move_vertex.triggered.connect(lambda: self.set_mode("move_vertex"))
 
-                if (
-                    poly_len > 3
-                ):  # Can't delete if it would make polygon invalid
+                if poly_len > 3:  # Can't delete if it would make polygon invalid
                     act_del_vertex = menu.addAction("Delete Vertex")
-                    act_del_vertex.triggered.connect(
-                        self.delete_selected_vertex
-                    )
+                    act_del_vertex.triggered.connect(self.delete_selected_vertex)
 
             menu.addSeparator()
 
             # Polygon actions
             act_add_vertex = menu.addAction("Add Vertex Here")
-            act_add_vertex.triggered.connect(
-                lambda: self.add_vertex_at_cursor(event)
-            )
+            act_add_vertex.triggered.connect(lambda: self.add_vertex_at_cursor(event))
 
             act_del_polygon = menu.addAction("Delete Polygon")
             act_del_polygon.triggered.connect(self.delete_selected_polygon)
@@ -185,7 +175,7 @@ class PolygonEditTool(BaseTool):
 
         transform = self.canvas_view.get_transform()
         zoom = self.canvas_view.get_zoom()
-        
+
         painter.save()
         painter.setTransform(transform, combine=True)
 
@@ -198,21 +188,18 @@ class PolygonEditTool(BaseTool):
             if obj and obj.polygon:
                 # Draw selected polygon outline
                 pen = QPen(QColor(255, 255, 0), 2)
-                pen.setCosmetic(True) # Width stays constant (2px)
+                pen.setCosmetic(True)  # Width stays constant (2px)
                 painter.setPen(pen)
                 painter.setBrush(Qt.BrushStyle.NoBrush)
-                
+
                 points = [QPointF(float(x), float(y)) for x, y in obj.polygon]
                 painter.drawPolygon(QPolygonF(points))
 
                 # Draw vertices (Control Points)
                 for i, (x, y) in enumerate(obj.polygon):
                     pt = QPointF(float(x), float(y))
-                    
-                    if (
-                        oid == self.selected_polygon_id
-                        and i == self.selected_vertex
-                    ):
+
+                    if oid == self.selected_polygon_id and i == self.selected_vertex:
                         # Selected vertex: larger red square
                         painter.setPen(QPen(QColor(255, 0, 0), 2))
                         painter.setBrush(QColor(255, 0, 0, 150))
@@ -226,11 +213,9 @@ class PolygonEditTool(BaseTool):
                         size = handle_size
 
                     # Draw rect centered on point
-                    painter.drawRect(QRectF(
-                        pt.x() - size / 2, 
-                        pt.y() - size / 2, 
-                        size, size
-                    ))
+                    painter.drawRect(
+                        QRectF(pt.x() - size / 2, pt.y() - size / 2, size, size)
+                    )
 
         painter.restore()
 
@@ -241,7 +226,7 @@ class PolygonEditTool(BaseTool):
         # Adjust tolerance to Image Space
         zoom = self.canvas_view.get_zoom()
         tolerance_image = tolerance_screen / zoom if zoom > 0 else tolerance_screen
-        
+
         for oid, obj in self.canvas_view.model.objects.items():
             if obj.polygon:
                 for i, (x, y) in enumerate(obj.polygon):
@@ -261,9 +246,7 @@ class PolygonEditTool(BaseTool):
                     return oid
         return None
 
-    def point_in_polygon(
-        self, pos: Tuple[int, int], points: List[QPointF]
-    ) -> bool:
+    def point_in_polygon(self, pos: Tuple[int, int], points: List[QPointF]) -> bool:
         # Ray casting algorithm
         x, y = pos
         n = len(points)
@@ -275,9 +258,7 @@ class PolygonEditTool(BaseTool):
                 if y <= max(p1y, p2y):
                     if x <= max(p1x, p2x):
                         if p1y != p2y:
-                            xinters = (y - p1y) * (p2x - p1x) / (
-                                p2y - p1y
-                            ) + p1x
+                            xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
                         if p1x == p2x or x <= xinters:
                             inside = not inside
             p1x, p1y = p2x, p2y
@@ -370,17 +351,11 @@ class PolygonEditTool(BaseTool):
         self.canvas_view.update()
 
     def undo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.undo(self.canvas_view.model)
 
     def redo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
 
     def point_to_line_distance(
@@ -399,9 +374,7 @@ class PolygonEditTool(BaseTool):
         if dx == 0 and dy == 0:
             return ((px - x1) ** 2 + (py - y1) ** 2) ** 0.5
 
-        t = max(
-            0, min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy))
-        )
+        t = max(0, min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)))
         closest_x = x1 + t * dx
         closest_y = y1 + t * dy
         return ((px - closest_x) ** 2 + (py - closest_y) ** 2) ** 0.5

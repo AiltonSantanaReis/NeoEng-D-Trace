@@ -63,9 +63,7 @@ def test_loaded_document_title_remains_branded_in_both_languages(qt_app):
 
 def test_cli_help_uses_new_identity(qt_app):
     parser = build_parser()
-    assert parser.description == (
-        "NeoEng-D-Trace - Game Asset Preparation Tool"
-    )
+    assert parser.description == ("NeoEng-D-Trace - Game Asset Preparation Tool")
 
 
 def test_main_window_translation_catalogs_have_identical_keys(qt_app):

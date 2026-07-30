@@ -6,11 +6,13 @@ This tool creates selections by clicking to place vertices of a polygon.
 Clicking on the first point or double-clicking completes the selection.
 """
 
-from PySide6.QtGui import QMouseEvent, QPainter, QPen, QColor
-from PySide6.QtWidgets import QMenu
-from PySide6.QtCore import Qt
-from typing import Tuple, Optional, List
 import math
+from typing import List, Optional, Tuple
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen
+from PySide6.QtWidgets import QMenu
+
 from .base_tool import BaseTool
 
 
@@ -25,9 +27,7 @@ class PolygonalLassoTool(BaseTool):
         super().__init__(canvas_view)
         self._vertices: List[Tuple[float, float]] = []
         self._preview_point: Optional[Tuple[float, float]] = None
-        self._close_tolerance = (
-            10.0  # Pixels de tolerância para fechar o polígono
-        )
+        self._close_tolerance = 10.0  # Pixels de tolerância para fechar o polígono
 
         self.current_lang = "en"
         self.translations = {
@@ -43,9 +43,7 @@ class PolygonalLassoTool(BaseTool):
             },
         }
 
-    def on_mouse_press(
-        self, event: QMouseEvent, position: Tuple[float, float]
-    ):
+    def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         """
         Add vertex on mouse press or close polygon if near start.
         """
@@ -62,9 +60,7 @@ class PolygonalLassoTool(BaseTool):
                 # Converte para coordenadas da tela para verificar a
                 # distância visual (pixels)
                 screen_click_x, screen_click_y = self.image_to_screen(x, y)
-                screen_start_x, screen_start_y = self.image_to_screen(
-                    start_x, start_y
-                )
+                screen_start_x, screen_start_y = self.image_to_screen(start_x, start_y)
 
                 dist = math.hypot(
                     screen_click_x - screen_start_x,
@@ -92,14 +88,10 @@ class PolygonalLassoTool(BaseTool):
             self._preview_point = (x, y)
             self.canvas_view.update()
 
-    def on_mouse_release(
-        self, event: QMouseEvent, position: Tuple[float, float]
-    ):
+    def on_mouse_release(self, event: QMouseEvent, position: Tuple[float, float]):
         pass
 
-    def on_double_click(
-        self, event: QMouseEvent, position: Tuple[float, float]
-    ):
+    def on_double_click(self, event: QMouseEvent, position: Tuple[float, float]):
         """
         Complete polygon on double-click or cancel if not enough vertices.
         """
@@ -161,8 +153,8 @@ class PolygonalLassoTool(BaseTool):
             screen_vertices.append((sx, sy))
 
         if len(screen_vertices) > 1:
-            from PySide6.QtGui import QPolygonF
             from PySide6.QtCore import QPointF
+            from PySide6.QtGui import QPolygonF
 
             qpoints = [QPointF(sx, sy) for sx, sy in screen_vertices]
             painter.drawPolyline(QPolygonF(qpoints))
@@ -192,9 +184,7 @@ class PolygonalLassoTool(BaseTool):
                 self._preview_point[0], self._preview_point[1]
             )
 
-            painter.drawLine(
-                int(prev_sx), int(prev_sy), int(mouse_sx), int(mouse_sy)
-            )
+            painter.drawLine(int(prev_sx), int(prev_sy), int(mouse_sx), int(mouse_sy))
 
             # Se tiver vértices suficientes, desenha uma "sugestão"
             # de fechamento se o mouse estiver perto do início
@@ -205,22 +195,18 @@ class PolygonalLassoTool(BaseTool):
                     # Highlight visual para mostrar que vai fechar
                     painter.setPen(QPen(QColor(0, 255, 0), 2))
                     painter.setBrush(Qt.BrushStyle.NoBrush)
-                    painter.drawEllipse(
-                        int(start_sx) - 8, int(start_sy) - 8, 16, 16
-                    )
+                    painter.drawEllipse(int(start_sx) - 8, int(start_sy) - 8, 16, 16)
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46;
             margin: 5px 0; }
-        """
-        )
+        """)
 
         act_cancel = menu.addAction(
             self.translations[self.current_lang]["cancel_selection"]
@@ -238,17 +224,11 @@ class PolygonalLassoTool(BaseTool):
         menu.exec(event.globalPos())
 
     def undo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.undo(self.canvas_view.model)
 
     def redo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
 
     def cancel(self):

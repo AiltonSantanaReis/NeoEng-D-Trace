@@ -23,7 +23,6 @@ from src.tools.magnetic_lasso_engine import (
 )
 
 
-
 def test_cv2_bgr_array_converts_to_gray_uint8():
     image = np.zeros((24, 31, 3), dtype=np.uint8)
     image[:, 16:, 2] = 255  # Red channel in OpenCV BGR order.
@@ -58,6 +57,7 @@ def test_non_uint8_gray_array_is_normalized_without_nan_or_inf():
     assert gray.dtype == np.uint8
     assert gray.shape == (2, 2)
     assert np.isfinite(gray).all()
+
 
 def test_presets_are_distinct_and_keep_mode():
     settings = MagneticLassoSettings(mode="legacy")
@@ -109,10 +109,7 @@ def test_precise_path_follows_quarter_circle_instead_of_cutting_inside():
     assert path[0] == start
     assert path[-1] == end
     assert len(path) > 30
-    radius_errors = [
-        abs(math.hypot(x - 80, y - 80) - 50.0)
-        for x, y in path
-    ]
+    radius_errors = [abs(math.hypot(x - 80, y - 80) - 50.0) for x, y in path]
     assert float(np.mean(radius_errors)) < 3.0
     assert path_edge_adherence(path, features.strength) > 0.55
 

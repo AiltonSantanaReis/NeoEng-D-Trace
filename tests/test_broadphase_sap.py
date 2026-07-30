@@ -1,5 +1,5 @@
 # tests/test_broadphase_sap.py
-from src.physics.broadphase import BroadPhaseSAP, AABB
+from src.physics.broadphase import AABB, BroadPhaseSAP
 
 
 def test_sap_insert_update_remove():

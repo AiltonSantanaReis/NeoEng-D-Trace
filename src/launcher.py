@@ -1,15 +1,16 @@
 """Application launcher for the single-tree NeoEng-D-Trace source layout."""
 
-import sys
-import os
-import base64
 import argparse
+import base64
+import os
+import sys
 from pathlib import Path
+
 # Tenta importar dependências críticas para dar feedback amigável
 try:
-    import pydantic
     import cv2
     import numpy
+    import pydantic
     from PIL import Image
 except ImportError as e:
     print(f"CRITICAL ERROR: Missing dependency: {e}")
@@ -17,10 +18,9 @@ except ImportError as e:
     print("Or manually: pip install pydantic opencv-python numpy pillow")
     sys.exit(1)
 
-from src.models.scene import Scene
+from src.core.app_identity import APP_DISPLAY_NAME
 from src.core.commands import CommandManager
 from src.core.config import ConfigManager
-from src.core.app_identity import APP_DISPLAY_NAME
 from src.core.logger import logger, setup_logging
 from src.core.validation_events import (
     record_validation_event,
@@ -29,6 +29,7 @@ from src.core.validation_events import (
     stop_validation_session,
     validation_enabled,
 )
+from src.models.scene import Scene
 
 MANUAL_VALIDATION_EVENTS = (
     "application.opened",
@@ -48,6 +49,7 @@ MANUAL_VALIDATION_EVENTS = (
 def get_project_root() -> Path:
     """Return the source-checkout root without changing the legacy config location."""
     return Path(__file__).resolve().parents[1]
+
 
 def run_headless(args: argparse.Namespace) -> int:
     """
@@ -108,11 +110,10 @@ def run_headless(args: argparse.Namespace) -> int:
         if args.export_scene_gltf:
             try:
                 from src.exporters.gltf_exporter import export_scene_to_gltf
+
                 success = export_scene_to_gltf(scene, args.export_scene_gltf)
                 if success:
-                    logger.info(
-                        f"Exported scene to GLTF: {args.export_scene_gltf}"
-                    )
+                    logger.info(f"Exported scene to GLTF: {args.export_scene_gltf}")
                 else:
                     logger.error("Failed to export scene to GLTF")
                     return 1
@@ -123,6 +124,7 @@ def run_headless(args: argparse.Namespace) -> int:
         if args.export_object_gltf and args.object_id:
             try:
                 from src.exporters.gltf_exporter import export_object_to_gltf
+
                 success = export_object_to_gltf(
                     args.object_id, scene, args.export_object_gltf
                 )
@@ -145,6 +147,7 @@ def run_headless(args: argparse.Namespace) -> int:
             metadata = export_scene_metadata(scene)
             try:
                 import json
+
                 with open(args.export_json, "w", encoding="utf-8") as f:
                     json.dump(metadata, f, indent=2)
                 logger.info(f"Exported metadata to JSON: {args.export_json}")
@@ -190,21 +193,15 @@ def build_parser() -> argparse.ArgumentParser:
         type=str,
         help="Export specific object to GLTF file",
     )
-    parser.add_argument(
-        "--object-id", type=str, help="Object ID for export operations"
-    )
+    parser.add_argument("--object-id", type=str, help="Object ID for export operations")
     parser.add_argument(
         "--export-json", type=str, help="Export scene metadata to JSON file"
     )
-    parser.add_argument(
-        "--save-project", type=str, help="Save project to file"
-    )
+    parser.add_argument("--save-project", type=str, help="Save project to file")
     parser.add_argument(
         "--validation-log",
         type=str,
-        help=(
-            "Write a structured JSONL log for a manual GUI validation session"
-        ),
+        help=("Write a structured JSONL log for a manual GUI validation session"),
     )
     return parser
 
@@ -244,8 +241,9 @@ def main() -> int:
     try:
         # GUI dependencies are deliberately loaded after CLI dispatch and
         # validation-recorder setup so import failures are captured.
-        from PySide6.QtWidgets import QApplication
         from PySide6.QtGui import QFont
+        from PySide6.QtWidgets import QApplication
+
         from src.ui.main_window import MainWindow
         from src.ui.theme_qss import QSS
 
@@ -294,9 +292,7 @@ def main() -> int:
         def on_close():
             try:
                 config.set("last_folder", getattr(win, "_last_folder", None))
-                config.set(
-                    "tool", getattr(win, "_current_tool", "polygonal_lasso")
-                )
+                config.set("tool", getattr(win, "_current_tool", "polygonal_lasso"))
                 geom = win.saveGeometry()
                 if geom:
                     config.set(
@@ -304,9 +300,7 @@ def main() -> int:
                         base64.b64encode(geom.data()).decode("ascii"),
                     )
                 config.save()
-                record_validation_event(
-                    "application.state.saved", "SUCCESS"
-                )
+                record_validation_event("application.state.saved", "SUCCESS")
             except Exception as exc:
                 logger.error(
                     "Failed to save application state: %s",
@@ -315,7 +309,7 @@ def main() -> int:
                 )
                 record_validation_exception("application.state.saved", exc)
 
-        win.closeEvent = lambda event: (on_close(), event.accept())
+        app.aboutToQuit.connect(on_close)
         exit_code = int(app.exec())
         record_validation_event(
             "application.closed",

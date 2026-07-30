@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import ast
-from contextlib import contextmanager
 import hashlib
 import importlib
 import json
 import subprocess
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
@@ -19,17 +19,123 @@ ROOT = Path(__file__).resolve().parents[1]
 MODULE_NAME = "src.exporters.gltf_exporter"
 MODULE_PATH = ROOT / "src" / "exporters" / "gltf_exporter.py"
 
-EXPECTED_CONTRACT = {'binary_sha256': '8acbb1d1117affb68c0e059a386a76c89d4267a3ecdedc742ce23b4659aafeb8', 'binary_size': 84, 'no_metadata_ok': True, 'no_metadata_sha256': 'ee2bd28df5f9eaee030e24aa9aa82a7f80b9c4615c14f3326fc324c6592834fb', 'no_metadata_size': 1198, 'object_ok': True, 'object_sha256': '01239871697a5e6ee9238fee4e6b5dca586d288b64397dd3c48668f9d1c90b24', 'object_size': 1110, 'scene_ok': True, 'scene_sha256': 'e650d8d0919c50591c03a89b6bad91945df93e8f3583b481b92ab43da0cac670', 'scene_size': 1595}
-EXPECTED_DOCUMENT = {'accessors': [{'bufferView': 0, 'byteOffset': 0, 'componentType': 5126, 'count': 3, 'max': [4.0, 3.0, 0.0], 'min': [0.0, 0.0, 0.0], 'type': 'VEC3'}, {'bufferView': 1, 'byteOffset': 0, 'componentType': 5123, 'count': 3, 'max': [2], 'min': [0], 'type': 'SCALAR'}, {'bufferView': 0, 'byteOffset': 36, 'componentType': 5126, 'count': 3, 'max': [12.0, 14.0, 0.0], 'min': [10.0, 10.0, 0.0], 'type': 'VEC3'}, {'bufferView': 1, 'byteOffset': 6, 'componentType': 5123, 'count': 3, 'max': [2], 'min': [0], 'type': 'SCALAR'}], 'asset': {'generator': 'NeoEng-D-Trace GLTF Exporter', 'version': '2.0'}, 'bufferViews': [{'buffer': 0, 'byteLength': 72, 'byteOffset': 0, 'byteStride': 12, 'target': 34962}, {'buffer': 0, 'byteLength': 12, 'byteOffset': 72, 'target': 34963}], 'buffers': [{'byteLength': 84}], 'meshes': [{'extras': {'groups': ['group_main'], 'layer': 'layer_fx', 'object_id': 'obj_a'}, 'primitives': [{'attributes': {'POSITION': 0}, 'indices': 1, 'mode': 4}]}, {'extras': {'groups': [], 'layer': 'layer_default', 'object_id': 'obj_b'}, 'primitives': [{'attributes': {'POSITION': 2}, 'indices': 3, 'mode': 4}]}], 'nodes': [{'extras': {'object_id': 'obj_a'}, 'mesh': 0}, {'extras': {'object_id': 'obj_b'}, 'mesh': 1}], 'scene': 0, 'scenes': [{'extras': {'groups': [{'id': 'group_main', 'members': ['obj_a'], 'name': 'Grupo'}], 'layers': [{'id': 'layer_default', 'name': 'Default', 'visible': True}, {'id': 'layer_fx', 'name': 'Efeitos', 'visible': False}]}, 'nodes': [0, 1]}]}
+EXPECTED_CONTRACT = {
+    "binary_sha256": "8acbb1d1117affb68c0e059a386a76c89d4267a3ecdedc742ce23b4659aafeb8",
+    "binary_size": 84,
+    "no_metadata_ok": True,
+    "no_metadata_sha256": "ee2bd28df5f9eaee030e24aa9aa82a7f80b9c4615c14f3326fc324c6592834fb",
+    "no_metadata_size": 1198,
+    "object_ok": True,
+    "object_sha256": "01239871697a5e6ee9238fee4e6b5dca586d288b64397dd3c48668f9d1c90b24",
+    "object_size": 1110,
+    "scene_ok": True,
+    "scene_sha256": "e650d8d0919c50591c03a89b6bad91945df93e8f3583b481b92ab43da0cac670",
+    "scene_size": 1595,
+}
+EXPECTED_DOCUMENT = {
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 3,
+            "max": [4.0, 3.0, 0.0],
+            "min": [0.0, 0.0, 0.0],
+            "type": "VEC3",
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5123,
+            "count": 3,
+            "max": [2],
+            "min": [0],
+            "type": "SCALAR",
+        },
+        {
+            "bufferView": 0,
+            "byteOffset": 36,
+            "componentType": 5126,
+            "count": 3,
+            "max": [12.0, 14.0, 0.0],
+            "min": [10.0, 10.0, 0.0],
+            "type": "VEC3",
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 6,
+            "componentType": 5123,
+            "count": 3,
+            "max": [2],
+            "min": [0],
+            "type": "SCALAR",
+        },
+    ],
+    "asset": {"generator": "NeoEng-D-Trace GLTF Exporter", "version": "2.0"},
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 72,
+            "byteOffset": 0,
+            "byteStride": 12,
+            "target": 34962,
+        },
+        {"buffer": 0, "byteLength": 12, "byteOffset": 72, "target": 34963},
+    ],
+    "buffers": [{"byteLength": 84}],
+    "meshes": [
+        {
+            "extras": {
+                "groups": ["group_main"],
+                "layer": "layer_fx",
+                "object_id": "obj_a",
+            },
+            "primitives": [{"attributes": {"POSITION": 0}, "indices": 1, "mode": 4}],
+        },
+        {
+            "extras": {"groups": [], "layer": "layer_default", "object_id": "obj_b"},
+            "primitives": [{"attributes": {"POSITION": 2}, "indices": 3, "mode": 4}],
+        },
+    ],
+    "nodes": [
+        {"extras": {"object_id": "obj_a"}, "mesh": 0},
+        {"extras": {"object_id": "obj_b"}, "mesh": 1},
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "extras": {
+                "groups": [{"id": "group_main", "members": ["obj_a"], "name": "Grupo"}],
+                "layers": [
+                    {"id": "layer_default", "name": "Default", "visible": True},
+                    {"id": "layer_fx", "name": "Efeitos", "visible": False},
+                ],
+            },
+            "nodes": [0, 1],
+        }
+    ],
+}
 EXPECTED_BINARY = (
     np.array(
         [
-            0.0, 0.0, 0.0,
-            4.0, 0.0, 0.0,
-            0.0, 3.0, 0.0,
-            10.0, 10.0, 0.0,
-            12.0, 10.0, 0.0,
-            10.0, 14.0, 0.0,
+            0.0,
+            0.0,
+            0.0,
+            4.0,
+            0.0,
+            0.0,
+            0.0,
+            3.0,
+            0.0,
+            10.0,
+            10.0,
+            0.0,
+            12.0,
+            10.0,
+            0.0,
+            10.0,
+            14.0,
+            0.0,
         ],
         dtype=np.float32,
     ).tobytes()
@@ -165,10 +271,7 @@ def _install_fake_backend(module, *, fail_save=False):
 def _temporary_fake_backend(module, *, fail_save=False):
     """Install the deterministic fake backend without leaking it to later tests."""
     missing = object()
-    original = {
-        name: getattr(module, name, missing)
-        for name in _BACKEND_SYMBOLS
-    }
+    original = {name: getattr(module, name, missing) for name in _BACKEND_SYMBOLS}
     try:
         _install_fake_backend(module, fail_save=fail_save)
         yield
@@ -189,12 +292,8 @@ def _fixture_scene() -> Scene:
     scene.layers.append(
         Layer(id="layer_fx", name="Efeitos", visible=False, locked=True)
     )
-    scene.add_object(
-        "obj_a", [(0, 0), (4, 0), (0, 3)], layer_id="layer_fx"
-    )
-    scene.add_object(
-        "obj_b", [(10, 10), (12, 10), (10, 14)], layer_id="layer_default"
-    )
+    scene.add_object("obj_a", [(0, 0), (4, 0), (0, 3)], layer_id="layer_fx")
+    scene.add_object("obj_b", [(10, 10), (12, 10), (10, 14)], layer_id="layer_default")
     group = Group(id="group_main", name="Grupo", visible=True, locked=False)
     group.members = ["obj_a"]
     scene.groups.append(group)
@@ -207,8 +306,14 @@ def _fake_contract(module, tmp_path: Path) -> dict:
         results = {}
         operations = (
             ("scene", lambda p: module.export_scene_to_gltf(scene, str(p), True)),
-            ("no_metadata", lambda p: module.export_scene_to_gltf(scene, str(p), False)),
-            ("object", lambda p: module.export_object_to_gltf("obj_a", scene, str(p), True)),
+            (
+                "no_metadata",
+                lambda p: module.export_scene_to_gltf(scene, str(p), False),
+            ),
+            (
+                "object",
+                lambda p: module.export_object_to_gltf("obj_a", scene, str(p), True),
+            ),
         )
         for key, operation in operations:
             path = tmp_path / f"{key}.glb"
@@ -236,14 +341,23 @@ def test_gltf_exporter_uses_single_src_implementation() -> None:
 def test_gltf_fake_backend_exact_contract_is_frozen(tmp_path: Path) -> None:
     module = importlib.import_module(MODULE_NAME)
     actual = _fake_contract(module, tmp_path)
-    assert {key: value for key, value in actual.items() if key != "document"} == EXPECTED_CONTRACT
+    assert {
+        key: value for key, value in actual.items() if key != "document"
+    } == EXPECTED_CONTRACT
     assert actual["document"] == EXPECTED_DOCUMENT
-    assert bytes.fromhex(
-        json.loads((tmp_path / "scene.glb").read_text(encoding="utf-8"))["binary_hex"]
-    ) == EXPECTED_BINARY
+    assert (
+        bytes.fromhex(
+            json.loads((tmp_path / "scene.glb").read_text(encoding="utf-8"))[
+                "binary_hex"
+            ]
+        )
+        == EXPECTED_BINARY
+    )
 
 
-def test_gltf_atomic_replacement_and_failure_cleanup_are_preserved(tmp_path: Path) -> None:
+def test_gltf_atomic_replacement_and_failure_cleanup_are_preserved(
+    tmp_path: Path,
+) -> None:
     module = importlib.import_module(MODULE_NAME)
     scene = _fixture_scene()
     target = tmp_path / "scene.glb"
@@ -266,16 +380,29 @@ def test_gltf_failure_contracts_are_preserved(tmp_path: Path) -> None:
     original_available = module._HAS_PYGLTF
     try:
         module._HAS_PYGLTF = False
-        assert module.export_scene_to_gltf(_fixture_scene(), str(tmp_path / "disabled.glb")) is False
+        assert (
+            module.export_scene_to_gltf(
+                _fixture_scene(), str(tmp_path / "disabled.glb")
+            )
+            is False
+        )
         assert not (tmp_path / "disabled.glb").exists()
     finally:
         module._HAS_PYGLTF = original_available
 
     with _temporary_fake_backend(module):
         scene = _fixture_scene()
-        assert module.export_object_to_gltf("missing", scene, str(tmp_path / "missing.glb")) is False
+        assert (
+            module.export_object_to_gltf(
+                "missing", scene, str(tmp_path / "missing.glb")
+            )
+            is False
+        )
         scene.objects["bad"] = SceneObject("bad", [(0, 0), (1, 1)], "layer_default")
-        assert module.export_object_to_gltf("bad", scene, str(tmp_path / "bad.glb")) is False
+        assert (
+            module.export_object_to_gltf("bad", scene, str(tmp_path / "bad.glb"))
+            is False
+        )
         empty = Scene()
         assert module.export_scene_to_gltf(empty, str(tmp_path / "empty.glb")) is False
 
@@ -294,7 +421,9 @@ def test_gltf_fake_backend_is_restored_after_each_test() -> None:
         assert getattr(module, name, None) is value
 
 
-def test_gltf_glb_persistence_prefers_binary_save_and_rejects_false(tmp_path: Path) -> None:
+def test_gltf_glb_persistence_prefers_binary_save_and_rejects_false(
+    tmp_path: Path,
+) -> None:
     module = importlib.import_module(MODULE_NAME)
     calls: list[tuple[str, str]] = []
 
@@ -306,7 +435,9 @@ def test_gltf_glb_persistence_prefers_binary_save_and_rejects_false(tmp_path: Pa
 
         def save(self, path):
             calls.append(("save", str(path)))
-            raise AssertionError("generic save() must not be used when save_binary() exists")
+            raise AssertionError(
+                "generic save() must not be used when save_binary() exists"
+            )
 
     target = tmp_path / "probe.glb"
     module._save_glb(_Probe(), str(target))
@@ -350,7 +481,9 @@ def test_gltf_real_glb_structure_and_binary_contract(tmp_path: Path) -> None:
     assert len(loaded.buffers) == 1
     assert loaded.scene == 0
 
-    assert [(a.bufferView, a.byteOffset, a.count, a.type) for a in loaded.accessors] == [
+    assert [
+        (a.bufferView, a.byteOffset, a.count, a.type) for a in loaded.accessors
+    ] == [
         (0, 0, 3, "VEC3"),
         (1, 0, 3, "SCALAR"),
         (0, 36, 3, "VEC3"),
@@ -392,7 +525,9 @@ def test_gltf_real_glb_structure_and_binary_contract(tmp_path: Path) -> None:
 def test_gltf_real_single_object_export_contract(tmp_path: Path) -> None:
     module = importlib.import_module(MODULE_NAME)
     path = tmp_path / "object.glb"
-    assert module.export_object_to_gltf("obj_a", _fixture_scene(), str(path), True) is True
+    assert (
+        module.export_object_to_gltf("obj_a", _fixture_scene(), str(path), True) is True
+    )
     loaded = module.GLTF2().load(str(path))
     assert len(loaded.nodes) == 1
     assert len(loaded.meshes) == 1

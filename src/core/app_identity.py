@@ -57,7 +57,4 @@ def build_window_title(
     if document_name:
         return f"{APP_DISPLAY_NAME} - {document_name}"
     lang = normalize_language(language)
-    return (
-        f"{APP_DISPLAY_NAME} {APP_UI_EDITION} - "
-        f"{_ENGINE_MODE_LABELS[lang]}"
-    )
+    return f"{APP_DISPLAY_NAME} {APP_UI_EDITION} - " f"{_ENGINE_MODE_LABELS[lang]}"

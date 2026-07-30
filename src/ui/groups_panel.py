@@ -1,15 +1,15 @@
 # src/ui/groups_panel.py
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
+    QHBoxLayout,
+    QInputDialog,
     QListWidget,
     QListWidgetItem,
-    QPushButton,
-    QHBoxLayout,
     QMessageBox,
-    QInputDialog,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
 )
-from PySide6.QtCore import Qt
 
 
 class GroupsPanel(QWidget):
@@ -52,28 +52,18 @@ class GroupsPanel(QWidget):
             },
         }
         self.list = QListWidget()
-        self.btn_new = QPushButton(
-            self.translations[self.current_lang]["new_group"]
-        )
+        self.btn_new = QPushButton(self.translations[self.current_lang]["new_group"])
         self.btn_delete = QPushButton(
             self.translations[self.current_lang]["delete_group"]
         )
-        self.btn_add = QPushButton(
-            self.translations[self.current_lang]["add_selected"]
-        )
+        self.btn_add = QPushButton(self.translations[self.current_lang]["add_selected"])
         self.btn_remove = QPushButton(
             self.translations[self.current_lang]["remove_selected"]
         )
         self.btn_up = QPushButton(self.translations[self.current_lang]["up"])
-        self.btn_down = QPushButton(
-            self.translations[self.current_lang]["down"]
-        )
-        self.btn_vis = QPushButton(
-            self.translations[self.current_lang]["toggle_vis"]
-        )
-        self.btn_lock = QPushButton(
-            self.translations[self.current_lang]["toggle_lock"]
-        )
+        self.btn_down = QPushButton(self.translations[self.current_lang]["down"])
+        self.btn_vis = QPushButton(self.translations[self.current_lang]["toggle_vis"])
+        self.btn_lock = QPushButton(self.translations[self.current_lang]["toggle_lock"])
 
         layout = QVBoxLayout()
         layout.addWidget(self.list)
@@ -116,7 +106,7 @@ class GroupsPanel(QWidget):
         # 2. Bloqueia sinais para evitar loops de evento
         self.list.blockSignals(True)
         self.list.clear()
-        
+
         for g in getattr(self.scene, "groups", []):
             # Formatação visual do status
             status = []
@@ -125,10 +115,10 @@ class GroupsPanel(QWidget):
             if not g.visible:
                 status.append("[HIDDEN]")
             status_str = " ".join(status)
-            
+
             item_text = f"{g.name} {status_str} ({len(g.members)} items)"
             item = QListWidgetItem(item_text)
-            
+
             # Dados reais ficam seguros aqui
             item.setData(Qt.UserRole, g.id)
             self.list.addItem(item)
@@ -140,7 +130,7 @@ class GroupsPanel(QWidget):
                 if item.data(Qt.UserRole) == current_gid:
                     self.list.setCurrentItem(item)
                     break
-        
+
         self.list.blockSignals(False)
 
     def _get_selected_group(self):
@@ -218,9 +208,7 @@ class GroupsPanel(QWidget):
             from src.core.commands import AddToGroupCommand
 
             if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(
-                    AddToGroupCommand(g.id, sid), self.scene
-                )
+                self.scene.cmd.execute(AddToGroupCommand(g.id, sid), self.scene)
             else:
                 self.scene.add_object_to_group(g.id, sid)
         except Exception as e:
@@ -249,9 +237,7 @@ class GroupsPanel(QWidget):
             from src.core.commands import RemoveFromGroupCommand
 
             if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(
-                    RemoveFromGroupCommand(g.id, sid), self.scene
-                )
+                self.scene.cmd.execute(RemoveFromGroupCommand(g.id, sid), self.scene)
             else:
                 self.scene.remove_object_from_group(g.id, sid)
         except Exception as e:
@@ -267,7 +253,7 @@ class GroupsPanel(QWidget):
             from src.core.commands import MoveGroupCommand
 
             idx = max(0, getattr(self.scene, "groups", []).index(g) - 1)
-            
+
             if hasattr(self.scene, "cmd") and self.scene.cmd:
                 self.scene.cmd.execute(MoveGroupCommand(g.id, idx), self.scene)
             else:
@@ -284,7 +270,7 @@ class GroupsPanel(QWidget):
 
             groups = getattr(self.scene, "groups", [])
             idx = min(len(groups) - 1, groups.index(g) + 1)
-            
+
             if hasattr(self.scene, "cmd") and self.scene.cmd:
                 self.scene.cmd.execute(MoveGroupCommand(g.id, idx), self.scene)
             else:

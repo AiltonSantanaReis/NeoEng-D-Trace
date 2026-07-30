@@ -3,14 +3,16 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Tuple, Union
-import numpy as np
-from PIL import Image, ImageDraw
 import os
 import tempfile
+from typing import List, Tuple, Union
+
+import numpy as np
+from PIL import Image, ImageDraw
 
 try:
     import cv2
+
     _HAS_CV2 = True
 except ImportError:
     _HAS_CV2 = False
@@ -29,10 +31,10 @@ def _to_pil_rgba(image: Union[np.ndarray, Image.Image]) -> Image.Image:
     """Normalize input image to PIL RGBA."""
     if isinstance(image, Image.Image):
         return image.convert("RGBA")
-        
+
     if not isinstance(image, np.ndarray):
         raise ValueError("Image must be np.ndarray or PIL.Image")
-        
+
     if image.ndim == 3:
         if image.shape[2] == 3:
             # Assume BGR if cv2 is available (standard for cv2.imread)
@@ -41,14 +43,14 @@ def _to_pil_rgba(image: Union[np.ndarray, Image.Image]) -> Image.Image:
             else:
                 rgb = image  # Assume RGB if no cv2 context
             return Image.fromarray(rgb, "RGB").convert("RGBA")
-            
+
         elif image.shape[2] == 4:
             if _HAS_CV2:
                 rgba = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)
             else:
                 rgba = image
             return Image.fromarray(rgba, "RGBA")
-            
+
     raise ValueError(f"Unsupported numpy image shape: {image.shape}")
 
 
@@ -82,11 +84,11 @@ def extract_masked_sprite(
         mask_w, mask_h = w * scale, h * scale
         mask_hr = Image.new("L", (mask_w, mask_h), 0)
         draw_hr = ImageDraw.Draw(mask_hr)
-        
+
         # Scale polygon points
         poly_hr = [(x * scale, y * scale) for x, y in poly_int]
         draw_hr.polygon(poly_hr, fill=255)
-        
+
         # Optional: Gaussian Blur for softer edges
         if _HAS_CV2:
             mask_np = np.array(mask_hr)
@@ -96,13 +98,13 @@ def extract_masked_sprite(
 
         # Downsample
         mask = mask_hr.resize((w, h), RESAMPLING_LANCZOS)
-        
+
     # 2. Fast Quality (Standard)
     else:
         mask = Image.new("L", (w, h), 0)
         draw = ImageDraw.Draw(mask)
         draw.polygon(poly_int, fill=255)
-        
+
         if antialias == "fast" and _HAS_CV2:
             mask_np = np.array(mask)
             mask_np = cv2.GaussianBlur(mask_np, (3, 3), 0)
@@ -111,12 +113,12 @@ def extract_masked_sprite(
     # Apply mask as alpha channel
     # Note: original image might already have alpha, we compose them
     r, g, b, a = pil_img.split()
-    
+
     # Combine original alpha with mask alpha (A_out = A_in * Mask / 255)
     # Using ImageChops.multiply logic but for L mode
     # A simpler way is using numpy or composite, but putalpha replaces.
     # Let's respect original transparency:
-    
+
     # If image has transparency, mask should only reveal where BOTH are opaque
     # mask_final = min(original_alpha, polygon_mask)
     if a:
@@ -170,18 +172,16 @@ def export_sprite(
     # Validate inputs
     if not hasattr(scene, "image") or scene.image is None:
         raise ValueError("Scene must have a loaded image")
-    
+
     if obj_id not in scene.objects:
         raise ValueError(f"Object {obj_id} not found in scene")
-        
+
     obj = scene.objects[obj_id]
-    
+
     # Resolve geometry (Polygon vs Bezier)
     if hasattr(obj, "beziers") and obj.beziers:
         if hasattr(scene, "sample_beziers_to_polygon"):
-            polygon = scene.sample_beziers_to_polygon(
-                obj.beziers, steps_per_segment
-            )
+            polygon = scene.sample_beziers_to_polygon(obj.beziers, steps_per_segment)
         else:
             # Fallback if method missing
             polygon = obj.polygon
@@ -222,9 +222,7 @@ def save_sprite(sprite: Image.Image, path: str):
     ext = os.path.splitext(path)[1].lower()
     fmt = "PNG" if not ext else None
 
-    fd, tmp_path = tempfile.mkstemp(
-        prefix="tmp_sprite_", suffix=ext, dir=dirn or "."
-    )
+    fd, tmp_path = tempfile.mkstemp(prefix="tmp_sprite_", suffix=ext, dir=dirn or ".")
     os.close(fd)
 
     try:

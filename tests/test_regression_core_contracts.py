@@ -40,9 +40,7 @@ def test_export_metadata_dispatches_engine_profile(
 ):
     output = tmp_path / f"{profile}.json"
 
-    metadata = export_metadata(
-        "obj1", square_scene, str(output), profile=profile
-    )
+    metadata = export_metadata("obj1", square_scene, str(output), profile=profile)
 
     assert required_keys.issubset(metadata)
     assert json.loads(output.read_text(encoding="utf-8")) == metadata

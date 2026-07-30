@@ -152,8 +152,9 @@ def test_failed_finish_preserves_anchors_and_segments():
     ]
     tool._rebuild_path()
 
-    with patch.object(tool, "_compute_magnetic_path", return_value=[]), patch.object(
-        tool, "_show_invalid_selection"
+    with (
+        patch.object(tool, "_compute_magnetic_path", return_value=[]),
+        patch.object(tool, "_show_invalid_selection"),
     ):
         result = tool.finish_selection()
 
@@ -205,9 +206,7 @@ def test_commit_sanitizes_backtracking_before_scene_command():
     canvas.model = scene
     tool = MagneticLassoTool(canvas, settings=MagneticLassoSettings())
 
-    object_id = tool.commit_selection(
-        [(0, 0), (12, 0), (6, 0), (12, 10), (0, 10)]
-    )
+    object_id = tool.commit_selection([(0, 0), (12, 0), (6, 0), (12, 10), (0, 10)])
 
     assert object_id is not None
     assert object_id in scene.objects

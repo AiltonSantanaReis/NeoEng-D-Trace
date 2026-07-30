@@ -6,26 +6,27 @@ This module provides high-level functions for detecting polygons in images
 and creating scene objects from them.
 """
 
-import numpy as np
+from typing import Any, Dict, List, Optional, Sequence, Tuple, cast
+
 import cv2
-from typing import List, Dict, Optional, Tuple, Any, cast, Sequence
-from .mask_utils import (
-    threshold_adaptive,
-    close_small_gaps,
-    rdp_simplify,
-    curvature_adaptive_simplify,
-)
-from .edge_utils import multi_scale_edges, enhanced_edge_detection
-from .smoothing import chaikin_smooth, catmull_rom_to_beziers
+import numpy as np
+
 from src.core.logger import logger
+
+from .edge_utils import enhanced_edge_detection, multi_scale_edges
+from .mask_utils import (
+    close_small_gaps,
+    curvature_adaptive_simplify,
+    rdp_simplify,
+    threshold_adaptive,
+)
+from .smoothing import catmull_rom_to_beziers, chaikin_smooth
 
 
 class DetectResult(list):
     """List-like result that also supports dict-style access."""
 
-    def __init__(
-        self, polygons: List[Dict], feedback: Optional[Dict[str, Any]] = None
-    ):
+    def __init__(self, polygons: List[Dict], feedback: Optional[Dict[str, Any]] = None):
         super().__init__(polygons)
         self.feedback: Dict[str, Any] = feedback or {}
 
@@ -46,9 +47,7 @@ class DetectResult(list):
         return default
 
 
-def detect_polygons(
-    image: np.ndarray, mode: str = "basic", **kwargs: Any
-) -> Any:
+def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> Any:
     """
     Detect polygons in an image using various algorithms.
     """
@@ -78,9 +77,7 @@ def detect_polygons(
         raise
 
 
-def _detect_polygons_basic(
-    image: np.ndarray, **kwargs: Any
-) -> List[Dict[str, Any]]:
+def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
     """Basic polygon detection."""
     downscale = float(kwargs.get("downscale", 1.0))
     canny_threshold1 = int(kwargs.get("canny_threshold1", 100))
@@ -97,15 +94,11 @@ def _detect_polygons_basic(
         height, width = gray.shape
         new_width = int(width * downscale)
         new_height = int(height * downscale)
-        gray = cv2.resize(
-            gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR
-        )
+        gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
 
     blurred = cv2.GaussianBlur(gray, (0, 0), sigmaX=1.0)
     edges = cv2.Canny(blurred, canny_threshold1, canny_threshold2)
-    contours, _ = cv2.findContours(
-        edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
-    )
+    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     detected_polygons = []
 
@@ -151,9 +144,7 @@ def _detect_polygons_basic(
             )
             area = area * (scale_factor**2)
         else:
-            result_points = [
-                (int(px), int(py)) for px, py in simplified_points
-            ]
+            result_points = [(int(px), int(py)) for px, py in simplified_points]
 
         detected_polygons.append(
             {
@@ -166,9 +157,7 @@ def _detect_polygons_basic(
     return detected_polygons
 
 
-def _detect_polygons_perfect(
-    image: np.ndarray, **kwargs: Any
-) -> List[Dict[str, Any]]:
+def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
     """Perfect polygon detection."""
     downscale = float(kwargs.get("downscale", 1.0))
     base_eps = float(kwargs.get("base_eps", 2.0))
@@ -190,9 +179,7 @@ def _detect_polygons_perfect(
         height, width = gray.shape
         new_width = int(width * downscale)
         new_height = int(height * downscale)
-        gray = cv2.resize(
-            gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR
-        )
+        gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
 
     # Use explicit casting for numpy operations to satisfy mypy
     gray_float = gray.astype(np.float32)
@@ -205,16 +192,12 @@ def _detect_polygons_perfect(
     if has_clear_fg_bg:
         _, mask = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
     elif small_image:
-        _, mask = cv2.threshold(
-            gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
-        )
+        _, mask = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     else:
         edge_response = multi_scale_edges(
             gray, scales=[1.0, 2.0, 4.0], weights=[0.5, 0.3, 0.2]
         )
-        mask = threshold_adaptive(
-            edge_response.astype(np.uint8), block_size=11, C=2
-        )
+        mask = threshold_adaptive(edge_response.astype(np.uint8), block_size=11, C=2)
 
     mask = close_small_gaps(mask, kernel_size=3)
 
@@ -227,9 +210,7 @@ def _detect_polygons_perfect(
         sure_fg = np.uint8(dist_transform > watershed_distance)
 
         if np.sum(sure_fg) == 0 and watershed_distance > 1:
-            sure_fg = np.uint8(
-                dist_transform > max(1, watershed_distance // 2)
-            )
+            sure_fg = np.uint8(dist_transform > max(1, watershed_distance // 2))
 
         kernel = np.ones((3, 3), np.uint8)
         sure_bg = cv2.dilate(mask, kernel, iterations=2)
@@ -276,8 +257,9 @@ def _detect_polygons_perfect(
             eps = max(1.0, 0.01 * peri)
             approx = cv2.approxPolyDP(contour, eps, True)
             simplified_points_int = [
-                (int(p[0][0]), int(p[0][1])) for p in approx
-            ]  # type: ignore
+                (int(x), int(y))
+                for x, y in np.asarray(approx, dtype=np.int32).reshape(-1, 2).tolist()
+            ]
         else:
             # curvature_adaptive_simplify expects Sequence[Any] (the contour)
             simplified_points_int = curvature_adaptive_simplify(
@@ -292,19 +274,18 @@ def _detect_polygons_perfect(
         if decompose_convex:
             convex_hull = cv2.convexHull(contour)
             simplified_points_int = [
-                (int(p[0][0]), int(p[0][1])) for p in convex_hull
-            ]  # type: ignore
+                (int(x), int(y))
+                for x, y in np.asarray(convex_hull, dtype=np.int32)
+                .reshape(-1, 2)
+                .tolist()
+            ]
 
         polygon_points = [(int(x), int(y)) for x, y in simplified_points_int]
         x, y, w, h = cv2.boundingRect(contour)
 
         perimeter = cv2.arcLength(contour, True)
-        circularity = (
-            4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
-        )
-        convexity = (
-            area / cv2.contourArea(cv2.convexHull(contour)) if area > 0 else 0
-        )
+        circularity = 4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
+        convexity = area / cv2.contourArea(cv2.convexHull(contour)) if area > 0 else 0
 
         if downscale != 1.0:
             scale_factor = 1.0 / downscale
@@ -337,9 +318,7 @@ def _detect_polygons_perfect(
     return detected_polygons
 
 
-def _detect_polygons_enhanced(
-    image: np.ndarray, **kwargs: Any
-) -> List[Dict[str, Any]]:
+def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
     """Enhanced polygon detection."""
     # Simplified for brevity, follows similar pattern of fixing types
     downscale = float(kwargs.get("downscale", 1.0))
@@ -360,9 +339,7 @@ def _detect_polygons_enhanced(
         height, width = gray.shape
         new_width = int(width * downscale)
         new_height = int(height * downscale)
-        gray = cv2.resize(
-            gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR
-        )
+        gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
 
     unique_vals = np.unique(gray)
     has_filled_shapes = (
@@ -376,9 +353,7 @@ def _detect_polygons_enhanced(
         mask = enhanced_edge_detection(gray, canny_thresh1, canny_thresh2)
 
     retr_mode = cv2.RETR_CCOMP if detect_holes else cv2.RETR_EXTERNAL
-    contours, hierarchy = cv2.findContours(
-        mask, retr_mode, cv2.CHAIN_APPROX_NONE
-    )
+    contours, hierarchy = cv2.findContours(mask, retr_mode, cv2.CHAIN_APPROX_NONE)
 
     detected_polygons = []
 
@@ -398,39 +373,30 @@ def _detect_polygons_enhanced(
             continue
 
         points_float = [
-            (float(point[0][0]), float(point[0][1])) for point in contour
-        ]  # type: ignore
+            (float(x), float(y))
+            for x, y in np.asarray(contour, dtype=np.float32).reshape(-1, 2).tolist()
+        ]
 
         if chaikin_iterations > 0:
-            points_float = chaikin_smooth(
-                points_float, iterations=chaikin_iterations
-            )
+            points_float = chaikin_smooth(points_float, iterations=chaikin_iterations)
 
         polygon_points_float: List[Tuple[float, float]] = points_float
         bezier_segments = None
         if fit_bezier:
             try:
-                bezier_segments = catmull_rom_to_beziers(
-                    points_float, closed=True
-                )
+                bezier_segments = catmull_rom_to_beziers(points_float, closed=True)
             except Exception:
                 pass
 
-        polygon_points_int = [
-            (int(px), int(py)) for px, py in polygon_points_float
-        ]
+        polygon_points_int = [(int(px), int(py)) for px, py in polygon_points_float]
 
         if len(polygon_points_int) < 3:
             continue
 
         x, y, w, h = cv2.boundingRect(contour)
         perimeter = cv2.arcLength(contour, True)
-        circularity = (
-            4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
-        )
-        convexity = (
-            area / cv2.contourArea(cv2.convexHull(contour)) if area > 0 else 0
-        )
+        circularity = 4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
+        convexity = area / cv2.contourArea(cv2.convexHull(contour)) if area > 0 else 0
 
         if downscale != 1.0:
             scale_factor = 1.0 / downscale

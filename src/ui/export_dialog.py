@@ -216,7 +216,9 @@ class ExportDialog(QDialog):
 
         self.group_2d = QGroupBox()
         self.group_2d.setObjectName("export_group_2d")
-        self.group_2d.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        self.group_2d.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum
+        )
         l_2d = QVBoxLayout()
         l_2d.setContentsMargins(12, 18, 12, 12)
         l_2d.setSpacing(8)
@@ -250,7 +252,9 @@ class ExportDialog(QDialog):
 
         self.group_3d = QGroupBox()
         self.group_3d.setObjectName("export_group_3d")
-        self.group_3d.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        self.group_3d.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum
+        )
         l_3d = QVBoxLayout()
         l_3d.setContentsMargins(12, 18, 12, 12)
         l_3d.setSpacing(8)
@@ -296,7 +300,12 @@ class ExportDialog(QDialog):
         self.btn_atlas.setText(t["atlas"])
         self.metadata_heading_label.setText(t["metadata_heading"])
         self.metadata_target_label.setText(t["target"])
-        profile_keys = ("profile_generic", "profile_godot", "profile_unity", "profile_phaser")
+        profile_keys = (
+            "profile_generic",
+            "profile_godot",
+            "profile_unity",
+            "profile_phaser",
+        )
         for index, key in enumerate(profile_keys):
             self.metadata_profile.setItemText(index, t[key])
         self.btn_metadata_selected.setText(t["metadata_selected"])
@@ -330,7 +339,9 @@ class ExportDialog(QDialog):
             button.setMinimumHeight(36)
             button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.metadata_profile.setMinimumHeight(34)
-        self.metadata_profile.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.metadata_profile.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
+        )
 
     def _check_prerequisites(self, require_selection=False, require_image=True) -> bool:
         if require_image and self.scene.image is None:
@@ -340,7 +351,8 @@ class ExportDialog(QDialog):
             QMessageBox.information(self, self.t["info"], self.t["no_objects"])
             return False
         if require_selection and (
-            not self.scene.selected_id or self.scene.selected_id not in self.scene.objects
+            not self.scene.selected_id
+            or self.scene.selected_id not in self.scene.objects
         ):
             QMessageBox.information(self, self.t["info"], self.t["no_selection"])
             return False
@@ -397,9 +409,7 @@ class ExportDialog(QDialog):
         valid_json = None
         destination_mode = "user-dialog"
         try:
-            validation_path = self._validation_file(
-                f"selected-{profile}-metadata.json"
-            )
+            validation_path = self._validation_file(f"selected-{profile}-metadata.json")
             if validation_path is not None:
                 path = validation_path
                 destination_mode = "validation-sandbox"
@@ -550,11 +560,15 @@ class ExportDialog(QDialog):
     def export_batch(self):
         started_at = time.perf_counter()
         if not self._check_prerequisites():
-            record_validation_event("export.sprite.batch", "BLOCKED", duration_ms=elapsed_ms(started_at))
+            record_validation_event(
+                "export.sprite.batch", "BLOCKED", duration_ms=elapsed_ms(started_at)
+            )
             return
         dir_path = QFileDialog.getExistingDirectory(self, self.t["batch_directory"])
         if not dir_path:
-            record_validation_event("export.sprite.batch", "CANCELLED", duration_ms=elapsed_ms(started_at))
+            record_validation_event(
+                "export.sprite.batch", "CANCELLED", duration_ms=elapsed_ms(started_at)
+            )
             return
         objects = list(self.scene.objects.items())
         total = len(objects)
@@ -585,7 +599,11 @@ class ExportDialog(QDialog):
                 logger.error("Failed to export %s: %s", object_id, exc, exc_info=True)
                 errors += 1
         progress.setValue(total)
-        status = "CANCELLED" if cancelled else ("SUCCESS" if count > 0 and errors == 0 else "FAILURE")
+        status = (
+            "CANCELLED"
+            if cancelled
+            else ("SUCCESS" if count > 0 and errors == 0 else "FAILURE")
+        )
         record_validation_event(
             "export.sprite.batch",
             status,
@@ -678,9 +696,7 @@ class ExportDialog(QDialog):
                     extraction_errors=extraction_errors,
                     destination_mode=destination_mode,
                 )
-                QMessageBox.warning(
-                    self, self.t["warning"], self.t["no_valid_sprites"]
-                )
+                QMessageBox.warning(self, self.t["warning"], self.t["no_valid_sprites"])
                 return
 
             progress.setLabelText(self.t["packing_atlas"])
@@ -783,9 +799,7 @@ class ExportDialog(QDialog):
                 destination_mode=destination_mode,
                 **file_evidence(path),
             )
-            QMessageBox.information(
-                self, self.t["success"], self.t["scene_success"]
-            )
+            QMessageBox.information(self, self.t["success"], self.t["scene_success"])
         except Exception as exc:
             logger.error(
                 "GLTF Scene export failed: %s",
@@ -851,9 +865,7 @@ class ExportDialog(QDialog):
                 destination_mode=destination_mode,
                 **file_evidence(path),
             )
-            QMessageBox.information(
-                self, self.t["success"], self.t["object_success"]
-            )
+            QMessageBox.information(self, self.t["success"], self.t["object_success"])
         except Exception as exc:
             logger.error(
                 "GLTF Object export failed: %s",
@@ -871,4 +883,3 @@ class ExportDialog(QDialog):
                 **file_evidence(path),
             )
             QMessageBox.critical(self, self.t["error"], str(exc))
-

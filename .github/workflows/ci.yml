@@ -31,26 +31,36 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
 
+      - name: Install Qt runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libegl1
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e .
-          python -m pip install pytest pytest-cov mypy black isort flake8
+          python -m pip install -r requirements-dev.txt
+
+      - name: Record validation environment
+        run: |
+          python --version
+          python -m pip freeze --all
 
       - name: Compile Python sources
         run: python -m compileall -q -f app.py src tests pack_for_ai.py tools
 
       - name: Lint for fatal errors
-        run: flake8 src tests --count --select=E9,F63,F7,F82 --show-source --statistics
+        run: flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Report non-blocking lint metrics
-        run: flake8 src tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        run: flake8 src tests tools app.py pack_for_ai.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Check formatting
-        run: black --check --diff src tests
+        run: black --check --diff src tests tools app.py pack_for_ai.py
 
       - name: Check import ordering
-        run: isort --check-only --diff src tests
+        run: isort --check-only --diff src tests tools app.py pack_for_ai.py
 
       - name: Type check
         run: mypy src --ignore-missing-imports

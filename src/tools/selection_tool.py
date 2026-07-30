@@ -3,8 +3,9 @@
 Selection tool for selecting polygons and vertices.
 """
 
+from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QMouseEvent, QPainter, QPolygonF
-from PySide6.QtCore import Qt, QPointF
+
 from .base_tool import BaseTool
 
 

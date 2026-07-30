@@ -8,7 +8,8 @@ Phaser export profile for NeoEng-D-Trace.
 Handles formatting of metadata for Phaser 3 Texture Atlas JSON format.
 """
 
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -34,15 +35,12 @@ def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
         "rotated": False,
         "trimmed": True,  # Assume trimmed if we are exporting polygons
         "spriteSourceSize": {
-            "x": 0, 
-            "y": 0, 
-            "w": rect.get("w", 0), 
-            "h": rect.get("h", 0)
+            "x": 0,
+            "y": 0,
+            "w": rect.get("w", 0),
+            "h": rect.get("h", 0),
         },
-        "sourceSize": {
-            "w": rect.get("w", 0), 
-            "h": rect.get("h", 0)
-        },
+        "sourceSize": {"w": rect.get("w", 0), "h": rect.get("h", 0)},
         # Phaser usually calculates pivot/anchor at runtime or via custom properties
         # but we can include it in specific custom fields if needed.
     }

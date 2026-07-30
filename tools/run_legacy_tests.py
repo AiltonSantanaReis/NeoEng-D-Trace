@@ -12,13 +12,13 @@ import hashlib
 import importlib.util
 import json
 import os
-from pathlib import Path
 import platform
 import subprocess
 import sys
 import tempfile
-from datetime import datetime, timezone
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from pathlib import Path
 
 
 def normalize_lf(data: bytes) -> bytes:
@@ -100,12 +100,38 @@ def select_files(manifest: dict, group: str, requested: list[str]) -> list[dict]
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--group", choices=("non-qt", "qt", "all"), default="non-qt")
-    parser.add_argument("--file", action="append", default=[], help="Run one legacy test file; repeatable.")
-    parser.add_argument("--output", type=Path, help="Report directory. Defaults to the OS temp directory.")
-    parser.add_argument("--list", action="store_true", help="List selected files without running them.")
-    parser.add_argument("--maxfail", type=int, default=0, help="Pass pytest --maxfail for each file; 0 means unlimited.")
-    parser.add_argument("--pytest-arg", action="append", default=[], help="Additional argument passed to pytest; repeatable.")
-    parser.add_argument("--timeout-seconds", type=int, default=120, help="Maximum runtime for each test file.")
+    parser.add_argument(
+        "--file",
+        action="append",
+        default=[],
+        help="Run one legacy test file; repeatable.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="Report directory. Defaults to the OS temp directory.",
+    )
+    parser.add_argument(
+        "--list", action="store_true", help="List selected files without running them."
+    )
+    parser.add_argument(
+        "--maxfail",
+        type=int,
+        default=0,
+        help="Pass pytest --maxfail for each file; 0 means unlimited.",
+    )
+    parser.add_argument(
+        "--pytest-arg",
+        action="append",
+        default=[],
+        help="Additional argument passed to pytest; repeatable.",
+    )
+    parser.add_argument(
+        "--timeout-seconds",
+        type=int,
+        default=120,
+        help="Maximum runtime for each test file.",
+    )
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parents[1]
@@ -128,13 +154,18 @@ def main() -> int:
         return 4
 
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    output = args.output or Path(tempfile.gettempdir()) / "neoeng-d-trace-legacy-tests" / timestamp
+    output = (
+        args.output
+        or Path(tempfile.gettempdir()) / "neoeng-d-trace-legacy-tests" / timestamp
+    )
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=True)
 
     env = os.environ.copy()
     existing_pythonpath = env.get("PYTHONPATH", "")
-    env["PYTHONPATH"] = str(project_root) + (os.pathsep + existing_pythonpath if existing_pythonpath else "")
+    env["PYTHONPATH"] = str(project_root) + (
+        os.pathsep + existing_pythonpath if existing_pythonpath else ""
+    )
     env.setdefault("QT_QPA_PLATFORM", "offscreen")
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
 
@@ -223,7 +254,9 @@ def main() -> int:
         "results": results,
     }
     summary_path = output / "summary.json"
-    summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    summary_path.write_text(
+        json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     print(f"Report: {summary_path}")
     return 1 if summary["totals"]["failed_files"] else 0
 

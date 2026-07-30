@@ -1,6 +1,7 @@
 # src/tools/base_tool.py
-from typing import Tuple, Optional, TYPE_CHECKING, Any
 import math
+from typing import TYPE_CHECKING, Any, Optional, Tuple
+
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QMouseEvent, QPainter
 
@@ -12,14 +13,14 @@ if TYPE_CHECKING:
 class BaseTool:
     """
     Classe base para todas as ferramentas de interação no Canvas.
-    Fornece métodos utilitários de conversão de coordenadas e 
+    Fornece métodos utilitários de conversão de coordenadas e
     interface padrão para o sistema de eventos.
     """
 
-    def __init__(self, canvas_view: 'CanvasView'):
+    def __init__(self, canvas_view: "CanvasView"):
         self.canvas_view = canvas_view
 
-    def interface(self) -> 'ToolInterface':
+    def interface(self) -> "ToolInterface":
         """
         Adapter Method: Converte a instância da ferramenta para a ToolInterface
         que o CanvasView espera receber.
@@ -155,7 +156,7 @@ class BaseTool:
     def draw_overlay(self, painter: QPainter):
         """
         Desenha overlays visuais sobre o canvas.
-        Nota: O Painter geralmente vem em coordenadas de TELA, a menos que 
+        Nota: O Painter geralmente vem em coordenadas de TELA, a menos que
         especificado o contrário no CanvasView.
         """
         pass

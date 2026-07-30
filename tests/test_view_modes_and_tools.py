@@ -1,9 +1,12 @@
 # tests/test_view_modes_and_tools.py
+import sys
+
 import pytest
+from PySide6.QtWidgets import QApplication
+
 from src.models.scene import Scene
 from src.ui.canvas_view import CanvasView
-from PySide6.QtWidgets import QApplication
-import sys
+
 
 @pytest.fixture(scope="module")
 def qt_app():
@@ -15,7 +18,13 @@ def test_canvas_view_modes(qt_app):
     scene = Scene()
     canvas = CanvasView(scene)
     # Testa alternância entre modos de visualização
-    for mode in [canvas.VIEW_LIT, canvas.VIEW_XRAY_1, canvas.VIEW_XRAY_2, canvas.VIEW_XRAY_3, canvas.VIEW_COLLISION]:
+    for mode in [
+        canvas.VIEW_LIT,
+        canvas.VIEW_XRAY_1,
+        canvas.VIEW_XRAY_2,
+        canvas.VIEW_XRAY_3,
+        canvas.VIEW_COLLISION,
+    ]:
         canvas.set_view_mode(mode)
         assert canvas._view_mode == mode
         # Simula update/render (não testa visual, mas garante que não quebra)

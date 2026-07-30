@@ -9,10 +9,10 @@ pytest.importorskip("PySide6")
 
 from PySide6.QtWidgets import QApplication
 
+from src.core.validation_events import start_validation_session, stop_validation_session
 from src.models.scene import Scene
 from src.ui import export_dialog as export_dialog_module
 from src.ui.export_dialog import ExportDialog
-from src.core.validation_events import start_validation_session, stop_validation_session
 
 
 @pytest.fixture(scope="module")
@@ -208,6 +208,7 @@ def test_validation_mode_uses_private_output_without_save_dialog(
     assert (sandbox / "selected-generic-metadata.json").is_file()
     dialog.close()
 
+
 def test_failed_validation_postcondition_records_one_domain_failure(
     qt_app, scene_with_selection, tmp_path, monkeypatch
 ):
@@ -215,7 +216,9 @@ def test_failed_validation_postcondition_records_one_domain_failure(
     dialog = ExportDialog(scene_with_selection)
     messages = []
 
-    monkeypatch.setattr(export_dialog_module, "export_metadata", lambda *args, **kwargs: {})
+    monkeypatch.setattr(
+        export_dialog_module, "export_metadata", lambda *args, **kwargs: {}
+    )
     monkeypatch.setattr(
         export_dialog_module.QFileDialog,
         "getSaveFileName",
@@ -241,7 +244,9 @@ def test_failed_validation_postcondition_records_one_domain_failure(
         stop_validation_session(exit_code=0, expected_events=("export.metadata",))
         dialog.close()
 
-    rows = [json.loads(line) for line in log_path.read_text(encoding="utf-8").splitlines()]
+    rows = [
+        json.loads(line) for line in log_path.read_text(encoding="utf-8").splitlines()
+    ]
     failures = [row for row in rows if row["event"] == "export.metadata"]
     assert len(failures) == 1
     assert failures[0]["status"] == "FAILURE"
@@ -250,4 +255,3 @@ def test_failed_validation_postcondition_records_one_domain_failure(
     assert rows[-1]["status"] == "FAILURE"
     assert rows[-1]["details"]["failure_count"] == 1
     assert messages
-

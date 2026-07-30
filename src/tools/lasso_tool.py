@@ -4,9 +4,11 @@ Lasso selection tool for free-form selections.
 """
 
 import math
-from PySide6.QtGui import QMouseEvent, QPainter, QPen, QColor, QPolygonF
+
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QMenu
-from PySide6.QtCore import Qt, QPointF
+
 from .base_tool import BaseTool
 from .mask_utils import rdp_simplify
 
@@ -119,21 +121,19 @@ class LassoTool(BaseTool):
             # Convert list of tuples to QPolygonF for efficient drawing
             qpoints = [QPointF(float(p[0]), float(p[1])) for p in self._points]
             painter.drawPolyline(QPolygonF(qpoints))
-            
+
         painter.restore()
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46;
             margin: 5px 0; }
-        """
-        )
+        """)
 
         act_cancel = menu.addAction(
             self.translations[self.current_lang]["cancel_selection"]
@@ -151,17 +151,11 @@ class LassoTool(BaseTool):
         menu.exec(event.globalPos())
 
     def undo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.undo(self.canvas_view.model)
 
     def redo_last_action(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
 
     def cancel(self):

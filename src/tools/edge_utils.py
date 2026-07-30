@@ -3,14 +3,16 @@
 Multi-scale edge detection utilities for computer vision.
 """
 
-import numpy as np
-import cv2
 from typing import List, Optional
+
+import cv2
+import numpy as np
 
 try:
     from src.core.logger import logger
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
 
@@ -33,7 +35,7 @@ def sobel_magnitude(img: np.ndarray) -> np.ndarray:
     """Compute Sobel edge magnitude."""
     if not isinstance(img, np.ndarray):
         raise ValueError("img deve ser um numpy array")
-    
+
     if img.ndim == 3:
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
@@ -44,7 +46,7 @@ def sobel_magnitude(img: np.ndarray) -> np.ndarray:
     sx_sq = np.square(sobelx, dtype=np.float32)
     sy_sq = np.square(sobely, dtype=np.float32)
     magnitude = np.sqrt(sx_sq + sy_sq)
-    
+
     return magnitude.astype(np.float32)
 
 
@@ -64,7 +66,7 @@ def log_response(img: np.ndarray, sigma: float) -> np.ndarray:
         raise ValueError("img deve ser um numpy array")
     if sigma <= 0:
         raise ValueError("sigma deve ser > 0")
-        
+
     if img.ndim == 3:
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
@@ -88,7 +90,7 @@ def multi_scale_edges(
     """Compute multi-scale edge detection."""
     if not isinstance(img, np.ndarray):
         raise ValueError("img deve ser um numpy array")
-        
+
     if img.ndim == 3:
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
@@ -104,7 +106,7 @@ def multi_scale_edges(
     weights_arr = weights_arr / weights_arr.sum()
 
     combined: Optional[np.ndarray] = None
-    
+
     for scale, w in zip(scales, weights_arr.tolist()):
         response = log_response(img, sigma=float(scale))
         if combined is None:
@@ -129,17 +131,13 @@ def enhanced_edge_detection(
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     # 1. Multi-scale LoG (Textura fina e bordas suaves)
-    log_edges = multi_scale_edges(
-        img, scales=[0.5, 1.0, 2.0], weights=[0.4, 0.4, 0.2]
-    )
-    
+    log_edges = multi_scale_edges(img, scales=[0.5, 1.0, 2.0], weights=[0.4, 0.4, 0.2])
+
     # 2. Sobel (Gradiente direcional forte)
     sobel_edges = sobel_magnitude(img)
-    
+
     # 3. Canny (Bordas finas e binárias)
-    canny_edges_result = canny_edges(
-        img, canny_thresh1, canny_thresh2
-    ).astype(float)
+    canny_edges_result = canny_edges(img, canny_thresh1, canny_thresh2).astype(float)
 
     # Normalização para 0.0 - 1.0
     log_norm = normalize_array(log_edges).astype(float) / 255.0
@@ -149,6 +147,6 @@ def enhanced_edge_detection(
     # Combinação Ponderada
     # LoG e Sobel dão "corpo" à borda, Canny dá precisão
     combined = 0.4 * log_norm + 0.4 * sobel_norm + 0.2 * canny_norm
-    
+
     result = (combined * 255).astype(np.uint8)
     return result

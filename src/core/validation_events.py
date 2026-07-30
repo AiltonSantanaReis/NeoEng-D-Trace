@@ -136,10 +136,7 @@ class _ValidationRecorder:
             )
             self._handle.flush()
             self._event_status[str(event)] = normalized_status
-            if (
-                str(event) != "session.summary"
-                and normalized_status in _STATUS_ERROR
-            ):
+            if str(event) != "session.summary" and normalized_status in _STATUS_ERROR:
                 self._failure_count += 1
 
     def write_exception(
@@ -243,9 +240,7 @@ def validation_output_directory() -> Optional[Path]:
     recorder = _recorder
     if recorder is None:
         return None
-    output = (
-        recorder.path.parent / "export_outputs" / recorder.session_id
-    ).resolve()
+    output = (recorder.path.parent / "export_outputs" / recorder.session_id).resolve()
     output.mkdir(parents=True, exist_ok=True)
     return output
 
@@ -378,9 +373,8 @@ def stop_validation_session(
             _capture_handler.close()
         if _previous_excepthook is not None:
             sys.excepthook = _previous_excepthook
-        if (
-            _previous_threading_excepthook is not None
-            and hasattr(threading, "excepthook")
+        if _previous_threading_excepthook is not None and hasattr(
+            threading, "excepthook"
         ):
             threading.excepthook = _previous_threading_excepthook
         _capture_handler = None

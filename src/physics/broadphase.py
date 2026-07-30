@@ -8,7 +8,7 @@ Broadphase Collision Detection
 Implements uniform grid broadphase for efficient collision candidate finding.
 """
 
-from typing import List, Tuple, Dict, Set, Any
+from typing import Any, Dict, List, Set, Tuple
 
 
 class AABB:

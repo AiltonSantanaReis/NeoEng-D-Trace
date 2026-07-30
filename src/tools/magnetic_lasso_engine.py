@@ -6,9 +6,9 @@ is kept separate from the UI adapter in :mod:`src.tools.magnetic_lasso`.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
 import heapq
 import math
+from dataclasses import dataclass, replace
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import cv2
@@ -49,7 +49,11 @@ class MagneticLassoSettings:
     def normalized(self) -> "MagneticLassoSettings":
         """Return a validated copy suitable for numerical routines."""
         mode = self.mode if self.mode in {"legacy", "precise"} else "precise"
-        preset = self.preset if self.preset in {"fast", "balanced", "precise"} else "balanced"
+        preset = (
+            self.preset
+            if self.preset in {"fast", "balanced", "precise"}
+            else "balanced"
+        )
         return replace(
             self,
             mode=mode,
@@ -197,12 +201,12 @@ def build_edge_features(
     gy = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)
     magnitude = cv2.magnitude(gx, gy)
 
-    positive = magnitude[magnitude > 0]
+    positive = np.asarray(magnitude[magnitude > 0], dtype=np.float32)
     scale = float(np.percentile(positive, 98.5)) if positive.size else 1.0
     scale = max(scale / sensitivity, 1e-6)
     sobel = np.clip(magnitude * (255.0 / scale), 0.0, 255.0).astype(np.uint8)
 
-    median = float(np.median(blurred))
+    median = float(np.median(np.asarray(blurred, dtype=np.float32)))
     low = int(max(0.0, (0.66 / sensitivity) * median))
     high = int(min(255.0, (1.33 / max(sensitivity, 1e-6)) * median + 24.0))
     if high <= low:
@@ -246,7 +250,8 @@ def snap_to_edge(
     if edge.ndim != 2 or edge.size == 0:
         return int(round(float(point[0]))), int(round(float(point[1])))
 
-    x, y = clamp_point(point, edge.shape)
+    edge_shape = (int(edge.shape[0]), int(edge.shape[1]))
+    x, y = clamp_point(point, edge_shape)
     radius = max(0, int(radius))
     if radius == 0:
         return x, y
@@ -279,7 +284,10 @@ _DIRECTIONS: Tuple[Tuple[int, int], ...] = (
     (1, 1),
 )
 _DIRECTION_LENGTHS = tuple(math.hypot(dx, dy) for dx, dy in _DIRECTIONS)
-_DIRECTION_UNITS = tuple((dx / length, dy / length) for (dx, dy), length in zip(_DIRECTIONS, _DIRECTION_LENGTHS))
+_DIRECTION_UNITS = tuple(
+    (dx / length, dy / length)
+    for (dx, dy), length in zip(_DIRECTIONS, _DIRECTION_LENGTHS)
+)
 
 
 def _search_bounds(
@@ -318,7 +326,9 @@ def _downscale_roi(
     strength_small = cv2.resize(strength, (new_w, new_h), interpolation=cv2.INTER_AREA)
     gx_small = cv2.resize(gx, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
     gy_small = cv2.resize(gy, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
-    start_small = clamp_point((start[0] * scale, start[1] * scale), strength_small.shape)
+    start_small = clamp_point(
+        (start[0] * scale, start[1] * scale), strength_small.shape
+    )
     end_small = clamp_point((end[0] * scale, end[1] * scale), strength_small.shape)
     return strength_small, gx_small, gy_small, start_small, end_small, scale
 
@@ -342,7 +352,9 @@ def _astar_directional(
     queue: List[Tuple[float, float, int, int, int]] = []
     heapq.heappush(queue, (0.0, 0.0, start[0], start[1], 8))
     best: Dict[Tuple[int, int, int], float] = {start_state: 0.0}
-    parent: Dict[Tuple[int, int, int], Optional[Tuple[int, int, int]]] = {start_state: None}
+    parent: Dict[Tuple[int, int, int], Optional[Tuple[int, int, int]]] = {
+        start_state: None
+    }
     final_state: Optional[Tuple[int, int, int]] = None
     expansions = 0
 
@@ -376,7 +388,10 @@ def _astar_directional(
             turn_cost = 0.0
             if previous_direction < 8:
                 prev_unit = _DIRECTION_UNITS[previous_direction]
-                alignment = max(-1.0, min(1.0, prev_unit[0] * move_unit[0] + prev_unit[1] * move_unit[1]))
+                alignment = max(
+                    -1.0,
+                    min(1.0, prev_unit[0] * move_unit[0] + prev_unit[1] * move_unit[1]),
+                )
                 turn_cost = (1.0 - alignment) * settings.turn_weight
 
             step_cost = (
@@ -398,7 +413,11 @@ def _astar_directional(
             heapq.heappush(queue, (new_g + heuristic, new_g, nx, ny, direction_index))
 
     if final_state is None:
-        candidates = [(cost, state) for state, cost in best.items() if state[0] == end[0] and state[1] == end[1]]
+        candidates = [
+            (cost, state)
+            for state, cost in best.items()
+            if state[0] == end[0] and state[1] == end[1]
+        ]
         if candidates:
             final_state = min(candidates, key=lambda item: item[0])[1]
         else:
@@ -437,9 +456,7 @@ def _astar_preview(
     start = clamp_point(start, strength.shape)
     end = clamp_point(end, strength.shape)
 
-    queue: List[Tuple[float, float, int, int]] = [
-        (0.0, 0.0, start[0], start[1])
-    ]
+    queue: List[Tuple[float, float, int, int]] = [(0.0, 0.0, start[0], start[1])]
     best = np.full((height, width), np.inf, dtype=np.float64)
     parent = np.full((height, width, 2), -1, dtype=np.int32)
     best[start[1], start[0]] = 0.0
@@ -463,8 +480,7 @@ def _astar_preview(
             edge_norm = float(strength[ny, nx]) / 255.0
             edge_cost = ((1.0 - edge_norm) ** 2) * settings.edge_weight
             across_gradient = abs(
-                move_unit[0] * float(gx[ny, nx])
-                + move_unit[1] * float(gy[ny, nx])
+                move_unit[0] * float(gx[ny, nx]) + move_unit[1] * float(gy[ny, nx])
             )
             direction_cost = across_gradient * settings.direction_weight
             step_cost = (
@@ -590,13 +606,15 @@ def live_wire_path(
     start_local = (start_global[0] - x0, start_global[1] - y0)
     end_local = (end_global[0] - x0, end_global[1] - y0)
 
-    strength_search, gx_search, gy_search, start_search, end_search, scale = _downscale_roi(
-        strength_roi,
-        gx_roi,
-        gy_roi,
-        start_local,
-        end_local,
-        settings.max_search_pixels,
+    strength_search, gx_search, gy_search, start_search, end_search, scale = (
+        _downscale_roi(
+            strength_roi,
+            gx_roi,
+            gy_roi,
+            start_local,
+            end_local,
+            settings.max_search_pixels,
+        )
     )
     path = _astar_directional(
         strength_search,
@@ -677,7 +695,9 @@ def _orientation(a: Point, b: Point, c: Point) -> int:
 
 
 def _on_segment(a: Point, b: Point, c: Point) -> bool:
-    return min(a[0], c[0]) <= b[0] <= max(a[0], c[0]) and min(a[1], c[1]) <= b[1] <= max(a[1], c[1])
+    return min(a[0], c[0]) <= b[0] <= max(a[0], c[0]) and min(a[1], c[1]) <= b[
+        1
+    ] <= max(a[1], c[1])
 
 
 def _segments_intersect(a: Point, b: Point, c: Point, d: Point) -> bool:
@@ -715,7 +735,6 @@ def polygon_self_intersects(points: Sequence[Sequence[float]]) -> bool:
     return False
 
 
-
 def polygon_signed_area(points: Sequence[Sequence[float]]) -> float:
     """Return the signed shoelace area of a closed polygon path."""
     polygon = deduplicate_path(points)
@@ -729,7 +748,9 @@ def polygon_signed_area(points: Sequence[Sequence[float]]) -> float:
     return area * 0.5
 
 
-def _remove_collinear_and_backtracking(points: Sequence[Sequence[float]]) -> List[Point]:
+def _remove_collinear_and_backtracking(
+    points: Sequence[Sequence[float]],
+) -> List[Point]:
     """Remove redundant collinear vertices, including immediate edge backtracking.
 
     Live-wire paths are pixel chains.  When two independently calculated
@@ -801,7 +822,10 @@ def sanitize_closed_polygon(
         clean = list(reversed(clean))
     return clean
 
-def path_edge_adherence(path: Sequence[Sequence[float]], edge_strength: np.ndarray) -> float:
+
+def path_edge_adherence(
+    path: Sequence[Sequence[float]], edge_strength: np.ndarray
+) -> float:
     """Return the mean normalized edge strength sampled by a path."""
     if not path:
         return 0.0
@@ -809,7 +833,8 @@ def path_edge_adherence(path: Sequence[Sequence[float]], edge_strength: np.ndarr
     if edge.ndim != 2 or edge.size == 0:
         return 0.0
     values = []
+    edge_shape = (int(edge.shape[0]), int(edge.shape[1]))
     for point in path:
-        x, y = clamp_point(point, edge.shape)
+        x, y = clamp_point(point, edge_shape)
         values.append(float(edge[y, x]) / 255.0)
     return float(np.mean(values)) if values else 0.0

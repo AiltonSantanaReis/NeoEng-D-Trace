@@ -8,9 +8,10 @@ The persistent JSON structures and serialization behavior are preserved.
 import json
 import os
 import tempfile
-from typing import Dict, Any, List
-from src.models.scene import Scene
+from typing import Any, Dict, List
+
 from src.core.logger import logger
+from src.models.scene import Scene
 
 
 def _get_profile_formatter(profile: str):
@@ -37,9 +38,7 @@ def _get_profile_formatter(profile: str):
     raise ValueError(f"Unsupported export profile: {profile}")
 
 
-def export_scene_metadata(
-    scene: Scene, profile: str = "default"
-) -> Dict[str, Any]:
+def export_scene_metadata(scene: Scene, profile: str = "default") -> Dict[str, Any]:
     """
     Exporta metadados da cena para dicionário JSON.
 
@@ -123,7 +122,7 @@ def export_scene_metadata(
                 sprite["pivot"]["x"] /= w
             if h > 0:
                 sprite["pivot"]["y"] /= h
-                
+
     elif profile == "godot":
         # Godot uses offset from center, usually no change needed here
         # unless specific sprite sheet format is required.
@@ -170,7 +169,7 @@ def export_metadata(
     if obj_id not in scene.objects:
         raise ValueError(f"Object {obj_id} not found in scene")
     obj = scene.objects[obj_id]
-    
+
     if not obj.polygon or len(obj.polygon) < 3:
         raise ValueError(f"Object {obj_id} has invalid polygon")
 
@@ -178,14 +177,14 @@ def export_metadata(
     ys = [p[1] for p in obj.polygon]
     min_x, max_x = min(xs), max(xs)
     min_y, max_y = min(ys), max(ys)
-    
+
     w = max_x - min_x
     h = max_y - min_y
     rect = {"x": min_x, "y": min_y, "w": w, "h": h}
 
     # Default pivot at center relative to sprite origin (0,0)
     pivot = {"x": w / 2, "y": h / 2}
-    
+
     # Polygon relative to sprite top-left
     polygon = [[px - min_x, py - min_y] for px, py in obj.polygon]
 

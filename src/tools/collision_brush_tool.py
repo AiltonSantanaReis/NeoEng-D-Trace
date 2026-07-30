@@ -1,8 +1,10 @@
 # src/tools/collision_brush_tool.py
 from typing import Optional, Tuple
-from PySide6.QtWidgets import QMenu, QMessageBox
-from PySide6.QtGui import QMouseEvent, QPainter, QColor, QPen, QPolygonF
+
 from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
+from PySide6.QtWidgets import QMenu, QMessageBox
+
 from src.tools.base_tool import BaseTool
 
 
@@ -84,9 +86,7 @@ class CollisionBrushTool(BaseTool):
                             )
                         else:
                             curr = self.canvas_view.model.has_collision(oid)
-                            self.canvas_view.model.set_object_collision(
-                                oid, not curr
-                            )
+                            self.canvas_view.model.set_object_collision(oid, not curr)
                         self.canvas_view.update()
                     except Exception as e:
                         QMessageBox.critical(
@@ -96,10 +96,8 @@ class CollisionBrushTool(BaseTool):
                         )
         elif event.button() == Qt.MouseButton.RightButton:
             if self.moving or self.scaling:
-                if self.scaling:
-                    self._show_scale_menu(
-                        self.scaling_oid, event.globalPos()
-                    )  # type: ignore
+                if self.scaling and self.scaling_oid is not None:
+                    self._show_scale_menu(self.scaling_oid, event.globalPos())
                 else:
                     self.moving = False
                     self.moving_oid = None
@@ -121,13 +119,8 @@ class CollisionBrushTool(BaseTool):
                 if obj and obj.polygon:
                     obj.polygon = [(x + dx, y + dy) for x, y in obj.polygon]
                     # Update collision if exists
-                    if (
-                        self.moving_oid
-                        in self.canvas_view.model.collision_shapes
-                    ):
-                        self.canvas_view.model.collision_shapes[
-                            self.moving_oid
-                        ] = [
+                    if self.moving_oid in self.canvas_view.model.collision_shapes:
+                        self.canvas_view.model.collision_shapes[self.moving_oid] = [
                             (x + dx, y + dy)
                             for x, y in self.canvas_view.model.collision_shapes[
                                 self.moving_oid
@@ -143,7 +136,7 @@ class CollisionBrushTool(BaseTool):
                 # Scale sensitivity
                 scale_factor = 1.0 + dy * 0.001
                 self.initial_scale *= scale_factor
-                
+
                 obj = self.canvas_view.model.objects.get(self.scaling_oid)
                 if obj and obj.polygon:
                     scaled_polygon = []
@@ -153,16 +146,13 @@ class CollisionBrushTool(BaseTool):
                         new_x = self.scale_center[0] + dx * self.initial_scale
                         new_y = self.scale_center[1] + dy * self.initial_scale
                         scaled_polygon.append((new_x, new_y))
-                    
+
                     obj.polygon = scaled_polygon
-                    if (
-                        self.scaling_oid
-                        in self.canvas_view.model.collision_shapes
-                    ):
-                        self.canvas_view.model.collision_shapes[
-                            self.scaling_oid
-                        ] = [(x, y) for x, y in scaled_polygon]
-                    
+                    if self.scaling_oid in self.canvas_view.model.collision_shapes:
+                        self.canvas_view.model.collision_shapes[self.scaling_oid] = [
+                            (x, y) for x, y in scaled_polygon
+                        ]
+
                     self.canvas_view.model._notify()
                 self.last_scale_pos = pos
 
@@ -194,14 +184,12 @@ class CollisionBrushTool(BaseTool):
 
     def _show_hub_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
-        """
-        )
+        """)
 
         main_window = self.canvas_view.parent()
 
@@ -214,12 +202,8 @@ class CollisionBrushTool(BaseTool):
         act_edit.triggered.connect(lambda: self._start_edit(main_window))
 
         # Scale
-        act_scale = menu.addAction(
-            self.translations[self.current_lang]["scale"]
-        )
-        act_scale.triggered.connect(
-            lambda: self._start_scale(oid, main_window)
-        )
+        act_scale = menu.addAction(self.translations[self.current_lang]["scale"])
+        act_scale.triggered.connect(lambda: self._start_scale(oid, main_window))
 
         menu.addSeparator()
 
@@ -234,34 +218,26 @@ class CollisionBrushTool(BaseTool):
         menu.addSeparator()
 
         # Remove
-        act_remove = menu.addAction(
-            self.translations[self.current_lang]["remove"]
-        )
+        act_remove = menu.addAction(self.translations[self.current_lang]["remove"])
         act_remove.triggered.connect(lambda: self._remove(oid))
 
         menu.exec(pos)
 
     def _show_scale_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
             border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
-        """
-        )
+        """)
 
         # Cancel
-        act_cancel = menu.addAction(
-            self.translations[self.current_lang]["cancel"]
-        )
+        act_cancel = menu.addAction(self.translations[self.current_lang]["cancel"])
         act_cancel.triggered.connect(self._cancel_scale)
 
         # Center
-        act_center = menu.addAction(
-            self.translations[self.current_lang]["center"]
-        )
+        act_center = menu.addAction(self.translations[self.current_lang]["center"])
         act_center.triggered.connect(
             lambda: self.canvas_view.focus_on_object(oid)
         )  # type: ignore
@@ -273,15 +249,11 @@ class CollisionBrushTool(BaseTool):
         menu.addSeparator()
 
         # Increase
-        act_increase = menu.addAction(
-            self.translations[self.current_lang]["increase"]
-        )
+        act_increase = menu.addAction(self.translations[self.current_lang]["increase"])
         act_increase.triggered.connect(lambda: self._scale_increase(oid))
 
         # Decrease
-        act_decrease = menu.addAction(
-            self.translations[self.current_lang]["decrease"]
-        )
+        act_decrease = menu.addAction(self.translations[self.current_lang]["decrease"])
         act_decrease.triggered.connect(lambda: self._scale_decrease(oid))
 
         menu.addSeparator()
@@ -326,12 +298,8 @@ class CollisionBrushTool(BaseTool):
             for x, y in obj.polygon:
                 dx = x - self.scale_center[0]  # type: ignore
                 dy = y - self.scale_center[1]  # type: ignore
-                new_x = (
-                    self.scale_center[0] + dx * self.initial_scale
-                )  # type: ignore
-                new_y = (
-                    self.scale_center[1] + dy * self.initial_scale
-                )  # type: ignore
+                new_x = self.scale_center[0] + dx * self.initial_scale  # type: ignore
+                new_y = self.scale_center[1] + dy * self.initial_scale  # type: ignore
                 scaled_polygon.append((new_x, new_y))
             obj.polygon = scaled_polygon
             if oid in self.canvas_view.model.collision_shapes:
@@ -361,18 +329,12 @@ class CollisionBrushTool(BaseTool):
             self.last_scale_pos = None
 
     def _undo(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.undo(self.canvas_view.model)
         self.canvas_view.update()
 
     def _redo(self):
-        if (
-            hasattr(self.canvas_view.model, "cmd")
-            and self.canvas_view.model.cmd
-        ):
+        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
         self.canvas_view.update()
 
@@ -380,9 +342,7 @@ class CollisionBrushTool(BaseTool):
         res = QMessageBox.question(
             self.canvas_view,
             self.translations[self.current_lang]["remove_title"],
-            self.translations[self.current_lang]["remove_question"].format(
-                oid=oid
-            ),
+            self.translations[self.current_lang]["remove_question"].format(oid=oid),
         )
         if res == QMessageBox.StandardButton.Yes:
             self.canvas_view.model.remove_object(oid)
@@ -423,7 +383,7 @@ class CollisionBrushTool(BaseTool):
                 pen = QPen(QColor(255, 255, 0), 3)
                 pen.setCosmetic(True)
                 painter.setPen(pen)
-                
+
                 points = [QPointF(float(x), float(y)) for x, y in obj.polygon]
                 painter.drawPolygon(QPolygonF(points))
 
@@ -434,10 +394,10 @@ class CollisionBrushTool(BaseTool):
                 pen = QPen(QColor(255, 0, 255), 3)
                 pen.setCosmetic(True)
                 painter.setPen(pen)
-                
+
                 points = [QPointF(float(x), float(y)) for x, y in obj.polygon]
                 painter.drawPolygon(QPolygonF(points))
-        
+
         painter.restore()
 
     def update_language(self, lang):

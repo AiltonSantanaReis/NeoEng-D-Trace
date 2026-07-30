@@ -32,9 +32,7 @@ def test_side_panel_tracks_scene_selection_after_polygon_creation(qt_app):
     scene = Scene()
     panel = SidePanel(scene, _CanvasStub())
 
-    object_id = scene.add_polygon(
-        [(0, 0), (20, 0), (20, 20), (0, 20)]
-    )
+    object_id = scene.add_polygon([(0, 0), (20, 0), (20, 20), (0, 20)])
     qt_app.processEvents()
 
     assert scene.selected_id == object_id
@@ -51,18 +49,9 @@ def test_side_panel_tracks_scene_selection_after_polygon_creation(qt_app):
 def test_export_dialog_uses_compact_vertical_policies(qt_app):
     dialog = ExportDialog(Scene())
 
-    assert (
-        dialog.layout().sizeConstraint()
-        == QLayout.SizeConstraint.SetFixedSize
-    )
-    assert (
-        dialog.group_2d.sizePolicy().verticalPolicy()
-        == QSizePolicy.Policy.Maximum
-    )
-    assert (
-        dialog.group_3d.sizePolicy().verticalPolicy()
-        == QSizePolicy.Policy.Maximum
-    )
+    assert dialog.layout().sizeConstraint() == QLayout.SizeConstraint.SetFixedSize
+    assert dialog.group_2d.sizePolicy().verticalPolicy() == QSizePolicy.Policy.Maximum
+    assert dialog.group_3d.sizePolicy().verticalPolicy() == QSizePolicy.Policy.Maximum
 
     for button in (
         dialog.btn_single,
@@ -73,10 +62,7 @@ def test_export_dialog_uses_compact_vertical_policies(qt_app):
         dialog.btn_gltf_object,
         dialog.btn_close,
     ):
-        assert (
-            button.sizePolicy().verticalPolicy()
-            == QSizePolicy.Policy.Fixed
-        )
+        assert button.sizePolicy().verticalPolicy() == QSizePolicy.Policy.Fixed
 
     assert dialog.group_2d.layout().spacing() == 8
     assert dialog.group_3d.layout().spacing() == 8

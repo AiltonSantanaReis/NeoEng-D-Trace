@@ -15,9 +15,9 @@ def _deny_destination_remove(monkeypatch, module, destinations):
     blocked = {str(Path(path)) for path in destinations}
 
     def guarded_remove(path):
-        assert str(Path(path)) not in blocked, (
-            "Exporter pre-deleted a destination instead of using os.replace"
-        )
+        assert (
+            str(Path(path)) not in blocked
+        ), "Exporter pre-deleted a destination instead of using os.replace"
         return real_remove(path)
 
     monkeypatch.setattr(module.os, "remove", guarded_remove)

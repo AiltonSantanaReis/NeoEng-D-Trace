@@ -67,7 +67,9 @@ def pack_project(root_dir: Path | None = None, output_file: Path | None = None) 
 
     with output.open("w", encoding="utf-8", newline="\n") as outfile:
         outfile.write("# Snapshot técnico do projeto\n")
-        outfile.write("# Gerado automaticamente; não substitui Git nem backup validado.\n\n")
+        outfile.write(
+            "# Gerado automaticamente; não substitui Git nem backup validado.\n\n"
+        )
         outfile.write("# --- ARQUIVOS INCLUÍDOS ---\n")
         for path in files:
             outfile.write(f"- {path.relative_to(root).as_posix()}\n")

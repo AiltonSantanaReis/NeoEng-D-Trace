@@ -4,21 +4,22 @@ Widget containing buttons for selecting drawing and selection tools.
 """
 
 from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QPushButton,
     QButtonGroup,
+    QPushButton,
     QSizePolicy,
+    QVBoxLayout,
+    QWidget,
 )
+
+from src.tools.collision_brush_tool import CollisionBrushTool
+from src.tools.ellipse_selection import EllipseSelectionTool
 from src.tools.lasso_tool import LassoTool
-from src.tools.polygonal_lasso import PolygonalLassoTool
 from src.tools.magnetic_lasso import MagneticLassoTool
 from src.tools.magnetic_lasso_engine import MagneticLassoSettings
 from src.tools.pen_tool import PenTool
-from src.tools.rect_selection import RectSelectionTool
-from src.tools.ellipse_selection import EllipseSelectionTool
 from src.tools.polygon_edit_tool import PolygonEditTool
-from src.tools.collision_brush_tool import CollisionBrushTool
+from src.tools.polygonal_lasso import PolygonalLassoTool
+from src.tools.rect_selection import RectSelectionTool
 from src.tools.selection_tool import SelectionTool
 
 
@@ -47,7 +48,7 @@ class ToolPalette(QWidget):
         layout.setSpacing(10)
 
         # --- Tool Buttons Definition ---
-        
+
         # Lasso
         self.btn_lasso = QPushButton("Lasso")
         self.btn_lasso.setCheckable(True)
@@ -229,32 +230,32 @@ class ToolPalette(QWidget):
     def select_next_tool(self):
         names = self.tool_names()
         current_idx = -1
-        
+
         # Find currently checked button
         for i, name in enumerate(names):
             btn = self.tool_buttons.get(name)
             if btn and btn.isChecked():
                 current_idx = i
                 break
-        
+
         next_idx = (current_idx + 1) % len(names)
         self.select_tool_by_name(names[next_idx])
 
     def select_prev_tool(self):
         names = self.tool_names()
         current_idx = -1
-        
+
         for i, name in enumerate(names):
             btn = self.tool_buttons.get(name)
             if btn and btn.isChecked():
                 current_idx = i
                 break
-                
+
         prev_idx = (current_idx - 1) % len(names)
         # Handle wrap around correctly for negative index
         if prev_idx < 0:
             prev_idx = len(names) - 1
-            
+
         self.select_tool_by_name(names[prev_idx])
 
     def select_tool_by_name(self, tool_name: str):
@@ -284,7 +285,7 @@ class ToolPalette(QWidget):
 
     def select_polygonal_lasso(self):
         # Mantém compatibilidade com __init__(view) se não foi alterado,
-        # ou ajusta se necessário. Pelo contexto dos logs anteriores, 
+        # ou ajusta se necessário. Pelo contexto dos logs anteriores,
         # PolygonalLassoTool acessava o model via view.
         polygonal_lasso_tool = PolygonalLassoTool(self.canvas_view)
         self.canvas_view.set_tool(polygonal_lasso_tool.interface())

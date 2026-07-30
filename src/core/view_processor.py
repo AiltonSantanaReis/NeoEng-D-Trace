@@ -2,6 +2,7 @@
 import cv2
 import numpy as np
 from PySide6.QtGui import QImage
+
 from src.core.logger import logger
 
 
@@ -62,7 +63,7 @@ class ViewProcessor:
                 return None
 
         # Ensure contiguous array for Qt
-        if not cv_img.flags['C_CONTIGUOUS']:
+        if not cv_img.flags["C_CONTIGUOUS"]:
             cv_img = np.ascontiguousarray(cv_img)
 
         height, width = cv_img.shape[:2]
@@ -88,7 +89,11 @@ class ViewProcessor:
                 # BGRA -> RGBA
                 rgba = cv2.cvtColor(cv_img, cv2.COLOR_BGRA2RGBA)
                 return QImage(
-                    rgba.data, width, height, rgba.strides[0], QImage.Format.Format_RGBA8888
+                    rgba.data,
+                    width,
+                    height,
+                    rgba.strides[0],
+                    QImage.Format.Format_RGBA8888,
                 ).copy()
 
         return None
@@ -128,7 +133,10 @@ class ViewProcessor:
                 abs_grad_y = abs_grad_y.astype(cp.uint8)
 
             # Magnitude combinada para canal Azul
-            magnitude = (abs_grad_x.astype(cp.float32) * 0.5 + abs_grad_y.astype(cp.float32) * 0.5).astype(cp.uint8)
+            magnitude = (
+                abs_grad_x.astype(cp.float32) * 0.5
+                + abs_grad_y.astype(cp.float32) * 0.5
+            ).astype(cp.uint8)
 
             # 5. Download GPU -> CPU para Merge
             r = cp.asnumpy(abs_grad_x)
@@ -139,47 +147,47 @@ class ViewProcessor:
             # Modo 2: Canny-like (bordas finas)
             # Gaussian blur
             gpu_blurred = ndimage.gaussian_filter(gpu_img, sigma=1.0)
-            
+
             # Sobel gradients
             grad_x = ndimage.sobel(gpu_blurred, axis=1)
             grad_y = ndimage.sobel(gpu_blurred, axis=0)
-            
+
             # Magnitude
             magnitude = cp.sqrt(grad_x**2 + grad_y**2)
-            
+
             # Non-maximum suppression approximation
             max_val = cp.max(magnitude)
             if max_val > 0:
                 magnitude = (magnitude / max_val * 255).astype(cp.uint8)
-            
+
             # Thresholding
             high_thresh = 100
             low_thresh = 50
             strong_edges = magnitude > high_thresh
             weak_edges = (magnitude >= low_thresh) & (magnitude <= high_thresh)
-            
+
             # Hysteresis (simplified)
             r = g = b = ((strong_edges | weak_edges) * 255).astype(cp.uint8)
-            
+
         elif mode == 3:
             # Modo 3: Laplacian (detecção de bordas de segunda ordem)
             # Gaussian blur first
             gpu_blurred = ndimage.gaussian_filter(gpu_img, sigma=1.0)
-            
+
             # Laplacian
             laplacian = ndimage.laplace(gpu_blurred)
-            
+
             # Absolute value and normalize
             abs_laplacian = cp.abs(laplacian)
             max_val = cp.max(abs_laplacian)
             if max_val > 0:
                 abs_laplacian = (abs_laplacian / max_val * 255).astype(cp.uint8)
-            
+
             # Invert for better visualization (dark edges on light background)
             abs_laplacian = 255 - abs_laplacian
-            
+
             r = g = b = cp.asnumpy(abs_laplacian)
-            
+
         else:
             # Fallback to mode 1
             r = g = b = cp.asnumpy(gpu_img)
@@ -197,40 +205,40 @@ class ViewProcessor:
         if mode == 1:
             # Modo 1: Sobel (gradiente)
             blurred = cv2.GaussianBlur(gray, (3, 3), 0)
-            
+
             # Sobel 16S para evitar overflow
             grad_x = cv2.Sobel(blurred, cv2.CV_16S, 1, 0, ksize=3)
             grad_y = cv2.Sobel(blurred, cv2.CV_16S, 0, 1, ksize=3)
-            
+
             abs_grad_x = cv2.convertScaleAbs(grad_x)
             abs_grad_y = cv2.convertScaleAbs(grad_y)
-            
+
             magnitude = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
 
             return cv2.merge([abs_grad_x, abs_grad_y, magnitude])
-            
+
         elif mode == 2:
             # Modo 2: Canny-like (bordas finas)
             blurred = cv2.GaussianBlur(gray, (3, 3), 0)
-            
+
             # Canny edge detection
             edges = cv2.Canny(blurred, 50, 150)
-            
+
             return cv2.merge([edges, edges, edges])
-            
+
         elif mode == 3:
             # Modo 3: Laplacian (detecção de bordas de segunda ordem)
             blurred = cv2.GaussianBlur(gray, (3, 3), 0)
-            
+
             # Laplacian
             laplacian = cv2.Laplacian(blurred, cv2.CV_64F, ksize=3)
             abs_laplacian = cv2.convertScaleAbs(laplacian)
-            
+
             # Invert for better visualization
             abs_laplacian = 255 - abs_laplacian
-            
+
             return cv2.merge([abs_laplacian, abs_laplacian, abs_laplacian])
-            
+
         else:
             # Fallback
             return cv2.merge([gray, gray, gray])
@@ -245,7 +253,7 @@ class ViewProcessor:
             return None
 
         xray_cv = None
-        
+
         if HAS_GPU:
             try:
                 xray_cv = ViewProcessor._gpu_generate_xray(image_array, mode)

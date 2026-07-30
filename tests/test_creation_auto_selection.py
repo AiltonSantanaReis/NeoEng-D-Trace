@@ -1,7 +1,6 @@
 from src.core.commands import CommandManager, CreateObjectCommand
 from src.models.scene import Scene
 
-
 SQUARE = [(0, 0), (20, 0), (20, 20), (0, 20)]
 
 

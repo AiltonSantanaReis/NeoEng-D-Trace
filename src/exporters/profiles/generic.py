@@ -3,7 +3,7 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import Dict, Any, Union, List
+from typing import Any, Dict, List, Union
 
 
 def format_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:
@@ -13,7 +13,7 @@ def format_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
     # Garante acesso seguro ao Rect
     rect = metadata.get("rect", {"x": 0, "y": 0, "w": 0, "h": 0})
-    
+
     # Normaliza o acesso ao Pivot (pode ser dict ou list dependendo da versão)
     pivot_raw = metadata.get("pivot", {"x": 0, "y": 0})
     if isinstance(pivot_raw, (list, tuple)):

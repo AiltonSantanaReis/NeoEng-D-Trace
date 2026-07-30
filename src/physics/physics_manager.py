@@ -5,11 +5,10 @@ Manages physics objects and collision detection using
 broadphase + narrow-phase.
 """
 
-from typing import (
-    Dict, List, Tuple, Any, Optional, Callable
-)
 from dataclasses import dataclass
-from .broadphase import UniformGridBroadPhase, AABB
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
+from .broadphase import AABB, UniformGridBroadPhase
 from .sat2d import sat_polygon_vs_polygon
 
 
@@ -65,9 +64,7 @@ class PhysicsObject:
 
     def get_world_shape(self) -> List[Tuple[float, float]]:
         """Get shape in world coordinates."""
-        return [
-            (x + self.position[0], y + self.position[1]) for x, y in self.shape
-        ]
+        return [(x + self.position[0], y + self.position[1]) for x, y in self.shape]
 
 
 class CollisionResult:
@@ -86,8 +83,10 @@ class CollisionResult:
         self.mtv = mtv  # Minimum Translation Vector
 
     def __repr__(self):
-        return f"CollisionResult({self.obj1_id} vs {self.obj2_id}: " \
-               f"{self.colliding}, MTV={self.mtv})"
+        return (
+            f"CollisionResult({self.obj1_id} vs {self.obj2_id}: "
+            f"{self.colliding}, MTV={self.mtv})"
+        )
 
 
 class PhysicsManager:
@@ -228,9 +227,7 @@ class PhysicsManager:
                 continue
 
             candidate_shape = self.objects[candidate_id].get_world_shape()
-            colliding, mtv = sat_polygon_vs_polygon(
-                query_shape, candidate_shape
-            )
+            colliding, mtv = sat_polygon_vs_polygon(query_shape, candidate_shape)
 
             if colliding:
                 result = CollisionResult(obj_id, candidate_id, True, mtv)

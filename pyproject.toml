@@ -21,8 +21,21 @@ pydantic = "2.12.5"
 pygltflib = "1.16.5"  # Exportação GLTF/GLB
 
 [tool.poetry.group.dev.dependencies]
-pytest = "9.0.1"
-mypy = "^1.15"
+pytest = "9.1.1"
+pytest-cov = "7.1.0"
+black = "26.5.1"
+isort = "8.0.1"
+flake8 = "7.3.0"
+mypy = "2.3.0"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+py_version = 311
+line_length = 88
 
 [build-system]
 requires = ["poetry-core"]

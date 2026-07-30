@@ -35,9 +35,15 @@ def _sha256(data: bytes) -> str:
 
 def _fixture_scene() -> Scene:
     scene = Scene()
-    scene.layers.append(Layer(id="layer_fx", name="Efeitos Ágeis", visible=False, locked=True))
-    scene.add_object("obj_player", [(10, 20), (30, 20), (30, 50), (10, 50)], layer_id="layer_fx")
-    scene.add_object("obj_prop", [(100, 5), (112, 5), (112, 13), (100, 13)], layer_id="layer_default")
+    scene.layers.append(
+        Layer(id="layer_fx", name="Efeitos Ágeis", visible=False, locked=True)
+    )
+    scene.add_object(
+        "obj_player", [(10, 20), (30, 20), (30, 50), (10, 50)], layer_id="layer_fx"
+    )
+    scene.add_object(
+        "obj_prop", [(100, 5), (112, 5), (112, 13), (100, 13)], layer_id="layer_default"
+    )
     group = Group(id="group_main", name="Grupo Principal", visible=True, locked=False)
     group.members = ["obj_player"]
     scene.groups.append(group)
@@ -48,6 +54,7 @@ def test_json_exporter_uses_single_src_implementation() -> None:
     module = importlib.import_module(MODULE_NAME)
     assert module.__file__.replace("\\", "/").endswith("src/exporters/json_exporter.py")
     assert module.export_scene_metadata.__module__ == MODULE_NAME
+
 
 @pytest.mark.parametrize("profile", ["default", "unity", "godot"])
 def test_json_scene_metadata_contract_is_frozen(profile: str) -> None:
@@ -98,7 +105,10 @@ def test_json_errors_and_optional_path_contracts_are_preserved(tmp_path: Path) -
     module = importlib.import_module(MODULE_NAME)
     scene = _fixture_scene()
 
-    assert module.export_metadata("obj_player", scene, "", profile="generic")["id"] == "obj_player"
+    assert (
+        module.export_metadata("obj_player", scene, "", profile="generic")["id"]
+        == "obj_player"
+    )
     with pytest.raises(ValueError, match="Object missing not found in scene"):
         module.export_metadata("missing", scene, "", profile="generic")
     with pytest.raises(ValueError, match="Unsupported export profile: unknown"):

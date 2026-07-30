@@ -7,10 +7,10 @@ import hashlib
 import math
 import time
 import weakref
-from typing import List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
-from PySide6.QtCore import QObject, QPointF, QRunnable, QThreadPool, Qt, Signal, Slot
+from PySide6.QtCore import QObject, QPointF, QRunnable, Qt, QThreadPool, Signal, Slot
 from PySide6.QtGui import (
     QActionGroup,
     QColor,
@@ -210,7 +210,10 @@ class _MagneticPathWorker(QRunnable):
                 "edge_features": edge_features,
                 "image_hash": image_hash,
                 "image_token": self.image_token,
-                "edge_signature": (self.mode, round(float(self.settings.sensitivity), 6)),
+                "edge_signature": (
+                    self.mode,
+                    round(float(self.settings.sensitivity), 6),
+                ),
             }
         )
 
@@ -244,7 +247,9 @@ class MagneticLassoTool(BaseTool):
             settings if settings is not None else MagneticLassoSettings(mode="legacy")
         )
         self.settings.mode = (
-            self.settings.mode if self.settings.mode in {"legacy", "precise"} else "precise"
+            self.settings.mode
+            if self.settings.mode in {"legacy", "precise"}
+            else "precise"
         )
 
         self._anchors: List[Point] = []
@@ -270,10 +275,10 @@ class MagneticLassoTool(BaseTool):
         # with headless contracts and external adapters.
         self._path_pool = _MAGNETIC_PATH_POOL
         self._path_bridge = _MagneticPathBridge(self)
-        self._path_workers = {}
+        self._path_workers: Dict[int, _MagneticPathWorker] = {}
         self._active_path_request: Optional[int] = None
-        self._queued_preview_request = None
-        self._queued_action_request = None
+        self._queued_preview_request: Optional[Dict[str, Any]] = None
+        self._queued_action_request: Optional[Dict[str, Any]] = None
         self._next_path_request_id = 0
         self._state_revision = 0
         self._segment_pending = False
@@ -383,9 +388,7 @@ class MagneticLassoTool(BaseTool):
                 return None
 
         if not isinstance(image, QImage):
-            self._last_error = (
-                "Unsupported scene image type: " + type(image).__name__
-            )
+            self._last_error = "Unsupported scene image type: " + type(image).__name__
             return None
 
         image = image.convertToFormat(QImage.Format.Format_Grayscale8)
@@ -823,10 +826,13 @@ class MagneticLassoTool(BaseTool):
         if len(self._anchors) < 3:
             return False
         zoom = self.get_canvas_zoom()
-        distance_screen = math.hypot(
-            float(point[0]) - self._anchors[0][0],
-            float(point[1]) - self._anchors[0][1],
-        ) * zoom
+        distance_screen = (
+            math.hypot(
+                float(point[0]) - self._anchors[0][0],
+                float(point[1]) - self._anchors[0][1],
+            )
+            * zoom
+        )
         return distance_screen <= self.settings.normalized().close_radius_screen
 
     # ------------------------------------------------------------------
@@ -870,7 +876,9 @@ class MagneticLassoTool(BaseTool):
             return
 
         self._hover_can_close = self._can_close_at(position)
-        endpoint = self._anchors[0] if self._hover_can_close else self._snap_anchor(position)
+        endpoint = (
+            self._anchors[0] if self._hover_can_close else self._snap_anchor(position)
+        )
         now = time.monotonic()
         elapsed_ms = (now - self._last_preview_time) * 1000.0
         interval = self.settings.normalized().preview_interval_ms
@@ -1094,7 +1102,11 @@ class MagneticLassoTool(BaseTool):
 
         radius = 4.0 / zoom if zoom > 0 else 4.0
         for index, (x, y) in enumerate(self._anchors):
-            color = QColor(0, 220, 255) if self.settings.mode == "precise" else QColor(255, 0, 0)
+            color = (
+                QColor(0, 220, 255)
+                if self.settings.mode == "precise"
+                else QColor(255, 0, 0)
+            )
             if index == 0:
                 color = QColor(255, 140, 0)
             painter.setPen(QPen(color, 1))
@@ -1138,15 +1150,13 @@ class MagneticLassoTool(BaseTool):
     def show_context_menu(self, event: QMouseEvent):
         text = self.translations[self.current_lang]
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet(
-            """
+        menu.setStyleSheet("""
             QMenu { background-color: #2d2d30; color: #e6e6e6;
                     border: 1px solid #3f3f46; }
             QMenu::item { padding: 5px 20px; }
             QMenu::item:selected { background-color: #2a6f97; }
             QMenu::separator { height: 1px; background: #3f3f46; margin: 5px 0; }
-            """
-        )
+            """)
 
         finish = menu.addAction(text["finish_selection"])
         finish.setEnabled(len(self._anchors) >= 3)
@@ -1168,7 +1178,9 @@ class MagneticLassoTool(BaseTool):
             action = mode_menu.addAction(text[label_key])
             action.setCheckable(True)
             action.setChecked(self.settings.mode == mode)
-            action.triggered.connect(lambda checked=False, value=mode: self._set_mode(value))
+            action.triggered.connect(
+                lambda checked=False, value=mode: self._set_mode(value)
+            )
             mode_group.addAction(action)
 
         preset_menu = menu.addMenu(text["preset"])
@@ -1182,7 +1194,9 @@ class MagneticLassoTool(BaseTool):
             action = preset_menu.addAction(text[label_key])
             action.setCheckable(True)
             action.setChecked(self.settings.preset == preset)
-            action.triggered.connect(lambda checked=False, value=preset: self._set_preset(value))
+            action.triggered.connect(
+                lambda checked=False, value=preset: self._set_preset(value)
+            )
             preset_group.addAction(action)
 
         show_edges = menu.addAction(text["show_edges"])

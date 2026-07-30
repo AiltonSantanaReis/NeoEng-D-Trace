@@ -3,20 +3,30 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Tuple, Dict, Iterable, Any
-from PIL import Image
 import json
 import os
 import tempfile
+from types import SimpleNamespace
+from typing import Any, Dict, Iterable, List, Optional, Protocol, Tuple, cast
+
+from PIL import Image
 
 # Tenta importar o Packer otimizado
 try:
     from src.utils.packing import Packer
+
     HAS_PACKER = True
 except ImportError:
     HAS_PACKER = False
 
 from src.core.logger import logger
+
+
+class _AtlasNode(Protocol):
+    x: int
+    y: int
+    w: int
+    h: int
 
 
 def _deterministic_sort(
@@ -48,9 +58,9 @@ def pack_sprites_to_atlas(
 
     sorted_items = _deterministic_sort(items)
     max_w, max_h = max_size
-    
+
     atlases = []
-    
+
     # Keep track of items remaining to pack
     remaining_items = list(sorted_items)
     current_atlas_index = 0
@@ -62,7 +72,7 @@ def pack_sprites_to_atlas(
         else:
             # Fallback simple variables
             x, y, row_h = padding, padding, 0
-            
+
         atlas_img = Image.new("RGBA", (max_w, max_h), (0, 0, 0, 0))
         meta: List[Dict[str, Any]] = []
         packed_in_this_atlas = []
@@ -71,13 +81,13 @@ def pack_sprites_to_atlas(
         for img, meta_dict in list(remaining_items):
             w, h = img.width, img.height
             name = meta_dict["name"]
-            node = None
+            node: Optional[_AtlasNode] = None
             rotated = False
 
             if HAS_PACKER:
                 # Try normal
                 node = packer.insert(w, h, name)
-                
+
                 # Try rotated if allowed and not fit
                 if node is None and allow_rotate:
                     node = packer.insert(h, w, name)
@@ -86,21 +96,29 @@ def pack_sprites_to_atlas(
             else:
                 # Simple Shelf logic fallback
                 if x + w <= max_w - padding and y + h <= max_h - padding:
-                    node = type('obj', (object,), {'x': x, 'y': y, 'w': w, 'h': h})
+                    node = cast(
+                        _AtlasNode,
+                        SimpleNamespace(x=x, y=y, w=w, h=h),
+                    )
                     x += w + padding
                     row_h = max(row_h, h)
                     # Wrap to new row
-                    if x > max_w - padding: # This logic is imperfect for mixed sizes but it's a fallback
-                        pass 
-                
+                    if (
+                        x > max_w - padding
+                    ):  # This logic is imperfect for mixed sizes but it's a fallback
+                        pass
+
                 # Naive row wrap logic for fallback
                 if x + w > max_w - padding:
                     x = padding
                     y += row_h + padding
                     row_h = 0
-                
+
                 if y + h <= max_h - padding and x + w <= max_w - padding:
-                    node = type('obj', (object,), {'x': x, 'y': y, 'w': w, 'h': h})
+                    node = cast(
+                        _AtlasNode,
+                        SimpleNamespace(x=x, y=y, w=w, h=h),
+                    )
                     x += w + padding
                     row_h = max(row_h, h)
 
@@ -113,9 +131,9 @@ def pack_sprites_to_atlas(
                     img_to_paste = img
 
                 atlas_img.paste(
-                    img_to_paste, 
-                    (node.x, node.y), 
-                    img_to_paste if "A" in img_to_paste.getbands() else None
+                    img_to_paste,
+                    (node.x, node.y),
+                    img_to_paste if "A" in img_to_paste.getbands() else None,
                 )
 
                 entry = {
@@ -125,7 +143,7 @@ def pack_sprites_to_atlas(
                     "rotated": rotated,
                 }
                 meta.append(entry)
-                packed_in_this_atlas.append((img, meta_dict)) # Record success
+                packed_in_this_atlas.append((img, meta_dict))  # Record success
 
         # Remove packed items from remaining list
         for item in packed_in_this_atlas:
@@ -214,14 +232,14 @@ def build_atlas(
     """High-level helper used by UI."""
     os.makedirs(out_dir, exist_ok=True)
     converted_items = [(img, {"name": name}) for name, img in items]
-    
+
     atlases = pack_sprites_to_atlas(
         converted_items,
         max_size=max_size,
         padding=padding,
         allow_rotate=allow_rotate,
     )
-    
+
     results = []
     for idx, (atlas_img, meta) in enumerate(atlases):
         atlas_path = os.path.join(out_dir, f"{base_name}_{idx}.png")
