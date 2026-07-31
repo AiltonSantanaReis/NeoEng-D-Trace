@@ -3,11 +3,9 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-import json
-import os
 import time
 import uuid
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 from src.core.logger import logger
 from src.core.validation_events import (
@@ -261,6 +259,9 @@ class Scene:
     def __init__(self):
         self.image = None
         self.image_path = None
+        self.image_path_kind: Optional[str] = None
+        self.image_sha256: Optional[str] = None
+        self._image_reference_loaded = False
         self.objects: Dict[str, SceneObject] = {}
         self.layers: List[Layer] = []
         self.groups: List[Group] = []
@@ -557,110 +558,38 @@ class Scene:
     def load_image(self, img, path):
         self.image = img
         self.image_path = path
+        self.image_path_kind = None
+        self.image_sha256 = None
+        self._image_reference_loaded = False
         self._notify()
 
     def get_image(self):
         return self.image
 
     # --- Persistence ---
-    def save_project(self, path: str):
+    def save_project(self, path: str) -> None:
+        """Validate and atomically save the complete persistent scene state."""
+
         try:
-            from typing import Any, Dict
+            from src.persistence.project_io import save_scene_project
 
-            data: Dict[str, Any] = {
-                "layers": [],
-                "objects": {},
-                "groups": [],
-                "collisions": [],
-            }
-            for layer in self.layers:
-                data["layers"].append(
-                    {
-                        "id": layer.id,
-                        "name": layer.name,
-                        "visible": layer.visible,
-                        "locked": layer.locked,
-                    }
-                )
-            for oid, obj in self.objects.items():
-                data["objects"][oid] = {
-                    "polygon": obj.polygon,
-                    "layer_id": obj.layer_id,
-                }
-            for g in self.groups:
-                data["groups"].append(
-                    {
-                        "id": g.id,
-                        "name": g.name,
-                        "visible": g.visible,
-                        "locked": g.locked,
-                        "members": list(g.members),
-                    }
-                )
-
-            # Save collisions
-            data["collisions"] = list(self.collision_shapes.keys())
-
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2)
-        except Exception as e:
-            logger.error(f"Failed to save project {path}: {e}")
+            save_scene_project(self, path)
+        except Exception as exc:
+            logger.error(f"Failed to save project {path}: {exc}")
             raise
 
-    def load_project(self, path: str):
+    def load_project(self, path: str) -> tuple[str, ...]:
+        """Load a validated project without leaving partial scene state."""
+
         try:
-            if not os.path.exists(path):
-                raise FileNotFoundError(path)
-            with open(path, "r", encoding="utf-8") as f:
-                from typing import Any, Dict
+            from src.persistence.project_io import load_project_into_scene
 
-                data: Dict[str, Any] = json.load(f)
-
-            self.layers = []
-            for layer_data in data.get("layers", []):
-                self.layers.append(
-                    Layer(
-                        id=layer_data["id"],
-                        name=layer_data.get("name", "Layer"),
-                        visible=layer_data.get("visible", True),
-                        locked=layer_data.get("locked", False),
-                    )
-                )
-            if not self.layers:
-                self.layers.append(Layer(id="layer_default", name="Default"))
-
-            self.objects = {}
-            for oid, info in data.get("objects", {}).items():
-                poly = [tuple(p) for p in info.get("polygon", [])]
-                poly = _normalize_polygon_winding(poly)
-                self.objects[oid] = SceneObject(
-                    oid,
-                    poly,
-                    info.get("layer_id", "layer_default"),
-                )
-
-            self.groups = []
-            for g in data.get("groups", []):
-                grp = Group(
-                    id=g["id"],
-                    name=g.get("name", "Group"),
-                    visible=g.get("visible", True),
-                    locked=g.get("locked", False),
-                )
-                grp.members = list(g.get("members", []))
-                self.groups.append(grp)
-
-            # Load collisions
-            self.collision_shapes = {}
-            for oid in data.get("collisions", []):
-                if oid in self.objects:
-                    self.collision_shapes[oid] = [
-                        (float(p[0]), float(p[1])) for p in self.objects[oid].polygon
-                    ]
-
-            self._notify()
-        except Exception as e:
-            logger.error(f"Failed to load project {path}: {e}")
+            warnings = load_project_into_scene(self, path)
+            for warning in warnings:
+                logger.warning("Project migration warning: %s", warning)
+            return warnings
+        except Exception as exc:
+            logger.error(f"Failed to load project {path}: {exc}")
             raise
 
     # --- Bezier ---
