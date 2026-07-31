@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "project": "NeoEng-D-Trace",
+  "stage": 2,
+  "stage_name": "Inventário funcional e testes de caracterização",
+  "branch": "audit/etapa-2-inventario-funcional",
+  "base_commit": "287f6ef770ec1e65410a0a567dee2747f67c9f3d",
+  "packages": [
+    {
+      "id": "inventario_estatico",
+      "filename": "NeoEng-D-Trace_Etapa2_Inventario_20260731_100024.zip",
+      "size_bytes": 102283,
+      "sha256": "0ee82920c86c52f85599e92644745b6b6abd0b1906ae737cb324400970262fe7"
+    },
+    {
+      "id": "legacy_nonqt",
+      "filename": "NeoEng-D-Trace_Etapa2_Legacy_NonQt_20260731_101604.zip",
+      "size_bytes": 12521,
+      "sha256": "046c59041534bd897b982fd06926b9cfc00c7b33aacbb26b28986919cc008c50"
+    },
+    {
+      "id": "legacy_qt",
+      "filename": "NeoEng-D-Trace_Etapa2_Legacy_Qt_20260731_103251.zip",
+      "size_bytes": 8872,
+      "sha256": "7f021c3ebfd3d228e6a4b73d2e7769bedcd1780d3bf3ebbb456262426316644b"
+    },
+    {
+      "id": "fluxos_qt_atuais",
+      "filename": "NeoEng-D-Trace_Etapa2_Qt_Current_Flows_20260731_110755.zip",
+      "size_bytes": 1807,
+      "sha256": "4d9ed670c256ec8b96420412c31187c5a52f0de5a47af63ae77345e2f357d20e"
+    },
+    {
+      "id": "fluxos_core_atuais",
+      "filename": "NeoEng-D-Trace_Etapa2_Core_Current_Flows_20260731_112655.zip",
+      "size_bytes": 3809,
+      "sha256": "cf1d58e0bf9d668e2972e1d94f4ab00c958d6abed7fcf9d4e3feae2030456a46"
+    },
+    {
+      "id": "persistencia_cli_gltf",
+      "filename": "NeoEng-D-Trace_Etapa2_Persistence_CLI_GLTF_20260731_113315.zip",
+      "size_bytes": 2520,
+      "sha256": "91fb4e17255954624e58bdb23f841fb1df5e854aa2504ff37d56a6666f88920a"
+    },
+    {
+      "id": "gui_manual_inicial",
+      "filename": "NeoEng-D-Trace_Etapa2_Manual_GUI_20260731_115201.zip",
+      "size_bytes": 198381,
+      "sha256": "e7d934752f9b9f0addf6fd80ddbbf4154b18f92f6925c4a9dcd8aa62413329d3"
+    },
+    {
+      "id": "gui_manual_controlada",
+      "filename": "NeoEng-D-Trace_Etapa2_Manual_GUI_Controlled_20260731_120824.zip",
+      "size_bytes": 15430,
+      "sha256": "fde7497c2b9a8db1e2cd428b9a4368d8c88fb894454fa9bb45030f40118ecbb7"
+    }
+  ],
+  "controlled_gui": {
+    "package_sha256": "fde7497c2b9a8db1e2cd428b9a4368d8c88fb894454fa9bb45030f40118ecbb7",
+    "top_level_checksums_all_match": true,
+    "controlled_input_match": true,
+    "session_status": "SUCCESS",
+    "missing_success_events": [],
+    "failure_record_count": 0,
+    "exported_file_count": 6,
+    "reference": {
+      "format": "PNG",
+      "mode": "RGBA",
+      "width": 977,
+      "height": 631
+    },
+    "selected_sprite": {
+      "format": "PNG",
+      "mode": "RGBA",
+      "width": 291,
+      "height": 219
+    },
+    "atlas_image": {
+      "format": "PNG",
+      "mode": "RGBA",
+      "width": 290,
+      "height": 219
+    },
+    "atlas_rect": {
+      "x": 0,
+      "y": 0,
+      "w": 291,
+      "h": 219
+    },
+    "atlas_rect_within_image": false,
+    "glb_headers": {
+      "scene.glb": {
+        "magic": "glTF",
+        "version": 2,
+        "declared_length": 1000,
+        "actual_length": 1000,
+        "length_matches": true
+      },
+      "selected-object.glb": {
+        "magic": "glTF",
+        "version": 2,
+        "declared_length": 1000,
+        "actual_length": 1000,
+        "length_matches": true
+      }
+    }
+  },
+  "summary": {
+    "tracked_files": 209,
+    "baseline_files": 208,
+    "python_files": 122,
+    "python_lines": 24966,
+    "static_syntax_errors": 0,
+    "legacy_tests": {
+      "declared_and_collected": 196,
+      "failures": 16,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 180
+    },
+    "qt_current_scenarios": 6,
+    "core_current_scenarios": 7,
+    "persistence_cli_gltf_scenarios": 6
+  },
+  "document_status": "PENDING_INTEGRATION_CI_AND_REVIEW",
+  "raw_evidence_publication": {
+    "status": "PENDING_CI_ARTIFACT",
+    "required_for_formal_closure": true,
+    "repository_bundle_path": "docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip",
+    "bundle_filename": "NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip",
+    "bundle_size_bytes": 339806,
+    "bundle_sha256": "86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836"
+  },
+  "risk_findings": {
+    "new_risk_id": "R-013",
+    "description": "Atlas JSON rectangle exceeds controlled PNG width by one pixel",
+    "status": "CONFIRMED_OPEN"
+  },
+  "formal_stage_closure": {
+    "status": "PENDING",
+    "stage_3_started": false
+  }
+}

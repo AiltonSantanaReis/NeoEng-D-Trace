@@ -14,6 +14,34 @@
 | R-010 | P1 | Dependências transitivas sem lockfile | Builds não reproduzíveis | Instalação limpa a partir de lockfile |
 | R-011 | P2 | Módulos grandes e acoplados ao Qt | Retrabalho e dificuldade de teste | Refatoração posterior protegida por caracterização |
 | R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
+| R-013 | P1 | Metadados do atlas podem exceder os limites da textura | Recorte incorreto ou falha em engines consumidoras | PNG e JSON reabertos; retângulos contidos; testes unitários e de integração |
+
+## Achados registrados na Etapa 2
+
+| ID | Estado | Evidência consolidada | Encaminhamento |
+|---|---|---|---|
+| R-001 | CONFIRMADO / ABERTO | Colisão personalizada e Bézier são perdidos; formato sem versão | Etapa 3 |
+| R-002 | ABERTO | Persistência interna existe, mas o ciclo Abrir/Salvar não está completo na UI | Etapa 4 |
+| R-003 | ABERTO | Caracterização ampliada; cobertura integral de UI permanece pendente | Etapa 11 |
+| R-004 | CONFIRMADO / ABERTO | Fluxos selecionados funcionam, mas falhas de comando são ocultadas do chamador | Etapa 5 |
+| R-005 | ABERTO | Exportação de resultados do painel de colisão permanece parcialmente desconectada | Etapa 6 |
+| R-006 | CONFIRMADO / ABERTO | Dois cenários negativos retornam código 0 sem arquivo | Etapa 7 |
+| R-007 | CONFIRMADO / ABERTO | Bézier não persiste; métricas geométricas ainda são insuficientes | Etapa 8 |
+| R-008 | CONFIRMADO / ABERTO | Duas implementações de LassoTool foram identificadas | Etapa 9 |
+| R-011 | ABERTO | Acoplamento ao Qt permanece dívida para refatoração protegida | Etapa 13 |
+| R-012 | CONFIRMADO / ABERTO | Schema desconhecido é aceito; tipos incorretos falham sem validação controlada | Etapa 12 |
+| R-013 | CONFIRMADO / ABERTO | Retângulo JSON do atlas excede o PNG controlado em 1 pixel | Etapa 10 |
+
+Relatório permanente:
+`docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md`.
+
+Manifesto estruturado:
+`docs/evidence/ETAPA_2_EVIDENCE_MANIFEST.json`.
+
+Pacote bruto preparado para publicação no artefato Windows do CI:
+`docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip`.
+
+Nenhum risco acima está encerrado por esta etapa.
 
 ## Encerramentos registrados
 
