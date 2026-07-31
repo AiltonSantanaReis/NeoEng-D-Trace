@@ -35,9 +35,9 @@ def test_identity_constants_are_explicit_and_stable():
     assert LEGACY_APP_NAMES == ("PolygonTool", "PolygonTool v2")
 
 
-def test_project_format_identity_is_not_invented_by_brand_migration():
-    assert PROJECT_FORMAT_ID is None
-    assert PROJECT_FORMAT_VERSION is None
+def test_project_format_identity_matches_the_approved_stage_3_adr():
+    assert PROJECT_FORMAT_ID == "neoeng-d-trace-project"
+    assert PROJECT_FORMAT_VERSION == 1
 
 
 def test_window_title_is_available_in_both_supported_languages():

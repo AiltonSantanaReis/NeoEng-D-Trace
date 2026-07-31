@@ -1,14 +1,14 @@
 """Centralized product identity for NeoEng-D-Trace.
 
-This module contains identity and display helpers only. It does not invent a
-project-file schema or installer identity that the product has not approved.
+This module contains approved product, display, and project-format identity.
+It does not define installer identity beyond the decisions already approved.
 ``LEGACY_APP_NAMES`` is restricted to compatibility checks and historical
 references.
 """
 
 from __future__ import annotations
 
-from typing import Final, Optional
+from typing import Final
 
 APP_NAME: Final[str] = "NeoEng-D-Trace"
 APP_DISPLAY_NAME: Final[str] = APP_NAME
@@ -20,9 +20,9 @@ CONFIG_DIR_NAME: Final[str] = APP_DISPLAY_NAME
 LOGGER_NAME: Final[str] = APP_DISPLAY_NAME
 GLTF_GENERATOR: Final[str] = f"{APP_DISPLAY_NAME} GLTF Exporter"
 
-# Deliberately undefined until the format ADR is approved.
-PROJECT_FORMAT_ID: Final[Optional[str]] = None
-PROJECT_FORMAT_VERSION: Final[Optional[int]] = None
+# Approved by the Stage 3 project-format ADR.
+PROJECT_FORMAT_ID: Final[str] = "neoeng-d-trace-project"
+PROJECT_FORMAT_VERSION: Final[int] = 1
 
 LEGACY_APP_NAMES: Final[tuple[str, ...]] = (
     "PolygonTool",
