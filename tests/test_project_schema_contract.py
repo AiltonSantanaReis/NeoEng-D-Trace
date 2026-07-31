@@ -164,3 +164,33 @@ def test_image_path_kind_must_match_path_syntax(path, kind):
             path_kind=kind,
             sha256=None,
         )
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "../outside/image.png",
+        r"..\outside\image.png",
+        r"folder/..\outside/image.png",
+        "folder/../image.png",
+        "   ",
+        "image\x00.png",
+    ],
+)
+def test_relative_image_path_rejects_traversal_and_invalid_text(path):
+    with pytest.raises(ValidationError):
+        ImageReferenceRecord(
+            path=path,
+            path_kind="relative",
+            sha256=None,
+        )
+
+
+def test_relative_image_path_accepts_internal_path():
+    reference = ImageReferenceRecord(
+        path="assets/source/image.png",
+        path_kind="relative",
+        sha256=None,
+    )
+
+    assert reference.path == "assets/source/image.png"

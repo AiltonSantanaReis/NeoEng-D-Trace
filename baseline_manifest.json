@@ -589,8 +589,8 @@
       "size": 19805
     },
     "src/persistence/project_schema.py": {
-      "sha256": "48053b2536a5e772847d15c1b5b17861132b87a74a2de9802e8f327225708768",
-      "size": 6556
+      "sha256": "11941a0fb0d7672ef2e039ab5c4fae2bcd50b37c959ad877f5ac892b4f64c20a",
+      "size": 7157
     },
     "src/physics/__init__.py": {
       "sha256": "9badce437b162f2dd16d1ff83a2d5415aae2662ff84d4462782d930519ef8f64",
@@ -829,8 +829,8 @@
       "size": 6884
     },
     "tests/test_project_schema_contract.py": {
-      "sha256": "230504bda01966ad41d8f1acc0faa4734f3069455db8679e7cca02f406d4c436",
-      "size": 4196
+      "sha256": "ff1d7406b0332625dd3f576c7901e96b3912b969deae8a95396edecf0a552a07",
+      "size": 4908
     },
     "tests/test_regression_core_contracts.py": {
       "sha256": "954258e1d7e90ad7cd48b6e0cea2a84e52fedcd61486f2f23f73de93895be584",

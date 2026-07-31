@@ -84,6 +84,15 @@ class ImageReferenceRecord(StrictProjectModel):
         pattern=r"^[0-9a-f]{64}$",
     )
 
+    @field_validator("path")
+    @classmethod
+    def validate_path_text(cls, value: str) -> str:
+        if "\x00" in value:
+            raise ValueError("image paths cannot contain NUL bytes")
+        if not value.strip():
+            raise ValueError("image paths cannot be blank")
+        return value
+
     @model_validator(mode="after")
     def validate_path_kind(self) -> "ImageReferenceRecord":
         absolute = (
@@ -94,6 +103,12 @@ class ImageReferenceRecord(StrictProjectModel):
             raise ValueError("relative image paths cannot be marked absolute")
         if self.path_kind == "relative" and absolute:
             raise ValueError("absolute image paths cannot be marked relative")
+        if self.path_kind == "relative":
+            normalized_parts = PurePosixPath(self.path.replace("\\", "/")).parts
+            if ".." in normalized_parts:
+                raise ValueError(
+                    "relative image paths cannot escape the project directory"
+                )
         return self
 
 
