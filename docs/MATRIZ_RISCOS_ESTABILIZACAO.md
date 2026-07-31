@@ -15,6 +15,13 @@
 | R-011 | P2 | Módulos grandes e acoplados ao Qt | Retrabalho e dificuldade de teste | Refatoração posterior protegida por caracterização |
 | R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
 
+## Validações candidatas a encerramento
+
+| ID | Estado | Evidência técnica | Condição restante |
+|---|---|---|---|
+| R-009 | PARCIAL | PR `#7`; commit `837aa6ac170e34868a87036ac2d33032eac99188`; execução `#29` (`30556955141`); jobs `test-windows` (`90919758232`) e `test` (`90919758259`) concluídos com `success` | Integrar o relatório e esta matriz e obter uma nova execução completa do CI sobre o commit de integração |
+| R-010 | PARCIAL | `poetry.lock` formato `2.1`; SHA-256 canônico `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`; `poetry sync` aprovado em Windows e Linux; artefatos `8765255412` e `8765217747` | Integrar o relatório e esta matriz e obter uma nova execução completa do CI sobre o commit de integração |
+
 ## Severidades
 
 - **P0:** risco de perda de dados, corrupção, segurança grave ou impossibilidade de confiar no produto. Bloqueia qualquer release e novas funcionalidades.
