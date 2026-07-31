@@ -15,12 +15,12 @@
 | R-011 | P2 | Módulos grandes e acoplados ao Qt | Retrabalho e dificuldade de teste | Refatoração posterior protegida por caracterização |
 | R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
 
-## Validações candidatas a encerramento
+## Encerramentos registrados
 
-| ID | Estado | Evidência técnica | Condição restante |
-|---|---|---|---|
-| R-009 | PARCIAL | PR `#7`; commit `837aa6ac170e34868a87036ac2d33032eac99188`; execução `#29` (`30556955141`); jobs `test-windows` (`90919758232`) e `test` (`90919758259`) concluídos com `success` | Integrar o relatório e esta matriz e obter uma nova execução completa do CI sobre o commit de integração |
-| R-010 | PARCIAL | `poetry.lock` formato `2.1`; SHA-256 canônico `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`; `poetry sync` aprovado em Windows e Linux; artefatos `8765255412` e `8765217747` | Integrar o relatório e esta matriz e obter uma nova execução completa do CI sobre o commit de integração |
+| ID | Estado | Evidência de encerramento |
+|---|---|---|
+| R-009 | ENCERRADO | Commit `f8f534edd74490f7264ebb153110ae65fce7066c`; workflow `Private validation` `#30` (`30596616841`); jobs Linux `test` (`91050247336`) e Windows `test-windows` (`91050247386`) concluídos com `success`; manifesto íntegro com 207 arquivos antes e depois |
+| R-010 | ENCERRADO | Instalação por `poetry sync` no Linux e Windows; lockfile canônico `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`; artefatos Linux `8780354978` e Windows `8780366021` vinculados ao commit validado |
 
 ## Severidades
 

@@ -148,13 +148,70 @@ Os artefatos foram vinculados ao commit
 - O GitHub Actions apresentou avisos relacionados à transição de Node 20 para Node 24.
 - Esta etapa não valida persistência completa, Abrir/Salvar, Undo/Redo ou exportação completa de colisão.
 
+## Validação da integração
+
+A inclusão do relatório de evidência, da matriz atualizada e do manifesto com
+207 arquivos foi validada remotamente pelo GitHub Actions.
+
+### Identificação
+
+- Commit validado: `f8f534edd74490f7264ebb153110ae65fce7066c`
+- Workflow: `Private validation`
+- Execução: `#30`
+- Run ID: `30596616841`
+- Conclusão: `success`
+
+### Linux
+
+- Job: `test`
+- Job ID: `91050247336`
+- Sistema: Ubuntu 24.04.4 LTS
+- Python: `3.11.15`
+- Poetry: `2.4.1`
+- Operações de instalação: `39 installs`, `0 updates`, `0 removals`
+- SHA-256 canônico do lockfile:
+  `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`
+- Manifesto antes e depois: `Baseline verified: 207 files`
+- flake8 fatal: `0`
+- Black: `94 files would be left unchanged`
+- mypy: `Success: no issues found in 58 source files`
+- pytest: `161 passed in 9.93s`
+- Cobertura: `48%`
+- Artefato: `validation-linux-python-3.11`
+- Artifact ID: `8780354978`
+- Tamanho: `23000 bytes`
+- SHA-256 do artefato:
+  `6f184bddb77cb4c77a27ce5a79e9e0c4a17d2a3324fc72d25918356b961adbff`
+
+### Windows
+
+- Job: `test-windows`
+- Job ID: `91050247386`
+- Sistema: Microsoft Windows Server 2025
+- Python: `3.11.9`
+- Poetry: `2.4.1`
+- Operações de instalação: `40 installs`, `0 updates`, `0 removals`
+- SHA-256 canônico do lockfile:
+  `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`
+- Manifesto antes e depois: `Baseline verified: 207 files`
+- flake8 fatal: `0`
+- Black: `94 files would be left unchanged`
+- mypy: `Success: no issues found in 58 source files`
+- pytest: `161 passed in 12.16s`
+- Cobertura: `48%`
+- Artefato: `validation-windows-python-3.11`
+- Artifact ID: `8780366021`
+- Tamanho: `22935 bytes`
+- SHA-256 do artefato:
+  `c1400d7df0dbee959ec010b508e0481162e63cd017bbd0977018dc32b889db36`
+
 ## Decisão técnica
 
-**APROVADO TECNICAMENTE — INTEGRAÇÃO DA EVIDÊNCIA PENDENTE**
+**APROVADO — ENCERRAMENTO FORMAL REGISTRADO; INTEGRAÇÃO EM `main` PENDENTE**
 
-O commit técnico comprovou ambiente reproduzível e validação equivalente em
-Windows e Linux.
+A execução `#30` comprovou que o commit contendo o relatório, a matriz e o
+manifesto atualizado foi validado integralmente no Linux e no Windows.
 
-Os riscos R-009 e R-010 somente poderão ser formalmente encerrados depois que
-este relatório e a atualização correspondente da matriz forem integrados e
-aprovados por uma nova execução completa do CI.
+Os critérios técnicos dos riscos `R-009` e `R-010` foram atendidos. O pull
+request deve permanecer sem merge até que este registro final passe por uma
+nova execução completa do CI e pela revisão final do diff.
