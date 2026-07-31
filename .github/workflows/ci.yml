@@ -12,6 +12,9 @@ permissions:
 
 env:
   PYTHON_VERSION: "3.11"
+  POETRY_VERSION: "2.4.1"
+  POETRY_VIRTUALENVS_IN_PROJECT: "true"
+  POETRY_NO_INTERACTION: "1"
   QT_QPA_PLATFORM: offscreen
 
 jobs:
@@ -22,56 +25,138 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Verify clean baseline manifest
-        run: python tools/baseline_integrity.py --verify
-
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: pip
+
+      - name: Verify clean baseline manifest
+        run: python tools/baseline_integrity.py --verify
 
       - name: Install Qt runtime libraries
         run: |
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends libegl1
 
-      - name: Install dependencies
+      - name: Install Poetry 2.4.1
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .
-          python -m pip install -r requirements-dev.txt
+          python -m pip install "poetry==${{ env.POETRY_VERSION }}"
 
-      - name: Record validation environment
+      - name: Verify dependency lock
+        run: poetry check --lock
+
+      - name: Synchronize dependencies from lock file
+        run: poetry sync --no-interaction --no-ansi
+
+      - name: Record Linux validation environment
         run: |
           python --version
-          python -m pip freeze --all
+          poetry --version
+          poetry run python --version
+          poetry run python -m pip freeze --all > "${{ runner.temp }}/environment-freeze.txt"
+          python -c "from pathlib import Path; import hashlib; raw=Path('poetry.lock').read_bytes(); text=raw.decode('utf-8'); canonical=text.replace('\r\n','\n').replace('\r','\n').encode('utf-8'); print('CANONICAL_LOCK_SHA256=' + hashlib.sha256(canonical).hexdigest())"
 
       - name: Compile Python sources
-        run: python -m compileall -q -f app.py src tests pack_for_ai.py tools
+        run: poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools
 
       - name: Lint for fatal errors
-        run: flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
+        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Report non-blocking lint metrics
-        run: flake8 src tests tools app.py pack_for_ai.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Check formatting
-        run: black --check --diff src tests tools app.py pack_for_ai.py
+        run: poetry run black --check --diff src tests tools app.py pack_for_ai.py
 
       - name: Check import ordering
-        run: isort --check-only --diff src tests tools app.py pack_for_ai.py
+        run: poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py
 
       - name: Type check
-        run: mypy src --ignore-missing-imports
+        run: poetry run mypy src --ignore-missing-imports
 
-      - name: Run tests with local coverage artifact
-        run: pytest --cov=src --cov-report=term-missing --cov-report=xml
+      - name: Run tests with Linux coverage
+        run: poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml
 
-      - name: Store coverage without external upload
+      - name: Verify Linux source tree remained unchanged
+        run: python tools/baseline_integrity.py --verify
+
+      - name: Store Linux evidence
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-python-3.11
-          path: coverage.xml
+          name: validation-linux-python-3.11
+          path: |
+            coverage.xml
+            ${{ runner.temp }}/environment-freeze.txt
+          if-no-files-found: error
+          retention-days: 7
+
+  test-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Verify clean baseline manifest
+        run: python tools/baseline_integrity.py --verify
+
+      - name: Install Poetry 2.4.1
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "poetry==${{ env.POETRY_VERSION }}"
+
+      - name: Verify dependency lock
+        run: poetry check --lock
+
+      - name: Synchronize dependencies from lock file
+        run: poetry sync --no-interaction --no-ansi
+
+      - name: Record Windows validation environment
+        shell: pwsh
+        run: |
+          python --version
+          poetry --version
+          poetry run python --version
+          poetry run python -m pip freeze --all |
+            Set-Content -Path (Join-Path $env:RUNNER_TEMP "environment-freeze.txt") -Encoding utf8
+          python -c "from pathlib import Path; import hashlib; raw=Path('poetry.lock').read_bytes(); text=raw.decode('utf-8'); canonical=text.replace('\r\n','\n').replace('\r','\n').encode('utf-8'); print('CANONICAL_LOCK_SHA256=' + hashlib.sha256(canonical).hexdigest())"
+
+      - name: Compile Python sources
+        run: poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools
+
+      - name: Lint for fatal errors
+        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Report non-blocking lint metrics
+        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Check formatting
+        run: poetry run black --check --diff src tests tools app.py pack_for_ai.py
+
+      - name: Check import ordering
+        run: poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py
+
+      - name: Type check
+        run: poetry run mypy src --ignore-missing-imports
+
+      - name: Run tests with Windows coverage
+        run: poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml
+
+      - name: Verify Windows source tree remained unchanged
+        run: python tools/baseline_integrity.py --verify
+
+      - name: Store Windows evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-windows-python-3.11
+          path: |
+            coverage.xml
+            ${{ runner.temp }}/environment-freeze.txt
           if-no-files-found: error
           retention-days: 7

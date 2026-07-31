@@ -15,6 +15,13 @@
 | R-011 | P2 | Módulos grandes e acoplados ao Qt | Retrabalho e dificuldade de teste | Refatoração posterior protegida por caracterização |
 | R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
 
+## Encerramentos registrados
+
+| ID | Estado | Evidência de encerramento |
+|---|---|---|
+| R-009 | ENCERRADO | Commit `f8f534edd74490f7264ebb153110ae65fce7066c`; workflow `Private validation` `#30` (`30596616841`); jobs Linux `test` (`91050247336`) e Windows `test-windows` (`91050247386`) concluídos com `success`; manifesto íntegro com 207 arquivos antes e depois |
+| R-010 | ENCERRADO | Instalação por `poetry sync` no Linux e Windows; lockfile canônico `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`; artefatos Linux `8780354978` e Windows `8780366021` vinculados ao commit validado |
+
 ## Severidades
 
 - **P0:** risco de perda de dados, corrupção, segurança grave ou impossibilidade de confiar no produto. Bloqueia qualquer release e novas funcionalidades.
