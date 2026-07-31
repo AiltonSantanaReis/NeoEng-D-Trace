@@ -284,9 +284,13 @@
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
       "size": 6772
     },
+    "docs/evidence/ETAPA_1_ENCERRAMENTO_POS_MERGE.md": {
+      "sha256": "46f1b9d0e499f8aba2798222c77b2e553d8cb548cda6cc967b0bd280e7b9d8a7",
+      "size": 6530
+    },
     "docs/evidence/README.md": {
-      "sha256": "258c17860c7d63336f9b104ff0247bf90a0efc961ff531c2bd706f309ac8f143",
-      "size": 735
+      "sha256": "be1e4314724cff54c73e2ec029a0e9a999da93d4cc4d1eac273dbca679256c1c",
+      "size": 985
     },
     "docs/phase-7-exporters.md": {
       "sha256": "99aecb50a1824e05467009aa05da9877b9d88a5470610ada302d4e117cbd731d",
