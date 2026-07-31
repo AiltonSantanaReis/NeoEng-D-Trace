@@ -51,3 +51,6 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   anteriores ao merge.
 - `ETAPA_1_ENCERRAMENTO_POS_MERGE.md` — validação da `main` e encerramento
   formal da Etapa 1 depois do merge.
+
+- `ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md` — inventário, caracterização e riscos da Etapa 2 antes do merge.
+- `ETAPA_2_ENCERRAMENTO_POS_MERGE.md` — validação da `main` e registro de encerramento da Etapa 2 depois do merge.

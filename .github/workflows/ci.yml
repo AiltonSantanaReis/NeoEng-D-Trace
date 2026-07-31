@@ -161,5 +161,7 @@ jobs:
             docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md
             docs/evidence/ETAPA_2_EVIDENCE_MANIFEST.json
             docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip
+            docs/evidence/ETAPA_2_ENCERRAMENTO_POS_MERGE.md
+            docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip
           if-no-files-found: error
           retention-days: 7

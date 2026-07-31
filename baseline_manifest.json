@@ -17,8 +17,8 @@
       "size": 1152
     },
     ".github/workflows/ci.yml": {
-      "sha256": "0f54ab71bcf19d4ec87ff7213e96a0b1da8b2f05a29bb7077d52d9e442b50608",
-      "size": 5905
+      "sha256": "834014d3ac73246ac870e706d936418f30abeb2ee464831df373b25ff35c00fa",
+      "size": 6052
     },
     ".gitignore": {
       "sha256": "1a28442e581d24e19e5181edc36c45871e038dec77b2b56bf75330fc6515b3b0",
@@ -193,8 +193,8 @@
       "size": 5569
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "b86f04c556fe9ec80a9b3d8c8e18972259e3c64a4e1cc9ad507bd953a7ecbb50",
-      "size": 4960
+      "sha256": "f69731c6d461600ae30d31a6c5e307e2b4eb19e24268d1995e4934ac146e0195",
+      "size": 5377
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "156adf066ca773eb1eb357d393ae990dcc62391899d391c09ad84e2a9758973d",
@@ -288,17 +288,25 @@
       "sha256": "46f1b9d0e499f8aba2798222c77b2e553d8cb548cda6cc967b0bd280e7b9d8a7",
       "size": 6530
     },
+    "docs/evidence/ETAPA_2_ENCERRAMENTO_POS_MERGE.md": {
+      "sha256": "e5cd0448733a7de865cfc554352f3e03b78e9935ad44b5b87ea3e0ca4f728c6d",
+      "size": 8937
+    },
     "docs/evidence/ETAPA_2_EVIDENCE_MANIFEST.json": {
-      "sha256": "9ac1a22071299b5579b16be0908f1c8e4e1ffa9ceabd59bc0f2b1c86571f8926",
-      "size": 4440
+      "sha256": "a427aac6448de1d533268dc2c068d6c40f862e2c65bd8934e33d1e4bb47b6031",
+      "size": 8008
     },
     "docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md": {
       "sha256": "8f0998eb3b14a488247ef87b8ea2d37c0be8451ab70625d86f2b15ba03de167f",
       "size": 9761
     },
     "docs/evidence/README.md": {
-      "sha256": "be1e4314724cff54c73e2ec029a0e9a999da93d4cc4d1eac273dbca679256c1c",
-      "size": 985
+      "sha256": "1329ee1c76b6851fb533bbbc1e663d52df2b09a1b5eb65de61cb7bb61c1a918a",
+      "size": 1226
+    },
+    "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
+      "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
+      "size": 391665
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip": {
       "sha256": "86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836",
