@@ -158,5 +158,8 @@ jobs:
           path: |
             coverage.xml
             ${{ runner.temp }}/environment-freeze.txt
+            docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md
+            docs/evidence/ETAPA_2_EVIDENCE_MANIFEST.json
+            docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip
           if-no-files-found: error
           retention-days: 7
