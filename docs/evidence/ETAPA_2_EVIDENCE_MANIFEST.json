@@ -122,14 +122,42 @@
     "core_current_scenarios": 7,
     "persistence_cli_gltf_scenarios": 6
   },
-  "document_status": "PENDING_INTEGRATION_CI_AND_REVIEW",
+  "document_status": "CLOSURE_RECORD_READY_FOR_INTEGRATION",
   "raw_evidence_publication": {
-    "status": "PENDING_CI_ARTIFACT",
+    "status": "PUBLISHED_AND_VALIDATED",
     "required_for_formal_closure": true,
     "repository_bundle_path": "docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip",
     "bundle_filename": "NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip",
     "bundle_size_bytes": 339806,
-    "bundle_sha256": "86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836"
+    "bundle_sha256": "86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836",
+    "pull_request_validation": {
+      "run_number": 35,
+      "run_id": 30645019894,
+      "head_sha": "4d507cd443f407cfa0a861d8cc46ff146b9f643e",
+      "conclusion": "success",
+      "linux_artifact": {
+        "id": 8799071198,
+        "digest": "sha256:084860a9a51c506921f4721b78f4f9e1b68285e9e9813bdd077a0d9456603d46"
+      },
+      "windows_artifact": {
+        "id": 8799088718,
+        "digest": "sha256:17bfbb8a79ed4f7fe03e5d6dddcdec3321913f5b0b2839175877581ad1784103"
+      }
+    },
+    "main_post_merge_validation": {
+      "run_number": 36,
+      "run_id": 30646258120,
+      "head_sha": "d41093e706d3c8c555f64ef0c15c9ad40219a208",
+      "conclusion": "success",
+      "linux_artifact": {
+        "id": 8799557767,
+        "digest": "sha256:c9ee9363877729e56dab048a9fda00c0d0df802d8c5885c935d729416219f54e"
+      },
+      "windows_artifact": {
+        "id": 8799571608,
+        "digest": "sha256:997a2452a18e3962dd6623f7b50c71ccd1eaeb8e7d91d2336b0929f66f6c2ecc"
+      }
+    }
   },
   "risk_findings": {
     "new_risk_id": "R-013",
@@ -137,7 +165,81 @@
     "status": "CONFIRMED_OPEN"
   },
   "formal_stage_closure": {
-    "status": "PENDING",
+    "decision": "APPROVED",
+    "status": "PENDING_CLOSURE_RECORD_INTEGRATION_AND_FINAL_MAIN_CI",
+    "closure_record_path": "docs/evidence/ETAPA_2_ENCERRAMENTO_POS_MERGE.md",
+    "closure_evidence_package_path": "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip",
     "stage_3_started": false
+  },
+  "integration": {
+    "pull_request": 9,
+    "feature_branch": "audit/etapa-2-inventario-funcional",
+    "feature_commit": "4d507cd443f407cfa0a861d8cc46ff146b9f643e",
+    "merge_commit": "d41093e706d3c8c555f64ef0c15c9ad40219a208",
+    "merge_method": "merge"
+  },
+  "post_merge_validation": {
+    "package_filename": "NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip",
+    "repository_path": "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip",
+    "size_bytes": 391665,
+    "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
+    "workflow": {
+      "name": "Private validation",
+      "run_id": 30646258120,
+      "run_number": 36,
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "head_branch": "main",
+      "head_sha": "d41093e706d3c8c555f64ef0c15c9ad40219a208"
+    },
+    "jobs": [
+      {
+        "id": 91208257924,
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 91208257772,
+        "name": "test-windows",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 8799557767,
+        "name": "validation-linux-python-3.11",
+        "size_in_bytes": 22998,
+        "digest": "sha256:c9ee9363877729e56dab048a9fda00c0d0df802d8c5885c935d729416219f54e",
+        "expired": false
+      },
+      {
+        "id": 8799571608,
+        "name": "validation-windows-python-3.11",
+        "size_in_bytes": 369035,
+        "digest": "sha256:997a2452a18e3962dd6623f7b50c71ccd1eaeb8e7d91d2336b0929f66f6c2ecc",
+        "expired": false
+      }
+    ],
+    "coverage": {
+      "linux": {
+        "lines-valid": "8849",
+        "lines-covered": "4205",
+        "line-rate": "0.4752"
+      },
+      "windows": {
+        "lines-valid": "8849",
+        "lines-covered": "4205",
+        "line-rate": "0.4752"
+      }
+    },
+    "evidence_hashes": {
+      "report_normalized_lf_sha256": "8f0998eb3b14a488247ef87b8ea2d37c0be8451ab70625d86f2b15ba03de167f",
+      "manifest_normalized_lf_sha256": "9ac1a22071299b5579b16be0908f1c8e4e1ffa9ceabd59bc0f2b1c86571f8926",
+      "raw_bundle_sha256": "86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836"
+    },
+    "gate": "APPROVED"
   }
 }

@@ -49,6 +49,8 @@ Nenhum risco acima está encerrado por esta etapa.
 |---|---|---|
 | R-009 | ENCERRADO | Commit `f8f534edd74490f7264ebb153110ae65fce7066c`; workflow `Private validation` `#30` (`30596616841`); jobs Linux `test` (`91050247336`) e Windows `test-windows` (`91050247386`) concluídos com `success`; manifesto íntegro com 207 arquivos antes e depois |
 | R-010 | ENCERRADO | Instalação por `poetry sync` no Linux e Windows; lockfile canônico `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`; artefatos Linux `8780354978` e Windows `8780366021` vinculados ao commit validado |
+| ETAPA-2 | APROVADA PARA ENCERRAMENTO | PR `#9`; merge `d41093e706d3c8c555f64ef0c15c9ad40219a208`; workflow pós-merge `#36` (`30646258120`); jobs Linux `test` (`91208257924`) e Windows `test-windows` (`91208257772`) com `success`; artefatos `8799557767` e `8799571608`; pacote pós-merge `809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c`; riscos R-001 a R-008 e R-011 a R-013 permanecem abertos |
+
 
 ## Severidades
 
