@@ -17,8 +17,8 @@
       "size": 1152
     },
     ".github/workflows/ci.yml": {
-      "sha256": "834014d3ac73246ac870e706d936418f30abeb2ee464831df373b25ff35c00fa",
-      "size": 6052
+      "sha256": "d4af12fbea10e668da1b8210e6c19d0a11859c4a6853f03cfa01bf4527f4c3f5",
+      "size": 6436
     },
     ".gitignore": {
       "sha256": "1a28442e581d24e19e5181edc36c45871e038dec77b2b56bf75330fc6515b3b0",
@@ -197,8 +197,8 @@
       "size": 5569
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "f69731c6d461600ae30d31a6c5e307e2b4eb19e24268d1995e4934ac146e0195",
-      "size": 5377
+      "sha256": "268736a1ff62e510b85603e7b92c930971e297388707361bef0431ed190383e4",
+      "size": 6252
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "156adf066ca773eb1eb357d393ae990dcc62391899d391c09ad84e2a9758973d",
@@ -304,9 +304,21 @@
       "sha256": "8f0998eb3b14a488247ef87b8ea2d37c0be8451ab70625d86f2b15ba03de167f",
       "size": 9761
     },
+    "docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md": {
+      "sha256": "5bc2af33c5cdb7a39cf8e6923a8f62143b6709b77057cf913a4ae806501b7d3d",
+      "size": 4702
+    },
+    "docs/evidence/ETAPA_3_PACOTE_1_EVIDENCE_MANIFEST.json": {
+      "sha256": "f5cd9c1fd0f27d0fd2a207401fe6a1acced1129a7b8c5c053c271f7d534d921d",
+      "size": 8034
+    },
+    "docs/evidence/ETAPA_3_PACOTE_1_PERSISTENCIA_VERSIONADA.md": {
+      "sha256": "c9c72e83be549bc6705b02ffa0f49c4a72d7ef1bd99494cd449f3f8eb4b52c4a",
+      "size": 7005
+    },
     "docs/evidence/README.md": {
-      "sha256": "1329ee1c76b6851fb533bbbc1e663d52df2b09a1b5eb65de61cb7bb61c1a918a",
-      "size": 1226
+      "sha256": "e290b4061953e893e8639042eab3dd05ef5fd5baa72da131cdce76b8959d34e8",
+      "size": 1501
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -315,6 +327,14 @@
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip": {
       "sha256": "86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836",
       "size": 339806
+    },
+    "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip": {
+      "sha256": "f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0",
+      "size": 2542880
+    },
+    "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip": {
+      "sha256": "411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f",
+      "size": 1753510
     },
     "docs/phase-7-exporters.md": {
       "sha256": "99aecb50a1824e05467009aa05da9877b9d88a5470610ada302d4e117cbd731d",

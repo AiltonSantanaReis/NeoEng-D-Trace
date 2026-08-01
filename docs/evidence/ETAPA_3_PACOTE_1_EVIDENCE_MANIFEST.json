@@ -1,0 +1,264 @@
+{
+  "evidence": {
+    "closure_path": "docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md",
+    "manifest_path": "docs/evidence/ETAPA_3_PACOTE_1_EVIDENCE_MANIFEST.json",
+    "post_merge_package": {
+      "filename": "NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip",
+      "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip",
+      "sha256": "f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0",
+      "size_bytes": 2542880
+    },
+    "raw_bundle": {
+      "filename": "NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip",
+      "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip",
+      "sha256": "411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f",
+      "size_bytes": 1753510
+    },
+    "report_path": "docs/evidence/ETAPA_3_PACOTE_1_PERSISTENCIA_VERSIONADA.md"
+  },
+  "formal_package_closure": {
+    "closure_branch": "docs/etapa-3-pacote-1-encerramento-pos-merge",
+    "closure_commit": null,
+    "decision": "APPROVED",
+    "stage_3_package_2_started": false,
+    "status": "PENDING_CLOSURE_RECORD_INTEGRATION_AND_FINAL_MAIN_CI"
+  },
+  "generated_at": "2026-07-31T23:28:57.508511-03:00",
+  "integration": {
+    "approved_feature_commit": "891fbc9550b5bba9bce041272da1db1f3bc3a7b3",
+    "base_commit": "0ff7e66767cedd0ad949a86fc8dae476d7c6594c",
+    "feature_branch": "feat/etapa-3-persistencia-versionada",
+    "initial_feature_commit": "349e2869623d70a23882d08135c770d30cd38fb3",
+    "merge_commit": "4a45e9c396da6cd63f44f1cf9792526c305478ec",
+    "merge_method": "merge",
+    "pr_merged": true,
+    "pull_request": 11
+  },
+  "main_post_merge_validation": {
+    "artifacts": [
+      {
+        "digest": "sha256:3b3a9a45d7661231b5f08e67e582165ed84d0ee106a7484d812f0339df9a610f",
+        "expired": false,
+        "id": 8809324964,
+        "name": "validation-linux-python-3.11",
+        "size_in_bytes": 23949
+      },
+      {
+        "digest": "sha256:d2371050d07d0859491d57d510684710989d862f185e8426ba609fbb63c8af47",
+        "expired": false,
+        "id": 8809335229,
+        "name": "validation-windows-python-3.11",
+        "size_in_bytes": 764942
+      }
+    ],
+    "conclusion": "success",
+    "event": "push",
+    "head_branch": "main",
+    "head_sha": "4a45e9c396da6cd63f44f1cf9792526c305478ec",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 91293265047,
+        "name": "test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 91293265003,
+        "name": "test-windows",
+        "status": "completed"
+      }
+    ],
+    "run_id": 30672598358,
+    "run_number": 41,
+    "status": "completed"
+  },
+  "package": 1,
+  "package_name": "Persistência versionada e confiável v1",
+  "persistence_gate": {
+    "atomic_replace_failure_preserves_destination": true,
+    "bezier_round_trip": true,
+    "complete_round_trip": true,
+    "custom_collision_round_trip": true,
+    "deterministic_bytes": true,
+    "extension": ".ndtproj",
+    "format_id": "neoeng-d-trace-project",
+    "known_legacy_migration": true,
+    "schema_version": 1
+  },
+  "project": "NeoEng-D-Trace",
+  "pull_request_validation": {
+    "artifacts": [
+      {
+        "digest": "sha256:e46e23f75bfe769f891db3e32aad13886d1559eacd0a9690fb8cdc5be1a3d598",
+        "expired": false,
+        "id": 8809253261,
+        "name": "validation-linux-python-3.11",
+        "size_in_bytes": 23950
+      },
+      {
+        "digest": "sha256:0ee1d59cb5628afe95b7b8532131cc317d41b614caaa28e0ee27b33223b6729b",
+        "expired": false,
+        "id": 8809264206,
+        "name": "validation-windows-python-3.11",
+        "size_in_bytes": 764941
+      }
+    ],
+    "conclusion": "success",
+    "event": "pull_request",
+    "head_branch": "feat/etapa-3-persistencia-versionada",
+    "head_sha": "891fbc9550b5bba9bce041272da1db1f3bc3a7b3",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 91292624183,
+        "name": "test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 91292624143,
+        "name": "test-windows",
+        "status": "completed"
+      }
+    ],
+    "run_id": 30672383923,
+    "run_number": 40,
+    "status": "completed"
+  },
+  "quality_gate": {
+    "baseline_files": 222,
+    "black_files_unchanged": 102,
+    "coverage": {
+      "line-rate": "0.4992",
+      "lines-covered": "4617",
+      "lines-valid": "9249",
+      "version": "7.15.2"
+    },
+    "fatal_flake8_findings": 0,
+    "mypy_source_files": 62,
+    "nonblocking_flake8_findings": 125,
+    "tests_per_operating_system": 212
+  },
+  "risks": {
+    "R-001": "APPROVED_FOR_CLOSURE_AFTER_EVIDENCE_PR_AND_FINAL_MAIN_CI",
+    "R-002": "OPEN_UI_OPEN_SAVE_NOT_IN_PACKAGE",
+    "R-007": "PARTIALLY_MITIGATED_BEZIER_PERSISTENCE_ONLY",
+    "R-012": "PARTIALLY_MITIGATED_REMAINS_OPEN"
+  },
+  "schema_version": 1,
+  "scope": {
+    "changed_files": 13,
+    "files": [
+      {
+        "additions": 42,
+        "changes": 48,
+        "deletions": 6,
+        "filename": "baseline_manifest.json",
+        "status": "modified"
+      },
+      {
+        "additions": 134,
+        "changes": 134,
+        "deletions": 0,
+        "filename": "docs/ADR_FORMATO_PROJETO_NEOENG_D_TRACE_V1.md",
+        "status": "added"
+      },
+      {
+        "additions": 6,
+        "changes": 12,
+        "deletions": 6,
+        "filename": "src/core/app_identity.py",
+        "status": "modified"
+      },
+      {
+        "additions": 24,
+        "changes": 119,
+        "deletions": 95,
+        "filename": "src/models/scene.py",
+        "status": "modified"
+      },
+      {
+        "additions": 45,
+        "changes": 45,
+        "deletions": 0,
+        "filename": "src/persistence/__init__.py",
+        "status": "added"
+      },
+      {
+        "additions": 31,
+        "changes": 31,
+        "deletions": 0,
+        "filename": "src/persistence/errors.py",
+        "status": "added"
+      },
+      {
+        "additions": 619,
+        "changes": 619,
+        "deletions": 0,
+        "filename": "src/persistence/project_io.py",
+        "status": "added"
+      },
+      {
+        "additions": 213,
+        "changes": 213,
+        "deletions": 0,
+        "filename": "src/persistence/project_schema.py",
+        "status": "added"
+      },
+      {
+        "additions": 3,
+        "changes": 6,
+        "deletions": 3,
+        "filename": "tests/test_app_identity.py",
+        "status": "modified"
+      },
+      {
+        "additions": 70,
+        "changes": 70,
+        "deletions": 0,
+        "filename": "tests/test_project_persistence_atomic.py",
+        "status": "added"
+      },
+      {
+        "additions": 260,
+        "changes": 260,
+        "deletions": 0,
+        "filename": "tests/test_project_persistence_failures.py",
+        "status": "added"
+      },
+      {
+        "additions": 229,
+        "changes": 229,
+        "deletions": 0,
+        "filename": "tests/test_project_persistence_roundtrip.py",
+        "status": "added"
+      },
+      {
+        "additions": 196,
+        "changes": 196,
+        "deletions": 0,
+        "filename": "tests/test_project_schema_contract.py",
+        "status": "added"
+      }
+    ],
+    "total_commits": 2
+  },
+  "security_gate": {
+    "blank_path_rejected": true,
+    "file_size_limit_tested_before_and_after_read": true,
+    "malformed_and_unknown_inputs_rejected": true,
+    "nul_byte_rejected": true,
+    "object_and_point_limit_boundaries_tested": false,
+    "object_and_point_limits_implemented": true,
+    "posix_windows_and_mixed_separators_tested": true,
+    "relative_path_traversal_rejected": true
+  },
+  "stage": 3,
+  "stage_2_evidence_chain": {
+    "current_and_historical_generations_are_distinct": true,
+    "current_manifest_normalized_lf_sha256": "a427aac6448de1d533268dc2c068d6c40f862e2c65bd8934e33d1e4bb47b6031",
+    "historical_manifest_normalized_lf_sha256": "9ac1a22071299b5579b16be0908f1c8e4e1ffa9ceabd59bc0f2b1c86571f8926",
+    "historical_manifest_preserved_in_post_merge_package": true
+  }
+}
