@@ -60,3 +60,14 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   validação do formato de projeto v1.
 - `ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md` — validação da `main` e registro
   de encerramento do Pacote 1 da Etapa 3 depois do merge funcional.
+
+- `ETAPA_4_ENCERRAMENTO_POS_MERGE.md` — validação da `main` e encerramento
+  formal da Etapa 4 depois do merge.
+- `ETAPA_4_EVIDENCE_MANIFEST.json` — manifesto estruturado da Etapa 4.
+
+- `ETAPA_5_PACOTE_1_COMMAND_MANAGER_CONTRACT.md` — implementação e validação
+  funcional do contrato, pilhas, transação e estado da UI.
+- `ETAPA_5_PACOTE_1_ENCERRAMENTO_POS_MERGE.md` — validação da `main` e
+  encerramento formal do Pacote 1 da Etapa 5.
+- `ETAPA_5_PACOTE_1_EVIDENCE_MANIFEST.json` — manifesto estruturado do
+  encerramento do Pacote 1 da Etapa 5.
