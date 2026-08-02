@@ -368,6 +368,8 @@ class MainWindow(QMainWindow):
         self.update_language()
         if hasattr(self.scene, "subscribe"):
             self.scene.subscribe(self._on_scene_changed)
+        self._connect_command_history()
+        self._update_undo_redo_actions()
         self._mark_document_clean()
 
     def _focus_selected(self):
@@ -433,27 +435,45 @@ class MainWindow(QMainWindow):
         QShortcut(QKeySequence.Undo, self, activated=self._undo)
         QShortcut(QKeySequence.Redo, self, activated=self._redo)
 
+    def _connect_command_history(self) -> None:
+        manager = getattr(self.scene, "cmd", None)
+        if manager is not None and hasattr(manager, "subscribe"):
+            manager.subscribe(self._update_undo_redo_actions)
+
+    def _update_undo_redo_actions(self) -> None:
+        manager = getattr(self.scene, "cmd", None)
+        can_undo = bool(manager is not None and getattr(manager, "can_undo", False))
+        can_redo = bool(manager is not None and getattr(manager, "can_redo", False))
+        self.undo_action.setEnabled(can_undo)
+        self.redo_action.setEnabled(can_redo)
+
     def _undo(self):
-        # Active drawing tools may consume Undo for their in-progress operation.
         if self.canvas.request_tool_undo():
             self.canvas.update()
-            return
+            self._update_undo_redo_actions()
+            return None
+        result = None
         if self.scene.cmd:
-            self.scene.cmd.undo(self.scene)
+            result = self.scene.cmd.undo(self.scene)
         self.canvas.update()
         self.side_panel.refresh()
         self._on_scene_changed()
+        self._update_undo_redo_actions()
+        return result
 
     def _redo(self):
-        # Active drawing tools may consume Redo for their in-progress operation.
         if self.canvas.request_tool_redo():
             self.canvas.update()
-            return
+            self._update_undo_redo_actions()
+            return None
+        result = None
         if self.scene.cmd:
-            self.scene.cmd.redo(self.scene)
+            result = self.scene.cmd.redo(self.scene)
         self.canvas.update()
         self.side_panel.refresh()
         self._on_scene_changed()
+        self._update_undo_redo_actions()
+        return result
 
     def _select_tool(self, tool_name):
         if hasattr(self.tool_palette, "select_tool_by_name"):
@@ -694,14 +714,16 @@ class MainWindow(QMainWindow):
     def _reset_command_history(self) -> None:
         manager = getattr(self.scene, "cmd", None)
         if manager is None:
+            self._update_undo_redo_actions()
             return
         if hasattr(manager, "clear"):
             manager.clear()
-            return
-        if hasattr(manager, "_undo"):
-            manager._undo.clear()
-        if hasattr(manager, "_redo"):
-            manager._redo.clear()
+        else:
+            if hasattr(manager, "_undo"):
+                manager._undo.clear()
+            if hasattr(manager, "_redo"):
+                manager._redo.clear()
+        self._update_undo_redo_actions()
 
     def _refresh_document_views(self, *, project_loaded: bool) -> None:
         has_image = self.scene.image is not None
