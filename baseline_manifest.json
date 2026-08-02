@@ -324,6 +324,10 @@
       "sha256": "530874a8837d782562a68f411954923c381ccfeb246a83e8fa285ebcde925bab",
       "size": 8007
     },
+    "docs/evidence/ETAPA_5_PACOTE_1_COMMAND_MANAGER_CONTRACT.md": {
+      "sha256": "8bbc3547af6d2ffa0cca9bf0ce9d2b5a0746f1654b5e8a189d8b65a2e72f8a18",
+      "size": 1628
+    },
     "docs/evidence/README.md": {
       "sha256": "e290b4061953e893e8639042eab3dd05ef5fd5baa72da131cdce76b8959d34e8",
       "size": 1501
@@ -541,8 +545,8 @@
       "size": 1884
     },
     "src/core/commands.py": {
-      "sha256": "c5895ac54684e64360a92b0fda4c5c0ea83bf1ea132a4e5b0431d1d632b6598d",
-      "size": 14985
+      "sha256": "013d0950402750be14d787cf493c2d595a4eb8136fec8c076af8351305342a65",
+      "size": 24744
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -749,8 +753,8 @@
       "size": 6486
     },
     "src/ui/main_window.py": {
-      "sha256": "2730ec18477fbc550431a6bfc4b90d84dea1b67afee872e944de8c57164fc9f9",
-      "size": 45940
+      "sha256": "b7bbb3de7b02b03ac03038057c6139ece41454de49ea3ac2d43f54119f0844d2",
+      "size": 46835
     },
     "src/ui/mask_viewer.py": {
       "sha256": "53af859b172e00f80b8b0bf2fd136918c35f2bf935ce087476865c25f2a40d3e",
@@ -903,6 +907,10 @@
     "tests/test_stage_4_project_ui.py": {
       "sha256": "3f93b8502e6858742f7a61206bf2f7f6d06d0fc6c300966a34ae2343671e837e",
       "size": 10336
+    },
+    "tests/test_stage_5_command_manager_contract.py": {
+      "sha256": "bd71fac5c5390bf645456e1ad3bfb3b67e1e057e534ce6305de065254e257e48",
+      "size": 9127
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

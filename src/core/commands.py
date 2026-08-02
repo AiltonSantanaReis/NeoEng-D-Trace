@@ -3,9 +3,101 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import Any, Dict, List, Optional, Tuple
+import copy
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from src.core.logger import logger
+
+
+class CommandStatus(str, Enum):
+    """Observable outcome of one command operation."""
+
+    APPLIED = "applied"
+    NO_CHANGE = "no_change"
+    REJECTED = "rejected"
+    FAILED = "failed"
+
+
+@dataclass(frozen=True)
+class CommandResult:
+    """Explicit command outcome returned to every manager caller."""
+
+    status: CommandStatus
+    command_name: str
+    operation: str
+    message: str = ""
+    error_type: Optional[str] = None
+
+    @property
+    def ok(self) -> bool:
+        return self.status in {
+            CommandStatus.APPLIED,
+            CommandStatus.NO_CHANGE,
+        }
+
+    @property
+    def changed(self) -> bool:
+        return self.status is CommandStatus.APPLIED
+
+    @classmethod
+    def applied(
+        cls,
+        command: "Command",
+        operation: str,
+        message: str = "",
+    ) -> "CommandResult":
+        return cls(
+            CommandStatus.APPLIED,
+            type(command).__name__,
+            operation,
+            message,
+        )
+
+    @classmethod
+    def no_change(
+        cls,
+        command: "Command",
+        operation: str,
+        message: str = "",
+    ) -> "CommandResult":
+        return cls(
+            CommandStatus.NO_CHANGE,
+            type(command).__name__,
+            operation,
+            message,
+        )
+
+    @classmethod
+    def rejected(
+        cls,
+        command: "Command",
+        operation: str,
+        message: str,
+    ) -> "CommandResult":
+        return cls(
+            CommandStatus.REJECTED,
+            type(command).__name__,
+            operation,
+            message,
+        )
+
+    @classmethod
+    def failed(
+        cls,
+        command: "Command",
+        operation: str,
+        error_type: str,
+        message: str = "",
+    ) -> "CommandResult":
+        return cls(
+            CommandStatus.FAILED,
+            type(command).__name__,
+            operation,
+            message,
+            error_type,
+        )
 
 
 class Command:
@@ -16,88 +108,344 @@ class Command:
         raise NotImplementedError()
 
 
+_STATE_ATTRIBUTES = (
+    "objects",
+    "layers",
+    "groups",
+    "collision_shapes",
+    "selected_id",
+)
+
+
+def _freeze_state(value: Any) -> Any:
+    if value is None or isinstance(value, (bool, int, float, str, bytes)):
+        return value
+    if isinstance(value, dict):
+        return tuple(
+            sorted(
+                (
+                    _freeze_state(key),
+                    _freeze_state(item),
+                )
+                for key, item in value.items()
+            )
+        )
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_state(item) for item in value)
+    if isinstance(value, set):
+        return tuple(sorted(_freeze_state(item) for item in value))
+    if hasattr(value, "__dict__"):
+        return (
+            type(value).__name__,
+            _freeze_state(
+                {
+                    key: item
+                    for key, item in vars(value).items()
+                    if key not in {"cmd", "_listeners"}
+                }
+            ),
+        )
+    return repr(value)
+
+
+@dataclass
+class _SceneCheckpoint:
+    values: Dict[str, Any]
+
+    @classmethod
+    def capture(cls, scene: Any) -> "_SceneCheckpoint":
+        return cls(
+            {
+                name: copy.deepcopy(getattr(scene, name))
+                for name in _STATE_ATTRIBUTES
+                if hasattr(scene, name)
+            }
+        )
+
+    def token(self) -> Any:
+        return _freeze_state(self.values)
+
+    def restore(self, scene: Any) -> None:
+        for name, value in self.values.items():
+            setattr(scene, name, copy.deepcopy(value))
+        if hasattr(scene, "_notify"):
+            scene._notify()
+
+
+def _sanitize_operation_failure(
+    command: Command,
+    operation: str,
+    exc: BaseException,
+) -> CommandResult:
+    error_type = type(exc).__name__
+    logger.error(
+        "Command %s %s failed (%s)",
+        type(command).__name__,
+        operation,
+        error_type,
+    )
+    return CommandResult.failed(
+        command,
+        operation,
+        error_type,
+        "The operation failed and its state was restored.",
+    )
+
+
+def _run_command_operation(
+    command: Command,
+    operation: str,
+    scene: Any,
+) -> CommandResult:
+    checkpoint = _SceneCheckpoint.capture(scene)
+    before = checkpoint.token()
+
+    try:
+        raw_result = getattr(command, operation)(scene)
+    except Exception as exc:
+        checkpoint.restore(scene)
+        return _sanitize_operation_failure(command, operation, exc)
+
+    after = _SceneCheckpoint.capture(scene).token()
+    changed = after != before
+
+    if isinstance(raw_result, CommandResult):
+        if raw_result.status in {
+            CommandStatus.REJECTED,
+            CommandStatus.FAILED,
+        }:
+            if changed:
+                checkpoint.restore(scene)
+            return raw_result
+        if raw_result.changed and not changed:
+            return CommandResult.no_change(
+                command,
+                operation,
+                "The command reported a change, but the scene was unchanged.",
+            )
+        if not raw_result.changed and changed:
+            checkpoint.restore(scene)
+            logger.error(
+                "Command %s %s returned an inconsistent result",
+                type(command).__name__,
+                operation,
+            )
+            return CommandResult.failed(
+                command,
+                operation,
+                "CommandContractError",
+                "The command result did not match the observed scene state.",
+            )
+        return raw_result
+
+    if changed:
+        return CommandResult.applied(command, operation)
+    return CommandResult.no_change(
+        command,
+        operation,
+        "The command completed without changing editable scene state.",
+    )
+
+
 class CompositeCommand(Command):
-    """Command that executes multiple sub-commands as a transaction."""
+    """Execute multiple commands as one repeatable transaction."""
 
     def __init__(self, commands: List[Command]):
-        self.commands = commands
+        self.commands = list(commands)
         self._executed: List[Command] = []
 
-    def execute(self, scene: Any):
-        for cmd in self.commands:
-            try:
-                cmd.execute(scene)
-                self._executed.append(cmd)
-            except Exception as e:
-                logger.error(f"Composite command failed at {cmd}: {e}")
-                # Undo executed commands
-                for executed in reversed(self._executed):
-                    try:
-                        executed.undo(scene)
-                    except Exception as undo_e:
-                        logger.error(f"Undo failed for {executed}: {undo_e}")
-                raise e
+    def _rollback_execute(self, scene: Any) -> Optional[CommandResult]:
+        for executed in reversed(self._executed):
+            result = _run_command_operation(executed, "undo", scene)
+            if not result.changed:
+                return CommandResult.failed(
+                    self,
+                    "execute",
+                    result.error_type or "CompositeRollbackError",
+                    "Composite execute rollback could not restore the scene.",
+                )
+        return None
 
-    def undo(self, scene: Any):
-        for cmd in reversed(self._executed):
-            try:
-                cmd.undo(scene)
-            except Exception as e:
-                logger.error(f"Undo failed for {cmd}: {e}")
-                # Continue undoing others
+    def execute(self, scene: Any) -> CommandResult:
+        self._executed = []
+        if not self.commands:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The composite command has no subcommands.",
+            )
+
+        for command in self.commands:
+            result = _run_command_operation(command, "execute", scene)
+            if not result.changed:
+                rollback_failure = self._rollback_execute(scene)
+                if rollback_failure is not None:
+                    return rollback_failure
+                if result.status is CommandStatus.FAILED:
+                    return CommandResult.failed(
+                        self,
+                        "execute",
+                        result.error_type or "CompositeCommandError",
+                        "A composite subcommand failed; applied changes were rolled back.",
+                    )
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "A composite subcommand made no editable change; "
+                    "applied changes were rolled back.",
+                )
+            self._executed.append(command)
+
+        return CommandResult.applied(self, "execute")
+
+    def undo(self, scene: Any) -> CommandResult:
+        if not self._executed:
+            return CommandResult.no_change(
+                self,
+                "undo",
+                "The composite command has no executed subcommands.",
+            )
+
+        undone: List[Command] = []
+        for command in reversed(self._executed):
+            result = _run_command_operation(command, "undo", scene)
+            if not result.changed:
+                compensation_failed = False
+                for reverted in reversed(undone):
+                    compensation = _run_command_operation(
+                        reverted,
+                        "execute",
+                        scene,
+                    )
+                    if not compensation.changed:
+                        compensation_failed = True
+                        break
+                error_type = (
+                    "CompositeCompensationError"
+                    if compensation_failed
+                    else result.error_type or "CompositeUndoError"
+                )
+                return CommandResult.failed(
+                    self,
+                    "undo",
+                    error_type,
+                    "Composite undo failed; the pre-undo state was restored "
+                    "when compensation succeeded.",
+                )
+            undone.append(command)
+
+        return CommandResult.applied(self, "undo")
 
 
 class CommandManager:
-    """Manages command execution with undo/redo functionality."""
+    """Manage command history with explicit, observable outcomes."""
 
-    def __init__(self, max_history=50):
-        """Initialize CommandManager with maximum history size."""
-        self.max_history = max_history
+    def __init__(self, max_history: int = 50):
+        if max_history < 1:
+            raise ValueError("max_history must be at least 1")
+        self.max_history = int(max_history)
         self._undo: List[Command] = []
         self._redo: List[Command] = []
+        self._listeners: List[Callable[[], None]] = []
+
+    @property
+    def can_undo(self) -> bool:
+        return bool(self._undo)
+
+    @property
+    def can_redo(self) -> bool:
+        return bool(self._redo)
+
+    @property
+    def undo_count(self) -> int:
+        return len(self._undo)
+
+    @property
+    def redo_count(self) -> int:
+        return len(self._redo)
+
+    def subscribe(self, callback: Callable[[], None]) -> None:
+        if callback not in self._listeners:
+            self._listeners.append(callback)
+
+    def unsubscribe(self, callback: Callable[[], None]) -> None:
+        if callback in self._listeners:
+            self._listeners.remove(callback)
+
+    def _notify_history_changed(self) -> None:
+        for callback in list(self._listeners):
+            try:
+                callback()
+            except Exception as exc:
+                logger.warning(
+                    "Command history listener failed (%s)",
+                    type(exc).__name__,
+                )
 
     def clear(self) -> None:
-        """Discard undo and redo history when the active document changes."""
-
+        had_history = bool(self._undo or self._redo)
         self._undo.clear()
         self._redo.clear()
+        if had_history:
+            self._notify_history_changed()
 
-    def execute(self, cmd: Command, scene: Any) -> None:
-        """Execute a command, handling exceptions and managing undo stack."""
-        try:
-            cmd.execute(scene)
-            self._undo.append(cmd)
-            if len(self._undo) > self.max_history:
-                self._undo.pop(0)
-            self._redo.clear()
-        except Exception as e:
-            logger.error(f"Command execution failed: {e}")
+    def execute(self, command: Command, scene: Any) -> CommandResult:
+        result = _run_command_operation(command, "execute", scene)
+        if not result.changed:
+            return result
 
-    def undo(self, scene: Any) -> None:
-        """Undo the last command, handling exceptions."""
+        self._undo.append(command)
+        if len(self._undo) > self.max_history:
+            del self._undo[: len(self._undo) - self.max_history]
+        self._redo.clear()
+        self._notify_history_changed()
+        return result
+
+    def undo(self, scene: Any) -> CommandResult:
         if not self._undo:
-            return
-        c = self._undo.pop()
-        try:
-            c.undo(scene)
-            self._redo.append(c)
-        except Exception as e:
-            logger.error(f"Command undo failed: {e}")
-            # Put back if undo failed
-            self._undo.append(c)
+            return CommandResult.no_change(
+                _EmptyHistoryCommand(),
+                "undo",
+                "Undo history is empty.",
+            )
 
-    def redo(self, scene: Any) -> None:
-        """Redo the last undone command, handling exceptions."""
+        command = self._undo[-1]
+        result = _run_command_operation(command, "undo", scene)
+        if not result.changed:
+            return result
+
+        self._undo.pop()
+        self._redo.append(command)
+        self._notify_history_changed()
+        return result
+
+    def redo(self, scene: Any) -> CommandResult:
         if not self._redo:
-            return
-        c = self._redo.pop()
-        try:
-            c.execute(scene)
-            self._undo.append(c)
-        except Exception as e:
-            logger.error(f"Command redo failed: {e}")
-            # Put back if redo failed
-            self._redo.append(c)
+            return CommandResult.no_change(
+                _EmptyHistoryCommand(),
+                "redo",
+                "Redo history is empty.",
+            )
+
+        command = self._redo[-1]
+        result = _run_command_operation(command, "execute", scene)
+        if not result.changed:
+            return result
+
+        self._redo.pop()
+        self._undo.append(command)
+        if len(self._undo) > self.max_history:
+            del self._undo[: len(self._undo) - self.max_history]
+        self._notify_history_changed()
+        return result
+
+
+class _EmptyHistoryCommand(Command):
+    def execute(self, scene: Any):
+        return None
+
+    def undo(self, scene: Any):
+        return None
 
 
 class RemoveLayerCommand(Command):
