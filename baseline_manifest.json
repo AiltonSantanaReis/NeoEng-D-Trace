@@ -317,12 +317,12 @@
       "size": 7005
     },
     "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
-      "sha256": "57fc45703eaa3b5276da13bf5e34365fac5cf0950ab0eb69d2c9f4bbe13823d6",
-      "size": 7524
+      "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
+      "size": 7651
     },
     "docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json": {
-      "sha256": "a8c12c18896de9bdbbead0f47ebe6c6e273e06a27c359ab8e31345b7d19022a5",
-      "size": 7855
+      "sha256": "530874a8837d782562a68f411954923c381ccfeb246a83e8fa285ebcde925bab",
+      "size": 8007
     },
     "docs/evidence/README.md": {
       "sha256": "e290b4061953e893e8639042eab3dd05ef5fd5baa72da131cdce76b8959d34e8",
@@ -345,8 +345,8 @@
       "size": 1753510
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip": {
-      "sha256": "9c60ad0ae74f6d15a5d473a4a1422b62ae1b80e4c1fe17d6becc82b86b85ddfe",
-      "size": 7355
+      "sha256": "d36c7062ae6de1bf3935744f0a764c0f23aca10c65a5e14928e0096ded4e96a3",
+      "size": 7292
     },
     "docs/phase-7-exporters.md": {
       "sha256": "99aecb50a1824e05467009aa05da9877b9d88a5470610ada302d4e117cbd731d",

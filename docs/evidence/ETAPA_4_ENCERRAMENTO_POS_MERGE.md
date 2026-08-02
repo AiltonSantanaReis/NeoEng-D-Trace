@@ -124,10 +124,12 @@ Fluxos comprovados:
 ## Pacote de evidência manual sanitizado
 
 - arquivo: `NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip`;
-- caminho: `C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip`;
-- tamanho: `7355` bytes;
+- caminho: `docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip`;
+- tamanho: `7292` bytes;
 - membros: `10`;
-- SHA-256: `9c60ad0ae74f6d15a5d473a4a1422b62ae1b80e4c1fe17d6becc82b86b85ddfe`;
+- SHA-256: `d36c7062ae6de1bf3935744f0a764c0f23aca10c65a5e14928e0096ded4e96a3`;
+- membros textuais reescritos durante a correção de privacidade: `2`;
+- auditoria posterior: `0` caminhos `C:/Users`, `C:\Users` ou ocorrências do usuário local;
 - caminhos absolutos locais foram substituídos por tokens explícitos;
 - hashes e tamanhos dos arquivos originais foram preservados em `ORIGINAL_FILE_HASHES.json`;
 - os projetos produzidos foram validados e tiveram seus hashes registrados sem publicar referências absolutas locais.

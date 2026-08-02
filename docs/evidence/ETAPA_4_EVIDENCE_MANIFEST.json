@@ -35,10 +35,16 @@
           "size_bytes": 6459
         }
       },
-      "path": "C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip",
+      "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip",
+      "privacy_audit": {
+        "local_path_findings": 0,
+        "local_username_rejected": true,
+        "rewritten_text_members": 2,
+        "windows_users_paths_rejected": true
+      },
       "sanitized": true,
-      "sha256": "9c60ad0ae74f6d15a5d473a4a1422b62ae1b80e4c1fe17d6becc82b86b85ddfe",
-      "size_bytes": 7355
+      "sha256": "d36c7062ae6de1bf3935744f0a764c0f23aca10c65a5e14928e0096ded4e96a3",
+      "size_bytes": 7292
     }
   },
   "formal_stage_closure": {
