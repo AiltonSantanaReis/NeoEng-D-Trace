@@ -556,11 +556,41 @@ class Scene:
 
     # --- Image Handling ---
     def load_image(self, img, path):
+        """Attach image data without replacing the existing scene document."""
+
         self.image = img
         self.image_path = path
         self.image_path_kind = None
         self.image_sha256 = None
         self._image_reference_loaded = False
+        self._notify()
+
+    def replace_with_image(self, img, path):
+        """Start a new document from an image without retaining old scene data."""
+
+        self.image = img
+        self.image_path = path
+        self.image_path_kind = None
+        self.image_sha256 = None
+        self._image_reference_loaded = False
+        self.objects = {}
+        self.layers = [
+            Layer(
+                id="layer_default",
+                name="Default",
+                visible=True,
+                locked=False,
+            )
+        ]
+        self.groups = []
+        self.collision_shapes = {}
+        self.selected_id = None
+        self._notify()
+
+    def attach_project_image(self, img):
+        """Attach decoded pixels while preserving the saved image reference."""
+
+        self.image = img
         self._notify()
 
     def get_image(self):

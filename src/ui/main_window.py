@@ -1,9 +1,12 @@
 # src/ui/main_window.py
+import hashlib
+import json
 import os
 import time
+from pathlib import Path
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction, QKeySequence, QShortcut
+from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QFileDialog,
     QMainWindow,
@@ -21,6 +24,7 @@ from src.core.validation_events import (
     record_validation_event,
     record_validation_exception,
 )
+from src.persistence import PROJECT_FILE_EXTENSION, build_project_document
 
 # Imports de Lógica e Física
 from src.physics.physics_manager import PhysicsManager
@@ -79,6 +83,8 @@ class MainWindow(QMainWindow):
         self._last_folder = config.get("last_folder")
         self._current_tool = config.get("tool", "polygonal_lasso")
         self._mask_viewer_dialog = None
+        self._project_path: Path | None = None
+        self._clean_signature: str | None = None
 
         # Configuração da Janela Principal
         self.current_lang = "en"
@@ -93,9 +99,10 @@ class MainWindow(QMainWindow):
         self.toolbar = QToolBar("Main")
         self.addToolBar(self.toolbar)
 
-        self.act_open = QAction("Open Image", self)
-        self.act_open.triggered.connect(self.open_image)
+        self.act_open = self.open_image_action
+        self.toolbar.addAction(self.open_project_action)
         self.toolbar.addAction(self.act_open)
+        self.toolbar.addAction(self.save_project_action)
 
         self.act_export = QAction("Export...", self)
         self.act_export.triggered.connect(self.open_export)
@@ -235,6 +242,30 @@ class MainWindow(QMainWindow):
         self.translations = {
             "en": {
                 "window_title": build_window_title("en"),
+                "file_menu": "File",
+                "open_project": "Open Project...",
+                "save_project": "Save",
+                "save_project_as": "Save As...",
+                "close_application": "Exit",
+                "project_files": "NeoEng-D-Trace Projects (*.ndtproj)",
+                "open_project_dialog": "Open Project",
+                "save_project_dialog": "Save Project",
+                "untitled_project": "Untitled",
+                "unsaved_title": "Unsaved changes",
+                "unsaved_message": "Save changes to the current project?",
+                "project_saved": "Project saved successfully.",
+                "failed_open_project": "Failed to open project: ",
+                "failed_save_project": "Failed to save project: ",
+                "project_warnings_title": "Project opened with warnings",
+                "project_image_missing": "Referenced image was not found: {path}",
+                "project_image_unreadable": "Referenced image could not be read: {path}",
+                "project_image_hash_mismatch": (
+                    "Referenced image differs from the saved SHA-256: {path}"
+                ),
+                "project_image_hash_unavailable": (
+                    "Referenced image was loaded, but its SHA-256 could not be "
+                    "verified: {path}"
+                ),
                 "open_image": "Open Image",
                 "open_image_dialog": "Open Image",
                 "image_files": "Images (*.png *.jpg *.jpeg *.bmp *.tiff)",
@@ -271,6 +302,34 @@ class MainWindow(QMainWindow):
             },
             "pt": {
                 "window_title": build_window_title("pt"),
+                "file_menu": "Arquivo",
+                "open_project": "Abrir Projeto...",
+                "save_project": "Salvar",
+                "save_project_as": "Salvar Como...",
+                "close_application": "Sair",
+                "project_files": "Projetos NeoEng-D-Trace (*.ndtproj)",
+                "open_project_dialog": "Abrir Projeto",
+                "save_project_dialog": "Salvar Projeto",
+                "untitled_project": "Sem título",
+                "unsaved_title": "Alterações não salvas",
+                "unsaved_message": "Deseja salvar as alterações do projeto atual?",
+                "project_saved": "Projeto salvo com sucesso.",
+                "failed_open_project": "Falha ao abrir projeto: ",
+                "failed_save_project": "Falha ao salvar projeto: ",
+                "project_warnings_title": "Projeto aberto com avisos",
+                "project_image_missing": (
+                    "A imagem referenciada não foi encontrada: {path}"
+                ),
+                "project_image_unreadable": (
+                    "A imagem referenciada não pôde ser lida: {path}"
+                ),
+                "project_image_hash_mismatch": (
+                    "A imagem referenciada difere do SHA-256 salvo: {path}"
+                ),
+                "project_image_hash_unavailable": (
+                    "A imagem referenciada foi carregada, mas seu SHA-256 não "
+                    "pôde ser verificado: {path}"
+                ),
                 "open_image": "Abrir Imagem",
                 "open_image_dialog": "Abrir Imagem",
                 "image_files": "Imagens (*.png *.jpg *.jpeg *.bmp *.tiff)",
@@ -307,6 +366,9 @@ class MainWindow(QMainWindow):
             },
         }
         self.update_language()
+        if hasattr(self.scene, "subscribe"):
+            self.scene.subscribe(self._on_scene_changed)
+        self._mark_document_clean()
 
     def _focus_selected(self):
         """Foca a câmera no objeto selecionado na lista lateral."""
@@ -380,6 +442,7 @@ class MainWindow(QMainWindow):
             self.scene.cmd.undo(self.scene)
         self.canvas.update()
         self.side_panel.refresh()
+        self._on_scene_changed()
 
     def _redo(self):
         # Active drawing tools may consume Redo for their in-progress operation.
@@ -390,6 +453,7 @@ class MainWindow(QMainWindow):
             self.scene.cmd.redo(self.scene)
         self.canvas.update()
         self.side_panel.refresh()
+        self._on_scene_changed()
 
     def _select_tool(self, tool_name):
         if hasattr(self.tool_palette, "select_tool_by_name"):
@@ -397,6 +461,37 @@ class MainWindow(QMainWindow):
 
     def _setup_menu_bar(self):
         menubar = self.menuBar()
+
+        self.file_menu = menubar.addMenu("File")
+
+        self.open_project_action = QAction("Open Project...", self)
+        self.open_project_action.setShortcut(QKeySequence.StandardKey.Open)
+        self.open_project_action.triggered.connect(self.open_project)
+        self.file_menu.addAction(self.open_project_action)
+
+        self.open_image_action = QAction("Open Image", self)
+        self.open_image_action.setShortcut(QKeySequence("Ctrl+Shift+O"))
+        self.open_image_action.triggered.connect(self.open_image)
+        self.file_menu.addAction(self.open_image_action)
+
+        self.file_menu.addSeparator()
+
+        self.save_project_action = QAction("Save", self)
+        self.save_project_action.setShortcut(QKeySequence.StandardKey.Save)
+        self.save_project_action.triggered.connect(self.save_project)
+        self.file_menu.addAction(self.save_project_action)
+
+        self.save_project_as_action = QAction("Save As...", self)
+        self.save_project_as_action.setShortcut(QKeySequence.StandardKey.SaveAs)
+        self.save_project_as_action.triggered.connect(self.save_project_as)
+        self.file_menu.addAction(self.save_project_as_action)
+
+        self.file_menu.addSeparator()
+
+        self.close_application_action = QAction("Exit", self)
+        self.close_application_action.setShortcut(QKeySequence.StandardKey.Quit)
+        self.close_application_action.triggered.connect(self.close)
+        self.file_menu.addAction(self.close_application_action)
 
         # --- Menu Editar (ADICIONADO) ---
         # Resolve o problema de falta de "self.undo_action"
@@ -432,7 +527,7 @@ class MainWindow(QMainWindow):
         try:
             self.current_lang = lang if lang in self.translations else "en"
             self.update_language()
-            expected_title = build_window_title(self.current_lang, self._document_name)
+            expected_title = self._expected_window_title()
             applied = (
                 self.current_lang in self.translations
                 and self.windowTitle() == expected_title
@@ -460,7 +555,14 @@ class MainWindow(QMainWindow):
         if self.current_lang not in self.translations:
             self.current_lang = "en"
         t = self.translations[self.current_lang]
-        self.setWindowTitle(build_window_title(self.current_lang, self._document_name))
+        self._refresh_window_title()
+
+        self.file_menu.setTitle(t["file_menu"])
+        self.open_project_action.setText(t["open_project"])
+        self.open_image_action.setText(t["open_image"])
+        self.save_project_action.setText(t["save_project"])
+        self.save_project_as_action.setText(t["save_project_as"])
+        self.close_application_action.setText(t["close_application"])
 
         self.act_open.setText(t["open_image"])
         self.act_export.setText(t["export"])
@@ -533,7 +635,371 @@ class MainWindow(QMainWindow):
     def select_tool(self, tool_name):
         self._current_tool = tool_name
 
-    def open_image(self):
+    def _signature_path_hint(self) -> Path:
+        if self._project_path is not None:
+            return self._project_path
+        image_path = getattr(self.scene, "image_path", None)
+        if image_path:
+            candidate = Path(os.fsdecode(image_path))
+            if candidate.is_absolute():
+                return candidate.parent / f"untitled{PROJECT_FILE_EXTENSION}"
+        return Path.cwd() / f"untitled{PROJECT_FILE_EXTENSION}"
+
+    def _compute_document_signature(self) -> str:
+        document = build_project_document(self.scene, self._signature_path_hint())
+        payload = json.dumps(
+            document.model_dump(mode="json"),
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def is_document_modified(self) -> bool:
+        if self._clean_signature is None:
+            return bool(
+                self._document_name
+                or getattr(self.scene, "image_path", None)
+                or self.scene.objects
+                or self.scene.groups
+                or self.scene.collision_shapes
+            )
+        try:
+            return self._compute_document_signature() != self._clean_signature
+        except Exception:
+            return True
+
+    def _expected_window_title(self) -> str:
+        document_name = self._document_name
+        if self.is_document_modified():
+            t = self.translations[self.current_lang]
+            document_name = f"{document_name or t['untitled_project']}*"
+        return build_window_title(self.current_lang, document_name)
+
+    def _refresh_window_title(self) -> None:
+        self.setWindowTitle(self._expected_window_title())
+
+    def _on_scene_changed(self) -> None:
+        self._refresh_window_title()
+
+    def _mark_document_clean(self) -> None:
+        self._clean_signature = self._compute_document_signature()
+        self._refresh_window_title()
+
+    def _mark_document_unsaved(self) -> None:
+        self._clean_signature = None
+        self._refresh_window_title()
+
+    def _reset_command_history(self) -> None:
+        manager = getattr(self.scene, "cmd", None)
+        if manager is None:
+            return
+        if hasattr(manager, "clear"):
+            manager.clear()
+            return
+        if hasattr(manager, "_undo"):
+            manager._undo.clear()
+        if hasattr(manager, "_redo"):
+            manager._redo.clear()
+
+    def _refresh_document_views(self, *, project_loaded: bool) -> None:
+        has_image = self.scene.image is not None
+        self.tool_palette.setEnabled(has_image)
+        self.side_panel.setEnabled(project_loaded or has_image)
+        self.side_panel.refresh()
+        if hasattr(self.groups, "refresh"):
+            self.groups.refresh()
+        self.canvas.update()
+        if has_image:
+            self.canvas.fit_to_window()
+
+    def _confirm_unsaved_changes(self) -> bool:
+        if not self.is_document_modified():
+            return True
+        t = self.translations[self.current_lang]
+        choice = QMessageBox.warning(
+            self,
+            t["unsaved_title"],
+            t["unsaved_message"],
+            QMessageBox.StandardButton.Save
+            | QMessageBox.StandardButton.Discard
+            | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Save,
+        )
+        if choice == QMessageBox.StandardButton.Save:
+            return self.save_project()
+        if choice == QMessageBox.StandardButton.Discard:
+            return True
+        return False
+
+    def _normalized_project_path(self, path: str | os.PathLike[str]) -> Path:
+        destination = Path(path)
+        if destination.suffix.lower() != PROJECT_FILE_EXTENSION:
+            destination = destination.with_suffix(PROJECT_FILE_EXTENSION)
+        return destination
+
+    def _project_dialog_start(self) -> str:
+        if self._project_path is not None:
+            return str(self._project_path)
+        base = Path(self._last_folder) if self._last_folder else Path.cwd()
+        stem = Path(self._document_name).stem if self._document_name else "project"
+        return str(base / f"{stem}{PROJECT_FILE_EXTENSION}")
+
+    def _rebase_image_reference_for_save(self, destination: Path) -> tuple[object, ...]:
+        original = (
+            getattr(self.scene, "image_path", None),
+            getattr(self.scene, "image_path_kind", None),
+            getattr(self.scene, "image_sha256", None),
+            getattr(self.scene, "_image_reference_loaded", False),
+        )
+        if (
+            self._project_path is None
+            or getattr(self.scene, "image_path", None) is None
+            or getattr(self.scene, "image_path_kind", None) != "relative"
+        ):
+            return original
+
+        source = (
+            self._project_path.parent / os.fsdecode(self.scene.image_path)
+        ).resolve(strict=False)
+        destination_parent = destination.parent.resolve(strict=False)
+        try:
+            relative = source.relative_to(destination_parent)
+        except ValueError:
+            self.scene.image_path = str(source)
+            self.scene.image_path_kind = "absolute"
+        else:
+            self.scene.image_path = relative.as_posix()
+            self.scene.image_path_kind = "relative"
+        return original
+
+    def _restore_image_reference(self, original: tuple[object, ...]) -> None:
+        (
+            self.scene.image_path,
+            self.scene.image_path_kind,
+            self.scene.image_sha256,
+            self.scene._image_reference_loaded,
+        ) = original
+
+    def _resolved_project_image_path(
+        self,
+        project_path: Path,
+        scene=None,
+    ) -> Path | None:
+        target_scene = scene if scene is not None else self.scene
+        image_path = getattr(target_scene, "image_path", None)
+        if image_path is None:
+            return None
+        candidate = Path(os.fsdecode(image_path))
+        if getattr(target_scene, "image_path_kind", None) == "relative":
+            return (project_path.parent / candidate).resolve(strict=False)
+        return candidate.expanduser()
+
+    def _attach_project_image(self, project_path: Path, scene=None) -> list[str]:
+        target_scene = scene if scene is not None else self.scene
+        resolved = self._resolved_project_image_path(project_path, target_scene)
+        if resolved is None:
+            return []
+
+        t = self.translations[self.current_lang]
+        if not resolved.is_file():
+            return [t["project_image_missing"].format(path=resolved)]
+
+        import cv2
+
+        try:
+            image = cv2.imread(str(resolved), cv2.IMREAD_UNCHANGED)
+        except (OSError, cv2.error):
+            image = None
+        if image is None:
+            return [t["project_image_unreadable"].format(path=resolved)]
+
+        warnings: list[str] = []
+        expected_hash = getattr(target_scene, "image_sha256", None)
+        if expected_hash:
+            digest = hashlib.sha256()
+            try:
+                with resolved.open("rb") as handle:
+                    for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                        digest.update(chunk)
+            except OSError:
+                warnings.append(
+                    t["project_image_hash_unavailable"].format(path=resolved)
+                )
+            else:
+                if digest.hexdigest() != expected_hash:
+                    warnings.append(
+                        t["project_image_hash_mismatch"].format(path=resolved)
+                    )
+
+        target_scene.attach_project_image(image)
+        return warnings
+
+    def _adopt_project_scene(self, staged_scene) -> None:
+        """Replace document data only after every load phase has succeeded."""
+
+        self.scene.image = staged_scene.image
+        self.scene.image_path = staged_scene.image_path
+        self.scene.image_path_kind = staged_scene.image_path_kind
+        self.scene.image_sha256 = staged_scene.image_sha256
+        self.scene._image_reference_loaded = staged_scene._image_reference_loaded
+        self.scene.layers = staged_scene.layers
+        self.scene.objects = staged_scene.objects
+        self.scene.groups = staged_scene.groups
+        self.scene.collision_shapes = staged_scene.collision_shapes
+        self.scene.selected_id = None
+
+    def _show_project_warnings(self, warnings: list[str]) -> None:
+        if not warnings:
+            return
+        t = self.translations[self.current_lang]
+        QMessageBox.warning(
+            self,
+            t["project_warnings_title"],
+            "\n".join(f"• {warning}" for warning in warnings),
+        )
+
+    def open_project(self) -> bool:
+        started_at = time.perf_counter()
+        t = self.translations[self.current_lang]
+        initial_dir = (
+            str(self._project_path.parent)
+            if self._project_path is not None
+            else self._last_folder or ""
+        )
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            t["open_project_dialog"],
+            initial_dir,
+            t["project_files"],
+        )
+        if not path:
+            record_validation_event(
+                "project.opened",
+                "CANCELLED",
+                duration_ms=elapsed_ms(started_at),
+            )
+            return False
+        if not self._confirm_unsaved_changes():
+            record_validation_event(
+                "project.opened",
+                "CANCELLED",
+                duration_ms=elapsed_ms(started_at),
+                reason="unsaved_changes",
+            )
+            return False
+
+        destination = Path(path).resolve(strict=False)
+        try:
+            staged_scene = type(self.scene)()
+            migration_warnings = list(staged_scene.load_project(str(destination)))
+            image_warnings = self._attach_project_image(
+                destination,
+                staged_scene,
+            )
+        except Exception as exc:
+            logger.error(
+                "Failed to open project: %s",
+                exc,
+                exc_info=True,
+                extra={"validation_event_recorded": True},
+            )
+            record_validation_exception(
+                "project.opened",
+                exc,
+                duration_ms=elapsed_ms(started_at),
+                schema_extension=destination.suffix.lower(),
+            )
+            QMessageBox.critical(
+                self,
+                t["error"],
+                t["failed_open_project"] + str(exc),
+            )
+            return False
+
+        self._adopt_project_scene(staged_scene)
+        self._project_path = destination
+        self._document_name = destination.name
+        self._last_folder = str(destination.parent)
+        self._reset_command_history()
+        self.scene._notify()
+        self._refresh_document_views(project_loaded=True)
+        self._mark_document_clean()
+        warnings = migration_warnings + image_warnings
+        self._show_project_warnings(warnings)
+        record_validation_event(
+            "project.opened",
+            "SUCCESS",
+            duration_ms=elapsed_ms(started_at),
+            schema_extension=destination.suffix.lower(),
+            object_count=len(self.scene.objects),
+            warning_count=len(warnings),
+            image_loaded=self.scene.image is not None,
+        )
+        return True
+
+    def _save_project_to(self, path: str | os.PathLike[str]) -> bool:
+        started_at = time.perf_counter()
+        t = self.translations[self.current_lang]
+        destination = self._normalized_project_path(path).resolve(strict=False)
+        original_reference = self._rebase_image_reference_for_save(destination)
+        try:
+            self.scene.save_project(str(destination))
+        except Exception as exc:
+            self._restore_image_reference(original_reference)
+            logger.error(
+                "Failed to save project: %s",
+                exc,
+                exc_info=True,
+                extra={"validation_event_recorded": True},
+            )
+            record_validation_exception(
+                "project.saved",
+                exc,
+                duration_ms=elapsed_ms(started_at),
+                schema_extension=destination.suffix.lower(),
+            )
+            QMessageBox.critical(
+                self,
+                t["error"],
+                t["failed_save_project"] + str(exc),
+            )
+            return False
+
+        self._project_path = destination
+        self._document_name = destination.name
+        self._last_folder = str(destination.parent)
+        self._mark_document_clean()
+        self.statusBar().showMessage(t["project_saved"], 5000)
+        record_validation_event(
+            "project.saved",
+            "SUCCESS",
+            duration_ms=elapsed_ms(started_at),
+            schema_extension=destination.suffix.lower(),
+            object_count=len(self.scene.objects),
+        )
+        return True
+
+    def save_project(self) -> bool:
+        if self._project_path is None:
+            return self.save_project_as()
+        return self._save_project_to(self._project_path)
+
+    def save_project_as(self) -> bool:
+        t = self.translations[self.current_lang]
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            t["save_project_dialog"],
+            self._project_dialog_start(),
+            t["project_files"],
+        )
+        if not path:
+            record_validation_event("project.saved", "CANCELLED")
+            return False
+        return self._save_project_to(path)
+
+    def open_image(self) -> bool:
         started_at = time.perf_counter()
         initial_dir = self._last_folder or ""
         t = self.translations[self.current_lang]
@@ -549,35 +1015,13 @@ class MainWindow(QMainWindow):
                 "CANCELLED",
                 duration_ms=elapsed_ms(started_at),
             )
-            return
-        self._last_folder = os.path.dirname(path)
+            return False
         try:
             import cv2
 
-            img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-            if img is None:
+            image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+            if image is None:
                 raise ValueError("Failed to load image")
-
-            self.scene.load_image(img, path)
-            self._document_name = os.path.basename(path)
-            self.update_language()
-            self.tool_palette.setEnabled(True)
-            self.side_panel.setEnabled(True)
-            self.canvas.fit_to_window()
-
-            loaded = self.scene.image is not None
-            record_validation_event(
-                "image.opened",
-                "SUCCESS" if loaded else "FAILURE",
-                duration_ms=elapsed_ms(started_at),
-                loaded=loaded,
-                width=int(img.shape[1]),
-                height=int(img.shape[0]),
-                channels=int(img.shape[2]) if img.ndim == 3 else 1,
-                suffix=os.path.splitext(path)[1].lower(),
-                tools_enabled=self.tool_palette.isEnabled(),
-                side_panel_enabled=self.side_panel.isEnabled(),
-            )
         except Exception as exc:
             logger.error(
                 "Failed to open image: %s",
@@ -593,9 +1037,42 @@ class MainWindow(QMainWindow):
             )
             QMessageBox.critical(
                 self,
-                self.translations[self.current_lang]["error"],
-                self.translations[self.current_lang]["failed_open_image"] + str(exc),
+                t["error"],
+                t["failed_open_image"] + str(exc),
             )
+            return False
+
+        if not self._confirm_unsaved_changes():
+            record_validation_event(
+                "image.opened",
+                "CANCELLED",
+                duration_ms=elapsed_ms(started_at),
+                reason="unsaved_changes",
+            )
+            return False
+
+        self.scene.replace_with_image(image, path)
+        self._project_path = None
+        self._document_name = os.path.basename(path)
+        self._last_folder = os.path.dirname(path)
+        self._reset_command_history()
+        self._refresh_document_views(project_loaded=False)
+        self._mark_document_unsaved()
+
+        loaded = self.scene.image is not None
+        record_validation_event(
+            "image.opened",
+            "SUCCESS" if loaded else "FAILURE",
+            duration_ms=elapsed_ms(started_at),
+            loaded=loaded,
+            width=int(image.shape[1]),
+            height=int(image.shape[0]),
+            channels=int(image.shape[2]) if image.ndim == 3 else 1,
+            suffix=os.path.splitext(path)[1].lower(),
+            tools_enabled=self.tool_palette.isEnabled(),
+            side_panel_enabled=self.side_panel.isEnabled(),
+        )
+        return loaded
 
     def open_export(self):
         started_at = time.perf_counter()
@@ -650,6 +1127,22 @@ class MainWindow(QMainWindow):
                 self.translations[self.current_lang]["error"],
                 self.translations[self.current_lang]["failed_mask_viewer"] + str(e),
             )
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self._confirm_unsaved_changes():
+            record_validation_event(
+                "document.close_requested",
+                "SUCCESS",
+                modified=False,
+            )
+            event.accept()
+            return
+        record_validation_event(
+            "document.close_requested",
+            "CANCELLED",
+            modified=True,
+        )
+        event.ignore()
 
     def _toggle_collision_overlay(self):
         visible = self.collision_overlay_action.isChecked()

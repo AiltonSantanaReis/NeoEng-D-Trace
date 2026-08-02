@@ -56,6 +56,12 @@ class CommandManager:
         self._undo: List[Command] = []
         self._redo: List[Command] = []
 
+    def clear(self) -> None:
+        """Discard undo and redo history when the active document changes."""
+
+        self._undo.clear()
+        self._redo.clear()
+
     def execute(self, cmd: Command, scene: Any) -> None:
         """Execute a command, handling exceptions and managing undo stack."""
         try:
