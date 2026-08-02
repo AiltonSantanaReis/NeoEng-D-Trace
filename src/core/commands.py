@@ -666,7 +666,8 @@ class HandleMoveCommand(Command):
         scene.set_object_beziers(self.object_id, obj.beziers)
 
 
-class ExpandContractCommand(Command):
+class UpdatePolygonCommand(Command):
+    # Replace one polygon and restore exact prior collision state on undo.
     def __init__(
         self,
         object_id: str,
@@ -674,18 +675,51 @@ class ExpandContractCommand(Command):
         new_polygon: List[Tuple[int, int]],
     ):
         self.object_id = object_id
-        self.old_polygon = [tuple(p) for p in old_polygon]
-        self.new_polygon = [tuple(p) for p in new_polygon]
+        self.old_polygon = [tuple(point) for point in old_polygon]
+        self.new_polygon = [tuple(point) for point in new_polygon]
+        self._had_collision = False
+        self._old_collision: Optional[List[Tuple[float, float]]] = None
 
     def execute(self, scene: Any):
-        if self.object_id not in scene.objects:
-            return
+        obj = scene.objects.get(self.object_id)
+        if obj is None:
+            return CommandResult.rejected(
+                self, "execute", "The object no longer exists."
+            )
+        if [tuple(point) for point in obj.polygon] != self.old_polygon:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The object changed before this edit could be applied.",
+            )
+        if self.old_polygon == self.new_polygon:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The polygon is already in the requested state.",
+            )
+
+        self._had_collision = self.object_id in scene.collision_shapes
+        self._old_collision = (
+            copy.deepcopy(scene.collision_shapes[self.object_id])
+            if self._had_collision
+            else None
+        )
         scene.update_polygon(self.object_id, self.new_polygon)
 
     def undo(self, scene: Any):
         if self.object_id not in scene.objects:
-            return
+            return CommandResult.rejected(self, "undo", "The object no longer exists.")
+
         scene.update_polygon(self.object_id, self.old_polygon)
+        if self._had_collision and self._old_collision is not None:
+            scene.collision_shapes[self.object_id] = copy.deepcopy(self._old_collision)
+            scene._notify()
+
+
+class ExpandContractCommand(UpdatePolygonCommand):
+    # Backward-compatible name for polygon replacement.
+    pass
 
 
 class CreateGroupCommand(Command):
@@ -834,61 +868,203 @@ class MoveGroupCommand(Command):
 
 
 class ToggleCollisionCommand(Command):
+    # Toggle collision and restore the exact previous shape on undo.
     def __init__(self, object_id: str):
         self.object_id = object_id
         self._was_enabled = False
+        self._old_shape: Optional[List[Tuple[float, float]]] = None
 
     def execute(self, scene: Any):
+        if self.object_id not in scene.objects:
+            return CommandResult.rejected(
+                self, "execute", "The object no longer exists."
+            )
+
         self._was_enabled = scene.has_collision(self.object_id)
-        scene.set_object_collision(self.object_id, not self._was_enabled)
+        self._old_shape = (
+            copy.deepcopy(scene.collision_shapes[self.object_id])
+            if self._was_enabled
+            else None
+        )
+        scene.set_object_collision(
+            self.object_id,
+            not self._was_enabled,
+        )
 
     def undo(self, scene: Any):
-        scene.set_object_collision(self.object_id, self._was_enabled)
+        if self.object_id not in scene.objects:
+            return CommandResult.rejected(self, "undo", "The object no longer exists.")
+
+        if self._was_enabled:
+            if self._old_shape is None:
+                return CommandResult.failed(
+                    self,
+                    "undo",
+                    "CollisionBackupError",
+                    "The previous collision shape is unavailable.",
+                )
+            scene.collision_shapes[self.object_id] = copy.deepcopy(self._old_shape)
+            scene._notify()
+        else:
+            scene.set_object_collision(self.object_id, False)
 
 
 class ClearSceneCommand(Command):
+    # Clear editable collections as one reversible operation.
     def __init__(self):
-        self._backup_objects = {}
-        self._backup_groups = []
-        self._backup_collisions = {}
+        self._backup_objects: Dict[str, Any] = {}
+        self._backup_groups: List[Any] = []
+        self._backup_collisions: Dict[str, List[Tuple[float, float]]] = {}
+        self._backup_selected_id: Optional[str] = None
 
     def execute(self, scene: Any):
-        self._backup_objects = scene.objects.copy()
-        if hasattr(scene, "groups"):
-            self._backup_groups = list(getattr(scene, "groups", []))
-        if hasattr(scene, "collision_shapes"):
-            self._backup_collisions = scene.collision_shapes.copy()
-        scene.objects.clear()
-        if hasattr(scene, "groups"):
-            scene.groups.clear()
-        if hasattr(scene, "collision_shapes"):
-            scene.collision_shapes.clear()
-        scene._notify()
+        if not (
+            scene.objects
+            or scene.groups
+            or scene.collision_shapes
+            or scene.selected_id is not None
+        ):
+            return CommandResult.no_change(
+                self, "execute", "The scene is already empty."
+            )
+
+        self._backup_objects = copy.deepcopy(scene.objects)
+        self._backup_groups = copy.deepcopy(scene.groups)
+        self._backup_collisions = copy.deepcopy(scene.collision_shapes)
+        self._backup_selected_id = scene.selected_id
+        scene.clear()
 
     def undo(self, scene: Any):
-        scene.objects = self._backup_objects.copy()
-        if hasattr(scene, "groups"):
-            scene.groups = list(self._backup_groups)
-        if hasattr(scene, "collision_shapes"):
-            scene.collision_shapes = self._backup_collisions.copy()
+        scene.objects = copy.deepcopy(self._backup_objects)
+        scene.groups = copy.deepcopy(self._backup_groups)
+        scene.collision_shapes = copy.deepcopy(self._backup_collisions)
+        scene.selected_id = self._backup_selected_id
         scene._notify()
 
 
 # --- NOVO COMANDO PARA CORRIGIR ERROS DE IMPORTAÇÃO ---
 
 
+class RenameObjectCommand(Command):
+    # Rename through the scene service.
+    def __init__(self, old_id: str, new_id: str):
+        self.old_id = old_id
+        self.new_id = new_id.strip()
+
+    def execute(self, scene: Any):
+        if not self.new_id:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The new object id must not be empty.",
+            )
+        if self.old_id == self.new_id:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The object already has this id.",
+            )
+        if self.old_id not in scene.objects:
+            return CommandResult.rejected(
+                self, "execute", "The object no longer exists."
+            )
+        if self.new_id in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "Another object already uses this id.",
+            )
+        scene.rename_object(self.old_id, self.new_id)
+
+    def undo(self, scene: Any):
+        scene.rename_object(self.new_id, self.old_id)
+
+
 class DeleteObjectCommand(Command):
+    # Delete and restore object-owned relationships.
     def __init__(self, object_id: str):
         self.object_id = object_id
         self._backup_obj: Optional[Any] = None
+        self._backup_object_index: Optional[int] = None
+        self._backup_group_members: Optional[Dict[str, List[str]]] = None
+        self._backup_selected_id: Optional[str] = None
+        self._had_collision = False
+        self._backup_collision: Optional[List[Tuple[float, float]]] = None
 
     def execute(self, scene: Any):
-        if self.object_id in scene.objects:
-            self._backup_obj = scene.objects[self.object_id]
-            scene.remove_object(self.object_id)
+        if self.object_id not in scene.objects:
+            return CommandResult.rejected(
+                self, "execute", "The object no longer exists."
+            )
+
+        self._backup_object_index = list(scene.objects).index(self.object_id)
+        self._backup_obj = copy.deepcopy(scene.objects[self.object_id])
+        self._backup_group_members = {
+            group.id: list(group.members) for group in scene.groups
+        }
+        self._backup_selected_id = scene.selected_id
+        self._had_collision = self.object_id in scene.collision_shapes
+        self._backup_collision = (
+            copy.deepcopy(scene.collision_shapes[self.object_id])
+            if self._had_collision
+            else None
+        )
+        scene.remove_object(self.object_id)
 
     def undo(self, scene: Any):
-        if self._backup_obj:
-            # Restaura o objeto diretamente para manter metadados
-            scene.objects[self.object_id] = self._backup_obj
-            scene._notify()
+        if (
+            self._backup_obj is None
+            or self._backup_object_index is None
+            or self._backup_group_members is None
+        ):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The deleted object backup is unavailable.",
+            )
+        if self.object_id in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The object id is already in use.",
+            )
+
+        items = list(scene.objects.items())
+        insert_at = min(self._backup_object_index, len(items))
+        items.insert(
+            insert_at,
+            (
+                self.object_id,
+                copy.deepcopy(self._backup_obj),
+            ),
+        )
+        scene.objects = dict(items)
+
+        if self._had_collision:
+            if self._backup_collision is None:
+                return CommandResult.failed(
+                    self,
+                    "undo",
+                    "CollisionBackupError",
+                    "The collision backup is unavailable.",
+                )
+            scene.collision_shapes[self.object_id] = copy.deepcopy(
+                self._backup_collision
+            )
+        else:
+            scene.collision_shapes.pop(self.object_id, None)
+
+        groups_by_id = {group.id: group for group in scene.groups}
+        for group_id, members in self._backup_group_members.items():
+            group = groups_by_id.get(group_id)
+            if group is None:
+                return CommandResult.failed(
+                    self,
+                    "undo",
+                    "GroupRelationshipError",
+                    "A required group is missing.",
+                )
+            group.members = list(members)
+
+        scene.selected_id = self._backup_selected_id
+        scene._notify()
