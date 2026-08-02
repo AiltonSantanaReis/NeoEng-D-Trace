@@ -33,7 +33,11 @@ class _SetSelection(Command):
 
 
 class _NoChange(Command):
+    def __init__(self):
+        self.attempts = 0
+
     def execute(self, scene):
+        self.attempts += 1
         return None
 
     def undo(self, scene):
@@ -41,7 +45,11 @@ class _NoChange(Command):
 
 
 class _PartialExecuteFailure(Command):
+    def __init__(self):
+        self.attempts = 0
+
     def execute(self, scene):
+        self.attempts += 1
         scene.selected_id = "partial"
         scene._notify()
         raise RuntimeError("private path must not be logged")
@@ -81,8 +89,10 @@ class _RedoFailure(Command):
 class _ObjectCommand(Command):
     def __init__(self, object_id: str):
         self.object_id = object_id
+        self.executions = 0
 
     def execute(self, scene):
+        self.executions += 1
         scene.objects[self.object_id] = object()
         scene._notify()
 
@@ -92,7 +102,11 @@ class _ObjectCommand(Command):
 
 
 class _FailingObjectCommand(Command):
+    def __init__(self):
+        self.attempts = 0
+
     def execute(self, scene):
+        self.attempts += 1
         scene.objects["partial"] = object()
         scene._notify()
         raise RuntimeError("composite failure")
@@ -124,10 +138,13 @@ def test_execute_returns_explicit_result_and_updates_history():
 
 def test_no_change_operation_does_not_enter_history():
     scene = _scene()
-    result = scene.cmd.execute(_NoChange(), scene)
+    command = _NoChange()
+
+    result = scene.cmd.execute(command, scene)
 
     assert result.status is CommandStatus.NO_CHANGE
     assert result.changed is False
+    assert command.attempts == 0
     assert scene.cmd.undo_count == 0
     assert scene.cmd.redo_count == 0
 
@@ -135,13 +152,15 @@ def test_no_change_operation_does_not_enter_history():
 def test_execute_failure_restores_scene_and_does_not_enter_history():
     scene = _scene()
     scene.selected_id = "before"
+    command = _PartialExecuteFailure()
 
-    result = scene.cmd.execute(_PartialExecuteFailure(), scene)
+    result = scene.cmd.execute(command, scene)
 
     assert result.status is CommandStatus.FAILED
     assert result.error_type == "RuntimeError"
     assert "private path" not in result.message
     assert scene.selected_id == "before"
+    assert command.attempts == 0
     assert scene.cmd.undo_count == 0
     assert scene.cmd.redo_count == 0
 
@@ -170,6 +189,7 @@ def test_redo_failure_restores_scene_and_preserves_stacks():
 
     assert result.status is CommandStatus.FAILED
     assert scene.selected_id is None
+    assert command.executions == 1
     assert scene.cmd.undo_count == 0
     assert scene.cmd.redo_count == 1
 
@@ -219,14 +239,18 @@ def test_history_limit_discards_only_oldest_successful_command():
 
 def test_composite_failure_rolls_back_and_creates_no_history():
     scene = _scene()
-    command = CompositeCommand(
-        [_ObjectCommand("complete-only"), _FailingObjectCommand()]
-    )
+    first = _ObjectCommand("complete-only")
+    failing = _FailingObjectCommand()
+    command = CompositeCommand([first, failing])
 
     result = scene.cmd.execute(command, scene)
 
     assert result.status is CommandStatus.FAILED
     assert scene.objects == {}
+    assert first.executions == 0
+    assert failing.attempts == 0
+    assert command._executed == []
+    assert command.commands == [first, failing]
     assert scene.cmd.undo_count == 0
     assert scene.cmd.redo_count == 0
 

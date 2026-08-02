@@ -107,6 +107,17 @@ class Command:
     def undo(self, scene: Any):
         raise NotImplementedError()
 
+    def _snapshot_state(self) -> Any:
+        """Capture mutable command state before one operation."""
+
+        return copy.deepcopy(vars(self))
+
+    def _restore_state(self, state: Any) -> None:
+        """Restore mutable command state after a rejected operation."""
+
+        vars(self).clear()
+        vars(self).update(copy.deepcopy(state))
+
 
 _STATE_ATTRIBUTES = (
     "objects",
@@ -172,6 +183,29 @@ class _SceneCheckpoint:
             scene._notify()
 
 
+@dataclass
+class _CommandCheckpoint:
+    state: Any
+
+    @classmethod
+    def capture(cls, command: Command) -> "_CommandCheckpoint":
+        return cls(command._snapshot_state())
+
+    def restore(self, command: Command) -> None:
+        command._restore_state(self.state)
+
+
+def _restore_operation_state(
+    *,
+    command: Command,
+    command_checkpoint: _CommandCheckpoint,
+    scene: Any,
+    scene_checkpoint: _SceneCheckpoint,
+) -> None:
+    command_checkpoint.restore(command)
+    scene_checkpoint.restore(scene)
+
+
 def _sanitize_operation_failure(
     command: Command,
     operation: str,
@@ -197,13 +231,23 @@ def _run_command_operation(
     operation: str,
     scene: Any,
 ) -> CommandResult:
-    checkpoint = _SceneCheckpoint.capture(scene)
-    before = checkpoint.token()
+    try:
+        command_checkpoint = _CommandCheckpoint.capture(command)
+    except Exception as exc:
+        return _sanitize_operation_failure(command, operation, exc)
+
+    scene_checkpoint = _SceneCheckpoint.capture(scene)
+    before = scene_checkpoint.token()
 
     try:
         raw_result = getattr(command, operation)(scene)
     except Exception as exc:
-        checkpoint.restore(scene)
+        _restore_operation_state(
+            command=command,
+            command_checkpoint=command_checkpoint,
+            scene=scene,
+            scene_checkpoint=scene_checkpoint,
+        )
         return _sanitize_operation_failure(command, operation, exc)
 
     after = _SceneCheckpoint.capture(scene).token()
@@ -214,17 +258,27 @@ def _run_command_operation(
             CommandStatus.REJECTED,
             CommandStatus.FAILED,
         }:
-            if changed:
-                checkpoint.restore(scene)
+            _restore_operation_state(
+                command=command,
+                command_checkpoint=command_checkpoint,
+                scene=scene,
+                scene_checkpoint=scene_checkpoint,
+            )
             return raw_result
         if raw_result.changed and not changed:
+            command_checkpoint.restore(command)
             return CommandResult.no_change(
                 command,
                 operation,
                 "The command reported a change, but the scene was unchanged.",
             )
         if not raw_result.changed and changed:
-            checkpoint.restore(scene)
+            _restore_operation_state(
+                command=command,
+                command_checkpoint=command_checkpoint,
+                scene=scene,
+                scene_checkpoint=scene_checkpoint,
+            )
             logger.error(
                 "Command %s %s returned an inconsistent result",
                 type(command).__name__,
@@ -236,10 +290,14 @@ def _run_command_operation(
                 "CommandContractError",
                 "The command result did not match the observed scene state.",
             )
+        if not raw_result.changed:
+            command_checkpoint.restore(command)
         return raw_result
 
     if changed:
         return CommandResult.applied(command, operation)
+
+    command_checkpoint.restore(command)
     return CommandResult.no_change(
         command,
         operation,
@@ -253,6 +311,21 @@ class CompositeCommand(Command):
     def __init__(self, commands: List[Command]):
         self.commands = list(commands)
         self._executed: List[Command] = []
+
+    def _snapshot_state(self) -> Any:
+        return {
+            "commands": list(self.commands),
+            "executed": list(self._executed),
+            "subcommands": [
+                (command, command._snapshot_state()) for command in self.commands
+            ],
+        }
+
+    def _restore_state(self, state: Any) -> None:
+        self.commands = list(state["commands"])
+        self._executed = list(state["executed"])
+        for command, command_state in state["subcommands"]:
+            command._restore_state(command_state)
 
     def _rollback_execute(self, scene: Any) -> Optional[CommandResult]:
         for executed in reversed(self._executed):

@@ -50,3 +50,21 @@ Continuam pendentes:
 - encerramento de `R-004`.
 
 Este pacote nao conclui a Etapa 5 e nao autoriza a Etapa 6.
+
+## Correcao de revisao do Pacote 1
+
+A revisao do primeiro commit identificou que o checkpoint restaurava a cena,
+mas nao o estado interno do proprio objeto de comando. Um comando que
+incrementasse contadores, alterasse IDs temporarios ou atualizasse backups
+antes de falhar poderia permanecer contaminado na pilha.
+
+A correcao adiciona:
+
+- checkpoint do estado interno de cada `Command`;
+- restauracao do comando em excecao, rejeicao, falha e operacao sem mudanca;
+- snapshot recursivo dos subcomandos de `CompositeCommand`, preservando as
+  referencias originais;
+- testes que comprovam a restauracao do estado interno em execute falho,
+  redo falho, no-op e rollback composto.
+
+Esta correcao continua limitada ao Pacote 1 e nao encerra `R-004`.
