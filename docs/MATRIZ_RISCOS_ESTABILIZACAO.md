@@ -23,7 +23,7 @@
 | R-001 | CONFIRMADO / ABERTO | Colisão personalizada e Bézier são perdidos; formato sem versão | Etapa 3 |
 | R-002 | ABERTO | Persistência interna existe, mas o ciclo Abrir/Salvar não está completo na UI | Etapa 4 |
 | R-003 | ABERTO | Caracterização ampliada; cobertura integral de UI permanece pendente | Etapa 11 |
-| R-004 | CONFIRMADO / ABERTO | Fluxos selecionados funcionam, mas falhas de comando são ocultadas do chamador | Etapa 5 |
+| R-004 | CONFIRMADO / ABERTO | Pacote 1 integrou contrato observável, rollback transacional, pilhas consistentes e estado da UI; comandos por operação, relações completas e mutações diretas permanecem incompletos | Etapa 5 — Pacote 2+ |
 | R-005 | ABERTO | Exportação de resultados do painel de colisão permanece parcialmente desconectada | Etapa 6 |
 | R-006 | CONFIRMADO / ABERTO | Dois cenários negativos retornam código 0 sem arquivo | Etapa 7 |
 | R-007 | CONFIRMADO / ABERTO | Bézier não persiste; métricas geométricas ainda são insuficientes | Etapa 8 |
@@ -55,6 +55,8 @@ Nenhum risco acima está encerrado por esta etapa.
 
 | R-002 | APROVADO PARA ENCERRAMENTO | PR `#13`; HEAD `3469a4a9bfab20fa8cd687e2925a64928e7903d3`; merge `4d663f028c5d501a2da44e3a34077023087df58c`; workflow da PR `#44` (`30741145009`) e workflow da `main` `#45` (`30746901415`) com Linux e Windows em `success`; validação manual GUI v4 com `15/15` checks aprovados, `0` erros automáticos, ciclo Abrir/Salvar, cancelamento, descarte, avisos de imagem, rejeição atômica de JSON corrompido e salvamento no fechamento; encerramento condicionado à integração desta evidência e ao CI final da `main` |
 | ETAPA-4 | APROVADA PARA ENCERRAMENTO | Ciclo Abrir/Salvar integrado e validado na UI Windows; `R-004` permanece aberto e é o próximo risco da ordem obrigatória; nenhuma implementação da Etapa 5 iniciada nesta PR documental |
+
+| ETAPA-5-PACOTE-1 | INTEGRADO / APROVADO NO ESCOPO | PR `#15`; HEAD funcional `587a0cc93c3efe6c4e668cb86d624cf79a2479b4`; HEAD mesclado `fb5c72b001e4d8085ec902e383190e04a17dae8c`; merge `46cc0664cd8cfe04a6bd3b89bb6dc56e9681f62a`; workflow pós-merge `#55` (`30769951023`) com Linux `test` (`91555266247`) e Windows `test-windows` (`91555266229`) em `success`; `235` testes locais; cobertura global `53%`; `src/core/commands.py` `60%`; validação manual Windows `9/9`; pacote pós-merge `7e0fc5d64cf0edcdef6ab96cc43d23b7d0d3ce7bfd515ad31db50a4ac9dabe41`; `R-004` permanece aberto para os pacotes seguintes |
 
 
 ## Severidades

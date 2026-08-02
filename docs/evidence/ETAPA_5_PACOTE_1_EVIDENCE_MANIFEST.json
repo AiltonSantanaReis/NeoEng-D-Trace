@@ -1,0 +1,55 @@
+{
+  "artifacts": {
+    "manual_bundle": {
+      "name": "NeoEng-D-Trace_Etapa5_Pacote1_Manual_20260802_191329.zip",
+      "sha256": "558885490730b335c0b0578e6b6c6d7030ec86c57ba0668c73fb5e30d481aecc"
+    },
+    "post_merge_bundle": {
+      "members": [
+        "resultado_pos_merge.json",
+        "sha256_manifest.json"
+      ],
+      "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa5_Pacote1_PosMerge_20260802_193753.zip",
+      "sha256": "7e0fc5d64cf0edcdef6ab96cc43d23b7d0d3ce7bfd515ad31db50a4ac9dabe41",
+      "size_bytes": 940
+    }
+  },
+  "base_commit": "46cc0664cd8cfe04a6bd3b89bb6dc56e9681f62a",
+  "decision": "APPROVED_IN_PACKAGE_SCOPE",
+  "environment": {
+    "gh": "gh version 2.93.0 (2026-05-27)",
+    "git": "git version 2.54.0.windows.1",
+    "platform": "win32",
+    "poetry": "Poetry (version 2.4.1)",
+    "python": "Python 3.11.9"
+  },
+  "generated_at": "2026-08-02T19:45:04.590655-03:00",
+  "merged_head": "fb5c72b001e4d8085ec902e383190e04a17dae8c",
+  "package": 1,
+  "post_merge_workflow": {
+    "conclusion": "success",
+    "linux_job_id": 91555266247,
+    "run_id": 30769951023,
+    "run_number": 55,
+    "windows_job_id": 91555266229
+  },
+  "pull_request": 15,
+  "repository": "AiltonSantanaReis/NeoEng-D-Trace",
+  "residual_state": {
+    "next_gate": "PLAN_STAGE5_PACKAGE2",
+    "r004_closed": false,
+    "stage5_completed": false,
+    "stage6_started": false
+  },
+  "risk": "R-004",
+  "schema_version": 1,
+  "stage": 5,
+  "validation": {
+    "baseline_before_documentation": 233,
+    "commands_line_coverage_percent": 60,
+    "global_line_coverage_percent": 53,
+    "manual_checks_passed": 9,
+    "manual_checks_total": 9,
+    "tests_passed": 235
+  }
+}
