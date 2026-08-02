@@ -168,5 +168,8 @@ jobs:
             docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip
             docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md
             docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip
+            docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md
+            docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json
+            docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip
           if-no-files-found: error
           retention-days: 7
