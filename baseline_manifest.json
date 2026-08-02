@@ -17,8 +17,8 @@
       "size": 1152
     },
     ".github/workflows/ci.yml": {
-      "sha256": "d4af12fbea10e668da1b8210e6c19d0a11859c4a6853f03cfa01bf4527f4c3f5",
-      "size": 6436
+      "sha256": "5aa8186b4703b1c56afc2a6d5af6f1f109b68c2e1d0120d4e939f19ee6c31ee6",
+      "size": 6650
     },
     ".gitignore": {
       "sha256": "1a28442e581d24e19e5181edc36c45871e038dec77b2b56bf75330fc6515b3b0",
@@ -197,8 +197,8 @@
       "size": 5569
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "268736a1ff62e510b85603e7b92c930971e297388707361bef0431ed190383e4",
-      "size": 6252
+      "sha256": "0e001ac6075f25c0c203a508f32c9307b155c0ba0f59e9ab2ad67e151cf0817a",
+      "size": 7041
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "156adf066ca773eb1eb357d393ae990dcc62391899d391c09ad84e2a9758973d",
@@ -316,6 +316,14 @@
       "sha256": "c9c72e83be549bc6705b02ffa0f49c4a72d7ef1bd99494cd449f3f8eb4b52c4a",
       "size": 7005
     },
+    "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
+      "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
+      "size": 7651
+    },
+    "docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json": {
+      "sha256": "530874a8837d782562a68f411954923c381ccfeb246a83e8fa285ebcde925bab",
+      "size": 8007
+    },
     "docs/evidence/README.md": {
       "sha256": "e290b4061953e893e8639042eab3dd05ef5fd5baa72da131cdce76b8959d34e8",
       "size": 1501
@@ -335,6 +343,10 @@
     "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip": {
       "sha256": "411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f",
       "size": 1753510
+    },
+    "docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip": {
+      "sha256": "d36c7062ae6de1bf3935744f0a764c0f23aca10c65a5e14928e0096ded4e96a3",
+      "size": 7292
     },
     "docs/phase-7-exporters.md": {
       "sha256": "99aecb50a1824e05467009aa05da9877b9d88a5470610ada302d4e117cbd731d",

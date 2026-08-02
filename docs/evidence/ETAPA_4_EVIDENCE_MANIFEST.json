@@ -1,0 +1,245 @@
+{
+  "evidence": {
+    "closure_path": "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md",
+    "manifest_path": "docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json",
+    "sanitized_manual_bundle": {
+      "filename": "NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip",
+      "member_count": 10,
+      "original_file_hashes": {
+        "RESUMO_FINAL.txt": {
+          "sha256": "58bcb2680070e64680b9d5154df4472222b12e6e4635b475e8e51e71af23b308",
+          "size_bytes": 466
+        },
+        "fixtures_manifest.json": {
+          "sha256": "77de354e33e30589277a6dde69e3f67ca4830a4736751948f9227dc1b8a2c6f8",
+          "size_bytes": 1062
+        },
+        "logs/stderr_gui.txt": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "logs/stdout_gui.txt": {
+          "sha256": "5880a5e08af9753af1b3e9585ebc2a52ea5c3ab597774d67ad0100ff04a6d5a2",
+          "size_bytes": 2683
+        },
+        "logs/validacao_gui.jsonl": {
+          "sha256": "33939a7fbbf5b1c01683ce08342132b54fcfa2e98d93879e844a50b95640e0a8",
+          "size_bytes": 9504
+        },
+        "preflight.json": {
+          "sha256": "15a4098416727e9723f3da02a4e48e388c811ab22522973c3edfde7f03a7b58c",
+          "size_bytes": 540
+        },
+        "resultado_final.json": {
+          "sha256": "f22829f19ac4e2ed4ab2bed378746e0f51ab7124a6715b6492c597646f4cf9e2",
+          "size_bytes": 6459
+        }
+      },
+      "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip",
+      "privacy_audit": {
+        "local_path_findings": 0,
+        "local_username_rejected": true,
+        "rewritten_text_members": 2,
+        "windows_users_paths_rejected": true
+      },
+      "sanitized": true,
+      "sha256": "d36c7062ae6de1bf3935744f0a764c0f23aca10c65a5e14928e0096ded4e96a3",
+      "size_bytes": 7292
+    }
+  },
+  "formal_stage_closure": {
+    "closure_branch": "docs/etapa-4-encerramento-pos-merge",
+    "closure_commit": null,
+    "closure_commit_note": "The final closure commit is recorded by Git/PR metadata; storing its own hash inside the same commit would be self-referential.",
+    "decision": "APPROVED",
+    "stage_5_started": false,
+    "status": "PENDING_CLOSURE_RECORD_INTEGRATION_AND_FINAL_MAIN_CI"
+  },
+  "generated_at": "2026-08-02T17:37:11.742328-03:00",
+  "integration": {
+    "approved_feature_commit": "3469a4a9bfab20fa8cd687e2925a64928e7903d3",
+    "base_commit": "2f6309acfc7c184f722f15ae15ece8dc5a21cc63",
+    "feature_branch": "feat/etapa-4-ciclo-abrir-salvar-ui",
+    "merge_commit": "4d663f028c5d501a2da44e3a34077023087df58c",
+    "merge_method": "merge",
+    "pr_merged": true,
+    "pull_request": 13
+  },
+  "main_post_merge_validation": {
+    "artifacts": [
+      {
+        "digest": "sha256:f02549954192d78fa18a97b50f9ed81f007c7e6d1ebcb96f040f31120b40ca8b",
+        "expired": false,
+        "id": 8833179318,
+        "name": "validation-linux-python-3.11",
+        "size_in_bytes": 24522
+      },
+      {
+        "digest": "sha256:fb0382a9c967de6074f63623848356265c73959989cd7563dcc22c9e773b48f1",
+        "expired": false,
+        "id": 8833187224,
+        "name": "validation-windows-python-3.11",
+        "size_in_bytes": 5067481
+      }
+    ],
+    "conclusion": "success",
+    "created_at": "2026-08-02T12:00:13Z",
+    "event": "push",
+    "head_branch": "main",
+    "head_sha": "4d663f028c5d501a2da44e3a34077023087df58c",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 91493922419,
+        "name": "test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 91493922390,
+        "name": "test-windows",
+        "status": "completed"
+      }
+    ],
+    "name": "Private validation",
+    "run_id": 30746901415,
+    "run_number": 45,
+    "status": "completed",
+    "updated_at": "2026-08-02T12:02:19Z"
+  },
+  "manual_validation": {
+    "application_exit_code": 0,
+    "automatic_errors": 0,
+    "events": {
+      "event_counts": {
+        "application.closed": 1,
+        "application.opened": 1,
+        "application.state.saved": 1,
+        "document.close_requested": 2,
+        "image.opened": 1,
+        "polygon.created": 3,
+        "project.opened": 8,
+        "project.saved": 4,
+        "python.log": 2,
+        "selection.synced": 3,
+        "session.start": 1,
+        "session.summary": 1,
+        "validation.mode": 1,
+        "window.geometry.restored": 1
+      },
+      "expected_negative_failure_events": 2,
+      "unexpected_failure_events": 0
+    },
+    "evidence_root_name": "NeoEng-D-Trace_Etapa4_Guiada_20260802_084517",
+    "gate": "APPROVED",
+    "manual_failed": 0,
+    "manual_passed": 15,
+    "manual_total": 15,
+    "output_projects": {
+      "ciclo_manual.ndtproj": {
+        "filename": "ciclo_manual.ndtproj",
+        "groups": 0,
+        "image_path_kind": "absolute",
+        "layers": 1,
+        "objects": 3,
+        "sha256": "dda7b254f420973a5e78f216a851140d6c5876102f3ff256c2a74d7ac18ff81d",
+        "size_bytes": 3401
+      },
+      "rebase_copia.ndtproj": {
+        "filename": "rebase_copia.ndtproj",
+        "groups": 1,
+        "image_path_kind": "absolute",
+        "layers": 2,
+        "objects": 2,
+        "sha256": "ea71f7630443f83b187d0d5a002ec504c8bbe0790a1f95070ca1e70589241e34",
+        "size_bytes": 1848
+      }
+    },
+    "source_files": {
+      "RESUMO_FINAL.txt": {
+        "sha256": "58bcb2680070e64680b9d5154df4472222b12e6e4635b475e8e51e71af23b308",
+        "size_bytes": 466
+      },
+      "logs/validacao_gui.jsonl": {
+        "sha256": "33939a7fbbf5b1c01683ce08342132b54fcfa2e98d93879e844a50b95640e0a8",
+        "size_bytes": 9504
+      },
+      "resultado_final.json": {
+        "sha256": "f22829f19ac4e2ed4ab2bed378746e0f51ab7124a6715b6492c597646f4cf9e2",
+        "size_bytes": 6459
+      }
+    },
+    "validator_version": 4,
+    "worktree_clean_after": true
+  },
+  "project": "NeoEng-D-Trace",
+  "pull_request": {
+    "base_ref": "main",
+    "base_sha": "2f6309acfc7c184f722f15ae15ece8dc5a21cc63",
+    "head_ref": "feat/etapa-4-ciclo-abrir-salvar-ui",
+    "head_sha": "3469a4a9bfab20fa8cd687e2925a64928e7903d3",
+    "merge_commit_sha": "4d663f028c5d501a2da44e3a34077023087df58c",
+    "merged": true,
+    "merged_at": "2026-08-02T12:00:11Z",
+    "number": 13,
+    "state": "closed"
+  },
+  "pull_request_validation": {
+    "artifacts": [
+      {
+        "digest": "sha256:e87df0a13db8887968aa4ff19457632c5a2666421346faee995113b5548db9ec",
+        "expired": false,
+        "id": 8831333445,
+        "name": "validation-linux-python-3.11",
+        "size_in_bytes": 24521
+      },
+      {
+        "digest": "sha256:2908c3b3c65cffc3bd6e9c59d2e4028670e33c0f8153a719971da42f2052f983",
+        "expired": false,
+        "id": 8831341327,
+        "name": "validation-windows-python-3.11",
+        "size_in_bytes": 5067478
+      }
+    ],
+    "conclusion": "success",
+    "created_at": "2026-08-02T09:07:44Z",
+    "event": "pull_request",
+    "head_branch": "feat/etapa-4-ciclo-abrir-salvar-ui",
+    "head_sha": "3469a4a9bfab20fa8cd687e2925a64928e7903d3",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 91478701263,
+        "name": "test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 91478701282,
+        "name": "test-windows",
+        "status": "completed"
+      }
+    ],
+    "name": "Private validation",
+    "run_id": 30741145009,
+    "run_number": 44,
+    "status": "completed",
+    "updated_at": "2026-08-02T09:09:52Z"
+  },
+  "quality_gate": {
+    "automatic_errors": 0,
+    "coverage_percent_displayed": 52,
+    "fatal_flake8_findings": 0,
+    "manual_checks": 15,
+    "manual_failures": 0,
+    "mypy_source_files": 62,
+    "tests_per_operating_system": 222
+  },
+  "risks": {
+    "R-002": "APPROVED_FOR_CLOSURE_AFTER_EVIDENCE_PR_AND_FINAL_MAIN_CI",
+    "R-004": "OPEN_NEXT_MANDATORY_STAGE"
+  },
+  "schema_version": 1,
+  "stage": 4,
+  "stage_name": "Ciclo Abrir/Salvar na interface"
+}

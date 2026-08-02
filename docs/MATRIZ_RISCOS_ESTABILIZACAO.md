@@ -53,6 +53,9 @@ Nenhum risco acima está encerrado por esta etapa.
 | R-001 | APROVADO PARA ENCERRAMENTO | PR `#11`; HEAD `891fbc9550b5bba9bce041272da1db1f3bc3a7b3`; merge `4a45e9c396da6cd63f44f1cf9792526c305478ec`; workflow da PR `#40` (`30672383923`) e workflow da `main` `#41` (`30672598358`) com Linux e Windows em `success`; `212` testes por sistema; round-trip completo preservando colisões e Béziers; migração legada; escrita atômica; pacote bruto `411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f`; pacote pós-merge `f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0`; encerramento condicionado à integração desta evidência e ao CI final da `main` |
 | ETAPA-3-PACOTE-1 | APROVADO PARA ENCERRAMENTO | Persistência v1 integrada por merge commit; correção de path traversal validada; `R-002` e `R-012` permanecem abertos; `R-007` permanece aberto para qualidade geométrica fora deste pacote |
 
+| R-002 | APROVADO PARA ENCERRAMENTO | PR `#13`; HEAD `3469a4a9bfab20fa8cd687e2925a64928e7903d3`; merge `4d663f028c5d501a2da44e3a34077023087df58c`; workflow da PR `#44` (`30741145009`) e workflow da `main` `#45` (`30746901415`) com Linux e Windows em `success`; validação manual GUI v4 com `15/15` checks aprovados, `0` erros automáticos, ciclo Abrir/Salvar, cancelamento, descarte, avisos de imagem, rejeição atômica de JSON corrompido e salvamento no fechamento; encerramento condicionado à integração desta evidência e ao CI final da `main` |
+| ETAPA-4 | APROVADA PARA ENCERRAMENTO | Ciclo Abrir/Salvar integrado e validado na UI Windows; `R-004` permanece aberto e é o próximo risco da ordem obrigatória; nenhuma implementação da Etapa 5 iniciada nesta PR documental |
+
 
 ## Severidades
 
