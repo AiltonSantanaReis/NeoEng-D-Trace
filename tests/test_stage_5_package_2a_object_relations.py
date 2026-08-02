@@ -1,3 +1,5 @@
+import copy
+
 from src.core.commands import (
     ClearSceneCommand,
     CommandManager,
@@ -158,6 +160,37 @@ def test_polygon_update_restores_exact_prior_collision():
 
     assert scene.cmd.redo(scene).status is CommandStatus.APPLIED
     assert scene.objects["object"].polygon == new_polygon
+
+
+def test_polygon_undo_notifies_once_with_only_final_geometry_state():
+    scene = _scene()
+    old_polygon = _square()
+    new_polygon = _square(10)
+    custom = [(0.5, 0.5), (19.5, 1.0), (9.0, 17.0)]
+    scene.add_object("object", old_polygon)
+    scene.collision_shapes["object"] = list(custom)
+
+    command = UpdatePolygonCommand(
+        "object",
+        old_polygon,
+        new_polygon,
+    )
+    assert scene.cmd.execute(command, scene).status is CommandStatus.APPLIED
+
+    observed = []
+
+    def capture_state():
+        observed.append(
+            (
+                copy.deepcopy(scene.objects["object"].polygon),
+                copy.deepcopy(scene.collision_shapes.get("object")),
+            )
+        )
+
+    scene.subscribe(capture_state)
+    assert scene.cmd.undo(scene).status is CommandStatus.APPLIED
+
+    assert observed == [(old_polygon, custom)]
 
 
 def test_stale_polygon_update_is_rejected_without_history():

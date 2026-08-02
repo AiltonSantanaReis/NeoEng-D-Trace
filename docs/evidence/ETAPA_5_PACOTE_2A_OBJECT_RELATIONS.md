@@ -13,6 +13,8 @@
 - exclusão e restauração integral das relações do objeto;
 - colisão customizada preservada no Undo;
 - alteração de polígono protegida contra estado obsoleto;
+- Undo de polígono restaura geometria e colisão atomicamente;
+- listeners recebem uma única notificação com o estado final;
 - limpeza reversível com seleção;
 - testes de execute, undo, redo e rejeições.
 

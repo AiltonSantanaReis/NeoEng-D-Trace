@@ -708,13 +708,23 @@ class UpdatePolygonCommand(Command):
         scene.update_polygon(self.object_id, self.new_polygon)
 
     def undo(self, scene: Any):
-        if self.object_id not in scene.objects:
+        obj = scene.objects.get(self.object_id)
+        if obj is None:
             return CommandResult.rejected(self, "undo", "The object no longer exists.")
+        if self._had_collision and self._old_collision is None:
+            return CommandResult.failed(
+                self,
+                "undo",
+                "CollisionBackupError",
+                "The previous collision shape is unavailable.",
+            )
 
-        scene.update_polygon(self.object_id, self.old_polygon)
-        if self._had_collision and self._old_collision is not None:
+        obj.polygon = copy.deepcopy(self.old_polygon)
+        if self._had_collision:
             scene.collision_shapes[self.object_id] = copy.deepcopy(self._old_collision)
-            scene._notify()
+        else:
+            scene.collision_shapes.pop(self.object_id, None)
+        scene._notify()
 
 
 class ExpandContractCommand(UpdatePolygonCommand):
