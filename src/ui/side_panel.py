@@ -14,6 +14,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.core.commands import (
+    CommandStatus,
+    DeleteObjectCommand,
+    RenameObjectCommand,
+    ToggleCollisionCommand,
+    UpdatePolygonCommand,
+)
 from src.core.logger import logger
 from src.core.validation_events import object_token, record_validation_event
 from src.utils.selection_tools import (
@@ -266,86 +273,83 @@ class SidePanel(QWidget):
             except Exception:
                 pass
 
+    def _execute_edit_command(self, command):
+        manager = getattr(self.scene, "cmd", None)
+        if manager is None:
+            raise RuntimeError("Undo/Redo command history is unavailable.")
+
+        result = manager.execute(command, self.scene)
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self,
+                self.translations[self.current_lang]["error"],
+                result.message or "The edit operation was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self,
+                self.translations[self.current_lang]["error"],
+                result.message or "The edit operation failed.",
+            )
+        return result
+
     def _on_toggle_physics(self):
-        oid, obj = self._get_selected_obj()
+        oid, _ = self._get_selected_obj()
         if not oid:
             return
 
         try:
-            # Tenta usar comando para Undo/Redo
-            try:
-                from src.core.commands import ToggleCollisionCommand
-
-                if hasattr(self.scene, "cmd") and self.scene.cmd:
-                    self.scene.cmd.execute(ToggleCollisionCommand(oid), self.scene)
-                    return
-            except ImportError:
-                pass
-
-            # Fallback manual
-            curr = self.scene.has_collision(oid)
-            self.scene.set_object_collision(oid, not curr)
-            self.canvas.update()
-
-        except Exception as e:
+            result = self._execute_edit_command(ToggleCollisionCommand(oid))
+            if result.changed:
+                self.canvas.update()
+        except Exception as exc:
             QMessageBox.critical(
                 self,
                 self.translations[self.current_lang]["error"],
-                self.translations[self.current_lang]["physics_toggle_error"] + str(e),
+                self.translations[self.current_lang]["physics_toggle_error"] + str(exc),
             )
 
     def _on_delete(self):
-        oid, obj = self._get_selected_obj()
+        oid, _ = self._get_selected_obj()
         if oid is None:
             return
-        resp = QMessageBox.question(
+        response = QMessageBox.question(
             self,
             self.translations[self.current_lang]["delete_title"],
             self.translations[self.current_lang]["delete_object"] + oid + "?",
         )
-        if resp != QMessageBox.StandardButton.Yes:
+        if response != QMessageBox.StandardButton.Yes:
             return
 
-        # Tenta usar comando para Undo/Redo
         try:
-            from src.core.commands import DeleteObjectCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(DeleteObjectCommand(oid), self.scene)
-                return
-        except ImportError:
-            pass
-
-        # Fallback manual
-        try:
-            self.scene.remove_object(oid)
-        except Exception as e:
+            self._execute_edit_command(DeleteObjectCommand(oid))
+        except Exception as exc:
             QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
+                self,
+                self.translations[self.current_lang]["error"],
+                str(exc),
             )
 
     def _on_rename(self):
-        oid, obj = self._get_selected_obj()
+        oid, _ = self._get_selected_obj()
         if oid is None:
             return
-        new, ok = QInputDialog.getText(
+        new_id, accepted = QInputDialog.getText(
             self,
             self.translations[self.current_lang]["rename_title"],
             self.translations[self.current_lang]["new_id"],
             text=oid,
         )
-        if not ok or not new:
+        if not accepted or not new_id:
             return
+
         try:
-            # Renomeia na cena e migra colisão
-            self.scene.objects[new] = self.scene.objects.pop(oid)
-            self.scene.objects[new].id = new
-            if oid in self.scene.collision_shapes:
-                self.scene.collision_shapes[new] = self.scene.collision_shapes.pop(oid)
-            self.scene._notify()
-        except Exception as e:
+            self._execute_edit_command(RenameObjectCommand(oid, new_id))
+        except Exception as exc:
             QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
+                self,
+                self.translations[self.current_lang]["error"],
+                str(exc),
             )
 
     def _on_export(self):
@@ -412,13 +416,25 @@ class SidePanel(QWidget):
 
     def _modify_poly(self, oid, obj, delta):
         try:
-            h, w = self.scene.image.shape[:2]
-            new_poly = expand_contract_polygon(obj.polygon, (h, w), delta)
-            if new_poly:
-                self.scene.update_polygon(oid, new_poly)
-        except Exception as e:
+            height, width = self.scene.image.shape[:2]
+            new_polygon = expand_contract_polygon(
+                obj.polygon,
+                (height, width),
+                delta,
+            )
+            if new_polygon:
+                self._execute_edit_command(
+                    UpdatePolygonCommand(
+                        oid,
+                        list(obj.polygon),
+                        list(new_polygon),
+                    )
+                )
+        except Exception as exc:
             QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
+                self,
+                self.translations[self.current_lang]["error"],
+                str(exc),
             )
 
     def _on_invert(self):
@@ -426,13 +442,24 @@ class SidePanel(QWidget):
         if not obj:
             return
         try:
-            h, w = self.scene.image.shape[:2]
-            new_poly = invert_selection(obj.polygon, (h, w))
-            if new_poly:
-                self.scene.update_polygon(oid, new_poly)
-        except Exception as e:
+            height, width = self.scene.image.shape[:2]
+            new_polygon = invert_selection(
+                obj.polygon,
+                (height, width),
+            )
+            if new_polygon:
+                self._execute_edit_command(
+                    UpdatePolygonCommand(
+                        oid,
+                        list(obj.polygon),
+                        list(new_polygon),
+                    )
+                )
+        except Exception as exc:
             QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
+                self,
+                self.translations[self.current_lang]["error"],
+                str(exc),
             )
 
     def _on_slider_change(self, value):
@@ -456,6 +483,18 @@ class SidePanel(QWidget):
         except Exception:
             self.canvas.clear_temp_mask()
 
+    def _reset_shape_preview(self):
+        self._last_preview_poly = None
+        self.slider.blockSignals(True)
+        try:
+            self.slider.setValue(0)
+        finally:
+            self.slider.blockSignals(False)
+        self.slider_label.setText(
+            self.translations[self.current_lang]["expand_contract"]
+        )
+        self.canvas.clear_temp_mask()
+
     def _on_apply(self):
         if not self._last_preview_poly:
             return
@@ -463,24 +502,24 @@ class SidePanel(QWidget):
         if not obj:
             return
         try:
-            from src.core.commands import ExpandContractCommand
-
-            cmd = ExpandContractCommand(
-                oid, list(obj.polygon), list(self._last_preview_poly)
+            result = self._execute_edit_command(
+                UpdatePolygonCommand(
+                    oid,
+                    list(obj.polygon),
+                    list(self._last_preview_poly),
+                )
             )
-            self.scene.cmd.execute(cmd, self.scene)
-            self.canvas.clear_temp_mask()
-            self._last_preview_poly = None
-            self.slider.setValue(0)
-        except Exception as e:
+            if result.ok:
+                self._reset_shape_preview()
+        except Exception as exc:
             QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
+                self,
+                self.translations[self.current_lang]["error"],
+                str(exc),
             )
 
     def _on_cancel_preview(self):
-        self._last_preview_poly = None
-        self.slider.setValue(0)
-        self.canvas.clear_temp_mask()
+        self._reset_shape_preview()
 
     def _on_export_now(self):
         from src.exporters.sprite_exporter import (

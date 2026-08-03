@@ -340,9 +340,13 @@
       "sha256": "52e3ab9cf8caa2351bc0626d40a2bf282e76454661368e17c822e794edd556dc",
       "size": 1100
     },
+    "docs/evidence/ETAPA_5_PACOTE_2B_UI_COMMAND_PATHS.md": {
+      "sha256": "bcd1f306ada72fa49bfd227fc125829ce5c1b0038de80123922e6a6fbe3aba58",
+      "size": 1661
+    },
     "docs/evidence/README.md": {
-      "sha256": "3ff34d44c7e557ff8193972220f91ef734a43e93d9c9623088a8477683e3d8ec",
-      "size": 2069
+      "sha256": "c14948ca1c2702478619a96b4a60f1025382af37f446ac4978065ec80795b598",
+      "size": 2360
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -737,8 +741,8 @@
       "size": 28
     },
     "src/ui/canvas_view.py": {
-      "sha256": "82f2b969e85f7eb16031d9d5f52f2de1dd2f5b2d1027a7eadf897b0160139894",
-      "size": 31952
+      "sha256": "29b1d9de065470e9263832088586368ec1e354dd0e93d87506dc3af157e78483",
+      "size": 32054
     },
     "src/ui/collision_overlay.py": {
       "sha256": "99c467248ef104530bf8f8bc49ceb2ae7150cf2a24e608e76979da3ce01cb89e",
@@ -777,8 +781,8 @@
       "size": 39549
     },
     "src/ui/side_panel.py": {
-      "sha256": "748ef36825a5c122d150f36ee341b059f7ce3e1ce3755d344c9ca6577ada9177",
-      "size": 19527
+      "sha256": "e635d01dd00cb9a46efb0a28b0b5fbf9049fdd4a86483cd67d06500c28b2718a",
+      "size": 20464
     },
     "src/ui/theme_qss.py": {
       "sha256": "d42611acb8a33b67ee8d165ab7578b8e77bbb6d948eac9722ae3809a42b0ff06",
@@ -931,6 +935,10 @@
     "tests/test_stage_5_package_2a_object_relations.py": {
       "sha256": "abcc9559c3419d82a6a7a21f3f259a61e6e40a6b9a995c67e6b281f366d37b2e",
       "size": 7303
+    },
+    "tests/test_stage_5_package_2b_ui_command_paths.py": {
+      "sha256": "147dcb96a9ec3af1b0e6dd2ae07e757521e49a50a0a9d80a0b52ef17e1d4181c",
+      "size": 8769
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

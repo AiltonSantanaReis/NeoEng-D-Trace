@@ -71,3 +71,8 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   encerramento formal do Pacote 1 da Etapa 5.
 - `ETAPA_5_PACOTE_1_EVIDENCE_MANIFEST.json` — manifesto estruturado do
   encerramento do Pacote 1 da Etapa 5.
+
+- `ETAPA_5_PACOTE_2A_OBJECT_RELATIONS.md` — integridade transacional de
+  identidade, relações, colisão, forma e limpeza no núcleo da cena.
+- `ETAPA_5_PACOTE_2B_UI_COMMAND_PATHS.md` — remoção dos fallbacks manuais nos
+  caminhos de interface cobertos pelos comandos do Pacote 2A.
