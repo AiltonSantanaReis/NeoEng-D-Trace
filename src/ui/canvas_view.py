@@ -21,6 +21,12 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QWidget
 
+from src.core.commands import (
+    ClearSceneCommand,
+    CommandStatus,
+    DeleteObjectCommand,
+    ToggleCollisionCommand,
+)
 from src.core.logger import logger
 
 # Proteção de importação caso ViewProcessor não esteja implementado ainda
@@ -269,40 +275,49 @@ class CanvasView(QWidget):
             self.center_on_polygon(obj.polygon, margin=50)
             self.flash_effect(QColor(0, 255, 255, 100), 300)
 
+    def _execute_edit_command(self, command):
+        manager = getattr(self.model, "cmd", None)
+        if manager is None:
+            raise RuntimeError("Undo/Redo command history is unavailable.")
+
+        result = manager.execute(command, self.model)
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self,
+                "Edit Rejected",
+                result.message or "The edit operation was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self,
+                "Edit Failed",
+                result.message or "The edit operation failed.",
+            )
+        return result
+
     def _toggle_physics(self, oid: str):
-        # Tenta importar o comando dinamicamente
         try:
-            from src.core.commands import ToggleCollisionCommand
-
-            if hasattr(self.model, "cmd") and self.model.cmd:
-                self.model.cmd.execute(ToggleCollisionCommand(oid), self.model)
+            result = self._execute_edit_command(ToggleCollisionCommand(oid))
+            if result.changed:
                 self.update()
-                return
-        except ImportError:
-            pass
-
-        # Fallback manual se o comando não existir
-        if hasattr(self.model, "set_object_collision"):
-            curr = self.model.has_collision(oid)
-            self.model.set_object_collision(oid, not curr)
-
-        self.update()
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                "Collision Toggle Error",
+                str(exc),
+            )
 
     def _delete_object(self, oid: str):
-        # Tenta importar o comando dinamicamente
         try:
-            from src.core.commands import DeleteObjectCommand
-
-            if hasattr(self.model, "cmd") and self.model.cmd:
-                self.model.cmd.execute(DeleteObjectCommand(oid), self.model)
+            result = self._execute_edit_command(DeleteObjectCommand(oid))
+            if result.changed:
                 self.update()
-                return
-        except ImportError:
-            pass
-
-        # Fallback
-        self.model.remove_object(oid)
-        self.update()
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                "Delete Error",
+                str(exc),
+            )
 
     def _toggle_gizmo(self):
         self._gizmo_enabled = self.gizmo_toggle.isChecked()
@@ -328,32 +343,26 @@ class CanvasView(QWidget):
             self.model.update_polygon(sid, new_poly)
 
     def clean_all(self):
-        res = QMessageBox.question(
+        response = QMessageBox.question(
             self,
             "Clean Scene",
-            "Are you sure you want to remove ALL polygons? This supports Undo.",
+            "Are you sure you want to remove ALL polygons? " "This supports Undo.",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
 
-        if res == QMessageBox.StandardButton.Yes:
-            # Tenta usar comando
-            try:
-                from src.core.commands import ClearSceneCommand
+        if response != QMessageBox.StandardButton.Yes:
+            return
 
-                if hasattr(self.model, "cmd") and self.model.cmd:
-                    self.model.cmd.execute(ClearSceneCommand(), self.model)
-                    self._after_clean()
-                    return
-            except ImportError:
-                pass
-
-            # Fallback manual
-            self.model.objects.clear()
-            if hasattr(self.model, "collision_shapes"):
-                self.model.collision_shapes.clear()
-            if hasattr(self.model, "_notify"):
-                self.model._notify()
-            self._after_clean()
+        try:
+            result = self._execute_edit_command(ClearSceneCommand())
+            if result.ok:
+                self._after_clean()
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                "Clean Scene Error",
+                str(exc),
+            )
 
     def _after_clean(self):
         self.clear_temp_mask()
