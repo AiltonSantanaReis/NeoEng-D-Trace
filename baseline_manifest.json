@@ -348,9 +348,13 @@
       "sha256": "85eaad6cbf7ab8e927dfaa530980d551f4041ffd40d05811cc08e0618249789b",
       "size": 1463
     },
+    "docs/evidence/ETAPA_5_PACOTE_3B_VERTEX_EDITING.md": {
+      "sha256": "88b7a9e2c781ede5b2a2d9d7faa57cb70fcf5048aedddc02ba4f441d764df4c6",
+      "size": 1619
+    },
     "docs/evidence/README.md": {
-      "sha256": "28d034e844e289773080a554591b25f334dbdb9fd078e3ccdc915e361cdb1482",
-      "size": 2502
+      "sha256": "cfa0d42d301fa9be4357d07a6bae28c55b8531e7f71cb34abe478bc76f08e586",
+      "size": 2625
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -725,8 +729,8 @@
       "size": 11524
     },
     "src/tools/polygon_edit_tool.py": {
-      "sha256": "bdc7ff9cd009fe3b55aecef2fbbb68f9e9f9909caae7056056b835cc01d2b769",
-      "size": 15406
+      "sha256": "f521b821ff7c6e5ca94ae67f14d2d96cd79ba11f2831ade2230f328622d59ff9",
+      "size": 24650
     },
     "src/tools/polygonal_lasso.py": {
       "sha256": "f62b1db71fe4589e88f3912b2c85df53f08398dee39b06d49cea7b7753cadbd4",
@@ -749,8 +753,8 @@
       "size": 28
     },
     "src/ui/canvas_view.py": {
-      "sha256": "68db0fae0003836e18bd7b9c9cd7cee4d7bcca6a42558e5098a3e55d290d3f48",
-      "size": 35396
+      "sha256": "9c93a22b21a628f1d26a877719b53510701be669bc317b1de396464a577c970d",
+      "size": 35488
     },
     "src/ui/collision_overlay.py": {
       "sha256": "99c467248ef104530bf8f8bc49ceb2ae7150cf2a24e608e76979da3ce01cb89e",
@@ -951,6 +955,10 @@
     "tests/test_stage_5_package_3a_gizmo_gesture.py": {
       "sha256": "66fa13f12df390921794626d439eb487f9baf66dcbd2d015ca84d31e50159770",
       "size": 6580
+    },
+    "tests/test_stage_5_package_3b_vertex_editing.py": {
+      "sha256": "918aff43c9d5dbbf4f676351741a3d2c27b4db1fead2a00672c746fa0a4d613d",
+      "size": 10882
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

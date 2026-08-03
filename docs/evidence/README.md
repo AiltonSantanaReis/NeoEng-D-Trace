@@ -78,3 +78,5 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   caminhos de interface cobertos pelos comandos do Pacote 2A.
 - `ETAPA_5_PACOTE_3A_GIZMO_GESTURE.md` — prévia contínua e consolidação do
   movimento pelo gizmo em uma única operação reversível.
+- `ETAPA_5_PACOTE_3B_VERTEX_EDITING.md` — movimento, inclusão e
+  exclusão de vértices por transações reversíveis.

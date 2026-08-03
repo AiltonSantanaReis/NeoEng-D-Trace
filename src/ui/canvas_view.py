@@ -624,6 +624,8 @@ class CanvasView(QWidget):
         """Ativa/Desativa modo de preview (para exportação)."""
         if mode and self._gizmo_active:
             self._cancel_gizmo_gesture()
+        if mode and self._tool and self._tool.on_cancel:
+            self._tool.on_cancel()
         self._preview_mode = mode
         # Esconde/Mostra botão do gizmo
         self.gizmo_toggle.setVisible(not mode)
