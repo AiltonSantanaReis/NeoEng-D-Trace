@@ -80,3 +80,4 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   movimento pelo gizmo em uma única operação reversível.
 - `ETAPA_5_PACOTE_3B_VERTEX_EDITING.md` — movimento, inclusão e
   exclusão de vértices por transações reversíveis.
+- `ETAPA_5_PACOTE_4A_OBJECT_DELETION.md` — exclusão simples e múltipla por comandos reversíveis.

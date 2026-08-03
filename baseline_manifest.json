@@ -352,9 +352,13 @@
       "sha256": "8e4135a644f3162d19a439fa26909535eb17c24249c6d3f1b9871407fc89b90b",
       "size": 2466
     },
+    "docs/evidence/ETAPA_5_PACOTE_4A_OBJECT_DELETION.md": {
+      "sha256": "4f8a1bba4816bc51b6427b5af3e3aa90c04df862c73f6cd4e18fcd5ae5ef0180",
+      "size": 1686
+    },
     "docs/evidence/README.md": {
-      "sha256": "cfa0d42d301fa9be4357d07a6bae28c55b8531e7f71cb34abe478bc76f08e586",
-      "size": 2625
+      "sha256": "fce5d2ddbb1d4d2e0e61d18c9459c40e44cd5b8cc135ef6a2be64354d889311c",
+      "size": 2727
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -693,8 +697,8 @@
       "size": 5927
     },
     "src/tools/collision_brush_tool.py": {
-      "sha256": "08e401bb81c819d0086e5d42824dbff7cabc9c32246e0e11d81cb5dc8cfabc1c",
-      "size": 16411
+      "sha256": "f8a452687be25df8976a3c92013f2c45da8d6f4e4b163464d916f80642fc8b1d",
+      "size": 18679
     },
     "src/tools/edge_utils.py": {
       "sha256": "e38a3bf7aba7202902dd80b9e63e02ce70f0ec5f6309715e1faf9718ee19d591",
@@ -729,8 +733,8 @@
       "size": 11524
     },
     "src/tools/polygon_edit_tool.py": {
-      "sha256": "af3ddb9a4367e6a9239a0d458cc4db0675807f1d1558a915a5e7df798fcfe31d",
-      "size": 22994
+      "sha256": "41c9d295dfa0a4e42690c96c26fb61f549ec939b17eca486538a4254d883950c",
+      "size": 25073
     },
     "src/tools/polygonal_lasso.py": {
       "sha256": "f62b1db71fe4589e88f3912b2c85df53f08398dee39b06d49cea7b7753cadbd4",
@@ -959,6 +963,10 @@
     "tests/test_stage_5_package_3b_vertex_editing.py": {
       "sha256": "6096e4e1e69e445f11fd0d09b966ac1c88dc7113dff34b48daffebadf74fe1fb",
       "size": 12430
+    },
+    "tests/test_stage_5_package_4a_object_deletion_paths.py": {
+      "sha256": "16f91f76f527fd95963b9392741665d6f02f582a9a1a6d55e51b6b41839b21ff",
+      "size": 9235
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",
