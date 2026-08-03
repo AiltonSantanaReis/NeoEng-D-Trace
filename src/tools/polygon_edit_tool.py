@@ -5,6 +5,12 @@ from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QMenu, QMessageBox
 
+from src.core.commands import (
+    CommandResult,
+    CommandStatus,
+    UpdatePolygonCommand,
+)
+from src.core.polygon_gesture import PolygonGestureTransaction
 from src.tools.base_tool import BaseTool
 
 
@@ -18,12 +24,283 @@ class PolygonEditTool(BaseTool):
         self.multi_select = False
         self.selected_polygon_ids = set()
         self.mode = "select"  # Default mode
+        self._vertex_transaction: Optional[PolygonGestureTransaction] = None
+        self._vertex_origin_index: Optional[int] = None
+        self._vertex_preview_position: Optional[Tuple[int, int]] = None
 
     def set_mode(self, mode: str):
         """Set the current tool mode."""
+        if mode != self.mode and self._vertex_transaction is not None:
+            self._cancel_vertex_gesture()
         self.mode = mode
 
+    def _report_vertex_result(
+        self,
+        result: CommandResult,
+        operation: str,
+    ) -> None:
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                result.message or "The vertex edit was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                result.message or "The vertex edit failed.",
+            )
+
+    def _execute_polygon_update(
+        self,
+        object_id: str,
+        old_polygon: List[Tuple[int, int]],
+        new_polygon: List[Tuple[int, int]],
+        operation: str,
+    ) -> Optional[CommandResult]:
+        manager = getattr(self.canvas_view.model, "cmd", None)
+        if manager is None:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return None
+
+        try:
+            result = manager.execute(
+                UpdatePolygonCommand(
+                    object_id,
+                    old_polygon,
+                    new_polygon,
+                ),
+                self.canvas_view.model,
+            )
+        except Exception as exc:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                str(exc),
+            )
+            return None
+
+        self._report_vertex_result(result, operation)
+        if result.changed:
+            self.canvas_view.update()
+        return result
+
+    @staticmethod
+    def _find_vertex_index_in_polygon(
+        polygon: List[Tuple[int, int]],
+        position: Tuple[int, int],
+    ) -> Optional[int]:
+        target = tuple(position)
+        for index, point in enumerate(polygon):
+            if tuple(point) == target:
+                return index
+        return None
+
+    def _find_current_vertex_index(
+        self,
+        object_id: str,
+        position: Optional[Tuple[int, int]],
+    ) -> Optional[int]:
+        if position is None:
+            return None
+        obj = self.canvas_view.model.objects.get(object_id)
+        if obj is None or not obj.polygon:
+            return None
+        return self._find_vertex_index_in_polygon(
+            [tuple(point) for point in obj.polygon],
+            position,
+        )
+
+    def _reset_vertex_gesture_state(self) -> None:
+        self._vertex_transaction = None
+        self._vertex_origin_index = None
+        self._vertex_preview_position = None
+        self.drag_start_pos = None
+
+    def _begin_vertex_gesture(self) -> bool:
+        object_id = self.selected_polygon_id
+        vertex_index = self.selected_vertex
+        if object_id is None or vertex_index is None:
+            return False
+
+        manager = getattr(self.canvas_view.model, "cmd", None)
+        if manager is None:
+            QMessageBox.critical(
+                self.canvas_view,
+                "Vertex Movement Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return False
+
+        obj = self.canvas_view.model.objects.get(object_id)
+        if (
+            obj is None
+            or not obj.polygon
+            or vertex_index < 0
+            or vertex_index >= len(obj.polygon)
+        ):
+            QMessageBox.warning(
+                self.canvas_view,
+                "Vertex Movement Rejected",
+                "The selected vertex is no longer available.",
+            )
+            return False
+
+        try:
+            self._vertex_transaction = PolygonGestureTransaction(
+                self.canvas_view.model,
+                object_id,
+            )
+        except Exception as exc:
+            self._vertex_transaction = None
+            QMessageBox.critical(
+                self.canvas_view,
+                "Vertex Movement Failed",
+                str(exc),
+            )
+            return False
+
+        self._vertex_origin_index = vertex_index
+        self._vertex_preview_position = tuple(obj.polygon[vertex_index])
+        return True
+
+    def _preview_vertex_position(
+        self,
+        position: Tuple[int, int],
+    ) -> None:
+        transaction = self._vertex_transaction
+        vertex_index = self._vertex_origin_index
+        if transaction is None or not transaction.active or vertex_index is None:
+            return
+
+        origin = transaction.origin_polygon
+        if vertex_index < 0 or vertex_index >= len(origin):
+            self._cancel_vertex_gesture()
+            QMessageBox.warning(
+                self.canvas_view,
+                "Vertex Movement Rejected",
+                "The selected vertex is no longer available.",
+            )
+            return
+
+        target = (int(position[0]), int(position[1]))
+        candidate = list(origin)
+        candidate[vertex_index] = target
+
+        try:
+            preview = transaction.preview(candidate)
+        except Exception as exc:
+            try:
+                if transaction.active:
+                    transaction.cancel()
+            except Exception:
+                pass
+            self._reset_vertex_gesture_state()
+            QMessageBox.critical(
+                self.canvas_view,
+                "Vertex Movement Failed",
+                str(exc),
+            )
+            self.canvas_view.update()
+            return
+
+        self._vertex_preview_position = target
+        preview_index = self._find_vertex_index_in_polygon(
+            preview,
+            target,
+        )
+        if preview_index is not None:
+            self.selected_vertex = preview_index
+        self.canvas_view.update()
+
+    def _finish_vertex_gesture(self) -> Optional[CommandResult]:
+        transaction = self._vertex_transaction
+        object_id = self.selected_polygon_id
+        target = self._vertex_preview_position
+        result: Optional[CommandResult] = None
+
+        try:
+            if transaction is not None and transaction.active:
+                result = transaction.commit(
+                    getattr(self.canvas_view.model, "cmd", None)
+                )
+                self._report_vertex_result(
+                    result,
+                    "Vertex Movement",
+                )
+                if result.changed and object_id is not None:
+                    self.selected_vertex = self._find_current_vertex_index(
+                        object_id,
+                        target,
+                    )
+        finally:
+            self._reset_vertex_gesture_state()
+            self.canvas_view.update()
+
+        return result
+
+    def _cancel_vertex_gesture(self) -> bool:
+        transaction = self._vertex_transaction
+        restored = False
+        try:
+            if transaction is not None and transaction.active:
+                restored = transaction.cancel()
+        finally:
+            self._reset_vertex_gesture_state()
+            self.canvas_view.update()
+        return restored
+
     def on_mouse_press(self, event: QMouseEvent, pos: Tuple[int, int]):
+        if event.button() == Qt.MouseButton.RightButton:
+            if self._vertex_transaction is not None:
+                self._cancel_vertex_gesture()
+                return
+            if self.adding_new:
+                self.adding_new = False
+                self.canvas_view.update()
+            else:
+                self.show_context_menu(event)
+            return
+
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
+
+        if self.adding_new:
+            self.add_vertex_at_pos(pos)
+            return
+
+        if self.multi_select:
+            oid = self.find_polygon_at(pos)
+            if oid:
+                if oid in self.selected_polygon_ids:
+                    self.selected_polygon_ids.remove(oid)
+                else:
+                    self.selected_polygon_ids.add(oid)
+                self.selected_vertex = None
+                self.canvas_view.update()
+            return
+
+        self.selected_polygon_id, self.selected_vertex = self.find_vertex_at(pos)
+        if self.selected_polygon_id is None:
+            self.selected_polygon_id = self.find_polygon_at(pos)
+            self.selected_vertex = None
+            self.selected_polygon_ids = (
+                {self.selected_polygon_id} if self.selected_polygon_id else set()
+            )
+            self.drag_start_pos = None
+        else:
+            self.selected_polygon_ids = {self.selected_polygon_id}
+            if self._begin_vertex_gesture():
+                self.drag_start_pos = QPointF(pos[0], pos[1])
+            else:
+                self.drag_start_pos = None
+        self.canvas_view.update()
+
         if event.button() == Qt.MouseButton.RightButton:
             if self.adding_new:
                 self.adding_new = False
@@ -64,36 +341,45 @@ class PolygonEditTool(BaseTool):
                 self.canvas_view.update()
 
     def on_mouse_move(self, event: QMouseEvent, pos: Tuple[int, int]):
-        if (
-            self.drag_start_pos
-            and self.selected_vertex is not None
-            and self.selected_polygon_id
-        ):
-            # Move vertex
-            obj = self.canvas_view.model.objects.get(self.selected_polygon_id)
-            if obj and obj.polygon:
-                obj.polygon[self.selected_vertex] = (pos[0], pos[1])
-                # Update collision if exists
-                if (
-                    hasattr(self.canvas_view.model, "collision_shapes")
-                    and self.selected_polygon_id
-                    in self.canvas_view.model.collision_shapes
-                ):
-                    self.canvas_view.model.collision_shapes[self.selected_polygon_id][
-                        self.selected_vertex
-                    ] = (float(pos[0]), float(pos[1]))
-                self.canvas_view.model._notify()
+        if self.drag_start_pos is not None and self._vertex_transaction is not None:
+            self._preview_vertex_position(pos)
         self.canvas_view.update()
 
     def on_mouse_release(self, event: QMouseEvent, pos: Tuple[int, int]):
-        if self.drag_start_pos:
-            # Create command for undo if moved
-            if self.selected_vertex is not None and self.selected_polygon_id:
-                # For simplicity, we'll update directly. In full
-                # implementation, use ExpandContractCommand
-                pass
+        if self._vertex_transaction is not None:
+            self._finish_vertex_gesture()
+        else:
+            self.drag_start_pos = None
+            self.canvas_view.update()
+
+    def on_cancel(self):
+        if self._vertex_transaction is not None:
+            self._cancel_vertex_gesture()
+        self.adding_new = False
         self.drag_start_pos = None
         self.canvas_view.update()
+
+    def on_key_press(self, event) -> bool:
+        if event.key() == Qt.Key.Key_Escape and self._vertex_transaction is not None:
+            self._cancel_vertex_gesture()
+            return True
+        if event.key() == Qt.Key.Key_Escape and self.adding_new:
+            self.adding_new = False
+            self.canvas_view.update()
+            return True
+        return False
+
+    def on_undo(self) -> bool:
+        if self._vertex_transaction is not None:
+            self._cancel_vertex_gesture()
+            return True
+        return False
+
+    def on_redo(self) -> bool:
+        if self._vertex_transaction is not None:
+            self._cancel_vertex_gesture()
+            return True
+        return False
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
@@ -279,51 +565,76 @@ class PolygonEditTool(BaseTool):
             )
 
     def delete_selected_vertex(self):
-        if self.selected_polygon_id and self.selected_vertex is not None:
-            obj = self.canvas_view.model.objects.get(self.selected_polygon_id)
-            if obj and obj.polygon and len(obj.polygon) > 3:
-                obj.polygon.pop(self.selected_vertex)
-                # Update collision if exists
-                if (
-                    hasattr(self.canvas_view.model, "collision_shapes")
-                    and self.selected_polygon_id
-                    in self.canvas_view.model.collision_shapes
-                ):
-                    self.canvas_view.model.collision_shapes[
-                        self.selected_polygon_id
-                    ].pop(self.selected_vertex)
-                self.canvas_view.model._notify()
-                self.selected_vertex = None
-                self.canvas_view.update()
+        object_id = self.selected_polygon_id
+        vertex_index = self.selected_vertex
+        if object_id is None or vertex_index is None:
+            return
+
+        obj = self.canvas_view.model.objects.get(object_id)
+        if (
+            obj is None
+            or not obj.polygon
+            or len(obj.polygon) <= 3
+            or vertex_index < 0
+            or vertex_index >= len(obj.polygon)
+        ):
+            return
+
+        old_polygon = [tuple(point) for point in obj.polygon]
+        new_polygon = list(old_polygon)
+        new_polygon.pop(vertex_index)
+
+        result = self._execute_polygon_update(
+            object_id,
+            old_polygon,
+            new_polygon,
+            "Delete Vertex",
+        )
+        if result is not None and result.changed:
+            self.selected_vertex = None
+            self.canvas_view.update()
 
     def add_vertex_at_pos(self, pos: Tuple[int, int]):
-        if self.selected_polygon_id:
-            obj = self.canvas_view.model.objects.get(self.selected_polygon_id)
-            if obj and obj.polygon:
-                # Find closest edge and insert
-                min_dist = float("inf")
-                insert_idx = len(obj.polygon)
-                for i in range(len(obj.polygon)):
-                    p1 = obj.polygon[i]
-                    p2 = obj.polygon[(i + 1) % len(obj.polygon)]
-                    dist = self.point_to_line_distance(pos, p1, p2)
-                    if dist < min_dist:
-                        min_dist = dist
-                        insert_idx = (i + 1) % len(obj.polygon)
+        object_id = self.selected_polygon_id
+        if object_id is None:
+            return
 
-                obj.polygon.insert(insert_idx, pos)
-                # Update collision
-                if (
-                    hasattr(self.canvas_view.model, "collision_shapes")
-                    and self.selected_polygon_id
-                    in self.canvas_view.model.collision_shapes
-                ):
-                    self.canvas_view.model.collision_shapes[
-                        self.selected_polygon_id
-                    ].insert(insert_idx, (float(pos[0]), float(pos[1])))
-                self.canvas_view.model._notify()
-                self.selected_vertex = insert_idx
-                self.canvas_view.update()
+        obj = self.canvas_view.model.objects.get(object_id)
+        if obj is None or not obj.polygon:
+            return
+
+        old_polygon = [tuple(point) for point in obj.polygon]
+        target = (int(pos[0]), int(pos[1]))
+
+        min_dist = float("inf")
+        insert_idx = len(old_polygon)
+        for index in range(len(old_polygon)):
+            point_a = old_polygon[index]
+            point_b = old_polygon[(index + 1) % len(old_polygon)]
+            distance = self.point_to_line_distance(
+                target,
+                point_a,
+                point_b,
+            )
+            if distance < min_dist:
+                min_dist = distance
+                insert_idx = (index + 1) % len(old_polygon)
+
+        new_polygon = list(old_polygon)
+        new_polygon.insert(insert_idx, target)
+
+        result = self._execute_polygon_update(
+            object_id,
+            old_polygon,
+            new_polygon,
+            "Add Vertex",
+        )
+        if result is not None and result.changed:
+            self.selected_vertex = self._find_current_vertex_index(
+                object_id,
+                target,
+            )
+            self.canvas_view.update()
 
     def delete_selected_polygon(self):
         if self.multi_select and self.selected_polygon_ids:
