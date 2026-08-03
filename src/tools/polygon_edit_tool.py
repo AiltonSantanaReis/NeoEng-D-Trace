@@ -301,45 +301,6 @@ class PolygonEditTool(BaseTool):
                 self.drag_start_pos = None
         self.canvas_view.update()
 
-        if event.button() == Qt.MouseButton.RightButton:
-            if self.adding_new:
-                self.adding_new = False
-                self.canvas_view.update()
-            else:
-                self.show_context_menu(event)
-            return
-        if event.button() == Qt.MouseButton.LeftButton:
-            if self.adding_new:
-                self.add_vertex_at_pos(pos)
-                return
-            if self.multi_select:
-                oid = self.find_polygon_at(pos)
-                if oid:
-                    if oid in self.selected_polygon_ids:
-                        self.selected_polygon_ids.remove(oid)
-                    else:
-                        self.selected_polygon_ids.add(oid)
-                    self.selected_vertex = None
-                    self.canvas_view.update()
-            else:
-                self.drag_start_pos = QPointF(pos[0], pos[1])
-                # Find polygon and vertex under cursor
-                self.selected_polygon_id, self.selected_vertex = self.find_vertex_at(
-                    pos
-                )
-                if self.selected_polygon_id is None:
-                    # Select polygon if no vertex found
-                    self.selected_polygon_id = self.find_polygon_at(pos)
-                    self.selected_vertex = None
-                    self.selected_polygon_ids = (
-                        {self.selected_polygon_id}
-                        if self.selected_polygon_id
-                        else set()
-                    )
-                else:
-                    self.selected_polygon_ids = {self.selected_polygon_id}
-                self.canvas_view.update()
-
     def on_mouse_move(self, event: QMouseEvent, pos: Tuple[int, int]):
         if self.drag_start_pos is not None and self._vertex_transaction is not None:
             self._preview_vertex_position(pos)

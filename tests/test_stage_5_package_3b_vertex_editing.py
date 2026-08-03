@@ -347,3 +347,67 @@ def test_vertex_edit_paths_have_no_manual_scene_mutation_fallbacks():
     assert "UpdatePolygonCommand" in inspect.getsource(
         PolygonEditTool._execute_polygon_update
     )
+
+
+def test_mouse_press_starts_vertex_transaction_once(monkeypatch):
+    scene = _scene()
+    tool = _tool(scene)
+    start = tuple(scene.objects["object"].polygon[0])
+    calls = 0
+    original_begin = tool._begin_vertex_gesture
+
+    def tracked_begin():
+        nonlocal calls
+        calls += 1
+        return original_begin()
+
+    monkeypatch.setattr(
+        tool,
+        "_begin_vertex_gesture",
+        tracked_begin,
+    )
+
+    tool.on_mouse_press(
+        _MouseEventStub(Qt.MouseButton.LeftButton),
+        start,
+    )
+
+    assert calls == 1
+    assert tool._vertex_transaction is not None
+    assert tool.drag_start_pos == QPointF(start[0], start[1])
+    assert tool.selected_polygon_id == "object"
+    assert tool.selected_vertex is not None
+
+    tool.on_cancel()
+
+
+def test_polygon_body_click_does_not_leave_legacy_drag_state(
+    monkeypatch,
+):
+    scene = _scene()
+    tool = _tool(scene)
+    body_position = (100, 80)
+
+    monkeypatch.setattr(
+        tool,
+        "find_vertex_at",
+        lambda pos: (None, None),
+    )
+    monkeypatch.setattr(
+        tool,
+        "find_polygon_at",
+        lambda pos: "object",
+    )
+
+    tool.on_mouse_press(
+        _MouseEventStub(Qt.MouseButton.LeftButton),
+        body_position,
+    )
+
+    assert tool.selected_polygon_id == "object"
+    assert tool.selected_vertex is None
+    assert tool.selected_polygon_ids == {"object"}
+    assert tool.drag_start_pos is None
+    assert tool._vertex_transaction is None
+    assert scene.cmd.undo_count == 0
+    assert scene.cmd.redo_count == 0
