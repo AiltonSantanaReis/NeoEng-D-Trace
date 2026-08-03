@@ -454,6 +454,45 @@ class Scene:
         logger.debug(f"Removed object {oid}")
         self._notify()
 
+    def rename_object(self, old_id: str, new_id: str):
+        # Rename an object while preserving all persistent references.
+        old_id = str(old_id)
+        new_id = str(new_id).strip()
+        if not new_id:
+            raise ValueError("new object id must not be empty")
+        if old_id not in self.objects:
+            raise KeyError(old_id)
+        if new_id == old_id:
+            return
+        if new_id in self.objects:
+            raise ValueError("Object id exists")
+
+        renamed_objects: Dict[str, SceneObject] = {}
+        for object_id, obj in self.objects.items():
+            if object_id == old_id:
+                obj.id = new_id
+                renamed_objects[new_id] = obj
+            else:
+                renamed_objects[object_id] = obj
+        self.objects = renamed_objects
+
+        if old_id in self.collision_shapes:
+            renamed_collisions = {}
+            for object_id, shape in self.collision_shapes.items():
+                key = new_id if object_id == old_id else object_id
+                renamed_collisions[key] = shape
+            self.collision_shapes = renamed_collisions
+
+        for group in self.groups:
+            group.members = [
+                new_id if member == old_id else member for member in group.members
+            ]
+
+        if self.selected_id == old_id:
+            self.selected_id = new_id
+
+        self._notify()
+
     def update_polygon(self, oid: str, polygon: List[Tuple[int, int]]):
         if oid not in self.objects:
             logger.warning(f"Object {oid} not found for update")

@@ -336,6 +336,10 @@
       "sha256": "92548de2eb21f1f2aaa4d0d752811c2308ca55031476377806113dd0e9f772ec",
       "size": 1675
     },
+    "docs/evidence/ETAPA_5_PACOTE_2A_OBJECT_RELATIONS.md": {
+      "sha256": "52e3ab9cf8caa2351bc0626d40a2bf282e76454661368e17c822e794edd556dc",
+      "size": 1100
+    },
     "docs/evidence/README.md": {
       "sha256": "3ff34d44c7e557ff8193972220f91ef734a43e93d9c9623088a8477683e3d8ec",
       "size": 2069
@@ -557,8 +561,8 @@
       "size": 1884
     },
     "src/core/commands.py": {
-      "sha256": "5ad41f8af461c21c448ef55651b83441fdb5440fb0be03e54f76d4fae0696a20",
-      "size": 27008
+      "sha256": "7841b028f4085b01017f4c00868c2df507615cc618d6099771c8076e17b9fbb6",
+      "size": 33811
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -621,8 +625,8 @@
       "size": 32
     },
     "src/models/scene.py": {
-      "sha256": "b4232c6c435d0b408c41f07b55611f6218c1b13a8b116a489b6a8779874e64c3",
-      "size": 20889
+      "sha256": "e76ef8c75de88929e825d890b10aa4e3d698c169d7a072c60afe53393310d312",
+      "size": 22283
     },
     "src/persistence/__init__.py": {
       "sha256": "bca8fb2c323eb56eb108c121e3813788b072acc8d5286b88903e34509b10b447",
@@ -923,6 +927,10 @@
     "tests/test_stage_5_command_manager_contract.py": {
       "sha256": "0f1156df52c5169754e3ad5e2deee84d9d728f8a774d4546fe3374d6f1b1037b",
       "size": 9739
+    },
+    "tests/test_stage_5_package_2a_object_relations.py": {
+      "sha256": "abcc9559c3419d82a6a7a21f3f259a61e6e40a6b9a995c67e6b281f366d37b2e",
+      "size": 7303
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",
