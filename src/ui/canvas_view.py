@@ -28,6 +28,7 @@ from src.core.commands import (
     ToggleCollisionCommand,
 )
 from src.core.logger import logger
+from src.core.polygon_gesture import PolygonGestureTransaction
 
 # Proteção de importação caso ViewProcessor não esteja implementado ainda
 VIEW_PROCESSOR_CLASS: Optional[type[Any]]
@@ -151,6 +152,8 @@ class CanvasView(QWidget):
         self._gizmo_active = False
         self._gizmo_start_mouse = QPointF()
         self._gizmo_enabled = False
+        self._gizmo_transaction: Optional[PolygonGestureTransaction] = None
+        self._gizmo_total_delta = QPointF()
 
         self._tool = None
         self._current_polygon = []
@@ -330,17 +333,111 @@ class CanvasView(QWidget):
         last_x, last_y = self._current_polygon[-1]
         return ((x - last_x) ** 2 + (y - last_y) ** 2) ** 0.5
 
-    def _move_selected_object(self, dx, dy):
-        sid = self.model.selected_id
-        obj = self.model.objects.get(sid)
-        if obj:
-            # Arredonda para inteiro para manter consistência de pixel
-            new_poly = [(int(p[0] + dx), int(p[1] + dy)) for p in obj.polygon]
+    def _reset_gizmo_interaction(self):
+        self._gizmo_active = False
+        self._gizmo_transaction = None
+        self._gizmo_total_delta = QPointF()
+        if self.gizmo:
+            self.gizmo.active_axis = self.gizmo.NONE
 
-            # Se tivermos um comando de movimento, o ideal seria usá-lo,
-            # mas para gizmo em tempo real, atualização direta é mais performática.
-            # O 'commit' do movimento deve ocorrer no mouseRelease.
-            self.model.update_polygon(sid, new_poly)
+    def _report_gizmo_result(self, result):
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self,
+                "Gizmo Movement Rejected",
+                result.message or "The movement was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self,
+                "Gizmo Movement Failed",
+                result.message or "The movement failed.",
+            )
+
+    def _begin_gizmo_object_gesture(self) -> bool:
+        object_id = getattr(self.model, "selected_id", None)
+        if not object_id:
+            return False
+        if getattr(self.model, "cmd", None) is None:
+            QMessageBox.critical(
+                self,
+                "Gizmo Movement Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return False
+
+        try:
+            self._gizmo_transaction = PolygonGestureTransaction(
+                self.model,
+                object_id,
+            )
+            self._gizmo_total_delta = QPointF()
+            return True
+        except Exception as exc:
+            self._gizmo_transaction = None
+            QMessageBox.critical(
+                self,
+                "Gizmo Movement Failed",
+                str(exc),
+            )
+            return False
+
+    def _move_selected_object(self, dx, dy):
+        transaction = self._gizmo_transaction
+        if transaction is None or not transaction.active:
+            return
+
+        self._gizmo_total_delta += QPointF(
+            float(dx),
+            float(dy),
+        )
+        total_x = self._gizmo_total_delta.x()
+        total_y = self._gizmo_total_delta.y()
+        new_polygon = [
+            (
+                int(round(point[0] + total_x)),
+                int(round(point[1] + total_y)),
+            )
+            for point in transaction.origin_polygon
+        ]
+
+        try:
+            transaction.preview(new_polygon)
+        except Exception as exc:
+            try:
+                if transaction.active:
+                    transaction.cancel()
+            finally:
+                self._reset_gizmo_interaction()
+                self.update()
+            QMessageBox.critical(
+                self,
+                "Gizmo Movement Failed",
+                str(exc),
+            )
+
+    def _finish_gizmo_gesture(self):
+        transaction = self._gizmo_transaction
+        result = None
+        try:
+            if transaction is not None and transaction.active:
+                result = transaction.commit(getattr(self.model, "cmd", None))
+                self._report_gizmo_result(result)
+        finally:
+            self._reset_gizmo_interaction()
+            self.update()
+        return result
+
+    def _cancel_gizmo_gesture(self) -> bool:
+        transaction = self._gizmo_transaction
+        restored = False
+        try:
+            if transaction is not None and transaction.active:
+                restored = transaction.cancel()
+        finally:
+            self._reset_gizmo_interaction()
+            self.update()
+        return restored
 
     def clean_all(self):
         response = QMessageBox.question(
@@ -505,6 +602,8 @@ class CanvasView(QWidget):
         return self._zoom
 
     def set_tool(self, tool):
+        if self._gizmo_active:
+            self._cancel_gizmo_gesture()
         if self._tool and self._tool.on_cancel:
             self._tool.on_cancel()
         self._tool = tool
@@ -523,6 +622,8 @@ class CanvasView(QWidget):
 
     def set_preview_mode(self, mode: bool):
         """Ativa/Desativa modo de preview (para exportação)."""
+        if mode and self._gizmo_active:
+            self._cancel_gizmo_gesture()
         self._preview_mode = mode
         # Esconde/Mostra botão do gizmo
         self.gizmo_toggle.setVisible(not mode)
@@ -559,8 +660,13 @@ class CanvasView(QWidget):
             hit = self.gizmo.hit_test(pos)
             if hit != self.gizmo.NONE:
                 self.gizmo.active_axis = hit
-                self._gizmo_active = True
                 self._gizmo_start_mouse = pos
+                self._gizmo_total_delta = QPointF()
+                if self.model.selected_id:
+                    if not self._begin_gizmo_object_gesture():
+                        self.gizmo.active_axis = self.gizmo.NONE
+                        return
+                self._gizmo_active = True
                 return
 
         # 2. Reset de Visão (Botão Gizmo "C")
@@ -633,8 +739,7 @@ class CanvasView(QWidget):
             delta_screen = pos - self._gizmo_start_mouse
             self._gizmo_start_mouse = pos
 
-            if self.model.selected_id:
-                # Move Objeto
+            if self._gizmo_transaction is not None:
                 dx = delta_screen.x() / self._zoom
                 dy = delta_screen.y() / self._zoom
                 if self.gizmo.active_axis == self.gizmo.AXIS_X:
@@ -684,11 +789,7 @@ class CanvasView(QWidget):
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         if self._gizmo_active:
-            self._gizmo_active = False
-            if self.gizmo:
-                self.gizmo.active_axis = self.gizmo.NONE
-            self.update()
-            # Aqui seria o local para commitar o Undo do movimento do gizmo
+            self._finish_gizmo_gesture()
             return
 
         if self._dragging:
@@ -719,6 +820,10 @@ class CanvasView(QWidget):
         return False
 
     def keyPressEvent(self, event: QKeyEvent):
+        if event.key() == Qt.Key.Key_Escape and self._gizmo_active:
+            self._cancel_gizmo_gesture()
+            event.accept()
+            return
         if self._tool and self._tool.on_key_press:
             try:
                 if self._tool.on_key_press(event):
