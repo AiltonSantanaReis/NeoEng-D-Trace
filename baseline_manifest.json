@@ -349,8 +349,8 @@
       "size": 1463
     },
     "docs/evidence/ETAPA_5_PACOTE_3B_VERTEX_EDITING.md": {
-      "sha256": "88b7a9e2c781ede5b2a2d9d7faa57cb70fcf5048aedddc02ba4f441d764df4c6",
-      "size": 1619
+      "sha256": "8e4135a644f3162d19a439fa26909535eb17c24249c6d3f1b9871407fc89b90b",
+      "size": 2466
     },
     "docs/evidence/README.md": {
       "sha256": "cfa0d42d301fa9be4357d07a6bae28c55b8531e7f71cb34abe478bc76f08e586",
@@ -729,8 +729,8 @@
       "size": 11524
     },
     "src/tools/polygon_edit_tool.py": {
-      "sha256": "f521b821ff7c6e5ca94ae67f14d2d96cd79ba11f2831ade2230f328622d59ff9",
-      "size": 24650
+      "sha256": "af3ddb9a4367e6a9239a0d458cc4db0675807f1d1558a915a5e7df798fcfe31d",
+      "size": 22994
     },
     "src/tools/polygonal_lasso.py": {
       "sha256": "f62b1db71fe4589e88f3912b2c85df53f08398dee39b06d49cea7b7753cadbd4",
@@ -957,8 +957,8 @@
       "size": 6580
     },
     "tests/test_stage_5_package_3b_vertex_editing.py": {
-      "sha256": "918aff43c9d5dbbf4f676351741a3d2c27b4db1fead2a00672c746fa0a4d613d",
-      "size": 10882
+      "sha256": "6096e4e1e69e445f11fd0d09b966ac1c88dc7113dff34b48daffebadf74fe1fb",
+      "size": 12430
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

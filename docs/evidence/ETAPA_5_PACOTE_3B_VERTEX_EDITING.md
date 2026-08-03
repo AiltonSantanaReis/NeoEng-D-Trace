@@ -47,3 +47,24 @@ transacional, sem registrar cada movimento intermediário do mouse.
 
 Aprovação apenas dos três caminhos de vértices. `R-004` e a Etapa 5
 permanecem abertos.
+
+
+## Correção pós-merge — caminho duplicado de clique
+
+A auditoria realizada após o merge da PR `#20` identificou que
+`PolygonEditTool.on_mouse_press` continha o novo fluxo transacional seguido
+por uma cópia residual do fluxo legado de seleção.
+
+Embora os testes e a validação visual do Pacote 3B tenham sido aprovados,
+a duplicação executava uma segunda passagem de seleção em cliques normais e
+não deve permanecer no estado integrado.
+
+Esta correção:
+
+- remove exclusivamente o segundo bloco legado de clique;
+- preserva o fluxo transacional já validado;
+- adiciona um teste que exige uma única inicialização da transação;
+- adiciona um teste que impede o retorno do `drag_start_pos` legado ao clicar
+  no corpo do polígono;
+- mantém a baseline em `245` arquivos;
+- não encerra `R-004`, a Etapa 5 ou inicia a Etapa 6.
