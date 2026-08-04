@@ -82,3 +82,4 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   exclusão de vértices por transações reversíveis.
 - `ETAPA_5_PACOTE_4A_OBJECT_DELETION.md` — exclusão simples e múltipla por comandos reversíveis.
 - `ETAPA_5_PACOTE_4B_COLLISION_TRANSFORM.md` — movimento e escala por gestos transacionais.
+- `ETAPA_5_PACOTE_4C_LAYER_GROUP_UI_FALLBACKS.md` — painéis de camadas e grupos bloqueiam alterações sem histórico e usam comandos reversíveis exatos.

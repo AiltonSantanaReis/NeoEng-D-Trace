@@ -360,9 +360,13 @@
       "sha256": "2580e075c8c9411313746cdd3032c371f274f5983226811ac55dc52bc48cb7dc",
       "size": 2618
     },
+    "docs/evidence/ETAPA_5_PACOTE_4C_LAYER_GROUP_UI_FALLBACKS.md": {
+      "sha256": "57070a4a430893baa1a55857b071220895c726eeae3fc2c48a809ce48b120043",
+      "size": 1937
+    },
     "docs/evidence/README.md": {
-      "sha256": "7cc087a2705102fdf6b10bf1fa4adef592d2b3fbd22501a85bda104a41ed5af2",
-      "size": 2821
+      "sha256": "697d8fa24e0b8a22028b32c0eecde9c509aed2884b10c7fe327efaf8eef8b5f0",
+      "size": 2979
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -581,8 +585,8 @@
       "size": 1884
     },
     "src/core/commands.py": {
-      "sha256": "faafadf2cf2fbfd60e9ff18a1bce208c4b48abfbde47188932fc564df7803e71",
-      "size": 39767
+      "sha256": "15f744b9bf2044ffbe5acaaf2b3acc0bc8c01e43c01f3e3db8c60fac58b0c9ac",
+      "size": 54233
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -789,12 +793,12 @@
       "size": 6080
     },
     "src/ui/groups_panel.py": {
-      "sha256": "8ab5ba502ec870cb6fd414d8bfc490c138f3a20d8586b2fa143f057803e4fef6",
-      "size": 11325
+      "sha256": "11ff1a424e255cf2f8559ebd3192f5fa2b7dd2bea475bbe34dc8377c2e221a83",
+      "size": 11875
     },
     "src/ui/layers_panel.py": {
-      "sha256": "77a3563f3ca5d19718dfd96f4f9f0e1b918aa183eff57c7ce17412d90479691e",
-      "size": 6486
+      "sha256": "45a9645573ec163b7a7765515550164c526d3eddbdd613486deea2859fc05887",
+      "size": 6169
     },
     "src/ui/main_window.py": {
       "sha256": "b7bbb3de7b02b03ac03038057c6139ece41454de49ea3ac2d43f54119f0844d2",
@@ -979,6 +983,10 @@
     "tests/test_stage_5_package_4b_collision_transform.py": {
       "sha256": "8c34ec299744e37699e8b2125d861a7e935252ae84a17ef82b14453856ababa8",
       "size": 12719
+    },
+    "tests/test_stage_5_package_4c_layer_group_ui_fallbacks.py": {
+      "sha256": "2f68278e19c9780f2a126b4b909df22943372967bf25cc9fe1858a97d6a7ac25",
+      "size": 13520
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

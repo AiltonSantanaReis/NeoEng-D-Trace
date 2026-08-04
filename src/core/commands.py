@@ -521,35 +521,85 @@ class _EmptyHistoryCommand(Command):
         return None
 
 
+def _layer_index(scene: Any, layer_id: str) -> Optional[int]:
+    for index, layer in enumerate(scene.layers):
+        if layer.id == layer_id:
+            return index
+    return None
+
+
+def _group_index(scene: Any, group_id: str) -> Optional[int]:
+    for index, group in enumerate(getattr(scene, "groups", [])):
+        if group.id == group_id:
+            return index
+    return None
+
+
 class RemoveLayerCommand(Command):
+    """Remove one layer and restore its exact index and assignments."""
+
     def __init__(self, layer_id: str):
-        self.layer_id = layer_id
+        self.layer_id = str(layer_id)
         self._backup_layer: Optional[Dict[str, Any]] = None
         self._backup_assignments: Optional[Dict[str, str]] = None
+        self._backup_index: Optional[int] = None
 
     def execute(self, scene: Any):
-        layer = next(
-            (layer for layer in scene.layers if layer.id == self.layer_id),
-            None,
-        )
-        if layer is None:
-            return
+        if self.layer_id == "layer_default":
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The default layer cannot be removed.",
+            )
+        index = _layer_index(scene, self.layer_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer no longer exists.",
+            )
+        layer = scene.layers[index]
+        self._backup_index = index
         self._backup_layer = {
             "id": layer.id,
             "name": layer.name,
-            "visible": layer.visible,
-            "locked": layer.locked,
+            "visible": bool(layer.visible),
+            "locked": bool(layer.locked),
         }
         self._backup_assignments = {
-            oid: obj.layer_id
-            for oid, obj in scene.objects.items()
+            object_id: obj.layer_id
+            for object_id, obj in scene.objects.items()
             if obj.layer_id == self.layer_id
         }
         scene.remove_layer(self.layer_id)
 
     def undo(self, scene: Any):
-        if self._backup_layer is None:
-            return
+        if (
+            self._backup_layer is None
+            or self._backup_assignments is None
+            or self._backup_index is None
+        ):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The removed layer backup is unavailable.",
+            )
+        if _layer_index(scene, self.layer_id) is not None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The layer id is already in use.",
+            )
+        if any(
+            object_id not in scene.objects for object_id in self._backup_assignments
+        ):
+            return CommandResult.failed(
+                self,
+                "undo",
+                "LayerRelationshipError",
+                "An object required by the removed layer is missing.",
+            )
+
         from src.models.scene import Layer
 
         layer = Layer(
@@ -558,78 +608,200 @@ class RemoveLayerCommand(Command):
             visible=self._backup_layer["visible"],
             locked=self._backup_layer["locked"],
         )
-        scene.layers.append(layer)
-        if self._backup_assignments:
-            for oid, old in self._backup_assignments.items():
-                if oid in scene.objects:
-                    scene.objects[oid].layer_id = layer.id
+        insert_at = min(self._backup_index, len(scene.layers))
+        scene.layers.insert(insert_at, layer)
+        for object_id, layer_id in self._backup_assignments.items():
+            scene.objects[object_id].layer_id = layer_id
+        scene._notify()
 
 
 class CreateLayerCommand(Command):
+    """Create one layer with stable identity across Undo and Redo."""
+
     def __init__(self, name: str):
-        self.name = name
+        self.name = str(name).strip()
         self.layer_id: Optional[str] = None
+        self._index: Optional[int] = None
 
     def execute(self, scene: Any):
-        layer = scene.create_layer(self.name)
-        self.layer_id = layer.id
+        if not self.name:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer name must not be empty.",
+            )
+        if self.layer_id is None:
+            layer = scene.create_layer(self.name)
+            self.layer_id = layer.id
+            self._index = len(scene.layers) - 1
+            return None
+        if _layer_index(scene, self.layer_id) is not None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer id is already in use.",
+            )
+
+        from src.models.scene import Layer
+
+        insert_at = min(
+            self._index if self._index is not None else len(scene.layers),
+            len(scene.layers),
+        )
+        scene.layers.insert(
+            insert_at,
+            Layer(id=self.layer_id, name=self.name),
+        )
+        scene._notify()
 
     def undo(self, scene: Any):
-        if self.layer_id:
-            scene.remove_layer(self.layer_id)
+        if self.layer_id is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created layer id is unavailable.",
+            )
+        index = _layer_index(scene, self.layer_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created layer no longer exists.",
+            )
+        self._index = index
+        scene.remove_layer(self.layer_id)
 
 
 class MoveLayerCommand(Command):
+    """Move one layer and restore its exact previous index."""
+
     def __init__(self, layer_id: str, new_index: int):
-        self.layer_id = layer_id
-        self.new_index = new_index
+        self.layer_id = str(layer_id)
+        self.new_index = int(new_index)
         self._old_index: Optional[int] = None
 
     def execute(self, scene: Any):
-        ids = [layer.id for layer in scene.layers]
-        if self.layer_id in ids:
-            self._old_index = ids.index(self.layer_id)
-        scene.move_layer(self.layer_id, self.new_index)
+        old_index = _layer_index(scene, self.layer_id)
+        if old_index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer no longer exists.",
+            )
+        target = max(0, min(self.new_index, len(scene.layers) - 1))
+        if target == old_index:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The layer is already at the requested index.",
+            )
+        self._old_index = old_index
+        scene.move_layer(self.layer_id, target)
 
     def undo(self, scene: Any):
-        if self._old_index is not None:
-            scene.move_layer(self.layer_id, self._old_index)
+        if self._old_index is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous layer index is unavailable.",
+            )
+        if _layer_index(scene, self.layer_id) is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The moved layer no longer exists.",
+            )
+        scene.move_layer(self.layer_id, self._old_index)
 
 
 class ToggleLayerVisibilityCommand(Command):
+    """Toggle layer visibility with exact state preconditions."""
+
     def __init__(self, layer_id: str):
-        self.layer_id = layer_id
+        self.layer_id = str(layer_id)
         self._old: Optional[bool] = None
+        self._new: Optional[bool] = None
 
     def execute(self, scene: Any):
-        for layer in scene.layers:
-            if layer.id == self.layer_id:
-                self._old = layer.visible
-                layer.visible = not layer.visible
-                return
+        index = _layer_index(scene, self.layer_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer no longer exists.",
+            )
+        current = bool(scene.layers[index].visible)
+        if self._old is None:
+            self._old = current
+            self._new = not current
+        elif current != self._old:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer visibility changed before Redo.",
+            )
+        scene.set_layer_visibility(self.layer_id, bool(self._new))
 
     def undo(self, scene: Any):
-        for layer in scene.layers:
-            if layer.id == self.layer_id and self._old is not None:
-                layer.visible = self._old
+        index = _layer_index(scene, self.layer_id)
+        if index is None or self._old is None or self._new is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous layer visibility is unavailable.",
+            )
+        if bool(scene.layers[index].visible) != self._new:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The layer visibility changed before Undo.",
+            )
+        scene.set_layer_visibility(self.layer_id, self._old)
 
 
 class ToggleLayerLockCommand(Command):
+    """Toggle layer lock with exact state preconditions."""
+
     def __init__(self, layer_id: str):
-        self.layer_id = layer_id
+        self.layer_id = str(layer_id)
         self._old: Optional[bool] = None
+        self._new: Optional[bool] = None
 
     def execute(self, scene: Any):
-        for layer in scene.layers:
-            if layer.id == self.layer_id:
-                self._old = layer.locked
-                layer.locked = not layer.locked
-                return
+        index = _layer_index(scene, self.layer_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer no longer exists.",
+            )
+        current = bool(scene.layers[index].locked)
+        if self._old is None:
+            self._old = current
+            self._new = not current
+        elif current != self._old:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The layer lock changed before Redo.",
+            )
+        scene.set_layer_lock(self.layer_id, bool(self._new))
 
     def undo(self, scene: Any):
-        for layer in scene.layers:
-            if layer.id == self.layer_id and self._old is not None:
-                layer.locked = self._old
+        index = _layer_index(scene, self.layer_id)
+        if index is None or self._old is None or self._new is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous layer lock is unavailable.",
+            )
+        if bool(scene.layers[index].locked) != self._new:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The layer lock changed before Undo.",
+            )
+        scene.set_layer_lock(self.layer_id, self._old)
 
 
 class HandleMoveCommand(Command):
@@ -911,87 +1083,308 @@ class ExpandContractCommand(UpdatePolygonCommand):
 
 
 class CreateGroupCommand(Command):
+    """Create one group with stable identity across Undo and Redo."""
+
     def __init__(self, name: str):
-        self.name = name
+        self.name = str(name).strip()
         self.group_id: Optional[str] = None
+        self._index: Optional[int] = None
 
     def execute(self, scene: Any):
-        g = scene.create_group(self.name)
-        self.group_id = g.id
+        if not self.name:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group name must not be empty.",
+            )
+        if self.group_id is None:
+            group = scene.create_group(self.name)
+            self.group_id = group.id
+            self._index = len(scene.groups) - 1
+            return None
+        if _group_index(scene, self.group_id) is not None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group id is already in use.",
+            )
+
+        from src.models.scene import Group
+
+        insert_at = min(
+            self._index if self._index is not None else len(scene.groups),
+            len(scene.groups),
+        )
+        scene.groups.insert(
+            insert_at,
+            Group(id=self.group_id, name=self.name),
+        )
+        scene._notify()
 
     def undo(self, scene: Any):
-        if self.group_id:
-            scene.remove_group(self.group_id)
+        if self.group_id is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created group id is unavailable.",
+            )
+        index = _group_index(scene, self.group_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created group no longer exists.",
+            )
+        self._index = index
+        scene.remove_group(self.group_id)
 
 
 class RemoveGroupCommand(Command):
+    """Remove one group and restore its exact state and index."""
+
     def __init__(self, group_id: str):
-        self.group_id = group_id
+        self.group_id = str(group_id)
         self._backup: Optional[Dict[str, Any]] = None
+        self._backup_index: Optional[int] = None
 
     def execute(self, scene: Any):
-        g = next(
-            (x for x in getattr(scene, "groups", []) if x.id == self.group_id),
-            None,
-        )
-        if g is None:
-            return
+        index = _group_index(scene, self.group_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group no longer exists.",
+            )
+        group = scene.groups[index]
+        self._backup_index = index
         self._backup = {
-            "id": g.id,
-            "name": g.name,
-            "visible": g.visible,
-            "locked": g.locked,
-            "members": list(g.members),
+            "id": group.id,
+            "name": group.name,
+            "visible": bool(group.visible),
+            "locked": bool(group.locked),
+            "members": list(group.members),
         }
         scene.remove_group(self.group_id)
 
     def undo(self, scene: Any):
-        if self._backup:
-            try:
-                from src.models.scene import Group
+        if self._backup is None or self._backup_index is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The removed group backup is unavailable.",
+            )
+        if _group_index(scene, self.group_id) is not None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The group id is already in use.",
+            )
+        if any(object_id not in scene.objects for object_id in self._backup["members"]):
+            return CommandResult.failed(
+                self,
+                "undo",
+                "GroupRelationshipError",
+                "An object required by the removed group is missing.",
+            )
 
-                g = Group(
-                    id=self._backup["id"],
-                    name=self._backup["name"],
-                    visible=self._backup["visible"],
-                    locked=self._backup["locked"],
-                )
-                g.members = list(self._backup["members"])
-                if not hasattr(scene, "groups"):
-                    scene.groups = []
-                scene.groups.append(g)
-            except Exception:
-                pass
+        from src.models.scene import Group
+
+        group = Group(
+            id=self._backup["id"],
+            name=self._backup["name"],
+            visible=self._backup["visible"],
+            locked=self._backup["locked"],
+        )
+        group.members = list(self._backup["members"])
+        insert_at = min(self._backup_index, len(scene.groups))
+        scene.groups.insert(insert_at, group)
+        scene._notify()
 
 
 class AddToGroupCommand(Command):
+    """Add one existing object to one existing group."""
+
     def __init__(self, group_id: str, object_id: str):
-        self.group_id = group_id
-        self.object_id = object_id
+        self.group_id = str(group_id)
+        self.object_id = str(object_id)
         self._added = False
 
     def execute(self, scene: Any):
+        index = _group_index(scene, self.group_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group no longer exists.",
+            )
+        if self.object_id not in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The object no longer exists.",
+            )
+        if self.object_id in scene.groups[index].members:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The object already belongs to this group.",
+            )
         scene.add_object_to_group(self.group_id, self.object_id)
         self._added = True
 
     def undo(self, scene: Any):
-        if self._added:
-            scene.remove_object_from_group(self.group_id, self.object_id)
+        index = _group_index(scene, self.group_id)
+        if index is None or not self._added:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The added group membership is unavailable.",
+            )
+        if self.object_id not in scene.groups[index].members:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The group membership changed before Undo.",
+            )
+        scene.remove_object_from_group(self.group_id, self.object_id)
 
 
 class RemoveFromGroupCommand(Command):
+    """Remove one object from one group and restore it on Undo."""
+
     def __init__(self, group_id: str, object_id: str):
-        self.group_id = group_id
-        self.object_id = object_id
+        self.group_id = str(group_id)
+        self.object_id = str(object_id)
         self._removed = False
 
     def execute(self, scene: Any):
+        index = _group_index(scene, self.group_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group no longer exists.",
+            )
+        if self.object_id not in scene.groups[index].members:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The object is not a member of this group.",
+            )
         scene.remove_object_from_group(self.group_id, self.object_id)
         self._removed = True
 
     def undo(self, scene: Any):
-        if self._removed:
-            scene.add_object_to_group(self.group_id, self.object_id)
+        index = _group_index(scene, self.group_id)
+        if index is None or not self._removed:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The removed group membership is unavailable.",
+            )
+        if self.object_id not in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The object no longer exists.",
+            )
+        if self.object_id in scene.groups[index].members:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The group membership changed before Undo.",
+            )
+        scene.add_object_to_group(self.group_id, self.object_id)
+
+
+class ToggleGroupVisibilityCommand(Command):
+    """Toggle group visibility with exact state preconditions."""
+
+    def __init__(self, group_id: str):
+        self.group_id = str(group_id)
+        self._old: Optional[bool] = None
+        self._new: Optional[bool] = None
+
+    def execute(self, scene: Any):
+        index = _group_index(scene, self.group_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group no longer exists.",
+            )
+        current = bool(scene.groups[index].visible)
+        if self._old is None:
+            self._old = current
+            self._new = not current
+        elif current != self._old:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group visibility changed before Redo.",
+            )
+        scene.set_group_visibility(self.group_id, bool(self._new))
+
+    def undo(self, scene: Any):
+        index = _group_index(scene, self.group_id)
+        if index is None or self._old is None or self._new is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous group visibility is unavailable.",
+            )
+        if bool(scene.groups[index].visible) != self._new:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The group visibility changed before Undo.",
+            )
+        scene.set_group_visibility(self.group_id, self._old)
+
+
+class ToggleGroupLockCommand(Command):
+    """Toggle group lock with exact state preconditions."""
+
+    def __init__(self, group_id: str):
+        self.group_id = str(group_id)
+        self._old: Optional[bool] = None
+        self._new: Optional[bool] = None
+
+    def execute(self, scene: Any):
+        index = _group_index(scene, self.group_id)
+        if index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group no longer exists.",
+            )
+        current = bool(scene.groups[index].locked)
+        if self._old is None:
+            self._old = current
+            self._new = not current
+        elif current != self._old:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group lock changed before Redo.",
+            )
+        scene.set_group_lock(self.group_id, bool(self._new))
+
+    def undo(self, scene: Any):
+        index = _group_index(scene, self.group_id)
+        if index is None or self._old is None or self._new is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous group lock is unavailable.",
+            )
+        if bool(scene.groups[index].locked) != self._new:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The group lock changed before Undo.",
+            )
+        scene.set_group_lock(self.group_id, self._old)
 
 
 class AddPolygonCommand(Command):
@@ -1039,20 +1432,45 @@ class CreateObjectCommand(Command):
 
 
 class MoveGroupCommand(Command):
+    """Move one group and restore its exact previous index."""
+
     def __init__(self, group_id: str, new_index: int):
-        self.group_id = group_id
-        self.new_index = new_index
+        self.group_id = str(group_id)
+        self.new_index = int(new_index)
         self._old_index: Optional[int] = None
 
     def execute(self, scene: Any):
-        ids = [g.id for g in getattr(scene, "groups", [])]
-        if self.group_id in ids:
-            self._old_index = ids.index(self.group_id)
-        scene.move_group(self.group_id, self.new_index)
+        old_index = _group_index(scene, self.group_id)
+        if old_index is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The group no longer exists.",
+            )
+        target = max(0, min(self.new_index, len(scene.groups) - 1))
+        if target == old_index:
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The group is already at the requested index.",
+            )
+        self._old_index = old_index
+        scene.move_group(self.group_id, target)
 
     def undo(self, scene: Any):
-        if self._old_index is not None:
-            scene.move_group(self.group_id, self._old_index)
+        if self._old_index is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous group index is unavailable.",
+            )
+        if _group_index(scene, self.group_id) is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The moved group no longer exists.",
+            )
+        scene.move_group(self.group_id, self._old_index)
 
 
 class ToggleCollisionCommand(Command):
