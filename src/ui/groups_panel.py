@@ -1,4 +1,6 @@
 # src/ui/groups_panel.py
+from typing import Optional
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QHBoxLayout,
@@ -11,8 +13,22 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.core.commands import (
+    AddToGroupCommand,
+    CommandResult,
+    CommandStatus,
+    CreateGroupCommand,
+    MoveGroupCommand,
+    RemoveFromGroupCommand,
+    RemoveGroupCommand,
+    ToggleGroupLockCommand,
+    ToggleGroupVisibilityCommand,
+)
+
 
 class GroupsPanel(QWidget):
+    """Command-only editor for scene groups."""
+
     def __init__(self, scene, parent=None):
         super().__init__(parent)
         self.scene = scene
@@ -33,6 +49,9 @@ class GroupsPanel(QWidget):
                 "info": "Info",
                 "no_group_selected": "No group selected",
                 "no_object_selected": "No object selected",
+                "history_unavailable": ("Undo/Redo command history is unavailable."),
+                "operation_rejected": ("The group operation was rejected."),
+                "operation_failed": "The group operation failed.",
             },
             "pt": {
                 "new_group": "Novo Grupo",
@@ -49,6 +68,11 @@ class GroupsPanel(QWidget):
                 "info": "Info",
                 "no_group_selected": "Nenhum grupo selecionado",
                 "no_object_selected": "Nenhum objeto selecionado",
+                "history_unavailable": (
+                    "O histórico de Desfazer/Refazer está indisponível."
+                ),
+                "operation_rejected": ("A operação do grupo foi rejeitada."),
+                "operation_failed": "A operação do grupo falhou.",
             },
         }
         self.list = QListWidget()
@@ -67,22 +91,22 @@ class GroupsPanel(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(self.list)
-        h = QHBoxLayout()
-        h.addWidget(self.btn_new)
-        h.addWidget(self.btn_delete)
-        layout.addLayout(h)
-        h2 = QHBoxLayout()
-        h2.addWidget(self.btn_add)
-        h2.addWidget(self.btn_remove)
-        layout.addLayout(h2)
-        h3 = QHBoxLayout()
-        h3.addWidget(self.btn_up)
-        h3.addWidget(self.btn_down)
-        layout.addLayout(h3)
-        h4 = QHBoxLayout()
-        h4.addWidget(self.btn_vis)
-        h4.addWidget(self.btn_lock)
-        layout.addLayout(h4)
+        row = QHBoxLayout()
+        row.addWidget(self.btn_new)
+        row.addWidget(self.btn_delete)
+        layout.addLayout(row)
+        row = QHBoxLayout()
+        row.addWidget(self.btn_add)
+        row.addWidget(self.btn_remove)
+        layout.addLayout(row)
+        row = QHBoxLayout()
+        row.addWidget(self.btn_up)
+        row.addWidget(self.btn_down)
+        layout.addLayout(row)
+        row = QHBoxLayout()
+        row.addWidget(self.btn_vis)
+        row.addWidget(self.btn_lock)
+        layout.addLayout(row)
         self.setLayout(layout)
 
         self.btn_new.clicked.connect(self._on_new)
@@ -99,217 +123,213 @@ class GroupsPanel(QWidget):
         self.refresh()
 
     def refresh(self):
-        # 1. Guarda o ID do grupo selecionado (user data), não o texto
         current_item = self.list.currentItem()
-        current_gid = current_item.data(Qt.UserRole) if current_item else None
+        current_group_id = (
+            current_item.data(Qt.ItemDataRole.UserRole)
+            if current_item is not None
+            else None
+        )
 
-        # 2. Bloqueia sinais para evitar loops de evento
         self.list.blockSignals(True)
         self.list.clear()
-
-        for g in getattr(self.scene, "groups", []):
-            # Formatação visual do status
+        for group in getattr(self.scene, "groups", []):
             status = []
-            if g.locked:
+            if group.locked:
                 status.append("[LOCKED]")
-            if not g.visible:
+            if not group.visible:
                 status.append("[HIDDEN]")
-            status_str = " ".join(status)
-
-            item_text = f"{g.name} {status_str} ({len(g.members)} items)"
-            item = QListWidgetItem(item_text)
-
-            # Dados reais ficam seguros aqui
-            item.setData(Qt.UserRole, g.id)
+            suffix = " ".join(status)
+            text = f"{group.name} {suffix} ({len(group.members)} items)"
+            item = QListWidgetItem(text.replace("  ", " ").strip())
+            item.setData(Qt.ItemDataRole.UserRole, group.id)
             self.list.addItem(item)
 
-        # 3. Restaura a seleção baseada no ID
-        if current_gid:
-            for i in range(self.list.count()):
-                item = self.list.item(i)
-                if item.data(Qt.UserRole) == current_gid:
-                    self.list.setCurrentItem(item)
-                    break
-
+        if current_group_id is not None:
+            self._select_group_id(current_group_id)
         self.list.blockSignals(False)
 
+    def _select_group_id(self, group_id: str) -> bool:
+        for row in range(self.list.count()):
+            item = self.list.item(row)
+            if item.data(Qt.ItemDataRole.UserRole) == group_id:
+                self.list.setCurrentItem(item)
+                return True
+        return False
+
     def _get_selected_group(self):
-        items = self.list.selectedItems()
-        if not items:
+        item = self.list.currentItem()
+        if item is None:
             return None, None
-
-        full_gid = items[0].data(Qt.UserRole)
-
-        g = next(
-            (x for x in getattr(self.scene, "groups", []) if x.id == full_gid),
+        group_id = item.data(Qt.ItemDataRole.UserRole)
+        group = next(
+            (
+                candidate
+                for candidate in getattr(self.scene, "groups", [])
+                if candidate.id == group_id
+            ),
             None,
         )
-        return g, full_gid
+        return group, group_id
+
+    def _execute_edit_command(self, command) -> Optional[CommandResult]:
+        manager = getattr(self.scene, "cmd", None)
+        translation = self.translations[self.current_lang]
+        if manager is None:
+            QMessageBox.critical(
+                self,
+                translation["error"],
+                translation["history_unavailable"],
+            )
+            return None
+
+        result = manager.execute(command, self.scene)
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self,
+                translation["error"],
+                result.message or translation["operation_rejected"],
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self,
+                translation["error"],
+                result.message or translation["operation_failed"],
+            )
+        return result
 
     def _on_new(self):
-        name, ok = QInputDialog.getText(
+        translation = self.translations[self.current_lang]
+        name, accepted = QInputDialog.getText(
             self,
-            self.translations[self.current_lang]["new_group_title"],
-            self.translations[self.current_lang]["name"],
+            translation["new_group_title"],
+            translation["name"],
         )
-        if not ok or not name:
+        if not accepted or not name:
             return
         try:
-            from src.core.commands import CreateGroupCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(CreateGroupCommand(name), self.scene)
-            else:
-                self.scene.create_group(name)
-        except Exception as e:
+            command = CreateGroupCommand(name)
+            result = self._execute_edit_command(command)
+            if result is not None and result.changed and command.group_id:
+                self._select_group_id(command.group_id)
+        except Exception as exc:
             QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
+                self,
+                translation["error"],
+                str(exc),
             )
 
     def _on_delete(self):
-        g, gid = self._get_selected_group()
-        if not g:
-            QMessageBox.information(
-                self,
-                self.translations[self.current_lang]["info"],
-                self.translations[self.current_lang]["no_group_selected"],
-            )
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
+            self._show_no_group()
             return
         try:
-            from src.core.commands import RemoveGroupCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(RemoveGroupCommand(g.id), self.scene)
-            else:
-                self.scene.remove_group(g.id)
-        except Exception as e:
-            QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
-            )
+            self._execute_edit_command(RemoveGroupCommand(group_id))
+        except Exception as exc:
+            self._show_error(exc)
 
     def _on_add_selected(self):
-        g, gid = self._get_selected_group()
-        if not g:
-            QMessageBox.information(
-                self,
-                self.translations[self.current_lang]["info"],
-                self.translations[self.current_lang]["no_group_selected"],
-            )
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
+            self._show_no_group()
             return
-        sid = getattr(self.scene, "selected_id", None)
-        if not sid:
-            QMessageBox.information(
-                self,
-                self.translations[self.current_lang]["info"],
-                self.translations[self.current_lang]["no_object_selected"],
-            )
+        object_id = getattr(self.scene, "selected_id", None)
+        if not object_id:
+            self._show_no_object()
             return
         try:
-            from src.core.commands import AddToGroupCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(AddToGroupCommand(g.id, sid), self.scene)
-            else:
-                self.scene.add_object_to_group(g.id, sid)
-        except Exception as e:
-            QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
-            )
+            self._execute_edit_command(AddToGroupCommand(group_id, object_id))
+        except Exception as exc:
+            self._show_error(exc)
 
     def _on_remove_selected(self):
-        g, gid = self._get_selected_group()
-        if not g:
-            QMessageBox.information(
-                self,
-                self.translations[self.current_lang]["info"],
-                self.translations[self.current_lang]["no_group_selected"],
-            )
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
+            self._show_no_group()
             return
-        sid = getattr(self.scene, "selected_id", None)
-        if not sid:
-            QMessageBox.information(
-                self,
-                self.translations[self.current_lang]["info"],
-                self.translations[self.current_lang]["no_object_selected"],
-            )
+        object_id = getattr(self.scene, "selected_id", None)
+        if not object_id:
+            self._show_no_object()
             return
         try:
-            from src.core.commands import RemoveFromGroupCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(RemoveFromGroupCommand(g.id, sid), self.scene)
-            else:
-                self.scene.remove_object_from_group(g.id, sid)
-        except Exception as e:
-            QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
-            )
+            self._execute_edit_command(RemoveFromGroupCommand(group_id, object_id))
+        except Exception as exc:
+            self._show_error(exc)
 
     def _on_up(self):
-        g, gid = self._get_selected_group()
-        if not g:
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
             return
         try:
-            from src.core.commands import MoveGroupCommand
-
-            idx = max(0, getattr(self.scene, "groups", []).index(g) - 1)
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(MoveGroupCommand(g.id, idx), self.scene)
-            else:
-                self.scene.move_group(g.id, idx)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            index = self.scene.groups.index(group)
+            if index <= 0:
+                return
+            self._execute_edit_command(MoveGroupCommand(group_id, index - 1))
+        except Exception as exc:
+            self._show_error(exc)
 
     def _on_down(self):
-        g, gid = self._get_selected_group()
-        if not g:
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
             return
         try:
-            from src.core.commands import MoveGroupCommand
-
-            groups = getattr(self.scene, "groups", [])
-            idx = min(len(groups) - 1, groups.index(g) + 1)
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(MoveGroupCommand(g.id, idx), self.scene)
-            else:
-                self.scene.move_group(g.id, idx)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            index = self.scene.groups.index(group)
+            if index >= len(self.scene.groups) - 1:
+                return
+            self._execute_edit_command(MoveGroupCommand(group_id, index + 1))
+        except Exception as exc:
+            self._show_error(exc)
 
     def _on_toggle_vis(self):
-        g, gid = self._get_selected_group()
-        if not g:
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
             return
         try:
-            # Não há comando específico para toggle group vis em commands.py,
-            # modificação direta é aceitável neste contexto ou exigiria criar o comando.
-            g.visible = not g.visible
-            self.scene._notify()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            self._execute_edit_command(ToggleGroupVisibilityCommand(group_id))
+        except Exception as exc:
+            self._show_error(exc)
 
     def _on_toggle_lock(self):
-        g, gid = self._get_selected_group()
-        if not g:
+        group, group_id = self._get_selected_group()
+        if group is None or group_id is None:
             return
         try:
-            g.locked = not g.locked
-            self.scene._notify()
-        except Exception as e:
-            QMessageBox.critical(
-                self, self.translations[self.current_lang]["error"], str(e)
-            )
+            self._execute_edit_command(ToggleGroupLockCommand(group_id))
+        except Exception as exc:
+            self._show_error(exc)
+
+    def _show_no_group(self):
+        translation = self.translations[self.current_lang]
+        QMessageBox.information(
+            self,
+            translation["info"],
+            translation["no_group_selected"],
+        )
+
+    def _show_no_object(self):
+        translation = self.translations[self.current_lang]
+        QMessageBox.information(
+            self,
+            translation["info"],
+            translation["no_object_selected"],
+        )
+
+    def _show_error(self, exc: BaseException):
+        translation = self.translations[self.current_lang]
+        QMessageBox.critical(
+            self,
+            translation["error"],
+            str(exc),
+        )
 
     def update_language(self, lang):
         self.current_lang = lang
-        t = self.translations[self.current_lang]
-        self.btn_new.setText(t["new_group"])
-        self.btn_delete.setText(t["delete_group"])
-        self.btn_add.setText(t["add_selected"])
-        self.btn_remove.setText(t["remove_selected"])
-        self.btn_up.setText(t["up"])
-        self.btn_down.setText(t["down"])
-        self.btn_vis.setText(t["toggle_vis"])
-        self.btn_lock.setText(t["toggle_lock"])
+        translation = self.translations[self.current_lang]
+        self.btn_new.setText(translation["new_group"])
+        self.btn_delete.setText(translation["delete_group"])
+        self.btn_add.setText(translation["add_selected"])
+        self.btn_remove.setText(translation["remove_selected"])
+        self.btn_up.setText(translation["up"])
+        self.btn_down.setText(translation["down"])
+        self.btn_vis.setText(translation["toggle_vis"])
+        self.btn_lock.setText(translation["toggle_lock"])

@@ -1,16 +1,31 @@
 # src/ui/layers_panel.py
+from typing import Optional
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QListWidget,
+    QListWidgetItem,
     QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
 )
 
+from src.core.commands import (
+    CommandResult,
+    CommandStatus,
+    CreateLayerCommand,
+    MoveLayerCommand,
+    RemoveLayerCommand,
+    ToggleLayerLockCommand,
+    ToggleLayerVisibilityCommand,
+)
+
 
 class LayersPanel(QWidget):
+    """Command-only editor for scene layers."""
+
     def __init__(self, scene, parent=None):
         super().__init__(parent)
         self.scene = scene
@@ -20,7 +35,7 @@ class LayersPanel(QWidget):
         self.list = QListWidget()
         self.layout.addWidget(self.list)
 
-        btns = QHBoxLayout()
+        buttons = QHBoxLayout()
         self.btn_new = QPushButton("New")
         self.btn_delete = QPushButton("Delete")
         self.btn_up = QPushButton("Up")
@@ -28,7 +43,7 @@ class LayersPanel(QWidget):
         self.btn_vis = QPushButton("Toggle Vis")
         self.btn_lock = QPushButton("Toggle Lock")
 
-        for b in (
+        for button in (
             self.btn_new,
             self.btn_delete,
             self.btn_up,
@@ -36,12 +51,11 @@ class LayersPanel(QWidget):
             self.btn_vis,
             self.btn_lock,
         ):
-            btns.addWidget(b)
+            buttons.addWidget(button)
 
-        self.layout.addLayout(btns)
+        self.layout.addLayout(buttons)
         self.setLayout(self.layout)
 
-        # Conexões
         self.btn_new.clicked.connect(self._create)
         self.btn_delete.clicked.connect(self._delete)
         self.btn_up.clicked.connect(self._up)
@@ -49,145 +63,128 @@ class LayersPanel(QWidget):
         self.btn_vis.clicked.connect(self._toggle_vis)
         self.btn_lock.clicked.connect(self._toggle_lock)
 
-        # Integração com o sistema de notificação da cena (Observer)
-        # Isso garante que Undo/Redo atualize a lista automaticamente
         if hasattr(self.scene, "subscribe"):
             self.scene.subscribe(self.refresh)
-
         self.refresh()
 
     def refresh(self):
-        # Tenta preservar a seleção atual
-        current_row = self.list.currentRow()
+        current_item = self.list.currentItem()
+        current_layer_id = (
+            current_item.data(Qt.ItemDataRole.UserRole)
+            if current_item is not None
+            else None
+        )
 
+        self.list.blockSignals(True)
         self.list.clear()
         for layer in self.scene.layers:
-            # Formatação visual do estado da camada
             status = []
             if layer.locked:
                 status.append("[LOCKED]")
             if not layer.visible:
                 status.append("[HIDDEN]")
+            suffix = " ".join(status)
+            item = QListWidgetItem(f"{layer.name} {suffix}".rstrip())
+            item.setData(Qt.ItemDataRole.UserRole, layer.id)
+            self.list.addItem(item)
 
-            status_str = " ".join(status)
-            name = f"{layer.name} {status_str}"
-            self.list.addItem(name)
+        if current_layer_id is not None:
+            self._select_layer_id(current_layer_id)
+        self.list.blockSignals(False)
 
-        # Restaura seleção se possível
-        if 0 <= current_row < self.list.count():
-            self.list.setCurrentRow(current_row)
+    def _select_layer_id(self, layer_id: str) -> bool:
+        for row in range(self.list.count()):
+            item = self.list.item(row)
+            if item.data(Qt.ItemDataRole.UserRole) == layer_id:
+                self.list.setCurrentItem(item)
+                return True
+        return False
+
+    def _selected_layer(self):
+        item = self.list.currentItem()
+        if item is None:
+            return None, None, None
+        layer_id = item.data(Qt.ItemDataRole.UserRole)
+        for index, layer in enumerate(self.scene.layers):
+            if layer.id == layer_id:
+                return layer, layer_id, index
+        return None, layer_id, None
+
+    def _execute_edit_command(self, command) -> Optional[CommandResult]:
+        manager = getattr(self.scene, "cmd", None)
+        if manager is None:
+            QMessageBox.critical(
+                self,
+                "Layer Edit Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return None
+
+        result = manager.execute(command, self.scene)
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self,
+                "Layer Edit Rejected",
+                result.message or "The layer operation was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self,
+                "Layer Edit Failed",
+                result.message or "The layer operation failed.",
+            )
+        return result
 
     def _create(self):
         try:
-            # Verifica se o CommandManager existe e está pronto
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                from src.core.commands import CreateLayerCommand
-
-                # CORREÇÃO: Passando self.scene como argumento
-                self.scene.cmd.execute(CreateLayerCommand("New Layer"), self.scene)
-            else:
-                # Fallback direto
-                self.scene.create_layer("New Layer")
-                # Se for fallback manual, precisamos chamar refresh manual
-                # (Se for via comando, o subscribe cuida disso)
-                self.refresh()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            command = CreateLayerCommand("New Layer")
+            result = self._execute_edit_command(command)
+            if result is not None and result.changed and command.layer_id:
+                self._select_layer_id(command.layer_id)
+        except Exception as exc:
+            QMessageBox.critical(self, "Error", str(exc))
 
     def _delete(self):
-        idx = self.list.currentRow()
-        if idx < 0:
+        _, layer_id, _ = self._selected_layer()
+        if layer_id is None:
             return
-
-        # Proteção contra índice fora de limites
-        if idx >= len(self.scene.layers):
-            return
-
-        lid = self.scene.layers[idx].id
         try:
-            from src.core.commands import RemoveLayerCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                # CORREÇÃO: Passando self.scene como argumento
-                self.scene.cmd.execute(RemoveLayerCommand(lid), self.scene)
-            else:
-                self.scene.remove_layer(lid)
-                self.refresh()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            self._execute_edit_command(RemoveLayerCommand(layer_id))
+        except Exception as exc:
+            QMessageBox.critical(self, "Error", str(exc))
 
     def _up(self):
-        idx = self.list.currentRow()
-        if idx <= 0:
+        _, layer_id, index = self._selected_layer()
+        if layer_id is None or index is None or index <= 0:
             return
-
-        lid = self.scene.layers[idx].id
         try:
-            from src.core.commands import MoveLayerCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                # Move para cima significa diminuir o índice
-                self.scene.cmd.execute(MoveLayerCommand(lid, idx - 1), self.scene)
-            else:
-                self.scene.move_layer(lid, idx - 1)
-                self.refresh()
-
-            # Ajusta seleção para seguir o item movido
-            self.list.setCurrentRow(idx - 1)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            self._execute_edit_command(MoveLayerCommand(layer_id, index - 1))
+        except Exception as exc:
+            QMessageBox.critical(self, "Error", str(exc))
 
     def _down(self):
-        idx = self.list.currentRow()
-        if idx < 0 or idx >= len(self.scene.layers) - 1:
+        _, layer_id, index = self._selected_layer()
+        if layer_id is None or index is None or index >= len(self.scene.layers) - 1:
             return
-
-        lid = self.scene.layers[idx].id
         try:
-            from src.core.commands import MoveLayerCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                # Move para baixo significa aumentar o índice
-                self.scene.cmd.execute(MoveLayerCommand(lid, idx + 1), self.scene)
-            else:
-                self.scene.move_layer(lid, idx + 1)
-                self.refresh()
-
-            # Ajusta seleção para seguir o item movido
-            self.list.setCurrentRow(idx + 1)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            self._execute_edit_command(MoveLayerCommand(layer_id, index + 1))
+        except Exception as exc:
+            QMessageBox.critical(self, "Error", str(exc))
 
     def _toggle_vis(self):
-        idx = self.list.currentRow()
-        if idx < 0:
+        _, layer_id, _ = self._selected_layer()
+        if layer_id is None:
             return
-        lid = self.scene.layers[idx].id
         try:
-            from src.core.commands import ToggleLayerVisibilityCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(ToggleLayerVisibilityCommand(lid), self.scene)
-            else:
-                curr = self.scene.layers[idx].visible
-                self.scene.set_layer_visibility(lid, not curr)
-                self.refresh()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            self._execute_edit_command(ToggleLayerVisibilityCommand(layer_id))
+        except Exception as exc:
+            QMessageBox.critical(self, "Error", str(exc))
 
     def _toggle_lock(self):
-        idx = self.list.currentRow()
-        if idx < 0:
+        _, layer_id, _ = self._selected_layer()
+        if layer_id is None:
             return
-        lid = self.scene.layers[idx].id
         try:
-            from src.core.commands import ToggleLayerLockCommand
-
-            if hasattr(self.scene, "cmd") and self.scene.cmd:
-                self.scene.cmd.execute(ToggleLayerLockCommand(lid), self.scene)
-            else:
-                curr = self.scene.layers[idx].locked
-                self.scene.set_layer_lock(lid, not curr)
-                self.refresh()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            self._execute_edit_command(ToggleLayerLockCommand(layer_id))
+        except Exception as exc:
+            QMessageBox.critical(self, "Error", str(exc))
