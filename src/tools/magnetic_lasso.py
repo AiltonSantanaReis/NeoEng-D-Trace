@@ -958,7 +958,8 @@ class MagneticLassoTool(BaseTool):
             return None
         object_id = self.commit_selection(candidate)
         if object_id is None:
-            self._show_invalid_selection()
+            if not self._last_error:
+                self._show_invalid_selection()
             return None
         self._reset_selection_state()
         self.canvas_view.update()
@@ -987,13 +988,15 @@ class MagneticLassoTool(BaseTool):
             return None
         object_id = self.commit_selection(candidate)
         if object_id is None:
-            self._show_invalid_selection()
+            if not self._last_error:
+                self._show_invalid_selection()
             return None
         self._reset_selection_state()
         self.canvas_view.update()
         return object_id
 
     def commit_selection(self, path: Optional[Sequence[Sequence[float]]] = None):
+        self._last_error = ""
         source = path if path is not None else self._path
         polygon = deduplicate_path(source)
         normalized = self.settings.normalized()
@@ -1033,14 +1036,10 @@ class MagneticLassoTool(BaseTool):
                 self._last_error = "Polygon rejected by the Scene validation contract"
                 return None
 
-            model = self.canvas_view.model
-            if hasattr(model, "cmd") and model.cmd is not None:
-                from src.core.commands import AddPolygonCommand
-
-                command = AddPolygonCommand(polygon)
-                model.cmd.execute(command, model)
-                return command.object_id
-            return model.add_polygon(polygon)
+            return self.commit_polygon_command(
+                polygon,
+                action_name="Magnetic Lasso Creation",
+            )
         except Exception as exc:
             self._last_error = str(exc)
             return None

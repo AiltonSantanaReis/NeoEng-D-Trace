@@ -164,7 +164,14 @@ def test_failed_finish_preserves_anchors_and_segments():
 
 
 def test_successful_finish_clears_state_only_after_object_creation():
-    canvas, scene = make_canvas()
+    from src.core.commands import CommandManager
+    from src.models.scene import Scene
+
+    canvas, _ = make_canvas()
+    scene = Scene()
+    scene.cmd = CommandManager()
+    canvas.scene = scene
+    canvas.model = scene
     tool = MagneticLassoTool(canvas, MagneticLassoSettings(mode="legacy"))
     tool._anchors = [(1, 1), (20, 1), (20, 20)]
     tool._segments = [
@@ -180,10 +187,11 @@ def test_successful_finish_clears_state_only_after_object_creation():
     ):
         result = tool.finish_selection()
 
-    assert result == "object-1"
+    assert result is not None
+    assert result in scene.objects
+    assert scene.cmd.undo_count == 1
     assert tool._anchors == []
     assert tool._path == []
-    scene.add_polygon.assert_called_once()
 
 
 def test_interface_exposes_key_and_local_history_callbacks():
