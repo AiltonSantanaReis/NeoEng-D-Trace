@@ -22,6 +22,7 @@ from PySide6.QtGui import (
 from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QWidget
 
 from src.core.commands import (
+    AddPolygonCommand,
     ClearSceneCommand,
     CommandStatus,
     DeleteObjectCommand,
@@ -297,6 +298,21 @@ class CanvasView(QWidget):
                 result.message or "The edit operation failed.",
             )
         return result
+
+    def _commit_native_polygon(self, polygon) -> Optional[str]:
+        command = AddPolygonCommand(list(polygon))
+        try:
+            result = self._execute_edit_command(command)
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                "Polygon Creation Unavailable",
+                str(exc),
+            )
+            return None
+        if result.changed and command.object_id is not None:
+            return str(command.object_id)
+        return None
 
     def _toggle_physics(self, oid: str):
         try:
@@ -718,17 +734,11 @@ class CanvasView(QWidget):
         if event.button() == Qt.MouseButton.RightButton:
             if len(self._current_polygon) > 0:
                 if len(self._current_polygon) >= 3:
-                    try:
-                        self.model.add_polygon(list(self._current_polygon))
-                    except ValueError as e:
-                        logger.warning(f"Failed to create polygon: {e}")
-                        QMessageBox.warning(
-                            self,
-                            "Invalid Polygon",
-                            "The polygon you drew is invalid. It may have self-intersections, "
-                            "be too small, or have other geometric issues. Please try drawing a simpler shape.",
-                        )
-                self._current_polygon = []
+                    object_id = self._commit_native_polygon(self._current_polygon)
+                    if object_id is not None:
+                        self._current_polygon = []
+                else:
+                    self._current_polygon = []
                 self.update()
             else:
                 super().mousePressEvent(event)  # Context Menu
@@ -842,17 +852,11 @@ class CanvasView(QWidget):
             self._tool.on_double_click(event, (ix, iy))
             return
         if len(self._current_polygon) >= 3:
-            try:
-                self.model.add_polygon(list(self._current_polygon))
-            except ValueError as e:
-                logger.warning(f"Failed to create polygon: {e}")
-                QMessageBox.warning(
-                    self,
-                    "Invalid Polygon",
-                    "The polygon you drew is invalid. It may have self-intersections, "
-                    "be too small, or have other geometric issues. Please try drawing a simpler shape.",
-                )
-        self._current_polygon = []
+            object_id = self._commit_native_polygon(self._current_polygon)
+            if object_id is not None:
+                self._current_polygon = []
+        else:
+            self._current_polygon = []
         self.update()
 
     def paintEvent(self, event):

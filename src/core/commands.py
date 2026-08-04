@@ -1387,48 +1387,201 @@ class ToggleGroupLockCommand(Command):
         scene.set_group_lock(self.group_id, self._old)
 
 
-class AddPolygonCommand(Command):
-    def __init__(self, polygon: List[Tuple[int, int]], layer_id: Optional[str] = None):
-        self.polygon = [tuple(p) for p in polygon]
-        self.layer_id = layer_id
-        self.object_id: Optional[str] = None
+class _CreatePolygonCommandBase(Command):
+    """Create one polygon object with stable identity and exact selection."""
 
-    def execute(self, scene: Any):
-        self.object_id = scene.add_polygon(self.polygon, self.layer_id)
-
-    def undo(self, scene: Any):
-        if self.object_id and self.object_id in scene.objects:
-            scene.remove_object(self.object_id)
-
-
-class CreateObjectCommand(Command):
     def __init__(
         self,
         polygon: List[Tuple[int, int]],
         layer_id: Optional[str] = None,
         object_id: Optional[str] = None,
     ):
-        self.polygon = [tuple(p) for p in polygon]
+        self.polygon = [tuple(point) for point in polygon]
         self.layer_id = layer_id
         self.object_id = object_id
+        self._previous_selected_id: Optional[str] = None
+        self._object_snapshot: Optional[Any] = None
+        self._object_ids_before: Optional[Tuple[str, ...]] = None
+        self._executed_once = False
 
-    def execute(self, scene: Any):
+    def _stored_layer_exists(self, scene: Any) -> bool:
+        if self._object_snapshot is None:
+            return False
+        layer_id = getattr(self._object_snapshot, "layer_id", None)
+        return layer_id in {layer.id for layer in scene.layers}
+
+    def _previous_selection_is_available(self, scene: Any) -> bool:
+        return (
+            self._previous_selected_id is None
+            or self._previous_selected_id in scene.objects
+        )
+
+    def _object_matches_snapshot(self, scene: Any) -> bool:
+        if self.object_id is None or self._object_snapshot is None:
+            return False
+        current = scene.objects.get(self.object_id)
+        return current is not None and _freeze_state(current) == _freeze_state(
+            self._object_snapshot
+        )
+
+    def _relationships_are_unchanged(self, scene: Any) -> bool:
+        if self.object_id is None:
+            return False
+        if self.object_id in scene.collision_shapes:
+            return False
+        return all(self.object_id not in group.members for group in scene.groups)
+
+    def _execute_first(self, scene: Any) -> Optional[CommandResult]:
+        target_layer_id = self.layer_id or "layer_default"
+        if target_layer_id not in {layer.id for layer in scene.layers}:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The target layer is unavailable.",
+            )
+        if self.object_id is not None and self.object_id in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The requested object id is already in use.",
+            )
+
+        self._previous_selected_id = scene.selected_id
+        self._object_ids_before = tuple(scene.objects)
+
         if self.object_id is None:
             self.object_id = scene.add_polygon(self.polygon, self.layer_id)
         else:
-            if self.object_id in scene.objects:
-                scene.update_polygon(self.object_id, self.polygon)
-            else:
-                scene.add_object(
-                    self.object_id,
-                    self.polygon,
-                    self.layer_id,
-                    select=True,
-                )
+            scene.add_object(
+                self.object_id,
+                self.polygon,
+                self.layer_id,
+                select=True,
+            )
+
+        self._object_snapshot = copy.deepcopy(scene.objects[self.object_id])
+        self._executed_once = True
+        return None
+
+    def _execute_redo(self, scene: Any) -> Optional[CommandResult]:
+        if (
+            self.object_id is None
+            or self._object_snapshot is None
+            or self._object_ids_before is None
+        ):
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The created object backup is unavailable.",
+            )
+        if self.object_id in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The created object id is already in use.",
+            )
+        if tuple(scene.objects) != self._object_ids_before:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The object collection changed before Redo.",
+            )
+        if scene.selected_id != self._previous_selected_id:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The selection changed before Redo.",
+            )
+        if not self._previous_selection_is_available(scene):
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The previous selection is no longer available.",
+            )
+        if not self._stored_layer_exists(scene):
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The target layer is no longer available.",
+            )
+
+        scene.objects[self.object_id] = copy.deepcopy(self._object_snapshot)
+        scene.selected_id = self.object_id
+        scene._notify()
+        return None
+
+    def execute(self, scene: Any):
+        if not self._executed_once:
+            return self._execute_first(scene)
+        return self._execute_redo(scene)
 
     def undo(self, scene: Any):
-        if self.object_id and self.object_id in scene.objects:
-            scene.remove_object(self.object_id)
+        if (
+            self.object_id is None
+            or self._object_snapshot is None
+            or self._object_ids_before is None
+        ):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created object backup is unavailable.",
+            )
+        if self.object_id not in scene.objects:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created object no longer exists.",
+            )
+        if tuple(scene.objects) != self._object_ids_before + (self.object_id,):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The object collection changed before Undo.",
+            )
+        if not self._object_matches_snapshot(scene):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created object changed before Undo.",
+            )
+        if not self._relationships_are_unchanged(scene):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The created object relationships changed before Undo.",
+            )
+        if scene.selected_id != self.object_id:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The selection changed before Undo.",
+            )
+        if not self._previous_selection_is_available(scene):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The previous selection is no longer available.",
+            )
+
+        scene.objects.pop(self.object_id)
+        scene.selected_id = self._previous_selected_id
+        scene._notify()
+        return None
+
+
+class AddPolygonCommand(_CreatePolygonCommandBase):
+    def __init__(self, polygon: List[Tuple[int, int]], layer_id: Optional[str] = None):
+        super().__init__(polygon, layer_id)
+
+
+class CreateObjectCommand(_CreatePolygonCommandBase):
+    def __init__(
+        self,
+        polygon: List[Tuple[int, int]],
+        layer_id: Optional[str] = None,
+        object_id: Optional[str] = None,
+    ):
+        super().__init__(polygon, layer_id, object_id)
 
 
 class MoveGroupCommand(Command):

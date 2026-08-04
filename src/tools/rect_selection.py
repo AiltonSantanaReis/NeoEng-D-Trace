@@ -71,9 +71,10 @@ class RectSelectionTool(BaseTool):
     def on_mouse_release(self, event: QMouseEvent, position: tuple):
         if event.button() == Qt.MouseButton.LeftButton and self._is_selecting:
             self._is_selecting = False
-            self.commit_selection()
-            self._start_point = None
-            self._end_point = None
+            object_id = self.commit_selection()
+            if object_id is not None:
+                self._start_point = None
+                self._end_point = None
             self.canvas_view.update()
 
     def commit_selection(self):
@@ -100,22 +101,10 @@ class RectSelectionTool(BaseTool):
             (int(round(left)), int(round(bottom))),
         ]
 
-        try:
-            if (
-                hasattr(self.canvas_view.model, "cmd")
-                and self.canvas_view.model.cmd is not None
-            ):
-                from src.core.commands import AddPolygonCommand
-
-                cmd = AddPolygonCommand(polygon)
-                self.canvas_view.model.cmd.execute(cmd, self.canvas_view.model)
-                return cmd.object_id
-            else:
-                oid = self.canvas_view.model.add_polygon(polygon)
-                return oid
-        except Exception as e:
-            print(f"Error adding rectangle: {e}")
-            return None
+        return self.commit_polygon_command(
+            polygon,
+            action_name="Rectangle Creation",
+        )
 
     def draw_overlay(self, painter: QPainter):
         """

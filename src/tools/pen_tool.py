@@ -124,10 +124,11 @@ class PenTool(BaseTool):
 
     def on_double_click(self, event: QMouseEvent, position: Tuple[float, float]):
         if len(self._nodes) >= 2:
-            self.commit_selection()
-            self._nodes = []
-            self._selected_node = None
-            self._selected_handle = None
+            object_id = self.commit_selection()
+            if object_id is not None:
+                self._nodes = []
+                self._selected_node = None
+                self._selected_handle = None
             self.canvas_view.update()
 
     def _place_anchor(self, point: Tuple[float, float]):
@@ -228,22 +229,10 @@ class PenTool(BaseTool):
         if len(cleaned_polygon) < 3:
             return None
 
-        try:
-            if (
-                hasattr(self.canvas_view.model, "cmd")
-                and self.canvas_view.model.cmd is not None
-            ):
-                from src.core.commands import AddPolygonCommand
-
-                cmd = AddPolygonCommand(cleaned_polygon)
-                self.canvas_view.model.cmd.execute(cmd, self.canvas_view.model)
-                return cmd.object_id
-            else:
-                oid = self.canvas_view.model.add_polygon(cleaned_polygon)
-                return oid
-        except Exception as e:
-            print(f"Error adding Bézier curve: {e}")
-            return None
+        return self.commit_polygon_command(
+            cleaned_polygon,
+            action_name="Pen Creation",
+        )
 
     def draw_overlay(self, painter: QPainter):
         if not self._nodes:

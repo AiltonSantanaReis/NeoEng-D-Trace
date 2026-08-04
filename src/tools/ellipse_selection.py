@@ -70,10 +70,11 @@ class EllipseSelectionTool(BaseTool):
     def on_mouse_release(self, event: QMouseEvent, position: tuple):
         if event.button() == Qt.MouseButton.LeftButton and self._is_selecting:
             self._is_selecting = False
-            self.commit_selection()
-            self._center = None
-            self._radius_x = 0
-            self._radius_y = 0
+            object_id = self.commit_selection()
+            if object_id is not None:
+                self._center = None
+                self._radius_x = 0
+                self._radius_y = 0
             self.canvas_view.update()
 
     def commit_selection(self):
@@ -91,22 +92,10 @@ class EllipseSelectionTool(BaseTool):
             y = cy + ry * math.sin(angle)
             polygon.append((int(round(x)), int(round(y))))
 
-        try:
-            if (
-                hasattr(self.canvas_view.model, "cmd")
-                and self.canvas_view.model.cmd is not None
-            ):
-                from src.core.commands import AddPolygonCommand
-
-                cmd = AddPolygonCommand(polygon)
-                self.canvas_view.model.cmd.execute(cmd, self.canvas_view.model)
-                return cmd.object_id
-            else:
-                oid = self.canvas_view.model.add_polygon(polygon)
-                return oid
-        except Exception as e:
-            print(f"Error adding ellipse: {e}")
-            return None
+        return self.commit_polygon_command(
+            polygon,
+            action_name="Ellipse Creation",
+        )
 
     def draw_overlay(self, painter: QPainter):
         """

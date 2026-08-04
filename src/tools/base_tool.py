@@ -1,9 +1,10 @@
 # src/tools/base_tool.py
 import math
-from typing import TYPE_CHECKING, Any, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Optional, Sequence, Tuple
 
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QMouseEvent, QPainter
+from PySide6.QtWidgets import QMessageBox
 
 # Evita importação circular apenas para tipagem
 if TYPE_CHECKING:
@@ -114,6 +115,73 @@ class BaseTool:
         pan = self._point_coordinates(getattr(self.canvas_view, "_pan", None))
         pan_x, pan_y = pan if pan is not None else (0.0, 0.0)
         return int(round((x - pan_x) / zoom)), int(round((y - pan_y) / zoom))
+
+    def commit_polygon_command(
+        self,
+        polygon: Sequence[Tuple[int, int]],
+        *,
+        action_name: str = "Polygon Creation",
+    ) -> Optional[str]:
+        """Create one polygon only through the scene CommandManager."""
+        model = getattr(self.canvas_view, "model", None)
+        manager = getattr(model, "cmd", None)
+        if manager is None:
+            message = "Undo/Redo command history is unavailable."
+            if hasattr(self, "_last_error"):
+                setattr(self, "_last_error", message)
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{action_name} Unavailable",
+                message,
+            )
+            return None
+
+        from src.core.commands import AddPolygonCommand, CommandStatus
+
+        command = AddPolygonCommand(list(polygon))
+        try:
+            result = manager.execute(command, model)
+        except Exception as exc:
+            message = f"The creation request failed ({type(exc).__name__})."
+            if hasattr(self, "_last_error"):
+                setattr(self, "_last_error", message)
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{action_name} Failed",
+                message,
+            )
+            return None
+
+        self._last_command_result = result
+        if result.status is CommandStatus.REJECTED:
+            if hasattr(self, "_last_error"):
+                setattr(self, "_last_error", result.message)
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{action_name} Rejected",
+                result.message or "The polygon creation was rejected.",
+            )
+            return None
+        if result.status is CommandStatus.FAILED:
+            if hasattr(self, "_last_error"):
+                setattr(self, "_last_error", result.message)
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{action_name} Failed",
+                result.message or "The polygon creation failed.",
+            )
+            return None
+        if not result.changed or command.object_id is None:
+            message = result.message or "No polygon was created."
+            if hasattr(self, "_last_error"):
+                setattr(self, "_last_error", message)
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{action_name} Unchanged",
+                message,
+            )
+            return None
+        return str(command.object_id)
 
     # --- Interface Methods (Override these in subclasses) ---
 

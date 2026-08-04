@@ -7,6 +7,8 @@ from unittest.mock import Mock
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 
+from src.core.commands import CommandManager
+from src.models.scene import Scene
 from src.tools.base_tool import BaseTool
 from src.tools.pen_tool import BezierNode, PenTool
 from src.tools.polygonal_lasso import PolygonalLassoTool
@@ -16,7 +18,8 @@ class FakeCanvas:
     def __init__(self):
         self._zoom = 2.0
         self._pan = [10.0, 20.0]
-        self.model = FakeScene()
+        self.model = Scene()
+        self.model.cmd = CommandManager()
         self.updated = 0
 
     def get_zoom(self):
@@ -27,16 +30,6 @@ class FakeCanvas:
 
     def update(self):
         self.updated += 1
-
-
-class FakeScene:
-    def __init__(self):
-        self.objects = {}
-
-    def add_polygon(self, polygon, layer_id=None):
-        object_id = f"obj_{len(self.objects)}"
-        self.objects[object_id] = list(polygon)
-        return object_id
 
 
 def test_base_tool_uses_numeric_zoom_fallback():

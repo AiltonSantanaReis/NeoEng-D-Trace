@@ -68,9 +68,10 @@ class PolygonalLassoTool(BaseTool):
                 )
 
                 if dist <= self._close_tolerance:
-                    self.commit_selection()
-                    self._vertices = []
-                    self._preview_point = None
+                    object_id = self.commit_selection()
+                    if object_id is not None:
+                        self._vertices = []
+                        self._preview_point = None
                     self.canvas_view.update()
                     return
 
@@ -111,30 +112,15 @@ class PolygonalLassoTool(BaseTool):
         self.canvas_view.update()
 
     def commit_selection(self):
-        """
-        Commit the polygonal selection.
-        """
+        """Commit the polygonal selection through CommandManager."""
         if len(self._vertices) < 3:
             return None
 
         polygon = [(int(round(x)), int(round(y))) for x, y in self._vertices]
-
-        try:
-            if (
-                hasattr(self.canvas_view.model, "cmd")
-                and self.canvas_view.model.cmd is not None
-            ):
-                from src.core.commands import AddPolygonCommand
-
-                cmd = AddPolygonCommand(polygon)
-                self.canvas_view.model.cmd.execute(cmd, self.canvas_view.model)
-                return cmd.object_id
-            else:
-                oid = self.canvas_view.model.add_polygon(polygon)
-                return oid
-        except Exception as e:
-            print(f"Error adding polygon: {e}")
-            return None
+        return self.commit_polygon_command(
+            polygon,
+            action_name="Polygonal Lasso Creation",
+        )
 
     def draw_overlay(self, painter: QPainter):
         """
