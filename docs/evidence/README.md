@@ -81,3 +81,4 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_3B_VERTEX_EDITING.md` — movimento, inclusão e
   exclusão de vértices por transações reversíveis.
 - `ETAPA_5_PACOTE_4A_OBJECT_DELETION.md` — exclusão simples e múltipla por comandos reversíveis.
+- `ETAPA_5_PACOTE_4B_COLLISION_TRANSFORM.md` — movimento e escala por gestos transacionais.

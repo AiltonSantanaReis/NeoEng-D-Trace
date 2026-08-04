@@ -1,5 +1,5 @@
 # src/tools/collision_brush_tool.py
-from typing import Optional, Tuple
+from typing import List, Optional, Sequence, Tuple
 
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
@@ -11,13 +11,16 @@ from src.core.commands import (
     DeleteObjectCommand,
     ToggleCollisionCommand,
 )
+from src.core.object_geometry_gesture import (
+    ObjectGeometryGestureTransaction,
+)
 from src.tools.base_tool import BaseTool
 
 
 class CollisionBrushTool(BaseTool):
     """
     Tool for interacting with physics properties of polygons.
-    Allows toggling collision, moving, and scaling objects directly.
+    Collision toggles, movement, and scale changes use command history.
     """
 
     def __init__(self, canvas_view):
@@ -31,6 +34,8 @@ class CollisionBrushTool(BaseTool):
         self.scale_center: Optional[Tuple[float, float]] = None
         self.initial_scale = 1.0
         self.last_scale_pos: Optional[Tuple[int, int]] = None
+        self._transform_transaction: Optional[ObjectGeometryGestureTransaction] = None
+        self._transform_anchor_pos: Optional[Tuple[int, int]] = None
         self.current_lang = "en"
         self.translations = {
             "en": {
@@ -64,123 +69,99 @@ class CollisionBrushTool(BaseTool):
         }
 
     def on_mouse_press(self, event: QMouseEvent, pos: Tuple[int, int]):
+        if self._transform_transaction is not None:
+            if event.button() == Qt.MouseButton.LeftButton:
+                self._finish_transform_gesture()
+                return
+            if event.button() == Qt.MouseButton.RightButton:
+                if self.scaling and self.scaling_oid is not None:
+                    self._show_scale_menu(
+                        self.scaling_oid,
+                        event.globalPos(),
+                    )
+                else:
+                    self._cancel_transform_gesture()
+                return
+
         if event.button() == Qt.MouseButton.LeftButton:
-            if self.moving or self.scaling:
-                # Commit or Cancel logic could go here
-                self.moving = False
-                self.moving_oid = None
-                self.last_pos = None
-                self.scaling = False
-                self.scaling_oid = None
-                self.scale_center = None
-                self.initial_scale = 1.0
-                self.last_scale_pos = None
-            else:
-                # Toggle collision for polygon at pos
-                oid = self._find_polygon_at(pos)
-                if oid:
-                    try:
-                        manager = getattr(
-                            self.canvas_view.model,
-                            "cmd",
-                            None,
-                        )
-                        if manager is None:
-                            QMessageBox.critical(
-                                self.canvas_view,
-                                "Collision Toggle Unavailable",
-                                "Undo/Redo command history is unavailable.",
-                            )
-                            return
-                        result = manager.execute(
-                            ToggleCollisionCommand(oid),
-                            self.canvas_view.model,
-                        )
-                        self._report_command_result(
-                            result,
-                            "Collision Toggle",
-                        )
-                        if result.changed:
-                            self.canvas_view.update()
-                    except Exception as e:
+            oid = self._find_polygon_at(pos)
+            if oid:
+                try:
+                    manager = getattr(
+                        self.canvas_view.model,
+                        "cmd",
+                        None,
+                    )
+                    if manager is None:
                         QMessageBox.critical(
                             self.canvas_view,
-                            "Error",
-                            f"Collision Toggle Error: {str(e)}",
+                            "Collision Toggle Unavailable",
+                            "Undo/Redo command history is unavailable.",
                         )
-        elif event.button() == Qt.MouseButton.RightButton:
-            if self.moving or self.scaling:
-                if self.scaling and self.scaling_oid is not None:
-                    self._show_scale_menu(self.scaling_oid, event.globalPos())
-                else:
-                    self.moving = False
-                    self.moving_oid = None
-                    self.last_pos = None
-            else:
-                # Show hub menu for polygon at pos
-                oid = self._find_polygon_at(pos)
-                if oid:
-                    self._show_hub_menu(oid, event.globalPos())
+                        return
+                    result = manager.execute(
+                        ToggleCollisionCommand(oid),
+                        self.canvas_view.model,
+                    )
+                    self._report_command_result(
+                        result,
+                        "Collision Toggle",
+                    )
+                    if result.changed:
+                        self.canvas_view.update()
+                except Exception as exc:
+                    QMessageBox.critical(
+                        self.canvas_view,
+                        "Error",
+                        f"Collision Toggle Error: {str(exc)}",
+                    )
+            return
+
+        if event.button() == Qt.MouseButton.RightButton:
+            oid = self._find_polygon_at(pos)
+            if oid:
+                self._show_hub_menu(
+                    oid,
+                    event.globalPos(),
+                )
 
     def on_mouse_move(self, event: QMouseEvent, pos: Tuple[int, int]):
         if self.moving and self.moving_oid:
-            if self.last_pos is None:
-                self.last_pos = pos
-            else:
-                dx = pos[0] - self.last_pos[0]
-                dy = pos[1] - self.last_pos[1]
-                obj = self.canvas_view.model.objects.get(self.moving_oid)
-                if obj and obj.polygon:
-                    obj.polygon = [(x + dx, y + dy) for x, y in obj.polygon]
-                    # Update collision if exists
-                    if self.moving_oid in self.canvas_view.model.collision_shapes:
-                        self.canvas_view.model.collision_shapes[self.moving_oid] = [
-                            (x + dx, y + dy)
-                            for x, y in self.canvas_view.model.collision_shapes[
-                                self.moving_oid
-                            ]
-                        ]
-                    self.canvas_view.model._notify()
-                self.last_pos = pos
+            self._preview_move(pos)
         elif self.scaling and self.scaling_oid and self.scale_center:
-            if self.last_scale_pos is None:
-                self.last_scale_pos = pos
-            else:
-                dy = pos[1] - self.last_scale_pos[1]
-                # Scale sensitivity
-                scale_factor = 1.0 + dy * 0.001
-                self.initial_scale *= scale_factor
-
-                obj = self.canvas_view.model.objects.get(self.scaling_oid)
-                if obj and obj.polygon:
-                    scaled_polygon = []
-                    for x, y in obj.polygon:
-                        dx = x - self.scale_center[0]
-                        dy = y - self.scale_center[1]
-                        new_x = self.scale_center[0] + dx * self.initial_scale
-                        new_y = self.scale_center[1] + dy * self.initial_scale
-                        scaled_polygon.append((new_x, new_y))
-
-                    obj.polygon = scaled_polygon
-                    if self.scaling_oid in self.canvas_view.model.collision_shapes:
-                        self.canvas_view.model.collision_shapes[self.scaling_oid] = [
-                            (x, y) for x, y in scaled_polygon
-                        ]
-
-                    self.canvas_view.model._notify()
-                self.last_scale_pos = pos
+            self._preview_scale(pos)
 
     def on_mouse_release(self, event: QMouseEvent, pos: Tuple[int, int]):
-        if self.moving:
-            self.moving = False
-            self.moving_oid = None
-            self.last_pos = None
-        if self.scaling:
-            self.scaling = False
-            self.scaling_oid = None
-            self.scale_center = None
-            self.initial_scale = 1.0
-            self.last_scale_pos = None
+        if (
+            event.button() == Qt.MouseButton.LeftButton
+            and self._transform_transaction is not None
+        ):
+            self._finish_transform_gesture()
+
+    def on_cancel(self):
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+        else:
+            self._reset_transform_state()
+            self.canvas_view.update()
+
+    def on_key_press(self, event) -> bool:
+        if event.key() == Qt.Key.Key_Escape and self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+            return True
+        return False
+
+    def on_undo(self) -> bool:
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+            return True
+        return False
+
+    def on_redo(self) -> bool:
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+            return True
+        return False
 
     def _find_polygon_at(self, pos: Tuple[int, int]) -> Optional[str]:
         # pos is already in image coordinates
@@ -282,74 +263,333 @@ class CollisionBrushTool(BaseTool):
 
         menu.exec(pos)
 
-    def _cancel_scale(self):
+    def _reset_transform_state(self) -> None:
+        self._transform_transaction = None
+        self._transform_anchor_pos = None
+        self.moving = False
+        self.moving_oid = None
+        self.last_pos = None
         self.scaling = False
         self.scaling_oid = None
         self.scale_center = None
         self.initial_scale = 1.0
         self.last_scale_pos = None
 
+    def _begin_transform_gesture(
+        self,
+        oid: str,
+        operation: str,
+    ) -> bool:
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+
+        manager = getattr(
+            self.canvas_view.model,
+            "cmd",
+            None,
+        )
+        if manager is None:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return False
+
+        obj = self.canvas_view.model.objects.get(oid)
+        if obj is None or not obj.polygon:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                "The selected object is no longer available.",
+            )
+            return False
+
+        try:
+            transaction = ObjectGeometryGestureTransaction(
+                self.canvas_view.model,
+                oid,
+            )
+        except Exception as exc:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                str(exc),
+            )
+            return False
+
+        self._transform_transaction = transaction
+        self._transform_anchor_pos = None
+        self.selected_polygon_id = oid
+
+        if operation == "Move":
+            self.moving = True
+            self.moving_oid = oid
+            self.last_pos = None
+            self.scaling = False
+            self.scaling_oid = None
+            self.scale_center = None
+            self.initial_scale = 1.0
+            self.last_scale_pos = None
+        else:
+            origin = transaction.origin_polygon
+            self.scale_center = (
+                sum(point[0] for point in origin) / len(origin),
+                sum(point[1] for point in origin) / len(origin),
+            )
+            self.scaling = True
+            self.scaling_oid = oid
+            self.initial_scale = 1.0
+            self.last_scale_pos = None
+            self.moving = False
+            self.moving_oid = None
+            self.last_pos = None
+        self.canvas_view.update()
+        return True
+
+    def _preview_move(
+        self,
+        pos: Tuple[int, int],
+    ) -> None:
+        transaction = self._transform_transaction
+        if (
+            transaction is None
+            or not transaction.active
+            or self.moving_oid != transaction.object_id
+        ):
+            return
+
+        if self._transform_anchor_pos is None:
+            self._transform_anchor_pos = (pos[0], pos[1])
+            self.last_pos = (pos[0], pos[1])
+            return
+
+        dx = pos[0] - self._transform_anchor_pos[0]
+        dy = pos[1] - self._transform_anchor_pos[1]
+        polygon = [
+            (
+                int(round(x + dx)),
+                int(round(y + dy)),
+            )
+            for x, y in transaction.origin_polygon
+        ]
+        collision = (
+            [
+                (
+                    float(x) + dx,
+                    float(y) + dy,
+                )
+                for x, y in (transaction.origin_collision or [])
+            ]
+            if transaction.origin_has_collision
+            else None
+        )
+        self._preview_transform_geometry(
+            polygon,
+            transaction.origin_has_collision,
+            collision,
+            "Move",
+        )
+        self.last_pos = (pos[0], pos[1])
+
+    def _preview_scale(
+        self,
+        pos: Tuple[int, int],
+    ) -> None:
+        if self._transform_anchor_pos is None:
+            self._transform_anchor_pos = (pos[0], pos[1])
+            self.last_scale_pos = (pos[0], pos[1])
+            return
+
+        delta_y = pos[1] - self._transform_anchor_pos[1]
+        self.initial_scale = max(
+            0.05,
+            1.0 + delta_y * 0.001,
+        )
+        self._apply_scale(self.scaling_oid)
+        self.last_scale_pos = (pos[0], pos[1])
+
+    def _preview_transform_geometry(
+        self,
+        polygon: Sequence[Tuple[float, float]],
+        has_collision: bool,
+        collision: Optional[Sequence[Tuple[float, float]]],
+        operation: str,
+    ) -> None:
+        transaction = self._transform_transaction
+        if transaction is None or not transaction.active:
+            return
+        try:
+            transaction.preview(
+                list(polygon),
+                has_collision=has_collision,
+                collision=(list(collision) if collision is not None else None),
+            )
+        except Exception as exc:
+            try:
+                if transaction.active:
+                    transaction.cancel()
+            except Exception:
+                pass
+            self._reset_transform_state()
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                str(exc),
+            )
+        self.canvas_view.update()
+
+    def _finish_transform_gesture(
+        self,
+    ) -> Optional[CommandResult]:
+        transaction = self._transform_transaction
+        operation = "Scale" if self.scaling else "Move"
+        result: Optional[CommandResult] = None
+        try:
+            if transaction is not None and transaction.active:
+                result = transaction.commit(
+                    getattr(
+                        self.canvas_view.model,
+                        "cmd",
+                        None,
+                    )
+                )
+                self._report_command_result(
+                    result,
+                    operation,
+                )
+        finally:
+            self._reset_transform_state()
+            self.canvas_view.update()
+        return result
+
+    def _cancel_transform_gesture(self) -> bool:
+        transaction = self._transform_transaction
+        restored = False
+        try:
+            if transaction is not None and transaction.active:
+                restored = transaction.cancel()
+        finally:
+            self._reset_transform_state()
+            self.canvas_view.update()
+        return restored
+
+    def _cancel_scale(self):
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+        else:
+            self._reset_transform_state()
+            self.canvas_view.update()
+
     def _switch_to_move(self, oid: str):
-        self._cancel_scale()
-        self.moving = True
-        self.moving_oid = oid
-        self.last_pos = None
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+        self._start_move(oid, None)
 
     def _scale_increase(self, oid: str):
-        if self.scaling and self.scale_center:
-            self.initial_scale *= 1.1
+        if (
+            self.scaling
+            and self.scale_center
+            and self.scaling_oid == oid
+            and self._transform_transaction is not None
+        ):
+            self.initial_scale = max(
+                0.05,
+                self.initial_scale * 1.1,
+            )
             self._apply_scale(oid)
 
     def _scale_decrease(self, oid: str):
-        if self.scaling and self.scale_center:
-            self.initial_scale *= 0.9
+        if (
+            self.scaling
+            and self.scale_center
+            and self.scaling_oid == oid
+            and self._transform_transaction is not None
+        ):
+            self.initial_scale = max(
+                0.05,
+                self.initial_scale * 0.9,
+            )
             self._apply_scale(oid)
 
-    def _apply_scale(self, oid: str):
-        obj = self.canvas_view.model.objects.get(oid)
-        if obj and obj.polygon:
-            scaled_polygon = []
-            for x, y in obj.polygon:
-                dx = x - self.scale_center[0]  # type: ignore
-                dy = y - self.scale_center[1]  # type: ignore
-                new_x = self.scale_center[0] + dx * self.initial_scale  # type: ignore
-                new_y = self.scale_center[1] + dy * self.initial_scale  # type: ignore
-                scaled_polygon.append((new_x, new_y))
-            obj.polygon = scaled_polygon
-            if oid in self.canvas_view.model.collision_shapes:
-                self.canvas_view.model.collision_shapes[oid] = [
-                    (x, y) for x, y in scaled_polygon
-                ]
-            self.canvas_view.model._notify()
+    def _apply_scale(self, oid: Optional[str]):
+        transaction = self._transform_transaction
+        center = self.scale_center
+        if (
+            transaction is None
+            or not transaction.active
+            or oid is None
+            or oid != transaction.object_id
+            or center is None
+        ):
+            return
+
+        factor = self.initial_scale
+        polygon = [
+            (
+                int(round(center[0] + (x - center[0]) * factor)),
+                int(round(center[1] + (y - center[1]) * factor)),
+            )
+            for x, y in transaction.origin_polygon
+        ]
+        collision = (
+            [
+                (
+                    center[0] + (float(x) - center[0]) * factor,
+                    center[1] + (float(y) - center[1]) * factor,
+                )
+                for x, y in (transaction.origin_collision or [])
+            ]
+            if transaction.origin_has_collision
+            else None
+        )
+        self._preview_transform_geometry(
+            polygon,
+            transaction.origin_has_collision,
+            collision,
+            "Scale",
+        )
 
     def _start_move(self, oid: str, main_window):
-        self.moving = True
-        self.moving_oid = oid
-        self.last_pos = None
+        self._begin_transform_gesture(
+            oid,
+            "Move",
+        )
 
     def _start_edit(self, main_window):
         if hasattr(main_window, "tool_palette"):
             main_window.tool_palette.select_tool_by_name("polygon_edit")
 
     def _start_scale(self, oid: str, main_window):
-        obj = self.canvas_view.model.objects.get(oid)
-        if obj and obj.polygon:
-            xs = [p[0] for p in obj.polygon]
-            ys = [p[1] for p in obj.polygon]
-            self.scale_center = (sum(xs) / len(xs), sum(ys) / len(ys))
-            self.scaling = True
-            self.scaling_oid = oid
-            self.initial_scale = 1.0
-            self.last_scale_pos = None
+        self._begin_transform_gesture(
+            oid,
+            "Scale",
+        )
 
     def _undo(self):
-        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
-            self.canvas_view.model.cmd.undo(self.canvas_view.model)
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+            return
+        manager = getattr(
+            self.canvas_view.model,
+            "cmd",
+            None,
+        )
+        if manager is not None:
+            manager.undo(self.canvas_view.model)
         self.canvas_view.update()
 
     def _redo(self):
-        if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:
-            self.canvas_view.model.cmd.redo(self.canvas_view.model)
+        if self._transform_transaction is not None:
+            self._cancel_transform_gesture()
+            return
+        manager = getattr(
+            self.canvas_view.model,
+            "cmd",
+            None,
+        )
+        if manager is not None:
+            manager.redo(self.canvas_view.model)
         self.canvas_view.update()
 
     def _report_command_result(
