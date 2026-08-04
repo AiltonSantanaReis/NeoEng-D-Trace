@@ -26,7 +26,8 @@ quando o `CommandManager` estava indisponível.
 - remoção da ferramenta de colisão por `DeleteObjectCommand`;
 - remoção do fallback direto do toggle de colisão;
 - bloqueio seguro quando o histórico está indisponível;
-- dez testes específicos.
+- rejeição atômica quando qualquer ID da seleção múltipla ficou obsoleto;
+- onze testes específicos.
 
 ## Fora do escopo
 
@@ -39,7 +40,7 @@ quando o `CommandManager` estava indisponível.
 
 ## Gates obrigatórios
 
-- dez testes específicos;
+- onze testes específicos;
 - suíte completa;
 - Black, isort, Flake8 fatal e mypy;
 - baseline de `247` arquivos;
@@ -51,3 +52,13 @@ quando o `CommandManager` estava indisponível.
 
 Aprovação somente dos caminhos de exclusão e do bloqueio do toggle sem
 histórico. `R-004` e a Etapa 5 permanecem abertos.
+## Correção 4A.1 — atomicidade de seleção obsoleta
+
+A revisão do diff da PR `#22` identificou que uma seleção múltipla com IDs
+válidos e obsoletos poderia excluir silenciosamente apenas o subconjunto ainda
+existente. O caminho foi corrigido para rejeitar a operação inteira antes da
+criação do comando, preservar a cena e manter as pilhas de Undo/Redo
+inalteradas. Um teste específico congela esse contrato.
+
+O CI `#69` aprovou a implementação inicial em Linux e Windows; um novo CI é
+obrigatório para o commit desta correção.

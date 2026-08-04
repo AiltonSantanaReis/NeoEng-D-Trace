@@ -614,6 +614,15 @@ class PolygonEditTool(BaseTool):
             return None
 
         requested = set(object_ids)
+        missing = requested.difference(self.canvas_view.model.objects)
+        if missing:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                "The selection changed before deletion; " "no objects were removed.",
+            )
+            return None
+
         targets = [
             object_id
             for object_id in self.canvas_view.model.objects

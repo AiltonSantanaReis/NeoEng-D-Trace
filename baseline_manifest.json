@@ -353,8 +353,8 @@
       "size": 2466
     },
     "docs/evidence/ETAPA_5_PACOTE_4A_OBJECT_DELETION.md": {
-      "sha256": "4f8a1bba4816bc51b6427b5af3e3aa90c04df862c73f6cd4e18fcd5ae5ef0180",
-      "size": 1686
+      "sha256": "ca6aaf18609b1a2cf8bd95335aa8fa5b99c7b198cf7c431a7d6e12dd2f22bf5b",
+      "size": 2317
     },
     "docs/evidence/README.md": {
       "sha256": "fce5d2ddbb1d4d2e0e61d18c9459c40e44cd5b8cc135ef6a2be64354d889311c",
@@ -733,8 +733,8 @@
       "size": 11524
     },
     "src/tools/polygon_edit_tool.py": {
-      "sha256": "41c9d295dfa0a4e42690c96c26fb61f549ec939b17eca486538a4254d883950c",
-      "size": 25073
+      "sha256": "0596368ae92b4217a7563bbf9b6db3186f1eba4813db933b58c783db41b500c5",
+      "size": 25397
     },
     "src/tools/polygonal_lasso.py": {
       "sha256": "f62b1db71fe4589e88f3912b2c85df53f08398dee39b06d49cea7b7753cadbd4",
@@ -965,8 +965,8 @@
       "size": 12430
     },
     "tests/test_stage_5_package_4a_object_deletion_paths.py": {
-      "sha256": "16f91f76f527fd95963b9392741665d6f02f582a9a1a6d55e51b6b41839b21ff",
-      "size": 9235
+      "sha256": "92ab5d6e612202d0d4b53dc9a14e52c731c0d514b37d22221b609c980eb19e62",
+      "size": 9998
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

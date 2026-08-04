@@ -209,6 +209,31 @@ def test_stale_polygon_selection_is_rejected_without_history(monkeypatch):
     assert messages
 
 
+def test_mixed_stale_multi_selection_is_rejected_atomically(monkeypatch):
+    scene = _scene()
+    tool = _polygon_tool(scene)
+    before = _snapshot(scene)
+    tool.multi_select = True
+    tool.selected_polygon_id = "B"
+    tool.selected_polygon_ids = {"B", "missing"}
+    messages = []
+
+    monkeypatch.setattr(
+        "src.tools.polygon_edit_tool.QMessageBox.warning",
+        lambda *args, **kwargs: messages.append(args),
+    )
+
+    tool.delete_selected_polygon()
+
+    assert _snapshot(scene) == before
+    assert scene.cmd.undo_count == 0
+    assert scene.cmd.redo_count == 0
+    assert tool.selected_polygon_id == "B"
+    assert tool.selected_polygon_ids == {"B", "missing"}
+    assert messages
+    assert "no objects were removed" in str(messages[-1])
+
+
 def test_collision_brush_remove_round_trips_exact_relations(monkeypatch):
     scene = _scene()
     tool = _brush_tool(scene)
