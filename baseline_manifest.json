@@ -356,9 +356,13 @@
       "sha256": "ca6aaf18609b1a2cf8bd95335aa8fa5b99c7b198cf7c431a7d6e12dd2f22bf5b",
       "size": 2317
     },
+    "docs/evidence/ETAPA_5_PACOTE_4B_COLLISION_TRANSFORM.md": {
+      "sha256": "938c2b4ab5d49b06ed81896d011c3cd88360d8ea639e6017b6603ef84f4a9c4e",
+      "size": 1811
+    },
     "docs/evidence/README.md": {
-      "sha256": "fce5d2ddbb1d4d2e0e61d18c9459c40e44cd5b8cc135ef6a2be64354d889311c",
-      "size": 2727
+      "sha256": "7cc087a2705102fdf6b10bf1fa4adef592d2b3fbd22501a85bda104a41ed5af2",
+      "size": 2821
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -577,8 +581,8 @@
       "size": 1884
     },
     "src/core/commands.py": {
-      "sha256": "7841b028f4085b01017f4c00868c2df507615cc618d6099771c8076e17b9fbb6",
-      "size": 33811
+      "sha256": "faafadf2cf2fbfd60e9ff18a1bce208c4b48abfbde47188932fc564df7803e71",
+      "size": 39767
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -587,6 +591,10 @@
     "src/core/logger.py": {
       "sha256": "8f2252fbc3a8406cf1166860070f30b434ef39d90b6291ed879d7e4ab3e3cd67",
       "size": 3139
+    },
+    "src/core/object_geometry_gesture.py": {
+      "sha256": "d2e776e90d15a594110eabec9acf64877f6f82a129ae186d02a4d9e9e82c0c55",
+      "size": 7398
     },
     "src/core/polygon_gesture.py": {
       "sha256": "cddd3f38bd00d5c8b863249f7dadd01bfb0170f119c346770495e7b25f070969",
@@ -697,8 +705,8 @@
       "size": 5927
     },
     "src/tools/collision_brush_tool.py": {
-      "sha256": "f8a452687be25df8976a3c92013f2c45da8d6f4e4b163464d916f80642fc8b1d",
-      "size": 18679
+      "sha256": "f61e849d848c364bd7e5b85ed9ec0f5f14b8538322d32722bfeb4212413713b5",
+      "size": 24357
     },
     "src/tools/edge_utils.py": {
       "sha256": "e38a3bf7aba7202902dd80b9e63e02ce70f0ec5f6309715e1faf9718ee19d591",
@@ -967,6 +975,10 @@
     "tests/test_stage_5_package_4a_object_deletion_paths.py": {
       "sha256": "92ab5d6e612202d0d4b53dc9a14e52c731c0d514b37d22221b609c980eb19e62",
       "size": 9998
+    },
+    "tests/test_stage_5_package_4b_collision_transform.py": {
+      "sha256": "8c18ff63e0c230fc70c2180b6bec3e2bf00bde62b1baf6c8e4ab4fe00170f774",
+      "size": 10966
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

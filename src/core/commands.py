@@ -727,6 +727,184 @@ class UpdatePolygonCommand(Command):
         scene._notify()
 
 
+class UpdateObjectGeometryCommand(Command):
+    """Replace polygon and collision geometry as one exact transaction."""
+
+    def __init__(
+        self,
+        object_id: str,
+        old_polygon: List[Tuple[float, float]],
+        new_polygon: List[Tuple[float, float]],
+        *,
+        old_has_collision: bool,
+        old_collision: Optional[List[Tuple[float, float]]],
+        new_has_collision: bool,
+        new_collision: Optional[List[Tuple[float, float]]],
+    ):
+        self.object_id = str(object_id)
+        self.old_polygon: List[Tuple[float, float]] = [
+            (point[0], point[1]) for point in old_polygon
+        ]
+        self.new_polygon: List[Tuple[float, float]] = [
+            (point[0], point[1]) for point in new_polygon
+        ]
+        self.old_has_collision = bool(old_has_collision)
+        self.old_collision = copy.deepcopy(old_collision) if old_has_collision else None
+        self.new_has_collision = bool(new_has_collision)
+        self.new_collision = copy.deepcopy(new_collision) if new_has_collision else None
+
+    @staticmethod
+    def _geometry(
+        scene: Any,
+        object_id: str,
+    ) -> Optional[
+        Tuple[
+            List[Tuple[float, float]],
+            bool,
+            Optional[List[Tuple[float, float]]],
+        ]
+    ]:
+        obj = scene.objects.get(object_id)
+        if obj is None:
+            return None
+        has_collision = object_id in scene.collision_shapes
+        collision = (
+            copy.deepcopy(scene.collision_shapes[object_id]) if has_collision else None
+        )
+        return (
+            [(point[0], point[1]) for point in obj.polygon],
+            has_collision,
+            collision,
+        )
+
+    @staticmethod
+    def _apply(
+        scene: Any,
+        object_id: str,
+        polygon: List[Tuple[float, float]],
+        has_collision: bool,
+        collision: Optional[List[Tuple[float, float]]],
+    ) -> CommandResult | None:
+        obj = scene.objects.get(object_id)
+        if obj is None:
+            return None
+        if has_collision and collision is None:
+            return CommandResult.failed(
+                UpdateObjectGeometryCommand(
+                    object_id,
+                    polygon,
+                    polygon,
+                    old_has_collision=False,
+                    old_collision=None,
+                    new_has_collision=False,
+                    new_collision=None,
+                ),
+                "execute",
+                "CollisionGeometryUnavailable",
+                "Collision geometry is required for this state.",
+            )
+
+        obj.polygon = copy.deepcopy(polygon)
+        if has_collision:
+            scene.collision_shapes[object_id] = copy.deepcopy(collision)
+        else:
+            scene.collision_shapes.pop(object_id, None)
+        scene._notify()
+        return None
+
+    def _expected_old_geometry(
+        self,
+    ) -> Tuple[
+        List[Tuple[float, float]],
+        bool,
+        Optional[List[Tuple[float, float]]],
+    ]:
+        return (
+            copy.deepcopy(self.old_polygon),
+            self.old_has_collision,
+            copy.deepcopy(self.old_collision),
+        )
+
+    def _expected_new_geometry(
+        self,
+    ) -> Tuple[
+        List[Tuple[float, float]],
+        bool,
+        Optional[List[Tuple[float, float]]],
+    ]:
+        return (
+            copy.deepcopy(self.new_polygon),
+            self.new_has_collision,
+            copy.deepcopy(self.new_collision),
+        )
+
+    def execute(self, scene: Any):
+        current = self._geometry(scene, self.object_id)
+        if current is None:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The object no longer exists.",
+            )
+        if current != self._expected_old_geometry():
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "The object geometry changed before this edit " "could be applied.",
+            )
+        if self._expected_old_geometry() == self._expected_new_geometry():
+            return CommandResult.no_change(
+                self,
+                "execute",
+                "The geometry is already in the requested state.",
+            )
+        if self.new_has_collision and self.new_collision is None:
+            return CommandResult.failed(
+                self,
+                "execute",
+                "CollisionGeometryUnavailable",
+                "The target collision geometry is unavailable.",
+            )
+
+        obj = scene.objects[self.object_id]
+        obj.polygon = copy.deepcopy(self.new_polygon)
+        if self.new_has_collision:
+            scene.collision_shapes[self.object_id] = copy.deepcopy(self.new_collision)
+        else:
+            scene.collision_shapes.pop(self.object_id, None)
+        scene._notify()
+
+    def undo(self, scene: Any):
+        current = self._geometry(scene, self.object_id)
+        if current is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The object no longer exists.",
+            )
+        if current != self._expected_new_geometry():
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The object geometry changed before Undo.",
+            )
+        if self.old_has_collision and self.old_collision is None:
+            return CommandResult.failed(
+                self,
+                "undo",
+                "CollisionGeometryUnavailable",
+                "The previous collision geometry is unavailable.",
+            )
+
+        obj = scene.objects[self.object_id]
+        obj.polygon = copy.deepcopy(self.old_polygon)
+        if self.old_has_collision:
+            scene.collision_shapes[self.object_id] = copy.deepcopy(self.old_collision)
+        else:
+            scene.collision_shapes.pop(self.object_id, None)
+        scene._notify()
+
+
 class ExpandContractCommand(UpdatePolygonCommand):
     # Backward-compatible name for polygon replacement.
     pass
