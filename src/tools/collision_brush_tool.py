@@ -5,6 +5,12 @@ from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QMenu, QMessageBox
 
+from src.core.commands import (
+    CommandResult,
+    CommandStatus,
+    DeleteObjectCommand,
+    ToggleCollisionCommand,
+)
 from src.tools.base_tool import BaseTool
 
 
@@ -74,20 +80,28 @@ class CollisionBrushTool(BaseTool):
                 oid = self._find_polygon_at(pos)
                 if oid:
                     try:
-                        from src.core.commands import ToggleCollisionCommand
-
-                        if (
-                            hasattr(self.canvas_view.model, "cmd")
-                            and self.canvas_view.model.cmd
-                        ):
-                            self.canvas_view.model.cmd.execute(
-                                ToggleCollisionCommand(oid),
-                                self.canvas_view.model,
+                        manager = getattr(
+                            self.canvas_view.model,
+                            "cmd",
+                            None,
+                        )
+                        if manager is None:
+                            QMessageBox.critical(
+                                self.canvas_view,
+                                "Collision Toggle Unavailable",
+                                "Undo/Redo command history is unavailable.",
                             )
-                        else:
-                            curr = self.canvas_view.model.has_collision(oid)
-                            self.canvas_view.model.set_object_collision(oid, not curr)
-                        self.canvas_view.update()
+                            return
+                        result = manager.execute(
+                            ToggleCollisionCommand(oid),
+                            self.canvas_view.model,
+                        )
+                        self._report_command_result(
+                            result,
+                            "Collision Toggle",
+                        )
+                        if result.changed:
+                            self.canvas_view.update()
                     except Exception as e:
                         QMessageBox.critical(
                             self.canvas_view,
@@ -338,14 +352,73 @@ class CollisionBrushTool(BaseTool):
             self.canvas_view.model.cmd.redo(self.canvas_view.model)
         self.canvas_view.update()
 
+    def _report_command_result(
+        self,
+        result: CommandResult,
+        operation: str,
+    ) -> None:
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                result.message or "The operation was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                result.message or "The operation failed.",
+            )
+
+    def _reset_interaction_for_object(self, oid: str) -> None:
+        if self.moving_oid == oid:
+            self.moving = False
+            self.moving_oid = None
+            self.last_pos = None
+        if self.scaling_oid == oid:
+            self.scaling = False
+            self.scaling_oid = None
+            self.scale_center = None
+            self.initial_scale = 1.0
+            self.last_scale_pos = None
+        if self.selected_polygon_id == oid:
+            self.selected_polygon_id = None
+
     def _remove(self, oid: str):
-        res = QMessageBox.question(
+        response = QMessageBox.question(
             self.canvas_view,
             self.translations[self.current_lang]["remove_title"],
             self.translations[self.current_lang]["remove_question"].format(oid=oid),
         )
-        if res == QMessageBox.StandardButton.Yes:
-            self.canvas_view.model.remove_object(oid)
+        if response != QMessageBox.StandardButton.Yes:
+            return
+
+        manager = getattr(self.canvas_view.model, "cmd", None)
+        if manager is None:
+            QMessageBox.critical(
+                self.canvas_view,
+                "Remove Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return
+
+        try:
+            result = manager.execute(
+                DeleteObjectCommand(oid),
+                self.canvas_view.model,
+            )
+        except Exception as exc:
+            QMessageBox.critical(
+                self.canvas_view,
+                "Remove Failed",
+                str(exc),
+            )
+            return
+
+        self._report_command_result(result, "Remove")
+        if result.changed:
+            self._reset_interaction_for_object(oid)
+            self.canvas_view.update()
 
     def draw_overlay(self, painter: QPainter):
         """Draws overlay using the view's transform for efficiency."""

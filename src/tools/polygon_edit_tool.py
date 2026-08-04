@@ -8,6 +8,8 @@ from PySide6.QtWidgets import QMenu, QMessageBox
 from src.core.commands import (
     CommandResult,
     CommandStatus,
+    CompositeCommand,
+    DeleteObjectCommand,
     UpdatePolygonCommand,
 )
 from src.core.polygon_gesture import PolygonGestureTransaction
@@ -597,18 +599,97 @@ class PolygonEditTool(BaseTool):
             )
             self.canvas_view.update()
 
+    def _execute_object_deletion(
+        self,
+        object_ids: List[str],
+        operation: str,
+    ) -> Optional[CommandResult]:
+        manager = getattr(self.canvas_view.model, "cmd", None)
+        if manager is None:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Unavailable",
+                "Undo/Redo command history is unavailable.",
+            )
+            return None
+
+        requested = set(object_ids)
+        missing = requested.difference(self.canvas_view.model.objects)
+        if missing:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                "The selection changed before deletion; " "no objects were removed.",
+            )
+            return None
+
+        targets = [
+            object_id
+            for object_id in self.canvas_view.model.objects
+            if object_id in requested
+        ]
+        if not targets:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                "No selected object is available for deletion.",
+            )
+            return None
+
+        command = (
+            DeleteObjectCommand(targets[0])
+            if len(targets) == 1
+            else CompositeCommand(
+                [DeleteObjectCommand(object_id) for object_id in targets]
+            )
+        )
+
+        try:
+            result = manager.execute(
+                command,
+                self.canvas_view.model,
+            )
+        except Exception as exc:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                str(exc),
+            )
+            return None
+
+        if result.status is CommandStatus.REJECTED:
+            QMessageBox.warning(
+                self.canvas_view,
+                f"{operation} Rejected",
+                result.message or "The deletion was rejected.",
+            )
+        elif result.status is CommandStatus.FAILED:
+            QMessageBox.critical(
+                self.canvas_view,
+                f"{operation} Failed",
+                result.message or "The deletion failed.",
+            )
+        return result
+
     def delete_selected_polygon(self):
         if self.multi_select and self.selected_polygon_ids:
-            for oid in list(self.selected_polygon_ids):
-                self.canvas_view.model.remove_object(oid)
+            object_ids = list(self.selected_polygon_ids)
+            operation = "Delete Polygons"
+        elif self.selected_polygon_id:
+            object_ids = [self.selected_polygon_id]
+            operation = "Delete Polygon"
+        else:
+            return
+
+        result = self._execute_object_deletion(
+            object_ids,
+            operation,
+        )
+        if result is not None and result.changed:
             self.selected_polygon_ids.clear()
             self.selected_polygon_id = None
             self.selected_vertex = None
-        elif self.selected_polygon_id:
-            self.canvas_view.model.remove_object(self.selected_polygon_id)
-            self.selected_polygon_id = None
-            self.selected_vertex = None
-        self.canvas_view.update()
+            self.canvas_view.update()
 
     def select_all_vertices(self):
         # Select the first vertex of the current polygon
