@@ -3,6 +3,7 @@
 Collision Panel for Physics Testing
 """
 
+import copy
 import json
 from typing import Dict, List
 
@@ -16,6 +17,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+from src.core.logger import logger
 
 
 class CollisionPanel(QWidget):
@@ -34,6 +37,8 @@ class CollisionPanel(QWidget):
         self.physics_manager = None
 
         self._setup_ui()
+        if hasattr(self.scene, "subscribe"):
+            self.scene.subscribe(self._on_scene_changed)
 
     def _setup_ui(self):
         layout = QVBoxLayout(self)
@@ -93,6 +98,39 @@ class CollisionPanel(QWidget):
 
     def set_physics_manager(self, physics_manager):
         self.physics_manager = physics_manager
+        self._sync_physics_manager_from_scene()
+
+    def _on_scene_changed(self):
+        self._sync_physics_manager_from_scene()
+
+    def _sync_physics_manager_from_scene(self) -> bool:
+        if self.physics_manager is None:
+            return True
+
+        previous = {
+            object_id: copy.deepcopy(physics_object.shape)
+            for object_id, physics_object in self.physics_manager.objects.items()
+        }
+        try:
+            self.physics_manager.clear()
+            for object_id, shape in self.scene.collision_shapes.items():
+                self.physics_manager.register(object_id, copy.deepcopy(shape))
+            return True
+        except Exception as exc:
+            logger.error(
+                "Failed to synchronize physics collision cache (%s)",
+                type(exc).__name__,
+            )
+            try:
+                self.physics_manager.clear()
+                for object_id, shape in previous.items():
+                    self.physics_manager.register(object_id, shape)
+            except Exception as restore_exc:
+                logger.error(
+                    "Failed to restore physics collision cache (%s)",
+                    type(restore_exc).__name__,
+                )
+            return False
 
     def update_collision_results(self, results: List[Dict]):
         self.collision_results = results
@@ -149,9 +187,15 @@ class CollisionPanel(QWidget):
             QMessageBox.warning(self, "Error", "Physics manager not available.")
             return
 
-        # Sincroniza Physics Manager com Scene shapes se necessário
+        # Synchronize the derived physics cache without creating history.
         if not self.physics_manager.objects and self.scene.collision_shapes:
-            self._on_auto_generate()
+            if not self._sync_physics_manager_from_scene():
+                QMessageBox.critical(
+                    self,
+                    "Error",
+                    "Physics collision cache synchronization failed.",
+                )
+                return
 
         if not self.physics_manager.objects:
             QMessageBox.information(
@@ -217,44 +261,57 @@ class CollisionPanel(QWidget):
             QMessageBox.critical(self, "Error", f"Export failed: {str(e)}")
 
     def _on_auto_generate(self):
+        manager = getattr(self.scene, "cmd", None)
+        if manager is None:
+            QMessageBox.warning(
+                self,
+                "Error",
+                "Undo/Redo command history is unavailable.",
+            )
+            return
+
         try:
-            collision_shapes = {}
-            count = 0
+            from src.core.commands import (
+                AutoGenerateCollisionShapesCommand,
+                CommandStatus,
+            )
 
-            # Limpa o physics manager para evitar duplicatas
-            if self.physics_manager:
-                self.physics_manager.clear()
-
-            for obj_id, obj in self.scene.objects.items():
-                if obj.polygon and len(obj.polygon) >= 3:
-                    # Converte para float para física
-                    shape = [(float(x), float(y)) for x, y in obj.polygon]
-                    collision_shapes[obj_id] = shape
-
-                    # REGISTRA NO PHYSICS MANAGER (CRÍTICO)
-                    if self.physics_manager:
-                        self.physics_manager.register(obj_id, shape)
-
-                    count += 1
-
-            if count == 0:
-                QMessageBox.information(
-                    self,
-                    "Info",
-                    "No valid polygons found in scene to generate collision shapes.",
-                )
+            command = AutoGenerateCollisionShapesCommand()
+            result = manager.execute(command, self.scene)
+            if not result.changed:
+                message = result.message or "Collision generation was not applied."
+                if result.status is CommandStatus.FAILED:
+                    QMessageBox.critical(self, "Error", message)
+                elif result.status is CommandStatus.REJECTED:
+                    QMessageBox.warning(self, "Error", message)
+                else:
+                    self._sync_physics_manager_from_scene()
+                    QMessageBox.information(self, "Info", message)
                 return
 
-            # Atualiza o modelo de dados da cena
-            self.scene.collision_shapes = collision_shapes
+            if not self._sync_physics_manager_from_scene():
+                QMessageBox.critical(
+                    self,
+                    "Error",
+                    "Collision shapes were updated, but the physics cache "
+                    "could not be synchronized.",
+                )
+                return
 
             QMessageBox.information(
                 self,
                 "Success",
-                f"Generated and registered {count} collision shapes from scene objects.",
+                "Generated and registered "
+                f"{command.generated_count} collision shapes from scene objects.",
             )
-
             self.auto_generate_requested.emit()
-
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Auto-generation failed: {str(e)}")
+        except Exception as exc:
+            logger.error(
+                "Collision auto-generation failed (%s)",
+                type(exc).__name__,
+            )
+            QMessageBox.critical(
+                self,
+                "Error",
+                f"Auto-generation failed: {str(exc)}",
+            )

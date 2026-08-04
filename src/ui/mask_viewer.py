@@ -1008,27 +1008,65 @@ class MaskViewerDialog(QDialog):
     def _apply_to_scene(self):
         if not self._last_polygons:
             return
-        try:
-            from src.core.commands import AddPolygonCommand
 
-            added_count = 0
+        manager = getattr(self.scene, "cmd", None)
+        if manager is None:
+            QMessageBox.warning(
+                self,
+                self.t["apply_error_title"],
+                self.t["apply_error"].format(
+                    error="Undo/Redo command history is unavailable."
+                ),
+            )
+            return
+
+        try:
+            from src.core.commands import (
+                AddPolygonCommand,
+                CommandStatus,
+                CompositeCommand,
+            )
+
+            commands = []
             for index, poly_data in enumerate(self._last_polygons):
                 polygon = (
                     poly_data.get("polygon")
                     if isinstance(poly_data, dict)
                     else poly_data
                 )
-                if polygon and len(polygon) >= 3:
-                    command = AddPolygonCommand(polygon)
-                    if hasattr(self.scene, "cmd") and self.scene.cmd:
-                        self.scene.cmd.execute(command, self.scene)
-                    else:
-                        self.scene.add_polygon(polygon)
-                    added_count += 1
+                if not polygon or len(polygon) < 3:
+                    QMessageBox.warning(
+                        self,
+                        self.t["apply_error_title"],
+                        self.t["apply_error"].format(
+                            error=f"Detected polygon {index + 1} is invalid."
+                        ),
+                    )
+                    return
+                commands.append(AddPolygonCommand(polygon))
+
+            composite = CompositeCommand(commands)
+            result = manager.execute(composite, self.scene)
+            if not result.changed:
+                message = result.message or "The polygon batch was not applied."
+                if result.status is CommandStatus.FAILED:
+                    QMessageBox.critical(
+                        self,
+                        self.t["apply_error_title"],
+                        self.t["apply_error"].format(error=message),
+                    )
                 else:
-                    logger.warning("Skipping invalid polygon %s", index)
+                    QMessageBox.warning(
+                        self,
+                        self.t["apply_error_title"],
+                        self.t["apply_error"].format(error=message),
+                    )
+                return
+
             QMessageBox.information(
-                self, self.t["success"], self.t["added"].format(count=added_count)
+                self,
+                self.t["success"],
+                self.t["added"].format(count=len(commands)),
             )
             self.close()
         except Exception as exc:

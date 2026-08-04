@@ -84,3 +84,4 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_4B_COLLISION_TRANSFORM.md` — movimento e escala por gestos transacionais.
 - `ETAPA_5_PACOTE_4C_LAYER_GROUP_UI_FALLBACKS.md` — painéis de camadas e grupos bloqueiam alterações sem histórico e usam comandos reversíveis exatos.
 - `ETAPA_5_PACOTE_5A_CREATION_COMMAND_PATHS.md` — identidade estável de criação e remoção dos fallbacks diretos das ferramentas ativas.
+- `ETAPA_5_PACOTE_5B_BATCH_COLLISION_COMMANDS.md` — lotes de máscara e auto-detect atômicos, com auto-geração reversível de colisões.
