@@ -30,7 +30,8 @@ pelo contorno do polígono.
 - cancelamento por Escape, troca de operação, Undo, Redo e cancelamento da
   ferramenta;
 - bloqueio seguro sem `CommandManager`;
-- quinze testes específicos.
+- ações Undo/Redo do menu cancelam primeiro o gesto ativo sem consumir o histórico global;
+- dezessete testes específicos.
 
 ## Fora do escopo
 
@@ -42,8 +43,8 @@ pelo contorno do polígono.
 
 ## Gates
 
-- quinze testes específicos;
-- suíte completa de `296` testes;
+- dezessete testes específicos;
+- suíte completa de `298` testes;
 - Black, isort, Flake8 fatal e mypy;
 - baseline de `250` arquivos;
 - CI Linux e Windows;
@@ -54,3 +55,17 @@ pelo contorno do polígono.
 
 O Pacote 4B cobre somente movimento e escala da ferramenta de colisão.
 `R-004` e a Etapa 5 permanecem abertos.
+
+## Correção 4B.1 — Undo/Redo do menu durante prévia
+
+A revisão do diff da PR `#23` identificou uma divergência entre os hooks
+`on_undo`/`on_redo` e as ações `_undo`/`_redo` ligadas aos menus da ferramenta.
+
+Os hooks cancelavam corretamente o gesto ativo e consumiam o evento. Já as
+ações de menu cancelavam a prévia e, no mesmo acionamento, continuavam para o
+Undo ou Redo global. Isso poderia alterar uma operação anterior sem intenção.
+
+A correção adiciona retorno imediato após o cancelamento e dois testes que
+mantêm pilhas e estado de uma operação anterior exatamente inalterados.
+O CI inicial `#72` foi aprovado em Linux e Windows; um novo CI é obrigatório
+para este commit.

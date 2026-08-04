@@ -357,8 +357,8 @@
       "size": 2317
     },
     "docs/evidence/ETAPA_5_PACOTE_4B_COLLISION_TRANSFORM.md": {
-      "sha256": "938c2b4ab5d49b06ed81896d011c3cd88360d8ea639e6017b6603ef84f4a9c4e",
-      "size": 1811
+      "sha256": "2580e075c8c9411313746cdd3032c371f274f5983226811ac55dc52bc48cb7dc",
+      "size": 2618
     },
     "docs/evidence/README.md": {
       "sha256": "7cc087a2705102fdf6b10bf1fa4adef592d2b3fbd22501a85bda104a41ed5af2",
@@ -705,8 +705,8 @@
       "size": 5927
     },
     "src/tools/collision_brush_tool.py": {
-      "sha256": "f61e849d848c364bd7e5b85ed9ec0f5f14b8538322d32722bfeb4212413713b5",
-      "size": 24357
+      "sha256": "5208ea7be04d14593d1fbe9c77bd81fc490cfddb399b0637135fd21c58cd7805",
+      "size": 24395
     },
     "src/tools/edge_utils.py": {
       "sha256": "e38a3bf7aba7202902dd80b9e63e02ce70f0ec5f6309715e1faf9718ee19d591",
@@ -977,8 +977,8 @@
       "size": 9998
     },
     "tests/test_stage_5_package_4b_collision_transform.py": {
-      "sha256": "8c18ff63e0c230fc70c2180b6bec3e2bf00bde62b1baf6c8e4ab4fe00170f774",
-      "size": 10966
+      "sha256": "8c34ec299744e37699e8b2125d861a7e935252ae84a17ef82b14453856ababa8",
+      "size": 12719
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

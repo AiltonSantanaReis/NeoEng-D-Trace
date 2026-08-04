@@ -13,7 +13,11 @@ pytest.importorskip("PySide6")
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication
 
-from src.core.commands import CommandManager, CommandStatus
+from src.core.commands import (
+    CommandManager,
+    CommandStatus,
+    ToggleCollisionCommand,
+)
 from src.models.scene import Scene
 from src.tools.collision_brush_tool import CollisionBrushTool
 
@@ -373,6 +377,69 @@ def test_redo_hook_cancels_active_transform_without_touching_history():
     assert _snapshot(scene) == origin
     assert scene.cmd.undo_count == 0
     assert scene.cmd.redo_count == 0
+
+
+def test_menu_undo_cancels_active_gesture_without_undoing_history():
+    scene = _scene()
+    scene.add_object(
+        "B",
+        [(160, 10), (220, 10), (220, 70), (160, 70)],
+        select=False,
+    )
+    scene.cmd.clear()
+    result = scene.cmd.execute(
+        ToggleCollisionCommand("B"),
+        scene,
+    )
+    assert result.status is CommandStatus.APPLIED
+    assert "B" in scene.collision_shapes
+    assert scene.cmd.undo_count == 1
+    assert scene.cmd.redo_count == 0
+
+    tool = _tool(scene)
+    origin = _snapshot(scene)
+    _preview_move(tool)
+
+    tool._undo()
+
+    assert _snapshot(scene) == origin
+    assert "B" in scene.collision_shapes
+    assert scene.cmd.undo_count == 1
+    assert scene.cmd.redo_count == 0
+    assert tool._transform_transaction is None
+    assert tool.moving is False
+
+
+def test_menu_redo_cancels_active_gesture_without_redoing_history():
+    scene = _scene()
+    scene.add_object(
+        "B",
+        [(160, 10), (220, 10), (220, 70), (160, 70)],
+        select=False,
+    )
+    scene.cmd.clear()
+    result = scene.cmd.execute(
+        ToggleCollisionCommand("B"),
+        scene,
+    )
+    assert result.status is CommandStatus.APPLIED
+    assert scene.cmd.undo(scene).status is CommandStatus.APPLIED
+    assert "B" not in scene.collision_shapes
+    assert scene.cmd.undo_count == 0
+    assert scene.cmd.redo_count == 1
+
+    tool = _tool(scene)
+    origin = _snapshot(scene)
+    _preview_scale(tool, 100)
+
+    tool._redo()
+
+    assert _snapshot(scene) == origin
+    assert "B" not in scene.collision_shapes
+    assert scene.cmd.undo_count == 0
+    assert scene.cmd.redo_count == 1
+    assert tool._transform_transaction is None
+    assert tool.scaling is False
 
 
 def test_missing_manager_blocks_move_and_scale(monkeypatch):

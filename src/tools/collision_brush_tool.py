@@ -569,6 +569,7 @@ class CollisionBrushTool(BaseTool):
     def _undo(self):
         if self._transform_transaction is not None:
             self._cancel_transform_gesture()
+            return
         manager = getattr(
             self.canvas_view.model,
             "cmd",
@@ -581,6 +582,7 @@ class CollisionBrushTool(BaseTool):
     def _redo(self):
         if self._transform_transaction is not None:
             self._cancel_transform_gesture()
+            return
         manager = getattr(
             self.canvas_view.model,
             "cmd",
