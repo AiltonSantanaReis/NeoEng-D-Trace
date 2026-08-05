@@ -440,7 +440,7 @@ def detect_and_create_objects(
     apply: bool = True,
     **kwargs: Any,
 ) -> List[str]:
-    """Detect polygons and optionally create objects."""
+    """Detect polygons and optionally create one atomic history entry."""
     if image is None:
         if hasattr(scene, "image") and scene.image is not None:
             image = scene.image
@@ -449,31 +449,56 @@ def detect_and_create_objects(
 
     try:
         result = detect_polygons(image, mode, **kwargs)
-        # Handle both DetectResult and legacy dict
         polygons = list(result)
 
         if not apply:
             return [f"preview_{i}" for i in range(len(polygons))]
 
-        object_ids: List[str] = []
-        layer_id = kwargs.get("layer_id", "layer_default")
-        from src.core.commands import CreateObjectCommand
+        manager = getattr(scene, "cmd", None)
+        if manager is None:
+            raise RuntimeError("Undo/Redo command history is unavailable.")
 
+        from src.core.commands import (
+            Command,
+            CommandStatus,
+            CompositeCommand,
+            CreateObjectCommand,
+        )
+
+        layer_id = kwargs.get("layer_id", "layer_default")
+        commands: List[CreateObjectCommand] = []
         for poly_data in polygons:
+            if not isinstance(poly_data, dict):
+                raise ValueError("Detected polygon data must be a mapping.")
             polygon = poly_data.get("polygon", [])
             poly_layer_id = poly_data.get("layer_id", layer_id)
-            cmd = CreateObjectCommand(polygon, poly_layer_id)
+            commands.append(CreateObjectCommand(polygon, poly_layer_id))
 
-            if hasattr(scene, "cmd") and scene.cmd:
-                scene.cmd.execute(cmd, scene)
-            else:
-                cmd.execute(scene)
+        if not commands:
+            return []
 
-            # Ensure we don't append None
-            if getattr(cmd, "object_id", None):
-                object_ids.append(str(cmd.object_id))
+        composite_commands: List[Command] = list(commands)
+        composite = CompositeCommand(composite_commands)
+        command_result = manager.execute(composite, scene)
+        if command_result.status is CommandStatus.FAILED:
+            raise RuntimeError(
+                command_result.message or "Automatic object creation failed."
+            )
+        if command_result.status is CommandStatus.REJECTED:
+            raise RuntimeError(
+                command_result.message or "Automatic object creation was rejected."
+            )
+        if not command_result.changed:
+            return []
 
+        object_ids = [
+            str(command.object_id)
+            for command in commands
+            if command.object_id is not None
+        ]
+        if len(object_ids) != len(commands):
+            raise RuntimeError("Automatic object creation returned incomplete ids.")
         return object_ids
-    except Exception as e:
-        logger.error(f"Error in detect_and_create_objects: {e}")
+    except Exception as exc:
+        logger.error("Error in detect_and_create_objects: %s", exc)
         raise

@@ -6,6 +6,8 @@ from unittest.mock import ANY, MagicMock, patch
 import cv2
 import numpy as np
 
+from src.core.commands import CommandStatus
+
 # Adiciona o diretório raiz ao path para importação
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
@@ -100,37 +102,36 @@ class TestAutoDetect(unittest.TestCase):
         self.assertEqual(res["feedback"], feedback)
         self.assertEqual(res.get("polygons"), data)
 
+    @patch("src.core.commands.CompositeCommand")
     @patch("src.core.commands.CreateObjectCommand")
-    def test_detect_and_create_objects_integration(self, MockCreateCommand):
-        """
-        Testa a integração com a Scene e CommandManager.
-        """
-        # Mock da Cena e do CommandManager
+    def test_detect_and_create_objects_integration(
+        self, MockCreateCommand, MockCompositeCommand
+    ):
+        """Testa integração atômica com Scene e CommandManager."""
         mock_scene = MagicMock()
         mock_scene.image = self.image
-        mock_scene.cmd = MagicMock()  # CommandManager
+        mock_scene.cmd = MagicMock()
 
-        # Configura o Mock do Comando
         mock_cmd_instance = MockCreateCommand.return_value
         mock_cmd_instance.object_id = "new-obj-uuid"
+        mock_composite = MockCompositeCommand.return_value
+        mock_scene.cmd.execute.return_value = MagicMock(
+            status=CommandStatus.APPLIED,
+            changed=True,
+        )
 
-        # Mock da detecção interna para retornar um polígono fixo
         with patch("src.tools.auto_detect.detect_polygons") as mock_detect:
             mock_detect.return_value = auto_detect.DetectResult(
                 [{"polygon": [(0, 0), (10, 0), (10, 10)], "layer_id": "L1"}]
             )
-
-            # Executa a função
             ids = auto_detect.detect_and_create_objects(
                 mock_scene, mode="basic", apply=True
             )
 
-            # Verifica se o comando foi instanciado e executado
-            MockCreateCommand.assert_called()
-            mock_scene.cmd.execute.assert_called_with(mock_cmd_instance, mock_scene)
-
-            # Verifica retorno dos IDs
-            self.assertEqual(ids, ["new-obj-uuid"])
+        MockCreateCommand.assert_called_once_with([(0, 0), (10, 0), (10, 10)], "L1")
+        MockCompositeCommand.assert_called_once_with([mock_cmd_instance])
+        mock_scene.cmd.execute.assert_called_once_with(mock_composite, mock_scene)
+        self.assertEqual(ids, ["new-obj-uuid"])
 
     def test_error_handling(self):
         """Testa validação de inputs."""

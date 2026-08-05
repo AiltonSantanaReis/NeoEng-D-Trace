@@ -368,9 +368,13 @@
       "sha256": "2139cfeda01967a1b34cb93e4180ce4211206feaac1cb915c7e7fa6d30be423f",
       "size": 4148
     },
+    "docs/evidence/ETAPA_5_PACOTE_5B_BATCH_COLLISION_COMMANDS.md": {
+      "sha256": "10a0d8b8c005b3e507d4a58396b659f3afd1bdb7d47d2fe06b760dd8bc1bef48",
+      "size": 3525
+    },
     "docs/evidence/README.md": {
-      "sha256": "77b110eb909607cef7700f2f91721918f3a45e1fd175873fd7ea96387dafa4fe",
-      "size": 3122
+      "sha256": "7b63b278469099005b3957944d7b1d19a5fbc8fbee522cd3b72163c5af0b9354",
+      "size": 3264
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -589,8 +593,8 @@
       "size": 1884
     },
     "src/core/commands.py": {
-      "sha256": "1a4be9cbea50aa1fcc3b375bc91ebf7fc370f03cd57571dac1e2299607c06eb3",
-      "size": 59714
+      "sha256": "d0a3134a862ff75291567acfc7ec5a7b25130a3b140f8588b00d789a6ee1e303",
+      "size": 64724
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -705,8 +709,8 @@
       "size": 111
     },
     "src/tools/auto_detect.py": {
-      "sha256": "42b47233e34ed2eb82f926c63aabe714ad0aa3d4c7818db1996df0751dcb693a",
-      "size": 16426
+      "sha256": "e505b27a22a216e37eb6ff3f54962fd106ad9ad530e31ff08e6e748806c5c664",
+      "size": 17440
     },
     "src/tools/base_tool.py": {
       "sha256": "9254c6f712871ffca98ade0433c0a879d3ef33b1736948602b49737baf4f6730",
@@ -781,8 +785,8 @@
       "size": 6133
     },
     "src/ui/collision_panel.py": {
-      "sha256": "8d7557e8b65970810011370a38267ce84cfba081295e53eb864623c4d121a581",
-      "size": 8629
+      "sha256": "b2594c0184a1e55d6d50b0b5501d49195e66636b028c04141a9204aaae33c1c2",
+      "size": 10811
     },
     "src/ui/export_dialog.py": {
       "sha256": "585ccde86c87a97d06ee447f4a48fe5e1dad3f22ef9ce8e96851ae245872185a",
@@ -809,8 +813,8 @@
       "size": 46835
     },
     "src/ui/mask_viewer.py": {
-      "sha256": "53af859b172e00f80b8b0bf2fd136918c35f2bf935ce087476865c25f2a40d3e",
-      "size": 39549
+      "sha256": "884c8fe0917c9791c4735645fdc61c7529b69e63dfc610fe0082cc07f457537a",
+      "size": 40777
     },
     "src/ui/side_panel.py": {
       "sha256": "e635d01dd00cb9a46efb0a28b0b5fbf9049fdd4a86483cd67d06500c28b2718a",
@@ -845,8 +849,8 @@
       "size": 2850
     },
     "tests/test_auto_detect.py": {
-      "sha256": "eb910518234a4966064b7497eee3ad8902881444d1f42c4ff345279dcc860d81",
-      "size": 5599
+      "sha256": "9bd80c9f79eebbba28a78f7c1b55dd79dd75d7b56974c1c432f2fd66c73b9c68",
+      "size": 5711
     },
     "tests/test_baseline_integrity.py": {
       "sha256": "9ee523a7d29aa8d0dc6b404aa2ff2bb1151d735ef6b1d30ddb67683f0a9f263c",
@@ -999,6 +1003,14 @@
     "tests/test_stage_5_package_5a_creation_ui.py": {
       "sha256": "baf45d72870fd474480ca5d584af63b6af589d72a997af228093688c00c956ea",
       "size": 4577
+    },
+    "tests/test_stage_5_package_5b_batch_commands.py": {
+      "sha256": "6050863e708933a450629ee768ec66eced9a7191ee842ad9862fd99395847983",
+      "size": 10920
+    },
+    "tests/test_stage_5_package_5b_ui_paths.py": {
+      "sha256": "991c0a86d269daaa1927016ca17540d2d255e4a28d77f17da5376805d49aa601",
+      "size": 7925
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

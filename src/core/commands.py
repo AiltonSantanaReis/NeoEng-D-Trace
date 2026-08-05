@@ -4,6 +4,7 @@ Implementation preserved in the single ``src`` source tree.
 """
 
 import copy
+import math
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Tuple
@@ -1624,6 +1625,131 @@ class MoveGroupCommand(Command):
                 "The moved group no longer exists.",
             )
         scene.move_group(self.group_id, self._old_index)
+
+
+class AutoGenerateCollisionShapesCommand(Command):
+    """Replace all collision shapes from current object polygons atomically."""
+
+    def __init__(self):
+        self._old_shapes: Optional[Dict[str, List[Tuple[float, float]]]] = None
+        self._generated_shapes: Optional[Dict[str, List[Tuple[float, float]]]] = None
+        self._object_geometry_token: Any = None
+        self._executed_once = False
+
+    @property
+    def generated_count(self) -> int:
+        return len(self._generated_shapes or {})
+
+    @staticmethod
+    def _current_geometry_token(scene: Any) -> Any:
+        return _freeze_state(
+            [
+                (
+                    object_id,
+                    list(getattr(obj, "polygon", []) or []),
+                )
+                for object_id, obj in scene.objects.items()
+            ]
+        )
+
+    def _build_shapes(
+        self,
+        scene: Any,
+    ) -> tuple[Optional[Dict[str, List[Tuple[float, float]]]], Optional[str]]:
+        generated: Dict[str, List[Tuple[float, float]]] = {}
+        for object_id, obj in scene.objects.items():
+            polygon = getattr(obj, "polygon", None)
+            if not polygon or len(polygon) < 3:
+                continue
+
+            shape: List[Tuple[float, float]] = []
+            for point in polygon:
+                if not isinstance(point, (list, tuple)) or len(point) != 2:
+                    return None, f"Object {object_id!r} has an invalid polygon point."
+                x, y = point
+                if not isinstance(x, (int, float)) or isinstance(x, bool):
+                    return None, f"Object {object_id!r} has a non-numeric x coordinate."
+                if not isinstance(y, (int, float)) or isinstance(y, bool):
+                    return None, f"Object {object_id!r} has a non-numeric y coordinate."
+                fx = float(x)
+                fy = float(y)
+                if not math.isfinite(fx) or not math.isfinite(fy):
+                    return None, f"Object {object_id!r} has a non-finite coordinate."
+                shape.append((fx, fy))
+            generated[str(object_id)] = shape
+        return generated, None
+
+    def execute(self, scene: Any):
+        if not self._executed_once:
+            generated, error = self._build_shapes(scene)
+            if error is not None:
+                return CommandResult.rejected(self, "execute", error)
+            if not generated:
+                return CommandResult.no_change(
+                    self,
+                    "execute",
+                    "No valid scene polygons are available for collision generation.",
+                )
+            if _freeze_state(scene.collision_shapes) == _freeze_state(generated):
+                return CommandResult.no_change(
+                    self,
+                    "execute",
+                    "Collision shapes already match the current scene polygons.",
+                )
+
+            self._old_shapes = copy.deepcopy(scene.collision_shapes)
+            self._generated_shapes = copy.deepcopy(generated)
+            self._object_geometry_token = self._current_geometry_token(scene)
+            self._executed_once = True
+        else:
+            if self._old_shapes is None or self._generated_shapes is None:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "The collision generation backup is unavailable.",
+                )
+            if self._current_geometry_token(scene) != self._object_geometry_token:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "Scene object geometry changed before Redo.",
+                )
+            if _freeze_state(scene.collision_shapes) != _freeze_state(self._old_shapes):
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "Collision shapes changed before Redo.",
+                )
+
+        scene.collision_shapes = copy.deepcopy(self._generated_shapes)
+        scene._notify()
+        return None
+
+    def undo(self, scene: Any):
+        if self._old_shapes is None or self._generated_shapes is None:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "The collision generation backup is unavailable.",
+            )
+        if self._current_geometry_token(scene) != self._object_geometry_token:
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "Scene object geometry changed before Undo.",
+            )
+        if _freeze_state(scene.collision_shapes) != _freeze_state(
+            self._generated_shapes
+        ):
+            return CommandResult.rejected(
+                self,
+                "undo",
+                "Collision shapes changed before Undo.",
+            )
+
+        scene.collision_shapes = copy.deepcopy(self._old_shapes)
+        scene._notify()
+        return None
 
 
 class ToggleCollisionCommand(Command):
