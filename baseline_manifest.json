@@ -24,14 +24,6 @@
       "sha256": "1a28442e581d24e19e5181edc36c45871e038dec77b2b56bf75330fc6515b3b0",
       "size": 719
     },
-    "CHANGELOG.md": {
-      "sha256": "13b4b6b31edb64bf1fb1f3e8987062618ceaecb202b27474309b83647b89e3e9",
-      "size": 25702
-    },
-    "README.md": {
-      "sha256": "2c7db86b020293115333c9714f0ffcc2d187748d53bad714206113ef716cbd92",
-      "size": 3726
-    },
     "app.py": {
       "sha256": "6eef1fb7c76c4b3648a530c1c3e939ed296ead232fd5c4be4e48708f69389997",
       "size": 218
@@ -51,6 +43,10 @@
     "bench/run_benchmarks.py": {
       "sha256": "7e014be03b53817986419855eff0ceab68f2b7a7aed111e01f9f02fb2de00332",
       "size": 2363
+    },
+    "CHANGELOG.md": {
+      "sha256": "13b4b6b31edb64bf1fb1f3e8987062618ceaecb202b27474309b83647b89e3e9",
+      "size": 25702
     },
     "config.example.json": {
       "sha256": "c00836891b06ee684735c1c2f573e050d63734a28aa503d4e6739466c34acdc3",
@@ -108,6 +104,22 @@
       "sha256": "7c94b514e23d3b378c81bbae92f8f5c523f40a427981615e8375cf26375ca917",
       "size": 5556
     },
+    "docs/ETAPA_0_5_2_CLASSIFICACAO_FALHAS.csv": {
+      "sha256": "d3d485e02ec6e8823a95ecd5618aafe9895cb5c47f596aff303825d6b148932c",
+      "size": 3451
+    },
+    "docs/ETAPA_0_5_2_MAPEAMENTO_TESTES.csv": {
+      "sha256": "7fbfe20831647c664396f85765756b63390e7a0d435b4a68baade2b0d0f085bb",
+      "size": 3631
+    },
+    "docs/ETAPA_0_5_2_RECONCILIACAO_TESTES.md": {
+      "sha256": "aca7b5e908f2b217a335ed13d8c1b33b24145f608a94ca97f18892619e3194a3",
+      "size": 5469
+    },
+    "docs/ETAPA_0_5_2_RESULTADOS_WINDOWS.md": {
+      "sha256": "b8ea368b4ebce9358d20dc0840c898544c6758e1b0a3fd3f28c7448cb2ca2278",
+      "size": 2926
+    },
     "docs/ETAPA_0_5_2C_INTEGRACAO_UI_EXPORTACAO.md": {
       "sha256": "cd27ccba29555704189941252fc28b6411d6741d72d82ab76857f9e9871a7f3b",
       "size": 1846
@@ -127,22 +139,6 @@
     "docs/ETAPA_0_5_2F_LACO_MAGNETICO_FUNCIONAL.md": {
       "sha256": "808cd02f9fbb239b33a4c59fa3c83bcc63000837a26b96c1e4fc7e080ce9301d",
       "size": 2743
-    },
-    "docs/ETAPA_0_5_2_CLASSIFICACAO_FALHAS.csv": {
-      "sha256": "d3d485e02ec6e8823a95ecd5618aafe9895cb5c47f596aff303825d6b148932c",
-      "size": 3451
-    },
-    "docs/ETAPA_0_5_2_MAPEAMENTO_TESTES.csv": {
-      "sha256": "7fbfe20831647c664396f85765756b63390e7a0d435b4a68baade2b0d0f085bb",
-      "size": 3631
-    },
-    "docs/ETAPA_0_5_2_RECONCILIACAO_TESTES.md": {
-      "sha256": "aca7b5e908f2b217a335ed13d8c1b33b24145f608a94ca97f18892619e3194a3",
-      "size": 5469
-    },
-    "docs/ETAPA_0_5_2_RESULTADOS_WINDOWS.md": {
-      "sha256": "b8ea368b4ebce9358d20dc0840c898544c6758e1b0a3fd3f28c7448cb2ca2278",
-      "size": 2926
     },
     "docs/ETAPA_0_5_CAPTURA_FORENSE.md": {
       "sha256": "ff0cbeb17e0a6db69f515b28a49f57669c042cd2b952c15f46020e420378d6e7",
@@ -168,6 +164,10 @@
       "sha256": "bd141708f80d546f4df2a07432ab8c2f3ace6e02f5ec21c910ae9c580c142802",
       "size": 3477
     },
+    "docs/ETAPA_0_6N1_IDENTIDADE_RUNTIME_BILINGUE.md": {
+      "sha256": "cacd3019ba03e9ecac9000da03a4ff2fe709070367165bcbfa7c6e409183115e",
+      "size": 2950
+    },
     "docs/ETAPA_0_6N1A_CORRECOES_RUNTIME.md": {
       "sha256": "5828b0566444eebb3a6d801757a7fb3520f8cdd58be9bfd9b13463d69dfea4dc",
       "size": 3708
@@ -176,10 +176,6 @@
       "sha256": "156b82d58b7ddfb12144507a358c1086aae3cc596f17fef1935315dc345fe185",
       "size": 1374
     },
-    "docs/ETAPA_0_6N1_IDENTIDADE_RUNTIME_BILINGUE.md": {
-      "sha256": "cacd3019ba03e9ecac9000da03a4ff2fe709070367165bcbfa7c6e409183115e",
-      "size": 2950
-    },
     "docs/ETAPA_0_6O1_OBSERVABILIDADE_VALIDACAO_MANUAL.md": {
       "sha256": "521cdf7e62513a7599d7cf8d50c928dc7f2e5bb9542629797a9db88b5bbdb2a6",
       "size": 1612
@@ -187,102 +183,6 @@
     "docs/ETAPA_0_6R_REALINHAMENTO_PRIVACIDADE.md": {
       "sha256": "d5e4daa8900ff64d6b4d7d4e3e68efab69ee8b83ab8f354cfa0208a7167208d6",
       "size": 2923
-    },
-    "docs/INVENTARIO_LOCALIZACAO_0_6N1.md": {
-      "sha256": "8a3f3122fbe4e20c65e2f2d24adc74dab62fa89b66b7499e4658a725c953fee3",
-      "size": 1220
-    },
-    "docs/MATRIZ_FUNCIONALIDADES.md": {
-      "sha256": "fc5a9835d4baae60d26018d0482cb323c0f161750652a9cef261ab0ffb4c9aa8",
-      "size": 5569
-    },
-    "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "f077fea250c44c76b229da8378e55ddf902a670e3e597f7487e5bf59be692c69",
-      "size": 7774
-    },
-    "docs/PLANO_DE_DESENVOLVIMENTO.md": {
-      "sha256": "156adf066ca773eb1eb357d393ae990dcc62391899d391c09ad84e2a9758973d",
-      "size": 10092
-    },
-    "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "efbe4b5a2be56048744ab6630360cf01878461414c7ee6bce982c04d3ee7ec9b",
-      "size": 3068
-    },
-    "docs/PLANO_RENOMEACAO.md": {
-      "sha256": "a249193d59bf9d30b64c5f3a62f89fbecfed21bc7145d85f19db69d982b2754a",
-      "size": 3186
-    },
-    "docs/PLANO_ROLLBACK_ETAPA_0_5_2E.md": {
-      "sha256": "359ce64489cbd6a77ab2e83474aab472158fbdefe2f5d8b9229c3eba1c7bc174",
-      "size": 816
-    },
-    "docs/PLANO_ROLLBACK_ETAPA_0_5_2F.md": {
-      "sha256": "f14611419707d46b8cee61054e2058ca69b82c15c25eb95fcf2c24700f957267",
-      "size": 1001
-    },
-    "docs/POLITICA_NAO_REGRESSAO.md": {
-      "sha256": "54c8fdf80cce97701ec5c0064813e339a20983cc899d3c056df967e0674626e8",
-      "size": 19169
-    },
-    "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md": {
-      "sha256": "b702af34dbc7cceeb811ab684bf776c7c0e83704705c9edef3b7b6e308b27da4",
-      "size": 1720
-    },
-    "docs/VALIDACAO_0_5_2F2.md": {
-      "sha256": "1ef5491db4deed67ae8eaa11a105359dc70b8044b186814e79b9d71cf975d4f6",
-      "size": 1019
-    },
-    "docs/VALIDACAO_0_5_2F3.md": {
-      "sha256": "252e5bd3cd89ac6090ed7657f878cb1adf667926b4249612199d918021692019",
-      "size": 551
-    },
-    "docs/VALIDACAO_CONSOLIDACAO_ARVORE_UNICA.md": {
-      "sha256": "51069043f91181e790730c9aed5bfec38f1b94c49130f7f4fe388f018818d71e",
-      "size": 794
-    },
-    "docs/VALIDACAO_ETAPA_0.md": {
-      "sha256": "0a5b8bc26ee7c9de7eee4d1490d37bf991ad1f33433d285e73ea259fa719bed1",
-      "size": 3475
-    },
-    "docs/VALIDACAO_ETAPA_0_5_1.md": {
-      "sha256": "9a7843e36f57226948c7e91f973024356c30b274e4361580e0f60d23b09f7503",
-      "size": 1556
-    },
-    "docs/VALIDACAO_ETAPA_0_5_2.md": {
-      "sha256": "a419e67a0d12d6cf2ed77d8455bcbff7e08410df486b4ec02f5e5ffe3ec3a7ef",
-      "size": 1203
-    },
-    "docs/VALIDACAO_ETAPA_0_5_2B.md": {
-      "sha256": "53f21b5a229142bcf8617134099720e66a5a4b9149d1f0bd090151347c599dfb",
-      "size": 1166
-    },
-    "docs/VALIDACAO_ETAPA_0_5_2C.md": {
-      "sha256": "602f58056de29d7074f1e7f486f996643c52e40302975c3fe3d417ec28058c4b",
-      "size": 1270
-    },
-    "docs/VALIDACAO_ETAPA_0_5_2D.md": {
-      "sha256": "6c1b18aa8e9ca4f370c764c46ee4cfa20e975f4077ab97ab471493e540e7ded6",
-      "size": 902
-    },
-    "docs/VALIDACAO_ETAPA_0_5_2E.md": {
-      "sha256": "874112595af2687d866d045c9e4d12fda779d12aab1717308d12de8f775e68fa",
-      "size": 1761
-    },
-    "docs/VALIDACAO_ETAPA_0_5_2F.md": {
-      "sha256": "784d43c3680125952ac7daf4700b3bfa8013695e6d56815e253137659dee2261",
-      "size": 1850
-    },
-    "docs/VALIDACAO_ETAPA_0_6N1.md": {
-      "sha256": "cffb0ffdd73d04bd3644b5c71e6a9fa5affebd898d2b6282cb9751665b23fb3b",
-      "size": 586
-    },
-    "docs/VALIDACAO_ETAPA_0_6N1A.md": {
-      "sha256": "92dd26f5e4a35d46a5ee3b16ea62d434fe2ed858f2967102ad3b5cad09e38322",
-      "size": 1340
-    },
-    "docs/VALIDACAO_ETAPA_0_6N1B.md": {
-      "sha256": "0cae84f460a01629b7fb1ab37c3a237c5e8d8645e3970db1b1a783b6b3a72864",
-      "size": 630
     },
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
@@ -372,9 +272,9 @@
       "sha256": "10a0d8b8c005b3e507d4a58396b659f3afd1bdb7d47d2fe06b760dd8bc1bef48",
       "size": 3525
     },
-    "docs/evidence/README.md": {
-      "sha256": "7b63b278469099005b3957944d7b1d19a5fbc8fbee522cd3b72163c5af0b9354",
-      "size": 3264
+    "docs/evidence/ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md": {
+      "sha256": "1e01240b4e2dfe1bfd2b7e3a6c30674588d31600212c8cb06b0ab22c051fb4e4",
+      "size": 1569
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -400,6 +300,22 @@
       "sha256": "7e0fc5d64cf0edcdef6ab96cc43d23b7d0d3ce7bfd515ad31db50a4ac9dabe41",
       "size": 940
     },
+    "docs/evidence/README.md": {
+      "sha256": "8863a7e0646134c5d93f41a75870b510b231b43310cfc26eaef1e2befbf1201d",
+      "size": 3404
+    },
+    "docs/INVENTARIO_LOCALIZACAO_0_6N1.md": {
+      "sha256": "8a3f3122fbe4e20c65e2f2d24adc74dab62fa89b66b7499e4658a725c953fee3",
+      "size": 1220
+    },
+    "docs/MATRIZ_FUNCIONALIDADES.md": {
+      "sha256": "fc5a9835d4baae60d26018d0482cb323c0f161750652a9cef261ab0ffb4c9aa8",
+      "size": 5569
+    },
+    "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
+      "sha256": "f077fea250c44c76b229da8378e55ddf902a670e3e597f7487e5bf59be692c69",
+      "size": 7774
+    },
     "docs/phase-7-exporters.md": {
       "sha256": "99aecb50a1824e05467009aa05da9877b9d88a5470610ada302d4e117cbd731d",
       "size": 607
@@ -411,6 +327,90 @@
     "docs/phase-tools-selection.md": {
       "sha256": "3e5276c322dec60e41b62b0b306eec6a54a3ec14889b1584d856f9f36ef84912",
       "size": 3323
+    },
+    "docs/PLANO_DE_DESENVOLVIMENTO.md": {
+      "sha256": "156adf066ca773eb1eb357d393ae990dcc62391899d391c09ad84e2a9758973d",
+      "size": 10092
+    },
+    "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
+      "sha256": "efbe4b5a2be56048744ab6630360cf01878461414c7ee6bce982c04d3ee7ec9b",
+      "size": 3068
+    },
+    "docs/PLANO_RENOMEACAO.md": {
+      "sha256": "a249193d59bf9d30b64c5f3a62f89fbecfed21bc7145d85f19db69d982b2754a",
+      "size": 3186
+    },
+    "docs/PLANO_ROLLBACK_ETAPA_0_5_2E.md": {
+      "sha256": "359ce64489cbd6a77ab2e83474aab472158fbdefe2f5d8b9229c3eba1c7bc174",
+      "size": 816
+    },
+    "docs/PLANO_ROLLBACK_ETAPA_0_5_2F.md": {
+      "sha256": "f14611419707d46b8cee61054e2058ca69b82c15c25eb95fcf2c24700f957267",
+      "size": 1001
+    },
+    "docs/POLITICA_NAO_REGRESSAO.md": {
+      "sha256": "54c8fdf80cce97701ec5c0064813e339a20983cc899d3c056df967e0674626e8",
+      "size": 19169
+    },
+    "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md": {
+      "sha256": "b702af34dbc7cceeb811ab684bf776c7c0e83704705c9edef3b7b6e308b27da4",
+      "size": 1720
+    },
+    "docs/VALIDACAO_0_5_2F2.md": {
+      "sha256": "1ef5491db4deed67ae8eaa11a105359dc70b8044b186814e79b9d71cf975d4f6",
+      "size": 1019
+    },
+    "docs/VALIDACAO_0_5_2F3.md": {
+      "sha256": "252e5bd3cd89ac6090ed7657f878cb1adf667926b4249612199d918021692019",
+      "size": 551
+    },
+    "docs/VALIDACAO_CONSOLIDACAO_ARVORE_UNICA.md": {
+      "sha256": "51069043f91181e790730c9aed5bfec38f1b94c49130f7f4fe388f018818d71e",
+      "size": 794
+    },
+    "docs/VALIDACAO_ETAPA_0.md": {
+      "sha256": "0a5b8bc26ee7c9de7eee4d1490d37bf991ad1f33433d285e73ea259fa719bed1",
+      "size": 3475
+    },
+    "docs/VALIDACAO_ETAPA_0_5_1.md": {
+      "sha256": "9a7843e36f57226948c7e91f973024356c30b274e4361580e0f60d23b09f7503",
+      "size": 1556
+    },
+    "docs/VALIDACAO_ETAPA_0_5_2.md": {
+      "sha256": "a419e67a0d12d6cf2ed77d8455bcbff7e08410df486b4ec02f5e5ffe3ec3a7ef",
+      "size": 1203
+    },
+    "docs/VALIDACAO_ETAPA_0_5_2B.md": {
+      "sha256": "53f21b5a229142bcf8617134099720e66a5a4b9149d1f0bd090151347c599dfb",
+      "size": 1166
+    },
+    "docs/VALIDACAO_ETAPA_0_5_2C.md": {
+      "sha256": "602f58056de29d7074f1e7f486f996643c52e40302975c3fe3d417ec28058c4b",
+      "size": 1270
+    },
+    "docs/VALIDACAO_ETAPA_0_5_2D.md": {
+      "sha256": "6c1b18aa8e9ca4f370c764c46ee4cfa20e975f4077ab97ab471493e540e7ded6",
+      "size": 902
+    },
+    "docs/VALIDACAO_ETAPA_0_5_2E.md": {
+      "sha256": "874112595af2687d866d045c9e4d12fda779d12aab1717308d12de8f775e68fa",
+      "size": 1761
+    },
+    "docs/VALIDACAO_ETAPA_0_5_2F.md": {
+      "sha256": "784d43c3680125952ac7daf4700b3bfa8013695e6d56815e253137659dee2261",
+      "size": 1850
+    },
+    "docs/VALIDACAO_ETAPA_0_6N1.md": {
+      "sha256": "cffb0ffdd73d04bd3644b5c71e6a9fa5affebd898d2b6282cb9751665b23fb3b",
+      "size": 586
+    },
+    "docs/VALIDACAO_ETAPA_0_6N1A.md": {
+      "sha256": "92dd26f5e4a35d46a5ee3b16ea62d434fe2ed858f2967102ad3b5cad09e38322",
+      "size": 1340
+    },
+    "docs/VALIDACAO_ETAPA_0_6N1B.md": {
+      "sha256": "0cae84f460a01629b7fb1ab37c3a237c5e8d8645e3970db1b1a783b6b3a72864",
+      "size": 630
     },
     "mypy.ini": {
       "sha256": "2312726ff716c97834a51dc6d8c388795fe4ef31e6fa9b0c1b9e281d76c9df57",
@@ -460,10 +460,6 @@
       "sha256": "7cc827f37c9ab615a99bd76a8e623ee789fa23bcba50b5be60b3c39927c5d4a8",
       "size": 18
     },
-    "quality/legacy_tests/README.md": {
-      "sha256": "964d4b46e45a0027e2d0e34074cac5b09c41b954ce2bd99f1391a455a63d4d23",
-      "size": 1669
-    },
     "quality/legacy_tests/manifest.json": {
       "sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
       "size": 21489
@@ -471,6 +467,10 @@
     "quality/legacy_tests/pytest.ini": {
       "sha256": "aac3586dc0d118b1f189f1f5dfc3db7ebdc5871f3e12c90dc37dd357eb213b86",
       "size": 168
+    },
+    "quality/legacy_tests/README.md": {
+      "sha256": "964d4b46e45a0027e2d0e34074cac5b09c41b954ce2bd99f1391a455a63d4d23",
+      "size": 1669
     },
     "quality/legacy_tests/tests/test_auto_detect_basic.py": {
       "sha256": "b50aeb0e2437a6693d013014d73aff26be3a5f47994e4e86b53f9e9c2a610ede",
@@ -572,6 +572,10 @@
       "sha256": "90329cf6ce63ca98ec48863cf4ee8d34c336ed001db0b952d3f8ff57dfbdb4e4",
       "size": 311
     },
+    "README.md": {
+      "sha256": "2c7db86b020293115333c9714f0ffcc2d187748d53bad714206113ef716cbd92",
+      "size": 3726
+    },
     "requirements-dev.txt": {
       "sha256": "aeaf118915a1ca241a0a1962a4162864b5246d5f2ea4e2abf2b6b28f05ea7d60",
       "size": 147
@@ -592,9 +596,13 @@
       "sha256": "dba51e5acee3dae82fa5977f814e9ca45b97a5e31af65b3db67fec7637d1e32a",
       "size": 1884
     },
+    "src/core/bezier_geometry.py": {
+      "sha256": "4a1bb4e0cbc8062013062e0d801283149ac5e6f4937ee36745ad63fa88a79837",
+      "size": 5128
+    },
     "src/core/commands.py": {
-      "sha256": "d0a3134a862ff75291567acfc7ec5a7b25130a3b140f8588b00d789a6ee1e303",
-      "size": 64724
+      "sha256": "780336416b16a27a8cf94fe78f6afd5ee5b3a4abe0fa9303b8811cc7d04e69b0",
+      "size": 75748
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -665,8 +673,8 @@
       "size": 32
     },
     "src/models/scene.py": {
-      "sha256": "e76ef8c75de88929e825d890b10aa4e3d698c169d7a072c60afe53393310d312",
-      "size": 22283
+      "sha256": "c5e8e85a31f4873b38f1de0ba475f4f392cbc4cb2441fca6e54d8fd932342aac",
+      "size": 22588
     },
     "src/persistence/__init__.py": {
       "sha256": "bca8fb2c323eb56eb108c121e3813788b072acc8d5286b88903e34509b10b447",
@@ -749,8 +757,8 @@
       "size": 10926
     },
     "src/tools/pen_tool.py": {
-      "sha256": "5c10f70a2462ad6e5f0b9369ea98f78902f7637a93e1cfff533f5b6bfe3e7bce",
-      "size": 11083
+      "sha256": "914d5f53431edb475aeffcf02a48dbc10b95ead9bbaa8983502ca418be70b20c",
+      "size": 22337
     },
     "src/tools/polygon_edit_tool.py": {
       "sha256": "0596368ae92b4217a7563bbf9b6db3186f1eba4813db933b58c783db41b500c5",
@@ -1011,6 +1019,14 @@
     "tests/test_stage_5_package_5b_ui_paths.py": {
       "sha256": "991c0a86d269daaa1927016ca17540d2d255e4a28d77f17da5376805d49aa601",
       "size": 7925
+    },
+    "tests/test_stage_5_package_5c_bezier_history.py": {
+      "sha256": "83c149dd0bc76f8ebcf62238ab7c678f5ddf29cebec0daa0285e6df982f98f1d",
+      "size": 12497
+    },
+    "tests/test_stage_5_package_5c_residual_command_contracts.py": {
+      "sha256": "ace3151264bb909a3c482cdb36ef7c3b0e7958f1d7710b2d6111e71f9224c67a",
+      "size": 5600
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

@@ -662,17 +662,28 @@ class Scene:
             raise
 
     # --- Bezier ---
-    def set_object_beziers(self, oid, beziers):
+    def set_object_beziers(self, oid, beziers, *, steps_per_segment=20):
+        from src.core.bezier_geometry import (
+            canonicalize_beziers,
+            sample_beziers_to_polygon,
+        )
+
         obj = self.objects.get(oid)
         if not obj:
             raise KeyError("object not found")
-        obj.beziers = beziers
-        obj.polygon = self.sample_beziers_to_polygon(beziers)
+        canonical = canonicalize_beziers(beziers)
+        polygon = sample_beziers_to_polygon(
+            canonical,
+            steps_per_segment=steps_per_segment,
+        )
+        obj.beziers = canonical
+        obj.polygon = polygon
         self._notify()
 
     def sample_beziers_to_polygon(self, beziers, steps_per_segment=20):
-        # Placeholder simples para evitar erro se beziers forem usados
-        pts = []
-        for seg in beziers:
-            pts.append((int(seg[0][0]), int(seg[0][1])))
-        return pts
+        from src.core.bezier_geometry import sample_beziers_to_polygon
+
+        return sample_beziers_to_polygon(
+            beziers,
+            steps_per_segment=steps_per_segment,
+        )
