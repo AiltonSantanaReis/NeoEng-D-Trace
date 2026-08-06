@@ -63,6 +63,8 @@ class _HandleEditState:
     old_pos: Tuple[float, float]
     old_beziers: BezierSegments
     old_polygon: List[Tuple[int, int]]
+    preview_beziers: BezierSegments
+    preview_polygon: List[Tuple[int, int]]
 
 
 class BezierNode:
@@ -105,21 +107,121 @@ class PenTool(BaseTool):
     def _model(self):
         return getattr(self.canvas_view, "model", None)
 
-    def _load_selected_bezier_object(self) -> bool:
-        model = self._model()
-        if model is None:
-            return False
-        object_id = getattr(model, "selected_id", None)
-        obj = model.objects.get(object_id) if object_id is not None else None
+    def _nodes_beziers(self) -> Optional[BezierSegments]:
+        try:
+            return self._nodes_to_beziers()
+        except (OverflowError, ValueError):
+            return None
+
+    def _object_bezier_state(
+        self, obj
+    ) -> Optional[Tuple[BezierSegments, List[Tuple[int, int]]]]:
         beziers = getattr(obj, "beziers", None) if obj is not None else None
         if beziers is None:
-            return False
+            return None
         try:
-            canonical = canonicalize_beziers(beziers)
-        except ValueError:
+            model = self._model()
+            if model is not None and hasattr(model, "prepare_bezier_geometry"):
+                canonical, _polygon = model.prepare_bezier_geometry(
+                    beziers,
+                    steps_per_segment=self._curve_segments,
+                )
+            else:
+                canonical = canonicalize_beziers(beziers)
+        except (OverflowError, TypeError, ValueError):
+            return None
+        return canonical, copy.deepcopy(obj.polygon)
+
+    def _active_preview_matches_model(self) -> bool:
+        edit = self._active_handle_edit
+        if edit is None:
             return False
-        self._editing_object_id = str(object_id)
-        self._load_nodes_from_beziers(canonical)
+        model = self._model()
+        obj = model.objects.get(edit.object_id) if model is not None else None
+        state = self._object_bezier_state(obj)
+        if state is None:
+            return False
+        return state == (edit.preview_beziers, edit.preview_polygon)
+
+    def _discard_active_handle_edit(self, *, restore_preview: bool) -> bool:
+        if self._active_handle_edit is None:
+            return False
+        if restore_preview and self._active_preview_matches_model():
+            self._restore_handle_preview()
+        self._active_handle_edit = None
+        self._selected_node = None
+        self._selected_handle = None
+        self._is_placing_handle = False
+        return True
+
+    def _cancel_active_handle_edit(self) -> bool:
+        if not self._discard_active_handle_edit(restore_preview=True):
+            return False
+        self._load_selected_bezier_object()
+        self.canvas_view.update()
+        return True
+
+    def _clear_loaded_bezier_object(self, *, restore_preview: bool = True) -> None:
+        self._discard_active_handle_edit(restore_preview=restore_preview)
+        self._editing_object_id = None
+        self._nodes = []
+        self._selected_node = None
+        self._selected_handle = None
+        self._is_placing_handle = False
+
+    def _load_selected_bezier_object(self) -> bool:
+        model = self._model()
+        object_id = getattr(model, "selected_id", None) if model is not None else None
+        obj = (
+            model.objects.get(object_id)
+            if model is not None and object_id is not None
+            else None
+        )
+        state = self._object_bezier_state(obj)
+        if state is None:
+            if self._editing_object_id is not None:
+                self._clear_loaded_bezier_object()
+            return False
+
+        selected_id = str(object_id)
+        if self._active_handle_edit is not None:
+            self._discard_active_handle_edit(restore_preview=True)
+        self._editing_object_id = selected_id
+        self._load_nodes_from_beziers(state[0])
+        return True
+
+    def _synchronize_selected_bezier_object(self) -> bool:
+        if self._editing_object_id is None:
+            return True
+        model = self._model()
+        selected_id = getattr(model, "selected_id", None) if model is not None else None
+        obj = (
+            model.objects.get(selected_id)
+            if model is not None and selected_id is not None
+            else None
+        )
+        if str(selected_id) != self._editing_object_id or obj is None:
+            return self._load_selected_bezier_object()
+
+        model_state = self._object_bezier_state(obj)
+        if model_state is None:
+            self._clear_loaded_bezier_object()
+            return False
+
+        # A global Undo/Redo or another command may replace the geometry while
+        # the same object remains selected. During a gesture, compare against
+        # the exact last preview installed in the model. Outside a gesture,
+        # only the canonical controls need to match the loaded nodes; the
+        # persisted polygon may legitimately use another sampling density.
+        if self._active_handle_edit is not None:
+            if not self._active_preview_matches_model():
+                self._discard_active_handle_edit(restore_preview=False)
+                self._load_nodes_from_beziers(model_state[0])
+            return True
+
+        loaded_beziers = self._nodes_beziers()
+        if loaded_beziers != model_state[0]:
+            self._load_nodes_from_beziers(model_state[0])
         return True
 
     def _load_nodes_from_beziers(self, beziers: BezierSegments) -> None:
@@ -171,6 +273,10 @@ class PenTool(BaseTool):
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
+            had_loaded_object = self._editing_object_id is not None
+            if had_loaded_object and not self._synchronize_selected_bezier_object():
+                self.canvas_view.update()
+                return
             if not self._nodes:
                 self._load_selected_bezier_object()
             click_point = (float(position[0]), float(position[1]))
@@ -194,6 +300,8 @@ class PenTool(BaseTool):
                             old_pos=beziers[mapping[0]][mapping[1]],
                             old_beziers=copy.deepcopy(beziers),
                             old_polygon=copy.deepcopy(obj.polygon),
+                            preview_beziers=copy.deepcopy(beziers),
+                            preview_polygon=copy.deepcopy(obj.polygon),
                         )
                 self.canvas_view.update()
                 return
@@ -214,6 +322,12 @@ class PenTool(BaseTool):
         self.canvas_view.update()
 
     def on_mouse_move(self, event: QMouseEvent, position: Tuple[float, float]):
+        if (
+            self._editing_object_id is not None
+            and not self._synchronize_selected_bezier_object()
+        ):
+            self.canvas_view.update()
+            return
         if self._selected_node and self._selected_handle:
             point = (float(position[0]), float(position[1]))
             if self._selected_handle == "in":
@@ -221,20 +335,27 @@ class PenTool(BaseTool):
             elif self._selected_handle == "out":
                 self._selected_node.handle_out = point
 
-            if self._active_handle_edit is not None:
+            edit = self._active_handle_edit
+            if edit is not None:
                 model = self._model()
-                object_id = self._active_handle_edit.object_id
+                object_id = edit.object_id
                 obj = model.objects.get(object_id) if model is not None else None
                 if obj is not None:
                     try:
-                        beziers = self._nodes_to_beziers()
-                        polygon = sample_beziers_to_polygon(
-                            beziers,
+                        requested_beziers = self._nodes_to_beziers()
+                        beziers, polygon = model.prepare_bezier_geometry(
+                            requested_beziers,
                             steps_per_segment=self._curve_segments,
                         )
-                    except ValueError as exc:
+                    except (OverflowError, TypeError, ValueError) as exc:
+                        # Invalid continuous geometry remains visual-only. The
+                        # accepted model stays at the last valid preview so a
+                        # release can reject without installing corrupt state.
                         self._last_error = str(exc)
                     else:
+                        self._last_error = ""
+                        edit.preview_beziers = copy.deepcopy(beziers)
+                        edit.preview_polygon = copy.deepcopy(polygon)
                         obj.beziers = copy.deepcopy(beziers)
                         obj.polygon = copy.deepcopy(polygon)
                         model._notify()
@@ -255,6 +376,11 @@ class PenTool(BaseTool):
     def _finish_handle_edit(self) -> None:
         edit = self._active_handle_edit
         if edit is None:
+            return
+        if not self._active_preview_matches_model():
+            self._discard_active_handle_edit(restore_preview=False)
+            self._load_selected_bezier_object()
+            self.canvas_view.update()
             return
         model = self._model()
         object_id = edit.object_id
@@ -313,6 +439,7 @@ class PenTool(BaseTool):
 
     def on_mouse_release(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
+            self._synchronize_selected_bezier_object()
             self._finish_handle_edit()
             self._selected_handle = None
             self._is_placing_handle = False
@@ -322,6 +449,17 @@ class PenTool(BaseTool):
         if self._editing_object_id is None and len(self._nodes) >= 2:
             self.commit_selection()
             self.canvas_view.update()
+
+    def on_key_press(self, event) -> bool:
+        if event.key() == Qt.Key.Key_Escape and self._active_handle_edit is not None:
+            return self._cancel_active_handle_edit()
+        return False
+
+    def on_undo(self) -> bool:
+        return self._cancel_active_handle_edit()
+
+    def on_redo(self) -> bool:
+        return self._cancel_active_handle_edit()
 
     def _place_anchor(self, point: Tuple[float, float]):
         new_node = BezierNode(point)
@@ -394,7 +532,7 @@ class PenTool(BaseTool):
                 self._nodes_to_beziers(),
                 steps_per_segment=self._curve_segments,
             )
-        except ValueError:
+        except (OverflowError, ValueError):
             return []
 
     @staticmethod
@@ -423,7 +561,13 @@ class PenTool(BaseTool):
                 or not isinstance(y, (int, float))
             ):
                 raise ValueError(f"Sampled point {index} coordinates must be numeric.")
-            current = (float(x), float(y))
+            try:
+                current = (float(x), float(y))
+            except (OverflowError, TypeError, ValueError) as exc:
+                raise ValueError(
+                    f"Sampled point {index} coordinates must be finite "
+                    "and representable."
+                ) from exc
             if not math.isfinite(current[0]) or not math.isfinite(current[1]):
                 raise ValueError(f"Sampled point {index} coordinates must be finite.")
             if not cleaned or cleaned[-1] != current:
@@ -472,7 +616,7 @@ class PenTool(BaseTool):
                 if len(self._nodes) >= 2
                 else self._beziers_from_sampled_points(self._generate_curve_points())
             )
-        except ValueError as exc:
+        except (OverflowError, ValueError) as exc:
             self._last_error = str(exc)
             return None
 
@@ -512,6 +656,7 @@ class PenTool(BaseTool):
         return self._editing_object_id
 
     def draw_overlay(self, painter: QPainter):
+        self._synchronize_selected_bezier_object()
         if not self._nodes:
             return
 
@@ -583,20 +728,23 @@ class PenTool(BaseTool):
         menu.exec(event.globalPos())
 
     def undo_last_action(self):
+        if self.on_undo():
+            return
         model = self._model()
         if model is not None and getattr(model, "cmd", None):
             model.cmd.undo(model)
             self._load_selected_bezier_object()
 
     def redo_last_action(self):
+        if self.on_redo():
+            return
         model = self._model()
         if model is not None and getattr(model, "cmd", None):
             model.cmd.redo(model)
             self._load_selected_bezier_object()
 
     def cancel(self):
-        self._restore_handle_preview()
-        self._active_handle_edit = None
+        self._discard_active_handle_edit(restore_preview=True)
         self._nodes = []
         self._selected_node = None
         self._selected_handle = None

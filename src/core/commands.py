@@ -14,7 +14,6 @@ from src.core.bezier_geometry import (
     canonical_point,
     canonicalize_beziers,
     replace_handle,
-    sample_beziers_to_polygon,
 )
 from src.core.logger import logger
 
@@ -843,11 +842,23 @@ class HandleMoveCommand(Command):
         try:
             old_pos = canonical_point(self.old_pos, label="old handle position")
             new_pos = canonical_point(self.new_pos, label="new handle position")
+        except OverflowError:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "Handle coordinates must be finite and representable.",
+            )
         except ValueError as exc:
             return CommandResult.rejected(self, "execute", str(exc))
         if isinstance(self.seg_index, bool) or not isinstance(self.seg_index, int):
             return CommandResult.rejected(
                 self, "execute", "segment_index must be an integer."
+            )
+        if isinstance(self.handle_index, bool) or not isinstance(
+            self.handle_index, int
+        ):
+            return CommandResult.rejected(
+                self, "execute", "handle_index must be an integer."
             )
         if self.handle_index not in {1, 2}:
             return CommandResult.rejected(
@@ -875,7 +886,7 @@ class HandleMoveCommand(Command):
             return None
         try:
             beziers = canonicalize_beziers(obj.beziers)
-        except (TypeError, ValueError):
+        except (OverflowError, TypeError, ValueError):
             return None
         has_collision = self.object_id in scene.collision_shapes
         collision = (
@@ -952,6 +963,12 @@ class HandleMoveCommand(Command):
         if not self._executed_once:
             try:
                 old_beziers = canonicalize_beziers(obj.beziers)
+            except OverflowError:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "Bézier coordinates must be finite and representable.",
+                )
             except ValueError as exc:
                 return CommandResult.rejected(self, "execute", str(exc))
             if self.seg_index < 0 or self.seg_index >= len(old_beziers):
@@ -969,15 +986,21 @@ class HandleMoveCommand(Command):
                     self, "execute", "The handle is already at the requested position."
                 )
             try:
-                new_beziers = replace_handle(
+                requested_beziers = replace_handle(
                     old_beziers,
                     self.seg_index,
                     self.handle_index,
                     self.new_pos,
                 )
-                new_polygon = sample_beziers_to_polygon(
-                    new_beziers,
+                new_beziers, new_polygon = scene.prepare_bezier_geometry(
+                    requested_beziers,
                     steps_per_segment=self.steps_per_segment,
+                )
+            except OverflowError:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "Bézier coordinates must be finite and representable.",
                 )
             except ValueError as exc:
                 return CommandResult.rejected(self, "execute", str(exc))
@@ -1105,10 +1128,6 @@ class UpdatePolygonCommand(Command):
             return CommandResult.rejected(
                 self, "execute", "The object no longer exists."
             )
-        if self.old_polygon == self.new_polygon:
-            return CommandResult.no_change(
-                self, "execute", "The polygon is already in the requested state."
-            )
 
         if not self._executed_once:
             if current[0] != self.old_polygon:
@@ -1116,6 +1135,12 @@ class UpdatePolygonCommand(Command):
                     self,
                     "execute",
                     "The object changed before this edit could be applied.",
+                )
+            if self.old_polygon == self.new_polygon:
+                return CommandResult.no_change(
+                    self,
+                    "execute",
+                    "The polygon is already in the requested state.",
                 )
             self._had_collision = bool(current[1])
             self._old_collision = copy.deepcopy(current[2])
@@ -1687,6 +1712,17 @@ class _CreatePolygonCommandBase(Command):
             return False
         return all(self.object_id not in group.members for group in scene.groups)
 
+    def _create_first_object(self, scene: Any) -> None:
+        if self.object_id is None:
+            self.object_id = scene.add_polygon(self.polygon, self.layer_id)
+        else:
+            scene.add_object(
+                self.object_id,
+                self.polygon,
+                self.layer_id,
+                select=True,
+            )
+
     def _execute_first(self, scene: Any) -> Optional[CommandResult]:
         target_layer_id = self.layer_id or "layer_default"
         if target_layer_id not in {layer.id for layer in scene.layers}:
@@ -1705,14 +1741,13 @@ class _CreatePolygonCommandBase(Command):
         self._previous_selected_id = scene.selected_id
         self._object_ids_before = tuple(scene.objects)
 
+        self._create_first_object(scene)
         if self.object_id is None:
-            self.object_id = scene.add_polygon(self.polygon, self.layer_id)
-        else:
-            scene.add_object(
-                self.object_id,
-                self.polygon,
-                self.layer_id,
-                select=True,
+            return CommandResult.failed(
+                self,
+                "execute",
+                "CreationIdentityError",
+                "The created object id is unavailable.",
             )
 
         self._object_snapshot = copy.deepcopy(scene.objects[self.object_id])
@@ -1855,12 +1890,20 @@ class CreateBezierObjectCommand(_CreatePolygonCommandBase):
         self.beziers = copy.deepcopy(beziers)
         self.steps_per_segment = steps_per_segment
 
+    def _create_first_object(self, scene: Any) -> None:
+        self.object_id = scene.add_bezier_object(
+            self.beziers,
+            layer_id=self.layer_id,
+            object_id=self.object_id,
+            select=True,
+            steps_per_segment=self.steps_per_segment,
+        )
+
     def execute(self, scene: Any):
         if not self._executed_once:
             try:
-                canonical = canonicalize_beziers(self.beziers)
-                polygon = sample_beziers_to_polygon(
-                    canonical,
+                canonical, polygon = scene.prepare_bezier_geometry(
+                    self.beziers,
                     steps_per_segment=self.steps_per_segment,
                 )
             except (TypeError, ValueError) as exc:
@@ -1868,23 +1911,7 @@ class CreateBezierObjectCommand(_CreatePolygonCommandBase):
 
             self.beziers = canonical
             self.polygon = polygon
-            result = self._execute_first(scene)
-            if result is not None:
-                return result
-            if self.object_id is None:
-                return CommandResult.failed(
-                    self,
-                    "execute",
-                    "BezierCreationError",
-                    "The created object id is unavailable.",
-                )
-            scene.set_object_beziers(
-                self.object_id,
-                canonical,
-                steps_per_segment=self.steps_per_segment,
-            )
-            self._object_snapshot = copy.deepcopy(scene.objects[self.object_id])
-            return None
+            return self._execute_first(scene)
         return self._execute_redo(scene)
 
 

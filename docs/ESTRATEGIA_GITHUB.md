@@ -1,5 +1,7 @@
 # Estratégia do repositório privado NeoEng-D-Trace
 
+> **CLASSIFICAÇÃO DOCUMENTAL — PLANO HISTÓRICO DE BOOTSTRAP:** o repositório privado e o novo histórico já foram criados. Não execute novamente as instruções de primeiro push ou recriação de baseline deste arquivo. A governança vigente está no Plano Mestre, na Política de Qualidade e na Matriz de Riscos.
+
 ## 1. Repositório de destino
 
 ```text
@@ -34,7 +36,7 @@ git remote add origin <repositório-novo>
 
 ```text
 NeoEng-D-Trace Maintainer
-169040421+AiltonSantanaReis@users.noreply.github.com
+<ID>+<usuario>@users.noreply.github.com
 ```
 
 A identidade deve ser configurada com `--local` no novo repositório e verificada antes do primeiro commit.

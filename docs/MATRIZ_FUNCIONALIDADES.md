@@ -1,5 +1,7 @@
 # Matriz de funcionalidades e estado de validação
 
+> **CLASSIFICAÇÃO DOCUMENTAL — SNAPSHOT HISTÓRICO:** esta matriz registra a auditoria inicial anterior às Etapas 1 a 5. Afirmações como ausência de remote, CI quebrada, schema sem versão e worktree com 416 entradas não representam o estado atual. Consulte `README.md`, `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md` e `docs/evidence/README.md`.
+
 Legenda:
 
 - **Presente**: implementação identificada no código;

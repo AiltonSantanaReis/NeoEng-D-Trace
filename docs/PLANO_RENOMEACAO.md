@@ -1,7 +1,9 @@
 # Plano de renomeação segura — PolygonTool para NeoEng-D-Trace
 
-**Status:** identidade aplicada; consolidação em árvore única aprovada.  
+**Status:** identidade aplicada; consolidação em árvore única aprovada.
 **Data da decisão:** 27 de julho de 2026.
+
+> **Nota de continuidade:** a decisão de árvore única permanece vigente. A seção de preparação Git registra o contexto anterior ao baseline privado e não descreve o estado atual do remote ou das PRs.
 
 ## 1. Decisão
 

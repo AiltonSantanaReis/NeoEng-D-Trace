@@ -1,5 +1,42 @@
 # Changelog
 
+## [Unreleased] — programa de estabilização, Etapas 1 a 5
+
+Snapshot documental de 6 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+- ambiente reproduzível consolidado em Python 3.11, Poetry 2.4.1 e CI Linux/Windows;
+- formato de projeto `.ndtproj` com schema v1 estrito, migração legada, escrita atômica e round-trip de colisões e segmentos Bézier;
+- ciclo Abrir/Salvar integrado e validado no Windows;
+- Etapa 5 integrada até o Pacote 5B na `main` `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
+- Pacote 5C permanece em PR draft para criação/edição Bézier transacional e contratos residuais;
+- revisão do Pacote 5C identificou e corrige atomicidade observável, sincronização da Caneta com a seleção e rejeição de no-op obsoleto;
+- a validação local v3.1 passou no Windows, mas a revisão posterior bloqueou o commit por evidência incompleta do arquivo untracked e por sincronização ausente após Undo/Redo global no mesmo objeto Bézier;
+- o corrector v3.2 preservou essas correções, mas o dry-run foi bloqueado pelo mypy antes de qualquer escrita porque o acesso ao objeto selecionado não possuía narrowing explícito de nulidade;
+- o corrector v3.3 passou no Windows com 50 testes focais, 9 documentais, 465 totais e cobertura global de 65%, produzindo evidência autossuficiente dos 19 arquivos;
+- a revisão pós-v3.3 bloqueou o commit porque Undo, Redo e Escape durante um arraste de handle não cancelavam primeiro a prévia ativa, uma mudança externa podia conflitar com a soltura do mouse e o relatório permanente ainda exibia as métricas antigas 48/6/460;
+- o corrector v3.4 passou no Windows com 59 testes focais, 10 documentais, 475 totais e cobertura global de 65%, produzindo evidência completa dos 19 arquivos com métricas dinâmicas;
+- a revisão pós-v3.4 bloqueou o commit porque a criação Bézier atômica rejeitava a orientação oposta em vez de normalizá-la e `HandleMoveCommand` podia aceitar um polígono amostrado degenerado, invertido ou auto-intersectante;
+- a correção incremental v3.5 centraliza a preparação geométrica Bézier, normaliza o polígono para sentido anti-horário, rejeita amostras inválidas antes de mutar o modelo ou o histórico e mantém prévias inválidas apenas no estado visual da Caneta;
+- o corrector v3.5 passou no Windows com 67 testes focais, 11 documentais, 484 totais e cobertura global de 65%, com evidência completa dos 19 arquivos;
+- a revisão pós-v3.5 bloqueou o commit porque o fallback geométrico determinístico, efetivamente usado no ambiente bloqueado sem Shapely, não detectava todos os contatos de extremidade e cruzamentos colineares entre arestas não adjacentes;
+- a correção incremental v3.6 implementa interseção inclusiva de segmentos, validação finita e remoção do vértice terminal duplicado em curvas fechadas válidas;
+- o corrector v3.6 passou no Windows com 71 testes focais, 12 documentais, 489 totais e cobertura global de 65%, com evidência completa dos 19 arquivos;
+- a revisão pós-v3.6 bloqueou o commit porque o bloco opcional de Shapely ainda participava da decisão de validade e conversões de coordenadas Bézier não representáveis podiam produzir `OverflowError` fora do contrato de rejeição;
+- a correção incremental v3.7 torna o validador determinístico a única autoridade de validade, rejeita aritmética de área não finita e traduz overflow de coordenadas em `ValueError` ou `CommandStatus.REJECTED` sem mutação;
+- o corrector v3.7 foi bloqueado no dry-run antes de escrever arquivos porque o teste de independência tentava substituir `scene_module.Polygon` sem permitir a ausência intencional desse símbolo;
+- a correção incremental v3.8 ajustou somente o harness desse teste com `raising=False`, preservou o estado inicial exato do v3.6 e manteve inalterado o código funcional da linha v3.7;
+- o corrector v3.8 passou no Windows com 77 testes focais, 13 documentais, 496 totais e cobertura global de 66%, com evidência completa dos 19 arquivos;
+- a revisão pós-v3.8 bloqueou o commit porque `canonical_point()` ainda deixava `OverflowError` escapar pela amostragem direta de `Scene.sample_beziers_to_polygon()` e pela exportação de sprite de um Bézier carregado;
+- a correção incremental v3.9 centraliza a conversão numérica representável em `src/core/bezier_geometry.py`, transforma overflow em `ValueError` controlado para todos os chamadores e amplia o escopo final para 20 arquivos;
+- o corrector v3.9 passou no Windows com 80 testes focais, 14 documentais, 500 totais e cobertura global de 66%, com evidência completa dos 20 arquivos;
+- a revisão pós-v3.9 bloqueou o commit porque a fórmula Bernstein ainda podia gerar `inf` intermediário a partir de controles finitos extremos e `Scene.add_object()` executava o reparo heurístico antes de conferir se `auto_repair` estava habilitado;
+- a correção incremental v4.0 preserva exatamente a avaliação Bernstein no domínio ordinário e usa De Casteljau numericamente estável para controles extremos, aplica o invariante canônico na amostragem pública e na sincronização da Caneta, e torna o reparo de polígonos estritamente opt-in com rejeição controlada;
+- o corrector v4.0 passou no Windows com 89 testes focais, 15 documentais, 510 totais e cobertura global de 66%, com evidência completa dos 20 arquivos;
+- a revisão pós-v4.0 bloqueou o commit porque o índice de handle não tinha contrato de tipo estrito: booleanos e `1.0` eram aceitos como índice 1, enquanto listas ou dicionários podiam expor `TypeError` bruto;
+- a correção incremental v4.1 exige `handle_index` inteiro não booleano no núcleo e no comando, rejeita entradas inválidas de forma controlada e garante ausência de mutação e de histórico;
+- documentação viva reconciliada com o estado versionado, mantendo auditorias e evidências antigas como snapshots históricos;
+- nenhuma entrada deste bloco declara release, encerramento de `R-004`, conclusão da Etapa 5 ou início da Etapa 6.
+
 ## 0.6O2 — observabilidade confiável e persistência segura
 
 - no modo `--validation-log`, as cinco exportações manuais usam uma pasta exclusiva da sessão e não dependem de seletores nativos;

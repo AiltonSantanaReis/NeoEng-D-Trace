@@ -11,6 +11,7 @@ from src.core.commands import (
     ExpandContractCommand,
     HandleMoveCommand,
     UpdateObjectGeometryCommand,
+    UpdatePolygonCommand,
 )
 from src.models.scene import Scene
 
@@ -132,6 +133,22 @@ def test_expand_contract_noop_creates_no_history():
     scene = _scene()
     result = scene.cmd.execute(ExpandContractCommand("A", OLD, OLD), scene)
     assert result.status is CommandStatus.NO_CHANGE
+    assert scene.cmd.undo_count == 0
+
+
+def test_update_polygon_rejects_stale_noop_snapshot():
+    scene = _scene()
+    scene.objects["A"].polygon[0] = (99, 99)
+    result = scene.cmd.execute(UpdatePolygonCommand("A", OLD, OLD), scene)
+    assert result.status is CommandStatus.REJECTED
+    assert scene.cmd.undo_count == 0
+
+
+def test_expand_contract_rejects_stale_noop_snapshot():
+    scene = _scene()
+    scene.objects["A"].polygon[0] = (99, 99)
+    result = scene.cmd.execute(ExpandContractCommand("A", OLD, OLD), scene)
+    assert result.status is CommandStatus.REJECTED
     assert scene.cmd.undo_count == 0
 
 

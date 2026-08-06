@@ -3,10 +3,17 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
+import math
 import time
 import uuid
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Sequence, Tuple
 
+from src.core.bezier_geometry import (
+    BezierSegments,
+    canonical_point,
+    canonicalize_beziers,
+    sample_beziers_to_polygon,
+)
 from src.core.logger import logger
 from src.core.validation_events import (
     elapsed_ms,
@@ -23,74 +30,85 @@ except ImportError:
     HAS_SHAPELY = False
 
 
+def _signed_polygon_area2(points: Sequence[Tuple[float, float]]) -> float:
+    """Return twice the signed polygon area."""
+
+    return sum(
+        points[index][0] * points[(index + 1) % len(points)][1]
+        - points[(index + 1) % len(points)][0] * points[index][1]
+        for index in range(len(points))
+    )
+
+
 def _normalize_polygon_winding(points: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
-    """Ensure the polygon is in counter-clockwise order."""
-    if len(points) < 3:
-        return points
-    # Calculate signed area
-    area = 0.0
-    n = len(points)
-    for i in range(n):
-        j = (i + 1) % n
-        area += points[i][0] * points[j][1]
-        area -= points[j][0] * points[i][1]
-    # If area is negative, it's clockwise, so reverse
-    if area < 0:
-        return list(reversed(points))
-    return points
+    """Remove a duplicated terminal vertex and enforce counter-clockwise order."""
+
+    normalized = list(points)
+    if len(normalized) > 1 and normalized[0] == normalized[-1]:
+        normalized.pop()
+    if len(normalized) >= 3 and _signed_polygon_area2(normalized) < 0:
+        normalized.reverse()
+    return normalized
 
 
 def _validate_polygon(points: List[Tuple[int, int]]) -> bool:
+    """Validate one simple, finite, counter-clockwise polygon deterministically."""
+
     if not isinstance(points, list) or len(points) < 3:
         return False
-    for p in points:
-        if not isinstance(p, (list, tuple)) or len(p) != 2:
-            return False
-        x, y = p
-        if not (isinstance(x, (int, float)) and isinstance(y, (int, float))):
-            return False
 
-    if HAS_SHAPELY:
+    numeric_points: List[Tuple[float, float]] = []
+    for point in points:
+        if not isinstance(point, (list, tuple)) or len(point) != 2:
+            return False
+        x, y = point
+        if (
+            isinstance(x, bool)
+            or isinstance(y, bool)
+            or not isinstance(x, (int, float))
+            or not isinstance(y, (int, float))
+        ):
+            return False
         try:
-            poly = Polygon(points)
-            if not poly.is_valid:
-                return False
-            # Check for self-intersections
-            if not poly.is_simple:
-                return False
-            # Ensure counter-clockwise
-            if not poly.exterior.is_ccw:
-                return False
-        except Exception:
+            numeric = (float(x), float(y))
+        except (OverflowError, TypeError, ValueError):
             return False
-    else:
-        # Fallback to basic checks
-        # Check winding (counter-clockwise)
-        area = 0.0
-        n = len(points)
-        for i in range(n):
-            j = (i + 1) % n
-            area += points[i][0] * points[j][1]
-            area -= points[j][0] * points[i][1]
-        if area <= 0:
+        if not math.isfinite(numeric[0]) or not math.isfinite(numeric[1]):
             return False
+        numeric_points.append(numeric)
 
-        # Check for self-intersections (basic)
-        if _has_self_intersections(points):
-            return False
+    count = len(numeric_points)
+    if any(
+        numeric_points[index] == numeric_points[(index + 1) % count]
+        for index in range(count)
+    ):
+        return False
+    area2 = _signed_polygon_area2(numeric_points)
+    if not math.isfinite(area2) or area2 <= 0.0:
+        return False
+    if _has_self_intersections(numeric_points):
+        return False
 
+    # Runtime validity is intentionally independent of optional Shapely.
+    # Shapely remains available only to the separate repair heuristic.
     return True
 
 
-def _has_self_intersections(points: List[Tuple[int, int]]) -> bool:
-    """Check if the polygon has self-intersecting edges."""
-    n = len(points)
-    for i in range(n):
-        for j in range(i + 2, n):  # Skip adjacent edges
-            if i == 0 and j == n - 1:
-                continue  # Skip the closing edge if adjacent
+def _has_self_intersections(points: Sequence[Tuple[float, float]]) -> bool:
+    """Return whether any non-adjacent polygon edges intersect or touch."""
+
+    count = len(points)
+    for first_index in range(count):
+        first_end = (first_index + 1) % count
+        for second_index in range(first_index + 1, count):
+            second_end = (second_index + 1) % count
+            if first_end == second_index or second_end == first_index:
+                continue
             if _lines_intersect(
-                points[i], points[(i + 1) % n], points[j], points[(j + 1) % n]
+                points[first_index],
+                points[first_end],
+                points[second_index],
+                points[second_end],
             ):
                 return True
     return False
@@ -157,8 +175,15 @@ def _attempt_repair(
     if not points:
         return points, False
 
-    # Work in floats for intermediate math
-    ptsf: List[Tuple[float, float]] = [(float(x), float(y)) for x, y in points]
+    # Work in canonical floats for intermediate math. Invalid or
+    # unrepresentable coordinates are not repair candidates.
+    try:
+        ptsf = [
+            canonical_point(point, label=f"polygon repair point {index}")
+            for index, point in enumerate(points)
+        ]
+    except ValueError:
+        return points, False
     ptsf = _remove_close_duplicates(ptsf, tol=1.0)
     ptsf = _remove_colinear(ptsf, tol=1e-6)
 
@@ -205,12 +230,44 @@ def _lines_intersect(
     p3: Tuple[float, float],
     p4: Tuple[float, float],
 ) -> bool:
-    """Check if line segments p1-p2 and p3-p4 intersect."""
+    """Return whether two closed line segments intersect or touch."""
 
-    def ccw(a, b, c):
-        return (c[1] - a[1]) * (b[0] - a[0]) > (b[1] - a[1]) * (c[0] - a[0])
+    def orientation(a, b, c) -> float:
+        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
 
-    return ccw(p1, p3, p4) != ccw(p2, p3, p4) and ccw(p1, p2, p3) != ccw(p1, p2, p4)
+    def sign(value: float) -> int:
+        if value > 1e-9:
+            return 1
+        if value < -1e-9:
+            return -1
+        return 0
+
+    def on_segment(a, b, point) -> bool:
+        return (
+            min(a[0], b[0]) - 1e-9 <= point[0] <= max(a[0], b[0]) + 1e-9
+            and min(a[1], b[1]) - 1e-9 <= point[1] <= max(a[1], b[1]) + 1e-9
+        )
+
+    first = orientation(p1, p2, p3)
+    second = orientation(p1, p2, p4)
+    third = orientation(p3, p4, p1)
+    fourth = orientation(p3, p4, p2)
+    first_sign = sign(first)
+    second_sign = sign(second)
+    third_sign = sign(third)
+    fourth_sign = sign(fourth)
+
+    if first_sign * second_sign < 0 and third_sign * fourth_sign < 0:
+        return True
+    if first_sign == 0 and on_segment(p1, p2, p3):
+        return True
+    if second_sign == 0 and on_segment(p1, p2, p4):
+        return True
+    if third_sign == 0 and on_segment(p3, p4, p1):
+        return True
+    if fourth_sign == 0 and on_segment(p3, p4, p2):
+        return True
+    return False
 
 
 class Layer:
@@ -252,7 +309,7 @@ class SceneObject:
         self.id = oid
         self.polygon = polygon
         self.layer_id = layer_id
-        self.beziers = None
+        self.beziers: Optional[BezierSegments] = None
 
 
 class Scene:
@@ -376,15 +433,21 @@ class Scene:
     ):
         polygon = _normalize_polygon_winding(polygon)
         if not _validate_polygon(polygon):
-            # Do not silently hide errors: attempt repair only when explicitly enabled
-            repaired, repaired_flag = _attempt_repair(polygon)
-            if repaired_flag and _validate_polygon(repaired) and self.auto_repair:
-                logger.warning(f"Auto-repaired polygon for object {oid}")
-                polygon = repaired
+            # Repair is strictly opt-in. Invalid coordinates must never enter
+            # the repair heuristic when auto-repair is disabled.
+            if self.auto_repair:
+                repaired, repaired_flag = _attempt_repair(polygon)
+                if repaired_flag and _validate_polygon(repaired):
+                    logger.warning(f"Auto-repaired polygon for object {oid}")
+                    polygon = repaired
+                else:
+                    logger.warning(
+                        f"Invalid polygon for object {oid}; auto_repair=enabled"
+                    )
+                    raise ValueError("Invalid polygon")
             else:
-                # Provide detailed logging for debugging, but raise the error so callers must handle it.
                 logger.warning(
-                    f"Invalid polygon for object {oid}; auto_repair={'enabled' if self.auto_repair else 'disabled'}"
+                    f"Invalid polygon for object {oid}; auto_repair=disabled"
                 )
                 raise ValueError("Invalid polygon")
         if oid in self.objects:
@@ -396,6 +459,59 @@ class Scene:
         if select:
             self.selected_id = oid
         self._notify()
+
+    @staticmethod
+    def prepare_bezier_geometry(
+        beziers,
+        *,
+        steps_per_segment: int = 20,
+    ) -> Tuple[BezierSegments, List[Tuple[int, int]]]:
+        """Return canonical controls and one valid counter-clockwise polygon."""
+
+        try:
+            canonical = canonicalize_beziers(beziers)
+            polygon = sample_beziers_to_polygon(
+                canonical,
+                steps_per_segment=steps_per_segment,
+            )
+        except OverflowError as exc:
+            raise ValueError(
+                "Bézier coordinates must be finite and representable."
+            ) from exc
+        polygon = _normalize_polygon_winding(polygon)
+        if not _validate_polygon(polygon):
+            raise ValueError("Invalid sampled Bézier polygon")
+        return canonical, polygon
+
+    def add_bezier_object(
+        self,
+        beziers,
+        layer_id: Optional[str] = None,
+        object_id: Optional[str] = None,
+        *,
+        select: bool = False,
+        steps_per_segment: int = 20,
+    ) -> str:
+        """Insert one complete Bézier object and notify only its final state."""
+
+        canonical, polygon = self.prepare_bezier_geometry(
+            beziers,
+            steps_per_segment=steps_per_segment,
+        )
+
+        oid = str(object_id) if object_id is not None else str(uuid.uuid4())
+        if oid in self.objects:
+            logger.warning(f"Object id {oid} already exists, skipping")
+            raise ValueError("Object id exists")
+
+        target_layer_id = layer_id or "layer_default"
+        obj = SceneObject(oid, polygon, target_layer_id)
+        obj.beziers = canonical
+        self.objects[oid] = obj
+        if select:
+            self.selected_id = oid
+        self._notify()
+        return oid
 
     def set_auto_repair(self, enabled: bool):
         """Enable or disable automatic polygon repair.
@@ -663,17 +779,11 @@ class Scene:
 
     # --- Bezier ---
     def set_object_beziers(self, oid, beziers, *, steps_per_segment=20):
-        from src.core.bezier_geometry import (
-            canonicalize_beziers,
-            sample_beziers_to_polygon,
-        )
-
         obj = self.objects.get(oid)
         if not obj:
             raise KeyError("object not found")
-        canonical = canonicalize_beziers(beziers)
-        polygon = sample_beziers_to_polygon(
-            canonical,
+        canonical, polygon = self.prepare_bezier_geometry(
+            beziers,
             steps_per_segment=steps_per_segment,
         )
         obj.beziers = canonical
@@ -681,9 +791,9 @@ class Scene:
         self._notify()
 
     def sample_beziers_to_polygon(self, beziers, steps_per_segment=20):
-        from src.core.bezier_geometry import sample_beziers_to_polygon
+        """Return the normalized polygon accepted by the scene invariant."""
 
-        return sample_beziers_to_polygon(
+        return self.prepare_bezier_geometry(
             beziers,
             steps_per_segment=steps_per_segment,
-        )
+        )[1]

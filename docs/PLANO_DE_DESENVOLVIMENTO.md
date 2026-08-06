@@ -1,5 +1,7 @@
 # Plano completo de desenvolvimento por etapas
 
+> **CLASSIFICAÇÃO DOCUMENTAL — ROADMAP HISTÓRICO SUPERADO:** este plano antecede o `docs/PLANO_MESTRE_ESTABILIZACAO.md` e contém recomendações que não são o toolchain vigente, como `uv` e Ruff. Não o use para iniciar etapas ou alterar dependências sem decisão formal.
+
 ## Princípios obrigatórios
 
 1. preservar o ZIP original como evidência;

@@ -2,6 +2,21 @@
 
 Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
+## Estado operacional de referência — 6 de agosto de 2026
+
+Este bloco é um snapshot, não substitui a verificação do repositório e do GitHub.
+
+- repositório: `AiltonSantanaReis/NeoEng-D-Trace`;
+- `main` integrada conhecida: `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
+- etapa ativa: Etapa 5 — Undo/Redo completo;
+- risco ativo da etapa: `R-004`;
+- Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B: integrados;
+- Pacote 5C: PR `#27` draft e não integrada; o gate v4.0 passou com 89 testes focais, 15 documentais, 510 totais e 66% de cobertura, mas a revisão pós-gate bloqueou commit porque o índice de handle aceitava booleanos e floats equivalentes a 1 e podia expor `TypeError` para valores não hashable; a linha v4.1 impõe tipo inteiro estrito no núcleo e no comando, rejeição controlada sem mutação ou histórico, e somente sua evidência Windows mais recente define o estado local;
+- Etapa 6: não iniciada;
+- próximo gate: exigir evidência v4.1 com `APPROVED_FOR_DIFF_REVIEW_ONLY`, revisar o diff completo dos 20 arquivos e a evidência autossuficiente; commit e push exigem autorização específica; depois, exigir novo CI Linux/Windows vinculado ao novo HEAD.
+
+Ready for review, merge, encerramento de `R-004`, conclusão da Etapa 5 e início da Etapa 6 são gates independentes e não estão implicitamente autorizados.
+
 ## Regras inegociáveis
 
 1. `main` representa somente estados aprovados.

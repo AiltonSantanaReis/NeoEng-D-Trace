@@ -16,7 +16,46 @@
 | R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
 | R-013 | P1 | Metadados do atlas podem exceder os limites da textura | Recorte incorreto ou falha em engines consumidoras | PNG e JSON reabertos; retângulos contidos; testes unitários e de integração |
 
+## Estado operacional atual dos riscos
+
+Snapshot de 6 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão.
+
+| ID | Estado atual | Evidência/encaminhamento vigente |
+|---|---|---|
+| R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
+| R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
+| R-003 | ABERTO | Cobertura integral de UI e ferramentas permanece para a Etapa 11 |
+| R-004 | CONFIRMADO / ABERTO | Etapa 5 integrada até o Pacote 5B; o v4.0 do Pacote 5C passou no Windows, mas a revisão bloqueou commit porque o índice de handle aceitava booleanos e floats equivalentes a 1 e podia expor `TypeError` para valores não hashable; a linha v4.1 permanece não integrada na PR `#27`; não fechar antes de gate v4.1, revisão, commit autorizado, novo HEAD, CI, validação focal e encerramento formal |
+| R-005 | ABERTO | Etapa 6 — exportação de colisões; ainda não iniciada |
+| R-006 | ABERTO | Etapa 7 — CLI e modo headless |
+| R-007 | PARCIAL / ABERTO | Persistência de segmentos Bézier resolvida na Etapa 3; qualidade e validações geométricas permanecem para a Etapa 8 |
+| R-008 | ABERTO | Etapa 9 — física, colisão e APIs duplicadas |
+| R-009 | ENCERRADO | CI Linux e Windows estabelecida |
+| R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
+| R-011 | ABERTO | Refatoração posterior protegida por caracterização |
+| R-012 | ABERTO | Limites e segurança operacional permanecem para a Etapa 12 |
+| R-013 | ABERTO | Contrato de atlas permanece para a Etapa 10 |
+
+## Progresso da Etapa 5
+
+| Pacote | PR | Integração | Evidência principal |
+|---|---:|---|---|
+| 1 | `#15`/`#16` | integrado | `ETAPA_5_PACOTE_1_COMMAND_MANAGER_CONTRACT.md` e encerramento pós-merge |
+| 2A | `#17` | integrado em `5109ba0b03a4d075c73e5183c473b29d94bc7f5c` | relações de objetos e atomicidade |
+| 2B | `#18` | integrado em `46f73d47081bcc6e997f494eb0c092c615a8f108` | caminhos de UI sem fallback direto |
+| 3A | `#19` | integrado em `830075b354b2fc4f96a8c1516757c1f10cac9833` | gesto do gizmo transacional |
+| 3B | `#20` | integrado em `4c9b8a4ad00834b956aedee0871454b9d40439f9` | edição de vértices transacional |
+| 3B.1 | `#21` | integrado em `e2e95b332f2647e7e1debd0ff0ed4759676bb992` | remoção do caminho duplicado |
+| 4A | `#22` | integrado em `8b59e4fa4dfbe14ad44e85e155073a0843634fd1` | exclusão de objetos transacional |
+| 4B | `#23` | integrado em `f8a7e3dce61acd6e9312d70575cdf9eb89297a9a` | movimento e escala de colisão |
+| 4C | `#24` | integrado em `0fc089bfc58ff9589f50bb394acd579bc2f71dd3` | camadas e grupos; `LayersPanel` não comprovado na `MainWindow` |
+| 5A | `#25` | integrado em `9235ddc1ceaeddaec2074050eaebdeacaf588e53` | caminhos ativos de criação |
+| 5B | `#26` | integrado em `ee38a2f1dc85093e34140ddd087312629b4ecb43` | lotes e geração de colisões reversíveis |
+| 5C | `#27` | NÃO INTEGRADO | Bézier e contratos residuais; v4.0 aprovado nos gates e bloqueado na revisão pós-gate pelo contrato não estrito do índice de handle; consultar a evidência v4.1 mais recente e revisar o escopo completo de 20 arquivos antes de commit |
+
 ## Achados registrados na Etapa 2
+
+> **SNAPSHOT HISTÓRICO:** a tabela abaixo registra o que foi observado na Etapa 2. Ela não representa o estado operacional atual e não deve substituir a seção anterior.
 
 | ID | Estado | Evidência consolidada | Encaminhamento |
 |---|---|---|---|
