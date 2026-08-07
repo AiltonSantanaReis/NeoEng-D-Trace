@@ -2,6 +2,26 @@
 
 Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
+## Estado operacional de referência — 6 de agosto de 2026
+
+Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
+
+- repositório: `AiltonSantanaReis/NeoEng-D-Trace`;
+- `main` integrada conhecida: `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
+- etapa ativa: Etapa 5 — Undo/Redo completo;
+- risco ativo da etapa: `R-004`;
+- Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B: integrados;
+- Pacote 5C: PR `#27`, draft e não integrada; o HEAD funcional `9bf83af0d58b5984ccfefc59a543428379b02632` contém o v4.1 em 20 arquivos e foi aprovado no gate Windows/Python 3.11.9 com 95 testes focais, 16 documentais, 517 totais e 66% de cobertura;
+- validação visual: manual aprovada e automática aprovada em 17/17 estados, com ZIP SHA-256 `2981a29d85f8df329bddd0711e16b54665a75d8522447405c476359d6bd2d189`;
+- CI do HEAD funcional: workflow `Private validation` `#82` (`31115744015`) com Linux e Windows em `success`; a primeira tentativa Windows falhou antes do checkout por indisponibilidade do GitHub e o retry passou sem alteração de código;
+- artefatos: Linux `8973550294` (`d6cee9f94f04d706cccb106d6456dcbc3e482e4ed84aec2fa15b6bfa396be435`) e Windows `8973729078` (`a433a229cdbc1bfe58d03804baa2edb223c5bc2f6c37d17431b90e86f3777aa6`);
+- comentários, reviews e threads pendentes: nenhum na verificação pré-merge;
+- gate atual: reconciliar documentos vivos e teste documental em novo commit exclusivamente documental, exigir CI Linux/Windows para esse novo HEAD e revisar o diff final;
+- depois desse CI, Ready e merge continuam decisões separadas; após eventual merge, a `main` deve passar por CI pós-merge e evidência de encerramento antes de fechar `R-004` ou concluir a Etapa 5;
+- Etapa 6: não iniciada.
+
+Ready for review, merge, encerramento de `R-004`, conclusão da Etapa 5 e início da Etapa 6 são gates independentes e não estão implicitamente autorizados.
+
 ## Regras inegociáveis
 
 1. `main` representa somente estados aprovados.

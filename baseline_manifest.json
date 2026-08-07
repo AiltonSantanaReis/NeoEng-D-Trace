@@ -13,8 +13,8 @@
       "size": 662
     },
     ".github/pull_request_template.md": {
-      "sha256": "73fd40d717e46d095da7d58c7f589cefb329d6df971912cf635c81a52ff2f4c4",
-      "size": 1152
+      "sha256": "e70a063ec143c6a70cb37888341db905c2caad22d2fd7c9815feb30719fa6fa3",
+      "size": 3620
     },
     ".github/workflows/ci.yml": {
       "sha256": "5aa8186b4703b1c56afc2a6d5af6f1f109b68c2e1d0120d4e939f19ee6c31ee6",
@@ -25,12 +25,12 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "13b4b6b31edb64bf1fb1f3e8987062618ceaecb202b27474309b83647b89e3e9",
-      "size": 25702
+      "sha256": "d466a38504957214fa2f64d7af28bfb0a4481c58ab5eea25aa5bac5b3a0a9d59",
+      "size": 32590
     },
     "README.md": {
-      "sha256": "2c7db86b020293115333c9714f0ffcc2d187748d53bad714206113ef716cbd92",
-      "size": 3726
+      "sha256": "30c4b8bc2f384f0f6e42ffcf04c185e7e2c06b79cec88e03795abc9288511948",
+      "size": 7824
     },
     "app.py": {
       "sha256": "6eef1fb7c76c4b3648a530c1c3e939ed296ead232fd5c4be4e48708f69389997",
@@ -105,8 +105,8 @@
       "size": 9712
     },
     "docs/ESTRATEGIA_GITHUB.md": {
-      "sha256": "7c94b514e23d3b378c81bbae92f8f5c523f40a427981615e8375cf26375ca917",
-      "size": 5556
+      "sha256": "2d21b66741d7cc3629e9421268cdb5742809f3e61d923b1b9749d2d3250b5485",
+      "size": 5866
     },
     "docs/ETAPA_0_5_2C_INTEGRACAO_UI_EXPORTACAO.md": {
       "sha256": "cd27ccba29555704189941252fc28b6411d6741d72d82ab76857f9e9871a7f3b",
@@ -193,24 +193,24 @@
       "size": 1220
     },
     "docs/MATRIZ_FUNCIONALIDADES.md": {
-      "sha256": "fc5a9835d4baae60d26018d0482cb323c0f161750652a9cef261ab0ffb4c9aa8",
-      "size": 5569
+      "sha256": "dfb92fe4f1ae5ebc6bf61fb62422e9792e6eb24674bec8b484693b6a89c63304",
+      "size": 5955
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "f077fea250c44c76b229da8378e55ddf902a670e3e597f7487e5bf59be692c69",
-      "size": 7774
+      "sha256": "7b99d49a190efabe479a25c1a7445e10b5f0fa473dda2082d84e18afe144059b",
+      "size": 11372
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
-      "sha256": "156adf066ca773eb1eb357d393ae990dcc62391899d391c09ad84e2a9758973d",
-      "size": 10092
+      "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
+      "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "efbe4b5a2be56048744ab6630360cf01878461414c7ee6bce982c04d3ee7ec9b",
-      "size": 3068
+      "sha256": "74dd7bab856a828ccb4da63e110a61bd3080fb0b22ca717ca6785b9503b0b044",
+      "size": 4986
     },
     "docs/PLANO_RENOMEACAO.md": {
-      "sha256": "a249193d59bf9d30b64c5f3a62f89fbecfed21bc7145d85f19db69d982b2754a",
-      "size": 3186
+      "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
+      "size": 3393
     },
     "docs/PLANO_ROLLBACK_ETAPA_0_5_2E.md": {
       "sha256": "359ce64489cbd6a77ab2e83474aab472158fbdefe2f5d8b9229c3eba1c7bc174",
@@ -225,8 +225,8 @@
       "size": 19169
     },
     "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md": {
-      "sha256": "b702af34dbc7cceeb811ab684bf776c7c0e83704705c9edef3b7b6e308b27da4",
-      "size": 1720
+      "sha256": "108fa3787a2130aefc8cf91fed77efcb52b969e1bdf31b3c1c16314152a00666",
+      "size": 6515
     },
     "docs/VALIDACAO_0_5_2F2.md": {
       "sha256": "1ef5491db4deed67ae8eaa11a105359dc70b8044b186814e79b9d71cf975d4f6",
@@ -372,9 +372,17 @@
       "sha256": "10a0d8b8c005b3e507d4a58396b659f3afd1bdb7d47d2fe06b760dd8bc1bef48",
       "size": 3525
     },
+    "docs/evidence/ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md": {
+      "sha256": "6213dc214c6aff5c7542ddf3184a2997b6eb7936570859ca88cf609503ecbb4d",
+      "size": 12602
+    },
+    "docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md": {
+      "sha256": "e476171da8c63c7ad8198d871b0f0550a4b25f38ae88ce3a686777aa01f5bd25",
+      "size": 3177
+    },
     "docs/evidence/README.md": {
-      "sha256": "7b63b278469099005b3957944d7b1d19a5fbc8fbee522cd3b72163c5af0b9354",
-      "size": 3264
+      "sha256": "35e82398195a80c98c7953a8a4d527e534a67ec115b8d5e8486ae5ca0c135c4d",
+      "size": 9155
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -592,9 +600,13 @@
       "sha256": "dba51e5acee3dae82fa5977f814e9ca45b97a5e31af65b3db67fec7637d1e32a",
       "size": 1884
     },
+    "src/core/bezier_geometry.py": {
+      "sha256": "3a9acdc7477e299c989a829711ccaa0a021c1d5f5083a087914fae6a61b3dec3",
+      "size": 9030
+    },
     "src/core/commands.py": {
-      "sha256": "d0a3134a862ff75291567acfc7ec5a7b25130a3b140f8588b00d789a6ee1e303",
-      "size": 64724
+      "sha256": "e0151b158d1b72f8256ed2b6292a4d589912345b073ee9e1cfd03552d756de0e",
+      "size": 76711
     },
     "src/core/config.py": {
       "sha256": "4a0cca6406661ffb3fecccacf56abe52871d5e75797372415e5ffe8536487c1e",
@@ -665,8 +677,8 @@
       "size": 32
     },
     "src/models/scene.py": {
-      "sha256": "e76ef8c75de88929e825d890b10aa4e3d698c169d7a072c60afe53393310d312",
-      "size": 22283
+      "sha256": "9488f592c239a50f41d85f9a5945e9d216644d2844a9ebe8d5d9b25d110b3c00",
+      "size": 26352
     },
     "src/persistence/__init__.py": {
       "sha256": "bca8fb2c323eb56eb108c121e3813788b072acc8d5286b88903e34509b10b447",
@@ -749,8 +761,8 @@
       "size": 10926
     },
     "src/tools/pen_tool.py": {
-      "sha256": "5c10f70a2462ad6e5f0b9369ea98f78902f7637a93e1cfff533f5b6bfe3e7bce",
-      "size": 11083
+      "sha256": "9ca08318086a6a7ff0729d4fe7cb1e57fe63a8f85754b63b666444e4dca19a0b",
+      "size": 28546
     },
     "src/tools/polygon_edit_tool.py": {
       "sha256": "0596368ae92b4217a7563bbf9b6db3186f1eba4813db933b58c783db41b500c5",
@@ -867,6 +879,10 @@
     "tests/test_creation_auto_selection.py": {
       "sha256": "f2a31f3330f20afb10c99bf60ae6a71437b9de89362001b792d223907efba905",
       "size": 1188
+    },
+    "tests/test_documentation_state_contracts.py": {
+      "sha256": "f0283bda1da03e7d25022c23ea5f6c44672c6007f0ca9e9bc0bb34231ceaa739",
+      "size": 13118
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
@@ -1011,6 +1027,14 @@
     "tests/test_stage_5_package_5b_ui_paths.py": {
       "sha256": "991c0a86d269daaa1927016ca17540d2d255e4a28d77f17da5376805d49aa601",
       "size": 7925
+    },
+    "tests/test_stage_5_package_5c_bezier_history.py": {
+      "sha256": "ec0e2a21d4b30d65083470005a833ba75332704994e4bbb0d9f9cc96cea5d610",
+      "size": 36664
+    },
+    "tests/test_stage_5_package_5c_residual_command_contracts.py": {
+      "sha256": "550d9f540aea10894c1040e03c0cbf4389bc182d8e1c2f3717fa0d3c77d7b361",
+      "size": 6200
     },
     "tests/test_tools_real.py": {
       "sha256": "a7d20d35d0fb9e3f109b410fc3a40bd31c0b03e1d550a06824c80850e9564357",

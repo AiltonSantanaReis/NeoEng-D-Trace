@@ -9,6 +9,12 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from src.core.bezier_geometry import (
+    BezierSegments,
+    canonical_point,
+    canonicalize_beziers,
+    replace_handle,
+)
 from src.core.logger import logger
 
 
@@ -806,6 +812,8 @@ class ToggleLayerLockCommand(Command):
 
 
 class HandleMoveCommand(Command):
+    """Move one cubic handle while preserving sampled and collision state."""
+
     def __init__(
         self,
         object_id: str,
@@ -813,77 +821,352 @@ class HandleMoveCommand(Command):
         handle_index: int,
         old_pos: Tuple[float, float],
         new_pos: Tuple[float, float],
+        *,
+        steps_per_segment: int = 20,
     ):
-        self.object_id = object_id
+        self.object_id = str(object_id)
         self.seg_index = seg_index
         self.handle_index = handle_index
         self.old_pos = tuple(old_pos)
         self.new_pos = tuple(new_pos)
+        self.steps_per_segment = steps_per_segment
+        self._old_beziers: Optional[BezierSegments] = None
+        self._new_beziers: Optional[BezierSegments] = None
+        self._old_polygon: Optional[List[Tuple[int, int]]] = None
+        self._new_polygon: Optional[List[Tuple[int, int]]] = None
+        self._had_collision: Optional[bool] = None
+        self._collision_snapshot: Optional[List[Tuple[float, float]]] = None
+        self._executed_once = False
+
+    def _validate_request(self) -> Optional[CommandResult]:
+        try:
+            old_pos = canonical_point(self.old_pos, label="old handle position")
+            new_pos = canonical_point(self.new_pos, label="new handle position")
+        except OverflowError:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "Handle coordinates must be finite and representable.",
+            )
+        except ValueError as exc:
+            return CommandResult.rejected(self, "execute", str(exc))
+        if isinstance(self.seg_index, bool) or not isinstance(self.seg_index, int):
+            return CommandResult.rejected(
+                self, "execute", "segment_index must be an integer."
+            )
+        if isinstance(self.handle_index, bool) or not isinstance(
+            self.handle_index, int
+        ):
+            return CommandResult.rejected(
+                self, "execute", "handle_index must be an integer."
+            )
+        if self.handle_index not in {1, 2}:
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "handle_index must identify control point 1 or 2.",
+            )
+        if isinstance(self.steps_per_segment, bool) or not isinstance(
+            self.steps_per_segment, int
+        ):
+            return CommandResult.rejected(
+                self, "execute", "steps_per_segment must be an integer."
+            )
+        if self.steps_per_segment < 1:
+            return CommandResult.rejected(
+                self, "execute", "steps_per_segment must be at least 1."
+            )
+        self.old_pos = old_pos
+        self.new_pos = new_pos
+        return None
+
+    def _current_state(self, scene: Any) -> Optional[Tuple[Any, ...]]:
+        obj = scene.objects.get(self.object_id)
+        if obj is None:
+            return None
+        try:
+            beziers = canonicalize_beziers(obj.beziers)
+        except (OverflowError, TypeError, ValueError):
+            return None
+        has_collision = self.object_id in scene.collision_shapes
+        collision = (
+            copy.deepcopy(scene.collision_shapes[self.object_id])
+            if has_collision
+            else None
+        )
+        return (
+            beziers,
+            copy.deepcopy(obj.polygon),
+            has_collision,
+            collision,
+        )
+
+    def _old_state(self) -> Optional[Tuple[Any, ...]]:
+        if (
+            self._old_beziers is None
+            or self._old_polygon is None
+            or self._had_collision is None
+        ):
+            return None
+        return (
+            copy.deepcopy(self._old_beziers),
+            copy.deepcopy(self._old_polygon),
+            self._had_collision,
+            copy.deepcopy(self._collision_snapshot),
+        )
+
+    def _new_state(self) -> Optional[Tuple[Any, ...]]:
+        if (
+            self._new_beziers is None
+            or self._new_polygon is None
+            or self._had_collision is None
+        ):
+            return None
+        return (
+            copy.deepcopy(self._new_beziers),
+            copy.deepcopy(self._new_polygon),
+            self._had_collision,
+            copy.deepcopy(self._collision_snapshot),
+        )
+
+    def _apply(
+        self,
+        scene: Any,
+        beziers: BezierSegments,
+        polygon: List[Tuple[int, int]],
+    ) -> None:
+        obj = scene.objects[self.object_id]
+        obj.beziers = copy.deepcopy(beziers)
+        obj.polygon = copy.deepcopy(polygon)
+        if self._had_collision:
+            scene.collision_shapes[self.object_id] = copy.deepcopy(
+                self._collision_snapshot
+            )
+        else:
+            scene.collision_shapes.pop(self.object_id, None)
+        scene._notify()
 
     def execute(self, scene: Any):
+        validation = self._validate_request()
+        if validation is not None:
+            return validation
         obj = scene.objects.get(self.object_id)
-        if not obj or not hasattr(obj, "beziers"):
-            return
-        seg = list(obj.beziers[self.seg_index])
-        seg[self.handle_index] = tuple(self.new_pos)
-        obj.beziers[self.seg_index] = tuple(seg)
-        scene.set_object_beziers(self.object_id, obj.beziers)
+        if obj is None:
+            return CommandResult.rejected(
+                self, "execute", "The object no longer exists."
+            )
+        if getattr(obj, "beziers", None) is None:
+            return CommandResult.rejected(
+                self, "execute", "The object has no Bézier geometry."
+            )
+
+        if not self._executed_once:
+            try:
+                old_beziers = canonicalize_beziers(obj.beziers)
+            except OverflowError:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "Bézier coordinates must be finite and representable.",
+                )
+            except ValueError as exc:
+                return CommandResult.rejected(self, "execute", str(exc))
+            if self.seg_index < 0 or self.seg_index >= len(old_beziers):
+                return CommandResult.rejected(
+                    self, "execute", "segment_index is outside the Bézier geometry."
+                )
+            if old_beziers[self.seg_index][self.handle_index] != self.old_pos:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "The handle changed before this edit could be applied.",
+                )
+            if self.old_pos == self.new_pos:
+                return CommandResult.no_change(
+                    self, "execute", "The handle is already at the requested position."
+                )
+            try:
+                requested_beziers = replace_handle(
+                    old_beziers,
+                    self.seg_index,
+                    self.handle_index,
+                    self.new_pos,
+                )
+                new_beziers, new_polygon = scene.prepare_bezier_geometry(
+                    requested_beziers,
+                    steps_per_segment=self.steps_per_segment,
+                )
+            except OverflowError:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "Bézier coordinates must be finite and representable.",
+                )
+            except ValueError as exc:
+                return CommandResult.rejected(self, "execute", str(exc))
+
+            self._old_beziers = copy.deepcopy(old_beziers)
+            self._new_beziers = copy.deepcopy(new_beziers)
+            self._old_polygon = copy.deepcopy(obj.polygon)
+            self._new_polygon = copy.deepcopy(new_polygon)
+            self._had_collision = self.object_id in scene.collision_shapes
+            self._collision_snapshot = (
+                copy.deepcopy(scene.collision_shapes[self.object_id])
+                if self._had_collision
+                else None
+            )
+            self._executed_once = True
+        elif self._current_state(scene) != self._old_state():
+            return CommandResult.rejected(
+                self,
+                "execute",
+                "Bézier, polygon or collision state changed before Redo.",
+            )
+
+        if self._new_beziers is None or self._new_polygon is None:
+            return CommandResult.failed(
+                self,
+                "execute",
+                "BezierBackupError",
+                "The target Bézier state is unavailable.",
+            )
+        self._apply(scene, self._new_beziers, self._new_polygon)
+        return None
 
     def undo(self, scene: Any):
-        obj = scene.objects.get(self.object_id)
-        if not obj or not hasattr(obj, "beziers"):
-            return
-        seg = list(obj.beziers[self.seg_index])
-        seg[self.handle_index] = tuple(self.old_pos)
-        obj.beziers[self.seg_index] = tuple(seg)
-        scene.set_object_beziers(self.object_id, obj.beziers)
+        if self._old_state() is None or self._new_state() is None:
+            return CommandResult.rejected(
+                self, "undo", "The previous Bézier state is unavailable."
+            )
+        if self._current_state(scene) != self._new_state():
+            return CommandResult.rejected(
+                self, "undo", "Bézier, polygon or collision state changed before Undo."
+            )
+        if self._old_beziers is None or self._old_polygon is None:
+            return CommandResult.failed(
+                self,
+                "undo",
+                "BezierBackupError",
+                "The previous Bézier state is unavailable.",
+            )
+        self._apply(scene, self._old_beziers, self._old_polygon)
+        return None
 
 
 class UpdatePolygonCommand(Command):
-    # Replace one polygon and restore exact prior collision state on undo.
+    """Replace one polygon with exact stale-state and collision checks."""
+
     def __init__(
         self,
         object_id: str,
         old_polygon: List[Tuple[int, int]],
         new_polygon: List[Tuple[int, int]],
     ):
-        self.object_id = object_id
-        self.old_polygon = [tuple(point) for point in old_polygon]
-        self.new_polygon = [tuple(point) for point in new_polygon]
-        self._had_collision = False
+        self.object_id = str(object_id)
+        self.old_polygon: List[Tuple[int, int]] = [
+            (point[0], point[1]) for point in old_polygon
+        ]
+        self.new_polygon: List[Tuple[int, int]] = [
+            (point[0], point[1]) for point in new_polygon
+        ]
+        self._had_collision: Optional[bool] = None
         self._old_collision: Optional[List[Tuple[float, float]]] = None
+        self._new_collision: Optional[List[Tuple[float, float]]] = None
+        self._executed_once = False
 
-    def execute(self, scene: Any):
+    def _state(self, scene: Any) -> Optional[Tuple[Any, ...]]:
         obj = scene.objects.get(self.object_id)
         if obj is None:
+            return None
+        has_collision = self.object_id in scene.collision_shapes
+        collision = (
+            copy.deepcopy(scene.collision_shapes[self.object_id])
+            if has_collision
+            else None
+        )
+        return (
+            [tuple(point) for point in obj.polygon],
+            has_collision,
+            collision,
+        )
+
+    def _old_state(self) -> Optional[Tuple[Any, ...]]:
+        if self._had_collision is None:
+            return None
+        return (
+            copy.deepcopy(self.old_polygon),
+            self._had_collision,
+            copy.deepcopy(self._old_collision),
+        )
+
+    def _new_state(self) -> Optional[Tuple[Any, ...]]:
+        if self._had_collision is None:
+            return None
+        return (
+            copy.deepcopy(self.new_polygon),
+            self._had_collision,
+            copy.deepcopy(self._new_collision),
+        )
+
+    def _apply(
+        self,
+        scene: Any,
+        polygon: List[Tuple[int, int]],
+        collision: Optional[List[Tuple[float, float]]],
+    ) -> None:
+        obj = scene.objects[self.object_id]
+        obj.polygon = copy.deepcopy(polygon)
+        if self._had_collision:
+            scene.collision_shapes[self.object_id] = copy.deepcopy(collision)
+        else:
+            scene.collision_shapes.pop(self.object_id, None)
+        scene._notify()
+
+    def execute(self, scene: Any):
+        current = self._state(scene)
+        if current is None:
             return CommandResult.rejected(
                 self, "execute", "The object no longer exists."
             )
-        if [tuple(point) for point in obj.polygon] != self.old_polygon:
-            return CommandResult.rejected(
-                self,
-                "execute",
-                "The object changed before this edit could be applied.",
+
+        if not self._executed_once:
+            if current[0] != self.old_polygon:
+                return CommandResult.rejected(
+                    self,
+                    "execute",
+                    "The object changed before this edit could be applied.",
+                )
+            if self.old_polygon == self.new_polygon:
+                return CommandResult.no_change(
+                    self,
+                    "execute",
+                    "The polygon is already in the requested state.",
+                )
+            self._had_collision = bool(current[1])
+            self._old_collision = copy.deepcopy(current[2])
+            self._new_collision = (
+                [(float(x), float(y)) for x, y in self.new_polygon]
+                if self._had_collision
+                else None
             )
-        if self.old_polygon == self.new_polygon:
-            return CommandResult.no_change(
-                self,
-                "execute",
-                "The polygon is already in the requested state.",
+            self._executed_once = True
+        elif current != self._old_state():
+            return CommandResult.rejected(
+                self, "execute", "Polygon or collision state changed before Redo."
             )
 
-        self._had_collision = self.object_id in scene.collision_shapes
-        self._old_collision = (
-            copy.deepcopy(scene.collision_shapes[self.object_id])
-            if self._had_collision
-            else None
-        )
-        scene.update_polygon(self.object_id, self.new_polygon)
+        self._apply(scene, self.new_polygon, self._new_collision)
+        return None
 
     def undo(self, scene: Any):
-        obj = scene.objects.get(self.object_id)
-        if obj is None:
-            return CommandResult.rejected(self, "undo", "The object no longer exists.")
+        if self._old_state() is None or self._new_state() is None:
+            return CommandResult.rejected(
+                self, "undo", "The previous polygon state is unavailable."
+            )
+        if self._state(scene) != self._new_state():
+            return CommandResult.rejected(
+                self, "undo", "Polygon or collision state changed before Undo."
+            )
         if self._had_collision and self._old_collision is None:
             return CommandResult.failed(
                 self,
@@ -891,13 +1174,8 @@ class UpdatePolygonCommand(Command):
                 "CollisionBackupError",
                 "The previous collision shape is unavailable.",
             )
-
-        obj.polygon = copy.deepcopy(self.old_polygon)
-        if self._had_collision:
-            scene.collision_shapes[self.object_id] = copy.deepcopy(self._old_collision)
-        else:
-            scene.collision_shapes.pop(self.object_id, None)
-        scene._notify()
+        self._apply(scene, self.old_polygon, self._old_collision)
+        return None
 
 
 class UpdateObjectGeometryCommand(Command):
@@ -1397,7 +1675,9 @@ class _CreatePolygonCommandBase(Command):
         layer_id: Optional[str] = None,
         object_id: Optional[str] = None,
     ):
-        self.polygon = [tuple(point) for point in polygon]
+        self.polygon: List[Tuple[int, int]] = [
+            (point[0], point[1]) for point in polygon
+        ]
         self.layer_id = layer_id
         self.object_id = object_id
         self._previous_selected_id: Optional[str] = None
@@ -1432,6 +1712,17 @@ class _CreatePolygonCommandBase(Command):
             return False
         return all(self.object_id not in group.members for group in scene.groups)
 
+    def _create_first_object(self, scene: Any) -> None:
+        if self.object_id is None:
+            self.object_id = scene.add_polygon(self.polygon, self.layer_id)
+        else:
+            scene.add_object(
+                self.object_id,
+                self.polygon,
+                self.layer_id,
+                select=True,
+            )
+
     def _execute_first(self, scene: Any) -> Optional[CommandResult]:
         target_layer_id = self.layer_id or "layer_default"
         if target_layer_id not in {layer.id for layer in scene.layers}:
@@ -1450,14 +1741,13 @@ class _CreatePolygonCommandBase(Command):
         self._previous_selected_id = scene.selected_id
         self._object_ids_before = tuple(scene.objects)
 
+        self._create_first_object(scene)
         if self.object_id is None:
-            self.object_id = scene.add_polygon(self.polygon, self.layer_id)
-        else:
-            scene.add_object(
-                self.object_id,
-                self.polygon,
-                self.layer_id,
-                select=True,
+            return CommandResult.failed(
+                self,
+                "execute",
+                "CreationIdentityError",
+                "The created object id is unavailable.",
             )
 
         self._object_snapshot = copy.deepcopy(scene.objects[self.object_id])
@@ -1583,6 +1873,46 @@ class CreateObjectCommand(_CreatePolygonCommandBase):
         object_id: Optional[str] = None,
     ):
         super().__init__(polygon, layer_id, object_id)
+
+
+class CreateBezierObjectCommand(_CreatePolygonCommandBase):
+    """Create one editable Bézier object with stable identity."""
+
+    def __init__(
+        self,
+        beziers: Any,
+        layer_id: Optional[str] = None,
+        object_id: Optional[str] = None,
+        *,
+        steps_per_segment: int = 20,
+    ):
+        super().__init__([], layer_id, object_id)
+        self.beziers = copy.deepcopy(beziers)
+        self.steps_per_segment = steps_per_segment
+
+    def _create_first_object(self, scene: Any) -> None:
+        self.object_id = scene.add_bezier_object(
+            self.beziers,
+            layer_id=self.layer_id,
+            object_id=self.object_id,
+            select=True,
+            steps_per_segment=self.steps_per_segment,
+        )
+
+    def execute(self, scene: Any):
+        if not self._executed_once:
+            try:
+                canonical, polygon = scene.prepare_bezier_geometry(
+                    self.beziers,
+                    steps_per_segment=self.steps_per_segment,
+                )
+            except (TypeError, ValueError) as exc:
+                return CommandResult.rejected(self, "execute", str(exc))
+
+            self.beziers = canonical
+            self.polygon = polygon
+            return self._execute_first(scene)
+        return self._execute_redo(scene)
 
 
 class MoveGroupCommand(Command):
