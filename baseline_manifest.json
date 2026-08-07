@@ -25,12 +25,12 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "a0eef922cfdd69dfc92a10f581d72d477d0b3e1cfd83f67cd8cb74a315cdf06d",
-      "size": 31793
+      "sha256": "d466a38504957214fa2f64d7af28bfb0a4481c58ab5eea25aa5bac5b3a0a9d59",
+      "size": 32590
     },
     "README.md": {
-      "sha256": "b4784d2cd55dbb99389a8d87d6b6ed26d74408ba943dbc965ea437bafdf39a6f",
-      "size": 7324
+      "sha256": "30c4b8bc2f384f0f6e42ffcf04c185e7e2c06b79cec88e03795abc9288511948",
+      "size": 7824
     },
     "app.py": {
       "sha256": "6eef1fb7c76c4b3648a530c1c3e939ed296ead232fd5c4be4e48708f69389997",
@@ -197,16 +197,16 @@
       "size": 5955
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "65325561b9dede3e1e3a8202d6f7b0277bfcdbda4d48c4ab15a36c9e1c4dbe8d",
-      "size": 11282
+      "sha256": "7b99d49a190efabe479a25c1a7445e10b5f0fa473dda2082d84e18afe144059b",
+      "size": 11372
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "a056c00d12f11f258b80447fffa995e6f6de8ddabc5dc9cabe4208393e6abdb7",
-      "size": 4425
+      "sha256": "74dd7bab856a828ccb4da63e110a61bd3080fb0b22ca717ca6785b9503b0b044",
+      "size": 4986
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -376,9 +376,13 @@
       "sha256": "6213dc214c6aff5c7542ddf3184a2997b6eb7936570859ca88cf609503ecbb4d",
       "size": 12602
     },
+    "docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md": {
+      "sha256": "e476171da8c63c7ad8198d871b0f0550a4b25f38ae88ce3a686777aa01f5bd25",
+      "size": 3177
+    },
     "docs/evidence/README.md": {
-      "sha256": "cf95160c8d603391cf8e971cb3935360e27f5400950d3945f87f2c0995eef1ff",
-      "size": 7938
+      "sha256": "35e82398195a80c98c7953a8a4d527e534a67ec115b8d5e8486ae5ca0c135c4d",
+      "size": 9155
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -877,8 +881,8 @@
       "size": 1188
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "a3e241892b940f762835749a44ae438cb22c608fbc2abfc38547f2bf11f903bc",
-      "size": 11949
+      "sha256": "f0283bda1da03e7d25022c23ea5f6c44672c6007f0ca9e9bc0bb34231ceaa739",
+      "size": 13118
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",

@@ -10,7 +10,11 @@ Snapshot de referência desta reconciliação documental, em 6 de agosto de 2026
 
 - `main` integrada até o Pacote 5B da Etapa 5, em `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
 - Etapa 5 ativa, com o risco `R-004` ainda aberto;
-- Pacote 5C na PR `#27`, draft e não integrado; o HEAD remoto ainda é `4802e24d6dd91a20dda4b56ae526ba33e5544322`; o gate v4.0 passou no Windows com 89 testes focais, 15 documentais, 510 totais e 66% de cobertura, mas a revisão pós-gate bloqueou o commit porque `replace_handle()` e `HandleMoveCommand` aceitavam `True` e `1.0` como índice de handle 1 e deixavam `TypeError` bruto escapar para índices não hashable; a linha v4.1 exige índice inteiro estrito, rejeita booleanos, floats e valores não hashable sem mutação ou histórico, mantendo o escopo final controlado em 20 arquivos;
+- Pacote 5C na PR `#27`, draft e não integrado; o HEAD funcional validado é `9bf83af0d58b5984ccfefc59a543428379b02632`, com 20 arquivos no escopo, gate local Windows/Python 3.11.9 de 95 testes focais, 16 documentais e 517 totais, cobertura global de 66%, validação manual aprovada e integração visual automática com 17/17 estados aprovados;
+- o workflow `Private validation` `#82` (`31115744015`) foi concluído com Linux e Windows em `success` para o HEAD funcional `9bf83af0d58b5984ccfefc59a543428379b02632`;
+- artefato Linux: `8973550294`, SHA-256 `d6cee9f94f04d706cccb106d6456dcbc3e482e4ed84aec2fa15b6bfa396be435`; artefato Windows: `8973729078`, SHA-256 `a433a229cdbc1bfe58d03804baa2edb223c5bc2f6c37d17431b90e86f3777aa6`;
+- não havia comentários, reviews ou threads pendentes na PR no momento da verificação pré-merge;
+- esta reconciliação cria um novo HEAD exclusivamente documental e exige novo CI Linux/Windows ligado ao commit que a contém antes de qualquer decisão sobre Ready for review;
 - Etapa 6 não iniciada;
 - nenhum texto deste README autoriza Ready for review, merge, fechamento de risco ou transição de etapa.
 
@@ -27,9 +31,9 @@ Snapshot de referência desta reconciliação documental, em 6 de agosto de 2026
 - exportação GLTF/GLB de cena e objeto com generator, geometria, metadados e padding validados;
 - entrada gráfica e headless por `app.py`.
 
-A PR `#27` contém trabalho ainda não integrado. Resultados do CI do commit anterior não comprovam alterações locais ou um HEAD posterior.
+A PR `#27` contém trabalho ainda não integrado. O HEAD `9bf83af0d58b5984ccfefc59a543428379b02632` é a âncora funcional já validada localmente, visualmente e pelo CI. O commit exclusivamente documental que contém esta reconciliação deve passar por novo CI Linux/Windows antes de Ready for review.
 
-O status da correção v4.1 é determinado exclusivamente pelo pacote de evidências produzido pelo gate integral no Windows. Mesmo quando registrado como `APPROVED_FOR_DIFF_REVIEW_ONLY`, o resultado autoriza somente a revisão do diff; não aprova commit, push, CI, Ready for review, merge ou encerramento de risco.
+Ready for review, merge, fechamento de `R-004`, conclusão da Etapa 5 e início da Etapa 6 permanecem decisões independentes. O relatório funcional v4.1 continua preservado como snapshot histórico e não é reescrito retroativamente.
 
 ## Estrutura aprovada
 

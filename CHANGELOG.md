@@ -34,6 +34,11 @@ Snapshot documental de 6 de agosto de 2026. O estado real da branch, da PR e do 
 - o corrector v4.0 passou no Windows com 89 testes focais, 15 documentais, 510 totais e cobertura global de 66%, com evidência completa dos 20 arquivos;
 - a revisão pós-v4.0 bloqueou o commit porque o índice de handle não tinha contrato de tipo estrito: booleanos e `1.0` eram aceitos como índice 1, enquanto listas ou dicionários podiam expor `TypeError` bruto;
 - a correção incremental v4.1 exige `handle_index` inteiro não booleano no núcleo e no comando, rejeita entradas inválidas de forma controlada e garante ausência de mutação e de histórico;
+- o gate oficial v4.1 passou no Windows/Python 3.11.9 com 95 testes focais, 16 documentais, 517 totais, baseline 263 e cobertura global de 66%;
+- a validação manual foi aprovada e a integração visual automática aprovou 17/17 estados, com ZIP SHA-256 `2981a29d85f8df329bddd0711e16b54665a75d8522447405c476359d6bd2d189`;
+- o commit funcional `9bf83af0d58b5984ccfefc59a543428379b02632` foi publicado por fast-forward sem força na PR `#27`;
+- o workflow `Private validation` `#82` (`31115744015`) concluiu Linux e Windows em `success`; a primeira tentativa Windows falhou antes do checkout por indisponibilidade do GitHub e o retry passou sem alteração de código;
+- a reconciliação documental pré-merge cria novo HEAD exclusivamente documental e exige novo CI Linux/Windows antes de Ready;
 - documentação viva reconciliada com o estado versionado, mantendo auditorias e evidências antigas como snapshots históricos;
 - nenhuma entrada deste bloco declara release, encerramento de `R-004`, conclusão da Etapa 5 ou início da Etapa 6.
 

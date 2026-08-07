@@ -25,7 +25,7 @@ Snapshot de 6 de agosto de 2026. O estado real do GitHub e do HEAD local deve se
 | R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
 | R-003 | ABERTO | Cobertura integral de UI e ferramentas permanece para a Etapa 11 |
-| R-004 | CONFIRMADO / ABERTO | Etapa 5 integrada até o Pacote 5B; o v4.0 do Pacote 5C passou no Windows, mas a revisão bloqueou commit porque o índice de handle aceitava booleanos e floats equivalentes a 1 e podia expor `TypeError` para valores não hashable; a linha v4.1 permanece não integrada na PR `#27`; não fechar antes de gate v4.1, revisão, commit autorizado, novo HEAD, CI, validação focal e encerramento formal |
+| R-004 | CONFIRMADO / ABERTO | Etapa 5 integrada até o Pacote 5B; o Pacote 5C permanece não integrado na PR `#27`, mas o HEAD funcional `9bf83af0d58b5984ccfefc59a543428379b02632` foi aprovado no gate local v4.1, na validação manual, em 17/17 estados automáticos e no CI Linux/Windows `#82`; o gate atual é a reconciliação documental com novo HEAD e novo CI; não fechar antes de merge, CI pós-merge da `main` e evidência formal de encerramento |
 | R-005 | ABERTO | Etapa 6 — exportação de colisões; ainda não iniciada |
 | R-006 | ABERTO | Etapa 7 — CLI e modo headless |
 | R-007 | PARCIAL / ABERTO | Persistência de segmentos Bézier resolvida na Etapa 3; qualidade e validações geométricas permanecem para a Etapa 8 |
@@ -51,7 +51,7 @@ Snapshot de 6 de agosto de 2026. O estado real do GitHub e do HEAD local deve se
 | 4C | `#24` | integrado em `0fc089bfc58ff9589f50bb394acd579bc2f71dd3` | camadas e grupos; `LayersPanel` não comprovado na `MainWindow` |
 | 5A | `#25` | integrado em `9235ddc1ceaeddaec2074050eaebdeacaf588e53` | caminhos ativos de criação |
 | 5B | `#26` | integrado em `ee38a2f1dc85093e34140ddd087312629b4ecb43` | lotes e geração de colisões reversíveis |
-| 5C | `#27` | NÃO INTEGRADO | Bézier e contratos residuais; v4.0 aprovado nos gates e bloqueado na revisão pós-gate pelo contrato não estrito do índice de handle; consultar a evidência v4.1 mais recente e revisar o escopo completo de 20 arquivos antes de commit |
+| 5C | `#27` | NÃO INTEGRADO / PRÉ-MERGE APROVADO NO HEAD FUNCIONAL | HEAD `9bf83af0d58b5984ccfefc59a543428379b02632`; 20 arquivos; 95 focais, 16 documentais, 517 totais, 66% de cobertura; validação manual e automática 17/17; CI `#82` Linux/Windows em `success`; reconciliação documental e novo CI ainda pendentes antes de Ready |
 
 ## Achados registrados na Etapa 2
 

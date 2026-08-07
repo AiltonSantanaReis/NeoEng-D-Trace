@@ -29,16 +29,27 @@ def test_package_5c_evidence_does_not_repeat_false_bezier_limitation():
 
 def test_live_documents_identify_current_main_pr_and_gate():
     expected_main = "ee38a2f1dc85093e34140ddd087312629b4ecb43"
+    functional_head = "9bf83af0d58b5984ccfefc59a543428379b02632"
     for relative in (
         "README.md",
         "docs/PLANO_MESTRE_ESTABILIZACAO.md",
         "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
         "docs/evidence/README.md",
     ):
-        text = _text(relative)
-        assert expected_main in text
-        assert "#27" in text
-        assert "R-004" in text
+        value = _text(relative)
+        assert expected_main in value
+        assert functional_head in value
+        assert "#27" in value
+        assert "R-004" in value
+        assert "#82" in value
+
+    premerge = _text("docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md")
+    assert functional_head in premerge
+    assert "31115744015" in premerge
+    assert "8973550294" in premerge
+    assert "8973729078" in premerge
+    assert "R-004`, aberto" in premerge
+    assert "Ready for review exige autorização separada" in premerge
 
 
 def test_superseded_documents_have_historical_classification():
@@ -60,38 +71,55 @@ def test_governance_requires_sha_bound_ci_and_historical_snapshots():
     assert "Toda afirmação de CI identifica o SHA" in template
 
 
-def test_live_documents_describe_post_v31_review_state_without_stale_gates():
+def test_live_documents_describe_premerge_state_without_stale_gates():
     stale_phrases = (
         "Pacote 5C: em correção e revalidação",
         "correção local deve ser revalidada",
         "próximo gate: correção incremental, reconciliação documental",
         "que deve permanecer draft até novo gate completo",
+        "o HEAD remoto ainda é `4802e24d6dd91a20dda4b56ae526ba33e5544322`",
     )
-    for relative in (
-        "README.md",
-        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
-        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
-        "docs/evidence/README.md",
-    ):
-        text = _text(relative)
+    ci_markers = {
+        "README.md": "novo CI Linux/Windows",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md": (
+            "exigir CI Linux/Windows para esse novo HEAD"
+        ),
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": "novo HEAD e novo CI",
+        "docs/evidence/README.md": "passar por CI Linux/Windows",
+    }
+    for relative, ci_marker in ci_markers.items():
+        value = _text(relative)
         for phrase in stale_phrases:
-            assert phrase not in text, (relative, phrase)
-    assert "APPROVED_FOR_DIFF_REVIEW_ONLY" in _text("README.md")
+            assert phrase not in value, (relative, phrase)
+        assert "9bf83af0d58b5984ccfefc59a543428379b02632" in value
+        if relative != "docs/evidence/README.md":
+            assert "APPROVED_FOR_DIFF_REVIEW_ONLY" not in value
+        assert ci_marker in value, (relative, ci_marker)
+
     evidence_index = _text("docs/evidence/README.md")
-    assert "corrector v3.1" in evidence_index
-    assert "corrector v3.2: bloqueado no dry-run pelo mypy" in evidence_index
-    assert "corrector v3.3" in evidence_index
-    assert "corrector v3.4" in evidence_index
-    assert "corrector v3.5" in evidence_index
-    assert "corrector v3.6" in evidence_index
-    assert (
-        "corrector v3.7: bloqueado no dry-run antes de escrever arquivos"
-        in evidence_index
-    )
-    assert "corrector v3.8" in evidence_index
-    assert "corrector v3.9" in evidence_index
-    assert "corrector v4.0" in evidence_index
-    assert "corrector v4.1" in evidence_index
+    for version in (
+        "v3.1",
+        "v3.2",
+        "v3.3",
+        "v3.4",
+        "v3.5",
+        "v3.6",
+        "v3.7",
+        "v3.8",
+        "v3.9",
+        "v4.0",
+        "v4.1",
+    ):
+        assert f"corrector {version}" in evidence_index
+    assert "ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md" in evidence_index
+    assert "## Histórico dos correctors do Pacote 5C" in evidence_index
+    assert "gate vigente naquele snapshot pré-commit" in evidence_index
+    assert "- gate vigente: somente uma evidência v4.1" not in evidence_index
+
+    premerge = _text("docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md")
+    assert "COMMIT, PUSH E NOVO CI" in premerge
+    assert "EXIGEM AUTORIZAÇÃO ESPECÍFICA" in premerge
+    assert "AUTORIZADA SOMENTE A" not in premerge
 
 
 def test_package_5c_evidence_records_v3_through_v40_truthfully():
@@ -148,6 +176,7 @@ def test_reconciled_documents_have_one_terminal_newline_without_blank_eof():
         "docs/PLANO_RENOMEACAO.md",
         "docs/evidence/README.md",
         "docs/evidence/ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md",
+        "docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md",
     )
     for relative in files:
         data = (ROOT / relative).read_bytes()
