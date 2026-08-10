@@ -14,7 +14,7 @@ Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, 
 - adiciona política de segurança, matriz funcional viva e evidência auditada;
 - migra metadados para PEP 621, exige `poetry check --strict` e promove Flake8 integral a gate com zero achados;
 - remove código morto duplicado do exportador GLTF e centraliza o bootstrap Qt dos testes;
-- mantém release, commit, push e CI final explicitamente não executados.
+- publica o commit `236eefd41ee51c7085e21d52fc80074eede0a793` na PR draft `#28`; CI `31422290050` aprova Linux e Windows; merge, CI pós-merge e release permanecem não executados.
 
 - ambiente reproduzível consolidado em Python 3.11, Poetry 2.4.1 e CI Linux/Windows;
 - formato de projeto `.ndtproj` com schema v1 estrito, migração legada, escrita atômica e round-trip de colisões e segmentos Bézier;

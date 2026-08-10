@@ -142,16 +142,24 @@ def test_stage5_closure_report_is_complete_and_conditional():
         "Cadeia funcional comprovada",
         "CI pós-merge histórico",
         "Limitações e riscos residuais",
-        "APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL",
+        "APROVADO REMOTAMENTE PARA REVISÃO E MERGE",
         "LOCAL_REMEDIATION_COMPLETE=YES",
         "DOCUMENTATION_PACKAGE_PREPARED=YES",
-        "COMMIT_CREATED=NO",
-        "PUSH_EXECUTED=NO",
-        "FINAL_CI_EXECUTED=NO",
+        "COMMIT_CREATED=YES",
+        "PUSH_EXECUTED=YES",
+        "PR_CREATED=YES",
+        "PR_NUMBER=28",
+        "PR_DRAFT=YES",
+        "PR_CI_EXECUTED=YES",
+        "PR_CI_STATUS=SUCCESS",
+        "POST_MERGE_CI_EXECUTED=NO",
         "R004_CLOSED=NO",
         "RELEASE_APPROVED=NO",
         "STAGE5_COMPLETED=NO",
         "STAGE6_STARTED=NO",
+        "31422290050",
+        "93565684359",
+        "93565684441",
     ):
         assert marker in text
 
@@ -349,7 +357,7 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     security = _text("SECURITY.md")
     reconciliation = json.loads(_text("quality/legacy_tests/reconciliation.json"))
 
-    assert "APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL" in audit
+    assert "APROVADO REMOTAMENTE PARA REVISÃO E MERGE" in audit
     assert "Esta decisão não aprova release" in audit
     assert "Matriz funcional atual" in matrix
     assert "Build Windows/instalador | NÃO INICIADO" in matrix
@@ -368,9 +376,11 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
         assert item["replacement_tests"]
 
 
-def test_live_closure_does_not_claim_unpublished_ci_or_release():
+def test_live_closure_does_not_claim_unmerged_or_release():
     closure = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
-    assert "FINAL_CI_EXECUTED=NO" in closure
+    assert "PR_CI_EXECUTED=YES" in closure
+    assert "PR_CI_STATUS=SUCCESS" in closure
+    assert "POST_MERGE_CI_EXECUTED=NO" in closure
     assert "R004_CLOSED=NO" in closure
     assert "STAGE5_COMPLETED=NO" in closure
     assert "RELEASE_APPROVED=NO" in closure

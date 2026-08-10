@@ -27,13 +27,13 @@ O fechamento de `R-004`, a conclusão da Etapa 5 e o início da Etapa 6
 permanecem gates independentes. Este pacote documental não os executa
 implicitamente.
 
-## Reavaliação auditada local — 10 de agosto de 2026
+## Reavaliação auditada publicada — 10 de agosto de 2026
 
 A recomendação anterior foi bloqueada durante auditoria rigorosa e somente
 restabelecida depois das correções descritas em
 `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`.
 
-Estado local atual:
+Estado remoto atual:
 
 - segurança de dependências e Bandit de alta severidade: aprovados;
 - suíte oficial: `532 passed`;
@@ -42,7 +42,9 @@ Estado local atual:
 - mypy estrito: zero erros em 65 arquivos;
 - cobertura combinada linhas/branches: `62.18%`, com piso CI de
   62%; metas finais de 90%/85% ainda abertas;
-- decisão: **APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL**;
+- publicação: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28`;
+- CI da PR: `31422290050`, Linux e Windows em `success`;
+- decisão: **APROVADO REMOTAMENTE PARA REVISÃO E MERGE**;
 - release: **NÃO APROVADA**.
 
 ## Regras inegociáveis

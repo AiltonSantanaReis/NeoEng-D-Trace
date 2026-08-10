@@ -29,12 +29,12 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "23b68b973b93f670ab4d87bc15dbef960fdfc7feec2dd6825ae447e9e383117b",
-      "size": 33820
+      "sha256": "ebb1a91572e084d7a6d5a48c7c30b37d0d7026d82c67fbde9e35767c291c8fd3",
+      "size": 33926
     },
     "README.md": {
-      "sha256": "8836a12ebcbe6f820aaf2a4aced3ee13db900f0f731c68294ed687526f362a22",
-      "size": 9234
+      "sha256": "d7c7c38948874f62519527da2f01ace909a2ec4f1ba7568e6fea5a771c10aa5e",
+      "size": 9390
     },
     "SECURITY.md": {
       "sha256": "1fe511e11d57a3a33485bef2c81924a6e0146dc6a7a3152a8e5ef7b88b51c628",
@@ -205,20 +205,20 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "71e7de6d7c349c14ca6a245b8f2808c66c324d28c1f6810ead8e84a62af774ca",
-      "size": 2966
+      "sha256": "1f09d5d056f33bdac9e5ac762ef4b9d0bc4079feb76ac5715d86cf891bcfdeed",
+      "size": 3044
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "6de3d02e7fdc7c2f3ba3d9d297a53526970dc8a0214d3eccd2a0e7660b4975ad",
-      "size": 12413
+      "sha256": "1f9a22a9c5a4fc9aefcccd232ec5b80312c36d5048f4844a0bcdeef783ac08ef",
+      "size": 12449
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "86b91688874dfc0314cd8e83952c7c5b6e0034b16588238b5ad88dee34f94eee",
-      "size": 5428
+      "sha256": "ac6fb7b8558f52eec48ef313fb811e749687b9feda31f9817fd98e35db48103d",
+      "size": 5567
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -297,8 +297,8 @@
       "size": 630
     },
     "docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md": {
-      "sha256": "e1f4775a2f60fd8022cd784e1f990cf44b9a333d12fea688973e6f2a7b9122e3",
-      "size": 3828
+      "sha256": "a753db00801741991566710b3bab6999fca90e87aa94409beac4f1aa9c8d9123",
+      "size": 4259
     },
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
@@ -341,8 +341,8 @@
       "size": 8007
     },
     "docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md": {
-      "sha256": "0bb75e946bbd09da9d3339543905d5aab1c7cbd6b2b9a3563fe74350ff0175b1",
-      "size": 3920
+      "sha256": "c1451fd19965ceff1af171ee3b46314fffdcf5ccaf46fff55589be710f5d86bc",
+      "size": 4563
     },
     "docs/evidence/ETAPA_5_PACOTE_1_COMMAND_MANAGER_CONTRACT.md": {
       "sha256": "1a96942a3d238777ccbb0b3d4872cc453a41e6ab030c47814da9c5c45a5a9976",
@@ -401,8 +401,8 @@
       "size": 3177
     },
     "docs/evidence/README.md": {
-      "sha256": "42b2322241530bd4138283e793c215826052acd7c7cc57b5a0e0a3438709df0c",
-      "size": 9530
+      "sha256": "e7125b5e565c59b5e038695bc59509e126f202b110e3899d4ff0defa83fee410",
+      "size": 9709
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -913,8 +913,8 @@
       "size": 1188
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "321a15b7836b7ab247e30e85d107c664d5a722d02ed6a51ac78f593f566946e0",
-      "size": 16648
+      "sha256": "1414c753ae814ae0c408784b73a895d0d5f25b4fe82c1396b0e81e46aa9c75ee",
+      "size": 16935
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",

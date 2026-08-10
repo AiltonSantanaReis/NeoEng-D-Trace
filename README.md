@@ -25,11 +25,12 @@ O merge funcional foi concluído. Commit, push, PR e merge do pacote documental
 de encerramento, fechamento de `R-004`, conclusão da Etapa 5 e início da Etapa
 6 continuam sendo gates independentes.
 
-## Auditoria corretiva local — 10 de agosto de 2026
+## Auditoria corretiva publicada — 10 de agosto de 2026
 
-A auditoria rigorosa inicialmente bloqueou o encerramento. O pacote local atual
-corrige os bloqueios encontrados e está **APROVADO LOCALMENTE PARA INTEGRAÇÃO E
-CI FINAL**, sem declarar integração remota ou release:
+A auditoria rigorosa inicialmente bloqueou o encerramento. O commit
+`236eefd41ee51c7085e21d52fc80074eede0a793` foi publicado na PR draft `#28` e
+o CI `31422290050` aprovou Linux e Windows. O pacote está **APROVADO
+REMOTAMENTE PARA REVISÃO E MERGE**, sem declarar integração na `main` ou release:
 
 - Pillow 12.3.0 e lock auditados sem vulnerabilidades conhecidas;
 - 196 testes legados executados, com 26 divergências brutas estritamente
@@ -41,7 +42,8 @@ CI FINAL**, sem declarar integração remota ou release:
 - suíte oficial completa: 532 testes aprovados;
 - cobertura combinada de linhas e branches: 62.18%, com piso incremental de 62% no CI;
 - matriz funcional viva: `docs/MATRIZ_FUNCIONALIDADES_ATUAL.md`;
-- evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`.
+- evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`;
+- merge da PR `#28` e CI pós-merge da `main` permanecem obrigatórios.
 
 ## Capacidades comprovadas no estado integrado
 

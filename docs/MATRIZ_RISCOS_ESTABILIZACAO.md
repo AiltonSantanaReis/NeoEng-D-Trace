@@ -26,7 +26,7 @@ local deve ser conferido antes de qualquer decisão.
 | R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
 | R-003 | ABERTO | `LayersPanel` integrado e cobertura de branches ativada com piso 62%; metas finais 90%/85% permanecem para a Etapa 11 |
-| R-004 | APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL / AINDA ABERTO | Pacotes integrados; auditoria corretiva concluída localmente; fechamento depende de commit, CI Linux/Windows do novo SHA e evidência pós-merge |
+| R-004 | APROVADO NO CI DA PR / AINDA ABERTO | Commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28` e CI `31422290050` aprovados; fechamento depende de merge e CI pós-merge da `main` |
 | R-005 | PARCIAL / ABERTO | Painel e toolbar gravam JSON real; schema genérico unificado permanece para a Etapa 6 |
 | R-006 | PARCIAL / ABERTO | Falso sucesso sem `--object-id` corrigido; matriz integral de CLI permanece para a Etapa 7 |
 | R-007 | PARCIAL / ABERTO | Persistência e invariantes Bézier tratados; qualidade geométrica adicional permanece para a Etapa 8 |
@@ -35,9 +35,9 @@ local deve ser conferido antes de qualquer decisão.
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
 | R-011 | ABERTO | Refatoração posterior protegida por caracterização |
 | R-012 | PARCIAL / ABERTO | Pillow 12.3.0, pip-audit e Bandit limpos; limites operacionais permanecem para a Etapa 12 |
-| R-013 | APROVADO LOCALMENTE / CI PENDENTE | Limites físico/JSON, transparência de borda e rotação corrigidos e testados; requer CI do novo SHA |
+| R-013 | APROVADO NO CI DA PR / INTEGRAÇÃO PENDENTE | Limites físico/JSON, transparência de borda e rotação corrigidos; Linux e Windows aprovados no CI `31422290050` |
 
-## Auditoria corretiva local — 10 de agosto de 2026
+## Auditoria corretiva publicada — 10 de agosto de 2026
 
 A recomendação de encerramento foi reavaliada após o CI pós-merge `#84`,
 execução da suíte legada, auditoria de dependências e provas reais de CLI, atlas
@@ -45,8 +45,8 @@ e colisões. Os achados e
 suas remediações estão em
 `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`.
 
-Nenhum estado `APROVADO LOCALMENTE` equivale a encerramento remoto antes de
-commit e CI do novo SHA.
+O CI da PR confirma o SHA auditado, mas não equivale a integração na `main`.
+`R-004` permanece aberto até merge e CI pós-merge.
 
 ## Progresso da Etapa 5
 

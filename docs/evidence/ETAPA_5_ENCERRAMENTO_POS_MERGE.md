@@ -9,7 +9,12 @@
 - HEAD documental final da PR: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
 - CI pós-merge histórico: `#84`, run `31136893143`, Linux e Windows aprovados;
 - artefatos históricos: Linux `8978309717` e Windows `8978326062`;
-- branch local de fechamento: `docs/etapa-5-encerramento-pos-merge`;
+- branch remota de fechamento: `docs/etapa-5-encerramento-pos-merge`;
+- commit auditado: `236eefd41ee51c7085e21d52fc80074eede0a793`;
+- PR de fechamento: `#28`, draft, base `main`;
+- CI da PR: run `31422290050`, conclusão `success`;
+- jobs: Linux `test` (`93565684359`) e Windows `test-windows` (`93565684441`), ambos `success`;
+- artefatos: Linux `9075840830` (`sha256:0ee90984bd1d907fdccfbb32df6a75c473e3a3d40eb6ce18e32809e1f175440b`) e Windows `9075871031` (`sha256:ca28dcf439bcd60ffd79406e8c1b7e01405ab9d7d79d761c7690835c7a6f032e`);
 - auditoria corretiva: 2026-08-10, Windows/Python 3.11.9.
 
 ## Cadeia funcional comprovada
@@ -63,15 +68,20 @@ anterior até sua remediação.
 - `R-006` permanece parcial para a matriz completa de CLI da Etapa 7;
 - `R-007`, `R-008`, `R-011` e `R-012` mantêm escopos futuros explícitos;
 - build Windows standalone, instalador e release pertencem à Etapa 14;
-- nenhum CI novo existe antes da publicação deste pacote local.
+- PR `#28` permanece draft; merge e CI pós-merge da `main` ainda não foram executados.
 
 ## Estado controlado
 
     LOCAL_REMEDIATION_COMPLETE=YES
     DOCUMENTATION_PACKAGE_PREPARED=YES
-    COMMIT_CREATED=NO
-    PUSH_EXECUTED=NO
-    FINAL_CI_EXECUTED=NO
+    COMMIT_CREATED=YES
+    PUSH_EXECUTED=YES
+    PR_CREATED=YES
+    PR_NUMBER=28
+    PR_DRAFT=YES
+    PR_CI_EXECUTED=YES
+    PR_CI_STATUS=SUCCESS
+    POST_MERGE_CI_EXECUTED=NO
     R004_CLOSED=NO
     STAGE5_COMPLETED=NO
     STAGE6_STARTED=NO
@@ -79,8 +89,8 @@ anterior até sua remediação.
 
 ## Decisão
 
-**APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL.**
+**APROVADO REMOTAMENTE PARA REVISÃO E MERGE.**
 
-`R-004` e a Etapa 5 somente poderão ser marcados como formalmente encerrados
-após commit, CI Linux/Windows do novo SHA e evidência pós-merge.
-O projeto não está aprovado para release.
+O commit auditado, o push e o CI Linux/Windows da PR foram concluídos. `R-004`
+e a Etapa 5 permanecem abertos até merge da PR `#28`, CI pós-merge da `main` e
+evidência desse estado integrado. O projeto não está aprovado para release.

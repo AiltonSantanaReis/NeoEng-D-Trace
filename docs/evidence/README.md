@@ -87,7 +87,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_5B_BATCH_COLLISION_COMMANDS.md` — lotes de máscara e auto-detect atômicos, com auto-geração reversível de colisões.
 - `ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md` — criação e edição Bézier reversíveis e cobertura nominal dos comandos residuais.
 - `ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md` — commit funcional, validação visual, CI Linux/Windows, artefatos e gates independentes anteriores ao merge.
-- `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, remediações e decisão local condicionada ao CI final.
+- `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, commit `236eefd`, PR draft `#28`, CI remoto e gates pós-merge pendentes.
 - `AUDITORIA_RIGOROSA_2026-08-10.md` — bloqueios descobertos, reconciliação legada e novos gates de segurança, tipagem e branches.
 
 ## Estado operacional da evidência atual
@@ -108,12 +108,13 @@ Snapshot pós-merge de 6 de agosto de 2026, condicionado à verificação do HEA
 - branch funcional: preservada no remoto;
 - `R-004`: APROVADO PARA ENCERRAMENTO FORMAL, mas ainda aberto;
 - Etapa 5: APROVADA PARA ENCERRAMENTO FORMAL, mas ainda não concluída;
-- gate atual: integrar este registro documental e exigir CI final da `main`;
+- auditoria corretiva: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28`, CI `31422290050` em `success`;
+- gate atual: revisar/mesclar a PR `#28` e exigir CI pós-merge da `main`;
 - Etapa 6: não iniciada.
 
 O arquivo `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente
-deste gate. Commit, push, PR, merge, fechamento de risco e transição de etapa
-permanecem decisões independentes.
+deste gate. Commit, push, PR e CI da PR foram executados; merge, CI pós-merge,
+fechamento de risco e transição de etapa permanecem decisões independentes.
 
 ## Histórico dos correctors do Pacote 5C
 

@@ -5,8 +5,9 @@
 - base remota auditada: `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
 - branch local: `docs/etapa-5-encerramento-pos-merge`;
 - ambiente: Windows build 26200, Python 3.11.9, Poetry 2.4.1;
-- estado GitHub verificado: PR `#27` mesclada; CI pós-merge `#84` aprovado;
-- estado desta evidência: local, sem commit, push ou CI novo.
+- estado GitHub histórico: PR `#27` mesclada; CI pós-merge `#84` aprovado;
+- publicação corretiva: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28`;
+- CI corretivo: run `31422290050`, Linux `93565684359` e Windows `93565684441` em `success`.
 
 ## Parecer inicial
 
@@ -54,11 +55,17 @@ temporária.
 - fluxo headless pelo wheel: projeto válido gerou JSON (1092 bytes), GLB (996 bytes, magic `glTF`) e round-trip `.ndtproj` (974 bytes); entrada sem polígonos foi rejeitada;
 - `git diff --check`: aprovado.
 
+## Validação remota
+
+- PR: `#28`, estado draft, base `main`;
+- run: `31422290050`, conclusão `success`;
+- Linux: job `93565684359`, artefato `9075840830`, digest `sha256:0ee90984bd1d907fdccfbb32df6a75c473e3a3d40eb6ce18e32809e1f175440b`;
+- Windows: job `93565684441`, artefato `9075871031`, digest `sha256:ca28dcf439bcd60ffd79406e8c1b7e01405ab9d7d79d761c7690835c7a6f032e`.
+
 ## Decisão
 
-**APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL DA ETAPA 5.**
+**APROVADO REMOTAMENTE PARA REVISÃO E MERGE DA ETAPA 5.**
 
-Esta decisão não aprova release. Não fecha riscos das Etapas 6–14, não declara
-as metas finais de cobertura atingidas e não transforma execução local em CI.
-O fechamento formal exige commit, CI Linux/Windows ligado ao novo SHA, revisão
-dos artefatos e atualização pós-merge.
+Esta decisão não aprova release, não fecha riscos das Etapas 6–14 e não declara
+as metas finais de cobertura atingidas. O fechamento formal exige merge da PR
+`#28`, CI pós-merge da `main` e evidência do SHA integrado.
