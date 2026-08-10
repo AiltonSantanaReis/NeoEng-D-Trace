@@ -6,9 +6,9 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Snapshot de referência do encerramento pós-merge da Etapa 5, em 6 de agosto de 2026:
+Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 2026:
 
-- `main` integrada no merge commit `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
+- `main` integrada no merge de fechamento `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
 - PR `#27` fechada e mesclada a partir do HEAD documental `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
 - Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B da Etapa 5: integrados; Pacote 5C: integrado;
 - gate funcional v4.1 no Windows/Python 3.11.9: 95 testes focais, 16 documentais, 517 totais e cobertura global de 66%;
@@ -18,19 +18,23 @@ Snapshot de referência do encerramento pós-merge da Etapa 5, em 6 de agosto de
 - artefato Linux pós-merge: `8978309717`, SHA-256 `25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`;
 - artefato Windows pós-merge: `8978326062`, SHA-256 `0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`;
 - branch funcional preservada no remoto;
-- `R-004`: **APROVADO PARA ENCERRAMENTO FORMAL**; Etapa 5: **APROVADA PARA ENCERRAMENTO FORMAL**; ambos ainda abertos até a integração do registro pós-merge e o CI final da `main`;
+- PR de fechamento `#28` mesclada a partir do HEAD `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
+- CI pós-merge de fechamento `31423386971`: Linux e Windows em `success`;
+- artefatos finais: Linux `9076253153` (`sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`) e Windows `9076283257` (`sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`);
+- `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-O merge funcional foi concluído. Commit, push, PR e merge do pacote documental
-de encerramento, fechamento de `R-004`, conclusão da Etapa 5 e início da Etapa
-6 continuam sendo gates independentes.
+O merge funcional e o pacote documental de encerramento foram concluídos.
+O início da Etapa 6 e qualquer aprovação de release continuam sendo gates
+independentes e não executados.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
 A auditoria rigorosa inicialmente bloqueou o encerramento. O commit
-`236eefd41ee51c7085e21d52fc80074eede0a793` foi publicado na PR draft `#28` e
-o CI `31422290050` aprovou Linux e Windows. O pacote está **APROVADO
-REMOTAMENTE PARA REVISÃO E MERGE**, sem declarar integração na `main` ou release:
+`236eefd41ee51c7085e21d52fc80074eede0a793` foi publicado na PR `#28`; o HEAD
+final `ab71e148c0b7441bd36f489472856d0b4adfaa1e` e o CI `31422901244`
+aprovaram Linux e Windows. A PR foi integrada e o CI pós-merge `31423386971`
+também foi aprovado, sem declarar release:
 
 - Pillow 12.3.0 e lock auditados sem vulnerabilidades conhecidas;
 - 196 testes legados executados, com 26 divergências brutas estritamente
@@ -43,7 +47,9 @@ REMOTAMENTE PARA REVISÃO E MERGE**, sem declarar integração na `main` ou rele
 - cobertura combinada de linhas e branches: 62.18%, com piso incremental de 62% no CI;
 - matriz funcional viva: `docs/MATRIZ_FUNCIONALIDADES_ATUAL.md`;
 - evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`;
-- merge da PR `#28` e CI pós-merge da `main` permanecem obrigatórios.
+- aviso não bloqueante: as Actions atuais ainda referenciam versões cuja ação
+  usava Node.js 20, forçado pelo GitHub para Node.js 24; este pacote final
+  atualiza checkout, setup-python e upload-artifact para `v7`/Node.js 24.
 
 ## Capacidades comprovadas no estado integrado
 
@@ -64,11 +70,10 @@ A PR `#27` foi mesclada por merge commit. O HEAD
 integrado. O relatório funcional v4.1 e a validação pré-merge continuam
 preservados como snapshots históricos e não são reescritos retroativamente.
 
-O pacote documental pós-merge registra `R-004` como
-**APROVADO PARA ENCERRAMENTO FORMAL** e a Etapa 5 como **APROVADA PARA
-ENCERRAMENTO FORMAL**, condicionados à integração desse registro e ao CI final
-da `main`. Nenhum texto deste README declara o risco
-encerrado, a Etapa 5 concluída ou a Etapa 6 iniciada.
+O pacote documental pós-merge registra `R-004` como **ENCERRADO NO ESCOPO
+APROVADO** e a Etapa 5 como **CONCLUÍDA**, com PR `#28` e CI pós-merge ligados
+ao SHA integrado. A Etapa 6 não foi iniciada e a release permanece não
+aprovada.
 
 ## Estrutura aprovada
 

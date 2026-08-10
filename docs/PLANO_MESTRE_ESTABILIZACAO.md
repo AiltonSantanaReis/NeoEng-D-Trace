@@ -2,12 +2,12 @@
 
 Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
-## Estado operacional de referência — 6 de agosto de 2026
+## Estado operacional de referência — 10 de agosto de 2026
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
 - repositório: `AiltonSantanaReis/NeoEng-D-Trace`;
-- `main` integrada conhecida: `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
+- `main` integrada conhecida: `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
 - PR funcional: `#27`, fechada e mesclada;
 - HEAD funcional v4.1: `9bf83af0d58b5984ccfefc59a543428379b02632`;
 - HEAD documental final da PR: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
@@ -18,14 +18,15 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 - CI pós-merge da `main`: workflow `Private validation` `#84` (`31136893143`) com Linux e Windows em `success`;
 - artefatos pós-merge: Linux `8978309717` (`25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`) e Windows `8978326062` (`0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`);
 - branch funcional: preservada no remoto;
-- `R-004`: APROVADO PARA ENCERRAMENTO FORMAL, mas ainda aberto;
-- Etapa 5: APROVADA PARA ENCERRAMENTO FORMAL, mas ainda não concluída;
-- gate atual: preparar, revisar, publicar e integrar o registro documental de encerramento; depois da integração, exigir CI final da `main`;
+- PR de fechamento: `#28`, HEAD `ab71e148c0b7441bd36f489472856d0b4adfaa1e`, mesclada em `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
+- CI pós-merge do fechamento: `31423386971`, Linux e Windows em `success`;
+- `R-004`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 5: CONCLUÍDA;
+- gate atual: planejar a Etapa 6 sem iniciá-la implicitamente e manter release bloqueada;
 - Etapa 6: não iniciada.
 
-O fechamento de `R-004`, a conclusão da Etapa 5 e o início da Etapa 6
-permanecem gates independentes. Este pacote documental não os executa
-implicitamente.
+O fechamento de `R-004` e a conclusão da Etapa 5 foram executados com evidência
+remota. O início da Etapa 6 permanece um gate independente.
 
 ## Reavaliação auditada publicada — 10 de agosto de 2026
 
@@ -42,9 +43,10 @@ Estado remoto atual:
 - mypy estrito: zero erros em 65 arquivos;
 - cobertura combinada linhas/branches: `62.18%`, com piso CI de
   62%; metas finais de 90%/85% ainda abertas;
-- publicação: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28`;
-- CI da PR: `31422290050`, Linux e Windows em `success`;
-- decisão: **APROVADO REMOTAMENTE PARA REVISÃO E MERGE**;
+- publicação: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, HEAD final `ab71e148c0b7441bd36f489472856d0b4adfaa1e`, PR `#28` mesclada;
+- CI final da PR: `31422901244`, Linux e Windows em `success`;
+- CI pós-merge: `31423386971`, Linux e Windows em `success`;
+- decisão: **ETAPA 5 FORMALMENTE ENCERRADA**;
 - release: **NÃO APROVADA**.
 
 ## Regras inegociáveis

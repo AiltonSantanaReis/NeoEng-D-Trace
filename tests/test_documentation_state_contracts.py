@@ -28,9 +28,9 @@ def test_package_5c_evidence_does_not_repeat_false_bezier_limitation():
     assert "não são persistidos pelo formato atual" not in text
 
 
-def test_live_documents_identify_postmerge_main_and_closure_gate():
-    expected_main = "6c4bcb3d945405a4615a4d6551247d1b01ce79f1"
-    merged_head = "8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e"
+def test_live_documents_identify_final_main_and_closed_stage():
+    expected_main = "56533b65f81d21fd9c762aa10c0d3e6747d742ca"
+    merged_head = "ab71e148c0b7441bd36f489472856d0b4adfaa1e"
     for relative in (
         "README.md",
         "docs/PLANO_MESTRE_ESTABILIZACAO.md",
@@ -40,19 +40,19 @@ def test_live_documents_identify_postmerge_main_and_closure_gate():
         value = _text(relative)
         assert expected_main in value
         assert merged_head in value
-        assert "#27" in value
+        assert "#28" in value
         assert "R-004" in value
-        assert "#84" in value
-        assert "APROVADO PARA ENCERRAMENTO FORMAL" in value
+        assert "31423386971" in value
+        assert "Etapa 6" in value
 
     closure = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
     assert expected_main in closure
     assert merged_head in closure
-    assert "31136893143" in closure
-    assert "8978309717" in closure
-    assert "8978326062" in closure
-    assert "R004_CLOSED=NO" in closure
-    assert "STAGE5_COMPLETED=NO" in closure
+    assert "31423386971" in closure
+    assert "9076253153" in closure
+    assert "9076283257" in closure
+    assert "R004_CLOSED=YES" in closure
+    assert "STAGE5_COMPLETED=YES" in closure
     assert "STAGE6_STARTED=NO" in closure
 
     premerge = _text("docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md")
@@ -103,8 +103,8 @@ def test_live_documents_describe_postmerge_state_without_stale_gates():
         value = _text(relative)
         for phrase in stale_phrases:
             assert phrase not in value, (relative, phrase)
-        assert "6c4bcb3d945405a4615a4d6551247d1b01ce79f1" in value
-        assert "8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e" in value
+        assert "56533b65f81d21fd9c762aa10c0d3e6747d742ca" in value
+        assert "ab71e148c0b7441bd36f489472856d0b4adfaa1e" in value
         if relative != "docs/evidence/README.md":
             assert "APPROVED_FOR_DIFF_REVIEW_ONLY" not in value
         assert ci_marker in value, (relative, ci_marker)
@@ -136,30 +136,33 @@ def test_live_documents_describe_postmerge_state_without_stale_gates():
     assert "AUTORIZADA SOMENTE A" not in premerge
 
 
-def test_stage5_closure_report_is_complete_and_conditional():
+def test_stage5_closure_report_is_complete_and_final():
     text = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
     for marker in (
         "Cadeia funcional comprovada",
         "CI pós-merge histórico",
         "Limitações e riscos residuais",
-        "APROVADO REMOTAMENTE PARA REVISÃO E MERGE",
+        "ETAPA 5 FORMALMENTE ENCERRADA",
         "LOCAL_REMEDIATION_COMPLETE=YES",
         "DOCUMENTATION_PACKAGE_PREPARED=YES",
         "COMMIT_CREATED=YES",
         "PUSH_EXECUTED=YES",
         "PR_CREATED=YES",
         "PR_NUMBER=28",
-        "PR_DRAFT=YES",
+        "PR_DRAFT=NO",
+        "PR_MERGED=YES",
         "PR_CI_EXECUTED=YES",
         "PR_CI_STATUS=SUCCESS",
-        "POST_MERGE_CI_EXECUTED=NO",
-        "R004_CLOSED=NO",
+        "POST_MERGE_CI_EXECUTED=YES",
+        "POST_MERGE_CI_STATUS=SUCCESS",
+        "R004_CLOSED=YES",
         "RELEASE_APPROVED=NO",
-        "STAGE5_COMPLETED=NO",
+        "STAGE5_COMPLETED=YES",
         "STAGE6_STARTED=NO",
-        "31422290050",
-        "93565684359",
-        "93565684441",
+        "31422901244",
+        "31423386971",
+        "93569241989",
+        "93569242024",
     ):
         assert marker in text
 
@@ -354,20 +357,26 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     matrix = _text("docs/MATRIZ_FUNCIONALIDADES_ATUAL.md")
     workflow = _text(".github/workflows/ci.yml")
     pyproject = _text("pyproject.toml")
+    mypy_config = _text("mypy.ini")
     security = _text("SECURITY.md")
     reconciliation = json.loads(_text("quality/legacy_tests/reconciliation.json"))
 
-    assert "APROVADO REMOTAMENTE PARA REVISÃO E MERGE" in audit
+    assert "ETAPA 5 FORMALMENTE ENCERRADA" in audit
     assert "Esta decisão não aprova release" in audit
     assert "Matriz funcional atual" in matrix
     assert "Build Windows/instalador | NÃO INICIADO" in matrix
     assert 'Pillow = "12.3.0"' in pyproject
-    assert "check_untyped_defs = true" in pyproject
+    assert "[tool.mypy]" not in pyproject
+    assert "check_untyped_defs = True" in mypy_config
+    assert "warn_unused_configs = True" in mypy_config
     assert "poetry run pip-audit" in workflow
     assert "poetry run bandit -q -r src -lll" in workflow
     assert "--cov-branch --cov-fail-under=62" in workflow
     assert "Run reconciled preserved legacy suite" in workflow
     assert "retention-days: 30" in workflow
+    assert workflow.count("actions/checkout@v7") == 2
+    assert workflow.count("actions/setup-python@v7") == 2
+    assert workflow.count("actions/upload-artifact@v7") == 2
     assert "GitHub Security Advisory" in security
     assert len(reconciliation["expected_failures"]) == 26
     for item in reconciliation["expected_failures"]:
@@ -376,12 +385,15 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
         assert item["replacement_tests"]
 
 
-def test_live_closure_does_not_claim_unmerged_or_release():
+def test_live_closure_claims_only_proven_merge_and_not_release():
     closure = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
     assert "PR_CI_EXECUTED=YES" in closure
     assert "PR_CI_STATUS=SUCCESS" in closure
-    assert "POST_MERGE_CI_EXECUTED=NO" in closure
-    assert "R004_CLOSED=NO" in closure
-    assert "STAGE5_COMPLETED=NO" in closure
+    assert "PR_MERGED=YES" in closure
+    assert "POST_MERGE_CI_EXECUTED=YES" in closure
+    assert "POST_MERGE_CI_STATUS=SUCCESS" in closure
+    assert "R004_CLOSED=YES" in closure
+    assert "STAGE5_COMPLETED=YES" in closure
+    assert "STAGE6_STARTED=NO" in closure
     assert "RELEASE_APPROVED=NO" in closure
-    assert "O projeto não está aprovado para release" in closure
+    assert re.search(r"projeto não está\s+aprovado para release", closure)

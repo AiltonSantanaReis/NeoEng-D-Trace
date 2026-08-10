@@ -6,15 +6,20 @@
 - risco principal: `R-004 — Undo/Redo incompleto`;
 - PR funcional: `#27`;
 - merge funcional em `main`: `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
-- HEAD documental final da PR: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
+- HEAD documental final da PR funcional: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
 - CI pós-merge histórico: `#84`, run `31136893143`, Linux e Windows aprovados;
 - artefatos históricos: Linux `8978309717` e Windows `8978326062`;
 - branch remota de fechamento: `docs/etapa-5-encerramento-pos-merge`;
 - commit auditado: `236eefd41ee51c7085e21d52fc80074eede0a793`;
-- PR de fechamento: `#28`, draft, base `main`;
-- CI da PR: run `31422290050`, conclusão `success`;
-- jobs: Linux `test` (`93565684359`) e Windows `test-windows` (`93565684441`), ambos `success`;
-- artefatos: Linux `9075840830` (`sha256:0ee90984bd1d907fdccfbb32df6a75c473e3a3d40eb6ce18e32809e1f175440b`) e Windows `9075871031` (`sha256:ca28dcf439bcd60ffd79406e8c1b7e01405ab9d7d79d761c7690835c7a6f032e`);
+- HEAD final da PR de fechamento: `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
+- PR de fechamento: `#28`, mesclada em `main` em 2026-08-10;
+- merge do fechamento: `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
+- CI final da PR: run `31422901244`, conclusão `success`;
+- jobs da PR: Linux `test` (`93567667841`) e Windows `test-windows` (`93567667795`), ambos `success`;
+- artefatos da PR: Linux `9076065640` (`sha256:998110fa36fcde9f7fb63a5637355318c5cd78a646869ad3610e342f2efd2d22`) e Windows `9076102334` (`sha256:ecbd075f639a05b710a8b8bfc1da84da3da6cf71a7443d3fb8f3398eed8b4b20`);
+- CI pós-merge do fechamento: run `31423386971`, conclusão `success`;
+- jobs pós-merge: Linux `test` (`93569241989`) e Windows `test-windows` (`93569242024`), ambos `success`;
+- artefatos pós-merge: Linux `9076253153` (`sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`) e Windows `9076283257` (`sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`);
 - auditoria corretiva: 2026-08-10, Windows/Python 3.11.9.
 
 ## Cadeia funcional comprovada
@@ -68,7 +73,12 @@ anterior até sua remediação.
 - `R-006` permanece parcial para a matriz completa de CLI da Etapa 7;
 - `R-007`, `R-008`, `R-011` e `R-012` mantêm escopos futuros explícitos;
 - build Windows standalone, instalador e release pertencem à Etapa 14;
-- PR `#28` permanece draft; merge e CI pós-merge da `main` ainda não foram executados.
+- as Actions emitiram aviso de depreciação do Node.js 20 para
+  `actions/checkout@v4`, `actions/setup-python@v5` e
+  `actions/upload-artifact@v4`; os jobs foram executados com Node.js 24 e
+  concluíram com sucesso. O pacote final atualiza as três actions para
+  `v7`/Node.js 24;
+- a Etapa 6 não foi iniciada e nenhum estado deste relatório aprova release.
 
 ## Estado controlado
 
@@ -78,19 +88,22 @@ anterior até sua remediação.
     PUSH_EXECUTED=YES
     PR_CREATED=YES
     PR_NUMBER=28
-    PR_DRAFT=YES
+    PR_DRAFT=NO
+    PR_MERGED=YES
     PR_CI_EXECUTED=YES
     PR_CI_STATUS=SUCCESS
-    POST_MERGE_CI_EXECUTED=NO
-    R004_CLOSED=NO
-    STAGE5_COMPLETED=NO
+    POST_MERGE_CI_EXECUTED=YES
+    POST_MERGE_CI_STATUS=SUCCESS
+    R004_CLOSED=YES
+    STAGE5_COMPLETED=YES
     STAGE6_STARTED=NO
     RELEASE_APPROVED=NO
 
 ## Decisão
 
-**APROVADO REMOTAMENTE PARA REVISÃO E MERGE.**
+**ETAPA 5 FORMALMENTE ENCERRADA.**
 
-O commit auditado, o push e o CI Linux/Windows da PR foram concluídos. `R-004`
-e a Etapa 5 permanecem abertos até merge da PR `#28`, CI pós-merge da `main` e
-evidência desse estado integrado. O projeto não está aprovado para release.
+O commit auditado, o push, o CI Linux/Windows da PR, o merge da PR `#28` e o CI
+pós-merge da `main` foram concluídos. `R-004` está encerrado no escopo aprovado
+e a Etapa 5 está concluída. A Etapa 6 não foi iniciada e o projeto não está
+aprovado para release.
