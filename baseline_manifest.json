@@ -33,8 +33,8 @@
       "size": 34461
     },
     "README.md": {
-      "sha256": "ffb44a389b1303cea5c484a3f3007519045af357a405d495fd484e64025d3d45",
-      "size": 9963
+      "sha256": "f556860b056302e1b051e2a41a619a1497195682ced2f9fc3dcad38764576153",
+      "size": 9908
     },
     "SECURITY.md": {
       "sha256": "1fe511e11d57a3a33485bef2c81924a6e0146dc6a7a3152a8e5ef7b88b51c628",
@@ -913,8 +913,8 @@
       "size": 1188
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "bbd918574d5acbea546039aced6de01ef0b245a901aa5a12852aeef53b972151",
-      "size": 17502
+      "sha256": "81569e54ce5dfd50af4e0f4eaa21bcac311945b78dd6f0e5a744ca36be49fa96",
+      "size": 17681
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",

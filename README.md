@@ -48,9 +48,9 @@ também foi aprovado, sem declarar release:
 - cobertura combinada de linhas e branches: 62.18%, com piso incremental de 62% no CI;
 - matriz funcional viva: `docs/MATRIZ_FUNCIONALIDADES_ATUAL.md`;
 - evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`;
-- aviso não bloqueante: as Actions atuais ainda referenciam versões cuja ação
-  usava Node.js 20, forçado pelo GitHub para Node.js 24; a PR `#29` atualizou
-  as três actions para `v7`/Node.js 24 e o CI final teve zero anotações.
+- aviso de runtime resolvido: a PR `#29` atualizou as três Actions para
+  `v7`/Node.js 24; o CI técnico final e as execuções subsequentes tiveram zero
+  anotações.
 
 ## Capacidades comprovadas no estado integrado
 
@@ -65,10 +65,10 @@ também foi aprovado, sem declarar release:
 - exportação GLTF/GLB de cena e objeto com generator, geometria, metadados e padding validados;
 - entrada gráfica e headless por `app.py`.
 
-A PR `#27` foi mesclada por merge commit. O HEAD
+A PR `#27` foi mesclada por merge commit. O HEAD funcional
 `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e` e o merge commit
-`6c4bcb3d945405a4615a4d6551247d1b01ce79f1` são as âncoras do estado
-integrado. O relatório funcional v4.1 e a validação pré-merge continuam
+`6c4bcb3d945405a4615a4d6551247d1b01ce79f1` são as âncoras funcionais da
+Etapa 5. O relatório funcional v4.1 e a validação pré-merge continuam
 preservados como snapshots históricos e não são reescritos retroativamente.
 
 O pacote documental pós-merge registra `R-004` como **ENCERRADO NO ESCOPO
