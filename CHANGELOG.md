@@ -1,15 +1,25 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 6
+## [Unreleased] — programa de estabilização, Etapas 1 a 7
 
 Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Cobertura de módulos críticos — candidato local
+### Etapa 7 — candidato local da CLI
+
+- define a matriz integral de argumentos, modos, saídas e códigos `0`, `1` e `2`;
+- elimina argumentos de operação silenciosamente ignorados e rejeita combinações incompletas;
+- propaga códigos reais por `app.py` e execução direta do módulo;
+- valida subprocessos, entradas reais, JSON/projeto reabertos e GLBs com magic `glTF`;
+- alcança 85% no launcher e 68.53% de cobertura combinada com 620 testes aprovados;
+- mantém `R-006` aberto até merge e CI pós-merge; release não aprovada.
+
+### Cobertura de módulos críticos — integrada
 
 - adiciona 46 testes comportamentais, negativos e Qt offscreen;
 - eleva a cobertura combinada de 62.45% para 67.51%, com 589 testes aprovados;
 - leva os módulos priorizados de 8–29% para 60–100%, exceto `launcher.py`, reservado à Etapa 7;
 - rejeita escalas/pesos de borda inválidos, dimensões Qt não suportadas e zoom zero no overlay;
+- PR `#35` mesclada em `511c0ba47f29971bfa218349fff2119ebe69dc3c`; CI pós-merge `31435181903` aprovou Linux e Windows;
 - mantém `R-003` aberto, metas finais pendentes e release não aprovada.
 
 ### Etapa 6 — integrada e encerrada no escopo aprovado

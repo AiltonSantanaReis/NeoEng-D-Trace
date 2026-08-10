@@ -29,8 +29,8 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "22d9107bd53224e758e8d7919149a06890dfb2816996fc5e6781a9e229001c8a",
-      "size": 35562
+      "sha256": "00babd0bf8a3245ec1abcf16d457b5673203e3c83d54a0d2bd1cc132bab3f717",
+      "size": 36217
     },
     "README.md": {
       "sha256": "9e2d648f994b6ce10d6428effabb2b61d6ddb863f44a19f644256f89c66af8e9",
@@ -91,6 +91,10 @@
     "docs/CONSOLIDACAO_ARVORE_UNICA_NEOENG_D_TRACE.md": {
       "sha256": "313a7c093efbc20ae65b79aeb84951038d55866250380f86d628439aba290192",
       "size": 1470
+    },
+    "docs/CONTRATO_CLI.md": {
+      "sha256": "665a11306bbf59ef7bfb93950a8f400402a84f6504dad8ec70fb69598336bb3f",
+      "size": 4857
     },
     "docs/CONTRATO_GLTF_GLB_NEOENG_D_TRACE.md": {
       "sha256": "70bf983222bff257c68c22c616cfb8200e03f4e6916262c384e432fb7736d501",
@@ -412,9 +416,13 @@
       "sha256": "5411a4dda34768e06327fab8f854aff49390d4dc0362d0b1e9b132bd2179847d",
       "size": 4897
     },
+    "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
+      "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
+      "size": 5554
+    },
     "docs/evidence/README.md": {
-      "sha256": "9bb721d648713546f5954b21485d75db4f38bb410d3e9a5a6e8096a7e648071c",
-      "size": 11530
+      "sha256": "9a1cfea7aa6164ef90289b04d34d7e2a7e33f46e0b615a8a610edf7678a1f0c7",
+      "size": 12303
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -937,8 +945,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "b154dc94d1985e70ec845dd956af13edb474165c95de1d80d8162959b0a634cd",
-      "size": 19532
+      "sha256": "a45f2580911e00df4ae1b95bf4af3950ea6a9be24ef03be73d5c6c346744bbd7",
+      "size": 20312
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
