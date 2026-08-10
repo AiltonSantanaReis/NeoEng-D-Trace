@@ -85,7 +85,7 @@ class CollisionOverlay:
                 label_x, label_y = shape[0]
                 painter.setPen(QPen(QColor(255, 255, 255), 1))
                 # Offset ajustado pelo zoom para não ficar colado
-                offset = 5.0 / zoom
+                offset = 5.0 / zoom if zoom > 0 else 5.0
                 painter.drawText(
                     QPointF(label_x + offset, label_y - offset), str(shape_id)[:8]
                 )
