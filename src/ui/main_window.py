@@ -24,6 +24,10 @@ from src.core.validation_events import (
     record_validation_event,
     record_validation_exception,
 )
+from src.exporters.collision_exporter import (
+    export_collision_document,
+    save_collision_text,
+)
 from src.exporters.json_exporter import save_json_metadata
 from src.persistence import PROJECT_FILE_EXTENSION, build_project_document
 
@@ -44,6 +48,26 @@ from src.ui.tool_palette import ToolPalette
 
 class MainWindow(QMainWindow):
 
+    def _report_collision_export_error(self, exc):
+        t = self.translations[self.current_lang]
+        logger.error("Failed to export collision data: %s", exc, exc_info=True)
+        QMessageBox.critical(
+            self,
+            t["error"],
+            t["failed_export_collision"] + str(exc),
+        )
+
+    def _build_collision_document(self, *, results=None, statistics=None):
+        try:
+            return export_collision_document(
+                self.scene,
+                results=results,
+                statistics=statistics,
+            )
+        except Exception as exc:
+            self._report_collision_export_error(exc)
+            return None
+
     def _save_collision_json(self, data, default_name="collisions.json"):
         t = self.translations[self.current_lang]
         path, _ = QFileDialog.getSaveFileName(
@@ -58,12 +82,7 @@ class MainWindow(QMainWindow):
         try:
             save_json_metadata(data, path)
         except Exception as exc:
-            logger.error("Failed to export collision JSON: %s", exc, exc_info=True)
-            QMessageBox.critical(
-                self,
-                t["error"],
-                t["failed_export_collision"] + str(exc),
-            )
+            self._report_collision_export_error(exc)
             return False
 
         QMessageBox.information(
@@ -74,12 +93,18 @@ class MainWindow(QMainWindow):
         return True
 
     def export_collision_json(self):
-        """Export collision shapes as JSON without changing their schema."""
-        data = getattr(self.scene, "collision_shapes", {})
+        """Export collision shapes using the canonical versioned schema."""
+        data = self._build_collision_document()
+        if data is None:
+            return False
         return self._save_collision_json(data)
 
     def export_collision_txt(self):
-        """Export collision shapes as the existing plain-text format."""
+        """Export the text view derived from the canonical collision schema."""
+        document = self._build_collision_document()
+        if document is None:
+            return False
+
         t = self.translations[self.current_lang]
         path, _ = QFileDialog.getSaveFileName(
             self,
@@ -87,14 +112,21 @@ class MainWindow(QMainWindow):
             "collisions.txt",
             t["text_files"],
         )
-        if path:
-            data = getattr(self.scene, "collision_shapes", {})
-            with open(path, "w", encoding="utf-8") as handle:
-                for object_id, shape in data.items():
-                    handle.write(f"Object {object_id}:\n")
-                    for point in shape:
-                        handle.write(f"  {point}\n")
-                    handle.write("\n")
+        if not path:
+            return False
+
+        try:
+            save_collision_text(document, path)
+        except Exception as exc:
+            self._report_collision_export_error(exc)
+            return False
+
+        QMessageBox.information(
+            self,
+            t["info"],
+            t["export_collision_success"].format(path=path),
+        )
+        return True
 
     def __init__(self, scene, config):
         super().__init__()
@@ -1211,13 +1243,12 @@ class MainWindow(QMainWindow):
             self.canvas.update()
 
     def _on_collision_export(self):
-        data = {
-            "collision_shapes": getattr(self.scene, "collision_shapes", {}),
-            "collision_results": self.collision_panel.collision_results,
-            "statistics": (
-                self.physics_manager.get_stats() if self.physics_manager else {}
-            ),
-        }
+        data = self._build_collision_document(
+            results=self.collision_panel.collision_results,
+            statistics=self.physics_manager.get_stats() if self.physics_manager else {},
+        )
+        if data is None:
+            return False
         return self._save_collision_json(data, "collision-results.json")
 
     def _on_collision_auto_generate(self):
