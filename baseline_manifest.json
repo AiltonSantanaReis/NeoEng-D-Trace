@@ -29,12 +29,12 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "6f64f6aaf69f1ded9aac007312cdc0b8e14a954d349c68c4493e4d40465b5b95",
-      "size": 36391
+      "sha256": "4dde9d2eb191dc77b41bb50f77c2d51d0b48c169269bfa467576938dfbbfa8a2",
+      "size": 37139
     },
     "README.md": {
-      "sha256": "012c20afd5027e90df1e5b2237ac0465babc8bae4125889721f0c1d18e2dc1cb",
-      "size": 11667
+      "sha256": "6230b7947a751650d6c2391992a2b96386df7ecc1abe8fdbabbf9cbf1df21a2b",
+      "size": 12390
     },
     "SECURITY.md": {
       "sha256": "1fe511e11d57a3a33485bef2c81924a6e0146dc6a7a3152a8e5ef7b88b51c628",
@@ -209,20 +209,20 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "6b7f22a16e319536cd87eb958a4537a015778f3d8baf2dcf2aab84994891f7d9",
-      "size": 3424
+      "sha256": "0aea307fe1d2fd6760baa0d24a0bc8c947866f64c2019202023bd095b454b2a3",
+      "size": 3781
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "9ed9c2ae173405e893d379e3de499d97dcc8222bafe07a2807d78cf5d02fe76e",
-      "size": 13277
+      "sha256": "2aa0ff36dfdac6e2e3749492d811649a29beab70239101fea5a0ac4da0840adb",
+      "size": 13423
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "693f5a056cd97c1422bc1cd62ba85de72b93747457147c094120ba06b3261083",
-      "size": 7561
+      "sha256": "de49f9d6f9e83e4806a9061075199d0ac58d3947df5f178c69e34ece3ee7a419",
+      "size": 7838
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -409,8 +409,8 @@
       "size": 3177
     },
     "docs/evidence/ETAPA_6_ENCERRAMENTO_POS_MERGE.md": {
-      "sha256": "4c18dc19ddd16fb97e0a0006d196569c6ed1d9755976852121e88144a7a96efe",
-      "size": 3133
+      "sha256": "2a4eeb815300958f339d516c221c76baec171aaba145742bd3a8fefdcf87316f",
+      "size": 3130
     },
     "docs/evidence/ETAPA_6_EXPORTACAO_COLISOES.md": {
       "sha256": "5411a4dda34768e06327fab8f854aff49390d4dc0362d0b1e9b132bd2179847d",
@@ -424,9 +424,13 @@
       "sha256": "6b7ed2df86fd329a468cc2517811ee49e288f9cd63e145d8c7e804cc4045a936",
       "size": 3470
     },
+    "docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md": {
+      "sha256": "748fcaa72d532d922d47a49d741334d35ef3ac7e76eccf354bb71142556e1255",
+      "size": 6062
+    },
     "docs/evidence/README.md": {
-      "sha256": "3494cea1036e7fa7e361b13575b4a8ae2839dc2327a897d9d508f7686632f8dc",
-      "size": 12799
+      "sha256": "9578cadf3b2463e66cda3a06e1fee310f8a9a9248af42a98c2bea098313339cf",
+      "size": 13710
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -525,8 +529,8 @@
       "size": 168
     },
     "quality/legacy_tests/reconciliation.json": {
-      "sha256": "de64f97d92099d4576b98b5867f327cf7ad7b7c1107d51ef1610c5bb0690f3a4",
-      "size": 19006
+      "sha256": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587",
+      "size": 19901
     },
     "quality/legacy_tests/tests/test_auto_detect_basic.py": {
       "sha256": "b50aeb0e2437a6693d013014d73aff26be3a5f47994e4e86b53f9e9c2a610ede",
@@ -757,8 +761,8 @@
       "size": 7802
     },
     "src/physics/convex_decomp.py": {
-      "sha256": "41219fcc33136d53410898e4f712606159edfc6ddcd1a79b338b2193e8d4e1d4",
-      "size": 10409
+      "sha256": "414030f3dc13cb16eeced86230a84fda8a7aedde75fe0d74be64bb96807f2e6d",
+      "size": 13284
     },
     "src/physics/physics_manager.py": {
       "sha256": "7489e1b96fad29a70c36c8f24450d9bad7e9c0eeef50a76eb3b6b676e71759ac",
@@ -949,8 +953,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "3dd6a26e4ef530be4a310f56812ae3413838c6ca86d88a8d16cc4422cb71aa46",
-      "size": 21550
+      "sha256": "7e318ce4761d3c79bd8be0f314c06c9dd310fb700bcdc8f649e5f02c00209500",
+      "size": 22392
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
@@ -1025,8 +1029,8 @@
       "size": 1756
     },
     "tests/test_stage_0_5_2e_core.py": {
-      "sha256": "8124149979ad5b39660a5dcdc55271313ab09d084ed93f468c82c25fce516c2c",
-      "size": 2689
+      "sha256": "ad3694717a92ff67e871fdabf1e863c578b44160d56b38f9201904e2f6ac4698",
+      "size": 2632
     },
     "tests/test_stage_0_5_2e_ui.py": {
       "sha256": "67e9ef7cc6ff611782b33b437d5ee1e8b78014efc860be4c6f608bc9ab12871f",
@@ -1111,6 +1115,10 @@
     "tests/test_stage_7_cli_contract.py": {
       "sha256": "75b90c44aae7f443d570d3dd7d670aec8dede4ecaebb2488b2f02e2d361dcde5",
       "size": 11901
+    },
+    "tests/test_stage_8_bezier_geometry.py": {
+      "sha256": "e9f60d15adebfb232b5ed192f5b8d837f8763f2cda6f63f4747765f166ca7372",
+      "size": 8301
     },
     "tests/test_tools_real.py": {
       "sha256": "bef7dadf5a12e5eca4b90173325d76f7eb09d17b83dc2afbe6b23fe44ed4bc8d",

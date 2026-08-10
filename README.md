@@ -6,7 +6,17 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Snapshot de referência do encerramento formal da Etapa 7, em 10 de agosto de 2026:
+Snapshot de validação pré-merge da Etapa 8, em 10 de agosto de 2026:
+
+- commit técnico local: `d11cd3dc0bd0063e325a53dd30fc439feda9dd24`;
+- suíte local: 125 testes focais, 660 totais no commit técnico e 661 no pacote pré-merge aprovados;
+- cobertura global: 72.95% de linhas, 56.48% de branches e 68.98% combinada;
+- núcleo geométrico: 95.59% de linhas e 93.29% de branches;
+- legado: 196 executados, 27/27 divergências exatas reconciliadas, zero inesperadas e zero ausentes;
+- `R-007`: aberto até merge e CI pós-merge; Etapa 8: **EM VALIDAÇÃO PRÉ-MERGE**;
+- `R-003` e metas finais de cobertura permanecem abertos; release: **NÃO APROVADA**.
+
+Snapshot histórico do encerramento formal da Etapa 7, em 10 de agosto de 2026:
 
 - implementação e evidência pré-merge: `a940ef13018aabc430126db3fd705b521fc1be06` e `51e55a37021c506471111ef1f4e7bc9abe67c65d`;
 - PR `#36` mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`;
@@ -46,7 +56,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6 e 7 possuem fechamento pós-merge comprovado. O início da Etapa 8 e qualquer aprovação de release continuam sendo gates independentes e não executados.
+As Etapas 5, 6 e 7 possuem fechamento pós-merge comprovado. A Etapa 8 possui somente aprovação local pré-merge; seu fechamento, as etapas seguintes e qualquer aprovação de release continuam sendo gates independentes não executados.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

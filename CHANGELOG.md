@@ -1,8 +1,17 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 7
+## [Unreleased] — programa de estabilização, Etapas 1 a 8
 
 Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 8 — aprovada localmente, não integrada
+
+- corrige o fallback de triangulação dependente da orientação e exige convexidade de cada orelha;
+- valida coordenadas, repetição de vértices, área, quantidade de triângulos, preservação de área e índices do backend opcional;
+- adiciona 38 casos Bézier/geométricos e substitui uma asserção antes inócua por rejeição explícita de fixture autossobreposto;
+- aprova 125 testes focais, 660 totais no commit técnico, 661 no pacote pré-merge e 27/27 divergências legadas estritamente reconciliadas;
+- alcança 95.59% de linhas e 93.29% de branches no núcleo geométrico;
+- mantém `R-007` aberto até merge e CI pós-merge; metas globais e release permanecem não aprovadas.
 
 ### Etapa 7 — integrada e encerrada no escopo aprovado
 

@@ -491,7 +491,23 @@ def test_stage7_cli_evidence_is_premerge_and_keeps_risk_open():
         assert marker in evidence
 
     assert "ETAPA_7_CLI_PRE_MERGE.md" in index
-    assert "Etapa 8: não iniciada" in index
+    assert "Etapa 8: APROVADA LOCALMENTE / NÃO INTEGRADA" in index
+
+
+def test_stage8_geometry_evidence_is_premerge_and_keeps_risk_open():
+    evidence = _text("docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md")
+    for marker in (
+        "d11cd3dc0bd0063e325a53dd30fc439feda9dd24",
+        "660 passed",
+        "661 passed",
+        "27/27",
+        "95.59%",
+        "93.29%",
+        "`R-007`: aberto até merge",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert marker in evidence
 
 
 def test_stage7_closure_is_bound_to_merge_and_postmerge_ci():

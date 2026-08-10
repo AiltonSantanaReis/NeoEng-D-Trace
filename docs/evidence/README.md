@@ -94,8 +94,22 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `COBERTURA_MODULOS_CRITICOS_2026-08-10.md` — snapshot pré-merge dos testes comportamentais dos módulos abaixo de 30%; integrado posteriormente pela PR `#35`; `R-003` permanece aberto.
 - `ETAPA_7_CLI_PRE_MERGE.md` — matriz local de argumentos, saídas, códigos de processo e subprocessos reais; `R-006` permanece aberto até merge e CI pós-merge.
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` — PR `#36`, merge, CI pós-merge, artefatos e encerramento formal de `R-006`/Etapa 7.
+- `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` — validação matemática local de Bézier, triangulação e degenerados; `R-007` permanece aberto até merge e CI pós-merge.
 
 ## Estado operacional da evidência atual
+
+Snapshot pré-merge da Etapa 8 em 10 de agosto de 2026:
+
+- commit técnico: `d11cd3dc0bd0063e325a53dd30fc439feda9dd24`;
+- validação local: 125 testes focais, 660 totais no commit técnico, 661 no pacote pré-merge e 27/27 divergências legadas exatas;
+- cobertura global: 72.95% de linhas, 56.48% de branches e 68.98% combinada;
+- núcleo geométrico: 95.59% de linhas e 93.29% de branches;
+- `R-007`: aberto; Etapa 8: APROVADA LOCALMENTE / NÃO INTEGRADA;
+- release: NÃO APROVADA.
+
+O arquivo `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` é a evidência permanente desta execução local. PR, CI Linux/Windows, merge e CI pós-merge ainda não foram executados.
+
+## Snapshot histórico anterior — encerramento da Etapa 7
 
 Snapshot de encerramento formal da Etapa 7 em 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
 
@@ -106,7 +120,7 @@ Snapshot de encerramento formal da Etapa 7 em 10 de agosto de 2026, condicionado
 - validação local: 47 testes focais, 620 no commit técnico, 621 no pacote pré-merge e 622 no fechamento, cobertura combinada 68.53% e launcher em 85%;
 - `R-006`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 7: CONCLUÍDA;
-- Etapa 8: não iniciada; release: NÃO APROVADA.
+- naquele snapshot, Etapa 8: não iniciada; release: NÃO APROVADA.
 
 O arquivo `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente deste gate.
 
