@@ -89,6 +89,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md` — commit funcional, validação visual, CI Linux/Windows, artefatos e gates independentes anteriores ao merge.
 - `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, PR `#28` integrada e CI pós-merge final aprovado.
 - `AUDITORIA_RIGOROSA_2026-08-10.md` — bloqueios descobertos, reconciliação legada e novos gates de segurança, tipagem e branches.
+- `ETAPA_6_EXPORTACAO_COLISOES.md` — candidato local do schema versionado e unificado de colisões; ainda não integrado.
 
 ## Estado operacional da evidência atual
 
@@ -113,12 +114,12 @@ Snapshot de fechamento formal de 10 de agosto de 2026, condicionado à verifica�
 - artefatos técnicos finais: Linux `9077091136` (`sha256:0ce0ad1f77b348f1d4061c7783a3467633a3089f19b18327627979f51befce51`) e Windows `9077113199` (`sha256:ab18e3e260f3f2b1e64b41e834363460f721112131411f350ac83e779fa9dae8`);
 - `R-004`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 5: CONCLUÍDA;
-- gate atual: planejamento explícito da Etapa 6; release permanece bloqueada;
-- Etapa 6: não iniciada.
+- gate atual: candidato técnico da Etapa 6 em validação; release permanece bloqueada;
+- Etapa 6: aprovada localmente, ainda não integrada.
 
 O arquivo `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente
 deste gate. Commit, push, PR, merge, CI da PR e CI pós-merge foram executados;
-o início da Etapa 6 e a aprovação de release permanecem decisões independentes.
+a integração da Etapa 6 e a aprovação de release permanecem decisões independentes.
 
 ## Histórico dos correctors do Pacote 5C
 

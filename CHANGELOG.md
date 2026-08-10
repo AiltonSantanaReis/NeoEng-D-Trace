@@ -1,8 +1,15 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 5
+## [Unreleased] — programa de estabilização, Etapas 1 a 6
 
 Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 6 — candidato local
+
+- unifica toolbar, painel e metadados genéricos no schema de colisões `neoeng-d-trace-collisions` v1;
+- valida referências, pontos finitos, quantidade mínima e área antes da exportação;
+- torna o TXT uma visão derivada com substituição atômica e preservação do destino em falha;
+- adiciona testes negativos, round-trip e integração UI; fechamento depende de merge e CI pós-merge.
 
 ### Auditoria corretiva local — 2026-08-10
 
