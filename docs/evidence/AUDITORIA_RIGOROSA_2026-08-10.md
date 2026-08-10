@@ -57,14 +57,13 @@ temporária.
 
 ## Validação remota
 
-- PR: `#28`, mesclada em `main`;
-- HEAD final da PR: `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
-- CI final da PR: `31422901244`, conclusão `success`;
-- merge: `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
-- CI pós-merge: `31423386971`, conclusão `success`;
-- Linux: job `93569241989`, artefato `9076253153`, digest `sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`;
-- Windows: job `93569242024`, artefato `9076283257`, digest `sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`;
-- aviso não bloqueante: actions baseadas em Node.js 20 foram forçadas pelo GitHub para Node.js 24.
+- fechamento documental: PR `#28`, merge `56533b65f81d21fd9c762aa10c0d3e6747d742ca`, CI pós-merge `31423386971` em `success`;
+- pacote técnico final: PR `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`;
+- âncora técnica integrada: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
+- CI pós-merge técnico: `31425585259`, conclusão `success`, zero anotações;
+- Linux: job `93576381868`, artefato `9077091136`, digest `sha256:0ce0ad1f77b348f1d4061c7783a3467633a3089f19b18327627979f51befce51`;
+- Windows: job `93576382048`, artefato `9077113199`, digest `sha256:ab18e3e260f3f2b1e64b41e834363460f721112131411f350ac83e779fa9dae8`;
+- actions oficiais atualizadas para `v7`/Node.js 24; configuração mypy efetiva consolidada em `mypy.ini`.
 
 ## Decisão
 
