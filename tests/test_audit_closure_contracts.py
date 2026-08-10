@@ -103,8 +103,10 @@ def test_collision_panel_export_writes_real_atomic_json(
 
     assert window._on_collision_export() is True
     payload = json.loads(output.read_text(encoding="utf-8"))
-    assert payload["collision_shapes"]["BOX"][2] == [4.0, 4.0]
-    assert payload["collision_results"][0]["obj1_id"] == "BOX"
+    assert payload["format_id"] == "neoeng-d-trace-collisions"
+    assert payload["shapes"][0]["object_id"] == "BOX"
+    assert payload["shapes"][0]["points"][2] == [4.0, 4.0]
+    assert payload["results"][0]["obj1_id"] == "BOX"
     assert messages == [f"Collision data exported to {output}"]
     assert [path.name for path in tmp_path.iterdir()] == [output.name]
 

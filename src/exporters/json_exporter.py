@@ -10,6 +10,7 @@ import os
 import tempfile
 from typing import Any, Dict, List
 
+from src.exporters.collision_exporter import collision_shape_record
 from src.models.scene import Scene
 
 
@@ -85,6 +86,7 @@ def export_scene_metadata(scene: Scene, profile: str = "default") -> Dict[str, A
             "pivot": pivot,
             "polygon_in_image": obj.polygon,
             "polygon_in_sprite": polygon_in_sprite,
+            "collision": collision_shape_record(scene, oid),
         }
         objects_data.append(entry)
 
@@ -203,6 +205,7 @@ def export_metadata(
         "group": group,
         "trimmed": True,
         "padding": 4,
+        "collision": collision_shape_record(scene, obj_id),
     }
 
     # Preserve the generic contract and dispatch engine-specific profiles

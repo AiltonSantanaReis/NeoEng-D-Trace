@@ -29,8 +29,8 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "481a1bd002046691095aad542916f9869249939bea0ff1ae9bf45a4ade754b6e",
-      "size": 34461
+      "sha256": "fcb165dbed72600d17b4500c4be7bf82352480fbf130daf590c20157e389a272",
+      "size": 34891
     },
     "README.md": {
       "sha256": "f556860b056302e1b051e2a41a619a1497195682ced2f9fc3dcad38764576153",
@@ -400,9 +400,13 @@
       "sha256": "e476171da8c63c7ad8198d871b0f0550a4b25f38ae88ce3a686777aa01f5bd25",
       "size": 3177
     },
+    "docs/evidence/ETAPA_6_EXPORTACAO_COLISOES.md": {
+      "sha256": "5411a4dda34768e06327fab8f854aff49390d4dc0362d0b1e9b132bd2179847d",
+      "size": 4897
+    },
     "docs/evidence/README.md": {
-      "sha256": "a8362ca3a266fd573cce7898a04f1cac9ce6e0fd789c7b4bdbdeae9783f55777",
-      "size": 10187
+      "sha256": "069f1991749ddfcf7c410ffd2ad6b309672412d162e04cc891a373b0d82a2553",
+      "size": 10354
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -660,13 +664,17 @@
       "sha256": "e3bd31148ca1c9a6de536a4d8407bd177828e95e063bf9dc51b8e63df3d300d9",
       "size": 8049
     },
+    "src/exporters/collision_exporter.py": {
+      "sha256": "5c28a5921932e8b022be38a56aa27e64756be1d65802a1dab1d9be1981041338",
+      "size": 6877
+    },
     "src/exporters/gltf_exporter.py": {
       "sha256": "77a0ce3de5d226d719395e672a3bbf7d8b828e2e88daae85bdf13c6434ab4c34",
       "size": 10379
     },
     "src/exporters/json_exporter.py": {
-      "sha256": "31f39f9d13916a65890d269485cbd176cbff909eedca09a891d5da7c707a217f",
-      "size": 6492
+      "sha256": "d8badde48a40ec889f6ce1a77b83086b1cac76308f15cf7e7bbab0f75296626d",
+      "size": 6681
     },
     "src/exporters/profiles/__init__.py": {
       "sha256": "dd3034f71940c45a6bbac7434afd24adde42b6fe4384a33d2e5f55a6ebc00c2d",
@@ -845,8 +853,8 @@
       "size": 6189
     },
     "src/ui/main_window.py": {
-      "sha256": "f57da401263545695b4a801b7882b6e0dc9b396b22d1ed8af0de1afa3dba18f3",
-      "size": 48155
+      "sha256": "f78c9559c706ae4027945bfc5c392baeb70d62a33eb75aff169fc00150b111c7",
+      "size": 48854
     },
     "src/ui/mask_viewer.py": {
       "sha256": "aafb015f92ae595024d4c62d5992ea2b23e5cce394d11836549bfe9dca233fea",
@@ -889,8 +897,8 @@
       "size": 2850
     },
     "tests/test_audit_closure_contracts.py": {
-      "sha256": "483a7cd1dce43699144f904257110f2525f69c06c8783515cd4bd0fc16fcd907",
-      "size": 7089
+      "sha256": "d6b1d467f2f95f1ca730c8382618f1f7464181942912ed9bc0a283e0450a397c",
+      "size": 7192
     },
     "tests/test_auto_detect.py": {
       "sha256": "96dc4149659bd0cd65dd4df71685cba621b301bff6780063ee23bce5f3653ed9",
@@ -933,7 +941,7 @@
       "size": 16939
     },
     "tests/test_json_exporter_contract.py": {
-      "sha256": "cc2f2b05adf73c1da6764ee8d726a64983c97d93d7df936d4da3e2dd20586f8c",
+      "sha256": "5748a0f243b898c8c0a7919a4701de5f38676c50e904f07b9c2f2d5ed29827e0",
       "size": 4160
     },
     "tests/test_logger_configuration.py": {
@@ -1067,6 +1075,10 @@
     "tests/test_stage_5_package_5c_residual_command_contracts.py": {
       "sha256": "1db47a4071f225450f8fb3346212ee935366d02486b9a7cbc66568d18d06276a",
       "size": 6177
+    },
+    "tests/test_stage_6_collision_export_schema.py": {
+      "sha256": "63739a1268ffbca78bffb9d8d7628fae7cfe6881a427e9677945a895a2420694",
+      "size": 7190
     },
     "tests/test_tools_real.py": {
       "sha256": "bef7dadf5a12e5eca4b90173325d76f7eb09d17b83dc2afbe6b23fe44ed4bc8d",
