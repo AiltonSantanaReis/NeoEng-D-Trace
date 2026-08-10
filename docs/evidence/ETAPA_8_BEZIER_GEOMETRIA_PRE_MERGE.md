@@ -62,6 +62,7 @@ testes substitutos, sem alterar os snapshots legados.
 | `quality/legacy_tests/reconciliation.json` | 20210 | `296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493` |
 | `coverage.xml` da execução técnica com 660 testes | 549554 | `676ead8155d760fcc238bad88b532b4af6c55ff2aec46321802f3e4898c3e69b` |
 | `coverage.xml` do pacote pré-merge com 661 testes | 549554 | `9d196edffe77a0c6a86ac16f030a94402e45bd25685be5bf5a265e3ed3a6fa81` |
+| `coverage.xml` pós-remediação CI com 661 testes | 549554 | `96ae2e18f39ae1fe5089ed1693f218f0b9cd963304b3f986eaa9601c016288e2` |
 
 `coverage.xml` é resultado bruto local e não é usado como prova remota; o CI deve
 publicar o relatório ligado ao HEAD da PR.
@@ -109,6 +110,11 @@ python tools/baseline_integrity.py --verify
 2. A revisão do diff encontrou falta de validação de índices fora do intervalo
    produzidos pelo backend opcional. A entrada agora falha fechada com
    `ValueError` e possui regressão dedicada.
+3. A primeira execução da PR `#38`, workflow `31440385642`, falhou em Linux e
+   Windows no Flake8 `E501`: duas strings adicionadas ao contrato documental
+   excediam 88 caracteres. Black não altera strings longas, e o Flake8 não foi
+   repetido após aquela edição final. As strings foram divididas sem alterar os
+   IDs e todos os gates locais foram repetidos antes do novo push.
 
 ## Limitações e riscos residuais
 

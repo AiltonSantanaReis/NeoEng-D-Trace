@@ -388,8 +388,10 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     failure_ids = {item["id"] for item in expected_failures}
     assert len(failure_ids) == len(expected_failures)
     assert {
-        "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_convex_decompose_l_shape",
-        "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_ear_clipping_concave_l_shape",
+        "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::"
+        "test_convex_decompose_l_shape",
+        "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::"
+        "test_ear_clipping_concave_l_shape",
     } <= failure_ids
     for item in expected_failures:
         assert item["message_contains"]

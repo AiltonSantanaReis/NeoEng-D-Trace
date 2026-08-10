@@ -425,8 +425,8 @@
       "size": 3470
     },
     "docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md": {
-      "sha256": "748fcaa72d532d922d47a49d741334d35ef3ac7e76eccf354bb71142556e1255",
-      "size": 6062
+      "sha256": "6be9d31f44c356280470b44920dc1471a3b9e77caa6468e7f294cd66c7ab284f",
+      "size": 6583
     },
     "docs/evidence/README.md": {
       "sha256": "9578cadf3b2463e66cda3a06e1fee310f8a9a9248af42a98c2bea098313339cf",
@@ -953,8 +953,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "7e318ce4761d3c79bd8be0f314c06c9dd310fb700bcdc8f649e5f02c00209500",
-      "size": 22392
+      "sha256": "bbb7dc57cb4d308253b153a21e742c935ec3716eeb55ba939deb12578e9202af",
+      "size": 22414
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
