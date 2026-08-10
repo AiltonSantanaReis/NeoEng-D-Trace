@@ -27,7 +27,7 @@ local deve ser conferido antes de qualquer decisão.
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
 | R-003 | ABERTO | `LayersPanel` integrado e cobertura de branches ativada com piso 62%; metas finais 90%/85% permanecem para a Etapa 11 |
 | R-004 | ENCERRADO NO ESCOPO APROVADO | PR `#28` fechou o registro; PR técnica `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, integrada em `574be9bd0268e70c384903f93f16cf6e73aa57a2`; CI pós-merge `31425585259` aprovou Linux e Windows |
-| R-005 | PARCIAL / ABERTO | Painel e toolbar gravam JSON real; schema genérico unificado permanece para a Etapa 6 |
+| R-005 | ENCERRADO NO ESCOPO APROVADO | Schema `neoeng-d-trace-collisions` v1 unifica toolbar, painel, metadados genéricos e TXT atômico; PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`; CI pós-merge `31431739320` aprovou Linux e Windows |
 | R-006 | PARCIAL / ABERTO | Falso sucesso sem `--object-id` corrigido; matriz integral de CLI permanece para a Etapa 7 |
 | R-007 | PARCIAL / ABERTO | Persistência e invariantes Bézier tratados; qualidade geométrica adicional permanece para a Etapa 8 |
 | R-008 | PARCIAL / ABERTO | `LassoTool` consolidado em alias canônico e SAT compatível coberto; auditoria ampla permanece para a Etapa 9 |
@@ -113,7 +113,8 @@ Nenhum risco acima está encerrado por esta etapa.
 
 | R-004 | ENCERRADO NO ESCOPO APROVADO | PR funcional `#27`; fechamento `#28`; pacote técnico `#29`; âncora `574be9bd0268e70c384903f93f16cf6e73aa57a2`; CI pós-merge `31425585259` com Linux e Windows em `success` |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Correção de limites físico/JSON, transparência e rotação integrada; CI pós-merge técnico `31425585259` aprovado |
-| ETAPA-5 | CONCLUÍDA | Pacotes 1 a 5C, auditoria corretiva e pacote técnico final integrados; CI pós-merge `31425585259` aprovado sem anotações; Etapa 6 não iniciada e release não aprovada |
+| ETAPA-5 | CONCLUÍDA | Pacotes 1 a 5C, auditoria corretiva e pacote técnico final integrados; CI pós-merge `31425585259` aprovado sem anotações; naquele encerramento, Etapa 6 não iniciada e release não aprovada |
+| ETAPA-6 | CONCLUÍDA | Contrato de colisões v1 integrado pela PR `#33`; merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI pós-merge `31431739320` aprovados; `R-005` encerrado; Etapa 7 e release não iniciadas |
 
 ## Severidades
 

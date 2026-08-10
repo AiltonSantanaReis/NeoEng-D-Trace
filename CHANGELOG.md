@@ -2,14 +2,14 @@
 
 ## [Unreleased] — programa de estabilização, Etapas 1 a 6
 
-Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 6 — candidato local
+### Etapa 6 — integrada e encerrada no escopo aprovado
 
 - unifica toolbar, painel e metadados genéricos no schema de colisões `neoeng-d-trace-collisions` v1;
 - valida referências, pontos finitos, quantidade mínima e área antes da exportação;
 - torna o TXT uma visão derivada com substituição atômica e preservação do destino em falha;
-- adiciona testes negativos, round-trip e integração UI; fechamento depende de merge e CI pós-merge.
+- adiciona testes negativos, round-trip e integração UI; PR `#33` mesclada em `73a128ec44cde17867bbac6a7854ce86a43aba5a`; CI pós-merge `31431739320` aprovou Linux e Windows; `R-005` encerrado; release não aprovada.
 
 ### Auditoria corretiva local — 2026-08-10
 
@@ -64,7 +64,7 @@ Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, 
 - o pacote documental pós-merge foi integrado pela PR `#28`; `R-004` está encerrado no escopo aprovado e a Etapa 5 está concluída;
 - o CI final da PR `#28` (`31422901244`) e o CI pós-merge `31423386971` aprovaram Linux e Windows;
 - a PR técnica final `#29` foi mesclada em `574be9bd0268e70c384903f93f16cf6e73aa57a2`; o CI pós-merge `31425585259` aprovou Linux e Windows sem anotações;
-- a Etapa 6 não foi iniciada, a branch foi preservada e a release permanece não aprovada;
+- naquele snapshot da Etapa 5, a Etapa 6 ainda não havia sido iniciada; a branch foi preservada e a release permaneceu não aprovada;
 - atualiza `checkout`, `setup-python` e `upload-artifact` para as releases oficiais `v7`/Node.js 24, eliminando a causa do aviso;
 - consolida a configuração efetiva do mypy em `mypy.ini`, remove a duplicação inócua no `pyproject.toml` e confirma corpos não tipados sem notas de exclusão.
 

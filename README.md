@@ -6,6 +6,16 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
+Snapshot de referência do encerramento formal da Etapa 6, em 10 de agosto de 2026:
+
+- implementação e evidência pré-merge: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
+- PR `#33` mesclada em `73a128ec44cde17867bbac6a7854ce86a43aba5a`;
+- CI da PR `31431473940` e CI pós-merge `31431739320`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9079413130` e Windows `9079450269`, com digests registrados na evidência permanente;
+- suíte local de fechamento: 543 testes aprovados; cobertura combinada: 62.45%; mypy: zero erros em 66 arquivos;
+- `R-005`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 6: **CONCLUÍDA**;
+- Etapa 7: não iniciada; release: **NÃO APROVADA**.
+
 Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 2026:
 
 - âncora técnica integrada e auditada da Etapa 5: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
@@ -71,10 +81,10 @@ A PR `#27` foi mesclada por merge commit. O HEAD funcional
 Etapa 5. O relatório funcional v4.1 e a validação pré-merge continuam
 preservados como snapshots históricos e não são reescritos retroativamente.
 
-O pacote documental pós-merge registra `R-004` como **ENCERRADO NO ESCOPO
-APROVADO** e a Etapa 5 como **CONCLUÍDA**, com PR `#28` e CI pós-merge ligados
-ao SHA integrado. A Etapa 6 não foi iniciada e a release permanece não
-aprovada.
+O pacote documental pós-merge da Etapa 5 registra `R-004` como **ENCERRADO
+NO ESCOPO APROVADO**. A Etapa 6 foi concluída posteriormente pela PR `#33` e
+pelo CI pós-merge `31431739320`. A Etapa 7 não foi iniciada e a release
+permanece não aprovada.
 
 ## Estrutura aprovada
 
@@ -162,7 +172,7 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 
 - `R-003`: cobertura integral de UI e ferramentas ainda pendente;
 - `R-004`: encerrado no escopo aprovado; Etapa 5 concluída após integração do registro e CI final da `main`;
-- `R-005`: exportação de colisões pertence à Etapa 6, ainda não iniciada;
+- `R-005`: encerrado no escopo aprovado após schema v1 unificado, PR `#33` e CI pós-merge `31431739320`;
 - `R-006`: confiabilidade integral da CLI pertence à Etapa 7;
 - `R-007`: persistência Bézier está implementada, mas validações geométricas adicionais pertencem à Etapa 8;
 - `R-008`: duplicidade do lasso foi removida; a revisão ampla de APIs permanece na Etapa 9;

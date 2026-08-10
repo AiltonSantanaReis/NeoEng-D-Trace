@@ -89,9 +89,25 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md` — commit funcional, validação visual, CI Linux/Windows, artefatos e gates independentes anteriores ao merge.
 - `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, PR `#28` integrada e CI pós-merge final aprovado.
 - `AUDITORIA_RIGOROSA_2026-08-10.md` — bloqueios descobertos, reconciliação legada e novos gates de segurança, tipagem e branches.
-- `ETAPA_6_EXPORTACAO_COLISOES.md` — candidato local do schema versionado e unificado de colisões; ainda não integrado.
+- `ETAPA_6_EXPORTACAO_COLISOES.md` — snapshot pré-merge do schema versionado e unificado de colisões.
+- `ETAPA_6_ENCERRAMENTO_POS_MERGE.md` — PR `#33`, merge, CI pós-merge, artefatos e encerramento formal de `R-005`/Etapa 6.
 
 ## Estado operacional da evidência atual
+
+Snapshot de encerramento formal da Etapa 6 em 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
+
+- commits técnico/documental: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
+- PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`;
+- CI da PR `31431473940` e CI pós-merge `31431739320`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9079413130` e Windows `9079450269`, com digests no relatório de encerramento;
+- validação local: 32 testes focais da implementação, 543 totais no fechamento, cobertura combinada 62.45% e mypy sem erros em 66 arquivos;
+- `R-005`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 6: CONCLUÍDA;
+- Etapa 7: não iniciada; release: NÃO APROVADA.
+
+O arquivo `ETAPA_6_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente deste gate.
+
+## Snapshot histórico anterior — encerramento da Etapa 5
 
 Snapshot de fechamento formal de 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
 
