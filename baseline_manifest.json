@@ -709,8 +709,8 @@
       "size": 7018
     },
     "src/launcher.py": {
-      "sha256": "2879e150cd46612e8997532cb2903b02c247a50817b443550840f80a1dbe2a23",
-      "size": 11191
+      "sha256": "c66a58da9756e70012f139f55ba503d23731da5bc90adaacdeccf256720cb4a2",
+      "size": 11589
     },
     "src/models/__init__.py": {
       "sha256": "48f9350985d4e4973cc9c548d8e8b5ce9582a9c314cf8dd139cc7cbf7e0eec44",
@@ -1095,6 +1095,10 @@
     "tests/test_stage_6_collision_export_schema.py": {
       "sha256": "63739a1268ffbca78bffb9d8d7628fae7cfe6881a427e9677945a895a2420694",
       "size": 7190
+    },
+    "tests/test_stage_7_cli_contract.py": {
+      "sha256": "75b90c44aae7f443d570d3dd7d670aec8dede4ecaebb2488b2f02e2d361dcde5",
+      "size": 11901
     },
     "tests/test_tools_real.py": {
       "sha256": "bef7dadf5a12e5eca4b90173325d76f7eb09d17b83dc2afbe6b23fe44ed4bc8d",
