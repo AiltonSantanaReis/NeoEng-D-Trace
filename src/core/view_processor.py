@@ -79,6 +79,20 @@ class ViewProcessor:
             )
             return None
 
+        if cv_img.ndim not in (2, 3):
+            logger.error(
+                "Unsupported image dimensions for Qt conversion: %s", cv_img.ndim
+            )
+            return None
+        if cv_img.ndim == 3 and cv_img.shape[2] not in (3, 4):
+            logger.error(
+                "Unsupported channel count for Qt conversion: %s", cv_img.shape[2]
+            )
+            return None
+        if any(dimension <= 0 for dimension in cv_img.shape[:2]):
+            logger.error("Empty image cannot be converted to QImage")
+            return None
+
         # Ensure contiguous array for Qt
         if not cv_img.flags["C_CONTIGUOUS"]:
             cv_img = np.ascontiguousarray(cv_img)

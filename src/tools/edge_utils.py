@@ -97,13 +97,25 @@ def multi_scale_edges(
     if scales is None:
         scales = [1.0, 2.0, 4.0]
 
+    if not scales:
+        raise ValueError("Scales list must be non-empty")
+
+    scales_arr = np.asarray(scales, dtype=np.float32)
+    if not np.isfinite(scales_arr).all() or np.any(scales_arr <= 0):
+        raise ValueError("Scales must contain positive finite values")
+
     if weights is None:
         weights = [1.0 / len(scales)] * len(scales)
     elif len(weights) != len(scales):
         raise ValueError("Weights list must match scales list length")
 
     weights_arr = np.array(weights, dtype=np.float32)
-    weights_arr = weights_arr / weights_arr.sum()
+    weight_sum = float(weights_arr.sum())
+    if not np.isfinite(weights_arr).all() or not np.isfinite(weight_sum):
+        raise ValueError("Weights must have a non-zero finite sum")
+    if abs(weight_sum) <= np.finfo(np.float32).eps:
+        raise ValueError("Weights must have a non-zero finite sum")
+    weights_arr = weights_arr / weight_sum
 
     combined: Optional[np.ndarray] = None
 
