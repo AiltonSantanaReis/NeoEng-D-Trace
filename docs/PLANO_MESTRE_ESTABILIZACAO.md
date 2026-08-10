@@ -15,8 +15,10 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 - cobertura crítica integrada pela PR `#35`; `R-003` permanece aberto para as metas finais;
 - `R-006`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 7: CONCLUÍDA;
-- gate atual: executar Bézier e geometria na Etapa 8;
-- Etapa 8: não iniciada; release: NÃO APROVADA.
+- Etapa 8 em validação pré-merge no commit técnico `d11cd3dc0bd0063e325a53dd30fc439feda9dd24`;
+- validação local: 125 testes focais, 660 totais no commit técnico e 661 no pacote pré-merge; núcleo geométrico com 95.59% de linhas e 93.29% de branches;
+- gate atual: PR, CI Linux/Windows, merge e CI pós-merge da Etapa 8;
+- `R-007` permanece aberto; release: NÃO APROVADA.
 
 ### Snapshot histórico imediatamente anterior — encerramento da Etapa 6
 

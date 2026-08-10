@@ -71,7 +71,7 @@ def test_curvature_rejects_invalid_min_points_type():
         curvature_adaptive_simplify(_circle_contour(), min_points=3.5)
 
 
-def test_decomposition_never_returns_zero_area_pieces():
+def test_decomposition_rejects_self_overlapping_fixture():
     overlapping_fixture = [
         (0.0, 0.0),
         (3.0, 0.0),
@@ -81,6 +81,5 @@ def test_decomposition_never_returns_zero_area_pieces():
         (0.0, 1.0),
         (0.0, 2.0),
     ]
-    pieces = convex_decompose_polygon(overlapping_fixture)
-    assert all(polygon_area(piece) > 1e-10 for piece in pieces)
-    assert all(is_convex_polygon(piece) for piece in pieces)
+    with pytest.raises(ValueError, match="preserve polygon geometry"):
+        convex_decompose_polygon(overlapping_fixture)

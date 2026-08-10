@@ -384,8 +384,16 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert workflow.count("actions/setup-python@v7") == 2
     assert workflow.count("actions/upload-artifact@v7") == 2
     assert "GitHub Security Advisory" in security
-    assert len(reconciliation["expected_failures"]) == 26
-    for item in reconciliation["expected_failures"]:
+    expected_failures = reconciliation["expected_failures"]
+    failure_ids = {item["id"] for item in expected_failures}
+    assert len(failure_ids) == len(expected_failures)
+    assert {
+        "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::"
+        "test_convex_decompose_l_shape",
+        "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::"
+        "test_ear_clipping_concave_l_shape",
+    } <= failure_ids
+    for item in expected_failures:
         assert item["message_contains"]
         assert item["rationale"]
         assert item["replacement_tests"]
@@ -485,7 +493,23 @@ def test_stage7_cli_evidence_is_premerge_and_keeps_risk_open():
         assert marker in evidence
 
     assert "ETAPA_7_CLI_PRE_MERGE.md" in index
-    assert "Etapa 8: não iniciada" in index
+    assert "Etapa 8: APROVADA LOCALMENTE / NÃO INTEGRADA" in index
+
+
+def test_stage8_geometry_evidence_is_premerge_and_keeps_risk_open():
+    evidence = _text("docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md")
+    for marker in (
+        "d11cd3dc0bd0063e325a53dd30fc439feda9dd24",
+        "660 passed",
+        "661 passed",
+        "27/27",
+        "95.59%",
+        "93.29%",
+        "`R-007`: aberto até merge",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert marker in evidence
 
 
 def test_stage7_closure_is_bound_to_merge_and_postmerge_ci():

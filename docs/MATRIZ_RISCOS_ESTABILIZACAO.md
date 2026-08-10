@@ -29,7 +29,7 @@ local deve ser conferido antes de qualquer decisão.
 | R-004 | ENCERRADO NO ESCOPO APROVADO | PR `#28` fechou o registro; PR técnica `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, integrada em `574be9bd0268e70c384903f93f16cf6e73aa57a2`; CI pós-merge `31425585259` aprovou Linux e Windows |
 | R-005 | ENCERRADO NO ESCOPO APROVADO | Schema `neoeng-d-trace-collisions` v1 unifica toolbar, painel, metadados genéricos e TXT atômico; PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`; CI pós-merge `31431739320` aprovou Linux e Windows |
 | R-006 | ENCERRADO NO ESCOPO APROVADO | Matriz integral, subprocessos, códigos `0`/`1`/`2` e saídas reais; PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovou Linux e Windows |
-| R-007 | PARCIAL / ABERTO | Persistência e invariantes Bézier tratados; qualidade geométrica adicional permanece para a Etapa 8 |
+| R-007 | APROVADO LOCALMENTE / ABERTO | Commit técnico `d11cd3dc0bd0063e325a53dd30fc439feda9dd24`; 125 testes focais, 660 totais no commit técnico e 661 no pacote pré-merge, 95.59% de linhas e 93.29% de branches no núcleo geométrico; aguarda PR, CI, merge e CI pós-merge |
 | R-008 | PARCIAL / ABERTO | `LassoTool` consolidado em alias canônico e SAT compatível coberto; auditoria ampla permanece para a Etapa 9 |
 | R-009 | ENCERRADO | CI Linux e Windows estabelecida |
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |

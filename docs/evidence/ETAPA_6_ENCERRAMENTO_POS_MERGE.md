@@ -22,7 +22,8 @@ O TXT é derivado do mesmo documento canônico e usa substituição atômica.
 ## Validação local
 
 - testes focais: `32 passed`;
-- suíte funcional pré-merge: `542 passed`, `0 failed`, `0 skipped`;`r`n- suíte local do pacote de fechamento: `543 passed`, `0 failed`, `0 skipped`;
+- suíte funcional pré-merge: `542 passed`, `0 failed`, `0 skipped`;
+- suíte local do pacote de fechamento: `543 passed`, `0 failed`, `0 skipped`;
 - cobertura combinada de linhas e branches: `62.45%`;
 - `src/exporters/collision_exporter.py`: `84%`;
 - `src/exporters/json_exporter.py`: `93%`;

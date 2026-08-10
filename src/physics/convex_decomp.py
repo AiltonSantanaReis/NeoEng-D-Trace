@@ -3,7 +3,8 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import List, Optional, Tuple
+import math
+from typing import List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -13,6 +14,83 @@ try:
     HAS_EARCUT = True
 except ImportError:
     HAS_EARCUT = False
+
+
+Point = Tuple[float, float]
+Polygon = List[Point]
+_GEOMETRY_EPSILON = 1e-10
+
+
+def _cross(first: Point, second: Point, third: Point) -> float:
+    return (second[0] - first[0]) * (third[1] - first[1]) - (second[1] - first[1]) * (
+        third[0] - first[0]
+    )
+
+
+def _signed_area2(polygon: Sequence[Point]) -> float:
+    return sum(
+        polygon[index][0] * polygon[(index + 1) % len(polygon)][1]
+        - polygon[(index + 1) % len(polygon)][0] * polygon[index][1]
+        for index in range(len(polygon))
+    )
+
+
+def _canonical_polygon(polygon: Sequence[Sequence[float]]) -> Polygon:
+    points: Polygon = []
+    for index, point in enumerate(polygon):
+        if not isinstance(point, (list, tuple)) or len(point) != 2:
+            raise ValueError(f"Polygon point {index} must contain two coordinates")
+        x, y = point
+        if (
+            isinstance(x, bool)
+            or isinstance(y, bool)
+            or not isinstance(x, (int, float))
+            or not isinstance(y, (int, float))
+        ):
+            raise ValueError(f"Polygon point {index} must be numeric")
+        try:
+            canonical = (float(x), float(y))
+        except (OverflowError, TypeError, ValueError) as exc:
+            raise ValueError(
+                f"Polygon point {index} must be finite and representable"
+            ) from exc
+        if not math.isfinite(canonical[0]) or not math.isfinite(canonical[1]):
+            raise ValueError(f"Polygon point {index} must be finite")
+        points.append(canonical)
+
+    if len(points) > 1 and points[0] == points[-1]:
+        points.pop()
+    if len(points) < 3:
+        return points
+    if len(set(points)) != len(points):
+        raise ValueError("Polygon must not contain repeated vertices")
+
+    area2 = _signed_area2(points)
+    if not math.isfinite(area2) or abs(area2) <= _GEOMETRY_EPSILON:
+        raise ValueError("Polygon must have finite non-zero area")
+    if area2 < 0.0:
+        points.reverse()
+    return points
+
+
+def _validated_triangulation(
+    polygon: Polygon, triangles: List[Polygon]
+) -> List[Polygon]:
+    expected_area = polygon_area(polygon)
+    triangle_area = sum(polygon_area(triangle) for triangle in triangles)
+    tolerance = max(_GEOMETRY_EPSILON, expected_area * 1e-9)
+    if (
+        len(triangles) != len(polygon) - 2
+        or any(polygon_area(triangle) <= _GEOMETRY_EPSILON for triangle in triangles)
+        or not math.isclose(
+            triangle_area,
+            expected_area,
+            rel_tol=0.0,
+            abs_tol=tolerance,
+        )
+    ):
+        raise ValueError("Triangulation did not preserve polygon geometry")
+    return triangles
 
 
 def polygon_area(polygon: List[Tuple[float, float]]) -> float:
@@ -70,31 +148,29 @@ def is_point_in_triangle(
 
     a, b, c = triangle
 
-    # Helper function to compute cross product (z-component)
-    def cross_product(p1, p2, p3):
-        return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
-
     # Check if point is on the same side of all edges
     # For a triangle ABC and point P, P should be on the same side of AB as C,
     # on the same side of BC as A, and on the same side of CA as B
 
     # Check against edge AB (from a to b), reference point is c
-    cross_ab = cross_product(a, b, c)
-    cross_ap = cross_product(a, b, point)
+    cross_ab = _cross(a, b, c)
+    if abs(cross_ab) <= _GEOMETRY_EPSILON:
+        return False
+    cross_ap = _cross(a, b, point)
 
     # Check against edge BC (from b to c), reference point is a
-    cross_bc = cross_product(b, c, a)
-    cross_bp = cross_product(b, c, point)
+    cross_bc = _cross(b, c, a)
+    cross_bp = _cross(b, c, point)
 
     # Check against edge CA (from c to a),
     # reference point is b
-    cross_ca = cross_product(c, a, b)
-    cross_cp = cross_product(c, a, point)
+    cross_ca = _cross(c, a, b)
+    cross_cp = _cross(c, a, point)
 
     # For point to be inside triangle, all cross products must have
     # the same sign as reference
     # We use a small epsilon for boundary cases
-    eps = 1e-10
+    eps = _GEOMETRY_EPSILON
 
     same_side_ab = cross_ab * cross_ap >= -eps
     same_side_bc = cross_bc * cross_bp >= -eps
@@ -106,24 +182,34 @@ def is_point_in_triangle(
 def triangulate_to_convex(
     pol: List[Tuple[float, float]],
 ) -> List[List[Tuple[float, float]]]:
-    """
-    Triangulate polygon using mapbox_earcut if available, else fallback.
-    Returns list of triangles.
-    """
-    if HAS_EARCUT and len(pol) > 3:
-        verts = np.array(pol, dtype=np.float32)
+    """Triangulate one finite polygon independently of the optional backend."""
+    if len(pol) < 3:
+        return []
+
+    canonical = _canonical_polygon(pol)
+    if len(canonical) < 3:
+        raise ValueError("Polygon must have finite non-zero area")
+    if HAS_EARCUT and len(canonical) > 3:
+        triangulate = getattr(earcut, "triangulate_float64", None)
+        if callable(triangulate):
+            verts = np.array(canonical, dtype=np.float64)
+        else:
+            triangulate = earcut.triangulate_float32
+            verts = np.array(canonical, dtype=np.float32)
         ring_ends = np.array([len(verts)], dtype=np.uint32)
-        tris = earcut.triangulate_float32(verts, ring_ends)
+        tris = triangulate(verts, ring_ends)
+        if len(tris) % 3:
+            raise ValueError("Triangulation backend returned malformed indices")
+        if any(index < 0 or index >= len(canonical) for index in tris):
+            raise ValueError("Triangulation backend returned out-of-range indices")
         result = []
-        for i in range(0, len(tris), 3):
-            a = pol[tris[i]]
-            b = pol[tris[i + 1]]
-            c = pol[tris[i + 2]]
-            result.append([a, b, c])
-        return result
-    else:
-        # Fallback to ear clipping
-        return ear_clipping_triangulation(pol)
+        for index in range(0, len(tris), 3):
+            first = canonical[tris[index]]
+            second = canonical[tris[index + 1]]
+            third = canonical[tris[index + 2]]
+            result.append([first, second, third])
+        return _validated_triangulation(canonical, result)
+    return ear_clipping_triangulation(canonical)
 
 
 def is_ear(polygon: List[Tuple[float, float]], vertex_index: int) -> bool:
@@ -148,6 +234,8 @@ def is_ear(polygon: List[Tuple[float, float]], vertex_index: int) -> bool:
     next_v = (vertex_index + 1) % n
 
     triangle = [polygon[prev], polygon[curr], polygon[next_v]]
+    if _cross(*triangle) <= _GEOMETRY_EPSILON:
+        return False
 
     # Check if any other vertex is inside this triangle
     for i in range(n):
@@ -162,51 +250,34 @@ def is_ear(polygon: List[Tuple[float, float]], vertex_index: int) -> bool:
 def ear_clipping_triangulation(
     polygon: List[Tuple[float, float]],
 ) -> List[List[Tuple[float, float]]]:
-    """
-    Triangulate a simple polygon using the ear clipping algorithm.
-
-    Args:
-        polygon: List of (x, y) vertex coordinates in counter-clockwise order
-
-    Returns:
-        List of triangles, each triangle is a list of 3 (x, y) vertices
-    """
+    """Triangulate a simple polygon through deterministic ear clipping."""
     if len(polygon) < 3:
         return []
 
-    # Make a copy of the polygon to work with
-    verts = polygon.copy()
-    triangles = []
+    canonical = _canonical_polygon(polygon)
+    verts = canonical.copy()
+    triangles: List[Polygon] = []
 
-    # Continue until only a triangle remains
     while len(verts) > 3:
-        # Find an ear
         ear_found = False
-        for i in range(len(verts)):
-            if is_ear(verts, i):
-                # Create triangle from ear
-                prev = (i - 1) % len(verts)
-                next_v = (i + 1) % len(verts)
-                triangle = [verts[prev], verts[i], verts[next_v]]
-                triangles.append(triangle)
-
-                # Remove the ear vertex
-                verts.pop(i)
+        for index in range(len(verts)):
+            if is_ear(verts, index):
+                previous = (index - 1) % len(verts)
+                next_index = (index + 1) % len(verts)
+                triangles.append([verts[previous], verts[index], verts[next_index]])
+                verts.pop(index)
                 ear_found = True
                 break
 
         if not ear_found:
-            # No ear found - polygon might be degenerate or
-            # have issues
             raise ValueError(
-                "No ear found in polygon - may not be simple or " "may be degenerate"
+                "No ear found in polygon - may not be simple or may be degenerate"
             )
 
-    # Add the final triangle
     if len(verts) == 3:
         triangles.append(verts.copy())
 
-    return triangles
+    return _validated_triangulation(canonical, triangles)
 
 
 def is_convex_polygon(
