@@ -403,3 +403,40 @@ def test_live_closure_claims_only_proven_merge_and_not_release():
     assert "STAGE6_STARTED=NO" in closure
     assert "RELEASE_APPROVED=NO" in closure
     assert re.search(r"projeto não está\s+aprovado para release", closure)
+
+
+def test_stage6_closure_is_bound_to_merge_and_postmerge_ci():
+    merge_commit = "73a128ec44cde17867bbac6a7854ce86a43aba5a"
+    postmerge_ci = "31431739320"
+    for relative in (
+        "README.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert merge_commit in value, relative
+        assert postmerge_ci in value, relative
+        assert "R-005" in value, relative
+        assert "Etapa 6" in value, relative
+
+    closure = _text("docs/evidence/ETAPA_6_ENCERRAMENTO_POS_MERGE.md")
+    for marker in (
+        "3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98",
+        "321ccf3a692c7c1916eeeb61e7a041ee8bcef035",
+        merge_commit,
+        "31431473940",
+        postmerge_ci,
+        "9079413130",
+        "9079450269",
+        "R005_CLOSED=YES",
+        "STAGE6_COMPLETED=YES",
+        "STAGE7_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert marker in closure
+
+    premerge = _text("docs/evidence/ETAPA_6_EXPORTACAO_COLISOES.md")
+    assert "APROVADO LOCALMENTE / NÃO INTEGRADO" in premerge
+    assert "R-005` permanece aberto" in premerge

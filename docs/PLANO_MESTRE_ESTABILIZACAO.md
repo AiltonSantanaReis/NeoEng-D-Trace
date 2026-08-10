@@ -7,6 +7,18 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
 - repositório: `AiltonSantanaReis/NeoEng-D-Trace`;
+- commits técnico/documental da Etapa 6: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
+- PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`;
+- CI da PR `31431473940` e pós-merge `31431739320`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9079413130`, Windows `9079450269`;
+- validação local de fechamento: 543 testes, cobertura combinada 62.45%, mypy sem erros em 66 arquivos;
+- `R-005`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 6: CONCLUÍDA;
+- gate atual: elevar cobertura nos módulos críticos e executar a Etapa 7;
+- Etapa 7: não iniciada; release: NÃO APROVADA.
+
+### Snapshot histórico imediatamente anterior — encerramento da Etapa 5
+
 - âncora técnica integrada e auditada: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
 - PR funcional: `#27`, fechada e mesclada;
 - HEAD funcional v4.1: `9bf83af0d58b5984ccfefc59a543428379b02632`;
@@ -23,11 +35,11 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 - CI pós-merge técnico: `31425585259`, Linux e Windows em `success`, zero anotações;
 - `R-004`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 5: CONCLUÍDA;
-- gate atual: planejar a Etapa 6 sem iniciá-la implicitamente e manter release bloqueada;
-- Etapa 6: não iniciada.
+- gate naquele snapshot: planejar a Etapa 6 sem iniciá-la implicitamente e manter release bloqueada;
+- naquele snapshot, Etapa 6: não iniciada.
 
 O fechamento de `R-004` e a conclusão da Etapa 5 foram executados com evidência
-remota. O início da Etapa 6 permanece um gate independente.
+remota. Naquele snapshot, o início da Etapa 6 ainda era um gate independente.
 
 ## Reavaliação auditada publicada — 10 de agosto de 2026
 
