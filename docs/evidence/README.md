@@ -95,19 +95,21 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_7_CLI_PRE_MERGE.md` — matriz local de argumentos, saídas, códigos de processo e subprocessos reais; `R-006` permanece aberto até merge e CI pós-merge.
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` — PR `#36`, merge, CI pós-merge, artefatos e encerramento formal de `R-006`/Etapa 7.
 - `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` — validação matemática local de Bézier, triangulação e degenerados; `R-007` permanece aberto até merge e CI pós-merge.
+- `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` — PR `#38`, merge, CI pós-merge, artefatos e encerramento formal de `R-007`/Etapa 8.
 
 ## Estado operacional da evidência atual
 
-Snapshot pré-merge da Etapa 8 em 10 de agosto de 2026:
+Snapshot de encerramento formal da Etapa 8 em 10 de agosto de 2026:
 
-- commit técnico: `d11cd3dc0bd0063e325a53dd30fc439feda9dd24`;
-- validação local: 125 testes focais, 660 totais no commit técnico, 661 no pacote pré-merge e 27/27 divergências legadas exatas;
-- cobertura global: 72.95% de linhas, 56.48% de branches e 68.98% combinada;
-- núcleo geométrico: 95.59% de linhas e 93.29% de branches;
-- `R-007`: aberto; Etapa 8: APROVADA LOCALMENTE / NÃO INTEGRADA;
-- release: NÃO APROVADA.
+- commits técnico/corretivo: `d11cd3dc0bd0063e325a53dd30fc439feda9dd24` e `23d467f37b39e97251e589b544b84f29bcb18fee`;
+- PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`;
+- CI da PR `31440755594` e pós-merge `31441024001`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9082863959` e Windows `9082897744`, com digests no relatório de encerramento;
+- validação local: 125 testes focais, 661 totais no pacote pré-merge, 662 no fechamento e 27/27 divergências legadas exatas;
+- `R-007`: ENCERRADO NO ESCOPO APROVADO; Etapa 8: CONCLUÍDA;
+- Etapa 9: não iniciada; release: NÃO APROVADA.
 
-O arquivo `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` é a evidência permanente desta execução local. PR, CI Linux/Windows, merge e CI pós-merge ainda não foram executados.
+O arquivo `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente deste gate.
 
 ## Snapshot histórico anterior — encerramento da Etapa 7
 
