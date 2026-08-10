@@ -161,14 +161,14 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 ## Limitações e riscos abertos
 
 - `R-003`: cobertura integral de UI e ferramentas ainda pendente;
-- `R-004`: escopo funcional e CI pós-merge aprovados; encerramento formal condicionado à integração do registro pós-merge e ao CI final da `main`;
+- `R-004`: encerrado no escopo aprovado; Etapa 5 concluída após integração do registro e CI final da `main`;
 - `R-005`: exportação de colisões pertence à Etapa 6, ainda não iniciada;
 - `R-006`: confiabilidade integral da CLI pertence à Etapa 7;
 - `R-007`: persistência Bézier está implementada, mas validações geométricas adicionais pertencem à Etapa 8;
 - `R-008`: duplicidade do lasso foi removida; a revisão ampla de APIs permanece na Etapa 9;
 - `R-011` permanece para refatoração protegida;
 - `R-012` está mitigado por auditoria automatizada, mas limites operacionais permanecem na Etapa 12;
-- `R-013` foi corrigido localmente e aguarda CI do commit;
+- `R-013`: encerrado no escopo auditado após integração e CI pós-merge aprovado;
 - `LayersPanel` está integrado à `MainWindow` e coberto por teste Qt;
 - autosave, 2.5D, build Windows, instalador e validação completa nas engines ainda não estão concluídos;
 - `PERF-MAGNETIC-001`, `UI-RESIZE-PT-001`, `POLY-VALIDATION-UX-001`, `GLTF-2D-001`, `GLTF-UV-001`, `GLTF-MATERIAL-001`, `GLTF-U16-001` e `GLTF-CLEANUP-001` permanecem limitações registradas.
