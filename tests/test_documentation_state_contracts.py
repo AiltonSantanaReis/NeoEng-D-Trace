@@ -18,6 +18,9 @@ def test_readme_reports_versioned_project_and_current_stage():
     assert "R-004" in text
     assert "Pacote 5C" in text
     assert "formato de projeto versionado, autosave" not in text
+    assert "encerramento formal condicionado" not in text
+    assert "foi corrigido localmente e aguarda CI" not in text
+    assert "Actions atuais ainda referenciam" not in text
 
 
 def test_package_5c_evidence_does_not_repeat_false_bezier_limitation():
