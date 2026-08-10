@@ -458,3 +458,31 @@ def test_critical_coverage_evidence_keeps_residual_risk_open():
     index = _text("docs/evidence/README.md")
     assert "COBERTURA_MODULOS_CRITICOS_2026-08-10.md" in index
     assert "R-003` permanece aberto" in index
+
+
+def test_stage7_cli_evidence_is_premerge_and_keeps_risk_open():
+    contract = _text("docs/CONTRATO_CLI.md")
+    evidence = _text("docs/evidence/ETAPA_7_CLI_PRE_MERGE.md")
+    index = _text("docs/evidence/README.md")
+
+    for marker in (
+        "| `0` |",
+        "| `1` |",
+        "| `2` |",
+        "--image` e `--project`",
+        "não é uma transação conjunta",
+    ):
+        assert marker in contract
+
+    for marker in (
+        "a940ef13018aabc430126db3fd705b521fc1be06",
+        "620 passed",
+        "68.53%",
+        "src/launcher.py`: `85%",
+        "R-006` permanece aberto",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+    ):
+        assert marker in evidence
+
+    assert "ETAPA_7_CLI_PRE_MERGE.md" in index
+    assert "Etapa 8: não iniciada" in index

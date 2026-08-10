@@ -20,7 +20,7 @@ except ImportError as e:
     print("For a source checkout, run: poetry install")
     sys.exit(1)
 
-from src.core.app_identity import APP_DISPLAY_NAME
+from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
 from src.core.commands import CommandManager
 from src.core.config import ConfigManager
 from src.core.logger import logger, setup_logging
@@ -53,22 +53,55 @@ def get_project_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
+EXIT_SUCCESS = 0
+EXIT_FAILURE = 1
+
+_HEADLESS_FIELDS = (
+    "image",
+    "project",
+    "export_scene_gltf",
+    "export_object_gltf",
+    "object_id",
+    "export_json",
+    "save_project",
+)
+
+
+def _headless_requested(args: argparse.Namespace) -> bool:
+    return bool(
+        args.headless or any(getattr(args, field, None) for field in _HEADLESS_FIELDS)
+    )
+
+
+def _headless_contract_error(args: argparse.Namespace) -> str | None:
+    if getattr(args, "validation_log", None):
+        return "--validation-log is available only in GUI mode"
+    if args.image and args.project:
+        return "--image and --project are mutually exclusive"
+    if args.export_object_gltf and not args.object_id:
+        return "--export-object-gltf requires --object-id"
+    if args.object_id and not args.export_object_gltf:
+        return "--object-id requires --export-object-gltf"
+    if not any(
+        getattr(args, field, None) for field in _HEADLESS_FIELDS if field != "object_id"
+    ):
+        return "headless mode requires an input or output operation"
+    return None
+
+
+def _cli_failure(message: str) -> int:
+    logger.error(message)
+    print(f"ERROR: {message}", file=sys.stderr)
+    return EXIT_FAILURE
+
+
 def run_headless(args: argparse.Namespace) -> int:
-    """
-    Run NeoEng-D-Trace in headless mode for automated processing.
+    """Run validated headless operations and return a process exit code."""
+    contract_error = _headless_contract_error(args)
+    if contract_error:
+        return _cli_failure(contract_error)
 
-    Args:
-        args: Parsed command line arguments
-
-    Returns:
-        Exit code (0 for success, 1 for error)
-    """
     try:
-        if args.export_object_gltf and not args.object_id:
-            logger.error("--export-object-gltf requires --object-id")
-            return 1
-
-        # Setup logging
         config_path = str(get_project_root() / "config.json")
         config = ConfigManager(config_path)
         setup_logging(
@@ -78,102 +111,71 @@ def run_headless(args: argparse.Namespace) -> int:
         )
 
         logger.info("Starting %s in headless mode", APP_DISPLAY_NAME)
-
-        # Create scene
         scene = Scene()
         scene.cmd = CommandManager()
 
-        # Load image if provided
         if args.image:
-            if not os.path.exists(args.image):
-                logger.error(f"Image file not found: {args.image}")
-                return 1
-
+            if not os.path.isfile(args.image):
+                return _cli_failure(f"Image file not found: {args.image}")
             try:
-                pil_image = PILImage.open(args.image)
-                scene.load_image(pil_image, args.image)
-                logger.info(f"Loaded image: {args.image}")
-            except Exception as e:
-                logger.error(f"Failed to load image: {e}")
-                return 1
+                with PILImage.open(args.image) as pil_image:
+                    scene.load_image(pil_image.copy(), args.image)
+            except Exception as exc:
+                return _cli_failure(f"Failed to load image: {exc}")
 
-        # Load project if provided
         if args.project:
-            if not os.path.exists(args.project):
-                logger.error(f"Project file not found: {args.project}")
-                return 1
-
+            if not os.path.isfile(args.project):
+                return _cli_failure(f"Project file not found: {args.project}")
             try:
                 scene.load_project(args.project)
-                logger.info(f"Loaded project: {args.project}")
-            except Exception as e:
-                logger.error(f"Failed to load project: {e}")
-                return 1
+            except Exception as exc:
+                return _cli_failure(f"Failed to load project: {exc}")
 
-        # Process operations
         if args.export_scene_gltf:
             try:
                 from src.exporters.gltf_exporter import export_scene_to_gltf
 
-                success = export_scene_to_gltf(scene, args.export_scene_gltf)
-                if success:
-                    logger.info(f"Exported scene to GLTF: {args.export_scene_gltf}")
-                else:
-                    logger.error("Failed to export scene to GLTF")
-                    return 1
-            except ImportError:
-                logger.error("GLTF exporter module not found")
-                return 1
+                if not export_scene_to_gltf(scene, args.export_scene_gltf):
+                    return _cli_failure("Failed to export scene to GLTF")
+            except (ImportError, OSError, ValueError, RuntimeError) as exc:
+                return _cli_failure(f"Failed to export scene to GLTF: {exc}")
 
         if args.export_object_gltf:
             try:
                 from src.exporters.gltf_exporter import export_object_to_gltf
 
-                success = export_object_to_gltf(
+                if not export_object_to_gltf(
                     args.object_id, scene, args.export_object_gltf
-                )
-                if success:
-                    msg = "Exported object {} to GLTF: {}".format(
-                        args.object_id, args.export_object_gltf
+                ):
+                    return _cli_failure(
+                        f"Failed to export object {args.object_id} to GLTF"
                     )
-                    logger.info(msg)
-                else:
-                    msg = f"Failed to export object {args.object_id} to GLTF"
-                    logger.error(msg)
-                    return 1
-            except ImportError:
-                logger.error("GLTF exporter module not found")
-                return 1
+            except (ImportError, OSError, ValueError, RuntimeError) as exc:
+                return _cli_failure(
+                    f"Failed to export object {args.object_id} to GLTF: {exc}"
+                )
 
         if args.export_json:
-            from src.exporters.json_exporter import export_scene_metadata
-
-            metadata = export_scene_metadata(scene)
             try:
-                import json
+                from src.exporters.json_exporter import (
+                    export_scene_metadata,
+                    save_json_metadata,
+                )
 
-                with open(args.export_json, "w", encoding="utf-8") as f:
-                    json.dump(metadata, f, indent=2)
-                logger.info(f"Exported metadata to JSON: {args.export_json}")
-            except Exception as e:
-                logger.error(f"Failed to export JSON: {e}")
-                return 1
+                save_json_metadata(export_scene_metadata(scene), args.export_json)
+            except (OSError, TypeError, ValueError) as exc:
+                return _cli_failure(f"Failed to export JSON: {exc}")
 
-        # Save project if requested
         if args.save_project:
             try:
                 scene.save_project(args.save_project)
-                logger.info(f"Saved project: {args.save_project}")
-            except Exception as e:
-                logger.error(f"Failed to save project: {e}")
-                return 1
+            except (OSError, TypeError, ValueError) as exc:
+                return _cli_failure(f"Failed to save project: {exc}")
 
-        logger.info("Headless processing completed successfully")
-        return 0
-
-    except Exception as e:
-        logger.error(f"Headless processing failed: {e}")
-        return 1
+        print("Headless processing completed successfully")
+        return EXIT_SUCCESS
+    except Exception as exc:
+        return _cli_failure(f"Headless processing failed: {exc}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -185,8 +187,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--headless", action="store_true", help="Run in headless mode (no GUI)"
     )
-    parser.add_argument("--image", type=str, help="Load image file")
-    parser.add_argument("--project", type=str, help="Load project file")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {APP_VERSION}",
+    )
+    source_group = parser.add_mutually_exclusive_group()
+    source_group.add_argument("--image", type=str, help="Load image file")
+    source_group.add_argument("--project", type=str, help="Load project file")
     parser.add_argument(
         "--export-scene-gltf",
         type=str,
@@ -214,9 +222,7 @@ def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
 
-    if args.headless or any(
-        [args.export_scene_gltf, args.export_object_gltf, args.export_json]
-    ):
+    if _headless_requested(args):
         return run_headless(args)
 
     config_path = str(get_project_root() / "config.json")
@@ -333,4 +339,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
