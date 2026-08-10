@@ -94,7 +94,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 Snapshot de fechamento formal de 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
 
-- `main`: `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
+- âncora técnica integrada e auditada: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
 - PR `#27`: fechada e mesclada;
 - HEAD funcional v4.1: `9bf83af0d58b5984ccfefc59a543428379b02632`;
 - HEAD documental final da PR: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
@@ -108,8 +108,9 @@ Snapshot de fechamento formal de 10 de agosto de 2026, condicionado à verifica�
 - branch funcional: preservada no remoto;
 - auditoria corretiva: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, HEAD final `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
 - PR `#28`: mesclada em `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
-- CI final da PR `31422901244` e pós-merge `31423386971`: Linux e Windows em `success`;
-- artefatos pós-merge finais: Linux `9076253153` (`sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`) e Windows `9076283257` (`sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`);
+- pacote técnico final: PR `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, merge `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
+- CI pós-merge técnico `31425585259`: Linux e Windows em `success`, zero anotações;
+- artefatos técnicos finais: Linux `9077091136` (`sha256:0ce0ad1f77b348f1d4061c7783a3467633a3089f19b18327627979f51befce51`) e Windows `9077113199` (`sha256:ab18e3e260f3f2b1e64b41e834363460f721112131411f350ac83e779fa9dae8`);
 - `R-004`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 5: CONCLUÍDA;
 - gate atual: planejamento explícito da Etapa 6; release permanece bloqueada;

@@ -20,6 +20,10 @@
 - CI pós-merge do fechamento: run `31423386971`, conclusão `success`;
 - jobs pós-merge: Linux `test` (`93569241989`) e Windows `test-windows` (`93569242024`), ambos `success`;
 - artefatos pós-merge: Linux `9076253153` (`sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`) e Windows `9076283257` (`sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`);
+- pacote técnico final: PR `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, merge `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
+- CI pós-merge técnico final: run `31425585259`, conclusão `success`, zero anotações;
+- jobs técnicos finais: Linux `93576381868` e Windows `93576382048`;
+- artefatos técnicos finais: Linux `9077091136` (`sha256:0ce0ad1f77b348f1d4061c7783a3467633a3089f19b18327627979f51befce51`) e Windows `9077113199` (`sha256:ab18e3e260f3f2b1e64b41e834363460f721112131411f350ac83e779fa9dae8`);
 - auditoria corretiva: 2026-08-10, Windows/Python 3.11.9.
 
 ## Cadeia funcional comprovada
@@ -76,8 +80,8 @@ anterior até sua remediação.
 - as Actions emitiram aviso de depreciação do Node.js 20 para
   `actions/checkout@v4`, `actions/setup-python@v5` e
   `actions/upload-artifact@v4`; os jobs foram executados com Node.js 24 e
-  concluíram com sucesso. O pacote final atualiza as três actions para
-  `v7`/Node.js 24;
+  concluíram com sucesso. A PR `#29` atualizou as três actions para
+  `v7`/Node.js 24 e o CI técnico final teve zero anotações;
 - a Etapa 6 não foi iniciada e nenhum estado deste relatório aprova release.
 
 ## Estado controlado

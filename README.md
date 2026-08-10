@@ -8,7 +8,7 @@ O estado real do repositório local e remoto prevalece sobre qualquer snapshot d
 
 Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 2026:
 
-- `main` integrada no merge de fechamento `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
+- âncora técnica integrada e auditada da Etapa 5: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
 - PR `#27` fechada e mesclada a partir do HEAD documental `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
 - Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B da Etapa 5: integrados; Pacote 5C: integrado;
 - gate funcional v4.1 no Windows/Python 3.11.9: 95 testes focais, 16 documentais, 517 totais e cobertura global de 66%;
@@ -19,8 +19,9 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - artefato Windows pós-merge: `8978326062`, SHA-256 `0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`;
 - branch funcional preservada no remoto;
 - PR de fechamento `#28` mesclada a partir do HEAD `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
-- CI pós-merge de fechamento `31423386971`: Linux e Windows em `success`;
-- artefatos finais: Linux `9076253153` (`sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`) e Windows `9076283257` (`sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`);
+- pacote técnico final PR `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, mesclado em `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
+- CI pós-merge técnico `31425585259`: Linux `93576381868` e Windows `93576382048` em `success`, zero anotações;
+- artefatos técnicos finais: Linux `9077091136` (`sha256:0ce0ad1f77b348f1d4061c7783a3467633a3089f19b18327627979f51befce51`) e Windows `9077113199` (`sha256:ab18e3e260f3f2b1e64b41e834363460f721112131411f350ac83e779fa9dae8`);
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
@@ -48,8 +49,8 @@ também foi aprovado, sem declarar release:
 - matriz funcional viva: `docs/MATRIZ_FUNCIONALIDADES_ATUAL.md`;
 - evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`;
 - aviso não bloqueante: as Actions atuais ainda referenciam versões cuja ação
-  usava Node.js 20, forçado pelo GitHub para Node.js 24; este pacote final
-  atualiza checkout, setup-python e upload-artifact para `v7`/Node.js 24.
+  usava Node.js 20, forçado pelo GitHub para Node.js 24; a PR `#29` atualizou
+  as três actions para `v7`/Node.js 24 e o CI final teve zero anotações.
 
 ## Capacidades comprovadas no estado integrado
 

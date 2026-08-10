@@ -29,8 +29,8 @@ def test_package_5c_evidence_does_not_repeat_false_bezier_limitation():
 
 
 def test_live_documents_identify_final_main_and_closed_stage():
-    expected_main = "56533b65f81d21fd9c762aa10c0d3e6747d742ca"
-    merged_head = "ab71e148c0b7441bd36f489472856d0b4adfaa1e"
+    expected_main = "574be9bd0268e70c384903f93f16cf6e73aa57a2"
+    merged_head = "956db473a88641bfdcfbd49ed122479f3fa2c51d"
     for relative in (
         "README.md",
         "docs/PLANO_MESTRE_ESTABILIZACAO.md",
@@ -42,15 +42,15 @@ def test_live_documents_identify_final_main_and_closed_stage():
         assert merged_head in value
         assert "#28" in value
         assert "R-004" in value
-        assert "31423386971" in value
+        assert "31425585259" in value
         assert "Etapa 6" in value
 
     closure = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
     assert expected_main in closure
     assert merged_head in closure
-    assert "31423386971" in closure
-    assert "9076253153" in closure
-    assert "9076283257" in closure
+    assert "31425585259" in closure
+    assert "9077091136" in closure
+    assert "9077113199" in closure
     assert "R004_CLOSED=YES" in closure
     assert "STAGE5_COMPLETED=YES" in closure
     assert "STAGE6_STARTED=NO" in closure
@@ -103,8 +103,8 @@ def test_live_documents_describe_postmerge_state_without_stale_gates():
         value = _text(relative)
         for phrase in stale_phrases:
             assert phrase not in value, (relative, phrase)
-        assert "56533b65f81d21fd9c762aa10c0d3e6747d742ca" in value
-        assert "ab71e148c0b7441bd36f489472856d0b4adfaa1e" in value
+        assert "574be9bd0268e70c384903f93f16cf6e73aa57a2" in value
+        assert "956db473a88641bfdcfbd49ed122479f3fa2c51d" in value
         if relative != "docs/evidence/README.md":
             assert "APPROVED_FOR_DIFF_REVIEW_ONLY" not in value
         assert ci_marker in value, (relative, ci_marker)
@@ -161,8 +161,11 @@ def test_stage5_closure_report_is_complete_and_final():
         "STAGE6_STARTED=NO",
         "31422901244",
         "31423386971",
+        "31425585259",
         "93569241989",
         "93569242024",
+        "93576381868",
+        "93576382048",
     ):
         assert marker in text
 

@@ -2,9 +2,9 @@
 
 **Snapshot integrado:** 2026-08-10
 
-**Base remota:** `56533b65f81d21fd9c762aa10c0d3e6747d742ca`
+**Âncora técnica integrada e auditada:** `574be9bd0268e70c384903f93f16cf6e73aa57a2`
 
-**Estado:** PR `#28` mesclada; CI pós-merge Linux/Windows `31423386971` aprovado.
+**Estado:** PR técnica final `#29` mesclada; CI pós-merge Linux/Windows `31425585259` aprovado sem anotações.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -15,7 +15,7 @@ snapshot histórico.
 | Ambiente e lock | APROVADO | `poetry check --lock --strict`, PEP 621 e instalação resolvida | nenhum aviso de metadados no Poetry 2.4.1 |
 | Persistência `.ndtproj` schema v1 | APROVADO | round-trip, migração, escrita atômica, falhas negativas | autosave não implementado |
 | Abrir/Salvar na UI | APROVADO | testes Qt Windows e evidência da Etapa 4 | wheel validado; executável e instalador standalone ainda ausentes |
-| Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31423386971` | nenhum no escopo da Etapa 5 |
+| Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31425585259` | nenhum no escopo da Etapa 5 |
 | Camadas e grupos | INTEGRADO / APROVADO | comandos reversíveis e `LayersPanel` integrado à `MainWindow` | cobertura total da UI permanece meta |
 | CLI/headless | PARCIAL | cenário real positivo; falta de `--object-id` agora retorna erro | matriz completa da Etapa 7 pendente |
 | Exportação de colisões | PARCIAL | toolbar e painel gravam JSON real; cancelamento sem sucesso | schema unificado da Etapa 6 pendente |
