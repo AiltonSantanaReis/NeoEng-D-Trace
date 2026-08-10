@@ -15,10 +15,12 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 - cobertura crítica integrada pela PR `#35`; `R-003` permanece aberto para as metas finais;
 - `R-006`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 7: CONCLUÍDA;
-- Etapa 8 em validação pré-merge no commit técnico `d11cd3dc0bd0063e325a53dd30fc439feda9dd24`;
-- validação local: 125 testes focais, 660 totais no commit técnico e 661 no pacote pré-merge; núcleo geométrico com 95.59% de linhas e 93.29% de branches;
-- gate atual: PR, CI Linux/Windows, merge e CI pós-merge da Etapa 8;
-- `R-007` permanece aberto; release: NÃO APROVADA.
+- Etapa 8 integrada pela PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`;
+- CI da PR `31440755594` e pós-merge `31441024001`: Linux e Windows em `success`, zero anotações;
+- validação local: 125 testes focais, 661 totais no pacote pré-merge e 662 no fechamento; núcleo geométrico com 95.59% de linhas e 93.29% de branches;
+- `R-007`: ENCERRADO NO ESCOPO APROVADO; Etapa 8: CONCLUÍDA;
+- gate atual: executar a auditoria de física, colisão e APIs da Etapa 9;
+- Etapa 9: não iniciada; release: NÃO APROVADA.
 
 ### Snapshot histórico imediatamente anterior — encerramento da Etapa 6
 
