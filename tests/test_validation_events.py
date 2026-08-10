@@ -30,7 +30,7 @@ def test_validation_session_flushes_structured_events_and_truthful_summary(tmp_p
             "language.changed",
             "SUCCESS",
             requested="pt",
-            sensitive_path=r"C:\\Users\\someone\\Pictures\\asset.png",
+            sensitive_path=r"X:\\fixtures\\asset.png",
         )
     finally:
         stop_validation_session(
