@@ -4,14 +4,14 @@
 
 Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 7 — candidato local da CLI
+### Etapa 7 — integrada e encerrada no escopo aprovado
 
 - define a matriz integral de argumentos, modos, saídas e códigos `0`, `1` e `2`;
 - elimina argumentos de operação silenciosamente ignorados e rejeita combinações incompletas;
 - propaga códigos reais por `app.py` e execução direta do módulo;
 - valida subprocessos, entradas reais, JSON/projeto reabertos e GLBs com magic `glTF`;
-- alcança 85% no launcher e 68.53% de cobertura combinada com 620 testes aprovados;
-- mantém `R-006` aberto até merge e CI pós-merge; release não aprovada.
+- alcança 85% no launcher e 68.53% de cobertura combinada, com 620 testes no commit técnico e 622 no fechamento;
+- PR `#36` mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI da PR `31436763095` e pós-merge `31437000772` aprovaram Linux e Windows sem anotações; `R-006` encerrado; release não aprovada.
 
 ### Cobertura de módulos críticos — integrada
 
