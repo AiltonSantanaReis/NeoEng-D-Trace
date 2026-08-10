@@ -322,7 +322,7 @@ class Scene:
         self.objects: Dict[str, SceneObject] = {}
         self.layers: List[Layer] = []
         self.groups: List[Group] = []
-        # Physics collision shapes
+        # Static collision shapes
         self.collision_shapes: Dict[str, List[Tuple[float, float]]] = {}
         self.selected_id: Optional[str] = None
         self._listeners: List[Callable[[], None]] = []
@@ -352,15 +352,15 @@ class Scene:
         for cb in to_remove:
             self._listeners.remove(cb)
 
-    # --- Physics System (INTEGRAÇÃO DE COLISÃO) ---
+    # --- Formas de colisão estática ---
     def set_object_collision(self, oid: str, enabled: bool):
-        """Ativa/Desativa física para um objeto."""
+        """Ativa ou desativa a forma de colisão de um objeto."""
         if oid not in self.objects:
             return
 
         if enabled:
             obj = self.objects[oid]
-            # Converte para float para o motor de física
+            # Canonicaliza coordenadas da forma de colisão.
             self.collision_shapes[oid] = [
                 (float(p[0]), float(p[1])) for p in obj.polygon
             ]

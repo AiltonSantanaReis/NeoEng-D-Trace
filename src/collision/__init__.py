@@ -1,11 +1,19 @@
-"""Public API for 2D collision helpers in the single ``src`` tree."""
+"""Public API for validated static 2D polygon collisions."""
 
-from src.physics.sat2d import overlap_intervals, project_polygon
-
-from .sat2d import polygon_collision_sat
+from .manager import CollisionObject, CollisionResult, StaticCollisionManager
+from .sat2d import (
+    overlap_intervals,
+    polygon_collision_sat,
+    polygons_overlap,
+    project_polygon,
+)
 
 __all__ = [
-    "project_polygon",
+    "CollisionObject",
+    "CollisionResult",
+    "StaticCollisionManager",
     "overlap_intervals",
     "polygon_collision_sat",
+    "polygons_overlap",
+    "project_polygon",
 ]

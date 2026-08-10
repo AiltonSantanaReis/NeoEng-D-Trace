@@ -30,9 +30,9 @@ except ImportError:
     _HAS_PYGLTF = False
 
 from src.core.app_identity import GLTF_GENERATOR
+from src.core.convex_decomp import triangulate_to_convex
 from src.core.logger import logger
 from src.models.scene import Scene as PolygonScene
-from src.physics.convex_decomp import triangulate_to_convex
 
 
 def _save_glb(gltf, output_path: str) -> None:

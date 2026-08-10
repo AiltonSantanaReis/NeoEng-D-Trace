@@ -8,12 +8,12 @@ from unittest.mock import MagicMock
 import pytest
 from PySide6.QtWidgets import QApplication, QMessageBox
 
+from src.collision import StaticCollisionManager
 from src.core.commands import (
     CommandManager,
     CommandResult,
 )
 from src.models.scene import Scene
-from src.physics.physics_manager import PhysicsManager
 from src.ui.collision_panel import CollisionPanel
 from src.ui.mask_viewer import MaskViewerDialog
 
@@ -160,8 +160,8 @@ def make_collision_scene():
 def test_collision_panel_auto_generation_uses_one_history_entry(qt_app, messages):
     scene = make_collision_scene()
     panel = CollisionPanel(scene)
-    physics = PhysicsManager()
-    panel.set_physics_manager(physics)
+    physics = StaticCollisionManager()
+    panel.set_collision_manager(physics)
 
     panel._on_auto_generate()
 
@@ -176,8 +176,8 @@ def test_collision_panel_syncs_cache_on_undo_and_redo(qt_app, messages):
     old = {"legacy": [(1.0, 1.0), (2.0, 1.0), (2.0, 2.0)]}
     scene.collision_shapes = copy.deepcopy(old)
     panel = CollisionPanel(scene)
-    physics = PhysicsManager()
-    panel.set_physics_manager(physics)
+    physics = StaticCollisionManager()
+    panel.set_collision_manager(physics)
 
     panel._on_auto_generate()
     assert set(physics.objects) == {"A", "B"}
@@ -215,8 +215,8 @@ def test_collision_panel_existing_shapes_are_noop_but_cache_is_synchronized(
         "B": [(40.0, 0.0), (60.0, 0.0), (60.0, 20.0)],
     }
     panel = CollisionPanel(scene)
-    physics = PhysicsManager()
-    panel.set_physics_manager(physics)
+    physics = StaticCollisionManager()
+    panel.set_collision_manager(physics)
     physics.clear()
 
     panel._on_auto_generate()
@@ -233,8 +233,8 @@ def test_collision_batch_test_syncs_cache_without_creating_history(qt_app, messa
         "B": [(40.0, 0.0), (60.0, 0.0), (60.0, 20.0)],
     }
     panel = CollisionPanel(scene)
-    physics = PhysicsManager()
-    panel.set_physics_manager(physics)
+    physics = StaticCollisionManager()
+    panel.set_collision_manager(physics)
     physics.clear()
 
     panel._on_batch_test()

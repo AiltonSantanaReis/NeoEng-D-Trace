@@ -1,6 +1,6 @@
 # src/ui/collision_panel.py
 """
-Collision Panel for Physics Testing
+Collision panel for static overlap testing.
 """
 
 import copy
@@ -22,7 +22,7 @@ from src.core.logger import logger
 
 class CollisionPanel(QWidget):
     """
-    Panel providing controls for physics collision testing and management.
+    Panel providing controls for static collision testing and management.
     """
 
     batch_test_requested = Signal()
@@ -33,7 +33,7 @@ class CollisionPanel(QWidget):
         super().__init__(parent)
         self.scene = scene
         self.collision_results: List[Dict] = []
-        self.physics_manager = None
+        self.collision_manager = None
 
         self._setup_ui()
         if hasattr(self.scene, "subscribe"):
@@ -42,7 +42,7 @@ class CollisionPanel(QWidget):
     def _setup_ui(self):
         layout = QVBoxLayout(self)
 
-        title = QLabel("Physics Collision Testing")
+        title = QLabel("Static Collision Testing")
         title.setStyleSheet("font-weight: bold; font-size: 14px;")
         layout.addWidget(title)
 
@@ -95,25 +95,29 @@ class CollisionPanel(QWidget):
 
         layout.addStretch()
 
+    def set_collision_manager(self, collision_manager):
+        self.collision_manager = collision_manager
+        self._sync_collision_manager_from_scene()
+
     def set_physics_manager(self, physics_manager):
-        self.physics_manager = physics_manager
-        self._sync_physics_manager_from_scene()
+        """Compatibility adapter for historical callers."""
+        self.set_collision_manager(physics_manager)
 
     def _on_scene_changed(self):
-        self._sync_physics_manager_from_scene()
+        self._sync_collision_manager_from_scene()
 
-    def _sync_physics_manager_from_scene(self) -> bool:
-        if self.physics_manager is None:
+    def _sync_collision_manager_from_scene(self) -> bool:
+        if self.collision_manager is None:
             return True
 
         previous = {
-            object_id: copy.deepcopy(physics_object.shape)
-            for object_id, physics_object in self.physics_manager.objects.items()
+            object_id: copy.deepcopy(collision_object.shape)
+            for object_id, collision_object in self.collision_manager.objects.items()
         }
         try:
-            self.physics_manager.clear()
+            self.collision_manager.clear()
             for object_id, shape in self.scene.collision_shapes.items():
-                self.physics_manager.register(object_id, copy.deepcopy(shape))
+                self.collision_manager.register(object_id, copy.deepcopy(shape))
             return True
         except Exception as exc:
             logger.error(
@@ -121,9 +125,9 @@ class CollisionPanel(QWidget):
                 type(exc).__name__,
             )
             try:
-                self.physics_manager.clear()
+                self.collision_manager.clear()
                 for object_id, shape in previous.items():
-                    self.physics_manager.register(object_id, shape)
+                    self.collision_manager.register(object_id, shape)
             except Exception as restore_exc:
                 logger.error(
                     "Failed to restore physics collision cache (%s)",
@@ -140,7 +144,7 @@ class CollisionPanel(QWidget):
             self.stats_text.setPlainText("No statistics available.")
             return
 
-        stats_text = f"""Physics Statistics:
+        stats_text = f"""Static Collision Statistics:
 • Total Objects: {stats.get('total_objects', 0)}
 • Grid Cell Size: {stats.get('grid_cell_size', 0)}
 • Occupied Cells: {stats.get('occupied_cells', 0)}
@@ -182,13 +186,15 @@ class CollisionPanel(QWidget):
         self.results_text.setPlainText(results_text)
 
     def _on_batch_test(self):
-        if not self.physics_manager:
-            QMessageBox.warning(self, "Error", "Physics manager not available.")
+        if not self.collision_manager:
+            QMessageBox.warning(
+                self, "Error", "Static collision manager not available."
+            )
             return
 
         # Synchronize the derived physics cache without creating history.
-        if not self.physics_manager.objects and self.scene.collision_shapes:
-            if not self._sync_physics_manager_from_scene():
+        if not self.collision_manager.objects and self.scene.collision_shapes:
+            if not self._sync_collision_manager_from_scene():
                 QMessageBox.critical(
                     self,
                     "Error",
@@ -196,16 +202,16 @@ class CollisionPanel(QWidget):
                 )
                 return
 
-        if not self.physics_manager.objects:
+        if not self.collision_manager.objects:
             QMessageBox.information(
                 self,
                 "Info",
-                "No physics objects registered. Use Auto-Generate first.",
+                "No collision shapes registered. Use Auto-Generate first.",
             )
             return
 
         try:
-            results = self.physics_manager.batch_test()
+            results = self.collision_manager.batch_test()
 
             self.update_collision_results(
                 [
@@ -219,7 +225,7 @@ class CollisionPanel(QWidget):
                 ]
             )
 
-            stats = self.physics_manager.get_stats()
+            stats = self.collision_manager.get_stats()
             self.update_statistics(stats)
 
             self.batch_test_requested.emit()
@@ -263,11 +269,11 @@ class CollisionPanel(QWidget):
                 elif result.status is CommandStatus.REJECTED:
                     QMessageBox.warning(self, "Error", message)
                 else:
-                    self._sync_physics_manager_from_scene()
+                    self._sync_collision_manager_from_scene()
                     QMessageBox.information(self, "Info", message)
                 return
 
-            if not self._sync_physics_manager_from_scene():
+            if not self._sync_collision_manager_from_scene():
                 QMessageBox.critical(
                     self,
                     "Error",

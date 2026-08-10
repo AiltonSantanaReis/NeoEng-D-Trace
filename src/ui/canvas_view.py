@@ -222,17 +222,17 @@ class CanvasView(QWidget):
             act_focus = menu.addAction("🔍 Focus Object")
             act_focus.triggered.connect(lambda: self.focus_on_object(clicked_obj_id))
 
-            # Física
-            has_physics = hasattr(
+            # Forma de colisão
+            has_collision = hasattr(
                 self.model, "has_collision"
             ) and self.model.has_collision(clicked_obj_id)
-            phys_txt = (
-                "Disable Physics Collision"
-                if has_physics
-                else "Enable Physics Collision"
+            collision_text = (
+                "Disable Collision Shape" if has_collision else "Enable Collision Shape"
             )
-            act_phys = menu.addAction(f"⚛️ {phys_txt}")
-            act_phys.triggered.connect(lambda: self._toggle_physics(clicked_obj_id))
+            collision_action = menu.addAction(f"⚛️ {collision_text}")
+            collision_action.triggered.connect(
+                lambda: self._toggle_collision(clicked_obj_id)
+            )
 
             menu.addSeparator()
 
@@ -312,7 +312,7 @@ class CanvasView(QWidget):
             return str(command.object_id)
         return None
 
-    def _toggle_physics(self, oid: str):
+    def _toggle_collision(self, oid: str):
         try:
             result = self._execute_edit_command(ToggleCollisionCommand(oid))
             if result.changed:
@@ -323,6 +323,10 @@ class CanvasView(QWidget):
                 "Collision Toggle Error",
                 str(exc),
             )
+
+    def _toggle_physics(self, oid: str):
+        """Compatibility adapter for historical callers."""
+        self._toggle_collision(oid)
 
     def _delete_object(self, oid: str):
         try:

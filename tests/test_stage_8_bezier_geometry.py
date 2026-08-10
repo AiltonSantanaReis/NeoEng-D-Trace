@@ -6,6 +6,7 @@ import math
 import numpy as np
 import pytest
 
+from src.core import convex_decomp
 from src.core.bezier_geometry import (
     canonical_point,
     canonicalize_beziers,
@@ -14,7 +15,6 @@ from src.core.bezier_geometry import (
     sample_beziers,
     sample_beziers_to_polygon,
 )
-from src.physics import convex_decomp
 
 BEZIERS = [
     ((0, 0), (0, -10), (10, -10), (10, 0)),
