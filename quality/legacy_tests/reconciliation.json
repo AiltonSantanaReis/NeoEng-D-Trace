@@ -8,11 +8,23 @@
     {
       "id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_convex_decompose_l_shape",
       "kind": "failure",
-      "message_contains": "assert 3 == 5",
-      "classification": "superseded_contract",
-      "rationale": "The exact triangle count was replaced by the stronger invariants that every piece is convex and total area is preserved; valid merging intentionally reduces five triangles to three convex pieces.",
+      "message_contains": "Triangulation did not preserve polygon geometry",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved seven-vertex fixture contains a self-overlapping vertical edge. The current decomposition contract rejects geometry whose triangulated area does not preserve the source polygon instead of returning corrupt convex pieces.",
       "replacement_tests": [
+        "tests/test_stage_0_5_2e_core.py::test_decomposition_rejects_self_overlapping_fixture",
         "tests/test_stage_0_5_2e_core.py::test_valid_l_shape_decomposition_preserves_area_and_convexity"
+      ]
+    },
+    {
+      "id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_ear_clipping_concave_l_shape",
+      "kind": "failure",
+      "message_contains": "Triangulation did not preserve polygon geometry",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved seven-vertex fixture contains a self-overlapping vertical edge. Ear clipping now validates area preservation and rejects the invalid fixture instead of accepting overlapping triangles.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2e_core.py::test_decomposition_rejects_self_overlapping_fixture",
+        "tests/test_stage_8_bezier_geometry.py::test_fallback_triangulation_is_orientation_independent"
       ]
     },
     {
