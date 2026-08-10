@@ -7,17 +7,29 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
 - repositório: `AiltonSantanaReis/NeoEng-D-Trace`;
-- commits técnico/documental da Etapa 6: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
+- commits técnico/documental da Etapa 7: `a940ef13018aabc430126db3fd705b521fc1be06` e `51e55a37021c506471111ef1f4e7bc9abe67c65d`;
+- PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`;
+- CI da PR `31436763095` e pós-merge `31437000772`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9081388807`, Windows `9081419753`;
+- validação local: 620 testes no commit técnico, 621 no pacote pré-merge e 622 no fechamento, cobertura combinada 68.53%, launcher 85% e mypy sem erros em 66 arquivos;
+- cobertura crítica integrada pela PR `#35`; `R-003` permanece aberto para as metas finais;
+- `R-006`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 7: CONCLUÍDA;
+- gate atual: executar Bézier e geometria na Etapa 8;
+- Etapa 8: não iniciada; release: NÃO APROVADA.
+
+### Snapshot histórico imediatamente anterior — encerramento da Etapa 6
+
+- commits técnico/documental: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
 - PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`;
 - CI da PR `31431473940` e pós-merge `31431739320`: Linux e Windows em `success`, zero anotações;
 - artefatos pós-merge: Linux `9079413130`, Windows `9079450269`;
 - validação local de fechamento: 543 testes, cobertura combinada 62.45%, mypy sem erros em 66 arquivos;
 - `R-005`: ENCERRADO NO ESCOPO APROVADO;
 - Etapa 6: CONCLUÍDA;
-- gate atual: elevar cobertura nos módulos críticos e executar a Etapa 7;
-- Etapa 7: não iniciada; release: NÃO APROVADA.
+- naquele snapshot, Etapa 7: não iniciada; release: NÃO APROVADA.
 
-### Snapshot histórico imediatamente anterior — encerramento da Etapa 5
+### Snapshot histórico anterior — encerramento da Etapa 5
 
 - âncora técnica integrada e auditada: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
 - PR funcional: `#27`, fechada e mesclada;

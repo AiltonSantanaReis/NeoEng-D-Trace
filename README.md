@@ -6,7 +6,18 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Snapshot de referência do encerramento formal da Etapa 6, em 10 de agosto de 2026:
+Snapshot de referência do encerramento formal da Etapa 7, em 10 de agosto de 2026:
+
+- implementação e evidência pré-merge: `a940ef13018aabc430126db3fd705b521fc1be06` e `51e55a37021c506471111ef1f4e7bc9abe67c65d`;
+- PR `#36` mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`;
+- CI da PR `31436763095` e CI pós-merge `31437000772`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9081388807` e Windows `9081419753`, com digests registrados na evidência permanente;
+- suíte local: 620 testes no commit técnico, 621 no pacote pré-merge e 622 no fechamento; cobertura combinada 68.53%; launcher 85%; mypy sem erros em 66 arquivos;
+- `R-006`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 7: **CONCLUÍDA**;
+- `R-003` e metas finais de cobertura permanecem abertos;
+- Etapa 8: não iniciada; release: **NÃO APROVADA**.
+
+Snapshot histórico do encerramento formal da Etapa 6, em 10 de agosto de 2026:
 
 - implementação e evidência pré-merge: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
 - PR `#33` mesclada em `73a128ec44cde17867bbac6a7854ce86a43aba5a`;
@@ -35,9 +46,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-O merge funcional e o pacote documental de encerramento foram concluídos.
-O início da Etapa 6 e qualquer aprovação de release continuam sendo gates
-independentes e não executados.
+As Etapas 5, 6 e 7 possuem fechamento pós-merge comprovado. O início da Etapa 8 e qualquer aprovação de release continuam sendo gates independentes e não executados.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
@@ -83,8 +92,7 @@ preservados como snapshots históricos e não são reescritos retroativamente.
 
 O pacote documental pós-merge da Etapa 5 registra `R-004` como **ENCERRADO
 NO ESCOPO APROVADO**. A Etapa 6 foi concluída posteriormente pela PR `#33` e
-pelo CI pós-merge `31431739320`. A Etapa 7 não foi iniciada e a release
-permanece não aprovada.
+pelo CI pós-merge `31431739320`. A Etapa 7 foi concluída posteriormente pela PR `#36` e pelo CI pós-merge `31437000772`. A Etapa 8 não foi iniciada e a release permanece não aprovada.
 
 ## Estrutura aprovada
 
@@ -173,7 +181,7 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 - `R-003`: cobertura integral de UI e ferramentas ainda pendente;
 - `R-004`: encerrado no escopo aprovado; Etapa 5 concluída após integração do registro e CI final da `main`;
 - `R-005`: encerrado no escopo aprovado após schema v1 unificado, PR `#33` e CI pós-merge `31431739320`;
-- `R-006`: confiabilidade integral da CLI pertence à Etapa 7;
+- `R-006`: encerrado no escopo aprovado após matriz integral da CLI, PR `#36` e CI pós-merge `31437000772`;
 - `R-007`: persistência Bézier está implementada, mas validações geométricas adicionais pertencem à Etapa 8;
 - `R-008`: duplicidade do lasso foi removida; a revisão ampla de APIs permanece na Etapa 9;
 - `R-011` permanece para refatoração protegida;

@@ -93,21 +93,24 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_6_ENCERRAMENTO_POS_MERGE.md` — PR `#33`, merge, CI pós-merge, artefatos e encerramento formal de `R-005`/Etapa 6.
 - `COBERTURA_MODULOS_CRITICOS_2026-08-10.md` — snapshot pré-merge dos testes comportamentais dos módulos abaixo de 30%; integrado posteriormente pela PR `#35`; `R-003` permanece aberto.
 - `ETAPA_7_CLI_PRE_MERGE.md` — matriz local de argumentos, saídas, códigos de processo e subprocessos reais; `R-006` permanece aberto até merge e CI pós-merge.
-
-## Estado operacional do candidato da Etapa 7
-
-Snapshot pré-merge de 10 de agosto de 2026:
-
-- commit técnico: `a940ef13018aabc430126db3fd705b521fc1be06`;
-- validação local: 47 testes focais, 620 totais, cobertura combinada 68.53% e launcher em 85%;
-- códigos reais de `app.py` e execução por módulo validados por subprocesso;
-- `R-006`: ABERTO até merge e CI pós-merge;
-- Etapa 7: APROVADA LOCALMENTE / NÃO INTEGRADA;
-- Etapa 8: não iniciada; release: NÃO APROVADA.
-
-O arquivo `ETAPA_7_CLI_PRE_MERGE.md` é a evidência permanente deste gate local.
+- `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` — PR `#36`, merge, CI pós-merge, artefatos e encerramento formal de `R-006`/Etapa 7.
 
 ## Estado operacional da evidência atual
+
+Snapshot de encerramento formal da Etapa 7 em 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
+
+- commits técnico/documental: `a940ef13018aabc430126db3fd705b521fc1be06` e `51e55a37021c506471111ef1f4e7bc9abe67c65d`;
+- PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`;
+- CI da PR `31436763095` e CI pós-merge `31437000772`: Linux e Windows em `success`, zero anotações;
+- artefatos pós-merge: Linux `9081388807` e Windows `9081419753`, com digests no relatório de encerramento;
+- validação local: 47 testes focais, 620 no commit técnico, 621 no pacote pré-merge e 622 no fechamento, cobertura combinada 68.53% e launcher em 85%;
+- `R-006`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 7: CONCLUÍDA;
+- Etapa 8: não iniciada; release: NÃO APROVADA.
+
+O arquivo `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente deste gate.
+
+## Snapshot histórico anterior — encerramento da Etapa 6
 
 Snapshot de encerramento formal da Etapa 6 em 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
 
