@@ -440,3 +440,21 @@ def test_stage6_closure_is_bound_to_merge_and_postmerge_ci():
     premerge = _text("docs/evidence/ETAPA_6_EXPORTACAO_COLISOES.md")
     assert "APROVADO LOCALMENTE / NÃO INTEGRADO" in premerge
     assert "R-005` permanece aberto" in premerge
+
+
+def test_critical_coverage_evidence_keeps_residual_risk_open():
+    evidence = _text("docs/evidence/COBERTURA_MODULOS_CRITICOS_2026-08-10.md")
+    for marker in (
+        "4f53a0d7df25ba6de7b2dd5759b4abc4be5e5b5e",
+        "589 passed",
+        "67.51%",
+        "src/launcher.py` | 18% | 18%",
+        "R-003` permanece aberto",
+        "não aprova release",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+    ):
+        assert marker in evidence
+
+    index = _text("docs/evidence/README.md")
+    assert "COBERTURA_MODULOS_CRITICOS_2026-08-10.md" in index
+    assert "R-003` permanece aberto" in index

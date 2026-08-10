@@ -91,6 +91,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `AUDITORIA_RIGOROSA_2026-08-10.md` — bloqueios descobertos, reconciliação legada e novos gates de segurança, tipagem e branches.
 - `ETAPA_6_EXPORTACAO_COLISOES.md` — snapshot pré-merge do schema versionado e unificado de colisões.
 - `ETAPA_6_ENCERRAMENTO_POS_MERGE.md` — PR `#33`, merge, CI pós-merge, artefatos e encerramento formal de `R-005`/Etapa 6.
+- `COBERTURA_MODULOS_CRITICOS_2026-08-10.md` — candidato local com testes comportamentais dos módulos abaixo de 30%; `R-003` permanece aberto.
 
 ## Estado operacional da evidência atual
 
