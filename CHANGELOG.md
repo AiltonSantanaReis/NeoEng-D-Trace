@@ -1,8 +1,17 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 8
+## [Unreleased] — programa de estabilização, Etapas 1 a 9
 
 Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 9 — candidato técnico pré-merge
+
+- consolida `src.collision` como API pública única de colisão estática e transforma `src.physics` em compatibilidade sem implementações concorrentes;
+- corrige IDs heterogêneos, validação geométrica, falso positivo côncavo e direção do MTV;
+- remove promessas inertes de gravidade, backend, passo fixo e callbacks, alinhando código e UI ao escopo estático da versão 1.0;
+- adiciona 39 casos da etapa; aprova 701 testes oficiais e 27/27 divergências históricas exatas;
+- alcança 73.65% de linhas, 57.65% de branches e 69.79% combinada; módulos canônicos de colisão entre 89% e 95%;
+- commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; `R-008` permanece aberto até merge e CI pós-merge; release não aprovada.
 
 ### Etapa 8 — integrada e encerrada no escopo aprovado
 

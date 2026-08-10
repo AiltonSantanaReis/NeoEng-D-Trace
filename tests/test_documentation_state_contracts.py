@@ -493,7 +493,8 @@ def test_stage7_cli_evidence_is_premerge_and_keeps_risk_open():
         assert marker in evidence
 
     assert "ETAPA_7_CLI_PRE_MERGE.md" in index
-    assert "Etapa 9: não iniciada" in index
+    assert "Etapa 9: EM VALIDAÇÃO PRÉ-MERGE" in index
+    assert "R-008` permanece aberto até merge" in index
 
 
 def test_stage8_geometry_evidence_is_premerge_and_keeps_risk_open():
