@@ -14,7 +14,7 @@ Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, 
 - adiciona política de segurança, matriz funcional viva e evidência auditada;
 - migra metadados para PEP 621, exige `poetry check --strict` e promove Flake8 integral a gate com zero achados;
 - remove código morto duplicado do exportador GLTF e centraliza o bootstrap Qt dos testes;
-- publica o commit `236eefd41ee51c7085e21d52fc80074eede0a793` na PR draft `#28`; CI `31422290050` aprova Linux e Windows; merge, CI pós-merge e release permanecem não executados.
+- publica o commit `236eefd41ee51c7085e21d52fc80074eede0a793`; a PR `#28` foi mesclada em `56533b65f81d21fd9c762aa10c0d3e6747d742ca`; CI pós-merge `31423386971` aprovou Linux e Windows; release permanece não aprovada.
 
 - ambiente reproduzível consolidado em Python 3.11, Poetry 2.4.1 e CI Linux/Windows;
 - formato de projeto `.ndtproj` com schema v1 estrito, migração legada, escrita atômica e round-trip de colisões e segmentos Bézier;
@@ -54,8 +54,11 @@ Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, 
 - a PR `#27` foi mesclada por merge commit em `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`, preservando a branch funcional;
 - o CI pós-merge `#84` (`31136893143`) aprovou Linux e Windows no merge commit;
 - os artefatos pós-merge são Linux `8978309717` (`25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`) e Windows `8978326062` (`0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`);
-- o pacote documental pós-merge registra `R-004` e a Etapa 5 como APROVADOS PARA ENCERRAMENTO FORMAL, condicionados à integração do registro e ao CI final da `main`;
-- nenhuma entrada deste bloco declara `R-004` encerrado, Etapa 5 concluída, Etapa 6 iniciada ou branch excluída.
+- o pacote documental pós-merge foi integrado pela PR `#28`; `R-004` está encerrado no escopo aprovado e a Etapa 5 está concluída;
+- o CI final da PR `31422901244` e o CI pós-merge `31423386971` aprovaram Linux e Windows;
+- a Etapa 6 não foi iniciada, a branch foi preservada e a release permanece não aprovada;
+- atualiza `checkout`, `setup-python` e `upload-artifact` para as releases oficiais `v7`/Node.js 24, eliminando a causa do aviso;
+- consolida a configuração efetiva do mypy em `mypy.ini`, remove a duplicação inócua no `pyproject.toml` e confirma corpos não tipados sem notas de exclusão.
 
 ## 0.6O2 — observabilidade confiável e persistência segura
 

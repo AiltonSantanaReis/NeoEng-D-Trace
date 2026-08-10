@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot pós-merge de 6 de agosto de 2026. O estado real do GitHub e do HEAD
+Snapshot de fechamento formal de 10 de agosto de 2026. O estado real do GitHub e do HEAD
 local deve ser conferido antes de qualquer decisão.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
@@ -26,7 +26,7 @@ local deve ser conferido antes de qualquer decisão.
 | R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
 | R-003 | ABERTO | `LayersPanel` integrado e cobertura de branches ativada com piso 62%; metas finais 90%/85% permanecem para a Etapa 11 |
-| R-004 | APROVADO NO CI DA PR / AINDA ABERTO | Commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28` e CI `31422290050` aprovados; fechamento depende de merge e CI pós-merge da `main` |
+| R-004 | ENCERRADO NO ESCOPO APROVADO | PR `#28` mesclada em `56533b65f81d21fd9c762aa10c0d3e6747d742ca`; CI pós-merge `31423386971` aprovou Linux e Windows |
 | R-005 | PARCIAL / ABERTO | Painel e toolbar gravam JSON real; schema genérico unificado permanece para a Etapa 6 |
 | R-006 | PARCIAL / ABERTO | Falso sucesso sem `--object-id` corrigido; matriz integral de CLI permanece para a Etapa 7 |
 | R-007 | PARCIAL / ABERTO | Persistência e invariantes Bézier tratados; qualidade geométrica adicional permanece para a Etapa 8 |
@@ -35,7 +35,7 @@ local deve ser conferido antes de qualquer decisão.
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
 | R-011 | ABERTO | Refatoração posterior protegida por caracterização |
 | R-012 | PARCIAL / ABERTO | Pillow 12.3.0, pip-audit e Bandit limpos; limites operacionais permanecem para a Etapa 12 |
-| R-013 | APROVADO NO CI DA PR / INTEGRAÇÃO PENDENTE | Limites físico/JSON, transparência de borda e rotação corrigidos; Linux e Windows aprovados no CI `31422290050` |
+| R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge `31423386971` aprovado |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
@@ -45,8 +45,9 @@ e colisões. Os achados e
 suas remediações estão em
 `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`.
 
-O CI da PR confirma o SHA auditado, mas não equivale a integração na `main`.
-`R-004` permanece aberto até merge e CI pós-merge.
+A PR `#28` e o CI pós-merge `31423386971` confirmam a integração do SHA
+auditado. `R-004` e `R-013` estão encerrados nos escopos comprovados; os
+demais riscos mantêm os estados explícitos da tabela.
 
 ## Progresso da Etapa 5
 
@@ -110,8 +111,9 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-5-PACOTE-1 | INTEGRADO / APROVADO NO ESCOPO | PR `#15`; HEAD funcional `587a0cc93c3efe6c4e668cb86d624cf79a2479b4`; HEAD mesclado `fb5c72b001e4d8085ec902e383190e04a17dae8c`; merge `46cc0664cd8cfe04a6bd3b89bb6dc56e9681f62a`; workflow pós-merge `#55` (`30769951023`) com Linux `test` (`91555266247`) e Windows `test-windows` (`91555266229`) em `success`; `235` testes locais; cobertura global `53%`; `src/core/commands.py` `60%`; validação manual Windows `9/9`; pacote pós-merge `7e0fc5d64cf0edcdef6ab96cc43d23b7d0d3ce7bfd515ad31db50a4ac9dabe41`; `R-004` permanece aberto para os pacotes seguintes |
 
 
-| R-004 | APROVADO PARA ENCERRAMENTO FORMAL | PR `#27`; HEAD final `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`; merge `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`; workflow pré-merge `#83` (`31135700216`) e pós-merge `#84` (`31136893143`) com Linux e Windows em `success`; encerramento condicionado à integração de `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` e ao CI final da `main` |
-| ETAPA-5 | APROVADA PARA ENCERRAMENTO FORMAL | Pacotes 1 a 5C integrados; validação manual e automática 17/17; 517 testes e 66% de cobertura no gate funcional; Etapa 6 permanece não iniciada até o fechamento formal |
+| R-004 | ENCERRADO NO ESCOPO APROVADO | PR funcional `#27`; PR de fechamento `#28`; HEAD final `ab71e148c0b7441bd36f489472856d0b4adfaa1e`; merge `56533b65f81d21fd9c762aa10c0d3e6747d742ca`; CI final da PR `31422901244` e pós-merge `31423386971` com Linux e Windows em `success` |
+| R-013 | ENCERRADO NO ESCOPO AUDITADO | Correção de limites físico/JSON, transparência e rotação integrada pelo merge `56533b65f81d21fd9c762aa10c0d3e6747d742ca`; CI pós-merge `31423386971` aprovado |
+| ETAPA-5 | CONCLUÍDA | Pacotes 1 a 5C integrados; auditoria corretiva, PR `#28` e CI pós-merge `31423386971` aprovados; Etapa 6 não iniciada e release não aprovada |
 
 ## Severidades
 

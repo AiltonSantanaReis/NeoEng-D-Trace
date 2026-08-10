@@ -57,15 +57,19 @@ temporária.
 
 ## Validação remota
 
-- PR: `#28`, estado draft, base `main`;
-- run: `31422290050`, conclusão `success`;
-- Linux: job `93565684359`, artefato `9075840830`, digest `sha256:0ee90984bd1d907fdccfbb32df6a75c473e3a3d40eb6ce18e32809e1f175440b`;
-- Windows: job `93565684441`, artefato `9075871031`, digest `sha256:ca28dcf439bcd60ffd79406e8c1b7e01405ab9d7d79d761c7690835c7a6f032e`.
+- PR: `#28`, mesclada em `main`;
+- HEAD final da PR: `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
+- CI final da PR: `31422901244`, conclusão `success`;
+- merge: `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
+- CI pós-merge: `31423386971`, conclusão `success`;
+- Linux: job `93569241989`, artefato `9076253153`, digest `sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`;
+- Windows: job `93569242024`, artefato `9076283257`, digest `sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`;
+- aviso não bloqueante: actions baseadas em Node.js 20 foram forçadas pelo GitHub para Node.js 24.
 
 ## Decisão
 
-**APROVADO REMOTAMENTE PARA REVISÃO E MERGE DA ETAPA 5.**
+**ETAPA 5 FORMALMENTE ENCERRADA.**
 
-Esta decisão não aprova release, não fecha riscos das Etapas 6–14 e não declara
-as metas finais de cobertura atingidas. O fechamento formal exige merge da PR
-`#28`, CI pós-merge da `main` e evidência do SHA integrado.
+Esta decisão não aprova release, não fecha os riscos ainda abertos das Etapas
+6–14 e não declara as metas finais de cobertura atingidas. A PR `#28`, o merge
+e o CI pós-merge do SHA integrado foram comprovados; a Etapa 6 não foi iniciada.

@@ -87,14 +87,14 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_5B_BATCH_COLLISION_COMMANDS.md` — lotes de máscara e auto-detect atômicos, com auto-geração reversível de colisões.
 - `ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md` — criação e edição Bézier reversíveis e cobertura nominal dos comandos residuais.
 - `ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md` — commit funcional, validação visual, CI Linux/Windows, artefatos e gates independentes anteriores ao merge.
-- `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, commit `236eefd`, PR draft `#28`, CI remoto e gates pós-merge pendentes.
+- `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, PR `#28` integrada e CI pós-merge final aprovado.
 - `AUDITORIA_RIGOROSA_2026-08-10.md` — bloqueios descobertos, reconciliação legada e novos gates de segurança, tipagem e branches.
 
 ## Estado operacional da evidência atual
 
-Snapshot pós-merge de 6 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
+Snapshot de fechamento formal de 10 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
 
-- `main`: `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
+- `main`: `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
 - PR `#27`: fechada e mesclada;
 - HEAD funcional v4.1: `9bf83af0d58b5984ccfefc59a543428379b02632`;
 - HEAD documental final da PR: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
@@ -106,15 +106,18 @@ Snapshot pós-merge de 6 de agosto de 2026, condicionado à verificação do HEA
 - artefato Linux pós-merge: ID `8978309717`, digest `25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`;
 - artefato Windows pós-merge: ID `8978326062`, digest `0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`;
 - branch funcional: preservada no remoto;
-- `R-004`: APROVADO PARA ENCERRAMENTO FORMAL, mas ainda aberto;
-- Etapa 5: APROVADA PARA ENCERRAMENTO FORMAL, mas ainda não concluída;
-- auditoria corretiva: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28`, CI `31422290050` em `success`;
-- gate atual: revisar/mesclar a PR `#28` e exigir CI pós-merge da `main`;
+- auditoria corretiva: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, HEAD final `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
+- PR `#28`: mesclada em `56533b65f81d21fd9c762aa10c0d3e6747d742ca`;
+- CI final da PR `31422901244` e pós-merge `31423386971`: Linux e Windows em `success`;
+- artefatos pós-merge finais: Linux `9076253153` (`sha256:b62f58240eb2f015d3f1906668e3402847668cab7ee6daa083f6a44fa1fd3443`) e Windows `9076283257` (`sha256:8ea7e557aa1eedf7a442962a49cee8a0cf778c02c678e72e75f05adc61438ef7`);
+- `R-004`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 5: CONCLUÍDA;
+- gate atual: planejamento explícito da Etapa 6; release permanece bloqueada;
 - Etapa 6: não iniciada.
 
 O arquivo `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente
-deste gate. Commit, push, PR e CI da PR foram executados; merge, CI pós-merge,
-fechamento de risco e transição de etapa permanecem decisões independentes.
+deste gate. Commit, push, PR, merge, CI da PR e CI pós-merge foram executados;
+o início da Etapa 6 e a aprovação de release permanecem decisões independentes.
 
 ## Histórico dos correctors do Pacote 5C
 
