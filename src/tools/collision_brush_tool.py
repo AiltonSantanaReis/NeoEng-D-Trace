@@ -1,5 +1,5 @@
 # src/tools/collision_brush_tool.py
-from typing import List, Optional, Sequence, Tuple
+from typing import Optional, Sequence, Tuple
 
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF

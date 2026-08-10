@@ -1,10 +1,5 @@
-import pytest
-
-pytest.importorskip("PySide6")
-
 from unittest.mock import Mock
 
-from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 
 from src.core.commands import CommandManager

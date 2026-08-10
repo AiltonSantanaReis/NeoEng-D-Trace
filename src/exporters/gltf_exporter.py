@@ -92,91 +92,6 @@ def export_scene_to_gltf(
         if not triangles:
             continue
 
-        # Flatten triangles into positions and indices
-        positions: List[float] = []
-        indices: List[int] = []
-        # Calculate current vertex offset relative to the LOCAL mesh
-        # We are creating a new primitive for each object, so indices start at 0 for this mesh
-        # BUT we are pushing everything to a single global buffer.
-        # So we need to track global vertex count for the buffer, but usually GLTF primitives
-        # reference accessors.
-
-        # Strategy: One Accessor per object? Or one big Accessor?
-        # The original code tries to use one big buffer but creates Accessors per object.
-        # Let's verify the logic:
-        # vertex_offset = len(all_positions) // 3 -> This is the global offset
-        # indices.extend([vertex_offset, ...]) -> This points to global indices
-        # BUT the Accessor 'min' and 'max' need to be correct.
-
-        # Correct GLTF approach for multiple objects:
-        # 1. Store all vertices in one big buffer (all_positions)
-        # 2. Store all indices in one big buffer (all_indices)
-        # 3. Create one Accessor for positions that views the WHOLE buffer range for this object?
-        #    No, usually we want one Accessor per primitive pointing to a subset of the bufferView.
-
-        # Let's stick to the implementation: One Accessor per Object.
-
-        # Start index for this object in the global list
-        start_vertex_index = len(all_positions) // 3
-
-        local_positions: List[float] = []
-        local_indices: List[int] = []
-
-        for tri in triangles:
-            if len(tri) < 3:
-                continue
-            # Simple triangulation (fan or strip logic might apply if convex,
-            # but convex_decomp returns triangles directly)
-
-            # Assuming convex_decomp returns list of triangles (list of 3 points)
-            # If it returns polygons, we need to triangulate them.
-            # triangulate_to_convex returns list of points? No, list of lists (polygons).
-            # We need to triangulate these convex polygons further into triangles for GLTF.
-
-            # Triangulate convex polygon (Fan)
-            p0 = tri[0]
-            for i in range(1, len(tri) - 1):
-                p1 = tri[i]
-                p2 = tri[i + 1]
-
-                # Append vertices
-                # Note: Duplicating vertices for flat shading/simplicity
-                # Optimization: reuse vertices, but requires index mapping.
-                # For simplicity here, unique vertices per triangle or reusing if we map them.
-
-                # Let's simply push unique vertices of the convex poly and index them
-                pass
-
-        # Simplified logic: Just dump triangles as raw vertex soup (easy but not optimized)
-        for tri in triangles:  # tri is a convex polygon
-            # Triangulate convex polygon as fan
-            if len(tri) < 3:
-                continue
-
-            base_idx = len(local_positions) // 3
-
-            # Add all vertices of this convex chunk
-            for vx, vy in tri:
-                local_positions.extend([vx, vy, 0.0])
-
-            # Add indices for fan
-            # 0, 1, 2; 0, 2, 3; ...
-            for i in range(1, len(tri) - 1):
-                local_indices.extend(
-                    [
-                        start_vertex_index + 0,
-                        start_vertex_index + i,
-                        start_vertex_index + i + 1,
-                    ]
-                )
-
-            # Update start index for next convex chunk of THIS object?
-            # No, if we dump all vertices of the chunk into local_positions,
-            # we need to increment the base index for the next chunk.
-            # Wait, the logic above is slightly flawed if 'triangles' contains multiple polygons.
-            # Let's fix:
-            start_vertex_index += len(tri)  # Advance global counter for next chunk
-
         # RE-WRITE LOOP FOR CLARITY AND CORRECTNESS
 
         # 1. Collect all vertices for this object first to minimize duplicates?
@@ -196,10 +111,13 @@ def export_scene_to_gltf(
 
             # Add fan indices
             # Center is 0 relative to this poly
-            # Indices are relative to the Accessor start, so they should start at 0, 1, 2...
-            # BUT if we put multiple objects in one buffer, we usually use Accessor byteOffset.
+            # Indices are relative to the Accessor start, so they should
+            # start at 0, 1, 2...
+            # Multiple objects in one buffer usually use an Accessor
+            # byteOffset.
 
-            # Let's use absolute indices relative to the Accessor we are about to create.
+            # Use absolute indices relative to the Accessor that is about
+            # to be created.
             # If we create one Accessor per object, indices should start at 0.
 
             base = current_obj_offset
@@ -216,19 +134,19 @@ def export_scene_to_gltf(
 
         # Global Byte Offsets
         pos_byte_offset = len(all_positions) * 4  # 4 bytes per float
-        idx_byte_offset = len(all_indices) * 2  # 2 bytes per ushort
 
         # Append to global lists
         all_positions.extend(obj_verts)
         # Indices in buffer must be global if we use a single big Accessor?
         # NO. We will create one Accessor per object.
         # The accessor will point to a specific byteOffset in the BufferView.
-        # The indices inside that accessor should be relative to the start of the position accessor (0-based).
+        # Indices inside that accessor are relative to the start of the
+        # position accessor (0-based).
         # So 'obj_indices' as calculated (0-based) is correct.
 
         # BUT wait, all_indices accumulates everything.
-        # If we put all indices in one BufferView, we can't easily have separate accessors
-        # pointing to "chunks" of indices unless we split BufferViews or use byteOffset on Accessor.
+        # A single index BufferView cannot easily expose separate accessors
+        # for chunks unless BufferViews are split or Accessor byteOffset is used.
         # Accessor byteOffset must be aligned.
 
         # Let's define the Accessors now relative to the buffers we will create later.
@@ -249,7 +167,7 @@ def export_scene_to_gltf(
 
         # Accessor for Indices
         # Indices need to be appended to a separate list or handle offset
-        # If we concatenate all indices in one buffer, we need to know where this object's indices start.
+        # Concatenated indices require the starting offset for each object.
         current_indices_start = len(all_indices)
         all_indices.extend(obj_indices)
 

@@ -6,17 +6,44 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Snapshot de referência desta reconciliação documental, em 6 de agosto de 2026:
+Snapshot de referência do encerramento pós-merge da Etapa 5, em 6 de agosto de 2026:
 
-- `main` integrada até o Pacote 5B da Etapa 5, em `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
-- Etapa 5 ativa, com o risco `R-004` ainda aberto;
-- Pacote 5C na PR `#27`, draft e não integrado; o HEAD funcional validado é `9bf83af0d58b5984ccfefc59a543428379b02632`, com 20 arquivos no escopo, gate local Windows/Python 3.11.9 de 95 testes focais, 16 documentais e 517 totais, cobertura global de 66%, validação manual aprovada e integração visual automática com 17/17 estados aprovados;
-- o workflow `Private validation` `#82` (`31115744015`) foi concluído com Linux e Windows em `success` para o HEAD funcional `9bf83af0d58b5984ccfefc59a543428379b02632`;
-- artefato Linux: `8973550294`, SHA-256 `d6cee9f94f04d706cccb106d6456dcbc3e482e4ed84aec2fa15b6bfa396be435`; artefato Windows: `8973729078`, SHA-256 `a433a229cdbc1bfe58d03804baa2edb223c5bc2f6c37d17431b90e86f3777aa6`;
-- não havia comentários, reviews ou threads pendentes na PR no momento da verificação pré-merge;
-- esta reconciliação cria um novo HEAD exclusivamente documental e exige novo CI Linux/Windows ligado ao commit que a contém antes de qualquer decisão sobre Ready for review;
-- Etapa 6 não iniciada;
-- nenhum texto deste README autoriza Ready for review, merge, fechamento de risco ou transição de etapa.
+- `main` integrada no merge commit `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
+- PR `#27` fechada e mesclada a partir do HEAD documental `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
+- Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B da Etapa 5: integrados; Pacote 5C: integrado;
+- gate funcional v4.1 no Windows/Python 3.11.9: 95 testes focais, 16 documentais, 517 totais e cobertura global de 66%;
+- validação manual aprovada e integração visual automática aprovada em 17/17 estados;
+- CI final pré-merge `Private validation` `#83` (`31135700216`): Linux e Windows em `success`;
+- CI pós-merge `Private validation` `#84` (`31136893143`) no merge commit: Linux e Windows em `success`;
+- artefato Linux pós-merge: `8978309717`, SHA-256 `25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`;
+- artefato Windows pós-merge: `8978326062`, SHA-256 `0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`;
+- branch funcional preservada no remoto;
+- `R-004`: **APROVADO PARA ENCERRAMENTO FORMAL**; Etapa 5: **APROVADA PARA ENCERRAMENTO FORMAL**; ambos ainda abertos até a integração do registro pós-merge e o CI final da `main`;
+- Etapa 6: não iniciada.
+
+O merge funcional foi concluído. Commit, push, PR e merge do pacote documental
+de encerramento, fechamento de `R-004`, conclusão da Etapa 5 e início da Etapa
+6 continuam sendo gates independentes.
+
+## Auditoria corretiva publicada — 10 de agosto de 2026
+
+A auditoria rigorosa inicialmente bloqueou o encerramento. O commit
+`236eefd41ee51c7085e21d52fc80074eede0a793` foi publicado na PR draft `#28` e
+o CI `31422290050` aprovou Linux e Windows. O pacote está **APROVADO
+REMOTAMENTE PARA REVISÃO E MERGE**, sem declarar integração na `main` ou release:
+
+- Pillow 12.3.0 e lock auditados sem vulnerabilidades conhecidas;
+- 196 testes legados executados, com 26 divergências brutas estritamente
+  reconciliadas e zero falhas inesperadas;
+- falso sucesso da CLI, limites do atlas e exportação real do painel de colisões
+  corrigidos;
+- `LayersPanel`, alias canônico do lasso, SAT compatível e PIL cobertos;
+- mypy incluindo corpos não anotados: zero erros em 65 arquivos;
+- suíte oficial completa: 532 testes aprovados;
+- cobertura combinada de linhas e branches: 62.18%, com piso incremental de 62% no CI;
+- matriz funcional viva: `docs/MATRIZ_FUNCIONALIDADES_ATUAL.md`;
+- evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`;
+- merge da PR `#28` e CI pós-merge da `main` permanecem obrigatórios.
 
 ## Capacidades comprovadas no estado integrado
 
@@ -26,14 +53,22 @@ Snapshot de referência desta reconciliação documental, em 6 de agosto de 2026
 - formato de projeto `.ndtproj`, identificador `neoeng-d-trace-project` e schema v1 estrito;
 - round-trip de camadas, grupos, polígonos, colisões personalizadas e segmentos Bézier;
 - ciclo Abrir/Salvar validado na interface do Windows;
-- histórico transacional integrado para os Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B da Etapa 5;
+- histórico transacional integrado para os Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A, 5B e 5C da Etapa 5;
 - exportação de sprite, atlas e metadados Generic/Godot/Unity/Phaser;
 - exportação GLTF/GLB de cena e objeto com generator, geometria, metadados e padding validados;
 - entrada gráfica e headless por `app.py`.
 
-A PR `#27` contém trabalho ainda não integrado. O HEAD `9bf83af0d58b5984ccfefc59a543428379b02632` é a âncora funcional já validada localmente, visualmente e pelo CI. O commit exclusivamente documental que contém esta reconciliação deve passar por novo CI Linux/Windows antes de Ready for review.
+A PR `#27` foi mesclada por merge commit. O HEAD
+`8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e` e o merge commit
+`6c4bcb3d945405a4615a4d6551247d1b01ce79f1` são as âncoras do estado
+integrado. O relatório funcional v4.1 e a validação pré-merge continuam
+preservados como snapshots históricos e não são reescritos retroativamente.
 
-Ready for review, merge, fechamento de `R-004`, conclusão da Etapa 5 e início da Etapa 6 permanecem decisões independentes. O relatório funcional v4.1 continua preservado como snapshot histórico e não é reescrito retroativamente.
+O pacote documental pós-merge registra `R-004` como
+**APROVADO PARA ENCERRAMENTO FORMAL** e a Etapa 5 como **APROVADA PARA
+ENCERRAMENTO FORMAL**, condicionados à integração desse registro e ao CI final
+da `main`. Nenhum texto deste README declara o risco
+encerrado, a Etapa 5 concluída ou a Etapa 6 iniciada.
 
 ## Estrutura aprovada
 
@@ -66,7 +101,7 @@ $Python311 = "$env:LOCALAPPDATA\Programs\Python\Python311\python.exe"
 & ".\.venv\Scripts\python.exe" -m pip install --upgrade pip
 & ".\.venv\Scripts\python.exe" -m pip install "poetry==2.4.1"
 $env:POETRY_VIRTUALENVS_IN_PROJECT = "true"
-& ".\.venv\Scripts\python.exe" -m poetry check --lock
+& ".\.venv\Scripts\python.exe" -m poetry check --lock --strict
 & ".\.venv\Scripts\python.exe" -m poetry sync --no-interaction --no-ansi
 & ".\.venv\Scripts\python.exe" -m poetry run python .\app.py
 ```
@@ -76,7 +111,7 @@ O caminho acima usa a instalação padrão do Python 3.11 no perfil do Windows s
 Quando `poetry` já estiver disponível no terminal:
 
 ```powershell
-poetry check --lock
+poetry check --lock --strict
 poetry sync --no-interaction --no-ansi
 poetry run python .\app.py
 ```
@@ -97,13 +132,16 @@ neoeng-d-trace
 
 ```powershell
 poetry run python tools/baseline_integrity.py --verify
-poetry check --lock
+poetry check --lock --strict
 poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools
-poetry run flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
+poetry run flake8 src tests tools app.py pack_for_ai.py
 poetry run black --check --diff src tests tools app.py pack_for_ai.py
 poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py
-poetry run mypy src --ignore-missing-imports
-poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml
+poetry run mypy src
+poetry run pip-audit
+poetry run bandit -q -r src -lll
+poetry run pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml
+poetry run python tools/run_legacy_tests.py --group all
 poetry run python tools/baseline_integrity.py --verify
 git diff --check
 ```
@@ -117,13 +155,15 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 ## Limitações e riscos abertos
 
 - `R-003`: cobertura integral de UI e ferramentas ainda pendente;
-- `R-004`: Undo/Redo ainda não pode ser encerrado antes da integração e do encerramento formal do Pacote 5C;
+- `R-004`: escopo funcional e CI pós-merge aprovados; encerramento formal condicionado à integração do registro pós-merge e ao CI final da `main`;
 - `R-005`: exportação de colisões pertence à Etapa 6, ainda não iniciada;
 - `R-006`: confiabilidade integral da CLI pertence à Etapa 7;
 - `R-007`: persistência Bézier está implementada, mas validações geométricas adicionais pertencem à Etapa 8;
-- `R-008`: APIs duplicadas ou parciais pertencem à Etapa 9;
-- `R-011`, `R-012` e `R-013` permanecem nas etapas definidas pela matriz de riscos;
-- `LayersPanel` existe e foi validado isoladamente, mas sua integração à `MainWindow` não foi comprovada no Pacote 4C;
+- `R-008`: duplicidade do lasso foi removida; a revisão ampla de APIs permanece na Etapa 9;
+- `R-011` permanece para refatoração protegida;
+- `R-012` está mitigado por auditoria automatizada, mas limites operacionais permanecem na Etapa 12;
+- `R-013` foi corrigido localmente e aguarda CI do commit;
+- `LayersPanel` está integrado à `MainWindow` e coberto por teste Qt;
 - autosave, 2.5D, build Windows, instalador e validação completa nas engines ainda não estão concluídos;
 - `PERF-MAGNETIC-001`, `UI-RESIZE-PT-001`, `POLY-VALIDATION-UX-001`, `GLTF-2D-001`, `GLTF-UV-001`, `GLTF-MATERIAL-001`, `GLTF-U16-001` e `GLTF-CLEANUP-001` permanecem limitações registradas.
 

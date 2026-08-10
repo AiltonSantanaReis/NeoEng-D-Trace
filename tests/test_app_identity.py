@@ -58,7 +58,7 @@ def test_unknown_language_falls_back_to_english_without_crashing():
 
 def test_application_version_matches_pyproject():
     data = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert data["tool"]["poetry"]["version"] == APP_VERSION
+    assert data["project"]["version"] == APP_VERSION
 
 
 def test_global_logger_uses_new_identity():

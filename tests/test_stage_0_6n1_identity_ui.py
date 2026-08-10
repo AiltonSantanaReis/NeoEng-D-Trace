@@ -5,13 +5,7 @@ Execute on Windows with Python 3.11 and PySide6.
 
 from __future__ import annotations
 
-import os
-
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-
 import pytest
-
-pytest.importorskip("PySide6")
 from PySide6.QtWidgets import QApplication
 
 from app import build_parser

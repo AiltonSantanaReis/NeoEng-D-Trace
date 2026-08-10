@@ -3,11 +3,6 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-"""
-Broadphase Collision Detection
-Implements uniform grid broadphase for efficient collision candidate finding.
-"""
-
 from typing import Any, Dict, List, Set, Tuple
 
 
@@ -85,8 +80,8 @@ class BroadPhaseSAP:
     def potential_pairs(self):
         # naive O(n log n) approach: sort by min_x and sweep
         items = sorted(self._intervals.items(), key=lambda kv: kv[1][0])
-        active = []
-        pairs = []
+        active: List[Tuple[int, float]] = []
+        pairs: List[Tuple[int, int]] = []
         for id_i, (minx, maxx) in items:
             # remove inactive
             active = [(j, jmax) for j, jmax in active if jmax >= minx]

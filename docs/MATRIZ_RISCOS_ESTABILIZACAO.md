@@ -18,23 +18,35 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot de 6 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão.
+Snapshot pós-merge de 6 de agosto de 2026. O estado real do GitHub e do HEAD
+local deve ser conferido antes de qualquer decisão.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
 | R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
-| R-003 | ABERTO | Cobertura integral de UI e ferramentas permanece para a Etapa 11 |
-| R-004 | CONFIRMADO / ABERTO | Etapa 5 integrada até o Pacote 5B; o Pacote 5C permanece não integrado na PR `#27`, mas o HEAD funcional `9bf83af0d58b5984ccfefc59a543428379b02632` foi aprovado no gate local v4.1, na validação manual, em 17/17 estados automáticos e no CI Linux/Windows `#82`; o gate atual é a reconciliação documental com novo HEAD e novo CI; não fechar antes de merge, CI pós-merge da `main` e evidência formal de encerramento |
-| R-005 | ABERTO | Etapa 6 — exportação de colisões; ainda não iniciada |
-| R-006 | ABERTO | Etapa 7 — CLI e modo headless |
-| R-007 | PARCIAL / ABERTO | Persistência de segmentos Bézier resolvida na Etapa 3; qualidade e validações geométricas permanecem para a Etapa 8 |
-| R-008 | ABERTO | Etapa 9 — física, colisão e APIs duplicadas |
+| R-003 | ABERTO | `LayersPanel` integrado e cobertura de branches ativada com piso 62%; metas finais 90%/85% permanecem para a Etapa 11 |
+| R-004 | APROVADO NO CI DA PR / AINDA ABERTO | Commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28` e CI `31422290050` aprovados; fechamento depende de merge e CI pós-merge da `main` |
+| R-005 | PARCIAL / ABERTO | Painel e toolbar gravam JSON real; schema genérico unificado permanece para a Etapa 6 |
+| R-006 | PARCIAL / ABERTO | Falso sucesso sem `--object-id` corrigido; matriz integral de CLI permanece para a Etapa 7 |
+| R-007 | PARCIAL / ABERTO | Persistência e invariantes Bézier tratados; qualidade geométrica adicional permanece para a Etapa 8 |
+| R-008 | PARCIAL / ABERTO | `LassoTool` consolidado em alias canônico e SAT compatível coberto; auditoria ampla permanece para a Etapa 9 |
 | R-009 | ENCERRADO | CI Linux e Windows estabelecida |
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
 | R-011 | ABERTO | Refatoração posterior protegida por caracterização |
-| R-012 | ABERTO | Limites e segurança operacional permanecem para a Etapa 12 |
-| R-013 | ABERTO | Contrato de atlas permanece para a Etapa 10 |
+| R-012 | PARCIAL / ABERTO | Pillow 12.3.0, pip-audit e Bandit limpos; limites operacionais permanecem para a Etapa 12 |
+| R-013 | APROVADO NO CI DA PR / INTEGRAÇÃO PENDENTE | Limites físico/JSON, transparência de borda e rotação corrigidos; Linux e Windows aprovados no CI `31422290050` |
+
+## Auditoria corretiva publicada — 10 de agosto de 2026
+
+A recomendação de encerramento foi reavaliada após o CI pós-merge `#84`,
+execução da suíte legada, auditoria de dependências e provas reais de CLI, atlas
+e colisões. Os achados e
+suas remediações estão em
+`docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`.
+
+O CI da PR confirma o SHA auditado, mas não equivale a integração na `main`.
+`R-004` permanece aberto até merge e CI pós-merge.
 
 ## Progresso da Etapa 5
 
@@ -48,10 +60,10 @@ Snapshot de 6 de agosto de 2026. O estado real do GitHub e do HEAD local deve se
 | 3B.1 | `#21` | integrado em `e2e95b332f2647e7e1debd0ff0ed4759676bb992` | remoção do caminho duplicado |
 | 4A | `#22` | integrado em `8b59e4fa4dfbe14ad44e85e155073a0843634fd1` | exclusão de objetos transacional |
 | 4B | `#23` | integrado em `f8a7e3dce61acd6e9312d70575cdf9eb89297a9a` | movimento e escala de colisão |
-| 4C | `#24` | integrado em `0fc089bfc58ff9589f50bb394acd579bc2f71dd3` | camadas e grupos; `LayersPanel` não comprovado na `MainWindow` |
+| 4C | `#24` | integrado em `0fc089bfc58ff9589f50bb394acd579bc2f71dd3` | camadas e grupos; integração de `LayersPanel` à `MainWindow` comprovada na remediação local de 2026-08-10 |
 | 5A | `#25` | integrado em `9235ddc1ceaeddaec2074050eaebdeacaf588e53` | caminhos ativos de criação |
 | 5B | `#26` | integrado em `ee38a2f1dc85093e34140ddd087312629b4ecb43` | lotes e geração de colisões reversíveis |
-| 5C | `#27` | NÃO INTEGRADO / PRÉ-MERGE APROVADO NO HEAD FUNCIONAL | HEAD `9bf83af0d58b5984ccfefc59a543428379b02632`; 20 arquivos; 95 focais, 16 documentais, 517 totais, 66% de cobertura; validação manual e automática 17/17; CI `#82` Linux/Windows em `success`; reconciliação documental e novo CI ainda pendentes antes de Ready |
+| 5C | `#27` | integrado em `6c4bcb3d945405a4615a4d6551247d1b01ce79f1` | HEAD final `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`; 517 testes; CI `#83` e `#84`; validação visual 17/17 |
 
 ## Achados registrados na Etapa 2
 
@@ -97,6 +109,9 @@ Nenhum risco acima está encerrado por esta etapa.
 
 | ETAPA-5-PACOTE-1 | INTEGRADO / APROVADO NO ESCOPO | PR `#15`; HEAD funcional `587a0cc93c3efe6c4e668cb86d624cf79a2479b4`; HEAD mesclado `fb5c72b001e4d8085ec902e383190e04a17dae8c`; merge `46cc0664cd8cfe04a6bd3b89bb6dc56e9681f62a`; workflow pós-merge `#55` (`30769951023`) com Linux `test` (`91555266247`) e Windows `test-windows` (`91555266229`) em `success`; `235` testes locais; cobertura global `53%`; `src/core/commands.py` `60%`; validação manual Windows `9/9`; pacote pós-merge `7e0fc5d64cf0edcdef6ab96cc43d23b7d0d3ce7bfd515ad31db50a4ac9dabe41`; `R-004` permanece aberto para os pacotes seguintes |
 
+
+| R-004 | APROVADO PARA ENCERRAMENTO FORMAL | PR `#27`; HEAD final `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`; merge `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`; workflow pré-merge `#83` (`31135700216`) e pós-merge `#84` (`31136893143`) com Linux e Windows em `success`; encerramento condicionado à integração de `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` e ao CI final da `main` |
+| ETAPA-5 | APROVADA PARA ENCERRAMENTO FORMAL | Pacotes 1 a 5C integrados; validação manual e automática 17/17; 517 testes e 66% de cobertura no gate funcional; Etapa 6 permanece não iniciada até o fechamento formal |
 
 ## Severidades
 

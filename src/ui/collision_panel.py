@@ -4,7 +4,6 @@ Collision Panel for Physics Testing
 """
 
 import copy
-import json
 from typing import Dict, List
 
 from PySide6.QtCore import Signal
@@ -237,28 +236,7 @@ class CollisionPanel(QWidget):
             )
             return
 
-        try:
-            export_data = {
-                "collision_shapes": self.scene.collision_shapes,
-                "collision_results": self.collision_results,
-                "statistics": (
-                    self.physics_manager.get_stats() if self.physics_manager else {}
-                ),
-            }
-
-            json_str = json.dumps(export_data, indent=2)
-
-            msg_box = QMessageBox(self)
-            msg_box.setWindowTitle("Collision Export")
-            msg_box.setText("Collision data exported to JSON:")
-            msg_box.setDetailedText(json_str)
-            msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg_box.exec()
-
-            self.export_collisions_requested.emit()
-
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Export failed: {str(e)}")
+        self.export_collisions_requested.emit()
 
     def _on_auto_generate(self):
         manager = getattr(self.scene, "cmd", None)

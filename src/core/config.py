@@ -74,11 +74,12 @@ class ConfigManager:
             self._load()
 
     def _load(self):
-        if not os.path.exists(self.path):
+        path = self.path
+        if path is None or not os.path.exists(path):
             return
 
         try:
-            with open(self.path, "r", encoding="utf-8") as f:
+            with open(path, "r", encoding="utf-8") as f:
                 content = f.read().strip()
                 if not content:
                     return  # Empty file, use defaults

@@ -8,14 +8,16 @@ from pathlib import Path
 
 # Tenta importar dependências críticas para dar feedback amigável
 try:
-    import cv2
-    import numpy
-    import pydantic
-    from PIL import Image
+    import cv2 as _cv2
+    import numpy as _numpy
+    import pydantic as _pydantic
+    from PIL import Image as PILImage
+
+    _CRITICAL_DEPENDENCIES = (_cv2, _numpy, _pydantic, PILImage)
 except ImportError as e:
     print(f"CRITICAL ERROR: Missing dependency: {e}")
-    print("Please install required packages: pip install -r requirements.txt")
-    print("Or manually: pip install pydantic opencv-python numpy pillow")
+    print("Install NeoEng-D-Trace with its declared dependencies.")
+    print("For a source checkout, run: poetry install")
     sys.exit(1)
 
 from src.core.app_identity import APP_DISPLAY_NAME
@@ -62,6 +64,10 @@ def run_headless(args: argparse.Namespace) -> int:
         Exit code (0 for success, 1 for error)
     """
     try:
+        if args.export_object_gltf and not args.object_id:
+            logger.error("--export-object-gltf requires --object-id")
+            return 1
+
         # Setup logging
         config_path = str(get_project_root() / "config.json")
         config = ConfigManager(config_path)
@@ -84,9 +90,7 @@ def run_headless(args: argparse.Namespace) -> int:
                 return 1
 
             try:
-                from PIL import Image
-
-                pil_image = Image.open(args.image)
+                pil_image = PILImage.open(args.image)
                 scene.load_image(pil_image, args.image)
                 logger.info(f"Loaded image: {args.image}")
             except Exception as e:
@@ -121,7 +125,7 @@ def run_headless(args: argparse.Namespace) -> int:
                 logger.error("GLTF exporter module not found")
                 return 1
 
-        if args.export_object_gltf and args.object_id:
+        if args.export_object_gltf:
             try:
                 from src.exporters.gltf_exporter import export_object_to_gltf
 

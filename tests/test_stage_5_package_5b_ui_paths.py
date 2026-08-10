@@ -6,16 +6,11 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock
 
 import pytest
-
-pytest.importorskip("PySide6")
-
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.core.commands import (
     CommandManager,
     CommandResult,
-    CommandStatus,
-    CompositeCommand,
 )
 from src.models.scene import Scene
 from src.physics.physics_manager import PhysicsManager

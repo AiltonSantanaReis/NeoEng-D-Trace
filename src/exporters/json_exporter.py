@@ -10,7 +10,6 @@ import os
 import tempfile
 from typing import Any, Dict, List
 
-from src.core.logger import logger
 from src.models.scene import Scene
 
 

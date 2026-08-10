@@ -263,8 +263,9 @@ def _iterative_rdp_with_weights(
         # Here we simulate RDP by iteratively removing the "flattest" point
         # that doesn't violate topology.
 
-        # Simplified logic: remove point with lowest curvature (highest calculated adaptive epsilon)
-        # But wait, weights passed are epsilons. High epsilon = low curvature = safe to remove.
+        # Remove the point with lowest curvature, represented by the
+        # highest calculated adaptive epsilon.
+        # High epsilon means low curvature and is therefore safe to remove.
         # So we want to remove points with HIGH weights first.
 
         # Find index with MAX weight (epsilon) excluding endpoints

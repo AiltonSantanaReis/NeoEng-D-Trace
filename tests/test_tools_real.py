@@ -39,7 +39,6 @@ def test_lasso_tool_real(qt_app):
 
 def test_polygon_edit_tool_real(qt_app):
     scene = Scene()
-    canvas = CanvasView(scene)
     # Adiciona polígono e edita
     poly = [(0, 0), (40, 0), (40, 40), (0, 40)]
     oid = scene.add_polygon(poly)

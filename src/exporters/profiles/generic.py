@@ -3,7 +3,7 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict
 
 
 def format_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:

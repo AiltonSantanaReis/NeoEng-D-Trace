@@ -1,6 +1,7 @@
 # src/core/view_processor.py
 import cv2
 import numpy as np
+from PIL import Image as PILImage
 from PySide6.QtGui import QImage
 
 from src.core.logger import logger
@@ -20,11 +21,12 @@ def has_cuda():
 # Check for GPU availability
 try:
     import cupy as cp
-    import cupyx.scipy.ndimage as ndimage
+    import cupyx.scipy.ndimage as cupy_ndimage
 
     # Verifica se realmente temos uma GPU acessível pelo CuPy
     if cp.cuda.runtime.getDeviceCount() > 0:
         HAS_GPU = True
+        ndimage = cupy_ndimage
         logger.info("CUDA GPU acceleration enabled via CuPy.")
     else:
         HAS_GPU = False
@@ -61,6 +63,21 @@ class ViewProcessor:
             except Exception:
                 # Fallback em caso de erro de memória na GPU
                 return None
+
+        if isinstance(cv_img, PILImage.Image):
+            if cv_img.mode == "L":
+                cv_img = np.asarray(cv_img)
+            elif cv_img.mode == "RGB":
+                cv_img = cv2.cvtColor(np.asarray(cv_img), cv2.COLOR_RGB2BGR)
+            else:
+                rgba = np.asarray(cv_img.convert("RGBA"))
+                cv_img = cv2.cvtColor(rgba, cv2.COLOR_RGBA2BGRA)
+
+        if not isinstance(cv_img, np.ndarray):
+            logger.error(
+                "Unsupported image type for Qt conversion: %s", type(cv_img).__name__
+            )
+            return None
 
         # Ensure contiguous array for Qt
         if not cv_img.flags["C_CONTIGUOUS"]:

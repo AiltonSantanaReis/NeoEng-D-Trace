@@ -7,7 +7,7 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
-from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, Signal
+from PySide6.QtCore import QObject, QPointF, Qt, QThread, Signal
 from PySide6.QtGui import (
     QAction,
     QColor,
@@ -110,10 +110,9 @@ class DetectionWorker(QObject):
 
 
 try:
-    from PIL import Image as PILImage
-    from PIL.ImageQt import ImageQt
+    import PIL
 
-    HAS_PIL = True
+    HAS_PIL = PIL is not None
 except ImportError:
     HAS_PIL = False
 
@@ -197,7 +196,7 @@ class MaskViewer(QWidget):
                     return i
         return -1
 
-    def set_numpy_image(self, image: np.ndarray):
+    def set_numpy_image(self, image: Optional[np.ndarray]):
         """Set the image to display from numpy array."""
         self._image = image.copy() if image is not None else None
         self._qimage_cache = None  # Invalidate cache
@@ -620,8 +619,8 @@ class MaskViewerDialog(QDialog):
         self.resize(1200, 800)
         self.viewer = MaskViewer(self)
         self._last_polygons: List[Any] = []
-        self._thread = None
-        self._worker = None
+        self._thread: Optional[QThread] = None
+        self._worker: Optional[DetectionWorker] = None
         self._current_mask = None
         self._layer_overlays: Dict[str, bool] = {}
         self.param_widgets: Dict[str, QSpinBox | QDoubleSpinBox] = {}
@@ -804,6 +803,7 @@ class MaskViewerDialog(QDialog):
         label = QLabel()
         self.param_labels[name] = label
         row.addWidget(label)
+        widget: QSpinBox | QDoubleSpinBox
         if isinstance(minimum, float):
             widget = QDoubleSpinBox()
             widget.setSingleStep(0.1)
@@ -967,19 +967,21 @@ class MaskViewerDialog(QDialog):
         self.setCursor(Qt.CursorShape.WaitCursor)
         preset_id = self._selected_preset_id()
         mode = DETECTION_PRESETS[preset_id]["mode"]
-        self._thread = QThread()
-        self._worker = DetectionWorker(image, mode, dict(self.params))
-        self._worker.moveToThread(self._thread)
-        self._thread.started.connect(self._worker.run)
-        self._worker.finished.connect(self._on_detection_finished)
-        self._worker.error.connect(self._on_detection_error)
-        self._worker.finished.connect(self._thread.quit)
-        self._worker.error.connect(self._thread.quit)
-        self._worker.finished.connect(self._worker.deleteLater)
-        self._worker.error.connect(self._worker.deleteLater)
-        self._thread.finished.connect(self._thread.deleteLater)
-        self._thread.finished.connect(self._clear_detection_thread)
-        self._thread.start()
+        thread = QThread()
+        worker = DetectionWorker(image, mode, dict(self.params))
+        self._thread = thread
+        self._worker = worker
+        worker.moveToThread(thread)
+        thread.started.connect(worker.run)
+        worker.finished.connect(self._on_detection_finished)
+        worker.error.connect(self._on_detection_error)
+        worker.finished.connect(thread.quit)
+        worker.error.connect(thread.quit)
+        worker.finished.connect(worker.deleteLater)
+        worker.error.connect(worker.deleteLater)
+        thread.finished.connect(thread.deleteLater)
+        thread.finished.connect(self._clear_detection_thread)
+        thread.start()
 
     def _clear_detection_thread(self):
         self._thread = None
@@ -1023,11 +1025,12 @@ class MaskViewerDialog(QDialog):
         try:
             from src.core.commands import (
                 AddPolygonCommand,
+                Command,
                 CommandStatus,
                 CompositeCommand,
             )
 
-            commands = []
+            commands: List[Command] = []
             for index, poly_data in enumerate(self._last_polygons):
                 polygon = (
                     poly_data.get("polygon")

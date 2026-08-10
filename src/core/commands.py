@@ -366,7 +366,8 @@ class CompositeCommand(Command):
                         self,
                         "execute",
                         result.error_type or "CompositeCommandError",
-                        "A composite subcommand failed; applied changes were rolled back.",
+                        "A composite subcommand failed; applied changes were "
+                        "rolled back.",
                     )
                 return CommandResult.rejected(
                     self,

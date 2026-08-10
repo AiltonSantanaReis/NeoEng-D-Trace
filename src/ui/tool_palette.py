@@ -337,7 +337,8 @@ class ToolPalette(QWidget):
             )
         else:
             self.btn_magnetic_lasso.setToolTip(
-                "Magnetic Lasso in precise mode. Right-click the canvas for Legacy mode, "
+                "Magnetic Lasso in precise mode. Right-click the canvas "
+                "for Legacy mode, "
                 "precision presets and edge-map preview."
             )
         if self._active_magnetic_lasso is not None:

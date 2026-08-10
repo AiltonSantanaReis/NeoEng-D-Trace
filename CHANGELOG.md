@@ -2,13 +2,25 @@
 
 ## [Unreleased] — programa de estabilização, Etapas 1 a 5
 
-Snapshot documental de 6 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+Snapshot documental pós-merge de 6 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Auditoria corretiva local — 2026-08-10
+
+- atualiza Pillow para 12.3.0 e adiciona gates reproduzíveis com `pip-audit` e Bandit;
+- corrige falso sucesso da CLI, limites/rotação do atlas e exportação real do painel de colisões;
+- executa 196 testes legados e reconcilia estritamente 26 divergências conhecidas, sem ocultar as falhas brutas;
+- integra `LayersPanel`, consolida o alias de lasso e cobre a API SAT compatível;
+- habilita mypy em corpos não anotados e cobertura de branches com piso incremental de 62%;
+- adiciona política de segurança, matriz funcional viva e evidência auditada;
+- migra metadados para PEP 621, exige `poetry check --strict` e promove Flake8 integral a gate com zero achados;
+- remove código morto duplicado do exportador GLTF e centraliza o bootstrap Qt dos testes;
+- publica o commit `236eefd41ee51c7085e21d52fc80074eede0a793` na PR draft `#28`; CI `31422290050` aprova Linux e Windows; merge, CI pós-merge e release permanecem não executados.
 
 - ambiente reproduzível consolidado em Python 3.11, Poetry 2.4.1 e CI Linux/Windows;
 - formato de projeto `.ndtproj` com schema v1 estrito, migração legada, escrita atômica e round-trip de colisões e segmentos Bézier;
 - ciclo Abrir/Salvar integrado e validado no Windows;
-- Etapa 5 integrada até o Pacote 5B na `main` `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
-- Pacote 5C permanece em PR draft para criação/edição Bézier transacional e contratos residuais;
+- Etapa 5 funcionalmente integrada até o Pacote 5C no merge commit `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
+- Pacote 5C foi mesclado pela PR `#27`; o HEAD final da PR é `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
 - revisão do Pacote 5C identificou e corrige atomicidade observável, sincronização da Caneta com a seleção e rejeição de no-op obsoleto;
 - a validação local v3.1 passou no Windows, mas a revisão posterior bloqueou o commit por evidência incompleta do arquivo untracked e por sincronização ausente após Undo/Redo global no mesmo objeto Bézier;
 - o corrector v3.2 preservou essas correções, mas o dry-run foi bloqueado pelo mypy antes de qualquer escrita porque o acesso ao objeto selecionado não possuía narrowing explícito de nulidade;
@@ -34,13 +46,16 @@ Snapshot documental de 6 de agosto de 2026. O estado real da branch, da PR e do 
 - o corrector v4.0 passou no Windows com 89 testes focais, 15 documentais, 510 totais e cobertura global de 66%, com evidência completa dos 20 arquivos;
 - a revisão pós-v4.0 bloqueou o commit porque o índice de handle não tinha contrato de tipo estrito: booleanos e `1.0` eram aceitos como índice 1, enquanto listas ou dicionários podiam expor `TypeError` bruto;
 - a correção incremental v4.1 exige `handle_index` inteiro não booleano no núcleo e no comando, rejeita entradas inválidas de forma controlada e garante ausência de mutação e de histórico;
-- o gate oficial v4.1 passou no Windows/Python 3.11.9 com 95 testes focais, 16 documentais, 517 totais, baseline 263 e cobertura global de 66%;
+- o gate oficial v4.1 passou no Windows/Python 3.11.9 com 95 testes focais, 16 documentais, 517 totais, baseline funcional 263 e cobertura global de 66%;
 - a validação manual foi aprovada e a integração visual automática aprovou 17/17 estados, com ZIP SHA-256 `2981a29d85f8df329bddd0711e16b54665a75d8522447405c476359d6bd2d189`;
-- o commit funcional `9bf83af0d58b5984ccfefc59a543428379b02632` foi publicado por fast-forward sem força na PR `#27`;
-- o workflow `Private validation` `#82` (`31115744015`) concluiu Linux e Windows em `success`; a primeira tentativa Windows falhou antes do checkout por indisponibilidade do GitHub e o retry passou sem alteração de código;
-- a reconciliação documental pré-merge cria novo HEAD exclusivamente documental e exige novo CI Linux/Windows antes de Ready;
-- documentação viva reconciliada com o estado versionado, mantendo auditorias e evidências antigas como snapshots históricos;
-- nenhuma entrada deste bloco declara release, encerramento de `R-004`, conclusão da Etapa 5 ou início da Etapa 6.
+- o commit funcional `9bf83af0d58b5984ccfefc59a543428379b02632` foi publicado por fast-forward sem força;
+- o commit documental pré-merge `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e` elevou a baseline para 264 arquivos;
+- o CI final pré-merge `#83` (`31135700216`) aprovou Linux e Windows no HEAD documental exato;
+- a PR `#27` foi mesclada por merge commit em `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`, preservando a branch funcional;
+- o CI pós-merge `#84` (`31136893143`) aprovou Linux e Windows no merge commit;
+- os artefatos pós-merge são Linux `8978309717` (`25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`) e Windows `8978326062` (`0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`);
+- o pacote documental pós-merge registra `R-004` e a Etapa 5 como APROVADOS PARA ENCERRAMENTO FORMAL, condicionados à integração do registro e ao CI final da `main`;
+- nenhuma entrada deste bloco declara `R-004` encerrado, Etapa 5 concluída, Etapa 6 iniciada ou branch excluída.
 
 ## 0.6O2 — observabilidade confiável e persistência segura
 

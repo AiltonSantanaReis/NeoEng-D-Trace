@@ -35,10 +35,11 @@ def test_runtime_has_no_imports_from_removed_namespace() -> None:
 
 def test_distribution_and_console_entry_use_single_src_tree() -> None:
     data = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    project = data["project"]
     poetry = data["tool"]["poetry"]
-    assert poetry["name"] == "neoeng-d-trace"
+    assert project["name"] == "neoeng-d-trace"
     assert poetry["packages"] == [{"include": "src"}]
-    assert poetry["scripts"]["neoeng-d-trace"] == "src.launcher:main"
+    assert project["scripts"]["neoeng-d-trace"] == "src.launcher:main"
 
 
 def test_launcher_keeps_legacy_config_in_project_root() -> None:

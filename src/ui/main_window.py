@@ -24,6 +24,7 @@ from src.core.validation_events import (
     record_validation_event,
     record_validation_exception,
 )
+from src.exporters.json_exporter import save_json_metadata
 from src.persistence import PROJECT_FILE_EXTENSION, build_project_document
 
 # Imports de Lógica e Física
@@ -33,6 +34,7 @@ from src.ui.collision_overlay import CollisionOverlay
 from src.ui.collision_panel import CollisionPanel
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
+from src.ui.layers_panel import LayersPanel
 from src.ui.mask_viewer import MaskViewerDialog
 
 # Imports dos componentes da UI
@@ -42,21 +44,39 @@ from src.ui.tool_palette import ToolPalette
 
 class MainWindow(QMainWindow):
 
-    def export_collision_json(self):
-        """Export collision shapes as JSON without changing their schema."""
-        import json
-
+    def _save_collision_json(self, data, default_name="collisions.json"):
         t = self.translations[self.current_lang]
         path, _ = QFileDialog.getSaveFileName(
             self,
             t["export_collision_json_dialog"],
-            "collisions.json",
+            default_name,
             t["json_files"],
         )
-        if path:
-            data = getattr(self.scene, "collision_shapes", {})
-            with open(path, "w", encoding="utf-8") as handle:
-                json.dump(data, handle, ensure_ascii=False, indent=2)
+        if not path:
+            return False
+
+        try:
+            save_json_metadata(data, path)
+        except Exception as exc:
+            logger.error("Failed to export collision JSON: %s", exc, exc_info=True)
+            QMessageBox.critical(
+                self,
+                t["error"],
+                t["failed_export_collision"] + str(exc),
+            )
+            return False
+
+        QMessageBox.information(
+            self,
+            t["info"],
+            t["export_collision_success"].format(path=path),
+        )
+        return True
+
+    def export_collision_json(self):
+        """Export collision shapes as JSON without changing their schema."""
+        data = getattr(self.scene, "collision_shapes", {})
+        return self._save_collision_json(data)
 
     def export_collision_txt(self):
         """Export collision shapes as the existing plain-text format."""
@@ -123,6 +143,7 @@ class MainWindow(QMainWindow):
         self.canvas = CanvasView(scene)
         self.tool_palette = ToolPalette(self.canvas)
         self.side_panel = SidePanel(scene, self.canvas)
+        self.layers = LayersPanel(scene)
         self.groups = GroupsPanel(scene)
 
         # Disable tools until image is loaded
@@ -224,6 +245,7 @@ class MainWindow(QMainWindow):
         # Painel Direito (Dividido Verticalmente)
         right_splitter = QSplitter(Qt.Orientation.Vertical)
         right_splitter.addWidget(self.side_panel)
+        right_splitter.addWidget(self.layers)
         right_splitter.addWidget(self.groups)
 
         splitter.addWidget(right_splitter)
@@ -258,7 +280,9 @@ class MainWindow(QMainWindow):
                 "failed_save_project": "Failed to save project: ",
                 "project_warnings_title": "Project opened with warnings",
                 "project_image_missing": "Referenced image was not found: {path}",
-                "project_image_unreadable": "Referenced image could not be read: {path}",
+                "project_image_unreadable": (
+                    "Referenced image could not be read: {path}"
+                ),
                 "project_image_hash_mismatch": (
                     "Referenced image differs from the saved SHA-256: {path}"
                 ),
@@ -275,6 +299,8 @@ class MainWindow(QMainWindow):
                 "export_collision_txt": "Export Collision (TXT)",
                 "export_collision_json_dialog": "Export Collision JSON",
                 "export_collision_txt_dialog": "Export Collision TXT",
+                "export_collision_success": "Collision data exported to {path}",
+                "failed_export_collision": "Failed to export collision data: ",
                 "json_files": "JSON Files (*.json)",
                 "text_files": "Text Files (*.txt)",
                 "fit_view": "Fit View (F)",
@@ -339,6 +365,8 @@ class MainWindow(QMainWindow):
                 "export_collision_txt": "Exportar Colisão (TXT)",
                 "export_collision_json_dialog": "Exportar Colisão em JSON",
                 "export_collision_txt_dialog": "Exportar Colisão em TXT",
+                "export_collision_success": "Dados de colisão exportados para {path}",
+                "failed_export_collision": "Falha ao exportar dados de colisão: ",
                 "json_files": "Arquivos JSON (*.json)",
                 "text_files": "Arquivos de Texto (*.txt)",
                 "fit_view": "Ajustar Visão (F)",
@@ -387,53 +415,47 @@ class MainWindow(QMainWindow):
 
     def _setup_shortcuts(self):
         # View Shortcuts
-        QShortcut(QKeySequence("F"), self, activated=self.canvas.fit_to_window)
-        QShortcut(
-            QKeySequence("X"), self, activated=self.canvas.toggle_xray
-        )  # Modo Raio-X
-        QShortcut(
-            QKeySequence("A"),
-            self,
-            activated=lambda: self.canvas.set_view_mode(0),
-        )  # Modo Lit (Normal)
+        QShortcut(QKeySequence("F"), self, self.canvas.fit_to_window)
+        QShortcut(QKeySequence("X"), self, self.canvas.toggle_xray)
+        QShortcut(QKeySequence("A"), self, lambda: self.canvas.set_view_mode(0))
 
         # Tool Shortcuts (1-6)
         QShortcut(
             QKeySequence("1"),
             self,
-            activated=lambda: self._select_tool("polygonal_lasso"),
+            lambda: self._select_tool("polygonal_lasso"),
         )
         QShortcut(
             QKeySequence("2"),
             self,
-            activated=lambda: self._select_tool("lasso_tool"),
+            lambda: self._select_tool("lasso_tool"),
         )
         QShortcut(
             QKeySequence("3"),
             self,
-            activated=lambda: self._select_tool("rect_selection"),
+            lambda: self._select_tool("rect_selection"),
         )
         QShortcut(
             QKeySequence("4"),
             self,
-            activated=lambda: self._select_tool("ellipse_selection"),
+            lambda: self._select_tool("ellipse_selection"),
         )
         QShortcut(
             QKeySequence("5"),
             self,
-            activated=lambda: self._select_tool("pen_tool"),
+            lambda: self._select_tool("pen_tool"),
         )
         QShortcut(
             QKeySequence("6"),
             self,
-            activated=lambda: self._select_tool("magnetic_lasso"),
+            lambda: self._select_tool("magnetic_lasso"),
         )
 
         # Undo/Redo Shortcuts
         # Nota: Mantemos isso para garantir o funcionamento do atalho,
         # mesmo que também exista no menu.
-        QShortcut(QKeySequence.Undo, self, activated=self._undo)
-        QShortcut(QKeySequence.Redo, self, activated=self._redo)
+        QShortcut(QKeySequence.StandardKey.Undo, self, self._undo)
+        QShortcut(QKeySequence.StandardKey.Redo, self, self._redo)
 
     def _connect_command_history(self) -> None:
         manager = getattr(self.scene, "cmd", None)
@@ -730,6 +752,8 @@ class MainWindow(QMainWindow):
         self.tool_palette.setEnabled(has_image)
         self.side_panel.setEnabled(project_loaded or has_image)
         self.side_panel.refresh()
+        if hasattr(self.layers, "refresh"):
+            self.layers.refresh()
         if hasattr(self.groups, "refresh"):
             self.groups.refresh()
         self.canvas.update()
@@ -1187,7 +1211,14 @@ class MainWindow(QMainWindow):
             self.canvas.update()
 
     def _on_collision_export(self):
-        pass
+        data = {
+            "collision_shapes": getattr(self.scene, "collision_shapes", {}),
+            "collision_results": self.collision_panel.collision_results,
+            "statistics": (
+                self.physics_manager.get_stats() if self.physics_manager else {}
+            ),
+        }
+        return self._save_collision_json(data, "collision-results.json")
 
     def _on_collision_auto_generate(self):
         if self.physics_manager:

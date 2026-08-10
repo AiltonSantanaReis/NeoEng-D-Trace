@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-import os
-
 import pytest
+from PySide6.QtWidgets import QApplication
 
 from src.core.commands import (
     AddPolygonCommand,
@@ -15,6 +14,7 @@ from src.core.commands import (
     CompositeCommand,
 )
 from src.models.scene import Scene
+from src.ui.main_window import MainWindow
 
 
 class _SetSelection(Command):
@@ -303,13 +303,6 @@ def test_existing_add_polygon_flow_returns_results():
     assert command.object_id not in scene.objects
     assert scene.cmd.redo(scene).status is CommandStatus.APPLIED
     assert len(scene.objects) == 1
-
-
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-pytest.importorskip("PySide6")
-from PySide6.QtWidgets import QApplication
-
-from src.ui.main_window import MainWindow
 
 
 class _ConfigStub:

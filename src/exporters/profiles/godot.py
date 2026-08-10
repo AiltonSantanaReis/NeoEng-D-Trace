@@ -3,11 +3,6 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-"""
-Godot export profile for NeoEng-D-Trace.
-Handles formatting of metadata for Godot Engine (AtlasTexture style).
-"""
-
 from typing import Any, Dict
 
 

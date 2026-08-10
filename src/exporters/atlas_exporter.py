@@ -139,7 +139,12 @@ def pack_sprites_to_atlas(
                 entry = {
                     "name": name,
                     "atlas": current_atlas_index,
-                    "rect": {"x": node.x, "y": node.y, "w": w, "h": h},
+                    "rect": {
+                        "x": node.x,
+                        "y": node.y,
+                        "w": img_to_paste.width,
+                        "h": img_to_paste.height,
+                    },
                     "rotated": rotated,
                 }
                 meta.append(entry)
@@ -152,19 +157,23 @@ def pack_sprites_to_atlas(
         # If nothing fit in an empty atlas, the item is too big
         if not packed_in_this_atlas and remaining_items:
             logger.warning(
-                f"Item {remaining_items[0][1]['name']} too big for atlas size {max_size}"
+                f"Item {remaining_items[0][1]['name']} too big for atlas "
+                f"size {max_size}"
             )
             # Skip this item to prevent infinite loop
             remaining_items.pop(0)
             continue
 
-        # Crop atlas to used size (Optional optimization)
-        # For simplicity, we keep full size or crop to content bounding box
-        bbox = atlas_img.getbbox()
-        if bbox:
-            atlas_cropped = atlas_img.crop((0, 0, bbox[2] + padding, bbox[3] + padding))
-        else:
-            atlas_cropped = atlas_img
+        used_width = max(entry["rect"]["x"] + entry["rect"]["w"] for entry in meta)
+        used_height = max(entry["rect"]["y"] + entry["rect"]["h"] for entry in meta)
+        atlas_cropped = atlas_img.crop(
+            (
+                0,
+                0,
+                min(max_w, used_width + padding),
+                min(max_h, used_height + padding),
+            )
+        )
 
         atlases.append((atlas_cropped, meta))
         current_atlas_index += 1

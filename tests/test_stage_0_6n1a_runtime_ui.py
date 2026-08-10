@@ -6,16 +6,11 @@ cover both supported languages, palette sizing and non-blocking lasso preview.
 
 from __future__ import annotations
 
-import os
 import time
 from unittest.mock import Mock, patch
 
 import numpy as np
 import pytest
-
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-pytest.importorskip("PySide6")
-
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QTransform
 from PySide6.QtWidgets import QApplication, QWidget

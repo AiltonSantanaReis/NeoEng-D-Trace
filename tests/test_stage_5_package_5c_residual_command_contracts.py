@@ -9,7 +9,6 @@ from src.core.commands import (
     CommandManager,
     CommandStatus,
     ExpandContractCommand,
-    HandleMoveCommand,
     UpdateObjectGeometryCommand,
     UpdatePolygonCommand,
 )

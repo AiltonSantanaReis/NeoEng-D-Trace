@@ -87,25 +87,34 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_5_PACOTE_5B_BATCH_COLLISION_COMMANDS.md` — lotes de máscara e auto-detect atômicos, com auto-geração reversível de colisões.
 - `ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md` — criação e edição Bézier reversíveis e cobertura nominal dos comandos residuais.
 - `ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md` — commit funcional, validação visual, CI Linux/Windows, artefatos e gates independentes anteriores ao merge.
+- `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` — merge da PR `#27`, auditoria corretiva, commit `236eefd`, PR draft `#28`, CI remoto e gates pós-merge pendentes.
+- `AUDITORIA_RIGOROSA_2026-08-10.md` — bloqueios descobertos, reconciliação legada e novos gates de segurança, tipagem e branches.
 
 ## Estado operacional da evidência atual
 
-Snapshot vivo de 6 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
+Snapshot pós-merge de 6 de agosto de 2026, condicionado à verificação do HEAD e do GitHub:
 
-- `main`: `ee38a2f1dc85093e34140ddd087312629b4ecb43`;
-- Etapa 5 e `R-004`: abertos;
-- Pacote 5C: PR `#27`, draft e não integrado;
-- HEAD funcional validado: `9bf83af0d58b5984ccfefc59a543428379b02632`;
-- escopo funcional remoto: 20 arquivos;
-- gate local Windows/Python 3.11.9: 95 focais, 16 documentais, 517 totais, 66% de cobertura e baseline 263;
-- validação visual manual: aprovada; validação automática: 17/17 estados; ZIP SHA-256 `2981a29d85f8df329bddd0711e16b54665a75d8522447405c476359d6bd2d189`;
-- commit funcional publicado por fast-forward sem força: `9bf83af0d58b5984ccfefc59a543428379b02632`;
-- CI `Private validation` `#82` (`31115744015`): Linux e Windows em `success`;
-- artefato Linux: ID `8973550294`, digest `d6cee9f94f04d706cccb106d6456dcbc3e482e4ed84aec2fa15b6bfa396be435`;
-- artefato Windows: ID `8973729078`, digest `a433a229cdbc1bfe58d03804baa2edb223c5bc2f6c37d17431b90e86f3777aa6`;
-- comentários, reviews e threads pendentes: nenhum;
-- gate atual: a reconciliação documental deve gerar novo HEAD, passar por CI Linux/Windows e ser revisada antes de Ready;
-- Ready, merge, fechamento de `R-004`, conclusão da Etapa 5 e início da Etapa 6 permanecem pendentes e independentes.
+- `main`: `6c4bcb3d945405a4615a4d6551247d1b01ce79f1`;
+- PR `#27`: fechada e mesclada;
+- HEAD funcional v4.1: `9bf83af0d58b5984ccfefc59a543428379b02632`;
+- HEAD documental final da PR: `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
+- Pacote 5C: integrado;
+- gate funcional Windows/Python 3.11.9: 95 focais, 16 documentais, 517 totais, 66% de cobertura e baseline 263;
+- validação visual manual: aprovada; validação automática: 17/17 estados;
+- CI final pré-merge `#83` (`31135700216`): Linux e Windows em `success`;
+- CI pós-merge `#84` (`31136893143`): Linux e Windows em `success`;
+- artefato Linux pós-merge: ID `8978309717`, digest `25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`;
+- artefato Windows pós-merge: ID `8978326062`, digest `0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`;
+- branch funcional: preservada no remoto;
+- `R-004`: APROVADO PARA ENCERRAMENTO FORMAL, mas ainda aberto;
+- Etapa 5: APROVADA PARA ENCERRAMENTO FORMAL, mas ainda não concluída;
+- auditoria corretiva: commit `236eefd41ee51c7085e21d52fc80074eede0a793`, PR draft `#28`, CI `31422290050` em `success`;
+- gate atual: revisar/mesclar a PR `#28` e exigir CI pós-merge da `main`;
+- Etapa 6: não iniciada.
+
+O arquivo `ETAPA_5_ENCERRAMENTO_POS_MERGE.md` é a evidência permanente
+deste gate. Commit, push, PR e CI da PR foram executados; merge, CI pós-merge,
+fechamento de risco e transição de etapa permanecem decisões independentes.
 
 ## Histórico dos correctors do Pacote 5C
 

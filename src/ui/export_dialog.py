@@ -180,7 +180,9 @@ class ExportDialog(QDialog):
             "batch_errors": "\nErros: {count} (consulte os logs)",
             "atlas_directory": "Selecionar Pasta de Saída do Atlas",
             "preparing_atlas": "Preparando sprites para o atlas...",
-            "no_valid_sprites": "Nenhum sprite válido foi encontrado para criar o atlas.",
+            "no_valid_sprites": (
+                "Nenhum sprite válido foi encontrado para criar o atlas."
+            ),
             "packing_atlas": "Montando o atlas (isso pode levar algum tempo)...",
             "atlas_success": "Atlas criado com sucesso em {count} página(s).",
             "atlas_failure": "Falha ao criar o atlas:\n{error}",
@@ -707,8 +709,12 @@ class ExportDialog(QDialog):
             for result in results:
                 atlas_path = result.get("atlas_path")
                 json_path = result.get("json_path")
-                atlas_ok = file_evidence(atlas_path)["size"] > 0
-                json_ok = self._json_file_is_valid(json_path)
+                atlas_ok = isinstance(atlas_path, str) and (
+                    file_evidence(atlas_path)["size"] > 0
+                )
+                json_ok = isinstance(json_path, str) and self._json_file_is_valid(
+                    json_path
+                )
                 valid_outputs = valid_outputs and atlas_ok and json_ok
                 output_count += int(atlas_ok) + int(json_ok)
             if not valid_outputs:

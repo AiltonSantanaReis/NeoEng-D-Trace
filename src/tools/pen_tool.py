@@ -17,7 +17,6 @@ from src.core.bezier_geometry import (
     canonicalize_beziers,
     cubic_bezier_point,
     sample_beziers,
-    sample_beziers_to_polygon,
 )
 from src.core.commands import (
     CommandStatus,
