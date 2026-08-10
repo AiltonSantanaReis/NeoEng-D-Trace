@@ -31,9 +31,9 @@ class LayersPanel(QWidget):
         self.scene = scene
         self.setMinimumWidth(200)
 
-        self.layout = QVBoxLayout()
+        self.main_layout = QVBoxLayout()
         self.list = QListWidget()
-        self.layout.addWidget(self.list)
+        self.main_layout.addWidget(self.list)
 
         buttons = QHBoxLayout()
         self.btn_new = QPushButton("New")
@@ -53,8 +53,8 @@ class LayersPanel(QWidget):
         ):
             buttons.addWidget(button)
 
-        self.layout.addLayout(buttons)
-        self.setLayout(self.layout)
+        self.main_layout.addLayout(buttons)
+        self.setLayout(self.main_layout)
 
         self.btn_new.clicked.connect(self._create)
         self.btn_delete.clicked.connect(self._delete)

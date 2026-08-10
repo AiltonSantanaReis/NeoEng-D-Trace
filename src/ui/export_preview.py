@@ -227,7 +227,8 @@ class ExportPreviewDialog(QDialog):
         if "rect" in self.metadata:
             rect = self.metadata["rect"]
             lines.append(
-                f"{self.TRANSLATIONS[self.current_lang]['rect']}: x={rect.get('x', '?')}, y={rect.get('y', '?')}, "
+                f"{self.TRANSLATIONS[self.current_lang]['rect']}: "
+                f"x={rect.get('x', '?')}, y={rect.get('y', '?')}, "
                 f"w={rect.get('w', '?')}, h={rect.get('h', '?')}"
             )
         if "pivot" in self.metadata:

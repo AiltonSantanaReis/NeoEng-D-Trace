@@ -3,16 +3,11 @@
 from __future__ import annotations
 
 import hashlib
-import os
 from pathlib import Path
-
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import cv2
 import numpy as np
 import pytest
-
-pytest.importorskip("PySide6")
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication, QFileDialog, QMessageBox
 

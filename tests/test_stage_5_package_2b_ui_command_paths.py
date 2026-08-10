@@ -3,14 +3,9 @@
 from __future__ import annotations
 
 import inspect
-import os
 
 import numpy as np
 import pytest
-
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-pytest.importorskip("PySide6")
-
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.core.commands import (

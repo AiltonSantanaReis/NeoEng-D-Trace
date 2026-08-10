@@ -17,6 +17,7 @@ import hashlib
 import json
 import os
 import subprocess
+from datetime import date
 from pathlib import Path
 from typing import Iterable, Sequence
 
@@ -141,7 +142,7 @@ def build_manifest() -> dict[str, object]:
     return {
         "schema_version": 2,
         "project": "NeoEng-D-Trace",
-        "baseline_date": "2026-07-29",
+        "baseline_date": date.today().isoformat(),
         "hash_algorithm": "sha256",
         "canonicalization": {
             "utf8_text_line_endings": "LF",

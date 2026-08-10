@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-import ast
 import hashlib
 import importlib
 import json
-import subprocess
-import sys
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -23,7 +20,9 @@ EXPECTED_CONTRACT = {
     "binary_sha256": "8acbb1d1117affb68c0e059a386a76c89d4267a3ecdedc742ce23b4659aafeb8",
     "binary_size": 84,
     "no_metadata_ok": True,
-    "no_metadata_sha256": "ee2bd28df5f9eaee030e24aa9aa82a7f80b9c4615c14f3326fc324c6592834fb",
+    "no_metadata_sha256": (
+        "ee2bd28df5f9eaee030e24aa9aa82a7f80b9c4615c14f3326fc324c6592834fb"
+    ),
     "no_metadata_size": 1198,
     "object_ok": True,
     "object_sha256": "01239871697a5e6ee9238fee4e6b5dca586d288b64397dd3c48668f9d1c90b24",
@@ -462,7 +461,10 @@ def test_gltf_required_pygltflib_dependency_is_available() -> None:
 
 @pytest.mark.skipif(
     not importlib.import_module(MODULE_NAME)._HAS_PYGLTF,
-    reason="pygltflib unavailable; the required-dependency test reports this as a failure",
+    reason=(
+        "pygltflib unavailable; the required-dependency test reports this "
+        "as a failure"
+    ),
 )
 def test_gltf_real_glb_structure_and_binary_contract(tmp_path: Path) -> None:
     module = importlib.import_module(MODULE_NAME)
@@ -520,7 +522,10 @@ def test_gltf_real_glb_structure_and_binary_contract(tmp_path: Path) -> None:
 
 @pytest.mark.skipif(
     not importlib.import_module(MODULE_NAME)._HAS_PYGLTF,
-    reason="pygltflib unavailable; the required-dependency test reports this as a failure",
+    reason=(
+        "pygltflib unavailable; the required-dependency test reports this "
+        "as a failure"
+    ),
 )
 def test_gltf_real_single_object_export_contract(tmp_path: Path) -> None:
     module = importlib.import_module(MODULE_NAME)

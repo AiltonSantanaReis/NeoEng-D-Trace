@@ -3,12 +3,7 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-"""
-Unity export profile for NeoEng-D-Trace.
-Handles formatting of metadata specifically for Unity's import pipeline.
-"""
-
-from typing import Any, Dict, List, Union
+from typing import Any, Dict
 
 
 def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
@@ -33,7 +28,8 @@ def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
 
     # Normalize pivot to 0-1 range relative to the sprite rect
     # Note: Unity Pivot is (0,0) at Bottom-Left, but standard image tools are Top-Left.
-    # Usually Unity importers handle the Y-flip, so we keep normalization relative to Rect size.
+    # Unity importers usually handle the Y-flip, so normalization stays
+    # relative to Rect size.
 
     w = rect.get("w", 0)
     h = rect.get("h", 0)

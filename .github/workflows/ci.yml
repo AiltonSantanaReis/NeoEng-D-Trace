@@ -44,7 +44,7 @@ jobs:
           python -m pip install "poetry==${{ env.POETRY_VERSION }}"
 
       - name: Verify dependency lock
-        run: poetry check --lock
+        run: poetry check --lock --strict
 
       - name: Synchronize dependencies from lock file
         run: poetry sync --no-interaction --no-ansi
@@ -60,11 +60,8 @@ jobs:
       - name: Compile Python sources
         run: poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools
 
-      - name: Lint for fatal errors
-        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
-
-      - name: Report non-blocking lint metrics
-        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run full lint
+        run: poetry run flake8 src tests tools app.py pack_for_ai.py
 
       - name: Check formatting
         run: poetry run black --check --diff src tests tools app.py pack_for_ai.py
@@ -72,11 +69,17 @@ jobs:
       - name: Check import ordering
         run: poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py
 
-      - name: Type check
-        run: poetry run mypy src --ignore-missing-imports
+      - name: Type check including untyped bodies
+        run: poetry run mypy src
 
-      - name: Run tests with Linux coverage
-        run: poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml
+      - name: Audit dependencies
+        run: poetry run pip-audit
+
+      - name: Scan high-severity source risks
+        run: poetry run bandit -q -r src -lll
+
+      - name: Run tests with Linux branch coverage
+        run: poetry run pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml
 
       - name: Verify Linux source tree remained unchanged
         run: python tools/baseline_integrity.py --verify
@@ -89,7 +92,7 @@ jobs:
             coverage.xml
             ${{ runner.temp }}/environment-freeze.txt
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 30
 
   test-windows:
     runs-on: windows-latest
@@ -112,7 +115,7 @@ jobs:
           python -m pip install "poetry==${{ env.POETRY_VERSION }}"
 
       - name: Verify dependency lock
-        run: poetry check --lock
+        run: poetry check --lock --strict
 
       - name: Synchronize dependencies from lock file
         run: poetry sync --no-interaction --no-ansi
@@ -130,11 +133,8 @@ jobs:
       - name: Compile Python sources
         run: poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools
 
-      - name: Lint for fatal errors
-        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --select=E9,F63,F7,F82 --show-source --statistics
-
-      - name: Report non-blocking lint metrics
-        run: poetry run flake8 src tests tools app.py pack_for_ai.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run full lint
+        run: poetry run flake8 src tests tools app.py pack_for_ai.py
 
       - name: Check formatting
         run: poetry run black --check --diff src tests tools app.py pack_for_ai.py
@@ -142,11 +142,20 @@ jobs:
       - name: Check import ordering
         run: poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py
 
-      - name: Type check
-        run: poetry run mypy src --ignore-missing-imports
+      - name: Type check including untyped bodies
+        run: poetry run mypy src
 
-      - name: Run tests with Windows coverage
-        run: poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml
+      - name: Audit dependencies
+        run: poetry run pip-audit
+
+      - name: Scan high-severity source risks
+        run: poetry run bandit -q -r src -lll
+
+      - name: Run tests with Windows branch coverage
+        run: poetry run pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml
+
+      - name: Run reconciled preserved legacy suite
+        run: poetry run python tools/run_legacy_tests.py --group all --output "${{ runner.temp }}/legacy-tests"
 
       - name: Verify Windows source tree remained unchanged
         run: python tools/baseline_integrity.py --verify
@@ -171,5 +180,9 @@ jobs:
             docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md
             docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json
             docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip
+            docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md
+            docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md
+            quality/legacy_tests/reconciliation.json
+            ${{ runner.temp }}/legacy-tests/summary.json
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 30

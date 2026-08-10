@@ -3,11 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 # src/ui/canvas_view.py
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, Optional, Tuple
 
 from PySide6.QtCore import QObject, QPointF, QRunnable, Qt, QThreadPool, Signal
 from PySide6.QtGui import (
-    QBrush,
     QColor,
     QFont,
     QImage,
@@ -121,7 +120,6 @@ class CanvasView(QWidget):
 
     def _get_image_center_screen(self):
         # Coloca o gizmo fora da imagem, um pouco acima do canto inferior esquerdo
-        w = self.width()
         h = self.height()
         # Margem de 20px da esquerda e 120px do fundo
         return QPointF(20, h - 120)
@@ -722,7 +720,8 @@ class CanvasView(QWidget):
                 self.update()
             else:
                 self.model.select_object(None)  # Deseleciona
-                # Check if this point is far enough from the last point to avoid duplicates
+                # Require enough distance from the last point to avoid
+                # duplicates.
                 if (
                     not self._current_polygon
                     or self._distance_to_last_point(ix, iy) >= 5
@@ -990,7 +989,7 @@ class CanvasView(QWidget):
         modes = {0: "LIT", 1: "X-RAY 1", 2: "X-RAY 2", 3: "X-RAY 3", 4: "COLLISION"}
         txt = f"VIEW: {modes.get(self._view_mode, '?')} | " f"ZOOM: {self._zoom:.2f}x"
         painter.setPen(QColor(0, 255, 255))
-        painter.setFont(QFont("Consolas", 10, QFont.Bold))
+        painter.setFont(QFont("Consolas", 10, QFont.Weight.Bold))
         font_metrics = painter.fontMetrics()
         text_width = font_metrics.horizontalAdvance(txt)
         center_x = (self.width() - text_width) // 2
@@ -1016,7 +1015,7 @@ class CanvasView(QWidget):
         painter.setBrush(QColor(128, 128, 128))
         painter.drawEllipse(gizmo_x - 8, gizmo_y - 8, 16, 16)
         painter.setPen(QColor(255, 255, 255))
-        painter.setFont(QFont("Arial", 10, QFont.Bold))
+        painter.setFont(QFont("Arial", 10, QFont.Weight.Bold))
         painter.drawText(gizmo_x - 4, gizmo_y + 4, "C")
 
         painter.restore()

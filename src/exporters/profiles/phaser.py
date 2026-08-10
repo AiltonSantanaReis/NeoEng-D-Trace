@@ -3,11 +3,6 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-"""
-Phaser export profile for NeoEng-D-Trace.
-Handles formatting of metadata for Phaser 3 Texture Atlas JSON format.
-"""
-
 from typing import Any, Dict
 
 

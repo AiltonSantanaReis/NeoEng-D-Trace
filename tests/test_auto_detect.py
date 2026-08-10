@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from unittest.mock import ANY, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import cv2
 import numpy as np
@@ -49,7 +49,8 @@ class TestAutoDetect(unittest.TestCase):
         mock_simplify.side_effect = lambda pts, eps: pts
 
         # Executa detecção
-        # Ajustamos min_area para garantir que nosso quadrado (40x40=1600) seja detectado
+        # Ajustamos min_area para garantir que nosso quadrado seja
+        # detectado (40x40=1600).
         result = auto_detect.detect_polygons(
             self.image, mode="basic", min_area=100.0, rdp_epsilon=1.0
         )

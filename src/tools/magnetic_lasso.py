@@ -73,10 +73,10 @@ def dijkstra_pathfinding(edge_map, start, end):
     start_local = (sx - min_x, sy - min_y)
     end_local = (ex - min_x, ey - min_y)
 
-    open_set = []
+    open_set: List[Tuple[float, float, Tuple[int, int]]] = []
     g_score = {start_local: 0.0}
     heapq.heappush(open_set, (0.0, 0.0, start_local))
-    came_from = {start_local: None}
+    came_from: Dict[Tuple[int, int], Optional[Tuple[int, int]]] = {start_local: None}
 
     max_x_local = max_x - min_x
     max_y_local = max_y - min_y
@@ -111,10 +111,10 @@ def dijkstra_pathfinding(edge_map, start, end):
         return []
 
     path = []
-    current = end_local
-    while current is not None:
-        path.append((current[0] + min_x, current[1] + min_y))
-        current = came_from[current]
+    cursor: Optional[Tuple[int, int]] = end_local
+    while cursor is not None:
+        path.append((cursor[0] + min_x, cursor[1] + min_y))
+        cursor = came_from[cursor]
     path.reverse()
     return path
 
@@ -166,7 +166,9 @@ class _MagneticPathWorker(QRunnable):
         image_hash = None
         try:
             if edge_map is None and self.image_array is not None:
-                image_hash = hashlib.sha1(self.image_array.tobytes()).hexdigest()
+                image_hash = hashlib.sha1(
+                    self.image_array.tobytes(), usedforsecurity=False
+                ).hexdigest()
                 if self.mode == "precise":
                     edge_features = build_edge_features(
                         self.image_array,
@@ -301,9 +303,15 @@ class MagneticLassoTool(BaseTool):
                 "show_edges": "Show Detected Edges",
                 "undo_project": "Undo Project",
                 "redo_project": "Redo Project",
-                "invalid_selection": "The magnetic path could not create a valid polygon. The anchors were preserved so you can adjust or cancel the selection.",
+                "invalid_selection": (
+                    "The magnetic path could not create a valid polygon. The "
+                    "anchors were preserved so you can adjust or cancel the selection."
+                ),
                 "title": "Magnetic Lasso",
-                "path_error": "The magnetic path calculation failed. The current anchors were preserved.",
+                "path_error": (
+                    "The magnetic path calculation failed. The current anchors "
+                    "were preserved."
+                ),
             },
             "pt": {
                 "finish_selection": "Concluir Seleção",
@@ -319,9 +327,15 @@ class MagneticLassoTool(BaseTool):
                 "show_edges": "Mostrar Bordas Detectadas",
                 "undo_project": "Desfazer no Projeto",
                 "redo_project": "Refazer no Projeto",
-                "invalid_selection": "O caminho magnético não conseguiu criar um polígono válido. As âncoras foram preservadas para ajuste ou cancelamento.",
+                "invalid_selection": (
+                    "O caminho magnético não conseguiu criar um polígono válido. "
+                    "As âncoras foram preservadas para ajuste ou cancelamento."
+                ),
                 "title": "Laço Magnético",
-                "path_error": "O cálculo do caminho magnético falhou. As âncoras atuais foram preservadas.",
+                "path_error": (
+                    "O cálculo do caminho magnético falhou. As âncoras atuais "
+                    "foram preservadas."
+                ),
             },
         }
 
@@ -339,7 +353,8 @@ class MagneticLassoTool(BaseTool):
 
     @staticmethod
     def _image_token(image):
-        """Return a cheap identity token without hashing image bytes on the GUI thread."""
+        """Return a cheap identity token without hashing image bytes on the
+        GUI thread."""
         if isinstance(image, np.ndarray):
             pointer = int(image.__array_interface__["data"][0]) if image.size else 0
             return (
@@ -422,7 +437,7 @@ class MagneticLassoTool(BaseTool):
             return
 
         image_token = self._current_image_token()
-        digest = hashlib.sha1(image_array.tobytes()).hexdigest()
+        digest = hashlib.sha1(image_array.tobytes(), usedforsecurity=False).hexdigest()
         if (
             digest == self._last_image_hash
             and image_token == self._last_image_token

@@ -43,13 +43,21 @@ def verify_integrity(legacy_root: Path, manifest: dict) -> list[str]:
         digest = hashlib.sha256(normalize_lf(path.read_bytes())).hexdigest()
         if digest != item["sha256_lf"]:
             errors.append(
-                f"hash mismatch: {item['path']} expected={item['sha256_lf']} actual={digest}"
+                f"hash mismatch: {item['path']} "
+                f"expected={item['sha256_lf']} actual={digest}"
             )
     return errors
 
 
 def parse_junit(path: Path) -> dict:
-    result = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0, "time": 0.0}
+    result = {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "time": 0.0,
+        "failure_details": [],
+    }
     if not path.is_file():
         result["errors"] = 1
         result["junit_missing"] = True
@@ -62,7 +70,110 @@ def parse_junit(path: Path) -> dict:
         result["errors"] += int(suite.attrib.get("errors", 0))
         result["skipped"] += int(suite.attrib.get("skipped", 0))
         result["time"] += float(suite.attrib.get("time", 0.0))
+        for case in suite.findall("testcase"):
+            for kind in ("failure", "error"):
+                detail = case.find(kind)
+                if detail is None:
+                    continue
+                result["failure_details"].append(
+                    {
+                        "classname": case.attrib.get("classname", ""),
+                        "name": case.attrib.get("name", ""),
+                        "kind": kind,
+                        "message": detail.attrib.get("message", ""),
+                        "body": detail.text or "",
+                    }
+                )
     return result
+
+
+def load_reconciliation(legacy_root: Path) -> tuple[Path, dict[str, dict]]:
+    path = legacy_root / "reconciliation.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"Legacy reconciliation manifest not found: {path}")
+
+    document = json.loads(path.read_text(encoding="utf-8"))
+    expectations: dict[str, dict] = {}
+    for item in document.get("expected_failures", []):
+        identifier = item.get("id")
+        if not isinstance(identifier, str) or not identifier:
+            raise ValueError(
+                "Every legacy reconciliation entry requires a non-empty id"
+            )
+        if identifier in expectations:
+            raise ValueError(f"Duplicate legacy reconciliation id: {identifier}")
+        if not item.get("rationale") or not item.get("replacement_tests"):
+            raise ValueError(
+                f"Legacy reconciliation {identifier} requires rationale "
+                "and replacement_tests"
+            )
+        expectations[identifier] = item
+    return path, expectations
+
+
+def reconcile_failures(
+    selected: list[dict], results: list[dict], expectations: dict[str, dict]
+) -> dict:
+    selected_stems = {Path(item["path"]).stem for item in selected}
+    relevant = {
+        identifier: item
+        for identifier, item in expectations.items()
+        if identifier.split("::", 1)[0] in selected_stems
+    }
+    matched: set[str] = set()
+    unexpected: list[dict] = []
+
+    for result in results:
+        stem = Path(result["file"]).stem
+        for detail in result.get("failure_details", []):
+            identifier = "::".join((stem, detail["classname"], detail["name"]))
+            detail["id"] = identifier
+            expectation = relevant.get(identifier)
+            if expectation is None:
+                unexpected.append(
+                    {"id": identifier, "reason": "failure is not reconciled"}
+                )
+                continue
+            expected_kind = expectation.get("kind", "failure")
+            message_contains = expectation.get("message_contains", "")
+            observed_text = detail["message"] + "\n" + detail["body"]
+            if detail["kind"] != expected_kind:
+                unexpected.append(
+                    {
+                        "id": identifier,
+                        "reason": (
+                            f"expected kind {expected_kind}, observed {detail['kind']}"
+                        ),
+                    }
+                )
+                continue
+            if message_contains and message_contains not in observed_text:
+                unexpected.append(
+                    {
+                        "id": identifier,
+                        "reason": (
+                            "failure signature changed; expected substring "
+                            + repr(message_contains)
+                        ),
+                    }
+                )
+                continue
+            if identifier in matched:
+                unexpected.append(
+                    {"id": identifier, "reason": "duplicate observed failure id"}
+                )
+                continue
+            matched.add(identifier)
+
+    missing = sorted(set(relevant) - matched)
+    status = "passed" if not unexpected and not missing else "failed"
+    return {
+        "status": status,
+        "expected_failures": len(relevant),
+        "matched_failures": len(matched),
+        "unexpected_failures": unexpected,
+        "missing_expected_failures": missing,
+    }
 
 
 def ensure_pytest_available(project_root: Path) -> bool:
@@ -136,6 +247,7 @@ def main() -> int:
 
     project_root = Path(__file__).resolve().parents[1]
     legacy_root, manifest = load_manifest(project_root)
+    reconciliation_path, expectations = load_reconciliation(legacy_root)
 
     integrity_errors = verify_integrity(legacy_root, manifest)
     if integrity_errors:
@@ -231,11 +343,13 @@ def main() -> int:
         )
         print(
             f"[{status.upper():6}] {filename}: tests={metrics['tests']} "
-            f"failures={metrics['failures']} errors={metrics['errors']} skipped={metrics['skipped']}"
+            f"failures={metrics['failures']} errors={metrics['errors']} "
+            f"skipped={metrics['skipped']}"
         )
 
+    reconciliation = reconcile_failures(selected, results, expectations)
     summary = {
-        "schema_version": 1,
+        "schema_version": 2,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "project_root": str(project_root),
         "python": sys.version,
@@ -243,6 +357,8 @@ def main() -> int:
         "group": args.group,
         "integrity": "passed",
         "source_commit": manifest["source_commit"],
+        "reconciliation_manifest": str(reconciliation_path),
+        "reconciliation": reconciliation,
         "selected_files": len(selected),
         "totals": {
             "tests": sum(item["tests"] for item in results),
@@ -257,8 +373,16 @@ def main() -> int:
     summary_path.write_text(
         json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
+    print(
+        "Reconciliation: "
+        f"{reconciliation['status']} "
+        f"matched={reconciliation['matched_failures']}/"
+        f"{reconciliation['expected_failures']} "
+        f"unexpected={len(reconciliation['unexpected_failures'])} "
+        f"missing={len(reconciliation['missing_expected_failures'])}"
+    )
     print(f"Report: {summary_path}")
-    return 1 if summary["totals"]["failed_files"] else 0
+    return 0 if reconciliation["status"] == "passed" else 1
 
 
 if __name__ == "__main__":

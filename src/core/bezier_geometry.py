@@ -62,7 +62,8 @@ def canonicalize_beziers(
     for segment_index in range(1, len(canonical)):
         if canonical[segment_index - 1][3] != canonical[segment_index][0]:
             raise ValueError(
-                f"Bézier segment {segment_index} is not continuous with the previous segment."
+                f"Bézier segment {segment_index} is not continuous with the "
+                "previous segment."
             )
     return canonical
 

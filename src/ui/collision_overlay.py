@@ -7,7 +7,7 @@ Draws physics collision shapes and collision indicators on the canvas.
 from typing import Any, Dict, List, Optional, Tuple
 
 from PySide6.QtCore import QPointF, Qt
-from PySide6.QtGui import QBrush, QColor, QFont, QPainter, QPen
+from PySide6.QtGui import QBrush, QColor, QPainter, QPen
 
 
 class CollisionOverlay:

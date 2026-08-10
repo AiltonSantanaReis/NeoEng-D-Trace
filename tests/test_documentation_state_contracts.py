@@ -1,5 +1,6 @@
 """Contracts that prevent current-state documentation from regressing."""
 
+import json
 import re
 from pathlib import Path
 
@@ -27,9 +28,9 @@ def test_package_5c_evidence_does_not_repeat_false_bezier_limitation():
     assert "não são persistidos pelo formato atual" not in text
 
 
-def test_live_documents_identify_current_main_pr_and_gate():
-    expected_main = "ee38a2f1dc85093e34140ddd087312629b4ecb43"
-    functional_head = "9bf83af0d58b5984ccfefc59a543428379b02632"
+def test_live_documents_identify_postmerge_main_and_closure_gate():
+    expected_main = "6c4bcb3d945405a4615a4d6551247d1b01ce79f1"
+    merged_head = "8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e"
     for relative in (
         "README.md",
         "docs/PLANO_MESTRE_ESTABILIZACAO.md",
@@ -38,13 +39,24 @@ def test_live_documents_identify_current_main_pr_and_gate():
     ):
         value = _text(relative)
         assert expected_main in value
-        assert functional_head in value
+        assert merged_head in value
         assert "#27" in value
         assert "R-004" in value
-        assert "#82" in value
+        assert "#84" in value
+        assert "APROVADO PARA ENCERRAMENTO FORMAL" in value
+
+    closure = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
+    assert expected_main in closure
+    assert merged_head in closure
+    assert "31136893143" in closure
+    assert "8978309717" in closure
+    assert "8978326062" in closure
+    assert "R004_CLOSED=NO" in closure
+    assert "STAGE5_COMPLETED=NO" in closure
+    assert "STAGE6_STARTED=NO" in closure
 
     premerge = _text("docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md")
-    assert functional_head in premerge
+    assert "9bf83af0d58b5984ccfefc59a543428379b02632" in premerge
     assert "31115744015" in premerge
     assert "8973550294" in premerge
     assert "8973729078" in premerge
@@ -71,27 +83,28 @@ def test_governance_requires_sha_bound_ci_and_historical_snapshots():
     assert "Toda afirmação de CI identifica o SHA" in template
 
 
-def test_live_documents_describe_premerge_state_without_stale_gates():
+def test_live_documents_describe_postmerge_state_without_stale_gates():
     stale_phrases = (
-        "Pacote 5C: em correção e revalidação",
-        "correção local deve ser revalidada",
-        "próximo gate: correção incremental, reconciliação documental",
-        "que deve permanecer draft até novo gate completo",
-        "o HEAD remoto ainda é `4802e24d6dd91a20dda4b56ae526ba33e5544322`",
+        "`main` integrada até o Pacote 5B",
+        "Pacote 5C na PR `#27`, draft e não integrado",
+        "Pacote 5C: PR `#27`, draft e não integrado",
+        "Pacote 5C permanece não integrado",
+        "A PR `#27` contém trabalho ainda não integrado",
+        "reconciliação documental deve gerar novo HEAD",
+        "novo CI Linux/Windows antes de Ready",
     )
     ci_markers = {
-        "README.md": "novo CI Linux/Windows",
-        "docs/PLANO_MESTRE_ESTABILIZACAO.md": (
-            "exigir CI Linux/Windows para esse novo HEAD"
-        ),
-        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": "novo HEAD e novo CI",
-        "docs/evidence/README.md": "passar por CI Linux/Windows",
+        "README.md": "CI pós-merge `Private validation` `#84`",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md": "CI pós-merge da `main`",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": "CI pós-merge `#84`",
+        "docs/evidence/README.md": "CI pós-merge `#84`",
     }
     for relative, ci_marker in ci_markers.items():
         value = _text(relative)
         for phrase in stale_phrases:
             assert phrase not in value, (relative, phrase)
-        assert "9bf83af0d58b5984ccfefc59a543428379b02632" in value
+        assert "6c4bcb3d945405a4615a4d6551247d1b01ce79f1" in value
+        assert "8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e" in value
         if relative != "docs/evidence/README.md":
             assert "APPROVED_FOR_DIFF_REVIEW_ONLY" not in value
         assert ci_marker in value, (relative, ci_marker)
@@ -112,6 +125,7 @@ def test_live_documents_describe_premerge_state_without_stale_gates():
     ):
         assert f"corrector {version}" in evidence_index
     assert "ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md" in evidence_index
+    assert "ETAPA_5_ENCERRAMENTO_POS_MERGE.md" in evidence_index
     assert "## Histórico dos correctors do Pacote 5C" in evidence_index
     assert "gate vigente naquele snapshot pré-commit" in evidence_index
     assert "- gate vigente: somente uma evidência v4.1" not in evidence_index
@@ -120,6 +134,35 @@ def test_live_documents_describe_premerge_state_without_stale_gates():
     assert "COMMIT, PUSH E NOVO CI" in premerge
     assert "EXIGEM AUTORIZAÇÃO ESPECÍFICA" in premerge
     assert "AUTORIZADA SOMENTE A" not in premerge
+
+
+def test_stage5_closure_report_is_complete_and_conditional():
+    text = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
+    for marker in (
+        "Cadeia funcional comprovada",
+        "CI pós-merge histórico",
+        "Limitações e riscos residuais",
+        "APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL",
+        "LOCAL_REMEDIATION_COMPLETE=YES",
+        "DOCUMENTATION_PACKAGE_PREPARED=YES",
+        "COMMIT_CREATED=NO",
+        "PUSH_EXECUTED=NO",
+        "FINAL_CI_EXECUTED=NO",
+        "R004_CLOSED=NO",
+        "RELEASE_APPROVED=NO",
+        "STAGE5_COMPLETED=NO",
+        "STAGE6_STARTED=NO",
+    ):
+        assert marker in text
+
+    patterns = (
+        r"testes documentais: `(?:\{\{DOCUMENTATION_TESTS\}\}|\d+) passed`",
+        r"suíte completa: `(?:\{\{FULL_TESTS\}\}|\d+) passed`",
+        r"cobertura combinada: `(?:\{\{COVERAGE_PERCENT\}\}|\d+(?:\.\d+)?)%`",
+        r"baseline: `(?:\{\{BASELINE_COUNT\}\}|\d+)` arquivos",
+    )
+    for pattern in patterns:
+        assert re.search(pattern, text), pattern
 
 
 def test_package_5c_evidence_records_v3_through_v40_truthfully():
@@ -177,6 +220,10 @@ def test_reconciled_documents_have_one_terminal_newline_without_blank_eof():
         "docs/evidence/README.md",
         "docs/evidence/ETAPA_5_PACOTE_5C_BEZIER_RESIDUAL_COMMANDS.md",
         "docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md",
+        "docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md",
+        "docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "SECURITY.md",
     )
     for relative in files:
         data = (ROOT / relative).read_bytes()
@@ -190,7 +237,7 @@ def test_package_5c_current_metrics_are_bound_to_the_v41_execution():
         r"testes focais do Pacote 5C: `(?:\{\{PACKAGE_TARGETED_TESTS\}\}|\d+) passed`",
         r"testes de contrato documental: `(?:\{\{DOCUMENTATION_TESTS\}\}|\d+) passed`",
         r"suíte completa: `(?:\{\{FULL_TESTS\}\}|\d+) passed`",
-        r"cobertura global exibida: `(?:\{\{COVERAGE_PERCENT\}\}|\d+)%`",
+        r"cobertura global exibida: `(?:\{\{COVERAGE_PERCENT\}\}|\d+(?:\.\d+)?)%`",
     )
     for pattern in patterns:
         assert re.search(pattern, text), pattern
@@ -292,3 +339,39 @@ def test_handle_index_type_contract_is_strict_and_reported():
     assert "índice de handle exigiu inteiro estrito" in template
     assert "O gate Windows v4.0 passou com 89 testes focais" in evidence
     assert "O v4.1 exige um inteiro estrito e não booleano" in evidence
+
+
+def test_audit_remediation_and_security_gates_are_fail_closed():
+    audit = _text("docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md")
+    matrix = _text("docs/MATRIZ_FUNCIONALIDADES_ATUAL.md")
+    workflow = _text(".github/workflows/ci.yml")
+    pyproject = _text("pyproject.toml")
+    security = _text("SECURITY.md")
+    reconciliation = json.loads(_text("quality/legacy_tests/reconciliation.json"))
+
+    assert "APROVADO LOCALMENTE PARA INTEGRAÇÃO E CI FINAL" in audit
+    assert "Esta decisão não aprova release" in audit
+    assert "Matriz funcional atual" in matrix
+    assert "Build Windows/instalador | NÃO INICIADO" in matrix
+    assert 'Pillow = "12.3.0"' in pyproject
+    assert "check_untyped_defs = true" in pyproject
+    assert "poetry run pip-audit" in workflow
+    assert "poetry run bandit -q -r src -lll" in workflow
+    assert "--cov-branch --cov-fail-under=62" in workflow
+    assert "Run reconciled preserved legacy suite" in workflow
+    assert "retention-days: 30" in workflow
+    assert "GitHub Security Advisory" in security
+    assert len(reconciliation["expected_failures"]) == 26
+    for item in reconciliation["expected_failures"]:
+        assert item["message_contains"]
+        assert item["rationale"]
+        assert item["replacement_tests"]
+
+
+def test_live_closure_does_not_claim_unpublished_ci_or_release():
+    closure = _text("docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md")
+    assert "FINAL_CI_EXECUTED=NO" in closure
+    assert "R004_CLOSED=NO" in closure
+    assert "STAGE5_COMPLETED=NO" in closure
+    assert "RELEASE_APPROVED=NO" in closure
+    assert "O projeto não está aprovado para release" in closure

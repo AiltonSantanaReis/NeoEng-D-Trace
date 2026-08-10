@@ -4,13 +4,8 @@ from __future__ import annotations
 
 import copy
 import inspect
-import os
 
 import pytest
-
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-pytest.importorskip("PySide6")
-
 from PySide6.QtWidgets import QApplication
 
 from src.core.commands import (

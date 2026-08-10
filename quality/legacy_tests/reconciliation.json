@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-08-10",
+  "project_commit": "6c4bcb3d945405a4615a4d6551247d1b01ce79f1",
+  "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+  "policy": "Raw legacy failures remain visible. The gate passes only when every observed failure matches an exact reviewed signature and every expected divergence remains accounted for. Unexpected failures and stale expectations fail the gate.",
+  "expected_failures": [
+    {
+      "id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_convex_decompose_l_shape",
+      "kind": "failure",
+      "message_contains": "assert 3 == 5",
+      "classification": "superseded_contract",
+      "rationale": "The exact triangle count was replaced by the stronger invariants that every piece is convex and total area is preserved; valid merging intentionally reduces five triangles to three convex pieces.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2e_core.py::test_valid_l_shape_decomposition_preserves_area_and_convexity"
+      ]
+    },
+    {
+      "id": "test_edge_utils::tests.test_edge_utils.TestEdgeUtils::test_sobel_magnitude",
+      "kind": "failure",
+      "message_contains": "dtype('float32')",
+      "classification": "superseded_contract",
+      "rationale": "The edge pipeline intentionally uses float32 to match OpenCV and reduce memory while retaining non-clipped magnitude values.",
+      "replacement_tests": [
+        "tests/test_audit_closure_contracts.py::test_sobel_magnitude_uses_float32_without_clipping"
+      ]
+    },
+    {
+      "id": "test_exporters::tests.test_exporters.TestExporters::test_atlas_rotation",
+      "kind": "failure",
+      "message_contains": "1 != 2",
+      "classification": "superseded_contract",
+      "rationale": "Rotation is now implemented, so the two sprites correctly share one atlas; physical rotated dimensions and bounds are asserted.",
+      "replacement_tests": [
+        "tests/test_audit_closure_contracts.py::test_rotated_atlas_metadata_uses_physical_dimensions"
+      ]
+    },
+    {
+      "id": "test_handle_command::tests.test_handle_command.TestHandleMove::test_handle_move_undo_redo",
+      "kind": "failure",
+      "message_contains": "Invalid polygon",
+      "classification": "obsolete_fixture",
+      "rationale": "The fixture creates a collinear three-point polygon that the current strict scene contract correctly rejects; handle history is covered with valid Bezier geometry.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5c_bezier_history.py::test_handle_move_undo_redo_restores_exact_states",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_invalid_creation_fails_without_history_or_partial_state"
+      ]
+    },
+    {
+      "id": "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection",
+      "kind": "failure",
+      "message_contains": "QMessageBox.warning' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid",
+      "kind": "failure",
+      "message_contains": "QMessageBox.critical' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit",
+      "kind": "failure",
+      "message_contains": "QMessageBox.critical' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5c_bezier_history.py::test_pen_runtime_creates_bezier_object_in_one_history_entry"
+      ]
+    },
+    {
+      "id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices",
+      "kind": "failure",
+      "message_contains": "QMessageBox.warning' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_commit_selection_converts_to_integers",
+      "kind": "failure",
+      "message_contains": "QMessageBox.warning' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection",
+      "kind": "failure",
+      "message_contains": "QMessageBox.warning' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection",
+      "kind": "failure",
+      "message_contains": "QMessageBox.warning' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands",
+      "kind": "failure",
+      "message_contains": "QMessageBox.critical' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands",
+      "kind": "failure",
+      "message_contains": "QMessageBox.critical' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands",
+      "kind": "failure",
+      "message_contains": "QMessageBox.critical' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo",
+      "kind": "failure",
+      "message_contains": "QMessageBox.critical' called with wrong argument types",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved test passes unittest.mock.Mock as a Qt parent and as a Scene. PySide6 6.10 rejects that parent type, while the current replacement executes the same creation/history contract with real CanvasView and Scene instances.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_commands.py::test_sequential_creations_restore_selection_in_stack_order"
+      ]
+    },
+    {
+      "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_get_image_array",
+      "kind": "failure",
+      "message_contains": "assert None is not None",
+      "classification": "obsolete_fixture",
+      "rationale": "The fixture is a generic Mock pretending to be QImage; the current adapter deliberately accepts only actual QImage or numpy arrays.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges"
+      ]
+    },
+    {
+      "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_compute_edge_map",
+      "kind": "failure",
+      "message_contains": "assert None is not None",
+      "classification": "obsolete_fixture",
+      "rationale": "The edge map is not built from a generic Mock image; actual QImage and OpenCV ndarray paths are covered.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges"
+      ]
+    },
+    {
+      "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_mouse_press_computes_path_between_anchors",
+      "kind": "failure",
+      "message_contains": "assert 1 == 2",
+      "classification": "obsolete_fixture",
+      "rationale": "Path solving is asynchronous and the legacy test assumes synchronous completion against a fake image.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges"
+      ]
+    },
+    {
+      "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_mouse_move_updates_preview",
+      "kind": "failure",
+      "message_contains": "assert 0 > 0",
+      "classification": "obsolete_fixture",
+      "rationale": "Preview solving is asynchronous and separately guarded from the commit solver; the old assertion runs before delivery.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges"
+      ]
+    },
+    {
+      "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_double_click_closes_selection",
+      "kind": "failure",
+      "message_contains": "Expected 'execute' to have been called once",
+      "classification": "obsolete_fixture",
+      "rationale": "The preserved path is not a valid closed polygon under the stricter sanitizer and its command manager is only a Mock.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges"
+      ]
+    },
+    {
+      "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_compute_magnetic_path_with_edge_map",
+      "kind": "failure",
+      "message_contains": "assert 0 > 0",
+      "classification": "obsolete_fixture",
+      "rationale": "The fake image cannot produce the validated edge cache required by the current solver.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges"
+      ]
+    },
+    {
+      "id": "test_mask_utils_curvature::tests.test_mask_utils_curvature.TestCurvatureAdaptiveSimplify::test_circle_contour",
+      "kind": "failure",
+      "message_contains": "assert 4 >= 8",
+      "classification": "superseded_contract",
+      "rationale": "The default simplifier may return any valid polygon with at least three points; callers that require a floor must pass min_points=8 explicitly.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2e_core.py::test_curvature_min_points_is_opt_in_and_preserves_requested_floor",
+        "tests/test_stage_0_5_2e_core.py::test_curvature_default_remains_backward_compatible"
+      ]
+    },
+    {
+      "id": "test_mask_viewer::tests.test_mask_viewer.TestMaskViewer::test_reset_view",
+      "kind": "failure",
+      "message_contains": "1.5 != 1.0",
+      "classification": "superseded_contract",
+      "rationale": "Reset now fills and centers the viewport instead of forcing 1:1 zoom.",
+      "replacement_tests": [
+        "tests/test_audit_closure_contracts.py::test_mask_viewer_reset_fills_and_centers_viewport"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands",
+      "kind": "failure",
+      "message_contains": "maximum recursion depth exceeded",
+      "classification": "obsolete_fixture",
+      "rationale": "Command state freezing traverses the recursively linked generic Mock graph; the replacement uses a real Scene and verifies one history entry.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5c_bezier_history.py::test_pen_runtime_creates_bezier_object_in_one_history_entry"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_rect_tool_with_commands",
+      "kind": "failure",
+      "message_contains": "assert 0 == 1",
+      "classification": "obsolete_fixture",
+      "rationale": "The legacy generic Mock does not satisfy current scene mutation and status contracts; the replacement uses real objects and command history.",
+      "replacement_tests": [
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_magnetic_lasso_with_commands",
+      "kind": "failure",
+      "message_contains": "assert 0 == 1",
+      "classification": "obsolete_fixture",
+      "rationale": "The legacy synchronous fake-path fixture no longer models the asynchronous validated magnetic-lasso pipeline.",
+      "replacement_tests": [
+        "tests/test_stage_0_5_2f_ui.py::test_qimage_padding_is_removed_from_numpy_array",
+        "tests/test_stage_0_5_2f_ui.py::test_successful_finish_clears_state_only_after_object_creation",
+        "tests/test_magnetic_lasso_preview_engine.py::test_preview_solver_is_deterministic_and_follows_detected_edges",
+        "tests/test_stage_5_package_5a_creation_ui.py::test_active_tool_creation_is_one_history_entry",
+        "tests/test_stage_5_package_5a_creation_commands.py::test_add_polygon_preserves_identity_and_previous_selection"
+      ]
+    }
+  ]
+}

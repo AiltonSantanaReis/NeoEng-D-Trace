@@ -58,7 +58,7 @@ class SidePanel(QWidget):
         """)
 
         self.slider_label = QLabel("Expand/Contract: 0 px")
-        self.slider = QSlider(Qt.Horizontal)
+        self.slider = QSlider(Qt.Orientation.Horizontal)
         self.slider.setMinimum(-50)
         self.slider.setMaximum(50)
         self.slider.setValue(0)
@@ -70,22 +70,23 @@ class SidePanel(QWidget):
 
         # Layout
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("Scene Objects:"))
+        self.scene_objects_label = QLabel("Scene Objects:")
+        layout.addWidget(self.scene_objects_label)
         layout.addWidget(self.list)
 
         # Grupo 1: Edição e Física
-        g_edit = QGroupBox("Properties")
+        self.properties_group = QGroupBox("Properties")
         l_edit = QVBoxLayout()
         h_basic = QHBoxLayout()
         h_basic.addWidget(self.btn_rename)
         h_basic.addWidget(self.btn_delete)
         l_edit.addLayout(h_basic)
         l_edit.addWidget(self.btn_physics)  # Adicionando o botão ao layout
-        g_edit.setLayout(l_edit)
-        layout.addWidget(g_edit)
+        self.properties_group.setLayout(l_edit)
+        layout.addWidget(self.properties_group)
 
         # Grupo 2: Modificadores
-        g_tools = QGroupBox("Modify Shape")
+        self.modify_shape_group = QGroupBox("Modify Shape")
         l_tools = QVBoxLayout()
         h_mod = QHBoxLayout()
         h_mod.addWidget(self.btn_expand)
@@ -98,16 +99,16 @@ class SidePanel(QWidget):
         h_apply.addWidget(self.btn_apply)
         h_apply.addWidget(self.btn_cancel)
         l_tools.addLayout(h_apply)
-        g_tools.setLayout(l_tools)
-        layout.addWidget(g_tools)
+        self.modify_shape_group.setLayout(l_tools)
+        layout.addWidget(self.modify_shape_group)
 
         # Grupo 3: Exportação
-        g_export = QGroupBox("Export")
+        self.export_group = QGroupBox("Export")
         l_export = QVBoxLayout()
         l_export.addWidget(self.btn_export)
         l_export.addWidget(self.btn_export_now)
-        g_export.setLayout(l_export)
-        layout.addWidget(g_export)
+        self.export_group.setLayout(l_export)
+        layout.addWidget(self.export_group)
 
         self.setLayout(layout)
 
@@ -555,9 +556,7 @@ class SidePanel(QWidget):
         self.current_lang = lang
         t = self.translations[self.current_lang]
         # Update labels
-        self.layout().itemAt(0).widget().setText(
-            t["scene_objects"]
-        )  # QLabel "Scene Objects:"
+        self.scene_objects_label.setText(t["scene_objects"])
         # Buttons
         self.btn_rename.setText(t["rename"])
         self.btn_delete.setText(t["delete"])
@@ -565,9 +564,9 @@ class SidePanel(QWidget):
         self.btn_contract.setText(t["contract"])
         self.btn_invert.setText(t["invert"])
         # Groups
-        self.layout().itemAt(2).widget().setTitle(t["properties"])  # g_edit
-        self.layout().itemAt(3).widget().setTitle(t["modify_shape"])  # g_tools
-        self.layout().itemAt(4).widget().setTitle(t["export"])  # g_export
+        self.properties_group.setTitle(t["properties"])
+        self.modify_shape_group.setTitle(t["modify_shape"])
+        self.export_group.setTitle(t["export"])
         self.slider_label.setText(t["expand_contract"])
         self.btn_apply.setText(t["apply"])
         self.btn_cancel.setText(t["cancel"])

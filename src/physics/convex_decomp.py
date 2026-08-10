@@ -3,12 +3,6 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-"""
-Ear Clipping Triangulation and Convex Decomposition
-Implements ear clipping algorithm for polygon triangulation and
-optional convex decomposition.
-"""
-
 from typing import List, Optional, Tuple
 
 import numpy as np
