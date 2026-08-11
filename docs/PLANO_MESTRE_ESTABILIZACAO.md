@@ -12,7 +12,7 @@ Etapa 11 em andamento — Pacotes 1 a 3:
 - 30 testes comportamentais novos; suíte oficial `762 passed` no Windows/Python 3.11.9;
 - cobertura `83,79%` de linhas, `70,36%` de branches e `80,55%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CIs dos Pacotes 1 e 2, inclusive `31477232020`, aceitos após auditoria integral de Linux/Windows e conteúdo recursivo; Pacote 3 ainda sem CI;
+- CIs dos Pacotes 1 a 3, inclusive `31477232020` e `31479113082`, aceitos após auditoria integral de Linux/Windows, proveniência, legado e conteúdo recursivo;
 - `R-003` continua aberto; faltam ao menos 722 linhas e 543 branches para as metas globais 90%/85%; integração e CI pós-merge permanecem pendentes;
 - Etapa 11 não concluída; release não aprovada.
 

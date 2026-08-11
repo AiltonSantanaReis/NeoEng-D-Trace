@@ -11,7 +11,7 @@ Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real
 - eleva a cobertura de 69,93% para 80,55% combinada, com 83,79% de linhas e 70,36% de branches;
 - elimina todos os módulos abaixo de 30% e leva canvas/exportação a 92,94%/90,80% de linhas e 80,63%/87,50% de branches;
 - remove um ramo comprovadamente inalcançável da navegação anterior da paleta;
-- aceita os CIs dos Pacotes 1 e 2, inclusive `31477232020`, somente após auditoria integral; mantém o Pacote 3 sem CI, `R-003` aberto, integração pendente e release não aprovada.
+- aceita os CIs dos Pacotes 1 a 3, inclusive `31477232020` e `31479113082`, somente após auditoria integral de proveniência, cobertura, legado e conteúdo recursivo; mantém `R-003` aberto, integração pendente e release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 

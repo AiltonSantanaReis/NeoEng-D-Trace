@@ -14,7 +14,7 @@ Etapa 11 em andamento, Pacotes 1 a 3 validados localmente em 11 de agosto de 202
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - o Pacote 3 eleva canvas para 92,94%/80,63% e diálogo de exportação para 90,80%/87,50% em linhas/branches;
 - `R-003` permanece aberto: faltam ao menos 722 linhas e 543 branches cobertos para as metas finais;
-- CIs dos Pacotes 1 e 2, inclusive o final `31477232020`, aceitos após auditoria; Pacote 3 ainda sem CI, integração pendente e release **NÃO APROVADA**.
+- CIs dos Pacotes 1 a 3, inclusive `31477232020` e `31479113082`, aceitos após auditoria integral; integração pendente e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
