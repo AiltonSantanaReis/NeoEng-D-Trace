@@ -11,7 +11,7 @@ Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real
 - eleva a cobertura de 69,93% para 83,00% combinada, com 86,06% de linhas e 73,38% de branches;
 - elimina todos os módulos abaixo de 30% e leva os quatro alvos do Pacote 4 a 90–99% de linhas;
 - remove três ramos comprovadamente inalcançáveis: um da paleta e dois da detecção automática;
-- aceita os CIs dos Pacotes 1 a 3, inclusive `31479998276`, somente após auditoria integral; mantém o Pacote 4 sem CI, `R-003` aberto, integração pendente e release não aprovada.
+- aceita os CIs dos Pacotes 1 a 4, inclusive `31479998276` e `31481664506`, somente após auditoria integral de proveniência, cobertura, legado e conteúdo recursivo; mantém `R-003` aberto, integração pendente e release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 

@@ -3,7 +3,7 @@
 **Data:** 11 de agosto de 2026
 **Base integrada:** `5e88c8d548e2b60612601f83e1bf24aeb91081bb`
 **Base técnica do pacote:** `427cc803c7923970b9fd89752c0247f75b4f94c6`
-**Estado:** APROVADO LOCALMENTE / CI NÃO EXECUTADO / NÃO INTEGRADO
+**Estado:** APROVADO LOCAL E NO CI PRÉ-MERGE / NÃO INTEGRADO
 **Release:** NÃO APROVADA
 
 ## Objetivo e escopo
@@ -109,7 +109,52 @@ do início deste pacote:
   inspecionados, sem violações ou divergências canônicas;
 - 43 diferenças textuais brutas limitaram-se a CRLF no checkout Windows.
 
-Esse CI anterior foi **ACEITO**. O Pacote 4 ainda não possui CI próprio.
+Esse CI anterior foi **ACEITO**.
+
+## Portões complementares locais
+
+Foram aprovados no commit técnico:
+
+- suíte oficial final: `779 passed`, zero falhas, erros ou ignorados;
+- `poetry check --lock --strict` e compilação integral;
+- Flake8, Black e isort no escopo integral;
+- mypy: zero erros em 70 arquivos fonte;
+- `pip-audit`: nenhuma vulnerabilidade conhecida; o pacote local não publicado
+  foi ignorado porque não existe no índice público;
+- Bandit: zero achados de alta severidade;
+- suíte legada: 196 testes, 27 falhas históricas exatamente reconciliadas,
+  zero inesperadas, ausentes, erros ou ignorados;
+- baseline: 310 arquivos verificados;
+- higiene de referências versionadas e arquivos aninhados: aprovada.
+
+## CI técnico do Pacote 4 auditado
+
+O workflow `31481664506` executou sobre o HEAD fonte
+`b74d118129e9835ea21656ad21fd722673aa3b74`.
+
+- Windows: job `93747777463`, artefato `9097517771`, SHA-256
+  `4003a2d21fdc605f98d912c9fe69848245595cb377af73c1d6a915092ba63549`;
+- Linux: job `93747777515`, artefato `9097494245`, SHA-256
+  `ecec7b6f2aa871b33af86fc01e15bf5facda4e44be2452a0e6904c351fec4be1`;
+- merge sintético `db3bdbcdefca2f9340f90e8eb4f326711775e958`, com pais base
+  `5e88c8d548e2b60612601f83e1bf24aeb91081bb` e fonte
+  `b74d118129e9835ea21656ad21fd722673aa3b74`;
+- `779 passed` nos dois sistemas, com cobertura semanticamente idêntica:
+  `10.007/11.628` linhas e `2.715/3.700` ramos;
+- hash canônico integral idêntico nos dois XMLs:
+  `5f1c4ec0830a81dc524d4470c88196954aaed9569cc5d522de1d44970cfd02aa`;
+- legado Windows: schema v4, 196 testes, reconciliação `27/27`, zero
+  inesperadas, ausentes, erros ou ignorados, HEAD fonte correto e árvore limpa;
+- 56 arquivos externos, 50 evidências e 1.415 payloads recursivos inspecionados;
+- 327 checksums internos validados; zero referências proibidas, caminhos
+  pessoais, caminhos inseguros, membros duplicados ou divergências de checksum;
+- 44 evidências textuais diferiram dos blobs somente por CRLF no checkout
+  Windows; após normalização canônica, as 50 coincidiram com o commit;
+- zero anotações nos dois jobs; PR `#45` aberta, draft e com mergeability limpa.
+
+O CI técnico do Pacote 4 foi **ACEITO** após inspeção. Isso não comprova
+integração, CI pós-merge, encerramento de `R-003`, conclusão da Etapa 11 nem
+release.
 
 ## Riscos e decisão
 
@@ -119,7 +164,7 @@ Esse CI anterior foi **ACEITO**. O Pacote 4 ainda não possui CI próprio.
   com o denominador atual.
 - `pen_tool.py`, `main_window.py`, `magnetic_lasso.py`, `scene.py` e painéis Qt
   concentram os maiores déficits seguintes.
-- O Pacote 4 está aprovado somente localmente; CI, integração e CI pós-merge
+- O CI pré-merge técnico do Pacote 4 foi aceito; integração e CI pós-merge
   não existem.
 - A Etapa 11 está **EM ANDAMENTO** e a release permanece **NÃO APROVADA**.
 
@@ -128,14 +173,14 @@ Esse CI anterior foi **ACEITO**. O Pacote 4 ainda não possui CI próprio.
 ```text
 BASE_COMMIT=5e88c8d548e2b60612601f83e1bf24aeb91081bb
 PACKAGE_BASE_COMMIT=427cc803c7923970b9fd89752c0247f75b4f94c6
-TECHNICAL_COMMIT=PENDING
+TECHNICAL_COMMIT=b74d118129e9835ea21656ad21fd722673aa3b74
 LOCAL_TESTS_PASSED=779
 LOCAL_LINES_COVERED=10007/11628
 LOCAL_BRANCHES_COVERED=2715/3700
 MODULES_BELOW_30_LINES=0
 MODULES_BELOW_30_BRANCHES=0
-PRE_MERGE_CI_RUN=NOT_RUN
-PRE_MERGE_CI_STATUS=NOT_RUN
+PRE_MERGE_CI_RUN=31481664506
+PRE_MERGE_CI_STATUS=ACCEPTED
 R003_CLOSED=NO
 STAGE11_COMPLETED=NO
 RELEASE_APPROVED=NO

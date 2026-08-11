@@ -29,12 +29,12 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "383119caab90fcbd8f56c9ab3877a582ffec08e17bf97b704ec521087679a3cc",
-      "size": 41961
+      "sha256": "a7a1f06c540a3dfde40f8a60c8c1224b4a70b368f15e44a92c5a115ab56e2691",
+      "size": 42016
     },
     "README.md": {
-      "sha256": "2536e472ab5126e570259546d551a13f332342f544172a74c0b10a904f632ca4",
-      "size": 15908
+      "sha256": "be64fbfdd0633e56ca657603f268beefcdb1b47638c517fd1754c7461ad05f01",
+      "size": 15901
     },
     "SECURITY.md": {
       "sha256": "1fe511e11d57a3a33485bef2c81924a6e0146dc6a7a3152a8e5ef7b88b51c628",
@@ -209,20 +209,20 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "e55b8b6c27917770a8141f32f71fd06b3b2194887641fe4df2389a046cc2a64a",
-      "size": 5103
+      "sha256": "e57a28333507f3a2d00604903008c4f26e82d24976c36d3436acc8c08e4f03b0",
+      "size": 5111
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "0c37cb00c2f1b1ff9993963c942548a0fa8f12ebbdc2c4e46af2e4c8df514c4f",
-      "size": 14805
+      "sha256": "120c56ed1d35ef7a6b472e02b2287068d1713192a8315354f026b7b582b97c3c",
+      "size": 14803
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "2a5e35cbe1f910c7e55da59d2328830ed3b2a5f720c1d5172d80df5706119efb",
-      "size": 11522
+      "sha256": "6293475cf72340fbd8c155e40403cab376d24de18dff71ba0031e5eb1149ba21",
+      "size": 11577
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -321,8 +321,8 @@
       "size": 10974
     },
     "docs/evidence/ETAPA_11_COBERTURA_NUMERICA_PACOTE_4.md": {
-      "sha256": "6666c10bb9b06635c8788cd5d21804c3e4766f89e3166b96f3961ba8abca7b43",
-      "size": 6065
+      "sha256": "eba16377522a213e931864d4707b29168e08daace343cfeb2f816f0545db5ad1",
+      "size": 8360
     },
     "docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_1.md": {
       "sha256": "f94b95ca6ad9e2051c6f3fe4cbd530c7a306b08b813a4714289f400cf1c7c75f",
@@ -469,7 +469,7 @@
       "size": 3950
     },
     "docs/evidence/README.md": {
-      "sha256": "0b90c93b21f95f9ae06759de552a077d929e496dd7373b82683995de381f7d66",
+      "sha256": "85eb9e48d9a1c0c69251c5dda959513f240ec1c646f433a8700eddaf417576f9",
       "size": 18051
     },
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
@@ -1013,8 +1013,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "f94562afde18ee5a3057f865e3ccda39756c6cf5390d65f441a0007c59a0f25f",
-      "size": 30526
+      "sha256": "d586596cac079716ede4d1e2b966b13daf904f3d1ce6f0e5d647db66b65833be",
+      "size": 30685
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",

@@ -14,7 +14,7 @@ Etapa 11 em andamento, Pacotes 1 a 4 validados localmente em 11 de agosto de 202
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - o Pacote 4 leva detecção automática, processamento visual e máscaras acima de 89% em linhas e branches e remove dois ramos mortos comprovados;
 - `R-003` permanece aberto: faltam ao menos 459 linhas e 430 branches cobertos para as metas finais;
-- CIs dos Pacotes 1 a 3, inclusive `31479998276`, aceitos após auditoria integral; Pacote 4 ainda sem CI, integração pendente e release **NÃO APROVADA**.
+- CIs dos Pacotes 1 a 4, inclusive `31479998276` e `31481664506`, aceitos após auditoria integral; integração pendente e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
