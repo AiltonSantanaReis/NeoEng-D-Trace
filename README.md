@@ -14,7 +14,7 @@ Etapa 11 em andamento, Pacote 1 aprovado localmente em 11 de agosto de 2026:
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - ramo inalcançável removido de `ToolPalette.select_previous_tool()`;
 - `R-003` permanece aberto: faltam ao menos 1.638 linhas e 902 branches cobertos para as metas finais;
-- pacote ainda não integrado nem validado no CI remoto; release: **NÃO APROVADA**.
+- CI pré-merge `31473415874` aceito após auditoria dos dois artefatos; pacote ainda não integrado e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 

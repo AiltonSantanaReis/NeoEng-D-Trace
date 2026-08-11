@@ -12,8 +12,9 @@ Etapa 11 em andamento — Pacote 1 local:
 - 11 testes comportamentais novos; suíte oficial `742 passed` no Windows/Python 3.11.9;
 - cobertura `75,92%` de linhas, `60,66%` de branches e `72,24%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- `R-003` continua aberto; metas globais 90%/85% e validação remota permanecem pendentes;
-- pacote não integrado; Etapa 11 não concluída; release não aprovada.
+- CI pré-merge `31473415874` aceito após auditoria integral de Linux/Windows e conteúdo recursivo;
+- `R-003` continua aberto; metas globais 90%/85%, integração e CI pós-merge permanecem pendentes;
+- Etapa 11 não concluída; release não aprovada.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:
 

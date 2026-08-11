@@ -120,7 +120,7 @@ Etapa 11 em andamento, Pacote 1 aprovado localmente em 11 de agosto de 2026:
 - `11` testes focais e `742` testes oficiais aprovados no Windows/Python 3.11.9;
 - cobertura exata `8.831/11.632` linhas e `2.247/3.704` branches;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- `R-003` aberto; pacote não integrado; CI remoto pendente; release não aprovada.
+- CI pré-merge `31473415874` aceito após auditoria dos artefatos; `R-003` aberto, pacote não integrado e release não aprovada.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 

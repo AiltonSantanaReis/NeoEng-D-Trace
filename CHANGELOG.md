@@ -11,7 +11,7 @@ Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real
 - eleva a cobertura de 69,93% para 72,24% combinada, com 75,92% de linhas e 60,66% de branches;
 - elimina todos os módulos abaixo de 30% em linhas ou branches mensuráveis;
 - remove um ramo comprovadamente inalcançável da navegação anterior da paleta;
-- mantém `R-003` aberto, integração e CI remoto pendentes e release não aprovada.
+- aceita o CI pré-merge `31473415874` somente após validar proveniência, digests, cobertura idêntica, legado, 47 evidências e 1.412 payloads; mantém `R-003` aberto, integração pendente e release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 

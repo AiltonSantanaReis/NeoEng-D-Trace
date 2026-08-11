@@ -104,6 +104,32 @@ diretório temporário foi removido após validação do caminho; a suíte legad
 repetida em diretório temporário externo e a baseline voltou a aprovar 304
 arquivos. Essa ocorrência foi operacional e não foi convertida em aprovação.
 
+## CI pré-merge auditado
+
+O workflow `31473415874` executou sobre o HEAD fonte
+`2e7ad84afc4c66ffaa78d177d418a59ec0e5c4da`. O resumo legado identificou
+separadamente o merge sintético testado
+`2d7e0c41e4960d02af63813244d4b6ee7b3584d2`, cujos pais são a base
+`5e88c8d548e2b60612601f83e1bf24aeb91081bb` e o HEAD fonte.
+
+- Linux: job `93721601195`, artefato `9094281869`, SHA-256
+  `937517fe4b519ca2053e750445326a678498f691d5956599addb7b9e5c8171f3`;
+- Windows: job `93721601233`, artefato `9094317936`, SHA-256
+  `dd76edf7791f2a1c0a8367c7189be721646f5425c29dc9d676b5512ec4bc341a`;
+- `742 passed` nos dois sistemas; cobertura idêntica em arquivo, módulo, linha
+  e ramo: `8.831/11.632` linhas e `2.247/3.704` ramos;
+- legado Windows: 196 testes, 27/27 divergências esperadas, zero inesperadas,
+  zero ausentes e árvore limpa;
+- 53 arquivos externos, 47 evidências e 1.412 payloads recursivos inspecionados;
+- 327 checksums internos validados e zero referências proibidas, caminhos
+  pessoais ou divergências de checksum;
+- duas evidências apresentaram diferença bruta apenas por LF/CRLF no checkout
+  Windows; após normalização exclusiva de fim de linha, as 47 evidências
+  coincidiram com os blobs do HEAD fonte. Nenhuma outra diferença foi aceita.
+
+O CI pré-merge foi **ACEITO** após essa inspeção. Isso não comprova merge, CI
+pós-merge, encerramento de `R-003`, conclusão da Etapa 11 nem release.
+
 ## Riscos e decisão
 
 - `R-003` permanece **ABERTO**: as metas globais de 90% de linhas e 85% de
@@ -114,7 +140,7 @@ arquivos. Essa ocorrência foi operacional e não foi convertida em aprovação.
   possuem cobertura insuficiente para encerramento.
 - Próximos alvos por menor cobertura de ramos incluem lasso magnético,
   visualizador de máscara, pincel de colisão e edição poligonal.
-- O CI remoto ainda não foi executado para este pacote.
+- O CI pré-merge foi aceito; integração e CI pós-merge ainda não existem.
 - A Etapa 11 está **EM ANDAMENTO**; este documento não aprova integração,
   encerramento da etapa nem release.
 

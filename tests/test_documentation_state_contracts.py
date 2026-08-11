@@ -713,6 +713,12 @@ def test_stage11_package_1_is_local_partial_and_keeps_r003_open():
         "STAGE11_COMPLETED=NO",
         "RELEASE_APPROVED=NO",
         "APROVADO LOCALMENTE / NÃO INTEGRADO",
+        "31473415874",
+        "93721601195",
+        "93721601233",
+        "9094281869",
+        "9094317936",
+        "1.412 payloads",
     ):
         assert expected in evidence
 
