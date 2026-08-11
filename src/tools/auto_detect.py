@@ -60,10 +60,8 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
             result = _detect_polygons_basic(image, **kwargs)
         elif mode == "perfect":
             result = _detect_polygons_perfect(image, **kwargs)
-        elif mode == "enhanced":
-            result = _detect_polygons_enhanced(image, **kwargs)
         else:
-            result = []
+            result = _detect_polygons_enhanced(image, **kwargs)
 
         feedback = {
             "status": "ok",
@@ -368,9 +366,6 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
             else [-1, -1, -1, -1]
         )
         is_hole = detect_holes and hier_info[3] != -1
-
-        if is_hole and area < min_area * 0.1:
-            continue
 
         points_float = [
             (float(x), float(y))

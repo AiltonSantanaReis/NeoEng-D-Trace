@@ -110,10 +110,24 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` — PR `#38`, merge, CI pós-merge, artefatos e encerramento formal de `R-007`/Etapa 8.
 - `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade e validação pré-merge.
 - `ETAPA_9_ENCERRAMENTO_POS_MERGE.md` — PR `#40`, merge, CI pós-merge, artefatos e encerramento formal de `R-008`/Etapa 9.
+- `ETAPA_11_COBERTURA_UI_PACOTE_1.md` — primeiro pacote local da Etapa 11; 742 testes, métricas exatas por módulo, zero módulos abaixo de 30% e `R-003` ainda aberto.
+- `ETAPA_11_COBERTURA_UI_PACOTE_2.md` — segundo pacote pré-merge da Etapa 11; lasso magnético, máscara, pincel de colisão e edição poligonal, com métricas exatas de linhas e ramos e CI auditado; `R-003` permanece aberto.
+- `ETAPA_11_COBERTURA_UI_PACOTE_3.md` — terceiro pacote pré-merge da Etapa 11; canvas e diálogo de exportação acima de 90% de linhas, métricas exatas e CI `31479113082` auditado; `R-003` permanece aberto.
+- `ETAPA_11_COBERTURA_NUMERICA_PACOTE_4.md` — quarto pacote pré-merge da Etapa 11; detecção, processamento visual, ferramenta base e máscaras, com dois ramos mortos removidos e CI `31481664506` auditado; `R-003` permanece aberto.
+- `ETAPA_11_COMANDOS_PAINEIS_PACOTE_5.md` — quinto pacote pré-merge da Etapa 11; contratos transacionais de comandos e painéis Qt entre 98% e 100% de linhas, com CI `31483687046` auditado; `R-003` permanece aberto.
+- `ETAPA_11_METAS_FINAIS_PACOTE_6.md` — sexto pacote pré-merge da Etapa 11; metas globais 90%/85% atingidas, CI `31488173784` auditado e `R-003` preservado aberto até integração e CI pós-merge.
 
 ## Estado operacional da evidência atual
 
-Encerramento formal da Etapa 10 em 11 de agosto de 2026:
+Etapa 11 em andamento, Pacotes 1 a 6 validados localmente em 11 de agosto de 2026:
+
+- base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
+- `145` testes focais e `877` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura exata `10.787/11.628` linhas e `3.147/3.700` branches; `90,91%` combinada;
+- zero módulos abaixo de 30% em linhas ou branches mensuráveis;
+- CI `31488173784` do Pacote 6 aceito após auditoria dos artefatos; metas 90%/85% atingidas; `R-003` aberto até integração e CI pós-merge; release não aprovada.
+
+Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
 - PR `#42` integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`;
 - validação local real em Godot `4.7` e Unity `6000.5.7f1`;

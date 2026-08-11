@@ -252,10 +252,6 @@ class ToolPalette(QWidget):
                 break
 
         prev_idx = (current_idx - 1) % len(names)
-        # Handle wrap around correctly for negative index
-        if prev_idx < 0:
-            prev_idx = len(names) - 1
-
         self.select_tool_by_name(names[prev_idx])
 
     def select_tool_by_name(self, tool_name: str):

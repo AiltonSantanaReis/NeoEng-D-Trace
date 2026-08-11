@@ -698,3 +698,159 @@ def test_stage10_remote_evidence_history_is_preserved_without_overstatement():
         "RELEASE_APPROVED=NO",
     ):
         assert expected in closure
+
+
+def test_stage11_package_1_is_local_partial_and_keeps_r003_open():
+    evidence = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_1.md")
+    for expected in (
+        "5e88c8d548e2b60612601f83e1bf24aeb91081bb",
+        "742 passed",
+        "8.831/11.632",
+        "2.247/3.704",
+        "MODULES_BELOW_30_LINES=0",
+        "MODULES_BELOW_30_BRANCHES=0",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+        "31473415874",
+        "93721601195",
+        "93721601233",
+        "9094281869",
+        "9094317936",
+        "1.412 payloads",
+    ):
+        assert expected in evidence
+
+
+def test_stage11_packages_update_live_state_without_closing_r003():
+    evidence = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_2.md")
+    for expected in (
+        "33a807ca41c549c283cad13250ca54b7e2bb6e0b",
+        "c9bafdd75a74a8dae39d814fd6b0ccf35a2f9f96",
+        "753 passed",
+        "31476442683",
+        "93731130311",
+        "93731130325",
+        "9095447008",
+        "9095475339",
+        "1.413 payloads",
+        "9.314/11.632",
+        "2.453/3.704",
+        "76,73%",
+        "1.155 linhas",
+        "696 ramos",
+        "MODULES_BELOW_30_LINES=0",
+        "MODULES_BELOW_30_BRANCHES=0",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+        "APROVADO LOCAL E NO CI PRÉ-MERGE / NÃO INTEGRADO",
+    ):
+        assert expected in evidence
+
+    package_3 = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_3.md")
+    for expected in (
+        "075b5b0231ca0aeb8a26d6253e847619d70211cf",
+        "762 passed",
+        "9.747/11.632",
+        "2.606/3.704",
+        "80,55%",
+        "722 linhas",
+        "543 ramos",
+        "2a1a9f2ad1f1e59cbcebb0f485632fa9e7478b78",
+        "31479113082",
+        "93739699296",
+        "93739699345",
+        "9096506966",
+        "9096572715",
+        "1.414 payloads",
+        "PRE_MERGE_CI_STATUS=ACCEPTED",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in package_3
+
+    package_4 = _text("docs/evidence/ETAPA_11_COBERTURA_NUMERICA_PACOTE_4.md")
+    for expected in (
+        "427cc803c7923970b9fd89752c0247f75b4f94c6",
+        "779 passed",
+        "10.007/11.628",
+        "2.715/3.700",
+        "83,00%",
+        "459 linhas",
+        "430 ramos",
+        "b74d118129e9835ea21656ad21fd722673aa3b74",
+        "31481664506",
+        "93747777463",
+        "93747777515",
+        "9097517771",
+        "9097494245",
+        "1.415 payloads",
+        "PRE_MERGE_CI_STATUS=ACCEPTED",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in package_4
+
+    package_5 = _text("docs/evidence/ETAPA_11_COMANDOS_PAINEIS_PACOTE_5.md")
+    for expected in (
+        "eed019ff8046d667988352df0aef93e129275919",
+        "810 passed",
+        "10.257/11.628",
+        "2.862/3.700",
+        "85,59%",
+        "209 linhas",
+        "283 ramos",
+        "07c5b78b4fc7e17676dcb42b4048f1a91273fd68",
+        "31483687046",
+        "93754111444",
+        "93754111445",
+        "9098343972",
+        "9098267096",
+        "1.415 payloads",
+        "PRE_MERGE_CI_STATUS=ACCEPTED",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in package_5
+
+    package_6 = _text("docs/evidence/ETAPA_11_METAS_FINAIS_PACOTE_6.md")
+    for expected in (
+        "d5a7b8559927dca130d6d47409988da07ef1dd7e",
+        "877 passed",
+        "10.787/11.628",
+        "3.147/3.700",
+        "90,91%",
+        "31488173784",
+        "93768251593",
+        "93768251612",
+        "9100022150",
+        "9099983296",
+        "1.418 payloads",
+        "COVERAGE_TARGETS_MET=YES",
+        "PRE_MERGE_CI_STATUS=ACCEPTED",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in package_6
+
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert "Etapa 11" in value, relative
+        assert "877" in value, relative
+        assert "90,91%" in value, relative
+        assert "R-003" in value, relative
+        assert "release" in value.lower(), relative
+        assert "não aprovada" in value.lower(), relative
