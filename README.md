@@ -13,6 +13,7 @@ Candidato técnico pré-merge da Etapa 9, validado localmente em 10 de agosto de
 - falhas corrigidas: IDs heterogêneos, falso positivo côncavo, entradas inválidas, MTV invertido e promessas inertes de física dinâmica;
 - suíte local: 39 casos da etapa, 702 testes oficiais e 196 históricos com 27/27 divergências exatas;
 - cobertura: 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica entre 89% e 95%;
+- CI da PR `31444774539`: Linux e Windows em `success`, zero anotações; artefatos `9084124074` e `9084165201` com digests registrados na evidência permanente;
 - `R-008`: **APROVADO PARA ENCERRAMENTO, CONDICIONADO A MERGE E CI PÓS-MERGE**;
 - Etapa 9: **EM VALIDAÇÃO PRÉ-MERGE**; release: **NÃO APROVADA**.
 
@@ -67,7 +68,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7 e 8 possuem fechamento pós-merge comprovado. A Etapa 9 possui candidato técnico local, mas merge, CI de PR, CI pós-merge e qualquer aprovação de release continuam pendentes.
+As Etapas 5, 6, 7 e 8 possuem fechamento pós-merge comprovado. A Etapa 9 possui candidato técnico e CI da PR comprovados, mas merge, CI pós-merge e qualquer aprovação de release continuam pendentes.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

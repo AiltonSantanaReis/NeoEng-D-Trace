@@ -96,7 +96,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` — PR `#36`, merge, CI pós-merge, artefatos e encerramento formal de `R-006`/Etapa 7.
 - `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` — validação matemática local de Bézier, triangulação e degenerados; `R-007` permanece aberto até merge e CI pós-merge.
 - `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` — PR `#38`, merge, CI pós-merge, artefatos e encerramento formal de `R-007`/Etapa 8.
-- `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade, testes e gates locais; `R-008` permanece aberto até merge e CI pós-merge.
+- `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade, testes locais e CI da PR `31444774539` aprovado; `R-008` permanece aberto até merge e CI pós-merge.
 
 ## Estado operacional da evidência atual
 

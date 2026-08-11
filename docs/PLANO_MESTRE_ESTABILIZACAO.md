@@ -12,6 +12,7 @@ Candidato técnico atual da Etapa 9:
 - 39 testes da etapa, 702 oficiais e 196 históricos; reconciliação 27/27;
 - cobertura global 73.65% de linhas, 57.65% de branches e 69.79% combinada;
 - API pública única de colisão estática; namespace histórico sem implementações concorrentes;
+- CI da PR `31444774539`: Linux e Windows em `success`, zero anotações;
 - `R-008`: APROVADO PARA ENCERRAMENTO, condicionado a merge e CI pós-merge;
 - Etapa 9: EM VALIDAÇÃO PRÉ-MERGE; release: NÃO APROVADA.
 

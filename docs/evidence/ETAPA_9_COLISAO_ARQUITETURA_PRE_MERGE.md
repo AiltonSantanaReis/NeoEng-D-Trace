@@ -133,11 +133,18 @@ local de cada executor: o valor gerado em 10 de agosto divergiu dos runners em
 informativo ISO válido, sem comparar o dia corrente, com teste de regressão que
 verifica um manifesto válido de dia anterior e rejeita data malformada.
 
+O terceiro run `31444774539`, no HEAD
+`eed101ee03e74298e36c15cf271e378fd51be5dc`, aprovou integralmente Linux
+(`93636493356`) e Windows (`93636493401`), sem anotações. Os artefatos
+`9084124074` (Linux) e `9084165201` (Windows) foram publicados com os digests
+`sha256:6aca44b1b60b895f6191f81a29c92846943457558bd0f7e4c30fc6b49fbd3f6a`
+e `sha256:ad07503dee5eb9b5dc8330ce17e82339218672c4945cc45d3f378d2bf9878f35`.
+
 ## Decisão pré-merge
 
 - `TECHNICAL_COMMIT_TESTED=YES`
 - `LOCAL_GATES_STATUS=SUCCESS`
-- `PR_CI_EXECUTED=NO`
+- `PR_CI_EXECUTED=YES`
 - `POST_MERGE_CI_EXECUTED=NO`
 - `R008_CLOSED=NO`
 - `STAGE9_COMPLETED=NO`
