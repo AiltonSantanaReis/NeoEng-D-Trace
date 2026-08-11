@@ -3,8 +3,8 @@
 ## Identificação
 
 - Branch: `etapa-10-exportadores-engines`.
-- Base auditada: `cf749564ab5d961772d66dc363d0e990cebf8da3`.
-- Commit técnico: pendente até o fechamento deste pacote.
+- Base auditada: `f2d44c9ce6645a343e5e515303cc6c3c75443ae7`.
+- Commit técnico: `bb849d1b19959198b34a123cd6d07cda2ae82cd2`.
 - Data local: 10 de agosto de 2026.
 - Estado: aprovado localmente; não integrado; CI remoto ainda não executado.
 
@@ -146,5 +146,5 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 
 **APROVADO LOCALMENTE / NÃO INTEGRADO.** Os critérios funcionais da Etapa 10
 foram demonstrados no computador local, inclusive nas duas engines reais. O
-encerramento formal depende de commit, PR, CI Linux/Windows, merge e CI
+encerramento formal depende de PR, CI Linux/Windows, merge e CI
 pós-merge. Release permanece **NÃO APROVADA**.

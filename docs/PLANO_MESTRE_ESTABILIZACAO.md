@@ -8,7 +8,7 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 
 Candidato técnico local da Etapa 10:
 
-- branch `etapa-10-exportadores-engines`, ainda sem commit final, PR, merge ou CI remoto;
+- branch `etapa-10-exportadores-engines`, commit técnico `bb849d1b19959198b34a123cd6d07cda2ae82cd2`, ainda sem PR, merge ou CI remoto;
 - perfis Godot/Unity corrigidos e unificados entre cena e objeto;
 - rollback multi-arquivo do atlas comprovado por falha injetada;
 - Godot `4.7` e Unity `6000.5.7f1` aprovados em caminhos Unicode, inclusive GLB;
