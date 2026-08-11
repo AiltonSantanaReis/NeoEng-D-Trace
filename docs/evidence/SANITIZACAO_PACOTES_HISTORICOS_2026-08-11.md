@@ -38,4 +38,4 @@ Etapas 2 e 3. O usuário autorizou explicitamente a sanitização controlada em
   removidos e zero alterações fora das categorias declaradas;
 - ZIPs de topo alterados: quatro; ZIPs de topo inalterados: dois;
 - teste de regressão: `tests/test_repository_reference_hygiene.py`;
-- CI pré-merge `31457937902`: aceito após varredura recursiva; merge, pós-merge e release: pendentes.
+- CI pré-merge `31457937902`: aceito após varredura recursiva; merge `9b22bdc54b13992658172d4748bfab44f3127c8e` concluído; fechamento pós-merge e release: pendentes.
