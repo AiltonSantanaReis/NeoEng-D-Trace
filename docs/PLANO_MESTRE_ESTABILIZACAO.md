@@ -6,7 +6,7 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Estado integrado da Etapa 10:
+Encerramento formal da Etapa 10:
 
 - branch funcional `etapa-10-exportadores-engines`, HEAD final `2d2afff2c57cd779750bcb9c02b24c421d73dc0c`, PR `#42` integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`;
 - primeiro CI remoto `31450335289`: gates Linux/Windows aprovados, mas resultado rejeitado porque o artefato omitiu a evidência atual e o resumo legado não identificou separadamente o HEAD testado;
@@ -15,13 +15,13 @@ Estado integrado da Etapa 10:
 - quatro ZIPs sanitizados mediante autorização explícita, checksums internos e hashes externos recalculados;
 - quarto CI remoto `31457937902`: Linux e Windows aprovados com `729` testes, merge sintético `0394d55501e32e2fa38acbcc4d1e3c5e126954ce`, HEAD fonte comprovado, `44` arquivos de evidência idênticos ao repositório e varredura recursiva sem violações; resultado pré-merge aceito;
 - CI pós-merge `31463873481`: jobs verdes e artefatos íntegros, mas resultado rejeitado porque Linux registrou `8.581` linhas e `2.145` branches cobertos, contra `8.582` e `2.146` no Windows;
-- teste determinístico força o par inverso da broadphase; correção local com `730` testes e cobertura restaurada, ainda sem PR e sem novo pós-merge;
+- teste determinístico força o par inverso da broadphase; CI pré-merge corretivo `31464786333` aceito, PR `#43` integrada em `f8caec3e7156d308f03046f81d2c89996f959466` e pós-merge `31469610508` aceito após auditoria integral;
 - perfis Godot/Unity corrigidos e unificados entre cena e objeto;
 - rollback multi-arquivo do atlas comprovado por falha injetada;
 - Godot `4.7` e Unity `6000.5.7f1` aprovados em caminhos Unicode, inclusive GLB;
 - `17` testes da etapa, `730` oficiais e `196` históricos com reconciliação `27/27`;
 - cobertura `73,77%` de linhas, `57,91%` de branches e `69,93%` combinada; mypy sem erros em `70` arquivos;
-- Etapa 10: INTEGRADA / FECHAMENTO PÓS-MERGE NÃO APROVADO; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
+- Etapa 10: CONCLUÍDA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
 
 ### Snapshot histórico — encerramento formal da Etapa 9
 

@@ -2,9 +2,9 @@
 
 **Snapshot local:** 2026-08-11
 
-**Última âncora integrada:** `9b22bdc54b13992658172d4748bfab44f3127c8e`
+**Última âncora integrada:** `f8caec3e7156d308f03046f81d2c89996f959466`
 
-**Estado atual:** Etapa 10 integrada pela PR `#42`; CIs pré-merge `31450335289`, `31451363518` e `31452032479` rejeitados; `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; CI pós-merge `31463873481` rejeitado após divergência de cobertura entre Linux e Windows; correção determinística ainda não integrada; release não aprovada.
+**Estado atual:** Etapa 10 concluída. PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; correção aceita em `31464786333`, integrada pela PR `#43` em `f8caec3e7156d308f03046f81d2c89996f959466` e reproduzida em `31469610508`; Etapa 11 não iniciada; release não aprovada.
 
 **Estado integrado anterior:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
 
@@ -24,10 +24,10 @@ snapshot histórico.
 | Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31425585259` | nenhum no escopo da Etapa 5 |
 | Camadas e grupos | INTEGRADO / APROVADO | comandos reversíveis e `LayersPanel` integrado à `MainWindow` | cobertura total da UI permanece meta |
 | CLI/headless | INTEGRADO / APROVADO | matriz de argumentos, códigos `0`/`1`/`2`, subprocessos, saídas reais e CI pós-merge `31437000772` | múltiplas saídas não formam transação conjunta; build instalado permanece para a Etapa 14 |
-| Exportação de colisões | PERFIS INTEGRADOS / FECHAMENTO PÓS-MERGE NÃO APROVADO | Etapa 6 e `R-005`: PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI `31431739320`; Etapa 10: PR `#42`, merge `9b22bdc54b13992658172d4748bfab44f3127c8e`, engines reais e pré-merge `31457937902` aceito | CI pós-merge `31463873481` rejeitado por cobertura não determinística; correção pendente |
-| Atlas | INTEGRADO / APROVADO; ROLLBACK LOCAL NÃO INTEGRADO | limites físico/JSON integrados; falha injetada no segundo commit restaura PNG/JSON | proteção contra interrupção física entre arquivos não é garantida pelo filesystem |
-| JSON de cena/sprite | INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO | schemas v1, pivôs, colisão, Unicode, consumo real em Godot/Unity, PR `#42` e merge `9b22bdc54b13992658172d4748bfab44f3127c8e` | correção de cobertura e novo pós-merge pendentes |
-| GLTF/GLB | INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO | importação real no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0`; PR `#42` integrada | UV, material, 2.5D e novo pós-merge pendentes |
+| Exportação de colisões | INTEGRADO / APROVADO | Etapa 6 e `R-005`: PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI `31431739320`; Etapa 10: PRs `#42`/`#43`, engines reais e pós-merge `31469610508` aceito | limites de GLB 2.5D permanecem fora do escopo |
+| Atlas | INTEGRADO / APROVADO | limites físico/JSON e rollback integrados; falha injetada no segundo commit restaura PNG/JSON | proteção contra interrupção física entre arquivos não é garantida pelo filesystem |
+| JSON de cena/sprite | INTEGRADO / APROVADO | schemas v1, pivôs, colisão, Unicode, consumo real em Godot/Unity, PRs `#42`/`#43` e pós-merge `31469610508` | nenhum no escopo aprovado |
+| GLTF/GLB | INTEGRADO / APROVADO NO ESCOPO 2D | importação real no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0`; pós-merge `31469610508` aceito | UV, material, 2.5D e limites de índice pendentes |
 | Lasso magnético | APROVADO NO ESCOPO ATUAL | engine, preview assíncrono, QImage e ndarray reais | desempenho e UX ainda possuem limitações registradas |
 | Colisão estática e APIs | INTEGRADO / APROVADO | API pública `src.collision`; 39 casos da etapa; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows | nenhum no escopo da Etapa 9 |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |

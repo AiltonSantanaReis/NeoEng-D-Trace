@@ -4,7 +4,7 @@
 
 Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 10 — integrada; fechamento pós-merge corretivo pendente
+### Etapa 10 — concluída no escopo aprovado
 
 - corrige offsets Godot, pivôs Unity e divergência entre exportação de cena e objeto;
 - versiona schemas específicos e centraliza validação de retângulos e pivôs;
@@ -21,7 +21,9 @@ Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real
 - integra a PR `#42` no merge `9b22bdc54b13992658172d4748bfab44f3127c8e`;
 - rejeita o CI pós-merge `31463873481` apesar dos jobs verdes: Linux cobriu uma linha e um branch a menos que Windows;
 - adiciona teste que força a ordem inversa da broadphase e elimina a cobertura dependente da ordem de conjunto;
-- mantém o fechamento pós-merge da Etapa 10 não aprovado, a Etapa 11 não iniciada e a release não aprovada.
+- aceita o CI pré-merge corretivo `31464786333` após auditoria dos artefatos e integra a PR `#43` em `f8caec3e7156d308f03046f81d2c89996f959466`;
+- aceita o CI pós-merge `31469610508` após confirmar `730` testes nos dois sistemas, cobertura detalhada idêntica, `45` evidências e zero violações recursivas;
+- conclui a Etapa 10; mantém a Etapa 11 não iniciada e a release não aprovada.
 
 ### Etapa 9 — integrada e encerrada no escopo aprovado
 
