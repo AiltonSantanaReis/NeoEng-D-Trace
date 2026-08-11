@@ -179,8 +179,8 @@ O manifesto JSON associado contém os mesmos hashes e os resultados estruturados
 Pacote bruto consolidado:
 
 - Arquivo: `NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip`
-- Tamanho: `339806` bytes
-- SHA-256: `86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836`
+- Tamanho: `339557` bytes
+- SHA-256: `37fbff9bc0e07faa60c3c64e0735f7c7466b248875314833fcb446c3e162d7c8`
 
 ## Conclusão técnica
 

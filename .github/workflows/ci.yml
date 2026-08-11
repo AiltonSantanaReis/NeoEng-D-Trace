@@ -100,6 +100,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v7
@@ -156,6 +158,8 @@ jobs:
 
       - name: Run reconciled preserved legacy suite
         run: poetry run python tools/run_legacy_tests.py --group all --output "${{ runner.temp }}/legacy-tests"
+        env:
+          NEOENG_SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Verify Windows source tree remained unchanged
         run: python tools/baseline_integrity.py --verify
@@ -167,21 +171,7 @@ jobs:
           path: |
             coverage.xml
             ${{ runner.temp }}/environment-freeze.txt
-            docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md
-            docs/evidence/ETAPA_2_EVIDENCE_MANIFEST.json
-            docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip
-            docs/evidence/ETAPA_2_ENCERRAMENTO_POS_MERGE.md
-            docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip
-            docs/evidence/ETAPA_3_PACOTE_1_PERSISTENCIA_VERSIONADA.md
-            docs/evidence/ETAPA_3_PACOTE_1_EVIDENCE_MANIFEST.json
-            docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip
-            docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md
-            docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip
-            docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md
-            docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json
-            docs/evidence/raw/NeoEng-D-Trace_Etapa4_Manual_Windows_Sanitized_20260802_084517.zip
-            docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md
-            docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md
+            docs/evidence/**
             quality/legacy_tests/reconciliation.json
             ${{ runner.temp }}/legacy-tests/summary.json
           if-no-files-found: error

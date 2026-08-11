@@ -5,14 +5,14 @@
     "post_merge_package": {
       "filename": "NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip",
       "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip",
-      "sha256": "f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0",
-      "size_bytes": 2542880
+      "sha256": "29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270",
+      "size_bytes": 2546619
     },
     "raw_bundle": {
       "filename": "NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip",
       "path": "docs/evidence/raw/NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip",
-      "sha256": "411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f",
-      "size_bytes": 1753510
+      "sha256": "22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b",
+      "size_bytes": 1755602
     },
     "report_path": "docs/evidence/ETAPA_3_PACOTE_1_PERSISTENCIA_VERSIONADA.md"
   },

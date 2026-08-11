@@ -64,8 +64,8 @@ Este documento não substitui a evidência funcional. Ele complementa:
 Pacote bruto:
 
 - arquivo: `NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip`;
-- tamanho: `1753510 bytes`;
-- SHA-256: `411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f`.
+- tamanho: `1755602 bytes`;
+- SHA-256: `22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b`.
 
 O pacote contém metadados canônicos da PR, commits, comparação de refs, reviews,
 comentários, runs, jobs, artefatos, logs completos por job, os quatro ZIPs
@@ -74,8 +74,8 @@ originais do GitHub e checksums internos.
 Pacote pós-merge:
 
 - arquivo: `NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip`;
-- tamanho: `2542880 bytes`;
-- SHA-256: `f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0`.
+- tamanho: `2546619 bytes`;
+- SHA-256: `29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270`.
 
 O pacote contém os resumos canônicos, o pacote bruto e o conteúdo reaberto dos
 artefatos Linux e Windows da `main`.

@@ -5,6 +5,7 @@ Implementation preserved in the single ``src`` source tree.
 
 import json
 import os
+import shutil
 import tempfile
 from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Optional, Protocol, Tuple, cast
@@ -20,6 +21,46 @@ except ImportError:
     HAS_PACKER = False
 
 from src.core.logger import logger
+
+
+def _commit_staged_files(staged_files: List[Tuple[str, str]]) -> None:
+    """Commit staged files as one rollback-protected output set."""
+    backups: Dict[str, Optional[str]] = {}
+    committed: List[str] = []
+
+    try:
+        for _, destination in staged_files:
+            if not os.path.exists(destination):
+                backups[destination] = None
+                continue
+            directory = os.path.dirname(destination) or "."
+            fd, backup_path = tempfile.mkstemp(
+                prefix="tmp_atlas_backup_", dir=directory
+            )
+            os.close(fd)
+            backups[destination] = backup_path
+            shutil.copy2(destination, backup_path)
+
+        for staged, destination in staged_files:
+            os.replace(staged, destination)
+            committed.append(destination)
+    except Exception:
+        for destination in reversed(committed):
+            stored_backup = backups[destination]
+            if stored_backup is None:
+                if os.path.exists(destination):
+                    os.remove(destination)
+            else:
+                os.replace(stored_backup, destination)
+                backups[destination] = None
+        raise
+    finally:
+        for staged, _ in staged_files:
+            if os.path.exists(staged):
+                os.remove(staged)
+        for remaining_backup in backups.values():
+            if remaining_backup and os.path.exists(remaining_backup):
+                os.remove(remaining_backup)
 
 
 class _AtlasNode(Protocol):
@@ -187,12 +228,7 @@ def save_atlas(
     atlas_path: str,
     json_path: str,
 ):
-    """Save atlas image and metadata with atomic replacement per file.
-
-    The image and JSON are fully written to temporary files before either
-    destination is replaced. A filesystem cannot atomically replace two files
-    as one transaction, so callers must still validate both outputs together.
-    """
+    """Save image and metadata as one rollback-protected output set."""
 
     atlas_dir = os.path.dirname(atlas_path)
     json_dir = os.path.dirname(json_path)
@@ -217,9 +253,8 @@ def save_atlas(
             handle.flush()
             os.fsync(handle.fileno())
 
-        os.replace(tmp_img, atlas_path)
+        _commit_staged_files([(tmp_img, atlas_path), (tmp_json, json_path)])
         tmp_img = ""
-        os.replace(tmp_json, json_path)
         tmp_json = ""
     except Exception as exc:
         logger.error("Failed to save atlas outputs: %s", exc)

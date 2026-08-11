@@ -2,11 +2,26 @@
 
 Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
-## Estado operacional de referência — 10 de agosto de 2026
+## Estado operacional de referência — 11 de agosto de 2026
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Encerramento formal da Etapa 9:
+Candidato técnico da Etapa 10 na PR `#42`:
+
+- branch `etapa-10-exportadores-engines`, commit funcional `bb849d1b19959198b34a123cd6d07cda2ae82cd2`, HEAD auditado `5411193014d49b185bf5a3c297b61d74df79d8cb`, PR `#42` aberta e ainda sem merge;
+- primeiro CI remoto `31450335289`: gates Linux/Windows aprovados, mas resultado rejeitado porque o artefato omitiu a evidência atual e o resumo legado não identificou separadamente o HEAD testado;
+- segundo CI remoto `31451363518`: gates aprovados e upload corrigido, mas resultado rejeitado porque o resumo portátil identificava somente o merge sintético testado, não o HEAD fonte da PR;
+- terceiro CI remoto `31452032479`: gates, upload e schema v4 aprovados, mas resultado rejeitado porque o scanner recursivo encontrou referências proibidas em ZIPs históricos aninhados;
+- quatro ZIPs sanitizados mediante autorização explícita, checksums internos e hashes externos recalculados;
+- quarto CI remoto `31457937902`: Linux e Windows aprovados com `729` testes, merge sintético `0394d55501e32e2fa38acbcc4d1e3c5e126954ce`, HEAD fonte comprovado, `44` arquivos de evidência idênticos ao repositório e varredura recursiva sem violações; resultado pré-merge aceito;
+- perfis Godot/Unity corrigidos e unificados entre cena e objeto;
+- rollback multi-arquivo do atlas comprovado por falha injetada;
+- Godot `4.7` e Unity `6000.5.7f1` aprovados em caminhos Unicode, inclusive GLB;
+- `17` testes da etapa, `729` oficiais e `196` históricos com reconciliação `27/27`;
+- cobertura `73,77%` de linhas, `57,91%` de branches e `69,93%` combinada; mypy sem erros em `70` arquivos;
+- Etapa 10: APROVADA PRÉ-MERGE / NÃO INTEGRADA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
+
+### Snapshot histórico — encerramento formal da Etapa 9
 
 - commit técnico local `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
 - 39 testes da etapa, 702 oficiais e 196 históricos; reconciliação 27/27;

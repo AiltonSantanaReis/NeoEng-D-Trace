@@ -180,7 +180,7 @@ Hashes aprovados:
 - manifesto estruturado, após normalização CRLF para LF:
   `9ac1a22071299b5579b16be0908f1c8e4e1ffa9ceabd59bc0f2b1c86571f8926`;
 - pacote bruto, sem normalização:
-  `86dcfadef644fe37dc93a88d7c9b92866a6c944410d0039ff56b9736a3076836`.
+  `37fbff9bc0e07faa60c3c64e0735f7c7466b248875314833fcb446c3e162d7c8`.
 
 A normalização foi aplicada somente aos arquivos textuais porque o checkout do
 job Windows usa CRLF. O ZIP binário foi comparado byte a byte.
@@ -193,9 +193,9 @@ Arquivo:
 
 Propriedades:
 
-- tamanho: `391665 bytes`;
+- tamanho: `393672 bytes`;
 - SHA-256:
-  `809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c`;
+  `3aed50811c30d5f49ed7d53695d9e04a73cbac6135121128ff1ac0519a288ffc`;
 - membros: `10`;
 - path traversal: não detectado;
 - membros duplicados: não detectados;
