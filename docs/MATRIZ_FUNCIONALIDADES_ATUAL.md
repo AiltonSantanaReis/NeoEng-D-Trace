@@ -4,7 +4,7 @@
 
 **Última âncora integrada:** `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`
 
-**Estado atual:** Etapa 9 integrada pela PR `#40`; CI pós-merge `31445518755` aprovado em Linux e Windows, sem anotações.
+**Estado atual:** Etapa 9 integrada pela PR `#40`; Etapa 10 aprovada localmente na branch técnica, ainda sem integração ou CI remoto; release não aprovada.
 
 **Estado integrado anterior:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
 
@@ -24,16 +24,16 @@ snapshot histórico.
 | Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31425585259` | nenhum no escopo da Etapa 5 |
 | Camadas e grupos | INTEGRADO / APROVADO | comandos reversíveis e `LayersPanel` integrado à `MainWindow` | cobertura total da UI permanece meta |
 | CLI/headless | INTEGRADO / APROVADO | matriz de argumentos, códigos `0`/`1`/`2`, subprocessos, saídas reais e CI pós-merge `31437000772` | múltiplas saídas não formam transação conjunta; build instalado permanece para a Etapa 14 |
-| Exportação de colisões | INTEGRADO / APROVADO | Etapa 6 e `R-005` encerrados; schema v1, PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI pós-merge `31431739320` | perfis específicos das engines permanecem na Etapa 10 |
-| Atlas | INTEGRADO / APROVADO | transparência de borda, rotação, limites físico/JSON e CI pós-merge | nenhum no escopo auditado |
-| JSON de cena/sprite | INTEGRADO / APROVADO NO ESCOPO GENÉRICO | colisão canônica integrada aos metadados de cena e objeto; contratos e atomicidade testados | perfis específicos Godot e Unity permanecem na Etapa 10 |
-| GLTF/GLB | APROVADO NO ESCOPO 2D | cena/objeto, bytes, metadados e subprocess headless | UV, material e contrato 2.5D permanecem |
+| Exportação de colisões | INTEGRADO / APROVADO; PERFIS LOCAIS NÃO INTEGRADOS | Etapa 6 e `R-005` encerrados; schema v1, PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI pós-merge `31431739320`; perfis Godot/Unity consumidos nas engines reais pela Etapa 10 local | integração e CI remoto da Etapa 10 pendentes |
+| Atlas | INTEGRADO / APROVADO; ROLLBACK LOCAL NÃO INTEGRADO | limites físico/JSON integrados; falha injetada no segundo commit restaura PNG/JSON | proteção contra interrupção física entre arquivos não é garantida pelo filesystem |
+| JSON de cena/sprite | APROVADO LOCALMENTE NAS ENGINES / NÃO INTEGRADO | schemas v1, pivôs, colisão, Unicode e consumo real em Godot/Unity | integração e CI remoto pendentes |
+| GLTF/GLB | APROVADO LOCALMENTE NAS ENGINES / NÃO INTEGRADO | estrutura externa e importação real no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` | UV, material, 2.5D e integração pendentes |
 | Lasso magnético | APROVADO NO ESCOPO ATUAL | engine, preview assíncrono, QImage e ndarray reais | desempenho e UX ainda possuem limitações registradas |
 | Colisão estática e APIs | INTEGRADO / APROVADO | API pública `src.collision`; 39 casos da etapa; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows | nenhum no escopo da Etapa 9 |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
-| Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 69 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PARCIAL | 702 testes; 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica 89%–95% | metas globais finais de 90% linhas/85% branches não atingidas |
+| Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 70 arquivos | ampliar anotações explícitas gradualmente |
+| Cobertura | PARCIAL | 720 testes; 73,77% de linhas, 57,91% de branches e 69,93% combinada | metas globais finais de 90% linhas/85% branches não atingidas; Etapa 11 prioriza UI |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

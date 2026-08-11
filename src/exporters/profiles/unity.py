@@ -1,52 +1,35 @@
-"""Implementation of :mod:`src.exporters.profiles.unity`.
-
-Implementation preserved in the single ``src`` source tree.
-"""
+"""Unity JSON metadata profile."""
 
 from typing import Any, Dict
 
+from src.exporters.profiles.common import normalized_rect_and_pivot
+
+UNITY_SCHEMA = "neoeng-d-trace-unity-sprite"
+UNITY_SCHEMA_VERSION = 1
+
 
 def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Format internal metadata to Unity SpriteMeta format.
-
-    Args:
-        meta: Internal metadata dict with keys: id, rect, pivot, polygon, etc.
-
-    Returns:
-        Dict in Unity format: name, rect, pivot, border
-    """
-    rect = meta.get("rect", {"x": 0, "y": 0, "w": 0, "h": 0})
-    pivot_raw = meta.get("pivot", {"x": 0.5, "y": 0.5})
-
-    # Normalize pivot access (handle dict or list/tuple)
-    if isinstance(pivot_raw, (list, tuple)):
-        px, py = pivot_raw[0], pivot_raw[1]
-    else:
-        px = pivot_raw.get("x", 0)
-        py = pivot_raw.get("y", 0)
-
-    # Normalize pivot to 0-1 range relative to the sprite rect
-    # Note: Unity Pivot is (0,0) at Bottom-Left, but standard image tools are Top-Left.
-    # Unity importers usually handle the Y-flip, so normalization stays
-    # relative to Rect size.
-
-    w = rect.get("w", 0)
-    h = rect.get("h", 0)
-
+    """Format one object for a Unity editor importer."""
+    rect, (pivot_x, pivot_y) = normalized_rect_and_pivot(meta)
     normalized_pivot = {
-        "x": px / w if w > 0 else 0.5,
-        "y": py / h if h > 0 else 0.5,
+        "x": pivot_x / rect["w"],
+        "y": pivot_y / rect["h"],
     }
 
     return {
-        "name": meta.get("id", "sprite"),
+        "schema": UNITY_SCHEMA,
+        "schema_version": UNITY_SCHEMA_VERSION,
+        "engine": "unity",
+        "name": str(meta.get("id", "sprite")),
+        "coordinate_origin": "top-left",
         "rect": {
-            "x": rect.get("x", 0),
-            "y": rect.get("y", 0),
-            "width": w,
-            "height": h,
+            "x": rect["x"],
+            "y": rect["y"],
+            "width": rect["w"],
+            "height": rect["h"],
         },
         "pivot": normalized_pivot,
-        "border": {"x": 0, "y": 0, "z": 0, "w": 0},  # No 9-slice support yet
+        "border": {"x": 0.0, "y": 0.0, "z": 0.0, "w": 0.0},
+        "polygon": meta.get("polygon", meta.get("polygon_in_sprite", [])),
+        "collision": meta.get("collision"),
     }

@@ -47,6 +47,10 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Evidências registradas
 
+- `ETAPA_10_EXPORTADORES_ENGINES.md` — contratos Godot/Unity, rollback do atlas,
+  harness reproduzível, validação real em ambas as engines e decisão local
+  pré-merge; não representa integração nem aprovação de release.
+
 - `ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md` — validações da Etapa 1
   anteriores ao merge.
 - `ETAPA_1_ENCERRAMENTO_POS_MERGE.md` — validação da `main` e encerramento

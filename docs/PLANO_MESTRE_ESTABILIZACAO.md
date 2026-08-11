@@ -6,7 +6,17 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Encerramento formal da Etapa 9:
+Candidato técnico local da Etapa 10:
+
+- branch `etapa-10-exportadores-engines`, ainda sem commit final, PR, merge ou CI remoto;
+- perfis Godot/Unity corrigidos e unificados entre cena e objeto;
+- rollback multi-arquivo do atlas comprovado por falha injetada;
+- Godot `4.7` e Unity `6000.5.7f1` aprovados em caminhos Unicode, inclusive GLB;
+- `17` testes da etapa, `720` oficiais e `196` históricos com reconciliação `27/27`;
+- cobertura `73,77%` de linhas, `57,91%` de branches e `69,93%` combinada; mypy sem erros em `70` arquivos;
+- Etapa 10: APROVADA LOCALMENTE / NÃO INTEGRADA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
+
+### Snapshot histórico — encerramento formal da Etapa 9
 
 - commit técnico local `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
 - 39 testes da etapa, 702 oficiais e 196 históricos; reconciliação 27/27;

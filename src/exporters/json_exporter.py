@@ -13,6 +13,10 @@ from typing import Any, Dict, List
 from src.exporters.collision_exporter import collision_shape_record
 from src.models.scene import Scene
 
+SCENE_METADATA_FORMAT_ID = "neoeng-d-trace-scene-metadata"
+OBJECT_METADATA_FORMAT_ID = "neoeng-d-trace-object-metadata"
+METADATA_SCHEMA_VERSION = 1
+
 
 def _get_profile_formatter(profile: str):
     """Return the formatter for a supported engine profile.
@@ -63,7 +67,7 @@ def export_scene_metadata(scene: Scene, profile: str = "default") -> Dict[str, A
 
         # Trimmed rect (em sprite space)
         rect_trimmed = {"x": 0, "y": 0, "w": w, "h": h}
-        pivot = {"x": 0.5, "y": 0.5}
+        pivot = {"x": w / 2.0, "y": h / 2.0}
 
         group = None
         for g in scene.groups:
@@ -90,7 +94,9 @@ def export_scene_metadata(scene: Scene, profile: str = "default") -> Dict[str, A
         }
         objects_data.append(entry)
 
-    data = {
+    data: Dict[str, Any] = {
+        "format_id": SCENE_METADATA_FORMAT_ID,
+        "schema_version": METADATA_SCHEMA_VERSION,
         "sprites": objects_data,
         "layers": [
             {
@@ -113,21 +119,13 @@ def export_scene_metadata(scene: Scene, profile: str = "default") -> Dict[str, A
         ],
     }
 
-    # Apply profile transformations directly here
-    if profile == "unity":
-        for sprite in data["sprites"]:
-            # Unity expects normalized pivots relative to trimmed rect
-            w = sprite["rect_trimmed"]["w"]
-            h = sprite["rect_trimmed"]["h"]
-            if w > 0:
-                sprite["pivot"]["x"] /= w
-            if h > 0:
-                sprite["pivot"]["y"] /= h
-
-    elif profile == "godot":
-        # Godot uses offset from center, usually no change needed here
-        # unless specific sprite sheet format is required.
-        pass
+    normalized_profile = profile.strip().lower()
+    if normalized_profile in {"", "default", "generic"}:
+        data["profile"] = "generic"
+    else:
+        formatter = _get_profile_formatter(normalized_profile)
+        data["profile"] = normalized_profile
+        data["sprites"] = [formatter(sprite) for sprite in data["sprites"]]
 
     return data
 
@@ -197,6 +195,9 @@ def export_metadata(
             break
 
     metadata = {
+        "format_id": OBJECT_METADATA_FORMAT_ID,
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "coordinate_space": "image",
         "id": obj_id,
         "rect": rect,
         "pivot": pivot,
@@ -211,10 +212,11 @@ def export_metadata(
     # Preserve the generic contract and dispatch engine-specific profiles
     # through their dedicated formatters. These modules are part of the
     # public export surface and must not become disconnected from this entrypoint.
-    if profile in {"", "default", "generic"}:
+    normalized_profile = profile.strip().lower()
+    if normalized_profile in {"", "default", "generic"}:
         formatted = metadata
     else:
-        formatter = _get_profile_formatter(profile)
+        formatter = _get_profile_formatter(normalized_profile)
         formatted = formatter(metadata)
 
     # Save to file

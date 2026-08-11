@@ -1,44 +1,30 @@
-"""Implementation of :mod:`src.exporters.profiles.godot`.
-
-Implementation preserved in the single ``src`` source tree.
-"""
+"""Godot 4 JSON metadata profile."""
 
 from typing import Any, Dict
 
+from src.exporters.profiles.common import normalized_rect_and_pivot
+
+GODOT_SCHEMA = "neoeng-d-trace-godot-sprite"
+GODOT_SCHEMA_VERSION = 1
+
 
 def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Format internal metadata to Godot AtlasTexture format.
-
-    Args:
-        meta: Internal metadata dict with keys: id, rect, pivot, polygon, etc.
-
-    Returns:
-        Dict in Godot format: rect, offset (from center)
-    """
-    rect = meta.get("rect", {"x": 0, "y": 0, "w": 0, "h": 0})
-    pivot_raw = meta.get("pivot", {"x": 0, "y": 0})
-
-    # Normalize pivot access (handle dict or list/tuple)
-    if isinstance(pivot_raw, (list, tuple)):
-        px, py = pivot_raw[0], pivot_raw[1]
-    else:
-        px = pivot_raw.get("x", 0)
-        py = pivot_raw.get("y", 0)
-
-    # Calculate center of the rect
-    center_x = rect["x"] + rect["w"] / 2
-    center_y = rect["y"] + rect["h"] / 2
-
-    # Godot Offset: Distance from center to pivot
-    # Note: Godot usually treats offset as the drawing offset to align the sprite.
-    # If pivot is the anchor point, the offset is typically (Pivot - Center).
-    offset = {"x": px - center_x, "y": py - center_y}
+    """Format one object for a Godot 4 ``AtlasTexture``/``Sprite2D`` consumer."""
+    rect, (pivot_x, pivot_y) = normalized_rect_and_pivot(meta)
+    offset = {
+        "x": rect["w"] / 2.0 - pivot_x,
+        "y": rect["h"] / 2.0 - pivot_y,
+    }
 
     return {
-        "name": meta.get("id", "sprite"),
+        "schema": GODOT_SCHEMA,
+        "schema_version": GODOT_SCHEMA_VERSION,
+        "engine": "godot-4",
+        "name": str(meta.get("id", "sprite")),
+        "coordinate_origin": "top-left",
         "rect": rect,
+        "pivot": {"x": pivot_x, "y": pivot_y},
         "offset": offset,
-        # Godot 4+ might prefer a 'region' key instead of 'rect',
-        # but 'rect' is standard for generic JSON parsers in Godot.
+        "polygon": meta.get("polygon", meta.get("polygon_in_sprite", [])),
+        "collision": meta.get("collision"),
     }

@@ -29,12 +29,12 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "be58d87571281e7f74568e337c1682fce478898461bc7382cd1d9392d3fd384b",
-      "size": 38864
+      "sha256": "8c2ba53d3ac18e2bc4241b28dbd035afdf91f86f35ac3aed2499d84d5ed5603f",
+      "size": 39689
     },
     "README.md": {
-      "sha256": "8c9ea97a6768233829202aaace3a7ed7907494dfb1a3385616baa6d0e7945562",
-      "size": 13565
+      "sha256": "73c8154724b442e03761f70e362ea46c9007b7e2d9c0384697472b139b72dd12",
+      "size": 14460
     },
     "SECURITY.md": {
       "sha256": "1fe511e11d57a3a33485bef2c81924a6e0146dc6a7a3152a8e5ef7b88b51c628",
@@ -209,20 +209,20 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "d2d6db2ca834afc02bb633c4e5970146fe27c88f64779f65c2b031a400bd5562",
-      "size": 4070
+      "sha256": "bc11c0142f79dfe85e007d798eddb2f7aaa28dbcc4e3c6f25ad98e6823c82eec",
+      "size": 4328
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "34774ff2f6d855f16af8c77b491e908b04e8f068e0e45030346c28e36f28345f",
-      "size": 13972
+      "sha256": "cbac0885fb75e8fb8d000d02b101574dd5d22685a502fa8f75e802359e914a3a",
+      "size": 14137
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "8fde853622149d91be536a286932b93a0316821d6d2a253aab071f3f76e34aa8",
-      "size": 8726
+      "sha256": "a7e2b84f39862122ba019361c4107bd76cb9c920825a7881f8acf34aefc5303e",
+      "size": 9390
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -307,6 +307,10 @@
     "docs/evidence/COBERTURA_MODULOS_CRITICOS_2026-08-10.md": {
       "sha256": "095f5baf12fc8970309144b52aab5816ab5fc5975c5123bd5c96d54083ca95aa",
       "size": 4276
+    },
+    "docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md": {
+      "sha256": "aa0632ce435fad01a6bf45b27ea8886bca7c8c9c17c8281e8480957a6e1855ad",
+      "size": 7907
     },
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
@@ -441,8 +445,8 @@
       "size": 3950
     },
     "docs/evidence/README.md": {
-      "sha256": "f685397a61006aace41ce1f6b6b3b17f9a3ebbaf231eab6f62cf4416cc12693f",
-      "size": 14949
+      "sha256": "2cebdee8cb9c1a23d3acec8923b710bed386a4c0f3349f331639f33015c8ab49",
+      "size": 15183
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -709,8 +713,8 @@
       "size": 10065
     },
     "src/exporters/atlas_exporter.py": {
-      "sha256": "e3bd31148ca1c9a6de536a4d8407bd177828e95e063bf9dc51b8e63df3d300d9",
-      "size": 8049
+      "sha256": "415ac4afee1fb9858ac9d72b8a8354d9bccdd65d1c6b508687abad52cb4b1769",
+      "size": 9314
     },
     "src/exporters/collision_exporter.py": {
       "sha256": "5c28a5921932e8b022be38a56aa27e64756be1d65802a1dab1d9be1981041338",
@@ -721,28 +725,32 @@
       "size": 10376
     },
     "src/exporters/json_exporter.py": {
-      "sha256": "d8badde48a40ec889f6ce1a77b83086b1cac76308f15cf7e7bbab0f75296626d",
-      "size": 6681
+      "sha256": "7836e91aaa0657c32db7b8d43163967911cdf1e3520178d1f4e945480170f80f",
+      "size": 6919
     },
     "src/exporters/profiles/__init__.py": {
       "sha256": "dd3034f71940c45a6bbac7434afd24adde42b6fe4384a33d2e5f55a6ebc00c2d",
       "size": 61
+    },
+    "src/exporters/profiles/common.py": {
+      "sha256": "89bae770a73ac57a717e51dfd7a7540ce9e5968a90152f6aacdc5c7b2db7d0b6",
+      "size": 1834
     },
     "src/exporters/profiles/generic.py": {
       "sha256": "2278a9cd7ebab3ce8b52a95f09b9ca2399216329f4037b80ec41ebbf738e1ad9",
       "size": 1308
     },
     "src/exporters/profiles/godot.py": {
-      "sha256": "854ebb679e457b0227951f616182d44656a92e0726c223267cf7906e2e62d352",
-      "size": 1421
+      "sha256": "622c981c5bba9ea837452834b5182ffc60a5abba13102960b50eb96da028944b",
+      "size": 947
     },
     "src/exporters/profiles/phaser.py": {
       "sha256": "168665570ceaa732612d5020cc424e6dd57e0b6a43e89219644340252696de7e",
       "size": 1217
     },
     "src/exporters/profiles/unity.py": {
-      "sha256": "85ba8ae8a89e56890bbcdf6c0640625e2ea4b0ddf691b97ea07cb7e711ed2ba4",
-      "size": 1531
+      "sha256": "7f31603681c3e8d2f6cf20b8fa4d52818f41e1d9446685149782b72e1659d4ea",
+      "size": 1066
     },
     "src/exporters/sprite_exporter.py": {
       "sha256": "9cd55c379fe0fd12c1ff194e42dfb7efc0fc703572730e32b1749797f836b5c4",
@@ -997,7 +1005,7 @@
       "size": 16939
     },
     "tests/test_json_exporter_contract.py": {
-      "sha256": "5748a0f243b898c8c0a7919a4701de5f38676c50e904f07b9c2f2d5ed29827e0",
+      "sha256": "f85cb815619e1af6fb62ddee709ee4812e1485b7f9d76e2543ae33b5daf2b857",
       "size": 4160
     },
     "tests/test_logger_configuration.py": {
@@ -1071,6 +1079,10 @@
     "tests/test_stage_0_6n1a_runtime_ui.py": {
       "sha256": "5055ac11c78ab2ef7185543bca89562a1718f4b6e565de2c044ee82e023e9247",
       "size": 6935
+    },
+    "tests/test_stage_10_engine_profiles.py": {
+      "sha256": "1c67ecf8d9afaee623a13a8db38d7d46990ca24cc9897328840db253442e57b3",
+      "size": 7167
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
@@ -1168,6 +1180,10 @@
       "sha256": "d9767b0fd6c117efea23ec5685cfca3bc7027a8f4c7fc82a38c9ca3228870517",
       "size": 8296
     },
+    "tools/godot_engine_validator.gd": {
+      "sha256": "83b68976e8a826bcd3455548537b54351d18e491017840f36742fef216483d7e",
+      "size": 2037
+    },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",
       "size": 664
@@ -1175,6 +1191,14 @@
     "tools/run_legacy_tests.py": {
       "sha256": "9d82a9762a3d35ad5ce50d9563e84f82ccebc2ae3690a9e8bfaa3d71bedcac02",
       "size": 13950
+    },
+    "tools/unity_engine_validator.cs": {
+      "sha256": "b67a4e3dc6a49c771ee55d7e648d30d7a436f2e7107494053ce8e601e7dd924c",
+      "size": 3139
+    },
+    "tools/validate_engine_exports.py": {
+      "sha256": "543e941a0d85dfe769af9c741af417d4fbf5bf3f0b2d5bf977ae5624aa8652d6",
+      "size": 10053
     }
   }
 }

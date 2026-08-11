@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada no escopo aprovado.
+Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada, enquanto a Etapa 10 está aprovada somente no ambiente local.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -116,7 +116,8 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-6 | CONCLUÍDA | Contrato de colisões v1 integrado pela PR `#33`; merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI pós-merge `31431739320` aprovados; `R-005` encerrado; Etapa 7 e release não iniciadas |
 | ETAPA-7 | CONCLUÍDA | Contrato integral da CLI integrado pela PR `#36`; merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a` e CI pós-merge `31437000772` aprovados sem anotações; `R-006` encerrado; Etapa 8 e release não iniciadas |
 | ETAPA-8 | CONCLUÍDA | Bézier e geometria integrados pela PR `#38`; merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e` e CI pós-merge `31441024001` aprovados; `R-007` encerrado |
-| ETAPA-9 | APROVADA LOCALMENTE / NÃO INTEGRADA | commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; 702 testes oficiais, 27/27 legado e 69.79% combinada; `R-008` continua aberto até merge e CI pós-merge |
+| ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
+| ETAPA-10 | APROVADA LOCALMENTE / NÃO INTEGRADA | 17 testes da etapa, 720 oficiais, 27/27 legado, Godot `4.7` e Unity `6000.5.7f1` reais; PR, merge e CI remoto pendentes |
 
 ## Severidades
 

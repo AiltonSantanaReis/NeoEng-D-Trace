@@ -1,8 +1,19 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 9
+## [Unreleased] — programa de estabilização, Etapas 1 a 10
 
 Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 10 — aprovada localmente, não integrada
+
+- corrige offsets Godot, pivôs Unity e divergência entre exportação de cena e objeto;
+- versiona schemas específicos e centraliza validação de retângulos e pivôs;
+- protege PNG/JSON do atlas com rollback após falha no segundo commit;
+- adiciona harness reproduzível para Godot e Unity, com nomes e caminhos Unicode;
+- fixa o importador oficial Unity glTFast `6.19.0` e valida GLB real nas duas engines;
+- aprova `17` testes da etapa, `720` oficiais, `196` históricos com reconciliação `27/27`, mypy em `70` arquivos e cobertura combinada `69,93%`;
+- registra falhas de licença, bootstrap, `ApiUpdater` e ausência de importador GLB nativo sem convertê-las em sucesso;
+- mantém Etapa 10 sem integração, Etapa 11 não iniciada e release não aprovada.
 
 ### Etapa 9 — integrada e encerrada no escopo aprovado
 
