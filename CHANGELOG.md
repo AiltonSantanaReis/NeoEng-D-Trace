@@ -4,14 +4,14 @@
 
 Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 11 — em andamento, Pacotes 1 a 6
+### Etapa 11 — integrada, decisão formal pendente
 
 - adiciona 145 testes comportamentais para UI, ferramentas, comandos, detecção, máscaras, processamento visual e exportação;
 - aprova 877 testes no Windows/Python 3.11.9;
 - eleva a cobertura de 69,93% para 90,91% combinada, com 92,77% de linhas e 85,05% de branches;
 - elimina todos os módulos abaixo de 30% e leva cena, janela principal, laço magnético, caneta, painel de colisões e exportador de sprites a 92–100%;
 - remove três ramos comprovadamente inalcançáveis: um da paleta e dois da detecção automática;
-- aceita os CIs dos Pacotes 1 a 6, inclusive `31483687046` e `31488173784`, somente após auditoria integral de proveniência, cobertura, legado e conteúdo recursivo; registra as metas quantitativas atingidas, mas mantém `R-003` aberto até integração e CI pós-merge; release não aprovada.
+- integra a PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc` e aceita o CI pós-merge `31491221322` somente após auditoria integral; condições técnicas de `R-003` comprovadas, mas encerramento formal pendente de autorização explícita; release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 

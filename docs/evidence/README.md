@@ -116,16 +116,17 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_11_COBERTURA_NUMERICA_PACOTE_4.md` — quarto pacote pré-merge da Etapa 11; detecção, processamento visual, ferramenta base e máscaras, com dois ramos mortos removidos e CI `31481664506` auditado; `R-003` permanece aberto.
 - `ETAPA_11_COMANDOS_PAINEIS_PACOTE_5.md` — quinto pacote pré-merge da Etapa 11; contratos transacionais de comandos e painéis Qt entre 98% e 100% de linhas, com CI `31483687046` auditado; `R-003` permanece aberto.
 - `ETAPA_11_METAS_FINAIS_PACOTE_6.md` — sexto pacote pré-merge da Etapa 11; metas globais 90%/85% atingidas, CI `31488173784` auditado e `R-003` preservado aberto até integração e CI pós-merge.
+- `ETAPA_11_VALIDACAO_POS_MERGE.md` — PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; CI pós-merge `31491221322` auditado; encerramento de `R-003` recomendado, mas não declarado sem autorização explícita.
 
 ## Estado operacional da evidência atual
 
-Etapa 11 em andamento, Pacotes 1 a 6 validados localmente em 11 de agosto de 2026:
+Etapa 11 integrada, com decisão formal pendente em 11 de agosto de 2026:
 
-- base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
+- PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`;
 - `145` testes focais e `877` testes oficiais aprovados no Windows/Python 3.11.9;
 - cobertura exata `10.787/11.628` linhas e `3.147/3.700` branches; `90,91%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CI `31488173784` do Pacote 6 aceito após auditoria dos artefatos; metas 90%/85% atingidas; `R-003` aberto até integração e CI pós-merge; release não aprovada.
+- CI pós-merge `31491221322` aceito após auditoria dos artefatos; condições de `R-003` comprovadas, mas encerramento formal pendente de autorização explícita; release não aprovada.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 

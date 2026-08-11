@@ -2,9 +2,9 @@
 
 **Snapshot local:** 2026-08-11
 
-**Última âncora integrada:** `5e88c8d548e2b60612601f83e1bf24aeb91081bb`
+**Última âncora integrada:** `2a38b89e542390b3b4396a88d9a416f3695caadc`
 
-**Estado atual:** Etapa 10 concluída e Etapa 11 em andamento. Os Pacotes 1 a 6 somam `145` testes comportamentais e `877` testes oficiais locais, com zero módulos abaixo de 30% e cobertura combinada de `90,91%`; CI `31488173784` do Pacote 6 aceito após auditoria integral; integração e CI pós-merge pendentes; release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
+**Estado atual:** Etapa 11 integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`. Os `877` testes e a cobertura combinada de `90,91%` foram reproduzidos no CI pós-merge `31491221322`; encerramento formal de `R-003` e da etapa pendente de autorização explícita; release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
 
 **Histórico integrado da Etapa 10:** PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; correção aceita em `31464786333`, integrada pela PR `#43` em `f8caec3e7156d308f03046f81d2c89996f959466` e reproduzida em `31469610508`.
 
@@ -12,7 +12,7 @@
 
 **Fechamento integrado anterior:** Etapa 7 mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
 
-**Riscos:** `R-006`, `R-007` e `R-008` encerrados nos escopos aprovados; metas quantitativas de `R-003` atingidas, mas o risco permanece aberto até integração e CI pós-merge; release não aprovada.
+**Riscos:** `R-006`, `R-007` e `R-008` encerrados nos escopos aprovados; condições técnicas de `R-003` comprovadas, mas o risco permanece aberto até autorização explícita; release não aprovada.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -35,7 +35,7 @@ snapshot histórico.
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 70 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PRÉ-MERGE / METAS ATINGIDAS | Pacotes 1 a 6: 877 testes locais; 10.787/11.628 linhas (92,77%), 3.147/3.700 branches (85,05%), 90,91% combinada e zero módulos abaixo de 30% | `R-003` e Etapa 11 permanecem abertos até integração e CI pós-merge |
+| Cobertura | INTEGRADO / DECISÃO PENDENTE | PR `#45`, merge `2a38b89e542390b3b4396a88d9a416f3695caadc`, CI pós-merge `31491221322`; 877 testes, 10.787/11.628 linhas (92,77%), 3.147/3.700 branches (85,05%) e 90,91% combinada | encerramento formal de `R-003` e da Etapa 11 depende de autorização explícita |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura
