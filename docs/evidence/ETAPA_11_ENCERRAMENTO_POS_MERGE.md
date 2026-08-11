@@ -1,4 +1,4 @@
-# Evidência — Validação pós-merge da Etapa 11
+# Evidência — Encerramento pós-merge da Etapa 11
 
 ## Identificação
 
@@ -10,10 +10,10 @@
 
 ## Objetivo
 
-Registrar a integração dos seis pacotes da Etapa 11 e a reprodução das metas
-globais de cobertura no CI pós-merge ligado ao SHA resultante da `main`. A
-transição formal de `R-003` e da Etapa 11 permanece pendente de autorização
-explícita.
+Encerrar `R-003` e a Etapa 11 depois de comprovar a integração dos seis pacotes
+e a reprodução das metas globais de cobertura no CI pós-merge ligado ao SHA
+resultante da `main`. A transição formal foi autorizada explicitamente após a
+auditoria completa das evidências.
 
 ## Validação local consolidada
 
@@ -84,11 +84,11 @@ A auditoria independente confirmou:
 - zero referências proibidas e zero caminhos pessoais locais;
 - digests dos ZIPs brutos idênticos aos publicados pelo GitHub.
 
-## Decisão pendente e riscos residuais
+## Decisão e riscos residuais
 
-- as condições técnicas para encerrar `R-003` estão comprovadas;
+- `R-003` está encerrado no escopo aprovado;
 - as metas globais 90% de linhas e 85% de branches foram superadas;
-- `R-003` e a Etapa 11 permanecem formalmente abertos até autorização explícita;
+- a Etapa 11 está concluída no escopo aprovado;
 - `R-012` permanece aberto para os limites operacionais da Etapa 12;
 - `R-011` permanece aberto para a refatoração Qt protegida da Etapa 13;
 - autosave, build, instalador e validações reais de release permanecem para as
@@ -108,11 +108,11 @@ LINE_COVERAGE=10787/11628
 BRANCH_COVERAGE=3147/3700
 COVERAGE_TARGETS_MET=YES
 R003_CLOSURE_RECOMMENDED=YES
-R003_CLOSED=NO
-STAGE11_COMPLETED=NO
+R003_CLOSED=YES
+STAGE11_COMPLETED=YES
 STAGE12_STARTED=NO
 RELEASE_APPROVED=NO
 ```
 
-Esta evidência não encerra risco ou etapa e não autoriza release, executável ou
-instalador.
+**Etapa 11 concluída no escopo aprovado.** O encerramento não autoriza release,
+executável ou instalador.

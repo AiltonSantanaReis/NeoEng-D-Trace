@@ -18,13 +18,13 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 11 de agosto de 2026. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`. Os `877` testes e a cobertura de 92,77% de linhas, 85,05% de branches e 90,91% combinada foram reproduzidos no CI pós-merge `31491221322`. As condições técnicas de `R-003` estão comprovadas, mas a decisão formal permanece pendente; release não aprovada.
+Snapshot vivo de 11 de agosto de 2026. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`. Os `877` testes e a cobertura de 92,77% de linhas, 85,05% de branches e 90,91% combinada foram reproduzidos no CI pós-merge `31491221322`. `R-003` e a Etapa 11 estão encerrados no escopo aprovado; Etapa 12 não iniciada e release não aprovada.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
 | R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
-| R-003 | ABERTO / ENCERRAMENTO RECOMENDADO | PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; CI pós-merge `31491221322` aceito após auditoria de 877 testes, cobertura 92,77%/85,05% e legado 27/27; encerramento formal depende de autorização explícita |
+| R-003 | ENCERRADO NO ESCOPO APROVADO | PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; CI pós-merge `31491221322` aceito após auditoria de 877 testes, cobertura 92,77%/85,05%, legado 27/27 e artefatos recursivos sem violações |
 | R-004 | ENCERRADO NO ESCOPO APROVADO | PR `#28` fechou o registro; PR técnica `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, integrada em `574be9bd0268e70c384903f93f16cf6e73aa57a2`; CI pós-merge `31425585259` aprovou Linux e Windows |
 | R-005 | ENCERRADO NO ESCOPO APROVADO | Schema `neoeng-d-trace-collisions` v1 unifica toolbar, painel, metadados genéricos e TXT atômico; PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`; CI pós-merge `31431739320` aprovou Linux e Windows |
 | R-006 | ENCERRADO NO ESCOPO APROVADO | Matriz integral, subprocessos, códigos `0`/`1`/`2` e saídas reais; PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovou Linux e Windows |

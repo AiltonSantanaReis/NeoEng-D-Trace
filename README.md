@@ -6,15 +6,15 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Etapa 11 integrada, com decisão formal de encerramento pendente em 11 de agosto de 2026:
+Etapa 11 concluída no escopo aprovado em 11 de agosto de 2026:
 
 - PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`;
 - 145 testes comportamentais novos e `877` testes oficiais aprovados no Windows/Python 3.11.9;
 - cobertura elevada para `92,77%` de linhas, `85,05%` de branches e `90,91%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - o Pacote 6 leva cena a 95%, janela principal a 99%, laço magnético a 92%, caneta a 96%, painel de colisões a 100% e exportador de sprites a 95%;
-- as condições técnicas para encerrar `R-003` estão comprovadas, mas o risco permanece formalmente aberto até autorização explícita;
-- CIs pré-merge `31489594270` e pós-merge `31491221322` aceitos após auditoria integral; release **NÃO APROVADA**.
+- `R-003` encerrado no escopo aprovado após integração e validação pós-merge;
+- CIs pré-merge `31489594270` e pós-merge `31491221322` aceitos após auditoria integral; Etapa 12 não iniciada e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
@@ -91,7 +91,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`; o CI pós-merge `31491221322` foi aceito após auditoria integral. As condições técnicas para fechamento estão comprovadas, mas a decisão formal permanece pendente; a release permanece não aprovada.
+As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`; o CI pós-merge `31491221322` foi aceito após auditoria integral. `R-003` e a Etapa 11 estão encerrados no escopo aprovado; a Etapa 12 não foi iniciada e a release permanece não aprovada.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
@@ -223,7 +223,7 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 
 ## Limitações e riscos abertos
 
-- `R-003`: integração e validação pós-merge aprovadas; encerramento formal pendente de autorização explícita;
+- `R-003`: encerrado no escopo aprovado após PR `#45`, merge `2a38b89e542390b3b4396a88d9a416f3695caadc` e CI pós-merge `31491221322`;
 - `R-004`: encerrado no escopo aprovado; Etapa 5 concluída após integração do registro e CI final da `main`;
 - `R-005`: encerrado no escopo aprovado após schema v1 unificado, PR `#33` e CI pós-merge `31431739320`;
 - `R-006`: encerrado no escopo aprovado após matriz integral da CLI, PR `#36` e CI pós-merge `31437000772`;
