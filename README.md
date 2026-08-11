@@ -6,16 +6,17 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Candidato técnico pré-merge da Etapa 9, validado localmente em 10 de agosto de 2026:
+Encerramento formal da Etapa 9, comprovado em 10 de agosto de 2026:
 
 - commit técnico: `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
 - API pública única em `src.collision`; `src.physics` preservado somente como compatibilidade sem implementações próprias;
 - falhas corrigidas: IDs heterogêneos, falso positivo côncavo, entradas inválidas, MTV invertido e promessas inertes de física dinâmica;
 - suíte local: 39 casos da etapa, 702 testes oficiais e 196 históricos com 27/27 divergências exatas;
 - cobertura: 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica entre 89% e 95%;
-- CI da PR `31444774539`: Linux e Windows em `success`, zero anotações; artefatos `9084124074` e `9084165201` com digests registrados na evidência permanente;
-- `R-008`: **APROVADO PARA ENCERRAMENTO, CONDICIONADO A MERGE E CI PÓS-MERGE**;
-- Etapa 9: **EM VALIDAÇÃO PRÉ-MERGE**; release: **NÃO APROVADA**.
+- CI final da PR `31445205968` e CI pós-merge `31445518755`: Linux e Windows em `success`, zero anotações;
+- PR `#40` mesclada em `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; artefatos e digests registrados na evidência permanente;
+- `R-008`: **ENCERRADO NO ESCOPO APROVADO**;
+- Etapa 9: **CONCLUÍDA**; Etapa 10: **NÃO INICIADA**; release: **NÃO APROVADA**.
 
 Snapshot histórico de encerramento formal da Etapa 8, em 10 de agosto de 2026:
 
@@ -68,7 +69,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7 e 8 possuem fechamento pós-merge comprovado. A Etapa 9 possui candidato técnico e CI da PR comprovados, mas merge, CI pós-merge e qualquer aprovação de release continuam pendentes.
+As Etapas 5, 6, 7, 8 e 9 possuem fechamento pós-merge comprovado. A Etapa 10 e qualquer aprovação de release continuam pendentes.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
@@ -205,7 +206,7 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 - `R-005`: encerrado no escopo aprovado após schema v1 unificado, PR `#33` e CI pós-merge `31431739320`;
 - `R-006`: encerrado no escopo aprovado após matriz integral da CLI, PR `#36` e CI pós-merge `31437000772`;
 - `R-007`: persistência Bézier está implementada, mas validações geométricas adicionais pertencem à Etapa 8;
-- `R-008`: API estática unificada no commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; encerramento depende de merge e CI pós-merge;
+- `R-008`: encerrado no escopo aprovado após API estática unificada, PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3` e CI pós-merge `31445518755`;
 - `R-011` permanece para refatoração protegida;
 - `R-012` está mitigado por auditoria automatizada, mas limites operacionais permanecem na Etapa 12;
 - `R-013`: encerrado no escopo auditado após integração e CI pós-merge aprovado;

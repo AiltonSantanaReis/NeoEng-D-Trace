@@ -6,15 +6,15 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Candidato técnico atual da Etapa 9:
+Encerramento formal da Etapa 9:
 
 - commit técnico local `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
 - 39 testes da etapa, 702 oficiais e 196 históricos; reconciliação 27/27;
 - cobertura global 73.65% de linhas, 57.65% de branches e 69.79% combinada;
 - API pública única de colisão estática; namespace histórico sem implementações concorrentes;
-- CI da PR `31444774539`: Linux e Windows em `success`, zero anotações;
-- `R-008`: APROVADO PARA ENCERRAMENTO, condicionado a merge e CI pós-merge;
-- Etapa 9: EM VALIDAÇÃO PRÉ-MERGE; release: NÃO APROVADA.
+- PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final da PR `31445205968` e pós-merge `31445518755`: Linux e Windows em `success`, zero anotações;
+- `R-008`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 9: CONCLUÍDA; Etapa 10: NÃO INICIADA; release: NÃO APROVADA.
 
 ### Snapshot histórico imediatamente anterior — encerramento da Etapa 8
 

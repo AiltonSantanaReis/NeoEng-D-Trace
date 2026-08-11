@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 ainda não foi integrada.
+Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada no escopo aprovado.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -29,7 +29,7 @@ Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local d
 | R-005 | ENCERRADO NO ESCOPO APROVADO | Schema `neoeng-d-trace-collisions` v1 unifica toolbar, painel, metadados genéricos e TXT atômico; PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`; CI pós-merge `31431739320` aprovou Linux e Windows |
 | R-006 | ENCERRADO NO ESCOPO APROVADO | Matriz integral, subprocessos, códigos `0`/`1`/`2` e saídas reais; PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovou Linux e Windows |
 | R-007 | ENCERRADO NO ESCOPO APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`; CI da PR `31440755594` e pós-merge `31441024001` aprovaram Linux e Windows sem anotações; núcleo geométrico com 95.59% de linhas e 93.29% de branches |
-| R-008 | APROVADO PARA ENCERRAMENTO / CONDICIONADO | commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; API pública única, wrappers históricos sem implementação própria, regressões e AST; CI da PR `31444774539` aprovado; depende de merge e CI pós-merge |
+| R-008 | ENCERRADO NO ESCOPO APROVADO | API pública única, wrappers históricos sem implementação própria e regressões; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final da PR `31445205968` e pós-merge `31445518755` aprovados em Linux e Windows |
 | R-009 | ENCERRADO | CI Linux e Windows estabelecida |
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
 | R-011 | ABERTO | Refatoração posterior protegida por caracterização |
