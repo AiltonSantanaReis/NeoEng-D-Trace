@@ -6,14 +6,14 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Etapa 11 em andamento — Pacotes 1 e 2:
+Etapa 11 em andamento — Pacotes 1 a 3:
 
 - base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
-- 22 testes comportamentais novos; suíte oficial `754 passed` no Windows/Python 3.11.9;
-- cobertura `80,07%` de linhas, `66,23%` de branches e `76,73%` combinada;
+- 30 testes comportamentais novos; suíte oficial `762 passed` no Windows/Python 3.11.9;
+- cobertura `83,79%` de linhas, `70,36%` de branches e `80,55%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CIs dos Pacotes 1 e 2 `31473415874`, `31474121642` e `31476442683` aceitos após auditoria integral de Linux/Windows e conteúdo recursivo;
-- `R-003` continua aberto; faltam ao menos 1.155 linhas e 696 branches para as metas globais 90%/85%; integração e CI pós-merge permanecem pendentes;
+- CIs dos Pacotes 1 e 2, inclusive `31477232020`, aceitos após auditoria integral de Linux/Windows e conteúdo recursivo; Pacote 3 ainda sem CI;
+- `R-003` continua aberto; faltam ao menos 722 linhas e 543 branches para as metas globais 90%/85%; integração e CI pós-merge permanecem pendentes;
 - Etapa 11 não concluída; release não aprovada.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:

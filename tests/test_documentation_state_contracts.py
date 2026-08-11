@@ -723,7 +723,7 @@ def test_stage11_package_1_is_local_partial_and_keeps_r003_open():
         assert expected in evidence
 
 
-def test_stage11_package_2_updates_live_state_without_closing_r003():
+def test_stage11_packages_update_live_state_without_closing_r003():
     evidence = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_2.md")
     for expected in (
         "33a807ca41c549c283cad13250ca54b7e2bb6e0b",
@@ -749,6 +749,23 @@ def test_stage11_package_2_updates_live_state_without_closing_r003():
     ):
         assert expected in evidence
 
+    package_3 = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_3.md")
+    for expected in (
+        "075b5b0231ca0aeb8a26d6253e847619d70211cf",
+        "762 passed",
+        "9.747/11.632",
+        "2.606/3.704",
+        "80,55%",
+        "722 linhas",
+        "543 ramos",
+        "TECHNICAL_COMMIT=PENDING",
+        "PRE_MERGE_CI_RUN=NOT_RUN",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in package_3
+
     for relative in (
         "README.md",
         "CHANGELOG.md",
@@ -759,8 +776,8 @@ def test_stage11_package_2_updates_live_state_without_closing_r003():
     ):
         value = _text(relative)
         assert "Etapa 11" in value, relative
-        assert "754" in value, relative
-        assert "76,73%" in value, relative
+        assert "762" in value, relative
+        assert "80,55%" in value, relative
         assert "R-003" in value, relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative

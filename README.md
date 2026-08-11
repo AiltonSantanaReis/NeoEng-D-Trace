@@ -6,15 +6,15 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Etapa 11 em andamento, Pacotes 1 e 2 validados em 11 de agosto de 2026:
+Etapa 11 em andamento, Pacotes 1 a 3 validados localmente em 11 de agosto de 2026:
 
 - base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
-- 22 testes comportamentais novos e `754` testes oficiais aprovados no Windows/Python 3.11.9;
-- cobertura elevada para `80,07%` de linhas, `66,23%` de branches e `76,73%` combinada;
+- 30 testes comportamentais novos e `762` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura elevada para `83,79%` de linhas, `70,36%` de branches e `80,55%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- o Pacote 2 eleva lasso magnético, visualizador de máscara, pincel de colisão e edição poligonal;
-- `R-003` permanece aberto: faltam ao menos 1.155 linhas e 696 branches cobertos para as metas finais;
-- CIs dos Pacotes 1 e 2 `31473415874`, `31474121642` e `31476442683` aceitos após auditoria; integração pendente e release **NÃO APROVADA**.
+- o Pacote 3 eleva canvas para 92,94%/80,63% e diálogo de exportação para 90,80%/87,50% em linhas/branches;
+- `R-003` permanece aberto: faltam ao menos 722 linhas e 543 branches cobertos para as metas finais;
+- CIs dos Pacotes 1 e 2, inclusive o final `31477232020`, aceitos após auditoria; Pacote 3 ainda sem CI, integração pendente e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
