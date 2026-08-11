@@ -154,8 +154,12 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   rejeitado.
 - Mediante autorização explícita, quatro ZIPs foram sanitizados, os checksums
   internos e hashes externos foram recalculados e um teste passou a examinar
-  arquivos rastreados e ZIPs aninhados. O encerramento continua condicionado a
-  nova execução remota e nova inspeção dos artefatos corrigidos.
+  arquivos rastreados e ZIPs aninhados.
+- A execução `31457937902` aprovou Linux e Windows no HEAD fonte
+  `5411193014d49b185bf5a3c297b61d74df79d8cb`. A inspeção independente confirmou
+  `729` testes por sistema, merge sintético `0394d55501e32e2fa38acbcc4d1e3c5e126954ce`
+  com ancestralidade válida, worktree limpa, cobertura exata, reconciliação
+  `27/27`, `44` arquivos de evidência idênticos e zero violações recursivas.
 
 ## Limitações e riscos residuais
 
@@ -169,11 +173,12 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   índice continuam fora desta etapa.
 - Cobertura integral da interface é a Etapa 11 e ainda não foi iniciada.
 - Build, instalador, autosave e validação de release continuam pendentes.
-- Três CIs remotos foram executados e rejeitados após inspeções progressivas dos artefatos; CI final aceito, merge e validação pós-merge ainda não ocorreram.
+- Três CIs remotos foram rejeitados após inspeções progressivas; o quarto foi aceito após auditoria integral. Merge e validação pós-merge ainda não ocorreram.
 
 ## Decisão
 
-**APROVADO LOCALMENTE / NÃO INTEGRADO.** Os critérios funcionais da Etapa 10
-foram demonstrados no computador local, inclusive nas duas engines reais. O
-encerramento formal depende de CI Linux/Windows com artefatos aceitos, merge e CI
-pós-merge. Release permanece **NÃO APROVADA**.
+**APROVADO PRÉ-MERGE / NÃO INTEGRADO.** Os critérios funcionais da Etapa 10
+foram demonstrados no computador local, inclusive nas duas engines reais, e o
+CI Linux/Windows com artefatos foi aceito após inspeção independente. O
+encerramento formal depende de merge e CI pós-merge.
+Release permanece **NÃO APROVADA**.

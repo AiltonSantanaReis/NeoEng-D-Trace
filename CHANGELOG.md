@@ -17,6 +17,7 @@ Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real
 - generaliza o upload de evidências; rejeita também o segundo CI `31451363518`, que publicou os arquivos corretos, mas ainda exigia metadado externo para ligar o merge sintético ao HEAD da PR;
 - eleva o resumo para schema v4, separando merge testado, HEAD fonte, estado da worktree e origem histórica, com prova de ancestralidade;
 - rejeita o terceiro CI `31452032479` após o scanner profundo encontrar referências proibidas em ZIPs históricos aninhados; sanitiza quatro pacotes mediante autorização explícita e recalcula checksums e hashes dependentes;
+- aceita o CI pré-merge `31457937902` somente após validar os dois jobs, `729` testes por sistema, proveniência v4, cobertura exata e `44` arquivos de evidência com varredura recursiva sem violações;
 - mantém Etapa 10 sem integração, Etapa 11 não iniciada e release não aprovada.
 
 ### Etapa 9 — integrada e encerrada no escopo aprovado

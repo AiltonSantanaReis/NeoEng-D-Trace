@@ -625,7 +625,7 @@ def test_stage9_closure_is_bound_to_merge_and_postmerge_ci():
     assert "não aprova release" in closure
 
 
-def test_stage10_remote_evidence_failure_is_preserved_without_overstatement():
+def test_stage10_remote_evidence_history_is_preserved_without_overstatement():
     for relative in (
         "README.md",
         "CHANGELOG.md",
@@ -640,8 +640,10 @@ def test_stage10_remote_evidence_failure_is_preserved_without_overstatement():
         assert "31450335289" in value, relative
         assert "31451363518" in value, relative
         assert "31452032479" in value, relative
+        assert "31457937902" in value, relative
         assert "rejeitad" in value, relative
+        assert "aceit" in value, relative
 
     evidence = _text("docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md")
-    assert "APROVADO LOCALMENTE / NÃO INTEGRADO" in evidence
+    assert "APROVADO PRÉ-MERGE / NÃO INTEGRADO" in evidence
     assert "Release permanece **NÃO APROVADA**" in evidence
