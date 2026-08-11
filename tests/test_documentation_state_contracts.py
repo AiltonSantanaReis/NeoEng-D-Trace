@@ -818,6 +818,27 @@ def test_stage11_packages_update_live_state_without_closing_r003():
     ):
         assert expected in package_5
 
+    package_6 = _text("docs/evidence/ETAPA_11_METAS_FINAIS_PACOTE_6.md")
+    for expected in (
+        "d5a7b8559927dca130d6d47409988da07ef1dd7e",
+        "877 passed",
+        "10.787/11.628",
+        "3.147/3.700",
+        "90,91%",
+        "31488173784",
+        "93768251593",
+        "93768251612",
+        "9100022150",
+        "9099983296",
+        "1.418 payloads",
+        "COVERAGE_TARGETS_MET=YES",
+        "PRE_MERGE_CI_STATUS=ACCEPTED",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in package_6
+
     for relative in (
         "README.md",
         "CHANGELOG.md",
@@ -828,8 +849,8 @@ def test_stage11_packages_update_live_state_without_closing_r003():
     ):
         value = _text(relative)
         assert "Etapa 11" in value, relative
-        assert "810" in value, relative
-        assert "85,59%" in value, relative
+        assert "877" in value, relative
+        assert "90,91%" in value, relative
         assert "R-003" in value, relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative
