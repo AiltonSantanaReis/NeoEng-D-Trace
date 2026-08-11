@@ -113,16 +113,17 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_11_COBERTURA_UI_PACOTE_1.md` — primeiro pacote local da Etapa 11; 742 testes, métricas exatas por módulo, zero módulos abaixo de 30% e `R-003` ainda aberto.
 - `ETAPA_11_COBERTURA_UI_PACOTE_2.md` — segundo pacote pré-merge da Etapa 11; lasso magnético, máscara, pincel de colisão e edição poligonal, com métricas exatas de linhas e ramos e CI auditado; `R-003` permanece aberto.
 - `ETAPA_11_COBERTURA_UI_PACOTE_3.md` — terceiro pacote pré-merge da Etapa 11; canvas e diálogo de exportação acima de 90% de linhas, métricas exatas e CI `31479113082` auditado; `R-003` permanece aberto.
+- `ETAPA_11_COBERTURA_NUMERICA_PACOTE_4.md` — quarto pacote local da Etapa 11; detecção, processamento visual, ferramenta base e máscaras, com dois ramos mortos removidos e CI ainda não executado; `R-003` permanece aberto.
 
 ## Estado operacional da evidência atual
 
-Etapa 11 em andamento, Pacotes 1 a 3 validados localmente em 11 de agosto de 2026:
+Etapa 11 em andamento, Pacotes 1 a 4 validados localmente em 11 de agosto de 2026:
 
 - base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
-- `30` testes focais e `762` testes oficiais aprovados no Windows/Python 3.11.9;
-- cobertura exata `9.747/11.632` linhas e `2.606/3.704` branches; `80,55%` combinada;
+- `47` testes focais e `779` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura exata `10.007/11.628` linhas e `2.715/3.700` branches; `83,00%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CIs dos Pacotes 1 a 3, inclusive `31477232020` e `31479113082`, aceitos após auditoria dos artefatos; `R-003` aberto, integração pendente e release não aprovada.
+- CIs dos Pacotes 1 a 3, inclusive `31479998276`, aceitos após auditoria dos artefatos; Pacote 4 ainda sem CI, `R-003` aberto, integração pendente e release não aprovada.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
