@@ -25,6 +25,42 @@ def normalize_lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
 
 
+def resolve_tested_commit(project_root: Path) -> str:
+    process = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    tested_commit = process.stdout.strip().lower()
+    if (
+        process.returncode != 0
+        or len(tested_commit) != 40
+        or any(character not in "0123456789abcdef" for character in tested_commit)
+    ):
+        raise RuntimeError("Unable to resolve the tested Git commit")
+    ci_commit = os.environ.get("GITHUB_SHA", "").strip().lower()
+    if ci_commit and ci_commit != tested_commit:
+        raise RuntimeError(
+            f"Tested commit {tested_commit} does not match CI commit {ci_commit}"
+        )
+    return tested_commit
+
+
+def working_tree_is_dirty(project_root: Path) -> bool:
+    process = subprocess.run(
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if process.returncode != 0:
+        raise RuntimeError("Unable to inspect the tested Git working tree")
+    return bool(process.stdout.strip())
+
+
 def load_manifest(project_root: Path) -> tuple[Path, dict]:
     legacy_root = project_root / "quality" / "legacy_tests"
     manifest_path = legacy_root / "manifest.json"
@@ -349,14 +385,16 @@ def main() -> int:
 
     reconciliation = reconcile_failures(selected, results, expectations)
     summary = {
-        "schema_version": 2,
+        "schema_version": 3,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "project_root": str(project_root),
         "python": sys.version,
         "platform": platform.platform(),
         "group": args.group,
         "integrity": "passed",
-        "source_commit": manifest["source_commit"],
+        "tested_commit": resolve_tested_commit(project_root),
+        "working_tree_dirty": working_tree_is_dirty(project_root),
+        "legacy_source_commit": manifest["source_commit"],
         "reconciliation_manifest": str(reconciliation_path),
         "reconciliation": reconciliation,
         "selected_files": len(selected),

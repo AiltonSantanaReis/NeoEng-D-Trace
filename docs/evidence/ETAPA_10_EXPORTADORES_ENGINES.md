@@ -6,7 +6,7 @@
 - Base auditada: `f2d44c9ce6645a343e5e515303cc6c3c75443ae7`.
 - Commit técnico: `bb849d1b19959198b34a123cd6d07cda2ae82cd2`.
 - Data local: 10 de agosto de 2026.
-- Estado: aprovado localmente; não integrado; CI remoto ainda não executado.
+- Estado: aprovado localmente; PR `#42` aberta; não integrado; CI final ainda não aceito.
 
 ## Objetivo e escopo
 
@@ -100,7 +100,7 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 
 - testes específicos da etapa: `17 passed`;
 - pacote focal de exportadores e UI: `58 passed`;
-- suíte oficial completa: `720 passed`;
+- suíte oficial completa: `725 passed`;
 - suíte histórica: `196` executados, `27/27` divergências previstas
   reconciliadas, zero inesperadas, zero ausentes e integridade aprovada;
 - cobertura: `8.582/11.634` linhas (`73,77%`), `2.146/3.706` branches
@@ -128,6 +128,21 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 | Unity | `scene.glb` | 968 | `de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde` |
 | Unity | relatório | 967 | `08a7dc5ed463f1c54ce03e1c05998b4a6f0bb48cff4c4f87db4d3445acba38de` |
 
+## Auditoria remota da PR 42
+
+- A execução `31450335289` aprovou os gates Linux e Windows no commit
+  `17ac9b614ea5cc17a16112add8201f2c525c7e45`.
+- O resultado verde não foi aceito isoladamente. A inspeção dos artefatos
+  demonstrou que a lista fixa do workflow não publicava este relatório.
+- O resumo da suíte histórica usava `source_commit` para o commit de origem da
+  captura, sem registrar separadamente o commit efetivamente testado. A origem
+  histórica estava correta, mas o campo era ambíguo para auditoria operacional.
+- A PR permaneceu sem merge. O upload foi generalizado para `docs/evidence/**`
+  e o resumo passou a separar `tested_commit` de `legacy_source_commit`, registrar
+  `working_tree_dirty` e falhar se o HEAD local divergir de `GITHUB_SHA` no CI.
+- O encerramento continua condicionado a nova execução remota e nova inspeção
+  dos artefatos corrigidos.
+
 ## Limitações e riscos residuais
 
 - A recuperação do atlas protege falhas observáveis de processo, mas nenhum
@@ -140,11 +155,11 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   índice continuam fora desta etapa.
 - Cobertura integral da interface é a Etapa 11 e ainda não foi iniciada.
 - Build, instalador, autosave e validação de release continuam pendentes.
-- CI remoto, merge e validação pós-merge ainda não ocorreram.
+- O CI remoto inicial foi executado, porém rejeitado após a inspeção dos artefatos; CI final aceito, merge e validação pós-merge ainda não ocorreram.
 
 ## Decisão
 
 **APROVADO LOCALMENTE / NÃO INTEGRADO.** Os critérios funcionais da Etapa 10
 foram demonstrados no computador local, inclusive nas duas engines reais. O
-encerramento formal depende de PR, CI Linux/Windows, merge e CI
+encerramento formal depende de CI Linux/Windows com artefatos aceitos, merge e CI
 pós-merge. Release permanece **NÃO APROVADA**.

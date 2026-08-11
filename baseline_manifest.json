@@ -21,20 +21,20 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "7863b6298e10215bcbf93a77961fcee3bc09924765efd63b1e3036c664aa5786",
-      "size": 6950
+      "sha256": "2401b63c2c900a8928feb6d2eedd382d66d9c4f3556d20db627d3dbff6bd1ee0",
+      "size": 5909
     },
     ".gitignore": {
       "sha256": "1a28442e581d24e19e5181edc36c45871e038dec77b2b56bf75330fc6515b3b0",
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "8c2ba53d3ac18e2bc4241b28dbd035afdf91f86f35ac3aed2499d84d5ed5603f",
-      "size": 39689
+      "sha256": "02c52e3db336db42a3014928eb4b0780541e2b8bc54d8ecc6f73e2309a8210e1",
+      "size": 40013
     },
     "README.md": {
-      "sha256": "73c8154724b442e03761f70e362ea46c9007b7e2d9c0384697472b139b72dd12",
-      "size": 14460
+      "sha256": "a0fe9daa1f24f04ce9341447576669ced8926896bd017b883c9b0086326c4845",
+      "size": 14707
     },
     "SECURITY.md": {
       "sha256": "1fe511e11d57a3a33485bef2c81924a6e0146dc6a7a3152a8e5ef7b88b51c628",
@@ -209,20 +209,20 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "bc11c0142f79dfe85e007d798eddb2f7aaa28dbcc4e3c6f25ad98e6823c82eec",
-      "size": 4328
+      "sha256": "f2f83701068a8e9d74a22ef8a6861500280ec40aa6c64e911fd2d92aa16065e8",
+      "size": 4398
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "cbac0885fb75e8fb8d000d02b101574dd5d22685a502fa8f75e802359e914a3a",
-      "size": 14137
+      "sha256": "62ed4b457ee918d0ecbb751d8e3c2d3803b8b1aedddc6079a7bd53882d394c19",
+      "size": 14287
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "1f9c113d23f8bcf5df2450e0412b920d7e3f863bfa190a051fe0d487c3906e04",
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "73149cdac036260e0c6677bd4f9439854eb55059bb6c10ff98f4d6b70f7405ee",
-      "size": 9436
+      "sha256": "3d64d14d9c7435a13f774d1940e9884bf080fd56b34af4c5c7a42edc2f65315e",
+      "size": 9762
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -309,8 +309,8 @@
       "size": 4276
     },
     "docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md": {
-      "sha256": "cfc5b08decb7a25e77429f794f1d45247ce786abac727f8136d2edd3f4cba24c",
-      "size": 7902
+      "sha256": "7701743a89e1b43fba4247679473a4a3baf0824fc0a2f8ea8ab6d8b776ea0bc5",
+      "size": 8919
     },
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
@@ -445,8 +445,8 @@
       "size": 3950
     },
     "docs/evidence/README.md": {
-      "sha256": "2cebdee8cb9c1a23d3acec8923b710bed386a4c0f3349f331639f33015c8ab49",
-      "size": 15183
+      "sha256": "1fe2e67894c53d34983a14e3761395dba9ab4d6306f1e63b5f5bf1e207181f7d",
+      "size": 15721
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c",
@@ -953,8 +953,8 @@
       "size": 2850
     },
     "tests/test_audit_closure_contracts.py": {
-      "sha256": "d6b1d467f2f95f1ca730c8382618f1f7464181942912ed9bc0a283e0450a397c",
-      "size": 7192
+      "sha256": "6785124dfbe436bc169660b9bccb6f742c3e2ab1e2f06b8dab464c4c64a84dff",
+      "size": 8628
     },
     "tests/test_auto_detect.py": {
       "sha256": "96dc4149659bd0cd65dd4df71685cba621b301bff6780063ee23bce5f3653ed9",
@@ -985,8 +985,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "bce3b9b81d5498dde231d2ad7142b2a0d55e907f619139caf3267ac903d92245",
-      "size": 24691
+      "sha256": "d35fd7c65b8180f27d3f6ccaebb50299acb4dc07d329826998b150238ce22520",
+      "size": 25588
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
@@ -1189,8 +1189,8 @@
       "size": 664
     },
     "tools/run_legacy_tests.py": {
-      "sha256": "9d82a9762a3d35ad5ce50d9563e84f82ccebc2ae3690a9e8bfaa3d71bedcac02",
-      "size": 13950
+      "sha256": "a4ba29212dcbabe0fc7cfc72dad28abdda7262504ed2bf2a4e930f57048c128e",
+      "size": 15261
     },
     "tools/unity_engine_validator.cs": {
       "sha256": "b67a4e3dc6a49c771ee55d7e648d30d7a436f2e7107494053ce8e601e7dd924c",

@@ -6,13 +6,13 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Candidato técnico local da Etapa 10, validado em 10 de agosto de 2026:
+Candidato técnico da Etapa 10 na PR `#42`, validado em 10 de agosto de 2026:
 
-- branch `etapa-10-exportadores-engines`, ainda sem merge ou CI remoto;
+- branch `etapa-10-exportadores-engines`, ainda sem merge; o primeiro CI remoto `31450335289` passou nos gates, mas foi rejeitado após a auditoria dos artefatos;
 - schemas Godot/Unity unificados entre cena e objeto, pivôs corrigidos e atlas protegido por rollback multi-arquivo;
 - harness reproduzível com Godot `4.7` e Unity `6000.5.7f1`; GLB importado no Unity pelo pacote oficial glTFast `6.19.0`;
 - caminhos e nomes Unicode aprovados nas duas engines reais;
-- `17` testes da etapa, `720` oficiais e `196` históricos com reconciliação `27/27`;
+- `17` testes da etapa, `725` oficiais e `196` históricos com reconciliação `27/27`;
 - cobertura local de `73,77%` de linhas, `57,91%` de branches e `69,93%` combinada; mypy sem erros em `70` arquivos;
 - Etapa 10: **APROVADA LOCALMENTE / NÃO INTEGRADA**; Etapa 11: **NÃO INICIADA**; release: **NÃO APROVADA**.
 
@@ -79,7 +79,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7, 8 e 9 possuem fechamento pós-merge comprovado. A Etapa 10 possui validação local real, mas integração, CI remoto e fechamento pós-merge continuam pendentes. Release permanece não aprovada.
+As Etapas 5, 6, 7, 8 e 9 possuem fechamento pós-merge comprovado. A Etapa 10 possui validação local real e PR `#42` aberta; o primeiro CI remoto foi rejeitado após a inspeção dos artefatos. Merge, CI final aceito e fechamento pós-merge continuam pendentes. Release permanece não aprovada.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
@@ -221,7 +221,7 @@ Por compatibilidade, a configuração continua em `config.json` na raiz do proje
 - `R-012` está mitigado por auditoria automatizada, mas limites operacionais permanecem na Etapa 12;
 - `R-013`: encerrado no escopo auditado após integração e CI pós-merge aprovado;
 - `LayersPanel` está integrado à `MainWindow` e coberto por teste Qt;
-- validação local Godot/Unity da Etapa 10 está aprovada, mas ainda não integrada; autosave, 2.5D, build Windows, instalador e release continuam pendentes;
+- validação local Godot/Unity da Etapa 10 está aprovada na PR `#42`, mas ainda não integrada; o primeiro CI foi rejeitado na auditoria dos artefatos; autosave, 2.5D, build Windows, instalador e release continuam pendentes;
 - `PERF-MAGNETIC-001`, `UI-RESIZE-PT-001`, `POLY-VALIDATION-UX-001`, `GLTF-2D-001`, `GLTF-UV-001`, `GLTF-MATERIAL-001`, `GLTF-U16-001` e `GLTF-CLEANUP-001` permanecem limitações registradas.
 
 ## Regras de continuidade

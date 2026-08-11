@@ -105,6 +105,16 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Estado operacional da evidência atual
 
+Candidato técnico da Etapa 10 em 10 de agosto de 2026:
+
+- PR `#42` aberta e ainda sem merge;
+- validação local real em Godot `4.7` e Unity `6000.5.7f1`;
+- CI remoto inicial `31450335289` com gates Linux/Windows aprovados, mas rejeitado após a inspeção dos artefatos;
+- correção do upload e da proveniência do resumo presente na PR, condicionada a nova execução remota e inspeção;
+- Etapa 10: APROVADA LOCALMENTE / NÃO INTEGRADA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
+
+### Snapshot integrado anterior — Etapa 9
+
 Encerramento formal da Etapa 9 em 10 de agosto de 2026:
 
 - commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;

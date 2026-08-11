@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -8,6 +9,7 @@ import pytest
 from PIL import Image
 from PySide6.QtWidgets import QApplication, QFileDialog, QMessageBox
 
+import tools.run_legacy_tests as legacy_runner
 from src.collision import polygon_collision_sat
 from src.core.commands import CommandManager
 from src.core.view_processor import ViewProcessor
@@ -21,7 +23,54 @@ from src.ui.layers_panel import LayersPanel
 from src.ui.main_window import MainWindow
 from src.ui.mask_viewer import MaskViewer
 from src.ui.theme_qss import QSS
-from tools.run_legacy_tests import reconcile_failures
+from tools.run_legacy_tests import (
+    reconcile_failures,
+    resolve_tested_commit,
+    working_tree_is_dirty,
+)
+
+
+def test_legacy_report_records_verified_tested_commit(
+    monkeypatch, tmp_path: Path
+) -> None:
+    expected = "a" * 40
+    monkeypatch.delenv("GITHUB_SHA", raising=False)
+    monkeypatch.setattr(
+        legacy_runner.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            args[0], 0, expected + "\n", ""
+        ),
+    )
+
+    assert resolve_tested_commit(tmp_path) == expected
+
+
+def test_legacy_report_rejects_ci_commit_mismatch(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setenv("GITHUB_SHA", "b" * 40)
+    monkeypatch.setattr(
+        legacy_runner.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            args[0], 0, "a" * 40 + "\n", ""
+        ),
+    )
+
+    with pytest.raises(RuntimeError, match="does not match CI commit"):
+        resolve_tested_commit(tmp_path)
+
+
+@pytest.mark.parametrize(("output", "expected"), [("", False), (" M file.py\n", True)])
+def test_legacy_report_records_working_tree_state(
+    monkeypatch, tmp_path: Path, output: str, expected: bool
+) -> None:
+    monkeypatch.setattr(
+        legacy_runner.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(args[0], 0, output, ""),
+    )
+
+    assert working_tree_is_dirty(tmp_path) is expected
 
 
 class _ConfigStub:

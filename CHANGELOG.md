@@ -11,8 +11,10 @@ Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real
 - protege PNG/JSON do atlas com rollback após falha no segundo commit;
 - adiciona harness reproduzível para Godot e Unity, com nomes e caminhos Unicode;
 - fixa o importador oficial Unity glTFast `6.19.0` e valida GLB real nas duas engines;
-- aprova `17` testes da etapa, `720` oficiais, `196` históricos com reconciliação `27/27`, mypy em `70` arquivos e cobertura combinada `69,93%`;
+- aprova `17` testes da etapa, `725` oficiais, `196` históricos com reconciliação `27/27`, mypy em `70` arquivos e cobertura combinada `69,93%`;
 - registra falhas de licença, bootstrap, `ApiUpdater` e ausência de importador GLB nativo sem convertê-las em sucesso;
+- abre a PR `#42`; rejeita o primeiro CI remoto `31450335289` apesar dos gates verdes, porque a inspeção dos artefatos revelou upload documental obsoleto e proveniência ambígua do resumo legado;
+- generaliza o upload de evidências e separa commit testado, estado da worktree e origem histórica no resumo reconciliado;
 - mantém Etapa 10 sem integração, Etapa 11 não iniciada e release não aprovada.
 
 ### Etapa 9 — integrada e encerrada no escopo aprovado

@@ -379,6 +379,10 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "poetry run bandit -q -r src -lll" in workflow
     assert "--cov-branch --cov-fail-under=62" in workflow
     assert "Run reconciled preserved legacy suite" in workflow
+    assert "docs/evidence/**" in workflow
+    assert (
+        "docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md" not in workflow
+    )
     assert "retention-days: 30" in workflow
     assert workflow.count("actions/checkout@v7") == 2
     assert workflow.count("actions/setup-python@v7") == 2
@@ -618,3 +622,23 @@ def test_stage9_closure_is_bound_to_merge_and_postmerge_ci():
     assert "31444322950" in closure
     assert "31444483410" in closure
     assert "não aprova release" in closure
+
+
+def test_stage10_remote_evidence_failure_is_preserved_without_overstatement():
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+        "docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md",
+    ):
+        value = _text(relative)
+        assert "#42" in value, relative
+        assert "31450335289" in value, relative
+        assert "rejeitad" in value, relative
+
+    evidence = _text("docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md")
+    assert "APROVADO LOCALMENTE / NÃO INTEGRADO" in evidence
+    assert "Release permanece **NÃO APROVADA**" in evidence
