@@ -214,12 +214,29 @@ def verify_manifest() -> int:
     actual = build_manifest()
     expected_files = expected.get("files", {})
     actual_files = actual["files"]
+    excluded_metadata = {"files", "baseline_date"}
     expected_metadata = {
-        key: value for key, value in expected.items() if key != "files"
+        key: value for key, value in expected.items() if key not in excluded_metadata
     }
-    actual_metadata = {key: value for key, value in actual.items() if key != "files"}
+    actual_metadata = {
+        key: value for key, value in actual.items() if key not in excluded_metadata
+    }
 
-    if forbidden or expected != actual:
+    baseline_date = expected.get("baseline_date")
+    try:
+        valid_baseline_date = (
+            isinstance(baseline_date, str)
+            and date.fromisoformat(baseline_date).isoformat() == baseline_date
+        )
+    except ValueError:
+        valid_baseline_date = False
+
+    if (
+        forbidden
+        or not valid_baseline_date
+        or expected_metadata != actual_metadata
+        or expected_files != actual_files
+    ):
         if forbidden:
             print("Forbidden tracked paths detected:")
             for item in forbidden:
@@ -228,6 +245,8 @@ def verify_manifest() -> int:
             print("Manifest metadata differs from the current integrity contract")
             print(f"Expected metadata: {expected_metadata}")
             print(f"Actual metadata:   {actual_metadata}")
+        if not valid_baseline_date:
+            print("Manifest baseline_date must be an ISO calendar date")
         expected_keys = set(expected_files)
         actual_keys = set(actual_files)
         for item in sorted(expected_keys - actual_keys):

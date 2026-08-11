@@ -1,14 +1,16 @@
 # Matriz funcional atual — NeoEng-D-Trace
 
-**Snapshot integrado:** 2026-08-10
+**Snapshot local:** 2026-08-10
 
-**Âncora integrada:** `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`
+**Última âncora integrada:** `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`
 
-**Estado:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
+**Candidato técnico:** Etapa 9 no commit `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; CI da PR `31444774539` aprovado; merge e CI pós-merge pendentes.
 
-**Fechamento anterior:** Etapa 7 integrada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
+**Estado integrado:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
 
-**Riscos:** `R-006` e `R-007` encerrados no escopo aprovado; Etapa 9 e release não iniciadas.
+**Fechamento integrado anterior:** Etapa 7 mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
+
+**Riscos:** `R-006` e `R-007` encerrados; `R-008` aprovado localmente para encerramento condicionado; release não aprovada.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -27,11 +29,11 @@ snapshot histórico.
 | JSON de cena/sprite | INTEGRADO / APROVADO NO ESCOPO GENÉRICO | colisão canônica integrada aos metadados de cena e objeto; contratos e atomicidade testados | perfis específicos Godot e Unity permanecem na Etapa 10 |
 | GLTF/GLB | APROVADO NO ESCOPO 2D | cena/objeto, bytes, metadados e subprocess headless | UV, material e contrato 2.5D permanecem |
 | Lasso magnético | APROVADO NO ESCOPO ATUAL | engine, preview assíncrono, QImage e ndarray reais | desempenho e UX ainda possuem limitações registradas |
-| APIs de lasso/SAT | INTEGRADO / APROVADO | alias único de `LassoTool`; SAT compatível coberto | revisão arquitetural ampla da Etapa 9 permanece |
+| Colisão estática e APIs | APROVADO PRÉ-MERGE / NÃO INTEGRADO | API pública `src.collision`; 39 casos da etapa; wrappers históricos por identidade; AST sem implementação concorrente; CI da PR `31444774539` aprovado em Linux e Windows | merge e CI pós-merge necessários para encerrar `R-008` |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
-| Tipagem | INTEGRADO / APROVADO | mypy com `check_untyped_defs`: zero erros em 66 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PARCIAL | 662 testes no fechamento; 72.95% de linhas, 56.48% de branches e 68.98% combinada; núcleo geométrico 95.59%/93.29% | metas globais finais de 90% linhas/85% branches não atingidas |
+| Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 69 arquivos | ampliar anotações explícitas gradualmente |
+| Cobertura | PARCIAL | 702 testes; 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica 89%–95% | metas globais finais de 90% linhas/85% branches não atingidas |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

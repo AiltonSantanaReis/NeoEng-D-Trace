@@ -53,7 +53,7 @@ def _close_ui(canvas, panel):
 
 def test_included_ui_methods_have_no_manual_fallbacks():
     side_methods = (
-        SidePanel._on_toggle_physics,
+        SidePanel._on_toggle_collision,
         SidePanel._on_delete,
         SidePanel._on_rename,
         SidePanel._modify_poly,
@@ -61,7 +61,7 @@ def test_included_ui_methods_have_no_manual_fallbacks():
         SidePanel._on_apply,
     )
     canvas_methods = (
-        CanvasView._toggle_physics,
+        CanvasView._toggle_collision,
         CanvasView._delete_object,
         CanvasView.clean_all,
     )
@@ -127,7 +127,7 @@ def test_side_panel_identity_collision_and_delete_use_history(
     qt_app.processEvents()
     panel.list.setCurrentRow(0)
 
-    panel._on_toggle_physics()
+    panel._on_toggle_collision()
     assert scene.has_collision("object")
     assert scene.cmd.undo_count == 1
 
@@ -209,7 +209,7 @@ def test_canvas_context_actions_use_history(
 ):
     scene, canvas, panel = _build_ui(qt_app)
 
-    canvas._toggle_physics("object")
+    canvas._toggle_collision("object")
     assert scene.has_collision("object")
     assert scene.cmd.undo(scene).status is CommandStatus.APPLIED
 

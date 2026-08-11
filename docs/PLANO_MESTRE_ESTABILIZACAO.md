@@ -6,6 +6,18 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
+Candidato técnico atual da Etapa 9:
+
+- commit técnico local `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
+- 39 testes da etapa, 702 oficiais e 196 históricos; reconciliação 27/27;
+- cobertura global 73.65% de linhas, 57.65% de branches e 69.79% combinada;
+- API pública única de colisão estática; namespace histórico sem implementações concorrentes;
+- CI da PR `31444774539`: Linux e Windows em `success`, zero anotações;
+- `R-008`: APROVADO PARA ENCERRAMENTO, condicionado a merge e CI pós-merge;
+- Etapa 9: EM VALIDAÇÃO PRÉ-MERGE; release: NÃO APROVADA.
+
+### Snapshot histórico imediatamente anterior — encerramento da Etapa 8
+
 - repositório: `AiltonSantanaReis/NeoEng-D-Trace`;
 - commits técnico/documental da Etapa 7: `a940ef13018aabc430126db3fd705b521fc1be06` e `51e55a37021c506471111ef1f4e7bc9abe67c65d`;
 - PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`;
@@ -19,8 +31,8 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 - CI da PR `31440755594` e pós-merge `31441024001`: Linux e Windows em `success`, zero anotações;
 - validação local: 125 testes focais, 661 totais no pacote pré-merge e 662 no fechamento; núcleo geométrico com 95.59% de linhas e 93.29% de branches;
 - `R-007`: ENCERRADO NO ESCOPO APROVADO; Etapa 8: CONCLUÍDA;
-- gate atual: executar a auditoria de física, colisão e APIs da Etapa 9;
-- Etapa 9: não iniciada; release: NÃO APROVADA.
+- gate naquele snapshot: executar a auditoria de física, colisão e APIs da Etapa 9;
+- naquele snapshot, Etapa 9: não iniciada; release: NÃO APROVADA.
 
 ### Snapshot histórico imediatamente anterior — encerramento da Etapa 6
 

@@ -3,7 +3,7 @@ import math
 import numpy as np
 import pytest
 
-from src.physics.convex_decomp import (
+from src.core.convex_decomp import (
     convex_decompose_polygon,
     is_convex_polygon,
     polygon_area,

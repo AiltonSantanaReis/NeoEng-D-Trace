@@ -47,11 +47,11 @@ class SidePanel(QWidget):
         self.btn_contract = QPushButton("Contract")
         self.btn_invert = QPushButton("Invert")
 
-        # Botão de Física (Toggle)
-        self.btn_physics = QPushButton("Physics: OFF")
-        self.btn_physics.setCheckable(True)
+        # Botão de forma de colisão
+        self.btn_collision = QPushButton("Collision: OFF")
+        self.btn_collision.setCheckable(True)
         # Estilo para destacar quando ativo (Azul)
-        self.btn_physics.setStyleSheet("""
+        self.btn_collision.setStyleSheet("""
             QPushButton { background-color: #3c3c3c; color: #aaaaaa; }
             QPushButton:checked { background-color: #007acc; color: white;
             border: 1px solid #0099ff; font-weight: bold; }
@@ -74,14 +74,14 @@ class SidePanel(QWidget):
         layout.addWidget(self.scene_objects_label)
         layout.addWidget(self.list)
 
-        # Grupo 1: Edição e Física
+        # Grupo 1: edição e colisão
         self.properties_group = QGroupBox("Properties")
         l_edit = QVBoxLayout()
         h_basic = QHBoxLayout()
         h_basic.addWidget(self.btn_rename)
         h_basic.addWidget(self.btn_delete)
         l_edit.addLayout(h_basic)
-        l_edit.addWidget(self.btn_physics)  # Adicionando o botão ao layout
+        l_edit.addWidget(self.btn_collision)  # Adicionando o botão ao layout
         self.properties_group.setLayout(l_edit)
         layout.addWidget(self.properties_group)
 
@@ -116,7 +116,7 @@ class SidePanel(QWidget):
         self.list.itemSelectionChanged.connect(self._on_select)
         self.btn_delete.clicked.connect(self._on_delete)
         self.btn_rename.clicked.connect(self._on_rename)
-        self.btn_physics.clicked.connect(self._on_toggle_physics)
+        self.btn_collision.clicked.connect(self._on_toggle_collision)
         self.btn_export.clicked.connect(self._on_export)
         self.btn_expand.clicked.connect(self._on_expand)
         self.btn_contract.clicked.connect(self._on_contract)
@@ -135,9 +135,9 @@ class SidePanel(QWidget):
                 "expand": "Expand",
                 "contract": "Contract",
                 "invert": "Invert",
-                "physics_off": "Physics: OFF",
-                "physics_on": "Physics: ON",
-                "physics_dash": "Physics: --",
+                "collision_off": "Collision: OFF",
+                "collision_on": "Collision: ON",
+                "collision_dash": "Collision: --",
                 "apply": "Apply",
                 "cancel": "Cancel",
                 "export_mask": "Export Mask",
@@ -152,7 +152,7 @@ class SidePanel(QWidget):
                 "rename_title": "Rename",
                 "new_id": "New id:",
                 "error": "Error",
-                "physics_toggle_error": "Physics Toggle Error: ",
+                "collision_toggle_error": "Collision Toggle Error: ",
                 "expand_title": "Expand",
                 "pixels": "Pixels:",
                 "contract_title": "Contract",
@@ -167,9 +167,9 @@ class SidePanel(QWidget):
                 "expand": "Expandir",
                 "contract": "Contrair",
                 "invert": "Inverter",
-                "physics_off": "Física: DESLIGADA",
-                "physics_on": "Física: LIGADA",
-                "physics_dash": "Física: --",
+                "collision_off": "Colisão: DESLIGADA",
+                "collision_on": "Colisão: LIGADA",
+                "collision_dash": "Colisão: --",
                 "apply": "Aplicar",
                 "cancel": "Cancelar",
                 "export_mask": "Exportar Máscara",
@@ -184,7 +184,7 @@ class SidePanel(QWidget):
                 "rename_title": "Renomear",
                 "new_id": "Novo id:",
                 "error": "Erro",
-                "physics_toggle_error": "Erro ao Alternar Física: ",
+                "collision_toggle_error": "Erro ao Alternar Colisão: ",
                 "expand_title": "Expandir",
                 "pixels": "Pixels:",
                 "contract_title": "Contrair",
@@ -249,20 +249,20 @@ class SidePanel(QWidget):
     def _update_button_states(self):
         oid, obj = self._get_selected_obj()
         if obj:
-            has_physics = oid in self.scene.collision_shapes
-            self.btn_physics.setChecked(has_physics)
-            self.btn_physics.setText(
+            has_collision = oid in self.scene.collision_shapes
+            self.btn_collision.setChecked(has_collision)
+            self.btn_collision.setText(
                 self.translations[self.current_lang][
-                    "physics_on" if has_physics else "physics_off"
+                    "collision_on" if has_collision else "collision_off"
                 ]
             )
-            self.btn_physics.setEnabled(True)
+            self.btn_collision.setEnabled(True)
         else:
-            self.btn_physics.setChecked(False)
-            self.btn_physics.setText(
-                self.translations[self.current_lang]["physics_dash"]
+            self.btn_collision.setChecked(False)
+            self.btn_collision.setText(
+                self.translations[self.current_lang]["collision_dash"]
             )
-            self.btn_physics.setEnabled(False)
+            self.btn_collision.setEnabled(False)
 
     def _on_select(self):
         self._update_button_states()
@@ -294,7 +294,7 @@ class SidePanel(QWidget):
             )
         return result
 
-    def _on_toggle_physics(self):
+    def _on_toggle_collision(self):
         oid, _ = self._get_selected_obj()
         if not oid:
             return
@@ -307,8 +307,13 @@ class SidePanel(QWidget):
             QMessageBox.critical(
                 self,
                 self.translations[self.current_lang]["error"],
-                self.translations[self.current_lang]["physics_toggle_error"] + str(exc),
+                self.translations[self.current_lang]["collision_toggle_error"]
+                + str(exc),
             )
+
+    def _on_toggle_physics(self):
+        """Compatibility adapter for historical callers."""
+        self._on_toggle_collision()
 
     def _on_delete(self):
         oid, _ = self._get_selected_obj()
@@ -572,5 +577,5 @@ class SidePanel(QWidget):
         self.btn_cancel.setText(t["cancel"])
         self.btn_export.setText(t["export_mask"])
         self.btn_export_now.setText(t["export_sprite"])
-        # Update physics button state
+        # Update collision button state
         self._update_button_states()

@@ -17,6 +17,8 @@ from PySide6.QtWidgets import (
     QToolBar,
 )
 
+# Imports de lógica e colisão estática
+from src.collision import StaticCollisionManager
 from src.core.app_identity import build_window_title
 from src.core.logger import logger
 from src.core.validation_events import (
@@ -30,9 +32,6 @@ from src.exporters.collision_exporter import (
 )
 from src.exporters.json_exporter import save_json_metadata
 from src.persistence import PROJECT_FILE_EXTENSION, build_project_document
-
-# Imports de Lógica e Física
-from src.physics.physics_manager import PhysicsManager
 from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
 from src.ui.collision_panel import CollisionPanel
@@ -182,13 +181,13 @@ class MainWindow(QMainWindow):
         self.tool_palette.setEnabled(False)
         self.side_panel.setEnabled(False)
 
-        # 4. Configuração de Física
-        self.physics_manager = PhysicsManager(grid_cell_size=64)
+        # 4. Configuração de colisão estática
+        self.collision_manager = StaticCollisionManager(grid_cell_size=64)
         self.collision_overlay = CollisionOverlay(scene)
         self.collision_panel = CollisionPanel(scene)
 
-        # Conexão Física -> UI
-        self.collision_panel.set_physics_manager(self.physics_manager)
+        # Conexão de colisão estática -> UI
+        self.collision_panel.set_collision_manager(self.collision_manager)
         self.collision_panel.batch_test_requested.connect(self._on_collision_batch_test)
         self.collision_panel.export_collisions_requested.connect(
             self._on_collision_export
@@ -269,7 +268,7 @@ class MainWindow(QMainWindow):
         self.language_button.clicked.connect(self.show_language_menu)
 
         # 6. Layout Principal (QSplitter para painéis redimensionáveis)
-        # Esquerda: Ferramentas | Centro: Canvas | Direita: Propriedades/Física
+        # Esquerda: Ferramentas | Centro: Canvas | Direita: Propriedades/Colisão
         splitter = QSplitter(Qt.Orientation.Horizontal)
         splitter.addWidget(self.tool_palette)
         splitter.addWidget(self.canvas)
@@ -1228,8 +1227,8 @@ class MainWindow(QMainWindow):
         self.canvas.update()
 
     def _on_collision_batch_test(self):
-        if self.physics_manager:
-            results = self.physics_manager.batch_test()
+        if self.collision_manager:
+            results = self.collision_manager.batch_test()
             overlay_results = [
                 {
                     "obj1_id": r.obj1_id,
@@ -1245,14 +1244,16 @@ class MainWindow(QMainWindow):
     def _on_collision_export(self):
         data = self._build_collision_document(
             results=self.collision_panel.collision_results,
-            statistics=self.physics_manager.get_stats() if self.physics_manager else {},
+            statistics=(
+                self.collision_manager.get_stats() if self.collision_manager else {}
+            ),
         )
         if data is None:
             return False
         return self._save_collision_json(data, "collision-results.json")
 
     def _on_collision_auto_generate(self):
-        if self.physics_manager:
+        if self.collision_manager:
             for shape_id, shape in self.scene.collision_shapes.items():
-                self.physics_manager.register(shape_id, shape)
+                self.collision_manager.register(shape_id, shape)
         self.canvas.update()
