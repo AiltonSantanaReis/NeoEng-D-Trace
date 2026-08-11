@@ -4,14 +4,14 @@
 
 Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 11 — em andamento, Pacote 1 local
+### Etapa 11 — em andamento, Pacotes 1 e 2
 
-- adiciona 11 testes comportamentais para elipse, canvas, diálogo e prévia de exportação e paleta de ferramentas;
-- aprova 742 testes no Windows/Python 3.11.9;
-- eleva a cobertura de 69,93% para 72,24% combinada, com 75,92% de linhas e 60,66% de branches;
+- adiciona 22 testes comportamentais para elipse, canvas, exportação, paleta, lasso magnético, máscara, pincel de colisão e edição poligonal;
+- aprova 754 testes no Windows/Python 3.11.9;
+- eleva a cobertura de 69,93% para 76,73% combinada, com 80,07% de linhas e 66,23% de branches;
 - elimina todos os módulos abaixo de 30% em linhas ou branches mensuráveis;
 - remove um ramo comprovadamente inalcançável da navegação anterior da paleta;
-- aceita o CI pré-merge `31473415874` somente após validar proveniência, digests, cobertura idêntica, legado, 47 evidências e 1.412 payloads; mantém `R-003` aberto, integração pendente e release não aprovada.
+- aceita os CIs do Pacote 1 `31473415874` e `31474121642` somente após validar proveniência, digests, cobertura idêntica, legado, 47 evidências e 1.412 payloads; mantém o Pacote 2 local, `R-003` aberto, integração pendente e release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 

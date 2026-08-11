@@ -6,15 +6,15 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Etapa 11 em andamento, Pacote 1 aprovado localmente em 11 de agosto de 2026:
+Etapa 11 em andamento, Pacotes 1 e 2 validados em 11 de agosto de 2026:
 
 - base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
-- 11 testes comportamentais novos e `742` testes oficiais aprovados no Windows/Python 3.11.9;
-- cobertura elevada para `75,92%` de linhas, `60,66%` de branches e `72,24%` combinada;
+- 22 testes comportamentais novos e `754` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura elevada para `80,07%` de linhas, `66,23%` de branches e `76,73%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- ramo inalcançável removido de `ToolPalette.select_previous_tool()`;
-- `R-003` permanece aberto: faltam ao menos 1.638 linhas e 902 branches cobertos para as metas finais;
-- CI pré-merge `31473415874` aceito após auditoria dos dois artefatos; pacote ainda não integrado e release **NÃO APROVADA**.
+- o Pacote 2 eleva lasso magnético, visualizador de máscara, pincel de colisão e edição poligonal;
+- `R-003` permanece aberto: faltam ao menos 1.155 linhas e 696 branches cobertos para as metas finais;
+- CIs do Pacote 1 `31473415874` e `31474121642` aceitos após auditoria; Pacote 2 ainda local, integração pendente e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
@@ -91,7 +91,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 está em andamento, com o Pacote 1 aprovado apenas localmente; a release permanece não aprovada.
+As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 está em andamento: o Pacote 1 possui CI pré-merge auditado e o Pacote 2 está aprovado apenas localmente; a release permanece não aprovada.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
