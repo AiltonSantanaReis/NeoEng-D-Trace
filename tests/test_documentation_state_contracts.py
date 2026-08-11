@@ -839,6 +839,33 @@ def test_stage11_packages_update_live_state_without_closing_r003():
     ):
         assert expected in package_6
 
+    postmerge = _text("docs/evidence/ETAPA_11_ENCERRAMENTO_POS_MERGE.md")
+    for expected in (
+        "3cd1616fed60101bbd809f530667227a5006c409",
+        "2a38b89e542390b3b4396a88d9a416f3695caadc",
+        "31489594270",
+        "93772672006",
+        "93772672083",
+        "9100512735",
+        "9100539788",
+        "31491221322",
+        "93777947832",
+        "93777947784",
+        "9101145671",
+        "9101167058",
+        "877 passed",
+        "10.787/11.628",
+        "3.147/3.700",
+        "90,91%",
+        "1.417 payloads",
+        "R003_CLOSURE_RECOMMENDED=YES",
+        "R003_CLOSED=YES",
+        "STAGE11_COMPLETED=YES",
+        "STAGE12_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in postmerge
+
     for relative in (
         "README.md",
         "CHANGELOG.md",
@@ -851,6 +878,8 @@ def test_stage11_packages_update_live_state_without_closing_r003():
         assert "Etapa 11" in value, relative
         assert "877" in value, relative
         assert "90,91%" in value, relative
+        assert "2a38b89e542390b3b4396a88d9a416f3695caadc" in value, relative
+        assert "31491221322" in value, relative
         assert "R-003" in value, relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative
