@@ -111,7 +111,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade e validação pré-merge.
 - `ETAPA_9_ENCERRAMENTO_POS_MERGE.md` — PR `#40`, merge, CI pós-merge, artefatos e encerramento formal de `R-008`/Etapa 9.
 - `ETAPA_11_COBERTURA_UI_PACOTE_1.md` — primeiro pacote local da Etapa 11; 742 testes, métricas exatas por módulo, zero módulos abaixo de 30% e `R-003` ainda aberto.
-- `ETAPA_11_COBERTURA_UI_PACOTE_2.md` — segundo pacote local da Etapa 11; lasso magnético, máscara, pincel de colisão e edição poligonal, com métricas exatas de linhas e ramos; `R-003` permanece aberto.
+- `ETAPA_11_COBERTURA_UI_PACOTE_2.md` — segundo pacote pré-merge da Etapa 11; lasso magnético, máscara, pincel de colisão e edição poligonal, com métricas exatas de linhas e ramos e CI auditado; `R-003` permanece aberto.
 
 ## Estado operacional da evidência atual
 
@@ -121,7 +121,7 @@ Etapa 11 em andamento, Pacotes 1 e 2 validados em 11 de agosto de 2026:
 - `22` testes focais e `754` testes oficiais aprovados no Windows/Python 3.11.9;
 - cobertura exata `9.314/11.632` linhas e `2.453/3.704` branches; `76,73%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CIs do Pacote 1 `31473415874` e `31474121642` aceitos após auditoria dos artefatos; Pacote 2 ainda local, `R-003` aberto, integração pendente e release não aprovada.
+- CIs dos Pacotes 1 e 2 `31473415874`, `31474121642` e `31476442683` aceitos após auditoria dos artefatos; `R-003` aberto, integração pendente e release não aprovada.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 

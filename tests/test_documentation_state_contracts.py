@@ -727,7 +727,14 @@ def test_stage11_package_2_updates_live_state_without_closing_r003():
     evidence = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_2.md")
     for expected in (
         "33a807ca41c549c283cad13250ca54b7e2bb6e0b",
+        "c9bafdd75a74a8dae39d814fd6b0ccf35a2f9f96",
         "753 passed",
+        "31476442683",
+        "93731130311",
+        "93731130325",
+        "9095447008",
+        "9095475339",
+        "1.413 payloads",
         "9.314/11.632",
         "2.453/3.704",
         "76,73%",
@@ -738,7 +745,7 @@ def test_stage11_package_2_updates_live_state_without_closing_r003():
         "R003_CLOSED=NO",
         "STAGE11_COMPLETED=NO",
         "RELEASE_APPROVED=NO",
-        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+        "APROVADO LOCAL E NO CI PRÉ-MERGE / NÃO INTEGRADO",
     ):
         assert expected in evidence
 

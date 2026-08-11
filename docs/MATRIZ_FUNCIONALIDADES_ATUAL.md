@@ -4,7 +4,7 @@
 
 **Última âncora integrada:** `5e88c8d548e2b60612601f83e1bf24aeb91081bb`
 
-**Estado atual:** Etapa 10 concluída e Etapa 11 em andamento. Os Pacotes 1 e 2 somam `22` testes comportamentais e `754` testes oficiais locais, com zero módulos abaixo de 30% e cobertura combinada de `76,73%`; CIs do Pacote 1 `31473415874` e `31474121642` aceitos após auditoria; Pacote 2 ainda local, integração e CI pós-merge pendentes; release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
+**Estado atual:** Etapa 10 concluída e Etapa 11 em andamento. Os Pacotes 1 e 2 somam `22` testes comportamentais e `754` testes oficiais locais, com zero módulos abaixo de 30% e cobertura combinada de `76,73%`; CIs dos Pacotes 1 e 2 `31473415874`, `31474121642` e `31476442683` aceitos após auditoria; integração e CI pós-merge pendentes; release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
 
 **Histórico integrado da Etapa 10:** PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; correção aceita em `31464786333`, integrada pela PR `#43` em `f8caec3e7156d308f03046f81d2c89996f959466` e reproduzida em `31469610508`.
 
@@ -35,7 +35,7 @@ snapshot histórico.
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 70 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PARCIAL / EM TRATAMENTO | Pacotes 1 e 2: 754 testes locais; 80,07% de linhas, 66,23% de branches, 76,73% combinada e zero módulos abaixo de 30% | metas globais de 90% linhas/85% branches não atingidas; faltam ao menos 1.155 linhas e 696 branches; Pacote 2, integração e CI pós-merge pendentes |
+| Cobertura | PARCIAL / EM TRATAMENTO | Pacotes 1 e 2: 754 testes locais; 80,07% de linhas, 66,23% de branches, 76,73% combinada e zero módulos abaixo de 30% | metas globais de 90% linhas/85% branches não atingidas; faltam ao menos 1.155 linhas e 696 branches; integração e CI pós-merge pendentes |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

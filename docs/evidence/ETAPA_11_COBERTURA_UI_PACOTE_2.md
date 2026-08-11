@@ -3,7 +3,7 @@
 **Data:** 11 de agosto de 2026
 **Base integrada:** `5e88c8d548e2b60612601f83e1bf24aeb91081bb`
 **Base técnica do pacote:** `33a807ca41c549c283cad13250ca54b7e2bb6e0b`
-**Estado:** APROVADO LOCALMENTE / NÃO INTEGRADO
+**Estado:** APROVADO LOCAL E NO CI PRÉ-MERGE / NÃO INTEGRADO
 **Release:** NÃO APROVADA
 
 ## Objetivo e escopo
@@ -110,9 +110,33 @@ Foram aprovados localmente:
 - suíte legada: 196 testes, 27 falhas históricas exatamente reconciliadas,
   zero inesperadas, zero ausentes, zero erros e zero ignorados.
 
-A baseline é regenerada e verificada depois deste fechamento documental.
-Resultados remotos somente serão aceitos após inspeção dos artefatos vinculados
-ao HEAD publicado.
+A baseline final foi regenerada e aprovada com 306 arquivos.
+
+## CI pré-merge auditado
+
+O workflow `31476442683` executou sobre o HEAD fonte
+`c9bafdd75a74a8dae39d814fd6b0ccf35a2f9f96`.
+
+- Linux: job `93731130311`, artefato `9095447008`, SHA-256
+  `9c43f7c79f53dad7253ffb8f21b0a399bb866fe2bf0407efea356d66b84f568b`;
+- Windows: job `93731130325`, artefato `9095475339`, SHA-256
+  `81641c9e0e2b7ee071ed4009f7c2305dc02af6f4a6dee10161c9996b2993ee06`;
+- merge sintético testado `ee5a5ca966fa343e13a2a00acb5cf7569afdb890`,
+  com pais base `5e88c8d548e2b60612601f83e1bf24aeb91081bb` e fonte
+  `c9bafdd75a74a8dae39d814fd6b0ccf35a2f9f96`;
+- `754 passed` nos dois sistemas, com cobertura semanticamente idêntica:
+  `9.314/11.632` linhas e `2.453/3.704` ramos;
+- legado Windows: 196 testes, reconciliação `27/27`, zero inesperadas, zero
+  ausentes, zero erros e árvore limpa;
+- 54 arquivos externos, 48 evidências e 1.413 payloads recursivos inspecionados;
+- 327 checksums internos validados e zero referências proibidas, caminhos
+  pessoais ou divergências de checksum;
+- os 42 arquivos textuais de evidência diferiram dos blobs apenas por CRLF no
+  checkout Windows; após normalização canônica de fim de linha, as 48
+  evidências coincidiram com o commit. Nenhuma outra diferença foi aceita.
+
+O CI pré-merge foi **ACEITO** após essa inspeção. Isso não comprova integração,
+CI pós-merge, encerramento de `R-003`, conclusão da Etapa 11 nem release.
 
 ## Riscos e decisão
 
@@ -122,7 +146,7 @@ ao HEAD publicado.
   com o denominador atual.
 - `canvas_view.py` e `export_dialog.py` continuam entre os alvos prioritários;
   módulos grandes de ferramentas e processamento também mantêm lacunas.
-- O Pacote 2 ainda não está integrado e não possui CI pós-merge.
+- O CI pré-merge do Pacote 2 foi aceito; integração e CI pós-merge não existem.
 - A Etapa 11 está **EM ANDAMENTO** e a release permanece **NÃO APROVADA**.
 
 ## Marcadores auditáveis
@@ -130,11 +154,14 @@ ao HEAD publicado.
 ```text
 BASE_COMMIT=5e88c8d548e2b60612601f83e1bf24aeb91081bb
 PACKAGE_BASE_COMMIT=33a807ca41c549c283cad13250ca54b7e2bb6e0b
+TECHNICAL_COMMIT=c9bafdd75a74a8dae39d814fd6b0ccf35a2f9f96
 LOCAL_TESTS_PASSED=754
 LOCAL_LINES_COVERED=9314/11632
 LOCAL_BRANCHES_COVERED=2453/3704
 MODULES_BELOW_30_LINES=0
 MODULES_BELOW_30_BRANCHES=0
+PRE_MERGE_CI_RUN=31476442683
+PRE_MERGE_CI_STATUS=ACCEPTED
 R003_CLOSED=NO
 STAGE11_COMPLETED=NO
 RELEASE_APPROVED=NO

@@ -14,7 +14,7 @@ Etapa 11 em andamento, Pacotes 1 e 2 validados em 11 de agosto de 2026:
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - o Pacote 2 eleva lasso magnético, visualizador de máscara, pincel de colisão e edição poligonal;
 - `R-003` permanece aberto: faltam ao menos 1.155 linhas e 696 branches cobertos para as metas finais;
-- CIs do Pacote 1 `31473415874` e `31474121642` aceitos após auditoria; Pacote 2 ainda local, integração pendente e release **NÃO APROVADA**.
+- CIs dos Pacotes 1 e 2 `31473415874`, `31474121642` e `31476442683` aceitos após auditoria; integração pendente e release **NÃO APROVADA**.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
@@ -91,7 +91,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 está em andamento: o Pacote 1 possui CI pré-merge auditado e o Pacote 2 está aprovado apenas localmente; a release permanece não aprovada.
+As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 está em andamento: os Pacotes 1 e 2 possuem CI pré-merge auditado, sem integração; a release permanece não aprovada.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
