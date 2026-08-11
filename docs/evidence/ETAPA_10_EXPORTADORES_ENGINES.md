@@ -100,7 +100,7 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 
 - testes específicos da etapa: `17 passed`;
 - pacote focal de exportadores e UI: `58 passed`;
-- suíte oficial completa: `729 passed`;
+- suíte oficial completa após a correção pós-merge: `730 passed`;
 - suíte histórica: `196` executados, `27/27` divergências previstas
   reconciliadas, zero inesperadas, zero ausentes e integridade aprovada;
 - cobertura: `8.582/11.634` linhas (`73,77%`), `2.146/3.706` branches
@@ -160,6 +160,10 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   `729` testes por sistema, merge sintético `0394d55501e32e2fa38acbcc4d1e3c5e126954ce`
   com ancestralidade válida, worktree limpa, cobertura exata, reconciliação
   `27/27`, `44` arquivos de evidência idênticos e zero violações recursivas.
+- A PR `#42` foi integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`.
+- O CI pós-merge `31463873481` terminou verde, mas foi rejeitado após os XMLs
+  mostrarem uma linha e um branch cobertos a menos no Linux. A causa e a
+  correção estão em `ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md`.
 
 ## Limitações e riscos residuais
 
@@ -173,12 +177,12 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   índice continuam fora desta etapa.
 - Cobertura integral da interface é a Etapa 11 e ainda não foi iniciada.
 - Build, instalador, autosave e validação de release continuam pendentes.
-- Três CIs remotos foram rejeitados após inspeções progressivas; o quarto foi aceito após auditoria integral. Merge e validação pós-merge ainda não ocorreram.
+- Três CIs pré-merge foram rejeitados e um foi aceito após auditoria integral. O merge ocorreu, mas o primeiro pós-merge foi rejeitado por cobertura não determinística.
 
 ## Decisão
 
-**APROVADO PRÉ-MERGE / NÃO INTEGRADO.** Os critérios funcionais da Etapa 10
-foram demonstrados no computador local, inclusive nas duas engines reais, e o
-CI Linux/Windows com artefatos foi aceito após inspeção independente. O
-encerramento formal depende de merge e CI pós-merge.
+**INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO.** Os critérios funcionais da
+Etapa 10 foram integrados e demonstrados nas duas engines reais. O primeiro CI
+pós-merge foi rejeitado após auditoria dos XMLs de cobertura. O encerramento
+formal depende da integração da correção determinística e de novo CI pós-merge.
 Release permanece **NÃO APROVADA**.

@@ -641,9 +641,26 @@ def test_stage10_remote_evidence_history_is_preserved_without_overstatement():
         assert "31451363518" in value, relative
         assert "31452032479" in value, relative
         assert "31457937902" in value, relative
+        assert "9b22bdc54b13992658172d4748bfab44f3127c8e" in value, relative
+        assert "31463873481" in value, relative
         assert "rejeitad" in value, relative
         assert "aceit" in value, relative
 
     evidence = _text("docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md")
-    assert "APROVADO PRÉ-MERGE / NÃO INTEGRADO" in evidence
+    assert "INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO" in evidence
     assert "Release permanece **NÃO APROVADA**" in evidence
+
+    correction = _text("docs/evidence/ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md")
+    for expected in (
+        "31463873481",
+        "93692633942",
+        "93692634029",
+        "9090792550",
+        "9090816311",
+        "8.581/11.634",
+        "8.582/11.634",
+        "test_manager_normalizes_reverse_broadphase_pair_order",
+        "730 passed",
+        "NÃO APROVADA",
+    ):
+        assert expected in correction

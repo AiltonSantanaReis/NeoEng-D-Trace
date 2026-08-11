@@ -1,10 +1,10 @@
 # Matriz funcional atual — NeoEng-D-Trace
 
-**Snapshot local:** 2026-08-10
+**Snapshot local:** 2026-08-11
 
-**Última âncora integrada:** `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`
+**Última âncora integrada:** `9b22bdc54b13992658172d4748bfab44f3127c8e`
 
-**Estado atual:** Etapa 9 integrada pela PR `#40`; Etapa 10 aprovada pré-merge na PR `#42`, ainda sem integração; os CIs `31450335289`, `31451363518` e `31452032479` foram rejeitados, e o run `31457937902` foi aceito por auditoria recursiva dos artefatos; release não aprovada.
+**Estado atual:** Etapa 10 integrada pela PR `#42`; CIs pré-merge `31450335289`, `31451363518` e `31452032479` rejeitados; `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; CI pós-merge `31463873481` rejeitado após divergência de cobertura entre Linux e Windows; correção determinística ainda não integrada; release não aprovada.
 
 **Estado integrado anterior:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
 
@@ -24,16 +24,16 @@ snapshot histórico.
 | Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31425585259` | nenhum no escopo da Etapa 5 |
 | Camadas e grupos | INTEGRADO / APROVADO | comandos reversíveis e `LayersPanel` integrado à `MainWindow` | cobertura total da UI permanece meta |
 | CLI/headless | INTEGRADO / APROVADO | matriz de argumentos, códigos `0`/`1`/`2`, subprocessos, saídas reais e CI pós-merge `31437000772` | múltiplas saídas não formam transação conjunta; build instalado permanece para a Etapa 14 |
-| Exportação de colisões | INTEGRADO / APROVADO; PERFIS PRÉ-MERGE NÃO INTEGRADOS | Etapa 6 e `R-005` encerrados; schema v1, PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI pós-merge `31431739320`; perfis Godot/Unity consumidos nas engines reais e CI pré-merge `31457937902` aceito | merge e CI pós-merge da Etapa 10 pendentes |
+| Exportação de colisões | PERFIS INTEGRADOS / FECHAMENTO PÓS-MERGE NÃO APROVADO | Etapa 6 e `R-005`: PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI `31431739320`; Etapa 10: PR `#42`, merge `9b22bdc54b13992658172d4748bfab44f3127c8e`, engines reais e pré-merge `31457937902` aceito | CI pós-merge `31463873481` rejeitado por cobertura não determinística; correção pendente |
 | Atlas | INTEGRADO / APROVADO; ROLLBACK LOCAL NÃO INTEGRADO | limites físico/JSON integrados; falha injetada no segundo commit restaura PNG/JSON | proteção contra interrupção física entre arquivos não é garantida pelo filesystem |
-| JSON de cena/sprite | APROVADO PRÉ-MERGE NAS ENGINES / NÃO INTEGRADO | schemas v1, pivôs, colisão, Unicode, consumo real em Godot/Unity e CI `31457937902` aceito | merge e CI pós-merge pendentes |
-| GLTF/GLB | APROVADO PRÉ-MERGE NAS ENGINES / NÃO INTEGRADO | estrutura externa e importação real no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0`; CI `31457937902` aceito | UV, material, 2.5D, merge e CI pós-merge pendentes |
+| JSON de cena/sprite | INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO | schemas v1, pivôs, colisão, Unicode, consumo real em Godot/Unity, PR `#42` e merge `9b22bdc54b13992658172d4748bfab44f3127c8e` | correção de cobertura e novo pós-merge pendentes |
+| GLTF/GLB | INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO | importação real no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0`; PR `#42` integrada | UV, material, 2.5D e novo pós-merge pendentes |
 | Lasso magnético | APROVADO NO ESCOPO ATUAL | engine, preview assíncrono, QImage e ndarray reais | desempenho e UX ainda possuem limitações registradas |
 | Colisão estática e APIs | INTEGRADO / APROVADO | API pública `src.collision`; 39 casos da etapa; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows | nenhum no escopo da Etapa 9 |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 70 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PARCIAL | 729 testes; 73,77% de linhas, 57,91% de branches e 69,93% combinada | metas globais finais de 90% linhas/85% branches não atingidas; Etapa 11 prioriza UI |
+| Cobertura | PARCIAL | 730 testes; 73,77% de linhas, 57,91% de branches e 69,93% combinada | metas globais finais de 90% linhas/85% branches não atingidas; Etapa 11 prioriza UI |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

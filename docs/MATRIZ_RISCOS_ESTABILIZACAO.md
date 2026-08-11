@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 11 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada. A Etapa 10 está aprovada pré-merge na PR `#42`, sem merge; os CIs `31450335289`, `31451363518` e `31452032479` foram rejeitados após inspeções progressivas, e o run `31457937902` foi aceito somente após validar proveniência, cobertura e artefatos recursivamente.
+Snapshot vivo de 11 de agosto de 2026. A Etapa 10 foi integrada pela PR `#42` no merge `9b22bdc54b13992658172d4748bfab44f3127c8e`. O CI pós-merge `31463873481` terminou verde, mas foi rejeitado porque a auditoria encontrou cobertura diferente entre Linux e Windows. A correção determinística ainda não foi integrada.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -117,7 +117,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-7 | CONCLUÍDA | Contrato integral da CLI integrado pela PR `#36`; merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a` e CI pós-merge `31437000772` aprovados sem anotações; `R-006` encerrado; Etapa 8 e release não iniciadas |
 | ETAPA-8 | CONCLUÍDA | Bézier e geometria integrados pela PR `#38`; merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e` e CI pós-merge `31441024001` aprovados; `R-007` encerrado |
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
-| ETAPA-10 | APROVADA PRÉ-MERGE / PR ABERTA / NÃO INTEGRADA | 17 testes da etapa, 729 oficiais por sistema, 27/27 legado e engines reais; PR `#42`; três CIs rejeitados; run `31457937902` aceito após auditoria recursiva; merge e pós-merge pendentes |
+| ETAPA-10 | INTEGRADA / FECHAMENTO PÓS-MERGE NÃO APROVADO | PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; pré-merge `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado após divergência Linux/Windows; correção local com 730 testes; PR corretiva e novo pós-merge pendentes |
 
 ## Severidades
 

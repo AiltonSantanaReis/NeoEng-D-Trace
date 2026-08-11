@@ -167,6 +167,19 @@ def test_mixed_identifier_types_are_deterministic() -> None:
     ]
 
 
+def test_manager_normalizes_reverse_broadphase_pair_order(monkeypatch) -> None:
+    manager = StaticCollisionManager()
+    manager.register("first", SQUARE)
+    manager.register("second", SQUARE, (1, 0))
+    monkeypatch.setattr(
+        manager.broadphase,
+        "get_all_pairs",
+        lambda: [("second", "first")],
+    )
+
+    assert manager._ordered_pairs() == [("first", "second")]
+
+
 def test_unhashable_identifier_is_rejected_controlled() -> None:
     with pytest.raises(ValueError, match="hashable"):
         StaticCollisionManager().register([], SQUARE)
