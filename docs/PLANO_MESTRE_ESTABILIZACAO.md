@@ -6,7 +6,16 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Encerramento formal da Etapa 10:
+Etapa 11 em andamento — Pacote 1 local:
+
+- base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
+- 11 testes comportamentais novos; suíte oficial `742 passed` no Windows/Python 3.11.9;
+- cobertura `75,92%` de linhas, `60,66%` de branches e `72,24%` combinada;
+- zero módulos abaixo de 30% em linhas ou branches mensuráveis;
+- `R-003` continua aberto; metas globais 90%/85% e validação remota permanecem pendentes;
+- pacote não integrado; Etapa 11 não concluída; release não aprovada.
+
+Snapshot integrado anterior — encerramento formal da Etapa 10:
 
 - branch funcional `etapa-10-exportadores-engines`, HEAD final `2d2afff2c57cd779750bcb9c02b24c421d73dc0c`, PR `#42` integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`;
 - primeiro CI remoto `31450335289`: gates Linux/Windows aprovados, mas resultado rejeitado porque o artefato omitiu a evidência atual e o resumo legado não identificou separadamente o HEAD testado;

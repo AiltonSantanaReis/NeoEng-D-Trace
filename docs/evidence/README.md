@@ -110,10 +110,19 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` — PR `#38`, merge, CI pós-merge, artefatos e encerramento formal de `R-007`/Etapa 8.
 - `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade e validação pré-merge.
 - `ETAPA_9_ENCERRAMENTO_POS_MERGE.md` — PR `#40`, merge, CI pós-merge, artefatos e encerramento formal de `R-008`/Etapa 9.
+- `ETAPA_11_COBERTURA_UI_PACOTE_1.md` — primeiro pacote local da Etapa 11; 742 testes, métricas exatas por módulo, zero módulos abaixo de 30% e `R-003` ainda aberto.
 
 ## Estado operacional da evidência atual
 
-Encerramento formal da Etapa 10 em 11 de agosto de 2026:
+Etapa 11 em andamento, Pacote 1 aprovado localmente em 11 de agosto de 2026:
+
+- base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
+- `11` testes focais e `742` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura exata `8.831/11.632` linhas e `2.247/3.704` branches;
+- zero módulos abaixo de 30% em linhas ou branches mensuráveis;
+- `R-003` aberto; pacote não integrado; CI remoto pendente; release não aprovada.
+
+Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
 - PR `#42` integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`;
 - validação local real em Godot `4.7` e Unity `6000.5.7f1`;

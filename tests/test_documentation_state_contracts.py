@@ -698,3 +698,35 @@ def test_stage10_remote_evidence_history_is_preserved_without_overstatement():
         "RELEASE_APPROVED=NO",
     ):
         assert expected in closure
+
+
+def test_stage11_package_1_is_local_partial_and_keeps_r003_open():
+    evidence = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_1.md")
+    for expected in (
+        "5e88c8d548e2b60612601f83e1bf24aeb91081bb",
+        "742 passed",
+        "8.831/11.632",
+        "2.247/3.704",
+        "MODULES_BELOW_30_LINES=0",
+        "MODULES_BELOW_30_BRANCHES=0",
+        "R003_CLOSED=NO",
+        "STAGE11_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+    ):
+        assert expected in evidence
+
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert "Etapa 11" in value, relative
+        assert "742" in value, relative
+        assert "R-003" in value, relative
+        assert "release" in value.lower(), relative
+        assert "não aprovada" in value.lower(), relative

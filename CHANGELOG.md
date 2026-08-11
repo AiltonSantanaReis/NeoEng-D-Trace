@@ -1,8 +1,17 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 10
+## [Unreleased] — programa de estabilização, Etapas 1 a 11
 
 Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 11 — em andamento, Pacote 1 local
+
+- adiciona 11 testes comportamentais para elipse, canvas, diálogo e prévia de exportação e paleta de ferramentas;
+- aprova 742 testes no Windows/Python 3.11.9;
+- eleva a cobertura de 69,93% para 72,24% combinada, com 75,92% de linhas e 60,66% de branches;
+- elimina todos os módulos abaixo de 30% em linhas ou branches mensuráveis;
+- remove um ramo comprovadamente inalcançável da navegação anterior da paleta;
+- mantém `R-003` aberto, integração e CI remoto pendentes e release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 
