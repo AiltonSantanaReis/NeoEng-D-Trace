@@ -2,15 +2,15 @@
 
 **Snapshot local:** 2026-08-10
 
-**Última âncora integrada:** `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`
+**Última âncora integrada:** `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`
 
-**Candidato técnico:** Etapa 9 no commit `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; CI da PR `31444774539` aprovado; merge e CI pós-merge pendentes.
+**Estado atual:** Etapa 9 integrada pela PR `#40`; CI pós-merge `31445518755` aprovado em Linux e Windows, sem anotações.
 
-**Estado integrado:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
+**Estado integrado anterior:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
 
 **Fechamento integrado anterior:** Etapa 7 mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
 
-**Riscos:** `R-006` e `R-007` encerrados; `R-008` aprovado localmente para encerramento condicionado; release não aprovada.
+**Riscos:** `R-006`, `R-007` e `R-008` encerrados nos escopos aprovados; `R-003` permanece aberto; release não aprovada.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -29,7 +29,7 @@ snapshot histórico.
 | JSON de cena/sprite | INTEGRADO / APROVADO NO ESCOPO GENÉRICO | colisão canônica integrada aos metadados de cena e objeto; contratos e atomicidade testados | perfis específicos Godot e Unity permanecem na Etapa 10 |
 | GLTF/GLB | APROVADO NO ESCOPO 2D | cena/objeto, bytes, metadados e subprocess headless | UV, material e contrato 2.5D permanecem |
 | Lasso magnético | APROVADO NO ESCOPO ATUAL | engine, preview assíncrono, QImage e ndarray reais | desempenho e UX ainda possuem limitações registradas |
-| Colisão estática e APIs | APROVADO PRÉ-MERGE / NÃO INTEGRADO | API pública `src.collision`; 39 casos da etapa; wrappers históricos por identidade; AST sem implementação concorrente; CI da PR `31444774539` aprovado em Linux e Windows | merge e CI pós-merge necessários para encerrar `R-008` |
+| Colisão estática e APIs | INTEGRADO / APROVADO | API pública `src.collision`; 39 casos da etapa; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows | nenhum no escopo da Etapa 9 |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 69 arquivos | ampliar anotações explícitas gradualmente |

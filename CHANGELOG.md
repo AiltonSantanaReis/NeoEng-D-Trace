@@ -4,7 +4,7 @@
 
 Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 9 — candidato técnico pré-merge
+### Etapa 9 — integrada e encerrada no escopo aprovado
 
 - consolida `src.collision` como API pública única de colisão estática e transforma `src.physics` em compatibilidade sem implementações concorrentes;
 - corrige IDs heterogêneos, validação geométrica, falso positivo côncavo e direção do MTV;
@@ -14,7 +14,8 @@ Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real
 - commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; `R-008` permanece aberto até merge e CI pós-merge; release não aprovada.
 - registra que o primeiro CI da PR (`31444322950`) falhou em Linux e Windows por manifesto de baseline desatualizado; o pacote corretivo regenera e verifica o manifesto antes de repetir o CI.
 - registra que o segundo CI (`31444483410`) expôs comparação não determinística de `baseline_date` após a virada UTC; a data passa a ser informativa, validada como ISO e coberta por regressão.
-- CI corrigido da PR `31444774539` aprova Linux e Windows sem anotações no HEAD `eed101ee03e74298e36c15cf271e378fd51be5dc`; merge e CI pós-merge continuam pendentes.
+- CI corrigido `31444774539` aprova Linux e Windows sem anotações no HEAD `eed101ee03e74298e36c15cf271e378fd51be5dc`.
+- CI final da PR `31445205968` aprova o HEAD documental `86cfb6b0cf43613417b12b3366f423216bd1e036`; PR `#40` mesclada em `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado nos dois sistemas, sem anotações; `R-008` encerrado; release não aprovada.
 
 ### Etapa 8 — integrada e encerrada no escopo aprovado
 

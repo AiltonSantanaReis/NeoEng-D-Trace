@@ -493,8 +493,8 @@ def test_stage7_cli_evidence_is_premerge_and_keeps_risk_open():
         assert marker in evidence
 
     assert "ETAPA_7_CLI_PRE_MERGE.md" in index
-    assert "Etapa 9: EM VALIDAÇÃO PRÉ-MERGE" in index
-    assert "R-008` permanece aberto até merge" in index
+    assert "Etapa 9: CONCLUÍDA" in index
+    assert "R-008`: ENCERRADO NO ESCOPO APROVADO" in index
 
 
 def test_stage8_geometry_evidence_is_premerge_and_keeps_risk_open():
@@ -581,3 +581,40 @@ def test_stage7_closure_is_bound_to_merge_and_postmerge_ci():
     premerge = _text("docs/evidence/ETAPA_7_CLI_PRE_MERGE.md")
     assert "APROVADO LOCALMENTE / NÃO INTEGRADO" in premerge
     assert "R-006` permanece aberto" in premerge
+
+
+def test_stage9_closure_is_bound_to_merge_and_postmerge_ci():
+    merge_commit = "76dd6b7ca3e7da08fab653d66ae29a33a839baf3"
+    postmerge_ci = "31445518755"
+    for relative in (
+        "README.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert merge_commit in value, relative
+        assert postmerge_ci in value, relative
+        assert "R-008" in value, relative
+        assert "Etapa 9" in value, relative
+
+    closure = _text("docs/evidence/ETAPA_9_ENCERRAMENTO_POS_MERGE.md")
+    for marker in (
+        "28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76",
+        "86cfb6b0cf43613417b12b3366f423216bd1e036",
+        merge_commit,
+        "31445205968",
+        postmerge_ci,
+        "9084385461",
+        "9084401751",
+        "R008_CLOSED=YES",
+        "STAGE9_COMPLETED=YES",
+        "STAGE10_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert marker in closure
+
+    assert "31444322950" in closure
+    assert "31444483410" in closure
+    assert "não aprova release" in closure

@@ -96,19 +96,21 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` — PR `#36`, merge, CI pós-merge, artefatos e encerramento formal de `R-006`/Etapa 7.
 - `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` — validação matemática local de Bézier, triangulação e degenerados; `R-007` permanece aberto até merge e CI pós-merge.
 - `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` — PR `#38`, merge, CI pós-merge, artefatos e encerramento formal de `R-007`/Etapa 8.
-- `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade, testes locais e CI da PR `31444774539` aprovado; `R-008` permanece aberto até merge e CI pós-merge.
+- `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade e validação pré-merge.
+- `ETAPA_9_ENCERRAMENTO_POS_MERGE.md` — PR `#40`, merge, CI pós-merge, artefatos e encerramento formal de `R-008`/Etapa 9.
 
 ## Estado operacional da evidência atual
 
-Candidato técnico pré-merge da Etapa 9 em 10 de agosto de 2026:
+Encerramento formal da Etapa 9 em 10 de agosto de 2026:
 
 - commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
 - validação local: 39 testes da etapa, 702 oficiais, 196 históricos e 27/27 divergências exatas;
 - cobertura: 73.65% de linhas, 57.65% de branches e 69.79% combinada;
-- `R-008`: APROVADO PARA ENCERRAMENTO, condicionado a merge e CI pós-merge;
-- Etapa 9: EM VALIDAÇÃO PRÉ-MERGE; release: NÃO APROVADA.
+- PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows;
+- `R-008`: ENCERRADO NO ESCOPO APROVADO;
+- Etapa 9: CONCLUÍDA; Etapa 10: NÃO INICIADA; release: NÃO APROVADA.
 
-O arquivo `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` é a evidência permanente deste gate local.
+Os arquivos `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` e `ETAPA_9_ENCERRAMENTO_POS_MERGE.md` preservam os gates local, remoto e pós-merge.
 
 ## Snapshot histórico anterior — encerramento da Etapa 8
 
