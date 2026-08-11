@@ -116,6 +116,14 @@ python tools/run_legacy_tests.py --group all
   candidato de release permanecem nas Etapas 12–14;
 - nenhum resultado local substitui CI de PR e CI pós-merge em Linux e Windows.
 
+## Primeira execução de CI da PR
+
+O run `31444322950` falhou antes da instalação e dos testes nos jobs Linux
+`93635193540` e Windows `93635193483`. A causa comum foi o manifesto de baseline
+não regenerado após os arquivos intencionais da etapa. A falha não foi tratada
+como teste aprovado: o pacote corretivo executa `--write`, confirma `--verify`
+localmente e exige nova execução integral dos dois jobs.
+
 ## Decisão pré-merge
 
 - `TECHNICAL_COMMIT_TESTED=YES`

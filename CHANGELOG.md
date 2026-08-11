@@ -12,6 +12,7 @@ Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real
 - adiciona 39 casos da etapa; aprova 701 testes oficiais e 27/27 divergências históricas exatas;
 - alcança 73.65% de linhas, 57.65% de branches e 69.79% combinada; módulos canônicos de colisão entre 89% e 95%;
 - commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; `R-008` permanece aberto até merge e CI pós-merge; release não aprovada.
+- registra que o primeiro CI da PR (`31444322950`) falhou em Linux e Windows por manifesto de baseline desatualizado; o pacote corretivo regenera e verifica o manifesto antes de repetir o CI.
 
 ### Etapa 8 — integrada e encerrada no escopo aprovado
 
