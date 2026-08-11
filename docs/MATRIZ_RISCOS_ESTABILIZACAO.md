@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada. A Etapa 10 está aprovada localmente na PR `#42`, sem merge; o primeiro CI remoto foi rejeitado após a inspeção dos artefatos.
+Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada. A Etapa 10 está aprovada localmente na PR `#42`, sem merge; os CIs remotos `31450335289` e `31451363518` foram rejeitados após a inspeção dos artefatos por lacunas distintas.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -117,7 +117,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-7 | CONCLUÍDA | Contrato integral da CLI integrado pela PR `#36`; merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a` e CI pós-merge `31437000772` aprovados sem anotações; `R-006` encerrado; Etapa 8 e release não iniciadas |
 | ETAPA-8 | CONCLUÍDA | Bézier e geometria integrados pela PR `#38`; merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e` e CI pós-merge `31441024001` aprovados; `R-007` encerrado |
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
-| ETAPA-10 | APROVADA LOCALMENTE / PR ABERTA / NÃO INTEGRADA | 17 testes da etapa, 725 oficiais, 27/27 legado e engines reais; PR `#42`; CI `31450335289` rejeitado após auditoria dos artefatos; correção, CI final aceito, merge e pós-merge pendentes |
+| ETAPA-10 | APROVADA LOCALMENTE / PR ABERTA / NÃO INTEGRADA | 17 testes da etapa, 727 oficiais, 27/27 legado e engines reais; PR `#42`; CIs `31450335289` e `31451363518` rejeitados após auditoria dos artefatos; schema v4, CI final aceito, merge e pós-merge pendentes |
 
 ## Severidades
 

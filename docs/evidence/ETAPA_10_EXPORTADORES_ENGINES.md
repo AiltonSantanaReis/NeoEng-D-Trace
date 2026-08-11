@@ -100,7 +100,7 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 
 - testes específicos da etapa: `17 passed`;
 - pacote focal de exportadores e UI: `58 passed`;
-- suíte oficial completa: `725 passed`;
+- suíte oficial completa: `727 passed`;
 - suíte histórica: `196` executados, `27/27` divergências previstas
   reconciliadas, zero inesperadas, zero ausentes e integridade aprovada;
 - cobertura: `8.582/11.634` linhas (`73,77%`), `2.146/3.706` branches
@@ -138,10 +138,17 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   captura, sem registrar separadamente o commit efetivamente testado. A origem
   histórica estava correta, mas o campo era ambíguo para auditoria operacional.
 - A PR permaneceu sem merge. O upload foi generalizado para `docs/evidence/**`
-  e o resumo passou a separar `tested_commit` de `legacy_source_commit`, registrar
-  `working_tree_dirty` e falhar se o HEAD local divergir de `GITHUB_SHA` no CI.
-- O encerramento continua condicionado a nova execução remota e nova inspeção
-  dos artefatos corrigidos.
+  e o resumo passou a separar `tested_commit`, `source_head_commit` e
+  `legacy_source_commit`, registrar `working_tree_dirty` e falhar se o HEAD da
+  branch não pertencer à revisão efetivamente testada pelo CI.
+- A execução `31451363518` aprovou novamente os gates e publicou todos os
+  arquivos de evidência. Mesmo assim, foi rejeitada: o resumo registrou o merge
+  sintético `1b37e0a30607498da7555b60d96e5c7c7a49d801`, mas não continha o
+  HEAD fonte `680120cf21b4491b861d08507354796a14a5b07b`; essa relação só era
+  demonstrável por metadado externo do serviço remoto.
+- O schema v4 agora registra `tested_commit` e `source_head_commit` e exige que
+  o segundo seja ancestral do primeiro. O encerramento continua condicionado a
+  nova execução remota e nova inspeção dos artefatos corrigidos.
 
 ## Limitações e riscos residuais
 
@@ -155,7 +162,7 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   índice continuam fora desta etapa.
 - Cobertura integral da interface é a Etapa 11 e ainda não foi iniciada.
 - Build, instalador, autosave e validação de release continuam pendentes.
-- O CI remoto inicial foi executado, porém rejeitado após a inspeção dos artefatos; CI final aceito, merge e validação pós-merge ainda não ocorreram.
+- Dois CIs remotos foram executados e rejeitados após a inspeção dos artefatos; CI final aceito, merge e validação pós-merge ainda não ocorreram.
 
 ## Decisão
 

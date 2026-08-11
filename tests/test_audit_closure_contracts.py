@@ -25,6 +25,7 @@ from src.ui.mask_viewer import MaskViewer
 from src.ui.theme_qss import QSS
 from tools.run_legacy_tests import (
     reconcile_failures,
+    resolve_source_head_commit,
     resolve_tested_commit,
     working_tree_is_dirty,
 )
@@ -71,6 +72,35 @@ def test_legacy_report_records_working_tree_state(
     )
 
     assert working_tree_is_dirty(tmp_path) is expected
+
+
+def test_legacy_report_records_source_head_ancestry(
+    monkeypatch, tmp_path: Path
+) -> None:
+    source = "b" * 40
+    tested = "a" * 40
+    monkeypatch.setenv("NEOENG_SOURCE_HEAD_SHA", source)
+    monkeypatch.setattr(
+        legacy_runner.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(args[0], 0, "", ""),
+    )
+
+    assert resolve_source_head_commit(tmp_path, tested) == source
+
+
+def test_legacy_report_rejects_unrelated_source_head(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("NEOENG_SOURCE_HEAD_SHA", "b" * 40)
+    monkeypatch.setattr(
+        legacy_runner.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(args[0], 1, "", ""),
+    )
+
+    with pytest.raises(RuntimeError, match="not part of the tested revision"):
+        resolve_source_head_commit(tmp_path, "a" * 40)
 
 
 class _ConfigStub:

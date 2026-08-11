@@ -385,6 +385,7 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     )
     assert "retention-days: 30" in workflow
     assert workflow.count("actions/checkout@v7") == 2
+    assert workflow.count("fetch-depth: 0") == 1
     assert workflow.count("actions/setup-python@v7") == 2
     assert workflow.count("actions/upload-artifact@v7") == 2
     assert "GitHub Security Advisory" in security
@@ -637,6 +638,7 @@ def test_stage10_remote_evidence_failure_is_preserved_without_overstatement():
         value = _text(relative)
         assert "#42" in value, relative
         assert "31450335289" in value, relative
+        assert "31451363518" in value, relative
         assert "rejeitad" in value, relative
 
     evidence = _text("docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md")

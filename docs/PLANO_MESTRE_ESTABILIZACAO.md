@@ -10,11 +10,12 @@ Candidato técnico da Etapa 10 na PR `#42`:
 
 - branch `etapa-10-exportadores-engines`, commit técnico `bb849d1b19959198b34a123cd6d07cda2ae82cd2`, PR `#42` aberta e ainda sem merge;
 - primeiro CI remoto `31450335289`: gates Linux/Windows aprovados, mas resultado rejeitado porque o artefato omitiu a evidência atual e o resumo legado não identificou separadamente o HEAD testado;
-- correção do workflow e da proveniência presente na PR, condicionada a nova execução e inspeção dos artefatos;
+- segundo CI remoto `31451363518`: gates aprovados e upload corrigido, mas resultado rejeitado porque o resumo portátil identificava somente o merge sintético testado, não o HEAD fonte da PR;
+- schema v4 presente na PR para registrar os dois commits e provar ancestralidade; nova execução e inspeção continuam obrigatórias;
 - perfis Godot/Unity corrigidos e unificados entre cena e objeto;
 - rollback multi-arquivo do atlas comprovado por falha injetada;
 - Godot `4.7` e Unity `6000.5.7f1` aprovados em caminhos Unicode, inclusive GLB;
-- `17` testes da etapa, `725` oficiais e `196` históricos com reconciliação `27/27`;
+- `17` testes da etapa, `727` oficiais e `196` históricos com reconciliação `27/27`;
 - cobertura `73,77%` de linhas, `57,91%` de branches e `69,93%` combinada; mypy sem erros em `70` arquivos;
 - Etapa 10: APROVADA LOCALMENTE / NÃO INTEGRADA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
 

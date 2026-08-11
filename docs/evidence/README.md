@@ -109,8 +109,8 @@ Candidato técnico da Etapa 10 em 10 de agosto de 2026:
 
 - PR `#42` aberta e ainda sem merge;
 - validação local real em Godot `4.7` e Unity `6000.5.7f1`;
-- CI remoto inicial `31450335289` com gates Linux/Windows aprovados, mas rejeitado após a inspeção dos artefatos;
-- correção do upload e da proveniência do resumo presente na PR, condicionada a nova execução remota e inspeção;
+- CIs remotos `31450335289` e `31451363518` com gates Linux/Windows aprovados, mas rejeitados após inspeção dos artefatos por lacunas distintas de publicação e proveniência;
+- schema v4 de proveniência presente na PR, condicionado a nova execução remota e inspeção;
 - Etapa 10: APROVADA LOCALMENTE / NÃO INTEGRADA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
 
 ### Snapshot integrado anterior — Etapa 9

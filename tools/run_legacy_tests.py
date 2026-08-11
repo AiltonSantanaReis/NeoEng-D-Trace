@@ -61,6 +61,26 @@ def working_tree_is_dirty(project_root: Path) -> bool:
     return bool(process.stdout.strip())
 
 
+def resolve_source_head_commit(project_root: Path, tested_commit: str) -> str:
+    source_head_commit = os.environ.get("NEOENG_SOURCE_HEAD_SHA", "").strip().lower()
+    if not source_head_commit:
+        return tested_commit
+    if len(source_head_commit) != 40 or any(
+        character not in "0123456789abcdef" for character in source_head_commit
+    ):
+        raise RuntimeError("Invalid source HEAD commit")
+    process = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", source_head_commit, tested_commit],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if process.returncode != 0:
+        raise RuntimeError("Source HEAD commit is not part of the tested revision")
+    return source_head_commit
+
+
 def load_manifest(project_root: Path) -> tuple[Path, dict]:
     legacy_root = project_root / "quality" / "legacy_tests"
     manifest_path = legacy_root / "manifest.json"
@@ -384,15 +404,17 @@ def main() -> int:
         )
 
     reconciliation = reconcile_failures(selected, results, expectations)
+    tested_commit = resolve_tested_commit(project_root)
     summary = {
-        "schema_version": 3,
+        "schema_version": 4,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "project_root": str(project_root),
         "python": sys.version,
         "platform": platform.platform(),
         "group": args.group,
         "integrity": "passed",
-        "tested_commit": resolve_tested_commit(project_root),
+        "tested_commit": tested_commit,
+        "source_head_commit": resolve_source_head_commit(project_root, tested_commit),
         "working_tree_dirty": working_tree_is_dirty(project_root),
         "legacy_source_commit": manifest["source_commit"],
         "reconciliation_manifest": str(reconciliation_path),

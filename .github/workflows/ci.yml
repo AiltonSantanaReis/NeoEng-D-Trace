@@ -100,6 +100,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v7
@@ -156,6 +158,8 @@ jobs:
 
       - name: Run reconciled preserved legacy suite
         run: poetry run python tools/run_legacy_tests.py --group all --output "${{ runner.temp }}/legacy-tests"
+        env:
+          NEOENG_SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Verify Windows source tree remained unchanged
         run: python tools/baseline_integrity.py --verify

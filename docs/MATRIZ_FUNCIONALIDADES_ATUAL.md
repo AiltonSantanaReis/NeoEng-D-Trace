@@ -4,7 +4,7 @@
 
 **Última âncora integrada:** `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`
 
-**Estado atual:** Etapa 9 integrada pela PR `#40`; Etapa 10 aprovada localmente na PR `#42`, ainda sem integração; o primeiro CI remoto `31450335289` foi rejeitado após a auditoria dos artefatos; release não aprovada.
+**Estado atual:** Etapa 9 integrada pela PR `#40`; Etapa 10 aprovada localmente na PR `#42`, ainda sem integração; os CIs remotos `31450335289` e `31451363518` foram rejeitados após a auditoria dos artefatos; release não aprovada.
 
 **Estado integrado anterior:** Etapa 8 integrada pela PR `#38`; CI pós-merge `31441024001` aprovado em Linux e Windows, sem anotações.
 
@@ -33,7 +33,7 @@ snapshot histórico.
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 70 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PARCIAL | 725 testes; 73,77% de linhas, 57,91% de branches e 69,93% combinada | metas globais finais de 90% linhas/85% branches não atingidas; Etapa 11 prioriza UI |
+| Cobertura | PARCIAL | 727 testes; 73,77% de linhas, 57,91% de branches e 69,93% combinada | metas globais finais de 90% linhas/85% branches não atingidas; Etapa 11 prioriza UI |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura
