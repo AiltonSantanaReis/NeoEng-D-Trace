@@ -639,6 +639,7 @@ def test_stage10_remote_evidence_failure_is_preserved_without_overstatement():
         assert "#42" in value, relative
         assert "31450335289" in value, relative
         assert "31451363518" in value, relative
+        assert "31452032479" in value, relative
         assert "rejeitad" in value, relative
 
     evidence = _text("docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md")

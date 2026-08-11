@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 10 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada. A Etapa 10 está aprovada localmente na PR `#42`, sem merge; os CIs remotos `31450335289` e `31451363518` foram rejeitados após a inspeção dos artefatos por lacunas distintas.
+Snapshot vivo de 11 de agosto de 2026. O estado real do GitHub e do HEAD local deve ser conferido antes de qualquer decisão; a Etapa 9 foi integrada e encerrada. A Etapa 10 está aprovada localmente na PR `#42`, sem merge; os CIs remotos `31450335289`, `31451363518` e `31452032479` foram rejeitados após inspeções progressivas; o terceiro revelou referências proibidas em ZIPs históricos aninhados, agora sanitizados com autorização explícita.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -100,8 +100,8 @@ Nenhum risco acima está encerrado por esta etapa.
 |---|---|---|
 | R-009 | ENCERRADO | Commit `f8f534edd74490f7264ebb153110ae65fce7066c`; workflow `Private validation` `#30` (`30596616841`); jobs Linux `test` (`91050247336`) e Windows `test-windows` (`91050247386`) concluídos com `success`; manifesto íntegro com 207 arquivos antes e depois |
 | R-010 | ENCERRADO | Instalação por `poetry sync` no Linux e Windows; lockfile canônico `43aaa1fd290d83f69c55ecf6bdc4abb7f55c170aa3172444f8828af01abeca86`; artefatos Linux `8780354978` e Windows `8780366021` vinculados ao commit validado |
-| ETAPA-2 | APROVADA PARA ENCERRAMENTO | PR `#9`; merge `d41093e706d3c8c555f64ef0c15c9ad40219a208`; workflow pós-merge `#36` (`30646258120`); jobs Linux `test` (`91208257924`) e Windows `test-windows` (`91208257772`) com `success`; artefatos `8799557767` e `8799571608`; pacote pós-merge `809c7b92da3a403e3a75f1f97a7f887c98c6174c798e32326b0cba93a8800e9c`; riscos R-001 a R-008 e R-011 a R-013 permanecem abertos |
-| R-001 | APROVADO PARA ENCERRAMENTO | PR `#11`; HEAD `891fbc9550b5bba9bce041272da1db1f3bc3a7b3`; merge `4a45e9c396da6cd63f44f1cf9792526c305478ec`; workflow da PR `#40` (`30672383923`) e workflow da `main` `#41` (`30672598358`) com Linux e Windows em `success`; `212` testes por sistema; round-trip completo preservando colisões e Béziers; migração legada; escrita atômica; pacote bruto `411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f`; pacote pós-merge `f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0`; encerramento condicionado à integração desta evidência e ao CI final da `main` |
+| ETAPA-2 | APROVADA PARA ENCERRAMENTO | PR `#9`; merge `d41093e706d3c8c555f64ef0c15c9ad40219a208`; workflow pós-merge `#36` (`30646258120`); jobs Linux `test` (`91208257924`) e Windows `test-windows` (`91208257772`) com `success`; artefatos `8799557767` e `8799571608`; pacote pós-merge `3aed50811c30d5f49ed7d53695d9e04a73cbac6135121128ff1ac0519a288ffc`; riscos R-001 a R-008 e R-011 a R-013 permanecem abertos |
+| R-001 | APROVADO PARA ENCERRAMENTO | PR `#11`; HEAD `891fbc9550b5bba9bce041272da1db1f3bc3a7b3`; merge `4a45e9c396da6cd63f44f1cf9792526c305478ec`; workflow da PR `#40` (`30672383923`) e workflow da `main` `#41` (`30672598358`) com Linux e Windows em `success`; `212` testes por sistema; round-trip completo preservando colisões e Béziers; migração legada; escrita atômica; pacote bruto `22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b`; pacote pós-merge `29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270`; encerramento condicionado à integração desta evidência e ao CI final da `main` |
 | ETAPA-3-PACOTE-1 | APROVADO PARA ENCERRAMENTO | Persistência v1 integrada por merge commit; correção de path traversal validada; `R-002` e `R-012` permanecem abertos; `R-007` permanece aberto para qualidade geométrica fora deste pacote |
 
 | R-002 | APROVADO PARA ENCERRAMENTO | PR `#13`; HEAD `3469a4a9bfab20fa8cd687e2925a64928e7903d3`; merge `4d663f028c5d501a2da44e3a34077023087df58c`; workflow da PR `#44` (`30741145009`) e workflow da `main` `#45` (`30746901415`) com Linux e Windows em `success`; validação manual GUI v4 com `15/15` checks aprovados, `0` erros automáticos, ciclo Abrir/Salvar, cancelamento, descarte, avisos de imagem, rejeição atômica de JSON corrompido e salvamento no fechamento; encerramento condicionado à integração desta evidência e ao CI final da `main` |
@@ -117,7 +117,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-7 | CONCLUÍDA | Contrato integral da CLI integrado pela PR `#36`; merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a` e CI pós-merge `31437000772` aprovados sem anotações; `R-006` encerrado; Etapa 8 e release não iniciadas |
 | ETAPA-8 | CONCLUÍDA | Bézier e geometria integrados pela PR `#38`; merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e` e CI pós-merge `31441024001` aprovados; `R-007` encerrado |
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
-| ETAPA-10 | APROVADA LOCALMENTE / PR ABERTA / NÃO INTEGRADA | 17 testes da etapa, 727 oficiais, 27/27 legado e engines reais; PR `#42`; CIs `31450335289` e `31451363518` rejeitados após auditoria dos artefatos; schema v4, CI final aceito, merge e pós-merge pendentes |
+| ETAPA-10 | APROVADA LOCALMENTE / PR ABERTA / NÃO INTEGRADA | 17 testes da etapa, 729 oficiais, 27/27 legado e engines reais; PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados após auditoria dos artefatos; ZIPs históricos sanitizados; CI final aceito, merge e pós-merge pendentes |
 
 ## Severidades
 

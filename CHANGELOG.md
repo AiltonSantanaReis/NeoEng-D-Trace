@@ -2,7 +2,7 @@
 
 ## [Unreleased] — programa de estabilização, Etapas 1 a 10
 
-Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
 ### Etapa 10 — aprovada localmente, não integrada
 
@@ -11,11 +11,12 @@ Registro documental contínuo, atualizado em 10 de agosto de 2026. O estado real
 - protege PNG/JSON do atlas com rollback após falha no segundo commit;
 - adiciona harness reproduzível para Godot e Unity, com nomes e caminhos Unicode;
 - fixa o importador oficial Unity glTFast `6.19.0` e valida GLB real nas duas engines;
-- aprova `17` testes da etapa, `727` oficiais, `196` históricos com reconciliação `27/27`, mypy em `70` arquivos e cobertura combinada `69,93%`;
+- aprova `17` testes da etapa, `729` oficiais, `196` históricos com reconciliação `27/27`, mypy em `70` arquivos e cobertura combinada `69,93%`;
 - registra falhas de licença, bootstrap, `ApiUpdater` e ausência de importador GLB nativo sem convertê-las em sucesso;
 - abre a PR `#42`; rejeita o primeiro CI remoto `31450335289` apesar dos gates verdes, porque a inspeção dos artefatos revelou upload documental obsoleto e proveniência ambígua do resumo legado;
 - generaliza o upload de evidências; rejeita também o segundo CI `31451363518`, que publicou os arquivos corretos, mas ainda exigia metadado externo para ligar o merge sintético ao HEAD da PR;
 - eleva o resumo para schema v4, separando merge testado, HEAD fonte, estado da worktree e origem histórica, com prova de ancestralidade;
+- rejeita o terceiro CI `31452032479` após o scanner profundo encontrar referências proibidas em ZIPs históricos aninhados; sanitiza quatro pacotes mediante autorização explícita e recalcula checksums e hashes dependentes;
 - mantém Etapa 10 sem integração, Etapa 11 não iniciada e release não aprovada.
 
 ### Etapa 9 — integrada e encerrada no escopo aprovado

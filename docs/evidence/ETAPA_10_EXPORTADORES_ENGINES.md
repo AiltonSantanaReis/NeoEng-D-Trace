@@ -100,7 +100,7 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 
 - testes específicos da etapa: `17 passed`;
 - pacote focal de exportadores e UI: `58 passed`;
-- suíte oficial completa: `727 passed`;
+- suíte oficial completa: `729 passed`;
 - suíte histórica: `196` executados, `27/27` divergências previstas
   reconciliadas, zero inesperadas, zero ausentes e integridade aprovada;
 - cobertura: `8.582/11.634` linhas (`73,77%`), `2.146/3.706` branches
@@ -147,7 +147,14 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   HEAD fonte `680120cf21b4491b861d08507354796a14a5b07b`; essa relação só era
   demonstrável por metadado externo do serviço remoto.
 - O schema v4 agora registra `tested_commit` e `source_head_commit` e exige que
-  o segundo seja ancestral do primeiro. O encerramento continua condicionado a
+  o segundo seja ancestral do primeiro.
+- A execução `31452032479` aprovou gates, upload e proveniência v4. A auditoria
+  recursiva, porém, encontrou `26` ocorrências repetidas de caminhos pessoais e
+  metadados de integração externa em ZIPs históricos aninhados. O resultado foi
+  rejeitado.
+- Mediante autorização explícita, quatro ZIPs foram sanitizados, os checksums
+  internos e hashes externos foram recalculados e um teste passou a examinar
+  arquivos rastreados e ZIPs aninhados. O encerramento continua condicionado a
   nova execução remota e nova inspeção dos artefatos corrigidos.
 
 ## Limitações e riscos residuais
@@ -162,7 +169,7 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   índice continuam fora desta etapa.
 - Cobertura integral da interface é a Etapa 11 e ainda não foi iniciada.
 - Build, instalador, autosave e validação de release continuam pendentes.
-- Dois CIs remotos foram executados e rejeitados após a inspeção dos artefatos; CI final aceito, merge e validação pós-merge ainda não ocorreram.
+- Três CIs remotos foram executados e rejeitados após inspeções progressivas dos artefatos; CI final aceito, merge e validação pós-merge ainda não ocorreram.
 
 ## Decisão
 
