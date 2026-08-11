@@ -11,7 +11,7 @@ Candidato técnico pré-merge da Etapa 9, validado localmente em 10 de agosto de
 - commit técnico: `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
 - API pública única em `src.collision`; `src.physics` preservado somente como compatibilidade sem implementações próprias;
 - falhas corrigidas: IDs heterogêneos, falso positivo côncavo, entradas inválidas, MTV invertido e promessas inertes de física dinâmica;
-- suíte local: 39 casos da etapa, 701 testes oficiais e 196 históricos com 27/27 divergências exatas;
+- suíte local: 39 casos da etapa, 702 testes oficiais e 196 históricos com 27/27 divergências exatas;
 - cobertura: 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica entre 89% e 95%;
 - `R-008`: **APROVADO PARA ENCERRAMENTO, CONDICIONADO A MERGE E CI PÓS-MERGE**;
 - Etapa 9: **EM VALIDAÇÃO PRÉ-MERGE**; release: **NÃO APROVADA**.

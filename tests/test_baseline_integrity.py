@@ -67,3 +67,28 @@ def test_tracked_forbidden_environment_file_is_blocked(
 
     assert baseline_integrity.find_forbidden_paths() == [".venv/tracked.pyc"]
     assert baseline_integrity.write_manifest() == 2
+
+
+def test_manifest_date_is_informational_but_must_be_valid(
+    monkeypatch, tmp_path: Path
+) -> None:
+    _init_repository(tmp_path)
+    (tmp_path / "app.py").write_text("print('ok')\n", encoding="utf-8")
+    _git(tmp_path, "add", "app.py")
+    monkeypatch.setattr(baseline_integrity, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        baseline_integrity,
+        "MANIFEST_PATH",
+        tmp_path / "baseline_manifest.json",
+    )
+    assert baseline_integrity.write_manifest() == 0
+
+    manifest_path = tmp_path / "baseline_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["baseline_date"] = "2000-01-01"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    assert baseline_integrity.verify_manifest() == 0
+
+    manifest["baseline_date"] = "not-a-date"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    assert baseline_integrity.verify_manifest() == 1

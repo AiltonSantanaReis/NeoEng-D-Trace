@@ -33,7 +33,7 @@ snapshot histórico.
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança de dependências | INTEGRADO / APROVADO | Pillow 12.3.0; `pip-audit` sem vulnerabilidades conhecidas | nova auditoria obrigatória a cada lock/release |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 69 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | PARCIAL | 701 testes; 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica 89%–95% | metas globais finais de 90% linhas/85% branches não atingidas |
+| Cobertura | PARCIAL | 702 testes; 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica 89%–95% | metas globais finais de 90% linhas/85% branches não atingidas |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

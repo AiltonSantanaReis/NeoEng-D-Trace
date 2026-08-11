@@ -103,7 +103,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 Candidato técnico pré-merge da Etapa 9 em 10 de agosto de 2026:
 
 - commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
-- validação local: 39 testes da etapa, 701 oficiais, 196 históricos e 27/27 divergências exatas;
+- validação local: 39 testes da etapa, 702 oficiais, 196 históricos e 27/27 divergências exatas;
 - cobertura: 73.65% de linhas, 57.65% de branches e 69.79% combinada;
 - `R-008`: APROVADO PARA ENCERRAMENTO, condicionado a merge e CI pós-merge;
 - Etapa 9: EM VALIDAÇÃO PRÉ-MERGE; release: NÃO APROVADA.

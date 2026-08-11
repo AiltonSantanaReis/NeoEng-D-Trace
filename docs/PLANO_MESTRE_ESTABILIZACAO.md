@@ -9,7 +9,7 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 Candidato técnico atual da Etapa 9:
 
 - commit técnico local `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
-- 39 testes da etapa, 701 oficiais e 196 históricos; reconciliação 27/27;
+- 39 testes da etapa, 702 oficiais e 196 históricos; reconciliação 27/27;
 - cobertura global 73.65% de linhas, 57.65% de branches e 69.79% combinada;
 - API pública única de colisão estática; namespace histórico sem implementações concorrentes;
 - `R-008`: APROVADO PARA ENCERRAMENTO, condicionado a merge e CI pós-merge;

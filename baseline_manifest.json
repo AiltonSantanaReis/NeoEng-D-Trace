@@ -29,11 +29,11 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "65d57b147ddc0734dacd21ef705aa22b76e1f2f57f9e8e20aac37a50bcc1c80b",
-      "size": 38253
+      "sha256": "f6afe7b7db2360a9c216f1e3e63ac9bd6c137b1d8cb400aef3614a82cf1a2bb2",
+      "size": 38453
     },
     "README.md": {
-      "sha256": "98ced3d97dcc95b6dc809d54e450a151b3ff97444ebc9a010fb36f262e05989f",
+      "sha256": "30369d839f743881faf277970a137013f815380e7b5025aaaafa690d45992113",
       "size": 13419
     },
     "SECURITY.md": {
@@ -209,11 +209,11 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "154a3f1ac7722c7b6fa756dd9f0f42c338012ffb0a8039303eef7aa66036184f",
+      "sha256": "d86d43d37f857cdb27a5640fbfbcd510009a0d5a49d623c626af7310c1cd74de",
       "size": 4056
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "94aea2a5852829abd9127f66d0be52a53e1689a9f77ce6b984713d3942e56ce2",
+      "sha256": "3be954b8f847ad8601e81e0ced517172c9ac1ba211c357b8bbea60d2c38bea90",
       "size": 13918
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
@@ -221,7 +221,7 @@
       "size": 10374
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "1cbbb7e4e856caf5d388634496a9a228319ffeabe8ee06da240de75fc5fab955",
+      "sha256": "8ef66f2b5c8931c1c9bb8a8e0fbe58a5bc83bbf8da9d008cef935cf5d4c75505",
       "size": 8590
     },
     "docs/PLANO_RENOMEACAO.md": {
@@ -433,11 +433,11 @@
       "size": 3517
     },
     "docs/evidence/ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md": {
-      "sha256": "695665709101cba083452d8e8800b0e4dd7f4a990fe712d0dd559b851dfaed07",
-      "size": 6297
+      "sha256": "dba565f761b7a364e46d64c5dcc6bff631b7652ce59c31f877d17dc3554993ad",
+      "size": 6851
     },
     "docs/evidence/README.md": {
-      "sha256": "fa08986b8113615222187a14e5eea05ba066a343a3b61eff1c2f63301eed0a9b",
+      "sha256": "1f3eba9072a15da70a6e364d8d7452d5cf0092815d1cc237075163e2efc880dd",
       "size": 14749
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
@@ -949,8 +949,8 @@
       "size": 5717
     },
     "tests/test_baseline_integrity.py": {
-      "sha256": "9ee523a7d29aa8d0dc6b404aa2ff2bb1151d735ef6b1d30ddb67683f0a9f263c",
-      "size": 2123
+      "sha256": "147120451fec1175694d82ced6a2c7fe39c121e780fdec2592945a0065c9122e",
+      "size": 3070
     },
     "tests/test_broadphase_sap.py": {
       "sha256": "7502f0b512513d22d32f0dac45cc4e06eda793609b2547e994cc8337116640e6",
@@ -1161,8 +1161,8 @@
       "size": 1709
     },
     "tools/baseline_integrity.py": {
-      "sha256": "1bff7dd7ab4cacb001fdfc5533e078097aff6f1a523bb275a10de936ef6a3753",
-      "size": 7692
+      "sha256": "d9767b0fd6c117efea23ec5685cfca3bc7027a8f4c7fc82a38c9ca3228870517",
+      "size": 8296
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",

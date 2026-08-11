@@ -83,12 +83,14 @@ python -m pip_audit
 python -m bandit -q -r src -lll
 python -m pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml -q
 python tools/run_legacy_tests.py --group all
+python tools/baseline_integrity.py --write
+python tools/baseline_integrity.py --verify
 ```
 
 ## Resultados locais finais
 
 - testes novos da Etapa 9: `39` coletados;
-- suíte oficial: `701 passed`, zero falhas, zero erros, zero ignorados;
+- suíte oficial: `702 passed`, zero falhas, zero erros, zero ignorados;
 - suíte histórica: `196` executados;
 - reconciliação histórica: `27/27`, zero inesperadas e zero ausentes;
 - cobertura global: `73.65%` de linhas e `57.65%` de branches;
@@ -123,6 +125,13 @@ O run `31444322950` falhou antes da instalação e dos testes nos jobs Linux
 não regenerado após os arquivos intencionais da etapa. A falha não foi tratada
 como teste aprovado: o pacote corretivo executa `--write`, confirma `--verify`
 localmente e exige nova execução integral dos dois jobs.
+
+O segundo run `31444483410` também falhou antes dos testes. O manifesto já
+continha os arquivos corretos, mas `baseline_date` era recalculado pela data
+local de cada executor: o valor gerado em 10 de agosto divergiu dos runners em
+11 de agosto UTC. A causa raiz foi corrigida para tratar a data como metadado
+informativo ISO válido, sem comparar o dia corrente, com teste de regressão que
+verifica um manifesto válido de dia anterior e rejeita data malformada.
 
 ## Decisão pré-merge
 

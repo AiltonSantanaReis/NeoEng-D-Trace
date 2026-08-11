@@ -116,7 +116,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-6 | CONCLUÍDA | Contrato de colisões v1 integrado pela PR `#33`; merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI pós-merge `31431739320` aprovados; `R-005` encerrado; Etapa 7 e release não iniciadas |
 | ETAPA-7 | CONCLUÍDA | Contrato integral da CLI integrado pela PR `#36`; merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a` e CI pós-merge `31437000772` aprovados sem anotações; `R-006` encerrado; Etapa 8 e release não iniciadas |
 | ETAPA-8 | CONCLUÍDA | Bézier e geometria integrados pela PR `#38`; merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e` e CI pós-merge `31441024001` aprovados; `R-007` encerrado |
-| ETAPA-9 | APROVADA LOCALMENTE / NÃO INTEGRADA | commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; 701 testes oficiais, 27/27 legado e 69.79% combinada; `R-008` continua aberto até merge e CI pós-merge |
+| ETAPA-9 | APROVADA LOCALMENTE / NÃO INTEGRADA | commit técnico `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`; 702 testes oficiais, 27/27 legado e 69.79% combinada; `R-008` continua aberto até merge e CI pós-merge |
 
 ## Severidades
 
