@@ -43,7 +43,9 @@ par inverso e comprova a normalização sem depender de plataforma ou hash seed.
 - linhas: `8.582/11.634` (`73,77%`);
 - branches: `2.146/3.706` (`57,91%`);
 - cobertura combinada: `69,93%`;
-- baseline: `300` arquivos;
-- Etapa 10 integrada, mas encerramento pós-merge ainda não aprovado;
-- PR corretiva, CI remoto, merge corretivo e novo CI pós-merge: pendentes;
+- baseline: `301` arquivos;
+- CI pré-merge corretivo `31464786333`: aceito após auditoria dos artefatos;
+- PR corretiva `#43` integrada em `f8caec3e7156d308f03046f81d2c89996f959466`;
+- CI pós-merge `31469610508`: aceito após auditoria dos artefatos;
+- Etapa 10: concluída no escopo aprovado;
 - release: **NÃO APROVADA**.

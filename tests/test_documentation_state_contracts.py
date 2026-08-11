@@ -643,11 +643,15 @@ def test_stage10_remote_evidence_history_is_preserved_without_overstatement():
         assert "31457937902" in value, relative
         assert "9b22bdc54b13992658172d4748bfab44f3127c8e" in value, relative
         assert "31463873481" in value, relative
+        assert "#43" in value, relative
+        assert "31464786333" in value, relative
+        assert "f8caec3e7156d308f03046f81d2c89996f959466" in value, relative
+        assert "31469610508" in value, relative
         assert "rejeitad" in value, relative
         assert "aceit" in value, relative
 
     evidence = _text("docs/evidence/ETAPA_10_EXPORTADORES_ENGINES.md")
-    assert "INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO" in evidence
+    assert "CONCLUÍDO NO ESCOPO APROVADO" in evidence
     assert "Release permanece **NÃO APROVADA**" in evidence
 
     correction = _text("docs/evidence/ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md")
@@ -661,6 +665,36 @@ def test_stage10_remote_evidence_history_is_preserved_without_overstatement():
         "8.582/11.634",
         "test_manager_normalizes_reverse_broadphase_pair_order",
         "730 passed",
+        "31464786333",
+        "#43",
+        "f8caec3e7156d308f03046f81d2c89996f959466",
+        "31469610508",
         "NÃO APROVADA",
     ):
         assert expected in correction
+
+    closure = _text("docs/evidence/ETAPA_10_ENCERRAMENTO_POS_MERGE.md")
+    for expected in (
+        "31463873481",
+        "31464786333",
+        "93695329283",
+        "93695329206",
+        "9091131139",
+        "9091140223",
+        "31469610508",
+        "93709824327",
+        "93709824406",
+        "9092862008",
+        "9092878881",
+        "730 passed",
+        "8.582/11.634",
+        "2.146/3.706",
+        "45",
+        "1.410",
+        "CORRECTIVE_PR_MERGED=YES",
+        "POST_MERGE_CI_STATUS=SUCCESS",
+        "STAGE10_COMPLETED=YES",
+        "STAGE11_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in closure

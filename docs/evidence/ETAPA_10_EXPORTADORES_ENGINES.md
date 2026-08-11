@@ -6,7 +6,7 @@
 - Base auditada: `f2d44c9ce6645a343e5e515303cc6c3c75443ae7`.
 - Commit técnico: `bb849d1b19959198b34a123cd6d07cda2ae82cd2`.
 - Data local: 10 de agosto de 2026.
-- Estado: aprovado localmente; PR `#42` aberta; não integrado; CI final ainda não aceito.
+- Estado: concluído após as PRs `#42` e `#43` e o CI pós-merge corretivo `31469610508`.
 
 ## Objetivo e escopo
 
@@ -164,6 +164,11 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
 - O CI pós-merge `31463873481` terminou verde, mas foi rejeitado após os XMLs
   mostrarem uma linha e um branch cobertos a menos no Linux. A causa e a
   correção estão em `ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md`.
+- O CI pré-merge corretivo `31464786333` foi aceito após auditoria integral; a
+  PR `#43` foi integrada em `f8caec3e7156d308f03046f81d2c89996f959466`.
+- O CI pós-merge corretivo `31469610508` foi aceito após confirmar `730` testes,
+  cobertura idêntica nos dois sistemas, legado `27/27`, `45` evidências e zero
+  violações em `1.410` payloads.
 
 ## Limitações e riscos residuais
 
@@ -177,12 +182,12 @@ fixture também usou o nome `sprite_ação`, exigido pelos dois validadores.
   índice continuam fora desta etapa.
 - Cobertura integral da interface é a Etapa 11 e ainda não foi iniciada.
 - Build, instalador, autosave e validação de release continuam pendentes.
-- Três CIs pré-merge foram rejeitados e um foi aceito após auditoria integral. O merge ocorreu, mas o primeiro pós-merge foi rejeitado por cobertura não determinística.
+- Três CIs funcionais foram rejeitados, um pré-merge funcional foi aceito e o primeiro pós-merge foi rejeitado; a correção foi integrada e reproduzida no pós-merge `31469610508`.
 
 ## Decisão
 
-**INTEGRADO / FECHAMENTO PÓS-MERGE NÃO APROVADO.** Os critérios funcionais da
-Etapa 10 foram integrados e demonstrados nas duas engines reais. O primeiro CI
-pós-merge foi rejeitado após auditoria dos XMLs de cobertura. O encerramento
-formal depende da integração da correção determinística e de novo CI pós-merge.
+**CONCLUÍDO NO ESCOPO APROVADO.** Os critérios funcionais da Etapa 10 foram
+integrados e demonstrados nas duas engines reais. O primeiro CI pós-merge foi
+rejeitado, a correção determinística foi integrada pela PR `#43` e o novo CI
+pós-merge `31469610508` reproduziu cobertura idêntica em Linux e Windows.
 Release permanece **NÃO APROVADA**.

@@ -54,7 +54,10 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
   harness reproduzível, validação real em ambas as engines e decisão local
   pré-merge; não representa integração nem aprovação de release.
 - `ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md` — merge da PR `#42`, CI pós-merge
-  verde rejeitado, divergência de cobertura e correção determinística pendente.
+  verde rejeitado, causa-raiz, correção determinística, PR `#43` e validações aceitas.
+- `ETAPA_10_ENCERRAMENTO_POS_MERGE.md` — CI corretivo `31464786333`, merge
+  `f8caec3e7156d308f03046f81d2c89996f959466`, pós-merge `31469610508`,
+  artefatos auditados e encerramento formal sem aprovação de release.
 
 - `ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md` — validações da Etapa 1
   anteriores ao merge.
@@ -110,15 +113,15 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Estado operacional da evidência atual
 
-Estado integrado da Etapa 10 em 11 de agosto de 2026:
+Encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
 - PR `#42` integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`;
 - validação local real em Godot `4.7` e Unity `6000.5.7f1`;
 - CIs remotos `31450335289`, `31451363518` e `31452032479` rejeitados após inspeções progressivas dos artefatos;
 - run `31457937902` aceito após validar schema v4, ancestralidade, `729` testes por sistema, cobertura exata, `44` arquivos publicados e varredura recursiva sem violações;
 - CI pós-merge `31463873481` rejeitado após detectar `8.581/2.145` cobertos no Linux contra `8.582/2.146` no Windows;
-- correção local: `730` testes e cobertura restaurada; PR corretiva e novo pós-merge pendentes;
-- Etapa 10: INTEGRADA / FECHAMENTO PÓS-MERGE NÃO APROVADO; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
+- CI corretivo `31464786333` aceito; PR `#43` integrada em `f8caec3e7156d308f03046f81d2c89996f959466`; pós-merge `31469610508` aceito após auditoria de `51` arquivos e `1.410` payloads;
+- Etapa 10: CONCLUÍDA; Etapa 11: NÃO INICIADA; release: NÃO APROVADA.
 
 ### Snapshot integrado anterior — Etapa 9
 
