@@ -18,13 +18,13 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 11 de agosto de 2026. A Etapa 10 foi encerrada e a Etapa 11 está em andamento sobre a base `5e88c8d548e2b60612601f83e1bf24aeb91081bb`. Os Pacotes 1 a 4 somam `779` testes locais e elevaram a cobertura para 86,06% de linhas, 73,38% de branches e 83,00% combinada, sem módulos abaixo de 30%. Os CIs dos Pacotes 1 a 4, inclusive `31479998276` e `31481664506`, foram aceitos após auditoria integral; integração e CI pós-merge pendentes; release não aprovada.
+Snapshot vivo de 11 de agosto de 2026. A Etapa 10 foi encerrada e a Etapa 11 está em andamento sobre a base `5e88c8d548e2b60612601f83e1bf24aeb91081bb`. Os Pacotes 1 a 5 somam `810` testes locais e elevaram a cobertura para 88,21% de linhas, 77,35% de branches e 85,59% combinada, sem módulos abaixo de 30%. Os CIs dos Pacotes 1 a 5, inclusive `31481664506` e `31483687046`, foram aceitos após auditoria integral; integração e CI pós-merge pendentes; release não aprovada.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
 | R-001 | ENCERRADO NO ESCOPO APROVADO | Persistência v1 integrada; colisões personalizadas e Béziers preservados no round-trip; evidências da Etapa 3 |
 | R-002 | ENCERRADO NO ESCOPO APROVADO | Ciclo Abrir/Salvar integrado e validado no Windows; evidências da Etapa 4 |
-| R-003 | ABERTO / EM TRATAMENTO | Pacotes 1 a 4 da Etapa 11: 779 testes locais, 86,06% de linhas, 73,38% de branches, 83,00% combinada e zero módulos abaixo de 30%; faltam ao menos 459 linhas e 430 branches para as metas finais 90%/85%; CIs dos Pacotes 1 a 4, inclusive `31479998276` e `31481664506`, aceitos após auditoria; integração e CI pós-merge pendentes |
+| R-003 | ABERTO / EM TRATAMENTO | Pacotes 1 a 5 da Etapa 11: 810 testes locais, 88,21% de linhas, 77,35% de branches, 85,59% combinada e zero módulos abaixo de 30%; faltam ao menos 209 linhas e 283 branches para as metas finais 90%/85%; CIs dos Pacotes 1 a 5, inclusive `31481664506` e `31483687046`, aceitos após auditoria; integração e CI pós-merge pendentes |
 | R-004 | ENCERRADO NO ESCOPO APROVADO | PR `#28` fechou o registro; PR técnica `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, integrada em `574be9bd0268e70c384903f93f16cf6e73aa57a2`; CI pós-merge `31425585259` aprovou Linux e Windows |
 | R-005 | ENCERRADO NO ESCOPO APROVADO | Schema `neoeng-d-trace-collisions` v1 unifica toolbar, painel, metadados genéricos e TXT atômico; PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`; CI pós-merge `31431739320` aprovou Linux e Windows |
 | R-006 | ENCERRADO NO ESCOPO APROVADO | Matriz integral, subprocessos, códigos `0`/`1`/`2` e saídas reais; PR `#36`, merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovou Linux e Windows |

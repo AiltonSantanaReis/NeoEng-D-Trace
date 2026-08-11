@@ -114,16 +114,17 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_11_COBERTURA_UI_PACOTE_2.md` — segundo pacote pré-merge da Etapa 11; lasso magnético, máscara, pincel de colisão e edição poligonal, com métricas exatas de linhas e ramos e CI auditado; `R-003` permanece aberto.
 - `ETAPA_11_COBERTURA_UI_PACOTE_3.md` — terceiro pacote pré-merge da Etapa 11; canvas e diálogo de exportação acima de 90% de linhas, métricas exatas e CI `31479113082` auditado; `R-003` permanece aberto.
 - `ETAPA_11_COBERTURA_NUMERICA_PACOTE_4.md` — quarto pacote pré-merge da Etapa 11; detecção, processamento visual, ferramenta base e máscaras, com dois ramos mortos removidos e CI `31481664506` auditado; `R-003` permanece aberto.
+- `ETAPA_11_COMANDOS_PAINEIS_PACOTE_5.md` — quinto pacote pré-merge da Etapa 11; contratos transacionais de comandos e painéis Qt entre 98% e 100% de linhas, com CI `31483687046` auditado; `R-003` permanece aberto.
 
 ## Estado operacional da evidência atual
 
-Etapa 11 em andamento, Pacotes 1 a 4 validados localmente em 11 de agosto de 2026:
+Etapa 11 em andamento, Pacotes 1 a 5 validados localmente em 11 de agosto de 2026:
 
 - base integrada `5e88c8d548e2b60612601f83e1bf24aeb91081bb`;
-- `47` testes focais e `779` testes oficiais aprovados no Windows/Python 3.11.9;
-- cobertura exata `10.007/11.628` linhas e `2.715/3.700` branches; `83,00%` combinada;
+- `78` testes focais e `810` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura exata `10.257/11.628` linhas e `2.862/3.700` branches; `85,59%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CIs dos Pacotes 1 a 4, inclusive `31479998276` e `31481664506`, aceitos após auditoria dos artefatos; `R-003` aberto, integração pendente e release não aprovada.
+- CIs dos Pacotes 1 a 5, inclusive `31481664506` e `31483687046`, aceitos após auditoria dos artefatos; `R-003` aberto, integração pendente e release não aprovada.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 

@@ -4,14 +4,14 @@
 
 Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 11 — em andamento, Pacotes 1 a 4
+### Etapa 11 — em andamento, Pacotes 1 a 5
 
-- adiciona 47 testes comportamentais para UI, ferramentas, detecção, máscaras, processamento visual e exportação;
-- aprova 779 testes no Windows/Python 3.11.9;
-- eleva a cobertura de 69,93% para 83,00% combinada, com 86,06% de linhas e 73,38% de branches;
-- elimina todos os módulos abaixo de 30% e leva os quatro alvos do Pacote 4 a 90–99% de linhas;
+- adiciona 78 testes comportamentais para UI, ferramentas, comandos, detecção, máscaras, processamento visual e exportação;
+- aprova 810 testes no Windows/Python 3.11.9;
+- eleva a cobertura de 69,93% para 85,59% combinada, com 88,21% de linhas e 77,35% de branches;
+- elimina todos os módulos abaixo de 30%, leva comandos a 94% de linhas e os três painéis do Pacote 5 a 98–100%;
 - remove três ramos comprovadamente inalcançáveis: um da paleta e dois da detecção automática;
-- aceita os CIs dos Pacotes 1 a 4, inclusive `31479998276` e `31481664506`, somente após auditoria integral de proveniência, cobertura, legado e conteúdo recursivo; mantém `R-003` aberto, integração pendente e release não aprovada.
+- aceita os CIs dos Pacotes 1 a 5, inclusive `31481664506` e `31483687046`, somente após auditoria integral de proveniência, cobertura, legado e conteúdo recursivo; mantém `R-003` aberto, integração pendente e release não aprovada.
 
 ### Etapa 10 — concluída no escopo aprovado
 
