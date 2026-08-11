@@ -1120,6 +1120,10 @@
       "sha256": "39b8168cb79e5d6b34971017d0cc94b273621bfeb373f993074bf8b6615e81ba",
       "size": 19776
     },
+    "tests/test_stage_11_command_contract_branch_coverage.py": {
+      "sha256": "80c08ecd15922b9220d8aad86baa1976a5f9d0be6564ad42c2271fea61f99d8d",
+      "size": 18561
+    },
     "tests/test_stage_11_numeric_tool_branch_coverage.py": {
       "sha256": "960ebccc7640d16c3254f4f7f15616487ce024e0d7db9761a6b09ba231022a6c",
       "size": 16475
@@ -1131,6 +1135,10 @@
     "tests/test_stage_11_secondary_branch_coverage.py": {
       "sha256": "254b4150185bb158d2feaa24c2743f507b31219d1ba1cacda793ac80ea069ce9",
       "size": 23276
+    },
+    "tests/test_stage_11_ui_panel_branch_coverage.py": {
+      "sha256": "27d68d2ced3e8dab74b4d8a415ce1485be75ac537398e048d30bd0c962921636",
+      "size": 14133
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
