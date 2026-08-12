@@ -1,183 +1,145 @@
 # NeoEng-D-Trace
 
-NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline para preparar assets de jogos a partir de imagens 2D: detectar objetos, corrigir contornos, editar polígonos e curvas Bézier, configurar colisões e exportar sprites, atlas, metadados e GLTF/GLB.
+**Ferramenta desktop proprietária e local-first para preparar assets de jogos a partir de imagens 2D.**
 
-## Autoridade e estado operacional
+NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
+> **Estado:** pré-release em desenvolvimento. **Etapa 11 concluída no escopo aprovado; Etapa 12 não iniciada; release NÃO APROVADA.**  
+> **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.  
+> **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
-Etapa 11 concluída no escopo aprovado em 11 de agosto de 2026:
+## Estado verificável
 
-- PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`;
-- 145 testes comportamentais novos e `877` testes oficiais aprovados no Windows/Python 3.11.9;
-- cobertura elevada para `92,77%` de linhas, `85,05%` de branches e `90,91%` combinada;
-- zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- o Pacote 6 leva cena a 95%, janela principal a 99%, laço magnético a 92%, caneta a 96%, painel de colisões a 100% e exportador de sprites a 95%;
-- `R-003` encerrado no escopo aprovado após integração e validação pós-merge;
-- CIs pré-merge `31489594270` e pós-merge `31491221322` aceitos após auditoria integral; Etapa 12 não iniciada e release **NÃO APROVADA**.
+Esta apresentação foi reorganizada sobre a `main` auditada em
+`a22a90088220e586c3382c3ed5dc1075a3ff7e6b`. Esse HEAD foi validado pelo
+workflow `Private validation` `31495971632`, com jobs Windows e Linux em
+`success`.
 
-Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
+| Indicador | Estado comprovado |
+|---|---|
+| Suíte oficial | **877 testes aprovados** |
+| Cobertura de linhas | **92,77%** |
+| Cobertura de branches | **85,05%** |
+| Cobertura combinada | **90,91%** |
+| Type checking | mypy sem erros em 70 arquivos |
+| Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
+| Segurança estática | Bandit sem achados de alta severidade no gate vigente |
+| Etapa atual encerrada | **Etapa 11** |
+| Próxima etapa | **Etapa 12 — não iniciada** |
+| Release | **NÃO APROVADA** |
 
-- PR `#42` integrada em `9b22bdc54b13992658172d4748bfab44f3127c8e`; os CIs `31450335289`, `31451363518` e `31452032479` foram rejeitados, e o pré-merge `31457937902` foi aceito após inspeção recursiva;
-- CI pós-merge `31463873481` rejeitado apesar dos jobs verdes por divergência de cobertura entre sistemas;
-- correção validada no CI pré-merge `31464786333`, integrada pela PR `#43` em `f8caec3e7156d308f03046f81d2c89996f959466` e reproduzida no pós-merge `31469610508`;
-- schemas Godot/Unity unificados entre cena e objeto, pivôs corrigidos e atlas protegido por rollback multi-arquivo;
-- harness reproduzível com Godot `4.7` e Unity `6000.5.7f1`; GLB importado no Unity pelo pacote oficial glTFast `6.19.0`;
-- caminhos e nomes Unicode aprovados nas duas engines reais;
-- `17` testes da etapa, `730` oficiais e `196` históricos com reconciliação `27/27`;
-- cobertura local e remota de `73,77%` de linhas, `57,91%` de branches e `69,93%` combinada; mypy sem erros em `70` arquivos;
-- Etapa 10: **CONCLUÍDA**; Etapa 11: **NÃO INICIADA**; release: **NÃO APROVADA**.
+O encerramento funcional da Etapa 11 permanece vinculado à integração
+`2a38b89e542390b3b4396a88d9a416f3695caadc` e ao CI pós-merge
+`31491221322`. O fechamento documental foi integrado posteriormente, sem
+alterar a decisão de release. `R-003` está encerrado no escopo aprovado;
+`R-011` permanece **ABERTO** e `R-012` permanece **PARCIAL / ABERTO**.
 
-Encerramento formal da Etapa 9, comprovado em 10 de agosto de 2026:
+## O que o NeoEng-D-Trace resolve
 
-- commit técnico: `28273dfb7cb0e0aeab1f8f9f3a99c07df3b08a76`;
-- API pública única em `src.collision`; `src.physics` preservado somente como compatibilidade sem implementações próprias;
-- falhas corrigidas: IDs heterogêneos, falso positivo côncavo, entradas inválidas, MTV invertido e promessas inertes de física dinâmica;
-- suíte local: 39 casos da etapa, 702 testes oficiais e 196 históricos com 27/27 divergências exatas;
-- cobertura: 73.65% de linhas, 57.65% de branches e 69.79% combinada; colisão canônica entre 89% e 95%;
-- CI final da PR `31445205968` e CI pós-merge `31445518755`: Linux e Windows em `success`, zero anotações;
-- PR `#40` mesclada em `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; artefatos e digests registrados na evidência permanente;
-- `R-008`: **ENCERRADO NO ESCOPO APROVADO**;
-- Etapa 9: **CONCLUÍDA**; Etapa 10: **NÃO INICIADA**; release: **NÃO APROVADA**.
+Preparar um asset 2D para uma engine costuma exigir alternar entre edição de
+imagem, contorno vetorial, colisão, metadados e exportação. O NeoEng-D-Trace
+concentra essas tarefas em uma aplicação desktop com projeto próprio,
+operações editáveis e exportadores verificáveis.
 
-Snapshot histórico de encerramento formal da Etapa 8, em 10 de agosto de 2026:
+Fluxo central:
 
-- commits técnico e corretivo: `d11cd3dc0bd0063e325a53dd30fc439feda9dd24` e `23d467f37b39e97251e589b544b84f29bcb18fee`;
-- PR `#38` mesclada em `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`;
-- CI da PR `31440755594` e CI pós-merge `31441024001`: Linux e Windows em `success`, zero anotações;
-- artefatos pós-merge: Linux `9082863959` e Windows `9082897744`, com digests registrados na evidência permanente;
-- suíte local: 125 testes focais, 661 totais no pacote pré-merge e 662 no fechamento; núcleo geométrico com 95.59% de linhas e 93.29% de branches;
-- legado: 196 executados, 27/27 divergências exatas reconciliadas, zero inesperadas e zero ausentes;
-- `R-007`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 8: **CONCLUÍDA**;
-- `R-003` permanece aberto; Etapa 9: não iniciada; release: **NÃO APROVADA**.
+```text
+Imagem 2D
+   ↓
+Detecção / seleção assistida
+   ↓
+Contorno, polígonos e Bézier
+   ↓
+Camadas, grupos e edição
+   ↓
+Colisão estática
+   ↓
+Sprite / atlas / metadados / GLTF-GLB no escopo 2D
+   ↓
+Pipeline da engine
+```
 
-Snapshot histórico do encerramento formal da Etapa 7, em 10 de agosto de 2026:
+## Capacidades comprovadas
 
-- implementação e evidência pré-merge: `a940ef13018aabc430126db3fd705b521fc1be06` e `51e55a37021c506471111ef1f4e7bc9abe67c65d`;
-- PR `#36` mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`;
-- CI da PR `31436763095` e CI pós-merge `31437000772`: Linux e Windows em `success`, zero anotações;
-- artefatos pós-merge: Linux `9081388807` e Windows `9081419753`, com digests registrados na evidência permanente;
-- suíte local: 620 testes no commit técnico, 621 no pacote pré-merge e 622 no fechamento; cobertura combinada 68.53%; launcher 85%; mypy sem erros em 66 arquivos;
-- `R-006`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 7: **CONCLUÍDA**;
-- `R-003` e metas finais de cobertura permanecem abertos;
-- Etapa 8: não iniciada; release: **NÃO APROVADA**.
+| Área | Estado atual |
+|---|---|
+| Projeto | formato `.ndtproj`, identificador `neoeng-d-trace-project` e **schema v1** estrito |
+| Persistência | criar, abrir e salvar projetos com round-trip de dados no escopo validado |
+| Interface | UI desktop PySide6 com identidade NeoEng-D-Trace e interface em português/inglês |
+| Edição | camadas, grupos, polígonos, vértices, curvas Bézier e histórico Undo/Redo |
+| Seleção | ferramentas retangular, elíptica, laço, laço poligonal, caneta e laço magnético |
+| Detecção | processamento e detecção assistida com OpenCV no pipeline atual |
+| Colisões | criação, visualização, transformação, validação e exportação de colisões estáticas |
+| Sprites | exportação de sprite individual e lote |
+| Atlas | geração de atlas e metadados com validação de limites |
+| Metadados | perfis Generic, Godot, Unity e Phaser disponíveis no exportador |
+| GLTF/GLB | exportação de cena e objeto **aprovada somente no escopo 2D atual** |
+| Integração real | consumo dos exports da Etapa 10 validado em Godot 4.7 e Unity 6000.5.7f1 com glTFast 6.19.0 |
+| Automação | entrada gráfica e CLI/headless pelo mesmo launcher |
 
-Snapshot histórico do encerramento formal da Etapa 6, em 10 de agosto de 2026:
+### Limite importante do GLTF/GLB
 
-- implementação e evidência pré-merge: `3c80bb7f0f72a26f5f4972c5aeb483b8d16e2e98` e `321ccf3a692c7c1916eeeb61e7a041ee8bcef035`;
-- PR `#33` mesclada em `73a128ec44cde17867bbac6a7854ce86a43aba5a`;
-- CI da PR `31431473940` e CI pós-merge `31431739320`: Linux e Windows em `success`, zero anotações;
-- artefatos pós-merge: Linux `9079413130` e Windows `9079450269`, com digests registrados na evidência permanente;
-- suíte local de fechamento: 543 testes aprovados; cobertura combinada: 62.45%; mypy: zero erros em 66 arquivos;
-- `R-005`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 6: **CONCLUÍDA**;
-- Etapa 7: não iniciada; release: **NÃO APROVADA**.
+O contrato atual **não** inclui extrusão, UV, materiais ou representação 2.5D.
+O exportador aprovado representa a geometria 2D no plano XY e preserva o
+escopo explicitamente testado. Esses itens não são anunciados aqui como
+funcionalidades entregues.
 
-Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 2026:
+Os perfis de metadados Godot, Unity e Phaser existem e possuem contratos
+automatizados. A validação em engine real registrada na Etapa 10 é específica
+para Godot e Unity; não é apresentada como validação equivalente do Phaser.
 
-- âncora técnica integrada e auditada da Etapa 5: `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
-- PR `#27` fechada e mesclada a partir do HEAD documental `8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e`;
-- Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A e 5B da Etapa 5: integrados; Pacote 5C: integrado;
-- gate funcional v4.1 no Windows/Python 3.11.9: 95 testes focais, 16 documentais, 517 totais e cobertura global de 66%;
-- validação manual aprovada e integração visual automática aprovada em 17/17 estados;
-- CI final pré-merge `Private validation` `#83` (`31135700216`): Linux e Windows em `success`;
-- CI pós-merge `Private validation` `#84` (`31136893143`) no merge commit: Linux e Windows em `success`;
-- artefato Linux pós-merge: `8978309717`, SHA-256 `25ee252a77fb43796a6c5b1cbbf10c5987791187a6e860a11c17e9980d45b091`;
-- artefato Windows pós-merge: `8978326062`, SHA-256 `0432e2e7ccc11d21d8769f160268f820ccf62af7edb5fd6f5a2070bcca4c912f`;
-- branch funcional preservada no remoto;
-- PR de fechamento `#28` mesclada a partir do HEAD `ab71e148c0b7441bd36f489472856d0b4adfaa1e`;
-- pacote técnico final PR `#29`, HEAD `956db473a88641bfdcfbd49ed122479f3fa2c51d`, mesclado em `574be9bd0268e70c384903f93f16cf6e73aa57a2`;
-- CI pós-merge técnico `31425585259`: Linux `93576381868` e Windows `93576382048` em `success`, zero anotações;
-- artefatos técnicos finais: Linux `9077091136` (`sha256:0ce0ad1f77b348f1d4061c7783a3467633a3089f19b18327627979f51befce51`) e Windows `9077113199` (`sha256:ab18e3e260f3f2b1e64b41e834363460f721112131411f350ac83e779fa9dae8`);
-- `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
-- Etapa 6: não iniciada.
+## Stack técnica
 
-As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`; o CI pós-merge `31491221322` foi aceito após auditoria integral. `R-003` e a Etapa 11 estão encerrados no escopo aprovado; a Etapa 12 não foi iniciada e a release permanece não aprovada.
+| Camada | Tecnologias |
+|---|---|
+| Runtime | Python 3.11 |
+| Desktop UI | PySide6 |
+| Imagem e visão computacional | OpenCV, Pillow |
+| Cálculo numérico | NumPy |
+| Modelos/validação | Pydantic |
+| GLTF/GLB | pygltflib |
+| Dependências | Poetry + `poetry.lock` |
+| Testes | pytest + pytest-cov |
+| Qualidade | Flake8, Black, isort, mypy |
+| Segurança | pip-audit, Bandit |
+| CI | GitHub Actions em Windows e Linux |
 
-## Auditoria corretiva publicada — 10 de agosto de 2026
+A faixa de Python declarada pelo pacote é `>=3.11,<3.12`; a referência
+operacional utilizada nas validações Windows é Python 3.11.9.
 
-A auditoria rigorosa inicialmente bloqueou o encerramento. O commit
-`236eefd41ee51c7085e21d52fc80074eede0a793` foi publicado na PR `#28`; o HEAD
-final `ab71e148c0b7441bd36f489472856d0b4adfaa1e` e o CI `31422901244`
-aprovaram Linux e Windows. A PR foi integrada e o CI pós-merge `31423386971`
-também foi aprovado, sem declarar release:
-
-- Pillow 12.3.0 e lock auditados sem vulnerabilidades conhecidas;
-- 196 testes legados executados, com 26 divergências brutas estritamente
-  reconciliadas e zero falhas inesperadas;
-- falso sucesso da CLI, limites do atlas e exportação real do painel de colisões
-  corrigidos;
-- `LayersPanel`, alias canônico do lasso, SAT compatível e PIL cobertos;
-- mypy incluindo corpos não anotados: zero erros em 65 arquivos;
-- suíte oficial completa: 532 testes aprovados;
-- cobertura combinada de linhas e branches: 62.18%, com piso incremental de 62% no CI;
-- matriz funcional viva: `docs/MATRIZ_FUNCIONALIDADES_ATUAL.md`;
-- evidência: `docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md`;
-- aviso de runtime resolvido: a PR `#29` atualizou as três Actions para
-  `v7`/Node.js 24; o CI técnico final e as execuções subsequentes tiveram zero
-  anotações.
-
-## Capacidades comprovadas no estado integrado
-
-- identidade NeoEng-D-Trace em UI, logger e metadados;
-- interface em inglês e português;
-- ambiente reproduzível em Python 3.11 com Poetry e CI Linux/Windows;
-- formato de projeto `.ndtproj`, identificador `neoeng-d-trace-project` e schema v1 estrito;
-- round-trip de camadas, grupos, polígonos, colisões personalizadas e segmentos Bézier;
-- ciclo Abrir/Salvar validado na interface do Windows;
-- histórico transacional integrado para os Pacotes 1, 2A, 2B, 3A, 3B, 3B.1, 4A, 4B, 4C, 5A, 5B e 5C da Etapa 5;
-- exportação de sprite, atlas e metadados Generic/Godot/Unity/Phaser;
-- exportação GLTF/GLB de cena e objeto com generator, geometria, metadados e padding validados;
-- entrada gráfica e headless por `app.py`.
-
-A PR `#27` foi mesclada por merge commit. O HEAD funcional
-`8ce44c238aaea79dafa64b8e1bba3ba5a8a7157e` e o merge commit
-`6c4bcb3d945405a4615a4d6551247d1b01ce79f1` são as âncoras funcionais da
-Etapa 5. O relatório funcional v4.1 e a validação pré-merge continuam
-preservados como snapshots históricos e não são reescritos retroativamente.
-
-O pacote documental pós-merge da Etapa 5 registra `R-004` como **ENCERRADO
-NO ESCOPO APROVADO**. A Etapa 6 foi concluída posteriormente pela PR `#33` e
-pelo CI pós-merge `31431739320`. A Etapa 7 foi concluída posteriormente pela PR `#36` e pelo CI pós-merge `31437000772`. A Etapa 8 não foi iniciada e a release permanece não aprovada.
-
-## Estrutura aprovada
+## Arquitetura
 
 Existe uma única árvore de implementação:
 
 ```text
 app.py
 src/
-├── collision/
-├── core/
-├── exporters/
-├── models/
-├── physics/
-├── tools/
-├── ui/
+├── collision/      # API canônica de colisão
+├── core/           # comandos, geometria, configuração e validação
+├── exporters/      # sprite, atlas, JSON, colisões e GLTF/GLB
+├── models/         # modelo de cena
+├── persistence/    # schema e I/O do projeto .ndtproj
+├── physics/        # compatibilidade histórica; sem motor dinâmico próprio
+├── tools/          # seleção, detecção e edição geométrica
+├── ui/             # janela, canvas, painéis, previews e gizmo
 └── utils/
 ```
 
-Não existe uma segunda árvore `neoeng_d_trace/`, nem aliases entre pacotes. O nome de distribuição é `neoeng-d-trace`; internamente, o código continua em `src/`.
+Não existe uma segunda árvore `neoeng_d_trace/`. A distribuição Python é
+`neoeng-d-trace`, enquanto a implementação interna permanece em `src/`.
 
-## Ambiente reproduzível no Windows
+## Execução a partir do código-fonte no Windows
 
-Faixa oficial: Python `>=3.11,<3.12`. A referência operacional é Python 3.11.9, Poetry 2.4.1 e ambiente virtual local `.venv`.
+> **Isto é um fluxo de desenvolvimento/validação, não um instalador de usuário
+> final.** Build Windows e instalador ainda não foram aprovados.
 
-```powershell
-Set-Location "C:\caminho\do\NeoEng-D-Trace"
-$Python311 = "$env:LOCALAPPDATA\Programs\Python\Python311\python.exe"
-& $Python311 --version
-& $Python311 -m venv .venv
-& ".\.venv\Scripts\python.exe" -m pip install --upgrade pip
-& ".\.venv\Scripts\python.exe" -m pip install "poetry==2.4.1"
-$env:POETRY_VIRTUALENVS_IN_PROJECT = "true"
-& ".\.venv\Scripts\python.exe" -m poetry check --lock --strict
-& ".\.venv\Scripts\python.exe" -m poetry sync --no-interaction --no-ansi
-& ".\.venv\Scripts\python.exe" -m poetry run python .\app.py
-```
+Requisitos usados pelo projeto:
 
-O caminho acima usa a instalação padrão do Python 3.11 no perfil do Windows sem depender do `py` launcher. Em outro computador, ajuste apenas `$Python311` depois de confirmar a versão exata.
+- Python 3.11 (`>=3.11,<3.12`);
+- Poetry 2.4.1;
+- ambiente virtual local recomendado.
 
-Quando `poetry` já estiver disponível no terminal:
+Quando `poetry` já está disponível no terminal:
 
 ```powershell
 poetry check --lock --strict
@@ -191,61 +153,137 @@ Ajuda da CLI:
 poetry run python .\app.py --help
 ```
 
-Entrada instalada:
+Entrada instalada pelo pacote:
 
-```powershell
+```text
 neoeng-d-trace
 ```
 
-## Gate local mínimo
+Para uma instalação do zero sem depender do `py` launcher, consulte o
+procedimento de ambiente e o workflow reproduzível registrado na documentação
+de evidências.
 
-```powershell
-poetry run python tools/baseline_integrity.py --verify
+## Qualidade e validação
+
+O gate atual executa, entre outros controles:
+
+```text
+baseline_integrity --verify
 poetry check --lock --strict
-poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools
-poetry run flake8 src tests tools app.py pack_for_ai.py
-poetry run black --check --diff src tests tools app.py pack_for_ai.py
-poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py
-poetry run mypy src
-poetry run pip-audit
-poetry run bandit -q -r src -lll
-poetry run pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml
-poetry run python tools/run_legacy_tests.py --group all
-poetry run python tools/baseline_integrity.py --verify
-git diff --check
+compileall
+Flake8
+Black --check
+isort --check-only
+mypy
+pip-audit
+Bandit
+pytest com cobertura de branches
+suíte legada reconciliada no Windows
+baseline_integrity --verify novamente
 ```
 
-A validação oficial de interface e dos correctors deve ocorrer no Windows 11 do mantenedor. CI Linux não substitui o gate Windows, e teste local não substitui o CI do HEAD publicado.
+A validação oficial de interface permanece vinculada ao Windows. Resultados
+headless/offscreen ou Linux não são usados para declarar suporte público a uma
+plataforma nem para substituir uma prova real quando o comportamento real é o
+objeto da validação.
 
-## Configuração
+## Limitações e pendências declaradas
 
-Por compatibilidade, a configuração continua em `config.json` na raiz do projeto. Uma mudança futura para AppData exige etapa própria, importação explícita e rollback.
+O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
-## Limitações e riscos abertos
+- **autosave e recuperação automática ainda não estão implementados**;
+- **build Windows, executável standalone e instalador ainda não foram
+  aprovados**;
+- **release não está aprovada**;
+- Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
+- `R-011` permanece aberto para refatoração protegida de módulos acoplados;
+- `R-012` permanece parcial/aberto para segurança e limites operacionais da
+  Etapa 12;
+- o GLTF/GLB atual não inclui UV, materiais, extrusão ou 2.5D;
+- limites oficiais de resolução, quantidade de objetos/vértices, memória,
+  tempo e hardware mínimo ainda não devem ser publicados sem benchmark
+  reproduzível no Windows;
+- física dinâmica completa, modelagem 3D completa, rigging, animação,
+  fotogrametria e suporte nativo completo ao Unreal não fazem parte do escopo
+  entregue da versão 1.0.
 
-- `R-003`: encerrado no escopo aprovado após PR `#45`, merge `2a38b89e542390b3b4396a88d9a416f3695caadc` e CI pós-merge `31491221322`;
-- `R-004`: encerrado no escopo aprovado; Etapa 5 concluída após integração do registro e CI final da `main`;
-- `R-005`: encerrado no escopo aprovado após schema v1 unificado, PR `#33` e CI pós-merge `31431739320`;
-- `R-006`: encerrado no escopo aprovado após matriz integral da CLI, PR `#36` e CI pós-merge `31437000772`;
-- `R-007`: persistência Bézier está implementada, mas validações geométricas adicionais pertencem à Etapa 8;
-- `R-008`: encerrado no escopo aprovado após API estática unificada, PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3` e CI pós-merge `31445518755`;
-- `R-011` permanece para refatoração protegida;
-- `R-012` está mitigado por auditoria automatizada, mas limites operacionais permanecem na Etapa 12;
-- `R-013`: encerrado no escopo auditado após integração e CI pós-merge aprovado;
-- `LayersPanel` está integrado à `MainWindow` e coberto por teste Qt;
-- validação Godot/Unity da Etapa 10 foi integrada pela PR `#42`; o CI pós-merge `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito; autosave, 2.5D, build Windows, instalador e release continuam pendentes;
-- `PERF-MAGNETIC-001`, `UI-RESIZE-PT-001`, `POLY-VALIDATION-UX-001`, `GLTF-2D-001`, `GLTF-UV-001`, `GLTF-MATERIAL-001`, `GLTF-U16-001` e `GLTF-CLEANUP-001` permanecem limitações registradas.
+A matriz exata de formatos de importação também não deve ser ampliada por
+inferência a partir de filtros de interface ou bibliotecas instaladas. O
+suporte definitivo depende de contrato e teste correspondentes.
 
-## Regras de continuidade
+## Documentação de engenharia
 
-- nenhuma funcionalidade será removida silenciosamente;
-- correções e melhorias exigem testes, rollback e evidência vinculada ao SHA;
-- documentos históricos não devem ser reescritos como se fossem estado atual;
-- documentos vivos devem indicar data, commit ou condição de verificação;
-- não usar `git reset`, `git clean`, force-push ou rebase destrutivo para limpar estado parcial;
-- não executar Ready for review, merge, exclusão de branch, fechamento de risco ou transição de etapa sem autorização específica;
-- não atribuir licença open source sem decisão jurídica formal.
+O README é a porta de entrada do projeto. A rastreabilidade detalhada permanece
+nas fontes canônicas:
 
-## Baseline privada
+- [Definição canônica do produto](docs/DEFINICAO_DO_PRODUTO.md)
+- [Plano Mestre de Estabilização](docs/PLANO_MESTRE_ESTABILIZACAO.md)
+- [Matriz funcional atual](docs/MATRIZ_FUNCIONALIDADES_ATUAL.md)
+- [Matriz de riscos](docs/MATRIZ_RISCOS_ESTABILIZACAO.md)
+- [Política de qualidade e evidências](docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md)
+- [Índice de evidências](docs/evidence/README.md)
+- [Contrato GLTF/GLB](docs/CONTRATO_GLTF_GLB_NEOENG_D_TRACE.md)
+- [Contrato da CLI](docs/CONTRATO_CLI.md)
+- [Changelog](CHANGELOG.md)
+- [Política de segurança](SECURITY.md)
 
-A origem e as limitações do primeiro baseline limpo estão registradas em `docs/BASELINE_2026-07-29.md`. A integridade do estado rastreado atual é verificável por `python tools/baseline_integrity.py --verify`.
+Snapshots históricos não são reescritos retroativamente. Documentos vivos
+devem continuar distinguindo estado atual, evidência de um SHA específico e
+histórico.
+
+## Licença e publicação
+
+NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. Não
+há licença open source atribuída. O texto jurídico comercial final ainda exige
+decisão/revisão própria antes de qualquer lançamento público.
+
+A reorganização deste README não aprova release, não inicia a Etapa 12 e não
+muda o estado de qualquer risco.
+
+<details>
+<summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>
+
+Esta seção permanece recolhida por padrão para não transformar a vitrine em um
+log operacional, mas conserva as referências que os contratos documentais
+atuais verificam. As fontes completas continuam em `docs/` e
+`docs/evidence/`.
+
+### Etapa 5
+
+- Pacote 5C integrado; `R-004` encerrado no escopo aprovado.
+- PR de fechamento `#28`; HEAD técnico
+  `956db473a88641bfdcfbd49ed122479f3fa2c51d`.
+- âncora final `574be9bd0268e70c384903f93f16cf6e73aa57a2`.
+- CI pós-merge `Private validation` `#84`; CI técnico pós-merge
+  `31425585259`.
+- o encerramento histórico registrou a transição para a Etapa 6 sem aprovar
+  release.
+
+### Etapas 6 a 9
+
+- Etapa 6: merge `73a128ec44cde17867bbac6a7854ce86a43aba5a`, CI
+  `31431739320`, `R-005` encerrado.
+- Etapa 7: merge `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`, CI
+  `31437000772`, `R-006` encerrado.
+- Etapa 8: merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI
+  `31441024001`, `R-007` encerrado.
+- Etapa 9: merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`, CI
+  `31445518755`, `R-008` encerrado.
+
+### Etapa 10
+
+A PR `#42` teve os CIs `31450335289`, `31451363518` e `31452032479`
+**rejeitados**. O pré-merge `31457937902` foi **aceito** e a integração
+ocorreu em `9b22bdc54b13992658172d4748bfab44f3127c8e`. O pós-merge
+`31463873481` foi **rejeitado**. A correção passou pelo CI `31464786333`,
+PR `#43`, merge `f8caec3e7156d308f03046f81d2c89996f959466` e pós-merge
+`31469610508`, que foi **aceito** após auditoria.
+
+### Etapa 11
+
+A Etapa 11 foi integrada em
+`2a38b89e542390b3b4396a88d9a416f3695caadc`; o CI pós-merge
+`31491221322` comprovou `877` testes e `90,91%` de cobertura combinada.
+`R-003` foi encerrado no escopo aprovado. A release permaneceu **não aprovada**.
+
+</details>
