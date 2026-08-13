@@ -10,17 +10,17 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 
 ## Estado verificável
 
-A última âncora integrada da `main` é
-`e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`, merge autorizado da PR `#51`.
-O primeiro CI da PR, `31693639653`, ficou verde, mas foi rejeitado após os
-artefatos revelarem uma falha real de preservação de quarentena em POSIX. A
-correção foi validada no CI pré-merge final `31696674184` e reproduzida no CI
-pós-merge `31698961646`, auditado em Linux e Windows. `R-011` e a Etapa 13
-estão encerrados no escopo aprovado; Etapa 14 e release permanecem pendentes.
+A âncora auditada de encerramento da Etapa 13 é
+`b4d9390dbd1274c283a3e3985d6d79be47de45d6`, merge autorizado da PR `#52`.
+Ela preserva a integração funcional da PR `#51` e incorpora a correção
+retrospectiva dos pacotes históricos. O CI pós-merge `31705652046` reproduziu
+`955` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado
+`27/27` e artefatos recursivos sem violações. `R-011` e a Etapa 13 estão
+encerrados no escopo aprovado; Etapa 14 e release permanecem pendentes.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte atual validada | **955 testes no fechamento documental; 953 no CI pós-merge funcional da Etapa 13, ambos em Linux e Windows** |
+| Suíte atual validada | **955 testes no CI pós-merge final da Etapa 13, em Linux e Windows** |
 | Cobertura integrada da Etapa 13 | **11.581/12.478 linhas — 92,81%** |
 | Branches integrados da Etapa 13 | **3.370/3.964 — 85,02%** |
 | Cobertura combinada integrada | **90,93%** |
@@ -36,6 +36,11 @@ A Etapa 13 foi integrada pela PR `#51` no merge
 `31698961646` reproduziu `953` testes, cobertura idêntica ponto a ponto em
 Linux/Windows e legado `27/27`; seus artefatos foram auditados. `R-011` está
 **ENCERRADO NO ESCOPO APROVADO**.
+
+O fechamento documental e a correção retrospectiva foram integrados pela PR
+`#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge
+`31705652046` aprovou `955` testes por plataforma e reproduziu as mesmas
+métricas de código, sem iniciar a Etapa 14 nem aprovar release.
 
 Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,
 detecção, broadphase, atlas, GLTF e logs. O legado executou 196 testes e

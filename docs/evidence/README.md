@@ -120,7 +120,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_12_SEGURANCA_LIMITES_PRE_MERGE.md` — falhas reproduzidas, limites centrais, corpus malformado, benchmarks Windows, `928` testes e riscos residuais; commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` e CI pré-merge `31684136128` do HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3` auditados; `R-012` aberto.
 - `ETAPA_12_ENCERRAMENTO_POS_MERGE.md` — PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04` e CI final `31688307089`; `R-012` encerrado e Etapa 12 concluída no escopo aprovado.
 - `ETAPA_13_REFATORACAO_QT_AUTOSAVE_PRE_MERGE.md` — refatoração Qt, autosave protegido, CI `31693639653` rejeitado, correção portátil e CI corretivo `31695151223` aceito após auditoria.
-- `ETAPA_13_ENCERRAMENTO_POS_MERGE.md` — PR `#51`, merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`, CI pós-merge `31698961646`, artefatos auditados e encerramento de `R-011`/Etapa 13 sem aprovação de release.
+- `ETAPA_13_ENCERRAMENTO_POS_MERGE.md` — PR funcional `#51`; fechamento `#52`, merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`, CI pós-merge final `31705652046`, artefatos auditados e encerramento de `R-011`/Etapa 13 sem aprovação de release.
 
 ## Estado operacional da evidência atual
 
@@ -129,8 +129,8 @@ Etapa 13 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 - PR `#51`, HEAD final `0b5d3c4e3831ad5efe52ae03a41107c6dafbf535` e merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`;
 - CI pós-merge `31698961646`: `953` testes em Linux/Windows, cobertura exata idêntica e zero módulos abaixo de 30%;
 - pacote documental local de encerramento: `955` testes aprovados e baseline de `338` arquivos, sem alteração das métricas de código integradas;
-- auditoria retrospectiva: scanner anterior não detectava separadores JSON duplicados; `60` payloads/`852` ocorrências locais foram removidos de quatro ZIPs autorizados; CI `31702428679` aceito após auditoria; no momento dessa evidência, a PR documental `#52` estava draft/não integrada;
-- legado `196` com reconciliação `27/27`, documentos idênticos e `1.421` payloads sem violações;
+- auditoria retrospectiva: scanner anterior não detectava separadores JSON duplicados; `60` payloads/`852` ocorrências locais foram removidos de quatro ZIPs autorizados; correção integrada pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`;
+- CI pós-merge final `31705652046`: `955` testes por sistema, legado `196` com reconciliação `27/27`, `57/57` documentos idênticos e `1.416` payloads sem violações;
 - `R-011` encerrado e Etapa 13 concluída; Etapa 14 não iniciada; release não aprovada.
 
 Etapa 12 integrada e concluída no escopo aprovado em 13 de agosto de 2026:

@@ -1063,6 +1063,14 @@ def test_stage13_postmerge_closure_records_integrated_state_without_release():
         "CLOSURE_WINDOWS_ARTIFACT=9181873468",
         "RETROSPECTIVE_HYGIENE_LOCAL_STATUS=PASSED",
         "RETROSPECTIVE_HYGIENE_REMEDIATION=CI_ACCEPTED",
+        "FINAL_CLOSURE_PR=52",
+        "FINAL_INTEGRATION_COMMIT=b4d9390dbd1274c283a3e3985d6d79be47de45d6",
+        "FINAL_POST_MERGE_CI_RUN=31705652046",
+        "FINAL_POST_MERGE_CI_STATUS=ACCEPTED",
+        "FINAL_LINUX_ARTIFACT=9183106504",
+        "FINAL_WINDOWS_ARTIFACT=9183135065",
+        "FINAL_TESTS_PASSED=955",
+        "FINAL_PAYLOADS_SCANNED=1416",
         "R011_CLOSED=YES",
         "STAGE13_COMPLETED=YES",
         "STAGE14_STARTED=NO",
@@ -1080,8 +1088,8 @@ def test_stage13_postmerge_closure_records_integrated_state_without_release():
         "docs/evidence/README.md",
     ):
         value = _text(relative)
-        assert "e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108" in value, relative
-        assert "31698961646" in value, relative
+        assert "b4d9390dbd1274c283a3e3985d6d79be47de45d6" in value, relative
+        assert "31705652046" in value, relative
         assert "R-011" in value, relative
         assert "encerrado" in value.lower(), relative
         assert "Etapa 14" in value, relative
