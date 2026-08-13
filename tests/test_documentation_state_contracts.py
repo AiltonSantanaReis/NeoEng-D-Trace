@@ -969,3 +969,73 @@ def test_stage12_closure_is_bound_to_merge_and_postmerge_ci():
         assert "encerrado" in value.lower(), relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative
+
+
+def test_stage12_final_closure_is_bound_to_documental_merge_and_ci():
+    closure = _text("docs/evidence/ETAPA_12_ENCERRAMENTO_POS_MERGE.md")
+    for expected in (
+        "#50",
+        "b9426074a08d25e008c2a4441654660103e3cabe",
+        "fc81c2ea10e751c15a39627d462ddfff390eeb04",
+        "31688307089",
+        "94409501023",
+        "94409501129",
+        "9176359924",
+        "9176393106",
+        "011e9a80ce81f46ed32ae13babf64fd09d8da8548a615f6a1bcd1f8334a44546",
+        "59eb68cc32570a60eae502ed3f15048707b9a064f9271eaae788227bfd5cb8e1",
+        "FINAL_TESTS_PASSED=929",
+        "FINAL_PAYLOADS_SCANNED=1420",
+    ):
+        assert expected in closure
+
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert "fc81c2ea10e751c15a39627d462ddfff390eeb04" in value, relative
+        assert "31688307089" in value, relative
+
+
+def test_stage13_premerge_evidence_keeps_r011_and_release_open():
+    evidence = _text("docs/evidence/ETAPA_13_REFATORACAO_QT_AUTOSAVE_PRE_MERGE.md")
+    for expected in (
+        "58ef2ac5091683ac81a9ee93a6ca6db2e617dd63",
+        "951 passed",
+        "11.578/12.469",
+        "3.370/3.964",
+        "85,02%",
+        "90,96%",
+        "334",
+        "27/27",
+        "QTimer",
+        "processos distintos",
+        "APROVADO LOCALMENTE / NÃO INTEGRADO",
+        "PRE_MERGE_CI_STATUS=NOT_RUN",
+        "R011_CLOSED=NO",
+        "STAGE13_COMPLETED=NO",
+        "STAGE14_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in evidence
+
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert "58ef2ac5091683ac81a9ee93a6ca6db2e617dd63" in value, relative
+        assert "951" in value, relative
+        assert "R-011" in value, relative
+        assert "não integrada" in value.lower() or "não integrado" in value.lower()
+        assert "release" in value.lower()
+        assert "não aprovada" in value.lower()

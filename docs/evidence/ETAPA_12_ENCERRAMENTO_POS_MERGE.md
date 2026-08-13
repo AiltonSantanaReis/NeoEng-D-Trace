@@ -94,6 +94,40 @@ Hashes adicionais da auditoria pós-merge:
 - `coverage.xml` Windows: `145494af6fbe2f74177382e2ec6b39a227b921f9ba7813e446e1e74903d2a224`;
 - resumo legado: `ac90dc1f7fe87ec7e595d54a78e06fb5d3956ae216b0804ea4adbf31d93005a9`.
 
+## Fechamento documental final integrado
+
+Depois do fechamento funcional acima, a PR documental `#50`, com HEAD fonte
+`b9426074a08d25e008c2a4441654660103e3cabe`, foi integrada em
+`fc81c2ea10e751c15a39627d462ddfff390eeb04`. O workflow pós-merge final
+`31688307089`, disparado por `push` nesse merge, foi concluído com `success` e
+zero anotações.
+
+| Sistema | Job | Estado | Artefato | Digest SHA-256 |
+|---|---:|---|---:|---|
+| Linux | `94409501023` | `success` | `9176359924` | `011e9a80ce81f46ed32ae13babf64fd09d8da8548a615f6a1bcd1f8334a44546` |
+| Windows | `94409501129` | `success` | `9176393106` | `59eb68cc32570a60eae502ed3f15048707b9a064f9271eaae788227bfd5cb8e1` |
+
+A auditoria final confirmou `929` testes em Linux e Windows, as mesmas
+`11.174/12.040` linhas, `3.309/3.892` branches e `90,91%` combinada,
+baseline `326`, legado `196` com reconciliação `27/27`, além de `1.420`
+payloads sem referência proibida ou caminho pessoal. Esse fechamento substitui
+como âncora operacional o merge funcional anterior, mas não reescreve seus
+registros históricos.
+
+```text
+FINAL_CLOSURE_PR=50
+FINAL_CLOSURE_SOURCE_HEAD=b9426074a08d25e008c2a4441654660103e3cabe
+FINAL_INTEGRATION_COMMIT=fc81c2ea10e751c15a39627d462ddfff390eeb04
+FINAL_POST_MERGE_CI_RUN=31688307089
+FINAL_POST_MERGE_CI_STATUS=ACCEPTED
+FINAL_LINUX_JOB=94409501023
+FINAL_WINDOWS_JOB=94409501129
+FINAL_LINUX_ARTIFACT=9176359924
+FINAL_WINDOWS_ARTIFACT=9176393106
+FINAL_TESTS_PASSED=929
+FINAL_PAYLOADS_SCANNED=1420
+```
+
 ## Decisão e riscos residuais
 
 - `R-012` está encerrado no escopo aprovado;
@@ -104,9 +138,10 @@ Hashes adicionais da auditoria pós-merge:
   integral após qualquer mudança;
 - as `27` divergências legadas continuam registradas e conciliadas, não
   apagadas;
-- `R-011` permanece aberto para a refatoração Qt protegida da Etapa 13;
-- autosave, build standalone, instalador e validações reais de release
-  permanecem para as Etapas 13 e 14;
+- `R-011` permanece aberto até integração e CI pós-merge da correção da Etapa 13;
+- no instante deste fechamento, autosave, build standalone, instalador e
+  validações reais de release permaneciam para as Etapas 13 e 14; o estado
+  pré-merge posterior do autosave está em `ETAPA_13_REFATORACAO_QT_AUTOSAVE_PRE_MERGE.md`;
 - release continua não aprovada.
 
 ## Marcadores auditáveis
@@ -129,5 +164,7 @@ STAGE13_STARTED=NO
 RELEASE_APPROVED=NO
 ```
 
-**Etapa 12 concluída no escopo aprovado.** O encerramento não autoriza
-release, executável ou instalador.
+**Etapa 12 concluída no escopo aprovado.** O fechamento final está ancorado em
+`fc81c2ea10e751c15a39627d462ddfff390eeb04` e `31688307089`; não autoriza
+release, executável ou instalador. O marcador histórico `STAGE13_STARTED=NO`
+registra o instante daquele fechamento e não descreve a branch pré-merge atual.
