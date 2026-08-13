@@ -4,7 +4,7 @@
 
 Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 12 — aprovação técnica pré-merge, segurança e limites operacionais
+### Etapa 12 — integrada e concluída, segurança e limites operacionais
 
 - vincula a validação local ao commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` com worktree limpa;
 
@@ -15,7 +15,9 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - aprova localmente `928` testes, `11.174/12.040` linhas, `3.309/3.892` branches, mypy em `73` arquivos, Bandit e pip-audit sem vulnerabilidades conhecidas;
 - reconcilia `196` testes legados com `27/27` divergências históricas e zero inesperadas;
 - audita o CI pré-merge `31684136128` no HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`: Linux e Windows aprovam `928` testes e as métricas exatas; dois artefatos têm digest confirmado e a varredura recursiva cobre `1.419` payloads sem violações;
-- mantém `R-012` aberto, Etapa 12 não concluída e release não aprovada até merge autorizado e auditoria pós-merge.
+- integra a PR `#49` em `872bf079d228d13d0203d22b844052b1f920e99b` e aceita o CI pós-merge `31686321925` após auditoria de Linux/Windows, logs, digests, cobertura, legado e `1.419` payloads sem violações;
+- aprova localmente `929` testes e baseline de `326` arquivos no pacote documental de encerramento, sem alteração nas métricas de cobertura do código-fonte;
+- encerra `R-012` e conclui a Etapa 12 no escopo aprovado; `R-011`, Etapas 13–14 e release permanecem pendentes.
 
 ### Etapa 11 — integrada e concluída no escopo aprovado
 
