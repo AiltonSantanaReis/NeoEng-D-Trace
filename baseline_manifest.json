@@ -29,8 +29,8 @@
       "size": 746
     },
     "CHANGELOG.md": {
-      "sha256": "06aae28b3c36479834a7979b04759084b05f406ae7790e290b605e94d570db03",
-      "size": 48118
+      "sha256": "06c949d914e470caa36e922d1c0d37f1df03d593aec304b6d718a0958380122d",
+      "size": 48357
     },
     "README.md": {
       "sha256": "2a459d0a6bfcd4ca663af1bdc868bd96e26c56460623ccc096e3508ad2e57113",
@@ -369,16 +369,16 @@
       "size": 12782
     },
     "docs/evidence/ETAPA_14_BUILD_RELEASE_PRE_MERGE.md": {
-      "sha256": "fdb053fe6b4fe9e91e526a0dfac14038db88054656a30cfb47e4bd356a603cc2",
-      "size": 6824
+      "sha256": "8cb127a4b89944d1a1eb1a202edc8a10e432bfbfd7990d166f307838896c69de",
+      "size": 7210
     },
     "docs/evidence/ETAPA_14_GODOT_RELEASE_VALIDATION.json": {
       "sha256": "3e1f8b3f46e549252d85fbe48d253eb253226c0b2991d0d8e06b70ff5ce4bda8",
       "size": 4684
     },
     "docs/evidence/ETAPA_14_RELEASE_VALIDATION_MANIFEST.json": {
-      "sha256": "d7cd0c63cceff0280d179e3f57518ba72637810125d03b7754e09312e7b15068",
-      "size": 3509
+      "sha256": "8f39d0b67e61462921babb20e88ce28b7b524ae5b2bffdf3acc13a2c227a3fcd",
+      "size": 3874
     },
     "docs/evidence/ETAPA_14_UNITY_RELEASE_VALIDATION.json": {
       "sha256": "4adf93ad8e64c7118d9ef409f65fd0987acd810f7d63284f990ce2534d0fa8ca",
@@ -1137,8 +1137,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "d704b8019ee8fa7eacc9fe7ebc7da22f88e0d46e5fc1506eaa744c9ff8eff3c7",
-      "size": 43112
+      "sha256": "f2caf78b436405c6b3d60056ae0093bc1e2f6483120c1a43d841ef04e4846741",
+      "size": 43534
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",

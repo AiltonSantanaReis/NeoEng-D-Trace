@@ -1116,6 +1116,8 @@ def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():
         "Unity `6000.5.7f1`",
         "NotSigned",
         "977 passed, 1 failed",
+        "PRE_MERGE_CI_RUN=31736919284",
+        "PRE_MERGE_CI_STATUS=REJECTED",
         "STAGE14_TECHNICAL_CANDIDATE=PASS",
         "STAGE14_COMPLETED=NO",
         "RELEASE_APPROVED=NO",
@@ -1171,5 +1173,14 @@ def test_stage14_engine_reports_match_manifested_real_fixtures():
             == manifest["fixtures"]["glb"]["sha256"]
         )
         assert all(command["returncode"] == 0 for command in report["commands"])
-        digest = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
-        assert digest == manifest["external_engine_validation"][engine]["report_sha256"]
+        canonical = json.dumps(
+            report, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+        digest = hashlib.sha256(canonical).hexdigest()
+        assert (
+            digest
+            == manifest["external_engine_validation"][engine]["report_canonical_sha256"]
+        )
+        lf = (ROOT / relative).read_text(encoding="utf-8").replace("\r\n", "\n")
+        crlf = lf.replace("\n", "\r\n")
+        assert json.loads(lf) == json.loads(crlf) == report

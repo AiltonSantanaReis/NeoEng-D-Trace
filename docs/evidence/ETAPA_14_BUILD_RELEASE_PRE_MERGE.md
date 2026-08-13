@@ -89,6 +89,7 @@ Nenhuma destas ocorrências foi convertida artificialmente em PASS:
 7. uma invocação focal usou nome de arquivo de teste incorreto e falhou antes de coletar casos; o comando correto foi executado;
 8. o primeiro gate final terminou com `977 passed, 1 failed`: o teste novo continha literalmente o próprio padrão proibido pelo scanner. A literal foi construída por partes sem mudar a asserção nem o scanner; `16` testes focais e depois os `978` testes passaram;
 9. o PyInstaller continua emitindo `242` linhas de módulos ausentes, majoritariamente condicionais/plataforma/ opcionais, e um aviso de `tzdata` ausente. Os smokes, MSI e engines passaram, mas os avisos não são declarados inexistentes.
+10. o primeiro CI da PR, run `31736919284`, foi rejeitado: Windows passou, mas Linux terminou com `979 passed, 1 failed` porque o contrato hashava bytes de um JSON textual com finais de linha dependentes da plataforma. A correção usa serialização JSON canônica e continua rejeitando qualquer divergência semântica.
 
 ## Limitações e riscos residuais
 
@@ -100,6 +101,10 @@ Nenhuma destas ocorrências foi convertida artificialmente em PASS:
 - logs brutos locais não são versionados porque contêm caminhos do ambiente; os relatórios normalizados e hashes são versionados.
 
 ## Decisão
+
+`PRE_MERGE_CI_RUN=31736919284`
+
+`PRE_MERGE_CI_STATUS=REJECTED`
 
 `STAGE14_TECHNICAL_CANDIDATE=PASS`
 

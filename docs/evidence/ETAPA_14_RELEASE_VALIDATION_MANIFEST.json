@@ -90,7 +90,7 @@
         "glb-external",
         "glb-engine"
       ],
-      "report_sha256": "32061103464b58e3bc26694bc723423092c99a1ca84be2596d804fc9bb1d2994"
+      "report_canonical_sha256": "f86b5e66b56743effca114ec1f2061aa330a0033081b903d30ea7b114a5bf5fd"
     },
     "unity": {
       "status": "SUCCESS",
@@ -101,7 +101,7 @@
         "glb-external",
         "glb-engine"
       ],
-      "report_sha256": "8462e26b8f0b35ae8792ffe1ff69879bcad2a94cd8ba49490cf7455f8a6db479"
+      "report_canonical_sha256": "f43be962d0497d4996da02fa44dc378834ada057386a10482c313cecf3b5c2f4"
     }
   },
   "integrity": {
@@ -124,5 +124,20 @@
       "R-015"
     ],
     "maintenance_risk": "R-016"
-  }
+  },
+  "ci_history": [
+    {
+      "run": 31736919284,
+      "status": "REJECTED",
+      "linux": {
+        "tests_passed": 979,
+        "tests_failed": 1
+      },
+      "windows": {
+        "status": "PASS"
+      },
+      "root_cause": "raw text hash depended on platform line endings",
+      "remediation": "canonical JSON content hash"
+    }
+  ]
 }
