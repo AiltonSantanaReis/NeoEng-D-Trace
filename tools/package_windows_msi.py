@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import re
+import struct
 import sys
 import uuid
 from pathlib import Path
@@ -68,6 +69,34 @@ def verify_portable_manifest(bundle: Path, manifest: dict[str, object]) -> None:
             raise ValueError(f"portable file size mismatch: {relative}")
         if sha256_file(path) != record.get("sha256"):
             raise ValueError(f"portable file hash mismatch: {relative}")
+
+
+def normalize_msi_storage_timestamps(path: Path) -> None:
+    data = bytearray(path.read_bytes())
+    if data[:8] != bytes.fromhex("D0CF11E0A1B11AE1"):
+        raise ValueError("MSI output is not a Compound File Binary document")
+    sector_shift = struct.unpack_from("<H", data, 30)[0]
+    if sector_shift not in (9, 12):
+        raise ValueError(f"unsupported MSI sector shift: {sector_shift}")
+    sector_size = 1 << sector_shift
+    first_directory_sector = struct.unpack_from("<I", data, 48)[0]
+    if first_directory_sector >= 0xFFFFFFFA:
+        raise ValueError("MSI output has no valid directory sector")
+    root_offset = (first_directory_sector + 1) * sector_size
+    if root_offset + 128 > len(data):
+        raise ValueError("MSI root directory entry is outside the output")
+    name_length = struct.unpack_from("<H", data, root_offset + 64)[0]
+    object_type = data[root_offset + 66]
+    root_name = data[root_offset : root_offset + name_length - 2].decode("utf-16le")
+    if root_name != "Root Entry" or object_type != 5:
+        raise ValueError("MSI root directory entry is invalid")
+    data[root_offset + 100 : root_offset + 116] = bytes(16)
+    temporary = path.with_suffix(path.suffix + ".normalizing")
+    try:
+        temporary.write_bytes(data)
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def _set_summary_package_code(database, package_code: str) -> None:
@@ -295,6 +324,7 @@ def build_msi(
         for path, (access_time, modified_time) in timestamps.items():
             os.utime(path, ns=(access_time, modified_time))
 
+    normalize_msi_storage_timestamps(output)
     digest = sha256_file(output)
     checksum_path = output.with_suffix(output.suffix + ".sha256")
     checksum_path.write_text(

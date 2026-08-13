@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import struct
 from pathlib import Path
 
 import src.core.app_paths as app_paths
@@ -203,3 +204,35 @@ def test_msi_rejects_portable_manifest_tampering(tmp_path: Path) -> None:
     executable.write_bytes(b"tampered")
     with pytest.raises(ValueError, match="size mismatch"):
         verify_portable_manifest(bundle, manifest)
+
+
+def test_msi_storage_timestamp_normalization_is_structurally_guarded(
+    tmp_path: Path,
+) -> None:
+    import pytest
+
+    from tools.package_windows_msi import normalize_msi_storage_timestamps
+
+    invalid = tmp_path / "invalid.msi"
+    invalid.write_bytes(b"not-an-msi")
+    with pytest.raises(ValueError, match="Compound File Binary"):
+        normalize_msi_storage_timestamps(invalid)
+
+    path = tmp_path / "valid.msi"
+    data = bytearray(1152)
+    data[:8] = bytes.fromhex("D0CF11E0A1B11AE1")
+    struct.pack_into("<H", data, 30, 9)
+    struct.pack_into("<I", data, 48, 1)
+    root_offset = 1024
+    name = "Root Entry".encode("utf-16le") + b"\x00\x00"
+    data[root_offset : root_offset + len(name)] = name
+    struct.pack_into("<H", data, root_offset + 64, len(name))
+    data[root_offset + 66] = 5
+    data[root_offset + 100 : root_offset + 116] = bytes(range(16))
+    path.write_bytes(data)
+
+    normalize_msi_storage_timestamps(path)
+
+    normalized = path.read_bytes()
+    assert normalized[root_offset + 100 : root_offset + 116] == bytes(16)
+    assert normalized[:root_offset] == data[:root_offset]
