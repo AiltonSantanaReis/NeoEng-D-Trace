@@ -131,10 +131,16 @@ def test_engine_validation_manifest_matches_preserved_reports() -> None:
     }
     for validation in manifest["validations"]:
         report_path = evidence_root / validation["report"]
-        report_bytes = report_path.read_bytes()
-        report = json.loads(report_bytes)
+        report_text = report_path.read_text(encoding="utf-8")
+        canonical_bytes = (
+            report_text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+        )
+        report = json.loads(report_text)
 
-        assert hashlib.sha256(report_bytes).hexdigest() == validation["report_sha256"]
+        assert (
+            hashlib.sha256(canonical_bytes).hexdigest()
+            == validation["report_canonical_sha256"]
+        )
         assert report["engine"] == validation["engine"]
         assert report["status"] == validation["status"] == "SUCCESS"
         assert set(report["checks"]) == set(validation["checks"]) == expected_checks

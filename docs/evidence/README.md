@@ -4,7 +4,7 @@
   alteração de testes, gates, cadeia de custódia, workflows remotos e
   reproduções locais antes da Etapa 14.
 - `PRE_ETAPA_14_ENGINE_VALIDATION_MANIFEST_2026-08-13.json` — vínculo verificável
-  entre commit-fonte, versões, contratos, relatórios reais de Godot/Unity e hashes.
+  entre commit-fonte, versões, contratos, relatórios reais de Godot/Unity e hashes canônicos.
 - `PRE_ETAPA_14_GODOT_VALIDATION_2026-08-13.json` — saída normalizada da
   importação real no Godot.
 - `PRE_ETAPA_14_UNITY_VALIDATION_2026-08-13.json` — saída normalizada da

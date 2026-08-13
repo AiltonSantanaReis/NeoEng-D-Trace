@@ -8,7 +8,7 @@ Não foi encontrada evidência técnica de fabricação deliberada de testes ou 
 
 - histórico entre o baseline `a3f376a` e `f042ceb2e5c41c4acbe445da82fe41b1164767f2`;
 - workflow, configuração de pytest, mypy, cobertura e segurança;
-- 960 testes oficiais pós-correção, 955 na âncora inicial, e 196 testes históricos preservados;
+- 962 testes oficiais após os controles de evidência, 955 na âncora inicial, e 196 testes históricos preservados;
 - 17 referências de testes substitutos, coletadas como 23 casos parametrizados;
 - seis ZIPs históricos, incluindo conteúdo aninhado;
 - 65 IDs de workflow citados nos documentos;
@@ -66,6 +66,10 @@ Os projetos produzidos foram omitidos do pacote por conterem referências absolu
 
 A busca inicial por `Get-Command` foi insuficiente e produziu uma conclusão incorreta sobre a disponibilidade do editor. A instalação gerenciada pelo Unity Hub foi então localizada e o Unity `6000.5.7f1` foi executado realmente em modo batch com `com.unity.cloud.gltfast=6.19.0`. A validação aprovou metadados, textura, colisão, GLB externo e GLB importado pela engine, com código de processo zero e relatório preservado. Um timeout de serviço externo apareceu somente no encerramento, depois de `ENGINE_VALIDATION=SUCCESS`, da gravação do resultado e do retorno zero; ele não foi ocultado nem interpretado como falha do contrato validado.
 
+### A-007 — hash textual dependente de fim de linha — alto — corrigido
+
+O primeiro manifesto preservou hashes dos bytes CRLF produzidos no Windows. O run `31725462572` aprovou todos os gates no Windows, mas foi corretamente rejeitado no Linux: 961 testes passaram e o novo teste de integridade falhou porque o checkout Git continha LF. A regra não foi removida nem afrouxada. O contrato passou a declarar SHA-256 canônico de UTF-8 após normalização de CRLF e CR para LF, usando os mesmos valores registrados pelo baseline. O run falho permanece como evidência da detecção e não deve ser citado como aprovação.
+
 ## Auditoria do histórico de testes
 
 - nenhum arquivo de teste foi removido entre o baseline e a âncora auditada;
@@ -84,7 +88,7 @@ Dos 65 IDs de workflow citados, 64 existem no repositório remoto e correspondem
 ## Execuções locais desta auditoria
 
 - 955/955 testes oficiais aprovados antes da correção, zero skip;
-- 960/960 testes oficiais aprovados após o endurecimento, zero skip;
+- 962/962 testes oficiais aprovados após os controles de evidência, zero skip;
 - 11.581/12.478 linhas: 92,81%;
 - 3.370/3.964 branches: 85,02%;
 - cobertura combinada: 90,93%, aprovada com piso 90;

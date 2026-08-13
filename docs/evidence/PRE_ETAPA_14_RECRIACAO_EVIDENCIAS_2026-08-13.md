@@ -8,7 +8,7 @@
 
 - Godot `4.7.stable.official.5b4e0cb0f`: execução real, cinco contratos aprovados e relatório bruto preservado.
 - Unity `6000.5.7f1` com glTFast `6.19.0`: execução real, cinco contratos aprovados, dois processos com retorno zero e relatório bruto preservado.
-- O manifesto vincula os dois relatórios ao commit-fonte e confere seus hashes SHA-256.
+- O manifesto vincula os dois relatórios ao commit-fonte e confere seus hashes SHA-256 canônicos, normalizados para LF para produzir o mesmo resultado em Windows e Linux.
 
 ## Pacotes históricos sanitizados
 
