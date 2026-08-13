@@ -8,6 +8,7 @@
 - commits técnicos: `2d8543264e98e73440da53900d0e476fe8bb1b05`,
   `46f090f96c25f44d546764b3bc9c9ca5f119fa11` e
   `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`;
+- commit corretivo: `426cef118fdb0a334e639ec962b2e514cfd59b0a`;
 - estado desta evidência: aprovado localmente, ainda não integrado;
 - release: não aprovada.
 
@@ -145,6 +146,66 @@ reutilizáveis.
    do schema. O harness foi corrigido para mutar depois da inicialização e usar
    a API pública `apply_to`; somente a terceira execução foi aceita.
 
+## Primeiro CI da PR — verde, mas rejeitado
+
+A PR draft `#51` executou o workflow `31693639653` no merge sintético
+`0f43ef78e47b60898983ed2fa4c82f6d3fdb2365`, cujos pais eram a base
+`fc81c2ea10e751c15a39627d462ddfff390eeb04` e o HEAD fonte
+`63f1ccfb5e5ff6ed295a5f169746c2d4c494cb38`.
+
+| Sistema | Job | Estado | Artefato | Digest SHA-256 |
+|---|---:|---|---:|---|
+| Linux | `94426333019` | `success` | `9178445539` | `d3b8657963b3e0bbef4e495443d8f80fa8313f0eeae338159010474fc23de507` |
+| Windows | `94426333153` | `success` | `9178479814` | `c39ce4650402f1d98ee71ce30025ead32835ba7651b7fab4591e4dbf3257e693` |
+
+Apesar dos jobs verdes e de zero anotações, a execução foi rejeitada após
+inspeção dos `coverage.xml`:
+
+- Linux: `11.576/12.469` linhas e `3.370/3.964` branches;
+- Windows: `11.578/12.469` linhas e `3.370/3.964` branches;
+- diferenças exatas: linhas `301` e `302` de `persistence/autosave.py`;
+- hashes dos relatórios: Linux
+  `53bc1dcc1a64f9a9b96efde08267c990222a4b2260fbf3ed545a417f177016e1`
+  e Windows
+  `cf73ac09bfe74027f7bb9c3e0db2688492534c6151da404982832641c26940ec`.
+
+A auditoria também confirmou:
+
+- `953 passed` nos dois sistemas;
+- merge sintético e HEAD fonte separados corretamente no resumo legado;
+- `196` testes legados, `27/27` conciliados e zero inesperados;
+- `56` documentos comparados: `53` iguais byte a byte e `3` iguais após
+  normalização exclusiva de CRLF/LF;
+- `62` arquivos, `1.421` payloads e `1.359` entradas aninhadas examinados
+  recursivamente, sem referência proibida, caminho pessoal ou checksum
+  inconsistente.
+
+### Causa raiz e correção
+
+`Path.rename` recusa um destino existente no Windows, porém substitui esse
+destino em sistemas POSIX. O teste que produzia uma segunda quarentena cobria
+o `FileExistsError` apenas no Windows; no Linux, o snapshot corrompido anterior
+era sobrescrito. O CI estava verde porque não existia asserção que preservasse
+o conteúdo anterior.
+
+O commit `426cef118fdb0a334e639ec962b2e514cfd59b0a` reserva o nome com
+`O_EXCL` e só então move atomicamente o snapshot para o placeholder criado
+pelo próprio processo. A regressão exige que a quarentena anterior permaneça
+intacta e que a nova use o sufixo `.1` em qualquer sistema.
+
+Validação local limpa do corretivo:
+
+- `953 passed`;
+- `11.581/12.478` linhas (`92,81%`);
+- `3.370/3.964` branches (`85,02%`);
+- cobertura combinada `90,93%`;
+- baseline `335`;
+- legado `196`, reconciliação `27/27`, zero inesperados;
+- Black, isort, mypy, Bandit e auditoria de dependências aprovados.
+
+O corretivo ainda aguarda novo CI da PR. Portanto, a Etapa 13 continua não
+integrada e `R-011` continua aberto.
+
 ## Limitações e riscos residuais
 
 - os testes locais e as provas externas não equivalem a integração na `main`;
@@ -160,6 +221,7 @@ reutilizáveis.
 ## Rollback
 
 O rollback técnico é realizado revertendo, em ordem inversa, os commits
+`426cef118fdb0a334e639ec962b2e514cfd59b0a`,
 `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`,
 `46f090f96c25f44d546764b3bc9c9ca5f119fa11` e
 `2d8543264e98e73440da53900d0e476fe8bb1b05`. Nenhum arquivo de projeto do
@@ -168,9 +230,9 @@ um envelope separado do schema `.ndtproj` v1.
 
 ## Decisão
 
-**APROVADO LOCALMENTE / NÃO INTEGRADO.** A implementação está pronta para PR e
-auditoria de CI, mas isso não encerra `R-011`, não conclui a Etapa 13 e não
-aprova release.
+**APROVADO LOCALMENTE / NÃO INTEGRADO.** O corretivo está pronto para novo CI
+da PR, mas isso não encerra `R-011`, não conclui a Etapa 13 e não aprova
+release.
 
 ```text
 BASE_MAIN=fc81c2ea10e751c15a39627d462ddfff390eeb04
@@ -181,7 +243,13 @@ BRANCH_COVERAGE=3370/3964
 MODULES_BELOW_30=0
 LEGACY_RECONCILIATION=27/27
 LOCAL_VALIDATION_STATUS=ACCEPTED
-PRE_MERGE_CI_STATUS=NOT_RUN
+PRE_MERGE_CI_RUN=31693639653
+PRE_MERGE_CI_STATUS=REJECTED
+CORRECTIVE_HEAD=426cef118fdb0a334e639ec962b2e514cfd59b0a
+CORRECTIVE_LOCAL_TESTS_PASSED=953
+CORRECTIVE_LINE_COVERAGE=11581/12478
+CORRECTIVE_BRANCH_COVERAGE=3370/3964
+CORRECTIVE_CI_STATUS=NOT_RUN
 R011_CLOSED=NO
 STAGE13_COMPLETED=NO
 STAGE14_STARTED=NO

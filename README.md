@@ -13,16 +13,18 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 A última âncora integrada da `main` é
 `fc81c2ea10e751c15a39627d462ddfff390eeb04`, resultante da PR de fechamento
 `#50`. O CI pós-merge final da Etapa 12, `31688307089`, foi auditado em Linux
-e Windows. A Etapa 13 está validada somente na branch de trabalho, no commit
-técnico `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`; ainda não há merge nem CI
-da PR que autorizem declarar integração.
+e Windows. A Etapa 13 está validada somente na branch de trabalho. O primeiro
+CI da PR, `31693639653`, ficou verde, mas foi rejeitado após os artefatos
+revelarem divergência de duas linhas entre Linux e Windows. A correção está no
+commit `426cef118fdb0a334e639ec962b2e514cfd59b0a`; ainda não há merge nem CI
+corretivo aceito que autorizem declarar integração.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte oficial | **929 testes no CI final integrado da Etapa 12; 951 locais na Etapa 13** |
-| Cobertura local da Etapa 13 | **11.578/12.469 linhas — 92,85%** |
+| Suíte oficial | **929 testes no CI final integrado da Etapa 12; 953 locais no corretivo da Etapa 13** |
+| Cobertura local corretiva da Etapa 13 | **11.581/12.478 linhas — 92,81%** |
 | Branches locais da Etapa 13 | **3.370/3.964 — 85,02%** |
-| Cobertura combinada local | **90,96%** |
+| Cobertura combinada local | **90,93%** |
 | Type checking | mypy sem erros em 80 arquivos no commit técnico da Etapa 13 |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
@@ -33,7 +35,7 @@ da PR que autorizem declarar integração.
 O fechamento final da Etapa 12 está vinculado à integração
 `fc81c2ea10e751c15a39627d462ddfff390eeb04` e ao CI pós-merge
 `31688307089`. `R-012` está encerrado no escopo aprovado. A correção de
-`R-011` foi aprovada localmente no commit `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`,
+`R-011` foi aprovada localmente no commit corretivo `426cef118fdb0a334e639ec962b2e514cfd59b0a`,
 mas o risco permanece **ABERTO** até merge autorizado e CI pós-merge auditado.
 
 Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,

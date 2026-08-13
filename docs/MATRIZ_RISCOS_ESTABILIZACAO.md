@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 13 de agosto de 2026. A Etapa 12 foi encerrada pela PR `#50` em `fc81c2ea10e751c15a39627d462ddfff390eeb04`; o CI final `31688307089` aprovou Linux e Windows com `929` testes e manteve 90,91% de cobertura combinada. A Etapa 13 foi aprovada localmente, mas não integrada, no commit `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`, com `951` testes, 92,85% de linhas, 85,02% de branches e 90,96% combinada. `R-011` continua aberto até merge e CI pós-merge; Etapa 14 e release permanecem pendentes.
+Snapshot vivo de 13 de agosto de 2026. A Etapa 12 foi encerrada pela PR `#50` em `fc81c2ea10e751c15a39627d462ddfff390eeb04`; o CI final `31688307089` aprovou Linux e Windows com `929` testes e manteve 90,91% de cobertura combinada. A Etapa 13 foi aprovada localmente, mas não integrada, no commit corretivo `426cef118fdb0a334e639ec962b2e514cfd59b0a`, com `953` testes, 92,81% de linhas, 85,02% de branches e 90,93% combinada; o CI verde `31693639653` foi rejeitado por divergência de cobertura entre sistemas. `R-011` continua aberto até merge e CI pós-merge; Etapa 14 e release permanecem pendentes.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -32,7 +32,7 @@ Snapshot vivo de 13 de agosto de 2026. A Etapa 12 foi encerrada pela PR `#50` em
 | R-008 | ENCERRADO NO ESCOPO APROVADO | API pública única, wrappers históricos sem implementação própria e regressões; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final da PR `31445205968` e pós-merge `31445518755` aprovados em Linux e Windows |
 | R-009 | ENCERRADO | CI Linux e Windows estabelecida |
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
-| R-011 | CORREÇÃO VALIDADA LOCALMENTE / ABERTO | Refatoração Qt e autosave aprovados no commit `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`; exige merge autorizado e CI pós-merge auditado para encerramento |
+| R-011 | CORREÇÃO VALIDADA LOCALMENTE / ABERTO | Refatoração Qt e autosave corrigidos no commit `426cef118fdb0a334e639ec962b2e514cfd59b0a`; CI `31693639653` rejeitado; exige CI corretivo, merge autorizado e CI pós-merge auditado para encerramento |
 | R-012 | ENCERRADO NO ESCOPO APROVADO | PR `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI pós-merge `31686321925`; limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes em Linux/Windows; artefatos e legado auditados |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
 

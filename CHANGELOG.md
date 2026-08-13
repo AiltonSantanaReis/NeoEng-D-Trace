@@ -9,11 +9,12 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - reduz `main_window.py` de `1.306` para `1.175` linhas físicas e separa sessão de documento, caminhos de estado, conversão de imagem, traduções e coordenação do autosave;
 - adiciona autosave local versionado, atômico e limitado, com quarentena de snapshot inválido, fingerprint do projeto-fonte e recuperação explícita;
 - preserva snapshots quando a recuperação é adiada, exige `Salvar como` após conflito da origem e limpa o snapshot somente após salvamento explícito bem-sucedido;
-- aprova `951` testes no commit limpo `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`, com `11.578/12.469` linhas, `3.370/3.964` branches e `90,96%` combinada;
-- mantém zero módulos abaixo de 30%, baseline de `334` arquivos, mypy em `80` arquivos, gates Black/isort/Bandit aprovados e nenhuma vulnerabilidade conhecida nas dependências auditáveis;
+- aprova `953` testes no commit corretivo limpo `426cef118fdb0a334e639ec962b2e514cfd59b0a`, com `11.581/12.478` linhas, `3.370/3.964` branches e `90,93%` combinada;
+- mantém zero módulos abaixo de 30%, baseline de `335` arquivos, mypy em `80` arquivos, gates Black/isort/Bandit aprovados e nenhuma vulnerabilidade conhecida nas dependências auditáveis;
 - reconcilia `196` testes legados com `27/27` falhas históricas previstas e zero inesperadas;
 - valida fora do pytest um `QTimer` real e a recuperação entre processos distintos sem alterar o projeto-fonte;
 - registra e corrige falhas intermediárias, inclusive uma suíte `939 passed, 1 failed`, risco de exclusão no fluxo adiado e branches inicialmente abaixo de 85%;
+- rejeita o CI verde `31693639653` após os artefatos mostrarem `11.576` linhas cobertas no Linux contra `11.578` no Windows; corrige a quarentena que sobrescrevia snapshot anterior em sistemas POSIX e adiciona regressão portátil;
 - mantém `R-011` aberto, Etapa 13 não concluída, Etapa 14 não iniciada e release não aprovada até merge autorizado e CI pós-merge auditado.
 
 ### Etapa 12 — integrada e concluída, segurança e limites operacionais

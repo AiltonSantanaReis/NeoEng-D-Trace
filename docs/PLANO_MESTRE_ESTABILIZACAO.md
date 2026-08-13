@@ -28,12 +28,12 @@ Etapa 12 — integrada e concluída no escopo aprovado:
 
 Etapa 13 — aprovada localmente, ainda não integrada:
 
-- base integrada `fc81c2ea10e751c15a39627d462ddfff390eeb04`; commit técnico final `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`;
+- base integrada `fc81c2ea10e751c15a39627d462ddfff390eeb04`; commit corretivo local `426cef118fdb0a334e639ec962b2e514cfd59b0a`;
 - sessão de documento, caminhos de estado, conversão de imagem, traduções e coordenação do autosave extraídos; `main_window.py` reduzido de `1.306` para `1.175` linhas;
 - autosave local versionado, atômico, limitado e recuperável explicitamente, com quarentena, fingerprint da origem e preservação da decisão adiada;
-- `951` testes, `11.578/12.469` linhas, `3.370/3.964` branches, `90,96%` combinada, zero módulos abaixo de 30% e baseline de `334` arquivos;
+- `953` testes, `11.581/12.478` linhas, `3.370/3.964` branches, `90,93%` combinada, zero módulos abaixo de 30% e baseline de `335` arquivos;
 - mypy em `80` arquivos, Black, isort, Bandit e pip-audit aprovados no escopo vigente; legado `27/27` conciliado;
-- provas externas aprovadas com `QTimer` real e processos distintos;
+- provas externas aprovadas com `QTimer` real e processos distintos; CI verde `31693639653` rejeitado por divergência Linux/Windows; correção portátil aguarda novo CI;
 - `R-011`: CORREÇÃO VALIDADA LOCALMENTE / ABERTO ATÉ MERGE E CI PÓS-MERGE; Etapa 13: NÃO CONCLUÍDA; Etapa 14: NÃO INICIADA; release: NÃO APROVADA.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:

@@ -1016,7 +1016,13 @@ def test_stage13_premerge_evidence_keeps_r011_and_release_open():
         "QTimer",
         "processos distintos",
         "APROVADO LOCALMENTE / NÃO INTEGRADO",
-        "PRE_MERGE_CI_STATUS=NOT_RUN",
+        "31693639653",
+        "426cef118fdb0a334e639ec962b2e514cfd59b0a",
+        "953 passed",
+        "11.581/12.478",
+        "90,93%",
+        "PRE_MERGE_CI_STATUS=REJECTED",
+        "CORRECTIVE_CI_STATUS=NOT_RUN",
         "R011_CLOSED=NO",
         "STAGE13_COMPLETED=NO",
         "STAGE14_STARTED=NO",
@@ -1033,8 +1039,8 @@ def test_stage13_premerge_evidence_keeps_r011_and_release_open():
         "docs/evidence/README.md",
     ):
         value = _text(relative)
-        assert "58ef2ac5091683ac81a9ee93a6ca6db2e617dd63" in value, relative
-        assert "951" in value, relative
+        assert "426cef118fdb0a334e639ec962b2e514cfd59b0a" in value, relative
+        assert "953" in value, relative
         assert "R-011" in value, relative
         assert "não integrada" in value.lower() or "não integrado" in value.lower()
         assert "release" in value.lower()
