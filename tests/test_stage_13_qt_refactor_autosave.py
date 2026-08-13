@@ -214,6 +214,112 @@ def test_non_adapter_layers_are_qt_independent_and_main_window_is_reduced() -> N
     assert xray.shape == (8, 8, 3)
 
 
+def test_autosave_coordinator_reports_write_discard_and_invalid_recovery_errors(
+    qt_app,
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    store = AutosaveStore(tmp_path / "state" / "recovery.json")
+    window = MainWindow(_scene(), _ConfigStub(), autosave_store=store)
+    assert window._discard_autosave() is True
+
+    messages = []
+    window.scene.add_object("shape", [(0, 0), (8, 0), (0, 8)])
+    window._autosave_coordinator.show_status = (
+        lambda message, duration: messages.append((message, duration))
+    )
+    monkeypatch.setattr(
+        store,
+        "save",
+        lambda *args, **kwargs: (_ for _ in ()).throw(AutosaveError("write blocked")),
+    )
+    assert window.perform_autosave() is False
+    assert messages[-1][1] == 5000
+
+    monkeypatch.setattr(store, "exists", lambda: True)
+    monkeypatch.setattr(
+        store,
+        "discard",
+        lambda: (_ for _ in ()).throw(AutosaveError("discard blocked")),
+    )
+    assert window._discard_autosave() is False
+    _close_clean(window)
+
+    invalid_path = tmp_path / "invalid" / "recovery.json"
+    invalid_path.parent.mkdir()
+    invalid_path.write_text("{", encoding="utf-8")
+    invalid_window = MainWindow(
+        _scene(),
+        _ConfigStub(),
+        autosave_store=AutosaveStore(invalid_path),
+    )
+    critical = []
+    monkeypatch.setattr(
+        QMessageBox,
+        "critical",
+        lambda *args, **kwargs: critical.append(str(args[2])),
+    )
+    assert invalid_window.offer_autosave_recovery() is False
+    assert "preserved" in critical[-1]
+    _close_clean(invalid_window)
+
+
+def test_autosave_recovery_callback_failure_is_visible_and_preserved(
+    qt_app,
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    scene = _scene()
+    scene.add_object("shape", [(0, 0), (8, 0), (0, 8)])
+    store = AutosaveStore(tmp_path / "state" / "recovery.json")
+    store.save(scene, reference_project_path=tmp_path / "untitled.ndtproj")
+    window = MainWindow(_scene(), _ConfigStub(), autosave_store=store)
+    critical = []
+    monkeypatch.setattr(
+        QMessageBox,
+        "warning",
+        lambda *args, **kwargs: QMessageBox.StandardButton.Yes,
+    )
+    monkeypatch.setattr(
+        QMessageBox,
+        "critical",
+        lambda *args, **kwargs: critical.append(str(args[2])),
+    )
+    window._autosave_coordinator.recover = lambda snapshot: (_ for _ in ()).throw(
+        RuntimeError("recovery blocked")
+    )
+
+    assert window.offer_autosave_recovery() is False
+    assert "recovery blocked" in critical[-1]
+    assert store.exists() is True
+    _close_clean(window)
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    (
+        ("saved_at_utc", "2026-08-13T12:30:00", "timezone"),
+        ("document_name", " ", "non-blank"),
+        ("source_project_sha256", "0" * 64, "present together"),
+    ),
+)
+def test_autosave_rejects_invalid_metadata_variants(
+    tmp_path: Path,
+    field: str,
+    value: str,
+    message: str,
+) -> None:
+    path = tmp_path / f"{field}.json"
+    store = AutosaveStore(path)
+    store.save(_scene(), reference_project_path=tmp_path / "untitled.ndtproj")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload[field] = value
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(AutosaveError, match=message):
+        store.load()
+
+
 def test_main_window_autosaves_modified_document_and_clears_after_save(
     qt_app,
     tmp_path: Path,

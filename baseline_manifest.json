@@ -1225,8 +1225,8 @@
       "size": 23032
     },
     "tests/test_stage_13_qt_refactor_autosave.py": {
-      "sha256": "5c8ad035cd4b4f4248b7a8a988aba2c3d0e0e3716ff9b689f5f61e2fef2b2f4b",
-      "size": 11493
+      "sha256": "cd4446f78623ec511cfeb036e09bdface9b8decd0bacc88293e3b446eb07d522",
+      "size": 14831
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
