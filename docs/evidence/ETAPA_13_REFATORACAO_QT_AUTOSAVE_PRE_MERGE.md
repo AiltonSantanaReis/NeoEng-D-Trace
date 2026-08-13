@@ -9,7 +9,7 @@
   `46f090f96c25f44d546764b3bc9c9ca5f119fa11` e
   `58ef2ac5091683ac81a9ee93a6ca6db2e617dd63`;
 - commit corretivo: `426cef118fdb0a334e639ec962b2e514cfd59b0a`;
-- estado desta evidência: aprovado localmente, ainda não integrado;
+- estado desta evidência: aprovado pré-merge, ainda não integrado;
 - release: não aprovada.
 
 ## Objetivo e escopo
@@ -203,14 +203,45 @@ Validação local limpa do corretivo:
 - legado `196`, reconciliação `27/27`, zero inesperados;
 - Black, isort, mypy, Bandit e auditoria de dependências aprovados.
 
-O corretivo ainda aguarda novo CI da PR. Portanto, a Etapa 13 continua não
-integrada e `R-011` continua aberto.
+## CI corretivo da PR — aceito após auditoria
+
+O workflow corretivo `31695151223` validou o HEAD fonte
+`c2e21374f2669248da55c6e77110f2b1f80164b2` pelo merge sintético
+`e48d88179a74738f64619dcd54714e3d420ae8d5`, com pais
+`fc81c2ea10e751c15a39627d462ddfff390eeb04` e
+`c2e21374f2669248da55c6e77110f2b1f80164b2`, e árvore
+`9b3ac479adf60f765a83019b4375a0b904b09998`.
+
+| Sistema | Job | Estado | Artefato | Digest SHA-256 |
+|---|---:|---|---:|---|
+| Linux | `94431148305` | `success` | `9179036011` | `0479561d472a2ed9884a61c575c4e4fadd4968720d4ab98ef595fcf9b1fb0643` |
+| Windows | `94431148369` | `success` | `9179071334` | `564042b66e97817b6b28a0bc9887dc781e73b8f26a4cf422818a1e7e35db668d` |
+
+A aceitação não se baseou apenas no estado verde:
+
+- zero anotações nos dois jobs;
+- `953 passed` em Linux e Windows;
+- `11.581/12.478` linhas e `3.370/3.964` branches nos dois sistemas;
+- zero diferenças entre pontos de cobertura e zero módulos abaixo de 30%;
+- SHA-256 dos `coverage.xml`: Linux
+  `d7b775202c265fb1312ecbcbd54d4233da65f40404a74da5c65a638d7b8b2b4e`
+  e Windows
+  `ff06944f4299ddd2d9d9963ee17d9e06af4ec40391a0d4fa621f80159a547527`;
+- legado schema v4: integridade aprovada, `196` testes, `27/27` conciliados,
+  zero inesperados, zero ausentes, zero erros, zero skips e árvore limpa;
+- `56` documentos comparados: `53` idênticos byte a byte e `3` equivalentes
+  após normalização exclusiva de CRLF/LF;
+- `62` arquivos, `1.421` payloads e `1.359` entradas aninhadas examinados
+  recursivamente, sem violações de referência, caminho pessoal ou checksum.
+
+O CI corretivo foi aceito. A Etapa 13 continua não integrada e `R-011`
+continua aberto até merge autorizado e CI pós-merge auditado.
 
 ## Limitações e riscos residuais
 
 - os testes locais e as provas externas não equivalem a integração na `main`;
-- o CI da PR ainda precisa reproduzir Linux e Windows, cobertura, legado,
-  proveniência e higiene recursiva dos artefatos;
+- o commit documental que registra esta auditoria ainda precisa passar pelos
+  gates da PR antes da revisão final;
 - a margem de branches continua pequena, de `0,02` ponto percentual;
 - o autosave não substitui backups nem garante recuperação diante de falha do
   dispositivo ou corrupção fora do processo;
@@ -230,9 +261,9 @@ um envelope separado do schema `.ndtproj` v1.
 
 ## Decisão
 
-**APROVADO LOCALMENTE / NÃO INTEGRADO.** O corretivo está pronto para novo CI
-da PR, mas isso não encerra `R-011`, não conclui a Etapa 13 e não aprova
-release.
+**APROVADO PRÉ-MERGE / NÃO INTEGRADO.** O CI corretivo foi aceito após
+auditoria dos artefatos, mas isso não encerra `R-011`, não conclui a Etapa 13
+e não aprova release.
 
 ```text
 BASE_MAIN=fc81c2ea10e751c15a39627d462ddfff390eeb04
@@ -249,7 +280,12 @@ CORRECTIVE_HEAD=426cef118fdb0a334e639ec962b2e514cfd59b0a
 CORRECTIVE_LOCAL_TESTS_PASSED=953
 CORRECTIVE_LINE_COVERAGE=11581/12478
 CORRECTIVE_BRANCH_COVERAGE=3370/3964
-CORRECTIVE_CI_STATUS=NOT_RUN
+CORRECTIVE_CI_SOURCE_HEAD=c2e21374f2669248da55c6e77110f2b1f80164b2
+CORRECTIVE_CI_MERGE=e48d88179a74738f64619dcd54714e3d420ae8d5
+CORRECTIVE_CI_RUN=31695151223
+CORRECTIVE_CI_LINUX_ARTIFACT=9179036011
+CORRECTIVE_CI_WINDOWS_ARTIFACT=9179071334
+CORRECTIVE_CI_STATUS=ACCEPTED
 R011_CLOSED=NO
 STAGE13_COMPLETED=NO
 STAGE14_STARTED=NO

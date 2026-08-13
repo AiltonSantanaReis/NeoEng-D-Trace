@@ -4,7 +4,7 @@
 
 **Última âncora integrada:** `fc81c2ea10e751c15a39627d462ddfff390eeb04`
 
-**Estado atual:** Etapa 12 encerrada pela PR `#50` em `fc81c2ea10e751c15a39627d462ddfff390eeb04` e CI final `31688307089`, com `929` testes em Linux/Windows. Etapa 13 aprovada somente localmente no commit corretivo `426cef118fdb0a334e639ec962b2e514cfd59b0a`: `953` testes, 92,81% de linhas, 85,02% de branches, 90,93% combinada e baseline de `335` arquivos; o CI verde `31693639653` foi rejeitado por divergência Linux/Windows. `R-012` está encerrado; `R-011` continua aberto até merge e CI pós-merge; Etapa 14 e release permanecem pendentes. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
+**Estado atual:** Etapa 12 encerrada pela PR `#50` em `fc81c2ea10e751c15a39627d462ddfff390eeb04` e CI final `31688307089`, com `929` testes em Linux/Windows. Etapa 13 aprovada pré-merge no commit corretivo `426cef118fdb0a334e639ec962b2e514cfd59b0a`: `953` testes, 92,81% de linhas, 85,02% de branches, 90,93% combinada e baseline de `335` arquivos; o CI verde `31693639653` foi rejeitado por divergência Linux/Windows e o corretivo `31695151223` foi aceito após auditoria. `R-012` está encerrado; `R-011` continua aberto até merge e CI pós-merge; Etapa 14 e release permanecem pendentes. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -16,7 +16,7 @@
 
 **Fechamento integrado anterior:** Etapa 7 mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
 
-**Riscos:** `R-003`, `R-006`, `R-007`, `R-008` e `R-012` encerrados nos escopos aprovados; `R-011` possui correção local validada após rejeição do CI `31693639653`, mas permanece aberto até CI corretivo, integração e CI pós-merge; release não aprovada.
+**Riscos:** `R-003`, `R-006`, `R-007`, `R-008` e `R-012` encerrados nos escopos aprovados; `R-011` possui correção pré-merge validada após rejeição do CI `31693639653` e aceitação do corretivo `31695151223`, mas permanece aberto até integração e CI pós-merge; release não aprovada.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -39,7 +39,7 @@ snapshot histórico.
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança e limites | INTEGRADO / APROVADO | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows; CI pós-merge `31686321925` auditado | nenhuma ferramenta prova ausência total; tetos não constituem SLA |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em `80` arquivos no commit corretivo da Etapa 13 | ampliar anotações explícitas gradualmente |
-| Cobertura | APROVADO LOCALMENTE / ETAPA 13 NÃO INTEGRADA | corretivo: `953` testes; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%) e 90,93% combinada; zero módulos abaixo de 30% | CI `31693639653` rejeitado; margem de branch de 0,02 p.p.; CI corretivo e pós-merge obrigatórios |
+| Cobertura | APROVADO PRÉ-MERGE / ETAPA 13 NÃO INTEGRADA | corretivo: `953` testes; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%) e 90,93% combinada; zero módulos abaixo de 30%; CI `31695151223` aceito | margem de branch de 0,02 p.p.; merge e CI pós-merge obrigatórios |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

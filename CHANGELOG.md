@@ -15,6 +15,7 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - valida fora do pytest um `QTimer` real e a recuperação entre processos distintos sem alterar o projeto-fonte;
 - registra e corrige falhas intermediárias, inclusive uma suíte `939 passed, 1 failed`, risco de exclusão no fluxo adiado e branches inicialmente abaixo de 85%;
 - rejeita o CI verde `31693639653` após os artefatos mostrarem `11.576` linhas cobertas no Linux contra `11.578` no Windows; corrige a quarentena que sobrescrevia snapshot anterior em sistemas POSIX e adiciona regressão portátil;
+- aceita o CI corretivo `31695151223` no HEAD `c2e21374f2669248da55c6e77110f2b1f80164b2` após confirmar cobertura idêntica ponto a ponto em Linux/Windows, legado `27/27`, documentos equivalentes e `1.421` payloads sem violações;
 - mantém `R-011` aberto, Etapa 13 não concluída, Etapa 14 não iniciada e release não aprovada até merge autorizado e CI pós-merge auditado.
 
 ### Etapa 12 — integrada e concluída, segurança e limites operacionais
