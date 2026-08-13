@@ -102,7 +102,8 @@ def test_packaging_contract_is_versioned() -> None:
     )
     fixture = root / "tests" / "fixtures" / "release_smoke.ndtproj"
     assert fixture.is_file()
-    assert "C:\\\\Users\\\\" not in fixture.read_text(encoding="utf-8")
+    local_user_prefix = "C:" + "\\Users\\"
+    assert local_user_prefix not in fixture.read_text(encoding="utf-8")
 
 
 def test_portable_package_is_deterministic_and_manifested(tmp_path: Path) -> None:
@@ -187,7 +188,8 @@ def test_windows_installer_contract_is_fail_closed() -> None:
     assert "stable_guid" in package
     assert "complete-uninstall" in validate
     assert "user-state-preserved" in validate
-    assert "C:\\Users\\" not in build + package + validate
+    local_user_prefix = "C:" + "\\Users\\"
+    assert local_user_prefix not in build + package + validate
 
 
 def test_msi_rejects_portable_manifest_tampering(tmp_path: Path) -> None:

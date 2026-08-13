@@ -1285,8 +1285,8 @@
       "size": 18166
     },
     "tests/test_stage_14_release_packaging.py": {
-      "sha256": "f591c44dbbf2bbfd007929ac5996d6e67693264d39b7b5eb6e22afce96313a37",
-      "size": 9403
+      "sha256": "99ac20aec0387e636702c520919a908d4f9969fbebf8b9670ce2d105548153e5",
+      "size": 9493
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
