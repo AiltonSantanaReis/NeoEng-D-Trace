@@ -1,0 +1,44 @@
+{
+  "format_id": "neoeng-d-trace-project",
+  "groups": [],
+  "image": null,
+  "layers": [
+    {
+      "id": "layer_default",
+      "locked": false,
+      "name": "Default",
+      "visible": true
+    }
+  ],
+  "metadata": {
+    "app_version": "0.2.0",
+    "generator": "NeoEng-D-Trace"
+  },
+  "objects": [
+    {
+      "beziers": null,
+      "collision": null,
+      "id": "release-smoke-box",
+      "layer_id": "layer_default",
+      "polygon": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 32,
+          "y": 0
+        },
+        {
+          "x": 32,
+          "y": 24
+        },
+        {
+          "x": 0,
+          "y": 24
+        }
+      ]
+    }
+  ],
+  "schema_version": 1
+}

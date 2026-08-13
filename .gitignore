@@ -56,3 +56,5 @@ dist/
 .DS_Store
 Thumbs.db
 Desktop.ini
+release/
+!packaging/*.spec

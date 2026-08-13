@@ -31,3 +31,7 @@ def default_state_directory(
 
 def default_autosave_path() -> Path:
     return default_state_directory() / "autosave" / "recovery.json"
+
+
+def default_config_path() -> Path:
+    return default_state_directory() / "config.json"
