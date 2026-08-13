@@ -3,6 +3,14 @@
 - `AUDITORIA_INTEGRIDADE_PRE_ETAPA_14_2026-08-13.md` — auditoria de fabricação,
   alteração de testes, gates, cadeia de custódia, workflows remotos e
   reproduções locais antes da Etapa 14.
+- `PRE_ETAPA_14_ENGINE_VALIDATION_MANIFEST_2026-08-13.json` — vínculo verificável
+  entre commit-fonte, versões, contratos, relatórios reais de Godot/Unity e hashes.
+- `PRE_ETAPA_14_GODOT_VALIDATION_2026-08-13.json` — saída normalizada da
+  importação real no Godot.
+- `PRE_ETAPA_14_UNITY_VALIDATION_2026-08-13.json` — saída normalizada da
+  importação real no Unity com glTFast.
+- `PRE_ETAPA_14_RECRIACAO_EVIDENCIAS_2026-08-13.md` — limites honestos e método
+  para produzir provas substitutivas atuais dos pacotes frágeis.
 
 Cada etapa deve criar um arquivo `ETAPA_<numero>_<nome>.md` baseado no modelo abaixo.
 

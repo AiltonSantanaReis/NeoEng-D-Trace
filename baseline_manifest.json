@@ -301,8 +301,8 @@
       "size": 630
     },
     "docs/evidence/AUDITORIA_INTEGRIDADE_PRE_ETAPA_14_2026-08-13.md": {
-      "sha256": "4616aefe15932bb073be47513c97bc7dff96152d8579519803e08ba8cba3e3b8",
-      "size": 7086
+      "sha256": "9568a136cb66c6c49946afa671b82ecd434629a0d58bb3d8a8d2ac5b5e07402c",
+      "size": 7602
     },
     "docs/evidence/AUDITORIA_RIGOROSA_2026-08-10.md": {
       "sha256": "ca39ad8c4186547c1da6e511b05c0fe958e7180a2851d85c727fd89c6d70febd",
@@ -500,9 +500,25 @@
       "sha256": "d016c6045acee041a65a21508a42462fdb81ec644fbc071658515d521b2bddb0",
       "size": 3950
     },
+    "docs/evidence/PRE_ETAPA_14_ENGINE_VALIDATION_MANIFEST_2026-08-13.json": {
+      "sha256": "213318d300e0c67de7970926327580615c71fe413a8ecfa658cd88cade5bfecb",
+      "size": 1291
+    },
+    "docs/evidence/PRE_ETAPA_14_GODOT_VALIDATION_2026-08-13.json": {
+      "sha256": "242b83d154c4b4efd4fe89b24678421364fb97ca2e4545d0710064f557ca41e9",
+      "size": 4138
+    },
+    "docs/evidence/PRE_ETAPA_14_RECRIACAO_EVIDENCIAS_2026-08-13.md": {
+      "sha256": "cea1ff709049701475759d5bbb95407aaf350a2df4595df1ed0949484f6d0b44",
+      "size": 2382
+    },
+    "docs/evidence/PRE_ETAPA_14_UNITY_VALIDATION_2026-08-13.json": {
+      "sha256": "692519a0796cc847fa6977e1037d553ec4882b8142490b096c7a2e2982efa4eb",
+      "size": 922
+    },
     "docs/evidence/README.md": {
-      "sha256": "19557c1f4f8c4305938dc5fffec649898ac4d6709b50238923b3ad05c522f3af",
-      "size": 21834
+      "sha256": "ca23b5f7deed16dd2c235e6f32471f7021746cb70d4f009de68da8cefd244d02",
+      "size": 22379
     },
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
       "sha256": "a14971ec281558a36456cc5a4492465e934252559a70febc6ad46a00cd0b2708",
@@ -1145,8 +1161,8 @@
       "size": 4908
     },
     "tests/test_quality_gate_integrity.py": {
-      "sha256": "e0b7e76f38a5e415c0c5480ec91c48c86d6d798bf4d233ece0627dc23134a0be",
-      "size": 3214
+      "sha256": "9de20dc768665339e57018c1d53f7bac1a6abe68736f67cf369ac7c7d73eea88",
+      "size": 5012
     },
     "tests/test_regression_core_contracts.py": {
       "sha256": "954258e1d7e90ad7cd48b6e0cea2a84e52fedcd61486f2f23f73de93895be584",

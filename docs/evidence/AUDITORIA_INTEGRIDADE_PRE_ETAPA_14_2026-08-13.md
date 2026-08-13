@@ -13,7 +13,7 @@ Não foi encontrada evidência técnica de fabricação deliberada de testes ou 
 - seis ZIPs históricos, incluindo conteúdo aninhado;
 - 65 IDs de workflow citados nos documentos;
 - persistência, CLI, colisão, Bézier, APIs, limites, Qt e autosave;
-- importação real de exports pelo Godot instalado.
+- importação real de exports pelos editores Godot e Unity instalados.
 
 ## Achados
 
@@ -62,9 +62,9 @@ O pacote manual registra `gate: APPROVED`, 15 verificações marcadas como aprov
 
 Os projetos produzidos foram omitidos do pacote por conterem referências absolutas; restaram hashes e invariantes. Portanto, os 15 itens manuais são atestações humanas apoiadas por logs, não uma prova integralmente reproduzível a partir do ZIP. A funcionalidade atual de abrir/salvar foi reproduzida pela suíte Qt local, mas isso não transforma retroativamente a evidência manual em evidência automática.
 
-### A-006 — Unity não reproduzido neste computador — médio — aberto
+### A-006 — descoberta inicial do Unity limitada ao `PATH` — médio — corrigido
 
-O executável Unity não está disponível neste ambiente. A alegação histórica foi confrontada com metadados e workflows remotos, mas não foi reexecutada localmente nesta auditoria. Godot 4.7 está instalado e aprovou importação real de metadados, textura, colisão e GLB. A Etapa 14 não deve afirmar nova validação Unity sem executar o editor real e preservar o relatório correspondente.
+A busca inicial por `Get-Command` foi insuficiente e produziu uma conclusão incorreta sobre a disponibilidade do editor. A instalação gerenciada pelo Unity Hub foi então localizada e o Unity `6000.5.7f1` foi executado realmente em modo batch com `com.unity.cloud.gltfast=6.19.0`. A validação aprovou metadados, textura, colisão, GLB externo e GLB importado pela engine, com código de processo zero e relatório preservado. Um timeout de serviço externo apareceu somente no encerramento, depois de `ENGINE_VALIDATION=SUCCESS`, da gravação do resultado e do retorno zero; ele não foi ocultado nem interpretado como falha do contrato validado.
 
 ## Auditoria do histórico de testes
 
@@ -93,9 +93,10 @@ Dos 65 IDs de workflow citados, 64 existem no repositório remoto e correspondem
 - legado bruto: 196 testes, 27 falhas, zero erro, zero skip;
 - reconciliação: 27/27 assinaturas esperadas, zero inesperada e zero ausente;
 - Godot 4.7 real: `SUCCESS` em metadados, textura, colisão, GLB externo e GLB importado pela engine.
+- Unity 6000.5.7f1 real com glTFast 6.19.0: `SUCCESS` nos mesmos cinco contratos, em duas execuções batch com código zero.
 
 ## Conclusão
 
 Não há base técnica para acusar fabricação deliberada. Há base técnica para afirmar que dois controles permitiam confiança excessiva: cobertura com piso obsoleto e referências substitutas não verificadas. Ambos foram endurecidos.
 
-As evidências históricas sanitizadas e a validação manual da Etapa 4 devem ser tratadas como registros de garantia limitada, não como prova autossuficiente. Unity permanece não reproduzido localmente. Esses pontos devem continuar visíveis durante a Etapa 14 e na decisão de release.
+As evidências históricas sanitizadas e a validação manual da Etapa 4 devem ser tratadas como registros de garantia limitada, não como prova autossuficiente. Godot e Unity foram reproduzidos localmente no código-fonte identificado; isso não recria retroativamente execuções históricas nem aprova release. Esses limites devem continuar visíveis durante a Etapa 14 e na decisão de release.

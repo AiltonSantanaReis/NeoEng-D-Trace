@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "engine": "unity",
+  "status": "SUCCESS",
+  "checks": [
+    "metadata",
+    "texture",
+    "collision",
+    "glb-external",
+    "glb-engine"
+  ],
+  "unity_package": "com.unity.cloud.gltfast=6.19.0",
+  "commands": [
+    {
+      "executable": "Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-createProject",
+        "unity-project",
+        "-logFile",
+        "unity-create.log"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "executable": "Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-projectPath",
+        "unity-project",
+        "-executeMethod",
+        "EngineExportValidator.Run",
+        "-logFile",
+        "unity-validation.log"
+      ],
+      "returncode": 0,
+      "output": "ENGINE_VALIDATION=SUCCESS\nENGINE_VERSION=6000.5.7f1\n"
+    }
+  ]
+}
