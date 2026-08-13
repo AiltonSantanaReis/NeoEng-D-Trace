@@ -79,7 +79,10 @@ jobs:
         run: poetry run bandit -q -r src -lll
 
       - name: Run tests with Linux branch coverage
-        run: poetry run pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml
+        run: poetry run pytest --cov=src --cov-branch --cov-fail-under=90 --cov-report=term-missing --cov-report=xml
+
+      - name: Enforce integrated coverage policy
+        run: poetry run python tools/check_coverage_policy.py coverage.xml
 
       - name: Verify Linux source tree remained unchanged
         run: python tools/baseline_integrity.py --verify
@@ -154,7 +157,10 @@ jobs:
         run: poetry run bandit -q -r src -lll
 
       - name: Run tests with Windows branch coverage
-        run: poetry run pytest --cov=src --cov-branch --cov-fail-under=62 --cov-report=term-missing --cov-report=xml
+        run: poetry run pytest --cov=src --cov-branch --cov-fail-under=90 --cov-report=term-missing --cov-report=xml
+
+      - name: Enforce integrated coverage policy
+        run: poetry run python tools/check_coverage_policy.py coverage.xml
 
       - name: Run reconciled preserved legacy suite
         run: poetry run python tools/run_legacy_tests.py --group all --output "${{ runner.temp }}/legacy-tests"

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "evidence_type": "pre_stage_14_real_engine_validation",
+  "tested_source_commit": "0a9bd99a0b0ef622fe6294f43ee69c7d68ac72c1",
+  "working_tree_clean_before_execution": true,
+  "hash_normalization": "UTF-8 com CRLF e CR normalizados para LF antes do SHA-256",
+  "validations": [
+    {
+      "engine": "godot",
+      "version": "4.7.stable.official.5b4e0cb0f",
+      "report": "PRE_ETAPA_14_GODOT_VALIDATION_2026-08-13.json",
+      "report_canonical_sha256": "242b83d154c4b4efd4fe89b24678421364fb97ca2e4545d0710064f557ca41e9",
+      "status": "SUCCESS",
+      "checks": ["metadata", "texture", "collision", "glb-external", "glb-engine"]
+    },
+    {
+      "engine": "unity",
+      "version": "6000.5.7f1",
+      "package": "com.unity.cloud.gltfast=6.19.0",
+      "report": "PRE_ETAPA_14_UNITY_VALIDATION_2026-08-13.json",
+      "report_canonical_sha256": "692519a0796cc847fa6977e1037d553ec4882b8142490b096c7a2e2982efa4eb",
+      "status": "SUCCESS",
+      "checks": ["metadata", "texture", "collision", "glb-external", "glb-engine"]
+    }
+  ],
+  "limitations": [
+    "Os relatórios validam o commit-fonte identificado e não recriam timestamps ou identidades de execuções históricas.",
+    "Os projetos gerados são temporários e podem ser recriados com tools/validate_engine_exports.py.",
+    "A validação dos engines não constitui aprovação de release."
+  ]
+}

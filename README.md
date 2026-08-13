@@ -31,6 +31,13 @@ encerrados no escopo aprovado; Etapa 14 e release permanecem pendentes.
 | Próxima etapa | **Etapa 14 — não iniciada** |
 | Release | **NÃO APROVADA** |
 
+O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
+de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
+30%. A suíte histórica não é declarada como aprovada: ela mantém 27 falhas
+brutas conhecidas, aceitas somente quando as assinaturas coincidem e os 17
+testes substitutos são coletáveis.
+
+
 A Etapa 13 foi integrada pela PR `#51` no merge
 `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`. O CI pós-merge
 `31698961646` reproduziu `953` testes, cobertura idêntica ponto a ponto em
