@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "evidence": "stage-14-release-candidate-pre-merge",
+  "date": "2026-08-13",
+  "source_commit": "9cef5a15e357f096312048c0beb9d43384c92fce",
+  "version": "0.2.0",
+  "environment": {
+    "os": "Windows",
+    "python": "3.11.9",
+    "poetry": "2.4.1",
+    "pyinstaller": "6.22.0",
+    "godot": "4.7.stable.official",
+    "unity": "6000.5.7f1",
+    "unity_gltf_package": "com.unity.cloud.gltfast=6.19.0"
+  },
+  "local_gate": {
+    "status": "PASS",
+    "tests_passed": 978,
+    "tests_failed": 0,
+    "lines": {
+      "covered": 11621,
+      "valid": 12523,
+      "percent": 92.8
+    },
+    "branches": {
+      "covered": 3382,
+      "valid": 3978,
+      "percent": 85.02
+    },
+    "combined_percent": 90.92,
+    "minimum_module_percent": 30,
+    "mypy_source_files": 80,
+    "legacy": {
+      "executed": 196,
+      "matched_expected_failures": 27,
+      "expected_failures": 27,
+      "unexpected": 0,
+      "missing": 0
+    }
+  },
+  "artifacts": {
+    "portable": {
+      "filename": "NeoEng-D-Trace-0.2.0-win64-portable.zip",
+      "size": 122552277,
+      "sha256": "2c8b9c8847d0c00e9f1d0786f5b14e161832856252d8454db58d0d9e198e0d68",
+      "identical_runs": 2,
+      "manifest_files": 312
+    },
+    "msi": {
+      "filename": "NeoEng-D-Trace-0.2.0-win64.msi",
+      "size": 121958400,
+      "sha256": "85adbdb1b754fc69a7fc717e9e9b4aed5950a8e71b746adb381f4444f589b7c5",
+      "identical_runs": 2,
+      "product_code": "{795B96C7-9290-5E8C-BE8A-83333EDD1269}",
+      "package_code": "{064DE26B-38B9-5732-8373-29328526848B}",
+      "upgrade_code": "{F13BFDC4-1445-56D9-A72E-8812CA7F9E87}",
+      "install_exit_code": 0,
+      "uninstall_exit_code": 0
+    }
+  },
+  "fixtures": {
+    "project": {
+      "size": 1096,
+      "sha256": "1a2efecf339b1d452a38aaef66fdc963b7e121e29f2cef0994daf424f552a706"
+    },
+    "source_png": {
+      "size": 229,
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc"
+    },
+    "glb": {
+      "size": 968,
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde"
+    },
+    "godot_json": {
+      "size": 1388,
+      "sha256": "1a44bbac050c787b8229a4dc8594f5a1bc59fd3c2a913252e7f980779d8fc49d"
+    },
+    "unity_json": {
+      "size": 1431,
+      "sha256": "300fb895c35d2d20ee83621dac0af831580b81ff8dd818891963065762847a7d"
+    }
+  },
+  "external_engine_validation": {
+    "godot": {
+      "status": "SUCCESS",
+      "checks": [
+        "metadata",
+        "texture",
+        "collision",
+        "glb-external",
+        "glb-engine"
+      ],
+      "report_sha256": "32061103464b58e3bc26694bc723423092c99a1ca84be2596d804fc9bb1d2994"
+    },
+    "unity": {
+      "status": "SUCCESS",
+      "checks": [
+        "metadata",
+        "texture",
+        "collision",
+        "glb-external",
+        "glb-engine"
+      ],
+      "report_sha256": "8462e26b8f0b35ae8792ffe1ff69879bcad2a94cd8ba49490cf7455f8a6db479"
+    }
+  },
+  "integrity": {
+    "portable_manifest_failures": 0,
+    "forbidden_references": 0,
+    "defender_bundle": "NO_THREATS_DETECTED",
+    "defender_msi": "NO_THREATS_DETECTED",
+    "gui_signature": "NotSigned",
+    "cli_signature": "NotSigned",
+    "msi_signature": "NotSigned",
+    "pyinstaller_missing_module_lines": 242,
+    "pyinstaller_hidden_tzdata_warning": true
+  },
+  "decision": {
+    "technical_candidate": "PASS",
+    "stage_completed": false,
+    "release_approved": false,
+    "blocking_risks": [
+      "R-014",
+      "R-015"
+    ],
+    "maintenance_risk": "R-016"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "engine": "godot",
+  "status": "SUCCESS",
+  "checks": [
+    "metadata",
+    "texture",
+    "collision",
+    "glb-external",
+    "glb-engine"
+  ],
+  "fixture_origin": "external-release",
+  "fixture_files": {
+    "engine-input.ndtproj": {
+      "size": 1096,
+      "sha256": "1a2efecf339b1d452a38aaef66fdc963b7e121e29f2cef0994daf424f552a706"
+    },
+    "probe-godot.json": {
+      "size": 1388,
+      "sha256": "1a44bbac050c787b8229a4dc8594f5a1bc59fd3c2a913252e7f980779d8fc49d"
+    },
+    "scene.glb": {
+      "size": 968,
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde"
+    },
+    "source.png": {
+      "size": 229,
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc"
+    }
+  },
+  "commands": [
+    {
+      "executable": "godot.exe",
+      "arguments": [
+        "--headless",
+        "--editor",
+        "--path",
+        "godot-release-engine-work",
+        "--import"
+      ],
+      "returncode": 0,
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Inicialização do Projeto (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Escaneando estrutura de arquivos...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Carregando nomes de classe globais...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verificando GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Criando scripts autoload...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Inicializando plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Iniciando escaneamento de arquivos...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | Started Escaneando ações... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | scene.glb\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | source.png\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importando Recursos (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparando arquivos para reimportação...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparando arquivos para reimportação...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executando operações pré-reimportação...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | source.png\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | scene.glb\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mimport\u001b[22m | Started Importar Cena (104 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mimport\u001b[22m | Importando Cena...\u001b[39m\u001b[0m\n[   1% ] \u001b[90m\u001b[1mimport\u001b[22m | Executando Script Personalizado...\u001b[39m\u001b[0m\n[  99% ] \u001b[90m\u001b[1mimport\u001b[22m | Salvando...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mimport\u001b[22m\n\u001b[0m\n[  66% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizando Importação de Recursos...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importando Recursos (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executando operações pós-reimportação...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Carregando editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Carregando layout do editor...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Carregando abas...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n"
+    },
+    {
+      "executable": "godot.exe",
+      "arguments": [
+        "--headless",
+        "--path",
+        "godot-release-engine-work",
+        "--script",
+        "validate.gd"
+      ],
+      "returncode": 0,
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nENGINE_VALIDATION=SUCCESS\nENGINE_VERSION=4.7-stable (official)\n"
+    }
+  ]
+}

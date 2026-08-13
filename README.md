@@ -4,7 +4,7 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 13 integrada e concluída; Etapa 14 não iniciada; release NÃO APROVADA.**
+> **Estado:** pré-release em desenvolvimento. **Etapa 14 possui candidato técnico aprovado localmente, ainda não integrado; release NÃO APROVADA.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
@@ -16,26 +16,38 @@ Ela preserva a integração funcional da PR `#51` e incorpora a correção
 retrospectiva dos pacotes históricos. O CI pós-merge `31705652046` reproduziu
 `955` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado
 `27/27` e artefatos recursivos sem violações. `R-011` e a Etapa 13 estão
-encerrados no escopo aprovado; Etapa 14 e release permanecem pendentes.
+encerrados no escopo aprovado. A Etapa 14 está aprovada apenas como candidato técnico local pré-merge; integração, CI da PR e release permanecem pendentes.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte atual validada | **955 testes no CI pós-merge final da Etapa 13, em Linux e Windows** |
-| Cobertura integrada da Etapa 13 | **11.581/12.478 linhas — 92,81%** |
-| Branches integrados da Etapa 13 | **3.370/3.964 — 85,02%** |
-| Cobertura combinada integrada | **90,93%** |
-| Type checking | mypy sem erros em 80 arquivos no commit técnico da Etapa 13 |
+| Suíte integrada | **955 testes no CI pós-merge final da Etapa 13, em Linux e Windows** |
+| Suíte do candidato da Etapa 14 | **978 testes locais aprovados no Windows/Python 3.11.9** |
+| Cobertura do candidato | **11.621/12.523 linhas — 92,80%** |
+| Branches do candidato | **3.382/3.978 — 85,02%** |
+| Cobertura combinada do candidato | **90,92%** |
+| Type checking | mypy sem erros em 80 arquivos no candidato da Etapa 14 |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
 | Última etapa integrada | **Etapa 13 — R-011 encerrado no escopo aprovado** |
-| Próxima etapa | **Etapa 14 — não iniciada** |
-| Release | **NÃO APROVADA** |
+| Candidato atual | **Etapa 14 — aprovado localmente, pré-merge e não integrado** |
+| Release | **NÃO APROVADA: artefatos sem assinatura, pendências jurídicas e identidade visual final** |
 
 O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
 de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
 30%. A suíte histórica não é declarada como aprovada: ela mantém 27 falhas
 brutas conhecidas, aceitas somente quando as assinaturas coincidem e os 17
 testes substitutos são coletáveis.
+
+O candidato técnico `0.2.0` foi construído duas vezes a partir de
+`9cef5a15e357f096312048c0beb9d43384c92fce`. Os ZIPs foram idênticos com
+SHA-256 `2c8b9c8847d0c00e9f1d0786f5b14e161832856252d8454db58d0d9e198e0d68`;
+os MSIs foram idênticos com SHA-256
+`85adbdb1b754fc69a7fc717e9e9b4aed5950a8e71b746adb381f4444f589b7c5`.
+A instalação por usuário, execução instalada, exportações, abertura/fechamento
+da GUI e desinstalação passaram em duas rodadas. Fixtures gerados pelos
+binários foram importados com sucesso no Godot `4.7` e Unity `6000.5.7f1` com
+glTFast `6.19.0`. Esses resultados não superam os bloqueios de assinatura e
+publicação.
 
 
 A Etapa 13 foi integrada pela PR `#51` no merge
@@ -47,7 +59,7 @@ Linux/Windows e legado `27/27`; seus artefatos foram auditados. `R-011` está
 O fechamento documental e a correção retrospectiva foram integrados pela PR
 `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge
 `31705652046` aprovou `955` testes por plataforma e reproduziu as mesmas
-métricas de código, sem iniciar a Etapa 14 nem aprovar release.
+métricas de código. Naquele snapshot, a Etapa 14 ainda não havia sido iniciada e a release não foi aprovada.
 
 Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,
 detecção, broadphase, atlas, GLTF e logs. O legado executou 196 testes e
@@ -151,8 +163,7 @@ Não existe uma segunda árvore `neoeng_d_trace/`. A distribuição Python é
 
 ## Execução a partir do código-fonte no Windows
 
-> **Isto é um fluxo de desenvolvimento/validação, não um instalador de usuário
-> final.** Build Windows e instalador ainda não foram aprovados.
+> **Isto é o fluxo a partir do código-fonte.** Existe um candidato técnico portátil/MSI validado localmente, mas ele não é uma release pública aprovada.
 
 Requisitos usados pelo projeto:
 
@@ -184,6 +195,22 @@ Para uma instalação do zero sem depender do `py` launcher, consulte o
 procedimento de ambiente e o workflow reproduzível registrado na documentação
 de evidências.
 
+### Build do candidato Windows
+
+Com a árvore Git limpa e o ambiente do lockfile ativo:
+
+```powershell
+.\scripts\build_windows.ps1
+.\scripts\build_installer.ps1
+```
+
+O primeiro comando gera e testa o bundle portátil; o segundo o reconstrói,
+cria o MSI por usuário, instala em diretório de validação, executa CLI/GUI e
+exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
+versionado. O build falha se a árvore estiver suja ou se o destino sair do
+workspace. Para distribuição pública ainda são obrigatórias assinatura de
+código, revisão jurídica e identidade visual final.
+
 ## Qualidade e validação
 
 O gate atual executa, entre outros controles:
@@ -213,8 +240,7 @@ objeto da validação.
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
-- **build Windows, executável standalone e instalador ainda não foram
-  aprovados**;
+- **bundle Windows e MSI passaram tecnicamente em um host real, mas não estão assinados nem aprovados para publicação**;
 - **release não está aprovada**;
 - Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
 - `R-011` está encerrado no escopo aprovado após merge autorizado e CI pós-merge auditado;
@@ -258,8 +284,7 @@ NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. N
 há licença open source atribuída. O texto jurídico comercial final ainda exige
 decisão/revisão própria antes de qualquer lançamento público.
 
-Esta atualização registra o encerramento pós-merge auditado da Etapa 13. Ela
-não inicia a Etapa 14 e não aprova release.
+Esta atualização registra o candidato técnico pré-merge da Etapa 14. Ela não declara integração, não substitui CI remoto e não aprova release.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

@@ -1,5 +1,10 @@
 # Evidências de validação
 
+- `ETAPA_14_BUILD_RELEASE_PRE_MERGE.md` — build portátil/MSI, duas execuções reproduzíveis, instalação/desinstalação, engines reais, gate completo, falhas intermediárias e bloqueios explícitos de release.
+- `ETAPA_14_RELEASE_VALIDATION_MANIFEST.json` — manifesto estruturado do commit-fonte, hashes, métricas, fixtures e decisões.
+- `ETAPA_14_GODOT_RELEASE_VALIDATION.json` — relatório real do Godot `4.7` sobre fixtures produzidos pelo candidato.
+- `ETAPA_14_UNITY_RELEASE_VALIDATION.json` — relatório real do Unity `6000.5.7f1` com glTFast `6.19.0`.
+
 - `AUDITORIA_INTEGRIDADE_PRE_ETAPA_14_2026-08-13.md` — auditoria de fabricação,
   alteração de testes, gates, cadeia de custódia, workflows remotos e
   reproduções locais antes da Etapa 14.
@@ -136,6 +141,15 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Estado operacional da evidência atual
 
+Etapa 14 com candidato técnico local pré-merge em 13 de agosto de 2026:
+
+- commit-fonte `9cef5a15e357f096312048c0beb9d43384c92fce`;
+- `978` testes, cobertura combinada `90,92%`, política de linhas/branches/módulos aprovada e legado `27/27`;
+- ZIP e MSI reproduzidos byte a byte, instalação/desinstalação e engines reais aprovadas;
+- Microsoft Defender sem ameaças detectadas e zero referências proibidas no bundle;
+- assinatura, jurídico, identidade visual, migração do builder MSI, integração e CI permanecem abertos;
+- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=NO`; `RELEASE_APPROVED=NO`.
+
 Etapa 13 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 
 - PR `#51`, HEAD final `0b5d3c4e3831ad5efe52ae03a41107c6dafbf535` e merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`;
@@ -143,7 +157,7 @@ Etapa 13 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 - pacote documental local de encerramento: `955` testes aprovados e baseline de `338` arquivos, sem alteração das métricas de código integradas;
 - auditoria retrospectiva: scanner anterior não detectava separadores JSON duplicados; `60` payloads/`852` ocorrências locais foram removidos de quatro ZIPs autorizados; correção integrada pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`;
 - CI pós-merge final `31705652046`: `955` testes por sistema, legado `196` com reconciliação `27/27`, `57/57` documentos idênticos e `1.416` payloads sem violações;
-- `R-011` encerrado e Etapa 13 concluída; Etapa 14 não iniciada; release não aprovada.
+- `R-011` encerrado e Etapa 13 concluída; naquele snapshot, Etapa 14 não iniciada; release não aprovada.
 
 Etapa 12 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 
