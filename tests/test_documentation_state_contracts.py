@@ -377,7 +377,8 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "warn_unused_configs = True" in mypy_config
     assert "poetry run pip-audit" in workflow
     assert "poetry run bandit -q -r src -lll" in workflow
-    assert "--cov-branch --cov-fail-under=62" in workflow
+    assert "--cov-branch --cov-fail-under=90" in workflow
+    assert "tools/check_coverage_policy.py coverage.xml" in workflow
     assert "Run reconciled preserved legacy suite" in workflow
     assert "docs/evidence/**" in workflow
     assert (

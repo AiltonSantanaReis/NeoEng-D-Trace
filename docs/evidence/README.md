@@ -1,5 +1,9 @@
 # Evidências de validação
 
+- `AUDITORIA_INTEGRIDADE_PRE_ETAPA_14_2026-08-13.md` — auditoria de fabricação,
+  alteração de testes, gates, cadeia de custódia, workflows remotos e
+  reproduções locais antes da Etapa 14.
+
 Cada etapa deve criar um arquivo `ETAPA_<numero>_<nome>.md` baseado no modelo abaixo.
 
 ## Modelo obrigatório

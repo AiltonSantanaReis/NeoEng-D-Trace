@@ -19,6 +19,7 @@ import tempfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 
 def normalize_lf(data: bytes) -> bytes:
@@ -106,7 +107,7 @@ def verify_integrity(legacy_root: Path, manifest: dict) -> list[str]:
 
 
 def parse_junit(path: Path) -> dict:
-    result = {
+    result: dict[str, Any] = {
         "tests": 0,
         "failures": 0,
         "errors": 0,
@@ -222,9 +223,10 @@ def reconcile_failures(
             matched.add(identifier)
 
     missing = sorted(set(relevant) - matched)
-    status = "passed" if not unexpected and not missing else "failed"
+    status = "reconciled" if not unexpected and not missing else "failed"
     return {
         "status": status,
+        "accepted": status == "reconciled",
         "expected_failures": len(relevant),
         "matched_failures": len(matched),
         "unexpected_failures": unexpected,
@@ -248,6 +250,55 @@ def ensure_pytest_available(project_root: Path) -> bool:
         file=sys.stderr,
     )
     return False
+
+
+def validate_replacement_tests(
+    project_root: Path,
+    expectations: dict[str, dict],
+    *,
+    timeout_seconds: int = 120,
+) -> dict:
+    references = sorted(
+        {
+            reference
+            for expectation in expectations.values()
+            for reference in expectation["replacement_tests"]
+        }
+    )
+    invalid = [
+        reference
+        for reference in references
+        if not isinstance(reference, str)
+        or not reference.startswith("tests/")
+        or "::" not in reference
+    ]
+    if invalid:
+        raise ValueError(
+            "Invalid replacement test reference(s): " + ", ".join(map(str, invalid))
+        )
+
+    env = os.environ.copy()
+    env.setdefault("QT_QPA_PLATFORM", "offscreen")
+    process = subprocess.run(
+        [sys.executable, "-m", "pytest", "--collect-only", "-q", *references],
+        cwd=project_root,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+        timeout=timeout_seconds,
+    )
+    if process.returncode != 0:
+        raise RuntimeError(
+            "Replacement test collection failed; reconciliation is not accepted:\n"
+            + process.stdout
+        )
+    return {
+        "status": "collected",
+        "references": len(references),
+        "pytest_returncode": process.returncode,
+    }
 
 
 def select_files(manifest: dict, group: str, requested: list[str]) -> list[dict]:
@@ -320,6 +371,12 @@ def main() -> int:
 
     if not ensure_pytest_available(project_root):
         return 4
+
+    try:
+        replacement_validation = validate_replacement_tests(project_root, expectations)
+    except (ValueError, RuntimeError, subprocess.TimeoutExpired) as exc:
+        print(str(exc), file=sys.stderr)
+        return 5
 
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output = (
@@ -405,8 +462,15 @@ def main() -> int:
 
     reconciliation = reconcile_failures(selected, results, expectations)
     tested_commit = resolve_tested_commit(project_root)
+    totals = {
+        "tests": sum(item["tests"] for item in results),
+        "failures": sum(item["failures"] for item in results),
+        "errors": sum(item["errors"] for item in results),
+        "skipped": sum(item["skipped"] for item in results),
+        "failed_files": sum(item["status"] != "passed" for item in results),
+    }
     summary = {
-        "schema_version": 4,
+        "schema_version": 5,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "project_root": str(project_root),
         "python": sys.version,
@@ -419,14 +483,14 @@ def main() -> int:
         "legacy_source_commit": manifest["source_commit"],
         "reconciliation_manifest": str(reconciliation_path),
         "reconciliation": reconciliation,
+        "replacement_test_validation": replacement_validation,
         "selected_files": len(selected),
-        "totals": {
-            "tests": sum(item["tests"] for item in results),
-            "failures": sum(item["failures"] for item in results),
-            "errors": sum(item["errors"] for item in results),
-            "skipped": sum(item["skipped"] for item in results),
-            "failed_files": sum(item["status"] != "passed" for item in results),
-        },
+        "raw_test_status": (
+            "failed"
+            if totals["failures"] or totals["errors"] or totals["failed_files"]
+            else "passed"
+        ),
+        "totals": totals,
         "results": results,
     }
     summary_path = output / "summary.json"
@@ -442,7 +506,7 @@ def main() -> int:
         f"missing={len(reconciliation['missing_expected_failures'])}"
     )
     print(f"Report: {summary_path}")
-    return 0 if reconciliation["status"] == "passed" else 1
+    return 0 if reconciliation["accepted"] else 1
 
 
 if __name__ == "__main__":
