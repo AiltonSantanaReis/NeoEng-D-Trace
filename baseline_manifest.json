@@ -993,7 +993,7 @@
       "size": 6189
     },
     "src/ui/main_window.py": {
-      "sha256": "4b2bf5bbdb4954cc529b4dd68c6ba62b06cc4307ce2dbcf54e06a7a9c5bb1977",
+      "sha256": "0298196c0f0ca045d808fad63da7c77a7c8e3fd0a931c85409c7a770f2d8732f",
       "size": 44105
     },
     "src/ui/main_window_translations.py": {
@@ -1225,8 +1225,8 @@
       "size": 23032
     },
     "tests/test_stage_13_qt_refactor_autosave.py": {
-      "sha256": "cd4446f78623ec511cfeb036e09bdface9b8decd0bacc88293e3b446eb07d522",
-      "size": 14831
+      "sha256": "2170b7f912d0743b57a20f36f3275c70314f4423dc2e9e8853e6c6cabe087eb1",
+      "size": 17924
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",

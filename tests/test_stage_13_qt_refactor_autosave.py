@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import io
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -129,6 +129,21 @@ def test_invalid_autosave_is_quarantined_without_deletion(tmp_path: Path) -> Non
     assert not path.exists()
 
 
+def test_autosave_rejects_duplicate_keys_and_reports_missing_file(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "recovery.json"
+    path.write_text('{"schema_version": 1, "schema_version": 1}', encoding="utf-8")
+    store = AutosaveStore(path)
+
+    with pytest.raises(AutosaveError, match="duplicate JSON object key"):
+        store.load()
+
+    missing_store = AutosaveStore(tmp_path / "missing.json")
+    with pytest.raises(AutosaveError, match="failed to read autosave"):
+        missing_store.load()
+
+
 def test_autosave_rejects_relative_context_path_and_bounds_file_read(
     tmp_path: Path,
     monkeypatch,
@@ -182,6 +197,18 @@ def test_autosave_paths_and_configuration_are_bounded(tmp_path: Path) -> None:
             platform="linux",
         )
         == tmp_path / "state" / "NeoEng-D-Trace"
+    )
+    assert (
+        default_state_directory({}, home=tmp_path / "home", platform="darwin")
+        == tmp_path / "home" / "Library" / "Application Support" / "NeoEng-D-Trace"
+    )
+    assert (
+        default_state_directory({}, home=tmp_path / "home", platform="win32")
+        == tmp_path / "home" / "AppData" / "Local" / "NeoEng-D-Trace"
+    )
+    assert (
+        default_state_directory({}, home=tmp_path / "home", platform="linux")
+        == tmp_path / "home" / ".local" / "state" / "NeoEng-D-Trace"
     )
     assert AppConfig().autosave_enabled is True
     assert AppConfig().autosave_interval_seconds == 60
@@ -263,6 +290,19 @@ def test_autosave_coordinator_reports_write_discard_and_invalid_recovery_errors(
     assert "preserved" in critical[-1]
     _close_clean(invalid_window)
 
+    absent_window = MainWindow(
+        _scene(),
+        _ConfigStub(),
+        autosave_store=AutosaveStore(tmp_path / "absent" / "recovery.json"),
+    )
+    assert absent_window.offer_autosave_recovery() is False
+    absent_window._autosave_coordinator.store.exists = lambda: True
+    absent_window._autosave_coordinator.store.load = lambda: (_ for _ in ()).throw(
+        AutosaveError("read blocked")
+    )
+    assert absent_window.offer_autosave_recovery() is False
+    _close_clean(absent_window)
+
 
 def test_autosave_recovery_callback_failure_is_visible_and_preserved(
     qt_app,
@@ -318,6 +358,53 @@ def test_autosave_rejects_invalid_metadata_variants(
 
     with pytest.raises(AutosaveError, match=message):
         store.load()
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    (
+        ("reference_project_path", "bad\x00path", "non-blank"),
+        ("source_project_path", "bad\x00path", "non-blank"),
+        ("document_name", "bad\x00name", "non-blank"),
+    ),
+)
+def test_autosave_rejects_nul_in_text_metadata(
+    tmp_path: Path,
+    field: str,
+    value: str,
+    message: str,
+) -> None:
+    path = tmp_path / f"nul-{field}.json"
+    store = AutosaveStore(path)
+    store.save(_scene(), reference_project_path=tmp_path / "untitled.ndtproj")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload[field] = value
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(AutosaveError, match=message):
+        store.load()
+
+
+def test_autosave_source_fingerprint_detects_change_and_optional_absence(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "source.ndtproj"
+    source.write_bytes(b"original")
+    store = AutosaveStore(tmp_path / "recovery.json")
+    store.save(
+        _scene(),
+        reference_project_path=source,
+        source_project_path=source,
+    )
+    snapshot = store.load()
+    assert snapshot.source_project_changed() is False
+
+    source.write_bytes(b"changed")
+    assert snapshot.source_project_changed() is True
+
+    detached = AutosaveStore(tmp_path / "detached.json")
+    detached.save(_scene(), reference_project_path=tmp_path / "untitled.ndtproj")
+    assert detached.load().source_project_changed() is False
 
 
 def test_main_window_autosaves_modified_document_and_clears_after_save(
@@ -434,6 +521,7 @@ def test_deferred_recovery_survives_close_and_blocks_overwrite(
     )
 
     assert window.offer_autosave_recovery() is False
+    assert window._autosave_coordinator.discard_current_session() is True
     window.scene.add_object("new", [(10, 0), (18, 0), (10, 8)])
     assert window.perform_autosave() is False
     window._mark_document_clean()

@@ -43,8 +43,8 @@ from src.ui.collision_panel import CollisionPanel
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
 from src.ui.layers_panel import LayersPanel
-from src.ui.mask_viewer import MaskViewerDialog
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
+from src.ui.mask_viewer import MaskViewerDialog
 
 # Imports dos componentes da UI
 from src.ui.side_panel import SidePanel
