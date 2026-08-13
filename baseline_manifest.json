@@ -29,8 +29,8 @@
       "size": 719
     },
     "CHANGELOG.md": {
-      "sha256": "130c86c6034eaaf1099b4f5b3376ce4dac58feb425b289beb8534b3cd72327d4",
-      "size": 46519
+      "sha256": "baf3c2c31678babb7a99b02f2a1fa2cf1c823fe71ca4bf4dc6bfe4866fd478fd",
+      "size": 46542
     },
     "README.md": {
       "sha256": "b1687a9944b5d85d37c75a844ba4c3489f26ff8aa993b64ce775f44671ac6ce8",
@@ -357,8 +357,8 @@
       "size": 10441
     },
     "docs/evidence/ETAPA_13_ENCERRAMENTO_POS_MERGE.md": {
-      "sha256": "298abd2333f7548bdc02f6b3aeb146cec3d89c516b72f0b3667d38c4cff2ad83",
-      "size": 7892
+      "sha256": "7564c5c372b6e90c9a1b68670966d516eadf3a428cc26d7894e36c4ef351ce3b",
+      "size": 9892
     },
     "docs/evidence/ETAPA_13_REFATORACAO_QT_AUTOSAVE_PRE_MERGE.md": {
       "sha256": "edec36553bb37a659358d2409029b3ed6344db5f0656b7c827c4cbf317caf8ed",
@@ -497,12 +497,12 @@
       "size": 3950
     },
     "docs/evidence/README.md": {
-      "sha256": "a063096896cfbc15f730babbf6fedc5e85efc41e3344137d5c649aa3eb2111cd",
-      "size": 21475
+      "sha256": "2e593ae3c5f179f210b8410c8610d8c950805d946cf99ce69484184283112a2c",
+      "size": 21532
     },
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
-      "sha256": "c344a2820d6ab30cf60d1351cd10b7c2c5d996a3ce4b7887564dcaf04171d26a",
-      "size": 4952
+      "sha256": "141022fde86389e24eac7c7ec6e194b3e3b487097bedbe01cecc8b71ffa20c29",
+      "size": 5146
     },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "5356fcfc5bbbe0597f1103e4f063ae7aa5d9474911dba9fc7ae7aac090374069",
@@ -1081,8 +1081,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "5e73a5754e52d8ca7868a2eae4a108c1bcc9f7f82dd2dbfaffd5fec9c38385b9",
-      "size": 39123
+      "sha256": "16b2a6894e2abba8d9acb1e347f1727644d1e4419592f59a1e383b716764bc9e",
+      "size": 39368
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",

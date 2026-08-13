@@ -64,5 +64,6 @@ checksums, zero checksum divergente e zero alteração inesperada.
 - na segunda correção, o teste passou a aceitar um ou mais separadores Windows, a bloquear também homes macOS e a reprovar quando o limite de profundidade impede a inspeção completa;
 - `tests/test_sanitize_evidence_archives.py` prova dry-run sem escrita, transformação aninhada, checksums e idempotência;
 - ferramenta aplicada novamente em dry-run após a escrita: quatro pacotes inalterados, zero substituição e hashes estáveis;
-- CI pré-merge `31457937902`: aceito com o scanner antigo; a limitação descoberta posteriormente fica registrada e exige novo CI desta correção;
+- CI pré-merge `31457937902`: aceito com o scanner antigo; a limitação descoberta posteriormente permanece registrada;
+- CI corretivo `31702428679`: aceito no HEAD `344f26fffc976fb95ab5b3922fc8c5dba9763d09` após auditoria de Linux/Windows, hashes, cobertura, legado, documentos e `1.416` payloads; PR documental `#52` ainda não integrada;
 - merge `9b22bdc54b13992658172d4748bfab44f3127c8e` concluído; release permanece não aprovada.

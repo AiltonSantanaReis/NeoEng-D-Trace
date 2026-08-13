@@ -129,6 +129,37 @@ violações do CI `31698961646` deve ser lida como resultado do scanner antigo,
 não como prova da regra ampliada. A correção documental/histórica depende de
 novo CI antes de integração.
 
+## CI do fechamento e da correção retrospectiva
+
+O workflow `31702428679` validou o HEAD fonte
+`344f26fffc976fb95ab5b3922fc8c5dba9763d09` no merge sintético
+`af810d378ee7b9d76c4ef0d3fe13d652be2cf5a1`, cujos pais são a base
+`e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e o próprio HEAD fonte. A árvore
+testada é `615c2435826a27bd8d71af54d641f512570485a8`.
+
+| Sistema | Job | Estado | Artefato | Digest SHA-256 |
+|---|---:|---|---:|---|
+| Linux | `94454577670` | `success` | `9181836961` | `f3c5eb14e6c68a4da7d08d71595c2389e473d71ecc41bc5bcd49d4090107b0b1` |
+| Windows | `94454577637` | `success` | `9181873468` | `472109724fc5aed977883c36f8d91e35034b49a0d81b65017035b2122e438633` |
+
+A auditoria independente confirmou zero anotações, `955 passed` nos dois
+sistemas, baseline `338` antes/depois, cobertura ponto a ponto idêntica em
+`11.581/12.478` linhas e `3.370/3.964` branches, zero módulos abaixo de 30%,
+`57/57` evidências byte a byte, legado schema v4 com `196` testes e `27/27`
+divergências conciliadas, além de `57` arquivos, `1.416` payloads e `1.359`
+entradas aninhadas com zero referência proibida, caminho pessoal ou checksum
+divergente.
+
+Hashes da auditoria:
+
+- log consolidado: `71e31a9c9da0447af5a5a48786b4fcb404b4d0af14fd7e4ffd05872e35697a03`;
+- `coverage.xml` Linux: `876048382a4f8b576e88f4bf5550def1e0e34f64cb0aa1380d4a9b09d79c884a`;
+- `coverage.xml` Windows: `1fda875f485f1f348fe82bd60d243f50e653b5a51fcc5704d07b4a8f512a643d`;
+- resumo legado: `9121d5a0a2bfcfc9215435aa5a11e3bbf7276513d354de53fb822309c8a5cba9`.
+
+Esse CI aceita a correção retrospectiva no commit fonte; a PR documental `#52`
+permanece draft e não integrada até autorização separada.
+
 ## Decisão e limites
 
 - `R-011` está encerrado no escopo aprovado;
@@ -160,9 +191,17 @@ POST_MERGE_BRANCH_COVERAGE=3370/3964
 POST_MERGE_PAYLOADS_SCANNED=1421
 CLOSURE_LOCAL_TESTS_PASSED=955
 CLOSURE_BASELINE_FILES=338
+CLOSURE_SOURCE_HEAD=344f26fffc976fb95ab5b3922fc8c5dba9763d09
+CLOSURE_CI_RUN=31702428679
+CLOSURE_CI_STATUS=ACCEPTED
+CLOSURE_SYNTHETIC_MERGE=af810d378ee7b9d76c4ef0d3fe13d652be2cf5a1
+CLOSURE_LINUX_JOB=94454577670
+CLOSURE_WINDOWS_JOB=94454577637
+CLOSURE_LINUX_ARTIFACT=9181836961
+CLOSURE_WINDOWS_ARTIFACT=9181873468
 RETROSPECTIVE_HYGIENE_FINDING=60_PAYLOADS_852_LOCAL_REFERENCES
 RETROSPECTIVE_HYGIENE_LOCAL_STATUS=PASSED
-RETROSPECTIVE_HYGIENE_REMEDIATION=PENDING_CI
+RETROSPECTIVE_HYGIENE_REMEDIATION=CI_ACCEPTED
 R011_CLOSED=YES
 STAGE13_COMPLETED=YES
 STAGE14_STARTED=NO
