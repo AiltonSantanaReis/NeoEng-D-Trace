@@ -20,7 +20,7 @@ estão encerrados no escopo aprovado; Etapa 14 e release permanecem pendentes.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte oficial | **953 testes no CI pós-merge integrado da Etapa 13, em Linux e Windows** |
+| Suíte atual validada | **955 testes no fechamento documental; 953 no CI pós-merge funcional da Etapa 13, ambos em Linux e Windows** |
 | Cobertura integrada da Etapa 13 | **11.581/12.478 linhas — 92,81%** |
 | Branches integrados da Etapa 13 | **3.370/3.964 — 85,02%** |
 | Cobertura combinada integrada | **90,93%** |

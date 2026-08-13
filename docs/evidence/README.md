@@ -129,7 +129,7 @@ Etapa 13 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 - PR `#51`, HEAD final `0b5d3c4e3831ad5efe52ae03a41107c6dafbf535` e merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`;
 - CI pós-merge `31698961646`: `953` testes em Linux/Windows, cobertura exata idêntica e zero módulos abaixo de 30%;
 - pacote documental local de encerramento: `955` testes aprovados e baseline de `338` arquivos, sem alteração das métricas de código integradas;
-- auditoria retrospectiva: scanner anterior não detectava separadores JSON duplicados; `60` payloads/`852` ocorrências locais foram removidos de quatro ZIPs autorizados; CI `31702428679` aceito após auditoria, PR documental `#52` ainda draft/não integrada;
+- auditoria retrospectiva: scanner anterior não detectava separadores JSON duplicados; `60` payloads/`852` ocorrências locais foram removidos de quatro ZIPs autorizados; CI `31702428679` aceito após auditoria; no momento dessa evidência, a PR documental `#52` estava draft/não integrada;
 - legado `196` com reconciliação `27/27`, documentos idênticos e `1.421` payloads sem violações;
 - `R-011` encerrado e Etapa 13 concluída; Etapa 14 não iniciada; release não aprovada.
 

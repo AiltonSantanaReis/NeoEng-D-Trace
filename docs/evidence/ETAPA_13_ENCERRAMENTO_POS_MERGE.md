@@ -157,8 +157,9 @@ Hashes da auditoria:
 - `coverage.xml` Windows: `1fda875f485f1f348fe82bd60d243f50e653b5a51fcc5704d07b4a8f512a643d`;
 - resumo legado: `9121d5a0a2bfcfc9215435aa5a11e3bbf7276513d354de53fb822309c8a5cba9`.
 
-Esse CI aceita a correção retrospectiva no commit fonte; a PR documental `#52`
-permanece draft e não integrada até autorização separada.
+Esse CI aceita a correção retrospectiva no commit fonte. No momento da coleta,
+a PR documental `#52` estava em draft e não integrada; qualquer integração
+exigia autorização separada.
 
 ## Decisão e limites
 
