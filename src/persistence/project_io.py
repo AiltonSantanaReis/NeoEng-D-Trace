@@ -558,14 +558,11 @@ def _point_tuple(point: PointRecord) -> tuple[int | float, int | float]:
     return (point.x, point.y)
 
 
-def load_project_into_scene(
+def apply_project_document_to_scene(
     scene: "Scene",
-    path: str | os.PathLike[str],
-) -> tuple[str, ...]:
-    """Replace scene state only after the complete document is validated."""
-
-    loaded = load_project_document(path)
-    document = loaded.document
+    document: ProjectDocumentV1,
+) -> None:
+    """Replace scene state from an already validated project document."""
 
     from src.models.scene import Group, Layer, SceneObject
 
@@ -634,4 +631,13 @@ def load_project_into_scene(
     scene.selected_id = None
     scene._notify()
 
+
+def load_project_into_scene(
+    scene: "Scene",
+    path: str | os.PathLike[str],
+) -> tuple[str, ...]:
+    """Replace scene state only after the complete document is validated."""
+
+    loaded = load_project_document(path)
+    apply_project_document_to_scene(scene, loaded.document)
     return loaded.warnings

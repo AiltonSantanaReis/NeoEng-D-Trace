@@ -1,8 +1,6 @@
 # src/core/view_processor.py
 import cv2
 import numpy as np
-from PIL import Image as PILImage
-from PySide6.QtGui import QImage
 
 from src.core.logger import logger
 
@@ -52,82 +50,9 @@ class ViewProcessor:
 
     @staticmethod
     def to_qimage(cv_img):
-        """Converte OpenCV BGR/Gray para QImage Otimizada."""
-        if cv_img is None:
-            return None
+        from src.ui.image_conversion import to_qimage
 
-        # Garante que os dados estejam na CPU e contíguos antes de criar QImage
-        if HAS_GPU and cp is not None and isinstance(cv_img, cp.ndarray):
-            try:
-                cv_img = cp.asnumpy(cv_img)
-            except Exception:
-                # Fallback em caso de erro de memória na GPU
-                return None
-
-        if isinstance(cv_img, PILImage.Image):
-            if cv_img.mode == "L":
-                cv_img = np.asarray(cv_img)
-            elif cv_img.mode == "RGB":
-                cv_img = cv2.cvtColor(np.asarray(cv_img), cv2.COLOR_RGB2BGR)
-            else:
-                rgba = np.asarray(cv_img.convert("RGBA"))
-                cv_img = cv2.cvtColor(rgba, cv2.COLOR_RGBA2BGRA)
-
-        if not isinstance(cv_img, np.ndarray):
-            logger.error(
-                "Unsupported image type for Qt conversion: %s", type(cv_img).__name__
-            )
-            return None
-
-        if cv_img.ndim not in (2, 3):
-            logger.error(
-                "Unsupported image dimensions for Qt conversion: %s", cv_img.ndim
-            )
-            return None
-        if cv_img.ndim == 3 and cv_img.shape[2] not in (3, 4):
-            logger.error(
-                "Unsupported channel count for Qt conversion: %s", cv_img.shape[2]
-            )
-            return None
-        if any(dimension <= 0 for dimension in cv_img.shape[:2]):
-            logger.error("Empty image cannot be converted to QImage")
-            return None
-
-        # Ensure contiguous array for Qt
-        if not cv_img.flags["C_CONTIGUOUS"]:
-            cv_img = np.ascontiguousarray(cv_img)
-
-        height, width = cv_img.shape[:2]
-
-        if cv_img.ndim == 2:
-            return QImage(
-                cv_img.data,
-                width,
-                height,
-                cv_img.strides[0],
-                QImage.Format.Format_Grayscale8,
-            ).copy()
-
-        elif cv_img.ndim == 3:
-            ch = cv_img.shape[2]
-            if ch == 3:
-                # BGR -> RGB
-                rgb = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-                return QImage(
-                    rgb.data, width, height, rgb.strides[0], QImage.Format.Format_RGB888
-                ).copy()
-            elif ch == 4:
-                # BGRA -> RGBA
-                rgba = cv2.cvtColor(cv_img, cv2.COLOR_BGRA2RGBA)
-                return QImage(
-                    rgba.data,
-                    width,
-                    height,
-                    rgba.strides[0],
-                    QImage.Format.Format_RGBA8888,
-                ).copy()
-
-        return None
+        return to_qimage(cv_img, has_gpu=HAS_GPU, cupy_module=cp)
 
     @staticmethod
     def _gpu_generate_xray(image_array: np.ndarray, mode: int = 1):
@@ -275,27 +200,26 @@ class ViewProcessor:
             return cv2.merge([gray, gray, gray])
 
     @staticmethod
-    def generate_xray(image_array: np.ndarray, mode: int = 1) -> QImage:
-        """
-        Gera visualização 'Raio-X' decidindo automaticamente entre CPU e GPU.
-        mode: 1=Sobel, 2=Canny, 3=Laplacian
-        """
+    def generate_xray_array(image_array: np.ndarray, mode: int = 1):
         if image_array is None:
             return None
 
         xray_cv = None
-
         if HAS_GPU:
             try:
                 xray_cv = ViewProcessor._gpu_generate_xray(image_array, mode)
-            except Exception as e:
-                logger.error(f"GPU processing failed, falling back to CPU: {e}")
-                # Fallback imediato
+            except Exception as exc:
+                logger.error("GPU processing failed, falling back to CPU: %s", exc)
                 try:
                     xray_cv = ViewProcessor._cpu_generate_xray(image_array, mode)
                 except Exception:
                     pass
         else:
             xray_cv = ViewProcessor._cpu_generate_xray(image_array, mode)
+        return xray_cv
 
-        return ViewProcessor.to_qimage(xray_cv)
+    @staticmethod
+    def generate_xray(image_array: np.ndarray, mode: int = 1):
+        return ViewProcessor.to_qimage(
+            ViewProcessor.generate_xray_array(image_array, mode)
+        )
