@@ -9,24 +9,27 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_TERMS = (b"co" + b"dex", b"open" + b"ai")
-LOCAL_USER_PATH = re.compile(rb"[a-z]:[\\/]" + b"users" + rb"[\\/]", re.IGNORECASE)
+LOCAL_USER_PATHS = (
+    re.compile(rb"[a-z]:[\\/]+" + b"users" + rb"[\\/]+", re.IGNORECASE),
+    re.compile(rb"/" + b"Users" + rb"/", re.IGNORECASE),
+)
 MAX_ARCHIVE_DEPTH = 8
 SANITIZED_ARCHIVES = {
     "NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": (
-        "3aed50811c30d5f49ed7d53695d9e04a73cbac6135121128ff1ac0519a288ffc",
-        393672,
+        "5356fcfc5bbbe0597f1103e4f063ae7aa5d9474911dba9fc7ae7aac090374069",
+        393802,
     ),
     "NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip": (
-        "37fbff9bc0e07faa60c3c64e0735f7c7466b248875314833fcb446c3e162d7c8",
-        339557,
+        "b8cb15a9f199cf9428ba9ebedebe360444905882c35902d471df5690d7a78f49",
+        339676,
     ),
     "NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip": (
-        "29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270",
-        2546619,
+        "a057fa82620cd0f7a5d8644a615adc65f923a0db36d71caacbf2a6dd41e54396",
+        2547724,
     ),
     "NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip": (
-        "22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b",
-        1755602,
+        "e082e552c015dd7fd742e8a05a27e454c2db6b63feea052ba162c9e31e2dfe28",
+        1756194,
     ),
 }
 
@@ -46,9 +49,12 @@ def _scan_payload(label: str, data: bytes, depth: int = 0) -> list[str]:
     lowered = data.lower()
     if any(term in lowered for term in FORBIDDEN_TERMS):
         violations.append(f"{label}: forbidden product/provider reference")
-    if LOCAL_USER_PATH.search(data):
+    if any(pattern.search(data) for pattern in LOCAL_USER_PATHS):
         violations.append(f"{label}: local user path")
-    if depth >= MAX_ARCHIVE_DEPTH or not zipfile.is_zipfile(io.BytesIO(data)):
+    if not zipfile.is_zipfile(io.BytesIO(data)):
+        return violations
+    if depth >= MAX_ARCHIVE_DEPTH:
+        violations.append(f"{label}: archive nesting exceeds scan limit")
         return violations
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
         entries = {

@@ -4,40 +4,38 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 12 integrada e concluída; Etapa 13 aprovada pré-merge, ainda não integrada; release NÃO APROVADA.**
+> **Estado:** pré-release em desenvolvimento. **Etapa 13 integrada e concluída; Etapa 14 não iniciada; release NÃO APROVADA.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
 ## Estado verificável
 
 A última âncora integrada da `main` é
-`fc81c2ea10e751c15a39627d462ddfff390eeb04`, resultante da PR de fechamento
-`#50`. O CI pós-merge final da Etapa 12, `31688307089`, foi auditado em Linux
-e Windows. A Etapa 13 está validada somente na branch de trabalho. O primeiro
-CI da PR, `31693639653`, ficou verde, mas foi rejeitado após os artefatos
-revelarem divergência de duas linhas entre Linux e Windows. A correção está no
-commit `426cef118fdb0a334e639ec962b2e514cfd59b0a`; o CI corretivo
-`31695151223`, no HEAD `c2e21374f2669248da55c6e77110f2b1f80164b2`, foi
-aceito após auditoria dos artefatos. Ainda não há merge nem CI pós-merge.
+`e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`, merge autorizado da PR `#51`.
+O primeiro CI da PR, `31693639653`, ficou verde, mas foi rejeitado após os
+artefatos revelarem uma falha real de preservação de quarentena em POSIX. A
+correção foi validada no CI pré-merge final `31696674184` e reproduzida no CI
+pós-merge `31698961646`, auditado em Linux e Windows. `R-011` e a Etapa 13
+estão encerrados no escopo aprovado; Etapa 14 e release permanecem pendentes.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte oficial | **929 testes no CI final integrado da Etapa 12; 953 locais e no CI corretivo da Etapa 13** |
-| Cobertura pré-merge corretiva da Etapa 13 | **11.581/12.478 linhas — 92,81%** |
-| Branches locais da Etapa 13 | **3.370/3.964 — 85,02%** |
-| Cobertura combinada local | **90,93%** |
+| Suíte atual validada | **955 testes no fechamento documental; 953 no CI pós-merge funcional da Etapa 13, ambos em Linux e Windows** |
+| Cobertura integrada da Etapa 13 | **11.581/12.478 linhas — 92,81%** |
+| Branches integrados da Etapa 13 | **3.370/3.964 — 85,02%** |
+| Cobertura combinada integrada | **90,93%** |
 | Type checking | mypy sem erros em 80 arquivos no commit técnico da Etapa 13 |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
-| Última etapa integrada | **Etapa 12 — R-012 encerrado no escopo aprovado** |
-| Etapa em validação | **Etapa 13 — aprovada pré-merge, não integrada** |
+| Última etapa integrada | **Etapa 13 — R-011 encerrado no escopo aprovado** |
+| Próxima etapa | **Etapa 14 — não iniciada** |
 | Release | **NÃO APROVADA** |
 
-O fechamento final da Etapa 12 está vinculado à integração
-`fc81c2ea10e751c15a39627d462ddfff390eeb04` e ao CI pós-merge
-`31688307089`. `R-012` está encerrado no escopo aprovado. A correção de
-`R-011` foi aprovada pré-merge no commit corretivo `426cef118fdb0a334e639ec962b2e514cfd59b0a`,
-mas o risco permanece **ABERTO** até merge autorizado e CI pós-merge auditado.
+A Etapa 13 foi integrada pela PR `#51` no merge
+`e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`. O CI pós-merge
+`31698961646` reproduziu `953` testes, cobertura idêntica ponto a ponto em
+Linux/Windows e legado `27/27`; seus artefatos foram auditados. `R-011` está
+**ENCERRADO NO ESCOPO APROVADO**.
 
 Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,
 detecção, broadphase, atlas, GLTF e logs. O legado executou 196 testes e
@@ -75,7 +73,7 @@ Pipeline da engine
 | Área | Estado atual |
 |---|---|
 | Projeto | formato `.ndtproj`, identificador `neoeng-d-trace-project` e **schema v1** estrito |
-| Persistência | criar, abrir e salvar projetos com round-trip; autosave e recuperação validados localmente na Etapa 13 |
+| Persistência | criar, abrir e salvar projetos com round-trip; autosave e recuperação integrados e auditados na Etapa 13 |
 | Interface | UI desktop PySide6 com identidade NeoEng-D-Trace e interface em português/inglês |
 | Edição | camadas, grupos, polígonos, vértices, curvas Bézier e histórico Undo/Redo |
 | Seleção | ferramentas retangular, elíptica, laço, laço poligonal, caneta e laço magnético |
@@ -202,12 +200,12 @@ objeto da validação.
 
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
-- **autosave e recuperação estão aprovados pré-merge; ainda não estão integrados à `main` e não substituem backup**;
+- **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
 - **build Windows, executável standalone e instalador ainda não foram
   aprovados**;
 - **release não está aprovada**;
 - Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
-- `R-011` possui correção pré-merge validada, mas permanece aberto até merge autorizado e CI pós-merge auditado;
+- `R-011` está encerrado no escopo aprovado após merge autorizado e CI pós-merge auditado;
 - `R-012` está encerrado no escopo aprovado, mas os limites publicados não
   constituem SLA nem garantia de ausência total de vulnerabilidades;
 - o GLTF/GLB atual não inclui UV, materiais, extrusão ou 2.5D;
@@ -248,8 +246,8 @@ NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. N
 há licença open source atribuída. O texto jurídico comercial final ainda exige
 decisão/revisão própria antes de qualquer lançamento público.
 
-Esta atualização registra a validação pré-merge auditada da Etapa 13. Ela não
-encerra `R-011`, não conclui a Etapa 13 e não aprova release.
+Esta atualização registra o encerramento pós-merge auditado da Etapa 13. Ela
+não inicia a Etapa 14 e não aprova release.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

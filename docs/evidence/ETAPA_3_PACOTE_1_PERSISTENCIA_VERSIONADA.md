@@ -118,11 +118,11 @@ Artefatos da `main`:
 ## Artefatos permanentes
 
 - Pacote bruto: `NeoEng-D-Trace_Etapa3_Pacote1_Raw_Evidence_Bundle.zip`;
-- tamanho do pacote bruto: `1755602 bytes`;
-- SHA-256 do pacote bruto: `22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b`;
+- tamanho do pacote bruto: `1756194 bytes`;
+- SHA-256 do pacote bruto: `e082e552c015dd7fd742e8a05a27e454c2db6b63feea052ba162c9e31e2dfe28`;
 - pacote pós-merge: `NeoEng-D-Trace_Etapa3_Pacote1_PostMerge_Main_20260731_232857.zip`;
-- tamanho do pacote pós-merge: `2546619 bytes`;
-- SHA-256 do pacote pós-merge: `29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270`.
+- tamanho do pacote pós-merge: `2547724 bytes`;
+- SHA-256 do pacote pós-merge: `a057fa82620cd0f7a5d8644a615adc65f923a0db36d71caacbf2a6dd41e54396`.
 
 Os pacotes foram reabertos, tiveram membros duplicados e path traversal
 verificados e contêm checksums internos. Os quatro ZIPs originais do GitHub
