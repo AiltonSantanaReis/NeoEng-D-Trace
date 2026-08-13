@@ -24,11 +24,17 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 from src.core.app_identity import APP_DISPLAY_NAME, LOGGER_NAME
+from src.core.operational_limits import (
+    MAX_LOG_TEXT_CHARS,
+    MAX_VALIDATION_EVENT_BYTES,
+    MAX_VALIDATION_LOG_FILE_BYTES,
+    VALIDATION_LOG_BACKUP_COUNT,
+)
 
 _STATUS_ERROR = {"FAILURE", "UNHANDLED_EXCEPTION"}
 _PATH_PATTERNS = (
-    re.compile(r"[A-Za-z]:[\\/](?:[^\s\"']+[\\/]?)+"),
-    re.compile(r"/(?:home|mnt|Users|tmp)/(?:[^\s\"']+/?) +".replace(" ", "")),
+    re.compile(r"(?<!\w)[A-Za-z]:[\\/][^\r\n\"']+"),
+    re.compile(r"/(?:home|mnt|Users|tmp)/[^\r\n\"']+"),
 )
 _PROCESS_TOKEN_KEY = secrets.token_bytes(32)
 
@@ -41,7 +47,10 @@ def _sanitize_text(value: str) -> str:
     text = str(value)
     for pattern in _PATH_PATTERNS:
         text = pattern.sub("<PATH>", text)
-    return text.replace("\r", "\\r").replace("\n", "\\n")
+    text = text.replace("\r", "\\r").replace("\n", "\\n")
+    if len(text) > MAX_LOG_TEXT_CHARS:
+        return text[:MAX_LOG_TEXT_CHARS] + "<TRUNCATED>"
+    return text
 
 
 def _sanitize_value(value: Any) -> Any:
@@ -103,6 +112,7 @@ class _ValidationRecorder:
         self.session_id = uuid.uuid4().hex[:16]
         self._token_key = secrets.token_bytes(32)
         self._lock = threading.RLock()
+        self._rotate_existing_if_needed()
         self._handle = self.path.open("a", encoding="utf-8", newline="\n")
         self._event_status: Dict[str, str] = {}
         self._failure_count = 0
@@ -119,6 +129,36 @@ class _ValidationRecorder:
             pid=os.getpid(),
         )
 
+    def _backup_path(self, index: int) -> Path:
+        return self.path.with_name(f"{self.path.name}.{index}")
+
+    def _rotate_files(self) -> None:
+        oldest = self._backup_path(VALIDATION_LOG_BACKUP_COUNT)
+        oldest.unlink(missing_ok=True)
+        for index in range(VALIDATION_LOG_BACKUP_COUNT - 1, 0, -1):
+            source = self._backup_path(index)
+            if source.exists():
+                os.replace(source, self._backup_path(index + 1))
+        if self.path.exists():
+            os.replace(self.path, self._backup_path(1))
+
+    def _rotate_existing_if_needed(self) -> None:
+        try:
+            oversized = (
+                self.path.is_file()
+                and self.path.stat().st_size >= MAX_VALIDATION_LOG_FILE_BYTES
+            )
+        except OSError:
+            oversized = False
+        if oversized:
+            self._rotate_files()
+
+    def _rotate_open_file(self) -> None:
+        self._handle.flush()
+        self._handle.close()
+        self._rotate_files()
+        self._handle = self.path.open("a", encoding="utf-8", newline="\n")
+
     def write(self, event: str, status: str = "INFO", **details: Any) -> None:
         normalized_status = str(status).upper()
         payload = {
@@ -128,12 +168,30 @@ class _ValidationRecorder:
             "status": normalized_status,
             "details": _sanitize_value(details),
         }
+        serialized = json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n"
+        serialized_bytes = len(serialized.encode("utf-8"))
+        if serialized_bytes > MAX_VALIDATION_EVENT_BYTES:
+            payload["details"] = {
+                "truncated": True,
+                "original_bytes": serialized_bytes,
+                "error_type": payload["details"].get("error_type"),
+                "error_message": payload["details"].get("error_message"),
+            }
+            serialized = json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n"
+            serialized_bytes = len(serialized.encode("utf-8"))
+
         with self._lock:
             if self._closed:
                 return
-            self._handle.write(
-                json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n"
-            )
+            try:
+                current_size = self.path.stat().st_size
+            except OSError:
+                current_size = 0
+            if current_size and (
+                current_size + serialized_bytes > MAX_VALIDATION_LOG_FILE_BYTES
+            ):
+                self._rotate_open_file()
+            self._handle.write(serialized)
             self._handle.flush()
             self._event_status[str(event)] = normalized_status
             if str(event) != "session.summary" and normalized_status in _STATUS_ERROR:

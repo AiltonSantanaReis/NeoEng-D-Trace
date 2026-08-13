@@ -209,6 +209,11 @@ def test_invalid_collision_fails_closed_before_file_dialog(qt_app, monkeypatch) 
     scene = _scene()
     scene.collision_shapes["A"] = [(0, 0), (1, 1), (2, 2)]
     window = MainWindow(scene, _ConfigStub())
+    assert window.is_document_modified() is False
+    scene.collision_shapes["A"].append((3, 3))
+    assert window.is_document_modified() is True
+    window._mark_document_clean()
+    assert window.is_document_modified() is False
     errors = []
     monkeypatch.setattr(
         QFileDialog,

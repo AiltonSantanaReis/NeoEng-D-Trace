@@ -12,6 +12,14 @@ from typing import Any, Dict, Iterable, List, Optional, Protocol, Tuple, cast
 
 from PIL import Image
 
+from src.core.operational_limits import (
+    MAX_ATLAS_DIMENSION,
+    MAX_ATLAS_ITEMS,
+    MAX_ATLAS_PAGES,
+    MAX_ATLAS_PIXELS,
+    MAX_ATLAS_TOTAL_INPUT_PIXELS,
+)
+
 # Tenta importar o Packer otimizado
 try:
     from src.utils.packing import Packer
@@ -97,8 +105,51 @@ def pack_sprites_to_atlas(
     if not items:
         return []
 
-    sorted_items = _deterministic_sort(items)
+    if (
+        not isinstance(max_size, (list, tuple))
+        or len(max_size) != 2
+        or any(
+            isinstance(value, bool) or not isinstance(value, int) for value in max_size
+        )
+    ):
+        raise ValueError("max_size must contain two positive integers")
     max_w, max_h = max_size
+    if max_w <= 0 or max_h <= 0:
+        raise ValueError("max_size must contain two positive integers")
+    if max_w > MAX_ATLAS_DIMENSION or max_h > MAX_ATLAS_DIMENSION:
+        raise ValueError(f"atlas dimensions cannot exceed {MAX_ATLAS_DIMENSION}")
+    if max_w * max_h > MAX_ATLAS_PIXELS:
+        raise ValueError(f"atlas exceeds the pixel limit of {MAX_ATLAS_PIXELS}")
+    if isinstance(padding, bool) or not isinstance(padding, int) or padding < 0:
+        raise ValueError("padding must be a non-negative integer")
+    if padding * 2 >= min(max_w, max_h):
+        raise ValueError("padding leaves no usable atlas area")
+    if len(items) > MAX_ATLAS_ITEMS:
+        raise ValueError(f"atlas item count exceeds the limit of {MAX_ATLAS_ITEMS}")
+
+    total_input_pixels = 0
+    for image, _metadata in items:
+        if not isinstance(image, Image.Image):
+            raise ValueError("atlas items must contain Pillow images")
+        if image.width <= 0 or image.height <= 0:
+            raise ValueError("atlas item dimensions must be positive")
+        if image.width > MAX_ATLAS_DIMENSION or image.height > MAX_ATLAS_DIMENSION:
+            raise ValueError(
+                f"atlas item dimensions cannot exceed {MAX_ATLAS_DIMENSION}"
+            )
+        pixels = image.width * image.height
+        if pixels > MAX_ATLAS_PIXELS:
+            raise ValueError(
+                f"atlas item exceeds the pixel limit of {MAX_ATLAS_PIXELS}"
+            )
+        total_input_pixels += pixels
+        if total_input_pixels > MAX_ATLAS_TOTAL_INPUT_PIXELS:
+            raise ValueError(
+                "atlas inputs exceed the aggregate pixel limit of "
+                f"{MAX_ATLAS_TOTAL_INPUT_PIXELS}"
+            )
+
+    sorted_items = _deterministic_sort(items)
 
     atlases = []
 
@@ -107,6 +158,8 @@ def pack_sprites_to_atlas(
     current_atlas_index = 0
 
     while remaining_items:
+        if current_atlas_index >= MAX_ATLAS_PAGES:
+            raise ValueError(f"atlas page count exceeds the limit of {MAX_ATLAS_PAGES}")
         # Create a new atlas
         if HAS_PACKER:
             packer = Packer(max_w, max_h, padding)

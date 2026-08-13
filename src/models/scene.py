@@ -3,10 +3,9 @@
 Implementation preserved in the single ``src`` source tree.
 """
 
-import math
 import time
 import uuid
-from typing import Callable, Dict, List, Optional, Sequence, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 from src.core.bezier_geometry import (
     BezierSegments,
@@ -15,6 +14,15 @@ from src.core.bezier_geometry import (
     sample_beziers_to_polygon,
 )
 from src.core.logger import logger
+from src.core.operational_limits import (
+    MAX_GROUP_MEMBERS,
+    MAX_PROJECT_GROUPS,
+    MAX_PROJECT_LAYERS,
+    MAX_PROJECT_OBJECTS,
+)
+from src.core.polygon_validation import is_valid_polygon as _validate_polygon
+from src.core.polygon_validation import lines_intersect
+from src.core.polygon_validation import signed_polygon_area2 as _signed_polygon_area2
 from src.core.validation_events import (
     elapsed_ms,
     object_token,
@@ -29,15 +37,7 @@ try:
 except ImportError:
     HAS_SHAPELY = False
 
-
-def _signed_polygon_area2(points: Sequence[Tuple[float, float]]) -> float:
-    """Return twice the signed polygon area."""
-
-    return sum(
-        points[index][0] * points[(index + 1) % len(points)][1]
-        - points[(index + 1) % len(points)][0] * points[index][1]
-        for index in range(len(points))
-    )
+_lines_intersect = lines_intersect
 
 
 def _normalize_polygon_winding(points: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
@@ -49,69 +49,6 @@ def _normalize_polygon_winding(points: List[Tuple[int, int]]) -> List[Tuple[int,
     if len(normalized) >= 3 and _signed_polygon_area2(normalized) < 0:
         normalized.reverse()
     return normalized
-
-
-def _validate_polygon(points: List[Tuple[int, int]]) -> bool:
-    """Validate one simple, finite, counter-clockwise polygon deterministically."""
-
-    if not isinstance(points, list) or len(points) < 3:
-        return False
-
-    numeric_points: List[Tuple[float, float]] = []
-    for point in points:
-        if not isinstance(point, (list, tuple)) or len(point) != 2:
-            return False
-        x, y = point
-        if (
-            isinstance(x, bool)
-            or isinstance(y, bool)
-            or not isinstance(x, (int, float))
-            or not isinstance(y, (int, float))
-        ):
-            return False
-        try:
-            numeric = (float(x), float(y))
-        except (OverflowError, TypeError, ValueError):
-            return False
-        if not math.isfinite(numeric[0]) or not math.isfinite(numeric[1]):
-            return False
-        numeric_points.append(numeric)
-
-    count = len(numeric_points)
-    if any(
-        numeric_points[index] == numeric_points[(index + 1) % count]
-        for index in range(count)
-    ):
-        return False
-    area2 = _signed_polygon_area2(numeric_points)
-    if not math.isfinite(area2) or area2 <= 0.0:
-        return False
-    if _has_self_intersections(numeric_points):
-        return False
-
-    # Runtime validity is intentionally independent of optional Shapely.
-    # Shapely remains available only to the separate repair heuristic.
-    return True
-
-
-def _has_self_intersections(points: Sequence[Tuple[float, float]]) -> bool:
-    """Return whether any non-adjacent polygon edges intersect or touch."""
-
-    count = len(points)
-    for first_index in range(count):
-        first_end = (first_index + 1) % count
-        for second_index in range(first_index + 1, count):
-            second_end = (second_index + 1) % count
-            if first_end == second_index or second_end == first_index:
-                continue
-            if _lines_intersect(
-                points[first_index],
-                points[first_end],
-                points[second_index],
-                points[second_end],
-            ):
-                return True
-    return False
 
 
 def _remove_close_duplicates(
@@ -224,52 +161,6 @@ def _attempt_repair(
     return points, False
 
 
-def _lines_intersect(
-    p1: Tuple[float, float],
-    p2: Tuple[float, float],
-    p3: Tuple[float, float],
-    p4: Tuple[float, float],
-) -> bool:
-    """Return whether two closed line segments intersect or touch."""
-
-    def orientation(a, b, c) -> float:
-        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
-
-    def sign(value: float) -> int:
-        if value > 1e-9:
-            return 1
-        if value < -1e-9:
-            return -1
-        return 0
-
-    def on_segment(a, b, point) -> bool:
-        return (
-            min(a[0], b[0]) - 1e-9 <= point[0] <= max(a[0], b[0]) + 1e-9
-            and min(a[1], b[1]) - 1e-9 <= point[1] <= max(a[1], b[1]) + 1e-9
-        )
-
-    first = orientation(p1, p2, p3)
-    second = orientation(p1, p2, p4)
-    third = orientation(p3, p4, p1)
-    fourth = orientation(p3, p4, p2)
-    first_sign = sign(first)
-    second_sign = sign(second)
-    third_sign = sign(third)
-    fourth_sign = sign(fourth)
-
-    if first_sign * second_sign < 0 and third_sign * fourth_sign < 0:
-        return True
-    if first_sign == 0 and on_segment(p1, p2, p3):
-        return True
-    if second_sign == 0 and on_segment(p1, p2, p4):
-        return True
-    if third_sign == 0 and on_segment(p3, p4, p1):
-        return True
-    if fourth_sign == 0 and on_segment(p3, p4, p2):
-        return True
-    return False
-
-
 class Layer:
     def __init__(
         self,
@@ -375,6 +266,8 @@ class Scene:
 
     # --- Layers Methods ---
     def create_layer(self, name: str = "Layer") -> Layer:
+        if len(self.layers) >= MAX_PROJECT_LAYERS:
+            raise ValueError(f"layer limit is {MAX_PROJECT_LAYERS}")
         layer = Layer(name=name)
         self.layers.append(layer)
         self._notify()
@@ -431,6 +324,8 @@ class Scene:
         layer_id: Optional[str] = None,
         select: bool = False,
     ):
+        if oid not in self.objects and len(self.objects) >= MAX_PROJECT_OBJECTS:
+            raise ValueError(f"object limit is {MAX_PROJECT_OBJECTS}")
         polygon = _normalize_polygon_winding(polygon)
         if not _validate_polygon(polygon):
             # Repair is strictly opt-in. Invalid coordinates must never enter
@@ -500,6 +395,8 @@ class Scene:
         )
 
         oid = str(object_id) if object_id is not None else str(uuid.uuid4())
+        if oid not in self.objects and len(self.objects) >= MAX_PROJECT_OBJECTS:
+            raise ValueError(f"object limit is {MAX_PROJECT_OBJECTS}")
         if oid in self.objects:
             logger.warning(f"Object id {oid} already exists, skipping")
             raise ValueError("Object id exists")
@@ -614,6 +511,8 @@ class Scene:
             logger.warning(f"Object {oid} not found for update")
             raise KeyError(oid)
         polygon = _normalize_polygon_winding(polygon)
+        if not _validate_polygon(polygon):
+            raise ValueError("Invalid polygon")
         self.objects[oid].polygon = polygon
 
         # Se tiver colisão, atualiza também
@@ -658,6 +557,8 @@ class Scene:
 
     # --- Groups ---
     def create_group(self, name="Group"):
+        if len(self.groups) >= MAX_PROJECT_GROUPS:
+            raise ValueError(f"group limit is {MAX_PROJECT_GROUPS}")
         g = Group(name=name)
         self.groups.append(g)
         self._notify()
@@ -674,6 +575,8 @@ class Scene:
         if not g:
             raise KeyError("group not found")
         if object_id not in g.members:
+            if len(g.members) >= MAX_GROUP_MEMBERS:
+                raise ValueError(f"group member limit is {MAX_GROUP_MEMBERS}")
             g.members.append(object_id)
         self._notify()
 

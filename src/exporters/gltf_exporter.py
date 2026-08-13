@@ -32,6 +32,7 @@ except ImportError:
 from src.core.app_identity import GLTF_GENERATOR
 from src.core.convex_decomp import triangulate_to_convex
 from src.core.logger import logger
+from src.core.operational_limits import MAX_GLTF_UINT16_INDEX
 from src.models.scene import Scene as PolygonScene
 
 
@@ -128,6 +129,13 @@ def export_scene_to_gltf(
 
         if not obj_verts:
             continue
+        if obj_indices and max(obj_indices) > MAX_GLTF_UINT16_INDEX:
+            logger.error(
+                "Object %s exceeds the GLTF uint16 index limit of %d",
+                obj_id,
+                MAX_GLTF_UINT16_INDEX,
+            )
+            return False
 
         # We have geometry for this object.
         # Now we need to append it to the GLOBAL buffer, but manage offsets correctly.

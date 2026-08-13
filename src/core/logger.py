@@ -5,13 +5,38 @@ from __future__ import annotations
 import functools
 import logging
 import os
+import re
 import sys
+from logging.handlers import RotatingFileHandler
 from typing import Any, Callable, Optional
 
 from src.core.app_identity import LOGGER_NAME
+from src.core.operational_limits import (
+    LOG_BACKUP_COUNT,
+    MAX_LOG_FILE_BYTES,
+    MAX_LOG_TEXT_CHARS,
+)
 
 logger = logging.getLogger(LOGGER_NAME)
 _OWNED_HANDLER_ATTR = "_neoeng_d_trace_owned"
+_PATH_PATTERNS = (
+    re.compile(r"(?<!\w)[A-Za-z]:[\\/][^\r\n\"']+"),
+    re.compile(r"/(?:home|mnt|Users|tmp)/[^\r\n\"']+"),
+)
+
+
+def _redact_paths(value: str) -> str:
+    text = str(value)
+    for pattern in _PATH_PATTERNS:
+        text = pattern.sub("<PATH>", text)
+    if len(text) > MAX_LOG_TEXT_CHARS:
+        return text[:MAX_LOG_TEXT_CHARS] + "<TRUNCATED>"
+    return text
+
+
+class _PrivacyFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        return _redact_paths(super().format(record))
 
 
 def _owned_handlers(target: logging.Logger):
@@ -54,9 +79,9 @@ def setup_logging(
         "CRITICAL": logging.CRITICAL,
     }
     level = level_map.get(str(log_level).upper(), logging.INFO)
-    formatter = logging.Formatter(
-        "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
-    )
+    format_string = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+    stream_formatter = logging.Formatter(format_string)
+    file_formatter = _PrivacyFormatter(format_string)
 
     root = logging.getLogger()
     logger.setLevel(level)
@@ -64,31 +89,33 @@ def setup_logging(
     logger.propagate = False
 
     # Reconfiguration is deterministic and removes only handlers owned here.
+    owned_handlers = {
+        id(handler): handler
+        for target in (logger, root)
+        for handler in _owned_handlers(target)
+    }
     for target in (logger, root):
-        for handler in _owned_handlers(target):
+        for handler in owned_handlers.values():
             target.removeHandler(handler)
-            handler.close()
+    for handler in owned_handlers.values():
+        handler.close()
 
-    _add_handler(logger, logging.StreamHandler(sys.stdout), formatter, level)
-    _add_handler(root, logging.StreamHandler(sys.stdout), formatter, level)
+    _add_handler(logger, logging.StreamHandler(sys.stdout), stream_formatter, level)
+    _add_handler(root, logging.StreamHandler(sys.stdout), stream_formatter, level)
 
     if log_to_file and log_file_path:
         try:
             log_dir = os.path.dirname(log_file_path)
             if log_dir:
                 os.makedirs(log_dir, exist_ok=True)
-            _add_handler(
-                logger,
-                logging.FileHandler(log_file_path, encoding="utf-8"),
-                formatter,
-                level,
+            file_handler = RotatingFileHandler(
+                log_file_path,
+                maxBytes=MAX_LOG_FILE_BYTES,
+                backupCount=LOG_BACKUP_COUNT,
+                encoding="utf-8",
             )
-            _add_handler(
-                root,
-                logging.FileHandler(log_file_path, encoding="utf-8"),
-                formatter,
-                level,
-            )
+            _add_handler(logger, file_handler, file_formatter, level)
+            _add_handler(root, file_handler, file_formatter, level)
         except Exception as exc:
             logger.warning("Failed to setup file logging: %s", exc)
 

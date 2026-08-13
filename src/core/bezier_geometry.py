@@ -5,6 +5,8 @@ from __future__ import annotations
 import math
 from typing import Iterable, List, Sequence, Tuple
 
+from src.core.operational_limits import MAX_BEZIER_SEGMENTS, MAX_POLYGON_POINTS
+
 BezierPoint = Tuple[float, float]
 BezierSegment = Tuple[BezierPoint, BezierPoint, BezierPoint, BezierPoint]
 BezierSegments = List[BezierSegment]
@@ -43,6 +45,10 @@ def canonicalize_beziers(
 
     if not isinstance(beziers, (list, tuple)):
         raise ValueError("Bézier geometry must be a sequence of segments.")
+    if len(beziers) > MAX_BEZIER_SEGMENTS:
+        raise ValueError(
+            f"Bézier geometry exceeds the segment limit of {MAX_BEZIER_SEGMENTS}."
+        )
 
     canonical: BezierSegments = []
     for segment_index, segment in enumerate(beziers):
@@ -194,6 +200,12 @@ def sample_beziers(
         raise ValueError("steps_per_segment must be at least 1.")
 
     canonical = canonicalize_beziers(beziers)
+    sampled_count = len(canonical) * steps_per_segment + 1
+    if sampled_count > MAX_POLYGON_POINTS:
+        raise ValueError(
+            f"Sampled Bézier geometry exceeds the point limit of "
+            f"{MAX_POLYGON_POINTS}."
+        )
     sampled: List[BezierPoint] = []
     for segment_index, segment in enumerate(canonical):
         segment_points = [

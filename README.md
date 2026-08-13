@@ -6,15 +6,15 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Etapa 11 concluída no escopo aprovado em 11 de agosto de 2026:
+Etapa 11 concluída; Etapa 12 implementada e validada localmente antes do commit técnico, em 13 de agosto de 2026:
 
-- PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`;
-- 145 testes comportamentais novos e `877` testes oficiais aprovados no Windows/Python 3.11.9;
-- cobertura elevada para `92,77%` de linhas, `85,05%` de branches e `90,91%` combinada;
-- zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- o Pacote 6 leva cena a 95%, janela principal a 99%, laço magnético a 92%, caneta a 96%, painel de colisões a 100% e exportador de sprites a 95%;
-- `R-003` encerrado no escopo aprovado após integração e validação pós-merge;
-- CIs pré-merge `31489594270` e pós-merge `31491221322` aceitos após auditoria integral; Etapa 12 não iniciada e release **NÃO APROVADA**.
+- PR funcional `#45` e fechamento `#46` da Etapa 11 integrados; CI pós-merge final `31495971632` aceito após auditoria de logs, hashes e 1.418 payloads;
+- Etapa 12 aprova localmente `928` testes no Windows/Python 3.11.9;
+- cobertura exata atual: `11.174/12.040` linhas (`92,81%`), `3.309/3.892` branches (`85,02%`) e `90,91%` combinada;
+- limites centrais cobrem configuração, imagens, projetos, polígonos/Bézier, detecção, broadphase, atlas, GLTF e logs;
+- `pip-audit` não encontrou vulnerabilidades conhecidas, Bandit de alta severidade ficou limpo e mypy aprovou `73` arquivos;
+- a suíte legada executou `196` testes e conciliou exatamente `27/27` divergências históricas, sem inesperadas;
+- `R-012` permanece **ABERTO**, a Etapa 12 permanece **NÃO CONCLUÍDA** e a release **NÃO APROVADA** até commit técnico, CI Linux/Windows, merge e auditoria pós-merge.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 
@@ -91,7 +91,7 @@ Snapshot de referência do encerramento formal da Etapa 5, em 10 de agosto de 20
 - `R-004`: **ENCERRADO NO ESCOPO APROVADO**; Etapa 5: **CONCLUÍDA**;
 - Etapa 6: não iniciada.
 
-As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`; o CI pós-merge `31491221322` foi aceito após auditoria integral. `R-003` e a Etapa 11 estão encerrados no escopo aprovado; a Etapa 12 não foi iniciada e a release permanece não aprovada.
+As Etapas 5, 6, 7, 8, 9 e 10 possuem fechamento pós-merge comprovado. Na Etapa 10, o CI `31463873481` foi rejeitado, a correção foi integrada pela PR `#43` e o pós-merge `31469610508` foi aceito após auditoria dos artefatos. A Etapa 11 foi integrada pela PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`; o fechamento formal foi integrado pela PR `#46` em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`, e o CI pós-merge final `31495971632` foi aceito após auditoria integral. `R-003` e a Etapa 11 estão encerrados no escopo aprovado; a Etapa 12 foi iniciada com `R-012` aberto e a release permanece não aprovada.
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

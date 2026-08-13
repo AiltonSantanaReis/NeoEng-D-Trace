@@ -23,6 +23,7 @@ from src.core.commands import (
     CreateBezierObjectCommand,
     HandleMoveCommand,
 )
+from src.core.operational_limits import MAX_POLYGON_POINTS
 
 from .base_tool import BaseTool
 
@@ -461,6 +462,12 @@ class PenTool(BaseTool):
         return self._cancel_active_handle_edit()
 
     def _place_anchor(self, point: Tuple[float, float]):
+        max_nodes = ((MAX_POLYGON_POINTS - 1) // self._curve_segments) + 1
+        if len(self._nodes) >= max_nodes:
+            self._last_error = (
+                f"Bézier geometry cannot exceed {MAX_POLYGON_POINTS} sampled points."
+            )
+            return
         new_node = BezierNode(point)
 
         if self._nodes:

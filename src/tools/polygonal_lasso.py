@@ -13,6 +13,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen
 from PySide6.QtWidgets import QMenu
 
+from src.core.operational_limits import MAX_POLYGON_POINTS
+
 from .base_tool import BaseTool
 
 
@@ -75,7 +77,8 @@ class PolygonalLassoTool(BaseTool):
                     self.canvas_view.update()
                     return
 
-            self._vertices.append((x, y))
+            if len(self._vertices) < MAX_POLYGON_POINTS:
+                self._vertices.append((x, y))
             self.canvas_view.update()
         elif event.button() == Qt.MouseButton.RightButton:
             self.show_context_menu(event)

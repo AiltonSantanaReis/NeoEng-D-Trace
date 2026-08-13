@@ -1,16 +1,27 @@
 """Broadphase implementations for canonical static collision queries."""
 
+import math
 from typing import Any, Dict, List, Set, Tuple
+
+from src.core.operational_limits import MAX_GRID_CELLS_PER_AABB
 
 
 class AABB:
     """Axis-Aligned Bounding Box for collision detection."""
 
     def __init__(self, min_x: float, min_y: float, max_x: float, max_y: float):
-        self.min_x = min_x
-        self.min_y = min_y
-        self.max_x = max_x
-        self.max_y = max_y
+        values = (min_x, min_y, max_x, max_y)
+        if any(isinstance(value, bool) for value in values):
+            raise ValueError("AABB coordinates must be finite numbers")
+        try:
+            canonical = tuple(float(value) for value in values)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValueError("AABB coordinates must be finite numbers") from exc
+        if not all(math.isfinite(value) for value in canonical):
+            raise ValueError("AABB coordinates must be finite numbers")
+        if canonical[0] > canonical[2] or canonical[1] > canonical[3]:
+            raise ValueError("AABB minimum coordinates cannot exceed maximums")
+        self.min_x, self.min_y, self.max_x, self.max_y = canonical
 
     @property
     def width(self) -> float:
@@ -97,6 +108,10 @@ class UniformGridBroadPhase:
         """
         Initialize the broadphase with given cell size.
         """
+        if isinstance(grid_cell_size, bool) or not isinstance(grid_cell_size, int):
+            raise ValueError("grid_cell_size must be a positive integer")
+        if grid_cell_size <= 0:
+            raise ValueError("grid_cell_size must be a positive integer")
         self.grid_cell_size = grid_cell_size
         # (grid_x, grid_y) -> set of object_ids
         self.grid: Dict[Tuple[int, int], Set[Any]] = {}
@@ -122,6 +137,12 @@ class UniformGridBroadPhase:
         if max_grid_y < min_grid_y:
             max_grid_y = min_grid_y
 
+        cell_count = (max_grid_x - min_grid_x + 1) * (max_grid_y - min_grid_y + 1)
+        if cell_count > MAX_GRID_CELLS_PER_AABB:
+            raise ValueError(
+                f"AABB exceeds the grid cell limit of {MAX_GRID_CELLS_PER_AABB}"
+            )
+
         # Collect all cells this AABB touches
         for grid_x in range(min_grid_x, max_grid_x + 1):
             for grid_y in range(min_grid_y, max_grid_y + 1):
@@ -133,15 +154,11 @@ class UniformGridBroadPhase:
         """
         Insert an object into the broadphase.
         """
-        # Remove from old position if it exists
+        cells = self._get_cells_for_aabb(aabb)
+
         if obj_id in self.objects:
             self.remove(obj_id)
-
-        # Store the AABB
         self.objects[obj_id] = aabb
-
-        # Add to all relevant grid cells
-        cells = self._get_cells_for_aabb(aabb)
         for cell in cells:
             if cell not in self.grid:
                 self.grid[cell] = set()

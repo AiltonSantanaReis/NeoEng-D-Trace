@@ -2,19 +2,28 @@
 
 Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
-## Estado operacional de referência — 11 de agosto de 2026
+## Estado operacional de referência — 13 de agosto de 2026
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
 Etapa 11 integrada e concluída no escopo aprovado:
 
-- PR `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`;
+- PR funcional `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; PR de fechamento `#46` integrada em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`;
 - 145 testes comportamentais novos; suíte oficial `877 passed` no Windows/Python 3.11.9;
 - cobertura exata `10.787/11.628` linhas (`92,77%`), `3.147/3.700` branches (`85,05%`) e `90,91%` combinada;
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
-- CIs pré-merge `31489594270` e pós-merge `31491221322` aceitos após auditoria integral de Linux/Windows, proveniência, legado e conteúdo recursivo;
+- CIs funcional `31491221322` e final de fechamento `31495971632` aceitos após auditoria integral de Linux/Windows, proveniência, legado, hashes e conteúdo recursivo;
 - `R-003` encerrado no escopo aprovado após integração e CI pós-merge auditado;
-- Etapa 11 concluída; Etapa 12 não iniciada; release não aprovada.
+- Etapa 11 concluída; Etapa 12 iniciada com `R-012` aberto; release não aprovada.
+
+Etapa 12 — estado local pré-merge:
+
+- `928` testes oficiais aprovados no Windows/Python 3.11.9;
+- cobertura exata `11.174/12.040` linhas (`92,81%`), `3.309/3.892` branches (`85,02%`) e `90,91%` combinada;
+- limites centrais e cenários malformados implementados para configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs;
+- pip-audit sem vulnerabilidades conhecidas, Bandit de alta severidade limpo, mypy sem erros em `73` arquivos e legado `27/27` conciliado;
+- evidência ainda baseada em worktree modificada; commit técnico, CI Linux/Windows, merge e pós-merge permanecem obrigatórios;
+- `R-012`: ABERTO; Etapa 12: NÃO CONCLUÍDA; release: NÃO APROVADA.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:
 

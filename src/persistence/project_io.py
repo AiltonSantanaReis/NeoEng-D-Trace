@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Any, Literal, cast
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 from src.core.app_identity import PROJECT_FORMAT_ID, PROJECT_FORMAT_VERSION
+from src.core.operational_limits import MAX_IMAGE_FILE_BYTES
 
 from .errors import (
     LegacyProjectMigrationError,
@@ -139,10 +140,26 @@ def _hash_file_if_available(path: Path) -> str | None:
     try:
         if not path.is_file():
             return None
+        before = path.stat()
+        if before.st_size > MAX_IMAGE_FILE_BYTES:
+            return None
         digest = hashlib.sha256()
+        total = 0
         with path.open("rb") as handle:
-            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            while True:
+                chunk = handle.read(min(1024 * 1024, MAX_IMAGE_FILE_BYTES - total + 1))
+                if not chunk:
+                    break
+                total += len(chunk)
+                if total > MAX_IMAGE_FILE_BYTES:
+                    return None
                 digest.update(chunk)
+        after = path.stat()
+        if (after.st_size, after.st_mtime_ns) != (
+            before.st_size,
+            before.st_mtime_ns,
+        ):
+            return None
         return digest.hexdigest()
     except OSError:
         return None
@@ -364,7 +381,8 @@ def _read_json(path: Path) -> Any:
         raise ProjectReadError(f"project file exceeds {MAX_PROJECT_FILE_BYTES} bytes")
 
     try:
-        raw = path.read_bytes()
+        with path.open("rb") as handle:
+            raw = handle.read(MAX_PROJECT_FILE_BYTES + 1)
     except OSError as exc:
         raise ProjectReadError(f"cannot read project file {path}: {exc}") from exc
 

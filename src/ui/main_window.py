@@ -20,6 +20,11 @@ from PySide6.QtWidgets import (
 # Imports de lógica e colisão estática
 from src.collision import StaticCollisionManager
 from src.core.app_identity import build_window_title
+from src.core.image_input import (
+    hash_validated_image_file,
+    inspect_image_file,
+    validate_decoded_image,
+)
 from src.core.logger import logger
 from src.core.validation_events import (
     elapsed_ms,
@@ -32,6 +37,7 @@ from src.exporters.collision_exporter import (
 )
 from src.exporters.json_exporter import save_json_metadata
 from src.persistence import PROJECT_FILE_EXTENSION, build_project_document
+from src.persistence.errors import ProjectValidationError
 from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
 from src.ui.collision_panel import CollisionPanel
@@ -719,7 +725,10 @@ class MainWindow(QMainWindow):
         return Path.cwd() / f"untitled{PROJECT_FILE_EXTENSION}"
 
     def _compute_document_signature(self) -> str:
-        document = build_project_document(self.scene, self._signature_path_hint())
+        try:
+            document = build_project_document(self.scene, self._signature_path_hint())
+        except ProjectValidationError:
+            return self._compute_unvalidated_document_signature()
         payload = json.dumps(
             document.model_dump(mode="json"),
             ensure_ascii=False,
@@ -728,6 +737,43 @@ class MainWindow(QMainWindow):
             allow_nan=False,
         ).encode("utf-8")
         return hashlib.sha256(payload).hexdigest()
+
+    def _compute_unvalidated_document_signature(self) -> str:
+        image_path = getattr(self.scene, "image_path", None)
+        snapshot = (
+            os.fsdecode(image_path) if image_path is not None else None,
+            getattr(self.scene, "image_path_kind", None),
+            getattr(self.scene, "image_sha256", None),
+            tuple(
+                (layer.id, layer.name, layer.visible, layer.locked)
+                for layer in self.scene.layers
+            ),
+            tuple(
+                (
+                    object_id,
+                    obj.id,
+                    obj.layer_id,
+                    tuple(obj.polygon),
+                    tuple(tuple(segment) for segment in (obj.beziers or [])),
+                )
+                for object_id, obj in self.scene.objects.items()
+            ),
+            tuple(
+                (
+                    group.id,
+                    group.name,
+                    group.visible,
+                    group.locked,
+                    tuple(group.members),
+                )
+                for group in self.scene.groups
+            ),
+            tuple(
+                (object_id, tuple(shape))
+                for object_id, shape in self.scene.collision_shapes.items()
+            ),
+        )
+        return hashlib.sha256(repr(snapshot).encode("utf-8")).hexdigest()
 
     def is_document_modified(self) -> bool:
         if self._clean_signature is None:
@@ -886,26 +932,25 @@ class MainWindow(QMainWindow):
         import cv2
 
         try:
+            image_info = inspect_image_file(resolved)
             image = cv2.imread(str(resolved), cv2.IMREAD_UNCHANGED)
-        except (OSError, cv2.error):
-            image = None
-        if image is None:
-            return [t["project_image_unreadable"].format(path=resolved)]
+            if image is None:
+                raise ValueError("decoder returned no pixels")
+            validate_decoded_image(image, image_info)
+        except (OSError, ValueError, cv2.error) as exc:
+            return [t["project_image_unreadable"].format(path=resolved) + f" ({exc})"]
 
         warnings: list[str] = []
         expected_hash = getattr(target_scene, "image_sha256", None)
         if expected_hash:
-            digest = hashlib.sha256()
             try:
-                with resolved.open("rb") as handle:
-                    for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-                        digest.update(chunk)
-            except OSError:
+                actual_hash = hash_validated_image_file(image_info)
+            except (OSError, ValueError):
                 warnings.append(
                     t["project_image_hash_unavailable"].format(path=resolved)
                 )
             else:
-                if digest.hexdigest() != expected_hash:
+                if actual_hash != expected_hash:
                     warnings.append(
                         t["project_image_hash_mismatch"].format(path=resolved)
                     )
@@ -1096,9 +1141,11 @@ class MainWindow(QMainWindow):
         try:
             import cv2
 
+            image_info = inspect_image_file(path)
             image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
             if image is None:
-                raise ValueError("Failed to load image")
+                raise ValueError("decoder returned no pixels")
+            validate_decoded_image(image, image_info)
         except Exception as exc:
             logger.error(
                 "Failed to open image: %s",

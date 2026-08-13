@@ -9,6 +9,8 @@ from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QMenu
 
+from src.core.operational_limits import MAX_POLYGON_POINTS
+
 from .base_tool import BaseTool
 from .mask_utils import rdp_simplify
 
@@ -60,12 +62,15 @@ class LassoTool(BaseTool):
                 dist = math.hypot(x - self._last_point[0], y - self._last_point[1])
                 if dist >= self._sample_dist:
                     # Só adiciona se não for igual ao último
-                    if (x, y) != self._last_point:
+                    if (x, y) != self._last_point and len(
+                        self._points
+                    ) < MAX_POLYGON_POINTS:
                         self._points.append((x, y))
                         self._last_point = (x, y)
             else:
-                self._points.append((x, y))
-                self._last_point = (x, y)
+                if len(self._points) < MAX_POLYGON_POINTS:
+                    self._points.append((x, y))
+                    self._last_point = (x, y)
             self.canvas_view.update()
 
     def on_mouse_release(self, event: QMouseEvent, position: tuple):

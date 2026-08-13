@@ -853,6 +853,13 @@ def test_stage11_packages_update_live_state_without_closing_r003():
         "93777947784",
         "9101145671",
         "9101167058",
+        "89d13d7e3ee7a4cd926912aed8e3ae7e3d5505bb",
+        "a22a90088220e586c3382c3ed5dc1075a3ff7e6b",
+        "31495971632",
+        "93793644185",
+        "93793644105",
+        "9103009810",
+        "9103050616",
         "877 passed",
         "10.787/11.628",
         "3.147/3.700",
@@ -861,7 +868,9 @@ def test_stage11_packages_update_live_state_without_closing_r003():
         "R003_CLOSURE_RECOMMENDED=YES",
         "R003_CLOSED=YES",
         "STAGE11_COMPLETED=YES",
-        "STAGE12_STARTED=NO",
+        "STAGE12_STARTED=YES",
+        "STAGE12_COMPLETED=NO",
+        "R012_CLOSED=NO",
         "RELEASE_APPROVED=NO",
     ):
         assert expected in postmerge
@@ -880,6 +889,49 @@ def test_stage11_packages_update_live_state_without_closing_r003():
         assert "90,91%" in value, relative
         assert "2a38b89e542390b3b4396a88d9a416f3695caadc" in value, relative
         assert "31491221322" in value, relative
+        assert "a22a90088220e586c3382c3ed5dc1075a3ff7e6b" in value, relative
+        assert "31495971632" in value, relative
         assert "R-003" in value, relative
+        assert "R-012" in value, relative
+        assert "release" in value.lower(), relative
+        assert "não aprovada" in value.lower(), relative
+
+
+def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
+    evidence = _text("docs/evidence/ETAPA_12_SEGURANCA_LIMITES_PRE_MERGE.md")
+    for expected in (
+        "a22a90088220e586c3382c3ed5dc1075a3ff7e6b",
+        "928 passed",
+        "11.174/12.040",
+        "3.309/3.892",
+        "85,02%",
+        "90,91%",
+        "73",
+        "196",
+        "27/27",
+        "R-012",
+        "ABERTO",
+        "PARCIAL",
+        "NÃO APROVADA",
+    ):
+        assert expected in evidence
+
+    assert "Commit técnico: PENDENTE" in evidence
+    assert "worktree modificada" in evidence
+    assert "CI Linux e Windows ainda não foi executado" in evidence
+    assert "Etapa 12: NÃO CONCLUÍDA" in evidence
+
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert "928" in value, relative
+        assert "R-012" in value, relative
+        assert "aberto" in value.lower(), relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative
