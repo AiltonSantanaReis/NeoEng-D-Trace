@@ -1,8 +1,21 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 11
+## [Unreleased] — programa de estabilização, Etapas 1 a 12
 
-Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 12 — aprovação técnica pré-merge, segurança e limites operacionais
+
+- vincula a validação local ao commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` com worktree limpa;
+
+- adota a ordem normativa do plano mestre; o plano de desenvolvimento antigo permanece classificado como roadmap histórico superado;
+- centraliza tetos de configuração, imagens, projeto, geometria, detecção, broadphase, atlas, GLTF e logs;
+- rejeita JSON desconhecido/duplicado/não finito, imagens incompatíveis ou multiframe, geometria excessiva/inválida e alocações patológicas antes da mutação final;
+- corrige a regressão descoberta na suíte integral sem remover a validação: estado inválido usa assinatura determinística para a janela, mas continua impossível de salvar/exportar;
+- aprova localmente `928` testes, `11.174/12.040` linhas, `3.309/3.892` branches, mypy em `73` arquivos, Bandit e pip-audit sem vulnerabilidades conhecidas;
+- reconcilia `196` testes legados com `27/27` divergências históricas e zero inesperadas;
+- audita o CI pré-merge `31684136128` no HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`: Linux e Windows aprovam `928` testes e as métricas exatas; dois artefatos têm digest confirmado e a varredura recursiva cobre `1.419` payloads sem violações;
+- mantém `R-012` aberto, Etapa 12 não concluída e release não aprovada até merge autorizado e auditoria pós-merge.
 
 ### Etapa 11 — integrada e concluída no escopo aprovado
 
@@ -11,7 +24,7 @@ Registro documental contínuo, atualizado em 11 de agosto de 2026. O estado real
 - eleva a cobertura de 69,93% para 90,91% combinada, com 92,77% de linhas e 85,05% de branches;
 - elimina todos os módulos abaixo de 30% e leva cena, janela principal, laço magnético, caneta, painel de colisões e exportador de sprites a 92–100%;
 - remove três ramos comprovadamente inalcançáveis: um da paleta e dois da detecção automática;
-- integra a PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc`, aceita o CI pós-merge `31491221322` somente após auditoria integral, encerra `R-003` e conclui a Etapa 11 no escopo aprovado; Etapa 12 não iniciada e release não aprovada.
+- integra a PR `#45` em `2a38b89e542390b3b4396a88d9a416f3695caadc` e aceita seu CI pós-merge `31491221322`; integra o fechamento formal pela PR `#46` em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`; aceita o CI pós-merge final `31495971632` somente após auditoria de logs, hashes e 1.418 payloads; encerra `R-003` e conclui a Etapa 11 no escopo aprovado, sem aprovar release.
 
 ### Etapa 10 — concluída no escopo aprovado
 

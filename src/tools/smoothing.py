@@ -3,6 +3,12 @@
 
 from typing import List, Tuple
 
+from src.core.operational_limits import (
+    MAX_BEZIER_SEGMENTS,
+    MAX_CHAIKIN_ITERATIONS,
+    MAX_POLYGON_POINTS,
+)
+
 try:
     from src.core.logger import logger
 except ImportError:
@@ -17,6 +23,19 @@ def chaikin_smooth(points: List[Point], iterations: int = 2) -> List[Point]:
     """
     Applies Chaikin's corner cutting algorithm to smooth a polyline.
     """
+    if isinstance(iterations, bool) or not isinstance(iterations, int):
+        raise ValueError("iterations must be an integer")
+    if iterations < 0 or iterations > MAX_CHAIKIN_ITERATIONS:
+        raise ValueError(f"iterations must be between 0 and {MAX_CHAIKIN_ITERATIONS}")
+    if len(points) > MAX_POLYGON_POINTS:
+        raise ValueError(f"points exceed the limit of {MAX_POLYGON_POINTS}")
+    if len(points) >= 2 and iterations > 0:
+        result_count = len(points) * (2**iterations)
+        if result_count > MAX_POLYGON_POINTS:
+            raise ValueError(
+                f"smoothed geometry exceeds the point limit of {MAX_POLYGON_POINTS}"
+            )
+
     try:
         if len(points) < 2 or iterations <= 0:
             return points[:]
@@ -60,6 +79,12 @@ def catmull_rom_to_beziers(
     Converts a sequence of points into Cubic Bezier segments using
     Catmull-Rom spline tangents.
     """
+    maximum_points = MAX_BEZIER_SEGMENTS if closed else MAX_BEZIER_SEGMENTS + 1
+    if len(points) > maximum_points:
+        raise ValueError(
+            f"points exceed the Bézier segment limit of {MAX_BEZIER_SEGMENTS}"
+        )
+
     try:
         if len(points) < 2:
             return []

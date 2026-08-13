@@ -23,6 +23,7 @@ except ImportError as e:
 from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
 from src.core.commands import CommandManager
 from src.core.config import ConfigManager
+from src.core.image_input import inspect_image_file, validate_decoded_image
 from src.core.logger import logger, setup_logging
 from src.core.validation_events import (
     record_validation_event,
@@ -118,7 +119,10 @@ def run_headless(args: argparse.Namespace) -> int:
             if not os.path.isfile(args.image):
                 return _cli_failure(f"Image file not found: {args.image}")
             try:
+                image_info = inspect_image_file(args.image)
                 with PILImage.open(args.image) as pil_image:
+                    pil_image.load()
+                    validate_decoded_image(pil_image, image_info)
                     scene.load_image(pil_image.copy(), args.image)
             except Exception as exc:
                 return _cli_failure(f"Failed to load image: {exc}")

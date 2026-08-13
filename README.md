@@ -4,28 +4,31 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 11 concluída no escopo aprovado; Etapa 12 não iniciada; release NÃO APROVADA.**  
-> **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.  
+> **Estado:** pré-release em desenvolvimento. **Etapa 11 concluída; Etapa 12 aprovada tecnicamente pré-merge, com integração e pós-merge pendentes; release NÃO APROVADA.**
+> **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
 ## Estado verificável
 
-Esta apresentação foi reorganizada sobre a `main` auditada em
-`a22a90088220e586c3382c3ed5dc1075a3ff7e6b`. Esse HEAD foi validado pelo
-workflow `Private validation` `31495971632`, com jobs Windows e Linux em
-`success`.
+Esta apresentação preserva a Etapa 11 auditada em
+`a22a90088220e586c3382c3ed5dc1075a3ff7e6b`, validada pelo workflow
+`Private validation` `31495971632`, e está reconciliada com a `main`
+`2e9cad4cb7879aa7ceb8ee0a1e096b738674a984`. A Etapa 12 foi validada
+localmente no commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` e
+no CI pré-merge `31684136128` do HEAD fonte
+`a42b54b07d8e9e10feb8d283adc664b52f9d25d3`.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte oficial | **877 testes aprovados** |
-| Cobertura de linhas | **92,77%** |
-| Cobertura de branches | **85,05%** |
+| Suíte oficial | **928 testes aprovados localmente e no CI Linux/Windows** |
+| Cobertura de linhas | **11.174/12.040 — 92,81%** |
+| Cobertura de branches | **3.309/3.892 — 85,02%** |
 | Cobertura combinada | **90,91%** |
-| Type checking | mypy sem erros em 70 arquivos |
+| Type checking | mypy sem erros em 73 arquivos |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
 | Etapa atual encerrada | **Etapa 11** |
-| Próxima etapa | **Etapa 12 — não iniciada** |
+| Etapa em execução | **Etapa 12 — pré-merge; R-012 aberto** |
 | Release | **NÃO APROVADA** |
 
 O encerramento funcional da Etapa 11 permanece vinculado à integração
@@ -33,6 +36,12 @@ O encerramento funcional da Etapa 11 permanece vinculado à integração
 `31491221322`. O fechamento documental foi integrado posteriormente, sem
 alterar a decisão de release. `R-003` está encerrado no escopo aprovado;
 `R-011` permanece **ABERTO** e `R-012` permanece **PARCIAL / ABERTO**.
+
+Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,
+detecção, broadphase, atlas, GLTF e logs. O legado executou 196 testes e
+conciliou 27/27 divergências históricas, sem falhas inesperadas. Esses
+resultados locais foram reproduzidos no CI pré-merge Linux/Windows. Isso não
+substitui merge autorizado nem auditoria pós-merge.
 
 ## O que o NeoEng-D-Trace resolve
 
@@ -237,8 +246,8 @@ NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. N
 há licença open source atribuída. O texto jurídico comercial final ainda exige
 decisão/revisão própria antes de qualquer lançamento público.
 
-A reorganização deste README não aprova release, não inicia a Etapa 12 e não
-muda o estado de qualquer risco.
+A atualização deste README não aprova release, não conclui a Etapa 12 e não
+encerra `R-012`.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

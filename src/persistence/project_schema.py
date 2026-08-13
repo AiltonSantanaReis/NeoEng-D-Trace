@@ -14,6 +14,22 @@ from src.core.app_identity import (
     PROJECT_FORMAT_ID,
     PROJECT_FORMAT_VERSION,
 )
+from src.core.operational_limits import (
+    MAX_BEZIER_SEGMENTS,
+    MAX_GROUP_MEMBERS,
+    MAX_POLYGON_POINTS,
+)
+from src.core.operational_limits import (
+    MAX_PROJECT_FILE_BYTES as _MAX_PROJECT_FILE_BYTES,
+)
+from src.core.operational_limits import (
+    MAX_PROJECT_GROUPS,
+    MAX_PROJECT_LAYERS,
+    MAX_PROJECT_OBJECTS,
+    MAX_PROJECT_POINTS,
+    MAX_PROJECT_POLYGON_COMPLEXITY,
+)
+from src.core.polygon_validation import is_valid_polygon
 
 if PROJECT_FORMAT_ID != "neoeng-d-trace-project":
     raise RuntimeError("unexpected project format identifier")
@@ -21,13 +37,11 @@ if PROJECT_FORMAT_VERSION != 1:
     raise RuntimeError("unexpected project format version")
 
 PROJECT_FILE_EXTENSION = ".ndtproj"
-MAX_PROJECT_FILE_BYTES = 64 * 1024 * 1024
-MAX_PROJECT_OBJECTS = 100_000
-MAX_PROJECT_POINTS = 1_000_000
 MAX_ID_LENGTH = 256
 MAX_NAME_LENGTH = 1024
 MAX_PATH_LENGTH = 32_768
 SHA256_HEX_LENGTH = 64
+MAX_PROJECT_FILE_BYTES = _MAX_PROJECT_FILE_BYTES
 
 
 class StrictProjectModel(BaseModel):
@@ -126,9 +140,15 @@ class SceneObjectRecord(StrictProjectModel):
 
     id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
-    polygon: list[PointRecord]
-    collision: list[PointRecord] | None = None
-    beziers: list[BezierSegmentRecord] | None = None
+    polygon: list[PointRecord] = Field(max_length=MAX_POLYGON_POINTS)
+    collision: list[PointRecord] | None = Field(
+        default=None,
+        max_length=MAX_POLYGON_POINTS,
+    )
+    beziers: list[BezierSegmentRecord] | None = Field(
+        default=None,
+        max_length=MAX_BEZIER_SEGMENTS,
+    )
 
 
 class GroupRecord(StrictProjectModel):
@@ -138,7 +158,7 @@ class GroupRecord(StrictProjectModel):
     name: str = Field(max_length=MAX_NAME_LENGTH)
     visible: bool
     locked: bool
-    members: list[str]
+    members: list[str] = Field(max_length=MAX_GROUP_MEMBERS)
 
     @field_validator("members")
     @classmethod
@@ -158,9 +178,9 @@ class ProjectDocumentV1(StrictProjectModel):
     schema_version: Literal[1] = 1
     metadata: ProjectMetadataRecord
     image: ImageReferenceRecord | None = None
-    layers: list[LayerRecord]
+    layers: list[LayerRecord] = Field(max_length=MAX_PROJECT_LAYERS)
     objects: list[SceneObjectRecord] = Field(max_length=MAX_PROJECT_OBJECTS)
-    groups: list[GroupRecord]
+    groups: list[GroupRecord] = Field(max_length=MAX_PROJECT_GROUPS)
 
     @model_validator(mode="after")
     def validate_references_and_limits(self) -> "ProjectDocumentV1":
@@ -195,12 +215,42 @@ class ProjectDocumentV1(StrictProjectModel):
                 )
 
         total_points = 0
+        polygon_complexity = 0
         for item in self.objects:
-            total_points += len(item.polygon)
-            total_points += len(item.collision or [])
+            polygon_points = len(item.polygon)
+            collision_points = len(item.collision or [])
+            if polygon_points > MAX_POLYGON_POINTS:
+                raise ValueError(
+                    f"object {item.id!r} exceeds the {MAX_POLYGON_POINTS} "
+                    "polygon point limit"
+                )
+            if collision_points > MAX_POLYGON_POINTS:
+                raise ValueError(
+                    f"object {item.id!r} exceeds the {MAX_POLYGON_POINTS} "
+                    "collision point limit"
+                )
+            total_points += polygon_points
+            total_points += collision_points
             total_points += 4 * len(item.beziers or [])
+            polygon_complexity += polygon_points * polygon_points
         if total_points > MAX_PROJECT_POINTS:
             raise ValueError(f"project exceeds the {MAX_PROJECT_POINTS} point limit")
+        if polygon_complexity > MAX_PROJECT_POLYGON_COMPLEXITY:
+            raise ValueError(
+                "project exceeds the polygon validation complexity limit of "
+                f"{MAX_PROJECT_POLYGON_COMPLEXITY}"
+            )
+
+        for item in self.objects:
+            polygon = [(point.x, point.y) for point in item.polygon]
+            if polygon and not is_valid_polygon(polygon):
+                raise ValueError(f"object {item.id!r} has invalid polygon geometry")
+            if item.collision is not None:
+                collision = [(point.x, point.y) for point in item.collision]
+                if not is_valid_polygon(collision):
+                    raise ValueError(
+                        f"object {item.id!r} has invalid collision geometry"
+                    )
         return self
 
 

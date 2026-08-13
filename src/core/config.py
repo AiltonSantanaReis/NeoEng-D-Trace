@@ -5,64 +5,79 @@ Implementation preserved in the single ``src`` source tree.
 
 import json
 import os
-import shutil
 import tempfile
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
+
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from src.core.logger import logger
-
-if TYPE_CHECKING:
-    from pydantic import BaseModel, Field, ValidationError
-else:
-    try:
-        from pydantic import BaseModel, Field, ValidationError
-
-        HAS_PYDANTIC = True
-    except ImportError:
-        HAS_PYDANTIC = False
-
-        # Fallback runtime para ambientes sem Pydantic.
-        class BaseModel:
-            def dict(self):
-                return self.__dict__
-
-            def model_dump(self):
-                return self.__dict__
-
-        class ValidationError(Exception):
-            pass
-
-        def Field(default=None, **kwargs):
-            return default
+from src.core.operational_limits import (
+    MAX_CONFIG_FILE_BYTES,
+    MAX_CONFIG_PATH_LENGTH,
+    MAX_CONFIG_TEXT_LENGTH,
+    MAX_EXPORT_PROFILES,
+    MAX_PROFILE_OPTIONS,
+    MAX_RECENT_FILES,
+    MAX_WINDOW_GEOMETRY_LENGTH,
+)
 
 
-class ExportProfile(BaseModel):
-    name: str
-    engine: str
-    options: Dict[str, Any] = Field(default_factory=dict)
+class ConfigLimitError(ValueError):
+    """Raised when configuration exceeds a bounded resource contract."""
 
 
-class AppConfig(BaseModel):
-    # Configuração Pydantic V2 (Permite ignorar campos extras no JSON)
-    model_config = {"extra": "ignore"}
+def _reject_duplicate_object_keys(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON object key: {key!r}")
+        result[key] = value
+    return result
 
-    config_version: int = Field(default=1, description="Version of config schema")
-    last_folder: Optional[str] = None
-    zoom: float = Field(default=1.0, ge=0.01, le=100.0)
-    tool: str = "polygonal_lasso"
-    window_geometry: Optional[str] = None
-    recent_files: List[str] = Field(default_factory=list)
-    default_export_profile: str = "default"
-    profiles: List[ExportProfile] = Field(default_factory=list)
 
-    # Logging settings
-    log_level: str = Field(
-        default="INFO",
-        description="Logging level: DEBUG, INFO, WARNING, ERROR",
+class StrictConfigModel(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+        strict=True,
+        validate_assignment=True,
     )
-    log_to_file: bool = Field(default=False, description="Whether to log to file")
+
+
+class ExportProfile(StrictConfigModel):
+    name: str = Field(min_length=1, max_length=MAX_CONFIG_TEXT_LENGTH)
+    engine: str = Field(min_length=1, max_length=MAX_CONFIG_TEXT_LENGTH)
+    options: Dict[str, Any] = Field(
+        default_factory=dict,
+        max_length=MAX_PROFILE_OPTIONS,
+    )
+
+
+class AppConfig(StrictConfigModel):
+    config_version: Literal[1] = 1
+    last_folder: Optional[str] = Field(default=None, max_length=MAX_CONFIG_PATH_LENGTH)
+    zoom: float = Field(default=1.0, ge=0.01, le=100.0)
+    tool: str = Field(default="polygonal_lasso", max_length=MAX_CONFIG_TEXT_LENGTH)
+    window_geometry: Optional[str] = Field(
+        default=None,
+        max_length=MAX_WINDOW_GEOMETRY_LENGTH,
+    )
+    recent_files: List[str] = Field(
+        default_factory=list,
+        max_length=MAX_RECENT_FILES,
+    )
+    default_export_profile: str = Field(
+        default="default",
+        max_length=MAX_CONFIG_TEXT_LENGTH,
+    )
+    profiles: List[ExportProfile] = Field(
+        default_factory=list,
+        max_length=MAX_EXPORT_PROFILES,
+    )
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
+    log_to_file: bool = False
     log_file_path: Optional[str] = Field(
-        default=None, description="Path to log file if log_to_file is True"
+        default=None,
+        max_length=MAX_CONFIG_PATH_LENGTH,
     )
 
 
@@ -79,32 +94,52 @@ class ConfigManager:
             return
 
         try:
-            with open(path, "r", encoding="utf-8") as f:
-                content = f.read().strip()
-                if not content:
-                    return  # Empty file, use defaults
-                data = json.loads(content)
+            size = os.path.getsize(path)
+            if size > MAX_CONFIG_FILE_BYTES:
+                raise ConfigLimitError(
+                    f"config file exceeds {MAX_CONFIG_FILE_BYTES} bytes"
+                )
+            with open(path, "rb") as handle:
+                raw = handle.read(MAX_CONFIG_FILE_BYTES + 1)
+            if len(raw) > MAX_CONFIG_FILE_BYTES:
+                raise ConfigLimitError(
+                    f"config file exceeds {MAX_CONFIG_FILE_BYTES} bytes"
+                )
+            content = raw.decode("utf-8", errors="strict").strip()
+            if not content:
+                return
+            data = json.loads(
+                content,
+                parse_constant=lambda value: (_ for _ in ()).throw(
+                    ValueError(f"non-finite JSON number is not allowed: {value}")
+                ),
+                object_pairs_hook=_reject_duplicate_object_keys,
+            )
+            self.config = AppConfig.model_validate(data)
 
-            # Validate and load data
-            self.config = AppConfig(**data)
-
-        except ValidationError as e:
-            logger.error(f"Config validation error: {e}")
+        except (
+            ValidationError,
+            ConfigLimitError,
+            UnicodeDecodeError,
+            ValueError,
+        ) as exc:
+            logger.error("Config validation error: %s", exc)
             self._backup_corrupted()
 
-        except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON in config file: {e}")
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.error("Failed to load config: %s", exc)
             self._backup_corrupted()
 
-        except Exception as e:
-            logger.error(f"Failed to load config: {e}")
+        except Exception as exc:
+            logger.error("Unexpected config load failure: %s", exc)
+            self._backup_corrupted()
 
     def _backup_corrupted(self):
         """Renames corrupted config file so a new one can be created."""
         try:
             if self.path and os.path.exists(self.path):
                 backup_path = self.path + ".corrupted"
-                shutil.move(self.path, backup_path)
+                os.replace(self.path, backup_path)
                 logger.warning(f"Corrupted config moved to {backup_path}")
         except Exception as e:
             logger.error(f"Failed to backup corrupted config: {e}")
@@ -123,33 +158,36 @@ class ConfigManager:
         if not self.path:
             return
 
+        temporary_path = None
         try:
-            # Ensure directory exists
-            os.makedirs(os.path.dirname(self.path), exist_ok=True)
+            data = self.config.model_dump(mode="json")
+            payload = (
+                json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+            ).encode("utf-8")
+            if len(payload) > MAX_CONFIG_FILE_BYTES:
+                raise ConfigLimitError(
+                    f"serialized config exceeds {MAX_CONFIG_FILE_BYTES} bytes"
+                )
 
-            # Compatibility: Pydantic V2 uses model_dump(), V1 uses dict()
-            if hasattr(self.config, "model_dump"):
-                data = self.config.model_dump()
-            else:
-                data = self.config.dict()
+            directory = os.path.dirname(self.path)
+            if directory:
+                os.makedirs(directory, exist_ok=True)
+            descriptor, temporary_path = tempfile.mkstemp(
+                suffix=".tmp",
+                dir=directory or ".",
+            )
+            with os.fdopen(descriptor, "wb") as handle:
+                handle.write(payload)
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temporary_path, self.path)
+            temporary_path = None
 
-            # Atomic write
-            dirn = os.path.dirname(self.path)
-            fd, tmp_path = tempfile.mkstemp(suffix=".tmp", dir=dirn, text=True)
-
-            with os.fdopen(fd, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
-
-            # Replace original file
-            if os.path.exists(self.path):
-                os.replace(tmp_path, self.path)  # Atomic on POSIX, safe on Py3+ Windows
-            else:
-                os.rename(tmp_path, self.path)
-
-        except Exception as e:
-            logger.error(f"Failed to save config: {e}")
-            if "tmp_path" in locals() and os.path.exists(tmp_path):
+        except Exception as exc:
+            logger.error("Failed to save config: %s", exc)
+        finally:
+            if temporary_path and os.path.exists(temporary_path):
                 try:
-                    os.remove(tmp_path)
-                except Exception:
+                    os.remove(temporary_path)
+                except OSError:
                     pass

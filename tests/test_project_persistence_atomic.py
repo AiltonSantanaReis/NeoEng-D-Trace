@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import io
+
 import pytest
 
 from src.models.scene import Scene
@@ -56,15 +58,32 @@ def test_actual_bytes_are_rechecked_after_stat(tmp_path, monkeypatch):
     path = tmp_path / "changing.ndtproj"
     path.write_bytes(b"")
 
-    original_read_bytes = project_io.Path.read_bytes
+    read_sizes = []
+    original_open = project_io.Path.open
 
-    def oversized_read_bytes(self):
+    class TrackingBytesIO(io.BytesIO):
+        def read(self, size=-1):
+            read_sizes.append(size)
+            return super().read(size)
+
+    def bounded_open(self, mode="r", *args, **kwargs):
         if self == path:
-            return b"{}"
-        return original_read_bytes(self)
+            return TrackingBytesIO(b"{}")
+        return original_open(self, mode, *args, **kwargs)
 
     monkeypatch.setattr(project_io, "MAX_PROJECT_FILE_BYTES", 1)
-    monkeypatch.setattr(project_io.Path, "read_bytes", oversized_read_bytes)
+    monkeypatch.setattr(project_io.Path, "open", bounded_open)
 
     with pytest.raises(ProjectReadError):
         Scene().load_project(str(path))
+    assert read_sizes == [2]
+
+    monkeypatch.setattr(project_io, "MAX_IMAGE_FILE_BYTES", 1)
+    assert project_io._hash_file_if_available(path) is None
+    assert read_sizes == [2, 2]
+
+    assert project_io._hash_file_if_available(tmp_path / "missing.png") is None
+    with original_open(path, "wb") as handle:
+        handle.write(b"12")
+    assert project_io._hash_file_if_available(path) is None
+    assert read_sizes == [2, 2]

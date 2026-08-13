@@ -7,6 +7,9 @@
 - HEAD documental final: `3cd1616fed60101bbd809f530667227a5006c409`;
 - merge funcional: `2a38b89e542390b3b4396a88d9a416f3695caadc`;
 - release: não aprovada.
+- PR de fechamento formal: `#46`;
+- HEAD de fechamento formal: `89d13d7e3ee7a4cd926912aed8e3ae7e3d5505bb`;
+- merge de fechamento formal: `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`.
 
 ## Objetivo
 
@@ -84,12 +87,41 @@ A auditoria independente confirmou:
 - zero referências proibidas e zero caminhos pessoais locais;
 - digests dos ZIPs brutos idênticos aos publicados pelo GitHub.
 
+## Fechamento formal e auditoria pós-merge final
+
+A PR `#46` integrou o fechamento documental no merge
+`a22a90088220e586c3382c3ed5dc1075a3ff7e6b`. O workflow pós-merge
+`31495971632`, disparado por `push` nesse SHA, foi aceito somente após
+inspeção independente dos jobs, logs, digests e conteúdo recursivo.
+
+| Sistema | Job | Estado | Artefato | Digest SHA-256 |
+|---|---:|---|---:|---|
+| Linux | `93793644185` | `success` | `9103009810` | `b641039fc068950dfa8b9fe3a161136ffd7ade8d2ba9fde8c93142665bfcafba` |
+| Windows | `93793644105` | `success` | `9103050616` | `95e95de0b5fdcaa1795adb8565e23827ce9b9b93c88bd945711390aba46271f0` |
+
+A auditoria final confirmou:
+
+- zero anotações nos dois check-runs;
+- `877 passed` em Linux e Windows;
+- `10.787/11.628` linhas e `3.147/3.700` branches nos dois sistemas;
+- baseline de 320 arquivos e mypy sem problemas em 70 arquivos;
+- nenhuma vulnerabilidade conhecida nas dependências auditáveis;
+- 196 testes históricos, reconciliação `27/27`, zero inesperadas e zero ausentes;
+- commit testado e HEAD fonte iguais ao merge, com worktree limpa;
+- 129 ZIPs e 1.418 payloads examinados recursivamente;
+- zero referências proibidas e zero caminhos pessoais locais;
+- hashes dos ZIPs brutos idênticos aos digests publicados pelo GitHub.
+
+Esta segunda validação pós-merge é necessária porque a PR `#46` alterou os
+marcadores formais de encerramento e elevou a baseline de 319 para 320 arquivos.
+
 ## Decisão e riscos residuais
 
 - `R-003` está encerrado no escopo aprovado;
 - as metas globais 90% de linhas e 85% de branches foram superadas;
 - a Etapa 11 está concluída no escopo aprovado;
-- `R-012` permanece aberto para os limites operacionais da Etapa 12;
+- `R-012` permanece aberto; a Etapa 12 foi iniciada para auditar e implementar
+  limites operacionais, sem aprovação funcional até este ponto;
 - `R-011` permanece aberto para a refatoração Qt protegida da Etapa 13;
 - autosave, build, instalador e validações reais de release permanecem para as
   Etapas 13 e 14;
@@ -110,7 +142,14 @@ COVERAGE_TARGETS_MET=YES
 R003_CLOSURE_RECOMMENDED=YES
 R003_CLOSED=YES
 STAGE11_COMPLETED=YES
-STAGE12_STARTED=NO
+CLOSURE_PR=46
+CLOSURE_HEAD=89d13d7e3ee7a4cd926912aed8e3ae7e3d5505bb
+CLOSURE_MERGE=a22a90088220e586c3382c3ed5dc1075a3ff7e6b
+FINAL_POST_MERGE_CI_RUN=31495971632
+FINAL_POST_MERGE_CI_STATUS=ACCEPTED
+STAGE12_STARTED=YES
+STAGE12_COMPLETED=NO
+R012_CLOSED=NO
 RELEASE_APPROVED=NO
 ```
 

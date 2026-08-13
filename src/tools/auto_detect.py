@@ -6,12 +6,22 @@ This module provides high-level functions for detecting polygons in images
 and creating scene objects from them.
 """
 
+import math
+from numbers import Real
 from typing import Any, Dict, List, Optional, Sequence, Tuple, cast
 
 import cv2
 import numpy as np
 
 from src.core.logger import logger
+from src.core.operational_limits import (
+    MAX_DECODED_IMAGE_BYTES,
+    MAX_IMAGE_DIMENSION,
+    MAX_IMAGE_PIXELS,
+    MAX_POLYGON_POINTS,
+    MAX_PROJECT_OBJECTS,
+    MAX_PROJECT_POINTS,
+)
 
 from .edge_utils import enhanced_edge_detection, multi_scale_edges
 from .mask_utils import (
@@ -21,6 +31,81 @@ from .mask_utils import (
     threshold_adaptive,
 )
 from .smoothing import catmull_rom_to_beziers, chaikin_smooth
+
+
+def _validate_detection_image(image: np.ndarray) -> None:
+    if image.ndim not in {2, 3}:
+        raise ValueError("image must be a 2D grayscale or RGB/RGBA array")
+    if image.ndim == 3 and image.shape[2] not in {3, 4}:
+        raise ValueError("image must be a 2D grayscale or RGB/RGBA array")
+    height, width = image.shape[:2]
+    if height < 1 or width < 1:
+        raise ValueError("image dimensions must be positive")
+    if height > MAX_IMAGE_DIMENSION or width > MAX_IMAGE_DIMENSION:
+        raise ValueError(f"image dimensions cannot exceed {MAX_IMAGE_DIMENSION}")
+    if height * width > MAX_IMAGE_PIXELS:
+        raise ValueError(f"image exceeds the pixel limit of {MAX_IMAGE_PIXELS}")
+    if image.nbytes > MAX_DECODED_IMAGE_BYTES:
+        raise ValueError(
+            f"image exceeds the decoded byte limit of {MAX_DECODED_IMAGE_BYTES}"
+        )
+    if not np.issubdtype(image.dtype, np.number):
+        raise ValueError("image dtype must be numeric")
+
+
+def _bounded_downscale(value: Any) -> float:
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError("downscale must be a finite number inside (0, 1]")
+    downscale = float(value)
+    if not math.isfinite(downscale) or not 0.0 < downscale <= 1.0:
+        raise ValueError("downscale must be a finite number inside (0, 1]")
+    return downscale
+
+
+def _bounded_chaikin_iterations(value: Any) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError("chaikin_iterations must be an integer")
+    return value
+
+
+def _resize_grayscale(gray: np.ndarray, downscale: float) -> np.ndarray:
+    if downscale == 1.0:
+        return gray
+    height, width = gray.shape
+    new_width = max(1, int(width * downscale))
+    new_height = max(1, int(height * downscale))
+    return cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+
+
+def _validate_contours(contours: Sequence[np.ndarray]) -> None:
+    if len(contours) > MAX_PROJECT_OBJECTS:
+        raise ValueError(
+            f"detected contour count exceeds the limit of {MAX_PROJECT_OBJECTS}"
+        )
+    point_count = sum(len(contour) for contour in contours)
+    if point_count > MAX_PROJECT_POINTS:
+        raise ValueError(
+            f"detected contour points exceed the limit of {MAX_PROJECT_POINTS}"
+        )
+
+
+def _validate_detection_result(polygons: Sequence[Dict[str, Any]]) -> None:
+    if len(polygons) > MAX_PROJECT_OBJECTS:
+        raise ValueError(
+            f"detected polygon count exceeds the limit of {MAX_PROJECT_OBJECTS}"
+        )
+    point_count = 0
+    for polygon in polygons:
+        points = polygon.get("polygon", [])
+        if len(points) > MAX_POLYGON_POINTS:
+            raise ValueError(
+                f"detected polygon exceeds the point limit of {MAX_POLYGON_POINTS}"
+            )
+        point_count += len(points)
+    if point_count > MAX_PROJECT_POINTS:
+        raise ValueError(
+            f"detected polygon points exceed the limit of {MAX_PROJECT_POINTS}"
+        )
 
 
 class DetectResult(list):
@@ -53,6 +138,7 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
     """
     if not isinstance(image, np.ndarray):
         raise TypeError("image must be a numpy.ndarray")
+    _validate_detection_image(image)
     if mode not in ["basic", "perfect", "enhanced"]:
         raise ValueError(f"Unknown mode: {mode}")
     try:
@@ -77,7 +163,7 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
 
 def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
     """Basic polygon detection."""
-    downscale = float(kwargs.get("downscale", 1.0))
+    downscale = _bounded_downscale(kwargs.get("downscale", 1.0))
     canny_threshold1 = int(kwargs.get("canny_threshold1", 100))
     canny_threshold2 = int(kwargs.get("canny_threshold2", 200))
     rdp_epsilon = float(kwargs.get("rdp_epsilon", 2.0))
@@ -88,15 +174,12 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
     else:
         gray = image.copy()
 
-    if downscale != 1.0:
-        height, width = gray.shape
-        new_width = int(width * downscale)
-        new_height = int(height * downscale)
-        gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+    gray = _resize_grayscale(gray, downscale)
 
     blurred = cv2.GaussianBlur(gray, (0, 0), sigmaX=1.0)
     edges = cv2.Canny(blurred, canny_threshold1, canny_threshold2)
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _validate_contours(contours)
 
     detected_polygons = []
 
@@ -152,12 +235,13 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
             }
         )
 
+    _validate_detection_result(detected_polygons)
     return detected_polygons
 
 
 def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
     """Perfect polygon detection."""
-    downscale = float(kwargs.get("downscale", 1.0))
+    downscale = _bounded_downscale(kwargs.get("downscale", 1.0))
     base_eps = float(kwargs.get("base_eps", 2.0))
     curvature_factor = float(kwargs.get("curvature_factor", 1.0))
     min_area = float(kwargs.get("min_area", 100.0))
@@ -173,11 +257,7 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
 
     orig_height, orig_width = gray.shape
 
-    if downscale != 1.0:
-        height, width = gray.shape
-        new_width = int(width * downscale)
-        new_height = int(height * downscale)
-        gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+    gray = _resize_grayscale(gray, downscale)
 
     # Use explicit casting for numpy operations to satisfy mypy
     gray_float = gray.astype(np.float32)
@@ -238,6 +318,7 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
     contours, hierarchy = cv2.findContours(
         separated_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE
     )
+    _validate_contours(contours)
 
     detected_polygons = []
 
@@ -313,17 +394,20 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
             }
         )
 
+    _validate_detection_result(detected_polygons)
     return detected_polygons
 
 
 def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
     """Enhanced polygon detection."""
     # Simplified for brevity, follows similar pattern of fixing types
-    downscale = float(kwargs.get("downscale", 1.0))
+    downscale = _bounded_downscale(kwargs.get("downscale", 1.0))
     canny_thresh1 = int(kwargs.get("canny_thresh1", 50))
     canny_thresh2 = int(kwargs.get("canny_thresh2", 150))
     min_area = float(kwargs.get("min_area", 50.0))
-    chaikin_iterations = int(kwargs.get("chaikin_iterations", 0))
+    chaikin_iterations = _bounded_chaikin_iterations(
+        kwargs.get("chaikin_iterations", 0)
+    )
     fit_bezier = bool(kwargs.get("fit_bezier", False))
     detect_holes = bool(kwargs.get("detect_holes", False))
     filled_shapes_threshold = int(kwargs.get("filled_shapes_threshold", 3))
@@ -333,11 +417,7 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
     else:
         gray = image.copy()
 
-    if downscale != 1.0:
-        height, width = gray.shape
-        new_width = int(width * downscale)
-        new_height = int(height * downscale)
-        gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+    gray = _resize_grayscale(gray, downscale)
 
     unique_vals = np.unique(gray)
     has_filled_shapes = (
@@ -352,6 +432,7 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
 
     retr_mode = cv2.RETR_CCOMP if detect_holes else cv2.RETR_EXTERNAL
     contours, hierarchy = cv2.findContours(mask, retr_mode, cv2.CHAIN_APPROX_NONE)
+    _validate_contours(contours)
 
     detected_polygons = []
 
@@ -366,6 +447,11 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
             else [-1, -1, -1, -1]
         )
         is_hole = detect_holes and hier_info[3] != -1
+
+        if len(contour) > MAX_POLYGON_POINTS:
+            raise ValueError(
+                f"detected polygon exceeds the point limit of {MAX_POLYGON_POINTS}"
+            )
 
         points_float = [
             (float(x), float(y))
@@ -425,6 +511,7 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
 
         detected_polygons.append(poly_data)
 
+    _validate_detection_result(detected_polygons)
     return detected_polygons
 
 
