@@ -240,8 +240,8 @@ continua aberto até merge autorizado e CI pós-merge auditado.
 ## Limitações e riscos residuais
 
 - os testes locais e as provas externas não equivalem a integração na `main`;
-- o commit documental que registra esta auditoria ainda precisa passar pelos
-  gates da PR antes da revisão final;
+- a validade deste registro depende de seu próprio CI da PR antes da revisão
+  final;
 - a margem de branches continua pequena, de `0,02` ponto percentual;
 - o autosave não substitui backups nem garante recuperação diante de falha do
   dispositivo ou corrupção fora do processo;
