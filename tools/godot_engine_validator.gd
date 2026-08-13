@@ -15,6 +15,12 @@ func _initialize() -> void:
     if typeof(metadata) != TYPE_DICTIONARY:
         fail("metadata-json")
         return
+    if metadata.has("sprites"):
+        var sprites = metadata.get("sprites")
+        if typeof(sprites) != TYPE_ARRAY or sprites.size() != 1:
+            fail("metadata-scene-wrapper")
+            return
+        metadata = sprites[0]
     if metadata.get("schema") != "neoeng-d-trace-godot-sprite":
         fail("metadata-schema")
         return

@@ -1,6 +1,6 @@
 # Plano completo de desenvolvimento por etapas
 
-> **CLASSIFICAÇÃO DOCUMENTAL — ROADMAP HISTÓRICO SUPERADO:** este plano antecede o `docs/PLANO_MESTRE_ESTABILIZACAO.md` e contém recomendações que não são o toolchain vigente, como `uv` e Ruff. Não o use para iniciar etapas ou alterar dependências sem decisão formal.
+> **CLASSIFICAÇÃO DOCUMENTAL — ROADMAP HISTÓRICO SUPERADO:** este plano antecede o `docs/PLANO_MESTRE_ESTABILIZACAO.md` e contém recomendações que não são o toolchain vigente, como `uv` e Ruff. Não o use para iniciar etapas ou alterar dependências sem decisão formal. A atividade chamada aqui de Etapa 12 corresponde à Etapa 14 do plano mestre e possui candidato técnico local pré-merge; isso não aprova release.
 
 ## Princípios obrigatórios
 
@@ -336,6 +336,8 @@ Critério de saída:
 - importa, edita, salva, reabre e exporta projeto de teste;
 - desinstalação não apaga projetos do usuário;
 - build reproduzível e versionado.
+
+Estado vigente: os critérios técnicos foram comprovados localmente no candidato `0.2.0`, exceto o requisito de usuário Windows limpo, que foi aproximado por instalação isolada no usuário atual. Assinatura, revisão jurídica, identidade visual e integração/CI permanecem abertas.
 
 ## Etapa 13 — Recursos avançados
 

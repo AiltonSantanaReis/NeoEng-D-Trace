@@ -4,6 +4,7 @@ import argparse
 import base64
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 # Tenta importar dependências críticas para dar feedback amigável
@@ -21,10 +22,12 @@ except ImportError as e:
     sys.exit(1)
 
 from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
+from src.core.app_paths import default_config_path
 from src.core.commands import CommandManager
 from src.core.config import ConfigManager
 from src.core.image_input import inspect_image_file, validate_decoded_image
 from src.core.logger import logger, setup_logging
+from src.core.operational_limits import MAX_CONFIG_FILE_BYTES
 from src.core.validation_events import (
     record_validation_event,
     record_validation_exception,
@@ -50,8 +53,57 @@ MANUAL_VALIDATION_EVENTS = (
 
 
 def get_project_root() -> Path:
-    """Return the source-checkout root without changing the legacy config location."""
+    """Return the source-checkout root."""
     return Path(__file__).resolve().parents[1]
+
+
+def _migrate_legacy_config(legacy_path: Path, config_path: Path) -> None:
+    if config_path.exists() or not legacy_path.is_file():
+        return
+
+    temporary_path: str | None = None
+    try:
+        with legacy_path.open("rb") as source:
+            payload = source.read(MAX_CONFIG_FILE_BYTES + 1)
+        if len(payload) > MAX_CONFIG_FILE_BYTES:
+            logger.warning(
+                "Legacy configuration exceeds %s bytes and was not migrated",
+                MAX_CONFIG_FILE_BYTES,
+            )
+            return
+
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        descriptor, temporary_path = tempfile.mkstemp(
+            suffix=".migrating", dir=config_path.parent
+        )
+        with os.fdopen(descriptor, "wb") as destination:
+            destination.write(payload)
+            destination.flush()
+            os.fsync(destination.fileno())
+        os.replace(temporary_path, config_path)
+        temporary_path = None
+        logger.info("Legacy configuration migrated to the user state directory")
+    except OSError as exc:
+        logger.warning("Legacy configuration migration failed: %s", exc)
+    finally:
+        if temporary_path and os.path.exists(temporary_path):
+            try:
+                os.remove(temporary_path)
+            except OSError:
+                pass
+
+
+def load_runtime_config(
+    *,
+    config_path: Path | None = None,
+    legacy_path: Path | None = None,
+    migrate_legacy: bool = True,
+) -> ConfigManager:
+    destination = default_config_path() if config_path is None else config_path
+    legacy = get_project_root() / "config.json" if legacy_path is None else legacy_path
+    if migrate_legacy:
+        _migrate_legacy_config(legacy, destination)
+    return ConfigManager(str(destination))
 
 
 EXIT_SUCCESS = 0
@@ -70,7 +122,9 @@ _HEADLESS_FIELDS = (
 
 def _headless_requested(args: argparse.Namespace) -> bool:
     return bool(
-        args.headless or any(getattr(args, field, None) for field in _HEADLESS_FIELDS)
+        args.headless
+        or getattr(args, "export_profile", "default") != "default"
+        or any(getattr(args, field, None) for field in _HEADLESS_FIELDS)
     )
 
 
@@ -83,6 +137,8 @@ def _headless_contract_error(args: argparse.Namespace) -> str | None:
         return "--export-object-gltf requires --object-id"
     if args.object_id and not args.export_object_gltf:
         return "--object-id requires --export-object-gltf"
+    if getattr(args, "export_profile", "default") != "default" and not args.export_json:
+        return "--export-profile requires --export-json"
     if not any(
         getattr(args, field, None) for field in _HEADLESS_FIELDS if field != "object_id"
     ):
@@ -103,8 +159,7 @@ def run_headless(args: argparse.Namespace) -> int:
         return _cli_failure(contract_error)
 
     try:
-        config_path = str(get_project_root() / "config.json")
-        config = ConfigManager(config_path)
+        config = load_runtime_config(migrate_legacy=False)
         setup_logging(
             log_level=config.get("log_level", "INFO"),
             log_to_file=config.get("log_to_file", False),
@@ -166,7 +221,10 @@ def run_headless(args: argparse.Namespace) -> int:
                     save_json_metadata,
                 )
 
-                save_json_metadata(export_scene_metadata(scene), args.export_json)
+                save_json_metadata(
+                    export_scene_metadata(scene, profile=args.export_profile),
+                    args.export_json,
+                )
             except (OSError, TypeError, ValueError) as exc:
                 return _cli_failure(f"Failed to export JSON: {exc}")
 
@@ -213,11 +271,22 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--export-json", type=str, help="Export scene metadata to JSON file"
     )
+    parser.add_argument(
+        "--export-profile",
+        choices=("default", "generic", "godot", "unity", "phaser"),
+        default="default",
+        help="Select the JSON metadata profile used by --export-json",
+    )
     parser.add_argument("--save-project", type=str, help="Save project to file")
     parser.add_argument(
         "--validation-log",
         type=str,
         help=("Write a structured JSONL log for a manual GUI validation session"),
+    )
+    parser.add_argument(
+        "--smoke-test-gui",
+        action="store_true",
+        help=argparse.SUPPRESS,
     )
     return parser
 
@@ -225,13 +294,14 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
+    if args.smoke_test_gui and not args.validation_log:
+        parser.error("--smoke-test-gui requires --validation-log")
 
     if _headless_requested(args):
         return run_headless(args)
 
-    config_path = str(get_project_root() / "config.json")
     try:
-        config = ConfigManager(config_path)
+        config = load_runtime_config()
     except Exception as exc:
         print(f"Error loading config: {exc}")
         config = ConfigManager(None)  # type: ignore
@@ -248,13 +318,14 @@ def main() -> int:
             "validation.mode",
             "SUCCESS",
             source_tree="src",
-            config_location="project-root",
+            config_location="user-state-directory",
         )
 
     exit_code = 1
     try:
         # GUI dependencies are deliberately loaded after CLI dispatch and
         # validation-recorder setup so import failures are captured.
+        from PySide6.QtCore import QTimer
         from PySide6.QtGui import QFont
         from PySide6.QtWidgets import QApplication
 
@@ -337,6 +408,8 @@ def main() -> int:
                 record_validation_exception("application.state.saved", exc)
 
         app.aboutToQuit.connect(on_close)
+        if args.smoke_test_gui:
+            QTimer.singleShot(250, app.quit)
         exit_code = int(app.exec())
         record_validation_event(
             "application.closed",
@@ -349,9 +422,18 @@ def main() -> int:
             record_validation_exception("application.runtime", exc)
         raise
     finally:
+        expected_events = (
+            (
+                "application.opened",
+                "application.state.saved",
+                "application.closed",
+            )
+            if args.smoke_test_gui
+            else MANUAL_VALIDATION_EVENTS
+        )
         stop_validation_session(
             exit_code=exit_code,
-            expected_events=MANUAL_VALIDATION_EVENTS,
+            expected_events=expected_events,
         )
 
 

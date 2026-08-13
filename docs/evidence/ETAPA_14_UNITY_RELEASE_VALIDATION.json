@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "engine": "unity",
+  "status": "SUCCESS",
+  "checks": [
+    "metadata",
+    "texture",
+    "collision",
+    "glb-external",
+    "glb-engine"
+  ],
+  "unity_package": "com.unity.cloud.gltfast=6.19.0",
+  "fixture_origin": "external-release",
+  "fixture_files": {
+    "engine-input.ndtproj": {
+      "size": 1096,
+      "sha256": "1a2efecf339b1d452a38aaef66fdc963b7e121e29f2cef0994daf424f552a706"
+    },
+    "probe-unity.json": {
+      "size": 1431,
+      "sha256": "300fb895c35d2d20ee83621dac0af831580b81ff8dd818891963065762847a7d"
+    },
+    "scene.glb": {
+      "size": 968,
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde"
+    },
+    "source.png": {
+      "size": 229,
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc"
+    }
+  },
+  "commands": [
+    {
+      "executable": "Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-createProject",
+        "unity-project",
+        "-logFile",
+        "unity-create.log"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "executable": "Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-projectPath",
+        "unity-project",
+        "-executeMethod",
+        "EngineExportValidator.Run",
+        "-logFile",
+        "unity-validation.log"
+      ],
+      "returncode": 0,
+      "output": "ENGINE_VALIDATION=SUCCESS\nENGINE_VERSION=6000.5.7f1\n"
+    }
+  ]
+}

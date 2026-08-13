@@ -1,5 +1,6 @@
 """Contracts that prevent current-state documentation from regressing."""
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -370,7 +371,7 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "ETAPA 5 FORMALMENTE ENCERRADA" in audit
     assert "Esta decisão não aprova release" in audit
     assert "Matriz funcional atual" in matrix
-    assert "Build Windows/instalador | NÃO INICIADO" in matrix
+    assert "Build Windows/instalador | APROVADO PRÉ-MERGE / NÃO INTEGRADO" in matrix
     assert 'Pillow = "12.3.0"' in pyproject
     assert "[tool.mypy]" not in pyproject
     assert "check_untyped_defs = True" in mypy_config
@@ -1096,3 +1097,102 @@ def test_stage13_postmerge_closure_records_integrated_state_without_release():
         assert "Etapa 14" in value, relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative
+
+
+def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():
+    evidence = _text("docs/evidence/ETAPA_14_BUILD_RELEASE_PRE_MERGE.md")
+    manifest = json.loads(
+        _text("docs/evidence/ETAPA_14_RELEASE_VALIDATION_MANIFEST.json")
+    )
+    for expected in (
+        "9cef5a15e357f096312048c0beb9d43384c92fce",
+        "978 passed",
+        "11.621/12.523",
+        "3.382/3.978",
+        "90,92%",
+        "2c8b9c8847d0c00e9f1d0786f5b14e161832856252d8454db58d0d9e198e0d68",
+        "85adbdb1b754fc69a7fc717e9e9b4aed5950a8e71b746adb381f4444f589b7c5",
+        "Godot `4.7`",
+        "Unity `6000.5.7f1`",
+        "NotSigned",
+        "977 passed, 1 failed",
+        "PRE_MERGE_CI_RUN=31736919284",
+        "PRE_MERGE_CI_STATUS=REJECTED",
+        "CORRECTIVE_CI_RUN=31737623236",
+        "CORRECTIVE_CI_STATUS=ACCEPTED_AFTER_ARTIFACT_AUDIT",
+        "d6516001d3901c253dafc78a5540884cf82dcf58",
+        "df7fc52e1e857950e1760848549dbc1ae3286571",
+        "1.431",
+        "9195814077",
+        "9195848386",
+        "STAGE14_TECHNICAL_CANDIDATE=PASS",
+        "STAGE14_COMPLETED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in evidence
+
+    assert manifest["source_commit"] == "9cef5a15e357f096312048c0beb9d43384c92fce"
+    assert manifest["local_gate"]["tests_passed"] == 978
+    assert manifest["artifacts"]["portable"]["identical_runs"] == 2
+    assert manifest["artifacts"]["msi"]["identical_runs"] == 2
+    assert manifest["external_engine_validation"]["godot"]["status"] == "SUCCESS"
+    assert manifest["external_engine_validation"]["unity"]["status"] == "SUCCESS"
+    assert manifest["integrity"]["forbidden_references"] == 0
+    assert manifest["decision"]["technical_candidate"] == "PASS"
+    assert manifest["decision"]["stage_completed"] is False
+    assert manifest["decision"]["release_approved"] is False
+    accepted = manifest["ci_history"][-1]
+    assert accepted["run"] == 31737623236
+    assert accepted["status"] == "ACCEPTED_AFTER_ARTIFACT_AUDIT"
+    assert accepted["coverage"]["pointwise_identical"] is True
+    assert accepted["prohibited_reference_violations"] == 0
+
+    for relative in (
+        "README.md",
+        "CHANGELOG.md",
+        "docs/PLANO_MESTRE_ESTABILIZACAO.md",
+        "docs/MATRIZ_RISCOS_ESTABILIZACAO.md",
+        "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md",
+        "docs/evidence/README.md",
+    ):
+        value = _text(relative)
+        assert "9cef5a15e357f096312048c0beb9d43384c92fce" in value, relative
+        assert "Etapa 14" in value, relative
+        assert "release" in value.lower(), relative
+        assert (
+            "não aprovada" in value.lower() or "RELEASE_APPROVED=NO" in value
+        ), relative
+
+
+def test_stage14_engine_reports_match_manifested_real_fixtures():
+    manifest = json.loads(
+        _text("docs/evidence/ETAPA_14_RELEASE_VALIDATION_MANIFEST.json")
+    )
+    godot = json.loads(_text("docs/evidence/ETAPA_14_GODOT_RELEASE_VALIDATION.json"))
+    unity = json.loads(_text("docs/evidence/ETAPA_14_UNITY_RELEASE_VALIDATION.json"))
+    reports = (
+        (godot, "godot", "docs/evidence/ETAPA_14_GODOT_RELEASE_VALIDATION.json"),
+        (unity, "unity", "docs/evidence/ETAPA_14_UNITY_RELEASE_VALIDATION.json"),
+    )
+    for report, engine, relative in reports:
+        assert report["status"] == "SUCCESS"
+        assert report["fixture_origin"] == "external-release"
+        assert (
+            report["checks"] == manifest["external_engine_validation"][engine]["checks"]
+        )
+        assert (
+            report["fixture_files"]["scene.glb"]["sha256"]
+            == manifest["fixtures"]["glb"]["sha256"]
+        )
+        assert all(command["returncode"] == 0 for command in report["commands"])
+        canonical = json.dumps(
+            report, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+        digest = hashlib.sha256(canonical).hexdigest()
+        assert (
+            digest
+            == manifest["external_engine_validation"][engine]["report_canonical_sha256"]
+        )
+        lf = (ROOT / relative).read_text(encoding="utf-8").replace("\r\n", "\n")
+        crlf = lf.replace("\n", "\r\n")
+        assert json.loads(lf) == json.loads(crlf) == report

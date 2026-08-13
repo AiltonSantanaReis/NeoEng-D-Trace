@@ -66,6 +66,7 @@ def _module_subprocess(*values):
         ("--export-object-gltf", "object.glb"),
         ("--object-id", "box"),
         ("--export-json", "scene.json"),
+        ("--export-profile", "unity"),
         ("--save-project", "saved.ndtproj"),
     ],
 )
@@ -86,6 +87,7 @@ def test_gui_only_arguments_do_not_trigger_headless():
         (("--headless",), "requires an input or output operation"),
         (("--object-id", "box"), "requires --export-object-gltf"),
         (("--export-object-gltf", "box.glb"), "requires --object-id"),
+        (("--export-profile", "unity"), "requires --export-json"),
         (
             ("--headless", "--validation-log", "events.jsonl"),
             "available only in GUI mode",
@@ -173,6 +175,32 @@ def test_real_project_combines_json_save_and_gltf_outputs(tmp_path, capsys):
     assert saved.read_text(encoding="utf-8").startswith("{")
     assert scene_glb.read_bytes()[:4] == b"glTF"
     assert object_glb.read_bytes()[:4] == b"glTF"
+    assert "completed successfully" in capsys.readouterr().out
+
+
+def test_real_project_exports_engine_json_profiles(tmp_path, capsys):
+    source = _project(tmp_path / "source.ndtproj")
+    for profile, schema in (
+        ("godot", "neoeng-d-trace-godot-sprite"),
+        ("unity", "neoeng-d-trace-unity-sprite"),
+    ):
+        metadata = tmp_path / f"{profile}.json"
+        assert (
+            launcher.run_headless(
+                _args(
+                    "--project",
+                    source,
+                    "--export-json",
+                    str(metadata),
+                    "--export-profile",
+                    profile,
+                )
+            )
+            == 0
+        )
+        payload = json.loads(metadata.read_text(encoding="utf-8"))
+        assert payload["profile"] == profile
+        assert payload["sprites"][0]["schema"] == schema
     assert "completed successfully" in capsys.readouterr().out
 
 

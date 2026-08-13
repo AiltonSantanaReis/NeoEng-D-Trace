@@ -1,8 +1,22 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 13
+## [Unreleased] — programa de estabilização, Etapas 1 a 14
 
 Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 14 — candidato técnico local pré-merge
+
+- adiciona bundle Windows em modo diretório, executáveis GUI/CLI versionados e ZIP determinístico com manifesto recursivo;
+- adiciona MSI por usuário com CAB embutido, identificadores determinísticos, atalho no menu e validação real de instalação/desinstalação;
+- move a configuração de runtime para estado gravável do usuário, com migração atômica do arquivo legado;
+- adiciona perfis CLI `godot`, `unity`, `phaser`, `generic` e `default`, com combinações incompletas rejeitadas;
+- reproduz ZIP e MSI byte a byte em duas execuções do commit `9cef5a15e357f096312048c0beb9d43384c92fce`;
+- aprova `978` testes locais, `90,92%` combinada, linhas `92,80%`, branches `85,02%`, módulos mensuráveis acima de `30%`, mypy em `80` arquivos e legado `27/27`;
+- valida fixtures produzidos pelos executáveis no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0`;
+- registra sem ocultação as falhas intermediárias de fixture, árvore suja, ordem do arquivo Python, timestamp MSI, perfil CLI e autoacionamento do scanner;
+- rejeita o primeiro CI da PR, run `31736919284`: Windows passou e Linux falhou com `979 passed, 1 failed` porque o hash bruto de relatório JSON variava com finais de linha; corrige o contrato para hash canônico do conteúdo semântico;
+- aceita o CI corretivo `31737623236` após confirmar `980` testes por sistema, cobertura ponto a ponto idêntica, legado `27/27`, digests dos dois artefatos, `66` evidências equivalentes e `1.431` payloads recursivos sem violações;
+- mantém `RELEASE_APPROVED=NO`: executáveis e MSI sem assinatura, texto jurídico e política de publicação pendentes, ícone final ausente, builder MSI dependente de API removida após Python 3.12 e validação limitada a um host Windows.
 
 ### Etapa 13 — integrada e concluída no escopo aprovado
 
@@ -17,7 +31,7 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - rejeita o CI verde `31693639653` após os artefatos mostrarem `11.576` linhas cobertas no Linux contra `11.578` no Windows; corrige a quarentena que sobrescrevia snapshot anterior em sistemas POSIX e adiciona regressão portátil;
 - aceita o CI corretivo `31695151223` no HEAD `c2e21374f2669248da55c6e77110f2b1f80164b2` após confirmar cobertura idêntica ponto a ponto em Linux/Windows, legado `27/27`, documentos equivalentes e `1.421` payloads sem violações;
 - integra a PR `#51` em `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e aceita o CI pós-merge `31698961646` somente após auditoria de cobertura, legado, documentos, proveniência e `1.421` payloads;
-- encerra `R-011` e conclui a Etapa 13 no escopo aprovado; Etapa 14 não iniciada e release não aprovada;
+- encerra `R-011` e conclui a Etapa 13 no escopo aprovado; naquele snapshot, a Etapa 14 não estava iniciada e a release não foi aprovada;
 - registra falha retrospectiva no scanner de caminhos históricos: `60` payloads e `852` ocorrências locais não detectadas por separadores JSON duplicados; sanitiza quatro ZIPs autorizados e endurece o contrato;
 - integra o fechamento documental pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6` e aceita o CI pós-merge `31705652046` após auditar `955` testes por sistema, cobertura idêntica, legado `27/27`, `57/57` documentos e `1.416` payloads sem violações.
 

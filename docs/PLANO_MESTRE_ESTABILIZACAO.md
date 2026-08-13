@@ -6,6 +6,16 @@ Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
+Etapa 14 — candidato técnico local pré-merge:
+
+- commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce`;
+- `978` testes locais aprovados no Windows/Python 3.11.9; cobertura `11.621/12.523` linhas (`92,80%`), `3.382/3.978` branches (`85,02%`) e `90,92%` combinada;
+- ZIP portátil e MSI reproduzidos byte a byte em duas execuções; instalação, binários instalados, exportações, GUI e desinstalação aprovados;
+- Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` consumiram fixtures produzidos pelo candidato;
+- integridade recursiva, ausência de referências proibidas e Microsoft Defender aprovados;
+- executáveis e MSI permanecem sem assinatura; licença/texto jurídico, política de publicação e identidade visual final permanecem pendentes;
+- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=NO`; `RELEASE_APPROVED=NO`.
+
 Etapa 11 integrada e concluída no escopo aprovado:
 
 - PR funcional `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; PR de fechamento `#46` integrada em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`;
@@ -14,7 +24,7 @@ Etapa 11 integrada e concluída no escopo aprovado:
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - CIs funcional `31491221322` e final de fechamento `31495971632` aceitos após auditoria integral de Linux/Windows, proveniência, legado, hashes e conteúdo recursivo;
 - `R-003` encerrado no escopo aprovado após integração e CI pós-merge auditado;
-- Etapas 11 e 12 concluídas nos escopos aprovados; Etapa 13 integrada e concluída; Etapa 14 não iniciada; release não aprovada.
+- Etapas 11 a 13 concluídas nos escopos aprovados; Etapa 14 agora possui candidato técnico local, ainda não integrado; release não aprovada.
 
 Etapa 12 — integrada e concluída no escopo aprovado:
 
@@ -35,7 +45,7 @@ Etapa 13 — integrada e concluída no escopo aprovado:
 - `955` testes no fechamento final, `11.581/12.478` linhas, `3.370/3.964` branches, `90,93%` combinada, zero módulos abaixo de 30% e baseline de `338` arquivos;
 - mypy em `80` arquivos, Black, isort, Bandit e pip-audit aprovados no escopo vigente; legado `27/27` conciliado;
 - provas externas aprovadas com `QTimer` real e processos distintos; CI verde `31693639653` rejeitado; CI pré-merge final `31696674184` e pós-merge `31698961646` aceitos após auditoria integral dos artefatos;
-- `R-011`: ENCERRADO NO ESCOPO APROVADO; Etapa 13: CONCLUÍDA; Etapa 14: NÃO INICIADA; release: NÃO APROVADA.
+- `R-011`: ENCERRADO NO ESCOPO APROVADO; Etapa 13: CONCLUÍDA; naquele snapshot, Etapa 14: NÃO INICIADA; release: NÃO APROVADA.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:
 

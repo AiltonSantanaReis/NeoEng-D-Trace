@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -44,22 +45,39 @@ def _write_source_image(path: Path) -> None:
     image.save(path, format="PNG")
 
 
-def _write_fixture(directory: Path, profile: str) -> dict[str, Path]:
+def _write_fixture(
+    directory: Path,
+    profile: str,
+    fixture_dir: Path | None = None,
+) -> dict[str, Path]:
     from src.exporters.gltf_exporter import export_scene_to_gltf
     from src.exporters.json_exporter import export_metadata, save_json_metadata
 
     directory.mkdir(parents=True, exist_ok=True)
-    scene = _fixture_scene()
     image_path = directory / "source.png"
     metadata_path = directory / f"probe-{profile}.json"
     glb_path = directory / "scene.glb"
-    _write_source_image(image_path)
-    save_json_metadata(
-        export_metadata(PROBE_ID, scene, "", profile=profile),
-        str(metadata_path),
-    )
-    if not export_scene_to_gltf(scene, str(glb_path)):
-        raise RuntimeError("GLB exporter reported failure")
+    if fixture_dir is None:
+        scene = _fixture_scene()
+        _write_source_image(image_path)
+        save_json_metadata(
+            export_metadata(PROBE_ID, scene, "", profile=profile),
+            str(metadata_path),
+        )
+        if not export_scene_to_gltf(scene, str(glb_path)):
+            raise RuntimeError("GLB exporter reported failure")
+    else:
+        fixture_dir = fixture_dir.resolve()
+        sources = {
+            image_path: fixture_dir / image_path.name,
+            metadata_path: fixture_dir / metadata_path.name,
+            glb_path: fixture_dir / glb_path.name,
+        }
+        for destination, source in sources.items():
+            if not source.is_file():
+                raise FileNotFoundError(f"external fixture file missing: {source.name}")
+            shutil.copy2(source, destination)
+
     document = GLTF2().load(str(glb_path))
     if document.asset is None or document.asset.version != "2.0":
         raise RuntimeError("external GLB structure validation failed")
@@ -104,8 +122,8 @@ def _resolve_executable(engine: str, requested: str | None) -> str:
     return str(Path(candidate).resolve())
 
 
-def _prepare_godot(workspace: Path) -> dict[str, Path]:
-    files = _write_fixture(workspace, "godot")
+def _prepare_godot(workspace: Path, fixture_dir: Path | None = None) -> dict[str, Path]:
+    files = _write_fixture(workspace, "godot", fixture_dir)
     shutil.copy2(
         ROOT / "tools" / "godot_engine_validator.gd", workspace / "validate.gd"
     )
@@ -135,9 +153,9 @@ def _validate_godot(executable: str, workspace: Path) -> list[dict[str, Any]]:
     return results
 
 
-def _prepare_unity(project: Path) -> dict[str, Path]:
+def _prepare_unity(project: Path, fixture_dir: Path | None = None) -> dict[str, Path]:
     assets = project / "Assets"
-    files = _write_fixture(assets, "unity")
+    files = _write_fixture(assets, "unity", fixture_dir)
     editor = assets / "Editor"
     editor.mkdir(parents=True, exist_ok=True)
     shutil.copy2(
@@ -163,6 +181,7 @@ def _validate_unity(
     executable: str,
     workspace: Path,
     package: str | None,
+    fixture_dir: Path | None = None,
 ) -> list[dict[str, Any]]:
     project = workspace / "unity-project"
     create_log = workspace / "unity-create.log"
@@ -202,7 +221,7 @@ def _validate_unity(
         raise RuntimeError(f"Unity project creation failed with {create['returncode']}")
     if not (project / "Assets").is_dir() or not (project / "ProjectSettings").is_dir():
         raise RuntimeError("Unity reported success without creating a complete project")
-    _prepare_unity(project)
+    _prepare_unity(project, fixture_dir)
     if package:
         _add_unity_package(project, package)
     validation_log = workspace / "unity-validation.log"
@@ -249,6 +268,7 @@ def main() -> int:
     parser.add_argument("--report", type=Path)
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--unity-package", default=UNITY_GLTF_PACKAGE)
+    parser.add_argument("--fixture-dir", type=Path)
     args = parser.parse_args()
 
     temporary: tempfile.TemporaryDirectory[str] | None = None
@@ -267,15 +287,28 @@ def main() -> int:
     }
     if args.engine == "unity":
         report["unity_package"] = args.unity_package
+    report["fixture_origin"] = (
+        "external-release" if args.fixture_dir is not None else "source-harness"
+    )
+    if args.fixture_dir is not None:
+        fixture_dir = args.fixture_dir.resolve()
+        report["fixture_files"] = {
+            path.name: {
+                "size": path.stat().st_size,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+            for path in sorted(fixture_dir.iterdir())
+            if path.is_file()
+        }
     try:
         if args.engine == "godot":
-            _prepare_godot(workspace)
+            _prepare_godot(workspace, args.fixture_dir)
             project = workspace
         else:
             project = workspace / "unity-project"
             if args.prepare_only:
                 project.mkdir(parents=True)
-                _prepare_unity(project)
+                _prepare_unity(project, args.fixture_dir)
         if args.prepare_only:
             report["status"] = "PREPARED_NOT_VALIDATED"
             report["project"] = project.name
@@ -284,7 +317,12 @@ def main() -> int:
             if args.engine == "godot":
                 commands = _validate_godot(executable, workspace)
             else:
-                commands = _validate_unity(executable, workspace, args.unity_package)
+                commands = _validate_unity(
+                    executable,
+                    workspace,
+                    args.unity_package,
+                    args.fixture_dir,
+                )
             report["status"] = "SUCCESS"
             report["commands"] = commands
         _write_report(args.report, report)

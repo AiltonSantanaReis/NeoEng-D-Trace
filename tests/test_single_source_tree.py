@@ -42,8 +42,9 @@ def test_distribution_and_console_entry_use_single_src_tree() -> None:
     assert project["scripts"]["neoeng-d-trace"] == "src.launcher:main"
 
 
-def test_launcher_keeps_legacy_config_in_project_root() -> None:
+def test_launcher_migrates_legacy_config_to_user_state() -> None:
     source = (ROOT / "src" / "launcher.py").read_text(encoding="utf-8")
+    assert "load_runtime_config()" in source
     assert 'get_project_root() / "config.json"' in source
     assert 'os.path.dirname(__file__), "config.json"' not in source
 
