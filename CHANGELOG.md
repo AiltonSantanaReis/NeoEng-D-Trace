@@ -18,7 +18,8 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - aceita o CI corretivo `31695151223` no HEAD `c2e21374f2669248da55c6e77110f2b1f80164b2` após confirmar cobertura idêntica ponto a ponto em Linux/Windows, legado `27/27`, documentos equivalentes e `1.421` payloads sem violações;
 - integra a PR `#51` em `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e aceita o CI pós-merge `31698961646` somente após auditoria de cobertura, legado, documentos, proveniência e `1.421` payloads;
 - encerra `R-011` e conclui a Etapa 13 no escopo aprovado; Etapa 14 não iniciada e release não aprovada;
-- registra falha retrospectiva no scanner de caminhos históricos: `60` payloads e `852` ocorrências locais não detectadas por separadores JSON duplicados; sanitiza quatro ZIPs autorizados, endurece o contrato e aceita o CI auditado `31702428679` sem integrar a PR documental.
+- registra falha retrospectiva no scanner de caminhos históricos: `60` payloads e `852` ocorrências locais não detectadas por separadores JSON duplicados; sanitiza quatro ZIPs autorizados e endurece o contrato;
+- integra o fechamento documental pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6` e aceita o CI pós-merge `31705652046` após auditar `955` testes por sistema, cobertura idêntica, legado `27/27`, `57/57` documentos e `1.416` payloads sem violações.
 
 ### Etapa 12 — integrada e concluída, segurança e limites operacionais
 

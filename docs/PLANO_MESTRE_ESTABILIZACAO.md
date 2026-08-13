@@ -29,9 +29,10 @@ Etapa 12 — integrada e concluída no escopo aprovado:
 Etapa 13 — integrada e concluída no escopo aprovado:
 
 - base `fc81c2ea10e751c15a39627d462ddfff390eeb04`; PR `#51`, HEAD final `0b5d3c4e3831ad5efe52ae03a41107c6dafbf535` e merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`;
+- fechamento documental e correção retrospectiva integrados pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`; CI pós-merge final `31705652046` auditado;
 - sessão de documento, caminhos de estado, conversão de imagem, traduções e coordenação do autosave extraídos; `main_window.py` reduzido de `1.306` para `1.175` linhas;
 - autosave local versionado, atômico, limitado e recuperável explicitamente, com quarentena, fingerprint da origem e preservação da decisão adiada;
-- `953` testes, `11.581/12.478` linhas, `3.370/3.964` branches, `90,93%` combinada, zero módulos abaixo de 30% e baseline de `335` arquivos;
+- `955` testes no fechamento final, `11.581/12.478` linhas, `3.370/3.964` branches, `90,93%` combinada, zero módulos abaixo de 30% e baseline de `338` arquivos;
 - mypy em `80` arquivos, Black, isort, Bandit e pip-audit aprovados no escopo vigente; legado `27/27` conciliado;
 - provas externas aprovadas com `QTimer` real e processos distintos; CI verde `31693639653` rejeitado; CI pré-merge final `31696674184` e pós-merge `31698961646` aceitos após auditoria integral dos artefatos;
 - `R-011`: ENCERRADO NO ESCOPO APROVADO; Etapa 13: CONCLUÍDA; Etapa 14: NÃO INICIADA; release: NÃO APROVADA.

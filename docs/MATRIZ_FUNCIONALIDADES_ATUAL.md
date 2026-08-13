@@ -2,9 +2,9 @@
 
 **Snapshot local:** 2026-08-13
 
-**Última âncora integrada:** `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`
+**Âncora auditada de encerramento da Etapa 13:** `b4d9390dbd1274c283a3e3985d6d79be47de45d6`
 
-**Estado atual:** Etapa 13 integrada pela PR `#51` no merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`; CI pós-merge `31698961646` aceito após auditoria de `953` testes por sistema, 92,81% de linhas, 85,02% de branches, 90,93% combinada, legado `27/27` e `1.421` payloads sem violações. O CI verde anterior `31693639653` permanece registrado como rejeitado por uma falha real de preservação POSIX. `R-011` e `R-012` estão encerrados nos escopos aprovados; Etapa 14 não iniciada e release não aprovada.
+**Estado atual:** Etapa 13 funcional integrada pela PR `#51`; fechamento documental e correção retrospectiva integrados pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge final `31705652046` foi aceito após auditoria de `955` testes por sistema, 92,81% de linhas, 85,02% de branches, 90,93% combinada, legado `27/27`, `57/57` documentos e `1.416` payloads sem violações. O CI verde anterior `31693639653` permanece registrado como rejeitado por uma falha real de preservação POSIX. `R-011` e `R-012` estão encerrados nos escopos aprovados; Etapa 14 não iniciada e release não aprovada.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -39,7 +39,7 @@ snapshot histórico.
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança e limites | INTEGRADO / APROVADO | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows; CI pós-merge `31686321925` auditado | nenhuma ferramenta prova ausência total; tetos não constituem SLA |
 | Tipagem | INTEGRADO / APROVADO | mypy com `check_untyped_defs`: zero erros em `80` arquivos no CI pós-merge da Etapa 13 | ampliar anotações explícitas gradualmente |
-| Cobertura | INTEGRADO / APROVADO | `953` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge `31698961646` | margem de branch de 0,02 p.p. |
+| Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

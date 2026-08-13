@@ -203,11 +203,52 @@ CLOSURE_WINDOWS_ARTIFACT=9181873468
 RETROSPECTIVE_HYGIENE_FINDING=60_PAYLOADS_852_LOCAL_REFERENCES
 RETROSPECTIVE_HYGIENE_LOCAL_STATUS=PASSED
 RETROSPECTIVE_HYGIENE_REMEDIATION=CI_ACCEPTED
+FINAL_CLOSURE_PR=52
+FINAL_SOURCE_HEAD=919ce59c1f4b652f879ab64af23c758272ece985
+FINAL_INTEGRATION_COMMIT=b4d9390dbd1274c283a3e3985d6d79be47de45d6
+FINAL_POST_MERGE_CI_RUN=31705652046
+FINAL_POST_MERGE_CI_STATUS=ACCEPTED
+FINAL_LINUX_JOB=94465417952
+FINAL_WINDOWS_JOB=94465417937
+FINAL_LINUX_ARTIFACT=9183106504
+FINAL_WINDOWS_ARTIFACT=9183135065
+FINAL_TESTS_PASSED=955
+FINAL_PAYLOADS_SCANNED=1416
 R011_CLOSED=YES
 STAGE13_COMPLETED=YES
 STAGE14_STARTED=NO
 RELEASE_APPROVED=NO
 ```
+
+## Integração documental final
+
+Mediante autorização explícita, a PR `#52` foi integrada no merge
+`b4d9390dbd1274c283a3e3985d6d79be47de45d6`. Seus pais são a integração
+funcional `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e o HEAD documental
+`919ce59c1f4b652f879ab64af23c758272ece985`; a árvore
+`3800cc8195481a20a0079583b3bd670733a945ac` coincide com o merge sintético
+pré-merge auditado.
+
+O CI pós-merge `31705652046` executou no próprio merge e foi aceito somente
+após inspeção dos logs e artefatos. Linux e Windows aprovaram `955` testes,
+baseline de `338` arquivos, lint, formatação, tipagem, dependências e análise
+estática. A cobertura foi idêntica ponto a ponto: `11.581/12.478` linhas e
+`3.370/3.964` branches, sem módulo abaixo de 30%.
+
+O legado executou `196` testes, manteve `27/27` divergências conciliadas e
+zero inesperada ou ausente; `source_head_commit` e `tested_commit` registraram
+o merge real, com árvore limpa. Os artefatos continham `57/57` documentos
+idênticos ao checkout da coleta, `1.416` payloads, `1.359` entradas aninhadas e
+`327` checksums verificados, sem referência proibida, caminho pessoal ou
+divergência de checksum.
+
+Digests dos artefatos brutos:
+
+- Linux: `0e6c8af122af2b3ae9c9e4f190a9690d6c79fab54c33c34f6bca90b8ff88523b`;
+- Windows: `8dc430cdea53e853123d593d61425a84fd26538b99d54db8a4fabfdabcbd6673`.
+
+Essa integração atualiza apenas o fechamento documental e a higiene das
+evidências. A Etapa 14 permanece não iniciada e a release não aprovada.
 
 ## Rollback
 

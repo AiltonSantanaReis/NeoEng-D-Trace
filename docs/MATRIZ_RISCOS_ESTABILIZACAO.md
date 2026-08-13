@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 13 de agosto de 2026. A Etapa 13 foi integrada pela PR `#51` no merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`. O CI pós-merge `31698961646` aprovou `953` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27` e `1.421` payloads sem violações. O CI verde anterior `31693639653` permanece rejeitado no histórico. `R-011` e `R-012` estão encerrados nos escopos aprovados; Etapa 14 não iniciada e release não aprovada.
+Snapshot vivo de 13 de agosto de 2026. A Etapa 13 funcional foi integrada pela PR `#51`; o fechamento documental e a correção retrospectiva foram integrados pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge final `31705652046` aprovou `955` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27`, `57/57` documentos e `1.416` payloads sem violações. O CI verde anterior `31693639653` permanece rejeitado no histórico. `R-011` e `R-012` estão encerrados nos escopos aprovados; Etapa 14 não iniciada e release não aprovada.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -120,7 +120,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-8 | CONCLUÍDA | Bézier e geometria integrados pela PR `#38`; merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e` e CI pós-merge `31441024001` aprovados; `R-007` encerrado |
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
 | ETAPA-10 | CONCLUÍDA | PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; pré-merge `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; CI corretivo `31464786333`, PR `#43`, merge `f8caec3e7156d308f03046f81d2c89996f959466` e pós-merge `31469610508` aceitos após auditoria |
-| ETAPA-13 | CONCLUÍDA | PR `#51`, merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e CI pós-merge `31698961646` auditado; `R-011` encerrado; Etapa 14 não iniciada e release não aprovada |
+| ETAPA-13 | CONCLUÍDA | PR funcional `#51`; fechamento `#52`, merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6` e CI pós-merge final `31705652046` auditado; `R-011` encerrado; Etapa 14 não iniciada e release não aprovada |
 
 ## Severidades
 
