@@ -737,8 +737,8 @@
       "size": 147
     },
     "scripts/build_windows.ps1": {
-      "sha256": "d4032c0e51d68fc93bf6f74bdd7ceb40e440ca1ab813f3ff6cd91539acf50491",
-      "size": 2611
+      "sha256": "8f8c4b3608033c2fdd708f381dc39b32342545e704294df17f0c738d4aca464d",
+      "size": 2641
     },
     "src/__init__.py": {
       "sha256": "0025aeb81a4d66e83dfd6f962595b5d7ec282a550a004523a49a2d891676c2a2",
@@ -1281,8 +1281,8 @@
       "size": 18166
     },
     "tests/test_stage_14_release_packaging.py": {
-      "sha256": "3ad6c1892881925b8cd610fae35eda4fc84e5acd25a15bf136c3db8dc48c955e",
-      "size": 5444
+      "sha256": "ddabfdff86b4b4db2dc5fb8afeeb6522e8da15a4496af79975757f3c2e84cde4",
+      "size": 5599
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",

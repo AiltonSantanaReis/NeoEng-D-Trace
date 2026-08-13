@@ -38,6 +38,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Unable to resolve source commit" }
     $env:SOURCE_DATE_EPOCH = (git show -s --format=%ct HEAD).Trim()
     if ($LASTEXITCODE -ne 0) { throw "Unable to resolve source timestamp" }
+    $env:PYTHONHASHSEED = "0"
 
     $distPath = Join-Path $releaseRoot "portable"
     $workPath = Join-Path $releaseRoot "work"

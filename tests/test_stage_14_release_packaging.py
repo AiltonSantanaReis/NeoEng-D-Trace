@@ -90,6 +90,10 @@ def test_packaging_contract_is_versioned() -> None:
     assert "$releaseRoot.Equals($repositoryRoot" in build
     assert "$releaseRoot.StartsWith($repositoryPrefix" in build
     assert "SkipClean" not in build
+    assert '$env:PYTHONHASHSEED = "0"' in build
+    assert build.index('$env:PYTHONHASHSEED = "0"') < build.index(
+        "pyinstaller --noconfirm"
+    )
     assert "package_portable_release.py" in build
     assert "validate_portable_release.py" in build
     assert build.index("validate_portable_release.py") < build.index(
