@@ -2,11 +2,11 @@
 
 **Snapshot local:** 2026-08-13
 
-**Última âncora integrada:** `872bf079d228d13d0203d22b844052b1f920e99b`
+**Última âncora integrada:** `fc81c2ea10e751c15a39627d462ddfff390eeb04`
 
-**Estado atual:** Etapa 12 integrada pela PR `#49` em `872bf079d228d13d0203d22b844052b1f920e99b` e concluída após auditoria do CI pós-merge `31686321925`. Linux e Windows reproduziram `928` testes, 92,81% de linhas, 85,02% de branches e 90,91% combinada; o pacote documental de fechamento aprovou `929` testes localmente e baseline de `326` arquivos, sem alterar a cobertura do código-fonte. `R-012` está encerrado no escopo aprovado; `R-011`, Etapas 13–14 e release permanecem pendentes. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
+**Estado atual:** Etapa 12 encerrada pela PR `#50` em `fc81c2ea10e751c15a39627d462ddfff390eeb04` e CI final `31688307089`, com `929` testes em Linux/Windows. Etapa 13 aprovada pré-merge no commit corretivo `426cef118fdb0a334e639ec962b2e514cfd59b0a`: `953` testes, 92,81% de linhas, 85,02% de branches, 90,93% combinada e baseline de `335` arquivos; o CI verde `31693639653` foi rejeitado por divergência Linux/Windows e o corretivo `31695151223` foi aceito após auditoria. `R-012` está encerrado; `R-011` continua aberto até merge e CI pós-merge; Etapa 14 e release permanecem pendentes. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
 
-**Baseline integrada da Etapa 12:** PR `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b`, CI `31686321925`, `928` testes e cobertura combinada `90,91%`.
+**Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
 **Baseline integrada da Etapa 11:** PR `#45`, merge `2a38b89e542390b3b4396a88d9a416f3695caadc`, CI `31491221322`, `877` testes e cobertura combinada `90,91%`.
 
@@ -16,7 +16,7 @@
 
 **Fechamento integrado anterior:** Etapa 7 mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
 
-**Riscos:** `R-003`, `R-006`, `R-007`, `R-008` e `R-012` encerrados nos escopos aprovados; `R-011` permanece aberto; release não aprovada.
+**Riscos:** `R-003`, `R-006`, `R-007`, `R-008` e `R-012` encerrados nos escopos aprovados; `R-011` possui correção pré-merge validada após rejeição do CI `31693639653` e aceitação do corretivo `31695151223`, mas permanece aberto até integração e CI pós-merge; release não aprovada.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -25,7 +25,7 @@ snapshot histórico.
 |---|---|---|---|
 | Identidade e árvore única | APROVADO | testes de identidade e `test_single_source_tree.py` | nenhum no escopo |
 | Ambiente e lock | APROVADO | `poetry check --lock --strict`, PEP 621 e instalação resolvida | nenhum aviso de metadados no Poetry 2.4.1 |
-| Persistência `.ndtproj` schema v1 | APROVADO | round-trip, migração, escrita atômica, falhas negativas | autosave não implementado |
+| Persistência `.ndtproj` schema v1 e autosave | APROVADO LOCALMENTE / AUTOSAVE NÃO INTEGRADO | round-trip, migração, escrita atômica, falhas negativas, timer real e recuperação entre processos | autosave ainda depende de merge e CI pós-merge; não substitui backup |
 | Abrir/Salvar na UI | APROVADO | testes Qt Windows e evidência da Etapa 4 | wheel validado; executável e instalador standalone ainda ausentes |
 | Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31425585259` | nenhum no escopo da Etapa 5 |
 | Camadas e grupos | INTEGRADO / APROVADO | comandos reversíveis e `LayersPanel` integrado à `MainWindow` | cobertura total da UI permanece meta |
@@ -38,8 +38,8 @@ snapshot histórico.
 | Colisão estática e APIs | INTEGRADO / APROVADO | API pública `src.collision`; 39 casos da etapa; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows | nenhum no escopo da Etapa 9 |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
 | Segurança e limites | INTEGRADO / APROVADO | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows; CI pós-merge `31686321925` auditado | nenhuma ferramenta prova ausência total; tetos não constituem SLA |
-| Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 73 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | INTEGRADO / APROVADO | `929` testes locais no fechamento e `928` no CI pós-merge funcional; `11.174/12.040` linhas (92,81%), `3.309/3.892` branches (85,02%) e 90,91% combinada | margem de branch de apenas 0,02 p.p.; qualquer mudança exige medição integral |
+| Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em `80` arquivos no commit corretivo da Etapa 13 | ampliar anotações explícitas gradualmente |
+| Cobertura | APROVADO PRÉ-MERGE / ETAPA 13 NÃO INTEGRADA | corretivo: `953` testes; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%) e 90,93% combinada; zero módulos abaixo de 30%; CI `31695151223` aceito | margem de branch de 0,02 p.p.; merge e CI pós-merge obrigatórios |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura

@@ -79,6 +79,8 @@ class AppConfig(StrictConfigModel):
         default=None,
         max_length=MAX_CONFIG_PATH_LENGTH,
     )
+    autosave_enabled: bool = True
+    autosave_interval_seconds: int = Field(default=60, ge=15, le=3_600)
 
 
 class ConfigManager:

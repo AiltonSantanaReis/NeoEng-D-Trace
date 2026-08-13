@@ -258,6 +258,8 @@ def main() -> int:
         from PySide6.QtGui import QFont
         from PySide6.QtWidgets import QApplication
 
+        from src.core.app_paths import default_autosave_path
+        from src.persistence.autosave import AutosaveStore
         from src.ui.main_window import MainWindow
         from src.ui.theme_qss import QSS
 
@@ -269,8 +271,19 @@ def main() -> int:
 
         scene = Scene()
         scene.cmd = CommandManager()
+        autosave_store = (
+            AutosaveStore(default_autosave_path())
+            if config.get("autosave_enabled", True)
+            else None
+        )
         win = MainWindow(scene, config)
+        enable_autosave = getattr(win, "enable_autosave", None)
+        if autosave_store is not None and enable_autosave is not None:
+            enable_autosave(autosave_store)
         win.show()
+        offer_autosave_recovery = getattr(win, "offer_autosave_recovery", None)
+        if offer_autosave_recovery is not None:
+            offer_autosave_recovery()
         record_validation_event(
             "application.opened",
             "SUCCESS",

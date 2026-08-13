@@ -118,18 +118,29 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_11_METAS_FINAIS_PACOTE_6.md` — sexto pacote pré-merge da Etapa 11; metas globais 90%/85% atingidas, CI `31488173784` auditado e `R-003` preservado aberto até integração e CI pós-merge.
 - `ETAPA_11_ENCERRAMENTO_POS_MERGE.md` — PR funcional `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; fechamento `#46` integrado em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`; CI pós-merge final `31495971632` auditado; `R-003` encerrado e Etapa 11 concluída no escopo aprovado.
 - `ETAPA_12_SEGURANCA_LIMITES_PRE_MERGE.md` — falhas reproduzidas, limites centrais, corpus malformado, benchmarks Windows, `928` testes e riscos residuais; commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` e CI pré-merge `31684136128` do HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3` auditados; `R-012` aberto.
-- `ETAPA_12_ENCERRAMENTO_POS_MERGE.md` — PR `#49` integrada em `872bf079d228d13d0203d22b844052b1f920e99b`; CI pós-merge `31686321925` auditado; `R-012` encerrado e Etapa 12 concluída no escopo aprovado.
+- `ETAPA_12_ENCERRAMENTO_POS_MERGE.md` — PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04` e CI final `31688307089`; `R-012` encerrado e Etapa 12 concluída no escopo aprovado.
+- `ETAPA_13_REFATORACAO_QT_AUTOSAVE_PRE_MERGE.md` — refatoração Qt, autosave protegido, CI `31693639653` rejeitado, correção portátil e CI corretivo `31695151223` aceito após auditoria; `R-011` aberto.
 
 ## Estado operacional da evidência atual
 
+Etapa 13 aprovada pré-merge, ainda não integrada, em 13 de agosto de 2026:
+
+- commit corretivo limpo `426cef118fdb0a334e639ec962b2e514cfd59b0a`;
+- `953` testes, `11.581/12.478` linhas, `3.370/3.964` branches e `90,93%` combinada;
+- zero módulos abaixo de 30%, baseline `335`, mypy em `80` arquivos e legado `27/27` conciliado;
+- provas externas com `QTimer` real e recuperação por processos distintos;
+- CI verde `31693639653` rejeitado por divergência Linux/Windows; CI corretivo `31695151223` aceito após auditoria dos artefatos;
+- `R-011` aberto até merge e CI pós-merge; Etapa 13 não concluída; Etapa 14 não iniciada; release não aprovada.
+
 Etapa 12 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 
-- `929` testes oficiais aprovados localmente no pacote de fechamento; `928` reproduzidos no CI pós-merge funcional;
+- PR funcional `#49` e fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`;
+- CI pós-merge final `31688307089` auditado em Linux/Windows com `929` testes;
 - cobertura exata `11.174/12.040` linhas e `3.309/3.892` branches; `90,91%` combinada;
 - mypy em `73` arquivos, pip-audit sem vulnerabilidades conhecidas, Bandit limpo e legado `27/27` conciliado;
-- PR `#49` integrada em `872bf079d228d13d0203d22b844052b1f920e99b`; CI pós-merge `31686321925` auditado em Linux/Windows, com `1.419` payloads e zero violações;
+- artefatos Linux `9176359924` e Windows `9176393106` com digests publicados e `1.420` payloads sem violações;
 - baseline local do fechamento: `326` arquivos;
-- `R-012` encerrado e Etapa 12 concluída no escopo aprovado; Etapa 13 não iniciada e release não aprovada.
+- `R-012` encerrado e Etapa 12 concluída no escopo aprovado; release não aprovada.
 
 Etapa 11 integrada e concluída no escopo aprovado em 11 de agosto de 2026:
 

@@ -11,6 +11,7 @@ from .errors import (
 )
 from .project_io import (
     LoadedProject,
+    apply_project_document_to_scene,
     build_project_document,
     load_project_document,
     load_project_into_scene,
@@ -38,6 +39,7 @@ __all__ = [
     "ProjectValidationError",
     "ProjectWriteError",
     "UnsupportedProjectVersionError",
+    "apply_project_document_to_scene",
     "build_project_document",
     "load_project_document",
     "load_project_into_scene",

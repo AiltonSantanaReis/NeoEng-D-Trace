@@ -1,6 +1,4 @@
 # src/ui/main_window.py
-import hashlib
-import json
 import os
 import time
 from pathlib import Path
@@ -20,6 +18,7 @@ from PySide6.QtWidgets import (
 # Imports de lógica e colisão estática
 from src.collision import StaticCollisionManager
 from src.core.app_identity import build_window_title
+from src.core.document_session import DocumentSession
 from src.core.image_input import (
     hash_validated_image_file,
     inspect_image_file,
@@ -36,14 +35,15 @@ from src.exporters.collision_exporter import (
     save_collision_text,
 )
 from src.exporters.json_exporter import save_json_metadata
-from src.persistence import PROJECT_FILE_EXTENSION, build_project_document
-from src.persistence.errors import ProjectValidationError
+from src.persistence.autosave import AutosaveStore
+from src.ui.autosave_coordinator import AutosaveCoordinator
 from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
 from src.ui.collision_panel import CollisionPanel
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
 from src.ui.layers_panel import LayersPanel
+from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
 
 # Imports dos componentes da UI
@@ -52,6 +52,38 @@ from src.ui.tool_palette import ToolPalette
 
 
 class MainWindow(QMainWindow):
+
+    @property
+    def _project_path(self) -> Path | None:
+        return self.document_session.project_path
+
+    @_project_path.setter
+    def _project_path(self, value: Path | None) -> None:
+        self.document_session.project_path = value
+
+    @property
+    def _document_name(self) -> str | None:
+        return self.document_session.document_name
+
+    @_document_name.setter
+    def _document_name(self, value: str | None) -> None:
+        self.document_session.document_name = value
+
+    @property
+    def _last_folder(self) -> str | None:
+        return self.document_session.last_folder
+
+    @_last_folder.setter
+    def _last_folder(self, value: str | None) -> None:
+        self.document_session.last_folder = value
+
+    @property
+    def _clean_signature(self) -> str | None:
+        return self.document_session.clean_signature
+
+    @_clean_signature.setter
+    def _clean_signature(self, value: str | None) -> None:
+        self.document_session.clean_signature = value
 
     def _report_collision_export_error(self, exc):
         t = self.translations[self.current_lang]
@@ -133,19 +165,22 @@ class MainWindow(QMainWindow):
         )
         return True
 
-    def __init__(self, scene, config):
+    def __init__(self, scene, config, *, autosave_store: AutosaveStore | None = None):
         super().__init__()
         self.scene = scene
         self.config = config
-        self._last_folder = config.get("last_folder")
+        self.document_session = DocumentSession(
+            scene,
+            last_folder=config.get("last_folder"),
+        )
         self._current_tool = config.get("tool", "polygonal_lasso")
-        self._mask_viewer_dialog = None
-        self._project_path: Path | None = None
-        self._clean_signature: str | None = None
+        self._mask_viewer_dialog: MaskViewerDialog | None = None
+        self._autosave_store = autosave_store
+        self._autosave_coordinator: AutosaveCoordinator | None = None
+        self.autosave_timer = None
 
         # Configuração da Janela Principal
         self.current_lang = "en"
-        self._document_name = None
         self.setWindowTitle(build_window_title(self.current_lang))
         self.resize(1200, 800)
 
@@ -298,144 +333,31 @@ class MainWindow(QMainWindow):
         # 7. Atalhos Globais
         self._setup_shortcuts()
 
-        self.translations = {
-            "en": {
-                "window_title": build_window_title("en"),
-                "file_menu": "File",
-                "open_project": "Open Project...",
-                "save_project": "Save",
-                "save_project_as": "Save As...",
-                "close_application": "Exit",
-                "project_files": "NeoEng-D-Trace Projects (*.ndtproj)",
-                "open_project_dialog": "Open Project",
-                "save_project_dialog": "Save Project",
-                "untitled_project": "Untitled",
-                "unsaved_title": "Unsaved changes",
-                "unsaved_message": "Save changes to the current project?",
-                "project_saved": "Project saved successfully.",
-                "failed_open_project": "Failed to open project: ",
-                "failed_save_project": "Failed to save project: ",
-                "project_warnings_title": "Project opened with warnings",
-                "project_image_missing": "Referenced image was not found: {path}",
-                "project_image_unreadable": (
-                    "Referenced image could not be read: {path}"
-                ),
-                "project_image_hash_mismatch": (
-                    "Referenced image differs from the saved SHA-256: {path}"
-                ),
-                "project_image_hash_unavailable": (
-                    "Referenced image was loaded, but its SHA-256 could not be "
-                    "verified: {path}"
-                ),
-                "open_image": "Open Image",
-                "open_image_dialog": "Open Image",
-                "image_files": "Images (*.png *.jpg *.jpeg *.bmp *.tiff)",
-                "export": "Export...",
-                "export_collision": "Export Collision",
-                "export_collision_json": "Export Collision (JSON)",
-                "export_collision_txt": "Export Collision (TXT)",
-                "export_collision_json_dialog": "Export Collision JSON",
-                "export_collision_txt_dialog": "Export Collision TXT",
-                "export_collision_success": "Collision data exported to {path}",
-                "failed_export_collision": "Failed to export collision data: ",
-                "json_files": "JSON Files (*.json)",
-                "text_files": "Text Files (*.txt)",
-                "fit_view": "Fit View (F)",
-                "pixel_1": "1:1 Pixel",
-                "lit": "Lit",
-                "xray_1": "X-Ray 1",
-                "xray_2": "X-Ray 2",
-                "xray_3": "X-Ray 3",
-                "focus_selected": "Focus Selected",
-                "clean_all": "🗑️ Clean All",
-                "edit_menu": "Edit",
-                "undo": "Undo",
-                "redo": "Redo",
-                "view_menu": "View",
-                "mask_viewer": "Mask Viewer (Auto-Detect)",
-                "collision_overlay": "Collision Overlay",
-                "info": "Info",
-                "select_object": "Select an object in the list first.",
-                "error": "Error",
-                "failed_open_image": "Failed to open image: ",
-                "failed_mask_viewer": "Failed to open Mask Viewer: ",
-                "language": "Language",
-                "english": "English",
-                "portuguese": "Portuguese",
-            },
-            "pt": {
-                "window_title": build_window_title("pt"),
-                "file_menu": "Arquivo",
-                "open_project": "Abrir Projeto...",
-                "save_project": "Salvar",
-                "save_project_as": "Salvar Como...",
-                "close_application": "Sair",
-                "project_files": "Projetos NeoEng-D-Trace (*.ndtproj)",
-                "open_project_dialog": "Abrir Projeto",
-                "save_project_dialog": "Salvar Projeto",
-                "untitled_project": "Sem título",
-                "unsaved_title": "Alterações não salvas",
-                "unsaved_message": "Deseja salvar as alterações do projeto atual?",
-                "project_saved": "Projeto salvo com sucesso.",
-                "failed_open_project": "Falha ao abrir projeto: ",
-                "failed_save_project": "Falha ao salvar projeto: ",
-                "project_warnings_title": "Projeto aberto com avisos",
-                "project_image_missing": (
-                    "A imagem referenciada não foi encontrada: {path}"
-                ),
-                "project_image_unreadable": (
-                    "A imagem referenciada não pôde ser lida: {path}"
-                ),
-                "project_image_hash_mismatch": (
-                    "A imagem referenciada difere do SHA-256 salvo: {path}"
-                ),
-                "project_image_hash_unavailable": (
-                    "A imagem referenciada foi carregada, mas seu SHA-256 não "
-                    "pôde ser verificado: {path}"
-                ),
-                "open_image": "Abrir Imagem",
-                "open_image_dialog": "Abrir Imagem",
-                "image_files": "Imagens (*.png *.jpg *.jpeg *.bmp *.tiff)",
-                "export": "Exportar...",
-                "export_collision": "Exportar Colisão",
-                "export_collision_json": "Exportar Colisão (JSON)",
-                "export_collision_txt": "Exportar Colisão (TXT)",
-                "export_collision_json_dialog": "Exportar Colisão em JSON",
-                "export_collision_txt_dialog": "Exportar Colisão em TXT",
-                "export_collision_success": "Dados de colisão exportados para {path}",
-                "failed_export_collision": "Falha ao exportar dados de colisão: ",
-                "json_files": "Arquivos JSON (*.json)",
-                "text_files": "Arquivos de Texto (*.txt)",
-                "fit_view": "Ajustar Visão (F)",
-                "pixel_1": "Pixel 1:1",
-                "lit": "Iluminado",
-                "xray_1": "Raio-X 1",
-                "xray_2": "Raio-X 2",
-                "xray_3": "Raio-X 3",
-                "focus_selected": "Focar Selecionado",
-                "clean_all": "🗑️ Limpar Tudo",
-                "edit_menu": "Editar",
-                "undo": "Desfazer",
-                "redo": "Refazer",
-                "view_menu": "Visualizar",
-                "mask_viewer": "Visualizador de Máscara (Auto-Detect)",
-                "collision_overlay": "Sobreposição de Colisão",
-                "info": "Info",
-                "select_object": "Selecione um objeto na lista primeiro.",
-                "error": "Erro",
-                "failed_open_image": "Falha ao abrir imagem: ",
-                "failed_mask_viewer": "Falha ao abrir " "Visualizador de Máscara: ",
-                "language": "Idioma",
-                "english": "Inglês",
-                "portuguese": "Português",
-            },
-        }
+        self.translations = MAIN_WINDOW_TRANSLATIONS
         self.update_language()
         if hasattr(self.scene, "subscribe"):
             self.scene.subscribe(self._on_scene_changed)
         self._connect_command_history()
         self._update_undo_redo_actions()
         self._mark_document_clean()
+        if self._autosave_store is not None:
+            self.enable_autosave(self._autosave_store)
+
+    def enable_autosave(self, store: AutosaveStore) -> None:
+        if self._autosave_coordinator is not None:
+            return
+        self._autosave_store = store
+        self._autosave_coordinator = AutosaveCoordinator(
+            self,
+            scene=self.scene,
+            session=self.document_session,
+            store=store,
+            interval_seconds=self.config.get("autosave_interval_seconds", 60),
+            translations=lambda: self.translations[self.current_lang],
+            recover=self._recover_autosave_snapshot,
+            show_status=self.statusBar().showMessage,
+        )
+        self.autosave_timer = self._autosave_coordinator.timer
 
     def _focus_selected(self):
         """Foca a câmera no objeto selecionado na lista lateral."""
@@ -715,79 +637,16 @@ class MainWindow(QMainWindow):
         self._current_tool = tool_name
 
     def _signature_path_hint(self) -> Path:
-        if self._project_path is not None:
-            return self._project_path
-        image_path = getattr(self.scene, "image_path", None)
-        if image_path:
-            candidate = Path(os.fsdecode(image_path))
-            if candidate.is_absolute():
-                return candidate.parent / f"untitled{PROJECT_FILE_EXTENSION}"
-        return Path.cwd() / f"untitled{PROJECT_FILE_EXTENSION}"
+        return self.document_session.signature_path_hint()
 
     def _compute_document_signature(self) -> str:
-        try:
-            document = build_project_document(self.scene, self._signature_path_hint())
-        except ProjectValidationError:
-            return self._compute_unvalidated_document_signature()
-        payload = json.dumps(
-            document.model_dump(mode="json"),
-            ensure_ascii=False,
-            sort_keys=True,
-            separators=(",", ":"),
-            allow_nan=False,
-        ).encode("utf-8")
-        return hashlib.sha256(payload).hexdigest()
+        return self.document_session.compute_signature()
 
     def _compute_unvalidated_document_signature(self) -> str:
-        image_path = getattr(self.scene, "image_path", None)
-        snapshot = (
-            os.fsdecode(image_path) if image_path is not None else None,
-            getattr(self.scene, "image_path_kind", None),
-            getattr(self.scene, "image_sha256", None),
-            tuple(
-                (layer.id, layer.name, layer.visible, layer.locked)
-                for layer in self.scene.layers
-            ),
-            tuple(
-                (
-                    object_id,
-                    obj.id,
-                    obj.layer_id,
-                    tuple(obj.polygon),
-                    tuple(tuple(segment) for segment in (obj.beziers or [])),
-                )
-                for object_id, obj in self.scene.objects.items()
-            ),
-            tuple(
-                (
-                    group.id,
-                    group.name,
-                    group.visible,
-                    group.locked,
-                    tuple(group.members),
-                )
-                for group in self.scene.groups
-            ),
-            tuple(
-                (object_id, tuple(shape))
-                for object_id, shape in self.scene.collision_shapes.items()
-            ),
-        )
-        return hashlib.sha256(repr(snapshot).encode("utf-8")).hexdigest()
+        return self.document_session.compute_unvalidated_signature()
 
     def is_document_modified(self) -> bool:
-        if self._clean_signature is None:
-            return bool(
-                self._document_name
-                or getattr(self.scene, "image_path", None)
-                or self.scene.objects
-                or self.scene.groups
-                or self.scene.collision_shapes
-            )
-        try:
-            return self._compute_document_signature() != self._clean_signature
-        except Exception:
-            return True
+        return self.document_session.is_modified()
 
     def _expected_window_title(self) -> str:
         document_name = self._document_name
@@ -803,11 +662,11 @@ class MainWindow(QMainWindow):
         self._refresh_window_title()
 
     def _mark_document_clean(self) -> None:
-        self._clean_signature = self._compute_document_signature()
+        self.document_session.mark_clean()
         self._refresh_window_title()
 
     def _mark_document_unsaved(self) -> None:
-        self._clean_signature = None
+        self.document_session.mark_unsaved()
         self._refresh_window_title()
 
     def _reset_command_history(self) -> None:
@@ -853,57 +712,62 @@ class MainWindow(QMainWindow):
         if choice == QMessageBox.StandardButton.Save:
             return self.save_project()
         if choice == QMessageBox.StandardButton.Discard:
+            self._discard_autosave()
             return True
         return False
 
     def _normalized_project_path(self, path: str | os.PathLike[str]) -> Path:
-        destination = Path(path)
-        if destination.suffix.lower() != PROJECT_FILE_EXTENSION:
-            destination = destination.with_suffix(PROJECT_FILE_EXTENSION)
-        return destination
+        return self.document_session.normalized_project_path(path)
 
     def _project_dialog_start(self) -> str:
-        if self._project_path is not None:
-            return str(self._project_path)
-        base = Path(self._last_folder) if self._last_folder else Path.cwd()
-        stem = Path(self._document_name).stem if self._document_name else "project"
-        return str(base / f"{stem}{PROJECT_FILE_EXTENSION}")
+        return self.document_session.project_dialog_start()
 
     def _rebase_image_reference_for_save(self, destination: Path) -> tuple[object, ...]:
-        original = (
-            getattr(self.scene, "image_path", None),
-            getattr(self.scene, "image_path_kind", None),
-            getattr(self.scene, "image_sha256", None),
-            getattr(self.scene, "_image_reference_loaded", False),
-        )
-        if (
-            self._project_path is None
-            or getattr(self.scene, "image_path", None) is None
-            or getattr(self.scene, "image_path_kind", None) != "relative"
-        ):
-            return original
-
-        source = (
-            self._project_path.parent / os.fsdecode(self.scene.image_path)
-        ).resolve(strict=False)
-        destination_parent = destination.parent.resolve(strict=False)
-        try:
-            relative = source.relative_to(destination_parent)
-        except ValueError:
-            self.scene.image_path = str(source)
-            self.scene.image_path_kind = "absolute"
-        else:
-            self.scene.image_path = relative.as_posix()
-            self.scene.image_path_kind = "relative"
-        return original
+        return self.document_session.rebase_image_reference_for_save(destination)
 
     def _restore_image_reference(self, original: tuple[object, ...]) -> None:
-        (
-            self.scene.image_path,
-            self.scene.image_path_kind,
-            self.scene.image_sha256,
-            self.scene._image_reference_loaded,
-        ) = original
+        self.document_session.restore_image_reference(original)
+
+    def _discard_autosave(self) -> bool:
+        if self._autosave_coordinator is None:
+            return True
+        return self._autosave_coordinator.discard_current_session()
+
+    def perform_autosave(self) -> bool:
+        if self._autosave_coordinator is None:
+            return False
+        return self._autosave_coordinator.perform()
+
+    def offer_autosave_recovery(self) -> bool:
+        if self._autosave_coordinator is None:
+            return False
+        return self._autosave_coordinator.offer_recovery()
+
+    def _recover_autosave_snapshot(self, snapshot) -> None:
+        staged_scene = type(self.scene)()
+        snapshot.apply_to(staged_scene)
+        image_warnings = self._attach_project_image(
+            snapshot.reference_project_path,
+            staged_scene,
+        )
+        self._adopt_project_scene(staged_scene)
+        source_changed = snapshot.source_project_changed()
+        self._project_path = None if source_changed else snapshot.source_project_path
+        translations = self.translations[self.current_lang]
+        self._document_name = snapshot.document_name or (
+            snapshot.source_project_path.name
+            if snapshot.source_project_path is not None
+            else translations["recovered_project"]
+        )
+        base_path = snapshot.source_project_path or snapshot.reference_project_path
+        self._last_folder = str(base_path.parent)
+        self._reset_command_history()
+        self.scene._notify()
+        self._refresh_document_views(project_loaded=True)
+        self._mark_document_unsaved()
+        if source_changed:
+            image_warnings.append(translations["autosave_source_changed"])
+        self._show_project_warnings(image_warnings)
 
     def _resolved_project_image_path(
         self,
@@ -1048,6 +912,7 @@ class MainWindow(QMainWindow):
         self.scene._notify()
         self._refresh_document_views(project_loaded=True)
         self._mark_document_clean()
+        self._discard_autosave()
         warnings = migration_warnings + image_warnings
         self._show_project_warnings(warnings)
         record_validation_event(
@@ -1093,6 +958,7 @@ class MainWindow(QMainWindow):
         self._document_name = destination.name
         self._last_folder = str(destination.parent)
         self._mark_document_clean()
+        self._discard_autosave()
         self.statusBar().showMessage(t["project_saved"], 5000)
         record_validation_event(
             "project.saved",
@@ -1182,6 +1048,7 @@ class MainWindow(QMainWindow):
         self._reset_command_history()
         self._refresh_document_views(project_loaded=False)
         self._mark_document_unsaved()
+        self._discard_autosave()
 
         loaded = self.scene.image is not None
         record_validation_event(
@@ -1254,6 +1121,8 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event: QCloseEvent) -> None:
         if self._confirm_unsaved_changes():
+            if self._autosave_coordinator is not None:
+                self._autosave_coordinator.stop()
             record_validation_event(
                 "document.close_requested",
                 "SUCCESS",

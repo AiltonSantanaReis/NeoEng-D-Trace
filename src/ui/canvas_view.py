@@ -29,6 +29,7 @@ from src.core.commands import (
 )
 from src.core.logger import logger
 from src.core.polygon_gesture import PolygonGestureTransaction
+from src.ui.image_conversion import to_qimage
 
 # Proteção de importação caso ViewProcessor não esteja implementado ainda
 VIEW_PROCESSOR_CLASS: Optional[type[Any]]
@@ -84,7 +85,18 @@ class XrayWorker(QRunnable):
             elif self.mode == CanvasView.VIEW_XRAY_3:
                 xray_mode = 3
 
-            qimage = VIEW_PROCESSOR_CLASS.generate_xray(self.image_array, xray_mode)
+            array_generator = getattr(
+                VIEW_PROCESSOR_CLASS,
+                "generate_xray_array",
+                None,
+            )
+            if array_generator is None:
+                qimage = VIEW_PROCESSOR_CLASS.generate_xray(
+                    self.image_array,
+                    xray_mode,
+                )
+            else:
+                qimage = to_qimage(array_generator(self.image_array, xray_mode))
         except Exception as e:
             logger.error(f"XRay generation failed: {e}")
             return
@@ -585,7 +597,7 @@ class CanvasView(QWidget):
         if self.gizmo is None and TRANSFORM_GIZMO_CLASS is not None:
             self.gizmo = TRANSFORM_GIZMO_CLASS()
 
-        self._qimage_lit = VIEW_PROCESSOR_CLASS.to_qimage(img)
+        self._qimage_lit = to_qimage(img)
         self._qimage_xray_1 = None
         self._qimage_xray_2 = None
         self._qimage_xray_3 = None

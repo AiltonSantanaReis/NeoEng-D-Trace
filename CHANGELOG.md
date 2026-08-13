@@ -1,8 +1,22 @@
 # Changelog
 
-## [Unreleased] — programa de estabilização, Etapas 1 a 12
+## [Unreleased] — programa de estabilização, Etapas 1 a 13
 
 Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+
+### Etapa 13 — aprovada localmente, ainda não integrada
+
+- reduz `main_window.py` de `1.306` para `1.175` linhas físicas e separa sessão de documento, caminhos de estado, conversão de imagem, traduções e coordenação do autosave;
+- adiciona autosave local versionado, atômico e limitado, com quarentena de snapshot inválido, fingerprint do projeto-fonte e recuperação explícita;
+- preserva snapshots quando a recuperação é adiada, exige `Salvar como` após conflito da origem e limpa o snapshot somente após salvamento explícito bem-sucedido;
+- aprova `953` testes no commit corretivo limpo `426cef118fdb0a334e639ec962b2e514cfd59b0a`, com `11.581/12.478` linhas, `3.370/3.964` branches e `90,93%` combinada;
+- mantém zero módulos abaixo de 30%, baseline de `335` arquivos, mypy em `80` arquivos, gates Black/isort/Bandit aprovados e nenhuma vulnerabilidade conhecida nas dependências auditáveis;
+- reconcilia `196` testes legados com `27/27` falhas históricas previstas e zero inesperadas;
+- valida fora do pytest um `QTimer` real e a recuperação entre processos distintos sem alterar o projeto-fonte;
+- registra e corrige falhas intermediárias, inclusive uma suíte `939 passed, 1 failed`, risco de exclusão no fluxo adiado e branches inicialmente abaixo de 85%;
+- rejeita o CI verde `31693639653` após os artefatos mostrarem `11.576` linhas cobertas no Linux contra `11.578` no Windows; corrige a quarentena que sobrescrevia snapshot anterior em sistemas POSIX e adiciona regressão portátil;
+- aceita o CI corretivo `31695151223` no HEAD `c2e21374f2669248da55c6e77110f2b1f80164b2` após confirmar cobertura idêntica ponto a ponto em Linux/Windows, legado `27/27`, documentos equivalentes e `1.421` payloads sem violações;
+- mantém `R-011` aberto, Etapa 13 não concluída, Etapa 14 não iniciada e release não aprovada até merge autorizado e CI pós-merge auditado.
 
 ### Etapa 12 — integrada e concluída, segurança e limites operacionais
 
@@ -17,6 +31,7 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - audita o CI pré-merge `31684136128` no HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`: Linux e Windows aprovam `928` testes e as métricas exatas; dois artefatos têm digest confirmado e a varredura recursiva cobre `1.419` payloads sem violações;
 - integra a PR `#49` em `872bf079d228d13d0203d22b844052b1f920e99b` e aceita o CI pós-merge `31686321925` após auditoria de Linux/Windows, logs, digests, cobertura, legado e `1.419` payloads sem violações;
 - aprova localmente `929` testes e baseline de `326` arquivos no pacote documental de encerramento, sem alteração nas métricas de cobertura do código-fonte;
+- integra o fechamento pela PR `#50` em `fc81c2ea10e751c15a39627d462ddfff390eeb04` e aceita o CI final `31688307089`, com `929` testes em Linux/Windows e artefatos auditados;
 - encerra `R-012` e conclui a Etapa 12 no escopo aprovado; `R-011`, Etapas 13–14 e release permanecem pendentes.
 
 ### Etapa 11 — integrada e concluída no escopo aprovado
