@@ -140,3 +140,66 @@ def test_gui_smoke_requires_structured_validation_log(monkeypatch) -> None:
     with pytest.raises(SystemExit) as captured:
         launcher.main()
     assert captured.value.code == 2
+
+
+def test_msi_identifiers_are_stable_and_path_safe() -> None:
+    from tools.package_windows_msi import (
+        short_directory_name,
+        stable_guid,
+        stable_identifier,
+    )
+
+    assert stable_guid("same") == stable_guid("same")
+    assert stable_guid("same") != stable_guid("different")
+    assert stable_identifier("cmp", "_internal/PySide6") == stable_identifier(
+        "cmp", "_internal/PySide6"
+    )
+    default = short_directory_name("NeoEng-D-Trace")
+    assert default.endswith("|NeoEng-D-Trace")
+    assert len(default.split("|", 1)[0]) <= 8
+
+
+def test_windows_installer_contract_is_fail_closed() -> None:
+    root = Path(__file__).resolve().parents[1]
+    build = (root / "scripts" / "build_installer.ps1").read_text(encoding="utf-8")
+    package = (root / "tools" / "package_windows_msi.py").read_text(encoding="utf-8")
+    validate = (root / "tools" / "validate_windows_installer.py").read_text(
+        encoding="utf-8"
+    )
+    assert "git status --porcelain --untracked-files=all" in build
+    assert "source_commit -ne $sourceCommit" in build
+    assert "build_windows.ps1" in build
+    assert build.index("build_windows.ps1") < build.index("package_windows_msi.py")
+    assert "package_windows_msi.py" in build
+    assert "validate_windows_installer.py" in build
+    assert '"MSIINSTALLPERUSER", "1"' in package
+    assert '"LIMITUI", "1"' in package
+    assert '"VersionNT64"' in package
+    assert "stable_guid" in package
+    assert "complete-uninstall" in validate
+    assert "user-state-preserved" in validate
+    assert "C:\\Users\\" not in build + package + validate
+
+
+def test_msi_rejects_portable_manifest_tampering(tmp_path: Path) -> None:
+    import pytest
+
+    from tools.package_windows_msi import sha256_file, verify_portable_manifest
+
+    bundle = tmp_path / "bundle"
+    bundle.mkdir()
+    executable = bundle / "NeoEng-D-Trace.exe"
+    executable.write_bytes(b"valid")
+    manifest = {
+        "files": [
+            {
+                "path": executable.name,
+                "size": executable.stat().st_size,
+                "sha256": sha256_file(executable),
+            }
+        ]
+    }
+    verify_portable_manifest(bundle, manifest)
+    executable.write_bytes(b"tampered")
+    with pytest.raises(ValueError, match="size mismatch"):
+        verify_portable_manifest(bundle, manifest)

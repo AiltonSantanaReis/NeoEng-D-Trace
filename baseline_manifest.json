@@ -736,6 +736,10 @@
       "sha256": "aeaf118915a1ca241a0a1962a4162864b5246d5f2ea4e2abf2b6b28f05ea7d60",
       "size": 147
     },
+    "scripts/build_installer.ps1": {
+      "sha256": "d07450ea09771cd3e088df5f5e81e7e9ce2b511509884432720cdce884db7dc3",
+      "size": 2775
+    },
     "scripts/build_windows.ps1": {
       "sha256": "8f8c4b3608033c2fdd708f381dc39b32342545e704294df17f0c738d4aca464d",
       "size": 2641
@@ -1281,8 +1285,8 @@
       "size": 18166
     },
     "tests/test_stage_14_release_packaging.py": {
-      "sha256": "ddabfdff86b4b4db2dc5fb8afeeb6522e8da15a4496af79975757f3c2e84cde4",
-      "size": 5599
+      "sha256": "6d84036cc49a2157c208b453814d4d64c14fec9919be906ff49d3b1cb260b563",
+      "size": 7943
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
@@ -1392,6 +1396,10 @@
       "sha256": "732206adbc953f83c6e16f9ea2e7274c3d7e2fdd12a94960e78796962808dce5",
       "size": 4635
     },
+    "tools/package_windows_msi.py": {
+      "sha256": "c4fe5b747a55cca3c15af6ae6436e1e2b204fc308039a1d801c2e9a2b8ef96a7",
+      "size": 11135
+    },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",
       "size": 664
@@ -1415,6 +1423,10 @@
     "tools/validate_portable_release.py": {
       "sha256": "b5db97092c40d8680d9c0f4704c03a52ce77106d56220411e29c54d83f3d9196",
       "size": 4576
+    },
+    "tools/validate_windows_installer.py": {
+      "sha256": "d5dcdebaa92528445fd91f261e7cebc0abdfb0d37f19cb02b6e3031b5e8bcbcd",
+      "size": 5200
     }
   }
 }
