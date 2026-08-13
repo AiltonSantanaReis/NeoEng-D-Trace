@@ -1,10 +1,10 @@
 # Matriz funcional atual — NeoEng-D-Trace
 
-**Snapshot local:** 2026-08-11
+**Snapshot local:** 2026-08-13
 
 **Última âncora integrada:** `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`
 
-**Estado atual:** Etapa 11 concluída no escopo aprovado pelas PRs `#45`/`#46` e CI final `31495971632`. A Etapa 12 possui implementação local pré-merge com `928` testes, cobertura de 92,81% de linhas, 85,02% de branches e 90,91% combinada; `R-012` continua aberto até commit técnico, CI Linux/Windows, merge e pós-merge. Release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
+**Estado atual:** Etapa 11 concluída no escopo aprovado pelas PRs `#45`/`#46` e CI final `31495971632`. A Etapa 12 possui implementação local pré-merge no commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, com `928` testes, cobertura de 92,81% de linhas, 85,02% de branches e 90,91% combinada; `R-012` continua aberto até CI Linux/Windows, merge autorizado e pós-merge. Release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
 
 **Baseline integrada da Etapa 11:** PR `#45`, merge `2a38b89e542390b3b4396a88d9a416f3695caadc`, CI `31491221322`, `877` testes e cobertura combinada `90,91%`.
 

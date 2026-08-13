@@ -5,8 +5,8 @@
 - Data local: 13 de agosto de 2026.
 - Branch: `etapa-12-limites-operacionais`.
 - Base integrada: `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`.
-- Commit técnico: PENDENTE nesta versão do relatório.
-- Estado durante as execuções: worktree modificada; resultados ainda não estão vinculados a um commit imutável.
+- Commit técnico: `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`.
+- Estado durante as execuções finais: worktree limpa; suíte oficial e legado vinculados ao commit técnico exato.
 - Decisão: **PARCIAL / APROVADO SOMENTE COMO EVIDÊNCIA LOCAL PRÉ-MERGE**.
 - `R-012`: **ABERTO** até commit técnico, CI Linux/Windows, merge e auditoria pós-merge.
 - Etapa 12: NÃO CONCLUÍDA.
@@ -79,8 +79,8 @@ Resultados locais mais recentes:
 - pip-audit: nenhuma vulnerabilidade conhecida; o pacote local do projeto não existe no índice público e foi informado como não auditável;
 - Bandit de alta severidade: zero achados;
 - legado: `196` testes, `27` falhas históricas esperadas, `27/27` conciliadas, zero inesperadas, zero ausentes, zero erros e zero skips;
-- `coverage.xml` SHA-256: `36d792325967fe6437357106fd83b16e3d63228ec78f9b561513cbddb2cfd933`;
-- resumo legado temporário SHA-256: `d254afbd01d0c16dfd9c9f9e5bfb6700d4c6ec37beb9198afe420296ee2c2864`.
+- `coverage.xml` SHA-256: `dba7b46b34405e347a48e5be02d1bb512f8c7375964f031d05233e654e154ba8`;
+- resumo legado temporário SHA-256: `1869b13ce3e96a4aec4232a6acfb74611a081f66b2a360989e1bf620c89be858`.
 
 Uma primeira suíte completa desta etapa terminou com `907 passed` e uma falha real: colisão inválida passou a interromper a inicialização durante o cálculo de assinatura documental. A validação de persistência foi mantida; a janela recebeu assinatura determinística de fallback para estado inválido. Depois da regressão específica, as execuções completas seguintes aprovaram `910/910` e, após ampliar branches de segurança, `928/928`.
 
@@ -112,7 +112,7 @@ Imagem quadrada 8K excede 16.777.216 pixels e é rejeitada deliberadamente antes
 ## Limitações e riscos residuais
 
 - CI Linux e Windows ainda não foi executado para o HEAD técnico desta etapa.
-- Os artefatos temporários locais registram a base integrada e `working_tree_dirty=true`; devem ser regenerados em commit imutável antes do fechamento.
+- O resumo legado final foi gerado fora do repositório com `tested_commit` e `source_head_commit` iguais a `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, `working_tree_dirty=false`, conciliado e removido após o cálculo do hash.
 - A cobertura de branches está apenas 0,02 ponto percentual acima da meta; qualquer mudança exige nova medição integral.
 - Benchmarks usam imagens sintéticas simples e não representam pior caso de imagens ruidosas, muitos contornos, atlas cheio ou hardware diferente.
 - Os 27 testes históricos divergentes continuam registrados; não são falhas novas, mas também não foram apagados.
@@ -121,4 +121,4 @@ Imagem quadrada 8K excede 16.777.216 pixels e é rejeitada deliberadamente antes
 
 ## Decisão pré-merge
 
-**PARCIAL.** A implementação local e os testes são suficientes para publicar um commit técnico e solicitar CI. Não há base para encerrar `R-012`, concluir a Etapa 12, iniciar a Etapa 13 ou aprovar release antes de commit limpo, CI Linux/Windows e auditoria dos artefatos ligados ao SHA exato.
+**PARCIAL.** O commit técnico e as validações locais limpas são suficientes para publicar a branch e solicitar CI. Não há base para encerrar `R-012`, concluir a Etapa 12, iniciar a Etapa 13 ou aprovar release antes de CI Linux/Windows, auditoria dos artefatos ligados ao SHA exato, merge autorizado e pós-merge.

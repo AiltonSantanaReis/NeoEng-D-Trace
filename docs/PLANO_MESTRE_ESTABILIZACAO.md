@@ -22,7 +22,7 @@ Etapa 12 — estado local pré-merge:
 - cobertura exata `11.174/12.040` linhas (`92,81%`), `3.309/3.892` branches (`85,02%`) e `90,91%` combinada;
 - limites centrais e cenários malformados implementados para configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs;
 - pip-audit sem vulnerabilidades conhecidas, Bandit de alta severidade limpo, mypy sem erros em `73` arquivos e legado `27/27` conciliado;
-- evidência ainda baseada em worktree modificada; commit técnico, CI Linux/Windows, merge e pós-merge permanecem obrigatórios;
+- commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` validado em worktree limpa; CI Linux/Windows, merge autorizado e pós-merge permanecem obrigatórios;
 - `R-012`: ABERTO; Etapa 12: NÃO CONCLUÍDA; release: NÃO APROVADA.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:

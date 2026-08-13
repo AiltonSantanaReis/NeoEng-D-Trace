@@ -6,7 +6,7 @@ NeoEng-D-Trace é uma ferramenta desktop proprietária e principalmente offline 
 
 O estado real do repositório local e remoto prevalece sobre qualquer snapshot documental. Antes de alterar código, consulte `docs/PLANO_MESTRE_ESTABILIZACAO.md`, `docs/MATRIZ_RISCOS_ESTABILIZACAO.md`, o índice `docs/evidence/README.md`, a PR atual e o CI ligado ao HEAD exato.
 
-Etapa 11 concluída; Etapa 12 implementada e validada localmente antes do commit técnico, em 13 de agosto de 2026:
+Etapa 11 concluída; Etapa 12 implementada e validada localmente no commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, em 13 de agosto de 2026:
 
 - PR funcional `#45` e fechamento `#46` da Etapa 11 integrados; CI pós-merge final `31495971632` aceito após auditoria de logs, hashes e 1.418 payloads;
 - Etapa 12 aprova localmente `928` testes no Windows/Python 3.11.9;
@@ -14,7 +14,7 @@ Etapa 11 concluída; Etapa 12 implementada e validada localmente antes do commit
 - limites centrais cobrem configuração, imagens, projetos, polígonos/Bézier, detecção, broadphase, atlas, GLTF e logs;
 - `pip-audit` não encontrou vulnerabilidades conhecidas, Bandit de alta severidade ficou limpo e mypy aprovou `73` arquivos;
 - a suíte legada executou `196` testes e conciliou exatamente `27/27` divergências históricas, sem inesperadas;
-- `R-012` permanece **ABERTO**, a Etapa 12 permanece **NÃO CONCLUÍDA** e a release **NÃO APROVADA** até commit técnico, CI Linux/Windows, merge e auditoria pós-merge.
+- `R-012` permanece **ABERTO**, a Etapa 12 permanece **NÃO CONCLUÍDA** e a release **NÃO APROVADA** até CI Linux/Windows, merge autorizado e auditoria pós-merge.
 
 Snapshot do encerramento formal da Etapa 10 em 11 de agosto de 2026:
 

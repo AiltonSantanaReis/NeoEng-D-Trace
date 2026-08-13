@@ -18,7 +18,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 13 de agosto de 2026. A Etapa 11 foi integrada pelas PRs `#45`/`#46`, com fechamento em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`, e encerrada após o CI pós-merge final `31495971632`. A Etapa 12 tem implementação local pré-merge com `928` testes, 92,81% de linhas, 85,02% de branches e 90,91% combinada, limites operacionais e corpus malformado; a evidência ainda não está vinculada a commit técnico/CI. `R-012` permanece aberto, a Etapa 12 não está concluída e a release não está aprovada.
+Snapshot vivo de 13 de agosto de 2026. A Etapa 11 foi integrada pelas PRs `#45`/`#46`, com fechamento em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`, e encerrada após o CI pós-merge final `31495971632`. A Etapa 12 tem implementação local pré-merge com `928` testes, 92,81% de linhas, 85,02% de branches e 90,91% combinada, limites operacionais e corpus malformado; a evidência local está vinculada ao commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, mas o CI ainda não foi executado. `R-012` permanece aberto, a Etapa 12 não está concluída e a release não está aprovada.
 
 | ID | Estado atual | Evidência/encaminhamento vigente |
 |---|---|---|
@@ -33,7 +33,7 @@ Snapshot vivo de 13 de agosto de 2026. A Etapa 11 foi integrada pelas PRs `#45`/
 | R-009 | ENCERRADO | CI Linux e Windows estabelecida |
 | R-010 | ENCERRADO | Lockfile e instalação reproduzível estabelecidos |
 | R-011 | ABERTO | Refatoração posterior protegida por caracterização |
-| R-012 | EM EXECUÇÃO / ABERTO | Implementação local pré-merge: limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes; CI Linux/Windows, merge e pós-merge ainda pendentes |
+| R-012 | EM EXECUÇÃO / ABERTO | Commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`: limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes; CI Linux/Windows, merge e pós-merge ainda pendentes |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026

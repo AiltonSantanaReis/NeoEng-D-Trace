@@ -901,6 +901,7 @@ def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
     evidence = _text("docs/evidence/ETAPA_12_SEGURANCA_LIMITES_PRE_MERGE.md")
     for expected in (
         "a22a90088220e586c3382c3ed5dc1075a3ff7e6b",
+        "da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f",
         "928 passed",
         "11.174/12.040",
         "3.309/3.892",
@@ -916,8 +917,8 @@ def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
     ):
         assert expected in evidence
 
-    assert "Commit técnico: PENDENTE" in evidence
-    assert "worktree modificada" in evidence
+    assert "Commit técnico: `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`" in evidence
+    assert "worktree limpa" in evidence
     assert "CI Linux e Windows ainda não foi executado" in evidence
     assert "Etapa 12: NÃO CONCLUÍDA" in evidence
 
@@ -931,6 +932,7 @@ def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
     ):
         value = _text(relative)
         assert "928" in value, relative
+        assert "da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f" in value, relative
         assert "R-012" in value, relative
         assert "aberto" in value.lower(), relative
         assert "release" in value.lower(), relative
