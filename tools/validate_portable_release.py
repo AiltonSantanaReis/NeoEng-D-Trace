@@ -3,13 +3,24 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
 import tempfile
 from pathlib import Path
 
+from PIL import Image, ImageDraw
+
 from src.core.app_identity import APP_VERSION
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def run_checked(command: list[str], environment: dict[str, str], timeout: int = 60):
@@ -27,6 +38,81 @@ def run_checked(command: list[str], environment: dict[str, str], timeout: int = 
             f"stdout={result.stdout}\nstderr={result.stderr}"
         )
     return result
+
+
+def _write_engine_input(fixture: Path, directory: Path) -> Path:
+    directory.mkdir(parents=True, exist_ok=True)
+    image_path = directory / "source.png"
+    image = Image.new("RGBA", (200, 100), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((100, 50, 139, 69), fill=(30, 180, 240, 255))
+    image.save(image_path, format="PNG")
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    payload["image"] = {
+        "path": image_path.name,
+        "path_kind": "relative",
+        "sha256": sha256_file(image_path),
+    }
+    points = [
+        {"x": 100, "y": 50},
+        {"x": 140, "y": 50},
+        {"x": 140, "y": 70},
+        {"x": 100, "y": 70},
+    ]
+    payload["objects"] = [
+        {
+            "id": "sprite_ação",
+            "layer_id": "layer_default",
+            "polygon": points,
+            "collision": points,
+            "beziers": None,
+        }
+    ]
+    project = directory / "engine-input.ndtproj"
+    project.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return project
+
+
+def _generate_engine_fixture(
+    cli: Path,
+    source_fixture: Path,
+    output: Path,
+    profile: str,
+    environment: dict[str, str],
+) -> None:
+    project = _write_engine_input(source_fixture, output)
+    metadata = output / f"probe-{profile}.json"
+    glb = output / "scene.glb"
+    result = run_checked(
+        [
+            str(cli),
+            "--project",
+            str(project),
+            "--export-json",
+            str(metadata),
+            "--export-profile",
+            profile,
+            "--export-scene-gltf",
+            str(glb),
+        ],
+        environment,
+    )
+    if "completed successfully" not in result.stdout:
+        raise AssertionError(f"{profile} engine fixture success marker is missing")
+    payload = json.loads(metadata.read_text(encoding="utf-8"))
+    if payload.get("profile") != profile:
+        raise AssertionError(f"{profile} metadata profile is missing")
+    sprites = payload.get("sprites")
+    expected_schema = f"neoeng-d-trace-{profile}-sprite"
+    if not sprites or sprites[0].get("schema") != expected_schema:
+        raise AssertionError(f"{profile} metadata schema is invalid")
+    if glb.read_bytes()[:4] != b"glTF":
+        raise AssertionError(f"{profile} GLB output has an invalid magic value")
 
 
 def validate_bundle(
@@ -78,6 +164,15 @@ def validate_bundle(
         json.loads(project.read_text(encoding="utf-8"))
         json.loads(metadata.read_text(encoding="utf-8"))
 
+        for profile in ("godot", "unity"):
+            _generate_engine_fixture(
+                cli,
+                fixture,
+                output / f"engine-{profile}",
+                profile,
+                environment,
+            )
+
         validation_log = output / "gui-validation.jsonl"
         run_checked(
             [
@@ -96,6 +191,13 @@ def validate_bundle(
         summary = rows[-1]
         if summary["event"] != "session.summary" or summary["status"] != "SUCCESS":
             raise AssertionError(f"GUI validation did not succeed: {summary}")
+        state_configs = list(Path(state).rglob("config.json"))
+        if len(state_configs) != 1:
+            raise AssertionError(
+                f"expected one user-state config, found {len(state_configs)}"
+            )
+        if (bundle / "config.json").exists():
+            raise AssertionError("portable runtime wrote config inside its bundle")
 
     report = {
         "schema_version": 1,
@@ -107,12 +209,19 @@ def validate_bundle(
             "headless-project",
             "headless-json",
             "headless-glb",
+            "godot-profile-json",
+            "godot-release-glb",
+            "unity-profile-json",
+            "unity-release-glb",
             "gui-open-close",
             "user-state-directory",
         ],
         "outputs": {
-            path.name: {"size": path.stat().st_size}
-            for path in sorted(output.iterdir())
+            path.relative_to(output).as_posix(): {
+                "size": path.stat().st_size,
+                "sha256": sha256_file(path),
+            }
+            for path in sorted(output.rglob("*"))
             if path.is_file()
         },
     }

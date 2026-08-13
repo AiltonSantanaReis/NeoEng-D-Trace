@@ -122,7 +122,9 @@ _HEADLESS_FIELDS = (
 
 def _headless_requested(args: argparse.Namespace) -> bool:
     return bool(
-        args.headless or any(getattr(args, field, None) for field in _HEADLESS_FIELDS)
+        args.headless
+        or getattr(args, "export_profile", "default") != "default"
+        or any(getattr(args, field, None) for field in _HEADLESS_FIELDS)
     )
 
 
@@ -135,6 +137,8 @@ def _headless_contract_error(args: argparse.Namespace) -> str | None:
         return "--export-object-gltf requires --object-id"
     if args.object_id and not args.export_object_gltf:
         return "--object-id requires --export-object-gltf"
+    if getattr(args, "export_profile", "default") != "default" and not args.export_json:
+        return "--export-profile requires --export-json"
     if not any(
         getattr(args, field, None) for field in _HEADLESS_FIELDS if field != "object_id"
     ):
@@ -217,7 +221,10 @@ def run_headless(args: argparse.Namespace) -> int:
                     save_json_metadata,
                 )
 
-                save_json_metadata(export_scene_metadata(scene), args.export_json)
+                save_json_metadata(
+                    export_scene_metadata(scene, profile=args.export_profile),
+                    args.export_json,
+                )
             except (OSError, TypeError, ValueError) as exc:
                 return _cli_failure(f"Failed to export JSON: {exc}")
 
@@ -263,6 +270,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--object-id", type=str, help="Object ID for export operations")
     parser.add_argument(
         "--export-json", type=str, help="Export scene metadata to JSON file"
+    )
+    parser.add_argument(
+        "--export-profile",
+        choices=("default", "generic", "godot", "unity", "phaser"),
+        default="default",
+        help="Select the JSON metadata profile used by --export-json",
     )
     parser.add_argument("--save-project", type=str, help="Save project to file")
     parser.add_argument(

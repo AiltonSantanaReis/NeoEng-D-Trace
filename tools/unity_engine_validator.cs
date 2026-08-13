@@ -38,6 +38,12 @@ public static class EngineExportValidator
         public CollisionRecord collision;
     }
 
+    [Serializable]
+    private sealed class SceneMetadataRecord
+    {
+        public MetadataRecord[] sprites;
+    }
+
     private static void Require(bool condition, string message)
     {
         if (!condition)
@@ -50,9 +56,14 @@ public static class EngineExportValidator
     {
         try
         {
-            var metadata = JsonUtility.FromJson<MetadataRecord>(
-                File.ReadAllText("Assets/probe-unity.json")
-            );
+            var metadataText = File.ReadAllText("Assets/probe-unity.json");
+            var sceneMetadata = JsonUtility.FromJson<SceneMetadataRecord>(metadataText);
+            var metadata =
+                sceneMetadata != null
+                && sceneMetadata.sprites != null
+                && sceneMetadata.sprites.Length == 1
+                    ? sceneMetadata.sprites[0]
+                    : JsonUtility.FromJson<MetadataRecord>(metadataText);
             Require(metadata != null, "metadata-json");
             Require(metadata.schema == "neoeng-d-trace-unity-sprite", "metadata-schema");
             Require(metadata.schema_version == 1, "metadata-version");

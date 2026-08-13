@@ -869,8 +869,8 @@
       "size": 7018
     },
     "src/launcher.py": {
-      "sha256": "d6ce86d3d202e2e4fde2630afa89028e682643ee07f30cc60f316300adf2a563",
-      "size": 14829
+      "sha256": "066d2d04996fcc8bfbb9aa3124ceaeea67c76cd30da896269f9156e5aacd6391",
+      "size": 15363
     },
     "src/models/__init__.py": {
       "sha256": "48f9350985d4e4973cc9c548d8e8b5ce9582a9c314cf8dd139cc7cbf7e0eec44",
@@ -1229,8 +1229,8 @@
       "size": 6935
     },
     "tests/test_stage_10_engine_profiles.py": {
-      "sha256": "1c67ecf8d9afaee623a13a8db38d7d46990ca24cc9897328840db253442e57b3",
-      "size": 7167
+      "sha256": "b21f5a80349386b3767b32529d395973715fb142fb773c2740c4517e319dcca8",
+      "size": 8023
     },
     "tests/test_stage_11_canvas_export_branch_coverage.py": {
       "sha256": "39b8168cb79e5d6b34971017d0cc94b273621bfeb373f993074bf8b6615e81ba",
@@ -1285,8 +1285,8 @@
       "size": 18166
     },
     "tests/test_stage_14_release_packaging.py": {
-      "sha256": "b1338549b699d01fac3c8ba987ece3d6aa6cd7c10b5c58d2d51b0a8afd431744",
-      "size": 9074
+      "sha256": "f591c44dbbf2bbfd007929ac5996d6e67693264d39b7b5eb6e22afce96313a37",
+      "size": 9403
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
@@ -1353,8 +1353,8 @@
       "size": 7420
     },
     "tests/test_stage_7_cli_contract.py": {
-      "sha256": "75b90c44aae7f443d570d3dd7d670aec8dede4ecaebb2488b2f02e2d361dcde5",
-      "size": 11901
+      "sha256": "66db971dffd1d2f3caad28e846a5ee93643ccabc2e92ed0b2788d9f4727407a6",
+      "size": 12882
     },
     "tests/test_stage_8_bezier_geometry.py": {
       "sha256": "e00125d6d76f7af6fa66d188e08ce6663881199866241cf60b29395c46bc67d3",
@@ -1389,8 +1389,8 @@
       "size": 3165
     },
     "tools/godot_engine_validator.gd": {
-      "sha256": "83b68976e8a826bcd3455548537b54351d18e491017840f36742fef216483d7e",
-      "size": 2037
+      "sha256": "53d14e95be4c58bf39f8a2c3c958c5f6159dc1c4ea1f06c19f5ee3f226f04a66",
+      "size": 2272
     },
     "tools/package_portable_release.py": {
       "sha256": "732206adbc953f83c6e16f9ea2e7274c3d7e2fdd12a94960e78796962808dce5",
@@ -1413,16 +1413,16 @@
       "size": 5212
     },
     "tools/unity_engine_validator.cs": {
-      "sha256": "b67a4e3dc6a49c771ee55d7e648d30d7a436f2e7107494053ce8e601e7dd924c",
-      "size": 3139
+      "sha256": "88804d034c97771e7bda4252eabf1b7288ce80bb286a1168611849a2da057cde",
+      "size": 3570
     },
     "tools/validate_engine_exports.py": {
-      "sha256": "543e941a0d85dfe769af9c741af417d4fbf5bf3f0b2d5bf977ae5624aa8652d6",
-      "size": 10053
+      "sha256": "b647bf6dab0edcf5dd734bfc61aef9e57df95453cec040b5feb97bea7be8d91c",
+      "size": 11492
     },
     "tools/validate_portable_release.py": {
-      "sha256": "b5db97092c40d8680d9c0f4704c03a52ce77106d56220411e29c54d83f3d9196",
-      "size": 4576
+      "sha256": "4c615ac6ff3c14b38d2f03fa90d2f9ef83b87a2fb74ef735db1d983d421f74d3",
+      "size": 8104
     },
     "tools/validate_windows_installer.py": {
       "sha256": "d5dcdebaa92528445fd91f261e7cebc0abdfb0d37f19cb02b6e3031b5e8bcbcd",

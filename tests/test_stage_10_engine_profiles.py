@@ -16,6 +16,7 @@ from tools.validate_engine_exports import (
     _add_unity_package,
     _prepare_godot,
     _prepare_unity,
+    _write_fixture,
 )
 
 
@@ -178,6 +179,26 @@ def test_unity_harness_prepares_real_outputs_and_pinned_package(tmp_path) -> Non
     assert files["glb"].read_bytes().startswith(b"glTF")
     assert manifest["dependencies"]["com.unity.cloud.gltfast"] == "6.19.0"
     assert (project / "Assets" / "Editor" / "EngineExportValidator.cs").is_file()
+
+
+@pytest.mark.parametrize("profile", ["godot", "unity"])
+def test_external_engine_fixture_is_copied_without_regeneration(tmp_path, profile):
+    source = tmp_path / "release"
+    generated = _write_fixture(source, profile)
+    sprite = json.loads(generated["metadata"].read_text(encoding="utf-8"))
+    generated["metadata"].write_text(
+        json.dumps({"profile": profile, "sprites": [sprite]}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    target = tmp_path / "engine"
+
+    copied = _write_fixture(target, profile, fixture_dir=source)
+
+    assert copied["image"].read_bytes() == generated["image"].read_bytes()
+    assert copied["glb"].read_bytes() == generated["glb"].read_bytes()
+    assert json.loads(copied["metadata"].read_text(encoding="utf-8"))["sprites"][0][
+        "schema"
+    ].endswith(f"{profile}-sprite")
 
 
 def test_atlas_transaction_cleans_failed_backup_preparation(

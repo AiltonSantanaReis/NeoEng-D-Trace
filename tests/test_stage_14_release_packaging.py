@@ -167,12 +167,20 @@ def test_windows_installer_contract_is_fail_closed() -> None:
     validate = (root / "tools" / "validate_windows_installer.py").read_text(
         encoding="utf-8"
     )
+    portable_validate = (root / "tools" / "validate_portable_release.py").read_text(
+        encoding="utf-8"
+    )
+    engine_validate = (root / "tools" / "validate_engine_exports.py").read_text(
+        encoding="utf-8"
+    )
     assert "git status --porcelain --untracked-files=all" in build
     assert "source_commit -ne $sourceCommit" in build
     assert "build_windows.ps1" in build
     assert build.index("build_windows.ps1") < build.index("package_windows_msi.py")
     assert "package_windows_msi.py" in build
     assert "validate_windows_installer.py" in build
+    assert '"--export-profile"' in portable_validate
+    assert '"--fixture-dir"' in engine_validate
     assert '"MSIINSTALLPERUSER", "1"' in package
     assert '"LIMITUI", "1"' in package
     assert '"VersionNT64"' in package
