@@ -897,11 +897,19 @@ def test_stage11_packages_update_live_state_without_closing_r003():
         assert "não aprovada" in value.lower(), relative
 
 
-def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
+def test_stage12_premerge_evidence_is_audited_and_keeps_r012_open():
     evidence = _text("docs/evidence/ETAPA_12_SEGURANCA_LIMITES_PRE_MERGE.md")
     for expected in (
         "a22a90088220e586c3382c3ed5dc1075a3ff7e6b",
+        "2e9cad4cb7879aa7ceb8ee0a1e096b738674a984",
         "da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f",
+        "a42b54b07d8e9e10feb8d283adc664b52f9d25d3",
+        "4a55943f102c569d6175da84aec74d127e69697b",
+        "31684136128",
+        "94396143432",
+        "94396143273",
+        "9174746367",
+        "9174781465",
         "928 passed",
         "11.174/12.040",
         "3.309/3.892",
@@ -912,14 +920,15 @@ def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
         "27/27",
         "R-012",
         "ABERTO",
-        "PARCIAL",
+        "APROVADO TECNICAMENTE PRÉ-MERGE",
         "NÃO APROVADA",
     ):
         assert expected in evidence
 
     assert "Commit técnico: `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`" in evidence
     assert "worktree limpa" in evidence
-    assert "CI Linux e Windows ainda não foi executado" in evidence
+    assert "1.419" in evidence
+    assert "zero referência proibida ou caminho pessoal" in evidence
     assert "Etapa 12: NÃO CONCLUÍDA" in evidence
 
     for relative in (
@@ -933,6 +942,7 @@ def test_stage12_premerge_evidence_is_local_and_keeps_r012_open():
         value = _text(relative)
         assert "928" in value, relative
         assert "da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f" in value, relative
+        assert "31684136128" in value, relative
         assert "R-012" in value, relative
         assert "aberto" in value.lower(), relative
         assert "release" in value.lower(), relative

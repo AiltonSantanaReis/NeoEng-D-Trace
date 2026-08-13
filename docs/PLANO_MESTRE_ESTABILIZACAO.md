@@ -16,13 +16,13 @@ Etapa 11 integrada e concluída no escopo aprovado:
 - `R-003` encerrado no escopo aprovado após integração e CI pós-merge auditado;
 - Etapa 11 concluída; Etapa 12 iniciada com `R-012` aberto; release não aprovada.
 
-Etapa 12 — estado local pré-merge:
+Etapa 12 — estado técnico pré-merge:
 
 - `928` testes oficiais aprovados no Windows/Python 3.11.9;
 - cobertura exata `11.174/12.040` linhas (`92,81%`), `3.309/3.892` branches (`85,02%`) e `90,91%` combinada;
 - limites centrais e cenários malformados implementados para configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs;
 - pip-audit sem vulnerabilidades conhecidas, Bandit de alta severidade limpo, mypy sem erros em `73` arquivos e legado `27/27` conciliado;
-- commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` validado em worktree limpa; CI Linux/Windows, merge autorizado e pós-merge permanecem obrigatórios;
+- commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` validado em worktree limpa; CI `31684136128` do HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3` auditado em Linux/Windows; merge autorizado e pós-merge permanecem obrigatórios;
 - `R-012`: ABERTO; Etapa 12: NÃO CONCLUÍDA; release: NÃO APROVADA.
 
 Snapshot integrado anterior — encerramento formal da Etapa 10:

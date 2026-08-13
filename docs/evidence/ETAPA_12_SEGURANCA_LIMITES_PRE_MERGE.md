@@ -4,11 +4,13 @@
 
 - Data local: 13 de agosto de 2026.
 - Branch: `etapa-12-limites-operacionais`.
-- Base integrada: `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`.
+- Base técnica original: `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`.
+- `main` reconciliada: `2e9cad4cb7879aa7ceb8ee0a1e096b738674a984`.
 - Commit técnico: `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`.
+- HEAD fonte auditado no CI: `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`.
 - Estado durante as execuções finais: worktree limpa; suíte oficial e legado vinculados ao commit técnico exato.
-- Decisão: **PARCIAL / APROVADO SOMENTE COMO EVIDÊNCIA LOCAL PRÉ-MERGE**.
-- `R-012`: **ABERTO** até commit técnico, CI Linux/Windows, merge e auditoria pós-merge.
+- Decisão: **APROVADO TECNICAMENTE PRÉ-MERGE / INTEGRAÇÃO PENDENTE**.
+- `R-012`: **ABERTO** até merge autorizado e auditoria pós-merge.
 - Etapa 12: NÃO CONCLUÍDA.
 - Release: **NÃO APROVADA**.
 
@@ -109,9 +111,27 @@ Validação e decodificação de PNG real:
 
 Imagem quadrada 8K excede 16.777.216 pixels e é rejeitada deliberadamente antes do processamento integral. Nenhum benchmark de pipeline 8K quadrado é apresentado como aprovado.
 
+## CI pré-merge auditado
+
+- PR draft: `#49`.
+- Workflow `Private validation`: `31684136128`, conclusão `success`.
+- HEAD fonte: `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`.
+- Merge sintético testado: `4a55943f102c569d6175da84aec74d127e69697b`, com pais `2e9cad4cb7879aa7ceb8ee0a1e096b738674a984` e `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`.
+
+| Sistema | Job | Artefato | Digest SHA-256 da API/ZIP bruto |
+|---|---:|---:|---|
+| Linux | `94396143432` | `9174746367` | `4c44616df7833a5568b6bf6cf7d69354a18374f24f7feb8643c2b6b7ab328bdf` |
+| Windows | `94396143273` | `9174781465` | `8a706f2fd16d0a3e27ce4d250e7818f58bca5e89c9f8d2d30a0d5426f881daef` |
+
+Os dois jobs aprovaram `928` testes, `11.174/12.040` linhas, `3.309/3.892` branches, `90,91%` combinada, baseline de `325` arquivos, mypy em `73` arquivos, pip-audit sem vulnerabilidades conhecidas e Bandit sem alta severidade. Não houve anotações de check-run, erro de comando de workflow ou traceback não legado nos logs.
+
+Os `coverage.xml` extraídos confirmaram as contagens exatas; SHA-256 Linux `9fe4bb8e1b7605909175f4503ecf6e02994c209911d55560de8216d7d89226f2` e Windows `164fb2c70b4df114c252310aa886d5f86036509f832760ebb8e9b5fccc6e646d`. O artefato Windows confirmou o legado no merge sintético, com `source_head_commit` igual ao HEAD fonte, `working_tree_dirty=false`, `196` testes e `27/27` divergências conciliadas; SHA-256 do resumo `01a8b14d6c523f064d3be62ec4c39e737313e08f7a4d0fa16afb788ce048d309`.
+
+A comparação com a árvore fonte encontrou `54` arquivos: `52` idênticos byte a byte e `2` documentos idênticos após normalização exclusiva de CRLF/LF, sem diferença textual. A varredura recursiva validou checksums internos e inspecionou `60` arquivos, `1.419` payloads e `1.359` entradas de arquivos aninhados, com zero referência proibida ou caminho pessoal. Os pacotes temporários foram removidos após a auditoria.
+
 ## Limitações e riscos residuais
 
-- CI Linux e Windows ainda não foi executado para o HEAD técnico desta etapa.
+- O CI pré-merge foi aceito para o HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3`; qualquer alteração posterior exige novo CI antes do merge.
 - O resumo legado final foi gerado fora do repositório com `tested_commit` e `source_head_commit` iguais a `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, `working_tree_dirty=false`, conciliado e removido após o cálculo do hash.
 - A cobertura de branches está apenas 0,02 ponto percentual acima da meta; qualquer mudança exige nova medição integral.
 - Benchmarks usam imagens sintéticas simples e não representam pior caso de imagens ruidosas, muitos contornos, atlas cheio ou hardware diferente.
@@ -121,4 +141,4 @@ Imagem quadrada 8K excede 16.777.216 pixels e é rejeitada deliberadamente antes
 
 ## Decisão pré-merge
 
-**PARCIAL.** O commit técnico e as validações locais limpas são suficientes para publicar a branch e solicitar CI. Não há base para encerrar `R-012`, concluir a Etapa 12, iniciar a Etapa 13 ou aprovar release antes de CI Linux/Windows, auditoria dos artefatos ligados ao SHA exato, merge autorizado e pós-merge.
+**APROVADO TECNICAMENTE PRÉ-MERGE / INTEGRAÇÃO PENDENTE.** A validação local e o CI do HEAD fonte foram aceitos após auditoria dos artefatos. Não há base para encerrar `R-012`, concluir a Etapa 12, iniciar a Etapa 13 ou aprovar release antes de merge explicitamente autorizado e auditoria pós-merge.

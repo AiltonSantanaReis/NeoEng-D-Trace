@@ -4,7 +4,7 @@
 
 **Última âncora integrada:** `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`
 
-**Estado atual:** Etapa 11 concluída no escopo aprovado pelas PRs `#45`/`#46` e CI final `31495971632`. A Etapa 12 possui implementação local pré-merge no commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, com `928` testes, cobertura de 92,81% de linhas, 85,02% de branches e 90,91% combinada; `R-012` continua aberto até CI Linux/Windows, merge autorizado e pós-merge. Release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
+**Estado atual:** Etapa 11 concluída no escopo aprovado pelas PRs `#45`/`#46` e CI final `31495971632`. A Etapa 12 possui implementação pré-merge no commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f`, com `928` testes, cobertura de 92,81% de linhas, 85,02% de branches e 90,91% combinada; o CI `31684136128` do HEAD fonte `a42b54b07d8e9e10feb8d283adc664b52f9d25d3` foi auditado em Linux/Windows. `R-012` continua aberto até merge autorizado e pós-merge. Release não aprovada. O histórico completo das PRs `#42`/`#43` e dos CIs aceitos/rejeitados permanece preservado abaixo e na evidência da Etapa 10.
 
 **Baseline integrada da Etapa 11:** PR `#45`, merge `2a38b89e542390b3b4396a88d9a416f3695caadc`, CI `31491221322`, `877` testes e cobertura combinada `90,91%`.
 
@@ -35,9 +35,9 @@ snapshot histórico.
 | Lasso magnético | APROVADO NO ESCOPO ATUAL | engine, preview assíncrono, QImage e ndarray reais | desempenho e UX ainda possuem limitações registradas |
 | Colisão estática e APIs | INTEGRADO / APROVADO | API pública `src.collision`; 39 casos da etapa; PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI pós-merge `31445518755` aprovado em Linux e Windows | nenhum no escopo da Etapa 9 |
 | Bézier e triangulação | INTEGRADO / APROVADO | PR `#38`, merge `fc869250e5067fb7b06b70c7d2dd3c0e1e1ee94e`, CI pós-merge `31441024001`; núcleo com 95.59% de linhas e 93.29% de branches | nenhum no escopo da Etapa 8 |
-| Segurança e limites | APROVADO LOCALMENTE / PRÉ-MERGE | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows | nenhuma ferramenta prova ausência total; CI Linux/Windows e pós-merge pendentes |
+| Segurança e limites | APROVADO TECNICAMENTE / PRÉ-MERGE | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows; CI `31684136128` auditado em Linux/Windows | nenhuma ferramenta prova ausência total; merge e pós-merge pendentes |
 | Tipagem | APROVADO LOCALMENTE | mypy com `check_untyped_defs`: zero erros em 73 arquivos | ampliar anotações explícitas gradualmente |
-| Cobertura | APROVADO LOCALMENTE / PRÉ-MERGE | `928` testes; `11.174/12.040` linhas (92,81%), `3.309/3.892` branches (85,02%) e 90,91% combinada | margem de branch de apenas 0,02 p.p.; CI/merge pendentes |
+| Cobertura | APROVADO TECNICAMENTE / PRÉ-MERGE | `928` testes locais e no CI Linux/Windows; `11.174/12.040` linhas (92,81%), `3.309/3.892` branches (85,02%) e 90,91% combinada | margem de branch de apenas 0,02 p.p.; merge e pós-merge pendentes |
 | Build Windows/instalador | NÃO INICIADO | wheel Python validado | Etapa 14 obrigatória antes de release |
 
 ## Regra de leitura
