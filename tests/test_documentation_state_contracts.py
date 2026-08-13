@@ -723,7 +723,7 @@ def test_stage11_package_1_is_local_partial_and_keeps_r003_open():
         assert expected in evidence
 
 
-def test_stage11_packages_update_live_state_without_closing_r003():
+def test_stage11_packages_and_closure_are_preserved():
     evidence = _text("docs/evidence/ETAPA_11_COBERTURA_UI_PACOTE_2.md")
     for expected in (
         "33a807ca41c549c283cad13250ca54b7e2bb6e0b",
@@ -887,17 +887,13 @@ def test_stage11_packages_update_live_state_without_closing_r003():
         assert "Etapa 11" in value, relative
         assert "877" in value, relative
         assert "90,91%" in value, relative
-        assert "2a38b89e542390b3b4396a88d9a416f3695caadc" in value, relative
-        assert "31491221322" in value, relative
-        assert "a22a90088220e586c3382c3ed5dc1075a3ff7e6b" in value, relative
-        assert "31495971632" in value, relative
         assert "R-003" in value, relative
         assert "R-012" in value, relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative
 
 
-def test_stage12_premerge_evidence_is_audited_and_keeps_r012_open():
+def test_stage12_premerge_evidence_preserves_historical_open_state():
     evidence = _text("docs/evidence/ETAPA_12_SEGURANCA_LIMITES_PRE_MERGE.md")
     for expected in (
         "a22a90088220e586c3382c3ed5dc1075a3ff7e6b",
@@ -931,6 +927,32 @@ def test_stage12_premerge_evidence_is_audited_and_keeps_r012_open():
     assert "zero referência proibida ou caminho pessoal" in evidence
     assert "Etapa 12: NÃO CONCLUÍDA" in evidence
 
+
+def test_stage12_closure_is_bound_to_merge_and_postmerge_ci():
+    closure = _text("docs/evidence/ETAPA_12_ENCERRAMENTO_POS_MERGE.md")
+    for expected in (
+        "#49",
+        "03b4cd2fc57e2f9187836e5a0ffc89ee08e18fba",
+        "872bf079d228d13d0203d22b844052b1f920e99b",
+        "31685608005",
+        "31686321925",
+        "94403113721",
+        "94403113862",
+        "9175582216",
+        "9175617872",
+        "928 passed",
+        "929",
+        "326",
+        "11.174/12.040",
+        "3.309/3.892",
+        "1.419",
+        "R012_CLOSED=YES",
+        "STAGE12_COMPLETED=YES",
+        "STAGE13_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+    ):
+        assert expected in closure
+
     for relative in (
         "README.md",
         "CHANGELOG.md",
@@ -941,9 +963,9 @@ def test_stage12_premerge_evidence_is_audited_and_keeps_r012_open():
     ):
         value = _text(relative)
         assert "928" in value, relative
-        assert "da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f" in value, relative
-        assert "31684136128" in value, relative
+        assert "872bf079d228d13d0203d22b844052b1f920e99b" in value, relative
+        assert "31686321925" in value, relative
         assert "R-012" in value, relative
-        assert "aberto" in value.lower(), relative
+        assert "encerrado" in value.lower(), relative
         assert "release" in value.lower(), relative
         assert "não aprovada" in value.lower(), relative

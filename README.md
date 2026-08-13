@@ -4,44 +4,41 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 11 concluída; Etapa 12 aprovada tecnicamente pré-merge, com integração e pós-merge pendentes; release NÃO APROVADA.**
+> **Estado:** pré-release em desenvolvimento. **Etapas 11 e 12 concluídas no escopo aprovado; Etapa 13 não iniciada; release NÃO APROVADA.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
 ## Estado verificável
 
-Esta apresentação preserva a Etapa 11 auditada em
-`a22a90088220e586c3382c3ed5dc1075a3ff7e6b`, validada pelo workflow
-`Private validation` `31495971632`, e está reconciliada com a `main`
-`2e9cad4cb7879aa7ceb8ee0a1e096b738674a984`. A Etapa 12 foi validada
-localmente no commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` e
-no CI pré-merge `31684136128` do HEAD fonte
-`a42b54b07d8e9e10feb8d283adc664b52f9d25d3`.
+Esta apresentação está ancorada na `main`
+`872bf079d228d13d0203d22b844052b1f920e99b`, resultante da PR `#49`. A
+Etapa 12 foi reproduzida no CI pós-merge `31686321925`, após validação local
+do commit técnico `da7611b543bb0ceb4eb8e67a7900aadcb8f04a5f` e auditoria do
+CI pré-merge final `31685608005`.
 
 | Indicador | Estado comprovado |
 |---|---|
-| Suíte oficial | **928 testes aprovados localmente e no CI Linux/Windows** |
+| Suíte oficial | **929 testes locais no fechamento; 928 no CI pós-merge funcional Linux/Windows** |
 | Cobertura de linhas | **11.174/12.040 — 92,81%** |
 | Cobertura de branches | **3.309/3.892 — 85,02%** |
 | Cobertura combinada | **90,91%** |
 | Type checking | mypy sem erros em 73 arquivos |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
-| Etapa atual encerrada | **Etapa 11** |
-| Etapa em execução | **Etapa 12 — pré-merge; R-012 aberto** |
+| Etapa atual encerrada | **Etapa 12 — R-012 encerrado no escopo aprovado** |
+| Próxima etapa | **Etapa 13 — não iniciada** |
 | Release | **NÃO APROVADA** |
 
-O encerramento funcional da Etapa 11 permanece vinculado à integração
-`2a38b89e542390b3b4396a88d9a416f3695caadc` e ao CI pós-merge
-`31491221322`. O fechamento documental foi integrado posteriormente, sem
-alterar a decisão de release. `R-003` está encerrado no escopo aprovado;
-`R-011` permanece **ABERTO** e `R-012` permanece **PARCIAL / ABERTO**.
+O encerramento funcional da Etapa 12 está vinculado à integração
+`872bf079d228d13d0203d22b844052b1f920e99b` e ao CI pós-merge
+`31686321925`. `R-012` está encerrado no escopo aprovado; `R-011` permanece
+**ABERTO** para a refatoração protegida da Etapa 13.
 
 Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,
 detecção, broadphase, atlas, GLTF e logs. O legado executou 196 testes e
 conciliou 27/27 divergências históricas, sem falhas inesperadas. Esses
-resultados locais foram reproduzidos no CI pré-merge Linux/Windows. Isso não
-substitui merge autorizado nem auditoria pós-merge.
+resultados foram reproduzidos no CI pós-merge Linux/Windows. Os tetos são
+controles de segurança, não SLA nem prova de ausência total de vulnerabilidades.
 
 ## O que o NeoEng-D-Trace resolve
 
@@ -206,8 +203,8 @@ O README não transforma roadmap em funcionalidade entregue. No estado atual:
 - **release não está aprovada**;
 - Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
 - `R-011` permanece aberto para refatoração protegida de módulos acoplados;
-- `R-012` permanece parcial/aberto para segurança e limites operacionais da
-  Etapa 12;
+- `R-012` está encerrado no escopo aprovado, mas os limites publicados não
+  constituem SLA nem garantia de ausência total de vulnerabilidades;
 - o GLTF/GLB atual não inclui UV, materiais, extrusão ou 2.5D;
 - limites oficiais de resolução, quantidade de objetos/vértices, memória,
   tempo e hardware mínimo ainda não devem ser publicados sem benchmark
@@ -246,8 +243,8 @@ NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. N
 há licença open source atribuída. O texto jurídico comercial final ainda exige
 decisão/revisão própria antes de qualquer lançamento público.
 
-A atualização deste README não aprova release, não conclui a Etapa 12 e não
-encerra `R-012`.
+A atualização deste README encerra somente a Etapa 12 e `R-012` no escopo
+auditado; não aprova release nem inicia a Etapa 13.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>
