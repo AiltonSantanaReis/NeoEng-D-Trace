@@ -297,10 +297,23 @@ class AutosaveStore:
         for suffix in range(1_000):
             candidate = base if suffix == 0 else base.with_name(f"{base.name}.{suffix}")
             try:
-                self.path.rename(candidate)
+                descriptor = os.open(
+                    candidate,
+                    os.O_WRONLY | os.O_CREAT | os.O_EXCL,
+                    0o600,
+                )
             except FileExistsError:
                 continue
             except OSError:
+                return None
+            try:
+                os.close(descriptor)
+                os.replace(self.path, candidate)
+            except OSError:
+                try:
+                    candidate.unlink(missing_ok=True)
+                except OSError:
+                    pass
                 return None
             return candidate
         return None

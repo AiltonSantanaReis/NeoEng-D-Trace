@@ -118,14 +118,17 @@ def test_autosave_atomic_failure_preserves_previous_snapshot(
 def test_invalid_autosave_is_quarantined_without_deletion(tmp_path: Path) -> None:
     path = tmp_path / "recovery.json"
     path.write_text("{", encoding="utf-8")
+    previous = path.with_name("recovery.json.corrupted")
+    previous.write_text("previous invalid snapshot", encoding="utf-8")
     store = AutosaveStore(path)
 
     with pytest.raises(AutosaveError) as captured:
         store.load()
 
     quarantine = captured.value.quarantine_path
-    assert quarantine is not None
+    assert quarantine == path.with_name("recovery.json.corrupted.1")
     assert quarantine.read_text(encoding="utf-8") == "{"
+    assert previous.read_text(encoding="utf-8") == "previous invalid snapshot"
     assert not path.exists()
 
 

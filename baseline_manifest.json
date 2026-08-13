@@ -845,8 +845,8 @@
       "size": 1166
     },
     "src/persistence/autosave.py": {
-      "sha256": "3861b0687d04d6e4ef0db0b3c5ab437ab000c5f4932eee0920b2c7e5422dc60b",
-      "size": 10467
+      "sha256": "99c52a642c61161a00d9a023a6f2875ce0734c45839481b311a535cd116e9224",
+      "size": 10886
     },
     "src/persistence/errors.py": {
       "sha256": "c5457d431b9b669dbf1283d242c4e5016690e9db5b3ab56112f26e1e15b3c19c",
@@ -1229,8 +1229,8 @@
       "size": 23032
     },
     "tests/test_stage_13_qt_refactor_autosave.py": {
-      "sha256": "2170b7f912d0743b57a20f36f3275c70314f4423dc2e9e8853e6c6cabe087eb1",
-      "size": 17924
+      "sha256": "b718008034d3e892e9814f716b4942f86b3e65a4c82e1329e57a5537afa7ba2e",
+      "size": 18166
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
