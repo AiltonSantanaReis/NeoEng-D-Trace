@@ -128,8 +128,8 @@
     "required_for_formal_closure": true,
     "repository_bundle_path": "docs/evidence/raw/NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip",
     "bundle_filename": "NeoEng-D-Trace_Etapa2_Raw_Evidence_Bundle.zip",
-    "bundle_size_bytes": 339557,
-    "bundle_sha256": "37fbff9bc0e07faa60c3c64e0735f7c7466b248875314833fcb446c3e162d7c8",
+    "bundle_size_bytes": 339676,
+    "bundle_sha256": "b8cb15a9f199cf9428ba9ebedebe360444905882c35902d471df5690d7a78f49",
     "pull_request_validation": {
       "run_number": 35,
       "run_id": 30645019894,
@@ -181,8 +181,8 @@
   "post_merge_validation": {
     "package_filename": "NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip",
     "repository_path": "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip",
-    "size_bytes": 393672,
-    "sha256": "3aed50811c30d5f49ed7d53695d9e04a73cbac6135121128ff1ac0519a288ffc",
+    "size_bytes": 393802,
+    "sha256": "5356fcfc5bbbe0597f1103e4f063ae7aa5d9474911dba9fc7ae7aac090374069",
     "workflow": {
       "name": "Private validation",
       "run_id": 30646258120,
@@ -238,7 +238,7 @@
     "evidence_hashes": {
       "report_normalized_lf_sha256": "8f0998eb3b14a488247ef87b8ea2d37c0be8451ab70625d86f2b15ba03de167f",
       "manifest_normalized_lf_sha256": "9ac1a22071299b5579b16be0908f1c8e4e1ffa9ceabd59bc0f2b1c86571f8926",
-      "raw_bundle_sha256": "37fbff9bc0e07faa60c3c64e0735f7c7466b248875314833fcb446c3e162d7c8"
+      "raw_bundle_sha256": "b8cb15a9f199cf9428ba9ebedebe360444905882c35902d471df5690d7a78f49"
     },
     "gate": "APPROVED"
   }

@@ -28,6 +28,29 @@ Etapas 2 e 3. O usuário autorizou explicitamente a sanitização controlada em
 | Etapa 3 pós-merge | `2542880` | `2546619` | `f8ce9be99ceae4e9859acff3e9f1f967a5c35edca85288a4b0032e6e8f4caaf0` | `29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270` |
 | Etapa 3 bruto | `1753510` | `1755602` | `411981900d5f3c795e0336a4a813bfe4311d25f647cb6a878b8f7239c2311d8f` | `22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b` |
 
+## Segunda correção — 13 de agosto de 2026
+
+Uma varredura retrospectiva mais estrita revelou uma falha no teste anterior:
+o regex aceitava somente um separador após a unidade e `Users`, enquanto os
+JSONs históricos armazenavam caminhos Windows com barras escapadas duplicadas.
+Assim, a afirmação anterior de zero ocorrências estava errada para esse formato.
+
+Mediante nova autorização explícita, os quatro ZIPs foram novamente
+sanitizados por `tools/sanitize_evidence_archives.py`. A execução encontrou `60`
+payloads JSON com `852` ocorrências do identificador local. A transformação
+removeu também caminhos de homes de runners Windows/macOS, totalizando `1.512`
+substituições em cópias aninhadas, reescreveu `85` instâncias de ZIP e atualizou
+`59` linhas de checksum. A comparação recursiva com os bytes do `HEAD`
+confirmou zero membro adicionado/removido, zero alteração fora de sanitização e
+checksums, zero checksum divergente e zero alteração inesperada.
+
+| Pacote | Bytes antes da segunda correção | Bytes finais | SHA-256 antes | SHA-256 final |
+|---|---:|---:|---|---|
+| Etapa 2 pós-merge | `393672` | `393802` | `3aed50811c30d5f49ed7d53695d9e04a73cbac6135121128ff1ac0519a288ffc` | `5356fcfc5bbbe0597f1103e4f063ae7aa5d9474911dba9fc7ae7aac090374069` |
+| Etapa 2 bruto | `339557` | `339676` | `37fbff9bc0e07faa60c3c64e0735f7c7466b248875314833fcb446c3e162d7c8` | `b8cb15a9f199cf9428ba9ebedebe360444905882c35902d471df5690d7a78f49` |
+| Etapa 3 pós-merge | `2546619` | `2547724` | `29fa47466b23b426e94dc919e5239fce7143bf73b78c93121890a16b6aa2e270` | `a057fa82620cd0f7a5d8644a615adc65f923a0db36d71caacbf2a6dd41e54396` |
+| Etapa 3 bruto | `1755602` | `1756194` | `22cbc2d80e5116ef991bdb91b4fc99891d9730db43b05735c408c76f018cbb8b` | `e082e552c015dd7fd742e8a05a27e454c2db6b63feea052ba162c9e31e2dfe28` |
+
 ## Validação
 
 - scanner recursivo inicial: `26` ocorrências em cópias aninhadas;
@@ -38,4 +61,8 @@ Etapas 2 e 3. O usuário autorizou explicitamente a sanitização controlada em
   removidos e zero alterações fora das categorias declaradas;
 - ZIPs de topo alterados: quatro; ZIPs de topo inalterados: dois;
 - teste de regressão: `tests/test_repository_reference_hygiene.py`;
-- CI pré-merge `31457937902`: aceito após varredura recursiva; merge `9b22bdc54b13992658172d4748bfab44f3127c8e` concluído; fechamento pós-merge e release: pendentes.
+- na segunda correção, o teste passou a aceitar um ou mais separadores Windows, a bloquear também homes macOS e a reprovar quando o limite de profundidade impede a inspeção completa;
+- `tests/test_sanitize_evidence_archives.py` prova dry-run sem escrita, transformação aninhada, checksums e idempotência;
+- ferramenta aplicada novamente em dry-run após a escrita: quatro pacotes inalterados, zero substituição e hashes estáveis;
+- CI pré-merge `31457937902`: aceito com o scanner antigo; a limitação descoberta posteriormente fica registrada e exige novo CI desta correção;
+- merge `9b22bdc54b13992658172d4748bfab44f3127c8e` concluído; release permanece não aprovada.

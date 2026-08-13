@@ -4,7 +4,7 @@
 
 Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
-### Etapa 13 — aprovada localmente, ainda não integrada
+### Etapa 13 — integrada e concluída no escopo aprovado
 
 - reduz `main_window.py` de `1.306` para `1.175` linhas físicas e separa sessão de documento, caminhos de estado, conversão de imagem, traduções e coordenação do autosave;
 - adiciona autosave local versionado, atômico e limitado, com quarentena de snapshot inválido, fingerprint do projeto-fonte e recuperação explícita;
@@ -16,7 +16,9 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - registra e corrige falhas intermediárias, inclusive uma suíte `939 passed, 1 failed`, risco de exclusão no fluxo adiado e branches inicialmente abaixo de 85%;
 - rejeita o CI verde `31693639653` após os artefatos mostrarem `11.576` linhas cobertas no Linux contra `11.578` no Windows; corrige a quarentena que sobrescrevia snapshot anterior em sistemas POSIX e adiciona regressão portátil;
 - aceita o CI corretivo `31695151223` no HEAD `c2e21374f2669248da55c6e77110f2b1f80164b2` após confirmar cobertura idêntica ponto a ponto em Linux/Windows, legado `27/27`, documentos equivalentes e `1.421` payloads sem violações;
-- mantém `R-011` aberto, Etapa 13 não concluída, Etapa 14 não iniciada e release não aprovada até merge autorizado e CI pós-merge auditado.
+- integra a PR `#51` em `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e aceita o CI pós-merge `31698961646` somente após auditoria de cobertura, legado, documentos, proveniência e `1.421` payloads;
+- encerra `R-011` e conclui a Etapa 13 no escopo aprovado; Etapa 14 não iniciada e release não aprovada;
+- registra falha retrospectiva no scanner de caminhos históricos: `60` payloads e `852` ocorrências locais não detectadas por separadores JSON duplicados; sanitiza quatro ZIPs autorizados, endurece o contrato e mantém a correção pendente de novo CI.
 
 ### Etapa 12 — integrada e concluída, segurança e limites operacionais
 

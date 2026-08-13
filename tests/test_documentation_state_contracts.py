@@ -1033,6 +1033,39 @@ def test_stage13_premerge_evidence_keeps_r011_and_release_open():
     ):
         assert expected in evidence
 
+    assert "não integrada" in evidence.lower()
+    assert "release" in evidence.lower()
+    assert "não aprovada" in evidence.lower()
+
+
+def test_stage13_postmerge_closure_records_integrated_state_without_release():
+    closure = _text("docs/evidence/ETAPA_13_ENCERRAMENTO_POS_MERGE.md")
+    for expected in (
+        "e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108",
+        "31698961646",
+        "94443159698",
+        "94443159474",
+        "9180500171",
+        "9180511616",
+        "953 passed",
+        "11.581/12.478",
+        "3.370/3.964",
+        "27/27",
+        "1.421",
+        "955 passed",
+        "baseline de `338` arquivos",
+        "CLOSURE_LOCAL_TESTS_PASSED=955",
+        "CLOSURE_BASELINE_FILES=338",
+        "RETROSPECTIVE_HYGIENE_LOCAL_STATUS=PASSED",
+        "RETROSPECTIVE_HYGIENE_REMEDIATION=PENDING_CI",
+        "R011_CLOSED=YES",
+        "STAGE13_COMPLETED=YES",
+        "STAGE14_STARTED=NO",
+        "RELEASE_APPROVED=NO",
+        "ETAPA 13 CONCLUÍDA NO ESCOPO APROVADO",
+    ):
+        assert expected in closure
+
     for relative in (
         "README.md",
         "CHANGELOG.md",
@@ -1042,10 +1075,10 @@ def test_stage13_premerge_evidence_keeps_r011_and_release_open():
         "docs/evidence/README.md",
     ):
         value = _text(relative)
-        assert "426cef118fdb0a334e639ec962b2e514cfd59b0a" in value, relative
-        assert "953" in value, relative
-        assert "31695151223" in value, relative
+        assert "e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108" in value, relative
+        assert "31698961646" in value, relative
         assert "R-011" in value, relative
-        assert "não integrada" in value.lower() or "não integrado" in value.lower()
-        assert "release" in value.lower()
-        assert "não aprovada" in value.lower()
+        assert "encerrado" in value.lower(), relative
+        assert "Etapa 14" in value, relative
+        assert "release" in value.lower(), relative
+        assert "não aprovada" in value.lower(), relative
