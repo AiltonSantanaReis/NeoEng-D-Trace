@@ -138,6 +138,42 @@
       },
       "root_cause": "raw text hash depended on platform line endings",
       "remediation": "canonical JSON content hash"
+    },
+    {
+      "run": 31737623236,
+      "status": "ACCEPTED_AFTER_ARTIFACT_AUDIT",
+      "source_head_commit": "d6516001d3901c253dafc78a5540884cf82dcf58",
+      "tested_merge_commit": "df7fc52e1e857950e1760848549dbc1ae3286571",
+      "tests_per_platform": 980,
+      "coverage": {
+        "lines_covered": 11621,
+        "lines_valid": 12523,
+        "branches_covered": 3382,
+        "branches_valid": 3978,
+        "pointwise_identical": true
+      },
+      "legacy": {
+        "tests": 196,
+        "matched_expected_failures": 27,
+        "expected_failures": 27,
+        "unexpected": 0,
+        "missing": 0,
+        "replacement_references": 17
+      },
+      "evidence_files_compared": 66,
+      "recursive_payloads_scanned": 1431,
+      "recursive_archives_scanned": 127,
+      "prohibited_reference_violations": 0,
+      "artifacts": {
+        "linux": {
+          "id": 9195814077,
+          "digest": "sha256:65ec4529b82c36116596c5810899fe7b4794d578b929bf3b94345859ddadc2b2"
+        },
+        "windows": {
+          "id": 9195848386,
+          "digest": "sha256:c3c8a7e3e090c756958a2487f8c6c57ea43c51e410b373217bfbd673226b3aee"
+        }
+      }
     }
   ]
 }

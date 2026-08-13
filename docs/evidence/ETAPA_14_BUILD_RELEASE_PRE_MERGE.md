@@ -91,6 +91,21 @@ Nenhuma destas ocorrências foi convertida artificialmente em PASS:
 9. o PyInstaller continua emitindo `242` linhas de módulos ausentes, majoritariamente condicionais/plataforma/ opcionais, e um aviso de `tzdata` ausente. Os smokes, MSI e engines passaram, mas os avisos não são declarados inexistentes.
 10. o primeiro CI da PR, run `31736919284`, foi rejeitado: Windows passou, mas Linux terminou com `979 passed, 1 failed` porque o contrato hashava bytes de um JSON textual com finais de linha dependentes da plataforma. A correção usa serialização JSON canônica e continua rejeitando qualquer divergência semântica.
 
+## CI pré-merge corretivo auditado
+
+O run `31737623236`, vinculado ao HEAD fonte `d6516001d3901c253dafc78a5540884cf82dcf58` e ao merge sintético `df7fc52e1e857950e1760848549dbc1ae3286571`, foi aceito somente após inspeção dos artefatos:
+
+- Linux e Windows: `980 passed` por sistema;
+- cobertura idêntica ponto a ponto em `80` módulos: `11.621/12.523` linhas e `3.382/3.978` branches;
+- política global e piso por módulo aprovados;
+- legado Windows: `196` testes, `27/27` falhas históricas reconciliadas, zero inesperadas/ausentes e `17` substitutos coletáveis;
+- `66` arquivos de evidência equivalentes ao repositório após normalização textual;
+- `1.431` payloads e `127` arquivos ZIP examinados recursivamente, sem referência proibida, caminho local ou checksum interno divergente;
+- artefato Linux `9195814077`, digest `65ec4529b82c36116596c5810899fe7b4794d578b929bf3b94345859ddadc2b2`;
+- artefato Windows `9195848386`, digest `c3c8a7e3e090c756958a2487f8c6c57ea43c51e410b373217bfbd673226b3aee`.
+
+O run verde foi aceito após essa auditoria; o run anterior `31736919284` permanece rejeitado no histórico.
+
 ## Limitações e riscos residuais
 
 - `R-014`: executáveis e MSI sem assinatura de código; bloqueia release pública.
@@ -105,6 +120,10 @@ Nenhuma destas ocorrências foi convertida artificialmente em PASS:
 `PRE_MERGE_CI_RUN=31736919284`
 
 `PRE_MERGE_CI_STATUS=REJECTED`
+
+`CORRECTIVE_CI_RUN=31737623236`
+
+`CORRECTIVE_CI_STATUS=ACCEPTED_AFTER_ARTIFACT_AUDIT`
 
 `STAGE14_TECHNICAL_CANDIDATE=PASS`
 

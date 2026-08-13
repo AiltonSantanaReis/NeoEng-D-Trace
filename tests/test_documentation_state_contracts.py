@@ -1118,6 +1118,13 @@ def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():
         "977 passed, 1 failed",
         "PRE_MERGE_CI_RUN=31736919284",
         "PRE_MERGE_CI_STATUS=REJECTED",
+        "CORRECTIVE_CI_RUN=31737623236",
+        "CORRECTIVE_CI_STATUS=ACCEPTED_AFTER_ARTIFACT_AUDIT",
+        "d6516001d3901c253dafc78a5540884cf82dcf58",
+        "df7fc52e1e857950e1760848549dbc1ae3286571",
+        "1.431",
+        "9195814077",
+        "9195848386",
         "STAGE14_TECHNICAL_CANDIDATE=PASS",
         "STAGE14_COMPLETED=NO",
         "RELEASE_APPROVED=NO",
@@ -1134,6 +1141,11 @@ def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():
     assert manifest["decision"]["technical_candidate"] == "PASS"
     assert manifest["decision"]["stage_completed"] is False
     assert manifest["decision"]["release_approved"] is False
+    accepted = manifest["ci_history"][-1]
+    assert accepted["run"] == 31737623236
+    assert accepted["status"] == "ACCEPTED_AFTER_ARTIFACT_AUDIT"
+    assert accepted["coverage"]["pointwise_identical"] is True
+    assert accepted["prohibited_reference_violations"] == 0
 
     for relative in (
         "README.md",

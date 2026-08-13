@@ -15,6 +15,7 @@ Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real
 - valida fixtures produzidos pelos executáveis no Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0`;
 - registra sem ocultação as falhas intermediárias de fixture, árvore suja, ordem do arquivo Python, timestamp MSI, perfil CLI e autoacionamento do scanner;
 - rejeita o primeiro CI da PR, run `31736919284`: Windows passou e Linux falhou com `979 passed, 1 failed` porque o hash bruto de relatório JSON variava com finais de linha; corrige o contrato para hash canônico do conteúdo semântico;
+- aceita o CI corretivo `31737623236` após confirmar `980` testes por sistema, cobertura ponto a ponto idêntica, legado `27/27`, digests dos dois artefatos, `66` evidências equivalentes e `1.431` payloads recursivos sem violações;
 - mantém `RELEASE_APPROVED=NO`: executáveis e MSI sem assinatura, texto jurídico e política de publicação pendentes, ícone final ausente, builder MSI dependente de API removida após Python 3.12 e validação limitada a um host Windows.
 
 ### Etapa 13 — integrada e concluída no escopo aprovado
