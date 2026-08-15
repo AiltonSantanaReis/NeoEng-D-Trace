@@ -8,15 +8,19 @@ import json
 import os
 import re
 import struct
-import sys
+import subprocess
+import tempfile
 import uuid
 from pathlib import Path
+from xml.sax.saxutils import quoteattr
 
 from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
 
 PRODUCT_NAMESPACE = uuid.UUID("6e69818d-93a3-5a86-953c-2326c536d06f")
 UPGRADE_CODE = "{F13BFDC4-1445-56D9-A72E-8812CA7F9E87}"
 MANUFACTURER = "NeoEng-D-Trace"
+WIX_VERSION = "4.0.6"
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def stable_guid(name: str) -> str:
@@ -71,6 +75,59 @@ def verify_portable_manifest(bundle: Path, manifest: dict[str, object]) -> None:
             raise ValueError(f"portable file hash mismatch: {relative}")
 
 
+def _cfb_sector_offset(sector_id: int, sector_size: int) -> int:
+    return (sector_id + 1) * sector_size
+
+
+def _cfb_fat_sector_ids(data: bytearray, sector_size: int) -> list[int]:
+    number_of_fat_sectors = struct.unpack_from("<I", data, 44)[0]
+    first_difat_sector = struct.unpack_from("<I", data, 68)[0]
+    number_of_difat_sectors = struct.unpack_from("<I", data, 72)[0]
+    sector_ids = [
+        struct.unpack_from("<I", data, 76 + index * 4)[0] for index in range(109)
+    ]
+    sector_ids = [sector_id for sector_id in sector_ids if sector_id < 0xFFFFFFFA]
+    current = first_difat_sector
+    for _ in range(number_of_difat_sectors):
+        offset = _cfb_sector_offset(current, sector_size)
+        if offset + sector_size > len(data):
+            raise ValueError("MSI DIFAT sector is outside the output")
+        for index in range((sector_size // 4) - 1):
+            sector_id = struct.unpack_from("<I", data, offset + index * 4)[0]
+            if sector_id < 0xFFFFFFFA:
+                sector_ids.append(sector_id)
+        current = struct.unpack_from("<I", data, offset + sector_size - 4)[0]
+    if len(sector_ids) < number_of_fat_sectors:
+        raise ValueError("MSI FAT directory is incomplete")
+    return sector_ids[:number_of_fat_sectors]
+
+
+def _cfb_directory_sector_ids(data: bytearray, sector_size: int) -> list[int]:
+    fat_sector_ids = _cfb_fat_sector_ids(data, sector_size)
+    fat: list[int] = []
+    for sector_id in fat_sector_ids:
+        offset = _cfb_sector_offset(sector_id, sector_size)
+        if offset + sector_size > len(data):
+            raise ValueError("MSI FAT sector is outside the output")
+        fat.extend(
+            struct.unpack_from("<I", data, offset + index * 4)[0]
+            for index in range(sector_size // 4)
+        )
+    current = struct.unpack_from("<I", data, 48)[0]
+    sectors: list[int] = []
+    visited: set[int] = set()
+    while current < 0xFFFFFFFA:
+        if current in visited or current >= len(fat):
+            raise ValueError("MSI directory chain is invalid")
+        offset = _cfb_sector_offset(current, sector_size)
+        if offset + sector_size > len(data):
+            raise ValueError("MSI directory sector is outside the output")
+        visited.add(current)
+        sectors.append(current)
+        current = fat[current]
+    return sectors
+
+
 def normalize_msi_storage_timestamps(path: Path) -> None:
     data = bytearray(path.read_bytes())
     if data[:8] != bytes.fromhex("D0CF11E0A1B11AE1"):
@@ -82,7 +139,7 @@ def normalize_msi_storage_timestamps(path: Path) -> None:
     first_directory_sector = struct.unpack_from("<I", data, 48)[0]
     if first_directory_sector >= 0xFFFFFFFA:
         raise ValueError("MSI output has no valid directory sector")
-    root_offset = (first_directory_sector + 1) * sector_size
+    root_offset = _cfb_sector_offset(first_directory_sector, sector_size)
     if root_offset + 128 > len(data):
         raise ValueError("MSI root directory entry is outside the output")
     name_length = struct.unpack_from("<H", data, root_offset + 64)[0]
@@ -90,7 +147,22 @@ def normalize_msi_storage_timestamps(path: Path) -> None:
     root_name = data[root_offset : root_offset + name_length - 2].decode("utf-16le")
     if root_name != "Root Entry" or object_type != 5:
         raise ValueError("MSI root directory entry is invalid")
-    data[root_offset + 100 : root_offset + 116] = bytes(16)
+    try:
+        directory_sectors = _cfb_directory_sector_ids(data, sector_size)
+    except ValueError as error:
+        raise ValueError(f"MSI directory chain is invalid: {error}") from error
+    for sector_id in directory_sectors:
+        sector_offset = _cfb_sector_offset(sector_id, sector_size)
+        for entry_offset in range(0, sector_size, 128):
+            object_type = data[sector_offset + entry_offset + 66]
+            if object_type in (1, 2, 5):
+                data[
+                    sector_offset
+                    + entry_offset
+                    + 100 : sector_offset
+                    + entry_offset
+                    + 116
+                ] = bytes(16)
     temporary = path.with_suffix(path.suffix + ".normalizing")
     try:
         temporary.write_bytes(data)
@@ -99,149 +171,201 @@ def normalize_msi_storage_timestamps(path: Path) -> None:
         temporary.unlink(missing_ok=True)
 
 
-def _set_summary_package_code(database, package_code: str) -> None:
-    from msilib import PID_APPNAME, PID_REVNUMBER
-
-    summary = database.GetSummaryInformation(20)
-    summary.SetProperty(PID_REVNUMBER, package_code)
-    summary.SetProperty(PID_APPNAME, "NeoEng-D-Trace MSI Builder")
-    summary.Persist()
+def _xml_attribute(name: str, value: str) -> str:
+    return f"{name}={quoteattr(value)}"
 
 
-def _add_bundle_tree(database, cabinet, bundle: Path, feature) -> tuple[str, int]:
-    from msilib import Directory, add_data
-
-    target = Directory(
-        database,
-        cabinet,
-        None,
-        str(bundle.parent),
-        "TARGETDIR",
-        "SourceDir",
-        componentflags=0,
-    )
-    local_app_data = Directory(
-        database,
-        cabinet,
-        target,
-        ".",
-        "LocalAppDataFolder",
-        ".",
-        componentflags=0,
-    )
-    programs = Directory(
-        database,
-        cabinet,
-        local_app_data,
-        ".",
-        "ProgramsFolder",
-        "Programs",
-        componentflags=0,
-    )
-    install = Directory(
-        database,
-        cabinet,
-        programs,
-        bundle.name,
-        "INSTALLDIR",
-        short_directory_name(APP_DISPLAY_NAME),
-        componentflags=0,
-    )
-    install.absolute = str(bundle)
-    add_data(
-        database,
-        "Directory",
-        [
-            ("ProgramMenuFolder", "TARGETDIR", "."),
-            (
-                "ApplicationProgramsFolder",
-                "ProgramMenuFolder",
-                short_directory_name(APP_DISPLAY_NAME),
-            ),
-        ],
+def _component_xml(relative: Path) -> tuple[str, int]:
+    relative_key = relative.as_posix()
+    component_id = stable_identifier("cmp", relative_key)
+    file_id = stable_identifier("fil", relative_key)
+    source = relative_key
+    return (
+        f"      <Component Id={quoteattr(component_id)} "
+        f"Guid={quoteattr(stable_guid(f'component:{relative_key}'))}>\n"
+        f"        <File Id={quoteattr(file_id)} Source={quoteattr(source)} "
+        'KeyPath="yes" />\n'
+        "      </Component>",
+        1,
     )
 
-    directory_objects = {Path("."): install}
-    for relative in sorted(
-        (path.relative_to(bundle) for path in bundle.rglob("*") if path.is_dir()),
-        key=lambda path: path.as_posix(),
-    ):
-        parent = directory_objects[relative.parent]
-        logical = stable_identifier("dir", relative.as_posix())
-        directory = Directory(
-            database,
-            cabinet,
-            parent,
-            relative.name,
-            logical,
-            short_directory_name(relative.name),
-            componentflags=0,
-        )
-        directory.absolute = str(bundle / relative)
-        directory_objects[relative] = directory
 
-    root_component = ""
-    gui_file_id = ""
-    file_count = 0
-    for relative, directory in directory_objects.items():
-        physical = bundle if relative == Path(".") else bundle / relative
-        files = sorted(path for path in physical.iterdir() if path.is_file())
-        if not files:
-            continue
-        relative_key = relative.as_posix()
-        component = stable_identifier("cmp", relative_key)
-        key_file = "NeoEng-D-Trace.exe" if relative == Path(".") else files[0].name
-        directory.start_component(
-            component=component,
-            feature=feature,
-            flags=0,
-            keyfile=key_file,
-            uuid=stable_guid(f"component:{relative_key}"),
-        )
-        for path in files:
-            logical = directory.add_file(path.name)
-            file_count += 1
-            if relative == Path(".") and path.name == "NeoEng-D-Trace.exe":
-                gui_file_id = logical
-        if relative == Path("."):
-            root_component = component
+def _directory_xml(bundle: Path) -> tuple[str, list[str], int]:
+    files = sorted(
+        path.relative_to(bundle) for path in bundle.rglob("*") if path.is_file()
+    )
+    directory_set: set[Path] = set()
+    for relative in files:
+        current = relative.parent
+        while current != Path("."):
+            directory_set.add(current)
+            current = current.parent
+    directories = sorted(
+        directory_set,
+        key=lambda path: (len(path.parts), path.as_posix()),
+    )
+    files_by_directory: dict[Path, list[Path]] = {}
+    for relative in files:
+        files_by_directory.setdefault(relative.parent, []).append(relative)
+    component_refs: list[str] = []
 
-    if not root_component or not gui_file_id:
-        raise ValueError("portable bundle is missing NeoEng-D-Trace.exe")
-    add_data(
-        database,
-        "Shortcut",
-        [
-            (
-                "NeoEngDTraceStartMenu",
-                "ApplicationProgramsFolder",
-                short_directory_name(APP_DISPLAY_NAME),
-                root_component,
-                f"[#{gui_file_id}]",
-                None,
-                "Prepare 2D game assets and collision geometry",
-                None,
-                None,
-                None,
-                1,
-                "INSTALLDIR",
+    def render(directory: Path, indent: str) -> tuple[list[str], int]:
+        lines: list[str] = []
+        count = 0
+        for relative in files_by_directory.get(directory, []):
+            component, component_count = _component_xml(relative)
+            lines.extend(component.replace("      ", indent + "  ").splitlines())
+            component_refs.append(stable_identifier("cmp", relative.as_posix()))
+            count += component_count
+        children = [child for child in directories if child.parent == directory]
+        for child in children:
+            directory_id = stable_identifier("dir", child.as_posix())
+            lines.append(
+                f"{indent}<Directory {_xml_attribute('Id', directory_id)} "
+                f"{_xml_attribute('Name', child.name)}>"
             )
-        ],
+            child_lines, child_count = render(child, indent + "  ")
+            lines.extend(child_lines)
+            lines.append(f"{indent}</Directory>")
+            count += child_count
+        return lines, count
+
+    body, file_count = render(Path("."), "      ")
+    return "\n".join(body), component_refs, file_count
+
+
+def _write_wix_source(bundle: Path, path: Path, product_code: str) -> int:
+    directory_body, component_refs, file_count = _directory_xml(bundle)
+    shortcut_component = stable_identifier("cmp", "start-menu")
+    component_refs.append(shortcut_component)
+    lines = [
+        '<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">',
+        f"  <Package {_xml_attribute('Name', APP_DISPLAY_NAME)} "
+        f"{_xml_attribute('Manufacturer', MANUFACTURER)} "
+        f"{_xml_attribute('Version', APP_VERSION)} "
+        f"{_xml_attribute('ProductCode', product_code)} "
+        f"{_xml_attribute('UpgradeCode', UPGRADE_CODE)} "
+        'Scope="perUser" Compressed="yes">',
+        (
+            "    <MajorUpgrade "
+            'DowngradeErrorMessage="A newer version is already installed." />'
+        ),
+        '    <MediaTemplate EmbedCab="yes" />',
+        (
+            '    <Launch Condition="VersionNT64" '
+            'Message="NeoEng-D-Trace requires 64-bit Windows." />'
+        ),
+        '    <Property Id="ALLUSERS" Value="2" />',
+        '    <Property Id="MSIINSTALLPERUSER" Value="1" />',
+        '    <Property Id="LIMITUI" Value="1" />',
+        '    <Property Id="ARPNOMODIFY" Value="1" />',
+        '    <Property Id="ARPNOREPAIR" Value="1" />',
+        '    <Property Id="REBOOT" Value="ReallySuppress" />',
+        '    <StandardDirectory Id="LocalAppDataFolder">',
+        f'      <Directory Id="INSTALLDIR" Name={quoteattr(APP_DISPLAY_NAME)}>',
+        directory_body,
+        "      </Directory>",
+        "    </StandardDirectory>",
+        '    <StandardDirectory Id="ProgramMenuFolder">',
+        (
+            '      <Directory Id="ApplicationProgramsFolder" '
+            f"Name={quoteattr(APP_DISPLAY_NAME)}>"
+        ),
+        (
+            f"        <Component Id={quoteattr(shortcut_component)} "
+            f'Guid={quoteattr(stable_guid("component:start-menu"))}>'
+        ),
+        (
+            f'          <Shortcut Id="NeoEngDTraceStartMenu" '
+            f"Name={quoteattr(APP_DISPLAY_NAME)} "
+            f'Target="[#{stable_identifier("fil", "NeoEng-D-Trace.exe")}]" '
+            'WorkingDirectory="INSTALLDIR" '
+            'Description="Prepare 2D game assets and collision geometry" />'
+        ),
+        (
+            "          <RemoveFolder "
+            'Id="RemoveApplicationProgramsFolder" On="uninstall" />'
+        ),
+        (
+            '          <RegistryValue Root="HKCU" Key="Software\\NeoEng-D-Trace" '
+            'Name="Installed" Type="integer" Value="1" KeyPath="yes" />'
+        ),
+        "        </Component>",
+        "      </Directory>",
+        "    </StandardDirectory>",
+        '    <Feature Id="MainFeature" Title="NeoEng-D-Trace" Level="1">',
+    ]
+    lines.extend(
+        f"      <ComponentRef Id={quoteattr(component_id)} />"
+        for component_id in component_refs
     )
-    add_data(
-        database,
-        "RemoveFile",
+    lines.extend(["    </Feature>", "  </Package>", "</Wix>"])
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    return file_count
+
+
+def _run_wix(source: Path, bundle: Path, output: Path, intermediate: Path) -> None:
+    version = subprocess.run(
+        ["dotnet", "tool", "run", "wix", "--version"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if version.returncode != 0:
+        raise RuntimeError(
+            "WiX tool is unavailable; run 'dotnet tool restore' before building"
+        )
+    reported = (version.stdout or version.stderr).strip()
+    if not reported.startswith(WIX_VERSION + "+"):
+        raise RuntimeError(f"unsupported WiX version: {reported}")
+    command = [
+        "dotnet",
+        "tool",
+        "run",
+        "wix",
+        "build",
+        str(source),
+        "-b",
+        str(bundle),
+        "-out",
+        str(output),
+        "-arch",
+        "x64",
+        "-pdbtype",
+        "none",
+        "-intermediatefolder",
+        str(intermediate),
+    ]
+    result = subprocess.run(command, cwd=ROOT, check=False)
+    if result.returncode != 0:
+        raise RuntimeError(f"WiX build failed with exit code {result.returncode}")
+
+
+def _set_package_code(output: Path, package_code: str) -> None:
+    script = ROOT / "tools" / "set_msi_package_code.ps1"
+    result = subprocess.run(
         [
-            (
-                "RemoveApplicationProgramsFolder",
-                root_component,
-                None,
-                "ApplicationProgramsFolder",
-                2,
-            )
+            "powershell.exe",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            str(script),
+            "-Path",
+            str(output),
+            "-PackageCode",
+            package_code,
         ],
+        cwd=ROOT,
+        check=False,
     )
-    return root_component, file_count
+    if result.returncode != 0:
+        raise RuntimeError(
+            "Windows Installer Summary Information update failed with "
+            f"exit code {result.returncode}"
+        )
 
 
 def build_msi(
@@ -250,7 +374,7 @@ def build_msi(
     source_commit: str,
     source_epoch: int,
 ) -> dict[str, object]:
-    if sys.platform != "win32":
+    if os.name != "nt":
         raise RuntimeError("MSI creation is supported only on Windows")
     if not bundle.is_dir():
         raise FileNotFoundError(f"portable bundle does not exist: {bundle}")
@@ -260,70 +384,17 @@ def build_msi(
         raise ValueError("portable manifest source commit does not match MSI source")
     verify_portable_manifest(bundle, manifest)
 
-    import msilib
-    from msilib import CAB, Feature, add_data, add_tables, schema, sequence, text
-
     product_code = stable_guid(f"product:{APP_VERSION}:{source_commit}")
     package_code = stable_guid(f"package:{APP_VERSION}:{source_commit}")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.unlink(missing_ok=True)
-
-    timestamps: dict[Path, tuple[int, int]] = {}
-    for path in sorted(bundle.rglob("*")):
-        if path.is_file():
-            stat = path.stat()
-            timestamps[path] = (stat.st_atime_ns, stat.st_mtime_ns)
-            os.utime(path, (source_epoch, source_epoch))
-
-    database = None
-    try:
-        database = msilib.init_database(
-            str(output),
-            schema,
-            APP_DISPLAY_NAME,
-            product_code,
-            APP_VERSION,
-            MANUFACTURER,
-        )
-        _set_summary_package_code(database, package_code)
-        add_tables(database, sequence)
-        add_tables(database, text)
-        add_data(
-            database,
-            "Property",
-            [
-                ("UpgradeCode", UPGRADE_CODE),
-                ("ALLUSERS", "2"),
-                ("MSIINSTALLPERUSER", "1"),
-                ("LIMITUI", "1"),
-                ("ARPNOMODIFY", "1"),
-                ("ARPNOREPAIR", "1"),
-                ("REBOOT", "ReallySuppress"),
-            ],
-        )
-        add_data(
-            database,
-            "LaunchCondition",
-            [("VersionNT64", "NeoEng-D-Trace requires 64-bit Windows.")],
-        )
-        cabinet = CAB("product.cab")
-        feature = Feature(
-            database,
-            "MainFeature",
-            APP_DISPLAY_NAME,
-            "NeoEng-D-Trace application files",
-            1,
-            directory="INSTALLDIR",
-        )
-        feature.set_current()
-        _, file_count = _add_bundle_tree(database, cabinet, bundle, feature)
-        cabinet.commit(database)
-        database.Commit()
-    finally:
-        database = None
-        for path, (access_time, modified_time) in timestamps.items():
-            os.utime(path, ns=(access_time, modified_time))
-
+    with tempfile.TemporaryDirectory(prefix="neoeng-wix-") as temporary:
+        temporary_path = Path(temporary)
+        source = temporary_path / "package.wxs"
+        intermediate = temporary_path / "obj"
+        file_count = _write_wix_source(bundle, source, product_code)
+        _run_wix(source, bundle, output, intermediate)
+    _set_package_code(output, package_code)
     normalize_msi_storage_timestamps(output)
     digest = sha256_file(output)
     checksum_path = output.with_suffix(output.suffix + ".sha256")
@@ -341,7 +412,7 @@ def build_msi(
         "package_code": package_code,
         "upgrade_code": UPGRADE_CODE,
         "package_type": "windows-msi-per-user",
-        "builder": f"python-msilib-{sys.version_info.major}.{sys.version_info.minor}",
+        "builder": f"wix-{WIX_VERSION}",
         "portable_manifest_sha256": sha256_file(manifest_path),
         "files": file_count,
         "installer": output.name,

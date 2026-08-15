@@ -165,6 +165,10 @@ def test_windows_installer_contract_is_fail_closed() -> None:
     root = Path(__file__).resolve().parents[1]
     build = (root / "scripts" / "build_installer.ps1").read_text(encoding="utf-8")
     package = (root / "tools" / "package_windows_msi.py").read_text(encoding="utf-8")
+    summary_normalizer = (root / "tools" / "set_msi_package_code.ps1").read_text(
+        encoding="utf-8"
+    )
+    wix_tools = (root / ".config" / "dotnet-tools.json").read_text(encoding="utf-8")
     validate = (root / "tools" / "validate_windows_installer.py").read_text(
         encoding="utf-8"
     )
@@ -182,9 +186,16 @@ def test_windows_installer_contract_is_fail_closed() -> None:
     assert "validate_windows_installer.py" in build
     assert '"--export-profile"' in portable_validate
     assert '"--fixture-dir"' in engine_validate
-    assert '"MSIINSTALLPERUSER", "1"' in package
-    assert '"LIMITUI", "1"' in package
-    assert '"VersionNT64"' in package
+    assert 'Scope="perUser"' in package
+    assert '"MSIINSTALLPERUSER"' in package
+    assert '"LIMITUI"' in package
+    assert "VersionNT64" in package
+    assert 'WIX_VERSION = "4.0.6"' in package
+    assert "SummaryInformation(20)" in summary_normalizer
+    assert "Property(12)" in summary_normalizer
+    assert "Property(13)" in summary_normalizer
+    assert '"version": "4.0.6"' in wix_tools
+    assert "msilib" not in package
     assert "stable_guid" in package
     assert "complete-uninstall" in validate
     assert "user-state-preserved" in validate
@@ -229,10 +240,14 @@ def test_msi_storage_timestamp_normalization_is_structurally_guarded(
         normalize_msi_storage_timestamps(invalid)
 
     path = tmp_path / "valid.msi"
-    data = bytearray(1152)
+    data = bytearray(1536)
     data[:8] = bytes.fromhex("D0CF11E0A1B11AE1")
     struct.pack_into("<H", data, 30, 9)
+    struct.pack_into("<I", data, 44, 1)
     struct.pack_into("<I", data, 48, 1)
+    struct.pack_into("<I", data, 76, 0)
+    struct.pack_into("<I", data, 512, 0xFFFFFFFD)
+    struct.pack_into("<I", data, 516, 0xFFFFFFFE)
     root_offset = 1024
     name = "Root Entry".encode("utf-16le") + b"\x00\x00"
     data[root_offset : root_offset + len(name)] = name

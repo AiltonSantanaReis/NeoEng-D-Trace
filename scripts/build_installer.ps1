@@ -44,6 +44,8 @@ try {
         throw "Portable bundle source commit does not match current HEAD"
     }
 
+    dotnet tool restore --no-cache
+    if ($LASTEXITCODE -ne 0) { throw "WiX tool restore failed" }
     $installer = Join-Path $resolvedReleaseRoot "NeoEng-D-Trace-0.2.0-win64.msi"
     poetry run python tools/package_windows_msi.py --bundle $bundle --output $installer --source-commit $sourceCommit --source-epoch $sourceEpoch
     if ($LASTEXITCODE -ne 0) { throw "MSI package creation failed" }
