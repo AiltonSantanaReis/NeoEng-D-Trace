@@ -4,9 +4,11 @@
 
 **Âncora integrada de encerramento da Etapa 13:** `b4d9390dbd1274c283a3e3985d6d79be47de45d6`
 
-**Âncora técnica pré-merge da Etapa 14:** `9cef5a15e357f096312048c0beb9d43384c92fce`
+**Âncora técnica da Etapa 14:** `9cef5a15e357f096312048c0beb9d43384c92fce`
 
-**Estado atual:** Etapa 13 funcional integrada pela PR `#51`; fechamento documental e correção retrospectiva integrados pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge final `31705652046` foi aceito após auditoria de `955` testes por sistema, 92,81% de linhas, 85,02% de branches, 90,93% combinada, legado `27/27`, `57/57` documentos e `1.416` payloads sem violações. O CI verde anterior `31693639653` permanece registrado como rejeitado por uma falha real de preservação POSIX. `R-011` e `R-012` estão encerrados nos escopos aprovados. A Etapa 14 possui candidato técnico local aprovado, ainda não integrado; release não aprovada.
+**Âncora integrada pós-merge da Etapa 14:** `36669ba126e339ec8640e1dc57ceda9db6c6c3dc` (PR `#55`, CI pós-merge `31739267811`)
+
+**Estado atual:** Etapas 11 a 13 permanecem encerradas nos escopos aprovados. A Etapa 14 foi integrada pela PR `#55` e o CI pós-merge `31739267811` foi aceito após auditoria de logs, hashes e conteúdo: `980` testes por sistema, cobertura idêntica ponto a ponto, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados. `R-014`, `R-015` e `R-016` permanecem abertos; release não aprovada.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -42,7 +44,7 @@ snapshot histórico.
 | Segurança e limites | INTEGRADO / APROVADO | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows; CI pós-merge `31686321925` auditado | nenhuma ferramenta prova ausência total; tetos não constituem SLA |
 | Tipagem | INTEGRADO / APROVADO | mypy com `check_untyped_defs`: zero erros em `80` arquivos no CI pós-merge da Etapa 13 | ampliar anotações explícitas gradualmente |
 | Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
-| Build Windows/instalador | APROVADO PRÉ-MERGE / NÃO INTEGRADO | ZIP e MSI idênticos em duas execuções; instalação, smoke, desinstalação, Godot/Unity, manifestos e Defender aprovados | sem assinatura; pendências jurídica/visual; builder MSI requer migração futura |
+| Build Windows/instalador | INTEGRADO / APROVADO NO ESCOPO TÉCNICO | ZIP e MSI idênticos em duas execuções; instalação, smoke, desinstalação, Godot/Unity, manifestos, Defender e CI pós-merge auditados | sem assinatura; pendências jurídica/visual; builder MSI requer migração futura |
 
 ## Regra de leitura
 

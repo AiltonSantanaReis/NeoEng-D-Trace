@@ -4,6 +4,8 @@
 - `ETAPA_14_RELEASE_VALIDATION_MANIFEST.json` — manifesto estruturado do commit-fonte, hashes, métricas, fixtures e decisões.
 - `ETAPA_14_GODOT_RELEASE_VALIDATION.json` — relatório real do Godot `4.7` sobre fixtures produzidos pelo candidato.
 - `ETAPA_14_UNITY_RELEASE_VALIDATION.json` — relatório real do Unity `6000.5.7f1` com glTFast `6.19.0`.
+- `ETAPA_14_ENCERRAMENTO_POS_MERGE.md` — auditoria dos logs, proveniência, cobertura, legado e artefatos do CI pós-merge.
+- `ETAPA_14_ENCERRAMENTO_POS_MERGE.json` — manifesto estruturado do fechamento técnico pós-merge.
 
 - `AUDITORIA_INTEGRIDADE_PRE_ETAPA_14_2026-08-13.md` — auditoria de fabricação,
   alteração de testes, gates, cadeia de custódia, workflows remotos e
@@ -141,14 +143,18 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Estado operacional da evidência atual
 
-Etapa 14 com candidato técnico local pré-merge em 13 de agosto de 2026:
+Etapa 14 encerrada no escopo técnico pós-merge em 15 de agosto de 2026:
 
 - commit-fonte `9cef5a15e357f096312048c0beb9d43384c92fce`;
 - `978` testes, cobertura combinada `90,92%`, política de linhas/branches/módulos aprovada e legado `27/27`;
 - ZIP e MSI reproduzidos byte a byte, instalação/desinstalação e engines reais aprovadas;
 - Microsoft Defender sem ameaças detectadas e zero referências proibidas no bundle;
-- assinatura, jurídico, identidade visual, migração do builder MSI, integração e CI permanecem abertos;
-- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=NO`; `RELEASE_APPROVED=NO`.
+- PR `#55`, merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc` e CI pós-merge `31739267811` foram auditados em logs e artefatos;
+- `980` testes por sistema, cobertura idêntica em 80 módulos, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados;
+- assinatura, jurídico, identidade visual e migração do builder MSI permanecem abertos;
+- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `RELEASE_APPROVED=NO`.
+
+O relatório permanente do fechamento é `ETAPA_14_ENCERRAMENTO_POS_MERGE.md`.
 
 Etapa 13 integrada e concluída no escopo aprovado em 13 de agosto de 2026:
 

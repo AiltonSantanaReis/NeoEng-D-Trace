@@ -371,7 +371,7 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "ETAPA 5 FORMALMENTE ENCERRADA" in audit
     assert "Esta decisão não aprova release" in audit
     assert "Matriz funcional atual" in matrix
-    assert "Build Windows/instalador | APROVADO PRÉ-MERGE / NÃO INTEGRADO" in matrix
+    assert "Build Windows/instalador | INTEGRADO / APROVADO NO ESCOPO TÉCNICO" in matrix
     assert 'Pillow = "12.3.0"' in pyproject
     assert "[tool.mypy]" not in pyproject
     assert "check_untyped_defs = True" in mypy_config

@@ -4,7 +4,7 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 14 possui candidato técnico aprovado localmente, ainda não integrado; release NÃO APROVADA.**
+> **Estado:** pré-release em desenvolvimento. **Etapa 14 foi integrada e encerrada no escopo técnico validado; release NÃO APROVADA.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
@@ -16,20 +16,22 @@ Ela preserva a integração funcional da PR `#51` e incorpora a correção
 retrospectiva dos pacotes históricos. O CI pós-merge `31705652046` reproduziu
 `955` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado
 `27/27` e artefatos recursivos sem violações. `R-011` e a Etapa 13 estão
-encerrados no escopo aprovado. A Etapa 14 está aprovada apenas como candidato técnico local pré-merge; integração, CI da PR e release permanecem pendentes.
+encerrados no escopo aprovado. A Etapa 14 foi integrada pela PR `#55`, com CI
+pós-merge `31739267811` auditado; os riscos de assinatura, publicação e manutenção
+do builder continuam impedindo a aprovação de release.
 
 | Indicador | Estado comprovado |
 |---|---|
 | Suíte integrada | **955 testes no CI pós-merge final da Etapa 13, em Linux e Windows** |
-| Suíte do candidato da Etapa 14 | **978 testes locais aprovados no Windows/Python 3.11.9** |
-| Cobertura do candidato | **11.621/12.523 linhas — 92,80%** |
-| Branches do candidato | **3.382/3.978 — 85,02%** |
-| Cobertura combinada do candidato | **90,92%** |
-| Type checking | mypy sem erros em 80 arquivos no candidato da Etapa 14 |
+| Suíte integrada da Etapa 14 | **980 testes aprovados em Linux e Windows/Python 3.11.9 no CI pós-merge** |
+| Cobertura da Etapa 14 | **11.621/12.523 linhas — 92,80%** |
+| Branches da Etapa 14 | **3.382/3.978 — 85,02%** |
+| Cobertura combinada da Etapa 14 | **90,92%** |
+| Type checking | mypy sem erros em 80 arquivos na Etapa 14 integrada |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
 | Última etapa integrada | **Etapa 13 — R-011 encerrado no escopo aprovado** |
-| Candidato atual | **Etapa 14 — aprovado localmente, pré-merge e não integrado** |
+| Etapa integrada atual | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Release | **NÃO APROVADA: artefatos sem assinatura, pendências jurídicas e identidade visual final** |
 
 O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
@@ -38,7 +40,7 @@ de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
 brutas conhecidas, aceitas somente quando as assinaturas coincidem e os 17
 testes substitutos são coletáveis.
 
-O candidato técnico `0.2.0` foi construído duas vezes a partir de
+A implementação técnica `0.2.0` foi construída duas vezes a partir de
 `9cef5a15e357f096312048c0beb9d43384c92fce`. Os ZIPs foram idênticos com
 SHA-256 `2c8b9c8847d0c00e9f1d0786f5b14e161832856252d8454db58d0d9e198e0d68`;
 os MSIs foram idênticos com SHA-256
@@ -284,7 +286,8 @@ NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. N
 há licença open source atribuída. O texto jurídico comercial final ainda exige
 decisão/revisão própria antes de qualquer lançamento público.
 
-Esta atualização registra o candidato técnico pré-merge da Etapa 14. Ela não declara integração, não substitui CI remoto e não aprova release.
+Esta atualização registra a integração e o fechamento técnico pós-merge da Etapa 14.
+Ela não aprova release: os riscos `R-014`, `R-015` e `R-016` permanecem abertos.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

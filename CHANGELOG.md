@@ -2,8 +2,14 @@
 
 ## [Unreleased] — programa de estabilização, Etapas 1 a 14
 
-Registro documental contínuo, atualizado em 13 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+Registro documental contínuo, atualizado em 15 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
+### Etapa 14 — encerramento técnico pós-merge
+
+- integra a PR `#55` no merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`;
+- aceita o CI pós-merge `31739267811` somente após auditar seus logs e artefatos: `980` testes por sistema, cobertura ponto a ponto idêntica em 80 módulos, `11.621/12.523` linhas, `3.382/3.978` branches, legado bruto `196` com `27/27` falhas históricas reconciliadas, `60/60` evidências byte a byte equivalentes e artefatos sem violações;
+- encerra a Etapa 14 no escopo técnico de build, instalação, desinstalação, exportação, engines e validação de integridade;
+- mantém `RELEASE_APPROVED=NO`: GUI, CLI e MSI sem assinatura, pendências jurídicas/visuais e migração futura do builder MSI permanecem abertas.
 ### Etapa 14 — candidato técnico local pré-merge
 
 - adiciona bundle Windows em modo diretório, executáveis GUI/CLI versionados e ZIP determinístico com manifesto recursivo;

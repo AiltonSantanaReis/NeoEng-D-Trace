@@ -21,7 +21,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 13 de agosto de 2026. A Etapa 13 funcional foi integrada pela PR `#51`; o fechamento documental e a correção retrospectiva foram integrados pela PR `#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge final `31705652046` aprovou `955` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27`, `57/57` documentos e `1.416` payloads sem violações. O CI verde anterior `31693639653` permanece rejeitado no histórico. `R-011` e `R-012` estão encerrados nos escopos aprovados. A Etapa 14 possui candidato técnico local pré-merge; `R-014`, `R-015` e `R-016` permanecem abertos e a release não está aprovada.
+Snapshot vivo de 15 de agosto de 2026. A Etapa 14 usou o commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce` e foi integrada pela PR `#55` no merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`. O CI pós-merge `31739267811` aprovou `980` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados. `R-014`, `R-015` e `R-016` permanecem abertos e a release não está aprovada.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -127,7 +127,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
 | ETAPA-10 | CONCLUÍDA | PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; pré-merge `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; CI corretivo `31464786333`, PR `#43`, merge `f8caec3e7156d308f03046f81d2c89996f959466` e pós-merge `31469610508` aceitos após auditoria |
 | ETAPA-13 | CONCLUÍDA | PR funcional `#51`; fechamento `#52`, merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6` e CI pós-merge final `31705652046` auditado; `R-011` encerrado; naquele encerramento, Etapa 14 não iniciada e release não aprovada |
-| ETAPA-14 | APROVADA LOCALMENTE / NÃO INTEGRADA | commit técnico `9cef5a15e357f096312048c0beb9d43384c92fce`; 978 testes; ZIP/MSI reproduzíveis; instalação, engines e Defender aprovados; `R-014`, `R-015` e `R-016` abertos; release não aprovada |
+| ETAPA-14 | CONCLUÍDA NO ESCOPO TÉCNICO | PR `#55`, merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`; CI pós-merge `31739267811` auditado; 980 testes por sistema; cobertura, legado e evidências equivalentes; `R-014`, `R-015` e `R-016` abertos; release não aprovada |
 
 ## Severidades
 
