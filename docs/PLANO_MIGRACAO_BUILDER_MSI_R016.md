@@ -77,3 +77,13 @@ TÉCNICO** até a execução em CI/Windows limpo, teste de upgrade e reparo entr
 versões distintas, revisão de dependências/licenciamento e assinatura do artefato
 final. Os MSI de validação continuam sem assinatura digital; isso é esperado e
 não é apresentado como aprovação de publicação.
+
+## Upgrade e reparo — evidência local
+
+O MSI oficial produzido pelo script completo no commit `828cf626b7ce382c360723b1be10c4ce718c4187` também foi exercitado contra o MSI baseline anterior:
+
+- upgrade no mesmo diretório: MSI anterior `0`, MSI WiX novo `0`, desinstalações `0`, resíduos `0`;
+- repair com `/fa`: instalação `0`, um `NeoEng-D-Trace-CLI.exe` removido deliberadamente foi restaurado, repair `0`, desinstalação `0`, resíduos `0`;
+- os logs e relatórios ficam nos artefatos locais de validação e não são usados como evidência versionada sem hash/manifesto.
+
+A validação demonstra o comportamento técnico do builder, mas não transforma o artefato em release público: assinatura, identidade legal, publicação e aprovação final permanecem gates separados.
