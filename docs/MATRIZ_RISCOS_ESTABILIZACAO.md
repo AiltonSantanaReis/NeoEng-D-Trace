@@ -21,7 +21,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 15 de agosto de 2026. A PR `#58` foi integrada no merge `f15193a55d1a5de0c7031f5bab656107302eee1b`; o CI pós-merge `31905237922` aprovou `982` testes em Linux e Windows, cobertura `92,80%`/`85,02%`, legado `27/27` reconciliado e árvore limpa. `R-014` e `R-015` permanecem abertos e bloqueiam a release pública. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. A política de roadmap permite builds técnicas sem assinatura para avaliadores identificados; a assinatura permanece obrigatória para a primeira release pública oficial.
+Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; o CI pós-merge `31907063633` aprovou os testes em Linux e Windows, com baseline íntegra e evidências auditadas. A primeira release oficial foi autorizada pelo proprietário. `R-014` e a formalização futura de `R-015` são riscos aceitos/deferidos e não bloqueiam essa primeira release por decisão do proprietário. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. Os artefatos atuais continuam sem assinatura; isso é declarado, não mascarado.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -40,8 +40,8 @@ Snapshot vivo de 15 de agosto de 2026. A PR `#58` foi integrada no merge `f15193
 | R-011 | ENCERRADO NO ESCOPO APROVADO | PR `#51`, merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e CI pós-merge `31698961646`; refatoração Qt e autosave auditados em Linux/Windows |
 | R-012 | ENCERRADO NO ESCOPO APROVADO | PR `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI pós-merge `31686321925`; limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes em Linux/Windows; artefatos e legado auditados |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
-| R-014 | ABERTO / DEFERIDO PARA FUTURAS BUILDS/RELEASES OFICIAIS | GUI, CLI e MSI retornam `NotSigned`; releases iniciais de validação podem ser distribuídas sem assinatura, com rotulagem e hashes |
-| R-015 | DOCUMENTAÇÃO PREPARADA / APROVAÇÃO PENDENTE | ícone recebido e versionado; NOTICE, política e roteiro inicial preparados; titularidade, termos, atribuições e aprovação final ainda pendentes |
+| R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES | GUI, CLI e MSI retornam `NotSigned`; a primeira release oficial pode ser distribuída sem assinatura por decisão do proprietário, com hashes e transparência |
+| R-015 | DECISÃO DE ROADMAP REGISTRADA / FORMALIZAÇÃO FUTURA | ícone gerado por IA e autorizado pelo proprietário; NOTICE, política e roteiro atualizados; licenciamento, atribuições e trâmites formais ficam para futuras versões |
 | R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
@@ -127,7 +127,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
 | ETAPA-10 | CONCLUÍDA | PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; pré-merge `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; CI corretivo `31464786333`, PR `#43`, merge `f8caec3e7156d308f03046f81d2c89996f959466` e pós-merge `31469610508` aceitos após auditoria |
 | ETAPA-13 | CONCLUÍDA | PR funcional `#51`; fechamento `#52`, merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6` e CI pós-merge final `31705652046` auditado; `R-011` encerrado; naquele encerramento, Etapa 14 não iniciada e release não aprovada |
-| ETAPA-14 | CONCLUÍDA NO ESCOPO TÉCNICO | PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b`; CI pós-merge `31905237922` auditado; 982 testes por sistema; cobertura, legado e evidências equivalentes; `R-014` e `R-015` abertos; `R-016` validado tecnicamente; release não aprovada |
+| ETAPA-14 | CONCLUÍDA NO ESCOPO TÉCNICO | PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b`; fechamento documental PR `#60`, merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; CI pós-merge `31907063633` auditado; testes, cobertura, legado e evidências reproduzidos; primeira release oficial autorizada pelo proprietário; `R-014` e formalização futura de `R-015` deferidos; `R-016` validado tecnicamente |
 
 ## Severidades
 

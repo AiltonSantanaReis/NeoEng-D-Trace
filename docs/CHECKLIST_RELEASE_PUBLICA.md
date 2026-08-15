@@ -1,6 +1,6 @@
 # Checklist de Release Pública — NeoEng-D-Trace
 
-**Status atual:** RELEASE INICIAL DE VALIDAÇÃO PERMITIDA CONDICIONALMENTE; RELEASE PÚBLICA OFICIAL NÃO APROVADA
+**Status atual:** PRIMEIRA RELEASE OFICIAL AUTORIZADA PELO PROPRIETÁRIO; ASSINATURA E TRÂMITES JURÍDICOS DEFERIDOS PARA FUTURAS VERSÕES
 
 Este checklist separa uma build técnica de uma release pública. Um item marcado
 como “futuro” não pode ser apresentado como concluído.
@@ -9,8 +9,8 @@ como “futuro” não pode ser apresentado como concluído.
 
 | Gate | Estado atual | Critério para fechar |
 |---|---|---|
-| R-014 — assinatura | DEFERIDO PARA FUTURAS BUILDS/RELEASES OFICIAIS; não bloqueia release inicial de validação | GUI, CLI, DLLs distribuídas e MSI assinados; cadeia e timestamp verificados quando o gate for ativado |
-| R-015 — publicação e dados | Documentos preparados; aprovação do proprietário pendente | Política, licença/termos, atribuições, identidade visual, contato e dados aprovados |
+| R-014 — assinatura | DEFERIDO PARA FUTURAS BUILDS/RELEASES; não bloqueia a primeira release oficial por decisão do proprietário | GUI, CLI, DLLs distribuídas e MSI assinados; cadeia e timestamp verificados quando o proprietário ativar este gate |
+| R-015 — publicação e dados | DECISÃO DE ROADMAP REGISTRADA; formalização futura conforme demanda | Licença/termos, atribuições, identidade visual, contato e dados formalizados quando o proprietário ativar este gate |
 | R-016 — builder MSI | Validado tecnicamente / governança pendente | WiX 4.0.6 fixado, build reproduzível, instalação, upgrade, reparo e remoção validados; revisar termos da toolchain no gate de release |
 | Qualidade funcional | Técnico aprovado | CI Linux/Windows, testes, cobertura, legado reconciliado e baseline íntegra |
 | Engines externas | Validado no fixture canônico | Repetir quando o candidato de release mudar |
@@ -21,15 +21,16 @@ como “futuro” não pode ser apresentado como concluído.
 - versões de Python, dependências, toolchain e Windows;
 - manifestos e hashes dos artefatos;
 - logs sem caminhos pessoais ou segredos;
-- assinatura verificada por processo independente;
+- assinatura verificada por processo independente quando `R-014` for ativado;
 - instalação, execução, exportação, atualização, reparo e desinstalação;
 - política e documentação aprovadas pelo responsável do projeto.
 
 ## Decisão de roadmap
 
-As primeiras releases podem ser releases de validação, sem assinatura, desde que
-sejam rotuladas como pré-release, vinculadas a hashes e destinadas a usuários
-identificados ou a uma pré-release pública claramente rotulada. A assinatura de
-`R-014` fica para futuras builds/releases oficiais após validação de usuários e
-crescimento do projeto. Isso não aprova a release pública oficial nem substitui
-a aprovação de `R-015`; CI verde, isoladamente, nunca aprova publicação.
+A primeira release oficial pode ser distribuída sem assinatura por decisão
+do proprietário, desde que os artefatos, hashes, testes, limitações e riscos
+sejam descritos com transparência. `R-014` fica para futuras builds/releases
+após validação de usuários e crescimento do projeto. A formalização de `R-015`
+será executada conforme demanda e decisão do proprietário. CI verde,
+isoladamente, nunca substitui a análise de evidências nem certifica
+conformidade jurídica.

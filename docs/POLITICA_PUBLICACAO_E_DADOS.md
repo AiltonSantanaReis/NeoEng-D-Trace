@@ -1,6 +1,6 @@
 # Política de Publicação e Dados — NeoEng-D-Trace
 
-**Status:** RASCUNHO OPERACIONAL PARA RELEASES INICIAIS; APROVAÇÃO DO PROPRIETÁRIO PENDENTE
+**Status:** DECISÃO DO PROPRIETÁRIO REGISTRADA; ASSINATURA, LICENCIAMENTO E TRÂMITES JURÍDICOS FUTUROS
 
 **Objetivo:** registrar o comportamento de dados conhecido e os critérios para
 uma futura publicação pública. Este documento não é aprovação jurídica, contrato
@@ -15,23 +15,20 @@ de licença nem declaração de conformidade regulatória.
 - Deve informar que o Windows pode exibir aviso de publicador desconhecido.
 - Cada build deve estar vinculada a um commit, manifesto e relatório de validação.
 
-### Release inicial de validação
+### Release oficial inicial
 
-Pode ser disponibilizada sem assinatura de código, desde que seja rotulada como
-pré-release, vinculada a commit/hash, acompanhada deste pacote documental e
-destinada a validação. Não deve ser apresentada como release oficial.
+Pode ser disponibilizada sem assinatura de código por decisão expressa do
+proprietário. Não é obrigatório rotulá-la como release de validação. Os
+artefatos devem continuar vinculados a commit/hash, acompanhados deste pacote
+documental e descritos honestamente como não assinados. Isso registra uma
+decisão de risco de publicação; não certifica conformidade jurídica.
 
-### Release pública
+### Releases futuras
 
-Não poderá ser declarada aprovada enquanto permanecer qualquer um dos seguintes
-itens:
-
-- assinatura de código ausente nos artefatos Windows;
-- texto jurídico, licença e atribuições de terceiros não aprovados;
-- política de publicação e dados não aprovada;
-- identidade visual e origem do ícone não confirmadas;
-- critérios técnicos de instalação, atualização, desinstalação e suporte não
-  reproduzidos no candidato final.
+A assinatura, o licenciamento, as atribuições formais e outros trâmites serão
+executados quando o proprietário decidir, especialmente se houver demanda de
+usuários e clientes. Os critérios técnicos de instalação, atualização,
+desinstalação e suporte continuam obrigatórios sempre que o candidato mudar.
 
 ## Dados tratados no escopo atual
 
@@ -61,9 +58,11 @@ inventados ou com uma suposição sobre propriedade intelectual.
 
 ## Relação com riscos
 
-- `R-015` permanece aberto até as decisões acima serem registradas e aprovadas.
+- `R-015` tem a decisão de roadmap registrada: a formalização jurídica, de
+  licenciamento e atribuições fica para futuras versões conforme demanda.
 - A assinatura de código é tratada separadamente em `R-014` e foi deliberadamente
-  adiada para futuras builds/releases oficiais, após validação de usuários e
-  crescimento do projeto. Ela não bloqueia as primeiras releases de validação.
-- O roteiro operacional das primeiras releases está em
+  adiada para futuras builds/releases, após validação de usuários e crescimento
+  do projeto. Ela não bloqueia a primeira release oficial por decisão do
+  proprietário.
+- O roteiro operacional da primeira release está em
   `docs/RELEASE_INICIAL_VALIDACAO.md`.

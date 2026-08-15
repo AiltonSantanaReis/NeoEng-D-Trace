@@ -4,7 +4,7 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 14 foi integrada e encerrada no escopo técnico validado; release NÃO APROVADA.**
+> **Estado:** pré-release em desenvolvimento. **Etapa 14 foi integrada e encerrada no escopo técnico validado; a primeira release oficial foi autorizada pelo proprietário.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
@@ -14,8 +14,9 @@ A âncora auditada atual é o merge da PR `#58`,
 `f15193a55d1a5de0c7031f5bab656107302eee1b`. O CI pós-merge
 `31905237922` reproduziu os testes em Linux e Windows, com árvore limpa,
 artefatos de evidência e a mesma cobertura nas duas plataformas. A Etapa 14
-está encerrada no escopo técnico validado; a release pública continua bloqueada
-por `R-015`; `R-014` fica deferido para futuras builds/releases oficiais.
+está encerrada no escopo técnico validado. A primeira release oficial foi
+autorizada pelo proprietário; `R-014` (assinatura) e a formalização futura de
+`R-015` permanecem deferidos por decisão de roadmap.
 
 | Indicador | Estado comprovado |
 |---|---|
@@ -29,7 +30,7 @@ por `R-015`; `R-014` fica deferido para futuras builds/releases oficiais.
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
 | Última etapa integrada | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Etapa integrada atual | **Etapa 14 — encerrada no escopo técnico auditado** |
-| Release | **NÃO APROVADA: artefatos sem assinatura, pendências jurídicas e identidade visual final** |
+| Release | **AUTORIZADA PELO PROPRIETÁRIO; artefatos atuais sem assinatura e formalizações futuras documentadas** |
 
 O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
 de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
@@ -46,8 +47,9 @@ O build oficial limpo produziu o MSI
 A instalação por usuário, execução instalada, exportações, abertura/fechamento
 da GUI, upgrade, repair e desinstalação passaram em rodadas reais. Fixtures gerados pelos
 binários foram importados com sucesso no Godot `4.7` e Unity `6000.5.7f1` com
-glTFast `6.19.0`. Esses resultados não superam os bloqueios de assinatura e
-publicação.
+glTFast `6.19.0`. A ausência de assinatura é conhecida e aceita no primeiro
+lançamento por decisão do proprietário; ela não é mascarada como validação de
+assinatura.
 
 
 A Etapa 13 foi integrada pela PR `#51` no merge
@@ -163,7 +165,9 @@ Não existe uma segunda árvore `neoeng_d_trace/`. A distribuição Python é
 
 ## Execução a partir do código-fonte no Windows
 
-> **Isto é o fluxo a partir do código-fonte.** Existe um candidato técnico portátil/MSI validado localmente, mas ele não é uma release pública aprovada.
+> **Isto é o fluxo a partir do código-fonte.** Existe um candidato técnico portátil/MSI validado localmente. Os artefatos
+atuais ainda não são assinados; a primeira release oficial foi autorizada pelo
+proprietário com esse risco explicitamente documentado.
 
 Requisitos usados pelo projeto:
 
@@ -208,12 +212,14 @@ O primeiro comando gera e testa o bundle portátil; o segundo o reconstrói,
 cria o MSI por usuário, instala em diretório de validação, executa CLI/GUI e
 exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
 versionado. O build falha se a árvore estiver suja ou se o destino sair do
-workspace. As primeiras releases de validação podem ser distribuídas sem assinatura, com rotulagem explícita; para uma distribuição pública oficial serão obrigatórias assinatura de código, revisão jurídica e identidade visual final.
+workspace.
 
-A decisão de roadmap é deliberada: o certificado de assinatura será adquirido
-para futuras builds/releases oficiais após validação com usuários e crescimento
-suficiente para justificar o custo. `R-014` não bloqueia as primeiras releases
-de validação, mas permanece aberto e não altera `RELEASE_APPROVED=NO`.
+A primeira release oficial pode ser distribuída sem assinatura por decisão
+expressa do proprietário. `R-014` fica deferido para futuras builds/releases,
+quando a demanda de usuários/clientes justificar o custo e os trâmites. O
+proprietário também decidirá futuramente a formalização jurídica, de
+licenciamento e atribuições associada a `R-015`; este README não declara que
+essa conformidade já foi obtida.
 
 ## Qualidade e validação
 
@@ -244,8 +250,8 @@ objeto da validação.
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
-- **bundle Windows e MSI passaram tecnicamente em um host real, mas não estão assinados nem aprovados para publicação**;
-- **release não está aprovada**;
+- **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura foi deferida para futuras builds/releases;
+- **a primeira release oficial está autorizada pelo proprietário, sem alegação de conformidade jurídica ou assinatura concluída**;
 - Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
 - `R-011` está encerrado no escopo aprovado após merge autorizado e CI pós-merge auditado;
 - `R-012` está encerrado no escopo aprovado, mas os limites publicados não
@@ -278,7 +284,7 @@ nas fontes canônicas:
 - [Changelog](CHANGELOG.md)
 - [Política de segurança](SECURITY.md)
 - [Roteiro de release inicial](docs/RELEASE_INICIAL_VALIDACAO.md)
-- [NOTICE preliminar](NOTICE.md)
+- [NOTICE](NOTICE.md)
 
 Snapshots históricos não são reescritos retroativamente. Documentos vivos
 devem continuar distinguindo estado atual, evidência de um SHA específico e
@@ -287,12 +293,16 @@ histórico.
 ## Licença e publicação
 
 NeoEng-D-Trace é um projeto proprietário e o repositório é público. Não há
-licença open source atribuída. O texto jurídico comercial final ainda exige
-decisão/revisão própria antes de qualquer lançamento público.
+licença open source atribuída. A primeira release oficial foi autorizada pelo
+proprietário; assinatura, licenciamento, atribuições formais e demais
+trâmites jurídicos podem ser executados em futuras versões conforme demanda.
+Este texto registra uma decisão de projeto, não um parecer jurídico nem uma
+certificação de conformidade.
 
 Esta atualização registra a integração e o fechamento técnico pós-merge da Etapa 14.
-Ela não aprova release: `R-014` e `R-015` permanecem abertos; `R-016` está
-validado tecnicamente e aguarda apenas governança de release.
+`R-014` e a formalização futura de `R-015` permanecem como riscos aceitos e
+deferidos; `R-016` está validado tecnicamente e aguarda apenas governança de
+toolchain/release.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>
