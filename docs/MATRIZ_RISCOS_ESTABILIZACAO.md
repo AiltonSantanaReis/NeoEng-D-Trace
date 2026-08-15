@@ -21,7 +21,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 15 de agosto de 2026. A Etapa 14 usou o commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce` e foi integrada pela PR `#55` no merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`. O CI pós-merge `31739267811` aprovou `980` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados. `R-014`, `R-015` e `R-016` permanecem abertos e a release não está aprovada.
+Snapshot vivo de 15 de agosto de 2026. A Etapa 14 usou o commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce` e foi integrada pela PR `#55` no merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`. O CI pós-merge `31739267811` aprovou `980` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados. `R-014`, `R-015` e `R-016` permanecem abertos e a release não está aprovada. A política de roadmap permite builds técnicas sem assinatura para avaliadores identificados; a assinatura permanece obrigatória para a primeira release pública oficial.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -40,7 +40,7 @@ Snapshot vivo de 15 de agosto de 2026. A Etapa 14 usou o commit-fonte técnico `
 | R-011 | ENCERRADO NO ESCOPO APROVADO | PR `#51`, merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e CI pós-merge `31698961646`; refatoração Qt e autosave auditados em Linux/Windows |
 | R-012 | ENCERRADO NO ESCOPO APROVADO | PR `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI pós-merge `31686321925`; limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes em Linux/Windows; artefatos e legado auditados |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
-| R-014 | ABERTO / BLOQUEIA RELEASE | GUI, CLI e MSI retornam `NotSigned`; candidato técnico não deve ser publicado como release |
+| R-014 | ABERTO / DEFERIDO PARA RELEASE PÚBLICA | GUI, CLI e MSI retornam `NotSigned`; builds técnicas podem ser usadas por avaliadores identificados, mas a primeira release pública oficial exige assinatura |
 | R-015 | ABERTO / BLOQUEIA RELEASE | licença comercial final, política de publicação/dados e ícone oficial não foram aprovados |
 | R-016 | ABERTO / DÍVIDA DE BUILD | MSI funcional e reproduzível em Python 3.11, mas o builder usa API descontinuada e removida após Python 3.12 |
 

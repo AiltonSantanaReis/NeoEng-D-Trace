@@ -210,8 +210,14 @@ O primeiro comando gera e testa o bundle portátil; o segundo o reconstrói,
 cria o MSI por usuário, instala em diretório de validação, executa CLI/GUI e
 exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
 versionado. O build falha se a árvore estiver suja ou se o destino sair do
-workspace. Para distribuição pública ainda são obrigatórias assinatura de
-código, revisão jurídica e identidade visual final.
+workspace. Para a primeira distribuição pública oficial ainda serão obrigatórias assinatura
+de código, revisão jurídica e identidade visual final. Builds de validação podem
+ser entregues a avaliadores identificados sem assinatura, com aviso explícito de
+pré-release e sem serem apresentadas como release pública.
+
+A decisão de roadmap é deliberada: o certificado de assinatura será adquirido
+após validação com usuários e crescimento suficiente para justificar o custo.
+Isso mantém `R-014` aberto e não altera `RELEASE_APPROVED=NO`.
 
 ## Qualidade e validação
 

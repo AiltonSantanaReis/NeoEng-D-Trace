@@ -18,6 +18,18 @@ Etapa 14 — encerrada no escopo técnico pós-merge:
 - `980` testes por sistema; cobertura idêntica ponto a ponto em 80 módulos; legado `27/27`; `60/60` evidências equivalentes e zero violações nos pacotes auditados;
 - `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `RELEASE_APPROVED=NO`.
 
+### Decisão de roadmap para os bloqueios restantes
+
+Builds de validação podem ser entregues a avaliadores identificados sem
+assinatura de código, desde que sejam rotuladas como pré-release técnica e não
+sejam apresentadas como release pública. A assinatura será adquirida para a
+primeira release pública oficial após validação de usuários e crescimento do
+projeto. Essa decisão não encerra `R-014`; ela apenas define seu momento de
+execução. Os detalhes estão em `docs/CHECKLIST_RELEASE_PUBLICA.md`,
+`docs/POLITICA_PUBLICACAO_E_DADOS.md`,
+`docs/IDENTIDADE_VISUAL_E_ATRIBUICOES.md` e
+`docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md`.
+
 Etapa 11 integrada e concluída no escopo aprovado:
 
 - PR funcional `#45` integrada em `2a38b89e542390b3b4396a88d9a416f3695caadc`; PR de fechamento `#46` integrada em `a22a90088220e586c3382c3ed5dc1075a3ff7e6b`;
