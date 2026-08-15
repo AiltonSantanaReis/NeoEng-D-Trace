@@ -7,6 +7,8 @@
 - `ETAPA_14_ENCERRAMENTO_POS_MERGE.md` — auditoria dos logs, proveniência, cobertura, legado e artefatos do CI pós-merge.
 - `ETAPA_14_ENCERRAMENTO_POS_MERGE.json` — manifesto estruturado do fechamento técnico pós-merge.
 - `CHECKLIST_RELEASE_PUBLICA.md` — gates necessários para transformar uma build técnica em release pública.
+- `RELEASE_INICIAL_VALIDACAO.md` — controles para as primeiras releases de validação sem assinatura, com rotulagem e hashes.
+- `NOTICE.md` — aviso preliminar de propriedade, identidade visual e atribuições pendentes.
 - `POLITICA_PUBLICACAO_E_DADOS.md` — rascunho de publicação e dados, pendente de aprovação jurídica e do proprietário.
 - `IDENTIDADE_VISUAL_E_ATRIBUICOES.md` — origem, direitos e integração do ícone, pendente de confirmação.
 - `PLANO_MIGRACAO_BUILDER_MSI_R016.md` — plano técnico e critérios de aceite para substituir `msilib`.

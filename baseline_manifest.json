@@ -36,9 +36,13 @@
       "sha256": "ed117f4d961d63148e0a6df355e41237074497c1bb47ad175ceb97da7a893b16",
       "size": 49348
     },
+    "NOTICE.md": {
+      "sha256": "d2ecc1799408c2769cb39a96c823cd7782755679f24952d948145778cbf0ac9f",
+      "size": 1263
+    },
     "README.md": {
-      "sha256": "d82603c96ffd9637af4e69274fe2a60fd2f719fb0dfc06ca85e3fa472fbff5b6",
-      "size": 15433
+      "sha256": "0bd09c1ef1558c2786dac0299c2cbdbc9e0a7494d45e949ea28e66799fa933e8",
+      "size": 15593
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -47,6 +51,10 @@
     "app.py": {
       "sha256": "6eef1fb7c76c4b3648a530c1c3e939ed296ead232fd5c4be4e48708f69389997",
       "size": 218
+    },
+    "assets/branding/neoeng-d-trace-icon-source.png": {
+      "sha256": "17dde3dc0d616cef8927403cb3b2b15aa818960776605eb2a7d2b99b8e5adedc",
+      "size": 194161
     },
     "bench/benchmark_convex_decomp.py": {
       "sha256": "061fa69e2f044953c9b935eafd30d7556884f55501fb9e998dfcaddc095209f0",
@@ -85,8 +93,8 @@
       "size": 2452
     },
     "docs/CHECKLIST_RELEASE_PUBLICA.md": {
-      "sha256": "7ffdf160cd6ed9cf1b8db84205305154fc6af27f272a846fbb0fe27c900229b8",
-      "size": 1761
+      "sha256": "9085285b7fa872cfe9008c613351d00183660ec08a2c38981acaae2d9904ac3f",
+      "size": 2182
     },
     "docs/CHECKPOINT_ETAPA_0_5_2D.md": {
       "sha256": "9e9f92f59c77e7173ed407798be9469462be97f5de854fe6892a0aacfa7dbb22",
@@ -209,8 +217,8 @@
       "size": 2923
     },
     "docs/IDENTIDADE_VISUAL_E_ATRIBUICOES.md": {
-      "sha256": "6751c1c583a581773a94f87cb114f12d39df20f2ed38a0b235c524eca4565531",
-      "size": 1437
+      "sha256": "f3fe2875ffc2ee6ded32f8d63b3d6d70e191307d15e61b5fdaa8ec6dbfb6946d",
+      "size": 1842
     },
     "docs/INVENTARIO_LOCALIZACAO_0_6N1.md": {
       "sha256": "8a3f3122fbe4e20c65e2f2d24adc74dab62fa89b66b7499e4658a725c953fee3",
@@ -225,16 +233,16 @@
       "size": 6072
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "86443b6af2cb2a17650c2688ccc4df6df3abf145c4f5d1080c474419b2c76d4d",
-      "size": 17099
+      "sha256": "6486555da63c1274f2acbd5963da7a67be16c1ebc5eb3e1ff203dfcff9d1d974",
+      "size": 17165
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "746aeb198ce04d9edd63111bcc36ee991ef4d527f3d003ec6e4863f569abb405",
-      "size": 16112
+      "sha256": "01583bef09e6172bd84d57fed689c53c557863e3b7e9053b0c1efee203d0e725",
+      "size": 16213
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "543a2e1cc6ae766f8180fa8739c1024c265921f64a8a4bebd4d2aedd54673b92",
@@ -257,12 +265,16 @@
       "size": 19169
     },
     "docs/POLITICA_PUBLICACAO_E_DADOS.md": {
-      "sha256": "f2ded067a36c17a3d1afa84dcacaec3657b1ba7781a41a065c89ff2b462b1227",
-      "size": 2652
+      "sha256": "08f0ce3374433d480da54d3c02af23a5f7d93d166ea8820b6bb0f3b4e45daebc",
+      "size": 3152
     },
     "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md": {
       "sha256": "108fa3787a2130aefc8cf91fed77efcb52b969e1bdf31b3c1c16314152a00666",
       "size": 6515
+    },
+    "docs/RELEASE_INICIAL_VALIDACAO.md": {
+      "sha256": "8bda74fecad5e878b417a64b69cfe9ae10baf532e25c1bb8b870df95094eae75",
+      "size": 2111
     },
     "docs/VALIDACAO_0_5_2F2.md": {
       "sha256": "1ef5491db4deed67ae8eaa11a105359dc70b8044b186814e79b9d71cf975d4f6",
@@ -561,8 +573,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "d04ae388bdebcf73f37e63b6af4855a7ee59c6d7bfed31b51d30a8af8b3a5bb5",
-      "size": 24731
+      "sha256": "4aaf20c72fdf9e23ac67bd4f5fc00081c47c8e00f7b83d1347012dd59a25e337",
+      "size": 24956
     },
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
       "sha256": "a14971ec281558a36456cc5a4492465e934252559a70febc6ad46a00cd0b2708",
@@ -1249,8 +1261,8 @@
       "size": 2217
     },
     "tests/test_stage14_postmerge_closure.py": {
-      "sha256": "cd63742c2f21fa1899a8f11655ace7b5af81e08fa4dc2a1533ba488f462ab8b2",
-      "size": 1975
+      "sha256": "327686965afc0f234a3edf486aceedc777117d2d174c15f58ac933780a4d4945",
+      "size": 2006
     },
     "tests/test_stage_0_5_2d_ui.py": {
       "sha256": "e3f8323bf29e1fecf34a7e6d29ff1a569ddbc42b77824337e3653a806e3be43d",

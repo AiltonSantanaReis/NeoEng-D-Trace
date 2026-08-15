@@ -13,7 +13,7 @@ Etapa 14 — encerrada no escopo técnico pós-merge:
 - MSI WiX reproduzido byte a byte em duas execuções; instalação, binários instalados, exportações, GUI, upgrade, reparo e desinstalação aprovados;
 - Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` consumiram fixtures produzidos pela implementação integrada;
 - integridade recursiva, ausência de referências proibidas e Microsoft Defender aprovados;
-- executáveis e MSI permanecem sem assinatura; licença/texto jurídico, política de publicação e identidade visual final permanecem pendentes; R-016 está validado tecnicamente, com revisão de termos da toolchain pendente;
+- executáveis e MSI permanecem sem assinatura; releases iniciais de validação são permitidas com rotulagem; licença/texto jurídico, política de publicação e identidade visual final permanecem pendentes; R-016 está validado tecnicamente, com revisão de termos da toolchain pendente;
 - PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b` e CI pós-merge `31905237922` auditado;
 - `982` testes por sistema; cobertura idêntica ponto a ponto em 80 módulos; legado `27/27` reconciliado e zero violações nos pacotes auditados;
 - `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `RELEASE_APPROVED=NO`.
@@ -21,11 +21,11 @@ Etapa 14 — encerrada no escopo técnico pós-merge:
 ### Decisão de roadmap para os bloqueios restantes
 
 Builds de validação podem ser entregues a avaliadores identificados sem
-assinatura de código, desde que sejam rotuladas como pré-release técnica e não
-sejam apresentadas como release pública. A assinatura será adquirida para a
-primeira release pública oficial após validação de usuários e crescimento do
-projeto. Essa decisão não encerra `R-014`; ela apenas define seu momento de
-execução. Os detalhes estão em `docs/CHECKLIST_RELEASE_PUBLICA.md`,
+assinatura de código, desde que sejam rotuladas como pré-release técnica; uma
+pré-release pública também deve ser explicitamente rotulada e acompanhada de
+hashes e documentação. A assinatura será adquirida para futuras builds/releases
+oficiais após validação de usuários e crescimento do projeto. `R-014` não bloqueia
+as primeiras releases de validação. Os detalhes estão em `docs/CHECKLIST_RELEASE_PUBLICA.md`,
 `docs/POLITICA_PUBLICACAO_E_DADOS.md`,
 `docs/IDENTIDADE_VISUAL_E_ATRIBUICOES.md` e
 `docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md`.
