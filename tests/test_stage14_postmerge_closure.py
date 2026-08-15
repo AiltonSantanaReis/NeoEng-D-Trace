@@ -48,8 +48,9 @@ def test_release_roadmap_defers_signature_without_approving_release() -> None:
         encoding="utf-8"
     )
 
-    assert "avaliadores identificados sem assinatura" in readme
+    assert "primeiras releases" in readme
+    assert "sem assinatura" in readme
     assert "RELEASE_APPROVED=NO" in readme
-    assert "R-014 | ABERTO / DEFERIDO PARA RELEASE PÚBLICA" in risks
-    assert "primeira release pública oficial" in checklist
+    assert "R-014 | ABERTO / DEFERIDO PARA FUTURAS BUILDS/RELEASES OFICIAIS" in risks
+    assert "futuras builds/releases oficiais" in checklist
     assert "NÃO APROVADA" in checklist

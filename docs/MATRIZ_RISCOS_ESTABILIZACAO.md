@@ -40,8 +40,8 @@ Snapshot vivo de 15 de agosto de 2026. A PR `#58` foi integrada no merge `f15193
 | R-011 | ENCERRADO NO ESCOPO APROVADO | PR `#51`, merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e CI pós-merge `31698961646`; refatoração Qt e autosave auditados em Linux/Windows |
 | R-012 | ENCERRADO NO ESCOPO APROVADO | PR `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI pós-merge `31686321925`; limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes em Linux/Windows; artefatos e legado auditados |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
-| R-014 | ABERTO / DEFERIDO PARA RELEASE PÚBLICA | GUI, CLI e MSI retornam `NotSigned`; builds técnicas podem ser usadas por avaliadores identificados, mas a primeira release pública oficial exige assinatura |
-| R-015 | ABERTO / BLOQUEIA RELEASE | licença comercial final, política de publicação/dados e ícone oficial não foram aprovados |
+| R-014 | ABERTO / DEFERIDO PARA FUTURAS BUILDS/RELEASES OFICIAIS | GUI, CLI e MSI retornam `NotSigned`; releases iniciais de validação podem ser distribuídas sem assinatura, com rotulagem e hashes |
+| R-015 | DOCUMENTAÇÃO PREPARADA / APROVAÇÃO PENDENTE | ícone recebido e versionado; NOTICE, política e roteiro inicial preparados; titularidade, termos, atribuições e aprovação final ainda pendentes |
 | R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026

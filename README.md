@@ -15,7 +15,7 @@ A âncora auditada atual é o merge da PR `#58`,
 `31905237922` reproduziu os testes em Linux e Windows, com árvore limpa,
 artefatos de evidência e a mesma cobertura nas duas plataformas. A Etapa 14
 está encerrada no escopo técnico validado; a release pública continua bloqueada
-por `R-014` e `R-015`.
+por `R-015`; `R-014` fica deferido para futuras builds/releases oficiais.
 
 | Indicador | Estado comprovado |
 |---|---|
@@ -208,14 +208,12 @@ O primeiro comando gera e testa o bundle portátil; o segundo o reconstrói,
 cria o MSI por usuário, instala em diretório de validação, executa CLI/GUI e
 exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
 versionado. O build falha se a árvore estiver suja ou se o destino sair do
-workspace. Para a primeira distribuição pública oficial ainda serão obrigatórias assinatura
-de código, revisão jurídica e identidade visual final. Builds de validação podem
-ser entregues a avaliadores identificados sem assinatura, com aviso explícito de
-pré-release e sem serem apresentadas como release pública.
+workspace. As primeiras releases de validação podem ser distribuídas sem assinatura, com rotulagem explícita; para uma distribuição pública oficial serão obrigatórias assinatura de código, revisão jurídica e identidade visual final.
 
 A decisão de roadmap é deliberada: o certificado de assinatura será adquirido
-após validação com usuários e crescimento suficiente para justificar o custo.
-Isso mantém `R-014` aberto e não altera `RELEASE_APPROVED=NO`.
+para futuras builds/releases oficiais após validação com usuários e crescimento
+suficiente para justificar o custo. `R-014` não bloqueia as primeiras releases
+de validação, mas permanece aberto e não altera `RELEASE_APPROVED=NO`.
 
 ## Qualidade e validação
 
@@ -279,6 +277,8 @@ nas fontes canônicas:
 - [Contrato da CLI](docs/CONTRATO_CLI.md)
 - [Changelog](CHANGELOG.md)
 - [Política de segurança](SECURITY.md)
+- [Roteiro de release inicial](docs/RELEASE_INICIAL_VALIDACAO.md)
+- [NOTICE preliminar](NOTICE.md)
 
 Snapshots históricos não são reescritos retroativamente. Documentos vivos
 devem continuar distinguindo estado atual, evidência de um SHA específico e
