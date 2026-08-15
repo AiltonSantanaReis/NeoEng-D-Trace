@@ -21,7 +21,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; o CI pós-merge `31907063633` aprovou os testes em Linux e Windows, com baseline íntegra e evidências auditadas. A primeira release oficial foi autorizada pelo proprietário. `R-014` e a formalização futura de `R-015` são riscos aceitos/deferidos e não bloqueiam essa primeira release por decisão do proprietário. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. Os artefatos atuais continuam sem assinatura; isso é declarado, não mascarado.
+Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; o CI pós-merge `31907063633` aprovou os testes em Linux e Windows, com baseline íntegra e evidências auditadas. A release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e a formalização futura de `R-015` são riscos aceitos/deferidos e não bloquearam essa release por decisão do proprietário. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. Os artefatos atuais continuam sem assinatura; isso é declarado, não mascarado.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 

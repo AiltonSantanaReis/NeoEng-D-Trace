@@ -3,6 +3,9 @@
 **Status:** decisão do proprietário registrada; assinatura e trâmites jurídicos deferidos
 **Data:** 15 de agosto de 2026
 
+**Publicação efetiva:** `v0.2.0` no commit `1feb2d134cea8c5a1d2346665280b31c051f5574`.
+Artefatos e hashes estão no [GitHub Releases](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/releases/tag/v0.2.0).
+
 ## Decisão de roadmap
 
 A primeira disponibilização pode ser uma **release oficial**, conforme decisão
@@ -39,7 +42,7 @@ por IA está registrada em `NOTICE.md` e em
 
 ## Decisão registrada
 
-- Primeira release oficial: autorizada pelo proprietário.
+- Primeira release oficial: publicada como `v0.2.0` pelo proprietário.
 - R-014: assinatura deferida para futuras builds/releases.
 - R-015: formalização jurídica/licenciamento/atribuições futura conforme demanda.
 - R-016: validação técnica do builder concluída; governança da toolchain permanece documentada.

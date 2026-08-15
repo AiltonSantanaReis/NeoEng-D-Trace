@@ -1,8 +1,8 @@
 # Checklist de Release Pública — NeoEng-D-Trace
 
-**Status atual:** PRIMEIRA RELEASE OFICIAL AUTORIZADA PELO PROPRIETÁRIO; ASSINATURA E TRÂMITES JURÍDICOS DEFERIDOS PARA FUTURAS VERSÕES
+**Status atual:** RELEASE OFICIAL `v0.2.0` PUBLICADA; ASSINATURA E TRÂMITES JURÍDICOS DEFERIDOS PARA FUTURAS VERSÕES
 
-Este checklist separa uma build técnica de uma release pública. Um item marcado
+Este checklist registra a release pública `v0.2.0` e separa gates concluídos de riscos aceitos/deferidos. Um item marcado
 como “futuro” não pode ser apresentado como concluído.
 
 ## Gates obrigatórios

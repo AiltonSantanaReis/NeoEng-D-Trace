@@ -39,7 +39,7 @@ def test_stage14_postmerge_closure_preserves_audited_truth() -> None:
     assert manifest["validation"]["coverage"]["pointwise_identical"] is True
 
 
-def test_release_roadmap_records_owner_authorization_and_defers_signature() -> None:
+def test_release_roadmap_records_published_release_and_defers_signature() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     risks = (ROOT / "docs" / "MATRIZ_RISCOS_ESTABILIZACAO.md").read_text(
         encoding="utf-8"
@@ -48,8 +48,9 @@ def test_release_roadmap_records_owner_authorization_and_defers_signature() -> N
         encoding="utf-8"
     )
 
-    assert "primeira release oficial" in readme.lower()
+    assert "release oficial" in readme.lower()
+    assert "v0.2.0" in readme
     assert "sem assinatura" in readme
     assert "R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES" in risks
     assert "futuras builds/releases" in checklist
-    assert "AUTORIZADA PELO PROPRIETÁRIO" in checklist
+    assert "PUBLICADA" in checklist
