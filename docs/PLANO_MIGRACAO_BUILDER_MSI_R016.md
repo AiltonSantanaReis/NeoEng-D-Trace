@@ -1,6 +1,6 @@
 # Plano de Migração do Builder MSI — R-016
 
-**Status:** ABERTO / PLANEJADO
+**Status:** VALIDADO TECNICAMENTE / GOVERNANÇA DE RELEASE PENDENTE
 
 ## Situação comprovada
 
@@ -72,11 +72,13 @@ O candidato recompilado após as correções passou a validação real de instal
 - desinstalação: exit code `0`, sem resíduos no diretório instalado;
 - estado do usuário preservado fora do diretório de instalação.
 
-Este resultado não fecha R-016 sozinho. O status permanece **ABERTO / CANDIDATO
-TÉCNICO** até a execução em CI/Windows limpo, teste de upgrade e reparo entre
-versões distintas, revisão de dependências/licenciamento e assinatura do artefato
-final. Os MSI de validação continuam sem assinatura digital; isso é esperado e
-não é apresentado como aprovação de publicação.
+Com as provas local e remota acima, o risco técnico de migração do R-016 está
+**VALIDADO**: toolchain pinada, builds determinísticos, CI Linux/Windows, instalação,
+upgrade, reparo, execução e remoção foram exercitados. Permanece uma pendência de
+governança para a release: revisar formalmente os termos/licença da toolchain e
+manter assinatura, identidade legal e aprovação pública nos gates R-014/R-015.
+Os MSI de validação continuam sem assinatura digital; isso é esperado e não é
+apresentado como aprovação de publicação.
 
 ## Upgrade e reparo — evidência local
 
