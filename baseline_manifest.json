@@ -373,12 +373,12 @@
       "size": 8422
     },
     "docs/evidence/ETAPA_14_ENCERRAMENTO_POS_MERGE.json": {
-      "sha256": "ce32cee86f2b93b106363b4227af4829345f886ba9377db961cded4203d6b5eb",
-      "size": 1953
+      "sha256": "836989bc9334780270ed57ed2613eae9f914fef38659cd7058cafc67c1eef50f",
+      "size": 1952
     },
     "docs/evidence/ETAPA_14_ENCERRAMENTO_POS_MERGE.md": {
-      "sha256": "b72712e769f9fe95c052aee64d7710a0b4a132a9db99406a35c27c205665155f",
-      "size": 2962
+      "sha256": "0cbcb4e0b8ec052fb7e4e63aa8714bcf53dcfb9ef591cf7a7273bcb30a43c3a7",
+      "size": 2961
     },
     "docs/evidence/ETAPA_14_GODOT_RELEASE_VALIDATION.json": {
       "sha256": "3e1f8b3f46e549252d85fbe48d253eb253226c0b2991d0d8e06b70ff5ce4bda8",
