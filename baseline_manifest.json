@@ -8,6 +8,10 @@
     "binary_files": "raw"
   },
   "files": {
+    ".config/dotnet-tools.json": {
+      "sha256": "e05ae72be2ce090a8ca340118581ddb80a037ccb94c9adf5613c8dded571d2c1",
+      "size": 142
+    },
     ".flake8": {
       "sha256": "65e92ca4dea47e2e54127e9718321acfdac36e98f3d00f981c5f8bdea8528483",
       "size": 129
@@ -233,8 +237,8 @@
       "size": 15988
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
-      "sha256": "a4c27a60381e922b73f72a895a7beac2116d10c72a0bf64b61eb794757d47d8e",
-      "size": 2442
+      "sha256": "882d5454cee6e51a884ff15c9e105d1335d6f5eb674a844c822435bdcc2dadc5",
+      "size": 4940
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -777,8 +781,8 @@
       "size": 147
     },
     "scripts/build_installer.ps1": {
-      "sha256": "d07450ea09771cd3e088df5f5e81e7e9ce2b511509884432720cdce884db7dc3",
-      "size": 2775
+      "sha256": "3ae6b0ec8a713cf22edfad44db698988ed3768823567c4024451a8ef5a15c921",
+      "size": 2876
     },
     "scripts/build_windows.ps1": {
       "sha256": "8f8c4b3608033c2fdd708f381dc39b32342545e704294df17f0c738d4aca464d",
@@ -1329,8 +1333,8 @@
       "size": 18166
     },
     "tests/test_stage_14_release_packaging.py": {
-      "sha256": "99ac20aec0387e636702c520919a908d4f9969fbebf8b9670ce2d105548153e5",
-      "size": 9493
+      "sha256": "2866fcab3c8992b6262a8fd6de727dc347ab8ed217f5b3a0b9fa07fd4f873904",
+      "size": 10179
     },
     "tests/test_stage_4_project_ui.py": {
       "sha256": "d0ca3c97558efe2ddad350e6566d44b841ca855069d703a05d18baf80bf06864",
@@ -1441,8 +1445,8 @@
       "size": 4635
     },
     "tools/package_windows_msi.py": {
-      "sha256": "75e8ac1cb759c5f992a9b352041e716cf5e495668b5d362d22ade81e242176b5",
-      "size": 12557
+      "sha256": "e3424cc96873ed6cf8c29fb9a980b795c8de8bb6b630d2102e8632a423ebc64d",
+      "size": 17235
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",
@@ -1455,6 +1459,10 @@
     "tools/sanitize_evidence_archives.py": {
       "sha256": "9071cdab5896d6e84b795323e08fb18228f61038562f2258cf6ec355ff1bb731",
       "size": 5212
+    },
+    "tools/set_msi_package_code.ps1": {
+      "sha256": "dffa30914076d2eca6143b1a148e340fd2ff13e08aa1349d894bbda551d22be9",
+      "size": 870
     },
     "tools/unity_engine_validator.cs": {
       "sha256": "88804d034c97771e7bda4252eabf1b7288ce80bb286a1168611849a2da057cde",
