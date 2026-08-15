@@ -2,10 +2,10 @@
 
 ## Identificação
 
-- PR integrada: `#55`.
-- Merge commit: `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`.
-- CI pós-merge: `31739267811`, evento `push`, `headSha` igual ao merge.
-- Commit-fonte do candidato: `9cef5a15e357f096312048c0beb9d43384c92fce`.
+- PR integrada mais recente: `#58`.
+- Merge commit: `f15193a55d1a5de0c7031f5bab656107302eee1b`.
+- CI pós-merge: `31905237922`, evento `push`, `headSha` igual ao merge.
+- Commit-fonte do build MSI: `828cf626b7ce382c360723b1be10c4ce718c4187`.
 - Data da auditoria: 15 de agosto de 2026.
 - Escopo: fechamento técnico da Etapa 14; não é aprovação de release pública.
 
@@ -14,7 +14,7 @@
 O CI executou os jobs Linux e Windows, ambos com conclusão `success`. Os logs
 registram:
 
-- `980 passed` em cada sistema;
+- `982 passed` em cada sistema;
 - `11.621/12.523` linhas cobertas (`92,80%`);
 - `3.382/3.978` branches cobertos (`85,02%`);
 - cobertura total `90,92%`, com política mínima de linhas, branches e módulos aprovada;
@@ -36,8 +36,8 @@ referências de testes substitutos coletadas.
 
 O relatório pós-merge registrou:
 
-- `tested_commit=36669ba126e339ec8640e1dc57ceda9db6c6c3dc`;
-- `source_head_commit=36669ba126e339ec8640e1dc57ceda9db6c6c3dc`;
+- `tested_commit=f15193a55d1a5de0c7031f5bab656107302eee1b`;
+- `source_head_commit=f15193a55d1a5de0c7031f5bab656107302eee1b`;
 - `working_tree_dirty=false`.
 
 O `project_commit` antigo no manifesto da reconciliação é a âncora histórica
@@ -51,10 +51,10 @@ contrato.
   árvore versionada;
 - 1.431 payloads e 127 arquivos compactados foram examinados pelo gate, sem
   referências proibidas;
-- artefato Linux: ID `9196448604`, digest
-  `sha256:67c85c55f82f3b227bc4f9b5c5445ff05c87b8cad6bdb21edfa6b1f5f7fba394`;
-- artefato Windows: ID `9196475630`, digest
-  `sha256:53e28ffca8809b47d16198a71391d09ca27ec317cb96ad886d47a46e8f15be5d`.
+- artefato Linux: ID `9252167708`, digest
+  `sha256:429f1b0fc498b7ecc8cbe2e4ce7472c1779e0a42871b55278a5500860cb013f3`;
+- artefato Windows: ID `9252176851`, digest
+  `sha256:8520f7ad9adcfa1fd93fe02426a1b8cff1320a138bd6732944b29b272693ec87`.
 
 ## Decisão
 
@@ -72,4 +72,4 @@ permanece bloqueada por:
 - `R-014`: GUI, CLI e MSI sem assinatura de código;
 - `R-015`: pendências jurídicas, política de publicação/dados e identidade
   visual final;
-- `R-016`: builder MSI dependente de API removida após Python 3.12.
+- `R-016`: migração para WiX 4.0.6 validada tecnicamente; permanece apenas a revisão de governança da toolchain no gate de release.

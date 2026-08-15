@@ -4,10 +4,12 @@
 
 ## Situação comprovada
 
-O builder atual em `tools/package_windows_msi.py` usa `msilib`. O build é
-funcional e reproduzível no ambiente validado com Python 3.11, mas não deve ser
-tratado como solução futura: `msilib` foi descontinuado no Python 3.11 e removido
-no Python 3.13; Python 3.12 foi a última versão que o forneceu.
+Na abertura deste plano, `tools/package_windows_msi.py` usava `msilib`. Essa
+dependência foi removida: o builder atual gera WiX e usa a toolchain fixada
+WiX `4.0.6`, restaurada pelo manifesto de ferramentas do repositório.
+O build continua funcional e reproduzível no ambiente validado com Python 3.11;
+os resultados históricos do builder `msilib` abaixo permanecem apenas como
+baseline de migração.
 
 ## Objetivo
 
@@ -30,7 +32,8 @@ observável atual e sem alterar silenciosamente o conteúdo instalado.
 3. Implementar um protótipo que gere o mesmo conjunto de arquivos e metadados.
 4. Comparar dois builds independentes por manifesto, estrutura MSI e hashes.
 5. Validar instalação, execução GUI/CLI, exportação, reparo, upgrade e remoção.
-6. Repetir a validação em Python 3.13 ou superior, conforme o alvo definido.
+6. Repetir a validação em uma futura versão Python somente quando o alvo do
+   produto mudar; a migração do builder não depende mais de `msilib`.
 7. Atualizar lockfile, CI, documentação e evidências somente após os testes.
 
 ## Critérios de aceite
@@ -47,9 +50,10 @@ O risco só poderá ser encerrado quando:
 
 ## Decisão de release
 
-O R-016 é dívida de manutenção e não deve ser marcado como resolvido apenas
-porque Python 3.11 ainda funciona. A migração pode ser realizada sem comprar
-certificado; a assinatura de código é um gate separado do builder.
+O risco técnico do R-016 está validado: a migração pode ser realizada sem
+certificado de assinatura, e a assinatura de código é um gate separado do
+builder. Permanece somente a revisão de termos da toolchain na governança da
+release.
 
 ## Evidência da migração — candidato técnico
 

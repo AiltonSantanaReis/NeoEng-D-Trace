@@ -17,11 +17,11 @@
 | R-013 | P1 | Metadados do atlas podem exceder os limites da textura | Recorte incorreto ou falha em engines consumidoras | PNG e JSON reabertos; retângulos contidos; testes unitários e de integração |
 | R-014 | P1 | Artefatos Windows não possuem assinatura de código | Alerta de confiança e cadeia de distribuição não autenticada | Assinar GUI, CLI e MSI; validar assinatura e timestamp |
 | R-015 | P1 | Texto jurídico, política de publicação e identidade visual final pendentes | Publicação sem base legal ou apresentação oficial | Aprovação jurídica, política de dados e ícone final versionado |
-| R-016 | P2 | Builder MSI usa API descontinuada e removida após Python 3.12 | Build futuro bloqueado ao atualizar Python | Migrar para toolchain MSI suportado e repetir reprodutibilidade/instalação |
+| R-016 | P2 | Governança da toolchain MSI migrada | Termos da ferramenta precisam ser revisados antes da release pública | Manter WiX 4.0.6 fixado e preservar provas de reprodutibilidade, instalação, upgrade e reparo |
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 15 de agosto de 2026. A Etapa 14 usou o commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce` e foi integrada pela PR `#55` no merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`. O CI pós-merge `31739267811` aprovou `980` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados. `R-014`, `R-015` e `R-016` permanecem abertos e a release não está aprovada. A política de roadmap permite builds técnicas sem assinatura para avaliadores identificados; a assinatura permanece obrigatória para a primeira release pública oficial.
+Snapshot vivo de 15 de agosto de 2026. A PR `#58` foi integrada no merge `f15193a55d1a5de0c7031f5bab656107302eee1b`; o CI pós-merge `31905237922` aprovou `982` testes em Linux e Windows, cobertura `92,80%`/`85,02%`, legado `27/27` reconciliado e árvore limpa. `R-014` e `R-015` permanecem abertos e bloqueiam a release pública. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. A política de roadmap permite builds técnicas sem assinatura para avaliadores identificados; a assinatura permanece obrigatória para a primeira release pública oficial.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -42,7 +42,7 @@ Snapshot vivo de 15 de agosto de 2026. A Etapa 14 usou o commit-fonte técnico `
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
 | R-014 | ABERTO / DEFERIDO PARA RELEASE PÚBLICA | GUI, CLI e MSI retornam `NotSigned`; builds técnicas podem ser usadas por avaliadores identificados, mas a primeira release pública oficial exige assinatura |
 | R-015 | ABERTO / BLOQUEIA RELEASE | licença comercial final, política de publicação/dados e ícone oficial não foram aprovados |
-| R-016 | ABERTO / DÍVIDA DE BUILD | MSI funcional e reproduzível em Python 3.11, mas o builder usa API descontinuada e removida após Python 3.12 |
+| R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
@@ -127,7 +127,7 @@ Nenhum risco acima está encerrado por esta etapa.
 | ETAPA-9 | CONCLUÍDA | PR `#40`, merge `76dd6b7ca3e7da08fab653d66ae29a33a839baf3`; CI final `31445205968` e pós-merge `31445518755` aprovados; `R-008` encerrado |
 | ETAPA-10 | CONCLUÍDA | PR `#42`; CIs `31450335289`, `31451363518` e `31452032479` rejeitados; pré-merge `31457937902` aceito; merge `9b22bdc54b13992658172d4748bfab44f3127c8e`; pós-merge `31463873481` rejeitado; CI corretivo `31464786333`, PR `#43`, merge `f8caec3e7156d308f03046f81d2c89996f959466` e pós-merge `31469610508` aceitos após auditoria |
 | ETAPA-13 | CONCLUÍDA | PR funcional `#51`; fechamento `#52`, merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6` e CI pós-merge final `31705652046` auditado; `R-011` encerrado; naquele encerramento, Etapa 14 não iniciada e release não aprovada |
-| ETAPA-14 | CONCLUÍDA NO ESCOPO TÉCNICO | PR `#55`, merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc`; CI pós-merge `31739267811` auditado; 980 testes por sistema; cobertura, legado e evidências equivalentes; `R-014`, `R-015` e `R-016` abertos; release não aprovada |
+| ETAPA-14 | CONCLUÍDA NO ESCOPO TÉCNICO | PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b`; CI pós-merge `31905237922` auditado; 982 testes por sistema; cobertura, legado e evidências equivalentes; `R-014` e `R-015` abertos; `R-016` validado tecnicamente; release não aprovada |
 
 ## Severidades
 

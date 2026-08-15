@@ -10,27 +10,24 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 
 ## Estado verificável
 
-A âncora auditada de encerramento da Etapa 13 é
-`b4d9390dbd1274c283a3e3985d6d79be47de45d6`, merge autorizado da PR `#52`.
-Ela preserva a integração funcional da PR `#51` e incorpora a correção
-retrospectiva dos pacotes históricos. O CI pós-merge `31705652046` reproduziu
-`955` testes em Linux e Windows, cobertura idêntica ponto a ponto, legado
-`27/27` e artefatos recursivos sem violações. `R-011` e a Etapa 13 estão
-encerrados no escopo aprovado. A Etapa 14 foi integrada pela PR `#55`, com CI
-pós-merge `31739267811` auditado; os riscos de assinatura, publicação e manutenção
-do builder continuam impedindo a aprovação de release.
+A âncora auditada atual é o merge da PR `#58`,
+`f15193a55d1a5de0c7031f5bab656107302eee1b`. O CI pós-merge
+`31905237922` reproduziu os testes em Linux e Windows, com árvore limpa,
+artefatos de evidência e a mesma cobertura nas duas plataformas. A Etapa 14
+está encerrada no escopo técnico validado; a release pública continua bloqueada
+por `R-014` e `R-015`.
 
 | Indicador | Estado comprovado |
 |---|---|
 | Suíte integrada | **955 testes no CI pós-merge final da Etapa 13, em Linux e Windows** |
-| Suíte integrada da Etapa 14 | **980 testes aprovados em Linux e Windows/Python 3.11.9 no CI pós-merge** |
+| Suíte integrada da Etapa 14 | **982 testes aprovados em Linux e Windows/Python 3.11 no CI pós-merge `31905237922`** |
 | Cobertura da Etapa 14 | **11.621/12.523 linhas — 92,80%** |
 | Branches da Etapa 14 | **3.382/3.978 — 85,02%** |
 | Cobertura combinada da Etapa 14 | **90,92%** |
 | Type checking | mypy sem erros em 80 arquivos na Etapa 14 integrada |
 | Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
-| Última etapa integrada | **Etapa 13 — R-011 encerrado no escopo aprovado** |
+| Última etapa integrada | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Etapa integrada atual | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Release | **NÃO APROVADA: artefatos sem assinatura, pendências jurídicas e identidade visual final** |
 
@@ -40,13 +37,14 @@ de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
 brutas conhecidas, aceitas somente quando as assinaturas coincidem e os 17
 testes substitutos são coletáveis.
 
-A implementação técnica `0.2.0` foi construída duas vezes a partir de
-`9cef5a15e357f096312048c0beb9d43384c92fce`. Os ZIPs foram idênticos com
-SHA-256 `2c8b9c8847d0c00e9f1d0786f5b14e161832856252d8454db58d0d9e198e0d68`;
-os MSIs foram idênticos com SHA-256
-`85adbdb1b754fc69a7fc717e9e9b4aed5950a8e71b746adb381f4444f589b7c5`.
+A migração técnica do builder MSI foi validada no commit-fonte
+`828cf626b7ce382c360723b1be10c4ce718c4187`: duas compilações WiX
+independentes do bundle produziram o mesmo SHA-256
+`b7e6afa36ab393db5d171fbff69730f7aec3ab64d1df533cbf0571826427e7cd`.
+O build oficial limpo produziu o MSI
+`6960217b02c14571b5b285499e200ec79987508f3bfd1db8fc7e75ed49f62524`.
 A instalação por usuário, execução instalada, exportações, abertura/fechamento
-da GUI e desinstalação passaram em duas rodadas. Fixtures gerados pelos
+da GUI, upgrade, repair e desinstalação passaram em rodadas reais. Fixtures gerados pelos
 binários foram importados com sucesso no Godot `4.7` e Unity `6000.5.7f1` com
 glTFast `6.19.0`. Esses resultados não superam os bloqueios de assinatura e
 publicação.
@@ -288,12 +286,13 @@ histórico.
 
 ## Licença e publicação
 
-NeoEng-D-Trace é um projeto proprietário e o repositório permanece privado. Não
-há licença open source atribuída. O texto jurídico comercial final ainda exige
+NeoEng-D-Trace é um projeto proprietário e o repositório é público. Não há
+licença open source atribuída. O texto jurídico comercial final ainda exige
 decisão/revisão própria antes de qualquer lançamento público.
 
 Esta atualização registra a integração e o fechamento técnico pós-merge da Etapa 14.
-Ela não aprova release: os riscos `R-014`, `R-015` e `R-016` permanecem abertos.
+Ela não aprova release: `R-014` e `R-015` permanecem abertos; `R-016` está
+validado tecnicamente e aguarda apenas governança de release.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

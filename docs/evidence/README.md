@@ -149,13 +149,13 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 Etapa 14 encerrada no escopo técnico pós-merge em 15 de agosto de 2026:
 
-- commit-fonte `9cef5a15e357f096312048c0beb9d43384c92fce`;
-- `978` testes, cobertura combinada `90,92%`, política de linhas/branches/módulos aprovada e legado `27/27`;
-- ZIP e MSI reproduzidos byte a byte, instalação/desinstalação e engines reais aprovadas;
+- commit-fonte do build MSI `828cf626b7ce382c360723b1be10c4ce718c4187`; merge documental/técnico atual `f15193a55d1a5de0c7031f5bab656107302eee1b`;
+- `982` testes por sistema, cobertura `92,80%` de linhas e `85,02%` de branches, política aprovada e legado `27/27` reconciliado;
+- WiX 4.0.6 fixado, builds MSI reproduzíveis, instalação, desinstalação, upgrade e repair reais validados;
 - Microsoft Defender sem ameaças detectadas e zero referências proibidas no bundle;
-- PR `#55`, merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc` e CI pós-merge `31739267811` foram auditados em logs e artefatos;
-- `980` testes por sistema, cobertura idêntica em 80 módulos, legado `27/27`, `60/60` evidências equivalentes e zero violações nos pacotes auditados;
-- assinatura, jurídico, identidade visual e migração do builder MSI permanecem abertos;
+- PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b` e CI pós-merge `31905237922` foram auditados em logs e artefatos;
+- cobertura idêntica em 80 módulos, árvore limpa e zero violações nos pacotes auditados;
+- assinatura, jurídico e identidade visual permanecem abertos; a migração do builder MSI foi validada tecnicamente;
 - `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `RELEASE_APPROVED=NO`.
 
 O relatório permanente do fechamento é `ETAPA_14_ENCERRAMENTO_POS_MERGE.md`.

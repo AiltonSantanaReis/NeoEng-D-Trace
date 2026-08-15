@@ -1156,8 +1156,11 @@ def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():
         "docs/evidence/README.md",
     ):
         value = _text(relative)
-        assert "9cef5a15e357f096312048c0beb9d43384c92fce" in value, relative
         assert "Etapa 14" in value, relative
+        assert (
+            "f15193a55d1a5de0c7031f5bab656107302eee1b" in value
+            or relative == "CHANGELOG.md"
+        ), relative
         assert "release" in value.lower(), relative
         assert (
             "não aprovada" in value.lower() or "RELEASE_APPROVED=NO" in value

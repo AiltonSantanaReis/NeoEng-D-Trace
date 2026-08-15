@@ -15,10 +15,10 @@ def test_stage14_postmerge_closure_preserves_audited_truth() -> None:
     )
 
     for marker in (
-        "PR integrada: `#55`",
-        "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
-        "31739267811",
-        "980 passed",
+        "PR integrada mais recente: `#58`",
+        "f15193a55d1a5de0c7031f5bab656107302eee1b",
+        "31905237922",
+        "982 passed",
         "raw_test_status=failed",
         "27 falhas brutas",
         "STAGE14_COMPLETED=YES",
