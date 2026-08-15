@@ -37,3 +37,19 @@ def test_stage14_postmerge_closure_preserves_audited_truth() -> None:
     assert manifest["legacy"]["unexpected_failures"] == 0
     assert manifest["legacy"]["missing_expected_failures"] == 0
     assert manifest["validation"]["coverage"]["pointwise_identical"] is True
+
+
+def test_release_roadmap_defers_signature_without_approving_release() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    risks = (ROOT / "docs" / "MATRIZ_RISCOS_ESTABILIZACAO.md").read_text(
+        encoding="utf-8"
+    )
+    checklist = (ROOT / "docs" / "CHECKLIST_RELEASE_PUBLICA.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "avaliadores identificados sem assinatura" in readme
+    assert "RELEASE_APPROVED=NO" in readme
+    assert "R-014 | ABERTO / DEFERIDO PARA RELEASE PÚBLICA" in risks
+    assert "primeira release pública oficial" in checklist
+    assert "NÃO APROVADA" in checklist
