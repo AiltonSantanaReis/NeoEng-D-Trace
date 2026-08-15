@@ -1,20 +1,22 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
-Baseline oficial: `a3f376af2a1f738bb36c107320757d0339300c78`.
+Baseline deste snapshot: `baseline_manifest.json`, gerado em 15 de agosto de 2026.
 
-## Estado operacional de referência — 13 de agosto de 2026
+## Estado operacional de referência — 15 de agosto de 2026
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
-Etapa 14 — candidato técnico local pré-merge:
+Etapa 14 — encerrada no escopo técnico pós-merge:
 
 - commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce`;
-- `978` testes locais aprovados no Windows/Python 3.11.9; cobertura `11.621/12.523` linhas (`92,80%`), `3.382/3.978` branches (`85,02%`) e `90,92%` combinada;
+- `980` testes por sistema no CI pós-merge; cobertura `11.621/12.523` linhas (`92,80%`), `3.382/3.978` branches (`85,02%`) e `90,92%` combinada;
 - ZIP portátil e MSI reproduzidos byte a byte em duas execuções; instalação, binários instalados, exportações, GUI e desinstalação aprovados;
-- Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` consumiram fixtures produzidos pelo candidato;
+- Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` consumiram fixtures produzidos pela implementação integrada;
 - integridade recursiva, ausência de referências proibidas e Microsoft Defender aprovados;
 - executáveis e MSI permanecem sem assinatura; licença/texto jurídico, política de publicação e identidade visual final permanecem pendentes;
-- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=NO`; `RELEASE_APPROVED=NO`.
+- PR `#55`, merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc` e CI pós-merge `31739267811` auditado;
+- `980` testes por sistema; cobertura idêntica ponto a ponto em 80 módulos; legado `27/27`; `60/60` evidências equivalentes e zero violações nos pacotes auditados;
+- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `RELEASE_APPROVED=NO`.
 
 Etapa 11 integrada e concluída no escopo aprovado:
 
@@ -24,7 +26,7 @@ Etapa 11 integrada e concluída no escopo aprovado:
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - CIs funcional `31491221322` e final de fechamento `31495971632` aceitos após auditoria integral de Linux/Windows, proveniência, legado, hashes e conteúdo recursivo;
 - `R-003` encerrado no escopo aprovado após integração e CI pós-merge auditado;
-- Etapas 11 a 13 concluídas nos escopos aprovados; Etapa 14 agora possui candidato técnico local, ainda não integrado; release não aprovada.
+- Etapas 11 a 14 concluídas nos escopos aprovados; `R-014`, `R-015` e `R-016` continuam abertos; release não aprovada.
 
 Etapa 12 — integrada e concluída no escopo aprovado:
 

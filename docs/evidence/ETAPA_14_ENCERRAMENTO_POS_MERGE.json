@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "evidence": "stage-14-technical-closure-post-merge",
+  "date": "2026-08-15",
+  "source_commit": "9cef5a15e357f096312048c0beb9d43384c92fce",
+  "merge_commit": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
+  "pull_request": 55,
+  "post_merge_ci": {
+    "run": 31739267811,
+    "event": "push",
+    "head_sha": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
+    "status": "success",
+    "jobs": {
+      "linux": 94578343923,
+      "windows": 94578343933
+    }
+  },
+  "validation": {
+    "tests_per_platform": 980,
+    "coverage": {
+      "lines_covered": 11621,
+      "lines_valid": 12523,
+      "branches_covered": 3382,
+      "branches_valid": 3978,
+      "line_percent": 92.8,
+      "branch_percent": 85.02,
+      "combined_percent": 90.92,
+      "modules": 80,
+      "pointwise_identical": true
+    },
+    "mypy_source_files": 80,
+    "baseline_files": 359
+  },
+  "legacy": {
+    "tests": 196,
+    "raw_test_status": "failed",
+    "raw_failures": 27,
+    "matched_expected_failures": 27,
+    "unexpected_failures": 0,
+    "missing_expected_failures": 0,
+    "replacement_references": 17,
+    "accepted": true,
+    "tested_commit": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
+    "source_head_commit": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
+    "working_tree_dirty": false
+  },
+  "artifact_audit": {
+    "evidence_files_compared": 60,
+    "recursive_payloads_scanned": 1431,
+    "recursive_archives_scanned": 127,
+    "prohibited_reference_violations": 0,
+    "linux": {
+      "id": 9196448604,
+      "digest": "sha256:67c85c55f82f3b227bc4f9b5c5445ff05c87b8cad6bdb21edfa6b1f5f7fba394"
+    },
+    "windows": {
+      "id": 9196475630,
+      "digest": "sha256:53e28ffca8809b47d16198a71391d09ca27ec317cb96ad886d47a46e8f15be5d"
+    }
+  },
+  "decision": {
+    "technical_candidate": "PASS",
+    "stage_completed": true,
+    "release_approved": false,
+    "blocking_risks": ["R-014", "R-015"],
+    "maintenance_risk": "R-016"
+  }
+}
