@@ -1,19 +1,19 @@
-# Release Inicial de Validação — NeoEng-D-Trace
+# Release Inicial Oficial — NeoEng-D-Trace
 
-**Status:** modelo operacional preparado; aprovação do proprietário pendente
+**Status:** decisão do proprietário registrada; assinatura e trâmites jurídicos deferidos
 **Data:** 15 de agosto de 2026
 
 ## Decisão de roadmap
 
-As primeiras disponibilizações do projeto serão tratadas como **releases de
-validação**, destinadas a usuários/avaliadores identificados e claramente
-rotuladas como pré-release. Elas não serão apresentadas como release pública
-oficial ou distribuição comercial madura.
+A primeira disponibilização pode ser uma **release oficial**, conforme decisão
+expressa do proprietário. Ela não precisa ser rotulada como release de validação.
 
 A assinatura de código de `R-014` fica deliberadamente para futuras
 builds/releases, depois da validação com usuários e do crescimento do projeto.
-Sua ausência não bloqueia uma release inicial de validação, desde que os
-controles abaixo sejam cumpridos.
+A ausência de assinatura é um risco conhecido e aceito pelo proprietário; não
+é apresentada como assinatura existente. A formalização jurídica, de
+licenciamento e atribuições de `R-015` também fica para futuras versões conforme
+demanda e decisão do proprietário.
 
 ## Controles obrigatórios para cada release inicial
 
@@ -23,23 +23,23 @@ controles abaixo sejam cumpridos.
   aprovação automática;
 - instalação, execução, exportação, atualização, reparo e desinstalação
   exercitados no candidato quando aplicável;
-- aviso explícito de que os artefatos Windows podem não ter assinatura;
-- identificação do público-alvo como avaliadores de validação;
-- canal de contato e procedimento para receber relatos de falha;
+- aviso explícito de que os artefatos Windows atuais não têm assinatura;
+- identificação da versão, commit, hashes e canal de contato para receber relatos de falha;
 - política de dados, NOTICE e atribuições anexados ao candidato;
 - nenhum segredo, caminho pessoal ou evidência não reproduzível no pacote.
 
 ## Limites
 
-Esta decisão não fecha `R-014`, não substitui revisão jurídica e não autoriza
-chamar o candidato de release oficial. `R-015` permanece parcialmente aberto
-até que o proprietário confirme texto jurídico, dados, atribuições, identidade
-visual e contato.
+Esta decisão não fecha tecnicamente `R-014` nem certifica revisão jurídica.
+Ela registra que o proprietário aceita a ausência de assinatura na primeira
+release oficial e decidirá futuramente sobre certificado, licenciamento,
+atribuições e outros trâmites de `R-015`. A autorização de uso do ícone gerado
+por IA está registrada em `NOTICE.md` e em
+`docs/IDENTIDADE_VISUAL_E_ATRIBUICOES.md`.
 
-## Aprovação do proprietário
+## Decisão registrada
 
-- Nome/titular: __________________________________________
-- Data: _________________________________________________
-- Versão autorizada: _____________________________________
-- Escopo: [ ] avaliadores identificados  [ ] pré-release pública rotulada
-- Observações: ___________________________________________
+- Primeira release oficial: autorizada pelo proprietário.
+- R-014: assinatura deferida para futuras builds/releases.
+- R-015: formalização jurídica/licenciamento/atribuições futura conforme demanda.
+- R-016: validação técnica do builder concluída; governança da toolchain permanece documentada.
