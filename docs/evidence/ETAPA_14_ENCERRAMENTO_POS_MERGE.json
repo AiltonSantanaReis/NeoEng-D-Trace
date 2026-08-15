@@ -2,21 +2,21 @@
   "schema_version": 1,
   "evidence": "stage-14-technical-closure-post-merge",
   "date": "2026-08-15",
-  "source_commit": "9cef5a15e357f096312048c0beb9d43384c92fce",
-  "merge_commit": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
-  "pull_request": 55,
+  "source_commit": "828cf626b7ce382c360723b1be10c4ce718c4187",
+  "merge_commit": "f15193a55d1a5de0c7031f5bab656107302eee1b",
+  "pull_request": 58,
   "post_merge_ci": {
-    "run": 31739267811,
+    "run": 31905237922,
     "event": "push",
-    "head_sha": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
+    "head_sha": "f15193a55d1a5de0c7031f5bab656107302eee1b",
     "status": "success",
     "jobs": {
-      "linux": 94578343923,
-      "windows": 94578343933
+      "linux": 95061883288,
+      "windows": 95061883266
     }
   },
   "validation": {
-    "tests_per_platform": 980,
+    "tests_per_platform": 982,
     "coverage": {
       "lines_covered": 11621,
       "lines_valid": 12523,
@@ -29,7 +29,7 @@
       "pointwise_identical": true
     },
     "mypy_source_files": 80,
-    "baseline_files": 359
+    "baseline_files": 368
   },
   "legacy": {
     "tests": 196,
@@ -40,8 +40,8 @@
     "missing_expected_failures": 0,
     "replacement_references": 17,
     "accepted": true,
-    "tested_commit": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
-    "source_head_commit": "36669ba126e339ec8640e1dc57ceda9db6c6c3dc",
+    "tested_commit": "f15193a55d1a5de0c7031f5bab656107302eee1b",
+    "source_head_commit": "f15193a55d1a5de0c7031f5bab656107302eee1b",
     "working_tree_dirty": false
   },
   "artifact_audit": {
@@ -50,12 +50,12 @@
     "recursive_archives_scanned": 127,
     "prohibited_reference_violations": 0,
     "linux": {
-      "id": 9196448604,
-      "digest": "sha256:67c85c55f82f3b227bc4f9b5c5445ff05c87b8cad6bdb21edfa6b1f5f7fba394"
+      "id": 9252167708,
+      "digest": "sha256:429f1b0fc498b7ecc8cbe2e4ce7472c1779e0a42871b55278a5500860cb013f3"
     },
     "windows": {
-      "id": 9196475630,
-      "digest": "sha256:53e28ffca8809b47d16198a71391d09ca27ec317cb96ad886d47a46e8f15be5d"
+      "id": 9252176851,
+      "digest": "sha256:8520f7ad9adcfa1fd93fe02426a1b8cff1320a138bd6732944b29b272693ec87"
     }
   },
   "decision": {
@@ -63,6 +63,6 @@
     "stage_completed": true,
     "release_approved": false,
     "blocking_risks": ["R-014", "R-015"],
-    "maintenance_risk": "R-016"
+    "maintenance_risk": "R-016_GOVERNANCA_TOOLCHAIN"
   }
 }

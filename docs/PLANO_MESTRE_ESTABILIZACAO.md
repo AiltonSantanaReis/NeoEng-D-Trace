@@ -8,14 +8,14 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 
 Etapa 14 — encerrada no escopo técnico pós-merge:
 
-- commit-fonte técnico `9cef5a15e357f096312048c0beb9d43384c92fce`;
-- `980` testes por sistema no CI pós-merge; cobertura `11.621/12.523` linhas (`92,80%`), `3.382/3.978` branches (`85,02%`) e `90,92%` combinada;
-- ZIP portátil e MSI reproduzidos byte a byte em duas execuções; instalação, binários instalados, exportações, GUI e desinstalação aprovados;
+- commit-fonte do build MSI `828cf626b7ce382c360723b1be10c4ce718c4187`; merge atual `f15193a55d1a5de0c7031f5bab656107302eee1b`;
+- `982` testes por sistema no CI pós-merge; cobertura `11.621/12.523` linhas (`92,80%`), `3.382/3.978` branches (`85,02%`) e `90,92%` combinada;
+- MSI WiX reproduzido byte a byte em duas execuções; instalação, binários instalados, exportações, GUI, upgrade, reparo e desinstalação aprovados;
 - Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` consumiram fixtures produzidos pela implementação integrada;
 - integridade recursiva, ausência de referências proibidas e Microsoft Defender aprovados;
-- executáveis e MSI permanecem sem assinatura; licença/texto jurídico, política de publicação e identidade visual final permanecem pendentes;
-- PR `#55`, merge `36669ba126e339ec8640e1dc57ceda9db6c6c3dc` e CI pós-merge `31739267811` auditado;
-- `980` testes por sistema; cobertura idêntica ponto a ponto em 80 módulos; legado `27/27`; `60/60` evidências equivalentes e zero violações nos pacotes auditados;
+- executáveis e MSI permanecem sem assinatura; licença/texto jurídico, política de publicação e identidade visual final permanecem pendentes; R-016 está validado tecnicamente, com revisão de termos da toolchain pendente;
+- PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b` e CI pós-merge `31905237922` auditado;
+- `982` testes por sistema; cobertura idêntica ponto a ponto em 80 módulos; legado `27/27` reconciliado e zero violações nos pacotes auditados;
 - `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `RELEASE_APPROVED=NO`.
 
 ### Decisão de roadmap para os bloqueios restantes

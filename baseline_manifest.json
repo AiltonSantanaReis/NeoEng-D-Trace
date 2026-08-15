@@ -37,8 +37,8 @@
       "size": 49348
     },
     "README.md": {
-      "sha256": "9415889ec60d8578eb08328c16cb1e16a0fb4107f7ab87df8f494677ff33e37b",
-      "size": 15606
+      "sha256": "d82603c96ffd9637af4e69274fe2a60fd2f719fb0dfc06ca85e3fa472fbff5b6",
+      "size": 15433
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -85,8 +85,8 @@
       "size": 2452
     },
     "docs/CHECKLIST_RELEASE_PUBLICA.md": {
-      "sha256": "0095cedd932e25971de0a9dccb3220f9f0ca044d507742fd7098f87bf96579bc",
-      "size": 1664
+      "sha256": "7ffdf160cd6ed9cf1b8db84205305154fc6af27f272a846fbb0fe27c900229b8",
+      "size": 1761
     },
     "docs/CHECKPOINT_ETAPA_0_5_2D.md": {
       "sha256": "9e9f92f59c77e7173ed407798be9469462be97f5de854fe6892a0aacfa7dbb22",
@@ -221,24 +221,24 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "ab9815eb66bfd7b53f4ffa8af87e1c05a804e36518f6076a1ab4af131b41fbe2",
-      "size": 6122
+      "sha256": "447df5d9d7728a4a89d40ad7943c2db4af92220214fbc84099e9dff8a7eb4f7d",
+      "size": 6072
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "e9110c469bbe548c4d2bfab829ed184758376a414b3aa5bbb338c5071b08ee05",
-      "size": 17016
+      "sha256": "86443b6af2cb2a17650c2688ccc4df6df3abf145c4f5d1080c474419b2c76d4d",
+      "size": 17099
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "6d38a4da782f55bf824438c5312e6bb9428588935a2471629dcc5c50ec7b83fa",
-      "size": 15988
+      "sha256": "746aeb198ce04d9edd63111bcc36ee991ef4d527f3d003ec6e4863f569abb405",
+      "size": 16112
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
-      "sha256": "882d5454cee6e51a884ff15c9e105d1335d6f5eb674a844c822435bdcc2dadc5",
-      "size": 4940
+      "sha256": "543a2e1cc6ae766f8180fa8739c1024c265921f64a8a4bebd4d2aedd54673b92",
+      "size": 5125
     },
     "docs/PLANO_RENOMEACAO.md": {
       "sha256": "5eba435e604ec88a6e4b7255a5101975f668317945419b753e86f29977f39543",
@@ -393,12 +393,12 @@
       "size": 8422
     },
     "docs/evidence/ETAPA_14_ENCERRAMENTO_POS_MERGE.json": {
-      "sha256": "836989bc9334780270ed57ed2613eae9f914fef38659cd7058cafc67c1eef50f",
-      "size": 1952
+      "sha256": "a011fb71bba6c639ebf989d0ae8141902fea6fcc6c702da33447ab2a2fedf714",
+      "size": 1973
     },
     "docs/evidence/ETAPA_14_ENCERRAMENTO_POS_MERGE.md": {
-      "sha256": "0cbcb4e0b8ec052fb7e4e63aa8714bcf53dcfb9ef591cf7a7273bcb30a43c3a7",
-      "size": 2961
+      "sha256": "828d073ee381dac055ec215155895be8e5ce8cc0d5bd7d436101f48899face8f",
+      "size": 3041
     },
     "docs/evidence/ETAPA_14_GODOT_RELEASE_VALIDATION.json": {
       "sha256": "3e1f8b3f46e549252d85fbe48d253eb253226c0b2991d0d8e06b70ff5ce4bda8",
@@ -561,8 +561,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "624a8779c3e2ed664064692fad405ef56f3d475c7cdcfc4663511f3d6d36eb7b",
-      "size": 24637
+      "sha256": "d04ae388bdebcf73f37e63b6af4855a7ee59c6d7bfed31b51d30a8af8b3a5bb5",
+      "size": 24731
     },
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
       "sha256": "a14971ec281558a36456cc5a4492465e934252559a70febc6ad46a00cd0b2708",
@@ -1165,8 +1165,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "1e53686545bca646595464040c581503834ab4921ede554a2886c90660ba34a6",
-      "size": 44077
+      "sha256": "0bda439821f5d064bc1d44c5177971c408b74e2d8f8ec58c21e272bae5661a39",
+      "size": 44143
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
@@ -1249,8 +1249,8 @@
       "size": 2217
     },
     "tests/test_stage14_postmerge_closure.py": {
-      "sha256": "e92d82ea49f653f95e6bd1796bd83ee2e0388e97e3880b297cf6a611e1e023dd",
-      "size": 1962
+      "sha256": "cd63742c2f21fa1899a8f11655ace7b5af81e08fa4dc2a1533ba488f462ab8b2",
+      "size": 1975
     },
     "tests/test_stage_0_5_2d_ui.py": {
       "sha256": "e3f8323bf29e1fecf34a7e6d29ff1a569ddbc42b77824337e3653a806e3be43d",
