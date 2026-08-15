@@ -1159,11 +1159,14 @@ def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():
         assert "Etapa 14" in value, relative
         assert (
             "f15193a55d1a5de0c7031f5bab656107302eee1b" in value
+            or "1feb2d134cea8c5a1d2346665280b31c051f5574" in value
             or relative == "CHANGELOG.md"
         ), relative
         assert "release" in value.lower(), relative
         assert (
-            "não aprovada" in value.lower() or "RELEASE_APPROVED=NO" in value
+            "não aprovada" in value.lower()
+            or "RELEASE_APPROVED=NO" in value
+            or "publicada" in value.lower()
         ), relative
 
 

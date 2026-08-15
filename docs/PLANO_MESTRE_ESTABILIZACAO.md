@@ -13,10 +13,10 @@ Etapa 14 — encerrada no escopo técnico pós-merge:
 - MSI WiX reproduzido byte a byte em duas execuções; instalação, binários instalados, exportações, GUI, upgrade, reparo e desinstalação aprovados;
 - Godot `4.7` e Unity `6000.5.7f1` com glTFast `6.19.0` consumiram fixtures produzidos pela implementação integrada;
 - integridade recursiva, ausência de referências proibidas e Microsoft Defender aprovados;
-- executáveis e MSI permanecem sem assinatura; a primeira release oficial foi autorizada pelo proprietário com esse risco aceito; assinatura, licenciamento e formalizações de R-015 ficam para futuras versões conforme demanda; R-016 está validado tecnicamente, com revisão de termos da toolchain pendente;
+- executáveis e MSI permanecem sem assinatura; a release oficial `v0.2.0` foi publicada pelo proprietário com esse risco aceito; assinatura, licenciamento e formalizações de R-015 ficam para futuras versões conforme demanda; R-016 está validado tecnicamente, com revisão de termos da toolchain pendente;
 - PR `#58`, merge `f15193a55d1a5de0c7031f5bab656107302eee1b` e CI pós-merge `31905237922` auditado;
 - `982` testes por sistema; cobertura idêntica ponto a ponto em 80 módulos; legado `27/27` reconciliado e zero violações nos pacotes auditados;
-- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `FIRST_OFFICIAL_RELEASE_AUTHORIZED=YES`; artefatos sem assinatura declarados.
+- `STAGE14_TECHNICAL_CANDIDATE=PASS`; `STAGE14_COMPLETED=YES`; `FIRST_OFFICIAL_RELEASE_PUBLISHED=v0.2.0`; artefatos sem assinatura declarados.
 
 ### Decisão de roadmap para os bloqueios restantes
 
@@ -39,7 +39,7 @@ Etapa 11 integrada e concluída no escopo aprovado:
 - zero módulos abaixo de 30% em linhas ou branches mensuráveis;
 - CIs funcional `31491221322` e final de fechamento `31495971632` aceitos após auditoria integral de Linux/Windows, proveniência, legado, hashes e conteúdo recursivo;
 - `R-003` encerrado no escopo aprovado após integração e CI pós-merge auditado;
-- Etapas 11 a 14 concluídas nos escopos aprovados; `R-014` e a formalização futura de `R-015` estão deferidos por decisão do proprietário; `R-016` está validado tecnicamente; primeira release oficial autorizada sem alegação de conformidade jurídica.
+- Etapas 11 a 14 concluídas nos escopos aprovados; `R-014` e a formalização futura de `R-015` estão deferidos por decisão do proprietário; `R-016` está validado tecnicamente; release oficial `v0.2.0` publicada sem alegação de conformidade jurídica.
 
 Etapa 12 — integrada e concluída no escopo aprovado:
 

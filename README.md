@@ -4,19 +4,19 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** pré-release em desenvolvimento. **Etapa 14 foi integrada e encerrada no escopo técnico validado; a primeira release oficial foi autorizada pelo proprietário.**
+> **Estado:** release oficial `v0.2.0` publicada. **Etapa 14 foi integrada e encerrada no escopo técnico validado; assinatura e formalizações jurídicas permanecem deferidas para futuras versões.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
 ## Estado verificável
 
-A âncora auditada atual é o merge da PR `#58`,
-`f15193a55d1a5de0c7031f5bab656107302eee1b`. O CI pós-merge
-`31905237922` reproduziu os testes em Linux e Windows, com árvore limpa,
-artefatos de evidência e a mesma cobertura nas duas plataformas. A Etapa 14
-está encerrada no escopo técnico validado. A primeira release oficial foi
-autorizada pelo proprietário; `R-014` (assinatura) e a formalização futura de
-`R-015` permanecem deferidos por decisão de roadmap.
+A âncora de código da release `v0.2.0` é o merge da PR `#61`,
+`1feb2d134cea8c5a1d2346665280b31c051f5574`. A release publicada está em
+[GitHub Releases](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/releases/tag/v0.2.0).
+O CI pós-merge `31907891488` passou em Linux e Windows; a build local real
+reproduziu o bundle portátil, o MSI, instalação, execução, exportações e
+desinstalação. `R-014` (assinatura) e a formalização futura de `R-015`
+permanecem deferidos por decisão de roadmap.
 
 | Indicador | Estado comprovado |
 |---|---|
@@ -30,7 +30,7 @@ autorizada pelo proprietário; `R-014` (assinatura) e a formalização futura de
 | Segurança estática | Bandit sem achados de alta severidade no gate vigente |
 | Última etapa integrada | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Etapa integrada atual | **Etapa 14 — encerrada no escopo técnico auditado** |
-| Release | **AUTORIZADA PELO PROPRIETÁRIO; artefatos atuais sem assinatura e formalizações futuras documentadas** |
+| Release | **PUBLICADA: `v0.2.0`; artefatos sem assinatura e formalizações futuras documentadas** |
 
 O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
 de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
@@ -165,9 +165,8 @@ Não existe uma segunda árvore `neoeng_d_trace/`. A distribuição Python é
 
 ## Execução a partir do código-fonte no Windows
 
-> **Isto é o fluxo a partir do código-fonte.** Existe um candidato técnico portátil/MSI validado localmente. Os artefatos
-atuais ainda não são assinados; a primeira release oficial foi autorizada pelo
-proprietário com esse risco explicitamente documentado.
+> **Isto é o fluxo a partir do código-fonte.** A release oficial `v0.2.0` portátil/MSI foi validada localmente e publicada. Os artefatos
+continuam sem assinatura; esse risco está explicitamente documentado.
 
 Requisitos usados pelo projeto:
 
@@ -214,7 +213,7 @@ exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
 versionado. O build falha se a árvore estiver suja ou se o destino sair do
 workspace.
 
-A primeira release oficial pode ser distribuída sem assinatura por decisão
+A release oficial `v0.2.0` foi distribuída sem assinatura por decisão
 expressa do proprietário. `R-014` fica deferido para futuras builds/releases,
 quando a demanda de usuários/clientes justificar o custo e os trâmites. O
 proprietário também decidirá futuramente a formalização jurídica, de
@@ -251,7 +250,7 @@ O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
 - **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura foi deferida para futuras builds/releases;
-- **a primeira release oficial está autorizada pelo proprietário, sem alegação de conformidade jurídica ou assinatura concluída**;
+- **a release oficial `v0.2.0` está publicada por decisão do proprietário, sem alegação de conformidade jurídica ou assinatura concluída**;
 - Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
 - `R-011` está encerrado no escopo aprovado após merge autorizado e CI pós-merge auditado;
 - `R-012` está encerrado no escopo aprovado, mas os limites publicados não
@@ -293,7 +292,7 @@ histórico.
 ## Licença e publicação
 
 NeoEng-D-Trace é um projeto proprietário e o repositório é público. Não há
-licença open source atribuída. A primeira release oficial foi autorizada pelo
+licença open source atribuída. A release oficial `v0.2.0` foi publicada pelo
 proprietário; assinatura, licenciamento, atribuições formais e demais
 trâmites jurídicos podem ser executados em futuras versões conforme demanda.
 Este texto registra uma decisão de projeto, não um parecer jurídico nem uma

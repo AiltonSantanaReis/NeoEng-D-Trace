@@ -6,6 +6,7 @@
 - `ETAPA_14_UNITY_RELEASE_VALIDATION.json` — relatório real do Unity `6000.5.7f1` com glTFast `6.19.0`.
 - `ETAPA_14_ENCERRAMENTO_POS_MERGE.md` — auditoria dos logs, proveniência, cobertura, legado e artefatos do CI pós-merge.
 - `ETAPA_14_ENCERRAMENTO_POS_MERGE.json` — manifesto estruturado do fechamento técnico pós-merge.
+- `RELEASE_V0.2.0_PUBLICACAO.md` — commit, tag, hashes, validações reais e limitações da release oficial publicada.
 - `CHECKLIST_RELEASE_PUBLICA.md` — gates necessários para transformar uma build técnica em release pública.
 - `RELEASE_INICIAL_VALIDACAO.md` — decisão e controles da primeira release oficial sem assinatura, com hashes e transparência.
 - `NOTICE.md` — aviso de propriedade, identidade visual autorizada pelo proprietário e atribuições futuras.
