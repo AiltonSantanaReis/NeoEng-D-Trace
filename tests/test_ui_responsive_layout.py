@@ -9,7 +9,6 @@ from PySide6.QtWidgets import QApplication
 from src.core.commands import CommandManager
 from src.models.scene import Scene
 from src.ui.main_window import MainWindow
-from src.ui.theme_qss import QSS
 
 
 class _ConfigStub:
@@ -35,7 +34,6 @@ def _window() -> MainWindow:
 
 
 def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
-    qt_app.setStyleSheet(QSS)
     window = _window()
     window.show()
     qt_app.processEvents()
@@ -77,7 +75,6 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
 def test_compact_panel_titles_follow_language_and_exports_remain_accessible(
     qt_app,
 ):
-    qt_app.setStyleSheet(QSS)
     window = _window()
     window.show()
     qt_app.processEvents()

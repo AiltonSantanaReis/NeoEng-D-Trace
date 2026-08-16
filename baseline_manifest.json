@@ -1541,8 +1541,8 @@
       "size": 2727
     },
     "tests/test_ui_responsive_layout.py": {
-      "sha256": "0e54166e8a6d2ccd866234a9db30ba0710562db25b85a137728dbd4a819e6650",
-      "size": 3505
+      "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",
+      "size": 3412
     },
     "tests/test_validation_events.py": {
       "sha256": "794b6e7429262469cfd393a17151f1ba23cbdacb527402901fa105c4a1f37af4",
