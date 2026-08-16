@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPolygonF
 
 
@@ -157,17 +157,24 @@ class TransformGizmo:
         painter.setPen(QPen(ring_color, 2.0))
         painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.drawEllipse(
-            -self.rotation_radius,
-            -self.rotation_radius,
-            self.rotation_radius * 2,
-            self.rotation_radius * 2,
+            QRectF(
+                -self.rotation_radius,
+                -self.rotation_radius,
+                self.rotation_radius * 2,
+                self.rotation_radius * 2,
+            )
         )
 
         plane_color = self._color(self.TRANSLATE_XY, self.color_anchor)
         painter.setPen(QPen(plane_color, 1.5))
         painter.setBrush(QBrush(QColor(62, 236, 255, 45)))
         painter.drawRect(
-            -self.plane_size, -self.plane_size, self.plane_size, self.plane_size
+            QRectF(
+                -self.plane_size,
+                -self.plane_size,
+                self.plane_size,
+                self.plane_size,
+            )
         )
 
         x_color = self._color(self.AXIS_X, self.color_x)
@@ -184,10 +191,12 @@ class TransformGizmo:
         painter.setPen(QPen(self._color(self.SCALE_X, self.color_x), 2.0))
         painter.setBrush(QBrush(QColor(20, 20, 20, 220)))
         painter.drawRect(
-            self.arm_length - self.scale_handle_size / 2,
-            -self.scale_handle_size / 2,
-            self.scale_handle_size,
-            self.scale_handle_size,
+            QRectF(
+                self.arm_length - self.scale_handle_size / 2,
+                -self.scale_handle_size / 2,
+                self.scale_handle_size,
+                self.scale_handle_size,
+            )
         )
 
         y_color = self._color(self.AXIS_Y, self.color_y)
@@ -204,28 +213,34 @@ class TransformGizmo:
         painter.setPen(QPen(self._color(self.SCALE_Y, self.color_y), 2.0))
         painter.setBrush(QBrush(QColor(20, 20, 20, 220)))
         painter.drawRect(
-            -self.scale_handle_size / 2,
-            -self.arm_length - self.scale_handle_size / 2,
-            self.scale_handle_size,
-            self.scale_handle_size,
+            QRectF(
+                -self.scale_handle_size / 2,
+                -self.arm_length - self.scale_handle_size / 2,
+                self.scale_handle_size,
+                self.scale_handle_size,
+            )
         )
 
         anchor_color = self._color(self.SCALE_UNIFORM, self.color_anchor)
         painter.setPen(QPen(anchor_color, 2.0))
         painter.setBrush(QBrush(QColor(10, 48, 55, 230)))
         painter.drawEllipse(
-            -self.center_radius,
-            -self.center_radius,
-            self.center_radius * 2,
-            self.center_radius * 2,
+            QRectF(
+                -self.center_radius,
+                -self.center_radius,
+                self.center_radius * 2,
+                self.center_radius * 2,
+            )
         )
         painter.setPen(QPen(self.color_center, 1.2))
-        painter.drawLine(-6, 0, 6, 0)
-        painter.drawLine(0, -6, 0, 6)
+        painter.drawLine(QPointF(-6, 0), QPointF(6, 0))
+        painter.drawLine(QPointF(0, -6), QPointF(0, 6))
 
         painter.setPen(self.color_anchor)
         painter.setFont(QFont("Consolas", 9, QFont.Weight.Bold))
-        painter.drawText(self.arm_length + 19, 4, "X")
-        painter.drawText(-4, -self.arm_length - self.arrow_size - 7, "Y")
-        painter.drawText(self.rotation_radius + 7, -self.rotation_radius + 2, "Rz")
+        painter.drawText(QPointF(self.arm_length + 19, 4), "X")
+        painter.drawText(QPointF(-4, -self.arm_length - self.arrow_size - 7), "Y")
+        painter.drawText(
+            QPointF(self.rotation_radius + 7, -self.rotation_radius + 2), "Rz"
+        )
         painter.restore()

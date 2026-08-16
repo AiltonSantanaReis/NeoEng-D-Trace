@@ -1725,8 +1725,8 @@
       "size": 155
     },
     "src/ui/gizmo_reference.py": {
-      "sha256": "623df97ca054bb9978b2f3ff8271ceecc035266ea945125358e9515772ec3857",
-      "size": 8521
+      "sha256": "0cd5ac56db5d0a10984902eaa9842ad3445c9d0c648d17e0b6c3232aca2bc1be",
+      "size": 8901
     },
     "src/ui/groups_panel.py": {
       "sha256": "11ff1a424e255cf2f8559ebd3192f5fa2b7dd2bea475bbe34dc8377c2e221a83",
