@@ -1698,9 +1698,9 @@ class _CreatePolygonCommandBase(Command):
 
     def _previous_selection_is_available(self, scene: Any) -> bool:
         return all(
-            object_id in scene.objects
-            for object_id in self._previous_selected_ids
+            object_id in scene.objects for object_id in self._previous_selected_ids
         )
+
     def _object_matches_snapshot(self, scene: Any) -> bool:
         if self.object_id is None or self._object_snapshot is None:
             return False
@@ -1743,7 +1743,9 @@ class _CreatePolygonCommandBase(Command):
             )
 
         self._previous_selected_id = scene.selected_id
-        self._previous_selected_ids = list(getattr(scene, "selected_ids", [])) or ([scene.selected_id] if scene.selected_id is not None else [])
+        self._previous_selected_ids = list(getattr(scene, "selected_ids", [])) or (
+            [scene.selected_id] if scene.selected_id is not None else []
+        )
         self._object_ids_before = tuple(scene.objects)
 
         self._create_first_object(scene)

@@ -218,11 +218,11 @@ def _transform_record(scene_object: Any) -> TransformRecord:
         rotation=Point3Record(
             x=float(rotation[0]), y=float(rotation[1]), z=float(rotation[2])
         ),
-        scale=Point3Record(
-            x=float(scale[0]), y=float(scale[1]), z=float(scale[2])
-        ),
+        scale=Point3Record(x=float(scale[0]), y=float(scale[1]), z=float(scale[2])),
         pivot=PointRecord(x=float(pivot[0]), y=float(pivot[1])),
     )
+
+
 def build_project_document(
     scene: "Scene",
     project_path: str | os.PathLike[str],

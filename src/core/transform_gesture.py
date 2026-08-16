@@ -83,7 +83,11 @@ def transformed_snapshot(
 ) -> TransformSnapshot:
     """Build a transformed snapshot around each object's own pivot."""
 
-    source = copy.deepcopy(base_snapshot) if base_snapshot is not None else capture_transform_state(scene, object_ids)
+    source = (
+        copy.deepcopy(base_snapshot)
+        if base_snapshot is not None
+        else capture_transform_state(scene, object_ids)
+    )
     result = copy.deepcopy(source)
     for object_id, state in source.items():
         anchor = (

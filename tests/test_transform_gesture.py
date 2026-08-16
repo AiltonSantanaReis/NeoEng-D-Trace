@@ -66,6 +66,7 @@ def test_multiple_objects_transform_around_shared_selection_anchor():
     assert scene.objects["box"].position == (5.0, 30.0, 0.0)
     assert scene.objects["second"].position == (85.0, 30.0, 0.0)
 
+
 def test_escape_cancel_restores_exact_state_without_history():
     scene = _scene()
     original = scene.objects["box"].polygon[:]

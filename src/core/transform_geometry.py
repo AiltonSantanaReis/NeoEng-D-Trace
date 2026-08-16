@@ -32,7 +32,9 @@ def validate_scale(scale_x: object, scale_y: object, scale_z: object = 1.0) -> P
     return values[0], values[1]
 
 
-def polygon_bounds(points: Iterable[Sequence[float]]) -> tuple[float, float, float, float]:
+def polygon_bounds(
+    points: Iterable[Sequence[float]],
+) -> tuple[float, float, float, float]:
     """Return the image-space bounding box of a non-empty point sequence."""
 
     normalized = [

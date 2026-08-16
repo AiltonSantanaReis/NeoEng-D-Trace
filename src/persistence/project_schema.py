@@ -94,6 +94,8 @@ class TransformRecord(StrictProjectModel):
     rotation: Point3Record
     scale: Point3Record
     pivot: PointRecord
+
+
 class BezierSegmentRecord(StrictProjectModel):
     """A cubic Bezier segment with exactly four control points."""
 
@@ -178,8 +180,8 @@ class SceneObjectRecord(StrictProjectModel):
         max_length=MAX_BEZIER_SEGMENTS,
     )
 
-
     transform: TransformRecord | None = None
+
 
 class GroupRecord(StrictProjectModel):
     """Persisted object group."""

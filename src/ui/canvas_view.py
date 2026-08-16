@@ -137,16 +137,25 @@ class CanvasView(QWidget):
             return []
         selected_ids = list(getattr(self.model, "selected_ids", []) or [])
         if selected_ids:
-            valid = [oid for oid in selected_ids if oid in getattr(self.model, "objects", {})]
+            valid = [
+                oid for oid in selected_ids if oid in getattr(self.model, "objects", {})
+            ]
             return valid if selected_id in valid else []
-        return [selected_id] if selected_id in getattr(self.model, "objects", {}) else []
+        return (
+            [selected_id] if selected_id in getattr(self.model, "objects", {}) else []
+        )
+
     def _selection_anchor_image(self, object_ids=None):
-        object_ids = object_ids if object_ids is not None else self._selected_object_ids()
+        object_ids = (
+            object_ids if object_ids is not None else self._selected_object_ids()
+        )
         if len(object_ids) == 1:
             position = getattr(self.model.objects[object_ids[0]], "position", None)
             if position is not None and len(position) >= 2:
                 return QPointF(float(position[0]), float(position[1]))
-        polygons = [getattr(self.model.objects[oid], "polygon", []) for oid in object_ids]
+        polygons = [
+            getattr(self.model.objects[oid], "polygon", []) for oid in object_ids
+        ]
         points = [point for polygon in polygons for point in polygon]
         if not points:
             return None
@@ -158,7 +167,10 @@ class CanvasView(QWidget):
 
     def _get_image_center_screen(self):
         anchor = self._selection_anchor_image()
-        return self.image_to_widget(anchor.x(), anchor.y()) if anchor is not None else None
+        return (
+            self.image_to_widget(anchor.x(), anchor.y()) if anchor is not None else None
+        )
+
     def __init__(self, model, parent=None):
         super().__init__(parent)
         self.model = model
@@ -432,7 +444,9 @@ class CanvasView(QWidget):
         if anchor is None:
             return False
         try:
-            self._gizmo_transaction = TransformGestureTransaction(self.model, object_ids)
+            self._gizmo_transaction = TransformGestureTransaction(
+                self.model, object_ids
+            )
             self._gizmo_anchor_image = (anchor.x(), anchor.y())
             self._gizmo_total_delta = QPointF()
             return True
@@ -441,7 +455,9 @@ class CanvasView(QWidget):
             QMessageBox.critical(self, "Gizmo Movement Failed", str(exc))
             return False
 
-    def _set_gizmo_feedback(self, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)):
+    def _set_gizmo_feedback(
+        self, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)
+    ):
         ids = self._selected_object_ids()
         if not ids:
             self._gizmo_feedback = ""
@@ -452,11 +468,14 @@ class CanvasView(QWidget):
         angles = getattr(obj, "rotation", (0.0, 0.0, 0.0))
         self._gizmo_feedback = (
             f"T: ({position[0]:.1f}, {position[1]:.1f}, {position[2]:.1f})  "
-            f"Rz: {angles[2]:.1f}°  S: ({values[0]:.2f}, {values[1]:.2f}, {values[2]:.2f})  "
+            f"Rz: {angles[2]:.1f}°  "
+            f"S: ({values[0]:.2f}, {values[1]:.2f}, {values[2]:.2f})  "
             f"Z-Depth: {position[2]:.1f}"
         )
 
-    def _preview_gizmo_transform(self, *, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)):
+    def _preview_gizmo_transform(
+        self, *, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)
+    ):
         transaction = self._gizmo_transaction
         if transaction is None or not transaction.active:
             return
@@ -509,6 +528,7 @@ class CanvasView(QWidget):
             self._reset_gizmo_interaction()
             self.update()
         return restored
+
     def clean_all(self):
         response = QMessageBox.question(
             self,
@@ -736,7 +756,9 @@ class CanvasView(QWidget):
                     self._gizmo_press_vector = pos - center_screen
                     self._gizmo_total_delta = QPointF()
                     if hit == self.gizmo.AXIS_Y:
-                        self._gizmo_y_screen_direction = 1.0 if self._gizmo_press_vector.y() > 0 else -1.0
+                        self._gizmo_y_screen_direction = (
+                            1.0 if self._gizmo_press_vector.y() > 0 else -1.0
+                        )
                     if not self._begin_gizmo_object_gesture():
                         self.gizmo.active_axis = self.gizmo.NONE
                         return
@@ -773,7 +795,9 @@ class CanvasView(QWidget):
             clicked_id = self._find_object_at(QPointF(ix, iy))
             if clicked_id:
                 try:
-                    additive = bool(event.modifiers() & Qt.KeyboardModifier.ControlModifier)
+                    additive = bool(
+                        event.modifiers() & Qt.KeyboardModifier.ControlModifier
+                    )
                 except TypeError:
                     additive = False
                 if additive and hasattr(self.model, "select_objects"):
@@ -782,7 +806,9 @@ class CanvasView(QWidget):
                         current = [oid for oid in current if oid != clicked_id]
                     else:
                         current.append(clicked_id)
-                    self.model.select_objects(current, primary=clicked_id if clicked_id in current else None)
+                    self.model.select_objects(
+                        current, primary=clicked_id if clicked_id in current else None
+                    )
                 elif hasattr(self.model, "select_object"):
                     self.model.select_object(clicked_id)
                 self.update()
@@ -825,13 +851,22 @@ class CanvasView(QWidget):
                 self._preview_gizmo_transform(
                     translation=(0.0, dy * self._gizmo_y_screen_direction)
                 )
-            elif operation in (getattr(self.gizmo, "CENTER", -1), getattr(self.gizmo, "TRANSLATE_XY", -2)):
+            elif operation in (
+                getattr(self.gizmo, "CENTER", -1),
+                getattr(self.gizmo, "TRANSLATE_XY", -2),
+            ):
                 self._preview_gizmo_transform(translation=(dx, dy))
             elif operation == self.gizmo.ROTATE_Z:
                 center_screen = self.gizmo.screen_pos
-                start_angle = math.degrees(math.atan2(-self._gizmo_press_vector.y(), self._gizmo_press_vector.x()))
+                start_angle = math.degrees(
+                    math.atan2(
+                        -self._gizmo_press_vector.y(), self._gizmo_press_vector.x()
+                    )
+                )
                 current_vector = pos - center_screen
-                current_angle = math.degrees(math.atan2(-current_vector.y(), current_vector.x()))
+                current_angle = math.degrees(
+                    math.atan2(-current_vector.y(), current_vector.x())
+                )
                 angle = current_angle - start_angle
                 while angle > 180.0:
                     angle -= 360.0
@@ -839,15 +874,33 @@ class CanvasView(QWidget):
                     angle += 360.0
                 self._preview_gizmo_transform(rotation=angle)
             elif operation == self.gizmo.SCALE_UNIFORM:
-                start_radius = max(math.hypot(self._gizmo_press_vector.x(), self._gizmo_press_vector.y()), 1.0)
-                current_radius = max(math.hypot((pos - self.gizmo.screen_pos).x(), (pos - self.gizmo.screen_pos).y()), 1.0)
+                start_radius = max(
+                    math.hypot(
+                        self._gizmo_press_vector.x(), self._gizmo_press_vector.y()
+                    ),
+                    1.0,
+                )
+                current_radius = max(
+                    math.hypot(
+                        (pos - self.gizmo.screen_pos).x(),
+                        (pos - self.gizmo.screen_pos).y(),
+                    ),
+                    1.0,
+                )
                 factor = max(0.05, min(20.0, current_radius / start_radius))
                 self._preview_gizmo_transform(scale=(factor, factor))
             elif operation == self.gizmo.SCALE_X:
                 factor = max(0.05, min(20.0, 1.0 + dx / self.gizmo.arm_length))
                 self._preview_gizmo_transform(scale=(factor, 1.0))
             elif operation == self.gizmo.SCALE_Y:
-                factor = max(0.05, min(20.0, 1.0 - dy * self._gizmo_y_screen_direction / self.gizmo.arm_length))
+                factor = max(
+                    0.05,
+                    min(
+                        20.0,
+                        1.0
+                        - dy * self._gizmo_y_screen_direction / self.gizmo.arm_length,
+                    ),
+                )
                 self._preview_gizmo_transform(scale=(1.0, factor))
             self.update()
             return
@@ -1101,6 +1154,7 @@ class CanvasView(QWidget):
         for index, line in enumerate(lines):
             painter.drawText(x + 9, y + 7 + (index + 1) * line_height - 2, line)
         painter.restore()
+
     def _draw_axis_gizmo(self, painter):
         # Pequeno helper visual no topo
         painter.save()

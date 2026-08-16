@@ -25,6 +25,7 @@ def qt_app():
     app = QApplication.instance() or QApplication([])
     yield app
 
+
 def test_reference_gizmo_draws_without_transparent_collapse(qt_app):
     gizmo = TransformGizmo()
     gizmo.set_screen_position(QPointF(110, 110))
