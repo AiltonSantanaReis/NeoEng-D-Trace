@@ -321,11 +321,11 @@ def test_mask_viewer_real_modes_layers_and_view_contracts(qapp: QApplication) ->
 def test_detection_worker_and_collision_document_real_contracts(
     qapp: QApplication, tmp_path: Path
 ) -> None:
-    from src.ui.mask_viewer import DetectionWorker
     from src.exporters.collision_exporter import (
         render_collision_text,
         save_collision_text,
     )
+    from src.ui.mask_viewer import DetectionWorker
 
     errors: list[str] = []
     empty_worker = DetectionWorker(None, "grabcut", {})
