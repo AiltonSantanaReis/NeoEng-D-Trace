@@ -1,4 +1,6 @@
 # Evidências de validação
+- `ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md` — addon Godot somente com GDScript, diagnóstico somente leitura, ZIP determinístico e execução headless real; não cobre a importação de Sprite2D/colisão da etapa 4.
+
 - `VALIDACAO_REAL_ENGINES_HARNESS_2026-08-16.md` — execução real do harness de exportadores no Godot 4.7 e Unity 6000.5.7f1; aprova apenas o escopo JSON/PNG/GLB existente, não os plugins nativos planejados.
 
 - `ETAPA_1_2_CONTRATO_INTEGRACAO_PLUGINS_2026-08-16.md` — contrato comum e manifesto determinístico dos adaptadores nativos; inclui hashes reais, escrita atômica, testes negativos e artefatos reproduzíveis. Engines Godot/Unity permanecem NÃO TESTADAS nesta etapa.

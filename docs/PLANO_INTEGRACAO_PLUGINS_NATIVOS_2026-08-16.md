@@ -1,7 +1,7 @@
 # Plano de integração dos adaptadores nativos
 
 Data: 2026-08-16
-Estado: etapas 1 e 2 aprovadas localmente; etapas 3 a 10 não iniciadas; nenhuma engine é declarada integrada até possuir testes reais no ambiente correspondente.
+Estado: etapa 3 aprovada localmente no Godot; etapas 4 a 10 não iniciadas; nenhuma sincronização nativa é declarada integrada até possuir testes reais no ambiente correspondente.
 
 ## Objetivo
 
@@ -49,9 +49,9 @@ pivô, atlas, tileset e animação.
 - formato de projeto v1 e perfis JSON existentes permanecem contratos ativos;
 - transação do atlas já existe e foi revalidada em etapa anterior;
 - rollback multi-saída da CLI já está integrado e testado;
-- plugins Godot/Unity ainda não estão implementados e permanecem NÃO TESTADOS;
-- etapas 1 e 2 possuem implementação e testes locais; nenhum adaptador de engine foi executado;
-- etapas 3 a 10 permanecem NÃO INICIADAS e sem declaração de integração nativa.
+- o addon Godot source-only da etapa 3 está implementado e validado; importação nativa e plugin Unity permanecem NÃO TESTADOS;
+- etapas 1 e 2 possuem implementação e testes locais; a etapa 3 possui addon Godot source-only e fixture headless real;
+- etapas 4 a 10 permanecem NÃO INICIADAS e sem declaração de sincronização nativa.
 
 ## Regra de promoção
 

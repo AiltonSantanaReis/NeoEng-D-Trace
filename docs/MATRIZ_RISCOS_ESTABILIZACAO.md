@@ -44,7 +44,7 @@ Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a43
 | R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES | GUI, CLI e MSI retornam `NotSigned`; a primeira release oficial pode ser distribuída sem assinatura por decisão do proprietário, com hashes e transparência |
 | R-015 | DECISÃO DE ROADMAP REGISTRADA / FORMALIZAÇÃO FUTURA | ícone gerado por IA e autorizado pelo proprietário; NOTICE, política e roteiro atualizados; licenciamento, atribuições e trâmites formais ficam para futuras versões |
 | R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
-| R-017 | ABERTO / NÃO INICIADO | Contrato comum e manifesto local aprovados nas etapas 1 e 2; adaptadores e validação real das engines permanecem pendentes. |
+| R-017 | ABERTO / EM IMPLEMENTAÇÃO | Contrato e addon Godot source-only aprovados nas etapas 1 a 3; importação de recursos, plugin Unity, sincronização, overrides e rollback nativos permanecem pendentes. |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
