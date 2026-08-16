@@ -33,7 +33,7 @@ snapshot histórico.
 | Abrir/Salvar na UI | APROVADO | testes Qt Windows, executável standalone e MSI exercitados com projeto real | validação de release ainda limitada a um host Windows |
 | Undo/Redo da Etapa 5 | INTEGRADO / APROVADO | pacotes 1–5C, suíte oficial, reconciliação legada e CI pós-merge `31425585259` | nenhum no escopo da Etapa 5 |
 | Camadas e grupos | INTEGRADO / APROVADO | comandos reversíveis e `LayersPanel` integrado à `MainWindow` | cobertura total da UI permanece meta |
-| CLI/headless | INTEGRADO / APROVADO | matriz de argumentos, códigos `0`/`1`/`2`, subprocessos, saídas reais, perfis de engine e binário instalado exercitado | múltiplas saídas não formam transação conjunta |
+| CLI/headless | INTEGRADO / APROVADO | matriz de argumentos, códigos `0`/`1`/`2`, subprocessos, saídas reais, perfis de engine, staging e rollback multi-saída exercitados | não há garantia contra perda de energia ou corrupção externa do filesystem |
 | Exportação de colisões | INTEGRADO / APROVADO | Etapa 6 e `R-005`: PR `#33`, merge `73a128ec44cde17867bbac6a7854ce86a43aba5a` e CI `31431739320`; Etapa 10: PRs `#42`/`#43`, engines reais e pós-merge `31469610508` aceito | limites de GLB 2.5D permanecem fora do escopo |
 | Atlas | INTEGRADO / APROVADO | limites físico/JSON, rollback e tetos de dimensão, pixels, itens e páginas; PR `#49` e CI pós-merge `31686321925` | interrupção física entre arquivos não é garantida pelo filesystem |
 | JSON de cena/sprite | INTEGRADO / APROVADO | schemas v1, pivôs, colisão, Unicode, consumo real em Godot/Unity, PRs `#42`/`#43` e pós-merge `31469610508` | nenhum no escopo aprovado |

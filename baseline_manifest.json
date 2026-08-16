@@ -109,8 +109,8 @@
       "size": 1470
     },
     "docs/CONTRATO_CLI.md": {
-      "sha256": "665a11306bbf59ef7bfb93950a8f400402a84f6504dad8ec70fb69598336bb3f",
-      "size": 4857
+      "sha256": "d4aae3728fc43a347c1fc153bb50bd2aaa9ef3da89303dfc8d1da545c60d6574",
+      "size": 5189
     },
     "docs/CONTRATO_GLTF_GLB_NEOENG_D_TRACE.md": {
       "sha256": "70bf983222bff257c68c22c616cfb8200e03f4e6916262c384e432fb7736d501",
@@ -229,8 +229,8 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "447df5d9d7728a4a89d40ad7943c2db4af92220214fbc84099e9dff8a7eb4f7d",
-      "size": 6072
+      "sha256": "e7ded2973b8fff2dedccb7d8c32da00c1a13b3671a5b82ff92bcb177a02e9c9f",
+      "size": 6112
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
       "sha256": "85abc19d69f0bd867fa6c769ca9fb5aabe9d2beb49fac2a6b78803b21ca8fa6c",
@@ -331,6 +331,10 @@
     "docs/VALIDACAO_ETAPA_0_6N1B.md": {
       "sha256": "0cae84f460a01629b7fb1ab37c3a237c5e8d8645e3970db1b1a783b6b3a72864",
       "size": 630
+    },
+    "docs/evidence/ADENDO_ESTABILIZACAO_CONTRATOS_2026-08-16.md": {
+      "sha256": "c8c5f749a373830067d332a4dbb25f05c012a6e9136ea2168829317974a995b7",
+      "size": 1947
     },
     "docs/evidence/AUDITORIA_INTEGRIDADE_PRE_ETAPA_14_2026-08-13.md": {
       "sha256": "a172ed2686af254f0115d6305d8058a39daf133a0b66ad9dbae81e07d6aaa5f9",
@@ -559,6 +563,10 @@
     "docs/evidence/ETAPA_DETECCAO_QUALIDADE_PRE_MERGE_2026-08-16.md": {
       "sha256": "a0a4aad974edbc7f3b4b6ac13a54ae1142f56d98b8620556d4c6ec07791547fe",
       "size": 7855
+    },
+    "docs/evidence/ETAPA_ESTABILIZACAO_TRANSACOES_2026-08-16.md": {
+      "sha256": "270584d224b998d78606c60c8362d89a9ce7cca2131eb5bbda6522dd8b1252f1",
+      "size": 2407
     },
     "docs/evidence/ETAPA_GIZMO_TRANSFORM_2026-08-16.md": {
       "sha256": "74c6ea5d26c8ee7a85f828cc1d08f5bd87762e130a70dc00d5e63562289ee8eb",
@@ -1160,6 +1168,14 @@
       "sha256": "4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18",
       "size": 6948
     },
+    "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
+      "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
+      "size": 8446
+    },
+    "docs/evidence/artifacts/transaction-stabilization/manifest.json": {
+      "sha256": "b43759bd40967289188f1cbb7413f20a3746ddbc3f38a4bb8dcf18b07e763435",
+      "size": 242
+    },
     "docs/evidence/artifacts/ui-audit-export-pipeline/1080p_FHD_01_sem_projeto.png": {
       "sha256": "76f62cb6ef912a39e4e8de19647174bf49c8af045ccfecb4ced484d41b636cd0",
       "size": 107155
@@ -1620,6 +1636,10 @@
       "sha256": "10a8e97e7030e7de2aa69f6dd460c2abcd56640bf886dbc62ea9f315622a4f1f",
       "size": 1114
     },
+    "src/core/atomic_outputs.py": {
+      "sha256": "b86eec120d88a67331c25278a8867d92c75e57a39c6fed36cd9d0c3d6d5b583a",
+      "size": 4961
+    },
     "src/core/bezier_geometry.py": {
       "sha256": "b433a4ca6a99c21c8acc152cade589fb8eb8d56345bc9526b721b52ae813b09d",
       "size": 9536
@@ -1737,8 +1757,8 @@
       "size": 6070
     },
     "src/launcher.py": {
-      "sha256": "066d2d04996fcc8bfbb9aa3124ceaeea67c76cd30da896269f9156e5aacd6391",
-      "size": 15363
+      "sha256": "959d273c0143c53ca1fc2535bbbcb2c2d9bb55397f32c0b96f31da04ff519a2e",
+      "size": 16514
     },
     "src/models/__init__.py": {
       "sha256": "48f9350985d4e4973cc9c548d8e8b5ce9582a9c314cf8dd139cc7cbf7e0eec44",
@@ -1968,6 +1988,10 @@
       "sha256": "e31af10e5cdef63cd64212f8bfd7da5b19149ec5c83c0a8f8753e3b12fcdb40e",
       "size": 2850
     },
+    "tests/test_atomic_outputs.py": {
+      "sha256": "39c700452696d75f24389638beb747238e117d06c4236d0f726e99e1ab7267e9",
+      "size": 7795
+    },
     "tests/test_audit_closure_contracts.py": {
       "sha256": "d8e08f4bd879dff62e754a44c891d0a123c6a68b83434e7bbd75b4996872a1dc",
       "size": 10604
@@ -2009,8 +2033,8 @@
       "size": 11141
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "0f5dfb32115fdbdb9bf5dade2566aba1a6f7f5844340a5e14ea77af1d3b3dcdb",
-      "size": 44266
+      "sha256": "dc6ce261381784ac6fb64cfd34b1c5100bdfbb62a0c4232b9dbeae0e9d49baff",
+      "size": 44295
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
