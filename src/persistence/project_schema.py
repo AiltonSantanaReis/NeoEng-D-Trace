@@ -70,6 +70,32 @@ class PointRecord(StrictProjectModel):
         return value
 
 
+class Point3Record(StrictProjectModel):
+    """A finite three-dimensional coordinate used by object transforms."""
+
+    x: int | float
+    y: int | float
+    z: int | float
+
+    @field_validator("x", "y", "z")
+    @classmethod
+    def validate_finite_coordinate(cls, value: int | float) -> int | float:
+        if isinstance(value, bool):
+            raise ValueError("boolean coordinates are not allowed")
+        if isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("coordinates must be finite")
+        return value
+
+
+class TransformRecord(StrictProjectModel):
+    """Persisted position, rotation, scale and normalized pivot."""
+
+    position: Point3Record
+    rotation: Point3Record
+    scale: Point3Record
+    pivot: PointRecord
+
+
 class BezierSegmentRecord(StrictProjectModel):
     """A cubic Bezier segment with exactly four control points."""
 
@@ -153,6 +179,8 @@ class SceneObjectRecord(StrictProjectModel):
         default=None,
         max_length=MAX_BEZIER_SEGMENTS,
     )
+
+    transform: TransformRecord | None = None
 
 
 class GroupRecord(StrictProjectModel):

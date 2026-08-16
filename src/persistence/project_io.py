@@ -31,9 +31,11 @@ from .project_schema import (
     GroupRecord,
     ImageReferenceRecord,
     LayerRecord,
+    Point3Record,
     PointRecord,
     ProjectDocumentV1,
     SceneObjectRecord,
+    TransformRecord,
     default_metadata,
 )
 
@@ -204,6 +206,23 @@ def _image_reference(scene: "Scene", project_path: Path) -> ImageReferenceRecord
     )
 
 
+def _transform_record(scene_object: Any) -> TransformRecord:
+    position = getattr(scene_object, "position", (0.0, 0.0, 0.0))
+    rotation = getattr(scene_object, "rotation", (0.0, 0.0, 0.0))
+    scale = getattr(scene_object, "scale", (1.0, 1.0, 1.0))
+    pivot = getattr(scene_object, "pivot", (0.5, 0.5))
+    return TransformRecord(
+        position=Point3Record(
+            x=float(position[0]), y=float(position[1]), z=float(position[2])
+        ),
+        rotation=Point3Record(
+            x=float(rotation[0]), y=float(rotation[1]), z=float(rotation[2])
+        ),
+        scale=Point3Record(x=float(scale[0]), y=float(scale[1]), z=float(scale[2])),
+        pivot=PointRecord(x=float(pivot[0]), y=float(pivot[1])),
+    )
+
+
 def build_project_document(
     scene: "Scene",
     project_path: str | os.PathLike[str],
@@ -257,6 +276,7 @@ def build_project_document(
                         if collision_parts_value is not None
                         else None
                     ),
+                    transform=_transform_record(scene_object),
                     beziers=(
                         [_bezier_segment(value) for value in beziers_value]
                         if beziers_value is not None
@@ -605,6 +625,27 @@ def apply_project_document_to_scene(
                 )
                 for segment in object_record.beziers
             ]
+        if object_record.transform is not None:
+            transform = object_record.transform
+            scene_object.position = (
+                float(transform.position.x),
+                float(transform.position.y),
+                float(transform.position.z),
+            )
+            scene_object.rotation = (
+                float(transform.rotation.x),
+                float(transform.rotation.y),
+                float(transform.rotation.z),
+            )
+            scene_object.scale = (
+                float(transform.scale.x),
+                float(transform.scale.y),
+                float(transform.scale.z),
+            )
+            scene_object.pivot = (
+                float(transform.pivot.x),
+                float(transform.pivot.y),
+            )
         new_objects[object_record.id] = scene_object
 
         if object_record.collision is not None:
@@ -645,6 +686,7 @@ def apply_project_document_to_scene(
     scene.collision_shapes = new_collisions
     scene.collision_parts = new_collision_parts
     scene.selected_id = None
+    scene.selected_ids = []
     scene._notify()
 
 

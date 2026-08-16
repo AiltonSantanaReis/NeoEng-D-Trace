@@ -397,7 +397,7 @@ def test_canvas_navigation_geometry_and_transform_branches(qt_app, monkeypatch):
     assert canvas._distance_to_last_point(1, 1) == float("inf")
     canvas._current_polygon = [(4, 5)]
     assert canvas._distance_to_last_point(7, 9) == 5.0
-    assert canvas._get_image_center_screen().x() == 20
+    assert canvas._get_image_center_screen() is None
 
     scene.image = None
     canvas.fit_to_window()
@@ -515,7 +515,7 @@ def test_canvas_modes_tools_and_gizmo_guard_branches(qt_app, monkeypatch):
     scene.image = np.zeros((16, 24, 4), dtype=np.uint8)
     canvas.update_image()
     assert canvas._qimage_lit is not None
-    assert canvas._gizmo_enabled is True
+    assert canvas._gizmo_enabled is False
     canvas.update_image()
 
     started = []

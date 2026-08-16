@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 # src/ui/canvas_view.py
@@ -28,7 +29,7 @@ from src.core.commands import (
     ToggleCollisionCommand,
 )
 from src.core.logger import logger
-from src.core.polygon_gesture import PolygonGestureTransaction
+from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.image_conversion import to_qimage
 
 # Proteção de importação caso ViewProcessor não esteja implementado ainda
@@ -130,11 +131,45 @@ class CanvasView(QWidget):
     VIEW_XRAY_3 = 3  # Laplacian edges
     VIEW_COLLISION = 4
 
+    def _selected_object_ids(self):
+        selected_id = getattr(self.model, "selected_id", None)
+        if selected_id is None:
+            return []
+        selected_ids = list(getattr(self.model, "selected_ids", []) or [])
+        if selected_ids:
+            valid = [
+                oid for oid in selected_ids if oid in getattr(self.model, "objects", {})
+            ]
+            return valid if selected_id in valid else []
+        return (
+            [selected_id] if selected_id in getattr(self.model, "objects", {}) else []
+        )
+
+    def _selection_anchor_image(self, object_ids=None):
+        object_ids = (
+            object_ids if object_ids is not None else self._selected_object_ids()
+        )
+        if len(object_ids) == 1:
+            position = getattr(self.model.objects[object_ids[0]], "position", None)
+            if position is not None and len(position) >= 2:
+                return QPointF(float(position[0]), float(position[1]))
+        polygons = [
+            getattr(self.model.objects[oid], "polygon", []) for oid in object_ids
+        ]
+        points = [point for polygon in polygons for point in polygon]
+        if not points:
+            return None
+        min_x = min(float(point[0]) for point in points)
+        max_x = max(float(point[0]) for point in points)
+        min_y = min(float(point[1]) for point in points)
+        max_y = max(float(point[1]) for point in points)
+        return QPointF((min_x + max_x) / 2.0, (min_y + max_y) / 2.0)
+
     def _get_image_center_screen(self):
-        # Coloca o gizmo fora da imagem, um pouco acima do canto inferior esquerdo
-        h = self.height()
-        # Margem de 20px da esquerda e 120px do fundo
-        return QPointF(20, h - 120)
+        anchor = self._selection_anchor_image()
+        return (
+            self.image_to_widget(anchor.x(), anchor.y()) if anchor is not None else None
+        )
 
     def __init__(self, model, parent=None):
         super().__init__(parent)
@@ -163,8 +198,13 @@ class CanvasView(QWidget):
         self._gizmo_active = False
         self._gizmo_start_mouse = QPointF()
         self._gizmo_enabled = False
-        self._gizmo_transaction: Optional[PolygonGestureTransaction] = None
+        self._gizmo_transaction: Optional[TransformGestureTransaction] = None
         self._gizmo_total_delta = QPointF()
+        self._gizmo_operation = 0
+        self._gizmo_anchor_image = None
+        self._gizmo_y_screen_direction = -1.0
+        self._gizmo_press_vector = QPointF()
+        self._gizmo_feedback = ""
 
         self._tool = None
         self._current_polygon = []
@@ -367,10 +407,15 @@ class CanvasView(QWidget):
         self._gizmo_active = False
         self._gizmo_transaction = None
         self._gizmo_total_delta = QPointF()
+        self._gizmo_operation = getattr(self.gizmo, "NONE", 0) if self.gizmo else 0
+        self._gizmo_anchor_image = None
+        self._gizmo_feedback = ""
         if self.gizmo:
             self.gizmo.active_axis = self.gizmo.NONE
 
     def _report_gizmo_result(self, result):
+        if result is None:
+            return
         if result.status is CommandStatus.REJECTED:
             QMessageBox.warning(
                 self,
@@ -385,8 +430,8 @@ class CanvasView(QWidget):
             )
 
     def _begin_gizmo_object_gesture(self) -> bool:
-        object_id = getattr(self.model, "selected_id", None)
-        if not object_id:
+        object_ids = self._selected_object_ids()
+        if not object_ids:
             return False
         if getattr(self.model, "cmd", None) is None:
             QMessageBox.critical(
@@ -395,44 +440,53 @@ class CanvasView(QWidget):
                 "Undo/Redo command history is unavailable.",
             )
             return False
-
+        anchor = self._selection_anchor_image(object_ids)
+        if anchor is None:
+            return False
         try:
-            self._gizmo_transaction = PolygonGestureTransaction(
-                self.model,
-                object_id,
+            self._gizmo_transaction = TransformGestureTransaction(
+                self.model, object_ids
             )
+            self._gizmo_anchor_image = (anchor.x(), anchor.y())
             self._gizmo_total_delta = QPointF()
             return True
         except Exception as exc:
             self._gizmo_transaction = None
-            QMessageBox.critical(
-                self,
-                "Gizmo Movement Failed",
-                str(exc),
-            )
+            QMessageBox.critical(self, "Gizmo Movement Failed", str(exc))
             return False
 
-    def _move_selected_object(self, dx, dy):
+    def _set_gizmo_feedback(
+        self, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)
+    ):
+        ids = self._selected_object_ids()
+        if not ids:
+            self._gizmo_feedback = ""
+            return
+        obj = self.model.objects[ids[0]]
+        position = getattr(obj, "position", (0.0, 0.0, 0.0))
+        values = getattr(obj, "scale", (1.0, 1.0, 1.0))
+        angles = getattr(obj, "rotation", (0.0, 0.0, 0.0))
+        self._gizmo_feedback = (
+            f"T: ({position[0]:.1f}, {position[1]:.1f}, {position[2]:.1f})  "
+            f"Rz: {angles[2]:.1f}°  "
+            f"S: ({values[0]:.2f}, {values[1]:.2f}, {values[2]:.2f})  "
+            f"Z-Depth: {position[2]:.1f}"
+        )
+
+    def _preview_gizmo_transform(
+        self, *, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)
+    ):
         transaction = self._gizmo_transaction
         if transaction is None or not transaction.active:
             return
-
-        self._gizmo_total_delta += QPointF(
-            float(dx),
-            float(dy),
-        )
-        total_x = self._gizmo_total_delta.x()
-        total_y = self._gizmo_total_delta.y()
-        new_polygon = [
-            (
-                int(round(point[0] + total_x)),
-                int(round(point[1] + total_y)),
-            )
-            for point in transaction.origin_polygon
-        ]
-
         try:
-            transaction.preview(new_polygon)
+            transaction.preview_transform(
+                translation=translation,
+                rotation_degrees=rotation,
+                scale=scale,
+                anchor_override=self._gizmo_anchor_image,
+            )
+            self._set_gizmo_feedback(translation, rotation, scale)
         except Exception as exc:
             try:
                 if transaction.active:
@@ -440,11 +494,17 @@ class CanvasView(QWidget):
             finally:
                 self._reset_gizmo_interaction()
                 self.update()
-            QMessageBox.critical(
-                self,
-                "Gizmo Movement Failed",
-                str(exc),
+            QMessageBox.critical(self, "Gizmo Movement Failed", str(exc))
+
+    def _move_selected_object(self, dx, dy):
+        """Compatibility path for callers that submit incremental XY motion."""
+        self._gizmo_total_delta += QPointF(float(dx), float(dy))
+        self._preview_gizmo_transform(
+            translation=(
+                float(round(self._gizmo_total_delta.x())),
+                float(round(self._gizmo_total_delta.y())),
             )
+        )
 
     def _finish_gizmo_gesture(self):
         transaction = self._gizmo_transaction
@@ -601,8 +661,8 @@ class CanvasView(QWidget):
         self._qimage_xray_1 = None
         self._qimage_xray_2 = None
         self._qimage_xray_3 = None
-        self._gizmo_enabled = True
-        self.gizmo_toggle.setChecked(True)
+        self._gizmo_enabled = bool(self._selected_object_ids())
+        self.gizmo_toggle.setChecked(self._gizmo_enabled)
         self.update()
 
     def get_transform(self) -> QTransform:
@@ -678,7 +738,7 @@ class CanvasView(QWidget):
     def mousePressEvent(self, event: QMouseEvent):
         pos = event.position()
 
-        # 1. Lógica do Gizmo (Se não estiver em preview)
+        # 1. Gizmo contextual da seleção (sempre em coordenadas de tela)
         if (
             not self._preview_mode
             and self._qimage_lit
@@ -686,21 +746,24 @@ class CanvasView(QWidget):
             and self.gizmo
         ):
             center_screen = self._get_image_center_screen()
-            if center_screen:
+            if center_screen is not None:
                 self.gizmo.set_screen_position(center_screen)
-
-            hit = self.gizmo.hit_test(pos)
-            if hit != self.gizmo.NONE:
-                self.gizmo.active_axis = hit
-                self._gizmo_start_mouse = pos
-                self._gizmo_total_delta = QPointF()
-                if self.model.selected_id:
+                hit = self.gizmo.hit_test(pos)
+                if hit != self.gizmo.NONE and self._selected_object_ids():
+                    self.gizmo.active_axis = hit
+                    self._gizmo_operation = hit
+                    self._gizmo_start_mouse = pos
+                    self._gizmo_press_vector = pos - center_screen
+                    self._gizmo_total_delta = QPointF()
+                    if hit == self.gizmo.AXIS_Y:
+                        self._gizmo_y_screen_direction = (
+                            1.0 if self._gizmo_press_vector.y() > 0 else -1.0
+                        )
                     if not self._begin_gizmo_object_gesture():
                         self.gizmo.active_axis = self.gizmo.NONE
                         return
-                self._gizmo_active = True
-                return
-
+                    self._gizmo_active = True
+                    return
         # 2. Reset de Visão (Botão Gizmo "C")
         # if not self._preview_mode:
         #     size = 40
@@ -731,7 +794,22 @@ class CanvasView(QWidget):
         if event.button() == Qt.MouseButton.LeftButton:
             clicked_id = self._find_object_at(QPointF(ix, iy))
             if clicked_id:
-                if hasattr(self.model, "select_object"):
+                try:
+                    additive = bool(
+                        event.modifiers() & Qt.KeyboardModifier.ControlModifier
+                    )
+                except TypeError:
+                    additive = False
+                if additive and hasattr(self.model, "select_objects"):
+                    current = self._selected_object_ids()
+                    if clicked_id in current:
+                        current = [oid for oid in current if oid != clicked_id]
+                    else:
+                        current.append(clicked_id)
+                    self.model.select_objects(
+                        current, primary=clicked_id if clicked_id in current else None
+                    )
+                elif hasattr(self.model, "select_object"):
                     self.model.select_object(clicked_id)
                 self.update()
             else:
@@ -761,31 +839,71 @@ class CanvasView(QWidget):
     def mouseMoveEvent(self, event: QMouseEvent):
         pos = event.position()
 
-        # 1. Movimento via Gizmo
+        # 1. Movimento via Gizmo: o preview sempre parte do estado inicial.
         if self._gizmo_active and self.gizmo and not self._preview_mode:
             delta_screen = pos - self._gizmo_start_mouse
-            self._gizmo_start_mouse = pos
-
-            if self._gizmo_transaction is not None:
-                dx = delta_screen.x() / self._zoom
-                dy = delta_screen.y() / self._zoom
-                if self.gizmo.active_axis == self.gizmo.AXIS_X:
-                    dy = 0
-                if self.gizmo.active_axis == self.gizmo.AXIS_Y:
-                    dx = 0
-                self._move_selected_object(dx, dy)
-            else:
-                # Pan via Gizmo
-                dx, dy = delta_screen.x(), delta_screen.y()
-                if self.gizmo.active_axis == self.gizmo.AXIS_X:
-                    dy = 0
-                if self.gizmo.active_axis == self.gizmo.AXIS_Y:
-                    dx = 0
-                self._pan += QPointF(dx, dy)
-
+            dx = delta_screen.x() / max(self._zoom, 0.01)
+            dy = delta_screen.y() / max(self._zoom, 0.01)
+            operation = self._gizmo_operation
+            if operation == self.gizmo.AXIS_X:
+                self._preview_gizmo_transform(translation=(dx, 0.0))
+            elif operation == self.gizmo.AXIS_Y:
+                self._preview_gizmo_transform(
+                    translation=(0.0, dy * self._gizmo_y_screen_direction)
+                )
+            elif operation in (
+                getattr(self.gizmo, "CENTER", -1),
+                getattr(self.gizmo, "TRANSLATE_XY", -2),
+            ):
+                self._preview_gizmo_transform(translation=(dx, dy))
+            elif operation == self.gizmo.ROTATE_Z:
+                center_screen = self.gizmo.screen_pos
+                start_angle = math.degrees(
+                    math.atan2(
+                        -self._gizmo_press_vector.y(), self._gizmo_press_vector.x()
+                    )
+                )
+                current_vector = pos - center_screen
+                current_angle = math.degrees(
+                    math.atan2(-current_vector.y(), current_vector.x())
+                )
+                angle = current_angle - start_angle
+                while angle > 180.0:
+                    angle -= 360.0
+                while angle < -180.0:
+                    angle += 360.0
+                self._preview_gizmo_transform(rotation=angle)
+            elif operation == self.gizmo.SCALE_UNIFORM:
+                start_radius = max(
+                    math.hypot(
+                        self._gizmo_press_vector.x(), self._gizmo_press_vector.y()
+                    ),
+                    1.0,
+                )
+                current_radius = max(
+                    math.hypot(
+                        (pos - self.gizmo.screen_pos).x(),
+                        (pos - self.gizmo.screen_pos).y(),
+                    ),
+                    1.0,
+                )
+                factor = max(0.05, min(20.0, current_radius / start_radius))
+                self._preview_gizmo_transform(scale=(factor, factor))
+            elif operation == self.gizmo.SCALE_X:
+                factor = max(0.05, min(20.0, 1.0 + dx / self.gizmo.arm_length))
+                self._preview_gizmo_transform(scale=(factor, 1.0))
+            elif operation == self.gizmo.SCALE_Y:
+                factor = max(
+                    0.05,
+                    min(
+                        20.0,
+                        1.0
+                        - dy * self._gizmo_y_screen_direction / self.gizmo.arm_length,
+                    ),
+                )
+                self._preview_gizmo_transform(scale=(1.0, factor))
             self.update()
             return
-
         # 2. Hover do Gizmo
         if (
             not self._preview_mode
@@ -930,6 +1048,7 @@ class CanvasView(QWidget):
         # Header Info (Apenas se não for preview)
         if not self._preview_mode:
             self._draw_hud(painter)
+            self._draw_gizmo_feedback(painter)
             # self._draw_axis_gizmo(painter)
 
             # Gizmo Interativo
@@ -965,14 +1084,14 @@ class CanvasView(QWidget):
         painter.end()
 
     def _draw_scene_objects(self, painter: QPainter):
-        selected_oid = getattr(self.model, "selected_id", None)
+        selected_oids = set(self._selected_object_ids())
 
         # Otimização: Itera apenas objetos visíveis se possível, mas aqui iteramos tudo
         for oid, obj in getattr(self.model, "objects", {}).items():
             poly = getattr(obj, "polygon", [])
             if len(poly) > 1:
                 # Estilo
-                if oid == selected_oid:
+                if oid in selected_oids:
                     painter.setPen(self._pen_selected)
                     painter.setBrush(self._brush_selected)
                 else:
@@ -1010,6 +1129,31 @@ class CanvasView(QWidget):
         text_width = font_metrics.horizontalAdvance(txt)
         center_x = (self.width() - text_width) // 2
         painter.drawText(center_x, 28, txt)
+
+    def _draw_gizmo_feedback(self, painter):
+        if not self._gizmo_feedback:
+            return
+        painter.save()
+        painter.setPen(QPen(QColor(62, 236, 255, 180), 1))
+        painter.setBrush(QColor(8, 22, 27, 225))
+        painter.setFont(QFont("Consolas", 9))
+        parts = self._gizmo_feedback.split("  S:", 1)
+        lines = [parts[0]]
+        if len(parts) == 2:
+            lines.append("S:" + parts[1])
+        metrics = painter.fontMetrics()
+        line_height = metrics.height()
+        width = max(metrics.horizontalAdvance(line) for line in lines) + 18
+        available_width = max(120, self.width() - 16)
+        width = min(width, available_width)
+        height = line_height * len(lines) + 12
+        x = max(8, self.width() - width - 8)
+        y = max(52, self.height() - height - 12)
+        painter.drawRoundedRect(x, y, width, height, 5, 5)
+        painter.setPen(QColor(170, 245, 255))
+        for index, line in enumerate(lines):
+            painter.drawText(x + 9, y + 7 + (index + 1) * line_height - 2, line)
+        painter.restore()
 
     def _draw_axis_gizmo(self, painter):
         # Pequeno helper visual no topo
