@@ -3,10 +3,10 @@
 ## Identificação
 
 - Commit técnico: 36f6fcdb7916eb8a5bddfe3b5fdbd700096ac7e2
-- Branch: codex/roi-grabcut-collision-pipeline
+- Branch: head da PR #63, identificado pelo SHA do commit técnico e pelo SHA corrente da PR
 - Data: 2026-08-15, America/Sao_Paulo
 - Estado: branch publicado no origin; PR #63 aberta para main; merge pendente
-- Responsável: Codex
+- Responsável: agente de desenvolvimento
 
 ## Objetivo e escopo
 
