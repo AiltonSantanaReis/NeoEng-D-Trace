@@ -432,6 +432,10 @@
       "sha256": "4adf93ad8e64c7118d9ef409f65fd0987acd810f7d63284f990ce2534d0fa8ca",
       "size": 1520
     },
+    "docs/evidence/ETAPA_1_2_CONTRATO_INTEGRACAO_PLUGINS_2026-08-16.md": {
+      "sha256": "73de344d5a32369af4df6572acce9a29bbaefc603d5adc89f05dce5d49f7c481",
+      "size": 5096
+    },
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
       "size": 6772
