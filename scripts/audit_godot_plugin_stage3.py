@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
+from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 ADDON_SOURCE = ROOT / "integrations" / "godot" / "addons" / "neoeng_d_trace"
@@ -52,10 +53,29 @@ def _run(executable: str, arguments: list[str], workspace: Path) -> dict[str, An
     }
 
 
-def _prepare(workspace: Path) -> None:
+def _prepare(workspace: Path, package: Path | None) -> None:
     addon_destination = workspace / "addons" / "neoeng_d_trace"
     addon_destination.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(ADDON_SOURCE, addon_destination)
+    if package is None:
+        shutil.copytree(ADDON_SOURCE, addon_destination)
+    else:
+        with ZipFile(package) as archive:
+            prefix = "neoeng-d-trace-godot/addons/neoeng_d_trace/"
+            members = archive.namelist()
+            if not members or any(
+                not name.startswith(prefix) or ".." in Path(name).parts
+                for name in members
+            ):
+                raise RuntimeError(
+                    "Godot addon ZIP contains unsafe or unexpected paths"
+                )
+            for name in members:
+                relative = name[len(prefix) :]
+                if not relative:
+                    continue
+                destination = addon_destination / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(archive.read(name))
     generated = workspace / "NeoEngGenerated"
     generated.mkdir()
     shutil.copy2(MANIFEST_SOURCE, generated / "hero.ndt.integration.json")
@@ -74,6 +94,7 @@ def main() -> int:
     parser.add_argument("--executable", required=True)
     parser.add_argument("--work-dir", type=Path)
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--package", type=Path)
     args = parser.parse_args()
     temporary: tempfile.TemporaryDirectory[str] | None = None
     if args.work_dir is None:
@@ -88,9 +109,10 @@ def main() -> int:
         "status": "FAILED",
         "plugin": "neoeng_d_trace",
         "source_only": True,
+        "installation_mode": "zip" if args.package is not None else "folder",
     }
     try:
-        _prepare(workspace)
+        _prepare(workspace, args.package)
         commands = [
             _run(
                 args.executable,
