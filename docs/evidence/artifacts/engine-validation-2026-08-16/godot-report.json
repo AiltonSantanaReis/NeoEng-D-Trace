@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "engine": "godot",
+  "status": "FAILED",
+  "checks": [
+    "metadata",
+    "texture",
+    "collision",
+    "glb-external",
+    "glb-engine"
+  ],
+  "fixture_origin": "source-harness",
+  "error_type": "FileNotFoundError",
+  "error": "godot executable not found"
+}

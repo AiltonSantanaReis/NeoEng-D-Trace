@@ -609,8 +609,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "7a8c7214b3a1eb7dd441b7e0fbc4d144095511c3f854a1741b0bea865650d3a5",
-      "size": 26082
+      "sha256": "e61201cbea791fa4c72bfac9cd8a45a27fb3e47030d4a13fd371d46128cd6797",
+      "size": 26295
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -619,6 +619,10 @@
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
       "sha256": "a14971ec281558a36456cc5a4492465e934252559a70febc6ad46a00cd0b2708",
       "size": 5335
+    },
+    "docs/evidence/VALIDACAO_REAL_ENGINES_HARNESS_2026-08-16.md": {
+      "sha256": "b3ebb7cff2de847e9989f034827bf2e2d021f9e497630574618e8fc2e45085af",
+      "size": 5233
     },
     "docs/evidence/artifacts/auto-detection-quality/final-v6/images/clean_rectangle_ground_truth.png": {
       "sha256": "8f27f0a85ccd086155419ddb2098806293596cd630f65d1c5b32f6d9aaa77d69",
@@ -1071,6 +1075,54 @@
     "docs/evidence/artifacts/auto-detection-quality/final-v6/report.json": {
       "sha256": "9fc5cf21cb7f2ab4a3ccb8901de30812e9f07d6652367dbe6ed28b4490031967",
       "size": 48918
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/engine-validation-index.json": {
+      "sha256": "2ff6e1a45f2cd4ba9cab77daa451abf93c760bfaf8dddbd0da9d5ee3bfb18ebf",
+      "size": 2538
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-probe.json": {
+      "sha256": "f046ae2bbf672f4b20062a150f806809ec81bd7e8486a3d3735326bda837d7b0",
+      "size": 817
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-report-real.json": {
+      "sha256": "2c5bbbd6a8a35a82612ec95138d91276a5322c0ed6be8d3a023aed6732a764fe",
+      "size": 4156
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-report.json": {
+      "sha256": "88c1cdc7eda6c43665566f9a696be777f172803f69524171c573b2183a8fbbc1",
+      "size": 289
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-scene.glb": {
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "size": 968
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-source.png": {
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "size": 229
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-engine-validation-result.txt": {
+      "sha256": "77919ab298b0305d4a43f30d01a7c950bef7b29732ff6709354ef66eef5a3f5d",
+      "size": 52
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-packages-lock.json": {
+      "sha256": "48ed050f24e1e481405d0da46e63913c494db272d62292d197c53af4ac3d930f",
+      "size": 9521
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-probe.json": {
+      "sha256": "d3b0f4e6cfb368d71fdcc29295937caa9912ef4183c9e365e4f8325f1acc9b5b",
+      "size": 850
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-report.json": {
+      "sha256": "6ef0038469c18c56f1c822e885a1dd7e4a872ff0c349ef3b2249d9db84c91954",
+      "size": 960
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-scene.glb": {
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "size": 968
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-source.png": {
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "size": 229
     },
     "docs/evidence/artifacts/export-pipeline-audit/animation/animation.json": {
       "sha256": "58400b75eb089ea8d88a36d674138c932ea33691b09d35c47ee655fe14643592",
