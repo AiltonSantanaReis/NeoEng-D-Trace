@@ -556,6 +556,10 @@
       "sha256": "d016c6045acee041a65a21508a42462fdb81ec644fbc071658515d521b2bddb0",
       "size": 3950
     },
+    "docs/evidence/ETAPA_ROI_GRABCUT_COLISAO_PRE_MERGE_2026-08-15.md": {
+      "sha256": "fb8f20039f9c880d61eb7e2d48bbbf7d14265304297abd94b271e85bb0df78f1",
+      "size": 6339
+    },
     "docs/evidence/PRE_ETAPA_14_ENGINE_VALIDATION_MANIFEST_2026-08-13.json": {
       "sha256": "a2a0945f8289419b9f3fb9a2a0cf13355c541d13eed253f7e6e7439498483d75",
       "size": 1396
@@ -573,8 +577,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "659d78b453b4b1c4c9bb4cd8fccc5dfb1b86bf875bae637e4dc1d8cd69a84ec2",
-      "size": 25085
+      "sha256": "8b331a17420140b0f02d69723fd7d6e8bf08b681f0f9ed51edb535deeb77bfcc",
+      "size": 25327
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
