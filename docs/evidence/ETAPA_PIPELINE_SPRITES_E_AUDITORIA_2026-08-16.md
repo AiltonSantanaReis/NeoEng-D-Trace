@@ -3,7 +3,7 @@
 Data: 2026-08-16
 Branch: codex/export-pipeline-completion
 Base auditada: origin/main em 535122bf7128f584328d058295006758f7134615
-Estado deste relatório: evidências geradas no working tree antes do commit final; o SHA definitivo deve ser gravado após o commit.
+Commit do conteúdo funcional e das evidências: 8dc60a4. O relatório é vinculado a esse commit por um commit documental posterior.
 
 ## Escopo
 
@@ -78,8 +78,8 @@ Observações importantes da auditoria:
 - o PR #67 delimita o gizmo como contextual 2D; ele não prova um gizmo 3D completo;
 - plugins nativos das engines não devem ser apresentados como existentes, pois permanecem fora do escopo v1.0;
 - limitações do ambiente offscreen e falhas históricas foram documentadas, não ocultadas;
-- a presente implementação só deve ser aprovada depois de o relatório receber o SHA do commit final e os checks do novo PR.
+- a implementação está vinculada ao commit 8dc60a4; a aprovação remota depende dos checks do novo PR.
 
 ## Decisão
 
-As alterações funcionais e os gates locais estão aprovados. O commit, push e merge ainda não fazem parte desta evidência: serão executados somente depois da revisão final do diff, limpeza controlada de temporários, gravação do SHA definitivo e aprovação dos checks remotos do novo PR.
+As alterações funcionais e os gates locais estão aprovados. O commit funcional foi criado como 8dc60a4. O push e o merge permanecem condicionados à aprovação dos checks remotos do novo PR.
