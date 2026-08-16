@@ -1,0 +1,19 @@
+{
+  "schema_version": 5,
+  "group": "all",
+  "tested_commit": "b5b8ec4bb18a0843b53117f2c51a1be4a0877103",
+  "integrity": "passed",
+  "status": "reconciled",
+  "accepted": true,
+  "expected_failures": 27,
+  "matched_failures": 27,
+  "unexpected_failures": [],
+  "missing_expected_failures": [],
+  "totals": {
+    "tests": 196,
+    "failures": 27,
+    "errors": 0,
+    "skipped": 0,
+    "failed_files": 12
+  }
+}

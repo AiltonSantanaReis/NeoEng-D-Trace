@@ -33,6 +33,9 @@ from .mask_utils import (
 from .segmentation import mask_contours, segment_grabcut
 from .smoothing import catmull_rom_to_beziers, chaikin_smooth
 
+# Large contours use bounded Douglas-Peucker to keep interactive detection responsive.
+MAX_CURVATURE_SIMPLIFICATION_POINTS = 100
+
 
 def _validate_detection_image(image: np.ndarray) -> None:
     if image.ndim not in {2, 3}:
@@ -66,6 +69,14 @@ def _bounded_downscale(value: Any) -> float:
 def _bounded_chaikin_iterations(value: Any) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise ValueError("chaikin_iterations must be an integer")
+    return value
+
+
+def _bounded_morphology_kernel(value: Any) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError("morph_kernel_size must be an odd integer")
+    if value < 1 or value > 31 or value % 2 == 0:
+        raise ValueError("morph_kernel_size must be an odd integer between 1 and 31")
     return value
 
 
@@ -453,15 +464,14 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
     )
     fg_bg_threshold = int(kwargs.get("fg_bg_threshold", 200))
     mean_threshold = int(kwargs.get("mean_threshold", 150))
+    detect_holes = bool(kwargs.get("detect_holes", True))
 
-    if len(image.shape) == 3:
-        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-    else:
-        gray = image.copy()
-
+    gray = _to_uint8_grayscale(image)
+    source_mask = _foreground_mask(image, gray)
     orig_height, orig_width = gray.shape
 
     gray = _resize_grayscale(gray, downscale)
+    mask = _resize_grayscale(source_mask, downscale)
 
     # Use explicit casting for numpy operations to satisfy mypy
     gray_float = gray.astype(np.float32)
@@ -470,16 +480,18 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
     )
     small_image = (orig_width * orig_height) <= 40000
 
-    mask: np.ndarray
-    if has_clear_fg_bg:
-        _, mask = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-    elif small_image:
-        _, mask = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    else:
-        edge_response = multi_scale_edges(
-            gray, scales=[1.0, 2.0, 4.0], weights=[0.5, 0.3, 0.2]
-        )
-        mask = threshold_adaptive(edge_response.astype(np.uint8), block_size=11, C=2)
+    if np.count_nonzero(mask) == 0:
+        if has_clear_fg_bg:
+            _, mask = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+        elif small_image:
+            _, mask = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        else:
+            edge_response = multi_scale_edges(
+                gray, scales=[1.0, 2.0, 4.0], weights=[0.5, 0.3, 0.2]
+            )
+            mask = threshold_adaptive(
+                edge_response.astype(np.uint8), block_size=11, C=2
+            )
 
     mask = close_small_gaps(mask, kernel_size=3)
 
@@ -544,12 +556,17 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
                 for x, y in np.asarray(approx, dtype=np.int32).reshape(-1, 2).tolist()
             ]
         else:
-            # curvature_adaptive_simplify expects Sequence[Any] (the contour)
-            simplified_points_int = curvature_adaptive_simplify(
-                cast(Sequence[Any], contour),
-                base_eps=base_eps,
-                curvature_factor=curvature_factor,
-            )
+            # The adaptive simplifier is quadratic for dense contours.
+            if len(contour) > MAX_CURVATURE_SIMPLIFICATION_POINTS:
+                simplified_points_int = _approximate_contour(
+                    contour, max(0.25, base_eps * 0.25)
+                )
+            else:
+                simplified_points_int = curvature_adaptive_simplify(
+                    cast(Sequence[Any], contour),
+                    base_eps=base_eps,
+                    curvature_factor=curvature_factor,
+                )
 
             # Curvature simplification can collapse a smooth arc to a few
             # vertices. Refine only those cases; polygon storage remains bounded.
@@ -560,6 +577,19 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
             simplified_points_int = _bounded_polygon_points(simplified_points_int)
         if len(simplified_points_int) < 3:
             continue
+
+        holes: List[List[Tuple[int, int]]] = []
+        if detect_holes and hierarchy is not None:
+            child_index = int(hierarchy[0][i][2])
+            while child_index != -1:
+                child_contour = contours[child_index]
+                if cv2.contourArea(child_contour) >= min_area:
+                    child_points = _approximate_contour(
+                        child_contour, max(0.25, base_eps)
+                    )
+                    if len(child_points) >= 3:
+                        holes.append(child_points)
+                child_index = int(hierarchy[0][child_index][0])
 
         if decompose_convex:
             convex_hull = cv2.convexHull(contour)
@@ -583,6 +613,10 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
                 (int(px * scale_factor), int(py * scale_factor))
                 for px, py in polygon_points
             ]
+            holes = [
+                [(int(px * scale_factor), int(py * scale_factor)) for px, py in hole]
+                for hole in holes
+            ]
             x, y, w, h = (
                 int(x * scale_factor),
                 int(y * scale_factor),
@@ -596,6 +630,7 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
                 "polygon": polygon_points,
                 "area": float(area),
                 "bbox": (x, y, w, h),
+                "holes": holes,
                 "quality_metrics": {
                     "vertex_count": len(polygon_points),
                     "circularity": float(circularity),
@@ -623,25 +658,26 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
     detect_holes = bool(kwargs.get("detect_holes", False))
     filled_shapes_threshold = int(kwargs.get("filled_shapes_threshold", 3))
 
-    if len(image.shape) == 3:
-        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-    else:
-        gray = image.copy()
-
+    morph_kernel_size = _bounded_morphology_kernel(kwargs.get("morph_kernel_size", 3))
+    gray = _to_uint8_grayscale(image)
+    source_mask = _foreground_mask(image, gray)
     gray = _resize_grayscale(gray, downscale)
+    mask = _resize_grayscale(source_mask, downscale)
 
     unique_vals = np.unique(gray)
     has_filled_shapes = (
         len(unique_vals) <= filled_shapes_threshold and 255 in unique_vals
     )
-
-    mask: np.ndarray
-    if has_filled_shapes:
+    if np.count_nonzero(mask) == 0 and has_filled_shapes:
         _, mask = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-    else:
-        mask = enhanced_edge_detection(gray, canny_thresh1, canny_thresh2)
+    elif np.count_nonzero(mask) == 0:
+        edge_response = enhanced_edge_detection(gray, canny_thresh1, canny_thresh2)
+        _, mask = cv2.threshold(
+            edge_response, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
+    mask = close_small_gaps(mask, kernel_size=morph_kernel_size)
 
-    retr_mode = cv2.RETR_CCOMP if detect_holes else cv2.RETR_EXTERNAL
+    retr_mode = cv2.RETR_TREE if detect_holes else cv2.RETR_EXTERNAL
     contours, hierarchy = cv2.findContours(mask, retr_mode, cv2.CHAIN_APPROX_NONE)
     _validate_contours(contours)
 
@@ -663,22 +699,20 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
             (float(x), float(y))
             for x, y in np.asarray(contour, dtype=np.float32).reshape(-1, 2).tolist()
         ]
-        if len(raw_points) > MAX_POLYGON_POINTS:
-            unique_points = {point for point in raw_points}
-            if len(unique_points) < 3 or cv2.arcLength(contour, True) <= 0:
+        unique_points = {point for point in raw_points}
+        if len(unique_points) < 3 or cv2.arcLength(contour, True) <= 0:
+            if len(raw_points) > MAX_POLYGON_POINTS:
                 raise ValueError(
                     f"detected polygon exceeds the point limit of {MAX_POLYGON_POINTS}"
                 )
+            continue
+        epsilon = max(0.25, float(kwargs.get("rdp_epsilon", 0.5)))
+        if len(raw_points) > MAX_POLYGON_POINTS:
             epsilon = max(
-                0.35,
-                float(kwargs.get("rdp_epsilon", 1.0)),
+                epsilon,
                 cv2.arcLength(contour, True) / (MAX_POLYGON_POINTS * 2.0),
             )
-            polygon_points_int = _approximate_contour(contour, epsilon)
-        else:
-            polygon_points_int = [
-                (int(round(px)), int(round(py))) for px, py in raw_points
-            ]
+        polygon_points_int = _approximate_contour(contour, epsilon)
 
         points_float = [(float(px), float(py)) for px, py in polygon_points_int]
         if chaikin_iterations > 0:
@@ -696,6 +730,21 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
         if len(polygon_points_int) < 3:
             continue
 
+        holes: List[List[Tuple[int, int]]] = []
+        if detect_holes and not is_hole:
+            child_index = int(hier_info[2])
+            while child_index != -1:
+                child_contour = contours[child_index]
+                if cv2.contourArea(child_contour) >= min_area:
+                    child_points = _approximate_contour(
+                        child_contour, max(0.25, float(kwargs.get("rdp_epsilon", 1.0)))
+                    )
+                    if len(child_points) >= 3:
+                        holes.append(child_points)
+                child_index = (
+                    int(hierarchy[0][child_index][0]) if hierarchy is not None else -1
+                )
+
         x, y, w, h = cv2.boundingRect(contour)
         perimeter = cv2.arcLength(contour, True)
         circularity = 4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
@@ -706,6 +755,10 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
             polygon_points_int = [
                 (int(px * scale_factor), int(py * scale_factor))
                 for px, py in polygon_points_int
+            ]
+            holes = [
+                [(int(px * scale_factor), int(py * scale_factor)) for px, py in hole]
+                for hole in holes
             ]
             x, y, w, h = (
                 int(x * scale_factor),
@@ -720,6 +773,7 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
             "area": float(area),
             "bbox": (x, y, w, h),
             "is_hole": is_hole,
+            "holes": holes,
             "hierarchy_level": hier_info[2],
             "quality_metrics": {
                 "vertex_count": len(polygon_points_int),
@@ -774,6 +828,8 @@ def detect_and_create_objects(
         for poly_data in polygons:
             if not isinstance(poly_data, dict):
                 raise ValueError("Detected polygon data must be a mapping.")
+            if poly_data.get("is_hole", False):
+                continue
             polygon = poly_data.get("polygon", [])
             poly_layer_id = poly_data.get("layer_id", layer_id)
             commands.append(CreateObjectCommand(polygon, poly_layer_id))
