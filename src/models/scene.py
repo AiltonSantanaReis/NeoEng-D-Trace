@@ -215,6 +215,7 @@ class Scene:
         self.groups: List[Group] = []
         # Static collision shapes
         self.collision_shapes: Dict[str, List[Tuple[float, float]]] = {}
+        self.collision_parts: Dict[str, List[List[Tuple[float, float]]]] = {}
         self.selected_id: Optional[str] = None
         self._listeners: List[Callable[[], None]] = []
         self.cmd = None
@@ -255,9 +256,11 @@ class Scene:
             self.collision_shapes[oid] = [
                 (float(p[0]), float(p[1])) for p in obj.polygon
             ]
+            self.collision_parts.pop(oid, None)
         else:
             if oid in self.collision_shapes:
                 del self.collision_shapes[oid]
+            self.collision_parts.pop(oid, None)
         self._notify()
 
     def has_collision(self, oid: str) -> bool:
@@ -454,6 +457,7 @@ class Scene:
         # Remove colisão associada se existir
         if oid in self.collision_shapes:
             del self.collision_shapes[oid]
+        self.collision_parts.pop(oid, None)
 
         self.objects.pop(oid)
         if self.selected_id == oid:
@@ -496,6 +500,13 @@ class Scene:
                 renamed_collisions[key] = shape
             self.collision_shapes = renamed_collisions
 
+        if old_id in self.collision_parts:
+            renamed_parts = {}
+            for object_id, parts in self.collision_parts.items():
+                key = new_id if object_id == old_id else object_id
+                renamed_parts[key] = parts
+            self.collision_parts = renamed_parts
+
         for group in self.groups:
             group.members = [
                 new_id if member == old_id else member for member in group.members
@@ -518,6 +529,7 @@ class Scene:
         # Se tiver colisão, atualiza também
         if oid in self.collision_shapes:
             self.collision_shapes[oid] = [(float(p[0]), float(p[1])) for p in polygon]
+            self.collision_parts.pop(oid, None)
 
         logger.debug(f"Updated polygon for object {oid} with {len(polygon)} vertices")
         self._notify()
@@ -531,6 +543,7 @@ class Scene:
         self.objects.clear()
         self.groups.clear()
         self.collision_shapes.clear()
+        self.collision_parts.clear()
         self.selected_id = None
         self._notify()
 
@@ -642,6 +655,7 @@ class Scene:
         ]
         self.groups = []
         self.collision_shapes = {}
+        self.collision_parts = {}
         self.selected_id = None
         self._notify()
 

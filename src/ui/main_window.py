@@ -1170,6 +1170,16 @@ class MainWindow(QMainWindow):
 
     def _on_collision_auto_generate(self):
         if self.collision_manager:
-            for shape_id, shape in self.scene.collision_shapes.items():
-                self.collision_manager.register(shape_id, shape)
+            if self.collision_panel.collision_manager is self.collision_manager:
+                self.collision_panel._sync_collision_manager_from_scene()
+            else:
+                for shape_id, shape in self.scene.collision_shapes.items():
+                    parts = getattr(self.scene, "collision_parts", {}).get(shape_id, [])
+                    if parts:
+                        for part_index, part in enumerate(parts):
+                            self.collision_manager.register(
+                                f"{shape_id}#part{part_index}", part
+                            )
+                    else:
+                        self.collision_manager.register(shape_id, shape)
         self.canvas.update()

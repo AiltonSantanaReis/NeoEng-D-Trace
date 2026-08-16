@@ -6,13 +6,14 @@ import math
 import os
 import tempfile
 from collections.abc import Mapping, Sequence
-from typing import Any
+from typing import Any, cast
 
 from src.models.scene import Scene
 
 COLLISION_FORMAT_ID = "neoeng-d-trace-collisions"
 COLLISION_SCHEMA_VERSION = 1
 COLLISION_COORDINATE_SPACE = "image"
+SUPPORTED_COORDINATE_SPACES = {"image", "normalized"}
 
 
 def _finite_float(value: Any, field: str) -> float:
@@ -59,18 +60,56 @@ def _normalize_points(object_id: str, points: Any) -> list[list[float]]:
     return normalized
 
 
-def collision_shape_record(scene: Scene, object_id: str) -> dict[str, Any] | None:
-    """Return the canonical collision record for one scene object."""
+def _coordinate_points(
+    object_id: str,
+    points: Any,
+    coordinate_space: str,
+    image_size: tuple[int, int] | None,
+) -> list[list[float]]:
+    normalized = _normalize_points(object_id, points)
+    if coordinate_space == "image":
+        return normalized
+    if image_size is None or len(image_size) != 2:
+        raise ValueError(
+            "image_size=(width, height) is required for normalized exports"
+        )
+    width, height = image_size
+    if width <= 0 or height <= 0:
+        raise ValueError("image_size must contain positive dimensions")
+    return [[point[0] / width, point[1] / height] for point in normalized]
+
+
+def collision_shape_record(
+    scene: Scene,
+    object_id: str,
+    *,
+    coordinate_space: str = COLLISION_COORDINATE_SPACE,
+    image_size: tuple[int, int] | None = None,
+) -> dict[str, Any] | None:
+    """Return one canonical collision record, including compound pieces."""
+    if coordinate_space not in SUPPORTED_COORDINATE_SPACES:
+        raise ValueError(f"unsupported collision coordinate space: {coordinate_space}")
     if object_id not in scene.collision_shapes:
         return None
     if object_id not in scene.objects:
         raise ValueError(f"Collision references unknown object: {object_id}")
-    return {
+    parts = getattr(scene, "collision_parts", {}).get(object_id, [])
+    record: dict[str, Any] = {
         "object_id": object_id,
-        "shape_type": "polygon",
-        "coordinate_space": COLLISION_COORDINATE_SPACE,
-        "points": _normalize_points(object_id, scene.collision_shapes[object_id]),
+        "shape_type": "compound" if parts else "polygon",
+        "coordinate_space": coordinate_space,
+        "points": _coordinate_points(
+            object_id, scene.collision_shapes[object_id], coordinate_space, image_size
+        ),
     }
+    if parts:
+        record["parts"] = [
+            _coordinate_points(
+                f"{object_id}#part{index}", part, coordinate_space, image_size
+            )
+            for index, part in enumerate(parts)
+        ]
+    return record
 
 
 def _normalize_results(
@@ -134,18 +173,26 @@ def export_collision_document(
     *,
     results: Sequence[Mapping[str, Any]] | None = None,
     statistics: Mapping[str, Any] | None = None,
+    coordinate_space: str = COLLISION_COORDINATE_SPACE,
+    image_size: tuple[int, int] | None = None,
 ) -> dict[str, Any]:
     """Build the single versioned collision document used by every JSON path."""
     shapes = []
     for object_id in sorted(scene.collision_shapes):
-        shape = collision_shape_record(scene, object_id)
-        if shape is not None:
-            shapes.append(shape)
+        shape = collision_shape_record(
+            scene,
+            object_id,
+            coordinate_space=coordinate_space,
+            image_size=image_size,
+        )
+        # The loop iterates the exact keys in collision_shapes; a missing shape
+        # is therefore impossible here unless the scene mutates concurrently.
+        shapes.append(cast(dict[str, Any], shape))
 
     return {
         "format_id": COLLISION_FORMAT_ID,
         "schema_version": COLLISION_SCHEMA_VERSION,
-        "coordinate_space": COLLISION_COORDINATE_SPACE,
+        "coordinate_space": coordinate_space,
         "shapes": shapes,
         "results": _normalize_results(results),
         "statistics": _normalize_json_value(statistics or {}, "statistics"),

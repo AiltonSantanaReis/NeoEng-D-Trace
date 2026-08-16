@@ -15,6 +15,7 @@ from src.core.bezier_geometry import (
     canonicalize_beziers,
     replace_handle,
 )
+from src.core.convex_decomp import convex_decompose_polygon, convex_hull_polygon
 from src.core.logger import logger
 
 
@@ -131,6 +132,7 @@ _STATE_ATTRIBUTES = (
     "layers",
     "groups",
     "collision_shapes",
+    "collision_parts",
     "selected_id",
 )
 
@@ -1959,17 +1961,35 @@ class MoveGroupCommand(Command):
 
 
 class AutoGenerateCollisionShapesCommand(Command):
-    """Replace all collision shapes from current object polygons atomically."""
+    """Generate compatible collision geometry atomically.
 
-    def __init__(self):
+    ``outline`` preserves the historical behavior. ``convex_hull`` creates a
+    single convex collider. ``convex_decomposition`` keeps the outline for
+    compatibility and stores the real convex pieces in ``scene.collision_parts``.
+    """
+
+    STRATEGIES = {"outline", "convex_hull", "convex_decomposition"}
+
+    def __init__(self, strategy: str = "outline"):
+        if strategy not in self.STRATEGIES:
+            raise ValueError(f"strategy must be one of {sorted(self.STRATEGIES)!r}")
+        self.strategy = strategy
         self._old_shapes: Optional[Dict[str, List[Tuple[float, float]]]] = None
+        self._old_parts: Optional[Dict[str, List[List[Tuple[float, float]]]]] = None
         self._generated_shapes: Optional[Dict[str, List[Tuple[float, float]]]] = None
+        self._generated_parts: Optional[Dict[str, List[List[Tuple[float, float]]]]] = (
+            None
+        )
         self._object_geometry_token: Any = None
         self._executed_once = False
 
     @property
     def generated_count(self) -> int:
         return len(self._generated_shapes or {})
+
+    @property
+    def generated_part_count(self) -> int:
+        return sum(len(parts) for parts in (self._generated_parts or {}).values())
 
     @staticmethod
     def _current_geometry_token(scene: Any) -> Any:
@@ -1986,8 +2006,13 @@ class AutoGenerateCollisionShapesCommand(Command):
     def _build_shapes(
         self,
         scene: Any,
-    ) -> tuple[Optional[Dict[str, List[Tuple[float, float]]]], Optional[str]]:
+    ) -> tuple[
+        Optional[Dict[str, List[Tuple[float, float]]]],
+        Optional[Dict[str, List[List[Tuple[float, float]]]]],
+        Optional[str],
+    ]:
         generated: Dict[str, List[Tuple[float, float]]] = {}
+        generated_parts: Dict[str, List[List[Tuple[float, float]]]] = {}
         for object_id, obj in scene.objects.items():
             polygon = getattr(obj, "polygon", None)
             if not polygon or len(polygon) < 3:
@@ -1996,23 +2021,48 @@ class AutoGenerateCollisionShapesCommand(Command):
             shape: List[Tuple[float, float]] = []
             for point in polygon:
                 if not isinstance(point, (list, tuple)) or len(point) != 2:
-                    return None, f"Object {object_id!r} has an invalid polygon point."
+                    return (
+                        None,
+                        None,
+                        f"Object {object_id!r} has an invalid polygon point.",
+                    )
                 x, y = point
                 if not isinstance(x, (int, float)) or isinstance(x, bool):
-                    return None, f"Object {object_id!r} has a non-numeric x coordinate."
+                    return (
+                        None,
+                        None,
+                        f"Object {object_id!r} has a non-numeric x coordinate.",
+                    )
                 if not isinstance(y, (int, float)) or isinstance(y, bool):
-                    return None, f"Object {object_id!r} has a non-numeric y coordinate."
+                    return (
+                        None,
+                        None,
+                        f"Object {object_id!r} has a non-numeric y coordinate.",
+                    )
                 fx = float(x)
                 fy = float(y)
                 if not math.isfinite(fx) or not math.isfinite(fy):
-                    return None, f"Object {object_id!r} has a non-finite coordinate."
+                    return (
+                        None,
+                        None,
+                        f"Object {object_id!r} has a non-finite coordinate.",
+                    )
                 shape.append((fx, fy))
+
+            try:
+                if self.strategy == "convex_hull":
+                    shape = convex_hull_polygon(shape)
+                elif self.strategy == "convex_decomposition":
+                    generated_parts[str(object_id)] = convex_decompose_polygon(shape)
+            except (TypeError, ValueError) as exc:
+                return None, None, f"Object {object_id!r} has invalid geometry: {exc}"
             generated[str(object_id)] = shape
-        return generated, None
+        return generated, generated_parts, None
 
     def execute(self, scene: Any):
+        current_parts = getattr(scene, "collision_parts", {})
         if not self._executed_once:
-            generated, error = self._build_shapes(scene)
+            generated, generated_parts, error = self._build_shapes(scene)
             if error is not None:
                 return CommandResult.rejected(self, "execute", error)
             if not generated:
@@ -2021,19 +2071,28 @@ class AutoGenerateCollisionShapesCommand(Command):
                     "execute",
                     "No valid scene polygons are available for collision generation.",
                 )
-            if _freeze_state(scene.collision_shapes) == _freeze_state(generated):
+            if _freeze_state(scene.collision_shapes) == _freeze_state(
+                generated
+            ) and _freeze_state(current_parts) == _freeze_state(generated_parts):
                 return CommandResult.no_change(
                     self,
                     "execute",
-                    "Collision shapes already match the current scene polygons.",
+                    "Collision shapes already match the requested strategy.",
                 )
 
             self._old_shapes = copy.deepcopy(scene.collision_shapes)
+            self._old_parts = copy.deepcopy(current_parts)
             self._generated_shapes = copy.deepcopy(generated)
+            self._generated_parts = copy.deepcopy(generated_parts)
             self._object_geometry_token = self._current_geometry_token(scene)
             self._executed_once = True
         else:
-            if self._old_shapes is None or self._generated_shapes is None:
+            if (
+                self._old_shapes is None
+                or self._old_parts is None
+                or self._generated_shapes is None
+                or self._generated_parts is None
+            ):
                 return CommandResult.rejected(
                     self,
                     "execute",
@@ -2045,7 +2104,9 @@ class AutoGenerateCollisionShapesCommand(Command):
                     "execute",
                     "Scene object geometry changed before Redo.",
                 )
-            if _freeze_state(scene.collision_shapes) != _freeze_state(self._old_shapes):
+            if _freeze_state(scene.collision_shapes) != _freeze_state(
+                self._old_shapes
+            ) or _freeze_state(current_parts) != _freeze_state(self._old_parts):
                 return CommandResult.rejected(
                     self,
                     "execute",
@@ -2053,11 +2114,17 @@ class AutoGenerateCollisionShapesCommand(Command):
                 )
 
         scene.collision_shapes = copy.deepcopy(self._generated_shapes)
+        scene.collision_parts = copy.deepcopy(self._generated_parts)
         scene._notify()
         return None
 
     def undo(self, scene: Any):
-        if self._old_shapes is None or self._generated_shapes is None:
+        if (
+            self._old_shapes is None
+            or self._old_parts is None
+            or self._generated_shapes is None
+            or self._generated_parts is None
+        ):
             return CommandResult.rejected(
                 self,
                 "undo",
@@ -2071,6 +2138,8 @@ class AutoGenerateCollisionShapesCommand(Command):
             )
         if _freeze_state(scene.collision_shapes) != _freeze_state(
             self._generated_shapes
+        ) or _freeze_state(getattr(scene, "collision_parts", {})) != _freeze_state(
+            self._generated_parts
         ):
             return CommandResult.rejected(
                 self,
@@ -2079,6 +2148,7 @@ class AutoGenerateCollisionShapesCommand(Command):
             )
 
         scene.collision_shapes = copy.deepcopy(self._old_shapes)
+        scene.collision_parts = copy.deepcopy(self._old_parts)
         scene._notify()
         return None
 

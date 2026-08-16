@@ -401,6 +401,31 @@ def try_merge_polygons(
     return unique
 
 
+def convex_hull_polygon(
+    polygon: Sequence[Sequence[float]],
+) -> List[Tuple[float, float]]:
+    """Return a deterministic monotonic-chain convex hull."""
+    points = _canonical_polygon(polygon)
+    if len(points) < 3:
+        raise ValueError("Polygon must have at least three distinct points")
+    unique = sorted(set(points))
+
+    lower: List[Point] = []
+    for point in unique:
+        while len(lower) >= 2 and _cross(lower[-2], lower[-1], point) <= 0.0:
+            lower.pop()
+        lower.append(point)
+    upper: List[Point] = []
+    for point in reversed(unique):
+        while len(upper) >= 2 and _cross(upper[-2], upper[-1], point) <= 0.0:
+            upper.pop()
+        upper.append(point)
+    hull = lower[:-1] + upper[:-1]
+    if len(hull) < 3:
+        raise ValueError("Polygon hull is degenerate")
+    return hull
+
+
 def convex_decompose_polygon(
     polygon: List[Tuple[float, float]],
 ) -> List[List[Tuple[float, float]]]:

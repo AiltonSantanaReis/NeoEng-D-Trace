@@ -145,6 +145,10 @@ class SceneObjectRecord(StrictProjectModel):
         default=None,
         max_length=MAX_POLYGON_POINTS,
     )
+    collision_parts: list[list[PointRecord]] | None = Field(
+        default=None,
+        max_length=MAX_POLYGON_POINTS,
+    )
     beziers: list[BezierSegmentRecord] | None = Field(
         default=None,
         max_length=MAX_BEZIER_SEGMENTS,
@@ -219,6 +223,9 @@ class ProjectDocumentV1(StrictProjectModel):
         for item in self.objects:
             polygon_points = len(item.polygon)
             collision_points = len(item.collision or [])
+            collision_parts_points = sum(
+                len(part) for part in (item.collision_parts or [])
+            )
             if polygon_points > MAX_POLYGON_POINTS:
                 raise ValueError(
                     f"object {item.id!r} exceeds the {MAX_POLYGON_POINTS} "
@@ -231,6 +238,7 @@ class ProjectDocumentV1(StrictProjectModel):
                 )
             total_points += polygon_points
             total_points += collision_points
+            total_points += collision_parts_points
             total_points += 4 * len(item.beziers or [])
             polygon_complexity += polygon_points * polygon_points
         if total_points > MAX_PROJECT_POINTS:
@@ -250,6 +258,12 @@ class ProjectDocumentV1(StrictProjectModel):
                 if not is_valid_polygon(collision):
                     raise ValueError(
                         f"object {item.id!r} has invalid collision geometry"
+                    )
+            for part in item.collision_parts or []:
+                part_points = [(point.x, point.y) for point in part]
+                if not is_valid_polygon(part_points):
+                    raise ValueError(
+                        f"object {item.id!r} has invalid collision part geometry"
                     )
         return self
 

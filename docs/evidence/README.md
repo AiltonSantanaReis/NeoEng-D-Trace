@@ -1,4 +1,6 @@
 # Evidências de validação
+- `ETAPA_ROI_GRABCUT_COLISAO_PRE_MERGE_2026-08-15.md` — pipeline funcional ROI/GrabCut, visualização raio-X, colisão composta, artefatos reais, hashes, gates locais e reconciliação legada; aprovação local pré-merge, sem CI remoto.
+
 
 - `ETAPA_14_BUILD_RELEASE_PRE_MERGE.md` — build portátil/MSI, duas execuções reproduzíveis, instalação/desinstalação, engines reais, gate completo, falhas intermediárias e bloqueios explícitos de release.
 - `ETAPA_14_RELEASE_VALIDATION_MANIFEST.json` — manifesto estruturado do commit-fonte, hashes, métricas, fixtures e decisões.
