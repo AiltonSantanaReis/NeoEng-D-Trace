@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://source.png" id="1_texture"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("1_texture")
+region = Rect2(0, 0, 16, 12)
+
+[node name="NeoEngGenerated_animation_conflict" type="Node2D"]
+metadata/neoeng_generated = true
+metadata/neoeng_manifest = "res://NeoEngGenerated/animation-conflict.ndt.integration.json"
+metadata/neoeng_object_id = "animation_conflict"
+metadata/neoeng_generator_version = "0.2.0"
+metadata/neoeng_layer = "layer_default"
+metadata/neoeng_group = ""
+metadata/neoeng_trimmed = true
+metadata/neoeng_padding = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_1")
+centered = true
+offset = Vector2(0, 0)
+metadata/neoeng_generated = true
+metadata/neoeng_pivot_pixels = Vector2(8, 6)
+metadata/neoeng_pivot_normalized = Vector2(0.500000000, 0.500000000)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-8, -6, 8, -6, 8, 6, -8, 6)
+metadata/neoeng_generated = true

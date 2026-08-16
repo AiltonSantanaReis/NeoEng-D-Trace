@@ -20,6 +20,7 @@ def test_godot_addon_is_source_only_and_has_stable_identity():
     assert config["plugin"]["script"].strip('"') == "plugin.gd"
     assert (ADDON_ROOT / "plugin.gd").is_file()
     assert (ADDON_ROOT / "manifest_diagnostic.gd").is_file()
+    assert (ADDON_ROOT / "import_generator.gd").is_file()
     assert (ADDON_ROOT / "README.md").is_file()
     assert not [
         path
@@ -40,6 +41,8 @@ def test_godot_addon_package_is_deterministic_and_contains_only_sources(tmp_path
         names = sorted(archive.namelist())
         assert names == [
             "neoeng-d-trace-godot/addons/neoeng_d_trace/README.md",
+            "neoeng-d-trace-godot/addons/neoeng_d_trace/animation_collision_driver.gd",
+            "neoeng-d-trace-godot/addons/neoeng_d_trace/import_generator.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/manifest_diagnostic.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.cfg",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.gd",

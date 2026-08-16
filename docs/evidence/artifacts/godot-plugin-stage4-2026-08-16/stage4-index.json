@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "stage": 4,
+  "status": "SUCCESS",
+  "artifacts": [
+    {
+      "name": "animation_conflict.tscn",
+      "size": 1055,
+      "sha256": "5ff2e87ad50df730fd2c1afd6d48b1826ece5c7452701d881cf8add13469192e"
+    },
+    {
+      "name": "animation.tscn",
+      "size": 1383,
+      "sha256": "716e5ce624205615069d4ebea5fea37798180bd7c27190ad34f934cf0476c9a6"
+    },
+    {
+      "name": "compound.tscn",
+      "size": 1197,
+      "sha256": "6c0b04ed14d665cc6498e478516d3c4fcc1ba7de58d28bee9e7c7d4f5200e748"
+    },
+    {
+      "name": "frames/frame_0000.png",
+      "size": 91,
+      "sha256": "d351653fd1a3c098af4e783032c4cb216bfc479242b2fab99438637a8663c21e"
+    },
+    {
+      "name": "frames/frame_0001.png",
+      "size": 95,
+      "sha256": "46ffbea8392b4e2e3f9e705f472e35b77e5b36071a1135e34ebcd02c622d0aa0"
+    },
+    {
+      "name": "hero.ndt.integration.json",
+      "size": 7027,
+      "sha256": "3b111c6ef1f4becd8dbe6dd751cfafb80efba250e6353b4437690b1e938a698a"
+    },
+    {
+      "name": "hero.tscn",
+      "size": 1013,
+      "sha256": "447843c023cedcf6793e311a0d9a2e97f062a572c1d56a786489342debb3661f"
+    },
+    {
+      "name": "initial-failure-animation-sync.json",
+      "size": 5771,
+      "sha256": "b2c26aa9e40e675e7dc92cea23fbfe7103b37cd3a67f619680ad840c5aa43d07"
+    },
+    {
+      "name": "initial-failure-nondeterminism.json",
+      "size": 4284,
+      "sha256": "7e6bb910ab5a32c7d7bfae4e3b55d1961d479115723516a8020a62b86404e1a2"
+    },
+    {
+      "name": "manual.tscn",
+      "size": 56,
+      "sha256": "2e8d24fa0f9868fbd74cb0b83bc6ea857ef85a40ddf8c62c78e28aa9dc92d9a2"
+    },
+    {
+      "name": "neoeng-d-trace-godot-stage4.zip",
+      "size": 10032,
+      "sha256": "9a196b0b5307486710619344be3facad2045b4739ba11fdbda984c7b1a96f225"
+    },
+    {
+      "name": "source.png",
+      "size": 127,
+      "sha256": "f9a6fded39b2fd9b2f7479b365a207b32c112d00f01c0a4ba78f7afdca18d722"
+    },
+    {
+      "name": "tileset_conflict.tscn",
+      "size": 1049,
+      "sha256": "628d07c40597c45fb4782bba1a4640f7b31b7e952b0860b80a3081adb56a9c98"
+    },
+    {
+      "name": "tileset.tres",
+      "size": 798,
+      "sha256": "3ebcf1a54db5a5f2e0f9596d42c0622003a791ad5fb2a4684dae4f76ea709825"
+    }
+  ]
+}
