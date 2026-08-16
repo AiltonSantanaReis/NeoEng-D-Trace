@@ -7,7 +7,7 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
-from PySide6.QtCore import QObject, QPointF, Qt, QThread, Signal
+from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, Signal
 from PySide6.QtGui import (
     QAction,
     QColor,
@@ -36,6 +36,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.core.view_processor import ViewProcessor
+
 logger = logging.getLogger(__name__)
 
 # Detection presets with parameters and expected performance
@@ -55,20 +57,33 @@ DETECTION_PRESETS = {
     "Perfect": {
         "mode": "perfect",
         "params": {
-            "downscale": 1.0,
+            "downscale": 0.65,
             "base_eps": 2.0,
             "curvature_factor": 1.0,
             "min_area": 100.0,
             "decompose_convex": False,
             "watershed_distance": 10,
+            "separate_touching": False,
         },
         "estimated_runtime": "0.5-2.0s",
         "expected_polygons": "5-20",
     },
+    "GrabCut": {
+        "mode": "grabcut",
+        "params": {
+            "min_area": 100.0,
+            "rdp_epsilon": 1.5,
+            "grabcut_iterations": 5,
+            "roi_padding": 2,
+            "detect_holes": True,
+        },
+        "estimated_runtime": "0.2-1.5s",
+        "expected_polygons": "1",
+    },
     "Enhanced": {
         "mode": "enhanced",
         "params": {
-            "downscale": 1.0,
+            "downscale": 0.65,
             "canny_thresh1": 50,
             "canny_thresh2": 150,
             "min_area": 50.0,
@@ -132,6 +147,7 @@ class MaskViewer(QWidget):
     viewChanged = Signal()
     imageClicked = Signal(QPointF)
     polygonSelected = Signal(int)  # Emits index of selected polygon, -1 for deselection
+    roiSelected = Signal(object)  # Emits (x, y, width, height) in image pixels
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -145,11 +161,19 @@ class MaskViewer(QWidget):
 
         # Image state
         self._image: Optional[np.ndarray] = None
+        self._display_image: Optional[np.ndarray] = None
+        self._display_mode = 0
         self._qimage_cache: Optional[QImage] = None
+        self._composed_image: Optional[np.ndarray] = None
+        self._layer_overlays: Dict[str, bool] = {}
+        self._layer_opacity = 0.5
 
         # Overlay Polygons (Visualization)
         self._overlay_polygons = []
         self._selected_polygon_index = -1  # Index of selected polygon, -1 for none
+        self._roi_mode = False
+        self._roi_start: Optional[QPointF] = None
+        self._roi_rect: Optional[Tuple[float, float, float, float]] = None
 
         # Pan state
         self._panning = False
@@ -168,6 +192,45 @@ class MaskViewer(QWidget):
         """Set polygons to draw over the image."""
         self._overlay_polygons = polygons
         self._selected_polygon_index = -1  # Reset selection when polygons change
+        self.update()
+
+    def set_roi_mode(self, enabled: bool) -> None:
+        """Enable rectangle selection for the assisted GrabCut workflow."""
+        self._roi_mode = bool(enabled)
+        self._roi_start = None
+        self.setCursor(
+            Qt.CursorShape.CrossCursor if self._roi_mode else Qt.CursorShape.ArrowCursor
+        )
+        self.update()
+
+    def get_roi(self) -> Optional[Tuple[int, int, int, int]]:
+        if self._roi_rect is None:
+            return None
+        x, y, width, height = self._roi_rect
+        return (int(round(x)), int(round(y)), int(round(width)), int(round(height)))
+
+    def clear_roi(self) -> None:
+        self._roi_rect = None
+        self._roi_start = None
+        self.update()
+
+    def _update_roi(self, current_view: QPointF) -> None:
+        if self._roi_start is None:
+            return
+        start_x, start_y = self.view_to_image(self._roi_start)
+        current_x, current_y = self.view_to_image(current_view)
+        if self._image is not None:
+            height, width = self._image.shape[:2]
+            start_x = min(max(start_x, 0.0), float(width))
+            current_x = min(max(current_x, 0.0), float(width))
+            start_y = min(max(start_y, 0.0), float(height))
+            current_y = min(max(current_y, 0.0), float(height))
+        self._roi_rect = (
+            min(start_x, current_x),
+            min(start_y, current_y),
+            abs(current_x - start_x),
+            abs(current_y - start_y),
+        )
         self.update()
 
     def get_selected_polygon_index(self) -> int:
@@ -197,10 +260,90 @@ class MaskViewer(QWidget):
         return -1
 
     def set_numpy_image(self, image: Optional[np.ndarray]):
-        """Set the image to display from numpy array."""
+        """Set the source image and refresh the selected display mode."""
         self._image = image.copy() if image is not None else None
-        self._qimage_cache = None  # Invalidate cache
+        self._qimage_cache = None
+        self.set_display_mode(self._display_mode, update=False)
         self.update()
+
+    def set_display_mode(self, mode: int, update: bool = True) -> None:
+        """Show the source image or one of the shared X-Ray processors."""
+        self._display_mode = max(0, min(3, int(mode)))
+        if self._image is None or self._display_mode == 0:
+            self._display_image = self._image
+        else:
+            try:
+                generated = ViewProcessor.generate_xray_array(
+                    self._image, self._display_mode
+                )
+                self._display_image = (
+                    np.asarray(generated).copy()
+                    if generated is not None
+                    else self._image
+                )
+            except Exception as exc:
+                logger.warning("Mask viewer X-Ray failed: %s", exc)
+                self._display_image = self._image
+        self._qimage_cache = None
+        if update:
+            self.update()
+
+    def set_layer_overlays(
+        self, enabled_layers: Dict[str, bool], opacity: float = 0.5
+    ) -> None:
+        """Render the selected diagnostic layers over the current image."""
+        self._layer_overlays = dict(enabled_layers)
+        self._layer_opacity = min(1.0, max(0.0, float(opacity)))
+        self._qimage_cache = None
+        self.update()
+
+    def _compose_layer_overlays(self, source: np.ndarray) -> np.ndarray:
+        if not self._layer_overlays or not HAS_CV2:
+            return source
+        if source.ndim == 2:
+            base = cv2.cvtColor(source, cv2.COLOR_GRAY2RGB)
+        elif source.shape[2] == 4:
+            base = source[:, :, :3].copy()
+        else:
+            base = source.copy()
+        if base.dtype != np.uint8:
+            base = np.clip(base, 0, 255).astype(np.uint8)
+        gray = cv2.cvtColor(base, cv2.COLOR_RGB2GRAY)
+        masks: Dict[str, np.ndarray] = {}
+        if self._layer_overlays.get("Sobel"):
+            sobel = ViewProcessor.generate_xray_array(base, 1)
+            masks["Sobel"] = cv2.cvtColor(sobel, cv2.COLOR_RGB2GRAY)
+        if self._layer_overlays.get("Canny"):
+            canny = ViewProcessor.generate_xray_array(base, 2)
+            masks["Canny"] = cv2.cvtColor(canny, cv2.COLOR_RGB2GRAY)
+        if self._layer_overlays.get("Threshold"):
+            _, masks["Threshold"] = cv2.threshold(
+                gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+            )
+        if self._layer_overlays.get("Watershed"):
+            _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            masks["Watershed"] = cv2.Canny(binary, 50, 150)
+        colors = {
+            "Sobel": (0, 220, 255),
+            "Canny": (255, 0, 180),
+            "Threshold": (40, 255, 80),
+            "Watershed": (255, 150, 0),
+        }
+        composed = base
+        for layer, mask in masks.items():
+            color = np.zeros_like(base)
+            color[:, :] = colors[layer]
+            active = mask > 0
+            if not np.any(active):
+                continue
+            blended = cv2.addWeighted(
+                composed, 1.0 - self._layer_opacity, color, self._layer_opacity, 0
+            )
+            composed[active] = blended[active]
+        return composed
+
+    def get_display_mode(self) -> int:
+        return self._display_mode
 
     def get_numpy_image(self) -> Optional[np.ndarray]:
         """Get the current image as numpy array."""
@@ -307,6 +450,11 @@ class MaskViewer(QWidget):
             self.setCursor(Qt.CursorShape.ClosedHandCursor)
             event.accept()
         elif event.button() == Qt.MouseButton.LeftButton:
+            if self._roi_mode:
+                self._roi_start = event.position()
+                self._roi_rect = None
+                event.accept()
+                return
             if not self._suppress_tool_events and self.tool_handler is not None:
                 if self.tool_handler(event):
                     event.accept()
@@ -329,7 +477,10 @@ class MaskViewer(QWidget):
             super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event: QMouseEvent):
-        if self._panning:
+        if self._roi_mode and self._roi_start is not None:
+            self._update_roi(event.position())
+            event.accept()
+        elif self._panning:
             delta = event.position() - self._pan_start_pos
             self._pan_x = self._pan_start_offset.x() + delta.x()
             self._pan_y = self._pan_start_offset.y() + delta.y()
@@ -340,7 +491,18 @@ class MaskViewer(QWidget):
             super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
-        if self._panning:
+        if self._roi_mode and self._roi_start is not None:
+            self._update_roi(event.position())
+            roi = self.get_roi()
+            self._roi_start = None
+            if roi is None or roi[2] < 2 or roi[3] < 2:
+                self._roi_rect = None
+                self.update()
+                event.ignore()
+                return
+            self.roiSelected.emit(roi)
+            event.accept()
+        elif self._panning:
             self._panning = False
             self._suppress_tool_events = False
             self.setCursor(Qt.CursorShape.ArrowCursor)
@@ -391,6 +553,14 @@ class MaskViewer(QWidget):
             # Draw Image
             painter.drawImage(0, 0, qimage)
 
+            if self._roi_rect is not None:
+                x, y, width, height = self._roi_rect
+                roi_pen = QPen(QColor(255, 165, 0), 2)
+                roi_pen.setCosmetic(True)
+                painter.setPen(roi_pen)
+                painter.setBrush(QColor(255, 165, 0, 35))
+                painter.drawRect(QRectF(x, y, width, height))
+
             # Draw Overlay Polygons
             if self._overlay_polygons:
                 for i, poly_data in enumerate(self._overlay_polygons):
@@ -429,20 +599,23 @@ class MaskViewer(QWidget):
             painter.restore()
 
     def _get_qimage(self) -> Optional[QImage]:
-        if self._image is None:
+        source = self._image if self._display_mode == 0 else self._display_image
+        if source is None:
             return None
         if self._qimage_cache is not None:
             return self._qimage_cache
 
         try:
+            source = self._compose_layer_overlays(np.asarray(source))
+            self._composed_image = source
             if HAS_CV2:
                 # Ensure RGB
-                if len(self._image.shape) == 3 and self._image.shape[2] == 3:
-                    rgb = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
+                if len(source.shape) == 3 and source.shape[2] == 3:
+                    rgb = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
                 else:
-                    rgb = self._image
+                    rgb = source
             else:
-                rgb = self._image
+                rgb = source
 
             height, width = rgb.shape[:2]
 
@@ -467,6 +640,11 @@ class MaskViewerDialog(QDialog):
         "en": {
             "window_title": "Mask Viewer - Auto Detection X-Ray",
             "toolbar": "Mask Viewer Toolbar",
+            "view_mode": "View:",
+            "view_original": "Original",
+            "view_xray_1": "X-Ray Sobel",
+            "view_xray_2": "X-Ray Canny",
+            "view_xray_3": "X-Ray Laplacian",
             "detection_action": "{preset} Detection",
             "performance_ready": "Performance: Ready",
             "performance": "Performance: {runtime}, Expected: {count} polygons",
@@ -501,6 +679,9 @@ class MaskViewerDialog(QDialog):
             "preset_basic": "Basic",
             "preset_perfect": "Perfect",
             "preset_enhanced": "Enhanced",
+            "preset_grabcut": "GrabCut (ROI)",
+            "select_roi": "Select ROI",
+            "roi_selected": "ROI: {x}, {y}, {width} x {height}",
             "detect": "Detect Polygons",
             "processing": "Processing...",
             "apply": "Apply to Scene",
@@ -521,6 +702,11 @@ class MaskViewerDialog(QDialog):
         "pt": {
             "window_title": "Visualizador de Máscara - Raio-X de Detecção Automática",
             "toolbar": "Ferramentas do Visualizador de Máscara",
+            "view_mode": "Visualização:",
+            "view_original": "Original",
+            "view_xray_1": "Raio-X Sobel",
+            "view_xray_2": "Raio-X Canny",
+            "view_xray_3": "Raio-X Laplaciano",
             "detection_action": "Detecção {preset}",
             "performance_ready": "Desempenho: Pronto",
             "performance": "Desempenho: {runtime}, esperado: {count} polígonos",
@@ -555,6 +741,9 @@ class MaskViewerDialog(QDialog):
             "preset_basic": "Básico",
             "preset_perfect": "Perfeito",
             "preset_enhanced": "Aprimorado",
+            "preset_grabcut": "GrabCut (ROI)",
+            "select_roi": "Selecionar ROI",
+            "roi_selected": "ROI: {x}, {y}, {width} x {height}",
             "detect": "Detectar Polígonos",
             "processing": "Processando...",
             "apply": "Aplicar à Cena",
@@ -574,11 +763,12 @@ class MaskViewerDialog(QDialog):
         },
     }
 
-    PRESET_ORDER = ("Basic", "Perfect", "Enhanced")
+    PRESET_ORDER = ("Basic", "Perfect", "Enhanced", "GrabCut")
     PRESET_TEXT_KEYS = {
         "Basic": "preset_basic",
         "Perfect": "preset_perfect",
         "Enhanced": "preset_enhanced",
+        "GrabCut": "preset_grabcut",
     }
     LAYER_TEXT_KEYS = {
         "Sobel": "layer_sobel",
@@ -608,6 +798,7 @@ class MaskViewerDialog(QDialog):
             "curvature_factor": 1.0,
             "decompose_convex": False,
             "watershed_distance": 10,
+            "separate_touching": False,
             "canny_thresh1": 50,
             "canny_thresh2": 150,
             "chaikin_iterations": 0,
@@ -622,6 +813,7 @@ class MaskViewerDialog(QDialog):
         self._thread: Optional[QThread] = None
         self._worker: Optional[DetectionWorker] = None
         self._current_mask = None
+        self._roi: Optional[Tuple[int, int, int, int]] = None
         self._layer_overlays: Dict[str, bool] = {}
         self.param_widgets: Dict[str, QSpinBox | QDoubleSpinBox] = {}
         self.param_labels: Dict[str, QLabel] = {}
@@ -714,6 +906,10 @@ class MaskViewerDialog(QDialog):
         self.detect_button = QPushButton()
         self.detect_button.clicked.connect(self._run_detection)
         detection_layout.addWidget(self.detect_button)
+        self.roi_button = QPushButton()
+        self.roi_button.setCheckable(True)
+        self.roi_button.clicked.connect(self._toggle_roi_mode)
+        detection_layout.addWidget(self.roi_button)
         self.apply_button = QPushButton()
         self.apply_button.clicked.connect(self._apply_to_scene)
         self.apply_button.setEnabled(False)
@@ -731,6 +927,7 @@ class MaskViewerDialog(QDialog):
 
         self.viewer.viewChanged.connect(self._update_info_labels)
         self.viewer.polygonSelected.connect(self._on_polygon_selected)
+        self.viewer.roiSelected.connect(self._on_roi_selected)
         logger.debug("UI setup completed")
 
     def _setup_toolbar(self):
@@ -744,6 +941,15 @@ class MaskViewerDialog(QDialog):
             )
             self.preset_actions[preset_id] = action
         self.toolbar.addSeparator()
+        self.view_mode_label = QLabel()
+        self.toolbar.addWidget(self.view_mode_label)
+        self.view_mode_combo = QComboBox()
+        self.view_mode_combo.addItem("", 0)
+        self.view_mode_combo.addItem("", 1)
+        self.view_mode_combo.addItem("", 2)
+        self.view_mode_combo.addItem("", 3)
+        self.view_mode_combo.currentIndexChanged.connect(self._on_view_mode_changed)
+        self.toolbar.addWidget(self.view_mode_combo)
         self.perf_label = QLabel()
         self.toolbar.addWidget(self.perf_label)
 
@@ -826,6 +1032,15 @@ class MaskViewerDialog(QDialog):
         for preset_id, action in self.preset_actions.items():
             label = t[self.PRESET_TEXT_KEYS[preset_id]]
             action.setText(t["detection_action"].format(preset=label))
+        self.view_mode_label.setText(t["view_mode"])
+        view_keys = (
+            "view_original",
+            "view_xray_1",
+            "view_xray_2",
+            "view_xray_3",
+        )
+        for index, key in enumerate(view_keys):
+            self.view_mode_combo.setItemText(index, t[key])
         self.layer_controls.setTitle(t["layer_visualization"])
         for layer_id, checkbox in self.layer_checkboxes.items():
             checkbox.setText(t[self.LAYER_TEXT_KEYS[layer_id]])
@@ -848,6 +1063,7 @@ class MaskViewerDialog(QDialog):
         if restore_index >= 0:
             self.preset_combo.setCurrentIndex(restore_index)
         self.detect_button.setText(t["processing"] if self._thread else t["detect"])
+        self.roi_button.setText(t["select_roi"])
         self.apply_button.setText(t["apply"])
         if not self._last_polygons and not self._thread:
             self.status_label.setText(t["ready"])
@@ -933,6 +1149,9 @@ class MaskViewerDialog(QDialog):
                 self.param_widgets[param_name].setValue(value)
             self.params[param_name] = value
 
+    def _on_view_mode_changed(self, index: int) -> None:
+        self.viewer.set_display_mode(index)
+
     def _on_layer_changed(self, layer_name, _state):
         self._update_layer_overlays()
 
@@ -943,10 +1162,12 @@ class MaskViewerDialog(QDialog):
             if checkbox.isChecked()
         ]
         self._layer_overlays = {layer: True for layer in enabled_layers}
-        self.viewer.update()
+        self.viewer.set_layer_overlays(
+            self._layer_overlays, self.opacity_slider.value() / 100.0
+        )
 
-    def _on_opacity_changed(self, _value):
-        self.viewer.update()
+    def _on_opacity_changed(self, value):
+        self.viewer.set_layer_overlays(self._layer_overlays, value / 100.0)
 
     def _on_param_changed(self, param_name, value):
         self.params[param_name] = value
@@ -961,14 +1182,20 @@ class MaskViewerDialog(QDialog):
                 self, self.t["no_image_title"], self.t["no_image_message"]
             )
             return
+        preset_id = self._selected_preset_id()
+        if preset_id == "GrabCut" and self._roi is None:
+            QMessageBox.warning(self, self.t["error"], self.t["select_roi"])
+            return
         self.detect_button.setEnabled(False)
         self.detect_button.setText(self.t["processing"])
         self.status_label.setText(self.t["running"])
         self.setCursor(Qt.CursorShape.WaitCursor)
-        preset_id = self._selected_preset_id()
         mode = DETECTION_PRESETS[preset_id]["mode"]
         thread = QThread()
-        worker = DetectionWorker(image, mode, dict(self.params))
+        detection_params: Dict[str, Any] = dict(self.params)
+        if preset_id == "GrabCut":
+            detection_params["roi"] = self._roi
+        worker = DetectionWorker(image, mode, detection_params)
         self._thread = thread
         self._worker = worker
         worker.moveToThread(thread)
@@ -1079,6 +1306,20 @@ class MaskViewerDialog(QDialog):
                 self.t["apply_error_title"],
                 self.t["apply_error"].format(error=exc),
             )
+
+    def _toggle_roi_mode(self, checked: bool) -> None:
+        self.viewer.set_roi_mode(checked)
+        if checked:
+            self.status_label.setText(self.t["select_roi"])
+
+    def _on_roi_selected(self, roi: Tuple[int, int, int, int]) -> None:
+        self._roi = roi
+        x, y, width, height = roi
+        self.status_label.setText(
+            self.t["roi_selected"].format(x=x, y=y, width=width, height=height)
+        )
+        self.roi_button.setChecked(False)
+        self.viewer.set_roi_mode(False)
 
     def _on_polygon_selected(self, index: int):
         if index >= 0:

@@ -237,6 +237,7 @@ def build_project_document(
                     f"object ID {scene_object.id!r}"
                 )
             collision_value = scene.collision_shapes.get(object_id)
+            collision_parts_value = getattr(scene, "collision_parts", {}).get(object_id)
             beziers_value = getattr(scene_object, "beziers", None)
             objects.append(
                 SceneObjectRecord(
@@ -246,6 +247,14 @@ def build_project_document(
                     collision=(
                         [_collision_point(value) for value in collision_value]
                         if collision_value is not None
+                        else None
+                    ),
+                    collision_parts=(
+                        [
+                            [_collision_point(value) for value in part]
+                            for part in collision_parts_value
+                        ]
+                        if collision_parts_value is not None
                         else None
                     ),
                     beziers=(
@@ -578,6 +587,7 @@ def apply_project_document_to_scene(
 
     new_objects: dict[str, SceneObject] = {}
     new_collisions: dict[str, list[tuple[float, float]]] = {}
+    new_collision_parts: dict[str, list[list[tuple[float, float]]]] = {}
     for object_record in document.objects:
         polygon = [_point_tuple(point) for point in object_record.polygon]
         scene_object = SceneObject(
@@ -600,6 +610,11 @@ def apply_project_document_to_scene(
         if object_record.collision is not None:
             new_collisions[object_record.id] = [
                 (float(point.x), float(point.y)) for point in object_record.collision
+            ]
+        if object_record.collision_parts is not None:
+            new_collision_parts[object_record.id] = [
+                [(float(point.x), float(point.y)) for point in part]
+                for part in object_record.collision_parts
             ]
 
     new_groups: list[Group] = []
@@ -628,6 +643,7 @@ def apply_project_document_to_scene(
     scene.objects = new_objects
     scene.groups = new_groups
     scene.collision_shapes = new_collisions
+    scene.collision_parts = new_collision_parts
     scene.selected_id = None
     scene._notify()
 

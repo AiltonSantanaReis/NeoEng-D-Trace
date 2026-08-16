@@ -8,6 +8,7 @@ from typing import Dict, List
 
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
+    QComboBox,
     QGroupBox,
     QLabel,
     QMessageBox,
@@ -60,6 +61,14 @@ class CollisionPanel(QWidget):
         self.export_btn.clicked.connect(self._on_export_collisions)
         button_layout.addWidget(self.export_btn)
 
+        self.strategy_combo = QComboBox()
+        self.strategy_combo.addItem("Outline (legacy)", "outline")
+        self.strategy_combo.addItem("Convex hull", "convex_hull")
+        self.strategy_combo.addItem("Convex decomposition", "convex_decomposition")
+        self.strategy_combo.setToolTip(
+            "Choose the collider representation used by the physics manager"
+        )
+        button_layout.addWidget(self.strategy_combo)
         self.auto_gen_btn = QPushButton("🤖 Auto-Generate from Scene Objects")
         self.auto_gen_btn.setToolTip(
             "Generate collision shapes from current scene polygons"
@@ -117,7 +126,16 @@ class CollisionPanel(QWidget):
         try:
             self.collision_manager.clear()
             for object_id, shape in self.scene.collision_shapes.items():
-                self.collision_manager.register(object_id, copy.deepcopy(shape))
+                parts = getattr(self.scene, "collision_parts", {}).get(object_id, [])
+                if parts:
+                    for part_index, part in enumerate(parts):
+                        self.collision_manager.register(
+                            f"{object_id}#part{part_index}",
+                            copy.deepcopy(part),
+                            metadata={"parent_id": object_id, "part_index": part_index},
+                        )
+                else:
+                    self.collision_manager.register(object_id, copy.deepcopy(shape))
             return True
         except Exception as exc:
             logger.error(
@@ -260,7 +278,8 @@ class CollisionPanel(QWidget):
                 CommandStatus,
             )
 
-            command = AutoGenerateCollisionShapesCommand()
+            strategy = self.strategy_combo.currentData() or "outline"
+            command = AutoGenerateCollisionShapesCommand(strategy=strategy)
             result = manager.execute(command, self.scene)
             if not result.changed:
                 message = result.message or "Collision generation was not applied."

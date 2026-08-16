@@ -30,6 +30,7 @@ from .mask_utils import (
     rdp_simplify,
     threshold_adaptive,
 )
+from .segmentation import mask_contours, segment_grabcut
 from .smoothing import catmull_rom_to_beziers, chaikin_smooth
 
 
@@ -75,6 +76,121 @@ def _resize_grayscale(gray: np.ndarray, downscale: float) -> np.ndarray:
     new_width = max(1, int(width * downscale))
     new_height = max(1, int(height * downscale))
     return cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+
+
+def _to_uint8_grayscale(image: np.ndarray) -> np.ndarray:
+    """Return a stable 8-bit grayscale image for all supported inputs."""
+    if image.ndim == 3:
+        if image.shape[2] == 4:
+            gray = cv2.cvtColor(image, cv2.COLOR_RGBA2GRAY)
+        else:
+            gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    else:
+        gray = image.copy()
+    if gray.dtype == np.uint8:
+        return gray
+    values = np.asarray(gray, dtype=np.float32)
+    if not np.isfinite(values).all():
+        values = np.nan_to_num(values, nan=0.0, posinf=255.0, neginf=0.0)
+    low = float(values.min())
+    high = float(values.max())
+    if high <= low:
+        return np.zeros(values.shape, dtype=np.uint8)
+    if low >= 0.0 and high <= 255.0:
+        return np.rint(values).astype(np.uint8)
+    return np.rint((values - low) * 255.0 / (high - low)).astype(np.uint8)
+
+
+def _alpha_foreground_mask(image: np.ndarray) -> Optional[np.ndarray]:
+    """Use a non-empty alpha channel when the source image has one."""
+    if image.ndim != 3 or image.shape[2] != 4:
+        return None
+    alpha = _to_uint8_grayscale(image[:, :, 3])
+    if int(alpha.max()) <= 0 or int(alpha.min()) == int(alpha.max()):
+        return None
+    return np.where(alpha > 8, 255, 0).astype(np.uint8)
+
+
+def _foreground_mask(image: np.ndarray, gray: np.ndarray) -> np.ndarray:
+    """Build a filled foreground mask, falling back to closed edges."""
+    alpha_mask = _alpha_foreground_mask(image)
+    if alpha_mask is not None:
+        return cv2.morphologyEx(
+            alpha_mask,
+            cv2.MORPH_CLOSE,
+            cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)),
+        )
+    if int(gray.max()) == int(gray.min()):
+        return np.zeros_like(gray, dtype=np.uint8)
+
+    _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    height, width = gray.shape
+    best = np.zeros_like(gray, dtype=np.uint8)
+    best_score = 0.0
+    best_has_interior_components = False
+    for candidate in (binary, cv2.bitwise_not(binary)):
+        count, labels, stats, _ = cv2.connectedComponentsWithStats(
+            candidate, connectivity=8
+        )
+        selected = np.zeros_like(candidate, dtype=np.uint8)
+        interior_area = 0
+        for label in range(1, count):
+            x, y, w, h, area = stats[label].tolist()
+            if x != 0 and y != 0 and x + w < width and y + h < height:
+                selected[labels == label] = 255
+                interior_area += int(area)
+        has_interior_components = interior_area > 0
+        if interior_area == 0:
+            selected = candidate.copy()  # type: ignore[assignment]
+            interior_area = int(np.count_nonzero(selected))
+        ratio = interior_area / float(max(1, width * height))
+        score = float(interior_area) * (
+            10.0 if has_interior_components else (0.1 if ratio > 0.5 else 1.0)
+        )
+        if (has_interior_components and not best_has_interior_components) or (
+            has_interior_components == best_has_interior_components
+            and score > best_score
+        ):
+            best = selected
+            best_score = score
+            best_has_interior_components = has_interior_components
+
+    if np.count_nonzero(best) > 0:
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+        return cv2.morphologyEx(best, cv2.MORPH_CLOSE, kernel)
+    edges = cv2.Canny(cv2.GaussianBlur(gray, (0, 0), 1.0), 50, 150)
+    return cv2.morphologyEx(
+        edges, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    )
+
+
+def _approximate_contour(
+    contour: np.ndarray,
+    epsilon: float,
+    max_points: int = MAX_POLYGON_POINTS,
+) -> List[Tuple[int, int]]:
+    """Approximate a contour while keeping the persisted polygon bounded."""
+    if float(cv2.arcLength(contour, True)) <= 0.0:
+        return []
+    current_epsilon = max(0.25, float(epsilon))
+    approximation = cv2.approxPolyDP(contour, current_epsilon, True)
+    while len(approximation) > max_points:
+        current_epsilon *= 1.35
+        approximation = cv2.approxPolyDP(contour, current_epsilon, True)
+    return [
+        (int(x), int(y))
+        for x, y in np.asarray(approximation, dtype=np.int32).reshape(-1, 2).tolist()
+    ]
+
+
+def _bounded_polygon_points(
+    points: Sequence[Tuple[Any, Any]], max_points: int = MAX_POLYGON_POINTS
+) -> List[Tuple[int, int]]:
+    """Reduce a smoothed polygon only when it exceeds the storage contract."""
+    if len(points) <= max_points:
+        return [(int(round(x)), int(round(y))) for x, y in points]
+    array = np.asarray(points, dtype=np.float32).reshape(-1, 1, 2)
+    return _approximate_contour(array, max(0.25, len(points) / max_points))
 
 
 def _validate_contours(contours: Sequence[np.ndarray]) -> None:
@@ -139,13 +255,15 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
     if not isinstance(image, np.ndarray):
         raise TypeError("image must be a numpy.ndarray")
     _validate_detection_image(image)
-    if mode not in ["basic", "perfect", "enhanced"]:
+    if mode not in ["basic", "perfect", "enhanced", "grabcut"]:
         raise ValueError(f"Unknown mode: {mode}")
     try:
         if mode == "basic":
             result = _detect_polygons_basic(image, **kwargs)
         elif mode == "perfect":
             result = _detect_polygons_perfect(image, **kwargs)
+        elif mode == "grabcut":
+            result, segmentation_feedback = _detect_polygons_grabcut(image, **kwargs)
         else:
             result = _detect_polygons_enhanced(image, **kwargs)
 
@@ -155,10 +273,95 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
             "mode": mode,
             "polygon_count": len(result),
         }
+        if mode == "grabcut":
+            feedback["segmentation"] = segmentation_feedback
         return DetectResult(result, feedback)
     except Exception as e:
         logger.error(f"Error in detect_polygons: {e}")
         raise
+
+
+def _detect_polygons_grabcut(
+    image: np.ndarray, **kwargs: Any
+) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Detect one ROI foreground using the real OpenCV GrabCut algorithm."""
+    roi = kwargs.get("roi")
+    if roi is None:
+        raise ValueError("grabcut detection requires an roi=(x, y, width, height)")
+    segmentation = segment_grabcut(
+        image,
+        roi,
+        iterations=int(kwargs.get("grabcut_iterations", 5)),
+        padding=int(kwargs.get("roi_padding", 2)),
+        keep_components=str(kwargs.get("keep_components", "largest")),
+    )
+    min_area = float(kwargs.get("min_area", 100.0))
+    epsilon = float(kwargs.get("rdp_epsilon", 1.5))
+    include_holes = bool(kwargs.get("detect_holes", True))
+    contours, hierarchy = mask_contours(segmentation.mask, include_holes=include_holes)
+    _validate_contours(contours)
+    polygons: List[Dict[str, Any]] = []
+    for index, contour in enumerate(contours):
+        parent = (
+            int(hierarchy[0][index][3])
+            if hierarchy is not None and index < len(hierarchy[0])
+            else -1
+        )
+        if parent != -1:
+            continue
+        area = float(cv2.contourArea(contour))
+        if area < min_area:
+            continue
+        outer = _approximate_contour(contour, epsilon)
+        if len(outer) < 3:
+            continue
+        holes: List[List[Tuple[int, int]]] = []
+        child = (
+            int(hierarchy[0][index][2])
+            if hierarchy is not None and index < len(hierarchy[0])
+            else -1
+        )
+        while child != -1:
+            hole_contour = contours[child]
+            if cv2.contourArea(hole_contour) >= min_area:
+                hole = _approximate_contour(hole_contour, epsilon)
+                if len(hole) >= 3:
+                    holes.append(hole)
+            child = int(hierarchy[0][child][0]) if hierarchy is not None else -1
+        x, y, width, height = cv2.boundingRect(contour)
+        perimeter = cv2.arcLength(contour, True)
+        convex_hull_area = cv2.contourArea(cv2.convexHull(contour))
+        record: Dict[str, Any] = {
+            "polygon": outer,
+            "area": area,
+            "bbox": (x, y, width, height),
+            "is_hole": False,
+            "holes": holes,
+            "quality_metrics": {
+                "vertex_count": len(outer),
+                "hole_count": len(holes),
+                "foreground_ratio": segmentation.foreground_ratio,
+                "circularity": (
+                    float(4.0 * math.pi * area / (perimeter * perimeter))
+                    if perimeter > 0.0
+                    else 0.0
+                ),
+                "convexity": (
+                    float(area / convex_hull_area) if convex_hull_area > 0.0 else 0.0
+                ),
+                "perimeter": float(perimeter),
+            },
+        }
+        polygons.append(record)
+    _validate_detection_result(polygons)
+    return polygons, {
+        "roi": segmentation.roi,
+        "foreground_pixels": segmentation.foreground_pixels,
+        "foreground_ratio": segmentation.foreground_ratio,
+        "components": segmentation.components,
+        "iterations": segmentation.iterations,
+        "hole_contours_preserved": include_holes,
+    }
 
 
 def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, Any]]:
@@ -169,16 +372,14 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
     rdp_epsilon = float(kwargs.get("rdp_epsilon", 2.0))
     min_area = float(kwargs.get("min_area", 100.0))
 
-    if len(image.shape) == 3:
-        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-    else:
-        gray = image.copy()
-
-    gray = _resize_grayscale(gray, downscale)
-
-    blurred = cv2.GaussianBlur(gray, (0, 0), sigmaX=1.0)
-    edges = cv2.Canny(blurred, canny_threshold1, canny_threshold2)
-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    gray = _to_uint8_grayscale(image)
+    source_mask = _foreground_mask(image, gray)
+    mask = _resize_grayscale(source_mask, downscale)
+    if np.count_nonzero(mask) == 0:
+        gray = _resize_grayscale(gray, downscale)
+        blurred = cv2.GaussianBlur(gray, (0, 0), sigmaX=1.0)
+        mask = cv2.Canny(blurred, canny_threshold1, canny_threshold2)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     _validate_contours(contours)
 
     detected_polygons = []
@@ -247,6 +448,9 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
     min_area = float(kwargs.get("min_area", 100.0))
     decompose_convex = bool(kwargs.get("decompose_convex", False))
     watershed_distance = int(kwargs.get("watershed_distance", 10))
+    separate_touching = bool(
+        kwargs.get("separate_touching", "watershed_distance" in kwargs)
+    )
     fg_bg_threshold = int(kwargs.get("fg_bg_threshold", 200))
     mean_threshold = int(kwargs.get("mean_threshold", 150))
 
@@ -280,7 +484,7 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
     mask = close_small_gaps(mask, kernel_size=3)
 
     separated_mask: np.ndarray
-    if not small_image:
+    if not small_image and separate_touching:
         if has_clear_fg_bg:
             watershed_distance = max(1, watershed_distance // 2)
 
@@ -347,6 +551,13 @@ def _detect_polygons_perfect(image: np.ndarray, **kwargs: Any) -> List[Dict[str,
                 curvature_factor=curvature_factor,
             )
 
+            # Curvature simplification can collapse a smooth arc to a few
+            # vertices. Refine only those cases; polygon storage remains bounded.
+            if len(simplified_points_int) <= 4 and len(contour) > 40:
+                refined = _approximate_contour(contour, max(0.35, base_eps * 0.35))
+                if len(refined) > len(simplified_points_int):
+                    simplified_points_int = refined
+            simplified_points_int = _bounded_polygon_points(simplified_points_int)
         if len(simplified_points_int) < 3:
             continue
 
@@ -448,28 +659,39 @@ def _detect_polygons_enhanced(image: np.ndarray, **kwargs: Any) -> List[Dict[str
         )
         is_hole = detect_holes and hier_info[3] != -1
 
-        if len(contour) > MAX_POLYGON_POINTS:
-            raise ValueError(
-                f"detected polygon exceeds the point limit of {MAX_POLYGON_POINTS}"
-            )
-
-        points_float = [
+        raw_points = [
             (float(x), float(y))
             for x, y in np.asarray(contour, dtype=np.float32).reshape(-1, 2).tolist()
         ]
+        if len(raw_points) > MAX_POLYGON_POINTS:
+            unique_points = {point for point in raw_points}
+            if len(unique_points) < 3 or cv2.arcLength(contour, True) <= 0:
+                raise ValueError(
+                    f"detected polygon exceeds the point limit of {MAX_POLYGON_POINTS}"
+                )
+            epsilon = max(
+                0.35,
+                float(kwargs.get("rdp_epsilon", 1.0)),
+                cv2.arcLength(contour, True) / (MAX_POLYGON_POINTS * 2.0),
+            )
+            polygon_points_int = _approximate_contour(contour, epsilon)
+        else:
+            polygon_points_int = [
+                (int(round(px)), int(round(py))) for px, py in raw_points
+            ]
 
+        points_float = [(float(px), float(py)) for px, py in polygon_points_int]
         if chaikin_iterations > 0:
             points_float = chaikin_smooth(points_float, iterations=chaikin_iterations)
+            polygon_points_int = _bounded_polygon_points(points_float)
+            points_float = [(float(px), float(py)) for px, py in polygon_points_int]
 
-        polygon_points_float: List[Tuple[float, float]] = points_float
         bezier_segments = None
         if fit_bezier:
             try:
                 bezier_segments = catmull_rom_to_beziers(points_float, closed=True)
             except Exception:
                 pass
-
-        polygon_points_int = [(int(px), int(py)) for px, py in polygon_points_float]
 
         if len(polygon_points_int) < 3:
             continue

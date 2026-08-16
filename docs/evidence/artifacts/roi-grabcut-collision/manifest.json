@@ -1,0 +1,65 @@
+{
+  "collision_parts": 4,
+  "detection_feedback": {
+    "message": "Detected 1 polygons in mode grabcut",
+    "mode": "grabcut",
+    "polygon_count": 1,
+    "segmentation": {
+      "components": 1,
+      "foreground_pixels": 21355,
+      "foreground_ratio": 0.27805989583333335,
+      "hole_contours_preserved": true,
+      "iterations": 5,
+      "roi": [
+        48,
+        33,
+        219,
+        174
+      ]
+    },
+    "status": "ok"
+  },
+  "files": {
+    "collision-compound-normalized.json": {
+      "bytes": 1960,
+      "sha256": "282ff00f02df4277435c574a03b969150bad1152ac3b8cbfcfd4d60dc3697edb"
+    },
+    "detected-compound.ndtproj": {
+      "bytes": 2393,
+      "sha256": "1af3e674a0d28e28f4a969416601c3325afa29abbe9e974bde58e4ef5a72e7ef"
+    },
+    "grabcut-mask.png": {
+      "bytes": 966,
+      "sha256": "e86c2105f17f8592005e1dacde0fbbc4ba9e38248dc608f94e330553b1959cad"
+    },
+    "mask-viewer-roi-xray.png": {
+      "bytes": 11651,
+      "sha256": "43930cc9fd8a770ea289a4fb8a4dc1397ca0086712c068147cb685ce56f9b88e"
+    },
+    "source.png": {
+      "bytes": 6948,
+      "sha256": "4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18"
+    }
+  },
+  "generator": "tools/generate_roi_collision_artifacts.py",
+  "grabcut": {
+    "components": 1,
+    "foreground_pixels": 21355,
+    "foreground_ratio": 0.27805989583333335,
+    "iterations": 5
+  },
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "roi": [
+    50,
+    35,
+    215,
+    170
+  ],
+  "schema_version": 1,
+  "source_shape": [
+    240,
+    320,
+    3
+  ]
+}

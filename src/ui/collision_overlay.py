@@ -43,6 +43,7 @@ class CollisionOverlay:
         painter.scale(zoom, zoom)
 
         self._draw_collision_shapes(painter, zoom)
+        self._draw_compound_parts(painter)
         self._draw_collision_indicators(painter)
 
         painter.restore()
@@ -89,6 +90,25 @@ class CollisionOverlay:
                 painter.drawText(
                     QPointF(label_x + offset, label_y - offset), str(shape_id)[:8]
                 )
+
+    def _draw_compound_parts(self, painter: QPainter):
+        """Draw the actual convex pieces generated for compound colliders."""
+        for shape_id, parts in getattr(self.scene, "collision_parts", {}).items():
+            color = self._get_shape_color(shape_id)
+            pen = QPen(color.darker(150), 2)
+            pen.setCosmetic(True)
+            painter.setPen(pen)
+            painter.setBrush(QBrush(color))
+            for part in parts:
+                if len(part) < 3:
+                    continue
+                points = [QPointF(x, y) for x, y in part]
+                painter.drawPolygon(points)
+                outline_pen = QPen(QColor(0, 0, 0), 1)
+                outline_pen.setCosmetic(True)
+                painter.setPen(outline_pen)
+                painter.setBrush(QBrush())
+                painter.drawPolygon(points)
 
     def _draw_collision_indicators(self, painter: QPainter):
         for result in self.collision_results:
@@ -137,6 +157,8 @@ class CollisionOverlay:
 
     def _get_shape_center(self, shape_id: str) -> Optional[Tuple[float, float]]:
         shape = self.scene.collision_shapes.get(shape_id)
+        if not shape and "#part" in shape_id:
+            shape = self.scene.collision_shapes.get(shape_id.split("#part", 1)[0])
         if not shape:
             return None
         sum_x = sum(x for x, y in shape)
