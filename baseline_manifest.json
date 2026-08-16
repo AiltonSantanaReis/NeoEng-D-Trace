@@ -241,8 +241,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "4cfa3ce627b3d728b2c2b388577ba7aec5c78606bb10820ccef9344969c20fb0",
-      "size": 4064
+      "sha256": "6acde89a307cb270a8fcf6a842b1fb8245df9865e2c0b316d415d02562af937a",
+      "size": 4346
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -559,6 +559,10 @@
     "docs/evidence/ETAPA_6_EXPORTACAO_COLISOES.md": {
       "sha256": "5411a4dda34768e06327fab8f854aff49390d4dc0362d0b1e9b132bd2179847d",
       "size": 4897
+    },
+    "docs/evidence/ETAPA_6_IMPORTACAO_UNITY_2026-08-16.md": {
+      "sha256": "d5f7cb0f63e662d239d216d0af0cef0937fdfb71721ee1d56c62e0ed3616ed64",
+      "size": 4327
     },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
@@ -1552,6 +1556,30 @@
       "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
       "size": 10112
     },
+    "docs/evidence/artifacts/unity-import-stage6-2026-08-16/fixture-manifest.json": {
+      "sha256": "fc7fccc0fa3e4d9dde2f495ad64ec043b9950355c6657b53533e0e4357dc593b",
+      "size": 2073
+    },
+    "docs/evidence/artifacts/unity-import-stage6-2026-08-16/stage6-index.json": {
+      "sha256": "ef4f1737b32e03b246ef54ce749cf21337ab55ca329e585488c2f2fdcf2a10ea",
+      "size": 1929
+    },
+    "docs/evidence/artifacts/unity-import-stage6-2026-08-16/stage6-report-negative-hash.json": {
+      "sha256": "8f20aee8ca09dd89ecd4188b3d8be29510ec0bfc9bbfdfc2eab5a469a9ff6a37",
+      "size": 245
+    },
+    "docs/evidence/artifacts/unity-import-stage6-2026-08-16/stage6-report-negative-manual.json": {
+      "sha256": "a579aa6b1078440fec8bd55666f84e9d5593b02bf52a363fcc4c2fe7d82bc7ec",
+      "size": 264
+    },
+    "docs/evidence/artifacts/unity-import-stage6-2026-08-16/stage6-report-repeat.json": {
+      "sha256": "4081714226afbd5b75d34a1c0e929bba2ee4f849a7b2c0968f223f1ca398ecf1",
+      "size": 541
+    },
+    "docs/evidence/artifacts/unity-import-stage6-2026-08-16/stage6-report.json": {
+      "sha256": "812635fd28852360395dafabc08e9881ae25bf18344975dd53c2eab79137baac",
+      "size": 1744
+    },
     "docs/evidence/artifacts/unity-package-stage5-2026-08-16/package.json": {
       "sha256": "b0dc398b9b514b04a2a4938b91d931bcfb40c8fd5564b16ff307204f3125c398",
       "size": 361
@@ -1652,9 +1680,17 @@
       "sha256": "b7f4a60f0ba46a8cd7108fd4fd2ac8881e503e1c99d484a6146583a5ff80ada9",
       "size": 59
     },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
+      "sha256": "6ef6c45edc0a28eff55285a420ab037f2e1505417b88e283b9a0396cf9a76809",
+      "size": 20064
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
+      "sha256": "c0cf44a9905072c973382ea3014d9bcdae7fe51206ffb20b45414434332be48f",
+      "size": 59
+    },
     "integrations/unity/package/com.neoeng.dtrace/README.md": {
-      "sha256": "f02c1f592261371847887b9596a64f56119b24aaf3837ee9a374db1cee79185e",
-      "size": 1584
+      "sha256": "6d9492d40e2c599b68d90305d461108e151fbbde77bddf6d81bf038808966f5d",
+      "size": 2059
     },
     "integrations/unity/package/com.neoeng.dtrace/README.md.meta": {
       "sha256": "7416d6a6f3c773700293d3c604792863f3fd5631d23590d157e4a9b01a8cc478",
@@ -1671,6 +1707,22 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngDTrace.Runtime.asmdef.meta": {
       "sha256": "965a471edbcb185e5e80ad95c833b8f5af6dd1d517f684b81ca7db21f5a4792b",
       "size": 166
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngGeneratedMarker.cs": {
+      "sha256": "060c5ae17fcafaf7984a5900369bd67dedf7a615ae3e12cdbd5252cbc733fdb3",
+      "size": 228
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngGeneratedMarker.cs.meta": {
+      "sha256": "3e593522f1fe8ad2a562c2811d960977c3e87723ee3be80bcfd2e1413d77e92b",
+      "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedSpriteMetadata.cs": {
+      "sha256": "12548536cad24c5f64d3120e5219a2b141998d7003beef1bfa713c18ce0cdf77",
+      "size": 668
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedSpriteMetadata.cs.meta": {
+      "sha256": "faa868432569af6f64697770b6ba6745efe344d23d5fc9f3a0b5b096fd33726d",
+      "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs": {
       "sha256": "db22d3a220054d9fe4a73499cd32ac5eeb202b3f3dcb0fcfd00219a01a1acc57",
@@ -1883,6 +1935,10 @@
     "scripts/audit_ui_capture.py": {
       "sha256": "fd3c05d25500b84b6a405cacde044a2a1fd997991b3308c48563629afdb42efb",
       "size": 9995
+    },
+    "scripts/audit_unity_import_stage6.py": {
+      "sha256": "225921b33757c7efbbf6dc03686b0f3274db5d89dc6442e16e417618f634ce7a",
+      "size": 13006
     },
     "scripts/audit_unity_package_stage5.py": {
       "sha256": "f6ccdabb56e7676151fbd1810b24ce564801de5c7fbba1732a3581e425e8b4e1",
@@ -2631,6 +2687,10 @@
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",
       "size": 3412
+    },
+    "tests/test_unity_import_scaffold.py": {
+      "sha256": "344094ee3e45fb4943acfc7923b4862c18037494bd949d305bbabf9e2fa9af7e",
+      "size": 1217
     },
     "tests/test_unity_package_scaffold.py": {
       "sha256": "0e69f81dfe34bee33f4cfab23633640ce65dec8e3c46551f7ade5e0891736d27",

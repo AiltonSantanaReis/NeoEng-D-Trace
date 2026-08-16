@@ -5,7 +5,7 @@ pacote UPM local ou Git e contém somente fontes C#, assemblies `.asmdef`,
 metadados e documentação. Não contém DLLs, executáveis, bibliotecas nativas,
 download automático ou dependência de marketplace.
 
-## Escopo aprovado nesta etapa
+## Escopo aprovado na Etapa 5
 
 - identidade estável `com.neoeng.dtrace`, versão `0.2.0`;
 - assembly Runtime com o contrato comum de manifesto;
@@ -14,8 +14,17 @@ download automático ou dependência de marketplace.
 - verificação de resolução UPM, versão, assemblies, contrato e política
   source-only.
 
-A importação de `Sprite`, `ScriptableObject`, `PolygonCollider2D` e prefabs
-pertence à Etapa 6 e não é declarada implementada por este pacote.
+## Importação da Etapa 6
+
+O pacote também contém o importador Unity da Etapa 6. Ele lê manifestos Unity
+válidos em `Assets`, cria `Sprite`, `NeoEngImportedSpriteMetadata`,
+`PolygonCollider2D` e prefabs controlados em `Assets/NeoEngGenerated`, e valida
+os recursos gerados por APIs do Unity Editor. O importador confere o hash da
+imagem, rejeita caminhos inseguros, bloqueia conteúdo manual no diretório
+gerado e falha fechado para manifestos inválidos.
+
+Sincronização incremental por hash, overrides e rollback permanecem nas etapas
+posteriores; esta etapa não declara essas capacidades.
 
 ## Instalação local
 
@@ -27,7 +36,7 @@ local para este diretório:
 ```
 
 Também é possível referenciar o diretório do pacote por Git. A instalação real
-e o diagnóstico batch são reproduzidos pelo harness da Etapa 5 e registrados
+o diagnóstico batch e a importação são reproduzidos pelos harnesses das etapas 5 e 6 e registrados
 em `docs/evidence`.
 
 ## Diagnóstico
