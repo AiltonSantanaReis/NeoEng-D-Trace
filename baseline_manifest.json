@@ -233,16 +233,16 @@
       "size": 6112
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "0bbc58297f5e6e18b865dc3164607831c3358a37e3e3af46a69d66c99df55a69",
-      "size": 17777
+      "sha256": "484e79e02682ed52ec900d5fe669e16a0c608b093525c1e857ee4d380a404dc1",
+      "size": 17827
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "7299f4ac12913396bbeb9380ac55916046b866e2aaa293f7f039e194c9c35411",
-      "size": 3390
+      "sha256": "45faf11a7a6f0a90d54e75777f80af41210b3e2f9074016a047fdbcc1e3717e1",
+      "size": 3485
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -468,6 +468,10 @@
       "sha256": "fb9c7fce556c6d4569a7df76561ad66729bdf48c43b73dbfd096539bd4b6df64",
       "size": 7005
     },
+    "docs/evidence/ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md": {
+      "sha256": "01e0436feac7464283d5e2b628f410c0a91fbe1d70c2c11edc955f76d78351db",
+      "size": 6315
+    },
     "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
       "size": 7651
@@ -609,8 +613,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "e61201cbea791fa4c72bfac9cd8a45a27fb3e47030d4a13fd371d46128cd6797",
-      "size": 26295
+      "sha256": "f4d789af0c83818ded0e38d8662f4d6848acf0b72939c1271a7f33b6b2e567ce",
+      "size": 26522
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -1204,6 +1208,22 @@
       "sha256": "3d47611f92e50a6fa1bdc5ead913703dc9745ef01157dfa44e83a18f65705474",
       "size": 1136
     },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/neoeng-d-trace-godot-stage3.zip": {
+      "sha256": "195461b99279b8d3516247a2635a9dc0c89263d394f71873beb846a483b00dc9",
+      "size": 3524
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/stage3-index.json": {
+      "sha256": "65fb7f8dceffe3d805a469a4954b7d3e92f50a598f905273e6f04d142510b034",
+      "size": 1431
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/stage3-report.json": {
+      "sha256": "1f84f236adbb982ffa6016fc027b4e110a5e3f4473d652c83fd37e5d9585a436",
+      "size": 3565
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/stage3-zip-report.json": {
+      "sha256": "bb1acacad12938046167364e9360d5d1bf12729f215f90e5319f12db921c7033",
+      "size": 3562
+    },
     "docs/evidence/artifacts/integration-manifest/artifact-index.json": {
       "sha256": "4428b88a393205dd0027f321e57904734ad90dd54af8a77827e6f204c2827887",
       "size": 504
@@ -1492,6 +1512,22 @@
       "sha256": "3e5276c322dec60e41b62b0b306eec6a54a3ec14889b1584d856f9f36ef84912",
       "size": 3323
     },
+    "integrations/godot/addons/neoeng_d_trace/README.md": {
+      "sha256": "ce4e1128c073b55540b2878f5fbb9227d785072c4ac5e5b55810fe980d069a5b",
+      "size": 953
+    },
+    "integrations/godot/addons/neoeng_d_trace/manifest_diagnostic.gd": {
+      "sha256": "afe17bae4547d35387b4171aa749ba509294ba10730df8f07937540e18fa0a26",
+      "size": 5999
+    },
+    "integrations/godot/addons/neoeng_d_trace/plugin.cfg": {
+      "sha256": "2c36178f1eba7b3522710e4e8e1e895110adba8c0ae87a54152f1a4369ca6a05",
+      "size": 177
+    },
+    "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
+      "sha256": "040afd81a789eb5d741af8f52b039fff10023ea34ea63b0bb90e44223c5fb059",
+      "size": 835
+    },
     "mypy.ini": {
       "sha256": "2c2c8584c401859cba04a7435c908845c3eb3bd61dbf99e6f3d0c4e5e97225e0",
       "size": 560
@@ -1672,6 +1708,10 @@
       "sha256": "371da2b8448b00944979589087dffd9008f144c920394d5779718ca90630ced3",
       "size": 6798
     },
+    "scripts/audit_godot_plugin_stage3.py": {
+      "sha256": "db169c1fbd661c702ab679c52b15952af704de6a9928363bda1f6c8259a350f1",
+      "size": 5522
+    },
     "scripts/audit_integration_manifest.py": {
       "sha256": "82b377304813285623667649507b96500a04db885fd121ae159999e0fc5a17d7",
       "size": 2010
@@ -1687,6 +1727,10 @@
     "scripts/build_windows.ps1": {
       "sha256": "8f8c4b3608033c2fdd708f381dc39b32342545e704294df17f0c738d4aca464d",
       "size": 2641
+    },
+    "scripts/package_godot_plugin.py": {
+      "sha256": "a4713410b840476cff869422584ec83252ca936c9fb1baf0c80ffad747e6a08e",
+      "size": 1382
     },
     "src/__init__.py": {
       "sha256": "0025aeb81a4d66e83dfd6f962595b5d7ec282a550a004523a49a2d891676c2a2",
@@ -2136,6 +2180,10 @@
       "sha256": "9afaac660d0401e70262fa00485abeae6b43be6db71579d892251cfc108c51fd",
       "size": 16939
     },
+    "tests/test_godot_plugin_scaffold.py": {
+      "sha256": "63ccf36db30aff8fe894590358c02bd26937694464ed9020fd1a10313cefb9e4",
+      "size": 1911
+    },
     "tests/test_grabcut_pipeline.py": {
       "sha256": "bb381958a30b534e2a79ba99acf60d59f23d0149677b13ecd095675f0e575c47",
       "size": 21450
@@ -2447,6 +2495,10 @@
     "tools/godot_engine_validator.gd": {
       "sha256": "53d14e95be4c58bf39f8a2c3c958c5f6159dc1c4ea1f06c19f5ee3f226f04a66",
       "size": 2272
+    },
+    "tools/godot_plugin_stage3_validator.gd": {
+      "sha256": "f99e001ac09904f3871e867da661a485604e69589686bafdbd9d7f9af2d93c5e",
+      "size": 1618
     },
     "tools/package_portable_release.py": {
       "sha256": "732206adbc953f83c6e16f9ea2e7274c3d7e2fdd12a94960e78796962808dce5",
