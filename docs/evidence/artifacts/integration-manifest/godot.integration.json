@@ -1,0 +1,106 @@
+{
+  "engine": "godot",
+  "format_id": "neoeng-d-trace-engine-integration",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.2.0"
+  },
+  "metadata": {
+    "format_id": "neoeng-d-trace-scene-metadata",
+    "groups": [],
+    "layers": [
+      {
+        "id": "layer_default",
+        "locked": false,
+        "name": "Default",
+        "visible": true
+      }
+    ],
+    "profile": "generic",
+    "schema_version": 1,
+    "sprites": [
+      {
+        "collision": null,
+        "group": null,
+        "id": "hero",
+        "layer": "layer_default",
+        "padding": 4,
+        "pivot": {
+          "x": 7.0,
+          "y": 4.0
+        },
+        "pivot_normalized": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "polygon_in_image": [
+          [
+            1,
+            2
+          ],
+          [
+            15,
+            2
+          ],
+          [
+            15,
+            10
+          ],
+          [
+            1,
+            10
+          ]
+        ],
+        "polygon_in_sprite": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            14.0,
+            0.0
+          ],
+          [
+            14.0,
+            8.0
+          ],
+          [
+            0.0,
+            8.0
+          ]
+        ],
+        "rect": {
+          "h": 8.0,
+          "w": 14.0,
+          "x": 1.0,
+          "y": 2.0
+        },
+        "rect_trimmed": {
+          "h": 8.0,
+          "w": 14.0,
+          "x": 0.0,
+          "y": 0.0
+        },
+        "trimmed": true
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "image": {
+      "path": "source.png",
+      "sha256": "33b2adecef77add7cad5d25d50dfbea47acf84250d0d578807a97d3768fed416"
+    },
+    "metadata": {
+      "format_id": "neoeng-d-trace-scene-metadata",
+      "schema_version": 1,
+      "sha256": "2b8f5247344d1a7e3086f08b162f6f26f88135a96d50f8c4cff0a128c9f0cbf0"
+    }
+  },
+  "sync": {
+    "destructive_update": false,
+    "direction": "dtrace-to-engine",
+    "generated_root": "NeoEngGenerated",
+    "override_suffix": ".ndt.override.json"
+  }
+}
