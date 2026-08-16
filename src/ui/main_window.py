@@ -11,7 +11,6 @@ from PySide6.QtWidgets import (
     QMenu,
     QMessageBox,
     QPushButton,
-    QSplitter,
     QToolBar,
 )
 
@@ -45,6 +44,7 @@ from src.ui.groups_panel import GroupsPanel
 from src.ui.layers_panel import LayersPanel
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
+from src.ui.responsive_layout import build_responsive_layout
 
 # Imports dos componentes da UI
 from src.ui.side_panel import SidePanel
@@ -211,6 +211,10 @@ class MainWindow(QMainWindow):
         self.export_collision_button = QPushButton("Export Collision", self)
         self.export_collision_button.setMenu(export_menu)
         self.toolbar.addWidget(self.export_collision_button)
+        self.file_menu.addSeparator()
+        self.file_menu.addAction(self.act_export)
+        self.file_menu.addAction(self.act_export_collision_json)
+        self.file_menu.addAction(self.act_export_collision_txt)
         # 3. Componentes Centrais
         self.canvas = CanvasView(scene)
         self.tool_palette = ToolPalette(self.canvas)
@@ -308,28 +312,7 @@ class MainWindow(QMainWindow):
         self.nav_toolbar.addWidget(self.language_button)
         self.language_button.clicked.connect(self.show_language_menu)
 
-        # 6. Layout Principal (QSplitter para painéis redimensionáveis)
-        # Esquerda: Ferramentas | Centro: Canvas | Direita: Propriedades/Colisão
-        splitter = QSplitter(Qt.Orientation.Horizontal)
-        splitter.addWidget(self.tool_palette)
-        splitter.addWidget(self.canvas)
-
-        # Painel Direito (Dividido Verticalmente)
-        right_splitter = QSplitter(Qt.Orientation.Vertical)
-        right_splitter.addWidget(self.side_panel)
-        right_splitter.addWidget(self.layers)
-        right_splitter.addWidget(self.groups)
-
-        splitter.addWidget(right_splitter)
-        splitter.addWidget(self.collision_panel)
-
-        # Define tamanhos iniciais para boa ergonomia
-        # Collision panel começa colapsado (tamanho 0)
-        splitter.setSizes([self.tool_palette.recommended_width(), 800, 250, 0])
-        splitter.setStretchFactor(1, 1)  # Canvas estica
-
-        self.setCentralWidget(splitter)
-
+        self._responsive_layout = build_responsive_layout(self)
         # 7. Atalhos Globais
         self._setup_shortcuts()
 
@@ -342,6 +325,13 @@ class MainWindow(QMainWindow):
         self._mark_document_clean()
         if self._autosave_store is not None:
             self.enable_autosave(self._autosave_store)
+
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        self._responsive_layout.update()
+
+    def _update_compact_panel_titles(self, translations) -> None:
+        self._responsive_layout.update_titles(translations)
 
     def enable_autosave(self, store: AutosaveStore) -> None:
         if self._autosave_coordinator is not None:
@@ -580,6 +570,7 @@ class MainWindow(QMainWindow):
         self.act_clean.setText(t["clean_all"])
         self.focus_button.setText(t["focus_selected"])
         self.language_button.setText(t["language"])
+        self._update_compact_panel_titles(t)
         if hasattr(self, "act_english"):
             self.act_english.setText(t["english"])
         if hasattr(self, "act_portuguese"):

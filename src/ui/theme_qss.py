@@ -8,7 +8,7 @@ QSS = """
 QWidget {
     background-color: #1e1e1e;
     color: #e6e6e6;
-    font-family: 'Segoe UI', Tahoma, Sans-Serif;
+    font-family: Arial, 'Segoe UI', Tahoma, Sans-Serif;
     selection-background-color: #2a6f97;
     selection-color: white;
 }
