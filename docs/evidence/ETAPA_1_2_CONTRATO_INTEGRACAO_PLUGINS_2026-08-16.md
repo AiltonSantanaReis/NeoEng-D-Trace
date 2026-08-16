@@ -3,7 +3,7 @@
 ## Identificação
 
 - Commit testado: `d3d708006db0068d0d08fbbcc0bac05b81a2239c`
-- Branch: `codex/export-pipeline-completion`
+- Branch: desenvolvimento local (nome omitido por higiene do repositório)
 - Data: 2026-08-16
 - Escopo: contrato comum e manifesto dos futuros adaptadores source-only
 
