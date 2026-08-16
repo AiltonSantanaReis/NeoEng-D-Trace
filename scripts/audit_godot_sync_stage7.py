@@ -6,7 +6,6 @@ from scripts.audit_godot_plugin_stage4 import _prepare
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "evidence" / "artifacts" / "godot-sync-stage7-2026-08-16"
-GODOT = Path(r"C:/Users/atnco/Downloads/Godot_v4.7-stable_win64.exe/Godot_v4.7-stable_win64_console.exe")
 VALIDATOR_NAME = "validate_stage7.gd"
 VALIDATOR = r'''extends SceneTree
 
@@ -102,9 +101,22 @@ def digest(path: Path) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--executable", type=Path, default=GODOT)
+    parser.add_argument("--executable", type=Path)
     args = parser.parse_args()
-    if not args.executable.is_file():
+    executable = args.executable
+    if executable is None:
+        configured = os.environ.get("NEOENG_GODOT_EXECUTABLE")
+        executable = Path(configured) if configured else None
+    if executable is None:
+        executable = next(
+            (
+                Path(candidate)
+                for candidate in ("godot", "godot4", "godot_console")
+                if shutil.which(candidate)
+            ),
+            None,
+        )
+    if executable is None or (not executable.is_file() and not shutil.which(str(executable))):
         raise RuntimeError("Godot console executable was not found")
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -116,25 +128,25 @@ def main() -> int:
         workspace.mkdir()
         fixture = _prepare(workspace)
         (workspace / VALIDATOR_NAME).write_text(VALIDATOR, encoding="utf-8")
-        pre = run(args.executable, ["--headless", "--editor", "--path", str(workspace), "--import", "--quit-after", "5"], temp)
+        pre = run(executable, ["--headless", "--editor", "--path", str(workspace), "--import", "--quit-after", "5"], temp)
         runs.append(pre)
         if not pre["success"]:
             raise RuntimeError("Godot asset pre-import failed")
         script_args = ["--headless", "--path", str(workspace), "--script", VALIDATOR_NAME, "--quit-after", "5"]
         for mode in ("initial", "repeat"):
-            item = run(args.executable, script_args, temp, mode)
+            item = run(executable, script_args, temp, mode)
             runs.append(item)
             if not item["success"]:
                 raise RuntimeError(f"Godot stage7 mode failed: {mode} | {item}")
         override_path = workspace / "NeoEngGenerated" / "hero.ndt.override.json"
         override_path.write_text(json.dumps({"schema_version": 1, "object_id": "hero", "polygon_in_sprite": [[1, 1], [15, 1], [15, 11], [1, 11]]}, indent=2) + "\n", encoding="utf-8")
         for mode in ("override", "override-repeat", "manual", "confirmed"):
-            item = run(args.executable, script_args, temp, mode)
+            item = run(executable, script_args, temp, mode)
             runs.append(item)
             if not item["success"]:
                 raise RuntimeError(f"Godot stage7 mode failed: {mode} | {item}")
         fixture["image"].write_bytes(fixture["image"].read_bytes() + b"stage7-drift")
-        item = run(args.executable, script_args, temp, "hash-drift")
+        item = run(executable, script_args, temp, "hash-drift")
         runs.append(item)
         if not item["success"]:
             raise RuntimeError("Godot hash drift mode failed")

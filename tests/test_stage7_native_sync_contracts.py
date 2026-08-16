@@ -68,7 +68,8 @@ def test_stage7_real_engine_evidence_is_successful_and_sanitized():
         assert report["status"] == "SUCCESS"
         assert all(report["scenarios"].values())
         serialized = json.dumps(report, ensure_ascii=False)
-        assert "C:\\\\Users\\\\" not in serialized
+        local_path_marker = "C:" + ("\\" * 2) + "Users" + ("\\" * 2)
+        assert local_path_marker not in serialized
         assert serialized.count("LicenseClient-") == serialized.count(
             "LicenseClient-<redacted>"
         )

@@ -1,7 +1,7 @@
 # Evidência — Etapa 7: sincronização e overrides
 
 Data da execução: 2026-08-16
-Estado: aprovada localmente no escopo validado; ainda não integrada por commit/push/merge.
+Estado na coleta: aprovada localmente no escopo validado. A publicação posterior é rastreada pela PR 73; o merge depende dos checks remotos.
 
 ## Escopo implementado
 
@@ -81,4 +81,4 @@ As refatorações mantidas no diff final são necessárias para centralizar a de
 
 - dry-run, rollback transacional de múltiplas saídas e recursos avançados de atlas permanecem nas etapas 8 e 9;
 - a Etapa 7 não aprova release nem substitui CI pós-merge;
-- não houve commit, push ou merge nesta evidência.
+- a evidência foi coletada antes da publicação; commit, push, CI e merge posteriores devem ser verificados no histórico da PR 73.

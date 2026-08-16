@@ -573,8 +573,8 @@
       "size": 3470
     },
     "docs/evidence/ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md": {
-      "sha256": "3e26a5f9068076b9945b63f1028831b5ab36b1e3cc841839a1d22a8c5f8b8376",
-      "size": 4343
+      "sha256": "171ab13235ae7c9b0365d6cc874177e907a8f5338c3b7a62215dd12fef58ee9f",
+      "size": 4476
     },
     "docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md": {
       "sha256": "6be9d31f44c356280470b44920dc1471a3b9e77caa6468e7f294cd66c7ab284f",
@@ -2005,8 +2005,8 @@
       "size": 8568
     },
     "scripts/audit_godot_sync_stage7.py": {
-      "sha256": "e0c8b660abb2bad90062f9a9b2001754b1f1e0d93bd043b642ed82b7c42e5976",
-      "size": 9055
+      "sha256": "843b43557348c894048d5d6098b1ad4fa74f99ada3f46f0280a14d7f282c6e59",
+      "size": 9412
     },
     "scripts/audit_integration_manifest.py": {
       "sha256": "82b377304813285623667649507b96500a04db885fd121ae159999e0fc5a17d7",
@@ -2581,8 +2581,8 @@
       "size": 1980
     },
     "tests/test_stage7_native_sync_contracts.py": {
-      "sha256": "16d29ce027a9562f0f3fcf8c949a2f4531a86f6f5a231ce710c9208d60fb7c7e",
-      "size": 2213
+      "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
+      "size": 2282
     },
     "tests/test_stage_0_5_2d_ui.py": {
       "sha256": "e3f8323bf29e1fecf34a7e6d29ff1a569ddbc42b77824337e3653a806e3be43d",
