@@ -186,8 +186,11 @@ def test_enhanced_detection_holes_smoothing_bezier_and_downscale():
         chaikin_iterations=1,
         fit_bezier=True,
     )
-    assert len(result) >= 2
-    assert any(item["is_hole"] for item in result)
+    outer = [item for item in result if not item["is_hole"]]
+    holes = [item for item in result if item["is_hole"]]
+    assert len(outer) == 1
+    assert len(holes) == 1
+    assert len(outer[0]["holes"]) == 1
     assert any("bezier_segments" in item for item in result)
 
     scaled = detect_module._detect_polygons_enhanced(

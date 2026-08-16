@@ -1,4 +1,5 @@
 # Evidências de validação
+- `ETAPA_DETECCAO_QUALIDADE_PRE_MERGE_2026-08-16.md` — corpus adversarial real do pipeline OpenCV, métricas de máscara/borda, comparação dos modos, reprodução do limite de 2.000 pontos, benchmark, artefatos hashados e riscos residuais pré-merge.
 - ETAPA_UI_RESPONSIVA_AUDITORIA_2026-08-16.md — auditoria funcional e visual da MainWindow em três resoluções, com artefatos PNG, hashes, mensagem real de validação, gates locais e limitações tipográficas explícitas.
 
 - `ETAPA_ROI_GRABCUT_COLISAO_PRE_MERGE_2026-08-15.md` — pipeline funcional ROI/GrabCut, visualização raio-X, colisão composta, artefatos reais, hashes, gates locais e reconciliação legada; aprovação local pré-merge, sem CI remoto.
