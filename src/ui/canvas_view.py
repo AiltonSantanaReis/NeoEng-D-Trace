@@ -29,6 +29,7 @@ from src.core.commands import (
     ToggleCollisionCommand,
 )
 from src.core.logger import logger
+from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.image_conversion import to_qimage
 
@@ -208,6 +209,8 @@ class CanvasView(QWidget):
 
         self._tool = None
         self._current_polygon = []
+        # Vertex snapping is opt-in so existing pixel coordinates remain unchanged.
+        self._vertex_snap_settings = SnapSettings()
 
         # Estilos de Desenho
         self._pen_poly = QPen(QColor(0, 255, 0), 2)
@@ -395,6 +398,23 @@ class CanvasView(QWidget):
     def _toggle_gizmo(self):
         self._gizmo_enabled = self.gizmo_toggle.isChecked()
         self.update()
+
+    def set_vertex_snapping(
+        self,
+        enabled: bool,
+        grid_size: int = 1,
+        origin: tuple[float, float] = (0.0, 0.0),
+    ) -> None:
+        """Enable pixel/grid snapping for manual vertex edits."""
+
+        self._vertex_snap_settings = SnapSettings(
+            enabled=bool(enabled), grid_size=grid_size, origin=origin
+        )
+
+    def snap_vertex_position(self, position: tuple[float, float]) -> tuple[int, int]:
+        """Apply the current vertex snap settings to an image-space point."""
+
+        return self._vertex_snap_settings.apply(position)
 
     def _distance_to_last_point(self, x: int, y: int) -> float:
         """Calculate distance from (x, y) to the last point in current polygon."""

@@ -1,0 +1,104 @@
+{
+  "format_id": "neoeng-d-trace-scene-metadata",
+  "schema_version": 1,
+  "sprites": [
+    {
+      "schema": "neoeng-d-trace-godot-sprite",
+      "schema_version": 1,
+      "engine": "godot-4",
+      "name": "pivot-object",
+      "coordinate_origin": "top-left",
+      "rect": {
+        "x": 12.0,
+        "y": 10.0,
+        "w": 42.0,
+        "h": 60.0
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 60.0
+      },
+      "offset": {
+        "x": 21.0,
+        "y": -30.0
+      },
+      "polygon": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          42.0,
+          0.0
+        ],
+        [
+          42.0,
+          60.0
+        ],
+        [
+          0.0,
+          60.0
+        ]
+      ],
+      "collision": null
+    },
+    {
+      "schema": "neoeng-d-trace-godot-sprite",
+      "schema_version": 1,
+      "engine": "godot-4",
+      "name": "concave-object",
+      "coordinate_origin": "top-left",
+      "rect": {
+        "x": 80.0,
+        "y": 18.0,
+        "w": 55.0,
+        "h": 64.0
+      },
+      "pivot": {
+        "x": 27.5,
+        "y": 32.0
+      },
+      "offset": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "polygon": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          55.0,
+          0.0
+        ],
+        [
+          55.0,
+          27.0
+        ],
+        [
+          28.0,
+          27.0
+        ],
+        [
+          28.0,
+          64.0
+        ],
+        [
+          0.0,
+          64.0
+        ]
+      ],
+      "collision": null
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer_default",
+      "name": "Default",
+      "visible": true,
+      "locked": false
+    }
+  ],
+  "groups": [],
+  "profile": "godot"
+}

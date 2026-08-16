@@ -1,0 +1,139 @@
+{
+  "captures": {
+    "1080p_FHD": {
+      "actual_capture_size": [
+        3840,
+        2120
+      ],
+      "actual_window_size": [
+        1920,
+        1060
+      ],
+      "files": {
+        "1080p_FHD_01_sem_projeto.png": {
+          "bytes": 107155,
+          "sha256": "76f62cb6ef912a39e4e8de19647174bf49c8af045ccfecb4ced484d41b636cd0"
+        },
+        "1080p_FHD_02_projeto_paineis.png": {
+          "bytes": 134473,
+          "sha256": "325db4801b6ad8644ef6f9eb7191c927f4999f1b410713b0bf27d1cc63715ee5"
+        },
+        "1080p_FHD_03_validacao_janela.png": {
+          "bytes": 134473,
+          "sha256": "325db4801b6ad8644ef6f9eb7191c927f4999f1b410713b0bf27d1cc63715ee5"
+        },
+        "1080p_FHD_03_validacao_modal.png": {
+          "bytes": 9459,
+          "sha256": "69aef71c0f14c738a5c9a2bb01e1f3a8fb6cbd9777adbbbe027c2d28c919b81a"
+        },
+        "1080p_FHD_04_gizmo_feedback.png": {
+          "bytes": 147264,
+          "sha256": "67976e9717fe163162a68c0cb6311edb48aff974218822d86000ccbda2fa16ce"
+        }
+      },
+      "requested_size": [
+        1920,
+        1080
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info"
+      }
+    },
+    "720p_Compacta": {
+      "actual_capture_size": [
+        2560,
+        1440
+      ],
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "720p_Compacta_01_sem_projeto.png": {
+          "bytes": 61556,
+          "sha256": "df5f561e386994c9336007593ead1589a8fc83dfe73317621234bcb41830faa2"
+        },
+        "720p_Compacta_02_projeto_paineis.png": {
+          "bytes": 88082,
+          "sha256": "b48b15db4fd8910bcf33af71c833be38a0d216bb5712938f13cc880ba770dedd"
+        },
+        "720p_Compacta_03_validacao_janela.png": {
+          "bytes": 86176,
+          "sha256": "d39316e570bbac41605e116efe1f4a8b6cd1e295d4ee509e20bad007cda3cfcf"
+        },
+        "720p_Compacta_03_validacao_modal.png": {
+          "bytes": 9459,
+          "sha256": "69aef71c0f14c738a5c9a2bb01e1f3a8fb6cbd9777adbbbe027c2d28c919b81a"
+        },
+        "720p_Compacta_04_gizmo_feedback.png": {
+          "bytes": 99796,
+          "sha256": "3e1ca70bd37593910244d8e8bf5a70444904aa515b1f78aa41a206f27ce584d0"
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info"
+      }
+    },
+    "768p_Minima": {
+      "actual_capture_size": [
+        2732,
+        1536
+      ],
+      "actual_window_size": [
+        1366,
+        768
+      ],
+      "files": {
+        "768p_Minima_01_sem_projeto.png": {
+          "bytes": 64879,
+          "sha256": "61c9d6850df306a9098cf7d4617a8a1cc223504c326c706d3386cf0c18102608"
+        },
+        "768p_Minima_02_projeto_paineis.png": {
+          "bytes": 91474,
+          "sha256": "ed504fca01286eaf9e0f64f30442a2c5e6ec4de2ae28decc535045be9216eb1b"
+        },
+        "768p_Minima_03_validacao_janela.png": {
+          "bytes": 89116,
+          "sha256": "a7056858e10e22e0db3e9660cfc036c97f188c452d5a2a23e8ef60c347198f5d"
+        },
+        "768p_Minima_03_validacao_modal.png": {
+          "bytes": 9459,
+          "sha256": "69aef71c0f14c738a5c9a2bb01e1f3a8fb6cbd9777adbbbe027c2d28c919b81a"
+        },
+        "768p_Minima_04_gizmo_feedback.png": {
+          "bytes": 103526,
+          "sha256": "6d0e2e915dddc2b0f1163c7b7a1ce9d98157026aeb652af8906389835057549a"
+        }
+      },
+      "requested_size": [
+        1366,
+        768
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info"
+      }
+    }
+  },
+  "generator": "scripts/audit_ui_capture.py",
+  "image_fixture": {
+    "bytes": 10112,
+    "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+  },
+  "platform": "Windows-10-10.0.26200-SP0",
+  "project_fixture": {
+    "bytes": 2193,
+    "sha256": "6d31aa6502346e99316419eefc70f9a66d9afd9690a0dce2f2fd98155d372c20"
+  },
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "schema_version": 1
+}

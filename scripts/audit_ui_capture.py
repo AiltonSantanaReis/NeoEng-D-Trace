@@ -22,6 +22,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import cv2  # noqa: E402
 import numpy as np  # noqa: E402
 from PySide6.QtCore import QSize, QTimer  # noqa: E402
+from PySide6.QtGui import QImage  # noqa: E402
 from PySide6.QtTest import QTest  # noqa: E402
 from PySide6.QtWidgets import QApplication, QMessageBox  # noqa: E402
 
@@ -132,6 +133,13 @@ def _capture(window: MainWindow, path: Path) -> None:
         raise RuntimeError(f"could not save screenshot {path.name}")
 
 
+def _capture_size(path: Path) -> list[int]:
+    image = QImage(str(path))
+    if image.isNull():
+        raise RuntimeError(f"could not read screenshot {path.name}")
+    return [image.width(), image.height()]
+
+
 def _new_window(
     scene: Scene,
     *,
@@ -207,7 +215,8 @@ def run(output: Path) -> dict[str, Any]:
             _open_panels(empty_window, width)
             _settle(app)
             _capture(empty_window, base_path)
-            actual_size = [empty_window.width(), empty_window.height()]
+            actual_window_size = [empty_window.width(), empty_window.height()]
+            actual_capture_size = _capture_size(base_path)
         finally:
             empty_window.close()
             _settle(app, 20)
@@ -251,7 +260,8 @@ def run(output: Path) -> dict[str, Any]:
             )
             manifest["captures"][label] = {
                 "requested_size": [width, height],
-                "actual_size": actual_size,
+                "actual_window_size": actual_window_size,
+                "actual_capture_size": actual_capture_size,
                 "files": {
                     base_path.name: _digest(base_path),
                     project_path_capture.name: _digest(project_path_capture),
