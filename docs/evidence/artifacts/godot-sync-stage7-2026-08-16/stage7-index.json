@@ -2,40 +2,40 @@
   "engine": "godot",
   "files": {
     "godot-stage7-01-asset-preimport.log": {
-      "bytes": 2962,
-      "sha256": "e1aa2289cc93c678cbfecc05265159c1298e8bf3452482b60eda0d861cc4ee88"
+      "bytes": 2916,
+      "sha256": "6ae3fd4339e21d8bb982192533ae2205f89b9d0456e12cd1d6d9b6676a19f60e"
     },
     "godot-stage7-02-initial.log": {
-      "bytes": 101,
-      "sha256": "80a0b502801723f93b1b97018daebdf43701787239d7b224f109e5e6544200a6"
+      "bytes": 98,
+      "sha256": "d97bf90437390e24e9536d5bc89877446302a7964988dd81e11d571a35ad7c91"
     },
     "godot-stage7-03-repeat.log": {
-      "bytes": 102,
-      "sha256": "cfadee4b6018b56c44cc9b545a277a8105bbf9fdae841ef29b08579ca8d62050"
+      "bytes": 99,
+      "sha256": "6cf7a4aa43566d78853cdf6fdb6cfa160c19287abd7cbb6b675c308b0df1d42d"
     },
     "godot-stage7-04-override.log": {
-      "bytes": 104,
-      "sha256": "5cbaf73e07ff508f601b29c7278b1bbea63944e6545bf362bdff54991364b948"
+      "bytes": 101,
+      "sha256": "9427d59e979ff0d37a194adc9cb77269579f022805788dacf183e1a149d38b27"
     },
     "godot-stage7-05-override-repeat.log": {
-      "bytes": 111,
-      "sha256": "0f815f380514b041397dacd208f8a5df74812e2927c187fd81cc451efa5a4894"
+      "bytes": 108,
+      "sha256": "5af59c7ad19c2fd13779ecb8ec0cc52db2d7faa163a5f28c0c2ef7a89a189b88"
     },
     "godot-stage7-06-manual.log": {
-      "bytes": 101,
-      "sha256": "7889f898ef6774d396dcde0f8dad433b39fd56923871e1480326f3a9cb89fecf"
+      "bytes": 98,
+      "sha256": "ce76840528bd534bbb6d469d5a4d383d7f2b905a6d357eefc19011158c069c8e"
     },
     "godot-stage7-07-confirmed.log": {
-      "bytes": 107,
-      "sha256": "7387b7d2ed06c742c58bb2543da7b2a8286a7090e2afb3d4aa9fb77d2a14bfe5"
+      "bytes": 104,
+      "sha256": "2905faf3844f8cf24a7a0b4db9ae2a1ed3e6632114835b875d29d5206961a8a8"
     },
     "godot-stage7-08-hash-drift.log": {
-      "bytes": 105,
-      "sha256": "42ea6241028e2db0387cae8688b8012282394140b58aab609b6007c3d271c14c"
+      "bytes": 102,
+      "sha256": "b1b785d269e6d41a97c9956bf8e0e4296ee1e777c4b5fc5bed1a53344420cfec"
     },
     "stage7-report.json": {
-      "bytes": 6628,
-      "sha256": "f686988b67c7d2f9dc9d4db1db5d4dd9cc920c2d9a2d0a480ccb8c0db8aa506c"
+      "bytes": 6545,
+      "sha256": "29de167f85c5d72d2d581cca3bb9d085637f7dbcbaae749021a9560945352df2"
     }
   },
   "schema_version": 1,

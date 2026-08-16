@@ -4,13 +4,13 @@
   "files": [
     {
       "path": "docs/evidence/artifacts/auto-detection-quality/final-v6/legacy_reconciliation.json",
-      "bytes": 427,
-      "sha256": "c259debd769c2a87b221d901cb3cfd1ae215e7f27a33e16242131093cb9e30a0"
+      "bytes": 409,
+      "sha256": "b8d1422f798d6e12d473c0a50272b6255724d5db32fc75c3683ba8803247a22b"
     },
     {
       "path": "docs/evidence/artifacts/auto-detection-quality/final-v6/report.json",
-      "bytes": 50324,
-      "sha256": "a437b91f4ad2b2348106a379b9d0d74b3a29ff897330c90f491009cf610b45e9"
+      "bytes": 48918,
+      "sha256": "9fc5cf21cb7f2ab4a3ccb8901de30812e9f07d6652367dbe6ed28b4490031967"
     },
     {
       "path": "docs/evidence/artifacts/auto-detection-quality/final-v6/images/clean_rectangle_ground_truth.png",

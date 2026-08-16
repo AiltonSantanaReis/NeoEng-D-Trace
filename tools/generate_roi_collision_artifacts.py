@@ -74,6 +74,7 @@ def main() -> int:
     collision_path.write_text(
         json.dumps(collision_document, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     project_path = OUTPUT / "detected-compound.ndtproj"
     save_scene_project(scene, project_path)
@@ -109,7 +110,9 @@ def main() -> int:
         "files": {path.name: _digest(path) for path in files},
     }
     (OUTPUT / "manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0

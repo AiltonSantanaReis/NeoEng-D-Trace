@@ -77,3 +77,16 @@ Um PR só pode ser considerado apto quando o diff estiver limitado ao escopo, to
 - reparo geométrico é estritamente opt-in: quando `auto_repair` estiver desativado, entradas inválidas devem ser rejeitadas antes de qualquer heurística; quando ativado, falha de conversão ou de reparo deve resultar em rejeição controlada.
 - índices estruturais de edição, incluindo `handle_index`, devem exigir inteiro estrito e não booleano antes de qualquer teste de conjunto ou indexação; floats numericamente equivalentes e valores não hashable devem ser rejeitados de forma controlada, sem mutação parcial ou entrada no histórico.
 - uma curva fechada válida pode repetir o primeiro ponto apenas como terminal da amostragem; esse terminal duplicado deve ser removido antes da validação e persistência.
+## Invariante imutável dos artefatos de evidência
+
+Esta regra é obrigatória para qualquer etapa futura e bloqueia o fluxo quando não puder ser comprovada:
+
+- todo texto versionado em `docs/evidence/` deve ser UTF-8 com finais de linha LF; arquivos binários devem ser comparados byte a byte;
+- cada `manifest.json`, `artifact-index.json`, `engine-validation-index.json` e índice de etapa deve registrar exatamente `bytes` e `sha256` do conteúdo que será revisado;
+- cada referência precisa existir, não pode estar ignorada pelo Git e, no gate de CI, precisa estar rastreada; o próprio manifest também está sujeito a esse gate;
+- geradores de evidência devem usar escrita explícita em LF. O validador `tools/evidence_integrity.py` é executado em Linux e Windows e falha fechado para CRLF/CR, arquivo ausente, arquivo ignorado, arquivo não rastreado, hash divergente, tamanho divergente e referência duplicada;
+- `--rewrite` é uma operação de reparo explícita e auditável para bytes e digests. CI não reescreve evidência, não recalcula manifest para obter `PASS` e não aceita `skip`, `xfail` ou exceção silenciosa como substituto;
+- evidência histórica ausente deve permanecer declarada como `unavailable_artifacts`, com motivo verificável. É proibido recriar logs históricos ou removê-los silenciosamente para transformar um resultado em aprovado;
+- qualquer relatório que não identifique commit/HEAD, ambiente, comandos, entradas, artefatos, falhas e limitações permanece `PARCIAL`, `BLOQUEADO` ou `NÃO TESTADO`, conforme o caso.
+
+O gate obrigatório está em `.github/workflows/ci.yml`. Uma alteração só pode ser considerada apta depois de o gate passar sobre os arquivos efetivamente rastreados no commit candidato.

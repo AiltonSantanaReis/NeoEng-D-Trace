@@ -13,16 +13,16 @@
       "sha256": "49cfefef286f4fb0ba5ad20a6c823804a7003b4b6284669c1b711cbed35a2e09"
     },
     "atlas\\atlas_0.json": {
-      "bytes": 557,
-      "sha256": "6d28e04746695fd299e6af4938d8af4bca2d9c42400dc0c9ad935aaad3592788"
+      "bytes": 520,
+      "sha256": "323690f55df123f10ebc6613550dd9abe41026fabfb734bb6e5e2b68a7855500"
     },
     "atlas\\atlas_0.png": {
       "bytes": 628,
       "sha256": "0f5d9dde67857bbe9b331b965ce87930f0ee5f15c6097680ef27d65f34fa8630"
     },
     "compound-collision.json": {
-      "bytes": 2261,
-      "sha256": "6ad0306af20cb1f2a80d7f206b957e9055b4cb378dc0eb7039e92a142b34388d"
+      "bytes": 2141,
+      "sha256": "0e39adb4992852296b7d1616da43e6f23c0b84a8ea0654238d230392148620d2"
     },
     "compound-project.ndtproj": {
       "bytes": 3709,
@@ -37,24 +37,24 @@
       "sha256": "55e5851359b48bdd5bf67f9b450103f5b85042a813f9d7b52c12c7c2bbd606f1"
     },
     "pivot-generic.json": {
-      "bytes": 2568,
-      "sha256": "b1d4f1b2baed9b5bff8ec4e327e206785011437304cb9dc1c6dbf2824659397b"
+      "bytes": 2409,
+      "sha256": "ff16a8b454cc7c96bccf9db10dd6a99f270f0c99af0b144d361ded5726155654"
     },
     "pivot-godot.json": {
-      "bytes": 1797,
-      "sha256": "84348f361e76380fe2b247ff7d7fba3e8bde5ca1f170b1b0f725cf880cc0130c"
+      "bytes": 1694,
+      "sha256": "eb19ee0c671424ae34b683e821f67a93ef3948c3c9bce78b94754507855458a5"
     },
     "pivot-phaser.json": {
-      "bytes": 1331,
-      "sha256": "c60bc7346d7f281608d60d9a193eeb3a458cb6db3522cbb5c67dcf21e5f049b4"
+      "bytes": 1258,
+      "sha256": "82b45bb4a2052ca4143e98651cb3d0409df14e0f009971818e83f6c5e79300d6"
     },
     "pivot-unity.json": {
-      "bytes": 1881,
-      "sha256": "8dfb4fd44fc66cbf65274a07b732d7dccedf34b33e150413c5fa6f164813b98e"
+      "bytes": 1774,
+      "sha256": "286db1569375f1c1ee9d547550b10321bd0db0c08aae84464aec81f5e39bb00c"
     },
     "snapping.json": {
-      "bytes": 161,
-      "sha256": "3005d5635d634a382b23970f56337a567cc4ab88d2aa4b941743bd3bfda9554c"
+      "bytes": 145,
+      "sha256": "7ba704f8f55f24fbc4b818dc270af988651ee574f04ccaca77d566eb5f9bf5be"
     },
     "source.png": {
       "bytes": 331,

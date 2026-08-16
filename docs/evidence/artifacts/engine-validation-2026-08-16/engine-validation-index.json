@@ -23,58 +23,69 @@
   "artifacts": [
     {
       "path": "godot-probe.json",
-      "size": 878,
-      "sha256": "1494c260c71ce3b27a22bc2dabe12c2dff836be6c3a61dadaf9f4daa249fe567"
+      "size": 817,
+      "sha256": "f046ae2bbf672f4b20062a150f806809ec81bd7e8486a3d3735326bda837d7b0",
+      "bytes": 817
     },
     {
       "path": "godot-report-real.json",
-      "size": 4195,
-      "sha256": "8e90823e27338d848e03bc472c2339e035a4bb37174b509ba5650679797016ba"
+      "size": 4156,
+      "sha256": "2c5bbbd6a8a35a82612ec95138d91276a5322c0ed6be8d3a023aed6732a764fe",
+      "bytes": 4156
     },
     {
       "path": "godot-report.json",
-      "size": 304,
-      "sha256": "2d2a81d83efb456349a32b4f019a8ff6facf629e64049685c3058ec622236901"
+      "size": 289,
+      "sha256": "88c1cdc7eda6c43665566f9a696be777f172803f69524171c573b2183a8fbbc1",
+      "bytes": 289
     },
     {
       "path": "godot-scene.glb",
       "size": 968,
-      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde"
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "bytes": 968
     },
     {
       "path": "godot-source.png",
       "size": 229,
-      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc"
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "bytes": 229
     },
     {
       "path": "unity-engine-validation-result.txt",
       "size": 52,
-      "sha256": "77919ab298b0305d4a43f30d01a7c950bef7b29732ff6709354ef66eef5a3f5d"
+      "sha256": "77919ab298b0305d4a43f30d01a7c950bef7b29732ff6709354ef66eef5a3f5d",
+      "bytes": 52
     },
     {
       "path": "unity-packages-lock.json",
       "size": 9521,
-      "sha256": "48ed050f24e1e481405d0da46e63913c494db272d62292d197c53af4ac3d930f"
+      "sha256": "48ed050f24e1e481405d0da46e63913c494db272d62292d197c53af4ac3d930f",
+      "bytes": 9521
     },
     {
       "path": "unity-probe.json",
-      "size": 913,
-      "sha256": "5e53a26575f3ad930cccb6a584ade0b8409b6260e096c930bb650b71df6bb366"
+      "size": 850,
+      "sha256": "d3b0f4e6cfb368d71fdcc29295937caa9912ef4183c9e365e4f8325f1acc9b5b",
+      "bytes": 850
     },
     {
       "path": "unity-report.json",
-      "size": 1006,
-      "sha256": "9c71fa2ce06ce49c3719aa6cd2830e5e4e38a4c3836d817cba4ac6cda4b1481d"
+      "size": 960,
+      "sha256": "6ef0038469c18c56f1c822e885a1dd7e4a872ff0c349ef3b2249d9db84c91954",
+      "bytes": 960
     },
     {
       "path": "unity-scene.glb",
       "size": 968,
-      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde"
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "bytes": 968
     },
     {
       "path": "unity-source.png",
       "size": 229,
-      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc"
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "bytes": 229
     }
   ]
 }

@@ -80,7 +80,7 @@ def write_project(project: Path, package_path: Path, unity_version: str) -> None
         "\\", "/"
     )
     (project / "ProjectSettings" / "ProjectVersion.txt").write_text(
-        f"m_EditorVersion: {unity_version}\n", encoding="utf-8"
+        f"m_EditorVersion: {unity_version}\n", encoding="utf-8", newline="\n"
     )
     (project / "Packages" / "manifest.json").write_text(
         json.dumps(
@@ -89,6 +89,7 @@ def write_project(project: Path, package_path: Path, unity_version: str) -> None
         )
         + "\n",
         encoding="utf-8",
+        newline="\n",
     )
 
 
@@ -298,7 +299,7 @@ def main() -> int:
             },
         }
         (OUT / "stage6-report.json").write_text(
-            json.dumps(final, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            json.dumps(final, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
         )
         (OUT / "stage6-report-repeat.json").write_bytes(positive_two_path.read_bytes())
         (OUT / "stage6-report-negative-hash.json").write_bytes(
@@ -319,7 +320,7 @@ def main() -> int:
             ("unity-import-negative-manual.log", negative_manual_run),
             ("unity-manual-fixture.log", manual_setup),
         ):
-            (OUT / name).write_text(run["output"], encoding="utf-8")
+            (OUT / name).write_text(run["output"], encoding="utf-8", newline="\n")
 
     files = {
         path.name: digest(path) for path in sorted(OUT.iterdir()) if path.is_file()
@@ -339,6 +340,7 @@ def main() -> int:
         )
         + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     print("NATIVE_IMPORT_STAGE6=SUCCESS")
     print(f"UNITY_VERSION={unity_version}")

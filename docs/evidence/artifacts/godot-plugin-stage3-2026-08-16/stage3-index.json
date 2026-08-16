@@ -15,37 +15,44 @@
     {
       "path": "neoeng-d-trace-godot-stage3.zip",
       "size": 3524,
-      "sha256": "195461b99279b8d3516247a2635a9dc0c89263d394f71873beb846a483b00dc9"
+      "sha256": "195461b99279b8d3516247a2635a9dc0c89263d394f71873beb846a483b00dc9",
+      "bytes": 3524
     },
     {
       "path": "stage3-report.json",
-      "size": 3599,
-      "sha256": "50fa529409edc51d05e3e4e191fb339bdd55b205286b35461a4d16924d6d1d5e"
+      "size": 3565,
+      "sha256": "1f84f236adbb982ffa6016fc027b4e110a5e3f4473d652c83fd37e5d9585a436",
+      "bytes": 3565
     },
     {
       "path": "stage3-zip-report.json",
-      "size": 3596,
-      "sha256": "6486994a3dcecabf5a3c575d5356e37fd408f44c752fe0edb0af5182aafca2db"
+      "size": 3562,
+      "sha256": "bb1acacad12938046167364e9360d5d1bf12729f215f90e5319f12db921c7033",
+      "bytes": 3562
     },
     {
-      "path": "source/manifest_diagnostic.gd",
+      "path": "neoeng-d-trace-godot/addons/neoeng_d_trace/manifest_diagnostic.gd",
       "size": 5999,
-      "sha256": "afe17bae4547d35387b4171aa749ba509294ba10730df8f07937540e18fa0a26"
+      "sha256": "afe17bae4547d35387b4171aa749ba509294ba10730df8f07937540e18fa0a26",
+      "bytes": 5999
     },
     {
-      "path": "source/plugin.cfg",
+      "path": "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.cfg",
       "size": 177,
-      "sha256": "2c36178f1eba7b3522710e4e8e1e895110adba8c0ae87a54152f1a4369ca6a05"
+      "sha256": "2c36178f1eba7b3522710e4e8e1e895110adba8c0ae87a54152f1a4369ca6a05",
+      "bytes": 177
     },
     {
-      "path": "source/plugin.gd",
+      "path": "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.gd",
       "size": 835,
-      "sha256": "040afd81a789eb5d741af8f52b039fff10023ea34ea63b0bb90e44223c5fb059"
+      "sha256": "040afd81a789eb5d741af8f52b039fff10023ea34ea63b0bb90e44223c5fb059",
+      "bytes": 835
     },
     {
-      "path": "source/README.md",
+      "path": "neoeng-d-trace-godot/addons/neoeng_d_trace/README.md",
       "size": 953,
-      "sha256": "ce4e1128c073b55540b2878f5fbb9227d785072c4ac5e5b55810fe980d069a5b"
+      "sha256": "ce4e1128c073b55540b2878f5fbb9227d785072c4ac5e5b55810fe980d069a5b",
+      "bytes": 953
     }
   ]
 }

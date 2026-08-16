@@ -131,6 +131,7 @@ def _prepare_godot(workspace: Path, fixture_dir: Path | None = None) -> dict[str
         '[application]\nconfig/name="EngineExportValidation"\n'
         '[rendering]\nrenderer/rendering_method="gl_compatibility"\n',
         encoding="utf-8",
+        newline="\n",
     )
     return files
 
@@ -173,7 +174,9 @@ def _add_unity_package(project: Path, package: str) -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest.setdefault("dependencies", {})[name] = version
     manifest_path.write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
 
 
@@ -257,7 +260,7 @@ def _write_report(path: Path | None, report: dict[str, Any]) -> None:
         print(serialized, end="")
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(serialized, encoding="utf-8")
+    path.write_text(serialized, encoding="utf-8", newline="\n")
 
 
 def main() -> int:

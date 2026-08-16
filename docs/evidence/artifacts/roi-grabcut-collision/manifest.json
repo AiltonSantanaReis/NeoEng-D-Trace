@@ -21,8 +21,8 @@
   },
   "files": {
     "collision-compound-normalized.json": {
-      "bytes": 1960,
-      "sha256": "282ff00f02df4277435c574a03b969150bad1152ac3b8cbfcfd4d60dc3697edb"
+      "bytes": 1854,
+      "sha256": "c219402079a535a0eb86a00bf3d5c90a67361a2a2fd5fa2d71034521cdecf09c"
     },
     "detected-compound.ndtproj": {
       "bytes": 2393,

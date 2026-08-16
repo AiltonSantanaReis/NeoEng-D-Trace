@@ -114,6 +114,7 @@ def main() -> int:
         )
         + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     outputs.append(snapping_path)
 
@@ -175,8 +176,7 @@ def main() -> int:
         },
     }
     (OUT / "manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     return 0
 
 

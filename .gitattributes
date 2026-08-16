@@ -1,0 +1,12 @@
+# Evidence bytes are part of the reproducibility contract.
+# Text evidence is always stored and checked out with LF endings.
+/docs/evidence/** text eol=lf
+/docs/evidence/**/*.png binary
+/docs/evidence/**/*.jpg binary
+/docs/evidence/**/*.jpeg binary
+/docs/evidence/**/*.gif binary
+/docs/evidence/**/*.zip binary
+/docs/evidence/**/*.glb binary
+/docs/evidence/**/*.gltf binary
+/docs/evidence/**/*.bin binary
+/docs/evidence/**/*.log -whitespace

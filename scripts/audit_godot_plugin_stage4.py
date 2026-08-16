@@ -147,6 +147,7 @@ def _prepare(workspace: Path) -> dict[str, Any]:
         "[editor_plugins]\n"
         'enabled=PackedStringArray("res://addons/neoeng_d_trace/plugin.cfg")\n',
         encoding="utf-8",
+        newline="\n",
     )
     return {
         "image": image_path,
@@ -237,16 +238,14 @@ def main() -> int:
         report["status"] = "SUCCESS"
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(
-            json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+            json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         return 0
     except Exception as exc:
         report["error_type"] = type(exc).__name__
         report["error"] = str(exc)
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(
-            json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+            json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         return 1
     finally:
         if temporary is not None:
