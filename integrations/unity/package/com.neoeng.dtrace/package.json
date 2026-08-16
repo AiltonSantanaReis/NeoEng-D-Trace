@@ -1,0 +1,17 @@
+{
+  "name": "com.neoeng.dtrace",
+  "version": "0.2.0",
+  "displayName": "NeoEng D-Trace Integration",
+  "description": "Source-only UPM package for the NeoEng-D-Trace integration contract.",
+  "unity": "2021.3",
+  "author": {
+    "name": "NeoEng-D-Trace"
+  },
+  "keywords": [
+    "neoeng",
+    "d-trace",
+    "sprites",
+    "collision",
+    "integration"
+  ]
+}

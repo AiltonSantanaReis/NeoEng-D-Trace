@@ -1,7 +1,7 @@
 # Plano de integração dos adaptadores nativos
 
 Data: 2026-08-16
-Estado: etapa 4 aprovada localmente no Godot no escopo documentado; etapas 5 a 10 não iniciadas; nenhuma sincronização nativa completa é declarada integrada sem testes reais no ambiente correspondente.
+Estado: etapas 4 e 5 aprovadas localmente nos escopos documentados; etapas 6 a 10 não iniciadas; nenhuma sincronização nativa completa é declarada integrada sem testes reais no ambiente correspondente.
 
 ## Objetivo
 
@@ -51,7 +51,9 @@ Adicionar adaptadores source-only para Godot e Unity, integrados ao NeoEng-D-Tra
 - o addon Godot source-only e a importação da etapa 4 foram validados em fixture headless real;
 - etapas 1 e 2 possuem implementação e testes locais; a etapa 3 possui addon Godot source-only e fixture headless real;
 - a etapa 4 foi promovida somente no escopo validado deste plano;
-- etapas 5 a 10 permanecem NÃO INICIADAS e sem declaração de sincronização nativa.
+- a etapa 5 possui pacote Unity UPM source-only, assemblies Runtime/Editor e diagnóstico batch validados no Unity real `6000.5.7f1`;
+- a etapa 5 foi validada somente no escopo do pacote; importação Unity, sincronização e rollback permanecem posteriores;
+- etapas 6 a 10 permanecem NÃO INICIADAS e sem declaração de sincronização nativa.
 
 ## Regra de promoção
 

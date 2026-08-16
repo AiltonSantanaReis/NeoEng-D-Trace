@@ -241,8 +241,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "4fede26aceb7614150bef532ce2365704a19b9b9191693ecd2f91053438adf2d",
-      "size": 3805
+      "sha256": "4cfa3ce627b3d728b2c2b388577ba7aec5c78606bb10820ccef9344969c20fb0",
+      "size": 4064
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -547,6 +547,10 @@
     "docs/evidence/ETAPA_5_PACOTE_5C_VALIDACAO_PRE_MERGE.md": {
       "sha256": "e476171da8c63c7ad8198d871b0f0550a4b25f38ae88ce3a686777aa01f5bd25",
       "size": 3177
+    },
+    "docs/evidence/ETAPA_5_PACOTE_UNITY_SOURCE_ONLY_2026-08-16.md": {
+      "sha256": "b0ef2fd4fece048ebd0c09abbc99f46449fc44a3408b639ee104a188b0b41b7d",
+      "size": 4244
     },
     "docs/evidence/ETAPA_6_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2a4eeb815300958f339d516c221c76baec171aaba145742bd3a8fefdcf87316f",
@@ -1548,6 +1552,26 @@
       "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
       "size": 10112
     },
+    "docs/evidence/artifacts/unity-package-stage5-2026-08-16/package.json": {
+      "sha256": "b0dc398b9b514b04a2a4938b91d931bcfb40c8fd5564b16ff307204f3125c398",
+      "size": 361
+    },
+    "docs/evidence/artifacts/unity-package-stage5-2026-08-16/stage5-index.json": {
+      "sha256": "9e3d2fd2326a13d7d91e8011ea8f0753f4d93cd6f7e1d0105939437dd14ab36a",
+      "size": 1492
+    },
+    "docs/evidence/artifacts/unity-package-stage5-2026-08-16/stage5-report-negative.json": {
+      "sha256": "d3b0bb4f20bd430c2544564f0e12449b52a916246ebb012daa5fe39ad1717831",
+      "size": 1148
+    },
+    "docs/evidence/artifacts/unity-package-stage5-2026-08-16/stage5-report-repeat.json": {
+      "sha256": "6820bf04ba1edf246b7dd628993297d7d0e2a89340724855e5e4dacf983bbf36",
+      "size": 1155
+    },
+    "docs/evidence/artifacts/unity-package-stage5-2026-08-16/stage5-report.json": {
+      "sha256": "3f186f781ecbbae95cc2c66d1fa88f686d065181b59f1264f0386acf6608d9aa",
+      "size": 2888
+    },
     "docs/evidence/raw/NeoEng-D-Trace_Etapa2_PostMerge_Main_20260731_132248.zip": {
       "sha256": "5356fcfc5bbbe0597f1103e4f063ae7aa5d9474911dba9fc7ae7aac090374069",
       "size": 393802
@@ -1607,6 +1631,62 @@
     "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
       "sha256": "709cbc48a5cfab8a0160f7d51c1400c8b1ad6ceccfbf4b312a9ee2506154bc00",
       "size": 1289
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor.meta": {
+      "sha256": "7ece5759a5ac1e80072a893d36af07c48a1a32abc8324811da5b860c3abd2cb4",
+      "size": 172
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/NeoEngDTrace.Editor.asmdef": {
+      "sha256": "209d733a13c64a358c5e5565d49cc8383ac9418ba2d6a4fe66d5e024690e8150",
+      "size": 395
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/NeoEngDTrace.Editor.asmdef.meta": {
+      "sha256": "484fe293006ac57f70df0b81a5d6f4966b054327c4457a9a1c911ddc1a2127fc",
+      "size": 166
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/PackageDiagnostics.cs": {
+      "sha256": "ab6b55d7b22db9f7b37eaf586e7dc8db793ee68aa69282ae707f422c04b147db",
+      "size": 6520
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/PackageDiagnostics.cs.meta": {
+      "sha256": "b7f4a60f0ba46a8cd7108fd4fd2ac8881e503e1c99d484a6146583a5ff80ada9",
+      "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/README.md": {
+      "sha256": "f02c1f592261371847887b9596a64f56119b24aaf3837ee9a374db1cee79185e",
+      "size": 1584
+    },
+    "integrations/unity/package/com.neoeng.dtrace/README.md.meta": {
+      "sha256": "7416d6a6f3c773700293d3c604792863f3fd5631d23590d157e4a9b01a8cc478",
+      "size": 158
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime.meta": {
+      "sha256": "2ce85a55b8b6c5909771eb209d7bdd4d918d70c20ffde5d9bc820bda39afdf73",
+      "size": 172
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngDTrace.Runtime.asmdef": {
+      "sha256": "9aa7b5c22b7597c487d7f85d969227c8e6143a776065782cc441ddd99921b2ce",
+      "size": 343
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngDTrace.Runtime.asmdef.meta": {
+      "sha256": "965a471edbcb185e5e80ad95c833b8f5af6dd1d517f684b81ca7db21f5a4792b",
+      "size": 166
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs": {
+      "sha256": "db22d3a220054d9fe4a73499cd32ac5eeb202b3f3dcb0fcfd00219a01a1acc57",
+      "size": 649
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs.meta": {
+      "sha256": "89addeea9fcce8b3cf8080ce17ee8f3e32b06fe0d96cf278577a2a31c4c05a8c",
+      "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/package.json": {
+      "sha256": "b0dc398b9b514b04a2a4938b91d931bcfb40c8fd5564b16ff307204f3125c398",
+      "size": 361
+    },
+    "integrations/unity/package/com.neoeng.dtrace/package.json.meta": {
+      "sha256": "d9118ed992c5c23830eddfac9b765d1f2793d47b5e04d7968c344ca1d51c406c",
+      "size": 163
     },
     "mypy.ini": {
       "sha256": "2c2c8584c401859cba04a7435c908845c3eb3bd61dbf99e6f3d0c4e5e97225e0",
@@ -1803,6 +1883,10 @@
     "scripts/audit_ui_capture.py": {
       "sha256": "fd3c05d25500b84b6a405cacde044a2a1fd997991b3308c48563629afdb42efb",
       "size": 9995
+    },
+    "scripts/audit_unity_package_stage5.py": {
+      "sha256": "f6ccdabb56e7676151fbd1810b24ce564801de5c7fbba1732a3581e425e8b4e1",
+      "size": 10620
     },
     "scripts/build_installer.ps1": {
       "sha256": "3ae6b0ec8a713cf22edfad44db698988ed3768823567c4024451a8ef5a15c921",
@@ -2547,6 +2631,10 @@
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",
       "size": 3412
+    },
+    "tests/test_unity_package_scaffold.py": {
+      "sha256": "0e69f81dfe34bee33f4cfab23633640ce65dec8e3c46551f7ade5e0891736d27",
+      "size": 2251
     },
     "tests/test_validation_events.py": {
       "sha256": "794b6e7429262469cfd393a17151f1ba23cbdacb527402901fa105c4a1f37af4",
