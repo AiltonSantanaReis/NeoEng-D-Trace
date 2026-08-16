@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 # src/ui/canvas_view.py
 from typing import Any, Callable, Optional, Tuple

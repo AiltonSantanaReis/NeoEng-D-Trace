@@ -1589,7 +1589,7 @@
       "size": 955
     },
     "src/persistence/project_io.py": {
-      "sha256": "bd9d22c0e45798beac331a035d6da8bda0c631144b8ccab812258712f3fcdb0f",
+      "sha256": "a7269b3b0501b36f6397b506e66b88c46e4b62609781319f95732e38473c3626",
       "size": 23088
     },
     "src/persistence/project_schema.py": {
@@ -1701,7 +1701,7 @@
       "size": 6003
     },
     "src/ui/canvas_view.py": {
-      "sha256": "855d0fa9dc51d95b6fd9e58323a9a3e4818fda4dcc70cdf256b2aa5144ef5b8b",
+      "sha256": "9877dc64da1ccac9928264ebf7ab7699d57177aa21e6dfc561ad895d9f1e4b3e",
       "size": 43022
     },
     "src/ui/collision_overlay.py": {
@@ -1905,7 +1905,7 @@
       "size": 5194
     },
     "tests/test_reference_gizmo.py": {
-      "sha256": "eb934f4dea06a890fbd6f89c4d5801e2deebbb85f85691be37bcc561fa0b1725",
+      "sha256": "9aa382bc9a484c500a9f3b32466a3d306298bf2f7b6b878ca455b56ddc6bfaa5",
       "size": 1380
     },
     "tests/test_regression_core_contracts.py": {
