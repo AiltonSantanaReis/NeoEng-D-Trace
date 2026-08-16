@@ -560,6 +560,10 @@
       "sha256": "0db7b14f0a52b9fab0d29245c4feaeb886856fb4b628f9049cfbdb7a9e1602c2",
       "size": 6561
     },
+    "docs/evidence/ETAPA_UI_RESPONSIVA_AUDITORIA_2026-08-16.md": {
+      "sha256": "1f4795c78473c21f98be74656de372e9b774e3f3bec561dea0446851e5248357",
+      "size": 6764
+    },
     "docs/evidence/PRE_ETAPA_14_ENGINE_VALIDATION_MANIFEST_2026-08-13.json": {
       "sha256": "a2a0945f8289419b9f3fb9a2a0cf13355c541d13eed253f7e6e7439498483d75",
       "size": 1396
@@ -577,8 +581,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "8b331a17420140b0f02d69723fd7d6e8bf08b681f0f9ed51edb535deeb77bfcc",
-      "size": 25327
+      "sha256": "6b8218432288b261b750a9a18111be18cd49cc7840ec8d483a0bc9df40d3ca6a",
+      "size": 25556
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
