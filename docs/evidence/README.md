@@ -1,3 +1,4 @@
+- ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — sincronização real por hash/fingerprint em Godot 4.7 e Unity 6000.5.7f1, overrides, bloqueio de divergência, confirmação destrutiva, regressões e artefatos sanitizados; aprovação local pendente de commit/CI/merge.
 # Evidências de validação
 - `ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md` — addon Godot somente com GDScript, diagnóstico somente leitura, ZIP determinístico e execução headless real; não cobre a importação de Sprite2D/colisão da etapa 4.
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using NeoEng.DTrace;
@@ -15,6 +16,7 @@ namespace NeoEng.DTrace.Editor
         private const string GeneratedRoot = "Assets/NeoEngGenerated";
         private const string MarkerFile = ".neoeng-generated";
         private const string PixelsPerUnit = "100";
+        private const string ConfirmDestructiveEnvironment = "NEOENG_STAGE7_CONFIRM_DESTRUCTIVE";
 
         [MenuItem("NeoEng D-Trace/Import Integration Manifest")]
         public static void RunFromMenu()
@@ -41,6 +43,10 @@ namespace NeoEng.DTrace.Editor
             {
                 result = ImportManifest(manifestPath);
             }
+            catch (SyncConflictException exception)
+            {
+                result = ImportResult.Failure("sync_conflict", exception.Message);
+            }
             catch (Exception exception)
             {
                 result = ImportResult.Failure("import_exception", exception.Message);
@@ -55,6 +61,7 @@ namespace NeoEng.DTrace.Editor
             if (result.Success)
             {
                 Debug.Log("UNITY_NATIVE_IMPORT_STAGE6=SUCCESS");
+                Debug.Log("UNITY_NATIVE_SYNC_STAGE7=SUCCESS");
                 Debug.Log("IMPORTED_SPRITES=" + result.ImportedSprites);
                 Debug.Log("IMPORTED_PREFABS=" + result.ImportedPrefabs);
                 Debug.Log("IMPORTED_COLLIDERS=" + result.ImportedColliders);
@@ -62,6 +69,7 @@ namespace NeoEng.DTrace.Editor
             }
 
             Debug.LogError("UNITY_NATIVE_IMPORT_STAGE6=FAILURE");
+            Debug.LogError("UNITY_NATIVE_SYNC_STAGE7=FAILURE");
             Debug.LogError(result.ErrorSummary());
             EditorApplication.Exit(1);
         }
@@ -77,6 +85,29 @@ namespace NeoEng.DTrace.Editor
             AssetDatabase.SaveAssets();
         }
 
+        public static void MutateGeneratedPrefabFixture()
+        {
+            const string prefabPath = GeneratedRoot + "/hero.prefab";
+            GameObject root = PrefabUtility.LoadPrefabContents(prefabPath);
+            if (root == null)
+            {
+                throw new InvalidOperationException("generated prefab fixture does not exist");
+            }
+            PolygonCollider2D collider = root.GetComponent<PolygonCollider2D>();
+            if (collider == null || collider.pathCount != 1)
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+                throw new InvalidOperationException("generated prefab collider fixture is invalid");
+            }
+            Vector2[] points = collider.GetPath(0);
+            points[0] += new Vector2(0.25f, 0.0f);
+            collider.SetPath(0, points);
+            PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            PrefabUtility.UnloadPrefabContents(root);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            Debug.Log("UNITY_NATIVE_SYNC_STAGE7_MUTATION=APPLIED");
+        }
         public static ImportResult ImportManifest(string manifestPath)
         {
             string normalizedManifestPath = NormalizeAssetPath(manifestPath);
@@ -86,8 +117,9 @@ namespace NeoEng.DTrace.Editor
                 return ImportResult.Failure("manifest", "integration manifest does not exist");
             }
 
-            IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(
-                File.ReadAllText(absoluteManifestPath, Encoding.UTF8));
+            string manifestText = File.ReadAllText(absoluteManifestPath, Encoding.UTF8);
+            IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(manifestText);
+            ApplyPolygonArrays(manifest, manifestText);
             ValidateManifest(manifest);
             string imageAssetPath = ResolveSourceImage(manifest.source.image.path);
             ValidateImageHash(manifest.source.image.sha256, imageAssetPath);
@@ -104,6 +136,18 @@ namespace NeoEng.DTrace.Editor
             {
                 ImportedAsset asset = ImportSprite(manifest, spriteRecord, texture, imageAssetPath);
                 result.Assets.Add(asset);
+                if (asset.Status == "UNCHANGED")
+                {
+                    result.UnchangedAssets++;
+                }
+                else
+                {
+                    result.UpdatedAssets++;
+                }
+                if (asset.OverrideApplied)
+                {
+                    result.OverridesApplied++;
+                }
             }
 
             result.ImportedSprites = result.Assets.Count;
@@ -133,20 +177,42 @@ namespace NeoEng.DTrace.Editor
             Sprite sprite = Sprite.Create(texture, rect, pivot, float.Parse(PixelsPerUnit), 0, SpriteMeshType.FullRect);
             sprite.name = safeId + ".sprite";
             string spritePath = GeneratedRoot + "/" + safeId + ".sprite.asset";
-            ReplaceGeneratedAsset(spritePath, sprite);
 
             Vector2[] polygon = record.polygon_in_sprite ?? Array.Empty<Vector2>();
             if (polygon.Length < 3)
             {
                 throw new InvalidDataException("sprite polygon must contain at least three points");
             }
-
+            OverrideData overrideData = ReadOverride(safeId, record.id);
+            Vector2[] effectivePolygon = overrideData.Polygon ?? polygon;
+            string expectedFingerprint = ComputeFingerprint(record.id, safeId + ".sprite", ToUnityPoints(effectivePolygon, record.rect.h, record.pivot));
+            string prefabPath = GeneratedRoot + "/" + safeId + ".prefab";
+            ExistingSync existing = InspectExistingPrefab(prefabPath, manifest, expectedFingerprint, overrideData.Hash);
+            if (existing.Unchanged)
+            {
+                return new ImportedAsset
+                {
+                    ObjectId = record.id,
+                    SpritePath = spritePath,
+                    MetadataPath = GeneratedRoot + "/" + safeId + ".metadata.asset",
+                    PrefabPath = prefabPath,
+                    ColliderPathCount = 1,
+                    ColliderPointCount = effectivePolygon.Length,
+                    Status = "UNCHANGED",
+                    OverrideApplied = overrideData.Polygon != null,
+                };
+            }
+            ReplaceGeneratedAsset(spritePath, sprite);
             NeoEngImportedSpriteMetadata metadata = ScriptableObject.CreateInstance<NeoEngImportedSpriteMetadata>();
             metadata.name = safeId + ".metadata";
             metadata.objectId = record.id;
             metadata.generatorId = manifest.generator.id;
             metadata.generatorVersion = manifest.generator.version;
             metadata.sourceImagePath = imageAssetPath;
+            metadata.sourceImageHash = manifest.source.image.sha256;
+            metadata.sourceMetadataHash = manifest.source.metadata.sha256;
+            metadata.overrideHash = overrideData.Hash;
+            metadata.generatedFingerprint = expectedFingerprint;
             metadata.layerId = record.layer;
             metadata.groupId = record.group;
             metadata.trimmed = record.trimmed;
@@ -155,7 +221,7 @@ namespace NeoEng.DTrace.Editor
             metadata.pivotPixels = new Vector2(record.pivot.x, record.pivot.y);
             metadata.pivotNormalized = pivot;
             metadata.sprite = sprite;
-            metadata.polygonInSprite = polygon;
+            metadata.polygonInSprite = effectivePolygon;
             string metadataPath = GeneratedRoot + "/" + safeId + ".metadata.asset";
             ReplaceGeneratedAsset(metadataPath, metadata);
 
@@ -164,12 +230,15 @@ namespace NeoEng.DTrace.Editor
             renderer.sprite = sprite;
             PolygonCollider2D collider = root.AddComponent<PolygonCollider2D>();
             collider.pathCount = 1;
-            collider.SetPath(0, ToUnityPoints(polygon, record.rect.h, record.pivot));
+            collider.SetPath(0, ToUnityPoints(effectivePolygon, record.rect.h, record.pivot));
             NeoEngGeneratedMarker marker = root.AddComponent<NeoEngGeneratedMarker>();
             marker.generatorId = manifest.generator.id;
             marker.generatorVersion = manifest.generator.version;
             marker.objectId = record.id;
-            string prefabPath = GeneratedRoot + "/" + safeId + ".prefab";
+            marker.sourceImageHash = manifest.source.image.sha256;
+            marker.sourceMetadataHash = manifest.source.metadata.sha256;
+            marker.overrideHash = overrideData.Hash;
+            marker.generatedFingerprint = expectedFingerprint;
             if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
             {
                 AssetDatabase.DeleteAsset(prefabPath);
@@ -188,8 +257,121 @@ namespace NeoEng.DTrace.Editor
                 MetadataPath = metadataPath,
                 PrefabPath = prefabPath,
                 ColliderPathCount = 1,
-                ColliderPointCount = polygon.Length,
+                ColliderPointCount = effectivePolygon.Length,
+                Status = "UPDATED",
+                OverrideApplied = overrideData.Polygon != null,
             };
+        }
+
+        private static ExistingSync InspectExistingPrefab(
+            string prefabPath,
+            IntegrationManifest manifest,
+            string expectedFingerprint,
+            string overrideHash)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            if (prefab == null)
+            {
+                return ExistingSync.NewAsset();
+            }
+            NeoEngGeneratedMarker marker = prefab.GetComponent<NeoEngGeneratedMarker>();
+            SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
+            PolygonCollider2D collider = prefab.GetComponent<PolygonCollider2D>();
+            if (marker == null || renderer == null || renderer.sprite == null || collider == null ||
+                string.IsNullOrWhiteSpace(marker.sourceImageHash) ||
+                string.IsNullOrWhiteSpace(marker.sourceMetadataHash) ||
+                string.IsNullOrWhiteSpace(marker.generatedFingerprint))
+            {
+                return RequireDestructiveConfirmation("generated Unity output has no synchronization state or contains manual content", prefabPath);
+            }
+            string actualFingerprint = ComputePrefabFingerprint(prefab);
+            if (actualFingerprint != marker.generatedFingerprint)
+            {
+                return RequireDestructiveConfirmation("generated Unity output was manually modified", prefabPath);
+            }
+            bool sameSource = marker.sourceImageHash == manifest.source.image.sha256 &&
+                marker.sourceMetadataHash == manifest.source.metadata.sha256 &&
+                marker.overrideHash == overrideHash;
+            if (sameSource && marker.generatedFingerprint == expectedFingerprint)
+            {
+                return ExistingSync.UnchangedAsset();
+            }
+            return ExistingSync.UpdateAsset();
+        }
+
+        private static ExistingSync RequireDestructiveConfirmation(string message, string path)
+        {
+            if (!IsDestructiveUpdateConfirmed())
+            {
+                throw new SyncConflictException(message + ": " + path);
+            }
+            return ExistingSync.UpdateAsset();
+        }
+
+        private static bool IsDestructiveUpdateConfirmed()
+        {
+            string value = Environment.GetEnvironmentVariable(ConfirmDestructiveEnvironment);
+            return string.Equals(value, "1", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static OverrideData ReadOverride(string safeId, string objectId)
+        {
+            string assetPath = GeneratedRoot + "/" + safeId + PackageIdentity.OverrideSuffix;
+            string absolutePath = ProjectAbsolutePath(assetPath);
+            if (!File.Exists(absolutePath))
+            {
+                return OverrideData.None();
+            }
+            string content = File.ReadAllText(absolutePath, Encoding.UTF8);
+            OverridePayload payload = JsonUtility.FromJson<OverridePayload>(content);
+            if (payload == null || payload.object_id != objectId || payload.polygon_in_sprite == null || payload.polygon_in_sprite.Length < 3)
+            {
+                throw new InvalidDataException("Unity override is invalid for generated object");
+            }
+            foreach (Vector2 point in payload.polygon_in_sprite)
+            {
+                if (float.IsNaN(point.x) || float.IsNaN(point.y) || float.IsInfinity(point.x) || float.IsInfinity(point.y))
+                {
+                    throw new InvalidDataException("Unity override contains non-finite polygon coordinates");
+                }
+            }
+            return new OverrideData
+            {
+                Polygon = payload.polygon_in_sprite,
+                Hash = ComputeSha256(Encoding.UTF8.GetBytes(content)),
+            };
+        }
+
+        private static string ComputePrefabFingerprint(GameObject prefab)
+        {
+            SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
+            PolygonCollider2D collider = prefab.GetComponent<PolygonCollider2D>();
+            NeoEngGeneratedMarker marker = prefab.GetComponent<NeoEngGeneratedMarker>();
+            Vector2[] points = collider.GetPath(0);
+            string signature = marker.objectId + "|" + renderer.sprite.name + "|" +
+                string.Join(";", points.Select(FormatPoint));
+            return ComputeSha256(Encoding.UTF8.GetBytes(signature));
+        }
+
+        private static string ComputeFingerprint(string objectId, string spriteName, Vector2[] points)
+        {
+            string signature = objectId + "|" + spriteName + "|" +
+                string.Join(";", points.Select(FormatPoint));
+            return ComputeSha256(Encoding.UTF8.GetBytes(signature));
+        }
+
+        private static string FormatPoint(Vector2 point)
+        {
+            return Math.Round(point.x, 6).ToString("0.######", System.Globalization.CultureInfo.InvariantCulture) + "," + Math.Round(point.y, 6).ToString("0.######", System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        private static string ComputeSha256(byte[] bytes)
+        {
+            using (SHA256 sha = SHA256.Create())
+            {
+                return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+            }
         }
 
         private static void ValidateGeneratedAssets(ImportResult result, IntegrationManifest manifest)
@@ -241,6 +423,71 @@ namespace NeoEng.DTrace.Editor
             AssetDatabase.CreateAsset(asset, assetPath);
         }
 
+        private static void ApplyPolygonArrays(IntegrationManifest manifest, string manifestText)
+        {
+            if (manifest == null || manifest.metadata == null || manifest.metadata.sprites == null)
+            {
+                return;
+            }
+
+            MatchCollection matches = Regex.Matches(
+                manifestText,
+                "\"polygon_in_sprite\"\\s*:\\s*\\[",
+                RegexOptions.CultureInvariant);
+            if (matches.Count != manifest.metadata.sprites.Length)
+            {
+                throw new InvalidDataException("manifest polygon count does not match sprite count");
+            }
+
+            for (int index = 0; index < matches.Count; index++)
+            {
+                int opening = manifestText.IndexOf('[', matches[index].Index);
+                string arrayText = ExtractBalancedArray(manifestText, opening);
+                MatchCollection points = Regex.Matches(
+                    arrayText,
+                    @"\[\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*,\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*\]",
+                    RegexOptions.CultureInvariant);
+                if (points.Count < 3)
+                {
+                    throw new InvalidDataException("manifest sprite polygon must contain at least three points");
+                }
+
+                Vector2[] polygon = new Vector2[points.Count];
+                for (int pointIndex = 0; pointIndex < points.Count; pointIndex++)
+                {
+                    float x = float.Parse(points[pointIndex].Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
+                    float y = float.Parse(points[pointIndex].Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
+                    polygon[pointIndex] = new Vector2(x, y);
+                }
+                manifest.metadata.sprites[index].polygon_in_sprite = polygon;
+            }
+        }
+
+        private static string ExtractBalancedArray(string text, int opening)
+        {
+            if (opening < 0 || opening >= text.Length || text[opening] != '[')
+            {
+                throw new InvalidDataException("manifest polygon array is invalid");
+            }
+
+            int depth = 0;
+            for (int index = opening; index < text.Length; index++)
+            {
+                if (text[index] == '[')
+                {
+                    depth++;
+                }
+                else if (text[index] == ']')
+                {
+                    depth--;
+                    if (depth == 0)
+                    {
+                        return text.Substring(opening, index - opening + 1);
+                    }
+                }
+            }
+            throw new InvalidDataException("manifest polygon array is unterminated");
+        }
         private static void ValidateManifest(IntegrationManifest manifest)
         {
             if (manifest == null || manifest.source == null || manifest.source.image == null || manifest.metadata == null)
@@ -411,6 +658,9 @@ namespace NeoEng.DTrace.Editor
             public int ImportedPrefabs;
             public int ImportedColliders;
             public List<ImportedAsset> Assets = new List<ImportedAsset>();
+            public int UpdatedAssets;
+            public int UnchangedAssets;
+            public int OverridesApplied;
 
             public static ImportResult SuccessResult(IntegrationManifest manifest, string sourceImagePath)
             {
@@ -435,6 +685,37 @@ namespace NeoEng.DTrace.Editor
             public string PrefabPath;
             public int ColliderPathCount;
             public int ColliderPointCount;
+            public string Status;
+            public bool OverrideApplied;
+        }
+
+        [Serializable]
+        public sealed class OverridePayload
+        {
+            public string object_id;
+            public Vector2[] polygon_in_sprite;
+        }
+
+        private sealed class OverrideData
+        {
+            public Vector2[] Polygon;
+            public string Hash;
+
+            public static OverrideData None() { return new OverrideData { Polygon = null, Hash = "" }; }
+        }
+
+        private sealed class ExistingSync
+        {
+            public bool Unchanged;
+
+            public static ExistingSync NewAsset() { return new ExistingSync(); }
+            public static ExistingSync UpdateAsset() { return new ExistingSync(); }
+            public static ExistingSync UnchangedAsset() { return new ExistingSync { Unchanged = true }; }
+        }
+
+        private sealed class SyncConflictException : InvalidOperationException
+        {
+            public SyncConflictException(string message) : base(message) { }
         }
     }
 }

@@ -64,6 +64,11 @@ def sanitize(text: str, temporary_root: Path) -> str:
         r"\1 <redacted>",
         value,
     )
+    value = re.sub(r"LicenseClient-[A-Za-z0-9_.-]+", "LicenseClient-<redacted>", value)
+    value = re.sub(r"(?i)\bPId:\s*\d+", "PId: <redacted>", value)
+    value = re.sub(r"(?i)\bprocessId\":\s*\d+", 'processId":<redacted>', value)
+    value = re.sub(r"(?i)\bPort\s+\d+", "Port <redacted>", value)
+    value = re.sub(r"WindowsEditor\(\d+,[^)]+\)", "WindowsEditor(<redacted>)", value)
     return value
 
 

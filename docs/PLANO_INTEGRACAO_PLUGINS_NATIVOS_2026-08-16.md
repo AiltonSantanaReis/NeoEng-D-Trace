@@ -1,7 +1,7 @@
 # Plano de integração dos adaptadores nativos
 
 Data: 2026-08-16
-Estado: etapas 4, 5 e 6 aprovadas localmente nos escopos documentados; etapas 7 a 10 não iniciadas; nenhuma sincronização nativa completa é declarada integrada sem testes reais no ambiente correspondente.
+Estado: etapas 4, 5, 6 e 7 aprovadas localmente nos escopos documentados; etapas 8 a 10 não iniciadas; nenhuma etapa é declarada integrada sem commit, CI e verificação pós-merge.
 
 ## Objetivo
 
@@ -54,8 +54,8 @@ Adicionar adaptadores source-only para Godot e Unity, integrados ao NeoEng-D-Tra
 - a etapa 5 possui pacote Unity UPM source-only, assemblies Runtime/Editor e diagnóstico batch validados no Unity real `6000.5.7f1`;
 - a etapa 5 foi validada somente no escopo do pacote; sincronização e rollback permanecem posteriores;
 - a etapa 6 possui importação Unity real de Sprite, ScriptableObject, PolygonCollider2D e prefab controlado, com hash de imagem e conflitos manuais testados;
-- a etapa 6 foi validada somente no escopo documentado; colisores compostos, sincronização, overrides e rollback permanecem posteriores;
-- etapas 7 a 10 permanecem NÃO INICIADAS e sem declaração de sincronização nativa.
+- a etapa 6 foi validada somente no escopo documentado; sincronização e overrides foram implementados e validados na etapa 7; rollback permanece posterior;
+- a etapa 7 foi validada localmente em Godot 4.7 e Unity 6000.5.7f1 para todos os recursos gerados no escopo atual, com hashes, overrides, divergência, confirmação destrutiva e idempotência; permanece pendente de commit, CI e merge;
 
 ## Regra de promoção
 

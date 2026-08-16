@@ -30,6 +30,12 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
     var image_reference = image.get("path") if typeof(image) == TYPE_DICTIONARY else ""
     if not ManifestDiagnostic._is_safe_relative(image_reference):
         return _failure(manifest_path, "manifest image path is not relative and safe")
+    var expected_image_hash := str(image.get("sha256", ""))
+    var metadata_source = source.get("metadata") if typeof(source) == TYPE_DICTIONARY else {}
+    var expected_metadata_hash := str(metadata_source.get("sha256", ""))
+    var actual_image_hash := _sha256_bytes(FileAccess.get_file_as_bytes("res://" + image_reference))
+    if actual_image_hash != expected_image_hash:
+        return _failure(manifest_path, "manifest image hash does not match source image")
     var texture := load("res://" + image_reference) as Texture2D
     if texture == null:
         return _failure(manifest_path, "manifest image cannot be loaded")
@@ -50,18 +56,18 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
                 "results": results,
             }
     if typeof(metadata) == TYPE_DICTIONARY and metadata.has("tileset"):
-        var tileset_result := _import_tileset(metadata.get("tileset"), manifest_path, output_root, image_reference)
+        var tileset_result := _import_tileset(metadata.get("tileset"), manifest_path, output_root, image_reference, expected_image_hash, expected_metadata_hash)
         results.append(tileset_result)
-        if tileset_result.get("status") != "UPDATED":
+        if tileset_result.get("status") != "UPDATED" and tileset_result.get("status") != "UNCHANGED":
             return {
                 "status": tileset_result.get("status"),
                 "manifest_path": manifest_path,
                 "results": results,
             }
     if typeof(metadata) == TYPE_DICTIONARY and metadata.has("animation"):
-        var animation_result := _import_animation(metadata.get("animation"), manifest_path, output_root)
+        var animation_result := _import_animation(metadata.get("animation"), manifest_path, output_root, expected_image_hash, expected_metadata_hash)
         results.append(animation_result)
-        if animation_result.get("status") != "UPDATED":
+        if animation_result.get("status") != "UPDATED" and animation_result.get("status") != "UNCHANGED":
             return {
                 "status": animation_result.get("status"),
                 "manifest_path": manifest_path,
@@ -117,19 +123,29 @@ static func _import_sprite(
     if properties.get("status") != "SUCCESS":
         return properties
     var destination := output_root.path_join(object_id + ".tscn")
-    if FileAccess.file_exists(destination):
-        var existing := FileAccess.get_file_as_string(destination)
-        if not existing.contains("metadata/neoeng_generated = true"):
-            return {"status": "CONFLICT", "id": object_id, "path": destination}
+    var source = payload.get("source", {})
+    var image_source = source.get("image", {}) if typeof(source) == TYPE_DICTIONARY else {}
+    var metadata_source = source.get("metadata", {}) if typeof(source) == TYPE_DICTIONARY else {}
+    var image_hash := str(image_source.get("sha256", ""))
+    var metadata_hash := str(metadata_source.get("sha256", ""))
+    var override := _read_override(output_root, object_id)
+    if override.get("status") != "SUCCESS":
+        return {"status": override.get("status", "FAILED"), "id": object_id, "error": override.get("error", "override is invalid")}
     var collision = sprite_data.get("collision")
+    if override.get("polygon") != null:
+        collision = {"shape_type": "polygon", "points": override.get("polygon")}
     var polygons: Array = []
     if typeof(collision) == TYPE_DICTIONARY:
         polygons = _collision_polygons(collision, rect_x, rect_y, pivot_x, pivot_y)
-    var scene_text := _build_scene_text(
+    var scene_template := _build_scene_text(
         object_id,
         manifest_path,
         _image_reference_from_manifest(payload),
         payload.get("generator", {}).get("version", ""),
+        image_hash,
+        metadata_hash,
+        str(override.get("hash", "")),
+        "",
         rect_x,
         rect_y,
         width,
@@ -139,12 +155,86 @@ static func _import_sprite(
         polygons,
         properties,
     )
+    var expected_fingerprint := _fingerprint(scene_template)
+    var scene_text := _set_fingerprint(scene_template, expected_fingerprint)
+    if FileAccess.file_exists(destination):
+        var existing := FileAccess.get_file_as_string(destination)
+        if not existing.contains("metadata/neoeng_generated = true"):
+            return {"status": "CONFLICT", "id": object_id, "path": destination, "error": "manual resource is not generated"}
+        var stored_fingerprint := _metadata_string(existing, "neoeng_generated_fingerprint")
+        var actual_fingerprint := _fingerprint(existing)
+        if stored_fingerprint.is_empty() or _metadata_string(existing, "neoeng_source_image_sha256").is_empty() or _metadata_string(existing, "neoeng_source_metadata_sha256").is_empty():
+            if not _destructive_update_confirmed():
+                return {"status": "CONFLICT", "id": object_id, "path": destination, "error": "generated resource has no synchronization state"}
+        elif actual_fingerprint != stored_fingerprint:
+            if not _destructive_update_confirmed():
+                return {"status": "CONFLICT", "id": object_id, "path": destination, "error": "manual divergence requires destructive update confirmation"}
+        elif _metadata_string(existing, "neoeng_source_image_sha256") == image_hash and _metadata_string(existing, "neoeng_source_metadata_sha256") == metadata_hash and _metadata_string(existing, "neoeng_override_sha256") == str(override.get("hash", "")) and stored_fingerprint == expected_fingerprint:
+            return {"status": "UNCHANGED", "id": object_id, "path": destination, "override_applied": override.get("polygon") != null}
     var write_result := _write_generated(destination, scene_text)
     if write_result.get("status") != "UPDATED":
         write_result["id"] = object_id
         return write_result
-    return {"status": "UPDATED", "id": object_id, "path": destination}
+    write_result["id"] = object_id
+    write_result["path"] = destination
+    write_result["override_applied"] = override.get("polygon") != null
+    return write_result
 
+
+static func _read_override(output_root: String, object_id: String) -> Dictionary:
+    var path := output_root.path_join(object_id + ".ndt.override.json")
+    if not FileAccess.file_exists(path):
+        return {"status": "SUCCESS", "polygon": null, "hash": ""}
+    var text := FileAccess.get_file_as_string(path)
+    var payload = JSON.parse_string(text)
+    if typeof(payload) != TYPE_DICTIONARY or payload.get("object_id") != object_id:
+        return {"status": "FAILED", "error": "override object id is invalid"}
+    var points = payload.get("polygon_in_sprite")
+    if typeof(points) != TYPE_ARRAY or points.size() < 3:
+        return {"status": "FAILED", "error": "override polygon is invalid"}
+    for point in points:
+        if typeof(point) != TYPE_ARRAY or point.size() != 2 or not is_finite(float(point[0])) or not is_finite(float(point[1])):
+            return {"status": "FAILED", "error": "override polygon contains invalid coordinates"}
+    return {"status": "SUCCESS", "polygon": points, "hash": _sha256_bytes(text.to_utf8_buffer())}
+
+
+static func _sha256_bytes(data: PackedByteArray) -> String:
+    var context := HashingContext.new()
+    context.start(HashingContext.HASH_SHA256)
+    context.update(data)
+    return context.finish().hex_encode()
+
+static func _fingerprint(text: String) -> String:
+    return _sha256_bytes(_without_fingerprint(text).to_utf8_buffer())
+
+
+static func _without_fingerprint(text: String) -> String:
+    var normalized := PackedStringArray()
+    for item in text.split("\n"):
+        if item.begins_with("metadata/neoeng_generated_fingerprint = "):
+            normalized.append("metadata/neoeng_generated_fingerprint = " + _quote(""))
+        else:
+            normalized.append(item)
+    return "\n".join(normalized)
+
+static func _set_fingerprint(text: String, fingerprint: String) -> String:
+    return text.replace("metadata/neoeng_generated_fingerprint = %s" % _quote(""), "metadata/neoeng_generated_fingerprint = " + _quote(fingerprint))
+
+
+static func _metadata_string(text: String, key: String) -> String:
+    var prefix := "metadata/" + key + " = "
+    for line in text.split("\n"):
+        if line.begins_with(prefix):
+            var value = line.trim_prefix(prefix).strip_edges()
+            if value.begins_with("\"") and value.ends_with("\""):
+                return str(JSON.parse_string(value))
+            return value
+    return ""
+
+
+static func _destructive_update_confirmed() -> bool:
+    var value := OS.get_environment("NEOENG_STAGE7_CONFIRM_DESTRUCTIVE").to_lower()
+    return value == "1" or value == "true"
 
 static func _sprite_properties(sprite_data: Dictionary) -> Dictionary:
     var layer = sprite_data.get("layer", "layer_default")
@@ -180,6 +270,8 @@ static func _import_tileset(
     manifest_path: String,
     output_root: String,
     image_reference: String,
+    source_image_hash: String,
+    source_metadata_hash: String,
 ) -> Dictionary:
     if typeof(tileset_data) != TYPE_DICTIONARY:
         return {"status": "FAILED", "error": "tileset payload must be an object"}
@@ -202,24 +294,49 @@ static func _import_tileset(
         if tile_error != "":
             return {"status": "FAILED", "error": tile_error}
     var destination := output_root.path_join("tileset.tres")
-    if FileAccess.file_exists(destination):
-        var existing := FileAccess.get_file_as_string(destination)
-        if not existing.contains("metadata/neoeng_generated = true"):
-            return {"status": "CONFLICT", "path": destination}
     var resource_text := _build_tileset_text(
         manifest_path,
         image_reference,
+        source_image_hash,
+        source_metadata_hash,
         tile_w,
         tile_h,
         spacing,
         margin,
         tiles,
     )
-    var result := _write_generated(destination, resource_text)
+    var result := _synchronize_generated(destination, resource_text, source_image_hash, source_metadata_hash)
     result["path"] = destination
     result["tile_count"] = tiles.size()
     return result
 
+
+static func _synchronize_generated(
+    destination: String,
+    template: String,
+    source_image_hash: String,
+    source_metadata_hash: String,
+    override_hash: String = "",
+) -> Dictionary:
+    var expected_fingerprint := _fingerprint(template)
+    var generated_text := _set_fingerprint(template, expected_fingerprint)
+    if FileAccess.file_exists(destination):
+        var existing := FileAccess.get_file_as_string(destination)
+        if not existing.contains("metadata/neoeng_generated = true"):
+            return {"status": "CONFLICT", "path": destination, "error": "manual resource is not generated"}
+        var stored_fingerprint := _metadata_string(existing, "neoeng_generated_fingerprint")
+        var actual_fingerprint := _fingerprint(existing)
+        if stored_fingerprint.is_empty() or _metadata_string(existing, "neoeng_source_image_sha256").is_empty() or _metadata_string(existing, "neoeng_source_metadata_sha256").is_empty():
+            if not _destructive_update_confirmed():
+                return {"status": "CONFLICT", "path": destination, "error": "generated resource has no synchronization state"}
+        elif actual_fingerprint != stored_fingerprint:
+            if not _destructive_update_confirmed():
+                return {"status": "CONFLICT", "path": destination, "error": "manual divergence requires destructive update confirmation"}
+        elif _metadata_string(existing, "neoeng_source_image_sha256") == source_image_hash and _metadata_string(existing, "neoeng_source_metadata_sha256") == source_metadata_hash and _metadata_string(existing, "neoeng_override_sha256") == override_hash and stored_fingerprint == expected_fingerprint:
+            return {"status": "UNCHANGED", "path": destination}
+    var result := _write_generated(destination, generated_text)
+    result["path"] = destination
+    return result
 
 static func _validate_tile(tile, tile_w: int, tile_h: int) -> String:
     if typeof(tile) != TYPE_DICTIONARY:
@@ -251,6 +368,8 @@ static func _import_animation(
     animation_data,
     manifest_path: String,
     output_root: String,
+    source_image_hash: String,
+    source_metadata_hash: String,
 ) -> Dictionary:
     if typeof(animation_data) != TYPE_DICTIONARY:
         return {"status": "FAILED", "error": "animation payload must be an object"}
@@ -268,15 +387,11 @@ static func _import_animation(
             return descriptor
         frame_descriptors.append(descriptor)
     var destination := output_root.path_join("animation.tscn")
-    if FileAccess.file_exists(destination):
-        var existing := FileAccess.get_file_as_string(destination)
-        if not existing.contains("metadata/neoeng_generated = true"):
-            return {"status": "CONFLICT", "path": destination}
     var speed := float(animation_data.get("speed", 12.0))
     if not is_finite(speed) or speed <= 0.0:
         return {"status": "FAILED", "error": "animation speed is invalid"}
-    var scene_text := _build_animation_text(manifest_path, frame_descriptors, speed, bool(animation_data.get("loop", true)))
-    var result := _write_generated(destination, scene_text)
+    var scene_text := _build_animation_text(manifest_path, source_image_hash, source_metadata_hash, frame_descriptors, speed, bool(animation_data.get("loop", true)))
+    var result := _synchronize_generated(destination, scene_text, source_image_hash, source_metadata_hash)
     result["path"] = destination
     result["frame_count"] = frame_descriptors.size()
     return result
@@ -311,6 +426,10 @@ static func _build_scene_text(
     manifest_path: String,
     image_reference: String,
     generator_version: String,
+    source_image_hash: String,
+    source_metadata_hash: String,
+    override_hash: String,
+    fingerprint: String,
     rect_x: float,
     rect_y: float,
     width: float,
@@ -334,6 +453,10 @@ static func _build_scene_text(
     lines.append("metadata/neoeng_manifest = %s" % _quote(manifest_path))
     lines.append("metadata/neoeng_object_id = %s" % _quote(object_id))
     lines.append("metadata/neoeng_generator_version = %s" % _quote(generator_version))
+    lines.append("metadata/neoeng_source_image_sha256 = %s" % _quote(source_image_hash))
+    lines.append("metadata/neoeng_source_metadata_sha256 = %s" % _quote(source_metadata_hash))
+    lines.append("metadata/neoeng_override_sha256 = %s" % _quote(override_hash))
+    lines.append("metadata/neoeng_generated_fingerprint = %s" % _quote(fingerprint))
     lines.append("metadata/neoeng_layer = %s" % _quote(properties.get("layer", "")))
     lines.append("metadata/neoeng_group = %s" % _quote(properties.get("group", "")))
     lines.append("metadata/neoeng_trimmed = %s" % str(properties.get("trimmed", false)).to_lower())
@@ -358,6 +481,8 @@ static func _build_scene_text(
 static func _build_tileset_text(
     manifest_path: String,
     image_reference: String,
+    source_image_hash: String,
+    source_metadata_hash: String,
     tile_w: int,
     tile_h: int,
     spacing: int,
@@ -388,12 +513,18 @@ static func _build_tileset_text(
     lines.append("physics_layer_0/collision_mask = 1")
     lines.append("metadata/neoeng_generated = true")
     lines.append("metadata/neoeng_manifest = %s" % _quote(manifest_path))
+    lines.append("metadata/neoeng_source_image_sha256 = %s" % _quote(source_image_hash))
+    lines.append("metadata/neoeng_source_metadata_sha256 = %s" % _quote(source_metadata_hash))
+    lines.append("metadata/neoeng_override_sha256 = %s" % _quote(""))
+    lines.append("metadata/neoeng_generated_fingerprint = %s" % _quote(""))
     lines.append("sources/0 = SubResource(\"TileSetAtlasSource_1\")")
     return "\n".join(lines) + "\n"
 
 
 static func _build_animation_text(
     manifest_path: String,
+    source_image_hash: String,
+    source_metadata_hash: String,
     frames: Array,
     speed: float,
     loop: bool,
@@ -429,6 +560,10 @@ static func _build_animation_text(
     lines.append("")
     lines.append("[node name=\"NeoEngGenerated_Animation\" type=\"Node2D\"]")
     lines.append("metadata/neoeng_generated = true")
+    lines.append("metadata/neoeng_source_image_sha256 = %s" % _quote(source_image_hash))
+    lines.append("metadata/neoeng_source_metadata_sha256 = %s" % _quote(source_metadata_hash))
+    lines.append("metadata/neoeng_override_sha256 = %s" % _quote(""))
+    lines.append("metadata/neoeng_generated_fingerprint = %s" % _quote(""))
     lines.append("metadata/neoeng_manifest = %s" % _quote(manifest_path))
     lines.append("metadata/neoeng_animation_frame_count = %d" % frames.size())
     if has_collisions:

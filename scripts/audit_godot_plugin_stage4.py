@@ -186,7 +186,15 @@ def main() -> int:
         commands = [
             _run(
                 args.executable,
-                ["--headless", "--editor", "--path", str(workspace), "--import"],
+                [
+                    "--headless",
+                    "--editor",
+                    "--path",
+                    str(workspace),
+                    "--import",
+                    "--quit-after",
+                    "5",
+                ],
                 workspace,
             ),
             _run(
@@ -197,6 +205,8 @@ def main() -> int:
                     str(workspace),
                     "--script",
                     "validate_stage4.gd",
+                    "--quit-after",
+                    "5",
                 ],
                 workspace,
             ),

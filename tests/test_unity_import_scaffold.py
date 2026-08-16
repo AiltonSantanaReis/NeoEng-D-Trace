@@ -20,6 +20,10 @@ def test_unity_importer_is_present_in_editor_source_only_package():
     assert "SaveAsPrefabAsset" in source
     assert "ValidateImageHash" in source
     assert "generated root contains manual content" in source
+    assert "ApplyPolygonArrays" in source
+    assert "ExtractBalancedArray" in source
+    assert "SyncConflictException" in source
+    assert "ConfirmDestructiveEnvironment" in source
 
 
 def test_unity_importer_keeps_stage_boundary_and_package_identity():
