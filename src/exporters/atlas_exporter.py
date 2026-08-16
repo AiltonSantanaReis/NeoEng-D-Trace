@@ -8,7 +8,7 @@ import os
 import shutil
 import tempfile
 from types import SimpleNamespace
-from typing import Any, Dict, Iterable, List, Optional, Protocol, Tuple, cast
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Protocol, Tuple, cast
 
 from PIL import Image
 
@@ -93,11 +93,54 @@ def _deterministic_sort(
     )
 
 
+def _extrude_edges(image: Image.Image, bleed: int) -> Image.Image:
+    """Return an RGBA image with edge pixels duplicated by ``bleed`` pixels."""
+
+    if bleed == 0:
+        return image
+    rgba = image.convert("RGBA")
+    width, height = rgba.size
+    result = Image.new("RGBA", (width + 2 * bleed, height + 2 * bleed))
+    result.paste(rgba, (bleed, bleed))
+    result.paste(
+        rgba.crop((0, 0, width, 1)).resize((width, bleed), Image.Resampling.NEAREST),
+        (bleed, 0),
+    )
+    result.paste(
+        rgba.crop((0, height - 1, width, height)).resize(
+            (width, bleed), Image.Resampling.NEAREST
+        ),
+        (bleed, height + bleed),
+    )
+    result.paste(
+        rgba.crop((0, 0, 1, height)).resize((bleed, height), Image.Resampling.NEAREST),
+        (0, bleed),
+    )
+    result.paste(
+        rgba.crop((width - 1, 0, width, height)).resize(
+            (bleed, height), Image.Resampling.NEAREST
+        ),
+        (width + bleed, bleed),
+    )
+    for source, position in (
+        ((0, 0, 1, 1), (0, 0)),
+        ((width - 1, 0, width, 1), (width + bleed, 0)),
+        ((0, height - 1, 1, height), (0, height + bleed)),
+        ((width - 1, height - 1, width, height), (width + bleed, height + bleed)),
+    ):
+        result.paste(
+            rgba.crop(source).resize((bleed, bleed), Image.Resampling.NEAREST),
+            position,
+        )
+    return result
+
+
 def pack_sprites_to_atlas(
     items: List[Tuple[Image.Image, Dict[str, Any]]],
     max_size: Tuple[int, int] = (2048, 2048),
     padding: int = 2,
     allow_rotate: bool = False,
+    bleed: int = 0,
 ) -> List[Tuple[Image.Image, List[Dict[str, Any]]]]:
     """
     Pack sprites into texture atlas(es) using MaxRects (if available) or Shelf.
@@ -122,13 +165,16 @@ def pack_sprites_to_atlas(
         raise ValueError(f"atlas exceeds the pixel limit of {MAX_ATLAS_PIXELS}")
     if isinstance(padding, bool) or not isinstance(padding, int) or padding < 0:
         raise ValueError("padding must be a non-negative integer")
+    if isinstance(bleed, bool) or not isinstance(bleed, int) or bleed < 0:
+        raise ValueError("bleed must be a non-negative integer")
     if padding * 2 >= min(max_w, max_h):
         raise ValueError("padding leaves no usable atlas area")
     if len(items) > MAX_ATLAS_ITEMS:
         raise ValueError(f"atlas item count exceeds the limit of {MAX_ATLAS_ITEMS}")
 
     total_input_pixels = 0
-    for image, _metadata in items:
+    prepared_items: List[Tuple[Image.Image, Dict[str, Any]]] = []
+    for image, metadata in items:
         if not isinstance(image, Image.Image):
             raise ValueError("atlas items must contain Pillow images")
         if image.width <= 0 or image.height <= 0:
@@ -137,7 +183,16 @@ def pack_sprites_to_atlas(
             raise ValueError(
                 f"atlas item dimensions cannot exceed {MAX_ATLAS_DIMENSION}"
             )
-        pixels = image.width * image.height
+        prepared = _extrude_edges(image, bleed)
+        if (
+            prepared.width > MAX_ATLAS_DIMENSION
+            or prepared.height > MAX_ATLAS_DIMENSION
+        ):
+            raise ValueError(
+                "atlas item dimensions including bleed cannot exceed "
+                f"{MAX_ATLAS_DIMENSION}"
+            )
+        pixels = prepared.width * prepared.height
         if pixels > MAX_ATLAS_PIXELS:
             raise ValueError(
                 f"atlas item exceeds the pixel limit of {MAX_ATLAS_PIXELS}"
@@ -148,8 +203,14 @@ def pack_sprites_to_atlas(
                 "atlas inputs exceed the aggregate pixel limit of "
                 f"{MAX_ATLAS_TOTAL_INPUT_PIXELS}"
             )
+        prepared_items.append(
+            (
+                prepared,
+                {**metadata, "_atlas_source_size": (image.width, image.height)},
+            )
+        )
 
-    sorted_items = _deterministic_sort(items)
+    sorted_items = _deterministic_sort(prepared_items)
 
     atlases = []
 
@@ -234,11 +295,26 @@ def pack_sprites_to_atlas(
                     "name": name,
                     "atlas": current_atlas_index,
                     "rect": {
+                        "x": node.x + bleed,
+                        "y": node.y + bleed,
+                        "w": (
+                            meta_dict["_atlas_source_size"][0]
+                            if not rotated
+                            else meta_dict["_atlas_source_size"][1]
+                        ),
+                        "h": (
+                            meta_dict["_atlas_source_size"][1]
+                            if not rotated
+                            else meta_dict["_atlas_source_size"][0]
+                        ),
+                    },
+                    "packed_rect": {
                         "x": node.x,
                         "y": node.y,
                         "w": img_to_paste.width,
                         "h": img_to_paste.height,
                     },
+                    "extrusion": bleed,
                     "rotated": rotated,
                 }
                 meta.append(entry)
@@ -258,8 +334,12 @@ def pack_sprites_to_atlas(
             remaining_items.pop(0)
             continue
 
-        used_width = max(entry["rect"]["x"] + entry["rect"]["w"] for entry in meta)
-        used_height = max(entry["rect"]["y"] + entry["rect"]["h"] for entry in meta)
+        used_width = max(
+            entry["packed_rect"]["x"] + entry["packed_rect"]["w"] for entry in meta
+        )
+        used_height = max(
+            entry["packed_rect"]["y"] + entry["packed_rect"]["h"] for entry in meta
+        )
         atlas_cropped = atlas_img.crop(
             (
                 0,
@@ -325,6 +405,8 @@ def build_atlas(
     max_size: Tuple[int, int] = (2048, 2048),
     padding: int = 2,
     allow_rotate: bool = False,
+    bleed: int = 1,
+    metadata_by_name: Optional[Mapping[str, Mapping[str, Any]]] = None,
 ) -> List[Dict[str, Any]]:
     """High-level helper used by UI."""
     os.makedirs(out_dir, exist_ok=True)
@@ -335,10 +417,19 @@ def build_atlas(
         max_size=max_size,
         padding=padding,
         allow_rotate=allow_rotate,
+        bleed=bleed,
     )
 
     results = []
     for idx, (atlas_img, meta) in enumerate(atlases):
+        if metadata_by_name:
+            for entry in meta:
+                source = metadata_by_name.get(entry["name"])
+                if source is None:
+                    continue
+                for key in ("pivot", "pivot_normalized"):
+                    if key in source:
+                        entry[key] = source[key]
         atlas_path = os.path.join(out_dir, f"{base_name}_{idx}.png")
         json_path = os.path.join(out_dir, f"{base_name}_{idx}.json")
         save_atlas(atlas_img, meta, atlas_path, json_path)

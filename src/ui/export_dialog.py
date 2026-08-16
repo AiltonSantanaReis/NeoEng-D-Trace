@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QGroupBox,
     QHBoxLayout,
+    QInputDialog,
     QLabel,
     QLayout,
     QMessageBox,
@@ -32,7 +33,11 @@ from src.core.validation_events import (
 
 # Protected imports keep the dialog available even if one exporter is missing.
 try:
-    from src.exporters.sprite_exporter import extract_masked_sprite, save_sprite
+    from src.exporters.sprite_exporter import (
+        _to_pil_rgba,
+        extract_masked_sprite,
+        save_sprite,
+    )
 
     HAS_SPRITE_EXPORTER = True
 except ImportError:
@@ -48,12 +53,28 @@ except ImportError:
     logger.error("Failed to import atlas_exporter")
 
 try:
-    from src.exporters.json_exporter import export_metadata
+    from src.exporters.json_exporter import build_object_metadata, export_metadata
 
     HAS_METADATA_EXPORTER = True
 except ImportError:
     HAS_METADATA_EXPORTER = False
     logger.error("Failed to import json_exporter")
+
+try:
+    from src.exporters.tileset_exporter import prepare_tileset, save_tileset
+
+    HAS_TILESET_EXPORTER = True
+except ImportError:
+    HAS_TILESET_EXPORTER = False
+    logger.error("Failed to import tileset_exporter")
+
+try:
+    from src.exporters.animation_batch import export_animation_frames
+
+    HAS_ANIMATION_EXPORTER = True
+except ImportError:
+    HAS_ANIMATION_EXPORTER = False
+    logger.error("Failed to import animation_batch")
 
 try:
     from src.exporters.gltf_exporter import (
@@ -77,6 +98,8 @@ class ExportDialog(QDialog):
             "single": "Export Selected Sprite",
             "batch": "Batch Export All Sprites",
             "atlas": "Build Texture Atlas",
+            "tileset": "Prepare Tileset Collisions",
+            "animation_batch": "Detect Animation Frames",
             "metadata_heading": "Engine Metadata (JSON)",
             "target": "Target:",
             "profile_generic": "Generic JSON",
@@ -137,6 +160,8 @@ class ExportDialog(QDialog):
             "single": "Exportar Sprite Selecionado",
             "batch": "Exportar Todos os Sprites em Lote",
             "atlas": "Criar Atlas de Texturas",
+            "tileset": "Preparar Colisões de Tileset",
+            "animation_batch": "Detectar Frames de Animação",
             "metadata_heading": "Metadados da Engine (JSON)",
             "target": "Destino:",
             "profile_generic": "JSON Genérico",
@@ -228,6 +253,8 @@ class ExportDialog(QDialog):
         self.btn_single = QPushButton()
         self.btn_batch = QPushButton()
         self.btn_atlas = QPushButton()
+        self.btn_tileset = QPushButton()
+        self.btn_animation_batch = QPushButton()
 
         self.metadata_heading_label = QLabel()
         metadata_row = QHBoxLayout()
@@ -246,6 +273,8 @@ class ExportDialog(QDialog):
         l_2d.addWidget(self.btn_single)
         l_2d.addWidget(self.btn_batch)
         l_2d.addWidget(self.btn_atlas)
+        l_2d.addWidget(self.btn_tileset)
+        l_2d.addWidget(self.btn_animation_batch)
         l_2d.addWidget(self.metadata_heading_label)
         l_2d.addLayout(metadata_row)
         l_2d.addWidget(self.btn_metadata_selected)
@@ -276,6 +305,8 @@ class ExportDialog(QDialog):
         self.btn_single.clicked.connect(self.export_single)
         self.btn_batch.clicked.connect(self.export_batch)
         self.btn_atlas.clicked.connect(self.export_atlas)
+        self.btn_tileset.clicked.connect(self.export_tileset)
+        self.btn_animation_batch.clicked.connect(self.export_animation_batch)
         self.btn_metadata_selected.clicked.connect(self.export_selected_metadata)
         self.btn_gltf_scene.clicked.connect(self.export_gltf_scene)
         self.btn_gltf_object.clicked.connect(self.export_gltf_object)
@@ -285,6 +316,10 @@ class ExportDialog(QDialog):
             self.btn_batch.setEnabled(False)
         if not HAS_ATLAS_EXPORTER:
             self.btn_atlas.setEnabled(False)
+        if not HAS_TILESET_EXPORTER:
+            self.btn_tileset.setEnabled(False)
+        if not HAS_ANIMATION_EXPORTER:
+            self.btn_animation_batch.setEnabled(False)
         if not HAS_METADATA_EXPORTER:
             self.metadata_profile.setEnabled(False)
             self.btn_metadata_selected.setEnabled(False)
@@ -300,6 +335,8 @@ class ExportDialog(QDialog):
         self.btn_single.setText(t["single"])
         self.btn_batch.setText(t["batch"])
         self.btn_atlas.setText(t["atlas"])
+        self.btn_tileset.setText(t["tileset"])
+        self.btn_animation_batch.setText(t["animation_batch"])
         self.metadata_heading_label.setText(t["metadata_heading"])
         self.metadata_target_label.setText(t["target"])
         profile_keys = (
@@ -333,6 +370,8 @@ class ExportDialog(QDialog):
             self.btn_single,
             self.btn_batch,
             self.btn_atlas,
+            self.btn_tileset,
+            self.btn_animation_batch,
             self.btn_metadata_selected,
             self.btn_gltf_scene,
             self.btn_gltf_object,
@@ -345,11 +384,13 @@ class ExportDialog(QDialog):
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
         )
 
-    def _check_prerequisites(self, require_selection=False, require_image=True) -> bool:
+    def _check_prerequisites(
+        self, require_selection=False, require_image=True, require_objects=True
+    ) -> bool:
         if require_image and self.scene.image is None:
             QMessageBox.critical(self, self.t["error"], self.t["no_image"])
             return False
-        if not self.scene.objects:
+        if require_objects and not self.scene.objects:
             QMessageBox.information(self, self.t["info"], self.t["no_objects"])
             return False
         if require_selection and (
@@ -619,6 +660,101 @@ class ExportDialog(QDialog):
             message += self.t["batch_errors"].format(count=errors)
         QMessageBox.information(self, self.t["batch_title"], message)
 
+    def export_tileset(self):
+        started_at = time.perf_counter()
+        if not self._check_prerequisites(require_objects=False):
+            record_validation_event(
+                "export.tileset", "BLOCKED", duration_ms=elapsed_ms(started_at)
+            )
+            return
+        width, accepted = QInputDialog.getInt(
+            self, self.t["tileset"], "Tile width", 16, 1, 4096
+        )
+        if not accepted:
+            record_validation_event(
+                "export.tileset", "CANCELLED", duration_ms=elapsed_ms(started_at)
+            )
+            return
+        height, accepted = QInputDialog.getInt(
+            self, self.t["tileset"], "Tile height", width, 1, 4096
+        )
+        if not accepted:
+            record_validation_event(
+                "export.tileset", "CANCELLED", duration_ms=elapsed_ms(started_at)
+            )
+            return
+        directory = self._validation_directory(
+            "tileset"
+        ) or QFileDialog.getExistingDirectory(self, "Select Tileset Output Directory")
+        if not directory:
+            record_validation_event(
+                "export.tileset", "CANCELLED", duration_ms=elapsed_ms(started_at)
+            )
+            return
+        try:
+            prepared = prepare_tileset(
+                _to_pil_rgba(self.scene.image), tile_size=(width, height)
+            )
+            result = save_tileset(prepared, directory)
+            if not file_evidence(result["manifest_path"])["size"]:
+                raise OSError("Tileset manifest postcondition failed")
+            record_validation_event(
+                "export.tileset",
+                "SUCCESS",
+                duration_ms=elapsed_ms(started_at),
+                tile_count=len(prepared["tiles"]),
+                manifest=result["manifest_path"],
+            )
+            QMessageBox.information(self, self.t["success"], result["manifest_path"])
+        except Exception as exc:
+            record_validation_exception(
+                "export.tileset", exc, duration_ms=elapsed_ms(started_at)
+            )
+            QMessageBox.critical(self, self.t["error"], str(exc))
+
+    def export_animation_batch(self):
+        started_at = time.perf_counter()
+        input_dir = QFileDialog.getExistingDirectory(
+            self, "Select Animation Frames Directory"
+        )
+        if not input_dir:
+            record_validation_event(
+                "export.animation.batch",
+                "CANCELLED",
+                duration_ms=elapsed_ms(started_at),
+            )
+            return
+        output_dir = self._validation_directory(
+            "animation"
+        ) or QFileDialog.getExistingDirectory(self, "Select Animation Output Directory")
+        if not output_dir:
+            record_validation_event(
+                "export.animation.batch",
+                "CANCELLED",
+                duration_ms=elapsed_ms(started_at),
+            )
+            return
+        try:
+            result = export_animation_frames(
+                input_dir, output_dir, mode="basic", min_area=10
+            )
+            count = result["manifest"]["frame_count"]
+            if not file_evidence(result["manifest_path"])["size"] or count <= 0:
+                raise OSError("Animation manifest postcondition failed")
+            record_validation_event(
+                "export.animation.batch",
+                "SUCCESS",
+                duration_ms=elapsed_ms(started_at),
+                frame_count=count,
+                manifest=result["manifest_path"],
+            )
+            QMessageBox.information(self, self.t["success"], result["manifest_path"])
+        except Exception as exc:
+            record_validation_exception(
+                "export.animation.batch", exc, duration_ms=elapsed_ms(started_at)
+            )
+            QMessageBox.critical(self, self.t["error"], str(exc))
+
     def export_atlas(self):
         started_at = time.perf_counter()
         if not self._check_prerequisites():
@@ -631,6 +767,7 @@ class ExportDialog(QDialog):
         destination_mode = "user-dialog"
         progress = None
         items = []
+        atlas_metadata = {}
         results = []
         extraction_errors = 0
         output_count = 0
@@ -679,6 +816,9 @@ class ExportDialog(QDialog):
                         self.scene.image, obj.polygon, padding=4
                     )
                     items.append((object_id, img))
+                    atlas_metadata[object_id] = build_object_metadata(
+                        self.scene, object_id
+                    )
                 except Exception as exc:
                     extraction_errors += 1
                     logger.error(
@@ -703,7 +843,13 @@ class ExportDialog(QDialog):
 
             progress.setLabelText(self.t["packing_atlas"])
             progress.setRange(0, 0)
-            results = build_atlas(items, dir_path, base_name="atlas")
+            results = build_atlas(
+                items,
+                dir_path,
+                base_name="atlas",
+                bleed=1,
+                metadata_by_name=atlas_metadata,
+            )
             progress.close()
             valid_outputs = bool(results) and extraction_errors == 0
             for result in results:

@@ -1,0 +1,74 @@
+{
+  "format_id": "neoeng-d-trace-scene-metadata",
+  "schema_version": 1,
+  "sprites": [
+    {
+      "filename": "pivot-object",
+      "frame": {
+        "x": 12.0,
+        "y": 10.0,
+        "w": 42.0,
+        "h": 60.0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 42.0,
+        "h": 60.0
+      },
+      "sourceSize": {
+        "w": 42.0,
+        "h": 60.0
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "pivotPixels": {
+        "x": 0.0,
+        "y": 60.0
+      }
+    },
+    {
+      "filename": "concave-object",
+      "frame": {
+        "x": 80.0,
+        "y": 18.0,
+        "w": 55.0,
+        "h": 64.0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 55.0,
+        "h": 64.0
+      },
+      "sourceSize": {
+        "w": 55.0,
+        "h": 64.0
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivotPixels": {
+        "x": 27.5,
+        "y": 32.0
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer_default",
+      "name": "Default",
+      "visible": true,
+      "locked": false
+    }
+  ],
+  "groups": [],
+  "profile": "phaser"
+}

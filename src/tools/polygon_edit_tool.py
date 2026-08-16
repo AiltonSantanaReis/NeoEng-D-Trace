@@ -190,7 +190,11 @@ class PolygonEditTool(BaseTool):
             )
             return
 
-        target = (int(position[0]), int(position[1]))
+        snapper = getattr(self.canvas_view, "snap_vertex_position", None)
+        if callable(snapper):
+            target = tuple(snapper(position))
+        else:
+            target = (int(position[0]), int(position[1]))
         candidate = list(origin)
         candidate[vertex_index] = target
 

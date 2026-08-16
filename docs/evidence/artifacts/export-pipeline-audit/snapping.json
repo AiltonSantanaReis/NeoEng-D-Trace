@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "grid_size": 4,
+  "origin": [
+    0.0,
+    0.0
+  ],
+  "input": [
+    11.9,
+    8.1
+  ],
+  "output": [
+    12,
+    8
+  ]
+}

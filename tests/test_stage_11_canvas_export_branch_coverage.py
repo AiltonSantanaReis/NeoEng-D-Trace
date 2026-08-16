@@ -5,7 +5,7 @@ from unittest.mock import Mock
 
 import numpy as np
 import pytest
-from PIL import Image
+from PIL import Image, ImageDraw
 from PySide6.QtCore import QEvent, QPoint, QPointF, Qt
 from PySide6.QtGui import QImage, QKeyEvent, QPainter
 from PySide6.QtWidgets import QApplication
@@ -314,7 +314,7 @@ def test_export_atlas_cancel_empty_success_and_failures(
     atlas_path = tmp_path / "atlas.png"
     json_path = tmp_path / "atlas.json"
 
-    def valid_atlas(items, directory, base_name):
+    def valid_atlas(items, directory, base_name, **kwargs):
         image.save(atlas_path)
         json_path.write_text('{"frames": {}}', encoding="utf-8")
         return [{"atlas_path": str(atlas_path), "json_path": str(json_path)}]
@@ -601,3 +601,84 @@ def test_canvas_paint_modes_overlays_helpers_and_language(qt_app):
     assert canvas.gizmo_toggle.text() == "Eixo"
     canvas._tool.update_language.assert_called_once_with("pt")
     canvas.close()
+
+
+def test_tileset_export_ui_cancel_and_success_paths(qt_app, tmp_path, monkeypatch):
+    scene = scene_with_exports()
+    dialog = ExportDialog(scene)
+    messages, events, exceptions = capture_export_boundaries(monkeypatch)
+
+    empty_dialog = ExportDialog(Scene())
+    empty_dialog.export_tileset()
+    assert events[-1][0][:2] == ("export.tileset", "BLOCKED")
+    empty_dialog.close()
+
+    monkeypatch.setattr(export_module.QInputDialog, "getInt", lambda *args: (16, False))
+    dialog.export_tileset()
+    assert events[-1][0][:2] == ("export.tileset", "CANCELLED")
+
+    responses = iter([(16, True), (16, False)])
+    monkeypatch.setattr(
+        export_module.QInputDialog, "getInt", lambda *args: next(responses)
+    )
+    dialog.export_tileset()
+    assert events[-1][0][:2] == ("export.tileset", "CANCELLED")
+
+    monkeypatch.setattr(export_module.QInputDialog, "getInt", lambda *args: (16, True))
+    monkeypatch.setattr(dialog, "_validation_directory", lambda name: None)
+    monkeypatch.setattr(
+        export_module.QFileDialog, "getExistingDirectory", lambda *args: ""
+    )
+    dialog.export_tileset()
+    assert events[-1][0][:2] == ("export.tileset", "CANCELLED")
+
+    monkeypatch.setattr(dialog, "_validation_directory", lambda name: str(tmp_path))
+    dialog.export_tileset()
+    assert events[-1][0][:2] == ("export.tileset", "SUCCESS")
+    assert messages[-1][0] == "information"
+    assert not exceptions
+    dialog.close()
+
+
+def test_animation_batch_export_ui_cancel_and_success_paths(
+    qt_app, tmp_path, monkeypatch
+):
+    scene = scene_with_exports()
+    dialog = ExportDialog(scene)
+    messages, events, exceptions = capture_export_boundaries(monkeypatch)
+
+    monkeypatch.setattr(
+        export_module.QFileDialog, "getExistingDirectory", lambda *args: ""
+    )
+    dialog.export_animation_batch()
+    assert events[-1][0][:2] == ("export.animation.batch", "CANCELLED")
+
+    source = tmp_path / "frames"
+    output = tmp_path / "animation"
+    source.mkdir()
+    output.mkdir()
+    image = Image.new("RGBA", (24, 24), (255, 255, 255, 0))
+    ImageDraw.Draw(image).rectangle((4, 4, 18, 18), fill=(255, 255, 255, 255))
+    image.save(source / "frame_1.png")
+    directories = iter((str(source), ""))
+    monkeypatch.setattr(
+        export_module.QFileDialog,
+        "getExistingDirectory",
+        lambda *args: next(directories),
+    )
+    monkeypatch.setattr(dialog, "_validation_directory", lambda name: None)
+    dialog.export_animation_batch()
+    assert events[-1][0][:2] == ("export.animation.batch", "CANCELLED")
+
+    directories = iter((str(source), str(output)))
+    monkeypatch.setattr(
+        export_module.QFileDialog,
+        "getExistingDirectory",
+        lambda *args: next(directories),
+    )
+    monkeypatch.setattr(dialog, "_validation_directory", lambda name: None)
+    dialog.export_animation_batch()
+    assert events[-1][0][:2] == ("export.animation.batch", "SUCCESS")
+    assert messages[-1][0] == "information"
+    assert not exceptions
+    dialog.close()

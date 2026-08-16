@@ -1,0 +1,91 @@
+{
+  "format_id": "neoeng-d-trace-animation",
+  "schema_version": 1,
+  "mode": "basic",
+  "coherence": {
+    "enabled": true,
+    "vertex_count": 5,
+    "method": "closed_perimeter_resampling_and_previous_frame_alignment"
+  },
+  "frame_count": 2,
+  "frames": [
+    {
+      "index": 0,
+      "source": "frame_2.png",
+      "texture": "frame_0000.png",
+      "size": {
+        "w": 32,
+        "h": 32
+      },
+      "polygon": [
+        [
+          6.0,
+          4.0
+        ],
+        [
+          6.0,
+          21.6
+        ],
+        [
+          19.200000000000003,
+          26.0
+        ],
+        [
+          28.0,
+          17.200000000000003
+        ],
+        [
+          23.599999999999994,
+          4.0
+        ]
+      ],
+      "holes": [],
+      "quality_metrics": {},
+      "feedback": {
+        "status": "ok",
+        "message": "Detected 1 polygons in mode basic",
+        "mode": "basic",
+        "polygon_count": 1
+      }
+    },
+    {
+      "index": 1,
+      "source": "frame_10.png",
+      "texture": "frame_0001.png",
+      "size": {
+        "w": 32,
+        "h": 32
+      },
+      "polygon": [
+        [
+          4.0,
+          4.0
+        ],
+        [
+          4.0,
+          21.6
+        ],
+        [
+          17.200000000000003,
+          26.0
+        ],
+        [
+          26.0,
+          17.200000000000003
+        ],
+        [
+          21.599999999999994,
+          4.0
+        ]
+      ],
+      "holes": [],
+      "quality_metrics": {},
+      "feedback": {
+        "status": "ok",
+        "message": "Detected 1 polygons in mode basic",
+        "mode": "basic",
+        "polygon_count": 1
+      }
+    }
+  ]
+}

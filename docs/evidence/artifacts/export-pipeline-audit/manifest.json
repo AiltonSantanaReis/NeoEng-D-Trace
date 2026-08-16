@@ -1,0 +1,122 @@
+{
+  "artifacts": {
+    "animation\\animation.json": {
+      "bytes": 1641,
+      "sha256": "58400b75eb089ea8d88a36d674138c932ea33691b09d35c47ee655fe14643592"
+    },
+    "animation\\frame_0000.png": {
+      "bytes": 132,
+      "sha256": "55e5851359b48bdd5bf67f9b450103f5b85042a813f9d7b52c12c7c2bbd606f1"
+    },
+    "animation\\frame_0001.png": {
+      "bytes": 131,
+      "sha256": "49cfefef286f4fb0ba5ad20a6c823804a7003b4b6284669c1b711cbed35a2e09"
+    },
+    "atlas\\atlas_0.json": {
+      "bytes": 557,
+      "sha256": "6d28e04746695fd299e6af4938d8af4bca2d9c42400dc0c9ad935aaad3592788"
+    },
+    "atlas\\atlas_0.png": {
+      "bytes": 628,
+      "sha256": "0f5d9dde67857bbe9b331b965ce87930f0ee5f15c6097680ef27d65f34fa8630"
+    },
+    "compound-collision.json": {
+      "bytes": 2261,
+      "sha256": "6ad0306af20cb1f2a80d7f206b957e9055b4cb378dc0eb7039e92a142b34388d"
+    },
+    "compound-project.ndtproj": {
+      "bytes": 3709,
+      "sha256": "b2e83bc2ca6126acf746e52c8215f105f871e2fa3671e97f21d0157b70dc887e"
+    },
+    "frames-source\\frame_10.png": {
+      "bytes": 131,
+      "sha256": "49cfefef286f4fb0ba5ad20a6c823804a7003b4b6284669c1b711cbed35a2e09"
+    },
+    "frames-source\\frame_2.png": {
+      "bytes": 132,
+      "sha256": "55e5851359b48bdd5bf67f9b450103f5b85042a813f9d7b52c12c7c2bbd606f1"
+    },
+    "pivot-generic.json": {
+      "bytes": 2568,
+      "sha256": "b1d4f1b2baed9b5bff8ec4e327e206785011437304cb9dc1c6dbf2824659397b"
+    },
+    "pivot-godot.json": {
+      "bytes": 1797,
+      "sha256": "84348f361e76380fe2b247ff7d7fba3e8bde5ca1f170b1b0f725cf880cc0130c"
+    },
+    "pivot-phaser.json": {
+      "bytes": 1331,
+      "sha256": "c60bc7346d7f281608d60d9a193eeb3a458cb6db3522cbb5c67dcf21e5f049b4"
+    },
+    "pivot-unity.json": {
+      "bytes": 1881,
+      "sha256": "8dfb4fd44fc66cbf65274a07b732d7dccedf34b33e150413c5fa6f164813b98e"
+    },
+    "snapping.json": {
+      "bytes": 161,
+      "sha256": "3005d5635d634a382b23970f56337a567cc4ab88d2aa4b941743bd3bfda9554c"
+    },
+    "source.png": {
+      "bytes": 331,
+      "sha256": "fb0465a67e6d89a8b31a7134b91bdf16f353fdfe673db2c642a6622c9a2c67ff"
+    },
+    "tileset\\tile_0000.png": {
+      "bytes": 79,
+      "sha256": "fa2d48ed3674addaa726e0e4ac2bf62ac22dc265f67387b5f3d0e0214c441086"
+    },
+    "tileset\\tile_0001.png": {
+      "bytes": 89,
+      "sha256": "df6e4519958b011f98b41cb931010b496faf1e430e0fd94f926bc06a2ffd9931"
+    },
+    "tileset\\tileset.json": {
+      "bytes": 1136,
+      "sha256": "3d47611f92e50a6fa1bdc5ead913703dc9745ef01157dfa44e83a18f65705474"
+    }
+  },
+  "generator": "scripts/audit_export_pipeline.py",
+  "schema_version": 1,
+  "stages": {
+    "1_pivot": {
+      "profiles": {
+        "generic": "pivot-generic.json",
+        "godot": "pivot-godot.json",
+        "phaser": "pivot-phaser.json",
+        "unity": "pivot-unity.json"
+      },
+      "status": "APPROVED"
+    },
+    "2_atlas_bleed": {
+      "outputs": [
+        "atlas\\atlas_0.png",
+        "atlas\\atlas_0.json"
+      ],
+      "status": "APPROVED"
+    },
+    "3_compound_colliders": {
+      "outputs": [
+        "compound-collision.json",
+        "compound-project.ndtproj"
+      ],
+      "part_count": 3,
+      "status": "APPROVED"
+    },
+    "4_vertex_snapping": {
+      "output": "snapping.json",
+      "status": "APPROVED"
+    },
+    "5_tileset_preparation": {
+      "output": "tileset\\tileset.json",
+      "status": "APPROVED",
+      "tile_count": 2
+    },
+    "6_animation_batch": {
+      "frame_count": 2,
+      "output": "animation\\animation.json",
+      "status": "APPROVED"
+    },
+    "7_native_engine_plugins": {
+      "reason": "Product definition keeps native plugins outside version 1.0; JSON profiles remain the supported contract.",
+      "status": "NOT_APPLICABLE"
+    }
+  }
+}

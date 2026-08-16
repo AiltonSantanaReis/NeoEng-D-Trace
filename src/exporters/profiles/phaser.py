@@ -36,6 +36,6 @@ def format_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
             "h": rect.get("h", 0),
         },
         "sourceSize": {"w": rect.get("w", 0), "h": rect.get("h", 0)},
-        # Phaser usually calculates pivot/anchor at runtime or via custom properties
-        # but we can include it in specific custom fields if needed.
+        "pivot": meta.get("pivot_normalized", meta.get("pivot")),
+        "pivotPixels": meta.get("pivot"),
     }

@@ -13,19 +13,19 @@ from src.models.scene import Group, Layer, Scene
 MODULE_NAME = "src.exporters.json_exporter"
 
 SCENE_HASHES = {
-    "default": "f5bd6958deb04add3b822968f7996c6d56cbc7a27c972db92da7606d772e7c70",
-    "unity": "873db693a96cc7382f79f217f20d2395d2e3203625cc7c6b3d5af4a2e65d5948",
-    "godot": "6927c420b750b1445c4d9c5369b24dda6e86e844fa75b9ec37cb9e0cf10841a2",
+    "default": "ff055d3f625525d3495ca80805a4df0dcfa58482ec03b5d069f7cf74e64985a0",
+    "unity": "a8042225b750d7b5314ea4ae1ad7a9be9a92a7fa32e947385e3e142e50f04cd0",
+    "godot": "444d6cf73a429c918dad2997b5730c244d9d8b0046e059e1346ce75879b12611",
 }
 OBJECT_HASHES = {
-    "generic": "000e8bfc730ff9f361b60a635a61ff301723d481ef17fd0d9491f0a13d2154dd",
-    "unity": "709cd0cd249410e60258160ae6ac7bdb08bc66cfce446513e5ed0e41353a1051",
-    "godot": "8a6e913089cd27240f6422d02c4184ac8123bf529a5df3489e6c0bcacf4c3f31",
-    "phaser": "b49f06445f7295df44105b16aaef1b44a807c02844ac673a25fa54c1b67343ae",
+    "generic": "cee13d76fc44dd6bb1c38a0c96fb23e76aa4f39b67c012b4013917b24df24abc",
+    "unity": "0d45f5f7aa01bc463b014532893640f6b147590ad1108887a71471371f34db67",
+    "godot": "43574483a34b38b74bd01e5bc1cef9cece2ec66ecf8ce38d1fc0f37eb257c204",
+    "phaser": "09aa6d956028bd6ae8c632251eb9a64cdcd6e426eb8bedec630c1336321e5c9d",
 }
 SAVED_SCENE_HASHES = {
-    "\n": "f5bd6958deb04add3b822968f7996c6d56cbc7a27c972db92da7606d772e7c70",
-    "\r\n": "b42d94421d96aa9c94f567adea212130d236453cbc59644bd484bc9465dccd2c",
+    "\n": "ff055d3f625525d3495ca80805a4df0dcfa58482ec03b5d069f7cf74e64985a0",
+    "\r\n": "054873044a2ea83948a6c5620c1111f3b4f4bbc162a6eda97311ec1ecd920ee1",
 }
 
 

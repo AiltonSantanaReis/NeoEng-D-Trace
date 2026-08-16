@@ -1,0 +1,38 @@
+[
+  {
+    "name": "concave-object",
+    "atlas": 0,
+    "rect": {
+      "x": 1,
+      "y": 1,
+      "w": 55,
+      "h": 64
+    },
+    "packed_rect": {
+      "x": 0,
+      "y": 0,
+      "w": 57,
+      "h": 66
+    },
+    "extrusion": 1,
+    "rotated": false
+  },
+  {
+    "name": "pivot-object",
+    "atlas": 0,
+    "rect": {
+      "x": 60,
+      "y": 1,
+      "w": 42,
+      "h": 60
+    },
+    "packed_rect": {
+      "x": 59,
+      "y": 0,
+      "w": 44,
+      "h": 62
+    },
+    "extrusion": 1,
+    "rotated": false
+  }
+]

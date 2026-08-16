@@ -62,6 +62,24 @@ def test_scene_profiles_use_the_same_engine_formatters() -> None:
     assert unity_sprite["collision"]["shape_type"] == "polygon"
 
 
+def test_custom_scene_pivot_is_exported_consistently_by_all_profiles() -> None:
+    scene = _scene()
+    scene.objects["probe"].set_pivot(0.0, 1.0)
+
+    generic = export_scene_metadata(scene)["sprites"][0]
+    godot = export_scene_metadata(scene, "godot")["sprites"][0]
+    unity = export_scene_metadata(scene, "unity")["sprites"][0]
+    phaser = export_scene_metadata(scene, "phaser")["sprites"][0]
+
+    assert generic["pivot"] == {"x": 0.0, "y": 20.0}
+    assert generic["pivot_normalized"] == {"x": 0.0, "y": 1.0}
+    assert godot["pivot"] == generic["pivot"]
+    assert godot["offset"] == {"x": 20.0, "y": -10.0}
+    assert unity["pivot"] == {"x": 0.0, "y": 1.0}
+    assert phaser["pivot"] == {"x": 0.0, "y": 1.0}
+    assert phaser["pivotPixels"] == {"x": 0.0, "y": 20.0}
+
+
 @pytest.mark.parametrize("profile", ["godot", "unity"])
 def test_object_and_scene_profiles_share_schema(profile: str) -> None:
     scene = _scene()

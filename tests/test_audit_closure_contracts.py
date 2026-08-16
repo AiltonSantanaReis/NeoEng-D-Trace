@@ -123,6 +123,37 @@ def test_headless_object_export_requires_object_id(tmp_path: Path) -> None:
     assert not output.exists()
 
 
+def test_atlas_bleed_duplicates_all_edge_pixels_and_keeps_source_rect() -> None:
+    image = Image.new("RGBA", (2, 2))
+    colors = {
+        (0, 0): (255, 0, 0, 255),
+        (1, 0): (0, 255, 0, 255),
+        (0, 1): (0, 0, 255, 255),
+        (1, 1): (255, 255, 0, 255),
+    }
+    for point, color in colors.items():
+        image.putpixel(point, color)
+
+    [(atlas, entries)] = pack_sprites_to_atlas(
+        [(image, {"name": "bleed"})],
+        max_size=(8, 8),
+        padding=0,
+        bleed=1,
+    )
+
+    entry = entries[0]
+    assert entry["rect"] == {"x": 1, "y": 1, "w": 2, "h": 2}
+    assert entry["packed_rect"] == {"x": 0, "y": 0, "w": 4, "h": 4}
+    assert entry["extrusion"] == 1
+    assert atlas.getpixel((0, 0)) == colors[(0, 0)]
+    assert atlas.getpixel((1, 0)) == colors[(0, 0)]
+    assert atlas.getpixel((3, 0)) == colors[(1, 0)]
+    assert atlas.getpixel((0, 3)) == colors[(0, 1)]
+    assert atlas.getpixel((3, 3)) == colors[(1, 1)]
+    assert atlas.getpixel((1, 1)) == colors[(0, 0)]
+    assert atlas.getpixel((2, 2)) == colors[(1, 1)]
+
+
 def test_atlas_crop_preserves_transparent_frame_bounds() -> None:
     image = Image.new("RGBA", (291, 219), (255, 255, 255, 255))
     for y in range(image.height):

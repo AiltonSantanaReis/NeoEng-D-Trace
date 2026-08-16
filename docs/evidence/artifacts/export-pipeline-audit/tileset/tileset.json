@@ -1,0 +1,82 @@
+{
+  "format_id": "neoeng-d-trace-tileset",
+  "schema_version": 1,
+  "tile_size": {
+    "w": 8,
+    "h": 8
+  },
+  "spacing": 2,
+  "margin": 0,
+  "tiles": [
+    {
+      "id": "tile_0000",
+      "index": 0,
+      "row": 0,
+      "column": 0,
+      "source_rect": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "size": {
+        "w": 8,
+        "h": 8
+      },
+      "collision": [
+        [
+          0,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          0,
+          8
+        ]
+      ],
+      "texture": "tile_0000.png"
+    },
+    {
+      "id": "tile_0001",
+      "index": 1,
+      "row": 0,
+      "column": 1,
+      "source_rect": {
+        "x": 10,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "size": {
+        "w": 8,
+        "h": 8
+      },
+      "collision": [
+        [
+          0,
+          2
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          0,
+          6
+        ]
+      ],
+      "texture": "tile_0001.png"
+    }
+  ]
+}
