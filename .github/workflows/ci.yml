@@ -32,6 +32,8 @@ jobs:
 
       - name: Verify clean baseline manifest
         run: python tools/baseline_integrity.py --verify
+      - name: Verify evidence manifest integrity
+        run: python tools/evidence_integrity.py --require-tracked
 
       - name: Install Qt runtime libraries
         run: |
@@ -113,6 +115,8 @@ jobs:
 
       - name: Verify clean baseline manifest
         run: python tools/baseline_integrity.py --verify
+      - name: Verify evidence manifest integrity
+        run: python tools/evidence_integrity.py --require-tracked
 
       - name: Install Poetry 2.4.1
         run: |

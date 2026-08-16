@@ -2,15 +2,18 @@
   "artifacts": [
     {
       "path": "source.png",
-      "sha256": "33b2adecef77add7cad5d25d50dfbea47acf84250d0d578807a97d3768fed416"
+      "sha256": "33b2adecef77add7cad5d25d50dfbea47acf84250d0d578807a97d3768fed416",
+      "bytes": 91
     },
     {
       "path": "godot.integration.json",
-      "sha256": "b6cfdd82821c4be89153ad6c930fff0468f41d10fc13d70165b7254e1561dbea"
+      "sha256": "b6cfdd82821c4be89153ad6c930fff0468f41d10fc13d70165b7254e1561dbea",
+      "bytes": 2069
     },
     {
       "path": "unity.integration.json",
-      "sha256": "723a360b115814751afb4c60bcdfef2fbd7d53a30fba0e1f5a3f8474d3f842f8"
+      "sha256": "723a360b115814751afb4c60bcdfef2fbd7d53a30fba0e1f5a3f8474d3f842f8",
+      "bytes": 2069
     }
   ],
   "format_id": "neoeng-d-trace-integration-audit-artifacts",

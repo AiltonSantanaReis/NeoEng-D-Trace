@@ -63,14 +63,14 @@ def _write_project(project: Path, package_path: Path, unity_version: str) -> Non
     (project / "Packages").mkdir(parents=True)
     (project / "Assets").mkdir(parents=True)
     (project / "ProjectSettings" / "ProjectVersion.txt").write_text(
-        f"m_EditorVersion: {unity_version}\n", encoding="utf-8"
+        f"m_EditorVersion: {unity_version}\n", encoding="utf-8", newline="\n"
     )
     relative_package = os.path.relpath(package_path, project / "Packages").replace(
         "\\", "/"
     )
     manifest = {"dependencies": {"com.neoeng.dtrace": f"file:{relative_package}"}}
     (project / "Packages" / "manifest.json").write_text(
-        json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+        json.dumps(manifest, indent=2) + "\n", encoding="utf-8", newline="\n"
     )
 
 
@@ -159,7 +159,7 @@ def _main() -> int:
         negative_project = temporary_root / "negative-project"
         shutil.copytree(PACKAGE_ROOT, negative_package)
         (negative_package / "forbidden.exe").write_text(
-            "negative fixture\n", encoding="utf-8"
+            "negative fixture\n", encoding="utf-8", newline="\n"
         )
 
         _write_project(first_project, PACKAGE_ROOT, unity_version)
@@ -240,6 +240,7 @@ def _main() -> int:
             )
             + "\n",
             encoding="utf-8",
+        newline="\n",
         )
         (OUT / "stage5-report-repeat.json").write_bytes(first_report_path.read_bytes())
         (OUT / "stage5-report-negative.json").write_bytes(
@@ -256,6 +257,7 @@ def _main() -> int:
                     source.read_text(encoding="utf-8", errors="replace"), temporary
                 ),
                 encoding="utf-8",
+            newline="\n",
             )
 
     time.sleep(1.0)
@@ -281,6 +283,7 @@ def _main() -> int:
         )
         + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     print("NATIVE_PACKAGE_STAGE5=SUCCESS")
     print(f"UNITY_VERSION={unity_version}")

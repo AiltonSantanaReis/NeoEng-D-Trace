@@ -127,7 +127,7 @@ def main() -> int:
         workspace = temp / "project"
         workspace.mkdir()
         fixture = _prepare(workspace)
-        (workspace / VALIDATOR_NAME).write_text(VALIDATOR, encoding="utf-8")
+        (workspace / VALIDATOR_NAME).write_text(VALIDATOR, encoding="utf-8", newline="\n")
         pre = run(executable, ["--headless", "--editor", "--path", str(workspace), "--import", "--quit-after", "5"], temp)
         runs.append(pre)
         if not pre["success"]:
@@ -139,7 +139,7 @@ def main() -> int:
             if not item["success"]:
                 raise RuntimeError(f"Godot stage7 mode failed: {mode} | {item}")
         override_path = workspace / "NeoEngGenerated" / "hero.ndt.override.json"
-        override_path.write_text(json.dumps({"schema_version": 1, "object_id": "hero", "polygon_in_sprite": [[1, 1], [15, 1], [15, 11], [1, 11]]}, indent=2) + "\n", encoding="utf-8")
+        override_path.write_text(json.dumps({"schema_version": 1, "object_id": "hero", "polygon_in_sprite": [[1, 1], [15, 1], [15, 11], [1, 11]]}, indent=2) + "\n", encoding="utf-8", newline="\n")
         for mode in ("override", "override-repeat", "manual", "confirmed"):
             item = run(executable, script_args, temp, mode)
             runs.append(item)
@@ -151,11 +151,11 @@ def main() -> int:
         if not item["success"]:
             raise RuntimeError("Godot hash drift mode failed")
         report = {"schema_version": 1, "stage": 7, "status": "SUCCESS", "engine": "godot", "godot_version": "4.7.stable", "scenarios": {"initial_update": True, "repeat_unchanged": True, "override_preserved": True, "manual_divergence_blocked": True, "destructive_confirmation_required": True, "hash_drift_rejected": True}, "runs": runs, "fixture": {"source_image": digest(fixture["image"]), "manifest": digest(fixture["manifest"])}}
-        (OUT / "stage7-report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+        (OUT / "stage7-report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         for index, item in enumerate(runs, 1):
-            (OUT / f"godot-stage7-{index:02d}-{item['mode']}.log").write_text(item["output"], encoding="utf-8")
+            (OUT / f"godot-stage7-{index:02d}-{item['mode']}.log").write_text(item["output"], encoding="utf-8", newline="\n")
     files = {path.name: digest(path) for path in sorted(OUT.iterdir()) if path.is_file()}
-    (OUT / "stage7-index.json").write_text(json.dumps({"schema_version": 1, "stage": 7, "status": "SUCCESS", "engine": "godot", "files": files}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (OUT / "stage7-index.json").write_text(json.dumps({"schema_version": 1, "stage": 7, "status": "SUCCESS", "engine": "godot", "files": files}, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print("NATIVE_SYNC_STAGE7_GODOT=SUCCESS")
     print("INITIAL_UPDATE=PASS")
     print("REPEAT_UNCHANGED=PASS")

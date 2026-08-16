@@ -32,6 +32,9 @@ dist/
 *.log
 *.tmp
 
+# Evidence logs are reproducibility inputs, not disposable local logs.
+!/docs/evidence/artifacts/**/*.log
+
 # Generated exports and local samples
 /*.glb
 /*.gltf

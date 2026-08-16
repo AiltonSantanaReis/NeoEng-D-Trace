@@ -85,7 +85,7 @@ def main() -> int:
         runs.append({"name": "repeat", "run": repeat, "report": repeat_report})
 
         override_path = project / "Assets" / "NeoEngGenerated" / "hero.ndt.override.json"
-        override_path.write_text(json.dumps({"schema_version": 1, "object_id": "hero", "polygon_in_sprite": [{"x": 1, "y": 1}, {"x": 15, "y": 1}, {"x": 15, "y": 11}, {"x": 1, "y": 11}]}, indent=2) + "\n", encoding="utf-8")
+        override_path.write_text(json.dumps({"schema_version": 1, "object_id": "hero", "polygon_in_sprite": [{"x": 1, "y": 1}, {"x": 15, "y": 1}, {"x": 15, "y": 11}, {"x": 1, "y": 11}]}, indent=2) + "\n", encoding="utf-8", newline="\n")
         override_report_path = temp / "override.json"
         override_run = run_unity(executable, project, temp, IMPORT_METHOD, override_report_path)
         override_report = load_report(override_report_path)
@@ -124,13 +124,13 @@ def main() -> int:
         runs.append({"name": "hash-drift", "run": hash_run, "report": hash_report})
 
         report = {"schema_version": 1, "stage": 7, "status": "SUCCESS", "engine": "unity", "unity_version": version, "scenarios": {"initial_update": True, "repeat_unchanged": True, "override_preserved": True, "manual_divergence_blocked": True, "destructive_confirmation_required": True, "hash_drift_rejected": True}, "runs": runs}
-        (OUT / "stage7-report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+        (OUT / "stage7-report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         for index, item in enumerate(runs, 1):
-            (OUT / f"unity-stage7-{index:02d}-{item['name']}.log").write_text(item["run"]["output"], encoding="utf-8")
+            (OUT / f"unity-stage7-{index:02d}-{item['name']}.log").write_text(item["run"]["output"], encoding="utf-8", newline="\n")
             if "report" in item:
-                (OUT / f"unity-stage7-{index:02d}-{item['name']}.json").write_text(json.dumps(item["report"], indent=2, sort_keys=True) + "\n", encoding="utf-8")
+                (OUT / f"unity-stage7-{index:02d}-{item['name']}.json").write_text(json.dumps(item["report"], indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     files = {path.name: digest(path) for path in sorted(OUT.iterdir()) if path.is_file()}
-    (OUT / "stage7-index.json").write_text(json.dumps({"schema_version": 1, "stage": 7, "status": "SUCCESS", "engine": "unity", "unity_version": version, "files": files}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (OUT / "stage7-index.json").write_text(json.dumps({"schema_version": 1, "stage": 7, "status": "SUCCESS", "engine": "unity", "unity_version": version, "files": files}, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print("NATIVE_SYNC_STAGE7_UNITY=SUCCESS")
     print("INITIAL_UPDATE=PASS")
     print("REPEAT_UNCHANGED=PASS")
