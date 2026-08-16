@@ -23,6 +23,7 @@ from src.core.operational_limits import (
 from src.core.polygon_validation import is_valid_polygon as _validate_polygon
 from src.core.polygon_validation import lines_intersect
 from src.core.polygon_validation import signed_polygon_area2 as _signed_polygon_area2
+from src.core.transform_geometry import anchor_for_polygon, finite_float
 from src.core.validation_events import (
     elapsed_ms,
     object_token,
@@ -201,6 +202,27 @@ class SceneObject:
         self.polygon = polygon
         self.layer_id = layer_id
         self.beziers: Optional[BezierSegments] = None
+        self.pivot = (0.5, 0.5)
+        self.position = (
+            (*anchor_for_polygon(polygon, self.pivot), 0.0)
+            if polygon
+            else (0.0, 0.0, 0.0)
+        )
+        self.rotation = (0.0, 0.0, 0.0)
+        self.scale = (1.0, 1.0, 1.0)
+
+    def set_pivot(self, x: float, y: float) -> None:
+        """Set the normalized bounding-box pivot and keep it anchored."""
+
+        self.pivot = (finite_float(x, "pivot.x"), finite_float(y, "pivot.y"))
+        self.sync_position_from_polygon()
+
+    def sync_position_from_polygon(self) -> None:
+        """Recompute the world position of the current normalized pivot."""
+
+        if self.polygon:
+            anchor = anchor_for_polygon(self.polygon, self.pivot)
+            self.position = (anchor[0], anchor[1], self.position[2])
 
 
 class Scene:
@@ -217,6 +239,7 @@ class Scene:
         self.collision_shapes: Dict[str, List[Tuple[float, float]]] = {}
         self.collision_parts: Dict[str, List[List[Tuple[float, float]]]] = {}
         self.selected_id: Optional[str] = None
+        self.selected_ids: List[str] = []
         self._listeners: List[Callable[[], None]] = []
         self.cmd = None
 
@@ -356,6 +379,7 @@ class Scene:
         self.objects[oid] = SceneObject(oid, polygon, layer_id)
         if select:
             self.selected_id = oid
+            self.selected_ids = [oid]
         self._notify()
 
     @staticmethod
@@ -410,6 +434,7 @@ class Scene:
         self.objects[oid] = obj
         if select:
             self.selected_id = oid
+            self.selected_ids = [oid]
         self._notify()
         return oid
 
@@ -460,9 +485,9 @@ class Scene:
         self.collision_parts.pop(oid, None)
 
         self.objects.pop(oid)
+        self.selected_ids = [item for item in self.selected_ids if item != oid]
         if self.selected_id == oid:
-            self.selected_id = None
-
+            self.selected_id = self.selected_ids[0] if self.selected_ids else None
         # Remove de grupos
         for g in self.groups:
             if oid in g.members:
@@ -512,9 +537,13 @@ class Scene:
                 new_id if member == old_id else member for member in group.members
             ]
 
+        if old_id in self.selected_ids:
+            self.selected_ids = [
+                new_id if item == old_id else item
+                for item in self.selected_ids
+            ]
         if self.selected_id == old_id:
             self.selected_id = new_id
-
         self._notify()
 
     def update_polygon(self, oid: str, polygon: List[Tuple[int, int]]):
@@ -531,11 +560,35 @@ class Scene:
             self.collision_shapes[oid] = [(float(p[0]), float(p[1])) for p in polygon]
             self.collision_parts.pop(oid, None)
 
+        self.objects[oid].sync_position_from_polygon()
+
         logger.debug(f"Updated polygon for object {oid} with {len(polygon)} vertices")
         self._notify()
 
     def select_object(self, oid: Optional[str]):
-        self.selected_id = oid
+        if oid is None:
+            self.selected_id = None
+            self.selected_ids = []
+        else:
+            if oid not in self.objects:
+                raise KeyError(oid)
+            self.selected_id = oid
+            self.selected_ids = [oid]
+        self._notify()
+
+    def select_objects(self, object_ids: List[str], primary: Optional[str] = None):
+        """Select existing objects deterministically, preserving one primary."""
+
+        unique = list(dict.fromkeys(object_ids))
+        missing = [oid for oid in unique if oid not in self.objects]
+        if missing:
+            raise KeyError(missing[0])
+        if primary is not None and primary not in unique:
+            raise KeyError(primary)
+        self.selected_ids = unique
+        self.selected_id = primary if primary is not None else (
+            unique[0] if unique else None
+        )
         self._notify()
 
     def clear(self):
@@ -545,6 +598,7 @@ class Scene:
         self.collision_shapes.clear()
         self.collision_parts.clear()
         self.selected_id = None
+        self.selected_ids = []
         self._notify()
 
     # --- Rendering Helpers ---
@@ -657,6 +711,7 @@ class Scene:
         self.collision_shapes = {}
         self.collision_parts = {}
         self.selected_id = None
+        self.selected_ids = []
         self._notify()
 
     def attach_project_image(self, img):

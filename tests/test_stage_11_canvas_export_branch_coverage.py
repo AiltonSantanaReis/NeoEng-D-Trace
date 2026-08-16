@@ -490,27 +490,26 @@ def test_canvas_gizmo_tools_history_and_release_paths(qt_app, monkeypatch):
     canvas.mousePressEvent(event(position=(12, 13)))
     assert gizmo.active_axis == gizmo.NONE
 
-    scene.selected_id = None
+    scene.select_object(None)
     canvas.mousePressEvent(event(position=(12, 13)))
-    assert canvas._gizmo_active is True
-    canvas._gizmo_transaction = None
+    assert canvas._gizmo_active is False
     canvas.mouseMoveEvent(event(Qt.MouseButton.NoButton, (20, 30)))
     assert canvas._pan.y() == 0
     finish = Mock()
     monkeypatch.setattr(canvas, "_finish_gizmo_gesture", finish)
     canvas.mouseReleaseEvent(event())
-    finish.assert_called_once()
+    finish.assert_not_called()
 
     canvas._gizmo_active = True
     canvas._gizmo_transaction = object()
     canvas._gizmo_start_mouse = QPointF(20, 30)
     canvas._zoom = 2.0
     gizmo.active_axis = gizmo.AXIS_Y
-    move = Mock()
-    monkeypatch.setattr(canvas, "_move_selected_object", move)
+    canvas._gizmo_operation = gizmo.AXIS_Y
+    preview = Mock()
+    monkeypatch.setattr(canvas, "_preview_gizmo_transform", preview)
     canvas.mouseMoveEvent(event(Qt.MouseButton.NoButton, (30, 40)))
-    move.assert_called_with(0, 5.0)
-
+    preview.assert_called_with(translation=(0.0, -5.0))
     canvas._gizmo_active = False
     canvas._gizmo_transaction = None
     gizmo.hit_test.return_value = gizmo.NONE

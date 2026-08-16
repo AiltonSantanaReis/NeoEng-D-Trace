@@ -134,6 +134,7 @@ _STATE_ATTRIBUTES = (
     "collision_shapes",
     "collision_parts",
     "selected_id",
+    "selected_ids",
 )
 
 
@@ -1684,6 +1685,7 @@ class _CreatePolygonCommandBase(Command):
         self.layer_id = layer_id
         self.object_id = object_id
         self._previous_selected_id: Optional[str] = None
+        self._previous_selected_ids: List[str] = []
         self._object_snapshot: Optional[Any] = None
         self._object_ids_before: Optional[Tuple[str, ...]] = None
         self._executed_once = False
@@ -1695,11 +1697,10 @@ class _CreatePolygonCommandBase(Command):
         return layer_id in {layer.id for layer in scene.layers}
 
     def _previous_selection_is_available(self, scene: Any) -> bool:
-        return (
-            self._previous_selected_id is None
-            or self._previous_selected_id in scene.objects
+        return all(
+            object_id in scene.objects
+            for object_id in self._previous_selected_ids
         )
-
     def _object_matches_snapshot(self, scene: Any) -> bool:
         if self.object_id is None or self._object_snapshot is None:
             return False
@@ -1742,6 +1743,7 @@ class _CreatePolygonCommandBase(Command):
             )
 
         self._previous_selected_id = scene.selected_id
+        self._previous_selected_ids = list(getattr(scene, "selected_ids", [])) or ([scene.selected_id] if scene.selected_id is not None else [])
         self._object_ids_before = tuple(scene.objects)
 
         self._create_first_object(scene)
@@ -1780,7 +1782,10 @@ class _CreatePolygonCommandBase(Command):
                 "execute",
                 "The object collection changed before Redo.",
             )
-        if scene.selected_id != self._previous_selected_id:
+        if (
+            scene.selected_id != self._previous_selected_id
+            or list(getattr(scene, "selected_ids", [])) != self._previous_selected_ids
+        ):
             return CommandResult.rejected(
                 self,
                 "execute",
@@ -1801,6 +1806,7 @@ class _CreatePolygonCommandBase(Command):
 
         scene.objects[self.object_id] = copy.deepcopy(self._object_snapshot)
         scene.selected_id = self.object_id
+        scene.selected_ids = [self.object_id]
         scene._notify()
         return None
 
@@ -1859,6 +1865,7 @@ class _CreatePolygonCommandBase(Command):
 
         scene.objects.pop(self.object_id)
         scene.selected_id = self._previous_selected_id
+        scene.selected_ids = list(self._previous_selected_ids)
         scene._notify()
         return None
 
@@ -2202,6 +2209,7 @@ class ClearSceneCommand(Command):
         self._backup_groups: List[Any] = []
         self._backup_collisions: Dict[str, List[Tuple[float, float]]] = {}
         self._backup_selected_id: Optional[str] = None
+        self._backup_selected_ids: List[str] = []
 
     def execute(self, scene: Any):
         if not (
@@ -2218,6 +2226,7 @@ class ClearSceneCommand(Command):
         self._backup_groups = copy.deepcopy(scene.groups)
         self._backup_collisions = copy.deepcopy(scene.collision_shapes)
         self._backup_selected_id = scene.selected_id
+        self._backup_selected_ids = list(getattr(scene, "selected_ids", []))
         scene.clear()
 
     def undo(self, scene: Any):
@@ -2225,6 +2234,7 @@ class ClearSceneCommand(Command):
         scene.groups = copy.deepcopy(self._backup_groups)
         scene.collision_shapes = copy.deepcopy(self._backup_collisions)
         scene.selected_id = self._backup_selected_id
+        scene.selected_ids = list(self._backup_selected_ids)
         scene._notify()
 
 
@@ -2274,6 +2284,7 @@ class DeleteObjectCommand(Command):
         self._backup_object_index: Optional[int] = None
         self._backup_group_members: Optional[Dict[str, List[str]]] = None
         self._backup_selected_id: Optional[str] = None
+        self._backup_selected_ids: List[str] = []
         self._had_collision = False
         self._backup_collision: Optional[List[Tuple[float, float]]] = None
 
@@ -2289,6 +2300,7 @@ class DeleteObjectCommand(Command):
             group.id: list(group.members) for group in scene.groups
         }
         self._backup_selected_id = scene.selected_id
+        self._backup_selected_ids = list(getattr(scene, "selected_ids", []))
         self._had_collision = self.object_id in scene.collision_shapes
         self._backup_collision = (
             copy.deepcopy(scene.collision_shapes[self.object_id])
@@ -2353,4 +2365,5 @@ class DeleteObjectCommand(Command):
             group.members = list(members)
 
         scene.selected_id = self._backup_selected_id
+        scene.selected_ids = list(self._backup_selected_ids)
         scene._notify()

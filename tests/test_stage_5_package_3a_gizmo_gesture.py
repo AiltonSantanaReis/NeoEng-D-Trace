@@ -180,7 +180,7 @@ def test_canvas_gizmo_paths_are_transactional_and_todo_is_removed():
     key_source = inspect.getsource(CanvasView.keyPressEvent)
 
     assert "model.update_polygon" not in move_source
-    assert "PolygonGestureTransaction" in inspect.getsource(
+    assert "TransformGestureTransaction" in inspect.getsource(
         CanvasView._begin_gizmo_object_gesture
     )
     assert "_finish_gizmo_gesture" in release_source

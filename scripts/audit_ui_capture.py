@@ -226,6 +226,18 @@ def run(output: Path) -> dict[str, Any]:
             project_path_capture = output / f"{label}_02_projeto_paineis.png"
             _capture(project_window, project_path_capture)
 
+            # Exercise the real transform transaction to expose the live gizmo feedback.
+            canvas = project_window.canvas
+            feedback_path = output / f"{label}_04_gizmo_feedback.png"
+            if not canvas._begin_gizmo_object_gesture():
+                raise RuntimeError("Could not begin the real gizmo transaction")
+            canvas._gizmo_active = True
+            canvas._gizmo_operation = canvas.gizmo.ROTATE_Z
+            canvas._preview_gizmo_transform(rotation=45.0)
+            _settle(app)
+            _capture(project_window, feedback_path)
+            canvas._cancel_gizmo_gesture()
+            _settle(app, 20)
             validation_window_path = output / f"{label}_03_validacao_janela.png"
             validation_modal_path = output / f"{label}_03_validacao_modal.png"
             if project_window._compact_layout:
@@ -243,6 +255,7 @@ def run(output: Path) -> dict[str, Any]:
                 "files": {
                     base_path.name: _digest(base_path),
                     project_path_capture.name: _digest(project_path_capture),
+                    feedback_path.name: _digest(feedback_path),
                     validation_window_path.name: _digest(validation_window_path),
                     validation_modal_path.name: _digest(validation_modal_path),
                 },
