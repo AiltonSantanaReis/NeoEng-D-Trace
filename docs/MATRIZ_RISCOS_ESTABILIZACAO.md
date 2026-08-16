@@ -22,7 +22,7 @@
 
 ## Estado operacional atual dos riscos
 
-Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; o CI pós-merge `31907063633` aprovou os testes em Linux e Windows, com baseline íntegra e evidências auditadas. A release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e a formalização futura de `R-015` são riscos aceitos/deferidos e não bloquearam essa release por decisão do proprietário. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. Os artefatos atuais continuam sem assinatura; isso é declarado, não mascarado.
+Snapshot histórico de 15 de agosto de 2026. Atualização de 16 de agosto de 2026: A PR `#60` foi integrada no merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; o CI pós-merge `31907063633` aprovou os testes em Linux e Windows, com baseline íntegra e evidências auditadas. A release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e a formalização futura de `R-015` são riscos aceitos/deferidos e não bloquearam essa release por decisão do proprietário. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. Os artefatos atuais continuam sem assinatura; isso é declarado, não mascarado.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -44,7 +44,7 @@ Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a43
 | R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES | GUI, CLI e MSI retornam `NotSigned`; a primeira release oficial pode ser distribuída sem assinatura por decisão do proprietário, com hashes e transparência |
 | R-015 | DECISÃO DE ROADMAP REGISTRADA / FORMALIZAÇÃO FUTURA | ícone gerado por IA e autorizado pelo proprietário; NOTICE, política e roteiro atualizados; licenciamento, atribuições e trâmites formais ficam para futuras versões |
 | R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
-| R-017 | ABERTO / ESCOPO REMANESCENTE | Etapas 3 a 7 possuem provas locais reais no escopo documentado; a Etapa 7 cobre sincronização/overrides em Godot 4.7 e Unity 6000.5.7f1, mas commit, CI, merge, dry-run, rollback e etapas 8 a 10 permanecem pendentes. |
+| R-017 | ABERTO / ESCOPO REMANESCENTE | Etapas 3 a 7 possuem provas reais no escopo documentado; a Etapa 7 cobre sincronização/overrides em Godot 4.7 e Unity 6000.5.7f1 e foi integrada pela PR 73 no merge 283db2f, com CI pós-merge 31971686798 aprovado. Permanecem pendentes apenas dry-run, rollback e etapas 8 a 10. |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 
