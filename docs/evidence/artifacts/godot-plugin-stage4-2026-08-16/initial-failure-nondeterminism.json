@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "stage": 4,
+  "status": "FAILED",
+  "plugin": "neoeng_d_trace",
+  "import_scope": "Sprite2D, AtlasTexture, pivot, CollisionPolygon2D, determinism, manual conflict",
+  "commands": [
+    {
+      "executable": "godot.exe",
+      "arguments": [
+        "--headless",
+        "--editor",
+        "--path",
+        "<local-path>",
+        "--import"
+      ],
+      "returncode": 0,
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Inicialização do Projeto (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Escaneando estrutura de arquivos...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Carregando nomes de classe globais...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verificando GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Criando scripts autoload...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Inicializando plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Iniciando escaneamento de arquivos...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registrando classes globais... (4 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | NeoEngDTraceImporter\u001b[39m\u001b[0m\n[  20% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | NeoEngDTraceManifestDiagnostic\u001b[39m\u001b[0m\n[  40% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  60% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importando Recursos (1 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparando arquivos para reimportação...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executando operações pré-reimportação...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | source.png\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizando Importação de Recursos...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importando Recursos (1 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executando operações pós-reimportação...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Carregando editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Carregando layout do editor...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Carregando abas...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n"
+    },
+    {
+      "executable": "godot.exe",
+      "arguments": [
+        "--headless",
+        "--path",
+        "<local-path>",
+        "--script",
+        "validate_stage4.gd"
+      ],
+      "returncode": 1,
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nERROR: non-deterministic-generated-scene\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _fail (res://validate_stage4.gd:7)\n       [1] _initialize (res://validate_stage4.gd:58)\n"
+    }
+  ],
+  "fixture_files": {
+    "source.png": {
+      "size": 112,
+      "sha256": "d98a488dd6e018ab9048000245899a14fdee37ed18fc2e17677cc0d36112ccb2"
+    },
+    "hero.ndt.integration.json": {
+      "size": 2486,
+      "sha256": "b6abf45dc0cbc97a6b0899acb58454175836fc0118d215a51aff7bc02bb0b903"
+    }
+  },
+  "error_type": "RuntimeError",
+  "error": "Godot stage-four command failed"
+}

@@ -18,6 +18,7 @@
 | R-014 | P1 | Artefatos Windows não possuem assinatura de código | Alerta de confiança e cadeia de distribuição não autenticada | Assinar GUI, CLI e MSI; validar assinatura e timestamp |
 | R-015 | P1 | Texto jurídico, política de publicação e identidade visual final pendentes | Publicação sem base legal ou apresentação oficial | Aprovação jurídica, política de dados e ícone final versionado |
 | R-016 | P2 | Governança da toolchain MSI migrada | Termos da ferramenta precisam ser revisados antes da release pública | Manter WiX 4.0.6 fixado e preservar provas de reprodutibilidade, instalação, upgrade e reparo |
+| R-017 | P1 | Adaptadores nativos Godot/Unity ainda não validados em engines reais | Integração pode divergir em importação, pivô, colisão, overrides ou rollback | Fixtures reais, execução nas engines alvo, dry-run, hashes, CI e evidência por etapa 3 a 10 |
 
 ## Estado operacional atual dos riscos
 
@@ -43,6 +44,7 @@ Snapshot vivo de 15 de agosto de 2026. A PR `#60` foi integrada no merge `5b9a43
 | R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES | GUI, CLI e MSI retornam `NotSigned`; a primeira release oficial pode ser distribuída sem assinatura por decisão do proprietário, com hashes e transparência |
 | R-015 | DECISÃO DE ROADMAP REGISTRADA / FORMALIZAÇÃO FUTURA | ícone gerado por IA e autorizado pelo proprietário; NOTICE, política e roteiro atualizados; licenciamento, atribuições e trâmites formais ficam para futuras versões |
 | R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
+| R-017 | ABERTO / EM IMPLEMENTAÇÃO | Contrato e addon Godot source-only aprovados nas etapas 1 a 3; importação de recursos, plugin Unity, sincronização, overrides e rollback nativos permanecem pendentes. |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

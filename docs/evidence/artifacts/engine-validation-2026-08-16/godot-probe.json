@@ -1,0 +1,62 @@
+{
+  "schema": "neoeng-d-trace-godot-sprite",
+  "schema_version": 1,
+  "engine": "godot-4",
+  "name": "sprite_a\u00e7\u00e3o",
+  "coordinate_origin": "top-left",
+  "rect": {
+    "x": 100.0,
+    "y": 50.0,
+    "w": 40.0,
+    "h": 20.0
+  },
+  "pivot": {
+    "x": 20.0,
+    "y": 10.0
+  },
+  "offset": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "polygon": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      40.0,
+      0.0
+    ],
+    [
+      40.0,
+      20.0
+    ],
+    [
+      0.0,
+      20.0
+    ]
+  ],
+  "collision": {
+    "object_id": "sprite_a\u00e7\u00e3o",
+    "shape_type": "polygon",
+    "coordinate_space": "image",
+    "points": [
+      [
+        100.0,
+        50.0
+      ],
+      [
+        140.0,
+        50.0
+      ],
+      [
+        140.0,
+        70.0
+      ],
+      [
+        100.0,
+        70.0
+      ]
+    ]
+  }
+}

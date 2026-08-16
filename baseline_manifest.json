@@ -233,12 +233,16 @@
       "size": 6112
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "85abc19d69f0bd867fa6c769ca9fb5aabe9d2beb49fac2a6b78803b21ca8fa6c",
-      "size": 17345
+      "sha256": "484e79e02682ed52ec900d5fe669e16a0c608b093525c1e857ee4d380a404dc1",
+      "size": 17827
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
+    },
+    "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
+      "sha256": "4fede26aceb7614150bef532ce2365704a19b9b9191693ecd2f91053438adf2d",
+      "size": 3805
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -428,6 +432,10 @@
       "sha256": "4adf93ad8e64c7118d9ef409f65fd0987acd810f7d63284f990ce2534d0fa8ca",
       "size": 1520
     },
+    "docs/evidence/ETAPA_1_2_CONTRATO_INTEGRACAO_PLUGINS_2026-08-16.md": {
+      "sha256": "49bd13de1a091b70db0bcdbf4839b3b4a898012d133893bfdc1e93980265201d",
+      "size": 5126
+    },
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
       "size": 6772
@@ -460,6 +468,14 @@
       "sha256": "fb9c7fce556c6d4569a7df76561ad66729bdf48c43b73dbfd096539bd4b6df64",
       "size": 7005
     },
+    "docs/evidence/ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md": {
+      "sha256": "01e0436feac7464283d5e2b628f410c0a91fbe1d70c2c11edc955f76d78351db",
+      "size": 6315
+    },
+    "docs/evidence/ETAPA_4A_IMPORTACAO_GODOT_2026-08-16.md": {
+      "sha256": "d7a27fdf92b0c8f8725c55ca0d578bb9fe7ab0051999d803183897d5d1d3c6ea",
+      "size": 479
+    },
     "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
       "size": 7651
@@ -467,6 +483,10 @@
     "docs/evidence/ETAPA_4_EVIDENCE_MANIFEST.json": {
       "sha256": "530874a8837d782562a68f411954923c381ccfeb246a83e8fa285ebcde925bab",
       "size": 8007
+    },
+    "docs/evidence/ETAPA_4_IMPORTACAO_GODOT_2026-08-16.md": {
+      "sha256": "1603c547be79f44bd6f8f232d1eec6b115cde8015c9f53c51689d045a157b3f1",
+      "size": 4753
     },
     "docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "4ce97c185650844321d42f158896c3aa8d851358dedb81820cfaca360614828f",
@@ -601,8 +621,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "4fe3756f92a4c3f29ea7a815c0df308e76fe58e9bd973403af5d256336259ade",
-      "size": 25811
+      "sha256": "f4d789af0c83818ded0e38d8662f4d6848acf0b72939c1271a7f33b6b2e567ce",
+      "size": 26522
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -611,6 +631,10 @@
     "docs/evidence/SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md": {
       "sha256": "a14971ec281558a36456cc5a4492465e934252559a70febc6ad46a00cd0b2708",
       "size": 5335
+    },
+    "docs/evidence/VALIDACAO_REAL_ENGINES_HARNESS_2026-08-16.md": {
+      "sha256": "b3ebb7cff2de847e9989f034827bf2e2d021f9e497630574618e8fc2e45085af",
+      "size": 5233
     },
     "docs/evidence/artifacts/auto-detection-quality/final-v6/images/clean_rectangle_ground_truth.png": {
       "sha256": "8f27f0a85ccd086155419ddb2098806293596cd630f65d1c5b32f6d9aaa77d69",
@@ -1064,6 +1088,54 @@
       "sha256": "9fc5cf21cb7f2ab4a3ccb8901de30812e9f07d6652367dbe6ed28b4490031967",
       "size": 48918
     },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/engine-validation-index.json": {
+      "sha256": "2ff6e1a45f2cd4ba9cab77daa451abf93c760bfaf8dddbd0da9d5ee3bfb18ebf",
+      "size": 2538
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-probe.json": {
+      "sha256": "f046ae2bbf672f4b20062a150f806809ec81bd7e8486a3d3735326bda837d7b0",
+      "size": 817
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-report-real.json": {
+      "sha256": "2c5bbbd6a8a35a82612ec95138d91276a5322c0ed6be8d3a023aed6732a764fe",
+      "size": 4156
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-report.json": {
+      "sha256": "88c1cdc7eda6c43665566f9a696be777f172803f69524171c573b2183a8fbbc1",
+      "size": 289
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-scene.glb": {
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "size": 968
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/godot-source.png": {
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "size": 229
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-engine-validation-result.txt": {
+      "sha256": "77919ab298b0305d4a43f30d01a7c950bef7b29732ff6709354ef66eef5a3f5d",
+      "size": 52
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-packages-lock.json": {
+      "sha256": "48ed050f24e1e481405d0da46e63913c494db272d62292d197c53af4ac3d930f",
+      "size": 9521
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-probe.json": {
+      "sha256": "d3b0f4e6cfb368d71fdcc29295937caa9912ef4183c9e365e4f8325f1acc9b5b",
+      "size": 850
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-report.json": {
+      "sha256": "6ef0038469c18c56f1c822e885a1dd7e4a872ff0c349ef3b2249d9db84c91954",
+      "size": 960
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-scene.glb": {
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "size": 968
+    },
+    "docs/evidence/artifacts/engine-validation-2026-08-16/unity-source.png": {
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "size": 229
+    },
     "docs/evidence/artifacts/export-pipeline-audit/animation/animation.json": {
       "sha256": "58400b75eb089ea8d88a36d674138c932ea33691b09d35c47ee655fe14643592",
       "size": 1641
@@ -1143,6 +1215,102 @@
     "docs/evidence/artifacts/export-pipeline-audit/tileset/tileset.json": {
       "sha256": "3d47611f92e50a6fa1bdc5ead913703dc9745ef01157dfa44e83a18f65705474",
       "size": 1136
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/neoeng-d-trace-godot-stage3.zip": {
+      "sha256": "195461b99279b8d3516247a2635a9dc0c89263d394f71873beb846a483b00dc9",
+      "size": 3524
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/stage3-index.json": {
+      "sha256": "65fb7f8dceffe3d805a469a4954b7d3e92f50a598f905273e6f04d142510b034",
+      "size": 1431
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/stage3-report.json": {
+      "sha256": "1f84f236adbb982ffa6016fc027b4e110a5e3f4473d652c83fd37e5d9585a436",
+      "size": 3565
+    },
+    "docs/evidence/artifacts/godot-plugin-stage3-2026-08-16/stage3-zip-report.json": {
+      "sha256": "bb1acacad12938046167364e9360d5d1bf12729f215f90e5319f12db921c7033",
+      "size": 3562
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16.json": {
+      "sha256": "e090fd49e2530d73d3f17a5d309137a716161b136ec02af0caf4f82fb5e70680",
+      "size": 5623
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/animation.tscn": {
+      "sha256": "716e5ce624205615069d4ebea5fea37798180bd7c27190ad34f934cf0476c9a6",
+      "size": 1383
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/animation_conflict.tscn": {
+      "sha256": "5ff2e87ad50df730fd2c1afd6d48b1826ece5c7452701d881cf8add13469192e",
+      "size": 1055
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/compound.tscn": {
+      "sha256": "6c0b04ed14d665cc6498e478516d3c4fcc1ba7de58d28bee9e7c7d4f5200e748",
+      "size": 1197
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/frames/frame_0000.png": {
+      "sha256": "d351653fd1a3c098af4e783032c4cb216bfc479242b2fab99438637a8663c21e",
+      "size": 91
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/frames/frame_0001.png": {
+      "sha256": "46ffbea8392b4e2e3f9e705f472e35b77e5b36071a1135e34ebcd02c622d0aa0",
+      "size": 95
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/hero.ndt.integration.json": {
+      "sha256": "3b111c6ef1f4becd8dbe6dd751cfafb80efba250e6353b4437690b1e938a698a",
+      "size": 7027
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/hero.tscn": {
+      "sha256": "447843c023cedcf6793e311a0d9a2e97f062a572c1d56a786489342debb3661f",
+      "size": 1013
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/initial-failure-animation-sync.json": {
+      "sha256": "ab071fdb1ab5fa74c1fd7c60f87ebce2afafc2db6665c576f3b14ce2c59898b3",
+      "size": 5726
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/initial-failure-nondeterminism.json": {
+      "sha256": "5cd08a9b97132c9e530c6ab78dc10e705d2d99342d91026a9333dd579052cf00",
+      "size": 4239
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/manual.tscn": {
+      "sha256": "2e8d24fa0f9868fbd74cb0b83bc6ea857ef85a40ddf8c62c78e28aa9dc92d9a2",
+      "size": 56
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/neoeng-d-trace-godot-stage4.zip": {
+      "sha256": "9a196b0b5307486710619344be3facad2045b4739ba11fdbda984c7b1a96f225",
+      "size": 10032
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/source.png": {
+      "sha256": "f9a6fded39b2fd9b2f7479b365a207b32c112d00f01c0a4ba78f7afdca18d722",
+      "size": 127
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/stage4-index.json": {
+      "sha256": "d60b0f5888db7185a649ad01e968bd870866e7917131d43ba7c02d885916bcc6",
+      "size": 2234
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/tileset.tres": {
+      "sha256": "3ebcf1a54db5a5f2e0f9596d42c0622003a791ad5fb2a4684dae4f76ea709825",
+      "size": 798
+    },
+    "docs/evidence/artifacts/godot-plugin-stage4-2026-08-16/tileset_conflict.tscn": {
+      "sha256": "628d07c40597c45fb4782bba1a4640f7b31b7e952b0860b80a3081adb56a9c98",
+      "size": 1049
+    },
+    "docs/evidence/artifacts/integration-manifest/artifact-index.json": {
+      "sha256": "4428b88a393205dd0027f321e57904734ad90dd54af8a77827e6f204c2827887",
+      "size": 504
+    },
+    "docs/evidence/artifacts/integration-manifest/godot.integration.json": {
+      "sha256": "b6cfdd82821c4be89153ad6c930fff0468f41d10fc13d70165b7254e1561dbea",
+      "size": 2069
+    },
+    "docs/evidence/artifacts/integration-manifest/source.png": {
+      "sha256": "33b2adecef77add7cad5d25d50dfbea47acf84250d0d578807a97d3768fed416",
+      "size": 91
+    },
+    "docs/evidence/artifacts/integration-manifest/unity.integration.json": {
+      "sha256": "723a360b115814751afb4c60bcdfef2fbd7d53a30fba0e1f5a3f8474d3f842f8",
+      "size": 2069
     },
     "docs/evidence/artifacts/roi-grabcut-collision/collision-compound-normalized.json": {
       "sha256": "c219402079a535a0eb86a00bf3d5c90a67361a2a2fd5fa2d71034521cdecf09c",
@@ -1416,6 +1584,30 @@
       "sha256": "3e5276c322dec60e41b62b0b306eec6a54a3ec14889b1584d856f9f36ef84912",
       "size": 3323
     },
+    "integrations/godot/addons/neoeng_d_trace/README.md": {
+      "sha256": "a44118c2136777760598ca1c69ebe3de8a6889113d726602ea9b980446edff65",
+      "size": 2178
+    },
+    "integrations/godot/addons/neoeng_d_trace/animation_collision_driver.gd": {
+      "sha256": "28d395080e23d10e295112b17937d12d6e8f6aaa19eedc9005a221c01564bde0",
+      "size": 1350
+    },
+    "integrations/godot/addons/neoeng_d_trace/import_generator.gd": {
+      "sha256": "6b79cbfa526d1846ae446e27a413606752b80e77796b843186ad7ea679fdfe7c",
+      "size": 25503
+    },
+    "integrations/godot/addons/neoeng_d_trace/manifest_diagnostic.gd": {
+      "sha256": "afe17bae4547d35387b4171aa749ba509294ba10730df8f07937540e18fa0a26",
+      "size": 5999
+    },
+    "integrations/godot/addons/neoeng_d_trace/plugin.cfg": {
+      "sha256": "2c36178f1eba7b3522710e4e8e1e895110adba8c0ae87a54152f1a4369ca6a05",
+      "size": 177
+    },
+    "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
+      "sha256": "709cbc48a5cfab8a0160f7d51c1400c8b1ad6ceccfbf4b312a9ee2506154bc00",
+      "size": 1289
+    },
     "mypy.ini": {
       "sha256": "2c2c8584c401859cba04a7435c908845c3eb3bd61dbf99e6f3d0c4e5e97225e0",
       "size": 560
@@ -1596,6 +1788,18 @@
       "sha256": "371da2b8448b00944979589087dffd9008f144c920394d5779718ca90630ced3",
       "size": 6798
     },
+    "scripts/audit_godot_plugin_stage3.py": {
+      "sha256": "db169c1fbd661c702ab679c52b15952af704de6a9928363bda1f6c8259a350f1",
+      "size": 5522
+    },
+    "scripts/audit_godot_plugin_stage4.py": {
+      "sha256": "0d01c81e819da18984266a37da4806c5269a351013124c79e8b354b773394f4f",
+      "size": 8327
+    },
+    "scripts/audit_integration_manifest.py": {
+      "sha256": "82b377304813285623667649507b96500a04db885fd121ae159999e0fc5a17d7",
+      "size": 2010
+    },
     "scripts/audit_ui_capture.py": {
       "sha256": "fd3c05d25500b84b6a405cacde044a2a1fd997991b3308c48563629afdb42efb",
       "size": 9995
@@ -1607,6 +1811,10 @@
     "scripts/build_windows.ps1": {
       "sha256": "8f8c4b3608033c2fdd708f381dc39b32342545e704294df17f0c738d4aca464d",
       "size": 2641
+    },
+    "scripts/package_godot_plugin.py": {
+      "sha256": "a4713410b840476cff869422584ec83252ca936c9fb1baf0c80ffad747e6a08e",
+      "size": 1382
     },
     "src/__init__.py": {
       "sha256": "0025aeb81a4d66e83dfd6f962595b5d7ec282a550a004523a49a2d891676c2a2",
@@ -1719,6 +1927,10 @@
     "src/exporters/gltf_exporter.py": {
       "sha256": "81a55731775677686b2df05554bd9dca0b50dd937fad74016b289faa7a6daac1",
       "size": 10706
+    },
+    "src/exporters/integration_manifest.py": {
+      "sha256": "e9d13c1c5edf670635b6f5ff8a1af9bae9b39582210cb219ca08c636d376fee5",
+      "size": 7518
     },
     "src/exporters/json_exporter.py": {
       "sha256": "4d464d6004e69d9f57500696ab787041cff8f4833270aa791a50bc5aaa2b5eb9",
@@ -2052,9 +2264,17 @@
       "sha256": "9afaac660d0401e70262fa00485abeae6b43be6db71579d892251cfc108c51fd",
       "size": 16939
     },
+    "tests/test_godot_plugin_scaffold.py": {
+      "sha256": "7a6eb88c0ba5b9fba4aa299245310754e4bb351f88871e5bc2bd2aea96897e79",
+      "size": 2135
+    },
     "tests/test_grabcut_pipeline.py": {
       "sha256": "bb381958a30b534e2a79ba99acf60d59f23d0149677b13ecd095675f0e575c47",
       "size": 21450
+    },
+    "tests/test_integration_manifest.py": {
+      "sha256": "af422d3c1fe520e3c137087ca6936b1041ec651bcc4493d337cb52cacb9a61c7",
+      "size": 6646
     },
     "tests/test_json_exporter_contract.py": {
       "sha256": "2fe479d579d20ff533dc3389c1a5c29fb212047d2427c6234142f34989e2b141",
@@ -2359,6 +2579,14 @@
     "tools/godot_engine_validator.gd": {
       "sha256": "53d14e95be4c58bf39f8a2c3c958c5f6159dc1c4ea1f06c19f5ee3f226f04a66",
       "size": 2272
+    },
+    "tools/godot_plugin_stage3_validator.gd": {
+      "sha256": "f99e001ac09904f3871e867da661a485604e69589686bafdbd9d7f9af2d93c5e",
+      "size": 1618
+    },
+    "tools/godot_plugin_stage4_validator.gd": {
+      "sha256": "8a2faf080fd2de33632e42f064a59cd63bd5d82f223b6ca2dbbd352d17878bad",
+      "size": 9918
     },
     "tools/package_portable_release.py": {
       "sha256": "732206adbc953f83c6e16f9ea2e7274c3d7e2fdd12a94960e78796962808dce5",
