@@ -3,6 +3,8 @@
 ## Identificação
 
 - Commit técnico: 36f6fcdb7916eb8a5bddfe3b5fdbd700096ac7e2
+- Head da PR validado remotamente: 924d3c6ab23c4ec77e8b1609795674781838fd5f
+- Workflow remoto: 31922261995, Linux e Windows aprovados
 - Branch: head da PR #63, identificado pelo SHA do commit técnico e pelo SHA corrente da PR
 - Data: 2026-08-15, America/Sao_Paulo
 - Estado: branch publicado no origin; PR #63 aberta para main; merge pendente
@@ -72,8 +74,8 @@ A suíte atual não falhou. O único aviso novo é a depreciação do construtor
 - A visualização raio-X facilita inspeção e sementes contextuais, mas não substitui correção manual quando a máscara estiver errada.
 - Os limites operacionais continuam válidos; entradas acima deles devem ser rejeitadas de forma controlada.
 - Não foi feita validação em runtime dentro de Unity/Godot neste branch; foram validados o schema/exportador local e a geometria.
-- A PR #63 está sob validação remota. Até todos os checks concluírem com sucesso, esta permanece uma aprovação local/pré-merge e não uma aprovação de integração ou release.
+- A PR #63 concluiu os checks remotos Linux e Windows com sucesso no workflow 31922261995. O merge ainda é um gate separado e permanece pendente de revisão/execução.
 
 ## Decisão
 
-APROVADO localmente / pré-merge, com limitações acima. O branch está pronto para revisão humana e execução dos workflows GitHub. Não declarar integrado, pronto para release ou aprovado por CI até a validação remota correspondente.
+APROVADO localmente e pelo CI pré-merge, com limitações acima. O branch está pronto para revisão final e merge. Não declarar integrado ou pronto para release até o merge e a validação pós-merge correspondentes.
