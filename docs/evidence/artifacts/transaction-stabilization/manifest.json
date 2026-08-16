@@ -1,0 +1,10 @@
+{
+  "generator": "manual deterministic evidence manifest",
+  "schema_version": 1,
+  "files": {
+    "full-test-results.txt": {
+      "bytes": 8559,
+      "sha256": "61f8e1f37fc4097fcd9002866e820f62a1e06c4a40b4ba8dce341167718f3459"
+    }
+  }
+}

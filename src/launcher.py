@@ -23,6 +23,7 @@ except ImportError as e:
 
 from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
 from src.core.app_paths import default_config_path
+from src.core.atomic_outputs import AtomicOutputTransaction
 from src.core.commands import CommandManager
 from src.core.config import ConfigManager
 from src.core.image_input import inspect_image_file, validate_decoded_image
@@ -190,49 +191,76 @@ def run_headless(args: argparse.Namespace) -> int:
             except Exception as exc:
                 return _cli_failure(f"Failed to load project: {exc}")
 
-        if args.export_scene_gltf:
-            try:
-                from src.exporters.gltf_exporter import export_scene_to_gltf
+        with AtomicOutputTransaction() as output_transaction:
+            staged_scene_gltf = (
+                output_transaction.stage_path(args.export_scene_gltf)
+                if args.export_scene_gltf
+                else None
+            )
+            staged_object_gltf = (
+                output_transaction.stage_path(args.export_object_gltf)
+                if args.export_object_gltf
+                else None
+            )
+            staged_json = (
+                output_transaction.stage_path(args.export_json)
+                if args.export_json
+                else None
+            )
+            staged_project = (
+                output_transaction.stage_path(args.save_project)
+                if args.save_project
+                else None
+            )
 
-                if not export_scene_to_gltf(scene, args.export_scene_gltf):
-                    return _cli_failure("Failed to export scene to GLTF")
-            except (ImportError, OSError, ValueError, RuntimeError) as exc:
-                return _cli_failure(f"Failed to export scene to GLTF: {exc}")
+            if staged_scene_gltf:
+                try:
+                    from src.exporters.gltf_exporter import export_scene_to_gltf
 
-        if args.export_object_gltf:
-            try:
-                from src.exporters.gltf_exporter import export_object_to_gltf
+                    if not export_scene_to_gltf(scene, staged_scene_gltf):
+                        return _cli_failure("Failed to export scene to GLTF")
+                except (ImportError, OSError, ValueError, RuntimeError) as exc:
+                    return _cli_failure(f"Failed to export scene to GLTF: {exc}")
 
-                if not export_object_to_gltf(
-                    args.object_id, scene, args.export_object_gltf
-                ):
+            if staged_object_gltf:
+                try:
+                    from src.exporters.gltf_exporter import export_object_to_gltf
+
+                    if not export_object_to_gltf(
+                        args.object_id, scene, staged_object_gltf
+                    ):
+                        return _cli_failure(
+                            f"Failed to export object {args.object_id} to GLTF"
+                        )
+                except (ImportError, OSError, ValueError, RuntimeError) as exc:
                     return _cli_failure(
-                        f"Failed to export object {args.object_id} to GLTF"
+                        f"Failed to export object {args.object_id} to GLTF: {exc}"
                     )
-            except (ImportError, OSError, ValueError, RuntimeError) as exc:
-                return _cli_failure(
-                    f"Failed to export object {args.object_id} to GLTF: {exc}"
-                )
 
-        if args.export_json:
+            if staged_json:
+                try:
+                    from src.exporters.json_exporter import (
+                        export_scene_metadata,
+                        save_json_metadata,
+                    )
+
+                    save_json_metadata(
+                        export_scene_metadata(scene, profile=args.export_profile),
+                        staged_json,
+                    )
+                except (OSError, TypeError, ValueError) as exc:
+                    return _cli_failure(f"Failed to export JSON: {exc}")
+
+            if staged_project:
+                try:
+                    scene.save_project(staged_project)
+                except (OSError, TypeError, ValueError) as exc:
+                    return _cli_failure(f"Failed to save project: {exc}")
+
             try:
-                from src.exporters.json_exporter import (
-                    export_scene_metadata,
-                    save_json_metadata,
-                )
-
-                save_json_metadata(
-                    export_scene_metadata(scene, profile=args.export_profile),
-                    args.export_json,
-                )
-            except (OSError, TypeError, ValueError) as exc:
-                return _cli_failure(f"Failed to export JSON: {exc}")
-
-        if args.save_project:
-            try:
-                scene.save_project(args.save_project)
-            except (OSError, TypeError, ValueError) as exc:
-                return _cli_failure(f"Failed to save project: {exc}")
+                output_transaction.commit()
+            except (OSError, ValueError, RuntimeError) as exc:
+                return _cli_failure(f"Failed to commit output set: {exc}")
 
         print("Headless processing completed successfully")
         return EXIT_SUCCESS

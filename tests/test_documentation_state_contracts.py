@@ -485,7 +485,7 @@ def test_stage7_cli_evidence_is_premerge_and_keeps_risk_open():
         "| `1` |",
         "| `2` |",
         "--image` e `--project`",
-        "não é uma transação conjunta",
+        "A execução com múltiplas saídas usa arquivos temporários",
     ):
         assert marker in contract
 

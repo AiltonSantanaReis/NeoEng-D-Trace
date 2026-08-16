@@ -1,6 +1,6 @@
 # Contrato da CLI e do modo headless
 
-**Estado:** candidato técnico da Etapa 7 validado localmente em 10 de agosto de 2026; integração e CI pós-merge pendentes.
+**Estado:** integrado e aprovado no escopo atual; múltiplas saídas usam staging e rollback durante a execução do processo. A garantia não cobre perda de energia ou corrupção externa do filesystem.
 
 ## Entradas oficiais
 
@@ -52,9 +52,10 @@ Exceções inesperadas do modo headless são convertidas em código `1`, sem tra
 - Entradas precisam ser arquivos regulares; diretórios não são aceitos como imagem ou projeto.
 - JSON, GLB e projeto usam os mecanismos atômicos dos exportadores/persistência correspondentes.
 - Um destino JSON existente é preservado quando a substituição atômica falha.
-- A execução com múltiplas saídas não é uma transação conjunta: se uma operação posterior falhar, arquivos anteriores já concluídos permanecem. Essa limitação deve ser tratada na etapa de contratos de exportação, sem alegação de atomicidade global.
+- A execução com múltiplas saídas usa arquivos temporários no mesmo diretório e só publica o conjunto ao final. Se o commit falhar durante a execução do processo, os destinos anteriores são restaurados e novos destinos parciais são removidos.
+- A transação rejeita destinos duplicados e não promete crash-consistency: perda de energia, corrupção do filesystem ou interrupção externa durante a substituição não são garantidas pelo contrato.
 - A CLI não valida importação dos GLBs em engines externas; essa prova pertence à etapa de exportadores e engines.
-- O código `0` comprova somente o contrato solicitado naquela execução; não aprova release nem elimina riscos de outras etapas.
+- O código `0` só é emitido depois do commit do conjunto de saídas. Ele comprova somente o contrato solicitado naquela execução; não aprova release nem elimina riscos de outras etapas.
 
 ## Testes de referência
 
