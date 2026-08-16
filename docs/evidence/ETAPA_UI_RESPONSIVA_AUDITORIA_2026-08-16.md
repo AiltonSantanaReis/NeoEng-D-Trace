@@ -2,7 +2,7 @@
 
 ## Identificação
 
-- Commit: `e7ae9764d85038bb82407f98a31e87dbf86c0077`
+- Commit: `4e839252a53d80c98aaf88a326306f7d51f3ef97`
 - Branch: revisão pré-merge correspondente ao commit, publicada no remoto.
 - Data/hora: 2026-08-16 00:40 BRT.
 - Responsável: mantenedor do projeto.
@@ -49,12 +49,12 @@ python tools/baseline_integrity.py --verify
 - Aprovados: 1003 testes; 12 PNGs gerados; 3 resoluções capturadas com dimensões exatas; mensagem real de validação capturada; splitters/abas responsivos; exportações acessíveis no menu Arquivo; canvas e painéis sem sobreposição observada; paleta escura consistente.
 - Reprovados: nenhum teste funcional ou gate estático local.
 - Ignorados: nenhum caso de teste foi ignorado.
-- Bloqueados: CI remoto, revisão e merge ainda não executados no momento deste relatório.
+- Bloqueados: revisão e merge ainda não executados no momento deste relatório.
 - Cobertura: 91% de linhas; política integrada aprovada, incluindo o piso de branches e o mínimo de módulos mensuráveis.
 - Tipagem: mypy sem erros em 82 arquivos de origem.
 - Dependências: pip-audit sem vulnerabilidades conhecidas; o pacote local não foi auditado por não estar publicado no índice.
 - Segurança estática: Bandit no mesmo comando da CI (`-lll`) aprovado.
-- Baseline: manifesto verificado com 400 arquivos.
+- Baseline: manifesto verificado com 401 arquivos.
 - Warnings: 10 avisos de depreciação de `QMouseEvent` em teste legado; não causaram falhas.
 
 ## Auditoria visual
@@ -85,6 +85,13 @@ A causa do problema de layout era a concentração de toolbars e painéis na mes
 
 A captura full-window em Qt offscreen exibiu glifos quadrados em parte dos textos, embora os valores textuais dos widgets, as traduções e a renderização isolada de rótulos tenham sido verificados. Isso é uma limitação do backend de captura do ambiente e impede declarar a tipografia visual como aprovada de forma conclusiva. Não foi mascarado nem convertido em sucesso.
 
+## CI pré-merge auditado
+
+- Run inicial `31924919538`, no HEAD `bdc0d895b056b5ec300a3945fd578d07d0b1a5b3`: Linux reprovado no passo da suíte por código 139, com segmentation fault exatamente no novo teste responsivo ao reaplicar o QSS. Windows terminou verde, mas o PR não foi considerado aprovado por causa do job Linux.
+- Causa raiz confirmada no log: `tests/test_ui_responsive_layout.py`, linha 38, aplicação redundante do stylesheet em uma suíte Qt já inicializada.
+- Correção publicada no HEAD `4e839252a53d80c98aaf88a326306f7d51f3ef97`: o teste de layout deixou de reaplicar QSS; o auditor visual continua aplicando o tema real.
+- Run corretivo `31925090921`: Linux e Windows verdes; 1003 testes aprovados por sistema; cobertura CI acima de 90%; política de cobertura aprovada; baseline verificado com 401 arquivos; legado Windows reconciliado com `27/27` correspondências, zero inesperadas e zero ausentes.
+- O run inicial permanece registrado como reprovado; não foi apagado nem reclassificado.
 ## Limitações e riscos residuais
 
 - A inspeção visual foi feita com backend Qt offscreen em um único ambiente Windows; não substitui validação em sessão gráfica real e em Linux.
