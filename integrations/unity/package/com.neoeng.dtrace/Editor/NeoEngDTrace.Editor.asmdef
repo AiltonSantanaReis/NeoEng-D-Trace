@@ -1,0 +1,18 @@
+{
+  "name": "NeoEngDTrace.Editor",
+  "rootNamespace": "NeoEng.DTrace.Editor",
+  "references": [
+    "NeoEngDTrace.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
