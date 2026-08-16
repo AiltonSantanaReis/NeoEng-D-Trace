@@ -1,7 +1,7 @@
 # Estabilização de transações e documentação
 
 Data: 2026-08-16
-Estado: evidência local final antes do commit; o SHA do commit funcional será vinculado após o versionamento.
+Commit funcional da implementação e dos testes: d476a3c. O baseline e este vínculo documental são atualizados no commit seguinte.
 
 ## Decisão
 
