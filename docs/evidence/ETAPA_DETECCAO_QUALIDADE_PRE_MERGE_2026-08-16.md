@@ -56,7 +56,7 @@ O benchmark final executou 44 combinações reais (11 casos × 4 modos), cada um
 
 | Modo | IoU mínimo | IoU médio | F1 de borda mínimo | F1 de borda médio | maior contagem de vértices | maior mediana (s) |
 |---|---:|---:|---:|---:|---:|---:|
-| Basic | 0,829384 | 0,972477 | 0,832593 | 0,981915 | 115 | 0,061837 |
+| Basic | 0,829384 | 0,972477 | 0,832593 | 0,981915 | 115 | 0,061970 |
 | Perfect | 0,977483 | 0,995972 | 0,955660 | 0,995969 | 311 | 0,002917 |
 | Enhanced | 0,977483 | 0,995633 | 0,955660 | 0,995969 | 311 | 0,013692 |
 | GrabCut/ROI | 0,966903 | 0,989510 | 0,974050 | 0,997641 | 141 | 0,083860 |
