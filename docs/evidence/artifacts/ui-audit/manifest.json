@@ -1,0 +1,115 @@
+{
+  "captures": {
+    "1080p_FHD": {
+      "actual_size": [
+        1920,
+        1080
+      ],
+      "files": {
+        "1080p_FHD_01_sem_projeto.png": {
+          "bytes": 14712,
+          "sha256": "1851f64b10b2ef9779a1735b59b5dda1aab4a195f8cc7e88a6d93862c9224dc3"
+        },
+        "1080p_FHD_02_projeto_paineis.png": {
+          "bytes": 22257,
+          "sha256": "d85fa708a42ffc5b6972f995169ceeb852fb8b04708f337cbf6144797b956f05"
+        },
+        "1080p_FHD_03_validacao_janela.png": {
+          "bytes": 22257,
+          "sha256": "d85fa708a42ffc5b6972f995169ceeb852fb8b04708f337cbf6144797b956f05"
+        },
+        "1080p_FHD_03_validacao_modal.png": {
+          "bytes": 1611,
+          "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7"
+        }
+      },
+      "requested_size": [
+        1920,
+        1080
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info"
+      }
+    },
+    "720p_Compacta": {
+      "actual_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "720p_Compacta_01_sem_projeto.png": {
+          "bytes": 8790,
+          "sha256": "6ea4752788b0d8807d11f20eb6c6c3db7809528fe52d61e9794f86d59c62c370"
+        },
+        "720p_Compacta_02_projeto_paineis.png": {
+          "bytes": 15968,
+          "sha256": "4d20dfcbc9dc24beebaa2f3a1a6601e01260a7521037daf88aa1d65ec171b30b"
+        },
+        "720p_Compacta_03_validacao_janela.png": {
+          "bytes": 15312,
+          "sha256": "3efe3118256e98ff84ceb42dfacf3a345c18e85c57824026692e610480e92257"
+        },
+        "720p_Compacta_03_validacao_modal.png": {
+          "bytes": 1611,
+          "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7"
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info"
+      }
+    },
+    "768p_Minima": {
+      "actual_size": [
+        1366,
+        768
+      ],
+      "files": {
+        "768p_Minima_01_sem_projeto.png": {
+          "bytes": 9474,
+          "sha256": "f58beaf2a7f04352c4379bf4409a5068e7354e66a3023bafe95058f39226e13c"
+        },
+        "768p_Minima_02_projeto_paineis.png": {
+          "bytes": 16454,
+          "sha256": "e3ef06dbb5039579c5a81bb912f93786adff954956f006045fe4b64ec16fdd28"
+        },
+        "768p_Minima_03_validacao_janela.png": {
+          "bytes": 15908,
+          "sha256": "dd45d8d02f3646b4dd2fec4c69feaf72c558547c4a16758fdaf9150462708c20"
+        },
+        "768p_Minima_03_validacao_modal.png": {
+          "bytes": 1611,
+          "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7"
+        }
+      },
+      "requested_size": [
+        1366,
+        768
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info"
+      }
+    }
+  },
+  "generator": "scripts/audit_ui_capture.py",
+  "image_fixture": {
+    "bytes": 10112,
+    "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+  },
+  "platform": "Windows-10-10.0.26200-SP0",
+  "project_fixture": {
+    "bytes": 1443,
+    "sha256": "5cbccd227dd84f3aaf9f09447529185b1ae31bf93999fbc547cda98021ac10d2"
+  },
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "schema_version": 1
+}
