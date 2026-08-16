@@ -565,8 +565,8 @@
       "size": 2757
     },
     "docs/evidence/ETAPA_PIPELINE_SPRITES_E_AUDITORIA_2026-08-16.md": {
-      "sha256": "b9e74971f64c69e36eacdf17bdc9e2e69466e1cc8726f06d740752211c2dacce",
-      "size": 5484
+      "sha256": "dd20246defa0597a9ffa761d47da9da9ad7c67428cbd7748f649b4b11a07862c",
+      "size": 5538
     },
     "docs/evidence/ETAPA_ROI_GRABCUT_COLISAO_PRE_MERGE_2026-08-15.md": {
       "sha256": "0db7b14f0a52b9fab0d29245c4feaeb886856fb4b628f9049cfbdb7a9e1602c2",
@@ -1093,8 +1093,8 @@
       "size": 132
     },
     "docs/evidence/artifacts/export-pipeline-audit/full-test-results.txt": {
-      "sha256": "76951ab8e22122369daba860b8101a5a247ef13bc13e3e4355721285aa22bf35",
-      "size": 8190
+      "sha256": "631ea7a047a12d80f3b8abd188d5ac268864e043407ee0377a4c46e08eb27e82",
+      "size": 8163
     },
     "docs/evidence/artifacts/export-pipeline-audit/manifest.json": {
       "sha256": "6a5c24f2dd9d4d4014e57ced0a6c59738977e15dd612164cfbe1efc5d43d4c33",

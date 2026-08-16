@@ -1,6 +1,6 @@
 ============================= test session starts =============================
 platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
-rootdir: C:\Users\atnco\Pictures\NeoEng-D-Trace
+rootdir: [workspace]
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-7.1.0

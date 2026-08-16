@@ -1,7 +1,7 @@
 # Auditoria de implementação e evidências — pipeline de sprites
 
 Data: 2026-08-16
-Branch: codex/export-pipeline-completion
+Branch: branch de trabalho
 Base auditada: origin/main em 535122bf7128f584328d058295006758f7134615
 Commit do conteúdo funcional e das evidências: 8dc60a4. O relatório é vinculado a esse commit por um commit documental posterior.
 
@@ -35,7 +35,7 @@ A etapa de colisores compostos já existia no projeto. Ela foi revalidada com o 
 - git diff --check: passou; os avisos apresentados são apenas normalização LF/CRLF do Git.
 - Bandit: passou.
 - pip-audit: nenhuma vulnerabilidade conhecida encontrada; o pacote local não publicado foi explicitamente reportado pela ferramenta como não auditável no PyPI.
-- Saída bruta da suíte: docs/evidence/artifacts/export-pipeline-audit/full-test-results.txt.
+- Saída da suíte preservada em docs/evidence/artifacts/export-pipeline-audit/full-test-results.txt, com apenas os caminhos locais normalizados para [workspace].
 
 ## Evidência funcional do pipeline
 
