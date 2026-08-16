@@ -1233,7 +1233,7 @@
       "size": 16939
     },
     "tests/test_grabcut_pipeline.py": {
-      "sha256": "0f3d4dcbf3614e85834a9ac8b1e44a5f0d196a9c214d283b5b0b8d6cc38deae6",
+      "sha256": "bb381958a30b534e2a79ba99acf60d59f23d0149677b13ecd095675f0e575c47",
       "size": 21450
     },
     "tests/test_json_exporter_contract.py": {
