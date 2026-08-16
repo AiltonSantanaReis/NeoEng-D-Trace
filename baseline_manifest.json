@@ -1821,8 +1821,8 @@
       "size": 1076
     },
     "tests/test_command_selection_roundtrip.py": {
-      "sha256": "2f722196b676a95fb74611082995a7659cdc316cdc4b044f9e03aa15f86af07b",
-      "size": 739
+      "sha256": "461ec160024af88ad863188acf81c39807083f806136106ea0df62b66ec2e9c0",
+      "size": 738
     },
     "tests/test_creation_auto_selection.py": {
       "sha256": "f2a31f3330f20afb10c99bf60ae6a71437b9de89362001b792d223907efba905",
@@ -1905,8 +1905,8 @@
       "size": 5194
     },
     "tests/test_reference_gizmo.py": {
-      "sha256": "a3229c48a33bde336e10481f59b7b8779c59c15b6b8f283d2daa8ed8938ae080",
-      "size": 1380
+      "sha256": "0b1d4af9f0d58c4492009e62494f57f5b9c5d53c024ff3005b77172fadaee8e0",
+      "size": 1379
     },
     "tests/test_regression_core_contracts.py": {
       "sha256": "954258e1d7e90ad7cd48b6e0cea2a84e52fedcd61486f2f23f73de93895be584",
@@ -1925,8 +1925,8 @@
       "size": 1774
     },
     "tests/test_selection_invariants.py": {
-      "sha256": "53b19c024ad895e59ee105c82c81ee12963046aeec5705ba7a137f56c970fbe8",
-      "size": 804
+      "sha256": "dbd653eab651b97a3e74984c3f75641622a3ef02d3defdb1eeca4806b4ef2be4",
+      "size": 803
     },
     "tests/test_single_source_tree.py": {
       "sha256": "47909f558e6ebfbb1493df0423c6a856d64ca6fb2de0d6b0ccf8c83e17094002",
@@ -2109,8 +2109,8 @@
       "size": 2741
     },
     "tests/test_transform_preview_regression.py": {
-      "sha256": "2a31c33ea7753178f1f756ca61e2372aea84658878076012e631212aa96fd938",
-      "size": 780
+      "sha256": "62e6818769af7ba53661d92b5838f70db14f7166e6554f66725dea4cce0467b0",
+      "size": 779
     },
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",
