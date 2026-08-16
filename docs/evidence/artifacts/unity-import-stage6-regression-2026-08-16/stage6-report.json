@@ -1,0 +1,65 @@
+{
+  "engine": "unity",
+  "negative_hash": {
+    "hash_drift_rejected": true,
+    "marker": "UNITY_NATIVE_IMPORT_STAGE6=FAILURE",
+    "report": {
+      "Assets": [],
+      "Error": "source image hash does not match manifest",
+      "ErrorCode": "import_exception",
+      "ImportedColliders": 0,
+      "ImportedPrefabs": 0,
+      "ImportedSprites": 0,
+      "SourceImagePath": "",
+      "Success": false
+    },
+    "returncode": 1
+  },
+  "negative_manual": {
+    "manual_content_rejected": true,
+    "marker": "UNITY_NATIVE_IMPORT_STAGE6=FAILURE",
+    "report": {
+      "Assets": [],
+      "Error": "generated root contains manual content and is not controlled",
+      "ErrorCode": "import_exception",
+      "ImportedColliders": 0,
+      "ImportedPrefabs": 0,
+      "ImportedSprites": 0,
+      "SourceImagePath": "",
+      "Success": false
+    },
+    "returncode": 1
+  },
+  "positive": {
+    "marker": "UNITY_NATIVE_IMPORT_STAGE6=SUCCESS",
+    "report": {
+      "Assets": [
+        {
+          "ColliderPathCount": 1,
+          "ColliderPointCount": 4,
+          "MetadataPath": "Assets/NeoEngGenerated/hero.metadata.asset",
+          "ObjectId": "hero",
+          "PrefabPath": "Assets/NeoEngGenerated/hero.prefab",
+          "SpritePath": "Assets/NeoEngGenerated/hero.sprite.asset"
+        }
+      ],
+      "Error": "",
+      "ErrorCode": "",
+      "ImportedColliders": 1,
+      "ImportedPrefabs": 1,
+      "ImportedSprites": 1,
+      "SourceImagePath": "Assets/source.png",
+      "Success": true
+    },
+    "returncode": 0
+  },
+  "repeat": {
+    "marker": "UNITY_NATIVE_IMPORT_STAGE6=SUCCESS",
+    "report_identical": true,
+    "returncode": 0
+  },
+  "schema_version": 1,
+  "stage": 6,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}

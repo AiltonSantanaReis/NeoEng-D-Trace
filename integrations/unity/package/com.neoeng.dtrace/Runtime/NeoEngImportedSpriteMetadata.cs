@@ -10,6 +10,10 @@ namespace NeoEng.DTrace
         public string generatorId;
         public string generatorVersion;
         public string sourceImagePath;
+        public string sourceImageHash;
+        public string sourceMetadataHash;
+        public string overrideHash;
+        public string generatedFingerprint;
         public string layerId;
         public string groupId;
         public bool trimmed;

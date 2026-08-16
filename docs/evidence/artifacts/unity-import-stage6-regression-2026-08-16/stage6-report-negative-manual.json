@@ -1,0 +1,10 @@
+{
+    "Success": false,
+    "ErrorCode": "import_exception",
+    "Error": "generated root contains manual content and is not controlled",
+    "SourceImagePath": "",
+    "ImportedSprites": 0,
+    "ImportedPrefabs": 0,
+    "ImportedColliders": 0,
+    "Assets": []
+}

@@ -1,0 +1,73 @@
+{
+  "engine": "unity",
+  "files": {
+    "stage7-report.json": {
+      "bytes": 232156,
+      "sha256": "ecddf0b9536f102ac4e2f70d47af5f358f0798fe45faa2a5befb3dff74bd38dd"
+    },
+    "unity-stage7-01-initial.json": {
+      "bytes": 633,
+      "sha256": "219e154ebd2e22eafedd5c5733399e7102785d80cb5bdec858b992c2424b2424"
+    },
+    "unity-stage7-01-initial.log": {
+      "bytes": 57974,
+      "sha256": "44a9f375a962ae20ba692b6065398b6815a6e777a819c9c4364deb65f47d8c73"
+    },
+    "unity-stage7-02-repeat.json": {
+      "bytes": 635,
+      "sha256": "72d8276c7994f57a7f4cee4e29f4c3792dbbb936f97ff1b7e80a078473d4c49c"
+    },
+    "unity-stage7-02-repeat.log": {
+      "bytes": 17709,
+      "sha256": "358c54985281f5681c2b22eac3dcb254c48b0617f630f528655387ec17c402e4"
+    },
+    "unity-stage7-03-override.json": {
+      "bytes": 632,
+      "sha256": "4ccb24d75a4e75f9451c46f608fe8bde486030b04a06ce7c3152ab347a3d9e14"
+    },
+    "unity-stage7-03-override.log": {
+      "bytes": 20730,
+      "sha256": "f293e83e6fb5d17f9833173454ed6d2572f8ab9765b3977a3a60e1a40c5c299b"
+    },
+    "unity-stage7-04-override-repeat.json": {
+      "bytes": 634,
+      "sha256": "c330dc48838ee27e4fc345c737e64b4072431e9707c697109824964dcbb80fb1"
+    },
+    "unity-stage7-04-override-repeat.log": {
+      "bytes": 17610,
+      "sha256": "bfcbf9479b4f1215d3ed34b6e762f4806c2418c44a7c3582caae6623f0e8186e"
+    },
+    "unity-stage7-05-manual-mutation.log": {
+      "bytes": 15715,
+      "sha256": "a258139f8a71cab126a3621d717bbe03cc8834bd0f676d51d91a03789dbd6061"
+    },
+    "unity-stage7-06-manual-conflict.json": {
+      "bytes": 349,
+      "sha256": "d6ff70d4975f9342826abf3bed8a92cbafaccc55a55d2ffae798b4951240a1a7"
+    },
+    "unity-stage7-06-manual-conflict.log": {
+      "bytes": 18615,
+      "sha256": "3915c1bd4cae4c8ec0cec262732b50ebed8837560c8e8234a85c15c632ea8db5"
+    },
+    "unity-stage7-07-destructive-confirmed.json": {
+      "bytes": 632,
+      "sha256": "4ccb24d75a4e75f9451c46f608fe8bde486030b04a06ce7c3152ab347a3d9e14"
+    },
+    "unity-stage7-07-destructive-confirmed.log": {
+      "bytes": 18913,
+      "sha256": "de063b9fee258aa9968b270bb37b72d4bbd2a57d38ef4270fd5f4570254ce3d6"
+    },
+    "unity-stage7-08-hash-drift.json": {
+      "bytes": 313,
+      "sha256": "189ab5e5a213f84c581848880c4ecbe4ced28c5d9dc9d67efe840e816cec616e"
+    },
+    "unity-stage7-08-hash-drift.log": {
+      "bytes": 55758,
+      "sha256": "e2599b6d23a76ccbdcaef32ad5c65ccf84f921fc393579792876bd4f759ab1a6"
+    }
+  },
+  "schema_version": 1,
+  "stage": 7,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}

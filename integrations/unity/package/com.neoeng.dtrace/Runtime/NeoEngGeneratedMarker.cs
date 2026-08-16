@@ -7,5 +7,9 @@ namespace NeoEng.DTrace
         public string generatorId;
         public string generatorVersion;
         public string objectId;
+        public string sourceImageHash;
+        public string sourceMetadataHash;
+        public string overrideHash;
+        public string generatedFingerprint;
     }
 }

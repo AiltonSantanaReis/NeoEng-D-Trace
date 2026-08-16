@@ -1,0 +1,44 @@
+{
+  "engine": "godot",
+  "files": {
+    "godot-stage7-01-asset-preimport.log": {
+      "bytes": 2962,
+      "sha256": "e1aa2289cc93c678cbfecc05265159c1298e8bf3452482b60eda0d861cc4ee88"
+    },
+    "godot-stage7-02-initial.log": {
+      "bytes": 101,
+      "sha256": "80a0b502801723f93b1b97018daebdf43701787239d7b224f109e5e6544200a6"
+    },
+    "godot-stage7-03-repeat.log": {
+      "bytes": 102,
+      "sha256": "cfadee4b6018b56c44cc9b545a277a8105bbf9fdae841ef29b08579ca8d62050"
+    },
+    "godot-stage7-04-override.log": {
+      "bytes": 104,
+      "sha256": "5cbaf73e07ff508f601b29c7278b1bbea63944e6545bf362bdff54991364b948"
+    },
+    "godot-stage7-05-override-repeat.log": {
+      "bytes": 111,
+      "sha256": "0f815f380514b041397dacd208f8a5df74812e2927c187fd81cc451efa5a4894"
+    },
+    "godot-stage7-06-manual.log": {
+      "bytes": 101,
+      "sha256": "7889f898ef6774d396dcde0f8dad433b39fd56923871e1480326f3a9cb89fecf"
+    },
+    "godot-stage7-07-confirmed.log": {
+      "bytes": 107,
+      "sha256": "7387b7d2ed06c742c58bb2543da7b2a8286a7090e2afb3d4aa9fb77d2a14bfe5"
+    },
+    "godot-stage7-08-hash-drift.log": {
+      "bytes": 105,
+      "sha256": "42ea6241028e2db0387cae8688b8012282394140b58aab609b6007c3d271c14c"
+    },
+    "stage7-report.json": {
+      "bytes": 6628,
+      "sha256": "f686988b67c7d2f9dc9d4db1db5d4dd9cc920c2d9a2d0a480ccb8c0db8aa506c"
+    }
+  },
+  "schema_version": 1,
+  "stage": 7,
+  "status": "SUCCESS"
+}
