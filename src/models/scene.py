@@ -539,8 +539,7 @@ class Scene:
 
         if old_id in self.selected_ids:
             self.selected_ids = [
-                new_id if item == old_id else item
-                for item in self.selected_ids
+                new_id if item == old_id else item for item in self.selected_ids
             ]
         if self.selected_id == old_id:
             self.selected_id = new_id
@@ -586,8 +585,8 @@ class Scene:
         if primary is not None and primary not in unique:
             raise KeyError(primary)
         self.selected_ids = unique
-        self.selected_id = primary if primary is not None else (
-            unique[0] if unique else None
+        self.selected_id = (
+            primary if primary is not None else (unique[0] if unique else None)
         )
         self._notify()
 

@@ -1573,8 +1573,8 @@
       "size": 32
     },
     "src/models/scene.py": {
-      "sha256": "c900148f902cc814f85d7068a569f64bd0a7e18aef6baff93d95664a27565230",
-      "size": 26569
+      "sha256": "f4fda504b2a0d2b2361b5d71e829d0f0d1b4c03da9b6d0cc91a907007bd6d6fc",
+      "size": 26555
     },
     "src/persistence/__init__.py": {
       "sha256": "1d4d239a207eeb4c2ca44d4331b2589605e0c202477dc7c66a258268953a2e03",
