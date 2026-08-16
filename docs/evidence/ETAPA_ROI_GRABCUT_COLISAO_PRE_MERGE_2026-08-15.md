@@ -5,14 +5,14 @@
 - Commit técnico: 36f6fcdb7916eb8a5bddfe3b5fdbd700096ac7e2
 - Branch: codex/roi-grabcut-collision-pipeline
 - Data: 2026-08-15, America/Sao_Paulo
-- Estado: branch local, não publicado e não integrado em GitHub
+- Estado: branch publicado no origin; PR #63 aberta para main; merge pendente
 - Responsável: Codex
 
 ## Objetivo e escopo
 
 Implementar funcionalmente a detecção assistida por ROI com OpenCV GrabCut, a visualização de raio-X e camadas diagnósticas, a preservação de hierarquia de contornos, a geração de colisões outline/convex hull/decomposição convexa, a persistência de partes compostas e a exportação em coordenadas de imagem ou normalizadas.
 
-A decisão técnica não incluiu SAM, rembg ou YOLO. O repositório não declara essas dependências e o requisito de operação local/leve não justifica introduzi-las sem modelo, licença, pacote e critério de qualidade reproduzível. GrabCut é uma segmentação assistida por ROI, não uma promessa de segmentação zero-shot universal.
+A decisão técnica não incluiu modelos externos de segmentação. O repositório não declara essas dependências e o requisito de operação local/leve não justifica introduzi-las sem modelo, licença, pacote e critério de qualidade reproduzível. GrabCut é uma segmentação assistida por ROI, não uma promessa de segmentação zero-shot universal.
 
 ## Ambiente
 
@@ -72,7 +72,7 @@ A suíte atual não falhou. O único aviso novo é a depreciação do construtor
 - A visualização raio-X facilita inspeção e sementes contextuais, mas não substitui correção manual quando a máscara estiver errada.
 - Os limites operacionais continuam válidos; entradas acima deles devem ser rejeitadas de forma controlada.
 - Não foi feita validação em runtime dentro de Unity/Godot neste branch; foram validados o schema/exportador local e a geometria.
-- Não foi executado CI remoto nem criada PR. Portanto, esta é uma aprovação local pré-merge, não uma aprovação de integração GitHub ou release.
+- A PR #63 está sob validação remota. Até todos os checks concluírem com sucesso, esta permanece uma aprovação local/pré-merge e não uma aprovação de integração ou release.
 
 ## Decisão
 
