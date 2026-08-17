@@ -1,0 +1,371 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.7f1 (017862109af0) revision 96354'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) Professional' Language: 'pt' Physical Memory: 32690 MB
+[Licensing::IpcConnector] Channel LicenseClient-<redacted> doesn't exist
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+<redacted-timestamp>
+[Licensing::Module] Successfully launched the LicensingClient (PId: <redacted>)
+
+COMMAND LINE ARGUMENTS:
+<local-path>
+-batchmode
+-nographics
+-quit
+-projectPath
+<local-path>\unity-closure-a
+-executeMethod
+NeoEng.DTrace.Editor.UnityImportGenerator.RunHeadlessAdvancedImport
+-logFile
+<local-path>\engine-unity-stage10-initial.log
+Successfully changed project path to: <local-path>\unity-closure-a
+<local-path>
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [32396]  Target information:
+
+Player connection [32396]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3128971126 [EditorId] 3128971126 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [32396]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3128971126 [EditorId] 3128971126 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [32396]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3128971126 [EditorId] 3128971126 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [32396]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3128971126 [EditorId] 3128971126 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [32396] Host joined multi-casting on [<network-address>:54997]...
+Player connection [32396] Host joined alternative multi-casting on [<network-address>:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-<redacted>, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-17T11:57:03.7109346Z"
+[Package Manager] Connected to IPC stream "Upm-25012" after 0.3 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: <redacted>, path: "<local-path>")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-<redacted>" (connect: 0.37s, validation: 0.05s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-17T11:57:03.7986747Z"
+[Licensing::Module] Connected to LicensingClient (PId: <redacted>, launch time: 0.01, total connection time: 0.46s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 4674131544823-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.50s
+[Licensing::Module] Licensing is initialized (took 0.08s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 8 unused hashed content files
+Initialize engine version: 6000.5.7f1 (017862109af0)
+[Subsystems] Discovering subsystems at path <local-path>
+[Subsystems] Discovering subsystems at path <local-path>
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '<local-path>
+Mono path[1] = '<local-path>
+Mono path[2] = '<local-path>
+Mono config path = '<local-path>
+<redacted-debug-endpoint>
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: <local-path>
+Register platform support module: <local-path>
+Registered in 0.006586 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:False
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.387 seconds
+Domain Reload Profiling: 1051ms
+	BeginReloadAssembly (199ms)
+		CreateAndSetChildDomain (15ms)
+	RebuildCommonClasses (5ms)
+	RebuildNativeTypeToScriptingClass (18ms)
+	initialDomainReloadingComplete (111ms)
+	LoadAllAssembliesAndSetupDomain (328ms)
+		LoadAssemblies (173ms)
+		AnalyzeDomain (227ms)
+			TypeCache.Refresh (225ms)
+				TypeCache.ScanAssembly (211ms)
+	FinalizeReload (390ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (94ms)
+			ProcessInitializeOnLoadAttributes (97ms)
+			ProcessInitializeOnLoadMethodAttributes (120ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 1 packages:
+  Local packages:
+    com.neoeng.dtrace@file:<repo>\integrations\unity\package\com.neoeng.dtrace (location: <repo>\integrations\unity\package\com.neoeng.dtrace)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+info: Microsoft.Hosting.Lifetime[14]
+<redacted-local-endpoint>
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: <local-path>\unity-closure-a
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 29.3396ms
+Starting: <local-path>"Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: <local-path>
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s111ms
+*** Tundra build success (0.08 seconds), 0 items updated, 168 evaluated
+AssetDatabase: script compilation time: 0.510060s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.477 seconds
+Domain Reload Profiling: 1091ms
+	BeginReloadAssembly (386ms)
+		DisableScriptedObjects (35ms)
+		CreateAndSetChildDomain (150ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (18ms)
+	initialDomainReloadingComplete (78ms)
+	LoadAllAssembliesAndSetupDomain (120ms)
+		LoadAssemblies (147ms)
+		AnalyzeDomain (9ms)
+			TypeCache.Refresh (4ms)
+			BuildScriptInfoCaches (3ms)
+	FinalizeReload (480ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (89ms)
+			ProcessInitializeOnLoadAttributes (74ms)
+			ProcessInitializeOnLoadMethodAttributes (69ms)
+			AfterProcessingInitializeOnLoad (26ms)
+		AwakeInstancesAfterBackupRestoration (22ms)
+Starting new worker id: 0 with log in <local-path>
+
+Asset Pipeline Refresh (id=73f7fc18d10a8894d8b623ce04682dca): Total: 1.884 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=626 ms
+		Asset DB Callback time: managed=22 ms, native=6 ms
+		Scripting: domain reloads=1, domain reload time=692 ms, compile time=512 ms, other=24 ms
+		Project Asset Count: scripts=29, non-scripts=5
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 11.496ms
+	ApplyChangesToAssetFolders: 0.518ms
+	Scan: 40.836ms
+	Collect global state as custom dependencies: 12.652ms
+	ProcessAssetsWithTransientArtifactChanges: 0.413ms
+	CategorizeAssets: 0.216ms
+	CompileScripts: 512.275ms
+	ImportOutOfDateAssets: 493.877ms (480.555ms without children)
+		UnloadImportedAssets: 0.123ms
+		ImportSchedulerStart: 13.189ms
+	PostProcessAllAssets: 22.151ms
+		MonoPostProcessAllAssets: 22.086ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 7.793ms
+			SyncVS.PostprocessSyncProject 2.065ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 1.116ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 0.768ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.272ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.193ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.166ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.080ms
+	UnloadStreamsBegin: 1.233ms
+	Untracked: 781.443ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 10.616ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-unity-closure-a
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 19 unused Assets / (0.5 MB). Loaded Objects now: 657.
+Memory consumption went from 184.1 MB to 183.6 MB.
+Total: 5.527600 ms (FindLiveObjects: 0.033300 ms CreateObjectMapping: 0.005600 ms MarkObjects: 5.305800 ms  DeleteObjects: 0.178600 ms)
+
+Importing 'GUID: aba5f61c1ac08734ab123c1794799869 - Path: Assets/NeoEngGenerated' with importer (DefaultImporter)
+Imported 'GUID: aba5f61c1ac08734ab123c1794799869' -> (Import Result ID: '2cde666190b3512ba1dc817452713e67') in 0.014 seconds [static dependencies only]. Details - ImportResultOutputID=0fd0b53641600de78c69867df4a06115 DependenciesID=20abe4aeb7bff09d867303119debd263 StaticDependenciesID=53f0846769f9f12179e23d85a69b39b7 
+Asset Pipeline Refresh (id=4fd30c4ea447f4c47a9c3332a98e3541): Total: 0.102 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Importing 'GUID: 87d3788ce77acff42873527da007e139 - Path: Assets/atlas/atlas_0.png' with importer (TextureImporter)
+Imported 'GUID: 87d3788ce77acff42873527da007e139' -> (Import Result ID: '135a25ca4609ccd929827c4a2ec1adb0') in 0.006 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=11b3fa204adbd1d9ac62d04042f2a67b DependenciesID=436cd8f07c0f60c13c928cb26278ced4 StaticDependenciesID=d892c54b50184f6f77e670788b3f9f0b 
+Asset Pipeline Refresh (id=22ba6133e8377284086d13b32d0800f1): Total: 0.027 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 87d3788ce77acff42873527da007e139 - Path: Assets/atlas/atlas_0.png' with importer (TextureImporter)
+Imported 'GUID: 87d3788ce77acff42873527da007e139' -> (Import Result ID: '135a25ca4609ccd929827c4a2ec1adb0') in 0.001 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=11b3fa204adbd1d9ac62d04042f2a67b DependenciesID=436cd8f07c0f60c13c928cb26278ced4 StaticDependenciesID=d892c54b50184f6f77e670788b3f9f0b 
+Asset Pipeline Refresh (id=a3469e923c82f444b804d761602a09c8): Total: 0.018 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 87d3788ce77acff42873527da007e139 - Path: Assets/atlas/atlas_0.png' with importer (TextureImporter)
+Imported 'GUID: 87d3788ce77acff42873527da007e139' -> (Import Result ID: 'b61b6dc1fd77465f03c8462a89fb2f72') in 0.002 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=c9e92afd5b2e94b386596c4aa5f3cb94 DependenciesID=453a3ee84c3c8290ba621bd2ce78696f StaticDependenciesID=c05d9784feea1cba1ad7bea0d7853578 
+Asset Pipeline Refresh (id=0d26480bad103634ebd27f6bd3e9910b): Total: 0.046 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: bd4be191655d23b41b5f71a87881c865 - Path: Assets/NeoEngGenerated/hero.sprite.asset' with importer (NativeFormatImporter)
+Imported 'GUID: bd4be191655d23b41b5f71a87881c865' -> (Import Result ID: 'dd7327aa6e4acbcfc1c4367e46e9352e') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=4ef6c6475ba520e78c1647453d9c54cc DependenciesID=0ce78481342db50a7309faac0581a2b9 StaticDependenciesID=70e6841db69cad453369b16af895f1a0 
+Asset Pipeline Refresh (id=1a7b2cec2b26b4b49b3a05d4949adc7f): Total: 0.022 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 10dcd12188975594eb73a0fa61928cde - Path: Assets/NeoEngGenerated/hero.metadata.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 10dcd12188975594eb73a0fa61928cde' -> (Import Result ID: '4d8fa419fed66b1b75adb265e76f735c') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=352403e3aa7055631e3101545d6afcf9 DependenciesID=52f197f4baaccba5c076bca2f4885e60 StaticDependenciesID=52c59ca7f1ce674da7b16254208afcff 
+Asset Pipeline Refresh (id=aff35d5022491f74c9eb124ee48b4eba): Total: 0.022 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 0b38cec5aa9417742821b4e4f27addd4 - Path: Assets/NeoEngGenerated/hero.prefab' with importer (PrefabImporter)
+Imported 'GUID: 0b38cec5aa9417742821b4e4f27addd4' -> (Import Result ID: '8831f3f094ebf5f425f94e3e8aa9b8b8') in 0.017 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=329e91fdfb83fc9d69ff2ba9aa72205d DependenciesID=fc7258c061dc96abc4a5cfba24d9c546 StaticDependenciesID=2201a206601b21ac2ca63efd9b4d7c74 
+Asset Pipeline Refresh (id=1f6d1494505b2914292039ed9119787f): Total: 0.039 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=7044de7ba1369db4bbda2178596b5a29): Total: 0.018 seconds - Initiated by RefreshV2(ForceUpdate)
+UNITY_NATIVE_IMPORT_STAGE6=SUCCESS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessAdvancedImport () (at <local-path>
+
+(Filename: <local-path>
+
+UNITY_NATIVE_SYNC_STAGE7=SUCCESS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessAdvancedImport () (at <local-path>
+
+(Filename: <local-path>
+
+UNITY_NATIVE_IMPORT_STAGE8=SUCCESS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessAdvancedImport () (at <local-path>
+
+(Filename: <local-path>
+
+IMPORTED_SPRITES=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessAdvancedImport () (at <local-path>
+
+(Filename: <local-path>
+
+IMPORTED_PREFABS=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessAdvancedImport () (at <local-path>
+
+(Filename: <local-path>
+
+IMPORTED_COLLIDERS=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessAdvancedImport () (at <local-path>
+
+(Filename: <local-path>
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-<redacted> channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-<redacted> channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Shut down.
+abort_threads: Failed aborting id: 0000000000007DE8, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000007DE8, mono_thread_manage will ignore it
+
+<redacted-debug-endpoint>
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

@@ -1,0 +1,187 @@
+{
+  "advanced": {
+    "atlas": {
+      "bleed": 1,
+      "pages": [
+        {
+          "height": 22,
+          "id": "atlas_0",
+          "path": "atlas/atlas_0.png",
+          "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0",
+          "sprites": [
+            {
+              "extrusion": 1,
+              "id": "hero",
+              "packed_rect": {
+                "h": 20.0,
+                "w": 26.0,
+                "x": 0.0,
+                "y": 0.0
+              },
+              "rect": {
+                "h": 18.0,
+                "w": 24.0,
+                "x": 1.0,
+                "y": 1.0
+              },
+              "rotated": false
+            }
+          ],
+          "width": 28
+        }
+      ]
+    },
+    "coordinate_system": {
+      "engine_y_axis": "up",
+      "image_origin": "top-left",
+      "pixels_per_unit": {
+        "godot": 1.0,
+        "unity": 16.0
+      },
+      "polygon_origin": "sprite-top-left"
+    },
+    "engine_properties": {
+      "godot": {
+        "centered": true,
+        "texture_filter": "nearest",
+        "texture_repeat": "disabled",
+        "z_index": 6
+      },
+      "unity": {
+        "filter_mode": "Point",
+        "pixels_per_unit": 16.0,
+        "sorting_layer": "Default",
+        "sorting_order": 7,
+        "wrap_mode": "Clamp",
+        "z_depth": 1.5
+      }
+    },
+    "schema_version": 1
+  },
+  "engine": "godot",
+  "format_id": "neoeng-d-trace-engine-integration",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.2.0"
+  },
+  "metadata": {
+    "format_id": "neoeng-d-trace-scene-metadata",
+    "groups": [],
+    "layers": [
+      {
+        "id": "layer_default",
+        "locked": false,
+        "name": "Default",
+        "visible": true
+      }
+    ],
+    "profile": "generic",
+    "schema_version": 1,
+    "sprites": [
+      {
+        "collision": {
+          "coordinate_space": "image",
+          "object_id": "hero",
+          "points": [
+            [
+              3.0,
+              4.0
+            ],
+            [
+              18.0,
+              4.0
+            ],
+            [
+              18.0,
+              14.0
+            ],
+            [
+              3.0,
+              14.0
+            ]
+          ],
+          "shape_type": "polygon"
+        },
+        "group": null,
+        "id": "hero",
+        "layer": "layer_default",
+        "padding": 4,
+        "pivot": {
+          "x": 3.75,
+          "y": 7.5
+        },
+        "pivot_normalized": {
+          "x": 0.25,
+          "y": 0.75
+        },
+        "polygon_in_image": [
+          [
+            3,
+            4
+          ],
+          [
+            18,
+            4
+          ],
+          [
+            18,
+            14
+          ],
+          [
+            3,
+            14
+          ]
+        ],
+        "polygon_in_sprite": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            15.0,
+            0.0
+          ],
+          [
+            15.0,
+            10.0
+          ],
+          [
+            0.0,
+            10.0
+          ]
+        ],
+        "rect": {
+          "h": 10.0,
+          "w": 15.0,
+          "x": 3.0,
+          "y": 4.0
+        },
+        "rect_trimmed": {
+          "h": 10.0,
+          "w": 15.0,
+          "x": 0.0,
+          "y": 0.0
+        },
+        "trimmed": true
+      }
+    ]
+  },
+  "schema_version": 2,
+  "source": {
+    "image": {
+      "path": "atlas/atlas_0.png",
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "metadata": {
+      "format_id": "neoeng-d-trace-scene-metadata",
+      "schema_version": 1,
+      "sha256": "82d75a85746fc3bec438b2de4ea390e1c9d478d79ed18609b686b7fef143b7c8"
+    }
+  },
+  "sync": {
+    "destructive_update": false,
+    "direction": "dtrace-to-engine",
+    "generated_root": "NeoEngGenerated",
+    "override_suffix": ".ndt.override.json"
+  }
+}

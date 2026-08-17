@@ -44,6 +44,19 @@ Legenda:
 | Configuração | ConfigManager presente | Sem suíte dedicada atual | Cobertura indireta | Parcial | Corrupção e gravação atômica |
 | Empacotamento Windows | Não entregue | Nenhum | Nenhum | Não validado | Build reproduzível |
 
+## Atualização operacional — Etapa 10 dos adaptadores nativos
+
+O quadro acima é o inventário inicial e permanece preservado. O estado operacional atual da integração de engines é:
+
+| Área | Evidência executada | Estado atual | Gate restante |
+|---|---|---|---|
+| Godot source-only | Fixture real, importação, dry-run, aplicação, repetição, conflito manual, drift de hash e regressão da Etapa 4 | Aprovado tecnicamente no commit `a713b8d9a28818bae2c72a2fab35e79f2f4e157d` | Push/CI ligado ao SHA exato |
+| Unity source-only | Fixture real, importação, dry-run, aplicação, repetição, conflito manual, drift de hash e regressão da Etapa 6 | Aprovado tecnicamente no commit `a713b8d9a28818bae2c72a2fab35e79f2f4e157d` | Push/CI ligado ao SHA exato |
+| Determinismo | Projetos independentes e normalização apenas de identificadores internos não semânticos | Aprovado tecnicamente no commit `a713b8d9a28818bae2c72a2fab35e79f2f4e157d` | Integridade pós-commit confirmada |
+| Evidências | Índice SHA-256, reabertura dos artefatos, privacidade e falhas intermediárias registradas | Aprovado tecnicamente no commit `a713b8d9a28818bae2c72a2fab35e79f2f4e157d` | Auditoria remota do diff |
+
+Referência: `docs/evidence/ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md`.
+
 ## Regra de liberação
 
 Uma linha não pode passar para “Aprovado” por revisão visual do código. Deve haver:

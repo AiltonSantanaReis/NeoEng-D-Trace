@@ -168,6 +168,16 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Estado operacional da evidência atual
 
+Etapa 10 dos adaptadores nativos no commit `a713b8d9a28818bae2c72a2fab35e79f2f4e157d` em 17 de agosto de 2026, com push/CI/merge pendentes:
+
+- `ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md` registra o escopo, os gates e as limitações sem reescrever snapshots históricos;
+- `artifacts/native-stage10-2026-08-17/` contém o relatório, índice SHA-256, fixtures, PNGs, manifests, logs reais de Godot/Unity, suíte completa e o resumo das falhas intermediárias;
+- o harness real produziu `NATIVE_STAGE10=SUCCESS`, com Godot `4.7.stable`, Unity `6000.5.7f1`, determinismo e regressões das Etapas 4/6 aprovados;
+- a suíte completa local registrou `1173 passed, 2 skipped, 10 warnings`; os skips são os testes de symlink condicionados à permissão do Windows e não foram alterados;
+- hashes, integridade de evidências e privacidade passaram; a release continua explicitamente NÃO APROVADA;
+- a CI atual não inicializa dinamicamente as engines; portanto a prova real de Godot/Unity é local, reproduzível e separada da cobertura dinâmica de CI;
+- a etapa ainda não está marcada como integrada: falta push, CI ligado ao SHA exato, auditoria remota e merge autorizado.
+
 Etapa 9 dos adaptadores nativos integrada no escopo técnico pós-merge em 17 de agosto de 2026:
 
 - PR `#81`, merge `e1620571ab2f638ba671baa33ac508858e229313`; checks pré-merge `32011747754` e CI pós-merge `32012110722`, ambos com Linux e Windows em `success`;
