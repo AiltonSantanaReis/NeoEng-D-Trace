@@ -468,6 +468,10 @@
       "sha256": "46f1b9d0e499f8aba2798222c77b2e553d8cb548cda6cc967b0bd280e7b9d8a7",
       "size": 6530
     },
+    "docs/evidence/ETAPA_1_SYNC_AUTOMATICO_2026-08-17.md": {
+      "sha256": "be1cbd0666a7c84cd005ea1563ad2e936f8b99eb7202f8ca43508b2dad0d91f0",
+      "size": 3520
+    },
     "docs/evidence/ETAPA_2_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "644d3f6a4ed9987a3e17672aabc2a09ec892a335ea04cb95722947ecdcde974e",
       "size": 8937
@@ -1475,6 +1479,154 @@
     "docs/evidence/artifacts/native-advanced-stage8-2026-08-17/unity-stage8-repeat.log": {
       "sha256": "4cd682ed55007d26219cbeee8d1c6fb8b04a453263af53654236736b8bbd8669",
       "size": 18540
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-01-stage1-failure-automatic-sync.log": {
+      "sha256": "53d56fbe578abb67b5d653d7ba0a51cbd94d0dadcee2ab5524f3093b563ccfa5",
+      "size": 1323
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-01-stage1-failure.json": {
+      "sha256": "b1842f05bf5897314a1a4a21a6a014f661f3438e2e2f64499b688a58ef8a9f17",
+      "size": 1944
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-02-stage1-failure-automatic-sync.log": {
+      "sha256": "6682846cb3871b39a65c21b6b0e679ceb67041993953ea23d78a18953bb36147",
+      "size": 1058
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-02-stage1-failure.json": {
+      "sha256": "a190a6f060393fe97913aa0d4a92a3462cf5469e70e93f801cab826e10abe9db",
+      "size": 1669
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-04-stage1-failure-automatic-sync.log": {
+      "sha256": "ad0bbaf3482a5e0f9dbfe44dc2c3e4d8425cfcd1cae07055b88ddf97aa31a5b3",
+      "size": 1086
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-04-stage1-failure.json": {
+      "sha256": "da3b26e111aab67af81327ca8a296e16c711c82df821f4f8cdc18b2eacc1c0c7",
+      "size": 1698
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-05-stage1-failure-automatic-sync.log": {
+      "sha256": "ad0bbaf3482a5e0f9dbfe44dc2c3e4d8425cfcd1cae07055b88ddf97aa31a5b3",
+      "size": 1086
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-05-stage1-failure.json": {
+      "sha256": "da3b26e111aab67af81327ca8a296e16c711c82df821f4f8cdc18b2eacc1c0c7",
+      "size": 1698
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-06-stage1-failure-automatic-sync.log": {
+      "sha256": "39ffcfe43f53d4625feee50daeb5967738e3c006e1c2431777e35a6c9e72ca3f",
+      "size": 2090
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-06-stage1-failure.json": {
+      "sha256": "1ad5a52f846e3d7875877d65858bd7cead14644024a47bc151f1539decca1c1b",
+      "size": 2931
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-unity-01-failure.json": {
+      "sha256": "f1411054b5926c57d186b6ddbec7e58cec6a5158870659d3b2f45090bee17d1e",
+      "size": 53894
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-unity-01-failure.log": {
+      "sha256": "9d0dd76171939f9ace23a46702d02a744cd38e727629d824bee14f1313fe8c5d",
+      "size": 52825
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-unity-02-failure.json": {
+      "sha256": "1dbebd2a1d4db7361199206804158f1d52ec6faea422d9dd108b346a10cc7aa8",
+      "size": 72553
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-unity-02-failure.log": {
+      "sha256": "14dccea51ac4011c9f458a5ab9e282a431e78c9f0cdeb5c95c9fc3444e2e6d70",
+      "size": 71043
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/godot-stage1-automatic-sync.log": {
+      "sha256": "1af097bba2fe8bf33cf8d93635a72e244de7de5e4e1e33954b46eb975579e87c",
+      "size": 2914
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/godot-stage1-editor.log": {
+      "sha256": "6ae3fd4339e21d8bb982192533ae2205f89b9d0456e12cd1d6d9b6676a19f60e",
+      "size": 2916
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/stage1-index.json": {
+      "sha256": "a7ff40ce90bea0be3e7f48995adbf986467fa09d36986d11dad4b8f969acb2e8",
+      "size": 2116
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/stage1-report.json": {
+      "sha256": "9c19041bbef189c9f2add38604200ee813dc91275421da25c762825917c795be",
+      "size": 8686
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/stage1-unity-index.json": {
+      "sha256": "c08ba11da7cf6656571a9c6d16f4a852353b34ffcb2d012321cd467b8a65428d",
+      "size": 3183
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/stage1-unity-report.json": {
+      "sha256": "4edcfc94e1686c94c1b9ba0293db918a5f5e0b24dbc48272709be097db845ee5",
+      "size": 73101
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/unity-stage1-auto-sync.log": {
+      "sha256": "284a2a6dfa2d58f159b5b7063cb743e091a882c714a30921b93e141b6e8033e9",
+      "size": 71598
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-02-2026-08-17/attempt-unity-atlas-01-failure.json": {
+      "sha256": "41e06f77d08a1daee7e5d597add48fa4400235013c80114d129a3a959596e617",
+      "size": 67487
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-02-2026-08-17/attempt-unity-atlas-01-failure.log": {
+      "sha256": "3996cdaa7dc0a54504f7831dee2e21ae4ebf195958152b1cca1bf4abff945293",
+      "size": 66040
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-03-2026-08-17/attempt-unity-atlas-02-failure.json": {
+      "sha256": "00ab026744c45a90d86bf8bef1c90fc2afed36c3d2e6277404ca31596590da91",
+      "size": 69459
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-03-2026-08-17/attempt-unity-atlas-02-failure.log": {
+      "sha256": "a523bf29a08d55db8d66dca9938daa324e51a92d443c9b5cc21db47fb45dbab4",
+      "size": 67979
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-04-2026-08-17/stage1-unity-index.json": {
+      "sha256": "9600b32ea47cf19dfd8f7396ed0a56f415905249193421ee7474a18e03d1ccd2",
+      "size": 428
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-04-2026-08-17/stage1-unity-report.json": {
+      "sha256": "004c3883d9d85fd1ebce1144c7ee9c3c9285534dd0a391596d56356d556fa077",
+      "size": 76898
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-04-2026-08-17/unity-stage1-auto-sync.log": {
+      "sha256": "a395a5cd20cc496de4df7f999d6534d35f223a9552f58000f7727317464f4294",
+      "size": 75378
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-2026-08-17/attempt-unity-stage1-failure.json": {
+      "sha256": "181e9aeec8ddfccfb675b96d032abea77dba3e672f6cca3fec2a7fa1d44dbb65",
+      "size": 67635
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-atlas-rerun-2026-08-17/attempt-unity-stage1-failure.log": {
+      "sha256": "3a7b1c2964d3d937ef3b89d3388d1540663eefcc74b1cba3e2a27a69badcd4c4",
+      "size": 66170
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-final-index-2026-08-17.json": {
+      "sha256": "9d39e49c19401cd3643914078995f98a19c7d5965fa2b580d6fbbbdeb8929d98",
+      "size": 7395
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-final-rerun-2026-08-17/stage1-unity-index.json": {
+      "sha256": "028a54ce54343526495f62d686b6f68dba48e0ca64099d467eeadd7cccdbac5a",
+      "size": 428
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-final-rerun-2026-08-17/stage1-unity-report.json": {
+      "sha256": "9b0faf86aade7c4544fbe9092c28f5731d506f6442068bc640cdfe20508fd515",
+      "size": 77815
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-final-rerun-2026-08-17/unity-stage1-auto-sync.log": {
+      "sha256": "15987e60c0af6c9541e66a157b0188963bad5dadfa95d37405ee2d5a3a67db2a",
+      "size": 75657
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-rerun-2026-08-17/stage1-unity-index.json": {
+      "sha256": "580bd5d951eef6bba22ba0a680ef9be7609c57eca820a16a50b1145eaa85584d",
+      "size": 428
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-rerun-2026-08-17/stage1-unity-report.json": {
+      "sha256": "d67bc8589ea76c8575dc52836fcbaccf7346eee54f1db59b2e72dc1413606c84",
+      "size": 72708
+    },
+    "docs/evidence/artifacts/native-auto-sync-stage1-rerun-2026-08-17/unity-stage1-auto-sync.log": {
+      "sha256": "22fb9144ae110728265621d3415a2678deed56e37ef60309d59e374334b726da",
+      "size": 71191
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-b.log": {
       "sha256": "739ee8892808cc3fc37f3b88ab3c65ad76f9c99b936b3d7e3d894951ee5776ad",
@@ -3885,12 +4037,20 @@
       "size": 177
     },
     "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
-      "sha256": "709cbc48a5cfab8a0160f7d51c1400c8b1ad6ceccfbf4b312a9ee2506154bc00",
-      "size": 1289
+      "sha256": "a5768579898b2423e124c594bef19ef22ae743ce0d9371a9646b0b8c9ca945cd",
+      "size": 3261
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor.meta": {
       "sha256": "7ece5759a5ac1e80072a893d36af07c48a1a32abc8324811da5b860c3abd2cb4",
       "size": 172
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/AutoSyncPostprocessor.cs": {
+      "sha256": "585c45d2797f22bb9de93aa0c5e246b53e6c4091c1b6b8dd807a74708f3f5438",
+      "size": 4589
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/AutoSyncPostprocessor.cs.meta": {
+      "sha256": "3e3970a8aa47540640a9ffcc4918517f48665a8d2fab972779fe3942717c3603",
+      "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/NeoEngDTrace.Editor.asmdef": {
       "sha256": "209d733a13c64a358c5e5565d49cc8383ac9418ba2d6a4fe66d5e024690e8150",
@@ -3909,8 +4069,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
-      "sha256": "3980a42d13f037e3f51a82bf34badf8e9168e8dd58e6a4fd5cb9e8ca9e65bf5f",
-      "size": 54118
+      "sha256": "8bb9a47c8446752f8e69c2ef6367921762ef7099e6fa8e80031fe338a8ad44c7",
+      "size": 57940
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
       "sha256": "c0cf44a9905072c973382ea3014d9bcdae7fe51206ffb20b45414434332be48f",
@@ -4168,6 +4328,10 @@
       "sha256": "73920c7d5b9a25eb55fa920e884e5c2f2c5b4bb1d44a43c4146488afd31c64ee",
       "size": 18943
     },
+    "scripts/audit_native_auto_sync_stage1.py": {
+      "sha256": "d8622284acdb58a615a72e11d1e422f740a3cf07cb1fc27e0fb8227e3d3c58ac",
+      "size": 8827
+    },
     "scripts/audit_native_stage10.py": {
       "sha256": "7368041dc14fac8b0b5c4180c4fc54231f32fc6786aad79e43be523698600b17",
       "size": 28953
@@ -4180,9 +4344,13 @@
       "sha256": "2434b617b0df2c84a92a1f84157a4bc86708e03701b9b8ef672d9598d98d7f13",
       "size": 12705
     },
+    "scripts/audit_unity_auto_sync_stage1.py": {
+      "sha256": "9c251f203390965da25330337edc8efc89572dcd388843a63c207fcd91e48b09",
+      "size": 10916
+    },
     "scripts/audit_unity_import_stage6.py": {
-      "sha256": "330c5ed7d650fe149a45e2e6f7bee3230e2413143db5e0769871a377021ba20f",
-      "size": 13478
+      "sha256": "9a83acce987d3808a0eeec530f4e3f55386cdf89ac2cf7dcb0ba6891f4b8d1a7",
+      "size": 13696
     },
     "scripts/audit_unity_package_stage5.py": {
       "sha256": "43f72eb1619b9ea0a03ca912a616af14130a3c4d8c392ecf85b7e5d25f526438",
@@ -4685,8 +4853,8 @@
       "size": 16939
     },
     "tests/test_godot_plugin_scaffold.py": {
-      "sha256": "7a6eb88c0ba5b9fba4aa299245310754e4bb351f88871e5bc2bd2aea96897e79",
-      "size": 2135
+      "sha256": "4d7e26a4a5f474d5a37eb35acccf81aac1a4f535ebc4c07c0974a81b839a7ef0",
+      "size": 2292
     },
     "tests/test_grabcut_pipeline.py": {
       "sha256": "bb381958a30b534e2a79ba99acf60d59f23d0149677b13ecd095675f0e575c47",
@@ -4783,6 +4951,10 @@
     "tests/test_stage14_postmerge_closure.py": {
       "sha256": "37d2def7b23e74c9925e31aeb8ab17019b292b027dd858342f231e477caded18",
       "size": 2287
+    },
+    "tests/test_stage1_automatic_sync_contracts.py": {
+      "sha256": "f13a350177a69900610248a6865177956049152cab950be2363ad5ae53acca5a",
+      "size": 2069
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
@@ -4985,8 +5157,8 @@
       "size": 1401
     },
     "tests/test_unity_package_scaffold.py": {
-      "sha256": "0e69f81dfe34bee33f4cfab23633640ce65dec8e3c46551f7ade5e0891736d27",
-      "size": 2251
+      "sha256": "acb3b5bbe855c7769eabf2ea91d9c338fb8950f294c8fe811717a4e5db50d9e2",
+      "size": 2408
     },
     "tests/test_validation_events.py": {
       "sha256": "794b6e7429262469cfd393a17151f1ba23cbdacb527402901fa105c4a1f37af4",
