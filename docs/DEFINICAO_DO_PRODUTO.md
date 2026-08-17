@@ -182,7 +182,14 @@ Projetos criados a partir do primeiro formato oficialmente versionado deverão a
 
 ## 16. Plugins
 
-Plugins de terceiros ficam fora da versão 1.0. Componentes de integração para Godot ou Unity poderão futuramente ser publicados separadamente, desde que não exponham o núcleo comercial.
+Plugins de terceiros e dependências de marketplace ficam fora da versão 1.0.
+Os adaptadores first-party source-only para Godot e Unity são uma linha de
+integração própria do NeoEng-D-Trace, acompanhada separadamente pelo plano
+`docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md`. Eles não são plugins de
+terceiros, não introduzem binários ou downloads obrigatórios e não alteram a
+fonte de verdade do núcleo. Sua implementação, distribuição e promoção
+continuam condicionadas aos gates reais de contrato, segurança, rollback,
+engines e evidências desse plano; a existência do plano não aprova release.
 
 ## 17. Modelo comercial e licença
 
@@ -248,7 +255,8 @@ Nenhum número será publicado antes de benchmark reproduzível no Windows.
 - escultura;
 - fotogrametria;
 - física dinâmica completa;
-- plugins de terceiros;
+- plugins de terceiros, dependências de marketplace e integrações externas não
+  aprovadas;
 - colaboração online;
 - serviços em nuvem obrigatórios;
 - IA externa obrigatória;
