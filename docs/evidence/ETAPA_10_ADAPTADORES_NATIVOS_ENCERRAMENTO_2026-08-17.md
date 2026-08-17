@@ -4,8 +4,9 @@
 
 - Escopo: fechamento técnico local dos adaptadores source-only Godot/Unity.
 - Baseline de entrada: `de50709586e6e3605efc347a85521ba40ff57ef3`.
+- Commit local validado: `a713b8d9a28818bae2c72a2fab35e79f2f4e157d`.
 - Data da execução: 2026-08-17.
-- Estado do merge: não realizado neste registro; o fechamento abaixo é pré-commit e será revalidado no commit candidato.
+- Estado do merge: não realizado; o commit local foi validado e push/CI/merge permanecem pendentes.
 
 Este documento é operacional e não altera snapshots históricos. Em particular, `DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md` e `ETAPA_10_EXPORTADORES_ENGINES.md` continuam sendo registros históricos com seus próprios estados e não são reinterpretados por esta evidência.
 
@@ -85,6 +86,6 @@ As primeiras seis execuções falharam por erros reais de sintaxe do fixture God
 
 ## Decisão
 
-**APROVADO TECNICAMENTE PARA CANDIDATO DE COMMIT, NÃO APROVADO PARA RELEASE.**
+**APROVADO TECNICAMENTE NO COMMIT `a713b8d9a28818bae2c72a2fab35e79f2f4e157d`; NÃO APROVADO PARA RELEASE.**
 
-A Etapa 10 só será promovida no plano após a repetição dos gates no commit candidato, a atualização legítima da baseline, a auditoria do diff e a validação de integridade dos artefatos. Nenhum merge é declarado por este documento.
+A Etapa 10 só será promovida no plano após push, CI ligado ao SHA exato, auditoria remota e merge autorizado. Nenhum merge é declarado por este documento.

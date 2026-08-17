@@ -189,8 +189,8 @@
       "size": 6374
     },
     "docs/ETAPA_0_5_MATRIZ_REGRESSAO.md": {
-      "sha256": "08e3688388a60786087445c4b54ccafdc86f60d6f7820f968f64e7460b05c4b2",
-      "size": 6137
+      "sha256": "7298e714d07721b2264e31977c80a9af0f067c29f7f27f15e5798d288263efaa",
+      "size": 6303
     },
     "docs/ETAPA_0_5_PLANO_RESTAURACAO_TESTES.md": {
       "sha256": "920d423bd4014b5415edea2413a2a707e1ee4ef8ade4941d571e999f5da131f6",
@@ -237,16 +237,16 @@
       "size": 6112
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "4320c8a6f7b2fb7743fc63562595ea27a1a80a5ce23eca8b419aedd2965b9a2b",
-      "size": 18187
+      "sha256": "ecf52f43428873142161f9eb15fd178791dd42f73005cdc2a7e88111df184ec3",
+      "size": 18228
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "47edab2cf72f2014f9ed173d0c8f506e2d796169b91be73e10592aacdbe237e0",
-      "size": 6068
+      "sha256": "f9ee7120d20429adde0481110a834fdfb46818c07e05b0d89eba4f13736b9859",
+      "size": 6175
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -365,8 +365,8 @@
       "size": 2348
     },
     "docs/evidence/ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md": {
-      "sha256": "d9b028ae1b23df3e7efbac978876bf3145f2d335a839d9af87bdec057107a84c",
-      "size": 5986
+      "sha256": "5a2f1c6de2d321900066b143607c630b53c43e63733ad27fbe7859c47210d5c4",
+      "size": 5976
     },
     "docs/evidence/ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md": {
       "sha256": "1ff4afb5e9109ecc00688da9895f61b0257d3063ba7ade8a4c6fb00997cad178",
@@ -677,8 +677,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "d155cfbccbc57ec0a1c50439abd08f5bcbab1e0556c4cbb8edee37ba2abc8be5",
-      "size": 30287
+      "sha256": "e59daf325437dbebe61ba142d1753f8e09117f83353606629415546c323ea665",
+      "size": 30299
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -1565,7 +1565,7 @@
       "size": 9531
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-index.json": {
-      "sha256": "497987c7fe257307be2cabf4db6469240cb7c02dc981e86f7a681787172a80ca",
+      "sha256": "d9b9e894236f9f461f961fd2d65a0e00a29b10dbd9f53ce5fb2bab1307f75147",
       "size": 6877
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-intermediate-failures.log": {
