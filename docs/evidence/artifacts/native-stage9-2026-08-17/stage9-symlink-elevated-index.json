@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "stage": 9,
+  "status": "SUCCESS",
+  "provenance": "operator_terminal_transcript_supplied_in_task",
+  "files": {
+    "stage9-symlink-elevated-console-normalized.log": {
+      "bytes": 466,
+      "sha256": "d71af77034ad90ddfe6739d197119d36d26ba92b15abd3db8927ea646c017ff5"
+    }
+  }
+}

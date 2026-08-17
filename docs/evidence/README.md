@@ -176,7 +176,8 @@ Etapa 9 dos adaptadores nativos integrada no escopo técnico pós-merge em 17 de
 - o diretório `artifacts/native-stage9-2026-08-17/` contém `13` arquivos, sendo `12` payloads no índice e o próprio índice; a varredura de privacidade passou;
 - a CI valida os gates Python, tipagem, cobertura e integridade, mas não inicializa dinamicamente Godot/Unity; por isso a execução real das engines permanece evidência local reproduzível, não cobertura dinâmica de CI;
 - `pip-audit` continua limitado pelo pacote local não publicado e há dez ocorrências históricas B110 fora do escopo da Etapa 9; nenhuma foi promovida artificialmente a PASS;
-- `STAGE9_STATUS=INTEGRATED`; `STAGE9_RELEASE_APPROVED=NO`; `STAGE10_STATUS=NOT_STARTED`.
+- STAGE9_STATUS=INTEGRATED; STAGE9_RELEASE_APPROVED=NO; STAGE10_STATUS=NOT_STARTED.
+- suplemento administrativo local: os dois testes de symlink passaram com 2 passed, 0 skipped; a proveniência da transcrição e o SHA-256 estão no fechamento e no artefato normalizado.
 Etapa 14 encerrada no escopo técnico pós-merge em 15 de agosto de 2026:
 
 - commit-fonte do build MSI `828cf626b7ce382c360723b1be10c4ce718c4187`; merge documental/técnico atual `f15193a55d1a5de0c7031f5bab656107302eee1b`;
