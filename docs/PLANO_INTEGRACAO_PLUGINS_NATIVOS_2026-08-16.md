@@ -1,7 +1,7 @@
 # Plano de integração dos adaptadores nativos
 
 Data da revisão: 2026-08-17
-Estado: etapas 4, 5, 6 e 7 integradas nos escopos documentados; a Etapa 8 está implementada e validada no pré-merge com artefatos reais Godot/Unity; etapas 9 e 10 não iniciadas. A promoção final da Etapa 8 ainda depende do commit, PR, CI e validação pós-merge. A distinção entre plugins de terceiros e adaptadores first-party source-only foi formalizada em docs/evidence/DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md, com base no main integrado `86195af3203ba7092bae70161ededd064f2b718b`.
+Estado: etapas 4, 5, 6, 7 e 8 integradas nos escopos documentados; as etapas 9 e 10 não iniciadas. A Etapa 8 foi integrada pela PR #79 no merge `8b40be3c72705cdd99c2e28849f030b7b3182bf0` e reproduzida no CI pós-merge `31995768720`. A distinção entre plugins de terceiros e adaptadores first-party source-only foi formalizada em docs/evidence/DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md.
 
 ## Objetivo
 
@@ -57,7 +57,7 @@ Adicionar adaptadores source-only para Godot e Unity, integrados ao NeoEng-D-Tra
 - a etapa 6 foi validada somente no escopo documentado; sincronização e overrides foram implementados e validados na etapa 7; rollback permanece posterior;
 - a etapa 7 foi validada em Godot 4.7 e Unity 6000.5.7f1 para todos os recursos gerados no escopo atual, com hashes, overrides, divergência, confirmação destrutiva e idempotência; PR 73, merge 283db2f e CI pós-merge 31971686798 foram concluídos; dry-run, rollback e etapas 8 a 10 permanecem posteriores;
 
-- a etapa 8 foi validada no pré-merge em Godot 4.7 e Unity 6000.5.7f1 com atlas real, bleed/extrusão, propriedades avançadas, normalização de coordenadas, repetição `UNCHANGED`, hashes e rejeição de drift; evidência em docs/evidence/ETAPA_8_RECURSOS_AVANCADOS_PRE_MERGE_2026-08-17.md e docs/evidence/artifacts/native-advanced-stage8-2026-08-17/; CI dinâmica dos engines e etapas 9/10 permanecem posteriores;
+- a etapa 8 foi integrada pela PR #79 no merge `8b40be3c72705cdd99c2e28849f030b7b3182bf0`; os checks pré-merge `31995537696` e o CI pós-merge `31995768720` passaram em Linux/Windows; os testes reais de Godot 4.7 e Unity 6000.5.7f1 permanecem documentados como evidência local reproduzível em docs/evidence/ETAPA_8_ENCERRAMENTO_POS_MERGE_2026-08-17.md e docs/evidence/artifacts/native-advanced-stage8-2026-08-17/; etapas 9/10 permanecem posteriores;
 ## Regra de promoção
 
 Cada etapa produzirá testes, artefatos e relatório em docs/evidence. A etapa só será promovida quando o critério de aceite passar em ambiente real ou for classificada explicitamente como BLOQUEADA/NÃO TESTADA. Um subescopo validado não promove automaticamente outra etapa.

@@ -245,8 +245,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "92b90a665b0f994387dee03c092ec2225b24b2a31efaaf531f58dadaf74d089b",
-      "size": 5311
+      "sha256": "a4dc38fe3e302e461c10612a558daa4088bc4dba8f8afe002edd1791aa08e18a",
+      "size": 5239
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -603,6 +603,10 @@
     "docs/evidence/ETAPA_8_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "16dc41071884dc3bda576b6b6aaf0f8f19338eb61ed14afed4dcab9f0981cdbf",
       "size": 3517
+    },
+    "docs/evidence/ETAPA_8_ENCERRAMENTO_POS_MERGE_2026-08-17.md": {
+      "sha256": "bac13572ff006521068818fdc6ae899bfbea8ce7174374d7ee3ae52788c2e160",
+      "size": 2971
     },
     "docs/evidence/ETAPA_8_RECURSOS_AVANCADOS_PRE_MERGE_2026-08-17.md": {
       "sha256": "8a31719950b45790b6cadab5b58d94675308201950d31224596d396088f382ee",
