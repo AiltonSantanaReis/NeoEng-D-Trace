@@ -6,7 +6,7 @@
 - Baseline de entrada: `de50709586e6e3605efc347a85521ba40ff57ef3`.
 - Commit local validado: `a713b8d9a28818bae2c72a2fab35e79f2f4e157d`.
 - Data da execução: 2026-08-17.
-- Estado do merge: não realizado; o commit local foi validado e push/CI/merge permanecem pendentes.
+- Estado do merge: PR #84 mesclada no commit `bca43f399928d69cb81e133e40991b7c011a0c10`; head validado `5fef53296d3c37495b26a4b2ec2f503103dc6604`; CI pós-merge `32028639637` PASS em Linux e Windows.
 
 Este documento é operacional e não altera snapshots históricos. Em particular, `DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md` e `ETAPA_10_EXPORTADORES_ENGINES.md` continuam sendo registros históricos com seus próprios estados e não são reinterpretados por esta evidência.
 
@@ -88,4 +88,4 @@ As primeiras seis execuções falharam por erros reais de sintaxe do fixture God
 
 **APROVADO TECNICAMENTE NO COMMIT `a713b8d9a28818bae2c72a2fab35e79f2f4e157d`; NÃO APROVADO PARA RELEASE.**
 
-A Etapa 10 só será promovida no plano após push, CI ligado ao SHA exato, auditoria remota e merge autorizado. Nenhum merge é declarado por este documento.
+A Etapa 10 está promovida no plano técnico após push, CI, auditoria e merge. A release continua não aprovada.

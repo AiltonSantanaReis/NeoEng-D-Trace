@@ -189,8 +189,8 @@
       "size": 6374
     },
     "docs/ETAPA_0_5_MATRIZ_REGRESSAO.md": {
-      "sha256": "7298e714d07721b2264e31977c80a9af0f067c29f7f27f15e5798d288263efaa",
-      "size": 6303
+      "sha256": "5f564fe04df03c161d87f5585eb489bcf21638cbfcbfee5e52237a74b073983a",
+      "size": 6398
     },
     "docs/ETAPA_0_5_PLANO_RESTAURACAO_TESTES.md": {
       "sha256": "920d423bd4014b5415edea2413a2a707e1ee4ef8ade4941d571e999f5da131f6",
@@ -237,16 +237,16 @@
       "size": 6112
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "ecf52f43428873142161f9eb15fd178791dd42f73005cdc2a7e88111df184ec3",
-      "size": 18228
+      "sha256": "1e73f8ca8dfe75501c863fc37ea24db3fafb5b65ccb49509ce16b6370db31247",
+      "size": 18250
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "f9ee7120d20429adde0481110a834fdfb46818c07e05b0d89eba4f13736b9859",
-      "size": 6175
+      "sha256": "a729951cfbb940deb51900f4b6c2150aa0b3b70c15e7996955780037caf30208",
+      "size": 6247
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -365,8 +365,8 @@
       "size": 2348
     },
     "docs/evidence/ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md": {
-      "sha256": "5a2f1c6de2d321900066b143607c630b53c43e63733ad27fbe7859c47210d5c4",
-      "size": 5976
+      "sha256": "87e2b3084de9263306fbcc02c0ce07be931301aece4bac684887faf1cd1ef4f5",
+      "size": 6030
     },
     "docs/evidence/ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md": {
       "sha256": "1ff4afb5e9109ecc00688da9895f61b0257d3063ba7ade8a4c6fb00997cad178",
@@ -677,8 +677,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "e59daf325437dbebe61ba142d1753f8e09117f83353606629415546c323ea665",
-      "size": 30299
+      "sha256": "23b683d899945efb898f72b59eb2f76c5046f0a05d56eca616c7a012c249a74c",
+      "size": 30285
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
