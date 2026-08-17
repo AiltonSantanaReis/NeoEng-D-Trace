@@ -245,8 +245,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "a4dc38fe3e302e461c10612a558daa4088bc4dba8f8afe002edd1791aa08e18a",
-      "size": 5239
+      "sha256": "661d71a636d152d0fce6ead2101f4fe2f64707a55229ff1a20c95ff7766fd047",
+      "size": 5840
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -617,12 +617,16 @@
       "size": 7265
     },
     "docs/evidence/ETAPA_9_DRY_RUN_SEGURANCA_ROLLBACK_PRE_MERGE_2026-08-17.md": {
-      "sha256": "fe61f3774d2520e5eef7f3cb0330f021c9b1888573d150672470248ae965067a",
-      "size": 5101
+      "sha256": "d3efa5942cd21b85fc228f3698db452df3779f3b723aaf8a4ade1492ad86c93b",
+      "size": 5212
     },
     "docs/evidence/ETAPA_9_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "d016c6045acee041a65a21508a42462fdb81ec644fbc071658515d521b2bddb0",
       "size": 3950
+    },
+    "docs/evidence/ETAPA_9_ENCERRAMENTO_POS_MERGE_2026-08-17.md": {
+      "sha256": "f787ad5de38860b5be06b1c93e5c45526551b9e6a160095bd0bdde32e4796ea9",
+      "size": 4019
     },
     "docs/evidence/ETAPA_AUDITOR_VISUAL_REPRODUTIVEL_2026-08-16.md": {
       "sha256": "833107653cc227e225c4139a7870b6fa3149ce8bc5a26ab66fe629cd9b00bf09",
@@ -669,8 +673,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "1a5d9147cf4b9ea0bd35871ad5d2302b3952093d923ede0ee04181391b310953",
-      "size": 27282
+      "sha256": "5c3a390b8e8052879c5d2cb9fc4be8688cfda583a5058d5f77f7a8b9b3e4087c",
+      "size": 28929
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
