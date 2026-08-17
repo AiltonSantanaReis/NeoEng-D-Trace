@@ -61,16 +61,17 @@ def sanitize(text: str, temporary_root: Path) -> str:
     value = re.sub(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", "<network-address>", value)
     value = re.sub(
         r"(?im)^(\s*(?:Machine Id|Session Id|Correlation Id|External correlation Id):).*$",
-        r"\1 <redacted>",
+        r"\1<redacted>",
         value,
     )
-    value = re.sub(r"LicenseClient-[A-Za-z0-9_.-]+", "LicenseClient-<redacted>", value)
+    value = re.sub(r"(?i)LicenseClient-[A-Za-z0-9_.-]+", "LicenseClient-<redacted>", value)
     value = re.sub(r"(?i)\bPId:\s*\d+", "PId: <redacted>", value)
-    value = re.sub(r"(?i)\bprocessId\":\s*\d+", 'processId":<redacted>', value)
+    value = re.sub(r"(?i)\bprocessId\"?\s*[:=]\s*\d+", "processId: <redacted>", value)
+    value = re.sub(r"(?i)\bprocess\s+Id:\s*\d+", "process Id: <redacted>", value)
     value = re.sub(r"(?i)\bPort\s+\d+", "Port <redacted>", value)
-    value = re.sub(r"WindowsEditor\(\d+,[^)]+\)", "WindowsEditor(<redacted>)", value)
+    value = re.sub(r"WindowsEditor\([^)]*\)", "WindowsEditor(<redacted>)", value)
+    value = re.sub(r"(?im)Player connection\s*\[\d+\][^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)", "<redacted-player-connection>", value)
     return value
-
 
 def write_project(project: Path, package_path: Path, unity_version: str) -> None:
     (project / "ProjectSettings").mkdir(parents=True)

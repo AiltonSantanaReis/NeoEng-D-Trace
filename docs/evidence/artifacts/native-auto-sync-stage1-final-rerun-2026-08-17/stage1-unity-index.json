@@ -1,0 +1,17 @@
+{
+  "engine": "unity",
+  "files": {
+    "stage1-unity-report.json": {
+      "bytes": 77815,
+      "sha256": "9b0faf86aade7c4544fbe9092c28f5731d506f6442068bc640cdfe20508fd515"
+    },
+    "unity-stage1-auto-sync.log": {
+      "bytes": 75657,
+      "sha256": "15987e60c0af6c9541e66a157b0188963bad5dadfa95d37405ee2d5a3a67db2a"
+    }
+  },
+  "schema_version": 1,
+  "stage": 1,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}
