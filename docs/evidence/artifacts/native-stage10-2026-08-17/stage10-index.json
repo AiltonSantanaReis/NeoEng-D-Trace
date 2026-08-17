@@ -108,8 +108,8 @@
       "sha256": "900314d1b1bb57a3dba5619b02bf564abfc708f46c16e219a17189b1da017d2b"
     },
     "stage10-intermediate-failures.log": {
-      "bytes": 1458,
-      "sha256": "c0223460b0b50673a2f688bc043280bd9cc87c9e9bacfaf0558fbca49271524a"
+      "bytes": 1788,
+      "sha256": "278e172d82f2108207c51c6dead18fdca11c10309ebda810292cfc2330c1a02e"
     },
     "stage10-report.json": {
       "bytes": 330117,
