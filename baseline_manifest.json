@@ -249,8 +249,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "a729951cfbb940deb51900f4b6c2150aa0b3b70c15e7996955780037caf30208",
-      "size": 6247
+      "sha256": "36cf30a1bc23bbe519584ac681b330fe5be79e99f3d130ebd97f65df2998e941",
+      "size": 6804
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "27d1fa1e3c39a924c7a139b6d494beaeef41678edd3db3d184a56169daa79396",
@@ -524,6 +524,10 @@
       "sha256": "1603c547be79f44bd6f8f232d1eec6b115cde8015c9f53c51689d045a157b3f1",
       "size": 4753
     },
+    "docs/evidence/ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md": {
+      "sha256": "7cb4d0da6ca0cfe4a6144b9bfa2071b2622684d1149c5b09fc670a47c112e584",
+      "size": 3700
+    },
     "docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "4ce97c185650844321d42f158896c3aa8d851358dedb81820cfaca360614828f",
       "size": 6049
@@ -701,8 +705,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "15b10b9e838b14baa7d7c61bcde65cac44f9b36e164b79d163b2a4261b3c1474",
-      "size": 30923
+      "sha256": "68a1433def026e89c4ac41dbd4ba6ee8d2280101d9d1ea129f06b1265cec0e98",
+      "size": 31138
     },
     "docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md": {
       "sha256": "b3d69ca306352b4c7310d0b57d9746e97302dda38617d140f3da296975858eff",
@@ -1999,6 +2003,94 @@
     "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun4-2026-08-17/unity-stage1-auto-sync.log": {
       "sha256": "474f034a3f1b555c2b379f4abf781d5d8b3da5cc94b8b249379e136e62c0aa0a",
       "size": 75792
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "7dd4d3f142de17564342debb5592a21f46ebff8c0889c87c5f6f1ed13cd9bba6",
+      "size": 440
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "19baab28c179ea73ca9d90e2c24d93d88c560d5b750ab29eca24c1f321fa621c",
+      "size": 834
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun10-2026-08-17/stage4-global-engine.log": {
+      "sha256": "3c32d0801bfe3966589895e26a7e9e48c8653383fe30f9abc92210676452b6d1",
+      "size": 66481
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun10-2026-08-17/stage4-global-index.json": {
+      "sha256": "45356cebb690cc45f8a419f0900116614db4f38c9491d17da6a22ff547b8885d",
+      "size": 372
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun10-2026-08-17/stage4-global-report.json": {
+      "sha256": "5ab1d51147c017b0c7fabc5b891f74876854d886be3fb803d6ad0519afe56a9d",
+      "size": 1299
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun2-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "9dfe72edd9da41a0006a2961bc1db9b5139bc5b181fa4949d1d1253285837f8f",
+      "size": 451
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun2-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "b46083d788459c4f66cd441a862f204093640bb964460fb8ccf6e626ee2be905",
+      "size": 845
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun3-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "a1e2ea1d85713e99f39a5eee64dbec151febb82e92aacc7546adbd443ee66850",
+      "size": 941
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun3-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "fd17e79021601fc36a915b8627e8952fd2088296c49c7b740434c835a65bb92d",
+      "size": 1347
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun4-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "3a1f60eaed113695b08139cee758881cc0671003aad88b789d929fe8044e2741",
+      "size": 1087
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun4-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "58f9c466d1c7f06cfe3c8180e39a05ce8de1ddd4f6b6dd4a833257a13156c4c7",
+      "size": 1497
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun5-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "bd4aed16b733d0f2bbb69e24d22f1faec18ebaf4867e9e3354a13dba4488bc82",
+      "size": 55535
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun5-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "e03ee4cad2d7a91c4989785e161e6066d5844ea3a12c15ac0997da732667f16f",
+      "size": 57706
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun6-2026-08-17/stage4-global-engine.log": {
+      "sha256": "191c95c8ec0a2979f6d0ca92fe0811a960763eb6c5f973e79f21315424e39fe9",
+      "size": 67525
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun6-2026-08-17/stage4-global-index.json": {
+      "sha256": "0a6c26f542ed66a7abc17d45d8f54fe71dfda362b51f19d94986271c29b62d65",
+      "size": 373
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun6-2026-08-17/stage4-global-report.json": {
+      "sha256": "996d9a7be82a0c2e7ec27c608e2dc763652cdc0a171a80804c1bbdb3ef9e4053",
+      "size": 70414
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun7-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "4866798b15050ced8b7960df1ca1a9aee305235d02c1c51ea6d3979d6dc7c02a",
+      "size": 60866
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun7-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "8d9ef2578f518a127724061d5f0ec7331b3b9d7c94bf5752f3ebaa8f72a66655",
+      "size": 63350
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun8-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "7e0b8ebd8c085b8684dbbddf36215551bd938aa1ccb67d381565032292c7f623",
+      "size": 45765
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun8-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "52e697ebd71fb0209083ee828ad98531c08183b0ada21923de60f721cc85f055",
+      "size": 48691
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun9-2026-08-17/attempt-stage4-engine.log": {
+      "sha256": "29060d29dd5f71b7a3bae27599c5412d49e4744bd4489f563027338bfddce85a",
+      "size": 60930
+    },
+    "docs/evidence/artifacts/native-stage4-global-transaction-rerun9-2026-08-17/attempt-stage4-failure.json": {
+      "sha256": "5a330ccaa119e68e1e59c39b1c10fef34693db527beddcf847b5956b5c065fe0",
+      "size": 63418
     },
     "docs/evidence/artifacts/native-stage9-2026-08-17/godot-manifest.ndt.integration.json": {
       "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
@@ -4217,8 +4309,8 @@
       "size": 1350
     },
     "integrations/godot/addons/neoeng_d_trace/import_generator.gd": {
-      "sha256": "7b6efb1d45cbc1768dca4ca74d2f717761831db3ad13c2892cefd0053eb645a0",
-      "size": 44555
+      "sha256": "9baa839fc3d5fbf87ee3c2dcba6e271010dcf12bc1025f91c6baa1dee3026c5c",
+      "size": 47412
     },
     "integrations/godot/addons/neoeng_d_trace/manifest_diagnostic.gd": {
       "sha256": "799985d8cf02e656ef60e5d6151eda4cb9c9f5c2c34a441dc462c43b733fbd2c",
@@ -4237,8 +4329,8 @@
       "size": 172
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/AutoSyncPostprocessor.cs": {
-      "sha256": "585c45d2797f22bb9de93aa0c5e246b53e6c4091c1b6b8dd807a74708f3f5438",
-      "size": 4589
+      "sha256": "7446a6a062534dd96c357cf816ec2a35be482a66bdea6703db00131b71baabd2",
+      "size": 4110
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/AutoSyncPostprocessor.cs.meta": {
       "sha256": "3e3970a8aa47540640a9ffcc4918517f48665a8d2fab972779fe3942717c3603",
@@ -4261,8 +4353,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
-      "sha256": "89699715fcaf02d6c98b4217d4a02a2099165962549a4fae9ca5be616c9de252",
-      "size": 80642
+      "sha256": "4154eddf372efaa154932faf50e8b40a611d2b45a4921a1f1767c92e98c0c919",
+      "size": 83295
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
       "sha256": "c0cf44a9905072c973382ea3014d9bcdae7fe51206ffb20b45414434332be48f",
@@ -4560,6 +4652,10 @@
       "sha256": "7368041dc14fac8b0b5c4180c4fc54231f32fc6786aad79e43be523698600b17",
       "size": 28953
     },
+    "scripts/audit_native_stage4_global_transaction.py": {
+      "sha256": "8b1016ae5064592b6d6ef0ed3198310cdfcfe818ba5095706d0f61dbf21a9b90",
+      "size": 17749
+    },
     "scripts/audit_native_stage9.py": {
       "sha256": "f82e8fda46437c2e92e8c9bcdfa901a0c5ae4914649522191a3895df1c4afe30",
       "size": 17484
@@ -4733,8 +4829,8 @@
       "size": 21420
     },
     "src/exporters/integration_sync.py": {
-      "sha256": "58794eb2c037528b4eb2bfe0d846f82d17bd88514a9b7dfcd4d3168ec03cec6a",
-      "size": 7270
+      "sha256": "25c6446c6852e749d19b1120ba028b18dff89438b3d95828eecf4211ff69cd2b",
+      "size": 11071
     },
     "src/exporters/json_exporter.py": {
       "sha256": "4d464d6004e69d9f57500696ab787041cff8f4833270aa791a50bc5aaa2b5eb9",
@@ -5097,8 +5193,8 @@
       "size": 12741
     },
     "tests/test_integration_sync.py": {
-      "sha256": "3cfb73bd363e9fd67f320ede37a7544127f2011ace3c8c7ffd00d0e2da0cb9b5",
-      "size": 11018
+      "sha256": "871b89a8366040d40ca59dd284ab9e58d86e443dd247d66a58dcd35a6a9170c4",
+      "size": 16342
     },
     "tests/test_json_exporter_contract.py": {
       "sha256": "2fe479d579d20ff533dc3389c1a5c29fb212047d2427c6234142f34989e2b141",
@@ -5185,8 +5281,12 @@
       "size": 2287
     },
     "tests/test_stage1_automatic_sync_contracts.py": {
-      "sha256": "4177ac7d754cc698ec2ad07acfea44147449d0a54fa43516907f68ad89c95fcb",
-      "size": 2142
+      "sha256": "8830f18fcfd7ca48b24e6a5e6a3ba55551ec226b8a18b861a7f310f77f1f8d19",
+      "size": 2193
+    },
+    "tests/test_stage4_global_transaction_contract.py": {
+      "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",
+      "size": 1619
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
