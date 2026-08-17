@@ -4605,8 +4605,8 @@
       "size": 1709
     },
     "tests/test_visual_artifact_auditor.py": {
-      "sha256": "281d44b52c87435e568070d34266a2d551e8fa925d18f8d0bb317aa7cea768d0",
-      "size": 4789
+      "sha256": "878072eb2a9de3f97fae6e3288bf13738ac9ae7655e844583432540bbce626e8",
+      "size": 4942
     },
     "tools/baseline_integrity.py": {
       "sha256": "d9767b0fd6c117efea23ec5685cfca3bc7027a8f4c7fc82a38c9ca3228870517",

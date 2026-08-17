@@ -31,12 +31,25 @@ def _widget(x: int, y: int, width: int, height: int, visible: bool = True) -> di
 def _make_capture(root: Path, *, rgba: bool = False) -> Path:
     root.mkdir()
     image_path = root / "1080p_FHD_01_sem_projeto.png"
-    image = Image.new("RGBA" if rgba else "RGB", (320, 200), (30, 30, 30, 128) if rgba else (30, 30, 30))
+    background = (30, 30, 30, 128) if rgba else (30, 30, 30)
+    image = Image.new("RGBA" if rgba else "RGB", (320, 200), background)
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 0, 319, 19), fill=(45, 45, 48, 128) if rgba else (45, 45, 48))
-    draw.rectangle((0, 20, 39, 199), fill=(60, 60, 60, 128) if rgba else (60, 60, 60))
-    draw.rectangle((40, 20, 219, 199), fill=(37, 37, 38, 128) if rgba else (37, 37, 38))
-    draw.rectangle((220, 20, 319, 199), fill=(63, 63, 70, 128) if rgba else (63, 63, 70))
+    draw.rectangle(
+        (0, 0, 319, 19),
+        fill=(45, 45, 48, 128) if rgba else (45, 45, 48),
+    )
+    draw.rectangle(
+        (0, 20, 39, 199),
+        fill=(60, 60, 60, 128) if rgba else (60, 60, 60),
+    )
+    draw.rectangle(
+        (40, 20, 219, 199),
+        fill=(37, 37, 38, 128) if rgba else (37, 37, 38),
+    )
+    draw.rectangle(
+        (220, 20, 319, 199),
+        fill=(63, 63, 70, 128) if rgba else (63, 63, 70),
+    )
     draw.point((50, 30), fill=(230, 230, 230, 128) if rgba else (230, 230, 230))
     draw.point((319, 199), fill=(30, 30, 30, 128) if rgba else (30, 30, 30))
     image.save(image_path, "PNG")
@@ -78,13 +91,16 @@ def _make_capture(root: Path, *, rgba: bool = False) -> Path:
     return image_path
 
 
-def test_visual_auditor_passes_valid_png_and_generates_annotation(tmp_path: Path) -> None:
+def test_visual_auditor_passes_valid_png_and_generates_annotation(
+    tmp_path: Path,
+) -> None:
     _make_capture(tmp_path / "input")
     report = run_audit(tmp_path / "input", tmp_path / "output")
 
     assert report["status"] == "PASS"
     assert report["finding_count"] == 0
-    assert (tmp_path / "output" / "1080p_FHD_01_sem_projeto_annotated.png").is_file()
+    annotation = tmp_path / "output" / "1080p_FHD_01_sem_projeto_annotated.png"
+    assert annotation.is_file()
     assert (tmp_path / "output" / "visual-audit-report.json").is_file()
 
 
@@ -112,9 +128,15 @@ def test_visual_auditor_detects_sibling_overlap(tmp_path: Path) -> None:
     _make_capture(tmp_path / "input")
     manifest_path = tmp_path / "input" / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"]["canvas"]["root_geometry"][0] = 0
-    manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"]["canvas"]["geometry"][0] = 0
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    canvas = manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"]
+    canvas = canvas["canvas"]
+    canvas["root_geometry"][0] = 0
+    canvas["geometry"][0] = 0
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
 
     report = run_audit(tmp_path / "input", tmp_path / "output")
 
