@@ -1565,12 +1565,12 @@
       "size": 9531
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-index.json": {
-      "sha256": "d9b9e894236f9f461f961fd2d65a0e00a29b10dbd9f53ce5fb2bab1307f75147",
+      "sha256": "7f0677fed5b5f6896b0ceb1c22b6feb7944ddcfbc141fa48dab6ddb3345a30f3",
       "size": 6877
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-intermediate-failures.log": {
-      "sha256": "c0223460b0b50673a2f688bc043280bd9cc87c9e9bacfaf0558fbca49271524a",
-      "size": 1458
+      "sha256": "278e172d82f2108207c51c6dead18fdca11c10309ebda810292cfc2330c1a02e",
+      "size": 1788
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-report.json": {
       "sha256": "7fc5d762b204764d2b179c426d53be9c911d906c3757a702e35650a6c3cda40b",
@@ -4153,8 +4153,8 @@
       "size": 18025
     },
     "scripts/audit_native_stage10.py": {
-      "sha256": "a1242ec26de4e765895b06a13f84a5cde930210caaa492301a21a31b00dc24af",
-      "size": 28411
+      "sha256": "b6ab3990ae689bf5c31be402c1c041205eb2e9f760fb22d8792619bf8eef80e3",
+      "size": 28792
     },
     "scripts/audit_native_stage9.py": {
       "sha256": "53544c7d062f7927d735060625a9b3513029321a2258b82e92c56d86213ed35f",
