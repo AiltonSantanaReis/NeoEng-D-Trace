@@ -1,0 +1,25 @@
+{
+  "engine": "unity",
+  "files": {
+    "reproduction-csharp-compile.log": {
+      "bytes": 42461,
+      "sha256": "80545309ac6487f9392d9762499d49e0fb3c8757abb6addd9130d056dad58474"
+    },
+    "reproduction-marker-script-binding.log": {
+      "bytes": 19884,
+      "sha256": "618e0af105142f290301989a4b8a0606d166b1a4090d9a6e96e009447618043c"
+    },
+    "reproduction-report.json": {
+      "bytes": 2120,
+      "sha256": "147c5b17f7416bcd9e3cab7646418e6fae9914fa4790cc9f26f963c59f7d7b54"
+    }
+  },
+  "historical_unavailable": [
+    "initial-failure-csharp-compile.log",
+    "initial-failure-marker-script-binding.log"
+  ],
+  "kind": "real_reproduction",
+  "schema_version": 1,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}

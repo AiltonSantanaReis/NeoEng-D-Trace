@@ -65,9 +65,10 @@ importação. Os caminhos temporários não foram persistidos.
    secundário no arquivo do ScriptableObject. Ele foi separado em
    `NeoEngGeneratedMarker.cs`.
 3. A fixture final repetiu os casos positivos e negativos após as correções.
-   Os logs sanitizados das falhas estão preservados como
-   `initial-failure-csharp-compile.log` e
-   `initial-failure-marker-script-binding.log`.
+   Os dois logs históricos das falhas originais não estão disponíveis e
+   permanecem declarados como `unavailable_artifacts` no índice histórico.
+   Reproduções reais novas estão registradas em
+   `ETAPA_6_REPRODUCAO_FALHAS_UNITY_2026-08-16.md`.
 
 ## Artefatos
 
