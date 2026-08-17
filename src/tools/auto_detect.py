@@ -436,10 +436,12 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
         while child_index != -1:
             hole_contour = contours[child_index]
             if cv2.contourArea(hole_contour) >= min_area:
-                hole_points = [
-                    (float(hole_point[0][0]), float(hole_point[0][1]))
-                    for hole_point in hole_contour
-                ]
+                hole_points: List[Tuple[float, float]] = []
+                for hole_index in range(len(hole_contour)):
+                    hole_point = hole_contour[hole_index]
+                    px = float(hole_point[0][0])
+                    py = float(hole_point[0][1])
+                    hole_points.append((px, py))
                 if len(hole_points) > 2:
                     simplified_hole = rdp_simplify(hole_points, rdp_epsilon)
                 else:
