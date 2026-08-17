@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "project": "NeoEng-D-Trace",
-  "baseline_date": "2026-08-16",
+  "baseline_date": "2026-08-17",
   "hash_algorithm": "sha256",
   "canonicalization": {
     "utf8_text_line_endings": "LF",
@@ -133,8 +133,8 @@
       "size": 1371
     },
     "docs/DEFINICAO_DO_PRODUTO.md": {
-      "sha256": "2283adf315d893c572449ce147295fbac0651b0a45c7774a7e02ca416e278449",
-      "size": 9712
+      "sha256": "2db6c397f5250d85185d73a385eb6d78793561bc9063016156f5690055643195",
+      "size": 10219
     },
     "docs/ESTRATEGIA_GITHUB.md": {
       "sha256": "2d21b66741d7cc3629e9421268cdb5742809f3e61d923b1b9749d2d3250b5485",
@@ -245,8 +245,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "2357c48954a53ea923a20c199ff0d5e231c96e981b9370ce770ad0ec282a2aa6",
-      "size": 4567
+      "sha256": "7ad9d10100bb269c835b4b0e977bbc84252955aa72d6873174aba6aabf86c78a",
+      "size": 4777
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -359,6 +359,10 @@
     "docs/evidence/COBERTURA_MODULOS_CRITICOS_2026-08-10.md": {
       "sha256": "095f5baf12fc8970309144b52aab5816ab5fc5975c5123bd5c96d54083ca95aa",
       "size": 4276
+    },
+    "docs/evidence/DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md": {
+      "sha256": "8c7cba0192836a383ea3a534acc7e54831a3da1c19363e156ddea150108d2aab",
+      "size": 2348
     },
     "docs/evidence/ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md": {
       "sha256": "1ff4afb5e9109ecc00688da9895f61b0257d3063ba7ade8a4c6fb00997cad178",

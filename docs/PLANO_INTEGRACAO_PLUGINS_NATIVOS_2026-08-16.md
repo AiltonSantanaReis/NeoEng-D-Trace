@@ -1,7 +1,7 @@
 # Plano de integração dos adaptadores nativos
 
-Data: 2026-08-16
-Estado: etapas 4, 5, 6 e 7 integradas nos escopos documentados; etapas 8 a 10 não iniciadas; a Etapa 7 foi integrada pela PR 73 no merge 283db2f e validada pelo CI pós-merge 31971686798.
+Data da revisão: 2026-08-17
+Estado: etapas 4, 5, 6 e 7 integradas nos escopos documentados; etapas 8 a 10 não iniciadas. A Etapa 7 foi integrada pela PR 73 no merge 283db2f e validada pelo CI pós-merge 31971686798. A distinção entre plugins de terceiros e adaptadores first-party source-only foi formalizada em docs/evidence/DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md, com base no main integrado 9c8d8f.
 
 ## Objetivo
 
