@@ -148,6 +148,7 @@ namespace NeoEng.DTrace.Editor
                 string manifestText = File.ReadAllText(absoluteManifestPath, Encoding.UTF8);
                 IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(manifestText);
                 ApplyPolygonArrays(manifest, manifestText);
+                ApplyCollisionArrays(manifest, manifestText);
                 ValidateManifest(manifest);
                 string imageAssetPath = ResolveSourceImage(manifest.source.image.path);
                 ValidateImageHash(manifest.source.image.sha256, imageAssetPath);
@@ -176,8 +177,9 @@ namespace NeoEng.DTrace.Editor
                         SpritePath = GeneratedRoot + "/" + safeId + ".sprite.asset",
                         MetadataPath = GeneratedRoot + "/" + safeId + ".metadata.asset",
                         PrefabPath = prefabPath,
-                        ColliderPathCount = 1,
-                        ColliderPointCount = record.polygon_in_sprite.Length,
+                        ColliderPathCount = CollisionPathCount(record, overrideData),
+                        ColliderPointCount = CollisionPointCount(record, overrideData),
+                        ColliderPointCounts = CollisionPointCounts(record, overrideData),
                         Status = exists ? "UPDATE" : "CREATE",
                         OverrideApplied = overrideData.Polygon != null,
                     });
@@ -236,6 +238,7 @@ namespace NeoEng.DTrace.Editor
             string manifestText = File.ReadAllText(absoluteManifestPath, Encoding.UTF8);
             IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(manifestText);
             ApplyPolygonArrays(manifest, manifestText);
+                ApplyCollisionArrays(manifest, manifestText);
             ValidateManifest(manifest);
             string imageAssetPath = ResolveSourceImage(manifest.source.image.path);
             ValidateImageHash(manifest.source.image.sha256, imageAssetPath);
@@ -371,6 +374,70 @@ namespace NeoEng.DTrace.Editor
             }
             return polygon.Select(point => new Vector2(logicalRect.h - point.y, point.x)).ToArray();
         }
+        private static Vector2[][] EffectiveCollisionPaths(
+            SpriteRecord record,
+            Vector2[] fallbackPolygon,
+            RectData logicalRect,
+            AtlasSpriteData atlasSprite,
+            OverrideData overrideData)
+        {
+            if (overrideData.Polygon != null)
+            {
+                return new[] { EffectivePolygon(overrideData.Polygon, logicalRect, atlasSprite) };
+            }
+            if (record.collision == null)
+            {
+                return new[] { EffectivePolygon(fallbackPolygon, logicalRect, atlasSprite) };
+            }
+            if (!string.IsNullOrWhiteSpace(record.collision.coordinate_space) && record.collision.coordinate_space != "image")
+            {
+                throw new InvalidDataException("Unity collision coordinate space must be image");
+            }
+            if (record.collision.shape_type == "compound")
+            {
+                if (record.collision.parts == null || record.collision.parts.Length == 0)
+                {
+                    throw new InvalidDataException("compound collision must contain parts");
+                }
+                return record.collision.parts.Select((part, index) =>
+                {
+                    if (part == null)
+                    {
+                        throw new InvalidDataException("compound collision part " + index + " is null");
+                    }
+                    return EffectivePolygon(ToSpriteCollisionPoints(part.points, logicalRect, record.id + "#part" + index), logicalRect, atlasSprite);
+                }).ToArray();
+            }
+            if (record.collision.shape_type != "polygon")
+            {
+                throw new InvalidDataException("Unity collision shape type is unsupported");
+            }
+            return new[]
+            {
+                EffectivePolygon(ToSpriteCollisionPoints(record.collision.points, logicalRect, record.id), logicalRect, atlasSprite),
+            };
+        }
+
+        private static Vector2[] ToSpriteCollisionPoints(Vector2[] points, RectData logicalRect, string objectId)
+        {
+            ValidateCollisionPoints(points, objectId);
+            return points.Select(point => new Vector2(point.x - logicalRect.x, point.y - logicalRect.y)).ToArray();
+        }
+
+        private static void ValidateCollisionPoints(Vector2[] points, string objectId)
+        {
+            if (points == null || points.Length < 3)
+            {
+                throw new InvalidDataException("collision " + objectId + " must contain at least three points");
+            }
+            foreach (Vector2 point in points)
+            {
+                if (float.IsNaN(point.x) || float.IsNaN(point.y) || float.IsInfinity(point.x) || float.IsInfinity(point.y))
+                {
+                    throw new InvalidDataException("collision " + objectId + " contains non-finite coordinates");
+                }
+            }
+        }
         private static ImportedAsset ImportSprite(
             IntegrationManifest manifest,
             SpriteRecord record,
@@ -412,8 +479,10 @@ namespace NeoEng.DTrace.Editor
             }
             OverrideData overrideData = ReadOverride(safeId, record.id);
             Vector2[] effectivePolygon = EffectivePolygon(overrideData.Polygon ?? polygon, logicalRect, atlasSprite);
+            Vector2[][] collisionPaths = EffectiveCollisionPaths(record, polygon, logicalRect, atlasSprite, overrideData);
             Vector2 effectivePivotPixels = new Vector2(pivot.x * regionData.w, pivot.y * regionData.h);
-            string expectedFingerprint = ComputeFingerprint(record.id, safeId + ".sprite", ToUnityPoints(effectivePolygon, regionData.h, effectivePivotPixels, pixelsPerUnit));
+            Vector2[][] unityCollisionPaths = collisionPaths.Select(path => ToUnityPoints(path, regionData.h, effectivePivotPixels, pixelsPerUnit)).ToArray();
+            string expectedFingerprint = ComputeFingerprint(record.id, safeId + ".sprite", unityCollisionPaths);
             string prefabPath = GeneratedRoot + "/" + safeId + ".prefab";
             ExistingSync existing = InspectExistingPrefab(prefabPath, manifest, expectedFingerprint, overrideData.Hash);
             if (existing.Unchanged)
@@ -424,8 +493,9 @@ namespace NeoEng.DTrace.Editor
                     SpritePath = spritePath,
                     MetadataPath = GeneratedRoot + "/" + safeId + ".metadata.asset",
                     PrefabPath = prefabPath,
-                    ColliderPathCount = 1,
-                    ColliderPointCount = effectivePolygon.Length,
+                    ColliderPathCount = unityCollisionPaths.Length,
+                    ColliderPointCount = unityCollisionPaths[0].Length,
+                    ColliderPointCounts = unityCollisionPaths.Select(path => path.Length).ToArray(),
                     Status = "UNCHANGED",
                     OverrideApplied = overrideData.Polygon != null,
                 };
@@ -463,8 +533,11 @@ namespace NeoEng.DTrace.Editor
                 root.transform.position = new Vector3(0f, 0f, manifest.advanced.engine_properties.unity.z_depth);
             }
             PolygonCollider2D collider = root.AddComponent<PolygonCollider2D>();
-            collider.pathCount = 1;
-            collider.SetPath(0, ToUnityPoints(effectivePolygon, regionData.h, effectivePivotPixels, pixelsPerUnit));
+            collider.pathCount = unityCollisionPaths.Length;
+            for (int pathIndex = 0; pathIndex < unityCollisionPaths.Length; pathIndex++)
+            {
+                collider.SetPath(pathIndex, unityCollisionPaths[pathIndex]);
+            }
             NeoEngGeneratedMarker marker = root.AddComponent<NeoEngGeneratedMarker>();
             marker.generatorId = manifest.generator.id;
             marker.generatorVersion = manifest.generator.version;
@@ -490,8 +563,9 @@ namespace NeoEng.DTrace.Editor
                 SpritePath = spritePath,
                 MetadataPath = metadataPath,
                 PrefabPath = prefabPath,
-                ColliderPathCount = 1,
-                ColliderPointCount = effectivePolygon.Length,
+                ColliderPathCount = unityCollisionPaths.Length,
+                ColliderPointCount = unityCollisionPaths[0].Length,
+                ColliderPointCounts = unityCollisionPaths.Select(path => path.Length).ToArray(),
                 Status = "UPDATED",
                 OverrideApplied = overrideData.Polygon != null,
             };
@@ -582,16 +656,21 @@ namespace NeoEng.DTrace.Editor
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
             PolygonCollider2D collider = prefab.GetComponent<PolygonCollider2D>();
             NeoEngGeneratedMarker marker = prefab.GetComponent<NeoEngGeneratedMarker>();
-            Vector2[] points = collider.GetPath(0);
-            string signature = marker.objectId + "|" + renderer.sprite.name + "|" +
-                string.Join(";", points.Select(FormatPoint));
-            return ComputeSha256(Encoding.UTF8.GetBytes(signature));
+            Vector2[][] paths = Enumerable.Range(0, collider.pathCount)
+                .Select(collider.GetPath)
+                .ToArray();
+            return ComputeFingerprint(marker.objectId, renderer.sprite.name, paths);
         }
 
         private static string ComputeFingerprint(string objectId, string spriteName, Vector2[] points)
         {
+            return ComputeFingerprint(objectId, spriteName, new[] { points });
+        }
+
+        private static string ComputeFingerprint(string objectId, string spriteName, Vector2[][] paths)
+        {
             string signature = objectId + "|" + spriteName + "|" +
-                string.Join(";", points.Select(FormatPoint));
+                string.Join("|", paths.Select(path => string.Join(";", path.Select(FormatPoint))));
             return ComputeSha256(Encoding.UTF8.GetBytes(signature));
         }
 
@@ -626,9 +705,16 @@ namespace NeoEng.DTrace.Editor
                 {
                     throw new InvalidDataException("generated prefab SpriteRenderer is invalid");
                 }
-                if (collider == null || collider.pathCount != asset.ColliderPathCount || collider.GetPath(0).Length != asset.ColliderPointCount)
+                if (collider == null || collider.pathCount != asset.ColliderPathCount || asset.ColliderPointCounts == null || asset.ColliderPointCounts.Length != collider.pathCount)
                 {
-                    throw new InvalidDataException("generated PolygonCollider2D is invalid");
+                    throw new InvalidDataException("generated PolygonCollider2D path count is invalid");
+                }
+                for (int pathIndex = 0; pathIndex < collider.pathCount; pathIndex++)
+                {
+                    if (collider.GetPath(pathIndex).Length != asset.ColliderPointCounts[pathIndex])
+                    {
+                        throw new InvalidDataException("generated PolygonCollider2D path point count is invalid");
+                    }
                 }
                 if (marker == null || marker.generatorId != manifest.generator.id || marker.generatorVersion != manifest.generator.version)
                 {
@@ -651,6 +737,48 @@ namespace NeoEng.DTrace.Editor
             }
         }
 
+        private static int[] CollisionPointCounts(SpriteRecord record)
+        {
+            return CollisionPointCounts(record, null);
+        }
+
+        private static int[] CollisionPointCounts(SpriteRecord record, OverrideData overrideData)
+        {
+            if (overrideData != null && overrideData.Polygon != null)
+            {
+                ValidateCollisionPoints(overrideData.Polygon, record.id + " override");
+                return new[] { overrideData.Polygon.Length };
+            }
+            if (record.collision == null || record.collision.shape_type == "polygon")
+            {
+                Vector2[] points = record.collision == null ? record.polygon_in_sprite : record.collision.points;
+                ValidateCollisionPoints(points, record.id);
+                return new[] { points.Length };
+            }
+            if (record.collision.shape_type == "compound" && record.collision.parts != null && record.collision.parts.Length > 0)
+            {
+                return record.collision.parts.Select((part, index) =>
+                {
+                    if (part == null)
+                    {
+                        throw new InvalidDataException("compound collision part " + index + " is null");
+                    }
+                    ValidateCollisionPoints(part.points, record.id + "#part" + index);
+                    return part.points.Length;
+                }).ToArray();
+            }
+            throw new InvalidDataException("compound collision must contain parts");
+        }
+
+        private static int CollisionPathCount(SpriteRecord record, OverrideData overrideData)
+        {
+            return CollisionPointCounts(record, overrideData).Length;
+        }
+
+        private static int CollisionPointCount(SpriteRecord record, OverrideData overrideData)
+        {
+            return CollisionPointCounts(record, overrideData)[0];
+        }
         private static Vector2[] ToUnityPoints(Vector2[] points, float spriteHeight, Vector2 pivotPixels, float pixelsPerUnit)
         {
             return points.Select(point => new Vector2(
@@ -667,6 +795,161 @@ namespace NeoEng.DTrace.Editor
             AssetDatabase.CreateAsset(asset, assetPath);
         }
 
+        private static void ApplyCollisionArrays(IntegrationManifest manifest, string manifestText)
+        {
+            if (manifest == null || manifest.metadata == null || manifest.metadata.sprites == null)
+            {
+                return;
+            }
+            Match spritesMatch = Regex.Match(manifestText, "\\\"sprites\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+            if (!spritesMatch.Success)
+            {
+                throw new InvalidDataException("manifest metadata sprites array was not found");
+            }
+            int opening = manifestText.IndexOf('[', spritesMatch.Index);
+            List<string> spriteObjects = ExtractTopLevelObjects(ExtractBalancedArray(manifestText, opening));
+            if (spriteObjects.Count != manifest.metadata.sprites.Length)
+            {
+                throw new InvalidDataException("manifest sprite object count does not match metadata count");
+            }
+            for (int index = 0; index < spriteObjects.Count; index++)
+            {
+                Match collisionMatch = Regex.Match(
+                    spriteObjects[index],
+                    "\\\"collision\\\"\\s*:\\s*(null|\\{)",
+                    RegexOptions.CultureInvariant);
+                if (!collisionMatch.Success || collisionMatch.Groups[1].Value == "null")
+                {
+                    manifest.metadata.sprites[index].collision = null;
+                    continue;
+                }
+                int collisionOpening = spriteObjects[index].IndexOf('{', collisionMatch.Index);
+                string collisionText = ExtractBalancedObject(spriteObjects[index], collisionOpening);
+                CollisionData collision = new CollisionData();
+                Match shapeMatch = Regex.Match(collisionText, "\\\"shape_type\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"", RegexOptions.CultureInvariant);
+                Match coordinateMatch = Regex.Match(collisionText, "\\\"coordinate_space\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"", RegexOptions.CultureInvariant);
+                if (!shapeMatch.Success)
+                {
+                    throw new InvalidDataException("collision shape type is missing");
+                }
+                collision.shape_type = shapeMatch.Groups[1].Value;
+                collision.coordinate_space = coordinateMatch.Success ? coordinateMatch.Groups[1].Value : null;
+                Match pointsMatch = Regex.Match(collisionText, "\\\"points\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+                if (pointsMatch.Success)
+                {
+                    int pointsOpening = collisionText.IndexOf('[', pointsMatch.Index);
+                    collision.points = ParseVectorArray(ExtractBalancedArray(collisionText, pointsOpening), "collision points");
+                }
+                Match partsMatch = Regex.Match(collisionText, "\\\"parts\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+                if (partsMatch.Success)
+                {
+                    int partsOpening = collisionText.IndexOf('[', partsMatch.Index);
+                    List<string> partArrays = ExtractTopLevelArrays(ExtractBalancedArray(collisionText, partsOpening));
+                    collision.parts = partArrays.Select((part, partIndex) => new CollisionPartData
+                    {
+                        points = ParseVectorArray(part, "collision part " + partIndex + " points"),
+                    }).ToArray();
+                }
+                manifest.metadata.sprites[index].collision = collision;
+            }
+        }
+
+        private static Vector2[] ParseVectorArray(string arrayText, string field)
+        {
+            MatchCollection points = Regex.Matches(
+                arrayText,
+                @"\[\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*,\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*\]",
+                RegexOptions.CultureInvariant);
+            if (points.Count < 3)
+            {
+                throw new InvalidDataException(field + " must contain at least three points");
+            }
+            Vector2[] result = new Vector2[points.Count];
+            for (int index = 0; index < points.Count; index++)
+            {
+                result[index] = new Vector2(
+                    float.Parse(points[index].Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture),
+                    float.Parse(points[index].Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture));
+            }
+            return result;
+        }
+
+        private static List<string> ExtractTopLevelObjects(string arrayText)
+        {
+            List<string> objects = new List<string>();
+            int depth = 0;
+            int start = -1;
+            for (int index = 0; index < arrayText.Length; index++)
+            {
+                if (arrayText[index] == '{')
+                {
+                    if (depth == 0) start = index;
+                    depth++;
+                }
+                else if (arrayText[index] == '}')
+                {
+                    depth--;
+                    if (depth == 0 && start >= 0)
+                    {
+                        objects.Add(arrayText.Substring(start, index - start + 1));
+                        start = -1;
+                    }
+                }
+            }
+            if (depth != 0)
+            {
+                throw new InvalidDataException("manifest sprite object array is malformed");
+            }
+            return objects;
+        }
+
+        private static List<string> ExtractTopLevelArrays(string arrayText)
+        {
+            List<string> arrays = new List<string>();
+            int depth = 0;
+            for (int index = 0; index < arrayText.Length; index++)
+            {
+                if (arrayText[index] == '[')
+                {
+                    if (depth == 1)
+                    {
+                        string nested = ExtractBalancedArray(arrayText, index);
+                        arrays.Add(nested);
+                        index += nested.Length - 1;
+                        continue;
+                    }
+                    depth++;
+                }
+                else if (arrayText[index] == ']')
+                {
+                    depth--;
+                }
+            }
+            if (depth != 0)
+            {
+                throw new InvalidDataException("manifest collision parts array is malformed");
+            }
+            return arrays;
+        }
+
+        private static string ExtractBalancedObject(string text, int opening)
+        {
+            if (opening < 0 || opening >= text.Length || text[opening] != '{')
+            {
+                throw new InvalidDataException("manifest collision object is invalid");
+            }
+            int depth = 0;
+            for (int index = opening; index < text.Length; index++)
+            {
+                if (text[index] == '{') depth++;
+                else if (text[index] == '}')
+                {
+                    depth--;
+                    if (depth == 0) return text.Substring(opening, index - opening + 1);
+                }
+            }
+            throw new InvalidDataException("manifest collision object is unterminated");
+        }
         private static void ApplyPolygonArrays(IntegrationManifest manifest, string manifestText)
         {
             if (manifest == null || manifest.metadata == null || manifest.metadata.sprites == null)
@@ -1138,7 +1421,14 @@ namespace NeoEng.DTrace.Editor
         }
         [Serializable] public sealed class RectData { public float x; public float y; public float w; public float h; }
         [Serializable] public sealed class PivotData { public float x; public float y; }
-        [Serializable] public sealed class CollisionData { public string shape_type; public Vector2[] points; }
+        [Serializable] public sealed class CollisionData
+        {
+            public string shape_type;
+            public string coordinate_space;
+            public Vector2[] points;
+            public CollisionPartData[] parts;
+        }
+        [Serializable] public sealed class CollisionPartData { public Vector2[] points; }
 
         [Serializable]
         public sealed class ImportResult
@@ -1180,6 +1470,7 @@ namespace NeoEng.DTrace.Editor
             public string PrefabPath;
             public int ColliderPathCount;
             public int ColliderPointCount;
+            public int[] ColliderPointCounts;
             public string Status;
             public bool OverrideApplied;
         }

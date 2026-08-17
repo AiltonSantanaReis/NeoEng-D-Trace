@@ -472,6 +472,10 @@
       "sha256": "be1cbd0666a7c84cd005ea1563ad2e936f8b99eb7202f8ca43508b2dad0d91f0",
       "size": 3520
     },
+    "docs/evidence/ETAPA_2_COLISORES_COMPOSTOS_UNITY_2026-08-17.md": {
+      "sha256": "3466c7e4eae2bdee3bfd0129783f2d108566302685b4e47d00c83a5cfd57cf4d",
+      "size": 3822
+    },
     "docs/evidence/ETAPA_2_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "644d3f6a4ed9987a3e17672aabc2a09ec892a335ea04cb95722947ecdcde974e",
       "size": 8937
@@ -1627,6 +1631,30 @@
     "docs/evidence/artifacts/native-auto-sync-stage1-rerun-2026-08-17/unity-stage1-auto-sync.log": {
       "sha256": "22fb9144ae110728265621d3415a2678deed56e37ef60309d59e374334b726da",
       "size": 71191
+    },
+    "docs/evidence/artifacts/native-compound-colliders-stage2-2026-08-17/stage2-unity-index.json": {
+      "sha256": "e99492493701d3d7be038db9a15acf890884225159e0f84046acdca9690be2ba",
+      "size": 427
+    },
+    "docs/evidence/artifacts/native-compound-colliders-stage2-2026-08-17/stage2-unity-report.json": {
+      "sha256": "be841020ca4646430e18f7a5a050eb25ab947a0ae1a0b2701e5eaea6d1eb454f",
+      "size": 72615
+    },
+    "docs/evidence/artifacts/native-compound-colliders-stage2-2026-08-17/unity-stage2-compound.log": {
+      "sha256": "bfb4565b2c3c02b6280bf04453a5bb6a2d74d7336b5a056e646344e95f37cd57",
+      "size": 70446
+    },
+    "docs/evidence/artifacts/native-compound-colliders-stage2-rerun-2026-08-17/stage2-unity-index.json": {
+      "sha256": "715db03acafb678981ba425c1d8ce385689cb0af48c08d4ec5cb6c46a9d2879d",
+      "size": 427
+    },
+    "docs/evidence/artifacts/native-compound-colliders-stage2-rerun-2026-08-17/stage2-unity-report.json": {
+      "sha256": "1421e0259ef21452218551d459667ad8c24e4666a7dc17b20fdf3ff3e389115d",
+      "size": 72497
+    },
+    "docs/evidence/artifacts/native-compound-colliders-stage2-rerun-2026-08-17/unity-stage2-compound.log": {
+      "sha256": "3e279647e7febb4f8bfbc89e6a294c5cda0706e6dad486c99fdae53bff631218",
+      "size": 70334
     },
     "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-b.log": {
       "sha256": "739ee8892808cc3fc37f3b88ab3c65ad76f9c99b936b3d7e3d894951ee5776ad",
@@ -4069,8 +4097,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
-      "sha256": "8bb9a47c8446752f8e69c2ef6367921762ef7099e6fa8e80031fe338a8ad44c7",
-      "size": 57940
+      "sha256": "ad33a98e71be6043d3dfb166182b855de4d83b8a97547df78ecb765d910075d1",
+      "size": 71703
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
       "sha256": "c0cf44a9905072c973382ea3014d9bcdae7fe51206ffb20b45414434332be48f",
@@ -4347,6 +4375,10 @@
     "scripts/audit_unity_auto_sync_stage1.py": {
       "sha256": "9c251f203390965da25330337edc8efc89572dcd388843a63c207fcd91e48b09",
       "size": 10916
+    },
+    "scripts/audit_unity_compound_colliders_stage2.py": {
+      "sha256": "0c91a4d1687a7973ff3f281c9bceb33e9aea299e6c2f523c1ef38484b11148e6",
+      "size": 12671
     },
     "scripts/audit_unity_import_stage6.py": {
       "sha256": "9a83acce987d3808a0eeec530f4e3f55386cdf89ac2cf7dcb0ba6891f4b8d1a7",
@@ -4985,8 +5017,8 @@
       "size": 7018
     },
     "tests/test_stage_10_engine_profiles.py": {
-      "sha256": "1c459274ad9e220b08fdf6ec29761aa42405c4298a2e00f2d8f7d0d816c434f5",
-      "size": 8801
+      "sha256": "b1ad8bce01b4d632314f10ab5f016b4d16b688dcd342a00044494fbb984faec1",
+      "size": 9345
     },
     "tests/test_stage_11_canvas_export_branch_coverage.py": {
       "sha256": "06a634df1d482d2f7defebb2f5806de8c28fca2b5001d7e127145bfa04752e94",
@@ -5157,8 +5189,8 @@
       "size": 1401
     },
     "tests/test_unity_package_scaffold.py": {
-      "sha256": "acb3b5bbe855c7769eabf2ea91d9c338fb8950f294c8fe811717a4e5db50d9e2",
-      "size": 2408
+      "sha256": "11d33010aad82a77437f31e130522ea9ea8587816b34eb3780078473d8c1e48b",
+      "size": 2934
     },
     "tests/test_validation_events.py": {
       "sha256": "794b6e7429262469cfd393a17151f1ba23cbdacb527402901fa105c4a1f37af4",
