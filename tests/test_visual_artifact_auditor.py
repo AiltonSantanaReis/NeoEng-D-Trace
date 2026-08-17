@@ -1,0 +1,122 @@
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+from PIL import Image, ImageDraw
+
+from scripts.audit_visual_artifacts import run_audit
+
+
+def _digest(path: Path) -> dict[str, int | str]:
+    raw = path.read_bytes()
+    return {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _widget(x: int, y: int, width: int, height: int, visible: bool = True) -> dict:
+    rect = [x, y, width, height]
+    return {
+        "class": "QWidget",
+        "object_name": "",
+        "visible": visible,
+        "enabled": True,
+        "geometry": rect,
+        "root_geometry": rect,
+        "frame_geometry": rect,
+    }
+
+
+def _make_capture(root: Path, *, rgba: bool = False) -> Path:
+    root.mkdir()
+    image_path = root / "1080p_FHD_01_sem_projeto.png"
+    image = Image.new("RGBA" if rgba else "RGB", (320, 200), (30, 30, 30, 128) if rgba else (30, 30, 30))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0, 0, 319, 19), fill=(45, 45, 48, 128) if rgba else (45, 45, 48))
+    draw.rectangle((0, 20, 39, 199), fill=(60, 60, 60, 128) if rgba else (60, 60, 60))
+    draw.rectangle((40, 20, 219, 199), fill=(37, 37, 38, 128) if rgba else (37, 37, 38))
+    draw.rectangle((220, 20, 319, 199), fill=(63, 63, 70, 128) if rgba else (63, 63, 70))
+    draw.point((50, 30), fill=(230, 230, 230, 128) if rgba else (230, 230, 230))
+    draw.point((319, 199), fill=(30, 30, 30, 128) if rgba else (30, 30, 30))
+    image.save(image_path, "PNG")
+
+    widgets = {
+        "main_splitter": _widget(0, 20, 320, 180),
+        "tool_palette": _widget(0, 20, 40, 180),
+        "canvas": _widget(40, 20, 180, 180),
+        "panel_stack": _widget(220, 20, 100, 180),
+        "desktop_panel_splitter": _widget(220, 20, 100, 180),
+        "right_splitter": _widget(220, 20, 60, 180),
+        "compact_panel_tabs": _widget(220, 20, 100, 180, False),
+        "side_panel": _widget(220, 20, 60, 60),
+        "layers": _widget(220, 80, 60, 60),
+        "groups": _widget(220, 140, 60, 60),
+        "collision_panel": _widget(280, 20, 40, 180),
+        "toolbar": _widget(0, 0, 100, 20),
+        "nav_toolbar": _widget(100, 0, 100, 20),
+        "xray_toolbar": _widget(200, 0, 120, 20),
+    }
+    manifest = {
+        "schema_version": 2,
+        "generator": "tests",
+        "captures": {
+            "1080p_FHD": {
+                "requested_size": [320, 200],
+                "actual_window_size": [320, 200],
+                "actual_capture_size": [320, 200],
+                "files": {image_path.name: _digest(image_path)},
+                "widget_geometry": {"sem_projeto": widgets},
+            }
+        },
+    }
+    (root / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return image_path
+
+
+def test_visual_auditor_passes_valid_png_and_generates_annotation(tmp_path: Path) -> None:
+    _make_capture(tmp_path / "input")
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "PASS"
+    assert report["finding_count"] == 0
+    assert (tmp_path / "output" / "1080p_FHD_01_sem_projeto_annotated.png").is_file()
+    assert (tmp_path / "output" / "visual-audit-report.json").is_file()
+
+
+def test_visual_auditor_fails_closed_on_hash_mismatch(tmp_path: Path) -> None:
+    image_path = _make_capture(tmp_path / "input")
+    image = np.asarray(Image.open(image_path).convert("RGB")).copy()
+    image[30, 50] = (255, 255, 255)
+    Image.fromarray(image).save(image_path, "PNG")
+
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "FAIL"
+    assert any(item["check"] == "hash" for item in report["findings"])
+
+
+def test_visual_auditor_fails_closed_on_transparency(tmp_path: Path) -> None:
+    _make_capture(tmp_path / "input", rgba=True)
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "FAIL"
+    assert any(item["check"] == "transparency" for item in report["findings"])
+
+
+def test_visual_auditor_detects_sibling_overlap(tmp_path: Path) -> None:
+    _make_capture(tmp_path / "input")
+    manifest_path = tmp_path / "input" / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"]["canvas"]["root_geometry"][0] = 0
+    manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"]["canvas"]["geometry"][0] = 0
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "FAIL"
+    assert any(item["check"] == "overlap" for item in report["findings"])

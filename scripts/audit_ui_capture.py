@@ -21,10 +21,10 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import cv2  # noqa: E402
 import numpy as np  # noqa: E402
-from PySide6.QtCore import QSize, QTimer  # noqa: E402
+from PySide6.QtCore import QPoint, QSize, QTimer  # noqa: E402
 from PySide6.QtGui import QImage  # noqa: E402
 from PySide6.QtTest import QTest  # noqa: E402
-from PySide6.QtWidgets import QApplication, QMessageBox  # noqa: E402
+from PySide6.QtWidgets import QApplication, QMessageBox, QWidget  # noqa: E402
 
 from src.core.commands import CommandManager  # noqa: E402
 from src.models.scene import Scene  # noqa: E402
@@ -140,6 +140,60 @@ def _capture_size(path: Path) -> list[int]:
     return [image.width(), image.height()]
 
 
+def _widget_snapshot(window: QWidget, *, root: QWidget | None = None) -> dict[str, Any]:
+    """Record geometry from Qt itself in the coordinate system of root.
+
+    The visual auditor consumes this data; it is deliberately captured from
+    live widgets after layout settling instead of reconstructed from pixels.
+    """
+
+    root = root or window
+    top_left = window.mapTo(root, QPoint(0, 0))
+    rect = window.geometry()
+    global_rect = window.frameGeometry()
+    return {
+        "class": type(window).__name__,
+        "object_name": window.objectName(),
+        "visible": window.isVisible(),
+        "enabled": window.isEnabled(),
+        "geometry": [rect.x(), rect.y(), rect.width(), rect.height()],
+        "root_geometry": [
+            top_left.x(),
+            top_left.y(),
+            window.width(),
+            window.height(),
+        ],
+        "frame_geometry": [
+            global_rect.x(),
+            global_rect.y(),
+            global_rect.width(),
+            global_rect.height(),
+        ],
+    }
+
+
+def _main_window_widgets(window: MainWindow) -> dict[str, dict[str, Any]]:
+    required = {
+        "main_splitter": window.main_splitter,
+        "tool_palette": window.tool_palette,
+        "canvas": window.canvas,
+        "panel_stack": window.panel_stack,
+        "desktop_panel_splitter": window.desktop_panel_splitter,
+        "right_splitter": window.right_splitter,
+        "compact_panel_tabs": window.compact_panel_tabs,
+        "side_panel": window.side_panel,
+        "layers": window.layers,
+        "groups": window.groups,
+        "collision_panel": window.collision_panel,
+        "toolbar": window.toolbar,
+        "nav_toolbar": window.nav_toolbar,
+        "xray_toolbar": window.xray_toolbar,
+    }
+    if any(not isinstance(widget, QWidget) for widget in required.values()):
+        raise RuntimeError("MainWindow layout contract has a non-widget member")
+    return {name: _widget_snapshot(widget, root=window) for name, widget in required.items()}
+
+
 def _new_window(
     scene: Scene,
     *,
@@ -174,6 +228,7 @@ def _capture_validation_message(
                 "title": box.windowTitle(),
                 "text": box.text(),
                 "informative_text": box.informativeText(),
+                "widget": _widget_snapshot(box, root=window),
             }
         )
         if not box.grab().save(str(path), "PNG"):
@@ -196,7 +251,7 @@ def run(output: Path) -> dict[str, Any]:
     scene, project_path = _prepare_project(output)
 
     manifest: dict[str, Any] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "generator": "scripts/audit_ui_capture.py",
         "platform": platform.platform(),
         "python": sys.version,
@@ -217,6 +272,7 @@ def run(output: Path) -> dict[str, Any]:
             _capture(empty_window, base_path)
             actual_window_size = [empty_window.width(), empty_window.height()]
             actual_capture_size = _capture_size(base_path)
+            empty_geometry = _main_window_widgets(empty_window)
         finally:
             empty_window.close()
             _settle(app, 20)
@@ -234,6 +290,7 @@ def run(output: Path) -> dict[str, Any]:
 
             project_path_capture = output / f"{label}_02_projeto_paineis.png"
             _capture(project_window, project_path_capture)
+            project_geometry = _main_window_widgets(project_window)
 
             # Exercise the real transform transaction to expose the live gizmo feedback.
             canvas = project_window.canvas
@@ -245,6 +302,7 @@ def run(output: Path) -> dict[str, Any]:
             canvas._preview_gizmo_transform(rotation=45.0)
             _settle(app)
             _capture(project_window, feedback_path)
+            feedback_geometry = _main_window_widgets(project_window)
             canvas._cancel_gizmo_gesture()
             _settle(app, 20)
             validation_window_path = output / f"{label}_03_validacao_janela.png"
@@ -255,6 +313,7 @@ def run(output: Path) -> dict[str, Any]:
                 )
                 _settle(app)
             _capture(project_window, validation_window_path)
+            validation_geometry = _main_window_widgets(project_window)
             message = _capture_validation_message(
                 app, project_window, validation_modal_path
             )
@@ -270,6 +329,13 @@ def run(output: Path) -> dict[str, Any]:
                     validation_modal_path.name: _digest(validation_modal_path),
                 },
                 "validation_message": message,
+                "widget_geometry": {
+                    "sem_projeto": empty_geometry,
+                    "projeto_paineis": project_geometry,
+                    "gizmo_feedback": feedback_geometry,
+                    "validacao_janela": validation_geometry,
+                    "validacao_modal": message["widget"],
+                },
             }
         finally:
             project_window.close()
