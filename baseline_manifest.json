@@ -593,8 +593,8 @@
       "size": 4476
     },
     "docs/evidence/ETAPA_8_BASELINE_CONTRATO_PRE_IMPLEMENTACAO_2026-08-17.md": {
-      "sha256": "d94594af9a20ecc740c81e6dfe0815e7d27a286b92c1e4c9bc8378028c822c5d",
-      "size": 2439
+      "sha256": "9704454b2e235a4fe715ea6839252288a9126e51cfeb720a02b13bcf7c067167",
+      "size": 2421
     },
     "docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md": {
       "sha256": "6be9d31f44c356280470b44920dc1471a3b9e77caa6468e7f294cd66c7ab284f",
@@ -4393,8 +4393,8 @@
       "size": 21450
     },
     "tests/test_integration_manifest.py": {
-      "sha256": "6136940535b01fd6370c549cf9a75255452435f478c20848f271eeabf57fb32d",
-      "size": 9156
+      "sha256": "32309ade2614cb75f7b02676989ec346537413c53dc4565b9fcef6a4816cd0e2",
+      "size": 12741
     },
     "tests/test_json_exporter_contract.py": {
       "sha256": "2fe479d579d20ff533dc3389c1a5c29fb212047d2427c6234142f34989e2b141",

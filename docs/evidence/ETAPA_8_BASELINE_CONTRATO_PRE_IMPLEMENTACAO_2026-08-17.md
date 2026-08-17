@@ -4,7 +4,7 @@
 
 - etapa: 8 do plano de integração de adaptadores nativos;
 - base técnica: `main` integrado em `86195af3203ba7092bae70161ededd064f2b718b`;
-- branch de trabalho: `codex/stage8-native-advanced-implementation`;
+- branch de trabalho: registrada no PR da Etapa 8;
 - baseline de fonte: `baseline_manifest.json` verificado antes da implementação;
 - escopo: bleed/extrusão do atlas, propriedades avançadas de engine e
   normalização de coordenadas entre Godot e Unity;
