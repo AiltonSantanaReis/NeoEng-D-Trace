@@ -1,0 +1,14 @@
+Stage 10 native-adapter closure harness — intermediate execution record
+Date: 2026-08-17
+
+The following failed runs were retained as diagnostic workspaces during development and are summarized here after the final successful run. No failed run was promoted to PASS.
+
+run=1 status=FAILED cause=Godot validator parse error caused by an invalid multiline return statement.
+run=2 status=FAILED cause=Godot validator parse error caused by invalid implicit multiline string concatenation.
+run=3 status=FAILED cause=Harness ordering defect: the independent snapshot was captured after the intentional manual-conflict mutation.
+run=4 status=FAILED cause=Unity independent-project comparison was too strict because internal YAML fileIDs and GUIDs legitimately differed.
+run=5 status=FAILED cause=Artifact privacy audit found unsanitized Unity paths/identity data and the Python capture overwrote the Unity engine log path.
+run=6 status=FAILED cause=Report command sanitization and Unity log separation were still incomplete; the package was invalidated and not used as evidence.
+run=7 status=SUCCESS cause=Validator syntax, snapshot ordering, Unity semantic normalization, command sanitization, and engine-log separation were corrected; all closure gates passed.
+
+Reproducibility rule: the official package contains only the final sanitized artifacts and this failure summary. Temporary diagnostic workspaces are not evidence and are excluded from version control.

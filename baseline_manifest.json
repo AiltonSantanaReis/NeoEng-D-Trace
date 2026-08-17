@@ -189,8 +189,8 @@
       "size": 6374
     },
     "docs/ETAPA_0_5_MATRIZ_REGRESSAO.md": {
-      "sha256": "1f010dbc705c866ac6469830f92d8aea8868db6012bcc4ede84cb1826e909d51",
-      "size": 5006
+      "sha256": "08e3688388a60786087445c4b54ccafdc86f60d6f7820f968f64e7460b05c4b2",
+      "size": 6137
     },
     "docs/ETAPA_0_5_PLANO_RESTAURACAO_TESTES.md": {
       "sha256": "920d423bd4014b5415edea2413a2a707e1ee4ef8ade4941d571e999f5da131f6",
@@ -237,16 +237,16 @@
       "size": 6112
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "8e9505a5f47b3f665218bd2413d49a6c8d656339ece0412f42d2cdb1584cd0b6",
-      "size": 17981
+      "sha256": "4320c8a6f7b2fb7743fc63562595ea27a1a80a5ce23eca8b419aedd2965b9a2b",
+      "size": 18187
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "09ad2bf837ef6c9d4313daa9c9da505b1633ab84871ada94c9294bfd0cc9a990",
-      "size": 5976
+      "sha256": "47edab2cf72f2014f9ed173d0c8f506e2d796169b91be73e10592aacdbe237e0",
+      "size": 6068
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -363,6 +363,10 @@
     "docs/evidence/DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md": {
       "sha256": "8c7cba0192836a383ea3a534acc7e54831a3da1c19363e156ddea150108d2aab",
       "size": 2348
+    },
+    "docs/evidence/ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md": {
+      "sha256": "d9b028ae1b23df3e7efbac978876bf3145f2d335a839d9af87bdec057107a84c",
+      "size": 5986
     },
     "docs/evidence/ETAPA_10_CORRECAO_COBERTURA_POS_MERGE.md": {
       "sha256": "1ff4afb5e9109ecc00688da9895f61b0257d3063ba7ade8a4c6fb00997cad178",
@@ -673,8 +677,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "21781ea7da7986d2a36bf57ec166eaa8f43181002b88a7bbb40ae062c6b6c5da",
-      "size": 29111
+      "sha256": "d155cfbccbc57ec0a1c50439abd08f5bcbab1e0556c4cbb8edee37ba2abc8be5",
+      "size": 30287
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -1455,6 +1459,186 @@
     "docs/evidence/artifacts/native-advanced-stage8-2026-08-17/unity-stage8-repeat.log": {
       "sha256": "ea6fc2b1bc82fc8a0f1c6c648531b41226fab23073b33e5843ce9880238eafa3",
       "size": 19606
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-b.log": {
+      "sha256": "47949f3445be6f03c0b40fd2291b4e1454c49953efecc6f7bbfb2c82c3c9ed7c",
+      "size": 59757
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-dry.log": {
+      "sha256": "a7fdb143fe775b8aa1447bbf41dc58468faeec213a65ca8c10522f1ce11f141f",
+      "size": 55645
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-hash.log": {
+      "sha256": "ef3d02d966c8f60230bbacd9b602d90d17c0f07304a0d8c28160bad87d500e68",
+      "size": 56019
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-initial.log": {
+      "sha256": "a6ae32364dabb41c3cf2af5053429e28f02fd8291430395351e5cf173e9bb24b",
+      "size": 21937
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-manual-setup.log": {
+      "sha256": "11966dd023cc4d6d2b6a26ec9d38ab8ab4aaeaa3a5872f57deb16da0409faa92",
+      "size": 53263
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-manual.log": {
+      "sha256": "7497224badc866d27e4ee4bdee6c2c9369b0b65d54ec6b03d507b05e4187e36a",
+      "size": 18265
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/engine-unity-stage10-repeat.log": {
+      "sha256": "800fec4b2a06451c3a7dfd36ef495b692567bc67bbf9b37d09cb48c63273b793",
+      "size": 19566
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-godot-closure-a-atlas.png": {
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0",
+      "size": 117
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-godot-closure-a-manifest.json": {
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-godot-closure-b-atlas.png": {
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0",
+      "size": 117
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-godot-closure-b-manifest.json": {
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-godot-closure-hash-atlas.png": {
+      "sha256": "d2c4087ba770e52c7211eadf17db332fef989402eed77f90b8bd20155e098531",
+      "size": 130
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-godot-closure-hash-manifest.json": {
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-a-apply.log": {
+      "sha256": "79dc9450927050e7038bcde1ab449dc08c1653d85e088c043458f8f92973ec62",
+      "size": 96
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-a-dry-run.log": {
+      "sha256": "eac37e90d50e7780b1dc9670fd34ca12de93886aec155d844870326bbb22a308",
+      "size": 98
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-a-manual.log": {
+      "sha256": "88ca58ef733e25366dcbd3028519fc5cf69eb355598aa42ca4f73d1408c07351",
+      "size": 100
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-a-preimport.log": {
+      "sha256": "781d70b1c6876b60d4c514444e7b3f1dcc41e501a392194177cf1c653cd7044e",
+      "size": 2647
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-a-repeat.log": {
+      "sha256": "4bfb85f7c58aa78a5bd21a0eef1a8dff7c85c8b8971e73f5b0fb65f7c7185250",
+      "size": 97
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-a-unsafe.log": {
+      "sha256": "c15209c312a6daabcee79ec6f385a4992ee55b4a89b77690f300fee11f328b6a",
+      "size": 101
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-b-apply.log": {
+      "sha256": "79dc9450927050e7038bcde1ab449dc08c1653d85e088c043458f8f92973ec62",
+      "size": 96
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-b-preimport.log": {
+      "sha256": "781d70b1c6876b60d4c514444e7b3f1dcc41e501a392194177cf1c653cd7044e",
+      "size": 2647
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-hash-hash-drift.log": {
+      "sha256": "9f6c216f0aeedc415b2c60c9400dd18d97fdf7012be9c297181a6f413ec73c31",
+      "size": 105
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-godot-closure-hash-preimport.log": {
+      "sha256": "781d70b1c6876b60d4c514444e7b3f1dcc41e501a392194177cf1c653cd7044e",
+      "size": 2647
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-regression-preimport.log": {
+      "sha256": "80f87a1999687bedcadb2c39dab0e55968a256860008fa7999fd7f6ecd5ccf62",
+      "size": 2865
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/godot-stage10-regression-stage4.log": {
+      "sha256": "92189a8d2fbe5884149067d252a14c6bde9af6f6c7e894091dfd190de4140f4a",
+      "size": 407
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-full-pytest.log": {
+      "sha256": "900314d1b1bb57a3dba5619b02bf564abfc708f46c16e219a17189b1da017d2b",
+      "size": 9531
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-index.json": {
+      "sha256": "497987c7fe257307be2cabf4db6469240cb7c02dc981e86f7a681787172a80ca",
+      "size": 6877
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-intermediate-failures.log": {
+      "sha256": "c0223460b0b50673a2f688bc043280bd9cc87c9e9bacfaf0558fbca49271524a",
+      "size": 1458
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/stage10-report.json": {
+      "sha256": "7fc5d762b204764d2b179c426d53be9c911d906c3757a702e35650a6c3cda40b",
+      "size": 330117
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-regression-stage6-RunHeadlessImport.log": {
+      "sha256": "4cdf0282880f3ddd7bb2f72c75b6e2baa57805e102adf1c0686066051a246ea9",
+      "size": 57155
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-b.log": {
+      "sha256": "247109dd13f328cb77a0993789fda8f267935762af839b3f9b224b08d5586b16",
+      "size": 59758
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-dry.log": {
+      "sha256": "51d08e3fddfda4e4d7b7e5c24fc588e8e1e14c5f8e1e50c745b3f13f7b27ec84",
+      "size": 55646
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-hash.log": {
+      "sha256": "ef3d02d966c8f60230bbacd9b602d90d17c0f07304a0d8c28160bad87d500e68",
+      "size": 56019
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-initial.log": {
+      "sha256": "1ef8a2e37ad74b26231e328193cae50e2fa2d12818bdbd26b636af8d1b071b10",
+      "size": 21938
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-manual-setup.log": {
+      "sha256": "d7fbb442316fae2b737f221dc38168c5ee88f6ab4d930c386ed966dc9f053b37",
+      "size": 53264
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-manual.log": {
+      "sha256": "7497224badc866d27e4ee4bdee6c2c9369b0b65d54ec6b03d507b05e4187e36a",
+      "size": 18265
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-stage10-repeat.log": {
+      "sha256": "aec21683d0dc7a58b5aa1a6aea3089040a7b0949720ab74ab8c12252ca715ff7",
+      "size": 19567
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-a-atlas.png": {
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0",
+      "size": 117
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-a-manifest.json": {
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-b-atlas.png": {
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0",
+      "size": 117
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-b-manifest.json": {
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-hash-atlas.png": {
+      "sha256": "d2c4087ba770e52c7211eadf17db332fef989402eed77f90b8bd20155e098531",
+      "size": 130
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-hash-manifest.json": {
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-manual-atlas.png": {
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0",
+      "size": 117
+    },
+    "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-manual-manifest.json": {
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
+      "size": 3886
     },
     "docs/evidence/artifacts/native-stage9-2026-08-17/godot-manifest.ndt.integration.json": {
       "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
@@ -3968,6 +4152,10 @@
       "sha256": "c44fcb94eedd8170cfec6a39770b10b1114d401bcbc99e3a0a2febc3cff777e0",
       "size": 18025
     },
+    "scripts/audit_native_stage10.py": {
+      "sha256": "a1242ec26de4e765895b06a13f84a5cde930210caaa492301a21a31b00dc24af",
+      "size": 28411
+    },
     "scripts/audit_native_stage9.py": {
       "sha256": "53544c7d062f7927d735060625a9b3513029321a2258b82e92c56d86213ed35f",
       "size": 17215
@@ -4555,6 +4743,10 @@
     "tests/test_snapping.py": {
       "sha256": "77d1a730695ecb0ab209b51b08f5232a1ec089b2adec60385c887da855ffb605",
       "size": 2470
+    },
+    "tests/test_stage10_closure.py": {
+      "sha256": "2928fd9af236f525ef25873459e07f490bdd977f9fbf5d15f4a153540edd816f",
+      "size": 3078
     },
     "tests/test_stage14_postmerge_closure.py": {
       "sha256": "9b43d8cc53f77bd76b1cfd8d60fc375b40cad064f2bd760412c1eac72318ecc3",

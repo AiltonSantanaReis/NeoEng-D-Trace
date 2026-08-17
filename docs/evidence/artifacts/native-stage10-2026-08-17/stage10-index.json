@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "stage": 10,
+  "status": "SUCCESS",
+  "files": {
+    "engine-unity-stage10-b.log": {
+      "bytes": 59757,
+      "sha256": "47949f3445be6f03c0b40fd2291b4e1454c49953efecc6f7bbfb2c82c3c9ed7c"
+    },
+    "engine-unity-stage10-dry.log": {
+      "bytes": 55645,
+      "sha256": "a7fdb143fe775b8aa1447bbf41dc58468faeec213a65ca8c10522f1ce11f141f"
+    },
+    "engine-unity-stage10-hash.log": {
+      "bytes": 56019,
+      "sha256": "ef3d02d966c8f60230bbacd9b602d90d17c0f07304a0d8c28160bad87d500e68"
+    },
+    "engine-unity-stage10-initial.log": {
+      "bytes": 21937,
+      "sha256": "a6ae32364dabb41c3cf2af5053429e28f02fd8291430395351e5cf173e9bb24b"
+    },
+    "engine-unity-stage10-manual-setup.log": {
+      "bytes": 53263,
+      "sha256": "11966dd023cc4d6d2b6a26ec9d38ab8ab4aaeaa3a5872f57deb16da0409faa92"
+    },
+    "engine-unity-stage10-manual.log": {
+      "bytes": 18265,
+      "sha256": "7497224badc866d27e4ee4bdee6c2c9369b0b65d54ec6b03d507b05e4187e36a"
+    },
+    "engine-unity-stage10-repeat.log": {
+      "bytes": 19566,
+      "sha256": "800fec4b2a06451c3a7dfd36ef495b692567bc67bbf9b37d09cb48c63273b793"
+    },
+    "godot-godot-closure-a-atlas.png": {
+      "bytes": 117,
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "godot-godot-closure-a-manifest.json": {
+      "bytes": 3886,
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf"
+    },
+    "godot-godot-closure-b-atlas.png": {
+      "bytes": 117,
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "godot-godot-closure-b-manifest.json": {
+      "bytes": 3886,
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf"
+    },
+    "godot-godot-closure-hash-atlas.png": {
+      "bytes": 130,
+      "sha256": "d2c4087ba770e52c7211eadf17db332fef989402eed77f90b8bd20155e098531"
+    },
+    "godot-godot-closure-hash-manifest.json": {
+      "bytes": 3886,
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf"
+    },
+    "godot-stage10-godot-closure-a-apply.log": {
+      "bytes": 96,
+      "sha256": "79dc9450927050e7038bcde1ab449dc08c1653d85e088c043458f8f92973ec62"
+    },
+    "godot-stage10-godot-closure-a-dry-run.log": {
+      "bytes": 98,
+      "sha256": "eac37e90d50e7780b1dc9670fd34ca12de93886aec155d844870326bbb22a308"
+    },
+    "godot-stage10-godot-closure-a-manual.log": {
+      "bytes": 100,
+      "sha256": "88ca58ef733e25366dcbd3028519fc5cf69eb355598aa42ca4f73d1408c07351"
+    },
+    "godot-stage10-godot-closure-a-preimport.log": {
+      "bytes": 2647,
+      "sha256": "781d70b1c6876b60d4c514444e7b3f1dcc41e501a392194177cf1c653cd7044e"
+    },
+    "godot-stage10-godot-closure-a-repeat.log": {
+      "bytes": 97,
+      "sha256": "4bfb85f7c58aa78a5bd21a0eef1a8dff7c85c8b8971e73f5b0fb65f7c7185250"
+    },
+    "godot-stage10-godot-closure-a-unsafe.log": {
+      "bytes": 101,
+      "sha256": "c15209c312a6daabcee79ec6f385a4992ee55b4a89b77690f300fee11f328b6a"
+    },
+    "godot-stage10-godot-closure-b-apply.log": {
+      "bytes": 96,
+      "sha256": "79dc9450927050e7038bcde1ab449dc08c1653d85e088c043458f8f92973ec62"
+    },
+    "godot-stage10-godot-closure-b-preimport.log": {
+      "bytes": 2647,
+      "sha256": "781d70b1c6876b60d4c514444e7b3f1dcc41e501a392194177cf1c653cd7044e"
+    },
+    "godot-stage10-godot-closure-hash-hash-drift.log": {
+      "bytes": 105,
+      "sha256": "9f6c216f0aeedc415b2c60c9400dd18d97fdf7012be9c297181a6f413ec73c31"
+    },
+    "godot-stage10-godot-closure-hash-preimport.log": {
+      "bytes": 2647,
+      "sha256": "781d70b1c6876b60d4c514444e7b3f1dcc41e501a392194177cf1c653cd7044e"
+    },
+    "godot-stage10-regression-preimport.log": {
+      "bytes": 2865,
+      "sha256": "80f87a1999687bedcadb2c39dab0e55968a256860008fa7999fd7f6ecd5ccf62"
+    },
+    "godot-stage10-regression-stage4.log": {
+      "bytes": 407,
+      "sha256": "92189a8d2fbe5884149067d252a14c6bde9af6f6c7e894091dfd190de4140f4a"
+    },
+    "stage10-full-pytest.log": {
+      "bytes": 9531,
+      "sha256": "900314d1b1bb57a3dba5619b02bf564abfc708f46c16e219a17189b1da017d2b"
+    },
+    "stage10-intermediate-failures.log": {
+      "bytes": 1458,
+      "sha256": "c0223460b0b50673a2f688bc043280bd9cc87c9e9bacfaf0558fbca49271524a"
+    },
+    "stage10-report.json": {
+      "bytes": 330117,
+      "sha256": "7fc5d762b204764d2b179c426d53be9c911d906c3757a702e35650a6c3cda40b"
+    },
+    "unity-regression-stage6-RunHeadlessImport.log": {
+      "bytes": 57155,
+      "sha256": "4cdf0282880f3ddd7bb2f72c75b6e2baa57805e102adf1c0686066051a246ea9"
+    },
+    "unity-stage10-b.log": {
+      "bytes": 59758,
+      "sha256": "247109dd13f328cb77a0993789fda8f267935762af839b3f9b224b08d5586b16"
+    },
+    "unity-stage10-dry.log": {
+      "bytes": 55646,
+      "sha256": "51d08e3fddfda4e4d7b7e5c24fc588e8e1e14c5f8e1e50c745b3f13f7b27ec84"
+    },
+    "unity-stage10-hash.log": {
+      "bytes": 56019,
+      "sha256": "ef3d02d966c8f60230bbacd9b602d90d17c0f07304a0d8c28160bad87d500e68"
+    },
+    "unity-stage10-initial.log": {
+      "bytes": 21938,
+      "sha256": "1ef8a2e37ad74b26231e328193cae50e2fa2d12818bdbd26b636af8d1b071b10"
+    },
+    "unity-stage10-manual-setup.log": {
+      "bytes": 53264,
+      "sha256": "d7fbb442316fae2b737f221dc38168c5ee88f6ab4d930c386ed966dc9f053b37"
+    },
+    "unity-stage10-manual.log": {
+      "bytes": 18265,
+      "sha256": "7497224badc866d27e4ee4bdee6c2c9369b0b65d54ec6b03d507b05e4187e36a"
+    },
+    "unity-stage10-repeat.log": {
+      "bytes": 19567,
+      "sha256": "aec21683d0dc7a58b5aa1a6aea3089040a7b0949720ab74ab8c12252ca715ff7"
+    },
+    "unity-unity-closure-a-atlas.png": {
+      "bytes": 117,
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "unity-unity-closure-a-manifest.json": {
+      "bytes": 3886,
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
+    },
+    "unity-unity-closure-b-atlas.png": {
+      "bytes": 117,
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "unity-unity-closure-b-manifest.json": {
+      "bytes": 3886,
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
+    },
+    "unity-unity-closure-hash-atlas.png": {
+      "bytes": 130,
+      "sha256": "d2c4087ba770e52c7211eadf17db332fef989402eed77f90b8bd20155e098531"
+    },
+    "unity-unity-closure-hash-manifest.json": {
+      "bytes": 3886,
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
+    },
+    "unity-unity-closure-manual-atlas.png": {
+      "bytes": 117,
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "unity-unity-closure-manual-manifest.json": {
+      "bytes": 3886,
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
+    }
+  }
+}
