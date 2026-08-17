@@ -3,9 +3,27 @@ from __future__ import annotations
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GODOT_PLUGIN = ROOT / "integrations" / "godot" / "addons" / "neoeng_d_trace" / "plugin.gd"
-UNITY_GENERATOR = ROOT / "integrations" / "unity" / "package" / "com.neoeng.dtrace" / "Editor" / "UnityImportGenerator.cs"
-UNITY_POSTPROCESSOR = ROOT / "integrations" / "unity" / "package" / "com.neoeng.dtrace" / "Editor" / "AutoSyncPostprocessor.cs"
+GODOT_PLUGIN = (
+    ROOT / "integrations" / "godot" / "addons" / "neoeng_d_trace" / "plugin.gd"
+)
+UNITY_GENERATOR = (
+    ROOT
+    / "integrations"
+    / "unity"
+    / "package"
+    / "com.neoeng.dtrace"
+    / "Editor"
+    / "UnityImportGenerator.cs"
+)
+UNITY_POSTPROCESSOR = (
+    ROOT
+    / "integrations"
+    / "unity"
+    / "package"
+    / "com.neoeng.dtrace"
+    / "Editor"
+    / "AutoSyncPostprocessor.cs"
+)
 
 
 def test_godot_automatic_sync_uses_editor_filesystem_event_with_safety_gates():

@@ -4953,8 +4953,8 @@
       "size": 2287
     },
     "tests/test_stage1_automatic_sync_contracts.py": {
-      "sha256": "f13a350177a69900610248a6865177956049152cab950be2363ad5ae53acca5a",
-      "size": 2069
+      "sha256": "4177ac7d754cc698ec2ad07acfea44147449d0a54fa43516907f68ad89c95fcb",
+      "size": 2142
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
