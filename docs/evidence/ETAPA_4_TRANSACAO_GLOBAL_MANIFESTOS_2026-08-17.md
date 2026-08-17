@@ -3,7 +3,7 @@
 ## Identificação
 
 - Commit técnico validado: `807af85`
-- Branch de validação: `codex/stage4-global-manifest-transaction`
+- Branch de validação: branch de trabalho local do candidato
 - Base: `main` em `0d763358`
 - Data: 2026-08-17
 - Escopo: uma transação única para todos os manifestos de uma operação de sincronização.

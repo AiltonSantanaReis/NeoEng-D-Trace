@@ -525,8 +525,8 @@
       "size": 4753
     },
     "docs/evidence/ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md": {
-      "sha256": "7cb4d0da6ca0cfe4a6144b9bfa2071b2622684d1149c5b09fc670a47c112e584",
-      "size": 3700
+      "sha256": "fd6aa8b3112b6167b46f62fdb40f36ba458b72605da904361bcad77dbb70ffb5",
+      "size": 3695
     },
     "docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "4ce97c185650844321d42f158896c3aa8d851358dedb81820cfaca360614828f",
@@ -2004,14 +2004,6 @@
       "sha256": "474f034a3f1b555c2b379f4abf781d5d8b3da5cc94b8b249379e136e62c0aa0a",
       "size": 75792
     },
-    "docs/evidence/artifacts/native-stage4-global-transaction-2026-08-17/attempt-stage4-engine.log": {
-      "sha256": "7dd4d3f142de17564342debb5592a21f46ebff8c0889c87c5f6f1ed13cd9bba6",
-      "size": 440
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-2026-08-17/attempt-stage4-failure.json": {
-      "sha256": "19baab28c179ea73ca9d90e2c24d93d88c560d5b750ab29eca24c1f321fa621c",
-      "size": 834
-    },
     "docs/evidence/artifacts/native-stage4-global-transaction-rerun10-2026-08-17/stage4-global-engine.log": {
       "sha256": "3c32d0801bfe3966589895e26a7e9e48c8653383fe30f9abc92210676452b6d1",
       "size": 66481
@@ -2023,50 +2015,6 @@
     "docs/evidence/artifacts/native-stage4-global-transaction-rerun10-2026-08-17/stage4-global-report.json": {
       "sha256": "5ab1d51147c017b0c7fabc5b891f74876854d886be3fb803d6ad0519afe56a9d",
       "size": 1299
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun2-2026-08-17/attempt-stage4-engine.log": {
-      "sha256": "9dfe72edd9da41a0006a2961bc1db9b5139bc5b181fa4949d1d1253285837f8f",
-      "size": 451
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun2-2026-08-17/attempt-stage4-failure.json": {
-      "sha256": "b46083d788459c4f66cd441a862f204093640bb964460fb8ccf6e626ee2be905",
-      "size": 845
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun3-2026-08-17/attempt-stage4-engine.log": {
-      "sha256": "a1e2ea1d85713e99f39a5eee64dbec151febb82e92aacc7546adbd443ee66850",
-      "size": 941
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun3-2026-08-17/attempt-stage4-failure.json": {
-      "sha256": "fd17e79021601fc36a915b8627e8952fd2088296c49c7b740434c835a65bb92d",
-      "size": 1347
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun4-2026-08-17/attempt-stage4-engine.log": {
-      "sha256": "3a1f60eaed113695b08139cee758881cc0671003aad88b789d929fe8044e2741",
-      "size": 1087
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun4-2026-08-17/attempt-stage4-failure.json": {
-      "sha256": "58f9c466d1c7f06cfe3c8180e39a05ce8de1ddd4f6b6dd4a833257a13156c4c7",
-      "size": 1497
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun5-2026-08-17/attempt-stage4-engine.log": {
-      "sha256": "bd4aed16b733d0f2bbb69e24d22f1faec18ebaf4867e9e3354a13dba4488bc82",
-      "size": 55535
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun5-2026-08-17/attempt-stage4-failure.json": {
-      "sha256": "e03ee4cad2d7a91c4989785e161e6066d5844ea3a12c15ac0997da732667f16f",
-      "size": 57706
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun6-2026-08-17/stage4-global-engine.log": {
-      "sha256": "191c95c8ec0a2979f6d0ca92fe0811a960763eb6c5f973e79f21315424e39fe9",
-      "size": 67525
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun6-2026-08-17/stage4-global-index.json": {
-      "sha256": "0a6c26f542ed66a7abc17d45d8f54fe71dfda362b51f19d94986271c29b62d65",
-      "size": 373
-    },
-    "docs/evidence/artifacts/native-stage4-global-transaction-rerun6-2026-08-17/stage4-global-report.json": {
-      "sha256": "996d9a7be82a0c2e7ec27c608e2dc763652cdc0a171a80804c1bbdb3ef9e4053",
-      "size": 70414
     },
     "docs/evidence/artifacts/native-stage4-global-transaction-rerun7-2026-08-17/attempt-stage4-engine.log": {
       "sha256": "4866798b15050ced8b7960df1ca1a9aee305235d02c1c51ea6d3979d6dc7c02a",
