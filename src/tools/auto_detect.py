@@ -445,9 +445,7 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
                 else:
                     simplified_hole = hole_points
                 if len(simplified_hole) >= 3:
-                    holes.append(
-                        [(int(px), int(py)) for px, py in simplified_hole]
-                    )
+                    holes.append([(int(px), int(py)) for px, py in simplified_hole])
             child_index = int(hierarchy[0][child_index][0])
 
         if downscale != 1.0:

@@ -4053,8 +4053,8 @@
       "size": 111
     },
     "src/tools/auto_detect.py": {
-      "sha256": "e07fa18a0db4f259c803fa98f3d1b725d4d77c7cf556f4e0aa90cc18c8e38734",
-      "size": 34320
+      "sha256": "ef598fecc2ec3edc372a40cf0a45a0fcc8b9b965b3c4adbe087e8fb76e24dd77",
+      "size": 34274
     },
     "src/tools/base_tool.py": {
       "sha256": "9254c6f712871ffca98ade0433c0a879d3ef33b1736948602b49737baf4f6730",
