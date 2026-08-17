@@ -488,6 +488,10 @@
       "sha256": "1acc6a7fec1dfca98716969c824512931bd719429df6d837a5e5648ff645f2bc",
       "size": 9761
     },
+    "docs/evidence/ETAPA_3_ANIMACOES_TILESETS_UNITY_2026-08-17.md": {
+      "sha256": "0371e262baa6a8b67e9f78899b043ea7453d7b6fab3d9f95fc54e9c81bde6f1f",
+      "size": 5756
+    },
     "docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "ed8a306ce9269372aa66d476e108835621dde5716757c4344ce8b617c17f672a",
       "size": 4702
@@ -1484,6 +1488,122 @@
       "sha256": "4cd682ed55007d26219cbeee8d1c6fb8b04a453263af53654236736b8bbd8669",
       "size": 18540
     },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/attempt-unity-stage3-animation-conflict.log": {
+      "sha256": "93a54315d15b2c8cc35785cf73fc8c12a2fd5bfc1700fcb58028bdec4cbfa647",
+      "size": 85561
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/attempt-unity-stage3-failure.json": {
+      "sha256": "2139ddb052f8ab15df0a347045740cf3f8774d45f10511587088a70e31da925d",
+      "size": 262403
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/attempt-unity-stage3-positive.log": {
+      "sha256": "508a1749b4610583179a7b29bc1f4c8b8027798853a6c30753c9b227e9ad8fb5",
+      "size": 87259
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/attempt-unity-stage3-tileset-conflict.log": {
+      "sha256": "7f37b3586437f5ac319c72daf098128fb51480f9a7450d0ec7ee6a31fa91f780",
+      "size": 85458
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/stage3-index.json": {
+      "sha256": "99cd0b15142e2c553a6b31f199fc76fa183660f47f880ad4c903f0089c5aea4c",
+      "size": 1373
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/stage3-report.json": {
+      "sha256": "deafa3799e6efae0507587bb7b456ffd3e8386c43633796f0ea71cca3c834436",
+      "size": 263637
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/unity-stage3-animation-conflict.log": {
+      "sha256": "93a54315d15b2c8cc35785cf73fc8c12a2fd5bfc1700fcb58028bdec4cbfa647",
+      "size": 85561
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/unity-stage3-positive.log": {
+      "sha256": "508a1749b4610583179a7b29bc1f4c8b8027798853a6c30753c9b227e9ad8fb5",
+      "size": 87259
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-2026-08-17/unity-stage3-tileset-conflict.log": {
+      "sha256": "7f37b3586437f5ac319c72daf098128fb51480f9a7450d0ec7ee6a31fa91f780",
+      "size": 85458
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/attempt-unity-stage3-animation-conflict.log": {
+      "sha256": "1a3c492307162a8fe21f2ec349565514ebd69a38949a99ebb830df588124262d",
+      "size": 85465
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/attempt-unity-stage3-positive.log": {
+      "sha256": "afc6c2cfb3275df9a10ce5f3e0ea25e3ee6cfdafe7e9df0df33b771ef9b72061",
+      "size": 87208
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/attempt-unity-stage3-tileset-conflict.log": {
+      "sha256": "08220859a8f8ada016863047b1e5587c32a49913732c8fc276792d8ee3baa8d1",
+      "size": 85331
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/stage3-index.json": {
+      "sha256": "51602abbaf0c037be6bb41807cf4c16c742fbdd5eea69914356543826bd600ad",
+      "size": 1217
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/stage3-report.json": {
+      "sha256": "579cc55eb650a0948cc1ecf9af469346438b42a74d1ac15cc827c4fba70e86e8",
+      "size": 263348
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/unity-stage3-animation-conflict.log": {
+      "sha256": "1a3c492307162a8fe21f2ec349565514ebd69a38949a99ebb830df588124262d",
+      "size": 85465
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/unity-stage3-positive.log": {
+      "sha256": "afc6c2cfb3275df9a10ce5f3e0ea25e3ee6cfdafe7e9df0df33b771ef9b72061",
+      "size": 87208
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun-2026-08-17/unity-stage3-tileset-conflict.log": {
+      "sha256": "08220859a8f8ada016863047b1e5587c32a49913732c8fc276792d8ee3baa8d1",
+      "size": 85331
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun2-2026-08-17/attempt-unity-stage3-animation-conflict.log": {
+      "sha256": "dd97bbaa8b27825a06f793f1c1dc69f9685973f1ded54f2924d7a187c00956ff",
+      "size": 80436
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun2-2026-08-17/attempt-unity-stage3-failure.json": {
+      "sha256": "f4b300045010425935a216564063e382cae96dca38a200dbc36a341732085d54",
+      "size": 242462
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun2-2026-08-17/attempt-unity-stage3-positive.log": {
+      "sha256": "c7201d27bab5b3f9c14eed10ac0ddffe903c20c242521f97c6acdeadfbc141f2",
+      "size": 76937
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun2-2026-08-17/attempt-unity-stage3-tileset-conflict.log": {
+      "sha256": "616dc871cff8c65b4a7451100e32808b75be12d8d71d847149debb2e0043fa1a",
+      "size": 80488
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/attempt-unity-stage3-animation-conflict.log": {
+      "sha256": "fb3396e354484045b30cf591b1f58b4c643600fb847387b4d954208911f341b6",
+      "size": 80552
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/attempt-unity-stage3-positive.log": {
+      "sha256": "54fac206a4123ba0208ef118f526bc3fe598681ce9c0797e5fc49efb4bbddc18",
+      "size": 82382
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/attempt-unity-stage3-tileset-conflict.log": {
+      "sha256": "1cb1a908572ac7a717e2e7730371e83ff612adf22a9302e6bdd5ee191d75fbf2",
+      "size": 80436
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/stage3-index.json": {
+      "sha256": "79e4253491416d7ca6b74241bff9173f8af065b4ee91cc8d1a4bbedf84d6273f",
+      "size": 1217
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/stage3-report.json": {
+      "sha256": "0a810673cecd6903f1b06f4249717534868a3354759bb46e9505ff15dbf6c743",
+      "size": 248534
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/unity-stage3-animation-conflict.log": {
+      "sha256": "fb3396e354484045b30cf591b1f58b4c643600fb847387b4d954208911f341b6",
+      "size": 80552
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/unity-stage3-positive.log": {
+      "sha256": "54fac206a4123ba0208ef118f526bc3fe598681ce9c0797e5fc49efb4bbddc18",
+      "size": 82382
+    },
+    "docs/evidence/artifacts/native-animation-tileset-stage3-rerun3-2026-08-17/unity-stage3-tileset-conflict.log": {
+      "sha256": "1cb1a908572ac7a717e2e7730371e83ff612adf22a9302e6bdd5ee191d75fbf2",
+      "size": 80436
+    },
     "docs/evidence/artifacts/native-auto-sync-stage1-2026-08-17/attempt-01-stage1-failure-automatic-sync.log": {
       "sha256": "53d56fbe578abb67b5d653d7ba0a51cbd94d0dadcee2ab5524f3093b563ccfa5",
       "size": 1323
@@ -1835,6 +1955,50 @@
     "docs/evidence/artifacts/native-stage10-2026-08-17/unity-unity-closure-manual-manifest.json": {
       "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
       "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-2026-08-17/attempt-unity-stage1-failure.json": {
+      "sha256": "3bb413ed3915acd17d7953d1894e55f6a2ea901dd1b7ed2c66a3fb3d766959bb",
+      "size": 45225
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-2026-08-17/attempt-unity-stage1-failure.log": {
+      "sha256": "62e42e04259a19cc51c15bc5089b4ca976599ac5bf1e5632576bd237f9506d90",
+      "size": 43340
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun-2026-08-17/attempt-unity-stage1-failure.json": {
+      "sha256": "a15700ae8629220a5db07c5a99aff8d55a7f1fd85baf6b3eae84782f363fa245",
+      "size": 45229
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun-2026-08-17/attempt-unity-stage1-failure.log": {
+      "sha256": "5821a1d2e3cc85c33fb2bd34f6e5acb742c0018000d78621f4dfdd33d0ce8f07",
+      "size": 43344
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun2-2026-08-17/attempt-unity-stage1-failure.json": {
+      "sha256": "20483938c4fbdec55f70a7153fa63cb0c1b954102c540fd02c3d645182d9046b",
+      "size": 45438
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun2-2026-08-17/attempt-unity-stage1-failure.log": {
+      "sha256": "82a025fd62f359b9a3c47f633538724d6f6eb718a4163352c3ed8e29d425dab4",
+      "size": 43449
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun3-2026-08-17/attempt-unity-stage1-failure.json": {
+      "sha256": "e603efc92be50f5e05d443afe440ce3d556dc513fdc6ceb1d3a395ee1b8bb49e",
+      "size": 56398
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun3-2026-08-17/attempt-unity-stage1-failure.log": {
+      "sha256": "7746f7741801123e6d7074a32fb7589cac17d3c31dda10576ffe007a03b3edc5",
+      "size": 55019
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun4-2026-08-17/stage1-unity-index.json": {
+      "sha256": "097731e3629dab14af6116fd0bf8ab1eb36e89f2dbc5789ce83b558fbe4f35d9",
+      "size": 428
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun4-2026-08-17/stage1-unity-report.json": {
+      "sha256": "15e78a0f3fc5de224b66c52ddfa11d216d8adf3dab504c079135a5fd9a0c839d",
+      "size": 77960
+    },
+    "docs/evidence/artifacts/native-stage3-regression-unity-basic-rerun4-2026-08-17/unity-stage1-auto-sync.log": {
+      "sha256": "474f034a3f1b555c2b379f4abf781d5d8b3da5cc94b8b249379e136e62c0aa0a",
+      "size": 75792
     },
     "docs/evidence/artifacts/native-stage9-2026-08-17/godot-manifest.ndt.integration.json": {
       "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
@@ -4097,12 +4261,20 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
-      "sha256": "ad33a98e71be6043d3dfb166182b855de4d83b8a97547df78ecb765d910075d1",
-      "size": 71703
+      "sha256": "89699715fcaf02d6c98b4217d4a02a2099165962549a4fae9ca5be616c9de252",
+      "size": 80642
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
       "sha256": "c0cf44a9905072c973382ea3014d9bcdae7fe51206ffb20b45414434332be48f",
       "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/UnityOptionalResourceImporter.cs": {
+      "sha256": "080e69758035b32627ec58a0fd561786e58cdd98adff9dad576f2b63e33250be",
+      "size": 27666
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/UnityOptionalResourceImporter.cs.meta": {
+      "sha256": "a317351b5e85f26df8b86553b02f9aa8a8326cbea691e8df5ac259d27836ccd9",
+      "size": 60
     },
     "integrations/unity/package/com.neoeng.dtrace/README.md": {
       "sha256": "6d9492d40e2c599b68d90305d461108e151fbbde77bddf6d81bf038808966f5d",
@@ -4115,6 +4287,14 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime.meta": {
       "sha256": "2ce85a55b8b6c5909771eb209d7bdd4d918d70c20ffde5d9bc820bda39afdf73",
       "size": 172
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngAnimationCollisionDriver.cs": {
+      "sha256": "278f68cdcd6ccb3526e28a2cfa3542b05921ffba90586c322f5287f562da9ee1",
+      "size": 2251
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngAnimationCollisionDriver.cs.meta": {
+      "sha256": "713a5d26e637d3de54ae82e8f0acb1513d9bce672f283f88c3147defaa372cf1",
+      "size": 60
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngDTrace.Runtime.asmdef": {
       "sha256": "9aa7b5c22b7597c487d7f85d969227c8e6143a776065782cc441ddd99921b2ce",
@@ -4132,6 +4312,14 @@
       "sha256": "3e593522f1fe8ad2a562c2811d960977c3e87723ee3be80bcfd2e1413d77e92b",
       "size": 59
     },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedAnimationMetadata.cs": {
+      "sha256": "a39f78790969a2f62e429891f483e1c029681b4f67345f622504f251fd59f327",
+      "size": 708
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedAnimationMetadata.cs.meta": {
+      "sha256": "3babebd3c7cb7a90d8f41b3e9cec2f9a69a896dfd3a91575ec0c6ca74ff9b084",
+      "size": 60
+    },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedSpriteMetadata.cs": {
       "sha256": "f4680fe80faa764d1a53e4c25d0afc22c929d3c8140075eafbb063976c10f7c8",
       "size": 829
@@ -4139,6 +4327,14 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedSpriteMetadata.cs.meta": {
       "sha256": "faa868432569af6f64697770b6ba6745efe344d23d5fc9f3a0b5b096fd33726d",
       "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedTilesetMetadata.cs": {
+      "sha256": "ad1dacdc4b5e9fc601e3ae762527e2a13aabb8b5997cb44c85d2a8bbe12430ad",
+      "size": 846
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedTilesetMetadata.cs.meta": {
+      "sha256": "5a6925e299ae2c979960fa63e0a913153fdacbfff95c07fa73aab9d484510f6e",
+      "size": 60
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs": {
       "sha256": "db22d3a220054d9fe4a73499cd32ac5eeb202b3f3dcb0fcfd00219a01a1acc57",
@@ -4371,6 +4567,10 @@
     "scripts/audit_ui_capture.py": {
       "sha256": "2434b617b0df2c84a92a1f84157a4bc86708e03701b9b8ef672d9598d98d7f13",
       "size": 12705
+    },
+    "scripts/audit_unity_animation_tileset_stage3.py": {
+      "sha256": "314e92b5cff5a6765c59ba68f9d07989a13dc202da29e92d9d5b5de2d6f7485c",
+      "size": 18503
     },
     "scripts/audit_unity_auto_sync_stage1.py": {
       "sha256": "9c251f203390965da25330337edc8efc89572dcd388843a63c207fcd91e48b09",
@@ -5189,8 +5389,8 @@
       "size": 1401
     },
     "tests/test_unity_package_scaffold.py": {
-      "sha256": "11d33010aad82a77437f31e130522ea9ea8587816b34eb3780078473d8c1e48b",
-      "size": 2934
+      "sha256": "1c4666eab181398b6abfe6e04e4169feb051f06a6daf5c5741b8ac552a09d7cd",
+      "size": 4212
     },
     "tests/test_validation_events.py": {
       "sha256": "794b6e7429262469cfd393a17151f1ba23cbdacb527402901fa105c4a1f37af4",

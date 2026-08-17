@@ -80,3 +80,32 @@ def test_unity_upm_package_is_source_only_and_keeps_stage_boundary():
     assert "RunHeadless" in diagnostics
     assert "UNITY_NATIVE_PACKAGE_STAGE5=SUCCESS" in diagnostics
     assert "source_only" in diagnostics
+
+
+def test_unity_stage3_optional_resources_have_native_contract_sources():
+    editor_importer = PACKAGE_ROOT / "Editor" / "UnityOptionalResourceImporter.cs"
+    animation_metadata = PACKAGE_ROOT / "Runtime" / "NeoEngImportedAnimationMetadata.cs"
+    animation_driver = PACKAGE_ROOT / "Runtime" / "NeoEngAnimationCollisionDriver.cs"
+    tileset_metadata = PACKAGE_ROOT / "Runtime" / "NeoEngImportedTilesetMetadata.cs"
+
+    assert editor_importer.is_file()
+    assert animation_metadata.is_file()
+    assert animation_driver.is_file()
+    assert tileset_metadata.is_file()
+
+    editor_source = editor_importer.read_text(encoding="utf-8")
+    generator_source = (PACKAGE_ROOT / "Editor" / "UnityImportGenerator.cs").read_text(
+        encoding="utf-8"
+    )
+    runtime_asmdef = json.loads(
+        (PACKAGE_ROOT / "Runtime" / "NeoEngDTrace.Runtime.asmdef").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert "AnimationUtility.SetObjectReferenceCurve" in editor_source
+    assert "PolygonCollider2D compoundCollider" in editor_source
+    assert "TilesetCollisionPaths" in editor_source
+    assert "UnityOptionalResourceImporter.Import" in generator_source
+    assert "ApplyOptionalGeometryArrays" in generator_source
+    assert runtime_asmdef["references"] == []

@@ -149,6 +149,7 @@ namespace NeoEng.DTrace.Editor
                 IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(manifestText);
                 ApplyPolygonArrays(manifest, manifestText);
                 ApplyCollisionArrays(manifest, manifestText);
+                ApplyOptionalGeometryArrays(manifest, manifestText);
                 ValidateManifest(manifest);
                 string imageAssetPath = ResolveSourceImage(manifest.source.image.path);
                 ValidateImageHash(manifest.source.image.sha256, imageAssetPath);
@@ -160,6 +161,10 @@ namespace NeoEng.DTrace.Editor
                     }
                 }
                 ValidateGeneratedRootForDryRun();
+                AssetDatabase.ImportAsset(imageAssetPath, ImportAssetOptions.ForceUpdate);
+                Texture2D sourceTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(imageAssetPath);
+                if (sourceTexture == null) throw new InvalidDataException("source image could not be loaded by AssetDatabase");
+                UnityOptionalResourceImporter.Validate(manifest, normalizedManifestPath, imageAssetPath, sourceTexture);
                 ImportResult result = ImportResult.SuccessResult(manifest, imageAssetPath);
                 foreach (SpriteRecord record in manifest.metadata.sprites)
                 {
@@ -188,7 +193,8 @@ namespace NeoEng.DTrace.Editor
                 result.ImportedPrefabs = result.Assets.Count;
                 result.ImportedColliders = result.Assets.Count;
                 result.UpdatedAssets = result.Assets.Count;
-                result.PlannedAssets = result.Assets.Count;
+                AddOptionalDryRunResults(normalizedManifestPath, manifest, result);
+                result.PlannedAssets = result.Assets.Count + result.OptionalAssets.Count;
                 result.DryRun = true;
                 return result;
             }
@@ -238,7 +244,8 @@ namespace NeoEng.DTrace.Editor
             string manifestText = File.ReadAllText(absoluteManifestPath, Encoding.UTF8);
             IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(manifestText);
             ApplyPolygonArrays(manifest, manifestText);
-                ApplyCollisionArrays(manifest, manifestText);
+            ApplyCollisionArrays(manifest, manifestText);
+            ApplyOptionalGeometryArrays(manifest, manifestText);
             ValidateManifest(manifest);
             string imageAssetPath = ResolveSourceImage(manifest.source.image.path);
             ValidateImageHash(manifest.source.image.sha256, imageAssetPath);
@@ -273,11 +280,44 @@ namespace NeoEng.DTrace.Editor
             result.ImportedSprites = result.Assets.Count;
             result.ImportedPrefabs = result.Assets.Count;
             result.ImportedColliders = result.Assets.Count;
+            UnityOptionalResourceImporter.Import(manifest, normalizedManifestPath, imageAssetPath, texture, result);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             ValidateGeneratedAssets(result, manifest);
             return result;
+        }
+
+        private static void AddOptionalDryRunResults(string manifestPath, IntegrationManifest manifest, ImportResult result)
+        {
+            string baseName = Path.GetFileNameWithoutExtension(manifestPath);
+            if (baseName.EndsWith(".ndt.integration", StringComparison.OrdinalIgnoreCase)) baseName = baseName.Substring(0, baseName.Length - ".ndt.integration".Length);
+            if (manifest.metadata.animation != null)
+            {
+                string id = SafeObjectId(baseName + "_animation");
+                result.ImportedAnimations = 1;
+                result.OptionalAssets.Add(new OptionalImportedAsset
+                {
+                    Kind = "animation",
+                    MetadataPath = GeneratedRoot + "/" + id + ".animation/" + id + ".metadata.asset",
+                    PrefabPath = GeneratedRoot + "/" + id + ".animation/" + id + ".prefab",
+                    FrameCount = manifest.metadata.animation.frames.Length,
+                    Status = "PLAN",
+                });
+            }
+            if (manifest.metadata.tileset != null)
+            {
+                string id = SafeObjectId(baseName + "_tileset");
+                result.ImportedTilesets = 1;
+                result.OptionalAssets.Add(new OptionalImportedAsset
+                {
+                    Kind = "tileset",
+                    MetadataPath = GeneratedRoot + "/" + id + ".tileset/" + id + ".metadata.asset",
+                    PrefabPath = GeneratedRoot + "/" + id + ".tileset/" + id + ".prefab",
+                    TileCount = manifest.metadata.tileset.tiles.Length,
+                    Status = "PLAN",
+                });
+            }
         }
 
         private static Dictionary<string, Texture2D> LoadAdvancedAtlasTextures(
@@ -950,6 +990,97 @@ namespace NeoEng.DTrace.Editor
             }
             throw new InvalidDataException("manifest collision object is unterminated");
         }
+        private static void ApplyOptionalGeometryArrays(IntegrationManifest manifest, string manifestText)
+        {
+            if (manifest == null || manifest.metadata == null)
+            {
+                return;
+            }
+            if (!HasOptionalPayload(manifestText, "animation"))
+            {
+                manifest.metadata.animation = null;
+            }
+            if (!HasOptionalPayload(manifestText, "tileset"))
+            {
+                manifest.metadata.tileset = null;
+            }
+            if (manifest.metadata.animation != null)
+            {
+                string animationText = ExtractOptionalObject(manifestText, "animation");
+                Match framesMatch = Regex.Match(animationText, "\\\"frames\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+                if (!framesMatch.Success)
+                {
+                    throw new InvalidDataException("animation frames array is missing");
+                }
+                int framesOpening = animationText.IndexOf('[', framesMatch.Index);
+                List<string> frames = ExtractTopLevelObjects(ExtractBalancedArray(animationText, framesOpening));
+                if (manifest.metadata.animation.frames == null || frames.Count != manifest.metadata.animation.frames.Length)
+                {
+                    throw new InvalidDataException("animation frame count does not match metadata");
+                }
+                for (int index = 0; index < frames.Count; index++)
+                {
+                    Match polygonMatch = Regex.Match(frames[index], "\\\"polygon\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+                    if (!polygonMatch.Success)
+                    {
+                        throw new InvalidDataException("animation frame polygon is missing");
+                    }
+                    int polygonOpening = frames[index].IndexOf('[', polygonMatch.Index);
+                    manifest.metadata.animation.frames[index].polygon = ParseVectorArray(
+                        ExtractBalancedArray(frames[index], polygonOpening),
+                        "animation frame polygon");
+                }
+            }
+            if (manifest.metadata.tileset != null)
+            {
+                string tilesetText = ExtractOptionalObject(manifestText, "tileset");
+                Match tilesMatch = Regex.Match(tilesetText, "\\\"tiles\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+                if (!tilesMatch.Success)
+                {
+                    throw new InvalidDataException("tileset tiles array is missing");
+                }
+                int tilesOpening = tilesetText.IndexOf('[', tilesMatch.Index);
+                List<string> tiles = ExtractTopLevelObjects(ExtractBalancedArray(tilesetText, tilesOpening));
+                if (manifest.metadata.tileset.tiles == null || tiles.Count != manifest.metadata.tileset.tiles.Length)
+                {
+                    throw new InvalidDataException("tileset tile count does not match metadata");
+                }
+                for (int index = 0; index < tiles.Count; index++)
+                {
+                    Match collisionMatch = Regex.Match(tiles[index], "\\\"collision\\\"\\s*:\\s*\\[", RegexOptions.CultureInvariant);
+                    if (!collisionMatch.Success)
+                    {
+                        manifest.metadata.tileset.tiles[index].collision = null;
+                        continue;
+                    }
+                    int collisionOpening = tiles[index].IndexOf('[', collisionMatch.Index);
+                    manifest.metadata.tileset.tiles[index].collision = ParseVectorArray(
+                        ExtractBalancedArray(tiles[index], collisionOpening),
+                        "tileset collision");
+                }
+            }
+        }
+
+        private static bool HasOptionalPayload(string manifestText, string key)
+        {
+            return Regex.IsMatch(
+                manifestText,
+                "\\\"" + key + "\\\"\\s*:\\s*\\{",
+                RegexOptions.CultureInvariant);
+        }
+        private static string ExtractOptionalObject(string manifestText, string key)
+        {
+            Match match = Regex.Match(
+                manifestText,
+                "\\\"" + key + "\\\"\\s*:\\s*\\{",
+                RegexOptions.CultureInvariant);
+            if (!match.Success)
+            {
+                throw new InvalidDataException(key + " payload is missing");
+            }
+            int opening = manifestText.IndexOf('{', match.Index);
+            return ExtractBalancedObject(manifestText, opening);
+        }
         private static void ApplyPolygonArrays(IntegrationManifest manifest, string manifestText)
         {
             if (manifest == null || manifest.metadata == null || manifest.metadata.sprites == null)
@@ -1396,7 +1527,7 @@ namespace NeoEng.DTrace.Editor
         [Serializable] public sealed class ImageData { public string path; public string sha256; }
         [Serializable] public sealed class MetadataHashData { public string format_id; public int schema_version; public string sha256; }
         [Serializable] public sealed class SyncData { public string direction; public string generated_root; public string override_suffix; public bool destructive_update; }
-        [Serializable] public sealed class MetadataData { public int schema_version; public SpriteRecord[] sprites; }
+        [Serializable] public sealed class MetadataData { public int schema_version; public SpriteRecord[] sprites; public TilesetData tileset; public AnimationData animation; }
         [Serializable] public sealed class AdvancedData { public int schema_version; public CoordinateSystemData coordinate_system; public AtlasData atlas; public EnginePropertiesData engine_properties; }
         [Serializable] public sealed class CoordinateSystemData { public string image_origin; public string polygon_origin; public string engine_y_axis; public PixelsPerUnitData pixels_per_unit; }
         [Serializable] public sealed class PixelsPerUnitData { public float godot; public float unity; }
@@ -1406,6 +1537,45 @@ namespace NeoEng.DTrace.Editor
         [Serializable] public sealed class EnginePropertiesData { public GodotProperties godot; public UnityProperties unity; }
         [Serializable] public sealed class GodotProperties { public string texture_filter; public string texture_repeat; public bool centered; public int z_index; }
         [Serializable] public sealed class UnityProperties { public float pixels_per_unit; public string filter_mode; public string wrap_mode; public string sorting_layer; public int sorting_order; public float z_depth; }
+        [Serializable] public sealed class AnimationData
+        {
+            public string format_id;
+            public int schema_version;
+            public string mode;
+            public float speed;
+            public bool loop;
+            public int frame_count;
+            public AnimationFrameData[] frames;
+        }
+        [Serializable] public sealed class AnimationFrameData
+        {
+            public int index;
+            public string source;
+            public string texture;
+            public SizeData size;
+            public Vector2[] polygon;
+        }
+        [Serializable] public sealed class TilesetData
+        {
+            public string format_id;
+            public int schema_version;
+            public SizeData tile_size;
+            public int spacing;
+            public int margin;
+            public TileData[] tiles;
+        }
+        [Serializable] public sealed class TileData
+        {
+            public string id;
+            public int index;
+            public int row;
+            public int column;
+            public RectData source_rect;
+            public SizeData size;
+            public Vector2[] collision;
+            public string texture;
+        }
+        [Serializable] public sealed class SizeData { public int w; public int h; }
         [Serializable] public sealed class SpriteRecord
         {
             public string id;
@@ -1440,6 +1610,9 @@ namespace NeoEng.DTrace.Editor
             public int ImportedSprites;
             public int ImportedPrefabs;
             public int ImportedColliders;
+            public int ImportedAnimations;
+            public int ImportedTilesets;
+            public List<OptionalImportedAsset> OptionalAssets = new List<OptionalImportedAsset>();
             public List<ImportedAsset> Assets = new List<ImportedAsset>();
             public int UpdatedAssets;
             public int UnchangedAssets;
@@ -1461,6 +1634,16 @@ namespace NeoEng.DTrace.Editor
             public string ToJson() { return JsonUtility.ToJson(this, true); }
         }
 
+        [Serializable]
+        public sealed class OptionalImportedAsset
+        {
+            public string Kind;
+            public string MetadataPath;
+            public string PrefabPath;
+            public int FrameCount;
+            public int TileCount;
+            public string Status;
+        }
         [Serializable]
         public sealed class ImportedAsset
         {
@@ -1499,7 +1682,7 @@ namespace NeoEng.DTrace.Editor
             public static ExistingSync UnchangedAsset() { return new ExistingSync { Unchanged = true }; }
         }
 
-        private sealed class SyncConflictException : InvalidOperationException
+        public sealed class SyncConflictException : InvalidOperationException
         {
             public SyncConflictException(string message) : base(message) { }
         }
