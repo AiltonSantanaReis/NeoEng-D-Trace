@@ -617,8 +617,8 @@
       "size": 7265
     },
     "docs/evidence/ETAPA_9_DRY_RUN_SEGURANCA_ROLLBACK_PRE_MERGE_2026-08-17.md": {
-      "sha256": "45fa55c6c4ae46fc24262a5860adb9b5f8f08ddeb50b1c11f76dad5226c93db9",
-      "size": 5107
+      "sha256": "fe61f3774d2520e5eef7f3cb0330f021c9b1888573d150672470248ae965067a",
+      "size": 5101
     },
     "docs/evidence/ETAPA_9_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "d016c6045acee041a65a21508a42462fdb81ec644fbc071658515d521b2bddb0",
@@ -4113,8 +4113,8 @@
       "size": 21420
     },
     "src/exporters/integration_sync.py": {
-      "sha256": "72dab1ca03a6f7ee5d9ea45a1e98d8bbee9428edded914ccce86fa2355cfe1bb",
-      "size": 7230
+      "sha256": "58794eb2c037528b4eb2bfe0d846f82d17bd88514a9b7dfcd4d3168ec03cec6a",
+      "size": 7270
     },
     "src/exporters/json_exporter.py": {
       "sha256": "4d464d6004e69d9f57500696ab787041cff8f4833270aa791a50bc5aaa2b5eb9",

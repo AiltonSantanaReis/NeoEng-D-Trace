@@ -3,7 +3,7 @@
 ## Baseline e escopo
 
 - baseline verificado: 531ca525327b4e5bc5346f7bdc5ad900416259c;
-- branch de trabalho: codex/stage9-dry-run-security-rollback;
+- branch de trabalho: branch de validação da Etapa 9;
 - escopo: planejamento sem escrita, validação de schema e hashes, rejeição
   fail-closed de caminhos inseguros e rollback de conjuntos de saídas;
 - Etapa 10: não promovida;

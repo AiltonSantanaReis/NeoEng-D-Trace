@@ -83,16 +83,17 @@ def _inside(root: Path, candidate: Path) -> bool:
 def _resolve_destination(root: Path, relative_path: str) -> Path:
     safe = _safe_relative(relative_path)
     root_resolved = root.resolve(strict=False)
-    candidate = (root_resolved / Path(safe)).resolve(strict=False)
-    if not _inside(root_resolved, candidate):
-        raise IntegrationSecurityError("output path escapes the generated root")
     current = root_resolved
     for part in Path(safe).parts[:-1]:
         current = current / part
         if current.exists() and current.is_symlink():
             raise IntegrationSecurityError("output path traverses a symlink")
-    if candidate.exists() and candidate.is_symlink():
+    raw_candidate = root_resolved / Path(safe)
+    if raw_candidate.exists() and raw_candidate.is_symlink():
         raise IntegrationSecurityError("output destination cannot be a symlink")
+    candidate = raw_candidate.resolve(strict=False)
+    if not _inside(root_resolved, candidate):
+        raise IntegrationSecurityError("output path escapes the generated root")
     return candidate
 
 
