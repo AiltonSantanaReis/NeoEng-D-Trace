@@ -1,0 +1,49 @@
+{
+  "engine": "unity",
+  "files": {
+    "fixture-manifest.json": {
+      "bytes": 2073,
+      "sha256": "fc7fccc0fa3e4d9dde2f495ad64ec043b9950355c6657b53533e0e4357dc593b"
+    },
+    "stage6-report-negative-hash.json": {
+      "bytes": 322,
+      "sha256": "93ce898041e5d0a3956aa919ef64f49530f4adb3457467655814fcf4ea85770e"
+    },
+    "stage6-report-negative-manual.json": {
+      "bytes": 341,
+      "sha256": "a2ea39b8d02b245f7732371c25e25661dcb89ea07896a269f07af8d226c5b38e"
+    },
+    "stage6-report-repeat.json": {
+      "bytes": 689,
+      "sha256": "9ed41bf95c7948723479e8885e2bec4e6ad3220c5955369f241ab193598d078d"
+    },
+    "stage6-report.json": {
+      "bytes": 2060,
+      "sha256": "133cc4958758db985b9d623e332da3a0d353ce1792ba6986e477ba29edc1d56c"
+    },
+    "unity-import-negative-hash.log": {
+      "bytes": 55352,
+      "sha256": "96f07a6f2ee7101ca42246d63316b8644d9f5687607afc31f1ce8da3c84c3601"
+    },
+    "unity-import-negative-manual.log": {
+      "bytes": 17753,
+      "sha256": "d40904bdc7110cc899c84ddbcd1fce61d4860170cdd1e09be0d97d36ed1633e1"
+    },
+    "unity-import-positive.log": {
+      "bytes": 57081,
+      "sha256": "2e53db0c02df1af2827241d958f5a0ced70c0a73a4a15ea22cde16f4e313e88f"
+    },
+    "unity-import-repeat.log": {
+      "bytes": 57089,
+      "sha256": "668a84308f5fb17a602a89e01c3f019221310d2c6ae028c75ae82ec83342ee09"
+    },
+    "unity-manual-fixture.log": {
+      "bytes": 52629,
+      "sha256": "b0c573187013382b7b89516e34fd9734201ac70116a52e625829aed263c3096f"
+    }
+  },
+  "schema_version": 1,
+  "stage": 6,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}

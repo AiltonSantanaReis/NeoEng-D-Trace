@@ -1,0 +1,43 @@
+{
+    "Success": false,
+    "PackageName": "com.neoeng.dtrace",
+    "PackageVersion": "0.2.0",
+    "SourcePolicy": "source-only",
+    "Checks": [
+        {
+            "Name": "package_name",
+            "Success": true,
+            "Detail": "actual=com.neoeng.dtrace; expected=com.neoeng.dtrace"
+        },
+        {
+            "Name": "package_version",
+            "Success": true,
+            "Detail": "actual=0.2.0; expected=0.2.0"
+        },
+        {
+            "Name": "package_manifest",
+            "Success": true,
+            "Detail": "package.json exists"
+        },
+        {
+            "Name": "runtime_assembly",
+            "Success": true,
+            "Detail": "runtime asmdef exists"
+        },
+        {
+            "Name": "editor_assembly",
+            "Success": true,
+            "Detail": "editor asmdef exists"
+        },
+        {
+            "Name": "identity_contract",
+            "Success": true,
+            "Detail": "runtime identity contract is stable"
+        },
+        {
+            "Name": "source_only",
+            "Success": false,
+            "Detail": "forbidden: forbidden.exe"
+        }
+    ]
+}

@@ -1,0 +1,124 @@
+{
+  "format_id": "neoeng-d-trace-project",
+  "groups": [],
+  "image": {
+    "path": "ui-audit-fixture.png",
+    "path_kind": "relative",
+    "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+  },
+  "layers": [
+    {
+      "id": "layer_default",
+      "locked": false,
+      "name": "Default",
+      "visible": true
+    }
+  ],
+  "metadata": {
+    "app_version": "0.2.0",
+    "generator": "NeoEng-D-Trace"
+  },
+  "objects": [
+    {
+      "beziers": null,
+      "collision": null,
+      "collision_parts": null,
+      "id": "rectangle-object",
+      "layer_id": "layer_default",
+      "polygon": [
+        {
+          "x": 80,
+          "y": 80
+        },
+        {
+          "x": 315,
+          "y": 80
+        },
+        {
+          "x": 315,
+          "y": 350
+        },
+        {
+          "x": 80,
+          "y": 350
+        }
+      ],
+      "transform": {
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 197.5,
+          "y": 215.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      }
+    },
+    {
+      "beziers": null,
+      "collision": null,
+      "collision_parts": null,
+      "id": "concave-object",
+      "layer_id": "layer_default",
+      "polygon": [
+        {
+          "x": 410,
+          "y": 100
+        },
+        {
+          "x": 620,
+          "y": 100
+        },
+        {
+          "x": 620,
+          "y": 250
+        },
+        {
+          "x": 520,
+          "y": 250
+        },
+        {
+          "x": 520,
+          "y": 380
+        },
+        {
+          "x": 410,
+          "y": 380
+        }
+      ],
+      "transform": {
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 515.0,
+          "y": 240.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      }
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,1407 @@
+{
+  "corpus": [
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "76ae9b771154072d80ce805dd0590080d92afc5a0da77b74e89e7aa05d35213d",
+      "name": "clean_rectangle",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "5b788866b8dc36bba63040d4f6fc7e482e32dd645eae1f3fea3b562a5642bbca",
+      "image_sha256": "8fae7c2b7c0a12a22f614cb07bae1af705ba995dee5298f54d6c9f70d405e83f",
+      "name": "concave_l",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "4a4d1875ed46881cfce91b24f75c37303649d8ec566d141d38b35995df2be2de",
+      "name": "shadow_texture",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "69a984326e72f942f24f5f6ec586eacee399641681996ca2352e745ac6bf3a1f",
+      "image_sha256": "a4eb944721b318a30d3f36440b2a3fb803f52729211af851df2aec58e0be6e60",
+      "name": "gradient_low_contrast",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 1,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "a0ea3cadb30fdb71c023a280f457569cb3e22e65b59c14ea050bcd70f271abe6",
+      "image_sha256": "ea11d20c7f6288c1392cfb4f44f45de02a2cd64dad34c7ea807539adf96ec075",
+      "name": "ring_hole",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "017784a93181e830c3e78e49c18b797c00db9a530711007d34dd0477846ccae4",
+      "image_sha256": "a33545a258c31bc87d2ab140166c6987b11b8100df5d926b626b224b1d8f8a16",
+      "name": "curved_blob",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 2,
+      "grabcut_ground_truth_sha256": "869056eac0deba7a6dc4062f05b51bda602db59dd74dd132701721b423f7fc6f",
+      "ground_truth_sha256": "5bd3c0de48b848c2d76646a7a2c7fa08f9d743c99f99c28ef0e1cffd3d6e3977",
+      "image_sha256": "7bb21e3a71fb16bf5f153576d7d362964a5692f88d3c812c5dbac4f6b4b0eba1",
+      "name": "two_objects",
+      "roi": [
+        30,
+        35,
+        90,
+        125
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "4be8f216f60da8ec52b1b29dbcb72576a1bd5a36d0afa65b16216dbf052235c3",
+      "image_sha256": "447c19deed8a6b09220b4dcc5a642ca83359e37bc2cab795d8d8d3bca79a0bd3",
+      "name": "touching_objects",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "2400f6f3135717de452bdaa69f5d7413619dd7c572bc51722ae09bb27a460448",
+      "image_sha256": "1c515084e1d3d829e7fe8be7f1500b25a618d20d209d6ee27b7d46cf12eec58e",
+      "name": "rgba_alpha",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "03d9dfd8b09d0a9c8858eadcf43bb36a067f93c2be1d4c1534d2588b2871dcaf",
+      "image_sha256": "35704ec1f4c47219065de19f7ef56217f9bf9538bec939f88170420e8033e55d",
+      "name": "noisy_background",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    },
+    {
+      "expected_holes": 0,
+      "expected_objects": 1,
+      "grabcut_ground_truth_sha256": null,
+      "ground_truth_sha256": "c6c1a3460ace64fa1b91395d52fa482b2e21e99a4e532ae1284e66b6deb8fdb5",
+      "image_sha256": "17d8c5579fdbb87465caebccc8d2b0805edb4c84962313269e855c7956a19074",
+      "name": "high_detail_boundary",
+      "roi": [
+        20,
+        15,
+        216,
+        162
+      ],
+      "shape": [
+        192,
+        256
+      ]
+    }
+  ],
+  "numpy": "2.2.6",
+  "opencv": "4.12.0",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9",
+  "repeats": 5,
+  "results": [
+    {
+      "case": "clean_rectangle",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "76ae9b771154072d80ce805dd0590080d92afc5a0da77b74e89e7aa05d35213d",
+      "median_seconds": 0.026766700000735,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 5,
+        "object_count": 1,
+        "vertex_counts": [
+          5
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.036433080001734196,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591908,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "clean_rectangle",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "76ae9b771154072d80ce805dd0590080d92afc5a0da77b74e89e7aa05d35213d",
+      "median_seconds": 0.0016499999910593033,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 4,
+        "object_count": 1,
+        "vertex_counts": [
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0019868999952450395,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "clean_rectangle",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "76ae9b771154072d80ce805dd0590080d92afc5a0da77b74e89e7aa05d35213d",
+      "median_seconds": 0.00870730000315234,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 4,
+        "object_count": 1,
+        "vertex_counts": [
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.009111620002659037,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591432,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "clean_rectangle",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "76ae9b771154072d80ce805dd0590080d92afc5a0da77b74e89e7aa05d35213d",
+      "median_seconds": 0.055940200021723285,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 4,
+        "object_count": 1,
+        "vertex_counts": [
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.05848604001221247,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "concave_l",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5b788866b8dc36bba63040d4f6fc7e482e32dd645eae1f3fea3b562a5642bbca",
+      "image_sha256": "8fae7c2b7c0a12a22f614cb07bae1af705ba995dee5298f54d6c9f70d405e83f",
+      "median_seconds": 0.02479299998958595,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9987213584288053,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9974459825305205,
+        "max_vertices": 7,
+        "object_count": 1,
+        "vertex_counts": [
+          7
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.025258379994193093,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "1e0a8cb6aa4637e65fca888f84cb677ada55e9a7c6d71f143165dedac8ae9d12"
+    },
+    {
+      "case": "concave_l",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5b788866b8dc36bba63040d4f6fc7e482e32dd645eae1f3fea3b562a5642bbca",
+      "image_sha256": "8fae7c2b7c0a12a22f614cb07bae1af705ba995dee5298f54d6c9f70d405e83f",
+      "median_seconds": 0.001327700010733679,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9999743950838561,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9999487914789021,
+        "max_vertices": 7,
+        "object_count": 1,
+        "vertex_counts": [
+          7
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0014328799850773066,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "b4048697ffb4a7bff13f7ad42a645a9cc6e0678f9c947d1d68d4509304ba6c29"
+    },
+    {
+      "case": "concave_l",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5b788866b8dc36bba63040d4f6fc7e482e32dd645eae1f3fea3b562a5642bbca",
+      "image_sha256": "8fae7c2b7c0a12a22f614cb07bae1af705ba995dee5298f54d6c9f70d405e83f",
+      "median_seconds": 0.008285000018076971,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9999743950838561,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9999487914789021,
+        "max_vertices": 7,
+        "object_count": 1,
+        "vertex_counts": [
+          7
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.010748979990603402,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "b4048697ffb4a7bff13f7ad42a645a9cc6e0678f9c947d1d68d4509304ba6c29"
+    },
+    {
+      "case": "concave_l",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5b788866b8dc36bba63040d4f6fc7e482e32dd645eae1f3fea3b562a5642bbca",
+      "image_sha256": "8fae7c2b7c0a12a22f614cb07bae1af705ba995dee5298f54d6c9f70d405e83f",
+      "median_seconds": 0.05646669998532161,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9999743950838561,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9999487914789021,
+        "max_vertices": 7,
+        "object_count": 1,
+        "vertex_counts": [
+          7
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.05965031999512575,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "b4048697ffb4a7bff13f7ad42a645a9cc6e0678f9c947d1d68d4509304ba6c29"
+    },
+    {
+      "case": "shadow_texture",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "4a4d1875ed46881cfce91b24f75c37303649d8ec566d141d38b35995df2be2de",
+      "median_seconds": 0.02465549999033101,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 5,
+        "object_count": 1,
+        "vertex_counts": [
+          5
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.028022919996874406,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "shadow_texture",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "4a4d1875ed46881cfce91b24f75c37303649d8ec566d141d38b35995df2be2de",
+      "median_seconds": 0.0013458000030368567,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 4,
+        "object_count": 1,
+        "vertex_counts": [
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.00157873997814022,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "shadow_texture",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "4a4d1875ed46881cfce91b24f75c37303649d8ec566d141d38b35995df2be2de",
+      "median_seconds": 0.008982400002423674,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 4,
+        "object_count": 1,
+        "vertex_counts": [
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.009258819982642308,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "shadow_texture",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de",
+      "image_sha256": "4a4d1875ed46881cfce91b24f75c37303649d8ec566d141d38b35995df2be2de",
+      "median_seconds": 0.06775399998878129,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 1.0,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 1.0,
+        "max_vertices": 4,
+        "object_count": 1,
+        "vertex_counts": [
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.07319693998433649,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "95a85fbc3eef1919b7b0596d11cf6cd31c7db351bf4bb03f37e6c07691cda3de"
+    },
+    {
+      "case": "gradient_low_contrast",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "69a984326e72f942f24f5f6ec586eacee399641681996ca2352e745ac6bf3a1f",
+      "image_sha256": "a4eb944721b318a30d3f36440b2a3fb803f52729211af851df2aec58e0be6e60",
+      "median_seconds": 0.017841199995018542,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9926056472932071,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9853198448315205,
+        "max_vertices": 18,
+        "object_count": 1,
+        "vertex_counts": [
+          18
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.019590799987781793,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "d82e0d2661d5c2ee37257f8edde7a4430c4b65373a7aea246720db1522e3d981"
+    },
+    {
+      "case": "gradient_low_contrast",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "69a984326e72f942f24f5f6ec586eacee399641681996ca2352e745ac6bf3a1f",
+      "image_sha256": "a4eb944721b318a30d3f36440b2a3fb803f52729211af851df2aec58e0be6e60",
+      "median_seconds": 0.0016811999958008528,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9989342265529841,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9978707224334601,
+        "max_vertices": 96,
+        "object_count": 1,
+        "vertex_counts": [
+          96
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0019822599948383867,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "cce983c3279be7223bd77d25ba237ece87f44b0676d01b22d233136ff1abf733"
+    },
+    {
+      "case": "gradient_low_contrast",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "69a984326e72f942f24f5f6ec586eacee399641681996ca2352e745ac6bf3a1f",
+      "image_sha256": "a4eb944721b318a30d3f36440b2a3fb803f52729211af851df2aec58e0be6e60",
+      "median_seconds": 0.006129199988208711,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9989342265529841,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9978707224334601,
+        "max_vertices": 96,
+        "object_count": 1,
+        "vertex_counts": [
+          96
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.0072637800069060175,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "cce983c3279be7223bd77d25ba237ece87f44b0676d01b22d233136ff1abf733"
+    },
+    {
+      "case": "gradient_low_contrast",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "69a984326e72f942f24f5f6ec586eacee399641681996ca2352e745ac6bf3a1f",
+      "image_sha256": "a4eb944721b318a30d3f36440b2a3fb803f52729211af851df2aec58e0be6e60",
+      "median_seconds": 0.058654599997680634,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9955348624203335,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9911094224924012,
+        "max_vertices": 20,
+        "object_count": 1,
+        "vertex_counts": [
+          20
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.0697878400038462,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "925373cb27e06805c40aac207dfa7a0a0ab90fca96cc1eff321330f694b5b745"
+    },
+    {
+      "case": "ring_hole",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "a0ea3cadb30fdb71c023a280f457569cb3e22e65b59c14ea050bcd70f271abe6",
+      "image_sha256": "ea11d20c7f6288c1392cfb4f44f45de02a2cd64dad34c7ea807539adf96ec075",
+      "median_seconds": 0.024134799983585253,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9887973769467973,
+        "expected_holes": 1,
+        "expected_objects": 1,
+        "hole_count": 1,
+        "iou": 0.9778429707403691,
+        "max_vertices": 21,
+        "object_count": 1,
+        "vertex_counts": [
+          21
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.02607879997813143,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591420,
+      "prediction_sha256": "607753f902fe51f765987d515667648249f4b17978eb35531325d3cecdcb9cc2"
+    },
+    {
+      "case": "ring_hole",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "a0ea3cadb30fdb71c023a280f457569cb3e22e65b59c14ea050bcd70f271abe6",
+      "image_sha256": "ea11d20c7f6288c1392cfb4f44f45de02a2cd64dad34c7ea807539adf96ec075",
+      "median_seconds": 0.0017545000009704381,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.99487895716946,
+        "expected_holes": 1,
+        "expected_objects": 1,
+        "hole_count": 1,
+        "iou": 0.9898100972672533,
+        "max_vertices": 76,
+        "object_count": 1,
+        "vertex_counts": [
+          76
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0018240399949718267,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591452,
+      "prediction_sha256": "17066d5037c05659daf93f9ef5af6065a6ea83e38c5c70134d290be6abfc3324"
+    },
+    {
+      "case": "ring_hole",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "a0ea3cadb30fdb71c023a280f457569cb3e22e65b59c14ea050bcd70f271abe6",
+      "image_sha256": "ea11d20c7f6288c1392cfb4f44f45de02a2cd64dad34c7ea807539adf96ec075",
+      "median_seconds": 0.008284900017315522,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9929928371223917,
+        "expected_holes": 1,
+        "expected_objects": 1,
+        "hole_count": 1,
+        "iou": 0.9860831915880625,
+        "max_vertices": 76,
+        "object_count": 1,
+        "vertex_counts": [
+          76,
+          24
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.008633040013955906,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591660,
+      "prediction_sha256": "0d6d28dbf3a1f04bf9a6f870dcd4628db14d210cec7b7afc7b0979bb253e4124"
+    },
+    {
+      "case": "ring_hole",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "a0ea3cadb30fdb71c023a280f457569cb3e22e65b59c14ea050bcd70f271abe6",
+      "image_sha256": "ea11d20c7f6288c1392cfb4f44f45de02a2cd64dad34c7ea807539adf96ec075",
+      "median_seconds": 0.0588141999905929,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9906512932377688,
+        "expected_holes": 1,
+        "expected_objects": 1,
+        "hole_count": 1,
+        "iou": 0.9814757641247298,
+        "max_vertices": 20,
+        "object_count": 1,
+        "vertex_counts": [
+          20
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.060344819980673495,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265721,
+      "prediction_sha256": "2371fc27f0d45981cabe9f8f785c2b003fdff0ff7555fc06df9d2bd1d4301d70"
+    },
+    {
+      "case": "curved_blob",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "017784a93181e830c3e78e49c18b797c00db9a530711007d34dd0477846ccae4",
+      "image_sha256": "a33545a258c31bc87d2ab140166c6987b11b8100df5d926b626b224b1d8f8a16",
+      "median_seconds": 0.018495700001949444,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9908785016418697,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9819219026193154,
+        "max_vertices": 19,
+        "object_count": 1,
+        "vertex_counts": [
+          19
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.02062739999964833,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "6f1fe1069452251d8ad608ef12346669d70f08a1e9133320b5c1f1e88bc7e528"
+    },
+    {
+      "case": "curved_blob",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "017784a93181e830c3e78e49c18b797c00db9a530711007d34dd0477846ccae4",
+      "image_sha256": "a33545a258c31bc87d2ab140166c6987b11b8100df5d926b626b224b1d8f8a16",
+      "median_seconds": 0.0016451000119559467,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9990295972828724,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.998061076102763,
+        "max_vertices": 89,
+        "object_count": 1,
+        "vertex_counts": [
+          89
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0021396399824880064,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "c22441c77159cb34910f82ea3d3c6078a049038aed266ef57e3e8f261a9c1b09"
+    },
+    {
+      "case": "curved_blob",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "017784a93181e830c3e78e49c18b797c00db9a530711007d34dd0477846ccae4",
+      "image_sha256": "a33545a258c31bc87d2ab140166c6987b11b8100df5d926b626b224b1d8f8a16",
+      "median_seconds": 0.006111100025009364,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9990295972828724,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.998061076102763,
+        "max_vertices": 89,
+        "object_count": 1,
+        "vertex_counts": [
+          89
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.00919506000354886,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "c22441c77159cb34910f82ea3d3c6078a049038aed266ef57e3e8f261a9c1b09"
+    },
+    {
+      "case": "curved_blob",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "017784a93181e830c3e78e49c18b797c00db9a530711007d34dd0477846ccae4",
+      "image_sha256": "a33545a258c31bc87d2ab140166c6987b11b8100df5d926b626b224b1d8f8a16",
+      "median_seconds": 0.05464339998434298,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9946151666059354,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9892880154639175,
+        "max_vertices": 21,
+        "object_count": 1,
+        "vertex_counts": [
+          21
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.055728979996638374,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "cd0eff952cabd1928b0cecf83a45d9b1df60ec960866dc0562d63c3d695969dd"
+    },
+    {
+      "case": "two_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5bd3c0de48b848c2d76646a7a2c7fa08f9d743c99f99c28ef0e1cffd3d6e3977",
+      "image_sha256": "7bb21e3a71fb16bf5f153576d7d362964a5692f88d3c812c5dbac4f6b4b0eba1",
+      "median_seconds": 0.02137520001269877,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9944406779661017,
+        "expected_holes": 0,
+        "expected_objects": 2,
+        "hole_count": 0,
+        "iou": 0.9889428263214671,
+        "max_vertices": 14,
+        "object_count": 2,
+        "vertex_counts": [
+          14,
+          5
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.02721531999413855,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591420,
+      "prediction_sha256": "514bf31ba35b2d342069f898fb913c5d6791f092bdd3908f35d1f894ec4e8efd"
+    },
+    {
+      "case": "two_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5bd3c0de48b848c2d76646a7a2c7fa08f9d743c99f99c28ef0e1cffd3d6e3977",
+      "image_sha256": "7bb21e3a71fb16bf5f153576d7d362964a5692f88d3c812c5dbac4f6b4b0eba1",
+      "median_seconds": 0.0017615999968256801,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9994605286818917,
+        "expected_holes": 0,
+        "expected_objects": 2,
+        "hole_count": 0,
+        "iou": 0.998921639108555,
+        "max_vertices": 52,
+        "object_count": 2,
+        "vertex_counts": [
+          52,
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0018277000053785741,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591580,
+      "prediction_sha256": "2402cc6b2916813c2ff5e10edf42bfd3dcdfc122a93f4f8753f58c8d94a79142"
+    },
+    {
+      "case": "two_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "5bd3c0de48b848c2d76646a7a2c7fa08f9d743c99f99c28ef0e1cffd3d6e3977",
+      "image_sha256": "7bb21e3a71fb16bf5f153576d7d362964a5692f88d3c812c5dbac4f6b4b0eba1",
+      "median_seconds": 0.00783459999365732,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9994605286818917,
+        "expected_holes": 0,
+        "expected_objects": 2,
+        "hole_count": 0,
+        "iou": 0.998921639108555,
+        "max_vertices": 52,
+        "object_count": 2,
+        "vertex_counts": [
+          52,
+          4
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.008269460016163067,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591468,
+      "prediction_sha256": "2402cc6b2916813c2ff5e10edf42bfd3dcdfc122a93f4f8753f58c8d94a79142"
+    },
+    {
+      "case": "two_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "869056eac0deba7a6dc4062f05b51bda602db59dd74dd132701721b423f7fc6f",
+      "image_sha256": "7bb21e3a71fb16bf5f153576d7d362964a5692f88d3c812c5dbac4f6b4b0eba1",
+      "median_seconds": 0.049400300020352006,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9949182501104729,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9898878874477908,
+        "max_vertices": 20,
+        "object_count": 1,
+        "vertex_counts": [
+          20
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.05055658001219854,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265721,
+      "prediction_sha256": "2cb838c73411f8bb5f98c954db3e5999abd5600d13baf79db5b60e36ee95a8ac"
+    },
+    {
+      "case": "touching_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "4be8f216f60da8ec52b1b29dbcb72576a1bd5a36d0afa65b16216dbf052235c3",
+      "image_sha256": "447c19deed8a6b09220b4dcc5a642ca83359e37bc2cab795d8d8d3bca79a0bd3",
+      "median_seconds": 0.018904199998360127,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9928102254571276,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9857230986163744,
+        "max_vertices": 24,
+        "object_count": 1,
+        "vertex_counts": [
+          24
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.02121741999872029,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "9726343feee1409f224a913105dbcce3ae4aaa8f2f4a3bab8e87166bf9416971"
+    },
+    {
+      "case": "touching_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "4be8f216f60da8ec52b1b29dbcb72576a1bd5a36d0afa65b16216dbf052235c3",
+      "image_sha256": "447c19deed8a6b09220b4dcc5a642ca83359e37bc2cab795d8d8d3bca79a0bd3",
+      "median_seconds": 0.0015912000089883804,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9987647785424387,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9975326048642933,
+        "max_vertices": 74,
+        "object_count": 1,
+        "vertex_counts": [
+          74
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0016316799854394048,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "deb58089d287a868ba8c9c190edf4cf1eaaadf9f94e8ec0cc1272aae88e50362"
+    },
+    {
+      "case": "touching_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "4be8f216f60da8ec52b1b29dbcb72576a1bd5a36d0afa65b16216dbf052235c3",
+      "image_sha256": "447c19deed8a6b09220b4dcc5a642ca83359e37bc2cab795d8d8d3bca79a0bd3",
+      "median_seconds": 0.0058363999996799976,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9987647785424387,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9975326048642933,
+        "max_vertices": 74,
+        "object_count": 1,
+        "vertex_counts": [
+          74
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.006303620006656274,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "deb58089d287a868ba8c9c190edf4cf1eaaadf9f94e8ec0cc1272aae88e50362"
+    },
+    {
+      "case": "touching_objects",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "4be8f216f60da8ec52b1b29dbcb72576a1bd5a36d0afa65b16216dbf052235c3",
+      "image_sha256": "447c19deed8a6b09220b4dcc5a642ca83359e37bc2cab795d8d8d3bca79a0bd3",
+      "median_seconds": 0.05508749998989515,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9943688201126236,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9888007054673721,
+        "max_vertices": 24,
+        "object_count": 1,
+        "vertex_counts": [
+          24
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.05976407999405638,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "924d0b3467c2eb810d6fbdaabd907f2799f9842fe1ae430e813b7df644d1e9a5"
+    },
+    {
+      "case": "rgba_alpha",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "2400f6f3135717de452bdaa69f5d7413619dd7c572bc51722ae09bb27a460448",
+      "image_sha256": "1c515084e1d3d829e7fe8be7f1500b25a618d20d209d6ee27b7d46cf12eec58e",
+      "median_seconds": 0.0167051000171341,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.991494532199271,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.983132530120482,
+        "max_vertices": 17,
+        "object_count": 1,
+        "vertex_counts": [
+          17
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.01691852001240477,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 673808,
+      "prediction_sha256": "788a78d67dce17492d4e555905ebd915aa699349f8e789d159853e014d645bf2"
+    },
+    {
+      "case": "rgba_alpha",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "2400f6f3135717de452bdaa69f5d7413619dd7c572bc51722ae09bb27a460448",
+      "image_sha256": "1c515084e1d3d829e7fe8be7f1500b25a618d20d209d6ee27b7d46cf12eec58e",
+      "median_seconds": 0.0010768999927677214,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9988749598199935,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9977524482260395,
+        "max_vertices": 81,
+        "object_count": 1,
+        "vertex_counts": [
+          81
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0017970800108741967,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 673840,
+      "prediction_sha256": "af0442e724a67335e2d33f6eb722954ad5bcabdbae1cb3564542cb2164ecb5b9"
+    },
+    {
+      "case": "rgba_alpha",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "2400f6f3135717de452bdaa69f5d7413619dd7c572bc51722ae09bb27a460448",
+      "image_sha256": "1c515084e1d3d829e7fe8be7f1500b25a618d20d209d6ee27b7d46cf12eec58e",
+      "median_seconds": 0.00502420001430437,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9988749598199935,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9977524482260395,
+        "max_vertices": 81,
+        "object_count": 1,
+        "vertex_counts": [
+          81
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.005068539996864274,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 673856,
+      "prediction_sha256": "af0442e724a67335e2d33f6eb722954ad5bcabdbae1cb3564542cb2164ecb5b9"
+    },
+    {
+      "case": "rgba_alpha",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "2400f6f3135717de452bdaa69f5d7413619dd7c572bc51722ae09bb27a460448",
+      "image_sha256": "1c515084e1d3d829e7fe8be7f1500b25a618d20d209d6ee27b7d46cf12eec58e",
+      "median_seconds": 0.05672359999152832,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9934122782201027,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9869107845499077,
+        "max_vertices": 17,
+        "object_count": 1,
+        "vertex_counts": [
+          17
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.06030888000386767,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1413529,
+      "prediction_sha256": "d82f21c5b20a7eb9ea78923017e772c06c55675ce478e8dc90405a7ff62360df"
+    },
+    {
+      "case": "noisy_background",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "03d9dfd8b09d0a9c8858eadcf43bb36a067f93c2be1d4c1534d2588b2871dcaf",
+      "image_sha256": "35704ec1f4c47219065de19f7ef56217f9bf9538bec939f88170420e8033e55d",
+      "median_seconds": 0.01738790000672452,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9938595782499798,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9877941058379507,
+        "max_vertices": 19,
+        "object_count": 1,
+        "vertex_counts": [
+          19
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.019501800008583814,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "0cee12936d6c84ee0b1bf0e91670168d2bea191038b054d9ec5de3b7e1e4e4b5"
+    },
+    {
+      "case": "noisy_background",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "03d9dfd8b09d0a9c8858eadcf43bb36a067f93c2be1d4c1534d2588b2871dcaf",
+      "image_sha256": "35704ec1f4c47219065de19f7ef56217f9bf9538bec939f88170420e8033e55d",
+      "median_seconds": 0.0017075000214390457,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9991560503154764,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9983135239318985,
+        "max_vertices": 85,
+        "object_count": 1,
+        "vertex_counts": [
+          85
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.0021872200013604015,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "f8e5aa2b8f91ef83818eef9545ce9ae4a666288705efa65c5db5e588b22c86d0"
+    },
+    {
+      "case": "noisy_background",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "03d9dfd8b09d0a9c8858eadcf43bb36a067f93c2be1d4c1534d2588b2871dcaf",
+      "image_sha256": "35704ec1f4c47219065de19f7ef56217f9bf9538bec939f88170420e8033e55d",
+      "median_seconds": 0.00607899998431094,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9991560503154764,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9983135239318985,
+        "max_vertices": 85,
+        "object_count": 1,
+        "vertex_counts": [
+          85
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.0063157600001432,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "f8e5aa2b8f91ef83818eef9545ce9ae4a666288705efa65c5db5e588b22c86d0"
+    },
+    {
+      "case": "noisy_background",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "03d9dfd8b09d0a9c8858eadcf43bb36a067f93c2be1d4c1534d2588b2871dcaf",
+      "image_sha256": "35704ec1f4c47219065de19f7ef56217f9bf9538bec939f88170420e8033e55d",
+      "median_seconds": 0.08265080000273883,
+      "metrics": {
+        "boundary_f1": 1.0,
+        "dice": 0.9951211644691746,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9902897038760934,
+        "max_vertices": 20,
+        "object_count": 1,
+        "vertex_counts": [
+          20
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.08564402000629343,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "433d71ea0c11e2e23fc50e0caf36e6f3630bf7a728087b43c89f079be5914b83"
+    },
+    {
+      "case": "high_detail_boundary",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "c6c1a3460ace64fa1b91395d52fa482b2e21e99a4e532ae1284e66b6deb8fdb5",
+      "image_sha256": "17d8c5579fdbb87465caebccc8d2b0805edb4c84962313269e855c7956a19074",
+      "median_seconds": 0.06320499998400919,
+      "metrics": {
+        "boundary_f1": 0.9684733654294145,
+        "dice": 0.9783295019157088,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9575783031321253,
+        "max_vertices": 115,
+        "object_count": 1,
+        "vertex_counts": [
+          115
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "basic",
+      "p95_seconds": 0.0668161399953533,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591384,
+      "prediction_sha256": "b064be3c59b5924ee786fb6406a3c8a20496f6479d442efaa17c5eb17230cd40"
+    },
+    {
+      "case": "high_detail_boundary",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "c6c1a3460ace64fa1b91395d52fa482b2e21e99a4e532ae1284e66b6deb8fdb5",
+      "image_sha256": "17d8c5579fdbb87465caebccc8d2b0805edb4c84962313269e855c7956a19074",
+      "median_seconds": 0.0028313000220805407,
+      "metrics": {
+        "boundary_f1": 0.9556603773584905,
+        "dice": 0.9886131208596636,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9774826441291881,
+        "max_vertices": 311,
+        "object_count": 1,
+        "vertex_counts": [
+          311
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "perfect",
+      "p95_seconds": 0.002877640019869432,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591416,
+      "prediction_sha256": "e3b0854d8a4cf76c08348fb6eedc2c8e0f78fe02e1cffe049660a01d62dd9964"
+    },
+    {
+      "case": "high_detail_boundary",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "c6c1a3460ace64fa1b91395d52fa482b2e21e99a4e532ae1284e66b6deb8fdb5",
+      "image_sha256": "17d8c5579fdbb87465caebccc8d2b0805edb4c84962313269e855c7956a19074",
+      "median_seconds": 0.01412720000371337,
+      "metrics": {
+        "boundary_f1": 0.9556603773584905,
+        "dice": 0.9886131208596636,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9774826441291881,
+        "max_vertices": 311,
+        "object_count": 1,
+        "vertex_counts": [
+          311
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "enhanced",
+      "p95_seconds": 0.015133240004070103,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 591496,
+      "prediction_sha256": "e3b0854d8a4cf76c08348fb6eedc2c8e0f78fe02e1cffe049660a01d62dd9964"
+    },
+    {
+      "case": "high_detail_boundary",
+      "deterministic": true,
+      "errors": [],
+      "ground_truth_sha256": "c6c1a3460ace64fa1b91395d52fa482b2e21e99a4e532ae1284e66b6deb8fdb5",
+      "image_sha256": "17d8c5579fdbb87465caebccc8d2b0805edb4c84962313269e855c7956a19074",
+      "median_seconds": 0.055113300011726096,
+      "metrics": {
+        "boundary_f1": 0.974050046339203,
+        "dice": 0.983172855077368,
+        "expected_holes": 0,
+        "expected_objects": 1,
+        "hole_count": 0,
+        "iou": 0.9669026441580444,
+        "max_vertices": 141,
+        "object_count": 1,
+        "vertex_counts": [
+          141
+        ],
+        "within_vertex_limit": true
+      },
+      "mode": "grabcut",
+      "p95_seconds": 0.05600449999328703,
+      "peak_memory_note": "tracemalloc cobre alocações Python; memória nativa do OpenCV pode não aparecer.",
+      "peak_python_bytes_max": 1265977,
+      "prediction_sha256": "43abf8e70bdc41ff64ca1f9507c8b2793d1f12568afef05fdfa378e291d009cf"
+    }
+  ],
+  "schema": 1,
+  "summary": {
+    "errors": 0,
+    "nondeterministic": 0,
+    "runs": 44
+  }
+}

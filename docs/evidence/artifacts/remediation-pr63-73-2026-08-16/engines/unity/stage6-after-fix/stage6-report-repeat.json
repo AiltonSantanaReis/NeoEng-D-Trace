@@ -1,0 +1,24 @@
+{
+    "Success": true,
+    "ErrorCode": "",
+    "Error": "",
+    "SourceImagePath": "Assets/source.png",
+    "ImportedSprites": 1,
+    "ImportedPrefabs": 1,
+    "ImportedColliders": 1,
+    "Assets": [
+        {
+            "ObjectId": "hero",
+            "SpritePath": "Assets/NeoEngGenerated/hero.sprite.asset",
+            "MetadataPath": "Assets/NeoEngGenerated/hero.metadata.asset",
+            "PrefabPath": "Assets/NeoEngGenerated/hero.prefab",
+            "ColliderPathCount": 1,
+            "ColliderPointCount": 4,
+            "Status": "UPDATED",
+            "OverrideApplied": false
+        }
+    ],
+    "UpdatedAssets": 1,
+    "UnchangedAssets": 0,
+    "OverridesApplied": 0
+}

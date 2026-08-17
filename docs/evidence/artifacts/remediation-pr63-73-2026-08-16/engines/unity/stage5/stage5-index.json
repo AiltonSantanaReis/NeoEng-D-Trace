@@ -1,0 +1,38 @@
+{
+  "engine": "unity",
+  "files": {
+    "package.json": {
+      "bytes": 361,
+      "sha256": "b0dc398b9b514b04a2a4938b91d931bcfb40c8fd5564b16ff307204f3125c398"
+    },
+    "stage5-report-negative.json": {
+      "bytes": 1148,
+      "sha256": "d3b0bb4f20bd430c2544564f0e12449b52a916246ebb012daa5fe39ad1717831"
+    },
+    "stage5-report-repeat.json": {
+      "bytes": 1155,
+      "sha256": "6820bf04ba1edf246b7dd628993297d7d0e2a89340724855e5e4dacf983bbf36"
+    },
+    "stage5-report.json": {
+      "bytes": 2888,
+      "sha256": "3f186f781ecbbae95cc2c66d1fa88f686d065181b59f1264f0386acf6608d9aa"
+    },
+    "unity-validation-negative.log": {
+      "bytes": 53955,
+      "sha256": "d102aad30c46bcf5ed4b0722a062f0225eaa715005c7005828185dd75e39ee05"
+    },
+    "unity-validation-repeat.log": {
+      "bytes": 52324,
+      "sha256": "da91253ffc6835a3dbd954305a97ede4956627af28813454035447c630a01e20"
+    },
+    "unity-validation.log": {
+      "bytes": 52285,
+      "sha256": "68536f563e86e2f5d421180dedfc58cab14518bfb5276219541bb4bc9959e928"
+    }
+  },
+  "package_name": "com.neoeng.dtrace",
+  "schema_version": 1,
+  "stage": 5,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}
