@@ -1,0 +1,13 @@
+{
+    "Success": false,
+    "ErrorCode": "import_exception",
+    "Error": "source image hash does not match manifest",
+    "SourceImagePath": "",
+    "ImportedSprites": 0,
+    "ImportedPrefabs": 0,
+    "ImportedColliders": 0,
+    "Assets": [],
+    "UpdatedAssets": 0,
+    "UnchangedAssets": 0,
+    "OverridesApplied": 0
+}

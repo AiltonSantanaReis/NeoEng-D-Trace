@@ -382,6 +382,7 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
     canny_threshold2 = int(kwargs.get("canny_threshold2", 200))
     rdp_epsilon = float(kwargs.get("rdp_epsilon", 2.0))
     min_area = float(kwargs.get("min_area", 100.0))
+    detect_holes = bool(kwargs.get("detect_holes", True))
 
     gray = _to_uint8_grayscale(image)
     source_mask = _foreground_mask(image, gray)
@@ -390,12 +391,15 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
         gray = _resize_grayscale(gray, downscale)
         blurred = cv2.GaussianBlur(gray, (0, 0), sigmaX=1.0)
         mask = cv2.Canny(blurred, canny_threshold1, canny_threshold2)
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    retr_mode = cv2.RETR_CCOMP if detect_holes else cv2.RETR_EXTERNAL
+    contours, hierarchy = cv2.findContours(mask, retr_mode, cv2.CHAIN_APPROX_NONE)
     _validate_contours(contours)
 
     detected_polygons = []
 
-    for contour in contours:
+    for index, contour in enumerate(contours):
+        if hierarchy is not None and hierarchy[0][index][3] != -1:
+            continue
         area = cv2.contourArea(contour)
         if area < min_area:
             continue
@@ -423,11 +427,38 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
         x, y, w, h = cv2.boundingRect(contour)
 
         result_points: List[Tuple[int, int]] = []
+        holes: List[List[Tuple[int, int]]] = []
+        child_index = (
+            int(hierarchy[0][index][2])
+            if detect_holes and hierarchy is not None
+            else -1
+        )
+        while child_index != -1:
+            hole_contour = contours[child_index]
+            if cv2.contourArea(hole_contour) >= min_area:
+                hole_points: List[Tuple[float, float]] = []
+                for hole_index in range(len(hole_contour)):
+                    hole_point = hole_contour[hole_index]
+                    px = float(hole_point[0][0])
+                    py = float(hole_point[0][1])
+                    hole_points.append((px, py))
+                if len(hole_points) > 2:
+                    simplified_hole = rdp_simplify(hole_points, rdp_epsilon)
+                else:
+                    simplified_hole = hole_points
+                if len(simplified_hole) >= 3:
+                    holes.append([(int(px), int(py)) for px, py in simplified_hole])
+            child_index = int(hierarchy[0][child_index][0])
+
         if downscale != 1.0:
             scale_factor = 1.0 / downscale
             result_points = [
                 (int(px * scale_factor), int(py * scale_factor))
                 for px, py in simplified_points
+            ]
+            holes = [
+                [(int(px * scale_factor), int(py * scale_factor)) for px, py in hole]
+                for hole in holes
             ]
             x, y, w, h = (
                 int(x * scale_factor),
@@ -444,6 +475,7 @@ def _detect_polygons_basic(image: np.ndarray, **kwargs: Any) -> List[Dict[str, A
                 "polygon": result_points,
                 "area": float(area),
                 "bbox": (x, y, w, h),
+                "holes": holes,
             }
         )
 

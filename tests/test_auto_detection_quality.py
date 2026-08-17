@@ -59,6 +59,16 @@ def test_real_hole_contract_is_one_object_with_one_hole(mode: str) -> None:
         assert not holes
 
 
+def test_basic_detection_preserves_internal_hole() -> None:
+    case = next(case for case in build_cases() if case.name == "ring_hole")
+    polygons = list(
+        detect_polygons(case.image, mode="basic", min_area=25.0, detect_holes=True)
+    )
+
+    assert len(polygons) == 1
+    assert len(polygons[0].get("holes", [])) == 1
+
+
 def test_high_detail_contour_is_bounded_and_deterministic() -> None:
     case = next(case for case in build_cases() if case.name == "high_detail_boundary")
     first, first_mask, _ = _run(case, "enhanced")

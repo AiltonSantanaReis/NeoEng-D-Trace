@@ -93,6 +93,8 @@ def test_mask_viewer_is_bilingual_and_language_change_preserves_view(qt_app):
     assert dialog.detect_button.text() == "Detectar Polígonos"
     assert dialog.preset_combo.itemData(0) == "Basic"
     assert dialog.preset_combo.itemText(0) == "Básico"
+    dialog._apply_preset("Basic")
+    assert dialog.params["detect_holes"] is True
 
     dialog.update_language("en")
     assert dialog.windowTitle() == "Mask Viewer - Auto Detection X-Ray"

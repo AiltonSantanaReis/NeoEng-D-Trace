@@ -1,0 +1,106 @@
+{
+  "engine": "unity",
+  "format_id": "neoeng-d-trace-engine-integration",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.2.0"
+  },
+  "metadata": {
+    "format_id": "neoeng-d-trace-scene-metadata",
+    "groups": [],
+    "layers": [
+      {
+        "id": "layer_default",
+        "locked": false,
+        "name": "Default",
+        "visible": true
+      }
+    ],
+    "profile": "generic",
+    "schema_version": 1,
+    "sprites": [
+      {
+        "collision": null,
+        "group": null,
+        "id": "hero",
+        "layer": "layer_default",
+        "padding": 4,
+        "pivot": {
+          "x": 8.0,
+          "y": 8.0
+        },
+        "pivot_normalized": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "polygon_in_image": [
+          [
+            4,
+            6
+          ],
+          [
+            20,
+            6
+          ],
+          [
+            20,
+            22
+          ],
+          [
+            4,
+            22
+          ]
+        ],
+        "polygon_in_sprite": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0
+          ],
+          [
+            16.0,
+            16.0
+          ],
+          [
+            0.0,
+            16.0
+          ]
+        ],
+        "rect": {
+          "h": 16.0,
+          "w": 16.0,
+          "x": 4.0,
+          "y": 6.0
+        },
+        "rect_trimmed": {
+          "h": 16.0,
+          "w": 16.0,
+          "x": 0.0,
+          "y": 0.0
+        },
+        "trimmed": true
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "image": {
+      "path": "source.png",
+      "sha256": "767f66c481f4834680d544ac754d30243d4693ce683f93412629840925101554"
+    },
+    "metadata": {
+      "format_id": "neoeng-d-trace-scene-metadata",
+      "schema_version": 1,
+      "sha256": "e36d45910f85482ada13736645cbaad51f709cefdba4628101951b5a1fde9419"
+    }
+  },
+  "sync": {
+    "destructive_update": false,
+    "direction": "dtrace-to-engine",
+    "generated_root": "NeoEngGenerated",
+    "override_suffix": ".ndt.override.json"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "engine": "godot",
+  "fixture": {
+    "manifest": {
+      "bytes": 7027,
+      "sha256": "3b111c6ef1f4becd8dbe6dd751cfafb80efba250e6353b4437690b1e938a698a"
+    },
+    "source_image": {
+      "bytes": 139,
+      "sha256": "10bda7a877c3bc408889be6781b2287b995014f7415125256dae27d329255063"
+    }
+  },
+  "godot_version": "4.7.stable",
+  "runs": [
+    {
+      "marker": "",
+      "mode": "asset-preimport",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Inicialização do Projeto (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Escaneando estrutura de arquivos...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Carregando nomes de classe globais...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verificando GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Criando scripts autoload...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Inicializando plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Iniciando escaneamento de arquivos...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registrando classes globais... (6 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  14% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | NeoEngDTraceImporter\u001b[39m\u001b[0m\n[  28% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | NeoEngDTraceManifestDiagnostic\u001b[39m\u001b[0m\n[  42% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  57% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  71% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | Started Escaneando ações... (3 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | frame_0000.png\u001b[39m\u001b[0m\n[  25% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | frame_0001.png\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | source.png\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importando Recursos (3 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparando arquivos para reimportação...\u001b[39m\u001b[0m\n[  25% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparando arquivos para reimportação...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparando arquivos para reimportação...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executando operações pré-reimportação...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | frame_0000.png\u001b[39m\u001b[0m\n[  25% ] \u001b[90m\u001b[1mreimport\u001b[22m | frame_0001.png\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mreimport\u001b[22m | source.png\u001b[39m\u001b[0m\n[  75% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizando Importação de Recursos...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importando Recursos (3 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executando operações pós-reimportação...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Carregando editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Carregando layout do editor...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Carregando abas...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_INITIAL=UPDATED",
+      "mode": "initial",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_INITIAL=UPDATED\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_REPEAT=UNCHANGED",
+      "mode": "repeat",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_REPEAT=UNCHANGED\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_OVERRIDE=PRESERVED",
+      "mode": "override",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_OVERRIDE=PRESERVED\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_OVERRIDE_REPEAT=UNCHANGED",
+      "mode": "override-repeat",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_OVERRIDE_REPEAT=UNCHANGED\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_MANUAL=CONFLICT",
+      "mode": "manual",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_MANUAL=CONFLICT\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_CONFIRMATION=ACCEPTED",
+      "mode": "confirmed",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_CONFIRMATION=ACCEPTED\n",
+      "returncode": 0,
+      "success": true
+    },
+    {
+      "marker": "GODOT_SYNC_STAGE7_HASH_DRIFT=REJECTED",
+      "mode": "hash-drift",
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>\n\nGODOT_SYNC_STAGE7_HASH_DRIFT=REJECTED\n",
+      "returncode": 0,
+      "success": true
+    }
+  ],
+  "scenarios": {
+    "destructive_confirmation_required": true,
+    "hash_drift_rejected": true,
+    "initial_update": true,
+    "manual_divergence_blocked": true,
+    "override_preserved": true,
+    "repeat_unchanged": true
+  },
+  "schema_version": 1,
+  "stage": 7,
+  "status": "SUCCESS"
+}

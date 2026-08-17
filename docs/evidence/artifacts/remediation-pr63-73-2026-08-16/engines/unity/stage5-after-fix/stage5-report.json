@@ -1,0 +1,111 @@
+{
+  "editor_assembly": "LOADED",
+  "engine": "unity",
+  "installation": "local-file-upm",
+  "negative": {
+    "marker": "UNITY_NATIVE_PACKAGE_STAGE5=FAILURE",
+    "report": {
+      "Checks": [
+        {
+          "Detail": "actual=com.neoeng.dtrace; expected=com.neoeng.dtrace",
+          "Name": "package_name",
+          "Success": true
+        },
+        {
+          "Detail": "actual=0.2.0; expected=0.2.0",
+          "Name": "package_version",
+          "Success": true
+        },
+        {
+          "Detail": "package.json exists",
+          "Name": "package_manifest",
+          "Success": true
+        },
+        {
+          "Detail": "runtime asmdef exists",
+          "Name": "runtime_assembly",
+          "Success": true
+        },
+        {
+          "Detail": "editor asmdef exists",
+          "Name": "editor_assembly",
+          "Success": true
+        },
+        {
+          "Detail": "runtime identity contract is stable",
+          "Name": "identity_contract",
+          "Success": true
+        },
+        {
+          "Detail": "forbidden: forbidden.exe",
+          "Name": "source_only",
+          "Success": false
+        }
+      ],
+      "PackageName": "com.neoeng.dtrace",
+      "PackageVersion": "0.2.0",
+      "SourcePolicy": "source-only",
+      "Success": false
+    },
+    "returncode": 1,
+    "source_only_violation_rejected": true
+  },
+  "package_name": "com.neoeng.dtrace",
+  "package_version": "0.2.0",
+  "positive": {
+    "marker": "UNITY_NATIVE_PACKAGE_STAGE5=SUCCESS",
+    "report": {
+      "Checks": [
+        {
+          "Detail": "actual=com.neoeng.dtrace; expected=com.neoeng.dtrace",
+          "Name": "package_name",
+          "Success": true
+        },
+        {
+          "Detail": "actual=0.2.0; expected=0.2.0",
+          "Name": "package_version",
+          "Success": true
+        },
+        {
+          "Detail": "package.json exists",
+          "Name": "package_manifest",
+          "Success": true
+        },
+        {
+          "Detail": "runtime asmdef exists",
+          "Name": "runtime_assembly",
+          "Success": true
+        },
+        {
+          "Detail": "editor asmdef exists",
+          "Name": "editor_assembly",
+          "Success": true
+        },
+        {
+          "Detail": "runtime identity contract is stable",
+          "Name": "identity_contract",
+          "Success": true
+        },
+        {
+          "Detail": "no native or executable artifacts",
+          "Name": "source_only",
+          "Success": true
+        }
+      ],
+      "PackageName": "com.neoeng.dtrace",
+      "PackageVersion": "0.2.0",
+      "SourcePolicy": "source-only",
+      "Success": true
+    },
+    "returncode": 0
+  },
+  "repeat": {
+    "marker": "UNITY_NATIVE_PACKAGE_STAGE5=SUCCESS",
+    "report_identical": true,
+    "returncode": 0
+  },
+  "schema_version": 1,
+  "stage": 5,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}

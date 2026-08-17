@@ -1,6 +1,8 @@
 - ADENDO_INTEGRIDADE_ARTEFATOS_2026-08-16.md — correção da cadeia de bytes, bloqueio de manifests e limites históricos declarados; não é aprovação de merge.
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
+- ETAPA_AUDITOR_VISUAL_REPRODUTIVEL_2026-08-16.md — contrato fail-closed para PNGs Pillow/OpenCV, hashes, alfa, geometrias Qt reais, clipping, sobreposição, paleta QSS e anotações reproduzíveis.
+
 - `ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md` — addon Godot somente com GDScript, diagnóstico somente leitura, ZIP determinístico e execução headless real; não cobre a importação de Sprite2D/colisão da etapa 4.
 
 - `VALIDACAO_REAL_ENGINES_HARNESS_2026-08-16.md` — execução real do harness de exportadores no Godot 4.7 e Unity 6000.5.7f1; aprova apenas o escopo JSON/PNG/GLB existente, não os plugins nativos planejados.
