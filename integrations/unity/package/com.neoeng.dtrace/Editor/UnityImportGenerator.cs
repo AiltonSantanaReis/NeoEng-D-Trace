@@ -232,6 +232,49 @@ namespace NeoEng.DTrace.Editor
             }
         }
 
+        public static ImportBatchResult ImportManifests(IEnumerable<string> manifestPaths)
+        {
+            string[] ordered = (manifestPaths ?? Array.Empty<string>())
+                .Where(path => !string.IsNullOrWhiteSpace(path))
+                .Select(NormalizeAssetPath)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(path => path, StringComparer.Ordinal)
+                .ToArray();
+            using (OutputSnapshot snapshot = OutputSnapshot.Create())
+            {
+                List<ImportResult> results = new List<ImportResult>();
+                try
+                {
+                    foreach (string manifestPath in ordered)
+                    {
+                        ImportResult result = ImportManifestUnsafe(manifestPath);
+                        results.Add(result);
+                        if (!result.Success)
+                        {
+                            return RestoreBatch(snapshot, results, "manifest import failed");
+                        }
+                    }
+                    return ImportBatchResult.SuccessResult(results);
+                }
+                catch (Exception exception)
+                {
+                    return RestoreBatch(snapshot, results, exception.Message);
+                }
+            }
+        }
+
+        private static ImportBatchResult RestoreBatch(
+            OutputSnapshot snapshot,
+            List<ImportResult> results,
+            string error)
+        {
+            if (!snapshot.Restore())
+            {
+                return ImportBatchResult.Failure("rollback_failure", "generated Unity outputs could not be restored", results);
+            }
+            return ImportBatchResult.Failure("global_transaction", error, results);
+        }
+
         private static ImportResult ImportManifestUnsafe(string manifestPath)
         {
             string normalizedManifestPath = NormalizeAssetPath(manifestPath);
@@ -1599,6 +1642,28 @@ namespace NeoEng.DTrace.Editor
             public CollisionPartData[] parts;
         }
         [Serializable] public sealed class CollisionPartData { public Vector2[] points; }
+
+        [Serializable]
+        public sealed class ImportBatchResult
+        {
+            public bool Success;
+            public string ErrorCode;
+            public string Error;
+            public List<ImportResult> Results = new List<ImportResult>();
+
+            public static ImportBatchResult SuccessResult(List<ImportResult> results)
+            {
+                return new ImportBatchResult { Success = true, Results = results };
+            }
+
+            public static ImportBatchResult Failure(string code, string error, List<ImportResult> results)
+            {
+                return new ImportBatchResult { Success = false, ErrorCode = code, Error = error, Results = results };
+            }
+
+            public string ErrorSummary() { return ErrorCode + ": " + Error; }
+            public string ToJson() { return JsonUtility.ToJson(this, true); }
+        }
 
         [Serializable]
         public sealed class ImportResult

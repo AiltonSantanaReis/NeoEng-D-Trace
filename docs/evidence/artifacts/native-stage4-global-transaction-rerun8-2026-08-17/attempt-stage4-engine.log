@@ -1,0 +1,898 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started InicializaÃ§Ã£o do Projeto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando estrutura de arquivos...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Carregando nomes de classe globais...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Criando scripts autoload...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneamento de arquivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registrando classes globais... (5 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | NeoEngDTraceImporter[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | NeoEngDTraceManifestDiagnostic[39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importando Recursos (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparando arquivos para reimportaÃ§Ã£o...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executando operaÃ§Ãµes prÃ©-reimportaÃ§Ã£o...[39m[0m
+[   0% ] [90m[1mreimport[22m | source.png[39m[0m
+[  50% ] [90m[1mreimport[22m | Finalizando ImportaÃ§Ã£o de Recursos...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importando Recursos (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executando operaÃ§Ãµes pÃ³s-reimportaÃ§Ã£o...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Carregando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Carregando layout do editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Carregando abas...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+
+Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>
+
+GODOT_STAGE4_GLOBAL_ROLLBACK=PASS
+GODOT_STAGE4_GLOBAL_IMPORT=PASS
+GODOT_STAGE4_GLOBAL_REPEAT=PASS
+NATIVE_STAGE4_GLOBAL_GODOT=SUCCESS
+
+
+Aborting batchmode due to failure:
+Scripts have compiler errors.
+
+
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.7f1 (017862109af0) revision 96354'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) Professional' Language: 'pt' Physical Memory: 32690 MB
+[Licensing::IpcConnector] Channel LicenseClient-<redacted> doesn't exist
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: <redacted>
+[Licensing::Module] Successfully launched the LicensingClient (PId: <redacted>)
+
+COMMAND LINE ARGUMENTS:
+<local-path>
+-batchmode
+-nographics
+-projectPath
+<local-path>\unity
+-logFile
+<local-path>\unity.log
+Successfully changed project path to: <local-path>\unity
+<local-path>
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.<redacted-player-connection>
+
+<redacted-player-connection>"[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3741507364 [EditorId] 3741507364 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+<redacted-player-connection>"[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3741507364 [EditorId] 3741507364 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+<redacted-player-connection>"[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3741507364 [EditorId] 3741507364 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+<redacted-player-connection>"[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 3741507364 [EditorId] 3741507364 [Version] 1048832 [Id] WindowsEditor(<redacted>) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+<redacted-player-connection>
+<redacted-player-connection>
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-<redacted>, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-17T23:25:41.6897902Z"
+[Package Manager] Connected to IPC stream "Upm-3548" after 0.3 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: <redacted>, path: "<local-path>")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:<redacted>
+  Correlation Id:<redacted>
+  External correlation Id:<redacted>
+  Machine Id:<redacted>
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-<redacted>" (connect: 0.37s, validation: 0.05s, handshake: 0.05s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-17T23:25:41.7870556Z"
+[Licensing::Module] Connected to LicensingClient (PId: <redacted>, launch time: 0.01, total connection time: 0.47s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: <redacted>
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.52s
+[Licensing::Module] Licensing is initialized (took 0.09s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+Rebuilding Library because the asset database could not be found!
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Initialize engine version: 6000.5.7f1 (017862109af0)
+[Subsystems] Discovering subsystems at path <local-path>
+[Subsystems] Discovering subsystems at path <local-path>
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '<local-path>
+Mono path[1] = '<local-path>
+Mono path[2] = '<local-path>
+Mono config path = '<local-path>
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=<network-address>:56548
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: <local-path>
+Register platform support module: <local-path>
+Registered in 0.006860 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:False
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.393 seconds
+Domain Reload Profiling: 1048ms
+	BeginReloadAssembly (197ms)
+		CreateAndSetChildDomain (17ms)
+	RebuildCommonClasses (5ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (109ms)
+	LoadAllAssembliesAndSetupDomain (325ms)
+		LoadAssemblies (169ms)
+		AnalyzeDomain (226ms)
+			TypeCache.Refresh (224ms)
+				TypeCache.ScanAssembly (210ms)
+	FinalizeReload (395ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (94ms)
+			ProcessInitializeOnLoadAttributes (104ms)
+			ProcessInitializeOnLoadMethodAttributes (120ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Done resolving packages in 0.48 seconds
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Lock file was created
+[Package Manager] Registered 1 packages:
+  Local packages:
+    com.neoeng.dtrace@file:<repo>\integrations\unity\package\com.neoeng.dtrace (location: <repo>\integrations\unity\package\com.neoeng.dtrace)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+AcceleratorClientConnectionCallback - disconnected - :0
+[ScriptCompilation] Requested script compilation because: Assembly Definition File(s) changed
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: htt<local-path>
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: <local-path>\unity
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST htt<local-path>
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST htt<local-path>
+Starting: <local-path>"Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: <local-path>
+ExitCode: 4 Duration: 0s45ms
+[             ] Require frontend run.  Library/Bee/1900b0aE.dag couldn't be loaded
+DisplayProgressbar: Compiling Scripts
+Starting: <local-path>"<local-path>" "Library/Bee/1900b0aE.dag.json" "Library/Bee/1900b0aE-inputdata.json" "Library\Bee\buildprogram0.traceevents"
+WorkingDir: <local-path>
+ExitCode: 0 Duration: 0s242ms
+Starting: <local-path>"Library/Bee/1900b0aE.dag" --continue-on-failure --dagfilejson="Library\Bee\1900b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: <local-path>
+ExitCode: 3 Duration: 3s456ms
+Finished compiling graph: 179 nodes, 794 flattened edges (776 ToBuild, 6 ToUse), maximum node priority 24
+[  1/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.TextCoreTextEngineModule.dll_9D6CC6E6B153E63C.mvfrm
+[  2/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.ShaderCompilationModule.dll_8BD4C024CDC49D21.mvfrm
+[  3/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SpriteShapeModule.dll_65C440F1F8C96AFF.mvfrm
+[  4/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SceneViewModule.dll_0C55D55C7B149334.mvfrm
+[  5/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SafeModeModule.dll_45C769F6FF45AC21.mvfrm
+[  6/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SketchUpModule.dll_2DDC4F474A774838.mvfrm
+[  7/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.ShaderFoundryModule.dll_597B3810C6A1EA97.mvfrm
+[  8/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.ShaderBuildSettingsModule.dll_6CE3BB4B63CFCCEF.mvfrm
+[  9/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SubstanceModule.dll_77857F2E15A99E33.mvfrm
+[ 10/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.TilemapModule.dll_88620B9BED1BFA01.mvfrm
+[ 11/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.TextCoreFontEngineModule.dll_5584907521D02D1E.mvfrm
+[ 12/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SpriteMaskModule.dll_52C550464C6836D2.mvfrm
+[ 13/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.TextRenderingModule.dll_643E8A08F64F1F62.mvfrm
+[ 14/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.TerrainModule.dll_E965A41AD55F18F8.mvfrm
+[ 15/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.QuickSearchModule.dll_0E3FB034F2FA8E88.mvfrm
+[ 16/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.SceneTemplateModule.dll_1A9B67CDA3F26E09.mvfrm
+[ 17/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.QuickInstallModule.dll_E870CF5853AAF76F.mvfrm
+[ 18/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.InsightsModule.dll_DAA4F5080D8DD327.mvfrm
+[ 19/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.ProjectAuditorModule.dll_55D011101AD2D826.mvfrm
+[ 20/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.PresetsUIModule.dll_890C2B36884A1E2B.mvfrm
+[ 21/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.PropertiesModule.dll_96D41CF49DE40594.mvfrm
+[ 22/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.Physics2DModule.dll_32EB6D851BCBE07C.mvfrm
+[ 23/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.MediaModule.dll_BD7E9226B571C0A7.mvfrm
+[ 24/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GridModule.dll_4D8EE9F7B6C08597.mvfrm
+[ 25/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.MathematicsModule.dll_7177C170B79F2A29.mvfrm
+[ 26/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GraphicsStateCollectionSerializerModule.dll_1F4A5F0762D36DE9.mvfrm
+[ 27/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.PlayModeModule.dll_8BBB5BB09E0EBB88.mvfrm
+[ 28/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.PhysicsModule.dll_CF1F28ABFFA0D00A.mvfrm
+[ 29/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.PhysicsCore2DModule.dll_AEC3B8E88A15076B.mvfrm
+[ 30/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.HierarchyModule.dll_BB19F93043D104E8.mvfrm
+[ 31/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.MultiplayerModule.dll_CC0B3023FBEEC06D.mvfrm
+[ 32/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.LightingModule.dll_3FCEE1735231754D.mvfrm
+[ 33/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GraphViewModule.dll_CDA5F25485F1C626.mvfrm
+[ 34/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GenericRemoteModule.dll_570137188D143B80.mvfrm
+[ 35/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GIModule.dll_C1D63A79B11DBE43.mvfrm
+[ 36/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.EmbreeModule.dll_325107F39E868BE9.mvfrm
+[ 37/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GraphToolkitModule.dll_256E65C402D3B7C1.mvfrm
+[ 38/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.EditorToolbarModule.dll_F6FBF70FA505C3D1.mvfrm
+[ 39/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.CoreBusinessMetricsModule.dll_E4A86E1CB717CAA7.mvfrm
+[ 40/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.DeviceSimulatorModule.dll_ADE4E55F9DD1D021.mvfrm
+[ 41/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.DiagnosticsModule.dll_83302F279A23922F.mvfrm
+[ 42/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.AccessibilityModule.dll_C0FFE13D2B701281.mvfrm
+[ 43/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.AssetComplianceModule.dll_E6BFF54E188DB44E.mvfrm
+[ 44/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.AdaptivePerformanceModule.dll_64BD74A290D09BAD.mvfrm
+[ 45/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.ContentLoadModule.dll_E5796CD811A9DAE2.mvfrm
+[ 46/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.ClothModule.dll_58A6D590114216FD.mvfrm
+[ 47/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.BuildProfileModule.dll_099181191224893C.mvfrm
+[ 48/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.CoreModule.dll_701DCE099E6BEFA0.mvfrm
+[ 49/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.AIModule.dll_2999F16C156ED629.mvfrm
+[ 50/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.Graphs.dll_E035D55896AED9D2.mvfrm
+[ 51/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/Unity.Scripting.dll_6312751106B582E1.mvfrm
+[ 52/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.dll_A9B10FE8A27D34DA.mvfrm
+[ 53/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.WindowsStandalone.Extensions.dll_51E76FAEAFB11C00.mvfrm
+[ 54/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.WebGL.Extensions.dll_4D57E384C9B75910.mvfrm
+[ 55/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.VirtualTexturingModule.dll_FC0F60CE6D32C5A9.mvfrm
+[ 56/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.VFXModule.dll_ABC6154FD31E85D0.mvfrm
+[ 57/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityConsentModule.dll_C3D0A9CA3E9B0551.mvfrm
+[ 58/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.U2DRuntimeModule.dll_8EFD74B6ED4FAE3D.mvfrm
+[ 59/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityCurlModule.dll_CF480FAED0628CB9.mvfrm
+[ 60/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityConnectModule.dll_F22B129E31906F01.mvfrm
+[ 61/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TextRenderingModule.dll_F07F7C306F47A287.mvfrm
+[ 62/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityAnalyticsCommonModule.dll_52088BBDF19918E8.mvfrm
+[ 63/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TextCoreTextEngineModule.dll_1BCC4239C451A507.mvfrm
+[ 64/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TextCoreFontEngineModule.dll_D3E40BC834CDEBE9.mvfrm
+[ 65/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TLSModule.dll_2AE77CE0FCB11C63.mvfrm
+[ 66/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.StreamingModule.dll_50C05BCDAFD6520A.mvfrm
+[ 67/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.SubstanceModule.dll_2D6B7016FB295018.mvfrm
+[ 68/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.SpriteMaskModule.dll_5373BD8E4EAC501D.mvfrm
+[ 69/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.SpriteShapeModule.dll_6B8A10810B037B84.mvfrm
+[ 70/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.SharedInternalsModule.dll_A394E45706DF90E9.mvfrm
+[ 71/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ScriptingModule.dll_B34CC743DFD6497F.mvfrm
+[ 72/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ShaderVariantAnalyticsModule.dll_4CC5DB256676EEB2.mvfrm
+[ 73/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll_32FB239C5BF3452A.mvfrm
+[ 74/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.PhysicsBackendPhysXModule.dll_FF60F0E5AED23171.mvfrm
+[ 75/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.PerformanceReportingModule.dll_B6C9CE79D7B07A8A.mvfrm
+[ 76/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.MultiplayerModule.dll_D1D0FFB30E28D0F2.mvfrm
+[ 77/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.RenderAs2DModule.dll_D8BA4CC27F826916.mvfrm
+[ 78/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.MathematicsModule.dll_773D90FFC9D93AAE.mvfrm
+[ 79/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.PropertiesModule.dll_97828A3CA0281EDF.mvfrm
+[ 80/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.MarshallingModule.dll_FA9181BB398970CC.mvfrm
+[ 81/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.GridAndSnapModule.dll_8CE915A91D884F1E.mvfrm
+[ 82/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.InputModule.dll_1E60FCA9DEDA8D62.mvfrm
+[ 83/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.LocalizationModule.dll_C2B4CDF7800C3415.mvfrm
+[ 84/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.InputLegacyModule.dll_E36DFE44ED52F96B.mvfrm
+[ 85/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.IdentifiersModule.dll_2AB26B1C17DA1192.mvfrm
+[ 86/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.InputForUIModule.dll_6CF9A5178D5D575F.mvfrm
+[ 87/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.HotReloadModule.dll_1D742C833B81B64E.mvfrm
+[ 88/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.GridModule.dll_70AFBD4A5EC5F0C2.mvfrm
+[ 89/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.GraphicsStateCollectionSerializerModule.dll_283E2BF72FD2B74E.mvfrm
+[ 90/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.GameCenterModule.dll_6A474AFE2D3CBAA3.mvfrm
+[ 91/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.GIModule.dll_0044CC091C9AF20E.mvfrm
+[ 92/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ContentLoadModule.dll_EB3F3C6723E3EB67.mvfrm
+[ 93/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.DSPGraphModule.dll_462F8DE0F57154C9.mvfrm
+[ 94/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.CrashReportingModule.dll_732D7EF974151B43.mvfrm
+[ 95/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ClusterRendererModule.dll_B391A7D10D8CDDA5.mvfrm
+[ 96/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.CoreModule.dll_933EA15C46715ACB.mvfrm
+[ 97/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ClusterInputModule.dll_846803A4E890411C.mvfrm
+[ 98/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.rsp2
+[ 99/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.UnityAdditionalFile.txt
+[100/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.dll.mvfrm.rsp
+[101/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.rsp
+[102/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.dll_770CC9104409A7F5.mvfrm
+[103/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.XRModule.dll_AA9E79239CAAAEAB.mvfrm
+[104/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ARModule.dll_217B47FEDE0968BD.mvfrm
+[105/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.VFXModule.dll_9FA472FC636E77CB.mvfrm
+[106/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.VectorGraphicsModule.dll_A2629CDF5840890F.mvfrm
+[107/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.VideoModule.dll_16C7FCFFF9B753BE.mvfrm
+[108/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UIToolkitAuthoringModule.dll_88DB25024056B0DE.mvfrm
+[109/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UnityConnectModule.dll_04CB8E8F37086E56.mvfrm
+[110/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UmbraModule.dll_6C9324ADC44BE38C.mvfrm
+[111/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UIElementsModule.dll_C1B118101DDC5ADC.mvfrm
+[112/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UIElementsSamplesModule.dll_80065DACEAC0A851.mvfrm
+[113/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.U2DModule.dll_CB7D1DDF990AD82A.mvfrm
+[114/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UIBuilderModule.dll_222E9F70F8AA3F5A.mvfrm
+[115/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.UIAutomationModule.dll_BA327009AE9851FC.mvfrm
+[116/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEditor.TreeModule.dll_CDC9C318263184DF.mvfrm
+[117/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AnimationModule.dll_9C2B6E7D604E9ACC.mvfrm
+[118/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityWebRequestAudioModule.dll_2EC622585E1B4522.mvfrm
+[119/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AndroidJNIModule.dll_3FFA00E366FBC9B2.mvfrm
+[120/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AdaptivePerformanceModule.dll_254D0958CC15EEB2.mvfrm
+[121/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AccessibilityModule.dll_4D40D364A46895A6.mvfrm
+[122/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.XRModule.dll_E90D0AB30827E276.mvfrm
+[123/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AMDModule.dll_2C57B97BD580A110.mvfrm
+[124/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.WindModule.dll_098D7C84D7A7D934.mvfrm
+[125/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.HierarchyCoreModule.dll_C45B703F1315EE9C.mvfrm
+[126/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AIModule.dll_680882FB80EC09F4.mvfrm
+[127/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.VehiclesModule.dll_B8A125F6FD3A5343.mvfrm
+[128/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.VectorGraphicsModule.dll_5D86FE7A742D1D1A.mvfrm
+[129/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.VideoModule.dll_DCF4B9642B348463.mvfrm
+[130/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityWebRequestTextureModule.dll_8C0BBD74BAAAB337.mvfrm
+[131/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityWebRequestWWWModule.dll_E68E8795B4116173.mvfrm
+[132/176    0s] MovedFromExtractor-Combine Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.dll.mvfrm
+[133/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityWebRequestModule.dll_3122AD2B9AA63018.mvfrm
+[134/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityWebRequestAssetBundleModule.dll_FA63CAE127646D5E.mvfrm
+[135/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UmbraModule.dll_32BFE111F5C91431.mvfrm
+[136/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UnityAnalyticsModule.dll_E5DF390F8E4DF8CD.mvfrm
+[137/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TilemapModule.dll_7ADCC446522AE146.mvfrm
+[138/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UIModule.dll_637C2128DD330FA0.mvfrm
+[139/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TerrainPhysicsModule.dll_C6BA7118FB69A15E.mvfrm
+[140/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.TerrainModule.dll_DBE05CC53A6E003D.mvfrm
+[141/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.SubsystemsModule.dll_BE2123F01CF43830.mvfrm
+[142/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.UIElementsModule.dll_C25F855820207427.mvfrm
+[143/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.rsp2
+[144/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.UnityAdditionalFile.txt
+[145/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.dll.mvfrm.rsp
+[146/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.rsp
+[147/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp2
+[148/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.UnityAdditionalFile.txt
+[149/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll.mvfrm.rsp
+[150/176    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp
+[151/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.PhysicsModule.dll_C199E15664AFB74F.mvfrm
+[152/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.PhysicsCore2DModule.dll_3B04AB10030D8A90.mvfrm
+[153/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ParticleSystemModule.dll_C63FC845E226A6D1.mvfrm
+[154/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.Physics2DModule.dll_E8D15E6E014B9261.mvfrm
+[155/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ScreenCaptureModule.dll_C7400A25B8102292.mvfrm
+[156/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.NVIDIAModule.dll_8A621FDAFC23A697.mvfrm
+[157/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.JSONSerializeModule.dll_AD585CA0A3A3F630.mvfrm
+[157/176    0s] Csc Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.dll (+2 others) [CacheHit b126a3d3d1579dfe50c80fb40aa6b6cc00000000000000000000000000000006]
+[158/176    0s] Csc Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.dll (+2 others)
+[160/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ImageConversionModule.dll_1F83A5818FB19599.mvfrm
+[161/176    0s] CopyFiles Library/ScriptAssemblies/NeoEngDTrace.Runtime.pdb
+[162/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.HierarchyModule.dll_70FFEA192950B6CD.mvfrm
+[163/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.IMGUIModule.dll_F04AD4602ED3FC9F.mvfrm
+[164/176    0s] CopyFiles Library/ScriptAssemblies/NeoEngDTrace.Runtime.dll
+[165/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.DirectorModule.dll_40DE2C77831083A8.mvfrm
+[166/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AssetBundleModule.dll_5228E3265561437A.mvfrm
+[167/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.AudioModule.dll_B7EB34F968A268BE.mvfrm
+[168/176    0s] MovedFromExtractor Library/Bee/artifacts/mvdfrm/UnityEngine.ClothModule.dll_1ED391F442BF47A2.mvfrm
+[169/176    0s] MovedFromExtractor-Combine Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.dll.mvfrm
+[170/176    0s] MovedFromExtractor-Combine Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll.mvfrm
+[169/176    0s] Csc Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.dll (+2 others) [CacheHit 43be5f609e701f346b89ecc8e343e51e00000000000000000000000000000006]
+[171/176    0s] Csc Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.dll (+2 others)
+[173/176    0s] CopyFiles Library/ScriptAssemblies/NeoEngDTrace.Editor.pdb
+[174/176    0s] CopyFiles Library/ScriptAssemblies/NeoEngDTrace.Editor.dll
+[175/176    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+##### CommandLine
+"<local-path>" exec "<local-path>" /nostdlib /noconfig /shared "@Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp" "@Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp2"
+##### Contents of Library\Bee\artifacts\1900b0aE.dag\Assembly-CSharp-Editor.rsp
+-target:library
+-out:"Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll"
+-refout:"Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.ref.dll"
+-define:UNITY_6000_5_7
+-define:UNITY_6000_5
+-define:UNITY_6000
+-define:UNITY_5_3_OR_NEWER
+-define:UNITY_5_4_OR_NEWER
+-define:UNITY_5_5_OR_NEWER
+-define:UNITY_5_6_OR_NEWER
+-define:UNITY_2017_1_OR_NEWER
+-define:UNITY_2017_2_OR_NEWER
+-define:UNITY_2017_3_OR_NEWER
+-define:UNITY_2017_4_OR_NEWER
+-define:UNITY_2018_1_OR_NEWER
+-define:UNITY_2018_2_OR_NEWER
+-define:UNITY_2018_3_OR_NEWER
+-define:UNITY_2018_4_OR_NEWER
+-define:UNITY_2019_1_OR_NEWER
+-define:UNITY_2019_2_OR_NEWER
+-define:UNITY_2019_3_OR_NEWER
+-define:UNITY_2019_4_OR_NEWER
+-define:UNITY_2020_1_OR_NEWER
+-define:UNITY_2020_2_OR_NEWER
+-define:UNITY_2020_3_OR_NEWER
+-define:UNITY_2021_1_OR_NEWER
+-define:UNITY_2021_2_OR_NEWER
+-define:UNITY_2021_3_OR_NEWER
+-define:UNITY_2022_1_OR_NEWER
+-define:UNITY_2022_2_OR_NEWER
+-define:UNITY_2022_3_OR_NEWER
+-define:UNITY_2023_1_OR_NEWER
+-define:UNITY_2023_2_OR_NEWER
+-define:UNITY_2023_3_OR_NEWER
+-define:UNITY_6000_0_OR_NEWER
+-define:UNITY_6000_1_OR_NEWER
+-define:UNITY_6000_2_OR_NEWER
+-define:UNITY_6000_3_OR_NEWER
+-define:UNITY_6000_4_OR_NEWER
+-define:UNITY_6000_5_OR_NEWER
+-define:PLATFORM_ARCH_64
+-define:UNITY_64
+-define:UNITY_INCLUDE_TESTS
+-define:ENABLE_AR
+-define:ENABLE_AUDIO
+-define:ENABLE_AUDIO_SCRIPTABLE_PIPELINE
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_EVENT_QUEUE
+-define:ENABLE_MICROPHONE
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_TEXTURE_STREAMING
+-define:ENABLE_VIRTUALTEXTURING
+-define:ENABLE_LZMA
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_VR
+-define:ENABLE_WEBCAM
+-define:ENABLE_UNITYWEBREQUEST
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_SERVICES_USE_WEBREQUEST
+-define:ENABLE_UNITY_CONSENT
+-define:ENABLE_UNITY_CLOUD_IDENTIFIERS
+-define:ENABLE_CLOUD_SERVICES_CRASH_REPORTING
+-define:ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING
+-define:ENABLE_CLOUD_SERVICES_PURCHASING
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_EDITOR_GAME_SERVICES
+-define:ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_HUB_LICENSE
+-define:ENABLE_WEBSOCKET_CLIENT
+-define:ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API
+-define:ENABLE_DIRECTOR_AUDIO
+-define:ENABLE_DIRECTOR_TEXTURE
+-define:ENABLE_MANAGED_JOBS
+-define:ENABLE_MANAGED_TRANSFORM_JOBS
+-define:ENABLE_MANAGED_ANIMATION_JOBS
+-define:ENABLE_MANAGED_AUDIO_JOBS
+-define:ENABLE_MANAGED_UNITYTLS
+-define:INCLUDE_DYNAMIC_GI
+-define:ENABLE_SCRIPTING_GC_WBARRIERS
+-define:PLATFORM_SUPPORTS_MONO
+-define:RENDER_SOFTWARE_CURSOR
+-define:ENABLE_MARSHALLING_TESTS
+-define:ENABLE_VIDEO
+-define:ENABLE_NAVIGATION_OFFMESHLINK_TO_NAVMESHLINK
+-define:ENABLE_ACCELERATOR_CLIENT_DEBUGGING
+-define:ENABLE_ACCESSIBILITY_SCREEN_READER
+-define:TEXTCORE_1_0_OR_NEWER
+-define:EDITOR_ONLY_NAVMESH_BUILDER_DEPRECATED
+-define:PLATFORM_STANDALONE_WIN
+-define:PLATFORM_STANDALONE
+-define:UNITY_STANDALONE_WIN
+-define:UNITY_STANDALONE
+-define:ENABLE_RUNTIME_GI
+-define:ENABLE_MOVIES
+-define:ENABLE_NETWORK
+-define:ENABLE_NVIDIA
+-define:ENABLE_AMD
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_CLOUD_SERVICES_ENGINE_DIAGNOSTICS
+-define:ENABLE_OUT_OF_PROCESS_CRASH_HANDLER
+-define:ENABLE_CLUSTER_SYNC
+-define:ENABLE_CLUSTERINPUT
+-define:PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP
+-define:GFXDEVICE_WAITFOREVENT_MESSAGEPUMP
+-define:PLATFORM_USES_EXPLICIT_MEMORY_MANAGER_INITIALIZER
+-define:PLATFORM_SUPPORTS_WAIT_FOR_PRESENTATION
+-define:PLATFORM_SUPPORTS_SPLIT_GRAPHICS_JOBS
+-define:PLATFORM_USES_VULKAN_OLD_SWAPCHAIN
+-define:USE_READ_ASYNC_MANAGED_API
+-define:ENABLE_MONO
+-define:NET_4_6
+-define:NET_UNITY_4_8
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_WIN
+-define:ENABLE_UNITY_COLLECTIONS_CHECKS
+-define:ENABLE_BURST_AOT
+-define:UNITY_TEAM_LICENSE
+-define:ENABLE_CUSTOM_RENDER_TEXTURE
+-define:ENABLE_DIRECTOR
+-define:ENABLE_LOCALIZATION
+-define:ENABLE_SPRITES
+-define:ENABLE_TERRAIN
+-define:ENABLE_TILEMAP
+-define:ENABLE_TIMELINE
+-define:ENABLE_LEGACY_INPUT_MANAGER
+-define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
+-define:TEXTCORE_TEXT_ENGINE_1_5_OR_NEWER
+-define:TEXTCORE_FONT_ENGINE_1_6_OR_NEWER
+-define:CSHARP_7_OR_LATER
+-define:CSHARP_7_3_OR_NEWER
+-define:UNITY_EDITOR_ONLY_COMPILATION
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"<local-path>"
+-r:"Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/NeoEngDTrace.Runtime.ref.dll"
+-analyzer:"<local-path>"
+-analyzer:"<local-path>"
+-analyzer:"<local-path>"
+-analyzer:"<local-path>"
+-analyzer:"<local-path>"
+-analyzer:"<local-path>"
+-analyzer:"<local-path>"
+"Assets/Editor/NeoEngStage4GlobalRunner.cs"
+-langversion:9.0
+/deterministic
+/optimize+
+/debug:portable
+/nologo
+/RuntimeMetadataVersion:v4.0.30319
+/nowarn:0169
+/nowarn:0649
+/nowarn:0282
+/nowarn:1701
+/nowarn:1702
+/utf8output
+/preferreduilang:en-US
+/additionalfile:"Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.UnityAdditionalFile.txt"
+##### Custom Environment Variables
+DOTNET_HOST_PATH=<local-path>
+DOTNET_MULTILEVEL_LOOKUP=0
+##### ExitCode
+1
+##### Output
+Assets\Editor\NeoEngStage4GlobalRunner.cs(76,5): error CS0106: The modifier 'private' is not valid for this item
+
+Assets\Editor\NeoEngStage4GlobalRunner.cs(101,5): error CS0106: The modifier 'private' is not valid for this item
+
+Assets\Editor\NeoEngStage4GlobalRunner.cs(106,2): error CS1513: } expected
+*** Tundra build failed (3.42 seconds), 171 items updated, 176 evaluated
+## Script Compilation Error for: Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+## CmdLine: "<local-path>" exec "<local-path>" /nostdlib /noconfig /shared "@Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp" "@Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp2"
+## Output:
+Assets\Editor\NeoEngStage4GlobalRunner.cs(76,5): error CS0106: The modifier 'private' is not valid for this item
+Assets\Editor\NeoEngStage4GlobalRunner.cs(101,5): error CS0106: The modifier 'private' is not valid for this item
+Assets\Editor\NeoEngStage4GlobalRunner.cs(106,2): error CS1513: } expected
+
+Assets\Editor\NeoEngStage4GlobalRunner.cs(76,5): error CS0106: The modifier 'private' is not valid for this item
+Assets\Editor\NeoEngStage4GlobalRunner.cs(101,5): error CS0106: The modifier 'private' is not valid for this item
+Assets\Editor\NeoEngStage4GlobalRunner.cs(106,2): error CS1513: } expected
+AssetDatabase: script compilation time: 4.200872s
+Scripts have compiler errors.
+Exiting without the bug reporter. Application will terminate with return code 1Shut down.
+

@@ -54,6 +54,23 @@ class IntegrationPlan:
         return tuple(item for item in self.outputs if item.action != "UNCHANGED")
 
 
+@dataclass(frozen=True)
+class GlobalIntegrationPlan:
+    """Immutable plan for one atomic commit spanning several manifests."""
+
+    root: Path
+    manifests: tuple[str, ...]
+    plans: tuple[IntegrationPlan, ...]
+
+    @property
+    def outputs(self) -> tuple[PlannedOutput, ...]:
+        return tuple(item for plan in self.plans for item in plan.outputs)
+
+    @property
+    def changed(self) -> tuple[PlannedOutput, ...]:
+        return tuple(item for item in self.outputs if item.action != "UNCHANGED")
+
+
 def _digest(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
@@ -137,6 +154,41 @@ def plan_outputs(
     return IntegrationPlan(root=root_path.resolve(strict=False), outputs=tuple(planned))
 
 
+def plan_manifest_batch(
+    root: str | Path,
+    manifests: Mapping[str, Mapping[str, bytes | bytearray | str]],
+) -> GlobalIntegrationPlan:
+    """Plan all manifest outputs before any of them is written."""
+
+    if not isinstance(manifests, Mapping) or not manifests:
+        raise IntegrationPlanError("manifest batch must not be empty")
+    root_path = Path(root).resolve(strict=False)
+    entries: list[tuple[str, IntegrationPlan]] = []
+    destinations: set[Path] = set()
+    for manifest_id, outputs in manifests.items():
+        if not isinstance(manifest_id, str) or not manifest_id.strip():
+            raise IntegrationPlanError("manifest identifier must be non-empty")
+        _safe_relative(manifest_id)
+        if not isinstance(outputs, Mapping) or not outputs:
+            raise IntegrationPlanError("manifest output set must not be empty")
+        entries.append((manifest_id, plan_outputs(root_path, outputs)))
+    entries.sort(key=lambda item: item[0])
+    for _, plan in entries:
+        if plan.root != root_path:
+            raise IntegrationPlanError("manifest plans must share one generated root")
+        for item in plan.outputs:
+            if item.absolute_path in destinations:
+                raise IntegrationPlanError(
+                    "manifests contain duplicate output destinations"
+                )
+            destinations.add(item.absolute_path)
+    return GlobalIntegrationPlan(
+        root=root_path,
+        manifests=tuple(item[0] for item in entries),
+        plans=tuple(item[1] for item in entries),
+    )
+
+
 def validate_manifest_sources(
     manifest: Mapping[str, object],
     *,
@@ -172,9 +224,51 @@ def apply_plan(
     expected = {item.relative_path for item in plan.outputs}
     if set(outputs) != expected:
         raise IntegrationPlanError("output set changed after dry-run")
+    _commit_output_items(plan.changed, outputs)
+
+
+def apply_manifest_batch(
+    plan: GlobalIntegrationPlan,
+    manifests: Mapping[str, Mapping[str, bytes | bytearray | str]],
+) -> None:
+    """Commit every changed output from every manifest in one transaction."""
+
+    if not isinstance(manifests, Mapping):
+        raise IntegrationPlanError("manifest batch changed after dry-run")
+    keys = tuple(manifests)
+    if (
+        any(not isinstance(key, str) for key in keys)
+        or set(keys) != set(plan.manifests)
+        or tuple(sorted(keys)) != plan.manifests
+    ):
+        raise IntegrationPlanError("manifest batch changed after dry-run")
+        raise IntegrationPlanError("manifest batch changed after dry-run")
+    all_outputs: dict[str, bytes | bytearray | str] = {}
+    for manifest_id in plan.manifests:
+        manifest_outputs = manifests[manifest_id]
+        manifest_plan = plan.plans[plan.manifests.index(manifest_id)]
+        if not isinstance(manifest_outputs, Mapping):
+            raise IntegrationPlanError("manifest output set is invalid")
+        if set(manifest_outputs) != {
+            item.relative_path for item in manifest_plan.outputs
+        }:
+            raise IntegrationPlanError("manifest output set changed after dry-run")
+        for relative_path, payload in manifest_outputs.items():
+            if relative_path in all_outputs:
+                raise IntegrationPlanError(
+                    "manifests contain duplicate output destinations"
+                )
+            all_outputs[relative_path] = payload
+    _commit_output_items(plan.changed, all_outputs)
+
+
+def _commit_output_items(
+    changed: tuple[PlannedOutput, ...],
+    outputs: Mapping[str, bytes | bytearray | str],
+) -> None:
     transaction = AtomicOutputTransaction()
     try:
-        for item in plan.changed:
+        for item in changed:
             staged = transaction.stage_path(str(item.absolute_path))
             payload = outputs[item.relative_path]
             data = (

@@ -46,7 +46,8 @@ def test_unity_automatic_sync_uses_asset_postprocessor_and_generator_contract():
     assert "ProcessChangedAssets" in postprocessor
     assert "FindManifestsAffectedByAssets" in generator
     assert "AssetDatabase.FindAssets" in generator
-    assert "ImportManifest(manifest)" in postprocessor
+    assert "ImportManifests(manifests)" in postprocessor
+    assert "transaction=GLOBAL" in postprocessor
     assert "UNITY_NATIVE_AUTO_SYNC=" in postprocessor
     assert "HashRetryCounts" in postprocessor
     assert "ScheduleHashRetry" in postprocessor
