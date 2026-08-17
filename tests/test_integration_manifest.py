@@ -9,6 +9,7 @@ from PIL import Image
 from src.exporters.integration_manifest import (
     INTEGRATION_FORMAT_ID,
     INTEGRATION_SCHEMA_VERSION,
+    build_advanced_integration_manifest,
     build_integration_manifest,
     save_integration_manifest,
     validate_integration_manifest,
@@ -187,3 +188,70 @@ def test_manifest_validation_rejects_non_mapping_generator_and_metadata(tmp_path
     manifest["metadata"] = None
     with pytest.raises(ValueError, match="metadata source"):
         validate_integration_manifest(manifest)
+
+
+def _advanced_manifest(tmp_path: Path) -> dict:
+    from src.exporters.atlas_exporter import build_atlas
+
+    source = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    for x in range(2, 14):
+        for y in range(3, 13):
+            source.putpixel((x, y), (10, 20, 30, 255))
+    atlas_dir = tmp_path / "atlas"
+    results = build_atlas(
+        [("hero", source)], str(atlas_dir), max_size=(64, 64), padding=2, bleed=1
+    )
+    atlas = results[0]
+    scene = Scene()
+    scene.load_image(source, "source.png")
+    scene.add_object("hero", [(2, 3), (13, 3), (13, 12), (2, 12)])
+    metadata = export_scene_metadata(scene)
+    return build_advanced_integration_manifest(
+        metadata,
+        engine="godot",
+        image_path=atlas["atlas_path"],
+        image_reference="atlas/atlas_0.png",
+        atlas_pages=[
+            {
+                "id": "atlas_0",
+                "path": "atlas/atlas_0.png",
+                "file_path": atlas["atlas_path"],
+                "entries": atlas["entries"],
+            }
+        ],
+        engine_properties={
+            "godot": {"texture_filter": "linear", "z_index": 4},
+            "unity": {"pixels_per_unit": 32.0, "sorting_order": 7, "z_depth": 1.5},
+        },
+    )
+
+
+def test_advanced_manifest_consumes_real_atlas_output_and_is_deterministic(tmp_path):
+    manifest = _advanced_manifest(tmp_path)
+    assert manifest["schema_version"] == 2
+    assert manifest["advanced"]["atlas"]["bleed"] == 1
+    page = manifest["advanced"]["atlas"]["pages"][0]
+    sprite = page["sprites"][0]
+    assert sprite["id"] == "hero"
+    assert sprite["extrusion"] == 1
+    assert manifest["advanced"]["coordinate_system"]["pixels_per_unit"]["unity"] == 32.0
+    validate_integration_manifest(manifest)
+    destination = tmp_path / "manifest.json"
+    save_integration_manifest(manifest, destination)
+    first = destination.read_bytes()
+    save_integration_manifest(manifest, destination)
+    assert first == destination.read_bytes()
+
+
+@pytest.mark.parametrize("field", ["bleed", "engine_properties"])
+def test_advanced_manifest_rejects_contract_drift(tmp_path, field):
+    import copy
+
+    manifest = _advanced_manifest(tmp_path)
+    mutated = copy.deepcopy(manifest)
+    if field == "bleed":
+        mutated["advanced"]["atlas"]["bleed"] = 2
+    else:
+        mutated["advanced"]["engine_properties"]["unity"]["filter_mode"] = "Unsupported"
+    with pytest.raises(ValueError):
+        validate_integration_manifest(mutated)

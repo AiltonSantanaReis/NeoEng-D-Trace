@@ -1,0 +1,51 @@
+{
+  "files": {
+    "godot-atlas-0.png": {
+      "bytes": 129,
+      "sha256": "914132e8ffc1ecdc58f8f990197e29d9f4fc5137b47156270d108eef6925e548"
+    },
+    "godot-manifest.ndt.integration.json": {
+      "bytes": 3886,
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf"
+    },
+    "godot-stage8-hash-drift.log": {
+      "bytes": 113,
+      "sha256": "a6be5fccbb02bd157d90fd454bfcfea08e13834efdbefac7662ce113f8793d1c"
+    },
+    "godot-stage8-initial.log": {
+      "bytes": 109,
+      "sha256": "efbe16a0bab3368a2a1569edb955e892b41b619ddba5771efe56db513970a0c3"
+    },
+    "godot-stage8-repeat.log": {
+      "bytes": 110,
+      "sha256": "042826257972861840698bbe58954fac08a357cc2bbddf263592bf58dc4aa356"
+    },
+    "stage8-report.json": {
+      "bytes": 142612,
+      "sha256": "544c6f4259e6d7897131054015c78a08ee22dee4724a52765297c2834b6adb0b"
+    },
+    "unity-atlas-0.png": {
+      "bytes": 117,
+      "sha256": "99f363f3a15d463053736dcce262e395d9e38027d84c27920106f50b9e7795c0"
+    },
+    "unity-manifest.ndt.integration.json": {
+      "bytes": 3886,
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
+    },
+    "unity-stage8-hash-drift.log": {
+      "bytes": 56035,
+      "sha256": "066c10d8a39fc7cefbd767e9d290d056a0e339b87b32fd02fa39779305841203"
+    },
+    "unity-stage8-initial.log": {
+      "bytes": 59935,
+      "sha256": "8bfa3ae7fd7c4c118af2a009275c59b36eafd74438defda4c273213ec5ebbc3d"
+    },
+    "unity-stage8-repeat.log": {
+      "bytes": 19606,
+      "sha256": "ea6fc2b1bc82fc8a0f1c6c648531b41226fab23073b33e5843ce9880238eafa3"
+    }
+  },
+  "schema_version": 1,
+  "stage": 8,
+  "status": "SUCCESS"
+}
