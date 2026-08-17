@@ -150,6 +150,8 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE.md` — PR `#36`, merge, CI pós-merge, artefatos e encerramento formal de `R-006`/Etapa 7.
 - `ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md` — validação matemática local de Bézier, triangulação e degenerados; `R-007` permanece aberto até merge e CI pós-merge.
 - `ETAPA_8_ENCERRAMENTO_POS_MERGE.md` — PR `#38`, merge, CI pós-merge, artefatos e encerramento formal de `R-007`/Etapa 8.
+- `ETAPA_9_DRY_RUN_SEGURANCA_ROLLBACK_PRE_MERGE_2026-08-17.md` — gates pré-merge da Etapa 9 dos adaptadores nativos, com falhas intermediárias e limitações declaradas.
+- `ETAPA_9_ENCERRAMENTO_POS_MERGE_2026-08-17.md` — PR `#81`, merge, CI pós-merge, testes reais locais de Godot/Unity e inventário dos artefatos.
 - `ETAPA_9_COLISAO_ARQUITETURA_PRE_MERGE.md` — falhas reproduzidas, API estática única, compatibilidade e validação pré-merge.
 - `ETAPA_9_ENCERRAMENTO_POS_MERGE.md` — PR `#40`, merge, CI pós-merge, artefatos e encerramento formal de `R-008`/Etapa 9.
 - `ETAPA_11_COBERTURA_UI_PACOTE_1.md` — primeiro pacote local da Etapa 11; 742 testes, métricas exatas por módulo, zero módulos abaixo de 30% e `R-003` ainda aberto.
@@ -166,6 +168,15 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 ## Estado operacional da evidência atual
 
+Etapa 9 dos adaptadores nativos integrada no escopo técnico pós-merge em 17 de agosto de 2026:
+
+- PR `#81`, merge `e1620571ab2f638ba671baa33ac508858e229313`; checks pré-merge `32011747754` e CI pós-merge `32012110722`, ambos com Linux e Windows em `success`;
+- `1167` testes locais, `2` skips condicionados à permissão de symlink no Windows local, cobertura total de `90,72%`, política de cobertura aprovada, mypy sem erros e integridade de baseline/evidências aprovada;
+- Godot `4.7.stable` e Unity `6000.5.7f1` executados localmente pelo harness real; dry-run, aplicação, repetição, drift de hash e rollback foram registrados nos artefatos versionados;
+- o diretório `artifacts/native-stage9-2026-08-17/` contém `13` arquivos, sendo `12` payloads no índice e o próprio índice; a varredura de privacidade passou;
+- a CI valida os gates Python, tipagem, cobertura e integridade, mas não inicializa dinamicamente Godot/Unity; por isso a execução real das engines permanece evidência local reproduzível, não cobertura dinâmica de CI;
+- `pip-audit` continua limitado pelo pacote local não publicado e há dez ocorrências históricas B110 fora do escopo da Etapa 9; nenhuma foi promovida artificialmente a PASS;
+- `STAGE9_STATUS=INTEGRATED`; `STAGE9_RELEASE_APPROVED=NO`; `STAGE10_STATUS=NOT_STARTED`.
 Etapa 14 encerrada no escopo técnico pós-merge em 15 de agosto de 2026:
 
 - commit-fonte do build MSI `828cf626b7ce382c360723b1be10c4ce718c4187`; merge documental/técnico atual `f15193a55d1a5de0c7031f5bab656107302eee1b`;

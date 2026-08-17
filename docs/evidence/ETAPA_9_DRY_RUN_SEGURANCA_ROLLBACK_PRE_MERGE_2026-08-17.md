@@ -73,8 +73,7 @@ binários instalados, sem mocks para o importador:
   REPEAT_IMPORT_DETERMINISTIC=PASS.
 
 Os artefatos reproduzíveis estão em
-docs/evidence/artifacts/native-stage9-2026-08-17/. O índice contém 11
-arquivos, tamanho e SHA-256 de cada arquivo. A varredura final de privacidade
+docs/evidence/artifacts/native-stage9-2026-08-17/. O diretório contém 13 arquivos versionados: o índice lista 12 payloads, e o próprio stage9-index.json completa o conjunto. Cada payload possui tamanho e SHA-256 no índice. A varredura final de privacidade
 não encontrou nome de usuário, caminho local, endereço, processo, identidade
 ou dado de licença nos artefatos.
 
