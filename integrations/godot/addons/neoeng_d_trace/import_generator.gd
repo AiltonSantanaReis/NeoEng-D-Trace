@@ -5,7 +5,15 @@ extends RefCounted
 const ManifestDiagnostic = preload("res://addons/neoeng_d_trace/manifest_diagnostic.gd")
 
 
-static func import_manifest(manifest_path: String, output_root: String = "res://NeoEngGenerated") -> Dictionary:
+static func dry_run_manifest(manifest_path: String, output_root: String = "res://NeoEngGenerated") -> Dictionary:
+    return import_manifest(manifest_path, output_root, true)
+
+
+static func import_manifest(
+    manifest_path: String,
+    output_root: String = "res://NeoEngGenerated",
+    dry_run: bool = false,
+) -> Dictionary:
     var diagnostic := ManifestDiagnostic.diagnose_manifest(manifest_path)
     if diagnostic.get("status") != "SUCCESS":
         return {
@@ -42,11 +50,12 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
     var advanced_validation := _validate_advanced_runtime(payload)
     if advanced_validation.get("status") != "SUCCESS":
         return _failure(manifest_path, str(advanced_validation.get("error", "advanced manifest is invalid")))
-    if not DirAccess.dir_exists_absolute(output_root):
+    if not dry_run and not DirAccess.dir_exists_absolute(output_root):
         var make_error := DirAccess.make_dir_recursive_absolute(output_root)
         if make_error != OK:
             return _failure(manifest_path, "generated output directory cannot be created")
     var results: Array = []
+    var operations: Array = []
     for sprite_data in sprites:
         if typeof(sprite_data) != TYPE_DICTIONARY:
             return _failure(manifest_path, "sprite metadata must be an object")
@@ -60,7 +69,7 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
             import_data["_advanced_page_hash"] = advanced_entry.get("sha256", "")
             import_data["_advanced_engine_properties"] = payload.get("advanced", {}).get("engine_properties", {}).get("godot", {})
             import_data["_advanced_pixels_per_unit"] = payload.get("advanced", {}).get("coordinate_system", {}).get("pixels_per_unit", {}).get("godot", 1.0)
-        var result := _import_sprite(import_data, texture, manifest_path, output_root, payload)
+        var result := _import_sprite(import_data, texture, manifest_path, output_root, payload, true)
         results.append(result)
         if result.get("status") == "CONFLICT" or result.get("status") == "FAILED":
             return {
@@ -68,24 +77,51 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
                 "manifest_path": manifest_path,
                 "results": results,
             }
+        if result.get("status") == "PLANNED":
+            operations.append(result)
     if typeof(metadata) == TYPE_DICTIONARY and metadata.has("tileset"):
-        var tileset_result := _import_tileset(metadata.get("tileset"), manifest_path, output_root, image_reference, expected_image_hash, expected_metadata_hash)
+        var tileset_result := _import_tileset(metadata.get("tileset"), manifest_path, output_root, image_reference, expected_image_hash, expected_metadata_hash, true)
         results.append(tileset_result)
-        if tileset_result.get("status") != "UPDATED" and tileset_result.get("status") != "UNCHANGED":
+        if tileset_result.get("status") != "PLANNED" and tileset_result.get("status") != "UPDATED" and tileset_result.get("status") != "UNCHANGED":
             return {
                 "status": tileset_result.get("status"),
                 "manifest_path": manifest_path,
                 "results": results,
             }
+        if tileset_result.get("status") == "PLANNED":
+            operations.append(tileset_result)
     if typeof(metadata) == TYPE_DICTIONARY and metadata.has("animation"):
-        var animation_result := _import_animation(metadata.get("animation"), manifest_path, output_root, expected_image_hash, expected_metadata_hash)
+        var animation_result := _import_animation(metadata.get("animation"), manifest_path, output_root, expected_image_hash, expected_metadata_hash, true)
         results.append(animation_result)
-        if animation_result.get("status") != "UPDATED" and animation_result.get("status") != "UNCHANGED":
+        if animation_result.get("status") != "PLANNED" and animation_result.get("status") != "UPDATED" and animation_result.get("status") != "UNCHANGED":
             return {
                 "status": animation_result.get("status"),
                 "manifest_path": manifest_path,
                 "results": results,
             }
+        if animation_result.get("status") == "PLANNED":
+            operations.append(animation_result)
+    if dry_run:
+        for planned in operations:
+            planned.erase("content")
+        return {
+            "status": "DRY_RUN",
+            "manifest_path": manifest_path,
+            "output_root": output_root,
+            "results": results,
+        }
+    var commit_result := _commit_operations(operations, output_root)
+    if commit_result.get("status") != "SUCCESS":
+        return {
+            "status": "FAILED",
+            "manifest_path": manifest_path,
+            "results": results,
+            "errors": [commit_result.get("error", "generated output transaction failed")],
+        }
+    for applied in results:
+        if applied.get("status") == "PLANNED":
+            applied["status"] = "UPDATED"
+            applied.erase("content")
     return {
         "status": "SUCCESS",
         "manifest_path": manifest_path,
@@ -114,6 +150,7 @@ static func _import_sprite(
     manifest_path: String,
     output_root: String,
     payload: Dictionary,
+    plan_only: bool = false,
 ) -> Dictionary:
     var object_id = sprite_data.get("id")
     if typeof(object_id) != TYPE_STRING or object_id.is_empty() or not _is_safe_name(object_id):
@@ -184,14 +221,9 @@ static func _import_sprite(
                 return {"status": "CONFLICT", "id": object_id, "path": destination, "error": "manual divergence requires destructive update confirmation"}
         elif _metadata_string(existing, "neoeng_source_image_sha256") == image_hash and _metadata_string(existing, "neoeng_source_metadata_sha256") == metadata_hash and _metadata_string(existing, "neoeng_override_sha256") == str(override.get("hash", "")) and stored_fingerprint == expected_fingerprint:
             return {"status": "UNCHANGED", "id": object_id, "path": destination, "override_applied": override.get("polygon") != null}
-    var write_result := _write_generated(destination, scene_text)
-    if write_result.get("status") != "UPDATED":
-        write_result["id"] = object_id
-        return write_result
-    write_result["id"] = object_id
-    write_result["path"] = destination
-    write_result["override_applied"] = override.get("polygon") != null
-    return write_result
+    if plan_only:
+        return {"status": "PLANNED", "id": object_id, "path": destination, "content": scene_text, "override_applied": override.get("polygon") != null}
+    return {"status": "FAILED", "id": object_id, "path": destination, "error": "internal import plan was not committed"}
 
 
 static func _read_override(output_root: String, object_id: String) -> Dictionary:
@@ -338,6 +370,7 @@ static func _import_tileset(
     image_reference: String,
     source_image_hash: String,
     source_metadata_hash: String,
+    plan_only: bool = false,
 ) -> Dictionary:
     if typeof(tileset_data) != TYPE_DICTIONARY:
         return {"status": "FAILED", "error": "tileset payload must be an object"}
@@ -371,7 +404,7 @@ static func _import_tileset(
         margin,
         tiles,
     )
-    var result := _synchronize_generated(destination, resource_text, source_image_hash, source_metadata_hash)
+    var result := _synchronize_generated(destination, resource_text, source_image_hash, source_metadata_hash, "", plan_only)
     result["path"] = destination
     result["tile_count"] = tiles.size()
     return result
@@ -383,6 +416,7 @@ static func _synchronize_generated(
     source_image_hash: String,
     source_metadata_hash: String,
     override_hash: String = "",
+    plan_only: bool = false,
 ) -> Dictionary:
     var expected_fingerprint := _fingerprint(template)
     var generated_text := _set_fingerprint(template, expected_fingerprint)
@@ -400,9 +434,9 @@ static func _synchronize_generated(
                 return {"status": "CONFLICT", "path": destination, "error": "manual divergence requires destructive update confirmation"}
         elif _metadata_string(existing, "neoeng_source_image_sha256") == source_image_hash and _metadata_string(existing, "neoeng_source_metadata_sha256") == source_metadata_hash and _metadata_string(existing, "neoeng_override_sha256") == override_hash and stored_fingerprint == expected_fingerprint:
             return {"status": "UNCHANGED", "path": destination}
-    var result := _write_generated(destination, generated_text)
-    result["path"] = destination
-    return result
+    if plan_only:
+        return {"status": "PLANNED", "path": destination, "content": generated_text}
+    return {"status": "FAILED", "path": destination, "error": "internal import plan was not committed"}
 
 static func _validate_tile(tile, tile_w: int, tile_h: int) -> String:
     if typeof(tile) != TYPE_DICTIONARY:
@@ -436,6 +470,7 @@ static func _import_animation(
     output_root: String,
     source_image_hash: String,
     source_metadata_hash: String,
+    plan_only: bool = false,
 ) -> Dictionary:
     if typeof(animation_data) != TYPE_DICTIONARY:
         return {"status": "FAILED", "error": "animation payload must be an object"}
@@ -457,7 +492,7 @@ static func _import_animation(
     if not is_finite(speed) or speed <= 0.0:
         return {"status": "FAILED", "error": "animation speed is invalid"}
     var scene_text := _build_animation_text(manifest_path, source_image_hash, source_metadata_hash, frame_descriptors, speed, bool(animation_data.get("loop", true)))
-    var result := _synchronize_generated(destination, scene_text, source_image_hash, source_metadata_hash)
+    var result := _synchronize_generated(destination, scene_text, source_image_hash, source_metadata_hash, "", plan_only)
     result["path"] = destination
     result["frame_count"] = frame_descriptors.size()
     return result
@@ -657,6 +692,75 @@ static func _build_animation_text(
         lines.append("metadata/neoeng_animation_frame = %d" % index)
     return "\n".join(lines) + "\n"
 
+
+static func _commit_operations(operations: Array, output_root: String) -> Dictionary:
+    if operations.is_empty():
+        return {"status": "SUCCESS"}
+    if not _is_project_relative(output_root):
+        return {"status": "FAILED", "error": "generated output root is unsafe"}
+    if not DirAccess.dir_exists_absolute(output_root):
+        var make_error := DirAccess.make_dir_recursive_absolute(output_root)
+        if make_error != OK:
+            return {"status": "FAILED", "error": "generated output directory cannot be created"}
+    var staged: Array = []
+    var prefix := output_root.trim_suffix("/") + "/"
+    for index in operations.size():
+        var operation = operations[index]
+        var destination := str(operation.get("path", ""))
+        if not destination.begins_with(prefix) or destination.contains(".."):
+            return {"status": "FAILED", "error": "generated output destination is unsafe"}
+        var temporary := destination + ".neoeng-stage9-tmp"
+        var backup := destination + ".neoeng-stage9-backup"
+        if FileAccess.file_exists(temporary) or FileAccess.file_exists(backup):
+            return {"status": "FAILED", "error": "staging path already exists"}
+        var staged_file := FileAccess.open(temporary, FileAccess.WRITE)
+        if staged_file == null:
+            return {"status": "FAILED", "error": "generated resource could not be staged"}
+        staged_file.store_string(str(operation.get("content", "")))
+        staged_file.close()
+        staged.append({
+            "destination": destination,
+            "temporary": temporary,
+            "backup": backup,
+            "backed_up": false,
+            "committed": false,
+        })
+    for index in staged.size():
+        var item: Dictionary = staged[index]
+        var destination := str(item["destination"])
+        if FileAccess.file_exists(destination):
+            if DirAccess.rename_absolute(destination, str(item["backup"])) != OK:
+                _rollback_operations(staged)
+                return {"status": "FAILED", "error": "existing generated output could not be backed up"}
+            item["backed_up"] = true
+        if DirAccess.rename_absolute(str(item["temporary"]), destination) != OK:
+            _rollback_operations(staged)
+            return {"status": "FAILED", "error": "generated output could not be committed"}
+        item["committed"] = true
+    _cleanup_operations(staged)
+    return {"status": "SUCCESS"}
+
+
+static func _rollback_operations(staged: Array) -> void:
+    for index in range(staged.size() - 1, -1, -1):
+        var item: Dictionary = staged[index]
+        var destination := str(item["destination"])
+        var backup := str(item["backup"])
+        if bool(item.get("committed", false)) and FileAccess.file_exists(destination):
+            DirAccess.remove_absolute(destination)
+        if bool(item.get("backed_up", false)) and FileAccess.file_exists(backup):
+            DirAccess.rename_absolute(backup, destination)
+    _cleanup_operations(staged)
+
+
+static func _cleanup_operations(staged: Array) -> void:
+    for item in staged:
+        var temporary := str(item["temporary"])
+        var backup := str(item["backup"])
+        if FileAccess.file_exists(temporary):
+            DirAccess.remove_absolute(temporary)
+        if FileAccess.file_exists(backup):
+            DirAccess.remove_absolute(backup)
 
 static func _write_generated(destination: String, text: String) -> Dictionary:
     var temporary := destination + ".tmp"
