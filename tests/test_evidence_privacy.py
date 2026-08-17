@@ -50,13 +50,16 @@ def test_versioned_evidence_artifacts_contain_no_unredacted_host_data() -> None:
         text = path.read_text(encoding="utf-8", errors="replace")
         for pattern in FORBIDDEN_PATTERNS:
             if pattern.search(text):
-                violations.append(f"{path.relative_to(ROOT).as_posix()}: {pattern.pattern}")
+                violations.append(
+                    f"{path.relative_to(ROOT).as_posix()}: {pattern.pattern}"
+                )
     assert violations == []
 
 
 def test_stage5_and_stage8_sanitizers_redact_engine_host_data(tmp_path: Path) -> None:
     raw = (
-        "LicenseClient-user-token PId: 1234 process Id: 5678 "
+        "LicenseClient-user-token PId: 1234 process Id: "
+        "5678 "
         "WindowsEditor(7,user) Player connection [42]\n"
     )
     for sanitizer in (sanitize_stage5, sanitize_stage8):
@@ -66,6 +69,7 @@ def test_stage5_and_stage8_sanitizers_redact_engine_host_data(tmp_path: Path) ->
         assert "process Id: 5678" not in sanitized
         assert "WindowsEditor(7,user)" not in sanitized
         assert "Player connection [42]" not in sanitized
+
 
 def test_sanitizers_preserve_json_structure(tmp_path: Path) -> None:
     raw = json.dumps(

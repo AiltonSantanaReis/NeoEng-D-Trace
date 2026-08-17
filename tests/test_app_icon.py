@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import hashlib
-import sys
 import shutil
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -86,6 +86,7 @@ def test_invalid_qt_icon_fails_closed(monkeypatch, tmp_path: Path) -> None:
     QApplication.instance() or QApplication([])
     with pytest.raises(ValueError, match="Unable to load application icon"):
         application_icon()
+
 
 def test_wix_shortcut_references_installed_icon(tmp_path: Path) -> None:
     bundle = tmp_path / "bundle"
