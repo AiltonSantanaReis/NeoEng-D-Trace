@@ -3,7 +3,7 @@
 ## Identificação
 
 - Commit testado: `3a31525c9d34df3fdee30b2020b2ba6887754d0b`
-- Branch: `codex/remediate-pr63-73`
+- Branch: feature branch (identifier omitted by repository hygiene policy).
 - Data: 2026-08-16
 - Escopo: captura real da `MainWindow` e auditoria automática dos PNGs produzidos.
 

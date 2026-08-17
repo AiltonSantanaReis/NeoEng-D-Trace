@@ -601,8 +601,8 @@
       "size": 3950
     },
     "docs/evidence/ETAPA_AUDITOR_VISUAL_REPRODUTIVEL_2026-08-16.md": {
-      "sha256": "a7b3925fb4826e0e21613140d0c39a8b9d8a5fb6f6a75bc9680234e4ae6e0b93",
-      "size": 4029
+      "sha256": "833107653cc227e225c4139a7870b6fa3149ce8bc5a26ab66fe629cd9b00bf09",
+      "size": 4069
     },
     "docs/evidence/ETAPA_DETECCAO_QUALIDADE_PRE_MERGE_2026-08-16.md": {
       "sha256": "a0a4aad974edbc7f3b4b6ac13a54ae1142f56d98b8620556d4c6ec07791547fe",
@@ -3041,8 +3041,8 @@
       "size": 232
     },
     "docs/evidence/artifacts/remediation-pr63-73-2026-08-16/visual-audit-final/visual-audit-index.json": {
-      "sha256": "0815442bb8f5b89a101c1103693e348abf1c04355dde27132c687df795d17530",
-      "size": 6077
+      "sha256": "e9f6b25a68cd58ecbff60b967963f5fc5430c696e1dbc83ad8776b2dcca18c03",
+      "size": 6038
     },
     "docs/evidence/artifacts/roi-grabcut-collision/collision-compound-normalized.json": {
       "sha256": "c219402079a535a0eb86a00bf3d5c90a67361a2a2fd5fa2d71034521cdecf09c",

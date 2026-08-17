@@ -2,7 +2,6 @@
   "schema_version": 1,
   "scope": "reproducible-visual-audit",
   "tested_commit": "3a31525c9d34df3fdee30b2020b2ba6887754d0b",
-  "branch": "codex/remediate-pr63-73",
   "files": {
     "input/1080p_FHD_01_sem_projeto.png": {
       "bytes": 14712,
