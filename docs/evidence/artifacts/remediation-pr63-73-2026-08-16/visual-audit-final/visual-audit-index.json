@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "scope": "reproducible-visual-audit",
+  "tested_commit": "3a31525c9d34df3fdee30b2020b2ba6887754d0b",
+  "branch": "codex/remediate-pr63-73",
+  "files": {
+    "input/1080p_FHD_01_sem_projeto.png": {
+      "bytes": 14712,
+      "sha256": "1851f64b10b2ef9779a1735b59b5dda1aab4a195f8cc7e88a6d93862c9224dc3"
+    },
+    "input/1080p_FHD_02_projeto_paineis.png": {
+      "bytes": 27464,
+      "sha256": "31513d3f744e4efaddf77da9ffc69da0a7740c4af13f61cf5796d5a00b9cc101"
+    },
+    "input/1080p_FHD_03_validacao_janela.png": {
+      "bytes": 27464,
+      "sha256": "31513d3f744e4efaddf77da9ffc69da0a7740c4af13f61cf5796d5a00b9cc101"
+    },
+    "input/1080p_FHD_03_validacao_modal.png": {
+      "bytes": 1611,
+      "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7"
+    },
+    "input/1080p_FHD_04_gizmo_feedback.png": {
+      "bytes": 31277,
+      "sha256": "ac30577af725dfe8641fa1674da517f66febd493537f47afe4d8522dc1e9dd16"
+    },
+    "input/720p_Compacta_01_sem_projeto.png": {
+      "bytes": 8790,
+      "sha256": "6ea4752788b0d8807d11f20eb6c6c3db7809528fe52d61e9794f86d59c62c370"
+    },
+    "input/720p_Compacta_02_projeto_paineis.png": {
+      "bytes": 20963,
+      "sha256": "4bdd25d324fd8a6541ab64e75c39db3b7395f85d581357c4792f10e9b48ed60f"
+    },
+    "input/720p_Compacta_03_validacao_janela.png": {
+      "bytes": 20347,
+      "sha256": "e9d4578bf474f8461099e59039f3da3434c5e366d1dda52e221b3e79af1d5bbe"
+    },
+    "input/720p_Compacta_03_validacao_modal.png": {
+      "bytes": 1611,
+      "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7"
+    },
+    "input/720p_Compacta_04_gizmo_feedback.png": {
+      "bytes": 24130,
+      "sha256": "fda201ad9fddbd718c532d061908d56686721da1aebf838cebf6aab90fc015f1"
+    },
+    "input/768p_Minima_01_sem_projeto.png": {
+      "bytes": 9474,
+      "sha256": "f58beaf2a7f04352c4379bf4409a5068e7354e66a3023bafe95058f39226e13c"
+    },
+    "input/768p_Minima_02_projeto_paineis.png": {
+      "bytes": 21503,
+      "sha256": "6e4e3cefc6761d8f87a9255611267aba7150d61c82167e4b5c909393b90bad63"
+    },
+    "input/768p_Minima_03_validacao_janela.png": {
+      "bytes": 21005,
+      "sha256": "7ef0a20522c0feb8c4861bf29fe94381d1a3eca8e01bf20f32c9075f82877b60"
+    },
+    "input/768p_Minima_03_validacao_modal.png": {
+      "bytes": 1611,
+      "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7"
+    },
+    "input/768p_Minima_04_gizmo_feedback.png": {
+      "bytes": 24762,
+      "sha256": "eb624d8ee28232f3f69b518ef86c0298c8871c822d3b3ea5e9b2993807cf63df"
+    },
+    "input/manifest.json": {
+      "bytes": 94437,
+      "sha256": "9386edc5915ebf4e381c2ffafd4d5cd089cad65ef768aaafa82a5aac7506fb01"
+    },
+    "input/ui-audit-fixture.ndtproj": {
+      "bytes": 2193,
+      "sha256": "6d31aa6502346e99316419eefc70f9a66d9afd9690a0dce2f2fd98155d372c20"
+    },
+    "input/ui-audit-fixture.png": {
+      "bytes": 10112,
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    "output/1080p_FHD_01_sem_projeto_annotated.png": {
+      "bytes": 15556,
+      "sha256": "e22bbd9706805c6b05a9219c51d110c1c22e676723e2c847ea5a324fe65759d1"
+    },
+    "output/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "bytes": 27745,
+      "sha256": "51be7ecadfcea43df99d525ccbee1a8da78d422aff91ea496ff740ebe85db1f0"
+    },
+    "output/1080p_FHD_03_validacao_janela_annotated.png": {
+      "bytes": 27745,
+      "sha256": "51be7ecadfcea43df99d525ccbee1a8da78d422aff91ea496ff740ebe85db1f0"
+    },
+    "output/1080p_FHD_03_validacao_modal_annotated.png": {
+      "bytes": 2155,
+      "sha256": "37c1eda1f8b89b3534383e22222db34a007f68cdfe2a2d179f0494ec61e85185"
+    },
+    "output/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "bytes": 31356,
+      "sha256": "d19e16fb615d3065ac217590a76f1faf08fa2d9acb120f648257dec1df91e4f7"
+    },
+    "output/720p_Compacta_01_sem_projeto_annotated.png": {
+      "bytes": 9520,
+      "sha256": "972bfcf2d131957758225e32fb331f7770f605dc2a1f133554cf58d3a7274411"
+    },
+    "output/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "bytes": 21505,
+      "sha256": "4dff014c69ee96fb590c5ecf31b6dc1d076b124d34588957ad217eecb7bd88c3"
+    },
+    "output/720p_Compacta_03_validacao_janela_annotated.png": {
+      "bytes": 20994,
+      "sha256": "297ecf75b0377104c6eeefb51504412aac4e9c942b188f087408cc768a86d1b8"
+    },
+    "output/720p_Compacta_03_validacao_modal_annotated.png": {
+      "bytes": 2155,
+      "sha256": "37c1eda1f8b89b3534383e22222db34a007f68cdfe2a2d179f0494ec61e85185"
+    },
+    "output/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "bytes": 24650,
+      "sha256": "74b9f4b94961e7aa219bfb7fed199a2cb4c213b407a9fe24d62a80a59a5e11d7"
+    },
+    "output/768p_Minima_01_sem_projeto_annotated.png": {
+      "bytes": 10214,
+      "sha256": "5507b4084a9654ecbdb6049497766ab28a2be134305ecd6127d59ea3637d4900"
+    },
+    "output/768p_Minima_02_projeto_paineis_annotated.png": {
+      "bytes": 22057,
+      "sha256": "5ecf99226ead5b14520c42e8a8477366bac6bf077f9fea7224bf0c53ba1cf12b"
+    },
+    "output/768p_Minima_03_validacao_janela_annotated.png": {
+      "bytes": 21663,
+      "sha256": "7ca00c663c02d34f0215a4e484598b5102454cfac97600b66921f1ba91e9335d"
+    },
+    "output/768p_Minima_03_validacao_modal_annotated.png": {
+      "bytes": 2155,
+      "sha256": "37c1eda1f8b89b3534383e22222db34a007f68cdfe2a2d179f0494ec61e85185"
+    },
+    "output/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "bytes": 25279,
+      "sha256": "911350d7ef6797a6b0c26087e9c18764ed88f342f79130abe1855da1292ca22f"
+    },
+    "output/ui-audit-fixture_annotated.png": {
+      "bytes": 4006,
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae"
+    },
+    "output/visual-audit-report.json": {
+      "bytes": 16920,
+      "sha256": "527344a97b1754aef5ca7980fb86a41cbd6d8b448443c7e42085b6880fc740ff"
+    },
+    "output/visual-audit-report.md": {
+      "bytes": 232,
+      "sha256": "c801486102c193629e0e4f07a3d649d2254727fba3f2fc049fb9d99f435475f1"
+    }
+  }
+}
