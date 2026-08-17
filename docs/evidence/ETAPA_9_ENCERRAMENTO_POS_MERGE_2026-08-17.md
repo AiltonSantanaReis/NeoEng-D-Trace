@@ -70,6 +70,25 @@ teste de destinos duplicados normalizados para ser portátil entre Linux e
 Windows. O CI corretivo passou nos dois sistemas antes do merge; o CI
 pós-merge também passou nos dois sistemas.
 
+## Suplemento — execução administrativa local
+
+O operador executou no terminal administrativo, após a execução não elevada
+que havia produzido dois skips, exatamente o comando:
+
+.\.venv\Scripts\python.exe -m pytest -q tests/test_integration_sync.py -k symlink -rs --tb=short
+
+A transcrição fornecida pelo operador registrou: 22 itens coletados, 2 testes
+selecionados, 20 itens desmarcados, código de saída 0 e 2 passed, 0 skipped.
+Os testes selecionados foram test_plan_rejects_symlink_escape e
+test_plan_rejects_symlink_destination. A evidência foi normalizada sem usuário,
+caminho local ou identificador de máquina; sua proveniência permanece
+explicitamente identificada como transcrição do terminal do operador, não como
+uma nova execução do terminal local reproduzida nesta sessão.
+
+O log normalizado e seu índice estão em
+docs/evidence/artifacts/native-stage9-2026-08-17/stage9-symlink-elevated-console-normalized.log
+e stage9-symlink-elevated-index.json. O log possui SHA-256
+d71af77034ad90ddfe6739d197119d36d26ba92b15abd3db8927ea646c017ff5.
 ## Limitações e decisão
 
 A Etapa 9 está integrada no escopo aprovado. Isso não aprova release e não

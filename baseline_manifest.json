@@ -245,8 +245,8 @@
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "661d71a636d152d0fce6ead2101f4fe2f64707a55229ff1a20c95ff7766fd047",
-      "size": 5840
+      "sha256": "09ad2bf837ef6c9d4313daa9c9da505b1633ab84871ada94c9294bfd0cc9a990",
+      "size": 5976
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "e8c872729cf965338d66c8562b7067cce5a36cb4443c52dc3eaeb1aa61d81d17",
@@ -625,8 +625,8 @@
       "size": 3950
     },
     "docs/evidence/ETAPA_9_ENCERRAMENTO_POS_MERGE_2026-08-17.md": {
-      "sha256": "f787ad5de38860b5be06b1c93e5c45526551b9e6a160095bd0bdde32e4796ea9",
-      "size": 4019
+      "sha256": "b1d22af053338df3eda73d2c38a5c64b81caaaf3fe2bc9f9ed8afb441fdecb2f",
+      "size": 5091
     },
     "docs/evidence/ETAPA_AUDITOR_VISUAL_REPRODUTIVEL_2026-08-16.md": {
       "sha256": "833107653cc227e225c4139a7870b6fa3149ce8bc5a26ab66fe629cd9b00bf09",
@@ -673,8 +673,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "5c3a390b8e8052879c5d2cb9fc4be8688cfda583a5058d5f77f7a8b9b3e4087c",
-      "size": 28929
+      "sha256": "21781ea7da7986d2a36bf57ec166eaa8f43181002b88a7bbb40ae062c6b6c5da",
+      "size": 29111
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -1487,6 +1487,14 @@
     "docs/evidence/artifacts/native-stage9-2026-08-17/stage9-report.json": {
       "sha256": "02a387211a1e433d3c05ab7c6ef1ae87bc134362d2913b6e7ace0e1cc115915b",
       "size": 173892
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/stage9-symlink-elevated-console-normalized.log": {
+      "sha256": "d71af77034ad90ddfe6739d197119d36d26ba92b15abd3db8927ea646c017ff5",
+      "size": 466
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/stage9-symlink-elevated-index.json": {
+      "sha256": "8fa3845423217fe8138bdcdc18f02f92b861197e8c817932dd0b2100abffc543",
+      "size": 310
     },
     "docs/evidence/artifacts/native-stage9-2026-08-17/unity-manifest.ndt.integration.json": {
       "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
