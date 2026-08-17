@@ -39,6 +39,9 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
     var texture := load("res://" + image_reference) as Texture2D
     if texture == null:
         return _failure(manifest_path, "manifest image cannot be loaded")
+    var advanced_validation := _validate_advanced_runtime(payload)
+    if advanced_validation.get("status") != "SUCCESS":
+        return _failure(manifest_path, str(advanced_validation.get("error", "advanced manifest is invalid")))
     if not DirAccess.dir_exists_absolute(output_root):
         var make_error := DirAccess.make_dir_recursive_absolute(output_root)
         if make_error != OK:
@@ -47,7 +50,17 @@ static func import_manifest(manifest_path: String, output_root: String = "res://
     for sprite_data in sprites:
         if typeof(sprite_data) != TYPE_DICTIONARY:
             return _failure(manifest_path, "sprite metadata must be an object")
-        var result := _import_sprite(sprite_data, texture, manifest_path, output_root, payload)
+        var import_data: Dictionary = sprite_data.duplicate(true)
+        var advanced_entry := _advanced_entry(payload, str(sprite_data.get("id", "")))
+        if advanced_entry.get("status") != "SUCCESS":
+            return _failure(manifest_path, str(advanced_entry.get("error", "advanced atlas sprite is missing")))
+        if advanced_entry.get("entry") != null:
+            import_data["rect"] = advanced_entry["entry"].get("rect")
+            import_data["_advanced_image_reference"] = advanced_entry.get("path", "")
+            import_data["_advanced_page_hash"] = advanced_entry.get("sha256", "")
+            import_data["_advanced_engine_properties"] = payload.get("advanced", {}).get("engine_properties", {}).get("godot", {})
+            import_data["_advanced_pixels_per_unit"] = payload.get("advanced", {}).get("coordinate_system", {}).get("pixels_per_unit", {}).get("godot", 1.0)
+        var result := _import_sprite(import_data, texture, manifest_path, output_root, payload)
         results.append(result)
         if result.get("status") == "CONFLICT" or result.get("status") == "FAILED":
             return {
@@ -140,7 +153,7 @@ static func _import_sprite(
     var scene_template := _build_scene_text(
         object_id,
         manifest_path,
-        _image_reference_from_manifest(payload),
+        _sprite_image_reference(sprite_data, payload),
         payload.get("generator", {}).get("version", ""),
         image_hash,
         metadata_hash,
@@ -236,6 +249,41 @@ static func _destructive_update_confirmed() -> bool:
     var value := OS.get_environment("NEOENG_STAGE7_CONFIRM_DESTRUCTIVE").to_lower()
     return value == "1" or value == "true"
 
+static func _validate_advanced_runtime(payload: Dictionary) -> Dictionary:
+    if int(payload.get("schema_version", 1)) != 2:
+        return {"status": "SUCCESS"}
+    var advanced = payload.get("advanced", {})
+    var pages = advanced.get("atlas", {}).get("pages", []) if typeof(advanced) == TYPE_DICTIONARY else []
+    for page in pages:
+        var path := str(page.get("path", ""))
+        if not ManifestDiagnostic._is_safe_relative(path):
+            return {"status": "FAILED", "error": "advanced atlas page path is unsafe"}
+        var bytes := FileAccess.get_file_as_bytes("res://" + path)
+        if bytes.is_empty() or _sha256_bytes(bytes) != str(page.get("sha256", "")):
+            return {"status": "FAILED", "error": "advanced atlas page hash does not match source"}
+        var page_texture := load("res://" + path) as Texture2D
+        if page_texture == null:
+            return {"status": "FAILED", "error": "advanced atlas page cannot be loaded"}
+        if page_texture.get_width() != int(page.get("width", -1)) or page_texture.get_height() != int(page.get("height", -1)):
+            return {"status": "FAILED", "error": "advanced atlas page dimensions do not match manifest"}
+    return {"status": "SUCCESS"}
+
+
+static func _advanced_entry(payload: Dictionary, object_id: String) -> Dictionary:
+    if int(payload.get("schema_version", 1)) != 2:
+        return {"status": "SUCCESS", "entry": null}
+    var pages = payload.get("advanced", {}).get("atlas", {}).get("pages", [])
+    for page in pages:
+        for entry in page.get("sprites", []):
+            if str(entry.get("id", "")) == object_id:
+                return {"status": "SUCCESS", "entry": entry, "path": str(page.get("path", "")), "sha256": str(page.get("sha256", ""))}
+    return {"status": "FAILED", "error": "advanced atlas sprite is missing: " + object_id}
+
+
+static func _sprite_image_reference(sprite_data: Dictionary, payload: Dictionary) -> String:
+    var advanced_reference := str(sprite_data.get("_advanced_image_reference", ""))
+    return advanced_reference if not advanced_reference.is_empty() else _image_reference_from_manifest(payload)
+
 static func _sprite_properties(sprite_data: Dictionary) -> Dictionary:
     var layer = sprite_data.get("layer", "layer_default")
     if typeof(layer) != TYPE_STRING or layer.is_empty() or not _is_safe_name(layer):
@@ -254,6 +302,18 @@ static func _sprite_properties(sprite_data: Dictionary) -> Dictionary:
     var normalized_y := float(pivot_normalized.get("y", -1.0))
     if not is_finite(normalized_x) or not is_finite(normalized_y):
         return {"status": "FAILED", "error": "sprite normalized pivot is invalid"}
+    var advanced_properties = sprite_data.get("_advanced_engine_properties", {})
+    var texture_filter := str(advanced_properties.get("texture_filter", "nearest"))
+    var texture_repeat := str(advanced_properties.get("texture_repeat", "disabled"))
+    var centered := bool(advanced_properties.get("centered", true))
+    var z_index_value := int(advanced_properties.get("z_index", 0))
+    if texture_filter != "nearest" and texture_filter != "linear":
+        return {"status": "FAILED", "error": "advanced Godot texture filter is invalid"}
+    if texture_repeat != "disabled" and texture_repeat != "enabled":
+        return {"status": "FAILED", "error": "advanced Godot texture repeat is invalid"}
+    var pixels_per_unit := float(sprite_data.get("_advanced_pixels_per_unit", 1.0))
+    if not is_finite(pixels_per_unit) or pixels_per_unit <= 0.0:
+        return {"status": "FAILED", "error": "advanced Godot pixels per unit is invalid"}
     return {
         "status": "SUCCESS",
         "layer": layer,
@@ -262,6 +322,12 @@ static func _sprite_properties(sprite_data: Dictionary) -> Dictionary:
         "padding": padding,
         "pivot_normalized_x": normalized_x,
         "pivot_normalized_y": normalized_y,
+        "texture_filter": texture_filter,
+        "texture_repeat": texture_repeat,
+        "centered": centered,
+        "z_index": z_index_value,
+        "pixels_per_unit": pixels_per_unit,
+        "advanced_page_hash": str(sprite_data.get("_advanced_page_hash", "")),
     }
 
 
@@ -461,11 +527,17 @@ static func _build_scene_text(
     lines.append("metadata/neoeng_group = %s" % _quote(properties.get("group", "")))
     lines.append("metadata/neoeng_trimmed = %s" % str(properties.get("trimmed", false)).to_lower())
     lines.append("metadata/neoeng_padding = %d" % int(properties.get("padding", 0)))
+    lines.append("metadata/neoeng_advanced_page_sha256 = %s" % _quote(str(properties.get("advanced_page_hash", ""))))
     lines.append("")
     lines.append("[node name=\"Sprite2D\" type=\"Sprite2D\" parent=\".\"]")
     lines.append("texture = SubResource(\"AtlasTexture_1\")")
-    lines.append("centered = true")
-    lines.append("offset = Vector2(%s, %s)" % [_number(width * 0.5 - pivot_x), _number(height * 0.5 - pivot_y)])
+    lines.append("centered = %s" % str(bool(properties.get("centered", true))).to_lower())
+    lines.append("texture_filter = %d" % (1 if properties.get("texture_filter", "nearest") == "nearest" else 2))
+    lines.append("texture_repeat = %d" % (0 if properties.get("texture_repeat", "disabled") == "disabled" else 1))
+    lines.append("z_index = %d" % int(properties.get("z_index", 0)))
+    var pixels_per_unit := float(properties.get("pixels_per_unit", 1.0))
+    lines.append("scale = Vector2(%s, %s)" % [_number(1.0 / pixels_per_unit), _number(1.0 / pixels_per_unit)])
+    lines.append("offset = Vector2(%s, %s)" % [_number((width * 0.5 - pivot_x) / pixels_per_unit), _number((height * 0.5 - pivot_y) / pixels_per_unit)])
     lines.append("metadata/neoeng_generated = true")
     lines.append("metadata/neoeng_pivot_pixels = Vector2(%s, %s)" % [_number(pivot_x), _number(pivot_y)])
     lines.append("metadata/neoeng_pivot_normalized = Vector2(%s, %s)" % [_number(properties.get("pivot_normalized_x", 0.5)), _number(properties.get("pivot_normalized_y", 0.5))])
@@ -473,7 +545,7 @@ static func _build_scene_text(
         var node_name := "CollisionPolygon2D" if polygons.size() == 1 else "CollisionPolygon2D_%d" % index
         lines.append("")
         lines.append("[node name=%s type=\"CollisionPolygon2D\" parent=\".\"]" % _quote(node_name))
-        lines.append("polygon = %s" % _packed_vector2_array(polygons[index]))
+        lines.append("polygon = %s" % _packed_vector2_array_scaled(polygons[index], float(properties.get("pixels_per_unit", 1.0))))
         lines.append("metadata/neoeng_generated = true")
     return "\n".join(lines) + "\n"
 
@@ -618,6 +690,13 @@ static func _packed_vector2_array_relative(points: Array, offset_x: float, offse
         polygon.append(Vector2(float(point[0]) - offset_x, float(point[1]) - offset_y))
     return _packed_vector2_array(polygon)
 
+
+static func _packed_vector2_array_scaled(polygon: PackedVector2Array, pixels_per_unit: float) -> String:
+    var values := PackedStringArray()
+    for point in polygon:
+        values.append(_number(point.x / pixels_per_unit))
+        values.append(_number(point.y / pixels_per_unit))
+    return "PackedVector2Array(" + ", ".join(values) + ")"
 
 static func _packed_vector2_array(polygon: PackedVector2Array) -> String:
     var values := PackedStringArray()

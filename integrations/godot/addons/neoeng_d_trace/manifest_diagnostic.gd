@@ -4,6 +4,7 @@ extends RefCounted
 
 const FORMAT_ID := "neoeng-d-trace-engine-integration"
 const SCHEMA_VERSION := 1
+const ADVANCED_SCHEMA_VERSION := 2
 const GENERATED_ROOT := "NeoEngGenerated"
 const OVERRIDE_SUFFIX := ".ndt.override.json"
 const SUPPORTED_ENGINE := "godot"
@@ -88,6 +89,8 @@ static func _collect_manifest_paths(root: String, paths: Array[String]) -> void:
 
 static func _validate_payload(payload: Dictionary, errors: Array) -> void:
     var expected_keys := ["format_id", "schema_version", "generator", "engine", "source", "sync", "metadata"]
+    if payload.get("schema_version") == ADVANCED_SCHEMA_VERSION:
+        expected_keys.append("advanced")
     for key in expected_keys:
         if not payload.has(key):
             errors.append("missing manifest field: " + key)
@@ -95,7 +98,7 @@ static func _validate_payload(payload: Dictionary, errors: Array) -> void:
         return
     if payload.get("format_id") != FORMAT_ID:
         errors.append("unsupported manifest format")
-    if payload.get("schema_version") != SCHEMA_VERSION:
+    if payload.get("schema_version") != SCHEMA_VERSION and payload.get("schema_version") != ADVANCED_SCHEMA_VERSION:
         errors.append("unsupported manifest schema version")
     if payload.get("engine") != SUPPORTED_ENGINE:
         errors.append("manifest engine is not godot")
@@ -117,7 +120,28 @@ static func _validate_payload(payload: Dictionary, errors: Array) -> void:
         errors.append("manifest sync policy is invalid")
     if typeof(payload.get("metadata")) != TYPE_DICTIONARY:
         errors.append("manifest metadata payload is invalid")
+    if payload.get("schema_version") == ADVANCED_SCHEMA_VERSION:
+        _validate_advanced(payload, errors)
 
+
+static func _validate_advanced(payload: Dictionary, errors: Array) -> void:
+    var advanced = payload.get("advanced")
+    if typeof(advanced) != TYPE_DICTIONARY or advanced.get("schema_version") != 1:
+        errors.append("advanced manifest payload is invalid")
+        return
+    var coordinates = advanced.get("coordinate_system")
+    if typeof(coordinates) != TYPE_DICTIONARY or coordinates.get("image_origin") != "top-left" or coordinates.get("polygon_origin") != "sprite-top-left" or coordinates.get("engine_y_axis") != "up":
+        errors.append("advanced coordinate contract is invalid")
+    var atlas = advanced.get("atlas")
+    if typeof(atlas) != TYPE_DICTIONARY or typeof(atlas.get("pages")) != TYPE_ARRAY or atlas.get("pages").is_empty():
+        errors.append("advanced atlas payload is invalid")
+    else:
+        for page in atlas.get("pages"):
+            if typeof(page) != TYPE_DICTIONARY or not _is_safe_relative(str(page.get("path", ""))) or typeof(page.get("sha256")) != TYPE_STRING or str(page.get("sha256")).length() != 64 or typeof(page.get("sprites")) != TYPE_ARRAY or page.get("sprites").is_empty():
+                errors.append("advanced atlas page is invalid")
+    var properties = advanced.get("engine_properties")
+    if typeof(properties) != TYPE_DICTIONARY or typeof(properties.get("godot")) != TYPE_DICTIONARY or typeof(properties.get("unity")) != TYPE_DICTIONARY:
+        errors.append("advanced engine properties are invalid")
 
 static func _validate_source(source: Dictionary, errors: Array) -> void:
     var image = source.get("image")

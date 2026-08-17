@@ -9,6 +9,7 @@ from PIL import Image
 from src.exporters.integration_manifest import (
     INTEGRATION_FORMAT_ID,
     INTEGRATION_SCHEMA_VERSION,
+    build_advanced_integration_manifest,
     build_integration_manifest,
     save_integration_manifest,
     validate_integration_manifest,
@@ -186,4 +187,188 @@ def test_manifest_validation_rejects_non_mapping_generator_and_metadata(tmp_path
     manifest = _manifest(tmp_path)
     manifest["metadata"] = None
     with pytest.raises(ValueError, match="metadata source"):
+        validate_integration_manifest(manifest)
+
+
+def _advanced_manifest(tmp_path: Path) -> dict:
+    from src.exporters.atlas_exporter import build_atlas
+
+    source = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    for x in range(2, 14):
+        for y in range(3, 13):
+            source.putpixel((x, y), (10, 20, 30, 255))
+    atlas_dir = tmp_path / "atlas"
+    results = build_atlas(
+        [("hero", source)], str(atlas_dir), max_size=(64, 64), padding=2, bleed=1
+    )
+    atlas = results[0]
+    scene = Scene()
+    scene.load_image(source, "source.png")
+    scene.add_object("hero", [(2, 3), (13, 3), (13, 12), (2, 12)])
+    metadata = export_scene_metadata(scene)
+    return build_advanced_integration_manifest(
+        metadata,
+        engine="godot",
+        image_path=atlas["atlas_path"],
+        image_reference="atlas/atlas_0.png",
+        atlas_pages=[
+            {
+                "id": "atlas_0",
+                "path": "atlas/atlas_0.png",
+                "file_path": atlas["atlas_path"],
+                "entries": atlas["entries"],
+            }
+        ],
+        engine_properties={
+            "godot": {"texture_filter": "linear", "z_index": 4},
+            "unity": {"pixels_per_unit": 32.0, "sorting_order": 7, "z_depth": 1.5},
+        },
+    )
+
+
+def test_advanced_manifest_consumes_real_atlas_output_and_is_deterministic(tmp_path):
+    manifest = _advanced_manifest(tmp_path)
+    assert manifest["schema_version"] == 2
+    assert manifest["advanced"]["atlas"]["bleed"] == 1
+    page = manifest["advanced"]["atlas"]["pages"][0]
+    sprite = page["sprites"][0]
+    assert sprite["id"] == "hero"
+    assert sprite["extrusion"] == 1
+    assert manifest["advanced"]["coordinate_system"]["pixels_per_unit"]["unity"] == 32.0
+    validate_integration_manifest(manifest)
+    destination = tmp_path / "manifest.json"
+    save_integration_manifest(manifest, destination)
+    first = destination.read_bytes()
+    save_integration_manifest(manifest, destination)
+    assert first == destination.read_bytes()
+
+
+@pytest.mark.parametrize("field", ["bleed", "engine_properties"])
+def test_advanced_manifest_rejects_contract_drift(tmp_path, field):
+    import copy
+
+    manifest = _advanced_manifest(tmp_path)
+    mutated = copy.deepcopy(manifest)
+    if field == "bleed":
+        mutated["advanced"]["atlas"]["bleed"] = 2
+    else:
+        mutated["advanced"]["engine_properties"]["unity"]["filter_mode"] = "Unsupported"
+    with pytest.raises(ValueError):
+        validate_integration_manifest(mutated)
+
+
+@pytest.mark.parametrize(
+    "label, mutation",
+    [
+        ("advanced-object", lambda manifest: manifest.__setitem__("advanced", None)),
+        (
+            "advanced-schema",
+            lambda manifest: manifest["advanced"].__setitem__("schema_version", 2),
+        ),
+        (
+            "coordinates-object",
+            lambda manifest: manifest["advanced"].__setitem__(
+                "coordinate_system", None
+            ),
+        ),
+        (
+            "coordinates-values",
+            lambda manifest: manifest["advanced"]["coordinate_system"].__setitem__(
+                "image_origin", "bottom-left"
+            ),
+        ),
+        (
+            "pixels-per-unit",
+            lambda manifest: manifest["advanced"]["coordinate_system"][
+                "pixels_per_unit"
+            ].__setitem__("godot", 0),
+        ),
+        (
+            "atlas-object",
+            lambda manifest: manifest["advanced"].__setitem__("atlas", None),
+        ),
+        (
+            "atlas-pages",
+            lambda manifest: manifest["advanced"]["atlas"].__setitem__("pages", []),
+        ),
+        (
+            "page-object",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"].__setitem__(
+                0, None
+            ),
+        ),
+        (
+            "page-identity",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0].__setitem__(
+                "id", ""
+            ),
+        ),
+        (
+            "page-hash",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0].__setitem__(
+                "sha256", "short"
+            ),
+        ),
+        (
+            "page-sprites",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0].__setitem__(
+                "sprites", []
+            ),
+        ),
+        (
+            "sprite-object",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0][
+                "sprites"
+            ].__setitem__(0, None),
+        ),
+        (
+            "sprite-contract",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0]["sprites"][
+                0
+            ].__setitem__("unexpected", True),
+        ),
+        (
+            "sprite-identity",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0]["sprites"][
+                0
+            ].__setitem__("id", ""),
+        ),
+        (
+            "engine-properties",
+            lambda manifest: manifest["advanced"].__setitem__(
+                "engine_properties", None
+            ),
+        ),
+        (
+            "godot-properties",
+            lambda manifest: manifest["advanced"]["engine_properties"].__setitem__(
+                "godot", None
+            ),
+        ),
+        (
+            "metadata-coverage",
+            lambda manifest: manifest["advanced"]["atlas"]["pages"][0]["sprites"][
+                0
+            ].__setitem__("id", "other"),
+        ),
+    ],
+)
+def test_advanced_manifest_rejects_each_invalid_contract_section(
+    tmp_path, label, mutation
+):
+    import copy
+
+    manifest = copy.deepcopy(_advanced_manifest(tmp_path))
+    mutation(manifest)
+    with pytest.raises(ValueError):
+        validate_integration_manifest(manifest)
+
+
+def test_advanced_manifest_rejects_non_mapping_and_unknown_schema(tmp_path):
+    with pytest.raises(ValueError, match="mapping"):
+        validate_integration_manifest(None)
+
+    manifest = _advanced_manifest(tmp_path)
+    manifest["schema_version"] = 99
+    with pytest.raises(ValueError, match="schema"):
         validate_integration_manifest(manifest)

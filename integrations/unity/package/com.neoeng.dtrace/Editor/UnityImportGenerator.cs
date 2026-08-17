@@ -15,7 +15,7 @@ namespace NeoEng.DTrace.Editor
     {
         private const string GeneratedRoot = "Assets/NeoEngGenerated";
         private const string MarkerFile = ".neoeng-generated";
-        private const string PixelsPerUnit = "100";
+        private const float LegacyPixelsPerUnit = 100f;
         private const string ConfirmDestructiveEnvironment = "NEOENG_STAGE7_CONFIRM_DESTRUCTIVE";
 
         [MenuItem("NeoEng D-Trace/Import Integration Manifest")]
@@ -62,6 +62,10 @@ namespace NeoEng.DTrace.Editor
             {
                 Debug.Log("UNITY_NATIVE_IMPORT_STAGE6=SUCCESS");
                 Debug.Log("UNITY_NATIVE_SYNC_STAGE7=SUCCESS");
+                if (Environment.GetEnvironmentVariable("NEOENG_STAGE8_MODE") == "advanced")
+                {
+                    Debug.Log("UNITY_NATIVE_IMPORT_STAGE8=SUCCESS");
+                }
                 Debug.Log("IMPORTED_SPRITES=" + result.ImportedSprites);
                 Debug.Log("IMPORTED_PREFABS=" + result.ImportedPrefabs);
                 Debug.Log("IMPORTED_COLLIDERS=" + result.ImportedColliders);
@@ -74,6 +78,11 @@ namespace NeoEng.DTrace.Editor
             EditorApplication.Exit(1);
         }
 
+        public static void RunHeadlessAdvancedImport()
+        {
+            Environment.SetEnvironmentVariable("NEOENG_STAGE8_MODE", "advanced");
+            RunHeadlessImport();
+        }
         public static void CreateManualPrefabFixture()
         {
             Directory.CreateDirectory(ProjectAbsolutePath(GeneratedRoot));
@@ -130,11 +139,12 @@ namespace NeoEng.DTrace.Editor
             {
                 return ImportResult.Failure("source_image", "source image could not be loaded by AssetDatabase");
             }
+            Dictionary<string, Texture2D> atlasTextures = LoadAdvancedAtlasTextures(manifest, imageAssetPath, texture);
 
             ImportResult result = ImportResult.SuccessResult(manifest, imageAssetPath);
             foreach (SpriteRecord spriteRecord in manifest.metadata.sprites)
             {
-                ImportedAsset asset = ImportSprite(manifest, spriteRecord, texture, imageAssetPath);
+                ImportedAsset asset = ImportSprite(manifest, spriteRecord, texture, imageAssetPath, atlasTextures);
                 result.Assets.Add(asset);
                 if (asset.Status == "UNCHANGED")
                 {
@@ -160,21 +170,131 @@ namespace NeoEng.DTrace.Editor
             return result;
         }
 
+        private static Dictionary<string, Texture2D> LoadAdvancedAtlasTextures(
+            IntegrationManifest manifest,
+            string sourceImageAssetPath,
+            Texture2D sourceTexture)
+        {
+            Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+            textures["__source__"] = sourceTexture;
+            if (manifest.schema_version != 2)
+            {
+                return textures;
+            }
+            ValidateAdvancedManifest(manifest);
+            foreach (AtlasPageData page in manifest.advanced.atlas.pages)
+            {
+                string assetPath = ResolveSourceImage(page.path);
+                ValidateImageHash(page.sha256, assetPath);
+                AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
+                Texture2D atlasTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+                if (atlasTexture == null)
+                {
+                    throw new InvalidDataException("advanced atlas page could not be loaded");
+                }
+                ApplyTextureProperties(assetPath, manifest.advanced.engine_properties.unity);
+                atlasTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+                if (atlasTexture == null || atlasTexture.width != page.width || atlasTexture.height != page.height)
+                {
+                    throw new InvalidDataException("advanced atlas page dimensions mismatch: expected " + page.width + "x" + page.height + ", actual " + (atlasTexture == null ? "null" : atlasTexture.width + "x" + atlasTexture.height));
+                }
+                textures[page.id] = atlasTexture;
+            }
+            return textures;
+        }
+
+        private static void ApplyTextureProperties(string assetPath, UnityProperties properties)
+        {
+            TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+            if (importer == null)
+            {
+                throw new InvalidDataException("advanced atlas page is not a texture importer asset");
+            }
+            importer.textureType = TextureImporterType.Sprite;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.filterMode = properties.filter_mode == "Point" ? FilterMode.Point : FilterMode.Bilinear;
+            importer.wrapMode = properties.wrap_mode == "Clamp" ? TextureWrapMode.Clamp :
+                properties.wrap_mode == "Repeat" ? TextureWrapMode.Repeat : TextureWrapMode.Mirror;
+            importer.SaveAndReimport();
+        }
+
+        private static AtlasSpriteData FindAdvancedSprite(IntegrationManifest manifest, string objectId, out AtlasPageData page)
+        {
+            page = null;
+            if (manifest.schema_version != 2)
+            {
+                return null;
+            }
+            foreach (AtlasPageData candidate in manifest.advanced.atlas.pages)
+            {
+                foreach (AtlasSpriteData sprite in candidate.sprites)
+                {
+                    if (sprite.id == objectId)
+                    {
+                        page = candidate;
+                        return sprite;
+                    }
+                }
+            }
+            throw new InvalidDataException("advanced atlas sprite is missing: " + objectId);
+        }
+
+        private static float PixelsPerUnit(IntegrationManifest manifest)
+        {
+            return manifest.schema_version == 2
+                ? manifest.advanced.engine_properties.unity.pixels_per_unit
+                : LegacyPixelsPerUnit;
+        }
+
+        private static Vector2 EffectivePivot(PivotData pivot, RectData logicalRect, AtlasSpriteData atlasSprite)
+        {
+            Vector2 normalized = new Vector2(pivot.x / logicalRect.w, pivot.y / logicalRect.h);
+            if (atlasSprite != null && atlasSprite.rotated)
+            {
+                return new Vector2(1f - normalized.y, normalized.x);
+            }
+            return normalized;
+        }
+
+        private static Vector2[] EffectivePolygon(Vector2[] polygon, RectData logicalRect, AtlasSpriteData atlasSprite)
+        {
+            if (atlasSprite == null || !atlasSprite.rotated)
+            {
+                return polygon;
+            }
+            return polygon.Select(point => new Vector2(logicalRect.h - point.y, point.x)).ToArray();
+        }
         private static ImportedAsset ImportSprite(
             IntegrationManifest manifest,
             SpriteRecord record,
             Texture2D texture,
-            string imageAssetPath)
+            string imageAssetPath,
+            Dictionary<string, Texture2D> atlasTextures)
         {
             string safeId = SafeObjectId(record.id);
-            Rect rect = new Rect(record.rect.x, texture.height - record.rect.y - record.rect.h, record.rect.w, record.rect.h);
-            if (rect.x < 0 || rect.y < 0 || rect.xMax > texture.width || rect.yMax > texture.height)
+            AtlasPageData atlasPage;
+            AtlasSpriteData atlasSprite = FindAdvancedSprite(manifest, record.id, out atlasPage);
+            Texture2D effectiveTexture = texture;
+            RectData logicalRect = record.rect;
+            RectData regionData = atlasSprite == null ? record.rect : atlasSprite.rect;
+            if (atlasSprite != null)
+            {
+                if (!atlasTextures.ContainsKey(atlasPage.id))
+                {
+                    throw new InvalidDataException("advanced atlas texture is not loaded");
+                }
+                effectiveTexture = atlasTextures[atlasPage.id];
+            }
+            Rect rect = new Rect(regionData.x, effectiveTexture.height - regionData.y - regionData.h, regionData.w, regionData.h);
+            if (rect.x < 0 || rect.y < 0 || rect.xMax > effectiveTexture.width || rect.yMax > effectiveTexture.height)
             {
                 throw new InvalidDataException("sprite rectangle is outside the source image");
             }
 
-            Vector2 pivot = new Vector2(record.pivot_normalized.x, record.pivot_normalized.y);
-            Sprite sprite = Sprite.Create(texture, rect, pivot, float.Parse(PixelsPerUnit), 0, SpriteMeshType.FullRect);
+            Vector2 pivot = EffectivePivot(record.pivot, logicalRect, atlasSprite);
+            float pixelsPerUnit = PixelsPerUnit(manifest);
+            int extrusion = atlasSprite == null ? 0 : atlasSprite.extrusion;
+            Sprite sprite = Sprite.Create(effectiveTexture, rect, pivot, pixelsPerUnit, (uint)extrusion, SpriteMeshType.FullRect);
             sprite.name = safeId + ".sprite";
             string spritePath = GeneratedRoot + "/" + safeId + ".sprite.asset";
 
@@ -184,8 +304,9 @@ namespace NeoEng.DTrace.Editor
                 throw new InvalidDataException("sprite polygon must contain at least three points");
             }
             OverrideData overrideData = ReadOverride(safeId, record.id);
-            Vector2[] effectivePolygon = overrideData.Polygon ?? polygon;
-            string expectedFingerprint = ComputeFingerprint(record.id, safeId + ".sprite", ToUnityPoints(effectivePolygon, record.rect.h, record.pivot));
+            Vector2[] effectivePolygon = EffectivePolygon(overrideData.Polygon ?? polygon, logicalRect, atlasSprite);
+            Vector2 effectivePivotPixels = new Vector2(pivot.x * regionData.w, pivot.y * regionData.h);
+            string expectedFingerprint = ComputeFingerprint(record.id, safeId + ".sprite", ToUnityPoints(effectivePolygon, regionData.h, effectivePivotPixels, pixelsPerUnit));
             string prefabPath = GeneratedRoot + "/" + safeId + ".prefab";
             ExistingSync existing = InspectExistingPrefab(prefabPath, manifest, expectedFingerprint, overrideData.Hash);
             if (existing.Unchanged)
@@ -217,8 +338,8 @@ namespace NeoEng.DTrace.Editor
             metadata.groupId = record.group;
             metadata.trimmed = record.trimmed;
             metadata.padding = record.padding;
-            metadata.sourceRect = new Rect(record.rect.x, record.rect.y, record.rect.w, record.rect.h);
-            metadata.pivotPixels = new Vector2(record.pivot.x, record.pivot.y);
+            metadata.sourceRect = new Rect(regionData.x, regionData.y, regionData.w, regionData.h);
+            metadata.pivotPixels = effectivePivotPixels;
             metadata.pivotNormalized = pivot;
             metadata.sprite = sprite;
             metadata.polygonInSprite = effectivePolygon;
@@ -228,9 +349,15 @@ namespace NeoEng.DTrace.Editor
             GameObject root = new GameObject(safeId);
             SpriteRenderer renderer = root.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
+            if (manifest.schema_version == 2)
+            {
+                renderer.sortingLayerName = manifest.advanced.engine_properties.unity.sorting_layer;
+                renderer.sortingOrder = manifest.advanced.engine_properties.unity.sorting_order;
+                root.transform.position = new Vector3(0f, 0f, manifest.advanced.engine_properties.unity.z_depth);
+            }
             PolygonCollider2D collider = root.AddComponent<PolygonCollider2D>();
             collider.pathCount = 1;
-            collider.SetPath(0, ToUnityPoints(effectivePolygon, record.rect.h, record.pivot));
+            collider.SetPath(0, ToUnityPoints(effectivePolygon, regionData.h, effectivePivotPixels, pixelsPerUnit));
             NeoEngGeneratedMarker marker = root.AddComponent<NeoEngGeneratedMarker>();
             marker.generatorId = manifest.generator.id;
             marker.generatorVersion = manifest.generator.version;
@@ -404,14 +531,24 @@ namespace NeoEng.DTrace.Editor
                 {
                     throw new InvalidDataException("generated ScriptableObject is invalid");
                 }
+                if (manifest.schema_version == 2)
+                {
+                    AtlasPageData atlasPage;
+                    AtlasSpriteData atlasSprite = FindAdvancedSprite(manifest, asset.ObjectId, out atlasPage);
+                    UnityProperties properties = manifest.advanced.engine_properties.unity;
+                    if (Math.Abs(sprite.pixelsPerUnit - properties.pixels_per_unit) > 0.0001f || renderer.sortingLayerName != properties.sorting_layer || renderer.sortingOrder != properties.sorting_order || Math.Abs(prefab.transform.position.z - properties.z_depth) > 0.0001f || atlasSprite == null || atlasSprite.extrusion != manifest.advanced.atlas.bleed)
+                    {
+                        throw new InvalidDataException("generated advanced Unity properties are invalid");
+                    }
+                }
             }
         }
 
-        private static Vector2[] ToUnityPoints(Vector2[] points, float spriteHeight, PivotData pivot)
+        private static Vector2[] ToUnityPoints(Vector2[] points, float spriteHeight, Vector2 pivotPixels, float pixelsPerUnit)
         {
             return points.Select(point => new Vector2(
-                (point.x - pivot.x) / 100f,
-                (spriteHeight - point.y - pivot.y) / 100f)).ToArray();
+                (point.x - pivotPixels.x) / pixelsPerUnit,
+                (spriteHeight - point.y - pivotPixels.y) / pixelsPerUnit)).ToArray();
         }
 
         private static void ReplaceGeneratedAsset(string assetPath, UnityEngine.Object asset)
@@ -494,7 +631,7 @@ namespace NeoEng.DTrace.Editor
             {
                 throw new InvalidDataException("integration manifest is incomplete");
             }
-            if (manifest.format_id != "neoeng-d-trace-engine-integration" || manifest.schema_version != 1 || manifest.engine != "unity")
+            if (manifest.format_id != "neoeng-d-trace-engine-integration" || (manifest.schema_version != 1 && manifest.schema_version != 2) || manifest.engine != "unity")
             {
                 throw new InvalidDataException("integration manifest contract is unsupported");
             }
@@ -514,6 +651,61 @@ namespace NeoEng.DTrace.Editor
                 manifest.source.metadata == null || manifest.source.metadata.sha256 == null || manifest.source.metadata.sha256.Length != 64)
             {
                 throw new InvalidDataException("integration source hashes are invalid");
+            }
+            if (manifest.schema_version == 2)
+            {
+                ValidateAdvancedManifest(manifest);
+            }
+        }
+
+        private static void ValidateAdvancedManifest(IntegrationManifest manifest)
+        {
+            AdvancedData advanced = manifest.advanced;
+            if (advanced == null || advanced.schema_version != 1 || advanced.coordinate_system == null || advanced.atlas == null || advanced.engine_properties == null)
+            {
+                throw new InvalidDataException("advanced integration contract is incomplete");
+            }
+            if (advanced.coordinate_system.image_origin != "top-left" || advanced.coordinate_system.polygon_origin != "sprite-top-left" || advanced.coordinate_system.engine_y_axis != "up" || advanced.coordinate_system.pixels_per_unit == null)
+            {
+                throw new InvalidDataException("advanced coordinate contract is invalid");
+            }
+            if (advanced.coordinate_system.pixels_per_unit.godot <= 0f || advanced.coordinate_system.pixels_per_unit.unity <= 0f)
+            {
+                throw new InvalidDataException("advanced pixels-per-unit values are invalid");
+            }
+            if (advanced.atlas.pages == null || advanced.atlas.pages.Length == 0 || advanced.atlas.bleed < 0)
+            {
+                throw new InvalidDataException("advanced atlas contract is invalid");
+            }
+            HashSet<string> ids = new HashSet<string>(StringComparer.Ordinal);
+            foreach (AtlasPageData page in advanced.atlas.pages)
+            {
+                if (page == null || string.IsNullOrWhiteSpace(page.id) || string.IsNullOrWhiteSpace(page.path) || page.sha256 == null || page.sha256.Length != 64 || page.width <= 0 || page.height <= 0 || page.sprites == null || page.sprites.Length == 0)
+                {
+                    throw new InvalidDataException("advanced atlas page contract is invalid");
+                }
+                foreach (AtlasSpriteData sprite in page.sprites)
+                {
+                    if (sprite == null || string.IsNullOrWhiteSpace(sprite.id) || !ids.Add(sprite.id) || sprite.rect == null || sprite.packed_rect == null || sprite.rect.w <= 0f || sprite.rect.h <= 0f || sprite.packed_rect.w <= 0f || sprite.packed_rect.h <= 0f || sprite.extrusion != advanced.atlas.bleed)
+                    {
+                        throw new InvalidDataException("advanced atlas sprite contract is invalid");
+                    }
+                }
+            }
+            UnityProperties unity = advanced.engine_properties.unity;
+            GodotProperties godot = advanced.engine_properties.godot;
+            if (unity == null || unity.pixels_per_unit <= 0f || (unity.filter_mode != "Point" && unity.filter_mode != "Bilinear") || (unity.wrap_mode != "Clamp" && unity.wrap_mode != "Repeat" && unity.wrap_mode != "Mirror") || string.IsNullOrWhiteSpace(unity.sorting_layer) || float.IsNaN(unity.z_depth) || float.IsInfinity(unity.z_depth))
+            {
+                throw new InvalidDataException("advanced Unity properties are invalid");
+            }
+            if (godot == null || (godot.texture_filter != "nearest" && godot.texture_filter != "linear") || (godot.texture_repeat != "disabled" && godot.texture_repeat != "enabled"))
+            {
+                throw new InvalidDataException("advanced Godot properties are invalid");
+            }
+            HashSet<string> metadataIds = new HashSet<string>(manifest.metadata.sprites.Select(item => item.id), StringComparer.Ordinal);
+            if (!ids.SetEquals(metadataIds))
+            {
+                throw new InvalidDataException("advanced atlas sprites do not match metadata sprites");
             }
         }
 
@@ -622,6 +814,7 @@ namespace NeoEng.DTrace.Editor
             public SourceData source;
             public SyncData sync;
             public MetadataData metadata;
+            public AdvancedData advanced;
         }
 
         [Serializable] public sealed class GeneratorData { public string id; public string version; }
@@ -630,6 +823,15 @@ namespace NeoEng.DTrace.Editor
         [Serializable] public sealed class MetadataHashData { public string format_id; public int schema_version; public string sha256; }
         [Serializable] public sealed class SyncData { public string direction; public string generated_root; public string override_suffix; public bool destructive_update; }
         [Serializable] public sealed class MetadataData { public int schema_version; public SpriteRecord[] sprites; }
+        [Serializable] public sealed class AdvancedData { public int schema_version; public CoordinateSystemData coordinate_system; public AtlasData atlas; public EnginePropertiesData engine_properties; }
+        [Serializable] public sealed class CoordinateSystemData { public string image_origin; public string polygon_origin; public string engine_y_axis; public PixelsPerUnitData pixels_per_unit; }
+        [Serializable] public sealed class PixelsPerUnitData { public float godot; public float unity; }
+        [Serializable] public sealed class AtlasData { public int bleed; public AtlasPageData[] pages; }
+        [Serializable] public sealed class AtlasPageData { public string id; public string path; public string sha256; public int width; public int height; public AtlasSpriteData[] sprites; }
+        [Serializable] public sealed class AtlasSpriteData { public string id; public RectData rect; public RectData packed_rect; public int extrusion; public bool rotated; }
+        [Serializable] public sealed class EnginePropertiesData { public GodotProperties godot; public UnityProperties unity; }
+        [Serializable] public sealed class GodotProperties { public string texture_filter; public string texture_repeat; public bool centered; public int z_index; }
+        [Serializable] public sealed class UnityProperties { public float pixels_per_unit; public string filter_mode; public string wrap_mode; public string sorting_layer; public int sorting_order; public float z_depth; }
         [Serializable] public sealed class SpriteRecord
         {
             public string id;
