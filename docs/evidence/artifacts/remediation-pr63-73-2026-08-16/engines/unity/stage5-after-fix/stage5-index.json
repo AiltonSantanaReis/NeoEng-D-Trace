@@ -18,16 +18,16 @@
       "sha256": "3f186f781ecbbae95cc2c66d1fa88f686d065181b59f1264f0386acf6608d9aa"
     },
     "unity-validation-negative.log": {
-      "bytes": 53966,
-      "sha256": "b7e7096190e4282b22a2057e65d7eb3fdd4391390e431be62eb7b17cb591ec53"
+      "bytes": 52890,
+      "sha256": "fc8a376b29975cd4c4e61ef752f818cb40e7e0cbaac2d05d24513bc12f5e0cc3"
     },
     "unity-validation-repeat.log": {
-      "bytes": 52150,
-      "sha256": "1e913ea1fa0ec0510830143214b5d3bb988133b05d06460868e5d25c8f4186f0"
+      "bytes": 51069,
+      "sha256": "74b04eb4796c2b0cd2ccaec629d5a939695889c53991520b772336cfa0413cfe"
     },
     "unity-validation.log": {
-      "bytes": 52149,
-      "sha256": "8127056689e0c9f066d6d5acf2ddfbf76a1209ba532388e6ae2c3e909dc573a9"
+      "bytes": 51068,
+      "sha256": "6ad0e5fb135c30145e3037fad623f3fd2f50e36248ae05b5f884f277594b23b0"
     }
   },
   "package_name": "com.neoeng.dtrace",

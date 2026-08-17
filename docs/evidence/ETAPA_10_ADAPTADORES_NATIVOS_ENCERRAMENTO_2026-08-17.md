@@ -82,10 +82,16 @@ As primeiras seis execuções falharam por erros reais de sintaxe do fixture God
 - A CI atual valida Python, tipagem, cobertura e integridade, mas não inicializa dinamicamente Godot/Unity; as execuções reais das engines desta etapa são evidências locais reproduzíveis.
 - O harness não aprova release, não assina binários e não prova instalação por marketplace.
 - Não há garantia contra perda de energia durante uma operação externa; o escopo validado é atomicidade, dry-run, conflito, drift e rollback conforme os contratos existentes.
-- A baseline ainda precisa ser regenerada após a inclusão deliberada dos novos arquivos e verificada no commit candidato; uma falha de baseline com arquivos novos não será mascarada.
+- Nota histórica do fechamento: a baseline ainda precisava ser regenerada naquele ponto; a verificação posterior foi concluída e está registrada abaixo.
 
 ## Decisão
 
 **APROVADO TECNICAMENTE NO COMMIT `a713b8d9a28818bae2c72a2fab35e79f2f4e157d`; NÃO APROVADO PARA RELEASE.**
 
 A Etapa 10 está promovida no plano técnico após push, CI, auditoria e merge. A release continua não aprovada.
+## Reconciliação posterior do estado de release
+O marcador acima é preservado como decisão do fechamento técnico da Etapa 10.
+Ele não é o estado atual da política de release. Em 17 de agosto de 2026, a
+decisão vigente removeu assinatura, formalização jurídica e execução dinâmica
+de Godot/Unity no CI como gates obrigatórios e aprovou a governança do R-016.
+A baseline atual foi verificada com `tools/baseline_integrity.py --verify`,

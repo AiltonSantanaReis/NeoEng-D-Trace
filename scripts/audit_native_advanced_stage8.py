@@ -115,15 +115,37 @@ def digest(path: Path) -> dict[str, Any]:
 
 def sanitize(value: str, temporary: Path) -> str:
     value = value.replace(str(temporary), "<local-path>").replace(str(ROOT), "<repo>")
-    value = re.sub(r"(?<!res)[A-Za-z]:[\\/](?!/)[^\r\n\"]+", "<local-path>", value)
+    value = re.sub(
+        r"(?<![A-Za-z])(?<!res)[A-Za-z]:[\\/](?!/)[^\r\n\"]+", "<local-path>", value
+    )
     value = re.sub(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", "<network-address>", value)
     identity_pattern = (
-        r"(?im)^\s*(?:Machine Id|Session Id|Correlation Id|"
-        r"External correlation Id):.*$"
+        r"(?im)(Machine Id|Session Id|Correlation Id|"
+        r"External correlation Id):[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)"
     )
-    value = re.sub(identity_pattern, "<redacted-engine-identity>", value)
+    value = re.sub(identity_pattern, r"\1: <redacted-engine-identity>", value)
     value = re.sub(
         r"(?i)LicenseClient-[A-Za-z0-9_.-]+", "LicenseClient-<redacted>", value
+    )
+    value = re.sub(r"(?i)\bPId:\s*\d+", "PId: <redacted>", value)
+    value = re.sub(r"(?i)\bprocessId\"?\s*[:=]\s*\d+", "processId: <redacted>", value)
+    value = re.sub(r"(?i)\bprocess\s+Id:\s*\d+", "process Id: <redacted>", value)
+    value = re.sub(r"(?i)WindowsEditor\([^)]*\)", "WindowsEditor(<redacted>)", value)
+    value = re.sub(
+        r"(?im)Player connection\s*\[\d+\][^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        "<redacted-player-connection>",
+        value,
+    )
+    value = re.sub(
+        r"(?im)Date:[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        "Date: <redacted-timestamp>",
+        value,
+    )
+    value = re.sub(r"(?im)http://localhost:\d+", "<redacted-local-endpoint>", value)
+    value = re.sub(
+        r"(?im)debugger-agent(?::|=)[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        "<redacted-debug-endpoint>",
+        value,
     )
     return value
 

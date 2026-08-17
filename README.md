@@ -4,7 +4,7 @@
 
 NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
 
-> **Estado:** release oficial `v0.2.0` publicada. **Etapa 14 foi integrada e encerrada no escopo técnico validado; assinatura e formalizações jurídicas permanecem deferidas para futuras versões.**
+> **Estado:** release oficial `v0.2.0` publicada. **Etapa 14 foi integrada e encerrada no escopo técnico validado; assinatura, formalizações jurídicas e CI dinâmico das engines não são gates obrigatórios.**
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
@@ -15,8 +15,8 @@ A âncora de código da release `v0.2.0` é o merge da PR `#61`,
 [GitHub Releases](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/releases/tag/v0.2.0).
 O CI pós-merge `31907891488` passou em Linux e Windows; a build local real
 reproduziu o bundle portátil, o MSI, instalação, execução, exportações e
-desinstalação. `R-014` (assinatura) e a formalização futura de `R-015`
-permanecem deferidos por decisão de roadmap.
+desinstalação. `R-014` (assinatura) e `R-015` são riscos declarados não
+bloqueantes; `R-016` foi revisado e aprovado. A decisão vigente está documentada no índice de evidências.
 
 | Indicador | Estado comprovado |
 |---|---|
@@ -31,6 +31,13 @@ permanecem deferidos por decisão de roadmap.
 | Última etapa integrada | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Etapa integrada atual | **Etapa 14 — encerrada no escopo técnico auditado** |
 | Release | **PUBLICADA: `v0.2.0`; artefatos sem assinatura e formalizações futuras documentadas** |
+### Política vigente de release
+
+`R-014` (assinatura), `R-015` (formalizações) e a execução dinâmica de
+Godot/Unity no CI não são gates obrigatórios. `R-016` está revisado e aprovado.
+Os artefatos sem assinatura e as limitações de CI continuam declarados com
+transparência; não são tratados como falhas de validação.
+Consulte `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
 O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
 de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
@@ -213,12 +220,10 @@ exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
 versionado. O build falha se a árvore estiver suja ou se o destino sair do
 workspace.
 
-A release oficial `v0.2.0` foi distribuída sem assinatura por decisão
-expressa do proprietário. `R-014` fica deferido para futuras builds/releases,
-quando a demanda de usuários/clientes justificar o custo e os trâmites. O
-proprietário também decidirá futuramente a formalização jurídica, de
-licenciamento e atribuições associada a `R-015`; este README não declara que
-essa conformidade já foi obtida.
+A release oficial `v0.2.0` foi distribuída sem assinatura por decisão expressa
+do proprietário. A assinatura e a formalização de `R-015` podem ser adotadas
+no futuro, mas não são gates obrigatórios; este README continua sem alegar
+certificação jurídica ou assinatura existente.
 
 ## Qualidade e validação
 
@@ -249,7 +254,7 @@ objeto da validação.
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
-- **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura foi deferida para futuras builds/releases;
+- **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura é opcional e não é gate de release;
 - **a release oficial `v0.2.0` está publicada por decisão do proprietário, sem alegação de conformidade jurídica ou assinatura concluída**;
 - Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
 - `R-011` está encerrado no escopo aprovado após merge autorizado e CI pós-merge auditado;
@@ -299,9 +304,9 @@ Este texto registra uma decisão de projeto, não um parecer jurídico nem uma
 certificação de conformidade.
 
 Esta atualização registra a integração e o fechamento técnico pós-merge da Etapa 14.
-`R-014` e a formalização futura de `R-015` permanecem como riscos aceitos e
-deferidos; `R-016` está validado tecnicamente e aguarda apenas governança de
-toolchain/release.
+`R-014` e `R-015` permanecem como riscos aceitos e não bloqueantes; `R-016` foi
+revisado e aprovado. A decisão vigente está em
+`docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

@@ -1,12 +1,12 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Built from '6000.5/staging' branch; Version is '6000.5.7f1 (017862109af0) revision 96354'; Using compiler version '194234433'; Build Type 'Release'
 OS: 'Windows 11  (10.0.26200) Professional' Language: 'pt' Physical Memory: 32690 MB
-[Licensing::IpcConnector] Channel LicenseClient-atnco doesn't exist
+[Licensing::IpcConnector] Channel LicenseClient-<redacted> doesn't exist
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-08-16T23:45:15Z
-[Licensing::Module] Successfully launched the LicensingClient (PId: 8752)
+<redacted-timestamp>
+[Licensing::Module] Successfully launched the LicensingClient (PId: <redacted>)
 
 COMMAND LINE ARGUMENTS:
 <local-path>
@@ -57,37 +57,37 @@ Successfully changed project path to: <local-path>\negative-project
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Logging is directed to a specific file, skipping project log.Player connection [29512]  Target information:
+<redacted-player-connection>
 
-Player connection [29512]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 140025667 [EditorId] 140025667 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [29512]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 140025667 [EditorId] 140025667 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [29512]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 140025667 [EditorId] 140025667 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [29512]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 140025667 [EditorId] 140025667 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [29512] Host joined multi-casting on [<network-address>:54997]...
-Player connection [29512] Host joined alternative multi-casting on [<network-address>:34997]...
+<redacted-player-connection>
+<redacted-player-connection>
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
 Starting IPC server.
-Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-atnco, press Ctrl-C to exit.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-atnco" at "2026-08-16T23:45:16.0264555Z"
-[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 8752, path: "<local-path>")
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-<redacted>, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-16T23:45:16.0264555Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: <redacted>, path: "<local-path>")
 [Licensing::Module] LicensingClient has failed validation; ignoring
 [Package Manager] Connected to IPC stream "Upm-27052" after 0.3 seconds.
 [Licensing::Module] Licensing is not yet initialized.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id: <redacted>
-  Correlation Id: <redacted>
-  External correlation Id: <redacted>
-  Machine Id: <redacted>
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-atnco" (connect: 0.37s, validation: 0.05s, handshake: 0.04s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-atnco-notifications" at "2026-08-16T23:45:16.1255303Z"
-[Licensing::Module] Connected to LicensingClient (PId: 8752, launch time: 0.01, total connection time: 0.47s)
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-<redacted>" (connect: 0.37s, validation: 0.05s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-16T23:45:16.1255303Z"
+[Licensing::Module] Connected to LicensingClient (PId: <redacted>, launch time: 0.01, total connection time: 0.47s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
@@ -122,7 +122,7 @@ Mono path[0] = '<local-path>
 Mono path[1] = '<local-path>
 Mono path[2] = '<local-path>
 Mono config path = '<local-path>
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=<network-address>:56052
+<redacted-debug-endpoint>
 CodeReloadManager initialized
 ImportWorker Server TCP listen port: 0
 AcceleratorClientConnectionCallback - disconnected - :0
@@ -559,8 +559,8 @@ Request timed out while processing request "http<local-path>", HTTP error code 0
 Input System module state changed to: ShutdownInProgress.
 Input Polling Thread exited.
 Input System module state changed to: Shutdown.
-[Licensing::IpcConnector] LicenseClient-atnco-notifications channel disconnected successfully.
-[Licensing::IpcConnector] LicenseClient-atnco channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-<redacted> channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-<redacted> channel disconnected successfully.
 AcceleratorClientConnectionCallback - disconnected - :0
 Cleanup mono
 CodeReloadManager destroyed
@@ -573,9 +573,9 @@ abort_threads: Failed aborting id: 00000000000073B8, mono_thread_manage will ign
 
 abort_threads: Failed aborting id: 0000000000005904, mono_thread_manage will ignore it
 
-debugger-agent: Unable to listen on 3392
+<redacted-debug-endpoint>
 Checking for leaked weakptr:
   Found no leaked weakptrs.
 [Package Manager] Server process was shutdown
-##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1786923925630,"processId":27052,"allocatedMemory":11315011,"memoryLabels":[{"Default":165435},{"Permanent":15516},{"NewDelete":65761},{"Thread":4197600},{"Manager":33605},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":831189},{"Material":24},{"GfxDevice":55328},{"Animation":952},{"Audio":1544},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":912},{"Input":42840},{"JobScheduler":256},{"TextLib":280},{"Mono":48},{"ScriptingNativeRuntime":674964},{"BaseObject":1622064},{"Resource":1208},{"Renderer":3080},{"Transform":4685},{"File":1032},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":12826},{"StaticString":3808},{"Utility":2673782},{"Curl":1712},{"PoolAlloc":2168},{"AI":80},{"TypeTree":17165},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":8504},{"WebRequest":589},{"VR":47114},{"SceneManager":608},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"Image":65536},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":552},{"Hierarchy":1176},{"UIElements":72},{"CoreStats":13688},{"Identifiers":6768},{"Gui":128},{"EditorUtility":81450},{"VersionControl":8},{"Undo":931},{"AssetDatabase":217734},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":38868},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":3500},{"Windowing":456},{"Licensing":1232},{"AssetReference":32},{"IPCStream":32}]}
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1786923925630,"processId: <redacted>,"allocatedMemory":11315011,"memoryLabels":[{"Default":165435},{"Permanent":15516},{"NewDelete":65761},{"Thread":4197600},{"Manager":33605},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":831189},{"Material":24},{"GfxDevice":55328},{"Animation":952},{"Audio":1544},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":912},{"Input":42840},{"JobScheduler":256},{"TextLib":280},{"Mono":48},{"ScriptingNativeRuntime":674964},{"BaseObject":1622064},{"Resource":1208},{"Renderer":3080},{"Transform":4685},{"File":1032},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":12826},{"StaticString":3808},{"Utility":2673782},{"Curl":1712},{"PoolAlloc":2168},{"AI":80},{"TypeTree":17165},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":8504},{"WebRequest":589},{"VR":47114},{"SceneManager":608},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"Image":65536},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":552},{"Hierarchy":1176},{"UIElements":72},{"CoreStats":13688},{"Identifiers":6768},{"Gui":128},{"EditorUtility":81450},{"VersionControl":8},{"Undo":931},{"AssetDatabase":217734},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":38868},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":3500},{"Windowing":456},{"Licensing":1232},{"AssetReference":32},{"IPCStream":32}]}
 ~StackAllocator(ALLOC_TEMP_MAIN) m_LastAlloc not NULL. Did you forget to call FreeAllStackAllocations()? To get more information, run app with -diag-temp-memory-leak-validation cmd line argument

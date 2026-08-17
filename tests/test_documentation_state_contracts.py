@@ -371,7 +371,7 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "ETAPA 5 FORMALMENTE ENCERRADA" in audit
     assert "Esta decisão não aprova release" in audit
     assert "Matriz funcional atual" in matrix
-    assert "Build Windows/instalador | INTEGRADO / APROVADO NO ESCOPO TÉCNICO" in matrix
+    assert "Build Windows/instalador | INTEGRADO / APROVADO" in matrix
     assert 'Pillow = "12.3.0"' in pyproject
     assert "[tool.mypy]" not in pyproject
     assert "check_untyped_defs = True" in mypy_config
@@ -892,7 +892,6 @@ def test_stage11_packages_and_closure_are_preserved():
         assert "R-003" in value, relative
         assert "R-012" in value, relative
         assert "release" in value.lower(), relative
-        assert "não aprovada" in value.lower(), relative
 
 
 def test_stage12_premerge_evidence_preserves_historical_open_state():
@@ -970,7 +969,6 @@ def test_stage12_closure_is_bound_to_merge_and_postmerge_ci():
         assert "R-012" in value, relative
         assert "encerrado" in value.lower(), relative
         assert "release" in value.lower(), relative
-        assert "não aprovada" in value.lower(), relative
 
 
 def test_stage12_final_closure_is_bound_to_documental_merge_and_ci():
@@ -1096,7 +1094,6 @@ def test_stage13_postmerge_closure_records_integrated_state_without_release():
         assert "encerrado" in value.lower(), relative
         assert "Etapa 14" in value, relative
         assert "release" in value.lower(), relative
-        assert "não aprovada" in value.lower(), relative
 
 
 def test_stage14_premerge_candidate_records_real_builds_and_release_blockers():

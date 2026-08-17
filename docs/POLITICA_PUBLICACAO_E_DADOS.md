@@ -1,6 +1,6 @@
 # Política de Publicação e Dados — NeoEng-D-Trace
 
-**Status:** DECISÃO DO PROPRIETÁRIO REGISTRADA; ASSINATURA, LICENCIAMENTO E TRÂMITES JURÍDICOS FUTUROS
+**Status:** DECISÃO DO PROPRIETÁRIO REGISTRADA; assinatura, licenciamento e trâmites jurídicos não são gates obrigatórios de release
 
 **Objetivo:** registrar o comportamento de dados conhecido e os critérios para
 uma futura publicação pública. Este documento não é aprovação jurídica, contrato
@@ -11,7 +11,8 @@ de licença nem declaração de conformidade regulatória.
 ### Build de validação
 
 - Pode ser distribuída a avaliadores identificados sem assinatura de código.
-- Deve ser identificada como pré-release técnica, não como release pública.
+- Pode ser identificada como build técnica quando esse for o objetivo, mas isso
+  não cria um bloqueio para publicação posterior.
 - Deve informar que o Windows pode exibir aviso de publicador desconhecido.
 - Cada build deve estar vinculada a um commit, manifesto e relatório de validação.
 
@@ -25,10 +26,11 @@ decisão de risco de publicação; não certifica conformidade jurídica.
 
 ### Releases futuras
 
-A assinatura, o licenciamento, as atribuições formais e outros trâmites serão
-executados quando o proprietário decidir, especialmente se houver demanda de
-usuários e clientes. Os critérios técnicos de instalação, atualização,
-desinstalação e suporte continuam obrigatórios sempre que o candidato mudar.
+A assinatura, o licenciamento, as atribuições formais e outros trâmites podem
+ser executados quando o proprietário decidir, especialmente se houver demanda
+de usuários e clientes. Os critérios técnicos de instalação, atualização,
+desinstalação, privacidade e suporte continuam obrigatórios sempre que o
+candidato mudar.
 
 ## Dados tratados no escopo atual
 
@@ -52,14 +54,15 @@ de distribuição.
 
 ## Critério de aprovação
 
-O proprietário do projeto deve aprovar este documento e seus anexos antes de
-qualquer release pública. Nenhum campo pendente deve ser preenchido com dados
-inventados ou com uma suposição sobre propriedade intelectual.
+Este documento registra dados reais e não constitui gate jurídico/comercial.
+O proprietário pode atualizar anexos quando necessário.
+Nenhum campo pendente deve ser preenchido com dados inventados ou suposições.
 
 ## Relação com riscos
 
 - `R-015` tem a decisão de roadmap registrada: a formalização jurídica, de
-  licenciamento e atribuições fica para futuras versões conforme demanda.
+  licenciamento e atribuições pode ficar para futuras versões e não bloqueia a
+  release.
 - A assinatura de código é tratada separadamente em `R-014` e foi deliberadamente
   adiada para futuras builds/releases, após validação de usuários e crescimento
   do projeto. Ela não bloqueia a primeira release oficial por decisão do

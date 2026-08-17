@@ -28,9 +28,18 @@ OUT = ROOT / "docs" / "evidence" / "artifacts" / "native-stage9-2026-08-17"
 def sanitize(value: str, temporary: Path) -> str:
     value = sanitize_stage8(value, temporary)
     patterns = (
-        (r"(?im)^.*Player connection.*$", "<redacted-player-connection>"),
-        (r"(?im)^.*(?:OS:|Physical Memory:).*$", "<redacted-host-profile>"),
-        (r"(?im)^\s*Date:.*$", "<redacted-timestamp>"),
+        (
+            r"(?im)Player connection\s*\[\d+\][^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            "<redacted-player-connection>",
+        ),
+        (
+            r"(?im)(?:OS:|Physical Memory:)[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            "<redacted-host-profile>",
+        ),
+        (
+            r"(?im)Date:[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            "Date: <redacted-timestamp>",
+        ),
         (
             r'(?im)^.*(?:PId|process Id|processId)"?\s*[:=]\s*\d+.*$',
             "<redacted-process-info>",
@@ -41,8 +50,11 @@ def sanitize(value: str, temporary: Path) -> str:
             r"(?im)^\s*\[Licensing::Module\] License group:.*$",
             "<redacted-license-group>",
         ),
-        (r"(?im)^.*http://localhost:\d+.*$", "<redacted-local-endpoint>"),
-        (r"(?im)^.*debugger-agent(?::|=).*$", "<redacted-debug-endpoint>"),
+        (r"(?im)http://localhost:\d+", "<redacted-local-endpoint>"),
+        (
+            r"(?im)debugger-agent(?::|=)[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            "<redacted-debug-endpoint>",
+        ),
     )
     for pattern, replacement in patterns:
         value = re.sub(pattern, replacement, value)

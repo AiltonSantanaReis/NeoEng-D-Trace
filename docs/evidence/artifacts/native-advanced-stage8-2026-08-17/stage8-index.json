@@ -21,8 +21,8 @@
       "sha256": "042826257972861840698bbe58954fac08a357cc2bbddf263592bf58dc4aa356"
     },
     "stage8-report.json": {
-      "bytes": 142612,
-      "sha256": "544c6f4259e6d7897131054015c78a08ee22dee4724a52765297c2834b6adb0b"
+      "bytes": 142013,
+      "sha256": "99d5d8e9881540fb5be943689e14524746a3d90ed4ee4cc241b1d9ac594da15a"
     },
     "unity-atlas-0.png": {
       "bytes": 117,
@@ -33,16 +33,16 @@
       "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
     },
     "unity-stage8-hash-drift.log": {
-      "bytes": 56035,
-      "sha256": "066c10d8a39fc7cefbd767e9d290d056a0e339b87b32fd02fa39779305841203"
+      "bytes": 54943,
+      "sha256": "3c4a9ff99d1f03fe61e9fcb82096cbfa826e169b2eeee5f8bf359ee8131e0602"
     },
     "unity-stage8-initial.log": {
-      "bytes": 59935,
-      "sha256": "8bfa3ae7fd7c4c118af2a009275c59b36eafd74438defda4c273213ec5ebbc3d"
+      "bytes": 58838,
+      "sha256": "6aec01d1a190a692454307ae237528dbbe4d4a26470c396026a33b040f36f4ed"
     },
     "unity-stage8-repeat.log": {
-      "bytes": 19606,
-      "sha256": "ea6fc2b1bc82fc8a0f1c6c648531b41226fab23073b33e5843ce9880238eafa3"
+      "bytes": 18540,
+      "sha256": "4cd682ed55007d26219cbeee8d1c6fb8b04a453263af53654236736b8bbd8669"
     }
   },
   "schema_version": 1,

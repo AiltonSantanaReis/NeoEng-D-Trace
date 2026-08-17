@@ -39,7 +39,7 @@ def test_stage14_postmerge_closure_preserves_audited_truth() -> None:
     assert manifest["validation"]["coverage"]["pointwise_identical"] is True
 
 
-def test_release_roadmap_records_published_release_and_defers_signature() -> None:
+def test_release_roadmap_records_published_release_and_non_blocking_risks() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     risks = (ROOT / "docs" / "MATRIZ_RISCOS_ESTABILIZACAO.md").read_text(
         encoding="utf-8"
@@ -51,6 +51,15 @@ def test_release_roadmap_records_published_release_and_defers_signature() -> Non
     assert "release oficial" in readme.lower()
     assert "v0.2.0" in readme
     assert "sem assinatura" in readme
-    assert "R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES" in risks
-    assert "futuras builds/releases" in checklist
+    assert "R-014 | ACEITO / NÃO BLOQUEANTE" in risks
+    assert "não são gates obrigatórios" in checklist
+    assert "R-016 — builder MSI | APROVADO" in checklist
     assert "PUBLICADA" in checklist
+
+
+def test_current_release_gate_reconciliation_is_explicit() -> None:
+    decision = (
+        ROOT / "docs" / "evidence" / "RECONCILIACAO_GATES_RELEASE_2026-08-17.md"
+    ).read_text(encoding="utf-8")
+
+    assert "CURRENT_RELEASE_POLICY_BLOCKERS=0" in decision
