@@ -616,6 +616,10 @@
       "sha256": "5835c2b91d3d10f49156f7631427bb7c7b68bde08ec6d33ceb142c42ce1910dc",
       "size": 7265
     },
+    "docs/evidence/ETAPA_9_DRY_RUN_SEGURANCA_ROLLBACK_PRE_MERGE_2026-08-17.md": {
+      "sha256": "45fa55c6c4ae46fc24262a5860adb9b5f8f08ddeb50b1c11f76dad5226c93db9",
+      "size": 5107
+    },
     "docs/evidence/ETAPA_9_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "d016c6045acee041a65a21508a42462fdb81ec644fbc071658515d521b2bddb0",
       "size": 3950
@@ -1447,6 +1451,58 @@
     "docs/evidence/artifacts/native-advanced-stage8-2026-08-17/unity-stage8-repeat.log": {
       "sha256": "ea6fc2b1bc82fc8a0f1c6c648531b41226fab23073b33e5843ce9880238eafa3",
       "size": 19606
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/godot-manifest.ndt.integration.json": {
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/godot-stage9-dry-run.log": {
+      "sha256": "8bb2b99a6475ae18a069d10057a4d61455589182a4ae01ed9fc650371287efc9",
+      "size": 97
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/godot-stage9-hash-drift.log": {
+      "sha256": "9202c98c26cab55bcda8436554e9d5f8c3cdbf0efdb35858ec02b543e0807b3f",
+      "size": 104
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/godot-stage9-initial.log": {
+      "sha256": "bc2507481d4f3c36dd34ee7b4815ae9b5543d89abeea34326da61d2094b0ca29",
+      "size": 95
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/godot-stage9-repeat.log": {
+      "sha256": "3377e7f776f0acbc37bca64986f798601c15adb10147c01d3e2a575a5c358bf7",
+      "size": 96
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/godot-stage9-unsafe.log": {
+      "sha256": "7f46f38727f5bd854932a0e0fdf0cd9aa1381cdfe8b0dd387ab829b5b8aa0c8d",
+      "size": 105
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/stage9-index.json": {
+      "sha256": "463fa0a779b3f7a2fc7ad94e96c85548b4f89020feea7577c64d6e480b1a4ce2",
+      "size": 1835
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/stage9-report.json": {
+      "sha256": "02a387211a1e433d3c05ab7c6ef1ae87bc134362d2913b6e7ace0e1cc115915b",
+      "size": 173892
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/unity-manifest.ndt.integration.json": {
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5",
+      "size": 3886
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/unity-stage9-dry-run.log": {
+      "sha256": "425b7ac4c797ff9807a32e9dcc18cde5570667ad7170e13bba5812d9c91e0e0c",
+      "size": 16441
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/unity-stage9-initial.log": {
+      "sha256": "b6560831e445db522eff71367101b2057cb89a32ce954a6d325527599baecd9d",
+      "size": 20583
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/unity-stage9-repeat.log": {
+      "sha256": "ed17d4a268846ec06095e1e95e7d8f60b89c0431278e59809aca028989c906b2",
+      "size": 18263
+    },
+    "docs/evidence/artifacts/native-stage9-2026-08-17/unity-stage9-rollback.log": {
+      "sha256": "eaaa605efd1c36acd6b8df2e953c3e457da38403281bbb53683c2378190e074d",
+      "size": 53148
     },
     "docs/evidence/artifacts/remediation-pr63-73-2026-08-16/auto-detection-after-fix/images/clean_rectangle_ground_truth.png": {
       "sha256": "8f27f0a85ccd086155419ddb2098806293596cd630f65d1c5b32f6d9aaa77d69",
@@ -3605,8 +3661,8 @@
       "size": 1350
     },
     "integrations/godot/addons/neoeng_d_trace/import_generator.gd": {
-      "sha256": "837438a5b9ad8c649e686880d3e7c6e85ac0c2740f31696dbb0a480546b70410",
-      "size": 39580
+      "sha256": "7b6efb1d45cbc1768dca4ca74d2f717761831db3ad13c2892cefd0053eb645a0",
+      "size": 44555
     },
     "integrations/godot/addons/neoeng_d_trace/manifest_diagnostic.gd": {
       "sha256": "799985d8cf02e656ef60e5d6151eda4cb9c9f5c2c34a441dc462c43b733fbd2c",
@@ -3641,8 +3697,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
-      "sha256": "26af7f047fc8abba6d5b4f6f598fa7fbfbc766c66d32208c89ecd11efc153562",
-      "size": 45585
+      "sha256": "3980a42d13f037e3f51a82bf34badf8e9168e8dd58e6a4fd5cb9e8ca9e65bf5f",
+      "size": 54118
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
       "sha256": "c0cf44a9905072c973382ea3014d9bcdae7fe51206ffb20b45414434332be48f",
@@ -3900,6 +3956,10 @@
       "sha256": "c44fcb94eedd8170cfec6a39770b10b1114d401bcbc99e3a0a2febc3cff777e0",
       "size": 18025
     },
+    "scripts/audit_native_stage9.py": {
+      "sha256": "53544c7d062f7927d735060625a9b3513029321a2258b82e92c56d86213ed35f",
+      "size": 17215
+    },
     "scripts/audit_ui_capture.py": {
       "sha256": "2434b617b0df2c84a92a1f84157a4bc86708e03701b9b8ef672d9598d98d7f13",
       "size": 12705
@@ -4051,6 +4111,10 @@
     "src/exporters/integration_manifest.py": {
       "sha256": "ada796978315c9a7ad5b16553ae55106bf2b0fc342c0ef26b3cd8fc87d6d9362",
       "size": 21420
+    },
+    "src/exporters/integration_sync.py": {
+      "sha256": "72dab1ca03a6f7ee5d9ea45a1e98d8bbee9428edded914ccce86fa2355cfe1bb",
+      "size": 7230
     },
     "src/exporters/json_exporter.py": {
       "sha256": "4d464d6004e69d9f57500696ab787041cff8f4833270aa791a50bc5aaa2b5eb9",
@@ -4399,6 +4463,10 @@
     "tests/test_integration_manifest.py": {
       "sha256": "32309ade2614cb75f7b02676989ec346537413c53dc4565b9fcef6a4816cd0e2",
       "size": 12741
+    },
+    "tests/test_integration_sync.py": {
+      "sha256": "b3dbb3c3c91f16fb4db12b5d973916ebe05fff9d03420722562d4ce57fe74b79",
+      "size": 11032
     },
     "tests/test_json_exporter_contract.py": {
       "sha256": "2fe479d579d20ff533dc3389c1a5c29fb212047d2427c6234142f34989e2b141",

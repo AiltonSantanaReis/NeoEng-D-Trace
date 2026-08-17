@@ -1,0 +1,55 @@
+{
+  "files": {
+    "godot-manifest.ndt.integration.json": {
+      "bytes": 3886,
+      "sha256": "4c5034586e416a43e5eb288eac681d7679e69efbe1ecb34e3338624b63fdbfbf"
+    },
+    "godot-stage9-dry-run.log": {
+      "bytes": 97,
+      "sha256": "8bb2b99a6475ae18a069d10057a4d61455589182a4ae01ed9fc650371287efc9"
+    },
+    "godot-stage9-hash-drift.log": {
+      "bytes": 104,
+      "sha256": "9202c98c26cab55bcda8436554e9d5f8c3cdbf0efdb35858ec02b543e0807b3f"
+    },
+    "godot-stage9-initial.log": {
+      "bytes": 95,
+      "sha256": "bc2507481d4f3c36dd34ee7b4815ae9b5543d89abeea34326da61d2094b0ca29"
+    },
+    "godot-stage9-repeat.log": {
+      "bytes": 96,
+      "sha256": "3377e7f776f0acbc37bca64986f798601c15adb10147c01d3e2a575a5c358bf7"
+    },
+    "godot-stage9-unsafe.log": {
+      "bytes": 105,
+      "sha256": "7f46f38727f5bd854932a0e0fdf0cd9aa1381cdfe8b0dd387ab829b5b8aa0c8d"
+    },
+    "stage9-report.json": {
+      "bytes": 173892,
+      "sha256": "02a387211a1e433d3c05ab7c6ef1ae87bc134362d2913b6e7ace0e1cc115915b"
+    },
+    "unity-manifest.ndt.integration.json": {
+      "bytes": 3886,
+      "sha256": "760cf4dfb30e839601294260132ceff08bef8815e31de6a8d7cf924a309ce6a5"
+    },
+    "unity-stage9-dry-run.log": {
+      "bytes": 16441,
+      "sha256": "425b7ac4c797ff9807a32e9dcc18cde5570667ad7170e13bba5812d9c91e0e0c"
+    },
+    "unity-stage9-initial.log": {
+      "bytes": 20583,
+      "sha256": "b6560831e445db522eff71367101b2057cb89a32ce954a6d325527599baecd9d"
+    },
+    "unity-stage9-repeat.log": {
+      "bytes": 18263,
+      "sha256": "ed17d4a268846ec06095e1e95e7d8f60b89c0431278e59809aca028989c906b2"
+    },
+    "unity-stage9-rollback.log": {
+      "bytes": 53148,
+      "sha256": "eaaa605efd1c36acd6b8df2e953c3e457da38403281bbb53683c2378190e074d"
+    }
+  },
+  "schema_version": 1,
+  "stage": 9,
+  "status": "SUCCESS"
+}

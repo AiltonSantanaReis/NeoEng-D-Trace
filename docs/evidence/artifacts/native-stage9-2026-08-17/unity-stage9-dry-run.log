@@ -1,0 +1,351 @@
+
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.7f1 (017862109af0) revision 96354'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Channel LicenseClient-<redacted> doesn't exist
+<redacted-host-profile>
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+<redacted-timestamp>
+<redacted-process-info>
+
+COMMAND LINE ARGUMENTS:
+<local-path>
+-batchmode
+-nographics
+-quit
+-projectPath
+<local-path>\unity-project
+-executeMethod
+NeoEng.DTrace.Editor.UnityImportGenerator.RunHeadlessStage9DryRun
+-logFile
+<local-path>\unity-project-RunHeadlessStage9DryRun.log
+Successfully changed project path to: <local-path>\unity-project
+<local-path>
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+<redacted-player-connection>
+
+<redacted-player-connection>
+
+<redacted-player-connection>
+
+<redacted-player-connection>
+
+<redacted-player-connection>
+
+<redacted-player-connection>
+<redacted-player-connection>
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-<redacted>, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-17T08:27:00.5476329Z"
+<redacted-process-info>
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Package Manager] Connected to IPC stream "Upm-30368" after 0.3 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-<redacted>" (connect: 0.37s, validation: 0.05s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-17T08:27:00.641046Z"
+<redacted-process-info>
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+<redacted-license-group>
+<redacted-engine-id>
+<redacted-license-info>
+<redacted-license-info>
+<redacted-license-info>
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.50s
+[Licensing::Module] Licensing is initialized (took 0.07s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 8 unused hashed content files
+Initialize engine version: 6000.5.7f1 (017862109af0)
+[Subsystems] Discovering subsystems at path <local-path>
+[Subsystems] Discovering subsystems at path <local-path>
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '<local-path>
+Mono path[1] = '<local-path>
+Mono path[2] = '<local-path>
+Mono config path = '<local-path>
+<redacted-debug-endpoint>
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: <local-path>
+Register platform support module: <local-path>
+Registered in 0.006390 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:False
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.389 seconds
+Domain Reload Profiling: 1053ms
+	BeginReloadAssembly (197ms)
+		CreateAndSetChildDomain (18ms)
+	RebuildCommonClasses (5ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (108ms)
+	LoadAllAssembliesAndSetupDomain (335ms)
+		LoadAssemblies (168ms)
+		AnalyzeDomain (233ms)
+			TypeCache.Refresh (232ms)
+				TypeCache.ScanAssembly (218ms)
+	FinalizeReload (392ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (96ms)
+			ProcessInitializeOnLoadAttributes (100ms)
+			ProcessInitializeOnLoadMethodAttributes (120ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 1 packages:
+  Local packages:
+    com.neoeng.dtrace@file:<repo>\integrations\unity\package\com.neoeng.dtrace (location: <repo>\integrations\unity\package\com.neoeng.dtrace)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.02 seconds
+info: Microsoft.Hosting.Lifetime[14]
+<redacted-local-endpoint>
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: <local-path>\unity-project
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 28.7200ms
+Starting: <local-path>"Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: <local-path>
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s105ms
+*** Tundra build success (0.07 seconds), 0 items updated, 168 evaluated
+AssetDatabase: script compilation time: 0.498484s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.476 seconds
+Domain Reload Profiling: 1100ms
+	BeginReloadAssembly (384ms)
+		DisableScriptedObjects (34ms)
+		CreateAndSetChildDomain (146ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (19ms)
+	initialDomainReloadingComplete (82ms)
+	LoadAllAssembliesAndSetupDomain (129ms)
+		LoadAssemblies (151ms)
+		AnalyzeDomain (9ms)
+			TypeCache.Refresh (4ms)
+	FinalizeReload (478ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (88ms)
+			ProcessInitializeOnLoadAttributes (77ms)
+			ProcessInitializeOnLoadMethodAttributes (66ms)
+			AfterProcessingInitializeOnLoad (24ms)
+		AwakeInstancesAfterBackupRestoration (22ms)
+Starting new worker id: 0 with log in <local-path>
+
+Asset Pipeline Refresh (id=0d639d81c544f0c42b4dad66a9ac504d): Total: 1.894 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=620 ms
+		Asset DB Callback time: managed=22 ms, native=23 ms
+		Scripting: domain reloads=1, domain reload time=702 ms, compile time=500 ms, other=24 ms
+		Project Asset Count: scripts=29, non-scripts=5
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 29.605ms
+	ApplyChangesToAssetFolders: 0.536ms
+	Scan: 41.513ms
+	Collect global state as custom dependencies: 11.849ms
+	ProcessAssetsWithTransientArtifactChanges: 0.410ms
+	CategorizeAssets: 0.214ms
+	CompileScripts: 500.327ms
+	ImportOutOfDateAssets: 491.386ms (478.740ms without children)
+		UnloadImportedAssets: 0.127ms
+		ImportSchedulerStart: 12.509ms
+	PostProcessAllAssets: 22.403ms
+		MonoPostProcessAllAssets: 22.328ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 7.469ms
+			SyncVS.PostprocessSyncProject 2.139ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.898ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 0.754ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.269ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.190ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.165ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.090ms
+	UnloadStreamsBegin: 1.366ms
+	Untracked: 787.625ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 10.863ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-unity-project
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 19 unused Assets / (0.5 MB). Loaded Objects now: 657.
+Memory consumption went from 184.3 MB to 183.7 MB.
+Total: 5.066000 ms (FindLiveObjects: 0.038400 ms CreateObjectMapping: 0.006100 ms MarkObjects: 4.814300 ms  DeleteObjects: 0.202200 ms)
+
+UNITY_NATIVE_IMPORT_STAGE6=SUCCESS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessStage9DryRun () (at <local-path>
+
+(Filename: <local-path>
+
+UNITY_NATIVE_SYNC_STAGE7=SUCCESS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessStage9DryRun () (at <local-path>
+
+(Filename: <local-path>
+
+UNITY_NATIVE_STAGE9_DRY_RUN=SUCCESS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessStage9DryRun () (at <local-path>
+
+(Filename: <local-path>
+
+IMPORTED_SPRITES=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessStage9DryRun () (at <local-path>
+
+(Filename: <local-path>
+
+IMPORTED_PREFABS=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessStage9DryRun () (at <local-path>
+
+(Filename: <local-path>
+
+IMPORTED_COLLIDERS=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessImport () (at <local-path>
+NeoEng.DTrace.Editor.UnityImportGenerator:RunHeadlessStage9DryRun () (at <local-path>
+
+(Filename: <local-path>
+
+Batchmode quit successfully invoked - shutting down!
+Curl error 42: Callback aborted
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-<redacted> channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-<redacted> channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Shut down.
+abort_threads: Failed aborting id: 0000000000004EF4, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000004EF4, mono_thread_manage will ignore it
+
+<redacted-debug-endpoint>
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

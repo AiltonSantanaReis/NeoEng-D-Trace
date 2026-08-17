@@ -17,6 +17,7 @@ namespace NeoEng.DTrace.Editor
         private const string MarkerFile = ".neoeng-generated";
         private const float LegacyPixelsPerUnit = 100f;
         private const string ConfirmDestructiveEnvironment = "NEOENG_STAGE7_CONFIRM_DESTRUCTIVE";
+        private const string Stage9DryRunEnvironment = "NEOENG_STAGE9_DRY_RUN";
 
         [MenuItem("NeoEng D-Trace/Import Integration Manifest")]
         public static void RunFromMenu()
@@ -41,7 +42,7 @@ namespace NeoEng.DTrace.Editor
             ImportResult result;
             try
             {
-                result = ImportManifest(manifestPath);
+                result = IsStage9DryRun() ? DryRunManifest(manifestPath) : ImportManifest(manifestPath);
             }
             catch (SyncConflictException exception)
             {
@@ -62,7 +63,11 @@ namespace NeoEng.DTrace.Editor
             {
                 Debug.Log("UNITY_NATIVE_IMPORT_STAGE6=SUCCESS");
                 Debug.Log("UNITY_NATIVE_SYNC_STAGE7=SUCCESS");
-                if (Environment.GetEnvironmentVariable("NEOENG_STAGE8_MODE") == "advanced")
+                if (IsStage9DryRun())
+                {
+                    Debug.Log("UNITY_NATIVE_STAGE9_DRY_RUN=SUCCESS");
+                }
+                else if (Environment.GetEnvironmentVariable("NEOENG_STAGE8_MODE") == "advanced")
                 {
                     Debug.Log("UNITY_NATIVE_IMPORT_STAGE8=SUCCESS");
                 }
@@ -81,6 +86,12 @@ namespace NeoEng.DTrace.Editor
         public static void RunHeadlessAdvancedImport()
         {
             Environment.SetEnvironmentVariable("NEOENG_STAGE8_MODE", "advanced");
+            RunHeadlessImport();
+        }
+
+        public static void RunHeadlessStage9DryRun()
+        {
+            Environment.SetEnvironmentVariable(Stage9DryRunEnvironment, "1");
             RunHeadlessImport();
         }
         public static void CreateManualPrefabFixture()
@@ -117,7 +128,103 @@ namespace NeoEng.DTrace.Editor
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             Debug.Log("UNITY_NATIVE_SYNC_STAGE7_MUTATION=APPLIED");
         }
+        private static bool IsStage9DryRun()
+        {
+            string value = Environment.GetEnvironmentVariable(Stage9DryRunEnvironment);
+            return string.Equals(value, "1", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static ImportResult DryRunManifest(string manifestPath)
+        {
+            try
+            {
+                string normalizedManifestPath = NormalizeAssetPath(manifestPath);
+                string absoluteManifestPath = ProjectAbsolutePath(normalizedManifestPath);
+                if (!File.Exists(absoluteManifestPath))
+                {
+                    return ImportResult.Failure("manifest", "integration manifest does not exist");
+                }
+                string manifestText = File.ReadAllText(absoluteManifestPath, Encoding.UTF8);
+                IntegrationManifest manifest = JsonUtility.FromJson<IntegrationManifest>(manifestText);
+                ApplyPolygonArrays(manifest, manifestText);
+                ValidateManifest(manifest);
+                string imageAssetPath = ResolveSourceImage(manifest.source.image.path);
+                ValidateImageHash(manifest.source.image.sha256, imageAssetPath);
+                if (manifest.schema_version == 2)
+                {
+                    foreach (AtlasPageData page in manifest.advanced.atlas.pages)
+                    {
+                        ValidateImageHash(page.sha256, ResolveSourceImage(page.path));
+                    }
+                }
+                ValidateGeneratedRootForDryRun();
+                ImportResult result = ImportResult.SuccessResult(manifest, imageAssetPath);
+                foreach (SpriteRecord record in manifest.metadata.sprites)
+                {
+                    string safeId = SafeObjectId(record.id);
+                    if (record.polygon_in_sprite == null || record.polygon_in_sprite.Length < 3)
+                    {
+                        throw new InvalidDataException("sprite polygon must contain at least three points");
+                    }
+                    OverrideData overrideData = ReadOverride(safeId, record.id);
+                    string prefabPath = GeneratedRoot + "/" + safeId + ".prefab";
+                    bool exists = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null;
+                    result.Assets.Add(new ImportedAsset
+                    {
+                        ObjectId = record.id,
+                        SpritePath = GeneratedRoot + "/" + safeId + ".sprite.asset",
+                        MetadataPath = GeneratedRoot + "/" + safeId + ".metadata.asset",
+                        PrefabPath = prefabPath,
+                        ColliderPathCount = 1,
+                        ColliderPointCount = record.polygon_in_sprite.Length,
+                        Status = exists ? "UPDATE" : "CREATE",
+                        OverrideApplied = overrideData.Polygon != null,
+                    });
+                }
+                result.ImportedSprites = result.Assets.Count;
+                result.ImportedPrefabs = result.Assets.Count;
+                result.ImportedColliders = result.Assets.Count;
+                result.UpdatedAssets = result.Assets.Count;
+                result.PlannedAssets = result.Assets.Count;
+                result.DryRun = true;
+                return result;
+            }
+            catch (SyncConflictException exception)
+            {
+                return ImportResult.Failure("sync_conflict", exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return ImportResult.Failure("dry_run", exception.Message);
+            }
+        }
+
         public static ImportResult ImportManifest(string manifestPath)
+        {
+            using (OutputSnapshot snapshot = OutputSnapshot.Create())
+            {
+                try
+                {
+                    ImportResult result = ImportManifestUnsafe(manifestPath);
+                    if (!result.Success && !snapshot.Restore())
+                    {
+                        return ImportResult.Failure("rollback_failure", "generated Unity outputs could not be restored");
+                    }
+                    return result;
+                }
+                catch
+                {
+                    if (!snapshot.Restore())
+                    {
+                        return ImportResult.Failure("rollback_failure", "generated Unity outputs could not be restored");
+                    }
+                    throw;
+                }
+            }
+        }
+
+        private static ImportResult ImportManifestUnsafe(string manifestPath)
         {
             string normalizedManifestPath = NormalizeAssetPath(manifestPath);
             string absoluteManifestPath = ProjectAbsolutePath(normalizedManifestPath);
@@ -751,6 +858,99 @@ namespace NeoEng.DTrace.Editor
             return paths[0];
         }
 
+        private static void ValidateGeneratedRootForDryRun()
+        {
+            string absoluteRoot = ProjectAbsolutePath(GeneratedRoot);
+            if (File.Exists(absoluteRoot))
+            {
+                throw new InvalidOperationException("generated root is a file");
+            }
+            if (!Directory.Exists(absoluteRoot))
+            {
+                return;
+            }
+            string marker = Path.Combine(absoluteRoot, MarkerFile);
+            if (!File.Exists(marker) && Directory.GetFiles(absoluteRoot, "*", SearchOption.AllDirectories).Length > 0)
+            {
+                throw new InvalidOperationException("generated root contains manual content and is not controlled");
+            }
+        }
+
+        private sealed class OutputSnapshot : IDisposable
+        {
+            private readonly string root;
+            private readonly string backup;
+            private readonly bool existed;
+
+            private OutputSnapshot(string root, string backup, bool existed)
+            {
+                this.root = root;
+                this.backup = backup;
+                this.existed = existed;
+            }
+
+            public static OutputSnapshot Create()
+            {
+                string root = ProjectAbsolutePath(GeneratedRoot);
+                bool existed = Directory.Exists(root);
+                string backup = Path.Combine(Path.GetTempPath(), "neoeng-dtrace-stage9-" + Guid.NewGuid().ToString("N"));
+                if (existed)
+                {
+                    CopyDirectory(root, backup);
+                }
+                return new OutputSnapshot(root, backup, existed);
+            }
+
+            public bool Restore()
+            {
+                try
+                {
+                    if (Directory.Exists(root))
+                    {
+                        Directory.Delete(root, true);
+                    }
+                    if (existed)
+                    {
+                        CopyDirectory(backup, root);
+                    }
+                    AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            public void Dispose()
+            {
+                try
+                {
+                    if (Directory.Exists(backup))
+                    {
+                        Directory.Delete(backup, true);
+                    }
+                }
+                catch
+                {
+                    // The import result remains authoritative; temporary cleanup is best effort.
+                }
+            }
+
+            private static void CopyDirectory(string source, string destination)
+            {
+                Directory.CreateDirectory(destination);
+                foreach (string file in Directory.GetFiles(source, "*", SearchOption.TopDirectoryOnly))
+                {
+                    string target = Path.Combine(destination, Path.GetFileName(file));
+                    File.Copy(file, target, true);
+                }
+                foreach (string directory in Directory.GetDirectories(source, "*", SearchOption.TopDirectoryOnly))
+                {
+                    CopyDirectory(directory, Path.Combine(destination, Path.GetFileName(directory)));
+                }
+            }
+        }
         private static void EnsureGeneratedRootIsControlled()
         {
             string absoluteRoot = ProjectAbsolutePath(GeneratedRoot);
@@ -863,6 +1063,8 @@ namespace NeoEng.DTrace.Editor
             public int UpdatedAssets;
             public int UnchangedAssets;
             public int OverridesApplied;
+            public bool DryRun;
+            public int PlannedAssets;
 
             public static ImportResult SuccessResult(IntegrationManifest manifest, string sourceImagePath)
             {
