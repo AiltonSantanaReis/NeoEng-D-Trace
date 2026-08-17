@@ -4601,8 +4601,8 @@
       "size": 715
     },
     "tests/test_app_icon.py": {
-      "sha256": "f4dca320dec595b072e167c866305f9734b48fdefea9fe5fce5986eb143cb5f3",
-      "size": 4251
+      "sha256": "a66f2d3da10ffdac9038120fce8fca63a794684ba1dc623e24511430dc00ed6e",
+      "size": 4252
     },
     "tests/test_app_identity.py": {
       "sha256": "8c792e8af4bfb1c15479b3b25661e687df25af9a2e096b7c664e2869612d8a2b",
@@ -4665,8 +4665,8 @@
       "size": 4018
     },
     "tests/test_evidence_privacy.py": {
-      "sha256": "1ddf954a452f1e8e639d29650f147fac5d3ef81499d0517b9ba17d67512ebf98",
-      "size": 2952
+      "sha256": "bfa692e4d3e29d8a8b67fbf4523fd74e532573d919160d9bea14d259848ada01",
+      "size": 3002
     },
     "tests/test_export.py": {
       "sha256": "0211f7c32f74175586a6cfc67624db26d3169eedbdcf95f9953bfe8d787a90e7",
