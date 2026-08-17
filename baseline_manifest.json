@@ -4465,8 +4465,8 @@
       "size": 12741
     },
     "tests/test_integration_sync.py": {
-      "sha256": "b3dbb3c3c91f16fb4db12b5d973916ebe05fff9d03420722562d4ce57fe74b79",
-      "size": 11032
+      "sha256": "3cfb73bd363e9fd67f320ede37a7544127f2011ace3c8c7ffd00d0e2da0cb9b5",
+      "size": 11018
     },
     "tests/test_json_exporter_contract.py": {
       "sha256": "2fe479d579d20ff533dc3389c1a5c29fb212047d2427c6234142f34989e2b141",

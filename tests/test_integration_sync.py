@@ -97,7 +97,7 @@ def test_plan_rejects_duplicate_normalized_destinations(tmp_path):
     with pytest.raises(IntegrationPlanError, match="duplicate output"):
         plan_outputs(
             tmp_path / "generated",
-            {"nested/output.json": "one", str(Path("nested") / "output.json"): "two"},
+            {"nested/output.json": "one", r"nested\output.json": "two"},
         )
 
 
