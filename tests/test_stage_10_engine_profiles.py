@@ -62,6 +62,20 @@ def test_scene_profiles_use_the_same_engine_formatters() -> None:
     assert unity_sprite["collision"]["shape_type"] == "polygon"
 
 
+def test_compound_collision_is_preserved_by_unity_profile() -> None:
+    scene = _scene()
+    scene.collision_parts["probe"] = [
+        [(100, 50), (120, 50), (120, 70), (100, 70)],
+        [(120, 50), (140, 50), (140, 70), (120, 70)],
+    ]
+    metadata = export_scene_metadata(scene, "unity")["sprites"][0]
+    collision = metadata["collision"]
+    assert collision["shape_type"] == "compound"
+    assert collision["coordinate_space"] == "image"
+    assert len(collision["parts"]) == 2
+    assert collision["parts"][1][0] == [120.0, 50.0]
+
+
 def test_custom_scene_pivot_is_exported_consistently_by_all_profiles() -> None:
     scene = _scene()
     scene.objects["probe"].set_pivot(0.0, 1.0)

@@ -1,0 +1,17 @@
+{
+  "engine": "unity",
+  "files": {
+    "stage2-unity-report.json": {
+      "bytes": 72497,
+      "sha256": "1421e0259ef21452218551d459667ad8c24e4666a7dc17b20fdf3ff3e389115d"
+    },
+    "unity-stage2-compound.log": {
+      "bytes": 70334,
+      "sha256": "3e279647e7febb4f8bfbc89e6a294c5cda0706e6dad486c99fdae53bff631218"
+    }
+  },
+  "schema_version": 1,
+  "stage": 2,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}

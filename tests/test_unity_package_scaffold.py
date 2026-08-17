@@ -50,6 +50,20 @@ def test_unity_upm_package_contains_runtime_and_editor_assemblies():
     assert (PACKAGE_ROOT / "Editor" / "AutoSyncPostprocessor.cs.meta").is_file()
 
 
+def test_unity_importer_preserves_canonical_compound_collision_paths():
+    source = (PACKAGE_ROOT / "Editor" / "UnityImportGenerator.cs").read_text(
+        encoding="utf-8"
+    )
+    assert "ApplyCollisionArrays(manifest, manifestText);" in source
+    assert "CollisionPartData" in source
+    assert "collider.pathCount = unityCollisionPaths.Length;" in source
+    assert "ColliderPointCounts" in source
+    assert (
+        'ComputeFingerprint(record.id, safeId + ".sprite", unityCollisionPaths)'
+        in source
+    )
+
+
 def test_unity_upm_package_is_source_only_and_keeps_stage_boundary():
     forbidden = {".a", ".bundle", ".dll", ".dylib", ".exe", ".so"}
     assert not [
