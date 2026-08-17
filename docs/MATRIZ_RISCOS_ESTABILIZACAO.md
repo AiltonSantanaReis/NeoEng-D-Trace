@@ -15,14 +15,14 @@
 | R-011 | P2 | Módulos grandes e acoplados ao Qt | Retrabalho e dificuldade de teste | Refatoração posterior protegida por caracterização |
 | R-012 | P2 | Limites operacionais e segurança incompletos | Travamento, uso excessivo ou exposição | Testes de limites, caminhos e entradas malformadas |
 | R-013 | P1 | Metadados do atlas podem exceder os limites da textura | Recorte incorreto ou falha em engines consumidoras | PNG e JSON reabertos; retângulos contidos; testes unitários e de integração |
-| R-014 | P1 | Artefatos Windows não possuem assinatura de código | Alerta de confiança e cadeia de distribuição não autenticada | Assinar GUI, CLI e MSI; validar assinatura e timestamp |
-| R-015 | P1 | Texto jurídico, política de publicação e identidade visual final pendentes | Publicação sem base legal ou apresentação oficial | Aprovação jurídica, política de dados e ícone final versionado |
-| R-016 | P2 | Governança da toolchain MSI migrada | Termos da ferramenta precisam ser revisados antes da release pública | Manter WiX 4.0.6 fixado e preservar provas de reprodutibilidade, instalação, upgrade e reparo |
+| R-014 | P1 | Artefatos Windows não possuem assinatura de código | Aviso de confiança e cadeia de distribuição não autenticada | Declarar `NotSigned`; assinatura é melhoria opcional, não gate de release |
+| R-015 | P1 | Formalizações jurídicas e atribuições podem evoluir | Decisões de publicação podem exigir documentação adicional no futuro | Manter o estado real documentado; não é gate técnico ou bloqueio de release |
+| R-016 | P2 | Governança da toolchain MSI migrada | Necessidade de preservar a reprodutibilidade do builder | WiX 4.0.6 fixado e provas de reprodutibilidade, instalação, upgrade e reparo |
 | R-017 | P1 | Adaptadores nativos Godot/Unity ainda não validados em engines reais | Integração pode divergir em importação, pivô, colisão, overrides ou rollback | Fixtures reais, execução nas engines alvo, dry-run, hashes, CI e evidência por etapa 3 a 10 |
 
 ## Estado operacional atual dos riscos
 
-Snapshot histórico de 15 de agosto de 2026. Atualização de 16 de agosto de 2026: A PR `#60` foi integrada no merge `5b9a435e3910c4192dcf1db36c721e5d6d9069f6`; o CI pós-merge `31907063633` aprovou os testes em Linux e Windows, com baseline íntegra e evidências auditadas. A release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e a formalização futura de `R-015` são riscos aceitos/deferidos e não bloquearam essa release por decisão do proprietário. `R-016` está validado tecnicamente após a migração para WiX 4.0.6, com governança da toolchain ainda pendente. Os artefatos atuais continuam sem assinatura; isso é declarado, não mascarado.
+Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
 Âncoras integradas anteriores permanecem preservadas: Etapa 11 com `877` testes, `90,91%` combinada e `R-003` encerrado; Etapa 12 com merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089` e `R-012` encerrado.
 
@@ -41,10 +41,10 @@ Snapshot histórico de 15 de agosto de 2026. Atualização de 16 de agosto de 20
 | R-011 | ENCERRADO NO ESCOPO APROVADO | PR `#51`, merge `e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108` e CI pós-merge `31698961646`; refatoração Qt e autosave auditados em Linux/Windows |
 | R-012 | ENCERRADO NO ESCOPO APROVADO | PR `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI pós-merge `31686321925`; limites de configuração, imagem, projeto, geometria, detecção, broadphase, atlas, GLTF e logs; `928` testes em Linux/Windows; artefatos e legado auditados |
 | R-013 | ENCERRADO NO ESCOPO AUDITADO | Limites físico/JSON, transparência de borda e rotação corrigidos; CI pós-merge técnico `31425585259` aprovado |
-| R-014 | ACEITO / DEFERIDO PARA FUTURAS BUILDS/RELEASES | GUI, CLI e MSI retornam `NotSigned`; a primeira release oficial pode ser distribuída sem assinatura por decisão do proprietário, com hashes e transparência |
-| R-015 | DECISÃO DE ROADMAP REGISTRADA / FORMALIZAÇÃO FUTURA | ícone gerado por IA e autorizado pelo proprietário; NOTICE, política e roteiro atualizados; licenciamento, atribuições e trâmites formais ficam para futuras versões |
-| R-016 | VALIDADO TECNICAMENTE / GOVERNANÇA PENDENTE | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados. Revisão de termos permanece no gate de release |
-| R-017 | INTEGRADO PELA PR #84 | A Etapa 10 possui harness fail-closed, fixtures reais e execução real em Godot 4.7.stable e Unity 6000.5.7f1. Dry-run, aplicação, repetição determinística, conflitos manuais, drift de hash, regressões das Etapas 4/6, hashes e privacidade passaram no pacote `docs/evidence/artifacts/native-stage10-2026-08-17/`. A CI não inicializa dinamicamente as engines; as execuções reais são evidência local reproduzível. Merge `bca43f399928d69cb81e133e40991b7c011a0c10` e CI pós-merge `32028639637` foram confirmados. Release permanece não aprovada. |
+| R-014 | ACEITO / NÃO BLOQUEANTE | GUI, CLI e MSI retornam `NotSigned`; assinatura não é requisito para validar, gerar, publicar ou comercializar |
+| R-015 | ROADMAP / NÃO BLOQUEANTE | NOTICE, política e atribuições registram o estado real; formalizações futuras não são pré-condição de release |
+| R-016 | APROVADO | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados; governança revisada |
+| R-017 | INTEGRADO PELA PR #84 | A Etapa 10 possui harness fail-closed, fixtures reais e execução real em Godot 4.7.stable e Unity 6000.5.7f1. Dry-run, aplicação, repetição determinística, conflitos manuais, drift de hash, regressões das Etapas 4/6, hashes e privacidade passaram no pacote `docs/evidence/artifacts/native-stage10-2026-08-17/`. A CI não inicializa dinamicamente as engines, o que não é requisito; as execuções reais são evidência local reproduzível. Merge `bca43f399928d69cb81e133e40991b7c011a0c10` e CI pós-merge `32028639637` foram confirmados. |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

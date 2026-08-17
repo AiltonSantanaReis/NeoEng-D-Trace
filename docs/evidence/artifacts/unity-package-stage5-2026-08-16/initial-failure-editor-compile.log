@@ -1,12 +1,12 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Built from '6000.5/staging' branch; Version is '6000.5.7f1 (017862109af0) revision 96354'; Using compiler version '194234433'; Build Type 'Release'
 OS: 'Windows 11  (10.0.26200) Professional' Language: 'pt' Physical Memory: 32690 MB
-[Licensing::IpcConnector] Channel LicenseClient-atnco doesn't exist
+[Licensing::IpcConnector] Channel LicenseClient-<redacted> doesn't exist
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-08-16T15:38:25Z
-[Licensing::Module] Successfully launched the LicensingClient (PId: 24744)
+<redacted-timestamp>
+[Licensing::Module] Successfully launched the LicensingClient (PId: <redacted>)
 
 COMMAND LINE ARGUMENTS:
 <local-path>
@@ -57,37 +57,37 @@ Successfully changed project path to: <local-path>\positive-one
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Logging is directed to a specific file, skipping project log.Player connection [28468]  Target information:
+<redacted-player-connection>
 
-Player connection [28468]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 4197335192 [EditorId] 4197335192 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [28468]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 4197335192 [EditorId] 4197335192 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [28468]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 4197335192 [EditorId] 4197335192 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [28468]  * "[IP] <network-address> [Port] 55504 [Flags] 2 [Guid] 4197335192 [EditorId] 4197335192 [Version] 1048832 [Id] WindowsEditor(7,Ailton) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+<redacted-player-connection>
 
-Player connection [28468] Host joined multi-casting on [<network-address>:54997]...
-Player connection [28468] Host joined alternative multi-casting on [<network-address>:34997]...
+<redacted-player-connection>
+<redacted-player-connection>
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
 Starting IPC server.
-Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-atnco, press Ctrl-C to exit.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-atnco" at "2026-08-16T15:38:25.6794954Z"
-[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 24744, path: "<local-path>")
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-<redacted>, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-16T15:38:25.6794954Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: <redacted>, path: "<local-path>")
 [Licensing::Module] LicensingClient has failed validation; ignoring
 [Package Manager] Connected to IPC stream "Upm-31948" after 0.3 seconds.
 [Licensing::Module] Licensing is not yet initialized.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id: <redacted>
-  Correlation Id: <redacted>
-  External correlation Id: <redacted>
-  Machine Id: <redacted>
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-atnco" (connect: 0.37s, validation: 0.05s, handshake: 0.04s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-atnco-notifications" at "2026-08-16T15:38:25.7699695Z"
-[Licensing::Module] Connected to LicensingClient (PId: 24744, launch time: 0.01, total connection time: 0.46s)
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+<redacted-engine-identity>
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-<redacted>" (connect: 0.37s, validation: 0.05s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>" at "2026-08-16T15:38:25.7699695Z"
+[Licensing::Module] Connected to LicensingClient (PId: <redacted>, launch time: 0.01, total connection time: 0.46s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
@@ -122,7 +122,7 @@ Mono path[0] = '<local-path>
 Mono path[1] = '<local-path>
 Mono path[2] = '<local-path>
 Mono config path = '<local-path>
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=<network-address>:56948
+<redacted-debug-endpoint>
 CodeReloadManager initialized
 ImportWorker Server TCP listen port: 0
 AcceleratorClientConnectionCallback - disconnected - :0

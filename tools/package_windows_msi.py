@@ -237,6 +237,7 @@ def _directory_xml(bundle: Path) -> tuple[str, list[str], int]:
 def _write_wix_source(bundle: Path, path: Path, product_code: str) -> int:
     directory_body, component_refs, file_count = _directory_xml(bundle)
     shortcut_component = stable_identifier("cmp", "start-menu")
+    icon_id = "NeoEngDTraceIcon.ico"
     component_refs.append(shortcut_component)
     lines = [
         '<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">',
@@ -280,8 +281,14 @@ def _write_wix_source(bundle: Path, path: Path, product_code: str) -> int:
             f"Name={quoteattr(APP_DISPLAY_NAME)} "
             f'Target="[#{stable_identifier("fil", "NeoEng-D-Trace.exe")}]" '
             'WorkingDirectory="INSTALLDIR" '
-            'Description="Prepare 2D game assets and collision geometry" />'
+            f'Description="Prepare 2D game assets and collision geometry" '
+            f'Icon={quoteattr(icon_id)} IconIndex="0">'
         ),
+        (
+            f"            <Icon Id={quoteattr(icon_id)} "
+            f'SourceFile={quoteattr("assets/branding/neoeng-d-trace-icon.ico")} />'
+        ),
+        "          </Shortcut>",
         (
             "          <RemoveFolder "
             'Id="RemoveApplicationProgramsFolder" On="uninstall" />'

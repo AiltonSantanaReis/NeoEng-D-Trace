@@ -35,6 +35,7 @@ from src.exporters.collision_exporter import (
 )
 from src.exporters.json_exporter import save_json_metadata
 from src.persistence.autosave import AutosaveStore
+from src.ui.app_icon import application_icon
 from src.ui.autosave_coordinator import AutosaveCoordinator
 from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
@@ -167,6 +168,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self, scene, config, *, autosave_store: AutosaveStore | None = None):
         super().__init__()
+        self.setWindowIcon(application_icon())
         self.scene = scene
         self.config = config
         self.document_session = DocumentSession(

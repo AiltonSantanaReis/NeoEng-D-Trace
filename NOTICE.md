@@ -19,6 +19,11 @@ foi autorizado. Nenhuma aprovação de terceiro é declarada como necessária pe
 decisão do proprietário. Esta declaração não é parecer jurídico nem prova
 independente de titularidade ou ausência de direitos de terceiros.
 
+O `.ico` derivado para o runtime Windows, executável e atalho do instalador é
+`assets/branding/neoeng-d-trace-icon.ico`. Seu conteúdo é gerado
+deterministicamente a partir do PNG autorizado pelo script
+`tools/generate_app_icon.py`.
+
 ## Dependências e terceiros
 
 As atribuições de dependências devem ser conferidas no lockfile e na documentação

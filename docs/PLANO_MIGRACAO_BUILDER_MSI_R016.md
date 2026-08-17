@@ -1,6 +1,6 @@
 # Plano de Migração do Builder MSI — R-016
 
-**Status:** VALIDADO TECNICAMENTE / GOVERNANÇA DE RELEASE PENDENTE
+**Status:** VALIDADO TECNICAMENTE / GOVERNANÇA APROVADA EM 17 DE AGOSTO DE 2026
 
 ## Situação comprovada
 
@@ -45,15 +45,16 @@ O risco só poderá ser encerrado quando:
 - instalação limpa e desinstalação não deixarem resíduos inesperados;
 - upgrade/reparo preservarem o contrato de arquivos e atalhos;
 - GUI, CLI e exportações passarem no candidato produzido;
-- o CI reproduzir os mesmos gates em uma máquina Windows limpa;
+- os gates suportados pelo CI permanecerem reproduzíveis em Linux/Windows; a
+  execução dinâmica das engines externas não é requisito deste plano;
 - o relatório registrar falhas, limitações e hashes reais.
 
 ## Decisão de release
 
-O risco técnico do R-016 está validado: a migração pode ser realizada sem
-certificado de assinatura, e a assinatura de código é um gate separado do
-builder. Permanece somente a revisão de termos da toolchain na governança da
-release.
+O risco técnico e a governança do R-016 estão aprovados: a migração pode ser
+realizada sem certificado de assinatura, e a assinatura de código é opcional e
+separada do builder. A validação real das engines permanece local e
+reproduzível; o CI não precisa inicializá-las dinamicamente.
 
 ## Evidência da migração — candidato técnico
 
@@ -93,3 +94,7 @@ O MSI oficial produzido pelo script completo no commit `828cf626b7ce382c360723b1
 - os logs e relatórios ficam nos artefatos locais de validação e não são usados como evidência versionada sem hash/manifesto.
 
 A validação demonstra o comportamento técnico do builder, mas não transforma o artefato em release público: assinatura, identidade legal, publicação e aprovação final permanecem gates separados.
+### Reconciliação de governança
+O trecho histórico acima preserva o estado da auditoria original. A decisão
+vigente de 17 de agosto de 2026 aprova a governança do R-016; assinatura e CI
+dinâmico das engines não são gates obrigatórios.

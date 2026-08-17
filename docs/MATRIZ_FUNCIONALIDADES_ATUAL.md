@@ -8,7 +8,7 @@
 
 **Âncora integrada pós-merge da Etapa 14:** `f15193a55d1a5de0c7031f5bab656107302eee1b` (PR `#58`, CI pós-merge `31905237922`)
 
-**Estado atual:** Etapas 11 a 13 permanecem encerradas nos escopos aprovados. A Etapa 14 foi integrada pela PR `#58` e o CI pós-merge `31905237922` foi aceito após auditoria de logs e artefatos: `982` testes por sistema, cobertura `92,80%`/`85,02%`, legado `27/27` reconciliado e árvore limpa. `R-014` e `R-015` permanecem abertos; `R-016` está validado tecnicamente; release não aprovada.
+**Estado atual:** Etapas 11 a 13 permanecem encerradas nos escopos aprovados. A Etapa 14 foi integrada pela PR `#58` e o CI pós-merge `31905237922` foi aceito após auditoria de logs e artefatos: `982` testes por sistema, cobertura `92,80%`/`85,02%`, legado `27/27` reconciliado e árvore limpa. `R-014` e `R-015` são não bloqueantes; `R-016` está revisado e aprovado; a release oficial `v0.2.0` está publicada.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -20,7 +20,7 @@
 
 **Fechamento integrado anterior:** Etapa 7 mesclada em `99326f2d7ccf7046e401d90830feb8a5d33e9f9a`; CI pós-merge `31437000772` aprovado.
 
-**Riscos:** `R-003`, `R-006`, `R-007`, `R-008`, `R-011`, `R-012` e `R-016` validados/encerrados nos escopos aprovados; `R-014` e `R-015` permanecem abertos e bloqueiam release pública.
+**Riscos:** `R-003`, `R-006`, `R-007`, `R-008`, `R-011`, `R-012` e `R-016` validados/encerrados nos escopos aprovados; `R-014` e `R-015` permanecem declarados como riscos não bloqueantes.
 
 Esta é a matriz viva. `MATRIZ_FUNCIONALIDADES.md` permanece apenas como
 snapshot histórico.
@@ -44,7 +44,7 @@ snapshot histórico.
 | Segurança e limites | INTEGRADO / APROVADO | Pillow 12.3.0; pip-audit e Bandit limpos; schema estrito; corpus malformado; rotação e privacidade de logs; benchmarks Windows; CI pós-merge `31686321925` auditado | nenhuma ferramenta prova ausência total; tetos não constituem SLA |
 | Tipagem | INTEGRADO / APROVADO | mypy com `check_untyped_defs`: zero erros em `80` arquivos no CI pós-merge da Etapa 13 | ampliar anotações explícitas gradualmente |
 | Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
-| Build Windows/instalador | INTEGRADO / APROVADO NO ESCOPO TÉCNICO | WiX 4.0.6 fixado; builds MSI reproduzíveis; instalação, smoke, upgrade, reparo, desinstalação, Godot/Unity, manifestos e CI pós-merge auditados | sem assinatura; pendências jurídica/visual |
+| Build Windows/instalador | INTEGRADO / APROVADO | WiX 4.0.6 fixado; builds MSI reproduzíveis; instalação, smoke, upgrade, reparo, desinstalação, Godot/Unity, manifestos e CI pós-merge auditados | assinatura é opcional; formalizações futuras não bloqueiam |
 
 ## Regra de leitura
 

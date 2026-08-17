@@ -1,6 +1,6 @@
 # Checklist de Release Pública — NeoEng-D-Trace
 
-**Status atual:** RELEASE OFICIAL `v0.2.0` PUBLICADA; ASSINATURA E TRÂMITES JURÍDICOS DEFERIDOS PARA FUTURAS VERSÕES
+**Status atual:** RELEASE OFICIAL `v0.2.0` PUBLICADA; `R-014`, `R-015` e a execução dinâmica das engines não são gates obrigatórios.
 
 Este checklist registra a release pública `v0.2.0` e separa gates concluídos de riscos aceitos/deferidos. Um item marcado
 como “futuro” não pode ser apresentado como concluído.
@@ -9,11 +9,11 @@ como “futuro” não pode ser apresentado como concluído.
 
 | Gate | Estado atual | Critério para fechar |
 |---|---|---|
-| R-014 — assinatura | DEFERIDO PARA FUTURAS BUILDS/RELEASES; não bloqueia a primeira release oficial por decisão do proprietário | GUI, CLI, DLLs distribuídas e MSI assinados; cadeia e timestamp verificados quando o proprietário ativar este gate |
-| R-015 — publicação e dados | DECISÃO DE ROADMAP REGISTRADA; formalização futura conforme demanda | Licença/termos, atribuições, identidade visual, contato e dados formalizados quando o proprietário ativar este gate |
-| R-016 — builder MSI | Validado tecnicamente / governança pendente | WiX 4.0.6 fixado, build reproduzível, instalação, upgrade, reparo e remoção validados; revisar termos da toolchain no gate de release |
+| R-014 — assinatura | RISCO ACEITO; NÃO É GATE | Assinatura é melhoria opcional futura; a ausência deve ser declarada, nunca apresentada como existente |
+| R-015 — publicação e dados | ROADMAP NÃO BLOQUEANTE | Formalizações podem ser adicionadas conforme decisão do proprietário; não são pré-condição técnica para publicar ou comercializar |
+| R-016 — builder MSI | APROVADO | WiX 4.0.6 fixado, build reproduzível, instalação, upgrade, reparo e remoção validados |
 | Qualidade funcional | Técnico aprovado | CI Linux/Windows, testes, cobertura, legado reconciliado e baseline íntegra |
-| Engines externas | Validado no fixture canônico | Repetir quando o candidato de release mudar |
+| Engines externas | Validado no fixture canônico | Repetir quando o candidato mudar; execução dinâmica no CI não é requisito |
 
 ## Evidências exigidas para o candidato final
 
@@ -21,16 +21,16 @@ como “futuro” não pode ser apresentado como concluído.
 - versões de Python, dependências, toolchain e Windows;
 - manifestos e hashes dos artefatos;
 - logs sem caminhos pessoais ou segredos;
-- assinatura verificada por processo independente quando `R-014` for ativado;
 - instalação, execução, exportação, atualização, reparo e desinstalação;
-- política e documentação aprovadas pelo responsável do projeto.
+- documentação do estado real, limitações e riscos;
+- política e documentação do projeto sem dados inventados ou alegações jurídicas não comprovadas.
 
-## Decisão de roadmap
+## Decisão vigente
 
-A primeira release oficial pode ser distribuída sem assinatura por decisão
-do proprietário, desde que os artefatos, hashes, testes, limitações e riscos
-sejam descritos com transparência. `R-014` fica para futuras builds/releases
-após validação de usuários e crescimento do projeto. A formalização de `R-015`
-será executada conforme demanda e decisão do proprietário. CI verde,
-isoladamente, nunca substitui a análise de evidências nem certifica
-conformidade jurídica.
+Uma release pode ser distribuída e comercializada sem assinatura de código;
+assinatura e formalizações de `R-015` são opcionais e não bloqueiam o release.
+A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais
+locais reproduzíveis permanecem válidas. CI verde não substitui a análise de
+evidências, mas a ausência de CI dinâmico também não invalida provas locais.
+Consulte a decisão vigente de reconciliação para o estado completo.
+`docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.

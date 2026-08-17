@@ -359,10 +359,14 @@ def main() -> int:
 
         from src.core.app_paths import default_autosave_path
         from src.persistence.autosave import AutosaveStore
+        from src.ui.app_icon import application_icon
         from src.ui.main_window import MainWindow
         from src.ui.theme_qss import QSS
 
         app = QApplication(sys.argv)
+        set_window_icon = getattr(app, "setWindowIcon", None)
+        if callable(set_window_icon):
+            set_window_icon(application_icon())
         font = QFont("Segoe UI", 10)
         font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
         app.setFont(font)

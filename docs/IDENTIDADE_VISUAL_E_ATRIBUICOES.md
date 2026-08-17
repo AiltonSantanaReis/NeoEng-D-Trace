@@ -12,19 +12,23 @@ ausência de direitos de terceiros.
 
 O arquivo recebido e versionado em `assets/branding/neoeng-d-trace-icon-source.png` é um PNG paletizado de `878×810`, modo `P`, com SHA-256
 `17dde3dc0d616cef8927403cb3b2b15aa818960776605eb2a7d2b99b8e5adedc`. Para Windows, a
-integração técnica deve gerar um `.ico` com canvas quadrado, transparência quando
-aplicável e múltiplas resoluções, no mínimo `16`, `32`, `48`, `64`, `128` e
-`256` pixels.
+integração técnica usa o `.ico` derivado `assets/branding/neoeng-d-trace-icon.ico`,
+com canvas quadrado, transparência preservada e múltiplas resoluções `16`, `32`,
+`48`, `64`, `128` e `256` pixels. O SHA-256 do derivado é
+`6120fd1376d3976e6f089ef1bd6da677280234d58ab09add189ce97f4abb3b91`.
 
-## Integração necessária
+## Integração realizada
 
 - o arquivo-fonte autorizado já está versionado;
-- gerar e versionar o `.ico` derivado a partir deste ativo;
-- usar o ícone no executável GUI, no instalador e nos atalhos;
-- verificar visualmente as resoluções pequenas e grandes;
+- o `.ico` derivado é gerado por `tools/generate_app_icon.py` e está versionado;
+- o runtime Qt aplica o ícone à `QApplication` e à `MainWindow`;
+- o PyInstaller inclui o ativo no bundle e aplica o ícone ao executável GUI;
+- o WiX referencia o mesmo ativo no atalho do menu Iniciar;
+- os contratos automatizados verificam transparência, resoluções, runtime e WiX;
 - registrar SHA-256 dos ativos no manifesto de release;
 - incluir a atribuição em `NOTICE` ou documento equivalente;
-- repetir os testes de build, instalação e desinstalação.
+- repetir os testes de build, instalação e desinstalação após cada mudança de
+  empacotamento.
 
 ## Trâmites futuros
 

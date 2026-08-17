@@ -7,12 +7,12 @@
   "package_name": "com.neoeng.dtrace",
   "files": {
     "initial-failure-editor-compile.log": {
-      "bytes": 42558,
-      "sha256": "993b440a7217ee10b35357215881f286bf1c64d2fa7b04b0ecfde00a7f266da7"
+      "bytes": 41496,
+      "sha256": "df80114dafdc1866db6d13a5d53353fe076345b32573673a71634680d2271bd8"
     },
     "initial-failure-path-resolution.log": {
-      "bytes": 8609,
-      "sha256": "2d2f1ab4b21aadc545647ace270c9e773989c763861b5c6b29eac70a207232bb"
+      "bytes": 7547,
+      "sha256": "4006ef19a87926166de934a279cff3d4c131282a6e45ddb9adf2193aca8003c4"
     },
     "package.json": {
       "bytes": 361,
@@ -31,16 +31,16 @@
       "sha256": "3f186f781ecbbae95cc2c66d1fa88f686d065181b59f1264f0386acf6608d9aa"
     },
     "unity-validation-negative.log": {
-      "bytes": 53914,
-      "sha256": "4f10760a34d46cad92ad748c79895f57e582e8b300b7b5b7ed3fcbd52256a3e9"
+      "bytes": 52846,
+      "sha256": "e517dcfed4a9565e05f61680007be6e231f43efd859d026883bef9b225d379c5"
     },
     "unity-validation-repeat.log": {
-      "bytes": 52144,
-      "sha256": "77f7520201753fcbbbeb7d338b431b84aaeb1f5dc49483c29dae2534f0dbc00e"
+      "bytes": 51063,
+      "sha256": "a151c2fd76ddb57c6c0096ab471cf6425c0cf579c834fc176341cbf4701bb9bf"
     },
     "unity-validation.log": {
-      "bytes": 52306,
-      "sha256": "84c2b908612ed43dcf3961af3d22242f1dc332537488fb7cdbe9e7fb3a13cb60"
+      "bytes": 51225,
+      "sha256": "0bba3f6191187454002b23ff9787a57ef637a732a5db33fe1baf7e874beb2968"
     }
   }
 }

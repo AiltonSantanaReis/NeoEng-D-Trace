@@ -1,6 +1,12 @@
 - ADENDO_INTEGRIDADE_ARTEFATOS_2026-08-16.md — correção da cadeia de bytes, bloqueio de manifests e limites históricos declarados; não é aprovação de merge.
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
+- PRIVACIDADE_ARTEFATOS_RECONCILIACAO_2026-08-17.md — correção fail-closed dos identificadores de host/processo nos artefatos e regeneração independente dos manifests.
+- `APP_ICON_INTEGRATION_2026-08-17.md` — integração do ativo autorizado no runtime Qt, PyInstaller, executável GUI e atalho WiX, com hashes e validação real.
+- `RECONCILIACAO_GATES_RELEASE_2026-08-17.md` — decisão vigente que remove
+  assinatura, formalização jurídica e CI dinâmico das engines como gates
+  obrigatórios, aprova o R-016 e registra a verificação atual da baseline com
+  1268 arquivos. Snapshots históricos permanecem inalterados.
 - ETAPA_AUDITOR_VISUAL_REPRODUTIVEL_2026-08-16.md — contrato fail-closed para PNGs Pillow/OpenCV, hashes, alfa, geometrias Qt reais, clipping, sobreposição, paleta QSS e anotações reproduzíveis.
 
 - `ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md` — addon Godot somente com GDScript, diagnóstico somente leitura, ZIP determinístico e execução headless real; não cobre a importação de Sprite2D/colisão da etapa 4.

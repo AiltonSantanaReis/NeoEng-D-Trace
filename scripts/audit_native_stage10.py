@@ -84,18 +84,24 @@ def sanitize_output(value: str, temporary: Path) -> str:
     value = sanitize_stage8(value, temporary)
     patterns = (
         (
-            r"(?im)^\s*(?:Machine Id|Session Id|Correlation Id|"
-            r"External correlation Id):.*$",
-            "<redacted-engine-identity>",
+            r"(?im)(Machine Id|Session Id|Correlation Id|"
+            r"External correlation Id):[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            r"\1: <redacted-engine-identity>",
         ),
         (r"(?i)LicenseClient-[A-Za-z0-9_.-]+", "LicenseClient-<redacted>"),
         (r"(?i)\bPId:\s*\d+", "PId: <redacted>"),
         (r"(?i)\bprocessId\"?\s*[:=]\s*\d+", "processId: <redacted>"),
         (r"(?i)\bprocess\s+Id:\s*\d+", "process Id: <redacted>"),
         (r"(?i)WindowsEditor\([^)]*\)", "WindowsEditor(<redacted>)"),
-        (r"(?im)^\s*Date:.*$", "<redacted-timestamp>"),
-        (r"(?im)^.*http://localhost:\d+.*$", "<redacted-local-endpoint>"),
-        (r"(?im)^.*debugger-agent(?::|=).*$", "<redacted-debug-endpoint>"),
+        (
+            r"(?im)Date:[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            "Date: <redacted-timestamp>",
+        ),
+        (r"(?im)http://localhost:\d+", "<redacted-local-endpoint>"),
+        (
+            r"(?im)debugger-agent(?::|=)[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+            "<redacted-debug-endpoint>",
+        ),
     )
     for pattern, replacement in patterns:
         value = re.sub(pattern, replacement, value)

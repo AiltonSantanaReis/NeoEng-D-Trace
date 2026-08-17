@@ -48,11 +48,35 @@ def _sanitize(text: str, temporary_root: Path) -> str:
     value = text.replace(str(temporary_root), "<local-path>")
     value = value.replace(str(ROOT), "<repo>")
     value = value.replace(str(PACKAGE_ROOT), "<package>")
-    value = re.sub(r"[A-Za-z]:[\\/][^\r\n\"]+", "<local-path>", value)
+    value = re.sub(r"(?<![A-Za-z])[A-Za-z]:[\\/][^\r\n\"]+", "<local-path>", value)
     value = re.sub(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", "<network-address>", value)
     value = re.sub(
-        r"(?im)^(\s*(?:Machine Id|Session Id|Correlation Id|External correlation Id):).*$",
-        r"\1 <redacted>",
+        r"(?im)(Machine Id|Session Id|Correlation Id|"
+        r"External correlation Id):[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        r"\1: <redacted-engine-identity>",
+        value,
+    )
+    value = re.sub(
+        r"(?i)LicenseClient-[A-Za-z0-9_.-]+", "LicenseClient-<redacted>", value
+    )
+    value = re.sub(r"(?i)\bPId:\s*\d+", "PId: <redacted>", value)
+    value = re.sub(r"(?i)\bprocessId\"?\s*[:=]\s*\d+", "processId: <redacted>", value)
+    value = re.sub(r"(?i)\bprocess\s+Id:\s*\d+", "process Id: <redacted>", value)
+    value = re.sub(r"(?i)WindowsEditor\([^)]*\)", "WindowsEditor(<redacted>)", value)
+    value = re.sub(
+        r"(?im)Player connection\s*\[\d+\][^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        "<redacted-player-connection>",
+        value,
+    )
+    value = re.sub(
+        r"(?im)Date:[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        "Date: <redacted-timestamp>",
+        value,
+    )
+    value = re.sub(r"(?im)http://localhost:\d+", "<redacted-local-endpoint>", value)
+    value = re.sub(
+        r"(?im)debugger-agent(?::|=)[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
+        "<redacted-debug-endpoint>",
         value,
     )
     return value
@@ -240,7 +264,7 @@ def _main() -> int:
             )
             + "\n",
             encoding="utf-8",
-        newline="\n",
+            newline="\n",
         )
         (OUT / "stage5-report-repeat.json").write_bytes(first_report_path.read_bytes())
         (OUT / "stage5-report-negative.json").write_bytes(
@@ -257,7 +281,7 @@ def _main() -> int:
                     source.read_text(encoding="utf-8", errors="replace"), temporary
                 ),
                 encoding="utf-8",
-            newline="\n",
+                newline="\n",
             )
 
     time.sleep(1.0)

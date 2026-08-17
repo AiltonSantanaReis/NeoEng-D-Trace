@@ -4,13 +4,14 @@ from pathlib import Path
 
 repository_root = Path(SPECPATH).parent
 entry_point = repository_root / "app.py"
+icon_path = repository_root / "assets" / "branding" / "neoeng-d-trace-icon.ico"
 version_resource = Path(SPECPATH) / "windows_version_info.txt"
 
 analysis = Analysis(
     [str(entry_point)],
     pathex=[str(repository_root)],
     binaries=[],
-    datas=[],
+    datas=[(str(icon_path), "assets/branding")],
     hiddenimports=["pygltflib"],
     hookspath=[],
     hooksconfig={},
@@ -27,6 +28,7 @@ gui_executable = EXE(
     [],
     exclude_binaries=True,
     name="NeoEng-D-Trace",
+    icon=str(icon_path),
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
