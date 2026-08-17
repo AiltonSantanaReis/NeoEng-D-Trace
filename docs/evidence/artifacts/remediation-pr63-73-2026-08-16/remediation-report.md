@@ -3,10 +3,10 @@
 ## Identificação
 
 - Escopo: remediação no estado atual baseado em origin/main; as PRs históricas #63–#73 não foram reescritas.
-- HEAD/base: 638918b3bae753c7b766aa2d8a5158f31064d217
+- HEAD/base: d617f3b50aa73c3e10a85ff740dc0ebe3a887731
 - Branch: codex/remediate-pr63-73
 - Data/hora UTC: 2026-08-17T00:10:15.2450437Z
-- Estado: alteração local ainda não commitada; nenhum push/merge executado nesta etapa.
+- Estado: commit local criado; nenhum push/merge executado nesta etapa.
 
 ## Objetivo e escopo
 
