@@ -4,7 +4,7 @@
 
 - Escopo: remediação no estado atual baseado em origin/main; as PRs históricas #63–#73 não foram reescritas.
 - HEAD/base: d617f3b50aa73c3e10a85ff740dc0ebe3a887731
-- Branch: codex/remediate-pr63-73
+- Branch: remediation-pr63-73
 - Data/hora UTC: 2026-08-17T00:10:15.2450437Z
 - Estado: commit local criado; nenhum push/merge executado nesta etapa.
 
@@ -49,7 +49,9 @@ Duas primeiras chamadas Unity foram inválidas por erro de invocação do agente
 - ui-after-fix/manifest.json e PNGs das três resoluções
 - relatórios Godot Stages 3, 4 e 7
 - relatórios Unity Stages 5, 6 e 7
-- full-suite-after-fix-sanitized.xml
+- full-suite-after-fix-sanitized.xml (comparativo anterior)
+- full-suite-final-sanitized.xml (execução final após a correção UI)
+- ui-final/manifest.json e PNGs das três resoluções
 - manifest.json com hashes byte a byte
 
 ## Limitações e riscos residuais

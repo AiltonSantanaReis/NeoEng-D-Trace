@@ -50,6 +50,7 @@ DETECTION_PRESETS = {
             "canny_threshold2": 200,
             "rdp_epsilon": 2.0,
             "min_area": 100.0,
+            "detect_holes": True,
         },
         "estimated_runtime": "0.1-0.5s",
         "expected_polygons": "10-50",
@@ -804,7 +805,7 @@ class MaskViewerDialog(QDialog):
             "chaikin_iterations": 0,
             "fit_bezier": False,
             "morph_kernel_size": 1,
-            "detect_holes": False,
+            "detect_holes": True,
         }
 
         self.resize(1200, 800)
