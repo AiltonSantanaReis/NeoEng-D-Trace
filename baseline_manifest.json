@@ -569,8 +569,12 @@
       "size": 4897
     },
     "docs/evidence/ETAPA_6_IMPORTACAO_UNITY_2026-08-16.md": {
-      "sha256": "d5f7cb0f63e662d239d216d0af0cef0937fdfb71721ee1d56c62e0ed3616ed64",
-      "size": 4327
+      "sha256": "1408c8588e0d0c563fd48810410a775dfe49111fc1e490f65d905fcc79bf49c0",
+      "size": 4435
+    },
+    "docs/evidence/ETAPA_6_REPRODUCAO_FALHAS_UNITY_2026-08-16.md": {
+      "sha256": "83cdc0ecd539cbbf879e1f4138ad5b0a0b3a3ab5f9f4a36a0019cf2be60c8a9f",
+      "size": 1883
     },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
@@ -645,8 +649,8 @@
       "size": 922
     },
     "docs/evidence/README.md": {
-      "sha256": "6bab75a452fc7bd77a0903373c77465e9cc1786f2534234c61a03f9f9bd803d4",
-      "size": 27091
+      "sha256": "1a5d9147cf4b9ea0bd35871ad5d2302b3952093d923ede0ee04181391b310953",
+      "size": 27282
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -3368,6 +3372,22 @@
       "sha256": "68fb627279473bcf626baa714c513c304616d385f69d3ed6833b4ed66d7176ce",
       "size": 52635
     },
+    "docs/evidence/artifacts/unity-import-stage6-reproductions-2026-08-16/reproduction-csharp-compile.log": {
+      "sha256": "80545309ac6487f9392d9762499d49e0fb3c8757abb6addd9130d056dad58474",
+      "size": 42461
+    },
+    "docs/evidence/artifacts/unity-import-stage6-reproductions-2026-08-16/reproduction-index.json": {
+      "sha256": "ffba85045e05d97da68107ef298175065fdc5df920e83fa54a8d30b08b12b786",
+      "size": 734
+    },
+    "docs/evidence/artifacts/unity-import-stage6-reproductions-2026-08-16/reproduction-marker-script-binding.log": {
+      "sha256": "618e0af105142f290301989a4b8a0606d166b1a4090d9a6e96e009447618043c",
+      "size": 19884
+    },
+    "docs/evidence/artifacts/unity-import-stage6-reproductions-2026-08-16/reproduction-report.json": {
+      "sha256": "147c5b17f7416bcd9e3cab7646418e6fae9914fa4790cc9f26f963c59f7d7b54",
+      "size": 2120
+    },
     "docs/evidence/artifacts/unity-package-stage5-2026-08-16/initial-failure-editor-compile.log": {
       "sha256": "993b440a7217ee10b35357215881f286bf1c64d2fa7b04b0ecfde00a7f266da7",
       "size": 42558
@@ -3843,6 +3863,10 @@
     "scripts/package_godot_plugin.py": {
       "sha256": "a4713410b840476cff869422584ec83252ca936c9fb1baf0c80ffad747e6a08e",
       "size": 1382
+    },
+    "scripts/reproduce_unity_stage6_missing_logs.py": {
+      "sha256": "fe7464af1334d529ab34413719d48267e800c5c9a39429830850a2bd40b74a15",
+      "size": 10583
     },
     "src/__init__.py": {
       "sha256": "0025aeb81a4d66e83dfd6f962595b5d7ec282a550a004523a49a2d891676c2a2",

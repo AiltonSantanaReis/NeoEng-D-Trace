@@ -1,0 +1,50 @@
+{
+  "cases": {
+    "csharp_compile": {
+      "diagnostic": "CS1012",
+      "failure_observed": true,
+      "input_transformation": {
+        "file": "Editor/UnityImportGenerator.cs",
+        "mutated_sha256": "7b117d8d7df9995ed46ba90c1d8a9cd4d787782bf76f379c6da379c43d90054e",
+        "original_sha256": "dad5e1e2dc6aa11235f8846dd4573f6994ca5da36f589c8bffe632b23f7fcc02",
+        "transformation": "TrimStart('.', '/') -> TrimStart('./')"
+      },
+      "log": "reproduction-csharp-compile.log",
+      "returncode": 1
+    },
+    "marker_script_binding": {
+      "failure_observed": true,
+      "input_transformation": {
+        "file": "Assets/NeoEngGenerated/hero.prefab",
+        "marker_guid": "cc7a745b440fb1f43b19711bc2e4ba7d",
+        "mutated_sha256": "63f1079e6fd1bf9c4f8d391e8398605fe3c25f7fd7402f0765ce256a0d9dc5c8",
+        "original_sha256": "4afe0a4560383576c6af373632a0226d3a6ac6ed4cdcdce12041c1191c32193a",
+        "transformation": "Unity-generated marker component binding changed to fileID 0"
+      },
+      "log": "reproduction-marker-script-binding.log",
+      "observation": {
+        "m_script_file_id_zero": true,
+        "prefab": "Assets/NeoEngGenerated/hero.prefab",
+        "validator_observed_invalid_marker": true
+      },
+      "returncode": 1
+    }
+  },
+  "engine": "unity",
+  "historical_logs_status": "originals_unavailable_reproduction_recorded",
+  "kind": "real_reproduction",
+  "limitations": [
+    "These are new executions against temporary fault-injected copies.",
+    "They do not replace or rewrite the two unavailable historical logs.",
+    "The package source and transformations are identified by hashes above."
+  ],
+  "schema_version": 1,
+  "source_package": {
+    "editor_source_sha256": "48a7b56cc05d07aed4508df78e4e7084f898d9d8f32d4eefd0b557160975ba27",
+    "marker_source_sha256": "0ff60f37828bfb193006d01663ed00a85995644a57a7bfeb3aefefc6f7472c6d",
+    "metadata_source_sha256": "9a3dac7ecf05ffa52be9f559ac2a12e52bb2197c7a96d020ddf3eb127e365850",
+    "package": "integrations/unity/package/com.neoeng.dtrace"
+  },
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}
