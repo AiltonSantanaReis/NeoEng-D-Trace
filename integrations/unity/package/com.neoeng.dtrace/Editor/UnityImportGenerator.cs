@@ -844,6 +844,97 @@ namespace NeoEng.DTrace.Editor
             return assetPath;
         }
 
+        public static string[] FindManifestsAffectedByAssets(IEnumerable<string> changedAssetPaths)
+        {
+            HashSet<string> changes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string changedPath in changedAssetPaths ?? Enumerable.Empty<string>())
+            {
+                if (string.IsNullOrWhiteSpace(changedPath))
+                {
+                    continue;
+                }
+                try
+                {
+                    changes.Add(NormalizeAssetPath(changedPath));
+                }
+                catch (InvalidDataException)
+                {
+                    // AssetPostprocessor also receives package and project paths; they are not manifest inputs.
+                }
+            }
+
+            bool overrideChanged = changes.Any(path =>
+                path.StartsWith(GeneratedRoot + "/", StringComparison.OrdinalIgnoreCase) &&
+                path.EndsWith(".ndt.override.json", StringComparison.OrdinalIgnoreCase));
+            List<string> affected = new List<string>();
+            foreach (string manifestPath in FindAllManifestPaths())
+            {
+                if (changes.Contains(manifestPath) || overrideChanged)
+                {
+                    affected.Add(manifestPath);
+                    continue;
+                }
+
+                string absoluteManifestPath = ProjectAbsolutePath(manifestPath);
+                IntegrationManifest manifest;
+                try
+                {
+                    manifest = JsonUtility.FromJson<IntegrationManifest>(File.ReadAllText(absoluteManifestPath, Encoding.UTF8));
+                }
+                catch
+                {
+                    continue;
+                }
+                if (manifest == null || manifest.source == null || manifest.source.image == null)
+                {
+                    continue;
+                }
+                if (MatchesChangedInput(changes, manifest.source.image.path))
+                {
+                    affected.Add(manifestPath);
+                    continue;
+                }
+                if (manifest.schema_version == 2 && manifest.advanced != null && manifest.advanced.atlas != null)
+                {
+                    foreach (AtlasPageData page in manifest.advanced.atlas.pages ?? Array.Empty<AtlasPageData>())
+                    {
+                        if (page != null && MatchesChangedInput(changes, page.path))
+                        {
+                            affected.Add(manifestPath);
+                            break;
+                        }
+                    }
+                }
+            }
+            return affected.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(path => path, StringComparer.Ordinal).ToArray();
+        }
+
+        private static bool MatchesChangedInput(HashSet<string> changes, string reference)
+        {
+            try
+            {
+                return changes.Contains(NormalizeInputAssetPath(reference));
+            }
+            catch (InvalidDataException)
+            {
+                return false;
+            }
+        }
+        private static string NormalizeInputAssetPath(string reference)
+        {
+            string normalized = NormalizeRelativeReference(reference);
+            return normalized.StartsWith("Assets/", StringComparison.Ordinal)
+                ? normalized
+                : "Assets/" + normalized;
+        }
+        private static string[] FindAllManifestPaths()
+        {
+            return AssetDatabase.FindAssets("t:TextAsset", new[] { "Assets" })
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Where(path => path.EndsWith(".ndt.integration.json", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(path => path, StringComparer.Ordinal)
+                .ToArray();
+        }
         private static string FindDefaultManifest()
         {
             string[] paths = AssetDatabase.FindAssets("t:TextAsset", new[] { "Assets" })

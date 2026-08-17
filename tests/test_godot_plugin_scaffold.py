@@ -22,6 +22,9 @@ def test_godot_addon_is_source_only_and_has_stable_identity():
     assert (ADDON_ROOT / "manifest_diagnostic.gd").is_file()
     assert (ADDON_ROOT / "import_generator.gd").is_file()
     assert (ADDON_ROOT / "README.md").is_file()
+    plugin = (ADDON_ROOT / "plugin.gd").read_text(encoding="utf-8")
+    assert "filesystem_changed" in plugin
+    assert "NEOENG_GODOT_AUTO_SYNC=" in plugin
     assert not [
         path
         for path in PLUGIN_ROOT.rglob("*")

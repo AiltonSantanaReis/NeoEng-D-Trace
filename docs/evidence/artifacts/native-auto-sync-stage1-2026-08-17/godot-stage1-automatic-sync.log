@@ -1,0 +1,63 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - http<local-path>
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialização do Projeto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando estrutura de arquivos...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Carregando nomes de classe globais...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Criando scripts autoload...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+GODOT_STAGE1_RUNNER_ENTERED
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneamento de arquivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Carregando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Carregando layout do editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Carregando abas...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+NEOENG_GODOT_AUTO_SYNC=SUCCESS
+{
+  "automatic": true,
+  "event": "filesystem_changed",
+  "root": "re<local-path>",
+  "status": "SUCCESS"
+}
+[   0% ] [90m[1mreimport[22m | Started (Re)Importando Recursos (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparando arquivos para reimportação...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executando operações pré-reimportação...[39m[0m
+[   0% ] [90m[1mreimport[22m | source.png[39m[0m
+[  50% ] [90m[1mreimport[22m | Finalizando Importação de Recursos...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importando Recursos (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executando operações pós-reimportação...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+NEOENG_GODOT_AUTO_SYNC=SUCCESS
+{
+  "automatic": true,
+  "event": "filesystem_changed",
+  "root": "re<local-path>",
+  "status": "SUCCESS"
+}
+GODOT_AUTO_SYNC_STAGE1=UPDATED
+[   0% ] [90m[1mreimport[22m | Started (Re)Importando Recursos (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparando arquivos para reimportação...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executando operações pré-reimportação...[39m[0m
+[   0% ] [90m[1mreimport[22m | source.png[39m[0m
+[  50% ] [90m[1mreimport[22m | Finalizando Importação de Recursos...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importando Recursos (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executando operações pós-reimportação...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+NEOENG_GODOT_AUTO_SYNC=CONFLICT
+{
+  "automatic": true,
+  "event": "filesystem_changed",
+  "root": "re<local-path>",
+  "status": "CONFLICT"
+}
+GODOT_AUTO_SYNC_STAGE1=CONFLICT_BLOCKED
+GODOT_AUTO_SYNC_STAGE1=PASS

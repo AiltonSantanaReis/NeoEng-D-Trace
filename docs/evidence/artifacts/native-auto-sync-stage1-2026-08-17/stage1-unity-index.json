@@ -1,0 +1,89 @@
+{
+  "engine": "unity",
+  "files": {
+    "attempt-01-stage1-failure-automatic-sync.log": {
+      "bytes": 1323,
+      "sha256": "53d56fbe578abb67b5d653d7ba0a51cbd94d0dadcee2ab5524f3093b563ccfa5"
+    },
+    "attempt-01-stage1-failure.json": {
+      "bytes": 1944,
+      "sha256": "b1842f05bf5897314a1a4a21a6a014f661f3438e2e2f64499b688a58ef8a9f17"
+    },
+    "attempt-02-stage1-failure-automatic-sync.log": {
+      "bytes": 1058,
+      "sha256": "6682846cb3871b39a65c21b6b0e679ceb67041993953ea23d78a18953bb36147"
+    },
+    "attempt-02-stage1-failure.json": {
+      "bytes": 1669,
+      "sha256": "a190a6f060393fe97913aa0d4a92a3462cf5469e70e93f801cab826e10abe9db"
+    },
+    "attempt-04-stage1-failure-automatic-sync.log": {
+      "bytes": 1086,
+      "sha256": "ad0bbaf3482a5e0f9dbfe44dc2c3e4d8425cfcd1cae07055b88ddf97aa31a5b3"
+    },
+    "attempt-04-stage1-failure.json": {
+      "bytes": 1698,
+      "sha256": "da3b26e111aab67af81327ca8a296e16c711c82df821f4f8cdc18b2eacc1c0c7"
+    },
+    "attempt-05-stage1-failure-automatic-sync.log": {
+      "bytes": 1086,
+      "sha256": "ad0bbaf3482a5e0f9dbfe44dc2c3e4d8425cfcd1cae07055b88ddf97aa31a5b3"
+    },
+    "attempt-05-stage1-failure.json": {
+      "bytes": 1698,
+      "sha256": "da3b26e111aab67af81327ca8a296e16c711c82df821f4f8cdc18b2eacc1c0c7"
+    },
+    "attempt-06-stage1-failure-automatic-sync.log": {
+      "bytes": 2090,
+      "sha256": "39ffcfe43f53d4625feee50daeb5967738e3c006e1c2431777e35a6c9e72ca3f"
+    },
+    "attempt-06-stage1-failure.json": {
+      "bytes": 2931,
+      "sha256": "1ad5a52f846e3d7875877d65858bd7cead14644024a47bc151f1539decca1c1b"
+    },
+    "attempt-unity-01-failure.json": {
+      "bytes": 53894,
+      "sha256": "f1411054b5926c57d186b6ddbec7e58cec6a5158870659d3b2f45090bee17d1e"
+    },
+    "attempt-unity-01-failure.log": {
+      "bytes": 52825,
+      "sha256": "9d0dd76171939f9ace23a46702d02a744cd38e727629d824bee14f1313fe8c5d"
+    },
+    "attempt-unity-02-failure.json": {
+      "bytes": 72553,
+      "sha256": "1dbebd2a1d4db7361199206804158f1d52ec6faea422d9dd108b346a10cc7aa8"
+    },
+    "attempt-unity-02-failure.log": {
+      "bytes": 71043,
+      "sha256": "14dccea51ac4011c9f458a5ab9e282a431e78c9f0cdeb5c95c9fc3444e2e6d70"
+    },
+    "godot-stage1-automatic-sync.log": {
+      "bytes": 2914,
+      "sha256": "1af097bba2fe8bf33cf8d93635a72e244de7de5e4e1e33954b46eb975579e87c"
+    },
+    "godot-stage1-editor.log": {
+      "bytes": 2916,
+      "sha256": "6ae3fd4339e21d8bb982192533ae2205f89b9d0456e12cd1d6d9b6676a19f60e"
+    },
+    "stage1-index.json": {
+      "bytes": 2116,
+      "sha256": "a7ff40ce90bea0be3e7f48995adbf986467fa09d36986d11dad4b8f969acb2e8"
+    },
+    "stage1-report.json": {
+      "bytes": 8686,
+      "sha256": "9c19041bbef189c9f2add38604200ee813dc91275421da25c762825917c795be"
+    },
+    "stage1-unity-report.json": {
+      "bytes": 73101,
+      "sha256": "4edcfc94e1686c94c1b9ba0293db918a5f5e0b24dbc48272709be097db845ee5"
+    },
+    "unity-stage1-auto-sync.log": {
+      "bytes": 71598,
+      "sha256": "284a2a6dfa2d58f159b5b7063cb743e091a882c714a30921b93e141b6e8033e9"
+    }
+  },
+  "schema_version": 1,
+  "stage": 1,
+  "status": "SUCCESS",
+  "unity_version": "6000.5.7f1"
+}
