@@ -528,6 +528,10 @@
       "sha256": "fb9c7fce556c6d4569a7df76561ad66729bdf48c43b73dbfd096539bd4b6df64",
       "size": 7005
     },
+    "docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md": {
+      "sha256": "bdce418eed8bd38bc6f4edc520d9accb70a60eb3d8fa9389294e9d7f330de80b",
+      "size": 4394
+    },
     "docs/evidence/ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md": {
       "sha256": "01e0436feac7464283d5e2b628f410c0a91fbe1d70c2c11edc955f76d78351db",
       "size": 6315
@@ -729,8 +733,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "947f94eda7f84d27b1997a2fd80fbd933055214e801506c46d120ca9ac92f296",
-      "size": 31353
+      "sha256": "1c4ee4099f89b5eed4c6ea852eabc1ef2b8725439705b7ec210995c034e48fa5",
+      "size": 31579
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
@@ -3815,6 +3819,58 @@
     "docs/evidence/artifacts/roi-grabcut-collision/source.png": {
       "sha256": "4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18",
       "size": 6948
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/1080p_FHD_en_palette.png": {
+      "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c",
+      "size": 2842
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/1080p_FHD_en_window.png": {
+      "sha256": "4f8ebecf048f34d6a03f196b60e3a3f79336347c86f25075985bf87e47fd858e",
+      "size": 11128
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/1080p_FHD_pt_palette.png": {
+      "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8",
+      "size": 2886
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/1080p_FHD_pt_window.png": {
+      "sha256": "12579bc61ea7183dcf450754bf8f44c77da5c41dd61c24579fa5172013dad42e",
+      "size": 11093
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/720p_Compacta_en_palette.png": {
+      "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c",
+      "size": 2842
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/720p_Compacta_en_window.png": {
+      "sha256": "6ea4752788b0d8807d11f20eb6c6c3db7809528fe52d61e9794f86d59c62c370",
+      "size": 8790
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/720p_Compacta_pt_palette.png": {
+      "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8",
+      "size": 2886
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/720p_Compacta_pt_window.png": {
+      "sha256": "419482f2a58d915c35c03c4fcae748f3d2625316545019d6335ea82cbbe532ff",
+      "size": 8821
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/768p_Minima_en_palette.png": {
+      "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c",
+      "size": 2842
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/768p_Minima_en_window.png": {
+      "sha256": "f58beaf2a7f04352c4379bf4409a5068e7354e66a3023bafe95058f39226e13c",
+      "size": 9474
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/768p_Minima_pt_palette.png": {
+      "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8",
+      "size": 2886
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/768p_Minima_pt_window.png": {
+      "sha256": "cc4364d947b6be93012454b7c3f3a5413dfc14944ef6d9d0b7fd0a108add78a8",
+      "size": 9536
+    },
+    "docs/evidence/artifacts/stage3-command-palette-2026-08-18/manifest.json": {
+      "sha256": "d5d7c72d09c42dff1e74556d8b277877951ba8e68a755a19ca38cbc3b2f223aa",
+      "size": 12936
     },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",

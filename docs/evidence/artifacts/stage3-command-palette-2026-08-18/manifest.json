@@ -1,0 +1,632 @@
+{
+  "captures": {
+    "1080p_FHD/en": {
+      "files": {
+        "1080p_FHD_en_palette.png": {
+          "bytes": 2842,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c"
+        },
+        "1080p_FHD_en_window.png": {
+          "bytes": 11128,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            1080,
+            1920,
+            3
+          ],
+          "sha256": "4f8ebecf048f34d6a03f196b60e3a3f79336347c86f25075985bf87e47fd858e"
+        }
+      },
+      "palette": {
+        "capture": {
+          "bytes": 2842,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c"
+        },
+        "command_count": 19,
+        "focused_search": true,
+        "geometry": [
+          653,
+          333,
+          620,
+          420
+        ],
+        "results_geometry": [
+          11,
+          81,
+          598,
+          306
+        ],
+        "search_geometry": [
+          11,
+          41,
+          598,
+          34
+        ],
+        "title_geometry": [
+          11,
+          11,
+          598,
+          24
+        ],
+        "visible": true
+      },
+      "resolution": [
+        1920,
+        1080
+      ],
+      "window": {
+        "capture": {
+          "bytes": 11128,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            1080,
+            1920,
+            3
+          ],
+          "sha256": "4f8ebecf048f34d6a03f196b60e3a3f79336347c86f25075985bf87e47fd858e"
+        },
+        "geometry": [
+          2,
+          2,
+          1920,
+          1080
+        ]
+      }
+    },
+    "1080p_FHD/pt": {
+      "files": {
+        "1080p_FHD_pt_palette.png": {
+          "bytes": 2886,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8"
+        },
+        "1080p_FHD_pt_window.png": {
+          "bytes": 11093,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            1080,
+            1920,
+            3
+          ],
+          "sha256": "12579bc61ea7183dcf450754bf8f44c77da5c41dd61c24579fa5172013dad42e"
+        }
+      },
+      "palette": {
+        "capture": {
+          "bytes": 2886,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8"
+        },
+        "command_count": 19,
+        "focused_search": true,
+        "geometry": [
+          653,
+          333,
+          620,
+          420
+        ],
+        "results_geometry": [
+          11,
+          81,
+          598,
+          306
+        ],
+        "search_geometry": [
+          11,
+          41,
+          598,
+          34
+        ],
+        "title_geometry": [
+          11,
+          11,
+          598,
+          24
+        ],
+        "visible": true
+      },
+      "resolution": [
+        1920,
+        1080
+      ],
+      "window": {
+        "capture": {
+          "bytes": 11093,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            1080,
+            1920,
+            3
+          ],
+          "sha256": "12579bc61ea7183dcf450754bf8f44c77da5c41dd61c24579fa5172013dad42e"
+        },
+        "geometry": [
+          2,
+          2,
+          1920,
+          1080
+        ]
+      }
+    },
+    "720p_Compacta/en": {
+      "files": {
+        "720p_Compacta_en_palette.png": {
+          "bytes": 2842,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c"
+        },
+        "720p_Compacta_en_window.png": {
+          "bytes": 8790,
+          "dimensions": [
+            1280,
+            720
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            720,
+            1280,
+            3
+          ],
+          "sha256": "6ea4752788b0d8807d11f20eb6c6c3db7809528fe52d61e9794f86d59c62c370"
+        }
+      },
+      "palette": {
+        "capture": {
+          "bytes": 2842,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c"
+        },
+        "command_count": 19,
+        "focused_search": true,
+        "geometry": [
+          333,
+          153,
+          620,
+          420
+        ],
+        "results_geometry": [
+          11,
+          81,
+          598,
+          306
+        ],
+        "search_geometry": [
+          11,
+          41,
+          598,
+          34
+        ],
+        "title_geometry": [
+          11,
+          11,
+          598,
+          24
+        ],
+        "visible": true
+      },
+      "resolution": [
+        1280,
+        720
+      ],
+      "window": {
+        "capture": {
+          "bytes": 8790,
+          "dimensions": [
+            1280,
+            720
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            720,
+            1280,
+            3
+          ],
+          "sha256": "6ea4752788b0d8807d11f20eb6c6c3db7809528fe52d61e9794f86d59c62c370"
+        },
+        "geometry": [
+          2,
+          2,
+          1280,
+          720
+        ]
+      }
+    },
+    "720p_Compacta/pt": {
+      "files": {
+        "720p_Compacta_pt_palette.png": {
+          "bytes": 2886,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8"
+        },
+        "720p_Compacta_pt_window.png": {
+          "bytes": 8821,
+          "dimensions": [
+            1280,
+            720
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            720,
+            1280,
+            3
+          ],
+          "sha256": "419482f2a58d915c35c03c4fcae748f3d2625316545019d6335ea82cbbe532ff"
+        }
+      },
+      "palette": {
+        "capture": {
+          "bytes": 2886,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8"
+        },
+        "command_count": 19,
+        "focused_search": true,
+        "geometry": [
+          333,
+          153,
+          620,
+          420
+        ],
+        "results_geometry": [
+          11,
+          81,
+          598,
+          306
+        ],
+        "search_geometry": [
+          11,
+          41,
+          598,
+          34
+        ],
+        "title_geometry": [
+          11,
+          11,
+          598,
+          24
+        ],
+        "visible": true
+      },
+      "resolution": [
+        1280,
+        720
+      ],
+      "window": {
+        "capture": {
+          "bytes": 8821,
+          "dimensions": [
+            1280,
+            720
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            720,
+            1280,
+            3
+          ],
+          "sha256": "419482f2a58d915c35c03c4fcae748f3d2625316545019d6335ea82cbbe532ff"
+        },
+        "geometry": [
+          2,
+          2,
+          1280,
+          720
+        ]
+      }
+    },
+    "768p_Minima/en": {
+      "files": {
+        "768p_Minima_en_palette.png": {
+          "bytes": 2842,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c"
+        },
+        "768p_Minima_en_window.png": {
+          "bytes": 9474,
+          "dimensions": [
+            1366,
+            768
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            768,
+            1366,
+            3
+          ],
+          "sha256": "f58beaf2a7f04352c4379bf4409a5068e7354e66a3023bafe95058f39226e13c"
+        }
+      },
+      "palette": {
+        "capture": {
+          "bytes": 2842,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c"
+        },
+        "command_count": 19,
+        "focused_search": true,
+        "geometry": [
+          376,
+          177,
+          620,
+          420
+        ],
+        "results_geometry": [
+          11,
+          81,
+          598,
+          306
+        ],
+        "search_geometry": [
+          11,
+          41,
+          598,
+          34
+        ],
+        "title_geometry": [
+          11,
+          11,
+          598,
+          24
+        ],
+        "visible": true
+      },
+      "resolution": [
+        1366,
+        768
+      ],
+      "window": {
+        "capture": {
+          "bytes": 9474,
+          "dimensions": [
+            1366,
+            768
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            768,
+            1366,
+            3
+          ],
+          "sha256": "f58beaf2a7f04352c4379bf4409a5068e7354e66a3023bafe95058f39226e13c"
+        },
+        "geometry": [
+          2,
+          2,
+          1366,
+          768
+        ]
+      }
+    },
+    "768p_Minima/pt": {
+      "files": {
+        "768p_Minima_pt_palette.png": {
+          "bytes": 2886,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8"
+        },
+        "768p_Minima_pt_window.png": {
+          "bytes": 9536,
+          "dimensions": [
+            1366,
+            768
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            768,
+            1366,
+            3
+          ],
+          "sha256": "cc4364d947b6be93012454b7c3f3a5413dfc14944ef6d9d0b7fd0a108add78a8"
+        }
+      },
+      "palette": {
+        "capture": {
+          "bytes": 2886,
+          "dimensions": [
+            620,
+            420
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            420,
+            620,
+            3
+          ],
+          "sha256": "e8930f5592d51a1b65dfd86d2bef6d2ed230e9aae2f3844738cfcb98bcde28b8"
+        },
+        "command_count": 19,
+        "focused_search": true,
+        "geometry": [
+          376,
+          177,
+          620,
+          420
+        ],
+        "results_geometry": [
+          11,
+          81,
+          598,
+          306
+        ],
+        "search_geometry": [
+          11,
+          41,
+          598,
+          34
+        ],
+        "title_geometry": [
+          11,
+          11,
+          598,
+          24
+        ],
+        "visible": true
+      },
+      "resolution": [
+        1366,
+        768
+      ],
+      "window": {
+        "capture": {
+          "bytes": 9536,
+          "dimensions": [
+            1366,
+            768
+          ],
+          "mode": "RGB",
+          "opencv_shape": [
+            768,
+            1366,
+            3
+          ],
+          "sha256": "cc4364d947b6be93012454b7c3f3a5413dfc14944ef6d9d0b7fd0a108add78a8"
+        },
+        "geometry": [
+          2,
+          2,
+          1366,
+          768
+        ]
+      }
+    }
+  },
+  "generator": "scripts/audit_command_palette_capture.py",
+  "languages": [
+    "en",
+    "pt"
+  ],
+  "requested_resolutions": {
+    "1080p_FHD": [
+      1920,
+      1080
+    ],
+    "720p_Compacta": [
+      1280,
+      720
+    ],
+    "768p_Minima": [
+      1366,
+      768
+    ]
+  },
+  "schema_version": 1,
+  "source_head": "a2abef51912108c06b6c762c91c80b4d124d156e",
+  "worktree_clean_at_capture": true
+}

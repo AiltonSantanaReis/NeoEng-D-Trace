@@ -2,6 +2,8 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
+- `ETAPA_3_PALETA_COMANDOS_2026-08-18.md` — implementação da paleta visual, busca, teclado, Escape, localização e acessibilidade, com capturas reais en/pt, geometrias Qt, hashes Pillow/OpenCV e validação do manifest.
+
 - `RECONCILIACAO_DOCUMENTAL_2026-08-18.md` — reconciliação dos documentos vivos com o merge da PR `#92`, registro do novo plano e classificação explícita de paleta/parallax como planejados e não iniciados.
 - `ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md` — transação única e rollback global de múltiplos manifestos, com testes Python, execução real Godot/Unity, hashes e falhas intermediárias preservadas.
 
