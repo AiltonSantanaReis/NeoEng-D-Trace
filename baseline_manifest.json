@@ -529,8 +529,8 @@
       "size": 7005
     },
     "docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md": {
-      "sha256": "bdce418eed8bd38bc6f4edc520d9accb70a60eb3d8fa9389294e9d7f330de80b",
-      "size": 4394
+      "sha256": "3eda94cbdc23861150c5d3b751980b5a92ee820088a41b58c3a1a6dd826cce53",
+      "size": 4958
     },
     "docs/evidence/ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md": {
       "sha256": "01e0436feac7464283d5e2b628f410c0a91fbe1d70c2c11edc955f76d78351db",
@@ -3869,7 +3869,7 @@
       "size": 9536
     },
     "docs/evidence/artifacts/stage3-command-palette-2026-08-18/manifest.json": {
-      "sha256": "d5d7c72d09c42dff1e74556d8b277877951ba8e68a755a19ca38cbc3b2f223aa",
+      "sha256": "59ad57426427cf019b46ac984a03d0733ca696383c764349d786e1c0d284951c",
       "size": 12936
     },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
@@ -5061,8 +5061,8 @@
       "size": 1435
     },
     "src/ui/command_palette.py": {
-      "sha256": "2b85ff39ebccd5ebe821ad26bc37a41496e9e1391f8b75d1c582b3e00a2c772f",
-      "size": 9808
+      "sha256": "f0fd8813f8862aa8da2ee91cde5689202b3470909ce0a92acea9cf741be21b74",
+      "size": 9837
     },
     "src/ui/command_registry.py": {
       "sha256": "bc74d2efc024c61132fedde46fbd5ef69dec5a9b3eb032c4fab1bcc4c7ae868c",

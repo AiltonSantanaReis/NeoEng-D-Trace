@@ -4,11 +4,11 @@
 atalho e ID estável, navegação por teclado, Enter, Escape, localização en/pt,
 acessibilidade básica e preservação das `QAction` como fonte única de execução.
 
-**Commit técnico testado:** `a2abef51912108c06b6c762c91c80b4d124d156e`
+**Commit técnico testado:** `d487ec9250404f1a0fc5de9d50ad227ce1fa5758`
 
-**Estado da evidência:** captura real concluída contra o commit acima, antes da
-publicação do PR. O identificador da branch de trabalho não é persistido no
-payload versionado por causa do gate de higiene de referências do repositório.
+**Estado da evidência:** captura real concluída contra o commit acima, com a árvore
+limpa no momento da captura. O identificador da branch de trabalho não é persistido
+no payload versionado por causa do gate de higiene de referências do repositório.
 
 ## Implementação comprovada
 
@@ -32,7 +32,6 @@ payload versionado por causa do gate de higiene de referências do repositório.
 Comando:
 
 ```text
-.\.venv\Scripts\python.exe tools\baseline_integrity.py --verify
 .\.venv\Scripts\python.exe scripts\audit_command_palette_capture.py --output docs\evidence\artifacts\stage3-command-palette-2026-08-18
 ```
 
@@ -68,12 +67,23 @@ emissão artificial de sinal ou relaxamento de asserção foi usado.
 
 - testes específicos das Etapas 2 e 3: `14 passed`;
 - suíte integral local: `1218 passed, 2 skipped, 10 warnings`;
-- Black, isort, Flake8 e py_compile: aprovados no escopo alterado;
+- Black, isort, Flake8, py_compile, mypy e Bandit: aprovados no escopo alterado;
+- cobertura de branches: `90,67%`, acima do gate de 90%;
 - baseline: `1409 files`, verificado após incluir o pacote de evidências;
 - integridade de evidências: `48 manifests validated`.
 
 Os dois skips permanecem condicionais e preexistentes na suíte; não foram
 criados nem usados para aprovar a Etapa 3.
+
+## Falha remota encontrada e corrigida
+
+A primeira execução remota da PR no Linux foi interrompida no gate de tipagem:
+`src/ui/command_palette.py:144` recebeu `QWidget | None` em atributo inferido como
+`None`. A correção foi uma anotação explícita e a importação correspondente de
+`QWidget`, registrada em `d487ec9250404f1a0fc5de9d50ad227ce1fa5758`. O gate local
+`poetry run mypy src` passou depois da correção; a execução remota precisa ser
+reavaliada nesse novo SHA. Nenhuma regra do CI foi alterada e nenhum bypass foi
+usado.
 
 ## Limitações declaradas
 
