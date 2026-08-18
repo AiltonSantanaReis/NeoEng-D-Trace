@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "ed117f4d961d63148e0a6df355e41237074497c1bb47ad175ceb97da7a893b16",
-      "size": 49348
+      "sha256": "4d1becadd4ec0d7d72f3b67e9027903871a5d57bd6fb4abcdf404dd838e1d853",
+      "size": 49717
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "f618a6c329a413972438a181960ceae91d2714b884a193d6f0537de2b7c1ba91",
-      "size": 16466
+      "sha256": "aba5d12cf3a98251473f9a47e547e9f3fec252b8966fe7f2cdcf8c35e7b71f5d",
+      "size": 17273
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -237,24 +237,28 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "45c297dd19c52435fa0d958d0cc103838918bc9c65bd27f97227cdab20003c9e",
-      "size": 6136
+      "sha256": "3863712baed3b19f0cd719a3924833aae2cde741b27d777543bc99a6cd070431",
+      "size": 6676
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "2c0e6339ee9c82a9700bbd9944d1b1207933f9a371fb611d00165992210c4987",
-      "size": 17887
+      "sha256": "1d7a1d8737f5dadedc3fc297739795e88d06d16caa1d93bd71a79c7edce6e33b",
+      "size": 18869
+    },
+    "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
+      "sha256": "3c8d0c8288fe14a33c6351f97c48fd589cafb6cb2272fd9787312fdba087c764",
+      "size": 4412
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
       "size": 10812
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
-      "sha256": "36cf30a1bc23bbe519584ac681b330fe5be79e99f3d130ebd97f65df2998e941",
-      "size": 6804
+      "sha256": "b03a76b3b45e7a0c9a2a3d29b3bc7812f70c1542f61caa207edc7ebdc07df216",
+      "size": 7063
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "27d1fa1e3c39a924c7a139b6d494beaeef41678edd3db3d184a56169daa79396",
-      "size": 16379
+      "sha256": "f004967277d5a38ff78b8871831e2ee67c65284285dbc51d75754cba686782cd",
+      "size": 17072
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -705,8 +709,12 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "68a1433def026e89c4ac41dbd4ba6ee8d2280101d9d1ea129f06b1265cec0e98",
-      "size": 31138
+      "sha256": "947f94eda7f84d27b1997a2fd80fbd933055214e801506c46d120ca9ac92f296",
+      "size": 31353
+    },
+    "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
+      "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
+      "size": 2788
     },
     "docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md": {
       "sha256": "b3d69ca306352b4c7310d0b57d9746e97302dda38617d140f3da296975858eff",

@@ -8,6 +8,18 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 > **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
 > **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
 
+## Snapshot atual verificado — 18 de agosto de 2026
+
+O estado de código mais recente verificado é o merge da PR `#92`, commit
+`b6549ffc1f0e92fb8eeb0f7846414356172191a8`. O CI pré-merge
+`32107519574` e o CI pós-merge `32107883246` passaram em Linux e Windows.
+Esse estado inclui apenas a limpeza do guard transacional e a atualização
+legítima do baseline; o plano de cenários parallax e a paleta de comandos
+estão planejados, mas ainda não iniciados.
+
+A release `v0.2.0` continua sendo um snapshot publicado anterior e não
+representa automaticamente o estado mais recente de `main`.
+
 ## Estado verificável
 
 A âncora de código da release `v0.2.0` é o merge da PR `#61`,
@@ -253,6 +265,8 @@ objeto da validação.
 
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
+- **paleta de comandos e cenários parallax estão planejados, mas não implementados nem integrados**;
+
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
 - **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura é opcional e não é gate de release;
 - **a release oficial `v0.2.0` está publicada por decisão do proprietário, sem alegação de conformidade jurídica ou assinatura concluída**;
@@ -277,6 +291,7 @@ suporte definitivo depende de contrato e teste correspondentes.
 O README é a porta de entrada do projeto. A rastreabilidade detalhada permanece
 nas fontes canônicas:
 
+- [Plano de Cenários Parallax e Paleta de Comandos](docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md)
 - [Definição canônica do produto](docs/DEFINICAO_DO_PRODUTO.md)
 - [Plano Mestre de Estabilização](docs/PLANO_MESTRE_ESTABILIZACAO.md)
 - [Matriz funcional atual](docs/MATRIZ_FUNCIONALIDADES_ATUAL.md)

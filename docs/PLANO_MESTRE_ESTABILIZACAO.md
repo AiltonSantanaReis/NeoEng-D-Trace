@@ -1,10 +1,26 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
-Baseline deste snapshot: `baseline_manifest.json`, gerado em 15 de agosto de 2026.
+Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
-## Estado operacional de referência — 15 de agosto de 2026
+## Estado operacional de referência — 18 de agosto de 2026
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
+
+## Reconciliação corrente do estado e do novo plano
+
+- `main` verificado em `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`.
+
+- CI pré-merge `32107519574` e CI pós-merge `32107883246` passaram em Linux e Windows.
+
+- A PR `#92` não promoveu nova funcionalidade: removeu uma instrução duplicada
+  e atualizou o baseline oficial.
+
+- O plano aceito de paleta de comandos e cenários parallax está registrado em
+  `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md` com estado
+  `PLANEJADO / NÃO INICIADO`.
+
+- A release `v0.2.0` permanece um snapshot publicado anterior; este `main`
+  contém commits posteriores e não deve ser apresentado como idêntico à release.
 
 Etapa 14 — encerrada no escopo técnico pós-merge:
 
