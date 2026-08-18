@@ -8,16 +8,21 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 
 ## Reconciliação corrente do estado e do novo plano
 
-- baseline funcional verificado em `b6549ffc1f0e92fb8eeb0f7846414356172191a8`,\n  merge da PR `#92`; o HEAD documental atual do `main` é `45b99f058601092a6121a7db4153ba27795325c0`,\n  merge da PR `#93`.
+- baseline funcional verificado em `b6549ffc1f0e92fb8eeb0f7846414356172191a8`,
+  merge da PR `#92`; o HEAD atual do `main` é `9cef8a0eabd0f6c6e087fc3a5251ddb9df02da18`,
+  merge da Etapa 2 pela PR `#95`.
 
-- CI pré-merge `32107519574` e CI pós-merge `32107883246` passaram em Linux e Windows.
+- CI pré-merge `32107519574` e CI pós-merge `32107883246` validaram o baseline;
+  reconciliação documental `32113850905` e validação da Etapa 2 `32118071443`
+  passaram em Linux e Windows.
 
-- A PR `#92` não promoveu nova funcionalidade: removeu uma instrução duplicada
-  e atualizou o baseline oficial.
+- A PR `#92` removeu uma instrução duplicada e atualizou o baseline; a PR `#93`
+  reconciliou a documentação; a PR `#95` integrou o registry de comandos, os
+  estados derivados das QAction e o gatilho Ctrl+K.
 
-- O plano aceito de paleta de comandos e cenários parallax está registrado em
-  `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md` com estado
-  `PLANEJADO / NÃO INICIADO`.
+- A paleta visual, busca, localização e acessibilidade ainda não foram
+  implementadas. O parallax, câmera, overlays e schema lateral continuam
+  `PLANEJADOS / NÃO INICIADOS`.
 
 - A release `v0.2.0` permanece um snapshot publicado anterior; este `main`
   contém commits posteriores e não deve ser apresentado como idêntico à release.

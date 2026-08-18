@@ -53,9 +53,16 @@ removidos ou usados para obter aprovação.
    Qt offscreen. A reprodução com o canvas focado confirmou o comportamento e
    o teste passou a usar o widget focável real, sem emissão artificial.
 
-## Limitações declaradas
+## Encerramento pós-merge
 
 - Não existe ainda uma paleta visual; não há alegação de busca ou UX concluída.
 - Não há cenário parallax, câmera, overlay ou schema lateral nesta etapa.
-- O CI remoto e o merge ainda precisam validar este conjunto antes do
-  encerramento formal da etapa.
+- O CI remoto `32118071443` passou em Linux e Windows, incluindo os gates de
+  cobertura, isolamento, integridade de evidências e preservação da suíte
+  legada.
+- A PR `#95` foi integrada no merge `9cef8a0eabd0f6c6e087fc3a5251ddb9df02da18`.
+  O registry, os 19 IDs estáveis, os estados derivados das QAction e o
+  gatilho Ctrl+K estão integrados no `main`.
+- A paleta visual, busca, localização, acessibilidade e o módulo parallax
+  permanecem pendentes para etapas posteriores; não são declarados como
+  concluídos por esta evidência.
