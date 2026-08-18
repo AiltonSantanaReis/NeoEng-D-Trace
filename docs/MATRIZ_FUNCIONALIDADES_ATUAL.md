@@ -8,7 +8,7 @@
 
 **Âncora integrada pós-merge da Etapa 14:** `f15193a55d1a5de0c7031f5bab656107302eee1b` (PR `#58`, CI pós-merge `31905237922`)
 
-**Âncora atual verificada:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`; CI pré-merge `32107519574` e CI pós-merge `32107883246` passaram em Linux e Windows.
+**Baseline funcional verificado:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`.\n**HEAD documental atual:** `45b99f058601092a6121a7db4153ba27795325c0`, merge da PR `#93`.\nCI pré-merge `32107519574`, pós-merge `32107883246` e reconciliação documental\n`32113850905` passaram nos respectivos gates Linux/Windows.
 
 **Estado atual:** Etapas 11 a 14 permanecem encerradas nos escopos aprovados. A PR `#92` contém apenas a remoção de uma instrução duplicada e a atualização correspondente do baseline. O plano de cenários parallax e a paleta de comandos estão `PLANEJADOS / NÃO INICIADOS`. A release oficial `v0.2.0` permanece publicada como snapshot anterior e não representa automaticamente o `main` atual.
 

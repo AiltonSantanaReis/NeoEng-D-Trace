@@ -8,7 +8,7 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 
 ## Reconciliação corrente do estado e do novo plano
 
-- `main` verificado em `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`.
+- baseline funcional verificado em `b6549ffc1f0e92fb8eeb0f7846414356172191a8`,\n  merge da PR `#92`; o HEAD documental atual do `main` é `45b99f058601092a6121a7db4153ba27795325c0`,\n  merge da PR `#93`.
 
 - CI pré-merge `32107519574` e CI pós-merge `32107883246` passaram em Linux e Windows.
 
