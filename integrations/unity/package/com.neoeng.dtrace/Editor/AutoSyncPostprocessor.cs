@@ -73,33 +73,21 @@ namespace NeoEng.DTrace.Editor
             running = true;
             try
             {
-                foreach (string manifest in manifests)
+                UnityImportGenerator.ImportBatchResult batch =
+                    UnityImportGenerator.ImportManifests(manifests);
+                if (!batch.Success)
                 {
-                    UnityImportGenerator.ImportResult result;
-                    try
+                    Debug.LogError("UNITY_NATIVE_AUTO_SYNC=GLOBAL_ROLLBACK error=" + batch.ErrorSummary());
+                    foreach (string manifest in manifests)
                     {
-                        result = UnityImportGenerator.ImportManifest(manifest);
+                        ScheduleHashRetry(manifest, batch.Error);
                     }
-                    catch (Exception exception)
-                    {
-                        Debug.LogError("UNITY_NATIVE_AUTO_SYNC=FAILED manifest=" + manifest + " error=" + exception.Message);
-                        ScheduleHashRetry(manifest, exception.Message);
-                        continue;
-                    }
-                    string status = !result.Success
-                        ? "FAILED"
-                        : result.UpdatedAssets > 0 ? "UPDATED" : "UNCHANGED";
-                    string line = "UNITY_NATIVE_AUTO_SYNC=" + status + " manifest=" + manifest;
-                    if (result.Success)
-                    {
-                        HashRetryCounts.Remove(manifest);
-                        Debug.Log(line);
-                    }
-                    else
-                    {
-                        Debug.LogError(line + " error=" + result.ErrorSummary());
-                        ScheduleHashRetry(manifest, result.Error);
-                    }
+                    return;
+                }
+                foreach (UnityImportGenerator.ImportResult result in batch.Results)
+                {
+                    string status = result.UpdatedAssets > 0 ? "UPDATED" : "UNCHANGED";
+                    Debug.Log("UNITY_NATIVE_AUTO_SYNC=" + status + " transaction=GLOBAL");
                 }
             }
             finally

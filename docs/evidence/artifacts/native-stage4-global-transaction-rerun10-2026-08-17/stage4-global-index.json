@@ -1,0 +1,15 @@
+{
+  "files": {
+    "stage4-global-engine.log": {
+      "bytes": 66481,
+      "sha256": "3c32d0801bfe3966589895e26a7e9e48c8653383fe30f9abc92210676452b6d1"
+    },
+    "stage4-global-report.json": {
+      "bytes": 1299,
+      "sha256": "5ab1d51147c017b0c7fabc5b891f74876854d886be3fb803d6ad0519afe56a9d"
+    }
+  },
+  "schema_version": 1,
+  "stage": 4,
+  "status": "SUCCESS"
+}

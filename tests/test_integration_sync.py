@@ -11,8 +11,10 @@ from src.exporters.integration_sync import (
     IntegrationPlanError,
     IntegrationSecurityError,
     _inside,
+    apply_manifest_batch,
     apply_plan,
     manifest_payload_hash,
+    plan_manifest_batch,
     plan_outputs,
     validate_manifest_sources,
 )
@@ -331,3 +333,158 @@ def test_manifest_payload_hash_rejects_missing_metadata(tmp_path):
 
     with pytest.raises(IntegrationPlanError, match="metadata is invalid"):
         manifest_payload_hash(manifest)
+
+
+def test_manifest_batch_plan_is_deterministic_and_does_not_write(tmp_path):
+    root = tmp_path / "generated"
+    manifests = {
+        "zeta.ndt.integration.json": {"zeta.json": "z"},
+        "alpha.ndt.integration.json": {"alpha.json": "a"},
+    }
+
+    plan = plan_manifest_batch(root, manifests)
+
+    assert plan.manifests == (
+        "alpha.ndt.integration.json",
+        "zeta.ndt.integration.json",
+    )
+    assert [item.relative_path for item in plan.outputs] == ["alpha.json", "zeta.json"]
+    assert not root.exists()
+
+
+def test_manifest_batch_commits_all_manifests_once_and_is_repeatable(tmp_path):
+    root = tmp_path / "generated"
+    manifests = {
+        "alpha.ndt.integration.json": {"alpha.json": "new-alpha"},
+        "zeta.ndt.integration.json": {"zeta.json": "new-zeta"},
+    }
+
+    plan = plan_manifest_batch(root, manifests)
+    apply_manifest_batch(plan, manifests)
+    first = {path: (root / path).read_bytes() for path in ("alpha.json", "zeta.json")}
+
+    repeat = plan_manifest_batch(root, manifests)
+    apply_manifest_batch(repeat, manifests)
+
+    assert {path: (root / path).read_bytes() for path in first} == first
+    assert not list(root.glob(".neoeng-*"))
+
+
+def test_manifest_batch_rolls_back_prior_manifest_when_later_output_fails(
+    tmp_path, monkeypatch
+):
+    root = tmp_path / "generated"
+    root.mkdir()
+    (root / "alpha.json").write_text("old-alpha", encoding="utf-8")
+    (root / "zeta.json").write_text("old-zeta", encoding="utf-8")
+    manifests = {
+        "alpha.ndt.integration.json": {"alpha.json": "new-alpha"},
+        "zeta.ndt.integration.json": {"zeta.json": "new-zeta"},
+    }
+    plan = plan_manifest_batch(root, manifests)
+
+    from src.core import atomic_outputs
+
+    original = atomic_outputs.AtomicOutputTransaction._replace
+
+    def fail_later(transaction, source, destination):
+        if Path(destination) == root / "zeta.json":
+            raise OSError("controlled global second-manifest failure")
+        return original(transaction, source, destination)
+
+    monkeypatch.setattr(atomic_outputs.AtomicOutputTransaction, "_replace", fail_later)
+    with pytest.raises(OSError, match="controlled global second-manifest failure"):
+        apply_manifest_batch(plan, manifests)
+
+    assert (root / "alpha.json").read_text(encoding="utf-8") == "old-alpha"
+    assert (root / "zeta.json").read_text(encoding="utf-8") == "old-zeta"
+    assert not list(root.glob(".neoeng-*"))
+
+
+def test_manifest_batch_rejects_cross_manifest_duplicate_before_writing(tmp_path):
+    root = tmp_path / "generated"
+    manifests = {
+        "alpha.ndt.integration.json": {"shared.json": "alpha"},
+        "zeta.ndt.integration.json": {r"shared.json": "zeta"},
+    }
+
+    with pytest.raises(IntegrationPlanError, match="duplicate output"):
+        plan_manifest_batch(root, manifests)
+    assert not root.exists()
+
+
+def test_manifest_batch_rejects_changed_manifest_without_mutation(tmp_path):
+    root = tmp_path / "generated"
+    manifests = {
+        "alpha.ndt.integration.json": {"alpha.json": "alpha"},
+        "zeta.ndt.integration.json": {"zeta.json": "zeta"},
+    }
+    plan = plan_manifest_batch(root, manifests)
+
+    with pytest.raises(IntegrationPlanError, match="manifest batch changed"):
+        apply_manifest_batch(
+            plan,
+            {"alpha.ndt.integration.json": manifests["alpha.ndt.integration.json"]},
+        )
+
+    assert not root.exists()
+
+
+@pytest.mark.parametrize(
+    "candidate",
+    [
+        None,
+        {
+            1: {"alpha.json": "alpha"},
+            "zeta.ndt.integration.json": {"zeta.json": "zeta"},
+        },
+    ],
+)
+def test_manifest_batch_rejects_invalid_mapping_keys_without_mutation(
+    tmp_path, candidate
+):
+    root = tmp_path / "generated"
+    manifests = {
+        "alpha.ndt.integration.json": {"alpha.json": "alpha"},
+        "zeta.ndt.integration.json": {"zeta.json": "zeta"},
+    }
+    plan = plan_manifest_batch(root, manifests)
+
+    with pytest.raises(IntegrationPlanError, match="manifest batch changed"):
+        apply_manifest_batch(plan, candidate)
+
+    assert not root.exists()
+
+
+def test_manifest_batch_rejects_non_mapping_manifest_outputs(tmp_path):
+    root = tmp_path / "generated"
+    manifests = {
+        "alpha.ndt.integration.json": {"alpha.json": "alpha"},
+        "zeta.ndt.integration.json": {"zeta.json": "zeta"},
+    }
+    plan = plan_manifest_batch(root, manifests)
+    changed = {
+        "alpha.ndt.integration.json": ["invalid"],
+        "zeta.ndt.integration.json": manifests["zeta.ndt.integration.json"],
+    }
+
+    with pytest.raises(IntegrationPlanError, match="output set is invalid"):
+        apply_manifest_batch(plan, changed)
+
+    assert not root.exists()
+
+
+def test_manifest_batch_rejects_changed_manifest_outputs_without_mutation(tmp_path):
+    root = tmp_path / "generated"
+    manifests = {
+        "alpha.ndt.integration.json": {"alpha.json": "alpha"},
+        "zeta.ndt.integration.json": {"zeta.json": "zeta"},
+    }
+    plan = plan_manifest_batch(root, manifests)
+    changed = dict(manifests)
+    changed["alpha.ndt.integration.json"] = {"unexpected.json": "alpha"}
+
+    with pytest.raises(IntegrationPlanError, match="output set changed"):
+        apply_manifest_batch(plan, changed)
+
+    assert not root.exists()

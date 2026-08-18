@@ -134,14 +134,91 @@ static func import_project(root: String = "res://NeoEngGenerated") -> Dictionary
     var scan := ManifestDiagnostic.scan_project(root)
     if scan.get("status") != "SUCCESS":
         return scan
+    var snapshot := _snapshot_tree(root)
     var results: Array = []
-    for manifest_result in scan.get("manifests", []):
+    var manifest_results: Array = scan.get("manifests", []).duplicate(true)
+    manifest_results.sort_custom(func(left: Dictionary, right: Dictionary):
+        return str(left.get("manifest_path", "")) < str(right.get("manifest_path", ""))
+    )
+    for manifest_result in manifest_results:
         var manifest_path = manifest_result.get("manifest_path", "")
-        results.append(import_manifest(manifest_path, root))
-    for result in results:
+        var result := import_manifest(manifest_path, root)
+        results.append(result)
         if result.get("status") != "SUCCESS":
-            return {"status": result.get("status"), "results": results}
-    return {"status": "SUCCESS", "root": root, "results": results}
+            if not _restore_tree(root, snapshot):
+                return {
+                    "status": "FAILED",
+                    "transaction": "GLOBAL",
+                    "rollback": "FAILED",
+                    "results": results,
+                }
+            return {
+                "status": "FAILED",
+                "transaction": "GLOBAL",
+                "rollback": "RESTORED",
+                "results": results,
+            }
+    return {
+        "status": "SUCCESS",
+        "transaction": "GLOBAL",
+        "rollback": "NOT_REQUIRED",
+        "root": root,
+        "results": results,
+    }
+
+
+static func _snapshot_tree(root: String) -> Dictionary:
+    var snapshot := {"exists": DirAccess.dir_exists_absolute(root), "files": {}}
+    if snapshot["exists"]:
+        var files: Dictionary = snapshot["files"]
+        _collect_tree_files(root, root, files)
+    return snapshot
+
+
+static func _collect_tree_files(root: String, current: String, files: Dictionary) -> void:
+    for file_name in DirAccess.get_files_at(current):
+        var path := current.path_join(file_name)
+        var relative := path.trim_prefix(root).trim_prefix("/")
+        files[relative] = FileAccess.get_file_as_bytes(path)
+    var directories := DirAccess.get_directories_at(current)
+    directories.sort()
+    for directory_name in directories:
+        _collect_tree_files(root, current.path_join(directory_name), files)
+
+
+static func _restore_tree(root: String, snapshot: Dictionary) -> bool:
+    if DirAccess.dir_exists_absolute(root) and not _remove_tree(root):
+        return false
+    if not bool(snapshot.get("exists", false)):
+        return true
+    if DirAccess.make_dir_recursive_absolute(root) != OK:
+        return false
+    var files: Dictionary = snapshot.get("files", {})
+    var paths: Array = files.keys()
+    paths.sort()
+    for relative in paths:
+        var destination := root.path_join(str(relative))
+        var parent := destination.get_base_dir()
+        if DirAccess.make_dir_recursive_absolute(parent) != OK:
+            return false
+        var handle := FileAccess.open(destination, FileAccess.WRITE)
+        if handle == null:
+            return false
+        handle.store_buffer(files[relative])
+        handle.close()
+    return true
+
+
+static func _remove_tree(path: String) -> bool:
+    for file_name in DirAccess.get_files_at(path):
+        if DirAccess.remove_absolute(path.path_join(file_name)) != OK:
+            return false
+    var directories := DirAccess.get_directories_at(path)
+    directories.sort()
+    for directory_name in directories:
+        if not _remove_tree(path.path_join(directory_name)):
+            return false
+    return DirAccess.remove_absolute(path) == OK
 
 
 static func _import_sprite(

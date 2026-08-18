@@ -1,0 +1,48 @@
+{
+  "engines": {
+    "godot": {
+      "run": {
+        "markers": {
+          "GODOT_STAGE4_GLOBAL_IMPORT=PASS": true,
+          "GODOT_STAGE4_GLOBAL_REPEAT=PASS": true,
+          "GODOT_STAGE4_GLOBAL_ROLLBACK=PASS": true,
+          "NATIVE_STAGE4_GLOBAL_GODOT=SUCCESS": true
+        },
+        "returncode": 0,
+        "success": true
+      },
+      "version": "4.7.stable"
+    },
+    "unity": {
+      "run": {
+        "markers": {
+          "NATIVE_STAGE4_GLOBAL_UNITY=SUCCESS": true,
+          "UNITY_STAGE4_GLOBAL_IMPORT=PASS": true,
+          "UNITY_STAGE4_GLOBAL_REPEAT=PASS": true,
+          "UNITY_STAGE4_GLOBAL_ROLLBACK=PASS": true
+        },
+        "returncode": 0,
+        "success": true
+      },
+      "version": "6000.5.7f1"
+    }
+  },
+  "fixtures": {
+    "godot_manifest": {
+      "bytes": 2073,
+      "sha256": "9c3213a03e194a3dddd650959ad514251edba54e5a12891cc91f55e1febf4bdb"
+    },
+    "godot_source": {
+      "bytes": 107,
+      "sha256": "3cab597896dc20cd533600d45e10434ee97d3ff45cee21119072865a9ef6ca58"
+    },
+    "unity_source": {
+      "bytes": 126,
+      "sha256": "767f66c481f4834680d544ac754d30243d4693ce683f93412629840925101554"
+    }
+  },
+  "schema_version": 1,
+  "scope": "global transaction and rollback of multiple manifests",
+  "stage": 4,
+  "status": "SUCCESS"
+}
