@@ -241,15 +241,15 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "a207deb6310771812f0bee47f7473e7ab097a4e29e108cac2ebbfb55c535a693",
-      "size": 6876
+      "sha256": "f21e8adbdf4b8e63af1ad2352bcfb1521dbfe81a85ea20bc8efb4c1d62d4cc88",
+      "size": 6904
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
       "sha256": "f564d568cdaca58fdd65ed205182e42c36cfc25fc992e286a9f9a6e28e68a655",
       "size": 18972
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
-      "sha256": "da7d936e2af3dea5217cc7e80a04d297f5b484af46608a861696a232e4a31903",
+      "sha256": "8535e7d61d4456549ec8eade3dd42d0bfb78dd1bfecd30b39d8226a16681db1f",
       "size": 4708
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
@@ -261,8 +261,8 @@
       "size": 7063
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "0ecc1e00d6d4443611c7cda137d93c91fd67a7d8ee17aa79d26d0cef2eb83212",
-      "size": 17218
+      "sha256": "51b89fa35c729b3b11845da99a1693fb736ad51d10b06c997ffe7634e3b6b811",
+      "size": 17236
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -552,6 +552,10 @@
       "sha256": "129cac0c4b966059bfc871a8a8f66534aad4ab144c36ffbe56289b3d78d3e28f",
       "size": 7757
     },
+    "docs/evidence/ETAPA_4B3_AUTORIA_CENARIO_2026-08-18.md": {
+      "sha256": "6afe0426addf3949e337ff961a96de6d2e36af137a8665ba4bf7b73b0955aeb1",
+      "size": 9172
+    },
     "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
       "sha256": "6d11b8e1485485e3438fcf86f7149852209195753b6d03b29683be18ae606542",
       "size": 6222
@@ -749,8 +753,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "5e300bf7f28ea827559cc2645445ba65a314b598ca575c0adb2d8787be9fcf5c",
-      "size": 32542
+      "sha256": "c40662fa3cf65f45fb0eca07d35d7a1acdfe9d0f7ee8d6d25963c1cbca34a4ce",
+      "size": 32772
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
@@ -3916,9 +3920,41 @@
       "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e",
       "size": 18489
     },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/main_window.py": {
+      "sha256": "c7fc797fefd6d26d34fbda1a7a82195b13d22298349f7b1d0e6d6a17bee01339",
+      "size": 45576
+    },
     "docs/evidence/artifacts/stage4b2-preview-2026-08-18/manifest.json": {
-      "sha256": "41e13af96715b53f52fd06ec06d98835e533271789814d7a97d6e8ec52018f8f",
-      "size": 5382
+      "sha256": "0a90bdc02df5ca1b2e9815affcb5bbb31a5e6f4bc14fe1bc6acf35034594b8e2",
+      "size": 5363
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/authoring_fixture.ndtproj": {
+      "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db",
+      "size": 30
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/authoring_fixture.ndtscenario.json": {
+      "sha256": "c4fb3456d8ca49baf4dc1c456b9413bef9945f56cbb53ef136ca9e572888d7fe",
+      "size": 733
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/compact_1280x720_01_authoring.png": {
+      "sha256": "07151c6fb5fc7c532fea8dccb7153103619ffc28cf9efaa1b8cec906fee0a1bb",
+      "size": 18834
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/compact_1280x720_01_authoring_annotated.png": {
+      "sha256": "b1b9a96ccedf012c7d3c347b962262c15703f8e5a517ba81fa07c1a616e47156",
+      "size": 20233
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/desktop_1920x1080_01_authoring.png": {
+      "sha256": "c620b4dc6ff470ac8b2d63e16add4104da2737f1b2fa09a97fb6a7d68def00f0",
+      "size": 24953
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/desktop_1920x1080_01_authoring_annotated.png": {
+      "sha256": "e83b061209008833e13d7466fe7e7bd323973a5c62d2836150087fd61be8d3b0",
+      "size": 27641
+    },
+    "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/manifest.json": {
+      "sha256": "0e98c5eaedad5649de21f09adba718d8f6ed33f737f2a9cc3d23f3265c3fc3eb",
+      "size": 5004
     },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
@@ -4744,6 +4780,10 @@
       "sha256": "f82e8fda46437c2e92e8c9bcdfa901a0c5ae4914649522191a3895df1c4afe30",
       "size": 17484
     },
+    "scripts/audit_scenario_authoring.py": {
+      "sha256": "8a2ee391e0c0ad5c0a7c8e290ee6d9d4a5334ec1b5e1b39f5688ca0231ddb9c8",
+      "size": 10537
+    },
     "scripts/audit_scenario_preview.py": {
       "sha256": "50a73d58ec9964dce851c757ee5eb20766f93e7560afe56aeb6e017452f14319",
       "size": 8150
@@ -4879,6 +4919,10 @@
     "src/core/polygon_validation.py": {
       "sha256": "2a06c8d8ac42a054d895086405e8f05281f841cfac2701af41da9970b15eb753",
       "size": 4041
+    },
+    "src/core/scenario_authoring.py": {
+      "sha256": "e80a3dec36c2c30b606bf663ec1c048f43fedd0b131f3b53f46f0ec50740b16c",
+      "size": 19089
     },
     "src/core/scenario_preview.py": {
       "sha256": "0d9f9ff7c7f92b38c34c98b66e9595839c7575c96ec8c7186409ae104834cb53",
@@ -5125,8 +5169,8 @@
       "size": 11299
     },
     "src/ui/command_bindings.py": {
-      "sha256": "dbed24f77744305cd2e1401427125d6300d168ac409ee6c08d08f40cf5963651",
-      "size": 1435
+      "sha256": "a507f68b1676c32019533238616d36f4d8ae3a28c15f0f55eb2c7499310bdea6",
+      "size": 1617
     },
     "src/ui/command_palette.py": {
       "sha256": "f0fd8813f8862aa8da2ee91cde5689202b3470909ce0a92acea9cf741be21b74",
@@ -5161,12 +5205,12 @@
       "size": 2371
     },
     "src/ui/layers_panel.py": {
-      "sha256": "4ff300ea4fee4a531db034c2f44e3ffc9cc2743682107ba074d908b4c781ae8b",
-      "size": 6189
+      "sha256": "d1621ec9307ce9c58e56bfb38b4fbd93c2b0cf17a19af6e2238c72f2bb2565ea",
+      "size": 6940
     },
     "src/ui/main_window.py": {
-      "sha256": "c7fc797fefd6d26d34fbda1a7a82195b13d22298349f7b1d0e6d6a17bee01339",
-      "size": 45576
+      "sha256": "b70376d94df32aa6107bdadc29556be06c8bd652dfebd7aa66c304ddc7434c22",
+      "size": 45689
     },
     "src/ui/main_window_translations.py": {
       "sha256": "1f3eefd3817c25028b8661aa1cfc6df7b73b3b032e6b043b1eeea5ae326a4608",
@@ -5177,8 +5221,16 @@
       "size": 50763
     },
     "src/ui/responsive_layout.py": {
-      "sha256": "f5433c867d1fa212c88beb182a2c64b58b31b829f43c572589e5e0eeff47856c",
-      "size": 5889
+      "sha256": "f243c9f0a529a18c8a125f1e642c8545f7021bb8243503d362c39e2cd6096e2a",
+      "size": 6533
+    },
+    "src/ui/scenario_authoring_actions.py": {
+      "sha256": "2929909aeb7a6c26b2fb769ce4ffea50cd0cb6a54e50767862b98da058279d23",
+      "size": 4365
+    },
+    "src/ui/scenario_panel.py": {
+      "sha256": "587110459573a6b86635b27807c5f48ec059c29144693f09b6f8617bce75ffd1",
+      "size": 13557
     },
     "src/ui/scenario_preview_actions.py": {
       "sha256": "becb6d3c526b3adbfb4c824de17cb2d812fe1bde2bfb2c32499cbe44cd9f1600",
@@ -5417,8 +5469,8 @@
       "size": 2804
     },
     "tests/test_stage2_command_registry.py": {
-      "sha256": "442e7d96a3153f0fc6fa4738df0c22bba837816c6dbb702bfa90d913be2fe4f8",
-      "size": 4330
+      "sha256": "734b8e71ec802bee038687924a9d945da01094ad46ca7780478bca5e837cf907",
+      "size": 4418
     },
     "tests/test_stage3_command_palette.py": {
       "sha256": "b13c471561edf5c24f8d407dbd0068f2cee43f470a30471c3fcdf4b8b5a50bcc",
@@ -5435,6 +5487,10 @@
     "tests/test_stage4b2_preview_overlays.py": {
       "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f",
       "size": 5314
+    },
+    "tests/test_stage4b3_scenario_authoring.py": {
+      "sha256": "e6a4be84c9f20212aeef302d85748a90071e7fbc262a54ae0dc4c09a3a983d6e",
+      "size": 11934
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",

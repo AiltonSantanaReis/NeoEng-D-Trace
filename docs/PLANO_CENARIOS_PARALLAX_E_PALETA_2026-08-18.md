@@ -1,13 +1,13 @@
 # Plano de Cenários Parallax e Paleta de Comandos — NeoEng-D-Trace
 
 **Data de aceitação:** 18 de agosto de 2026
-**Estado:** EM EXECUÇÃO — Etapa 4B.2 aprovada no escopo local; Etapa 4B geral aberta
+**Estado:** EM EXECUÇÃO — Etapa 4B.3 aprovada no escopo local; Etapa 4B geral aberta
 **Baseline funcional verificada:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8` (merge da PR `#92`)
 **Fonte de referência:** `plano_cenarios_parallax_neoeng_dtrace.docx`, SHA-256 `066dd9a5b192e215b1859a81ab22fbdfe2d9a7b8db46acbc7f6f62fe867cc0ac`
 
 ## Natureza deste documento
 
-Este plano registra uma decisão de produto aceita para desenvolvimento futuro. A câmera/parallax matemática (4A), o schema lateral (4B.1) e o preview/overlays (4B.2) possuem implementação e evidência locais pré-merge; persistência de autoria, exportação, benchmark e fechamento da Etapa 4B continuam pendentes.
+Este plano registra uma decisão de produto aceita para desenvolvimento futuro. A câmera/parallax matemática (4A), o schema lateral (4B.1), o preview/overlays (4B.2) e a autoria lateral (4B.3) possuem implementação e evidência locais pré-merge; exportação, benchmark e fechamento da Etapa 4B continuam pendentes.
 O documento anexado é uma especificação de referência; o status acima e as evidências próprias de cada etapa são a autoridade para o estado atual. Suas
 afirmações sobre WebGL, runtime, shaders, partículas e desempenho não são
 afirmações sobre o estado atual do projeto.

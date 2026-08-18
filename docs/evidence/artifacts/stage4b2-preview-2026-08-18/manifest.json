@@ -187,9 +187,9 @@
       "bytes": 55984,
       "sha256": "860693bb67b1351f6935b39510541f04afeb644e8240dc1bec8924f611757e09"
     },
-    "../../../../src/ui/main_window.py": {
-      "bytes": 46766,
-      "sha256": "da2620b621ac9235c28408846278cb9561997e4a357c6021a3635dc6d021b9fc"
+    "main_window.py": {
+      "bytes": 45576,
+      "sha256": "c7fc797fefd6d26d34fbda1a7a82195b13d22298349f7b1d0e6d6a17bee01339"
     },
     "../../../../src/ui/main_window_translations.py": {
       "bytes": 9926,
