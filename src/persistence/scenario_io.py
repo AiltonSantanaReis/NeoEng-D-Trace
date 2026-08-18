@@ -210,8 +210,6 @@ def save_scenario(
                 handle.flush()
                 os.fsync(handle.fileno())
             transaction.commit()
-    except ScenarioWriteError:
-        raise
     except OSError as exc:
         raise ScenarioWriteError(
             f"failed to atomically write scenario {destination}: {exc}"

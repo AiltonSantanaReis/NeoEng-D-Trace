@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+import src.persistence.scenario_io as scenario_io
 import src.persistence.scenario_schema as scenario_schema
 from src.core.atomic_outputs import AtomicOutputTransaction
 from src.persistence.scenario_io import (
@@ -320,6 +321,137 @@ def test_save_requires_existing_parent_and_never_creates_partial_output(tmp_path
     with pytest.raises(ScenarioWriteError, match="does not exist"):
         save_scenario(document, target)
     assert not target.exists()
+
+
+def test_read_stat_and_open_failures_are_reported(monkeypatch):
+    class StatFailurePath:
+        def exists(self):
+            return True
+
+        def is_file(self):
+            return True
+
+        def stat(self):
+            raise OSError("controlled scenario stat failure")
+
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: StatFailurePath())
+    with pytest.raises(ScenarioReadError, match="stat"):
+        load_scenario("ignored.ndtscenario.json")
+
+    class OpenFailurePath:
+        def exists(self):
+            return True
+
+        def is_file(self):
+            return True
+
+        def stat(self):
+            return type("Stat", (), {"st_size": 0})()
+
+        def open(self, *_args, **_kwargs):
+            raise OSError("controlled scenario read failure")
+
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: OpenFailurePath())
+    with pytest.raises(ScenarioReadError, match="read"):
+        load_scenario("ignored.ndtscenario.json")
+
+
+def test_read_and_hash_stream_limits_are_enforced(monkeypatch):
+    class OversizedScenarioHandle:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def read(self, _size):
+            return b"xx"
+
+    class OversizedScenarioPath:
+        def exists(self):
+            return True
+
+        def is_file(self):
+            return True
+
+        def stat(self):
+            return type("Stat", (), {"st_size": 0})()
+
+        def open(self, *_args, **_kwargs):
+            return OversizedScenarioHandle()
+
+    monkeypatch.setattr(scenario_io, "MAX_SCENARIO_FILE_BYTES", 1)
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: OversizedScenarioPath())
+    with pytest.raises(ScenarioReadError, match="exceeds"):
+        load_scenario("ignored.ndtscenario.json")
+
+    class OversizedProjectPath(OversizedScenarioPath):
+        suffix = ".ndtproj"
+
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: OversizedProjectPath())
+    with pytest.raises(ScenarioReadError, match="exceeds"):
+        hash_project_file("ignored.ndtproj")
+
+    class ProjectSizeFailurePath(OversizedProjectPath):
+        def stat(self):
+            return type("Stat", (), {"st_size": 2})()
+
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: ProjectSizeFailurePath())
+    with pytest.raises(ScenarioReadError, match="exceeds"):
+        hash_project_file("ignored.ndtproj")
+
+
+def test_hash_stat_and_read_failures_are_reported(monkeypatch):
+    class ProjectStatFailurePath:
+        suffix = ".ndtproj"
+
+        def is_file(self):
+            return True
+
+        def stat(self):
+            raise OSError("controlled project stat failure")
+
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: ProjectStatFailurePath())
+    with pytest.raises(ScenarioReadError, match="stat"):
+        hash_project_file("ignored.ndtproj")
+
+    class ProjectReadFailurePath:
+        suffix = ".ndtproj"
+
+        def is_file(self):
+            return True
+
+        def stat(self):
+            return type("Stat", (), {"st_size": 0})()
+
+        def open(self, *_args, **_kwargs):
+            raise OSError("controlled project read failure")
+
+    monkeypatch.setattr(scenario_io, "Path", lambda _value: ProjectReadFailurePath())
+    with pytest.raises(ScenarioReadError, match="read"):
+        hash_project_file("ignored.ndtproj")
+
+
+def test_invalid_serialization_and_staging_failure_are_reported(tmp_path, monkeypatch):
+    with pytest.raises(ScenarioValidationError):
+        serialize_scenario({"format_id": SCENARIO_FORMAT_ID})
+
+    project = _project(tmp_path / "scene.ndtproj")
+    document = _document(project)
+    monkeypatch.setattr(scenario_io, "MAX_SCENARIO_FILE_BYTES", 1)
+    with pytest.raises(ScenarioWriteError, match="exceeds"):
+        save_scenario(document, tmp_path / "too-large.ndtscenario.json")
+
+    monkeypatch.setattr(
+        AtomicOutputTransaction,
+        "stage_path",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            OSError("controlled scenario stage failure")
+        ),
+    )
+    monkeypatch.setattr(scenario_io, "MAX_SCENARIO_FILE_BYTES", 64 * 1024 * 1024)
+    with pytest.raises(ScenarioWriteError, match="stage failure"):
+        save_scenario(_document(project), tmp_path / "stage-failure.ndtscenario.json")
 
 
 def test_save_rolls_back_existing_sidecar_when_replace_fails(tmp_path, monkeypatch):
