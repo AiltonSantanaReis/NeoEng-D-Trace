@@ -171,11 +171,17 @@ def run(output: Path) -> dict[str, Any]:
                 window_path = output / f"{resolution_name}_{language}_window.png"
                 _capture(palette, palette_path)
                 _capture(window, window_path)
+                palette_capture = _image_metadata(palette_path)
+                window_capture = _image_metadata(window_path)
                 manifest["captures"][f"{resolution_name}/{language}"] = {
                     "resolution": [width, height],
+                    "files": {
+                        palette_path.name: palette_capture,
+                        window_path.name: window_capture,
+                    },
                     "window": {
                         "geometry": _rect(window),
-                        "capture": _image_metadata(window_path),
+                        "capture": window_capture,
                     },
                     "palette": {
                         "visible": palette.isVisible(),
@@ -185,7 +191,7 @@ def run(output: Path) -> dict[str, Any]:
                         "search_geometry": _rect(palette.search_input),
                         "results_geometry": _rect(palette.results),
                         "command_count": palette.results.count(),
-                        "capture": _image_metadata(palette_path),
+                        "capture": palette_capture,
                     },
                 }
                 QTest.keyClick(palette.search_input, Qt.Key.Key_Escape)
