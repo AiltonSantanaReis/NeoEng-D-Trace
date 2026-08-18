@@ -8,8 +8,15 @@ Registro documental contínuo, atualizado em 18 de agosto de 2026. O estado real
 
 - registra o merge da PR `#97` (`5d4c0829`) e o CI pós-merge `32125768535`, aprovado em Linux e Windows;
 - registra a Etapa 3 integrada: paleta visual, busca, teclado, localização e acessibilidade, com capturas reais e hashes versionados;
-- mantém os cenários parallax, câmera, overlays e schema lateral como trabalho posterior no `main` da PR `#97`; registra a PR `#99` como candidato pré-merge das etapas 4A–4B.5, ainda sem integração;
+- registra a PR `#99` integrada no merge `a129cd251345456c39254b39682d1ef083fd28d0`; o CI pós-merge `32184900502` aprovou Linux e Windows para as etapas 4A–4B.5 de câmera, parallax, schema lateral, preview, autoria e exportação;
 - preserva a release `v0.2.0` como snapshot publicado anterior, sem apresentá-la como idêntica ao `main` atual;
+
+### Etapas 4A–4B.5 — cenários parallax integrados
+
+- integra a PR `#99` no merge `a129cd251345456c39254b39682d1ef083fd28d0`;
+- aprova o CI pós-merge `32184900502` em Linux e Windows;
+- mantém partículas, shaders, pós-processamento, triggers, streaming de texturas e runtime completo fora do escopo do MVP;
+- preserva a release `v0.2.0` como snapshot anterior, sem promover automaticamente este merge a uma nova release.
 
 ### Etapa 14 — encerramento técnico pós-merge
 
