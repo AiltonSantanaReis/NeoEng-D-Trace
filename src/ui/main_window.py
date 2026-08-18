@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -40,6 +40,8 @@ from src.ui.autosave_coordinator import AutosaveCoordinator
 from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
 from src.ui.collision_panel import CollisionPanel
+from src.ui.command_bindings import register_main_window_commands
+from src.ui.command_registry import CommandRegistry
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
 from src.ui.layers_panel import LayersPanel
@@ -53,6 +55,8 @@ from src.ui.tool_palette import ToolPalette
 
 
 class MainWindow(QMainWindow):
+
+    command_palette_requested = Signal()
 
     @property
     def _project_path(self) -> Path | None:
@@ -188,6 +192,7 @@ class MainWindow(QMainWindow):
 
         # 1. Menu Bar (File, View, etc.)
         self._setup_menu_bar()
+        self.command_registry = CommandRegistry(self)
 
         # 2. Main Toolbar (Arquivo/Exportação)
         self.toolbar = QToolBar("Main")
@@ -317,6 +322,7 @@ class MainWindow(QMainWindow):
         self._responsive_layout = build_responsive_layout(self)
         # 7. Atalhos Globais
         self._setup_shortcuts()
+        register_main_window_commands(self.command_registry, self)
 
         self.translations = MAIN_WINDOW_TRANSLATIONS
         self.update_language()
@@ -407,6 +413,16 @@ class MainWindow(QMainWindow):
         # mesmo que também exista no menu.
         QShortcut(QKeySequence.StandardKey.Undo, self, self._undo)
         QShortcut(QKeySequence.StandardKey.Redo, self, self._redo)
+
+        self.command_palette_shortcut = QShortcut(QKeySequence("Ctrl+K"), self)
+        self.command_palette_shortcut.setObjectName("command_palette_shortcut")
+        self.command_palette_shortcut.setContext(Qt.ShortcutContext.WindowShortcut)
+        self.command_palette_shortcut.activated.connect(self._request_command_palette)
+
+    def _request_command_palette(self) -> None:
+        """Notify the future palette host without implementing its UI here."""
+
+        self.command_palette_requested.emit()
 
     def _connect_command_history(self) -> None:
         manager = getattr(self.scene, "cmd", None)
