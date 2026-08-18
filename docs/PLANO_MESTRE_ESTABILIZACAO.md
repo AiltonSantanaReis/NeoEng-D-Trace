@@ -15,8 +15,7 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 - A PR `#97` integrou a paleta visual, busca, teclado, localização e acessibilidade,
   com captura real e hashes registrados na evidência da Etapa 3.
 
-- O parallax, câmera, overlays e schema lateral continuam `PLANEJADOS / NÃO
-  INICIADOS`; não são promovidos pela Etapa 3.
+- O candidato local pré-merge da Etapa 4B contém câmera/parallax (4A), schema lateral (4B.1) e preview/overlays (4B.2), comprovados em evidências hashadas. Persistência/autoria, exportação, benchmark e merge permanecem pendentes; não há aprovação de release.
 
 - A release `v0.2.0` permanece um snapshot publicado anterior; este `main`
   contém commits posteriores e não deve ser apresentado como idêntico à release.

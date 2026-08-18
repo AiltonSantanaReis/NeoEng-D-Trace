@@ -2,6 +2,8 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
+- `ETAPA_4B2_PREVIEW_OVERLAYS_2026-08-18.md` — preview somente leitura no canvas, overlays 16:9/safe area/máscara, testes Qt reais, isolamento da edição normal, capturas PNG, geometria Qt e hashes; pré-merge, sem persistência/exportação de cenário.
+
 - `ETAPA_3_PALETA_COMANDOS_2026-08-18.md` — implementação da paleta visual, busca, teclado, Escape, localização e acessibilidade, com capturas reais en/pt, geometrias Qt, hashes Pillow/OpenCV e validação do manifest.
 - `ETAPA_3_ENCERRAMENTO_POS_MERGE.md` — fechamento pós-merge da PR `#97`, CI `32125768535` aprovado em Linux/Windows e sincronização do `main` ao merge `5d4c0829`.
 - ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md — modelo matemático puro

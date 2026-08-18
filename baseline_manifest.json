@@ -241,16 +241,16 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "3d75d226d18cdad53eb5776498148bf8daa7ad0fad36e58b09ff3aa65945af8b",
-      "size": 6730
+      "sha256": "a207deb6310771812f0bee47f7473e7ab097a4e29e108cac2ebbfb55c535a693",
+      "size": 6876
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
       "sha256": "f564d568cdaca58fdd65ed205182e42c36cfc25fc992e286a9f9a6e28e68a655",
       "size": 18972
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
-      "sha256": "3c8d0c8288fe14a33c6351f97c48fd589cafb6cb2272fd9787312fdba087c764",
-      "size": 4412
+      "sha256": "da7d936e2af3dea5217cc7e80a04d297f5b484af46608a861696a232e4a31903",
+      "size": 4708
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -261,8 +261,8 @@
       "size": 7063
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "86fe78cf188e3c9124f16710710797229eb7ada7721fd766bea3137edec6759f",
-      "size": 17075
+      "sha256": "0ecc1e00d6d4443611c7cda137d93c91fd67a7d8ee17aa79d26d0cef2eb83212",
+      "size": 17218
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -548,6 +548,10 @@
       "sha256": "02ec1b39b68a49a3b8a700c79f65f603e41e49bfcef497b15333bc612bc2decb",
       "size": 5230
     },
+    "docs/evidence/ETAPA_4B2_PREVIEW_OVERLAYS_2026-08-18.md": {
+      "sha256": "129cac0c4b966059bfc871a8a8f66534aad4ab144c36ffbe56289b3d78d3e28f",
+      "size": 7757
+    },
     "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
       "sha256": "6d11b8e1485485e3438fcf86f7149852209195753b6d03b29683be18ae606542",
       "size": 6222
@@ -745,8 +749,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "e24489c4f57a5b90e68e3013d4b1f8ce050a26be6320e3240aac70283892f019",
-      "size": 32282
+      "sha256": "5e300bf7f28ea827559cc2645445ba65a314b598ca575c0adb2d8787be9fcf5c",
+      "size": 32542
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
@@ -3892,6 +3896,30 @@
       "sha256": "3c9cd2a9ad5103ed2b26192dd86ae51f0383c306214576462c7994994c5f3927",
       "size": 1033
     },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/01_normal_editing.png": {
+      "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e",
+      "size": 18489
+    },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/02_preview_read_only.png": {
+      "sha256": "4e4ef8565ecedde356743a1c4b8f04a1c622acd52f2dcc9cc4f6b1308bf887d7",
+      "size": 9581
+    },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/03_preview_with_overlays.png": {
+      "sha256": "9d7720218d9310d7569aa301e42781d21533b54d1dc211d55d806a5398d0760a",
+      "size": 11781
+    },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/03_preview_with_overlays_annotated.png": {
+      "sha256": "97c028092c88ba215e1ee7a7066ed7f30a1cdcfd7c8699caadbb29b9afbe2879",
+      "size": 11030
+    },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/04_normal_after_preview.png": {
+      "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e",
+      "size": 18489
+    },
+    "docs/evidence/artifacts/stage4b2-preview-2026-08-18/manifest.json": {
+      "sha256": "41e13af96715b53f52fd06ec06d98835e533271789814d7a97d6e8ec52018f8f",
+      "size": 5382
+    },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
       "size": 8446
@@ -4716,6 +4744,10 @@
       "sha256": "f82e8fda46437c2e92e8c9bcdfa901a0c5ae4914649522191a3895df1c4afe30",
       "size": 17484
     },
+    "scripts/audit_scenario_preview.py": {
+      "sha256": "50a73d58ec9964dce851c757ee5eb20766f93e7560afe56aeb6e017452f14319",
+      "size": 8150
+    },
     "scripts/audit_ui_capture.py": {
       "sha256": "2434b617b0df2c84a92a1f84157a4bc86708e03701b9b8ef672d9598d98d7f13",
       "size": 12705
@@ -4847,6 +4879,10 @@
     "src/core/polygon_validation.py": {
       "sha256": "2a06c8d8ac42a054d895086405e8f05281f841cfac2701af41da9970b15eb753",
       "size": 4041
+    },
+    "src/core/scenario_preview.py": {
+      "sha256": "0d9f9ff7c7f92b38c34c98b66e9595839c7575c96ec8c7186409ae104834cb53",
+      "size": 5221
     },
     "src/core/snapping.py": {
       "sha256": "6fefac930644e3ff766307fee239bba7dc0201323fb2b64908620a2614dc5998",
@@ -5077,8 +5113,8 @@
       "size": 6003
     },
     "src/ui/canvas_view.py": {
-      "sha256": "0d91c46173afbde9c0132b517dbc9a7a17204bbc87dd5170b16ebe2839afa376",
-      "size": 43783
+      "sha256": "92f4aedf18d50234354c9b2f511b1b97745213b52c937dcb4e89cf167b40ac93",
+      "size": 54530
     },
     "src/ui/collision_overlay.py": {
       "sha256": "5dd981c6fa08ee715f7d32f9b1904cd671fe2bd0e8f92b541c49744e5091af0f",
@@ -5129,12 +5165,12 @@
       "size": 6189
     },
     "src/ui/main_window.py": {
-      "sha256": "7b41a10ed9ac4444b94ef76aa02630435c7e6e81d53a02397dea3de16c48f51b",
-      "size": 45485
+      "sha256": "c7fc797fefd6d26d34fbda1a7a82195b13d22298349f7b1d0e6d6a17bee01339",
+      "size": 45576
     },
     "src/ui/main_window_translations.py": {
-      "sha256": "b61924cff55d388a0c113c2ef0b434033d05498a2d7ab44be61f20da214315cf",
-      "size": 9463
+      "sha256": "1f3eefd3817c25028b8661aa1cfc6df7b73b3b032e6b043b1eeea5ae326a4608",
+      "size": 9722
     },
     "src/ui/mask_viewer.py": {
       "sha256": "810f4019c52adaf1bb790eb54b6df567157934f2048eae0f9357051c91e323b8",
@@ -5143,6 +5179,10 @@
     "src/ui/responsive_layout.py": {
       "sha256": "f5433c867d1fa212c88beb182a2c64b58b31b829f43c572589e5e0eeff47856c",
       "size": 5889
+    },
+    "src/ui/scenario_preview_actions.py": {
+      "sha256": "becb6d3c526b3adbfb4c824de17cb2d812fe1bde2bfb2c32499cbe44cd9f1600",
+      "size": 1980
     },
     "src/ui/side_panel.py": {
       "sha256": "28c3cd61abfd6f185cb5d1cecb2679eb54de4a23b504097de9f9573762fd8f4d",
@@ -5336,6 +5376,10 @@
       "sha256": "7c5623855cddbf355ac02cd04378cdbf001ee38f5d994d59599dfc8b45aa6da1",
       "size": 2451
     },
+    "tests/test_scenario_preview.py": {
+      "sha256": "68fabedf8af5344e14de7314b77f0e1966c71480b9b5ea8cd10e15e796d3f3b7",
+      "size": 3320
+    },
     "tests/test_scenario_schema_io.py": {
       "sha256": "f14e74fdbb73057fd99bb68514fe6f63d6d20fd3bee16cabb903e2e0cd49c6a2",
       "size": 16923
@@ -5387,6 +5431,10 @@
     "tests/test_stage4_parallax_camera.py": {
       "sha256": "acf8255fc49b2208f2d79b0d63824680d72f2a3843fffa2c8616e98f7e3cf5bd",
       "size": 4379
+    },
+    "tests/test_stage4b2_preview_overlays.py": {
+      "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f",
+      "size": 5314
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
