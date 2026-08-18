@@ -242,7 +242,6 @@ def apply_manifest_batch(
         or tuple(sorted(keys)) != plan.manifests
     ):
         raise IntegrationPlanError("manifest batch changed after dry-run")
-        raise IntegrationPlanError("manifest batch changed after dry-run")
     all_outputs: dict[str, bytes | bytearray | str] = {}
     for manifest_id in plan.manifests:
         manifest_outputs = manifests[manifest_id]
