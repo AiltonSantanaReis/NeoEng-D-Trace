@@ -10,15 +10,14 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 
 ## Snapshot atual verificado — 18 de agosto de 2026
 
-O baseline funcional de código verificado é o merge da PR `#97`, commit
-`5d4c0829adabfcd51741d95151f808722d43857c`. O CI pós-merge `32125768535`
-passou em Linux e Windows nos jobs `95675864634` e `95675864866`.
+O baseline funcional de código verificado é o merge da PR `#99`, commit
+`a129cd251345456c39254b39682d1ef083fd28d0`. O CI pós-merge `32184900502`
+passou em Linux e Windows nos jobs `95866168681` e `95866168551`.
 A Etapa 3 integrou a paleta visual, busca, teclado, localização e acessibilidade,
 com evidências reais em `docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md`.
-No `main` integrado pela PR `#97`, o módulo de cenários parallax, câmera,
-overlays e schema lateral permanece planejado e não iniciado. A PR `#99`
-contém um candidato pré-merge das etapas 4A a 4B.5, com evidências locais;
-essa implementação não é apresentada como integrada até os checks e o merge.
+No `main` integrado pela PR `#99`, o módulo de cenários parallax, câmera,
+overlays e schema lateral está integrado no escopo aprovado das etapas 4A a 4B.5,
+com evidências locais hashadas e CI pós-merge aprovado.
 
 A release `v0.2.0` continua sendo um snapshot publicado anterior e não
 representa automaticamente o estado mais recente de `main`.
@@ -268,7 +267,7 @@ objeto da validação.
 
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
-- **paleta de comandos está integrada e validada na Etapa 3; no `main` da PR #97 os cenários parallax permanecem planejados, enquanto a PR #99 contém candidato pré-merge ainda não integrado**;
+- **paleta de comandos está integrada e validada na Etapa 3; as etapas 4A–4B.5 de cenários parallax estão integradas e validadas no `main` pelo CI pós-merge `32184900502`**;
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
 - **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura é opcional e não é gate de release;

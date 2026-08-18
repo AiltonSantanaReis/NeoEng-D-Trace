@@ -8,14 +8,14 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 
 ## Reconciliação corrente do estado e do novo plano
 
-- baseline funcional verificado no merge `5d4c0829adabfcd51741d95151f808722d43857c`,
-  PR `#97`; CI pós-merge `32125768535` passou em Linux e Windows nos jobs
-  `95675864634` e `95675864866`.
+- baseline funcional verificado no merge `a129cd251345456c39254b39682d1ef083fd28d0`,
+  PR `#99`; CI pós-merge `32184900502` passou em Linux e Windows nos jobs
+  `95866168681` e `95866168551`.
 
 - A PR `#97` integrou a paleta visual, busca, teclado, localização e acessibilidade,
   com captura real e hashes registrados na evidência da Etapa 3.
 
-- O candidato pré-merge da PR `#99` contém câmera/parallax (4A), schema lateral (4B.1), preview/overlays (4B.2), autoria lateral (4B.3), exportação/consumidores (4B.4) e fechamento de qualidade (4B.5), comprovados em evidências locais hashadas. Os checks do PR, o CI pós-merge e a integração permanecem pendentes; não há aprovação de release.
+- A PR `#99` integrou câmera/parallax (4A), schema lateral (4B.1), preview/overlays (4B.2), autoria lateral (4B.3), exportação/consumidores (4B.4) e fechamento de qualidade (4B.5), comprovados em evidências locais hashadas. O merge resultou no commit `a129cd251345456c39254b39682d1ef083fd28d0`; o CI pós-merge `32184900502` foi aprovado em Linux e Windows. Isso não aprova automaticamente uma nova release.
 
 - A release `v0.2.0` permanece um snapshot publicado anterior; este `main`
   contém commits posteriores e não deve ser apresentado como idêntico à release.
