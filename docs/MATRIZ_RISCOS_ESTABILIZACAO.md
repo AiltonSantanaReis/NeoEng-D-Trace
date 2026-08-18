@@ -24,7 +24,7 @@
 
 ## Estado operacional atual dos riscos
 
-Atualização corrente de 18 de agosto de 2026: o baseline funcional é o merge `b6549ffc` da PR `#92` e o HEAD atual do `main` é o merge `9cef8a0` da PR `#95`; R-018 permanece planejado e R-019 foi mitigado no escopo da Etapa 2.
+Atualização corrente de 18 de agosto de 2026: o baseline funcional é o merge `5d4c0829` da PR `#97`, com CI pós-merge `32125768535` aprovado em Linux e Windows; R-018 permanece planejado e R-019 foi encerrado no escopo da Etapa 3.
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
@@ -50,7 +50,7 @@ Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agos
 | R-016 | APROVADO | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados; governança revisada |
 | R-017 | INTEGRADO PELA PR #84 | A Etapa 10 possui harness fail-closed, fixtures reais e execução real em Godot 4.7.stable e Unity 6000.5.7f1. Dry-run, aplicação, repetição determinística, conflitos manuais, drift de hash, regressões das Etapas 4/6, hashes e privacidade passaram no pacote `docs/evidence/artifacts/native-stage10-2026-08-17/`. A CI não inicializa dinamicamente as engines, o que não é requisito; as execuções reais são evidência local reproduzível. Merge `bca43f399928d69cb81e133e40991b7c011a0c10` e CI pós-merge `32028639637` foram confirmados. |
 | R-018 | PLANEJADO / NÃO INICIADO | Plano aceito em `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`; nenhuma implementação ou evidência de funcionamento existe ainda. |
-| R-019 | ETAPA 2 INTEGRADA / RISCO REDUZIDO | Registry único de QAction, 19 IDs, estados e Ctrl+K validados na PR `#95`; busca, UI e acessibilidade ainda dependem da Etapa 3 |
+| R-019 | ENCERRADO NO ESCOPO DA ETAPA 3 | PR `#97`, merge `5d4c0829`, CI pós-merge `32125768535`; registry único de QAction, busca, UI, estados, teclado, localização e acessibilidade comprovados |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

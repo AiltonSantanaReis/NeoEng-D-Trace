@@ -10,14 +10,13 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 
 ## Snapshot atual verificado — 18 de agosto de 2026
 
-O baseline funcional de código verificado é o merge da PR `#92`, commit
-`b6549ffc1f0e92fb8eeb0f7846414356172191a8`. O HEAD atual do `main` é o merge
-da Etapa 2, PR `#95`, commit `9cef8a0eabd0f6c6e087fc3a5251ddb9df02da18`.
-Os CIs de baseline `32107519574` e `32107883246`, a reconciliação documental
-`32113850905` e a validação da Etapa 2 `32118071443` passaram em Linux e
-Windows. A infraestrutura de registro de comandos e o gatilho Ctrl+K estão
-integrados; a paleta visual, busca, localização e acessibilidade continuam
-planejadas para as etapas seguintes, e o parallax permanece não iniciado.
+O baseline funcional de código verificado é o merge da PR `#97`, commit
+`5d4c0829adabfcd51741d95151f808722d43857c`. O CI pós-merge `32125768535`
+passou em Linux e Windows nos jobs `95675864634` e `95675864866`.
+A Etapa 3 integrou a paleta visual, busca, teclado, localização e acessibilidade,
+com evidências reais em `docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md`.
+O módulo de cenários parallax, câmera, overlays e schema lateral permanece
+planejado e não iniciado.
 
 A release `v0.2.0` continua sendo um snapshot publicado anterior e não
 representa automaticamente o estado mais recente de `main`.
@@ -267,7 +266,7 @@ objeto da validação.
 
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
-- **paleta de comandos e cenários parallax estão planejados, mas não implementados nem integrados**;
+- **paleta de comandos está integrada e validada na Etapa 3; cenários parallax permanecem planejados e não iniciados**;
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
 - **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura é opcional e não é gate de release;
