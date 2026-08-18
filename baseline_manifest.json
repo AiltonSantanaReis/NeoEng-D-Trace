@@ -4597,8 +4597,8 @@
       "size": 147
     },
     "scripts/audit_command_palette_capture.py": {
-      "sha256": "83c677c03df5900edd5abd4aed20c8fbce22b0f074bdc55eb0251ea017cd3496",
-      "size": 7345
+      "sha256": "970a68fdf39ad6627d89951b73153998f6904ebb97477c0537083bf77d3fa04c",
+      "size": 7615
     },
     "scripts/audit_export_pipeline.py": {
       "sha256": "6eb4fef3a21e60dcc76474df04fb45cdebf80f64819038d1b013bb951fb5f13a",
