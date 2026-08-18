@@ -8,9 +8,12 @@
 
 **Âncora integrada pós-merge da Etapa 14:** `f15193a55d1a5de0c7031f5bab656107302eee1b` (PR `#58`, CI pós-merge `31905237922`)
 
-**Baseline funcional verificado:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`.\n**HEAD documental atual:** `45b99f058601092a6121a7db4153ba27795325c0`, merge da PR `#93`.\nCI pré-merge `32107519574`, pós-merge `32107883246` e reconciliação documental\n`32113850905` passaram nos respectivos gates Linux/Windows.
+**Baseline funcional verificado:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`.
+**HEAD atual do main:** `9cef8a0eabd0f6c6e087fc3a5251ddb9df02da18`, merge da PR `#95`.
+CI de baseline `32107519574`/`32107883246`, reconciliação `32113850905` e Etapa 2
+`32118071443` passaram nos respectivos gates Linux/Windows.
 
-**Estado atual:** Etapas 11 a 14 permanecem encerradas nos escopos aprovados. A PR `#92` contém apenas a remoção de uma instrução duplicada e a atualização correspondente do baseline. O plano de cenários parallax e a paleta de comandos estão `PLANEJADOS / NÃO INICIADOS`. A release oficial `v0.2.0` permanece publicada como snapshot anterior e não representa automaticamente o `main` atual.
+**Estado atual:** Etapas 11 a 14 permanecem encerradas nos escopos aprovados. A Etapa 2 integrou a infraestrutura do registry de comandos e o gatilho Ctrl+K; a paleta visual, busca, localização, acessibilidade e o módulo parallax permanecem planejados para as etapas seguintes. A release oficial `v0.2.0` permanece publicada como snapshot anterior e não representa automaticamente o `main` atual.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -47,7 +50,7 @@ snapshot histórico.
 | Tipagem | INTEGRADO / APROVADO | mypy com `check_untyped_defs`: zero erros em `80` arquivos no CI pós-merge da Etapa 13 | ampliar anotações explícitas gradualmente |
 | Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
 | Build Windows/instalador | INTEGRADO / APROVADO | WiX 4.0.6 fixado; builds MSI reproduzíveis; instalação, smoke, upgrade, reparo, desinstalação, Godot/Unity, manifestos e CI pós-merge auditados | assinatura é opcional; formalizações futuras não bloqueiam |
-| Paleta de comandos | PLANEJADA / NÃO INICIADA | plano aceito em `PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md` | nenhuma implementação ou evidência de funcionamento ainda |
+| Paleta de comandos | INFRAESTRUTURA INTEGRADA / UI NÃO INICIADA | PR `#95`, merge `9cef8a0`; registry, 19 IDs, estados QAction e Ctrl+K comprovados em `docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md` | busca, interface, localização e acessibilidade ficam para Etapa 3 |
 | Cenários parallax 2D/2.5D | PLANEJADA / NÃO INICIADA | plano aceito em `PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md` | câmera, schema, preview e integração ainda não implementados |
 
 ## Regra de leitura

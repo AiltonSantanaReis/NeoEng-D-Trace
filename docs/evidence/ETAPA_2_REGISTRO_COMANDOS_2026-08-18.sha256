@@ -1,6 +1,6 @@
-# SHA-256 dos artefatos da Etapa 2; recalcular após qualquer alteração.
+# SHA-256 canônico UTF-8/LF dos artefatos da Etapa 2; recalcular após qualquer alteração.
 bc74d2efc024c61132fedde46fbd5ef69dec5a9b3eb032c4fab1bcc4c7ae868c  src/ui/command_registry.py
 dbed24f77744305cd2e1401427125d6300d168ac409ee6c08d08f40cf5963651  src/ui/command_bindings.py
-4fb56ba78161ef18fb94eefa16a9b67bd7027f9b1dd861d3e1d53063dc64de8a  src/ui/main_window.py
+eb548b81d32c5b5808f28da11177dfc63927972cf5a0f42d20ae0ac9330f073d  src/ui/main_window.py
 ffc2b28785219dc400e3376e4c5c84e4ddff853f97972a36d12f2ed3e8a6e1cd  tests/test_stage2_command_registry.py
-bd11c5b28a7f9e34a82a02687f1dac65ad8409c1c239c3408accbbb14351f1c4  docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md
+1df1c139796053f209c37fe9fe25fbc2165910f51c64f8e9ccee8c86a6566fba  docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md
