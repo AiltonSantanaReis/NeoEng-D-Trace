@@ -24,6 +24,25 @@ from .project_schema import (
     PROJECT_FILE_EXTENSION,
     ProjectDocumentV1,
 )
+from .scenario_io import (
+    ScenarioFormatError,
+    ScenarioReadError,
+    ScenarioValidationError,
+    ScenarioWriteError,
+    hash_project_file,
+    load_scenario,
+    project_reference_for,
+    save_scenario,
+    scenario_sha256,
+    serialize_scenario,
+    verify_project_reference,
+)
+from .scenario_schema import (
+    SCENARIO_FILE_EXTENSION,
+    SCENARIO_FORMAT_ID,
+    SCENARIO_SCHEMA_VERSION,
+    ScenarioDocumentV1,
+)
 
 __all__ = [
     "LegacyProjectMigrationError",
@@ -39,6 +58,21 @@ __all__ = [
     "ProjectValidationError",
     "ProjectWriteError",
     "UnsupportedProjectVersionError",
+    "SCENARIO_FILE_EXTENSION",
+    "SCENARIO_FORMAT_ID",
+    "SCENARIO_SCHEMA_VERSION",
+    "ScenarioDocumentV1",
+    "ScenarioFormatError",
+    "ScenarioReadError",
+    "ScenarioValidationError",
+    "ScenarioWriteError",
+    "hash_project_file",
+    "load_scenario",
+    "project_reference_for",
+    "save_scenario",
+    "scenario_sha256",
+    "serialize_scenario",
+    "verify_project_reference",
     "apply_project_document_to_scene",
     "build_project_document",
     "load_project_document",
