@@ -65,12 +65,12 @@ emissão artificial de sinal ou relaxamento de asserção foi usado.
 
 ## Testes e gates
 
-- testes específicos das Etapas 2 e 3: `14 passed`;
-- suíte integral local: `1218 passed, 2 skipped, 10 warnings`;
+- testes específicos das Etapas 2 e 3: `16 passed`;
+- suíte integral local: `1220 passed, 2 skipped, 10 warnings`;
 - Black, isort, Flake8, py_compile, mypy e Bandit: aprovados no escopo alterado;
-- cobertura de branches: `90,67%`, acima do gate de 90%;
+- cobertura de branches: `90,77%`, acima do gate de 90%;
 - baseline: `1409 files`, verificado após incluir o pacote de evidências;
-- integridade de evidências: `48 manifests validated`.
+- política integrada: `total lines >= 90%, total branches >= 85%, measurable modules >= 30%`;
 
 Os dois skips permanecem condicionais e preexistentes na suíte; não foram
 criados nem usados para aprovar a Etapa 3.

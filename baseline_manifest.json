@@ -529,8 +529,8 @@
       "size": 7005
     },
     "docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md": {
-      "sha256": "3eda94cbdc23861150c5d3b751980b5a92ee820088a41b58c3a1a6dd826cce53",
-      "size": 4958
+      "sha256": "605e98aaa5a0a661d38f0572094a8be711f93c6509311fd4fa787633f4ffc87b",
+      "size": 4997
     },
     "docs/evidence/ETAPA_3_PLUGIN_GODOT_SOURCE_ONLY_2026-08-16.md": {
       "sha256": "01e0436feac7464283d5e2b628f410c0a91fbe1d70c2c11edc955f76d78351db",
@@ -5341,8 +5341,8 @@
       "size": 4330
     },
     "tests/test_stage3_command_palette.py": {
-      "sha256": "3cdb8ee58f264b7992f110c67dbcdffb07a0e4dfe2ef792222fbc877ea201f3c",
-      "size": 5656
+      "sha256": "b13c471561edf5c24f8d407dbd0068f2cee43f470a30471c3fcdf4b8b5a50bcc",
+      "size": 7354
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",

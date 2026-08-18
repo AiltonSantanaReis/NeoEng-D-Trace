@@ -91,6 +91,58 @@ def test_palette_keyboard_navigation_triggers_enabled_action_and_closes() -> Non
         dialog.close()
 
 
+def test_palette_covers_directional_and_results_keyboard_contracts() -> None:
+    _app()
+    first = QAction("First")
+    second = QAction("Second")
+    triggered: list[str] = []
+    first.triggered.connect(lambda: triggered.append("first"))
+    second.triggered.connect(lambda: triggered.append("second"))
+    dialog = _palette(("test.first", first), ("test.second", second))
+    try:
+        dialog.show_palette()
+        QTest.keyClick(dialog.search_input, Qt.Key.Key_Up)
+        assert dialog.results.currentRow() == 1
+        dialog.results.setFocus()
+        QTest.keyClick(dialog.results, Qt.Key.Key_Return)
+        assert triggered == ["second"]
+
+        dialog.show_palette()
+        dialog.results.setFocus()
+        QTest.keyClick(dialog.results, Qt.Key.Key_Escape)
+        assert dialog.isVisible() is False
+    finally:
+        dialog.close()
+
+
+def test_palette_refreshes_visibility_and_disabled_selection_paths() -> None:
+    _app()
+    hidden = QAction("Hidden")
+    hidden.setVisible(False)
+    blocked = QAction("Blocked")
+    blocked.setEnabled(False)
+    enabled = QAction("Enabled")
+    dialog = _palette(
+        ("test.hidden", hidden),
+        ("test.blocked", blocked),
+        ("test.enabled", enabled),
+    )
+    try:
+        dialog.search_input.setText("hidden")
+        assert dialog.results.item(0).text() == "No matching commands."
+
+        dialog.search_input.clear()
+        dialog.results.setCurrentRow(0)
+        dialog._move_selection(1)
+        assert dialog.results.currentRow() == 1
+
+        blocked.setEnabled(True)
+        _app().processEvents()
+        assert dialog.results.item(1).flags() & Qt.ItemFlag.ItemIsEnabled
+    finally:
+        dialog.close()
+
+
 def test_palette_does_not_trigger_disabled_action() -> None:
     _app()
     blocked = QAction("Blocked")
