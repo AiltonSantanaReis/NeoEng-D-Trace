@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_commit": "f3a0eddd8c2e128a80d2b3a31bc690ec64e63b25",
+  "scope": "pure orthographic camera and parallax math",
+  "files": {
+    "../../../../src/core/parallax_camera.py": {
+      "bytes": 6602,
+      "sha256": "2928c3be068c73e0255d6232233c9d0cf27e29f6388731f554c31a043b826a47"
+    },
+    "../../../../tests/test_stage4_parallax_camera.py": {
+      "bytes": 4379,
+      "sha256": "acf8255fc49b2208f2d79b0d63824680d72f2a3843fffa2c8616e98f7e3cf5bd"
+    },
+    "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
+      "bytes": 6222,
+      "sha256": "6d11b8e1485485e3438fcf86f7149852209195753b6d03b29683be18ae606542"
+    }
+  }
+}

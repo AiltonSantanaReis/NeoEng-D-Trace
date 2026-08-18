@@ -544,6 +544,10 @@
       "sha256": "d7a27fdf92b0c8f8725c55ca0d578bb9fe7ab0051999d803183897d5d1d3c6ea",
       "size": 479
     },
+    "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
+      "sha256": "6d11b8e1485485e3438fcf86f7149852209195753b6d03b29683be18ae606542",
+      "size": 6222
+    },
     "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
       "size": 7651
@@ -737,8 +741,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "55bc235086c6f53b7445964fec4b015add7552b031d1a319c5ed00f7ba91be30",
-      "size": 31748
+      "sha256": "712ba6c3cb140d66a59280e3f423113b736896b4552de57827f48bb918023ccc",
+      "size": 32041
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
@@ -3875,6 +3879,10 @@
     "docs/evidence/artifacts/stage3-command-palette-2026-08-18/manifest.json": {
       "sha256": "59ad57426427cf019b46ac984a03d0733ca696383c764349d786e1c0d284951c",
       "size": 12936
+    },
+    "docs/evidence/artifacts/stage4-parallax-camera-2026-08-18/manifest.json": {
+      "sha256": "6e467ded7f4f57a5f2e9071d3452799ec2ca6010b40619310976d965922db4e5",
+      "size": 671
     },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",

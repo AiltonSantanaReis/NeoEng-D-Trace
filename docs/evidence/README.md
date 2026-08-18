@@ -4,6 +4,10 @@
 
 - `ETAPA_3_PALETA_COMANDOS_2026-08-18.md` — implementação da paleta visual, busca, teclado, Escape, localização e acessibilidade, com capturas reais en/pt, geometrias Qt, hashes Pillow/OpenCV e validação do manifest.
 - `ETAPA_3_ENCERRAMENTO_POS_MERGE.md` — fechamento pós-merge da PR `#97`, CI `32125768535` aprovado em Linux/Windows e sincronização do `main` ao merge `5d4c0829`.
+- ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md — modelo matemático puro
+  pré-merge de câmera ortográfica e parallax, com profundidade separada de
+  position.z, testes negativos, cobertura, hashes e limitações explícitas;
+  não representa ainda integração do módulo de cenários.
 
 - `RECONCILIACAO_DOCUMENTAL_2026-08-18.md` — reconciliação dos documentos vivos com o merge da PR `#92`, registro do novo plano e classificação explícita de paleta/parallax como planejados e não iniciados.
 - `ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md` — transação única e rollback global de múltiplos manifestos, com testes Python, execução real Godot/Unity, hashes e falhas intermediárias preservadas.
