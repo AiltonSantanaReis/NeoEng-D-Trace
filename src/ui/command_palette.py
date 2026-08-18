@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QVBoxLayout,
+    QWidget,
 )
 
 from src.ui.command_registry import CommandRegistry, CommandState
@@ -76,7 +77,7 @@ class CommandPaletteDialog(QDialog):
         self.registry = registry
         self.translations = translations
         self.current_lang = "en"
-        self._previous_focus = None
+        self._previous_focus: QWidget | None = None
 
         self.setObjectName("command_palette_dialog")
         self.setModal(False)
