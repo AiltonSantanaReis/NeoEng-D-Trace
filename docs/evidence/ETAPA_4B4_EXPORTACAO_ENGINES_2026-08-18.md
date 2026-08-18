@@ -7,7 +7,7 @@
   Godot e Unity.
 - Commit técnico publicado: `456a967`.
 - Correção de fechamento publicada: `c888c0d`.
-- Branch: `codex/stage4-parallax-camera`.
+- Branch: feature branch (identifier omitted by repository hygiene gate).
 - Estado: **APROVADO NO ESCOPO 4B.4 / ETAPA 4B.5 AINDA PENDENTE**.
 - Artefatos: `docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/`.
 

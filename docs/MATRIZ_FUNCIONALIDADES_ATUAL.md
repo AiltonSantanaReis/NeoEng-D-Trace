@@ -49,7 +49,7 @@ snapshot histórico.
 | Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
 | Build Windows/instalador | INTEGRADO / APROVADO | WiX 4.0.6 fixado; builds MSI reproduzíveis; instalação, smoke, upgrade, reparo, desinstalação, Godot/Unity, manifestos e CI pós-merge auditados | assinatura é opcional; formalizações futuras não bloqueiam |
 | Paleta de comandos | INTEGRADO / APROVADO | PR `#97`, merge `5d4c0829`; CI pós-merge `32125768535`; paleta, busca, teclado, localização, acessibilidade e capturas reais em `docs/evidence/ETAPA_3_ENCERRAMENTO_POS_MERGE.md` | nenhum no escopo da Etapa 3 |
-| Cenários parallax 2D/2.5D | CANDIDATO PRÉ-MERGE — 4B.4 APROVADA NO ESCOPO | 4A–4B.4 comprovadas em `docs/evidence/ETAPA_4B4_EXPORTACAO_ENGINES_2026-08-18.md` e manifests hashados; commits técnicos `456a967` e `c888c0d` | benchmark, 4B.5 e merge ainda pendentes |
+| Cenários parallax 2D/2.5D | CANDIDATO PRÉ-MERGE — 4B.5 APROVADA NO ESCOPO LOCAL | 4A–4B.5 comprovadas em `docs/evidence/ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md` e manifests hashados; auditor local em `3be4a92` | PR, CI pós-merge e merge ainda pendentes |
 
 ## Regra de leitura
 

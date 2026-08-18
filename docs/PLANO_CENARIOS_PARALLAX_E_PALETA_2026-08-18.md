@@ -1,9 +1,9 @@
 # Plano de Cenários Parallax e Paleta de Comandos — NeoEng-D-Trace
 
 **Data de aceitação:** 18 de agosto de 2026
-**Estado:** EM EXECUÇÃO — Etapas 4B.1 a 4B.4 aprovadas no escopo local; Etapa 4B.5 e o merge geral permanecem pendentes
+**Estado:** EM EXECUÇÃO — Etapas 4B.1 a 4B.5 aprovadas no escopo local; PR, CI pós-merge e merge geral permanecem pendentes
 **Baseline funcional verificada:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8` (merge da PR `#92`)
-**Candidato local 4B.4 verificado:** `c888c0d` (commits técnicos `456a967` e `c888c0d`)
+**Candidato local 4B.5 verificado:** `3be4a92` (commits técnicos `456a967`, `c888c0d` e `3be4a92`)
 **Fonte de referência:** `plano_cenarios_parallax_neoeng_dtrace.docx`, SHA-256 `066dd9a5b192e215b1859a81ab22fbdfe2d9a7b8db46acbc7f6f62fe867cc0ac`
 
 ## Natureza deste documento
@@ -55,7 +55,8 @@ exigem decisão e contratos próprios antes de qualquer implementação.
 9. Exportação JSON genérica e validação real dos consumidores Godot/Unity — concluída no escopo 4B.4, com diferenças de capacidade documentadas.
    respeitando diferenças de capacidade documentadas.
 10. Benchmark Windows, determinismo, regressão, evidências hashadas, CI,
-    revisão do diff, PR e merge.
+    revisão do diff, PR e merge — auditor local concluído; promoção permanece
+    condicionada aos checks do candidato.
 
 ## Gates de cada etapa
 

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "stage": "4B.5",
+  "files": {
+    "scenario-input.ndtproj": {
+      "bytes": 30,
+      "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db"
+    },
+    "scenario-input.ndtscenario.json": {
+      "bytes": 733,
+      "sha256": "c4fb3456d8ca49baf4dc1c456b9413bef9945f56cbb53ef136ca9e572888d7fe"
+    },
+    "scenario-runtime-a.ndtscenario.runtime.json": {
+      "bytes": 867,
+      "sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb"
+    },
+    "scenario-runtime-b.ndtscenario.runtime.json": {
+      "bytes": 867,
+      "sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb"
+    },
+    "benchmark-report.json": {
+      "bytes": 2937,
+      "sha256": "5d9ea7239f864f81af4a588b4b1466dd85cc187c5f87f6c4b502d5a4ab8d71c6"
+    }
+  },
+  "count": 5
+}

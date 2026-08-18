@@ -1,0 +1,36 @@
+{
+  "camera": {
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "zoom": 1.0
+  },
+  "format_id": "neoeng-d-trace-scenario",
+  "layers": [
+    {
+      "id": "layer_default",
+      "name": "Captured Layer",
+      "object_ids": [
+        "authoring_object"
+      ],
+      "parallax": {
+        "depth": 0.7,
+        "translation_strength": 1.0,
+        "zoom_strength": 1.0
+      },
+      "visible": true
+    }
+  ],
+  "metadata": {
+    "app_version": "0.2.0",
+    "generator": "NeoEng-D-Trace",
+    "name": "authoring_fixture"
+  },
+  "project": {
+    "format_id": "neoeng-d-trace-project",
+    "schema_version": 1,
+    "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db"
+  },
+  "schema_version": 1
+}

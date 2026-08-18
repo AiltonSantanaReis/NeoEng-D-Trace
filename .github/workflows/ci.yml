@@ -86,6 +86,9 @@ jobs:
       - name: Enforce integrated coverage policy
         run: poetry run python tools/check_coverage_policy.py coverage.xml
 
+      - name: Run Stage 4B.5 quality audit
+        run: poetry run python scripts/audit_stage4b5_quality.py --output "${{ runner.temp }}/stage4b5-quality"
+
       - name: Verify Linux source tree remained unchanged
         run: python tools/baseline_integrity.py --verify
 
@@ -165,6 +168,9 @@ jobs:
 
       - name: Enforce integrated coverage policy
         run: poetry run python tools/check_coverage_policy.py coverage.xml
+
+      - name: Run Stage 4B.5 quality audit
+        run: poetry run python scripts/audit_stage4b5_quality.py --output "${{ runner.temp }}/stage4b5-quality"
 
       - name: Run reconciled preserved legacy suite
         run: poetry run python tools/run_legacy_tests.py --group all --output "${{ runner.temp }}/legacy-tests"

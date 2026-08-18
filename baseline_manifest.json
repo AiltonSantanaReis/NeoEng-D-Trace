@@ -29,8 +29,8 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "771ff7b825a90b4de07a486911b240d8f5ca7808db3591580541d9e606583794",
-      "size": 6531
+      "sha256": "ed42ab4108b918053196568f274ac578def0bef29e6552290a160458388740f0",
+      "size": 6843
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
@@ -241,16 +241,16 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "f21e8adbdf4b8e63af1ad2352bcfb1521dbfe81a85ea20bc8efb4c1d62d4cc88",
-      "size": 6904
+      "sha256": "15bdb16cb2a6081b4f5660f04453236b92bc32825cf16000cde8dc6a6fcb9e10",
+      "size": 6853
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
       "sha256": "f564d568cdaca58fdd65ed205182e42c36cfc25fc992e286a9f9a6e28e68a655",
       "size": 18972
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
-      "sha256": "8535e7d61d4456549ec8eade3dd42d0bfb78dd1bfecd30b39d8226a16681db1f",
-      "size": 4708
+      "sha256": "8562f70c308f28547f1065dce0838f6b23352c56098e1cb7c73f416325c3b5b6",
+      "size": 5040
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -555,6 +555,14 @@
     "docs/evidence/ETAPA_4B3_AUTORIA_CENARIO_2026-08-18.md": {
       "sha256": "6afe0426addf3949e337ff961a96de6d2e36af137a8665ba4bf7b73b0955aeb1",
       "size": 9172
+    },
+    "docs/evidence/ETAPA_4B4_EXPORTACAO_ENGINES_2026-08-18.md": {
+      "sha256": "75d7493c08ffdf9a4a29046c3be52cca01504ee2ebcbcdbe84754babe37f2e6f",
+      "size": 4965
+    },
+    "docs/evidence/ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md": {
+      "sha256": "0ba13ac20ec7db8d75cb982ebb2096787d0bf134736c8049d68d0465cab600e6",
+      "size": 4400
     },
     "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
       "sha256": "6d11b8e1485485e3438fcf86f7149852209195753b6d03b29683be18ae606542",
@@ -3956,6 +3964,62 @@
       "sha256": "0e98c5eaedad5649de21f09adba718d8f6ed33f737f2a9cc3d23f3265c3fc3eb",
       "size": 5004
     },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/artifact-index.json": {
+      "sha256": "09a346e9a89e5e1071a2b5e8d6d0730945ad7e82905f94eafbc533b49f2f1308",
+      "size": 660
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/engine-report.json": {
+      "sha256": "bbf4e81d6894950d3607651f6ab88ea63742d16818de0f779ee1f9c2ec7dbb6f",
+      "size": 431
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/godot-negative.log": {
+      "sha256": "d652068b6ffa2a90a704b95635b845e96affe4b2b9409065242e3a2fb3e876df",
+      "size": 634
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/godot-plugin.log": {
+      "sha256": "4184b67470c4b0a5c3e50d2b07c98fd347d1fa26d6a0470e534092a7696b0bd7",
+      "size": 858
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/godot-positive.log": {
+      "sha256": "2ac603df0a234d57242d3651ccfefad1bb029df13dd69350eb24d49b73c126be",
+      "size": 219
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/scenario.ndtscenario.runtime.json": {
+      "sha256": "75ba287e57a77e86b5383030da2ae9a5cf62e753e29f7e833b371f2b8e24bfdc",
+      "size": 1099
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/unity-negative.log": {
+      "sha256": "c5a66aac1eacfa649b5fb58fbd4018415c9b9b0f121224c51ec43780c6d29f40",
+      "size": 18298
+    },
+    "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/unity-positive.log": {
+      "sha256": "279c01fdcda325e192d059600c45de6ac3dcf481b8e9b2746ffb0e2c7d5804df",
+      "size": 54862
+    },
+    "docs/evidence/artifacts/stage4b5-quality-2026-08-18/artifact-index.json": {
+      "sha256": "7137cd1ecfea9e5d093375eaeaaadf70351ba04a509bb4bab46ce728d34e0f25",
+      "size": 836
+    },
+    "docs/evidence/artifacts/stage4b5-quality-2026-08-18/benchmark-report.json": {
+      "sha256": "5d9ea7239f864f81af4a588b4b1466dd85cc187c5f87f6c4b502d5a4ab8d71c6",
+      "size": 2937
+    },
+    "docs/evidence/artifacts/stage4b5-quality-2026-08-18/scenario-input.ndtproj": {
+      "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db",
+      "size": 30
+    },
+    "docs/evidence/artifacts/stage4b5-quality-2026-08-18/scenario-input.ndtscenario.json": {
+      "sha256": "c4fb3456d8ca49baf4dc1c456b9413bef9945f56cbb53ef136ca9e572888d7fe",
+      "size": 733
+    },
+    "docs/evidence/artifacts/stage4b5-quality-2026-08-18/scenario-runtime-a.ndtscenario.runtime.json": {
+      "sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+      "size": 867
+    },
+    "docs/evidence/artifacts/stage4b5-quality-2026-08-18/scenario-runtime-b.ndtscenario.runtime.json": {
+      "sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+      "size": 867
+    },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
       "size": 8446
@@ -4437,8 +4501,12 @@
       "size": 177
     },
     "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
-      "sha256": "a5768579898b2423e124c594bef19ef22ae743ce0d9371a9646b0b8c9ca945cd",
-      "size": 3261
+      "sha256": "3dc86336cc6409cc243925d6d9249e6f58a33d924fdfa87a61a6d5553719c37d",
+      "size": 3754
+    },
+    "integrations/godot/addons/neoeng_d_trace/scenario_importer.gd": {
+      "sha256": "93821ed0935a22b31bcde9979fcef87ddfdf137be2bc8a2a5bb8189a65e54674",
+      "size": 4849
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor.meta": {
       "sha256": "7ece5759a5ac1e80072a893d36af07c48a1a32abc8324811da5b860c3abd2cb4",
@@ -4467,6 +4535,14 @@
     "integrations/unity/package/com.neoeng.dtrace/Editor/PackageDiagnostics.cs.meta": {
       "sha256": "b7f4a60f0ba46a8cd7108fd4fd2ac8881e503e1c99d484a6146583a5ff80ada9",
       "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/ScenarioImportGenerator.cs": {
+      "sha256": "811792f03c353b8e9692ad89aa083efe4b508030b9e89e1e4fc9b58562e76846",
+      "size": 7505
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/ScenarioImportGenerator.cs.meta": {
+      "sha256": "b8f0e653b18d66a33fed8e58fdb56a82dcf203ce28618d786b73491ec6b353a2",
+      "size": 251
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
       "sha256": "4154eddf372efaa154932faf50e8b40a611d2b45a4921a1f1767c92e98c0c919",
@@ -4543,6 +4619,14 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedTilesetMetadata.cs.meta": {
       "sha256": "5a6925e299ae2c979960fa63e0a913153fdacbfff95c07fa73aab9d484510f6e",
       "size": 60
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngScenarioMetadata.cs": {
+      "sha256": "808e335fbf9e02067feda908bb46dab9bf3763073fa1da972472f6a1de7d679b",
+      "size": 706
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngScenarioMetadata.cs.meta": {
+      "sha256": "20a49ecfa9f6f9d63abe8d7470fbcd621e598627344bcbeea9b52e48fdd4cc77",
+      "size": 251
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs": {
       "sha256": "db22d3a220054d9fe4a73499cd32ac5eeb202b3f3dcb0fcfd00219a01a1acc57",
@@ -4788,6 +4872,14 @@
       "sha256": "50a73d58ec9964dce851c757ee5eb20766f93e7560afe56aeb6e017452f14319",
       "size": 8150
     },
+    "scripts/audit_stage4b4_engines.py": {
+      "sha256": "6f602de71341f15f2f9361a00614086c7fbdfc5e5ad00a80f21a73a29429061b",
+      "size": 10980
+    },
+    "scripts/audit_stage4b5_quality.py": {
+      "sha256": "eae88778ba3923c03e073ec8e19cdea1a1295d6381a64b483ea749ae8cc282e3",
+      "size": 10410
+    },
     "scripts/audit_ui_capture.py": {
       "sha256": "2434b617b0df2c84a92a1f84157a4bc86708e03701b9b8ef672d9598d98d7f13",
       "size": 12705
@@ -4921,8 +5013,8 @@
       "size": 4041
     },
     "src/core/scenario_authoring.py": {
-      "sha256": "e80a3dec36c2c30b606bf663ec1c048f43fedd0b131f3b53f46f0ec50740b16c",
-      "size": 19089
+      "sha256": "f9191c8010e059b4319478674190a41fc9a42c3d4fa66baf64207c551374c548",
+      "size": 19915
     },
     "src/core/scenario_preview.py": {
       "sha256": "0d9f9ff7c7f92b38c34c98b66e9595839c7575c96ec8c7186409ae104834cb53",
@@ -4999,6 +5091,10 @@
     "src/exporters/profiles/unity.py": {
       "sha256": "7f31603681c3e8d2f6cf20b8fa4d52818f41e1d9446685149782b72e1659d4ea",
       "size": 1066
+    },
+    "src/exporters/scenario_exporter.py": {
+      "sha256": "67005434793cedf38bb4caf58ac5d222eb986c4222f561c223be4230e0a556e3",
+      "size": 9339
     },
     "src/exporters/sprite_exporter.py": {
       "sha256": "9cd55c379fe0fd12c1ff194e42dfb7efc0fc703572730e32b1749797f836b5c4",
@@ -5169,8 +5265,8 @@
       "size": 11299
     },
     "src/ui/command_bindings.py": {
-      "sha256": "a507f68b1676c32019533238616d36f4d8ae3a28c15f0f55eb2c7499310bdea6",
-      "size": 1617
+      "sha256": "4d86914a943bdcc26cebf593fa637c3229b40785b2a7bdb0dc810368e6708f4f",
+      "size": 1681
     },
     "src/ui/command_palette.py": {
       "sha256": "f0fd8813f8862aa8da2ee91cde5689202b3470909ce0a92acea9cf741be21b74",
@@ -5225,8 +5321,8 @@
       "size": 6533
     },
     "src/ui/scenario_authoring_actions.py": {
-      "sha256": "2929909aeb7a6c26b2fb769ce4ffea50cd0cb6a54e50767862b98da058279d23",
-      "size": 4365
+      "sha256": "843a09509886fc73989841ada8936e9dedd10364da54663cea92f224dac6ad51",
+      "size": 4982
     },
     "src/ui/scenario_panel.py": {
       "sha256": "587110459573a6b86635b27807c5f48ec059c29144693f09b6f8617bce75ffd1",
@@ -5353,8 +5449,8 @@
       "size": 16939
     },
     "tests/test_godot_plugin_scaffold.py": {
-      "sha256": "4d7e26a4a5f474d5a37eb35acccf81aac1a4f535ebc4c07c0974a81b839a7ef0",
-      "size": 2292
+      "sha256": "a2877e8788198ec05be1ab38900c62579ba51bcee9146fc6187a183631f2e701",
+      "size": 2430
     },
     "tests/test_grabcut_pipeline.py": {
       "sha256": "bb381958a30b534e2a79ba99acf60d59f23d0149677b13ecd095675f0e575c47",
@@ -5469,8 +5565,8 @@
       "size": 2804
     },
     "tests/test_stage2_command_registry.py": {
-      "sha256": "734b8e71ec802bee038687924a9d945da01094ad46ca7780478bca5e837cf907",
-      "size": 4418
+      "sha256": "28793603cb6d0674438ce047536ef8cd49b323360f78c6cf5ec9120e322d18fd",
+      "size": 4449
     },
     "tests/test_stage3_command_palette.py": {
       "sha256": "b13c471561edf5c24f8d407dbd0068f2cee43f470a30471c3fcdf4b8b5a50bcc",
@@ -5489,8 +5585,16 @@
       "size": 5314
     },
     "tests/test_stage4b3_scenario_authoring.py": {
-      "sha256": "e6a4be84c9f20212aeef302d85748a90071e7fbc262a54ae0dc4c09a3a983d6e",
-      "size": 11934
+      "sha256": "0d89dc246f29928fd88e43f5258feddc8ffc9063df21c3928c6cb829892a4d71",
+      "size": 12147
+    },
+    "tests/test_stage4b4_scenario_export.py": {
+      "sha256": "5e1d3926e7273472d9a90a6f6e50c56582686044c44cc91bb867967723582a11",
+      "size": 7294
+    },
+    "tests/test_stage4b5_quality.py": {
+      "sha256": "06ffb07ffbe013c6eba9fc578f0436e9e7c4e3cbbf544449e1559038ea8294e6",
+      "size": 1687
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
@@ -5747,6 +5851,10 @@
     "tools/godot_plugin_stage4_validator.gd": {
       "sha256": "8a2faf080fd2de33632e42f064a59cd63bd5d82f223b6ca2dbbd352d17878bad",
       "size": 9918
+    },
+    "tools/godot_scenario_stage4b4_validator.gd": {
+      "sha256": "92a89513e09c5437424f330827f67a344ec4217bbc1c83c5584135c0e3ed0a52",
+      "size": 2108
     },
     "tools/package_portable_release.py": {
       "sha256": "732206adbc953f83c6e16f9ea2e7274c3d7e2fdd12a94960e78796962808dce5",
