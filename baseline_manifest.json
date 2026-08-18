@@ -4820,6 +4820,10 @@
       "sha256": "5a64014b3a9f1acfe8faabd9eb3344052acff170d8a6a1cc7d78b36753323326",
       "size": 1232
     },
+    "src/core/parallax_camera.py": {
+      "sha256": "2928c3be068c73e0255d6232233c9d0cf27e29f6388731f554c31a043b826a47",
+      "size": 6602
+    },
     "src/core/polygon_gesture.py": {
       "sha256": "cddd3f38bd00d5c8b863249f7dadd01bfb0170f119c346770495e7b25f070969",
       "size": 5255
@@ -5351,6 +5355,10 @@
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",
       "size": 1619
+    },
+    "tests/test_stage4_parallax_camera.py": {
+      "sha256": "acf8255fc49b2208f2d79b0d63824680d72f2a3843fffa2c8616e98f7e3cf5bd",
+      "size": 4379
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
