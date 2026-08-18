@@ -92,3 +92,31 @@ def test_manifest_date_is_informational_but_must_be_valid(
     manifest["baseline_date"] = "not-a-date"
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     assert baseline_integrity.verify_manifest() == 1
+
+
+def test_git_blob_mode_ignores_worktree_eol_conversion(
+    monkeypatch, tmp_path: Path
+) -> None:
+    _init_repository(tmp_path)
+    artifact = tmp_path / "app.py"
+    artifact.write_bytes(b"line\n")
+    _git(tmp_path, "add", "app.py")
+    artifact.write_bytes(b"line\r\n")
+
+    monkeypatch.setattr(baseline_integrity, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        baseline_integrity,
+        "MANIFEST_PATH",
+        tmp_path / "baseline_manifest.json",
+    )
+
+    assert baseline_integrity.write_manifest(use_git_blob=True) == 0
+    expected = json.loads(
+        (tmp_path / "baseline_manifest.json").read_text(encoding="utf-8")
+    )
+    assert expected["files"]["app.py"]["size"] == 5
+    assert baseline_integrity.verify_manifest(use_git_blob=True) == 0
+
+    artifact.write_bytes(b"changed\n")
+    assert baseline_integrity.verify_manifest(use_git_blob=True) == 0
+    assert baseline_integrity.verify_manifest(use_git_blob=False) == 1

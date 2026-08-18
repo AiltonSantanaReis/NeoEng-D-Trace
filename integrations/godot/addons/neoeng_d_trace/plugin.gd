@@ -5,11 +5,13 @@ const PLUGIN_ID := "neoeng_d_trace"
 const PLUGIN_VERSION := "0.2.0"
 const MENU_ITEM := "NeoEng D-Trace: Diagnose integration manifests"
 const IMPORT_MENU_ITEM := "NeoEng D-Trace: Import integration manifests"
+const SCENARIO_MENU_ITEM := "NeoEng D-Trace: Validate scenario runtime export"
 const AUTO_SYNC_SETTING := "neoeng_d_trace/automatic_sync_enabled"
 const AUTO_SYNC_DEBOUNCE_SECONDS := 0.35
 const AUTO_SYNC_SUPPRESSION_MILLISECONDS := 750
 const Importer = preload("res://addons/neoeng_d_trace/import_generator.gd")
 const ManifestDiagnostic = preload("res://addons/neoeng_d_trace/manifest_diagnostic.gd")
+const ScenarioImporter = preload("res://addons/neoeng_d_trace/scenario_importer.gd")
 
 var _sync_timer: Timer
 var _sync_running := false
@@ -19,6 +21,7 @@ var _suppress_events_until := 0
 func _enter_tree() -> void:
     add_tool_menu_item(MENU_ITEM, Callable(self, "_diagnose_project"))
     add_tool_menu_item(IMPORT_MENU_ITEM, Callable(self, "_import_project"))
+    add_tool_menu_item(SCENARIO_MENU_ITEM, Callable(self, "_validate_scenario_project"))
     _sync_timer = Timer.new()
     _sync_timer.one_shot = true
     _sync_timer.wait_time = AUTO_SYNC_DEBOUNCE_SECONDS
@@ -39,7 +42,12 @@ func _exit_tree() -> void:
         _sync_timer = null
     remove_tool_menu_item(MENU_ITEM)
     remove_tool_menu_item(IMPORT_MENU_ITEM)
+    remove_tool_menu_item(SCENARIO_MENU_ITEM)
 
+
+func _validate_scenario_project() -> void:
+    var result := ScenarioImporter.diagnose_export("res://NeoEngGenerated/scenario.ndtscenario.runtime.json")
+    print(JSON.stringify(result, "  "))
 
 func _diagnose_project() -> void:
     var result := ManifestDiagnostic.scan_project("res://NeoEngGenerated")

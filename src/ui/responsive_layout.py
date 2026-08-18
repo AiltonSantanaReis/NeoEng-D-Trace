@@ -57,7 +57,7 @@ class ResponsivePanelLayout:
             self._move_panels_to_desktop()
             self.panel_stack.setCurrentWidget(self.desktop_panel_splitter)
             self.main_splitter.setSizes(
-                [self.owner.tool_palette.recommended_width(), 800, 250]
+                [self.owner.tool_palette.recommended_width(), 800, 360]
             )
 
         self.toolbar.setVisible(not compact)
@@ -95,7 +95,12 @@ class ResponsivePanelLayout:
         self.right_splitter.addWidget(self.layers)
         self.right_splitter.addWidget(self.groups)
         self.desktop_panel_splitter.addWidget(self.collision_panel)
-        self.desktop_panel_splitter.setSizes([250, 0])
+        for widget in (self.side_panel, self.layers, self.groups, self.collision_panel):
+            widget.show()
+        self.right_splitter.setMaximumSize(16777215, 16777215)
+        self.desktop_panel_splitter.setMaximumSize(16777215, 16777215)
+        self.right_splitter.setSizes([250, 250, 250])
+        self.desktop_panel_splitter.setSizes([360, 0])
 
     def update_titles(self, translations: dict[str, Any]) -> None:
         if self.compact_panel_tabs.count() != 4:
@@ -118,11 +123,19 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     main_splitter.addWidget(owner.canvas)
 
     right_splitter = QSplitter(Qt.Orientation.Vertical)
+    right_splitter.setSizePolicy(
+        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Ignored,
+    )
     right_splitter.addWidget(owner.side_panel)
     right_splitter.addWidget(owner.layers)
     right_splitter.addWidget(owner.groups)
 
     desktop_panel_splitter = QSplitter(Qt.Orientation.Horizontal)
+    desktop_panel_splitter.setSizePolicy(
+        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Ignored,
+    )
     desktop_panel_splitter.addWidget(right_splitter)
     desktop_panel_splitter.addWidget(owner.collision_panel)
 
@@ -135,6 +148,10 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     )
 
     panel_stack = QStackedWidget()
+    panel_stack.setSizePolicy(
+        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Ignored,
+    )
     panel_stack.addWidget(desktop_panel_splitter)
     panel_stack.addWidget(compact_panel_tabs)
 

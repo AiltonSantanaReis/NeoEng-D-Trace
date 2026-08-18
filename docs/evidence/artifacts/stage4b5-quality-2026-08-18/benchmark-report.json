@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "stage": "4B.5",
+  "commit": "7f7075db594d6df77ce24e45d9ab31eb1744c767",
+  "branch": "feature branch (identifier omitted by repository hygiene gate)",
+  "environment": {
+    "platform": "Windows",
+    "platform_release": "10",
+    "python": "3.11.9"
+  },
+  "inputs": {
+    "project": {
+      "path": "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/authoring_fixture.ndtproj",
+      "bytes": 30,
+      "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db"
+    },
+    "scenario": {
+      "path": "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/authoring_fixture.ndtscenario.json",
+      "bytes": 733,
+      "sha256": "c4fb3456d8ca49baf4dc1c456b9413bef9945f56cbb53ef136ca9e572888d7fe"
+    }
+  },
+  "checks": {
+    "determinism": {
+      "runtime_export": {
+        "deterministic": true,
+        "hashes": [
+          "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+          "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+          "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+          "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+          "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb"
+        ],
+        "bytes": 867
+      },
+      "preview_projection": {
+        "deterministic": true
+      },
+      "overlay_geometry": {
+        "deterministic": true
+      },
+      "input_unchanged": true,
+      "passed": true
+    },
+    "benchmark": {
+      "warmup": {
+        "runtime_export_sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb"
+      },
+      "limits_are_safety_ceilings": true,
+      "measurements": [
+        {
+          "label": "runtime_export_serialization",
+          "operations": 500,
+          "elapsed_seconds": 0.056374,
+          "operations_per_second": 8869.29,
+          "max_elapsed_seconds": 10.0,
+          "within_limit": true
+        },
+        {
+          "label": "preview_projection",
+          "operations": 10000,
+          "elapsed_seconds": 0.727794,
+          "operations_per_second": 13740.146,
+          "max_elapsed_seconds": 5.0,
+          "within_limit": true
+        },
+        {
+          "label": "overlay_geometry",
+          "operations": 10000,
+          "elapsed_seconds": 0.027431,
+          "operations_per_second": 364552.384,
+          "max_elapsed_seconds": 5.0,
+          "within_limit": true
+        }
+      ],
+      "passed": true
+    },
+    "artifact_bytes_match": true
+  },
+  "artifacts": {
+    "runtime_sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
+    "runtime_bytes": 867
+  },
+  "limitations": [
+    "No historical timing baseline existed before Stage 4B.5; timing values are a first reproducible local baseline.",
+    "The audit measures the editor-side pure preview/export contracts, not an engine runtime or FPS claim."
+  ]
+}

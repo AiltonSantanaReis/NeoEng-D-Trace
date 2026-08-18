@@ -31,5 +31,9 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("export.open", window.act_export),
             ("collision.export_json", window.act_export_collision_json),
             ("collision.export_txt", window.act_export_collision_txt),
+            ("scenario.save", window.scenario_save_action),
+            ("scenario.load", window.scenario_load_action),
+            ("scenario.reset", window.scenario_reset_action),
+            ("scenario.export", window.scenario_export_action),
         ]
     )

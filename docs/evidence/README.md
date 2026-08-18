@@ -2,6 +2,16 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
+Estado vivo da PR `#99`: as evidências 4A–4B.5 são candidatas pré-merge; somente os checks obrigatórios e o CI correspondente podem autorizar a retirada do draft. Nenhuma delas declara integração em `main` ou aprovação de release.
+
+- `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; pré-merge.
+- `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; pré-merge.
+- `ETAPA_4B2_PREVIEW_OVERLAYS_2026-08-18.md` — preview somente leitura, overlays e isolamento da edição normal; pré-merge.
+- `ETAPA_4B3_AUTORIA_CENARIO_2026-08-18.md` — autoria lateral, Undo/Redo isolado, persistência e auditoria Qt/Pillow/NumPy; pré-merge.
+- `ETAPA_4B4_EXPORTACAO_ENGINES_2026-08-18.md` — snapshot histórico da primeira execução da exportação; consulte a correção atual dos validadores.
+- `ETAPA_4B4_CORRECAO_VALIDADORES_2026-08-18.md` — correção do contrato LF/blob, validadores Godot/Unity fortalecidos, cinco casos negativos por engine e execução real reproduzível; pré-merge.
+- `ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md` — determinismo, benchmark e fechamento de qualidade; pré-merge.
+
 - `ETAPA_3_PALETA_COMANDOS_2026-08-18.md` — implementação da paleta visual, busca, teclado, Escape, localização e acessibilidade, com capturas reais en/pt, geometrias Qt, hashes Pillow/OpenCV e validação do manifest.
 - `ETAPA_3_ENCERRAMENTO_POS_MERGE.md` — fechamento pós-merge da PR `#97`, CI `32125768535` aprovado em Linux/Windows e sincronização do `main` ao merge `5d4c0829`.
 

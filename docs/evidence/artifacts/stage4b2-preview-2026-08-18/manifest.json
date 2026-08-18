@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "generator": "scripts/audit_scenario_preview.py",
+  "viewport": [
+    1280,
+    720
+  ],
+  "states": {
+    "normal_editing": {
+      "preview": false,
+      "overlays": false
+    },
+    "preview_read_only": {
+      "preview": true,
+      "overlays": false
+    },
+    "preview_with_overlays": {
+      "preview": true,
+      "overlays": true
+    },
+    "normal_after_preview": {
+      "preview": false,
+      "overlays": false
+    }
+  },
+  "qt_geometry": {
+    "canvas_origin": [
+      158,
+      55
+    ],
+    "canvas_size": [
+      778,
+      665
+    ]
+  },
+  "overlay": {
+    "annotated": "03_preview_with_overlays_annotated.png",
+    "canvas_origin": [
+      158,
+      55
+    ],
+    "viewport_size": [
+      778.0,
+      665.0
+    ],
+    "frame": [
+      0.0,
+      113.6875,
+      778.0,
+      437.625
+    ],
+    "safe_area": [
+      38.89999999999999,
+      135.56875,
+      700.2,
+      393.8625
+    ],
+    "crop_regions": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        665.0
+      ],
+      [
+        778.0,
+        0.0,
+        0.0,
+        665.0
+      ],
+      [
+        0.0,
+        0.0,
+        778.0,
+        113.6875
+      ],
+      [
+        0.0,
+        551.3125,
+        778.0,
+        113.6875
+      ]
+    ]
+  },
+  "pixel_checks": {
+    "cyan_pixels": 3166,
+    "yellow_pixels": 934
+  },
+  "pngs": {
+    "normal_editing": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB",
+      "alpha": [
+        255,
+        255
+      ],
+      "border_nonblack_pixels": 4000,
+      "digest": {
+        "bytes": 18489,
+        "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e"
+      }
+    },
+    "preview_read_only": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB",
+      "alpha": [
+        255,
+        255
+      ],
+      "border_nonblack_pixels": 4000,
+      "digest": {
+        "bytes": 9581,
+        "sha256": "4e4ef8565ecedde356743a1c4b8f04a1c622acd52f2dcc9cc4f6b1308bf887d7"
+      }
+    },
+    "preview_with_overlays": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB",
+      "alpha": [
+        255,
+        255
+      ],
+      "border_nonblack_pixels": 4000,
+      "digest": {
+        "bytes": 11781,
+        "sha256": "9d7720218d9310d7569aa301e42781d21533b54d1dc211d55d806a5398d0760a"
+      }
+    },
+    "normal_after_preview": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB",
+      "alpha": [
+        255,
+        255
+      ],
+      "border_nonblack_pixels": 4000,
+      "digest": {
+        "bytes": 18489,
+        "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e"
+      }
+    }
+  },
+  "scene_invariants": {
+    "object_ids": [
+      "preview_object"
+    ],
+    "undo_count": 0,
+    "polygon": [
+      [
+        120,
+        100
+      ],
+      [
+        350,
+        100
+      ],
+      [
+        350,
+        330
+      ],
+      [
+        120,
+        330
+      ]
+    ]
+  },
+  "source_commit": "638db729ac51988ecce3edb54785aff33bf1687c",
+  "scope": "read-only scenario preview, safe-frame/crop overlays, Qt interaction isolation and real PNG audit",
+  "files": {
+    "../../../../src/core/scenario_preview.py": {
+      "bytes": 5221,
+      "sha256": "0d9f9ff7c7f92b38c34c98b66e9595839c7575c96ec8c7186409ae104834cb53"
+    },
+    "../../../../src/ui/canvas_view.py": {
+      "bytes": 54530,
+      "sha256": "92f4aedf18d50234354c9b2f511b1b97745213b52c937dcb4e89cf167b40ac93"
+    },
+    "main_window.py": {
+      "bytes": 45576,
+      "sha256": "c7fc797fefd6d26d34fbda1a7a82195b13d22298349f7b1d0e6d6a17bee01339"
+    },
+    "../../../../src/ui/main_window_translations.py": {
+      "bytes": 9722,
+      "sha256": "1f3eefd3817c25028b8661aa1cfc6df7b73b3b032e6b043b1eeea5ae326a4608"
+    },
+    "../../../../src/ui/scenario_preview_actions.py": {
+      "bytes": 1980,
+      "sha256": "becb6d3c526b3adbfb4c824de17cb2d812fe1bde2bfb2c32499cbe44cd9f1600"
+    },
+    "../../../../tests/test_scenario_preview.py": {
+      "bytes": 3320,
+      "sha256": "68fabedf8af5344e14de7314b77f0e1966c71480b9b5ea8cd10e15e796d3f3b7"
+    },
+    "../../../../tests/test_stage4b2_preview_overlays.py": {
+      "bytes": 5314,
+      "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f"
+    },
+    "../../../../scripts/audit_scenario_preview.py": {
+      "bytes": 8150,
+      "sha256": "50a73d58ec9964dce851c757ee5eb20766f93e7560afe56aeb6e017452f14319"
+    },
+    "../../ETAPA_4B2_PREVIEW_OVERLAYS_2026-08-18.md": {
+      "bytes": 7757,
+      "sha256": "129cac0c4b966059bfc871a8a8f66534aad4ab144c36ffbe56289b3d78d3e28f"
+    },
+    "01_normal_editing.png": {
+      "bytes": 18489,
+      "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e"
+    },
+    "02_preview_read_only.png": {
+      "bytes": 9581,
+      "sha256": "4e4ef8565ecedde356743a1c4b8f04a1c622acd52f2dcc9cc4f6b1308bf887d7"
+    },
+    "03_preview_with_overlays.png": {
+      "bytes": 11781,
+      "sha256": "9d7720218d9310d7569aa301e42781d21533b54d1dc211d55d806a5398d0760a"
+    },
+    "03_preview_with_overlays_annotated.png": {
+      "bytes": 11030,
+      "sha256": "97c028092c88ba215e1ee7a7066ed7f30a1cdcfd7c8699caadbb29b9afbe2879"
+    },
+    "04_normal_after_preview.png": {
+      "bytes": 18489,
+      "sha256": "d583ce5cc6efccfa02b407d673e0d46095e7f6c0f77a83492ab743bccabed20e"
+    }
+  }
+}

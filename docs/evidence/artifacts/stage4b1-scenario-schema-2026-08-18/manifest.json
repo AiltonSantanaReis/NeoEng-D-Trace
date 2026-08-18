@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "source_commit": "0290f60e5c7186c42e02402d119fc37a27edbacd",
+  "scope": "versioned lateral scenario schema with bounded hash, round-trip and atomic rollback",
+  "files": {
+    "../../../../src/persistence/scenario_schema.py": {
+      "bytes": 5889,
+      "sha256": "4999b311be46471bc75e9bc9e58d9f0c941714cc850eb19b46b31a2323c35e44"
+    },
+    "../../../../src/persistence/scenario_io.py": {
+      "bytes": 8016,
+      "sha256": "45765cae1b1436fa68806eed27bfd41182c22b795d809c41757d271ace3487bc"
+    },
+    "../../../../src/persistence/__init__.py": {
+      "bytes": 1998,
+      "sha256": "1a9f403718c43470f3e25487e44f4f67446df056083b64da8a81c66e8f2a0330"
+    },
+    "../../../../tests/test_scenario_schema_io.py": {
+      "bytes": 16923,
+      "sha256": "f14e74fdbb73057fd99bb68514fe6f63d6d20fd3bee16cabb903e2e0cd49c6a2"
+    },
+    "docs/evidence/ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md": {
+      "bytes": 5230,
+      "sha256": "02ec1b39b68a49a3b8a700c79f65f603e41e49bfcef497b15333bc612bc2decb"
+    }
+  }
+}

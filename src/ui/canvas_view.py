@@ -6,7 +6,7 @@ from dataclasses import dataclass
 # src/ui/canvas_view.py
 from typing import Any, Callable, Optional, Tuple
 
-from PySide6.QtCore import QObject, QPointF, QRunnable, Qt, QThreadPool, Signal
+from PySide6.QtCore import QObject, QPointF, QRectF, QRunnable, Qt, QThreadPool, Signal
 from PySide6.QtGui import (
     QColor,
     QFont,
@@ -29,6 +29,13 @@ from src.core.commands import (
     ToggleCollisionCommand,
 )
 from src.core.logger import logger
+from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
+from src.core.scenario_preview import (
+    ScenarioOverlayGeometry,
+    ScenarioPreviewLayer,
+    build_overlay_geometry,
+    project_layer_points,
+)
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.image_conversion import to_qimage
@@ -187,6 +194,13 @@ class CanvasView(QWidget):
 
         # Flags de Estado
         self._preview_mode = False  # Modo de exportação (esconde UI helpers)
+        self._scenario_preview_enabled = False
+        self._scenario_overlays_visible = False
+        self._scenario_overlay_aspect = (16, 9)
+        self._scenario_safe_fraction = 0.9
+        self._scenario_camera: Optional[OrthographicCamera] = None
+        self._scenario_layers: tuple[ScenarioPreviewLayer, ...] = ()
+        self._scenario_overlay_geometry: Optional[ScenarioOverlayGeometry] = None
 
         # --- Configurações Críticas de Interação ---
         self.setMouseTracking(True)
@@ -248,6 +262,9 @@ class CanvasView(QWidget):
             self.update_image()
 
     def contextMenuEvent(self, event):
+        if self._scenario_preview_enabled:
+            event.accept()
+            return
         if self._tool or len(self._current_polygon) > 0:
             return
 
@@ -736,15 +753,138 @@ class CanvasView(QWidget):
             self._cancel_gizmo_gesture()
         if mode and self._tool and self._tool.on_cancel:
             self._tool.on_cancel()
+        if mode and self._scenario_preview_enabled:
+            self._scenario_preview_enabled = False
         self._preview_mode = mode
         # Esconde/Mostra botão do gizmo
         self.gizmo_toggle.setVisible(not mode)
         self.update()
 
+    def _scenario_camera_from_current_view(self) -> OrthographicCamera:
+        width = max(1.0, float(self.width()))
+        height = max(1.0, float(self.height()))
+        zoom = max(0.01, float(self._zoom))
+        return OrthographicCamera(
+            (width, height),
+            position=(
+                (width / 2.0 - self._pan.x()) / zoom,
+                (height / 2.0 - self._pan.y()) / zoom,
+            ),
+            zoom=zoom,
+        )
+
+    def _scenario_camera_for_viewport(self) -> OrthographicCamera:
+        width = max(1.0, float(self.width()))
+        height = max(1.0, float(self.height()))
+        camera = self._scenario_camera or self._scenario_camera_from_current_view()
+        if camera.viewport_size != (width, height):
+            camera = OrthographicCamera(
+                (width, height), position=camera.position, zoom=camera.zoom
+            )
+            self._scenario_camera = camera
+        return camera
+
+    @staticmethod
+    def _scenario_qtransform(
+        camera: OrthographicCamera, layer: ParallaxLayer | None = None
+    ) -> QTransform:
+        resolved = layer or ParallaxLayer()
+        zoom = camera.effective_zoom(resolved)
+        center_x, center_y = camera.viewport_center
+        translation_factor = resolved.translation_factor
+        transform = QTransform()
+        transform.translate(
+            center_x - camera.position[0] * translation_factor * zoom,
+            center_y - camera.position[1] * translation_factor * zoom,
+        )
+        transform.scale(zoom, zoom)
+        return transform
+
+    def set_scenario_preview_enabled(self, enabled: bool) -> None:
+        """Toggle the read-only scenario preview without changing the scene."""
+
+        enabled = bool(enabled)
+        if enabled and not self._scenario_preview_enabled:
+            if self._gizmo_active:
+                self._cancel_gizmo_gesture()
+            if self._tool and self._tool.on_cancel:
+                self._tool.on_cancel()
+            self._scenario_camera = self._scenario_camera_from_current_view()
+        self._scenario_preview_enabled = enabled
+        if not enabled:
+            self._dragging = False
+            self.setCursor(Qt.CursorShape.ArrowCursor)
+        self.update()
+
+    def is_scenario_preview_enabled(self) -> bool:
+        return self._scenario_preview_enabled
+
+    def set_scenario_preview_layers(
+        self, layers: tuple[ScenarioPreviewLayer, ...] | list[ScenarioPreviewLayer]
+    ) -> None:
+        """Set runtime-only layer bindings; persistence belongs to Etapa 4B.3."""
+
+        resolved = tuple(layers)
+        if any(not isinstance(layer, ScenarioPreviewLayer) for layer in resolved):
+            raise ValueError("scenario preview layers must be ScenarioPreviewLayer")
+        layer_ids = [layer.id for layer in resolved]
+        if len(layer_ids) != len(set(layer_ids)):
+            raise ValueError("scenario preview layer IDs must be unique")
+        object_ids = [object_id for layer in resolved for object_id in layer.object_ids]
+        if len(object_ids) != len(set(object_ids)):
+            raise ValueError("scenario preview object bindings must be unique")
+        self._scenario_layers = resolved
+        self.update()
+
+    def set_scenario_camera(self, camera: OrthographicCamera) -> None:
+        """Install a runtime camera without persisting or mutating the scene."""
+
+        if not isinstance(camera, OrthographicCamera):
+            raise ValueError("scenario camera must be an OrthographicCamera")
+        self._scenario_camera = camera
+        self.update()
+
+    def set_scenario_overlays_visible(
+        self,
+        visible: bool,
+        *,
+        aspect_ratio: tuple[int, int] | None = None,
+        safe_fraction: float | None = None,
+    ) -> None:
+        """Toggle safe-frame/crop overlays with validated runtime geometry."""
+
+        resolved_aspect = aspect_ratio or self._scenario_overlay_aspect
+        resolved_safe_fraction = (
+            self._scenario_safe_fraction if safe_fraction is None else safe_fraction
+        )
+        geometry = build_overlay_geometry(
+            (max(1.0, float(self.width())), max(1.0, float(self.height()))),
+            aspect_ratio=resolved_aspect,
+            safe_fraction=resolved_safe_fraction,
+        )
+        self._scenario_overlay_aspect = resolved_aspect
+        self._scenario_safe_fraction = geometry.safe_fraction
+        self._scenario_overlay_geometry = geometry
+        self._scenario_overlays_visible = bool(visible)
+        self.update()
+
+    def is_scenario_overlays_visible(self) -> bool:
+        return self._scenario_overlays_visible
+
     # --- Eventos de Input ---
     def wheelEvent(self, event: QWheelEvent):
         delta = event.angleDelta().y()
         factor = 1.15 if delta > 0 else 1 / 1.15
+        if self._scenario_preview_enabled:
+            camera = self._scenario_camera_for_viewport()
+            self._scenario_camera = OrthographicCamera(
+                camera.viewport_size,
+                position=camera.position,
+                zoom=max(0.01, min(50.0, camera.zoom * factor)),
+            )
+            self.update()
+            event.accept()
+            return
         t = self.get_transform()
         inv, _ = t.inverted()
         mouse_in_img = inv.map(event.position())
@@ -757,6 +897,14 @@ class CanvasView(QWidget):
 
     def mousePressEvent(self, event: QMouseEvent):
         pos = event.position()
+
+        if self._scenario_preview_enabled:
+            if event.button() == Qt.MouseButton.MiddleButton:
+                self._dragging = True
+                self._last_mouse = pos
+                self.setCursor(Qt.CursorShape.ClosedHandCursor)
+            event.accept()
+            return
 
         # 1. Gizmo contextual da seleção (sempre em coordenadas de tela)
         if (
@@ -859,6 +1007,24 @@ class CanvasView(QWidget):
     def mouseMoveEvent(self, event: QMouseEvent):
         pos = event.position()
 
+        if self._scenario_preview_enabled:
+            if self._dragging:
+                delta = pos - self._last_mouse
+                self._last_mouse = pos
+                camera = self._scenario_camera_for_viewport()
+                zoom = max(camera.zoom, 0.01)
+                self._scenario_camera = OrthographicCamera(
+                    camera.viewport_size,
+                    position=(
+                        camera.position[0] - delta.x() / zoom,
+                        camera.position[1] - delta.y() / zoom,
+                    ),
+                    zoom=camera.zoom,
+                )
+                self.update()
+            event.accept()
+            return
+
         # 1. Movimento via Gizmo: o preview sempre parte do estado inicial.
         if self._gizmo_active and self.gizmo and not self._preview_mode:
             delta_screen = pos - self._gizmo_start_mouse
@@ -953,6 +1119,12 @@ class CanvasView(QWidget):
         self.update()
 
     def mouseReleaseEvent(self, event: QMouseEvent):
+        if self._scenario_preview_enabled:
+            if self._dragging:
+                self._dragging = False
+                self.setCursor(Qt.CursorShape.ArrowCursor)
+            event.accept()
+            return
         if self._gizmo_active:
             self._finish_gizmo_gesture()
             return
@@ -1012,10 +1184,97 @@ class CanvasView(QWidget):
             self._current_polygon = []
         self.update()
 
+    def _draw_scenario_scene_objects(
+        self, painter: QPainter, camera: OrthographicCamera
+    ) -> None:
+        selected_oids = set(self._selected_object_ids())
+        object_layers = {
+            object_id: layer
+            for layer in self._scenario_layers
+            for object_id in layer.object_ids
+        }
+        for oid, obj in getattr(self.model, "objects", {}).items():
+            poly = getattr(obj, "polygon", [])
+            if len(poly) <= 1:
+                continue
+            layer = object_layers.get(oid)
+            if layer is not None and not layer.visible:
+                continue
+            resolved_layer = layer or ScenarioPreviewLayer(
+                id="__unassigned__", parallax=ParallaxLayer()
+            )
+            projected = project_layer_points(camera, resolved_layer, poly)
+            if len(projected) <= 1:
+                continue
+            if oid in selected_oids:
+                painter.setPen(self._pen_selected)
+                painter.setBrush(self._brush_selected)
+            else:
+                painter.setPen(self._pen_poly)
+                painter.setBrush(self._brush_poly)
+            painter.drawPolygon(QPolygonF([QPointF(x, y) for x, y in projected]))
+
+    def _draw_scenario_overlays(self, painter: QPainter) -> None:
+        viewport_size = (
+            max(1.0, float(self.width())),
+            max(1.0, float(self.height())),
+        )
+        geometry = self._scenario_overlay_geometry
+        if geometry is None or geometry.viewport_size != viewport_size:
+            geometry = build_overlay_geometry(
+                viewport_size,
+                aspect_ratio=self._scenario_overlay_aspect,
+                safe_fraction=self._scenario_safe_fraction,
+            )
+            self._scenario_overlay_geometry = geometry
+        painter.save()
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(0, 0, 0, 150))
+        for x, y, width, height in geometry.crop_regions:
+            if width > 0.0 and height > 0.0:
+                painter.drawRect(QRectF(x, y, width, height))
+        x, y, width, height = geometry.frame
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.setPen(QPen(QColor(62, 236, 255, 220), 2))
+        painter.drawRect(QRectF(x, y, width, height))
+        x, y, width, height = geometry.safe_area
+        safe_pen = QPen(QColor(255, 220, 80, 220), 1)
+        safe_pen.setStyle(Qt.PenStyle.DashLine)
+        painter.setPen(safe_pen)
+        painter.drawRect(QRectF(x, y, width, height))
+        painter.setPen(QColor(190, 245, 255))
+        painter.setFont(QFont("Consolas", 9, QFont.Weight.Bold))
+        ratio = f"{geometry.aspect_ratio[0]}:{geometry.aspect_ratio[1]}"
+        painter.drawText(10, self.height() - 12, f"SAFE FRAME {ratio}")
+        painter.restore()
+
+    def _paint_scenario_preview(self, painter: QPainter) -> None:
+        camera = self._scenario_camera_for_viewport()
+        image = self._qimage_lit
+        if image is not None:
+            painter.save()
+            painter.setTransform(self._scenario_qtransform(camera))
+            painter.drawImage(0, 0, image)
+            painter.restore()
+        painter.save()
+        self._draw_scenario_scene_objects(painter, camera)
+        painter.restore()
+        if self._scenario_overlays_visible:
+            self._draw_scenario_overlays(painter)
+        self._draw_hud(painter)
+        painter.setPen(QColor(170, 245, 255))
+        painter.setFont(QFont("Consolas", 9, QFont.Weight.Bold))
+        painter.drawText(10, 62, "SCENARIO PREVIEW | READ-ONLY")
+
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         painter.fillRect(self.rect(), QColor(30, 30, 30))
+
+        if self._scenario_preview_enabled:
+            self._paint_scenario_preview(painter)
+            painter.end()
+            return
 
         # 1. Transformação para Mundo
         t = self.get_transform()

@@ -1,5 +1,7 @@
 # Evidência — Reconciliação documental e registro do plano
 
+> **SNAPSHOT HISTÓRICO:** este relatório registra o estado do commit de referência `b6549ffc` antes da implementação da PR `#99`. Consulte os documentos vivos e as evidências 4A–4B.5 para o estado candidato atual.
+
 ## Identificação
 
 - Commit funcional de referência: `b6549ffc1f0e92fb8eeb0f7846414356172191a8`

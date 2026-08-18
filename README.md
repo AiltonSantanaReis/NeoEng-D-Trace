@@ -15,8 +15,10 @@ O baseline funcional de código verificado é o merge da PR `#97`, commit
 passou em Linux e Windows nos jobs `95675864634` e `95675864866`.
 A Etapa 3 integrou a paleta visual, busca, teclado, localização e acessibilidade,
 com evidências reais em `docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md`.
-O módulo de cenários parallax, câmera, overlays e schema lateral permanece
-planejado e não iniciado.
+No `main` integrado pela PR `#97`, o módulo de cenários parallax, câmera,
+overlays e schema lateral permanece planejado e não iniciado. A PR `#99`
+contém um candidato pré-merge das etapas 4A a 4B.5, com evidências locais;
+essa implementação não é apresentada como integrada até os checks e o merge.
 
 A release `v0.2.0` continua sendo um snapshot publicado anterior e não
 representa automaticamente o estado mais recente de `main`.
@@ -266,7 +268,7 @@ objeto da validação.
 
 O README não transforma roadmap em funcionalidade entregue. No estado atual:
 
-- **paleta de comandos está integrada e validada na Etapa 3; cenários parallax permanecem planejados e não iniciados**;
+- **paleta de comandos está integrada e validada na Etapa 3; no `main` da PR #97 os cenários parallax permanecem planejados, enquanto a PR #99 contém candidato pré-merge ainda não integrado**;
 
 - **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
 - **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura é opcional e não é gate de release;

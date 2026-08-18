@@ -1,0 +1,50 @@
+CASE=wrong_format
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+ERROR: scenario-import:{"errors":["scenario export keys are invalid"],"status":"FAILED"}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _fail (res://tools/godot_scenario_stage4b4_validator.gd:7)
+       [1] _check (res://tools/godot_scenario_stage4b4_validator.gd:13)
+       [2] _initialize (res://tools/godot_scenario_stage4b4_validator.gd:23)
+
+CASE=generator_identity
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+ERROR: scenario-import:{"errors":["scenario export generator is invalid"],"status":"FAILED"}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _fail (res://tools/godot_scenario_stage4b4_validator.gd:7)
+       [1] _check (res://tools/godot_scenario_stage4b4_validator.gd:13)
+       [2] _initialize (res://tools/godot_scenario_stage4b4_validator.gd:23)
+
+CASE=lowercase_binding_hash
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+ERROR: scenario-import:{"errors":["scenario export source binding is invalid"],"status":"FAILED"}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _fail (res://tools/godot_scenario_stage4b4_validator.gd:7)
+       [1] _check (res://tools/godot_scenario_stage4b4_validator.gd:13)
+       [2] _initialize (res://tools/godot_scenario_stage4b4_validator.gd:23)
+
+CASE=camera_zoom
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+ERROR: scenario-import:{"errors":["scenario export camera is invalid"],"status":"FAILED"}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _fail (res://tools/godot_scenario_stage4b4_validator.gd:7)
+       [1] _check (res://tools/godot_scenario_stage4b4_validator.gd:13)
+       [2] _initialize (res://tools/godot_scenario_stage4b4_validator.gd:23)
+
+CASE=parallax_range
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+ERROR: scenario-import:{"errors":["scenario export parallax values are invalid"],"status":"FAILED"}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _fail (res://tools/godot_scenario_stage4b4_validator.gd:7)
+       [1] _check (res://tools/godot_scenario_stage4b4_validator.gd:13)
+       [2] _initialize (res://tools/godot_scenario_stage4b4_validator.gd:23)
+

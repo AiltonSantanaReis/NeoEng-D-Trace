@@ -1,0 +1,54 @@
+{
+  "expected": {
+    "godot_negative_exit": 1,
+    "godot_plugin_exit": 0,
+    "godot_positive_exit": 0,
+    "unity_negative_exit": 1,
+    "unity_positive_exit": 0
+  },
+  "godot": {
+    "negative_cases": {
+      "camera_zoom": {
+        "exit": 1
+      },
+      "generator_identity": {
+        "exit": 1
+      },
+      "lowercase_binding_hash": {
+        "exit": 1
+      },
+      "parallax_range": {
+        "exit": 1
+      },
+      "wrong_format": {
+        "exit": 1
+      }
+    },
+    "negative_exit": 1,
+    "plugin_exit": 0,
+    "positive_exit": 0
+  },
+  "payload_sha256": "75ba287e57a77e86b5383030da2ae9a5cf62e753e29f7e833b371f2b8e24bfdc",
+  "status": "PASS",
+  "unity": {
+    "negative_cases": {
+      "camera_zoom": {
+        "exit": 1
+      },
+      "generator_identity": {
+        "exit": 1
+      },
+      "lowercase_binding_hash": {
+        "exit": 1
+      },
+      "parallax_range": {
+        "exit": 1
+      },
+      "wrong_format": {
+        "exit": 1
+      }
+    },
+    "negative_exit": 1,
+    "positive_exit": 0
+  }
+}

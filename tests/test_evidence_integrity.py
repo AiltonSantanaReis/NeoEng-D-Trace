@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import subprocess
 import zipfile
 from pathlib import Path
 
@@ -93,10 +94,53 @@ def test_validator_reads_member_from_evidence_zip(tmp_path: Path, monkeypatch) -
     assert evidence_integrity.validate_manifest(manifest, require_tracked=True) == []
 
 
+def test_git_blob_mode_validates_index_bytes_not_worktree_conversion(
+    tmp_path: Path, monkeypatch
+) -> None:
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=tmp_path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Evidence Test"], cwd=tmp_path, check=True
+    )
+    artifact = tmp_path / "artifact.py"
+    artifact.write_bytes(b"line\n")
+    manifest = tmp_path / "manifest.json"
+    evidence_integrity.write_json_lf(
+        manifest, {"files": {"artifact.py": evidence_integrity.digest_path(artifact)}}
+    )
+    subprocess.run(
+        ["git", "add", "artifact.py", "manifest.json"], cwd=tmp_path, check=True
+    )
+    artifact.write_bytes(b"line\r\n")
+    monkeypatch.setattr(evidence_integrity, "ROOT", tmp_path)
+    monkeypatch.setattr(evidence_integrity, "EVIDENCE_ROOT", tmp_path)
+
+    assert (
+        evidence_integrity.validate_manifest(
+            manifest, require_tracked=True, use_git_blob=True
+        )
+        == []
+    )
+    worktree_issues = evidence_integrity.validate_manifest(
+        manifest, require_tracked=True, use_git_blob=False
+    )
+    assert any("non-canonical" in issue.message for issue in worktree_issues)
+    assert any("sha256 mismatch" in issue.message for issue in worktree_issues)
+
+
 def test_ci_requires_strict_evidence_gate_in_both_jobs() -> None:
     root = Path(__file__).resolve().parents[1]
     workflow = (root / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
-    assert workflow.count("python tools/evidence_integrity.py --require-tracked") == 2
-    assert "/docs/evidence/** text eol=lf" in (root / ".gitattributes").read_text(
-        encoding="utf-8"
+    assert (
+        workflow.count(
+            "python tools/evidence_integrity.py --require-tracked --git-blob"
+        )
+        == 2
     )
+    attributes = (root / ".gitattributes").read_text(encoding="utf-8")
+    assert "/docs/evidence/** text eol=lf" in attributes
+    assert "*.py text eol=lf" in attributes
