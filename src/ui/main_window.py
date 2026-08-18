@@ -49,6 +49,7 @@ from src.ui.layers_panel import LayersPanel
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
 from src.ui.responsive_layout import build_responsive_layout
+from src.ui.scenario_authoring_actions import install_scenario_authoring
 from src.ui.scenario_preview_actions import install_scenario_preview_actions
 from src.ui.side_panel import SidePanel
 from src.ui.tool_palette import ToolPalette
@@ -250,7 +251,7 @@ class MainWindow(QMainWindow):
 
         # Adiciona Overlay ao Canvas
         self.canvas.set_collision_overlay(self.collision_overlay)
-
+        install_scenario_authoring(self)
         # 5. NAVIGATION TOOLBAR
         # (Barra de Ferramentas de Navegação e Ações Rápidas)
         self.nav_toolbar = QToolBar("Navigation")

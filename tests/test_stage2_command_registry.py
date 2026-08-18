@@ -87,6 +87,9 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "export.open",
             "collision.export_json",
             "collision.export_txt",
+            "scenario.save",
+            "scenario.load",
+            "scenario.reset",
         }
         assert set(window.command_registry.command_ids()) == expected
         assert window.command_registry.action("file.save") is window.save_project_action

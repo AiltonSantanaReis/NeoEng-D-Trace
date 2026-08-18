@@ -3,11 +3,12 @@ from typing import Optional
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QHBoxLayout,
+    QGridLayout,
     QListWidget,
     QListWidgetItem,
     QMessageBox,
     QPushButton,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -32,10 +33,13 @@ class LayersPanel(QWidget):
         self.setMinimumWidth(200)
 
         self.main_layout = QVBoxLayout()
+        self.tabs = QTabWidget()
+        self.project_layers_page = QWidget()
+        self.project_layers_layout = QVBoxLayout(self.project_layers_page)
         self.list = QListWidget()
-        self.main_layout.addWidget(self.list)
+        self.project_layers_layout.addWidget(self.list)
 
-        buttons = QHBoxLayout()
+        buttons = QGridLayout()
         self.btn_new = QPushButton("New")
         self.btn_delete = QPushButton("Delete")
         self.btn_up = QPushButton("Up")
@@ -43,17 +47,21 @@ class LayersPanel(QWidget):
         self.btn_vis = QPushButton("Toggle Vis")
         self.btn_lock = QPushButton("Toggle Lock")
 
-        for button in (
-            self.btn_new,
-            self.btn_delete,
-            self.btn_up,
-            self.btn_down,
-            self.btn_vis,
-            self.btn_lock,
+        for index, button in enumerate(
+            (
+                self.btn_new,
+                self.btn_delete,
+                self.btn_up,
+                self.btn_down,
+                self.btn_vis,
+                self.btn_lock,
+            )
         ):
-            buttons.addWidget(button)
+            buttons.addWidget(button, index // 3, index % 3)
 
-        self.main_layout.addLayout(buttons)
+        self.project_layers_layout.addLayout(buttons)
+        self.tabs.addTab(self.project_layers_page, "Project Layers")
+        self.main_layout.addWidget(self.tabs)
         self.setLayout(self.main_layout)
 
         self.btn_new.clicked.connect(self._create)
@@ -66,6 +74,16 @@ class LayersPanel(QWidget):
         if hasattr(self.scene, "subscribe"):
             self.scene.subscribe(self.refresh)
         self.refresh()
+
+    def attach_scenario_panel(self, panel: QWidget) -> None:
+        if self.tabs.indexOf(panel) < 0:
+            self.tabs.addTab(panel, "Scenario")
+
+    def update_language(self, lang: str) -> None:
+        del lang
+        if self.tabs.count() >= 2:
+            self.tabs.setTabText(0, "Project Layers")
+            self.tabs.setTabText(1, "Scenario")
 
     def refresh(self):
         current_item = self.list.currentItem()
