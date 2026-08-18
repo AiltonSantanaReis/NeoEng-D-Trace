@@ -105,7 +105,7 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
         app.processEvents()
 
 
-def test_ctrl_k_emits_request_without_creating_palette_ui() -> None:
+def test_ctrl_k_emits_request_and_opens_palette() -> None:
     app = _app()
     window = MainWindow(Scene(), {})
     try:
@@ -120,7 +120,11 @@ def test_ctrl_k_emits_request_without_creating_palette_ui() -> None:
         app.processEvents()
 
         assert requests == [True]
+        assert window.command_palette.isVisible() is True
         assert window.command_palette_shortcut.key().toString() == "Ctrl+K"
+        QTest.keyClick(window.command_palette.search_input, Qt.Key_Escape)
+        app.processEvents()
+        assert window.command_palette.isVisible() is False
     finally:
         window.close()
         app.processEvents()

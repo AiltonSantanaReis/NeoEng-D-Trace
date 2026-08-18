@@ -86,6 +86,19 @@ MAIN_WINDOW_TRANSLATIONS = {
         "collision_panel": "Collision",
         "english": "English",
         "portuguese": "Portuguese",
+        "command_palette_title": "Command Palette",
+        "command_palette_placeholder": "Search commands by name or ID...",
+        "command_palette_no_results": "No matching commands.",
+        "command_palette_hint": "Up/Down to navigate · Enter to run · Esc to close",
+        "command_palette_search_name": "Command search",
+        "command_palette_search_description": (
+            "Type a command name, shortcut, or stable command ID."
+        ),
+        "command_palette_results_name": "Command results",
+        "command_palette_results_description": (
+            "Enabled commands can be run with Enter. Disabled commands are shown "
+            "but cannot be run."
+        ),
     },
     "pt": {
         "window_title": build_window_title("pt"),
@@ -172,5 +185,20 @@ MAIN_WINDOW_TRANSLATIONS = {
         "collision_panel": "Colisão",
         "english": "Inglês",
         "portuguese": "Português",
+        "command_palette_title": "Paleta de Comandos",
+        "command_palette_placeholder": "Pesquisar comandos por nome ou ID...",
+        "command_palette_no_results": "Nenhum comando encontrado.",
+        "command_palette_hint": (
+            "Cima/Baixo para navegar · Enter para executar · " "Esc para fechar"
+        ),
+        "command_palette_search_name": "Pesquisa de comandos",
+        "command_palette_search_description": (
+            "Digite o nome, atalho ou ID estável do comando."
+        ),
+        "command_palette_results_name": "Resultados de comandos",
+        "command_palette_results_description": (
+            "Comandos habilitados podem ser executados com Enter. Comandos "
+            "desabilitados são exibidos, mas não podem ser executados."
+        ),
     },
 }
