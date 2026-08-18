@@ -8,21 +8,15 @@ Este bloco é um snapshot vivo condicionado à verificação do repositório e d
 
 ## Reconciliação corrente do estado e do novo plano
 
-- baseline funcional verificado em `b6549ffc1f0e92fb8eeb0f7846414356172191a8`,
-  merge da PR `#92`; o HEAD atual do `main` é `9cef8a0eabd0f6c6e087fc3a5251ddb9df02da18`,
-  merge da Etapa 2 pela PR `#95`.
+- baseline funcional verificado no merge `5d4c0829adabfcd51741d95151f808722d43857c`,
+  PR `#97`; CI pós-merge `32125768535` passou em Linux e Windows nos jobs
+  `95675864634` e `95675864866`.
 
-- CI pré-merge `32107519574` e CI pós-merge `32107883246` validaram o baseline;
-  reconciliação documental `32113850905` e validação da Etapa 2 `32118071443`
-  passaram em Linux e Windows.
+- A PR `#97` integrou a paleta visual, busca, teclado, localização e acessibilidade,
+  com captura real e hashes registrados na evidência da Etapa 3.
 
-- A PR `#92` removeu uma instrução duplicada e atualizou o baseline; a PR `#93`
-  reconciliou a documentação; a PR `#95` integrou o registry de comandos, os
-  estados derivados das QAction e o gatilho Ctrl+K.
-
-- A paleta visual, busca, localização e acessibilidade ainda não foram
-  implementadas. O parallax, câmera, overlays e schema lateral continuam
-  `PLANEJADOS / NÃO INICIADOS`.
+- O parallax, câmera, overlays e schema lateral continuam `PLANEJADOS / NÃO
+  INICIADOS`; não são promovidos pela Etapa 3.
 
 - A release `v0.2.0` permanece um snapshot publicado anterior; este `main`
   contém commits posteriores e não deve ser apresentado como idêntico à release.

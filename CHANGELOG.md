@@ -6,9 +6,9 @@ Registro documental contínuo, atualizado em 18 de agosto de 2026. O estado real
 
 ### Reconciliação documental e plano de novas funcionalidades
 
-- registra o merge da PR `#92` (`b6549ffc`), a reconciliação da PR `#93` (`45b99f0`) e a Etapa 2 integrada pela PR `#95` (`9cef8a0`);
-- registra o CI da Etapa 2 `32118071443`, aprovado em Linux e Windows;
-- classifica a infraestrutura do registry e o gatilho Ctrl+K como integrados, mantendo a paleta visual, busca, localização, acessibilidade e cenários parallax como trabalho posterior;
+- registra o merge da PR `#97` (`5d4c0829`) e o CI pós-merge `32125768535`, aprovado em Linux e Windows;
+- registra a Etapa 3 integrada: paleta visual, busca, teclado, localização e acessibilidade, com capturas reais e hashes versionados;
+- mantém os cenários parallax, câmera, overlays e schema lateral como trabalho posterior;
 - preserva a release `v0.2.0` como snapshot publicado anterior, sem apresentá-la como idêntica ao `main` atual;
 
 ### Etapa 14 — encerramento técnico pós-merge
