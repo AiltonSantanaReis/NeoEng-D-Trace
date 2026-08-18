@@ -1,11 +1,17 @@
 # Plano de integração dos adaptadores nativos
 
-Data da revisão: 2026-08-17
+Data da revisão: 2026-08-18
 Estado: etapas 4, 5, 6, 7, 8 e 9 integradas nos escopos documentados; a etapa 10 está integrada pela PR #84 no merge `bca43f399928d69cb81e133e40991b7c011a0c10`; o CI pós-merge `32028639637` passou em Linux e Windows; release permanece não aprovada. A Etapa 8 foi integrada pela PR #79 no merge `8b40be3c72705cdd99c2e28849f030b7b3182bf0` e reproduzida no CI pós-merge `31995768720`. A Etapa 9 foi integrada pela PR #81 no merge `e1620571ab2f638ba671baa33ac508858e229313`; o CI pós-merge `32012110722` passou em Linux e Windows. A distinção entre plugins de terceiros e adaptadores first-party source-only foi formalizada em docs/evidence/DECISAO_ESCopo_ADAPTADORES_NATIVOS_2026-08-17.md.
 
 ## Reconciliação vigente da Etapa 4 de estabilização
 
 O número “Etapa 4” usado nesta execução refere-se à estabilização posterior de transação global e rollback de múltiplos manifestos. Ele não reclassifica nem reescreve o snapshot histórico da Etapa 4 deste plano, cujo critério original era a importação Godot. A evidência vigente da estabilização é `docs/evidence/ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md`, baseada no commit técnico `807af85`; o aceite original de importação Godot permanece histórico e separado.
+
+## Reconciliação com o plano de cenários
+
+O plano de cenários parallax e paleta de comandos é uma linha de produto
+separada dos adaptadores nativos Godot/Unity. A PR `#92` não alterou os
+contratos das engines nem promoveu as etapas 1–10 deste plano.
 
 ## Objetivo
 

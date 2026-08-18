@@ -1,6 +1,6 @@
 # Matriz funcional atual — NeoEng-D-Trace
 
-**Snapshot local:** 2026-08-13
+**Snapshot local:** 2026-08-18
 
 **Âncora integrada de encerramento da Etapa 13:** `b4d9390dbd1274c283a3e3985d6d79be47de45d6`
 
@@ -8,7 +8,9 @@
 
 **Âncora integrada pós-merge da Etapa 14:** `f15193a55d1a5de0c7031f5bab656107302eee1b` (PR `#58`, CI pós-merge `31905237922`)
 
-**Estado atual:** Etapas 11 a 13 permanecem encerradas nos escopos aprovados. A Etapa 14 foi integrada pela PR `#58` e o CI pós-merge `31905237922` foi aceito após auditoria de logs e artefatos: `982` testes por sistema, cobertura `92,80%`/`85,02%`, legado `27/27` reconciliado e árvore limpa. `R-014` e `R-015` são não bloqueantes; `R-016` está revisado e aprovado; a release oficial `v0.2.0` está publicada.
+**Âncora atual verificada:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8`, merge da PR `#92`; CI pré-merge `32107519574` e CI pós-merge `32107883246` passaram em Linux e Windows.
+
+**Estado atual:** Etapas 11 a 14 permanecem encerradas nos escopos aprovados. A PR `#92` contém apenas a remoção de uma instrução duplicada e a atualização correspondente do baseline. O plano de cenários parallax e a paleta de comandos estão `PLANEJADOS / NÃO INICIADOS`. A release oficial `v0.2.0` permanece publicada como snapshot anterior e não representa automaticamente o `main` atual.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -45,6 +47,8 @@ snapshot histórico.
 | Tipagem | INTEGRADO / APROVADO | mypy com `check_untyped_defs`: zero erros em `80` arquivos no CI pós-merge da Etapa 13 | ampliar anotações explícitas gradualmente |
 | Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
 | Build Windows/instalador | INTEGRADO / APROVADO | WiX 4.0.6 fixado; builds MSI reproduzíveis; instalação, smoke, upgrade, reparo, desinstalação, Godot/Unity, manifestos e CI pós-merge auditados | assinatura é opcional; formalizações futuras não bloqueiam |
+| Paleta de comandos | PLANEJADA / NÃO INICIADA | plano aceito em `PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md` | nenhuma implementação ou evidência de funcionamento ainda |
+| Cenários parallax 2D/2.5D | PLANEJADA / NÃO INICIADA | plano aceito em `PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md` | câmera, schema, preview e integração ainda não implementados |
 
 ## Regra de leitura
 

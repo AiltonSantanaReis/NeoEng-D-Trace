@@ -19,8 +19,12 @@
 | R-015 | P1 | Formalizações jurídicas e atribuições podem evoluir | Decisões de publicação podem exigir documentação adicional no futuro | Manter o estado real documentado; não é gate técnico ou bloqueio de release |
 | R-016 | P2 | Governança da toolchain MSI migrada | Necessidade de preservar a reprodutibilidade do builder | WiX 4.0.6 fixado e provas de reprodutibilidade, instalação, upgrade e reparo |
 | R-017 | P1 | Adaptadores nativos Godot/Unity ainda não validados em engines reais | Integração pode divergir em importação, pivô, colisão, overrides ou rollback | Fixtures reais, execução nas engines alvo, dry-run, hashes, CI e evidência por etapa 3 a 10 |
+| R-018 | P1 | Escopo parallax pode acoplar o editor a um runtime de engine | Crescimento de escopo, regressão do editor 2D e contrato instável | ADR, documento lateral versionado, preview isolado, limites, benchmark e rollback |
+| R-019 | P2 | Paleta de comandos pode divergir dos menus e ignorar estados de ação | Ações indisponíveis ou atalhos inconsistentes | Registro único de `QAction`, testes Qt de habilitação, localização, teclado e regressão |
 
 ## Estado operacional atual dos riscos
+
+Atualização corrente de 18 de agosto de 2026: `main` está no merge `b6549ffc` da PR `#92`; os riscos R-018 e R-019 estão planejados e não iniciados.
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
@@ -45,6 +49,8 @@ Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agos
 | R-015 | ROADMAP / NÃO BLOQUEANTE | NOTICE, política e atribuições registram o estado real; formalizações futuras não são pré-condição de release |
 | R-016 | APROVADO | WiX 4.0.6 fixado; dois builds independentes, build oficial, instalação, upgrade, reparo e desinstalação validados; governança revisada |
 | R-017 | INTEGRADO PELA PR #84 | A Etapa 10 possui harness fail-closed, fixtures reais e execução real em Godot 4.7.stable e Unity 6000.5.7f1. Dry-run, aplicação, repetição determinística, conflitos manuais, drift de hash, regressões das Etapas 4/6, hashes e privacidade passaram no pacote `docs/evidence/artifacts/native-stage10-2026-08-17/`. A CI não inicializa dinamicamente as engines, o que não é requisito; as execuções reais são evidência local reproduzível. Merge `bca43f399928d69cb81e133e40991b7c011a0c10` e CI pós-merge `32028639637` foram confirmados. |
+| R-018 | PLANEJADO / NÃO INICIADO | Plano aceito em `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`; nenhuma implementação ou evidência de funcionamento existe ainda. |
+| R-019 | PLANEJADO / NÃO INICIADO | Plano aceito em `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`; nenhuma implementação ou evidência de funcionamento existe ainda. |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

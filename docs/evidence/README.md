@@ -1,6 +1,8 @@
 - ADENDO_INTEGRIDADE_ARTEFATOS_2026-08-16.md — correção da cadeia de bytes, bloqueio de manifests e limites históricos declarados; não é aprovação de merge.
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
+
+- `RECONCILIACAO_DOCUMENTAL_2026-08-18.md` — reconciliação dos documentos vivos com o merge da PR `#92`, registro do novo plano e classificação explícita de paleta/parallax como planejados e não iniciados.
 - `ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md` — transação única e rollback global de múltiplos manifestos, com testes Python, execução real Godot/Unity, hashes e falhas intermediárias preservadas.
 
 - PRIVACIDADE_ARTEFATOS_RECONCILIACAO_2026-08-17.md — correção fail-closed dos identificadores de host/processo nos artefatos e regeneração independente dos manifests.
