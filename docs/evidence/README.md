@@ -5,6 +5,7 @@
 - `ETAPA_3_PALETA_COMANDOS_2026-08-18.md` — implementação da paleta visual, busca, teclado, Escape, localização e acessibilidade, com capturas reais en/pt, geometrias Qt, hashes Pillow/OpenCV e validação do manifest.
 - `ETAPA_3_ENCERRAMENTO_POS_MERGE.md` — fechamento pós-merge da PR `#97`, CI `32125768535` aprovado em Linux/Windows e sincronização do `main` ao merge `5d4c0829`.
 - ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md — modelo matemático puro
+- `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado de cenário, hash do projeto v1, limites, round-trip, parsing negativo, escrita atômica e rollback; preview, UI, exportação e engines permanecem etapas posteriores.
   pré-merge de câmera ortográfica e parallax, com profundidade separada de
   position.z, testes negativos, cobertura, hashes e limitações explícitas;
   não representa ainda integração do módulo de cenários.

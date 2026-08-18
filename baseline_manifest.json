@@ -544,6 +544,10 @@
       "sha256": "d7a27fdf92b0c8f8725c55ca0d578bb9fe7ab0051999d803183897d5d1d3c6ea",
       "size": 479
     },
+    "docs/evidence/ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md": {
+      "sha256": "02ec1b39b68a49a3b8a700c79f65f603e41e49bfcef497b15333bc612bc2decb",
+      "size": 5230
+    },
     "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
       "sha256": "6d11b8e1485485e3438fcf86f7149852209195753b6d03b29683be18ae606542",
       "size": 6222
@@ -741,8 +745,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "712ba6c3cb140d66a59280e3f423113b736896b4552de57827f48bb918023ccc",
-      "size": 32041
+      "sha256": "e24489c4f57a5b90e68e3013d4b1f8ce050a26be6320e3240aac70283892f019",
+      "size": 32282
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
@@ -3884,6 +3888,10 @@
       "sha256": "6e467ded7f4f57a5f2e9071d3452799ec2ca6010b40619310976d965922db4e5",
       "size": 671
     },
+    "docs/evidence/artifacts/stage4b1-scenario-schema-2026-08-18/manifest.json": {
+      "sha256": "3c9cd2a9ad5103ed2b26192dd86ae51f0383c306214576462c7994994c5f3927",
+      "size": 1033
+    },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
       "size": 8446
@@ -4933,8 +4941,8 @@
       "size": 26555
     },
     "src/persistence/__init__.py": {
-      "sha256": "1d4d239a207eeb4c2ca44d4331b2589605e0c202477dc7c66a258268953a2e03",
-      "size": 1166
+      "sha256": "1a9f403718c43470f3e25487e44f4f67446df056083b64da8a81c66e8f2a0330",
+      "size": 1998
     },
     "src/persistence/autosave.py": {
       "sha256": "99c52a642c61161a00d9a023a6f2875ce0734c45839481b311a535cd116e9224",
@@ -4951,6 +4959,14 @@
     "src/persistence/project_schema.py": {
       "sha256": "17e162f25d93f0a08c1ab4c45cf434a16a6ece71d74b4d73717466eef63d9996",
       "size": 10712
+    },
+    "src/persistence/scenario_io.py": {
+      "sha256": "45765cae1b1436fa68806eed27bfd41182c22b795d809c41757d271ace3487bc",
+      "size": 8016
+    },
+    "src/persistence/scenario_schema.py": {
+      "sha256": "4999b311be46471bc75e9bc9e58d9f0c941714cc850eb19b46b31a2323c35e44",
+      "size": 5889
     },
     "src/physics/__init__.py": {
       "sha256": "8734b0cf141de1a9dc2d75c3b32a3c630ad5b796faff155b173a2e2063215ed3",
@@ -5319,6 +5335,10 @@
     "tests/test_sanitize_evidence_archives.py": {
       "sha256": "7c5623855cddbf355ac02cd04378cdbf001ee38f5d994d59599dfc8b45aa6da1",
       "size": 2451
+    },
+    "tests/test_scenario_schema_io.py": {
+      "sha256": "f14e74fdbb73057fd99bb68514fe6f63d6d20fd3bee16cabb903e2e0cd49c6a2",
+      "size": 16923
     },
     "tests/test_scene_repair.py": {
       "sha256": "bdd56cf0c9780da16d3961044e4026a7f1933a75a11659503dda014f34ed667f",
