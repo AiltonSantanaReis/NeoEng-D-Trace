@@ -4596,6 +4596,10 @@
       "sha256": "aeaf118915a1ca241a0a1962a4162864b5246d5f2ea4e2abf2b6b28f05ea7d60",
       "size": 147
     },
+    "scripts/audit_command_palette_capture.py": {
+      "sha256": "c11d69f915362165d882efbb7354e0a4a3c5a61fd0356507aa7619605a740e83",
+      "size": 7015
+    },
     "scripts/audit_export_pipeline.py": {
       "sha256": "6eb4fef3a21e60dcc76474df04fb45cdebf80f64819038d1b013bb951fb5f13a",
       "size": 6829
@@ -5000,6 +5004,10 @@
       "sha256": "dbed24f77744305cd2e1401427125d6300d168ac409ee6c08d08f40cf5963651",
       "size": 1435
     },
+    "src/ui/command_palette.py": {
+      "sha256": "2b85ff39ebccd5ebe821ad26bc37a41496e9e1391f8b75d1c582b3e00a2c772f",
+      "size": 9808
+    },
     "src/ui/command_registry.py": {
       "sha256": "bc74d2efc024c61132fedde46fbd5ef69dec5a9b3eb032c4fab1bcc4c7ae868c",
       "size": 4702
@@ -5033,12 +5041,12 @@
       "size": 6189
     },
     "src/ui/main_window.py": {
-      "sha256": "eb548b81d32c5b5808f28da11177dfc63927972cf5a0f42d20ae0ac9330f073d",
-      "size": 45233
+      "sha256": "7b41a10ed9ac4444b94ef76aa02630435c7e6e81d53a02397dea3de16c48f51b",
+      "size": 45485
     },
     "src/ui/main_window_translations.py": {
-      "sha256": "d7d0f3c5c7fbc3aad692fa5dafaf710bcc22255fbb45f92ac82383f5010be169",
-      "size": 7976
+      "sha256": "b61924cff55d388a0c113c2ef0b434033d05498a2d7ab44be61f20da214315cf",
+      "size": 9463
     },
     "src/ui/mask_viewer.py": {
       "sha256": "810f4019c52adaf1bb790eb54b6df567157934f2048eae0f9357051c91e323b8",
@@ -5053,8 +5061,8 @@
       "size": 20752
     },
     "src/ui/theme_qss.py": {
-      "sha256": "1fc32f5b709c372550c4a3d356657d8f0df7ea7ff5481da1a39858771a028705",
-      "size": 4039
+      "sha256": "7a3df69cb0f914a44867d90ade6525dbd7519778eceedc731db49f4c018aec2b",
+      "size": 4812
     },
     "src/ui/tool_palette.py": {
       "sha256": "d0be37a8868a927d0b43a67d2490985b18bbe7868a9e5aab229569f1e2c58119",
@@ -5273,8 +5281,12 @@
       "size": 2804
     },
     "tests/test_stage2_command_registry.py": {
-      "sha256": "ffc2b28785219dc400e3376e4c5c84e4ddff853f97972a36d12f2ed3e8a6e1cd",
-      "size": 4120
+      "sha256": "442e7d96a3153f0fc6fa4738df0c22bba837816c6dbb702bfa90d913be2fe4f8",
+      "size": 4330
+    },
+    "tests/test_stage3_command_palette.py": {
+      "sha256": "3cdb8ee58f264b7992f110c67dbcdffb07a0e4dfe2ef792222fbc877ea201f3c",
+      "size": 5656
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",

@@ -186,6 +186,41 @@ QComboBox QAbstractItemView {
     color: #f0f0f0;
 }
 
+/* --- Command Palette --- */
+QDialog#command_palette_dialog {
+    background: #252526;
+    border: 1px solid #007acc;
+}
+QLabel#command_palette_title {
+    color: #f0f0f0;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 4px 2px;
+}
+QLineEdit#command_palette_search {
+    background: #1e1e1e;
+    border: 1px solid #3f3f46;
+    color: #f0f0f0;
+    padding: 8px;
+}
+QLineEdit#command_palette_search:focus {
+    border: 1px solid #007acc;
+}
+QListWidget#command_palette_results {
+    background: #1e1e1e;
+    border: 1px solid #3f3f46;
+}
+QListWidget#command_palette_results::item {
+    padding: 8px;
+}
+QListWidget#command_palette_results::item:selected {
+    background: #094771;
+    color: white;
+}
+QLabel#command_palette_hint {
+    color: #9d9d9d;
+    padding: 2px;
+}
 /* --- ToolTip --- */
 QToolTip {
     background-color: #252526;

@@ -41,6 +41,7 @@ from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
 from src.ui.collision_panel import CollisionPanel
 from src.ui.command_bindings import register_main_window_commands
+from src.ui.command_palette import CommandPaletteDialog
 from src.ui.command_registry import CommandRegistry
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
@@ -325,6 +326,7 @@ class MainWindow(QMainWindow):
         register_main_window_commands(self.command_registry, self)
 
         self.translations = MAIN_WINDOW_TRANSLATIONS
+        self.command_palette = CommandPaletteDialog(self.command_registry, self)
         self.update_language()
         if hasattr(self.scene, "subscribe"):
             self.scene.subscribe(self._on_scene_changed)
@@ -420,9 +422,10 @@ class MainWindow(QMainWindow):
         self.command_palette_shortcut.activated.connect(self._request_command_palette)
 
     def _request_command_palette(self) -> None:
-        """Notify the future palette host without implementing its UI here."""
+        """Open the integrated palette while preserving the public request signal."""
 
         self.command_palette_requested.emit()
+        self.command_palette.show_palette()
 
     def _connect_command_history(self) -> None:
         manager = getattr(self.scene, "cmd", None)
@@ -606,6 +609,7 @@ class MainWindow(QMainWindow):
         self.collision_overlay_action.setText(t["collision_overlay"])
 
         # Update other components
+        self.command_palette.update_language(self.current_lang)
         if hasattr(self.side_panel, "update_language"):
             self.side_panel.update_language(self.current_lang)
         if hasattr(self.tool_palette, "update_language"):
