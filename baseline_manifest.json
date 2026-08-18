@@ -241,16 +241,16 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "15bdb16cb2a6081b4f5660f04453236b92bc32825cf16000cde8dc6a6fcb9e10",
-      "size": 6853
+      "sha256": "a0dd2580a6d08c64bca5e2dc93ce83d963b59dce8bd76b0be7f50976b93943a1",
+      "size": 6873
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
       "sha256": "f564d568cdaca58fdd65ed205182e42c36cfc25fc992e286a9f9a6e28e68a655",
       "size": 18972
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
-      "sha256": "8562f70c308f28547f1065dce0838f6b23352c56098e1cb7c73f416325c3b5b6",
-      "size": 5040
+      "sha256": "310841aec15dd6a5de2356e5c60672a03c384140c433fc90d80b27b665c343d8",
+      "size": 5077
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -561,7 +561,7 @@
       "size": 4965
     },
     "docs/evidence/ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md": {
-      "sha256": "0ba13ac20ec7db8d75cb982ebb2096787d0bf134736c8049d68d0465cab600e6",
+      "sha256": "e1a08a5b4bcefb1d67a2e3493e368e14423f3e59e3ba0a30586eeaca017b1d82",
       "size": 4400
     },
     "docs/evidence/ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md": {
@@ -3997,12 +3997,12 @@
       "size": 54862
     },
     "docs/evidence/artifacts/stage4b5-quality-2026-08-18/artifact-index.json": {
-      "sha256": "7137cd1ecfea9e5d093375eaeaaadf70351ba04a509bb4bab46ce728d34e0f25",
+      "sha256": "1fd10123dfd03532f6d01ebda212c63198a2ccfd60e50c7cc096878a8018d1c0",
       "size": 836
     },
     "docs/evidence/artifacts/stage4b5-quality-2026-08-18/benchmark-report.json": {
-      "sha256": "5d9ea7239f864f81af4a588b4b1466dd85cc187c5f87f6c4b502d5a4ab8d71c6",
-      "size": 2937
+      "sha256": "64e776c6b7053978b06a93c07b31fa1804230cd5b079e4fd05e9d24b83e85d72",
+      "size": 2936
     },
     "docs/evidence/artifacts/stage4b5-quality-2026-08-18/scenario-input.ndtproj": {
       "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db",

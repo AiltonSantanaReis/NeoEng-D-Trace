@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "PASS",
   "stage": "4B.5",
-  "commit": "3be4a92db76a6fdb5474e2b458a4be1e9d152541",
+  "commit": "7f7075db594d6df77ce24e45d9ab31eb1744c767",
   "branch": "feature branch (identifier omitted by repository hygiene gate)",
   "environment": {
     "platform": "Windows",
@@ -52,24 +52,24 @@
         {
           "label": "runtime_export_serialization",
           "operations": 500,
-          "elapsed_seconds": 0.057728,
-          "operations_per_second": 8661.293,
+          "elapsed_seconds": 0.056374,
+          "operations_per_second": 8869.29,
           "max_elapsed_seconds": 10.0,
           "within_limit": true
         },
         {
           "label": "preview_projection",
           "operations": 10000,
-          "elapsed_seconds": 0.693242,
-          "operations_per_second": 14424.973,
+          "elapsed_seconds": 0.727794,
+          "operations_per_second": 13740.146,
           "max_elapsed_seconds": 5.0,
           "within_limit": true
         },
         {
           "label": "overlay_geometry",
           "operations": 10000,
-          "elapsed_seconds": 0.024869,
-          "operations_per_second": 402110.274,
+          "elapsed_seconds": 0.027431,
+          "operations_per_second": 364552.384,
           "max_elapsed_seconds": 5.0,
           "within_limit": true
         }

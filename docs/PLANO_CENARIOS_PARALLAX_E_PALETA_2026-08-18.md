@@ -3,12 +3,12 @@
 **Data de aceitação:** 18 de agosto de 2026
 **Estado:** EM EXECUÇÃO — Etapas 4B.1 a 4B.5 aprovadas no escopo local; PR, CI pós-merge e merge geral permanecem pendentes
 **Baseline funcional verificada:** `b6549ffc1f0e92fb8eeb0f7846414356172191a8` (merge da PR `#92`)
-**Candidato local 4B.5 verificado:** `3be4a92` (commits técnicos `456a967`, `c888c0d` e `3be4a92`)
+**Candidato local 4B.5 verificado:** `7f7075d` (commits técnicos `456a967`, `c888c0d`, `3be4a92` e `7f7075d`)
 **Fonte de referência:** `plano_cenarios_parallax_neoeng_dtrace.docx`, SHA-256 `066dd9a5b192e215b1859a81ab22fbdfe2d9a7b8db46acbc7f6f62fe867cc0ac`
 
 ## Natureza deste documento
 
-Este plano registra uma decisão de produto aceita para desenvolvimento futuro. A câmera/parallax matemática (4A), o schema lateral (4B.1), o preview/overlays (4B.2), a autoria lateral (4B.3) e a exportação/validação real (4B.4) possuem implementação e evidência locais pré-merge; benchmark e fechamento da Etapa 4B continuam pendentes.
+Este plano registra uma decisão de produto aceita para desenvolvimento futuro. A câmera/parallax matemática (4A), o schema lateral (4B.1), o preview/overlays (4B.2), a autoria lateral (4B.3) e a exportação/validação real (4B.4) e o fechamento de qualidade (4B.5) possuem implementação e evidência locais pré-merge; PR, CI pós-merge e merge continuam pendentes.
 O documento anexado é uma especificação de referência; o status acima e as evidências próprias de cada etapa são a autoridade para o estado atual. Suas
 afirmações sobre WebGL, runtime, shaders, partículas e desempenho não são
 afirmações sobre o estado atual do projeto.

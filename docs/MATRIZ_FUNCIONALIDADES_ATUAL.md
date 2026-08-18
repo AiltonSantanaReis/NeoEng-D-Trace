@@ -11,7 +11,7 @@
 **Baseline funcional verificado:** `5d4c0829adabfcd51741d95151f808722d43857c`, merge da PR `#97`.
 **CI pós-merge:** run `32125768535`, Linux `95675864634` e Windows `95675864866`, todos aprovados.
 
-**Estado atual:** Etapas 11 a 14 permanecem encerradas nos escopos aprovados. A Etapa 3 integrou a paleta visual, busca, localização, teclado e acessibilidade; o candidato local pré-merge contém 4A, 4B.1, 4B.2, 4B.3 e 4B.4 com evidências hashadas, enquanto 4B.5 permanece pendente. A release oficial `v0.2.0` permanece publicada como snapshot anterior e não representa automaticamente o `main` atual.
+**Estado atual:** Etapas 11 a 14 permanecem encerradas nos escopos aprovados. A Etapa 3 integrou a paleta visual, busca, localização, teclado e acessibilidade; o candidato local pré-merge contém 4A, 4B.1, 4B.2, 4B.3, 4B.4 e 4B.5 com evidências hashadas; PR, CI pós-merge e merge permanecem pendentes. A release oficial `v0.2.0` permanece publicada como snapshot anterior e não representa automaticamente o `main` atual.
 
 **Baseline integrada da Etapa 12:** PR funcional `#49`, merge `872bf079d228d13d0203d22b844052b1f920e99b` e CI `31686321925` com `928` testes; fechamento `#50`, merge final `fc81c2ea10e751c15a39627d462ddfff390eeb04`, CI `31688307089`, `929` testes e cobertura combinada `90,91%`.
 
@@ -49,7 +49,7 @@ snapshot histórico.
 | Cobertura | INTEGRADO / APROVADO | `955` testes por sistema; `11.581/12.478` linhas (92,81%), `3.370/3.964` branches (85,02%), 90,93% combinada e zero módulos abaixo de 30%; CI pós-merge final `31705652046` | margem de branch de 0,02 p.p. |
 | Build Windows/instalador | INTEGRADO / APROVADO | WiX 4.0.6 fixado; builds MSI reproduzíveis; instalação, smoke, upgrade, reparo, desinstalação, Godot/Unity, manifestos e CI pós-merge auditados | assinatura é opcional; formalizações futuras não bloqueiam |
 | Paleta de comandos | INTEGRADO / APROVADO | PR `#97`, merge `5d4c0829`; CI pós-merge `32125768535`; paleta, busca, teclado, localização, acessibilidade e capturas reais em `docs/evidence/ETAPA_3_ENCERRAMENTO_POS_MERGE.md` | nenhum no escopo da Etapa 3 |
-| Cenários parallax 2D/2.5D | CANDIDATO PRÉ-MERGE — 4B.5 APROVADA NO ESCOPO LOCAL | 4A–4B.5 comprovadas em `docs/evidence/ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md` e manifests hashados; auditor local em `3be4a92` | PR, CI pós-merge e merge ainda pendentes |
+| Cenários parallax 2D/2.5D | CANDIDATO PRÉ-MERGE — 4B.5 APROVADA NO ESCOPO LOCAL | 4A–4B.5 comprovadas em `docs/evidence/ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md` e manifests hashados; auditor local em `7f7075d` | PR, CI pós-merge e merge ainda pendentes |
 
 ## Regra de leitura
 

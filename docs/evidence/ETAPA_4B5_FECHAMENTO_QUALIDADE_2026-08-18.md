@@ -5,7 +5,7 @@
 - Escopo: fechamento técnico da câmera/parallax e do cenário lateral após as etapas 4A a 4B.4.
 - Estado: **APROVADO NO ESCOPO LOCAL; PR, CI e merge permanecem pendentes neste snapshot**.
 - Branch de execução: feature branch (identifier omitted by repository hygiene gate).
-- HEAD de execução do auditor: `3be4a92db76a6fdb5474e2b458a4be1e9d152541`.
+- HEAD de execução do auditor: `7f7075db594d6df77ce24e45d9ab31eb1744c767`.
 - Auditor reproduzível: `scripts/audit_stage4b5_quality.py`.
 - Artefatos: `docs/evidence/artifacts/stage4b5-quality-2026-08-18/`.
 
@@ -48,9 +48,9 @@ anterior à 4B.5; esta execução registra o primeiro baseline reproduzível.
 
 | Operação | Execuções | Tempo | Operações/s | Limite | Resultado |
 |---|---:|---:|---:|---:|---|
-| Serialização runtime | 500 | 0,057728 s | 8.661,293 | 10 s | PASS |
-| Projeção preview | 10.000 | 0,693242 s | 14.424,973 | 5 s | PASS |
-| Geometria overlay | 10.000 | 0,024869 s | 402.110,274 | 5 s | PASS |
+| Serialização runtime | 500 | 0,056374 s | 8.869,290 | 10 s | PASS |
+| Projeção preview | 10.000 | 0,727794 s | 13.740,146 | 5 s | PASS |
+| Geometria overlay | 10.000 | 0,027431 s | 364.552,384 | 5 s | PASS |
 
 Os valores acima são os registrados pelo artefato desta execução; o relatório
 JSON é a fonte integral dos dados e não deve ser alterado manualmente.
