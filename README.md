@@ -10,12 +10,13 @@ NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, cor
 
 ## Snapshot atual verificado — 18 de agosto de 2026
 
-O estado de código mais recente verificado é o merge da PR `#92`, commit
-`b6549ffc1f0e92fb8eeb0f7846414356172191a8`. O CI pré-merge
-`32107519574` e o CI pós-merge `32107883246` passaram em Linux e Windows.
-Esse estado inclui apenas a limpeza do guard transacional e a atualização
-legítima do baseline; o plano de cenários parallax e a paleta de comandos
-estão planejados, mas ainda não iniciados.
+O baseline funcional de código verificado é o merge da PR `#92`, commit
+`b6549ffc1f0e92fb8eeb0f7846414356172191a8`. O HEAD atual do `main` é o merge
+documental da PR `#93`, commit `45b99f058601092a6121a7db4153ba27795325c0`.
+O CI pré-merge `32107519574` e o CI pós-merge `32107883246` validam o baseline
+funcional; o CI da PR #93 (`32113850905`) validou a reconciliação documental em
+Linux e Windows. A PR #93 não alterou código funcional; o plano de cenários
+parallax e a paleta de comandos continuam planejados, mas ainda não iniciados.
 
 A release `v0.2.0` continua sendo um snapshot publicado anterior e não
 representa automaticamente o estado mais recente de `main`.

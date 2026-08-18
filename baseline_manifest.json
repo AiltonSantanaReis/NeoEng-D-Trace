@@ -45,8 +45,8 @@
       "size": 1673
     },
     "README.md": {
-      "sha256": "aba5d12cf3a98251473f9a47e547e9f3fec252b8966fe7f2cdcf8c35e7b71f5d",
-      "size": 17273
+      "sha256": "e83bbbc08aff028e6397c25f9eb9feb044243db5999a02a1dee7b54c7d8d92c2",
+      "size": 17415
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -83,6 +83,10 @@
     "config.example.json": {
       "sha256": "c00836891b06ee684735c1c2f573e050d63734a28aa503d4e6739466c34acdc3",
       "size": 271
+    },
+    "docs/ADR_CENARIOS_PARALLAX_PALETA_ETAPA1_2026-08-18.md": {
+      "sha256": "e630bfe0c5496bf96826b6e764df86c147206e7117ef7da509c82cd38363aa81",
+      "size": 2244
     },
     "docs/ADR_FORMATO_PROJETO_NEOENG_D_TRACE_V1.md": {
       "sha256": "17d93bf6c29ad53a29c4e832307a3bc2b7739d1f6abe1d78afcf2380888047b8",
@@ -237,12 +241,12 @@
       "size": 5955
     },
     "docs/MATRIZ_FUNCIONALIDADES_ATUAL.md": {
-      "sha256": "3863712baed3b19f0cd719a3924833aae2cde741b27d777543bc99a6cd070431",
-      "size": 6676
+      "sha256": "0797d9ebe5bf157329d126ac50192ccf9f00a647a3a93075a1bc6b38d5c34c01",
+      "size": 6830
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "1d7a1d8737f5dadedc3fc297739795e88d06d16caa1d93bd71a79c7edce6e33b",
-      "size": 18869
+      "sha256": "5eba25c34ae9981c51d1776a51ea012c565000eb94afa068144ad33247b9da45",
+      "size": 18944
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "3c8d0c8288fe14a33c6351f97c48fd589cafb6cb2272fd9787312fdba087c764",
@@ -257,8 +261,8 @@
       "size": 7063
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "f004967277d5a38ff78b8871831e2ee67c65284285dbc51d75754cba686782cd",
-      "size": 17072
+      "sha256": "bf9692f645bbb9bd0d5611fab51d0be62d95128f9496e79d1ed0546841942ace",
+      "size": 17190
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -467,6 +471,14 @@
     "docs/evidence/ETAPA_1_AMBIENTE_REPRODUZIVEL_CI_WINDOWS_LINUX.md": {
       "sha256": "2520f0f4f2b1ea37622dcd3afb041279b7014bf88db988004cdeb7aa06b2c5d8",
       "size": 6772
+    },
+    "docs/evidence/ETAPA_1_CENARIOS_BASELINE_2026-08-18.md": {
+      "sha256": "9851b9cd39a690570d9121d95520e3790c912a198d7001bb14b17cb5cbbe88d4",
+      "size": 2467
+    },
+    "docs/evidence/ETAPA_1_CENARIOS_BASELINE_2026-08-18.sha256": {
+      "sha256": "8ba49987b1bb76bd9f82bbea352f8e7e68b0f65515e66a26e14adca1a8cb2ab3",
+      "size": 429
     },
     "docs/evidence/ETAPA_1_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "46f1b9d0e499f8aba2798222c77b2e553d8cb548cda6cc967b0bd280e7b9d8a7",
@@ -5239,6 +5251,10 @@
     "tests/test_stage1_automatic_sync_contracts.py": {
       "sha256": "8830f18fcfd7ca48b24e6a5e6a3ba55551ec226b8a18b861a7f310f77f1f8d19",
       "size": 2193
+    },
+    "tests/test_stage1_scenario_characterization.py": {
+      "sha256": "496914caf7c2f398bf9995eac138ab68cfecdacf10972830591562a11602f26b",
+      "size": 2804
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",

@@ -1,0 +1,4 @@
+# SHA-256 dos artefatos da Etapa 1; recalcular após qualquer alteração.
+e630bfe0c5496bf96826b6e764df86c147206e7117ef7da509c82cd38363aa81  docs/ADR_CENARIOS_PARALLAX_PALETA_ETAPA1_2026-08-18.md
+496914caf7c2f398bf9995eac138ab68cfecdacf10972830591562a11602f26b  tests/test_stage1_scenario_characterization.py
+9851b9cd39a690570d9121d95520e3790c912a198d7001bb14b17cb5cbbe88d4  docs/evidence/ETAPA_1_CENARIOS_BASELINE_2026-08-18.md

@@ -24,7 +24,7 @@
 
 ## Estado operacional atual dos riscos
 
-Atualização corrente de 18 de agosto de 2026: `main` está no merge `b6549ffc` da PR `#92`; os riscos R-018 e R-019 estão planejados e não iniciados.
+Atualização corrente de 18 de agosto de 2026: o baseline funcional é o merge\n`b6549ffc` da PR `#92` e o HEAD documental do `main` é o merge `45b99f0` da PR\n`#93`; os riscos R-018 e R-019 estão planejados e não iniciados.
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
