@@ -1,5 +1,7 @@
 # Evidência — Etapa 4B.4: exportação de cenário e consumidores
 
+> **SNAPSHOT HISTÓRICO:** este relatório registra a primeira execução da Etapa 4B.4. A correção posterior dos validadores e os cinco casos negativos ampliados estão documentados em `ETAPA_4B4_CORRECAO_VALIDADORES_2026-08-18.md`.
+
 ## Identificação
 
 - Escopo: exportação runtime JSON determinística do sidecar `.ndtscenario.json`,

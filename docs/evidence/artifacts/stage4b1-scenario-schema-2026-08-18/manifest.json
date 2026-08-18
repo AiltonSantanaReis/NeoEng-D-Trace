@@ -12,8 +12,8 @@
       "sha256": "45765cae1b1436fa68806eed27bfd41182c22b795d809c41757d271ace3487bc"
     },
     "../../../../src/persistence/__init__.py": {
-      "bytes": 2079,
-      "sha256": "42826e1fc46790af1e0c1b89677f941ce9dc4c25c2f46c17234a1d50ee2cf0da"
+      "bytes": 1998,
+      "sha256": "1a9f403718c43470f3e25487e44f4f67446df056083b64da8a81c66e8f2a0330"
     },
     "../../../../tests/test_scenario_schema_io.py": {
       "bytes": 16923,

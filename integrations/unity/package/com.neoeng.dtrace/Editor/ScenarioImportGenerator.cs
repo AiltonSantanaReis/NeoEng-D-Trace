@@ -83,23 +83,36 @@ namespace NeoEng.DTrace.Editor
         {
             if (export == null || export.format_id != "neoeng-d-trace-scenario-runtime" || export.schema_version != 1)
                 throw new InvalidDataException("unsupported scenario runtime export");
+            if (export.generator == null || export.generator.id != "neoeng_d_trace")
+                throw new InvalidDataException("scenario generator is invalid");
+            RequireText(export.generator.version, "scenario generator version", 128);
             if (export.source == null || export.project == null || export.camera == null || export.camera.position == null || export.layers == null)
                 throw new InvalidDataException("scenario runtime export is incomplete");
+            if (export.source.format_id != "neoeng-d-trace-scenario" || export.source.schema_version != 1)
+                throw new InvalidDataException("scenario source binding is invalid");
+            if (export.project.format_id != "neoeng-d-trace-project" || export.project.schema_version != 1)
+                throw new InvalidDataException("scenario project binding is invalid");
             RequireHash(export.source.sha256, "scenario source hash");
             RequireHash(export.project.sha256, "project hash");
-            if (float.IsNaN(export.camera.zoom) || float.IsInfinity(export.camera.zoom) || export.camera.zoom <= 0f)
-                throw new InvalidDataException("scenario camera zoom is invalid");
+            if (float.IsNaN(export.camera.position.x) || float.IsInfinity(export.camera.position.x) ||
+                float.IsNaN(export.camera.position.y) || float.IsInfinity(export.camera.position.y) ||
+                float.IsNaN(export.camera.zoom) || float.IsInfinity(export.camera.zoom) || export.camera.zoom <= 0f)
+                throw new InvalidDataException("scenario camera values are invalid");
+            if (export.layers.Length > 256)
+                throw new InvalidDataException("scenario layer limit exceeded");
             HashSet<string> layerIds = new HashSet<string>(StringComparer.Ordinal);
             HashSet<string> objectIds = new HashSet<string>(StringComparer.Ordinal);
+            int objectReferenceCount = 0;
             foreach (ScenarioLayerData layer in export.layers)
             {
-                if (layer == null || string.IsNullOrWhiteSpace(layer.id) || !layerIds.Add(layer.id))
+                if (layer == null || string.IsNullOrWhiteSpace(layer.id) || layer.id.Length > 256 || !layerIds.Add(layer.id))
                     throw new InvalidDataException("scenario layer IDs are invalid or duplicated");
-                if (layer.object_ids == null || layer.parallax == null)
+                if (layer.name == null || layer.name.Length > 256 || layer.object_ids == null || layer.parallax == null)
                     throw new InvalidDataException("scenario layer payload is incomplete");
                 foreach (string objectId in layer.object_ids)
                 {
-                    if (string.IsNullOrWhiteSpace(objectId) || !objectIds.Add(objectId))
+                    objectReferenceCount++;
+                    if (objectReferenceCount > 100000 || string.IsNullOrWhiteSpace(objectId) || objectId.Length > 256 || !objectIds.Add(objectId))
                         throw new InvalidDataException("scenario object references are invalid or duplicated");
                 }
                 RequireUnit(layer.parallax.depth, "scenario parallax depth");
@@ -108,9 +121,15 @@ namespace NeoEng.DTrace.Editor
             }
         }
 
+        private static void RequireText(string value, string field, int maxLength)
+        {
+            if (value == null || value.Length == 0 || value.Length > maxLength)
+                throw new InvalidDataException(field + " is invalid");
+        }
+
         private static void RequireHash(string value, string field)
         {
-            if (string.IsNullOrWhiteSpace(value) || value.Length != 64 || value.Any(character => !Uri.IsHexDigit(character)))
+            if (string.IsNullOrWhiteSpace(value) || value.Length != 64 || value.Any(character => !"0123456789abcdef".Contains(character)))
                 throw new InvalidDataException(field + " is invalid");
         }
 
@@ -123,13 +142,15 @@ namespace NeoEng.DTrace.Editor
         {
             public string format_id;
             public int schema_version;
+            public GeneratorData generator;
             public SourceData source;
             public ProjectData project;
             public CameraData camera;
             public ScenarioLayerData[] layers;
         }
-        [Serializable] private sealed class SourceData { public string sha256; }
-        [Serializable] private sealed class ProjectData { public string sha256; }
+        [Serializable] private sealed class GeneratorData { public string id; public string version; }
+        [Serializable] private sealed class SourceData { public string format_id; public int schema_version; public string sha256; }
+        [Serializable] private sealed class ProjectData { public string format_id; public int schema_version; public string sha256; }
         [Serializable] private sealed class CameraData { public PointData position; public float zoom; }
         [Serializable] private sealed class PointData { public float x; public float y; }
         [Serializable] private sealed class ScenarioLayerData

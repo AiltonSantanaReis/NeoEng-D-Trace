@@ -31,9 +31,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Verify clean baseline manifest
-        run: python tools/baseline_integrity.py --verify
+        run: python tools/baseline_integrity.py --verify --git-blob
       - name: Verify evidence manifest integrity
-        run: python tools/evidence_integrity.py --require-tracked
+        run: python tools/evidence_integrity.py --require-tracked --git-blob
 
       - name: Install Qt runtime libraries
         run: |
@@ -90,7 +90,7 @@ jobs:
         run: poetry run python scripts/audit_stage4b5_quality.py --output "${{ runner.temp }}/stage4b5-quality"
 
       - name: Verify Linux source tree remained unchanged
-        run: python tools/baseline_integrity.py --verify
+        run: python tools/baseline_integrity.py --verify --git-blob
 
       - name: Store Linux evidence
         uses: actions/upload-artifact@v7
@@ -117,9 +117,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Verify clean baseline manifest
-        run: python tools/baseline_integrity.py --verify
+        run: python tools/baseline_integrity.py --verify --git-blob
       - name: Verify evidence manifest integrity
-        run: python tools/evidence_integrity.py --require-tracked
+        run: python tools/evidence_integrity.py --require-tracked --git-blob
 
       - name: Install Poetry 2.4.1
         run: |
@@ -178,7 +178,7 @@ jobs:
           NEOENG_SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Verify Windows source tree remained unchanged
-        run: python tools/baseline_integrity.py --verify
+        run: python tools/baseline_integrity.py --verify --git-blob
 
       - name: Store Windows evidence
         uses: actions/upload-artifact@v7

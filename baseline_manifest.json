@@ -17,8 +17,8 @@
       "size": 129
     },
     ".gitattributes": {
-      "sha256": "633c5f1190d49ccbac27a4f21ba7dce2b1549a12f2523480e5cd78272ec17e0f",
-      "size": 441
+      "sha256": "19b3e57d7a808c6048f8832a12f839f71cf129bca7ab809581d0a60c25f8ae1f",
+      "size": 511
     },
     ".github/ISSUE_TEMPLATE/falha_confirmada.md": {
       "sha256": "4a6200259ed383b675572777b039ca51adcf6e23a619b58617a382dea6a132be",
@@ -29,24 +29,24 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "ed42ab4108b918053196568f274ac578def0bef29e6552290a160458388740f0",
-      "size": 6843
+      "sha256": "3c7a382c84ac7bcf2e5936fad880ee317bf4b4386284ba9a718c2eccf0a0f8b1",
+      "size": 6909
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "c7afdfd3dca2c4f1b9479cf1388412e1dbbc4cc68f2896d58889430978bf8d14",
-      "size": 49863
+      "sha256": "a96a4e795d731e85c6b8f100372fecb2dff3865c596dabe12e45937a7ba14041",
+      "size": 49977
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "4e9f10894668a064ef28b636b1f754e2450e42bb8ad58e35193eed7ace6b3abf",
-      "size": 17368
+      "sha256": "ee54476e15aac5bcc8bc08e16716832cca4ec9e67bcc042ba81a5952d4f6ceac",
+      "size": 17649
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -245,8 +245,8 @@
       "size": 6873
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "f564d568cdaca58fdd65ed205182e42c36cfc25fc992e286a9f9a6e28e68a655",
-      "size": 18972
+      "sha256": "0098543a1d12af27794127f343ca07498ed4d3fa1bfbad29e10ad8147dbc37d5",
+      "size": 19114
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "310841aec15dd6a5de2356e5c60672a03c384140c433fc90d80b27b665c343d8",
@@ -261,8 +261,8 @@
       "size": 7063
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "51b89fa35c729b3b11845da99a1693fb736ad51d10b06c997ffe7634e3b6b811",
-      "size": 17236
+      "sha256": "71771f6a8adf8f88801eae1d8d6045e88799017c79ac8c1486d4a6b50996967a",
+      "size": 17304
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -557,8 +557,8 @@
       "size": 9172
     },
     "docs/evidence/ETAPA_4B4_EXPORTACAO_ENGINES_2026-08-18.md": {
-      "sha256": "75d7493c08ffdf9a4a29046c3be52cca01504ee2ebcbcdbe84754babe37f2e6f",
-      "size": 4965
+      "sha256": "a7769c8d9550428207094c4a108b3915f2df863c3f35d860fbee08b20f3cf71f",
+      "size": 5202
     },
     "docs/evidence/ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md": {
       "sha256": "e1a08a5b4bcefb1d67a2e3493e368e14423f3e59e3ba0a30586eeaca017b1d82",
@@ -765,8 +765,8 @@
       "size": 32772
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
-      "sha256": "50aac284aac6589446b92b47e428bab496e35fde5bb3b16c892ba249bb6f4f47",
-      "size": 2788
+      "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
+      "size": 3011
     },
     "docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md": {
       "sha256": "b3d69ca306352b4c7310d0b57d9746e97302dda38617d140f3da296975858eff",
@@ -3905,7 +3905,7 @@
       "size": 671
     },
     "docs/evidence/artifacts/stage4b1-scenario-schema-2026-08-18/manifest.json": {
-      "sha256": "3c9cd2a9ad5103ed2b26192dd86ae51f0383c306214576462c7994994c5f3927",
+      "sha256": "c21ba234e4a4181531a69ae220eb981e2a36ffa06b6b678c09facbca93123289",
       "size": 1033
     },
     "docs/evidence/artifacts/stage4b2-preview-2026-08-18/01_normal_editing.png": {
@@ -3933,7 +3933,7 @@
       "size": 45576
     },
     "docs/evidence/artifacts/stage4b2-preview-2026-08-18/manifest.json": {
-      "sha256": "0a90bdc02df5ca1b2e9815affcb5bbb31a5e6f4bc14fe1bc6acf35034594b8e2",
+      "sha256": "a3a9fe6ffd4c8ae94101d59749766b9aacdf897376c5a99b5de41289e73f9d6c",
       "size": 5363
     },
     "docs/evidence/artifacts/stage4b3-authoring-2026-08-18/authoring_fixture.ndtproj": {
@@ -3965,16 +3965,16 @@
       "size": 5004
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/artifact-index.json": {
-      "sha256": "09a346e9a89e5e1071a2b5e8d6d0730945ad7e82905f94eafbc533b49f2f1308",
+      "sha256": "1f0e25cf2a380a376cf998035693b76534ff3f6fbd7d4d8f075d1f5fd2deedf7",
       "size": 660
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/engine-report.json": {
-      "sha256": "bbf4e81d6894950d3607651f6ab88ea63742d16818de0f779ee1f9c2ec7dbb6f",
-      "size": 431
+      "sha256": "9aad7a5710782f8698ba4db93082ed1fc9153fb5300c35237b9fa7fe0e62d81b",
+      "size": 1035
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/godot-negative.log": {
-      "sha256": "d652068b6ffa2a90a704b95635b845e96affe4b2b9409065242e3a2fb3e876df",
-      "size": 634
+      "sha256": "ac3c289e1e05b7f39f4d3ff1373a821727e427266edd1a40ae17d744b98de860",
+      "size": 2562
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/godot-plugin.log": {
       "sha256": "4184b67470c4b0a5c3e50d2b07c98fd347d1fa26d6a0470e534092a7696b0bd7",
@@ -3989,12 +3989,12 @@
       "size": 1099
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/unity-negative.log": {
-      "sha256": "c5a66aac1eacfa649b5fb58fbd4018415c9b9b0f121224c51ec43780c6d29f40",
-      "size": 18298
+      "sha256": "073a4c73b8cac3de3d4b1234f16dc0c55ac19691511c02f608df0de520318e31",
+      "size": 92327
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/unity-positive.log": {
-      "sha256": "279c01fdcda325e192d059600c45de6ac3dcf481b8e9b2746ffb0e2c7d5804df",
-      "size": 54862
+      "sha256": "316c54660bffbf81122cc7736045376c0edbbebc676912b3a393fe72f178544a",
+      "size": 54915
     },
     "docs/evidence/artifacts/stage4b5-quality-2026-08-18/artifact-index.json": {
       "sha256": "1fd10123dfd03532f6d01ebda212c63198a2ccfd60e50c7cc096878a8018d1c0",
@@ -4505,8 +4505,8 @@
       "size": 3754
     },
     "integrations/godot/addons/neoeng_d_trace/scenario_importer.gd": {
-      "sha256": "93821ed0935a22b31bcde9979fcef87ddfdf137be2bc8a2a5bb8189a65e54674",
-      "size": 4849
+      "sha256": "e2caf412cfab56c9c818192b45feb2655efd5931941175814df02a3ccdaf1106",
+      "size": 7433
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor.meta": {
       "sha256": "7ece5759a5ac1e80072a893d36af07c48a1a32abc8324811da5b860c3abd2cb4",
@@ -4537,8 +4537,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ScenarioImportGenerator.cs": {
-      "sha256": "811792f03c353b8e9692ad89aa083efe4b508030b9e89e1e4fc9b58562e76846",
-      "size": 7505
+      "sha256": "62d399957ee5c3d8a0e2dd18c80ccdc2a8820024994cb809e25b73ea8a5cdf4b",
+      "size": 9216
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ScenarioImportGenerator.cs.meta": {
       "sha256": "b8f0e653b18d66a33fed8e58fdb56a82dcf203ce28618d786b73491ec6b353a2",
@@ -4873,8 +4873,8 @@
       "size": 8150
     },
     "scripts/audit_stage4b4_engines.py": {
-      "sha256": "6f602de71341f15f2f9361a00614086c7fbdfc5e5ad00a80f21a73a29429061b",
-      "size": 10980
+      "sha256": "bfd454871def23dc01ec78b25b9e133f29d480f7b153436aa276c6dae705a7ed",
+      "size": 13504
     },
     "scripts/audit_stage4b5_quality.py": {
       "sha256": "eae88778ba3923c03e073ec8e19cdea1a1295d6381a64b483ea749ae8cc282e3",
@@ -5393,8 +5393,8 @@
       "size": 4396
     },
     "tests/test_baseline_integrity.py": {
-      "sha256": "147120451fec1175694d82ced6a2c7fe39c121e780fdec2592945a0065c9122e",
-      "size": 3070
+      "sha256": "017a47760591139843857d600eb74deedce5bfb25e307eee0588c88cf2f7d534",
+      "size": 4019
     },
     "tests/test_broadphase_sap.py": {
       "sha256": "7502f0b512513d22d32f0dac45cc4e06eda793609b2547e994cc8337116640e6",
@@ -5425,8 +5425,8 @@
       "size": 44102
     },
     "tests/test_evidence_integrity.py": {
-      "sha256": "e856908e70480dfa8127d46112e46714d78c5dced5e2039d101cd415324083a5",
-      "size": 4018
+      "sha256": "0975d4ec535736782280b8962ce2f86162936948fb4559a9d87c920605093203",
+      "size": 5537
     },
     "tests/test_evidence_privacy.py": {
       "sha256": "bfa692e4d3e29d8a8b67fbf4523fd74e532573d919160d9bea14d259848ada01",
@@ -5589,8 +5589,8 @@
       "size": 12147
     },
     "tests/test_stage4b4_scenario_export.py": {
-      "sha256": "5e1d3926e7273472d9a90a6f6e50c56582686044c44cc91bb867967723582a11",
-      "size": 7294
+      "sha256": "e63c4ef1a1762ec5b1a5f316f1ec64eb71860b73063e1932ae4a1cf4ed6eeda8",
+      "size": 7598
     },
     "tests/test_stage4b5_quality.py": {
       "sha256": "06ffb07ffbe013c6eba9fc578f0436e9e7c4e3cbbf544449e1559038ea8294e6",
@@ -5817,8 +5817,8 @@
       "size": 4942
     },
     "tools/baseline_integrity.py": {
-      "sha256": "d9767b0fd6c117efea23ec5685cfca3bc7027a8f4c7fc82a38c9ca3228870517",
-      "size": 8296
+      "sha256": "63424a986930099dca2a163a954a30a70c11575cad2473cf0a6624ca43e04f8e",
+      "size": 9310
     },
     "tools/benchmark_auto_detection.py": {
       "sha256": "839373b6dc28f5ea67d51fb1dd7ae91098d9dd27d9898d89a7379554ec78e53a",
@@ -5829,8 +5829,8 @@
       "size": 3165
     },
     "tools/evidence_integrity.py": {
-      "sha256": "1cf4946a92e3ff75a3f66d4ad03b9af040323fa6fb5e074b43caae2b49ca83ac",
-      "size": 11885
+      "sha256": "0c9ac7dd8f4b9d8fd090696e779f6818e32f6f5b3ea1c871280e81203496518f",
+      "size": 12992
     },
     "tools/generate_app_icon.py": {
       "sha256": "25c5727c4a5efe0262cdac0089e3bcd9c1f0efc83de374dc18e62ff579b6769c",

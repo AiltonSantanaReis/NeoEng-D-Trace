@@ -113,7 +113,12 @@ def iter_source_files() -> Iterable[Path]:
 def canonical_bytes(path: Path) -> bytes:
     """Return deterministic bytes for hashing on every supported platform."""
 
-    raw = path.read_bytes()
+    return canonical_raw_bytes(path.read_bytes())
+
+
+def canonical_raw_bytes(raw: bytes) -> bytes:
+    """Canonicalize raw bytes without consulting the worktree path."""
+
     if b"\x00" in raw:
         return raw
 
@@ -126,14 +131,27 @@ def canonical_bytes(path: Path) -> bytes:
     return normalized.encode("utf-8")
 
 
+def _git_blob_bytes(relative: Path) -> bytes | None:
+    result = subprocess.run(
+        ["git", "show", f":{relative.as_posix()}"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.stdout if result.returncode == 0 else None
+
+
 def sha256_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
-def build_manifest() -> dict[str, object]:
+def build_manifest(*, use_git_blob: bool = False) -> dict[str, object]:
     files: dict[str, dict[str, object]] = {}
     for path in iter_source_files():
-        content = canonical_bytes(path)
+        relative = path.relative_to(ROOT)
+        raw = _git_blob_bytes(relative) if use_git_blob else None
+        content = canonical_raw_bytes(raw) if raw is not None else canonical_bytes(path)
         files[path.relative_to(ROOT).as_posix()] = {
             "sha256": sha256_bytes(content),
             "size": len(content),
@@ -188,30 +206,32 @@ def find_forbidden_paths() -> list[str]:
     return sorted(set(problems))
 
 
-def write_manifest() -> int:
+def write_manifest(*, use_git_blob: bool = False) -> int:
     forbidden = find_forbidden_paths()
     if forbidden:
         print("Refusing to create a baseline with forbidden tracked paths:")
         for item in forbidden:
             print(f"  - {item}")
         return 2
-    MANIFEST_PATH.write_text(
-        json.dumps(build_manifest(), indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-        newline="\n",
+    content = (
+        json.dumps(
+            build_manifest(use_git_blob=use_git_blob), indent=2, ensure_ascii=False
+        )
+        + "\n"
     )
+    MANIFEST_PATH.write_text(content, encoding="utf-8", newline="\n")
     print(f"Wrote {MANIFEST_PATH.relative_to(ROOT)}")
     return 0
 
 
-def verify_manifest() -> int:
+def verify_manifest(*, use_git_blob: bool = False) -> int:
     if not MANIFEST_PATH.is_file():
         print("baseline_manifest.json is missing")
         return 2
 
     forbidden = find_forbidden_paths()
     expected = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    actual = build_manifest()
+    actual = build_manifest(use_git_blob=use_git_blob)
     expected_files = expected.get("files", {})
     actual_files = actual["files"]
     excluded_metadata = {"files", "baseline_date"}
@@ -267,8 +287,15 @@ def main() -> int:
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--write", action="store_true")
     action.add_argument("--verify", action="store_true")
+    parser.add_argument(
+        "--git-blob",
+        action="store_true",
+        help="build or verify against staged Git bytes instead of worktree bytes",
+    )
     args = parser.parse_args()
-    return write_manifest() if args.write else verify_manifest()
+    if args.write:
+        return write_manifest(use_git_blob=args.git_blob)
+    return verify_manifest(use_git_blob=args.git_blob)
 
 
 if __name__ == "__main__":

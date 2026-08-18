@@ -167,6 +167,29 @@ def _write_fixture(root: Path) -> tuple[Path, Path, bytes]:
     return godot_project, unity_project, payload
 
 
+def _negative_payloads(payload: bytes) -> dict[str, bytes]:
+    """Return independent malformed payloads for real consumer rejection tests."""
+
+    cases: dict[str, dict] = {}
+    cases["wrong_format"] = {"format_id": "wrong", "schema_version": 1}
+    generator = json.loads(payload)
+    generator["generator"]["id"] = "wrong_generator"
+    cases["generator_identity"] = generator
+    binding = json.loads(payload)
+    binding["source"]["sha256"] = "A" * 64
+    cases["lowercase_binding_hash"] = binding
+    camera = json.loads(payload)
+    camera["camera"]["zoom"] = 0
+    cases["camera_zoom"] = camera
+    parallax = json.loads(payload)
+    parallax["layers"][0]["parallax"]["depth"] = 2
+    cases["parallax_range"] = parallax
+    return {
+        name: (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        for name, value in cases.items()
+    }
+
+
 def _write_report(name: str, content: str) -> str:
     path = OUTPUT / name
     path.write_text(content, encoding="utf-8")
@@ -210,16 +233,6 @@ def main() -> int:
             godot_plugin_command, env=base_env, cwd=ROOT
         )
         godot_code, godot_output = _run(godot_command, env=env, cwd=ROOT)
-        (godot_project / "NeoEngGenerated/scenario.invalid.json").write_text(
-            json.dumps({"format_id": "wrong", "schema_version": 1}), encoding="utf-8"
-        )
-        negative_env = {
-            **base_env,
-            "NEOENG_SCENARIO_EXPORT": "res://NeoEngGenerated/scenario.invalid.json",
-        }
-        godot_negative_code, godot_negative_output = _run(
-            godot_command, env=negative_env, cwd=ROOT
-        )
         unity_command = [
             unity,
             "-batchmode",
@@ -239,23 +252,61 @@ def main() -> int:
             ),
         }
         unity_code, unity_output = _run(unity_command, env=unity_env, cwd=ROOT)
-        (unity_project / "Assets/NeoEngGenerated/scenario.invalid.json").write_text(
-            json.dumps({"format_id": "wrong", "schema_version": 1}), encoding="utf-8"
-        )
-        unity_negative_env = {
-            **base_env,
-            "NEOENG_SCENARIO_EXPORT": "Assets/NeoEngGenerated/scenario.invalid.json",
-        }
-        unity_negative_code, unity_negative_output = _run(
-            unity_command, env=unity_negative_env, cwd=ROOT
-        )
+        negative_payloads = _negative_payloads(payload)
+        godot_negative_results: dict[str, dict[str, object]] = {}
+        unity_negative_results: dict[str, dict[str, object]] = {}
+        for case_name, invalid_payload in negative_payloads.items():
+            godot_name = f"scenario.invalid.{case_name}.json"
+            unity_name = f"scenario.invalid.{case_name}.json"
+            (godot_project / "NeoEngGenerated" / godot_name).write_bytes(
+                invalid_payload
+            )
+            (unity_project / "Assets/NeoEngGenerated" / unity_name).write_bytes(
+                invalid_payload
+            )
+            godot_negative_code, godot_negative_output = _run(
+                godot_command,
+                env={
+                    **base_env,
+                    "NEOENG_SCENARIO_EXPORT": f"res://NeoEngGenerated/{godot_name}",
+                },
+                cwd=ROOT,
+            )
+            unity_negative_code, unity_negative_output = _run(
+                unity_command,
+                env={
+                    **base_env,
+                    "NEOENG_SCENARIO_EXPORT": f"Assets/NeoEngGenerated/{unity_name}",
+                },
+                cwd=ROOT,
+            )
+            godot_negative_results[case_name] = {
+                "exit": godot_negative_code,
+                "log": _sanitize(godot_negative_output, fixture_root),
+            }
+            unity_negative_results[case_name] = {
+                "exit": unity_negative_code,
+                "log": _sanitize(unity_negative_output, fixture_root),
+            }
 
+    godot_negative_code = max(
+        int(item["exit"]) for item in godot_negative_results.values()
+    )
+    unity_negative_code = max(
+        int(item["exit"]) for item in unity_negative_results.values()
+    )
+    godot_negative_output = "\n".join(
+        f"CASE={name}\n{item['log']}" for name, item in godot_negative_results.items()
+    )
+    unity_negative_output = "\n".join(
+        f"CASE={name}\n{item['log']}" for name, item in unity_negative_results.items()
+    )
     logs = {
         "godot-plugin.log": _sanitize(godot_plugin_output, fixture_root),
         "godot-positive.log": _sanitize(godot_output, fixture_root),
-        "godot-negative.log": _sanitize(godot_negative_output, fixture_root),
+        "godot-negative.log": godot_negative_output + "\n",
         "unity-positive.log": _sanitize(unity_output, fixture_root),
-        "unity-negative.log": _sanitize(unity_negative_output, fixture_root),
+        "unity-negative.log": unity_negative_output + "\n",
     }
     for name, content in logs.items():
         _write_report(name, content)
@@ -265,10 +316,18 @@ def main() -> int:
             "positive_exit": godot_code,
             "negative_exit": godot_negative_code,
             "plugin_exit": godot_plugin_code,
+            "negative_cases": {
+                name: {"exit": int(item["exit"])}
+                for name, item in godot_negative_results.items()
+            },
         },
         "unity": {
             "positive_exit": unity_code,
             "negative_exit": unity_negative_code,
+            "negative_cases": {
+                name: {"exit": int(item["exit"])}
+                for name, item in unity_negative_results.items()
+            },
         },
         "payload_sha256": hashlib.sha256(payload).hexdigest(),
         "expected": {
@@ -284,15 +343,21 @@ def main() -> int:
         if (
             godot_code == 0
             and godot_plugin_code == 0
-            and godot_negative_code == 1
+            and all(item["exit"] != 0 for item in godot_negative_results.values())
             and unity_code == 0
-            and unity_negative_code == 1
+            and all(item["exit"] != 0 for item in unity_negative_results.values())
             and "SCRIPT ERROR" not in logs["godot-plugin.log"]
             and "Parse Error" not in logs["godot-plugin.log"]
             and "SCENARIO_ENGINE_STAGE4B4=SUCCESS" in logs["godot-positive.log"]
             and "SCENARIO_ENGINE_STAGE4B4=SUCCESS" in logs["unity-positive.log"]
-            and "scenario export is missing" in logs["godot-negative.log"]
-            and "unsupported scenario runtime export" in logs["unity-negative.log"]
+            and all(
+                "CASE=" + name in logs["godot-negative.log"]
+                for name in negative_payloads
+            )
+            and all(
+                "CASE=" + name in logs["unity-negative.log"]
+                for name in negative_payloads
+            )
             and "C:\\" not in logs["godot-negative.log"]
             and "C:/" not in logs["godot-negative.log"]
             and "C:\\" not in logs["unity-negative.log"]

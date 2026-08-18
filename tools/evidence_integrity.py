@@ -27,12 +27,14 @@ TEXT_SUFFIXES = {
     ".gd",
     ".json",
     ".md",
+    ".meta",
     ".ndtproj",
     ".res",
     ".tres",
     ".tscn",
     ".txt",
     ".log",
+    ".py",
 }
 MANIFEST_NAMES = {
     "manifest.json",
@@ -204,10 +206,33 @@ def _ignored(path: Path) -> bool:
     return result.returncode == 0
 
 
-def _artifact_bytes(entry: ManifestEntry) -> tuple[bytes | None, Path | None]:
-    """Read a file reference, or a member of a tracked evidence archive."""
+def _git_blob_bytes(path: Path) -> bytes | None:
+    """Read the staged Git bytes, falling back to the current HEAD."""
+
+    relative = _repo_relative(path)
+    for spec in (f":{relative}", f"HEAD:{relative}"):
+        result = subprocess.run(
+            ["git", "show", spec],
+            cwd=ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        if result.returncode == 0:
+            return result.stdout
+    return None
+
+
+def _artifact_bytes(
+    entry: ManifestEntry, *, use_git_blob: bool = False
+) -> tuple[bytes | None, Path | None]:
+    """Read a file reference or a member of a tracked evidence archive."""
 
     if entry.target.is_file():
+        if use_git_blob and _tracked(entry.target):
+            raw = _git_blob_bytes(entry.target)
+            if raw is not None:
+                return raw, entry.target
         return entry.target.read_bytes(), entry.target
     for archive in sorted(entry.manifest.parent.glob("*.zip")):
         try:
@@ -220,7 +245,9 @@ def _artifact_bytes(entry: ManifestEntry) -> tuple[bytes | None, Path | None]:
     return None, None
 
 
-def validate_manifest(manifest: Path, *, require_tracked: bool) -> list[Issue]:
+def validate_manifest(
+    manifest: Path, *, require_tracked: bool, use_git_blob: bool = False
+) -> list[Issue]:
     issues: list[Issue] = []
     if _ignored(manifest):
         issues.append(Issue(manifest, "ignored manifest"))
@@ -238,7 +265,7 @@ def validate_manifest(manifest: Path, *, require_tracked: bool) -> list[Issue]:
             issues.append(Issue(manifest, f"duplicate reference: {entry.label}"))
             continue
         seen.add(entry.target)
-        raw, tracked_source = _artifact_bytes(entry)
+        raw, tracked_source = _artifact_bytes(entry, use_git_blob=use_git_blob)
         if raw is None or tracked_source is None:
             issues.append(
                 Issue(
@@ -293,8 +320,8 @@ def _set_digest(record: dict[str, Any], digest: dict[str, Any]) -> None:
         record["size"] = digest["bytes"]
 
 
-def rewrite_manifests() -> list[Issue]:
-    """Canonicalize referenced text and rewrite all supported digest records."""
+def rewrite_manifests(*, use_git_blob: bool = False) -> list[Issue]:
+    """Canonicalize text and rewrite digests from worktree or staged Git bytes."""
 
     issues: list[Issue] = []
     manifests = discover_manifests()
@@ -307,7 +334,7 @@ def rewrite_manifests() -> list[Issue]:
             continue
         entries_by_manifest[manifest] = list(iter_manifest_entries(manifest, data))
         for entry in entries_by_manifest[manifest]:
-            raw, source = _artifact_bytes(entry)
+            raw, source = _artifact_bytes(entry, use_git_blob=use_git_blob)
             if raw is None or source is None:
                 issues.append(Issue(manifest, f"missing artifact: {entry.label}"))
                 continue
@@ -335,13 +362,18 @@ def parse_args(argv: Iterable[str]) -> argparse.Namespace:
         action="store_true",
         help="reject evidence that is not in the Git index; required in CI",
     )
+    parser.add_argument(
+        "--git-blob",
+        action="store_true",
+        help="validate direct artifacts against staged Git bytes or HEAD",
+    )
     return parser.parse_args(list(argv))
 
 
 def main(argv: Iterable[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
     if args.rewrite:
-        issues = rewrite_manifests()
+        issues = rewrite_manifests(use_git_blob=args.git_blob)
         if issues:
             for issue in issues:
                 print(f"ERROR {issue.manifest}: {issue.message}")
@@ -349,7 +381,11 @@ def main(argv: Iterable[str] | None = None) -> int:
     issues = [
         issue
         for manifest in discover_manifests()
-        for issue in validate_manifest(manifest, require_tracked=args.require_tracked)
+        for issue in validate_manifest(
+            manifest,
+            require_tracked=args.require_tracked,
+            use_git_blob=args.git_blob,
+        )
     ]
     if issues:
         for issue in issues:

@@ -184,16 +184,16 @@
       "sha256": "0d9f9ff7c7f92b38c34c98b66e9595839c7575c96ec8c7186409ae104834cb53"
     },
     "../../../../src/ui/canvas_view.py": {
-      "bytes": 55984,
-      "sha256": "860693bb67b1351f6935b39510541f04afeb644e8240dc1bec8924f611757e09"
+      "bytes": 54530,
+      "sha256": "92f4aedf18d50234354c9b2f511b1b97745213b52c937dcb4e89cf167b40ac93"
     },
     "main_window.py": {
       "bytes": 45576,
       "sha256": "c7fc797fefd6d26d34fbda1a7a82195b13d22298349f7b1d0e6d6a17bee01339"
     },
     "../../../../src/ui/main_window_translations.py": {
-      "bytes": 9926,
-      "sha256": "8f4b7c88d1bdf1c3601c249b9507a66b2847d2184d757e82a7dac4ee3855cd76"
+      "bytes": 9722,
+      "sha256": "1f3eefd3817c25028b8661aa1cfc6df7b73b3b032e6b043b1eeea5ae326a4608"
     },
     "../../../../src/ui/scenario_preview_actions.py": {
       "bytes": 1980,

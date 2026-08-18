@@ -186,4 +186,12 @@ def test_native_consumer_sources_expose_the_same_runtime_contract():
         assert "schema_version" in source
         assert "object_ids" in source
         assert "parallax" in source
+        assert "generator" in source
+        assert "format_id" in source
         assert "scenario" in source.lower()
+    assert "_exact_keys" in godot
+    assert "_lower_hex_hash" in godot
+    assert "object_reference_count" in godot
+    assert "GeneratorData" in unity
+    assert "RequireHash" in unity
+    assert "objectReferenceCount" in unity
