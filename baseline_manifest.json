@@ -504,6 +504,14 @@
       "sha256": "1acc6a7fec1dfca98716969c824512931bd719429df6d837a5e5648ff645f2bc",
       "size": 9761
     },
+    "docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md": {
+      "sha256": "bd11c5b28a7f9e34a82a02687f1dac65ad8409c1c239c3408accbbb14351f1c4",
+      "size": 2793
+    },
+    "docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.sha256": {
+      "sha256": "3891c5ebb35d91c6a05b8b592641c8b47ed6ec042b60307bf988d059792dd5a0",
+      "size": 573
+    },
     "docs/evidence/ETAPA_3_ANIMACOES_TILESETS_UNITY_2026-08-17.md": {
       "sha256": "0371e262baa6a8b67e9f78899b043ea7453d7b6fab3d9f95fc54e9c81bde6f1f",
       "size": 5756
@@ -4988,6 +4996,14 @@
       "sha256": "7f9f5cd21ec21626b8a90f2cc17342ca7250d3ed6aa3bd87808190c201cc8a80",
       "size": 11299
     },
+    "src/ui/command_bindings.py": {
+      "sha256": "dbed24f77744305cd2e1401427125d6300d168ac409ee6c08d08f40cf5963651",
+      "size": 1435
+    },
+    "src/ui/command_registry.py": {
+      "sha256": "bc74d2efc024c61132fedde46fbd5ef69dec5a9b3eb032c4fab1bcc4c7ae868c",
+      "size": 4702
+    },
     "src/ui/export_dialog.py": {
       "sha256": "ad485ceff7e9b57cb2d1f8597b4fe076176608645475eb9cbe6312241799dbb1",
       "size": 40707
@@ -5017,8 +5033,8 @@
       "size": 6189
     },
     "src/ui/main_window.py": {
-      "sha256": "577bca625631cf8565e880d32a6fa43c9b3e3af91cbc8ab81472a8c0c4b65339",
-      "size": 44437
+      "sha256": "eb548b81d32c5b5808f28da11177dfc63927972cf5a0f42d20ae0ac9330f073d",
+      "size": 45233
     },
     "src/ui/main_window_translations.py": {
       "sha256": "d7d0f3c5c7fbc3aad692fa5dafaf710bcc22255fbb45f92ac82383f5010be169",
@@ -5255,6 +5271,10 @@
     "tests/test_stage1_scenario_characterization.py": {
       "sha256": "496914caf7c2f398bf9995eac138ab68cfecdacf10972830591562a11602f26b",
       "size": 2804
+    },
+    "tests/test_stage2_command_registry.py": {
+      "sha256": "ffc2b28785219dc400e3376e4c5c84e4ddff853f97972a36d12f2ed3e8a6e1cd",
+      "size": 4120
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",
