@@ -135,7 +135,15 @@ def run(output: Path) -> dict[str, Any]:
             _settle(app)
             for language in LANGUAGES:
                 window.set_language(language)
+                window.activateWindow()
+                window.raise_()
+                _settle(app)
                 window.canvas.setFocus()
+                _settle(app)
+                if not window.canvas.hasFocus():
+                    raise RuntimeError(
+                        f"canvas did not receive focus for {resolution_name}/{language}"
+                    )
                 QTest.keyClick(
                     window.canvas,
                     Qt.Key.Key_K,
