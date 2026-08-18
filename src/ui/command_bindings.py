@@ -34,5 +34,6 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("scenario.save", window.scenario_save_action),
             ("scenario.load", window.scenario_load_action),
             ("scenario.reset", window.scenario_reset_action),
+            ("scenario.export", window.scenario_export_action),
         ]
     )

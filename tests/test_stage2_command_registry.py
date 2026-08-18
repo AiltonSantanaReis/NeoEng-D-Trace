@@ -90,6 +90,7 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "scenario.save",
             "scenario.load",
             "scenario.reset",
+            "scenario.export",
         }
         assert set(window.command_registry.command_ids()) == expected
         assert window.command_registry.action("file.save") is window.save_project_action

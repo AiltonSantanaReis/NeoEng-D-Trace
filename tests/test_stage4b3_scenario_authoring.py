@@ -164,6 +164,11 @@ def test_main_window_hosts_scenario_tab_and_keeps_legacy_panel_layout(qt_app):
         qt_app.processEvents()
         assert window.right_splitter.count() == 3
         assert window.scenario_save_action in window.scenario_menu.actions()
+        assert window.scenario_export_action in window.scenario_menu.actions()
+        assert (
+            window.command_registry.action("scenario.export")
+            is window.scenario_export_action
+        )
         assert (
             window.command_registry.action("scenario.save")
             is window.scenario_save_action

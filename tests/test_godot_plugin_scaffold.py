@@ -21,6 +21,7 @@ def test_godot_addon_is_source_only_and_has_stable_identity():
     assert (ADDON_ROOT / "plugin.gd").is_file()
     assert (ADDON_ROOT / "manifest_diagnostic.gd").is_file()
     assert (ADDON_ROOT / "import_generator.gd").is_file()
+    assert (ADDON_ROOT / "scenario_importer.gd").is_file()
     assert (ADDON_ROOT / "README.md").is_file()
     plugin = (ADDON_ROOT / "plugin.gd").read_text(encoding="utf-8")
     assert "filesystem_changed" in plugin
@@ -49,6 +50,7 @@ def test_godot_addon_package_is_deterministic_and_contains_only_sources(tmp_path
             "neoeng-d-trace-godot/addons/neoeng_d_trace/manifest_diagnostic.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.cfg",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.gd",
+            "neoeng-d-trace-godot/addons/neoeng_d_trace/scenario_importer.gd",
         ]
         assert all(
             Path(name).suffix.lower() in {".gd", ".cfg", ".md"} for name in names

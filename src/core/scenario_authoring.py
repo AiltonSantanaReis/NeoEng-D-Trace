@@ -15,6 +15,10 @@ from typing import Any, Callable, Iterable
 from src.core.commands import Command, CommandResult, CommandStatus
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
 from src.core.scenario_preview import ScenarioPreviewLayer
+from src.exporters.scenario_exporter import (
+    SCENARIO_EXPORT_FILE_EXTENSION,
+    save_scenario_runtime_export,
+)
 from src.models.scene import Scene
 from src.persistence.project_schema import PointRecord
 from src.persistence.scenario_io import (
@@ -361,6 +365,22 @@ class ScenarioAuthoringState:
         self.scenario_path = destination
         self.saved_digest = scenario_sha256(self.document)
         self._notify()
+        return destination
+
+    def export_runtime(self, path: Path | None = None) -> Path:
+        if self.project_path is None or self.document is None:
+            raise ScenarioAuthoringError("a saved project is required")
+        self._rebind_project_hash(self.project_path)
+        source = self.scenario_path or self.project_path.with_name(
+            self.project_path.stem + ".ndtscenario.json"
+        )
+        if path is None:
+            destination = source.with_name(
+                self.project_path.stem + SCENARIO_EXPORT_FILE_EXTENSION
+            )
+        else:
+            destination = Path(path).resolve(strict=False)
+        save_scenario_runtime_export(self.document, destination)
         return destination
 
     def apply(self, after: ScenarioDocumentV1, description: str) -> CommandResult:

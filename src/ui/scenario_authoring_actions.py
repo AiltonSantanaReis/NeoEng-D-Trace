@@ -67,6 +67,18 @@ def _sync_preview(window: Any) -> None:
     window.canvas.update()
 
 
+def _export(window: Any) -> bool:
+    try:
+        destination = window.scenario_authoring.export_runtime()
+    except Exception as exc:
+        _report(window, "Scenario export failed", str(exc))
+        return False
+    window.statusBar().showMessage(
+        f"Scenario runtime export written to {destination.name}.", 5000
+    )
+    return True
+
+
 def install_scenario_authoring(window: Any) -> None:
     """Install the scenario tab and actions without changing Scene history."""
 
@@ -83,6 +95,7 @@ def install_scenario_authoring(window: Any) -> None:
             window.scenario_save_action.setEnabled(available)
             window.scenario_load_action.setEnabled(available)
             window.scenario_reset_action.setEnabled(available)
+            window.scenario_export_action.setEnabled(available)
 
     menu = window.menuBar().addMenu("Scenario")
     window.scenario_save_action = QAction("Save Scenario", window)
@@ -91,9 +104,13 @@ def install_scenario_authoring(window: Any) -> None:
     window.scenario_load_action.triggered.connect(lambda: _load(window))
     window.scenario_reset_action = QAction("Reset From Project", window)
     window.scenario_reset_action.triggered.connect(lambda: _reset(window))
+    window.scenario_export_action = QAction("Export Runtime JSON", window)
+    window.scenario_export_action.triggered.connect(lambda: _export(window))
+
     menu.addAction(window.scenario_save_action)
     menu.addAction(window.scenario_load_action)
     menu.addAction(window.scenario_reset_action)
+    menu.addAction(window.scenario_export_action)
     window.scenario_menu = menu
     state.subscribe(state_changed)
     state_changed()
