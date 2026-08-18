@@ -2,16 +2,18 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
-- `ETAPA_4B2_PREVIEW_OVERLAYS_2026-08-18.md` — preview somente leitura no canvas, overlays 16:9/safe area/máscara, testes Qt reais, isolamento da edição normal, capturas PNG, geometria Qt e hashes; pré-merge, sem persistência/exportação de cenário.
-- `ETAPA_4B3_AUTORIA_CENARIO_2026-08-18.md` — autoria lateral de cenários, painel, inspetor, Undo/Redo isolado, persistência hash-bound, auditoria Qt/Pillow/NumPy e hashes; pré-merge, sem exportação/consumidores de engine.
+Estado vivo da PR `#99`: as evidências 4A–4B.5 são candidatas pré-merge; somente os checks obrigatórios e o CI correspondente podem autorizar a retirada do draft. Nenhuma delas declara integração em `main` ou aprovação de release.
+
+- `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; pré-merge.
+- `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; pré-merge.
+- `ETAPA_4B2_PREVIEW_OVERLAYS_2026-08-18.md` — preview somente leitura, overlays e isolamento da edição normal; pré-merge.
+- `ETAPA_4B3_AUTORIA_CENARIO_2026-08-18.md` — autoria lateral, Undo/Redo isolado, persistência e auditoria Qt/Pillow/NumPy; pré-merge.
+- `ETAPA_4B4_EXPORTACAO_ENGINES_2026-08-18.md` — snapshot histórico da primeira execução da exportação; consulte a correção atual dos validadores.
+- `ETAPA_4B4_CORRECAO_VALIDADORES_2026-08-18.md` — correção do contrato LF/blob, validadores Godot/Unity fortalecidos, cinco casos negativos por engine e execução real reproduzível; pré-merge.
+- `ETAPA_4B5_FECHAMENTO_QUALIDADE_2026-08-18.md` — determinismo, benchmark e fechamento de qualidade; pré-merge.
 
 - `ETAPA_3_PALETA_COMANDOS_2026-08-18.md` — implementação da paleta visual, busca, teclado, Escape, localização e acessibilidade, com capturas reais en/pt, geometrias Qt, hashes Pillow/OpenCV e validação do manifest.
 - `ETAPA_3_ENCERRAMENTO_POS_MERGE.md` — fechamento pós-merge da PR `#97`, CI `32125768535` aprovado em Linux/Windows e sincronização do `main` ao merge `5d4c0829`.
-- ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md — modelo matemático puro
-- `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado de cenário, hash do projeto v1, limites, round-trip, parsing negativo, escrita atômica e rollback; preview, UI, exportação e engines permanecem etapas posteriores.
-  pré-merge de câmera ortográfica e parallax, com profundidade separada de
-  position.z, testes negativos, cobertura, hashes e limitações explícitas;
-  não representa ainda integração do módulo de cenários.
 
 - `RECONCILIACAO_DOCUMENTAL_2026-08-18.md` — reconciliação dos documentos vivos com o merge da PR `#92`, registro do novo plano e classificação explícita de paleta/parallax como planejados e não iniciados.
 - `ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md` — transação única e rollback global de múltiplos manifestos, com testes Python, execução real Godot/Unity, hashes e falhas intermediárias preservadas.

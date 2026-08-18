@@ -556,6 +556,10 @@
       "sha256": "6afe0426addf3949e337ff961a96de6d2e36af137a8665ba4bf7b73b0955aeb1",
       "size": 9172
     },
+    "docs/evidence/ETAPA_4B4_CORRECAO_VALIDADORES_2026-08-18.md": {
+      "sha256": "288a01e8c68806b30684548cf081469ce5e1da879e1b54eea969b6415132d820",
+      "size": 4190
+    },
     "docs/evidence/ETAPA_4B4_EXPORTACAO_ENGINES_2026-08-18.md": {
       "sha256": "a7769c8d9550428207094c4a108b3915f2df863c3f35d860fbee08b20f3cf71f",
       "size": 5202
@@ -761,8 +765,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "c40662fa3cf65f45fb0eca07d35d7a1acdfe9d0f7ee8d6d25963c1cbca34a4ce",
-      "size": 32772
+      "sha256": "506676c061eae159b0f081c9df6826e2d23211bea0f9719d2ed0ce2463018940",
+      "size": 33051
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -3965,7 +3969,7 @@
       "size": 5004
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/artifact-index.json": {
-      "sha256": "1f0e25cf2a380a376cf998035693b76534ff3f6fbd7d4d8f075d1f5fd2deedf7",
+      "sha256": "2d37bebe657196490390172eaac557d4221445a90e40bf6044064ad257858348",
       "size": 660
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/engine-report.json": {
@@ -3989,12 +3993,12 @@
       "size": 1099
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/unity-negative.log": {
-      "sha256": "073a4c73b8cac3de3d4b1234f16dc0c55ac19691511c02f608df0de520318e31",
-      "size": 92327
+      "sha256": "32a2260d98bc4a2eb021b2993b8ca8266584f30f8fceb04b07dd628f3990d645",
+      "size": 92244
     },
     "docs/evidence/artifacts/stage4b4-engine-validation-2026-08-18/unity-positive.log": {
-      "sha256": "316c54660bffbf81122cc7736045376c0edbbebc676912b3a393fe72f178544a",
-      "size": 54915
+      "sha256": "7beacbaf5333e6d8b467f248229c5bbd10fbb4fd92bec0aad791b057a9fa5055",
+      "size": 54875
     },
     "docs/evidence/artifacts/stage4b5-quality-2026-08-18/artifact-index.json": {
       "sha256": "1fd10123dfd03532f6d01ebda212c63198a2ccfd60e50c7cc096878a8018d1c0",
