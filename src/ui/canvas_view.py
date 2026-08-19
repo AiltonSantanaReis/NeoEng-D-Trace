@@ -1431,22 +1431,35 @@ class CanvasView(QWidget):
             QRectF(margin, 52.0, width, height),
             QRectF(self.width() - width - margin, 52.0, width, height),
             QRectF(margin, self.height() - height - 12.0, width, height),
-            QRectF(self.width() - width - margin, self.height() - height - 12.0, width, height),
+            QRectF(
+                self.width() - width - margin,
+                self.height() - height - 12.0,
+                width,
+                height,
+            ),
         )
         gizmo_rect = QRectF()
         if self.gizmo is not None and self._gizmo_enabled:
-            radius = max(
-                float(getattr(self.gizmo, "arm_length", 76.0))
-                + float(getattr(self.gizmo, "arrow_size", 14.0)),
-                float(getattr(self.gizmo, "rotation_radius", 51.0))
-                + float(getattr(self.gizmo, "rotation_tolerance", 10.0)),
-            ) + 12.0
+            radius = (
+                max(
+                    float(getattr(self.gizmo, "arm_length", 76.0))
+                    + float(getattr(self.gizmo, "arrow_size", 14.0)),
+                    float(getattr(self.gizmo, "rotation_radius", 51.0))
+                    + float(getattr(self.gizmo, "rotation_tolerance", 10.0)),
+                )
+                + 12.0
+            )
             center = self.gizmo.screen_pos
-            gizmo_rect = QRectF(center.x() - radius, center.y() - radius, radius * 2, radius * 2)
+            gizmo_rect = QRectF(
+                center.x() - radius, center.y() - radius, radius * 2, radius * 2
+            )
         for candidate in candidates:
             if candidate.left() < margin or candidate.top() < 45.0:
                 continue
-            if candidate.right() > self.width() - margin or candidate.bottom() > self.height() - margin:
+            if (
+                candidate.right() > self.width() - margin
+                or candidate.bottom() > self.height() - margin
+            ):
                 continue
             if gizmo_rect.isNull() or not candidate.intersects(gizmo_rect):
                 return candidate
@@ -1467,7 +1480,11 @@ class CanvasView(QWidget):
         painter.drawRoundedRect(rect, 5, 5)
         painter.setPen(QColor(170, 245, 255))
         for index, line in enumerate(lines):
-            painter.drawText(rect.left() + 9, rect.top() + 7 + (index + 1) * painter.fontMetrics().height() - 2, line)
+            painter.drawText(
+                rect.left() + 9,
+                rect.top() + 7 + (index + 1) * painter.fontMetrics().height() - 2,
+                line,
+            )
         painter.restore()
 
     def _draw_axis_gizmo(self, painter):

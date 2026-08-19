@@ -134,11 +134,15 @@ class ScenarioEditorWindow(QMainWindow):
                 )
             )
             self.status_label.setText(
-                "Unsaved scenario changes" if self.authoring.is_dirty else "Scenario ready"
+                "Unsaved scenario changes"
+                if self.authoring.is_dirty
+                else "Scenario ready"
             )
         else:
             self.canvas.set_scenario_preview_layers(())
-            self.status_label.setText("Open and save a project to enable scenario authoring")
+            self.status_label.setText(
+                "Open and save a project to enable scenario authoring"
+            )
         self.canvas.update()
 
     def update_language(self, language: str) -> None:

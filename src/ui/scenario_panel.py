@@ -399,19 +399,40 @@ class ScenarioPanel(QWidget):
     def update_language(self, lang: str) -> None:
         translations = {
             "en": {
-                "title": "Scenario Layer Stack", "inspector": "Layer Inspector",
-                "camera": "Camera Inspector", "empty": "Save a project in the main editor to enable scenario authoring.",
-                "add": "Add", "remove": "Remove", "up": "Up", "down": "Down",
-                "visible_toggle": "Toggle Visible", "assign": "Assign Selected Object",
-                "save": "Save Scenario", "load": "Reload Scenario", "reset": "Reset From Project",
+                "title": "Scenario Layer Stack",
+                "inspector": "Layer Inspector",
+                "camera": "Camera Inspector",
+                "empty": (
+                    "Save a project in the main " "editor to enable scenario authoring."
+                ),
+                "add": "Add",
+                "remove": "Remove",
+                "up": "Up",
+                "down": "Down",
+                "visible_toggle": "Toggle Visible",
+                "assign": "Assign Selected Object",
+                "save": "Save Scenario",
+                "load": "Reload Scenario",
+                "reset": "Reset From Project",
                 "visible": "Visible",
             },
             "pt": {
-                "title": "Camadas do Cenário", "inspector": "Inspetor da Camada",
-                "camera": "Inspetor da Câmera", "empty": "Salve um projeto no editor principal para habilitar a autoria de cenários.",
-                "add": "Adicionar", "remove": "Remover", "up": "Subir", "down": "Descer",
-                "visible_toggle": "Alternar Visibilidade", "assign": "Atribuir Objeto Selecionado",
-                "save": "Salvar Cenário", "load": "Recarregar Cenário", "reset": "Redefinir do Projeto",
+                "title": "Camadas do Cenário",
+                "inspector": "Inspetor da Camada",
+                "camera": "Inspetor da Câmera",
+                "empty": (
+                    "Salve um projeto no editor principal "
+                    "para habilitar a autoria de cenários."
+                ),
+                "add": "Adicionar",
+                "remove": "Remover",
+                "up": "Subir",
+                "down": "Descer",
+                "visible_toggle": "Alternar Visibilidade",
+                "assign": "Atribuir Objeto Selecionado",
+                "save": "Salvar Cenário",
+                "load": "Recarregar Cenário",
+                "reset": "Redefinir do Projeto",
                 "visible": "Visível",
             },
         }
@@ -421,10 +442,15 @@ class ScenarioPanel(QWidget):
         self.camera_label.setText(t["camera"])
         self.empty_state.setText(t["empty"])
         for button, key in (
-            (self.btn_add, "add"), (self.btn_remove, "remove"), (self.btn_up, "up"),
-            (self.btn_down, "down"), (self.btn_visible, "visible_toggle"),
-            (self.btn_assign, "assign"), (self.btn_save, "save"),
-            (self.btn_load, "load"), (self.btn_reset, "reset"),
+            (self.btn_add, "add"),
+            (self.btn_remove, "remove"),
+            (self.btn_up, "up"),
+            (self.btn_down, "down"),
+            (self.btn_visible, "visible_toggle"),
+            (self.btn_assign, "assign"),
+            (self.btn_save, "save"),
+            (self.btn_load, "load"),
+            (self.btn_reset, "reset"),
         ):
             button.setText(t[key])
         self.visible_box.setText(t["visible"])

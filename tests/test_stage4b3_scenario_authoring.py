@@ -6,7 +6,6 @@ import hashlib
 
 import numpy as np
 import pytest
-from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QApplication
 
 from src.core.commands import CommandManager
@@ -165,7 +164,10 @@ def test_main_window_keeps_scenario_authoring_out_of_main_layers(qt_app, tmp_pat
         assert window.scenario_panel is None
         assert window.compact_panel_tabs.count() == 4
         assert window.scenario_open_action in window.scenario_menu.actions()
-        assert window.command_registry.action("scenario.open") is window.scenario_open_action
+        assert (
+            window.command_registry.action("scenario.open")
+            is window.scenario_open_action
+        )
         window.open_scenario_editor()
         qt_app.processEvents()
         editor = window.scenario_editor_window
@@ -175,8 +177,14 @@ def test_main_window_keeps_scenario_authoring_out_of_main_layers(qt_app, tmp_pat
         assert editor.scenario_panel.btn_add.isEnabled()
         assert window.scenario_save_action in window.scenario_menu.actions()
         assert window.scenario_export_action in window.scenario_menu.actions()
-        assert window.command_registry.action("scenario.export") is window.scenario_export_action
-        assert window.command_registry.action("scenario.save") is window.scenario_save_action
+        assert (
+            window.command_registry.action("scenario.export")
+            is window.scenario_export_action
+        )
+        assert (
+            window.command_registry.action("scenario.save")
+            is window.scenario_save_action
+        )
     finally:
         if window.scenario_editor_window is not None:
             window.scenario_editor_window.close()

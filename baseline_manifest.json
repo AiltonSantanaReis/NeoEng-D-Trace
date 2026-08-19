@@ -5385,8 +5385,8 @@
       "size": 6003
     },
     "src/ui/canvas_view.py": {
-      "sha256": "a667de4cc71eee74fa13d6f99527ce264af4a7ae8bf97ba136e1d0e89b5423f1",
-      "size": 56263
+      "sha256": "638f0bf4a15cb52120cc55bccccb929436d269c274db3eabf956b86db9701f66",
+      "size": 56551
     },
     "src/ui/collision_overlay.py": {
       "sha256": "5dd981c6fa08ee715f7d32f9b1904cd671fe2bd0e8f92b541c49744e5091af0f",
@@ -5437,16 +5437,16 @@
       "size": 6940
     },
     "src/ui/main_window.py": {
-      "sha256": "c3bfb645e4743dd67ae16e35e8f83b46bc672c0782e89af2fc8bfdc4498df219",
-      "size": 45988
+      "sha256": "628bff75a0aab10b2ad3e4eedc74114acd949d4d0005b5e1e46e3888b22102dc",
+      "size": 45715
     },
     "src/ui/main_window_translations.py": {
       "sha256": "1f3eefd3817c25028b8661aa1cfc6df7b73b3b032e6b043b1eeea5ae326a4608",
       "size": 9722
     },
     "src/ui/mask_viewer.py": {
-      "sha256": "e2b4a6a8b6914f48773c43eb3c6b8a2174900926a062b1b367ea901914ffafcd",
-      "size": 52578
+      "sha256": "6474089e03ed615b9ab52d40190540335da46e25f41eba3e6fa6e75ee7189b15",
+      "size": 52600
     },
     "src/ui/responsive_layout.py": {
       "sha256": "dce4f171d06d4aaf1cb81825784bf3542e581282f2d53ec76f403f98dcb886c0",
@@ -5457,12 +5457,12 @@
       "size": 6055
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "03342c55bed8f1f3ecfa1d224bc80629d76caf5a5490b38c9d793e8e52f94d80",
-      "size": 6613
+      "sha256": "c82bab56c1800868b5bbb25a2db9a1ed0658842ae1eb9a76b443e1e6f4393f99",
+      "size": 6675
     },
     "src/ui/scenario_panel.py": {
-      "sha256": "78551138c719528350d88705d3f50f78aa654fe1881b7b87ad6ab03143e761d4",
-      "size": 16714
+      "sha256": "3589d5f4d83d9e42ca51e7a79d75976ac4a4eb1eb23c7ab624371b7edf50650a",
+      "size": 17136
     },
     "src/ui/scenario_preview_actions.py": {
       "sha256": "becb6d3c526b3adbfb4c824de17cb2d812fe1bde2bfb2c32499cbe44cd9f1600",
@@ -5721,8 +5721,8 @@
       "size": 5314
     },
     "tests/test_stage4b3_scenario_authoring.py": {
-      "sha256": "9681bbd0c3b210c652818c432d2169acbc27c78198b3b25357be5d166c59fdff",
-      "size": 12747
+      "sha256": "4b7e2754276f6fd59801a03fc0768d86194a42181f2d07c16b4dd9b550368d7e",
+      "size": 12822
     },
     "tests/test_stage4b4_scenario_export.py": {
       "sha256": "e63c4ef1a1762ec5b1a5f316f1ec64eb71860b73063e1932ae4a1cf4ed6eeda8",
@@ -5925,8 +5925,8 @@
       "size": 3976
     },
     "tests/test_ui_defect_regressions.py": {
-      "sha256": "4537413533337014d483f6d9a8f6d5cc9eee5fb170bf08fe2ab324810fffe735",
-      "size": 5133
+      "sha256": "3f1a065436ab1ca18309ba3d63e943e0958c758ba34ecbdb10dfd608e3905233",
+      "size": 5196
     },
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",

@@ -929,7 +929,9 @@ class MaskViewerDialog(QDialog):
         controls_scroll = QScrollArea(self)
         controls_scroll.setObjectName("mask_controls_scroll")
         controls_scroll.setWidgetResizable(True)
-        controls_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        controls_scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
         controls_scroll.setMinimumWidth(390)
         controls_scroll.setMaximumWidth(470)
         controls_scroll.setWidget(control_panel)

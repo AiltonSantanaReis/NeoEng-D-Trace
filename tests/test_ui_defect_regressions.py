@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from PySide6.QtCore import QPointF, QRectF, QSize
+from PySide6.QtCore import QRectF, QSize
 from PySide6.QtGui import QImage, QPainter
 from PySide6.QtWidgets import QApplication
 
@@ -40,7 +40,9 @@ def _scene() -> Scene:
     scene.image = np.zeros((180, 260, 4), dtype=np.uint8)
     scene.image[:, :, :3] = (32, 38, 48)
     scene.image[:, :, 3] = 255
-    scene.add_object("object_a", [(40, 35), (180, 35), (180, 140), (40, 140)], select=True)
+    scene.add_object(
+        "object_a", [(40, 35), (180, 35), (180, 140), (40, 140)], select=True
+    )
     scene.cmd.clear()
     return scene
 
@@ -78,7 +80,9 @@ def test_scenario_editor_is_scrollable_and_interactive_after_binding(tmp_path, q
         editor.show()
         qt_app.processEvents()
         panel = editor.scenario_panel
-        scroll = editor.findChild(type(editor.centralWidget().widget(1)), "scenario_inspector_scroll")
+        scroll = editor.findChild(
+            type(editor.centralWidget().widget(1)), "scenario_inspector_scroll"
+        )
         assert scroll is not None
         assert panel.list.isEnabled()
         assert panel.list.count() == 1
@@ -135,7 +139,10 @@ def test_mask_viewer_exposes_and_switches_all_xray_modes(qt_app):
     dialog = MaskViewerDialog(_scene())
     try:
         assert len(dialog.view_mode_buttons) == 4
-        assert dialog.findChild(type(dialog.view_mode_group), "mask_view_mode_group") is dialog.view_mode_group
+        assert (
+            dialog.findChild(type(dialog.view_mode_group), "mask_view_mode_group")
+            is dialog.view_mode_group
+        )
         for index, button in enumerate(dialog.view_mode_buttons):
             button.click()
             qt_app.processEvents()
