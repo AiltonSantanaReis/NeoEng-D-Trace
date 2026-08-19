@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from PySide6.QtCore import QMimeData, QPointF, Qt, QUrl
-from PySide6.QtGui import QDropEvent, QImage
+from PySide6.QtCore import QMimeData, QPoint, QPointF, Qt, QUrl
+from PySide6.QtGui import QDragEnterEvent, QDropEvent, QImage
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 
@@ -23,10 +23,11 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringMetadataRecord,
     SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
+    SceneSnapRecord,
     SceneTransformRecord,
 )
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
-from src.ui.scene_authoring_viewport import SceneAuthoringViewport
+from src.ui.scene_authoring_viewport import SceneAuthoringViewport, SceneTransformGizmo
 
 SHA = "a" * 64
 
@@ -126,6 +127,20 @@ def test_factory_only_emits_hashable_relative_asset(tmp_path: Path) -> None:
     rejected = document_from_scene(scene, project)
     assert rejected.assets == []
     assert rejected.objects == []
+    scene.image_path = None
+    no_image = document_from_scene(scene, project)
+    assert no_image.assets == []
+    assert no_image.objects == []
+    scene.image_path = "assets/tree.png"
+    relative = document_from_scene(scene, project)
+    assert relative.assets[0].path == "assets/tree.png"
+    scene.image_path = str(tmp_path / "missing.png")
+    missing = document_from_scene(scene, project)
+    assert missing.assets == []
+    scene.image_path = str(asset)
+    scene.layers = []
+    fallback_layers = document_from_scene(scene, project)
+    assert fallback_layers.layers[0].id == "layer_default"
 
 
 def test_viewport_inspector_and_drop_import_are_interactive(
@@ -253,3 +268,226 @@ def test_window_binds_professional_editor_only_after_saved_project(
     finally:
         window.close()
         qt_app.processEvents()
+
+
+def test_session_transaction_guards_and_history_capacity() -> None:
+    with pytest.raises(ValueError, match="at least 1"):
+        SceneAuthoringSession(SceneAuthoringModel(_document()), max_history=0)
+    session = SceneAuthoringSession(SceneAuthoringModel(_document()), max_history=1)
+    notifications = []
+
+    def callback() -> None:
+        notifications.append(True)
+
+    session.subscribe(callback)
+    session.subscribe(callback)
+    session.set_selection(["object_a"])
+    assert len(notifications) == 1
+    assert session.apply(lambda: None, "no-op") is False
+    session.begin_gesture()
+    with pytest.raises(RuntimeError, match="already active"):
+        session.begin_gesture()
+    session.cancel_gesture()
+    with pytest.raises(RuntimeError, match="no authoring gesture"):
+        session.restore_gesture_base()
+    with pytest.raises(RuntimeError, match="no authoring gesture"):
+        session.finish_gesture("missing")
+    with pytest.raises(RuntimeError, match="no authoring gesture"):
+        session.preview_transform_selected()
+    before = session.snapshot()
+    with pytest.raises(RuntimeError, match="boom"):
+        session.apply(lambda: (_ for _ in ()).throw(RuntimeError("boom")), "fail")
+    assert session.snapshot() == before
+    session.update_transform("object_a", _transform(11.0))
+    session.update_transform("object_a", _transform(12.0))
+    assert session.undo_count == 1
+    session.clear_history()
+    assert session.undo() is False
+    assert session.redo() is False
+
+
+def test_gizmo_modes_and_invalid_image_are_explicit(qt_app, tmp_path: Path) -> None:
+    gizmo = SceneTransformGizmo()
+    assert gizmo._mode_for(QPointF(40.0, 0.0)) == "rotate"
+    assert gizmo._mode_for(QPointF(30.0, 0.0)) == "translate_x"
+    assert gizmo._mode_for(QPointF(0.0, -30.0)) == "translate_y"
+    assert gizmo._mode_for(QPointF(30.0, 30.0)) == "scale"
+    assert gizmo._mode_for(QPointF(0.0, 0.0)) == "translate"
+    invalid = tmp_path / "invalid.png"
+    invalid.write_bytes(b"not an image")
+    with pytest.raises(ValueError, match="decoded"):
+        SceneAuthoringViewport._image_size(invalid)
+    del qt_app
+
+
+def test_inspector_reports_empty_and_locked_edit_paths(qt_app) -> None:
+    session = SceneAuthoringSession(SceneAuthoringModel(_document()))
+    inspector = SceneAuthoringInspector(session)
+    try:
+        inspector.apply_transform()
+        inspector._undo()
+        inspector._redo()
+        inspector._delete()
+        session.set_selection(["object_a"])
+        inspector.snap_enabled.setChecked(True)
+        inspector._apply_snap()
+        assert session.document.snap == SceneSnapRecord(enabled=True)
+    finally:
+        inspector.close()
+    locked_session = SceneAuthoringSession(SceneAuthoringModel(_document(locked=True)))
+    locked_inspector = SceneAuthoringInspector(locked_session)
+    messages = []
+    locked_inspector.status_message.connect(messages.append)
+    try:
+        locked_session.set_selection(["object_a"])
+        locked_inspector.apply_transform()
+        assert messages and "locked" in messages[-1]
+    finally:
+        locked_inspector.close()
+
+
+def test_viewport_gizmo_modes_commit_and_noop_paths(qt_app) -> None:
+    session = SceneAuthoringSession(SceneAuthoringModel(_document()))
+    viewport = SceneAuthoringViewport(session)
+    try:
+        viewport._object_moved("missing", QPointF(1.0, 1.0))
+        viewport._object_released("missing", QPointF(1.0, 1.0))
+        assert viewport.undo() is False
+        assert viewport.redo() is False
+        session.set_selection(["object_a"])
+        for mode, point in (
+            ("translate_x", QPointF(20.0, 30.0)),
+            ("translate_y", QPointF(30.0, 30.0)),
+            ("scale", QPointF(35.0, 35.0)),
+            ("rotate", QPointF(10.0, 60.0)),
+        ):
+            current = session.document.objects[0].transform.position
+            start = QPointF(current.x, current.y)
+            viewport._gizmo_started(mode, start)
+            viewport._gizmo_changed(mode, point)
+            viewport._gizmo_finished(mode, point)
+        viewport._gizmo_start = None
+        viewport._gizmo_changed("translate", QPointF(1.0, 1.0))
+        viewport._gizmo_start = QPointF(0.0, 0.0)
+        viewport._gizmo_changed("unknown", QPointF(1.0, 1.0))
+        viewport._gizmo_start = QPointF(0.0, 0.0)
+        session.clear_selection()
+        viewport._gizmo_changed("rotate", QPointF(1.0, 1.0))
+        assert viewport._gizmo_start is not None
+    finally:
+        viewport.close()
+        qt_app.processEvents()
+
+
+def test_viewport_drop_rejections_text_path_and_visibility(
+    qt_app, tmp_path: Path
+) -> None:
+    session = SceneAuthoringSession(SceneAuthoringModel(_document()))
+    viewport = SceneAuthoringViewport(session)
+    messages = []
+    viewport.status_message.connect(messages.append)
+    try:
+        empty = QMimeData()
+        drag_empty = QDragEnterEvent(
+            QPoint(1, 1),
+            Qt.DropAction.CopyAction,
+            empty,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        viewport.dragEnterEvent(drag_empty)
+        assert not drag_empty.isAccepted()
+        no_drop = QDropEvent(
+            QPointF(1.0, 1.0),
+            Qt.DropAction.CopyAction,
+            empty,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        viewport.dropEvent(no_drop)
+        assert "Drop an image" in messages[-1]
+    finally:
+        viewport.close()
+
+    project = tmp_path / "scene.ndtproj"
+    project.write_bytes(b"project bytes")
+    asset = tmp_path / "text-drop.png"
+    image = QImage(6, 5, QImage.Format.Format_RGBA8888)
+    image.fill(0xFF445566)
+    assert image.save(str(asset))
+    no_project = SceneAuthoringViewport(
+        SceneAuthoringSession(SceneAuthoringModel(_document()))
+    )
+    no_project.status_message.connect(messages.append)
+    try:
+        text_mime = QMimeData()
+        text_mime.setText(str(asset))
+        drag_text = QDragEnterEvent(
+            QPoint(1, 1),
+            Qt.DropAction.CopyAction,
+            text_mime,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        no_project.dragEnterEvent(drag_text)
+        assert drag_text.isAccepted()
+        no_project.dropEvent(
+            QDropEvent(
+                QPointF(2.0, 2.0),
+                Qt.DropAction.CopyAction,
+                text_mime,
+                Qt.MouseButton.LeftButton,
+                Qt.KeyboardModifier.NoModifier,
+            )
+        )
+        assert "Save the project" in messages[-1]
+    finally:
+        no_project.close()
+
+    imported_session = SceneAuthoringSession(SceneAuthoringModel(_document()))
+    imported = SceneAuthoringViewport(imported_session, project_root=tmp_path)
+    try:
+        text_mime = QMimeData()
+        text_mime.setText(str(asset))
+        imported.dropEvent(
+            QDropEvent(
+                QPointF(2.0, 2.0),
+                Qt.DropAction.CopyAction,
+                text_mime,
+                Qt.MouseButton.LeftButton,
+                Qt.KeyboardModifier.NoModifier,
+            )
+        )
+        assert any(
+            item.path == "text-drop.png" for item in imported_session.document.assets
+        )
+    finally:
+        imported.close()
+
+    hidden = _document().model_copy(
+        update={
+            "objects": [
+                item.model_copy(update={"visible": False})
+                for item in _document().objects
+            ]
+        }
+    )
+    hidden_viewport = SceneAuthoringViewport(
+        SceneAuthoringSession(SceneAuthoringModel(hidden))
+    )
+    try:
+        assert hidden_viewport._items == {}
+    finally:
+        hidden_viewport.close()
+        qt_app.processEvents()
+
+
+def test_session_empty_state_observables() -> None:
+    session = SceneAuthoringSession(SceneAuthoringModel(_document()))
+    assert session.can_undo is False
+    assert session.can_redo is False
+    assert session.undo_count == 0
+    assert session.redo_count == 0
+    session.cancel_gesture()
+    session.clear_selection()
+    assert session.selection.ids == ()

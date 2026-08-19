@@ -18,7 +18,7 @@ from typing import Any
 
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 from src.ui.theme_qss import QSS
 
@@ -58,6 +58,21 @@ SIBLING_RELATIONS = (
     ("side_panel", "layers"),
     ("side_panel", "groups"),
     ("layers", "groups"),
+)
+SCENARIO_WIDGETS = (
+    "scenario_editor_toolbar",
+    "scenario_editor_splitter",
+    "professional_viewport_pages",
+    "scenario_right_pages",
+    "professional_viewport",
+    "professional_inspector",
+)
+SCENARIO_BASE_WIDGETS = ("scenario_editor_toolbar", "scenario_editor_splitter", "professional_viewport_pages", "scenario_right_pages")
+SCENARIO_PARENT_RELATIONS = (
+    ("professional_viewport_pages", "scenario_editor_splitter"),
+    ("scenario_right_pages", "scenario_editor_splitter"),
+    ("professional_viewport", "professional_viewport_pages"),
+    ("professional_inspector", "scenario_right_pages"),
 )
 STATE_BY_SUFFIX = {
     "_01_sem_projeto.png": "sem_projeto",
@@ -206,6 +221,35 @@ def _geometry_checks(
         if rect is None or rect[2:] != image_size:
             _finding(findings, "geometry", "modal Qt geometry differs from PNG size", image=filename)
         return
+    profile = geometry.get("profile")
+    if profile in {"professional_scene_empty", "professional_scene_editor"}:
+        state_widgets = geometry.get("professional_editor")
+        if not isinstance(state_widgets, dict):
+            _finding(findings, "geometry", "missing professional editor geometry", image=filename)
+            return
+        rects: dict[str, tuple[int, int, int, int]] = {}
+        visible: set[str] = set()
+        width, height = image_size
+        required_widgets = SCENARIO_BASE_WIDGETS if profile == "professional_scene_empty" else SCENARIO_WIDGETS
+        for name in required_widgets:
+            widget = state_widgets.get(name)
+            if not isinstance(widget, dict):
+                _finding(findings, "geometry", f"missing Qt widget geometry: {name}", image=filename)
+                continue
+            root_rect = _rect(widget.get("root_geometry"))
+            local_rect = _rect(widget.get("geometry"))
+            if root_rect is None or local_rect is None or root_rect[2:] != local_rect[2:]:
+                _finding(findings, "geometry", f"invalid or inconsistent geometry: {name}", image=filename)
+                continue
+            rects[name] = root_rect
+            if bool(widget.get("visible")):
+                visible.add(name)
+                if root_rect[2] <= 0 or root_rect[3] <= 0 or not _within(root_rect, (0, 0, width, height)):
+                    _finding(findings, "clipping", f"visible widget is clipped by capture bounds: {name}", image=filename, rects=[{"name": name, "rect": list(root_rect), "severity": "error"}])
+        for child, parent in SCENARIO_PARENT_RELATIONS:
+            if child in visible and parent in visible and child in rects and parent in rects and not _within(rects[child], rects[parent]):
+                _finding(findings, "geometry", f"Qt child is outside its recorded parent: {child} -> {parent}", image=filename, rects=[{"name": child, "rect": list(rects[child]), "severity": "error"}, {"name": parent, "rect": list(rects[parent]), "severity": "error"}])
+        return
     state_widgets = geometry.get(state)
     if not isinstance(state_widgets, dict):
         _finding(findings, "geometry", f"missing widget state: {state}", image=filename)
@@ -267,9 +311,10 @@ def _palette_checks(
     rgb: np.ndarray,
     is_modal: bool,
     findings: list[dict[str, Any]],
+    profile: str | None = None,
 ) -> dict[str, Any]:
     colors = sorted(set(COLOR_RE.findall(QSS)))
-    required = MODAL_PALETTE if is_modal else CORE_PALETTE
+    required = MODAL_PALETTE if is_modal else (("#1e1e1e", "#3c3c3c", "#e6e6e6") if profile == "professional_scene_empty" else CORE_PALETTE)
     counts: dict[str, int] = {}
     for value in required:
         color = tuple(bytes.fromhex(value[1:]))
@@ -374,10 +419,11 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
                 break
         if expected_size is not None and tuple(metadata["size"]) != tuple(expected_size):
             _finding(findings, "dimensions", f"PNG dimensions {metadata['size']} != Qt capture {expected_size}", image=filename)
+        capture = next((item for item in captures.values() if filename in item.get("files", {})), {})
         if state is not None:
-            capture = next((item for item in captures.values() if filename in item.get("files", {})), {})
             _geometry_checks(filename, state, capture.get("widget_geometry"), tuple(metadata["size"]), findings)
-        palette = _palette_checks(filename, rgb, is_modal, findings) if is_screenshot else {"skipped": True}
+        palette_profile = capture.get("widget_geometry", {}).get("profile") if isinstance(capture.get("widget_geometry"), dict) else None
+        palette = _palette_checks(filename, rgb, is_modal, findings, profile=palette_profile) if is_screenshot else {"skipped": True}
         edge = np.concatenate((rgb[0, :, :], rgb[-1, :, :], rgb[:, 0, :], rgb[:, -1, :]), axis=0)
         edge_activity = float((edge.max(axis=1) > 180).mean())
         image_reports[filename] = {key: value for key, value in metadata.items() if key != "rgb"} | {

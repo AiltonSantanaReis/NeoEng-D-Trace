@@ -110,14 +110,14 @@ class SceneTransformGizmo(QGraphicsObject):
 
     def _mode_for(self, point: QPointF) -> str:
         radius = math.hypot(point.x(), point.y())
+        if abs(point.x()) >= 27.0 and abs(point.y()) >= 27.0:
+            return "scale"
         if 38.0 <= radius <= 56.0:
             return "rotate"
         if point.x() >= 26.0 and abs(point.y()) <= 9.0:
             return "translate_x"
         if point.y() <= -26.0 and abs(point.x()) <= 9.0:
             return "translate_y"
-        if abs(point.x()) >= 27.0 and abs(point.y()) >= 27.0:
-            return "scale"
         return "translate"
 
     def paint(self, painter, option, widget=None) -> None:
