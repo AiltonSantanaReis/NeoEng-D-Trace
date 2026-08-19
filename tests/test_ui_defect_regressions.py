@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-
 from PySide6.QtCore import QRectF, QSize
 from PySide6.QtGui import QImage, QPainter
 from PySide6.QtWidgets import QApplication
