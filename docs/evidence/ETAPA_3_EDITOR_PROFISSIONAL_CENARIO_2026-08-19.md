@@ -71,6 +71,8 @@ asserções ou comportamento. A correção foi validada localmente com o lint
 estrito do arquivo e 16 testes de regressão/Etapa 3 aprovados. O baseline foi
 regenerado contra os bytes staged e verificado com 1.532 arquivos.
 
+A execução remota `32300986840` confirmou no Windows uma reprovação de `black --check`: o segundo ajuste do `assert` ainda não estava normalizado. No Linux, o job não alcançou o código do projeto: o passo `Refresh apt package indexes for Qt` excedeu o timeout de 10 minutos do runner. A normalização Black foi aplicada e passou localmente; o Linux exige nova execução para validação remota.
+
 A PR permanece pendente de nova execução remota dos dois jobs; nenhum check
 reprovado foi tratado como aprovação e nenhum bypass foi aplicado.
 
