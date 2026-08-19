@@ -1,0 +1,217 @@
+"""Qt-independent editing model for professional scene authoring.
+
+The model is deliberately independent from the existing lateral scenario and
+from Qt. It provides deterministic selection, object/group operations and
+snapping for the future editor window; persistence and rendering are separate
+plan stages.
+"""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+from typing import Iterable
+
+from src.persistence.project_schema import Point3Record
+from src.persistence.scene_authoring_schema import (
+    AssetReferenceRecord,
+    SceneAuthoringDocumentV1,
+    SceneGroupAuthoringRecord,
+    SceneObjectAuthoringRecord,
+    SceneSnapRecord,
+    SceneTransformRecord,
+)
+
+
+@dataclass(frozen=True)
+class SceneSelection:
+    ids: tuple[str, ...] = ()
+    primary: str | None = None
+
+    def __post_init__(self) -> None:
+        if len(self.ids) != len(set(self.ids)):
+            raise ValueError("selection IDs must be unique")
+        if self.primary is not None and self.primary not in self.ids:
+            raise ValueError("selection primary must belong to selection")
+
+    @classmethod
+    def from_ids(
+        cls, object_ids: Iterable[str], primary: str | None = None
+    ) -> "SceneSelection":
+        ids = tuple(dict.fromkeys(object_ids))
+        chosen = primary if primary is not None else (ids[0] if ids else None)
+        return cls(ids=ids, primary=chosen)
+
+
+def snap_value(value: int | float, spacing: int | float) -> float:
+    """Snap one finite coordinate using symmetric nearest-grid rounding."""
+
+    if (
+        isinstance(value, bool)
+        or isinstance(spacing, bool)
+        or not math.isfinite(float(value))
+        or not math.isfinite(float(spacing))
+        or spacing <= 0
+    ):
+        raise ValueError("snap value must be finite and spacing positive")
+    return float(round(float(value) / float(spacing)) * float(spacing))
+
+
+def snap_transform(
+    transform: SceneTransformRecord,
+    snap: SceneSnapRecord,
+) -> SceneTransformRecord:
+    """Return a validated transform with position snapped when enabled."""
+
+    if not snap.enabled:
+        return transform
+    return SceneTransformRecord(
+        position=transform.position.model_copy(
+            update={
+                "x": snap_value(transform.position.x, snap.spacing.x),
+                "y": snap_value(transform.position.y, snap.spacing.y),
+            }
+        ),
+        rotation=transform.rotation,
+        scale=transform.scale,
+        pivot=transform.pivot,
+        flip_x=transform.flip_x,
+        flip_y=transform.flip_y,
+    )
+
+
+class SceneAuthoringModel:
+    """Validated document plus non-persistent selection state."""
+
+    def __init__(self, document: SceneAuthoringDocumentV1) -> None:
+        self.document = SceneAuthoringDocumentV1.model_validate(document, strict=True)
+        self.selection = SceneSelection()
+
+    def _replace(self, **changes: object) -> None:
+        candidate = self.document.model_copy(update=changes)
+        self.document = SceneAuthoringDocumentV1.model_validate(candidate, strict=True)
+
+    def _object(self, object_id: str) -> SceneObjectAuthoringRecord:
+        for item in self.document.objects:
+            if item.id == object_id:
+                return item
+        raise KeyError(object_id)
+
+    def _assert_editable(self, object_id: str) -> None:
+        item = self._object(object_id)
+        if item.locked:
+            raise PermissionError(f"object {object_id!r} is locked")
+        for layer in self.document.layers:
+            if layer.id == item.layer_id and layer.locked:
+                raise PermissionError(f"layer {layer.id!r} is locked")
+
+    def set_selection(
+        self, object_ids: Iterable[str], primary: str | None = None
+    ) -> SceneSelection:
+        selected = SceneSelection.from_ids(object_ids, primary)
+        known = {item.id for item in self.document.objects}
+        missing = [item for item in selected.ids if item not in known]
+        if missing:
+            raise KeyError(missing[0])
+        self.selection = selected
+        return selected
+
+    def clear_selection(self) -> None:
+        self.selection = SceneSelection()
+
+    def add_asset(self, asset: AssetReferenceRecord) -> None:
+        if asset.id in {item.id for item in self.document.assets}:
+            raise ValueError("asset ID exists")
+        self._replace(assets=[*self.document.assets, asset])
+
+    def add_object(
+        self, obj: SceneObjectAuthoringRecord, *, select: bool = False
+    ) -> None:
+        if obj.id in {item.id for item in self.document.objects}:
+            raise ValueError("object ID exists")
+        self._replace(objects=[*self.document.objects, obj])
+        if select:
+            self.set_selection([obj.id])
+
+    def remove_object(self, object_id: str) -> None:
+        self._object(object_id)
+        self._replace(
+            objects=[item for item in self.document.objects if item.id != object_id],
+            groups=[
+                group.model_copy(
+                    update={
+                        "members": [
+                            member for member in group.members if member != object_id
+                        ]
+                    }
+                )
+                for group in self.document.groups
+            ],
+        )
+        self.set_selection(
+            [item for item in self.selection.ids if item != object_id],
+            primary=(
+                self.selection.primary if self.selection.primary != object_id else None
+            ),
+        )
+
+    def update_transform(self, object_id: str, transform: SceneTransformRecord) -> None:
+        self._assert_editable(object_id)
+        objects = [
+            (
+                item.model_copy(update={"transform": transform})
+                if item.id == object_id
+                else item
+            )
+            for item in self.document.objects
+        ]
+        self._replace(objects=objects)
+
+    def translate_selected(self, delta: Point3Record) -> None:
+        """Translate selected objects while preserving their relative positions."""
+
+        for object_id in self.selection.ids:
+            self._assert_editable(object_id)
+        selected = set(self.selection.ids)
+        objects = []
+        for item in self.document.objects:
+            if item.id not in selected:
+                objects.append(item)
+                continue
+            position = item.transform.position
+            translated = Point3Record(
+                x=position.x + delta.x,
+                y=position.y + delta.y,
+                z=position.z + delta.z,
+            )
+            transform = SceneTransformRecord(
+                position=translated,
+                rotation=item.transform.rotation,
+                scale=item.transform.scale,
+                pivot=item.transform.pivot,
+                flip_x=item.transform.flip_x,
+                flip_y=item.transform.flip_y,
+            )
+            objects.append(
+                item.model_copy(
+                    update={"transform": snap_transform(transform, self.document.snap)}
+                )
+            )
+        self._replace(objects=objects)
+
+    def set_snap(self, snap: SceneSnapRecord) -> None:
+        self._replace(snap=snap)
+
+    def add_group(self, group: SceneGroupAuthoringRecord) -> None:
+        if group.id in {item.id for item in self.document.groups}:
+            raise ValueError("group ID exists")
+        known = {item.id for item in self.document.objects}
+        if any(member not in known for member in group.members):
+            raise KeyError("group member object not found")
+        self._replace(groups=[*self.document.groups, group])
+
+    def group_selection(self, group: SceneGroupAuthoringRecord) -> None:
+        if not self.selection.ids:
+            raise ValueError("cannot group an empty selection")
+        group = group.model_copy(update={"members": list(self.selection.ids)})
+        self.add_group(group)

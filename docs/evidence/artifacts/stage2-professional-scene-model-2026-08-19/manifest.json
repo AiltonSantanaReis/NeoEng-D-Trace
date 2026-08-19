@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "scope": "professional scene authoring model: portable assets, transforms, selection, groups, locks and snapping",
+  "files": {
+    "scene_authoring_fixture.ndtscene.json": {
+      "bytes": 1394,
+      "sha256": "3d820a0a95edb6bbce51642b583a56ee43022ead704653acd2ce28ad61a2ea9c"
+    },
+    "validation-output.txt": {
+      "bytes": 11527,
+      "sha256": "61630aa64772a1f8ce394b42bccef493fa96088a53ffc9ac3c77f3041f922012"
+    },
+    "../../../../src/core/scene_authoring_model.py": {
+      "bytes": 7931,
+      "sha256": "fdd54e11a9e068c551deb90b136f90c14b12081eb8919ec58cca84a5b8152526"
+    },
+    "../../../../src/persistence/scene_authoring_schema.py": {
+      "bytes": 7838,
+      "sha256": "fb14520064ed5ee34099fadeac37057e4c5023976b3694c57065a11b6a52896e"
+    },
+    "../../../../tests/test_stage2_scene_authoring_model.py": {
+      "bytes": 6554,
+      "sha256": "98d2723e448a762efe700020863463e4e519f34776cb5d72fc02a4f928fc0cf0"
+    },
+    "../../../../docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md": {
+      "bytes": 4197,
+      "sha256": "efb2aefe64099e10f90369bdeb20d224155d68bf1db96e93f59ea8b46dd98a79"
+    }
+  }
+}

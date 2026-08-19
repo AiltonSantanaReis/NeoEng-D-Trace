@@ -1,8 +1,8 @@
 # Plano de extensão profissional de cenários — NeoEng-D-Trace
 
 **Data de início:** 19 de agosto de 2026
-**Estado:** Etapa 1 em execução
-**Base integrada:** `487ae11` (merge da PR `#103`)
+**Estado:** Etapa 2 em execução
+**Base integrada:** `7b697f8` (merge da PR `#104`)
 **Plano relacionado:** `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
 
 ## Motivo da extensão
@@ -81,5 +81,3 @@ testado mantém a etapa aberta.
 Não serão adicionados nesta extensão, sem contrato e decisão próprios, editor
 de imagem, modelagem 3D, runtime completo de jogo, streaming de assets,
 simulação física de partículas ou efeitos não determinísticos.
-
-\n

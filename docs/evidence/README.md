@@ -377,3 +377,4 @@ a integração da Etapa 6 e a aprovação de release permanecem decisões indepe
 - gate vigente naquele snapshot pré-commit: uma evidência v4.1 com `APPROVED_FOR_DIFF_REVIEW_ONLY` era pré-condição para iniciar a revisão do diff; commit, push e novo CI ainda eram gates separados.
 
 O formato de projeto v1 já persiste segmentos Bézier. Qualquer documento ou metadado da PR que afirme ausência dessa persistência deve ser corrigido antes de Ready for review.
+- `ETAPA_2_MODELO_CENARIO_PROFISSIONAL_2026-08-19.md` — contrato e modelo editável profissional; estado pré-merge da PR.

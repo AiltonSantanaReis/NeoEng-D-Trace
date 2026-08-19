@@ -1,0 +1,71 @@
+{
+  "assets": [
+    {
+      "id": "tree",
+      "path": "assets/tree.png",
+      "path_kind": "relative",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "format_id": "neoeng-d-trace-scene-authoring",
+  "groups": [],
+  "layers": [
+    {
+      "id": "background",
+      "locked": false,
+      "name": "Background",
+      "visible": true
+    }
+  ],
+  "metadata": {
+    "app_version": "0.2.0",
+    "generator": "NeoEng-D-Trace",
+    "name": "Stage 2 fixture"
+  },
+  "objects": [
+    {
+      "asset_id": "tree",
+      "id": "tree-1",
+      "layer_id": "background",
+      "locked": false,
+      "transform": {
+        "flip_x": false,
+        "flip_y": false,
+        "pivot": {
+          "x": 0.5,
+          "y": 1.0
+        },
+        "position": {
+          "x": 10.0,
+          "y": 2.0,
+          "z": 3.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 45.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "visible": true
+    }
+  ],
+  "project": {
+    "format_id": "neoeng-d-trace-project",
+    "schema_version": 1,
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "schema_version": 1,
+  "snap": {
+    "enabled": true,
+    "mode": "grid",
+    "spacing": {
+      "x": 5.0,
+      "y": 2.0
+    }
+  }
+}
