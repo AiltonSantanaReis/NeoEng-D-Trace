@@ -6,7 +6,7 @@
   caracterização da extensão profissional.
 - Commit-base: `487ae11adfa7b9052debd5eda41e47460399406e`.
 - Branch de execução: `codex/scenario-authoring-professional`.
-- Estado: **PENDENTE DE GATES LOCAIS**.
+- Estado: **APROVADO NO ESCOPO DA ETAPA 1**.
 - Plano: `docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md`.
 
 ## Fatos confirmados no código
@@ -78,6 +78,11 @@ git status --short --branch
   não serão criados skips para esta etapa.
 - Cobertura: será registrada pela execução real; nenhum limiar será alterado.
 
+## Incidentes encontrados e corrigidos
+
+1. O primeiro baseline marcou os dois documentos novos como Unexpected porque ainda não estavam rastreados. Eles foram commitados e o baseline foi regenerado; a validação final passou com 1509 arquivos.
+2. Uma normalização textual intermediária reduziu acidentalmente o arquivo do plano e inseriu uma sequência literal de newline no registro. A perda foi detectada por comparação de bytes, restaurada do blob 062e755 e corrigida nos commits aef47f8 e e46920f. Nenhum código, projeto do usuário ou regra de teste foi alterado.
+
 ## Lacunas deliberadamente não declaradas como resolvidas
 
 Esta etapa não implementa drag-and-drop, objetos independentes, transformações
@@ -93,7 +98,6 @@ ou migrado.
 
 ## Decisão
 
-**PENDENTE DE FECHAMENTO DO BASELINE.** Os testes de caracterização e a
-integridade dos manifestos passaram. A etapa só será fechada após os dois novos
-documentos estarem rastreados, o baseline ser regenerado contra os blobs do
-commit e a validação final confirmar árvore limpa.
+**APROVADO NO ESCOPO DA ETAPA 1.** Baseline, caracterização, integridade de
+evidências, higiene documental e árvore limpa foram comprovados. A aprovação
+não declara implementadas as funcionalidades das etapas 2 a 6.
