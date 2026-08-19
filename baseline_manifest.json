@@ -29,8 +29,8 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "0aebe71564a428b49af472ce519e71283889a44267f8a8dfa2f76932f9ca59d2",
-      "size": 6948
+      "sha256": "43066cd9f1a692af386d3bdc086930a0e81b73c41d4e208e62d9a9a1e9b9b348",
+      "size": 7511
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
@@ -513,8 +513,8 @@
       "size": 9761
     },
     "docs/evidence/ETAPA_2_MODELO_CENARIO_PROFISSIONAL_2026-08-19.md": {
-      "sha256": "b6b585322f582edf6501fb999c558003334f9c9706046b73404c08af3e6a28b2",
-      "size": 3243
+      "sha256": "0243693af9ce380b40dd84362a4be95d18c7f59b4df4dda9c025303371c96b38",
+      "size": 4136
     },
     "docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md": {
       "sha256": "1df1c139796053f209c37fe9fe25fbc2165910f51c64f8e9ccee8c86a6566fba",

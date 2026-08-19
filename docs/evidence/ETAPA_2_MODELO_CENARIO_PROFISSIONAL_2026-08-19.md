@@ -58,6 +58,22 @@ do gate imutável de 85%. Foram adicionados somente testes de ramos negativos e
 operações de edição que estavam sem exercício; o gate não foi alterado, nenhum
 código foi excluído e não houve bypass. A nova medição local atingiu 85,20%.
 
+## Incidente de execução Linux
+
+Após a correção dos testes, os runs `32234606879` e `32235832881` foram
+observados com o job Linux parado no passo `Install Qt runtime libraries`.
+Em ambos os runs, o passo iniciou e os passos seguintes permaneceram
+pendentes; nenhum dos dois chegou à suíte Linux, à cobertura ou ao
+armazenamento de evidências. O job Windows do run `32235832881` concluiu com
+sucesso.
+
+Os dois runs presos foram cancelados depois dessa confirmação. A ocorrência é
+registrada como falha operacional do processo de preparação do runner, não
+como falha funcional ou aprovação dos testes Linux. O workflow foi corrigido
+sem alterar gates: a atualização dos índices APT e a instalação do Qt agora
+são passos independentes, não interativos, com retries e limites de conexão.
+Uma nova execução do CI é necessária para validar o comportamento corrigido.
+
 ## Rollback e limites
 
 O rollback desta etapa é a reversão do commit da PR, sem migração automática de
