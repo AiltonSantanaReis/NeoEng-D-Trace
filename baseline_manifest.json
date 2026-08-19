@@ -5457,7 +5457,7 @@
       "size": 6055
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "c82bab56c1800868b5bbb25a2db9a1ed0658842ae1eb9a76b443e1e6f4393f99",
+      "sha256": "de6e556f641272e8b6ef8908409b867c1ea0495a4bc33aa6fb47f60cce9b3674",
       "size": 6675
     },
     "src/ui/scenario_panel.py": {
@@ -5925,8 +5925,8 @@
       "size": 3976
     },
     "tests/test_ui_defect_regressions.py": {
-      "sha256": "3f1a065436ab1ca18309ba3d63e943e0958c758ba34ecbdb10dfd608e3905233",
-      "size": 5196
+      "sha256": "b8aab8458d75d4918d18953c4c5d50515c0ceba4de1d4bd7c28b69469eba9330",
+      "size": 5195
     },
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",
