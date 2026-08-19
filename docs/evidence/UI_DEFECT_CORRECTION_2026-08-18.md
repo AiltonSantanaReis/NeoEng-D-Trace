@@ -4,7 +4,7 @@
 
 Esta evidência registra a correção dos defeitos reproduzidos nas capturas anexadas: autoria de cenário misturada ao editor principal, painel comprimido, controles sem estado explicativo, gizmo sobrepondo HUD, feedback textual sem reserva geométrica e modos X-Ray pouco acessíveis no Mask Viewer.
 
-A evidência foi gerada localmente no Windows, em branch isolada, contra o commit-base `b73fa027e0f5144fb132f49051099123f6e8330a`. O manifest com hashes está em `docs/evidence/artifacts/ui-defect-fix-2026-08-18/manifest.json`.
+A evidência foi gerada localmente no Windows, em branch isolada, contra o commit-base `b73fa027e0f5144fb132f49051099123f6e8330a`, e a implementacao foi commitada em `b02d30595cf3a4fdbbbe12233a2eb8fc62b636fe` na PR `#103`. O manifest com hashes está em `docs/evidence/artifacts/ui-defect-fix-2026-08-18/manifest.json`.
 
 ## Correções implementadas
 
@@ -87,4 +87,4 @@ O auditor histórico `scripts/audit_scenario_authoring.py`, adaptado para a jane
 
 A saída informou que CuPy não está instalado e usou o fallback CPU. Isso não é falha da UI nem foi tratado como Pass artificial; a auditoria solicitada não depende de aceleração CuPy.
 
-Esta alteração ainda não foi commitada, enviada ou mergeada. O próximo gate é revisar o diff e decidir explicitamente sobre commit/PR.
+A implementacao foi commitada e enviada na PR `#103`. O merge ainda nao foi realizado: a PR permanece condicionada aos gates Linux/Windows e a integridade da baseline/evidencias.

@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import zipfile
@@ -41,6 +42,7 @@ MANIFEST_NAMES = {
     "artifact-index.json",
     "engine-validation-index.json",
 }
+_GIT_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{7,40}$")
 
 
 @dataclass(frozen=True)
@@ -206,11 +208,16 @@ def _ignored(path: Path) -> bool:
     return result.returncode == 0
 
 
-def _git_blob_bytes(path: Path) -> bytes | None:
-    """Read the staged Git bytes, falling back to the current HEAD."""
+def _git_blob_bytes(path: Path, *, revision: str | None = None) -> bytes | None:
+    """Read a tracked file from a Git revision or the staged tree."""
 
     relative = _repo_relative(path)
-    for spec in (f":{relative}", f"HEAD:{relative}"):
+    specs = (
+        (f"{revision}:{relative}",)
+        if revision
+        else (f":{relative}", f"HEAD:{relative}")
+    )
+    for spec in specs:
         result = subprocess.run(
             ["git", "show", spec],
             cwd=ROOT,
@@ -223,14 +230,30 @@ def _git_blob_bytes(path: Path) -> bytes | None:
     return None
 
 
+def _git_commit_exists(revision: str) -> bool:
+    if not _GIT_COMMIT_RE.fullmatch(revision):
+        return False
+    result = subprocess.run(
+        ["git", "cat-file", "-e", f"{revision}^{{commit}}"],
+        cwd=ROOT,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.returncode == 0
+
+
 def _artifact_bytes(
-    entry: ManifestEntry, *, use_git_blob: bool = False
+    entry: ManifestEntry,
+    *,
+    use_git_blob: bool = False,
+    source_commit: str | None = None,
 ) -> tuple[bytes | None, Path | None]:
     """Read a file reference or a member of a tracked evidence archive."""
 
     if entry.target.is_file():
         if use_git_blob and _tracked(entry.target):
-            raw = _git_blob_bytes(entry.target)
+            raw = _git_blob_bytes(entry.target, revision=source_commit)
             if raw is not None:
                 return raw, entry.target
         return entry.target.read_bytes(), entry.target
@@ -259,13 +282,23 @@ def validate_manifest(
         return [Issue(manifest, f"cannot load manifest: {exc}")]
 
     entries = list(iter_manifest_entries(manifest, data))
+    source_commit = data.get("source_commit") if use_git_blob else None
+    if source_commit is not None and (
+        not isinstance(source_commit, str) or not _git_commit_exists(source_commit)
+    ):
+        issues.append(Issue(manifest, "source_commit is unavailable or invalid"))
+        source_commit = None
     seen: set[Path] = set()
     for entry in entries:
         if entry.target in seen:
             issues.append(Issue(manifest, f"duplicate reference: {entry.label}"))
             continue
         seen.add(entry.target)
-        raw, tracked_source = _artifact_bytes(entry, use_git_blob=use_git_blob)
+        raw, tracked_source = _artifact_bytes(
+            entry,
+            use_git_blob=use_git_blob,
+            source_commit=source_commit if use_git_blob else None,
+        )
         if raw is None or tracked_source is None:
             issues.append(
                 Issue(
