@@ -6025,8 +6025,8 @@
       "size": 3976
     },
     "tests/test_ui_defect_regressions.py": {
-      "sha256": "38eb44677cba1152924d43d7ac95f694ba7a728b7ba72b8819a72bf6eecbec43",
-      "size": 5767
+      "sha256": "b1c1b9d334ac7f627bb46f9907ffd3d56d7cdbbdee26319e5a2fece8a2feb294",
+      "size": 5755
     },
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",

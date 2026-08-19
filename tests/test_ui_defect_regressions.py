@@ -92,8 +92,7 @@ def test_scenario_editor_is_scrollable_and_interactive_after_binding(tmp_path, q
         assert editor.professional_inspector is not None
         assert editor.right_pages.currentWidget() is editor.professional_inspector
         assert (
-            editor.professional_viewport.objectName()
-            == "professional_scene_viewport"
+            editor.professional_viewport.objectName() == "professional_scene_viewport"
         )
         assert panel.list.isEnabled()
         assert panel.list.count() == 1
