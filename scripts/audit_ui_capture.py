@@ -112,8 +112,21 @@ def _open_panels(window: MainWindow, width: int) -> None:
         window.compact_panel_tabs.setCurrentWidget(window.side_panel)
         return
 
-    collision_width = 360 if width >= 1280 else 320
-    right_width = 320 if width >= 1366 else 290
+    # At 1920x1080 the normal desktop layout reserves 360px for the whole
+    # panel stack, while CollisionPanel's real minimum width is larger. Grow
+    # that live main-splitter section before opening both desktop panels.
+    minimum_collision = max(1, window.collision_panel.minimumSizeHint().width())
+    desired_panel_width = max(800, minimum_collision + 360)
+    total_width = max(1, window.main_splitter.width())
+    current_sizes = window.main_splitter.sizes()
+    tool_width = current_sizes[0] if current_sizes else window.tool_palette.width()
+    panel_width = min(desired_panel_width, max(1, total_width - tool_width - 1))
+    canvas_width = max(1, total_width - tool_width - panel_width)
+    window.main_splitter.setSizes([tool_width, canvas_width, panel_width])
+
+    available_width = max(2, window.desktop_panel_splitter.width())
+    collision_width = min(minimum_collision, available_width - 1)
+    right_width = max(1, available_width - collision_width)
     window.desktop_panel_splitter.setSizes([right_width, collision_width])
     window.right_splitter.setSizes([230, 180, 180])
     window.collision_panel.show()
@@ -154,7 +167,10 @@ def _widget_snapshot(window: QWidget, *, root: QWidget | None = None) -> dict[st
     return {
         "class": type(window).__name__,
         "object_name": window.objectName(),
-        "visible": window.isVisible(),
+        # isVisible() may remain true for a widget on an inactive
+        # QStackedWidget/QTabWidget page. The audit contract must describe
+        # what is actually rendered in the captured window.
+        "visible": window.isVisible() and window.isVisibleTo(root),
         "enabled": window.isEnabled(),
         "geometry": [rect.x(), rect.y(), rect.width(), rect.height()],
         "root_geometry": [
@@ -267,6 +283,7 @@ def run(output: Path) -> dict[str, Any]:
         empty_window = _new_window(empty_scene, project_loaded=False)
         try:
             empty_window.resize(QSize(width, height))
+            _settle(app, 20)
             _open_panels(empty_window, width)
             _settle(app)
             _capture(empty_window, base_path)
@@ -284,6 +301,7 @@ def run(output: Path) -> dict[str, Any]:
         )
         try:
             project_window.resize(QSize(width, height))
+            _settle(app, 20)
             _open_panels(project_window, width)
             scene.select_object("rectangle-object")
             _settle(app)
