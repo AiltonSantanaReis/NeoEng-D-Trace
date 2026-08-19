@@ -95,7 +95,7 @@ def _create_fixture(root: Path) -> tuple[Path, Path, Scene]:
     image_path.parent.mkdir(parents=True, exist_ok=True)
     image = QImage(160, 100, QImage.Format.Format_RGBA8888)
     image.fill(0xFF204060)
-    assert image.save(str(image_path), b"PNG")
+    assert image.save(str(image_path))
     scene = Scene()
     scene.cmd = CommandManager(max_history=20)
     scene.image_path = str(image_path)
