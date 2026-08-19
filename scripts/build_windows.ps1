@@ -50,7 +50,7 @@ try {
     poetry run python tools/validate_portable_release.py --bundle $bundle --output $smokeOutput --fixture "tests/fixtures/release_smoke.ndtproj"
     if ($LASTEXITCODE -ne 0) { throw "Portable smoke validation failed" }
 
-    $archive = Join-Path $releaseRoot "NeoEng-D-Trace-0.2.0-win64-portable.zip"
+    $archive = Join-Path $releaseRoot "NeoEng-D-Trace-0.3.0-win64-portable.zip"
     poetry run python tools/package_portable_release.py --bundle $bundle --output $archive --source-commit $sourceCommit
     if ($LASTEXITCODE -ne 0) { throw "Portable package creation failed" }
 

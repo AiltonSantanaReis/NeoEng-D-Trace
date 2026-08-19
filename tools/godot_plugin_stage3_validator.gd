@@ -14,7 +14,7 @@ func _initialize() -> void:
     if info.get("id") != "neoeng_d_trace":
         _fail("plugin-id")
         return
-    if info.get("version") != "0.2.0":
+    if info.get("version") != "0.3.0":
         _fail("plugin-version")
         return
     if not bool(info.get("source_only")) or info.get("binary_dependencies").size() != 0:

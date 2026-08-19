@@ -1,6 +1,6 @@
 [project]
 name = "neoeng-d-trace"
-version = "0.2.0"
+version = "0.3.0"
 description = "NeoEng-D-Trace game asset preparation tool"
 authors = [
     { name = "NeoEng-D-Trace Maintainer", email = "169040421+AiltonSantanaReis@users.noreply.github.com" },

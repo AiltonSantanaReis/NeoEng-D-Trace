@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "09d5eed5106e3c866d694ad0416081cb29b910be3cad401b5cf7f460f6e612aa",
-      "size": 50435
+      "sha256": "21c510e074c6bc04ce90e0f96fcbe1fc889273b89b607e77dd77a78ae4c3394b",
+      "size": 51938
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "eea172738049e68e4a37cb4d99d4495f6026bb334598e882fc2382cbf6aa6b76",
-      "size": 17538
+      "sha256": "199d64dd99ea90a89a3e4d75bd5cf5e0b918e937bf8cd5828c44a63e6d6e25c2",
+      "size": 10837
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -4505,11 +4505,11 @@
       "size": 7777
     },
     "integrations/godot/addons/neoeng_d_trace/plugin.cfg": {
-      "sha256": "2c36178f1eba7b3522710e4e8e1e895110adba8c0ae87a54152f1a4369ca6a05",
+      "sha256": "4ca8e615db96f7775e167546220bf5e1bf9b65e1dd91bf410892191f1794bab9",
       "size": 177
     },
     "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
-      "sha256": "3dc86336cc6409cc243925d6d9249e6f58a33d924fdfa87a61a6d5553719c37d",
+      "sha256": "10135739865296d9d3b3cadc61f044098bbbc85b3cf332e95ba5a5fb6249953b",
       "size": 3754
     },
     "integrations/godot/addons/neoeng_d_trace/scenario_importer.gd": {
@@ -4553,7 +4553,7 @@
       "size": 251
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs": {
-      "sha256": "4154eddf372efaa154932faf50e8b40a611d2b45a4921a1f1767c92e98c0c919",
+      "sha256": "4a91cd6aa10efcc9668884884f8f62c69ed02dcc1428c758e99caa0912db82ec",
       "size": 83295
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/UnityImportGenerator.cs.meta": {
@@ -4569,7 +4569,7 @@
       "size": 60
     },
     "integrations/unity/package/com.neoeng.dtrace/README.md": {
-      "sha256": "6d9492d40e2c599b68d90305d461108e151fbbde77bddf6d81bf038808966f5d",
+      "sha256": "cc45c5984ef2e0afb615777d2f5852995e9881534478f557cd38bd5d6b72b09c",
       "size": 2059
     },
     "integrations/unity/package/com.neoeng.dtrace/README.md.meta": {
@@ -4637,7 +4637,7 @@
       "size": 251
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs": {
-      "sha256": "db22d3a220054d9fe4a73499cd32ac5eeb202b3f3dcb0fcfd00219a01a1acc57",
+      "sha256": "a8e135cecf806e80eff625ea5fdf80ce861213fb39a8d9c51376ff917f6eac40",
       "size": 649
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/PackageIdentity.cs.meta": {
@@ -4645,7 +4645,7 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/package.json": {
-      "sha256": "b0dc398b9b514b04a2a4938b91d931bcfb40c8fd5564b16ff307204f3125c398",
+      "sha256": "506f3b5b87dc2f707715c1538d60af56b263e17206024f6167050259adb8e391",
       "size": 361
     },
     "integrations/unity/package/com.neoeng.dtrace/package.json.meta": {
@@ -4673,7 +4673,7 @@
       "size": 197925
     },
     "pyproject.toml": {
-      "sha256": "d3caeec62061433689d627e8f385015099118c3b03ab7c6383630802c3cbe3c3",
+      "sha256": "aa91cac93755a5c363a35966478127e620543f600ceaddbb32f1a54f7075d479",
       "size": 1013
     },
     "pytest.ini": {
@@ -4865,7 +4865,7 @@
       "size": 28953
     },
     "scripts/audit_native_stage4_global_transaction.py": {
-      "sha256": "8b1016ae5064592b6d6ef0ed3198310cdfcfe818ba5095706d0f61dbf21a9b90",
+      "sha256": "accbf1dc766a259ebfda7f4cf870edeaf3bf3bbda001fe22c93390fa43271b54",
       "size": 17749
     },
     "scripts/audit_native_stage9.py": {
@@ -4921,11 +4921,11 @@
       "size": 18198
     },
     "scripts/build_installer.ps1": {
-      "sha256": "3ae6b0ec8a713cf22edfad44db698988ed3768823567c4024451a8ef5a15c921",
+      "sha256": "d67b3d1a1e63fc18196ac223e0da638f3ced196476107d7c82a104518c497e53",
       "size": 2876
     },
     "scripts/build_windows.ps1": {
-      "sha256": "8f8c4b3608033c2fdd708f381dc39b32342545e704294df17f0c738d4aca464d",
+      "sha256": "c02643da500ee069a31ba1374b46a491d4e217f4ac17e53499a38f1adb4807f8",
       "size": 2641
     },
     "scripts/package_godot_plugin.py": {
@@ -4961,7 +4961,7 @@
       "size": 787
     },
     "src/core/app_identity.py": {
-      "sha256": "dba51e5acee3dae82fa5977f814e9ca45b97a5e31af65b3db67fec7637d1e32a",
+      "sha256": "1da132e15817aa10acee7609412d7d2e7e7dff3f82c8ace5722e3630f684bbe0",
       "size": 1884
     },
     "src/core/app_paths.py": {
@@ -5457,7 +5457,7 @@
       "size": 16939
     },
     "tests/test_godot_plugin_scaffold.py": {
-      "sha256": "a2877e8788198ec05be1ab38900c62579ba51bcee9146fc6187a183631f2e701",
+      "sha256": "9c4d594dd56f87d761caadff2d2bbc55e5db1649165435ba012c1e9c3964b046",
       "size": 2430
     },
     "tests/test_grabcut_pipeline.py": {
@@ -5757,7 +5757,7 @@
       "size": 7420
     },
     "tests/test_stage_7_cli_contract.py": {
-      "sha256": "66db971dffd1d2f3caad28e846a5ee93643ccabc2e92ed0b2788d9f4727407a6",
+      "sha256": "b45b42cd16d158ea599b7f40b1e2c1ba646e6c091df3b55cbc2850345005d826",
       "size": 12882
     },
     "tests/test_stage_8_bezier_geometry.py": {
@@ -5801,11 +5801,11 @@
       "size": 3412
     },
     "tests/test_unity_import_scaffold.py": {
-      "sha256": "1adaf85d1dce01e0bbfc1994f5fa163230cc77e18b3dbc7dc34905f7350e8c57",
+      "sha256": "634a702829e989a80e23f69765423d686580ed88769e9eb64e859ed6c1c9b71d",
       "size": 1401
     },
     "tests/test_unity_package_scaffold.py": {
-      "sha256": "1c4666eab181398b6abfe6e04e4169feb051f06a6daf5c5741b8ac552a09d7cd",
+      "sha256": "b0036c13a3def3f14d3d476b5e1e9ed563c4b2ec5d7cbac5229ed8d9ef710e11",
       "size": 4212
     },
     "tests/test_validation_events.py": {
@@ -5853,7 +5853,7 @@
       "size": 2272
     },
     "tools/godot_plugin_stage3_validator.gd": {
-      "sha256": "f99e001ac09904f3871e867da661a485604e69589686bafdbd9d7f9af2d93c5e",
+      "sha256": "f566139ea8423ca64bae2650027ad1e6f0272f286186efc5c798e9503f6809e6",
       "size": 1618
     },
     "tools/godot_plugin_stage4_validator.gd": {

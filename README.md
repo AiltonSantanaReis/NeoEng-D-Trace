@@ -1,201 +1,119 @@
 # NeoEng-D-Trace
 
-**Ferramenta desktop proprietária e local-first para preparar assets de jogos a partir de imagens 2D.**
+**Ferramenta desktop local-first para preparação, edição e exportação de assets 2D para jogos.**
 
-NeoEng-D-Trace reúne, em um fluxo único, detecção e seleção assistida, correção de contornos, edição de polígonos e curvas Bézier, configuração de colisões e exportação de assets. O foco atual é o pipeline 2D; o projeto não se apresenta como editor de imagens, ferramenta de modelagem 3D completa ou engine de jogos.
+O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, criação e correção de máscaras, edição de contornos, polígonos e curvas Bézier, configuração de colisões, preparação de sprites/atlas e integração com engines. O produto não é apresentado como editor de imagens completo, engine de jogos ou modelador 3D.
 
-> **Estado:** release oficial `v0.2.0` publicada. **Etapa 14 foi integrada e encerrada no escopo técnico validado; assinatura, formalizações jurídicas e CI dinâmico das engines não são gates obrigatórios.**
-> **Plataforma oficial inicial:** Windows 11. O CI também executa testes em Linux, mas isso não constitui suporte público ao Linux.
-> **Operação:** o fluxo principal é local/offline; imagens, projetos e assets não dependem de serviços em nuvem para o funcionamento aprovado.
+> **Versão de referência:** `v0.3.0` — evolução do snapshot público `v0.2.0`, com o estado técnico atual do `main` preservado em evidências e com rollback explícito.
+> **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
+> **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Snapshot atual verificado — 18 de agosto de 2026
+## Snapshot técnico e rastreabilidade
 
-O baseline funcional de código verificado é o merge da PR `#99`, commit
-`a129cd251345456c39254b39682d1ef083fd28d0`. O CI pós-merge `32184900502`
-passou em Linux e Windows nos jobs `95866168681` e `95866168551`.
-A Etapa 3 integrou a paleta visual, busca, teclado, localização e acessibilidade,
-com evidências reais em `docs/evidence/ETAPA_3_PALETA_COMANDOS_2026-08-18.md`.
-No `main` integrado pela PR `#99`, o módulo de cenários parallax, câmera,
-overlays e schema lateral está integrado no escopo aprovado das etapas 4A a 4B.5,
-com evidências locais hashadas e CI pós-merge aprovado.
+O estado integrado anterior à preparação da `v0.3.0` é o merge da PR `#101`, commit
+`1d7fee0e30128f51e17e579f52807fb84fb8f5cb`. O CI pós-merge desse snapshot foi
+aprovado em Linux e Windows. O ponto de restauração integral foi preservado na tag
+`backup/main-before-v0.3.0`, que aponta para o mesmo commit.
 
-A release `v0.2.0` continua sendo um snapshot publicado anterior e não
-representa automaticamente o estado mais recente de `main`.
+A release `v0.2.0` permanece disponível como snapshot histórico anterior:
+[GitHub Releases — v0.2.0](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/releases/tag/v0.2.0).
+Ela não deve ser confundida com o estado atual nem com a linha `v0.3.0`.
 
-## Estado verificável
+O fechamento documental da Etapa 13 foi integrado no commit
+`b4d9390dbd1274c283a3e3985d6d79be47de45d6`, com CI pós-merge
+`31705652046`; `R-011` foi encerrado no escopo aprovado. A Etapa 14 foi
+registrada e encerrada posteriormente no escopo técnico validado. A release oficial histórica `v0.2.0`, ancorada em `1feb2d134cea8c5a1d2346665280b31c051f5574`,
+foi publicada sem assinatura; isso permanece uma limitação declarada, não uma
+alegação de certificação.
 
-A âncora de código da release `v0.2.0` é o merge da PR `#61`,
-`1feb2d134cea8c5a1d2346665280b31c051f5574`. A release publicada está em
-[GitHub Releases](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/releases/tag/v0.2.0).
-O CI pós-merge `31907891488` passou em Linux e Windows; a build local real
-reproduziu o bundle portátil, o MSI, instalação, execução, exportações e
-desinstalação. `R-014` (assinatura) e `R-015` são riscos declarados não
-bloqueantes; `R-016` foi revisado e aprovado. A decisão vigente está documentada no índice de evidências.
-
-| Indicador | Estado comprovado |
-|---|---|
-| Suíte integrada | **955 testes no CI pós-merge final da Etapa 13, em Linux e Windows** |
-| Suíte integrada da Etapa 14 | **982 testes aprovados em Linux e Windows/Python 3.11 no CI pós-merge `31905237922`** |
-| Cobertura da Etapa 14 | **11.621/12.523 linhas — 92,80%** |
-| Branches da Etapa 14 | **3.382/3.978 — 85,02%** |
-| Cobertura combinada da Etapa 14 | **90,92%** |
-| Type checking | mypy sem erros em 80 arquivos na Etapa 14 integrada |
-| Dependências | auditoria sem vulnerabilidades conhecidas no lock validado |
-| Segurança estática | Bandit sem achados de alta severidade no gate vigente |
-| Última etapa integrada | **Etapa 14 — encerrada no escopo técnico auditado** |
-| Etapa integrada atual | **Etapa 14 — encerrada no escopo técnico auditado** |
-| Release | **PUBLICADA: `v0.2.0`; artefatos sem assinatura e formalizações futuras documentadas** |
-### Política vigente de release
-
-`R-014` (assinatura), `R-015` (formalizações) e a execução dinâmica de
-Godot/Unity no CI não são gates obrigatórios. `R-016` está revisado e aprovado.
-Os artefatos sem assinatura e as limitações de CI continuam declarados com
-transparência; não são tratados como falhas de validação.
-Consulte `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
-
-O gate vigente bloqueia cobertura combinada abaixo de 90%, linhas globais abaixo
-de 90%, branches globais abaixo de 85% e qualquer módulo mensurável abaixo de
-30%. A suíte histórica não é declarada como aprovada: ela mantém 27 falhas
-brutas conhecidas, aceitas somente quando as assinaturas coincidem e os 17
-testes substitutos são coletáveis.
-
-A migração técnica do builder MSI foi validada no commit-fonte
-`828cf626b7ce382c360723b1be10c4ce718c4187`: duas compilações WiX
-independentes do bundle produziram o mesmo SHA-256
-`b7e6afa36ab393db5d171fbff69730f7aec3ab64d1df533cbf0571826427e7cd`.
-O build oficial limpo produziu o MSI
-`6960217b02c14571b5b285499e200ec79987508f3bfd1db8fc7e75ed49f62524`.
-A instalação por usuário, execução instalada, exportações, abertura/fechamento
-da GUI, upgrade, repair e desinstalação passaram em rodadas reais. Fixtures gerados pelos
-binários foram importados com sucesso no Godot `4.7` e Unity `6000.5.7f1` com
-glTFast `6.19.0`. A ausência de assinatura é conhecida e aceita no primeiro
-lançamento por decisão do proprietário; ela não é mascarada como validação de
-assinatura.
-
-
-A Etapa 13 foi integrada pela PR `#51` no merge
-`e7eb4a4c81fa2b46e8b9d5db40562e4ce7021108`. O CI pós-merge
-`31698961646` reproduziu `953` testes, cobertura idêntica ponto a ponto em
-Linux/Windows e legado `27/27`; seus artefatos foram auditados. `R-011` está
-**ENCERRADO NO ESCOPO APROVADO**.
-
-O fechamento documental e a correção retrospectiva foram integrados pela PR
-`#52` no merge `b4d9390dbd1274c283a3e3985d6d79be47de45d6`. O CI pós-merge
-`31705652046` aprovou `955` testes por plataforma e reproduziu as mesmas
-métricas de código. Naquele snapshot, a Etapa 14 ainda não havia sido iniciada e a release não foi aprovada.
-
-Os limites da Etapa 12 cobrem configuração, imagens, projetos, geometria,
-detecção, broadphase, atlas, GLTF e logs. O legado executou 196 testes e
-conciliou 27/27 divergências históricas, sem falhas inesperadas. Esses
-resultados foram reproduzidos no CI pós-merge Linux/Windows. Os tetos são
-controles de segurança, não SLA nem prova de ausência total de vulnerabilidades.
-
-## O que o NeoEng-D-Trace resolve
-
-Preparar um asset 2D para uma engine costuma exigir alternar entre edição de
-imagem, contorno vetorial, colisão, metadados e exportação. O NeoEng-D-Trace
-concentra essas tarefas em uma aplicação desktop com projeto próprio,
-operações editáveis e exportadores verificáveis.
-
-Fluxo central:
+## O que o projeto entrega
 
 ```text
 Imagem 2D
    ↓
-Detecção / seleção assistida
+Seleção/detecção assistida e máscara
    ↓
-Contorno, polígonos e Bézier
+Contorno, polígonos, Bézier e edição visual
    ↓
-Camadas, grupos e edição
+Camadas, grupos, transformações e undo/redo
    ↓
-Colisão estática
+Colisão estática, validação e decomposição
    ↓
-Sprite / atlas / metadados / GLTF-GLB no escopo 2D
+Sprite, atlas, pivô, metadados e GLTF/GLB 2D
    ↓
-Pipeline da engine
+Adaptador source-only para Godot/Unity ou pipeline próprio da engine
 ```
 
-## Capacidades comprovadas
+### Capacidades integradas
 
 | Área | Estado atual |
 |---|---|
-| Projeto | formato `.ndtproj`, identificador `neoeng-d-trace-project` e **schema v1** estrito |
-| Persistência | criar, abrir e salvar projetos com round-trip; autosave e recuperação integrados e auditados na Etapa 13 |
-| Interface | UI desktop PySide6 com identidade NeoEng-D-Trace e interface em português/inglês |
-| Edição | camadas, grupos, polígonos, vértices, curvas Bézier e histórico Undo/Redo |
-| Seleção | ferramentas retangular, elíptica, laço, laço poligonal, caneta e laço magnético |
-| Detecção | processamento e detecção assistida com OpenCV no pipeline atual |
-| Colisões | criação, visualização, transformação, validação e exportação de colisões estáticas |
-| Sprites | exportação de sprite individual e lote |
-| Atlas | geração de atlas e metadados com validação de limites |
-| Metadados | perfis Generic, Godot, Unity e Phaser disponíveis no exportador |
-| GLTF/GLB | exportação de cena e objeto **aprovada somente no escopo 2D atual** |
-| Integração real | consumo dos exports da Etapa 10 validado em Godot 4.7 e Unity 6000.5.7f1 com glTFast 6.19.0 |
-| Automação | entrada gráfica e CLI/headless pelo mesmo launcher |
+| Projeto | `.ndtproj`, identidade `neoeng-d-trace-project` e schema v1 estrito |
+| Interface | PySide6, tema escuro, português/inglês, painéis, paleta de comandos e atalhos |
+| Seleção e detecção | Seleção retangular, elíptica, laços, caneta, laço magnético e pipeline OpenCV assistido |
+| Geometria | Contornos, polígonos, vértices, Bézier, simplificação, validação topológica e transformações |
+| Colisão | Colisores estáticos, compostos, validação, preview e exportação |
+| Sprites e atlas | Exportação individual/lote, pivô, metadados, packing e validação de limites |
+| Engines | Perfis Generic, Godot, Unity e Phaser; adaptadores source-only Godot e Unity |
+| Cenários parallax | Câmera, profundidade, camadas, overlays, autoria visual, schema lateral e exportação no escopo aprovado |
+| GLTF/GLB | Geometria 2D no plano XY, com contrato e validação específicos |
+| Automação | CLI/headless e interface gráfica usando o mesmo núcleo de operações |
 
-### Limite importante do GLTF/GLB
+## Cenários parallax e paleta de comandos
 
-O contrato atual **não** inclui extrusão, UV, materiais ou representação 2.5D.
-O exportador aprovado representa a geometria 2D no plano XY e preserva o
-escopo explicitamente testado. Esses itens não são anunciados aqui como
-funcionalidades entregues.
+O módulo de cenários permite organizar objetos, camadas, profundidade, câmera e
+molduras de visualização no editor. A paleta de comandos coexiste com os menus
+tradicionais para preservar descoberta e acelerar o fluxo de usuários experientes.
 
-Os perfis de metadados Godot, Unity e Phaser existem e possuem contratos
-automatizados. A validação em engine real registrada na Etapa 10 é específica
-para Godot e Unity; não é apresentada como validação equivalente do Phaser.
+O escopo entregue é de autoria, preview e exportação estrutural. Partículas,
+shaders, pós-processamento, triggers, streaming de texturas e runtime completo de
+engine permanecem fora do MVP e não são anunciados como funcionalidades concluídas.
 
-## Stack técnica
+## Integrações nativas
 
-| Camada | Tecnologias |
-|---|---|
-| Runtime | Python 3.11 |
-| Desktop UI | PySide6 |
-| Imagem e visão computacional | OpenCV, Pillow |
-| Cálculo numérico | NumPy |
-| Modelos/validação | Pydantic |
-| GLTF/GLB | pygltflib |
-| Dependências | Poetry + `poetry.lock` |
-| Testes | pytest + pytest-cov |
-| Qualidade | Flake8, Black, isort, mypy |
-| Segurança | pip-audit, Bandit |
-| CI | GitHub Actions em Windows e Linux |
+- **Godot:** addon source-only, importação de sprites, colisões, atlas, animações,
+  tilesets, diagnóstico e sincronização controlada.
+- **Unity:** pacote UPM source-only, assemblies Runtime/Editor, importação,
+  colisões, animações, tilesets, sincronização, overrides e rollback conforme os
+  contratos versionados.
 
-A faixa de Python declarada pelo pacote é `>=3.11,<3.12`; a referência
-operacional utilizada nas validações Windows é Python 3.11.9.
+As integrações não carregam binários ou dependências baixadas automaticamente. A
+validação real registrada para Godot e Unity permanece vinculada aos fixtures,
+versões e evidências indicados em `docs/evidence`.
 
-## Arquitetura
+## Validação do estado atual
 
-Existe uma única árvore de implementação:
+Os gates executados no checkout atual comprovaram:
 
-```text
-app.py
-src/
-├── collision/      # API canônica de colisão
-├── core/           # comandos, geometria, configuração e validação
-├── exporters/      # sprite, atlas, JSON, colisões e GLTF/GLB
-├── models/         # modelo de cena
-├── persistence/    # schema, I/O do projeto e snapshot de autosave
-├── physics/        # compatibilidade histórica; sem motor dinâmico próprio
-├── tools/          # seleção, detecção e edição geométrica
-├── ui/             # janela, canvas, painéis, previews e gizmo
-└── utils/
-```
+- `1326 passed, 2 skipped` na suíte Python; os skips são condicionais e explícitos;
+- cobertura total de linhas acima de 90% e branches acima de 85%, com a política
+  oficial aprovada;
+- Flake8, Black, isort, mypy e Bandit aprovados;
+- baseline e manifestos de evidência íntegros contra os bytes Git;
+- auditoria visual reproduzível aprovada nas resoluções previstas, sem achados;
+- worktree limpo e sincronizado com `origin/main` antes da preparação da release.
 
-Não existe uma segunda árvore `neoeng_d_trace/`. A distribuição Python é
-`neoeng-d-trace`, enquanto a implementação interna permanece em `src/`.
+Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
+`docs/evidence`; o README não substitui os logs nem reclassifica testes não
+executados.
 
-## Execução a partir do código-fonte no Windows
+## Instalação e uso no Windows
 
-> **Isto é o fluxo a partir do código-fonte.** A release oficial `v0.2.0` portátil/MSI foi validada localmente e publicada. Os artefatos
-continuam sem assinatura; esse risco está explicitamente documentado.
+### Release publicada
 
-Requisitos usados pelo projeto:
+A distribuição da versão `v0.3.0` deve ser obtida na página de releases:
+[GitHub Releases](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/releases).
+Os artefatos oficiais são o bundle portátil, o instalador MSI e seus manifestos
+SHA-256. A ausência de assinatura digital é declarada e não é apresentada como
+certificação.
 
-- Python 3.11 (`>=3.11,<3.12`);
+### Execução a partir do código-fonte
+
+Requisitos operacionais:
+
+- Python `>=3.11,<3.12`;
 - Poetry 2.4.1;
-- ambiente virtual local recomendado.
-
-Quando `poetry` já está disponível no terminal:
+- Windows 11 para a validação gráfica oficial.
 
 ```powershell
 poetry check --lock --strict
@@ -203,127 +121,71 @@ poetry sync --no-interaction --no-ansi
 poetry run python .\app.py
 ```
 
-Ajuda da CLI:
+Para consultar a CLI:
 
 ```powershell
 poetry run python .\app.py --help
+poetry run python .\app.py --version
 ```
 
-Entrada instalada pelo pacote:
+## Build e rollback
 
-```text
-neoeng-d-trace
-```
-
-Para uma instalação do zero sem depender do `py` launcher, consulte o
-procedimento de ambiente e o workflow reproduzível registrado na documentação
-de evidências.
-
-### Build do candidato Windows
-
-Com a árvore Git limpa e o ambiente do lockfile ativo:
+O build oficial exige uma árvore Git limpa, usa o lockfile e valida o bundle e o
+MSI antes de concluir:
 
 ```powershell
 .\scripts\build_windows.ps1
 .\scripts\build_installer.ps1
 ```
 
-O primeiro comando gera e testa o bundle portátil; o segundo o reconstrói,
-cria o MSI por usuário, instala em diretório de validação, executa CLI/GUI e
-exportações reais e desinstala. Os artefatos ficam em `release/`, que não é
-versionado. O build falha se a árvore estiver suja ou se o destino sair do
-workspace.
+A tag `backup/main-before-v0.3.0` é o rollback do estado anterior à release. Para
+inspecioná-la sem alterar `main`:
 
-A release oficial `v0.2.0` foi distribuída sem assinatura por decisão expressa
-do proprietário. A assinatura e a formalização de `R-015` podem ser adotadas
-no futuro, mas não são gates obrigatórios; este README continua sem alegar
-certificação jurídica ou assinatura existente.
-
-## Qualidade e validação
-
-O gate atual executa, entre outros controles:
-
-```text
-baseline_integrity --verify
-poetry check --lock --strict
-compileall
-Flake8
-Black --check
-isort --check-only
-mypy
-pip-audit
-Bandit
-pytest com cobertura de branches
-suíte legada reconciliada no Windows
-baseline_integrity --verify novamente
+```powershell
+git fetch origin --tags
+git switch --detach backup/main-before-v0.3.0
 ```
 
-A validação oficial de interface permanece vinculada ao Windows. Resultados
-headless/offscreen ou Linux não são usados para declarar suporte público a uma
-plataforma nem para substituir uma prova real quando o comportamento real é o
-objeto da validação.
+Uma restauração de desenvolvimento deve ser feita em branch própria a partir
+dessa tag. Nenhum arquivo de usuário deve ser sobrescrito sem backup e validação.
 
-## Limitações e pendências declaradas
+## Limitações declaradas
 
-O README não transforma roadmap em funcionalidade entregue. No estado atual:
+- A detecção automática é assistida e depende da imagem, iluminação, contraste e
+  configuração; não é prometida como segmentação perfeita universal.
+- O GLTF/GLB atual não inclui UV, materiais, extrusão ou runtime 2.5D.
+- Física dinâmica completa, modelagem 3D, rigging, fotogrametria e suporte nativo
+  completo ao Unreal estão fora do escopo entregue.
+- Linux e macOS não são plataformas públicas suportadas nesta versão.
+- Os adaptadores nativos permanecem source-only; não incluem binários proprietários
+  nem downloads automáticos.
+- Assinatura digital, certificação e formalizações jurídicas não são alegadas nem
+  tratadas como gates técnicos obrigatórios.
 
-- **paleta de comandos está integrada e validada na Etapa 3; as etapas 4A–4B.5 de cenários parallax estão integradas e validadas no `main` pelo CI pós-merge `32184900502`**;
+## Documentação canônica
 
-- **autosave e recuperação estão integrados e auditados, mas não substituem backup**;
-- **bundle Windows e MSI passaram tecnicamente em um host real, mas ainda não estão assinados**; a assinatura é opcional e não é gate de release;
-- **a release oficial `v0.2.0` está publicada por decisão do proprietário, sem alegação de conformidade jurídica ou assinatura concluída**;
-- Linux e macOS não são plataformas oficialmente suportadas para a versão 1.0;
-- `R-011` está encerrado no escopo aprovado após merge autorizado e CI pós-merge auditado;
-- `R-012` está encerrado no escopo aprovado, mas os limites publicados não
-  constituem SLA nem garantia de ausência total de vulnerabilidades;
-- o GLTF/GLB atual não inclui UV, materiais, extrusão ou 2.5D;
-- limites oficiais de resolução, quantidade de objetos/vértices, memória,
-  tempo e hardware mínimo ainda não devem ser publicados sem benchmark
-  reproduzível no Windows;
-- física dinâmica completa, modelagem 3D completa, rigging, animação,
-  fotogrametria e suporte nativo completo ao Unreal não fazem parte do escopo
-  entregue da versão 1.0.
-
-A matriz exata de formatos de importação também não deve ser ampliada por
-inferência a partir de filtros de interface ou bibliotecas instaladas. O
-suporte definitivo depende de contrato e teste correspondentes.
-
-## Documentação de engenharia
-
-O README é a porta de entrada do projeto. A rastreabilidade detalhada permanece
-nas fontes canônicas:
-
-- [Plano de Cenários Parallax e Paleta de Comandos](docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md)
-- [Definição canônica do produto](docs/DEFINICAO_DO_PRODUTO.md)
-- [Plano Mestre de Estabilização](docs/PLANO_MESTRE_ESTABILIZACAO.md)
-- [Matriz funcional atual](docs/MATRIZ_FUNCIONALIDADES_ATUAL.md)
-- [Matriz de riscos](docs/MATRIZ_RISCOS_ESTABILIZACAO.md)
+- [Plano de Cenários Parallax e Paleta](docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md)
+- [Definição do produto](docs/DEFINICAO_DO_PRODUTO.md)
+- [Matriz de funcionalidades](docs/MATRIZ_FUNCIONALIDADES_ATUAL.md)
 - [Política de qualidade e evidências](docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md)
+- [Política de não regressão](docs/POLITICA_NAO_REGRESSAO.md)
+- [Checklist de release pública](docs/CHECKLIST_RELEASE_PUBLICA.md)
 - [Índice de evidências](docs/evidence/README.md)
 - [Contrato GLTF/GLB](docs/CONTRATO_GLTF_GLB_NEOENG_D_TRACE.md)
 - [Contrato da CLI](docs/CONTRATO_CLI.md)
 - [Changelog](CHANGELOG.md)
 - [Política de segurança](SECURITY.md)
-- [Roteiro de release inicial](docs/RELEASE_INICIAL_VALIDACAO.md)
 - [NOTICE](NOTICE.md)
 
-Snapshots históricos não são reescritos retroativamente. Documentos vivos
-devem continuar distinguindo estado atual, evidência de um SHA específico e
-histórico.
+Snapshots históricos são preservados. Documentos vivos distinguem o estado atual,
+a evidência de um SHA específico e o histórico do projeto.
 
 ## Licença e publicação
 
-NeoEng-D-Trace é um projeto proprietário e o repositório é público. Não há
-licença open source atribuída. A release oficial `v0.2.0` foi publicada pelo
-proprietário; assinatura, licenciamento, atribuições formais e demais
-trâmites jurídicos podem ser executados em futuras versões conforme demanda.
-Este texto registra uma decisão de projeto, não um parecer jurídico nem uma
-certificação de conformidade.
-
-Esta atualização registra a integração e o fechamento técnico pós-merge da Etapa 14.
-`R-014` e `R-015` permanecem como riscos aceitos e não bloqueantes; `R-016` foi
-revisado e aprovado. A decisão vigente está em
-`docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
+NeoEng-D-Trace é um projeto proprietário com repositório público; não há licença
+open source atribuída. Este README descreve o produto e suas validações técnicas,
+não constitui parecer jurídico, certificação de conformidade ou promessa de
+suporte fora das limitações declaradas.
 
 <details>
 <summary><strong>Âncoras históricas preservadas para contratos documentais e auditoria</strong></summary>

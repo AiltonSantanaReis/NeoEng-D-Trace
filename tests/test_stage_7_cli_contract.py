@@ -262,7 +262,7 @@ def test_save_and_unexpected_setup_failures_return_one(tmp_path, monkeypatch, ca
     ("values", "expected_code", "stream", "marker"),
     [
         (("--help",), 0, "stdout", "--export-object-gltf"),
-        (("--version",), 0, "stdout", "0.2.0"),
+        (("--version",), 0, "stdout", "0.3.0"),
         (("--unknown",), 2, "stderr", "unrecognized arguments"),
         (("--headless",), 1, "stderr", "requires an input or output operation"),
         (

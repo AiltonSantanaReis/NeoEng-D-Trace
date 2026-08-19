@@ -12,7 +12,7 @@ from typing import Final
 
 APP_NAME: Final[str] = "NeoEng-D-Trace"
 APP_DISPLAY_NAME: Final[str] = APP_NAME
-APP_VERSION: Final[str] = "0.2.0"
+APP_VERSION: Final[str] = "0.3.0"
 APP_UI_EDITION: Final[str] = "v2"
 APP_ID: Final[str] = "neoeng_d_trace"
 APP_AUTHOR: Final[str] = "NeoEng-D-Trace Maintainer"

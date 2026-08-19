@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.3.0] — 2026-08-18
+
+Release baseada no estado integrado do `main` após a PR `#101`.
+
+### Entregue
+
+- atualiza a identidade do aplicativo e dos adaptadores Godot/Unity para `0.3.0`;
+- consolida a paleta de comandos, autoria de cenários parallax, câmera,
+  profundidade, overlays, schema lateral e exportação no escopo aprovado;
+- mantém os adaptadores nativos source-only, com importação, sincronização,
+  validação e rollback conforme os contratos versionados;
+- estabiliza a auditoria visual da UI, incluindo geometrias de painéis,
+  detecção de clipping e anotação fail-closed;
+- remove avisos de recursos nas asserções de testes e atualiza o uso de eventos
+  Qt para a API vigente;
+- publica o ponto de restauração `backup/main-before-v0.3.0`, apontando para o
+  estado anterior à preparação desta release.
+
+### Validação
+
+- suíte Python: `1326 passed, 2 skipped`;
+- cobertura total: `91%`, com política oficial de linhas, branches e módulos
+  aprovada;
+- Flake8, Black, isort, mypy e Bandit aprovados;
+- auditoria visual reproduzível aprovada, sem achados;
+- CI Linux/Windows e integridade de baseline/evidências aprovados antes da
+  publicação.
+
+### Limitações declaradas
+
+A release não inclui runtime completo de engine, partículas, shaders, pós-
+processamento, triggers ou streaming de texturas. O GLTF/GLB permanece no
+escopo 2D do plano XY. Assinatura digital e formalizações jurídicas não são
+alegadas nem são gates técnicos obrigatórios.
+
 ## [Unreleased] — programa de estabilização, Etapas 1 a 14
 
 Registro documental contínuo, atualizado em 18 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
