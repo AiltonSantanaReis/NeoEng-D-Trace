@@ -37,10 +37,29 @@ jobs:
       - name: Verify evidence manifest integrity
         run: python tools/evidence_integrity.py --require-tracked --git-blob
 
-      - name: Install Qt runtime libraries
+      - name: Refresh apt package indexes for Qt
+        timeout-minutes: 10
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libegl1
+          set -euxo pipefail
+          sudo apt-get \
+            -o Acquire::Retries=3 \
+            -o Acquire::http::Timeout=30 \
+            -o Acquire::https::Timeout=30 \
+            update
+
+      - name: Install Qt runtime libraries
+        timeout-minutes: 10
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          set -euxo pipefail
+          sudo apt-get \
+            -o Acquire::Retries=3 \
+            -o Acquire::http::Timeout=30 \
+            -o Acquire::https::Timeout=30 \
+            install --yes --no-install-recommends libegl1
 
       - name: Install Poetry 2.4.1
         run: |

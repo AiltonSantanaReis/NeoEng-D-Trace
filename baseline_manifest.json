@@ -29,8 +29,8 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "0aebe71564a428b49af472ce519e71283889a44267f8a8dfa2f76932f9ca59d2",
-      "size": 6948
+      "sha256": "43066cd9f1a692af386d3bdc086930a0e81b73c41d4e208e62d9a9a1e9b9b348",
+      "size": 7511
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
@@ -253,8 +253,8 @@
       "size": 5053
     },
     "docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md": {
-      "sha256": "434d60085388e2580e1f65ea3f63865389a947a3ac3385689ef0b1f4659eeef1",
-      "size": 4200
+      "sha256": "efb2aefe64099e10f90369bdeb20d224155d68bf1db96e93f59ea8b46dd98a79",
+      "size": 4197
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -511,6 +511,10 @@
     "docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md": {
       "sha256": "1acc6a7fec1dfca98716969c824512931bd719429df6d837a5e5648ff645f2bc",
       "size": 9761
+    },
+    "docs/evidence/ETAPA_2_MODELO_CENARIO_PROFISSIONAL_2026-08-19.md": {
+      "sha256": "0243693af9ce380b40dd84362a4be95d18c7f59b4df4dda9c025303371c96b38",
+      "size": 4136
     },
     "docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md": {
       "sha256": "1df1c139796053f209c37fe9fe25fbc2165910f51c64f8e9ccee8c86a6566fba",
@@ -777,8 +781,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "564be09d39e197b157be79b02d9034bbbc705ddae2a09d4bfce34aa13face246",
-      "size": 33583
+      "sha256": "f57127cda4fbe95a07e03b4598458a60a7e3a5197144bd6ee71fd2afc5b19cd7",
+      "size": 33708
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -3868,6 +3872,18 @@
       "sha256": "4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18",
       "size": 6948
     },
+    "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
+      "sha256": "203c798aeb985ef7e4f51a8d3665267e3c33684aab1b88a0d1d56abcb82ad5cd",
+      "size": 1155
+    },
+    "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/scene_authoring_fixture.ndtscene.json": {
+      "sha256": "3d820a0a95edb6bbce51642b583a56ee43022ead704653acd2ce28ad61a2ea9c",
+      "size": 1394
+    },
+    "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/validation-output.txt": {
+      "sha256": "92e95109532a473448f36ffa0c868a50cf5432cd1c8a97695e3aa7178abc1b51",
+      "size": 1355
+    },
     "docs/evidence/artifacts/stage3-command-palette-2026-08-18/1080p_FHD_en_palette.png": {
       "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c",
       "size": 2842
@@ -5160,6 +5176,10 @@
       "sha256": "0d9f9ff7c7f92b38c34c98b66e9595839c7575c96ec8c7186409ae104834cb53",
       "size": 5221
     },
+    "src/core/scene_authoring_model.py": {
+      "sha256": "fdd54e11a9e068c551deb90b136f90c14b12081eb8919ec58cca84a5b8152526",
+      "size": 7931
+    },
     "src/core/snapping.py": {
       "sha256": "6fefac930644e3ff766307fee239bba7dc0201323fb2b64908620a2614dc5998",
       "size": 2514
@@ -5283,6 +5303,10 @@
     "src/persistence/scenario_schema.py": {
       "sha256": "4999b311be46471bc75e9bc9e58d9f0c941714cc850eb19b46b31a2323c35e44",
       "size": 5889
+    },
+    "src/persistence/scene_authoring_schema.py": {
+      "sha256": "fb14520064ed5ee34099fadeac37057e4c5023976b3694c57065a11b6a52896e",
+      "size": 7838
     },
     "src/physics/__init__.py": {
       "sha256": "8734b0cf141de1a9dc2d75c3b32a3c630ad5b796faff155b173a2e2063215ed3",
@@ -5711,6 +5735,10 @@
     "tests/test_stage2_command_registry.py": {
       "sha256": "10e634d6c32ab0ddb2c94b0601695c4e63d8818626edd4007e60330d9a3cd47c",
       "size": 4478
+    },
+    "tests/test_stage2_scene_authoring_model.py": {
+      "sha256": "6777c888c86b38ea33eb6a6dbbc6c5ad3942df296f3abd4255ba93ebbee12949",
+      "size": 10757
     },
     "tests/test_stage3_command_palette.py": {
       "sha256": "b13c471561edf5c24f8d407dbd0068f2cee43f470a30471c3fcdf4b8b5a50bcc",
