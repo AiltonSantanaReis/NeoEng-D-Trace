@@ -16,6 +16,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PIL import Image  # noqa: E402
 from PySide6.QtCore import QSize  # noqa: E402
+from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from scripts.audit_stage3_professional_editor_capture import _geometry  # noqa: E402
@@ -150,9 +151,16 @@ def capture(output: Path) -> dict[str, Any]:
                     window, captures_dir / loaded, size
                 )
                 preview = f"stage4_{label}_04_gizmo_feedback.png"
+                before_preview = viewport._items["fixture_object"].pos()
                 inspector.camera_x.setValue(80.0)
                 inspector.camera_apply_button.click()
+                QTest.qWait(120)
                 QApplication.processEvents()
+                after_preview = viewport._items["fixture_object"].pos()
+                if before_preview == after_preview:
+                    raise RuntimeError(
+                        f"camera update did not move fixture object at {label}"
+                    )
                 captures[f"preview_{label}"] = _capture(
                     window, captures_dir / preview, size
                 )
