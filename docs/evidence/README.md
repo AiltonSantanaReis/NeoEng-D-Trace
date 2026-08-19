@@ -111,6 +111,8 @@ APROVADO | REPROVADO | BLOQUEADO | PARCIAL | NÃO TESTADO
 
 Uma captura isolada, relato verbal ou resultado sem commit identificado não é evidência suficiente.
 
+- ETAPA_1_CENARIOS_PROFISSIONAIS_2026-08-19.md — baseline e contratos da extensão profissional de autoria visual de cenários; permanece pendente até o fechamento do baseline e dos gates.
+
 ## Evidências registradas
 
 - `SANITIZACAO_PACOTES_HISTORICOS_2026-08-11.md` — autorização, transformação,
