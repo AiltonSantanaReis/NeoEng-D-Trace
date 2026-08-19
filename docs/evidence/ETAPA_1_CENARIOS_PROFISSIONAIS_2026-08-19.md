@@ -98,3 +98,4 @@ integridade dos manifestos passaram. A etapa só será fechada após os dois nov
 documentos estarem rastreados, o baseline ser regenerado contra os blobs do
 commit e a validação final confirmar árvore limpa.
 
+\n
