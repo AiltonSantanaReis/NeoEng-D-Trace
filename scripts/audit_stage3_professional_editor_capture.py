@@ -126,6 +126,7 @@ def _capture(
 def capture(output: Path) -> dict[str, Any]:
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=True)
+    provenance = _git_state()
     capture_dir = output / "captures"
     capture_dir.mkdir(parents=True, exist_ok=True)
     captures: dict[str, Any] = {}
@@ -175,7 +176,7 @@ def capture(output: Path) -> dict[str, Any]:
     manifest = {
         "schema_version": 2,
         "generator": "scripts/audit_stage3_professional_editor_capture.py",
-        **_git_state(),
+        **provenance,
         "privacy": {"absolute_paths_persisted": False, "fixture_is_temporary": True},
         "captures": captures,
     }
