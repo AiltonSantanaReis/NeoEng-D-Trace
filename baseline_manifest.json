@@ -4889,8 +4889,8 @@
       "size": 10410
     },
     "scripts/audit_ui_capture.py": {
-      "sha256": "2434b617b0df2c84a92a1f84157a4bc86708e03701b9b8ef672d9598d98d7f13",
-      "size": 12705
+      "sha256": "fa0e8c8b7e5ce181c220adc6b31fff5b83dbb00a49ebcac188bc7bcb8df31f95",
+      "size": 13864
     },
     "scripts/audit_unity_animation_tileset_stage3.py": {
       "sha256": "314e92b5cff5a6765c59ba68f9d07989a13dc202da29e92d9d5b5de2d6f7485c",
@@ -4917,8 +4917,8 @@
       "size": 8718
     },
     "scripts/audit_visual_artifacts.py": {
-      "sha256": "88f6555769c62bb10c52f45fbba8cdc07466b2efa78a400b17dd0451d9206784",
-      "size": 17175
+      "sha256": "790841ccbdcef498ac4fa00cd4158a5a96f26531d997654e1ebef0b6410a36b8",
+      "size": 18198
     },
     "scripts/build_installer.ps1": {
       "sha256": "3ae6b0ec8a713cf22edfad44db698988ed3768823567c4024451a8ef5a15c921",
@@ -5381,8 +5381,8 @@
       "size": 3096
     },
     "tests/test_atomic_export_replacement.py": {
-      "sha256": "e31af10e5cdef63cd64212f8bfd7da5b19149ec5c83c0a8f8753e3b12fcdb40e",
-      "size": 2850
+      "sha256": "ad506bb3bf6c87dc10951cdbf3398efc9e19123017da308494105df82a54f0d4",
+      "size": 2908
     },
     "tests/test_atomic_outputs.py": {
       "sha256": "39c700452696d75f24389638beb747238e117d06c4236d0f726e99e1ab7267e9",
@@ -5461,8 +5461,8 @@
       "size": 2430
     },
     "tests/test_grabcut_pipeline.py": {
-      "sha256": "bb381958a30b534e2a79ba99acf60d59f23d0149677b13ecd095675f0e575c47",
-      "size": 21450
+      "sha256": "441a8c924b84b9feb664fca6c7ed948d8734390644c9be145ff84a5993941764",
+      "size": 21504
     },
     "tests/test_integration_manifest.py": {
       "sha256": "32309ade2614cb75f7b02676989ec346537413c53dc4565b9fcef6a4816cd0e2",
@@ -5813,16 +5813,16 @@
       "size": 6146
     },
     "tests/test_validation_export_outputs.py": {
-      "sha256": "9b786d0cd3457baedc6a35ecf8e25f6ce47786a76de801ed594dfbfbc14d4102",
-      "size": 3217
+      "sha256": "38bbcaf83cdfaa27e15239887408d2dab54cc3f1042b4eb19fb9aedd3d114fa3",
+      "size": 3287
     },
     "tests/test_view_modes_and_tools.py": {
       "sha256": "c2c7084e2c96f875a8b46c47d186d2ea3eeb892e64f10936f623605ff430e7f6",
       "size": 1709
     },
     "tests/test_visual_artifact_auditor.py": {
-      "sha256": "878072eb2a9de3f97fae6e3288bf13738ac9ae7655e844583432540bbce626e8",
-      "size": 4942
+      "sha256": "0906a4a8a639b36ea0596454b2436b511ffe0226c73cf740a247fbd13d2b6ad4",
+      "size": 5826
     },
     "tools/baseline_integrity.py": {
       "sha256": "63424a986930099dca2a163a954a30a70c11575cad2473cf0a6624ca43e04f8e",
