@@ -199,6 +199,73 @@ class SceneAuthoringModel:
             )
         self._replace(objects=objects)
 
+    def transform_selected(
+        self,
+        *,
+        translation: Point3Record = Point3Record(x=0.0, y=0.0, z=0.0),
+        rotation_z: float = 0.0,
+        scale_factor: float = 1.0,
+    ) -> None:
+        """Apply one validated 2D transform to the current selection.
+
+        Rotation and uniform scale are calculated around the geometric center
+        of the selection, preserving the relative arrangement of objects.
+        The operation is deliberately model-only; the editor session decides
+        whether it is a preview or an undoable command.
+        """
+
+        if not math.isfinite(float(rotation_z)):
+            raise ValueError("rotation_z must be finite")
+        if not math.isfinite(float(scale_factor)) or scale_factor <= 0:
+            raise ValueError("scale_factor must be finite and positive")
+        for object_id in self.selection.ids:
+            self._assert_editable(object_id)
+        if not self.selection.ids:
+            return
+
+        selected = set(self.selection.ids)
+        selected_objects = [
+            item for item in self.document.objects if item.id in selected
+        ]
+        center_x = sum(item.transform.position.x for item in selected_objects) / len(
+            selected_objects
+        )
+        center_y = sum(item.transform.position.y for item in selected_objects) / len(
+            selected_objects
+        )
+        angle = math.radians(float(rotation_z))
+        cosine, sine = math.cos(angle), math.sin(angle)
+        objects = []
+        for item in self.document.objects:
+            if item.id not in selected:
+                objects.append(item)
+                continue
+            position = item.transform.position
+            relative_x = (position.x - center_x) * scale_factor
+            relative_y = (position.y - center_y) * scale_factor
+            rotated_x = relative_x * cosine - relative_y * sine
+            rotated_y = relative_x * sine + relative_y * cosine
+            transform = SceneTransformRecord(
+                position=Point3Record(
+                    x=center_x + rotated_x + translation.x,
+                    y=center_y + rotated_y + translation.y,
+                    z=position.z + translation.z,
+                ),
+                rotation=item.transform.rotation.model_copy(
+                    update={"z": item.transform.rotation.z + rotation_z}
+                ),
+                scale=Point3Record(
+                    x=item.transform.scale.x * scale_factor,
+                    y=item.transform.scale.y * scale_factor,
+                    z=item.transform.scale.z * scale_factor,
+                ),
+                pivot=item.transform.pivot,
+                flip_x=item.transform.flip_x,
+                flip_y=item.transform.flip_y,
+            )
+            objects.append(item.model_copy(update={"transform": transform}))
+        self._replace(objects=objects)
+
     def set_snap(self, snap: SceneSnapRecord) -> None:
         self._replace(snap=snap)
 

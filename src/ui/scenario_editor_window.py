@@ -7,6 +7,7 @@ compress or intercept the main editor panels.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt
@@ -16,12 +17,19 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QScrollArea,
     QSplitter,
+    QStackedWidget,
     QToolBar,
+    QVBoxLayout,
     QWidget,
 )
 
 from src.core.scenario_authoring import ScenarioAuthoringState
+from src.core.scene_authoring_factory import document_from_scene
+from src.core.scene_authoring_model import SceneAuthoringModel
+from src.core.scene_authoring_session import SceneAuthoringSession
 from src.ui.scenario_panel import ScenarioPanel
+from src.ui.scene_authoring_inspector import SceneAuthoringInspector
+from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
 
 class ScenarioEditorWindow(QMainWindow):
@@ -44,7 +52,24 @@ class ScenarioEditorWindow(QMainWindow):
         self.setMinimumSize(980, 640)
         self.resize(1280, 820)
 
+        self.professional_session: SceneAuthoringSession | None = None
+        self.professional_viewport: SceneAuthoringViewport | None = None
+        self.professional_inspector: SceneAuthoringInspector | None = None
+        self._professional_project: Path | None = None
         self.canvas = self._build_canvas()
+        self.legacy_canvas = self.canvas
+        self.professional_pages = QStackedWidget(self)
+        self.professional_pages.setObjectName("professional_viewport_pages")
+        professional_empty = QLabel(self.professional_pages)
+        professional_empty.setObjectName("professional_scene_viewport_empty")
+        professional_empty.setWordWrap(True)
+        professional_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        professional_empty.setText(
+            "Professional scene viewport\n\n" "Load a saved project to begin authoring."
+        )
+        self.professional_pages.addWidget(professional_empty)
+        self.professional_pages.addWidget(self.canvas)
+        self.professional_pages.setCurrentWidget(professional_empty)
         self.scenario_panel = ScenarioPanel(authoring, scene, self)
         self.scenario_panel.setMinimumWidth(390)
         self.scenario_panel.setMaximumWidth(520)
@@ -54,11 +79,31 @@ class ScenarioEditorWindow(QMainWindow):
         scroll.setWidgetResizable(True)
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         scroll.setWidget(self.scenario_panel)
+        self.scenario_inspector_scroll = scroll
+
+        self.right_pages = QStackedWidget(self)
+        self.right_pages.setObjectName("scenario_right_pages")
+        empty_panel = QWidget(self.right_pages)
+        empty_layout = QVBoxLayout(empty_panel)
+        empty_label = QLabel(empty_panel)
+        empty_label.setObjectName("professional_scene_inspector_empty")
+        empty_label.setWordWrap(True)
+        empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        empty_label.setText(
+            "Save a project to enable the professional scene inspector.\n\n"
+            "Drag image assets into the viewport after the project is loaded."
+        )
+        empty_layout.addStretch(1)
+        empty_layout.addWidget(empty_label)
+        empty_layout.addStretch(1)
+        self.right_pages.addWidget(empty_panel)
+        self.right_pages.addWidget(scroll)
+        self.right_pages.setCurrentWidget(empty_panel)
 
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.setObjectName("scenario_editor_splitter")
-        splitter.addWidget(self.canvas)
-        splitter.addWidget(scroll)
+        splitter.addWidget(self.professional_pages)
+        splitter.addWidget(self.right_pages)
         splitter.setStretchFactor(0, 1)
         splitter.setStretchFactor(1, 0)
         splitter.setSizes([850, 430])
@@ -75,6 +120,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.load_action = QAction(self)
         self.reset_action = QAction(self)
         self.export_action = QAction(self)
+        self.undo_action = QAction(self)
+        self.redo_action = QAction(self)
         self.overlay_action = QAction(self)
         self.overlay_action.setCheckable(True)
         for action in (
@@ -83,6 +130,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.load_action,
             self.reset_action,
             self.export_action,
+            self.undo_action,
+            self.redo_action,
             self.overlay_action,
         ):
             self.toolbar.addAction(action)
@@ -91,6 +140,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.toolbar.addWidget(self.status_label)
 
         self.open_action.triggered.connect(self._open_project_hint)
+        self.undo_action.triggered.connect(self._undo_professional)
+        self.redo_action.triggered.connect(self._redo_professional)
         self.save_action.triggered.connect(self.scenario_panel.save)
         self.load_action.triggered.connect(self.scenario_panel.load)
         self.reset_action.triggered.connect(self.scenario_panel.reset)
@@ -111,6 +162,49 @@ class ScenarioEditorWindow(QMainWindow):
         canvas.gizmo_toggle.setVisible(False)
         return canvas
 
+    def _build_professional_viewport(self) -> None:
+        project_path = self.authoring.project_path
+        if project_path is None:
+            return
+        document = document_from_scene(self.scene, project_path)
+        session = SceneAuthoringSession(SceneAuthoringModel(document))
+        viewport = SceneAuthoringViewport(
+            session,
+            project_root=project_path.parent,
+            parent=self.professional_pages,
+        )
+        for object_id, scene_object in self.scene.objects.items():
+            record = next(
+                (item for item in document.objects if item.id == object_id),
+                None,
+            )
+            if record is None:
+                continue
+            origin_x = record.transform.position.x
+            origin_y = record.transform.position.y
+            viewport.set_geometry(
+                object_id,
+                (
+                    (float(x) - origin_x, float(y) - origin_y)
+                    for x, y in scene_object.polygon
+                ),
+            )
+        inspector = SceneAuthoringInspector(session, self.right_pages)
+        inspector.status_message.connect(self._show_professional_status)
+        viewport.status_message.connect(self._show_professional_status)
+        inspector.status_message.connect(lambda _message: viewport.sync())
+        self.right_pages.addWidget(inspector)
+        self.right_pages.setCurrentWidget(inspector)
+        self.professional_pages.addWidget(viewport)
+        self.professional_pages.setCurrentWidget(viewport)
+        self.professional_session = session
+        self.professional_viewport = viewport
+        self.professional_inspector = inspector
+        self._professional_project = project_path
+
+    def _show_professional_status(self, message: str) -> None:
+        self.status_label.setText(message)
+
     def _open_project_hint(self) -> None:
         self.status_label.setText(
             "Open and save a project in the main editor before authoring a scenario."
@@ -119,13 +213,26 @@ class ScenarioEditorWindow(QMainWindow):
     def _toggle_overlays(self) -> None:
         self.canvas.set_scenario_overlays_visible(self.overlay_action.isChecked())
 
+    def _undo_professional(self) -> None:
+        if self.professional_viewport is not None and self.professional_viewport.undo():
+            self.status_label.setText("Undo applied")
+
+    def _redo_professional(self) -> None:
+        if self.professional_viewport is not None and self.professional_viewport.redo():
+            self.status_label.setText("Redo applied")
+
     def refresh(self) -> None:
         available = self.authoring.is_available
+        if available and self._professional_project != self.authoring.project_path:
+            self._build_professional_viewport()
         self.save_action.setEnabled(available)
         self.load_action.setEnabled(available)
         self.reset_action.setEnabled(available)
         self.export_action.setEnabled(available)
         self.overlay_action.setEnabled(available)
+        session = self.professional_session
+        self.undo_action.setEnabled(session is not None and session.can_undo)
+        self.redo_action.setEnabled(session is not None and session.can_redo)
         if available:
             self.canvas.set_scenario_preview_layers(self.authoring.preview_layers())
             self.canvas.set_scenario_camera(
@@ -155,6 +262,8 @@ class ScenarioEditorWindow(QMainWindow):
                 "Recarregar",
                 "Redefinir",
                 "Exportar Runtime",
+                "Desfazer",
+                "Refazer",
                 "Sobreposições",
             )
         else:
@@ -165,6 +274,8 @@ class ScenarioEditorWindow(QMainWindow):
                 "Reload",
                 "Reset",
                 "Export Runtime",
+                "Undo",
+                "Redo",
                 "Overlays",
             )
         for action, label in zip(
@@ -174,6 +285,8 @@ class ScenarioEditorWindow(QMainWindow):
                 self.load_action,
                 self.reset_action,
                 self.export_action,
+                self.undo_action,
+                self.redo_action,
                 self.overlay_action,
             ),
             labels,

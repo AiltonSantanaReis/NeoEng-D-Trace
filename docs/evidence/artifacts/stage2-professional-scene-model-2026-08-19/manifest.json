@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "source_commit": "44e24e87eea95ce0f4ba4fda8853b4f9606255f7",
   "scope": "professional scene authoring model: portable assets, transforms, selection, groups, locks and snapping",
   "files": {
     "scene_authoring_fixture.ndtscene.json": {

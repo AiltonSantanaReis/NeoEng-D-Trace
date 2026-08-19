@@ -112,6 +112,7 @@ APROVADO | REPROVADO | BLOQUEADO | PARCIAL | NÃO TESTADO
 Uma captura isolada, relato verbal ou resultado sem commit identificado não é evidência suficiente.
 
 - ETAPA_1_CENARIOS_PROFISSIONAIS_2026-08-19.md — baseline e contratos da extensão profissional de autoria visual de cenários; permanece pendente até o fechamento do baseline e dos gates.
+- `ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md` — editor profissional separado, viewport, drag-and-drop, gizmos, inspector, Undo/Redo, testes reais e auditoria visual automatizada; pendente de CI/PR até o fechamento remoto.
 
 ## Evidências registradas
 

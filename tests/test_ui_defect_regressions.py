@@ -53,8 +53,15 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
         qt_app.processEvents()
         editor = window.scenario_editor_window
         assert editor is not None and editor.isVisible()
-        assert editor.scenario_panel.empty_state.isVisible()
-        assert "project" in editor.scenario_panel.empty_state.text().lower()
+        empty = editor.professional_pages.currentWidget()
+        assert empty is not None and empty.isVisible()
+        assert empty.objectName() == "professional_scene_viewport_empty"
+        assert "project" in empty.text().lower()
+        inspector_empty = editor.right_pages.currentWidget().findChild(
+            type(editor.scenario_panel.empty_state),
+            "professional_scene_inspector_empty",
+        )
+        assert inspector_empty is not None
         assert editor.scenario_panel.btn_add.isEnabled() is False
         assert window.layers.tabs.count() == 1
         assert window.scenario_open_action in window.view_menu.actions()
@@ -79,10 +86,14 @@ def test_scenario_editor_is_scrollable_and_interactive_after_binding(tmp_path, q
         editor.show()
         qt_app.processEvents()
         panel = editor.scenario_panel
-        scroll = editor.findChild(
-            type(editor.centralWidget().widget(1)), "scenario_inspector_scroll"
-        )
+        scroll = editor.scenario_inspector_scroll
         assert scroll is not None
+        assert editor.professional_viewport is not None
+        assert editor.professional_inspector is not None
+        assert editor.right_pages.currentWidget() is editor.professional_inspector
+        assert (
+            editor.professional_viewport.objectName() == "professional_scene_viewport"
+        )
         assert panel.list.isEnabled()
         assert panel.list.count() == 1
         assert panel.name_edit.height() >= 20
