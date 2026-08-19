@@ -5,7 +5,7 @@
 - Escopo: baseline real, reconciliação documental, inventário de contratos e
   caracterização da extensão profissional.
 - Commit-base: `487ae11adfa7b9052debd5eda41e47460399406e`.
-- Branch de execução: `codex/scenario-authoring-professional`.
+- Branch de execução: `feature-branch-id-omitted`.
 - Estado: **APROVADO NO ESCOPO DA ETAPA 1**.
 - Plano: `docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md`.
 
@@ -25,7 +25,7 @@ ampliada, não misturada novamente ao editor 2D.
 
 Contratos preservados nesta etapa: schema de projeto v1, `SceneObject.position.z`,
 colisores, gizmo 2D, menus, atalhos, histórico do editor principal, exportadores
-existentes e os consumidores Godot/Unity já validados no escopo anterior.
+existentes e os consumidores de engines já validados no escopo anterior.
 
 ## Entradas e hashes
 
@@ -82,6 +82,8 @@ git status --short --branch
 
 1. O primeiro baseline marcou os dois documentos novos como Unexpected porque ainda não estavam rastreados. Eles foram commitados e o baseline foi regenerado; a validação final passou com 1509 arquivos.
 2. Uma normalização textual intermediária reduziu acidentalmente o arquivo do plano e inseriu uma sequência literal de newline no registro. A perda foi detectada por comparação de bytes, restaurada do blob 062e755 e corrigida nos commits aef47f8 e e46920f. Nenhum código, projeto do usuário ou regra de teste foi alterado.
+
+3. O primeiro CI Windows rejeitou a referência textual de provedor no novo documento pelo gate de higiene de referências. A descrição foi generalizada para consumidores de engines; nenhuma regra do gate foi alterada.
 
 ## Lacunas deliberadamente não declaradas como resolvidas
 
