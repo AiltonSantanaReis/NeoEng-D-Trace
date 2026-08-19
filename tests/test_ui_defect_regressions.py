@@ -58,7 +58,8 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
         assert empty.objectName() == "professional_scene_viewport_empty"
         assert "project" in empty.text().lower()
         inspector_empty = editor.right_pages.currentWidget().findChild(
-            type(editor.scenario_panel.empty_state), "professional_scene_inspector_empty"
+            type(editor.scenario_panel.empty_state),
+            "professional_scene_inspector_empty",
         )
         assert inspector_empty is not None
         assert editor.scenario_panel.btn_add.isEnabled() is False
@@ -90,7 +91,10 @@ def test_scenario_editor_is_scrollable_and_interactive_after_binding(tmp_path, q
         assert editor.professional_viewport is not None
         assert editor.professional_inspector is not None
         assert editor.right_pages.currentWidget() is editor.professional_inspector
-        assert editor.professional_viewport.objectName() == "professional_scene_viewport"
+        assert (
+            editor.professional_viewport.objectName()
+            == "professional_scene_viewport"
+        )
         assert panel.list.isEnabled()
         assert panel.list.count() == 1
         assert panel.name_edit.height() >= 20

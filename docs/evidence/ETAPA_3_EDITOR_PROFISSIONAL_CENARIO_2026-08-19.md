@@ -61,10 +61,23 @@ registra o mesmo SHA-256 do manifest e `status: PASS`, `finding_count: 0`.
 
 Nenhum PASS foi obtido por bypass, exclusão, alteração de regra ou mascaramento.
 
+## Revalidação da PR #106
+
+A primeira execução remota `32299592245` reprovou nos jobs Linux e Windows
+pelo mesmo motivo: `E501` nas linhas 61 e 93 de
+`tests/test_ui_defect_regressions.py` (89 caracteres, limite 88). A falha
+não foi funcional nem de ambiente; as duas linhas foram quebradas sem alterar
+asserções ou comportamento. A correção foi validada localmente com o lint
+estrito do arquivo e 16 testes de regressão/Etapa 3 aprovados. O baseline foi
+regenerado contra os bytes staged e verificado com 1.532 arquivos.
+
+A PR permanece pendente de nova execução remota dos dois jobs; nenhum check
+reprovado foi tratado como aprovação e nenhum bypass foi aplicado.
+
 ## Limitações e decisão
 
 A captura offscreen não substitui teste interativo de GPU. Persistência/reabertura
 do documento profissional, parallax, sockets e exportação de engines não fazem
 parte da Etapa 3. A CI remota ainda precisa aprovar a PR.
 
-**Decisão: APROVADO LOCALMENTE PARA REVISÃO DA PR; PENDENTE CI REMOTO E MERGE.**
+**Decisão: APROVADO LOCALMENTE PARA REVISÃO DA PR; PENDENTE NOVA EXECUÇÃO CI REMOTO E MERGE.**

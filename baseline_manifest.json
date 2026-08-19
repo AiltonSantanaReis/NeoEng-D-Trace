@@ -529,8 +529,8 @@
       "size": 5756
     },
     "docs/evidence/ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md": {
-      "sha256": "c6da3fced1917eeaa4167369c96509a8465e086d99d8a93c3ce9a4701d8ab9a8",
-      "size": 3427
+      "sha256": "4205e39170ca1f51d2dcd9eb9d52098119f937b4264347de26a92ca546aac733",
+      "size": 4123
     },
     "docs/evidence/ETAPA_3_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "0d379fa9b795471cf4284da79b9feea332b534d76e6903d91faaaacd8401306e",
@@ -6025,8 +6025,8 @@
       "size": 3976
     },
     "tests/test_ui_defect_regressions.py": {
-      "sha256": "11c39d64251013aa43eeb28834f02d1af68612755cd7a95dc2f0b1d08fac5142",
-      "size": 5718
+      "sha256": "38eb44677cba1152924d43d7ac95f694ba7a728b7ba72b8819a72bf6eecbec43",
+      "size": 5767
     },
     "tests/test_ui_responsive_layout.py": {
       "sha256": "46fff788ec67409cc71e71ebde0c40a60adeea78433ecf379890719e0efe0d39",
