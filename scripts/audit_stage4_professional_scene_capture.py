@@ -146,6 +146,10 @@ def capture(output: Path) -> dict[str, Any]:
             if len(session.document.sockets) != 3:
                 raise RuntimeError("socket controls did not create all typed markers")
             for label, size in RESOLUTIONS.items():
+                inspector.camera_x.setValue(42.0)
+                inspector.camera_apply_button.click()
+                QTest.qWait(120)
+                QApplication.processEvents()
                 loaded = f"stage4_{label}_02_projeto_paineis.png"
                 captures[f"loaded_{label}"] = _capture(
                     window, captures_dir / loaded, size
