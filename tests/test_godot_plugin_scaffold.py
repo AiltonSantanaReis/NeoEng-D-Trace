@@ -16,7 +16,7 @@ def test_godot_addon_is_source_only_and_has_stable_identity():
     config.read(ADDON_ROOT / "plugin.cfg", encoding="utf-8")
 
     assert config["plugin"]["name"].strip('"') == "NeoEng D-Trace"
-    assert config["plugin"]["version"].strip('"') == "0.2.0"
+    assert config["plugin"]["version"].strip('"') == "0.3.0"
     assert config["plugin"]["script"].strip('"') == "plugin.gd"
     assert (ADDON_ROOT / "plugin.gd").is_file()
     assert (ADDON_ROOT / "manifest_diagnostic.gd").is_file()

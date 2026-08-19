@@ -1510,7 +1510,7 @@ namespace NeoEng.DTrace.Editor
             }
             if (!File.Exists(marker))
             {
-                File.WriteAllText(marker, "generator=neoeng_d_trace\nversion=0.2.0\n", new UTF8Encoding(false));
+                File.WriteAllText(marker, "generator=neoeng_d_trace\nversion=0.3.0\n", new UTF8Encoding(false));
                 AssetDatabase.Refresh();
             }
         }

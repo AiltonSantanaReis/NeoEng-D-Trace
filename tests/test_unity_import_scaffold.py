@@ -31,6 +31,6 @@ def test_unity_importer_keeps_stage_boundary_and_package_identity():
     readme = (PACKAGE_ROOT / "README.md").read_text(encoding="utf-8")
 
     assert package["name"] == "com.neoeng.dtrace"
-    assert package["version"] == "0.2.0"
+    assert package["version"] == "0.3.0"
     assert "Sincronização incremental" in readme
     assert "Assets/NeoEngGenerated" in readme

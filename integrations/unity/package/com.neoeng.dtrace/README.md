@@ -7,7 +7,7 @@ download automático ou dependência de marketplace.
 
 ## Escopo aprovado na Etapa 5
 
-- identidade estável `com.neoeng.dtrace`, versão `0.2.0`;
+- identidade estável `com.neoeng.dtrace`, versão `0.3.0`;
 - assembly Runtime com o contrato comum de manifesto;
 - assembly Editor separado, carregado somente pelo Unity Editor;
 - diagnóstico por menu e por `-executeMethod` em modo batch;

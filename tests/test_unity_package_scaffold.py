@@ -16,7 +16,7 @@ def test_unity_upm_package_has_stable_source_only_identity():
 
     assert manifest == {
         "name": "com.neoeng.dtrace",
-        "version": "0.2.0",
+        "version": "0.3.0",
         "displayName": "NeoEng D-Trace Integration",
         "description": (
             "Source-only UPM package for the NeoEng-D-Trace integration contract."

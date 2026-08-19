@@ -1,6 +1,6 @@
 {
   "name": "com.neoeng.dtrace",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "displayName": "NeoEng D-Trace Integration",
   "description": "Source-only UPM package for the NeoEng-D-Trace integration contract.",
   "unity": "2021.3",

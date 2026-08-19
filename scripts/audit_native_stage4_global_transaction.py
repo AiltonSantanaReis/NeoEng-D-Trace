@@ -116,7 +116,7 @@ internal static class NeoEngStage4GlobalRunner
     private const string Generated = "Assets/NeoEngGenerated";
     private const string Keep = Generated + "/keep.txt";
     private const string KeepValue = "preserved\n";
-    private const string MarkerValue = "generator=neoeng_d_trace\nversion=0.2.0\n";
+    private const string MarkerValue = "generator=neoeng_d_trace\nversion=0.3.0\n";
 
     static NeoEngStage4GlobalRunner() { EditorApplication.delayCall += Begin; }
 

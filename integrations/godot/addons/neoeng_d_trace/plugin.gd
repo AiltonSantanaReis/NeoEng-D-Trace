@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 const PLUGIN_ID := "neoeng_d_trace"
-const PLUGIN_VERSION := "0.2.0"
+const PLUGIN_VERSION := "0.3.0"
 const MENU_ITEM := "NeoEng D-Trace: Diagnose integration manifests"
 const IMPORT_MENU_ITEM := "NeoEng D-Trace: Import integration manifests"
 const SCENARIO_MENU_ITEM := "NeoEng D-Trace: Validate scenario runtime export"

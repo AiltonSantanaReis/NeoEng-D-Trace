@@ -6,7 +6,7 @@ namespace NeoEng.DTrace
     public static class PackageIdentity
     {
         public const string PackageName = "com.neoeng.dtrace";
-        public const string PackageVersion = "0.2.0";
+        public const string PackageVersion = "0.3.0";
         public const string IntegrationFormatId = "neoeng-d-trace-engine-integration";
         public const int IntegrationSchemaVersion = 1;
         public const string GeneratedRoot = "NeoEngGenerated";
