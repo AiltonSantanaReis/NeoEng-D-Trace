@@ -3,7 +3,7 @@
 ## Identificação
 
 - Commit-fonte da captura: `3396878ebc32361affeb37621699009c67e9fed4`
-- Branch: `codex/scenario-authoring-stage3`
+- Branch: `stage3`
 - Data/hora: 2026-08-19 15:03:37 -03:00
 - Proveniência: `worktree_clean_at_capture_start: true`
 
