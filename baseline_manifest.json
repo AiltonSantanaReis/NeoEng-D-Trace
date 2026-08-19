@@ -5917,8 +5917,8 @@
       "size": 4379
     },
     "tests/test_stage4_professional_scene_authoring.py": {
-      "sha256": "6ba9a013b19ad1065f24760fb583a9cecb18dcaa9265ba8a4cd9985fe778136c",
-      "size": 8181
+      "sha256": "40a4564841e0c85bce4a6d622a7a0ef0a747b8e90b7d4e3c248cc11ea1c0856b",
+      "size": 18885
     },
     "tests/test_stage4b2_preview_overlays.py": {
       "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f",
