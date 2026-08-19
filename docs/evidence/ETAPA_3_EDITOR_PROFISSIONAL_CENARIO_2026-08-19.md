@@ -75,8 +75,9 @@ A execução remota `32300986840` confirmou no Windows uma reprovação de `blac
 
 Na execução `32303557990`, o job Windows foi aprovado. O job Linux falhou novamente no passo `Refresh apt package indexes for Qt` após 10 minutos; o rerun do mesmo job (`96234478458`) repetiu o timeout. Assim, há duas tentativas Linux independentes com a mesma falha de infraestrutura, sem execução dos testes do projeto nesse job.
 
-A PR permanece pendente de nova execução remota dos dois jobs; nenhum check
-reprovado foi tratado como aprovação e nenhum bypass foi aplicado.
+Execução final `32305826961`: os jobs Linux e Windows concluíram com sucesso, incluindo os gates de integridade, lint, formatação, testes, cobertura e árvore de fontes. O timeout Linux foi transitório e não se repetiu nesta execução.
+
+A PR está pronta para revisão; o merge permanece pendente de autorização explícita.
 
 ## Limitações e decisão
 
@@ -84,4 +85,4 @@ A captura offscreen não substitui teste interativo de GPU. Persistência/reaber
 do documento profissional, parallax, sockets e exportação de engines não fazem
 parte da Etapa 3. A CI remota ainda precisa aprovar a PR.
 
-**Decisão: APROVADO LOCALMENTE PARA REVISÃO DA PR; PENDENTE NOVA EXECUÇÃO CI REMOTO E MERGE.**
+**Decisão: APROVADO LOCALMENTE E NO CI; PR PRONTA PARA REVISÃO; MERGE PENDENTE DE AUTORIZAÇÃO.**
