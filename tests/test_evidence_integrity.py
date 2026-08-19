@@ -163,9 +163,13 @@ def test_historical_source_commit_keeps_snapshot_immutable(
     )
     subprocess.run(["git", "add", "."], cwd=tmp_path, check=True)
     subprocess.run(["git", "commit", "-qm", "snapshot"], cwd=tmp_path, check=True)
-    source_commit = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=tmp_path, check=True, capture_output=True
-    ).stdout.decode().strip()
+    source_commit = (
+        subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=tmp_path, check=True, capture_output=True
+        )
+        .stdout.decode()
+        .strip()
+    )
     data = json.loads(manifest.read_text(encoding="utf-8"))
     data["source_commit"] = source_commit
     evidence_integrity.write_json_lf(manifest, data)
@@ -184,9 +188,12 @@ def test_historical_source_commit_keeps_snapshot_immutable(
     monkeypatch.setattr(evidence_integrity, "_tracked", lambda path: True)
     monkeypatch.setattr(evidence_integrity, "_ignored", lambda path: False)
 
-    assert evidence_integrity.validate_manifest(
-        manifest, require_tracked=True, use_git_blob=True
-    ) == []
+    assert (
+        evidence_integrity.validate_manifest(
+            manifest, require_tracked=True, use_git_blob=True
+        )
+        == []
+    )
 
 
 def test_ci_requires_strict_evidence_gate_in_both_jobs() -> None:

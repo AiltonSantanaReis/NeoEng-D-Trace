@@ -5561,8 +5561,8 @@
       "size": 44102
     },
     "tests/test_evidence_integrity.py": {
-      "sha256": "e204d395fc7ff260e94d6b18a60bbb4a58172e46d9c2e3ee731150bdfbf50fbb",
-      "size": 7598
+      "sha256": "0524b027e224f5c530cada7a3404d430e381397e220c8e917c5962e07797411d",
+      "size": 7672
     },
     "tests/test_evidence_privacy.py": {
       "sha256": "bfa692e4d3e29d8a8b67fbf4523fd74e532573d919160d9bea14d259848ada01",
