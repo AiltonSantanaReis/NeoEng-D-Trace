@@ -7,6 +7,7 @@
   merge normal e verificação pós-merge.
 - Base integrada: `7b697f88e07d653767111b775391c50678fa6f8e`.
 - Manifesto: `docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json`.
+- Commit-fonte dos hashes do manifesto: `44e24e87eea95ce0f4ba4fda8853b4f9606255f7`; a base integrada é o merge que contém esse commit.
 
 ## O que foi implementado
 

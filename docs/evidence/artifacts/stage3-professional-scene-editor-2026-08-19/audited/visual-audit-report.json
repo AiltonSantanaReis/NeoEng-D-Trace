@@ -1,0 +1,172 @@
+{
+  "checks": [
+    "pillow_decode",
+    "opencv_decode",
+    "dimensions",
+    "transparency",
+    "sha256",
+    "clipping",
+    "qt_geometry",
+    "overlap",
+    "qss_palette",
+    "annotated_output"
+  ],
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "finding_count": 0,
+  "findings": [],
+  "images": {
+    "stage3_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.99234375,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 868852,
+          "#3c3c3c": 29509,
+          "#e6e6e6": 5208
+        }
+      },
+      "sha256": "41e69763b3a562b8523682c3b40817dc6b65ff6a9f5a13931201eb990a3c46bf",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage3_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9816644965277778,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 147320,
+          "#252526": 28150,
+          "#2d2d30": 1736,
+          "#3c3c3c": 139150,
+          "#3f3f46": 8034,
+          "#e6e6e6": 4648
+        }
+      },
+      "sha256": "16a6e4c5a94b2176af9f7677b4a8056ec34095ba983965f6ea3ba11ee7b6159d",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage3_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9816644965277778,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 147320,
+          "#252526": 19242,
+          "#2d2d30": 868,
+          "#3c3c3c": 148926,
+          "#3f3f46": 8034,
+          "#e6e6e6": 4648
+        }
+      },
+      "sha256": "0cfa8600292cb81f9486c153c11a74dd8c5fb3ff231a866bcd52325f9c03de4c",
+      "size": [
+        1280,
+        720
+      ]
+    }
+  },
+  "input": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "1df201a8db716152742757ceba432249df6fca12057cf2849d51d2beb748f4d6"
+  },
+  "schema_version": 1,
+  "status": "PASS"
+}

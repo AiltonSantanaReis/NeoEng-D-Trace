@@ -1,0 +1,471 @@
+{
+  "captures": {
+    "empty": {
+      "actual_capture_size": [
+        1280,
+        720
+      ],
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "stage3_01_sem_projeto.png": {
+          "bytes": 5035,
+          "sha256": "41e69763b3a562b8523682c3b40817dc6b65ff6a9f5a13931201eb990a3c46bf"
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ],
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_viewport_pages": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "object_name": "professional_viewport_pages",
+            "root_geometry": [
+              0,
+              35,
+              846,
+              685
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "object_name": "scenario_editor_splitter",
+            "root_geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "object_name": "scenario_editor_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              850,
+              0,
+              430,
+              685
+            ],
+            "geometry": [
+              850,
+              0,
+              430,
+              685
+            ],
+            "object_name": "scenario_right_pages",
+            "root_geometry": [
+              850,
+              35,
+              430,
+              685
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_empty"
+      }
+    },
+    "loaded": {
+      "actual_capture_size": [
+        1280,
+        720
+      ],
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "stage3_02_projeto_paineis.png": {
+          "bytes": 14575,
+          "sha256": "16a6e4c5a94b2176af9f7677b4a8056ec34095ba983965f6ea3ba11ee7b6159d"
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ],
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_inspector": {
+            "class": "SceneAuthoringInspector",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              430,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              430,
+              685
+            ],
+            "object_name": "professional_scene_inspector",
+            "root_geometry": [
+              850,
+              35,
+              430,
+              685
+            ],
+            "visible": true
+          },
+          "professional_viewport": {
+            "class": "SceneAuthoringViewport",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "object_name": "professional_scene_viewport",
+            "root_geometry": [
+              0,
+              35,
+              846,
+              685
+            ],
+            "visible": true
+          },
+          "professional_viewport_pages": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "object_name": "professional_viewport_pages",
+            "root_geometry": [
+              0,
+              35,
+              846,
+              685
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "object_name": "scenario_editor_splitter",
+            "root_geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "object_name": "scenario_editor_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              850,
+              0,
+              430,
+              685
+            ],
+            "geometry": [
+              850,
+              0,
+              430,
+              685
+            ],
+            "object_name": "scenario_right_pages",
+            "root_geometry": [
+              850,
+              35,
+              430,
+              685
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_editor"
+      }
+    },
+    "transformed": {
+      "actual_capture_size": [
+        1280,
+        720
+      ],
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "stage3_04_gizmo_feedback.png": {
+          "bytes": 14624,
+          "sha256": "0cfa8600292cb81f9486c153c11a74dd8c5fb3ff231a866bcd52325f9c03de4c"
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ],
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_inspector": {
+            "class": "SceneAuthoringInspector",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              430,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              430,
+              685
+            ],
+            "object_name": "professional_scene_inspector",
+            "root_geometry": [
+              850,
+              35,
+              430,
+              685
+            ],
+            "visible": true
+          },
+          "professional_viewport": {
+            "class": "SceneAuthoringViewport",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "object_name": "professional_scene_viewport",
+            "root_geometry": [
+              0,
+              35,
+              846,
+              685
+            ],
+            "visible": true
+          },
+          "professional_viewport_pages": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "geometry": [
+              0,
+              0,
+              846,
+              685
+            ],
+            "object_name": "professional_viewport_pages",
+            "root_geometry": [
+              0,
+              35,
+              846,
+              685
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "object_name": "scenario_editor_splitter",
+            "root_geometry": [
+              0,
+              35,
+              1280,
+              685
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "object_name": "scenario_editor_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              1280,
+              35
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              850,
+              0,
+              430,
+              685
+            ],
+            "geometry": [
+              850,
+              0,
+              430,
+              685
+            ],
+            "object_name": "scenario_right_pages",
+            "root_geometry": [
+              850,
+              35,
+              430,
+              685
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_editor"
+      }
+    }
+  },
+  "generator": "scripts/audit_stage3_professional_editor_capture.py",
+  "privacy": {
+    "absolute_paths_persisted": false,
+    "fixture_is_temporary": true
+  },
+  "schema_version": 2,
+  "source_commit": "3396878ebc32361affeb37621699009c67e9fed4",
+  "worktree_clean_at_capture_start": true
+}
