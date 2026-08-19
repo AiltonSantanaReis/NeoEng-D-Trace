@@ -5329,8 +5329,8 @@
       "size": 5412
     },
     "src/core/scene_authoring_session.py": {
-      "sha256": "7a2dcd29c7fef53f8aef4558c8b4b94913c2d4b3e56305203997e265aa2fa9a2",
-      "size": 9025
+      "sha256": "c4517b0f2d8c5dd3599270be2bf21a7c4e781b962eab8a01d56b1b1eda3a19b0",
+      "size": 8995
     },
     "src/core/snapping.py": {
       "sha256": "6fefac930644e3ff766307fee239bba7dc0201323fb2b64908620a2614dc5998",

@@ -10,7 +10,6 @@ from src.persistence.project_schema import Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocument,
-    SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
