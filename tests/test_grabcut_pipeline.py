@@ -435,6 +435,8 @@ def test_mask_viewer_real_mouse_and_keyboard_events(qapp: QApplication) -> None:
         return QMouseEvent(
             event_type,
             QPointF(x, y),
+            QPointF(x, y),
+            QPointF(x, y),
             button,
             button,
             modifiers,

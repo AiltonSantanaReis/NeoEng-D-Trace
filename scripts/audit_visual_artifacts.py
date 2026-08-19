@@ -294,8 +294,29 @@ def _annotate(input_path: Path, output_path: Path, findings: list[dict[str, Any]
             rect = entry.get("rect")
             if isinstance(rect, list) and len(rect) == 4:
                 x, y, w, h = rect
-                draw.rectangle((x, y, x + w - 1, y + h - 1), outline=color, width=4)
-                draw.text((max(0, x + 4), max(0, y + 4)), str(entry.get("name", item["check"])), fill=color)
+                label = str(entry.get("name", item["check"]))
+                if w <= 0 or h <= 0:
+                    # Keep the finding visible without allowing malformed Qt
+                    # geometry to crash annotation and hide the real FAIL.
+                    marker_x = max(0, min(image.width - 1, x))
+                    marker_y = max(0, min(image.height - 1, y))
+                    draw.ellipse(
+                        (marker_x - 5, marker_y - 5, marker_x + 5, marker_y + 5),
+                        outline=color,
+                        width=4,
+                    )
+                    draw.text(
+                        (max(0, marker_x + 6), max(0, marker_y + 4)),
+                        label,
+                        fill=color,
+                    )
+                    continue
+                left = max(0, min(image.width - 1, x))
+                top = max(0, min(image.height - 1, y))
+                right = max(left, min(image.width - 1, x + w - 1))
+                bottom = max(top, min(image.height - 1, y + h - 1))
+                draw.rectangle((left, top, right, bottom), outline=color, width=4)
+                draw.text((max(0, left + 4), max(0, top + 4)), label, fill=color)
     banner = (18, 130, 80) if status == "PASS" and not relevant else (190, 40, 35)
     draw.rectangle((0, 0, min(image.width, 260), 24), fill=banner)
     draw.text((6, 5), f"VISUAL AUDIT {status}", fill=(255, 255, 255))

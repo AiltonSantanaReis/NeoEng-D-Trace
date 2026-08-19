@@ -78,13 +78,15 @@ def test_validation_sandbox_generates_real_export_outputs(tmp_path):
         assert export_scene_to_gltf(scene, str(scene_path)) is True
         assert export_object_to_gltf("object/main", scene, str(object_path)) is True
 
-        assert Image.open(sprite_path).format == "PNG"
+        with Image.open(sprite_path) as image:
+            assert image.format == "PNG"
         assert (
             json.loads(metadata_path.read_text(encoding="utf-8"))["id"] == "object/main"
         )
         assert atlas_results
         for result in atlas_results:
-            assert Image.open(result["atlas_path"]).format == "PNG"
+            with Image.open(result["atlas_path"]) as image:
+                assert image.format == "PNG"
             assert isinstance(
                 json.loads(Path(result["json_path"]).read_text(encoding="utf-8")),
                 list,

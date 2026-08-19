@@ -44,7 +44,8 @@ def test_sprite_replaces_existing_destination_without_predelete(tmp_path, monkey
         str(destination),
     )
 
-    assert Image.open(destination).format == "PNG"
+    with Image.open(destination) as image:
+        assert image.format == "PNG"
     assert not list(tmp_path.glob("tmp_sprite_*"))
 
 
@@ -62,7 +63,8 @@ def test_atlas_replaces_existing_outputs_without_predelete(tmp_path, monkeypatch
         str(json_path),
     )
 
-    assert Image.open(atlas_path).format == "PNG"
+    with Image.open(atlas_path) as image:
+        assert image.format == "PNG"
     assert json.loads(json_path.read_text(encoding="utf-8")) == [{"name": "item"}]
     assert not list(tmp_path.glob("tmp_atlas_*"))
 

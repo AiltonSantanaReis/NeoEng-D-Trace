@@ -142,3 +142,27 @@ def test_visual_auditor_detects_sibling_overlap(tmp_path: Path) -> None:
 
     assert report["status"] == "FAIL"
     assert any(item["check"] == "overlap" for item in report["findings"])
+
+
+def test_visual_auditor_annotates_nonpositive_geometry_without_crashing(
+    tmp_path: Path,
+) -> None:
+    _make_capture(tmp_path / "input")
+    manifest_path = tmp_path / "input" / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    right_splitter = manifest["captures"]["1080p_FHD"]["widget_geometry"][
+        "sem_projeto"
+    ]["right_splitter"]
+    right_splitter["root_geometry"][2] = 0
+    right_splitter["geometry"][2] = 0
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "FAIL"
+    assert any(item["check"] == "geometry" for item in report["findings"])
+    assert (tmp_path / "output" / "1080p_FHD_01_sem_projeto_annotated.png").is_file()
