@@ -9,16 +9,20 @@ from src.core.scene_authoring_model import SceneAuthoringModel, SceneSelection
 from src.persistence.project_schema import Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
-    SceneAuthoringDocumentV1,
+    SceneAuthoringDocument,
+    SceneAuthoringDocumentV2,
+    SceneCameraAuthoringRecord,
     SceneObjectAuthoringRecord,
+    SceneParallaxLayerRecord,
     SceneSnapRecord,
+    SceneSocketRecord,
     SceneTransformRecord,
 )
 
 
 @dataclass(frozen=True)
 class SceneAuthoringSnapshot:
-    document: SceneAuthoringDocumentV1
+    document: SceneAuthoringDocument
     selection: SceneSelection
 
 
@@ -43,7 +47,7 @@ class SceneAuthoringSession:
         self._gesture_before: SceneAuthoringSnapshot | None = None
 
     @property
-    def document(self) -> SceneAuthoringDocumentV1:
+    def document(self) -> SceneAuthoringDocument:
         return self.model.document
 
     @property
@@ -81,7 +85,7 @@ class SceneAuthoringSession:
         )
 
     def _restore(self, snapshot: SceneAuthoringSnapshot) -> None:
-        self.model.document = SceneAuthoringDocumentV1.model_validate(
+        self.model.document = self.model.document.__class__.model_validate(
             snapshot.document, strict=True
         )
         known = {item.id for item in self.document.objects}
@@ -235,6 +239,36 @@ class SceneAuthoringSession:
         return self.apply(
             lambda: self.model.set_snap(snap),
             "Edit snapping",
+        )
+
+    def set_camera(self, camera: SceneCameraAuthoringRecord) -> bool:
+        return self.apply(
+            lambda: self.model.set_camera(camera),
+            "Edit scene camera",
+        )
+
+    def set_parallax_layer(self, parallax: SceneParallaxLayerRecord) -> bool:
+        return self.apply(
+            lambda: self.model.set_parallax_layer(parallax),
+            "Edit layer parallax",
+        )
+
+    def add_socket(self, socket: SceneSocketRecord) -> bool:
+        return self.apply(
+            lambda: self.model.add_socket(socket),
+            "Add scene socket",
+        )
+
+    def update_socket_position(self, socket_id: str, position: Point3Record) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_position(socket_id, position),
+            "Move scene socket",
+        )
+
+    def remove_socket(self, socket_id: str) -> bool:
+        return self.apply(
+            lambda: self.model.remove_socket(socket_id),
+            "Remove scene socket",
         )
 
     def undo(self) -> bool:

@@ -2,7 +2,7 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
-Estado vivo após o merge da PR `#99`: as evidências 4A–4B.5 estão integradas no `main` pelo merge `a129cd251345456c39254b39682d1ef083fd28d0`; o CI pós-merge `32184900502` foi aprovado em Linux e Windows. Isso não constitui aprovação automática de release.
+Estado vivo após o merge da PR `#106`: a Etapa 3 do editor profissional está integrada no `main` pelo merge `f477b6d`; o CI pós-merge `32306687719` foi aprovado em Linux e Windows. A Etapa 4 do plano profissional está em execução nesta linha de desenvolvimento e ainda não está integrada. Isso não constitui aprovação automática de release.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
 - `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; evidência da implementação integrada.
@@ -112,7 +112,7 @@ APROVADO | REPROVADO | BLOQUEADO | PARCIAL | NÃO TESTADO
 Uma captura isolada, relato verbal ou resultado sem commit identificado não é evidência suficiente.
 
 - ETAPA_1_CENARIOS_PROFISSIONAIS_2026-08-19.md — baseline e contratos da extensão profissional de autoria visual de cenários; permanece pendente até o fechamento do baseline e dos gates.
-- `ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md` — editor profissional separado, viewport, drag-and-drop, gizmos, inspector, Undo/Redo, testes reais e auditoria visual automatizada; pendente de CI/PR até o fechamento remoto.
+- `ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md` — snapshot histórico da implementação do editor profissional; a integração atual foi encerrada pelo merge `f477b6d` e CI `32306687719`. Não reescrever este snapshot para representar a Etapa 4.
 
 ## Evidências registradas
 

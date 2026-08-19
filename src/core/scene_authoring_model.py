@@ -15,11 +15,16 @@ from typing import Iterable
 from src.persistence.project_schema import Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
-    SceneAuthoringDocumentV1,
+    SceneAuthoringDocument,
+    SceneAuthoringDocumentV2,
+    SceneCameraAuthoringRecord,
     SceneGroupAuthoringRecord,
     SceneObjectAuthoringRecord,
+    SceneParallaxLayerRecord,
     SceneSnapRecord,
+    SceneSocketRecord,
     SceneTransformRecord,
+    validate_scene_authoring_document,
 )
 
 
@@ -83,13 +88,13 @@ def snap_transform(
 class SceneAuthoringModel:
     """Validated document plus non-persistent selection state."""
 
-    def __init__(self, document: SceneAuthoringDocumentV1) -> None:
-        self.document = SceneAuthoringDocumentV1.model_validate(document, strict=True)
+    def __init__(self, document: SceneAuthoringDocument) -> None:
+        self.document = validate_scene_authoring_document(document)
         self.selection = SceneSelection()
 
     def _replace(self, **changes: object) -> None:
         candidate = self.document.model_copy(update=changes)
-        self.document = SceneAuthoringDocumentV1.model_validate(candidate, strict=True)
+        self.document = validate_scene_authoring_document(candidate)
 
     def _object(self, object_id: str) -> SceneObjectAuthoringRecord:
         for item in self.document.objects:
@@ -268,6 +273,54 @@ class SceneAuthoringModel:
 
     def set_snap(self, snap: SceneSnapRecord) -> None:
         self._replace(snap=snap)
+
+    def _stage4_document(self) -> SceneAuthoringDocumentV2:
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("stage 4 properties require scene authoring schema v2")
+        return self.document
+
+    def set_camera(self, camera: SceneCameraAuthoringRecord) -> None:
+        self._stage4_document()
+        self._replace(camera=camera)
+
+    def set_parallax_layer(self, parallax: SceneParallaxLayerRecord) -> None:
+        document = self._stage4_document()
+        if parallax.layer_id not in {item.id for item in document.layers}:
+            raise KeyError(parallax.layer_id)
+        records = [
+            item
+            for item in document.parallax_layers
+            if item.layer_id != parallax.layer_id
+        ]
+        self._replace(parallax_layers=[*records, parallax])
+
+    def add_socket(self, socket: SceneSocketRecord) -> None:
+        document = self._stage4_document()
+        if socket.layer_id not in {item.id for item in document.layers}:
+            raise KeyError(socket.layer_id)
+        self._replace(sockets=[*document.sockets, socket])
+
+    def update_socket_position(self, socket_id: str, position: Point3Record) -> None:
+        document = self._stage4_document()
+        if not any(item.id == socket_id for item in document.sockets):
+            raise KeyError(socket_id)
+        sockets = [
+            (
+                item.model_copy(update={"position": position})
+                if item.id == socket_id
+                else item
+            )
+            for item in document.sockets
+        ]
+        self._replace(sockets=sockets)
+
+    def remove_socket(self, socket_id: str) -> None:
+        document = self._stage4_document()
+        if not any(item.id == socket_id for item in document.sockets):
+            raise KeyError(socket_id)
+        self._replace(
+            sockets=[item for item in document.sockets if item.id != socket_id]
+        )
 
     def add_group(self, group: SceneGroupAuthoringRecord) -> None:
         if group.id in {item.id for item in self.document.groups}:

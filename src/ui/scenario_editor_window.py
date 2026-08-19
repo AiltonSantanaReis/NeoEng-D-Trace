@@ -27,6 +27,7 @@ from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_authoring_factory import document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.persistence.scene_authoring_schema import upgrade_scene_authoring_document
 from src.ui.scenario_panel import ScenarioPanel
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
@@ -123,7 +124,10 @@ class ScenarioEditorWindow(QMainWindow):
         self.undo_action = QAction(self)
         self.redo_action = QAction(self)
         self.overlay_action = QAction(self)
+        self.preview_action = QAction(self)
         self.overlay_action.setCheckable(True)
+        self.preview_action.setCheckable(True)
+        self.preview_action.setChecked(True)
         for action in (
             self.open_action,
             self.save_action,
@@ -133,6 +137,7 @@ class ScenarioEditorWindow(QMainWindow):
             self.undo_action,
             self.redo_action,
             self.overlay_action,
+            self.preview_action,
         ):
             self.toolbar.addAction(action)
         self.toolbar.addSeparator()
@@ -147,6 +152,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.reset_action.triggered.connect(self.scenario_panel.reset)
         self.export_action.triggered.connect(self.scenario_panel.export_runtime)
         self.overlay_action.triggered.connect(self._toggle_overlays)
+        self.preview_action.triggered.connect(self._toggle_professional_preview)
         self.authoring.subscribe(self.refresh)
         self.update_language(language)
         self.refresh()
@@ -166,13 +172,16 @@ class ScenarioEditorWindow(QMainWindow):
         project_path = self.authoring.project_path
         if project_path is None:
             return
-        document = document_from_scene(self.scene, project_path)
+        document = upgrade_scene_authoring_document(
+            document_from_scene(self.scene, project_path)
+        )
         session = SceneAuthoringSession(SceneAuthoringModel(document))
         viewport = SceneAuthoringViewport(
             session,
             project_root=project_path.parent,
             parent=self.professional_pages,
         )
+        viewport.set_preview_enabled(self.preview_action.isChecked())
         for object_id, scene_object in self.scene.objects.items():
             record = next(
                 (item for item in document.objects if item.id == object_id),
@@ -212,6 +221,12 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _toggle_overlays(self) -> None:
         self.canvas.set_scenario_overlays_visible(self.overlay_action.isChecked())
+
+    def _toggle_professional_preview(self) -> None:
+        if self.professional_viewport is not None:
+            self.professional_viewport.set_preview_enabled(
+                self.preview_action.isChecked()
+            )
 
     def _undo_professional(self) -> None:
         if self.professional_viewport is not None and self.professional_viewport.undo():
@@ -265,6 +280,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Desfazer",
                 "Refazer",
                 "Sobreposições",
+                "Preview Parallax",
             )
         else:
             self.setWindowTitle("Scenario Editor — NeoEng-D-Trace")
@@ -277,6 +293,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Undo",
                 "Redo",
                 "Overlays",
+                "Parallax Preview",
             )
         for action, label in zip(
             (
@@ -288,6 +305,7 @@ class ScenarioEditorWindow(QMainWindow):
                 self.undo_action,
                 self.redo_action,
                 self.overlay_action,
+                self.preview_action,
             ),
             labels,
         ):
