@@ -9,7 +9,7 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMessageBox
 
 from src.core.scenario_authoring import ScenarioAuthoringState
-from src.ui.scenario_panel import ScenarioPanel
+from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
 def _report(window: Any, title: str, message: str) -> None:
@@ -80,13 +80,31 @@ def _export(window: Any) -> bool:
 
 
 def install_scenario_authoring(window: Any) -> None:
-    """Install the scenario tab and actions without changing Scene history."""
+    """Install scenario actions and a separate authoring window.
+
+    The main editor keeps only the read-only preview. Authoring controls live
+    in a dedicated window so they cannot compress or intercept image panels.
+    """
 
     state = ScenarioAuthoringState(window.scene)
-    panel = ScenarioPanel(state, window.scene, window)
     window.scenario_authoring = state
-    window.scenario_panel = panel
-    window.layers.attach_scenario_panel(panel)
+    window.scenario_panel = None
+    window.scenario_editor_window = None
+
+    def open_editor() -> None:
+        editor = window.scenario_editor_window
+        if editor is None:
+            editor = ScenarioEditorWindow(
+                state,
+                window.scene,
+                language=window.current_lang,
+                parent=window,
+            )
+            window.scenario_editor_window = editor
+        editor.show()
+        editor.raise_()
+        editor.activateWindow()
+        editor.refresh()
 
     def state_changed() -> None:
         _sync_preview(window)
@@ -96,8 +114,12 @@ def install_scenario_authoring(window: Any) -> None:
             window.scenario_load_action.setEnabled(available)
             window.scenario_reset_action.setEnabled(available)
             window.scenario_export_action.setEnabled(available)
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.refresh()
 
     menu = window.menuBar().addMenu("Scenario")
+    window.scenario_open_action = QAction("Open Scenario Editor", window)
+    window.scenario_open_action.triggered.connect(open_editor)
     window.scenario_save_action = QAction("Save Scenario", window)
     window.scenario_save_action.triggered.connect(lambda: _save(window))
     window.scenario_load_action = QAction("Reload Scenario", window)
@@ -107,11 +129,16 @@ def install_scenario_authoring(window: Any) -> None:
     window.scenario_export_action = QAction("Export Runtime JSON", window)
     window.scenario_export_action.triggered.connect(lambda: _export(window))
 
+    menu.addAction(window.scenario_open_action)
+    window.view_menu.addSeparator()
+    window.view_menu.addAction(window.scenario_open_action)
+    menu.addSeparator()
     menu.addAction(window.scenario_save_action)
     menu.addAction(window.scenario_load_action)
     menu.addAction(window.scenario_reset_action)
     menu.addAction(window.scenario_export_action)
     window.scenario_menu = menu
+    window.open_scenario_editor = open_editor
     state.subscribe(state_changed)
     state_changed()
 
@@ -141,6 +168,7 @@ def install_scenario_authoring(window: Any) -> None:
 
     def update_language_with_scenario() -> None:
         original_update_language()
-        window.scenario_panel.update_language(window.current_lang)
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.update_language(window.current_lang)
 
     window.update_language = update_language_with_scenario

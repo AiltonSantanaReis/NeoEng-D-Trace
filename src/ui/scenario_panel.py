@@ -9,7 +9,6 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QDoubleSpinBox,
     QFormLayout,
-    QHBoxLayout,
     QLabel,
     QLineEdit,
     QListWidget,
@@ -24,7 +23,7 @@ from src.core.scenario_authoring import ScenarioAuthoringError, ScenarioAuthorin
 
 
 class ScenarioPanel(QWidget):
-    """Scenario layer stack and inspector hosted inside the Layers tab."""
+    """Scenario layer stack and inspector for the dedicated editor window."""
 
     def __init__(self, authoring: ScenarioAuthoringState, scene: Any, parent=None):
         super().__init__(parent)
@@ -32,10 +31,17 @@ class ScenarioPanel(QWidget):
         self.scene = scene
         self._refreshing = False
 
+        self.setObjectName("scenario_panel")
+        self.setMinimumWidth(390)
         self.list = QListWidget()
+        self.list.setObjectName("scenario_layer_list")
         self.list.setAccessibleName("Scenario layers")
         self.list.currentItemChanged.connect(self._on_selection_changed)
 
+        self.empty_state = QLabel()
+        self.empty_state.setObjectName("scenario_empty_state")
+        self.empty_state.setWordWrap(True)
+        self.empty_state.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.btn_add = QPushButton("Add")
         self.btn_remove = QPushButton("Remove")
         self.btn_up = QPushButton("Up")
@@ -59,8 +65,10 @@ class ScenarioPanel(QWidget):
             button.setAutoDefault(False)
 
         self.name_edit = QLineEdit()
+        self.name_edit.setObjectName("scenario_layer_name")
         self.name_edit.editingFinished.connect(self._rename)
         self.visible_box = QCheckBox("Visible")
+        self.visible_box.setObjectName("scenario_layer_visible")
         self.visible_box.toggled.connect(self._set_visible)
         self.depth_spin = self._spin(0.0, 1.0, 0.05)
         self.translation_spin = self._spin(0.0, 1.0, 0.05)
@@ -78,17 +86,18 @@ class ScenarioPanel(QWidget):
         self.camera_y_spin.editingFinished.connect(self._set_camera)
         self.camera_zoom_spin.editingFinished.connect(self._set_camera)
 
-        layer_buttons = QHBoxLayout()
+        layer_buttons = QVBoxLayout()
         for button in (self.btn_add, self.btn_remove, self.btn_up, self.btn_down):
             layer_buttons.addWidget(button)
-        state_buttons = QHBoxLayout()
+        state_buttons = QVBoxLayout()
         for button in (self.btn_visible, self.btn_assign):
             state_buttons.addWidget(button)
-        persistence_buttons = QHBoxLayout()
+        persistence_buttons = QVBoxLayout()
         for button in (self.btn_save, self.btn_load, self.btn_reset):
             persistence_buttons.addWidget(button)
 
         inspector = QFormLayout()
+        inspector.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
         inspector.addRow("Name", self.name_edit)
         inspector.addRow("Visible", self.visible_box)
         inspector.addRow("Depth", self.depth_spin)
@@ -97,18 +106,24 @@ class ScenarioPanel(QWidget):
         inspector.addRow("Assignments", self.object_ids)
 
         camera = QFormLayout()
+        camera.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
         camera.addRow("Camera X", self.camera_x_spin)
         camera.addRow("Camera Y", self.camera_y_spin)
         camera.addRow("Camera Zoom", self.camera_zoom_spin)
 
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("Scenario Layer Stack"))
+        self.title_label = QLabel("Scenario Layer Stack")
+        self.title_label.setObjectName("scenario_layer_stack_title")
+        layout.addWidget(self.title_label)
+        layout.addWidget(self.empty_state)
         layout.addWidget(self.list)
         layout.addLayout(layer_buttons)
         layout.addLayout(state_buttons)
-        layout.addWidget(QLabel("Layer Inspector"))
+        self.inspector_label = QLabel("Layer Inspector")
+        self.camera_label = QLabel("Camera Inspector")
+        layout.addWidget(self.inspector_label)
         layout.addLayout(inspector)
-        layout.addWidget(QLabel("Camera Inspector"))
+        layout.addWidget(self.camera_label)
         layout.addLayout(camera)
         layout.addStretch(1)
         layout.addLayout(persistence_buttons)
@@ -177,6 +192,12 @@ class ScenarioPanel(QWidget):
             ):
                 button.setEnabled(available)
             self.list.setEnabled(available)
+            self.empty_state.setVisible(not available)
+            self.empty_state.setText(
+                "Save a project in the main editor to enable scenario authoring."
+                if available is False
+                else ""
+            )
             self.name_edit.setEnabled(available)
             self.visible_box.setEnabled(available)
             for widget in (
@@ -366,7 +387,70 @@ class ScenarioPanel(QWidget):
     def reset(self) -> None:
         self._run(lambda: self.authoring.reset())
 
-    def update_language(self, _lang: str) -> None:
-        """Keep the panel API compatible; labels remain stable in this MVP."""
+    def export_runtime(self):
+        """Export the validated runtime manifest for the current scenario."""
+        result = None
+        try:
+            result = self.authoring.export_runtime()
+        except Exception as exc:
+            QMessageBox.critical(self, "Scenario export failed", str(exc))
+        return result
 
-        return None
+    def update_language(self, lang: str) -> None:
+        translations = {
+            "en": {
+                "title": "Scenario Layer Stack",
+                "inspector": "Layer Inspector",
+                "camera": "Camera Inspector",
+                "empty": (
+                    "Save a project in the main " "editor to enable scenario authoring."
+                ),
+                "add": "Add",
+                "remove": "Remove",
+                "up": "Up",
+                "down": "Down",
+                "visible_toggle": "Toggle Visible",
+                "assign": "Assign Selected Object",
+                "save": "Save Scenario",
+                "load": "Reload Scenario",
+                "reset": "Reset From Project",
+                "visible": "Visible",
+            },
+            "pt": {
+                "title": "Camadas do Cenário",
+                "inspector": "Inspetor da Camada",
+                "camera": "Inspetor da Câmera",
+                "empty": (
+                    "Salve um projeto no editor principal "
+                    "para habilitar a autoria de cenários."
+                ),
+                "add": "Adicionar",
+                "remove": "Remover",
+                "up": "Subir",
+                "down": "Descer",
+                "visible_toggle": "Alternar Visibilidade",
+                "assign": "Atribuir Objeto Selecionado",
+                "save": "Salvar Cenário",
+                "load": "Recarregar Cenário",
+                "reset": "Redefinir do Projeto",
+                "visible": "Visível",
+            },
+        }
+        t = translations.get(lang, translations["en"])
+        self.title_label.setText(t["title"])
+        self.inspector_label.setText(t["inspector"])
+        self.camera_label.setText(t["camera"])
+        self.empty_state.setText(t["empty"])
+        for button, key in (
+            (self.btn_add, "add"),
+            (self.btn_remove, "remove"),
+            (self.btn_up, "up"),
+            (self.btn_down, "down"),
+            (self.btn_visible, "visible_toggle"),
+            (self.btn_assign, "assign"),
+            (self.btn_save, "save"),
+            (self.btn_load, "load"),
+            (self.btn_reset, "reset"),
+        ):
+            button.setText(t[key])
+        self.visible_box.setText(t["visible"])

@@ -251,7 +251,9 @@ class CanvasView(QWidget):
         self.gizmo_toggle.setCheckable(True)
         self.gizmo_toggle.setChecked(False)
         self.gizmo_toggle.clicked.connect(self._toggle_gizmo)
-        self.gizmo_toggle.setGeometry(10, 50, 80, 30)
+        self.gizmo_toggle.setObjectName("gizmo_toggle")
+        self.gizmo_toggle.setMinimumWidth(92)
+        self.gizmo_toggle.setToolTip("Toggle interactive transform gizmo")
 
         self.threadpool = QThreadPool()
 
@@ -1327,7 +1329,6 @@ class CanvasView(QWidget):
         # Header Info (Apenas se não for preview)
         if not self._preview_mode:
             self._draw_hud(painter)
-            self._draw_gizmo_feedback(painter)
             # self._draw_axis_gizmo(painter)
 
             # Gizmo Interativo
@@ -1336,6 +1337,7 @@ class CanvasView(QWidget):
                 if center_screen:
                     self.gizmo.set_screen_position(center_screen)
                     self.gizmo.draw(painter)
+            self._draw_gizmo_feedback(painter)
 
         # Overlays de Ferramenta
         if self._tool and self._tool.draw_overlay:
@@ -1409,6 +1411,60 @@ class CanvasView(QWidget):
         center_x = (self.width() - text_width) // 2
         painter.drawText(center_x, 28, txt)
 
+    def _gizmo_feedback_rect(self, painter: QPainter) -> QRectF:
+        """Return a feedback rectangle that does not cover the interactive gizmo."""
+        if not self._gizmo_feedback:
+            return QRectF()
+        parts = self._gizmo_feedback.split("  S:", 1)
+        lines = [parts[0]]
+        if len(parts) == 2:
+            lines.append("S:" + parts[1])
+        metrics = painter.fontMetrics()
+        line_height = metrics.height()
+        width = min(
+            max(metrics.horizontalAdvance(line) for line in lines) + 18,
+            max(120, self.width() - 16),
+        )
+        height = line_height * len(lines) + 12
+        margin = 8.0
+        candidates = (
+            QRectF(margin, 52.0, width, height),
+            QRectF(self.width() - width - margin, 52.0, width, height),
+            QRectF(margin, self.height() - height - 12.0, width, height),
+            QRectF(
+                self.width() - width - margin,
+                self.height() - height - 12.0,
+                width,
+                height,
+            ),
+        )
+        gizmo_rect = QRectF()
+        if self.gizmo is not None and self._gizmo_enabled:
+            radius = (
+                max(
+                    float(getattr(self.gizmo, "arm_length", 76.0))
+                    + float(getattr(self.gizmo, "arrow_size", 14.0)),
+                    float(getattr(self.gizmo, "rotation_radius", 51.0))
+                    + float(getattr(self.gizmo, "rotation_tolerance", 10.0)),
+                )
+                + 12.0
+            )
+            center = self.gizmo.screen_pos
+            gizmo_rect = QRectF(
+                center.x() - radius, center.y() - radius, radius * 2, radius * 2
+            )
+        for candidate in candidates:
+            if candidate.left() < margin or candidate.top() < 45.0:
+                continue
+            if (
+                candidate.right() > self.width() - margin
+                or candidate.bottom() > self.height() - margin
+            ):
+                continue
+            if gizmo_rect.isNull() or not candidate.intersects(gizmo_rect):
+                return candidate
+        return candidates[-1]
+
     def _draw_gizmo_feedback(self, painter):
         if not self._gizmo_feedback:
             return
@@ -1420,18 +1476,15 @@ class CanvasView(QWidget):
         lines = [parts[0]]
         if len(parts) == 2:
             lines.append("S:" + parts[1])
-        metrics = painter.fontMetrics()
-        line_height = metrics.height()
-        width = max(metrics.horizontalAdvance(line) for line in lines) + 18
-        available_width = max(120, self.width() - 16)
-        width = min(width, available_width)
-        height = line_height * len(lines) + 12
-        x = max(8, self.width() - width - 8)
-        y = max(52, self.height() - height - 12)
-        painter.drawRoundedRect(x, y, width, height, 5, 5)
+        rect = self._gizmo_feedback_rect(painter)
+        painter.drawRoundedRect(rect, 5, 5)
         painter.setPen(QColor(170, 245, 255))
         for index, line in enumerate(lines):
-            painter.drawText(x + 9, y + 7 + (index + 1) * line_height - 2, line)
+            painter.drawText(
+                rect.left() + 9,
+                rect.top() + 7 + (index + 1) * painter.fontMetrics().height() - 2,
+                line,
+            )
         painter.restore()
 
     def _draw_axis_gizmo(self, painter):

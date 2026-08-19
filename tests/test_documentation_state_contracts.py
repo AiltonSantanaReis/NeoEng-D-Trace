@@ -387,7 +387,7 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     )
     assert "retention-days: 30" in workflow
     assert workflow.count("actions/checkout@v7") == 2
-    assert workflow.count("fetch-depth: 0") == 1
+    assert workflow.count("fetch-depth: 0") == 2
     assert workflow.count("actions/setup-python@v7") == 2
     assert workflow.count("actions/upload-artifact@v7") == 2
     assert "GitHub Security Advisory" in security

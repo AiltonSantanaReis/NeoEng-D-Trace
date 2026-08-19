@@ -1,0 +1,403 @@
+{
+  "source_parent_commit": "b73fa027e0f5144fb132f49051099123f6e8330a",
+  "viewports": {
+    "compact_1280x720": {
+      "main": {
+        "file": "compact_1280x720_main.png",
+        "width": 1280,
+        "height": 720,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "79708e5a0b405cc9e3728857d915c440039b18404262a985754c6b64d569d8de"
+      },
+      "main_annotated": {
+        "file": "compact_1280x720_main_annotated.png",
+        "sha256": "1f6834184d9051cde4914f4ffac9bc195239c20614e634e57d6c176ce1c782a7"
+      },
+      "main_clipping": [],
+      "gizmo_feedback": {
+        "file": "compact_1280x720_gizmo_feedback.png",
+        "width": 1280,
+        "height": 720,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "34e2d449866d4f20731a16027e4c0219c87dc97135ccc196774212b380882622"
+      },
+      "gizmo_feedback_annotated": {
+        "file": "compact_1280x720_gizmo_feedback_annotated.png",
+        "sha256": "6e34271de5ce81601969f679484f7e49038f2d7cde8a4cc5bc07630ea5d7ff91"
+      },
+      "gizmo_feedback_geometry": {
+        "feedback": [
+          392,
+          52,
+          258,
+          36
+        ],
+        "gizmo": [
+          83,
+          53,
+          204,
+          204
+        ],
+        "window_feedback": [
+          550,
+          107,
+          258,
+          36
+        ],
+        "window_gizmo": [
+          241,
+          108,
+          204,
+          204
+        ],
+        "coordinate_space": "canvas-local for feedback/gizmo; window for window_* fields",
+        "overlap": false
+      },
+      "scenario_editor": {
+        "file": "compact_1280x720_scenario_editor.png",
+        "width": 1280,
+        "height": 720,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "be97e3d2512fa312777134905a35445afcd45e568e6cb31be49d44c413215c67"
+      },
+      "scenario_annotated": {
+        "file": "compact_1280x720_scenario_editor_annotated.png",
+        "sha256": "236ee5f951e2595681b13a366a2bd9b6cdeb4cca1dba482a3f779764a0992084"
+      },
+      "scenario_clipping": [],
+      "geometries": {
+        "main": {
+          "canvas": [
+            158,
+            55,
+            658,
+            665
+          ],
+          "navigation_toolbar": [
+            0,
+            20,
+            1019,
+            35
+          ]
+        },
+        "scenario": {
+          "scenario_canvas": [
+            0,
+            35,
+            846,
+            685
+          ],
+          "scenario_inspector": [
+            851,
+            36,
+            416,
+            683
+          ]
+        }
+      },
+      "xray_buttons": 43
+    },
+    "compact_1366x768": {
+      "main": {
+        "file": "compact_1366x768_main.png",
+        "width": 1366,
+        "height": 768,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "6f09fd2250978896c042077e4871dc8fd4a92b951d3c8fc6738282d8e902ccdb"
+      },
+      "main_annotated": {
+        "file": "compact_1366x768_main_annotated.png",
+        "sha256": "d45107e92b72214fc5c84f8139a0013ebab23b933e3efee23ffe6927cb562972"
+      },
+      "main_clipping": [],
+      "gizmo_feedback": {
+        "file": "compact_1366x768_gizmo_feedback.png",
+        "width": 1366,
+        "height": 768,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "e1b3a2850f584c0ccb72448c130dd8425c7840ee51ba1a205b6febbc4bad8fbc"
+      },
+      "gizmo_feedback_annotated": {
+        "file": "compact_1366x768_gizmo_feedback_annotated.png",
+        "sha256": "aaf70e1759aec90ff5505359fd9601229f6d2e8ce47b1d1b7be05cc80aeeef9c"
+      },
+      "gizmo_feedback_geometry": {
+        "feedback": [
+          478,
+          52,
+          258,
+          36
+        ],
+        "gizmo": [
+          83,
+          53,
+          204,
+          204
+        ],
+        "window_feedback": [
+          636,
+          107,
+          258,
+          36
+        ],
+        "window_gizmo": [
+          241,
+          108,
+          204,
+          204
+        ],
+        "coordinate_space": "canvas-local for feedback/gizmo; window for window_* fields",
+        "overlap": false
+      },
+      "scenario_editor": {
+        "file": "compact_1366x768_scenario_editor.png",
+        "width": 1366,
+        "height": 768,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "b493219ec3a01abaa9de5f841a31c054829840f4c81da81b7b0aa698c8ac4f94"
+      },
+      "scenario_annotated": {
+        "file": "compact_1366x768_scenario_editor_annotated.png",
+        "sha256": "ed19e4d9fc643d20051d26ac7f1812dce8172233f3f3e8cf661366736d5579b6"
+      },
+      "scenario_clipping": [],
+      "geometries": {
+        "main": {
+          "canvas": [
+            158,
+            55,
+            744,
+            713
+          ],
+          "navigation_toolbar": [
+            0,
+            20,
+            1019,
+            35
+          ]
+        },
+        "scenario": {
+          "scenario_canvas": [
+            0,
+            35,
+            932,
+            733
+          ],
+          "scenario_inspector": [
+            937,
+            36,
+            416,
+            731
+          ]
+        }
+      },
+      "xray_buttons": 43
+    },
+    "desktop_1920x1080": {
+      "main": {
+        "file": "desktop_1920x1080_main.png",
+        "width": 1920,
+        "height": 1080,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "19d9f9041e353145e586bca64e7073fa38ce032e9c0378b456509d8c37c9298a"
+      },
+      "main_annotated": {
+        "file": "desktop_1920x1080_main_annotated.png",
+        "sha256": "c4f6c558b08a379b0475053004721b284c0a0313530add4fc2c065f00b091a1d"
+      },
+      "main_clipping": [],
+      "gizmo_feedback": {
+        "file": "desktop_1920x1080_gizmo_feedback.png",
+        "width": 1920,
+        "height": 1080,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "f1b9d8111eabacd11566fab19e8e354a3a668660340d142e2b17f43c1c38cdde"
+      },
+      "gizmo_feedback_annotated": {
+        "file": "desktop_1920x1080_gizmo_feedback_annotated.png",
+        "sha256": "86d684e940c5a1aa14291de59005d188280a0c38444bbb0981757ac92ef860c0"
+      },
+      "gizmo_feedback_geometry": {
+        "feedback": [
+          1032,
+          52,
+          258,
+          36
+        ],
+        "gizmo": [
+          83,
+          53,
+          204,
+          204
+        ],
+        "window_feedback": [
+          1190,
+          107,
+          258,
+          36
+        ],
+        "window_gizmo": [
+          241,
+          108,
+          204,
+          204
+        ],
+        "coordinate_space": "canvas-local for feedback/gizmo; window for window_* fields",
+        "overlap": false
+      },
+      "scenario_editor": {
+        "file": "desktop_1920x1080_scenario_editor.png",
+        "width": 1920,
+        "height": 1080,
+        "alpha": [
+          255,
+          255
+        ],
+        "sha256": "dcf296cff8ca4fd6e61aedebaf49938a16d21757534d0db52253481d254840f0"
+      },
+      "scenario_annotated": {
+        "file": "desktop_1920x1080_scenario_editor_annotated.png",
+        "sha256": "a069a31fd8de92ab2c2774d99c41254501683e52237f6b43bf4a85e1518f2ef2"
+      },
+      "scenario_clipping": [],
+      "geometries": {
+        "main": {
+          "canvas": [
+            158,
+            55,
+            1298,
+            1025
+          ],
+          "navigation_toolbar": [
+            850,
+            20,
+            957,
+            35
+          ]
+        },
+        "scenario": {
+          "scenario_canvas": [
+            0,
+            35,
+            1486,
+            1045
+          ],
+          "scenario_inspector": [
+            1491,
+            36,
+            428,
+            1043
+          ]
+        }
+      },
+      "xray_buttons": 43
+    }
+  },
+  "source_files": {
+    "src/ui/scenario_editor_window.py": {
+      "bytes": 6614,
+      "sha256": "109e840f2ff900da844ffd175fbdb693aaf95ab83efb3e94d4aa19364193fde5"
+    },
+    "src/ui/scenario_authoring_actions.py": {
+      "bytes": 6055,
+      "sha256": "4579bec197f7b5663cb6b6531407f3c3f87b0935fd07f9d7a788bf54f3a2281c"
+    },
+    "src/ui/scenario_panel.py": {
+      "bytes": 16714,
+      "sha256": "78551138c719528350d88705d3f50f78aa654fe1881b7b87ad6ab03143e761d4"
+    },
+    "src/ui/canvas_view.py": {
+      "bytes": 56263,
+      "sha256": "a667de4cc71eee74fa13d6f99527ce264af4a7ae8bf97ba136e1d0e89b5423f1"
+    },
+    "src/ui/mask_viewer.py": {
+      "bytes": 52578,
+      "sha256": "e2b4a6a8b6914f48773c43eb3c6b8a2174900926a062b1b367ea901914ffafcd"
+    },
+    "src/ui/main_window.py": {
+      "bytes": 45988,
+      "sha256": "c3bfb645e4743dd67ae16e35e8f83b46bc672c0782e89af2fc8bfdc4498df219"
+    },
+    "src/ui/command_bindings.py": {
+      "bytes": 1741,
+      "sha256": "1373d863e8546d776ea853feed492d4058efd84c77d714bce9df44d3b4206498"
+    },
+    "tests/test_ui_defect_regressions.py": {
+      "bytes": 5133,
+      "sha256": "4537413533337014d483f6d9a8f6d5cc9eee5fb170bf08fe2ab324810fffe735"
+    }
+  },
+  "mask_viewer": {
+    "capture": {
+      "file": "mask_viewer_xray_controls.png",
+      "width": 1200,
+      "height": 800,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "89d24792887bebb3c7888f2641e1e907a8da4625efe78ab1e44712d1c0a583ff"
+    },
+    "annotated": {
+      "file": "mask_viewer_xray_controls_annotated.png",
+      "sha256": "28958ea4d8af7ae1d25df127def93e20fcecc85cd46ede4a4302463347f6d572"
+    },
+    "modes": [
+      {
+        "index": 0,
+        "text": "Original",
+        "checked": true
+      },
+      {
+        "index": 1,
+        "text": "X-Ray Sobel",
+        "checked": true
+      },
+      {
+        "index": 2,
+        "text": "X-Ray Canny",
+        "checked": true
+      },
+      {
+        "index": 3,
+        "text": "X-Ray Laplacian",
+        "checked": true
+      }
+    ],
+    "controls_scroll_present": true
+  },
+  "checks": {
+    "layers_scenario_separation": true,
+    "gizmo_toolbar_parent": true,
+    "mask_xray_modes": true,
+    "no_unexpected_clipping": true
+  },
+  "fixture": {
+    "file": "ui_fixture.ndtproj",
+    "sha256": "a3d6b338fe95ac88bebc0a966677a6050dce5aee69faf8ef64a67f8d0a4a87cf"
+  }
+}

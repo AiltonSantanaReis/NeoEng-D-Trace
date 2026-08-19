@@ -50,14 +50,15 @@ class ResponsivePanelLayout:
             self.owner.setMinimumSize(0, 0)
             self._move_panels_to_compact()
             self.panel_stack.setCurrentWidget(self.compact_panel_tabs)
+            self.compact_panel_tabs.setMinimumWidth(460)
             self.main_splitter.setSizes(
-                [self.owner.tool_palette.recommended_width(), 1, 340]
+                [self.owner.tool_palette.recommended_width(), 1, 460]
             )
         else:
             self._move_panels_to_desktop()
             self.panel_stack.setCurrentWidget(self.desktop_panel_splitter)
             self.main_splitter.setSizes(
-                [self.owner.tool_palette.recommended_width(), 800, 360]
+                [self.owner.tool_palette.recommended_width(), 800, 460]
             )
 
         self.toolbar.setVisible(not compact)

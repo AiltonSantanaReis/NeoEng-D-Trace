@@ -20,6 +20,7 @@ from PySide6.QtGui import (
     QWheelEvent,
 )
 from PySide6.QtWidgets import (
+    QButtonGroup,
     QCheckBox,
     QComboBox,
     QDialog,
@@ -29,6 +30,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QMessageBox,
     QPushButton,
+    QScrollArea,
     QSlider,
     QSpinBox,
     QToolBar,
@@ -820,6 +822,8 @@ class MaskViewerDialog(QDialog):
         self.param_labels: Dict[str, QLabel] = {}
         self.layer_checkboxes: Dict[str, QCheckBox] = {}
         self.preset_actions: Dict[str, QAction] = {}
+        self.view_mode_buttons: list[QPushButton] = []
+        self.view_mode_button_group: QButtonGroup | None = None
 
         self._setup_ui()
         self.update_language(self.current_lang)
@@ -842,6 +846,8 @@ class MaskViewerDialog(QDialog):
 
         self._setup_toolbar()
         control_layout.addWidget(self.toolbar)
+        self._setup_explicit_view_modes()
+        control_layout.addWidget(self.view_mode_group)
         self._setup_layer_controls()
         control_layout.addWidget(self.layer_controls)
         self._setup_parameter_controls()
@@ -920,7 +926,16 @@ class MaskViewerDialog(QDialog):
         control_layout.addWidget(self.detection_group)
         control_layout.addStretch()
 
-        main_layout.addWidget(control_panel, 0)
+        controls_scroll = QScrollArea(self)
+        controls_scroll.setObjectName("mask_controls_scroll")
+        controls_scroll.setWidgetResizable(True)
+        controls_scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        controls_scroll.setMinimumWidth(390)
+        controls_scroll.setMaximumWidth(470)
+        controls_scroll.setWidget(control_panel)
+        main_layout.addWidget(controls_scroll, 0)
         viewer_container = QWidget()
         viewer_layout = QVBoxLayout(viewer_container)
         viewer_layout.addWidget(self.viewer)
@@ -930,6 +945,25 @@ class MaskViewerDialog(QDialog):
         self.viewer.polygonSelected.connect(self._on_polygon_selected)
         self.viewer.roiSelected.connect(self._on_roi_selected)
         logger.debug("UI setup completed")
+
+    def _setup_explicit_view_modes(self) -> None:
+        """Expose all X-Ray modes in the scrollable control panel."""
+        self.view_mode_group = QGroupBox()
+        self.view_mode_group.setObjectName("mask_view_mode_group")
+        layout = QHBoxLayout(self.view_mode_group)
+        group = QButtonGroup(self)
+        group.setExclusive(True)
+        self.view_mode_button_group = group
+        for index in range(4):
+            button = QPushButton()
+            button.setObjectName(f"mask_view_mode_{index}")
+            button.setCheckable(True)
+            button.setAutoDefault(False)
+            group.addButton(button, index)
+            layout.addWidget(button)
+            self.view_mode_buttons.append(button)
+        group.idClicked.connect(self._on_explicit_view_mode)
+        self.view_mode_buttons[0].setChecked(True)
 
     def _setup_toolbar(self):
         self.toolbar = QToolBar()
@@ -1034,6 +1068,7 @@ class MaskViewerDialog(QDialog):
             label = t[self.PRESET_TEXT_KEYS[preset_id]]
             action.setText(t["detection_action"].format(preset=label))
         self.view_mode_label.setText(t["view_mode"])
+        self.view_mode_group.setTitle(t["view_mode"])
         view_keys = (
             "view_original",
             "view_xray_1",
@@ -1042,6 +1077,7 @@ class MaskViewerDialog(QDialog):
         )
         for index, key in enumerate(view_keys):
             self.view_mode_combo.setItemText(index, t[key])
+            self.view_mode_buttons[index].setText(t[key])
         self.layer_controls.setTitle(t["layer_visualization"])
         for layer_id, checkbox in self.layer_checkboxes.items():
             checkbox.setText(t[self.LAYER_TEXT_KEYS[layer_id]])
@@ -1152,6 +1188,11 @@ class MaskViewerDialog(QDialog):
 
     def _on_view_mode_changed(self, index: int) -> None:
         self.viewer.set_display_mode(index)
+        if 0 <= index < len(self.view_mode_buttons):
+            self.view_mode_buttons[index].setChecked(True)
+
+    def _on_explicit_view_mode(self, index: int) -> None:
+        self.view_mode_combo.setCurrentIndex(index)
 
     def _on_layer_changed(self, layer_name, _state):
         self._update_layer_overlays()

@@ -191,12 +191,13 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(build_window_title(self.current_lang))
         self.resize(1200, 800)
 
-        # 1. Menu Bar (File, View, etc.)
         self._setup_menu_bar()
         self.command_registry = CommandRegistry(self)
 
-        # 2. Main Toolbar (Arquivo/Exportação)
         self.toolbar = QToolBar("Main")
+        self.toolbar.setObjectName("main_toolbar")
+        self.toolbar.setMovable(False)
+        self.toolbar.setFloatable(False)
         self.addToolBar(self.toolbar)
 
         self.act_open = self.open_image_action
@@ -208,7 +209,6 @@ class MainWindow(QMainWindow):
         self.act_export.triggered.connect(self.open_export)
         self.toolbar.addAction(self.act_export)
 
-        # Adiciona menu de exportação de colisão
         export_menu = QMenu(self)
         self.act_export_collision_json = QAction("Export Collision (JSON)", self)
         self.act_export_collision_json.triggered.connect(self.export_collision_json)
@@ -223,23 +223,19 @@ class MainWindow(QMainWindow):
         self.file_menu.addAction(self.act_export)
         self.file_menu.addAction(self.act_export_collision_json)
         self.file_menu.addAction(self.act_export_collision_txt)
-        # 3. Componentes Centrais
         self.canvas = CanvasView(scene)
         self.tool_palette = ToolPalette(self.canvas)
         self.side_panel = SidePanel(scene, self.canvas)
         self.layers = LayersPanel(scene)
         self.groups = GroupsPanel(scene)
 
-        # Disable tools until image is loaded
         self.tool_palette.setEnabled(False)
         self.side_panel.setEnabled(False)
 
-        # 4. Configuração de colisão estática
         self.collision_manager = StaticCollisionManager(grid_cell_size=64)
         self.collision_overlay = CollisionOverlay(scene)
         self.collision_panel = CollisionPanel(scene)
 
-        # Conexão de colisão estática -> UI
         self.collision_panel.set_collision_manager(self.collision_manager)
         self.collision_panel.batch_test_requested.connect(self._on_collision_batch_test)
         self.collision_panel.export_collisions_requested.connect(
@@ -249,15 +245,18 @@ class MainWindow(QMainWindow):
             self._on_collision_auto_generate
         )
 
-        # Adiciona Overlay ao Canvas
         self.canvas.set_collision_overlay(self.collision_overlay)
         install_scenario_authoring(self)
         # 5. NAVIGATION TOOLBAR
         # (Barra de Ferramentas de Navegação e Ações Rápidas)
         self.nav_toolbar = QToolBar("Navigation")
+        self.nav_toolbar.setObjectName("navigation_toolbar")
+        self.nav_toolbar.setMovable(False)
+        self.nav_toolbar.setFloatable(False)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.nav_toolbar)
+        self.nav_toolbar.addWidget(self.canvas.gizmo_toggle)
+        self.nav_toolbar.addSeparator()
 
-        # Botão: Ajustar à Tela
         self.act_fit = QAction("Fit View (F)", self)
         self.act_fit.triggered.connect(self.canvas.fit_to_window)
         self.nav_toolbar.addAction(self.act_fit)
@@ -269,8 +268,10 @@ class MainWindow(QMainWindow):
 
         self.nav_toolbar.addSeparator()
 
-        # Barra de opções de Raio-X
         self.xray_toolbar = QToolBar("X-Ray Modes")
+        self.xray_toolbar.setObjectName("xray_toolbar")
+        self.xray_toolbar.setMovable(False)
+        self.xray_toolbar.setFloatable(False)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.xray_toolbar)
 
         self.act_lit = QAction("Lit", self)
@@ -297,7 +298,6 @@ class MainWindow(QMainWindow):
         )
         self.xray_toolbar.addAction(self.act_xray3)
 
-        # Botão: Focar Seleção (Leva a câmera ao objeto selecionado)
         self.focus_button = QPushButton("Focus Selected", self)
         self.focus_button.setFlat(True)
         self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)

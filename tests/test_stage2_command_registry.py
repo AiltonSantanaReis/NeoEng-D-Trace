@@ -87,6 +87,7 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "export.open",
             "collision.export_json",
             "collision.export_txt",
+            "scenario.open",
             "scenario.save",
             "scenario.load",
             "scenario.reset",

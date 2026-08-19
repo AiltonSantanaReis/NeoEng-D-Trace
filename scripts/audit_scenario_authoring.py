@@ -24,7 +24,7 @@ from src.ui.main_window import MainWindow  # noqa: E402
 from src.ui.theme_qss import QSS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "docs" / "evidence" / "artifacts" / "stage4b3-authoring-2026-08-18"
+OUTPUT = ROOT / "docs" / "evidence" / "artifacts" / "stage4b3-authoring-window-2026-08-18"
 VIEWPORTS = {"compact_1280x720": (1280, 720), "desktop_1920x1080": (1920, 1080)}
 
 
@@ -119,13 +119,14 @@ def _inspect_png(path: Path, expected: tuple[int, int]) -> dict[str, Any]:
 
 def _annotate(path: Path, window: MainWindow) -> tuple[str, dict[str, Any]]:
     canvas_rect = _rect(window.canvas, window)
-    scenario_rect = _rect(window.scenario_panel, window)
+    inspector = window.scenario_panel.parentWidget()
+    scenario_rect = _rect(inspector, window)
     window_rect = [0, 0, window.width(), window.height()]
     canvas_qrect = QRect(*canvas_rect)
     scenario_qrect = QRect(*scenario_rect)
     if canvas_qrect.intersects(scenario_qrect):
         raise RuntimeError("canvas and scenario panel overlap")
-    for name, rect in (("canvas", canvas_rect), ("scenario_panel", scenario_rect)):
+    for name, rect in (("canvas", canvas_rect), ("scenario_inspector", scenario_rect)):
         x, y, width, height = rect
         if x < 0 or y < 0 or x + width > window.width() or y + height > window.height():
             raise RuntimeError(f"{name} is clipped by the window")
@@ -158,7 +159,7 @@ def _annotate(path: Path, window: MainWindow) -> tuple[str, dict[str, Any]]:
     return annotated.name, {
         "window": window_rect,
         "canvas": canvas_rect,
-        "scenario_panel": scenario_rect,
+        "scenario_inspector": scenario_rect,
         "overlap": False,
         "clipping": False,
     }
@@ -175,8 +176,12 @@ def run() -> dict[str, Any]:
     window._project_path = project
     window.scenario_authoring.bind_project(project)
     window.scenario_authoring.reset()
-    window.layers.tabs.setCurrentWidget(window.scenario_panel)
     window.show()
+    window.open_scenario_editor()
+    editor = window.scenario_editor_window
+    if editor is None:
+        raise RuntimeError("dedicated scenario editor did not open")
+    editor.show()
     _settle(app)
     captures: dict[str, dict[str, Any]] = {}
     try:
@@ -184,16 +189,11 @@ def run() -> dict[str, Any]:
         if not state.is_available:
             raise RuntimeError("scenario authoring did not bind to the fixture")
         for label, size in VIEWPORTS.items():
-            window.resize(QSize(*size))
-            _settle(app)
-            if window._compact_layout:
-                window.compact_panel_tabs.setCurrentWidget(window.layers)
-                _settle(app)
-            window.layers.tabs.setCurrentWidget(window.scenario_panel)
+            editor.resize(QSize(*size))
             _settle(app)
             normal = OUTPUT / f"{label}_01_authoring.png"
-            _capture(window, normal)
-            annotated_name, geometry = _annotate(normal, window)
+            _capture(editor, normal)
+            annotated_name, geometry = _annotate(normal, editor)
             captures[label] = {
                 "mode": "compact" if window._compact_layout else "desktop",
                 "authoring": _inspect_png(normal, size),
@@ -202,15 +202,15 @@ def run() -> dict[str, Any]:
                     "digest": _digest(OUTPUT / annotated_name),
                 },
                 "geometry": geometry,
-                "tabs": window.layers.tabs.count(),
-                "scenario_tab_index": window.layers.tabs.indexOf(window.scenario_panel),
+                "main_layers_tabs": window.layers.tabs.count(),
+                "scenario_editor_separate": True,
             }
 
         layer_id = state.document.layers[0].id
-        window.scenario_panel.name_edit.setText("Captured Layer")
-        window.scenario_panel._rename()
-        window.scenario_panel.depth_spin.setValue(0.7)
-        window.scenario_panel._set_parallax()
+        editor.scenario_panel.name_edit.setText("Captured Layer")
+        editor.scenario_panel._rename()
+        editor.scenario_panel.depth_spin.setValue(0.7)
+        editor.scenario_panel._set_parallax()
         assert state.commands.undo_count == 2
         before_undo = state.document
         state.undo()

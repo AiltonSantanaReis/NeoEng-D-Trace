@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import zipfile
 from pathlib import Path
@@ -130,6 +131,69 @@ def test_git_blob_mode_validates_index_bytes_not_worktree_conversion(
     )
     assert any("non-canonical" in issue.message for issue in worktree_issues)
     assert any("sha256 mismatch" in issue.message for issue in worktree_issues)
+
+
+def test_historical_source_commit_keeps_snapshot_immutable(
+    tmp_path: Path, monkeypatch
+) -> None:
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=tmp_path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Evidence Test"], cwd=tmp_path, check=True
+    )
+    artifact = tmp_path / "src.py"
+    artifact.write_bytes(b"historical\n")
+    manifest_dir = tmp_path / "docs" / "evidence" / "artifacts" / "snapshot"
+    manifest_dir.mkdir(parents=True)
+    manifest = manifest_dir / "manifest.json"
+    evidence_integrity.write_json_lf(
+        manifest,
+        {
+            "source_commit": "PENDING",
+            "files": {
+                "../../../../src.py": evidence_integrity.digest_bytes(
+                    artifact.read_bytes()
+                )
+            },
+        },
+    )
+    subprocess.run(["git", "add", "."], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-qm", "snapshot"], cwd=tmp_path, check=True)
+    source_commit = (
+        subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=tmp_path, check=True, capture_output=True
+        )
+        .stdout.decode()
+        .strip()
+    )
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    data["source_commit"] = source_commit
+    evidence_integrity.write_json_lf(manifest, data)
+    subprocess.run(
+        ["git", "add", "docs/evidence/artifacts/snapshot/manifest.json"],
+        cwd=tmp_path,
+        check=True,
+    )
+    artifact.write_bytes(b"current\n")
+    monkeypatch.setattr(evidence_integrity, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        evidence_integrity,
+        "EVIDENCE_ROOT",
+        tmp_path / "docs" / "evidence" / "artifacts",
+    )
+    monkeypatch.setattr(evidence_integrity, "_tracked", lambda path: True)
+    monkeypatch.setattr(evidence_integrity, "_ignored", lambda path: False)
+
+    assert (
+        evidence_integrity.validate_manifest(
+            manifest, require_tracked=True, use_git_blob=True
+        )
+        == []
+    )
 
 
 def test_ci_requires_strict_evidence_gate_in_both_jobs() -> None:
