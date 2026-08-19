@@ -113,6 +113,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 - ETAPA_1_CENARIOS_PROFISSIONAIS_2026-08-19.md — baseline e contratos da extensão profissional de autoria visual de cenários; permanece pendente até o fechamento do baseline e dos gates.
 - `ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md` — snapshot histórico da implementação do editor profissional; a integração atual foi encerrada pelo merge `f477b6d` e CI `32306687719`. Não reescrever este snapshot para representar a Etapa 4.
+- ETAPA_4_EDITOR_PROFISSIONAL_PREVIEW_2026-08-19.md — Etapa 4 aprovada localmente com contrato v2, câmera/parallax, sockets tipados, 70 testes focados, suíte completa, capturas em três resoluções e auditoria visual PASS; PR/CI/merge ainda pendentes.
 
 ## Evidências registradas
 

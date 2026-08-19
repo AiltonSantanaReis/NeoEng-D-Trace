@@ -1,0 +1,462 @@
+{
+  "checks": [
+    "pillow_decode",
+    "opencv_decode",
+    "dimensions",
+    "transparency",
+    "sha256",
+    "clipping",
+    "qt_geometry",
+    "overlap",
+    "qss_palette",
+    "annotated_output"
+  ],
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "finding_count": 0,
+  "findings": [],
+  "images": {
+    "stage4_1280x720_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.99234375,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 868852,
+          "#3c3c3c": 29509,
+          "#e6e6e6": 5208
+        }
+      },
+      "sha256": "67885e641880b89b7034252901d8575af1c3fc042ed361b70ee377d8117a98f6",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage4_1280x720_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9754058159722222,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 176390,
+          "#252526": 19272,
+          "#2d2d30": 868,
+          "#3c3c3c": 114731,
+          "#3f3f46": 15592,
+          "#e6e6e6": 4802
+        }
+      },
+      "sha256": "25a96d3ada999efcbe977b420c5db172b252b3c0d461c6b5f186c6e257d0dd32",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage4_1280x720_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9754047309027778,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 176390,
+          "#252526": 19272,
+          "#2d2d30": 868,
+          "#3c3c3c": 114731,
+          "#3f3f46": 15592,
+          "#e6e6e6": 4802
+        }
+      },
+      "sha256": "2534ef490513c484ce31f806f8727763a63a51acf23127db8169470eaa56f856",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage4_1366x768_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9932741581259151,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 993138,
+          "#3c3c3c": 29701,
+          "#e6e6e6": 5208
+        }
+      },
+      "sha256": "e24518d21d986798195981146ab535f53cf5eaa3e4bf7c4882fc5c49b4ea38fd",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "stage4_1366x768_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9775090364202049,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 183902,
+          "#252526": 22196,
+          "#2d2d30": 868,
+          "#3c3c3c": 126773,
+          "#3f3f46": 15716,
+          "#e6e6e6": 5232
+        }
+      },
+      "sha256": "5d216410bdd6ed348d6f6c4d5c9363838ba646f7faf89996a49895b0ddf0fe45",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "stage4_1366x768_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9775090364202049,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 183902,
+          "#252526": 22196,
+          "#2d2d30": 868,
+          "#3c3c3c": 126773,
+          "#3f3f46": 15716,
+          "#e6e6e6": 5232
+        }
+      },
+      "sha256": "a87190b54c768c1bd0de9caf922bb4cdff2f0c89ca6881e0d995ec41316d7686",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "stage4_1920x1080_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9963811728395062,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 1997012,
+          "#3c3c3c": 37116,
+          "#e6e6e6": 5208
+        }
+      },
+      "sha256": "3dbe02ca50d063668cca2e4c85f291e089bbdd003e1e14dd3016efdc2821600f",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "stage4_1920x1080_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9854060570987654,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 236434,
+          "#252526": 30175,
+          "#2d2d30": 868,
+          "#3c3c3c": 211251,
+          "#3f3f46": 16516,
+          "#e6e6e6": 7504
+        }
+      },
+      "sha256": "ca010ed616f3ba16ddca42944330259e1e90d30a55a5f339d9d0a1d73f49e90a",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "stage4_1920x1080_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.985405574845679,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 236434,
+          "#252526": 30175,
+          "#2d2d30": 868,
+          "#3c3c3c": 211251,
+          "#3f3f46": 16516,
+          "#e6e6e6": 7504
+        }
+      },
+      "sha256": "851048b42fa249c68703c5b9cb303285983e92fee68ded0590ce455d8fdb10e4",
+      "size": [
+        1920,
+        1080
+      ]
+    }
+  },
+  "input": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "91ad47a0aeba6dc0015a6f68e183fd3ef234e90710394aa84b990b430675bf06"
+  },
+  "schema_version": 1,
+  "source_commit": "9895f5df494ae782697a9531a9352abfb8941a0c",
+  "status": "PASS",
+  "worktree_clean_at_capture_start": true
+}
