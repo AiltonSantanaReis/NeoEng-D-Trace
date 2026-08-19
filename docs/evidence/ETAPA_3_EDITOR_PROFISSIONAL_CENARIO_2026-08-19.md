@@ -73,6 +73,8 @@ regenerado contra os bytes staged e verificado com 1.532 arquivos.
 
 A execução remota `32300986840` confirmou no Windows uma reprovação de `black --check`: o segundo ajuste do `assert` ainda não estava normalizado. No Linux, o job não alcançou o código do projeto: o passo `Refresh apt package indexes for Qt` excedeu o timeout de 10 minutos do runner. A normalização Black foi aplicada e passou localmente; o Linux exige nova execução para validação remota.
 
+Na execução `32303557990`, o job Windows foi aprovado. O job Linux falhou novamente no passo `Refresh apt package indexes for Qt` após 10 minutos; o rerun do mesmo job (`96234478458`) repetiu o timeout. Assim, há duas tentativas Linux independentes com a mesma falha de infraestrutura, sem execução dos testes do projeto nesse job.
+
 A PR permanece pendente de nova execução remota dos dois jobs; nenhum check
 reprovado foi tratado como aprovação e nenhum bypass foi aplicado.
 
