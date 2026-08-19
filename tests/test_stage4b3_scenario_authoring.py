@@ -152,28 +152,34 @@ def test_scenario_panel_controls_edit_and_save_the_real_sidecar(tmp_path, qt_app
         qt_app.processEvents()
 
 
-def test_main_window_hosts_scenario_tab_and_keeps_legacy_panel_layout(qt_app):
+def test_main_window_keeps_scenario_authoring_out_of_main_layers(qt_app, tmp_path):
+    project = tmp_path / "scenario-editor.ndtproj"
+    project.write_bytes(b"scenario editor fixture\n")
     window = MainWindow(_scene(), _Config())
+    window._project_path = project
+    window.scenario_authoring.bind_project(project)
     window.show()
     qt_app.processEvents()
     try:
-        assert window.layers.tabs.count() == 2
-        assert window.layers.tabs.indexOf(window.scenario_panel) >= 0
+        assert window.layers.tabs.count() == 1
+        assert window.scenario_panel is None
         assert window.compact_panel_tabs.count() == 4
-        window.resize(QSize(1920, 1080))
+        assert window.scenario_open_action in window.scenario_menu.actions()
+        assert window.command_registry.action("scenario.open") is window.scenario_open_action
+        window.open_scenario_editor()
         qt_app.processEvents()
-        assert window.right_splitter.count() == 3
+        editor = window.scenario_editor_window
+        assert editor is not None and editor.isVisible()
+        assert editor.scenario_panel.list.count() == 1
+        assert editor.scenario_panel.name_edit.height() >= 20
+        assert editor.scenario_panel.btn_add.isEnabled()
         assert window.scenario_save_action in window.scenario_menu.actions()
         assert window.scenario_export_action in window.scenario_menu.actions()
-        assert (
-            window.command_registry.action("scenario.export")
-            is window.scenario_export_action
-        )
-        assert (
-            window.command_registry.action("scenario.save")
-            is window.scenario_save_action
-        )
+        assert window.command_registry.action("scenario.export") is window.scenario_export_action
+        assert window.command_registry.action("scenario.save") is window.scenario_save_action
     finally:
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.close()
         window.close()
         qt_app.processEvents()
 

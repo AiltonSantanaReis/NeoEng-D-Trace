@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "generator": "scripts/audit_scenario_authoring.py",
+  "scope": "scenario layer stack, inspector, isolated Undo/Redo and sidecar persistence",
+  "viewport_states": {
+    "compact_1280x720": {
+      "mode": "compact",
+      "authoring": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "RGB",
+        "alpha": [
+          255,
+          255
+        ],
+        "dark_pixels": 860373,
+        "non_empty_pixels": 921600,
+        "digest": {
+          "bytes": 9886,
+          "sha256": "7fc3178f7fd8f2baee1a1c7ca9f87024812e026e071b51945f7f138d9ed2d785"
+        }
+      },
+      "annotated": {
+        "name": "compact_1280x720_01_authoring_annotated.png",
+        "digest": {
+          "bytes": 11357,
+          "sha256": "4f479a9b2f462132ab4fdd3b4aca4898687445123c4f4e3e7c02ffe559cf35df"
+        }
+      },
+      "geometry": {
+        "window": [
+          0,
+          0,
+          1280,
+          720
+        ],
+        "canvas": [
+          0,
+          35,
+          846,
+          685
+        ],
+        "scenario_inspector": [
+          851,
+          36,
+          416,
+          683
+        ],
+        "overlap": false,
+        "clipping": false
+      },
+      "main_layers_tabs": 1,
+      "scenario_editor_separate": true
+    },
+    "desktop_1920x1080": {
+      "mode": "compact",
+      "authoring": {
+        "size": [
+          1920,
+          1080
+        ],
+        "mode": "RGB",
+        "alpha": [
+          255,
+          255
+        ],
+        "dark_pixels": 2001303,
+        "non_empty_pixels": 2073600,
+        "digest": {
+          "bytes": 17941,
+          "sha256": "fbfe72fa45bfdb7d59c0b611d689c396bfaa20568af126d20eac168d90c97e26"
+        }
+      },
+      "annotated": {
+        "name": "desktop_1920x1080_01_authoring_annotated.png",
+        "digest": {
+          "bytes": 20477,
+          "sha256": "abbfa3ca54432c809b4c8d538b4a2d356636040a292202f1e15d2c25cd5cd8dd"
+        }
+      },
+      "geometry": {
+        "window": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "canvas": [
+          0,
+          35,
+          1486,
+          1045
+        ],
+        "scenario_inspector": [
+          1491,
+          36,
+          428,
+          1043
+        ],
+        "overlap": false,
+        "clipping": false
+      },
+      "main_layers_tabs": 1,
+      "scenario_editor_separate": true
+    },
+    "authoring_transaction": {
+      "layer_id": "layer_default",
+      "after_undo_name": "Captured Layer",
+      "restored_name": "Captured Layer",
+      "undo_count_after_redo": 2,
+      "redo_count_after_redo": 0,
+      "saved_digest": {
+        "bytes": 733,
+        "sha256": "041f44f7fdbcabbb0e0f6cb30e6dd71e75a29a95bc5195a61a0dcbb6503836b4"
+      },
+      "project_digest": {
+        "bytes": 30,
+        "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db"
+      },
+      "scene_polygon": [
+        [
+          90,
+          70
+        ],
+        [
+          280,
+          70
+        ],
+        [
+          280,
+          240
+        ],
+        [
+          90,
+          240
+        ]
+      ],
+      "scene_undo_count": 0,
+      "preview_enabled": false
+    }
+  },
+  "artifacts": {
+    "authoring_fixture.ndtproj": {
+      "bytes": 30,
+      "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db"
+    },
+    "authoring_fixture.ndtscenario.json": {
+      "bytes": 733,
+      "sha256": "041f44f7fdbcabbb0e0f6cb30e6dd71e75a29a95bc5195a61a0dcbb6503836b4"
+    }
+  },
+  "source_commit": "b73fa027e0f5144fb132f49051099123f6e8330a",
+  "source_files": {
+    "scenario_authoring.py": {
+      "bytes": 19915,
+      "sha256": "f9191c8010e059b4319478674190a41fc9a42c3d4fa66baf64207c551374c548"
+    },
+    "scenario_panel.py": {
+      "bytes": 16714,
+      "sha256": "78551138c719528350d88705d3f50f78aa654fe1881b7b87ad6ab03143e761d4"
+    },
+    "scenario_authoring_actions.py": {
+      "bytes": 6055,
+      "sha256": "4579bec197f7b5663cb6b6531407f3c3f87b0935fd07f9d7a788bf54f3a2281c"
+    },
+    "layers_panel.py": {
+      "bytes": 6940,
+      "sha256": "d1621ec9307ce9c58e56bfb38b4fbd93c2b0cf17a19af6e2238c72f2bb2565ea"
+    },
+    "responsive_layout.py": {
+      "bytes": 6590,
+      "sha256": "dce4f171d06d4aaf1cb81825784bf3542e581282f2d53ec76f403f98dcb886c0"
+    },
+    "main_window.py": {
+      "bytes": 45988,
+      "sha256": "c3bfb645e4743dd67ae16e35e8f83b46bc672c0782e89af2fc8bfdc4498df219"
+    },
+    "command_bindings.py": {
+      "bytes": 1741,
+      "sha256": "1373d863e8546d776ea853feed492d4058efd84c77d714bce9df44d3b4206498"
+    },
+    "test_stage2_command_registry.py": {
+      "bytes": 4478,
+      "sha256": "10e634d6c32ab0ddb2c94b0601695c4e63d8818626edd4007e60330d9a3cd47c"
+    },
+    "test_stage4b3_scenario_authoring.py": {
+      "bytes": 12747,
+      "sha256": "9681bbd0c3b210c652818c432d2169acbc27c78198b3b25357be5d166c59fdff"
+    },
+    "audit_scenario_authoring.py": {
+      "bytes": 10452,
+      "sha256": "5680b36fc6e43a147f5ef4f5d9de148c07f9fb6c89c1af0bdb9c65e086648290"
+    }
+  }
+}

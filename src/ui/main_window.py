@@ -197,6 +197,7 @@ class MainWindow(QMainWindow):
 
         # 2. Main Toolbar (Arquivo/Exportação)
         self.toolbar = QToolBar("Main")
+        self.toolbar.setObjectName("main_toolbar"); self.toolbar.setMovable(False); self.toolbar.setFloatable(False)
         self.addToolBar(self.toolbar)
 
         self.act_open = self.open_image_action
@@ -223,7 +224,6 @@ class MainWindow(QMainWindow):
         self.file_menu.addAction(self.act_export)
         self.file_menu.addAction(self.act_export_collision_json)
         self.file_menu.addAction(self.act_export_collision_txt)
-        # 3. Componentes Centrais
         self.canvas = CanvasView(scene)
         self.tool_palette = ToolPalette(self.canvas)
         self.side_panel = SidePanel(scene, self.canvas)
@@ -255,9 +255,10 @@ class MainWindow(QMainWindow):
         # 5. NAVIGATION TOOLBAR
         # (Barra de Ferramentas de Navegação e Ações Rápidas)
         self.nav_toolbar = QToolBar("Navigation")
+        self.nav_toolbar.setObjectName("navigation_toolbar"); self.nav_toolbar.setMovable(False); self.nav_toolbar.setFloatable(False)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.nav_toolbar)
+        self.nav_toolbar.addWidget(self.canvas.gizmo_toggle); self.nav_toolbar.addSeparator()
 
-        # Botão: Ajustar à Tela
         self.act_fit = QAction("Fit View (F)", self)
         self.act_fit.triggered.connect(self.canvas.fit_to_window)
         self.nav_toolbar.addAction(self.act_fit)
@@ -269,8 +270,8 @@ class MainWindow(QMainWindow):
 
         self.nav_toolbar.addSeparator()
 
-        # Barra de opções de Raio-X
         self.xray_toolbar = QToolBar("X-Ray Modes")
+        self.xray_toolbar.setObjectName("xray_toolbar"); self.xray_toolbar.setMovable(False); self.xray_toolbar.setFloatable(False)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.xray_toolbar)
 
         self.act_lit = QAction("Lit", self)
@@ -297,7 +298,6 @@ class MainWindow(QMainWindow):
         )
         self.xray_toolbar.addAction(self.act_xray3)
 
-        # Botão: Focar Seleção (Leva a câmera ao objeto selecionado)
         self.focus_button = QPushButton("Focus Selected", self)
         self.focus_button.setFlat(True)
         self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
