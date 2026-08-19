@@ -7,8 +7,8 @@
       "sha256": "3d820a0a95edb6bbce51642b583a56ee43022ead704653acd2ce28ad61a2ea9c"
     },
     "validation-output.txt": {
-      "bytes": 11527,
-      "sha256": "61630aa64772a1f8ce394b42bccef493fa96088a53ffc9ac3c77f3041f922012"
+      "bytes": 1355,
+      "sha256": "92e95109532a473448f36ffa0c868a50cf5432cd1c8a97695e3aa7178abc1b51"
     },
     "../../../../src/core/scene_authoring_model.py": {
       "bytes": 7931,
@@ -19,8 +19,8 @@
       "sha256": "fb14520064ed5ee34099fadeac37057e4c5023976b3694c57065a11b6a52896e"
     },
     "../../../../tests/test_stage2_scene_authoring_model.py": {
-      "bytes": 6554,
-      "sha256": "98d2723e448a762efe700020863463e4e519f34776cb5d72fc02a4f928fc0cf0"
+      "bytes": 10757,
+      "sha256": "6777c888c86b38ea33eb6a6dbbc6c5ad3942df296f3abd4255ba93ebbee12949"
     },
     "../../../../docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md": {
       "bytes": 4197,

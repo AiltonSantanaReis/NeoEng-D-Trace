@@ -513,8 +513,8 @@
       "size": 9761
     },
     "docs/evidence/ETAPA_2_MODELO_CENARIO_PROFISSIONAL_2026-08-19.md": {
-      "sha256": "e44df3e42b043ef4850e5535f3e4ce475378e5ade95af022da9488ae3cc2c161",
-      "size": 2831
+      "sha256": "b6b585322f582edf6501fb999c558003334f9c9706046b73404c08af3e6a28b2",
+      "size": 3243
     },
     "docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md": {
       "sha256": "1df1c139796053f209c37fe9fe25fbc2165910f51c64f8e9ccee8c86a6566fba",
@@ -3873,7 +3873,7 @@
       "size": 6948
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
-      "sha256": "0abb096a60631e9517079d9415216e17e0cd7c5c3ca8d1e6b7a8b40ee2a155f8",
+      "sha256": "203c798aeb985ef7e4f51a8d3665267e3c33684aab1b88a0d1d56abcb82ad5cd",
       "size": 1155
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/scene_authoring_fixture.ndtscene.json": {
@@ -3881,8 +3881,8 @@
       "size": 1394
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/validation-output.txt": {
-      "sha256": "61630aa64772a1f8ce394b42bccef493fa96088a53ffc9ac3c77f3041f922012",
-      "size": 11527
+      "sha256": "92e95109532a473448f36ffa0c868a50cf5432cd1c8a97695e3aa7178abc1b51",
+      "size": 1355
     },
     "docs/evidence/artifacts/stage3-command-palette-2026-08-18/1080p_FHD_en_palette.png": {
       "sha256": "09f402f43f9377e197bf6781777da89440bd7ecc94900fbb9a8c9ba18c5ba95c",
@@ -5737,8 +5737,8 @@
       "size": 4478
     },
     "tests/test_stage2_scene_authoring_model.py": {
-      "sha256": "98d2723e448a762efe700020863463e4e519f34776cb5d72fc02a4f928fc0cf0",
-      "size": 6554
+      "sha256": "6777c888c86b38ea33eb6a6dbbc6c5ad3942df296f3abd4255ba93ebbee12949",
+      "size": 10757
     },
     "tests/test_stage3_command_palette.py": {
       "sha256": "b13c471561edf5c24f8d407dbd0068f2cee43f470a30471c3fcdf4b8b5a50bcc",

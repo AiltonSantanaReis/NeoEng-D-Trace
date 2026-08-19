@@ -179,3 +179,108 @@ def test_remove_object_updates_groups_and_selection_without_dangling_references(
     assert [item.id for item in model.document.objects] == ["tree-2"]
     assert model.document.groups[0].members == ["tree-2"]
     assert model.selection == SceneSelection(ids=("tree-2",), primary="tree-2")
+
+
+def test_model_rejects_duplicate_assets_objects_groups_and_missing_objects() -> None:
+    model = SceneAuthoringModel(_document())
+    asset = AssetReferenceRecord(id="rock", path="assets/rock.png", sha256=SHA)
+    model.add_asset(asset)
+    with pytest.raises(ValueError, match="asset ID exists"):
+        model.add_asset(asset)
+
+    model.add_object(_object("tree-1"))
+    with pytest.raises(ValueError, match="object ID exists"):
+        model.add_object(_object("tree-1"))
+    with pytest.raises(KeyError, match="tree-missing"):
+        model.remove_object("tree-missing")
+    with pytest.raises(KeyError, match="tree-missing"):
+        model.update_transform("tree-missing", _transform())
+    with pytest.raises(KeyError, match="member"):
+        model.add_group(
+            SceneGroupAuthoringRecord(
+                id="bad-group", name="Bad", members=["tree-missing"]
+            )
+        )
+    model.add_group(SceneGroupAuthoringRecord(id="trees", name="Trees", members=[]))
+    with pytest.raises(ValueError, match="group ID exists"):
+        model.add_group(SceneGroupAuthoringRecord(id="trees", name="Again", members=[]))
+
+
+def test_model_handles_empty_selection_and_locked_layer() -> None:
+    model = SceneAuthoringModel(_document())
+    model.clear_selection()
+    with pytest.raises(ValueError, match="empty selection"):
+        model.group_selection(
+            SceneGroupAuthoringRecord(id="empty", name="Empty", members=[])
+        )
+
+    locked_layer = _document().model_copy(
+        update={
+            "layers": [
+                _document().layers[0].model_copy(update={"locked": True}),
+            ],
+        }
+    )
+    locked_model = SceneAuthoringModel(locked_layer)
+    locked_model.add_object(_object(), select=True)
+    with pytest.raises(PermissionError, match="layer"):
+        locked_model.update_transform("tree-1", _transform(4.0))
+
+
+def test_model_snap_update_and_unselected_objects_are_preserved() -> None:
+    model = SceneAuthoringModel(_document())
+    model.add_object(_object("tree-1"), select=True)
+    model.add_object(
+        _object("tree-2").model_copy(update={"transform": _transform(20.0)})
+    )
+    model.set_snap(
+        SceneSnapRecord(enabled=True, mode="grid", spacing=PointRecord(x=5, y=2))
+    )
+    model.set_selection(["tree-1"])
+    model.translate_selected(Point3Record(x=2.6, y=0.0, z=0.0))
+    assert model.document.objects[0].transform.position.x == 5.0
+    assert model.document.objects[1].transform.position.x == 20.0
+
+
+def test_selection_primary_and_snap_value_reject_invalid_inputs() -> None:
+    from src.core.scene_authoring_model import snap_value
+
+    with pytest.raises(ValueError, match="primary"):
+        SceneSelection(ids=("one",), primary="missing")
+    with pytest.raises(ValueError, match="finite"):
+        snap_value(float("nan"), 1)
+    with pytest.raises(ValueError, match="finite"):
+        snap_value(1, float("inf"))
+    with pytest.raises(ValueError, match="finite"):
+        snap_value(True, 1)
+
+
+def test_schema_rejects_path_separators_and_invalid_group_members() -> None:
+    with pytest.raises(ValueError, match="separators"):
+        AssetReferenceRecord(id="asset", path="assets\\tree.png", sha256=SHA)
+    with pytest.raises(ValueError, match="non-empty"):
+        SceneGroupAuthoringRecord(id="bad", name="Bad", members=[""])
+    with pytest.raises(ValueError, match="unique"):
+        SceneGroupAuthoringRecord(id="bad", name="Bad", members=["a", "a"])
+
+
+def test_schema_rejects_unknown_group_reference_and_invalid_numeric_helper_inputs() -> (
+    None
+):
+    from src.persistence.scene_authoring_schema import _finite, _positive, _unit
+
+    with pytest.raises(ValueError, match="unknown object"):
+        SceneAuthoringDocumentV1(
+            **{
+                **_document().model_dump(),
+                "groups": [
+                    SceneGroupAuthoringRecord(id="bad", name="Bad", members=["missing"])
+                ],
+            }
+        )
+    with pytest.raises(ValueError, match="finite"):
+        _finite(True, "test")
+    with pytest.raises(ValueError, match="positive"):
+        _positive(0, "test")
+    with pytest.raises(ValueError, match="between"):
+        _unit(2, "test")
