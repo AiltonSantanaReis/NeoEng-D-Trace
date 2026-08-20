@@ -5,10 +5,9 @@
 A Etapa 6 foi executada localmente no Windows e aprovada pelos gates definidos no
 plano de cenários. A evidência foi capturada com o commit de código
 `01399c24ef52f7e506628b71cd48ac2d21e30a1d`, no branch de trabalho da etapa, com
-worktree limpo no início e durante as capturas. O pacote ainda não está
-integrado ao `main`: PR, CI remoto e merge permanecem pendentes.
+worktree limpo no início e durante as capturas. O pacote está integrado ao main pelo merge ecbaab6; a PR 110 e o CI 32336447483 foram aprovados em Linux e Windows.
 
-Decisão: **APROVADO LOCALMENTE / NÃO INTEGRADO**.
+Decisão: **APROVADO E INTEGRADO**.
 
 ## Escopo comprovado
 
@@ -96,8 +95,6 @@ entra no conjunto de hashes para evitar auto-referência.
 
 ## Rollback e decisão
 
-O rollback local é a reversão dos commits de proveniência e evidência desta etapa, identificados por 01399c24ef52f7e506628b71cd48ac2d21e30a1d4ef52f7e506628b71cd48ac2d21e30a1d e pelo commit de evidências que o sucede. O merge 57f29d4 da Etapa 5 permanece como base anterior. Nenhum arquivo de usuário é migrado ou apagado por esta etapa.
+O rollback local é a reversão dos commits de proveniência e evidência desta etapa, identificados por 01399c24ef52f7e506628b71cd48ac2d21e30a1d e pelo commit de evidências 7a5952aea907615879714c9557dedbdc7d793f35. O merge 57f29d4 da Etapa 5 permanece como base anterior. Nenhum arquivo de usuário é migrado ou apagado por esta etapa.
 
-A etapa está aprovada localmente porque todos os gates executáveis nesta máquina
-passaram. A integração remota, CI remoto, revisão de PR e merge ainda não foram
-executados e não são inferidos por esta evidência.
+A etapa está aprovada e integrada porque os gates locais passaram, a PR 110 foi revisada, o CI 32336447483 passou em Linux e Windows e o merge ecbaab6 foi concluído.

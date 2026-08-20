@@ -1,8 +1,8 @@
 # Plano de extensão profissional de cenários — NeoEng-D-Trace
 
 **Data de início:** 19 de agosto de 2026
-**Estado:** Etapa 6 validada localmente; PR/CI/merge pendentes
-**Base integrada:** `57f29d4` (merge da PR `#108`; CI `32321900264` aprovado em Linux e Windows)
+**Estado:** Etapa 6 integrada no main pelo merge ecbaab6; CI Linux/Windows aprovado
+**Base integrada:** ecbaab6 (merge da PR 110; CI 32336447483 aprovado em Linux e Windows)
 **Plano relacionado:** `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
 
 ## Motivo da extensão
