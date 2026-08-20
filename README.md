@@ -68,6 +68,9 @@ tradicionais para preservar descoberta e acelerar o fluxo de usuários experient
 O escopo entregue é de autoria, preview e exportação estrutural. Partículas,
 shaders, pós-processamento, triggers, streaming de texturas e runtime completo de
 engine permanecem fora do MVP e não são anunciados como funcionalidades concluídas.
+O ADR de runtime possui implementação local da Etapa 5 para preview CPU
+determinístico de pós-processamento, com fallback explícito e sem adaptadores
+nativos Godot/Unity. Essa capacidade ainda não está aprovada ou publicada.
 
 ## Integrações nativas
 
