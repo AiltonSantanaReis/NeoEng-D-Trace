@@ -253,8 +253,8 @@
       "size": 5053
     },
     "docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md": {
-      "sha256": "31b63eb4122384d902c93db035834c206efd3a8c4f599ac7a6b0fd200e77ccf3",
-      "size": 4220
+      "sha256": "230097a298a046143abd3cc92d7683e5bb05542b97aa2bc8c868c9e6b43a5d3c",
+      "size": 4313
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -596,6 +596,10 @@
       "sha256": "05024bb4507d40b3f5427e284a9b56e16dcc82d6fd4188c35160d6a383812334",
       "size": 4792
     },
+    "docs/evidence/ETAPA_4_EDITOR_PROFISSIONAL_PREVIEW_POS_MERGE_2026-08-19.md": {
+      "sha256": "0750ceaaed452f9a8eb0b0941fe64fffedecdc397b323cfc2403aec83815e451",
+      "size": 2290
+    },
     "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
       "size": 7651
@@ -789,8 +793,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "5833389a96eaa1cf01c842c3c83808b90845d2c9ec52dda94b0c1f100871ed82",
-      "size": 34307
+      "sha256": "4cf402ba02c146d82fb7703dd69d9fda3a02ea1a9e8ef0da7982d0b3c29c0847",
+      "size": 34193
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
