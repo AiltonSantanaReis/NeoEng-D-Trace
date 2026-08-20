@@ -22,10 +22,11 @@
 | R-018 | P1 | Escopo parallax pode acoplar o editor a um runtime de engine | Crescimento de escopo, regressão do editor 2D e contrato instável | ADR, documento lateral versionado, preview isolado, limites, benchmark e rollback |
 | R-019 | P2 | Paleta de comandos pode divergir dos menus e ignorar estados de ação | Ações indisponíveis ou atalhos inconsistentes | Registro único de `QAction`, testes Qt de habilitação, localização, teclado e regressão |
 | R-020 | P1 | Pós-processamento não possui adaptadores nativos de engine | Consumidores podem interpretar preview CPU como suporte de engine | Contrato hash-bound, preview determinístico, fallback explícito, testes, CI e validação pós-merge |
+| R-021 | P1 | Runtime de triggers está em desenvolvimento e ainda não possui adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 
 ## Estado operacional atual dos riscos
 
-Atualização corrente de 20 de agosto de 2026: o baseline das Etapas 1–4 é o merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`; a RUNTIME-ETAPA-5 foi integrada no merge `159b1241b012`, com auditoria limpa PASS, artefatos hashados, CI Linux/Windows e validação pós-merge. R-020 está encerrado no escopo aprovado. R-018 e R-019 permanecem preservados nos estados registrados abaixo.
+Atualização corrente de 20 de agosto de 2026: o baseline das Etapas 1–4 é o merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`; a RUNTIME-ETAPA-5 foi integrada no merge `159b1241b012`, com auditoria limpa PASS, artefatos hashados, CI Linux/Windows e validação pós-merge. R-020 está encerrado no escopo aprovado. R-021 está aberto enquanto a RUNTIME-ETAPA-6 permanece em desenvolvimento local, sem integração ou suporte de engine. R-018, R-019 e os snapshots históricos permanecem preservados nos estados registrados abaixo.
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
