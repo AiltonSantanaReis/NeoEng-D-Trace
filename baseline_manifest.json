@@ -6441,8 +6441,8 @@
       "size": 4478
     },
     "tests/test_stage2_runtime_lighting.py": {
-      "sha256": "ba938da690850d70df1a8de9e41b2861de21a2a3f0662dd5547127db0cd5077a",
-      "size": 8204
+      "sha256": "6c4a5ce0202802d31116c65e4795e1de22e58eb4cdfe28a55aeb2392564d5a74",
+      "size": 9373
     },
     "tests/test_stage2_runtime_lighting_hardening.py": {
       "sha256": "dbb941a44a1716d7ff5a6f81e3721df659c88b5c1458b46f86961b918c481d76",

@@ -23,6 +23,7 @@ from src.runtime import (
     MaterialBindingRecord,
     MaterialRecord,
     RuntimeHost,
+    save_lighting_runtime_export,
     serialize_lighting_runtime_export,
     validate_lighting_runtime_export,
 )
@@ -234,6 +235,34 @@ def test_lighting_runtime_requires_loaded_document_and_valid_position() -> None:
     runtime.load_manifest(_document().model_dump(mode="json"))
     with pytest.raises(LightingRuntimeError, match="Point3Record"):
         runtime.preview((0.0, 0.0, 0.0))
+
+
+def test_save_lighting_export_is_atomic_and_rejects_invalid_destinations(
+    tmp_path,
+) -> None:
+    document = _document()
+    destination = tmp_path / "lighting.json"
+
+    save_lighting_runtime_export(document, destination)
+    assert destination.read_bytes() == serialize_lighting_runtime_export(document)
+
+    with pytest.raises(LightingValidationError, match="directory does not exist"):
+        save_lighting_runtime_export(document, tmp_path / "missing" / "lighting.json")
+
+    directory_destination = tmp_path / "directory"
+    directory_destination.mkdir()
+    with pytest.raises(LightingValidationError, match="destination is a directory"):
+        save_lighting_runtime_export(document, directory_destination)
+
+
+def test_preview_socket_requires_loaded_manifest_and_known_socket() -> None:
+    runtime = LightingRuntime()
+    with pytest.raises(LightingRuntimeError, match="required"):
+        runtime.preview_socket("socket-lamp")
+
+    runtime.load_manifest(_document().model_dump(mode="json"))
+    with pytest.raises(LightingRuntimeError, match="unknown light socket"):
+        runtime.preview_socket("missing-socket")
 
 
 def test_runtime_host_advertises_lighting_as_native_capability() -> None:
