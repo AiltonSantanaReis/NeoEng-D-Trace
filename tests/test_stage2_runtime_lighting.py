@@ -11,7 +11,6 @@ import pytest
 from src.persistence.project_schema import Point3Record
 from src.runtime import (
     AmbientLightRecord,
-    LightSocketRecord,
     LightingColorRecord,
     LightingDocumentV1,
     LightingFormatError,
@@ -20,6 +19,7 @@ from src.runtime import (
     LightingSourceBindingRecord,
     LightingSourceRecord,
     LightingValidationError,
+    LightSocketRecord,
     MaterialBindingRecord,
     MaterialRecord,
     RuntimeHost,

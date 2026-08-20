@@ -5965,7 +5965,7 @@
       "size": 324
     },
     "src/runtime/__init__.py": {
-      "sha256": "ed3fc0f3e8d32de8f9456331a149e9a4d0be639fa95dba5a1b51bb6ff8842397",
+      "sha256": "a78672fd309e26d0073989a857d5830365d00527506c4d94dc4c20760ada58cc",
       "size": 2452
     },
     "src/runtime/lighting.py": {
@@ -6397,7 +6397,7 @@
       "size": 4478
     },
     "tests/test_stage2_runtime_lighting.py": {
-      "sha256": "351ce44e259115db78e7589ca3408498c62bbf58c02ae43ee7f27b96fc520c72",
+      "sha256": "ba938da690850d70df1a8de9e41b2861de21a2a3f0662dd5547127db0cd5077a",
       "size": 8204
     },
     "tests/test_stage2_runtime_lighting_hardening.py": {
