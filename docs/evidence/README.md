@@ -19,6 +19,7 @@
 - `ETAPA_6_RUNTIME_TRIGGERS_ENCERRAMENTO_POS_MERGE_2026-08-20.md` — encerramento pós-merge da Etapa 6; PR `#123`, merge `46604d3`, CI da PR Linux/Windows, validação local, auditoria 13/13 e limitações de engine registradas.
 - `artifacts/runtime-triggers-phase6-postmerge-2026-08-20/` — pacote hashado da auditoria pós-merge no commit `46604d3`.
 - ETAPA_7_RUNTIME_STREAMING_2026-08-20.md — evidência viva da implementação em andamento; registra o contrato, os testes reais, a reprodução da falha inicial e os gates ainda pendentes. Não declara aprovação, CI, merge ou suporte de engine.
+- rtifacts/runtime-streaming-phase7-post-isort-2026-08-20/ — pacote PASS reauditado no HEAD 8910944, com leitura assíncrona, prioridades, cache, descarte, recuperação, limites, privacidade e árvore limpa; ainda não equivale à aprovação formal da etapa, pois CI, PR, merge e pós-merge permanecem pendentes.
 - `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.

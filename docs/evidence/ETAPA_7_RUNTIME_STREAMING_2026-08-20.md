@@ -72,21 +72,26 @@ funcionais como `true`, mas registrou `FAIL` exclusivamente por
 checkpoint; não foi tratado como PASS parcial.
 
 Após o checkpoint local `b456248972e046e44b06eb00b07f5d1d58f0fd84`, a execução em
-árvore limpa produziu `PASS` em todos os checks, incluindo leitura assíncrona
-real, payload, prioridades, cache, recuperação, limites, persistência, hash,
-privacidade e `source_tree_clean=true`. A suíte integral reproduziu `1535
-passed, 2 skipped` e a política integrada de cobertura passou com linhas e
-branches dentro dos limites vigentes.
+árvore limpa produziu `PASS` em todos os checks. A correção de ordenação isort
+foi registrada em `89109440f9ed867501e6326a1b3c59d12b3796bc`; a auditoria foi
+reexecutada nesse HEAD e confirmou leitura assíncrona real, payload, prioridades,
+cache, recuperação, limites, persistência, hash, privacidade e
+`source_tree_clean=true`. A suíte integral reproduziu `1535 passed, 2 skipped` e
+a política integrada de cobertura passou com linhas e branches dentro dos
+limites vigentes.
 
-Pacote PASS versionado em `docs/evidence/artifacts/runtime-streaming-phase7-2026-08-20/`:
+Pacote PASS final desta caracterização, vinculado ao HEAD
+`89109440f9ed867501e6326a1b3c59d12b3796bc`, versionado em
+`docs/evidence/artifacts/runtime-streaming-phase7-post-isort-2026-08-20/`. O
+pacote anterior em `runtime-streaming-phase7-2026-08-20/` permanece preservado
+como evidência do checkpoint anterior:
 
-- `stage7-runtime-streaming-report.json`: 2104 bytes; SHA-256 `e774711ec01ec8507bbf10b3450bdb88ad9f9e36a90dc2e599acfc2c7cc47437`;
+- `stage7-runtime-streaming-report.json`: 2104 bytes; SHA-256 `68a0de35ec899d0a65c4fc9a0e8581f76b15216d10951948b0108d1a4f6bee80`;
 - `streaming-sidecar.json`: 1168 bytes; SHA-256 `be1d2bfe30873d54062d66dcb987b9680ae5daa9fc5d6795399cf40e94160fd6`;
-- `artifact-index.json`: 382 bytes; SHA-256 `9ec0d7c6570f743a8cecbde8a752a55586bce0f0297e8507b5681206f1939da`.
+- `artifact-index.json`: 382 bytes; SHA-256 `12b9a012b0bbc2892aaaddeb13d28772a2045a8feef225f02a6f01eef531e0d9`.
 
-O índice foi gerado pelo próprio auditor e os hashes acima foram recalculados
-localmente após a movimentação para o diretório padrão de evidências.
-
+O índice foi gerado pelo próprio auditor no HEAD corretivo e os hashes acima
+foram recalculados localmente após a geração do pacote.
 ## Gates pendentes
 
 - suíte integral e cobertura branch sem redução;
