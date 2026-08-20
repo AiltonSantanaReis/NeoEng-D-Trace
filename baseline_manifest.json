@@ -537,8 +537,8 @@
       "size": 592
     },
     "docs/evidence/ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md": {
-      "sha256": "0a2b9030283ee860c2fc17d93b39afafd06f36f62d080aa1405fd4da0c6fb54a",
-      "size": 7131
+      "sha256": "394c46fd80f74d947ad05e3a85e30e1b6f5a8348338bc8ec4370dd3e09806312",
+      "size": 8917
     },
     "docs/evidence/ETAPA_3_ANIMACOES_TILESETS_UNITY_2026-08-17.md": {
       "sha256": "0371e262baa6a8b67e9f78899b043ea7453d7b6fab3d9f95fc54e9c81bde6f1f",
@@ -817,8 +817,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "76e5a1de3a71b0a55655af5e84a952461caa0abf9a49b0e67240ef5fe789e637",
-      "size": 36436
+      "sha256": "52e3d3c255907a128c7b3191025864222de3381658c43dabc7dcdfbfcd6d1c79",
+      "size": 36913
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -4123,6 +4123,94 @@
     "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/runtime-lighting-report.json": {
       "sha256": "8046cbf791eccd6792f15ec1f9d68f13d7c1a5b3d2fd6c5d422edf9fd5615a1f",
       "size": 3698
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/artifact-index.json": {
+      "sha256": "e98dd799795a7af03da94d93ab762b18ae9283848d3e0e38ae7aa27b58a51c49",
+      "size": 1407
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/baseline_integrity.log": {
+      "sha256": "898c907cde8ac11f24c5c3faa44429862318456663b4c2700d8ea8b2edd9b3ca",
+      "size": 572
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/black_check.log": {
+      "sha256": "c31f6198e068284efeccaeed2378463e6fc728ad5c8091e49445fd7ef98fd638",
+      "size": 68
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/evidence_integrity.log": {
+      "sha256": "2845c10dc51c1d2d6a04ada68ad33c2117b5263b30cebb110c510976728b39b1",
+      "size": 51
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/flake8.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/focused_pytest.log": {
+      "sha256": "660d577ad48ad84d1779ff91ddd6a4e2dd5b67e09a7cd402acc64982d2d4bf3d",
+      "size": 699
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/full_pytest.log": {
+      "sha256": "08efee828fb92a1293052bd0382cd20ac81620113daad63e50b92dee9e0b443b",
+      "size": 11038
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/git_diff_check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/mypy.log": {
+      "sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+      "size": 43
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/py_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/runtime-lighting-report.json": {
+      "sha256": "5d135f6c5ef55f659725e4713600fde8437fef0bb98a221d805779e6bd087f59",
+      "size": 3664
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/artifact-index.json": {
+      "sha256": "d5b7ba0664b3be87ba99c60228ac2c470f9a138266f885b189a9fe34aaf68f10",
+      "size": 1406
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/baseline_integrity.log": {
+      "sha256": "15770bb03ed40338ab4a8412f819bd6960126065c18e558e0a30a725aaac306a",
+      "size": 30
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/black_check.log": {
+      "sha256": "c31f6198e068284efeccaeed2378463e6fc728ad5c8091e49445fd7ef98fd638",
+      "size": 68
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/evidence_integrity.log": {
+      "sha256": "2845c10dc51c1d2d6a04ada68ad33c2117b5263b30cebb110c510976728b39b1",
+      "size": 51
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/flake8.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/focused_pytest.log": {
+      "sha256": "017f067fc40c2d543634188587734a84447a4f6f080a542ba871df2fa8979fa2",
+      "size": 699
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/full_pytest.log": {
+      "sha256": "ecedcc2631d33018b29d1deb2fd25605060b6af8aebe2424b09f35623cf6d11c",
+      "size": 11038
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/git_diff_check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/mypy.log": {
+      "sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+      "size": 43
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/py_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/runtime-lighting-report.json": {
+      "sha256": "fdb2e2c48bf8cf8e8a6809b968d6908637865e815364bb01becd69452fd90da0",
+      "size": 3662
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
       "sha256": "ffc779e948f94975c5ee12254052d150979ea5343887bfe1ba9e03a46b0213b2",
