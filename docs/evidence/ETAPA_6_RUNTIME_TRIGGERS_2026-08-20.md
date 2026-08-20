@@ -1,9 +1,9 @@
 # Evidência pré-merge — Etapa 6 do ADR de runtime: triggers
 
-**Estado:** IMPLEMENTAÇÃO LOCAL VALIDADA; AGUARDANDO CHECKPOINT, CI E PR
+**Estado:** IMPLEMENTAÇÃO LOCAL VALIDADA; AUDITORIA LIMPA PASS; AGUARDANDO CI E PR
 **Data:** 20 de agosto de 2026
 **ADR vigente:** `docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md`
-**Base:** `bc99deb3905d71b6bcc6693832dee3341eeef2a8`
+**Base:** checkpoint `67db343eef4adeb084eb96fa8b372ad9c7fa35cb` em `main`
 **Branch:** `main`
 
 ## Escopo executado
@@ -97,9 +97,18 @@ Resultado no worktree modificado:
 - `privacy`: PASS;
 - `status` geral: FAIL exclusivamente por `source_tree_clean`.
 
-Esse FAIL não foi convertido em PASS. Após o checkpoint local, o auditor será
-executado novamente em árvore limpa e seu pacote hashado será versionado. Se
-qualquer check falhar nessa execução, a fase permanecerá bloqueada.
+Esse FAIL não foi convertido em PASS. Após os checkpoints `6ab5b5d` e
+`67db343`, o auditor foi executado novamente em árvore limpa e passou com os 13
+checks, incluindo `source_tree_clean=true`:
+
+- relatório: `status=PASS`;
+- commit observado: `67db343eef4adeb084eb96fa8b372ad9c7fa35cb`;
+- branch: `main`;
+- árvore limpa: `true`;
+- checks funcionais: todos `true`;
+- privacidade: `true`.
+
+A execução limpa não substitui CI, PR, merge ou validação pós-merge.
 
 ## Correções descobertas durante a validação
 
@@ -125,11 +134,21 @@ suíte correspondente.
 - A fase não está aprovada nem integrada até passar por blobs Git, baseline,
   árvore limpa, evidências hashadas, CI, PR, merge normal e validação pós-merge.
 
+## Artefatos versionados da auditoria limpa
+
+Pacote: `docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/`.
+
+- `stage6-runtime-triggers-report.json` — `2102` bytes — SHA-256 `86f93afebb0535f3027ed861336530e9046f21fb248790696d606445af983697`;
+- `trigger-replay.json` — `948` bytes — SHA-256 `fc79e329eb2ac448755af95e7843dfb7bb45f2d24d0decedc1ea1a8a3eb8e28a`;
+- `trigger-sidecar.json` — `2005` bytes — SHA-256 `22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c`;
+- `triggers.json` — `2005` bytes — SHA-256 `22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c`;
+- `artifact-index.json` — `651` bytes — SHA-256 `5b1625033c20c248bfcfe2466d02dafc252cdba60196e5d8d674f96c031ebad1`.
+
 ## Decisão
 
 **VALIDADA LOCALMENTE NO ESCOPO DA IMPLEMENTAÇÃO; NÃO INTEGRADA.**
 
-Ainda faltam checkpoint local limpo, auditoria em árvore limpa, manifesto de
-baseline contra blobs Git, revisão documental final, CI obrigatório Linux/Windows,
-PR, merge normal e validação pós-merge. Nenhuma release ou suporte de engine é
-declarado por esta evidência.
+A implementação, os testes, a auditoria limpa, a baseline Git-blob e a
+integridade de evidências estão concluídas neste checkpoint. Ainda faltam CI
+obrigatório Linux/Windows, revisão final de diff, PR, merge normal e validação
+pós-merge. Nenhuma release ou suporte de engine é declarado por esta evidência.
