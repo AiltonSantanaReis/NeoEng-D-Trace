@@ -573,8 +573,8 @@
       "size": 6315
     },
     "docs/evidence/ETAPA_3_RUNTIME_SHADERS_2026-08-20.md": {
-      "sha256": "9b84afa88ab5fc4ac07203033c9300d488674ba974477622dd354e40c99050e3",
-      "size": 2815
+      "sha256": "d573d80431e043237b8dde0c1df012f4df08b04887a55aee2af364b30815e9ed",
+      "size": 4938
     },
     "docs/evidence/ETAPA_4A_IMPORTACAO_GODOT_2026-08-16.md": {
       "sha256": "d7a27fdf92b0c8f8725c55ca0d578bb9fe7ab0051999d803183897d5d1d3c6ea",
@@ -4215,6 +4215,30 @@
     "docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/runtime-lighting-report.json": {
       "sha256": "fdb2e2c48bf8cf8e8a6809b968d6908637865e815364bb01becd69452fd90da0",
       "size": 3662
+    },
+    "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/artifact-index.json": {
+      "sha256": "1e023e4c04d7ea1d56dfc004c2376ee39d3e9ada6e66ef930b516e9c8fde5304",
+      "size": 791
+    },
+    "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/compiled/basic.fragment.qsb": {
+      "sha256": "f922f9d64a646c1a38ad40fee0dafc20dd04bbfae4165cbfa09c9db7fb133272",
+      "size": 216
+    },
+    "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/compiled/basic.vertex.qsb": {
+      "sha256": "a423babf7303038a9a609ba30f460ca981e2f6782f3e7c09f2cebda216a74e1a",
+      "size": 401
+    },
+    "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/shader-sidecar-copy.json": {
+      "sha256": "e230c8fbc2c6aaf722fca1a564a814051fcfbb15a64cd725df47b514e237d607",
+      "size": 1007
+    },
+    "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/shader-sidecar.json": {
+      "sha256": "e230c8fbc2c6aaf722fca1a564a814051fcfbb15a64cd725df47b514e237d607",
+      "size": 1007
+    },
+    "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/stage3-runtime-shaders-report.json": {
+      "sha256": "4ed53b0789f81ef2e50d42e18b05cc9ba80c8884725f780dc9f963356892a7b1",
+      "size": 2077
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
       "sha256": "ffc779e948f94975c5ee12254052d150979ea5343887bfe1ba9e03a46b0213b2",

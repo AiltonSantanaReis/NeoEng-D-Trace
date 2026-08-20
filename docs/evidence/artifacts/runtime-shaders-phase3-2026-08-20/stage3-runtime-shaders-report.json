@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "stage": "3",
+  "scope": "runtime-shaders",
+  "status": "PASS",
+  "source": {
+    "commit": "1c75c8591897e925d5398358ea6be31756581b48",
+    "branch": "Ailton/runtime-phase3-shaders",
+    "worktree_clean": true
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "backend": {
+    "id": "qt-qsb",
+    "compiler": "qsb.exe"
+  },
+  "commands": [
+    "python scripts/audit_runtime_shaders_phase3.py --output <output>",
+    "python -m pytest --cov=src --cov-branch --cov-fail-under=90",
+    "python tools/check_coverage_policy.py coverage.xml"
+  ],
+  "checks": {
+    "source_tree_clean": true,
+    "canonical_sidecar_roundtrip": true,
+    "real_qt_qsb_resolved": true,
+    "both_stages_compiled": true,
+    "invalid_stage_rejected_without_replacement": true,
+    "privacy": true
+  },
+  "compilation": {
+    "status": "PASS",
+    "backend": "qt-qsb",
+    "program_id": "basic",
+    "compiler": "qsb.exe",
+    "stages": [
+      {
+        "stage": "vertex",
+        "bytes": 401,
+        "sha256": "a423babf7303038a9a609ba30f460ca981e2f6782f3e7c09f2cebda216a74e1a",
+        "file": "compiled/basic.vertex.qsb"
+      },
+      {
+        "stage": "fragment",
+        "bytes": 216,
+        "sha256": "f922f9d64a646c1a38ad40fee0dafc20dd04bbfae4165cbfa09c9db7fb133272",
+        "file": "compiled/basic.fragment.qsb"
+      }
+    ]
+  },
+  "failure_reproduction": {
+    "status": "EXPECTED_REJECTION",
+    "error_type": "ShaderCompilationError",
+    "message": "qsb rejected fragment stage: Shader baking failed: ERROR: :2: '' :  syntax error, unexpected LEFT_BRACE, expecting RIGHT_PAREN\nERROR: 1 compilation errors.  No code generated."
+  },
+  "limitations": [
+    "The native backend in this phase is Qt Shader Tools (qsb).",
+    "Unsupported backends are rejected explicitly; no silent fallback is claimed.",
+    "Particles, post-processing, triggers, streaming and engine runtime adapters remain future phases."
+  ],
+  "privacy_leaks": []
+}
