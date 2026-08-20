@@ -14,8 +14,10 @@ import argparse
 import json
 import platform
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -168,46 +170,46 @@ def run(output: Path) -> dict[str, Any]:
         raise FileExistsError(
             f"output must be a new directory; refusing to overwrite: {output.name}"
         )
-    output.mkdir(parents=True)
     source = _source_state()
 
-    main_root = output / "main-window"
-    main_captures = main_root / "captures"
-    main_captures.mkdir(parents=True)
-    capture_main_window(main_captures)
-    ui_report = run_audit(main_captures, main_root / "audited")
+    with tempfile.TemporaryDirectory(prefix="neoeng-stage6-evidence-") as temporary:
+        staging = Path(temporary)
+        main_root = staging / "main-window"
+        main_captures = main_root / "captures"
+        main_captures.mkdir(parents=True)
+        capture_main_window(main_captures)
+        ui_report = run_audit(main_captures, main_root / "audited")
 
-    scene_report = capture_scene(output / "professional-editor")
+        scene_report = capture_scene(staging / "professional-editor")
 
-    document = _fixture()
-    determinism = _determinism_checks(document)
-    benchmark = _benchmark(document)
+        document = _fixture()
+        determinism = _determinism_checks(document)
+        benchmark = _benchmark(document)
 
-    leaks_before_report = _path_leaks(output)
-    report = _write_stage6_report(
-        output,
-        source=source,
-        ui_report=ui_report,
-        scene_report=scene_report,
-        determinism=determinism,
-        benchmark=benchmark,
-        leaks=leaks_before_report,
-    )
-    index = {
-        "schema_version": 1,
-        "stage": "6",
-        "files": _files_index(output),
-    }
-    write_json_lf(output / "artifact-index.json", index)
-    # The index itself is intentionally excluded from its own digest set.
-    if _path_leaks(output):
-        report["status"] = "FAIL"
-        report["checks"]["privacy"] = False
-        report["privacy_leaks"] = _path_leaks(output)
-        write_json_lf(output / "stage6-report.json", report)
-    if report["status"] == "FAIL":
+        leaks_before_report = _path_leaks(staging)
+        report = _write_stage6_report(
+            staging,
+            source=source,
+            ui_report=ui_report,
+            scene_report=scene_report,
+            determinism=determinism,
+            benchmark=benchmark,
+            leaks=leaks_before_report,
+        )
+        index = {
+            "schema_version": 1,
+            "stage": "6",
+            "files": _files_index(staging),
+        }
+        write_json_lf(staging / "artifact-index.json", index)
+        # The index itself is intentionally excluded from its own digest set.
+        if _path_leaks(staging):
+            report["status"] = "FAIL"
+            report["checks"]["privacy"] = False
+            report["privacy_leaks"] = _path_leaks(staging)
+            write_json_lf(staging / "stage6-report.json", report)
+        shutil.copytree(staging, output)
         return report
-    return report
 
 
 def parse_args(argv: Iterable[str]) -> argparse.Namespace:
