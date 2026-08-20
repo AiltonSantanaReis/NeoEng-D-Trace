@@ -11,7 +11,8 @@
   auditoria reproduzível no merge `84dfee7`.
 - `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — evidência histórica e encerramento pós-merge da Etapa 2; implementação no merge `eb9837b`, documentação reconciliada no merge `ff66fa7`, CI Linux/Windows e validação local PASS no escopo definido.
 - `ETAPA_3_RUNTIME_SHADERS_2026-08-20.md` — snapshot pré-merge preservado e encerramento pós-merge da Etapa 3; PR #117, merge `c76ac4b`, CI Linux/Windows, auditoria real, baseline/evidências por blobs Git e suíte pós-merge aprovados no escopo definido.
-- ETAPA_4_RUNTIME_PARTICULAS_2026-08-20.md — implementação local validada de partículas determinísticas, fixed update, seeds, pausa, replay, limites, persistência autoral e auditoria fail-closed; PR, CI, merge e pós-merge permanecem pendentes.
+- `ETAPA_4_RUNTIME_PARTICULAS_2026-08-20.md` — implementação e encerramento pós-merge de partículas determinísticas, fixed update, seeds, pausa, replay, limites, persistência autoral e auditoria fail-closed; PR #119, merge `a757da0`, CI Linux/Windows e validação pós-merge aprovados no escopo definido.
+- `ETAPA_4_RUNTIME_PARTICULAS_ENCERRAMENTO_POS_MERGE_2026-08-20.md` — fechamento pós-merge no commit `a757da0`, CI `32405503776`, auditoria, baseline, evidências e suíte integral validados.
 - `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.
