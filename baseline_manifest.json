@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "1fbe4f53864093077212bdeb47e01f8040033c148e7b6c0e9a0fe36333d82299",
-      "size": 9321
+      "sha256": "7b977c63e3bb331e950986439dab831b484f8528dea55a1e33b4a439aab1d227",
+      "size": 9699
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -536,6 +536,10 @@
       "sha256": "6a172c4132a1f44e7c64ee9d105c0f86ec7f22d9645b20d275cf9ddd1208974f",
       "size": 592
     },
+    "docs/evidence/ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md": {
+      "sha256": "0a2b9030283ee860c2fc17d93b39afafd06f36f62d080aa1405fd4da0c6fb54a",
+      "size": 7131
+    },
     "docs/evidence/ETAPA_3_ANIMACOES_TILESETS_UNITY_2026-08-17.md": {
       "sha256": "0371e262baa6a8b67e9f78899b043ea7453d7b6fab3d9f95fc54e9c81bde6f1f",
       "size": 5756
@@ -813,8 +817,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "bfdc8bef1711469e3a3e1a164964ab3370bf372372453572314c540b8e4bec91",
-      "size": 35317
+      "sha256": "76e5a1de3a71b0a55655af5e84a952461caa0abf9a49b0e67240ef5fe789e637",
+      "size": 36436
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -3988,6 +3992,138 @@
       "sha256": "756d4e15ca52f62375fc6498db191752e0450ea8d5dd2b4e0d52e9b2df430e65",
       "size": 2676
     },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/artifact-index.json": {
+      "sha256": "856da03ec0c05d63bcf3ea3460c6d005662ca74060c1beb93c7255e2b96e2ddc",
+      "size": 1406
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/baseline_integrity.log": {
+      "sha256": "5aafaa52356d861954657b68405fad3e6b3d2ed7e44383c9a0785b3c5ff0e827",
+      "size": 30
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/black_check.log": {
+      "sha256": "c31f6198e068284efeccaeed2378463e6fc728ad5c8091e49445fd7ef98fd638",
+      "size": 68
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/evidence_integrity.log": {
+      "sha256": "88c937a1b13589eccf1474fdf1f123cb74a6f4f44ae9ee79644542729e5c3022",
+      "size": 51
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/flake8.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/focused_pytest.log": {
+      "sha256": "ec6ef9564472459a3d9088a9d34c25e8e221853fa7fb497540a9f9b02d7ada6c",
+      "size": 699
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/full_pytest.log": {
+      "sha256": "6245d53e23df2a18325752f4d317add2b834a08d44979e1fda1a8cb81b912952",
+      "size": 11038
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/git_diff_check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/mypy.log": {
+      "sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+      "size": 43
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/py_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/runtime-lighting-report.json": {
+      "sha256": "72eec64f0b969351a860642851e31527faca9701a8822c9697db8b01068d558b",
+      "size": 3698
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/artifact-index.json": {
+      "sha256": "ad21371bb5283908022e907efefe0ad1bc4f590811e858ad4df285f0e7401eb5",
+      "size": 1406
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/baseline_integrity.log": {
+      "sha256": "1521925cc29955bcc0e2f9d9bbfdf06381471195fda596658becc096383df6ba",
+      "size": 30
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/black_check.log": {
+      "sha256": "c31f6198e068284efeccaeed2378463e6fc728ad5c8091e49445fd7ef98fd638",
+      "size": 68
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/evidence_integrity.log": {
+      "sha256": "ef808df032aabe6f6262d56944bdefd6b16b6623868574cc686bc178a4cb9bdc",
+      "size": 51
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/flake8.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/focused_pytest.log": {
+      "sha256": "a7fd22299244af3e20887e9afafb6ddb02dfdf14e050a01c6488db37c6a8d3e5",
+      "size": 699
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/full_pytest.log": {
+      "sha256": "f1cab3e58dab12085c337bd14bbd893f261050d375b12880fd8f92ee649882be",
+      "size": 11038
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/git_diff_check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/mypy.log": {
+      "sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+      "size": 43
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/py_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/runtime-lighting-report.json": {
+      "sha256": "38d164ace749ecfd32ef511a33ddd8fbfd7b372f79f0501d89aee8228a32e7ef",
+      "size": 3698
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/artifact-index.json": {
+      "sha256": "48d84c41339b38eecca73f8ce83e33ee7bb157225aefb4ccc87e18d3d26abf60",
+      "size": 1406
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/baseline_integrity.log": {
+      "sha256": "7bed61570751be4bae346000ab065e612e58da11a748169e17a405f45d3c7f8d",
+      "size": 30
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/black_check.log": {
+      "sha256": "c31f6198e068284efeccaeed2378463e6fc728ad5c8091e49445fd7ef98fd638",
+      "size": 68
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/evidence_integrity.log": {
+      "sha256": "fb87183f630e217b6b01e7cc6591c468a8399d479d12ba8094e42a6176b4ef97",
+      "size": 51
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/flake8.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/focused_pytest.log": {
+      "sha256": "2e8adb3fd701b4137dd736e9b5b73ea38f4c829de6bcc415840a34ef98ba4ed7",
+      "size": 699
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/full_pytest.log": {
+      "sha256": "cb46ad943096a3de62bcea0e10de6e4cded0fde321d6098b04ac3bd36fe807e9",
+      "size": 11038
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/git_diff_check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/mypy.log": {
+      "sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+      "size": 43
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/py_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/runtime-lighting-report.json": {
+      "sha256": "8046cbf791eccd6792f15ec1f9d68f13d7c1a5b3d2fd6c5d422edf9fd5615a1f",
+      "size": 3698
+    },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
       "sha256": "ffc779e948f94975c5ee12254052d150979ea5343887bfe1ba9e03a46b0213b2",
       "size": 1218
@@ -5568,6 +5704,10 @@
       "sha256": "def3f15ca0e3b5dc653dd36c4b1fbb35a863b0cadf88269f95ce314df177de2d",
       "size": 7351
     },
+    "scripts/audit_runtime_lighting_phase2.py": {
+      "sha256": "caf611a32e5c1d03a029429222cff04be9c322b287475b54e416a36920130d0c",
+      "size": 7716
+    },
     "scripts/audit_scenario_authoring.py": {
       "sha256": "5680b36fc6e43a147f5ef4f5d9de148c07f9fb6c89c1af0bdb9c65e086648290",
       "size": 10452
@@ -5913,12 +6053,16 @@
       "size": 324
     },
     "src/runtime/__init__.py": {
-      "sha256": "3631853cc5f81d12b2b6c489f55e927df27ed0395b1fd73fc34766a2821e1092",
-      "size": 1140
+      "sha256": "a78672fd309e26d0073989a857d5830365d00527506c4d94dc4c20760ada58cc",
+      "size": 2452
+    },
+    "src/runtime/lighting.py": {
+      "sha256": "827dccbb1167a351d2220d739c435c12c408601a88a583c9a7e18888d10650c5",
+      "size": 19214
     },
     "src/runtime/scene_runtime.py": {
-      "sha256": "e97393157b6f75826dcdd16237c7a275fd69ec41aa5d6c6540dcb6c31832ff0c",
-      "size": 18016
+      "sha256": "98d4f23230a5e96b22d9182428d34cfac5999ba081acc7e621388ad413411198",
+      "size": 18044
     },
     "src/tools/__init__.py": {
       "sha256": "9cde802502cdc65dff3b12bfcd4700e87c7598c405e2bd2398bd838050f3133f",
@@ -6329,8 +6473,8 @@
       "size": 2193
     },
     "tests/test_stage1_runtime_base.py": {
-      "sha256": "52d9351b793ef26c3143a80f10378360df3512785a8db70d65f95cdcea990ab5",
-      "size": 5851
+      "sha256": "2198e664b869074762ae2ff2f31cc7cbfd20af16ff49f21d998ccd8f2e01ed77",
+      "size": 5849
     },
     "tests/test_stage1_scenario_characterization.py": {
       "sha256": "496914caf7c2f398bf9995eac138ab68cfecdacf10972830591562a11602f26b",
@@ -6339,6 +6483,14 @@
     "tests/test_stage2_command_registry.py": {
       "sha256": "10e634d6c32ab0ddb2c94b0601695c4e63d8818626edd4007e60330d9a3cd47c",
       "size": 4478
+    },
+    "tests/test_stage2_runtime_lighting.py": {
+      "sha256": "6c4a5ce0202802d31116c65e4795e1de22e58eb4cdfe28a55aeb2392564d5a74",
+      "size": 9373
+    },
+    "tests/test_stage2_runtime_lighting_hardening.py": {
+      "sha256": "dbb941a44a1716d7ff5a6f81e3721df659c88b5c1458b46f86961b918c481d76",
+      "size": 2490
     },
     "tests/test_stage2_scene_authoring_model.py": {
       "sha256": "6777c888c86b38ea33eb6a6dbbc6c5ad3942df296f3abd4255ba93ebbee12949",

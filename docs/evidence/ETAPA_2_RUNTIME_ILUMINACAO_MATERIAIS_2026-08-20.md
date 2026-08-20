@@ -1,0 +1,154 @@
+# Evidência — Etapa 2 — Iluminação e materiais do runtime
+
+## Identificação
+
+- Implementação auditada: `bd25b0e30b1896a8cc4192985428ea9267505f02`
+- Branch auditada: `Ailton/runtime-phase2-lighting-materials`
+- Data/hora do auditor: `2026-08-20T13:00:46+00:00`
+- Auditor: `scripts/audit_runtime_lighting_phase2.py`
+- Pacote: `docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/`
+
+## Ambiente
+
+- Sistema operacional: Windows 10 build `10.0.26200`
+- Python: `3.11.9`
+- Dependências: ambiente `.venv` do projeto, lockfile validado pelo CI
+- Baseline contra blobs Git antes do pacote: `1677 files`
+- Baseline final staged após incluir os pacotes r1, r2 e r3: `1711 files` — PASS.
+- Manifests de evidência validados antes do pacote: `64`
+- Manifests finais staged após incluir os pacotes r1, r2 e r3: `67` — PASS.
+
+## Objetivo e escopo
+
+Foi implementado o contrato versionado de iluminação e materiais como
+sidecar do exportador de cenário runtime existente. O schema lateral
+`neoeng-d-trace-scenario` v1 e o exportador runtime v1 não foram reinterpretados.
+
+Incluído:
+
+- `neoeng-d-trace-runtime-lighting` schema v1 e API v1;
+- vínculo explícito ao hash SHA-256 do cenário runtime de origem;
+- fontes `point`, `directional` e `spot` com limites finitos;
+- materiais `lit` e `unlit`, albedo, emissão, opacidade e bindings por objeto;
+- sockets de luz com posição 2.5D e referência de fonte;
+- preview estrutural determinístico, sem relógio de parede ou aleatoriedade;
+- fallback seguro `unlit` e decisão incompatível explícita;
+- carregamento canônico, rejeição de BOM, duplicatas e números não finitos;
+- preservação do estado anterior em substituição inválida;
+- capacidade `runtime.lighting` registrada no host base.
+
+## Comandos executados
+
+O auditor executou os comandos abaixo no commit identificado:
+
+- `pytest` focado e suíte integral;
+- `black --check`;
+- `flake8`;
+- `mypy src/runtime`;
+- `py_compile`;
+- `tools/baseline_integrity.py --verify --git-blob`;
+- `tools/evidence_integrity.py --require-tracked --git-blob`;
+- `git diff --check`.
+
+## Resultados
+
+- Foco da etapa: `87 passed`.
+- Suíte integral: `1440 passed, 2 skipped`.
+- Black: PASS.
+- flake8: PASS.
+- mypy: PASS.
+- py_compile: PASS.
+- Baseline Git-blob: PASS, `1677 files`.
+- Integridade de evidências: PASS, `64 manifests`.
+- Diff: PASS.
+- Auditor: `PASS`.
+
+Os dois skips são os skips históricos condicionados à permissão de symlink no
+Windows; não foram criados nem alterados nesta etapa.
+
+## Artefatos e hashes
+
+- `runtime-lighting-report.json`: 3698 bytes; SHA-256
+  `8046cbf791eccd6792f15ec1f9d68f13d7c1a5b3d2fd6c5d422edf9fd5615a1f`.
+- `artifact-index.json`: 1406 bytes; SHA-256 `48d84c41339b38eecca73f8ce83e33ee7bb157225aefb4ccc87e18d3d26abf60`.
+- `runtime-lighting-phase2-2026-08-20-r2/runtime-lighting-report.json`: 3698 bytes; SHA-256 `72eec64f0b969351a860642851e31527faca9701a8822c9697db8b01068d558b`.
+- `runtime-lighting-phase2-2026-08-20-r2/artifact-index.json`: 1406 bytes; SHA-256 `856da03ec0c05d63bcf3ea3460c6d005662ca74060c1beb93c7255e2b96e2ddc`.
+- `runtime-lighting-phase2-2026-08-20-r3/runtime-lighting-report.json`: 3698 bytes; SHA-256 `38d164ace749ecfd32ef511a33ddd8fbfd7b372f79f0501d89aee8228a32e7ef`.
+- `runtime-lighting-phase2-2026-08-20-r3/artifact-index.json`: 1406 bytes; SHA-256 `ad21371bb5283908022e907efe0ad1bc4f590811e858ad4df285f0e7401eb5`.
+- Os logs individuais de cada gate estão no mesmo diretório e são indexados
+  pelo `artifact-index.json`.
+
+## Falhas e causa raiz
+
+Durante a preparação, o baseline inicialmente rejeitou o commit técnico
+porque os novos arquivos ainda não estavam no manifesto. O manifesto foi
+regenerado com `--git-blob`, verificado e registrado no commit separado de
+reconciliação `bd25b0e` antes da auditoria final.
+
+Uma primeira invocação do auditor também pré-criou o diretório de saída,
+violando o contrato de não sobrescrita do próprio auditor. Nenhum relatório
+foi aceito daquela execução; a execução válida foi feita em diretório novo e
+produziu `PASS`.
+
+## Limitações e riscos residuais
+
+- O preview é avaliação estrutural determinística de cor, não rasterização
+  GPU nem simulação de shader.
+- Shaders, partículas, pós-processamento, triggers e streaming permanecem nas
+  fases futuras do ADR.
+- VRAM, FPS, driver e comportamento específico de hardware não são gates desta
+  fase.
+- Reprodução em Godot e Unity pertence à fase posterior de adaptadores reais.
+- A integração da PR, CI remoto e validação pós-merge ainda são pendentes;
+  este documento não declara encerramento formal antes desses gates.
+
+## Decisão
+
+**NÃO APROVADO — validação local PASS; PR, CI remoto, merge e validação
+pós-merge pendentes.**
+
+## Revalidação após o primeiro CI da PR #115
+
+O primeiro CI remoto da PR #115 (run `32373956781`) falhou no job Linux
+exclusivamente no passo `isort --check-only`. O job confirmou antes da falha
+que o baseline e a integridade das evidências estavam válidos; não houve falha
+de testes, lint ou formatação Black. A causa foi a ordenação de imports em
+`src/runtime/__init__.py` e `tests/test_stage2_runtime_lighting.py`.
+
+Correção aplicada sem alterar regras ou asserções:
+
+- commit corretivo: `43733cb83af04f11d4e7fcef7df58e83f936b61b`;
+- `isort --check-only`, suíte focada e suíte integral reexecutados localmente;
+- auditor completo reexecutado em worktree limpo, com `status: PASS`;
+- pacote atualizado: `docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/`.
+
+Resultados do auditor r2:
+
+- suíte focada: `87 passed`;
+- suíte integral: `1440 passed, 2 skipped`;
+- baseline, evidências, Black, Flake8, Mypy, PyCompile e diff: PASS;
+- relatório r2 vinculado ao commit corretivo e ao worktree limpo.
+
+O primeiro CI falho permanece registrado como evento histórico e não foi
+apagado ou reinterpretado. A PR #115 requer nova execução remota após o fix;
+portanto a decisão continua **NÃO APROVADO** até Linux e Windows concluírem
+com sucesso e a validação pós-merge ser realizada.
+
+## Revalidação após a política de cobertura da PR #115
+
+A segunda execução do CI da PR #115 (run `32375964745`) corrigiu o isort em
+Linux e Windows e executou `1442 passed, 2 skipped`, mas o job Linux falhou
+legitimamente na política integrada de cobertura: `84,94%` de branches contra
+o mínimo imutável de `85,00%`. A cobertura de linhas foi `90,91%` e passou.
+
+A causa foi cobertura insuficiente de ramos introduzidos no contrato de
+iluminação, não uma alteração da política. Foram adicionados testes reais para
+a gravação atômica, destinos inválidos e sockets sem manifesto ou com identidade
+desconhecida. A execução local oficial passou com `1442 passed, 2 skipped`,
+linhas `91,00%` e a política integrada PASS.
+
+O auditor r3 foi executado no commit `4038bac7a28d756db3cfeffa8710929e55d0ec8a`,
+com worktree limpo e `status: PASS`; seu pacote está em
+`docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/`.
+O evento de cobertura falho permanece preservado; a PR #115 requer nova
+execução remota após este fix.
