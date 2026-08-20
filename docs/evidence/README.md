@@ -9,6 +9,8 @@
   pós-merge formal da Etapa 1; decisão APROVADO no escopo definido.
 - `artifacts/runtime-base-phase1-postmerge-2026-08-20/` — pacote hashado da
   auditoria reproduzível no merge `84dfee7`.
+- `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — validação local PASS do contrato de iluminação e materiais; PR, CI remoto, merge e pós-merge ainda pendentes.
+- `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 # Evidências de validação
 
 Estado vivo em 20 de agosto de 2026: a Etapa 1 foi encerrada formalmente no merge `7e190b4` da PR documental `#114`, após a implementação integrada no merge `84dfee7` da PR `#113`; o CI `32362255134` foi aprovado em Linux e Windows e a validação pós-merge local confirmou 1421 testes aprovados e 2 skips históricos. O pacote de encerramento está listado acima. As Etapas 5 e 6 permanecem registradas pelos seus respectivos merges e evidências. Isso não constitui aprovação automática de release.

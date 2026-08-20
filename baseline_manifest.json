@@ -536,6 +536,10 @@
       "sha256": "6a172c4132a1f44e7c64ee9d105c0f86ec7f22d9645b20d275cf9ddd1208974f",
       "size": 592
     },
+    "docs/evidence/ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md": {
+      "sha256": "b4f34d69cd2361758bbabec56e3e0962ad2bf81e98451a71e040d90fafe44a4b",
+      "size": 4115
+    },
     "docs/evidence/ETAPA_3_ANIMACOES_TILESETS_UNITY_2026-08-17.md": {
       "sha256": "0371e262baa6a8b67e9f78899b043ea7453d7b6fab3d9f95fc54e9c81bde6f1f",
       "size": 5756
@@ -813,8 +817,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "bf41719c6a23ed62b0a4e2c77d30e13b9306d1c77dcb9add2f826d54d0cb0db5",
-      "size": 35590
+      "sha256": "0bc73e2a29a00d8244156eb60d937957546ebc715554586d412b869a47504f62",
+      "size": 35876
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -3987,6 +3991,50 @@
     "docs/evidence/artifacts/runtime-base-phase1-postmerge-2026-08-20/runtime-base-report.json": {
       "sha256": "756d4e15ca52f62375fc6498db191752e0450ea8d5dd2b4e0d52e9b2df430e65",
       "size": 2676
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/artifact-index.json": {
+      "sha256": "48d84c41339b38eecca73f8ce83e33ee7bb157225aefb4ccc87e18d3d26abf60",
+      "size": 1406
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/baseline_integrity.log": {
+      "sha256": "7bed61570751be4bae346000ab065e612e58da11a748169e17a405f45d3c7f8d",
+      "size": 30
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/black_check.log": {
+      "sha256": "c31f6198e068284efeccaeed2378463e6fc728ad5c8091e49445fd7ef98fd638",
+      "size": 68
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/evidence_integrity.log": {
+      "sha256": "fb87183f630e217b6b01e7cc6591c468a8399d479d12ba8094e42a6176b4ef97",
+      "size": 51
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/flake8.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/focused_pytest.log": {
+      "sha256": "2e8adb3fd701b4137dd736e9b5b73ea38f4c829de6bcc415840a34ef98ba4ed7",
+      "size": 699
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/full_pytest.log": {
+      "sha256": "cb46ad943096a3de62bcea0e10de6e4cded0fde321d6098b04ac3bd36fe807e9",
+      "size": 11038
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/git_diff_check.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/mypy.log": {
+      "sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+      "size": 43
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/py_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20/runtime-lighting-report.json": {
+      "sha256": "8046cbf791eccd6792f15ec1f9d68f13d7c1a5b3d2fd6c5d422edf9fd5615a1f",
+      "size": 3698
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
       "sha256": "ffc779e948f94975c5ee12254052d150979ea5343887bfe1ba9e03a46b0213b2",
