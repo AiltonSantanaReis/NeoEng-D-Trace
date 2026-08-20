@@ -92,6 +92,10 @@
       "sha256": "17d93bf6c29ad53a29c4e832307a3bc2b7739d1f6abe1d78afcf2380888047b8",
       "size": 3570
     },
+    "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
+      "sha256": "1fbe4f53864093077212bdeb47e01f8040033c148e7b6c0e9a0fe36333d82299",
+      "size": 9321
+    },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
       "size": 8205
