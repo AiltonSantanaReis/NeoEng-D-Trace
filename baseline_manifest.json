@@ -84,10 +84,6 @@
       "sha256": "c00836891b06ee684735c1c2f573e050d63734a28aa503d4e6739466c34acdc3",
       "size": 271
     },
-    "coverage-stage5.json": {
-      "sha256": "748edb13dafeb7baccf35e9c036ee7ce025fc8d9c6f34a2087cd17b2d0e81118",
-      "size": 1661093
-    },
     "docs/ADR_CENARIOS_PARALLAX_PALETA_ETAPA1_2026-08-18.md": {
       "sha256": "e630bfe0c5496bf96826b6e764df86c147206e7117ef7da509c82cd38363aa81",
       "size": 2244
