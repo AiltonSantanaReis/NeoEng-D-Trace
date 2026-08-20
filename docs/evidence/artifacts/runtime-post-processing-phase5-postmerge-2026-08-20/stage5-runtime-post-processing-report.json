@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-post-processing-phase5",
+  "status": "PASS",
+  "source": {
+    "commit": "159b1241b01264aec7c80424fc5da8985fbede4b",
+    "branch": "main",
+    "worktree_clean": true
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "backend": {
+    "native": "cpu-preview",
+    "engine_adapters": []
+  },
+  "commands": [
+    "python scripts/audit_runtime_post_processing_phase5.py --output <new-directory>",
+    "python -m pytest -q tests/test_stage5_runtime_post_processing.py",
+    "python -m pytest --cov=src --cov-branch --cov-fail-under=90"
+  ],
+  "checks": {
+    "source_tree_clean": true,
+    "canonical_sidecar_roundtrip": true,
+    "source_binding_is_hash_bound": true,
+    "ordered_effects_are_deterministic": true,
+    "disabled_effect_is_reported": true,
+    "alpha_is_preserved": true,
+    "limits_are_enforced": true,
+    "fallback_is_explicit": true,
+    "atomic_persistence_preserves_previous_bytes": true,
+    "privacy": true
+  },
+  "contract": {
+    "format_id": "neoeng-d-trace-runtime-post-processing",
+    "schema_version": 1,
+    "algorithm_version": 1,
+    "document_sha256": "52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6",
+    "serialized_bytes": 1031,
+    "effect_count": 3,
+    "effect_order": [
+      10,
+      20,
+      30
+    ]
+  },
+  "privacy_leaks": [],
+  "limitations": [
+    "The implemented native backend is a deterministic CPU preview, not GPU rasterization.",
+    "Godot and Unity post-processing adapters are not implemented in this phase.",
+    "VRAM, driver-specific FPS and backend-specific rendering remain untested.",
+    "The phase is not approved until full repository gates, tracked-byte validation, CI and post-merge validation pass."
+  ]
+}
