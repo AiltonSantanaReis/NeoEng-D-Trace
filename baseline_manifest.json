@@ -741,8 +741,8 @@
       "size": 1883
     },
     "docs/evidence/ETAPA_6_RUNTIME_TRIGGERS_2026-08-20.md": {
-      "sha256": "ad4db677dced694a8d09bd2badc2d67d6fade3422487fe35c9cbc422f2cba289",
-      "size": 5962
+      "sha256": "1d9f68492c45ef94e9fc6207c11bde12899ef9d41b0c166477828dd2f16b72e6",
+      "size": 7004
     },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
@@ -4323,6 +4323,26 @@
     "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/stage3-runtime-shaders-report.json": {
       "sha256": "4ed53b0789f81ef2e50d42e18b05cc9ba80c8884725f780dc9f963356892a7b1",
       "size": 2077
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/artifact-index.json": {
+      "sha256": "5b1625033c20c248bfcfe2466d02dafc252cdba60196e5d8d674f96c031ebad1",
+      "size": 651
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/stage6-runtime-triggers-report.json": {
+      "sha256": "86f93afebb0535f3027ed861336530e9046f21fb248790696d606445af983697",
+      "size": 2102
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/trigger-replay.json": {
+      "sha256": "fc79e329eb2ac448755af95e7843dfb7bb45f2d24d0decedc1ea1a8a3eb8e28a",
+      "size": 948
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/trigger-sidecar.json": {
+      "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
+      "size": 2005
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/triggers.json": {
+      "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
+      "size": 2005
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
       "sha256": "ffc779e948f94975c5ee12254052d150979ea5343887bfe1ba9e03a46b0213b2",
