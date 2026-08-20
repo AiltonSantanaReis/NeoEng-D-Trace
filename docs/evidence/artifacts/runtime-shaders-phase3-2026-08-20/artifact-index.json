@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "stage": "3",
+  "files": {
+    "compiled/basic.fragment.qsb": {
+      "bytes": 216,
+      "sha256": "f922f9d64a646c1a38ad40fee0dafc20dd04bbfae4165cbfa09c9db7fb133272"
+    },
+    "compiled/basic.vertex.qsb": {
+      "bytes": 401,
+      "sha256": "a423babf7303038a9a609ba30f460ca981e2f6782f3e7c09f2cebda216a74e1a"
+    },
+    "shader-sidecar-copy.json": {
+      "bytes": 1007,
+      "sha256": "e230c8fbc2c6aaf722fca1a564a814051fcfbb15a64cd725df47b514e237d607"
+    },
+    "shader-sidecar.json": {
+      "bytes": 1007,
+      "sha256": "e230c8fbc2c6aaf722fca1a564a814051fcfbb15a64cd725df47b514e237d607"
+    },
+    "stage3-runtime-shaders-report.json": {
+      "bytes": 2077,
+      "sha256": "4ed53b0789f81ef2e50d42e18b05cc9ba80c8884725f780dc9f963356892a7b1"
+    }
+  }
+}
