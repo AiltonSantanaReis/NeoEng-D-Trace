@@ -744,6 +744,10 @@
       "sha256": "1d9f68492c45ef94e9fc6207c11bde12899ef9d41b0c166477828dd2f16b72e6",
       "size": 7004
     },
+    "docs/evidence/ETAPA_6_RUNTIME_TRIGGERS_ENCERRAMENTO_POS_MERGE_2026-08-20.md": {
+      "sha256": "285672b98e6926c2134bfe7f0358538c9f4ce28e680cd1f6ba84eac3007fa6cb",
+      "size": 3870
+    },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
       "size": 5554
@@ -4341,6 +4345,26 @@
       "size": 2005
     },
     "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/triggers.json": {
+      "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
+      "size": 2005
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-postmerge-2026-08-20/artifact-index.json": {
+      "sha256": "92a3aad274e89c17495e8a1ffde7b4c6148765fbfea4633c34923ee913ecf04b",
+      "size": 651
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-postmerge-2026-08-20/stage6-runtime-triggers-report.json": {
+      "sha256": "27d1809afe80e8048b233c96aa1d21511a911400cd43f04aa42fd72bc422db38",
+      "size": 2147
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-postmerge-2026-08-20/trigger-replay.json": {
+      "sha256": "fc79e329eb2ac448755af95e7843dfb7bb45f2d24d0decedc1ea1a8a3eb8e28a",
+      "size": 948
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-postmerge-2026-08-20/trigger-sidecar.json": {
+      "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
+      "size": 2005
+    },
+    "docs/evidence/artifacts/runtime-triggers-phase6-postmerge-2026-08-20/triggers.json": {
       "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
       "size": 2005
     },
