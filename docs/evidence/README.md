@@ -1,5 +1,13 @@
 - ADENDO_INTEGRIDADE_ARTEFATOS_2026-08-16.md — correção da cadeia de bytes, bloqueio de manifests e limites históricos declarados; não é aprovação de merge.
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
+- `RECONCILIACAO_GATE_GLOBAL_2026-08-20.md` — reconciliação do gate por blobs Git,
+  preservação de snapshots históricos e causa raiz documentada; local aprovado,
+  CI remoto ainda pendente.
+- `ETAPA_1_RUNTIME_BASE_2026-08-20.md` — auditoria integral do runtime base
+  determinístico, com 1421 testes aprovados, 2 skips históricos, 62 manifests
+  validados e artefatos hashados; bloqueado até CI remoto.
+- `artifacts/runtime-base-phase1-2026-08-20/` — logs, relatório e índice
+  reproduzíveis da auditoria da Fase 1.
 # Evidências de validação
 
 Estado vivo após os merges das PRs 108 e 110: a Etapa 5 está integrada pelo merge 57f29d4 e a Etapa 6 pelo merge ecbaab6. O CI 32321900264 e o CI 32336447483 foram aprovados em Linux e Windows. O pacote hashado da Etapa 6 está em artifacts/stage6-professional-scene-2026-08-20/. Isso não constitui aprovação automática de release.

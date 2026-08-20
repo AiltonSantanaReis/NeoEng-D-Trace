@@ -133,6 +133,37 @@ def test_git_blob_mode_validates_index_bytes_not_worktree_conversion(
     assert any("sha256 mismatch" in issue.message for issue in worktree_issues)
 
 
+def test_git_blob_batch_reader_reuses_one_process_for_staged_and_revision_bytes(
+    tmp_path: Path, monkeypatch
+) -> None:
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=tmp_path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Evidence Test"], cwd=tmp_path, check=True
+    )
+    artifact = tmp_path / "artifact.py"
+    artifact.write_bytes(b"line\n")
+    subprocess.run(["git", "add", "artifact.py"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-qm", "blob"], cwd=tmp_path, check=True)
+    revision = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    artifact.write_bytes(b"line\r\n")
+    monkeypatch.setattr(evidence_integrity, "ROOT", tmp_path)
+
+    with evidence_integrity._GitBlobBatch() as reader:
+        assert reader.read(artifact) == b"line\n"
+        assert reader.read(artifact, revision=revision) == b"line\n"
+
+
 def test_historical_source_commit_keeps_snapshot_immutable(
     tmp_path: Path, monkeypatch
 ) -> None:

@@ -18,7 +18,7 @@ import sys
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Iterator
+from typing import Any, Iterable, Iterator, Sequence
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE_ROOT = ROOT / "docs" / "evidence" / "artifacts"
@@ -208,6 +208,101 @@ def _ignored(path: Path) -> bool:
     return result.returncode == 0
 
 
+@dataclass(frozen=True)
+class _GitPathState:
+    """Cached tracked/ignored state for one repository scan."""
+
+    tracked: frozenset[str]
+    ignored: frozenset[str]
+
+    @classmethod
+    def from_paths(cls, paths: Sequence[Path]) -> "_GitPathState":
+        relative = sorted({_repo_relative(path) for path in paths})
+        tracked = frozenset(
+            value.decode("utf-8")
+            for value in subprocess.check_output(
+                ["git", "ls-files", "-z"], cwd=ROOT
+            ).split(b"\0")
+            if value
+        )
+        if not relative:
+            return cls(tracked=tracked, ignored=frozenset())
+        check = subprocess.run(
+            ["git", "check-ignore", "--stdin", "-z"],
+            cwd=ROOT,
+            input=b"".join(value.encode("utf-8") + b"\0" for value in relative),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        ignored = frozenset(
+            value.decode("utf-8") for value in check.stdout.split(b"\0") if value
+        )
+        return cls(tracked=tracked, ignored=ignored)
+
+    def is_tracked(self, path: Path) -> bool:
+        return _repo_relative(path) in self.tracked
+
+    def is_ignored(self, path: Path) -> bool:
+        return _repo_relative(path) in self.ignored
+
+
+class _GitBlobBatch:
+    """Read many Git blobs through one ``git cat-file`` process."""
+
+    def __init__(self) -> None:
+        self._process = subprocess.Popen(
+            ["git", "cat-file", "--batch"],
+            cwd=ROOT,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+        )
+
+    def read(self, path: Path, *, revision: str | None = None) -> bytes | None:
+        relative = _repo_relative(path)
+        specs = (
+            (f"{revision}:{relative}",)
+            if revision
+            else (f":{relative}", f"HEAD:{relative}")
+        )
+        if self._process.stdin is None or self._process.stdout is None:
+            return None
+        for spec in specs:
+            self._process.stdin.write(spec.encode("utf-8") + b"\n")
+            self._process.stdin.flush()
+            header = self._process.stdout.readline()
+            if not header:
+                return None
+            fields = header.rstrip(b"\n").split(b" ")
+            if len(fields) == 2 and fields[1] == b"missing":
+                continue
+            if len(fields) != 3:
+                return None
+            try:
+                size = int(fields[2])
+            except ValueError:
+                return None
+            raw = self._process.stdout.read(size)
+            self._process.stdout.read(1)
+            if fields[1] == b"blob":
+                return raw
+        return None
+
+    def close(self) -> None:
+        if self._process.stdin is not None:
+            self._process.stdin.close()
+        if self._process.stdout is not None:
+            self._process.stdout.close()
+        self._process.wait(timeout=5)
+
+    def __enter__(self) -> "_GitBlobBatch":
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        self.close()
+
+
 def _git_blob_bytes(path: Path, *, revision: str | None = None) -> bytes | None:
     """Read a tracked file from a Git revision or the staged tree."""
 
@@ -248,12 +343,23 @@ def _artifact_bytes(
     *,
     use_git_blob: bool = False,
     source_commit: str | None = None,
+    blob_reader: _GitBlobBatch | None = None,
+    path_state: _GitPathState | None = None,
 ) -> tuple[bytes | None, Path | None]:
     """Read a file reference or a member of a tracked evidence archive."""
 
     if entry.target.is_file():
-        if use_git_blob and _tracked(entry.target):
-            raw = _git_blob_bytes(entry.target, revision=source_commit)
+        tracked = (
+            path_state.is_tracked(entry.target)
+            if path_state is not None
+            else _tracked(entry.target)
+        )
+        if use_git_blob and tracked:
+            raw = (
+                blob_reader.read(entry.target, revision=source_commit)
+                if blob_reader is not None
+                else _git_blob_bytes(entry.target, revision=source_commit)
+            )
             if raw is not None:
                 return raw, entry.target
         return entry.target.read_bytes(), entry.target
@@ -269,12 +375,25 @@ def _artifact_bytes(
 
 
 def validate_manifest(
-    manifest: Path, *, require_tracked: bool, use_git_blob: bool = False
+    manifest: Path,
+    *,
+    require_tracked: bool,
+    use_git_blob: bool = False,
+    blob_reader: _GitBlobBatch | None = None,
+    path_state: _GitPathState | None = None,
 ) -> list[Issue]:
     issues: list[Issue] = []
-    if _ignored(manifest):
+    if (
+        path_state.is_ignored(manifest)
+        if path_state is not None
+        else _ignored(manifest)
+    ):
         issues.append(Issue(manifest, "ignored manifest"))
-    if require_tracked and not _tracked(manifest):
+    if require_tracked and not (
+        path_state.is_tracked(manifest)
+        if path_state is not None
+        else _tracked(manifest)
+    ):
         issues.append(Issue(manifest, "untracked manifest"))
     try:
         data = _load_manifest(manifest)
@@ -298,6 +417,8 @@ def validate_manifest(
             entry,
             use_git_blob=use_git_blob,
             source_commit=source_commit if use_git_blob else None,
+            blob_reader=blob_reader,
+            path_state=path_state,
         )
         if raw is None or tracked_source is None:
             issues.append(
@@ -308,7 +429,11 @@ def validate_manifest(
                 )
             )
             continue
-        if _ignored(tracked_source):
+        if (
+            path_state.is_ignored(tracked_source)
+            if path_state is not None
+            else _ignored(tracked_source)
+        ):
             issues.append(
                 Issue(
                     manifest,
@@ -316,7 +441,11 @@ def validate_manifest(
                     f"{_repo_relative(tracked_source)}",
                 )
             )
-        if require_tracked and not _tracked(tracked_source):
+        if require_tracked and not (
+            path_state.is_tracked(tracked_source)
+            if path_state is not None
+            else _tracked(tracked_source)
+        ):
             issues.append(
                 Issue(
                     manifest,
@@ -353,7 +482,12 @@ def _set_digest(record: dict[str, Any], digest: dict[str, Any]) -> None:
         record["size"] = digest["bytes"]
 
 
-def rewrite_manifests(*, use_git_blob: bool = False) -> list[Issue]:
+def rewrite_manifests(
+    *,
+    use_git_blob: bool = False,
+    blob_reader: _GitBlobBatch | None = None,
+    path_state: _GitPathState | None = None,
+) -> list[Issue]:
     """Canonicalize text and rewrite digests from worktree or staged Git bytes."""
 
     issues: list[Issue] = []
@@ -366,8 +500,20 @@ def rewrite_manifests(*, use_git_blob: bool = False) -> list[Issue]:
             issues.append(Issue(manifest, f"cannot load manifest: {exc}"))
             continue
         entries_by_manifest[manifest] = list(iter_manifest_entries(manifest, data))
+        source_commit = data.get("source_commit") if use_git_blob else None
+        if source_commit is not None and (
+            not isinstance(source_commit, str) or not _git_commit_exists(source_commit)
+        ):
+            issues.append(Issue(manifest, "source_commit is unavailable or invalid"))
+            continue
         for entry in entries_by_manifest[manifest]:
-            raw, source = _artifact_bytes(entry, use_git_blob=use_git_blob)
+            raw, source = _artifact_bytes(
+                entry,
+                use_git_blob=use_git_blob,
+                source_commit=source_commit if use_git_blob else None,
+                blob_reader=blob_reader,
+                path_state=path_state,
+            )
             if raw is None or source is None:
                 issues.append(Issue(manifest, f"missing artifact: {entry.label}"))
                 continue
@@ -403,23 +549,63 @@ def parse_args(argv: Iterable[str]) -> argparse.Namespace:
     return parser.parse_args(list(argv))
 
 
+def _path_state_for_manifests(manifests: Sequence[Path]) -> _GitPathState:
+    paths: list[Path] = list(manifests)
+    for manifest in manifests:
+        try:
+            data = _load_manifest(manifest)
+        except (OSError, json.JSONDecodeError, ValueError):
+            continue
+        paths.extend(entry.target for entry in iter_manifest_entries(manifest, data))
+    return _GitPathState.from_paths(paths)
+
+
+def _validate_all(
+    manifests: Sequence[Path], *, require_tracked: bool, use_git_blob: bool
+) -> list[Issue]:
+    if not use_git_blob:
+        return [
+            issue
+            for manifest in manifests
+            for issue in validate_manifest(
+                manifest, require_tracked=require_tracked, use_git_blob=False
+            )
+        ]
+    state = _path_state_for_manifests(manifests)
+    with _GitBlobBatch() as reader:
+        return [
+            issue
+            for manifest in manifests
+            for issue in validate_manifest(
+                manifest,
+                require_tracked=require_tracked,
+                use_git_blob=True,
+                blob_reader=reader,
+                path_state=state,
+            )
+        ]
+
+
 def main(argv: Iterable[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
     if args.rewrite:
-        issues = rewrite_manifests(use_git_blob=args.git_blob)
+        manifests = discover_manifests()
+        if args.git_blob:
+            state = _path_state_for_manifests(manifests)
+            with _GitBlobBatch() as reader:
+                issues = rewrite_manifests(
+                    use_git_blob=True, blob_reader=reader, path_state=state
+                )
+        else:
+            issues = rewrite_manifests(use_git_blob=False)
         if issues:
             for issue in issues:
                 print(f"ERROR {issue.manifest}: {issue.message}")
             return 1
-    issues = [
-        issue
-        for manifest in discover_manifests()
-        for issue in validate_manifest(
-            manifest,
-            require_tracked=args.require_tracked,
-            use_git_blob=args.git_blob,
-        )
-    ]
+    manifests = discover_manifests()
+    issues = _validate_all(
+        manifests, require_tracked=args.require_tracked, use_git_blob=args.git_blob
+    )
     if issues:
         for issue in issues:
             print(f"ERROR {issue.manifest}: {issue.message}")
