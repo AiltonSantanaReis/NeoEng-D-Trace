@@ -129,7 +129,7 @@ def test_runtime_capability_negotiation_requires_explicit_safe_fallback() -> Non
 
     assert [item.compatibility for item in report.decisions] == [
         Compatibility.NATIVE,
-        Compatibility.DEGRADED,
+        Compatibility.NATIVE,
         Compatibility.INCOMPATIBLE,
     ]
     assert report.accepted is False

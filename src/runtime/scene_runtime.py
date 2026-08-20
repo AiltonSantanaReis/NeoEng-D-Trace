@@ -40,6 +40,7 @@ _SUPPORTED_CAPABILITIES = frozenset(
         "runtime.fixed_update",
         "runtime.cancellation",
         "runtime.rollback",
+        "runtime.lighting",
     }
 )
 

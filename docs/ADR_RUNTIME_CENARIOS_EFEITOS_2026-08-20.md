@@ -1,8 +1,9 @@
 # ADR — Runtime de cenários, efeitos e validação portátil
 
-**Status:** aceito para planejamento; implementação não iniciada
+**Status:** Etapa 1 concluída; Etapa 2 em implementação
 **Data:** 20 de agosto de 2026
-**Base:** `main` no merge `31d94b0`
+**Base:** `main` no merge `7e190b4`
+**Estado de execução:** A Etapa 1 foi encerrada após a PR #113 (`84dfee7`) e a PR documental #114 (`7e190b4`). A Etapa 2 iniciou sua implementação na branch de trabalho atual; sua decisão final permanece pendente dos gates próprios.
 **Planos relacionados:**
 
 - `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
