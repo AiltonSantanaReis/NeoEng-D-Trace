@@ -1,16 +1,17 @@
 - ADENDO_INTEGRIDADE_ARTEFATOS_2026-08-16.md — correção da cadeia de bytes, bloqueio de manifests e limites históricos declarados; não é aprovação de merge.
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
-- `RECONCILIACAO_GATE_GLOBAL_2026-08-20.md` — reconciliação do gate por blobs Git,
-  preservação de snapshots históricos e causa raiz documentada; local aprovado,
-  CI remoto ainda pendente.
-- `ETAPA_1_RUNTIME_BASE_2026-08-20.md` — auditoria integral do runtime base
-  determinístico, com 1421 testes aprovados, 2 skips históricos, 62 manifests
-  validados e artefatos hashados; bloqueado até CI remoto.
-- `artifacts/runtime-base-phase1-2026-08-20/` — logs, relatório e índice
-  reproduzíveis da auditoria da Fase 1.
+- `RECONCILIACAO_GATE_GLOBAL_2026-08-20.md` — snapshot pré-merge da reconciliação
+  do gate por blobs Git; preservado sem reescrita retroativa.
+- `ETAPA_1_RUNTIME_BASE_2026-08-20.md` — snapshot pré-merge da auditoria do
+  runtime base; preservado sem reescrita retroativa.
+- `artifacts/runtime-base-phase1-2026-08-20/` — pacote pré-merge preservado.
+- `ETAPA_1_RUNTIME_BASE_ENCERRAMENTO_POS_MERGE_2026-08-20.md` — encerramento
+  pós-merge formal da Etapa 1; decisão APROVADO no escopo definido.
+- `artifacts/runtime-base-phase1-postmerge-2026-08-20/` — pacote hashado da
+  auditoria reproduzível no merge `84dfee7`.
 # Evidências de validação
 
-Estado vivo após os merges das PRs 108 e 110: a Etapa 5 está integrada pelo merge 57f29d4 e a Etapa 6 pelo merge ecbaab6. O CI 32321900264 e o CI 32336447483 foram aprovados em Linux e Windows. O pacote hashado da Etapa 6 está em artifacts/stage6-professional-scene-2026-08-20/. Isso não constitui aprovação automática de release.
+Estado vivo em 20 de agosto de 2026: a Etapa 1 foi encerrada formalmente no merge `84dfee7` da PR `#113`; o CI `32362255134` foi aprovado em Linux e Windows e a validação pós-merge local confirmou 1421 testes aprovados e 2 skips históricos. O pacote de encerramento está listado acima. As Etapas 5 e 6 permanecem registradas pelos seus respectivos merges e evidências. Isso não constitui aprovação automática de release.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
 - `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; evidência da implementação integrada.

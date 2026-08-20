@@ -1,0 +1,41 @@
+{
+  "files": {
+    "black_check.log": {
+      "bytes": 68,
+      "sha256": "f1224edae245846f070013286d07e65cdb037bfac8bf95b18131e72d807c8981"
+    },
+    "evidence_integrity.log": {
+      "bytes": 51,
+      "sha256": "77e7d8b9d094b5ae645067d7f042f5758ff7c47afcc38e40788fbd68be8027ae"
+    },
+    "flake8.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "focused_pytest.log": {
+      "bytes": 619,
+      "sha256": "f398df76584c0540eb5015a129368f6528a0d75fa1c698e4c750f2eb92dfc707"
+    },
+    "full_pytest.log": {
+      "bytes": 10878,
+      "sha256": "8c88eb3e72c6707a8db85e222243014b32c41c912d4d1b8f179b4a4e4c8e3faa"
+    },
+    "git_diff_check.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mypy.log": {
+      "bytes": 43,
+      "sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    "py_compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "runtime-base-report.json": {
+      "bytes": 2676,
+      "sha256": "756d4e15ca52f62375fc6498db191752e0450ea8d5dd2b4e0d52e9b2df430e65"
+    }
+  },
+  "schema_version": 1
+}
