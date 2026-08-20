@@ -109,6 +109,9 @@ NÃ£o fazem parte desta fase e permanecem **nÃ£o testados/nÃ£o concluÃ­do
 - partÃ­culas persistidas como estado transitÃ³rio ou replay salvo em arquivo; somente o estado autoral Ã© persistido por contrato;
 - triggers, streaming e runtime completo da engine.
 
+## Falha do primeiro CI e correção
+
+A execução remota `32404980740` falhou nos jobs Linux `96541819933` e Windows `96541820201` antes dos testes, no gate `Verify clean baseline manifest`. A causa confirmada foi a alteração posterior de `docs/evidence/README.md` sem regenerar o `baseline_manifest.json` correspondente. A falha não foi mascarada nem tratada como PASS; o baseline foi regenerado contra os blobs staged, a integridade de evidências foi revalidada e o fix será submetido em novo SHA para nova execução integral do CI.
 ## DecisÃ£o
 
 **APROVADO LOCALMENTE NO ESCOPO DA RUNTIME-ETAPA-4, NÃƒO INTEGRADO.** A implementaÃ§Ã£o, os testes locais, a auditoria fail-closed e os artefatos reproduzÃ­veis estÃ£o concluÃ­dos neste checkpoint. A etapa sÃ³ poderÃ¡ ser considerada formalmente concluÃ­da apÃ³s validaÃ§Ã£o dos bytes rastreados, atualizaÃ§Ã£o do baseline/manifesto, revisÃ£o do diff, PR, CI obrigatÃ³rio Linux/Windows, merge normal e validaÃ§Ã£o pÃ³s-merge. AtÃ© lÃ¡, nÃ£o declarar a capacidade como integrada em `main` nem promover release.
