@@ -5541,8 +5541,8 @@
       "size": 8319
     },
     "src/persistence/scene_authoring_schema.py": {
-      "sha256": "6edd8d84f82b2364b71e9a20a6da1af0383843429cba34b31e33389b63731d88",
-      "size": 16042
+      "sha256": "6dbb269a0eea658d74d159e4613651138bd061b389f71abb8e3f7a57e3c3cfae",
+      "size": 16038
     },
     "src/physics/__init__.py": {
       "sha256": "8734b0cf141de1a9dc2d75c3b32a3c630ad5b796faff155b173a2e2063215ed3",
