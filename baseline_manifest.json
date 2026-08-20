@@ -253,8 +253,8 @@
       "size": 5053
     },
     "docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md": {
-      "sha256": "31b63eb4122384d902c93db035834c206efd3a8c4f599ac7a6b0fd200e77ccf3",
-      "size": 4220
+      "sha256": "b68c7954da7df9bb074bc2a0a00dde9c1e139304711448e2951503670e2efc36",
+      "size": 4281
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -596,6 +596,10 @@
       "sha256": "05024bb4507d40b3f5427e284a9b56e16dcc82d6fd4188c35160d6a383812334",
       "size": 4792
     },
+    "docs/evidence/ETAPA_4_EDITOR_PROFISSIONAL_PREVIEW_POS_MERGE_2026-08-19.md": {
+      "sha256": "0750ceaaed452f9a8eb0b0941fe64fffedecdc397b323cfc2403aec83815e451",
+      "size": 2290
+    },
     "docs/evidence/ETAPA_4_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2d1b73cabc3bf15dbdb28d74d7842374bee3c035b8a7932f9b44cef4c6b07cfb",
       "size": 7651
@@ -611,6 +615,10 @@
     "docs/evidence/ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md": {
       "sha256": "fd6aa8b3112b6167b46f62fdb40f36ba458b72605da904361bcad77dbb70ffb5",
       "size": 3695
+    },
+    "docs/evidence/ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md": {
+      "sha256": "5e7e6949f42935c071d1a1b54bd680578ef3f4e3a9ab7fa4512b73d331d50039",
+      "size": 4210
     },
     "docs/evidence/ETAPA_5_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "4ce97c185650844321d42f158896c3aa8d851358dedb81820cfaca360614828f",
@@ -789,8 +797,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "5833389a96eaa1cf01c842c3c83808b90845d2c9ec52dda94b0c1f100871ed82",
-      "size": 34307
+      "sha256": "9946e1227f9476b3111ce0725512c3f1d9c2e9acb69147bf285f36330a1e1a16",
+      "size": 34447
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -4216,6 +4224,46 @@
       "sha256": "b289ed758fae15d3d24ce834ea4d7adb471d3afa69c0b356f9cdf47420e310fb",
       "size": 867
     },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/godot-negative-hash.log": {
+      "sha256": "a6c538ab5ad44429fb300f058fda5536069433685eb352f138e3357672405b54",
+      "size": 3292
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/godot-positive.log": {
+      "sha256": "fadc373f13284e53f63e2db95f2136bda9895ab134d9ba25c11f5da67bfdf4ba",
+      "size": 2641
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/hero-unity.png": {
+      "sha256": "010217fefacff21fec538b7e961cc4e00fe0e2b3a64b919211603d9d43647a5f",
+      "size": 78
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/hero.png": {
+      "sha256": "010217fefacff21fec538b7e961cc4e00fe0e2b3a64b919211603d9d43647a5f",
+      "size": 78
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/scene-authoring.godot.json": {
+      "sha256": "600075344b2bc1a7f062a171d8a7cc5e6523059bb5002104080f5d1b1c75a80e",
+      "size": 2900
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/scene-authoring.unity.json": {
+      "sha256": "880ed07ca79cf75c28f61c16556c241a4fd577658f623e43f2748590eac7901f",
+      "size": 2900
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/stage5-report.json": {
+      "sha256": "7695a9179040c3d41994f90b3284419c5cac2dd57f6c24f1ca1edbd217d47fb5",
+      "size": 940
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/unity-negative-hash.log": {
+      "sha256": "8bf359f4475a8d95a5db854ca1761944f138c080a76ab62f2f69a56823a11e26",
+      "size": 55620
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/unity-positive.log": {
+      "sha256": "56bff0612c94116b5f0db4cfbe9a8c4e87e288af4609eaea3815c588e5e0e9cd",
+      "size": 55819
+    },
+    "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/unity-stage5-report.json": {
+      "sha256": "551e1d1ea44939c1f030af9983eeed532d0970ca7698df7ed9b9d1f22276b6d0",
+      "size": 1149
+    },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
       "size": 8446
@@ -4785,8 +4833,12 @@
       "size": 177
     },
     "integrations/godot/addons/neoeng_d_trace/plugin.gd": {
-      "sha256": "10135739865296d9d3b3cadc61f044098bbbc85b3cf332e95ba5a5fb6249953b",
-      "size": 3754
+      "sha256": "07dc351062362f997003dd3583e4ca16f3b9dd02f75c9f936648c74c7fb7b459",
+      "size": 4560
+    },
+    "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd": {
+      "sha256": "992cc7027174fe91b6324229986e6a73e6465331c6e850b94aa673c6d24309a6",
+      "size": 12722
     },
     "integrations/godot/addons/neoeng_d_trace/scenario_importer.gd": {
       "sha256": "e2caf412cfab56c9c818192b45feb2655efd5931941175814df02a3ccdaf1106",
@@ -4819,6 +4871,14 @@
     "integrations/unity/package/com.neoeng.dtrace/Editor/PackageDiagnostics.cs.meta": {
       "sha256": "b7f4a60f0ba46a8cd7108fd4fd2ac8881e503e1c99d484a6146583a5ff80ada9",
       "size": 59
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs": {
+      "sha256": "7d640774a2443ce2877ecddb8c7c90b689d5018fa3071f071af3ba4409c28672",
+      "size": 18518
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs.meta": {
+      "sha256": "332b0eba46d31578dfbcbe807ba64a406cd6d8e118e4345e606a2c71baa619d3",
+      "size": 251
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ScenarioImportGenerator.cs": {
       "sha256": "62d399957ee5c3d8a0e2dd18c80ccdc2a8820024994cb809e25b73ea8a5cdf4b",
@@ -4903,6 +4963,14 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedTilesetMetadata.cs.meta": {
       "sha256": "5a6925e299ae2c979960fa63e0a913153fdacbfff95c07fa73aab9d484510f6e",
       "size": 60
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalSceneMetadata.cs": {
+      "sha256": "c7e6a8440071602bffedef6d658d3d2cef449e26fbac1d912cb7cb3e3f75cca4",
+      "size": 1367
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalSceneMetadata.cs.meta": {
+      "sha256": "074df858c8a891d23f36a2dcec3b11587498981ba31b9ad78f15cb8266870048",
+      "size": 251
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngScenarioMetadata.cs": {
       "sha256": "808e335fbf9e02067feda908bb46dab9bf3763073fa1da972472f6a1de7d679b",
@@ -5148,6 +5216,14 @@
       "sha256": "f82e8fda46437c2e92e8c9bcdfa901a0c5ae4914649522191a3895df1c4afe30",
       "size": 17484
     },
+    "scripts/audit_professional_scene_stage5.py": {
+      "sha256": "76961a86da08abf534fa28f042b143a3ae5314f9e3ff5dd07104526a7b671fcd",
+      "size": 8664
+    },
+    "scripts/audit_professional_scene_stage5_unity.py": {
+      "sha256": "19115414eedfff8cc70c622997151a5060a59dc5e3e64d059c744331e8136099",
+      "size": 7783
+    },
     "scripts/audit_scenario_authoring.py": {
       "sha256": "5680b36fc6e43a147f5ef4f5d9de148c07f9fb6c89c1af0bdb9c65e086648290",
       "size": 10452
@@ -5197,8 +5273,8 @@
       "size": 13696
     },
     "scripts/audit_unity_package_stage5.py": {
-      "sha256": "43f72eb1619b9ea0a03ca912a616af14130a3c4d8c392ecf85b7e5d25f526438",
-      "size": 11772
+      "sha256": "72db54207ff20b63519ec97bb3ecc04ad7c6b22eafbeeb84c7e16c8fffc86f86",
+      "size": 11755
     },
     "scripts/audit_unity_sync_stage7.py": {
       "sha256": "6c915dcb4e7e50916407fb935ddfc6e71b4cfdbdddbef7215053b39182b52aca",
@@ -5408,6 +5484,10 @@
       "sha256": "67005434793cedf38bb4caf58ac5d222eb986c4222f561c223be4230e0a556e3",
       "size": 9339
     },
+    "src/exporters/scene_authoring_export.py": {
+      "sha256": "ef0696046d8f287237a7840ecc71cc70b9b4f11fbf61207e94c31c902664067a",
+      "size": 11066
+    },
     "src/exporters/sprite_exporter.py": {
       "sha256": "9cd55c379fe0fd12c1ff194e42dfb7efc0fc703572730e32b1749797f836b5c4",
       "size": 7018
@@ -5429,8 +5509,8 @@
       "size": 26555
     },
     "src/persistence/__init__.py": {
-      "sha256": "1a9f403718c43470f3e25487e44f4f67446df056083b64da8a81c66e8f2a0330",
-      "size": 1998
+      "sha256": "60291c2bc19817c6d929e804bcb9094cec872c58895b8c6966e74f3139d0f785",
+      "size": 2696
     },
     "src/persistence/autosave.py": {
       "sha256": "99c52a642c61161a00d9a023a6f2875ce0734c45839481b311a535cd116e9224",
@@ -5456,9 +5536,13 @@
       "sha256": "4999b311be46471bc75e9bc9e58d9f0c941714cc850eb19b46b31a2323c35e44",
       "size": 5889
     },
+    "src/persistence/scene_authoring_io.py": {
+      "sha256": "02e1e3f4ed3e09782f1c0d1b05d159c8219b9c7c0c450c453a1434a72e86be26",
+      "size": 8319
+    },
     "src/persistence/scene_authoring_schema.py": {
-      "sha256": "0200e5761b797578fc8456480aea0c1eb614a34ca3bc59f70c3c14e474bb5234",
-      "size": 16011
+      "sha256": "6dbb269a0eea658d74d159e4613651138bd061b389f71abb8e3f7a57e3c3cfae",
+      "size": 16038
     },
     "src/physics/__init__.py": {
       "sha256": "8734b0cf141de1a9dc2d75c3b32a3c630ad5b796faff155b173a2e2063215ed3",
@@ -5777,8 +5861,8 @@
       "size": 16939
     },
     "tests/test_godot_plugin_scaffold.py": {
-      "sha256": "9c4d594dd56f87d761caadff2d2bbc55e5db1649165435ba012c1e9c3964b046",
-      "size": 2430
+      "sha256": "1e0e80f7dba5a3e4e69d0903e7a385c25597c4d4bfcddeccd5f2a6ded2b30141",
+      "size": 2588
     },
     "tests/test_grabcut_pipeline.py": {
       "sha256": "441a8c924b84b9feb664fca6c7ed948d8734390644c9be145ff84a5993941764",
@@ -5935,6 +6019,14 @@
     "tests/test_stage4b5_quality.py": {
       "sha256": "06ffb07ffbe013c6eba9fc578f0436e9e7c4e3cbbf544449e1559038ea8294e6",
       "size": 1687
+    },
+    "tests/test_stage5_professional_adapters.py": {
+      "sha256": "938d9979c7fe7619e5815106c5ba42d5c891a8060991bd36ce47bcdade14b36b",
+      "size": 2459
+    },
+    "tests/test_stage5_scene_authoring_persistence.py": {
+      "sha256": "7cbb70601aaeaaa09d4e78433db2e995233580f5fb797a309ef6e981274773fd",
+      "size": 13277
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
@@ -6195,6 +6287,10 @@
     "tools/godot_plugin_stage4_validator.gd": {
       "sha256": "8a2faf080fd2de33632e42f064a59cd63bd5d82f223b6ca2dbbd352d17878bad",
       "size": 9918
+    },
+    "tools/godot_professional_scene_stage5_validator.gd": {
+      "sha256": "c9640318404b3b7924b98c25bc57e4144ad42bffc69dffd23106ec8b3779c260",
+      "size": 2092
     },
     "tools/godot_scenario_stage4b4_validator.gd": {
       "sha256": "92a89513e09c5437424f330827f67a344ec4217bbc1c83c5584135c0e3ed0a52",

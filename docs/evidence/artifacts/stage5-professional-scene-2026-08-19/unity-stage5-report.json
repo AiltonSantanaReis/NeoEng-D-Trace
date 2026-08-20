@@ -1,0 +1,40 @@
+{
+  "artifacts": {
+    "asset": {
+      "bytes": 78,
+      "sha256": "010217fefacff21fec538b7e961cc4e00fe0e2b3a64b919211603d9d43647a5f"
+    },
+    "export": {
+      "bytes": 2900,
+      "sha256": "880ed07ca79cf75c28f61c16556c241a4fd577658f623e43f2748590eac7901f"
+    }
+  },
+  "engine": "unity",
+  "engine_version": "6000.5.7f1",
+  "negative_hash": {
+    "diagnostic_lines": [
+      "[Licensing::Module] Error: Access token is unavailable; failed to update",
+      "Curl error 42: Callback aborted"
+    ],
+    "expected_hash_rejection": true,
+    "failure_marker": true,
+    "layers": null,
+    "log_sha256": "8bf359f4475a8d95a5db854ca1761944f138c080a76ab62f2f69a56823a11e26",
+    "objects": null,
+    "returncode": 1,
+    "success_marker": false
+  },
+  "positive": {
+    "diagnostic_lines": [
+      "[Licensing::Module] Error: Access token is unavailable; failed to update",
+      "Curl error 42: Callback aborted"
+    ],
+    "failure_marker": false,
+    "layers": 1,
+    "log_sha256": "56bff0612c94116b5f0db4cfbe9a8c4e87e288af4609eaea3815c588e5e0e9cd",
+    "objects": 1,
+    "returncode": 0,
+    "success_marker": true
+  },
+  "schema_version": 1
+}

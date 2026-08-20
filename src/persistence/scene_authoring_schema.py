@@ -3,7 +3,8 @@
 This contract is intentionally separate from ``ScenarioDocumentV1`` and from
 the existing ``.ndtproj`` v1 document. It models authored scene objects and
 their assets without changing the meaning of any existing project field.
-Persistence and engine adapters are implemented in later plan stages.
+Persistence is provided by `scene_authoring_io` and engine adapters by
+`scene_authoring_export`.
 """
 
 from __future__ import annotations

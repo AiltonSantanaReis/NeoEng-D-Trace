@@ -2,7 +2,7 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
-Estado vivo após o merge da PR `#106`: a Etapa 3 do editor profissional está integrada no `main` pelo merge `f477b6d`; o CI pós-merge `32306687719` foi aprovado em Linux e Windows. A Etapa 4 do plano profissional está em execução nesta linha de desenvolvimento e ainda não está integrada. Isso não constitui aprovação automática de release.
+Estado vivo após o merge da PR `#107`: a Etapa 4 do editor profissional está integrada no `main` pelo merge `19f3cfd`; o CI `32314410332` foi aprovado em Linux e Windows. A Etapa 5 foi implementada e validada localmente com testes Python e execuções reais Godot/Unity, mas ainda depende dos gates de PR/CI antes de ser considerada integrada. Isso não constitui aprovação automática de release.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
 - `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; evidência da implementação integrada.
@@ -113,7 +113,8 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 
 - ETAPA_1_CENARIOS_PROFISSIONAIS_2026-08-19.md — baseline e contratos da extensão profissional de autoria visual de cenários; permanece pendente até o fechamento do baseline e dos gates.
 - `ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md` — snapshot histórico da implementação do editor profissional; a integração atual foi encerrada pelo merge `f477b6d` e CI `32306687719`. Não reescrever este snapshot para representar a Etapa 4.
-- ETAPA_4_EDITOR_PROFISSIONAL_PREVIEW_2026-08-19.md — Etapa 4 aprovada localmente com contrato v2, câmera/parallax, sockets tipados, 70 testes focados, suíte completa, capturas em três resoluções e auditoria visual PASS; PR/CI/merge ainda pendentes.
+- `ETAPA_4_EDITOR_PROFISSIONAL_PREVIEW_2026-08-19.md` — snapshot histórico pré-merge da Etapa 4; preservado sem reescrita retroativa.
+- `ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md` — persistência V1/V2, exportação genérica/Godot/Unity, adaptadores nativos reais e casos negativos de hash; validação local concluída, PR/CI pendentes.
 
 ## Evidências registradas
 

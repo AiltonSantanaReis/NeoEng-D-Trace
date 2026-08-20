@@ -1,0 +1,35 @@
+{
+  "artifacts": {
+    "asset": {
+      "bytes": 78,
+      "sha256": "010217fefacff21fec538b7e961cc4e00fe0e2b3a64b919211603d9d43647a5f"
+    },
+    "export": {
+      "bytes": 2900,
+      "sha256": "600075344b2bc1a7f062a171d8a7cc5e6523059bb5002104080f5d1b1c75a80e"
+    }
+  },
+  "engine": "godot",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "negative_hash": {
+    "failure_marker": true,
+    "hash_rejection": true,
+    "layers": null,
+    "log_sha256": "a6c538ab5ad44429fb300f058fda5536069433685eb352f138e3357672405b54",
+    "objects": null,
+    "preimport_returncode": 0,
+    "returncode": 1,
+    "success_marker": false
+  },
+  "positive": {
+    "failure_marker": false,
+    "hash_rejection": false,
+    "layers": 1,
+    "log_sha256": "fadc373f13284e53f63e2db95f2136bda9895ab134d9ba25c11f5da67bfdf4ba",
+    "objects": 1,
+    "preimport_returncode": 0,
+    "returncode": 0,
+    "success_marker": true
+  },
+  "schema_version": 1
+}
