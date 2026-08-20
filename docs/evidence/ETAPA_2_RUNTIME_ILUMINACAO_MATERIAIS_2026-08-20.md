@@ -14,9 +14,9 @@
 - Python: `3.11.9`
 - Dependências: ambiente `.venv` do projeto, lockfile validado pelo CI
 - Baseline contra blobs Git antes do pacote: `1677 files`
-- Baseline final staged após incluir os pacotes r1 e r2: `1700 files` — PASS.
+- Baseline final staged após incluir os pacotes r1, r2 e r3: `1711 files` — PASS.
 - Manifests de evidência validados antes do pacote: `64`
-- Manifests finais staged após incluir os pacotes r1 e r2: `66` — PASS.
+- Manifests finais staged após incluir os pacotes r1, r2 e r3: `67` — PASS.
 
 ## Objetivo e escopo
 
@@ -73,6 +73,8 @@ Windows; não foram criados nem alterados nesta etapa.
 - `artifact-index.json`: 1406 bytes; SHA-256 `48d84c41339b38eecca73f8ce83e33ee7bb157225aefb4ccc87e18d3d26abf60`.
 - `runtime-lighting-phase2-2026-08-20-r2/runtime-lighting-report.json`: 3698 bytes; SHA-256 `72eec64f0b969351a860642851e31527faca9701a8822c9697db8b01068d558b`.
 - `runtime-lighting-phase2-2026-08-20-r2/artifact-index.json`: 1406 bytes; SHA-256 `856da03ec0c05d63bcf3ea3460c6d005662ca74060c1beb93c7255e2b96e2ddc`.
+- `runtime-lighting-phase2-2026-08-20-r3/runtime-lighting-report.json`: 3698 bytes; SHA-256 `38d164ace749ecfd32ef511a33ddd8fbfd7b372f79f0501d89aee8228a32e7ef`.
+- `runtime-lighting-phase2-2026-08-20-r3/artifact-index.json`: 1406 bytes; SHA-256 `ad21371bb5283908022e907efe0ad1bc4f590811e858ad4df285f0e7401eb5`.
 - Os logs individuais de cada gate estão no mesmo diretório e são indexados
   pelo `artifact-index.json`.
 
@@ -131,3 +133,22 @@ O primeiro CI falho permanece registrado como evento histórico e não foi
 apagado ou reinterpretado. A PR #115 requer nova execução remota após o fix;
 portanto a decisão continua **NÃO APROVADO** até Linux e Windows concluírem
 com sucesso e a validação pós-merge ser realizada.
+
+## Revalidação após a política de cobertura da PR #115
+
+A segunda execução do CI da PR #115 (run `32375964745`) corrigiu o isort em
+Linux e Windows e executou `1442 passed, 2 skipped`, mas o job Linux falhou
+legitimamente na política integrada de cobertura: `84,94%` de branches contra
+o mínimo imutável de `85,00%`. A cobertura de linhas foi `90,91%` e passou.
+
+A causa foi cobertura insuficiente de ramos introduzidos no contrato de
+iluminação, não uma alteração da política. Foram adicionados testes reais para
+a gravação atômica, destinos inválidos e sockets sem manifesto ou com identidade
+desconhecida. A execução local oficial passou com `1442 passed, 2 skipped`,
+linhas `91,00%` e a política integrada PASS.
+
+O auditor r3 foi executado no commit `4038bac7a28d756db3cfeffa8710929e55d0ec8a`,
+com worktree limpo e `status: PASS`; seu pacote está em
+`docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/`.
+O evento de cobertura falho permanece preservado; a PR #115 requer nova
+execução remota após este fix.

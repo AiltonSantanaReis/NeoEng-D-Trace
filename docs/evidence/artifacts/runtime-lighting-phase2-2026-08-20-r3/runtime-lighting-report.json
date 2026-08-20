@@ -1,0 +1,105 @@
+{
+  "checks": {
+    "baseline_integrity": true,
+    "black_check": true,
+    "evidence_integrity": true,
+    "flake8": true,
+    "focused_pytest": true,
+    "full_pytest": true,
+    "git_diff_check": true,
+    "mypy": true,
+    "py_compile": true
+  },
+  "contract": {
+    "fallback": "unlit material or explicit incompatible capability decision",
+    "lighting_api_version": 1,
+    "lighting_format_id": "neoeng-d-trace-runtime-lighting",
+    "lighting_schema_version": 1,
+    "material_modes": [
+      "lit",
+      "unlit"
+    ],
+    "source_format_id": "neoeng-d-trace-scenario-runtime",
+    "source_schema_version": 1,
+    "supported_kinds": [
+      "point",
+      "directional",
+      "spot"
+    ]
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9"
+  },
+  "generated_at_utc": "2026-08-20T13:58:25+00:00",
+  "limitations": [
+    "Preview is a deterministic structural colour evaluation, not GPU rasterization.",
+    "This phase does not implement shaders, particles, post-processing, triggers or streaming.",
+    "Hardware-specific GPU, VRAM, driver and FPS behaviour remains outside this portable gate.",
+    "Godot and Unity runtime reproduction belongs to the later adapter phase."
+  ],
+  "results": [
+    {
+      "command": "-m pytest -q tests/test_stage1_runtime_base.py tests/test_stage2_runtime_lighting.py tests/test_stage2_runtime_lighting_hardening.py tests/test_stage4b4_scenario_export.py tests/test_scenario_schema_io.py --tb=short",
+      "label": "focused_pytest",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "-m pytest -q --tb=short",
+      "label": "full_pytest",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "-m black --check src/runtime tests/test_stage1_runtime_base.py tests/test_stage2_runtime_lighting.py tests/test_stage2_runtime_lighting_hardening.py tests/test_stage4b4_scenario_export.py tests/test_scenario_schema_io.py scripts/audit_runtime_lighting_phase2.py",
+      "label": "black_check",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "-m flake8 src/runtime tests/test_stage1_runtime_base.py tests/test_stage2_runtime_lighting.py tests/test_stage2_runtime_lighting_hardening.py tests/test_stage4b4_scenario_export.py tests/test_scenario_schema_io.py scripts/audit_runtime_lighting_phase2.py",
+      "label": "flake8",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "-m mypy src/runtime",
+      "label": "mypy",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "-m py_compile src/runtime/lighting.py src/runtime/scene_runtime.py src/runtime/__init__.py tests/test_stage1_runtime_base.py tests/test_stage2_runtime_lighting.py tests/test_stage2_runtime_lighting_hardening.py tests/test_stage4b4_scenario_export.py tests/test_scenario_schema_io.py scripts/audit_runtime_lighting_phase2.py",
+      "label": "py_compile",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "tools/baseline_integrity.py --verify --git-blob",
+      "label": "baseline_integrity",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "tools/evidence_integrity.py --require-tracked --git-blob",
+      "label": "evidence_integrity",
+      "passed": true,
+      "returncode": 0
+    },
+    {
+      "command": "git_diff_check",
+      "label": "git_diff_check",
+      "passed": true,
+      "returncode": 0
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "branch": "Ailton/runtime-phase2-lighting-materials",
+    "commit": "4038bac7a28d756db3cfeffa8710929e55d0ec8a",
+    "worktree_clean": true
+  },
+  "stage": "runtime-lighting-materials-phase2",
+  "status": "PASS"
+}

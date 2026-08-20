@@ -3,7 +3,7 @@
 **Status:** Etapa 1 concluída; Etapa 2 em validação remota
 **Data:** 20 de agosto de 2026
 **Base:** `main` no merge `7e190b4`
-**Estado de execução:** A Etapa 1 foi encerrada após a PR #113 (`84dfee7`) e a PR documental #114 (`7e190b4`). A Etapa 2 está na PR #115; o primeiro CI registrou falha de isort, corrigida no commit `43733cb`, e aguarda nova execução remota. Sua decisão final permanece pendente dos gates próprios.
+**Estado de execução:** A Etapa 1 foi encerrada após a PR #113 (`84dfee7`) e a PR documental #114 (`7e190b4`). A Etapa 2 está na PR #115; o primeiro CI registrou falha de isort, corrigida no commit `43733cb`, e o segundo registrou cobertura de branches `84,94% < 85,00%`, corrigida com testes no commit `4038bac`. A nova execução remota e a decisão final permanecem pendentes.
 **Planos relacionados:**
 
 - `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
