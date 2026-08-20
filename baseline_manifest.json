@@ -45,8 +45,8 @@
       "size": 1673
     },
     "README.md": {
-      "sha256": "50086db103f55daf14adf701af63ca9c93be2d1624789152a9fee80454588007",
-      "size": 11154
+      "sha256": "3e958c98f251b061434c8d3a836932478ae7fc9ae14be6a372b95e6d0be76cd5",
+      "size": 11173
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "198b956078fdd19ad89f6e165bef042cf7e3359c70d3c2570a49babf873c1608",
-      "size": 11950
+      "sha256": "8c564bb61a6f386cb8a198724091df59ad0b32937b7f33dd1d749bbd7f0db64d",
+      "size": 11936
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -249,8 +249,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "4fefc00ab6aa061251c3f9122aa2a38be4476ad356d9fc5a323502854ed8eeb5",
-      "size": 19733
+      "sha256": "1aead8df379738d334e3bb3cc10e2062239fefb2be65198036f2f5dc3eafb713",
+      "size": 19645
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "59de520a30f0f4fad9474ed56466aabf02881512da5e1d99e7975916cb479ed7",
@@ -716,6 +716,10 @@
       "sha256": "9ca5c0657d2d92d9fa05515aec3935d0b7a5283f0ec429d3f476baae8981feb1",
       "size": 6405
     },
+    "docs/evidence/ETAPA_5_RUNTIME_POS_PROCESSAMENTO_ENCERRAMENTO_POS_MERGE_2026-08-20.md": {
+      "sha256": "cbf9756211bd9154eda75978946c87ea98631ef522d602fb61505fbed2040cd1",
+      "size": 2536
+    },
     "docs/evidence/ETAPA_6_CENARIOS_PROFISSIONAIS_2026-08-20.md": {
       "sha256": "a5b2d51015fd9e7ad61c67500009bba0da4892bdf8be866eada5c56232d4fbca",
       "size": 5039
@@ -833,8 +837,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "05ea4c74e225a325d586e5d5ae5c186ae76413ed9c25375386efc7be0efe3c56",
-      "size": 37844
+      "sha256": "37c53a341f80cad23f5ce4ed352145c455a6622ad653bea7e1e7d5b6a3104401",
+      "size": 37938
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -4274,6 +4278,22 @@
     },
     "docs/evidence/artifacts/runtime-post-processing-phase5-2026-08-20/stage5-runtime-post-processing-report.json": {
       "sha256": "5446b09f824dd68567a26980c538f0220c0b9b33e93e6b6a55898adb9f2951a5",
+      "size": 1860
+    },
+    "docs/evidence/artifacts/runtime-post-processing-phase5-postmerge-2026-08-20/artifact-index.json": {
+      "sha256": "7619a2d6cbc669630969f9bfdb5ba936c2a72b45aa706eaffda54d1caff828b3",
+      "size": 541
+    },
+    "docs/evidence/artifacts/runtime-post-processing-phase5-postmerge-2026-08-20/post-processing-sidecar.json": {
+      "sha256": "52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6",
+      "size": 1031
+    },
+    "docs/evidence/artifacts/runtime-post-processing-phase5-postmerge-2026-08-20/post-processing.json": {
+      "sha256": "52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6",
+      "size": 1031
+    },
+    "docs/evidence/artifacts/runtime-post-processing-phase5-postmerge-2026-08-20/stage5-runtime-post-processing-report.json": {
+      "sha256": "aebfccbf0a351490be4cccca12bee9ce5e0528ae6c4b62aa478a173f59fcb281",
       "size": 1860
     },
     "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/artifact-index.json": {
