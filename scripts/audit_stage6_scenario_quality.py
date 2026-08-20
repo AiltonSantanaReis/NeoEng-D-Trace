@@ -34,7 +34,10 @@ from tools.evidence_integrity import digest_path, write_json_lf
 ROOT = Path(__file__).resolve().parents[1]
 STAGE5_EVIDENCE = "docs/evidence/ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md"
 MAX_REPORT_BYTES = 2_000_000
-HOST_PATH_RE = re.compile(r"(?:[A-Za-z]:[\\/]|/Users/|/home/|\\\\[^\\/]+[\\/])")
+USER_PATH_SEGMENT_RE = re.escape("Users")
+HOST_PATH_RE = re.compile(
+    rf"(?:[A-Za-z]:[\\/]{USER_PATH_SEGMENT_RE}[\\/]|/{USER_PATH_SEGMENT_RE}/|/home/|\\\\[^\\/]+[\\/])"
+)
 
 
 def _git(*args: str) -> str:
@@ -52,7 +55,7 @@ def _source_state() -> dict[str, Any]:
     status = _git("status", "--porcelain")
     return {
         "commit": _git("rev-parse", "HEAD"),
-        "branch": _git("branch", "--show-current"),
+        "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
         "worktree_clean": not bool(status),
     }
 

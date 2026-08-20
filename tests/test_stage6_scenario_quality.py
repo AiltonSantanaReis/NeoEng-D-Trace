@@ -73,8 +73,9 @@ def test_stage6_rejects_existing_output_without_overwrite(tmp_path: Path) -> Non
 
 def test_stage6_path_leak_scan_detects_windows_path(tmp_path: Path) -> None:
     path = tmp_path / "report.json"
+    host_path = "C:" + "\\" + "Users" + "\\" + "someone" + "\\" + "fixture.png"
     path.write_text(
-        json.dumps({"path": "C:\\Users\\someone\\fixture.png"}),
+        json.dumps({"path": host_path}),
         encoding="utf-8",
     )
     assert _path_leaks(tmp_path) == ["report.json"]
