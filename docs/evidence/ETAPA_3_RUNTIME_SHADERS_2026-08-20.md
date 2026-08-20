@@ -6,7 +6,7 @@
 - Branch auditada: `Ailton/runtime-phase3-shaders`.
 - Auditor: `scripts/audit_runtime_shaders_phase3.py`.
 - Pacote: `docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/`.
-- Estado: validação local pré-merge; CI, PR, merge e pós-merge pendentes.
+- Estado histórico do snapshot: validação local pré-merge; os gates posteriores foram concluídos e estão registrados no encerramento pós-merge abaixo.
 
 ## Ambiente
 
@@ -93,7 +93,7 @@ limiar, scanner, asserção ou regra foi alterado. A execução posterior no com
   não declarados são rejeitados explicitamente, sem fallback silencioso.
 - Não há ainda validação de rasterização GPU, VRAM, FPS ou driver específico.
 - A reprodução em Godot/Unity pertence à fase posterior de adaptadores reais.
-- CI remoto, promoção de PR, merge e validação pós-merge ainda estão pendentes.
+- CI remoto, promoção de PR, merge e validação pós-merge foram concluídos; os resultados estão registrados no encerramento pós-merge abaixo.
 
 ## Validação pós-commit local
 
@@ -112,5 +112,28 @@ implementação `1c75c85`.
 
 ## Decisão
 
-**NÃO APROVADO PARA MERGE — implementação e validação local PASS; falta CI
-remoto obrigatório, revisão da PR, merge normal e validação pós-merge.**
+**Decisão histórica do snapshot:** NÃO APROVADO PARA MERGE enquanto os gates
+remoto e pós-merge ainda estavam pendentes. Esta decisão não representa o
+estado atual após o merge documentado abaixo.
+
+
+## Encerramento pós-merge
+
+- PR: #117 — feat(runtime): complete phase 3 shader contract.
+- CI da PR: run 32390132601; jobs Linux e Windows aprovados.
+- Merge normal: c76ac4b3ed7a6d1d7ee95509b0c24957ffe6ca59.
+- Auditor pós-merge: PASS no commit de merge; árvore limpa, round-trip
+  canônico, qsb real, compilação dos dois estágios, rejeição negativa sem
+  substituição e privacidade passaram.
+- Baseline por blobs Git: PASS, 1743 files.
+- Integridade de evidências por blobs Git: PASS, 70 manifests.
+- Suíte completa pós-merge: 1456 passed, 2 skipped; cobertura de linhas
+  91,02%.
+- Política de cobertura: PASS; linhas >= 90%, branches >= 85% e módulos
+  mensuráveis >= 30%.
+- main local e origin/main apontam para o mesmo merge; worktree limpo.
+
+**APROVADO PÓS-MERGE NO ESCOPO DA ETAPA 3:** contrato de shaders, compilação
+real via Qt Shader Tools, publicação atômica, rollback e rejeição explícita de
+backends não declarados. Partículas, pós-processamento, triggers, streaming e
+adaptadores completos de runtime Godot/Unity permanecem fora desta etapa.

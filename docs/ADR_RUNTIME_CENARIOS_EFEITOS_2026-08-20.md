@@ -1,9 +1,9 @@
 # ADR — Runtime de cenários, efeitos e validação portátil
 
-**Status:** Etapas 1 e 2 concluídas; Etapa 3 (Shaders) em implementação e validação local
+**Status:** Etapas 1, 2 e 3 concluídas no escopo aprovado; release permanece uma decisão independente
 **Data:** 20 de agosto de 2026
-**Base:** `main` no merge `ff66fa7`
-**Estado de execução:** A Etapa 1 foi encerrada pela implementação `84dfee7` e documentação `7e190b4`. A Etapa 2 foi integrada pela PR #115 no merge `eb9837b` e sua documentação pós-merge pela PR #116 no merge `ff66fa7`; CI Linux/Windows e validação local pós-merge foram aprovados no escopo definido. A Etapa 3 está sendo desenvolvida na branch de trabalho atual; os testes locais já cobrem o contrato e o compilador real, mas a evidência final, CI, merge e validação pós-merge ainda não foram realizados.
+**Base:** `main` no merge `c76ac4b3ed7a6d1d7ee95509b0c24957ffe6ca59`
+**Estado de execução:** A Etapa 1 foi encerrada pela implementação `84dfee7` e documentação `7e190b4`. A Etapa 2 foi integrada pela PR #115 no merge `eb9837b` e sua documentação pós-merge pela PR #116 no merge `ff66fa7`. A Etapa 3 foi integrada pela PR #117 no merge `c76ac4b`; CI Linux/Windows, auditoria real e validação local pós-merge foram aprovados no escopo definido. As capacidades futuras continuam explicitamente fora desta etapa.
 **Planos relacionados:**
 
 - `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
