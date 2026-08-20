@@ -171,10 +171,10 @@ def test_qt_qsb_missing_compiler_is_not_degraded_to_pass(tmp_path: Path) -> None
         )
 
 
-def test_runtime_host_advertises_only_the_integrated_shader_capability() -> None:
+def test_runtime_host_advertises_integrated_runtime_capabilities() -> None:
     host = RuntimeHost()
     assert "runtime.shaders" in host.supported_capabilities
-    assert "runtime.particles" not in host.supported_capabilities
+    assert "runtime.particles" in host.supported_capabilities
 
 
 def test_shader_contract_rejects_non_finite_nul_and_wrong_uniform_values() -> None:

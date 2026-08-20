@@ -123,22 +123,26 @@ def test_runtime_capability_negotiation_requires_explicit_safe_fallback() -> Non
                 fallback_mode="disabled",
                 fallback_reason="lighting is not available in the base host",
             ),
-            CapabilityRequest("runtime.particles", required=False),
+            CapabilityRequest("runtime.particles"),
         ]
     )
 
     assert [item.compatibility for item in report.decisions] == [
         Compatibility.NATIVE,
         Compatibility.NATIVE,
-        Compatibility.INCOMPATIBLE,
+        Compatibility.NATIVE,
     ]
-    assert report.accepted is False
+    assert report.accepted is True
+
+    incompatible = host.negotiate([CapabilityRequest("runtime.unknown")])
+    assert incompatible.accepted is False
+    assert incompatible.incompatible[0].required_capability == "runtime.unknown"
 
     with pytest.raises(RuntimeCapabilityError) as error:
         host.load_manifest(
-            _payload(), requirements=[CapabilityRequest("runtime.particles")]
+            _payload(), requirements=[CapabilityRequest("runtime.unknown")]
         )
-    assert error.value.report.incompatible[0].required_capability == "runtime.particles"
+    assert error.value.report.incompatible[0].required_capability == "runtime.unknown"
     assert host.snapshot.phase is RuntimePhase.EMPTY
 
 
