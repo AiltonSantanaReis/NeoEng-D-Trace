@@ -1,9 +1,9 @@
 # Evidência pré-merge — Etapa 5 do ADR de runtime: pós-processamento
 
-**Estado:** IMPLEMENTAÇÃO LOCAL VALIDADA; NÃO APROVADA PARA MERGE
+**Estado:** IMPLEMENTAÇÃO LOCAL VALIDADA; AGUARDANDO CI/PR
 **Data:** 20 de agosto de 2026
 **ADR vigente:** `docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md`
-**Base:** `main` no merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`
+**Base:** checkpoint local `45d94971cca0` em `main`
 **Branch:** `main`
 
 ## Escopo executado
@@ -99,9 +99,22 @@ Resultado observado no worktree modificado:
 - `source_tree_clean`: FAIL, porque a implementação ainda não estava
   versionada em um commit candidato.
 
-O relatório geral foi corretamente `FAIL`. Esse resultado não foi alterado,
-mascarado ou convertido em PASS. A auditoria deverá ser repetida depois do
-checkpoint versionado e novamente sobre os bytes rastreados pelo Git.
+No checkpoint limpo `45d94971cca0`, todos os checks passaram:
+
+- `canonical_sidecar_roundtrip`: PASS;
+- `source_binding_is_hash_bound`: PASS;
+- `ordered_effects_are_deterministic`: PASS;
+- `disabled_effect_is_reported`: PASS;
+- `alpha_is_preserved`: PASS;
+- `limits_are_enforced`: PASS;
+- `fallback_is_explicit`: PASS;
+- `atomic_persistence_preserves_previous_bytes`: PASS;
+- `privacy`: PASS;
+- `source_tree_clean`: PASS.
+
+O relatório geral foi `PASS` com exit code `0`. A execução anterior em árvore
+modificada permanece registrada como `FAIL` legítimo; ela não foi alterada,
+mascarada ou convertida em PASS.
 
 ## Falha encontrada e corrigida durante a execução
 
@@ -118,7 +131,18 @@ Unity específica para esse recurso, pois não existe adaptador de pós-processa
 implementado nesta etapa. Não há evidência de regressão reproduzida nas
 Etapas 1–4: a suíte de não regressão passou com 82 testes.
 
-**Decisão:** `PARCIAL / NÃO APROVADA`. A implementação local e os testes
-funcionais passaram, mas faltam checkpoint versionado, auditoria com árvore
-limpa, manifestos de evidência por blobs Git, revisão documental, CI, PR e
-validação pós-merge. Nenhum merge ou release é autorizado por este documento.
+## Artefatos versionados da auditoria
+
+Pacote: `docs/evidence/artifacts/runtime-post-processing-phase5-2026-08-20/`.
+
+- `stage5-runtime-post-processing-report.json` — `1860` bytes — SHA-256 `5446b09f824dd68567a26980c538f0220c0b9b33e93e6b6a55898adb9f2951a5`;
+- `post-processing-sidecar.json` — `1031` bytes — SHA-256 `52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6`;
+- `post-processing.json` — `1031` bytes — SHA-256 `52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6`;
+- `artifact-index.json` — `541` bytes — SHA-256 `975884e2cf30bad9fd057da68910b9d3eca9222e51353a03fae56d8f6382003a`.
+
+**Decisão:** `APROVADA LOCALMENTE NO ESCOPO DA ETAPA 5; NÃO INTEGRADA`.
+A implementação, os testes, a auditoria em árvore limpa e os artefatos
+reprodutíveis estão concluídos neste checkpoint. Ainda faltam validação dos
+bytes rastreados por manifesto Git, revisão documental final, PR, CI obrigatório
+Linux/Windows, merge normal e validação pós-merge. Até essas validações, não
+declarar a capacidade como integrada em `main` nem promover release.

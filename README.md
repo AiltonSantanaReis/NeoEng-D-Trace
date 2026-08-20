@@ -70,7 +70,7 @@ shaders, pós-processamento, triggers, streaming de texturas e runtime completo 
 engine permanecem fora do MVP e não são anunciados como funcionalidades concluídas.
 O ADR de runtime possui implementação local da Etapa 5 para preview CPU
 determinístico de pós-processamento, com fallback explícito e sem adaptadores
-nativos Godot/Unity. Essa capacidade ainda não está aprovada ou publicada.
+nativos Godot/Unity. Essa capacidade foi validada localmente no checkpoint 45d94971cca0, mas ainda não está publicada; aguarda CI, PR e validação pós-merge.
 
 ## Integrações nativas
 

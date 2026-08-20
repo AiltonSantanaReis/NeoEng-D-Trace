@@ -14,7 +14,7 @@
 - `ETAPA_4_RUNTIME_PARTICULAS_2026-08-20.md` — implementação e encerramento pós-merge de partículas determinísticas, fixed update, seeds, pausa, replay, limites, persistência autoral e auditoria fail-closed; PR #119, merge `a757da0`, CI Linux/Windows e validação pós-merge aprovados no escopo definido.
 - `ETAPA_4_RUNTIME_PARTICULAS_ENCERRAMENTO_POS_MERGE_2026-08-20.md` — fechamento pós-merge no commit `a757da0`, CI `32405503776`, auditoria, baseline, evidências e suíte integral validados.
 - `ETAPA_5_RUNTIME_POS_PROCESSAMENTO_2026-08-20.md` — evidência pré-merge da
-  implementação local do preview CPU determinístico; permanece NÃO APROVADA.
+  implementação local do preview CPU determinístico; auditoria limpa PASS no checkpoint 45d94971cca0; aguarda CI, PR e pós-merge.
 - `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.

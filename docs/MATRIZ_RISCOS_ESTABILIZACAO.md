@@ -25,7 +25,7 @@
 
 ## Estado operacional atual dos riscos
 
-Atualização corrente de 20 de agosto de 2026: o baseline integrado é o merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`, com as validações pós-merge das Etapas 1–4 documentadas. A RUNTIME-ETAPA-5 possui implementação local do preview CPU e testes funcionais, mas permanece pré-merge; R-020 está aberto até a validação por blobs Git, CI, PR e pós-merge. R-018 e R-019 permanecem preservados nos estados registrados abaixo.
+Atualização corrente de 20 de agosto de 2026: o baseline integrado das Etapas 1–4 é o merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`; a RUNTIME-ETAPA-5 possui checkpoint local `45d94971cca0`, auditoria limpa PASS, artefatos hashados e testes funcionais. R-020 permanece aberto até a validação por blobs Git, CI, PR e pós-merge. R-018 e R-019 permanecem preservados nos estados registrados abaixo.
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 
@@ -52,7 +52,7 @@ Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agos
 | R-017 | INTEGRADO PELA PR #84 | A Etapa 10 possui harness fail-closed, fixtures reais e execução real em Godot 4.7.stable e Unity 6000.5.7f1. Dry-run, aplicação, repetição determinística, conflitos manuais, drift de hash, regressões das Etapas 4/6, hashes e privacidade passaram no pacote `docs/evidence/artifacts/native-stage10-2026-08-17/`. A CI não inicializa dinamicamente as engines, o que não é requisito; as execuções reais são evidência local reproduzível. Merge `bca43f399928d69cb81e133e40991b7c011a0c10` e CI pós-merge `32028639637` foram confirmados. |
 | R-018 | EM VALIDAÇÃO PRÉ-MERGE | A PR `#99` contém implementação 4A–4B.5, evidências hashadas e execução real Godot/Unity; o risco permanece aberto até os checks obrigatórios e o merge. |
 | R-019 | ENCERRADO NO ESCOPO DA ETAPA 3 | PR `#97`, merge `5d4c0829`, CI pós-merge `32125768535`; registry único de QAction, busca, UI, estados, teclado, localização e acessibilidade comprovados |
-| R-020 | EM DESENVOLVIMENTO LOCAL | `ETAPA_5_RUNTIME_POS_PROCESSAMENTO_2026-08-20.md`; todos os checks funcionais locais passaram, mas `source_tree_clean` permanece deliberadamente FAIL até o checkpoint versionado |
+| R-020 | VALIDADO LOCALMENTE / ABERTO PARA INTEGRAÇÃO | `ETAPA_5_RUNTIME_POS_PROCESSAMENTO_2026-08-20.md` e artefatos `runtime-post-processing-phase5-2026-08-20`; todos os checks locais, incluindo `source_tree_clean`, passaram no checkpoint `45d94971cca0`; CI, PR e pós-merge pendentes |
 
 ## Auditoria corretiva publicada — 10 de agosto de 2026
 

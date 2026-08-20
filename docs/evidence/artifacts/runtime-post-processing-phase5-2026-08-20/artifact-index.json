@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-post-processing-phase5",
+  "files": {
+    "post-processing-sidecar.json": {
+      "bytes": 1031,
+      "sha256": "52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6"
+    },
+    "post-processing.json": {
+      "bytes": 1031,
+      "sha256": "52e93174d4d8450239b470f5142685376786785a811a47121634eea7227f97a6"
+    },
+    "stage5-runtime-post-processing-report.json": {
+      "bytes": 1860,
+      "sha256": "5446b09f824dd68567a26980c538f0220c0b9b33e93e6b6a55898adb9f2951a5"
+    }
+  }
+}
