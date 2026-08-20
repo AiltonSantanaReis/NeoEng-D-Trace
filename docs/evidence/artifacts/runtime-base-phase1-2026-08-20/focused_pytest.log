@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: <repo>
+configfile: pytest.ini
+plugins: cov-7.1.0
+collected 70 items
+
+tests\test_stage1_runtime_base.py ...........                            [ 15%]
+tests\test_stage4b4_scenario_export.py ............................      [ 55%]
+tests\test_scenario_schema_io.py .............................           [ 97%]
+tests\test_stage1_scenario_characterization.py ..                        [100%]
+
+============================= 70 passed in 1.44s ==============================
