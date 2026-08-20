@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "1fbe4f53864093077212bdeb47e01f8040033c148e7b6c0e9a0fe36333d82299",
-      "size": 9321
+      "sha256": "af0532ccef505dfa9638fed76d3eff85304d08601828368de4d72435a036c268",
+      "size": 9552
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -813,8 +813,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "bfdc8bef1711469e3a3e1a164964ab3370bf372372453572314c540b8e4bec91",
-      "size": 35317
+      "sha256": "bf41719c6a23ed62b0a4e2c77d30e13b9306d1c77dcb9add2f826d54d0cb0db5",
+      "size": 35590
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -5568,6 +5568,10 @@
       "sha256": "def3f15ca0e3b5dc653dd36c4b1fbb35a863b0cadf88269f95ce314df177de2d",
       "size": 7351
     },
+    "scripts/audit_runtime_lighting_phase2.py": {
+      "sha256": "caf611a32e5c1d03a029429222cff04be9c322b287475b54e416a36920130d0c",
+      "size": 7716
+    },
     "scripts/audit_scenario_authoring.py": {
       "sha256": "5680b36fc6e43a147f5ef4f5d9de148c07f9fb6c89c1af0bdb9c65e086648290",
       "size": 10452
@@ -5913,12 +5917,16 @@
       "size": 324
     },
     "src/runtime/__init__.py": {
-      "sha256": "3631853cc5f81d12b2b6c489f55e927df27ed0395b1fd73fc34766a2821e1092",
-      "size": 1140
+      "sha256": "ed3fc0f3e8d32de8f9456331a149e9a4d0be639fa95dba5a1b51bb6ff8842397",
+      "size": 2452
+    },
+    "src/runtime/lighting.py": {
+      "sha256": "827dccbb1167a351d2220d739c435c12c408601a88a583c9a7e18888d10650c5",
+      "size": 19214
     },
     "src/runtime/scene_runtime.py": {
-      "sha256": "e97393157b6f75826dcdd16237c7a275fd69ec41aa5d6c6540dcb6c31832ff0c",
-      "size": 18016
+      "sha256": "98d4f23230a5e96b22d9182428d34cfac5999ba081acc7e621388ad413411198",
+      "size": 18044
     },
     "src/tools/__init__.py": {
       "sha256": "9cde802502cdc65dff3b12bfcd4700e87c7598c405e2bd2398bd838050f3133f",
@@ -6329,8 +6337,8 @@
       "size": 2193
     },
     "tests/test_stage1_runtime_base.py": {
-      "sha256": "52d9351b793ef26c3143a80f10378360df3512785a8db70d65f95cdcea990ab5",
-      "size": 5851
+      "sha256": "2198e664b869074762ae2ff2f31cc7cbfd20af16ff49f21d998ccd8f2e01ed77",
+      "size": 5849
     },
     "tests/test_stage1_scenario_characterization.py": {
       "sha256": "496914caf7c2f398bf9995eac138ab68cfecdacf10972830591562a11602f26b",
@@ -6339,6 +6347,14 @@
     "tests/test_stage2_command_registry.py": {
       "sha256": "10e634d6c32ab0ddb2c94b0601695c4e63d8818626edd4007e60330d9a3cd47c",
       "size": 4478
+    },
+    "tests/test_stage2_runtime_lighting.py": {
+      "sha256": "351ce44e259115db78e7589ca3408498c62bbf58c02ae43ee7f27b96fc520c72",
+      "size": 8204
+    },
+    "tests/test_stage2_runtime_lighting_hardening.py": {
+      "sha256": "dbb941a44a1716d7ff5a6f81e3721df659c88b5c1458b46f86961b918c481d76",
+      "size": 2490
     },
     "tests/test_stage2_scene_authoring_model.py": {
       "sha256": "6777c888c86b38ea33eb6a6dbbc6c5ad3942df296f3abd4255ba93ebbee12949",
