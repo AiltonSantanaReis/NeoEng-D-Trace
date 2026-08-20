@@ -147,6 +147,15 @@ def run(output: Path) -> dict[str, Any]:
                 "scripts/audit_runtime_base_phase1.py",
             ],
         ),
+        (
+            "evidence_integrity",
+            [
+                sys.executable,
+                "tools/evidence_integrity.py",
+                "--require-tracked",
+                "--git-blob",
+            ],
+        ),
         ("git_diff_check", ["git", "diff", "--check"]),
     ]
     results: list[dict[str, Any]] = []
