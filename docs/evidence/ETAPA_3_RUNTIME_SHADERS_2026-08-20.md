@@ -95,6 +95,21 @@ limiar, scanner, asserção ou regra foi alterado. A execução posterior no com
 - A reprodução em Godot/Unity pertence à fase posterior de adaptadores reais.
 - CI remoto, promoção de PR, merge e validação pós-merge ainda estão pendentes.
 
+## Validação pós-commit local
+
+Após o commit da evidência `355cb6dadca5e4b1b0ebcbde933f665e22ee34cd`, a
+árvore permaneceu limpa e os bytes rastreados foram revalidados:
+
+- baseline por blobs Git: **PASS**, `1743 files`;
+- integridade de evidências por blobs Git: **PASS**, `70 manifests`;
+- auditor temporário: **PASS**, commit-fonte `355cb6d`;
+- `source_tree_clean`, compilação dos dois estágios, rejeição negativa e
+  privacidade: todos `true`.
+
+Essa execução confirma a proveniência pós-commit; os artefatos hashados
+versionados continuam sendo os do auditor final executado no commit de
+implementação `1c75c85`.
+
 ## Decisão
 
 **NÃO APROVADO PARA MERGE — implementação e validação local PASS; falta CI
