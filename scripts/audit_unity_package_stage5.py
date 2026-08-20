@@ -53,7 +53,7 @@ def _sanitize(text: str, temporary_root: Path) -> str:
     value = re.sub(
         r"(?im)(Machine Id|Session Id|Correlation Id|"
         r"External correlation Id):[^\\\r\n\"]*(?=\\+n|\r?\n|\\\"|\"|$)",
-        r"\1: <redacted-engine-identity>",
+        r"\1:<redacted>",
         value,
     )
     value = re.sub(

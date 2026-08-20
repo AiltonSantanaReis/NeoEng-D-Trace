@@ -1,0 +1,135 @@
+{
+  "capabilities": {
+    "supported": [
+      "assets",
+      "layers",
+      "objects",
+      "groups",
+      "transforms",
+      "camera",
+      "parallax",
+      "sockets",
+      "snap_settings"
+    ],
+    "unsupported": [
+      "runtime_lighting",
+      "runtime_particles",
+      "runtime_shaders",
+      "runtime_post_processing"
+    ]
+  },
+  "coordinate_mapping": {
+    "position_y_sign": 1,
+    "rotation_sign": 1,
+    "rotation_unit": "degrees",
+    "source_origin": "top-left",
+    "target_origin": "godot-2d-y-down"
+  },
+  "format_id": "neoeng-d-trace-scene-authoring-export",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.3.0"
+  },
+  "scene": {
+    "assets": [
+      {
+        "id": "hero_asset",
+        "path": "assets/hero.png",
+        "path_kind": "relative",
+        "sha256": "010217fefacff21fec538b7e961cc4e00fe0e2b3a64b919211603d9d43647a5f"
+      }
+    ],
+    "camera": {
+      "position": {
+        "x": 2.0,
+        "y": 4.0
+      },
+      "zoom": 1.25
+    },
+    "format_id": "neoeng-d-trace-scene-authoring",
+    "groups": [],
+    "layers": [
+      {
+        "id": "foreground",
+        "locked": false,
+        "name": "Foreground",
+        "visible": true
+      }
+    ],
+    "metadata": {
+      "app_version": "0.2.0",
+      "generator": "NeoEng-D-Trace",
+      "name": "Stage 5 native fixture"
+    },
+    "objects": [
+      {
+        "asset_id": "hero_asset",
+        "id": "hero",
+        "layer_id": "foreground",
+        "locked": false,
+        "transform": {
+          "flip_x": true,
+          "flip_y": false,
+          "pivot": {
+            "x": 0.5,
+            "y": 1.0
+          },
+          "position": {
+            "x": 10.0,
+            "y": 20.0,
+            "z": 3.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 15.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          }
+        },
+        "visible": true
+      }
+    ],
+    "parallax_layers": [],
+    "project": {
+      "format_id": "neoeng-d-trace-project",
+      "schema_version": 1,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "schema_version": 2,
+    "snap": {
+      "enabled": false,
+      "mode": "pixel",
+      "spacing": {
+        "x": 1.0,
+        "y": 1.0
+      }
+    },
+    "sockets": [
+      {
+        "color": "#ffe082",
+        "id": "lamp",
+        "intensity": 1.5,
+        "layer_id": "foreground",
+        "object_id": "hero",
+        "position": {
+          "x": 3.0,
+          "y": 4.0,
+          "z": 1.0
+        },
+        "radius": 64.0,
+        "type": "light"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scene-authoring",
+    "schema_version": 2,
+    "sha256": "3b8c9115f3fab46a4b356bbd20dcfecfab26526ad1971a1a7ac353c6c832a632"
+  },
+  "target": "godot"
+}

@@ -1,7 +1,7 @@
 # Plano de extensão profissional de cenários — NeoEng-D-Trace
 
 **Data de início:** 19 de agosto de 2026
-**Estado:** Etapa 4 integrada; Etapa 5 iniciada — baseline e contratos de persistência em execução
+**Estado:** Etapa 5 implementada e validada localmente; PR/CI pendentes
 **Base integrada:** `19f3cfd` (merge da PR `#107`; CI `32314410332` aprovado em Linux e Windows)
 **Plano relacionado:** `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
 

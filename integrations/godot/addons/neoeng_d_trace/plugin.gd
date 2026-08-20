@@ -6,12 +6,14 @@ const PLUGIN_VERSION := "0.3.0"
 const MENU_ITEM := "NeoEng D-Trace: Diagnose integration manifests"
 const IMPORT_MENU_ITEM := "NeoEng D-Trace: Import integration manifests"
 const SCENARIO_MENU_ITEM := "NeoEng D-Trace: Validate scenario runtime export"
+const PROFESSIONAL_SCENE_MENU_ITEM := "NeoEng D-Trace: Import professional scene export"
 const AUTO_SYNC_SETTING := "neoeng_d_trace/automatic_sync_enabled"
 const AUTO_SYNC_DEBOUNCE_SECONDS := 0.35
 const AUTO_SYNC_SUPPRESSION_MILLISECONDS := 750
 const Importer = preload("res://addons/neoeng_d_trace/import_generator.gd")
 const ManifestDiagnostic = preload("res://addons/neoeng_d_trace/manifest_diagnostic.gd")
 const ScenarioImporter = preload("res://addons/neoeng_d_trace/scenario_importer.gd")
+const ProfessionalSceneImporter = preload("res://addons/neoeng_d_trace/professional_scene_importer.gd")
 
 var _sync_timer: Timer
 var _sync_running := false
@@ -22,6 +24,7 @@ func _enter_tree() -> void:
     add_tool_menu_item(MENU_ITEM, Callable(self, "_diagnose_project"))
     add_tool_menu_item(IMPORT_MENU_ITEM, Callable(self, "_import_project"))
     add_tool_menu_item(SCENARIO_MENU_ITEM, Callable(self, "_validate_scenario_project"))
+    add_tool_menu_item(PROFESSIONAL_SCENE_MENU_ITEM, Callable(self, "_import_professional_scene"))
     _sync_timer = Timer.new()
     _sync_timer.one_shot = true
     _sync_timer.wait_time = AUTO_SYNC_DEBOUNCE_SECONDS
@@ -43,10 +46,21 @@ func _exit_tree() -> void:
     remove_tool_menu_item(MENU_ITEM)
     remove_tool_menu_item(IMPORT_MENU_ITEM)
     remove_tool_menu_item(SCENARIO_MENU_ITEM)
+    remove_tool_menu_item(PROFESSIONAL_SCENE_MENU_ITEM)
 
 
 func _validate_scenario_project() -> void:
     var result := ScenarioImporter.diagnose_export("res://NeoEngGenerated/scenario.ndtscenario.runtime.json")
+    print(JSON.stringify(result, "  "))
+
+func _import_professional_scene() -> void:
+    var result := ProfessionalSceneImporter.import_scene("res://NeoEngGenerated/scene-authoring.godot.json")
+    if result.get("status") == "SUCCESS":
+        var root: Node = result["root"]
+        var edited_root := get_editor_interface().get_edited_scene_root()
+        if edited_root != null:
+            edited_root.add_child(root)
+            root.owner = edited_root
     print(JSON.stringify(result, "  "))
 
 func _diagnose_project() -> void:

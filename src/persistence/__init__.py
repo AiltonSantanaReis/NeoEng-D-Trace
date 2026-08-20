@@ -43,8 +43,32 @@ from .scenario_schema import (
     SCENARIO_SCHEMA_VERSION,
     ScenarioDocumentV1,
 )
+from .scene_authoring_io import (
+    SceneAuthoringAssetError,
+    SceneAuthoringFormatError,
+    SceneAuthoringReadError,
+    SceneAuthoringValidationError,
+    SceneAuthoringWriteError,
+    load_scene_authoring,
+    load_scene_authoring_v2,
+    save_scene_authoring,
+    scene_authoring_sha256,
+    serialize_scene_authoring,
+    verify_scene_assets,
+)
 
 __all__ = [
+    "SceneAuthoringAssetError",
+    "SceneAuthoringFormatError",
+    "SceneAuthoringReadError",
+    "SceneAuthoringValidationError",
+    "SceneAuthoringWriteError",
+    "load_scene_authoring",
+    "load_scene_authoring_v2",
+    "save_scene_authoring",
+    "scene_authoring_sha256",
+    "serialize_scene_authoring",
+    "verify_scene_assets",
     "LegacyProjectMigrationError",
     "LoadedProject",
     "MAX_PROJECT_FILE_BYTES",
