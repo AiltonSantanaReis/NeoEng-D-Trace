@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "stage": "6",
+  "status": "PASS",
+  "source": {
+    "commit": "93cdc5ee1ca07cf913f4c141e0746476f0417cb7",
+    "branch": "codex/scenario-authoring-stage6",
+    "worktree_clean": true
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "commands": [
+    "python scripts/audit_stage6_scenario_quality.py --output <output>",
+    "python -m pytest -q tests/test_stage6_scenario_quality.py",
+    "python -m pytest -q",
+    "python tools/check_coverage_policy.py <coverage.xml>"
+  ],
+  "checks": {
+    "source_tree_clean": true,
+    "main_window_visual_audit": true,
+    "professional_editor_visual_audit": true,
+    "professional_editor_clean_capture": true,
+    "determinism": true,
+    "performance_safety_ceilings": true,
+    "privacy": true,
+    "stage5_engine_contract_remains_explicit": true
+  },
+  "reports": {
+    "main_window": "main-window/audited/visual-audit-report.json",
+    "professional_editor": "professional-editor/stage4-capture-report.json"
+  },
+  "performance": {
+    "warmup": {
+      "runtime_export_sha256": "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c"
+    },
+    "limits_are_safety_ceilings": true,
+    "measurements": [
+      {
+        "label": "runtime_export_serialization",
+        "operations": 500,
+        "elapsed_seconds": 0.056846,
+        "operations_per_second": 8795.678,
+        "max_elapsed_seconds": 10.0,
+        "within_limit": true
+      },
+      {
+        "label": "preview_projection",
+        "operations": 10000,
+        "elapsed_seconds": 0.704535,
+        "operations_per_second": 14193.759,
+        "max_elapsed_seconds": 5.0,
+        "within_limit": true
+      },
+      {
+        "label": "overlay_geometry",
+        "operations": 10000,
+        "elapsed_seconds": 0.025242,
+        "operations_per_second": 396168.261,
+        "max_elapsed_seconds": 5.0,
+        "within_limit": true
+      }
+    ],
+    "passed": true
+  },
+  "determinism": {
+    "runtime_export": {
+      "deterministic": true,
+      "hashes": [
+        "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+        "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+        "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+        "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+        "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c"
+      ],
+      "bytes": 867
+    },
+    "preview_projection": {
+      "deterministic": true
+    },
+    "overlay_geometry": {
+      "deterministic": true
+    },
+    "input_unchanged": true,
+    "passed": true
+  },
+  "engine_boundary": {
+    "stage5_evidence": "docs/evidence/ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md",
+    "statement": "Godot and Unity native adapter execution remains a separate real-engine contract from this editor-side audit."
+  },
+  "limitations": [
+    "Benchmark uses a safety ceiling, not an FPS or historical claim.",
+    "No runtime particles, streaming, or non-deterministic VFX are added.",
+    "Engine support is reported by separate real adapter evidence; missing native capability is not treated as an editor failure."
+  ],
+  "privacy_leaks": []
+}

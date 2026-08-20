@@ -1,0 +1,774 @@
+{
+  "checks": [
+    "pillow_decode",
+    "opencv_decode",
+    "dimensions",
+    "transparency",
+    "sha256",
+    "clipping",
+    "qt_geometry",
+    "overlap",
+    "qss_palette",
+    "annotated_output"
+  ],
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "finding_count": 0,
+  "findings": [],
+  "images": {
+    "1080p_FHD_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.984778163580247,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 1435274,
+          "#252526": 172272,
+          "#2d2d30": 42048,
+          "#3c3c3c": 289154,
+          "#3f3f46": 12008,
+          "#e6e6e6": 2992
+        }
+      },
+      "sha256": "07f48a6eeefb44c133e897c6bdca29cf517a200b6b01451627adf9370aa2648b",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "1080p_FHD_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9692457561728395,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 1340127,
+          "#252526": 132952,
+          "#2d2d30": 37840,
+          "#3c3c3c": 325542,
+          "#3f3f46": 12008,
+          "#e6e6e6": 3384
+        }
+      },
+      "sha256": "f5e24e7bafcb83fc1a564da32bcf31b5f06c6d6bf2915b8967d1285ebf6acae5",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "1080p_FHD_03_validacao_janela.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9692457561728395,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 1340127,
+          "#252526": 132952,
+          "#2d2d30": 37840,
+          "#3c3c3c": 325542,
+          "#3f3f46": 12008,
+          "#e6e6e6": 3384
+        }
+      },
+      "sha256": "f5e24e7bafcb83fc1a564da32bcf31b5f06c6d6bf2915b8967d1285ebf6acae5",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "1080p_FHD_03_validacao_modal.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        100,
+        400,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.93795,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 36310,
+          "#3c3c3c": 1144,
+          "#e6e6e6": 1540
+        }
+      },
+      "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7",
+      "size": [
+        400,
+        100
+      ]
+    },
+    "1080p_FHD_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9681674382716049,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 1323439,
+          "#252526": 132952,
+          "#2d2d30": 37840,
+          "#3c3c3c": 325542,
+          "#3f3f46": 12008,
+          "#e6e6e6": 3384
+        }
+      },
+      "sha256": "34172eba9e24bdd91bae2b2c62a416b232e6b9699eb12f847c7f869066049c99",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "720p_Compacta_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00025,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9759266493055555,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 572737,
+          "#252526": 168643,
+          "#2d2d30": 30496,
+          "#3c3c3c": 43143,
+          "#3f3f46": 5434,
+          "#e6e6e6": 2324
+        }
+      },
+      "sha256": "d05a18db541cb0c644c82ee4bcaf726396428545f1014e116714a43b2868c765",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "720p_Compacta_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00025,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9409787326388889,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 475564,
+          "#252526": 115831,
+          "#2d2d30": 25040,
+          "#3c3c3c": 92191,
+          "#3f3f46": 5434,
+          "#e6e6e6": 2716
+        }
+      },
+      "sha256": "d26aeb472505040c3c19b473da0f920e22b6386bfc3652e9146591f86adf2954",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "720p_Compacta_03_validacao_janela.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00025,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9406423611111111,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 463737,
+          "#252526": 12521,
+          "#2d2d30": 25040,
+          "#3c3c3c": 214915,
+          "#3f3f46": 5860,
+          "#e6e6e6": 2208
+        }
+      },
+      "sha256": "e661b8ca39d571eda2693b63592379b79adc0c61a9323863fe2fc0a6acdce63b",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "720p_Compacta_03_validacao_modal.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        100,
+        400,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.93795,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 36310,
+          "#3c3c3c": 1144,
+          "#e6e6e6": 1540
+        }
+      },
+      "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7",
+      "size": [
+        400,
+        100
+      ]
+    },
+    "720p_Compacta_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00025,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9385525173611111,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 458876,
+          "#252526": 115831,
+          "#2d2d30": 25040,
+          "#3c3c3c": 92191,
+          "#3f3f46": 5434,
+          "#e6e6e6": 2716
+        }
+      },
+      "sha256": "94397c06f1f57d691b79ec44976e94446945022fa3bb7594935dd4dd6acd67c0",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "768p_Minima_01_sem_projeto.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00023430178069353328,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9786061798438263,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 669891,
+          "#252526": 192687,
+          "#2d2d30": 32216,
+          "#3c3c3c": 43527,
+          "#3f3f46": 5530,
+          "#e6e6e6": 2324
+        }
+      },
+      "sha256": "c4f28a48419f6b356de04c0dbb85ec096feb3febfde2dedc50b7b0e26296e340",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "768p_Minima_02_projeto_paineis.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00023430178069353328,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.947905228160078,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 572766,
+          "#252526": 139875,
+          "#2d2d30": 26760,
+          "#3c3c3c": 92575,
+          "#3f3f46": 5530,
+          "#e6e6e6": 2716
+        }
+      },
+      "sha256": "ef1b0fad562d8138b75aeaebbbec1b37fd8a1cb74d3c030b705202695b7eef53",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "768p_Minima_03_validacao_janela.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00023430178069353328,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9476097334065398,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 582155,
+          "#252526": 15445,
+          "#2d2d30": 26760,
+          "#3c3c3c": 215299,
+          "#3f3f46": 5860,
+          "#e6e6e6": 2208
+        }
+      },
+      "sha256": "75d7bbcda12cd66cb7afa5b8668bd71318fb240201649fe0f9d91c4a6a20d23f",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "768p_Minima_03_validacao_modal.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        100,
+        400,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.93795,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 36310,
+          "#3c3c3c": 1144,
+          "#e6e6e6": 1540
+        }
+      },
+      "sha256": "3c9c08b9d7a2dc3854db4f20738f9b82d8b0712651bb41339f39af723c0454d7",
+      "size": [
+        400,
+        100
+      ]
+    },
+    "768p_Minima_04_gizmo_feedback.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.00023430178069353328,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9457738530990727,
+        "qss_colors": [
+          "#007acc",
+          "#094771",
+          "#1e1e1e",
+          "#252526",
+          "#264f78",
+          "#2a2d2e",
+          "#2a6f97",
+          "#2d2d30",
+          "#3c3c3c",
+          "#3e3e42",
+          "#3f3f46",
+          "#424242",
+          "#4e4e4e",
+          "#4f4f4f",
+          "#6d6d6d",
+          "#9d9d9d",
+          "#cccccc",
+          "#e6e6e6",
+          "#f0f0f0"
+        ],
+        "required_counts": {
+          "#1e1e1e": 556078,
+          "#252526": 139875,
+          "#2d2d30": 26760,
+          "#3c3c3c": 92575,
+          "#3f3f46": 5530,
+          "#e6e6e6": 2716
+        }
+      },
+      "sha256": "c1f4f0ea7238c03c82b3017734eb6393172cb951f7d50bd6e878a7eb09c1eca6",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "ui-audit-fixture.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        480,
+        720,
+        3
+      ],
+      "palette": {
+        "skipped": true
+      },
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
+      "size": [
+        720,
+        480
+      ]
+    }
+  },
+  "input": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "85f0623b4c174114cde0e9392f864b0f9c8e4be23e4a80f9490e661dd80cf9ab"
+  },
+  "schema_version": 1,
+  "status": "PASS"
+}
