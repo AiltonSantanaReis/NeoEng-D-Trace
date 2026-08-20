@@ -1,0 +1,106 @@
+{
+  "algorithm_version": 1,
+  "events": [
+    {
+      "enabled": true,
+      "id": "enter",
+      "payload": {
+        "kind": "entered"
+      }
+    },
+    {
+      "enabled": true,
+      "id": "stay",
+      "payload": {
+        "kind": "stayed"
+      }
+    },
+    {
+      "enabled": true,
+      "id": "exit",
+      "payload": {
+        "kind": "exited"
+      }
+    },
+    {
+      "enabled": false,
+      "id": "disabled",
+      "payload": {}
+    }
+  ],
+  "fixed_dt": 0.016666666666666666,
+  "format_id": "neoeng-d-trace-runtime-triggers",
+  "max_substeps": 4,
+  "required_capability": "runtime.triggers",
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scenario-runtime",
+    "schema_version": 1,
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "zones": [
+    {
+      "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "conditions": [
+        {
+          "key": "mode",
+          "operator": "eq",
+          "value": "active"
+        }
+      ],
+      "enabled": true,
+      "enter_event_id": "enter",
+      "exit_event_id": "exit",
+      "id": "high",
+      "priority": 20,
+      "size": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+      },
+      "stay_event_id": "stay"
+    },
+    {
+      "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "conditions": [],
+      "enabled": true,
+      "enter_event_id": "enter",
+      "exit_event_id": null,
+      "id": "low",
+      "priority": 10,
+      "size": {
+        "x": 20.0,
+        "y": 20.0,
+        "z": 20.0
+      },
+      "stay_event_id": null
+    },
+    {
+      "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "conditions": [],
+      "enabled": false,
+      "enter_event_id": "disabled",
+      "exit_event_id": null,
+      "id": "disabled-zone",
+      "priority": 0,
+      "size": {
+        "x": 30.0,
+        "y": 30.0,
+        "z": 30.0
+      },
+      "stay_event_id": null
+    }
+  ]
+}

@@ -45,6 +45,7 @@ _SUPPORTED_CAPABILITIES = frozenset(
         "runtime.shaders",
         "runtime.particles",
         "runtime.post_processing",
+        "runtime.triggers",
     }
 )
 

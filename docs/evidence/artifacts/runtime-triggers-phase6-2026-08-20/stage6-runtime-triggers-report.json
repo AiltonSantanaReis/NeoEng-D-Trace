@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-triggers-phase6",
+  "status": "PASS",
+  "source": {
+    "commit": "67db343eef4adeb084eb96fa8b372ad9c7fa35cb",
+    "branch": "main",
+    "worktree_clean": true
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "backend": {
+    "native": "deterministic-fixed-step-cpu",
+    "engine_adapters": []
+  },
+  "commands": [
+    "python scripts/audit_runtime_triggers_phase6.py --output <new-directory>",
+    "python -m pytest -q tests/test_stage6_runtime_triggers.py",
+    "python -m pytest --cov=src --cov-branch --cov-fail-under=90"
+  ],
+  "checks": {
+    "source_tree_clean": true,
+    "canonical_sidecar_roundtrip": true,
+    "source_binding_is_hash_bound": true,
+    "priority_order_and_transitions_are_deterministic": true,
+    "conditions_and_disabled_events_are_explicit": true,
+    "missing_observation_emits_exit": true,
+    "cancellation_preserves_state": true,
+    "fixed_step_limits_preserve_state": true,
+    "pause_resume_is_explicit": true,
+    "replay_is_deterministic_and_bound": true,
+    "atomic_persistence_preserves_previous_bytes": true,
+    "runtime_host_advertises_capability": true,
+    "privacy": true
+  },
+  "contract": {
+    "format_id": "neoeng-d-trace-runtime-triggers",
+    "schema_version": 1,
+    "algorithm_version": 1,
+    "document_sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
+    "serialized_bytes": 2005,
+    "zone_count": 3,
+    "event_count": 4,
+    "fixed_dt": 0.016666666666666666,
+    "max_substeps": 4
+  },
+  "privacy_leaks": [],
+  "limitations": [
+    "The implemented runtime is a deterministic CPU trigger dispatcher, not a graphical engine or physics engine.",
+    "Godot and Unity trigger adapters are not implemented in this phase.",
+    "Network delivery, streaming and engine-specific frame scheduling remain outside this phase.",
+    "The phase is not approved until full repository gates, tracked-byte validation, CI and post-merge validation pass."
+  ]
+}
