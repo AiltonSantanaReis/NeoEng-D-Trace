@@ -9,19 +9,7 @@ import json
 import pytest
 
 from src.exporters.scenario_exporter import build_scenario_runtime_export
-from src.runtime import (
-    CapabilityRequest,
-    Compatibility,
-    RuntimeCancellationToken,
-    RuntimeCapabilityError,
-    RuntimeClockError,
-    RuntimeHost,
-    RuntimeLifecycleError,
-    RuntimeManifestFormatError,
-    RuntimeManifestValidationError,
-    RuntimePhase,
-    RuntimeCancelledError,
-)
+from src.persistence.project_schema import PointRecord
 from src.persistence.scenario_schema import (
     ProjectReferenceRecord,
     ScenarioCameraRecord,
@@ -30,7 +18,19 @@ from src.persistence.scenario_schema import (
     ScenarioParallaxRecord,
     default_scenario_metadata,
 )
-from src.persistence.project_schema import PointRecord
+from src.runtime import (
+    CapabilityRequest,
+    Compatibility,
+    RuntimeCancellationToken,
+    RuntimeCancelledError,
+    RuntimeCapabilityError,
+    RuntimeClockError,
+    RuntimeHost,
+    RuntimeLifecycleError,
+    RuntimeManifestFormatError,
+    RuntimeManifestValidationError,
+    RuntimePhase,
+)
 
 
 def _payload() -> dict[str, object]:

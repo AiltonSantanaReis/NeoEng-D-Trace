@@ -6,9 +6,10 @@ from .scene_runtime import (
     CapabilityDecision,
     CapabilityRequest,
     Compatibility,
+    RuntimeCancellationToken,
+    RuntimeCancelledError,
     RuntimeCapabilityError,
     RuntimeCapabilityReport,
-    RuntimeCancelledError,
     RuntimeClockError,
     RuntimeExecutionError,
     RuntimeHost,
@@ -19,7 +20,6 @@ from .scene_runtime import (
     RuntimeManifestValidationError,
     RuntimePhase,
     RuntimeTickResult,
-    RuntimeCancellationToken,
 )
 
 __all__ = [
