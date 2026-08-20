@@ -152,3 +152,40 @@ com worktree limpo e `status: PASS`; seu pacote está em
 `docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r3/`.
 O evento de cobertura falho permanece preservado; a PR #115 requer nova
 execução remota após este fix.
+
+
+## Encerramento da validação pós-merge
+
+Este adendo registra a validação realizada após a integração da PR #115 no
+merge `eb9837b5411eaf62007be7f5ff88502d0ac48e74`. O `main` local foi
+sincronizado por fast-forward com `origin/main`; a árvore permaneceu limpa e
+os dois refs apontaram para o mesmo commit.
+
+### Execução real no branch integrado
+
+- suíte integral: `1442 passed, 2 skipped`;
+- cobertura oficial com branches: `91,00%` de linhas;
+- política integrada de cobertura: PASS;
+- auditor `scripts/audit_runtime_lighting_phase2.py`: PASS em todos os 9 checks;
+- baseline por blobs Git: PASS, `1733 files`;
+- integridade de evidências por blobs Git: PASS, `69 manifests`;
+- auditoria executada em Windows 10 build `10.0.26200`, Python `3.11.9`;
+- `main` local e `origin/main`: ambos em `eb9837b5411eaf62007be7f5ff88502d0ac48e74`;
+- worktree final: limpo.
+
+### Proveniência dos artefatos
+
+- pacote PASS: `docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20/`;
+- pacote da primeira tentativa, que falhou somente porque o baseline ainda não
+  continha os novos arquivos: `docs/evidence/artifacts/runtime-lighting-phase2-postmerge-2026-08-20-initial-baseline-failure/`;
+- a tentativa inicial foi preservada como falha histórica; nenhum resultado
+  foi apagado, reclassificado ou usado para obter PASS;
+- o pacote PASS foi gerado fora do worktree limpo, seus bytes foram preservados
+  e depois registrados no baseline Git.
+
+### Decisão pós-merge
+
+**APROVADO no escopo técnico da Etapa 2.** A implementação, o CI pré-merge,
+o merge e a validação pós-merge foram comprovados. Permanecem fora do escopo
+desta etapa shaders completos, partículas, pós-processamento, triggers,
+streaming e reprodução de runtime em Godot/Unity, conforme o ADR.
