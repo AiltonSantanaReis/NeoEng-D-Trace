@@ -66,16 +66,26 @@ histórica ou regra de governança foi alterado.
 .\.venv\Scripts\python.exe scripts/audit_runtime_streaming_phase7.py --output <new-directory>
 ```
 
-A execução local em árvore modificada produziu todos os checks funcionais como
-`true`, incluindo leitura assíncrona real, payload, prioridades, cache,
-recuperação, limites, persistência, hash e privacidade. O status geral foi
-`FAIL` exclusivamente por `source_tree_clean=false`. Esse FAIL é legítimo e
-esperado antes do checkpoint; não é PASS parcial nem aprovação.
+A primeira execução local em árvore modificada produziu todos os checks
+funcionais como `true`, mas registrou `FAIL` exclusivamente por
+`source_tree_clean=false`. Esse FAIL foi legítimo e esperado antes do
+checkpoint; não foi tratado como PASS parcial.
 
-O auditor gera `stage7-runtime-streaming-report.json`,
-`streaming-sidecar.json` e `artifact-index.json` com SHA-256. O pacote
-intermediário só será evidência final após regeneração em árvore limpa e
-validação dos bytes rastreados pelo Git.
+Após o checkpoint local `b456248972e046e44b06eb00b07f5d1d58f0fd84`, a execução em
+árvore limpa produziu `PASS` em todos os checks, incluindo leitura assíncrona
+real, payload, prioridades, cache, recuperação, limites, persistência, hash,
+privacidade e `source_tree_clean=true`. A suíte integral reproduziu `1535
+passed, 2 skipped` e a política integrada de cobertura passou com linhas e
+branches dentro dos limites vigentes.
+
+Pacote PASS versionado em `docs/evidence/artifacts/runtime-streaming-phase7-2026-08-20/`:
+
+- `stage7-runtime-streaming-report.json`: 2104 bytes; SHA-256 `e774711ec01ec8507bbf10b3450bdb88ad9f9e36a90dc2e599acfc2c7cc47437`;
+- `streaming-sidecar.json`: 1168 bytes; SHA-256 `be1d2bfe30873d54062d66dcb987b9680ae5daa9fc5d6795399cf40e94160fd6`;
+- `artifact-index.json`: 382 bytes; SHA-256 `9ec0d7c6570f743a8cecbde8a752a55586bce0f0297e8507b5681206f1939da`.
+
+O índice foi gerado pelo próprio auditor e os hashes acima foram recalculados
+localmente após a movimentação para o diretório padrão de evidências.
 
 ## Gates pendentes
 
