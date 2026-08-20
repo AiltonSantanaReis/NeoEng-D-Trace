@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "a282536159f894a194d7dee838ca058e8593dcae6722f79d2e7f05b8842b1185",
-      "size": 9885
+      "sha256": "b742e08556b1fd0c72ed3600d0321d6f21206d51c6f8b29a29f15c48b485ef94",
+      "size": 11611
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -631,6 +631,10 @@
     "docs/evidence/ETAPA_4_IMPORTACAO_GODOT_2026-08-16.md": {
       "sha256": "1603c547be79f44bd6f8f232d1eec6b115cde8015c9f53c51689d045a157b3f1",
       "size": 4753
+    },
+    "docs/evidence/ETAPA_4_RUNTIME_PARTICULAS_2026-08-20.md": {
+      "sha256": "0585532d3c7a530c509b50d1c32c3814ad2dcfb4d85ab242e60971de3f4909ef",
+      "size": 8395
     },
     "docs/evidence/ETAPA_4_TRANSACAO_GLOBAL_MANIFESTOS_2026-08-17.md": {
       "sha256": "fd6aa8b3112b6167b46f62fdb40f36ba458b72605da904361bcad77dbb70ffb5",
@@ -4216,6 +4220,22 @@
       "sha256": "fdb2e2c48bf8cf8e8a6809b968d6908637865e815364bb01becd69452fd90da0",
       "size": 3662
     },
+    "docs/evidence/artifacts/runtime-particles-phase4-2026-08-20/artifact-index.json": {
+      "sha256": "ff1e77bf10e5fda4980d2c9b0d627c388449c892a7beb82b2c4d37134b4a7221",
+      "size": 514
+    },
+    "docs/evidence/artifacts/runtime-particles-phase4-2026-08-20/particle-sidecar.json": {
+      "sha256": "6b14443676c3ca8bbc612c1c470951f357bfb43b9de00601ad1226fbd4aa7408",
+      "size": 862
+    },
+    "docs/evidence/artifacts/runtime-particles-phase4-2026-08-20/particles.json": {
+      "sha256": "6b14443676c3ca8bbc612c1c470951f357bfb43b9de00601ad1226fbd4aa7408",
+      "size": 862
+    },
+    "docs/evidence/artifacts/runtime-particles-phase4-2026-08-20/stage4-runtime-particles-report.json": {
+      "sha256": "1df49e476e8711b0b291f43962b3f4d440311d336dfb4dcf86ddf592b144f8f2",
+      "size": 1993
+    },
     "docs/evidence/artifacts/runtime-shaders-phase3-2026-08-20/artifact-index.json": {
       "sha256": "1e023e4c04d7ea1d56dfc004c2376ee39d3e9ada6e66ef930b516e9c8fde5304",
       "size": 791
@@ -5824,6 +5844,10 @@
       "sha256": "caf611a32e5c1d03a029429222cff04be9c322b287475b54e416a36920130d0c",
       "size": 7716
     },
+    "scripts/audit_runtime_particles_phase4.py": {
+      "sha256": "a7239f608aca23dbf91b70acea792122c7b5272c2586659d6be6f0c9dfd639f1",
+      "size": 12446
+    },
     "scripts/audit_runtime_shaders_phase3.py": {
       "sha256": "845108d50533efbce62c0912bab96b8b846600c840784a53b8a11f9e776a53f9",
       "size": 9048
@@ -6173,16 +6197,20 @@
       "size": 324
     },
     "src/runtime/__init__.py": {
-      "sha256": "de7a6f95773f9b867d8856c45ccabf63558c907892042190fe2f5fd827a5927a",
-      "size": 4001
+      "sha256": "3646b2ef67c0b8574648e6fd2860a4cff6334c5c171889185271a19e213fb927",
+      "size": 5470
     },
     "src/runtime/lighting.py": {
       "sha256": "827dccbb1167a351d2220d739c435c12c408601a88a583c9a7e18888d10650c5",
       "size": 19214
     },
+    "src/runtime/particles.py": {
+      "sha256": "4824190b87f4896543b7091006c5655d85e2f4b1d872a786494867428faaef10",
+      "size": 24224
+    },
     "src/runtime/scene_runtime.py": {
-      "sha256": "4bf30de527a6fd5bc9bd4258ac39a169796e55668a8198e9e03647ac662ebe2c",
-      "size": 18128
+      "sha256": "2b9dfae5d7919c7e0d6c49c72f258dc53aa0ff97d21b17848d1c10356977de71",
+      "size": 18157
     },
     "src/runtime/shaders.py": {
       "sha256": "7460eb778b2bf703734cb0809d65d29679852a4ab27a3a2a9376884a05b4e890",
@@ -6597,8 +6625,8 @@
       "size": 2193
     },
     "tests/test_stage1_runtime_base.py": {
-      "sha256": "2198e664b869074762ae2ff2f31cc7cbfd20af16ff49f21d998ccd8f2e01ed77",
-      "size": 5849
+      "sha256": "4922f789abd2368cf0fe98fb2b9dbcfabb6fc4c090e765c028802eb9a76cccdb",
+      "size": 6020
     },
     "tests/test_stage1_scenario_characterization.py": {
       "sha256": "496914caf7c2f398bf9995eac138ab68cfecdacf10972830591562a11602f26b",
@@ -6629,8 +6657,8 @@
       "size": 18413
     },
     "tests/test_stage3_runtime_shaders.py": {
-      "sha256": "e4e4e0a30b0ef065629fae0e4cfe1b22833432858081889ca4b1569f206fa4a9",
-      "size": 10159
+      "sha256": "5089d82ddef0601929ac131983320da3d2aede890a8913a63489e7f6c3a89d4d",
+      "size": 10149
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",
@@ -6643,6 +6671,10 @@
     "tests/test_stage4_professional_scene_authoring.py": {
       "sha256": "40a4564841e0c85bce4a6d622a7a0ef0a747b8e90b7d4e3c248cc11ea1c0856b",
       "size": 18885
+    },
+    "tests/test_stage4_runtime_particles.py": {
+      "sha256": "4237665de2b4d11708b10d4190124b9211f055cb1e95db40a048d0ff88e64417",
+      "size": 10746
     },
     "tests/test_stage4b2_preview_overlays.py": {
       "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f",
