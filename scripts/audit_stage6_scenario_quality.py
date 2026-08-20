@@ -36,7 +36,8 @@ STAGE5_EVIDENCE = "docs/evidence/ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md"
 MAX_REPORT_BYTES = 2_000_000
 USER_PATH_SEGMENT_RE = re.escape("Users")
 HOST_PATH_RE = re.compile(
-    rf"(?:[A-Za-z]:[\\/]{USER_PATH_SEGMENT_RE}[\\/]|/{USER_PATH_SEGMENT_RE}/|/home/|\\\\[^\\/]+[\\/])"
+    rf"(?:[A-Za-z]:[\\/]{USER_PATH_SEGMENT_RE}[\\/]"
+    rf"|/{USER_PATH_SEGMENT_RE}/|/home/|\\\\[^\\/]+[\\/])"
 )
 
 
