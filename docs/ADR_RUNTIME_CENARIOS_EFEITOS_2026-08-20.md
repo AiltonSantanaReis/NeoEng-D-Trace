@@ -1,9 +1,9 @@
 # ADR — Runtime de cenários, efeitos e validação portátil
 
-**Status:** Etapa 1 concluída; Etapa 2 em validação remota
+**Status:** Etapas 1 e 2 concluídas; Etapa 3 (Shaders) em implementação e validação local
 **Data:** 20 de agosto de 2026
-**Base:** `main` no merge `7e190b4`
-**Estado de execução:** A Etapa 1 foi encerrada após a PR #113 (`84dfee7`) e a PR documental #114 (`7e190b4`). A Etapa 2 está na PR #115; o primeiro CI registrou falha de isort, corrigida no commit `43733cb`, e o segundo registrou cobertura de branches `84,94% < 85,00%`, corrigida com testes no commit `4038bac`. A nova execução remota e a decisão final permanecem pendentes.
+**Base:** `main` no merge `ff66fa7`
+**Estado de execução:** A Etapa 1 foi encerrada pela implementação `84dfee7` e documentação `7e190b4`. A Etapa 2 foi integrada pela PR #115 no merge `eb9837b` e sua documentação pós-merge pela PR #116 no merge `ff66fa7`; CI Linux/Windows e validação local pós-merge foram aprovados no escopo definido. A Etapa 3 está sendo desenvolvida na branch de trabalho atual; os testes locais já cobrem o contrato e o compilador real, mas a evidência final, CI, merge e validação pós-merge ainda não foram realizados.
 **Planos relacionados:**
 
 - `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
@@ -106,8 +106,9 @@ como `NÃO TESTADO` ou `BLOQUEADO`, conforme a causa, nunca como aprovado.
 
 ## Ordem planejada de implementação
 
-Estas fases são uma sequência de planejamento. Nenhuma fase está iniciada por
-este ADR e cada uma exigirá autorização, baseline e decisão de saída própria:
+Estas fases são uma sequência de planejamento. Cada fase exige
+autorização, baseline e decisão de saída própria; o cabeçalho deste ADR
+registra o estado vivo sem reescrever os snapshots históricos:
 
 1. **Runtime base:** carregamento, ciclo de vida, capacidades, erros,
    cancelamento, rollback e contrato versionado.

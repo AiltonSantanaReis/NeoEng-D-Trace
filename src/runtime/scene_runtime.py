@@ -7,10 +7,10 @@ execution host required by the runtime ADR.  It validates the existing
 provides only the base guarantees: transactional activation, lifecycle,
 explicit capabilities, cancellation and fixed-step time.
 
-Lighting, particles, shaders, post-processing, triggers and streaming are not
-registered as supported capabilities here.  A later phase must add each one
-with its own contract and evidence instead of silently treating this host as a
-complete engine.
+Lighting and shaders are registered only through their own versioned sidecar
+contracts. Particles, post-processing, triggers and streaming are not registered
+as supported capabilities here. Each later phase must add its own contract and
+evidence instead of silently treating this host as a complete engine.
 """
 
 from __future__ import annotations
@@ -41,6 +41,7 @@ _SUPPORTED_CAPABILITIES = frozenset(
         "runtime.cancellation",
         "runtime.rollback",
         "runtime.lighting",
+        "runtime.shaders",
     }
 )
 

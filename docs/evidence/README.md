@@ -9,13 +9,14 @@
   pós-merge formal da Etapa 1; decisão APROVADO no escopo definido.
 - `artifacts/runtime-base-phase1-postmerge-2026-08-20/` — pacote hashado da
   auditoria reproduzível no merge `84dfee7`.
-- `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — validação local PASS do contrato de iluminação e materiais; primeiro CI da PR #115 falhou apenas no isort, correção registrada e nova validação local PASS; CI remoto, merge e pós-merge ainda pendentes.
+- `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — evidência histórica e encerramento pós-merge da Etapa 2; implementação no merge `eb9837b`, documentação reconciliada no merge `ff66fa7`, CI Linux/Windows e validação local PASS no escopo definido.
+- `ETAPA_3_RUNTIME_SHADERS_2026-08-20.md` — evidência da Etapa 3; permanece pendente até a auditoria final, CI, merge e validação pós-merge.
 - `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.
 # Evidências de validação
 
-Estado vivo em 20 de agosto de 2026: a Etapa 1 foi encerrada formalmente no merge `7e190b4` da PR documental `#114`, após a implementação integrada no merge `84dfee7` da PR `#113`; o CI `32362255134` foi aprovado em Linux e Windows e a validação pós-merge local confirmou 1421 testes aprovados e 2 skips históricos. O pacote de encerramento está listado acima. As Etapas 5 e 6 permanecem registradas pelos seus respectivos merges e evidências. Isso não constitui aprovação automática de release.
+Estado vivo em 20 de agosto de 2026: as Etapas 1 e 2 estão encerradas nos merges `84dfee7`/`7e190b4` e `eb9837b`/`ff66fa7`, respectivamente, com CI Linux/Windows e validação pós-merge documentados. A Etapa 3 (Shaders) está em implementação e validação local; não há ainda aprovação de CI, merge ou pós-merge para essa etapa. Isso não constitui aprovação automática de release.
 A Etapa 2 do ADR de runtime (iluminação e materiais) foi integrada pela PR #115 no merge `eb9837b5411eaf62007be7f5ff88502d0ac48e74`. O primeiro CI falhou no isort e o segundo falhou legitimamente na cobertura de branches (`84,94% < 85,00%`); os fixes `43733cb` e `4038bac` foram aplicados sem alterar regras. O run remoto `32378117544` aprovou Linux e Windows. A validação pós-merge local registrou `1442 passed, 2 skipped`, cobertura de linhas `91,00%`, política de cobertura PASS, auditor completo PASS, baseline de `1733 files` e `69 manifests` de evidência. O pacote está em `artifacts/runtime-lighting-phase2-postmerge-2026-08-20/`; a primeira tentativa com baseline ainda não reconciliado foi preservada separadamente. Etapa 2: APROVADA no escopo técnico definido no ADR; shaders completos, partículas, pós-processamento, triggers, streaming e runtime Godot/Unity permanecem em fases futuras.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
