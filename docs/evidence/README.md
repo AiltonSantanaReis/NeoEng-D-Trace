@@ -10,13 +10,13 @@
 - `artifacts/runtime-base-phase1-postmerge-2026-08-20/` — pacote hashado da
   auditoria reproduzível no merge `84dfee7`.
 - `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — evidência histórica e encerramento pós-merge da Etapa 2; implementação no merge `eb9837b`, documentação reconciliada no merge `ff66fa7`, CI Linux/Windows e validação local PASS no escopo definido.
-- `ETAPA_3_RUNTIME_SHADERS_2026-08-20.md` — evidência da Etapa 3; permanece pendente até a auditoria final, CI, merge e validação pós-merge.
+- `ETAPA_3_RUNTIME_SHADERS_2026-08-20.md` — snapshot pré-merge preservado e encerramento pós-merge da Etapa 3; PR #117, merge `c76ac4b`, CI Linux/Windows, auditoria real, baseline/evidências por blobs Git e suíte pós-merge aprovados no escopo definido.
 - `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.
 # Evidências de validação
 
-Estado vivo em 20 de agosto de 2026: as Etapas 1 e 2 estão encerradas nos merges `84dfee7`/`7e190b4` e `eb9837b`/`ff66fa7`, respectivamente, com CI Linux/Windows e validação pós-merge documentados. A Etapa 3 (Shaders) está em implementação e validação local; não há ainda aprovação de CI, merge ou pós-merge para essa etapa. Isso não constitui aprovação automática de release.
+Estado vivo em 20 de agosto de 2026: as Etapas 1, 2 e 3 estão encerradas nos merges `84dfee7`/`7e190b4`, `eb9837b`/`ff66fa7` e `c76ac4b`, respectivamente, com CI Linux/Windows e validação pós-merge documentados. A Etapa 3 foi aprovada somente no escopo de contrato de shaders, compilação real via Qt Shader Tools, publicação atômica, rollback e rejeição explícita de backends não declarados. Isso não constitui aprovação automática de release.
 A Etapa 2 do ADR de runtime (iluminação e materiais) foi integrada pela PR #115 no merge `eb9837b5411eaf62007be7f5ff88502d0ac48e74`. O primeiro CI falhou no isort e o segundo falhou legitimamente na cobertura de branches (`84,94% < 85,00%`); os fixes `43733cb` e `4038bac` foram aplicados sem alterar regras. O run remoto `32378117544` aprovou Linux e Windows. A validação pós-merge local registrou `1442 passed, 2 skipped`, cobertura de linhas `91,00%`, política de cobertura PASS, auditor completo PASS, baseline de `1733 files` e `69 manifests` de evidência. O pacote está em `artifacts/runtime-lighting-phase2-postmerge-2026-08-20/`; a primeira tentativa com baseline ainda não reconciliado foi preservada separadamente. Etapa 2: APROVADA no escopo técnico definido no ADR; shaders completos, partículas, pós-processamento, triggers, streaming e runtime Godot/Unity permanecem em fases futuras.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.

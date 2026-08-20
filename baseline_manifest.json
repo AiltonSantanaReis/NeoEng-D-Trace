@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "d368377962eacfa7d27f69180db51fd7987ea4703333bc9fad14f38d12b1fb9a",
-      "size": 9916
+      "sha256": "a282536159f894a194d7dee838ca058e8593dcae6722f79d2e7f05b8842b1185",
+      "size": 9885
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -573,8 +573,8 @@
       "size": 6315
     },
     "docs/evidence/ETAPA_3_RUNTIME_SHADERS_2026-08-20.md": {
-      "sha256": "48c7a3b3f040a6486fe22180c3aa0049140ee75297bd2615aa5f208306bc55e8",
-      "size": 5574
+      "sha256": "080c00ae803768f50b08600a8fd1d9e1c67bd341f96137a42abcc88a0a308b5e",
+      "size": 6849
     },
     "docs/evidence/ETAPA_4A_IMPORTACAO_GODOT_2026-08-16.md": {
       "sha256": "d7a27fdf92b0c8f8725c55ca0d578bb9fe7ab0051999d803183897d5d1d3c6ea",
@@ -821,8 +821,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "c0090211dd6e08b610cf3ea37890163f138de4351dfe7a27c91ae7101e636818",
-      "size": 36942
+      "sha256": "c714faacd9282559ad884716bd45a7242f24dd943436740b474d3fc17d789f5f",
+      "size": 37120
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
