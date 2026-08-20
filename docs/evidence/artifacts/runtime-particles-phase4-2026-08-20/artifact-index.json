@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-particles-phase4",
+  "files": {
+    "particle-sidecar.json": {
+      "bytes": 862,
+      "sha256": "6b14443676c3ca8bbc612c1c470951f357bfb43b9de00601ad1226fbd4aa7408"
+    },
+    "particles.json": {
+      "bytes": 862,
+      "sha256": "6b14443676c3ca8bbc612c1c470951f357bfb43b9de00601ad1226fbd4aa7408"
+    },
+    "stage4-runtime-particles-report.json": {
+      "bytes": 1993,
+      "sha256": "1df49e476e8711b0b291f43962b3f4d440311d336dfb4dcf86ddf592b144f8f2"
+    }
+  }
+}

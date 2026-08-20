@@ -42,6 +42,7 @@ _SUPPORTED_CAPABILITIES = frozenset(
         "runtime.rollback",
         "runtime.lighting",
         "runtime.shaders",
+        "runtime.particles",
     }
 )
 

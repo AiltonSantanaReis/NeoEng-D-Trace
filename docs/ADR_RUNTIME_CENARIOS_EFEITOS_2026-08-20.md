@@ -1,13 +1,31 @@
 # ADR — Runtime de cenários, efeitos e validação portátil
 
-**Status:** Etapas 1, 2 e 3 concluídas no escopo aprovado; release permanece uma decisão independente
+**Status:** Etapas 1, 2 e 3 concluídas no escopo aprovado; RUNTIME-ETAPA-4 está em execução local e não está aprovada; release permanece uma decisão independente
 **Data:** 20 de agosto de 2026
-**Base:** `main` no merge `c76ac4b3ed7a6d1d7ee95509b0c24957ffe6ca59`
-**Estado de execução:** A Etapa 1 foi encerrada pela implementação `84dfee7` e documentação `7e190b4`. A Etapa 2 foi integrada pela PR #115 no merge `eb9837b` e sua documentação pós-merge pela PR #116 no merge `ff66fa7`. A Etapa 3 foi integrada pela PR #117 no merge `c76ac4b`; CI Linux/Windows, auditoria real e validação local pós-merge foram aprovados no escopo definido. As capacidades futuras continuam explicitamente fora desta etapa.
+**Base:** main no merge 342f55f126c7f8f2fbfa6bbb98bfd73f3ab9438b
+**Estado de execução:** A Etapa 1 foi encerrada pela implementação 84dfee7 e documentação 7e190b. A Etapa 2 foi integrada pela PR #115 no merge eb9837b e sua documentação pós-merge pela PR #116 no merge ff66fa7. A Etapa 3 foi integrada pela PR #117 no merge c76ac4b; CI Linux/Windows, auditoria real e validação local pós-merge foram aprovados no escopo definido. A RUNTIME-ETAPA-4 possui implementação local ainda não commitada, com os testes focados das Etapas 1–4 aprovados (68 passed, sendo 27 da Etapa 4) e gates estáticos aprovados; isso não constitui aprovação da etapa. Nenhuma regressão foi reproduzida na validação focada. A transição da capacidade runtime.particles de não suportada para nativa é uma mudança prevista do escopo da Etapa 4, ainda sujeita aos gates completos, e não uma regressão comprovada. A avaliação anterior que apenas sugeria risco foi reclassificada como hipótese não confirmada e não será usada como evidência.
 **Planos relacionados:**
 
 - `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
 - `docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md`
+
+## Fontes obrigatórias de governança
+
+Este ADR define apenas o plano específico do runtime. As decisões de implementação,
+qualidade, evidência e publicação também estão subordinadas às fontes globais
+do projeto, que devem ser lidas antes de cada fase:
+
+- docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md;
+- docs/POLITICA_NAO_REGRESSAO.md;
+- docs/PLANO_MESTRE_ESTABILIZACAO.md;
+- docs/MATRIZ_RISCOS_ESTABILIZACAO.md;
+- docs/evidence/README.md;
+- .github/workflows/ci.yml;
+- template e regras de revisão do repositório.
+
+Nenhuma hipótese, teste focado, documento antigo ou evidência local não
+rastreada pode substituir esses gates. Regressão só será registrada como fato
+após reprodução, análise de causa e evidência verificável.
 
 ## Decisão
 
@@ -27,7 +45,9 @@ implementada, integrada ou suportada.
 O escopo 4A–4B.5 já aprovado entrega autoria, câmera/parallax, camadas,
 overlays, persistência e exportação estrutural. Sockets de luz, VFX e trigger
 são marcadores autorais; eles não constituem execução de efeitos ou runtime de
-engine.
+engine. A RUNTIME-ETAPA-4 está sendo implementada separadamente, sem alterar
+silenciosamente o schema .ndtproj v1 ou os fluxos do editor principal; até a
+conclusão dos gates, sua capacidade permanece não aprovada.
 
 Os exportadores devem continuar informando explicitamente capacidades não
 suportadas. Nenhum efeito poderá ser descartado silenciosamente, simulado de
@@ -188,10 +208,12 @@ auditável.
 
 ## Consequência
 
-O ADR permite planejar o runtime de efeitos sem inflar silenciosamente o MVP ou
-misturar o editor de autoria com uma engine completa. A implementação futura
-será incremental, determinística, portável e reversível, com diferenças entre
-Godot, Unity e backends tratadas por capacidades explícitas. Até que cada fase
-seja concluída e comprovada pelos gates acima, partículas, shaders, iluminação,
+O ADR permite desenvolver o runtime de efeitos sem inflar silenciosamente o
+MVP ou misturar o editor de autoria com uma engine completa. A implementação é
+incremental, determinística, portável e reversível, com diferenças entre Godot,
+Unity e backends tratadas por capacidades explícitas. As Etapas 1, 2 e 3 estão
+concluídas apenas nos escopos registrados no estado acima. Até que a Etapa 4 e
+as fases seguintes sejam concluídas e comprovadas pelos gates, partículas,
 pós-processamento, triggers, streaming e runtime completo permanecem
-**fora das funcionalidades concluídas do projeto**.
+**fora das funcionalidades concluídas do projeto**; shaders, iluminação e
+materiais permanecem concluídos somente nos escopos específicos já aprovados.
