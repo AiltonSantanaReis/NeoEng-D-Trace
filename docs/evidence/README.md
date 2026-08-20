@@ -9,12 +9,13 @@
   pós-merge formal da Etapa 1; decisão APROVADO no escopo definido.
 - `artifacts/runtime-base-phase1-postmerge-2026-08-20/` — pacote hashado da
   auditoria reproduzível no merge `84dfee7`.
-- `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — validação local PASS do contrato de iluminação e materiais; PR, CI remoto, merge e pós-merge ainda pendentes.
+- `ETAPA_2_RUNTIME_ILUMINACAO_MATERIAIS_2026-08-20.md` — validação local PASS do contrato de iluminação e materiais; primeiro CI da PR #115 falhou apenas no isort, correção registrada e nova validação local PASS; CI remoto, merge e pós-merge ainda pendentes.
 - `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
+- `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 # Evidências de validação
 
 Estado vivo em 20 de agosto de 2026: a Etapa 1 foi encerrada formalmente no merge `7e190b4` da PR documental `#114`, após a implementação integrada no merge `84dfee7` da PR `#113`; o CI `32362255134` foi aprovado em Linux e Windows e a validação pós-merge local confirmou 1421 testes aprovados e 2 skips históricos. O pacote de encerramento está listado acima. As Etapas 5 e 6 permanecem registradas pelos seus respectivos merges e evidências. Isso não constitui aprovação automática de release.
-A Etapa 2 do ADR de runtime (iluminação e materiais) está em implementação e ainda não está aprovada. Nenhuma capacidade de runtime será considerada concluída antes dos gates próprios.
+A Etapa 2 do ADR de runtime (iluminação e materiais) está em validação remota na PR #115 e ainda não está aprovada. O primeiro CI falhou no isort; o fix `43733cb` passou a validação local e aguarda nova execução remota. Nenhuma capacidade de runtime será considerada concluída antes dos gates próprios.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
 - `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; evidência da implementação integrada.

@@ -14,9 +14,9 @@
 - Python: `3.11.9`
 - Dependências: ambiente `.venv` do projeto, lockfile validado pelo CI
 - Baseline contra blobs Git antes do pacote: `1677 files`
-- Baseline final staged após incluir o pacote: `1689 files` — PASS.
+- Baseline final staged após incluir os pacotes r1 e r2: `1700 files` — PASS.
 - Manifests de evidência validados antes do pacote: `64`
-- Manifests finais staged após incluir o pacote: `65` — PASS.
+- Manifests finais staged após incluir os pacotes r1 e r2: `66` — PASS.
 
 ## Objetivo e escopo
 
@@ -71,6 +71,8 @@ Windows; não foram criados nem alterados nesta etapa.
 - `runtime-lighting-report.json`: 3698 bytes; SHA-256
   `8046cbf791eccd6792f15ec1f9d68f13d7c1a5b3d2fd6c5d422edf9fd5615a1f`.
 - `artifact-index.json`: 1406 bytes; SHA-256 `48d84c41339b38eecca73f8ce83e33ee7bb157225aefb4ccc87e18d3d26abf60`.
+- `runtime-lighting-phase2-2026-08-20-r2/runtime-lighting-report.json`: 3698 bytes; SHA-256 `72eec64f0b969351a860642851e31527faca9701a8822c9697db8b01068d558b`.
+- `runtime-lighting-phase2-2026-08-20-r2/artifact-index.json`: 1406 bytes; SHA-256 `856da03ec0c05d63bcf3ea3460c6d005662ca74060c1beb93c7255e2b96e2ddc`.
 - Os logs individuais de cada gate estão no mesmo diretório e são indexados
   pelo `artifact-index.json`.
 
@@ -102,3 +104,30 @@ produziu `PASS`.
 
 **NÃO APROVADO — validação local PASS; PR, CI remoto, merge e validação
 pós-merge pendentes.**
+
+## Revalidação após o primeiro CI da PR #115
+
+O primeiro CI remoto da PR #115 (run `32373956781`) falhou no job Linux
+exclusivamente no passo `isort --check-only`. O job confirmou antes da falha
+que o baseline e a integridade das evidências estavam válidos; não houve falha
+de testes, lint ou formatação Black. A causa foi a ordenação de imports em
+`src/runtime/__init__.py` e `tests/test_stage2_runtime_lighting.py`.
+
+Correção aplicada sem alterar regras ou asserções:
+
+- commit corretivo: `43733cb83af04f11d4e7fcef7df58e83f936b61b`;
+- `isort --check-only`, suíte focada e suíte integral reexecutados localmente;
+- auditor completo reexecutado em worktree limpo, com `status: PASS`;
+- pacote atualizado: `docs/evidence/artifacts/runtime-lighting-phase2-2026-08-20-r2/`.
+
+Resultados do auditor r2:
+
+- suíte focada: `87 passed`;
+- suíte integral: `1440 passed, 2 skipped`;
+- baseline, evidências, Black, Flake8, Mypy, PyCompile e diff: PASS;
+- relatório r2 vinculado ao commit corretivo e ao worktree limpo.
+
+O primeiro CI falho permanece registrado como evento histórico e não foi
+apagado ou reinterpretado. A PR #115 requer nova execução remota após o fix;
+portanto a decisão continua **NÃO APROVADO** até Linux e Windows concluírem
+com sucesso e a validação pós-merge ser realizada.
