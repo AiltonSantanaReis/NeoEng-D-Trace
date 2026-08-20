@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "33c0b3a9b896de71ac051fb1ef4841d67ee6d76c6a6854b02309d509bd78a117",
-      "size": 12103
+      "sha256": "df8acab1c29cbf8ca0a2eaa9f960c8c4f792efa14f44ed231bea697298295a61",
+      "size": 14050
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -249,8 +249,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "a37ff6b577331e203771493fa768e96d27ec54a617d47c4de7429d33e2ed7df1",
-      "size": 20321
+      "sha256": "6f2035eb150365476504c776f1a687af5129d495223781739fc99629d5fcd785",
+      "size": 21625
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "59de520a30f0f4fad9474ed56466aabf02881512da5e1d99e7975916cb479ed7",
@@ -756,6 +756,10 @@
       "sha256": "6b7ed2df86fd329a468cc2517811ee49e288f9cd63e145d8c7e804cc4045a936",
       "size": 3470
     },
+    "docs/evidence/ETAPA_7_RUNTIME_STREAMING_2026-08-20.md": {
+      "sha256": "d400f85993c5d29b1a97c2002a063eb5e3970ebee133d341089d83620ef254a4",
+      "size": 5181
+    },
     "docs/evidence/ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md": {
       "sha256": "171ab13235ae7c9b0365d6cc874177e907a8f5338c3b7a62215dd12fef58ee9f",
       "size": 4476
@@ -845,8 +849,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "aa111e2f9d652f665d325bc795809e035b03ab19d3c6a899494b1e6e549d684b",
-      "size": 38778
+      "sha256": "8d5a08a6f9c0fb0690b7202ad0467eb9c0e09addbd17ea5492222b7343618de3",
+      "size": 39571
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -4328,6 +4332,30 @@
       "sha256": "4ed53b0789f81ef2e50d42e18b05cc9ba80c8884725f780dc9f963356892a7b1",
       "size": 2077
     },
+    "docs/evidence/artifacts/runtime-streaming-phase7-2026-08-20/artifact-index.json": {
+      "sha256": "9ec0d7c6570f743a8cecbdde8a752a55586bce0f0297e8507b5681206f1939da",
+      "size": 382
+    },
+    "docs/evidence/artifacts/runtime-streaming-phase7-2026-08-20/stage7-runtime-streaming-report.json": {
+      "sha256": "e774711ec01ec8507bbf10b3450bdb88ad9f9e36a90dc2e599acfc2c7cc47437",
+      "size": 2104
+    },
+    "docs/evidence/artifacts/runtime-streaming-phase7-2026-08-20/streaming-sidecar.json": {
+      "sha256": "be1d2bfe30873d54062d66dcb987b9680ae5daa9fc5d6795399cf40e94160fd6",
+      "size": 1168
+    },
+    "docs/evidence/artifacts/runtime-streaming-phase7-post-isort-2026-08-20/artifact-index.json": {
+      "sha256": "12b9a012b0bbc2892aaaddeb13d28772a2045a8feef225f02a6f01eef531e0d9",
+      "size": 382
+    },
+    "docs/evidence/artifacts/runtime-streaming-phase7-post-isort-2026-08-20/stage7-runtime-streaming-report.json": {
+      "sha256": "68a0de35ec899d0a65c4fc9a0e8581f76b15216d10951948b0108d1a4f6bee80",
+      "size": 2104
+    },
+    "docs/evidence/artifacts/runtime-streaming-phase7-post-isort-2026-08-20/streaming-sidecar.json": {
+      "sha256": "be1d2bfe30873d54062d66dcb987b9680ae5daa9fc5d6795399cf40e94160fd6",
+      "size": 1168
+    },
     "docs/evidence/artifacts/runtime-triggers-phase6-2026-08-20/artifact-index.json": {
       "sha256": "5b1625033c20c248bfcfe2466d02dafc252cdba60196e5d8d674f96c031ebad1",
       "size": 651
@@ -5964,6 +5992,10 @@
       "sha256": "845108d50533efbce62c0912bab96b8b846600c840784a53b8a11f9e776a53f9",
       "size": 9048
     },
+    "scripts/audit_runtime_streaming_phase7.py": {
+      "sha256": "5e988b42269720ba762f2f0a592bc11990a0878b3424b9c69bf47677fc0c903e",
+      "size": 15566
+    },
     "scripts/audit_runtime_triggers_phase6.py": {
       "sha256": "a7094789cd58e259980a1fb5b36e1bab64604607127089f307405bc3ea9cb53d",
       "size": 13573
@@ -6313,8 +6345,8 @@
       "size": 324
     },
     "src/runtime/__init__.py": {
-      "sha256": "5313c3adf5aebdd56ba21e59747cb2b578b9baea59ade8456b6aefd9a5f8f4f9",
-      "size": 9075
+      "sha256": "24cfa905b6c0027acd3f4721d31def9c8f10a1fd2487a2138de5932c56d26fcf",
+      "size": 10802
     },
     "src/runtime/lighting.py": {
       "sha256": "827dccbb1167a351d2220d739c435c12c408601a88a583c9a7e18888d10650c5",
@@ -6329,12 +6361,16 @@
       "size": 20888
     },
     "src/runtime/scene_runtime.py": {
-      "sha256": "8693cd13c39d8f5a8a51dd428fbb84a80ff3b0fb8d18b143f91b7cb2dee306f1",
-      "size": 18220
+      "sha256": "57aa0019c019351a2a0c5fb4cb457f2c18fe140ab07fe51e7341b07e9bd963e5",
+      "size": 18186
     },
     "src/runtime/shaders.py": {
       "sha256": "7460eb778b2bf703734cb0809d65d29679852a4ab27a3a2a9376884a05b4e890",
       "size": 16637
+    },
+    "src/runtime/streaming.py": {
+      "sha256": "23b85d87f49241522cfeb10f2ffe3ffe51a5d36bb7cad5884e9a8d4e13d5f29f",
+      "size": 33786
     },
     "src/runtime/triggers.py": {
       "sha256": "0c2d016f900e0f34557a0135926d77bc354e50c40815b87dda5f30285ca0a1ae",
@@ -6839,6 +6875,10 @@
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",
       "size": 2282
+    },
+    "tests/test_stage7_runtime_streaming.py": {
+      "sha256": "fded5f8ea722ddd174a92ac400ebd33d7964179c472695881f4c2f6cf01bc43b",
+      "size": 15352
     },
     "tests/test_stage_0_5_2d_ui.py": {
       "sha256": "e3f8323bf29e1fecf34a7e6d29ff1a569ddbc42b77824337e3653a806e3be43d",

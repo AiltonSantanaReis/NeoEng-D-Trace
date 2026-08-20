@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-streaming-phase7",
+  "files": {
+    "stage7-runtime-streaming-report.json": {
+      "bytes": 2104,
+      "sha256": "68a0de35ec899d0a65c4fc9a0e8581f76b15216d10951948b0108d1a4f6bee80"
+    },
+    "streaming-sidecar.json": {
+      "bytes": 1168,
+      "sha256": "be1d2bfe30873d54062d66dcb987b9680ae5daa9fc5d6795399cf40e94160fd6"
+    }
+  }
+}

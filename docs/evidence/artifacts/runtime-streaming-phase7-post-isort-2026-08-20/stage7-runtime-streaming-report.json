@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-streaming-phase7",
+  "status": "PASS",
+  "source": {
+    "commit": "89109440f9ed867501e6326a1b3c59d12b3796bc",
+    "branch": "Ailton/runtime-stage7-streaming",
+    "worktree_clean": true
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "commands": [
+    "python scripts/audit_runtime_streaming_phase7.py --output <new-directory>",
+    "python -m pytest -q tests/test_stage7_runtime_streaming.py",
+    "python -m pytest --cov=src --cov-branch --cov-fail-under=90"
+  ],
+  "checks": {
+    "source_tree_clean": true,
+    "canonical_sidecar_roundtrip_and_hash": true,
+    "source_binding_is_hash_bound": true,
+    "real_async_load_and_payload_identity": true,
+    "priority_and_pending_limit_are_deterministic": true,
+    "cancellation_is_observable_and_recoverable": true,
+    "cache_eviction_is_safe_and_deterministic": true,
+    "hash_failure_and_explicit_retry_recover": true,
+    "cache_budget_failure_is_explicit_and_recoverable": true,
+    "atomic_persistence_preserves_previous_bytes": true,
+    "contract_limits_are_fail_closed": true,
+    "runtime_host_advertises_capability": true,
+    "privacy": true
+  },
+  "contract": {
+    "format_id": "neoeng-d-trace-runtime-streaming",
+    "schema_version": 1,
+    "algorithm_version": 1,
+    "document_sha256": "be1d2bfe30873d54062d66dcb987b9680ae5daa9fc5d6795399cf40e94160fd6",
+    "serialized_bytes": 1168,
+    "asset_count": 3,
+    "limits": {
+      "max_cache_bytes": 64,
+      "max_asset_bytes": 64,
+      "max_pending": 4,
+      "max_events_per_poll": 32
+    }
+  },
+  "privacy_leaks": [],
+  "limitations": [
+    "The implementation loads real local files under a constrained root; it does not provide engine-specific GPU streaming.",
+    "Memory limits are logical byte budgets; VRAM, driver-specific FPS and engine residency remain outside this phase.",
+    "The phase is not approved until tracked-byte validation, full repository gates, CI and post-merge validation pass."
+  ]
+}
