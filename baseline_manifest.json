@@ -685,8 +685,8 @@
       "size": 4244
     },
     "docs/evidence/ETAPA_6_CENARIOS_PROFISSIONAIS_2026-08-20.md": {
-      "sha256": "66f469381d705a48e0a561ee7e3928ba44c6573042502cffb17c7060cb07f7d7",
-      "size": 4937
+      "sha256": "3573dfb9f3b9812215ecbce7d7ff9785fbd04ac647b9281f077e9ab81d8ea1bc",
+      "size": 5088
     },
     "docs/evidence/ETAPA_6_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "2a4eeb815300958f339d516c221c76baec171aaba145742bd3a8fefdcf87316f",
@@ -801,7 +801,7 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "80dcb45d83ec3d036fa677c1cae07309aac5c7b184ba51328ea7dcc3432ec71d",
+      "sha256": "c1c5119bc4d26461c125ec75c0929f34032e206df053361037aeb4d70229d81b",
       "size": 34700
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
@@ -4269,7 +4269,7 @@
       "size": 1149
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/artifact-index.json": {
-      "sha256": "66f6a4d46bae0aa2859bdec2431f5e858d51f8964a4b194263c9263d65e28865",
+      "sha256": "7c53db1a4c5c8bc65088eb450f0ab65d1f5204585b3b3518a4db6ac19f0084a7",
       "size": 10724
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/main-window/audited/1080p_FHD_01_sem_projeto_annotated.png": {
@@ -4453,7 +4453,7 @@
       "size": 24793
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/professional-editor/audited/visual-audit-report.json": {
-      "sha256": "6bafb2f584d938c8ed5dd6742cd8b57b3f52f6122d26eb6708ff4eb058f39f2e",
+      "sha256": "9163655991de499dcb12285d1ece4c7eff703521f44d718e4b9f600121113b21",
       "size": 10235
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/professional-editor/audited/visual-audit-report.md": {
@@ -4461,7 +4461,7 @@
       "size": 232
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/professional-editor/captures/manifest.json": {
-      "sha256": "56de28428740200a7958dbd5e5a6955aa7dd34b11b88d28cdee06f72b628910e",
+      "sha256": "fdee10cc308a377db4f5ef2d585221336cafdb1688e4470116909977a184946f",
       "size": 31899
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/professional-editor/captures/stage4_1280x720_01_sem_projeto.png": {
@@ -4501,12 +4501,12 @@
       "size": 23393
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/professional-editor/stage4-capture-report.json": {
-      "sha256": "82c5167050d998c59b3898a01f27dddd9dda07e5e8982adc37a7f7e03e3ff8cf",
+      "sha256": "205ebe537c1703b3d16b5c3abf3ee645a32e0b8842b38ea60b76f5436229b975",
       "size": 10341
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/stage6-report.json": {
-      "sha256": "3cfac9a2b0bb63afea3629610adc1f40b574ccb94c180260d5c6659731f0589f",
-      "size": 3290
+      "sha256": "ee495638feaf000f81bf83d9bdd9282ba9effc2c7c2b9c942ccd019ec7fc8b01",
+      "size": 3305
     },
     "docs/evidence/artifacts/transaction-stabilization/full-test-results.txt": {
       "sha256": "9a7e7c737de99a433453f96a0e247fae8eacba6ff46c77ff13878933f224d878",
@@ -5493,8 +5493,8 @@
       "size": 10410
     },
     "scripts/audit_stage6_scenario_quality.py": {
-      "sha256": "cc1e3981898a5efa9963b240eb359186098c44d4223ecd18e431a55506835145",
-      "size": 8090
+      "sha256": "64a27d573d9d0bf68d24cbc3b093af51445c66eccd6c5264c0e774ead23b9d90",
+      "size": 8201
     },
     "scripts/audit_ui_capture.py": {
       "sha256": "fa0e8c8b7e5ce181c220adc6b31fff5b83dbb00a49ebcac188bc7bcb8df31f95",
@@ -6277,8 +6277,8 @@
       "size": 13277
     },
     "tests/test_stage6_scenario_quality.py": {
-      "sha256": "236d3bdec164889abb7318b3b9e1e8798966735bde3493f90f68bc23eedf2d18",
-      "size": 2551
+      "sha256": "10473064e42c3ca2619e93cc01638f2a639b0823741acacfa6742d5b98dd88ad",
+      "size": 2607
     },
     "tests/test_stage7_native_sync_contracts.py": {
       "sha256": "0ff148a7972a9e979a74b792162fddee50cc5dd4679346fbe651b74787a0a234",

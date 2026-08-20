@@ -1384,6 +1384,6 @@
     "fixture_is_temporary": true
   },
   "schema_version": 2,
-  "source_commit": "93cdc5ee1ca07cf913f4c141e0746476f0417cb7",
+  "source_commit": "01399c24ef52f7e506628b71cd48ac2d21e30a1d",
   "worktree_clean_at_capture_start": true
 }

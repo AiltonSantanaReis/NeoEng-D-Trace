@@ -4,7 +4,7 @@
 
 A Etapa 6 foi executada localmente no Windows e aprovada pelos gates definidos no
 plano de cenários. A evidência foi capturada com o commit de código
-`93cdc5ee1ca07cf913f4c141e0746476f0417cb7`, no branch de trabalho da etapa, com
+`01399c24ef52f7e506628b71cd48ac2d21e30a1d`, no branch de trabalho da etapa, com
 worktree limpo no início e durante as capturas. O pacote ainda não está
 integrado ao `main`: PR, CI remoto e merge permanecem pendentes.
 
@@ -75,9 +75,9 @@ O índice contém 59 referências para 60 arquivos físicos; o próprio índice 
 entra no conjunto de hashes para evitar auto-referência.
 
 - `stage6-report.json` — SHA-256
-  `3cfac9a2b0bb63afea3629610adc1f40b574ccb94c180260d5c6659731f0589f`;
+  `ee495638feaf000f81bf83d9bdd9282ba9effc2c7c2b9c942ccd019ec7fc8b01`;
 - `artifact-index.json` — SHA-256
-  `66f6a4d46ba0eaa2859bdec2431f5e858d51f8964a4b194263c9263d65e28865`;
+  `7c53db1a4c5c8bc65088eb450f0ab65d1f5204585b3b3518a4db6ac19f0084a7`;
 - `main-window/audited/visual-audit-report.json` — zero achados em 16 imagens;
 - `professional-editor/stage4-capture-report.json` — zero achados em 9 imagens;
 - cada PNG, log e relatório restante possui `bytes` e `sha256` no índice.
@@ -96,9 +96,7 @@ entra no conjunto de hashes para evitar auto-referência.
 
 ## Rollback e decisão
 
-O rollback local é a reversão dos commits `93cdc5e` e `51823c6`, preservando o
-merge `57f29d4` da Etapa 5 como base anterior. Nenhum arquivo de usuário é
-migrado ou apagado por esta etapa.
+O rollback local é a reversão dos commits de proveniência e evidência desta etapa, identificados por 01399c24ef52f7e506628b71cd48ac2d21e30a1d4ef52f7e506628b71cd48ac2d21e30a1d e pelo commit de evidências que o sucede. O merge 57f29d4 da Etapa 5 permanece como base anterior. Nenhum arquivo de usuário é migrado ou apagado por esta etapa.
 
 A etapa está aprovada localmente porque todos os gates executáveis nesta máquina
 passaram. A integração remota, CI remoto, revisão de PR e merge ainda não foram

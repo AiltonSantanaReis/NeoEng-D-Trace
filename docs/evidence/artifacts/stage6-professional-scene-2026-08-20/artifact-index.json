@@ -184,7 +184,7 @@
     },
     "professional-editor/audited/visual-audit-report.json": {
       "bytes": 10235,
-      "sha256": "6bafb2f584d938c8ed5dd6742cd8b57b3f52f6122d26eb6708ff4eb058f39f2e"
+      "sha256": "9163655991de499dcb12285d1ece4c7eff703521f44d718e4b9f600121113b21"
     },
     "professional-editor/audited/visual-audit-report.md": {
       "bytes": 232,
@@ -192,7 +192,7 @@
     },
     "professional-editor/captures/manifest.json": {
       "bytes": 31899,
-      "sha256": "56de28428740200a7958dbd5e5a6955aa7dd34b11b88d28cdee06f72b628910e"
+      "sha256": "fdee10cc308a377db4f5ef2d585221336cafdb1688e4470116909977a184946f"
     },
     "professional-editor/captures/stage4_1280x720_01_sem_projeto.png": {
       "bytes": 4992,
@@ -232,11 +232,11 @@
     },
     "professional-editor/stage4-capture-report.json": {
       "bytes": 10341,
-      "sha256": "82c5167050d998c59b3898a01f27dddd9dda07e5e8982adc37a7f7e03e3ff8cf"
+      "sha256": "205ebe537c1703b3d16b5c3abf3ee645a32e0b8842b38ea60b76f5436229b975"
     },
     "stage6-report.json": {
-      "bytes": 3290,
-      "sha256": "3cfac9a2b0bb63afea3629610adc1f40b574ccb94c180260d5c6659731f0589f"
+      "bytes": 3305,
+      "sha256": "ee495638feaf000f81bf83d9bdd9282ba9effc2c7c2b9c942ccd019ec7fc8b01"
     }
   }
 }

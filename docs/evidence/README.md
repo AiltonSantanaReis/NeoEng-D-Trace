@@ -2,7 +2,7 @@
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 # Evidências de validação
 
-Estado vivo após o merge da PR `#108`: a Etapa 5 do editor profissional está integrada no `main` pelo merge `57f29d4`; o CI `32321900264` foi aprovado em Linux e Windows. A Etapa 6 do plano de cenários foi validada localmente no commit `93cdc5e`; o pacote hashado está em `artifacts/stage6-professional-scene-2026-08-20/`. PR, CI remoto e merge ainda estão pendentes. Isso não constitui aprovação automática de release.
+Estado vivo após o merge da PR `#108`: a Etapa 5 do editor profissional está integrada no `main` pelo merge `57f29d4`; o CI `32321900264` foi aprovado em Linux e Windows. A Etapa 6 do plano de cenários foi validada localmente no commit `01399c2`; o pacote hashado está em `artifacts/stage6-professional-scene-2026-08-20/`. PR, CI remoto e merge ainda estão pendentes. Isso não constitui aprovação automática de release.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
 - `ETAPA_4B1_SCHEMA_LATERAL_2026-08-18.md` — schema lateral versionado, hash-bound, limites, round-trip, parsing negativo, escrita atômica e rollback; evidência da implementação integrada.
@@ -115,7 +115,7 @@ Uma captura isolada, relato verbal ou resultado sem commit identificado não é 
 - `ETAPA_3_EDITOR_PROFISSIONAL_CENARIO_2026-08-19.md` — snapshot histórico da implementação do editor profissional; a integração atual foi encerrada pelo merge `f477b6d` e CI `32306687719`. Não reescrever este snapshot para representar a Etapa 4.
 - `ETAPA_4_EDITOR_PROFISSIONAL_PREVIEW_2026-08-19.md` — snapshot histórico pré-merge da Etapa 4; preservado sem reescrita retroativa.
 - `ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md` — persistência V1/V2, exportação genérica/Godot/Unity, adaptadores nativos reais e casos negativos de hash; PR `#108`, merge `57f29d4` e CI `32321900264` aprovados em Linux/Windows.
-- ETAPA_6_CENARIOS_PROFISSIONAIS_2026-08-20.md — testes reais, auditoria visual automatizada, desempenho, hashes e privacidade; validação local aprovada no commit 93cdc5e, PR/CI/merge pendentes.
+- ETAPA_6_CENARIOS_PROFISSIONAIS_2026-08-20.md — testes reais, auditoria visual automatizada, desempenho, hashes e privacidade; validação local aprovada no commit 01399c2, PR/CI/merge pendentes.
 
 ## Evidências registradas
 

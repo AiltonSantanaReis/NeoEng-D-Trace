@@ -453,10 +453,10 @@
   },
   "input": {
     "manifest": "manifest.json",
-    "manifest_sha256": "56de28428740200a7958dbd5e5a6955aa7dd34b11b88d28cdee06f72b628910e"
+    "manifest_sha256": "fdee10cc308a377db4f5ef2d585221336cafdb1688e4470116909977a184946f"
   },
   "schema_version": 1,
-  "source_commit": "93cdc5ee1ca07cf913f4c141e0746476f0417cb7",
+  "source_commit": "01399c24ef52f7e506628b71cd48ac2d21e30a1d",
   "status": "PASS",
   "worktree_clean_at_capture_start": true
 }

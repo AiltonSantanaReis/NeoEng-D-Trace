@@ -3,8 +3,8 @@
   "stage": "6",
   "status": "PASS",
   "source": {
-    "commit": "93cdc5ee1ca07cf913f4c141e0746476f0417cb7",
-    "branch": "codex/scenario-authoring-stage6",
+    "commit": "01399c24ef52f7e506628b71cd48ac2d21e30a1d",
+    "branch": "feature/stage6-scenario-quality-reconciliation",
     "worktree_clean": true
   },
   "environment": {
@@ -40,24 +40,24 @@
       {
         "label": "runtime_export_serialization",
         "operations": 500,
-        "elapsed_seconds": 0.056846,
-        "operations_per_second": 8795.678,
+        "elapsed_seconds": 0.055963,
+        "operations_per_second": 8934.475,
         "max_elapsed_seconds": 10.0,
         "within_limit": true
       },
       {
         "label": "preview_projection",
         "operations": 10000,
-        "elapsed_seconds": 0.704535,
-        "operations_per_second": 14193.759,
+        "elapsed_seconds": 0.693368,
+        "operations_per_second": 14422.352,
         "max_elapsed_seconds": 5.0,
         "within_limit": true
       },
       {
         "label": "overlay_geometry",
         "operations": 10000,
-        "elapsed_seconds": 0.025242,
-        "operations_per_second": 396168.261,
+        "elapsed_seconds": 0.024831,
+        "operations_per_second": 402717.538,
         "max_elapsed_seconds": 5.0,
         "within_limit": true
       }
