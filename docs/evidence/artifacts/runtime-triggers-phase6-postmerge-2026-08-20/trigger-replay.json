@@ -1,0 +1,44 @@
+{
+  "algorithm_version": 1,
+  "document_sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
+  "fixed_dt": 0.016666666666666666,
+  "format_id": "neoeng-d-trace-runtime-triggers",
+  "frames": [
+    {
+      "elapsed": 0.016666666666666666,
+      "observations": [
+        {
+          "context": {
+            "mode": "active"
+          },
+          "object_id": "actor",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "elapsed": 0.016666666666666666,
+      "observations": [
+        {
+          "context": {
+            "mode": "active"
+          },
+          "object_id": "actor",
+          "position": {
+            "x": 20.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        }
+      ]
+    }
+  ],
+  "initial_accumulator": 0.0,
+  "initial_active_pairs": [],
+  "initial_simulation_time": 0.0,
+  "initial_tick_index": 0
+}

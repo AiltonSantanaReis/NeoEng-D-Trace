@@ -1,8 +1,8 @@
 # ADR — Runtime de cenários, efeitos e validação portátil
 
-**Status:** Etapas 1, 2, 3 e RUNTIME-ETAPA-4 concluídas no escopo aprovado; RUNTIME-ETAPA-5 concluída no escopo aprovado; RUNTIME-ETAPA-6 em desenvolvimento e ainda não aprovada; release permanece uma decisão independente
+**Status:** Etapas 1, 2, 3, RUNTIME-ETAPA-4, RUNTIME-ETAPA-5 e RUNTIME-ETAPA-6 concluídas somente nos escopos aprovados; release permanece uma decisão independente
 **Data:** 20 de agosto de 2026
-**Base:** merge 159b1241b01264aec7c80424fc5da8985fbede4b
+**Base:** merge 46604d336af7867e0dd59f9af6e07e5b39a5827f
 **Estado de execução:** A Etapa 1 foi encerrada pela implementação 84dfee7 e documentação 7e190b4. A Etapa 2 foi integrada pela PR #115 no merge eb9837b e sua documentação pós-merge pela PR #116 no merge ff66fa7. A Etapa 3 foi integrada pela PR #117 no merge c76ac4b. A RUNTIME-ETAPA-4 foi integrada pela PR #119 no merge a757da027e531898d1b0e2fb1d18f4f23fd20271 e sua documentação foi reconciliada no merge 27b2baf; o CI Linux/Windows do head 490f58c passou no run 32405503776 e a validação local pós-merge passou nos merges publicados. Nenhuma regressão foi reproduzida. A capacidade runtime.particles foi promovida de não suportada para nativa como mudança prevista da Etapa 4, não como regressão. A RUNTIME-ETAPA-5 foi integrada pela PR #121 no merge 159b1241b012; a evidência pré-merge, o encerramento pós-merge, o CI Linux/Windows e a validação local estão registrados sem declarar capacidades fora do escopo.
 **Planos relacionados:**
 
@@ -50,10 +50,10 @@ silenciosamente o schema `.ndtproj` v1 ou os fluxos do editor principal; sua
 capacidade está aprovada somente no escopo registrado neste ADR. Após a PR #119
 e a validação pós-merge, ela permanece aprovada somente nesse escopo.
 
-A RUNTIME-ETAPA-6 foi iniciada localmente para implementar triggers versionados,
-zonas, condições, prioridades, eventos, cancelamento e replay determinístico.
-Enquanto os gates desta fase não forem concluídos, essa capacidade permanece em
-desenvolvimento e não está aprovada, integrada ou suportada em release.
+A RUNTIME-ETAPA-6 foi integrada no merge 46604d3 para implementar triggers
+versionados, zonas, condições, prioridades, eventos, cancelamento e replay
+determinístico. A capacidade está aprovada somente no escopo do dispatcher CPU
+determinístico e não declara suporte de engine ou release.
 
 Os exportadores devem continuar informando explicitamente capacidades não
 suportadas. Nenhum efeito poderá ser descartado silenciosamente, simulado de
@@ -214,4 +214,4 @@ auditável.
 
 ## Consequência
 
-O ADR permite desenvolver o runtime de efeitos sem inflar silenciosamente o MVP ou misturar o editor de autoria com uma engine completa. A implementação é incremental, determinística, portátil e reversível, com diferenças entre Godot, Unity e backends tratadas por capacidades explícitas. As Etapas 1, 2, 3 e 4 estão concluídas somente nos escopos registrados no estado acima. A Etapa 5 está concluída e integrada no escopo do preview CPU determinístico, cadeia, limites, ordenação, fallback e persistência, no merge 159b1241b012. A Etapa 6 está em desenvolvimento local e não foi promovida como integrada. Adaptadores nativos, GPU, triggers concluídos, streaming e runtime completo permanecem fora do escopo concluído; shaders, iluminação, materiais e partículas permanecem concluídos apenas nos escopos específicos aprovados.
+O ADR permite desenvolver o runtime de efeitos sem inflar silenciosamente o MVP ou misturar o editor de autoria com uma engine completa. A implementação é incremental, determinística, portátil e reversível, com diferenças entre Godot, Unity e backends tratadas por capacidades explícitas. As Etapas 1, 2, 3 e 4 estão concluídas somente nos escopos registrados no estado acima. A Etapa 5 está concluída e integrada no escopo do preview CPU determinístico, cadeia, limites, ordenação, fallback e persistência, no merge 159b1241b012. A Etapa 6 está concluída e integrada somente no escopo do dispatcher CPU determinístico, no merge 46604d336af7. Adaptadores nativos, GPU, streaming e runtime completo permanecem fora do escopo concluído; shaders, iluminação, materiais, partículas e triggers permanecem concluídos apenas nos escopos específicos aprovados.

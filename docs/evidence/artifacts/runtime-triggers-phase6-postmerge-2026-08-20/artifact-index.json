@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-triggers-phase6",
+  "files": {
+    "stage6-runtime-triggers-report.json": {
+      "bytes": 2147,
+      "sha256": "27d1809afe80e8048b233c96aa1d21511a911400cd43f04aa42fd72bc422db38"
+    },
+    "trigger-replay.json": {
+      "bytes": 948,
+      "sha256": "fc79e329eb2ac448755af95e7843dfb7bb45f2d24d0decedc1ea1a8a3eb8e28a"
+    },
+    "trigger-sidecar.json": {
+      "bytes": 2005,
+      "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c"
+    },
+    "triggers.json": {
+      "bytes": 2005,
+      "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c"
+    }
+  }
+}
