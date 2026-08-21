@@ -45,6 +45,7 @@ from src.ui.command_palette import CommandPaletteDialog
 from src.ui.command_registry import CommandRegistry
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
+from src.ui.icon_library import configure_main_window_controls
 from src.ui.layers_panel import LayersPanel
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
@@ -308,7 +309,7 @@ class MainWindow(QMainWindow):
         self.nav_toolbar.addSeparator()
 
         # Botão: Limpar Tudo (Com Undo)
-        self.act_clean = QAction("🗑️ Clean All", self)
+        self.act_clean = QAction("Clean All", self)
         self.act_clean.triggered.connect(self.canvas.clean_all)
         self.nav_toolbar.addAction(self.act_clean)
 
@@ -317,6 +318,7 @@ class MainWindow(QMainWindow):
         self.language_button = QPushButton("Language", self)
         self.nav_toolbar.addWidget(self.language_button)
         self.language_button.clicked.connect(self.show_language_menu)
+        configure_main_window_controls(self)
 
         self._responsive_layout = build_responsive_layout(self)
         # 7. Atalhos Globais

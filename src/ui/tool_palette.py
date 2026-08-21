@@ -3,6 +3,7 @@
 Widget containing buttons for selecting drawing and selection tools.
 """
 
+from PySide6.QtCore import QSize
 from PySide6.QtWidgets import (
     QButtonGroup,
     QPushButton,
@@ -21,6 +22,7 @@ from src.tools.polygon_edit_tool import PolygonEditTool
 from src.tools.polygonal_lasso import PolygonalLassoTool
 from src.tools.rect_selection import RectSelectionTool
 from src.tools.selection_tool import SelectionTool
+from src.ui.icon_library import TOOL_ICON_KEYS, configure_widget
 
 
 class ToolPalette(QWidget):
@@ -152,6 +154,10 @@ class ToolPalette(QWidget):
             "selection": self.btn_selection,
         }
 
+        for tool_name, icon_key in TOOL_ICON_KEYS.items():
+            button = self.tool_buttons[tool_name]
+            button.setIconSize(QSize(18, 18))
+            configure_widget(button, icon_key)
         # Localization
         self.current_lang = "en"
         self.translations = {
@@ -191,9 +197,17 @@ class ToolPalette(QWidget):
             ),
             default=0,
         )
-        # 16 px layout margins + 16 px button padding + 6 px borders +
-        # a small allowance for platform/DPI rounding.
-        palette_width = max(132, min(260, widest_line + 46))
+        # 16 px layout margins + icon + text padding + borders + a small
+        # allowance for platform/DPI rounding.
+        icon_width = max(
+            (
+                button.iconSize().width()
+                for button in buttons
+                if not button.icon().isNull()
+            ),
+            default=0,
+        )
+        palette_width = max(156, min(280, widest_line + icon_width + 58))
         self.setMinimumWidth(palette_width)
         self.setMaximumWidth(palette_width)
 
