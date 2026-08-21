@@ -1,0 +1,273 @@
+# Plano Vivo e Fonte de Verdade — Interface Moderna e Profissional
+
+**Projeto:** NeoEng-D-Trace
+**Data de criação:** 2026-08-21
+**Status do plano:** \`PLANEJADO / NÃO INICIADO\`
+**Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
+
+## 1. Finalidade e autoridade
+
+Este documento é a fonte de verdade do plano de modernização da interface do NeoEng-D-Trace. Ele organiza escopo, ordem, critérios de aceitação, evidências e ciclo de entrega das melhorias visuais e de usabilidade.
+
+Ele é subordinado às regras globais do repositório, especialmente:
+
+- \`docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md\`;
+- \`docs/PLANO_MESTRE_ESTABILIZACAO.md\`;
+- \`docs/MATRIZ_RISCOS_ESTABILIZACAO.md\`;
+- \`.github/pull_request_template.md\`;
+- workflows e validadores presentes no repositório;
+- ADRs e contratos técnicos aplicáveis.
+
+Nenhuma seção deste plano pode reduzir, substituir ou relativizar uma governança global. Em caso de conflito, a governança global prevalece; o conflito deve ser registrado e este documento deve ser corrigido antes de qualquer implementação afetada.
+
+Este plano não é uma autorização para alterar regras, thresholds, scanners, contratos de evidência, cobertura, CI, histórico Git, dados do usuário ou escopo de runtime.
+
+## 2. Estado real no momento do registro
+
+O último HEAD local observado durante a criação deste documento foi \`5b69967968c2034242a090cff747dad4e78e9723\`, na branch local \`Ailton/fix/ui-panel-visibility\`.
+
+O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. O trabalho de modernização descrito aqui ainda não foi iniciado.
+
+Na leitura do estado local, foram encontrados diretórios de artefatos de auditoria não rastreados. Portanto, a árvore não foi considerada limpa e nenhuma conclusão de release, PR ou merge foi inferida a partir de documentação antiga ou de uma execução anterior.
+
+As capturas, hashes e resultados de auditorias existentes continuam sendo evidências de seus respectivos commits e escopos. Não são evidência automática das etapas deste plano.
+
+## 3. Regras imutáveis de integridade e anti-alucinação
+
+### 3.1 Fatos, inferências e indisponibilidade
+
+1. Só pode ser declarado como executado o comando que tiver sido realmente executado no ambiente identificado, com saída preservada ou artefato verificável.
+2. Nunca inventar caminho, hash, commit, branch, número de PR, run de CI, versão de engine, contagem de testes, cobertura, captura ou resultado visual.
+3. Se um dado não estiver disponível, declarar \`NÃO TESTADO\`, \`BLOQUEADO\` ou \`PARCIAL\`, conforme a causa. Não preencher a lacuna com estimativa.
+4. Separar explicitamente fatos observados, resultados reproduzidos, inferências técnicas e limitações.
+5. Documento, comentário, captura antiga, cache de build ou saída de outra branch não prova o comportamento do HEAD atual.
+6. Toda afirmação de funcionamento deve cruzar implementação, teste, artefato e origem Git correspondente. Quando a funcionalidade for visual, deve haver captura atual e análise visual automatizada; revisão humana continua necessária quando a política exigir julgamento visual.
+7. CI verde prova que os checks executados passaram para um SHA específico. Não prova, sozinho, usabilidade, qualidade visual, ausência de clipping, correção de todos os fluxos ou aprovação de release.
+8. Um texto \`PASS\` produzido por uma ferramenta não substitui a decisão formal nem autoriza ocultar findings, limitações ou testes ausentes.
+
+### 3.2 Proibição de desvio e de alteração oportunista
+
+1. Não alterar regras, governanças, thresholds, cobertura mínima, validadores, scanners ou tolerâncias visuais para obter \`PASS\`.
+2. Não remover testes, enfraquecer asserções, converter falhas em \`skip\`/\`xfail\`, fragmentar strings, ofuscar dados, remover campos de auditoria ou usar valores como \`redacted\` para escapar de um scanner.
+3. Não usar bypass, \`--no-verify\`, desativação de jobs, exclusão de fixtures, mocks no lugar de comportamento real ou qualquer mecanismo que produza falso positivo.
+4. Não pular, reordenar ou declarar concluída uma etapa sem autorização documentada e sem cumprir todos os gates da etapa anterior.
+5. Não ampliar o escopo para editor de imagem, engine de jogo, redesign de contratos de runtime ou alteração de matemática do gizmo sem plano e aprovação específicos.
+6. Dúvida, divergência documental, artefato ausente, falha intermitente não explicada ou diferença entre plataformas interrompe a progressão; não é motivo para maquiar o relatório.
+7. Snapshots históricos são imutáveis. Correções devem ser feitas em documento vivo ou em novo adendo datado, preservando a proveniência do snapshot original.
+
+### 3.3 Git, CI e merge
+
+1. É proibido \`push --force\`, \`push --force-with-lease\`, merge forçado, reescrita de histórico, \`reset --hard\` não autorizado ou exclusão ampla de arquivos/branches.
+2. Todo commit deve conter somente alterações escopadas e revisadas; arquivos temporários, dados de identidade, caminhos pessoais e artefatos sem proveniência não entram no commit.
+3. A branch e os SHAs base/head devem ser registrados antes da PR. O CI precisa ser associado ao SHA exato que será revisado.
+4. Falha de CI é falha legítima até causa raiz comprovada e correção real. Não se repete o job indefinidamente para procurar um resultado favorável.
+5. CI verde não autoriza merge automaticamente. A revisão deve confirmar diff, testes, evidências, hashes, findings, limitações e compatibilidade com as governanças.
+6. Merge só ocorre após autorização explícita, checks obrigatórios aprovados, revisão da evidência e ausência de pendência conhecida não autorizada.
+7. Após merge, é obrigatório validar o SHA resultante no \`main\`, executar os checks pós-merge definidos, gerar evidência pós-merge e reconciliar os documentos vivos. Se o pós-merge falhar, o estado é bloqueado e não pode ser chamado de concluído.
+
+## 4. Contrato mínimo de evidência por etapa
+
+Cada etapa deve gerar um relatório versionado, com conteúdo completo e manifestos referentes aos bytes efetivamente testados. O relatório deve conter:
+
+- objetivo, escopo e itens explicitamente fora do escopo;
+- baseline, branch e SHA exato de origem;
+- causa raiz confirmada por reprodução, quando houver correção;
+- arquivos alterados e justificativa de cada alteração relevante;
+- sistema operacional, Python, Qt/PySide6, dependências, backend gráfico, DPI, locale e modo headless/nativo;
+- comandos completos, entradas, fixtures, parâmetros, seeds e relógio simulado quando aplicável;
+- saída bruta ou referência rastreável aos logs e artefatos;
+- contagem de testes \`passed\`, \`failed\`, \`skipped\`, \`xfail\`, \`blocked\` e \`not tested\`;
+- cobertura antes/depois, incluindo branches, sem comparar números de execuções diferentes;
+- hashes SHA-256 dos inputs, outputs, capturas, relatórios, manifestos e builds;
+- verificação de bytes via Git blob quando o artefato estiver versionado;
+- auditoria automática, findings anotados e revisão humana identificada quando necessária;
+- riscos residuais, limitações reais, divergências de plataforma e motivo de cada skip;
+- decisão formal: \`APROVADO\`, \`REPROVADO\`, \`BLOQUEADO\`, \`NÃO TESTADO\` ou \`PARCIAL\`;
+- procedimento de rollback e condição objetiva para retomada.
+
+Os arquivos de evidência devem usar UTF-8 e LF, não conter caminhos absolutos pessoais ou dados sensíveis e não omitir informações necessárias à reprodução. Sanitização de apresentação não pode destruir a proveniência; dados indisponíveis devem ser declarados como indisponíveis.
+
+## 5. Reprodução obrigatória
+
+Uma pessoa diferente deve conseguir reproduzir o resultado com o commit, dependências, comandos, fixtures e parâmetros registrados. Toda execução deve distinguir:
+
+- execução local no worktree;
+- execução contra bytes do Git;
+- build limpo;
+- execução remota no CI;
+- validação pós-merge no \`main\`.
+
+Não é permitido reutilizar métricas de uma execução anterior para aprovar um novo SHA. A evidência só é válida quando o manifest, o conteúdo e o commit declarado concordam byte a byte.
+
+Para a UI, registrar também resolução lógica, escala de DPI, tamanho físico da captura, backend Qt, estado da janela, projeto carregado, seleção, painéis abertos e ação que gerou cada estado. Para cada finding visual, guardar a captura anotada, o relatório JSON e o hash.
+
+## 6. Ciclo obrigatório de cada etapa e de cada entrega
+
+O ciclo abaixo é obrigatório e não pode ser abreviado:
+
+### Fase A — Governança e baseline
+
+Ler as políticas globais, plano mestre, matriz de riscos, template de PR, workflows, contratos e documentos vivos relacionados. Confirmar o SHA e o estado da árvore. Identificar trabalho não rastreado sem apagá-lo.
+
+### Fase B — Implementação completa
+
+Implementar somente o escopo autorizado, incluindo estados de erro, limites, persistência, acessibilidade e rollback quando aplicáveis. Não deixar placeholder, caminho silencioso ou funcionalidade parcial declarada como pronta.
+
+### Fase C — Testes focados e negativos
+
+Testar o fluxo nominal, entradas inválidas, limites, ausência de seleção, janela compacta, DPI alto, redimensionamento, foco/teclado, persistência, reversão e falhas de recurso. Falha deve interromper a etapa até a causa raiz ser corrigida.
+
+### Fase D — Gates completos
+
+Executar suíte integral, cobertura com a política vigente, lint, formatação, tipagem, compilação, segurança, integridade de baseline/evidências e checks específicos do projeto. Os gates não podem ser reconfigurados para obter aprovação.
+
+### Fase E — Artefatos reais
+
+Gerar build limpa quando a etapa envolver distribuição. Executar o aplicativo real e os fluxos reais; mocks são apenas complementares. Validar artefatos finais e hashes contra os bytes efetivamente produzidos.
+
+### Fase F — Auditoria visual e humana
+
+Executar o auditor visual reprodutível em todas as resoluções e estados definidos. Inspecionar dimensões, alpha, clipping, sobreposição, geometria Qt, paleta, legibilidade e consistência. Onde a automação não puder concluir, registrar revisão humana com captura, observação concreta e decisão; nunca converter ausência de revisão em \`PASS\`.
+
+### Fase G — Evidência e reconciliação
+
+Gerar manifestos, hashes e relatório da execução atual. Conferir que referências existem, estão rastreadas quando exigido, usam LF e correspondem ao commit. Atualizar somente documentos vivos; preservar snapshots históricos.
+
+### Fase H — Revisão pré-commit
+
+Revisar diff, \`git diff --check\`, status, escopo, arquivos temporários, segredos, caminhos pessoais, testes alterados e coerência documental. Confirmar que nenhum teste ou regra foi enfraquecido.
+
+### Fase I — Commit e pós-commit
+
+Fazer commit somente depois de a etapa estar completa e comprovada. Registrar o SHA. Reexecutar os gates essenciais contra o SHA do commit com árvore limpa ou declarar precisamente por que a limpeza não foi possível. Um commit local não é push, PR, merge nem release.
+
+### Fase J — Push e PR
+
+Com autorização, fazer push normal, sem force. Verificar SHA remoto. Abrir PR com base/head exatos, evidências e limitações. Manter a PR em draft enquanto a revisão técnica e documental não estiver completa.
+
+### Fase K — CI e revisão da PR
+
+Revisar todos os jobs, logs, artefatos, warnings e o SHA testado. Reproduzir localmente falhas relevantes. CI verde é requisito necessário, nunca evidência única de funcionamento.
+
+### Fase L — Merge autorizado
+
+Somente após os gates e a revisão completa, solicitar/usar autorização explícita para merge normal segundo a política do repositório. Não usar force, bypass ou merge de uma PR com pendência conhecida.
+
+### Fase M — Pós-merge
+
+Atualizar o \`main\`, confirmar o merge SHA, executar a validação pós-merge, gerar evidência independente, revisar a árvore e reconciliar o estado vivo. Só então a etapa pode receber \`APROVADO\` no escopo definido.
+
+## 7. Plano de modernização da interface
+
+### Etapa 0 — Baseline visual e contrato de escopo
+
+Catalogar a interface real atual em 1920×1080, 1366×768 e 1280×720, com DPI nativo e estados sem projeto, projeto carregado, painéis abertos, máscara/raio-X, gizmo e validação. Registrar geometria Qt, clipping, sobreposição, paleta, tamanhos e problemas reproduzidos. Congelar o contrato de que o redesign não altera \`.ndtproj\`, runtime, exportadores, atalhos, undo/redo ou matemática do gizmo sem aprovação separada.
+
+**Gate:** baseline hashado, auditor automático executado, findings reproduzíveis e relatório \`APROVADO\` apenas para a caracterização; problemas encontrados não são mascarados.
+
+### Etapa 1 — Tokens visuais e tema
+
+Criar tokens únicos para fundo, superfície, borda, texto, texto secundário, destaque, estados hover/pressed/checked/disabled, erro e sucesso. Consolidar QSS sem depender de tema externo não controlado. Garantir contraste, foco visível, escalabilidade de fonte, consistência de ícones e ausência de bordas laranja fixas sem função.
+
+**Gate:** testes de paleta e contraste, captura comparativa, nenhuma regressão funcional, sem duplicação de cores arbitrárias.
+
+### Etapa 2 — Biblioteca de ícones e ações
+
+Definir ícones licenciados ou nativos, tamanho, padding, tooltip, texto acessível e fallback textual. Padronizar ações Open, Save, Export, Clean, Fit, Zoom, X-Ray, Gizmo e ferramentas. Não remover texto de acessibilidade para economizar espaço.
+
+**Gate:** todos os ícones carregam no build real, tooltips e atalhos funcionam, fallback é testado, ícones não dependem de caminho local.
+
+### Etapa 3 — Barra esquerda de ferramentas
+
+Migrar ferramentas para \`QToolBar\`/ações agrupadas ou componente equivalente sem quebrar a seleção atual. Lasso, Pen, Rect, Polygon, Brush, Gizmo e máscara devem possuir estado ativo evidente, hover discreto, foco de teclado, tooltip e atalho. Não permitir seleção de ferramenta bloqueada sem feedback.
+
+**Gate:** testes de cada ação, teclado/mouse, estados checked/disabled, resolução compacta e captura sem borda dominante.
+
+### Etapa 4 — Barra superior
+
+Agrupar Arquivo, Edição, Visualização, Renderização e Exportação com separadores nativos. Padronizar ícone/texto, espaçamento, overflow e menus. Preservar menus tradicionais e atalhos. O comando de preview de cenário deve abrir uma janela/editor separado quando essa for a funcionalidade planejada, não misturar os contextos.
+
+**Gate:** cada ação é acionável e rastreável, menus e atalhos permanecem equivalentes, sem botão órfão ou espaço irregular não intencional.
+
+### Etapa 5 — Viewport e HUD
+
+Separar estado persistente da cena, informações de zoom/view e comandos temporários. Mover status de zoom/view para status bar ou overlay discreto com contraste e proteção contra sobreposição. Garantir que texto não fique sob gizmo, painéis, canvas ou bordas.
+
+**Gate:** captura real em três resoluções, auditoria de clipping/sobreposição, zoom/fit/1:1 e X-Ray funcionando no contexto correto de máscaras.
+
+### Etapa 6 — Gizmo profissional
+
+Preservar a matemática e o contrato existentes enquanto melhorar hit-test, posicionamento, modos, feedback e acessibilidade. O gizmo deve respeitar seleção de objeto/vértice, translação, rotação, escala, snapping e leitura numérica, quando já suportados. O layout deve reposicionar o gizmo conforme o viewport, sem ocultar textos.
+
+**Gate:** testes geométricos e de interação, limites, DPI, redimensionamento, seleção múltipla, undo/redo e capturas reais anotadas.
+
+### Etapa 7 — Painéis laterais
+
+Corrigir tamanho mínimo, rolagem, hierarquia, estados disabled/enabled e separação entre inspector principal, camadas do projeto e cenário. Substituir grades de botões por barras de ferramentas compactas quando não houver perda de descoberta; manter menus de contexto e tooltips. Nada pode ficar esmagado ou inacessível.
+
+**Gate:** geometrias Qt reais, ações clicáveis, seleção de itens, propriedades editáveis, painéis visíveis em DPI/resoluções alvo e ausência de falsos positivos do auditor.
+
+### Etapa 8 — Editor de cenário separado
+
+Criar ou consolidar uma janela de autoria de cenário separada do editor principal. Ela deve possuir layer stack selecionável, inspector, viewport próprio, marcações/overlays, sockets e controles de câmera conforme contratos existentes. Abrir, fechar, redimensionar e transferir contexto sem misturar estado de projeto e estado de cenário.
+
+**Gate:** fluxo completo de abrir/editar/salvar/reabrir, isolamento de estado, cancelamento sem perda, capturas de cada estado e testes de regressão no editor principal.
+
+### Etapa 9 — Responsividade e DPI
+
+Validar layout em resoluções mínimas e altas, escala 100/125/150/200%, fontes grandes, maximização, restauração e mudança de monitor. Usar \`QSizePolicy\`, layouts reais e rolagem; não mascarar clipping reduzindo fonte abaixo do limite legível.
+
+**Gate:** matriz de capturas com dimensões lógicas e físicas, auditor de geometria/pixels, nenhum painel ou controle inacessível.
+
+### Etapa 10 — Acessibilidade e usabilidade
+
+Garantir foco, ordem de tabulação, atalhos, tooltips, nomes acessíveis, contraste, indicação não apenas por cor, ações destrutivas confirmáveis e mensagens de erro acionáveis. Testar mouse e teclado separadamente.
+
+**Gate:** testes automatizados de foco/atalhos e revisão humana documentada dos fluxos principais.
+
+### Etapa 11 — Auditor visual no projeto
+
+Estender o auditor para validar PNGs com Pillow/OpenCV, dimensões, alpha, hashes, clipping, sobreposição, geometrias Qt, paleta e áreas suspeitas anotadas. O relatório deve ser determinístico e fail-closed, sem depender apenas de inspeção humana.
+
+**Gate:** fixtures positivos e negativos reais, relatório PASS/FAIL reproduzível, hash dos relatórios e confirmação de que o auditor não foi enfraquecido para aceitar a interface.
+
+### Etapa 12 — Desempenho e estabilidade
+
+Medir tempo de abertura, resize, troca de painel, seleção, zoom, captura e uso lógico de memória. Usar cenários determinísticos, sem transformar métricas dependentes de hardware em gate sem política. Warnings devem ser classificados e acompanhados.
+
+**Gate:** comparação contra baseline atual, ausência de regressão funcional e visual, limites documentados e nenhuma otimização que degrade acessibilidade ou precisão.
+
+### Etapa 13 — Build e distribuição
+
+Reproduzir build limpa, verificar ícones, QSS, fontes, recursos, manifestos, executáveis e inicialização em ambiente separado. Registrar warnings de empacotamento sem escondê-los; só classificá-los como não bloqueantes quando houver impacto analisado e evidência.
+
+**Gate:** smoke test real, hashes dos artefatos, integridade recursiva, sem dados pessoais, origem Git exata e rollback disponível.
+
+### Etapa 14 — Entrega e pós-merge
+
+Concluir somente após PR revisada, CI aprovada no SHA exato, evidências completas, autorização de merge e validação independente no \`main\`. Atualizar o plano vivo com o estado real, preservar snapshots e não anunciar release automaticamente.
+
+## 8. Critérios formais de conclusão
+
+Uma etapa só pode ser \`APROVADA\` quando implementação, testes positivos e negativos, análise de artefatos, evidências hashadas, auditoria visual, revisão humana necessária, documentação, CI no SHA exato e validação pós-merge estiverem concluídos no escopo declarado.
+
+Qualquer item ausente recebe \`PARCIAL\`, \`NÃO TESTADO\` ou \`BLOQUEADO\`; não recebe aprovação por aproximação. A conclusão de uma etapa não autoriza concluir etapas posteriores.
+
+O plano completo só estará encerrado quando todas as etapas tiverem decisão formal individual e uma auditoria final reconciliar código, testes, evidências, documentos vivos, Git e CI.
+
+## 9. Estados permitidos e regra de parada
+
+- \`PLANEJADO / NÃO INICIADO\`: não há implementação autorizada ou comprovada.
+- \`EM IMPLEMENTAÇÃO\`: há alterações, mas os gates ainda não foram concluídos.
+- \`PARCIAL\`: parte do escopo funciona ou foi testada, mas há lacuna conhecida.
+- \`BLOQUEADO\`: uma falha, divergência ou dependência impede progressão.
+- \`NÃO TESTADO\`: a execução necessária não ocorreu ou não é reproduzível.
+- \`APROVADO\`: todos os critérios formais da etapa foram comprovados.
+
+Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, a regra ou o teste para transformar o estado em \`PASS\`.
+
+## 10. Registro de mudanças do documento
+
+| Data | Alteração | Estado |
+|---|---|---|
+| 2026-08-21 | Criação deste plano vivo, com escopo, etapas, contrato de evidência e ciclo anti-bypass. Nenhuma implementação foi declarada. | \`PLANEJADO / NÃO INICIADO\` |

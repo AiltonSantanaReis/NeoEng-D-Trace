@@ -239,15 +239,18 @@ def _capture_validation_message(
         if not boxes:
             return
         box = boxes[-1]
+        pixmap = box.grab()
+        widget_snapshot = _widget_snapshot(box, root=window)
+        widget_snapshot["capture_size"] = [pixmap.width(), pixmap.height()]
         message_data.update(
             {
                 "title": box.windowTitle(),
                 "text": box.text(),
                 "informative_text": box.informativeText(),
-                "widget": _widget_snapshot(box, root=window),
+                "widget": widget_snapshot,
             }
         )
-        if not box.grab().save(str(path), "PNG"):
+        if not pixmap.save(str(path), "PNG"):
             raise RuntimeError(f"could not save screenshot {path.name}")
         box.accept()
 

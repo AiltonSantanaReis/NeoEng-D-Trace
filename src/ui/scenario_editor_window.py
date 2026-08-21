@@ -56,6 +56,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_session: SceneAuthoringSession | None = None
         self.professional_viewport: SceneAuthoringViewport | None = None
         self.professional_inspector: SceneAuthoringInspector | None = None
+        self.professional_inspector_scroll: QScrollArea | None = None
         self._professional_project: Path | None = None
         self.canvas = self._build_canvas()
         self.legacy_canvas = self.canvas
@@ -198,17 +199,25 @@ class ScenarioEditorWindow(QMainWindow):
                     for x, y in scene_object.polygon
                 ),
             )
-        inspector = SceneAuthoringInspector(session, self.right_pages)
+        inspector = SceneAuthoringInspector(session)
+        inspector_scroll = QScrollArea(self.right_pages)
+        inspector_scroll.setObjectName("professional_inspector_scroll")
+        inspector_scroll.setWidgetResizable(True)
+        inspector_scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        inspector_scroll.setWidget(inspector)
         inspector.status_message.connect(self._show_professional_status)
         viewport.status_message.connect(self._show_professional_status)
         inspector.status_message.connect(lambda _message: viewport.sync())
-        self.right_pages.addWidget(inspector)
-        self.right_pages.setCurrentWidget(inspector)
+        self.right_pages.addWidget(inspector_scroll)
+        self.right_pages.setCurrentWidget(inspector_scroll)
         self.professional_pages.addWidget(viewport)
         self.professional_pages.setCurrentWidget(viewport)
         self.professional_session = session
         self.professional_viewport = viewport
         self.professional_inspector = inspector
+        self.professional_inspector_scroll = inspector_scroll
         self._professional_project = project_path
 
     def _show_professional_status(self, message: str) -> None:
