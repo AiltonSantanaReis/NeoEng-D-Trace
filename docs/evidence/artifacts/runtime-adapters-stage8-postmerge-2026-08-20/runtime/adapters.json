@@ -1,0 +1,194 @@
+{
+  "api_version": 1,
+  "capabilities": {
+    "godot": {
+      "adapter_id": "neoeng.dtrace.godot.runtime",
+      "adapter_version": 1,
+      "support": [
+        {
+          "compatibility": "native",
+          "id": "runtime.scene_loading",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "native",
+          "id": "runtime.lifecycle",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "native",
+          "id": "runtime.fixed_update",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.lighting",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.shaders",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.particles",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.post_processing",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.triggers",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.streaming",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        }
+      ]
+    },
+    "unity": {
+      "adapter_id": "neoeng.dtrace.unity.runtime",
+      "adapter_version": 1,
+      "support": [
+        {
+          "compatibility": "native",
+          "id": "runtime.scene_loading",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "native",
+          "id": "runtime.lifecycle",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "native",
+          "id": "runtime.fixed_update",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.lighting",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.shaders",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.particles",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.post_processing",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.triggers",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        {
+          "compatibility": "degraded",
+          "id": "runtime.streaming",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        }
+      ]
+    }
+  },
+  "format_id": "neoeng-d-trace-runtime-adapters",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.3.0"
+  },
+  "schema_version": 1,
+  "sidecars": [
+    {
+      "bytes": 2104,
+      "capability": "runtime.lighting",
+      "format_id": "neoeng-d-trace-runtime-lighting",
+      "path": "runtime/lighting.json",
+      "required": true,
+      "schema_version": 1,
+      "sha256": "06893ca3e9cbbc16faef29a21f177e41dacb8cd305045f3e0e2bfebd5dffef8f"
+    },
+    {
+      "bytes": 862,
+      "capability": "runtime.particles",
+      "format_id": "neoeng-d-trace-runtime-particles",
+      "path": "runtime/particles.json",
+      "required": true,
+      "schema_version": 1,
+      "sha256": "bf831cdbac7cc6a61782c9f888bae88e62b5a372b65541989216185bcd572fc5"
+    },
+    {
+      "bytes": 1031,
+      "capability": "runtime.post_processing",
+      "format_id": "neoeng-d-trace-runtime-post-processing",
+      "path": "runtime/post_processing.json",
+      "required": true,
+      "schema_version": 1,
+      "sha256": "091143799f7bbb25404f0974228b10b204be4087cabc58480ca4e39d6e166409"
+    },
+    {
+      "bytes": 1007,
+      "capability": "runtime.shaders",
+      "format_id": "neoeng-d-trace-runtime-shader",
+      "path": "runtime/shaders.json",
+      "required": true,
+      "schema_version": 1,
+      "sha256": "40f0f5494032ceae8d65a329ca846eb699b5c165f2888a476db75a07835e7117"
+    },
+    {
+      "bytes": 732,
+      "capability": "runtime.streaming",
+      "format_id": "neoeng-d-trace-runtime-streaming",
+      "path": "runtime/streaming.json",
+      "required": true,
+      "schema_version": 1,
+      "sha256": "a8b103b688794594e18b65fbe7a7f3f60ff3f49e1e70009bee6c8d24c00686f5"
+    },
+    {
+      "bytes": 2005,
+      "capability": "runtime.triggers",
+      "format_id": "neoeng-d-trace-runtime-triggers",
+      "path": "runtime/triggers.json",
+      "required": true,
+      "schema_version": 1,
+      "sha256": "c7ec71524fff7deada68e02ebd81f88f15c228d4efb113322e04c328afcc01bd"
+    }
+  ],
+  "source": {
+    "bytes": 1099,
+    "format_id": "neoeng-d-trace-scenario-runtime",
+    "path": "runtime/scenario.ndtscenario.runtime.json",
+    "schema_version": 1,
+    "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+  }
+}

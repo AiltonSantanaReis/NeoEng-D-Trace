@@ -1,0 +1,38 @@
+{
+  "runtime/adapters.json": {
+    "bytes": 6573,
+    "sha256": "4e367190f584a1bda14536ffbc1c4650a3234873e2391f6d533dbe5df37a0345"
+  },
+  "runtime/lighting.json": {
+    "bytes": 2104,
+    "sha256": "06893ca3e9cbbc16faef29a21f177e41dacb8cd305045f3e0e2bfebd5dffef8f"
+  },
+  "runtime/particles.json": {
+    "bytes": 862,
+    "sha256": "bf831cdbac7cc6a61782c9f888bae88e62b5a372b65541989216185bcd572fc5"
+  },
+  "runtime/post_processing.json": {
+    "bytes": 1031,
+    "sha256": "091143799f7bbb25404f0974228b10b204be4087cabc58480ca4e39d6e166409"
+  },
+  "runtime/scenario.ndtscenario.runtime.json": {
+    "bytes": 1099,
+    "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+  },
+  "runtime/shaders.json": {
+    "bytes": 1007,
+    "sha256": "40f0f5494032ceae8d65a329ca846eb699b5c165f2888a476db75a07835e7117"
+  },
+  "runtime/streaming.json": {
+    "bytes": 732,
+    "sha256": "a8b103b688794594e18b65fbe7a7f3f60ff3f49e1e70009bee6c8d24c00686f5"
+  },
+  "runtime/triggers.json": {
+    "bytes": 2005,
+    "sha256": "c7ec71524fff7deada68e02ebd81f88f15c228d4efb113322e04c328afcc01bd"
+  },
+  "stage8-report.json": {
+    "bytes": 8168,
+    "sha256": "58197e838a0871db497fd214a3b50016a5e01dbf5bb13a150e476dab6b9af821"
+  }
+}

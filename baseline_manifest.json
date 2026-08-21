@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "f7071ff70142e56076ef74476c1ca7d6f24f69cafdbbf69f4db21ebd49851748",
-      "size": 16605
+      "sha256": "2557415267f12d07dda4a40965cb52e84b14545e1326cfbcc12f7cbc8b5f4cff",
+      "size": 18796
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -772,6 +772,10 @@
       "sha256": "2300bb4ffe8b55ca53426e2f2f65258dd10e9ed3e698ecad696c2bcc0eeb6dd6",
       "size": 4008
     },
+    "docs/evidence/ETAPA_8_ADAPTADORES_REAIS_ENCERRAMENTO_POS_MERGE_2026-08-20.md": {
+      "sha256": "eedf843ba5022be62f66631cc8adb5f6e39474863d5ca1e5a35a422caee0f58b",
+      "size": 4361
+    },
     "docs/evidence/ETAPA_8_BASELINE_CONTRATO_PRE_IMPLEMENTACAO_2026-08-17.md": {
       "sha256": "9704454b2e235a4fe715ea6839252288a9126e51cfeb720a02b13bcf7c067167",
       "size": 2421
@@ -857,8 +861,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "376cf4bf64c1b6e9a96d23c38ab4d34c100df0d1c88449893b7948e1836bb8de",
-      "size": 39000
+      "sha256": "bf415145b3f68db44f34078b21070876ae9896e93b9bbf71712c6ffb1a3f5f31",
+      "size": 39484
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -3991,6 +3995,46 @@
     "docs/evidence/artifacts/runtime-adapters-stage8-2026-08-20/stage8-report.json": {
       "sha256": "8358635ed394cd66db7bf6575d0313d46a810ceaf504af06147f2da28618428b",
       "size": 8246
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/artifact-index.json": {
+      "sha256": "8f5b13541343e6870f4af59dc9b807f284fecd2feb8f2ee71515074a4219b72c",
+      "size": 1232
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/adapters.json": {
+      "sha256": "4e367190f584a1bda14536ffbc1c4650a3234873e2391f6d533dbe5df37a0345",
+      "size": 6573
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/lighting.json": {
+      "sha256": "06893ca3e9cbbc16faef29a21f177e41dacb8cd305045f3e0e2bfebd5dffef8f",
+      "size": 2104
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/particles.json": {
+      "sha256": "bf831cdbac7cc6a61782c9f888bae88e62b5a372b65541989216185bcd572fc5",
+      "size": 862
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/post_processing.json": {
+      "sha256": "091143799f7bbb25404f0974228b10b204be4087cabc58480ca4e39d6e166409",
+      "size": 1031
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/scenario.ndtscenario.runtime.json": {
+      "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a",
+      "size": 1099
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/shaders.json": {
+      "sha256": "40f0f5494032ceae8d65a329ca846eb699b5c165f2888a476db75a07835e7117",
+      "size": 1007
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/streaming.json": {
+      "sha256": "a8b103b688794594e18b65fbe7a7f3f60ff3f49e1e70009bee6c8d24c00686f5",
+      "size": 732
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/runtime/triggers.json": {
+      "sha256": "c7ec71524fff7deada68e02ebd81f88f15c228d4efb113322e04c328afcc01bd",
+      "size": 2005
+    },
+    "docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/stage8-report.json": {
+      "sha256": "58197e838a0871db497fd214a3b50016a5e01dbf5bb13a150e476dab6b9af821",
+      "size": 8168
     },
     "docs/evidence/artifacts/runtime-base-phase1-2026-08-20/artifact-index.json": {
       "sha256": "c9763e0561059fb31c0a21d9eff7eea098ed5fbdf594d2541d25e5904f384618",

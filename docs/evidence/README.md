@@ -21,12 +21,14 @@
 - `ETAPA_7_RUNTIME_STREAMING_2026-08-20.md` — caracterização técnica pré-merge preservada, reconciliada com o encerramento pós-merge; não declara GPU, VRAM ou suporte nativo Godot/Unity.
 - `ETAPA_7_RUNTIME_STREAMING_ENCERRAMENTO_POS_MERGE_2026-08-20.md` — encerramento pós-merge da PR #125, merge `f0d350a`, CI `32430267567`, auditoria, baseline, evidências, cobertura e validação local reproduzidos.
 - `artifacts/runtime-streaming-phase7-post-isort-2026-08-20/` — pacote hashado da auditoria pré-merge no HEAD `8910944`; preservado como evidência histórica da caracterização.
-- `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
+- ETAPA_8_ADAPTADORES_REAIS_2026-08-20.md — snapshot pré-merge preservado sem reescrita retroativa.
+- ETAPA_8_ADAPTADORES_REAIS_ENCERRAMENTO_POS_MERGE_2026-08-20.md — encerramento pós-merge da PR #127, merge 91e62a3, CI 32440065240, auditoria real Godot/Unity, suíte integral, baseline, integridade e limitações documentados.
+- artifacts/runtime-adapters-stage8-postmerge-2026-08-20/ — pacote sanitizado e hashado da auditoria reproduzida no main pós-merge.- `artifacts/runtime-lighting-phase2-2026-08-20/` — pacote hashado do auditor da Etapa 2 no commit `bd25b0e`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r2/` — pacote hashado do auditor após o fix `43733cb`.
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.
 # Evidências de validação
 
-Estado vivo em 20 de agosto de 2026: as Etapas 1, 2, 3, RUNTIME-ETAPA-4, RUNTIME-ETAPA-5, RUNTIME-ETAPA-6 e RUNTIME-ETAPA-7 estão encerradas somente nos escopos aprovados, com CI Linux/Windows e validação pós-merge documentados. A RUNTIME-ETAPA-7 foi integrada pela PR #125 no merge `f0d350ad7b61e2e9bc7865515768f3662804c953`; isso não constitui aprovação automática de release.
+Estado vivo em 20 de agosto de 2026: as Etapas 1, 2, 3, RUNTIME-ETAPA-4, RUNTIME-ETAPA-5, RUNTIME-ETAPA-6, RUNTIME-ETAPA-7 e RUNTIME-ETAPA-8 estão encerradas somente nos escopos aprovados, com CI Linux/Windows e validação pós-merge documentados. A RUNTIME-ETAPA-8 foi integrada pela PR #127 no merge 91e62a30b534356a2f20dc15299157233c46ba8e; isso não constitui aprovação automática de release.
 A Etapa 2 do ADR de runtime (iluminação e materiais) foi integrada pela PR #115 no merge `eb9837b5411eaf62007be7f5ff88502d0ac48e74`. O primeiro CI falhou no isort e o segundo falhou legitimamente na cobertura de branches (`84,94% < 85,00%`); os fixes `43733cb` e `4038bac` foram aplicados sem alterar regras. O run remoto `32378117544` aprovou Linux e Windows. A validação pós-merge local registrou `1442 passed, 2 skipped`, cobertura de linhas `91,00%`, política de cobertura PASS, auditor completo PASS, baseline de `1733 files` e `69 manifests` de evidência. O pacote está em `artifacts/runtime-lighting-phase2-postmerge-2026-08-20/`; a primeira tentativa com baseline ainda não reconciliado foi preservada separadamente. Etapa 2: APROVADA no escopo técnico definido no ADR; shaders completos, partículas, pós-processamento, triggers, streaming e runtime Godot/Unity permanecem em fases futuras.
 
 - `ETAPA_4_CAMERA_PARALLAX_MODELO_2026-08-18.md` — modelo matemático puro de câmera ortográfica/parallax, com testes negativos e hashes; evidência da implementação integrada.
