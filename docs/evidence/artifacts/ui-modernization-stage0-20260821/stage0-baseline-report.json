@@ -1,0 +1,361 @@
+{
+  "artifact_index": "artifact-index.json",
+  "artifacts_root": ".",
+  "automatic_audit": {
+    "checks": [
+      "pillow_decode",
+      "opencv_decode",
+      "dimensions",
+      "transparency",
+      "sha256",
+      "clipping",
+      "qt_geometry",
+      "overlap",
+      "qss_palette",
+      "annotated_output"
+    ],
+    "finding_count": 0,
+    "manifest_sha256": "50fef8e8a20ffaaa687bcbb2efd6cc777704a181783aff0303c48cb9981daa42",
+    "status": "PASS",
+    "visual_report_sha256": "498761bcd5e3d0189dcccc8ceb1eb89538651927131e98598e601b29b79346bd"
+  },
+  "capture_summary": {
+    "1080p_FHD": {
+      "actual_capture_size": [
+        3840,
+        2120
+      ],
+      "actual_window_size": [
+        1920,
+        1060
+      ],
+      "requested_size": [
+        1920,
+        1080
+      ],
+      "states": [
+        "1080p_FHD_01_sem_projeto.png",
+        "1080p_FHD_02_projeto_paineis.png",
+        "1080p_FHD_03_validacao_janela.png",
+        "1080p_FHD_03_validacao_modal.png",
+        "1080p_FHD_04_gizmo_feedback.png"
+      ],
+      "validation_modal_capture_size": [
+        738,
+        190
+      ],
+      "validation_text": "No collision shapes registered. Use Auto-Generate first.",
+      "visible_widgets_by_state": {
+        "gizmo_feedback": [
+          "canvas",
+          "collision_panel",
+          "desktop_panel_splitter",
+          "groups",
+          "layers",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "right_splitter",
+          "side_panel",
+          "tool_palette",
+          "toolbar",
+          "xray_toolbar"
+        ],
+        "projeto_paineis": [
+          "canvas",
+          "collision_panel",
+          "desktop_panel_splitter",
+          "groups",
+          "layers",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "right_splitter",
+          "side_panel",
+          "tool_palette",
+          "toolbar",
+          "xray_toolbar"
+        ],
+        "sem_projeto": [
+          "canvas",
+          "collision_panel",
+          "desktop_panel_splitter",
+          "groups",
+          "layers",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "right_splitter",
+          "side_panel",
+          "tool_palette",
+          "toolbar",
+          "xray_toolbar"
+        ],
+        "validacao_janela": [
+          "canvas",
+          "collision_panel",
+          "desktop_panel_splitter",
+          "groups",
+          "layers",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "right_splitter",
+          "side_panel",
+          "tool_palette",
+          "toolbar",
+          "xray_toolbar"
+        ]
+      }
+    },
+    "720p_Compacta": {
+      "actual_capture_size": [
+        2560,
+        1440
+      ],
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "requested_size": [
+        1280,
+        720
+      ],
+      "states": [
+        "720p_Compacta_01_sem_projeto.png",
+        "720p_Compacta_02_projeto_paineis.png",
+        "720p_Compacta_03_validacao_janela.png",
+        "720p_Compacta_03_validacao_modal.png",
+        "720p_Compacta_04_gizmo_feedback.png"
+      ],
+      "validation_modal_capture_size": [
+        738,
+        190
+      ],
+      "validation_text": "No collision shapes registered. Use Auto-Generate first.",
+      "visible_widgets_by_state": {
+        "gizmo_feedback": [
+          "canvas",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "side_panel",
+          "tool_palette",
+          "xray_toolbar"
+        ],
+        "projeto_paineis": [
+          "canvas",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "side_panel",
+          "tool_palette",
+          "xray_toolbar"
+        ],
+        "sem_projeto": [
+          "canvas",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "side_panel",
+          "tool_palette",
+          "xray_toolbar"
+        ],
+        "validacao_janela": [
+          "canvas",
+          "collision_panel",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "tool_palette",
+          "xray_toolbar"
+        ]
+      }
+    },
+    "768p_Minima": {
+      "actual_capture_size": [
+        2732,
+        1536
+      ],
+      "actual_window_size": [
+        1366,
+        768
+      ],
+      "requested_size": [
+        1366,
+        768
+      ],
+      "states": [
+        "768p_Minima_01_sem_projeto.png",
+        "768p_Minima_02_projeto_paineis.png",
+        "768p_Minima_03_validacao_janela.png",
+        "768p_Minima_03_validacao_modal.png",
+        "768p_Minima_04_gizmo_feedback.png"
+      ],
+      "validation_modal_capture_size": [
+        738,
+        190
+      ],
+      "validation_text": "No collision shapes registered. Use Auto-Generate first.",
+      "visible_widgets_by_state": {
+        "gizmo_feedback": [
+          "canvas",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "side_panel",
+          "tool_palette",
+          "xray_toolbar"
+        ],
+        "projeto_paineis": [
+          "canvas",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "side_panel",
+          "tool_palette",
+          "xray_toolbar"
+        ],
+        "sem_projeto": [
+          "canvas",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "side_panel",
+          "tool_palette",
+          "xray_toolbar"
+        ],
+        "validacao_janela": [
+          "canvas",
+          "collision_panel",
+          "compact_panel_tabs",
+          "main_splitter",
+          "nav_toolbar",
+          "panel_stack",
+          "tool_palette",
+          "xray_toolbar"
+        ]
+      }
+    }
+  },
+  "commands": [
+    "QT_QPA_PLATFORM=windows .\\.venv\\Scripts\\python.exe scripts/audit_ui_capture.py --output docs/evidence/artifacts/ui-modernization-stage0-20260821/raw-captures",
+    ".\\.venv\\Scripts\\python.exe scripts/audit_visual_artifacts.py --input docs/evidence/artifacts/ui-modernization-stage0-20260821/raw-captures --output docs/evidence/artifacts/ui-modernization-stage0-20260821/visual-audit",
+    ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_visual_artifact_auditor.py tests/test_stage9_functional_ui_audit.py --tb=short"
+  ],
+  "decision_scope": "caracterização reproduzível do estado atual; não é aprovação de implementação, release, PR ou merge",
+  "environment": {
+    "dpi_note": "manifesto registra tamanho lógico e físico; DPI local observado em evidência anterior como 200%",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "qt_platform": "windows"
+  },
+  "formal_conclusion": "APROVADO somente para a caracterização da baseline. As melhorias identificadas permanecem pendentes e serão tratadas nas etapas posteriores; nenhuma implementação foi realizada nesta etapa.",
+  "human_review": {
+    "agent_visual_inspection": "COMPLETED",
+    "external_human_confirmation": "NOT_CONFIRMED",
+    "method": "folha de contato em memória e inspeção detalhada de capturas compactas; PNGs originais preservados",
+    "reason_not_confirmed": "não houve confirmação independente do proprietário nesta execução"
+  },
+  "limitations": [
+    "A árvore contém diretórios de artefatos locais não rastreados de execuções anteriores; isso é reportado e não foi apagado.",
+    "O auditor automático não mede intenção estética, fadiga visual ou qualidade de hierarquia; essas observações são baseline qualitativa, não findings automáticos.",
+    "A revisão visual do agente não substitui confirmação humana independente quando exigida pelo gate."
+  ],
+  "schema_version": 1,
+  "scope": {
+    "excluded": [
+      "redesign",
+      "icon replacement",
+      "QSS redesign",
+      "new scenario editor",
+      "runtime contract changes",
+      "export contract changes"
+    ],
+    "real_paths_exercised": [
+      "MainWindow",
+      "project fixture",
+      "object selection",
+      "gizmo transaction",
+      "CollisionPanel validation message"
+    ],
+    "resolutions": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1366,
+        768
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "states": [
+      "sem_projeto",
+      "projeto_paineis",
+      "validacao_janela",
+      "validacao_modal",
+      "gizmo_feedback"
+    ]
+  },
+  "source": {
+    "branch": "Ailton/fix/ui-panel-visibility",
+    "commit": "5879d189ccddb92645699ab8ee5f7cb0fc08e83f",
+    "worktree_clean": false
+  },
+  "stage": 0,
+  "stage_name": "Baseline visual e contrato de escopo",
+  "status": "APROVADO",
+  "visual_observations": [
+    {
+      "area": "left_toolbar",
+      "evidence": "capturas reais 1080p_FHD, 768p_Minima e 720p_Compacta nos estados sem projeto e projeto_paineis",
+      "id": "BASELINE-VIS-001",
+      "observation": "Ferramentas são predominantemente textuais e usam bordas laranjas espessas e fixas.",
+      "planned_stage": 3,
+      "severity": "design_debt"
+    },
+    {
+      "area": "top_toolbar",
+      "evidence": "capturas reais em todas as resoluções",
+      "id": "BASELINE-VIS-002",
+      "observation": "A barra superior mistura menu, botões textuais e agrupamento visual pouco consistente.",
+      "planned_stage": 4,
+      "severity": "design_debt"
+    },
+    {
+      "area": "viewport_hud",
+      "evidence": "capturas reais nos estados projeto_paineis e gizmo_feedback",
+      "id": "BASELINE-VIS-003",
+      "observation": "O indicador ciano VIEW/ZOOM permanece dentro do viewport e deve ser reavaliado contra gizmo e conteúdo.",
+      "planned_stage": 5,
+      "severity": "design_debt"
+    },
+    {
+      "area": "side_panels",
+      "evidence": "auditor visual: 0 findings; revisão visual das capturas",
+      "id": "BASELINE-VIS-004",
+      "observation": "Painéis e propriedades estão legíveis nesta execução e não apresentaram clipping automático; a hierarquia e densidade visual continuam candidatas à modernização.",
+      "planned_stage": 7,
+      "severity": "design_debt"
+    },
+    {
+      "area": "dpi",
+      "evidence": "manifest.json: requested_size, actual_window_size e actual_capture_size",
+      "id": "BASELINE-VIS-005",
+      "observation": "Com DPI local de 200%, a captura física excede a resolução lógica solicitada; o manifesto preserva ambos os tamanhos.",
+      "planned_stage": 9,
+      "severity": "observed_environment"
+    }
+  ]
+}
