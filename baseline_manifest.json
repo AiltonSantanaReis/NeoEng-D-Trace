@@ -769,8 +769,8 @@
       "size": 4476
     },
     "docs/evidence/ETAPA_8_ADAPTADORES_REAIS_2026-08-20.md": {
-      "sha256": "7faf983be4e127337401805583ca0c7b3bcb2953eadfb80705f4a95641954346",
-      "size": 4009
+      "sha256": "2300bb4ffe8b55ca53426e2f2f65258dd10e9ed3e698ecad696c2bcc0eeb6dd6",
+      "size": 4008
     },
     "docs/evidence/ETAPA_8_BASELINE_CONTRATO_PRE_IMPLEMENTACAO_2026-08-17.md": {
       "sha256": "9704454b2e235a4fe715ea6839252288a9126e51cfeb720a02b13bcf7c067167",
@@ -3953,7 +3953,7 @@
       "size": 6948
     },
     "docs/evidence/artifacts/runtime-adapters-stage8-2026-08-20/artifact-index.json": {
-      "sha256": "bb24e35ff8201c6450d5464513bf5205a56321859287a99f369bea71dd60edb4",
+      "sha256": "ea911dde996227d6c52cbddc3fcc6bb553eda5f017d8fdc133401585bcb86285",
       "size": 1232
     },
     "docs/evidence/artifacts/runtime-adapters-stage8-2026-08-20/runtime/adapters.json": {
@@ -3989,8 +3989,8 @@
       "size": 2005
     },
     "docs/evidence/artifacts/runtime-adapters-stage8-2026-08-20/stage8-report.json": {
-      "sha256": "521087958fe01994b90ec6214ee0d0b232976e82cd71d597fdc3580d53c27608",
-      "size": 8216
+      "sha256": "8358635ed394cd66db7bf6575d0313d46a810ceaf504af06147f2da28618428b",
+      "size": 8246
     },
     "docs/evidence/artifacts/runtime-base-phase1-2026-08-20/artifact-index.json": {
       "sha256": "c9763e0561059fb31c0a21d9eff7eea098ed5fbdf594d2541d25e5904f384618",
