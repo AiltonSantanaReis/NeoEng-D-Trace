@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "7a82f8d768fdeac3d88cccedb784dabe98b7b123c582edcd9f9d98646ee50005",
-      "size": 22998
+      "sha256": "71fc6c50cda1d2ddb17fa58c12b5f7879c0ec5953a1c12cd3d15e822477a3a59",
+      "size": 23027
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -539,6 +539,10 @@
     "docs/evidence/ETAPA_2_INTERFACE_MODERNA_2026-08-21.md": {
       "sha256": "fc6f2302e502ebb46b7f610d3fb6aae040be69d13fcff0e75b2d92e484465148",
       "size": 6043
+    },
+    "docs/evidence/ETAPA_2_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-21.md": {
+      "sha256": "be6b882f282e6154b3a38dd6924985c117acf67f6f46b78e8ee427516e9af81e",
+      "size": 2768
     },
     "docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md": {
       "sha256": "1acc6a7fec1dfca98716969c824512931bd719429df6d837a5e5648ff645f2bc",
@@ -881,8 +885,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "479b5e9ea427b00bb6cdbb5150a06d1ce8610a24ebe3344450fbbeec1050606c",
-      "size": 40647
+      "sha256": "a994e3d26a960f566e3209e8611871563084c289cffc3e98020819138ea99e66",
+      "size": 40819
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
