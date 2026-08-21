@@ -279,14 +279,6 @@ class CanvasView(QWidget):
         clicked_obj_id = self._find_object_at(img_pt)
 
         menu = QMenu(self)
-        menu.setStyleSheet("""
-            QMenu { background-color: #2d2d30; color: #e6e6e6;
-            border: 1px solid #3f3f46; }
-            QMenu::item { padding: 5px 20px; }
-            QMenu::item:selected { background-color: #2a6f97; }
-            QMenu::separator { height: 1px; background: #3f3f46;
-            margin: 5px 0; }
-        """)
 
         if clicked_obj_id:
             label = menu.addAction(f"Selected: {clicked_obj_id[:8]}...")

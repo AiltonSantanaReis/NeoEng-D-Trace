@@ -301,9 +301,7 @@ class MainWindow(QMainWindow):
         self.focus_button = QPushButton("Focus Selected", self)
         self.focus_button.setFlat(True)
         self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.focus_button.setStyleSheet(
-            "QPushButton:pressed { background-color: transparent; " "border: none; }"
-        )
+        self.focus_button.setObjectName("focus_button")
         self.focus_button.clicked.connect(self._focus_selected)
         self.nav_toolbar.addWidget(self.focus_button)
 

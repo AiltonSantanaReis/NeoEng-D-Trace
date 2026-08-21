@@ -8,6 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from scripts.audit_visual_artifacts import run_audit
+from src.ui.theme_tokens import THEME_TOKENS
 
 
 def _digest(path: Path) -> dict[str, int | str]:
@@ -28,30 +29,36 @@ def _widget(x: int, y: int, width: int, height: int, visible: bool = True) -> di
     }
 
 
+def _color(token: str, *, rgba: bool) -> tuple[int, ...]:
+    rgb = tuple(int(token[index : index + 2], 16) for index in (1, 3, 5))
+    return (*rgb, 128) if rgba else rgb
+
+
 def _make_capture(root: Path, *, rgba: bool = False) -> Path:
     root.mkdir()
     image_path = root / "1080p_FHD_01_sem_projeto.png"
-    background = (30, 30, 30, 128) if rgba else (30, 30, 30)
+    background = _color(THEME_TOKENS.window, rgba=rgba)
     image = Image.new("RGBA" if rgba else "RGB", (320, 200), background)
     draw = ImageDraw.Draw(image)
     draw.rectangle(
         (0, 0, 319, 19),
-        fill=(45, 45, 48, 128) if rgba else (45, 45, 48),
+        fill=_color(THEME_TOKENS.surface_alt, rgba=rgba),
     )
     draw.rectangle(
         (0, 20, 39, 199),
-        fill=(60, 60, 60, 128) if rgba else (60, 60, 60),
+        fill=_color(THEME_TOKENS.surface_raised, rgba=rgba),
     )
     draw.rectangle(
         (40, 20, 219, 199),
-        fill=(37, 37, 38, 128) if rgba else (37, 37, 38),
+        fill=_color(THEME_TOKENS.surface, rgba=rgba),
     )
     draw.rectangle(
         (220, 20, 319, 199),
-        fill=(63, 63, 70, 128) if rgba else (63, 63, 70),
+        fill=_color(THEME_TOKENS.border, rgba=rgba),
     )
-    draw.point((50, 30), fill=(230, 230, 230, 128) if rgba else (230, 230, 230))
-    draw.point((319, 199), fill=(30, 30, 30, 128) if rgba else (30, 30, 30))
+    draw.point((50, 30), fill=_color(THEME_TOKENS.text_primary, rgba=rgba))
+    draw.point((51, 30), fill=_color(THEME_TOKENS.accent, rgba=rgba))
+    draw.point((319, 199), fill=_color(THEME_TOKENS.window, rgba=rgba))
     image.save(image_path, "PNG")
 
     widgets = {
@@ -89,6 +96,28 @@ def _make_capture(root: Path, *, rgba: bool = False) -> Path:
         newline="\n",
     )
     return image_path
+
+
+def test_visual_auditor_uses_contextual_palette_for_modal(
+    tmp_path: Path,
+) -> None:
+    from scripts.audit_visual_artifacts import _palette_checks
+
+    rgb = np.zeros((4, 4, 3), dtype=np.uint8)
+    rgb[:, :] = _color(THEME_TOKENS.window, rgba=False)
+    rgb[0, 0] = _color(THEME_TOKENS.text_primary, rgba=False)
+    findings: list[dict] = []
+
+    palette = _palette_checks(
+        "validacao_modal.png",
+        rgb,
+        is_modal=True,
+        findings=findings,
+    )
+
+    assert findings == []
+    assert palette["required_counts"][THEME_TOKENS.window] > 0
+    assert THEME_TOKENS.surface not in palette["required_counts"]
 
 
 def test_visual_auditor_passes_valid_png_and_generates_annotation(

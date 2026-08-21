@@ -50,12 +50,7 @@ class SidePanel(QWidget):
         # Botão de forma de colisão
         self.btn_collision = QPushButton("Collision: OFF")
         self.btn_collision.setCheckable(True)
-        # Estilo para destacar quando ativo (Azul)
-        self.btn_collision.setStyleSheet("""
-            QPushButton { background-color: #3c3c3c; color: #aaaaaa; }
-            QPushButton:checked { background-color: #007acc; color: white;
-            border: 1px solid #0099ff; font-weight: bold; }
-        """)
+        self.btn_collision.setObjectName("collision_toggle")
 
         self.slider_label = QLabel("Expand/Contract: 0 px")
         self.slider = QSlider(Qt.Orientation.Horizontal)
