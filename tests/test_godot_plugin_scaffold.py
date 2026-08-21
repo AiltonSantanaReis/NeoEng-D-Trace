@@ -52,6 +52,7 @@ def test_godot_addon_package_is_deterministic_and_contains_only_sources(tmp_path
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.cfg",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/professional_scene_importer.gd",
+            "neoeng-d-trace-godot/addons/neoeng_d_trace/runtime_adapter.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/scenario_importer.gd",
         ]
         assert all(

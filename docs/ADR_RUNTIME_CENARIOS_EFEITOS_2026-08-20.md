@@ -162,6 +162,45 @@ registra o estado vivo sem reescrever os snapshots históricos:
 9. **Fechamento:** regressão integral, auditoria visual, benchmarks lógicos,
    evidências hashadas, CI, revisão de diff, PR, merge e validação pós-merge.
 
+## Etapa 8 — estado de execução e contrato dos adaptadores
+
+A Etapa 8 está em desenvolvimento na branch `Ailton/runtime-stage8-adapters`. O
+escopo atual é o adaptador real compartilhado por Godot e Unity para as
+capacidades já implementadas nas Etapas 1–7, sem alterar `.ndtproj` v1, o
+manifesto `neoeng-d-trace-scenario-runtime` v1 ou os sidecars versionados.
+
+A integração introduz o bundle versionado `neoeng-d-trace-runtime-adapters`
+v1. Ele referencia o manifesto de cenário e os seis sidecars de runtime por
+caminhos POSIX relativos à raiz do projeto, registra tamanho e SHA-256 dos bytes
+exatos, valida a cadeia de dependências (shaders dependem do sidecar de
+iluminação; os demais sidecars dependem do manifesto de cenário) e exige uma
+matriz ordenada de capacidades para `godot` e `unity`. Cada decisão contém
+`native`, `degraded` ou `incompatible`, além de `mode` e `reason`; nenhuma
+capacidade não executada é promovida silenciosamente.
+
+O comportamento comprovado nesta fase é: importação da hierarquia de camadas,
+carregamento/hash dos sidecars, preservação da matriz de fallback e reprodução
+determinística do ciclo de vida/fixed tick. Godot e Unity executam esse
+comportamento em seus próprios processos headless. Iluminação, shaders,
+partículas, pós-processamento, triggers e streaming permanecem `degraded` como
+metadata/contrato no adaptador atual; isso não declara renderização nativa dos
+efeitos nas engines.
+
+O auditor reproduzível é `scripts/audit_runtime_adapters_stage8.py`. A execução
+local mais recente teve `functional_status=PASS` em Python, Godot e Unity:
+ambos os engines executaram os marcadores de importação, duas camadas e três
+fixed ticks; Unity também confirmou seis sidecars. O relatório formal ficou
+`status=FAIL` exclusivamente porque `worktree_clean=false`, conforme o gate
+fail-closed, e não pode ser usado como evidência final antes do checkpoint
+versionado. A suíte completa executou 1.570 testes aprovados e 2 skips já
+existentes; cobertura foi 91,00% em linhas e o gate confirmou branches >=85%.
+Os avisos reais do Unity sobre licensing/token e tentativas de rede foram
+preservados como avisos ambientais não bloqueantes; não alteram os marcadores
+funcionais nem foram suprimidos. Ainda faltam evidência final em árvore limpa,
+validação por blobs Git, revisão, CI e pós-merge. Resultados de execuções
+anteriores, inclusive falhas de fixture/caminho, permanecem apenas no
+histórico da sessão e não são reutilizados como evidência final.
+
 ## Governança obrigatória antes de cada fase
 
 Antes de iniciar qualquer fase, o agente ou desenvolvedor deverá ler e

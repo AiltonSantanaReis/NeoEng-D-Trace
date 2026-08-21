@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "6662ca421ab22620ee16962f8e6ae335e7aeb93d9c71ff27c945ea9fbc869584",
-      "size": 14057
+      "sha256": "f7071ff70142e56076ef74476c1ca7d6f24f69cafdbbf69f4db21ebd49851748",
+      "size": 16605
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -5592,6 +5592,10 @@
       "sha256": "992cc7027174fe91b6324229986e6a73e6465331c6e850b94aa673c6d24309a6",
       "size": 12722
     },
+    "integrations/godot/addons/neoeng_d_trace/runtime_adapter.gd": {
+      "sha256": "85855a3beb1b34c176e0aa82ace53b6aab2153f222c40c876e174be055dade81",
+      "size": 8753
+    },
     "integrations/godot/addons/neoeng_d_trace/scenario_importer.gd": {
       "sha256": "e2caf412cfab56c9c818192b45feb2655efd5931941175814df02a3ccdaf1106",
       "size": 7433
@@ -5631,6 +5635,10 @@
     "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs.meta": {
       "sha256": "332b0eba46d31578dfbcbe807ba64a406cd6d8e118e4345e606a2c71baa619d3",
       "size": 251
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Editor/RuntimeAdapterGenerator.cs": {
+      "sha256": "602b0576ffa5f8244a2fd239301565f3401cbad9f1b9a79457fb92dfa6161762",
+      "size": 10867
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ScenarioImportGenerator.cs": {
       "sha256": "62d399957ee5c3d8a0e2dd18c80ccdc2a8820024994cb809e25b73ea8a5cdf4b",
@@ -5723,6 +5731,10 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalSceneMetadata.cs.meta": {
       "sha256": "074df858c8a891d23f36a2dcec3b11587498981ba31b9ad78f15cb8266870048",
       "size": 251
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngRuntimeAdapterMetadata.cs": {
+      "sha256": "ba6ca87f53b964df7cb98e7175e31216fa68433206a9b9f13007e9c56c75e4b1",
+      "size": 765
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngScenarioMetadata.cs": {
       "sha256": "808e335fbf9e02067feda908bb46dab9bf3763073fa1da972472f6a1de7d679b",
@@ -5975,6 +5987,10 @@
     "scripts/audit_professional_scene_stage5_unity.py": {
       "sha256": "19115414eedfff8cc70c622997151a5060a59dc5e3e64d059c744331e8136099",
       "size": 7783
+    },
+    "scripts/audit_runtime_adapters_stage8.py": {
+      "sha256": "4b82485f472529d47b654dd00730e4b4b910dda9f2dfb5a9911a0a4badd4460c",
+      "size": 15862
     },
     "scripts/audit_runtime_base_phase1.py": {
       "sha256": "def3f15ca0e3b5dc653dd36c4b1fbb35a863b0cadf88269f95ce314df177de2d",
@@ -6349,12 +6365,16 @@
       "size": 324
     },
     "src/runtime/__init__.py": {
-      "sha256": "24cfa905b6c0027acd3f4721d31def9c8f10a1fd2487a2138de5932c56d26fcf",
-      "size": 10802
+      "sha256": "1adc7e5ff3198f2a5b7730e7b2778c9e77d16b4b36b177b6267a94f0341c650e",
+      "size": 11691
+    },
+    "src/runtime/engine_adapters.py": {
+      "sha256": "7201fcfb74dde15cfa1bc2d2217e9f94ba117650fcc28500146e9262f4b66fd6",
+      "size": 22984
     },
     "src/runtime/lighting.py": {
-      "sha256": "827dccbb1167a351d2220d739c435c12c408601a88a583c9a7e18888d10650c5",
-      "size": 19214
+      "sha256": "8b5067532bd543af903f00edc205ffc5299a49315d31a49e70657e3b3ea0babe",
+      "size": 20285
     },
     "src/runtime/particles.py": {
       "sha256": "4824190b87f4896543b7091006c5655d85e2f4b1d872a786494867428faaef10",
@@ -6677,8 +6697,8 @@
       "size": 16939
     },
     "tests/test_godot_plugin_scaffold.py": {
-      "sha256": "1e0e80f7dba5a3e4e69d0903e7a385c25597c4d4bfcddeccd5f2a6ded2b30141",
-      "size": 2588
+      "sha256": "6fc336ae281acfb78dcb6ba0d7c5db406e5dfa7620b73daeb677a9d87a595101",
+      "size": 2665
     },
     "tests/test_grabcut_pipeline.py": {
       "sha256": "441a8c924b84b9feb664fca6c7ed948d8734390644c9be145ff84a5993941764",
@@ -6883,6 +6903,10 @@
     "tests/test_stage7_runtime_streaming.py": {
       "sha256": "fded5f8ea722ddd174a92ac400ebd33d7964179c472695881f4c2f6cf01bc43b",
       "size": 15352
+    },
+    "tests/test_stage8_runtime_adapters.py": {
+      "sha256": "a88040d26b24241c529537150859e5820701463559073e3bbd5795f7c4a1a269",
+      "size": 16137
     },
     "tests/test_stage_0_5_2d_ui.py": {
       "sha256": "e3f8323bf29e1fecf34a7e6d29ff1a569ddbc42b77824337e3653a806e3be43d",

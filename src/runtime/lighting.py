@@ -346,6 +346,34 @@ def _read_lighting_file(path: Path) -> LightingDocumentV1:
     return document
 
 
+def load_lighting_runtime_export_bytes(raw: bytes) -> LightingDocumentV1:
+    """Load canonical lighting sidecar bytes with strict JSON checks."""
+
+    if not isinstance(raw, bytes):
+        raise LightingFormatError("lighting manifest bytes must be bytes")
+    if len(raw) > MAX_PROJECT_FILE_BYTES:
+        raise LightingFormatError("lighting manifest exceeds file limit")
+    if raw.startswith(b"\xef\xbb\xbf"):
+        raise LightingFormatError("UTF-8 BOM is not allowed")
+    try:
+        payload = json.loads(
+            raw.decode("utf-8"),
+            parse_constant=_reject_json_constant,
+            object_pairs_hook=_reject_duplicate_keys,
+        )
+    except (
+        UnicodeDecodeError,
+        json.JSONDecodeError,
+        RecursionError,
+        ValueError,
+    ) as exc:
+        raise LightingFormatError(f"invalid lighting JSON: {exc}") from exc
+    document = _validated_document(payload)
+    if raw != serialize_lighting_runtime_export(document):
+        raise LightingFormatError("lighting manifest bytes are not canonical")
+    return document
+
+
 def _clamp(value: float) -> float:
     return min(1.0, max(0.0, value))
 
