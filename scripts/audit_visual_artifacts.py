@@ -218,7 +218,13 @@ def _geometry_checks(
     if state == "validacao_modal":
         widget = geometry.get("validacao_modal")
         rect = _rect(widget.get("root_geometry")) if isinstance(widget, dict) else None
-        if rect is None or rect[2:] != image_size:
+        capture_size = (
+            tuple(widget.get("capture_size"))
+            if isinstance(widget, dict) and isinstance(widget.get("capture_size"), list)
+            else None
+        )
+        expected_size = capture_size or (rect[2:] if rect is not None else None)
+        if expected_size is None or tuple(expected_size) != image_size:
             _finding(findings, "geometry", "modal Qt geometry differs from PNG size", image=filename)
         return
     profile = geometry.get("profile")
@@ -413,7 +419,10 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
             if filename in capture.get("files", {}):
                 if is_modal:
                     widget = capture.get("widget_geometry", {}).get("validacao_modal", {})
-                    expected_size = _rect(widget.get("root_geometry"))[2:] if isinstance(widget, dict) and _rect(widget.get("root_geometry")) else None
+                    if isinstance(widget, dict) and isinstance(widget.get("capture_size"), list):
+                        expected_size = widget["capture_size"]
+                    else:
+                        expected_size = _rect(widget.get("root_geometry"))[2:] if isinstance(widget, dict) and _rect(widget.get("root_geometry")) else None
                 else:
                     expected_size = capture.get("actual_capture_size")
                 break
