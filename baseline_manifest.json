@@ -93,8 +93,8 @@
       "size": 3570
     },
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
-      "sha256": "df8acab1c29cbf8ca0a2eaa9f960c8c4f792efa14f44ed231bea697298295a61",
-      "size": 14050
+      "sha256": "6662ca421ab22620ee16962f8e6ae335e7aeb93d9c71ff27c945ea9fbc869584",
+      "size": 14057
     },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
@@ -249,8 +249,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "6f2035eb150365476504c776f1a687af5129d495223781739fc99629d5fcd785",
-      "size": 21625
+      "sha256": "c8941523ca93ad7d2eb6c58e470b5d47a4c1676d3851a3c28abff0add8ea6b65",
+      "size": 21541
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "59de520a30f0f4fad9474ed56466aabf02881512da5e1d99e7975916cb479ed7",
@@ -757,8 +757,12 @@
       "size": 3470
     },
     "docs/evidence/ETAPA_7_RUNTIME_STREAMING_2026-08-20.md": {
-      "sha256": "d400f85993c5d29b1a97c2002a063eb5e3970ebee133d341089d83620ef254a4",
-      "size": 5181
+      "sha256": "ee9714380cb8b0637948c400788ea2bd0dbab33fc0f34dc724d6412c405b59fc",
+      "size": 5144
+    },
+    "docs/evidence/ETAPA_7_RUNTIME_STREAMING_ENCERRAMENTO_POS_MERGE_2026-08-20.md": {
+      "sha256": "d83130620841e41194ec756715ebbe39c69f2ba452d1b13ff385023673925450",
+      "size": 2907
     },
     "docs/evidence/ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md": {
       "sha256": "171ab13235ae7c9b0365d6cc874177e907a8f5338c3b7a62215dd12fef58ee9f",
@@ -849,8 +853,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "8d5a08a6f9c0fb0690b7202ad0467eb9c0e09addbd17ea5492222b7343618de3",
-      "size": 39571
+      "sha256": "376cf4bf64c1b6e9a96d23c38ab4d34c100df0d1c88449893b7948e1836bb8de",
+      "size": 39000
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",

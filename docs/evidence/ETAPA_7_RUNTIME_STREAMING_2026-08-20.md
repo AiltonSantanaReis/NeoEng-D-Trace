@@ -1,15 +1,13 @@
 # Etapa 7 do ADR de runtime — streaming
 
-**Estado:** EM DESENVOLVIMENTO / NÃO APROVADA
+**Estado:** ENCERRADA NO ESCOPO APROVADO
 **Branch:** `Ailton/runtime-stage7-streaming`
 **Base:** `1e6b4c8f08f2237ec4dcc2ff8a5c6368515be1c9`
 **ADR:** `docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md`
 
-Esta é uma evidência viva da RUNTIME-ETAPA-7. Ela não substitui a governança
-global, não reclassifica snapshots históricos e não constitui aprovação,
-merge, release ou suporte de engine.
+Esta é a caracterização técnica da RUNTIME-ETAPA-7; o encerramento pós-merge está em documento separado. Ela não substitui a governança global, não reclassifica snapshots históricos e não declara release ou suporte de engine.
 
-## Escopo em desenvolvimento
+## Escopo implementado
 
 O sidecar `neoeng-d-trace-runtime-streaming` permanece separado dos contratos
 de autoria. Ele registra origem hash-bound, assets com caminhos POSIX relativos,
@@ -92,15 +90,6 @@ como evidência do checkpoint anterior:
 
 O índice foi gerado pelo próprio auditor no HEAD corretivo e os hashes acima
 foram recalculados localmente após a geração do pacote.
-## Gates pendentes
+## Encerramento e fronteira
 
-- suíte integral e cobertura branch sem redução;
-- baseline e manifests contra bytes efetivamente versionados;
-- auditoria em árvore limpa e artefatos hashados;
-- CI Linux e Windows;
-- PR, revisão de checks e merge normal;
-- validação pós-merge e reconciliação desta evidência com o commit final.
-
-Até todos os gates passarem, a Etapa 7 permanece **EM DESENVOLVIMENTO / NÃO
-APROVADA**. Streaming GPU, residência de VRAM e integração nativa Godot/Unity
-continuam fora do escopo desta etapa.
+Os gates foram concluídos no merge `f0d350ad7b61e2e9bc7865515768f3662804c953`: CI Linux/Windows no run `32430267567`, suíte integral, cobertura, baseline Git-blob, integridade de evidências, auditoria limpa e validação pós-merge. Consulte `docs/evidence/ETAPA_7_RUNTIME_STREAMING_ENCERRAMENTO_POS_MERGE_2026-08-20.md`. Streaming GPU, residência de VRAM e integração nativa Godot/Unity continuam fora do escopo desta etapa.
