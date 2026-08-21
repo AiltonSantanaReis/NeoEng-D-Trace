@@ -6,7 +6,7 @@ pós-merge.
 
 ## Proveniência
 
-- Commit auditado: 5722da8072e877585ddeca5d3ae6c50647ff462e
+- Commit auditado: 09df5da54f29507bdc61e829bc77ee44859a9a47
 - Branch auditada: Ailton/runtime-stage8-adapters
 - Worktree no auditor: limpo
 - Auditor: scripts/audit_runtime_adapters_stage8.py
@@ -69,8 +69,8 @@ apagados nem convertidos artificialmente em PASS.
 
 | Artefato | Bytes | SHA-256 |
 |---|---:|---|
-| artifact-index.json | 1232 | bb24e35ff8201c6450d5464513bf5205a56321859287a99f369bea71dd60edb4 |
-| stage8-report.json | 8216 | 521087958fe01994b90ec6214ee0d0b232976e82cd71d597fdc3580d53c27608 |
+| artifact-index.json | 1232 | ea911dde996227d6c52cbddc3fcc6bb553eda5f017d8fdc133401585bcb86285 |
+| stage8-report.json | 8216 | 8358635ed394cd66db7bf6575d0313d46a810ceaf504af06147f2da28618428 |
 | runtime/adapters.json | 6573 | 4e367190f584a1bda14536ffbc1c4650a3234873e2391f6d533dbe5df37a0345 |
 | runtime/scenario.ndtscenario.runtime.json | 1099 | 064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a |
 | runtime/lighting.json | 2104 | 06893ca3e9cbbc25404af29a21f177e41dacb8cd305045f3e0e2bfebd5dffef8f |

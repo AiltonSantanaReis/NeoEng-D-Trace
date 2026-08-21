@@ -39,7 +39,7 @@
         "<redacted-path>rogramData\\chocolatey\\bin\\godot.EXE",
         "--headless",
         "--path",
-        "<redacted>atnco\\AppData\\Local\\Temp\\neoeng-stage8-audit-clean-81db8d76df8a4ab0844e33001c81d514\\godot",
+        "<redacted-path>rs\\atnco\\AppData\\Local\\Temp\\neoeng-stage8-audit-fixed-clean-729b325c286a4ceb914e313e97eb1e0f\\godot",
         "--script",
         "res://main.gd"
       ],
@@ -56,7 +56,7 @@
         "-nographics",
         "-quit",
         "-projectPath",
-        "<redacted>atnco\\AppData\\Local\\Temp\\neoeng-stage8-audit-clean-81db8d76df8a4ab0844e33001c81d514\\unity",
+        "<redacted-path>rs\\atnco\\AppData\\Local\\Temp\\neoeng-stage8-audit-fixed-clean-729b325c286a4ceb914e313e97eb1e0f\\unity",
         "-executeMethod",
         "NeoEng.DTrace.Editor.RuntimeAdapterGenerator.RunHeadlessRuntimeAdapter",
         "-logFile",
@@ -66,7 +66,7 @@
       "returncode": 0,
       "status": "PASS",
       "stderr_markers": "",
-      "stdout_markers": "[Licensing::Module] LicensingClient has failed validation; ignoring\\n[Licensing::Module] Error: Access token is unavailable; failed to update\\nInitialize engine version: 6000.5.7f1 (017862109af0)\\nRUNTIME_ADAPTER_UNITY=SUCCESS\\nRUNTIME_ADAPTER_LAYERS=2\\nRUNTIME_ADAPTER_SIDECARS=6\\nRUNTIME_ADAPTER_FIXED_TICK=3\\nCurl error 42: Callback aborted\\nRequest timed out while processing request \"https://public-cdn.cloud.unity3d.com/config/production\", HTTP error code 0\\nabort_threads: Failed aborting id: 0000000000004DF4, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000004448, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000004DF4, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000004448, mono_thread_manage will ignore it"
+      "stdout_markers": "[Licensing::Module] LicensingClient has failed validation; ignoring\\n[Licensing::Module] Error: Access token is unavailable; failed to update\\nInitialize engine version: 6000.5.7f1 (017862109af0)\\nRUNTIME_ADAPTER_UNITY=SUCCESS\\nRUNTIME_ADAPTER_LAYERS=2\\nRUNTIME_ADAPTER_SIDECARS=6\\nRUNTIME_ADAPTER_FIXED_TICK=3\\nCurl error 42: Callback aborted\\nRequest timed out while processing request \"https://public-cdn.cloud.unity3d.com/config/production\", HTTP error code 0\\nabort_threads: Failed aborting id: 0000000000000114, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000002E60, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000000114, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000002E60, mono_thread_manage will ignore it"
     }
   },
   "functional_status": "PASS",
@@ -196,7 +196,7 @@
   },
   "source": {
     "branch": "Ailton/runtime-stage8-adapters",
-    "commit": "5722da8072e877585ddeca5d3ae6c50647ff462e",
+    "commit": "09df5da54f29507bdc61e829bc77ee44859a9a47",
     "worktree_clean": true
   },
   "status": "PASS"
