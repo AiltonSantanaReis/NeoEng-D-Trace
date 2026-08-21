@@ -11,6 +11,7 @@ Esta evidência não aprova release, push, PR ou merge. Ela registra somente a v
 - Branch: `Ailton/fix/ui-panel-visibility`
 - Commits da correção de UI: `ffb8cf9`, `d09a4cd`
 - Commit do contrato do auditor: `bec1348`
+- Commit dos testes/auditor funcional reproduzível: `95f1dd3`
 - Build oficial usada na validação do executável: commit `d09a4cd1660f944aef6ef001477d7f0c5a2270d5`
 - Plataforma: Windows 10, Python 3.11.9, Qt/PySide6 do ambiente do projeto
 - O Windows local reportou DPI 200%; as capturas nativas registram o tamanho físico real e o manifesto também mantém o tamanho lógico solicitado.
