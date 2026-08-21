@@ -1,9 +1,9 @@
 # ADR — Runtime de cenários, efeitos e validação portátil
 
-**Status:** Etapas 1, 2, 3, RUNTIME-ETAPA-4, RUNTIME-ETAPA-5, RUNTIME-ETAPA-6 e RUNTIME-ETAPA-7 concluídas somente nos escopos aprovados; release permanece uma decisão independente
+**Status:** Etapas 1, 2, 3, RUNTIME-ETAPA-4, RUNTIME-ETAPA-5, RUNTIME-ETAPA-6, RUNTIME-ETAPA-7 e RUNTIME-ETAPA-8 concluídas somente nos escopos aprovados; release permanece uma decisão independente
 **Data:** 20 de agosto de 2026
-**Base:** merge f0d350ad7b61e2e9bc7865515768f3662804c953
-**Estado de execução:** A Etapa 1 foi encerrada pela implementação 84dfee7 e documentação 7e190b4. A Etapa 2 foi integrada pela PR #115 no merge eb9837b e sua documentação pós-merge pela PR #116 no merge ff66fa7. A Etapa 3 foi integrada pela PR #117 no merge c76ac4b. A RUNTIME-ETAPA-4 foi integrada pela PR #119 no merge a757da027e531898d1b0e2fb1d18f4f23fd20271 e sua documentação foi reconciliada no merge 27b2baf; o CI Linux/Windows do head 490f58c passou no run 32405503776 e a validação local pós-merge passou nos merges publicados. Nenhuma regressão foi reproduzida. A capacidade runtime.particles foi promovida de não suportada para nativa como mudança prevista da Etapa 4, não como regressão. A RUNTIME-ETAPA-5 foi integrada pela PR #121 no merge 159b1241b012; a evidência pré-merge, o encerramento pós-merge, o CI Linux/Windows e a validação local estão registrados sem declarar capacidades fora do escopo. A RUNTIME-ETAPA-7 foi integrada pela PR #125 no merge `f0d350ad7b61e2e9bc7865515768f3662804c953`; o CI Linux/Windows passou no run `32430267567` e a validação pós-merge foi reproduzida no mesmo merge. A aprovação permanece limitada ao contrato lateral de streaming local, sem declarar GPU, VRAM ou suporte nativo Godot/Unity.
+**Base:** merge 91e62a30b534356a2f20dc15299157233c46ba8e
+**Estado de execução:** A Etapa 1 foi encerrada pela implementação 84dfee7 e documentação 7e190b4. A Etapa 2 foi integrada pela PR #115 no merge eb9837b e sua documentação pós-merge pela PR #116 no merge ff66fa7. A Etapa 3 foi integrada pela PR #117 no merge c76ac4b. A RUNTIME-ETAPA-4 foi integrada pela PR #119 no merge a757da027e531898d1b0e2fb1d18f4f23fd20271 e sua documentação foi reconciliada no merge 27b2baf; o CI Linux/Windows do head 490f58c passou no run 32405503776 e a validação local pós-merge passou nos merges publicados. Nenhuma regressão foi reproduzida. A capacidade runtime.particles foi promovida de não suportada para nativa como mudança prevista da Etapa 4, não como regressão. A RUNTIME-ETAPA-5 foi integrada pela PR #121 no merge 159b1241b012; a evidência pré-merge, o encerramento pós-merge, o CI Linux/Windows e a validação local estão registrados sem declarar capacidades fora do escopo. A RUNTIME-ETAPA-7 foi integrada pela PR #125 no merge f0d350ad7b61e2e9bc7865515768f3662804c953; o CI Linux/Windows passou no run 32430267567 e a validação pós-merge foi reproduzida no mesmo merge. A RUNTIME-ETAPA-8 foi integrada pela PR #127 no merge 91e62a30b534356a2f20dc15299157233c46ba8e; o CI Linux/Windows passou no run 32440065240 e a auditoria pós-merge reproduziu Python, Godot e Unity com PASS no main limpo. A aprovação permanece limitada aos contratos e capacidades explicitamente registrados, sem declarar release, GPU ou VRAM como aprovados.
 **Planos relacionados:**
 
 - `docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md`
@@ -164,7 +164,7 @@ registra o estado vivo sem reescrever os snapshots históricos:
 
 ## Etapa 8 — estado de execução e contrato dos adaptadores
 
-A Etapa 8 está em desenvolvimento na branch `Ailton/runtime-stage8-adapters`. O
+O parágrafo abaixo é o registro pré-merge da Etapa 8, preservado como snapshot histórico. A integração atual está registrada no encerramento pós-merge docs/evidence/ETAPA_8_ADAPTADORES_REAIS_ENCERRAMENTO_POS_MERGE_2026-08-20.md. O
 escopo atual é o adaptador real compartilhado por Godot e Unity para as
 capacidades já implementadas nas Etapas 1–7, sem alterar `.ndtproj` v1, o
 manifesto `neoeng-d-trace-scenario-runtime` v1 ou os sidecars versionados.
@@ -201,6 +201,15 @@ validação por blobs Git, revisão, CI e pós-merge. Resultados de execuções
 anteriores, inclusive falhas de fixture/caminho, permanecem apenas no
 histórico da sessão e não são reutilizados como evidência final.
 
+### Estado vivo da RUNTIME-ETAPA-8 — concluída no escopo aprovado
+
+A PR #127 foi integrada pelo merge 91e62a30b534356a2f20dc15299157233c46ba8e. Os jobs Linux e Windows do CI 32440065240 passaram no HEAD candidato bf15df502c64a4547a133678640f801249cc25f6. Na validação pós-merge, o main local e origin/main apontaram para o mesmo merge e a árvore permaneceu limpa.
+
+O auditor scripts/audit_runtime_adapters_stage8.py foi executado novamente no main e produziu status=PASS, functional_status=PASS, source.worktree_clean=true e privacy_leaks=[]. Godot e Unity reais executaram em modo headless e retornaram os marcadores do adaptador: duas camadas e três fixed ticks; Unity confirmou também seis sidecars. A matriz continua explícita: ciclo de vida, carregamento de cena e fixed update são native; iluminação, shaders, partículas, pós-processamento, triggers e streaming permanecem degraded como metadata/sidecars, sem alegação de renderização nativa desses efeitos.
+
+A suíte pós-merge registrou 1570 passed, 2 skipped, cobertura de linhas de 91,00%, política de cobertura aprovada, baseline Git-blob aprovado e integridade de evidências aprovada. Os dois skips são os casos históricos de symlink condicionados à permissão do Windows; não foram criados nem alterados para obter PASS. Os avisos reais do Unity sobre LicensingClient, token e tentativas de rede foram preservados no relatório e classificados somente como avisos ambientais não bloqueantes para este teste funcional.
+
+O pacote hashado desta execução está em docs/evidence/artifacts/runtime-adapters-stage8-postmerge-2026-08-20/. O encerramento formal, comandos, entradas, hashes, limitações e decisão estão em docs/evidence/ETAPA_8_ADAPTADORES_REAIS_ENCERRAMENTO_POS_MERGE_2026-08-20.md.
 ## Governança obrigatória antes de cada fase
 
 Antes de iniciar qualquer fase, o agente ou desenvolvedor deverá ler e
