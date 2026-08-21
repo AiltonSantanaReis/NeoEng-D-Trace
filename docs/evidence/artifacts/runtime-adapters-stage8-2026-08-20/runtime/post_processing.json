@@ -1,0 +1,47 @@
+{
+  "algorithm_version": 1,
+  "backend": "cpu-preview",
+  "compatibility": "native",
+  "effects": [
+    {
+      "enabled": true,
+      "id": "vignette",
+      "kind": "vignette",
+      "order": 20,
+      "parameters": {
+        "amount": 0.5,
+        "radius": 0.5
+      }
+    },
+    {
+      "enabled": true,
+      "id": "exposure",
+      "kind": "exposure",
+      "order": 10,
+      "parameters": {
+        "stops": 1.0
+      }
+    },
+    {
+      "enabled": false,
+      "id": "disabled-gray",
+      "kind": "grayscale",
+      "order": 30,
+      "parameters": {
+        "amount": 1.0
+      }
+    }
+  ],
+  "fallback": {
+    "mode": "cpu-preview",
+    "reason": "The requested backend has no native Stage 5 adapter."
+  },
+  "format_id": "neoeng-d-trace-runtime-post-processing",
+  "required_capability": "runtime.post_processing",
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scenario-runtime",
+    "schema_version": 1,
+    "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+  }
+}
