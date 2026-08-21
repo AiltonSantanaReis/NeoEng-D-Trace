@@ -16,19 +16,19 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-import numpy as np
-from PIL import Image, ImageDraw
-from PySide6.QtCore import QPoint, QRect, QSize
-from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QWidget
+import numpy as np  # noqa: E402
+from PIL import Image, ImageDraw  # noqa: E402
+from PySide6.QtCore import QPoint, QRect, QSize  # noqa: E402
+from PySide6.QtTest import QTest  # noqa: E402
+from PySide6.QtWidgets import QApplication, QScrollArea, QWidget  # noqa: E402
 
-from scripts.audit_ui_defect_capture import AuditConfig, fixture_scene
-from src.ui.main_window import MainWindow
-from src.ui.theme_qss import QSS
+from scripts.audit_ui_defect_capture import AuditConfig, fixture_scene  # noqa: E402
+from src.ui.main_window import MainWindow  # noqa: E402
+from src.ui.theme_qss import QSS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 VIEWPORTS = {
@@ -73,6 +73,15 @@ def rect_in(widget: QWidget, parent: QWidget) -> QRect:
     return QRect(point.x(), point.y(), widget.width(), widget.height())
 
 
+def _has_scroll_ancestor(child: QWidget, root: QWidget) -> bool:
+    parent = child.parentWidget()
+    while parent is not None and parent is not root:
+        if isinstance(parent, QScrollArea):
+            return True
+        parent = parent.parentWidget()
+    return False
+
+
 def scoped_clipping(widget: QWidget) -> list[dict[str, Any]]:
     """Check only widgets owned by this top-level window.
 
@@ -83,6 +92,8 @@ def scoped_clipping(widget: QWidget) -> list[dict[str, Any]]:
     findings: list[dict[str, Any]] = []
     for child in widget.findChildren(QWidget):
         if child.window() is not widget:
+            continue
+        if _has_scroll_ancestor(child, widget):
             continue
         if not child.isVisible() or child.width() <= 0 or child.height() <= 0:
             continue
@@ -143,7 +154,9 @@ def annotate(path: Path, boxes: dict[str, QRect]) -> dict[str, Any]:
     return {"file": output.name, "sha256": digest(output)}
 
 
-def _record_action(results: dict[str, Any], name: str, passed: bool, detail: Any) -> None:
+def _record_action(
+    results: dict[str, Any], name: str, passed: bool, detail: Any
+) -> None:
     results[name] = {"status": "PASS" if passed else "FAIL", "detail": detail}
 
 
@@ -152,12 +165,15 @@ def run(output: Path | None = None) -> dict[str, Any]:
         output = Path(tempfile.mkdtemp(prefix="neoeng-stage9-functional-ui-"))
     output.mkdir(parents=True, exist_ok=True)
 
-    app = QApplication.instance() or QApplication(sys.argv)
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication(sys.argv)
+    app = cast(QApplication, app)
     app.setStyleSheet(QSS)
     project = output / "ui_fixture.ndtproj"
     project.write_bytes(b"stage9-functional-ui-fixture-v1\n")
     scene = fixture_scene()
-    window = MainWindow(scene, AuditConfig())
+    window: Any = MainWindow(scene, AuditConfig())
     window._project_path = project
     window.scenario_authoring.bind_project(project)
     window.scenario_authoring.reset()
@@ -187,7 +203,9 @@ def run(output: Path | None = None) -> dict[str, Any]:
         for name, button in palette.tool_buttons.items():
             button.click()
             settle(app)
-            passed = button.isChecked() and palette.button_group.checkedButton() is button
+            passed = (
+                button.isChecked() and palette.button_group.checkedButton() is button
+            )
             passed = passed and window.canvas._tool is not None
             tool_results[name] = {
                 "status": "PASS" if passed else "FAIL",
@@ -214,9 +232,13 @@ def run(output: Path | None = None) -> dict[str, Any]:
         result["functional"]["main_xray_actions"] = xray_results
 
         window.canvas.gizmo_toggle.click()
-        gizmo_on = window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
+        gizmo_on = (
+            window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
+        )
         window.canvas.gizmo_toggle.click()
-        gizmo_off = window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
+        gizmo_off = (
+            window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
+        )
         _record_action(
             result["functional"],
             "gizmo_toggle",
@@ -333,7 +355,7 @@ def run(output: Path | None = None) -> dict[str, Any]:
         result["functional"]["mask_viewer_modes"] = modes
         mask.close()
 
-        functional_values = []
+        functional_values: list[str | None] = []
         for value in result["functional"].values():
             if isinstance(value, dict):
                 functional_values.extend(
@@ -349,11 +371,7 @@ def run(output: Path | None = None) -> dict[str, Any]:
             "human_review": False,
             "source_tree_clean": result["source"]["worktree_clean"],
         }
-        result["status"] = (
-            "PASS"
-            if all(result["checks"].values())
-            else "FAIL"
-        )
+        result["status"] = "PASS" if all(result["checks"].values()) else "FAIL"
     except Exception as exc:
         result["fatal_error"] = {"type": type(exc).__name__, "message": str(exc)}
         result["status"] = "FAIL"

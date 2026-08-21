@@ -77,7 +77,16 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
         assert window.layers.parent() is window.right_splitter
         assert window.groups.parent() is window.right_splitter
         assert window.collision_panel.parent() is window.desktop_panel_splitter
-        assert window.main_splitter.sizes()[2] >= 790
+        required_panel_width = (
+            max(
+                widget.minimumSizeHint().width()
+                for widget in (window.side_panel, window.layers, window.groups)
+            )
+            + window.collision_panel.minimumSizeHint().width()
+            + max(1, window.desktop_panel_splitter.handleWidth())
+        )
+        assert window.main_splitter.sizes()[2] >= required_panel_width
+        assert window.layers.width() >= window.layers.minimumSizeHint().width()
         assert all(size > 0 for size in window.desktop_panel_splitter.sizes())
         assert window.right_splitter.width() > 0
         assert window.collision_panel.width() > 0

@@ -90,6 +90,17 @@ class ResponsivePanelLayout:
         requested_panel_width = (
             self.COMPACT_PANEL_WIDTH if self.is_compact else self.DESKTOP_PANEL_WIDTH
         )
+        if not self.is_compact:
+            right_minimum = max(
+                widget.minimumSizeHint().width()
+                for widget in (self.side_panel, self.layers, self.groups)
+            )
+            collision_minimum = max(1, self.collision_panel.minimumSizeHint().width())
+            splitter_gap = max(1, self.desktop_panel_splitter.handleWidth())
+            requested_panel_width = max(
+                requested_panel_width,
+                right_minimum + collision_minimum + splitter_gap,
+            )
         panel_width = min(
             requested_panel_width,
             max(1, total_width - tool_width - 1),

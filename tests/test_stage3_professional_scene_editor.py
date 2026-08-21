@@ -8,7 +8,7 @@ import pytest
 from PySide6.QtCore import QMimeData, QPoint, QPointF, Qt, QUrl
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QImage
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QScrollArea
 
 from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_authoring_factory import document_from_scene
@@ -260,6 +260,10 @@ def test_window_binds_professional_editor_only_after_saved_project(
         qt_app.processEvents()
         assert window.professional_viewport is not None
         assert window.professional_inspector is not None
+        assert isinstance(window.right_pages.currentWidget(), QScrollArea)
+        assert (
+            window.right_pages.currentWidget().widget() is window.professional_inspector
+        )
         window.professional_session.set_selection(["scene_object"])
         qt_app.processEvents()
         assert window.professional_pages.currentWidget() is window.professional_viewport
