@@ -269,12 +269,12 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "06638ca0574f7517fb2f7a46e3dcf12a1afb087a040a5c38cebba916df101326",
-      "size": 21430
+      "sha256": "9f522b9d9fdcee494d59a2913127540b8d142b34add40678ceabdaadf36ce937",
+      "size": 22084
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "6bd5f38b9ec037275232cfeadff87975b34aa8f276339ad6ec18c4e400556f6e",
-      "size": 17704
+      "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
+      "size": 17788
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -395,6 +395,10 @@
     "docs/evidence/ETAPA_0_INTERFACE_MODERNA_2026-08-21.md": {
       "sha256": "5d837a02d549b71a7fc278697cfd78cfdb2bce24d026ae68cc6315d7d517c5c8",
       "size": 3528
+    },
+    "docs/evidence/ETAPA_0_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-21.md": {
+      "sha256": "0d7ba832e0641089d8bfb79ae3f0902ecbb66b083f41de914805be91e65c3228",
+      "size": 3346
     },
     "docs/evidence/ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md": {
       "sha256": "6831900bdea2e424811a6dd89399ed15e12fc41613bd50bf9ddfaedec1809269",
@@ -869,8 +873,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "d95b3a79e7def14b66646d8b358439aa51ac6100980cd30ccbb1d827c601f4c2",
-      "size": 39809
+      "sha256": "4e851cc23f7e281ae4c21ad027833770f3109d3a0a81cf25bac273a6c6c03274",
+      "size": 40217
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",

@@ -1,6 +1,6 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
-O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a fonte de verdade do escopo específico de modernização da interface. Ele permanece subordinado a este plano mestre e às demais governanças; em 21 de agosto de 2026 está `PLANEJADO / NÃO INICIADO` e não autoriza, por si só, implementação, merge ou release.
+O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a fonte de verdade do escopo específico de modernização da interface. Ele permanece subordinado a este plano mestre e às demais governanças; em 21 de agosto de 2026 a Etapa 0 está aprovada somente no escopo de baseline visual, enquanto as Etapas 1–14 permanecem planejadas. O plano não autoriza, por si só, implementação, merge ou release.
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
