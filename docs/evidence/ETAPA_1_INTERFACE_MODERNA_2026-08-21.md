@@ -87,7 +87,7 @@ A execucao normal contra a arvore de trabalho foi reprovada por divergencias
 de snapshots historicos que referenciam bytes antigos. Isso e reportado, nao
 mascarado e nao foi resolvido reescrevendo historico. O modo Git-blob e o gate
 adequado para validar os bytes versionados; apos o staging e o merge, o gate
-sera repetido contra os blobs do estado final.
+foi repetido no `main` apos o merge contra os blobs do estado final.
 
 ## Revisao visual
 
@@ -127,20 +127,22 @@ arquivos de correcao e regeneracao contra os blobs staged:
 - Black e Flake8 dos arquivos corrigidos: PASS;
 - os cinco diretorios locais permanecem preservados e fora do commit.
 
-A PR continua bloqueada ate nova execucao do CI confirmar os dois jobs verdes.
-Nao houve bypass, relaxamento de regra, reescrita de snapshot historico ou
-conclusao pos-merge.
-## Decisao
+Nao houve bypass, relaxamento de regra ou reescrita de snapshot historico.
 
-A implementacao da Etapa 1 esta completa e passou nos gates locais. A etapa
-somente sera formalmente concluida apos:
+## Encerramento pos-merge
 
-1. staging explicito dos arquivos previstos;
-2. validacao nos blobs Git;
-3. commit sem force;
-4. push e PR;
-5. CI verde em todos os jobs;
-6. merge normal;
-7. validacao pos-merge e atualizacao deste registro com o SHA final.
+A PR #131 foi mergeada normalmente em `main` no commit
+`71b1c44313b28d3323e17dc14fbb58179d02eb74`, apos o CI `32532498310` aprovar os
+jobs Linux `96927141129` e Windows `96927140823`.
 
-A Etapa 2 nao foi iniciada.
+A validacao pos-merge executada no `main` local sincronizado com `origin/main`
+confirmou:
+
+- `Baseline verified: 1911 files`;
+- `Evidence integrity passed: 84 manifests validated`;
+- `1583 passed, 2 skipped` na suite completa;
+- `git diff --exit-code` sem divergencia na arvore rastreada.
+
+Os cinco diretorios locais `release-stage9-*` permanecem preservados como
+untracked e nao fazem parte do estado versionado. A Etapa 1 da interface
+moderna profissional esta formalmente encerrada. A Etapa 2 nao foi iniciada.
