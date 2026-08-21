@@ -1,8 +1,8 @@
 # Plano Vivo e Fonte de Verdade — Interface Moderna e Profissional
 
-**Projeto:** NeoEng-D-Trace  
-**Data de criação:** 2026-08-21  
-**Status do plano:** \`PLANEJADO / NÃO INICIADO\`  
+**Projeto:** NeoEng-D-Trace
+**Data de criação:** 2026-08-21
+**Status do plano:** \`PLANEJADO / NÃO INICIADO\`
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
