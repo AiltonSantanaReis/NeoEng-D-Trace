@@ -173,6 +173,10 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     """Build the panel layout and attach its public widgets to the owner."""
 
     main_splitter = QSplitter(Qt.Orientation.Horizontal)
+    main_splitter.setSizePolicy(
+        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Ignored,
+    )
     main_splitter.addWidget(owner.tool_palette)
     main_splitter.addWidget(owner.canvas)
 
@@ -223,6 +227,9 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     main_splitter.setSizes([owner.tool_palette.recommended_width(), 800, 460])
     main_splitter.setStretchFactor(1, 1)
     owner.setCentralWidget(main_splitter)
+    # Keep the top-level window resizable below the desktop page hint so the
+    # responsive controller can switch to the compact panel tabs.
+    owner.setMinimumSize(0, 0)
 
     controller = ResponsivePanelLayout(
         owner,

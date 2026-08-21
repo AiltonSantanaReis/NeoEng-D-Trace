@@ -39,6 +39,8 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
     qt_app.processEvents()
 
     try:
+        assert window.minimumWidth() < 1280
+        assert window.minimumHeight() < 720
         for width, height in ((1366, 768), (1280, 720)):
             window.resize(QSize(width, height))
             qt_app.processEvents()
