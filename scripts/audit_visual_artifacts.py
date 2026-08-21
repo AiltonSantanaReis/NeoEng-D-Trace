@@ -21,6 +21,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from src.ui.theme_qss import QSS
+from src.ui.theme_tokens import THEME_TOKENS
 
 COLOR_RE = re.compile(r"#[0-9A-Fa-f]{6}")
 MAIN_WIDGETS = (
@@ -81,8 +82,15 @@ STATE_BY_SUFFIX = {
     "_03_validacao_modal.png": "validacao_modal",
     "_04_gizmo_feedback.png": "gizmo_feedback",
 }
-CORE_PALETTE = ("#1e1e1e", "#3c3c3c", "#252526", "#2d2d30", "#3f3f46", "#e6e6e6")
-MODAL_PALETTE = ("#1e1e1e", "#3c3c3c", "#e6e6e6")
+CORE_PALETTE = (
+    THEME_TOKENS.window,
+    THEME_TOKENS.surface,
+    THEME_TOKENS.surface_alt,
+    THEME_TOKENS.border,
+    THEME_TOKENS.text_primary,
+)
+MODAL_PALETTE = (THEME_TOKENS.window, THEME_TOKENS.text_primary)
+INTERACTIVE_PALETTE = (THEME_TOKENS.accent,)
 
 
 def _digest(path: Path) -> dict[str, Any]:
@@ -327,6 +335,9 @@ def _palette_checks(
         counts[value] = int(np.all(rgb == color, axis=2).sum())
         if counts[value] == 0:
             _finding(findings, "palette", f"required QSS color absent from screenshot: {value}", image=filename)
+    for value in INTERACTIVE_PALETTE:
+        color = tuple(bytes.fromhex(value[1:]))
+        counts[value] = int(np.all(rgb == color, axis=2).sum())
     luminance = (0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2])
     dark_ratio = float((luminance <= 100).mean())
     if dark_ratio < 0.55:
@@ -440,6 +451,21 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
             "edge_activity": edge_activity,
             "palette": palette,
         }
+    non_modal = [
+        report
+        for name, report in image_reports.items()
+        if not name.endswith("_03_validacao_modal.png")
+    ]
+    for value in INTERACTIVE_PALETTE:
+        if not any(
+            report.get("palette", {}).get("required_counts", {}).get(value, 0) > 0
+            for report in non_modal
+        ):
+            _finding(
+                findings,
+                "palette",
+                f"interactive QSS color absent from all non-modal screenshots: {value}",
+            )
     status = "PASS" if not findings else "FAIL"
     output_dir.mkdir(parents=True, exist_ok=True)
     for filename in sorted(image_reports):
@@ -449,7 +475,7 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
         "status": status,
         "input": {"manifest": "manifest.json", "manifest_sha256": _digest(manifest_path)["sha256"]},
         "environment": {"platform": platform.platform(), "python": sys.version},
-        "checks": ["pillow_decode", "opencv_decode", "dimensions", "transparency", "sha256", "clipping", "qt_geometry", "overlap", "qss_palette", "annotated_output"],
+        "checks": ["pillow_decode", "opencv_decode", "dimensions", "transparency", "sha256", "clipping", "qt_geometry", "overlap", "qss_palette_contextual", "qss_palette_aggregate", "annotated_output"],
         "images": image_reports,
         "findings": findings,
         "finding_count": len(findings),

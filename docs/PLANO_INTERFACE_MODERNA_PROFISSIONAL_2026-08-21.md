@@ -26,7 +26,7 @@ Este plano não é uma autorização para alterar regras, thresholds, scanners, 
 
 O estado vivo atual foi reconciliado após a Etapa 0 no merge \`61165a58bfa6d5b6a10bcbee89dd8d7e7c6fe643\`, com \`main\` local sincronizado a \`origin/main\`.
 
-O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline; nenhum redesign foi implementado. A Etapa 1 e todas as etapas posteriores continuam não iniciadas.
+O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. A Etapa 1 foi implementada e validada localmente, mas permanece pendente de CI, merge e validação pós-merge. A Etapa 2 e todas as etapas posteriores não foram iniciadas.
 
 Na leitura do estado local, foram encontrados diretórios de artefatos de auditoria não rastreados. Portanto, a árvore não foi considerada limpa e nenhuma conclusão de release, PR ou merge foi inferida a partir de documentação antiga ou de uma execução anterior.
 
@@ -172,6 +172,8 @@ Catalogar a interface real atual em 1920×1080, 1366×768 e 1280×720, com DPI n
 Criar tokens únicos para fundo, superfície, borda, texto, texto secundário, destaque, estados hover/pressed/checked/disabled, erro e sucesso. Consolidar QSS sem depender de tema externo não controlado. Garantir contraste, foco visível, escalabilidade de fonte, consistência de ícones e ausência de bordas laranja fixas sem função.
 
 **Gate:** testes de paleta e contraste, captura comparativa, nenhuma regressão funcional, sem duplicação de cores arbitrárias.
+
+**Estado local em 2026-08-21:** implementação concluída; auditoria visual PASS; suíte completa PASS; CI e pós-merge ainda pendentes.
 
 ### Etapa 2 — Biblioteca de ícones e ações
 

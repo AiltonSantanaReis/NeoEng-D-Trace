@@ -52,19 +52,19 @@ class ToolPalette(QWidget):
         # Lasso
         self.btn_lasso = QPushButton("Lasso")
         self.btn_lasso.setCheckable(True)
-        self.btn_lasso.setStyleSheet(self._get_button_style())
+        self.btn_lasso.setProperty("uiRole", "tool")
         self.btn_lasso.clicked.connect(self.select_lasso)
 
         # Polygonal Lasso
         self.btn_polygonal_lasso = QPushButton("Polygonal\nLasso")
         self.btn_polygonal_lasso.setCheckable(True)
-        self.btn_polygonal_lasso.setStyleSheet(self._get_button_style())
+        self.btn_polygonal_lasso.setProperty("uiRole", "tool")
         self.btn_polygonal_lasso.clicked.connect(self.select_polygonal_lasso)
 
         # Magnetic Lasso
         self.btn_magnetic_lasso = QPushButton("Magnetic\nLasso")
         self.btn_magnetic_lasso.setCheckable(True)
-        self.btn_magnetic_lasso.setStyleSheet(self._get_button_style())
+        self.btn_magnetic_lasso.setProperty("uiRole", "tool")
         self.btn_magnetic_lasso.clicked.connect(self.select_magnetic_lasso)
         self.btn_magnetic_lasso.setToolTip(
             "Magnetic Lasso: precise edge-following mode. "
@@ -74,37 +74,37 @@ class ToolPalette(QWidget):
         # Pen
         self.btn_pen = QPushButton("Pen")
         self.btn_pen.setCheckable(True)
-        self.btn_pen.setStyleSheet(self._get_button_style())
+        self.btn_pen.setProperty("uiRole", "tool")
         self.btn_pen.clicked.connect(self.select_pen)
 
         # Rect
         self.btn_rect = QPushButton("Rect")
         self.btn_rect.setCheckable(True)
-        self.btn_rect.setStyleSheet(self._get_button_style())
+        self.btn_rect.setProperty("uiRole", "tool")
         self.btn_rect.clicked.connect(self.select_rect)
 
         # Ellipse
         self.btn_ellipse = QPushButton("Ellipse")
         self.btn_ellipse.setCheckable(True)
-        self.btn_ellipse.setStyleSheet(self._get_button_style())
+        self.btn_ellipse.setProperty("uiRole", "tool")
         self.btn_ellipse.clicked.connect(self.select_ellipse)
 
         # Polygon Edit
         self.btn_polygon_edit = QPushButton("Edit\nPolygon")
         self.btn_polygon_edit.setCheckable(True)
-        self.btn_polygon_edit.setStyleSheet(self._get_button_style())
+        self.btn_polygon_edit.setProperty("uiRole", "tool")
         self.btn_polygon_edit.clicked.connect(self.select_polygon_edit)
 
         # Collision Brush
         self.btn_collision_brush = QPushButton("Collision\nBrush")
         self.btn_collision_brush.setCheckable(True)
-        self.btn_collision_brush.setStyleSheet(self._get_button_style())
+        self.btn_collision_brush.setProperty("uiRole", "tool")
         self.btn_collision_brush.clicked.connect(self.select_collision_brush)
 
         # Selection
         self.btn_selection = QPushButton("Selection")
         self.btn_selection.setCheckable(True)
-        self.btn_selection.setStyleSheet(self._get_button_style())
+        self.btn_selection.setProperty("uiRole", "tool")
         self.btn_selection.clicked.connect(self.select_selection)
 
         # --- Button Group (Exclusive Selection) ---
@@ -211,21 +211,6 @@ class ToolPalette(QWidget):
 
     def recommended_width(self):
         return self.minimumWidth()
-
-    def _get_button_style(self):
-        return """
-            QPushButton {
-                padding: 6px 8px;
-            }
-            QPushButton:checked {
-                border: 3px solid #00BFFF;
-                background-color: rgba(0, 191, 255, 50);
-            }
-            QPushButton:!checked {
-                border: 3px solid #FF4500;
-                background-color: rgba(255, 69, 0, 30);
-            }
-        """
 
     def select_next_tool(self):
         names = self.tool_names()

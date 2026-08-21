@@ -97,7 +97,13 @@ def _filesystem_source_files() -> Iterable[Path]:
 def iter_source_files() -> Iterable[Path]:
     """Yield files relevant to the repository integrity contract."""
 
-    repository_paths = _git_paths(("--cached", "--others", "--exclude-standard"))
+    # A baseline is a contract for the versioned repository, not for the
+    # developer's complete worktree. Including ``--others`` made local build
+    # outputs enter the manifest and then appear as ``Missing`` in CI, where
+    # only Git blobs exist. Untracked evidence remains governed by the
+    # evidence-integrity validator and must be staged before entering this
+    # baseline.
+    repository_paths = _git_paths(("--cached",))
     if repository_paths is None:
         yield from _filesystem_source_files()
         return

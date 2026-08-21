@@ -179,12 +179,6 @@ class CollisionBrushTool(BaseTool):
 
     def _show_hub_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet("""
-            QMenu { background-color: #2d2d30; color: #e6e6e6;
-            border: 1px solid #3f3f46; }
-            QMenu::item { padding: 5px 20px; }
-            QMenu::item:selected { background-color: #2a6f97; }
-        """)
 
         main_window = self.canvas_view.parent()
 
@@ -220,12 +214,6 @@ class CollisionBrushTool(BaseTool):
 
     def _show_scale_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet("""
-            QMenu { background-color: #2d2d30; color: #e6e6e6;
-            border: 1px solid #3f3f46; }
-            QMenu::item { padding: 5px 20px; }
-            QMenu::item:selected { background-color: #2a6f97; }
-        """)
 
         # Cancel
         act_cancel = menu.addAction(self.translations[self.current_lang]["cancel"])

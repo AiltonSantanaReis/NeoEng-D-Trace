@@ -44,7 +44,7 @@ class CollisionPanel(QWidget):
         layout = QVBoxLayout(self)
 
         title = QLabel("Static Collision Testing")
-        title.setStyleSheet("font-weight: bold; font-size: 14px;")
+        title.setObjectName("panel_section_title")
         layout.addWidget(title)
 
         button_layout = QVBoxLayout()

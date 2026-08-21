@@ -1,0 +1,480 @@
+{
+  "capture_count": 15,
+  "checks": {
+    "artifact_hashes_generated": true,
+    "expected_geometry_delta_count": 12,
+    "resolutions_and_states": true,
+    "unexpected_geometry_delta": true,
+    "visual_audit_zero_findings": true
+  },
+  "decision_scope": "evid\u00eancia t\u00e9cnica da Etapa 1; n\u00e3o \u00e9 aprova\u00e7\u00e3o de release",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "expected_geometry_deltas": [
+    {
+      "deltas": [
+        {
+          "new": [
+            488,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            488,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            1122,
+            23,
+            798,
+            39
+          ],
+          "old": [
+            1118,
+            23,
+            802,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "1080p_FHD",
+      "state": "gizmo_feedback"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            488,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            488,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            1122,
+            23,
+            798,
+            39
+          ],
+          "old": [
+            1118,
+            23,
+            802,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "1080p_FHD",
+      "state": "projeto_paineis"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            488,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            488,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            1122,
+            23,
+            798,
+            39
+          ],
+          "old": [
+            1118,
+            23,
+            802,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "1080p_FHD",
+      "state": "sem_projeto"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            488,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            488,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            1122,
+            23,
+            798,
+            39
+          ],
+          "old": [
+            1118,
+            23,
+            802,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "1080p_FHD",
+      "state": "validacao_janela"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            646,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            650,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "720p_Compacta",
+      "state": "gizmo_feedback"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            646,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            650,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "720p_Compacta",
+      "state": "projeto_paineis"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            646,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            650,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "720p_Compacta",
+      "state": "sem_projeto"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            646,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            650,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "720p_Compacta",
+      "state": "validacao_janela"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            732,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            736,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "768p_Minima",
+      "state": "gizmo_feedback"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            732,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            736,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "768p_Minima",
+      "state": "projeto_paineis"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            732,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            736,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "768p_Minima",
+      "state": "sem_projeto"
+    },
+    {
+      "deltas": [
+        {
+          "new": [
+            0,
+            23,
+            634,
+            39
+          ],
+          "old": [
+            0,
+            23,
+            630,
+            39
+          ],
+          "widget": "nav_toolbar"
+        },
+        {
+          "new": [
+            634,
+            23,
+            732,
+            39
+          ],
+          "old": [
+            630,
+            23,
+            736,
+            39
+          ],
+          "widget": "xray_toolbar"
+        }
+      ],
+      "reason": "QSS changed horizontal toolbar allocation while preserving height and right boundary",
+      "resolution": "768p_Minima",
+      "state": "validacao_janela"
+    }
+  ],
+  "findings": [],
+  "inputs": {
+    "baseline_manifest": "../ui-modernization-stage0-20260821/raw-captures/manifest.json",
+    "baseline_manifest_sha256": "50fef8e8a20ffaaa687bcbb2efd6cc777704a181783aff0303c48cb9981daa42",
+    "candidate_manifest": "raw-captures/manifest.json",
+    "candidate_manifest_sha256": "419b45ab386fefaa4d8bede5d9b92ecab62e1051850481d95ab0e1130b74c673",
+    "visual_report": "visual-audit/visual-audit-report.json",
+    "visual_report_sha256": "a74581e93bee6c0c2c6523ac00063d10967f37c28449bad8f9c23dd7f03321e6"
+  },
+  "schema_version": 1,
+  "source": {
+    "branch": "main",
+    "commit": "6fff4ccbb1c58170352e8d7fcbc407062d14eef5",
+    "worktree_clean": false
+  },
+  "stage": 1,
+  "stage_name": "Tokens visuais e tema controlado",
+  "status": "PASS",
+  "unexpected_geometry_deltas": []
+}

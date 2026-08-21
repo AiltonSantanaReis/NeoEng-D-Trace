@@ -1164,13 +1164,6 @@ class MagneticLassoTool(BaseTool):
     def show_context_menu(self, event: QMouseEvent):
         text = self.translations[self.current_lang]
         menu = QMenu(self.canvas_view)
-        menu.setStyleSheet("""
-            QMenu { background-color: #2d2d30; color: #e6e6e6;
-                    border: 1px solid #3f3f46; }
-            QMenu::item { padding: 5px 20px; }
-            QMenu::item:selected { background-color: #2a6f97; }
-            QMenu::separator { height: 1px; background: #3f3f46; margin: 5px 0; }
-            """)
 
         finish = menu.addAction(text["finish_selection"])
         finish.setEnabled(len(self._anchors) >= 3)
