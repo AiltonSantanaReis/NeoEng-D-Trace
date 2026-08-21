@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QSizePolicy, QSplitter, QStackedWidget, QTabWidget
 
 
@@ -12,6 +12,8 @@ class ResponsivePanelLayout:
     """Switch between the desktop splitters and compact panel tabs."""
 
     BREAKPOINT = 1450
+    COMPACT_PANEL_WIDTH = 460
+    DESKTOP_PANEL_WIDTH = 800
 
     def __init__(
         self,
@@ -40,30 +42,82 @@ class ResponsivePanelLayout:
         self.groups = groups
         self.collision_panel = collision_panel
         self.is_compact = False
+        self._geometry_update_pending = False
 
     def update(self, *, force: bool = False) -> None:
         compact = self.owner.width() < self.BREAKPOINT
         if not force and compact == self.is_compact:
+            self._schedule_geometry_update()
             return
 
         if compact:
             self.owner.setMinimumSize(0, 0)
             self._move_panels_to_compact()
             self.panel_stack.setCurrentWidget(self.compact_panel_tabs)
-            self.compact_panel_tabs.setMinimumWidth(460)
-            self.main_splitter.setSizes(
-                [self.owner.tool_palette.recommended_width(), 1, 460]
-            )
+            self.compact_panel_tabs.setMinimumWidth(self.COMPACT_PANEL_WIDTH)
         else:
             self._move_panels_to_desktop()
             self.panel_stack.setCurrentWidget(self.desktop_panel_splitter)
-            self.main_splitter.setSizes(
-                [self.owner.tool_palette.recommended_width(), 800, 460]
-            )
 
         self.toolbar.setVisible(not compact)
         self.is_compact = compact
         self.owner._compact_layout = compact
+        self._apply_geometry()
+        self._schedule_geometry_update()
+
+    def _schedule_geometry_update(self) -> None:
+        """Reapply splitter sizes after Qt completes a native resize pass.
+
+        Windows can deliver the resize event before the central layout has
+        received its final size. A second pass prevents QSplitter from
+        collapsing the panel stack to zero after the mode switch.
+        """
+
+        if self._geometry_update_pending:
+            return
+        self._geometry_update_pending = True
+        QTimer.singleShot(0, self._apply_scheduled_geometry)
+
+    def _apply_scheduled_geometry(self) -> None:
+        self._geometry_update_pending = False
+        self._apply_geometry()
+
+    def _apply_geometry(self) -> None:
+        """Reserve a visible panel region for the current responsive mode."""
+
+        tool_width = self.owner.tool_palette.recommended_width()
+        total_width = max(1, self.main_splitter.width())
+        requested_panel_width = (
+            self.COMPACT_PANEL_WIDTH if self.is_compact else self.DESKTOP_PANEL_WIDTH
+        )
+        panel_width = min(
+            requested_panel_width,
+            max(1, total_width - tool_width - 1),
+        )
+        canvas_width = max(1, total_width - tool_width - panel_width)
+        self.main_splitter.setSizes([tool_width, canvas_width, panel_width])
+
+        if self.is_compact:
+            self.compact_panel_tabs.setCurrentWidget(self.side_panel)
+            self.compact_panel_tabs.show()
+            self.side_panel.show()
+            return
+
+        available_width = max(2, self.desktop_panel_splitter.width())
+        collision_minimum = max(
+            1,
+            self.collision_panel.minimumSizeHint().width(),
+        )
+        collision_width = min(collision_minimum, available_width - 1)
+        right_width = max(1, available_width - collision_width)
+        self.desktop_panel_splitter.setSizes([right_width, collision_width])
+        for widget in (
+            self.side_panel,
+            self.layers,
+            self.groups,
+            self.collision_panel,
+        ):
+            widget.show()
 
     def _move_panels_to_compact(self) -> None:
         for widget in (
@@ -101,7 +155,6 @@ class ResponsivePanelLayout:
         self.right_splitter.setMaximumSize(16777215, 16777215)
         self.desktop_panel_splitter.setMaximumSize(16777215, 16777215)
         self.right_splitter.setSizes([250, 250, 250])
-        self.desktop_panel_splitter.setSizes([360, 0])
 
     def update_titles(self, translations: dict[str, Any]) -> None:
         if self.compact_panel_tabs.count() != 4:
@@ -125,18 +178,20 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
 
     right_splitter = QSplitter(Qt.Orientation.Vertical)
     right_splitter.setSizePolicy(
-        QSizePolicy.Policy.Ignored,
-        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Expanding,
+        QSizePolicy.Policy.Expanding,
     )
+    right_splitter.setChildrenCollapsible(False)
     right_splitter.addWidget(owner.side_panel)
     right_splitter.addWidget(owner.layers)
     right_splitter.addWidget(owner.groups)
 
     desktop_panel_splitter = QSplitter(Qt.Orientation.Horizontal)
     desktop_panel_splitter.setSizePolicy(
-        QSizePolicy.Policy.Ignored,
-        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Expanding,
+        QSizePolicy.Policy.Expanding,
     )
+    desktop_panel_splitter.setChildrenCollapsible(False)
     desktop_panel_splitter.addWidget(right_splitter)
     desktop_panel_splitter.addWidget(owner.collision_panel)
 
@@ -144,14 +199,14 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     compact_panel_tabs.setDocumentMode(True)
     compact_panel_tabs.setElideMode(Qt.TextElideMode.ElideRight)
     compact_panel_tabs.setSizePolicy(
-        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Expanding,
         QSizePolicy.Policy.Expanding,
     )
 
     panel_stack = QStackedWidget()
     panel_stack.setSizePolicy(
-        QSizePolicy.Policy.Ignored,
-        QSizePolicy.Policy.Ignored,
+        QSizePolicy.Policy.Expanding,
+        QSizePolicy.Policy.Expanding,
     )
     panel_stack.addWidget(desktop_panel_splitter)
     panel_stack.addWidget(compact_panel_tabs)
@@ -164,9 +219,9 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     owner._compact_layout = False
 
     main_splitter.addWidget(panel_stack)
-    main_splitter.setSizes([owner.tool_palette.recommended_width(), 800, 250])
+    main_splitter.setChildrenCollapsible(False)
+    main_splitter.setSizes([owner.tool_palette.recommended_width(), 800, 460])
     main_splitter.setStretchFactor(1, 1)
-    desktop_panel_splitter.setSizes([250, 0])
     owner.setCentralWidget(main_splitter)
 
     controller = ResponsivePanelLayout(

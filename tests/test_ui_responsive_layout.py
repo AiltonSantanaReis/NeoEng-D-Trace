@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 from PySide6.QtCore import QSize
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QSizePolicy
 
 from src.core.commands import CommandManager
 from src.models.scene import Scene
@@ -47,6 +47,14 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
             assert window._compact_layout is True
             assert window.panel_stack.currentWidget() is window.compact_panel_tabs
             assert window.toolbar.isVisible() is False
+            assert window.main_splitter.sizes()[2] >= 450
+            assert window.compact_panel_tabs.width() >= 450
+            assert window.compact_panel_tabs.currentWidget() is window.side_panel
+            assert window.side_panel.width() >= 440
+            assert (
+                window.panel_stack.sizePolicy().horizontalPolicy()
+                == QSizePolicy.Policy.Expanding
+            )
             assert window.compact_panel_tabs.count() == 4
             assert window.compact_panel_tabs.indexOf(window.collision_panel) >= 0
             assert window.compact_panel_tabs.indexOf(window.side_panel) >= 0
@@ -67,6 +75,10 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
         assert window.layers.parent() is window.right_splitter
         assert window.groups.parent() is window.right_splitter
         assert window.collision_panel.parent() is window.desktop_panel_splitter
+        assert window.main_splitter.sizes()[2] >= 790
+        assert all(size > 0 for size in window.desktop_panel_splitter.sizes())
+        assert window.right_splitter.width() > 0
+        assert window.collision_panel.width() > 0
     finally:
         window._mark_document_clean()
         window.close()
@@ -103,6 +115,24 @@ def test_compact_panel_titles_follow_language_and_exports_remain_accessible(
             window.act_export_collision_json,
             window.act_export_collision_txt,
         }.issubset(menu_actions)
+    finally:
+        window._mark_document_clean()
+        window.close()
+
+
+def test_panel_splitters_cannot_collapse_during_responsive_switch(qt_app):
+    window = _window()
+    window.show()
+    qt_app.processEvents()
+
+    try:
+        assert window.main_splitter.childrenCollapsible() is False
+        assert window.desktop_panel_splitter.childrenCollapsible() is False
+        assert window.right_splitter.childrenCollapsible() is False
+        assert (
+            window.panel_stack.sizePolicy().verticalPolicy()
+            == QSizePolicy.Policy.Expanding
+        )
     finally:
         window._mark_document_clean()
         window.close()
