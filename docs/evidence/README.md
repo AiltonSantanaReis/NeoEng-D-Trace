@@ -1,3 +1,5 @@
+- `ETAPA_0_INTERFACE_MODERNA_2026-08-21.md` — snapshot pré-merge da baseline visual, preservado sem reescrita retroativa.
+- `ETAPA_0_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-21.md` — encerramento pós-merge da PR #129, merge `61165a5`, CI Linux/Windows, suíte integral, auditoria visual, integridade de evidências e baseline Git-blob validados; aprovado somente no escopo de caracterização.
 - ADENDO_INTEGRIDADE_ARTEFATOS_2026-08-16.md — correção da cadeia de bytes, bloqueio de manifests e limites históricos declarados; não é aprovação de merge.
 - ETAPA_7_SINCRONIZACAO_OVERRIDES_2026-08-16.md — snapshot histórico da sincronização real; não deve ser lido como aprovação do estado atual sem o gate de integridade e o HEAD correspondente.
 - `RECONCILIACAO_GATE_GLOBAL_2026-08-20.md` — snapshot pré-merge da reconciliação

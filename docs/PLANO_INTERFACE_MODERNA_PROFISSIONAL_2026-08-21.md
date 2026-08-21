@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** \`PLANEJADO / NÃO INICIADO\`
+**Status do plano:** \`ETAPA 0 APROVADA / ETAPAS 1–14 PLANEJADAS\`
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -24,9 +24,9 @@ Este plano não é uma autorização para alterar regras, thresholds, scanners, 
 
 ## 2. Estado real no momento do registro
 
-O último HEAD local observado durante a criação deste documento foi \`5b69967968c2034242a090cff747dad4e78e9723\`, na branch local \`Ailton/fix/ui-panel-visibility\`.
+O estado vivo atual foi reconciliado após a Etapa 0 no merge \`61165a58bfa6d5b6a10bcbee89dd8d7e7c6fe643\`, com \`main\` local sincronizado a \`origin/main\`.
 
-O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. O trabalho de modernização descrito aqui ainda não foi iniciado.
+O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline; nenhum redesign foi implementado. A Etapa 1 e todas as etapas posteriores continuam não iniciadas.
 
 Na leitura do estado local, foram encontrados diretórios de artefatos de auditoria não rastreados. Portanto, a árvore não foi considerada limpa e nenhuma conclusão de release, PR ou merge foi inferida a partir de documentação antiga ou de uma execução anterior.
 
@@ -161,6 +161,8 @@ Atualizar o \`main\`, confirmar o merge SHA, executar a validação pós-merge, 
 
 ### Etapa 0 — Baseline visual e contrato de escopo
 
+**Estado:** \`APROVADO\` somente no escopo de caracterização, após PR #129, CI Linux/Windows e validação pós-merge no SHA \`61165a5\`. O encerramento vivo está em \`docs/evidence/ETAPA_0_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-21.md\`.
+
 Catalogar a interface real atual em 1920×1080, 1366×768 e 1280×720, com DPI nativo e estados sem projeto, projeto carregado, painéis abertos, máscara/raio-X, gizmo e validação. Registrar geometria Qt, clipping, sobreposição, paleta, tamanhos e problemas reproduzidos. Congelar o contrato de que o redesign não altera \`.ndtproj\`, runtime, exportadores, atalhos, undo/redo ou matemática do gizmo sem aprovação separada.
 
 **Gate:** baseline hashado, auditor automático executado, findings reproduzíveis e relatório \`APROVADO\` apenas para a caracterização; problemas encontrados não são mascarados.
@@ -271,3 +273,4 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 | Data | Alteração | Estado |
 |---|---|---|
 | 2026-08-21 | Criação deste plano vivo, com escopo, etapas, contrato de evidência e ciclo anti-bypass. Nenhuma implementação foi declarada. | \`PLANEJADO / NÃO INICIADO\` |
+| 2026-08-21 | Etapa 0 validada após PR #129, CI \`32521765023\`, merge \`61165a5\`, suíte pós-merge, evidências, auditor visual e baseline Git-blob em worktree limpa. Findings de design preservados; Etapa 1 não iniciada. | \`ETAPA 0 APROVADA / ETAPAS 1–14 PLANEJADAS\` |
