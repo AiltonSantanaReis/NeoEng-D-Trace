@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** ETAPA 0–1 APROVADAS / ETAPA 2 PASS_LOCAL AGUARDANDO CI E POS-MERGE / ETAPAS 3–14 PLANEJADAS
+**Status do plano:** ETAPAS 0–2 APROVADAS / ETAPAS 3–14 PLANEJADAS
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -26,7 +26,7 @@ Este plano não é uma autorização para alterar regras, thresholds, scanners, 
 
 O estado vivo atual foi reconciliado após a Etapa 0 no merge \`61165a58bfa6d5b6a10bcbee89dd8d7e7c6fe643\`, com \`main\` local sincronizado a \`origin/main\`.
 
-O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. A Etapa 1 foi formalmente encerrada após CI, merge e validação pós-merge. A Etapa 2 foi implementada e validada localmente neste branch, com ciclo remoto ainda pendente. As Etapas 3–14 não foram iniciadas.
+O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. A Etapa 1 foi formalmente encerrada após CI, merge e validação pós-merge. A Etapa 2 foi formalmente encerrada após PR #133, CI, merge e validação pós-merge. As Etapas 3–14 não foram iniciadas.
 
 Na leitura do estado local, foram encontrados diretórios de artefatos de auditoria não rastreados. Portanto, a árvore não foi considerada limpa e nenhuma conclusão de release, PR ou merge foi inferida a partir de documentação antiga ou de uma execução anterior.
 
@@ -181,7 +181,7 @@ Definir ícones licenciados ou nativos, tamanho, padding, tooltip, texto acessí
 
 **Gate:** todos os ícones carregam no build real, tooltips e atalhos funcionam, fallback é testado, ícones não dependem de caminho local.
 
-**Estado local em 2026-08-21:** implementação completa e auditoria local PASS. Capturas reais nas três resoluções, auditoria Pillow/OpenCV/Qt sem achados, contrato live de 25 ícones e atalhos PASS, suíte completa 1586 passed, 2 skipped. A etapa permanece aguardando commit, push, PR, CI e validação pós-merge; não é aprovação de release.
+**Estado em 2026-08-21:** APROVADA após PR #133, merge ff66ffd, CI Linux/Windows, baseline/evidência Git-blob e validação pós-merge. A aprovação é somente do escopo desta etapa e não é aprovação de release.
 
 ### Etapa 3 — Barra esquerda de ferramentas
 
@@ -279,3 +279,4 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 | 2026-08-21 | Criação deste plano vivo, com escopo, etapas, contrato de evidência e ciclo anti-bypass. Nenhuma implementação foi declarada. | \`PLANEJADO / NÃO INICIADO\` |
 | 2026-08-21 | Etapa 0 validada após PR #129, CI 32521765023, merge 61165a5, suíte pós-merge, evidências, auditor visual e baseline Git-blob em worktree limpa. Findings de design preservados; Etapa 1 não iniciada. | ETAPA 0 APROVADA / ETAPAS 1–14 PLANEJADAS |
 | 2026-08-21 | Etapa 1 encerrada após PR #131, merge 71b1c44, PR documental #132, merge aea54aa, CI Linux/Windows e validação pós-merge. Etapa 2 implementada localmente com evidências reais; ciclo remoto pendente. | ETAPA 0–1 APROVADAS / ETAPA 2 PASS_LOCAL |
+| 2026-08-21 | Etapa 2 encerrada após PR #133, merge ff66ffd, CI run 32536763488, baseline/evidência por blobs Git e suíte pós-merge. Próxima etapa: Etapa 3. | ETAPAS 0–2 APROVADAS / ETAPAS 3–14 PLANEJADAS |
