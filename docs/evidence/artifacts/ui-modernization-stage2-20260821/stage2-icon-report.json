@@ -1,0 +1,874 @@
+{
+  "artifacts": {
+    "raw_manifest": {
+      "bytes": 95371,
+      "path": "raw-captures/manifest.json",
+      "sha256": "d0b90ce6ac70fd0dea29b2f0cc0aea76e7e8126660ee73e7bf012440e35de36e"
+    },
+    "visual_report": {
+      "bytes": 15682,
+      "path": "visual-audit/visual-audit-report.json",
+      "sha256": "304785975e79ed958e767f2e8c7b8c38c3bf347b2e66e5c72bf2880c6c0bf035"
+    }
+  },
+  "checks": {
+    "capture_status": "PASS",
+    "runtime_icon_contract": {
+      "actions": {
+        "act_100": {
+          "accessible_name": "one to one zoom",
+          "icon_fallback": false,
+          "icon_key": "zoom_100",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "1:1 Pixel",
+          "tooltip": "one to one zoom"
+        },
+        "act_clean": {
+          "accessible_name": "clean",
+          "icon_fallback": false,
+          "icon_key": "clean",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "\ud83d\uddd1\ufe0f Clean All",
+          "tooltip": "clean"
+        },
+        "act_export": {
+          "accessible_name": "export",
+          "icon_fallback": false,
+          "icon_key": "export",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Export...",
+          "tooltip": "export"
+        },
+        "act_export_collision_json": {
+          "accessible_name": "collision export",
+          "icon_fallback": false,
+          "icon_key": "collision",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Export Collision (JSON)",
+          "tooltip": "collision export"
+        },
+        "act_export_collision_txt": {
+          "accessible_name": "collision export",
+          "icon_fallback": false,
+          "icon_key": "collision",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Export Collision (TXT)",
+          "tooltip": "collision export"
+        },
+        "act_fit": {
+          "accessible_name": "fit view",
+          "icon_fallback": false,
+          "icon_key": "fit",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Fit View (F)",
+          "tooltip": "fit view"
+        },
+        "act_lit": {
+          "accessible_name": "lit view",
+          "icon_fallback": false,
+          "icon_key": "lit",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Lit",
+          "tooltip": "lit view"
+        },
+        "act_xray1": {
+          "accessible_name": "x-ray one",
+          "icon_fallback": false,
+          "icon_key": "xray_1",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "X-Ray 1",
+          "tooltip": "x-ray one"
+        },
+        "act_xray2": {
+          "accessible_name": "x-ray two",
+          "icon_fallback": false,
+          "icon_key": "xray_2",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "X-Ray 2",
+          "tooltip": "x-ray two"
+        },
+        "act_xray3": {
+          "accessible_name": "x-ray three",
+          "icon_fallback": false,
+          "icon_key": "xray_3",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "X-Ray 3",
+          "tooltip": "x-ray three"
+        },
+        "open_image_action": {
+          "accessible_name": "open image",
+          "icon_fallback": false,
+          "icon_key": "open_image",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Open Image",
+          "tooltip": "open image"
+        },
+        "open_project_action": {
+          "accessible_name": "folder",
+          "icon_fallback": false,
+          "icon_key": "open",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Open Project...",
+          "tooltip": "folder"
+        },
+        "save_project_action": {
+          "accessible_name": "save",
+          "icon_fallback": false,
+          "icon_key": "save",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Save",
+          "tooltip": "save"
+        },
+        "save_project_as_action": {
+          "accessible_name": "save as",
+          "icon_fallback": false,
+          "icon_key": "save_as",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Save As...",
+          "tooltip": "save as"
+        },
+        "tool:collision_brush": {
+          "accessible_name": "collision brush tool",
+          "icon_fallback": false,
+          "icon_key": "collision_brush",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Collision\nBrush",
+          "tooltip": "collision brush tool"
+        },
+        "tool:ellipse_selection": {
+          "accessible_name": "ellipse tool",
+          "icon_fallback": false,
+          "icon_key": "ellipse",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Ellipse",
+          "tooltip": "ellipse tool"
+        },
+        "tool:lasso_tool": {
+          "accessible_name": "lasso tool",
+          "icon_fallback": false,
+          "icon_key": "lasso",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Lasso",
+          "tooltip": "lasso tool"
+        },
+        "tool:magnetic_lasso": {
+          "accessible_name": "magnetic lasso tool",
+          "icon_fallback": false,
+          "icon_key": "magnetic",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Magnetic\nLasso",
+          "tooltip": "Magnetic Lasso in precise mode. Right-click the canvas for Legacy mode, precision presets and edge-map preview."
+        },
+        "tool:pen_tool": {
+          "accessible_name": "pen tool",
+          "icon_fallback": false,
+          "icon_key": "pen",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Pen",
+          "tooltip": "pen tool"
+        },
+        "tool:polygon_edit": {
+          "accessible_name": "polygon edit tool",
+          "icon_fallback": false,
+          "icon_key": "polygon_edit",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Edit\nPolygon",
+          "tooltip": "polygon edit tool"
+        },
+        "tool:polygonal_lasso": {
+          "accessible_name": "polygon tool",
+          "icon_fallback": false,
+          "icon_key": "polygon",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Polygonal\nLasso",
+          "tooltip": "polygon tool"
+        },
+        "tool:rect_selection": {
+          "accessible_name": "rectangle tool",
+          "icon_fallback": false,
+          "icon_key": "rect",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Rect",
+          "tooltip": "rectangle tool"
+        },
+        "tool:selection": {
+          "accessible_name": "selection tool",
+          "icon_fallback": false,
+          "icon_key": "selection",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Selection",
+          "tooltip": "selection tool"
+        }
+      },
+      "catalog_size": 25,
+      "failure_count": 0,
+      "failures": [],
+      "shortcuts": {
+        "actual": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "A",
+          "Ctrl+K",
+          "Ctrl+Y",
+          "Ctrl+Z",
+          "F",
+          "X"
+        ],
+        "missing": [],
+        "required": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "A",
+          "Ctrl+K",
+          "F",
+          "X"
+        ]
+      },
+      "status": "PASS",
+      "toolbars": {
+        "main": {
+          "icon_size": [
+            18,
+            18
+          ],
+          "tool_button_style": "ToolButtonTextBesideIcon"
+        },
+        "navigation": {
+          "icon_size": [
+            18,
+            18
+          ],
+          "tool_button_style": "ToolButtonTextBesideIcon"
+        },
+        "xray": {
+          "icon_size": [
+            18,
+            18
+          ],
+          "tool_button_style": "ToolButtonTextBesideIcon"
+        }
+      },
+      "translated": {
+        "gizmo_toggle": {
+          "accessible_name": "transform gizmo",
+          "icon_fallback": false,
+          "icon_key": "gizmo",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Eixo",
+          "tooltip": "transform gizmo"
+        },
+        "open_image_action": {
+          "accessible_name": "open image",
+          "icon_fallback": false,
+          "icon_key": "open_image",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Abrir Imagem",
+          "tooltip": "open image"
+        }
+      },
+      "widgets": {
+        "canvas.gizmo_toggle": {
+          "accessible_name": "transform gizmo",
+          "icon_fallback": false,
+          "icon_key": "gizmo",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Gizmo",
+          "tooltip": "transform gizmo"
+        },
+        "export_collision_button": {
+          "accessible_name": "collision export",
+          "icon_fallback": false,
+          "icon_key": "collision",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Export Collision",
+          "tooltip": "collision export"
+        },
+        "focus_button": {
+          "accessible_name": "focus selected",
+          "icon_fallback": false,
+          "icon_key": "focus",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Focus Selected",
+          "tooltip": "focus selected"
+        },
+        "language_button": {
+          "accessible_name": "language",
+          "icon_fallback": false,
+          "icon_key": "language",
+          "icon_null": false,
+          "icon_sizes": [
+            [
+              16,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              32,
+              32
+            ]
+          ],
+          "text": "Language",
+          "tooltip": "language"
+        }
+      }
+    },
+    "visual_finding_count": 0,
+    "visual_status": "PASS"
+  },
+  "commands": {
+    "capture": {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/audit_ui_capture.py",
+        "--output",
+        "docs/evidence/artifacts/ui-modernization-stage2-20260821/raw-captures"
+      ],
+      "log": "capture.log",
+      "returncode": 0
+    },
+    "visual_audit": {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/audit_visual_artifacts.py",
+        "--input",
+        "docs/evidence/artifacts/ui-modernization-stage2-20260821/raw-captures",
+        "--output",
+        "docs/evidence/artifacts/ui-modernization-stage2-20260821/visual-audit"
+      ],
+      "log": "visual-audit.log",
+      "returncode": 0
+    }
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "qt_platform": "offscreen"
+  },
+  "schema_version": 1,
+  "source_state": {
+    "branch": "Ailton/interface-stage2-icons",
+    "commit": "aea54aa93ddfaff7ea8a77df24df2f0aa127b4fb",
+    "worktree_clean": false
+  },
+  "stage": "Etapa 2 \u2014 Biblioteca de \u00edcones e a\u00e7\u00f5es",
+  "status": "PASS"
+}

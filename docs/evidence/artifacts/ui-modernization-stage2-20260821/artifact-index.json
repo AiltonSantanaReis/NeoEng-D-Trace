@@ -1,0 +1,165 @@
+{
+  "files": {
+    "capture.log": {
+      "bytes": 96152,
+      "sha256": "c4ae880a14710081cae87e1b62dd76b26e61c44910546e77bda36c6d7cdb4458"
+    },
+    "raw-captures/1080p_FHD_01_sem_projeto.png": {
+      "bytes": 28709,
+      "sha256": "701c89ed8380ce8f22731ee0e976223f4d8d7c92c6649e31b93fbc505bee060a"
+    },
+    "raw-captures/1080p_FHD_02_projeto_paineis.png": {
+      "bytes": 41198,
+      "sha256": "ace8de69107b298d46c1e7a8b17668ca099a44a77683365f3d269dcd6f91d750"
+    },
+    "raw-captures/1080p_FHD_03_validacao_janela.png": {
+      "bytes": 41198,
+      "sha256": "ace8de69107b298d46c1e7a8b17668ca099a44a77683365f3d269dcd6f91d750"
+    },
+    "raw-captures/1080p_FHD_03_validacao_modal.png": {
+      "bytes": 1786,
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+    },
+    "raw-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "bytes": 44654,
+      "sha256": "1006a567b20986ba594b56ea0c4c0e58270cd40779304490b2375e517dbcaf81"
+    },
+    "raw-captures/720p_Compacta_01_sem_projeto.png": {
+      "bytes": 19423,
+      "sha256": "2c39b2daf7cb81304952257f0067ddcd18b90e56684b01e8c14f3689886661f8"
+    },
+    "raw-captures/720p_Compacta_02_projeto_paineis.png": {
+      "bytes": 31619,
+      "sha256": "bb26c6bd7b5b3bca18c59bb6656f6aee41c8909b07ce0fcbf4cf914e71c79745"
+    },
+    "raw-captures/720p_Compacta_03_validacao_janela.png": {
+      "bytes": 30519,
+      "sha256": "8503bf64df1f05a9060f9e335c80f94fedd95ca969b4e2d39f53bcd8a9ce4bbc"
+    },
+    "raw-captures/720p_Compacta_03_validacao_modal.png": {
+      "bytes": 1786,
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+    },
+    "raw-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "bytes": 34816,
+      "sha256": "b33436d06156a62fe2fa53ea42cf1020e12a1f8f16d5c9dd2a51f23a18e2b635"
+    },
+    "raw-captures/768p_Minima_01_sem_projeto.png": {
+      "bytes": 20164,
+      "sha256": "2e5c8ac80b2591e3559c1ec3a261ad97e0ba9e81e384f9f3a1109683b1358fa7"
+    },
+    "raw-captures/768p_Minima_02_projeto_paineis.png": {
+      "bytes": 32537,
+      "sha256": "1580185db1abefad8a562707148c4057fb1678c49c3dcc6ae1c613dd5e5876fa"
+    },
+    "raw-captures/768p_Minima_03_validacao_janela.png": {
+      "bytes": 31238,
+      "sha256": "8fb7c9877ef0f912b7acc8e704c4307406b390e9d71dd91655320388e8cf3ed6"
+    },
+    "raw-captures/768p_Minima_03_validacao_modal.png": {
+      "bytes": 1786,
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+    },
+    "raw-captures/768p_Minima_04_gizmo_feedback.png": {
+      "bytes": 35774,
+      "sha256": "8d5568b9f264b98ba116b2df73dea045cea8409d90f876413a73938891524ef7"
+    },
+    "raw-captures/manifest.json": {
+      "bytes": 95371,
+      "sha256": "d0b90ce6ac70fd0dea29b2f0cc0aea76e7e8126660ee73e7bf012440e35de36e"
+    },
+    "raw-captures/ui-audit-fixture.ndtproj": {
+      "bytes": 2193,
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+    },
+    "raw-captures/ui-audit-fixture.png": {
+      "bytes": 10112,
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    "stage2-icon-report.json": {
+      "bytes": 18646,
+      "sha256": "dad4e4bbb6c403ffbc9e7663bb00f87f845afda42794eec5f6b486db18bd9dd2"
+    },
+    "stage2-icon-report.md": {
+      "bytes": 596,
+      "sha256": "4a0b2e5e8b88c6b52e85c896b2b9a09acc4411ed2512d47d62b7bf65af757b59"
+    },
+    "visual-audit.log": {
+      "bytes": 39,
+      "sha256": "78f35f1a1d87b4882a9abb2a22179095f948975c2a3b64da4ebf95d23c0c958c"
+    },
+    "visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "bytes": 28957,
+      "sha256": "8ed97799215a12098d4a0c05fc32ba2de60f98884f5bef0e1b835c4688dee79f"
+    },
+    "visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "bytes": 41025,
+      "sha256": "fc9f97e7219d0dce0771b931f44c8b9c8f0850f9fa1f2684ca3472f61547bcb5"
+    },
+    "visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "bytes": 41025,
+      "sha256": "fc9f97e7219d0dce0771b931f44c8b9c8f0850f9fa1f2684ca3472f61547bcb5"
+    },
+    "visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "bytes": 2300,
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d"
+    },
+    "visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "bytes": 44296,
+      "sha256": "5b6627592151121ac27b045c0d30f007f9ac38d0731720a1dfc095fbe5c3412b"
+    },
+    "visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "bytes": 19775,
+      "sha256": "9aa3d58808413ac125b12c90ae59d436dfc949a291711676d8dae7aa6039e9bb"
+    },
+    "visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "bytes": 31737,
+      "sha256": "aad18144f8be4ab2c3007d21c22e12fe569de7605cd2ac609793c23dd8f3c4d6"
+    },
+    "visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "bytes": 30786,
+      "sha256": "a9aa740fa018a678f6be2a43d58cfcfdd706505b26134787bbcfa4456aea0285"
+    },
+    "visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "bytes": 2300,
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d"
+    },
+    "visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "bytes": 34684,
+      "sha256": "21daa3b640939cfbea095ac4c9e74c400160f723a4e012d00fc3aa9cb9762804"
+    },
+    "visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "bytes": 20551,
+      "sha256": "aedd931746a8ccd311da7545f78745d558e73408b56489548e91078aa3ce5c60"
+    },
+    "visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "bytes": 32773,
+      "sha256": "0ac8f29d97b014088ad484bb824014d3603673cac59df7a089f9c9b75fd7c20d"
+    },
+    "visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "bytes": 31645,
+      "sha256": "f704d10656131d6c35725e7bd0bb31a5ca11bea7fbb198cd58a6b86ca655c85c"
+    },
+    "visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "bytes": 2300,
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d"
+    },
+    "visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "bytes": 35747,
+      "sha256": "a41e215c5d4ec0a73e56f6242fd8330e7a908ee9b2f5a029af2ec2399817849a"
+    },
+    "visual-audit/ui-audit-fixture_annotated.png": {
+      "bytes": 4006,
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae"
+    },
+    "visual-audit/visual-audit-report.json": {
+      "bytes": 15682,
+      "sha256": "304785975e79ed958e767f2e8c7b8c38c3bf347b2e66e5c72bf2880c6c0bf035"
+    },
+    "visual-audit/visual-audit-report.md": {
+      "bytes": 267,
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961"
+    }
+  },
+  "schema_version": 1
+}
