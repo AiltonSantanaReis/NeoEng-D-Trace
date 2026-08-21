@@ -120,3 +120,27 @@ def test_git_blob_mode_ignores_worktree_eol_conversion(
     artifact.write_bytes(b"changed\n")
     assert baseline_integrity.verify_manifest(use_git_blob=True) == 0
     assert baseline_integrity.verify_manifest(use_git_blob=False) == 1
+
+
+def test_baseline_ignores_untracked_worktree_outputs(
+    monkeypatch, tmp_path: Path
+) -> None:
+    _init_repository(tmp_path)
+    tracked = tmp_path / "app.py"
+    tracked.write_text("print('ok')\n", encoding="utf-8")
+    _git(tmp_path, "add", "app.py")
+    (tmp_path / "build-output.bin").write_bytes(b"local-only")
+
+    monkeypatch.setattr(baseline_integrity, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        baseline_integrity,
+        "MANIFEST_PATH",
+        tmp_path / "baseline_manifest.json",
+    )
+
+    assert baseline_integrity.write_manifest(use_git_blob=True) == 0
+    manifest = json.loads(
+        (tmp_path / "baseline_manifest.json").read_text(encoding="utf-8")
+    )
+    assert set(manifest["files"]) == {"app.py"}
+    assert baseline_integrity.verify_manifest(use_git_blob=True) == 0

@@ -69,7 +69,7 @@ Auditoria comparativa contra a baseline da Etapa 0:
 - `.venv/Scripts/python.exe -m pytest -q tests/test_stage1_ui_theme.py tests/test_visual_artifact_auditor.py tests/test_repository_reference_hygiene.py --tb=short`
   - 13 passed.
 - `.venv/Scripts/python.exe -m pytest -q --tb=short`
-  - 1582 passed, 2 skipped.
+  - 1583 passed, 2 skipped.
 - Black e isort nos arquivos novos e alterados de teste/auditoria: PASS.
 - Flake8 nos modulos existentes tocados e nos novos tokens/testes: PASS.
 - Mypy em `src/ui/theme_tokens.py` e `scripts/audit_stage1_ui_theme.py`: PASS.
@@ -103,6 +103,33 @@ A revisao visual do agente nao substitui uma confirmacao independente do
 proprietario quando essa confirmacao for exigida. Nenhum achado subjetivo foi
 transformado em PASS automatico.
 
+## Reconciliacao do gate de baseline
+
+A segunda execucao do CI da PR #131 (`32530692607`, jobs Linux e Windows) falhou
+legitimamente no passo `Verify clean baseline manifest`. A causa foi confirmada
+nos logs: o manifesto continha 1214 entradas de cinco diretorios locais
+`release-stage9-*` que estavam apenas como untracked no worktree e nao existem
+nos blobs enviados ao GitHub. Nenhum desses diretorios foi removido ou alterado.
+
+A correcao foi feita na origem, em `tools/baseline_integrity.py`: o baseline
+passa a enumerar exclusivamente caminhos rastreados no indice Git (`--cached`),
+pois o contrato `--git-blob` deve representar o repositorio versionado. Arquivos
+untracked continuam sob o contrato de `evidence_integrity` e so entram no
+baseline depois de serem explicitamente staged/versionados.
+
+Foi adicionado o teste regressivo
+`test_baseline_ignores_untracked_worktree_outputs`. Apos staging dos tres
+arquivos de correcao e regeneracao contra os blobs staged:
+
+- `Baseline verified: 1911 files`;
+- `Evidence integrity passed: 84 manifests validated`;
+- `1583 passed, 2 skipped` na suite completa;
+- Black e Flake8 dos arquivos corrigidos: PASS;
+- os cinco diretorios locais permanecem preservados e fora do commit.
+
+A PR continua bloqueada ate nova execucao do CI confirmar os dois jobs verdes.
+Nao houve bypass, relaxamento de regra, reescrita de snapshot historico ou
+conclusao pos-merge.
 ## Decisao
 
 A implementacao da Etapa 1 esta completa e passou nos gates locais. A etapa
