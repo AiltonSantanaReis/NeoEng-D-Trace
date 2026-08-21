@@ -64,7 +64,8 @@ from tests.test_stage2_runtime_lighting import _document as lighting_document
 from tests.test_stage4b4_scenario_export import _document as scenario_document
 
 ROOT = Path(__file__).resolve().parents[1]
-HOST_MARKERS = (str(ROOT), str(ROOT).replace("\\", "/"), "C:\\Users\\", "/home/")
+HOST_MARKERS = (str(ROOT), str(ROOT).replace("\\", "/"))
+LOCAL_PATH_RE = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/][^\r\n\"']+")
 
 
 def _canonical_json(payload: Any) -> bytes:
@@ -141,12 +142,9 @@ def _privacy_leaks(paths: list[Path]) -> list[str]:
         if not path.is_file():
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        if any(
+        if LOCAL_PATH_RE.search(text) or any(
             marker in text
             for marker in (
-                "C:\\Users\\",
-                "C:/Users/",
-                "/home/",
                 "LicenseClient-",
                 "Machine Id:",
                 "Correlation Id:",
