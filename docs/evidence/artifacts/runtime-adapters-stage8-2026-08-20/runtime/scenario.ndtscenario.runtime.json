@@ -1,0 +1,51 @@
+{
+  "camera": {
+    "position": {
+      "x": 12.0,
+      "y": -4.0
+    },
+    "zoom": 1.5
+  },
+  "format_id": "neoeng-d-trace-scenario-runtime",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.3.0"
+  },
+  "layers": [
+    {
+      "id": "layer_foreground",
+      "name": "Foreground",
+      "object_ids": [
+        "object_a"
+      ],
+      "parallax": {
+        "depth": 0.25,
+        "translation_strength": 0.75,
+        "zoom_strength": 0.8
+      },
+      "visible": true
+    },
+    {
+      "id": "layer_background",
+      "name": "Background",
+      "object_ids": [],
+      "parallax": {
+        "depth": 1.0,
+        "translation_strength": 0.5,
+        "zoom_strength": 0.4
+      },
+      "visible": false
+    }
+  ],
+  "project": {
+    "format_id": "neoeng-d-trace-project",
+    "schema_version": 1,
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scenario",
+    "schema_version": 1,
+    "sha256": "aa75c00d7b26e318918adc37a00dfb593a5954e383992ae827f640abf54f440b"
+  }
+}

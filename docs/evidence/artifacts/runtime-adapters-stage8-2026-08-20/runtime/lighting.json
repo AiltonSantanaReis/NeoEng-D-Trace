@@ -1,0 +1,114 @@
+{
+  "ambient": {
+    "color": {
+      "b": 1.0,
+      "g": 1.0,
+      "r": 1.0
+    },
+    "intensity": 0.1
+  },
+  "format_id": "neoeng-d-trace-runtime-lighting",
+  "lights": [
+    {
+      "color": {
+        "b": 0.0,
+        "g": 0.0,
+        "r": 1.0
+      },
+      "cone_angle_degrees": 45.0,
+      "direction_degrees": 0.0,
+      "enabled": true,
+      "id": "lamp",
+      "intensity": 1.0,
+      "kind": "point",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "range": 10.0
+    },
+    {
+      "color": {
+        "b": 1.0,
+        "g": 0.0,
+        "r": 0.0
+      },
+      "cone_angle_degrees": 45.0,
+      "direction_degrees": 0.0,
+      "enabled": true,
+      "id": "sun",
+      "intensity": 0.2,
+      "kind": "directional",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "range": 100.0
+    }
+  ],
+  "material_bindings": [
+    {
+      "material_id": "lit-material",
+      "object_id": "object-lit"
+    },
+    {
+      "material_id": "unlit-material",
+      "object_id": "object-unlit"
+    }
+  ],
+  "materials": [
+    {
+      "albedo": {
+        "b": 1.0,
+        "g": 1.0,
+        "r": 1.0
+      },
+      "emission": {
+        "b": 0.0,
+        "g": 0.0,
+        "r": 0.0
+      },
+      "emission_strength": 0.0,
+      "id": "lit-material",
+      "lighting_mode": "lit",
+      "opacity": 1.0
+    },
+    {
+      "albedo": {
+        "b": 0.4,
+        "g": 0.3,
+        "r": 0.2
+      },
+      "emission": {
+        "b": 0.0,
+        "g": 0.0,
+        "r": 0.1
+      },
+      "emission_strength": 0.5,
+      "id": "unlit-material",
+      "lighting_mode": "unlit",
+      "opacity": 1.0
+    }
+  ],
+  "schema_version": 1,
+  "sockets": [
+    {
+      "enabled": true,
+      "id": "socket-lamp",
+      "object_id": "object-lit",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "source_id": "lamp"
+    }
+  ],
+  "source": {
+    "format_id": "neoeng-d-trace-scenario-runtime",
+    "schema_version": 1,
+    "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+  }
+}

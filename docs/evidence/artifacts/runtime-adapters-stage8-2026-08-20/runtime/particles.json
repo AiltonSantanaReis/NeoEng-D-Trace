@@ -1,0 +1,43 @@
+{
+  "algorithm_version": 1,
+  "emitters": [
+    {
+      "acceleration": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0
+      },
+      "burst_count": 1,
+      "emission_rate": 10.0,
+      "enabled": true,
+      "id": "smoke",
+      "initial_velocity": {
+        "x": 1.0,
+        "y": 2.0,
+        "z": 0.0
+      },
+      "lifetime": 0.5,
+      "max_particles": 4,
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "seed": 7,
+      "velocity_spread": {
+        "x": 0.25,
+        "y": 0.5,
+        "z": 0.0
+      }
+    }
+  ],
+  "fixed_dt": 0.1,
+  "format_id": "neoeng-d-trace-runtime-particles",
+  "max_substeps": 4,
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scenario-runtime",
+    "schema_version": 1,
+    "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+  }
+}

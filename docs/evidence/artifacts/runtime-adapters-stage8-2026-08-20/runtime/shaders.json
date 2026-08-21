@@ -1,0 +1,44 @@
+{
+  "api_version": 1,
+  "format_id": "neoeng-d-trace-runtime-shader",
+  "materials": [
+    {
+      "id": "material-basic",
+      "program_id": "basic",
+      "uniforms": [
+        {
+          "default": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "kind": "vec4",
+          "name": "tint"
+        }
+      ]
+    }
+  ],
+  "programs": [
+    {
+      "backend": "qt-qsb",
+      "id": "basic",
+      "stages": [
+        {
+          "source": "#version 440\nlayout(location = 0) in vec4 vertex;\nvoid main() { gl_Position = vertex; }\n",
+          "stage": "vertex"
+        },
+        {
+          "source": "#version 440\nlayout(location = 0) out vec4 fragColor;\nvoid main() { fragColor = vec4(1.0); }\n",
+          "stage": "fragment"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-runtime-lighting",
+    "schema_version": 1,
+    "sha256": "06893ca3e9cbbc16faef29a21f177e41dacb8cd305045f3e0e2bfebd5dffef8f"
+  }
+}

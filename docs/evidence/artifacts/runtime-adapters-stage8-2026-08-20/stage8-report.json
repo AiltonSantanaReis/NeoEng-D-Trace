@@ -1,0 +1,203 @@
+{
+  "artifacts": {
+    "runtime/adapters.json": {
+      "bytes": 6573,
+      "sha256": "4e367190f584a1bda14536ffbc1c4650a3234873e2391f6d533dbe5df37a0345"
+    },
+    "runtime/lighting.json": {
+      "bytes": 2104,
+      "sha256": "06893ca3e9cbbc16faef29a21f177e41dacb8cd305045f3e0e2bfebd5dffef8f"
+    },
+    "runtime/particles.json": {
+      "bytes": 862,
+      "sha256": "bf831cdbac7cc6a61782c9f888bae88e62b5a372b65541989216185bcd572fc5"
+    },
+    "runtime/post_processing.json": {
+      "bytes": 1031,
+      "sha256": "091143799f7bbb25404f0974228b10b204be4087cabc58480ca4e39d6e166409"
+    },
+    "runtime/scenario.ndtscenario.runtime.json": {
+      "bytes": 1099,
+      "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+    },
+    "runtime/shaders.json": {
+      "bytes": 1007,
+      "sha256": "40f0f5494032ceae8d65a329ca846eb699b5c165f2888a476db75a07835e7117"
+    },
+    "runtime/streaming.json": {
+      "bytes": 732,
+      "sha256": "a8b103b688794594e18b65fbe7a7f3f60ff3f49e1e70009bee6c8d24c00686f5"
+    },
+    "runtime/triggers.json": {
+      "bytes": 2005,
+      "sha256": "c7ec71524fff7deada68e02ebd81f88f15c228d4efb113322e04c328afcc01bd"
+    }
+  },
+  "engines": {
+    "godot": {
+      "command": [
+        "<redacted-path>rogramData\\chocolatey\\bin\\godot.EXE",
+        "--headless",
+        "--path",
+        "<redacted-path>rs\\atnco\\AppData\\Local\\Temp\\neoeng-stage8-audit-fixed-clean-729b325c286a4ceb914e313e97eb1e0f\\godot",
+        "--script",
+        "res://main.gd"
+      ],
+      "label": "godot_headless",
+      "returncode": 0,
+      "status": "PASS",
+      "stderr_markers": "",
+      "stdout_markers": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\\nRUNTIME_ADAPTER_GODOT=SUCCESS\\nRUNTIME_ADAPTER_LAYERS=2\\nRUNTIME_ADAPTER_FIXED_TICK=3"
+    },
+    "unity": {
+      "command": [
+        "<redacted-path>rogram Files\\Unity\\Hub\\Editor\\6000.5.7f1\\Editor\\Unity.exe",
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-projectPath",
+        "<redacted-path>rs\\atnco\\AppData\\Local\\Temp\\neoeng-stage8-audit-fixed-clean-729b325c286a4ceb914e313e97eb1e0f\\unity",
+        "-executeMethod",
+        "NeoEng.DTrace.Editor.RuntimeAdapterGenerator.RunHeadlessRuntimeAdapter",
+        "-logFile",
+        "-"
+      ],
+      "label": "unity_batchmode",
+      "returncode": 0,
+      "status": "PASS",
+      "stderr_markers": "",
+      "stdout_markers": "[Licensing::Module] LicensingClient has failed validation; ignoring\\n[Licensing::Module] Error: Access token is unavailable; failed to update\\nInitialize engine version: 6000.5.7f1 (017862109af0)\\nRUNTIME_ADAPTER_UNITY=SUCCESS\\nRUNTIME_ADAPTER_LAYERS=2\\nRUNTIME_ADAPTER_SIDECARS=6\\nRUNTIME_ADAPTER_FIXED_TICK=3\\nCurl error 42: Callback aborted\\nRequest timed out while processing request \"https://public-cdn.cloud.unity3d.com/config/production\", HTTP error code 0\\nabort_threads: Failed aborting id: 0000000000000114, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000002E60, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000000114, mono_thread_manage will ignore it\\nabort_threads: Failed aborting id: 0000000000002E60, mono_thread_manage will ignore it"
+    }
+  },
+  "functional_status": "PASS",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "privacy_leaks": [],
+  "python": {
+    "godot": {
+      "bundle_sha256": "4e367190f584a1bda14536ffbc1c4650a3234873e2391f6d533dbe5df37a0345",
+      "capabilities": {
+        "runtime.fixed_update": {
+          "compatibility": "native",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.lifecycle": {
+          "compatibility": "native",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.lighting": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.particles": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.post_processing": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.scene_loading": {
+          "compatibility": "native",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.shaders": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.streaming": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.triggers": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        }
+      },
+      "scenario_sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a",
+      "sidecars": [
+        "runtime.lighting",
+        "runtime.particles",
+        "runtime.post_processing",
+        "runtime.shaders",
+        "runtime.streaming",
+        "runtime.triggers"
+      ],
+      "status": "PASS"
+    },
+    "unity": {
+      "bundle_sha256": "4e367190f584a1bda14536ffbc1c4650a3234873e2391f6d533dbe5df37a0345",
+      "capabilities": {
+        "runtime.fixed_update": {
+          "compatibility": "native",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.lifecycle": {
+          "compatibility": "native",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.lighting": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.particles": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.post_processing": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.scene_loading": {
+          "compatibility": "native",
+          "mode": "scene-tree-fixed-tick",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.shaders": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.streaming": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        },
+        "runtime.triggers": {
+          "compatibility": "degraded",
+          "mode": "validated-sidecar-metadata",
+          "reason": "The adapter executes the declared contract in this scope."
+        }
+      },
+      "scenario_sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a",
+      "sidecars": [
+        "runtime.lighting",
+        "runtime.particles",
+        "runtime.post_processing",
+        "runtime.shaders",
+        "runtime.streaming",
+        "runtime.triggers"
+      ],
+      "status": "PASS"
+    }
+  },
+  "source": {
+    "branch": "Ailton/runtime-stage8-adapters",
+    "commit": "09df5da54f29507bdc61e829bc77ee44859a9a47",
+    "worktree_clean": true
+  },
+  "status": "PASS"
+}

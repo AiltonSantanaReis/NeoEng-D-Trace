@@ -1,0 +1,29 @@
+{
+  "algorithm_version": 1,
+  "api_version": 1,
+  "assets": [
+    {
+      "enabled": true,
+      "id": "smoke",
+      "path": "textures/smoke.bin",
+      "pinned": false,
+      "priority": 0,
+      "sha256": "04d588cb41b8022d1233924f0fe8280d9e2bb92cdc81658eb102ef9c42fc9452",
+      "size_bytes": 5
+    }
+  ],
+  "format_id": "neoeng-d-trace-runtime-streaming",
+  "limits": {
+    "max_asset_bytes": 64,
+    "max_cache_bytes": 64,
+    "max_events_per_poll": 32,
+    "max_pending": 4
+  },
+  "required_capability": "runtime.streaming",
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scenario-runtime",
+    "schema_version": 1,
+    "sha256": "064100a3d2d3144d08f353a13fc3c140a04af7d2021e81655ad24b8a5e6ad74a"
+  }
+}

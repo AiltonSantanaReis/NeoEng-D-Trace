@@ -1,5 +1,21 @@
 """Runtime services for executing validated NeoEng-D-Trace scene manifests."""
 
+from .engine_adapters import (
+    ADAPTER_API_VERSION,
+    ADAPTER_BUNDLE_FORMAT_ID,
+    ADAPTER_BUNDLE_SCHEMA_VERSION,
+    CAPABILITIES,
+    ENGINE_IDS,
+    AdapterBundleError,
+    AdapterBundleFormatError,
+    AdapterBundleReport,
+    AdapterBundleValidationError,
+    build_adapter_bundle,
+    load_adapter_bundle,
+    serialize_adapter_bundle,
+    validate_adapter_bundle,
+    write_adapter_bundle,
+)
 from .lighting import (
     LIGHTING_API_VERSION,
     LIGHTING_FORMAT_ID,
@@ -19,6 +35,7 @@ from .lighting import (
     MaterialRecord,
     build_lighting_runtime_export,
     lighting_runtime_export_sha256,
+    load_lighting_runtime_export_bytes,
     save_lighting_runtime_export,
     serialize_lighting_runtime_export,
     validate_lighting_runtime_export,
@@ -188,6 +205,20 @@ from .triggers import (
 )
 
 __all__ = [
+    "ADAPTER_API_VERSION",
+    "ADAPTER_BUNDLE_FORMAT_ID",
+    "ADAPTER_BUNDLE_SCHEMA_VERSION",
+    "CAPABILITIES",
+    "ENGINE_IDS",
+    "AdapterBundleError",
+    "AdapterBundleFormatError",
+    "AdapterBundleReport",
+    "AdapterBundleValidationError",
+    "build_adapter_bundle",
+    "load_adapter_bundle",
+    "serialize_adapter_bundle",
+    "validate_adapter_bundle",
+    "write_adapter_bundle",
     "RUNTIME_HOST_API_VERSION",
     "RUNTIME_HOST_FORMAT_ID",
     "CapabilityDecision",
@@ -330,6 +361,7 @@ __all__ = [
     "MaterialRecord",
     "build_lighting_runtime_export",
     "lighting_runtime_export_sha256",
+    "load_lighting_runtime_export_bytes",
     "save_lighting_runtime_export",
     "serialize_lighting_runtime_export",
     "validate_lighting_runtime_export",
