@@ -1,6 +1,11 @@
-# Etapa 5 — Iconografia da barra esquerda e Collision
+# Etapa 5 — Iconografia da barra esquerda e Collision — snapshot pré-merge
 
-**Estado:** VALIDADO LOCALMENTE — NÃO APROVADO PARA MERGE
+**Classificação:** evidência histórica preservada. O estado não aprovado para
+merge abaixo descreve a execução local original; a implementação foi depois
+incluída na PR #140 e integrada no commit de merge registrado no encerramento
+pós-merge da Etapa 5.
+
+**Estado do snapshot:** VALIDADO LOCALMENTE — NÃO APROVADO PARA MERGE naquele momento
 **Data da execução:** 2026-08-22
 **Base observada:** 5d45f6ed54a1cf21cb394e8a8d5d8974708e44c8
 **Branch observada:** Ailton/interface-stage5-viewport-hud
@@ -73,4 +78,6 @@ Manifesto: docs/evidence/artifacts/ui-modernization-stage5-20260822/collision-ic
 ## Decisão
 
 **APROVADO somente para revisão local do diff.**
-**NÃO APROVADO para commit, PR, merge ou encerramento da Etapa 5** até a revisão do diff, empacotamento/validação exigidos e os gates remotos correspondentes.
+**Decisão histórica:** NÃO APROVADO para commit, PR, merge ou encerramento da
+Etapa 5 naquele momento. A decisão atual está registrada em
+ETAPA_5_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-22.md.

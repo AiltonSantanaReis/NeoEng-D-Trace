@@ -693,8 +693,8 @@
       "size": 3695
     },
     "docs/evidence/ETAPA_5_BUILD_PORTABLE_2026-08-22.md": {
-      "sha256": "9f22605a741aa652256dd627bc253eed1a93b7637031386418b0496d0e6d9eef",
-      "size": 2810
+      "sha256": "f38de427008e4b5f10279f976506abb061dd51c26b3641a15b1afa3554e5578f",
+      "size": 3191
     },
     "docs/evidence/ETAPA_5_CENARIOS_PROFISSIONAIS_2026-08-19.md": {
       "sha256": "5e7e6949f42935c071d1a1b54bd680578ef3f4e3a9ab7fa4512b73d331d50039",
@@ -705,16 +705,20 @@
       "size": 6049
     },
     "docs/evidence/ETAPA_5_ICONES_COLLISION_2026-08-22.md": {
-      "sha256": "ab784a246e77e8f7a01dcb2eb30e65bda60cfb405eaaf8e66386ce76440526d7",
-      "size": 4057
+      "sha256": "50e9a467f3909daea455934f821855f1aa14ce1b42c822aa520f318f338ff303",
+      "size": 4419
     },
     "docs/evidence/ETAPA_5_INTERFACE_MODERNA_2026-08-22.md": {
-      "sha256": "0883b49eaca6918070f679087abb03d5608f4e735038b5c17bf3ab76d214d299",
-      "size": 4695
+      "sha256": "a8c952bc7211cebd822decae9d643890dff7c463edc33c7398f2e9d3eccaf64f",
+      "size": 5448
     },
     "docs/evidence/ETAPA_5_INTERFACE_MODERNA_ENCERRAMENTO_POS_COMMIT_2026-08-22.md": {
-      "sha256": "8b42087280a10cb013c3a5773c4fc4e6597192aef6063f6dcfe652e2d4b7de0e",
-      "size": 1731
+      "sha256": "f074e00ac74e4cf3443c37ff97073f0e45b055eb5a5644ba855796d125f2b23f",
+      "size": 1877
+    },
+    "docs/evidence/ETAPA_5_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-22.md": {
+      "sha256": "1afbf9cdcb3c0174dc04c3e39ca5c0ebc47ff725142db7c0658644d464f30721",
+      "size": 2386
     },
     "docs/evidence/ETAPA_5_PACOTE_1_COMMAND_MANAGER_CONTRACT.md": {
       "sha256": "1a96942a3d238777ccbb0b3d4872cc453a41e6ab030c47814da9c5c45a5a9976",

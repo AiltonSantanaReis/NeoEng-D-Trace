@@ -1,6 +1,6 @@
 # Etapa 5 — Encerramento pós-commit
 
-Estado: **validado pós-commit; aguardando push, PR, CI e merge**
+Estado: **snapshot histórico pós-commit; reconciliado após PR, CI e merge**
 Commit verificado: 67859e51eb87f8d97b49399b7e3f92086afd0c92
 Branch: Ailton/interface-stage5-viewport-hud
 Data: 2026-08-22
@@ -35,4 +35,9 @@ Não houve force, bypass, alteração de regra, supressão de teste ou reclassif
 
 ## Decisão
 
-O commit local está validado. A Etapa 5 ainda não é formalmente encerrada no repositório remoto: falta push normal, abertura da PR, aprovação de todos os checks CI, merge autorizado e validação pós-merge. Este documento não antecipa esses gates.
+**Decisão histórica do snapshot:** o commit local estava validado e os gates
+remotos ainda estavam pendentes naquele momento. A decisão atual está
+registrada em ETAPA_5_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-22.md.
+
+O commit de merge efetivo é 1f4c2abc59d8015506ecda559ea138f163be4f90, com CI
+Linux/Windows aprovado no run 32580477614 e validação pós-merge reproduzida.
