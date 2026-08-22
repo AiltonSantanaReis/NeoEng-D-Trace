@@ -310,3 +310,6 @@ def configure_main_window_controls(window: Any) -> None:
     from src.ui.top_toolbar import configure_top_toolbars
 
     configure_top_toolbars(window)
+    from src.ui.viewport_status import configure_viewport_status
+
+    configure_viewport_status(window)

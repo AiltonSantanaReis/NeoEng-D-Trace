@@ -319,9 +319,8 @@ class MainWindow(QMainWindow):
         self.nav_toolbar.addWidget(self.language_button)
         self.language_button.clicked.connect(self.show_language_menu)
         configure_main_window_controls(self)
-
         self._responsive_layout = build_responsive_layout(self)
-        # 7. Atalhos Globais
+
         self._setup_shortcuts()
         register_main_window_commands(self.command_registry, self)
 

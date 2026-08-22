@@ -1,0 +1,423 @@
+{
+  "capture_manifest": {
+    "file": "windows-captures/manifest.json",
+    "resolution_count": 3,
+    "sha256": "4c39ebc724b57242fde9791392e0fcd153f1cec406af430151b2f49dcd459b60"
+  },
+  "decision": "PASS",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "qt_platform": "windows"
+  },
+  "functional_contract": {
+    "failure_count": 0,
+    "failures": [],
+    "qt_platform": "windows",
+    "states": {
+      "1080p_FHD/fit": {
+        "canvas_geometry": [
+          153,
+          0,
+          962,
+          975
+        ],
+        "digest": {
+          "bytes": 192248,
+          "sha256": "ec4c5a78f997cb416ecab23460ab49b408655e4f5ec734705be803d5f4ac15c3"
+        },
+        "file": "functional-captures/1080p_FHD_fit.png",
+        "size": [
+          1920,
+          1080
+        ],
+        "status_bar_geometry": [
+          0,
+          1039,
+          1920,
+          21
+        ],
+        "status_geometry": [
+          1690,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.27x",
+        "view_mode": 1,
+        "zoom": 1.2693055555555555
+      },
+      "1080p_FHD/lit_1to1": {
+        "canvas_geometry": [
+          153,
+          0,
+          962,
+          975
+        ],
+        "digest": {
+          "bytes": 173851,
+          "sha256": "a89d2bcd005baf68c11ac88db191048bd47d6364efb244150778a9ac2698b0fd"
+        },
+        "file": "functional-captures/1080p_FHD_lit_1to1.png",
+        "size": [
+          1920,
+          1080
+        ],
+        "status_bar_geometry": [
+          0,
+          1039,
+          1920,
+          21
+        ],
+        "status_geometry": [
+          1690,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: LIT  |  ZOOM: 1.00x",
+        "view_mode": 0,
+        "zoom": 1.0
+      },
+      "1080p_FHD/xray1": {
+        "canvas_geometry": [
+          153,
+          0,
+          962,
+          975
+        ],
+        "digest": {
+          "bytes": 182385,
+          "sha256": "70412fb1a60dab9e87da5f92fb3045751caf2520384b0531cfb2f9e4c4a4d509"
+        },
+        "file": "functional-captures/1080p_FHD_xray1.png",
+        "size": [
+          1920,
+          1080
+        ],
+        "status_bar_geometry": [
+          0,
+          1039,
+          1920,
+          21
+        ],
+        "status_geometry": [
+          1690,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+        "view_mode": 1,
+        "zoom": 1.0
+      },
+      "1080p_FHD/xray1_1to1": {
+        "canvas_geometry": [
+          153,
+          0,
+          962,
+          975
+        ],
+        "digest": {
+          "bytes": 183821,
+          "sha256": "5d7be919fb705d691479bfd7e24c8870e504a4664d0809308bb7824f0e76c3d9"
+        },
+        "file": "functional-captures/1080p_FHD_xray1_1to1.png",
+        "size": [
+          1920,
+          1080
+        ],
+        "status_bar_geometry": [
+          0,
+          1039,
+          1920,
+          21
+        ],
+        "status_geometry": [
+          1690,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+        "view_mode": 1,
+        "zoom": 1.0
+      },
+      "720p_Compacta/fit": {
+        "canvas_geometry": [
+          153,
+          0,
+          662,
+          635
+        ],
+        "digest": {
+          "bytes": 101742,
+          "sha256": "c513f347fb03b621af64166dae91afa1125b62f5f072606100d3a45f22fe341f"
+        },
+        "file": "functional-captures/720p_Compacta_fit.png",
+        "size": [
+          1280,
+          720
+        ],
+        "status_bar_geometry": [
+          0,
+          699,
+          1280,
+          21
+        ],
+        "status_geometry": [
+          1050,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 0.87x",
+        "view_mode": 1,
+        "zoom": 0.8734722222222221
+      },
+      "720p_Compacta/lit_1to1": {
+        "canvas_geometry": [
+          153,
+          0,
+          662,
+          635
+        ],
+        "digest": {
+          "bytes": 88943,
+          "sha256": "6afc4de5ba1c47ef4b465c7720e2c1522fd96197438bc9fe742d937e0f841445"
+        },
+        "file": "functional-captures/720p_Compacta_lit_1to1.png",
+        "size": [
+          1280,
+          720
+        ],
+        "status_bar_geometry": [
+          0,
+          699,
+          1280,
+          21
+        ],
+        "status_geometry": [
+          1050,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: LIT  |  ZOOM: 1.00x",
+        "view_mode": 0,
+        "zoom": 1.0
+      },
+      "720p_Compacta/xray1": {
+        "canvas_geometry": [
+          153,
+          0,
+          662,
+          635
+        ],
+        "digest": {
+          "bytes": 96814,
+          "sha256": "e5b9ab03118c380e2da6b927942fe7832fcf3f492b1c17ab73e5ec8d9d6a3682"
+        },
+        "file": "functional-captures/720p_Compacta_xray1.png",
+        "size": [
+          1280,
+          720
+        ],
+        "status_bar_geometry": [
+          0,
+          699,
+          1280,
+          21
+        ],
+        "status_geometry": [
+          1050,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+        "view_mode": 1,
+        "zoom": 1.0
+      },
+      "720p_Compacta/xray1_1to1": {
+        "canvas_geometry": [
+          153,
+          0,
+          662,
+          635
+        ],
+        "digest": {
+          "bytes": 97716,
+          "sha256": "2ed87db7f0cbdbb4328fcccd56259f6b9e2526a920817cda13f2917dffca7426"
+        },
+        "file": "functional-captures/720p_Compacta_xray1_1to1.png",
+        "size": [
+          1280,
+          720
+        ],
+        "status_bar_geometry": [
+          0,
+          699,
+          1280,
+          21
+        ],
+        "status_geometry": [
+          1050,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+        "view_mode": 1,
+        "zoom": 1.0
+      },
+      "768p_Minima/fit": {
+        "canvas_geometry": [
+          153,
+          0,
+          748,
+          683
+        ],
+        "digest": {
+          "bytes": 105672,
+          "sha256": "836c0cdc6711c81e6d09d4437ebd7385213b357796a07224080969c227cc7bf4"
+        },
+        "file": "functional-captures/768p_Minima_fit.png",
+        "size": [
+          1366,
+          768
+        ],
+        "status_bar_geometry": [
+          0,
+          747,
+          1366,
+          21
+        ],
+        "status_geometry": [
+          1136,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 0.99x",
+        "view_mode": 1,
+        "zoom": 0.9869444444444445
+      },
+      "768p_Minima/lit_1to1": {
+        "canvas_geometry": [
+          153,
+          0,
+          748,
+          683
+        ],
+        "digest": {
+          "bytes": 92191,
+          "sha256": "d2b050dc582e087fd138e7614536926e40dbe5472811f0cfb6286238a1285b3f"
+        },
+        "file": "functional-captures/768p_Minima_lit_1to1.png",
+        "size": [
+          1366,
+          768
+        ],
+        "status_bar_geometry": [
+          0,
+          747,
+          1366,
+          21
+        ],
+        "status_geometry": [
+          1136,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: LIT  |  ZOOM: 1.00x",
+        "view_mode": 0,
+        "zoom": 1.0
+      },
+      "768p_Minima/xray1": {
+        "canvas_geometry": [
+          153,
+          0,
+          748,
+          683
+        ],
+        "digest": {
+          "bytes": 101049,
+          "sha256": "4a8bb76fd403868116f698611e46b0e0a36f7d6a48ac5e5d4dcb8a7613bb2bb3"
+        },
+        "file": "functional-captures/768p_Minima_xray1.png",
+        "size": [
+          1366,
+          768
+        ],
+        "status_bar_geometry": [
+          0,
+          747,
+          1366,
+          21
+        ],
+        "status_geometry": [
+          1136,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+        "view_mode": 1,
+        "zoom": 1.0
+      },
+      "768p_Minima/xray1_1to1": {
+        "canvas_geometry": [
+          153,
+          0,
+          748,
+          683
+        ],
+        "digest": {
+          "bytes": 102193,
+          "sha256": "cadd06bcd60e9eebbeebb2dac5a44fcc458fd94130c19444228b18c6b2b1d181"
+        },
+        "file": "functional-captures/768p_Minima_xray1_1to1.png",
+        "size": [
+          1366,
+          768
+        ],
+        "status_bar_geometry": [
+          0,
+          747,
+          1366,
+          21
+        ],
+        "status_geometry": [
+          1136,
+          3,
+          210,
+          16
+        ],
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+        "view_mode": 1,
+        "zoom": 1.0
+      }
+    },
+    "status": "PASS"
+  },
+  "schema_version": 1,
+  "scope": [
+    "viewport state moved to permanent status bar",
+    "live Lit/X-Ray/zoom/Fit/1:1 status synchronization",
+    "legacy canvas HUD not invoked by MainWindow",
+    "gizmo, masks, side panels and scenario editor contracts preserved"
+  ],
+  "source_state": {
+    "branch": "Ailton/interface-stage5-viewport-hud",
+    "commit": "8441bf7710b96752fa8e766469900e224cd497d5",
+    "worktree_clean": false
+  },
+  "stage": "Etapa 5 \u2014 Viewport e HUD",
+  "visual_audit": {
+    "finding_count": 0,
+    "report": "windows-visual-audit/visual-audit-report.json",
+    "status": "PASS"
+  }
+}

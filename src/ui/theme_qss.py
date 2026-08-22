@@ -44,6 +44,13 @@ QStatusBar {{
     color: {tokens.text_secondary};
     border-top: 1px solid {tokens.border};
 }}
+QStatusBar QLabel#viewport_status {{
+    background: transparent;
+    color: {tokens.accent};
+    padding: 0px 10px;
+    font-family: 'Segoe UI', Arial, Sans-Serif;
+    font-weight: 600;
+}}
 
 QMenuBar {{ background: {tokens.surface_alt}; color: {tokens.text_primary}; }}
 QMenuBar::item {{ background: transparent; padding: 4px 8px; }}
