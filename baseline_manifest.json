@@ -580,6 +580,10 @@
       "sha256": "0d379fa9b795471cf4284da79b9feea332b534d76e6903d91faaaacd8401306e",
       "size": 1595
     },
+    "docs/evidence/ETAPA_3_INTERFACE_MODERNA_2026-08-21.md": {
+      "sha256": "8cae60acccac7b792e8a2c3f241248f9c58528927dd09fe948b9ddbc614e7f35",
+      "size": 6290
+    },
     "docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "ed8a306ce9269372aa66d476e108835621dde5716757c4344ce8b617c17f672a",
       "size": 4702
@@ -5912,6 +5916,318 @@
       "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961",
       "size": 267
     },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/artifact-index.json": {
+      "sha256": "8dbb1eb1e881da92c5d46740ebce5eb1ac8568d6753e1133b8af06c4f4d0fb3f",
+      "size": 13219
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/capture.log": {
+      "sha256": "0c19da3c111dba2d8f05d8c17cc71a043115ee570c61e2097ac3ec49c36ee939",
+      "size": 95619
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/1080p_FHD_01_sem_projeto.png": {
+      "sha256": "e9ddbccb83045466e1f0bf301a8be911a153d7239cee2efd0caf9d2f9243d93c",
+      "size": 160922
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/1080p_FHD_02_projeto_paineis.png": {
+      "sha256": "5a93b0a1198f5bb56c731b8d8175f4f08e712ae6712d74778f13cc9a7d754d7b",
+      "size": 190230
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/1080p_FHD_03_validacao_janela.png": {
+      "sha256": "5a93b0a1198f5bb56c731b8d8175f4f08e712ae6712d74778f13cc9a7d754d7b",
+      "size": 190230
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/1080p_FHD_03_validacao_modal.png": {
+      "sha256": "aa78a423063e3ce238b5eb7df47492a404106a6ff5fce1fb6f7cd22f805af814",
+      "size": 10971
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "sha256": "cd3b208993ec717954a6911534b65659a9aafdeb341bdb2ea6c1cda647ffbfac",
+      "size": 202890
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/720p_Compacta_01_sem_projeto.png": {
+      "sha256": "d801c511c7e64dd14e5eef480af6a00bd6e71dd98b4656fc8e213bfa7c4a438d",
+      "size": 88327
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/720p_Compacta_02_projeto_paineis.png": {
+      "sha256": "45d4badd9e99b6d60bd6114ce447f4d8f8d2c4bb1462aabedd805e84bb7b14ed",
+      "size": 116611
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/720p_Compacta_03_validacao_janela.png": {
+      "sha256": "527d5ab76ebae8f1c5d3a07d4908bf82efc7f782144fc238039be9e29b0885ae",
+      "size": 112739
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/720p_Compacta_03_validacao_modal.png": {
+      "sha256": "aa78a423063e3ce238b5eb7df47492a404106a6ff5fce1fb6f7cd22f805af814",
+      "size": 10971
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "sha256": "37b4c9f5d9856deede781b643cc9c69803544a7d4cd815e0203c6444f086b27c",
+      "size": 127450
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/768p_Minima_01_sem_projeto.png": {
+      "sha256": "a522c45ba02441d251f6afdca9a5c241f4d2db01bf33d163a9a00b463c3dbe15",
+      "size": 90951
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/768p_Minima_02_projeto_paineis.png": {
+      "sha256": "7ad68451a9a44cf73ba4a94d9218c99476dd5c0cff6f1127d95ca8e25e7d1b09",
+      "size": 119344
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/768p_Minima_03_validacao_janela.png": {
+      "sha256": "7e91b2ea2428cfa44242d9ccb994143116f014cb09522bf74aae833007539272",
+      "size": 116023
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/768p_Minima_03_validacao_modal.png": {
+      "sha256": "aa78a423063e3ce238b5eb7df47492a404106a6ff5fce1fb6f7cd22f805af814",
+      "size": 10971
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/768p_Minima_04_gizmo_feedback.png": {
+      "sha256": "0bec83a969f80c1f607d6906fd230df94ba9d2cc96afc7cf1e940cc8185ec267",
+      "size": 130875
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/manifest.json": {
+      "sha256": "eac1640cc71572de025e7155187198aee0a5408139367cab9d77ae000a6339ce",
+      "size": 95450
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/ui-audit-fixture.ndtproj": {
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75",
+      "size": 2193
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-captures/ui-audit-fixture.png": {
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
+      "size": 10112
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "sha256": "3967ed42d4292715cf66d8b9bdc01a6162a6e4c4463206a4525755862c46a7b8",
+      "size": 156130
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "sha256": "b9f73ef5c0c579d933e68642390fa4647df78c2c0afa3e699a4a489561a06085",
+      "size": 184413
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "sha256": "b9f73ef5c0c579d933e68642390fa4647df78c2c0afa3e699a4a489561a06085",
+      "size": 184413
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "sha256": "b41006b5948c1ff9f073d6dd47857f9334365aa7183d55bc7e5be2de7b0a8e96",
+      "size": 11441
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "sha256": "134a85744f2aced63a132d3b44fb9c5ca285f8be0484016f3dc80b3bc6b1087d",
+      "size": 196498
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "sha256": "121c5541ab5b66f7dc5f0aea2de15ee9e242a8b1928c4bf39de90af63c524e39",
+      "size": 85799
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "sha256": "42f68106e04c053ed0320ec510390d27e5b19091823f1cff22d49973031fd047",
+      "size": 112992
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "sha256": "59fca50400879c503b0760d263668de191c2288ef52cd57e65ce2fe65eea0c63",
+      "size": 109898
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "sha256": "b41006b5948c1ff9f073d6dd47857f9334365aa7183d55bc7e5be2de7b0a8e96",
+      "size": 11441
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "sha256": "409481b07e72174ad0b1589236c7c500cf0f7fa1b57d87375cef6c1c34168118",
+      "size": 124148
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "sha256": "e3911f6b069bcfd487a96d85ae800d6258d95416a76d013771d20eb56c39e8ba",
+      "size": 88623
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "sha256": "4ab4c730588dafa26da592f728943948529b1da1b747b9b7b2525e2281afb545",
+      "size": 116191
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "sha256": "549ccc7661c6bd402d8afcd5994d8694bb3fdc11e710b02dab257624862c0117",
+      "size": 113114
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "sha256": "b41006b5948c1ff9f073d6dd47857f9334365aa7183d55bc7e5be2de7b0a8e96",
+      "size": 11441
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "sha256": "6e0773dd0f5884d74ae405b56b08eab3ddfeeeb1a753984c788292572dab0a4a",
+      "size": 127696
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/ui-audit-fixture_annotated.png": {
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae",
+      "size": 4006
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/visual-audit-report.json": {
+      "sha256": "4a839ef79c2699065d29a97fd4c834429c753e5fc170572fcc814fe8b175dbe0",
+      "size": 15683
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/native-visual-audit/visual-audit-report.md": {
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961",
+      "size": 267
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/1080p_FHD_01_sem_projeto.png": {
+      "sha256": "f8ab69dd6a4375ceb9630c271bbf0fd1a235f6121652a6280f8fe0354104815f",
+      "size": 28039
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/1080p_FHD_02_projeto_paineis.png": {
+      "sha256": "5779143e9a6d5c68999c45d3ab1adb6cf9953c11fab78995057fa37500ca3566",
+      "size": 40437
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/1080p_FHD_03_validacao_janela.png": {
+      "sha256": "5779143e9a6d5c68999c45d3ab1adb6cf9953c11fab78995057fa37500ca3566",
+      "size": 40437
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/1080p_FHD_03_validacao_modal.png": {
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4",
+      "size": 1786
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "sha256": "a7f726bb9e665dbda13a60ff366a298d8d139848667db953ace01886f53e6d13",
+      "size": 43646
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/720p_Compacta_01_sem_projeto.png": {
+      "sha256": "dc96c3468eb9fca12b00165015653acfb7da0f417eb3b92e8eafa550d801b75e",
+      "size": 18545
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/720p_Compacta_02_projeto_paineis.png": {
+      "sha256": "7da4f87a3bd1a64c57912b6f5a74ed4b3ed3d0214503e828a9981f42357b9f9a",
+      "size": 30864
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/720p_Compacta_03_validacao_janela.png": {
+      "sha256": "5e6878e9b17a8cd56b3a664358d72c84e95c6991d177e581134373811d457c0e",
+      "size": 29906
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/720p_Compacta_03_validacao_modal.png": {
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4",
+      "size": 1786
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "sha256": "276773efac5926ea9f0ac3990ff98b3195ab57e591fdfab9d17868b3e02d1275",
+      "size": 34177
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/768p_Minima_01_sem_projeto.png": {
+      "sha256": "87c951e50d7159d374ab4269c5bf05f847b64e2461170c89e68e21eda1ffe924",
+      "size": 19076
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/768p_Minima_02_projeto_paineis.png": {
+      "sha256": "3833749143e86d4eb8e778d1f2cdcc772e930ffcab53c7240a08dc5928849f26",
+      "size": 31644
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/768p_Minima_03_validacao_janela.png": {
+      "sha256": "10f63e0748aac0f5a8b4b284d5c77514f3381b401a93a4ba31344ee94de2f56b",
+      "size": 30628
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/768p_Minima_03_validacao_modal.png": {
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4",
+      "size": 1786
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/768p_Minima_04_gizmo_feedback.png": {
+      "sha256": "42f84b6d8b2df5db6ab53e7bf1d8e3c9ca9d6c1ce11d39f86ebc01baee7d034d",
+      "size": 35100
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/manifest.json": {
+      "sha256": "0517b3bcedcfc0be385201b4123d1c383a602664adc1e687d4e16c62fd37809b",
+      "size": 95575
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/ui-audit-fixture.ndtproj": {
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75",
+      "size": 2193
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures/ui-audit-fixture.png": {
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
+      "size": 10112
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/rollback/tool_palette_legacy.py": {
+      "sha256": "ae1a125e6f2993aba9d14c46be08cc8db85ef0ec90bed531d2fe447c8ebfd9ef",
+      "size": 13268
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/stage3-toolbar-report.json": {
+      "sha256": "2e8a1da664d061ac173e12205bdc4fb6d90c5531a5bd8bf488c679c753cd6edf",
+      "size": 4980
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/stage3-toolbar-report.md": {
+      "sha256": "ae08c042f6e2f68736b87995aa602e7edb347d7d8d0ae6eb664f4119f3b50327",
+      "size": 298
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit.log": {
+      "sha256": "78f35f1a1d87b4882a9abb2a22179095f948975c2a3b64da4ebf95d23c0c958c",
+      "size": 39
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "sha256": "b383ec3c007cb8a8851bb49c4d22cf4039cbdf4964feaba3db66984db797d366",
+      "size": 28325
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "sha256": "e1ae1cc809cb983ea7f8441506d78740647ef15a83f2d3538c86dde2ef010a66",
+      "size": 40403
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "sha256": "e1ae1cc809cb983ea7f8441506d78740647ef15a83f2d3538c86dde2ef010a66",
+      "size": 40403
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d",
+      "size": 2300
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "sha256": "8afae4a9fad4408ad44226ba2e5bf713e8c96d30b714e01e148f3af8d65522ef",
+      "size": 43441
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "sha256": "edc446090f7223aca22e0f1239a52be25656ee6ee4b0081ecaf644e8a3baeaf5",
+      "size": 19096
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "sha256": "6f531b9ffb1242d55798442ae556656cbcb438378f9af759bf14d77360e8e21d",
+      "size": 31111
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "sha256": "b801bfeb222d7c28f5b939afc7eca1e07b99a07cf3e6a0999bf156b45d0fb94c",
+      "size": 30270
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d",
+      "size": 2300
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "sha256": "093c68f93dbff68002914dabd7006b417dc0d87471d13ef49576565c673cbd3e",
+      "size": 34160
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "sha256": "64f3cccc2fa54ea908d3b00ab4d023593c527e1a8708f8d6f084d909cfd80629",
+      "size": 19668
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "sha256": "05bc85bcbaef461acd862aaae3654f82228cc351338caa6386a81fbadb012d72",
+      "size": 31997
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "sha256": "dafbbfba382f1c4261ee6225ffca38763738f94bd05f69ca9206e2c7d1e1b1b0",
+      "size": 31124
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d",
+      "size": 2300
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "sha256": "4ae87592570ecb53d7e830f0e432523aff06660fa11f8e15efe502852e34413e",
+      "size": 35140
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/ui-audit-fixture_annotated.png": {
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae",
+      "size": 4006
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/visual-audit-report.json": {
+      "sha256": "f3e6cf2ef986344f5a11a8b2f9fa25b2d45f33c15703e9aa84b61eeee18e714f",
+      "size": 15690
+    },
+    "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit/visual-audit-report.md": {
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961",
+      "size": 267
+    },
     "docs/evidence/artifacts/unity-import-stage6-2026-08-16/fixture-manifest.json": {
       "sha256": "fc7fccc0fa3e4d9dde2f495ad64ec043b9950355c6657b53533e0e4357dc593b",
       "size": 2073
@@ -6636,6 +6952,10 @@
       "sha256": "abea3cd585d6ac6cc7bcf43c558e8228aee6d27b9eac7ca8068bcfd60e23b0f1",
       "size": 7208
     },
+    "scripts/audit_stage3_ui_toolbar.py": {
+      "sha256": "7e12974e4b9a56680960e72a8b4648afc57beba7e428b6d060a1a30f7095ba10",
+      "size": 8932
+    },
     "scripts/audit_stage4_professional_scene_capture.py": {
       "sha256": "efe6d912830b89751cbeeb5c97ea6b2aaba9e133e76c0d2f8445c748000e0660",
       "size": 8206
@@ -7205,8 +7525,12 @@
       "size": 3653
     },
     "src/ui/tool_palette.py": {
-      "sha256": "ae1a125e6f2993aba9d14c46be08cc8db85ef0ec90bed531d2fe447c8ebfd9ef",
-      "size": 13268
+      "sha256": "6081b88ea39373829a9fe701ed90ce362d0cfb9d7cd7208af25beccc7e14df81",
+      "size": 719
+    },
+    "src/ui/tool_palette_impl.py": {
+      "sha256": "4e69e88eeb9b1f82dbad14e7f23b0b5579c42af7beaee9f8284d5460159d825a",
+      "size": 12392
     },
     "src/utils/packing.py": {
       "sha256": "5cafdf59abf318449422a8eb75b4a0f33532c51d7def8285a9b1ff7c93dce487",
@@ -7467,6 +7791,10 @@
     "tests/test_stage3_runtime_shaders.py": {
       "sha256": "5089d82ddef0601929ac131983320da3d2aede890a8913a63489e7f6c3a89d4d",
       "size": 10149
+    },
+    "tests/test_stage3_ui_toolbar.py": {
+      "sha256": "e045ecc2016b4a329dfe979a08f7d79c9af1dbab74257a80f81916ab8e3a6d98",
+      "size": 3585
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",

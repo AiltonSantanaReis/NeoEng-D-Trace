@@ -1,0 +1,185 @@
+{
+  "artifacts": {
+    "raw_manifest": {
+      "path": "raw-captures/manifest.json"
+    },
+    "visual_report": {
+      "path": "visual-audit/visual-audit-report.json"
+    }
+  },
+  "commands": {
+    "capture": {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/audit_ui_capture.py",
+        "--output",
+        "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures"
+      ],
+      "log": "capture.log",
+      "returncode": 0
+    },
+    "visual_audit": {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/audit_visual_artifacts.py",
+        "--input",
+        "docs/evidence/artifacts/ui-modernization-stage3-20260821/raw-captures",
+        "--output",
+        "docs/evidence/artifacts/ui-modernization-stage3-20260821/visual-audit"
+      ],
+      "log": "visual-audit.log",
+      "returncode": 0
+    }
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "qt_platform": "offscreen"
+  },
+  "limitations": [
+    "Visual captures use Qt offscreen; independent human aesthetic review is not automated.",
+    "The Gizmo and Mask Viewer remain in their existing contexts; they are outside this stage's structural migration."
+  ],
+  "live_contract": {
+    "buttons": {
+      "collision_brush": {
+        "accessible_name": "Collision Brush",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          320,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Collision\nBrush",
+        "tooltip": "Paint collision geometry \u2014 Open an image to enable tools."
+      },
+      "ellipse_selection": {
+        "accessible_name": "Ellipse",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          228,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Ellipse",
+        "tooltip": "Ellipse selection (4) \u2014 Open an image to enable tools."
+      },
+      "lasso_tool": {
+        "accessible_name": "Lasso",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          4,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Lasso",
+        "tooltip": "Lasso tool (2) \u2014 Open an image to enable tools."
+      },
+      "magnetic_lasso": {
+        "accessible_name": "Magnetic Lasso",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          92,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Magnetic\nLasso",
+        "tooltip": "Magnetic lasso (6). Right-click the canvas for modes and presets. \u2014 Open an image to enable tools."
+      },
+      "pen_tool": {
+        "accessible_name": "Pen",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          140,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Pen",
+        "tooltip": "Pen tool (5) \u2014 Open an image to enable tools."
+      },
+      "polygon_edit": {
+        "accessible_name": "Edit Polygon",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          276,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Edit\nPolygon",
+        "tooltip": "Edit polygon vertices \u2014 Open an image to enable tools."
+      },
+      "polygonal_lasso": {
+        "accessible_name": "Polygonal Lasso",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          48,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Polygonal\nLasso",
+        "tooltip": "Polygonal lasso (1) \u2014 Open an image to enable tools."
+      },
+      "rect_selection": {
+        "accessible_name": "Rect",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          184,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Rect",
+        "tooltip": "Rectangle selection (3) \u2014 Open an image to enable tools."
+      },
+      "selection": {
+        "accessible_name": "Selection",
+        "focus_policy": "StrongFocus",
+        "geometry": [
+          8,
+          364,
+          132,
+          40
+        ],
+        "icon_null": false,
+        "text": "Selection",
+        "tooltip": "Select objects \u2014 Open an image to enable tools."
+      }
+    },
+    "failure_count": 0,
+    "failures": [],
+    "status": "PASS",
+    "toolbar": {
+      "action_count": 9,
+      "class": "ToolPalette",
+      "maximum_width": 164,
+      "minimum_width": 148,
+      "object_name": "left_tool_toolbar",
+      "orientation": "Vertical",
+      "separator_count": 2,
+      "tool_button_style": "ToolButtonIconOnly"
+    }
+  },
+  "schema_version": 1,
+  "source_state": {
+    "branch": "Ailton/interface-stage3-toolbar",
+    "commit": "eaa6a559c729d1a394aab3d269e19adbde8a39b7",
+    "worktree_clean": false
+  },
+  "stage": "Etapa 3 \u2014 Barra esquerda de ferramentas",
+  "status": "PASS"
+}
