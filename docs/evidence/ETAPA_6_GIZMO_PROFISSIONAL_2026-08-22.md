@@ -9,7 +9,7 @@
 
 Esta evidência segue as governanças globais do repositório. O baseline técnico da etapa permanece preservado em `docs/evidence/ETAPA_6_GIZMO_BASELINE_2026-08-22.md` e seu encerramento pós-merge em `docs/evidence/ETAPA_6_GIZMO_BASELINE_ENCERRAMENTO_POS_MERGE_2026-08-22.md`. Esses snapshots históricos não foram reescritos.
 
-A implementação foi executada na branch `Ailton/stage6-gizmo-professional`, derivada do conteúdo pós-merge documental `b02227b917363cea49fc5e8d7ae933aecb3fade3`. O relatório local registra `worktree_clean=false` porque há alterações da etapa e diretórios locais históricos não rastreados preservados; isso não foi mascarado.
+A implementação foi executada na branch `Ailton/stage6-gizmo-professional`, derivada do conteúdo pós-merge documental `b02227b917363cea49fc5e8d7ae933aecb3fade3` e registrada no commit local `ff1e11fb95c9d8059e72059d44b3e31871863a2c`. O relatório pós-commit registra `worktree_clean=false` porque os diretórios locais históricos não rastreados foram preservados; isso não foi mascarado.
 
 ## Escopo implementado
 
@@ -78,10 +78,10 @@ A inspeção visual humana direta não foi confirmada nesta execução porque o 
 | `src/ui/scene_authoring_viewport.py` | 27776 | `795665d5b5944520eb07d2258ce197a8762509a18f412f5d45ae800d613f8409` |
 | `tests/test_stage6_professional_gizmo.py` | 4641 | `70149299ee00ef9616aefd2a7b49d97207eb070cf5e0114ebfb891eb32830a54` |
 | `scripts/audit_stage6_professional_gizmo.py` | 11619 | `b1e1e2489581f8254ee6a40e14d18c050c2f56bf65b2c6bbd8b16e2b00f63494` |
-| `stage6-gizmo-report.json` | 23709 | `e5e14692a9d7805329188a19069ba36abe96d01a1080ad8f1b941c869595517e` |
-| `stage6-gizmo-artifact-index.json` | 5464 | `929687fe3ea38ae58c6d2415a4d1bc0a088408b2480c32a7d4d7d59f93705d03` |
+| `stage6-gizmo-report.json` | 23709 | `853a30d02e8312a4491fa5eaf37a224cd726255551c978382667ca1357d3c3fc` |
+| `stage6-gizmo-artifact-index.json` | 5464 | `93694ec1f41fb4336152d6e0c7e838699ba6283d0b1b45574524d0b0bcce1414` |
 
-O índice contém 29 arquivos e registra bytes/SHA-256 de cada captura bruta, anotada, fixture e relatório incluído no pacote.
+O índice contém 29 arquivos e registra bytes/SHA-256 de cada captura bruta, anotada, fixture e relatório incluído no pacote. O relatório foi regenerado pós-commit no SHA `ff1e11fb95c9d8059e72059d44b3e31871863a2c`; o índice foi então atualizado para o novo digest.
 
 ## Pendências e decisão
 

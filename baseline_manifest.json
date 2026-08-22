@@ -813,8 +813,8 @@
       "size": 2378
     },
     "docs/evidence/ETAPA_6_GIZMO_PROFISSIONAL_2026-08-22.md": {
-      "sha256": "6735e1973a6a02b74b483924f519137432b8ffa5a1f59f7cdc7a927ef11f4dc4",
-      "size": 7341
+      "sha256": "0a94c007cee52464ecca15770a8a37e1eafaa71e3721fbc4a413fea199cf2a82",
+      "size": 7543
     },
     "docs/evidence/ETAPA_6_IMPORTACAO_UNITY_2026-08-16.md": {
       "sha256": "1408c8588e0d0c563fd48810410a775dfe49111fc1e490f65d905fcc79bf49c0",
@@ -6985,7 +6985,7 @@
       "size": 444
     },
     "docs/evidence/artifacts/ui-modernization-stage6-20260822/stage6-gizmo-artifact-index.json": {
-      "sha256": "929687fe3ea38ae58c6d2415a4d1bc0a088408b2480c32a7d4d7d59f93705d03",
+      "sha256": "93694ec1f41fb4336152d6e0c7e838699ba6283d0b1b45574524d0b0bcce1414",
       "size": 5464
     },
     "docs/evidence/artifacts/ui-modernization-stage6-20260822/stage6-gizmo-baseline-report.json": {
@@ -6993,7 +6993,7 @@
       "size": 4972
     },
     "docs/evidence/artifacts/ui-modernization-stage6-20260822/stage6-gizmo-report.json": {
-      "sha256": "e5e14692a9d7805329188a19069ba36abe96d01a1080ad8f1b941c869595517e",
+      "sha256": "853a30d02e8312a4491fa5eaf37a224cd726255551c978382667ca1357d3c3fc",
       "size": 23709
     },
     "docs/evidence/artifacts/ui-modernization-stage6-20260822/windows-captures/1080p_FHD_01_selected.png": {
