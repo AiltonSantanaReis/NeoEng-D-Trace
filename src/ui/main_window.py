@@ -49,6 +49,7 @@ from src.ui.icon_library import configure_main_window_controls
 from src.ui.layers_panel import LayersPanel
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
+from src.ui.reference_chrome import connect_reference_search
 from src.ui.responsive_layout import build_responsive_layout
 from src.ui.scenario_authoring_actions import install_scenario_authoring
 from src.ui.scenario_preview_actions import install_scenario_preview_actions
@@ -320,12 +321,11 @@ class MainWindow(QMainWindow):
         self.language_button.clicked.connect(self.show_language_menu)
         configure_main_window_controls(self)
         self._responsive_layout = build_responsive_layout(self)
-
         self._setup_shortcuts()
         register_main_window_commands(self.command_registry, self)
-
         self.translations = MAIN_WINDOW_TRANSLATIONS
         self.command_palette = CommandPaletteDialog(self.command_registry, self)
+        connect_reference_search(self)
         self.update_language()
         if hasattr(self.scene, "subscribe"):
             self.scene.subscribe(self._on_scene_changed)
@@ -699,6 +699,7 @@ class MainWindow(QMainWindow):
     def _refresh_document_views(self, *, project_loaded: bool) -> None:
         has_image = self.scene.image is not None
         self.tool_palette.setEnabled(has_image)
+        self.reference_tool_palette.setEnabled(has_image)
         self.side_panel.setEnabled(project_loaded or has_image)
         self.side_panel.refresh()
         if hasattr(self.layers, "refresh"):

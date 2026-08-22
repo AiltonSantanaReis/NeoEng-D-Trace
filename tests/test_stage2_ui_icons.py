@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pytest
+from PySide6.QtCore import QSize
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication
 
@@ -94,6 +95,9 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         window.focus_button,
         window.language_button,
         window.export_collision_button,
+        window.collision_panel.batch_test_btn,
+        window.collision_panel.export_btn,
+        window.collision_panel.auto_gen_btn,
     ):
         assert not widget.icon().isNull()
         assert widget.text()
@@ -112,6 +116,16 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         assert button.property("iconFallback") is False
         assert button.minimumWidth() <= window.tool_palette.minimumWidth()
 
+    for widget, key in (
+        (window.collision_panel.batch_test_btn, "collision_test"),
+        (window.collision_panel.export_btn, "export"),
+        (window.collision_panel.auto_gen_btn, "collision_auto_generate"),
+    ):
+        assert widget.property("iconKey") == key
+        assert widget.iconSize() == QSize(20, 20)
+        assert all(ord(character) <= 0xFFFF for character in widget.text())
+
+    assert window.reference_tool_palette.iconSize() == QSize(24, 24)
     window.set_language("pt")
     assert window.open_project_action.text()
     assert window.canvas.gizmo_toggle.text() == "Eixo"

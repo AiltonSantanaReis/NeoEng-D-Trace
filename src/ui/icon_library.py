@@ -66,6 +66,16 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="m12 3.5 7.5 4.25v8.5L12 20.5l-7.5-4.25v-8.5z"/>'
         '<path d="m4.5 7.75 7.5 4.25 7.5-4.25M12 12v8.5"/>',
     ),
+    "collision_test": (
+        "batch collision test",
+        '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>'
+        '<path d="m7.5 10.5 2 2 4-4"/>',
+    ),
+    "collision_auto_generate": (
+        "auto-generate collision",
+        '<path d="m5 16 5-5 6 6-5 5z"/><path d="m10 11 5-5 4 4-5 5z"/>'
+        '<path d="M17 3.5v4M15 5.5h4"/>',
+    ),
     "clean": (
         "clean",
         '<path d="M5 7h14M9 4h6l1 3H8zM7 7l1 13h8l1-13"/>'
@@ -119,6 +129,46 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<circle cx="12" cy="12" r="8.5"/>'
         '<path d="M3.5 12h17M12 3.5c2.3 2.3 3.5 5.1 3.5 8.5s-1.2 6.2-3.5 8.5'
         'c-2.3-2.3-3.5-5.1-3.5-8.5S9.7 5.8 12 3.5z"/>',
+    ),
+    "view": (
+        "view",
+        '<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M8 12h8M12 8v8"/>',
+    ),
+    "pan": (
+        "pan",
+        '<path d="M8 11V5a1.5 1.5 0 0 1 3 0v5-6a1.5 1.5 0 0 1 3 0'
+        "v6-4a1.5 1.5 0 0 1 3 0v6-2a1.5 1.5 0 0 1 3 0"
+        'v5c0 4-2 6-6 6h-2c-3 0-5-2-5-5l-2-2a1.5 1.5 0 0 1 2-2z"/>',
+    ),
+    "parallax": (
+        "parallax",
+        '<path d="M4 7h10M4 12h16M4 17h10"/><path d="m14 5 4 2-4 2M10 15l-4 2 4 2"/>',
+    ),
+    "add": (
+        "add layer",
+        '<circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/>',
+    ),
+    "remove": (
+        "remove layer",
+        '<circle cx="12" cy="12" r="8.5"/><path d="M8 12h8"/>',
+    ),
+    "up": (
+        "move layer up",
+        '<path d="M12 19V5M7 10l5-5 5 5"/>',
+    ),
+    "down": (
+        "move layer down",
+        '<path d="M12 5v14M7 14l5 5 5-5"/>',
+    ),
+    "visible": (
+        "toggle layer visibility",
+        '<path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5z"/>'
+        '<circle cx="12" cy="12" r="2.5"/>',
+    ),
+    "lock": (
+        "toggle layer lock",
+        '<rect x="5" y="10" width="14" height="10" rx="1.5"/>'
+        '<path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
     ),
     "lasso": (
         "lasso tool",
@@ -307,9 +357,28 @@ def configure_main_window_controls(window: Any) -> None:
     for name, key in widget_keys.items():
         configure_widget(getattr(window, name), key)
     configure_widget(window.canvas.gizmo_toggle, "gizmo")
+    from src.ui.reference_chrome import (
+        configure_reference_tool_palette,
+        configure_reference_top_toolbar,
+    )
     from src.ui.top_toolbar import configure_top_toolbars
 
     configure_top_toolbars(window)
+    configure_reference_tool_palette(window)
+    configure_reference_top_toolbar(window)
+    window.reference_tool_palette.setEnabled(window.tool_palette.isEnabled())
+    # Preserve the Stage 4 toolbar object/visibility contract. The reference
+    # toolbar is the visible chrome; the legacy command bar remains a zero-height
+    # compatibility surface so existing actions and tests retain their identity.
+    window.toolbar.setMinimumHeight(0)
+    window.toolbar.setMaximumHeight(0)
+    # Keep the historical toolbar object/action contract without reserving
+    # width beside the visible reference toolbar.
+    window.toolbar.setMinimumWidth(0)
+    window.toolbar.setMaximumWidth(0)
+
+    window.nav_toolbar.setVisible(False)
+    window.xray_toolbar.setVisible(False)
     from src.ui.viewport_status import configure_viewport_status
 
     configure_viewport_status(window)

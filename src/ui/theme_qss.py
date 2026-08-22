@@ -39,6 +39,118 @@ QToolBar::separator {{
     width: 1px;
     margin: 5px 3px;
 }}
+QToolBar#reference_tool_palette {{
+    min-width: 72px;
+    max-width: 84px;
+    padding: 8px 4px;
+    spacing: 6px;
+    background: {tokens.surface_alt};
+    border-right: 1px solid {tokens.border};
+}}
+QToolBar#reference_tool_palette QToolButton {{
+    min-width: 56px;
+    max-width: 64px;
+    min-height: 42px;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}}
+QToolBar#reference_tool_palette QToolButton:hover {{
+    background: {tokens.surface_raised};
+    border-color: {tokens.border_strong};
+}}
+QToolBar#reference_tool_palette QToolButton:checked {{
+    background: {tokens.rgba(tokens.accent, 28)};
+    border-color: {tokens.accent};
+    color: {tokens.accent};
+}}QToolBar#reference_top_toolbar {{
+    min-height: 74px;
+    max-height: 82px;
+    padding: 4px 8px;
+    spacing: 6px;
+    background: {tokens.surface_alt};
+    border-bottom: 1px solid {tokens.border};
+}}
+QToolBar#reference_top_toolbar QToolButton#reference_menu_button {{
+    min-width: 34px;
+    max-width: 34px;
+    font-size: 20px;
+    padding: 0px;
+}}
+QToolBar#reference_top_toolbar QToolButton {{
+    min-width: 54px;
+    min-height: 58px;
+    padding: 4px 7px 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}}
+QToolBar#reference_top_toolbar QToolButton:hover {{
+    background: {tokens.surface_raised};
+    border-color: {tokens.border_strong};
+}}
+QToolBar#reference_top_toolbar QToolButton:checked {{
+    background: {tokens.rgba(tokens.accent, 28)};
+    border-color: {tokens.accent};
+    color: {tokens.accent};
+}}
+QLineEdit#reference_command_search {{
+    min-height: 28px;
+    padding: 5px 10px;
+    background: {tokens.window};
+    border: 1px solid {tokens.border};
+    border-radius: 5px;
+    color: {tokens.text_primary};
+}}
+QLineEdit#reference_command_search:focus {{
+    border-color: {tokens.focus};
+}}
+QTabWidget#reference_panel_tabs {{
+    background: {tokens.surface};
+    border-left: 1px solid {tokens.border};
+}}
+QTabWidget#reference_panel_tabs::pane {{
+    border: 0px;
+    background: {tokens.surface};
+}}
+QTabWidget#reference_panel_tabs QTabBar::tab {{
+    min-width: 78px;
+    padding: 9px 12px;
+    color: {tokens.text_secondary};
+    background: {tokens.surface_alt};
+    border: 0px;
+    border-bottom: 2px solid transparent;
+}}
+QTabWidget#reference_panel_tabs QTabBar::tab:selected {{
+    color: {tokens.text_primary};
+    border-bottom-color: {tokens.accent};
+    background: {tokens.surface};
+}}
+QWidget#viewport_chrome {{
+    background: {tokens.window};
+}}
+QWidget#viewport_horizontal_ruler, QWidget#viewport_vertical_ruler {{
+    background: {tokens.surface_alt};
+    color: {tokens.text_secondary};
+    border: 0px;
+}}
+QWidget#viewport_overlay_bar {{
+    background: {tokens.surface_alt};
+    border: 1px solid {tokens.border_strong};
+    border-radius: 4px;
+}}
+QWidget#viewport_overlay_bar QToolButton {{
+    background: transparent;
+    border: 0px;
+    padding: 5px 8px;
+    color: {tokens.text_primary};
+}}
+QWidget#viewport_overlay_bar QToolButton:hover {{
+    background: {tokens.surface_raised};
+}}
+QWidget#viewport_overlay_bar QToolButton:checked {{
+    color: {tokens.accent};
+    background: {tokens.rgba(tokens.accent, 28)};
+}}
 QStatusBar {{
     background: {tokens.surface_alt};
     color: {tokens.text_secondary};

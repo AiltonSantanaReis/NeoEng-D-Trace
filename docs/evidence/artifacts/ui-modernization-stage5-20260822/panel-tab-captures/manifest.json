@@ -1,0 +1,125 @@
+{
+  "captures": [
+    {
+      "bytes": 27114,
+      "file": "panel-tab-captures/1080p_FHD_01_objects.png",
+      "sha256": "b4725c91a818420e7ed51f44290d93415df7a7db20cd5060038683ca55fd1a96",
+      "size": [
+        1920,
+        1080
+      ],
+      "tab": "Objects"
+    },
+    {
+      "bytes": 24437,
+      "file": "panel-tab-captures/1080p_FHD_02_layers.png",
+      "sha256": "80fed7155628bbc8504abf059e93696499b7d78f5fb75882e9e7753c2a5f8ca9",
+      "size": [
+        1920,
+        1080
+      ],
+      "tab": "Layers"
+    },
+    {
+      "bytes": 25282,
+      "file": "panel-tab-captures/1080p_FHD_03_groups.png",
+      "sha256": "bfebc6406db3ff698b2f1c5e47c23cc530979da4a03cb8fce2882389131dae53",
+      "size": [
+        1920,
+        1080
+      ],
+      "tab": "Groups"
+    },
+    {
+      "bytes": 25053,
+      "file": "panel-tab-captures/1080p_FHD_04_collision.png",
+      "sha256": "a95b85dcc0d3382303b9c8e9b3fcc54816f75008bb8831a1cd40d269431f3a01",
+      "size": [
+        1920,
+        1080
+      ],
+      "tab": "Collision"
+    },
+    {
+      "bytes": 22713,
+      "file": "panel-tab-captures/768p_Minima_01_objects.png",
+      "sha256": "055683634bd075b0e545c5371ea751fb683e8c3621fb6ce1c85481ab10c0ff2c",
+      "size": [
+        1366,
+        768
+      ],
+      "tab": "Objects"
+    },
+    {
+      "bytes": 19826,
+      "file": "panel-tab-captures/768p_Minima_02_layers.png",
+      "sha256": "f7252a54955bb191e805ffe99e4d7e218f5d76056ef51537cdc7e59c12866d16",
+      "size": [
+        1366,
+        768
+      ],
+      "tab": "Layers"
+    },
+    {
+      "bytes": 20963,
+      "file": "panel-tab-captures/768p_Minima_03_groups.png",
+      "sha256": "30ef4476d46aa820f3a04b5bb83106d066a16a5a76331ddee549247ad83dd916",
+      "size": [
+        1366,
+        768
+      ],
+      "tab": "Groups"
+    },
+    {
+      "bytes": 20781,
+      "file": "panel-tab-captures/768p_Minima_04_collision.png",
+      "sha256": "64d7def7bd9585881cf805d531ddc8dd679814f18b6fa00063d89419970b6f85",
+      "size": [
+        1366,
+        768
+      ],
+      "tab": "Collision"
+    },
+    {
+      "bytes": 21637,
+      "file": "panel-tab-captures/720p_Compacta_01_objects.png",
+      "sha256": "a900168f40b8b7d5b92296467f8e1cb462dfe02b9279644d0d9d1ab5c713fe06",
+      "size": [
+        1280,
+        720
+      ],
+      "tab": "Objects"
+    },
+    {
+      "bytes": 19008,
+      "file": "panel-tab-captures/720p_Compacta_02_layers.png",
+      "sha256": "8dc101782455100bd5ecff2b682944335dcfed86b6881c373d6eb6aa73c19e40",
+      "size": [
+        1280,
+        720
+      ],
+      "tab": "Layers"
+    },
+    {
+      "bytes": 19805,
+      "file": "panel-tab-captures/720p_Compacta_03_groups.png",
+      "sha256": "7a964d7837e2ed69f5bf8b9f70576a5062ba374c84da57e0126406459a0d5559",
+      "size": [
+        1280,
+        720
+      ],
+      "tab": "Groups"
+    },
+    {
+      "bytes": 19932,
+      "file": "panel-tab-captures/720p_Compacta_04_collision.png",
+      "sha256": "37f2f1775340997a15a2fec68280bcefd16be924c8a42a351de324fe2b95945c",
+      "size": [
+        1280,
+        720
+      ],
+      "tab": "Collision"
+    }
+  ],
+  "schema_version": 1
+}

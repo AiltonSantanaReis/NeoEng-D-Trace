@@ -24,7 +24,13 @@ import numpy as np  # noqa: E402
 from PySide6.QtCore import QPoint, QSize, QTimer  # noqa: E402
 from PySide6.QtGui import QImage  # noqa: E402
 from PySide6.QtTest import QTest  # noqa: E402
-from PySide6.QtWidgets import QApplication, QMessageBox, QWidget  # noqa: E402
+from PySide6.QtWidgets import (  # noqa: E402
+    QApplication,
+    QMessageBox,
+    QStackedWidget,
+    QTabWidget,
+    QWidget,
+)
 
 from src.core.commands import CommandManager  # noqa: E402
 from src.models.scene import Scene  # noqa: E402
@@ -108,6 +114,11 @@ def _digest(path: Path) -> dict[str, Any]:
 
 
 def _open_panels(window: MainWindow, width: int) -> None:
+    if hasattr(window, "reference_panel_tabs"):
+        # The reference shell uses one right dock with selectable pages.
+        window.reference_panel_tabs.setCurrentWidget(window.layers)
+        return
+
     if window._compact_layout:
         window.compact_panel_tabs.setCurrentWidget(window.side_panel)
         return
@@ -153,6 +164,42 @@ def _capture_size(path: Path) -> list[int]:
     return [image.width(), image.height()]
 
 
+def _rendered_to_root(widget: QWidget, root: QWidget) -> bool:
+    """Return whether a widget page contributes pixels to the captured root."""
+    ancestor = widget.parentWidget()
+    while ancestor is not None and ancestor is not root:
+        if isinstance(ancestor, (QTabWidget, QStackedWidget)):
+            index = ancestor.indexOf(widget)
+            if index >= 0 and ancestor.currentIndex() != index:
+                return False
+        ancestor = ancestor.parentWidget()
+    return True
+
+
+def _tab_visibility_snapshot(tabs: QTabWidget, root: QWidget) -> dict[str, Any]:
+    """Record the rendered visibility contract of every tab page."""
+    return {
+        "current_index": tabs.currentIndex(),
+        "visible_to_root": tabs.isVisibleTo(root),
+        "pages": [
+            {
+                "index": index,
+                "title": tabs.tabText(index),
+                "current": index == tabs.currentIndex(),
+                "visible": tabs.widget(index).isVisible(),
+                "visible_to_root": tabs.widget(index).isVisibleTo(root),
+                "geometry": [
+                    tabs.widget(index).x(),
+                    tabs.widget(index).y(),
+                    tabs.widget(index).width(),
+                    tabs.widget(index).height(),
+                ],
+            }
+            for index in range(tabs.count())
+        ],
+    }
+
+
 def _widget_snapshot(window: QWidget, *, root: QWidget | None = None) -> dict[str, Any]:
     """Record geometry from Qt itself in the coordinate system of root.
 
@@ -170,7 +217,16 @@ def _widget_snapshot(window: QWidget, *, root: QWidget | None = None) -> dict[st
         # isVisible() may remain true for a widget on an inactive
         # QStackedWidget/QTabWidget page. The audit contract must describe
         # what is actually rendered in the captured window.
-        "visible": window.isVisible() and window.isVisibleTo(root),
+        # A zero-sized compatibility widget may remain logically visible in
+        # Qt while contributing no pixels to the captured frame. The visual
+        # audit must classify rendered visibility, not stale QObject state.
+        "visible": (
+            window.isVisible()
+            and window.isVisibleTo(root)
+            and _rendered_to_root(window, root)
+            and rect.width() > 0
+            and rect.height() > 0
+        ),
         "enabled": window.isEnabled(),
         "geometry": [rect.x(), rect.y(), rect.width(), rect.height()],
         "root_geometry": [
@@ -192,9 +248,11 @@ def _main_window_widgets(window: MainWindow) -> dict[str, dict[str, Any]]:
     required = {
         "main_splitter": window.main_splitter,
         "tool_palette": window.tool_palette,
+        "reference_tool_palette": window.reference_tool_palette,
         "canvas": window.canvas,
         "panel_stack": window.panel_stack,
         "desktop_panel_splitter": window.desktop_panel_splitter,
+        "reference_panel_tabs": window.reference_panel_tabs,
         "right_splitter": window.right_splitter,
         "compact_panel_tabs": window.compact_panel_tabs,
         "side_panel": window.side_panel,
@@ -207,7 +265,18 @@ def _main_window_widgets(window: MainWindow) -> dict[str, dict[str, Any]]:
     }
     if any(not isinstance(widget, QWidget) for widget in required.values()):
         raise RuntimeError("MainWindow layout contract has a non-widget member")
-    return {name: _widget_snapshot(widget, root=window) for name, widget in required.items()}
+    snapshots = {
+        name: _widget_snapshot(widget, root=window) for name, widget in required.items()
+    }
+    snapshots["tab_visibility"] = {
+        "reference_panel_tabs": _tab_visibility_snapshot(
+            window.reference_panel_tabs, window
+        ),
+        "compact_panel_tabs": _tab_visibility_snapshot(
+            window.compact_panel_tabs, window
+        ),
+    }
+    return snapshots
 
 
 def _new_window(
@@ -363,7 +432,9 @@ def run(output: Path) -> dict[str, Any]:
             _settle(app, 20)
     manifest_path = output / "manifest.json"
     manifest_path.write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     return manifest
 

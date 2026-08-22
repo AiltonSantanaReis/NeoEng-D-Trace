@@ -2,7 +2,7 @@
   "capture_manifest": {
     "file": "windows-captures/manifest.json",
     "resolution_count": 3,
-    "sha256": "4c39ebc724b57242fde9791392e0fcd153f1cec406af430151b2f49dcd459b60"
+    "sha256": "516de9f5dd17bcd5d6392eee00fc6840bb1189c23a06272988989026f2a2a0d4"
   },
   "decision": "PASS",
   "environment": {
@@ -17,14 +17,14 @@
     "states": {
       "1080p_FHD/fit": {
         "canvas_geometry": [
-          153,
           0,
-          962,
-          975
+          0,
+          1261,
+          928
         ],
         "digest": {
-          "bytes": 192248,
-          "sha256": "ec4c5a78f997cb416ecab23460ab49b408655e4f5ec734705be803d5f4ac15c3"
+          "bytes": 141136,
+          "sha256": "2d26df63ddb7f0f077ae0ad2c39d36f5905cc8b00b710b3a9be6fee3683358b2"
         },
         "file": "functional-captures/1080p_FHD_fit.png",
         "size": [
@@ -43,20 +43,20 @@
           210,
           16
         ],
-        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.27x",
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.66x",
         "view_mode": 1,
-        "zoom": 1.2693055555555555
+        "zoom": 1.6638194444444443
       },
       "1080p_FHD/lit_1to1": {
         "canvas_geometry": [
-          153,
           0,
-          962,
-          975
+          0,
+          1261,
+          928
         ],
         "digest": {
-          "bytes": 173851,
-          "sha256": "a89d2bcd005baf68c11ac88db191048bd47d6364efb244150778a9ac2698b0fd"
+          "bytes": 133430,
+          "sha256": "f87fe8ac4421d13f97b0b02fc054647b4cd4f9f3f51ea4eec2f1b28ff14903a5"
         },
         "file": "functional-captures/1080p_FHD_lit_1to1.png",
         "size": [
@@ -81,14 +81,14 @@
       },
       "1080p_FHD/xray1": {
         "canvas_geometry": [
-          153,
           0,
-          962,
-          975
+          0,
+          1261,
+          928
         ],
         "digest": {
-          "bytes": 182385,
-          "sha256": "70412fb1a60dab9e87da5f92fb3045751caf2520384b0531cfb2f9e4c4a4d509"
+          "bytes": 134495,
+          "sha256": "ccc5357f977ab54ad3e0ea216ea61f694e4ae64e0b95ce5573d1ff88620bcceb"
         },
         "file": "functional-captures/1080p_FHD_xray1.png",
         "size": [
@@ -113,14 +113,14 @@
       },
       "1080p_FHD/xray1_1to1": {
         "canvas_geometry": [
-          153,
           0,
-          962,
-          975
+          0,
+          1261,
+          928
         ],
         "digest": {
-          "bytes": 183821,
-          "sha256": "5d7be919fb705d691479bfd7e24c8870e504a4664d0809308bb7824f0e76c3d9"
+          "bytes": 135138,
+          "sha256": "eee7928e817fe50c8c1a3a75743019df12d731f796d87435b305d5c39a27ee81"
         },
         "file": "functional-captures/1080p_FHD_xray1_1to1.png",
         "size": [
@@ -145,14 +145,14 @@
       },
       "720p_Compacta/fit": {
         "canvas_geometry": [
-          153,
           0,
-          662,
-          635
+          0,
+          701,
+          588
         ],
         "digest": {
-          "bytes": 101742,
-          "sha256": "c513f347fb03b621af64166dae91afa1125b62f5f072606100d3a45f22fe341f"
+          "bytes": 134878,
+          "sha256": "cd3c199adb1ffd285d7d0b1e6a96629f47168854a5bd6fa5704277a74d78bc47"
         },
         "file": "functional-captures/720p_Compacta_fit.png",
         "size": [
@@ -171,20 +171,20 @@
           210,
           16
         ],
-        "status_text": "VIEW: X-RAY 1  |  ZOOM: 0.87x",
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 0.92x",
         "view_mode": 1,
-        "zoom": 0.8734722222222221
+        "zoom": 0.9249305555555555
       },
       "720p_Compacta/lit_1to1": {
         "canvas_geometry": [
-          153,
           0,
-          662,
-          635
+          0,
+          701,
+          588
         ],
         "digest": {
-          "bytes": 88943,
-          "sha256": "6afc4de5ba1c47ef4b465c7720e2c1522fd96197438bc9fe742d937e0f841445"
+          "bytes": 114209,
+          "sha256": "57ceb806edeef95e7af3dca51185684a3427b033a865f859c22af4642818835c"
         },
         "file": "functional-captures/720p_Compacta_lit_1to1.png",
         "size": [
@@ -209,14 +209,14 @@
       },
       "720p_Compacta/xray1": {
         "canvas_geometry": [
-          153,
           0,
-          662,
-          635
+          0,
+          701,
+          588
         ],
         "digest": {
-          "bytes": 96814,
-          "sha256": "e5b9ab03118c380e2da6b927942fe7832fcf3f492b1c17ab73e5ec8d9d6a3682"
+          "bytes": 115312,
+          "sha256": "91fc153bd365e24db8a2b79fe634ca708f6695a00d596ecc95b03684ed839826"
         },
         "file": "functional-captures/720p_Compacta_xray1.png",
         "size": [
@@ -241,14 +241,14 @@
       },
       "720p_Compacta/xray1_1to1": {
         "canvas_geometry": [
-          153,
           0,
-          662,
-          635
+          0,
+          701,
+          588
         ],
         "digest": {
-          "bytes": 97716,
-          "sha256": "2ed87db7f0cbdbb4328fcccd56259f6b9e2526a920817cda13f2917dffca7426"
+          "bytes": 130216,
+          "sha256": "d4e719f6f60fe572bb14a79cd8e62267d789f41ef8186dc47f36c159c493c872"
         },
         "file": "functional-captures/720p_Compacta_xray1_1to1.png",
         "size": [
@@ -273,14 +273,14 @@
       },
       "768p_Minima/fit": {
         "canvas_geometry": [
-          153,
           0,
-          748,
-          683
+          0,
+          787,
+          636
         ],
         "digest": {
-          "bytes": 105672,
-          "sha256": "836c0cdc6711c81e6d09d4437ebd7385213b357796a07224080969c227cc7bf4"
+          "bytes": 141387,
+          "sha256": "ff410f799477479ce2f80740ef6f904704e8511e8d253bd513488a0af95f3845"
         },
         "file": "functional-captures/768p_Minima_fit.png",
         "size": [
@@ -299,20 +299,20 @@
           210,
           16
         ],
-        "status_text": "VIEW: X-RAY 1  |  ZOOM: 0.99x",
+        "status_text": "VIEW: X-RAY 1  |  ZOOM: 1.04x",
         "view_mode": 1,
-        "zoom": 0.9869444444444445
+        "zoom": 1.0384027777777776
       },
       "768p_Minima/lit_1to1": {
         "canvas_geometry": [
-          153,
           0,
-          748,
-          683
+          0,
+          787,
+          636
         ],
         "digest": {
-          "bytes": 92191,
-          "sha256": "d2b050dc582e087fd138e7614536926e40dbe5472811f0cfb6286238a1285b3f"
+          "bytes": 117700,
+          "sha256": "1e2853e7bee9077ccd619d9fb0f262cff3bbe52a4c1a356f9d66951d394531f3"
         },
         "file": "functional-captures/768p_Minima_lit_1to1.png",
         "size": [
@@ -337,14 +337,14 @@
       },
       "768p_Minima/xray1": {
         "canvas_geometry": [
-          153,
           0,
-          748,
-          683
+          0,
+          787,
+          636
         ],
         "digest": {
-          "bytes": 101049,
-          "sha256": "4a8bb76fd403868116f698611e46b0e0a36f7d6a48ac5e5d4dcb8a7613bb2bb3"
+          "bytes": 118890,
+          "sha256": "ec4be677de6987c0b85b36348709d10bb9008f423f2da59c48645e1519bbc063"
         },
         "file": "functional-captures/768p_Minima_xray1.png",
         "size": [
@@ -369,14 +369,14 @@
       },
       "768p_Minima/xray1_1to1": {
         "canvas_geometry": [
-          153,
           0,
-          748,
-          683
+          0,
+          787,
+          636
         ],
         "digest": {
-          "bytes": 102193,
-          "sha256": "cadd06bcd60e9eebbeebb2dac5a44fcc458fd94130c19444228b18c6b2b1d181"
+          "bytes": 136267,
+          "sha256": "160568a781f111360c0903123132ad71caa9abfac77a428f65c1b332f6ddfa6c"
         },
         "file": "functional-captures/768p_Minima_xray1_1to1.png",
         "size": [
@@ -402,16 +402,72 @@
     },
     "status": "PASS"
   },
+  "reference_fixture": {
+    "bytes": 1653419,
+    "comparison_method": "chrome geometry and interaction contract; central illustrative scene pixels excluded",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "file": "reference/reference-chrome.png",
+    "sha256": "d97bbc04fc18833cfd2b729abfce8157417caf0d73532779d77aef95f28c90be",
+    "status": "PASS"
+  },
+  "reference_shell_contract": {
+    "desktop_panel_widget": "QTabWidget",
+    "desktop_tabs": [
+      "Objects",
+      "Layers",
+      "Groups",
+      "Collision"
+    ],
+    "failure_count": 0,
+    "failures": [],
+    "left_toolbar_width": 81,
+    "platform": "windows",
+    "reference_fixture": {
+      "bytes": 1653419,
+      "comparison_method": "chrome geometry and interaction contract; central illustrative scene pixels excluded",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "file": "reference/reference-chrome.png",
+      "sha256": "d97bbc04fc18833cfd2b729abfce8157417caf0d73532779d77aef95f28c90be",
+      "status": "PASS"
+    },
+    "splitter_sizes": [
+      81,
+      1289,
+      540
+    ],
+    "status": "PASS",
+    "tabs": [
+      "Objects",
+      "Layers",
+      "Groups",
+      "Collision"
+    ],
+    "toolbar_actions": 6
+  },
+  "reference_visual_match": {
+    "central_scene_excluded": true,
+    "gaps": [],
+    "method": "live Qt structure compared with reference chrome contract",
+    "status": "PASS"
+  },
   "schema_version": 1,
   "scope": [
     "viewport state moved to permanent status bar",
     "live Lit/X-Ray/zoom/Fit/1:1 status synchronization",
     "legacy canvas HUD not invoked by MainWindow",
-    "gizmo, masks, side panels and scenario editor contracts preserved"
+    "gizmo, masks, side panels and scenario editor contracts preserved",
+    "reference-aligned toolbar, viewport rulers, HUD overlay and live Pan/Select controls",
+    "historical desktop panel splitters preserved; compact panel tabs and Layers action toolbar verified"
   ],
   "source_state": {
     "branch": "Ailton/interface-stage5-viewport-hud",
-    "commit": "67859e51eb87f8d97b49399b7e3f92086afd0c92",
+    "commit": "5d45f6ed54a1cf21cb394e8a8d5d8974708e44c8",
     "worktree_clean": false
   },
   "stage": "Etapa 5 \u2014 Viewport e HUD",

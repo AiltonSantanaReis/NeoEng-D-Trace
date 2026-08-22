@@ -1,0 +1,23 @@
+{
+  "comparisons": [
+    {
+      "changed_pixels": 0,
+      "changed_ratio": 0.0,
+      "components": [],
+      "diff_image": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_01_initial_objects_vs_after_cycle_diff.png",
+      "first": "1080p_FHD_01_initial_objects.png",
+      "second": "1080p_FHD_06_objects_after_cycle.png",
+      "total_pixels": 541620
+    },
+    {
+      "changed_pixels": 0,
+      "changed_ratio": 0.0,
+      "components": [],
+      "diff_image": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_01_initial_objects_vs_after_cycle_diff.png",
+      "first": "720p_Compacta_01_initial_objects.png",
+      "second": "720p_Compacta_06_objects_after_cycle.png",
+      "total_pixels": 295780
+    }
+  ],
+  "schema_version": 1
+}

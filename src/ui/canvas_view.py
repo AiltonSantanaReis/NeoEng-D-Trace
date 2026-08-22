@@ -134,6 +134,7 @@ class ToolInterface:
 
 class CanvasView(QWidget):
     viewport_state_changed = Signal(str)
+    pan_mode_changed = Signal(bool)
 
     VIEW_LIT = 0
     VIEW_XRAY_1 = 1  # Sobel gradients
@@ -193,6 +194,7 @@ class CanvasView(QWidget):
         self._pan = QPointF(0.0, 0.0)
         self._dragging = False
         self._last_mouse = QPointF()
+        self._pan_mode = False
 
         # Flags de Estado
         self._preview_mode = False  # Modo de exportação (esconde UI helpers)
@@ -751,6 +753,18 @@ class CanvasView(QWidget):
         self._tool = tool
         self.update()
 
+    def set_pan_mode(self, enabled: bool) -> None:
+        """Use the primary mouse button for viewport panning when enabled."""
+        self._pan_mode = bool(enabled)
+        if not self._pan_mode and self._dragging:
+            self._dragging = False
+            self.setCursor(Qt.CursorShape.ArrowCursor)
+        self.pan_mode_changed.emit(self._pan_mode)
+        self.update()
+
+    def is_pan_mode(self) -> bool:
+        return self._pan_mode
+
     def set_collision_overlay(self, overlay):
         self._collision_overlay = overlay
 
@@ -919,6 +933,12 @@ class CanvasView(QWidget):
                 self._last_mouse = pos
                 self.setCursor(Qt.CursorShape.ClosedHandCursor)
             event.accept()
+            return
+
+        if self._pan_mode and event.button() == Qt.MouseButton.LeftButton:
+            self._dragging = True
+            self._last_mouse = pos
+            self.setCursor(Qt.CursorShape.ClosedHandCursor)
             return
 
         # 1. Gizmo contextual da seleção (sempre em coordenadas de tela)
