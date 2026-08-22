@@ -1,0 +1,179 @@
+{
+  "artifacts": {
+    "raw_manifest": "raw-captures/manifest.json",
+    "visual_report": "visual-audit/visual-audit-report.json"
+  },
+  "commands": {
+    "capture": {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/audit_ui_capture.py",
+        "--output",
+        "docs/evidence/artifacts/ui-modernization-stage4-20260822/raw-captures"
+      ],
+      "log": "capture.log",
+      "returncode": 0
+    },
+    "visual_audit": {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/audit_visual_artifacts.py",
+        "--input",
+        "docs/evidence/artifacts/ui-modernization-stage4-20260822/raw-captures",
+        "--output",
+        "docs/evidence/artifacts/ui-modernization-stage4-20260822/visual-audit"
+      ],
+      "log": "visual-audit.log",
+      "returncode": 0
+    }
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "qt_platform": "offscreen"
+  },
+  "limitations": [
+    "The capture pipeline is real Qt offscreen rendering; native Windows DPI capture remains a separate environment-specific audit.",
+    "Viewport HUD/Gizmo relocation and the separate scenario authoring window remain outside this toolbar stage."
+  ],
+  "live_contract": {
+    "actions": {
+      "act_100": {
+        "accessible_name": "one to one zoom",
+        "icon_key": "zoom_100",
+        "icon_null": false,
+        "text": "1:1 Pixel",
+        "tooltip": "one to one zoom"
+      },
+      "act_export": {
+        "accessible_name": "export",
+        "icon_key": "export",
+        "icon_null": false,
+        "text": "Export...",
+        "tooltip": "export"
+      },
+      "act_fit": {
+        "accessible_name": "fit view",
+        "icon_key": "fit",
+        "icon_null": false,
+        "text": "Fit View (F)",
+        "tooltip": "fit view"
+      },
+      "collision_overlay_action": {
+        "accessible_name": "collision overlay",
+        "icon_key": "stage4_overlay",
+        "icon_null": false,
+        "text": "Collision Overlay",
+        "tooltip": "collision overlay"
+      },
+      "mask_viewer_action": {
+        "accessible_name": "mask viewer",
+        "icon_key": "stage4_mask",
+        "icon_null": false,
+        "text": "Mask Viewer (Auto-Detect)",
+        "tooltip": "mask viewer"
+      },
+      "open_image_action": {
+        "accessible_name": "open image",
+        "icon_key": "open_image",
+        "icon_null": false,
+        "text": "Open Image",
+        "tooltip": "open image"
+      },
+      "open_project_action": {
+        "accessible_name": "folder",
+        "icon_key": "open",
+        "icon_null": false,
+        "text": "Open Project...",
+        "tooltip": "folder"
+      },
+      "redo_action": {
+        "accessible_name": "redo",
+        "icon_key": "stage4_redo",
+        "icon_null": false,
+        "text": "Redo",
+        "tooltip": "redo"
+      },
+      "save_project_action": {
+        "accessible_name": "save",
+        "icon_key": "save",
+        "icon_null": false,
+        "text": "Save",
+        "tooltip": "save"
+      },
+      "save_project_as_action": {
+        "accessible_name": "save as",
+        "icon_key": "save_as",
+        "icon_null": false,
+        "text": "Save As...",
+        "tooltip": "save as"
+      },
+      "undo_action": {
+        "accessible_name": "undo",
+        "icon_key": "stage4_undo",
+        "icon_null": false,
+        "text": "Undo",
+        "tooltip": "undo"
+      }
+    },
+    "contract": {
+      "action_identity_preserved": true,
+      "native_separators": true,
+      "stage": 4,
+      "toolbar_roles": {
+        "main_toolbar": "commands",
+        "navigation_toolbar": "context",
+        "xray_toolbar": "render"
+      }
+    },
+    "failure_count": 0,
+    "failures": [],
+    "status": "PASS",
+    "toolbars": {
+      "main_toolbar": {
+        "action_count": 12,
+        "geometry": [
+          0,
+          0,
+          640,
+          480
+        ],
+        "object_name": "main_toolbar",
+        "role": "commands",
+        "separator_count": 3
+      },
+      "navigation_toolbar": {
+        "action_count": 4,
+        "geometry": [
+          0,
+          20,
+          255,
+          41
+        ],
+        "object_name": "navigation_toolbar",
+        "role": "context",
+        "separator_count": 0
+      },
+      "xray_toolbar": {
+        "action_count": 4,
+        "geometry": [
+          255,
+          20,
+          945,
+          41
+        ],
+        "object_name": "xray_toolbar",
+        "role": "render",
+        "separator_count": 0
+      }
+    }
+  },
+  "schema_version": 1,
+  "source_state": {
+    "branch": "Ailton/interface-stage4-top-toolbar",
+    "commit": "834a089ba29750499caa329c30b9d9c760c29b73",
+    "worktree_clean": false
+  },
+  "stage": "Etapa 4 \u2014 Barra superior",
+  "status": "PASS"
+}

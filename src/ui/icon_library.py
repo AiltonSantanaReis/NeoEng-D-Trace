@@ -307,3 +307,6 @@ def configure_main_window_controls(window: Any) -> None:
     for name, key in widget_keys.items():
         configure_widget(getattr(window, name), key)
     configure_widget(window.canvas.gizmo_toggle, "gizmo")
+    from src.ui.top_toolbar import configure_top_toolbars
+
+    configure_top_toolbars(window)
