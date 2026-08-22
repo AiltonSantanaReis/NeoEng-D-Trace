@@ -1,11 +1,14 @@
 # Etapa 7 — Painéis laterais da interface moderna
 
-**Estado atual:** `PASS_LOCAL / NÃO APROVADA`
+**Estado atual:** `PASS_LOCAL / REVISÃO HUMANA APROVADA / AGUARDANDO PÓS-MERGE`
 
 Esta evidência registra a implementação e a validação local da Etapa 7 no
-commit `9ee591615d30f98037e8506f513c4c2635fb207d`. A etapa ainda depende dos
-gates remotos, revisão da PR, CI no SHA exato, merge autorizado e validação
-pós-merge. Não é aprovação de release.
+commit `9ee591615d30f98037e8506f513c4c2635fb207d`. O CI remoto `32604234627`
+passou em Linux e Windows no commit
+`282fa28946d23b49a72d941aaa2c1620d424f0ea`. A revisão visual humana foi
+realizada nas capturas versionadas. Permanecem pendentes o CI do commit
+documental desta revisão, o merge autorizado e a validação pós-merge. Não é
+aprovação de release.
 
 ## Escopo e baseline
 
@@ -117,19 +120,46 @@ regenerado contra os blobs Git efetivamente versionados e verificado com
 sucesso: Baseline verified: 2396 files. A suíte local posterior retornou
 1612 passed, 2 skipped e a integridade de evidências retornou 104 manifests
 validated. O CI precisa ser reexecutado no novo commit corretivo.
+
+## Revisão visual humana
+
+A revisão foi realizada sobre as capturas PNG versionadas, sem depender apenas do
+resultado automatizado:
+
+- `groups-panel-audit-post-checkpoint/1080p_FHD_05_grupos_painel.png` — PASS;
+- `groups-panel-audit-post-checkpoint/768p_Minima_05_grupos_painel.png` — PASS;
+- `groups-panel-audit-post-checkpoint/720p_Compacta_05_grupos_painel.png` — PASS;
+- estados completos `post-checkpoint-captures/*_02_projeto_paineis.png` — PASS.
+
+Foram verificados visualmente clipping nas bordas, sobreposição entre canvas e
+painéis, legibilidade de textos e ícones, toolbar Groups dentro do dock,
+consistência entre resoluções e acessibilidade dos painéis. Não foram observados
+artefatos ou degradação visual. A toolbar compacta de Groups mantém os oito
+comandos, sem esconder ações funcionais. As diferenças da barra superior em
+relação à imagem de referência não pertencem ao escopo da Etapa 7 e não foram
+classificadas como falha desta etapa.
+
+As capturas específicas foram conferidas pelos hashes já registrados no pacote:
+`D265FB1259445559B965A79B96875A951B7E2592A3E915C788BF0B76D7C73C6D`,
+`41BF159C0BA0607EAAE4052B64DC62A5B809C3B41B45B95810F70FF4B95A09C8` e
+`B6BECDFADC114D7494719653DC920DE2C66990F3509EBA9744AAF975E4CCE5A0`.
 ## Limitações e gates pendentes
 
 - `worktree_clean=false` no relatório local porque existem diretórios locais
   de artefatos não rastreados preservados; isso não foi apresentado como
   árvore limpa;
-- revisão visual humana das capturas não foi declarada nem substituída pelo
-  auditor automatizado;
-- PR, CI remoto, merge autorizado e validação pós-merge ainda não foram
-  executados nesta etapa.
+- revisão visual humana concluída com resultado PASS nas capturas específicas
+  da Etapa 7 e nos estados completos de projeto;
+- a PR #147 permanece draft; o CI `32604234627` passou no commit de
+  implementação/correção, mas este novo registro documental exigirá nova
+  execução do CI; merge autorizado e validação pós-merge continuam pendentes.
 
 ## Decisão
 
-**PASS_LOCAL:** a melhoria comprovada foi implementada integralmente no
-escopo limitado e validada com testes reais, auditoria Qt nativa, capturas,
-hashes, integridade e privacidade. **A Etapa 7 permanece não aprovada** até
-os gates remotos e pós-merge serem concluídos sem alterar as regras.
+**PASS_LOCAL + HUMAN_REVIEW_PASS:** a melhoria comprovada foi implementada
+integralmente no escopo limitado e validada com testes reais, auditoria Qt
+nativa, capturas, hashes, integridade, privacidade e revisão visual humana.
+O CI remoto já passou nos dois sistemas operacionais no commit
+`282fa28946d23b49a72d941aaa2c1620d424f0ea`. A Etapa 7 ainda aguarda a nova
+validação do CI deste registro documental, merge autorizado e validação
+pós-merge; não é aprovação de release.
