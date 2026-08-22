@@ -95,7 +95,12 @@ class SceneObjectGraphicsItem(QGraphicsObject):
 
 
 class SceneTransformGizmo(QGraphicsObject):
-    """Interactive translate, rotate and uniform-scale gizmo."""
+    """Interactive translate, rotate and uniform-scale gizmo.
+
+    The scenario editor keeps its string-based signal contract, while the
+    hit-test is fail-closed outside a real handle and hover state is exposed
+    for consistent visual feedback.
+    """
 
     gesture_started = Signal(str, QPointF)
     gesture_changed = Signal(str, QPointF)
@@ -104,37 +109,57 @@ class SceneTransformGizmo(QGraphicsObject):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
+        self.setAcceptHoverEvents(True)
         self.setZValue(100.0)
         self._mode: str | None = None
+        self._hover_mode: str | None = None
 
     def boundingRect(self) -> QRectF:
         return QRectF(-58.0, -58.0, 116.0, 116.0)
 
-    def _mode_for(self, point: QPointF) -> str:
-        radius = math.hypot(point.x(), point.y())
-        if abs(point.x()) >= 27.0 and abs(point.y()) >= 27.0:
+    def _mode_for(self, point: QPointF) -> str | None:
+        if not self.boundingRect().contains(point):
+            return None
+        if 27.0 <= point.x() <= 48.0 and 27.0 <= point.y() <= 48.0:
             return "scale"
+        radius = math.hypot(point.x(), point.y())
         if 38.0 <= radius <= 56.0:
             return "rotate"
         if point.x() >= 26.0 and abs(point.y()) <= 9.0:
             return "translate_x"
         if point.y() <= -26.0 and abs(point.x()) <= 9.0:
             return "translate_y"
-        return "translate"
+        if radius <= 14.0:
+            return "translate"
+        return None
+
+    @staticmethod
+    def _color(mode: str, hover_mode: str | None, base: str) -> QColor:
+        return QColor("#ffe36e" if mode == hover_mode else base)
 
     def paint(self, painter, option, widget=None) -> None:
         del option, widget
         painter.setRenderHint(painter.RenderHint.Antialiasing, True)
-        painter.setPen(QPen(QColor("#ff5d63"), 3.0))
+        painter.setPen(
+            QPen(self._color("translate_x", self._hover_mode, "#ff5d63"), 3.0)
+        )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(42.0, 0.0))
-        painter.setPen(QPen(QColor("#59dc89"), 3.0))
+        painter.setPen(
+            QPen(self._color("translate_y", self._hover_mode, "#59dc89"), 3.0)
+        )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(0.0, -42.0))
-        painter.setPen(QPen(QColor("#b8c6d6"), 2.0, Qt.PenStyle.DashLine))
+        painter.setPen(
+            QPen(
+                self._color("rotate", self._hover_mode, "#b8c6d6"),
+                2.0,
+                Qt.PenStyle.DashLine,
+            )
+        )
         painter.drawEllipse(QRectF(-48.0, -48.0, 96.0, 96.0))
-        painter.setBrush(QBrush(QColor("#dceeff")))
+        painter.setBrush(QBrush(self._color("translate", self._hover_mode, "#dceeff")))
         painter.setPen(QPen(QColor("#113044"), 1.5))
         painter.drawRect(QRectF(-7.0, -7.0, 14.0, 14.0))
-        painter.setBrush(QBrush(QColor("#ffcf65")))
+        painter.setBrush(QBrush(self._color("scale", self._hover_mode, "#ffcf65")))
         painter.drawRect(QRectF(33.0, 33.0, 12.0, 12.0))
         painter.drawPolygon(
             QPolygonF([QPointF(42.0, 0.0), QPointF(32.0, -6.0), QPointF(32.0, 6.0)])
@@ -144,8 +169,23 @@ class SceneTransformGizmo(QGraphicsObject):
             QPolygonF([QPointF(0.0, -42.0), QPointF(-6.0, -32.0), QPointF(6.0, -32.0)])
         )
 
+    def hoverMoveEvent(self, event) -> None:
+        mode = self._mode_for(event.pos())
+        if mode != self._hover_mode:
+            self._hover_mode = mode
+            self.update()
+        event.accept()
+
+    def hoverLeaveEvent(self, event) -> None:
+        self._hover_mode = None
+        self.update()
+        event.accept()
+
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         self._mode = self._mode_for(event.pos())
+        if self._mode is None:
+            event.ignore()
+            return
         self.gesture_started.emit(self._mode, event.scenePos())
         event.accept()
 
