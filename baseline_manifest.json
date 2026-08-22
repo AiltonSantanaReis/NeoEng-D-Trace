@@ -672,6 +672,10 @@
       "sha256": "54dc78646eea9c76348ef7e48b3639ba2d55ca86938588afc3ab801c5786638d",
       "size": 5484
     },
+    "docs/evidence/ETAPA_4_INTERFACE_MODERNA_ENCERRAMENTO_POS_COMMIT_2026-08-22.md": {
+      "sha256": "9178ce7ad0d9932965185a62465bd92785eb6a3176ff92f15cdce21b709cd739",
+      "size": 2511
+    },
     "docs/evidence/ETAPA_4_RUNTIME_PARTICULAS_2026-08-20.md": {
       "sha256": "88b1d1e30eaa067d55a0fbe32eb3bf38f79059a9282bebce1bc8989aed2e64ae",
       "size": 8937
@@ -6237,7 +6241,7 @@
       "size": 267
     },
     "docs/evidence/artifacts/ui-modernization-stage4-20260822/artifact-index.json": {
-      "sha256": "a5d045ee6494f50a6719659acfd4f30dcbb3784e15c66fb47f8f87d877a6f1a3",
+      "sha256": "a7471c9d558a68c0bc2f0dbee32ffb53b6c5004a77b6fd15c5084629930f1f1e",
       "size": 6739
     },
     "docs/evidence/artifacts/ui-modernization-stage4-20260822/capture.log": {
@@ -6317,11 +6321,11 @@
       "size": 10112
     },
     "docs/evidence/artifacts/ui-modernization-stage4-20260822/stage4-top-toolbar-report.json": {
-      "sha256": "dc56fb8a10811daa72caed180224b93e6249985bcb93bbda55f0312636a21e2e",
+      "sha256": "3295bb6ff7348cdf7639c09a95fe3957449a3676d560d38acf892cdf73f3b540",
       "size": 4778
     },
     "docs/evidence/artifacts/ui-modernization-stage4-20260822/stage4-top-toolbar-report.md": {
-      "sha256": "23d2de7e22838be9b7ce0375b460ee05a979a2a2373f1fa7c13fc262344c07e9",
+      "sha256": "0476e3879dbda28999e048903a0f95e031c1a5f3f79fe6c03bb684d3a319a6db",
       "size": 267
     },
     "docs/evidence/artifacts/ui-modernization-stage4-20260822/visual-audit.log": {

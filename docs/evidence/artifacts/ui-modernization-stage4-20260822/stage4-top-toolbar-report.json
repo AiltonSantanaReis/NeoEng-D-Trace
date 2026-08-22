@@ -171,7 +171,7 @@
   "schema_version": 1,
   "source_state": {
     "branch": "Ailton/interface-stage4-top-toolbar",
-    "commit": "640fed7c0361da8537d29f1528f228bf77480f79",
+    "commit": "834a089ba29750499caa329c30b9d9c760c29b73",
     "worktree_clean": false
   },
   "stage": "Etapa 4 \u2014 Barra superior",
