@@ -1,6 +1,6 @@
 # Etapa 5 — Viewport e HUD da interface moderna
 
-Estado: **implementação concluída localmente; aguardando commit, PR, CI e merge**
+Estado: **snapshot técnico pré-merge; reconciliado com o estado pós-merge**
 Data da execução: 2026-08-22
 Branch de trabalho: Ailton/interface-stage5-viewport-hud
 HEAD de referência da execução: 8441bf7710b96752fa8e766469900e224cd497d5
@@ -79,6 +79,27 @@ O capturador headless existente também foi executado e retornou zero achados es
 - A ausência de fontes no backend headless é uma limitação do ambiente de captura; não foi mascarada nem corrigida por alteração de regra.
 - A Etapa 5 não altera o gizmo profissional nem os painéis laterais; esses itens continuam nos gates das etapas correspondentes.
 
+## Reconciliação pós-merge
+
+Este documento preserva a evidência produzida antes dos gates remotos. A
+decisão pré-merge acima não representa mais o estado atual do repositório.
+
+- PR #140 — merge normal concluído.
+- Commit de merge no main: 1f4c2abc59d8015506ecda559ea138f163be4f90.
+- CI: run 32580477614, jobs Linux 97048946903 e Windows 97048947022, ambos
+  concluídos com success.
+- Validação pós-merge em worktree limpa: baseline de 2234 arquivos e
+  integridade de 98 manifests aprovadas; 1600 testes passaram, 2 foram
+  classificados como skips já previstos e a cobertura foi de 91,25%.
+- A auditoria Stage 4B.5, a política de cobertura, Bandit de alta severidade e
+  pip-audit também passaram.
+
+O encerramento consolidado está em
+ETAPA_5_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-22.md. Esta etapa
+não constitui aprovação de release.
+
 ## Decisão
 
-A implementação da Etapa 5 está completa e comprovada localmente. O próximo gate legítimo é a revisão do diff, inclusão explícita dos arquivos novos, atualização do baseline/manifests contra os blobs Git e somente então commit, validação pós-commit, push, PR, CI, merge autorizado e validação pós-merge.
+**Decisão histórica do snapshot:** a implementação estava completa e
+comprovada localmente, mas ainda aguardava os gates remotos. O estado atual é
+definido pelo encerramento pós-merge referenciado acima.

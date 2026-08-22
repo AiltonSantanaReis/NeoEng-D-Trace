@@ -1,6 +1,11 @@
-# Etapa 5 — build portátil pós-commit
+# Etapa 5 — build portátil — snapshot pré-merge
 
-**Estado:** build local reproduzível validada; CI, PR e merge ainda pendentes
+**Classificação:** evidência histórica preservada. O build abaixo foi
+produzido antes do merge; não deve ser interpretado como ausência dos gates
+atuais. O estado consolidado está em
+ETAPA_5_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-22.md.
+
+**Estado do snapshot:** build local reproduzível validada antes do CI, PR e merge
 **Commit de origem:** `96851f16cd27f7880c85f187139a98b88a9a8b84`
 **Plataforma:** Windows 10 (`10.0.26200`), Python 3.11.9, PyInstaller 6.22.0
 **Worktree de build:** worktree temporária limpa no commit de origem
@@ -54,7 +59,8 @@ execução comprovada nesta build.
 
 ## Limitações e decisão
 
-Esta evidência prova a build e o smoke local do commit indicado. Ainda não
-prova CI, PR ou merge; esses gates permanecem obrigatórios e serão executados
-separadamente. A Etapa 5 só será declarada formalmente concluída após esses
-gates e a validação pós-merge.
+Esta evidência prova a build e o smoke local do commit indicado. A afirmação
+de que CI, PR, merge e validação pós-merge estavam pendentes pertence ao
+momento histórico da execução e está superada pelo encerramento pós-merge
+referenciado no início deste documento. A build continua sendo uma evidência
+do commit de origem, não uma aprovação independente de release.
