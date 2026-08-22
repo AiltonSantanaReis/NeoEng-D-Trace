@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** ETAPAS 0–6 APROVADAS / ETAPAS 7–14 PLANEJADAS
+**Status do plano:** ETAPAS 0–7 APROVADAS / ETAPAS 8–14 PLANEJADAS
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -34,7 +34,7 @@ Na leitura do estado local, foram encontrados diretórios de artefatos de audito
 
 As capturas, hashes e resultados de auditorias existentes continuam sendo evidências de seus respectivos commits e escopos. Não são evidência automática das etapas deste plano. A evidência local atual da Etapa 6 é válida apenas para a branch e o worktree identificados no relatório correspondente.
 
-Reconciliação viva de 2026-08-22: o main local está no checkpoint 9ee591615d30f98037e8506f513c4c2635fb207d e origin/main permanece em d6ed662aee0d34a892bf7e60ca78f51d5318792. A Etapa 7 foi implementada e validada localmente como PASS_LOCAL no escopo do GroupsPanel; o checkpoint ainda não foi publicado, a Etapa 7 não está aprovada e as Etapas 8–14 continuam planejadas. Diretórios locais não rastreados continuam preservados e não são evidência de árvore limpa.
+Reconciliação viva de 2026-08-22: o `main` local e `origin/main` estão sincronizados no merge `23e31c893ef6f2081f0b329e74ec84f047f51a67`. A Etapa 7 foi implementada, revisada visualmente, aprovada pelo CI, mesclada e validada pós-merge no escopo do `GroupsPanel`. As Etapas 8–14 continuam planejadas. Diretórios locais não rastreados continuam preservados e não são evidência de árvore limpa.
 
 ## 3. Regras imutáveis de integridade e anti-alucinação
 
