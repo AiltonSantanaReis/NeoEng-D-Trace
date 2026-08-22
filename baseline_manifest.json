@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "71fc6c50cda1d2ddb17fa58c12b5f7879c0ec5953a1c12cd3d15e822477a3a59",
-      "size": 23027
+      "sha256": "4e7335d737fbe9ef3bfc53dfb1823fc721ecbc46f034b11434180eddb97242bd",
+      "size": 25023
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -803,6 +803,10 @@
     "docs/evidence/ETAPA_6_EXPORTACAO_COLISOES.md": {
       "sha256": "5411a4dda34768e06327fab8f854aff49390d4dc0362d0b1e9b132bd2179847d",
       "size": 4897
+    },
+    "docs/evidence/ETAPA_6_GIZMO_BASELINE_2026-08-22.md": {
+      "sha256": "f256df1b50ea8d2a28e058a71ff2d7fdcf94e326662c6b5e2c62d1e27ab0f8b1",
+      "size": 4809
     },
     "docs/evidence/ETAPA_6_IMPORTACAO_UNITY_2026-08-16.md": {
       "sha256": "1408c8588e0d0c563fd48810410a775dfe49111fc1e490f65d905fcc79bf49c0",
@@ -6967,6 +6971,14 @@
     "docs/evidence/artifacts/ui-modernization-stage5-20260822/windows-visual-audit/visual-audit-report.md": {
       "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961",
       "size": 267
+    },
+    "docs/evidence/artifacts/ui-modernization-stage6-20260822/manifest.json": {
+      "sha256": "1c6a4e31b97aa9c431465356b6fcb1bd2c2eaa271bd076fc495f968f239694c7",
+      "size": 444
+    },
+    "docs/evidence/artifacts/ui-modernization-stage6-20260822/stage6-gizmo-baseline-report.json": {
+      "sha256": "da438f2d5862794665e7c7ba53630112f6f346ce3672d1185403ffb74818afb9",
+      "size": 4972
     },
     "docs/evidence/artifacts/unity-import-stage6-2026-08-16/fixture-manifest.json": {
       "sha256": "fc7fccc0fa3e4d9dde2f495ad64ec043b9950355c6657b53533e0e4357dc593b",

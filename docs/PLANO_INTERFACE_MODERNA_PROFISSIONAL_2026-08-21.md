@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** ETAPAS 0–2 APROVADAS / ETAPAS 3–14 PLANEJADAS
+**Status do plano:** ETAPAS 0–5 APROVADAS / ETAPAS 6–14 PLANEJADAS
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -26,7 +26,9 @@ Este plano não é uma autorização para alterar regras, thresholds, scanners, 
 
 O estado vivo atual foi reconciliado após a Etapa 0 no merge \`61165a58bfa6d5b6a10bcbee89dd8d7e7c6fe643\`, com \`main\` local sincronizado a \`origin/main\`.
 
-O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. A Etapa 1 foi formalmente encerrada após CI, merge e validação pós-merge. A Etapa 2 foi formalmente encerrada após PR #133, CI, merge e validação pós-merge. As Etapas 3–14 não foram iniciadas.
+O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. A Etapa 1 foi formalmente encerrada após CI, merge e validação pós-merge. A Etapa 2 foi formalmente encerrada após PR #133, CI, merge e validação pós-merge. As Etapas 3, 4 e 5 foram posteriormente encerradas no escopo aprovado, cada uma após implementação, evidências, CI, merge e validação pós-merge, conforme os snapshots pós-merge correspondentes em `docs/evidence/`. A Etapa 6 ainda não foi iniciada; seu baseline é registrado separadamente antes de qualquer alteração.
+
+Na reconciliação de 2026-08-22, o `main` observado foi o merge `425f21df2bbf9a67c01a577b59ae6bbba25995b7`, que incorpora a documentação pós-merge da Etapa 5. A branch de trabalho do baseline da Etapa 6 parte desse mesmo conteúdo. Os diretórios locais de artefatos históricos não rastreados foram preservados e não são usados como evidência de árvore limpa, release ou aprovação.
 
 Na leitura do estado local, foram encontrados diretórios de artefatos de auditoria não rastreados. Portanto, a árvore não foi considerada limpa e nenhuma conclusão de release, PR ou merge foi inferida a partir de documentação antiga ou de uma execução anterior.
 
@@ -280,3 +282,7 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 | 2026-08-21 | Etapa 0 validada após PR #129, CI 32521765023, merge 61165a5, suíte pós-merge, evidências, auditor visual e baseline Git-blob em worktree limpa. Findings de design preservados; Etapa 1 não iniciada. | ETAPA 0 APROVADA / ETAPAS 1–14 PLANEJADAS |
 | 2026-08-21 | Etapa 1 encerrada após PR #131, merge 71b1c44, PR documental #132, merge aea54aa, CI Linux/Windows e validação pós-merge. Etapa 2 implementada localmente com evidências reais; ciclo remoto pendente. | ETAPA 0–1 APROVADAS / ETAPA 2 PASS_LOCAL |
 | 2026-08-21 | Etapa 2 encerrada após PR #133, merge ff66ffd, CI run 32536763488, baseline/evidência por blobs Git e suíte pós-merge. Próxima etapa: Etapa 3. | ETAPAS 0–2 APROVADAS / ETAPAS 3–14 PLANEJADAS |
+| 2026-08-22 | Etapa 3 encerrada no escopo da barra esquerda após PR #136, merge `adb36398b5c239ded610afa07932de7ff9bff340`, CI e validação pós-merge. Gizmo, Mask Viewer e painéis laterais permaneceram fora do escopo da etapa. | ETAPAS 0–3 APROVADAS / ETAPAS 4–14 PLANEJADAS |
+| 2026-08-22 | Etapa 4 encerrada no escopo da barra superior após PR #138, merge `c85171a59774f709d2541dc6a75e9eb8a9416955`, CI Linux/Windows e validação pós-merge. Viewport/HUD, gizmo e painéis laterais permaneceram nas etapas próprias. | ETAPAS 0–4 APROVADAS / ETAPAS 5–14 PLANEJADAS |
+| 2026-08-22 | Etapa 5 encerrada no escopo de viewport, HUD e iconografia após PR #140, merge `1f4c2abc59d8015506ecda559ea138f163be4f90`, CI run 32580477614 e validação pós-merge. A reconciliação documental foi integrada no merge `425f21df2bbf9a67c01a577b59ae6bbba25995b7` após PR #141. | ETAPAS 0–5 APROVADAS / ETAPAS 6–14 PLANEJADAS |
+| 2026-08-22 | Baseline da Etapa 6 iniciado a partir de `425f21df2bbf9a67c01a577b59ae6bbba25995b7`. A implementação do gizmo profissional ainda não foi iniciada; capacidades, contratos, duplicidade de implementações e lacunas de teste ficam registradas em `ETAPA_6_GIZMO_BASELINE_2026-08-22.md`. | ETAPAS 0–5 APROVADAS / ETAPA 6 BASELINE / IMPLEMENTAÇÃO NÃO INICIADA |
