@@ -1,7 +1,7 @@
 # Etapa 6 — Gizmo profissional — validação pós-merge
 
-**Estado:** `VALIDADA PÓS-MERGE / REVISÃO HUMANA VISUAL NÃO CONFIRMADA`
-**Data:** 2026-08-22
+**Estado:** `CONCLUÍDA NO ESCOPO APROVADO`
+**Data:** 2026-08-22\n**Revisão visual humana:** aprovada pelo proprietário do projeto após visualização das capturas anotadas versionadas.
 **Release:** não aprovada por este documento
 
 ## Proveniência
@@ -51,7 +51,7 @@ O auditor Windows versionado da etapa permanece íntegro no `main`:
 - três resoluções lógicas e quatro estados por resolução;
 - PNGs brutos e anotados hashados no manifesto de evidências.
 
-A revisão visual humana direta não foi confirmada nesta execução porque o visualizador do ambiente encontrou bloqueio de ACL nos PNGs do workspace. Portanto, este documento não transforma o resultado automatizado Pillow/OpenCV/Qt em alegação de revisão humana.
+A revisão visual humana das capturas anotadas versionadas foi realizada e aprovada pelo proprietário do projeto. A aprovação é específica para os estados e resoluções capturados; não amplia o escopo para release ou para etapas posteriores.
 
 ## Estado da árvore local
 
@@ -59,4 +59,4 @@ Não há alterações rastreadas locais. Permanecem seis diretórios históricos
 
 ## Decisão
 
-A implementação do gizmo profissional está integrada no `main` e validada pelos gates remotos e pela suíte pós-merge reproduzida localmente. A aprovação formal da etapa permanece condicionada à revisão visual humana exigida pelo critério aplicável; até essa confirmação, o plano deve manter a Etapa 6 como `PÓS-MERGE VALIDADA / REVISÃO HUMANA VISUAL NÃO CONFIRMADA`, sem iniciar a Etapa 7.
+A implementação do gizmo profissional está integrada no `main`, validada pelos gates remotos, pela suíte pós-merge reproduzida localmente e pela revisão visual humana aprovada. A Etapa 6 está formalmente concluída no escopo aprovado. A Etapa 7 permanece apenas como próxima etapa planejada e exige autorização própria.
