@@ -20,10 +20,10 @@ class TransformGizmo:
     NONE = 0
     AXIS_X = 1
     AXIS_Y = 2
-    CENTER = 3  # compatibility alias retained for the central scale handle
+    CENTER = 3  # central uniform-scale handle; value kept for compatibility
     TRANSLATE_XY = 8
     ROTATE_Z = 4
-    SCALE_UNIFORM = 3
+    SCALE_UNIFORM = 5  # inner ring uniform-scale handle
     SCALE_X = 6
     SCALE_Y = 7
 
@@ -46,9 +46,50 @@ class TransformGizmo:
         self.color_center = QColor(205, 235, 242)
         self.color_hover = QColor(255, 231, 91)
         self.color_dimmed = QColor(100, 100, 100, 150)
+        self._handle_names = {
+            self.AXIS_X: "X axis translation",
+            self.AXIS_Y: "Y axis translation",
+            self.TRANSLATE_XY: "XY plane translation",
+            self.ROTATE_Z: "Z axis rotation",
+            self.CENTER: "Uniform scale center handle",
+            self.SCALE_UNIFORM: "Uniform scale ring",
+            self.SCALE_X: "X axis scale",
+            self.SCALE_Y: "Y axis scale",
+        }
 
     def set_screen_position(self, pos: QPointF):
         self.screen_pos = QPointF(pos)
+
+    def visual_radius(self) -> float:
+        """Return the complete screen-space radius used by hit-test and paint."""
+
+        return max(
+            self.arm_length + self.arrow_size,
+            self.rotation_radius + self.rotation_tolerance,
+            self.arm_length + self.scale_handle_size / 2.0,
+        )
+
+    def visual_bounds(self, margin: float = 0.0) -> QRectF:
+        """Return the painted bounds in widget coordinates."""
+
+        radius = self.visual_radius() + max(0.0, float(margin))
+        return QRectF(
+            self.screen_pos.x() - radius,
+            self.screen_pos.y() - radius,
+            radius * 2.0,
+            radius * 2.0,
+        )
+
+    def handle_name(self, operation: int) -> str:
+        """Return stable human-readable semantics for accessibility and logs."""
+
+        return self._handle_names.get(operation, "No gizmo handle")
+
+    def handle_tooltip(self, operation: int) -> str:
+        return f"{self.handle_name(operation)} (drag)"
+
+    def available_handles(self) -> tuple[int, ...]:
+        return tuple(self._handle_names)
 
     @staticmethod
     def _distance_to_segment(point: QPointF, start: QPointF, end: QPointF) -> float:
@@ -86,7 +127,8 @@ class TransformGizmo:
         if scale_hit != self.NONE:
             return scale_hit
 
-        if abs(dx) <= self.plane_size and -self.plane_size * 1.5 <= dy <= -2:
+        plane_hit_extent = max(1.0, self.plane_size - 3.0)
+        if abs(dx) <= plane_hit_extent and -plane_hit_extent <= dy <= -3.0:
             return self.TRANSLATE_XY
 
         x_end = QPointF(self.screen_pos.x() + self.arm_length, self.screen_pos.y())
@@ -221,7 +263,7 @@ class TransformGizmo:
             )
         )
 
-        anchor_color = self._color(self.SCALE_UNIFORM, self.color_anchor)
+        anchor_color = self._color(self.CENTER, self.color_anchor)
         painter.setPen(QPen(anchor_color, 2.0))
         painter.setBrush(QBrush(QColor(10, 48, 55, 230)))
         painter.drawEllipse(

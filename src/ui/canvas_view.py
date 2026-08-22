@@ -182,6 +182,83 @@ class CanvasView(QWidget):
             self.image_to_widget(anchor.x(), anchor.y()) if anchor is not None else None
         )
 
+    def _gizmo_visual_radius(self) -> float:
+        if self.gizmo is None:
+            return 0.0
+        radius_fn = getattr(self.gizmo, "visual_radius", None)
+        if callable(radius_fn):
+            return float(radius_fn())
+        return max(
+            float(getattr(self.gizmo, "arm_length", 76.0))
+            + float(getattr(self.gizmo, "arrow_size", 14.0)),
+            float(getattr(self.gizmo, "rotation_radius", 51.0))
+            + float(getattr(self.gizmo, "rotation_tolerance", 10.0)),
+        )
+
+    def _gizmo_visual_bounds(self, margin: float = 0.0) -> QRectF:
+        if self.gizmo is None:
+            return QRectF()
+        bounds_fn = getattr(self.gizmo, "visual_bounds", None)
+        if callable(bounds_fn):
+            return bounds_fn(margin=margin)
+        radius = self._gizmo_visual_radius() + max(0.0, float(margin))
+        center = self.gizmo.screen_pos
+        return QRectF(
+            center.x() - radius,
+            center.y() - radius,
+            radius * 2.0,
+            radius * 2.0,
+        )
+
+    def _update_gizmo_screen_position(self):
+        """Place the gizmo inside the viewport without changing image coordinates."""
+
+        if self.gizmo is None:
+            return None
+        anchor = self._get_image_center_screen()
+        if anchor is None:
+            return None
+        radius = self._gizmo_visual_radius()
+        margin = 8.0
+
+        def clamp(value: float, extent: float) -> float:
+            minimum = radius + margin
+            maximum = extent - radius - margin
+            if maximum < minimum:
+                return max(0.0, extent / 2.0)
+            return min(max(value, minimum), maximum)
+
+        position = QPointF(
+            clamp(anchor.x(), float(self.width())),
+            clamp(anchor.y(), float(self.height())),
+        )
+        self.gizmo.set_screen_position(position)
+        return position
+
+    def _snap_gizmo_translation(self, translation):
+        """Snap a gesture delta against the transaction's original anchor."""
+
+        if not self._vertex_snap_settings.enabled or self._gizmo_anchor_image is None:
+            return translation
+        anchor_x, anchor_y = self._gizmo_anchor_image
+        snapped = self._vertex_snap_settings.apply(
+            (anchor_x + float(translation[0]), anchor_y + float(translation[1]))
+        )
+        return (snapped[0] - anchor_x, snapped[1] - anchor_y)
+
+    def _nudge_selected_with_gizmo(self, dx: float, dy: float) -> bool:
+        if (
+            self._gizmo_active
+            or not self._gizmo_enabled
+            or not self._selected_object_ids()
+        ):
+            return False
+        if not self._begin_gizmo_object_gesture():
+            return False
+        self._preview_gizmo_transform(translation=(dx, dy))
+        result = self._finish_gizmo_gesture()
+        return result is not None and result.status is CommandStatus.APPLIED
+
     def __init__(self, model, parent=None):
         super().__init__(parent)
         self.model = model
@@ -257,6 +334,10 @@ class CanvasView(QWidget):
         self.gizmo_toggle.clicked.connect(self._toggle_gizmo)
         self.gizmo_toggle.setObjectName("gizmo_toggle")
         self.gizmo_toggle.setMinimumWidth(92)
+        self.gizmo_toggle.setAccessibleName("Transform gizmo toggle")
+        self.gizmo_toggle.setAccessibleDescription(
+            "Enable or disable the interactive 2D transform gizmo"
+        )
         self.gizmo_toggle.setToolTip("Toggle interactive transform gizmo")
 
         self.threadpool = QThreadPool()
@@ -515,6 +596,7 @@ class CanvasView(QWidget):
         if transaction is None or not transaction.active:
             return
         try:
+            translation = self._snap_gizmo_translation(translation)
             transaction.preview_transform(
                 translation=translation,
                 rotation_degrees=rotation,
@@ -948,7 +1030,7 @@ class CanvasView(QWidget):
             and self._gizmo_enabled
             and self.gizmo
         ):
-            center_screen = self._get_image_center_screen()
+            center_screen = self._update_gizmo_screen_position()
             if center_screen is not None:
                 self.gizmo.set_screen_position(center_screen)
                 hit = self.gizmo.hit_test(pos)
@@ -1072,11 +1154,27 @@ class CanvasView(QWidget):
                 self._preview_gizmo_transform(
                     translation=(0.0, dy * self._gizmo_y_screen_direction)
                 )
+            elif operation == getattr(self.gizmo, "TRANSLATE_XY", -2):
+                self._preview_gizmo_transform(translation=(dx, dy))
             elif operation in (
                 getattr(self.gizmo, "CENTER", -1),
-                getattr(self.gizmo, "TRANSLATE_XY", -2),
+                getattr(self.gizmo, "SCALE_UNIFORM", -3),
             ):
-                self._preview_gizmo_transform(translation=(dx, dy))
+                start_radius = max(
+                    math.hypot(
+                        self._gizmo_press_vector.x(), self._gizmo_press_vector.y()
+                    ),
+                    1.0,
+                )
+                current_radius = max(
+                    math.hypot(
+                        (pos - self.gizmo.screen_pos).x(),
+                        (pos - self.gizmo.screen_pos).y(),
+                    ),
+                    1.0,
+                )
+                factor = max(0.05, min(20.0, current_radius / start_radius))
+                self._preview_gizmo_transform(scale=(factor, factor))
             elif operation == self.gizmo.ROTATE_Z:
                 center_screen = self.gizmo.screen_pos
                 start_angle = math.degrees(
@@ -1133,7 +1231,7 @@ class CanvasView(QWidget):
             and self.gizmo
             and not self._dragging
         ):
-            center_screen = self._get_image_center_screen()
+            center_screen = self._update_gizmo_screen_position()
             if center_screen:
                 self.gizmo.set_screen_position(center_screen)
                 if self.gizmo.update_hover(pos):
@@ -1196,6 +1294,23 @@ class CanvasView(QWidget):
             self._cancel_gizmo_gesture()
             event.accept()
             return
+        if not self._gizmo_active and self._gizmo_enabled:
+            nudge_by_key: dict[int, tuple[float, float]] = {
+                int(Qt.Key.Key_Left): (-1.0, 0.0),
+                int(Qt.Key.Key_Right): (1.0, 0.0),
+                int(Qt.Key.Key_Up): (0.0, -1.0),
+                int(Qt.Key.Key_Down): (0.0, 1.0),
+            }
+            nudge = nudge_by_key.get(int(event.key()))
+            if nudge is not None:
+                step = (
+                    10.0
+                    if event.modifiers() & Qt.KeyboardModifier.ShiftModifier
+                    else 1.0
+                )
+                if self._nudge_selected_with_gizmo(nudge[0] * step, nudge[1] * step):
+                    event.accept()
+                    return
         if self._tool and self._tool.on_key_press:
             try:
                 if self._tool.on_key_press(event):
@@ -1364,7 +1479,7 @@ class CanvasView(QWidget):
         if not self._preview_mode:
             # Gizmo Interativo
             if self._qimage_lit and self._gizmo_enabled and self.gizmo:
-                center_screen = self._get_image_center_screen()
+                center_screen = self._update_gizmo_screen_position()
                 if center_screen:
                     self.gizmo.set_screen_position(center_screen)
                     self.gizmo.draw(painter)
@@ -1477,19 +1592,7 @@ class CanvasView(QWidget):
         )
         gizmo_rect = QRectF()
         if self.gizmo is not None and self._gizmo_enabled:
-            radius = (
-                max(
-                    float(getattr(self.gizmo, "arm_length", 76.0))
-                    + float(getattr(self.gizmo, "arrow_size", 14.0)),
-                    float(getattr(self.gizmo, "rotation_radius", 51.0))
-                    + float(getattr(self.gizmo, "rotation_tolerance", 10.0)),
-                )
-                + 12.0
-            )
-            center = self.gizmo.screen_pos
-            gizmo_rect = QRectF(
-                center.x() - radius, center.y() - radius, radius * 2, radius * 2
-            )
+            gizmo_rect = self._gizmo_visual_bounds(margin=12.0)
         for candidate in candidates:
             if candidate.left() < margin or candidate.top() < 45.0:
                 continue

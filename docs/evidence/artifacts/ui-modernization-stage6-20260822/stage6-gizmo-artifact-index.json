@@ -1,0 +1,152 @@
+{
+  "artifact_root": "docs/evidence/artifacts/ui-modernization-stage6-20260822",
+  "files": [
+    {
+      "bytes": 444,
+      "file": "manifest.json",
+      "sha256": "1c6a4e31b97aa9c431465356b6fcb1bd2c2eaa271bd076fc495f968f239694c7"
+    },
+    {
+      "bytes": 4972,
+      "file": "stage6-gizmo-baseline-report.json",
+      "sha256": "da438f2d5862794665e7c7ba53630112f6f346ce3672d1185403ffb74818afb9"
+    },
+    {
+      "bytes": 23709,
+      "file": "stage6-gizmo-report.json",
+      "sha256": "e5e14692a9d7805329188a19069ba36abe96d01a1080ad8f1b941c869595517e"
+    },
+    {
+      "bytes": 154351,
+      "file": "windows-captures/1080p_FHD_01_selected.png",
+      "sha256": "26f9a22b5412c528fd26ad71f39bd995deb6ac1eb6b8d191de77c75066c86dbd"
+    },
+    {
+      "bytes": 154337,
+      "file": "windows-captures/1080p_FHD_02_hover.png",
+      "sha256": "2209aee1072ab16aef3d77a6f60142bcc5dcf0c65e8577de96cb0aaae9bc9581"
+    },
+    {
+      "bytes": 169588,
+      "file": "windows-captures/1080p_FHD_03_feedback.png",
+      "sha256": "c4e18fb190f9a2f8d457a325775902878b050c3d0111eab56f23f96492510777"
+    },
+    {
+      "bytes": 154356,
+      "file": "windows-captures/1080p_FHD_04_undo.png",
+      "sha256": "4ef07a120e1f467d6ea9bbd02b8692180ad3e520477758719cbb897bcdfeced5"
+    },
+    {
+      "bytes": 134072,
+      "file": "windows-captures/720p_Compacta_01_selected.png",
+      "sha256": "e7ca1e62defdbc5668e830fb2f3d30ea439332d2da16466b75ec3a991c9dc784"
+    },
+    {
+      "bytes": 134064,
+      "file": "windows-captures/720p_Compacta_02_hover.png",
+      "sha256": "41263530b944520b5970da19971acec083d19dd11b6d08b85048977eb2023469"
+    },
+    {
+      "bytes": 148676,
+      "file": "windows-captures/720p_Compacta_03_feedback.png",
+      "sha256": "24fb02f786e7aaeed2d55c745fb7a8e9d2db86d10ad598f8a7b6657708adc3c5"
+    },
+    {
+      "bytes": 134064,
+      "file": "windows-captures/720p_Compacta_04_undo.png",
+      "sha256": "41263530b944520b5970da19971acec083d19dd11b6d08b85048977eb2023469"
+    },
+    {
+      "bytes": 137435,
+      "file": "windows-captures/768p_Minima_01_selected.png",
+      "sha256": "5be4c0cf9da2798842ebc301bf7b1996e8fcea6bd473e8f7950b241ee11dd3ce"
+    },
+    {
+      "bytes": 137420,
+      "file": "windows-captures/768p_Minima_02_hover.png",
+      "sha256": "99d6ca8329df08dbe00cca7fa5b5601ddde8b092f253f5239ebe9e698ebb00b7"
+    },
+    {
+      "bytes": 152663,
+      "file": "windows-captures/768p_Minima_03_feedback.png",
+      "sha256": "35e2b33e8a340389ebfdc67870d19eead49074792e1c19c19cfcb5cfc504c3d0"
+    },
+    {
+      "bytes": 137420,
+      "file": "windows-captures/768p_Minima_04_undo.png",
+      "sha256": "99d6ca8329df08dbe00cca7fa5b5601ddde8b092f253f5239ebe9e698ebb00b7"
+    },
+    {
+      "bytes": 2193,
+      "file": "windows-captures/ui-audit-fixture.ndtproj",
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+    },
+    {
+      "bytes": 10112,
+      "file": "windows-captures/ui-audit-fixture.png",
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    {
+      "bytes": 168394,
+      "file": "windows-visual-audit/1080p_FHD_01_selected_annotated.png",
+      "sha256": "f09e283079d3256d934e01c009d612ed3d8125574baf48d0ed711789e3d7e7e4"
+    },
+    {
+      "bytes": 168399,
+      "file": "windows-visual-audit/1080p_FHD_02_hover_annotated.png",
+      "sha256": "c6a4250e6ec130ba6a5ab3169d649668a00150f0dd15ba6e94ec96b1eeadfaec"
+    },
+    {
+      "bytes": 185405,
+      "file": "windows-visual-audit/1080p_FHD_03_feedback_annotated.png",
+      "sha256": "a691c3a236f563751312ed46f823a91740131fe6b16ab0dd767e1738cb9db68a"
+    },
+    {
+      "bytes": 168507,
+      "file": "windows-visual-audit/1080p_FHD_04_undo_annotated.png",
+      "sha256": "df40f0caca0e9a0bf84f8f1fe73d94d2d91ab438f21b7a3a6cc2b8df2b32c5f3"
+    },
+    {
+      "bytes": 144423,
+      "file": "windows-visual-audit/720p_Compacta_01_selected_annotated.png",
+      "sha256": "bea40d4d5c75ccc66a19a547a186d5ded5745f1d2a0064db8d2a0ae596d25000"
+    },
+    {
+      "bytes": 144414,
+      "file": "windows-visual-audit/720p_Compacta_02_hover_annotated.png",
+      "sha256": "c6125b03d553f2d737ae54a4093753e36c1e1628f3b1a20dbf99f00d6591a022"
+    },
+    {
+      "bytes": 160744,
+      "file": "windows-visual-audit/720p_Compacta_03_feedback_annotated.png",
+      "sha256": "e7bcf7ffd769bcfcd12f8678c9bd03de86592d2d637b621963144f6805cba593"
+    },
+    {
+      "bytes": 144414,
+      "file": "windows-visual-audit/720p_Compacta_04_undo_annotated.png",
+      "sha256": "c6125b03d553f2d737ae54a4093753e36c1e1628f3b1a20dbf99f00d6591a022"
+    },
+    {
+      "bytes": 149847,
+      "file": "windows-visual-audit/768p_Minima_01_selected_annotated.png",
+      "sha256": "f54f7e8a5ca3dd2c9610bdc43c365f009b44f4709d5b1960953a382d2689b592"
+    },
+    {
+      "bytes": 149863,
+      "file": "windows-visual-audit/768p_Minima_02_hover_annotated.png",
+      "sha256": "b4f43b3b538a4187ab938f863e9348a846eae01b032b3d37ce21a8fd04a2d190"
+    },
+    {
+      "bytes": 166435,
+      "file": "windows-visual-audit/768p_Minima_03_feedback_annotated.png",
+      "sha256": "2a641e78063a5c9cc80095a87cb9ca820d486ae194186db87d80db2aef6d45a9"
+    },
+    {
+      "bytes": 149863,
+      "file": "windows-visual-audit/768p_Minima_04_undo_annotated.png",
+      "sha256": "b4f43b3b538a4187ab938f863e9348a846eae01b032b3d37ce21a8fd04a2d190"
+    }
+  ],
+  "schema_version": 1,
+  "stage": "Etapa 6 \u2014 Gizmo profissional"
+}
