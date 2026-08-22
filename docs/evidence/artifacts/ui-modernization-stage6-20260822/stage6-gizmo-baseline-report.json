@@ -1,0 +1,101 @@
+{
+  "branch": "Ailton/stage6-gizmo-baseline",
+  "captures": {
+    "reason": "Ainda não foram executadas capturas dedicadas da Etapa 6 para DPI, redimensionamento, limites de hit-test, seleção múltipla e undo/redo. As capturas históricas de etapas anteriores não são reutilizadas como prova deste gate.",
+    "status": "NAO_TESTADO"
+  },
+  "commands": [
+    ".venv/Scripts/python.exe tools/baseline_integrity.py --verify --git-blob",
+    ".venv/Scripts/python.exe tools/evidence_integrity.py --require-tracked --git-blob",
+    ".venv/Scripts/python.exe -m pytest -q tests/test_reference_gizmo.py tests/test_critical_ui_coverage.py tests/test_stage3_professional_scene_editor.py tests/test_stage4_professional_scene_authoring.py tests/test_stage5_viewport_hud.py --tb=short"
+  ],
+  "confirmed_gaps_or_unproven_contracts": [
+    "Há duas implementações de gizmo com contratos visuais e de interação separados; equivalência ainda não foi comprovada.",
+    "Não foi comprovado pelos testes atuais que o gizmo principal seja acionado e editável por vértice individual em todos os fluxos.",
+    "O eixo Z é exibido como metadado; não há arrasto de profundidade comprovado no gizmo 2D.",
+    "O snapping existente para vértices não foi comprovado como aplicado às transformações de objeto do gizmo.",
+    "O feedback numérico atual é visual e somente leitura; não foi comprovada edição numérica dedicada nem comportamento completo em seleção múltipla.",
+    "Acessibilidade de teclado, foco e nomes acessíveis dos handles do gizmo não foi comprovada.",
+    "Não há ainda captura real dedicada para o conjunto de limites, DPI, redimensionamento, seleção múltipla e undo/redo exigido pela Etapa 6."
+  ],
+  "decision": "BASELINE_APROVADA_APENAS_PARA_ANALISE_IMPLEMENTACAO_NAO_INICIADA",
+  "environment": {
+    "backend": "not used by this baseline test matrix",
+    "os": "Windows",
+    "pyside6": "6.10.1",
+    "python": "3.11.9",
+    "qt": "6.10.1"
+  },
+  "limitations": [
+    "O resultado não aprova a implementação da Etapa 6.",
+    "O worktree não está limpo por causa da reconciliação documental em andamento e seis diretórios históricos não rastreados preservados; isso não foi usado como PASS de árvore limpa.",
+    "Nenhum arquivo de código do gizmo foi alterado nesta etapa de baseline."
+  ],
+  "observed_capabilities": [
+    "TransformGizmo principal com translação X/Y/XY, rotação Z, escala uniforme e escala por eixo.",
+    "Âncora de seleção individual e centro calculado para seleção múltipla.",
+    "Prévia transacional com commit, cancelamento, Escape e integração com histórico.",
+    "Feedback pintado com posição, rotação Z, escala e Z-Depth.",
+    "SceneTransformGizmo separado no editor de autoria de cenários."
+  ],
+  "results": {
+    "baseline_git_blob": {
+      "files_after_staging_package": 2238,
+      "files_before_package": 2235,
+      "status": "PASS"
+    },
+    "evidence_git_blob": {
+      "manifests_after_staging_package": 99,
+      "manifests_before_package": 98,
+      "status": "PASS"
+    },
+    "focused_tests": {
+      "collected": 47,
+      "duration_seconds": 2.2,
+      "failed": 0,
+      "passed": 47,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "schema_version": 1,
+  "scope": "gizmo-profissional-baseline",
+  "source_commit": "425f21df2bbf9a67c01a577b59ae6bbba25995b7",
+  "source_hashes": [
+    {
+      "git_blob_sha1": "d07a8d9f797b0704fccce52713e16a03a36c376d",
+      "path": "src/ui/gizmo_reference.py",
+      "sha256": "BE79C685FF5CC9A42D77C89FABB2EE1B6E6943E56D1B6A2FC3F5F3A74BE04EF9"
+    },
+    {
+      "git_blob_sha1": "8993e9f6329592a236b3408fed6659c30ee9731f",
+      "path": "src/ui/gizmo.py",
+      "sha256": "F465CC29C2D945D94504B8DD0121F99DC45A890DA24572CBF04B60E9AF03C137"
+    },
+    {
+      "git_blob_sha1": "11e2c39c2a86d6bc974c1c69a0ba7a3304a0d8fd",
+      "path": "src/ui/canvas_view.py",
+      "sha256": "CD87E5C00AFB8F1CE1891F5A8326B1376E0E7239CA9D0055FF1E8BEF8393C416"
+    },
+    {
+      "git_blob_sha1": "9b97341ce725b867aeec948c70ecf8d89894384c",
+      "path": "src/ui/scene_authoring_viewport.py",
+      "sha256": "BB0280397AC1B062F83943096C1C52365832BFCD4B985851F8F57636F84D0D98"
+    },
+    {
+      "git_blob_sha1": "fc07f3542745f98f3a2d8de5a8e1ebecaaf26cc5",
+      "path": "src/core/transform_gesture.py",
+      "sha256": "1FD8A2CA8661385361D4FDB10D3F03F56E6D6DE4DCD0BBCF269D720A8CAEC5CC"
+    }
+  ],
+  "source_tree_clean": false,
+  "stage": 6,
+  "tracked_changes_at_capture": [
+    "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md"
+  ],
+  "untracked_preserved_count": 6,
+  "validation_sequence": [
+    "A execução inicial validou o conteúdo existente no commit de origem antes da inclusão do pacote: baseline 2235 arquivos e 98 manifests.",
+    "Após o staging do plano reconciliado e do pacote de baseline, o manifesto foi regenerado contra os blobs Git e revalidado: baseline 2238 arquivos e 99 manifests."
+  ]
+}

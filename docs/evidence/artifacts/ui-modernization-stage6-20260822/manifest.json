@@ -1,0 +1,13 @@
+{
+  "artifact_root": "docs/evidence/artifacts/ui-modernization-stage6-20260822",
+  "files": [
+    {
+      "bytes": 4972,
+      "path": "docs/evidence/artifacts/ui-modernization-stage6-20260822/stage6-gizmo-baseline-report.json",
+      "sha256": "da438f2d5862794665e7c7ba53630112f6f346ce3672d1185403ffb74818afb9"
+    }
+  ],
+  "schema": 1,
+  "scope": "gizmo-profissional-baseline",
+  "source_commit": "425f21df2bbf9a67c01a577b59ae6bbba25995b7"
+}
