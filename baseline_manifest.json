@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "5e95433ef3930a0f9d6542b61ce0e203f2e3f6249471fa4f7720d6304e1b2e98",
-      "size": 26261
+      "sha256": "fd3dbcbf01714406c6fa74ef11bcba2b4d93cabc19f5bcc116c9853ea9dd557f",
+      "size": 26859
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -815,6 +815,10 @@
     "docs/evidence/ETAPA_6_GIZMO_PROFISSIONAL_2026-08-22.md": {
       "sha256": "0a94c007cee52464ecca15770a8a37e1eafaa71e3721fbc4a413fea199cf2a82",
       "size": 7543
+    },
+    "docs/evidence/ETAPA_6_GIZMO_PROFISSIONAL_ENCERRAMENTO_POS_MERGE_2026-08-22.md": {
+      "sha256": "9ddd8a24c278c610e7d47c18205828080f113765b83310ff2fdcb7573ad474ef",
+      "size": 3180
     },
     "docs/evidence/ETAPA_6_IMPORTACAO_UNITY_2026-08-16.md": {
       "sha256": "1408c8588e0d0c563fd48810410a775dfe49111fc1e490f65d905fcc79bf49c0",
