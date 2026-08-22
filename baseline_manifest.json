@@ -552,6 +552,10 @@
       "sha256": "feacc97b73b98bc11949b2e8092b6c6f342850ffc2d97df2f59335139178f99c",
       "size": 4273
     },
+    "docs/evidence/ETAPA_2_RECONCILIACAO_FINAL_2026-08-21.md": {
+      "sha256": "39a1527990a4bce8e06dc821cbdc8732b6af6ed27a015e9eb020df91eb70c4b0",
+      "size": 727
+    },
     "docs/evidence/ETAPA_2_REGISTRO_COMANDOS_2026-08-18.md": {
       "sha256": "1df1c139796053f209c37fe9fe25fbc2165910f51c64f8e9ccee8c86a6566fba",
       "size": 3240
