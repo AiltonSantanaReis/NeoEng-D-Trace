@@ -1,14 +1,14 @@
 # src/ui/groups_panel.py
 from typing import Optional
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import (
-    QHBoxLayout,
     QInputDialog,
     QListWidget,
     QListWidgetItem,
     QMessageBox,
     QPushButton,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -89,24 +89,51 @@ class GroupsPanel(QWidget):
         self.btn_vis = QPushButton(self.translations[self.current_lang]["toggle_vis"])
         self.btn_lock = QPushButton(self.translations[self.current_lang]["toggle_lock"])
 
+        # Keep the legacy QPushButtons as stable public command handles while
+        # presenting the same compact, icon-first action strip already used by
+        # LayersPanel. This removes the four-row text-button grid without
+        # removing any command, signal, translation, or test seam.
+        legacy_buttons = (
+            self.btn_new,
+            self.btn_delete,
+            self.btn_add,
+            self.btn_remove,
+            self.btn_up,
+            self.btn_down,
+            self.btn_vis,
+            self.btn_lock,
+        )
+        for button in legacy_buttons:
+            button.setVisible(False)
+            button.setAccessibleName(button.text())
+
+        self.action_toolbar = QToolBar()
+        self.action_toolbar.setObjectName("groups_action_toolbar")
+        self.action_toolbar.setMovable(False)
+        self.action_toolbar.setFloatable(False)
+        self.action_toolbar.setIconSize(QSize(16, 16))
+        self.action_toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
+        from src.ui.icon_library import configure_action
+
+        self._toolbar_actions = {}
+        for key, button in (
+            ("add", self.btn_new),
+            ("remove", self.btn_delete),
+            ("add", self.btn_add),
+            ("remove", self.btn_remove),
+            ("up", self.btn_up),
+            ("down", self.btn_down),
+            ("visible", self.btn_vis),
+            ("lock", self.btn_lock),
+        ):
+            action = self.action_toolbar.addAction(button.text())
+            configure_action(action, key, text=button.text(), tooltip=button.text())
+            action.triggered.connect(button.click)
+            self._toolbar_actions[button] = action
+
         layout = QVBoxLayout()
+        layout.addWidget(self.action_toolbar)
         layout.addWidget(self.list)
-        row = QHBoxLayout()
-        row.addWidget(self.btn_new)
-        row.addWidget(self.btn_delete)
-        layout.addLayout(row)
-        row = QHBoxLayout()
-        row.addWidget(self.btn_add)
-        row.addWidget(self.btn_remove)
-        layout.addLayout(row)
-        row = QHBoxLayout()
-        row.addWidget(self.btn_up)
-        row.addWidget(self.btn_down)
-        layout.addLayout(row)
-        row = QHBoxLayout()
-        row.addWidget(self.btn_vis)
-        row.addWidget(self.btn_lock)
-        layout.addLayout(row)
         self.setLayout(layout)
 
         self.btn_new.clicked.connect(self._on_new)
@@ -333,3 +360,7 @@ class GroupsPanel(QWidget):
         self.btn_down.setText(translation["down"])
         self.btn_vis.setText(translation["toggle_vis"])
         self.btn_lock.setText(translation["toggle_lock"])
+        for button, action in self._toolbar_actions.items():
+            action.setText(button.text())
+            action.setToolTip(button.text())
+            action.setStatusTip(button.text())

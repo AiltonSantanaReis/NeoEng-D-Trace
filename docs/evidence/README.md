@@ -1,3 +1,4 @@
+- `ETAPA_7_PAINEIS_LATERAIS_2026-08-22.md` — PASS_LOCAL no escopo comprovado do GroupsPanel; evidências hashadas, auditor nativo Windows, integridade e privacidade PASS; PR/CI/merge/pós-merge pendentes.
 - `ETAPA_0_INTERFACE_MODERNA_2026-08-21.md` — snapshot pré-merge da baseline visual, preservado sem reescrita retroativa.
 - ETAPA_1_INTERFACE_MODERNA_2026-08-21.md — implementação de tokens/QSS, 15 capturas reais, auditoria visual, comparação geométrica e hashes; encerrada após CI e pós-merge.
 - ETAPA_2_INTERFACE_MODERNA_2026-08-21.md — biblioteca de ícones embutidos, ações padronizadas, fallback textual, acessibilidade, atalhos e auditoria real de capturas; implementação pré-merge.
@@ -33,7 +34,7 @@
 - `artifacts/runtime-lighting-phase2-2026-08-20-r3/` — pacote hashado do auditor após o fix de cobertura `4038bac`.
 # Evidências de validação
 
-Plano vivo da modernização da interface: docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md. Este é o documento fonte de verdade somente para esse escopo de UI, subordinado às políticas globais. Etapa 0: caracterização encerrada; Etapa 1: aprovada após CI e pós-merge; Etapa 2: aprovada no escopo encerrado; Etapas 3–14: não iniciadas.
+Plano vivo da modernização da interface: docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md. Este é o documento fonte de verdade somente para esse escopo de UI, subordinado às políticas globais. Etapas 0–6: aprovadas nos escopos registrados; Etapa 7: PASS_LOCAL no escopo do GroupsPanel, ainda não aprovada; Etapas 8–14: planejadas.
 
 Estado vivo em 20 de agosto de 2026: as Etapas 1, 2, 3, RUNTIME-ETAPA-4, RUNTIME-ETAPA-5, RUNTIME-ETAPA-6, RUNTIME-ETAPA-7 e RUNTIME-ETAPA-8 estão encerradas somente nos escopos aprovados, com CI Linux/Windows e validação pós-merge documentados. A RUNTIME-ETAPA-8 foi integrada pela PR #127 no merge 91e62a30b534356a2f20dc15299157233c46ba8e; isso não constitui aprovação automática de release.
 A Etapa 2 do ADR de runtime (iluminação e materiais) foi integrada pela PR #115 no merge `eb9837b5411eaf62007be7f5ff88502d0ac48e74`. O primeiro CI falhou no isort e o segundo falhou legitimamente na cobertura de branches (`84,94% < 85,00%`); os fixes `43733cb` e `4038bac` foram aplicados sem alterar regras. O run remoto `32378117544` aprovou Linux e Windows. A validação pós-merge local registrou `1442 passed, 2 skipped`, cobertura de linhas `91,00%`, política de cobertura PASS, auditor completo PASS, baseline de `1733 files` e `69 manifests` de evidência. O pacote está em `artifacts/runtime-lighting-phase2-postmerge-2026-08-20/`; a primeira tentativa com baseline ainda não reconciliado foi preservada separadamente. Etapa 2: APROVADA no escopo técnico definido no ADR; shaders completos, partículas, pós-processamento, triggers, streaming e runtime Godot/Unity permanecem em fases futuras.
@@ -416,3 +417,5 @@ a integração da Etapa 6 e a aprovação de release permanecem decisões indepe
 
 O formato de projeto v1 já persiste segmentos Bézier. Qualquer documento ou metadado da PR que afirme ausência dessa persistência deve ser corrigido antes de Ready for review.
 - `ETAPA_2_MODELO_CENARIO_PROFISSIONAL_2026-08-19.md` — contrato e modelo editável profissional; estado pré-merge da PR.
+
+Estado vivo reconciliado em 2026-08-22: checkpoint local 9ee5916 e origin/main d6ed66; nenhum estado local não publicado é apresentado como integrado.
