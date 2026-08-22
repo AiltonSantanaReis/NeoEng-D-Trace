@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "file": "build-report.json",
+      "bytes": 1986,
+      "sha256": "0e0d987058a98abdb1af3bc4369a0d40ff8ac19445cdd8324b0726f0979076df"
+    }
+  ]
+}
