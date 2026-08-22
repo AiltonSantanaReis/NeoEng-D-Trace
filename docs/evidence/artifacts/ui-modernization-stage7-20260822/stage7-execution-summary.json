@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "stage": 7,
+  "source_commit": "9ee591615d30f98037e8506f513c4c2635fb207d",
+  "parent_commit": "bd6ed662aee0d34a892bf7e60ca78f51d5318792",
+  "branch": "main",
+  "tracked_changes_pending": "evidence package and live documentation only",
+  "local_worktree_clean": false,
+  "implementation": {
+    "changed_files": [
+      "src/ui/groups_panel.py",
+      "scripts/audit_stage7_side_panels.py",
+      "tests/test_stage7_side_panels.py"
+    ],
+    "behavior": "Groups actions use compact deterministic icon toolbar; legacy command handles/signals preserved."
+  },
+  "tests": {
+    "static": "py_compile, black --check, isort --check-only, flake8 PASS",
+    "full": "1612 passed, 2 skipped",
+    "focused": "22 passed"
+  },
+  "visual": {
+    "resolutions": [
+      "1920x1080",
+      "1366x768",
+      "1280x720"
+    ],
+    "stage7_audit_status": "PASS",
+    "general_audit_status": "PASS",
+    "native_qt": "windows",
+    "general_audit_findings": 0,
+    "stage7_audit_findings": 0
+  },
+  "privacy_incident": "An intermediate local test-log attempt exposed host paths inside the non-versioned staging package and was rejected by the repository privacy test. Those logs were preserved outside the versioned package; no host-path log is included here.",
+  "human_visual_review": "NOT_PERFORMED",
+  "decision": "PASS_LOCAL_IMPLEMENTATION; PR/CI/merge/post-merge and required visual review remain pending."
+}

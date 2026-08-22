@@ -1,0 +1,173 @@
+{
+  "captures": {
+    "1080p_FHD": {
+      "actual_window_size": [
+        1920,
+        1060
+      ],
+      "capture": {
+        "bytes": 101640,
+        "path": "1080p_FHD_05_grupos_painel.png",
+        "sha256": "d265fb1259445559b965a79b96875a951b7e2592a3e915c788bf0b76d7c73c6d"
+      },
+      "contract": {
+        "action_count": 8,
+        "findings": [],
+        "legacy_buttons_visible": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "list_geometry": [
+          9,
+          41,
+          522,
+          911
+        ],
+        "panel_geometry": [
+          0,
+          0,
+          540,
+          961
+        ],
+        "status": "PASS",
+        "toolbar_geometry": [
+          9,
+          9,
+          522,
+          26
+        ],
+        "toolbar_icon_size": [
+          16,
+          16
+        ]
+      },
+      "requested_size": [
+        1920,
+        1080
+      ]
+    },
+    "720p_Compacta": {
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "capture": {
+        "bytes": 83319,
+        "path": "720p_Compacta_05_grupos_painel.png",
+        "sha256": "b6becdfadc114d7494719653dc920de2c66990f3509eba9744aaf975e4cce5a0"
+      },
+      "contract": {
+        "action_count": 8,
+        "findings": [],
+        "legacy_buttons_visible": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "list_geometry": [
+          9,
+          41,
+          442,
+          571
+        ],
+        "panel_geometry": [
+          0,
+          0,
+          460,
+          621
+        ],
+        "status": "PASS",
+        "toolbar_geometry": [
+          9,
+          9,
+          442,
+          26
+        ],
+        "toolbar_icon_size": [
+          16,
+          16
+        ]
+      },
+      "requested_size": [
+        1280,
+        720
+      ]
+    },
+    "768p_Minima": {
+      "actual_window_size": [
+        1366,
+        768
+      ],
+      "capture": {
+        "bytes": 86155,
+        "path": "768p_Minima_05_grupos_painel.png",
+        "sha256": "41bf159c0ba0607eaae4052b64dc62a5b809c3b41b45b95810f70ff4b95a09c8"
+      },
+      "contract": {
+        "action_count": 8,
+        "findings": [],
+        "legacy_buttons_visible": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "list_geometry": [
+          9,
+          41,
+          442,
+          619
+        ],
+        "panel_geometry": [
+          0,
+          0,
+          460,
+          669
+        ],
+        "status": "PASS",
+        "toolbar_geometry": [
+          9,
+          9,
+          442,
+          26
+        ],
+        "toolbar_icon_size": [
+          16,
+          16
+        ]
+      },
+      "requested_size": [
+        1366,
+        768
+      ]
+    }
+  },
+  "findings": [],
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "qt_platform": "windows",
+  "schema_version": 1,
+  "scope": "side_panels_groups_toolbar",
+  "source_state": {
+    "branch": "main",
+    "commit": "bd6ed662aee0d34a892bf7e60ca78f51d5318792",
+    "worktree_clean": false
+  },
+  "stage": 7,
+  "status": "PASS"
+}
