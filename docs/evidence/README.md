@@ -1,4 +1,5 @@
-- `ETAPA_7_PAINEIS_LATERAIS_2026-08-22.md` — PASS_LOCAL no escopo comprovado do GroupsPanel; evidências hashadas, auditor nativo Windows, integridade e privacidade PASS; PR/CI/merge/pós-merge pendentes.
+- `ETAPA_7_PAINEIS_LATERAIS_2026-08-22.md` — snapshot pré-merge PASS_LOCAL do escopo comprovado do GroupsPanel; preservado sem reescrita retroativa.
+- `ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-22.md` — PR #147, merge `23e31c8`, CI Linux/Windows, revisão visual humana, baseline Git-blob, integridade de evidências, suíte pós-merge e auditor nativo aprovados no escopo definido.
 - `ETAPA_0_INTERFACE_MODERNA_2026-08-21.md` — snapshot pré-merge da baseline visual, preservado sem reescrita retroativa.
 - ETAPA_1_INTERFACE_MODERNA_2026-08-21.md — implementação de tokens/QSS, 15 capturas reais, auditoria visual, comparação geométrica e hashes; encerrada após CI e pós-merge.
 - ETAPA_2_INTERFACE_MODERNA_2026-08-21.md — biblioteca de ícones embutidos, ações padronizadas, fallback textual, acessibilidade, atalhos e auditoria real de capturas; implementação pré-merge.

@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "b0adbf24ed820bf15e30bca473e5256026bbc93db491918a32b373de9f61b3a3",
-      "size": 28232
+      "sha256": "0b3b692d8af4d3175f2eb0b7a2deb5ff9926f430a2079ad84a2f73d9072bb4a5",
+      "size": 28159
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -848,6 +848,10 @@
       "sha256": "b463e0e329ab0d39100e135f8c4dc6f4c66609cb2e1a9db44843c8650a73debd",
       "size": 8434
     },
+    "docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-22.md": {
+      "sha256": "08e417b52237b5fc8cf44f53bf535d7a18e2a0a45be700a35f8a677431aaf3e5",
+      "size": 2172
+    },
     "docs/evidence/ETAPA_7_RUNTIME_STREAMING_2026-08-20.md": {
       "sha256": "ee9714380cb8b0637948c400788ea2bd0dbab33fc0f34dc724d6412c405b59fc",
       "size": 5144
@@ -953,8 +957,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "d93833435041d4acdb27ddff2896359910d8265b94f99b40e0db428ba361549d",
-      "size": 41176
+      "sha256": "75184c2cd013894ede146c29c8c2453725b85602e61335c3eab22c0db7cdf9b0",
+      "size": 41371
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
