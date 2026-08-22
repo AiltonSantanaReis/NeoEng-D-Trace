@@ -106,7 +106,17 @@ foi incluído no log; o próprio teste também reimprimiu o padrão detectado.
 Os logs foram preservados fora do pacote versionado, não foram usados como
 prova, e o pacote final não contém caminhos locais. Após a retirada desses
 logs, a suíte completa e o teste de privacidade passaram novamente.
+## Revalidação do baseline após a PR
 
+O primeiro run remoto da PR #147 (32603283468) falhou legitimamente no job
+Linux, na etapa Verify clean baseline manifest, antes da execução da suíte.
+O log apontou como Unexpected os artefatos da Etapa 7 que já estavam
+versionados, mas ainda não haviam sido incorporados ao aseline_manifest.
+Não houve alteração no validador nem supressão do erro. O manifesto foi
+regenerado contra os blobs Git efetivamente versionados e verificado com
+sucesso: Baseline verified: 2396 files. A suíte local posterior retornou
+1612 passed, 2 skipped e a integridade de evidências retornou 104 manifests
+validated. O CI precisa ser reexecutado no novo commit corretivo.
 ## Limitações e gates pendentes
 
 - `worktree_clean=false` no relatório local porque existem diretórios locais
