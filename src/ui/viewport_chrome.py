@@ -75,7 +75,7 @@ class ViewportOverlayBar(QWidget):
 
     def __init__(self, window, canvas, parent=None) -> None:
         super().__init__(parent)
-        self.window = window
+        self.host_window = window
         self.canvas = canvas
         self.setObjectName("viewport_overlay_bar")
         self.setFixedHeight(38)

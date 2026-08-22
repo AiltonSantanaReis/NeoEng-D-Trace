@@ -343,8 +343,8 @@
           636
         ],
         "digest": {
-          "bytes": 118890,
-          "sha256": "ec4be677de6987c0b85b36348709d10bb9008f423f2da59c48645e1519bbc063"
+          "bytes": 134975,
+          "sha256": "b8f57985007feccd0bca1ab4b7038058e77f08bb8ccf39f6d0d03c01c0b1ba8f"
         },
         "file": "functional-captures/768p_Minima_xray1.png",
         "size": [
@@ -403,14 +403,14 @@
     "status": "PASS"
   },
   "reference_fixture": {
-    "bytes": 1653419,
+    "bytes": 1645436,
     "comparison_method": "chrome geometry and interaction contract; central illustrative scene pixels excluded",
     "dimensions": [
       1672,
       941
     ],
     "file": "reference/reference-chrome.png",
-    "sha256": "d97bbc04fc18833cfd2b729abfce8157417caf0d73532779d77aef95f28c90be",
+    "sha256": "2580eb62de5fc2315feb4dd2500d58e8939925835c7eabb7532624758dc0b2b4",
     "status": "PASS"
   },
   "reference_shell_contract": {
@@ -426,14 +426,14 @@
     "left_toolbar_width": 81,
     "platform": "windows",
     "reference_fixture": {
-      "bytes": 1653419,
+      "bytes": 1645436,
       "comparison_method": "chrome geometry and interaction contract; central illustrative scene pixels excluded",
       "dimensions": [
         1672,
         941
       ],
       "file": "reference/reference-chrome.png",
-      "sha256": "d97bbc04fc18833cfd2b729abfce8157417caf0d73532779d77aef95f28c90be",
+      "sha256": "2580eb62de5fc2315feb4dd2500d58e8939925835c7eabb7532624758dc0b2b4",
       "status": "PASS"
     },
     "splitter_sizes": [
@@ -467,7 +467,7 @@
   ],
   "source_state": {
     "branch": "Ailton/interface-stage5-viewport-hud",
-    "commit": "5d45f6ed54a1cf21cb394e8a8d5d8974708e44c8",
+    "commit": "e7c33045bd92dc97ffce95e729ef04f250cfbd88",
     "worktree_clean": false
   },
   "stage": "Etapa 5 \u2014 Viewport e HUD",

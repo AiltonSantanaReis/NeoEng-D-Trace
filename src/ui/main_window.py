@@ -313,12 +313,12 @@ class MainWindow(QMainWindow):
         self.act_clean = QAction("Clean All", self)
         self.act_clean.triggered.connect(self.canvas.clean_all)
         self.nav_toolbar.addAction(self.act_clean)
-
         self.nav_toolbar.addSeparator()
 
         self.language_button = QPushButton("Language", self)
         self.nav_toolbar.addWidget(self.language_button)
         self.language_button.clicked.connect(self.show_language_menu)
+        self.reference_tool_palette: QToolBar
         configure_main_window_controls(self)
         self._responsive_layout = build_responsive_layout(self)
         self._setup_shortcuts()

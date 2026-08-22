@@ -6525,8 +6525,8 @@
       "size": 117700
     },
     "docs/evidence/artifacts/ui-modernization-stage5-20260822/functional-captures/768p_Minima_xray1.png": {
-      "sha256": "ec4be677de6987c0b85b36348709d10bb9008f423f2da59c48645e1519bbc063",
-      "size": 118890
+      "sha256": "b8f57985007feccd0bca1ab4b7038058e77f08bb8ccf39f6d0d03c01c0b1ba8f",
+      "size": 134975
     },
     "docs/evidence/artifacts/ui-modernization-stage5-20260822/functional-captures/768p_Minima_xray1_1to1.png": {
       "sha256": "160568a781f111360c0903123132ad71caa9abfac77a428f65c1b332f6ddfa6c",
@@ -6673,11 +6673,11 @@
       "size": 10112
     },
     "docs/evidence/artifacts/ui-modernization-stage5-20260822/reference/reference-chrome.png": {
-      "sha256": "d97bbc04fc18833cfd2b729abfce8157417caf0d73532779d77aef95f28c90be",
-      "size": 1653419
+      "sha256": "2580eb62de5fc2315feb4dd2500d58e8939925835c7eabb7532624758dc0b2b4",
+      "size": 1645436
     },
     "docs/evidence/artifacts/ui-modernization-stage5-20260822/stage5-viewport-hud-report.json": {
-      "sha256": "a2ff8390e7696fca71e2161c1cc36a4bcc731c67d31a03b8bf453fe775828191",
+      "sha256": "2fa5ca9f929f6cff4513a0860bb8ffb3b88f68fe54c24ceb23aa95be2941d646",
       "size": 11132
     },
     "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_01_initial_objects.png": {
@@ -8225,8 +8225,8 @@
       "size": 8420
     },
     "src/ui/main_window.py": {
-      "sha256": "2eae3ebb485a80c7617c30d7387917a788d9a9ab9bc3ff2b7a7b7e22e32d1a15",
-      "size": 45861
+      "sha256": "bf59e4343a09de9fdfdcf9c218149d8b0a094f0c4cd293e90140941d61001fb9",
+      "size": 45906
     },
     "src/ui/main_window_translations.py": {
       "sha256": "1f3eefd3817c25028b8661aa1cfc6df7b73b3b032e6b043b1eeea5ae326a4608",
@@ -8293,8 +8293,8 @@
       "size": 6673
     },
     "src/ui/viewport_chrome.py": {
-      "sha256": "96ed1d436bfdc37a65b3f1ddd2348dc520c2111cc7454699be1fd156804c52e3",
-      "size": 6855
+      "sha256": "19ac2b256c297d344c7901d8e1de89a4f90bcf84cf82085777115d359b04992a",
+      "size": 6860
     },
     "src/ui/viewport_status.py": {
       "sha256": "baf9510bcf8b7316f82660d41798ac988a9932ec5ba849d7a8f0e761aa10451d",
