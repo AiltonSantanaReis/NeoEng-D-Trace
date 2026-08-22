@@ -1,7 +1,8 @@
 # src/ui/layers_panel.py
 from typing import Optional
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QGridLayout,
     QListWidget,
@@ -9,6 +10,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QTabWidget,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -47,20 +49,44 @@ class LayersPanel(QWidget):
         self.btn_vis = QPushButton("Toggle Vis")
         self.btn_lock = QPushButton("Toggle Lock")
 
-        for index, button in enumerate(
-            (
-                self.btn_new,
-                self.btn_delete,
-                self.btn_up,
-                self.btn_down,
-                self.btn_vis,
-                self.btn_lock,
-            )
+        # Keep the legacy QPushButtons as stable public command handles, but
+        # present the actions through a compact, reference-aligned toolbar.
+        for button in (
+            self.btn_new,
+            self.btn_delete,
+            self.btn_up,
+            self.btn_down,
+            self.btn_vis,
+            self.btn_lock,
         ):
-            buttons.addWidget(button, index // 3, index % 3)
+            button.setVisible(False)
+            button.setAccessibleName(button.text())
 
+        self.action_toolbar = QToolBar()
+        self.action_toolbar.setObjectName("layers_action_toolbar")
+        self.action_toolbar.setMovable(False)
+        self.action_toolbar.setFloatable(False)
+        self.action_toolbar.setIconSize(QSize(16, 16))
+        self.action_toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
+        from src.ui.icon_library import configure_action
+
+        for key, button in (
+            ("add", self.btn_new),
+            ("remove", self.btn_delete),
+            ("up", self.btn_up),
+            ("down", self.btn_down),
+            ("visible", self.btn_vis),
+            ("lock", self.btn_lock),
+        ):
+            action = self.action_toolbar.addAction(button.text())
+            configure_action(action, key, text=button.text(), tooltip=button.text())
+            action.triggered.connect(button.click)
+        self.project_layers_layout.addWidget(self.action_toolbar)
+        self.project_layers_layout.removeWidget(self.action_toolbar)
+        self.project_layers_layout.insertWidget(0, self.action_toolbar)
         self.project_layers_layout.addLayout(buttons)
         self.tabs.addTab(self.project_layers_page, "Project Layers")
+        self.tabs.tabBar().setVisible(False)
         self.main_layout.addWidget(self.tabs)
         self.setLayout(self.main_layout)
 
@@ -104,6 +130,9 @@ class LayersPanel(QWidget):
             suffix = " ".join(status)
             item = QListWidgetItem(f"{layer.name} {suffix}".rstrip())
             item.setData(Qt.ItemDataRole.UserRole, layer.id)
+            # Pin the list delegate to the application UI font so layer names
+            # remain readable in native and captured Windows backends.
+            item.setFont(QFont("Segoe UI", 10))
             self.list.addItem(item)
 
         if current_layer_id is not None:

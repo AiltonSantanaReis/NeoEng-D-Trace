@@ -133,6 +133,9 @@ class ToolInterface:
 
 
 class CanvasView(QWidget):
+    viewport_state_changed = Signal(str)
+    pan_mode_changed = Signal(bool)
+
     VIEW_LIT = 0
     VIEW_XRAY_1 = 1  # Sobel gradients
     VIEW_XRAY_2 = 2  # Canny edges
@@ -191,6 +194,7 @@ class CanvasView(QWidget):
         self._pan = QPointF(0.0, 0.0)
         self._dragging = False
         self._last_mouse = QPointF()
+        self._pan_mode = False
 
         # Flags de Estado
         self._preview_mode = False  # Modo de exportação (esconde UI helpers)
@@ -604,6 +608,7 @@ class CanvasView(QWidget):
         new_pan_y = (self.height() - h * self._zoom) / 2.0
         self._pan = QPointF(new_pan_x, new_pan_y)
         self.update()
+        self._emit_viewport_state()
 
     def flash_effect(self, color: QColor, duration: int = 300):
         self._flash_color = color
@@ -641,6 +646,22 @@ class CanvasView(QWidget):
         pan_y = (self.height() / 2) - (cy * self._zoom)
         self._pan = QPointF(pan_x, pan_y)
         self.update()
+        self._emit_viewport_state()
+
+    def viewport_state_text(self) -> str:
+        """Return the canonical, human-readable viewport status."""
+
+        modes = {
+            self.VIEW_LIT: "LIT",
+            self.VIEW_XRAY_1: "X-RAY 1",
+            self.VIEW_XRAY_2: "X-RAY 2",
+            self.VIEW_XRAY_3: "X-RAY 3",
+            self.VIEW_COLLISION: "COLLISION",
+        }
+        return f"VIEW: {modes.get(self._view_mode, '?')}  |  ZOOM: {self._zoom:.2f}x"
+
+    def _emit_viewport_state(self) -> None:
+        self.viewport_state_changed.emit(self.viewport_state_text())
 
     def set_view_mode(self, mode: int):
         self._view_mode = mode
@@ -657,6 +678,7 @@ class CanvasView(QWidget):
                     worker.signals.finished.connect(self._on_xray_finished)
                     self.threadpool.start(worker)
         self.update()
+        self._emit_viewport_state()
 
     def _on_xray_finished(self, qimage: QImage, mode: int):
         cache_attr = f"_qimage_xray_{mode}"
@@ -717,6 +739,7 @@ class CanvasView(QWidget):
         if 0.01 < zoom < 100.0:
             self._zoom = zoom
             self.update()
+            self._emit_viewport_state()
 
     def get_zoom(self) -> float:
         """Retorna o nível de zoom atual."""
@@ -729,6 +752,18 @@ class CanvasView(QWidget):
             self._tool.on_cancel()
         self._tool = tool
         self.update()
+
+    def set_pan_mode(self, enabled: bool) -> None:
+        """Use the primary mouse button for viewport panning when enabled."""
+        self._pan_mode = bool(enabled)
+        if not self._pan_mode and self._dragging:
+            self._dragging = False
+            self.setCursor(Qt.CursorShape.ArrowCursor)
+        self.pan_mode_changed.emit(self._pan_mode)
+        self.update()
+
+    def is_pan_mode(self) -> bool:
+        return self._pan_mode
 
     def set_collision_overlay(self, overlay):
         self._collision_overlay = overlay
@@ -898,6 +933,12 @@ class CanvasView(QWidget):
                 self._last_mouse = pos
                 self.setCursor(Qt.CursorShape.ClosedHandCursor)
             event.accept()
+            return
+
+        if self._pan_mode and event.button() == Qt.MouseButton.LeftButton:
+            self._dragging = True
+            self._last_mouse = pos
+            self.setCursor(Qt.CursorShape.ClosedHandCursor)
             return
 
         # 1. Gizmo contextual da seleção (sempre em coordenadas de tela)
@@ -1318,11 +1359,9 @@ class CanvasView(QWidget):
         # --- Camada de Tela (Interface) ---
         painter.setTransform(QTransform())
 
-        # Header Info (Apenas se não for preview)
+        # O estado persistente do viewport vive na status bar da MainWindow.
+        # Isso mantém o canvas livre para conteúdo, overlays e gizmo.
         if not self._preview_mode:
-            self._draw_hud(painter)
-            # self._draw_axis_gizmo(painter)
-
             # Gizmo Interativo
             if self._qimage_lit and self._gizmo_enabled and self.gizmo:
                 center_screen = self._get_image_center_screen()
@@ -1389,13 +1428,19 @@ class CanvasView(QWidget):
         painter.drawRect(0, 0, w, h)
 
     def _draw_hud(self, painter):
+        """Draw the legacy opt-in overlay for isolated canvas callers.
+
+        MainWindow does not invoke this helper anymore: the live viewport state
+        is exposed through viewport_state_changed and rendered by the permanent
+        status-bar indicator. Keeping the explicit helper preserves compatibility
+        for tools that intentionally request a canvas overlay.
+        """
         header_height = 45
         painter.setBrush(QColor(20, 20, 20, 200))
         painter.setPen(QPen(QColor(150, 150, 150), 2))
         painter.drawRect(0, 0, self.width(), header_height)
 
-        modes = {0: "LIT", 1: "X-RAY 1", 2: "X-RAY 2", 3: "X-RAY 3", 4: "COLLISION"}
-        txt = f"VIEW: {modes.get(self._view_mode, '?')} | " f"ZOOM: {self._zoom:.2f}x"
+        txt = self.viewport_state_text()
         painter.setPen(QColor(0, 255, 255))
         painter.setFont(QFont("Consolas", 10, QFont.Weight.Bold))
         font_metrics = painter.fontMetrics()

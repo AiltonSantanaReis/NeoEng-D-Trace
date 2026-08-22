@@ -1,0 +1,543 @@
+{
+  "finding_count": 0,
+  "findings": [],
+  "platform": "Windows-10-10.0.26200-SP0",
+  "qt_platform": "windows",
+  "records": {
+    "main/compact/Collision": {
+      "current_index": 3,
+      "pages": [
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": true,
+          "visible_to_root": true
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/compact/Groups": {
+      "current_index": 2,
+      "pages": [
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            621
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/compact/Layers": {
+      "current_index": 1,
+      "pages": [
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            621
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/compact/Objects": {
+      "current_index": 0,
+      "pages": [
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            460,
+            621
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            621
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/desktop/Collision": {
+      "current_index": 3,
+      "pages": [
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": true,
+          "visible_to_root": true
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/desktop/Groups": {
+      "current_index": 2,
+      "pages": [
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            981
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/desktop/Layers": {
+      "current_index": 1,
+      "pages": [
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            981
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            981
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "main/desktop/Objects": {
+      "current_index": 0,
+      "pages": [
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            540,
+            961
+          ],
+          "index": 0,
+          "title": "Objects",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            981
+          ],
+          "index": 1,
+          "title": "Layers",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            981
+          ],
+          "index": 2,
+          "title": "Groups",
+          "visible": false,
+          "visible_to_root": false
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            460,
+            981
+          ],
+          "index": 3,
+          "title": "Collision",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "scenario/right_pages": {
+      "current_index": 0,
+      "pages": [
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            430,
+            794
+          ],
+          "index": 0,
+          "title": "",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            100,
+            30
+          ],
+          "index": 1,
+          "title": "scenario_inspector_scroll",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    },
+    "scenario/viewport_pages": {
+      "current_index": 0,
+      "pages": [
+        {
+          "current": true,
+          "geometry": [
+            0,
+            0,
+            845,
+            794
+          ],
+          "index": 0,
+          "title": "professional_scene_viewport_empty",
+          "visible": true,
+          "visible_to_root": true
+        },
+        {
+          "current": false,
+          "geometry": [
+            0,
+            0,
+            400,
+            300
+          ],
+          "index": 1,
+          "title": "",
+          "visible": false,
+          "visible_to_root": false
+        }
+      ],
+      "visible_to_root": true
+    }
+  },
+  "schema_version": 1,
+  "source_state": {
+    "branch": "Ailton/interface-stage5-viewport-hud",
+    "commit": "5d45f6ed54a1cf21cb394e8a8d5d8974708e44c8",
+    "worktree_clean": false
+  },
+  "status": "PASS"
+}

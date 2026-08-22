@@ -46,6 +46,42 @@ def _scene() -> Scene:
     return scene
 
 
+def _assert_only_current_page_visible(stack, root) -> None:
+    current_index = stack.currentIndex()
+    assert current_index >= 0
+    for index in range(stack.count()):
+        page = stack.widget(index)
+        expected = index == current_index
+        assert page.isVisible() is expected
+        assert page.isVisibleTo(root) is expected
+
+
+def test_all_main_and_scenario_page_stacks_hide_inactive_pages(qt_app):
+    window = MainWindow(_scene(), _Config())
+    try:
+        window.show()
+        qt_app.processEvents()
+        for size, tabs in (
+            (QSize(1920, 1080), window.reference_panel_tabs),
+            (QSize(1280, 720), window.compact_panel_tabs),
+        ):
+            window.resize(size)
+            qt_app.processEvents()
+            _assert_only_current_page_visible(tabs, window)
+
+        window.open_scenario_editor()
+        qt_app.processEvents()
+        editor = window.scenario_editor_window
+        assert editor is not None
+        _assert_only_current_page_visible(editor.professional_pages, editor)
+        _assert_only_current_page_visible(editor.right_pages, editor)
+    finally:
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.close()
+        window.close()
+        qt_app.processEvents()
+
+
 def test_scenario_editor_has_explained_empty_state(qt_app):
     window = MainWindow(_scene(), _Config())
     try:

@@ -27,9 +27,11 @@ COLOR_RE = re.compile(r"#[0-9A-Fa-f]{6}")
 MAIN_WIDGETS = (
     "main_splitter",
     "tool_palette",
+    "reference_tool_palette",
     "canvas",
     "panel_stack",
     "desktop_panel_splitter",
+    "reference_panel_tabs",
     "right_splitter",
     "compact_panel_tabs",
     "side_panel",
@@ -41,24 +43,17 @@ MAIN_WIDGETS = (
     "xray_toolbar",
 )
 PARENT_RELATIONS = {
-    "tool_palette": "main_splitter",
+    "reference_tool_palette": "main_splitter",
     "canvas": "main_splitter",
     "panel_stack": "main_splitter",
     "desktop_panel_splitter": "panel_stack",
+    "reference_panel_tabs": "desktop_panel_splitter",
     "compact_panel_tabs": "panel_stack",
-    "right_splitter": "desktop_panel_splitter",
-    "collision_panel": "desktop_panel_splitter",
-    "side_panel": "right_splitter",
-    "layers": "right_splitter",
-    "groups": "right_splitter",
+    "collision_panel": "reference_panel_tabs",
 }
 SIBLING_RELATIONS = (
-    ("tool_palette", "canvas"),
+    ("reference_tool_palette", "canvas"),
     ("canvas", "panel_stack"),
-    ("right_splitter", "collision_panel"),
-    ("side_panel", "layers"),
-    ("side_panel", "groups"),
-    ("layers", "groups"),
 )
 SCENARIO_WIDGETS = (
     "scenario_editor_toolbar",
@@ -68,7 +63,12 @@ SCENARIO_WIDGETS = (
     "professional_viewport",
     "professional_inspector",
 )
-SCENARIO_BASE_WIDGETS = ("scenario_editor_toolbar", "scenario_editor_splitter", "professional_viewport_pages", "scenario_right_pages")
+SCENARIO_BASE_WIDGETS = (
+    "scenario_editor_toolbar",
+    "scenario_editor_splitter",
+    "professional_viewport_pages",
+    "scenario_right_pages",
+)
 SCENARIO_PARENT_RELATIONS = (
     ("professional_viewport_pages", "scenario_editor_splitter"),
     ("scenario_right_pages", "scenario_editor_splitter"),
@@ -106,7 +106,9 @@ def _rect(value: Any) -> tuple[int, int, int, int] | None:
     return tuple(value)
 
 
-def _intersection_area(first: tuple[int, int, int, int], second: tuple[int, int, int, int]) -> int:
+def _intersection_area(
+    first: tuple[int, int, int, int], second: tuple[int, int, int, int]
+) -> int:
     left = max(first[0], second[0])
     top = max(first[1], second[1])
     right = min(first[0] + first[2], second[0] + second[2])
@@ -114,7 +116,9 @@ def _intersection_area(first: tuple[int, int, int, int], second: tuple[int, int,
     return max(0, right - left) * max(0, bottom - top)
 
 
-def _within(child: tuple[int, int, int, int], parent: tuple[int, int, int, int]) -> bool:
+def _within(
+    child: tuple[int, int, int, int], parent: tuple[int, int, int, int]
+) -> bool:
     return (
         child[0] >= parent[0]
         and child[1] >= parent[1]
@@ -201,7 +205,10 @@ def _validate_hashes(
             _finding(findings, "hash", f"invalid digest record: {name}")
             continue
         actual_digest = _digest(actual[name])
-        if actual_digest != {"bytes": digest.get("bytes"), "sha256": digest.get("sha256")}:
+        if actual_digest != {
+            "bytes": digest.get("bytes"),
+            "sha256": digest.get("sha256"),
+        }:
             _finding(findings, "hash", f"digest mismatch: {name}")
     return expected
 
@@ -211,6 +218,62 @@ def _capture_state(name: str) -> str | None:
         if name.endswith(suffix):
             return state
     return None
+
+
+def _tab_visibility_checks(
+    filename: str,
+    geometry: Any,
+    findings: list[dict[str, Any]],
+) -> None:
+    """Fail closed when an inactive tab page is visible in the capture."""
+    tab_visibility = (
+        geometry.get("tab_visibility") if isinstance(geometry, dict) else None
+    )
+    if not isinstance(tab_visibility, dict):
+        _finding(
+            findings, "geometry", "missing tab visibility contract", image=filename
+        )
+        return
+    for name, snapshot in tab_visibility.items():
+        if not isinstance(snapshot, dict):
+            _finding(
+                findings,
+                "geometry",
+                f"invalid tab visibility record: {name}",
+                image=filename,
+            )
+            continue
+        container_visible = bool(snapshot.get("visible_to_root"))
+        current_index = snapshot.get("current_index")
+        pages = snapshot.get("pages")
+        if not isinstance(current_index, int) or not isinstance(pages, list):
+            _finding(
+                findings,
+                "geometry",
+                f"invalid tab visibility payload: {name}",
+                image=filename,
+            )
+            continue
+        for page in pages:
+            if not isinstance(page, dict) or not isinstance(page.get("index"), int):
+                _finding(
+                    findings,
+                    "geometry",
+                    f"invalid tab page visibility: {name}",
+                    image=filename,
+                )
+                continue
+            index = page["index"]
+            rendered = bool(page.get("visible")) and bool(page.get("visible_to_root"))
+            expected = container_visible and index == current_index
+            if rendered != expected:
+                state = "active" if index == current_index else "inactive"
+                _finding(
+                    findings,
+                    "geometry",
+                    f"{name} {state} tab page visibility is inconsistent",
+                    image=filename,
+                )
 
 
 def _geometry_checks(
@@ -233,67 +296,162 @@ def _geometry_checks(
         )
         expected_size = capture_size or (rect[2:] if rect is not None else None)
         if expected_size is None or tuple(expected_size) != image_size:
-            _finding(findings, "geometry", "modal Qt geometry differs from PNG size", image=filename)
+            _finding(
+                findings,
+                "geometry",
+                "modal Qt geometry differs from PNG size",
+                image=filename,
+            )
         return
     profile = geometry.get("profile")
     if profile in {"professional_scene_empty", "professional_scene_editor"}:
         state_widgets = geometry.get("professional_editor")
         if not isinstance(state_widgets, dict):
-            _finding(findings, "geometry", "missing professional editor geometry", image=filename)
+            _finding(
+                findings,
+                "geometry",
+                "missing professional editor geometry",
+                image=filename,
+            )
             return
         rects: dict[str, tuple[int, int, int, int]] = {}
         visible: set[str] = set()
         width, height = image_size
-        required_widgets = SCENARIO_BASE_WIDGETS if profile == "professional_scene_empty" else SCENARIO_WIDGETS
+        required_widgets = (
+            SCENARIO_BASE_WIDGETS
+            if profile == "professional_scene_empty"
+            else SCENARIO_WIDGETS
+        )
         for name in required_widgets:
             widget = state_widgets.get(name)
             if not isinstance(widget, dict):
-                _finding(findings, "geometry", f"missing Qt widget geometry: {name}", image=filename)
+                _finding(
+                    findings,
+                    "geometry",
+                    f"missing Qt widget geometry: {name}",
+                    image=filename,
+                )
                 continue
             root_rect = _rect(widget.get("root_geometry"))
             local_rect = _rect(widget.get("geometry"))
-            if root_rect is None or local_rect is None or root_rect[2:] != local_rect[2:]:
-                _finding(findings, "geometry", f"invalid or inconsistent geometry: {name}", image=filename)
+            if (
+                root_rect is None
+                or local_rect is None
+                or root_rect[2:] != local_rect[2:]
+            ):
+                _finding(
+                    findings,
+                    "geometry",
+                    f"invalid or inconsistent geometry: {name}",
+                    image=filename,
+                )
                 continue
             rects[name] = root_rect
             if bool(widget.get("visible")):
                 visible.add(name)
-                if root_rect[2] <= 0 or root_rect[3] <= 0 or not _within(root_rect, (0, 0, width, height)):
-                    _finding(findings, "clipping", f"visible widget is clipped by capture bounds: {name}", image=filename, rects=[{"name": name, "rect": list(root_rect), "severity": "error"}])
+                if (
+                    root_rect[2] <= 0
+                    or root_rect[3] <= 0
+                    or not _within(root_rect, (0, 0, width, height))
+                ):
+                    _finding(
+                        findings,
+                        "clipping",
+                        f"visible widget is clipped by capture bounds: {name}",
+                        image=filename,
+                        rects=[
+                            {"name": name, "rect": list(root_rect), "severity": "error"}
+                        ],
+                    )
         for child, parent in SCENARIO_PARENT_RELATIONS:
-            if child in visible and parent in visible and child in rects and parent in rects and not _within(rects[child], rects[parent]):
-                _finding(findings, "geometry", f"Qt child is outside its recorded parent: {child} -> {parent}", image=filename, rects=[{"name": child, "rect": list(rects[child]), "severity": "error"}, {"name": parent, "rect": list(rects[parent]), "severity": "error"}])
+            if (
+                child in visible
+                and parent in visible
+                and child in rects
+                and parent in rects
+                and not _within(rects[child], rects[parent])
+            ):
+                _finding(
+                    findings,
+                    "geometry",
+                    f"Qt child is outside its recorded parent: {child} -> {parent}",
+                    image=filename,
+                    rects=[
+                        {
+                            "name": child,
+                            "rect": list(rects[child]),
+                            "severity": "error",
+                        },
+                        {
+                            "name": parent,
+                            "rect": list(rects[parent]),
+                            "severity": "error",
+                        },
+                    ],
+                )
         return
     state_widgets = geometry.get(state)
     if not isinstance(state_widgets, dict):
         _finding(findings, "geometry", f"missing widget state: {state}", image=filename)
         return
+    _tab_visibility_checks(filename, state_widgets, findings)
     rects: dict[str, tuple[int, int, int, int]] = {}
     visible: set[str] = set()
     width, height = image_size
     for name in MAIN_WIDGETS:
         widget = state_widgets.get(name)
         if not isinstance(widget, dict):
-            _finding(findings, "geometry", f"missing Qt widget geometry: {name}", image=filename)
+            _finding(
+                findings,
+                "geometry",
+                f"missing Qt widget geometry: {name}",
+                image=filename,
+            )
             continue
         root_rect = _rect(widget.get("root_geometry"))
         local_rect = _rect(widget.get("geometry"))
         if root_rect is None or local_rect is None or root_rect[2:] != local_rect[2:]:
-            _finding(findings, "geometry", f"invalid or inconsistent geometry: {name}", image=filename)
+            _finding(
+                findings,
+                "geometry",
+                f"invalid or inconsistent geometry: {name}",
+                image=filename,
+            )
+            continue
+        if bool(widget.get("visible")) and (root_rect[2] <= 0 or root_rect[3] <= 0):
+            _finding(
+                findings,
+                "geometry",
+                f"non-positive Qt geometry: {name}",
+                image=filename,
+                rects=[{"name": name, "rect": list(root_rect), "severity": "error"}],
+            )
             continue
         rects[name] = root_rect
         if bool(widget.get("visible")):
             visible.add(name)
-            if root_rect[2] <= 0 or root_rect[3] <= 0 or not _within(root_rect, (0, 0, width, height)):
+            if (
+                root_rect[2] <= 0
+                or root_rect[3] <= 0
+                or not _within(root_rect, (0, 0, width, height))
+            ):
                 _finding(
                     findings,
                     "clipping",
                     f"visible widget is clipped by capture bounds: {name}",
                     image=filename,
-                    rects=[{"name": name, "rect": list(root_rect), "severity": "error"}],
+                    rects=[
+                        {"name": name, "rect": list(root_rect), "severity": "error"}
+                    ],
                 )
     for child, parent in PARENT_RELATIONS.items():
-        if child in visible and parent in visible and child in rects and parent in rects and not _within(rects[child], rects[parent]):
+        if (
+            child in visible
+            and parent in visible
+            and child in rects
+            and parent in rects
+            and not _within(rects[child], rects[parent])
+        ):
             _finding(
                 findings,
                 "geometry",
@@ -305,7 +463,12 @@ def _geometry_checks(
                 ],
             )
     for first, second in SIBLING_RELATIONS:
-        if first in visible and second in visible and first in rects and second in rects:
+        if (
+            first in visible
+            and second in visible
+            and first in rects
+            and second in rects
+        ):
             area = _intersection_area(rects[first], rects[second])
             if area:
                 _finding(
@@ -314,8 +477,16 @@ def _geometry_checks(
                     f"visible sibling widgets overlap: {first} / {second} ({area}px²)",
                     image=filename,
                     rects=[
-                        {"name": first, "rect": list(rects[first]), "severity": "error"},
-                        {"name": second, "rect": list(rects[second]), "severity": "error"},
+                        {
+                            "name": first,
+                            "rect": list(rects[first]),
+                            "severity": "error",
+                        },
+                        {
+                            "name": second,
+                            "rect": list(rects[second]),
+                            "severity": "error",
+                        },
                     ],
                 )
 
@@ -328,30 +499,58 @@ def _palette_checks(
     profile: str | None = None,
 ) -> dict[str, Any]:
     colors = sorted(set(COLOR_RE.findall(QSS)))
-    required = MODAL_PALETTE if is_modal else (("#1e1e1e", "#3c3c3c", "#e6e6e6") if profile == "professional_scene_empty" else CORE_PALETTE)
+    required = (
+        MODAL_PALETTE
+        if is_modal
+        else (
+            ("#1e1e1e", "#3c3c3c", "#e6e6e6")
+            if profile == "professional_scene_empty"
+            else CORE_PALETTE
+        )
+    )
     counts: dict[str, int] = {}
     for value in required:
         color = tuple(bytes.fromhex(value[1:]))
         counts[value] = int(np.all(rgb == color, axis=2).sum())
         if counts[value] == 0:
-            _finding(findings, "palette", f"required QSS color absent from screenshot: {value}", image=filename)
+            _finding(
+                findings,
+                "palette",
+                f"required QSS color absent from screenshot: {value}",
+                image=filename,
+            )
     for value in INTERACTIVE_PALETTE:
         color = tuple(bytes.fromhex(value[1:]))
         counts[value] = int(np.all(rgb == color, axis=2).sum())
-    luminance = (0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2])
+    luminance = 0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2]
     dark_ratio = float((luminance <= 100).mean())
     if dark_ratio < 0.55:
-        _finding(findings, "palette", f"dark-theme pixel ratio too low: {dark_ratio:.4f}", image=filename)
-    return {"qss_colors": colors, "required_counts": counts, "dark_pixel_ratio": dark_ratio}
+        _finding(
+            findings,
+            "palette",
+            f"dark-theme pixel ratio too low: {dark_ratio:.4f}",
+            image=filename,
+        )
+    return {
+        "qss_colors": colors,
+        "required_counts": counts,
+        "dark_pixel_ratio": dark_ratio,
+    }
 
 
-def _annotate(input_path: Path, output_path: Path, findings: list[dict[str, Any]], status: str) -> None:
+def _annotate(
+    input_path: Path, output_path: Path, findings: list[dict[str, Any]], status: str
+) -> None:
     with Image.open(input_path) as source:
         image = source.convert("RGB")
     draw = ImageDraw.Draw(image)
     relevant = [item for item in findings if item.get("image") == input_path.name]
     for item in relevant:
-        color = (220, 50, 47) if item["check"] in {"clipping", "overlap", "geometry"} else (245, 166, 35)
+        color = (
+            (220, 50, 47)
+            if item["check"] in {"clipping", "overlap", "geometry"}
+            else (245, 166, 35)
+        )
         for entry in item.get("rects", []):
             rect = entry.get("rect")
             if isinstance(rect, list) and len(rect) == 4:
@@ -392,7 +591,9 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
     if not input_dir.is_dir():
         raise FileNotFoundError(input_dir)
     if output_dir == input_dir or input_dir in output_dir.parents:
-        raise ValueError("output directory must not be inside the input capture directory")
+        raise ValueError(
+            "output directory must not be inside the input capture directory"
+        )
     manifest_path = input_dir / "manifest.json"
     findings: list[dict[str, Any]] = []
     if not manifest_path.is_file():
@@ -420,33 +621,85 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
         is_modal = state == "validacao_modal"
         if metadata["has_alpha"] and metadata["alpha_min"] != 255:
             if is_screenshot:
-                _finding(findings, "transparency", "screenshot contains transparent pixels", image=filename)
+                _finding(
+                    findings,
+                    "transparency",
+                    "screenshot contains transparent pixels",
+                    image=filename,
+                )
             elif metadata["alpha_min"] == 0:
-                _finding(findings, "transparency", "fixture is fully or partially transparent", image=filename)
+                _finding(
+                    findings,
+                    "transparency",
+                    "fixture is fully or partially transparent",
+                    image=filename,
+                )
         if metadata["has_alpha"] and metadata["alpha_min"] != metadata["alpha_max"]:
-            _finding(findings, "transparency", "mixed alpha values are not deterministic for an audit PNG", image=filename)
+            _finding(
+                findings,
+                "transparency",
+                "mixed alpha values are not deterministic for an audit PNG",
+                image=filename,
+            )
         expected_size: list[int] | None = None
         for capture in captures.values():
             if filename in capture.get("files", {}):
                 if is_modal:
-                    widget = capture.get("widget_geometry", {}).get("validacao_modal", {})
-                    if isinstance(widget, dict) and isinstance(widget.get("capture_size"), list):
+                    widget = capture.get("widget_geometry", {}).get(
+                        "validacao_modal", {}
+                    )
+                    if isinstance(widget, dict) and isinstance(
+                        widget.get("capture_size"), list
+                    ):
                         expected_size = widget["capture_size"]
                     else:
-                        expected_size = _rect(widget.get("root_geometry"))[2:] if isinstance(widget, dict) and _rect(widget.get("root_geometry")) else None
+                        expected_size = (
+                            _rect(widget.get("root_geometry"))[2:]
+                            if isinstance(widget, dict)
+                            and _rect(widget.get("root_geometry"))
+                            else None
+                        )
                 else:
                     expected_size = capture.get("actual_capture_size")
                 break
-        if expected_size is not None and tuple(metadata["size"]) != tuple(expected_size):
-            _finding(findings, "dimensions", f"PNG dimensions {metadata['size']} != Qt capture {expected_size}", image=filename)
-        capture = next((item for item in captures.values() if filename in item.get("files", {})), {})
+        if expected_size is not None and tuple(metadata["size"]) != tuple(
+            expected_size
+        ):
+            _finding(
+                findings,
+                "dimensions",
+                f"PNG dimensions {metadata['size']} != Qt capture {expected_size}",
+                image=filename,
+            )
+        capture = next(
+            (item for item in captures.values() if filename in item.get("files", {})),
+            {},
+        )
         if state is not None:
-            _geometry_checks(filename, state, capture.get("widget_geometry"), tuple(metadata["size"]), findings)
-        palette_profile = capture.get("widget_geometry", {}).get("profile") if isinstance(capture.get("widget_geometry"), dict) else None
-        palette = _palette_checks(filename, rgb, is_modal, findings, profile=palette_profile) if is_screenshot else {"skipped": True}
-        edge = np.concatenate((rgb[0, :, :], rgb[-1, :, :], rgb[:, 0, :], rgb[:, -1, :]), axis=0)
+            _geometry_checks(
+                filename,
+                state,
+                capture.get("widget_geometry"),
+                tuple(metadata["size"]),
+                findings,
+            )
+        palette_profile = (
+            capture.get("widget_geometry", {}).get("profile")
+            if isinstance(capture.get("widget_geometry"), dict)
+            else None
+        )
+        palette = (
+            _palette_checks(filename, rgb, is_modal, findings, profile=palette_profile)
+            if is_screenshot
+            else {"skipped": True}
+        )
+        edge = np.concatenate(
+            (rgb[0, :, :], rgb[-1, :, :], rgb[:, 0, :], rgb[:, -1, :]), axis=0
+        )
         edge_activity = float((edge.max(axis=1) > 180).mean())
-        image_reports[filename] = {key: value for key, value in metadata.items() if key != "rgb"} | {
+        image_reports[filename] = {
+            key: value for key, value in metadata.items() if key != "rgb"
+        } | {
             "sha256": _digest(path)["sha256"],
             "edge_activity": edge_activity,
             "palette": palette,
@@ -469,36 +722,85 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
     status = "PASS" if not findings else "FAIL"
     output_dir.mkdir(parents=True, exist_ok=True)
     for filename in sorted(image_reports):
-        _annotate(input_dir / filename, output_dir / f"{Path(filename).stem}_annotated.png", findings, status)
+        _annotate(
+            input_dir / filename,
+            output_dir / f"{Path(filename).stem}_annotated.png",
+            findings,
+            status,
+        )
     report = {
         "schema_version": 1,
         "status": status,
-        "input": {"manifest": "manifest.json", "manifest_sha256": _digest(manifest_path)["sha256"]},
+        "input": {
+            "manifest": "manifest.json",
+            "manifest_sha256": _digest(manifest_path)["sha256"],
+        },
         "environment": {"platform": platform.platform(), "python": sys.version},
-        "checks": ["pillow_decode", "opencv_decode", "dimensions", "transparency", "sha256", "clipping", "qt_geometry", "overlap", "qss_palette_contextual", "qss_palette_aggregate", "annotated_output"],
+        "checks": [
+            "pillow_decode",
+            "opencv_decode",
+            "dimensions",
+            "transparency",
+            "sha256",
+            "clipping",
+            "qt_geometry",
+            "overlap",
+            "qss_palette_contextual",
+            "qss_palette_aggregate",
+            "annotated_output",
+        ],
         "images": image_reports,
         "findings": findings,
         "finding_count": len(findings),
     }
     report_text = json.dumps(report, indent=2, sort_keys=True) + "\n"
-    (output_dir / "visual-audit-report.json").write_text(report_text, encoding="utf-8", newline="\n")
-    lines = ["# Reproducible visual audit", "", f"Status: **{status}**", "", f"Findings: {len(findings)}", "", "## Checks", "", "- " + "\n- ".join(report["checks"])]
+    (output_dir / "visual-audit-report.json").write_text(
+        report_text, encoding="utf-8", newline="\n"
+    )
+    lines = [
+        "# Reproducible visual audit",
+        "",
+        f"Status: **{status}**",
+        "",
+        f"Findings: {len(findings)}",
+        "",
+        "## Checks",
+        "",
+        "- " + "\n- ".join(report["checks"]),
+    ]
     if findings:
         lines.extend(["", "## Findings", ""])
         lines.extend(f"- **{item['check']}**: {item['message']}" for item in findings)
     else:
         lines.extend(["", "No automated findings."])
-    (output_dir / "visual-audit-report.md").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    (output_dir / "visual-audit-report.md").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8", newline="\n"
+    )
     return report
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input", type=Path, required=True, help="capture directory containing manifest.json")
-    parser.add_argument("--output", type=Path, required=True, help="directory for annotated PNGs and reports")
+    parser.add_argument(
+        "--input",
+        type=Path,
+        required=True,
+        help="capture directory containing manifest.json",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="directory for annotated PNGs and reports",
+    )
     args = parser.parse_args()
     report = run_audit(args.input, args.output)
-    print(json.dumps({"status": report["status"], "finding_count": report["finding_count"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {"status": report["status"], "finding_count": report["finding_count"]},
+            sort_keys=True,
+        )
+    )
     return 0 if report["status"] == "PASS" else 1
 
 

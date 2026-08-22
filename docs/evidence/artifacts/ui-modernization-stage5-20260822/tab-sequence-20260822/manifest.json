@@ -1,0 +1,107 @@
+{
+  "records": [
+    {
+      "bytes": 27114,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_01_initial_objects.png",
+      "sha256": "b4725c91a818420e7ed51f44290d93415df7a7db20cd5060038683ca55fd1a96"
+    },
+    {
+      "bytes": 24437,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_03_layers.png",
+      "sha256": "80fed7155628bbc8504abf059e93696499b7d78f5fb75882e9e7753c2a5f8ca9"
+    },
+    {
+      "bytes": 25282,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_04_groups.png",
+      "sha256": "bfebc6406db3ff698b2f1c5e47c23cc530979da4a03cb8fce2882389131dae53"
+    },
+    {
+      "bytes": 25053,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_05_collision.png",
+      "sha256": "a95b85dcc0d3382303b9c8e9b3fcc54816f75008bb8831a1cd40d269431f3a01"
+    },
+    {
+      "bytes": 26997,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_02_objects.png",
+      "sha256": "3ec5dd909dc840dfe9488572e0f1ddf76c2b4c0b3bbfc5bc432f32024cfdd0c7"
+    },
+    {
+      "bytes": 26997,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/1080p_FHD_06_objects_after_cycle.png",
+      "sha256": "3ec5dd909dc840dfe9488572e0f1ddf76c2b4c0b3bbfc5bc432f32024cfdd0c7"
+    },
+    {
+      "comparison": "1080p_FHD",
+      "initial_vs_after_cycle": {
+        "changed_pixels": 13162,
+        "changed_ratio": 0.024301170562386912,
+        "crop": [
+          1380,
+          55,
+          540,
+          1003
+        ],
+        "mean_abs_diff": 0.3660795391602969,
+        "total_pixels": 541620
+      },
+      "panel_geometry": [
+        1380,
+        55,
+        540,
+        1003
+      ]
+    },
+    {
+      "bytes": 22004,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_01_initial_objects.png",
+      "sha256": "33983515a34cc630474d87bff735e14384c931fa70fa0e242394bd18b1f14a8c"
+    },
+    {
+      "bytes": 19335,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_03_layers.png",
+      "sha256": "36bdc851853141496055983028e6a0be5f0a331e7e7d0b78fa2ac04fc637624c"
+    },
+    {
+      "bytes": 20331,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_04_groups.png",
+      "sha256": "bf7eef082620778bf71720a848cf34421a2b5dd7711ce5b125dc0b86f830caaa"
+    },
+    {
+      "bytes": 19932,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_05_collision.png",
+      "sha256": "37f2f1775340997a15a2fec68280bcefd16be924c8a42a351de324fe2b95945c"
+    },
+    {
+      "bytes": 21637,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_02_objects.png",
+      "sha256": "a900168f40b8b7d5b92296467f8e1cb462dfe02b9279644d0d9d1ab5c713fe06"
+    },
+    {
+      "bytes": 21637,
+      "file": "docs/evidence/artifacts/ui-modernization-stage5-20260822/tab-sequence-20260822/720p_Compacta_06_objects_after_cycle.png",
+      "sha256": "a900168f40b8b7d5b92296467f8e1cb462dfe02b9279644d0d9d1ab5c713fe06"
+    },
+    {
+      "comparison": "720p_Compacta",
+      "initial_vs_after_cycle": {
+        "changed_pixels": 97871,
+        "changed_ratio": 0.33089120292109,
+        "crop": [
+          820,
+          55,
+          460,
+          643
+        ],
+        "mean_abs_diff": 5.416654270065589,
+        "total_pixels": 295780
+      },
+      "panel_geometry": [
+        820,
+        55,
+        460,
+        643
+      ]
+    }
+  ],
+  "schema_version": 1
+}

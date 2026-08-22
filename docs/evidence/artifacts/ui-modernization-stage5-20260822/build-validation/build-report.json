@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "status": "PASS_LOCAL_BUILD",
+  "source_commit": "96851f16cd27f7880c85f187139a98b88a9a8b84",
+  "source_tree_clean": true,
+  "build_script": "scripts/build_windows.ps1",
+  "build_command": ".\\scripts\\build_windows.ps1 -OutputRoot release-stage5-clean",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9",
+  "pyinstaller": "6.22.0",
+  "smoke_status": "SUCCESS",
+  "smoke_checks": [
+    "cli-version",
+    "versioned-project-input",
+    "headless-project",
+    "headless-json",
+    "headless-glb",
+    "godot-profile-json",
+    "godot-release-glb",
+    "unity-profile-json",
+    "unity-release-glb",
+    "gui-open-close",
+    "user-state-directory"
+  ],
+  "package_files": 355,
+  "artifacts": [
+    {
+      "file": "NeoEng-D-Trace-0.3.0-win64-portable.zip",
+      "bytes": 124324444,
+      "sha256": "00d8635121564f198d1503eb723ad68e9ab50c45c1d75d8287f0eff0ec646977"
+    },
+    {
+      "file": "NeoEng-D-Trace-0.3.0-win64-portable.zip.sha256",
+      "bytes": 106,
+      "sha256": "4c8797079fb5ff3346b821734dfe77284fb004e93f694273276dc23a21b3858a"
+    },
+    {
+      "file": "portable/NeoEng-D-Trace/release-manifest.json",
+      "bytes": 63078,
+      "sha256": "b0e81464d66890c680d9d429c12fe3ca4676f000b74e9505071d569c55614e92"
+    },
+    {
+      "file": "smoke/gui-validation.jsonl",
+      "bytes": 1922,
+      "sha256": "de60d081c8c75becbf0b2713e1ab80a6a9cf3ca0e4c59616ab57e2157388ee5b"
+    },
+    {
+      "file": "smoke/smoke.glb",
+      "bytes": 956,
+      "sha256": "084e8c4bfbb0a421df24967b36e7776824a9506a7ee353fdf45914c2f230037a"
+    },
+    {
+      "file": "smoke/smoke.json",
+      "bytes": 1311,
+      "sha256": "99c2e85247bf4c9fc1b2eda2ac298c2dc56b73e9b412793db25273f4c679e58b"
+    }
+  ],
+  "warnings": [
+    {
+      "kind": "pyinstaller_optional_hidden_import",
+      "module": "tzdata",
+      "source_usage_found": false,
+      "smoke_impact": "none_observed",
+      "suppressed": false
+    }
+  ],
+  "ci_pr_merge_status": "PENDING"
+}

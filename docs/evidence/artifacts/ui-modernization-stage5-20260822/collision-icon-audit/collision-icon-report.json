@@ -1,0 +1,195 @@
+{
+  "finding_count": 0,
+  "findings": [],
+  "platform": "Windows-10-10.0.26200-SP0",
+  "qt_platform": "windows",
+  "records": {
+    "1080p_FHD": {
+      "active_tab": "Collision",
+      "active_tabs": [
+        "Objects",
+        "Layers",
+        "Groups",
+        "Collision"
+      ],
+      "buttons": {
+        "auto_generate": {
+          "accessible_name": "auto-generate collision",
+          "icon_fallback": false,
+          "icon_key": "collision_auto_generate",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Auto-Generate from Scene Objects",
+          "visible_to_window": true
+        },
+        "batch_test": {
+          "accessible_name": "batch collision test",
+          "icon_fallback": false,
+          "icon_key": "collision_test",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Batch Test",
+          "visible_to_window": true
+        },
+        "export": {
+          "accessible_name": "export",
+          "icon_fallback": false,
+          "icon_key": "export",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Export Collisions",
+          "visible_to_window": true
+        }
+      },
+      "capture": {
+        "bytes": 123409,
+        "dimensions": [
+          3840,
+          2120
+        ],
+        "file": "1080p_FHD_collision.png",
+        "sha256": "ed1667bb4ac9430ab19fccadc57019fcf12aaf6ba2a77b9263585e7ec89861c2"
+      },
+      "resolution": [
+        1920,
+        1080
+      ]
+    },
+    "720p_Compacta": {
+      "active_tab": "Collision",
+      "active_tabs": [
+        "Objects",
+        "Layers",
+        "Groups",
+        "Collision"
+      ],
+      "buttons": {
+        "auto_generate": {
+          "accessible_name": "auto-generate collision",
+          "icon_fallback": false,
+          "icon_key": "collision_auto_generate",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Auto-Generate from Scene Objects",
+          "visible_to_window": true
+        },
+        "batch_test": {
+          "accessible_name": "batch collision test",
+          "icon_fallback": false,
+          "icon_key": "collision_test",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Batch Test",
+          "visible_to_window": true
+        },
+        "export": {
+          "accessible_name": "export",
+          "icon_fallback": false,
+          "icon_key": "export",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Export Collisions",
+          "visible_to_window": true
+        }
+      },
+      "capture": {
+        "bytes": 103755,
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "file": "720p_Compacta_collision.png",
+        "sha256": "3a0b1002e45dd682fd77dff5c5c5c3a2f33c583c851c33f55696c9e976e5b74a"
+      },
+      "resolution": [
+        1280,
+        720
+      ]
+    },
+    "768p_Minima": {
+      "active_tab": "Collision",
+      "active_tabs": [
+        "Objects",
+        "Layers",
+        "Groups",
+        "Collision"
+      ],
+      "buttons": {
+        "auto_generate": {
+          "accessible_name": "auto-generate collision",
+          "icon_fallback": false,
+          "icon_key": "collision_auto_generate",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Auto-Generate from Scene Objects",
+          "visible_to_window": true
+        },
+        "batch_test": {
+          "accessible_name": "batch collision test",
+          "icon_fallback": false,
+          "icon_key": "collision_test",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Batch Test",
+          "visible_to_window": true
+        },
+        "export": {
+          "accessible_name": "export",
+          "icon_fallback": false,
+          "icon_key": "export",
+          "icon_null": false,
+          "icon_size": [
+            20,
+            20
+          ],
+          "text": "Export Collisions",
+          "visible_to_window": true
+        }
+      },
+      "capture": {
+        "bytes": 106476,
+        "dimensions": [
+          2732,
+          1536
+        ],
+        "file": "768p_Minima_collision.png",
+        "sha256": "f1fb005dd1265c785f03109ed88d55766acc9b33abe683462830b2d88118b0fd"
+      },
+      "resolution": [
+        1366,
+        768
+      ]
+    }
+  },
+  "schema_version": 1,
+  "source_state": {
+    "branch": "Ailton/interface-stage5-viewport-hud",
+    "commit": "5d45f6ed54a1cf21cb394e8a8d5d8974708e44c8",
+    "worktree_clean": false
+  },
+  "status": "PASS"
+}

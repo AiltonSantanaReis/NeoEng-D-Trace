@@ -1,0 +1,21 @@
+{
+  "files": {
+    "1080p_FHD_collision.png": {
+      "bytes": 123409,
+      "sha256": "ed1667bb4ac9430ab19fccadc57019fcf12aaf6ba2a77b9263585e7ec89861c2"
+    },
+    "720p_Compacta_collision.png": {
+      "bytes": 103755,
+      "sha256": "3a0b1002e45dd682fd77dff5c5c5c3a2f33c583c851c33f55696c9e976e5b74a"
+    },
+    "768p_Minima_collision.png": {
+      "bytes": 106476,
+      "sha256": "f1fb005dd1265c785f03109ed88d55766acc9b33abe683462830b2d88118b0fd"
+    },
+    "collision-icon-report.json": {
+      "bytes": 4857,
+      "sha256": "705a52ae55c7bfbcd3ebfbd3ce12d3381903551a568380136357e42847582972"
+    }
+  },
+  "schema_version": 1
+}

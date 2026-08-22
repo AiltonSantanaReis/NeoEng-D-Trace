@@ -33,6 +33,36 @@ def _window() -> MainWindow:
     return MainWindow(scene, _ConfigStub())
 
 
+def _assert_only_current_tab_visible(window, tabs):
+    current_index = tabs.currentIndex()
+    assert current_index >= 0
+    for index in range(tabs.count()):
+        page = tabs.widget(index)
+        expected = index == current_index
+        assert page.isVisible() is expected
+        assert page.isVisibleTo(window) is expected
+
+
+def test_initial_tab_pages_hide_inactive_pages(qt_app):
+    window = _window()
+    window.resize(QSize(1920, 1080))
+    window.show()
+    qt_app.processEvents()
+    try:
+        _assert_only_current_tab_visible(window, window.reference_panel_tabs)
+
+        window.resize(QSize(1280, 720))
+        qt_app.processEvents()
+        _assert_only_current_tab_visible(window, window.compact_panel_tabs)
+
+        window.resize(QSize(1920, 1080))
+        qt_app.processEvents()
+        _assert_only_current_tab_visible(window, window.reference_panel_tabs)
+    finally:
+        window._mark_document_clean()
+        window.close()
+
+
 def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
     window = _window()
     window.show()
@@ -71,24 +101,24 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
         assert window.panel_stack.currentWidget() is window.desktop_panel_splitter
         assert window.toolbar.isVisible() is True
         assert window.compact_panel_tabs.count() == 0
-        assert window.right_splitter.count() == 3
-        assert window.desktop_panel_splitter.count() == 2
-        assert window.side_panel.parent() is window.right_splitter
-        assert window.layers.parent() is window.right_splitter
-        assert window.groups.parent() is window.right_splitter
-        assert window.collision_panel.parent() is window.desktop_panel_splitter
-        required_panel_width = (
-            max(
-                widget.minimumSizeHint().width()
-                for widget in (window.side_panel, window.layers, window.groups)
+        assert window.reference_panel_tabs.count() == 4
+        assert window.desktop_panel_splitter.count() == 1
+        assert window.desktop_panel_splitter.widget(0) is window.reference_panel_tabs
+        assert all(
+            window.reference_panel_tabs.indexOf(panel) >= 0
+            for panel in (
+                window.side_panel,
+                window.layers,
+                window.groups,
+                window.collision_panel,
             )
-            + window.collision_panel.minimumSizeHint().width()
-            + max(1, window.desktop_panel_splitter.handleWidth())
         )
-        assert window.main_splitter.sizes()[2] >= required_panel_width
+        assert window.reference_tool_palette.isVisibleTo(window)
+        assert window.reference_tool_palette.width() <= 84
+        assert window.main_splitter.sizes()[2] >= 520
         assert window.layers.width() >= window.layers.minimumSizeHint().width()
-        assert all(size > 0 for size in window.desktop_panel_splitter.sizes())
-        assert window.right_splitter.width() > 0
+        assert window.desktop_panel_splitter.sizes()[0] > 0
+        assert window.reference_panel_tabs.width() > 0
         assert window.collision_panel.width() > 0
     finally:
         window._mark_document_clean()
