@@ -584,6 +584,10 @@
       "sha256": "8cae60acccac7b792e8a2c3f241248f9c58528927dd09fe948b9ddbc614e7f35",
       "size": 6290
     },
+    "docs/evidence/ETAPA_3_INTERFACE_MODERNA_ENCERRAMENTO_POS_MERGE_2026-08-22.md": {
+      "sha256": "e773f34c5637556a148c235dd53891fa94f135c1a2d0932d1bb3088888df925d",
+      "size": 3668
+    },
     "docs/evidence/ETAPA_3_PACOTE_1_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "ed8a306ce9269372aa66d476e108835621dde5716757c4344ce8b617c17f672a",
       "size": 4702
