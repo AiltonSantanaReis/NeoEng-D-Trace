@@ -16,6 +16,7 @@ from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
 from src.exporters.scene_authoring_export import validate_scene_authoring_export
 from src.models.scene import Scene
+from src.ui import scenario_editor_window as scenario_editor_window_module
 from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
@@ -438,5 +439,118 @@ def test_export_is_schema_valid_deterministic_and_hash_bound(
         payload = json.loads(second_bytes)
         assert payload["source"]["sha256"]
         assert payload["scene"]["objects"][0]["id"] == "scene_object"
+    finally:
+        _close(window, qt_app)
+
+
+def test_unavailable_editor_actions_and_language_fallback_are_explicit(
+    tmp_path: Path, qt_app
+) -> None:
+    scene = Scene()
+    scene.cmd = CommandManager(max_history=20)
+    authoring = ScenarioAuthoringState(scene)
+    window = ScenarioEditorWindow(authoring, scene)
+    try:
+        assert window.professional_session is None
+        window._build_professional_viewport()
+        window._open_project_hint()
+        assert "Open and save" in window.status_label.text()
+        window._save_professional()
+        assert "before saving" in window.status_label.text()
+        window._load_professional()
+        assert "before reloading" in window.status_label.text()
+        window._reset_professional()
+        assert "before resetting" in window.status_label.text()
+        window._export_professional()
+        assert "before exporting" in window.status_label.text()
+        window._undo_professional()
+        window._redo_professional()
+        window._update_professional_status()
+        window._show_professional_status("No project")
+        window._toggle_overlays()
+        window._set_editor_mode(preview=True)
+        assert window.preview_action.isChecked()
+        assert not window.authoring_action.isChecked()
+        window.update_language("pt")
+        assert window.windowTitle() == "Editor de Cenário — NeoEng-D-Trace"
+        window.update_language("unsupported")
+        assert window.windowTitle() == "Scenario Editor — NeoEng-D-Trace"
+    finally:
+        _close(window, qt_app)
+
+
+def test_existing_sidecar_and_failure_paths_remain_observable(
+    tmp_path: Path, qt_app, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    window, _scene = _window(tmp_path, qt_app)
+    try:
+        session = window.professional_session
+        scene_path = tmp_path / "scene.ndtscene.json"
+        assert session is not None
+        window.save_action.trigger()
+        qt_app.processEvents()
+        assert scene_path.is_file()
+
+        window.close()
+        reopened = ScenarioEditorWindow(window.authoring, window.scene)
+        reopened.show()
+        qt_app.processEvents()
+        try:
+            assert reopened.professional_session is not None
+            assert reopened.professional_inspector_scroll is not None
+            saved_viewport = reopened.professional_viewport
+            assert saved_viewport is not None
+
+            monkeypatch.setattr(
+                scenario_editor_window_module,
+                "save_scene_authoring",
+                lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                    OSError("save failure")
+                ),
+            )
+            reopened._save_professional()
+            assert "Scenario save failed" in reopened.status_label.text()
+
+            monkeypatch.setattr(
+                scenario_editor_window_module,
+                "load_scene_authoring_v2",
+                lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                    ValueError("load failure")
+                ),
+            )
+            reopened._load_professional()
+            assert "Scenario reload failed" in reopened.status_label.text()
+
+            monkeypatch.setattr(
+                scenario_editor_window_module,
+                "save_scene_authoring_export",
+                lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                    OSError("export failure")
+                ),
+            )
+            reopened._export_professional()
+            assert "Scenario export failed" in reopened.status_label.text()
+
+            monkeypatch.undo()
+            reopened.professional_viewport = None
+            reopened._load_professional()
+            assert reopened.status_label.text() == "Scenario reloaded"
+            reopened._reset_professional()
+            assert reopened.status_label.text() == "Scenario reset from project"
+            reopened.professional_viewport = saved_viewport
+
+            reopened.professional_session.set_selection(["scene_object"])
+            reopened.professional_inspector.position_x.setValue(23.0)
+            reopened.professional_inspector.apply_transform()
+            reopened._undo_professional()
+            assert reopened.status_label.text() == "Undo applied"
+            reopened._redo_professional()
+            assert reopened.status_label.text() == "Redo applied"
+
+            scene_path.unlink()
+            reopened._load_professional()
+            assert "No saved scenario" in reopened.status_label.text()
+        finally:
+            _close(reopened, qt_app)
     finally:
         _close(window, qt_app)
