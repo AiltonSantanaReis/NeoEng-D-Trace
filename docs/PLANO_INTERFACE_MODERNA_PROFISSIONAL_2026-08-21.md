@@ -324,3 +324,9 @@ O snapshot de 2026-08-22 permanece histórico e limitado ao `GroupsPanel`. O est
 ### Addendum vivo — revisão visual humana da Etapa 7 — 2026-08-23
 
 A revisão humana está registrada em `docs/evidence/ETAPA_7_REVISAO_VISUAL_HUMANA_2026-08-23.md`. Ela não reescreve o relatório anterior nem aprova release. A Etapa 7 ainda requer promoção da PR, decisão de merge e validação pós-merge.
+
+| 2026-08-23 | Encerramento pós-merge da Etapa 7: PR #154, CI `32634474078` Linux/Windows aprovado, merge `bf6da772afb659e0801b869f2ce5a0740918d94e`, main sincronizado, evidência `110 manifests`, baseline `2618 files` e suíte pós-merge `1625 passed, 2 skipped`. | ETAPA 7 APROVADA NO ESCOPO DEFINIDO / ETAPAS 8–14 PLANEJADAS |
+
+### Encerramento pós-merge — Etapa 7 — 2026-08-23
+
+O encerramento está documentado em `docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md`. A aprovação é limitada ao escopo dos painéis laterais e não é aprovação de release.
