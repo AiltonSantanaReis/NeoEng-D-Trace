@@ -239,3 +239,28 @@ def test_visual_auditor_annotates_nonpositive_geometry_without_crashing(
     assert report["status"] == "FAIL"
     assert any(item["check"] == "geometry" for item in report["findings"])
     assert (tmp_path / "output" / "1080p_FHD_01_sem_projeto_annotated.png").is_file()
+
+
+def test_scenario_palette_tracks_live_theme_tokens() -> None:
+    from scripts.audit_visual_artifacts import CORE_PALETTE, SCENARIO_PALETTE
+
+    assert SCENARIO_PALETTE == CORE_PALETTE
+    assert SCENARIO_PALETTE == (
+        THEME_TOKENS.window,
+        THEME_TOKENS.surface,
+        THEME_TOKENS.surface_alt,
+        THEME_TOKENS.border,
+        THEME_TOKENS.text_primary,
+    )
+
+
+def test_scrollable_content_contract_allows_vertical_overflow_only() -> None:
+    from scripts.audit_visual_artifacts import _within_scrollable_content
+
+    viewport = (850, 27, 430, 671)
+    content = (851, 28, 414, 1373)
+
+    assert _within_scrollable_content(content, viewport)
+    assert not _within_scrollable_content((851, 28, 431, 1373), viewport)
+    assert not _within_scrollable_content((849, 28, 414, 1373), viewport)
+    assert not _within_scrollable_content((851, 26, 414, 1373), viewport)

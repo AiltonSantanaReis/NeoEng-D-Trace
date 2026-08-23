@@ -1,0 +1,225 @@
+{
+  "checks": [
+    "pillow_decode",
+    "opencv_decode",
+    "dimensions",
+    "transparency",
+    "sha256",
+    "clipping",
+    "qt_geometry",
+    "overlap",
+    "qss_palette_contextual",
+    "qss_palette_aggregate",
+    "annotated_output"
+  ],
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+  },
+  "finding_count": 0,
+  "findings": [],
+  "images": {
+    "stage8_01_scenario_empty.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9937586805555556,
+        "qss_colors": [
+          "#171a1f",
+          "#1f242b",
+          "#252c35",
+          "#2d3640",
+          "#2e6d93",
+          "#338db7",
+          "#3b4652",
+          "#526170",
+          "#56b7e6",
+          "#64707c",
+          "#76cef2",
+          "#81d8ff",
+          "#aab7c4",
+          "#e8eef5"
+        ],
+        "required_counts": {
+          "#171a1f": 840674,
+          "#1f242b": 38970,
+          "#252c35": 24044,
+          "#3b4652": 7274,
+          "#56b7e6": 0,
+          "#e8eef5": 729
+        }
+      },
+      "sha256": "181e6d1322a4d2d86a22be3409cd736f3fc8e34b3916080ecba5092a2c914bc3",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage8_02_scenario_authoring.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        720,
+        1280,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9830967881944445,
+        "qss_colors": [
+          "#171a1f",
+          "#1f242b",
+          "#252c35",
+          "#2d3640",
+          "#2e6d93",
+          "#338db7",
+          "#3b4652",
+          "#526170",
+          "#56b7e6",
+          "#64707c",
+          "#76cef2",
+          "#81d8ff",
+          "#aab7c4",
+          "#e8eef5"
+        ],
+        "required_counts": {
+          "#171a1f": 138790,
+          "#1f242b": 36262,
+          "#252c35": 27461,
+          "#3b4652": 17394,
+          "#56b7e6": 224,
+          "#e8eef5": 1059
+        }
+      },
+      "sha256": "41d5e3f3041f0620dd969e45834965e28b0e0a4a77711d14e2a40e8ffd4d0c98",
+      "size": [
+        1280,
+        720
+      ]
+    },
+    "stage8_03_scenario_overlays.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        768,
+        1366,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9779942197413373,
+        "qss_colors": [
+          "#171a1f",
+          "#1f242b",
+          "#252c35",
+          "#2d3640",
+          "#2e6d93",
+          "#338db7",
+          "#3b4652",
+          "#526170",
+          "#56b7e6",
+          "#64707c",
+          "#76cef2",
+          "#81d8ff",
+          "#aab7c4",
+          "#e8eef5"
+        ],
+        "required_counts": {
+          "#171a1f": 153929,
+          "#1f242b": 39444,
+          "#252c35": 29267,
+          "#3b4652": 17895,
+          "#56b7e6": 442,
+          "#e8eef5": 1106
+        }
+      },
+      "sha256": "2dac04698a14e0f58eb9d7edd6a8ff91a31ca0cf6d77bb66f8dfc9878ca4ceb4",
+      "size": [
+        1366,
+        768
+      ]
+    },
+    "stage8_04_scenario_preview.png": {
+      "alpha_max": null,
+      "alpha_min": null,
+      "edge_activity": 0.0,
+      "has_alpha": false,
+      "mode": "RGB",
+      "opencv_shape": [
+        1080,
+        1920,
+        3
+      ],
+      "palette": {
+        "dark_pixel_ratio": 0.9858685378086419,
+        "qss_colors": [
+          "#171a1f",
+          "#1f242b",
+          "#252c35",
+          "#2d3640",
+          "#2e6d93",
+          "#338db7",
+          "#3b4652",
+          "#526170",
+          "#56b7e6",
+          "#64707c",
+          "#76cef2",
+          "#81d8ff",
+          "#aab7c4",
+          "#e8eef5"
+        ],
+        "required_counts": {
+          "#171a1f": 199988,
+          "#1f242b": 113951,
+          "#252c35": 39796,
+          "#3b4652": 27188,
+          "#56b7e6": 528,
+          "#e8eef5": 1168
+        }
+      },
+      "sha256": "afcffd59d77fb0c8c42e28dd0f3e101ad3eafc0face7fc10e1977c4bba585fcc",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    "ui-audit-fixture.png": {
+      "alpha_max": 255,
+      "alpha_min": 255,
+      "edge_activity": 0.0,
+      "has_alpha": true,
+      "mode": "RGBA",
+      "opencv_shape": [
+        8,
+        8,
+        4
+      ],
+      "palette": {
+        "skipped": true
+      },
+      "sha256": "c5c4e332d644b73a12b96149f833b809aa56e1c07378120a8b25a24d55aadfd8",
+      "size": [
+        8,
+        8
+      ]
+    }
+  },
+  "input": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "744faa9aaeef0083c07b4194cfc522ae72cba57a1cb7f6cc0dac5a9bf7639ccc"
+  },
+  "schema_version": 1,
+  "status": "PASS"
+}

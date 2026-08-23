@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "63fbcf441af5e40e98205e2d11bcb948e35c1ebbac07b38dd0ab1a1f38ace2c7",
-      "size": 44906
+      "sha256": "057d572180b744b01a0fa01dcdecae770f0e37537b7b499b2da5316ce013e96b",
+      "size": 49848
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -899,6 +899,10 @@
     "docs/evidence/ETAPA_8_BEZIER_GEOMETRIA_PRE_MERGE.md": {
       "sha256": "6be9d31f44c356280470b44920dc1471a3b9e77caa6468e7f294cd66c7ab284f",
       "size": 6583
+    },
+    "docs/evidence/ETAPA_8_EDITOR_CENARIO_SEPARADO_2026-08-23.md": {
+      "sha256": "0e54458bcb26cec040805e786bebdd0c643ac01eaa0565e36040e20fb4cac345",
+      "size": 6901
     },
     "docs/evidence/ETAPA_8_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "16dc41071884dc3bda576b6b6aaf0f8f19338eb61ed14afed4dcab9f0981cdbf",
@@ -8472,6 +8476,66 @@
       "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
       "size": 10112
     },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/stage8_01_scenario_empty_annotated.png": {
+      "sha256": "07ecb54ecc4e1512751bfa17ecd1cedfb7d9e9bc56ee9dc104720fd5e15c7560",
+      "size": 19734
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/stage8_02_scenario_authoring_annotated.png": {
+      "sha256": "44c8d78d7bc06d0dcb2fcd145335b8cd365b8ea621e9156bc54f736240aac541",
+      "size": 42138
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/stage8_03_scenario_overlays_annotated.png": {
+      "sha256": "4294e7be77bbb294d22ad1b7686e9f6614e161e17e6797aabcabe7118c5d73cc",
+      "size": 49407
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/stage8_04_scenario_preview_annotated.png": {
+      "sha256": "149e733a3690658cb4ff4a9f0dfe71bd0e33eee70a524463c5e7d74e04a12e16",
+      "size": 72575
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/ui-audit-fixture_annotated.png": {
+      "sha256": "795f257dfc54ef1439c338d2c7568af6dd5a5c6305ba24357618722ba19b5ba9",
+      "size": 86
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/visual-audit-report.json": {
+      "sha256": "b81325be9e8ecf90fefd0744396be3b8872a86f849410a41ef9c8e438830f9bb",
+      "size": 4998
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/annotated/visual-audit-report.md": {
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961",
+      "size": 267
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/artifact-index.json": {
+      "sha256": "0795791772e6d70646659893e3a26b674b6ccb486884b7ef3ef8ea1073c0de0d",
+      "size": 2528
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/manifest.json": {
+      "sha256": "744faa9aaeef0083c07b4194cfc522ae72cba57a1cb7f6cc0dac5a9bf7639ccc",
+      "size": 10308
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/stage8-focused-junit.xml": {
+      "sha256": "c89f32528579f387f0533543c48b6afb902ff183089322ecdc792b1803559c05",
+      "size": 2875
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/stage8_01_scenario_empty.png": {
+      "sha256": "181e6d1322a4d2d86a22be3409cd736f3fc8e34b3916080ecba5092a2c914bc3",
+      "size": 20981
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/stage8_02_scenario_authoring.png": {
+      "sha256": "41d5e3f3041f0620dd969e45834965e28b0e0a4a77711d14e2a40e8ffd4d0c98",
+      "size": 43220
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/stage8_03_scenario_overlays.png": {
+      "sha256": "2dac04698a14e0f58eb9d7edd6a8ff91a31ca0cf6d77bb66f8dfc9878ca4ceb4",
+      "size": 50653
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/stage8_04_scenario_preview.png": {
+      "sha256": "afcffd59d77fb0c8c42e28dd0f3e101ad3eafc0face7fc10e1977c4bba585fcc",
+      "size": 73586
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/ui-audit-fixture.png": {
+      "sha256": "c5c4e332d644b73a12b96149f833b809aa56e1c07378120a8b25a24d55aadfd8",
+      "size": 100
+    },
     "docs/evidence/artifacts/unity-import-stage6-2026-08-16/fixture-manifest.json": {
       "sha256": "fc7fccc0fa3e4d9dde2f495ad64ec043b9950355c6657b53533e0e4357dc593b",
       "size": 2073
@@ -9244,6 +9308,10 @@
       "sha256": "e9d390cded098e4cc182dacda18840d388b9e34baeaaee3b6ae09425fa5ce1b6",
       "size": 9183
     },
+    "scripts/audit_stage8_scenario_editor.py": {
+      "sha256": "96836c24b501a5b5e9d45c82face216ef0ff6624860373903a11bf53d8d65ef8",
+      "size": 7790
+    },
     "scripts/audit_stage9_functional_ui.py": {
       "sha256": "ebcaab88b9a2394e9b02ce1a11ad1ae650e9e0f47d975bb12f205816b959cdc1",
       "size": 16330
@@ -9285,8 +9353,8 @@
       "size": 8718
     },
     "scripts/audit_visual_artifacts.py": {
-      "sha256": "83fcf31732b220da39abc81ee74dd79f92bc59eb5ea94accdac29ad9c3f5465c",
-      "size": 28458
+      "sha256": "af2a54979c790379582eb9796cf28bce184d05c8f9385a7a1085aa606c596038",
+      "size": 30353
     },
     "scripts/build_installer.ps1": {
       "sha256": "d67b3d1a1e63fc18196ac223e0da638f3ced196476107d7c82a104518c497e53",
@@ -9401,16 +9469,16 @@
       "size": 4921
     },
     "src/core/scene_authoring_model.py": {
-      "sha256": "f7ed11dcfe4bd09bbd8fcacf44b93ea0b044fe6630e2e2c3adb81dd2107a0c67",
-      "size": 12865
+      "sha256": "09fcfd74b0852ceea4dfb0b8ab8c28bbd6662c455a6ddf0e4ba29664a89a5ef6",
+      "size": 15892
     },
     "src/core/scene_authoring_preview.py": {
       "sha256": "f8195905157e17387ec7dfeacef49e90557b70f24cd0c65a5bf83051d1d0dee0",
       "size": 5412
     },
     "src/core/scene_authoring_session.py": {
-      "sha256": "c4517b0f2d8c5dd3599270be2bf21a7c4e781b962eab8a01d56b1b1eda3a19b0",
-      "size": 8995
+      "sha256": "4b500ded3560ff10a9683bef9be243962b3df75e6fcbd51088e19eec7480ee18",
+      "size": 10653
     },
     "src/core/snapping.py": {
       "sha256": "6fefac930644e3ff766307fee239bba7dc0201323fb2b64908620a2614dc5998",
@@ -9773,8 +9841,8 @@
       "size": 6055
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "b022ae7cf677ef185f008bd9765d42dd0dc6ece29ed05a787ee0beaf7440547e",
-      "size": 13300
+      "sha256": "e6e78ee030cf9db87f8328bd5c02f5ffd49cc7d88202c450c26097a01edc18a4",
+      "size": 20180
     },
     "src/ui/scenario_panel.py": {
       "sha256": "3589d5f4d83d9e42ca51e7a79d75976ac4a4eb1eb23c7ab624371b7edf50650a",
@@ -9788,9 +9856,13 @@
       "sha256": "e153198ecd87fcf30782d586ce05ddba50a3dc7d6526bb62ec5f5597d027f071",
       "size": 20539
     },
+    "src/ui/scene_authoring_layer_stack.py": {
+      "sha256": "230a511c68a2b25f5ba17324d9ad2e5512e96174f6654c09df00d8392a15a8ce",
+      "size": 6447
+    },
     "src/ui/scene_authoring_viewport.py": {
-      "sha256": "795665d5b5944520eb07d2258ce197a8762509a18f412f5d45ae800d613f8409",
-      "size": 27776
+      "sha256": "11f98eb8e817f76e864ed3ebb8b956d90ca9d468b8aa38494634375d03885b06",
+      "size": 30878
     },
     "src/ui/side_panel.py": {
       "sha256": "f089d28995f9318818b68233a6717a7281099d69b52fc256e3dc486d59b9caa5",
@@ -10180,6 +10252,10 @@
       "sha256": "a88040d26b24241c529537150859e5820701463559073e3bbd5795f7c4a1a269",
       "size": 16137
     },
+    "tests/test_stage8_scenario_editor_separation.py": {
+      "sha256": "4eae25a3b1437b09d184094a08aa8c0f3d712c715e340f3cfd99b9d800002a3f",
+      "size": 22113
+    },
     "tests/test_stage9_functional_ui_audit.py": {
       "sha256": "ef752d951bc1a19fe89ebc5a63b3c4355738c69fa961172574839c2f083f351f",
       "size": 4830
@@ -10401,8 +10477,8 @@
       "size": 1709
     },
     "tests/test_visual_artifact_auditor.py": {
-      "sha256": "fd8277a20cadad2fcb155f2205aa9f8539976bdd51bcf0532e15d2ed87e7cec0",
-      "size": 8448
+      "sha256": "79f3c13978f6ab20fb83d2529b43c12c1445384f3b915011d883bb76268e71ef",
+      "size": 9336
     },
     "tools/baseline_integrity.py": {
       "sha256": "683c92e266c17335e880999885256c8466feedfa0b99ca687d726573b9a98aa4",

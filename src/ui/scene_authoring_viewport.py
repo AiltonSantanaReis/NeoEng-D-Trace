@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
+from src.core.scenario_preview import build_overlay_geometry
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
@@ -268,6 +269,8 @@ class SceneAuthoringViewport(QGraphicsView):
         self._items: dict[str, SceneObjectGraphicsItem] = {}
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
         self._preview_enabled = False
+        self._authoring_enabled = True
+        self._overlay_visible = False
         self._gizmo: SceneTransformGizmo | None = None
         self._gesture_start: QPointF | None = None
         self._item_gesture_id: str | None = None
@@ -305,6 +308,34 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def is_preview_enabled(self) -> bool:
         return self._preview_enabled
+
+    def set_authoring_enabled(self, enabled: bool) -> None:
+        if not isinstance(enabled, bool):
+            raise TypeError("authoring enabled must be boolean")
+        if not enabled and (
+            self._gesture_start is not None or self._gizmo_start is not None
+        ):
+            self.session.cancel_gesture()
+            self._gesture_start = None
+            self._item_gesture_id = None
+            self._gesture_layer_id = None
+            self._gesture_mode = None
+            self._gizmo_start = None
+        self._authoring_enabled = enabled
+        self._refresh_gizmo()
+        self.viewport().update()
+
+    def is_authoring_enabled(self) -> bool:
+        return self._authoring_enabled
+
+    def set_overlay_visible(self, visible: bool) -> None:
+        if not isinstance(visible, bool):
+            raise TypeError("overlay visible must be boolean")
+        self._overlay_visible = visible
+        self.viewport().update()
+
+    def is_overlay_visible(self) -> bool:
+        return self._overlay_visible
 
     def _camera(self) -> OrthographicCamera:
         document = self.session.document
@@ -511,6 +542,12 @@ class SceneAuthoringViewport(QGraphicsView):
         else:
             current = [object_id]
         self.session.set_selection(current, object_id if object_id in current else None)
+        self.selection_changed.emit()
+        self._refresh_selection()
+        self._refresh_gizmo()
+        if not self._authoring_enabled:
+            self.status_message.emit("Preview mode is read-only")
+            return
         item = next(
             item for item in self.session.document.objects if item.id == object_id
         )
@@ -523,6 +560,8 @@ class SceneAuthoringViewport(QGraphicsView):
         self._refresh_gizmo()
 
     def _object_moved(self, object_id: str, scene_pos: QPointF) -> None:
+        if not self._authoring_enabled:
+            return
         if self._item_gesture_id != object_id or self._gesture_start is None:
             return
         layer_id = self._gesture_layer_id or ""
@@ -536,6 +575,8 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def _object_released(self, object_id: str, scene_pos: QPointF) -> None:
         del scene_pos
+        if not self._authoring_enabled:
+            return
         if self._item_gesture_id == object_id:
             self.session.finish_gesture("Move objects")
         self._item_gesture_id = None
@@ -545,12 +586,15 @@ class SceneAuthoringViewport(QGraphicsView):
         self.status_message.emit("Objects moved")
 
     def _gizmo_started(self, mode: str, scene_pos: QPointF) -> None:
+        if not self._authoring_enabled:
+            self.status_message.emit("Preview mode is read-only")
+            return
         self._gesture_mode = mode
         self._gizmo_start = scene_pos
         self.session.begin_gesture()
 
     def _gizmo_changed(self, mode: str, scene_pos: QPointF) -> None:
-        if self._gizmo_start is None:
+        if not self._authoring_enabled or self._gizmo_start is None:
             return
         primary = self.session.selection.primary
         if primary is None:
@@ -593,6 +637,8 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def _gizmo_finished(self, mode: str, scene_pos: QPointF) -> None:
         del scene_pos
+        if not self._authoring_enabled:
+            return
         self.session.finish_gesture(f"Apply {mode} gizmo transform")
         self._gesture_mode = None
         self._gizmo_start = None
@@ -612,12 +658,19 @@ class SceneAuthoringViewport(QGraphicsView):
         return changed
 
     def dragEnterEvent(self, event) -> None:
+        if not self._authoring_enabled:
+            event.ignore()
+            return
         if event.mimeData().hasUrls() or event.mimeData().hasText():
             event.acceptProposedAction()
         else:
             event.ignore()
 
     def dropEvent(self, event) -> None:
+        if not self._authoring_enabled:
+            self.status_message.emit("Preview mode is read-only")
+            event.ignore()
+            return
         paths = [
             Path(url.toLocalFile())
             for url in event.mimeData().urls()
@@ -725,3 +778,31 @@ class SceneAuthoringViewport(QGraphicsView):
         while y <= rect.bottom():
             painter.drawLine(QPointF(rect.left(), y), QPointF(rect.right(), y))
             y += 32.0
+
+    def paintEvent(self, event) -> None:
+        super().paintEvent(event)
+        if not self._overlay_visible:
+            return
+        size = self.viewport().size()
+        geometry = build_overlay_geometry((float(size.width()), float(size.height())))
+        painter = QPainter(self.viewport())
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        for x, y, width, height in geometry.crop_regions:
+            if width > 0.0 and height > 0.0:
+                painter.fillRect(
+                    QRectF(x, y, width, height),
+                    QColor(4, 8, 12, 150),
+                )
+        frame = geometry.frame
+        safe = geometry.safe_area
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.setPen(QPen(QColor("#59d8e8"), 2.0))
+        painter.drawRect(QRectF(*frame))
+        painter.setPen(QPen(QColor("#a8dce7"), 1.0, Qt.PenStyle.DashLine))
+        painter.drawRect(QRectF(*safe))
+        painter.setPen(QPen(QColor("#e8edf2"), 1.0))
+        painter.drawText(
+            QPointF(frame[0] + 8.0, frame[1] + 20.0),
+            "16:9  SAFE 90%",
+        )
+        painter.end()
