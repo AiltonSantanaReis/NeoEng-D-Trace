@@ -231,3 +231,15 @@ foram indexados no pacote oficial. A classificação é `PASS_LOCAL_AUTOMATED`,
 não aprovação formal: revisão visual humana está `BLOQUEADA / NÃO EXECUTADA`
 por ACL do visualizador e push, PR, CI, merge e pós-merge ainda são pendentes.
 A Etapa 8 permanece bloqueada.
+
+
+## Addendum — revisão visual humana da Etapa 7 — 2026-08-23
+
+A revisão humana das 12 capturas reais foi concluída com `0` clipping
+irreversível, `0` sobreposição estrutural e `0` artefatos visuais bloqueantes.
+A rolagem observada nas resoluções compactas foi considerada acessibilidade
+funcional, não clipping. Menus de contexto permanecem comprovados por teste Qt
+focal, não por captura de menu aberto.
+
+Classificação atual: `PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS`; PR #154 continua
+draft e o ciclo de promoção, merge e pós-merge ainda é obrigatório.

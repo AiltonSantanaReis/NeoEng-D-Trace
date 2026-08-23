@@ -439,3 +439,12 @@ Estado vivo reconciliado em 2026-08-22: checkpoint local 9ee5916 e origin/main 
 Estado: `PASS_LOCAL_AUTOMATED`; revisão visual humana bloqueada por ACL e
 CI/PR/merge/pós-merge pendentes. A Etapa 7 não está formalmente aprovada e a
 Etapa 8 continua bloqueada. Snapshots anteriores não foram reescritos.
+
+## Revisão visual humana — Etapa 7 — 2026-08-23
+
+- `ETAPA_7_REVISAO_VISUAL_HUMANA_2026-08-23.md` — revisão das 12 capturas
+  reais: 0 clipping irreversível, 0 sobreposição estrutural e 0 artefatos
+  visuais bloqueantes.
+
+Estado: `PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS`; promoção da PR, merge e
+validação pós-merge continuam pendentes.

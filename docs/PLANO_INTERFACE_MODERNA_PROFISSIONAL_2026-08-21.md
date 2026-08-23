@@ -318,3 +318,9 @@ A Etapa 6 foi merged na PR #152 em `ebdb889bc415eca4ea263a98e59551645130fbd5`. C
 ### Addendum vivo — Etapa 7 — 2026-08-23
 
 O snapshot de 2026-08-22 permanece histórico e limitado ao `GroupsPanel`. O estado vivo atual cobre os quatro painéis e está documentado em `docs/evidence/ETAPA_7_PAINEIS_LATERAIS_COMPLETA_2026-08-23.md`. A etapa não é formalmente aprovada: a árvore local contém artefatos históricos não rastreados, a revisão humana visual está bloqueada pelo ACL do visualizador e o ciclo remoto ainda não foi executado.
+
+| 2026-08-23 | Revisão visual humana das 12 capturas reais concluída: 0 clipping irreversível, 0 sobreposição estrutural, 0 artefatos visuais bloqueantes e tema escuro consistente. A rolagem compacta foi distinguida de clipping. Menus abertos permanecem cobertos pelos testes Qt, não por captura. | ETAPA 7 PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS / CICLO REMOTO FINAL PENDENTE |
+
+### Addendum vivo — revisão visual humana da Etapa 7 — 2026-08-23
+
+A revisão humana está registrada em `docs/evidence/ETAPA_7_REVISAO_VISUAL_HUMANA_2026-08-23.md`. Ela não reescreve o relatório anterior nem aprova release. A Etapa 7 ainda requer promoção da PR, decisão de merge e validação pós-merge.
