@@ -1,0 +1,681 @@
+{
+  "files": {
+    "dpi-100/gallery-runtime.json": {
+      "bytes": 60377,
+      "sha256": "786c5b76a9025ce44e56c155c5f6abed99228e48202e0bc8a1ce9517c8b38525"
+    },
+    "dpi-100/icon-gallery.png": {
+      "bytes": 77242,
+      "sha256": "95f6be2ed8084268ad345ba69ae7b7a8c68456889b46bc62afe4d4a9e3f215d2"
+    },
+    "dpi-100/raw-captures/1080p_FHD_01_sem_projeto.png": {
+      "bytes": 25136,
+      "sha256": "10bbecb66a1eda9612bc804aee82c65c8592ad84ec450fbd083096c801481f58"
+    },
+    "dpi-100/raw-captures/1080p_FHD_02_projeto_paineis.png": {
+      "bytes": 38482,
+      "sha256": "4145b65a5f337818b39211f4f52785b7d3bca730bc70f6ed749fe7735a7c4a5e"
+    },
+    "dpi-100/raw-captures/1080p_FHD_03_validacao_janela.png": {
+      "bytes": 38482,
+      "sha256": "4145b65a5f337818b39211f4f52785b7d3bca730bc70f6ed749fe7735a7c4a5e"
+    },
+    "dpi-100/raw-captures/1080p_FHD_03_validacao_modal.png": {
+      "bytes": 1786,
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+    },
+    "dpi-100/raw-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "bytes": 43507,
+      "sha256": "f775957d73c5c8646dba270309d3bf6716cbc42fcd3b3ba79bcb9dd242d764e0"
+    },
+    "dpi-100/raw-captures/720p_Compacta_01_sem_projeto.png": {
+      "bytes": 21278,
+      "sha256": "43c18fe0d64434388148a3d73e2fe406f907e91a24f17922c524d54377d2571e"
+    },
+    "dpi-100/raw-captures/720p_Compacta_02_projeto_paineis.png": {
+      "bytes": 34228,
+      "sha256": "0b09388b88507d7693fdf18b2e56e748a727e74080d4a5eeeed472a10eadcc53"
+    },
+    "dpi-100/raw-captures/720p_Compacta_03_validacao_janela.png": {
+      "bytes": 34712,
+      "sha256": "6a6876d6f2f4640634a43f67728e0b5f13da202d12f3458cfc2c9e85763e8450"
+    },
+    "dpi-100/raw-captures/720p_Compacta_03_validacao_modal.png": {
+      "bytes": 1786,
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+    },
+    "dpi-100/raw-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "bytes": 39402,
+      "sha256": "05914c8bbbbaada4389dba0f070833b80c5ea6e8925c6e0138871cd65e59b98e"
+    },
+    "dpi-100/raw-captures/768p_Minima_01_sem_projeto.png": {
+      "bytes": 22001,
+      "sha256": "d8f42aeb99f7eff13396d49e82ace8a1cbee6624dec5adda24b009e7b654d590"
+    },
+    "dpi-100/raw-captures/768p_Minima_02_projeto_paineis.png": {
+      "bytes": 35189,
+      "sha256": "9b14e62e1a41db9831569f9b62d39daf98453df2c506986caf7e70f8dd6e17de"
+    },
+    "dpi-100/raw-captures/768p_Minima_03_validacao_janela.png": {
+      "bytes": 35268,
+      "sha256": "bb8892aaeb2590844f7d4e3aa07ae7cf70decf567e5e0b5eb877de8e1f27c319"
+    },
+    "dpi-100/raw-captures/768p_Minima_03_validacao_modal.png": {
+      "bytes": 1786,
+      "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+    },
+    "dpi-100/raw-captures/768p_Minima_04_gizmo_feedback.png": {
+      "bytes": 40239,
+      "sha256": "be9db7661cb5b4ab8e1d4b7963517e220dad8233af09a047fe4eeaea435b74cd"
+    },
+    "dpi-100/raw-captures/manifest.json": {
+      "bytes": 130158,
+      "sha256": "c599d786ddc559d4842b76e5913c90a4fea2de28a0df49cb5d885c1506bbce29"
+    },
+    "dpi-100/raw-captures/ui-audit-fixture.ndtproj": {
+      "bytes": 2193,
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+    },
+    "dpi-100/raw-captures/ui-audit-fixture.png": {
+      "bytes": 10112,
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    "dpi-100/visual-audit.log": {
+      "bytes": 39,
+      "sha256": "78f35f1a1d87b4882a9abb2a22179095f948975c2a3b64da4ebf95d23c0c958c"
+    },
+    "dpi-100/visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "bytes": 25178,
+      "sha256": "afa87dc96edce7eebb174f0229b07ebded777b1bb6c56713f3e7935b1648ef7c"
+    },
+    "dpi-100/visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "bytes": 38176,
+      "sha256": "cb873b828c552905bd9d718310613365c0bf57cde7a882c656d46a9b54200398"
+    },
+    "dpi-100/visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "bytes": 38176,
+      "sha256": "cb873b828c552905bd9d718310613365c0bf57cde7a882c656d46a9b54200398"
+    },
+    "dpi-100/visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "bytes": 2300,
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d"
+    },
+    "dpi-100/visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "bytes": 43059,
+      "sha256": "4fbb167c128cd1b0538be9d749fdabf7f42f479a84adb030d848dedeabce6487"
+    },
+    "dpi-100/visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "bytes": 20980,
+      "sha256": "8bd61287214af31b651a5ace9cf9c528ce8d58d483cd5edab3b516fdadf1459e"
+    },
+    "dpi-100/visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "bytes": 33527,
+      "sha256": "88b93855d507d78e6784d1b306c310f5f2556420e2f9625a0051cdc91f5a6cb9"
+    },
+    "dpi-100/visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "bytes": 34149,
+      "sha256": "b230493c690ca87da8c53bbf01e57d6d0e0b9c3257bc7956697d4bfd04e0dde6"
+    },
+    "dpi-100/visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "bytes": 2300,
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d"
+    },
+    "dpi-100/visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "bytes": 38499,
+      "sha256": "964a4a770c92b95b1539a1da05dd73d4709b80bb6978bb27e71790b3119850da"
+    },
+    "dpi-100/visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "bytes": 21794,
+      "sha256": "6f0f25300356153e102aa6ee2b6bdb16ac4c23e23783117dae6162c11728745c"
+    },
+    "dpi-100/visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "bytes": 34658,
+      "sha256": "ed0cbd02071b56ebbe4b45e8b758cc0e67a797fb3bea56adff61e7a595ab8a47"
+    },
+    "dpi-100/visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "bytes": 34818,
+      "sha256": "2fceb59b76508c0ba0eac41801e74bffe06806d50dca40f30da5707c2d0e9c24"
+    },
+    "dpi-100/visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "bytes": 2300,
+      "sha256": "646417a02b630e2da94f750585b6202d8ede84799e2a70d6f667b6d4af57099d"
+    },
+    "dpi-100/visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "bytes": 39535,
+      "sha256": "d977c3ac35933bb2a726c44e1f99be7ffef8868c74a5c82455b4fa85d88e2605"
+    },
+    "dpi-100/visual-audit/ui-audit-fixture_annotated.png": {
+      "bytes": 4006,
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae"
+    },
+    "dpi-100/visual-audit/visual-audit-report.json": {
+      "bytes": 15760,
+      "sha256": "ee07bbec5d648b1f17ffce849e66a0deb3af5344a187a0f1c06a5ab5bdc65e0c"
+    },
+    "dpi-100/visual-audit/visual-audit-report.md": {
+      "bytes": 267,
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961"
+    },
+    "dpi-100/worker-report.json": {
+      "bytes": 69681,
+      "sha256": "b7439c579fc2c758ac176ef00ef975af1b8ab736b9de37fd78fa351b059710a4"
+    },
+    "dpi-100/worker.log": {
+      "bytes": 37,
+      "sha256": "326de9ebf85acf8d8edf5ef3d6fae7a875cdf71ff3486aba295206e43c2aee70"
+    },
+    "dpi-125/gallery-runtime.json": {
+      "bytes": 60378,
+      "sha256": "fc8db24d6fd4c208fc1f37b0fdbe83b188d69593322b27820031a7ca567ca1e4"
+    },
+    "dpi-125/icon-gallery.png": {
+      "bytes": 141305,
+      "sha256": "f70177f289cfddc2c8c9ff0cdc7ffb3e6a811271b9965cec5e69d6d8a981e7f9"
+    },
+    "dpi-125/raw-captures/1080p_FHD_01_sem_projeto.png": {
+      "bytes": 42411,
+      "sha256": "607036cc582b97590d55ae6c2cef37b36b54bf7a76dd11d8eced22f733544608"
+    },
+    "dpi-125/raw-captures/1080p_FHD_02_projeto_paineis.png": {
+      "bytes": 58588,
+      "sha256": "fbbfa4a05e6391f75c4abb7b3aae66bf3364550273f47bdce2280329d47988d4"
+    },
+    "dpi-125/raw-captures/1080p_FHD_03_validacao_janela.png": {
+      "bytes": 58588,
+      "sha256": "fbbfa4a05e6391f75c4abb7b3aae66bf3364550273f47bdce2280329d47988d4"
+    },
+    "dpi-125/raw-captures/1080p_FHD_03_validacao_modal.png": {
+      "bytes": 2414,
+      "sha256": "8e6fabac50e5e4776faf55f9405533625a1306897cf260c14839794be4b7444a"
+    },
+    "dpi-125/raw-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "bytes": 64400,
+      "sha256": "d950ff1d83abe08cc3c3bcc48db4ec954076251f775e84237fa6f6d94c4bfd31"
+    },
+    "dpi-125/raw-captures/720p_Compacta_01_sem_projeto.png": {
+      "bytes": 37246,
+      "sha256": "dcce37aa90bdfcaa7fc27ffa2c723b51b792bb5a0c7b28a958c85a50de9046c0"
+    },
+    "dpi-125/raw-captures/720p_Compacta_02_projeto_paineis.png": {
+      "bytes": 52524,
+      "sha256": "9fc681c3d94dbf55ee2a8d9a1bff9dd2c590fe6a3086c111ffe7d1510961397d"
+    },
+    "dpi-125/raw-captures/720p_Compacta_03_validacao_janela.png": {
+      "bytes": 53070,
+      "sha256": "7dc00e04d3d727c97f8dc4b7f8ea73e80909d7c7290d55eb71e006ba9ed8b3b4"
+    },
+    "dpi-125/raw-captures/720p_Compacta_03_validacao_modal.png": {
+      "bytes": 2414,
+      "sha256": "8e6fabac50e5e4776faf55f9405533625a1306897cf260c14839794be4b7444a"
+    },
+    "dpi-125/raw-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "bytes": 58382,
+      "sha256": "e8e708035bc9e9ba4daf90bc89098068e6a5d3497a3c7ac25b3111fe2f7bb88f"
+    },
+    "dpi-125/raw-captures/768p_Minima_01_sem_projeto.png": {
+      "bytes": 38086,
+      "sha256": "14b42713212d736a8c5797484031c5503586415192bbc930964bea1e2f9f3770"
+    },
+    "dpi-125/raw-captures/768p_Minima_02_projeto_paineis.png": {
+      "bytes": 53538,
+      "sha256": "a6151f93fa55a96ae9ed3443c5ec29030abfbcd231403dbb0886da80c3232c73"
+    },
+    "dpi-125/raw-captures/768p_Minima_03_validacao_janela.png": {
+      "bytes": 53768,
+      "sha256": "0cfbb36f44ed4c8a471b9525a04d1cdcb5b236e41e5f9d3cd8b05664def96f4a"
+    },
+    "dpi-125/raw-captures/768p_Minima_03_validacao_modal.png": {
+      "bytes": 2414,
+      "sha256": "8e6fabac50e5e4776faf55f9405533625a1306897cf260c14839794be4b7444a"
+    },
+    "dpi-125/raw-captures/768p_Minima_04_gizmo_feedback.png": {
+      "bytes": 59390,
+      "sha256": "2221fd6d021463259230d32d24f34b7dd70a577aaf3d1d5f52ec6f27ea08dcf6"
+    },
+    "dpi-125/raw-captures/manifest.json": {
+      "bytes": 130158,
+      "sha256": "e2a75c367ac8e7d5f6bb40a3fea5759700f303606e9c21a1aebb4f50826969a8"
+    },
+    "dpi-125/raw-captures/ui-audit-fixture.ndtproj": {
+      "bytes": 2193,
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+    },
+    "dpi-125/raw-captures/ui-audit-fixture.png": {
+      "bytes": 10112,
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    "dpi-125/visual-audit.log": {
+      "bytes": 39,
+      "sha256": "78f35f1a1d87b4882a9abb2a22179095f948975c2a3b64da4ebf95d23c0c958c"
+    },
+    "dpi-125/visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "bytes": 42839,
+      "sha256": "98d876be39fe24b86bfca1a1dcda4726883928c23369ef958c2c3d822aea071c"
+    },
+    "dpi-125/visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "bytes": 58038,
+      "sha256": "4171c0669495c3403daf11858750f7f390b4d974c1210415b7e56fe48be8491d"
+    },
+    "dpi-125/visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "bytes": 58038,
+      "sha256": "4171c0669495c3403daf11858750f7f390b4d974c1210415b7e56fe48be8491d"
+    },
+    "dpi-125/visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "bytes": 2996,
+      "sha256": "49ca47bd44da464c0f0436cbffb8c61762d76e78bd169e09ccc4e47959eb79d1"
+    },
+    "dpi-125/visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "bytes": 64162,
+      "sha256": "3a897a5aff7d56aab56b39ad07808507c10b6dd08a5f51b4c260aa1e70654e2d"
+    },
+    "dpi-125/visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "bytes": 37414,
+      "sha256": "5352cf80d99eb3c2af35ba0b62453771ac3a2f6669fccef789cc84c81100e3c8"
+    },
+    "dpi-125/visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "bytes": 51711,
+      "sha256": "320c31dda1ca4c7caca9b2e208abca5468fd9231e57a167ad844c63dcb35a140"
+    },
+    "dpi-125/visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "bytes": 52167,
+      "sha256": "b14e849963715df51a25bfcb5ee38a643aa0041b26d64e55d3095601dadffa54"
+    },
+    "dpi-125/visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "bytes": 2996,
+      "sha256": "49ca47bd44da464c0f0436cbffb8c61762d76e78bd169e09ccc4e47959eb79d1"
+    },
+    "dpi-125/visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "bytes": 57715,
+      "sha256": "4541c2aeb7d2563e3334f26af1546302d87054dc225008e56fdf7cb0a0063583"
+    },
+    "dpi-125/visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "bytes": 38568,
+      "sha256": "aaf3703668a30915e185fa002e6ec26e6902183b08d3543ffaafd9d029d74854"
+    },
+    "dpi-125/visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "bytes": 52811,
+      "sha256": "2aa10e3a8581b226db181f01e66b7ded21db067480dcc0836d80c5b96ec810a7"
+    },
+    "dpi-125/visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "bytes": 53071,
+      "sha256": "18ffa028492999086893e992f83c976e476f16d15f957d4b30797b043733bb19"
+    },
+    "dpi-125/visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "bytes": 2996,
+      "sha256": "49ca47bd44da464c0f0436cbffb8c61762d76e78bd169e09ccc4e47959eb79d1"
+    },
+    "dpi-125/visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "bytes": 58977,
+      "sha256": "efb199bac6a68383fbd3472d8f086d4adc0ab163c7be9827675bb27f02132330"
+    },
+    "dpi-125/visual-audit/ui-audit-fixture_annotated.png": {
+      "bytes": 4006,
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae"
+    },
+    "dpi-125/visual-audit/visual-audit-report.json": {
+      "bytes": 15653,
+      "sha256": "ee3b0364036d450414034bb204e00de42a3536a395cef3f265a850b4b8d854d9"
+    },
+    "dpi-125/visual-audit/visual-audit-report.md": {
+      "bytes": 267,
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961"
+    },
+    "dpi-125/worker-report.json": {
+      "bytes": 69684,
+      "sha256": "e970d3ac28cc442af9a6a2ee237a3e6ea0a6f757b08bfb30a3099ffbda57a9a7"
+    },
+    "dpi-125/worker.log": {
+      "bytes": 37,
+      "sha256": "3bc97fd8c2b318d4d96ff4eaf265851a7191e63ad9ea22884d091ac42f5c366a"
+    },
+    "dpi-150/gallery-runtime.json": {
+      "bytes": 60380,
+      "sha256": "b977ae0d0892102ca4f8dd20e1e75fdb56c0dc9efba9df2e50168deec545f1f4"
+    },
+    "dpi-150/icon-gallery.png": {
+      "bytes": 183999,
+      "sha256": "0e0dd0647684e3977223966b7e7c85a6c7bd95183885c39ac2d2ec38f243621c"
+    },
+    "dpi-150/raw-captures/1080p_FHD_01_sem_projeto.png": {
+      "bytes": 53114,
+      "sha256": "bfcd3d2d60dbc3f880e00f7bb904b94fd7524905c5842505bc7eb00bb9ad5066"
+    },
+    "dpi-150/raw-captures/1080p_FHD_02_projeto_paineis.png": {
+      "bytes": 71867,
+      "sha256": "60db18a119158b34947d108a68690195706badf9771c3793a0217a0a62ad9a0a"
+    },
+    "dpi-150/raw-captures/1080p_FHD_03_validacao_janela.png": {
+      "bytes": 71867,
+      "sha256": "60db18a119158b34947d108a68690195706badf9771c3793a0217a0a62ad9a0a"
+    },
+    "dpi-150/raw-captures/1080p_FHD_03_validacao_modal.png": {
+      "bytes": 2989,
+      "sha256": "8f656e1a88fe1e476e51c0cbfc41b10191b95f977976723749b55633565d7453"
+    },
+    "dpi-150/raw-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "bytes": 79718,
+      "sha256": "b5b0d7548b764495fd6286307ef54d0f0ceb2a00f56ec7f01ca70765c89aa5ca"
+    },
+    "dpi-150/raw-captures/720p_Compacta_01_sem_projeto.png": {
+      "bytes": 44918,
+      "sha256": "8f0452edb8c4dbe537a6de51cd2c1c6ce4ed967aab962ce2b204f76761a3b0a2"
+    },
+    "dpi-150/raw-captures/720p_Compacta_02_projeto_paineis.png": {
+      "bytes": 62833,
+      "sha256": "6d4296a228c288c538298eb925d82316ef0213e9580e547163db18f404104287"
+    },
+    "dpi-150/raw-captures/720p_Compacta_03_validacao_janela.png": {
+      "bytes": 64194,
+      "sha256": "e47a58e9b67235079e3f716308b44454d651e1f8fde5dd7bc0c53f4d1b0ed226"
+    },
+    "dpi-150/raw-captures/720p_Compacta_03_validacao_modal.png": {
+      "bytes": 2989,
+      "sha256": "8f656e1a88fe1e476e51c0cbfc41b10191b95f977976723749b55633565d7453"
+    },
+    "dpi-150/raw-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "bytes": 69941,
+      "sha256": "35c78a1400229f99013cf079a262c0ed36148100c606696a7de0d5bbf4abe057"
+    },
+    "dpi-150/raw-captures/768p_Minima_01_sem_projeto.png": {
+      "bytes": 45991,
+      "sha256": "c1a866f5891c66c87fd8f69e722325a6128947bf56989fd4c48d0c19b787a00e"
+    },
+    "dpi-150/raw-captures/768p_Minima_02_projeto_paineis.png": {
+      "bytes": 64408,
+      "sha256": "5bb5ff1fe5ceddac2c348b89d30471fa554965c57f8630580fabd2a8c78b4dff"
+    },
+    "dpi-150/raw-captures/768p_Minima_03_validacao_janela.png": {
+      "bytes": 65364,
+      "sha256": "ab36ce1ee701495e597bce098449f264d892974f7905ab49b2b9fe274555b62e"
+    },
+    "dpi-150/raw-captures/768p_Minima_03_validacao_modal.png": {
+      "bytes": 2989,
+      "sha256": "8f656e1a88fe1e476e51c0cbfc41b10191b95f977976723749b55633565d7453"
+    },
+    "dpi-150/raw-captures/768p_Minima_04_gizmo_feedback.png": {
+      "bytes": 71560,
+      "sha256": "95f4c3cebffdb28a46100baf9081884d21fd1f0023d003d25ee1ea21e92c880c"
+    },
+    "dpi-150/raw-captures/manifest.json": {
+      "bytes": 130160,
+      "sha256": "8dd524782e86dd37243b8cced378161347f2dc8fc5ab31aa20458afefbc7e194"
+    },
+    "dpi-150/raw-captures/ui-audit-fixture.ndtproj": {
+      "bytes": 2193,
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+    },
+    "dpi-150/raw-captures/ui-audit-fixture.png": {
+      "bytes": 10112,
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    "dpi-150/visual-audit.log": {
+      "bytes": 39,
+      "sha256": "78f35f1a1d87b4882a9abb2a22179095f948975c2a3b64da4ebf95d23c0c958c"
+    },
+    "dpi-150/visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "bytes": 53242,
+      "sha256": "8e087b3601b09f05a16d7e505401019a7ca20e3756393aa69fe08ee608571236"
+    },
+    "dpi-150/visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "bytes": 71453,
+      "sha256": "7e0cecab79391b8fd199a1fde633f8dbad26fd4a1519e7534bd85a2d4f6d6cd4"
+    },
+    "dpi-150/visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "bytes": 71453,
+      "sha256": "7e0cecab79391b8fd199a1fde633f8dbad26fd4a1519e7534bd85a2d4f6d6cd4"
+    },
+    "dpi-150/visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "bytes": 3755,
+      "sha256": "d266a84f0718872827f617d2e5c7ac5f9badd8b2ea93913ff09f779c3c759a48"
+    },
+    "dpi-150/visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "bytes": 79447,
+      "sha256": "171e092286867af1120c4496b56185f7f7f32b79e595bd59c82e1ffab8802831"
+    },
+    "dpi-150/visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "bytes": 45446,
+      "sha256": "608b1635d2abaf7fb116670f318b376cabf5407b3e7b78c8b3d3e9ef396abc4d"
+    },
+    "dpi-150/visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "bytes": 62585,
+      "sha256": "dcda54987ac767fa62ebacf40d20466d62cc4261ebe1ea406d2f99454d51d668"
+    },
+    "dpi-150/visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "bytes": 64109,
+      "sha256": "111f5e9a84793669b49617c0da193955fea10078c612706a9f9abe808cd6f6f2"
+    },
+    "dpi-150/visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "bytes": 3755,
+      "sha256": "d266a84f0718872827f617d2e5c7ac5f9badd8b2ea93913ff09f779c3c759a48"
+    },
+    "dpi-150/visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "bytes": 69905,
+      "sha256": "ca775841786cf3c38af2fdc3925fe6b3da383c209776742bdff603aaae5e8333"
+    },
+    "dpi-150/visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "bytes": 46357,
+      "sha256": "048f5094b313ef6c7cb4e1dce750d2d88a7b572ee3afb25cd6af44e574a480b9"
+    },
+    "dpi-150/visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "bytes": 63913,
+      "sha256": "81ffaea6516e8291c940a04c82790e303d70f907e60dab1ca4a82018297e69bd"
+    },
+    "dpi-150/visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "bytes": 65080,
+      "sha256": "ffcb977b2723b11b4cf79986f76ec9fcb0f9b617604086ee5418d0df5d6fa435"
+    },
+    "dpi-150/visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "bytes": 3755,
+      "sha256": "d266a84f0718872827f617d2e5c7ac5f9badd8b2ea93913ff09f779c3c759a48"
+    },
+    "dpi-150/visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "bytes": 71373,
+      "sha256": "24a77346f1d5e5ecc537743e3d4694296859b182859469a871ecd270a9bf37d6"
+    },
+    "dpi-150/visual-audit/ui-audit-fixture_annotated.png": {
+      "bytes": 4006,
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae"
+    },
+    "dpi-150/visual-audit/visual-audit-report.json": {
+      "bytes": 15678,
+      "sha256": "cf314e12b1d7221333dc67bbd44237a586a47ffc9b24d997ff4e6bd27cf5a903"
+    },
+    "dpi-150/visual-audit/visual-audit-report.md": {
+      "bytes": 267,
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961"
+    },
+    "dpi-150/worker-report.json": {
+      "bytes": 69684,
+      "sha256": "b9d1cd645b6982974f511a4bfef3a1ef0fe703830888c5082043528df82e0b1d"
+    },
+    "dpi-150/worker.log": {
+      "bytes": 37,
+      "sha256": "055d93d3438b0cc08fc22161a0a42b73f6c1ab76c2932d6be4e1a6fa66a457eb"
+    },
+    "dpi-200/gallery-runtime.json": {
+      "bytes": 60377,
+      "sha256": "1614b45646ac277a2b0a218d6e22ae8ba2a3cb5edae6edf0670d7edb919dd805"
+    },
+    "dpi-200/icon-gallery.png": {
+      "bytes": 288912,
+      "sha256": "202c9da8b63a190d60bff44fdd6e641abe6c57dd61fe8ceb0bfdaf9028ebef62"
+    },
+    "dpi-200/raw-captures/1080p_FHD_01_sem_projeto.png": {
+      "bytes": 79674,
+      "sha256": "60c4b38bf8855ea1b1f5137cba8864e986b64af7753886fd91fe0f463b67c2bb"
+    },
+    "dpi-200/raw-captures/1080p_FHD_02_projeto_paineis.png": {
+      "bytes": 103735,
+      "sha256": "dd23db2ed624e66f6c729ff90b510c9c4ab059e75d3439b0ab77f1bbff4bbe68"
+    },
+    "dpi-200/raw-captures/1080p_FHD_03_validacao_janela.png": {
+      "bytes": 103735,
+      "sha256": "dd23db2ed624e66f6c729ff90b510c9c4ab059e75d3439b0ab77f1bbff4bbe68"
+    },
+    "dpi-200/raw-captures/1080p_FHD_03_validacao_modal.png": {
+      "bytes": 4194,
+      "sha256": "f0a9235ab572b5e3c3ecf4dfbc95fc8e1d574d2ddc0f9945d90286b1447e6b69"
+    },
+    "dpi-200/raw-captures/1080p_FHD_04_gizmo_feedback.png": {
+      "bytes": 112562,
+      "sha256": "bc29508ada59963aa945b1ff70aeeac3a0bcbdb73cb918716fc5f54e393a0c6a"
+    },
+    "dpi-200/raw-captures/720p_Compacta_01_sem_projeto.png": {
+      "bytes": 63555,
+      "sha256": "b3f174dba0293724a9fb07ae98dc2064e919c8ded9f4d24d6a579c1406b76897"
+    },
+    "dpi-200/raw-captures/720p_Compacta_02_projeto_paineis.png": {
+      "bytes": 86428,
+      "sha256": "ba4435ffc96312e4b270d0481a7dcfaf3d1bb49c5b0f46edad47f4e7b6a05f60"
+    },
+    "dpi-200/raw-captures/720p_Compacta_03_validacao_janela.png": {
+      "bytes": 89994,
+      "sha256": "018915123a18575133abf97a9c826ce5a77baafc658a0886f9f14f89a4f2c554"
+    },
+    "dpi-200/raw-captures/720p_Compacta_03_validacao_modal.png": {
+      "bytes": 4194,
+      "sha256": "f0a9235ab572b5e3c3ecf4dfbc95fc8e1d574d2ddc0f9945d90286b1447e6b69"
+    },
+    "dpi-200/raw-captures/720p_Compacta_04_gizmo_feedback.png": {
+      "bytes": 95476,
+      "sha256": "b80de669532aa92825a64c1ca80d72f6adc4134e3e32b70f7ce34134b10961e6"
+    },
+    "dpi-200/raw-captures/768p_Minima_01_sem_projeto.png": {
+      "bytes": 65526,
+      "sha256": "f0cafc89c89a5188b49aa67acf6280af6e7970eb1de695b9ca59d21997bdb63a"
+    },
+    "dpi-200/raw-captures/768p_Minima_02_projeto_paineis.png": {
+      "bytes": 89162,
+      "sha256": "5fbb0b6505ded1928bcf1903c671ff7f362a4fd001d5ab6d48c9d5d31b5306e4"
+    },
+    "dpi-200/raw-captures/768p_Minima_03_validacao_janela.png": {
+      "bytes": 92524,
+      "sha256": "81f1ec02bc908a8694ab7b658f0a5a8ea759bb89a574362042032c842f7a2605"
+    },
+    "dpi-200/raw-captures/768p_Minima_03_validacao_modal.png": {
+      "bytes": 4194,
+      "sha256": "f0a9235ab572b5e3c3ecf4dfbc95fc8e1d574d2ddc0f9945d90286b1447e6b69"
+    },
+    "dpi-200/raw-captures/768p_Minima_04_gizmo_feedback.png": {
+      "bytes": 98467,
+      "sha256": "4105b66490adc7ffffc72465a937b2df441046a6d21b115ef4e147d14fdc148e"
+    },
+    "dpi-200/raw-captures/manifest.json": {
+      "bytes": 130161,
+      "sha256": "69e04877edea7c979ae1425a6a7c3c57747dd90fd11291dfecd567f7836cb33a"
+    },
+    "dpi-200/raw-captures/ui-audit-fixture.ndtproj": {
+      "bytes": 2193,
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+    },
+    "dpi-200/raw-captures/ui-audit-fixture.png": {
+      "bytes": 10112,
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+    },
+    "dpi-200/visual-audit.log": {
+      "bytes": 39,
+      "sha256": "78f35f1a1d87b4882a9abb2a22179095f948975c2a3b64da4ebf95d23c0c958c"
+    },
+    "dpi-200/visual-audit/1080p_FHD_01_sem_projeto_annotated.png": {
+      "bytes": 80096,
+      "sha256": "25f8d5227477b3a63249e0c036ee046d8106e568d4f4929b7b0e63c93e1ea98a"
+    },
+    "dpi-200/visual-audit/1080p_FHD_02_projeto_paineis_annotated.png": {
+      "bytes": 103625,
+      "sha256": "17407c3507acc4f22175c333b14188ae5c70555522ca6886cb5e55c99937ea84"
+    },
+    "dpi-200/visual-audit/1080p_FHD_03_validacao_janela_annotated.png": {
+      "bytes": 103625,
+      "sha256": "17407c3507acc4f22175c333b14188ae5c70555522ca6886cb5e55c99937ea84"
+    },
+    "dpi-200/visual-audit/1080p_FHD_03_validacao_modal_annotated.png": {
+      "bytes": 4933,
+      "sha256": "cf5225de067c14c5ce00ae5ab7918ac3eaec7845db1f8686733054a578975624"
+    },
+    "dpi-200/visual-audit/1080p_FHD_04_gizmo_feedback_annotated.png": {
+      "bytes": 113151,
+      "sha256": "ca5dc3869e26b5b2263922b9041646e749ff435e9a03e7c5662d392f6d3f51b5"
+    },
+    "dpi-200/visual-audit/720p_Compacta_01_sem_projeto_annotated.png": {
+      "bytes": 64163,
+      "sha256": "1e7e86426f6036559def471c4350e8551ac847e33879d35f41a8d0b2a109b373"
+    },
+    "dpi-200/visual-audit/720p_Compacta_02_projeto_paineis_annotated.png": {
+      "bytes": 86874,
+      "sha256": "1b8459e6d72aa58d0c799b002a00be1f4f63affc489c046ee266dda074af41c9"
+    },
+    "dpi-200/visual-audit/720p_Compacta_03_validacao_janela_annotated.png": {
+      "bytes": 89975,
+      "sha256": "f770abfdb9037ca80397a89ae66fb77140c5f8bec2e72535b98b80b0af4da77b"
+    },
+    "dpi-200/visual-audit/720p_Compacta_03_validacao_modal_annotated.png": {
+      "bytes": 4933,
+      "sha256": "cf5225de067c14c5ce00ae5ab7918ac3eaec7845db1f8686733054a578975624"
+    },
+    "dpi-200/visual-audit/720p_Compacta_04_gizmo_feedback_annotated.png": {
+      "bytes": 96058,
+      "sha256": "02e6ff8405602cdf349bd7d231bd1557977afff4a9304370d48a6ed775cbce00"
+    },
+    "dpi-200/visual-audit/768p_Minima_01_sem_projeto_annotated.png": {
+      "bytes": 66307,
+      "sha256": "901a5b2654929e4ef71723b6507506ff7372b4ce93b8af92fe60e45c466f9594"
+    },
+    "dpi-200/visual-audit/768p_Minima_02_projeto_paineis_annotated.png": {
+      "bytes": 89605,
+      "sha256": "00f8a9fbb1d951d3eaefccd031ac21c283525b2bea579bd8f4a92f80d245030b"
+    },
+    "dpi-200/visual-audit/768p_Minima_03_validacao_janela_annotated.png": {
+      "bytes": 92429,
+      "sha256": "5e5d3da9444c5fee2726b0f4f19861de6b79d9c92a8a667683330cb3245c8b05"
+    },
+    "dpi-200/visual-audit/768p_Minima_03_validacao_modal_annotated.png": {
+      "bytes": 4933,
+      "sha256": "cf5225de067c14c5ce00ae5ab7918ac3eaec7845db1f8686733054a578975624"
+    },
+    "dpi-200/visual-audit/768p_Minima_04_gizmo_feedback_annotated.png": {
+      "bytes": 99054,
+      "sha256": "477c6c3484b0ea1945bfcf518bf8362cc74d3090dbd1b17966c19aa34f569d37"
+    },
+    "dpi-200/visual-audit/ui-audit-fixture_annotated.png": {
+      "bytes": 4006,
+      "sha256": "ba4f7a5e1d048c5de1ed6d34856aecac7b771727a4ef9229e531074d0e0c4fae"
+    },
+    "dpi-200/visual-audit/visual-audit-report.json": {
+      "bytes": 15687,
+      "sha256": "e4a7e3f5153d12d09819fc7a11823c47b28b3d9d35c63a1b8b32c4214ca041eb"
+    },
+    "dpi-200/visual-audit/visual-audit-report.md": {
+      "bytes": 267,
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961"
+    },
+    "dpi-200/worker-report.json": {
+      "bytes": 69682,
+      "sha256": "77572e5973e0c31d5a27a2c1ef8f7ee3d71157368a8f6021ae277613e947345d"
+    },
+    "dpi-200/worker.log": {
+      "bytes": 37,
+      "sha256": "71c8bf9ad72c1ed3cfacbc5dbd72bfa6b8818a028383ed9e5b9f01b31d65512e"
+    },
+    "stage2-dpi-matrix-report.json": {
+      "bytes": 6894,
+      "sha256": "cbbb57257ec148044a93c0ff20a3d7c184d20fd6e8f3c403f3e43378b5d5e576"
+    },
+    "stage2-dpi-matrix-report.md": {
+      "bytes": 631,
+      "sha256": "81ba5ff866ff690acdae1c72d2671c8c0d19c55027f151695a07f964e27324e6"
+    },
+    "stage2-full-pytest-failure-sanitized.log": {
+      "bytes": 13140,
+      "sha256": "c7bab24633bb008cb2a06b083dfae3dc5024f10aff8dd3b2590fbd83aad5b9b1"
+    },
+    "stage2-full-pytest-final.log": {
+      "bytes": 12332,
+      "sha256": "ef0da196e96b3be7533310e635b21278c5d0fbc45250797a91ce839e7fd43e93"
+    },
+    "stage2-full-pytest.log": {
+      "bytes": 13117,
+      "sha256": "dd77f0908b81998c4e8b8dce836484d3a5a84c436eddd0af4248505a0b2e53b3"
+    }
+  },
+  "schema_version": 1
+}

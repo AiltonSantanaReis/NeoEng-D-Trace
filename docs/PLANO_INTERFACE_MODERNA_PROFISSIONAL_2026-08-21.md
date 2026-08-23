@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** ETAPAS 0, 1, 3, 4 e 5 APROVADAS / ETAPAS 2, 6 e 7 PARCIAIS FRENTE AO PLANO DETALHADO / ETAPAS 8–14 PLANEJADAS
+**Status do plano:** ETAPAS 0, 1, 3, 4 e 5 APROVADAS / ETAPA 2 PASS_LOCAL / ETAPAS 6 e 7 PARCIAIS FRENTE AO PLANO DETALHADO / ETAPAS 8–14 PLANEJADAS
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -185,7 +185,9 @@ Definir ícones licenciados ou nativos, tamanho, padding, tooltip, texto acessí
 
 **Gate:** todos os ícones carregam no build real, tooltips e atalhos funcionam, fallback é testado, ícones não dependem de caminho local.
 
-**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A aprovação pós-merge anterior permanece válida somente para o catálogo, fallback, tooltips e acessibilidade comprovados; a matriz visual completa de DPI 100/125/150/200 ainda não foi executada. A aprovação não é aprovação de release.
+**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A aprovação pós-merge anterior permanece válida somente para o catálogo, fallback, tooltips e acessibilidade comprovados; a matriz visual completa de DPI 100/125/150/200 ainda não tinha sido executada. A aprovação não é aprovação de release.
+
+**Estado local em 2026-08-23:** `PASS_LOCAL` no commit `033278c52c12279c59b39fb9766fa5a02dcab5ed`. A matriz Qt foi executada em processos independentes nas escalas 100/125/150/200%, com 144 células por escala, hashes, clipping e auditor visual PASS. A evidência está em `docs/evidence/ETAPA_2_ICONES_DPI_2026-08-23.md` e no pacote `ui-modernization-stage2-dpi-20260823-r3`. Ainda faltam staging exato, baseline/evidência Git-blob, PR, CI e validação pós-merge; a escala foi controlada por `QT_SCALE_FACTOR` em backend offscreen e não representa troca do DPI global do Windows.
 
 ### Etapa 3 — Barra esquerda de ferramentas
 
@@ -299,3 +301,4 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 | 2026-08-22 | Reconciliação pós-aprovação visual versionada após PR #145, merge `c1bf40c273038a2bbeb35b4d450c10724f6c84ea`, CI Linux/Windows aprovado e validação documental pós-merge. A Etapa 7 continua planejada e não foi iniciada. | ETAPAS 0–6 APROVADAS / ETAPAS 7–14 PLANEJADAS |
 | 2026-08-22 | Etapa 7 validada localmente no checkpoint `9ee591615d30f98037e8506f513c4c2635fb207d`: GroupsPanel normalizado para toolbar compacta mantendo oito comandos, testes focados 22/22, suíte 1612 passed/2 skipped, gates estáticos PASS, capturas nativas Windows em três resoluções, auditor visual geral e auditor específico com 0 findings, integridade 104 manifests e privacidade PASS. Falha intermediária de log com caminhos locais foi rejeitada e preservada fora do pacote versionado. PR, CI, merge e pós-merge pendentes; revisão humana não declarada. | ETAPAS 0–6 APROVADAS / ETAPA 7 PASS_LOCAL / ETAPAS 8–14 PLANEJADAS |
 | 2026-08-22 | Reconciliação do plano detalhado original: Etapas 0, 1, 3, 4 e 5 permanecem aprovadas nos escopos comprovados; Etapas 2, 6 e 7 são parciais frente aos requisitos detalhados. A Etapa 8 não pode iniciar antes do fechamento documentado dessas lacunas. Relatório: docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md. | ETAPAS 0, 1, 3, 4 e 5 APROVADAS / ETAPAS 2, 6 e 7 PARCIAIS / ETAPAS 8–14 PLANEJADAS |
+| 2026-08-23 | Etapa 2 retomada para fechar a matriz DPI. Auditor `audit_stage2_icon_dpi_matrix.py` executado no commit `033278c`; quatro escalas Qt observadas, 144 células por escala, clipping 0, auditor visual PASS, suíte integral `1617 passed, 2 skipped`. Evidência: `ETAPA_2_ICONES_DPI_2026-08-23.md` e pacote r3. PR, CI e pós-merge permanecem pendentes. | ETAPAS 0, 1, 3, 4 e 5 APROVADAS / ETAPA 2 PASS_LOCAL / ETAPAS 6 e 7 PARCIAIS / ETAPAS 8–14 PLANEJADAS |

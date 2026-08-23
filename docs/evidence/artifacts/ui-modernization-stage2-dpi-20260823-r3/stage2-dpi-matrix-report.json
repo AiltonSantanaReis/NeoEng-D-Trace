@@ -1,0 +1,185 @@
+{
+  "cases": {
+    "100": {
+      "factor": 1.0,
+      "visual_audit": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_visual_artifacts.py",
+          "--input",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100/raw-captures",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100/visual-audit"
+        ],
+        "finding_count": 0,
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100/visual-audit.log",
+        "report": {
+          "bytes": 15760,
+          "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100/visual-audit/visual-audit-report.json",
+          "sha256": "ee07bbec5d648b1f17ffce849e66a0deb3af5344a187a0f1c06a5ab5bdc65e0c"
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      "worker": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_stage2_icon_dpi_matrix.py",
+          "--worker",
+          "--percent",
+          "100",
+          "--factor",
+          "1.0",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100"
+        ],
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100/worker.log",
+        "returncode": 0
+      },
+      "worker_report": {
+        "bytes": 69681,
+        "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-100/worker-report.json",
+        "sha256": "b7439c579fc2c758ac176ef00ef975af1b8ab736b9de37fd78fa351b059710a4"
+      }
+    },
+    "125": {
+      "factor": 1.25,
+      "visual_audit": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_visual_artifacts.py",
+          "--input",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125/raw-captures",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125/visual-audit"
+        ],
+        "finding_count": 0,
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125/visual-audit.log",
+        "report": {
+          "bytes": 15653,
+          "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125/visual-audit/visual-audit-report.json",
+          "sha256": "ee3b0364036d450414034bb204e00de42a3536a395cef3f265a850b4b8d854d9"
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      "worker": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_stage2_icon_dpi_matrix.py",
+          "--worker",
+          "--percent",
+          "125",
+          "--factor",
+          "1.25",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125"
+        ],
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125/worker.log",
+        "returncode": 0
+      },
+      "worker_report": {
+        "bytes": 69684,
+        "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-125/worker-report.json",
+        "sha256": "e970d3ac28cc442af9a6a2ee237a3e6ea0a6f757b08bfb30a3099ffbda57a9a7"
+      }
+    },
+    "150": {
+      "factor": 1.5,
+      "visual_audit": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_visual_artifacts.py",
+          "--input",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150/raw-captures",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150/visual-audit"
+        ],
+        "finding_count": 0,
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150/visual-audit.log",
+        "report": {
+          "bytes": 15678,
+          "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150/visual-audit/visual-audit-report.json",
+          "sha256": "cf314e12b1d7221333dc67bbd44237a586a47ffc9b24d997ff4e6bd27cf5a903"
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      "worker": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_stage2_icon_dpi_matrix.py",
+          "--worker",
+          "--percent",
+          "150",
+          "--factor",
+          "1.5",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150"
+        ],
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150/worker.log",
+        "returncode": 0
+      },
+      "worker_report": {
+        "bytes": 69684,
+        "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-150/worker-report.json",
+        "sha256": "b9d1cd645b6982974f511a4bfef3a1ef0fe703830888c5082043528df82e0b1d"
+      }
+    },
+    "200": {
+      "factor": 2.0,
+      "visual_audit": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_visual_artifacts.py",
+          "--input",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200/raw-captures",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200/visual-audit"
+        ],
+        "finding_count": 0,
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200/visual-audit.log",
+        "report": {
+          "bytes": 15687,
+          "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200/visual-audit/visual-audit-report.json",
+          "sha256": "e4a7e3f5153d12d09819fc7a11823c47b28b3d9d35c63a1b8b32c4214ca041eb"
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      "worker": {
+        "command": [
+          ".venv/Scripts/python.exe",
+          "scripts/audit_stage2_icon_dpi_matrix.py",
+          "--worker",
+          "--percent",
+          "200",
+          "--factor",
+          "2.0",
+          "--output",
+          "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200"
+        ],
+        "log": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200/worker.log",
+        "returncode": 0
+      },
+      "worker_report": {
+        "bytes": 69682,
+        "path": "docs/evidence/artifacts/ui-modernization-stage2-dpi-20260823-r3/dpi-200/worker-report.json",
+        "sha256": "77572e5973e0c31d5a27a2c1ef8f7ee3d71157368a8f6021ae277613e947345d"
+      }
+    }
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9"
+  },
+  "failures": [],
+  "schema_version": 1,
+  "source_state": {
+    "branch": "Ailton/stage2-icon-dpi-matrix",
+    "commit": "033278c52c12279c59b39fb9766fa5a02dcab5ed",
+    "worktree_clean": false
+  },
+  "stage": "Etapa 2 \u2014 Matriz DPI da biblioteca de \u00edcones",
+  "status": "PASS"
+}
