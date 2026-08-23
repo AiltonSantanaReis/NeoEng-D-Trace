@@ -188,3 +188,23 @@ histórico. As aprovações anteriores continuam válidas somente nos escopos
 explicitamente comprovados. Frente ao plano detalhado original, as Etapas 2, 6
 e 7 ficam `PARCIAIS`; portanto, não há autorização técnica para avançar à
 Etapa 8 antes de fechar essas lacunas.
+## Adendo pós-merge — Etapa 2 — 2026-08-23
+
+A conclusão 'PARCIAL FRENTE AO PLANO DETALHADO' acima é o snapshot histórico
+da auditoria de 2026-08-22 e não foi reescrita. A lacuna específica da Etapa 2
+foi fechada posteriormente, com autorização e ciclo completo:
+
+- Auditoria real da matriz DPI 100/125/150/200% no commit técnico
+  033278c52c12279c59b39fb9766fa5a02dcab5ed.
+- 144 células por escala, clipping 0, hashes e auditor visual PASS.
+- Evidência: docs/evidence/ETAPA_2_ICONES_DPI_2026-08-23.md.
+- PR #150, CI run 32613109759, jobs Linux e Windows 'success'.
+- Merge: bcb0951ee05c41b03eae2a66e712d1f041cde7f8.
+- Pós-merge: baseline Git-blob de 2571 arquivos, 109 manifests íntegros e
+  suíte Windows '1617 passed, 2 skipped'.
+
+Para o estado operacional atual, a Etapa 2 está 'APROVADA NO ESCOPO
+COMPROVADO'; as Etapas 6 e 7 continuam parciais conforme a auditoria original.
+A Etapa 8 continua bloqueada até que as lacunas das Etapas 6 e 7 sejam fechadas.
+A aprovação da Etapa 2 não é aprovação de release e a matriz não representa uma
+troca física de monitor/DPI global do Windows.
