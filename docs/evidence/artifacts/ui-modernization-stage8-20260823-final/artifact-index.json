@@ -1,0 +1,76 @@
+{
+  "artifacts": [
+    {
+      "path": "annotated/stage8_01_scenario_empty_annotated.png",
+      "bytes": 19734,
+      "sha256": "07ecb54ecc4e1512751bfa17ecd1cedfb7d9e9bc56ee9dc104720fd5e15c7560"
+    },
+    {
+      "path": "annotated/stage8_02_scenario_authoring_annotated.png",
+      "bytes": 42138,
+      "sha256": "44c8d78d7bc06d0dcb2fcd145335b8cd365b8ea621e9156bc54f736240aac541"
+    },
+    {
+      "path": "annotated/stage8_03_scenario_overlays_annotated.png",
+      "bytes": 49407,
+      "sha256": "4294e7be77bbb294d22ad1b7686e9f6614e161e17e6797aabcabe7118c5d73cc"
+    },
+    {
+      "path": "annotated/stage8_04_scenario_preview_annotated.png",
+      "bytes": 72575,
+      "sha256": "149e733a3690658cb4ff4a9f0dfe71bd0e33eee70a524463c5e7d74e04a12e16"
+    },
+    {
+      "path": "annotated/ui-audit-fixture_annotated.png",
+      "bytes": 86,
+      "sha256": "795f257dfc54ef1439c338d2c7568af6dd5a5c6305ba24357618722ba19b5ba9"
+    },
+    {
+      "path": "annotated/visual-audit-report.json",
+      "bytes": 4998,
+      "sha256": "b81325be9e8ecf90fefd0744396be3b8872a86f849410a41ef9c8e438830f9bb"
+    },
+    {
+      "path": "annotated/visual-audit-report.md",
+      "bytes": 267,
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961"
+    },
+    {
+      "path": "raw/manifest.json",
+      "bytes": 10308,
+      "sha256": "744faa9aaeef0083c07b4194cfc522ae72cba57a1cb7f6cc0dac5a9bf7639ccc"
+    },
+    {
+      "path": "raw/stage8-focused-junit.xml",
+      "bytes": 2875,
+      "sha256": "c89f32528579f387f0533543c48b6afb902ff183089322ecdc792b1803559c05"
+    },
+    {
+      "path": "raw/stage8_01_scenario_empty.png",
+      "bytes": 20981,
+      "sha256": "181e6d1322a4d2d86a22be3409cd736f3fc8e34b3916080ecba5092a2c914bc3"
+    },
+    {
+      "path": "raw/stage8_02_scenario_authoring.png",
+      "bytes": 43220,
+      "sha256": "41d5e3f3041f0620dd969e45834965e28b0e0a4a77711d14e2a40e8ffd4d0c98"
+    },
+    {
+      "path": "raw/stage8_03_scenario_overlays.png",
+      "bytes": 50653,
+      "sha256": "2dac04698a14e0f58eb9d7edd6a8ff91a31ca0cf6d77bb66f8dfc9878ca4ceb4"
+    },
+    {
+      "path": "raw/stage8_04_scenario_preview.png",
+      "bytes": 73586,
+      "sha256": "afcffd59d77fb0c8c42e28dd0f3e101ad3eafc0face7fc10e1977c4bba585fcc"
+    },
+    {
+      "path": "raw/ui-audit-fixture.png",
+      "bytes": 100,
+      "sha256": "c5c4e332d644b73a12b96149f833b809aa56e1c07378120a8b25a24d55aadfd8"
+    }
+  ],
+  "format_id": "neoeng-d-trace-ui-modernization-stage8-scenario-editor",
+  "schema_version": 1
+}

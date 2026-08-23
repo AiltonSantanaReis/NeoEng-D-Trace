@@ -1,0 +1,467 @@
+{
+  "captures": {
+    "scenario_authoring": {
+      "actual_capture_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "stage8_02_scenario_authoring.png": {
+          "bytes": 43220,
+          "sha256": "41d5e3f3041f0620dd969e45834965e28b0e0a4a77711d14e2a40e8ffd4d0c98"
+        }
+      },
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_inspector_scroll": {
+            "geometry": [
+              0,
+              0,
+              430,
+              660
+            ],
+            "root_geometry": [
+              850,
+              38,
+              430,
+              660
+            ],
+            "scroll_area": true,
+            "visible": true
+          },
+          "professional_scene_inspector": {
+            "geometry": [
+              0,
+              0,
+              416,
+              1554
+            ],
+            "root_geometry": [
+              851,
+              39,
+              416,
+              1554
+            ],
+            "scroll_area_parent": "professional_inspector_scroll",
+            "scrollable": true,
+            "visible": true
+          },
+          "professional_scene_viewport": {
+            "geometry": [
+              0,
+              0,
+              846,
+              660
+            ],
+            "root_geometry": [
+              0,
+              38,
+              846,
+              660
+            ],
+            "visible": true
+          },
+          "professional_viewport_pages": {
+            "geometry": [
+              0,
+              0,
+              846,
+              660
+            ],
+            "root_geometry": [
+              0,
+              38,
+              846,
+              660
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "geometry": [
+              0,
+              0,
+              1280,
+              660
+            ],
+            "root_geometry": [
+              0,
+              38,
+              1280,
+              660
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "geometry": [
+              0,
+              0,
+              1280,
+              38
+            ],
+            "root_geometry": [
+              0,
+              0,
+              1280,
+              38
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "geometry": [
+              0,
+              0,
+              430,
+              660
+            ],
+            "root_geometry": [
+              850,
+              38,
+              430,
+              660
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_editor"
+      }
+    },
+    "scenario_empty": {
+      "actual_capture_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "stage8_01_scenario_empty.png": {
+          "bytes": 20981,
+          "sha256": "181e6d1322a4d2d86a22be3409cd736f3fc8e34b3916080ecba5092a2c914bc3"
+        }
+      },
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_viewport_pages": {
+            "geometry": [
+              0,
+              0,
+              846,
+              660
+            ],
+            "root_geometry": [
+              0,
+              38,
+              846,
+              660
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "geometry": [
+              0,
+              0,
+              1280,
+              660
+            ],
+            "root_geometry": [
+              0,
+              38,
+              1280,
+              660
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "geometry": [
+              0,
+              0,
+              1280,
+              38
+            ],
+            "root_geometry": [
+              0,
+              0,
+              1280,
+              38
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "geometry": [
+              0,
+              0,
+              430,
+              660
+            ],
+            "root_geometry": [
+              850,
+              38,
+              430,
+              660
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_empty"
+      }
+    },
+    "scenario_overlays": {
+      "actual_capture_size": [
+        1366,
+        768
+      ],
+      "files": {
+        "stage8_03_scenario_overlays.png": {
+          "bytes": 50653,
+          "sha256": "2dac04698a14e0f58eb9d7edd6a8ff91a31ca0cf6d77bb66f8dfc9878ca4ceb4"
+        }
+      },
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_inspector_scroll": {
+            "geometry": [
+              0,
+              0,
+              430,
+              708
+            ],
+            "root_geometry": [
+              936,
+              38,
+              430,
+              708
+            ],
+            "scroll_area": true,
+            "visible": true
+          },
+          "professional_scene_inspector": {
+            "geometry": [
+              0,
+              0,
+              416,
+              1554
+            ],
+            "root_geometry": [
+              937,
+              39,
+              416,
+              1554
+            ],
+            "scroll_area_parent": "professional_inspector_scroll",
+            "scrollable": true,
+            "visible": true
+          },
+          "professional_scene_viewport": {
+            "geometry": [
+              0,
+              0,
+              932,
+              708
+            ],
+            "root_geometry": [
+              0,
+              38,
+              932,
+              708
+            ],
+            "visible": true
+          },
+          "professional_viewport_pages": {
+            "geometry": [
+              0,
+              0,
+              932,
+              708
+            ],
+            "root_geometry": [
+              0,
+              38,
+              932,
+              708
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "geometry": [
+              0,
+              0,
+              1366,
+              708
+            ],
+            "root_geometry": [
+              0,
+              38,
+              1366,
+              708
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "geometry": [
+              0,
+              0,
+              1366,
+              38
+            ],
+            "root_geometry": [
+              0,
+              0,
+              1366,
+              38
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "geometry": [
+              0,
+              0,
+              430,
+              708
+            ],
+            "root_geometry": [
+              936,
+              38,
+              430,
+              708
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_editor"
+      }
+    },
+    "scenario_preview": {
+      "actual_capture_size": [
+        1920,
+        1080
+      ],
+      "files": {
+        "stage8_04_scenario_preview.png": {
+          "bytes": 73586,
+          "sha256": "afcffd59d77fb0c8c42e28dd0f3e101ad3eafc0face7fc10e1977c4bba585fcc"
+        }
+      },
+      "widget_geometry": {
+        "professional_editor": {
+          "professional_inspector_scroll": {
+            "geometry": [
+              0,
+              0,
+              430,
+              1020
+            ],
+            "root_geometry": [
+              1490,
+              38,
+              430,
+              1020
+            ],
+            "scroll_area": true,
+            "visible": true
+          },
+          "professional_scene_inspector": {
+            "geometry": [
+              0,
+              0,
+              416,
+              1554
+            ],
+            "root_geometry": [
+              1491,
+              39,
+              416,
+              1554
+            ],
+            "scroll_area_parent": "professional_inspector_scroll",
+            "scrollable": true,
+            "visible": true
+          },
+          "professional_scene_viewport": {
+            "geometry": [
+              0,
+              0,
+              1486,
+              1020
+            ],
+            "root_geometry": [
+              0,
+              38,
+              1486,
+              1020
+            ],
+            "visible": true
+          },
+          "professional_viewport_pages": {
+            "geometry": [
+              0,
+              0,
+              1486,
+              1020
+            ],
+            "root_geometry": [
+              0,
+              38,
+              1486,
+              1020
+            ],
+            "visible": true
+          },
+          "scenario_editor_splitter": {
+            "geometry": [
+              0,
+              0,
+              1920,
+              1020
+            ],
+            "root_geometry": [
+              0,
+              38,
+              1920,
+              1020
+            ],
+            "visible": true
+          },
+          "scenario_editor_toolbar": {
+            "geometry": [
+              0,
+              0,
+              1920,
+              38
+            ],
+            "root_geometry": [
+              0,
+              0,
+              1920,
+              38
+            ],
+            "visible": true
+          },
+          "scenario_right_pages": {
+            "geometry": [
+              0,
+              0,
+              430,
+              1020
+            ],
+            "root_geometry": [
+              1490,
+              38,
+              430,
+              1020
+            ],
+            "visible": true
+          }
+        },
+        "profile": "professional_scene_editor"
+      }
+    }
+  },
+  "image_fixture": {
+    "bytes": 100,
+    "sha256": "c5c4e332d644b73a12b96149f833b809aa56e1c07378120a8b25a24d55aadfd8"
+  },
+  "purpose": "stage8-dedicated-scenario-editor",
+  "schema_version": 2,
+  "source": {
+    "branch": "Ailton/stage8-scenario-editor-completion-20260823",
+    "commit": "c11d56f7359db3d5a1b8646caa635e4b42bd820a",
+    "worktree_clean": false
+  }
+}
