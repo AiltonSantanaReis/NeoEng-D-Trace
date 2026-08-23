@@ -1,14 +1,18 @@
 # src/ui/side_panel.py
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSignalBlocker, Qt
 from PySide6.QtWidgets import (
+    QDoubleSpinBox,
     QFileDialog,
+    QFormLayout,
     QGroupBox,
     QHBoxLayout,
     QInputDialog,
     QLabel,
+    QLayout,
     QListWidget,
     QMessageBox,
     QPushButton,
+    QScrollArea,
     QSlider,
     QVBoxLayout,
     QWidget,
@@ -22,6 +26,11 @@ from src.core.commands import (
     UpdatePolygonCommand,
 )
 from src.core.logger import logger
+from src.core.transform_gesture import (
+    TransformObjectsCommand,
+    capture_transform_state,
+    transformed_snapshot,
+)
 from src.core.validation_events import object_token, record_validation_event
 from src.utils.selection_tools import (
     expand_contract_polygon,
@@ -49,6 +58,30 @@ class SidePanel(QWidget):
 
         # Botão de forma de colisão
         self.btn_collision = QPushButton("Collision: OFF")
+
+        self.transform_group = QGroupBox("Transform")
+        self.position_x = self._transform_spin(-1_000_000.0, 1_000_000.0)
+        self.position_y = self._transform_spin(-1_000_000.0, 1_000_000.0)
+        self.position_z = self._transform_spin(-1_000_000.0, 1_000_000.0)
+        self.rotation_x = self._transform_spin(-360_000.0, 360_000.0)
+        self.rotation_y = self._transform_spin(-360_000.0, 360_000.0)
+        self.rotation_z = self._transform_spin(-360_000.0, 360_000.0)
+        self.scale_x = self._transform_spin(0.001, 1000.0, 0.1)
+        self.scale_y = self._transform_spin(0.001, 1000.0, 0.1)
+        self.scale_z = self._transform_spin(0.001, 1000.0, 0.1)
+        transform_form = QFormLayout(self.transform_group)
+        transform_form.addRow("Position X", self.position_x)
+        transform_form.addRow("Position Y", self.position_y)
+        transform_form.addRow("Position Z", self.position_z)
+        transform_form.addRow("Rotation X", self.rotation_x)
+        transform_form.addRow("Rotation Y", self.rotation_y)
+        transform_form.addRow("Rotation Z", self.rotation_z)
+        transform_form.addRow("Scale X", self.scale_x)
+        transform_form.addRow("Scale Y", self.scale_y)
+        transform_form.addRow("Scale Z", self.scale_z)
+        self.btn_apply_transform = QPushButton("Apply Transform")
+        self.btn_apply_transform.setObjectName("apply_transform")
+        transform_form.addRow(self.btn_apply_transform)
         self.btn_collision.setCheckable(True)
         self.btn_collision.setObjectName("collision_toggle")
 
@@ -64,7 +97,9 @@ class SidePanel(QWidget):
         self.btn_export_now = QPushButton("Export Sprite")
 
         # Layout
-        layout = QVBoxLayout()
+        content = QWidget(self)
+        layout = QVBoxLayout(content)
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.scene_objects_label = QLabel("Scene Objects:")
         layout.addWidget(self.scene_objects_label)
         layout.addWidget(self.list)
@@ -79,6 +114,7 @@ class SidePanel(QWidget):
         l_edit.addWidget(self.btn_collision)  # Adicionando o botão ao layout
         self.properties_group.setLayout(l_edit)
         layout.addWidget(self.properties_group)
+        layout.addWidget(self.transform_group)
 
         # Grupo 2: Modificadores
         self.modify_shape_group = QGroupBox("Modify Shape")
@@ -105,13 +141,21 @@ class SidePanel(QWidget):
         self.export_group.setLayout(l_export)
         layout.addWidget(self.export_group)
 
-        self.setLayout(layout)
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setObjectName("side_panel_scroll")
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
+        self.scroll_area.setWidget(content)
+        root_layout = QVBoxLayout(self)
+        root_layout.setContentsMargins(0, 0, 0, 0)
+        root_layout.addWidget(self.scroll_area)
 
         # Conexões
         self.list.itemSelectionChanged.connect(self._on_select)
         self.btn_delete.clicked.connect(self._on_delete)
         self.btn_rename.clicked.connect(self._on_rename)
         self.btn_collision.clicked.connect(self._on_toggle_collision)
+        self.btn_apply_transform.clicked.connect(self._on_apply_transform)
         self.btn_export.clicked.connect(self._on_export)
         self.btn_expand.clicked.connect(self._on_expand)
         self.btn_contract.clicked.connect(self._on_contract)
@@ -194,6 +238,17 @@ class SidePanel(QWidget):
         self.refresh()
         self._last_preview_poly = None
 
+    @staticmethod
+    def _transform_spin(
+        minimum: float, maximum: float, step: float = 1.0
+    ) -> QDoubleSpinBox:
+        widget = QDoubleSpinBox()
+        widget.setRange(minimum, maximum)
+        widget.setSingleStep(step)
+        widget.setDecimals(4)
+        widget.setKeyboardTracking(False)
+        return widget
+
     def refresh(self):
         """Rebuild the object list and mirror the scene selection exactly."""
         selected_id = getattr(self.scene, "selected_id", None)
@@ -231,6 +286,7 @@ class SidePanel(QWidget):
             )
         self._last_validation_selection_marker = marker
         self._update_button_states()
+        self._refresh_transform_fields()
 
     def _get_selected_obj(self):
         items = self.list.selectedItems()
@@ -240,6 +296,29 @@ class SidePanel(QWidget):
         oid = full_text.replace(" [P]", "")
         obj = self.scene.objects.get(oid)
         return oid, obj
+
+    def _refresh_transform_fields(self) -> None:
+        oid, obj = self._get_selected_obj()
+        widgets = (
+            self.position_x,
+            self.position_y,
+            self.position_z,
+            self.rotation_x,
+            self.rotation_y,
+            self.rotation_z,
+            self.scale_x,
+            self.scale_y,
+            self.scale_z,
+        )
+        enabled = obj is not None
+        self.transform_group.setEnabled(enabled)
+        self.btn_apply_transform.setEnabled(enabled)
+        if obj is None:
+            return
+        values = (*tuple(obj.position), *tuple(obj.rotation), *tuple(obj.scale))
+        for widget, value in zip(widgets, values):
+            with QSignalBlocker(widget):
+                widget.setValue(float(value))
 
     def _update_button_states(self):
         oid, obj = self._get_selected_obj()
@@ -288,6 +367,59 @@ class SidePanel(QWidget):
                 result.message or "The edit operation failed.",
             )
         return result
+
+    def _on_apply_transform(self) -> None:
+        oid, obj = self._get_selected_obj()
+        if oid is None or obj is None:
+            return
+        try:
+            before = capture_transform_state(self.scene, [oid])
+            origin = before[oid]
+            target_position = (
+                self.position_x.value(),
+                self.position_y.value(),
+                self.position_z.value(),
+            )
+            target_rotation = (
+                self.rotation_x.value(),
+                self.rotation_y.value(),
+                self.rotation_z.value(),
+            )
+            target_scale = (
+                self.scale_x.value(),
+                self.scale_y.value(),
+                self.scale_z.value(),
+            )
+            if abs(origin.scale[0]) < 1e-12 or abs(origin.scale[1]) < 1e-12:
+                raise ValueError("Current object scale cannot be zero.")
+            after = transformed_snapshot(
+                self.scene,
+                [oid],
+                translation=(
+                    target_position[0] - origin.position[0],
+                    target_position[1] - origin.position[1],
+                ),
+                rotation_degrees=target_rotation[2] - origin.rotation[2],
+                scale=(
+                    target_scale[0] / origin.scale[0],
+                    target_scale[1] / origin.scale[1],
+                ),
+                anchor_override=origin.position[:2],
+                base_snapshot=before,
+            )
+            state = after[oid]
+            state.position = target_position
+            state.rotation = target_rotation
+            state.scale = target_scale
+            result = self._execute_edit_command(TransformObjectsCommand(before, after))
+            if result.changed:
+                self.canvas.update()
+        except (KeyError, ValueError, RuntimeError) as exc:
+            QMessageBox.warning(
+                self,
+                self.translations[self.current_lang]["error"],
+                str(exc),
+            )
 
     def _on_toggle_collision(self):
         oid, _ = self._get_selected_obj()

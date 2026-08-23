@@ -28,6 +28,7 @@ from scripts.audit_ui_capture import (  # noqa: E402
     _prepare_project,
     _settle,
 )
+from src.tools.polygon_edit_tool import PolygonEditTool  # noqa: E402
 from src.ui import canvas_view as canvas_module  # noqa: E402
 from src.ui.theme_qss import QSS  # noqa: E402
 from src.ui.theme_tokens import THEME_TOKENS  # noqa: E402
@@ -145,6 +146,42 @@ def _annotate(path: Path, boxes: dict[str, QRect]) -> dict[str, Any]:
     return {"file": target.name, **_digest(target)}
 
 
+def _transform_panel_contract(window: Any, failures: list[str]) -> dict[str, Any]:
+    panel = window.side_panel
+    panel_rect = _rect_in(panel, window)
+    if not _inside(panel_rect, window.rect()):
+        failures.append("transform panel escapes main window")
+    fields = (
+        "position_x",
+        "position_y",
+        "position_z",
+        "rotation_x",
+        "rotation_y",
+        "rotation_z",
+        "scale_x",
+        "scale_y",
+        "scale_z",
+    )
+    geometry: dict[str, list[int]] = {}
+    for name in fields:
+        widget = getattr(panel, name)
+        rect = _rect_in(widget, window)
+        geometry[name] = _rect_payload(rect)
+        if not widget.isVisible():
+            failures.append(f"transform field is not visible: {name}")
+        if not _inside(rect, panel_rect):
+            failures.append(f"transform field escapes side panel: {name}")
+        if rect.width() < 40 or rect.height() < 12:
+            failures.append(f"transform field is clipped: {name}")
+    return {
+        "side_panel_geometry": _rect_payload(panel_rect),
+        "transform_group_geometry": _rect_payload(
+            _rect_in(panel.transform_group, window)
+        ),
+        "transform_fields_geometry": geometry,
+    }
+
+
 def _state_capture(
     app: QApplication,
     window: Any,
@@ -154,6 +191,7 @@ def _state_capture(
     failures: list[str],
 ) -> dict[str, Any]:
     canvas = window.canvas
+    panel_contract = _transform_panel_contract(window, failures)
     path = RAW_ROOT / f"{label}_{state}.png"
     _settle(app, 60)
     _capture(window, path)
@@ -205,6 +243,7 @@ def _state_capture(
         "annotation": annotation,
         "selected_ids": list(canvas._selected_object_ids()),
         "scene_object_count": len(scene.objects),
+        **panel_contract,
     }
 
 
@@ -265,6 +304,70 @@ def run() -> dict[str, Any]:
                 captures[f"{label}/undo"] = _state_capture(
                     app, window, scene, label, "04_undo", failures
                 )
+
+            panel = window.side_panel
+            panel.position_x.setValue(
+                float(scene.objects["rectangle-object"].position[0]) + 18.0
+            )
+            panel.position_y.setValue(
+                float(scene.objects["rectangle-object"].position[1]) + 9.0
+            )
+            panel.position_z.setValue(7.0)
+            panel.rotation_z.setValue(12.0)
+            panel.scale_x.setValue(1.1)
+            panel.scale_y.setValue(0.9)
+            panel._on_apply_transform()
+            actual_position = tuple(scene.objects["rectangle-object"].position)
+            expected_position = (
+                panel.position_x.value(),
+                panel.position_y.value(),
+                7.0,
+            )
+            if any(
+                abs(actual - expected) > 1e-6
+                for actual, expected in zip(actual_position, expected_position)
+            ):
+                failures.append(f"{label}: numeric transform was not applied")
+            window.canvas.update()
+            captures[f"{label}/numeric"] = _state_capture(
+                app, window, scene, label, "05_numeric", failures
+            )
+            numeric_undo = scene.cmd.undo(scene)
+            if numeric_undo.status.name != "APPLIED":
+                failures.append(f"{label}: numeric transform undo was not applied")
+            window.canvas.update()
+            captures[f"{label}/numeric_undo"] = _state_capture(
+                app, window, scene, label, "06_numeric_undo", failures
+            )
+
+            vertex_tool = PolygonEditTool(window.canvas)
+            window.canvas.set_tool(vertex_tool.interface())
+            vertex_tool.selected_polygon_id = "rectangle-object"
+            vertex_tool.selected_vertex = 0
+            window.canvas._gizmo_enabled = True
+            window.canvas._update_gizmo_screen_position()
+            window.canvas._gizmo_operation = window.canvas.gizmo.TRANSLATE_XY
+            vertex_origin = tuple(scene.objects["rectangle-object"].polygon[0])
+            if not window.canvas._begin_gizmo_vertex_gesture():
+                failures.append(f"{label}: vertex gizmo transaction did not begin")
+            else:
+                target = (vertex_origin[0] + 11, vertex_origin[1] + 7)
+                window.canvas._preview_gizmo_vertex(
+                    window.canvas.image_to_widget(*target)
+                )
+                captures[f"{label}/vertex"] = _state_capture(
+                    app, window, scene, label, "07_vertex", failures
+                )
+                vertex_result = window.canvas._finish_gizmo_gesture()
+                if vertex_result is None or vertex_result.status.name != "APPLIED":
+                    failures.append(f"{label}: vertex gizmo commit was not applied")
+                vertex_undo = scene.cmd.undo(scene)
+                if vertex_undo.status.name != "APPLIED":
+                    failures.append(f"{label}: vertex gizmo undo was not applied")
+                window.canvas.update()
+                captures[f"{label}/vertex_undo"] = _state_capture(
+                    app, window, scene, label, "08_vertex_undo", failures
+                )
         finally:
             window.close()
             _settle(app, 30)
@@ -283,7 +386,16 @@ def run() -> dict[str, Any]:
             "qt_platform": app.platformName(),
         },
         "resolutions": {name: list(size) for name, size in RESOLUTIONS.items()},
-        "states_per_resolution": ["selected", "hover", "feedback", "undo"],
+        "states_per_resolution": [
+            "selected",
+            "hover",
+            "feedback",
+            "undo",
+            "numeric",
+            "numeric_undo",
+            "vertex",
+            "vertex_undo",
+        ],
         "capture_count": len(captures),
         "captures": captures,
         "failures": failures,

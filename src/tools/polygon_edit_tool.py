@@ -171,6 +171,42 @@ class PolygonEditTool(BaseTool):
         self._vertex_preview_position = tuple(obj.polygon[vertex_index])
         return True
 
+    def begin_vertex_gizmo_gesture(self) -> bool:
+        """Start a vertex transaction for the canvas gizmo."""
+
+        if self._vertex_transaction is not None:
+            return False
+        return self._begin_vertex_gesture()
+
+    def preview_vertex_gizmo_position(self, position: Tuple[int, int]) -> None:
+        """Preview a gizmo-constrained vertex position."""
+
+        self._preview_vertex_position((int(position[0]), int(position[1])))
+
+    def finish_vertex_gizmo_gesture(self) -> Optional[CommandResult]:
+        """Commit the active vertex transaction as one history entry."""
+
+        return self._finish_vertex_gesture()
+
+    def cancel_vertex_gizmo_gesture(self) -> bool:
+        """Cancel the active vertex transaction without adding history."""
+
+        return self._cancel_vertex_gesture()
+
+    def selected_vertex_position(self) -> Optional[Tuple[int, int]]:
+        """Return the selected vertex, including an active preview."""
+
+        if self.selected_polygon_id is None or self.selected_vertex is None:
+            return None
+        if self._vertex_preview_position is not None:
+            return tuple(self._vertex_preview_position)
+        obj = self.canvas_view.model.objects.get(self.selected_polygon_id)
+        if obj is None or not obj.polygon:
+            return None
+        if self.selected_vertex < 0 or self.selected_vertex >= len(obj.polygon):
+            return None
+        return tuple(obj.polygon[self.selected_vertex])
+
     def _preview_vertex_position(
         self,
         position: Tuple[int, int],
