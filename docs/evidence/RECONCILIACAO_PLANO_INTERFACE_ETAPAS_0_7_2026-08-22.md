@@ -243,3 +243,15 @@ focal, não por captura de menu aberto.
 
 Classificação atual: `PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS`; PR #154 continua
 draft e o ciclo de promoção, merge e pós-merge ainda é obrigatório.
+
+
+## Encerramento pós-merge — Etapa 7 — 2026-08-23
+
+A Etapa 7 foi encerrada no escopo definido após a PR #154, CI Linux/Windows
+aprovado no run `32634474078`, merge `bf6da772afb659e0801b869f2ce5a0740918d94e` e
+validação independente no `main`. A validação pós-merge confirmou `110
+manifests`, baseline `2618 files` e `1625 passed, 2 skipped`.
+
+O plano de reconciliação das Etapas 0–7 está concluído no escopo
+documentado. Isso não aprova release; as Etapas 8–14 seguem planejadas e
+devem obedecer aos mesmos gates.

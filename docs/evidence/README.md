@@ -448,3 +448,12 @@ Etapa 8 continua bloqueada. Snapshots anteriores não foram reescritos.
 
 Estado: `PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS`; promoção da PR, merge e
 validação pós-merge continuam pendentes.
+
+## Encerramento pós-merge — Etapa 7 — 2026-08-23
+
+- `ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md` — PR #154,
+  CI Linux/Windows aprovado, merge `bf6da772`, validação pós-merge no `main`,
+  `110 manifests`, baseline `2618 files` e `1625 passed, 2 skipped`.
+
+A Etapa 7 está aprovada somente no escopo dos painéis laterais. Release não
+foi aprovada; as Etapas 8–14 continuam planejadas.
