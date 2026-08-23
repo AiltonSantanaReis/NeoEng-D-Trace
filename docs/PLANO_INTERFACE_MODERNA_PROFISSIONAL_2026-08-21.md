@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** ETAPAS 0–7 APROVADAS / ETAPAS 8–14 PLANEJADAS
+**Status do plano:** ETAPAS 0, 1, 3, 4 e 5 APROVADAS / ETAPAS 2, 6 e 7 PARCIAIS FRENTE AO PLANO DETALHADO / ETAPAS 8–14 PLANEJADAS
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -34,7 +34,7 @@ Na leitura do estado local, foram encontrados diretórios de artefatos de audito
 
 As capturas, hashes e resultados de auditorias existentes continuam sendo evidências de seus respectivos commits e escopos. Não são evidência automática das etapas deste plano. A evidência local atual da Etapa 6 é válida apenas para a branch e o worktree identificados no relatório correspondente.
 
-Reconciliação viva de 2026-08-22: o `main` local e `origin/main` estão sincronizados no merge `23e31c893ef6f2081f0b329e74ec84f047f51a67`. A Etapa 7 foi implementada, revisada visualmente, aprovada pelo CI, mesclada e validada pós-merge no escopo do `GroupsPanel`. As Etapas 8–14 continuam planejadas. Diretórios locais não rastreados continuam preservados e não são evidência de árvore limpa.
+Reconciliação viva de 2026-08-22: o `main` local e `origin/main` estão sincronizados no merge `b5bacf8a598716d28ed6035da97c2c6b49e3ce1f`. A Etapa 7 foi implementada, revisada visualmente, aprovada pelo CI, mesclada e validada pós-merge somente no escopo do `GroupsPanel`; frente ao plano detalhado original, os demais painéis continuam parciais. A reconciliação completa das Etapas 0–7 está em `docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md`. As Etapas 8–14 continuam planejadas. Diretórios locais não rastreados continuam preservados e não são evidência de árvore limpa.
 
 ## 3. Regras imutáveis de integridade e anti-alucinação
 
@@ -185,7 +185,7 @@ Definir ícones licenciados ou nativos, tamanho, padding, tooltip, texto acessí
 
 **Gate:** todos os ícones carregam no build real, tooltips e atalhos funcionam, fallback é testado, ícones não dependem de caminho local.
 
-**Estado em 2026-08-21:** APROVADA após PR #133, merge ff66ffd, CI Linux/Windows, baseline/evidência Git-blob e validação pós-merge. A aprovação é somente do escopo desta etapa e não é aprovação de release.
+**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A aprovação pós-merge anterior permanece válida somente para o catálogo, fallback, tooltips e acessibilidade comprovados; a matriz visual completa de DPI 100/125/150/200 ainda não foi executada. A aprovação não é aprovação de release.
 
 ### Etapa 3 — Barra esquerda de ferramentas
 
@@ -211,11 +211,15 @@ Preservar a matemática e o contrato existentes enquanto melhorar hit-test, posi
 
 **Gate:** testes geométricos e de interação, limites, DPI, redimensionamento, seleção múltipla, undo/redo e capturas reais anotadas.
 
+**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A implementação integrada cobre hit-test, translação XY, rotação Z, escalas, snapping, feedback, seleção múltipla, undo/redo e acessibilidade comprovados. Permanecem não comprovados a matriz de DPI completa, todos os fluxos de edição de vértice individual pelo gizmo e um inspector numérico editável completo.
+
 ### Etapa 7 — Painéis laterais
 
 Corrigir tamanho mínimo, rolagem, hierarquia, estados disabled/enabled e separação entre inspector principal, camadas do projeto e cenário. Substituir grades de botões por barras de ferramentas compactas quando não houver perda de descoberta; manter menus de contexto e tooltips. Nada pode ficar esmagado ou inacessível.
 
 **Gate:** geometrias Qt reais, ações clicáveis, seleção de itens, propriedades editáveis, painéis visíveis em DPI/resoluções alvo e ausência de falsos positivos do auditor.
+
+**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A aprovação pós-merge anterior cobre somente a toolbar compacta do `GroupsPanel`. `Objects`, `Layers`, `Collision` e o inspector ainda não possuem a comprovação integral exigida pelo plano detalhado.
 
 ### Etapa 8 — Editor de cenário separado
 
@@ -290,5 +294,8 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 | 2026-08-22 | Baseline da Etapa 6 iniciado a partir de `425f21df2bbf9a67c01a577b59ae6bbba25995b7`. A implementação do gizmo profissional ainda não foi iniciada; capacidades, contratos, duplicidade de implementações e lacunas de teste ficam registradas em `ETAPA_6_GIZMO_BASELINE_2026-08-22.md`. | ETAPAS 0–5 APROVADAS / ETAPA 6 BASELINE / IMPLEMENTAÇÃO NÃO INICIADA |
 | 2026-08-22 | Baseline da Etapa 6 validado pós-merge da PR #142 no SHA `c42542ee428bd81c79257d10e62546694442b9a0`: baseline 2238 arquivos, evidências 99 manifests e suíte completa 1600 passed/2 skipped. O gizmo profissional continua sem implementação; capturas específicas da Etapa 6 permanecem não testadas. | ETAPAS 0–5 APROVADAS / ETAPA 6 PLANEJADA / BASELINE PÓS-MERGE VALIDADO |
 
-| 2026-08-22 | Implementação local da Etapa 6 validada na branch `Ailton/stage6-gizmo-professional`: 1609 passed/2 skipped, cobertura XML 92,99% linhas e 85,19% branches, política PASS, gates estáticos PASS, baseline Git-blob com 2270 arquivos, evidências com 100 manifests e auditor nativo Windows com 12 capturas/0 findings. Causa raiz real de hit-test e compatibilidade de dublês corrigida. PR, CI, merge e pós-merge continuam pendentes; revisão humana visual não confirmada por ACL do visualizador. | ETAPAS 0–5 APROVADAS / ETAPA 6 PASS_LOCAL / ETAPAS 7–14 PLANEJADAS |\n| 2026-08-22 | Etapa 6 integrada na PR #144, com CI Linux/Windows aprovado e merge `d01e42f7348265f4cfe4df65a8d6c2761e0730e8`. Pós-merge local reproduzido no `main`: baseline 2270 arquivos, evidências 100 manifests, 30 testes focados e suíte completa 1609 passed/2 skipped. A revisão visual humana foi posteriormente aprovada pelo proprietário do projeto. | ETAPA 6 APROVADA NO ESCOPO DEFINIDO |\n| 2026-08-22 | Reconciliação pós-aprovação visual versionada após PR #145, merge `c1bf40c273038a2bbeb35b4d450c10724f6c84ea`, CI Linux/Windows aprovado e validação documental pós-merge. A Etapa 7 continua planejada e não foi iniciada. | ETAPAS 0–6 APROVADAS / ETAPAS 7–14 PLANEJADAS |
+| 2026-08-22 | Implementação local da Etapa 6 validada na branch `Ailton/stage6-gizmo-professional`: 1609 passed/2 skipped, cobertura XML 92,99% linhas e 85,19% branches, política PASS, gates estáticos PASS, baseline Git-blob com 2270 arquivos, evidências com 100 manifests e auditor nativo Windows com 12 capturas/0 findings. Causa raiz real de hit-test e compatibilidade de dublês corrigida. PR, CI, merge e pós-merge continuam pendentes; revisão humana visual não confirmada por ACL do visualizador. | ETAPAS 0–5 APROVADAS / ETAPA 6 PASS_LOCAL / ETAPAS 7–14 PLANEJADAS |
+| 2026-08-22 | Etapa 6 integrada na PR #144, com CI Linux/Windows aprovado e merge `d01e42f7348265f4cfe4df65a8d6c2761e0730e8`. Pós-merge local reproduzido no `main`: baseline 2270 arquivos, evidências 100 manifests, 30 testes focados e suíte completa 1609 passed/2 skipped. A revisão visual humana foi posteriormente aprovada pelo proprietário do projeto. | ETAPA 6 APROVADA NO ESCOPO DEFINIDO |
+| 2026-08-22 | Reconciliação pós-aprovação visual versionada após PR #145, merge `c1bf40c273038a2bbeb35b4d450c10724f6c84ea`, CI Linux/Windows aprovado e validação documental pós-merge. A Etapa 7 continua planejada e não foi iniciada. | ETAPAS 0–6 APROVADAS / ETAPAS 7–14 PLANEJADAS |
 | 2026-08-22 | Etapa 7 validada localmente no checkpoint `9ee591615d30f98037e8506f513c4c2635fb207d`: GroupsPanel normalizado para toolbar compacta mantendo oito comandos, testes focados 22/22, suíte 1612 passed/2 skipped, gates estáticos PASS, capturas nativas Windows em três resoluções, auditor visual geral e auditor específico com 0 findings, integridade 104 manifests e privacidade PASS. Falha intermediária de log com caminhos locais foi rejeitada e preservada fora do pacote versionado. PR, CI, merge e pós-merge pendentes; revisão humana não declarada. | ETAPAS 0–6 APROVADAS / ETAPA 7 PASS_LOCAL / ETAPAS 8–14 PLANEJADAS |
+| 2026-08-22 | Reconciliação do plano detalhado original: Etapas 0, 1, 3, 4 e 5 permanecem aprovadas nos escopos comprovados; Etapas 2, 6 e 7 são parciais frente aos requisitos detalhados. A Etapa 8 não pode iniciar antes do fechamento documentado dessas lacunas. Relatório: docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md. | ETAPAS 0, 1, 3, 4 e 5 APROVADAS / ETAPAS 2, 6 e 7 PARCIAIS / ETAPAS 8–14 PLANEJADAS |
