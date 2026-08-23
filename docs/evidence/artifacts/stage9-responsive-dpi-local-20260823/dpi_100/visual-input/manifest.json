@@ -1,0 +1,5725 @@
+{
+  "captures": {
+    "1080p_FHD": {
+      "actual_capture_size": [
+        1920,
+        1080
+      ],
+      "actual_window_size": [
+        1920,
+        1080
+      ],
+      "files": {
+        "1080p_FHD_01_sem_projeto.png": {
+          "bytes": 25003,
+          "sha256": "99acaaaff42ed993d49b3d83457f4764137e2b80280443d122bace7e677821a6"
+        },
+        "1080p_FHD_02_projeto_paineis.png": {
+          "bytes": 38405,
+          "sha256": "acac3708431994d468c6bf8b4abae7aa259050dba0781544406f94443e2d674b"
+        },
+        "1080p_FHD_03_validacao_janela.png": {
+          "bytes": 38405,
+          "sha256": "acac3708431994d468c6bf8b4abae7aa259050dba0781544406f94443e2d674b"
+        },
+        "1080p_FHD_03_validacao_modal.png": {
+          "bytes": 1786,
+          "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+        },
+        "1080p_FHD_04_gizmo_feedback.png": {
+          "bytes": 43368,
+          "sha256": "701a8482a6af32dc4544fbd3d1cf3429e036e590a4a5ea819b82f1c6eb0a9386"
+        }
+      },
+      "requested_size": [
+        1920,
+        1080
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info",
+        "widget": {
+          "capture_size": [
+            400,
+            100
+          ],
+          "class": "QMessageBox",
+          "enabled": true,
+          "frame_geometry": [
+            398,
+            490,
+            404,
+            104
+          ],
+          "geometry": [
+            400,
+            492,
+            400,
+            100
+          ],
+          "object_name": "",
+          "root_geometry": [
+            1780,
+            601,
+            400,
+            100
+          ],
+          "visible": true
+        }
+      },
+      "widget_geometry": {
+        "gizmo_feedback": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              105,
+              1255,
+              953
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              460,
+              975
+            ],
+            "visible": false
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": true
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              77,
+              89,
+              981
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": false
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            },
+            "reference_panel_tabs": {
+              "current_index": 1,
+              "pages": [
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "projeto_paineis": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              105,
+              1255,
+              953
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              460,
+              975
+            ],
+            "visible": false
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": true
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              77,
+              89,
+              981
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": false
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            },
+            "reference_panel_tabs": {
+              "current_index": 1,
+              "pages": [
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "sem_projeto": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              105,
+              1255,
+              953
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              460,
+              975
+            ],
+            "visible": false
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": true
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              77,
+              89,
+              981
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": false
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            },
+            "reference_panel_tabs": {
+              "current_index": 1,
+              "pages": [
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "validacao_janela": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "geometry": [
+              0,
+              0,
+              1255,
+              953
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              105,
+              1255,
+              953
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              975
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              460,
+              975
+            ],
+            "visible": false
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              951
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              460,
+              951
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": true
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              77,
+              1920,
+              981
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              1380,
+              0,
+              540,
+              981
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              981
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              1380,
+              77,
+              540,
+              981
+            ],
+            "visible": true
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              981
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              77,
+              89,
+              981
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "geometry": [
+              0,
+              0,
+              540,
+              949
+            ],
+            "object_name": "",
+            "root_geometry": [
+              1380,
+              109,
+              540,
+              949
+            ],
+            "visible": false
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            },
+            "reference_panel_tabs": {
+              "current_index": 1,
+              "pages": [
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    540,
+                    949
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    951
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              -500,
+              -500,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "validacao_modal": {
+          "capture_size": [
+            400,
+            100
+          ],
+          "class": "QMessageBox",
+          "enabled": true,
+          "frame_geometry": [
+            398,
+            490,
+            404,
+            104
+          ],
+          "geometry": [
+            400,
+            492,
+            400,
+            100
+          ],
+          "object_name": "",
+          "root_geometry": [
+            1780,
+            601,
+            400,
+            100
+          ],
+          "visible": true
+        }
+      }
+    },
+    "720p_Compacta": {
+      "actual_capture_size": [
+        1280,
+        720
+      ],
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "files": {
+        "720p_Compacta_01_sem_projeto.png": {
+          "bytes": 23816,
+          "sha256": "cf0759f6f4e3a59e9d287bf3b66303689fe641a74caacdf6dd416608d686c176"
+        },
+        "720p_Compacta_02_projeto_paineis.png": {
+          "bytes": 36815,
+          "sha256": "0e4f49fc5cd687465e2b5af5dd89c282aa6793bab417263253114cc1a30fba59"
+        },
+        "720p_Compacta_03_validacao_janela.png": {
+          "bytes": 33869,
+          "sha256": "40e2265466c9b33937cfbb5596f6506e7513f41ea77016d016a568b055bdee00"
+        },
+        "720p_Compacta_03_validacao_modal.png": {
+          "bytes": 1786,
+          "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+        },
+        "720p_Compacta_04_gizmo_feedback.png": {
+          "bytes": 41843,
+          "sha256": "ed3bc00c64cf1abe517449f7d073e5ee13c7fc7c0da658be9a5d6163879ac336"
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info",
+        "widget": {
+          "capture_size": [
+            400,
+            100
+          ],
+          "class": "QMessageBox",
+          "enabled": true,
+          "frame_geometry": [
+            398,
+            310,
+            404,
+            104
+          ],
+          "geometry": [
+            400,
+            312,
+            400,
+            100
+          ],
+          "object_name": "",
+          "root_geometry": [
+            1220,
+            419,
+            400,
+            100
+          ],
+          "visible": true
+        }
+      },
+      "widget_geometry": {
+        "gizmo_feedback": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              695,
+              587
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              615
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              460,
+              591
+            ],
+            "visible": true
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 0,
+              "pages": [
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    591
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "projeto_paineis": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              695,
+              587
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              615
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              460,
+              591
+            ],
+            "visible": true
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 0,
+              "pages": [
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    591
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "sem_projeto": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              695,
+              587
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              615
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              460,
+              591
+            ],
+            "visible": true
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 0,
+              "pages": [
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    591
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "validacao_janela": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "geometry": [
+              0,
+              0,
+              695,
+              587
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              695,
+              587
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              460,
+              591
+            ],
+            "visible": true
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1280,
+              615
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "geometry": [
+              820,
+              0,
+              460,
+              615
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              83,
+              460,
+              615
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              820,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              615
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              615
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              591
+            ],
+            "object_name": "",
+            "root_geometry": [
+              820,
+              107,
+              460,
+              591
+            ],
+            "visible": false
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 3,
+              "pages": [
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    591
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    591
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": true,
+                  "visible_to_root": true
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "validacao_modal": {
+          "capture_size": [
+            400,
+            100
+          ],
+          "class": "QMessageBox",
+          "enabled": true,
+          "frame_geometry": [
+            398,
+            310,
+            404,
+            104
+          ],
+          "geometry": [
+            400,
+            312,
+            400,
+            100
+          ],
+          "object_name": "",
+          "root_geometry": [
+            1220,
+            419,
+            400,
+            100
+          ],
+          "visible": true
+        }
+      }
+    },
+    "768p_Minima": {
+      "actual_capture_size": [
+        1366,
+        768
+      ],
+      "actual_window_size": [
+        1366,
+        768
+      ],
+      "files": {
+        "768p_Minima_01_sem_projeto.png": {
+          "bytes": 25098,
+          "sha256": "9d39d2f6ede9f69aaa922b469042586a1b7e043c77bd9459fb37af2e624c1a1a"
+        },
+        "768p_Minima_02_projeto_paineis.png": {
+          "bytes": 38370,
+          "sha256": "51e651be972089a78532cd07090b7a0a45a54f2c5d1c710e123a9c885da9986d"
+        },
+        "768p_Minima_03_validacao_janela.png": {
+          "bytes": 34697,
+          "sha256": "d860919dbabd3447d3b936c59430263dffb5fd97b133968c0c3db095f7bc09d3"
+        },
+        "768p_Minima_03_validacao_modal.png": {
+          "bytes": 1786,
+          "sha256": "c98792b4cca48a3d157bb05802c572132d03ca2f0272116469af32d6bf3550e4"
+        },
+        "768p_Minima_04_gizmo_feedback.png": {
+          "bytes": 43460,
+          "sha256": "6995890cda28c99f98638daa73f57ede6cd65dbdf2113e9aea5753f8bacea064"
+        }
+      },
+      "requested_size": [
+        1366,
+        768
+      ],
+      "validation_message": {
+        "informative_text": "",
+        "text": "No collision shapes registered. Use Auto-Generate first.",
+        "title": "Info",
+        "widget": {
+          "capture_size": [
+            400,
+            100
+          ],
+          "class": "QMessageBox",
+          "enabled": true,
+          "frame_geometry": [
+            398,
+            334,
+            404,
+            104
+          ],
+          "geometry": [
+            400,
+            336,
+            400,
+            100
+          ],
+          "object_name": "",
+          "root_geometry": [
+            1306,
+            443,
+            400,
+            100
+          ],
+          "visible": true
+        }
+      },
+      "widget_geometry": {
+        "gizmo_feedback": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              781,
+              635
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              663
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              460,
+              639
+            ],
+            "visible": true
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 0,
+              "pages": [
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    639
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "projeto_paineis": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              781,
+              635
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              663
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              460,
+              639
+            ],
+            "visible": true
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 0,
+              "pages": [
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    639
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "sem_projeto": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              781,
+              635
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              663
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              460,
+              639
+            ],
+            "visible": true
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 0,
+              "pages": [
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    639
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": true,
+                  "visible_to_root": true
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": false,
+                  "visible_to_root": false
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": false,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "validacao_janela": {
+          "canvas": {
+            "class": "CanvasView",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "geometry": [
+              0,
+              0,
+              781,
+              635
+            ],
+            "object_name": "",
+            "root_geometry": [
+              121,
+              111,
+              781,
+              635
+            ],
+            "visible": true
+          },
+          "collision_panel": {
+            "class": "CollisionPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              460,
+              639
+            ],
+            "visible": true
+          },
+          "compact_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "desktop_panel_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "groups": {
+            "class": "GroupsPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "layers": {
+            "class": "LayersPanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "main_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              83,
+              1366,
+              663
+            ],
+            "visible": true
+          },
+          "nav_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "navigation_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "panel_stack": {
+            "class": "QStackedWidget",
+            "enabled": true,
+            "frame_geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "geometry": [
+              906,
+              0,
+              460,
+              663
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              83,
+              460,
+              663
+            ],
+            "visible": true
+          },
+          "reference_panel_tabs": {
+            "class": "QTabWidget",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "reference_panel_tabs",
+            "root_geometry": [
+              906,
+              83,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "reference_tool_palette": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "geometry": [
+              0,
+              0,
+              89,
+              663
+            ],
+            "object_name": "reference_tool_palette",
+            "root_geometry": [
+              0,
+              83,
+              89,
+              663
+            ],
+            "visible": true
+          },
+          "right_splitter": {
+            "class": "QSplitter",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          },
+          "side_panel": {
+            "class": "SidePanel",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "geometry": [
+              0,
+              0,
+              460,
+              639
+            ],
+            "object_name": "",
+            "root_geometry": [
+              906,
+              107,
+              460,
+              639
+            ],
+            "visible": false
+          },
+          "tab_visibility": {
+            "compact_panel_tabs": {
+              "current_index": 3,
+              "pages": [
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    639
+                  ],
+                  "index": 0,
+                  "title": "Objects",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 1,
+                  "title": "Layers",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": false,
+                  "geometry": [
+                    0,
+                    0,
+                    640,
+                    480
+                  ],
+                  "index": 2,
+                  "title": "Groups",
+                  "visible": false,
+                  "visible_to_root": false
+                },
+                {
+                  "current": true,
+                  "geometry": [
+                    0,
+                    0,
+                    460,
+                    639
+                  ],
+                  "index": 3,
+                  "title": "Collision",
+                  "visible": true,
+                  "visible_to_root": true
+                }
+              ],
+              "visible_to_root": true
+            },
+            "reference_panel_tabs": {
+              "current_index": -1,
+              "pages": [],
+              "visible_to_root": false
+            }
+          },
+          "tool_palette": {
+            "class": "ToolPalette",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "object_name": "left_tool_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              148,
+              480
+            ],
+            "visible": false
+          },
+          "toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "object_name": "main_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "visible": false
+          },
+          "xray_toolbar": {
+            "class": "QToolBar",
+            "enabled": true,
+            "frame_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "object_name": "xray_toolbar",
+            "root_geometry": [
+              0,
+              0,
+              640,
+              480
+            ],
+            "visible": false
+          }
+        },
+        "validacao_modal": {
+          "capture_size": [
+            400,
+            100
+          ],
+          "class": "QMessageBox",
+          "enabled": true,
+          "frame_geometry": [
+            398,
+            334,
+            404,
+            104
+          ],
+          "geometry": [
+            400,
+            336,
+            400,
+            100
+          ],
+          "object_name": "",
+          "root_geometry": [
+            1306,
+            443,
+            400,
+            100
+          ],
+          "visible": true
+        }
+      }
+    }
+  },
+  "generator": "scripts/audit_ui_capture.py",
+  "image_fixture": {
+    "bytes": 10112,
+    "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7"
+  },
+  "platform": "Windows-10-10.0.26200-SP0",
+  "project_fixture": {
+    "bytes": 2193,
+    "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75"
+  },
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "schema_version": 2
+}

@@ -1,0 +1,41 @@
+{
+  "report": {
+    "file": "stage9-responsive-dpi-report.json",
+    "sha256": "54eb2532719648df4c39895d5f3ff94e58386cb780a98d94df7bc03cecc59980"
+  },
+  "schema_version": 1,
+  "workers": [
+    {
+      "dpi": {
+        "label": "100",
+        "requested_scale": 1.0
+      },
+      "file": "dpi_100\\stage9-worker-report.json",
+      "sha256": "db207f11e253bd2427b0f03449896dc12537aa70e4b9667145de0ad3daa0e4e4"
+    },
+    {
+      "dpi": {
+        "label": "125",
+        "requested_scale": 1.25
+      },
+      "file": "dpi_125\\stage9-worker-report.json",
+      "sha256": "198a1ac07e4d661b741b6041a75df3a37f88cf50a2d746794ba8e3c60b11fbd4"
+    },
+    {
+      "dpi": {
+        "label": "150",
+        "requested_scale": 1.5
+      },
+      "file": "dpi_150\\stage9-worker-report.json",
+      "sha256": "49cc67d9598a45c9fb35789e5ae646085aff4392de3bf95684f35788b5af0a70"
+    },
+    {
+      "dpi": {
+        "label": "200",
+        "requested_scale": 2.0
+      },
+      "file": "dpi_200\\stage9-worker-report.json",
+      "sha256": "0c38585e0dc34bfd4dc501200e203c2ffcb52689eda8f3903355893d907f1ec2"
+    }
+  ]
+}

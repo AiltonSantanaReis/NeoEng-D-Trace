@@ -1,0 +1,10 @@
+GPU processing failed, falling back to CPU: OpenCV(4.12.0) :-1: error: (-5:Bad argument) in function 'merge'
+> Overload resolution failed:
+>  - Can't parse 'mv'. Sequence item with index 0 has a wrong type
+>  - Can't parse 'mv'. Sequence item with index 0 has a wrong type
+
+GPU processing failed, falling back to CPU: OpenCV(4.12.0) :-1: error: (-5:Bad argument) in function 'merge'
+> Overload resolution failed:
+>  - Can't parse 'mv'. Sequence item with index 0 has a wrong type
+>  - Can't parse 'mv'. Sequence item with index 0 has a wrong type
+

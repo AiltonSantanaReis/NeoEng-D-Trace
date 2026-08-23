@@ -61,8 +61,9 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
     toolbar.setFloatable(False)
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
     toolbar.setIconSize(QSize(24, 24))
-    toolbar.setMinimumWidth(72)
-    toolbar.setMaximumWidth(84)
+    # Reserve the effective rail width after production QSS borders/padding.
+    toolbar.setMinimumWidth(80)
+    toolbar.setMaximumWidth(88)
     toolbar.setProperty("uiRole", "reference_tool_palette")
     for action in window.tool_palette.actions():
         if action.isSeparator():
