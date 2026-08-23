@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "method": "Pillow decode/load + OpenCV imread(IMREAD_UNCHANGED) + SHA-256 cross-check",
+  "capture_count": 12,
+  "captures": [
+    {
+      "resolution": "1080p_FHD",
+      "panel": "collision",
+      "path": "1080p_FHD_04_collision.png",
+      "bytes": 113983,
+      "sha256": "58d5769c475370f48d18ff6831457d1e11127067baa0f71c92d761d69547e001",
+      "pil_size": [
+        3840,
+        2120
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        3840,
+        2120
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "1080p_FHD",
+      "panel": "groups",
+      "path": "1080p_FHD_03_groups.png",
+      "bytes": 101640,
+      "sha256": "d265fb1259445559b965a79b96875a951b7e2592a3e915c788bf0b76d7c73c6d",
+      "pil_size": [
+        3840,
+        2120
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        3840,
+        2120
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "1080p_FHD",
+      "panel": "layers",
+      "path": "1080p_FHD_02_layers.png",
+      "bytes": 102763,
+      "sha256": "404586376b7caba4fb34bd683baaef358be2147f6b45ca3d983d7219f1dea2a4",
+      "pil_size": [
+        3840,
+        2120
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        3840,
+        2120
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "1080p_FHD",
+      "panel": "objects",
+      "path": "1080p_FHD_01_objects.png",
+      "bytes": 144035,
+      "sha256": "acfc02f738a28864376ea5fda17f68a185e6460bbd4c91d1c06ef550f2addaf3",
+      "pil_size": [
+        3840,
+        2120
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        3840,
+        2120
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "720p_Compacta",
+      "panel": "collision",
+      "path": "720p_Compacta_04_collision.png",
+      "bytes": 94733,
+      "sha256": "d1fc840c9de5959aa4ae2a8b1452cf30a83dedd1c56e73bde643aee4941fdce3",
+      "pil_size": [
+        2560,
+        1440
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2560,
+        1440
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "720p_Compacta",
+      "panel": "groups",
+      "path": "720p_Compacta_03_groups.png",
+      "bytes": 83319,
+      "sha256": "b6becdfadc114d7494719653dc920de2c66990f3509eba9744aaf975e4cce5a0",
+      "pil_size": [
+        2560,
+        1440
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2560,
+        1440
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "720p_Compacta",
+      "panel": "layers",
+      "path": "720p_Compacta_02_layers.png",
+      "bytes": 84634,
+      "sha256": "0205e591c177dccf132be52281d03c5a415220296482ce6de443804f75c5756a",
+      "pil_size": [
+        2560,
+        1440
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2560,
+        1440
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "720p_Compacta",
+      "panel": "objects",
+      "path": "720p_Compacta_01_objects.png",
+      "bytes": 121647,
+      "sha256": "51dca4dddb603cf14579f1ade9bff2a78ed2fee604e803818f85e2a2709896be",
+      "pil_size": [
+        2560,
+        1440
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2560,
+        1440
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "768p_Minima",
+      "panel": "collision",
+      "path": "768p_Minima_04_collision.png",
+      "bytes": 97527,
+      "sha256": "312a2d3a696d82daffa619255c1aabe1a36e6cedfa9ba692c8201247be014679",
+      "pil_size": [
+        2732,
+        1536
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2732,
+        1536
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "768p_Minima",
+      "panel": "groups",
+      "path": "768p_Minima_03_groups.png",
+      "bytes": 86155,
+      "sha256": "41bf159c0ba0607eaae4052b64dc62a5b809c3b41b45b95810f70ff4b95a09c8",
+      "pil_size": [
+        2732,
+        1536
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2732,
+        1536
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "768p_Minima",
+      "panel": "layers",
+      "path": "768p_Minima_02_layers.png",
+      "bytes": 87345,
+      "sha256": "be05dc46fcfa24ed8396ad38433fb1495fe42caa63cf320707ba0bbf2d5e3382",
+      "pil_size": [
+        2732,
+        1536
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2732,
+        1536
+      ],
+      "opencv_channels": 3
+    },
+    {
+      "resolution": "768p_Minima",
+      "panel": "objects",
+      "path": "768p_Minima_01_objects.png",
+      "bytes": 127001,
+      "sha256": "cca9db61e1f52bd43cf24f42a087e474451b10243f69043166bb0fc8e6642377",
+      "pil_size": [
+        2732,
+        1536
+      ],
+      "pil_mode": "RGB",
+      "pil_bands": [
+        "R",
+        "G",
+        "B"
+      ],
+      "opencv_size": [
+        2732,
+        1536
+      ],
+      "opencv_channels": 3
+    }
+  ]
+}

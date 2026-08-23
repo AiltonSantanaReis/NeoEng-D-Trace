@@ -313,3 +313,8 @@ O primeiro run remoto da PR #152 (`32627926745`) falhou nos jobs Linux e Windows
 ### Encerramento pós-merge da Etapa 6
 
 A Etapa 6 foi merged na PR #152 em `ebdb889bc415eca4ea263a98e59551645130fbd5`. CI Linux/Windows e validação pós-merge local passaram; a etapa está encerrada no escopo aprovado, sem aprovação de release.
+| 2026-08-23 | Retomada da Etapa 7 na branch `Ailton/stage7-side-panels-completion-20260823`: Objects, Layers, Groups e Collision receberam toolbars compactas preservando handles; seleção/inspector, estados, rolagem, tooltips e menus de contexto foram testados. Commit técnico `8334f87bd58ff2e33c5e7041217bf6354844bd2e`; suíte `1625 passed, 2 skipped`; auditor nativo Windows `12 capturas / 0 findings`; Pillow/OpenCV `12/12 PASS`. Revisão visual humana foi bloqueada por ACL e PR/CI/merge/pós-merge estão pendentes. | ETAPA 7 PASS_LOCAL_AUTOMATED / GATES PENDENTES |
+
+### Addendum vivo — Etapa 7 — 2026-08-23
+
+O snapshot de 2026-08-22 permanece histórico e limitado ao `GroupsPanel`. O estado vivo atual cobre os quatro painéis e está documentado em `docs/evidence/ETAPA_7_PAINEIS_LATERAIS_COMPLETA_2026-08-23.md`. A etapa não é formalmente aprovada: a árvore local contém artefatos históricos não rastreados, a revisão humana visual está bloqueada pelo ACL do visualizador e o ciclo remoto ainda não foi executado.

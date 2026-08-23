@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "39fea39dd928369bc2ff2299815ad69ef96376e4daa8af1d94f46efb966464b1",
-      "size": 32576
+      "sha256": "54def2edeba3609aaf3c88aaa51f6c56f961cbe534abfbbd568a5f5f7c2dab3b",
+      "size": 33617
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -856,6 +856,10 @@
       "sha256": "b463e0e329ab0d39100e135f8c4dc6f4c66609cb2e1a9db44843c8650a73debd",
       "size": 8434
     },
+    "docs/evidence/ETAPA_7_PAINEIS_LATERAIS_COMPLETA_2026-08-23.md": {
+      "sha256": "c7daa7e6caa1fc2fa008d0bcc6e573587c7c3ea0f794a76f0fd627eafbaa8455",
+      "size": 5272
+    },
     "docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-22.md": {
       "sha256": "08e417b52237b5fc8cf44f53bf535d7a18e2a0a45be700a35f8a677431aaf3e5",
       "size": 2172
@@ -965,8 +969,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "0d1623ca270c330133f0a6f005811a182470ec1914c0c5f3a3b318867b6f3f78",
-      "size": 42256
+      "sha256": "e8c113d1499c746f1990a71b512f9c394495604da5e41d488b981bb6114166fb",
+      "size": 42929
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -981,8 +985,8 @@
       "size": 3110
     },
     "docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md": {
-      "sha256": "02dd5a14df1f5d93cecc5a6967859440a3eac07921c33e67638c1c63edb9932a",
-      "size": 11128
+      "sha256": "99556419122cf419879ab1e77c9144a9cbe95bb9ea0815ddde8bd309740517a7",
+      "size": 11955
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -8388,6 +8392,74 @@
       "sha256": "8ebc631fcfd3cb75d6426f564fa761dd273eb22d870849a3f61139413d3dbaa3",
       "size": 1426
     },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/1080p_FHD_01_objects.png": {
+      "sha256": "acfc02f738a28864376ea5fda17f68a185e6460bbd4c91d1c06ef550f2addaf3",
+      "size": 144035
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/1080p_FHD_02_layers.png": {
+      "sha256": "404586376b7caba4fb34bd683baaef358be2147f6b45ca3d983d7219f1dea2a4",
+      "size": 102763
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/1080p_FHD_03_groups.png": {
+      "sha256": "d265fb1259445559b965a79b96875a951b7e2592a3e915c788bf0b76d7c73c6d",
+      "size": 101640
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/1080p_FHD_04_collision.png": {
+      "sha256": "58d5769c475370f48d18ff6831457d1e11127067baa0f71c92d761d69547e001",
+      "size": 113983
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/720p_Compacta_01_objects.png": {
+      "sha256": "51dca4dddb603cf14579f1ade9bff2a78ed2fee604e803818f85e2a2709896be",
+      "size": 121647
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/720p_Compacta_02_layers.png": {
+      "sha256": "0205e591c177dccf132be52281d03c5a415220296482ce6de443804f75c5756a",
+      "size": 84634
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/720p_Compacta_03_groups.png": {
+      "sha256": "b6becdfadc114d7494719653dc920de2c66990f3509eba9744aaf975e4cce5a0",
+      "size": 83319
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/720p_Compacta_04_collision.png": {
+      "sha256": "d1fc840c9de5959aa4ae2a8b1452cf30a83dedd1c56e73bde643aee4941fdce3",
+      "size": 94733
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/768p_Minima_01_objects.png": {
+      "sha256": "cca9db61e1f52bd43cf24f42a087e474451b10243f69043166bb0fc8e6642377",
+      "size": 127001
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/768p_Minima_02_layers.png": {
+      "sha256": "be05dc46fcfa24ed8396ad38433fb1495fe42caa63cf320707ba0bbf2d5e3382",
+      "size": 87345
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/768p_Minima_03_groups.png": {
+      "sha256": "41bf159c0ba0607eaae4052b64dc62a5b809c3b41b45b95810f70ff4b95a09c8",
+      "size": 86155
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/768p_Minima_04_collision.png": {
+      "sha256": "312a2d3a696d82daffa619255c1aabe1a36e6cedfa9ba692c8201247be014679",
+      "size": 97527
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/artifact-index.json": {
+      "sha256": "166c253aa4eac585c577081fafb234ef4c04a02164a3ced48b6800883b5856eb",
+      "size": 2807
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/png-io-validation.json": {
+      "sha256": "dc6fdd4829bf433ff00a7bf949bf4ddc0ded7db57bea5d486ab01965861a48b9",
+      "size": 5693
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/stage7-side-panels-complete-report.json": {
+      "sha256": "da29451b30beb234a541c1434aa27ce042ced33e908db02c17c35274318fee26",
+      "size": 50202
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/ui-audit-fixture.ndtproj": {
+      "sha256": "0c1c2321113a2dacd4ea4dd4fc9b30e1686fdf964665ab48a6afd71d103e7a75",
+      "size": 2193
+    },
+    "docs/evidence/artifacts/ui-modernization-stage7-20260823-final/ui-audit-fixture.png": {
+      "sha256": "5c1922c64ce7ab1f7118b5f28e2ab86f7e79e233917fe50b0366f10a1e8e79b7",
+      "size": 10112
+    },
     "docs/evidence/artifacts/unity-import-stage6-2026-08-16/fixture-manifest.json": {
       "sha256": "fc7fccc0fa3e4d9dde2f495ad64ec043b9950355c6657b53533e0e4357dc593b",
       "size": 2073
@@ -9156,6 +9228,10 @@
       "sha256": "d53be37fe9a480bdf714c3e94e855a1816061e2aecadee0a63465df85e0267b6",
       "size": 5658
     },
+    "scripts/audit_stage7_side_panels_complete.py": {
+      "sha256": "e9d390cded098e4cc182dacda18840d388b9e34baeaaee3b6ae09425fa5ce1b6",
+      "size": 9183
+    },
     "scripts/audit_stage9_functional_ui.py": {
       "sha256": "ebcaab88b9a2394e9b02ce1a11ad1ae650e9e0f47d975bb12f205816b959cdc1",
       "size": 16330
@@ -9613,8 +9689,8 @@
       "size": 7171
     },
     "src/ui/collision_panel.py": {
-      "sha256": "9c74cfc6acda710c21e00acb4537f0f90237540dd617efe75ea88ac3bf57e110",
-      "size": 11670
+      "sha256": "04664438b0febdb30927e249b5c7a147a391ae069984a19ce016fb31713c06cd",
+      "size": 13737
     },
     "src/ui/command_bindings.py": {
       "sha256": "1373d863e8546d776ea853feed492d4058efd84c77d714bce9df44d3b4206498",
@@ -9645,8 +9721,8 @@
       "size": 11985
     },
     "src/ui/groups_panel.py": {
-      "sha256": "5d15d6f25436e9bf2b7a87ad06e2937b4944bd8ebe775daf0c4621b0dfa23eaa",
-      "size": 13299
+      "sha256": "0bb3a10ad362fcad5b99092c5a5edd7235a984b6a699157ef403710f68f8eff3",
+      "size": 14290
     },
     "src/ui/icon_library.py": {
       "sha256": "3fa249a3bc5263a01fe2f1ec947a6cc9e1d332e6eb743def3c60deeba39b19f7",
@@ -9657,8 +9733,8 @@
       "size": 2371
     },
     "src/ui/layers_panel.py": {
-      "sha256": "758c16c7a42a1d75698b7ec17c5f8f50712a38e1e3e102bccc11436044ac4747",
-      "size": 8420
+      "sha256": "323e6a0eabaecff885bca8f3ab6031d1f877058c6cadd5d9ae84ec3527192a3c",
+      "size": 9497
     },
     "src/ui/main_window.py": {
       "sha256": "bf59e4343a09de9fdfdcf9c218149d8b0a094f0c4cd293e90140941d61001fb9",
@@ -9705,8 +9781,8 @@
       "size": 27776
     },
     "src/ui/side_panel.py": {
-      "sha256": "e098f326d7adeee25cd309563b04cdb6372358378f44ce8eacd33d58692843b8",
-      "size": 25949
+      "sha256": "f089d28995f9318818b68233a6717a7281099d69b52fc256e3dc486d59b9caa5",
+      "size": 30409
     },
     "src/ui/theme_qss.py": {
       "sha256": "2c3ca41540b4ce5286f83f223844d4ec66e44c7fc331ea60c1b9fa9527305ed9",
@@ -10083,6 +10159,10 @@
     "tests/test_stage7_side_panels.py": {
       "sha256": "183b9cf70d5b6d8cc6e23f6fbeef58e9ef0f0b7e8e11d1b5baebd3d3a4c3dcd5",
       "size": 3550
+    },
+    "tests/test_stage7_side_panels_completion.py": {
+      "sha256": "19fd265d41ebb7d988befa63abcd04b7aefb48e741cdc4e1aaf38d193fc06f8d",
+      "size": 7788
     },
     "tests/test_stage8_runtime_adapters.py": {
       "sha256": "a88040d26b24241c529537150859e5820701463559073e3bbd5795f7c4a1a269",
