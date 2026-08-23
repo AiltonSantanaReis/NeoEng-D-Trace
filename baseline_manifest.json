@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "0b3b692d8af4d3175f2eb0b7a2deb5ff9926f430a2079ad84a2f73d9072bb4a5",
-      "size": 28159
+      "sha256": "95e516f724df4db74bca1ba7077d78350f64ce0c7963455e7c93466d90054f63",
+      "size": 29677
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -957,8 +957,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "75184c2cd013894ede146c29c8c2453725b85602e61335c3eab22c0db7cdf9b0",
-      "size": 41371
+      "sha256": "cdcf29fedfc9b179ed872a46ed9b5f71f52cef532fc787280a0b83a00698b65d",
+      "size": 41472
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -971,6 +971,10 @@
     "docs/evidence/RECONCILIACAO_GATE_GLOBAL_2026-08-20.md": {
       "sha256": "7b1a8f0753149bf67e270f4f92958a85977a051be349af7a08bfa63d4222e468",
       "size": 3110
+    },
+    "docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md": {
+      "sha256": "8157cf45f4fa4d1e73bb46f6ca41d6fdf773e75c4bc18e6912f22db726735cc7",
+      "size": 8725
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
