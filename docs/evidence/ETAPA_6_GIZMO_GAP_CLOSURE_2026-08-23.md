@@ -82,3 +82,6 @@ Após preparar os bytes versionados, a validação por blobs Git retornou Eviden
 O run `32627926745` falhou legitimamente nos jobs Linux e Windows no gate `poetry run mypy src`, antes da execução dos testes funcionais posteriores. Ambos reportaram `src/tools/polygon_edit_tool.py:202`: retorno inferido como `tuple[int, ...]` incompatível com `tuple[int, int] | None`. A falha foi reproduzida localmente com o mesmo comando, sem alterar o gate.
 
 A correção foi limitada ao retorno explícito dos dois componentes inteiros do vértice. Após a correção: `mypy src` PASS em 131 arquivos; Black/isort/Flake8 PASS; testes focados `31 passed`; suíte completa `1621 passed, 2 skipped`. A PR requer novo run de CI; nenhum PASS remoto é presumido a partir desses resultados locais.
+### Encerramento pós-merge — 2026-08-23
+
+A PR #152 foi merged em `ebdb889bc415eca4ea263a98e59551645130fbd5`. O CI remoto `32628620905` passou nos jobs Linux e Windows. A validação local executada sobre o `main` pós-merge passou com `1621 passed, 2 skipped`; `evidence_integrity.py --require-tracked --git-blob` validou `109 manifests`; `baseline_integrity.py --verify --git-blob` validou `2597 files`; e `main` local/remoto apontaram para o mesmo commit. A implementação permanece sem aprovação de release nesta evidência.

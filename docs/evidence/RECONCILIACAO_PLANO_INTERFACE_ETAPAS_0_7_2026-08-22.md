@@ -214,3 +214,6 @@ O estado anterior PARCIAL FRENTE AO PLANO DETALHADO permanece como snapshot hist
 ### Atualização da Etapa 6 — reconciliação do primeiro CI da PR #152
 
 O primeiro CI remoto da Etapa 6 falhou de forma legítima no gate de tipagem em ambos os sistemas. A causa foi corrigida sem bypass ou alteração de regras; a validação local pós-correção passou, mas a Etapa 6 continua pendente de novo CI, revisão e pós-merge.
+### Encerramento pós-merge da Etapa 6
+
+A Etapa 6 foi merged em `ebdb889bc415eca4ea263a98e59551645130fbd5`, com CI Linux/Windows e validação pós-merge local aprovados. O escopo foi encerrado sem reclassificar snapshots históricos e sem aprovar release.
