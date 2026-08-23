@@ -421,3 +421,8 @@ O formato de projeto v1 já persiste segmentos Bézier. Qualquer documento ou me
 - `ETAPA_2_MODELO_CENARIO_PROFISSIONAL_2026-08-19.md` — contrato e modelo editável profissional; estado pré-merge da PR.
 
 Estado vivo reconciliado em 2026-08-22: checkpoint local 9ee5916 e origin/main d6ed66; nenhum estado local não publicado é apresentado como integrado.
+
+## Estado vivo — Etapa 6 — 2026-08-23
+
+- ETAPA_6_GIZMO_GAP_CLOSURE_2026-08-23.md — PASS_LOCAL do fechamento das lacunas de vértice, inspector numérico e clipping; 31 testes focais, suíte 1621/2 e auditoria Windows com 24 capturas/0 findings. PR, CI, merge e pós-merge ainda pendentes.
+- artifacts/ui-modernization-stage6-20260822/ — relatório, capturas brutas e imagens anotadas da matriz real Windows; os hashes e a proveniência do checkpoint estão no relatório e na evidência acima.

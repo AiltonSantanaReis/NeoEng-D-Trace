@@ -213,7 +213,7 @@ Preservar a matemática e o contrato existentes enquanto melhorar hit-test, posi
 
 **Gate:** testes geométricos e de interação, limites, DPI, redimensionamento, seleção múltipla, undo/redo e capturas reais anotadas.
 
-**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A implementação integrada cobre hit-test, translação XY, rotação Z, escalas, snapping, feedback, seleção múltipla, undo/redo e acessibilidade comprovados. Permanecem não comprovados a matriz de DPI completa, todos os fluxos de edição de vértice individual pelo gizmo e um inspector numérico editável completo.
+**Estado reconciliado em 2026-08-23:** PASS_LOCAL frente às lacunas anteriormente declaradas. A implementação local cobre hit-test, translação XY, rotação Z, escalas, snapping, feedback, seleção múltipla, undo/redo, edição de vértice individual pelo gizmo, inspector numérico editável e proteção contra clipping por rolagem. A matriz Windows real produziu 24 capturas em três resoluções com 0 findings. PR, CI, merge, pós-merge e revisão visual humana continuam pendentes; o status formal permanece aberto até esses gates.
 
 ### Etapa 7 — Painéis laterais
 
@@ -304,3 +304,9 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 | 2026-08-23 | Etapa 2 retomada para fechar a matriz DPI. Auditor `audit_stage2_icon_dpi_matrix.py` executado no commit `033278c`; quatro escalas Qt observadas, 144 células por escala, clipping 0, auditor visual PASS, suíte integral `1617 passed, 2 skipped`. Evidência: `ETAPA_2_ICONES_DPI_2026-08-23.md` e pacote r3. | ETAPAS 0, 1, 2, 3, 4 e 5 APROVADAS / ETAPAS 6 e 7 PARCIAIS / ETAPAS 8–14 PLANEJADAS |
 
 | 2026-08-23 | Encerramento pós-merge da Etapa 2: PR #150, merge `bcb0951ee05c41b03eae2a66e712d1f041cde7f8`, CI run `32613109759` com Linux/Windows PASS, baseline 2571 arquivos, 109 manifests íntegros e suíte pós-merge `1617 passed, 2 skipped`. A aprovação permanece limitada à matriz DPI, catálogo real, clipping, hashes e auditoria visual; release e DPI físico do Windows não são declarados. | ETAPAS 0, 1, 2, 3, 4 e 5 APROVADAS / ETAPAS 6 e 7 PARCIAIS / ETAPAS 8–14 PLANEJADAS |
+### Addendum vivo — 2026-08-23 — Etapa 6
+
+A lacuna local da Etapa 6 foi fechada no checkpoint fec2ee1b068b46d2cfe096519a0526ea576059ec. A evidência reproduzível está em docs/evidence/ETAPA_6_GIZMO_GAP_CLOSURE_2026-08-23.md e no relatório Windows ampliado com 24 capturas. Este addendum não reescreve os snapshots de 2026-08-22; ele os supersede somente para o estado vivo atual. A etapa ainda não é formalmente concluída enquanto PR, CI, merge, pós-merge e revisão visual humana não forem realizados.
+### Atualização viva da Etapa 6 — CI da PR #152
+
+O primeiro run remoto da PR #152 (`32627926745`) falhou nos jobs Linux e Windows no gate de tipagem de `src/tools/polygon_edit_tool.py`, antes dos testes funcionais. A causa foi reproduzida e corrigida localmente; a suíte completa permanece `1621 passed, 2 skipped`. Um novo run remoto ainda é obrigatório antes de qualquer merge.

@@ -142,7 +142,32 @@ class CanvasView(QWidget):
     VIEW_XRAY_3 = 3  # Laplacian edges
     VIEW_COLLISION = 4
 
+    def _active_tool_object(self):
+        tool = self._tool
+        owner = getattr(getattr(tool, "on_mouse_press", None), "__self__", None)
+        return owner if owner is not None else tool
+
+    def _selected_vertex_target(self):
+        """Return the active polygon-edit vertex without changing scene selection."""
+
+        tool = self._active_tool_object()
+        object_id = getattr(tool, "selected_polygon_id", None)
+        vertex_index = getattr(tool, "selected_vertex", None)
+        if object_id is None or vertex_index is None:
+            return None
+        obj = getattr(self.model, "objects", {}).get(object_id)
+        if obj is None or vertex_index < 0 or vertex_index >= len(obj.polygon):
+            return None
+        position = getattr(tool, "selected_vertex_position", None)
+        point = position() if callable(position) else obj.polygon[vertex_index]
+        if point is None:
+            return None
+        return str(object_id), int(vertex_index), (float(point[0]), float(point[1]))
+
     def _selected_object_ids(self):
+        vertex_target = self._selected_vertex_target()
+        if vertex_target is not None:
+            return [vertex_target[0]]
         selected_id = getattr(self.model, "selected_id", None)
         if selected_id is None:
             return []
@@ -157,6 +182,9 @@ class CanvasView(QWidget):
         )
 
     def _selection_anchor_image(self, object_ids=None):
+        vertex_target = self._selected_vertex_target()
+        if vertex_target is not None:
+            return QPointF(vertex_target[2][0], vertex_target[2][1])
         object_ids = (
             object_ids if object_ids is not None else self._selected_object_ids()
         )
@@ -233,6 +261,9 @@ class CanvasView(QWidget):
             clamp(anchor.y(), float(self.height())),
         )
         self.gizmo.set_screen_position(position)
+        set_vertex_mode = getattr(self.gizmo, "set_vertex_mode", None)
+        if callable(set_vertex_mode):
+            set_vertex_mode(self._selected_vertex_target() is not None)
         return position
 
     def _snap_gizmo_translation(self, translation):
@@ -301,6 +332,8 @@ class CanvasView(QWidget):
         self._gizmo_y_screen_direction = -1.0
         self._gizmo_press_vector = QPointF()
         self._gizmo_feedback = ""
+        self._gizmo_vertex_active = False
+        self._gizmo_vertex_origin = None
 
         self._tool = None
         self._current_polygon = []
@@ -519,6 +552,36 @@ class CanvasView(QWidget):
         last_x, last_y = self._current_polygon[-1]
         return ((x - last_x) ** 2 + (y - last_y) ** 2) ** 0.5
 
+    def _begin_gizmo_vertex_gesture(self) -> bool:
+        target = self._selected_vertex_target()
+        tool = self._active_tool_object()
+        begin = getattr(tool, "begin_vertex_gizmo_gesture", None)
+        if target is None or not callable(begin):
+            return False
+        if not begin():
+            return False
+        self._gizmo_vertex_active = True
+        self._gizmo_vertex_origin = target[2]
+        self._gizmo_anchor_image = target[2]
+        self._gizmo_total_delta = QPointF()
+        return True
+
+    def _preview_gizmo_vertex(self, pos: QPointF) -> None:
+        if not self._gizmo_vertex_active or self._gizmo_vertex_origin is None:
+            return
+        preview = getattr(
+            self._active_tool_object(), "preview_vertex_gizmo_position", None
+        )
+        if not callable(preview):
+            return
+        x, y = self.widget_to_image(pos)
+        origin_x, origin_y = self._gizmo_vertex_origin
+        if self._gizmo_operation == getattr(self.gizmo, "AXIS_X", -1):
+            y = int(round(origin_y))
+        elif self._gizmo_operation == getattr(self.gizmo, "AXIS_Y", -1):
+            x = int(round(origin_x))
+        preview((int(x), int(y)))
+
     def _reset_gizmo_interaction(self):
         self._gizmo_active = False
         self._gizmo_transaction = None
@@ -526,6 +589,8 @@ class CanvasView(QWidget):
         self._gizmo_operation = getattr(self.gizmo, "NONE", 0) if self.gizmo else 0
         self._gizmo_anchor_image = None
         self._gizmo_feedback = ""
+        self._gizmo_vertex_active = False
+        self._gizmo_vertex_origin = None
         if self.gizmo:
             self.gizmo.active_axis = self.gizmo.NONE
 
@@ -624,6 +689,14 @@ class CanvasView(QWidget):
         )
 
     def _finish_gizmo_gesture(self):
+        if self._gizmo_vertex_active:
+            finish = getattr(
+                self._active_tool_object(), "finish_vertex_gizmo_gesture", None
+            )
+            result = finish() if callable(finish) else None
+            self._reset_gizmo_interaction()
+            self.update()
+            return result
         transaction = self._gizmo_transaction
         result = None
         try:
@@ -636,6 +709,14 @@ class CanvasView(QWidget):
         return result
 
     def _cancel_gizmo_gesture(self) -> bool:
+        if self._gizmo_vertex_active:
+            cancel = getattr(
+                self._active_tool_object(), "cancel_vertex_gizmo_gesture", None
+            )
+            restored = bool(cancel()) if callable(cancel) else False
+            self._reset_gizmo_interaction()
+            self.update()
+            return restored
         transaction = self._gizmo_transaction
         restored = False
         try:
@@ -1034,6 +1115,21 @@ class CanvasView(QWidget):
             if center_screen is not None:
                 self.gizmo.set_screen_position(center_screen)
                 hit = self.gizmo.hit_test(pos)
+                vertex_target = self._selected_vertex_target()
+                vertex_handles = set(
+                    getattr(self.gizmo, "available_handles", lambda: ())()
+                )
+                if vertex_target is not None and hit in vertex_handles:
+                    self.gizmo.active_axis = hit
+                    self._gizmo_operation = hit
+                    self._gizmo_start_mouse = pos
+                    self._gizmo_press_vector = pos - center_screen
+                    self._gizmo_total_delta = QPointF()
+                    if not self._begin_gizmo_vertex_gesture():
+                        self.gizmo.active_axis = self.gizmo.NONE
+                        return
+                    self._gizmo_active = True
+                    return
                 if hit != self.gizmo.NONE and self._selected_object_ids():
                     self.gizmo.active_axis = hit
                     self._gizmo_operation = hit
@@ -1143,6 +1239,10 @@ class CanvasView(QWidget):
             return
 
         # 1. Movimento via Gizmo: o preview sempre parte do estado inicial.
+        if self._gizmo_vertex_active:
+            self._preview_gizmo_vertex(pos)
+            self.update()
+            return
         if self._gizmo_active and self.gizmo and not self._preview_mode:
             delta_screen = pos - self._gizmo_start_mouse
             dx = delta_screen.x() / max(self._zoom, 0.01)

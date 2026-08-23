@@ -30,6 +30,7 @@ class TransformGizmo:
     def __init__(self):
         self.active_axis = self.NONE
         self.hover_axis = self.NONE
+        self.vertex_mode = False
         self.screen_pos = QPointF(0, 0)
         self.arm_length = 76.0
         self.arrow_size = 14.0
@@ -60,6 +61,23 @@ class TransformGizmo:
     def set_screen_position(self, pos: QPointF):
         self.screen_pos = QPointF(pos)
 
+    def set_vertex_mode(self, enabled: bool) -> None:
+        """Restrict the gizmo to the XY handles used for vertex editing."""
+
+        self.vertex_mode = bool(enabled)
+        if self.vertex_mode:
+            blocked = (
+                self.ROTATE_Z,
+                self.CENTER,
+                self.SCALE_UNIFORM,
+                self.SCALE_X,
+                self.SCALE_Y,
+            )
+            if self.active_axis in blocked:
+                self.active_axis = self.NONE
+            if self.hover_axis in blocked:
+                self.hover_axis = self.NONE
+
     def visual_radius(self) -> float:
         """Return the complete screen-space radius used by hit-test and paint."""
 
@@ -89,6 +107,8 @@ class TransformGizmo:
         return f"{self.handle_name(operation)} (drag)"
 
     def available_handles(self) -> tuple[int, ...]:
+        if self.vertex_mode:
+            return (self.AXIS_X, self.AXIS_Y, self.TRANSLATE_XY)
         return tuple(self._handle_names)
 
     @staticmethod
@@ -118,6 +138,23 @@ class TransformGizmo:
         dx = mouse_pos.x() - self.screen_pos.x()
         dy = mouse_pos.y() - self.screen_pos.y()
         distance = math.hypot(dx, dy)
+        if self.vertex_mode:
+            plane_hit_extent = max(1.0, self.plane_size - 3.0)
+            if abs(dx) <= plane_hit_extent and -plane_hit_extent <= dy <= -3.0:
+                return self.TRANSLATE_XY
+            x_end = QPointF(self.screen_pos.x() + self.arm_length, self.screen_pos.y())
+            if (
+                self._distance_to_segment(mouse_pos, self.screen_pos, x_end)
+                <= self.handle_thickness
+            ):
+                return self.AXIS_X
+            y_end = QPointF(self.screen_pos.x(), self.screen_pos.y() - self.arm_length)
+            if (
+                self._distance_to_segment(mouse_pos, self.screen_pos, y_end)
+                <= self.handle_thickness
+            ):
+                return self.AXIS_Y
+            return self.NONE
         # The anchor ring translates freely; the inner square is uniform scale.
         if distance <= 5.0:
             return self.CENTER
