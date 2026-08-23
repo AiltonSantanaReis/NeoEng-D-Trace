@@ -19,6 +19,7 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
     SceneGroupAuthoringRecord,
+    SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
     SceneSnapRecord,
@@ -273,6 +274,85 @@ class SceneAuthoringModel:
 
     def set_snap(self, snap: SceneSnapRecord) -> None:
         self._replace(snap=snap)
+
+    def _layer(self, layer_id: str) -> SceneLayerAuthoringRecord:
+        for item in self.document.layers:
+            if item.id == layer_id:
+                return item
+        raise KeyError(layer_id)
+
+    def add_layer(self, layer: SceneLayerAuthoringRecord) -> None:
+        if layer.id in {item.id for item in self.document.layers}:
+            raise ValueError("layer ID exists")
+        self._replace(layers=[*self.document.layers, layer])
+
+    def remove_layer(self, layer_id: str) -> None:
+        self._layer(layer_id)
+        if len(self.document.layers) <= 1:
+            raise ValueError("at least one layer is required")
+        if any(item.layer_id == layer_id for item in self.document.objects):
+            raise ValueError("cannot remove a layer with assigned objects")
+        if isinstance(self.document, SceneAuthoringDocumentV2):
+            if any(item.layer_id == layer_id for item in self.document.sockets):
+                raise ValueError("cannot remove a layer with assigned sockets")
+            parallax = [
+                item
+                for item in self.document.parallax_layers
+                if item.layer_id != layer_id
+            ]
+            self._replace(
+                layers=[item for item in self.document.layers if item.id != layer_id],
+                parallax_layers=parallax,
+            )
+            return
+        self._replace(
+            layers=[item for item in self.document.layers if item.id != layer_id]
+        )
+
+    def rename_layer(self, layer_id: str, name: str) -> None:
+        layer = self._layer(layer_id)
+        self._replace(
+            layers=[
+                layer.model_copy(update={"name": name}) if item.id == layer_id else item
+                for item in self.document.layers
+            ]
+        )
+
+    def reorder_layer(self, layer_id: str, target_index: int) -> None:
+        self._layer(layer_id)
+        layers = list(self.document.layers)
+        item = layers.pop(
+            next(index for index, value in enumerate(layers) if value.id == layer_id)
+        )
+        target = max(0, min(int(target_index), len(layers)))
+        layers.insert(target, item)
+        self._replace(layers=layers)
+
+    def set_layer_visibility(self, layer_id: str, visible: bool) -> None:
+        layer = self._layer(layer_id)
+        self._replace(
+            layers=[
+                (
+                    layer.model_copy(update={"visible": visible})
+                    if item.id == layer_id
+                    else item
+                )
+                for item in self.document.layers
+            ]
+        )
+
+    def set_layer_locked(self, layer_id: str, locked: bool) -> None:
+        layer = self._layer(layer_id)
+        self._replace(
+            layers=[
+                (
+                    layer.model_copy(update={"locked": locked})
+                    if item.id == layer_id
+                    else item
+                )
+                for item in self.document.layers
+            ]
+        )
 
     def _stage4_document(self) -> SceneAuthoringDocumentV2:
         if not isinstance(self.document, SceneAuthoringDocumentV2):

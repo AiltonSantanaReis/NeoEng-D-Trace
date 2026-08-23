@@ -225,11 +225,72 @@ Corrigir tamanho mínimo, rolagem, hierarquia, estados disabled/enabled e separa
 
 ### Etapa 8 — Editor de cenário separado
 
-Criar ou consolidar uma janela de autoria de cenário separada do editor principal. Ela deve possuir layer stack selecionável, inspector, viewport próprio, marcações/overlays, sockets e controles de câmera conforme contratos existentes. Abrir, fechar, redimensionar e transferir contexto sem misturar estado de projeto e estado de cenário.
+Consolidar, sem misturar responsabilidades, uma janela de autoria de cenário separada do editor principal. O editor principal permanece focado em imagem, máscara e colisão; ele pode oferecer somente o comando de abertura e uma pré-visualização explicitamente somente leitura. A janela de cenário deve manter estado, histórico, seleção, persistência e exportação próprios, sem alterar silenciosamente a cena, os painéis ou o histórico do editor principal.
 
-**Gate:** fluxo completo de abrir/editar/salvar/reabrir, isolamento de estado, cancelamento sem perda, capturas de cada estado e testes de regressão no editor principal.
+### Fronteira funcional obrigatória
 
-### Etapa 9 — Responsividade e DPI
+- `MainWindow` não recebe layer stack, inspector, sockets, parallax autoral ou controles de edição do cenário.
+- `ScenarioEditorWindow` é uma `QMainWindow` própria, com título, identidade, toolbar, barra de status e ciclo de vida independentes.
+- Abrir, fechar, redimensionar e transferir o contexto do projeto não pode misturar estado do projeto principal com o documento de cenário.
+- A pré-visualização disponível no editor principal é somente leitura; a autoria ocorre exclusivamente na janela dedicada.
+- Fechar a janela não pode perder alterações, seleção, histórico ou estado sujo; o ciclo de reabertura deve preservar o estado conforme a política de persistência vigente.
+
+### Conteúdo funcional mínimo da janela dedicada
+
+- viewport próprio para seleção, arrastar e posicionar objetos;
+- layer stack selecionável, adicionável, removível, renomeável, reordenável, visível e bloqueável;
+- inspector rolável para transformação, pivô, rotação, escala, snap, parallax, sockets, colisão e metadados conforme os contratos existentes;
+- camera preview com controles de posição e zoom;
+- edição de parallax por camada e visualização determinística da projeção;
+- sockets visíveis e editáveis, sem alterar a imagem original;
+- overlays de moldura, safe area e recorte que sejam somente visuais e não mutem o documento;
+- undo/redo isolado do histórico do editor principal;
+- salvamento e recarga do documento versionado do cenário;
+- exportação do manifesto/runtime validado, com schema, bytes e hash rastreáveis.
+
+### Modos de operação
+
+1. **Autoria:** permite selecionar objetos, arrastar, usar gizmo, editar valores numéricos, alterar layers/parallax/sockets, salvar, desfazer e refazer.
+2. **Pré-visualização:** permite observar câmera, parallax e overlays, mas bloqueia mutações, gestos, drops e edição numérica; o status deve declarar explicitamente `somente leitura`.
+
+A troca entre os modos deve ser reversível, não criar uma entrada de undo/redo e não alterar o documento. O modo inicial deve ser autoria quando a janela for aberta para edição.
+
+### Identidade e usabilidade
+
+- título próprio e indicação inequívoca de `Scenario Editor`;
+- toolbar própria com abrir, salvar, recarregar, redefinir, exportar, undo, redo, overlays e seleção explícita de modo;
+- `QStatusBar` própria para mensagens persistentes e temporárias, incluindo dirty state e somente leitura;
+- painéis laterais roláveis e redimensionáveis, sem conteúdo crítico menor que seu tamanho mínimo;
+- navegação clara entre objetos, layers e grupos;
+- modo de autoria e modo de pré-visualização visualmente distinguíveis;
+- nenhum texto persistente sobreposto ao gizmo ou aos controles críticos.
+
+### Gate obrigatório da Etapa 8
+
+A etapa somente pode ser classificada como concluída após evidenciar todos os pontos abaixo:
+
+1. abrir a janela dedicada a partir do editor principal;
+2. confirmar que viewport, layer stack, inspector, camera preview, parallax, sockets e overlays existem e são acessíveis;
+3. carregar contexto de projeto sem alterar o documento principal;
+4. selecionar objeto e confirmar seleção no viewport, layer stack e inspector;
+5. mover objeto por gesto, gerando uma única transação no histórico do cenário;
+6. editar transformação por controles numéricos e confirmar persistência no modelo;
+7. adicionar, remover, renomear, reordenar e selecionar layer;
+8. alterar câmera, parallax e sockets com validação do contrato;
+9. ativar overlays e comprovar que somente a pintura visual muda;
+10. alternar autoria/pré-visualização e comprovar que pré-visualização rejeita mutações;
+11. executar undo/redo no cenário e comprovar que o histórico da `MainWindow` permanece inalterado;
+12. salvar, modificar, recarregar e comparar o documento restaurado byte a byte quando aplicável;
+13. exportar cenário e validar schema, conteúdo, bytes e hash do artefato;
+14. fechar com alterações e reabrir sem perda ou corrupção de estado;
+15. redimensionar em 1280×720, 1366×768 e 1920×1080, sem clipping, sobreposição ou perda de acesso;
+16. executar regressão do editor principal para imagem, máscara, colisão, exportação e pré-visualização somente leitura.
+
+### Evidências e bloqueios
+
+Devem ser gerados testes positivos e negativos, capturas reais de cada estado, hashes/manifests dos artefatos, auditoria automática de geometria/clipping/overlap e revisão visual humana. A evidência deve registrar commit, ambiente, comandos, entradas, resultados brutos, limitações e decisão. Não é permitido obter `PASS` por bypass, force merge, remoção de asserção, alteração de threshold, omissão de estado sujo ou substituição de falha por aviso sem justificativa. Enquanto qualquer item funcional, visual, de isolamento, teste, evidência, CI ou pós-merge permanecer sem comprovação, a Etapa 8 será `NÃO CONCLUÍDA`.
+
+Etapa 9 — Responsividade e DPI
 
 Validar layout em resoluções mínimas e altas, escala 100/125/150/200%, fontes grandes, maximização, restauração e mudança de monitor. Usar \`QSizePolicy\`, layouts reais e rolagem; não mascarar clipping reduzindo fonte abaixo do limite legível.
 

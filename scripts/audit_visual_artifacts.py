@@ -60,8 +60,9 @@ SCENARIO_WIDGETS = (
     "scenario_editor_splitter",
     "professional_viewport_pages",
     "scenario_right_pages",
-    "professional_viewport",
-    "professional_inspector",
+    "professional_scene_viewport",
+    "professional_inspector_scroll",
+    "professional_scene_inspector",
 )
 SCENARIO_BASE_WIDGETS = (
     "scenario_editor_toolbar",
@@ -72,8 +73,9 @@ SCENARIO_BASE_WIDGETS = (
 SCENARIO_PARENT_RELATIONS = (
     ("professional_viewport_pages", "scenario_editor_splitter"),
     ("scenario_right_pages", "scenario_editor_splitter"),
-    ("professional_viewport", "professional_viewport_pages"),
-    ("professional_inspector", "scenario_right_pages"),
+    ("professional_scene_viewport", "professional_viewport_pages"),
+    ("professional_inspector_scroll", "scenario_right_pages"),
+    ("professional_scene_inspector", "professional_inspector_scroll"),
 )
 STATE_BY_SUFFIX = {
     "_01_sem_projeto.png": "sem_projeto",
@@ -81,6 +83,10 @@ STATE_BY_SUFFIX = {
     "_03_validacao_janela.png": "validacao_janela",
     "_03_validacao_modal.png": "validacao_modal",
     "_04_gizmo_feedback.png": "gizmo_feedback",
+    "_scenario_empty.png": "scenario_empty",
+    "_scenario_authoring.png": "scenario_editor",
+    "_scenario_overlays.png": "scenario_editor",
+    "_scenario_preview.png": "scenario_editor",
 }
 CORE_PALETTE = (
     THEME_TOKENS.window,
@@ -89,6 +95,7 @@ CORE_PALETTE = (
     THEME_TOKENS.border,
     THEME_TOKENS.text_primary,
 )
+SCENARIO_PALETTE = CORE_PALETTE
 MODAL_PALETTE = (THEME_TOKENS.window, THEME_TOKENS.text_primary)
 INTERACTIVE_PALETTE = (THEME_TOKENS.accent,)
 
@@ -124,6 +131,17 @@ def _within(
         and child[1] >= parent[1]
         and child[0] + child[2] <= parent[0] + parent[2]
         and child[1] + child[3] <= parent[1] + parent[3]
+    )
+
+
+def _within_scrollable_content(
+    child: tuple[int, int, int, int], parent: tuple[int, int, int, int]
+) -> bool:
+    """Allow only vertical content overflow inside an explicit QScrollArea."""
+    return (
+        child[0] >= parent[0]
+        and child[1] >= parent[1]
+        and child[0] + child[2] <= parent[0] + parent[2]
     )
 
 
@@ -349,11 +367,26 @@ def _geometry_checks(
             rects[name] = root_rect
             if bool(widget.get("visible")):
                 visible.add(name)
-                if (
+                clipped = (
                     root_rect[2] <= 0
                     or root_rect[3] <= 0
                     or not _within(root_rect, (0, 0, width, height))
-                ):
+                )
+                scroll_content = (
+                    name == "professional_scene_inspector"
+                    and bool(widget.get("scrollable"))
+                    and widget.get("scroll_area_parent")
+                    == "professional_inspector_scroll"
+                    and isinstance(
+                        state_widgets.get("professional_inspector_scroll"), dict
+                    )
+                    and bool(
+                        state_widgets["professional_inspector_scroll"].get(
+                            "scroll_area"
+                        )
+                    )
+                )
+                if clipped and not scroll_content:
                     _finding(
                         findings,
                         "clipping",
@@ -369,7 +402,17 @@ def _geometry_checks(
                 and parent in visible
                 and child in rects
                 and parent in rects
-                and not _within(rects[child], rects[parent])
+                and not (
+                    _within(rects[child], rects[parent])
+                    or (
+                        child == "professional_scene_inspector"
+                        and bool(state_widgets[child].get("scrollable"))
+                        and state_widgets[child].get("scroll_area_parent")
+                        == "professional_inspector_scroll"
+                        and bool(state_widgets[parent].get("scroll_area"))
+                        and _within_scrollable_content(rects[child], rects[parent])
+                    )
+                )
             ):
                 _finding(
                     findings,
@@ -503,8 +546,8 @@ def _palette_checks(
         MODAL_PALETTE
         if is_modal
         else (
-            ("#1e1e1e", "#3c3c3c", "#e6e6e6")
-            if profile == "professional_scene_empty"
+            SCENARIO_PALETTE
+            if profile in {"professional_scene_empty", "professional_scene_editor"}
             else CORE_PALETTE
         )
     )

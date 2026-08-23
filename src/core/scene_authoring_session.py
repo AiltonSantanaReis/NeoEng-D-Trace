@@ -11,6 +11,7 @@ from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocument,
     SceneCameraAuthoringRecord,
+    SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
     SceneSnapRecord,
@@ -44,6 +45,7 @@ class SceneAuthoringSession:
         self._redo: list[_HistoryEntry] = []
         self._listeners: list[Callable[[], None]] = []
         self._gesture_before: SceneAuthoringSnapshot | None = None
+        self._saved_document = self.document.model_copy(deep=True)
 
     @property
     def document(self) -> SceneAuthoringDocument:
@@ -52,6 +54,18 @@ class SceneAuthoringSession:
     @property
     def selection(self) -> SceneSelection:
         return self.model.selection
+
+    @property
+    def is_dirty(self) -> bool:
+        """Whether the authored document differs from its last saved snapshot."""
+
+        return self.document != self._saved_document
+
+    def mark_saved(self) -> None:
+        """Record the current authored document as the persisted baseline."""
+
+        self._saved_document = self.document.model_copy(deep=True)
+        self._notify()
 
     @property
     def can_undo(self) -> bool:
@@ -238,6 +252,39 @@ class SceneAuthoringSession:
         return self.apply(
             lambda: self.model.set_snap(snap),
             "Edit snapping",
+        )
+
+    def add_layer(self, layer: SceneLayerAuthoringRecord) -> bool:
+        return self.apply(lambda: self.model.add_layer(layer), "Add scene layer")
+
+    def remove_layer(self, layer_id: str) -> bool:
+        return self.apply(
+            lambda: self.model.remove_layer(layer_id),
+            "Remove scene layer",
+        )
+
+    def rename_layer(self, layer_id: str, name: str) -> bool:
+        return self.apply(
+            lambda: self.model.rename_layer(layer_id, name),
+            "Rename scene layer",
+        )
+
+    def reorder_layer(self, layer_id: str, target_index: int) -> bool:
+        return self.apply(
+            lambda: self.model.reorder_layer(layer_id, target_index),
+            "Reorder scene layer",
+        )
+
+    def set_layer_visibility(self, layer_id: str, visible: bool) -> bool:
+        return self.apply(
+            lambda: self.model.set_layer_visibility(layer_id, visible),
+            "Set scene layer visibility",
+        )
+
+    def set_layer_locked(self, layer_id: str, locked: bool) -> bool:
+        return self.apply(
+            lambda: self.model.set_layer_locked(layer_id, locked),
+            "Set scene layer lock",
         )
 
     def set_camera(self, camera: SceneCameraAuthoringRecord) -> bool:

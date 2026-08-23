@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
@@ -27,9 +27,15 @@ from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_authoring_factory import document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.exporters.scene_authoring_export import save_scene_authoring_export
+from src.persistence.scene_authoring_io import (
+    load_scene_authoring_v2,
+    save_scene_authoring,
+)
 from src.persistence.scene_authoring_schema import upgrade_scene_authoring_document
 from src.ui.scenario_panel import ScenarioPanel
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
+from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
 
@@ -58,6 +64,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector: SceneAuthoringInspector | None = None
         self.professional_inspector_scroll: QScrollArea | None = None
         self._professional_project: Path | None = None
+        self.professional_scene_path: Path | None = None
+        self.layer_stack: SceneAuthoringLayerStack | None = None
         self.canvas = self._build_canvas()
         self.legacy_canvas = self.canvas
         self.professional_pages = QStackedWidget(self)
@@ -126,9 +134,16 @@ class ScenarioEditorWindow(QMainWindow):
         self.redo_action = QAction(self)
         self.overlay_action = QAction(self)
         self.preview_action = QAction(self)
+        self.authoring_action = QAction(self)
         self.overlay_action.setCheckable(True)
         self.preview_action.setCheckable(True)
-        self.preview_action.setChecked(True)
+        self.authoring_action.setCheckable(True)
+        self.preview_action.setChecked(False)
+        self.authoring_action.setChecked(True)
+        self.mode_group = QActionGroup(self)
+        self.mode_group.setExclusive(True)
+        self.mode_group.addAction(self.authoring_action)
+        self.mode_group.addAction(self.preview_action)
         for action in (
             self.open_action,
             self.save_action,
@@ -139,21 +154,25 @@ class ScenarioEditorWindow(QMainWindow):
             self.redo_action,
             self.overlay_action,
             self.preview_action,
+            self.authoring_action,
         ):
             self.toolbar.addAction(action)
         self.toolbar.addSeparator()
         self.status_label = QLabel(self)
-        self.toolbar.addWidget(self.status_label)
+        self.status_label.setObjectName("scenario_editor_status_label")
+        self.statusBar().setObjectName("scenario_editor_status_bar")
+        self.statusBar().addPermanentWidget(self.status_label)
 
         self.open_action.triggered.connect(self._open_project_hint)
         self.undo_action.triggered.connect(self._undo_professional)
         self.redo_action.triggered.connect(self._redo_professional)
-        self.save_action.triggered.connect(self.scenario_panel.save)
-        self.load_action.triggered.connect(self.scenario_panel.load)
-        self.reset_action.triggered.connect(self.scenario_panel.reset)
-        self.export_action.triggered.connect(self.scenario_panel.export_runtime)
+        self.save_action.triggered.connect(self._save_professional)
+        self.load_action.triggered.connect(self._load_professional)
+        self.reset_action.triggered.connect(self._reset_professional)
+        self.export_action.triggered.connect(self._export_professional)
         self.overlay_action.triggered.connect(self._toggle_overlays)
         self.preview_action.triggered.connect(self._toggle_professional_preview)
+        self.authoring_action.triggered.connect(self._toggle_professional_authoring)
         self.authoring.subscribe(self.refresh)
         self.update_language(language)
         self.refresh()
@@ -173,9 +192,13 @@ class ScenarioEditorWindow(QMainWindow):
         project_path = self.authoring.project_path
         if project_path is None:
             return
-        document = upgrade_scene_authoring_document(
-            document_from_scene(self.scene, project_path)
-        )
+        scene_path = project_path.with_suffix(".ndtscene.json")
+        if scene_path.is_file():
+            document = load_scene_authoring_v2(scene_path)
+        else:
+            document = upgrade_scene_authoring_document(
+                document_from_scene(self.scene, project_path)
+            )
         session = SceneAuthoringSession(SceneAuthoringModel(document))
         viewport = SceneAuthoringViewport(
             session,
@@ -183,6 +206,8 @@ class ScenarioEditorWindow(QMainWindow):
             parent=self.professional_pages,
         )
         viewport.set_preview_enabled(self.preview_action.isChecked())
+        viewport.set_authoring_enabled(self.authoring_action.isChecked())
+        viewport.set_overlay_visible(self.overlay_action.isChecked())
         for object_id, scene_object in self.scene.objects.items():
             record = next(
                 (item for item in document.objects if item.id == object_id),
@@ -200,6 +225,12 @@ class ScenarioEditorWindow(QMainWindow):
                 ),
             )
         inspector = SceneAuthoringInspector(session)
+        self.layer_stack = SceneAuthoringLayerStack(session)
+        inspector_layout = inspector.layout()
+        if not isinstance(inspector_layout, QVBoxLayout):
+            raise RuntimeError("professional inspector has no vertical layout")
+        inspector_layout.insertWidget(0, self.layer_stack)
+        self.layer_stack.status_message.connect(self._show_professional_status)
         inspector_scroll = QScrollArea(self.right_pages)
         inspector_scroll.setObjectName("professional_inspector_scroll")
         inspector_scroll.setWidgetResizable(True)
@@ -219,9 +250,90 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector = inspector
         self.professional_inspector_scroll = inspector_scroll
         self._professional_project = project_path
+        self.professional_scene_path = scene_path
+        session.subscribe(self._update_professional_status)
+
+    def _save_professional(self) -> None:
+        if self.professional_session is None or self.professional_scene_path is None:
+            self.status_label.setText("Save a project before saving the scenario")
+            return
+        try:
+            save_scene_authoring(
+                self.professional_session.document, self.professional_scene_path
+            )
+            self.professional_session.mark_saved()
+            self.status_label.setText("Scenario saved")
+        except (OSError, ValueError) as exc:
+            self.status_label.setText(f"Scenario save failed: {exc}")
+
+    def _load_professional(self) -> None:
+        if self.professional_session is None or self.professional_scene_path is None:
+            self.status_label.setText("Save a project before reloading the scenario")
+            return
+        if not self.professional_scene_path.is_file():
+            self.status_label.setText("No saved scenario exists yet")
+            return
+        try:
+            document = load_scene_authoring_v2(self.professional_scene_path)
+            self.professional_session.model.document = document
+            self.professional_session.clear_history()
+            self.professional_session.clear_selection()
+            self.professional_session.mark_saved()
+            if self.professional_viewport is not None:
+                self.professional_viewport.sync()
+            self.status_label.setText("Scenario reloaded")
+        except (OSError, ValueError) as exc:
+            self.status_label.setText(f"Scenario reload failed: {exc}")
+
+    def _reset_professional(self) -> None:
+        if self._professional_project is None or self.professional_session is None:
+            self.status_label.setText("Save a project before resetting the scenario")
+            return
+        document = upgrade_scene_authoring_document(
+            document_from_scene(self.scene, self._professional_project)
+        )
+        self.professional_session.model.document = document
+        self.professional_session.clear_history()
+        self.professional_session.clear_selection()
+        if self.professional_viewport is not None:
+            self.professional_viewport.sync()
+        self.status_label.setText("Scenario reset from project")
+
+    def _export_professional(self) -> None:
+        if self.professional_session is None or self._professional_project is None:
+            self.status_label.setText("Save a project before exporting the scenario")
+            return
+        destination = self._professional_project.with_suffix(".ndtscene.runtime.json")
+        try:
+            save_scene_authoring_export(
+                upgrade_scene_authoring_document(self.professional_session.document),
+                destination,
+                target="generic",
+            )
+            self.status_label.setText("Scenario runtime exported")
+        except (OSError, ValueError) as exc:
+            self.status_label.setText(f"Scenario export failed: {exc}")
+
+    def _update_professional_status(self) -> None:
+        if self.professional_session is None:
+            return
+        mode_status = (
+            "Scenario preview — read-only"
+            if self.preview_action.isChecked()
+            else "Scenario authoring"
+        )
+        suffix = " — unsaved changes" if self.professional_session.is_dirty else ""
+        self.status_label.setText(mode_status + suffix)
 
     def _show_professional_status(self, message: str) -> None:
-        self.status_label.setText(message)
+        suffix = ""
+        if (
+            self.professional_session is not None
+            and self.professional_session.is_dirty
+            and "unsaved" not in message.lower()
+        ):
+            suffix = " — unsaved changes"
+        self.status_label.setText(message + suffix)
 
     def _open_project_hint(self) -> None:
         self.status_label.setText(
@@ -229,13 +341,28 @@ class ScenarioEditorWindow(QMainWindow):
         )
 
     def _toggle_overlays(self) -> None:
-        self.canvas.set_scenario_overlays_visible(self.overlay_action.isChecked())
+        if self.professional_viewport is not None:
+            self.professional_viewport.set_overlay_visible(
+                self.overlay_action.isChecked()
+            )
 
     def _toggle_professional_preview(self) -> None:
+        self._set_editor_mode(preview=True)
+
+    def _toggle_professional_authoring(self) -> None:
+        self._set_editor_mode(preview=False)
+
+    def _set_editor_mode(self, *, preview: bool) -> None:
+        self.preview_action.setChecked(preview)
+        self.authoring_action.setChecked(not preview)
         if self.professional_viewport is not None:
-            self.professional_viewport.set_preview_enabled(
-                self.preview_action.isChecked()
-            )
+            self.professional_viewport.set_preview_enabled(preview)
+            self.professional_viewport.set_authoring_enabled(not preview)
+        if self.professional_inspector is not None:
+            self.professional_inspector.setEnabled(not preview)
+        self.status_label.setText(
+            "Scenario preview — read-only" if preview else "Scenario authoring"
+        )
 
     def _undo_professional(self) -> None:
         if self.professional_viewport is not None and self.professional_viewport.undo():
@@ -254,6 +381,12 @@ class ScenarioEditorWindow(QMainWindow):
         self.reset_action.setEnabled(available)
         self.export_action.setEnabled(available)
         self.overlay_action.setEnabled(available)
+        self.preview_action.setEnabled(available)
+        self.authoring_action.setEnabled(available)
+        if self.professional_inspector is not None:
+            self.professional_inspector.setEnabled(
+                available and not self.preview_action.isChecked()
+            )
         session = self.professional_session
         self.undo_action.setEnabled(session is not None and session.can_undo)
         self.redo_action.setEnabled(session is not None and session.can_redo)
@@ -264,10 +397,18 @@ class ScenarioEditorWindow(QMainWindow):
                     (float(self.canvas.width()), float(self.canvas.height()))
                 )
             )
+            mode_status = (
+                "Scenario preview — read-only"
+                if self.preview_action.isChecked()
+                else "Scenario authoring"
+            )
+            session_dirty = (
+                self.professional_session.is_dirty
+                if self.professional_session is not None
+                else False
+            )
             self.status_label.setText(
-                "Unsaved scenario changes"
-                if self.authoring.is_dirty
-                else "Scenario ready"
+                mode_status + (" — unsaved changes" if session_dirty else "")
             )
         else:
             self.canvas.set_scenario_preview_layers(())
@@ -290,6 +431,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Refazer",
                 "Sobreposições",
                 "Preview Parallax",
+                "Autoria",
             )
         else:
             self.setWindowTitle("Scenario Editor — NeoEng-D-Trace")
@@ -303,6 +445,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Redo",
                 "Overlays",
                 "Parallax Preview",
+                "Authoring",
             )
         for action, label in zip(
             (
@@ -315,6 +458,7 @@ class ScenarioEditorWindow(QMainWindow):
                 self.redo_action,
                 self.overlay_action,
                 self.preview_action,
+                self.authoring_action,
             ),
             labels,
         ):
@@ -322,7 +466,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.scenario_panel.update_language(self.current_lang)
 
     def closeEvent(self, event) -> None:
-        if self.authoring.is_dirty:
+        if self.professional_session is not None and self.professional_session.is_dirty:
             self.status_label.setText("Unsaved scenario changes preserved")
         self.hide()
         event.ignore()
