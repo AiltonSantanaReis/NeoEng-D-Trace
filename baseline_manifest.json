@@ -904,6 +904,10 @@
       "sha256": "0e54458bcb26cec040805e786bebdd0c643ac01eaa0565e36040e20fb4cac345",
       "size": 6901
     },
+    "docs/evidence/ETAPA_8_EDITOR_CENARIO_SEPARADO_ENCERRAMENTO_POS_MERGE_2026-08-23.md": {
+      "sha256": "c98ffd4356f72dfbc455544f32af1e2effb0cc44ee22aa636417115bcc7471ea",
+      "size": 2591
+    },
     "docs/evidence/ETAPA_8_ENCERRAMENTO_POS_MERGE.md": {
       "sha256": "16dc41071884dc3bda576b6b6aaf0f8f19338eb61ed14afed4dcab9f0981cdbf",
       "size": 3517
@@ -8533,6 +8537,66 @@
       "size": 73586
     },
     "docs/evidence/artifacts/ui-modernization-stage8-20260823-final/raw/ui-audit-fixture.png": {
+      "sha256": "c5c4e332d644b73a12b96149f833b809aa56e1c07378120a8b25a24d55aadfd8",
+      "size": 100
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/stage8_01_scenario_empty_annotated.png": {
+      "sha256": "07ecb54ecc4e1512751bfa17ecd1cedfb7d9e9bc56ee9dc104720fd5e15c7560",
+      "size": 19734
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/stage8_02_scenario_authoring_annotated.png": {
+      "sha256": "44c8d78d7bc06d0dcb2fcd145335b8cd365b8ea621e9156bc54f736240aac541",
+      "size": 42138
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/stage8_03_scenario_overlays_annotated.png": {
+      "sha256": "4294e7be77bbb294d22ad1b7686e9f6614e161e17e6797aabcabe7118c5d73cc",
+      "size": 49407
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/stage8_04_scenario_preview_annotated.png": {
+      "sha256": "149e733a3690658cb4ff4a9f0dfe71bd0e33eee70a524463c5e7d74e04a12e16",
+      "size": 72575
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/ui-audit-fixture_annotated.png": {
+      "sha256": "795f257dfc54ef1439c338d2c7568af6dd5a5c6305ba24357618722ba19b5ba9",
+      "size": 86
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/visual-audit-report.json": {
+      "sha256": "f39bff3048c00f35a66d83029b85e62fce8245e67905360ffcc56acf42905637",
+      "size": 4998
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/annotated/visual-audit-report.md": {
+      "sha256": "5f733e0bd459b8377a4e6e08001ef16dc5f0abed100c7c151f79b483625f1961",
+      "size": 267
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/artifact-index.json": {
+      "sha256": "57ac601e31a9304d3ec2f1d41cd519b2dfdd92f3e6f052399327639aecef659d",
+      "size": 2538
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/manifest.json": {
+      "sha256": "adf16d886d10dd15ef98bf294a8ecac03f5c2049bc1becc3587c2307f9a955ab",
+      "size": 10263
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/stage8-focused-junit.xml": {
+      "sha256": "2351508685ad29637f67914888bb67a9a66bd4ba6905b01ced3cf9e37c1701f4",
+      "size": 2875
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/stage8_01_scenario_empty.png": {
+      "sha256": "181e6d1322a4d2d86a22be3409cd736f3fc8e34b3916080ecba5092a2c914bc3",
+      "size": 20981
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/stage8_02_scenario_authoring.png": {
+      "sha256": "41d5e3f3041f0620dd969e45834965e28b0e0a4a77711d14e2a40e8ffd4d0c98",
+      "size": 43220
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/stage8_03_scenario_overlays.png": {
+      "sha256": "2dac04698a14e0f58eb9d7edd6a8ff91a31ca0cf6d77bb66f8dfc9878ca4ceb4",
+      "size": 50653
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/stage8_04_scenario_preview.png": {
+      "sha256": "afcffd59d77fb0c8c42e28dd0f3e101ad3eafc0face7fc10e1977c4bba585fcc",
+      "size": 73586
+    },
+    "docs/evidence/artifacts/ui-modernization-stage8-20260823-postmerge/raw/ui-audit-fixture.png": {
       "sha256": "c5c4e332d644b73a12b96149f833b809aa56e1c07378120a8b25a24d55aadfd8",
       "size": 100
     },
