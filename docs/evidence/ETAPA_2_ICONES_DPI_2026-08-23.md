@@ -1,6 +1,6 @@
 # Etapa 2 — Biblioteca de ícones e matriz DPI — 2026-08-23
 
-**Estado:** `PASS_LOCAL / AGUARDANDO PR, CI E PÓS-MERGE`
+**Estado:** `APROVADA NO ESCOPO COMPROVADO / PÓS-MERGE VALIDADO`
 
 ## Objetivo e escopo
 
@@ -89,6 +89,22 @@ comportamentos específicos de driver ou de configuração física do desktop.
 ## Decisão
 
 `PASS_LOCAL`: a lacuna de matriz Qt 100/125/150/200%, hashes, clipping e
-auditoria visual foi implementada e reproduzida. A Etapa 2 ainda não é
-formalmente aprovada: faltam staging exato, baseline/evidência por blobs Git,
-PR, CI no SHA candidato e validação pós-merge no `main`.
+auditoria visual foi implementada e reproduzida. O ciclo remoto e a validação
+pós-merge foram concluídos no escopo declarado abaixo.
+
+## Encerramento pós-merge — 2026-08-23
+
+- PR: #150.
+- Merge: `bcb0951ee05c41b03eae2a66e712d1f041cde7f8`.
+- CI da PR: run `32613109759`, jobs Linux e Windows `success`.
+- Baseline pós-merge contra blobs Git: `2571 files`, PASS.
+- Integridade pós-merge: `109 manifests`, PASS.
+- Suíte pós-merge no Windows/Python 3.11: `1617 passed, 2 skipped`.
+- `main` local e `origin/main` sincronizados no SHA do merge.
+- Não há alterações rastreadas pendentes; diretórios históricos locais não
+  rastreados foram preservados e não foram usados como evidência de árvore limpa.
+
+A Etapa 2 está formalmente encerrada somente no escopo da matriz DPI, catálogo
+real de ícones, clipping, hashes e auditoria visual documentados neste arquivo.
+Isso não aprova release e não substitui uma matriz em troca física de monitor/
+DPI do Windows; essa limitação permanece declarada.
