@@ -1,11 +1,10 @@
 # src/ui/side_panel.py
-from PySide6.QtCore import QSignalBlocker, Qt
+from PySide6.QtCore import QSignalBlocker, QSize, Qt
 from PySide6.QtWidgets import (
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
     QGroupBox,
-    QHBoxLayout,
     QInputDialog,
     QLabel,
     QLayout,
@@ -14,6 +13,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSlider,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -96,6 +96,54 @@ class SidePanel(QWidget):
         self.btn_export = QPushButton("Export Mask")
         self.btn_export_now = QPushButton("Export Sprite")
 
+        # Keep legacy QPushButtons as stable command handles. The visible
+        # presentation uses compact toolbars so the inspector remains usable
+        # at compact resolutions without removing any command.
+        from src.ui.icon_library import configure_action
+
+        self.properties_action_toolbar = self._build_action_toolbar(
+            "objects_properties_action_toolbar",
+            (
+                ("polygon_edit", self.btn_rename),
+                ("clean", self.btn_delete),
+                ("collision", self.btn_collision),
+            ),
+            configure_action,
+        )
+        self.modify_action_toolbar = self._build_action_toolbar(
+            "objects_modify_action_toolbar",
+            (
+                ("add", self.btn_expand),
+                ("remove", self.btn_contract),
+                ("xray_3", self.btn_invert),
+                ("visible", self.btn_apply),
+                ("clean", self.btn_cancel),
+            ),
+            configure_action,
+        )
+        self.export_action_toolbar = self._build_action_toolbar(
+            "objects_export_action_toolbar",
+            (("export", self.btn_export), ("open_image", self.btn_export_now)),
+            configure_action,
+        )
+        self._toolbar_bindings = (
+            (
+                self.properties_action_toolbar,
+                (self.btn_rename, self.btn_delete, self.btn_collision),
+            ),
+            (
+                self.modify_action_toolbar,
+                (
+                    self.btn_expand,
+                    self.btn_contract,
+                    self.btn_invert,
+                    self.btn_apply,
+                    self.btn_cancel,
+                ),
+            ),
+            (self.export_action_toolbar, (self.btn_export, self.btn_export_now)),
+        )
+
         # Layout
         content = QWidget(self)
         layout = QVBoxLayout(content)
@@ -107,11 +155,7 @@ class SidePanel(QWidget):
         # Grupo 1: edição e colisão
         self.properties_group = QGroupBox("Properties")
         l_edit = QVBoxLayout()
-        h_basic = QHBoxLayout()
-        h_basic.addWidget(self.btn_rename)
-        h_basic.addWidget(self.btn_delete)
-        l_edit.addLayout(h_basic)
-        l_edit.addWidget(self.btn_collision)  # Adicionando o botão ao layout
+        l_edit.addWidget(self.properties_action_toolbar)
         self.properties_group.setLayout(l_edit)
         layout.addWidget(self.properties_group)
         layout.addWidget(self.transform_group)
@@ -119,25 +163,16 @@ class SidePanel(QWidget):
         # Grupo 2: Modificadores
         self.modify_shape_group = QGroupBox("Modify Shape")
         l_tools = QVBoxLayout()
-        h_mod = QHBoxLayout()
-        h_mod.addWidget(self.btn_expand)
-        h_mod.addWidget(self.btn_contract)
-        h_mod.addWidget(self.btn_invert)
-        l_tools.addLayout(h_mod)
+        l_tools.addWidget(self.modify_action_toolbar)
         l_tools.addWidget(self.slider_label)
         l_tools.addWidget(self.slider)
-        h_apply = QHBoxLayout()
-        h_apply.addWidget(self.btn_apply)
-        h_apply.addWidget(self.btn_cancel)
-        l_tools.addLayout(h_apply)
         self.modify_shape_group.setLayout(l_tools)
         layout.addWidget(self.modify_shape_group)
 
         # Grupo 3: Exportação
         self.export_group = QGroupBox("Export")
         l_export = QVBoxLayout()
-        l_export.addWidget(self.btn_export)
-        l_export.addWidget(self.btn_export_now)
+        l_export.addWidget(self.export_action_toolbar)
         self.export_group.setLayout(l_export)
         layout.addWidget(self.export_group)
 
@@ -164,6 +199,20 @@ class SidePanel(QWidget):
         self.btn_apply.clicked.connect(self._on_apply)
         self.btn_cancel.clicked.connect(self._on_cancel_preview)
         self.btn_export_now.clicked.connect(self._on_export_now)
+
+        for button in (
+            self.btn_rename,
+            self.btn_delete,
+            self.btn_expand,
+            self.btn_contract,
+            self.btn_invert,
+            self.btn_collision,
+            self.btn_apply,
+            self.btn_cancel,
+            self.btn_export,
+            self.btn_export_now,
+        ):
+            button.setVisible(False)
 
         self.current_lang = "en"
         self.translations = {
@@ -237,6 +286,38 @@ class SidePanel(QWidget):
             self.scene.subscribe(self.refresh)
         self.refresh()
         self._last_preview_poly = None
+
+    def _build_action_toolbar(self, name, bindings, configure_action):
+        toolbar = QToolBar()
+        toolbar.setObjectName(name)
+        toolbar.setMovable(False)
+        toolbar.setFloatable(False)
+        toolbar.setIconSize(QSize(16, 16))
+        toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
+        for key, button in bindings:
+            action = toolbar.addAction(button.text())
+            configure_action(
+                action,
+                key,
+                text=button.text(),
+                tooltip=button.text(),
+                accessible_name=button.text(),
+            )
+            action.setProperty("commandKey", key)
+            action.triggered.connect(button.click)
+            action.setCheckable(button.isCheckable())
+            button.toggled.connect(action.setChecked)
+        return toolbar
+
+    def _sync_action_toolbar_texts(self) -> None:
+        for toolbar, buttons in self._toolbar_bindings:
+            for action, button in zip(toolbar.actions(), buttons):
+                action.setText(button.text())
+                action.setToolTip(button.text())
+                action.setStatusTip(button.text())
+                action.setEnabled(button.isEnabled())
+                if button.isCheckable():
+                    action.setChecked(button.isChecked())
 
     @staticmethod
     def _transform_spin(
@@ -337,6 +418,7 @@ class SidePanel(QWidget):
                 self.translations[self.current_lang]["collision_dash"]
             )
             self.btn_collision.setEnabled(False)
+        self._sync_action_toolbar_texts()
 
     def _on_select(self):
         self._update_button_states()
@@ -347,6 +429,7 @@ class SidePanel(QWidget):
                 self.scene.select_object(oid)
             except Exception:
                 pass
+        self._refresh_transform_fields()
 
     def _execute_edit_command(self, command):
         manager = getattr(self.scene, "cmd", None)

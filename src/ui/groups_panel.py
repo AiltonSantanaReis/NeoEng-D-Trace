@@ -128,6 +128,7 @@ class GroupsPanel(QWidget):
         ):
             action = self.action_toolbar.addAction(button.text())
             configure_action(action, key, text=button.text(), tooltip=button.text())
+            action.setProperty("commandKey", key)
             action.triggered.connect(button.click)
             self._toolbar_actions[button] = action
 

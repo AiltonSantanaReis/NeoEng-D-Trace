@@ -80,6 +80,7 @@ class LayersPanel(QWidget):
         ):
             action = self.action_toolbar.addAction(button.text())
             configure_action(action, key, text=button.text(), tooltip=button.text())
+            action.setProperty("commandKey", key)
             action.triggered.connect(button.click)
         self.project_layers_layout.addWidget(self.action_toolbar)
         self.project_layers_layout.removeWidget(self.action_toolbar)

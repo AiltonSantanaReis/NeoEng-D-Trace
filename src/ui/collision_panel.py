@@ -6,7 +6,7 @@ Collision panel for static overlap testing.
 import copy
 from typing import Dict, List
 
-from PySide6.QtCore import QSize, Signal
+from PySide6.QtCore import QSize, Qt, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QGroupBox,
@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QTextEdit,
+    QToolBar,
     QVBoxLayout,
     QWidget,
 )
@@ -57,14 +58,12 @@ class CollisionPanel(QWidget):
             "Run collision detection on all collision shapes"
         )
         self.batch_test_btn.clicked.connect(self._on_batch_test)
-        button_layout.addWidget(self.batch_test_btn)
 
         self.export_btn = QPushButton("Export Collisions")
         configure_widget(self.export_btn, "export")
         self.export_btn.setIconSize(QSize(20, 20))
         self.export_btn.setToolTip("Export collision results to JSON file")
         self.export_btn.clicked.connect(self._on_export_collisions)
-        button_layout.addWidget(self.export_btn)
 
         self.strategy_combo = QComboBox()
         self.strategy_combo.addItem("Outline (legacy)", "outline")
@@ -73,7 +72,7 @@ class CollisionPanel(QWidget):
         self.strategy_combo.setToolTip(
             "Choose the collider representation used by the physics manager"
         )
-        button_layout.addWidget(self.strategy_combo)
+
         self.auto_gen_btn = QPushButton("Auto-Generate from Scene Objects")
         configure_widget(self.auto_gen_btn, "collision_auto_generate")
         self.auto_gen_btn.setIconSize(QSize(20, 20))
@@ -81,8 +80,44 @@ class CollisionPanel(QWidget):
             "Generate collision shapes from current scene polygons"
         )
         self.auto_gen_btn.clicked.connect(self._on_auto_generate)
-        button_layout.addWidget(self.auto_gen_btn)
 
+        self.action_toolbar = QToolBar()
+        self.action_toolbar.setObjectName("collision_action_toolbar")
+        self.action_toolbar.setMovable(False)
+        self.action_toolbar.setFloatable(False)
+        self.action_toolbar.setIconSize(QSize(16, 16))
+        self.action_toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
+        from src.ui.icon_library import configure_action
+
+        for key, button, tooltip in (
+            (
+                "collision_test",
+                self.batch_test_btn,
+                "Run collision detection on all collision shapes",
+            ),
+            ("export", self.export_btn, "Export collision results to JSON file"),
+            (
+                "collision_auto_generate",
+                self.auto_gen_btn,
+                "Generate collision shapes from current scene polygons",
+            ),
+        ):
+            action = self.action_toolbar.addAction(button.text())
+            configure_action(
+                action,
+                key,
+                text=button.text(),
+                tooltip=tooltip,
+                accessible_name=button.text(),
+            )
+            action.setProperty("commandKey", key)
+            action.triggered.connect(button.click)
+
+        for button in (self.batch_test_btn, self.export_btn, self.auto_gen_btn):
+            button.setVisible(False)
+
+        button_layout.addWidget(self.action_toolbar)
+        button_layout.addWidget(self.strategy_combo)
         layout.addLayout(button_layout)
 
         results_group = QGroupBox("Collision Results")
