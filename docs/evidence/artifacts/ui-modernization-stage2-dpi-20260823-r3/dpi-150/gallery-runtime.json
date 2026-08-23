@@ -1,0 +1,4248 @@
+{
+  "buttons": [
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "add",
+      "logical_geometry": [
+        302,
+        32,
+        56,
+        44
+      ],
+      "object_name": "icon_add_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "add",
+      "logical_geometry": [
+        368,
+        32,
+        56,
+        44
+      ],
+      "object_name": "icon_add_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "add",
+      "logical_geometry": [
+        434,
+        32,
+        56,
+        44
+      ],
+      "object_name": "icon_add_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "add",
+      "logical_geometry": [
+        500,
+        32,
+        56,
+        44
+      ],
+      "object_name": "icon_add_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "clean",
+      "logical_geometry": [
+        302,
+        80,
+        56,
+        44
+      ],
+      "object_name": "icon_clean_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "clean",
+      "logical_geometry": [
+        368,
+        80,
+        56,
+        44
+      ],
+      "object_name": "icon_clean_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "clean",
+      "logical_geometry": [
+        434,
+        80,
+        56,
+        44
+      ],
+      "object_name": "icon_clean_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "clean",
+      "logical_geometry": [
+        500,
+        80,
+        56,
+        44
+      ],
+      "object_name": "icon_clean_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision",
+      "logical_geometry": [
+        302,
+        128,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision",
+      "logical_geometry": [
+        368,
+        128,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision",
+      "logical_geometry": [
+        434,
+        128,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision",
+      "logical_geometry": [
+        500,
+        128,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_auto_generate",
+      "logical_geometry": [
+        302,
+        176,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_auto_generate_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_auto_generate",
+      "logical_geometry": [
+        368,
+        176,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_auto_generate_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_auto_generate",
+      "logical_geometry": [
+        434,
+        176,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_auto_generate_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_auto_generate",
+      "logical_geometry": [
+        500,
+        176,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_auto_generate_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_brush",
+      "logical_geometry": [
+        302,
+        224,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_brush_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_brush",
+      "logical_geometry": [
+        368,
+        224,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_brush_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_brush",
+      "logical_geometry": [
+        434,
+        224,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_brush_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_brush",
+      "logical_geometry": [
+        500,
+        224,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_brush_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_test",
+      "logical_geometry": [
+        302,
+        272,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_test_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_test",
+      "logical_geometry": [
+        368,
+        272,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_test_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_test",
+      "logical_geometry": [
+        434,
+        272,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_test_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "collision_test",
+      "logical_geometry": [
+        500,
+        272,
+        56,
+        44
+      ],
+      "object_name": "icon_collision_test_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "down",
+      "logical_geometry": [
+        302,
+        320,
+        56,
+        44
+      ],
+      "object_name": "icon_down_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "down",
+      "logical_geometry": [
+        368,
+        320,
+        56,
+        44
+      ],
+      "object_name": "icon_down_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "down",
+      "logical_geometry": [
+        434,
+        320,
+        56,
+        44
+      ],
+      "object_name": "icon_down_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "down",
+      "logical_geometry": [
+        500,
+        320,
+        56,
+        44
+      ],
+      "object_name": "icon_down_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "ellipse",
+      "logical_geometry": [
+        302,
+        368,
+        56,
+        44
+      ],
+      "object_name": "icon_ellipse_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "ellipse",
+      "logical_geometry": [
+        368,
+        368,
+        56,
+        44
+      ],
+      "object_name": "icon_ellipse_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "ellipse",
+      "logical_geometry": [
+        434,
+        368,
+        56,
+        44
+      ],
+      "object_name": "icon_ellipse_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "ellipse",
+      "logical_geometry": [
+        500,
+        368,
+        56,
+        44
+      ],
+      "object_name": "icon_ellipse_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "export",
+      "logical_geometry": [
+        302,
+        416,
+        56,
+        44
+      ],
+      "object_name": "icon_export_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "export",
+      "logical_geometry": [
+        368,
+        416,
+        56,
+        44
+      ],
+      "object_name": "icon_export_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "export",
+      "logical_geometry": [
+        434,
+        416,
+        56,
+        44
+      ],
+      "object_name": "icon_export_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "export",
+      "logical_geometry": [
+        500,
+        416,
+        56,
+        44
+      ],
+      "object_name": "icon_export_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "fit",
+      "logical_geometry": [
+        302,
+        464,
+        56,
+        44
+      ],
+      "object_name": "icon_fit_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "fit",
+      "logical_geometry": [
+        368,
+        464,
+        56,
+        44
+      ],
+      "object_name": "icon_fit_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "fit",
+      "logical_geometry": [
+        434,
+        464,
+        56,
+        44
+      ],
+      "object_name": "icon_fit_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "fit",
+      "logical_geometry": [
+        500,
+        464,
+        56,
+        44
+      ],
+      "object_name": "icon_fit_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "focus",
+      "logical_geometry": [
+        302,
+        512,
+        56,
+        44
+      ],
+      "object_name": "icon_focus_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "focus",
+      "logical_geometry": [
+        368,
+        512,
+        56,
+        44
+      ],
+      "object_name": "icon_focus_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "focus",
+      "logical_geometry": [
+        434,
+        512,
+        56,
+        44
+      ],
+      "object_name": "icon_focus_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "focus",
+      "logical_geometry": [
+        500,
+        512,
+        56,
+        44
+      ],
+      "object_name": "icon_focus_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "gizmo",
+      "logical_geometry": [
+        302,
+        560,
+        56,
+        44
+      ],
+      "object_name": "icon_gizmo_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "gizmo",
+      "logical_geometry": [
+        368,
+        560,
+        56,
+        44
+      ],
+      "object_name": "icon_gizmo_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "gizmo",
+      "logical_geometry": [
+        434,
+        560,
+        56,
+        44
+      ],
+      "object_name": "icon_gizmo_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "gizmo",
+      "logical_geometry": [
+        500,
+        560,
+        56,
+        44
+      ],
+      "object_name": "icon_gizmo_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "language",
+      "logical_geometry": [
+        302,
+        608,
+        56,
+        44
+      ],
+      "object_name": "icon_language_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "language",
+      "logical_geometry": [
+        368,
+        608,
+        56,
+        44
+      ],
+      "object_name": "icon_language_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "language",
+      "logical_geometry": [
+        434,
+        608,
+        56,
+        44
+      ],
+      "object_name": "icon_language_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "language",
+      "logical_geometry": [
+        500,
+        608,
+        56,
+        44
+      ],
+      "object_name": "icon_language_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lasso",
+      "logical_geometry": [
+        302,
+        656,
+        56,
+        44
+      ],
+      "object_name": "icon_lasso_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lasso",
+      "logical_geometry": [
+        368,
+        656,
+        56,
+        44
+      ],
+      "object_name": "icon_lasso_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lasso",
+      "logical_geometry": [
+        434,
+        656,
+        56,
+        44
+      ],
+      "object_name": "icon_lasso_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lasso",
+      "logical_geometry": [
+        500,
+        656,
+        56,
+        44
+      ],
+      "object_name": "icon_lasso_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lit",
+      "logical_geometry": [
+        302,
+        704,
+        56,
+        44
+      ],
+      "object_name": "icon_lit_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lit",
+      "logical_geometry": [
+        368,
+        704,
+        56,
+        44
+      ],
+      "object_name": "icon_lit_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lit",
+      "logical_geometry": [
+        434,
+        704,
+        56,
+        44
+      ],
+      "object_name": "icon_lit_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lit",
+      "logical_geometry": [
+        500,
+        704,
+        56,
+        44
+      ],
+      "object_name": "icon_lit_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lock",
+      "logical_geometry": [
+        302,
+        752,
+        56,
+        44
+      ],
+      "object_name": "icon_lock_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lock",
+      "logical_geometry": [
+        368,
+        752,
+        56,
+        44
+      ],
+      "object_name": "icon_lock_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lock",
+      "logical_geometry": [
+        434,
+        752,
+        56,
+        44
+      ],
+      "object_name": "icon_lock_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "lock",
+      "logical_geometry": [
+        500,
+        752,
+        56,
+        44
+      ],
+      "object_name": "icon_lock_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "magnetic",
+      "logical_geometry": [
+        302,
+        800,
+        56,
+        44
+      ],
+      "object_name": "icon_magnetic_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "magnetic",
+      "logical_geometry": [
+        368,
+        800,
+        56,
+        44
+      ],
+      "object_name": "icon_magnetic_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "magnetic",
+      "logical_geometry": [
+        434,
+        800,
+        56,
+        44
+      ],
+      "object_name": "icon_magnetic_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "magnetic",
+      "logical_geometry": [
+        500,
+        800,
+        56,
+        44
+      ],
+      "object_name": "icon_magnetic_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open",
+      "logical_geometry": [
+        302,
+        848,
+        56,
+        44
+      ],
+      "object_name": "icon_open_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open",
+      "logical_geometry": [
+        368,
+        848,
+        56,
+        44
+      ],
+      "object_name": "icon_open_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open",
+      "logical_geometry": [
+        434,
+        848,
+        56,
+        44
+      ],
+      "object_name": "icon_open_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open",
+      "logical_geometry": [
+        500,
+        848,
+        56,
+        44
+      ],
+      "object_name": "icon_open_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open_image",
+      "logical_geometry": [
+        302,
+        896,
+        56,
+        44
+      ],
+      "object_name": "icon_open_image_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open_image",
+      "logical_geometry": [
+        368,
+        896,
+        56,
+        44
+      ],
+      "object_name": "icon_open_image_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open_image",
+      "logical_geometry": [
+        434,
+        896,
+        56,
+        44
+      ],
+      "object_name": "icon_open_image_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "open_image",
+      "logical_geometry": [
+        500,
+        896,
+        56,
+        44
+      ],
+      "object_name": "icon_open_image_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pan",
+      "logical_geometry": [
+        302,
+        944,
+        56,
+        44
+      ],
+      "object_name": "icon_pan_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pan",
+      "logical_geometry": [
+        368,
+        944,
+        56,
+        44
+      ],
+      "object_name": "icon_pan_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pan",
+      "logical_geometry": [
+        434,
+        944,
+        56,
+        44
+      ],
+      "object_name": "icon_pan_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pan",
+      "logical_geometry": [
+        500,
+        944,
+        56,
+        44
+      ],
+      "object_name": "icon_pan_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "parallax",
+      "logical_geometry": [
+        302,
+        992,
+        56,
+        44
+      ],
+      "object_name": "icon_parallax_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "parallax",
+      "logical_geometry": [
+        368,
+        992,
+        56,
+        44
+      ],
+      "object_name": "icon_parallax_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "parallax",
+      "logical_geometry": [
+        434,
+        992,
+        56,
+        44
+      ],
+      "object_name": "icon_parallax_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "parallax",
+      "logical_geometry": [
+        500,
+        992,
+        56,
+        44
+      ],
+      "object_name": "icon_parallax_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pen",
+      "logical_geometry": [
+        302,
+        1040,
+        56,
+        44
+      ],
+      "object_name": "icon_pen_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pen",
+      "logical_geometry": [
+        368,
+        1040,
+        56,
+        44
+      ],
+      "object_name": "icon_pen_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pen",
+      "logical_geometry": [
+        434,
+        1040,
+        56,
+        44
+      ],
+      "object_name": "icon_pen_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "pen",
+      "logical_geometry": [
+        500,
+        1040,
+        56,
+        44
+      ],
+      "object_name": "icon_pen_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon",
+      "logical_geometry": [
+        302,
+        1088,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon",
+      "logical_geometry": [
+        368,
+        1088,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon",
+      "logical_geometry": [
+        434,
+        1088,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon",
+      "logical_geometry": [
+        500,
+        1088,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon_edit",
+      "logical_geometry": [
+        302,
+        1136,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_edit_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon_edit",
+      "logical_geometry": [
+        368,
+        1136,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_edit_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon_edit",
+      "logical_geometry": [
+        434,
+        1136,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_edit_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "polygon_edit",
+      "logical_geometry": [
+        500,
+        1136,
+        56,
+        44
+      ],
+      "object_name": "icon_polygon_edit_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "rect",
+      "logical_geometry": [
+        302,
+        1184,
+        56,
+        44
+      ],
+      "object_name": "icon_rect_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "rect",
+      "logical_geometry": [
+        368,
+        1184,
+        56,
+        44
+      ],
+      "object_name": "icon_rect_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "rect",
+      "logical_geometry": [
+        434,
+        1184,
+        56,
+        44
+      ],
+      "object_name": "icon_rect_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "rect",
+      "logical_geometry": [
+        500,
+        1184,
+        56,
+        44
+      ],
+      "object_name": "icon_rect_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "remove",
+      "logical_geometry": [
+        302,
+        1232,
+        56,
+        44
+      ],
+      "object_name": "icon_remove_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "remove",
+      "logical_geometry": [
+        368,
+        1232,
+        56,
+        44
+      ],
+      "object_name": "icon_remove_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "remove",
+      "logical_geometry": [
+        434,
+        1232,
+        56,
+        44
+      ],
+      "object_name": "icon_remove_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "remove",
+      "logical_geometry": [
+        500,
+        1232,
+        56,
+        44
+      ],
+      "object_name": "icon_remove_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save",
+      "logical_geometry": [
+        302,
+        1280,
+        56,
+        44
+      ],
+      "object_name": "icon_save_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save",
+      "logical_geometry": [
+        368,
+        1280,
+        56,
+        44
+      ],
+      "object_name": "icon_save_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save",
+      "logical_geometry": [
+        434,
+        1280,
+        56,
+        44
+      ],
+      "object_name": "icon_save_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save",
+      "logical_geometry": [
+        500,
+        1280,
+        56,
+        44
+      ],
+      "object_name": "icon_save_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save_as",
+      "logical_geometry": [
+        302,
+        1328,
+        56,
+        44
+      ],
+      "object_name": "icon_save_as_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save_as",
+      "logical_geometry": [
+        368,
+        1328,
+        56,
+        44
+      ],
+      "object_name": "icon_save_as_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save_as",
+      "logical_geometry": [
+        434,
+        1328,
+        56,
+        44
+      ],
+      "object_name": "icon_save_as_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "save_as",
+      "logical_geometry": [
+        500,
+        1328,
+        56,
+        44
+      ],
+      "object_name": "icon_save_as_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "selection",
+      "logical_geometry": [
+        302,
+        1376,
+        56,
+        44
+      ],
+      "object_name": "icon_selection_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "selection",
+      "logical_geometry": [
+        368,
+        1376,
+        56,
+        44
+      ],
+      "object_name": "icon_selection_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "selection",
+      "logical_geometry": [
+        434,
+        1376,
+        56,
+        44
+      ],
+      "object_name": "icon_selection_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "selection",
+      "logical_geometry": [
+        500,
+        1376,
+        56,
+        44
+      ],
+      "object_name": "icon_selection_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "up",
+      "logical_geometry": [
+        302,
+        1424,
+        56,
+        44
+      ],
+      "object_name": "icon_up_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "up",
+      "logical_geometry": [
+        368,
+        1424,
+        56,
+        44
+      ],
+      "object_name": "icon_up_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "up",
+      "logical_geometry": [
+        434,
+        1424,
+        56,
+        44
+      ],
+      "object_name": "icon_up_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "up",
+      "logical_geometry": [
+        500,
+        1424,
+        56,
+        44
+      ],
+      "object_name": "icon_up_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "view",
+      "logical_geometry": [
+        302,
+        1472,
+        56,
+        44
+      ],
+      "object_name": "icon_view_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "view",
+      "logical_geometry": [
+        368,
+        1472,
+        56,
+        44
+      ],
+      "object_name": "icon_view_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "view",
+      "logical_geometry": [
+        434,
+        1472,
+        56,
+        44
+      ],
+      "object_name": "icon_view_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "view",
+      "logical_geometry": [
+        500,
+        1472,
+        56,
+        44
+      ],
+      "object_name": "icon_view_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "visible",
+      "logical_geometry": [
+        302,
+        1520,
+        56,
+        44
+      ],
+      "object_name": "icon_visible_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "visible",
+      "logical_geometry": [
+        368,
+        1520,
+        56,
+        44
+      ],
+      "object_name": "icon_visible_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "visible",
+      "logical_geometry": [
+        434,
+        1520,
+        56,
+        44
+      ],
+      "object_name": "icon_visible_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "visible",
+      "logical_geometry": [
+        500,
+        1520,
+        56,
+        44
+      ],
+      "object_name": "icon_visible_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_1",
+      "logical_geometry": [
+        302,
+        1568,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_1_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_1",
+      "logical_geometry": [
+        368,
+        1568,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_1_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_1",
+      "logical_geometry": [
+        434,
+        1568,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_1_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_1",
+      "logical_geometry": [
+        500,
+        1568,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_1_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_2",
+      "logical_geometry": [
+        302,
+        1616,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_2_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_2",
+      "logical_geometry": [
+        368,
+        1616,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_2_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_2",
+      "logical_geometry": [
+        434,
+        1616,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_2_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_2",
+      "logical_geometry": [
+        500,
+        1616,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_2_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_3",
+      "logical_geometry": [
+        302,
+        1664,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_3_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_3",
+      "logical_geometry": [
+        368,
+        1664,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_3_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_3",
+      "logical_geometry": [
+        434,
+        1664,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_3_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "xray_3",
+      "logical_geometry": [
+        500,
+        1664,
+        56,
+        44
+      ],
+      "object_name": "icon_xray_3_32",
+      "size": 32
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "zoom_100",
+      "logical_geometry": [
+        302,
+        1712,
+        56,
+        44
+      ],
+      "object_name": "icon_zoom_100_16",
+      "size": 16
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "zoom_100",
+      "logical_geometry": [
+        368,
+        1712,
+        56,
+        44
+      ],
+      "object_name": "icon_zoom_100_20",
+      "size": 20
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "zoom_100",
+      "logical_geometry": [
+        434,
+        1712,
+        56,
+        44
+      ],
+      "object_name": "icon_zoom_100_24",
+      "size": 24
+    },
+    {
+      "icon_available_sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "key": "zoom_100",
+      "logical_geometry": [
+        500,
+        1712,
+        56,
+        44
+      ],
+      "object_name": "icon_zoom_100_32",
+      "size": 32
+    }
+  ],
+  "catalog_keys": [
+    "add",
+    "clean",
+    "collision",
+    "collision_auto_generate",
+    "collision_brush",
+    "collision_test",
+    "down",
+    "ellipse",
+    "export",
+    "fit",
+    "focus",
+    "gizmo",
+    "language",
+    "lasso",
+    "lit",
+    "lock",
+    "magnetic",
+    "open",
+    "open_image",
+    "pan",
+    "parallax",
+    "pen",
+    "polygon",
+    "polygon_edit",
+    "rect",
+    "remove",
+    "save",
+    "save_as",
+    "selection",
+    "up",
+    "view",
+    "visible",
+    "xray_1",
+    "xray_2",
+    "xray_3",
+    "zoom_100"
+  ],
+  "catalog_size": 36,
+  "gallery": {
+    "bytes": 183999,
+    "path": "icon-gallery.png",
+    "sha256": "0e0dd0647684e3977223966b7e7c85a6c7bd95183885c39ac2d2ec38f243621c"
+  },
+  "gallery_logical_size": [
+    572,
+    1772
+  ],
+  "gallery_physical_size": [
+    858,
+    2658
+  ],
+  "icon_sizes": [
+    16,
+    20,
+    24,
+    32
+  ],
+  "logical_dpi": [
+    96.0,
+    96.0
+  ],
+  "observed_device_pixel_ratio": 1.5,
+  "physical_dpi": [
+    66.625,
+    66.625
+  ],
+  "requested_scale_factor": 1.5
+}
