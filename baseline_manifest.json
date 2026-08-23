@@ -956,6 +956,10 @@
       "sha256": "16d4ed161bf4875b4e96a516fa2094914ff04d1fd4d41eb2188f3097e5689540",
       "size": 7769
     },
+    "docs/evidence/PLANO_INTERFACE_CONSOLIDACAO_ENCERRAMENTO_POS_MERGE_2026-08-23.md": {
+      "sha256": "43f7e820676576a9d9a113cdfa7c561d0058528efc6d6d15e530e9a8e64b93c9",
+      "size": 2775
+    },
     "docs/evidence/PRE_ETAPA_14_ENGINE_VALIDATION_MANIFEST_2026-08-13.json": {
       "sha256": "a2a0945f8289419b9f3fb9a2a0cf13355c541d13eed253f7e6e7439498483d75",
       "size": 1396
