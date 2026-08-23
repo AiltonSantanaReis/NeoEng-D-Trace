@@ -208,3 +208,6 @@ COMPROVADO'; as Etapas 6 e 7 continuam parciais conforme a auditoria original.
 A Etapa 8 continua bloqueada até que as lacunas das Etapas 6 e 7 sejam fechadas.
 A aprovação da Etapa 2 não é aprovação de release e a matriz não representa uma
 troca física de monitor/DPI global do Windows.
+## Addendum de reconciliação — Etapa 6 — 2026-08-23
+
+O estado anterior PARCIAL FRENTE AO PLANO DETALHADO permanece como snapshot histórico. No estado vivo, as lacunas foram implementadas localmente no checkpoint fec2ee1b068b46d2cfe096519a0526ea576059ec: gizmo XY contextual para vértice individual, inspector numérico atômico e rolagem estrutural do painel. A auditoria Qt nativa Windows produziu 24 capturas, 0 findings, hashes e geometrias reais nas três resoluções. A classificação atual é PASS_LOCAL; PR, CI, merge, pós-merge e revisão visual humana ainda são gates pendentes. A Etapa 8 continua bloqueada até o fechamento remoto e a reconciliação pós-merge.
