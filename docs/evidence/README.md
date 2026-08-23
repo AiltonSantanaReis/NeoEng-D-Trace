@@ -426,3 +426,25 @@ Estado vivo reconciliado em 2026-08-22: checkpoint local 9ee5916 e origin/main 
 
 - ETAPA_6_GIZMO_GAP_CLOSURE_2026-08-23.md — PASS_LOCAL do fechamento das lacunas de vértice, inspector numérico e clipping; 31 testes focais, suíte 1621/2 e auditoria Windows com 24 capturas/0 findings. PR, CI, merge e pós-merge ainda pendentes.
 - artifacts/ui-modernization-stage6-20260822/ — relatório, capturas brutas e imagens anotadas da matriz real Windows; os hashes e a proveniência do checkpoint estão no relatório e na evidência acima.
+
+## Estado vivo — Etapa 7 — 2026-08-23
+
+- `ETAPA_7_PAINEIS_LATERAIS_COMPLETA_2026-08-23.md` — validação local
+  automatizada dos quatro painéis no commit `8334f87`, com `1625 passed,
+  2 skipped`, auditor nativo Windows de 12 capturas/0 findings e validação
+  Pillow/OpenCV dos PNGs.
+- `artifacts/ui-modernization-stage7-20260823-final/` — pacote final com
+  `artifact-index.json`, relatório de geometria, hashes e capturas reais.
+
+Estado: `PASS_LOCAL_AUTOMATED`; revisão visual humana bloqueada por ACL e
+CI/PR/merge/pós-merge pendentes. A Etapa 7 não está formalmente aprovada e a
+Etapa 8 continua bloqueada. Snapshots anteriores não foram reescritos.
+
+## Revisão visual humana — Etapa 7 — 2026-08-23
+
+- `ETAPA_7_REVISAO_VISUAL_HUMANA_2026-08-23.md` — revisão das 12 capturas
+  reais: 0 clipping irreversível, 0 sobreposição estrutural e 0 artefatos
+  visuais bloqueantes.
+
+Estado: `PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS`; promoção da PR, merge e
+validação pós-merge continuam pendentes.

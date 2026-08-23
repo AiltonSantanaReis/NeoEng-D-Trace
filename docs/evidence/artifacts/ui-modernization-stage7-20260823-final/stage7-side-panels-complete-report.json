@@ -1,0 +1,1766 @@
+{
+  "captures": {
+    "1080p_FHD": {
+      "actual_window_size": [
+        1920,
+        1060
+      ],
+      "panels": {
+        "collision": {
+          "capture": {
+            "bytes": 113983,
+            "path": "1080p_FHD_04_collision.png",
+            "sha256": "58d5769c475370f48d18ff6831457d1e11127067baa0f71c92d761d69547e001"
+          },
+          "contract": {
+            "class": "CollisionPanel",
+            "geometry": [
+              0,
+              0,
+              540,
+              961
+            ],
+            "lists": [
+              {
+                "count": 3,
+                "geometry": [
+                  2,
+                  2,
+                  96,
+                  26
+                ],
+                "name": "",
+                "visible": false
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "collision_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "collision_test",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Batch Test",
+                    "tooltip": "Run collision detection on all collision shapes"
+                  },
+                  {
+                    "command_key": "export",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Export Collisions",
+                    "tooltip": "Export collision results to JSON file"
+                  },
+                  {
+                    "command_key": "collision_auto_generate",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Auto-Generate from Scene Objects",
+                    "tooltip": "Generate collision shapes from current scene polygons"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  31,
+                  522,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "groups": {
+          "capture": {
+            "bytes": 101640,
+            "path": "1080p_FHD_03_groups.png",
+            "sha256": "d265fb1259445559b965a79b96875a951b7e2592a3e915c788bf0b76d7c73c6d"
+          },
+          "contract": {
+            "class": "GroupsPanel",
+            "geometry": [
+              0,
+              0,
+              540,
+              961
+            ],
+            "lists": [
+              {
+                "count": 0,
+                "geometry": [
+                  9,
+                  41,
+                  522,
+                  911
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "groups_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "New Group",
+                    "tooltip": "New Group"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete Group",
+                    "tooltip": "Delete Group"
+                  },
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Add Selected",
+                    "tooltip": "Add Selected"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Remove Selected",
+                    "tooltip": "Remove Selected"
+                  },
+                  {
+                    "command_key": "up",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Up",
+                    "tooltip": "Up"
+                  },
+                  {
+                    "command_key": "down",
+                    "geometry": [
+                      117,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 5,
+                    "text": "Down",
+                    "tooltip": "Down"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      140,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 6,
+                    "text": "Toggle Vis",
+                    "tooltip": "Toggle Vis"
+                  },
+                  {
+                    "command_key": "lock",
+                    "geometry": [
+                      163,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 7,
+                    "text": "Toggle Lock",
+                    "tooltip": "Toggle Lock"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  9,
+                  522,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "layers": {
+          "capture": {
+            "bytes": 102763,
+            "path": "1080p_FHD_02_layers.png",
+            "sha256": "404586376b7caba4fb34bd683baaef358be2147f6b45ca3d983d7219f1dea2a4"
+          },
+          "contract": {
+            "class": "LayersPanel",
+            "geometry": [
+              0,
+              0,
+              540,
+              961
+            ],
+            "lists": [
+              {
+                "count": 1,
+                "geometry": [
+                  9,
+                  41,
+                  498,
+                  887
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "layers_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "New",
+                    "tooltip": "New"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete",
+                    "tooltip": "Delete"
+                  },
+                  {
+                    "command_key": "up",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Up",
+                    "tooltip": "Up"
+                  },
+                  {
+                    "command_key": "down",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Down",
+                    "tooltip": "Down"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Toggle Vis",
+                    "tooltip": "Toggle Vis"
+                  },
+                  {
+                    "command_key": "lock",
+                    "geometry": [
+                      117,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 5,
+                    "text": "Toggle Lock",
+                    "tooltip": "Toggle Lock"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  9,
+                  498,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "objects": {
+          "capture": {
+            "bytes": 144035,
+            "path": "1080p_FHD_01_objects.png",
+            "sha256": "acfc02f738a28864376ea5fda17f68a185e6460bbd4c91d1c06ef550f2addaf3"
+          },
+          "contract": {
+            "class": "SidePanel",
+            "geometry": [
+              0,
+              0,
+              540,
+              961
+            ],
+            "lists": [
+              {
+                "count": 2,
+                "geometry": [
+                  9,
+                  31,
+                  522,
+                  336
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [
+              {
+                "geometry": [
+                  0,
+                  0,
+                  540,
+                  961
+                ],
+                "horizontal_range": [
+                  0,
+                  0
+                ],
+                "name": "side_panel_scroll",
+                "vertical_range": [
+                  0,
+                  0
+                ],
+                "visible": true
+              }
+            ],
+            "selection_state": {
+              "collision_enabled": false,
+              "rename_enabled": true,
+              "transform_enabled": false
+            },
+            "status": "PASS",
+            "toolbars": {
+              "objects_export_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "export",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Export Mask",
+                    "tooltip": "Export Mask"
+                  },
+                  {
+                    "command_key": "open_image",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Export Sprite",
+                    "tooltip": "Export Sprite"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  500,
+                  26
+                ]
+              },
+              "objects_modify_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Expand",
+                    "tooltip": "Expand"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Contract",
+                    "tooltip": "Contract"
+                  },
+                  {
+                    "command_key": "xray_3",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Invert",
+                    "tooltip": "Invert"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Apply",
+                    "tooltip": "Apply"
+                  },
+                  {
+                    "command_key": "clean",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Cancel",
+                    "tooltip": "Cancel"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  500,
+                  26
+                ]
+              },
+              "objects_properties_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "polygon_edit",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Rename",
+                    "tooltip": "Rename"
+                  },
+                  {
+                    "command_key": "clean",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete",
+                    "tooltip": "Delete"
+                  },
+                  {
+                    "command_key": "collision",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Collision: --",
+                    "tooltip": "Collision: --"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  500,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        }
+      },
+      "requested_size": [
+        1920,
+        1080
+      ]
+    },
+    "720p_Compacta": {
+      "actual_window_size": [
+        1280,
+        720
+      ],
+      "panels": {
+        "collision": {
+          "capture": {
+            "bytes": 94733,
+            "path": "720p_Compacta_04_collision.png",
+            "sha256": "d1fc840c9de5959aa4ae2a8b1452cf30a83dedd1c56e73bde643aee4941fdce3"
+          },
+          "contract": {
+            "class": "CollisionPanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              621
+            ],
+            "lists": [
+              {
+                "count": 3,
+                "geometry": [
+                  2,
+                  2,
+                  96,
+                  26
+                ],
+                "name": "",
+                "visible": false
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "collision_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "collision_test",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Batch Test",
+                    "tooltip": "Run collision detection on all collision shapes"
+                  },
+                  {
+                    "command_key": "export",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Export Collisions",
+                    "tooltip": "Export collision results to JSON file"
+                  },
+                  {
+                    "command_key": "collision_auto_generate",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Auto-Generate from Scene Objects",
+                    "tooltip": "Generate collision shapes from current scene polygons"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  31,
+                  442,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "groups": {
+          "capture": {
+            "bytes": 83319,
+            "path": "720p_Compacta_03_groups.png",
+            "sha256": "b6becdfadc114d7494719653dc920de2c66990f3509eba9744aaf975e4cce5a0"
+          },
+          "contract": {
+            "class": "GroupsPanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              621
+            ],
+            "lists": [
+              {
+                "count": 0,
+                "geometry": [
+                  9,
+                  41,
+                  442,
+                  571
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "groups_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "New Group",
+                    "tooltip": "New Group"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete Group",
+                    "tooltip": "Delete Group"
+                  },
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Add Selected",
+                    "tooltip": "Add Selected"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Remove Selected",
+                    "tooltip": "Remove Selected"
+                  },
+                  {
+                    "command_key": "up",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Up",
+                    "tooltip": "Up"
+                  },
+                  {
+                    "command_key": "down",
+                    "geometry": [
+                      117,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 5,
+                    "text": "Down",
+                    "tooltip": "Down"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      140,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 6,
+                    "text": "Toggle Vis",
+                    "tooltip": "Toggle Vis"
+                  },
+                  {
+                    "command_key": "lock",
+                    "geometry": [
+                      163,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 7,
+                    "text": "Toggle Lock",
+                    "tooltip": "Toggle Lock"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  9,
+                  442,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "layers": {
+          "capture": {
+            "bytes": 84634,
+            "path": "720p_Compacta_02_layers.png",
+            "sha256": "0205e591c177dccf132be52281d03c5a415220296482ce6de443804f75c5756a"
+          },
+          "contract": {
+            "class": "LayersPanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              621
+            ],
+            "lists": [
+              {
+                "count": 1,
+                "geometry": [
+                  9,
+                  41,
+                  418,
+                  547
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "layers_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "New",
+                    "tooltip": "New"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete",
+                    "tooltip": "Delete"
+                  },
+                  {
+                    "command_key": "up",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Up",
+                    "tooltip": "Up"
+                  },
+                  {
+                    "command_key": "down",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Down",
+                    "tooltip": "Down"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Toggle Vis",
+                    "tooltip": "Toggle Vis"
+                  },
+                  {
+                    "command_key": "lock",
+                    "geometry": [
+                      117,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 5,
+                    "text": "Toggle Lock",
+                    "tooltip": "Toggle Lock"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  9,
+                  418,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "objects": {
+          "capture": {
+            "bytes": 121647,
+            "path": "720p_Compacta_01_objects.png",
+            "sha256": "51dca4dddb603cf14579f1ade9bff2a78ed2fee604e803818f85e2a2709896be"
+          },
+          "contract": {
+            "class": "SidePanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              621
+            ],
+            "lists": [
+              {
+                "count": 2,
+                "geometry": [
+                  9,
+                  31,
+                  430,
+                  58
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [
+              {
+                "geometry": [
+                  0,
+                  0,
+                  460,
+                  621
+                ],
+                "horizontal_range": [
+                  0,
+                  0
+                ],
+                "name": "side_panel_scroll",
+                "vertical_range": [
+                  0,
+                  62
+                ],
+                "visible": true
+              }
+            ],
+            "selection_state": {
+              "collision_enabled": false,
+              "rename_enabled": true,
+              "transform_enabled": false
+            },
+            "status": "PASS",
+            "toolbars": {
+              "objects_export_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "export",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Export Mask",
+                    "tooltip": "Export Mask"
+                  },
+                  {
+                    "command_key": "open_image",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Export Sprite",
+                    "tooltip": "Export Sprite"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  408,
+                  26
+                ]
+              },
+              "objects_modify_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Expand",
+                    "tooltip": "Expand"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Contract",
+                    "tooltip": "Contract"
+                  },
+                  {
+                    "command_key": "xray_3",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Invert",
+                    "tooltip": "Invert"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Apply",
+                    "tooltip": "Apply"
+                  },
+                  {
+                    "command_key": "clean",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Cancel",
+                    "tooltip": "Cancel"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  408,
+                  26
+                ]
+              },
+              "objects_properties_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "polygon_edit",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Rename",
+                    "tooltip": "Rename"
+                  },
+                  {
+                    "command_key": "clean",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete",
+                    "tooltip": "Delete"
+                  },
+                  {
+                    "command_key": "collision",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Collision: --",
+                    "tooltip": "Collision: --"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  408,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        }
+      },
+      "requested_size": [
+        1280,
+        720
+      ]
+    },
+    "768p_Minima": {
+      "actual_window_size": [
+        1366,
+        768
+      ],
+      "panels": {
+        "collision": {
+          "capture": {
+            "bytes": 97527,
+            "path": "768p_Minima_04_collision.png",
+            "sha256": "312a2d3a696d82daffa619255c1aabe1a36e6cedfa9ba692c8201247be014679"
+          },
+          "contract": {
+            "class": "CollisionPanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              669
+            ],
+            "lists": [
+              {
+                "count": 3,
+                "geometry": [
+                  2,
+                  2,
+                  96,
+                  26
+                ],
+                "name": "",
+                "visible": false
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "collision_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "collision_test",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Batch Test",
+                    "tooltip": "Run collision detection on all collision shapes"
+                  },
+                  {
+                    "command_key": "export",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Export Collisions",
+                    "tooltip": "Export collision results to JSON file"
+                  },
+                  {
+                    "command_key": "collision_auto_generate",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Auto-Generate from Scene Objects",
+                    "tooltip": "Generate collision shapes from current scene polygons"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  31,
+                  442,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "groups": {
+          "capture": {
+            "bytes": 86155,
+            "path": "768p_Minima_03_groups.png",
+            "sha256": "41bf159c0ba0607eaae4052b64dc62a5b809c3b41b45b95810f70ff4b95a09c8"
+          },
+          "contract": {
+            "class": "GroupsPanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              669
+            ],
+            "lists": [
+              {
+                "count": 0,
+                "geometry": [
+                  9,
+                  41,
+                  442,
+                  619
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "groups_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "New Group",
+                    "tooltip": "New Group"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete Group",
+                    "tooltip": "Delete Group"
+                  },
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Add Selected",
+                    "tooltip": "Add Selected"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Remove Selected",
+                    "tooltip": "Remove Selected"
+                  },
+                  {
+                    "command_key": "up",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Up",
+                    "tooltip": "Up"
+                  },
+                  {
+                    "command_key": "down",
+                    "geometry": [
+                      117,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 5,
+                    "text": "Down",
+                    "tooltip": "Down"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      140,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 6,
+                    "text": "Toggle Vis",
+                    "tooltip": "Toggle Vis"
+                  },
+                  {
+                    "command_key": "lock",
+                    "geometry": [
+                      163,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 7,
+                    "text": "Toggle Lock",
+                    "tooltip": "Toggle Lock"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  9,
+                  442,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "layers": {
+          "capture": {
+            "bytes": 87345,
+            "path": "768p_Minima_02_layers.png",
+            "sha256": "be05dc46fcfa24ed8396ad38433fb1495fe42caa63cf320707ba0bbf2d5e3382"
+          },
+          "contract": {
+            "class": "LayersPanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              669
+            ],
+            "lists": [
+              {
+                "count": 1,
+                "geometry": [
+                  9,
+                  41,
+                  418,
+                  595
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [],
+            "status": "PASS",
+            "toolbars": {
+              "layers_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "New",
+                    "tooltip": "New"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete",
+                    "tooltip": "Delete"
+                  },
+                  {
+                    "command_key": "up",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Up",
+                    "tooltip": "Up"
+                  },
+                  {
+                    "command_key": "down",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Down",
+                    "tooltip": "Down"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Toggle Vis",
+                    "tooltip": "Toggle Vis"
+                  },
+                  {
+                    "command_key": "lock",
+                    "geometry": [
+                      117,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 5,
+                    "text": "Toggle Lock",
+                    "tooltip": "Toggle Lock"
+                  }
+                ],
+                "geometry": [
+                  9,
+                  9,
+                  418,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        },
+        "objects": {
+          "capture": {
+            "bytes": 127001,
+            "path": "768p_Minima_01_objects.png",
+            "sha256": "cca9db61e1f52bd43cf24f42a087e474451b10243f69043166bb0fc8e6642377"
+          },
+          "contract": {
+            "class": "SidePanel",
+            "geometry": [
+              0,
+              0,
+              460,
+              669
+            ],
+            "lists": [
+              {
+                "count": 2,
+                "geometry": [
+                  9,
+                  31,
+                  430,
+                  58
+                ],
+                "name": "",
+                "visible": true
+              }
+            ],
+            "scroll_areas": [
+              {
+                "geometry": [
+                  0,
+                  0,
+                  460,
+                  669
+                ],
+                "horizontal_range": [
+                  0,
+                  0
+                ],
+                "name": "side_panel_scroll",
+                "vertical_range": [
+                  0,
+                  14
+                ],
+                "visible": true
+              }
+            ],
+            "selection_state": {
+              "collision_enabled": false,
+              "rename_enabled": true,
+              "transform_enabled": false
+            },
+            "status": "PASS",
+            "toolbars": {
+              "objects_export_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "export",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Export Mask",
+                    "tooltip": "Export Mask"
+                  },
+                  {
+                    "command_key": "open_image",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Export Sprite",
+                    "tooltip": "Export Sprite"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  408,
+                  26
+                ]
+              },
+              "objects_modify_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "add",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Expand",
+                    "tooltip": "Expand"
+                  },
+                  {
+                    "command_key": "remove",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Contract",
+                    "tooltip": "Contract"
+                  },
+                  {
+                    "command_key": "xray_3",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Invert",
+                    "tooltip": "Invert"
+                  },
+                  {
+                    "command_key": "visible",
+                    "geometry": [
+                      71,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 3,
+                    "text": "Apply",
+                    "tooltip": "Apply"
+                  },
+                  {
+                    "command_key": "clean",
+                    "geometry": [
+                      94,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 4,
+                    "text": "Cancel",
+                    "tooltip": "Cancel"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  408,
+                  26
+                ]
+              },
+              "objects_properties_action_toolbar": {
+                "actions": [
+                  {
+                    "command_key": "polygon_edit",
+                    "geometry": [
+                      2,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 0,
+                    "text": "Rename",
+                    "tooltip": "Rename"
+                  },
+                  {
+                    "command_key": "clean",
+                    "geometry": [
+                      25,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 1,
+                    "text": "Delete",
+                    "tooltip": "Delete"
+                  },
+                  {
+                    "command_key": "collision",
+                    "geometry": [
+                      48,
+                      2,
+                      23,
+                      22
+                    ],
+                    "icon_null": false,
+                    "index": 2,
+                    "text": "Collision: --",
+                    "tooltip": "Collision: --"
+                  }
+                ],
+                "geometry": [
+                  11,
+                  27,
+                  408,
+                  26
+                ]
+              }
+            },
+            "visible": true
+          }
+        }
+      },
+      "requested_size": [
+        1366,
+        768
+      ]
+    }
+  },
+  "findings": [],
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "qt_platform": "windows",
+  "schema_version": 2,
+  "scope": "all_side_panels",
+  "source_state": {
+    "branch": "Ailton/stage7-side-panels-completion-20260823",
+    "commit": "8334f87bd58ff2e33c5e7041217bf6354844bd2e",
+    "worktree_clean": false
+  },
+  "stage": 7,
+  "status": "PASS"
+}

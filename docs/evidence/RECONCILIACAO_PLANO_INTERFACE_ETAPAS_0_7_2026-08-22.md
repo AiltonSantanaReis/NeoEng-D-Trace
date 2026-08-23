@@ -217,3 +217,29 @@ O primeiro CI remoto da Etapa 6 falhou de forma legítima no gate de tipagem em 
 ### Encerramento pós-merge da Etapa 6
 
 A Etapa 6 foi merged em `ebdb889bc415eca4ea263a98e59551645130fbd5`, com CI Linux/Windows e validação pós-merge local aprovados. O escopo foi encerrado sem reclassificar snapshots históricos e sem aprovar release.
+
+## Addendum de reconciliação — Etapa 7 — 2026-08-23
+
+O estado histórico `PARCIAL FRENTE AO PLANO DETALHADO` não foi reescrito. A
+retomada fechou localmente os itens reproduzidos nos quatro painéis: toolbar
+compacta com contratos, seleção real, inspector habilitado, rolagem, estados,
+tooltips e menus de contexto. O checkpoint técnico é `8334f87bd58ff2e33c5e7041217bf6354844bd2e`.
+
+A suíte Windows passou com `1625 passed, 2 skipped`; o auditor Qt nativo gerou
+12 capturas e `0 findings`; Pillow/OpenCV validaram 12/12 PNGs e os hashes
+foram indexados no pacote oficial. A classificação é `PASS_LOCAL_AUTOMATED`,
+não aprovação formal: revisão visual humana está `BLOQUEADA / NÃO EXECUTADA`
+por ACL do visualizador e push, PR, CI, merge e pós-merge ainda são pendentes.
+A Etapa 8 permanece bloqueada.
+
+
+## Addendum — revisão visual humana da Etapa 7 — 2026-08-23
+
+A revisão humana das 12 capturas reais foi concluída com `0` clipping
+irreversível, `0` sobreposição estrutural e `0` artefatos visuais bloqueantes.
+A rolagem observada nas resoluções compactas foi considerada acessibilidade
+funcional, não clipping. Menus de contexto permanecem comprovados por teste Qt
+focal, não por captura de menu aberto.
+
+Classificação atual: `PASS_LOCAL_AUTOMATED + HUMAN_VISUAL_PASS`; PR #154 continua
+draft e o ciclo de promoção, merge e pós-merge ainda é obrigatório.
