@@ -310,3 +310,6 @@ A lacuna local da Etapa 6 foi fechada no checkpoint fec2ee1b068b46d2cfe096519a05
 ### Atualização viva da Etapa 6 — CI da PR #152
 
 O primeiro run remoto da PR #152 (`32627926745`) falhou nos jobs Linux e Windows no gate de tipagem de `src/tools/polygon_edit_tool.py`, antes dos testes funcionais. A causa foi reproduzida e corrigida localmente; a suíte completa permanece `1621 passed, 2 skipped`. Um novo run remoto ainda é obrigatório antes de qualquer merge.
+### Encerramento pós-merge da Etapa 6
+
+A Etapa 6 foi merged na PR #152 em `ebdb889bc415eca4ea263a98e59551645130fbd5`. CI Linux/Windows e validação pós-merge local passaram; a etapa está encerrada no escopo aprovado, sem aprovação de release.
