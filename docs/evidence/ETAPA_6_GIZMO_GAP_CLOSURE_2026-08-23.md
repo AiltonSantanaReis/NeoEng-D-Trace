@@ -77,3 +77,8 @@ Ainda não há CI, PR, merge ou validação pós-merge deste checkpoint. A revis
 ## Integridade do pacote staged
 
 Após preparar os bytes versionados, a validação por blobs Git retornou Evidence integrity passed: 109 manifests validated. O baseline foi regenerado e verificado contra os mesmos bytes, retornando Baseline verified: 2597 files. Esses números são do pacote staged desta etapa e não incluem os diretórios locais históricos preservados.
+### Reconciliação do CI da PR #152 — 2026-08-23
+
+O run `32627926745` falhou legitimamente nos jobs Linux e Windows no gate `poetry run mypy src`, antes da execução dos testes funcionais posteriores. Ambos reportaram `src/tools/polygon_edit_tool.py:202`: retorno inferido como `tuple[int, ...]` incompatível com `tuple[int, int] | None`. A falha foi reproduzida localmente com o mesmo comando, sem alterar o gate.
+
+A correção foi limitada ao retorno explícito dos dois componentes inteiros do vértice. Após a correção: `mypy src` PASS em 131 arquivos; Black/isort/Flake8 PASS; testes focados `31 passed`; suíte completa `1621 passed, 2 skipped`. A PR requer novo run de CI; nenhum PASS remoto é presumido a partir desses resultados locais.

@@ -211,3 +211,6 @@ troca física de monitor/DPI global do Windows.
 ## Addendum de reconciliação — Etapa 6 — 2026-08-23
 
 O estado anterior PARCIAL FRENTE AO PLANO DETALHADO permanece como snapshot histórico. No estado vivo, as lacunas foram implementadas localmente no checkpoint fec2ee1b068b46d2cfe096519a0526ea576059ec: gizmo XY contextual para vértice individual, inspector numérico atômico e rolagem estrutural do painel. A auditoria Qt nativa Windows produziu 24 capturas, 0 findings, hashes e geometrias reais nas três resoluções. A classificação atual é PASS_LOCAL; PR, CI, merge, pós-merge e revisão visual humana ainda são gates pendentes. A Etapa 8 continua bloqueada até o fechamento remoto e a reconciliação pós-merge.
+### Atualização da Etapa 6 — reconciliação do primeiro CI da PR #152
+
+O primeiro CI remoto da Etapa 6 falhou de forma legítima no gate de tipagem em ambos os sistemas. A causa foi corrigida sem bypass ou alteração de regras; a validação local pós-correção passou, mas a Etapa 6 continua pendente de novo CI, revisão e pós-merge.

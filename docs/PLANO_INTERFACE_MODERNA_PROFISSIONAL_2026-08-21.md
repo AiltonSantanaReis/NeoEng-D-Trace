@@ -307,3 +307,6 @@ Ao primeiro resultado incompatível, a etapa para. Não se altera o relatório, 
 ### Addendum vivo — 2026-08-23 — Etapa 6
 
 A lacuna local da Etapa 6 foi fechada no checkpoint fec2ee1b068b46d2cfe096519a0526ea576059ec. A evidência reproduzível está em docs/evidence/ETAPA_6_GIZMO_GAP_CLOSURE_2026-08-23.md e no relatório Windows ampliado com 24 capturas. Este addendum não reescreve os snapshots de 2026-08-22; ele os supersede somente para o estado vivo atual. A etapa ainda não é formalmente concluída enquanto PR, CI, merge, pós-merge e revisão visual humana não forem realizados.
+### Atualização viva da Etapa 6 — CI da PR #152
+
+O primeiro run remoto da PR #152 (`32627926745`) falhou nos jobs Linux e Windows no gate de tipagem de `src/tools/polygon_edit_tool.py`, antes dos testes funcionais. A causa foi reproduzida e corrigida localmente; a suíte completa permanece `1621 passed, 2 skipped`. Um novo run remoto ainda é obrigatório antes de qualquer merge.

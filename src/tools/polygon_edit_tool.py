@@ -199,7 +199,10 @@ class PolygonEditTool(BaseTool):
         if self.selected_polygon_id is None or self.selected_vertex is None:
             return None
         if self._vertex_preview_position is not None:
-            return tuple(self._vertex_preview_position)
+            return (
+                int(self._vertex_preview_position[0]),
+                int(self._vertex_preview_position[1]),
+            )
         obj = self.canvas_view.model.objects.get(self.selected_polygon_id)
         if obj is None or not obj.polygon:
             return None

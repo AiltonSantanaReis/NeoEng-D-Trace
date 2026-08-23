@@ -269,8 +269,8 @@
       "size": 7063
     },
     "docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md": {
-      "sha256": "fe4571ddf5e6eacb662c4023edf2bac74406eda3818f44df8ef59f58b4b28754",
-      "size": 31940
+      "sha256": "891147e1430fe5c3a77d5bc0f0c908ae66b120b621af39177d6f7864a9c4b398",
+      "size": 32327
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
       "sha256": "8ca2ab60f6e43964a668e0d6c3e24ad078716352a6796cab183d60b8f7fb4c22",
@@ -817,8 +817,8 @@
       "size": 2378
     },
     "docs/evidence/ETAPA_6_GIZMO_GAP_CLOSURE_2026-08-23.md": {
-      "sha256": "bf405b8a58fdba86fee44fdd30367ae0521b86f6b629fd779163aafea3b37591",
-      "size": 5170
+      "sha256": "b3defc33c0b77ee10c8248b496dfaa833e35d19983c3d3d49dbc03323d33cfea",
+      "size": 5925
     },
     "docs/evidence/ETAPA_6_GIZMO_PROFISSIONAL_2026-08-22.md": {
       "sha256": "0a94c007cee52464ecca15770a8a37e1eafaa71e3721fbc4a413fea199cf2a82",
@@ -981,8 +981,8 @@
       "size": 3110
     },
     "docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md": {
-      "sha256": "8302bd2de5c818cbcb01ae6ea289293abaa41271de518a3f04a62e3d676f9c6a",
-      "size": 10526
+      "sha256": "273885f051c88361d7054498c560178f1fbff66b2d27949bf0fb32f35ced2871",
+      "size": 10871
     },
     "docs/evidence/RELEASE_V0.2.0_PUBLICACAO.md": {
       "sha256": "c62458b639e1a8fc18d75ca4394dcc469faca810515f97008ca7c83cc65cb422",
@@ -9565,8 +9565,8 @@
       "size": 28491
     },
     "src/tools/polygon_edit_tool.py": {
-      "sha256": "a765c785674996b5db47c598d6a1316e23a4aceb111cdbc4bdc2f19f185bd82e",
-      "size": 26681
+      "sha256": "d80463ca8dadeaf520d589f40e42dad72ae9a99e2e7ab4a261485dcc95d11744",
+      "size": 26770
     },
     "src/tools/polygonal_lasso.py": {
       "sha256": "4f9e8847921802b86e2a50eced5dd2a4dcdebc9c0952d6e300af5badcd3b8725",
