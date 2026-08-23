@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano:** ETAPAS 0, 1, 2, 3, 4 e 5 APROVADAS NOS ESCOPOS COMPROVADOS / ETAPAS 6 e 7 PARCIAIS FRENTE AO PLANO DETALHADO / ETAPAS 8–14 PLANEJADAS
+**Status do plano em 2026-08-23:** ETAPAS 0–7 APROVADAS SOMENTE NOS ESCOPOS COMPROVADOS / ETAPAS 8–14 PLANEJADAS E NÃO INICIADAS. Esta linha é o estado vivo canônico; registros anteriores que indiquem outro estado são snapshots históricos.
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -26,7 +26,7 @@ Este plano não é uma autorização para alterar regras, thresholds, scanners, 
 
 O estado vivo atual foi reconciliado após a Etapa 0 no merge \`61165a58bfa6d5b6a10bcbee89dd8d7e7c6fe643\`, com \`main\` local sincronizado a \`origin/main\`.
 
-O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação deste novo plano. A auditoria funcional anterior permaneceu fail-closed quando a revisão humana e a árvore limpa não estavam comprovadas. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. A Etapa 1 foi formalmente encerrada após CI, merge e validação pós-merge. A Etapa 2 foi formalmente encerrada após PR #133, CI, merge e validação pós-merge. As Etapas 3, 4 e 5 foram posteriormente encerradas no escopo aprovado, cada uma após implementação, evidências, CI, merge e validação pós-merge, conforme os snapshots pós-merge correspondentes em `docs/evidence/`. A Etapa 6 foi integrada no `main` pelo merge `c1bf40c273038a2bbeb35b4d450c10724f6c84ea` após PR, CI e validação pós-merge reproduzida. A revisão visual humana das capturas anotadas foi realizada e aprovada pelo proprietário do projeto; a Etapa 6 está formalmente concluída no escopo aprovado. A Etapa 7 permanece planejada e depende de autorização própria.
+O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação automática deste plano. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. As Etapas 1–7 foram encerradas nos escopos comprovados nos respectivos snapshots pós-merge em docs/evidence/; isso não transforma requisitos fora desses escopos em implementados. As Etapas 8–14 permanecem planejadas e não podem iniciar sem o ciclo de autorização e baseline correspondente.
 
 Na reconciliação de 2026-08-22, o `main` observado foi o merge `425f21df2bbf9a67c01a577b59ae6bbba25995b7`, que incorpora a documentação pós-merge da Etapa 5. A branch de trabalho do baseline da Etapa 6 parte desse mesmo conteúdo. Os diretórios locais de artefatos históricos não rastreados foram preservados e não são usados como evidência de árvore limpa, release ou aprovação.
 
@@ -34,7 +34,7 @@ Na leitura do estado local, foram encontrados diretórios de artefatos de audito
 
 As capturas, hashes e resultados de auditorias existentes continuam sendo evidências de seus respectivos commits e escopos. Não são evidência automática das etapas deste plano. A evidência local atual da Etapa 6 é válida apenas para a branch e o worktree identificados no relatório correspondente.
 
-Reconciliação viva de 2026-08-22: o `main` local e `origin/main` estão sincronizados no merge `b5bacf8a598716d28ed6035da97c2c6b49e3ce1f`. A Etapa 7 foi implementada, revisada visualmente, aprovada pelo CI, mesclada e validada pós-merge somente no escopo do `GroupsPanel`; frente ao plano detalhado original, os demais painéis continuam parciais. A reconciliação completa das Etapas 0–7 está em `docs/evidence/RECONCILIACAO_PLANO_INTERFACE_ETAPAS_0_7_2026-08-22.md`. As Etapas 8–14 continuam planejadas. Diretórios locais não rastreados continuam preservados e não são evidência de árvore limpa.
+Reconciliação viva de 2026-08-23: a Etapa 7 está encerrada somente no escopo descrito em docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md, após PR, CI, merge e validação pós-merge. O registro anterior limitado ao GroupsPanel é histórico e foi supersedido pelo addendum vivo posterior; não foi apagado. Diretórios locais não rastreados continuam preservados e não são evidência de árvore limpa.
 
 ## 3. Regras imutáveis de integridade e anti-alucinação
 
@@ -213,7 +213,7 @@ Preservar a matemática e o contrato existentes enquanto melhorar hit-test, posi
 
 **Gate:** testes geométricos e de interação, limites, DPI, redimensionamento, seleção múltipla, undo/redo e capturas reais anotadas.
 
-**Estado reconciliado em 2026-08-23:** PASS_LOCAL frente às lacunas anteriormente declaradas. A implementação local cobre hit-test, translação XY, rotação Z, escalas, snapping, feedback, seleção múltipla, undo/redo, edição de vértice individual pelo gizmo, inspector numérico editável e proteção contra clipping por rolagem. A matriz Windows real produziu 24 capturas em três resoluções com 0 findings. PR, CI, merge, pós-merge e revisão visual humana continuam pendentes; o status formal permanece aberto até esses gates.
+**Estado vivo em 2026-08-23:** APROVADA NO ESCOPO COMPROVADO após PR, CI, merge, validação pós-merge e revisão visual humana registrados nos addenda e evidências da Etapa 6. O escopo aprovado não amplia automaticamente os comportamentos que o baseline marcou como fora do contrato.
 
 ### Etapa 7 — Painéis laterais
 
@@ -221,7 +221,7 @@ Corrigir tamanho mínimo, rolagem, hierarquia, estados disabled/enabled e separa
 
 **Gate:** geometrias Qt reais, ações clicáveis, seleção de itens, propriedades editáveis, painéis visíveis em DPI/resoluções alvo e ausência de falsos positivos do auditor.
 
-**Estado reconciliado em 2026-08-22:** PARCIAL frente ao plano detalhado original. A aprovação pós-merge anterior cobre somente a toolbar compacta do `GroupsPanel`. `Objects`, `Layers`, `Collision` e o inspector ainda não possuem a comprovação integral exigida pelo plano detalhado.
+**Estado vivo em 2026-08-23:** APROVADA NO ESCOPO COMPROVADO nos quatro painéis e no inspector, conforme docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md. A aprovação não declara concluídas as Etapas 8–14 nem requisitos de editor de cenário que pertençam a essas etapas.
 
 ### Etapa 8 — Editor de cenário separado
 
@@ -330,3 +330,61 @@ A revisão humana está registrada em `docs/evidence/ETAPA_7_REVISAO_VISUAL_HUMA
 ### Encerramento pós-merge — Etapa 7 — 2026-08-23
 
 O encerramento está documentado em `docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md`. A aprovação é limitada ao escopo dos painéis laterais e não é aprovação de release.
+
+## 11. Especificação consolidada obrigatória — 2026-08-23
+
+Esta seção consolida os requisitos operacionais do plano e é a referência de execução para as Etapas 0–14. Ela não substitui políticas globais, contratos, workflows ou ADRs. Em conflito, a governança global prevalece e a divergência deve ser registrada antes de qualquer alteração.
+
+### 11.1 Referência visual e limites
+A imagem de referência orienta hierarquia visual, distribuição de espaço, densidade, agrupamento, proporção entre viewport e painéis, cores e leitura do estado ativo. Não exige copiar a cena, assets ou conteúdo ilustrativo. Toda comparação separa fatos mensuráveis (geometria, clipping, overlap, dimensões, cores e widgets), julgamento humano (legibilidade, equilíbrio, hierarquia e aspecto profissional) e limitações de resolução, backend ou DPI. Semelhança subjetiva, captura antiga, build antiga ou CI verde isolado não aprovam etapa.
+
+### 11.2 Máquina de estados e bloqueio
+Estados permitidos: PLANEJADA / NÃO INICIADA, EM IMPLEMENTAÇÃO, PASS_LOCAL, HUMAN_VISUAL_PASS, CI_PASS, MERGED, PÓS_MERGE_PASS, APROVADA NO ESCOPO COMPROVADO, PARCIAL, NÃO TESTADA, BLOQUEADA e REPROVADA. PASS_LOCAL, revisão humana ou CI isoladamente não encerram etapa. APROVADA exige implementação completa, testes positivos/negativos, artefatos reais, hashes, auditoria visual, revisão humana necessária, documentação, CI no SHA exato, merge autorizado e validação pós-merge independente. Qualquer falha, divergência, artefato ausente, não determinismo, regressão ou impedimento interrompe a etapa; corrige-se a causa, nunca o gate.
+
+### 11.3 Etapa 0 — Baseline, governança e inventário
+Somente caracterização; nenhum código, contrato, regra ou layout de produção pode ser alterado. Ler políticas, plano mestre, riscos, template, workflows, contratos e documentos vivos; confirmar branch, SHA-base, remote, worktree e untracked sem apagar dados do proprietário; inventariar MainWindow, ToolPalette, tool manager/buttons, abas, painéis, X-Ray, gizmo, navegação, cenário separado, inspetores, menus, atalhos, status bar e exportadores; identificar sinais, nomes públicos e contratos; reproduzir problemas; capturar sem projeto, projeto, painéis, gizmo, validação, cenário e máscara/X-Ray em 1920x1080, 1366x768 e 1280x720; registrar dimensões, transparência, hashes, geometria Qt, clipping, overlap, paleta, contraste e acessibilidade; gerar e validar manifesto via Git blob. Saída: baseline reproduzível, findings e limitações.
+
+### 11.4 Etapa 1 — Tokens e tema
+Centralizar QSS/funções sem cores arbitrárias. Tokens mínimos: canvas #11161b, panel #1d2329, surface #252c33, elevated #2d363e; primary #e8edf2, secondary #a8b2bd, disabled #66717c; accent #59d8e8, active #3f93ad, selection #365f78, focus #7ce9f5; success #75d99b, warning #e4bb6a, error #e77b86. Manter hover, pressed, checked, disabled e focus; remover bordas laranja sem função; garantir contraste; evitar sombras/gradientes excessivos e temas não controlados. Testar paleta, contraste, estados, cores não autorizadas e capturas.
+
+### 11.5 Etapa 2 — Ícones
+Biblioteca vetorial versionada, própria/licenciada/nativa, sem caminho local e sem emoji funcional. Catálogo: seleção, laço, laço poligonal, laço magnético, caneta, retângulo, elipse, edição de polígono, pincel de colisão, mover, zoom, fit, foco, abrir, salvar, exportar, desfazer, refazer, limpar, visibilidade, bloqueio, adicionar, remover, subir, descer, X-Ray, iluminação, gizmo, snap, grade, cenário e validação. Cada ícone deve suportar 16/20/24 px ou escala vetorial, DPI 100/125/150/200, padding, tooltip, accessibleName/Description, fallback textual, contraste e estados. Testar catálogo, build Windows, fallback, tooltip, atalhos, clipping e DPI.
+
+### 11.6 Etapa 3 — Rail esquerda
+Rail de aproximadamente 56–72 px, botões quadrados, ícone, tooltip, atalho, foco e indicador ativo. Grupos: seleção (seleção, retângulo, elipse); contorno (laços, caneta, edição); colisão (pincel, colisor, validação); navegação (mover, zoom, fit, foco). Preservar tool_manager, tool_buttons, nomes, sinais, seleção exclusiva, atalhos e compatibilidade. Testar mouse/teclado, checked/disabled, tooltips, exclusividade, compacto e clipping.
+
+### 11.7 Etapa 4 — Barra superior
+Agrupar com separadores nativos: Arquivo (abrir projeto/imagem, salvar, exportar); Visualização (fit, 1:1, foco, grade, snap); Renderização/máscara (Lit, X-Ray 1/2/3, máscara); Edição (undo, redo, limpar, configurações); Comandos (Ctrl+K, recentes e buscas). Uniformizar ícone/texto; compacto IconOnly com tooltip e acessibilidade; amplo TextBesideIcon; remover espaços artificiais e órfãos; preservar menus/atalhos/sinais; preview de cenário abre editor separado. Testar ações, overflow e não invasão do canvas.
+
+### 11.8 Etapa 5 — Viewport e HUD
+Viewport amplo, sem ocultar objeto, vértice, colisor ou gizmo. HUD/status informa Lit/X-Ray, zoom, snap, cursor, grade, gizmo, seleção e transformação sem overlap. Persistente na QStatusBar; temporário expira. Testar zoom, X-Ray no Mask Viewer, coordenadas, fit, clipping, overlap e gizmo nas três resoluções.
+
+### 11.9 Etapa 6 — Gizmo
+A imagem orienta composição e não substitui a lógica. Melhorias: escala proporcional ao zoom, linhas finas, X/Y/Z consistentes, anéis discretos, alças, eixo ativo, caixa suave e feedback numérico sem ocultar texto. Preservar translação, rotação, escala, seleção, vértices, undo/redo, bloqueio, snap, pivô, coordenadas, colisor, exportação e transações. Cada gesto é uma transação; cancelamento restaura snapshot; undo/redo determinístico. Testar hit-test, limites, multi-seleção, vértice, DPI, resize e capturas anotadas.
+
+### 11.10 Etapa 7 — Painéis
+Não misturar editor principal e cenário; manter rolagem e mínimo de conteúdo. Objects: lista, busca, seleção, visibilidade, bloqueio, grupos e ações. Layers: hierarquia, profundidade, visibilidade, bloqueio, ordenação e toolbar. Groups: criar/remover, adicionar/remover seleção, ordenar, visibilidade e bloqueio. Collision: validação, shapes, vértices, convexidade, topologia, exportação e geração. Inspector recolhível: Transform, Pivot, Scale, Rotation, Snap, Parallax, Sockets, Collision e Metadata. Divisores sutis, sem QGroupBox excessivo; ações primárias visíveis e secundárias em contexto. Testar geometria, seleção, edição, estados, rolagem, tooltips, menus, clipping e DPI.
+
+### 11.11 Etapa 8 — Editor de cenário separado
+Janela própria com viewport, layer stack, inspector, camera preview, parallax, sockets, overlays, undo/redo, salvamento e exportação. Testar abrir/fechar, carregar, selecionar, mover, transformar, adicionar layer, salvar/recarregar, exportar, cancelar sem perda e isolamento. Preview não é autoria. Iluminação, partículas, shaders, pós-processamento, triggers e streaming só entram em etapas/contratos próprios; ausência não pode ser mascarada.
+
+### 11.12 Etapa 9 — Responsividade e DPI
+Matriz: 1280x720 compacto, 1366x768 compacto, 1920x1080 desktop; escalas 100/125/150/200%; maximizar/restaurar, fonte maior e troca de monitor quando disponível. Verificar dimensões lógicas/físicas, transparência, clipping, overlap, paleta, hashes, geometrias Qt, widgets críticos, rolagem e menus dentro da tela. Não reduzir fonte abaixo do limite nem esconder controle sem rota comprovada.
+
+### 11.13 Etapa 10 — Acessibilidade
+Adicionar accessibleName/Description, tooltips, Tab, foco, atalhos, teclado, contraste, estados que não dependam só de cor, nomes claros e erros acionáveis. Botão sem texto possui tooltip e nome. Testar mouse e teclado separadamente, conflitos, foco, paleta e texto alternativo.
+
+### 11.14 Etapa 11 — Auditoria visual
+Ler PNGs com Pillow/OpenCV; validar dimensões, alpha, SHA-256, clipping, overlap canvas/toolbars/painéis, geometrias Qt, paleta/contraste, widgets críticos e áreas anotadas. Relatório determinístico PASS/FAIL/NOT_CONFIRMED. Estados: sem projeto, projeto, painéis, gizmo, validação, cenário e máscara/X-Ray. PASS automático não substitui revisão humana; NOT_CONFIRMED não vira PASS. Fixtures negativos devem falhar para clipping, hash, dimensão, transparência e overlap. É proibido remover widgets, alterar thresholds, mascarar paths, omitir worktree ou trocar falha por warning sem justificativa. Revisão humana registra captura, resolução/DPI e observações concretas; não substitui automação.
+
+### 11.15 Etapa 12 — Performance
+Medir contra baseline: abertura; troca de resolução; alternância/resize de painéis; seleção; zoom; captura; abertura do cenário; memória lógica; widgets; renderização. Método determinístico. Hardware pode ser informativo quando a política não o torna gate; orçamento lógico, tick e contagem são reproduzíveis. Não sacrificar legibilidade, adicionar dependência pesada sem justificativa, reconstruir painéis em cada resize ou atualizar continuamente; usar incremental/debounce.
+
+### 11.16 Etapa 13 — Compatibilidade e pacote
+Validar Python, build oficial, portátil, GUI, CLI, Godot, Unity, JSON, GLB, perfis, estado e dependências. Recurso não suportado por engine recebe NÃO SUPORTADO ou fallback observável. Build em worktree limpo registra commit, manifesto, hashes, logs, smoke e warnings; sem dados pessoais, caminhos ou credenciais. Testar rollback de empacotamento.
+
+### 11.17 Etapa 14 — Checkpoint obrigatório
+Sem abreviação: ler governança; confirmar ponto/autorização; baseline; implementação completa; testes focados; testes negativos; suíte/gates estáticos; auditoria visual/capturas; análise de artefatos/geometria/paleta/clipping/overlap/desempenho; hashes e Git blob; regressões/limitações; documentação viva sem reescrever snapshots; diff/higiene/segredos/worktree; commit somente com comprovação; revalidar SHA; push normal sem force quando autorizado; PR com base/head/evidências; revisar CI no SHA; autorização explícita; merge normal; validação independente pós-merge no main; evidência pós-merge; só então APROVADA. Ordem: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14. Etapa 0 não implementa; concluir uma não conclui a seguinte.
+
+### 11.18 Critério final único
+Encerramento somente quando cada etapa tiver decisão individual; funções existentes operarem; três resoluções e quatro escalas forem validadas; painéis acessíveis; auditoria sem achados reais; capturas/relatórios hashados; revisão humana registrada; build limpa aprovada; Godot/Unity documentados; documentos reconciliados; CI verde no SHA correto; push/PR/merge autorizado; e pós-merge aprovado. Isso não aprova release; release tem gates próprios.
