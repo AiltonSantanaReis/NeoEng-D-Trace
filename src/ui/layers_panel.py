@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QListWidget,
     QListWidgetItem,
+    QMenu,
     QMessageBox,
     QPushButton,
     QTabWidget,
@@ -39,6 +40,8 @@ class LayersPanel(QWidget):
         self.project_layers_page = QWidget()
         self.project_layers_layout = QVBoxLayout(self.project_layers_page)
         self.list = QListWidget()
+        self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.list.customContextMenuRequested.connect(self._show_context_menu)
         self.project_layers_layout.addWidget(self.list)
 
         buttons = QGridLayout()
@@ -70,6 +73,7 @@ class LayersPanel(QWidget):
         self.action_toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         from src.ui.icon_library import configure_action
 
+        self._toolbar_actions = {}
         for key, button in (
             ("add", self.btn_new),
             ("remove", self.btn_delete),
@@ -82,6 +86,7 @@ class LayersPanel(QWidget):
             configure_action(action, key, text=button.text(), tooltip=button.text())
             action.setProperty("commandKey", key)
             action.triggered.connect(button.click)
+            self._toolbar_actions[button] = action
         self.project_layers_layout.addWidget(self.action_toolbar)
         self.project_layers_layout.removeWidget(self.action_toolbar)
         self.project_layers_layout.insertWidget(0, self.action_toolbar)
@@ -157,6 +162,23 @@ class LayersPanel(QWidget):
             if layer.id == layer_id:
                 return layer, layer_id, index
         return None, layer_id, None
+
+    def _build_context_menu(self) -> QMenu:
+        menu = QMenu(self.list)
+        for button, toolbar_action in self._toolbar_actions.items():
+            action = menu.addAction(toolbar_action.icon(), button.text())
+            action.setToolTip(button.toolTip() or button.text())
+            action.setProperty("commandKey", toolbar_action.property("commandKey"))
+            action.setEnabled(toolbar_action.isEnabled())
+            action.triggered.connect(toolbar_action.trigger)
+        return menu
+
+    def _show_context_menu(self, position) -> None:
+        item = self.list.itemAt(position)
+        if item is None:
+            return
+        self.list.setCurrentRow(self.list.row(item))
+        self._build_context_menu().exec(self.list.mapToGlobal(position))
 
     def _execute_edit_command(self, command) -> Optional[CommandResult]:
         manager = getattr(self.scene, "cmd", None)

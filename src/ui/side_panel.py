@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QLayout,
     QListWidget,
+    QMenu,
     QMessageBox,
     QPushButton,
     QScrollArea,
@@ -47,6 +48,8 @@ class SidePanel(QWidget):
         self._last_validation_selection_marker = None
 
         self.list = QListWidget()
+        self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.list.customContextMenuRequested.connect(self._show_context_menu)
 
         # --- Botões ---
         self.btn_rename = QPushButton("Rename")
@@ -318,6 +321,32 @@ class SidePanel(QWidget):
                 action.setEnabled(button.isEnabled())
                 if button.isCheckable():
                     action.setChecked(button.isChecked())
+
+    def _build_context_menu(self) -> QMenu:
+        menu = QMenu(self.list)
+        sections = (
+            ("Properties", self.properties_action_toolbar),
+            ("Modify Shape", self.modify_action_toolbar),
+            ("Export", self.export_action_toolbar),
+        )
+        for title, toolbar in sections:
+            submenu = menu.addMenu(title)
+            for toolbar_action in toolbar.actions():
+                action = submenu.addAction(toolbar_action.icon(), toolbar_action.text())
+                action.setToolTip(toolbar_action.toolTip())
+                action.setProperty("commandKey", toolbar_action.property("commandKey"))
+                action.setEnabled(toolbar_action.isEnabled())
+                action.setCheckable(toolbar_action.isCheckable())
+                action.setChecked(toolbar_action.isChecked())
+                action.triggered.connect(toolbar_action.trigger)
+        return menu
+
+    def _show_context_menu(self, position) -> None:
+        item = self.list.itemAt(position)
+        if item is None:
+            return
+        self.list.setCurrentRow(self.list.row(item))
+        self._build_context_menu().exec(self.list.mapToGlobal(position))
 
     @staticmethod
     def _transform_spin(

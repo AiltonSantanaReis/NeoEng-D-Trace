@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
     QInputDialog,
     QListWidget,
     QListWidgetItem,
+    QMenu,
     QMessageBox,
     QPushButton,
     QToolBar,
@@ -76,6 +77,8 @@ class GroupsPanel(QWidget):
             },
         }
         self.list = QListWidget()
+        self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.list.customContextMenuRequested.connect(self._show_context_menu)
         self.btn_new = QPushButton(self.translations[self.current_lang]["new_group"])
         self.btn_delete = QPushButton(
             self.translations[self.current_lang]["delete_group"]
@@ -198,6 +201,23 @@ class GroupsPanel(QWidget):
             None,
         )
         return group, group_id
+
+    def _build_context_menu(self) -> QMenu:
+        menu = QMenu(self.list)
+        for button, toolbar_action in self._toolbar_actions.items():
+            action = menu.addAction(toolbar_action.icon(), button.text())
+            action.setToolTip(button.toolTip() or button.text())
+            action.setProperty("commandKey", toolbar_action.property("commandKey"))
+            action.setEnabled(toolbar_action.isEnabled())
+            action.triggered.connect(toolbar_action.trigger)
+        return menu
+
+    def _show_context_menu(self, position) -> None:
+        item = self.list.itemAt(position)
+        if item is None:
+            return
+        self.list.setCurrentRow(self.list.row(item))
+        self._build_context_menu().exec(self.list.mapToGlobal(position))
 
     def _execute_edit_command(self, command) -> Optional[CommandResult]:
         manager = getattr(self.scene, "cmd", None)

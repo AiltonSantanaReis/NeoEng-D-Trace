@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
     QComboBox,
     QGroupBox,
     QLabel,
+    QMenu,
     QMessageBox,
     QPushButton,
     QTextEdit,
@@ -116,6 +117,9 @@ class CollisionPanel(QWidget):
         for button in (self.batch_test_btn, self.export_btn, self.auto_gen_btn):
             button.setVisible(False)
 
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.customContextMenuRequested.connect(self._show_context_menu)
+
         button_layout.addWidget(self.action_toolbar)
         button_layout.addWidget(self.strategy_combo)
         layout.addLayout(button_layout)
@@ -145,6 +149,19 @@ class CollisionPanel(QWidget):
         layout.addWidget(stats_group)
 
         layout.addStretch()
+
+    def _build_context_menu(self) -> QMenu:
+        menu = QMenu(self)
+        for toolbar_action in self.action_toolbar.actions():
+            action = menu.addAction(toolbar_action.icon(), toolbar_action.text())
+            action.setToolTip(toolbar_action.toolTip())
+            action.setProperty("commandKey", toolbar_action.property("commandKey"))
+            action.setEnabled(toolbar_action.isEnabled())
+            action.triggered.connect(toolbar_action.trigger)
+        return menu
+
+    def _show_context_menu(self, position) -> None:
+        self._build_context_menu().exec(self.mapToGlobal(position))
 
     def set_collision_manager(self, collision_manager):
         self.collision_manager = collision_manager

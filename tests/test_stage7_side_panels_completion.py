@@ -61,6 +61,15 @@ def _assert_toolbar_contract(toolbar, expected_count):
         assert action.property("commandKey")
 
 
+def _assert_context_menu_contract(menu, expected_count):
+    actions = menu.actions()
+    assert len(actions) == expected_count
+    for action in actions:
+        assert action.text()
+        assert action.toolTip()
+        assert action.property("commandKey")
+
+
 def test_objects_panel_has_compact_commands_and_real_selection(qt_app):
     scene = _scene()
     window = _show_window(qt_app, scene)
@@ -90,6 +99,24 @@ def test_objects_panel_has_compact_commands_and_real_selection(qt_app):
         assert panel.transform_group.isEnabled()
         assert panel.btn_apply_transform.isEnabled()
         assert panel.properties_action_toolbar.actions()[2].isEnabled()
+        assert panel.list.contextMenuPolicy() is Qt.ContextMenuPolicy.CustomContextMenu
+        context_menu = panel._build_context_menu()
+        assert [action.text() for action in context_menu.actions()] == [
+            "Properties",
+            "Modify Shape",
+            "Export",
+        ]
+        expected_context_sizes = {
+            "Properties": 3,
+            "Modify Shape": 5,
+            "Export": 2,
+        }
+        for section in context_menu.actions():
+            submenu = section.menu()
+            assert submenu is not None
+            _assert_context_menu_contract(
+                submenu, expected_context_sizes[section.text()]
+            )
 
         collision_action = panel.properties_action_toolbar.actions()[2]
         collision_action.trigger()
@@ -118,6 +145,15 @@ def test_layers_panel_toolbar_and_selection_are_live(qt_app):
         assert panel.list.currentItem() is not None
         layer_id = panel.list.currentItem().data(0x0100)
         assert layer_id == scene.layers[0].id
+        assert panel.list.contextMenuPolicy() is Qt.ContextMenuPolicy.CustomContextMenu
+        _assert_context_menu_contract(panel._build_context_menu(), 6)
+
+        before = len(scene.layers)
+        context_menu = panel._build_context_menu()
+        context_menu.actions()[0].trigger()
+        qt_app.processEvents()
+        assert len(scene.layers) == before + 1
+        assert panel.list.count() == len(scene.layers)
 
         before = len(scene.layers)
         panel.action_toolbar.actions()[0].trigger()
@@ -154,6 +190,8 @@ def test_collision_panel_toolbar_and_real_batch_action(qt_app):
         qt_app.processEvents()
         assert "Collision Test Results" in panel.results_text.toPlainText()
         assert panel.stats_text.isVisibleTo(panel)
+        assert panel.contextMenuPolicy() is Qt.ContextMenuPolicy.CustomContextMenu
+        _assert_context_menu_contract(panel._build_context_menu(), 3)
     finally:
         window._mark_document_clean()
         window.close()
@@ -176,6 +214,11 @@ def test_all_stage7_panels_are_reachable_at_compact_resolution(qt_app):
             assert panel.width() > 0
             assert panel.height() > 0
             assert window.compact_panel_tabs.currentWidget() is panel
+        assert (
+            window.groups.list.contextMenuPolicy()
+            is Qt.ContextMenuPolicy.CustomContextMenu
+        )
+        _assert_context_menu_contract(window.groups._build_context_menu(), 8)
     finally:
         window._mark_document_clean()
         window.close()
