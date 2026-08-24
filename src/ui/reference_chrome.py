@@ -76,6 +76,18 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
                 button.setMaximumSize(QSize(56, 36))
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
                 button.setIconSize(QSize(18, 18))
+                # The visible rail creates a new QToolButton for the shared
+                # QAction. QAction metadata is not guaranteed to populate
+                # the widget's accessibility/focus surface, so copy the
+                # public feedback explicitly to the button that users see.
+                action_id = action.data() or action.objectName()
+                button.setObjectName(f"reference_tool_button_{action_id}")
+                button.setAccessibleName(action.text().replace("\n", " "))
+                button.setToolTip(action.toolTip())
+                button.setStatusTip(action.statusTip())
+                button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+                button.setProperty("iconKey", action.property("iconKey"))
+                button.setProperty("uiRole", "reference_tool")
     window.reference_tool_palette = toolbar
     return toolbar
 

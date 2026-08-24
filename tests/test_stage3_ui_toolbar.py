@@ -38,7 +38,7 @@ def test_stage3_toolbar_is_vertical_action_backed_and_grouped(qt_app):
         assert len(tool_actions) == 9
         rail_actions = [action for action in actions if action.objectName().startswith("rail_action_")]
         assert len(rail_actions) == 5
-        assert sum(action.isSeparator() for action in actions) == 4
+        assert sum(action.isSeparator() for action in actions) == 3
         assert all(action in toolbar.action_group.actions() for action in tool_actions)
         assert toolbar.action_group.isExclusive() is True
         assert toolbar.button_group.exclusive() is True
@@ -46,6 +46,22 @@ def test_stage3_toolbar_is_vertical_action_backed_and_grouped(qt_app):
             "validation", "move_viewport", "zoom_viewport", "fit_view", "focus_selected"
         }
         assert all(action.icon().isNull() is False for action in toolbar.navigation_actions.values())
+        assert [action.data() for action in tool_actions] == [
+            "selection",
+            "rect_selection",
+            "ellipse_selection",
+            "lasso_tool",
+            "polygonal_lasso",
+            "magnetic_lasso",
+            "pen_tool",
+            "polygon_edit",
+            "collision_brush",
+        ]
+        assert [
+            action.data()
+            for action in actions
+            if action.isSeparator()
+        ] == [None, None, None]
     finally:
         window.close()
         qt_app.processEvents()
@@ -80,6 +96,27 @@ def test_stage3_toolbar_preserves_real_selection_and_feedback(qt_app):
         qt_app.processEvents()
         assert toolbar.btn_lasso.text() == "Laço"
         assert "ferramenta" in toolbar.btn_lasso.toolTip().casefold()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage3_visible_reference_rail_preserves_accessibility_and_focus(qt_app):
+    window = _window(qt_app)
+    try:
+        rail = window.reference_tool_palette
+        rail.setEnabled(True)
+        for action in rail.actions():
+            if action.isSeparator():
+                continue
+            button = rail.widgetForAction(action)
+            assert button is not None
+            assert button.accessibleName() == button.text().replace("\n", " ")
+            assert button.toolTip(), action.objectName()
+            assert button.focusPolicy() != Qt.FocusPolicy.NoFocus, action.objectName()
+            assert button.property("iconKey") == action.property("iconKey")
+            assert button.objectName().startswith("reference_tool_button_")
+            assert button.property("uiRole") == "reference_tool"
     finally:
         window.close()
         qt_app.processEvents()

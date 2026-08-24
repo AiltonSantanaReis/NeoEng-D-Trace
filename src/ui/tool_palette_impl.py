@@ -27,15 +27,17 @@ from src.tools.selection_tool import SelectionTool
 from src.ui.icon_library import configure_action, configure_widget
 
 _TOOL_SPECS: Final[tuple[tuple[str, str, str, str | None], ...]] = (
+    # Keep the action order aligned with the normative rail groups:
+    # selection, outline, collision. IDs and shortcuts remain unchanged.
+    ("selection", "selection", "selection", None),
+    ("rect_selection", "rect", "rect", "3"),
+    ("ellipse_selection", "ellipse", "ellipse", "4"),
     ("lasso_tool", "lasso", "lasso", "2"),
     ("polygonal_lasso", "polygon", "polygonal_lasso", "1"),
     ("magnetic_lasso", "magnetic", "magnetic_lasso", "6"),
     ("pen_tool", "pen", "pen", "5"),
-    ("rect_selection", "rect", "rect", "3"),
-    ("ellipse_selection", "ellipse", "ellipse", "4"),
     ("polygon_edit", "polygon_edit", "polygon_edit", None),
     ("collision_brush", "collision_brush", "collision_brush", None),
-    ("selection", "selection", "selection", None),
 )
 
 _AUXILIARY_SPECS: Final[tuple[tuple[str, str, str], ...]] = (
@@ -141,7 +143,7 @@ class ToolPalette(QToolBar):
         for index, (tool_name, icon_key, label_key, _shortcut) in enumerate(
             _TOOL_SPECS
         ):
-            if index in (3, 6):
+            if index in (3, 8):
                 self.addSeparator()
             action = QAction(self)
             action.setObjectName(f"tool_action_{tool_name}")
@@ -188,7 +190,6 @@ class ToolPalette(QToolBar):
     def _build_auxiliary_actions(self) -> None:
         """Expose the remaining source-required rail groups as real actions."""
 
-        self.addSeparator()
         for action_name, icon_key, label in _AUXILIARY_SPECS:
             action = QAction(self)
             action.setObjectName(f"rail_action_{action_name}")
