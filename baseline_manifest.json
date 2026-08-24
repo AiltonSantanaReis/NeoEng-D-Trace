@@ -11325,8 +11325,8 @@
       "size": 2193
     },
     "tests/test_stage1_contract_audit.py": {
-      "sha256": "3d45d8b73b3177600a687302962887983148eb7434831f22121bafacf7c7bab4",
-      "size": 727
+      "sha256": "f62a00618cc7bacd3d70fc1a43f40f4b46b92e1cdad1c60beff9be3ef6889b09",
+      "size": 732
     },
     "tests/test_stage1_runtime_base.py": {
       "sha256": "4922f789abd2368cf0fe98fb2b9dbcfabb6fc4c090e765c028802eb9a76cccdb",
