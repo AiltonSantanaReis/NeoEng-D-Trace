@@ -11,16 +11,16 @@ A aprovação humana deve ser explícita e baseada nos artefatos deste snapshot.
 
 ## Matriz de revisão visual
 
-Para cada resolução, revisar os oito estados abaixo:
+Para cada resolução, revisar os oito estados:
 
-- `no_project`: janela sem projeto;
-- `project_open`: projeto com conteúdo;
-- `panels`: painéis e navegação;
-- `mask_viewer`: abertura e layout do Mask Viewer;
-- `xray`: estado X-Ray;
-- `gizmo`: estado do gizmo;
-- `validation`: painel de validação;
-- `scenario_editor`: editor dedicado de cenários.
+- `no_project`;
+- `project_open`;
+- `panels`;
+- `mask_viewer`;
+- `xray`;
+- `gizmo`;
+- `validation`;
+- `scenario_editor`.
 
 Resoluções obrigatórias:
 
@@ -28,7 +28,7 @@ Resoluções obrigatórias:
 - 1366×768;
 - 1920×1080.
 
-Arquivos: [capturas visuais](C:\Users\atnco\Pictures\NeoEng-D-Trace\artifacts\stage0-snapshot-20260824\visual-evidence)
+Capturas: `artifacts/stage0-snapshot-20260824/visual-evidence/`
 
 ## Critérios obrigatórios
 
@@ -47,8 +47,6 @@ O revisor deve verificar, em cada captura aplicável:
 - ausência de evidência que dependa de uma etapa posterior.
 
 ## Resultado do revisor
-
-Preencher após a análise:
 
 ```text
 Revisor:
