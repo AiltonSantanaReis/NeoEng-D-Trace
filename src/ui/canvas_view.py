@@ -884,20 +884,23 @@ class CanvasView(QWidget):
         self._cursor_image = cursor
         self.viewport_details_changed.emit(self.viewport_details_text())
 
+    def _queue_xray_generation(self, mode: int) -> None:
+        if not (self.VIEW_XRAY_1 <= mode <= self.VIEW_XRAY_3):
+            return
+        if VIEW_PROCESSOR_CLASS is None:
+            return
+        img = getattr(self.model, "image", None)
+        if img is None:
+            return
+        cache_attr = f"_qimage_xray_{mode}"
+        if getattr(self, cache_attr, None) is None:
+            worker = XrayWorker(img, mode)
+            worker.signals.finished.connect(self._on_xray_finished)
+            self.threadpool.start(worker)
+
     def set_view_mode(self, mode: int):
         self._view_mode = mode
-        # Inicia worker de XRay se necessário
-        if (
-            mode >= self.VIEW_XRAY_1 and mode <= self.VIEW_XRAY_3
-        ) and VIEW_PROCESSOR_CLASS is not None:
-            img = getattr(self.model, "image", None)
-            if img is not None:
-                # Check if we already have this xray mode cached
-                cache_attr = f"_qimage_xray_{mode}"
-                if getattr(self, cache_attr, None) is None:
-                    worker = XrayWorker(img, mode)
-                    worker.signals.finished.connect(self._on_xray_finished)
-                    self.threadpool.start(worker)
+        self._queue_xray_generation(mode)
         self.update()
         self._emit_viewport_state()
 
@@ -935,6 +938,7 @@ class CanvasView(QWidget):
         self._qimage_xray_1 = None
         self._qimage_xray_2 = None
         self._qimage_xray_3 = None
+        self._queue_xray_generation(self._view_mode)
         self._gizmo_enabled = bool(self._selected_object_ids())
         self.gizmo_toggle.setChecked(self._gizmo_enabled)
         self.update()

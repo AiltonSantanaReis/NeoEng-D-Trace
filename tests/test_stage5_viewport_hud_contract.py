@@ -4,11 +4,12 @@ import sys
 
 import numpy as np
 import pytest
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import QPoint, QPointF, Qt
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QMessageBox, QScrollArea
 
 from src.models.scene import Scene
+from src.ui.canvas_view import CanvasView
 from src.ui.main_window import MainWindow
 from src.ui.mask_viewer import MaskViewer, MaskViewerDialog
 
@@ -154,4 +155,56 @@ def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, siz
             assert dialog.viewer.get_display_mode() == index
     finally:
         dialog.close()
+
+
+def test_stage5_mask_viewer_fits_after_layout_and_selects_processing_source(qt_app):
+    viewer = MaskViewer()
+    dialog = None
+    try:
+        viewer.resize(400, 300)
+        viewer.show()
+        viewer.set_numpy_image(np.zeros((80, 160, 3), dtype=np.uint8))
+        qt_app.processEvents()
+
+        center = viewer.image_to_view(QPointF(80, 40))
+        assert center.x() == pytest.approx(200.0)
+        assert center.y() == pytest.approx(150.0)
+        assert viewer.get_zoom() == pytest.approx(3.75)
+
+        viewer.set_numpy_image(_bgr_fixture())
+        viewer.set_display_mode(2)
+        original = viewer.get_processing_image()
+        active = viewer.get_processing_image(use_active_view=True)
+        assert original is not None and active is not None
+        assert original.shape == active.shape
+        assert not np.array_equal(original, active)
+
+        scene = Scene()
+        scene.load_image(_bgr_fixture(), "stage5-source-fixture.png")
+        dialog = MaskViewerDialog(scene)
+        dialog.view_mode_combo.setCurrentIndex(2)
+        dialog.processing_source_combo.setCurrentIndex(1)
+        selected = dialog._get_detection_image()
+        assert selected is not None
+        assert np.array_equal(selected, dialog.viewer.get_processing_image(True))
+    finally:
+        if dialog is not None:
+            dialog.close()
+        viewer.close()
+
+
+def test_stage5_xray_mode_is_requeued_after_image_refresh(qt_app, monkeypatch):
+    scene = Scene()
+    canvas = CanvasView(scene)
+    try:
+        scene.image = _bgr_fixture()
+        started = []
+        monkeypatch.setattr(canvas.threadpool, "start", started.append)
+        canvas.set_view_mode(canvas.VIEW_XRAY_2)
+        assert len(started) == 1
+        canvas.update_image()
+        assert canvas._view_mode == canvas.VIEW_XRAY_2
+        assert len(started) == 2
+    finally:
+        canvas.close()
 

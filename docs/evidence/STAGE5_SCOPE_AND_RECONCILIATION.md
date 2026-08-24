@@ -19,6 +19,12 @@ No Mask Viewer foram verificados: abertura, imagem original, Sobel, Canny, Lapla
 
 O auditor independente é `scripts/audit_stage5_contract.py`. Ele executa o Qt real no backend Windows, cria fixtures determinísticas, percorre 3 resoluções, 4 estados de viewport, 4 modos do Mask Viewer, interações de mouse/teclado/ROI e valida a auditoria visual. O snapshot é gerado por `scripts/generate_stage5_snapshot.py` e permanece vinculado ao snapshot pai da Etapa 4 e ao manifesto `FINAL_TARGET`.
 
+## Correção evolutiva pós-aprovação
+
+Após a revisão humana, foi identificada uma melhoria de uso ainda pertencente à Etapa 5. O Mask Viewer agora aguarda o layout final para executar o ajuste inicial, garantindo imagem grande e centralizada. A fonte da detecção automática é explícita: `Imagem original` permanece como padrão; `Visualização ativa` usa o X-Ray selecionado sem modificar a imagem original.
+
+O Canvas preserva o modo X-Ray ativo durante atualizações da imagem e reconstitui o cache do modo selecionado. Isso permite continuar trabalhando com o efeito ativado. A visualização e o processamento permanecem separados por padrão, evitando uma alteração silenciosa na entrada dos algoritmos; a incorporação do X-Ray ao detector ocorre somente quando o artista seleciona essa fonte.
+
 Artefatos principais:
 
 - `artifacts/stage5-snapshot-20260824/stage5-contract-audit.json`

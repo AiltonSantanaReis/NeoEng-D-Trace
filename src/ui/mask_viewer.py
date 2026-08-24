@@ -7,7 +7,7 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
-from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, Signal
+from PySide6.QtCore import QObject, QPointF, QRectF, QTimer, Qt, QThread, Signal
 from PySide6.QtGui import (
     QAction,
     QColor,
@@ -166,6 +166,7 @@ class MaskViewer(QWidget):
         self._image: Optional[np.ndarray] = None
         self._display_image: Optional[np.ndarray] = None
         self._display_mode = 0
+        self._fit_pending = False
         self._qimage_cache: Optional[QImage] = None
         self._composed_image: Optional[np.ndarray] = None
         self._layer_overlays: Dict[str, bool] = {}
@@ -265,9 +266,26 @@ class MaskViewer(QWidget):
     def set_numpy_image(self, image: Optional[np.ndarray]):
         """Set the source image and refresh the selected display mode."""
         self._image = image.copy() if image is not None else None
+        self._fit_pending = self._image is not None
         self._qimage_cache = None
+        if self.isVisible():
+            QTimer.singleShot(0, self._fit_after_layout)
         self.set_display_mode(self._display_mode, update=False)
         self.update()
+
+    def showEvent(self, event) -> None:
+        """Fit after the parent layout has assigned the final viewport size."""
+        super().showEvent(event)
+        if self._fit_pending:
+            QTimer.singleShot(0, self._fit_after_layout)
+
+    def _fit_after_layout(self) -> None:
+        if not self._fit_pending or self._image is None:
+            return
+        if self.width() <= 0 or self.height() <= 0:
+            return
+        self._fit_pending = False
+        self.reset_view()
 
     def set_display_mode(self, mode: int, update: bool = True) -> None:
         """Show the source image or one of the shared X-Ray processors."""
@@ -350,6 +368,17 @@ class MaskViewer(QWidget):
 
     def get_numpy_image(self) -> Optional[np.ndarray]:
         """Get the current image as numpy array."""
+        return self._image.copy() if self._image is not None else None
+
+    def get_processing_image(self, use_active_view: bool = False) -> Optional[np.ndarray]:
+        """Return the explicit image source selected for a processing tool.
+
+        The original scene image remains the default. When requested, the
+        currently selected X-Ray result is returned without mutating the
+        original scene image.
+        """
+        if use_active_view and self._display_mode != 0 and self._display_image is not None:
+            return self._display_image.copy()
         return self._image.copy() if self._image is not None else None
 
     def get_zoom(self) -> float:
@@ -657,6 +686,9 @@ class MaskViewerDialog(QDialog):
             "view_mode": "View:",
             "view_original": "Original",
             "view_xray_1": "X-Ray Sobel",
+            "processing_source": "Detection source:",
+            "source_original": "Original image",
+            "source_active_view": "Active view (X-Ray when selected)",
             "view_xray_2": "X-Ray Canny",
             "view_xray_3": "X-Ray Laplacian",
             "detection_action": "{preset} Detection",
@@ -718,6 +750,9 @@ class MaskViewerDialog(QDialog):
             "toolbar": "Ferramentas do Visualizador de Máscara",
             "view_mode": "Visualização:",
             "view_original": "Original",
+            "processing_source": "Fonte da detecção:",
+            "source_original": "Imagem original",
+            "source_active_view": "Visualização ativa (Raio-X quando selecionado)",
             "view_xray_1": "Raio-X Sobel",
             "view_xray_2": "Raio-X Canny",
             "view_xray_3": "Raio-X Laplaciano",
@@ -920,6 +955,16 @@ class MaskViewerDialog(QDialog):
         self.preset_combo.currentIndexChanged.connect(self._on_preset_changed)
         preset_layout.addWidget(self.preset_combo)
         detection_layout.addLayout(preset_layout)
+        source_layout = QHBoxLayout()
+        self.processing_source_label = QLabel()
+        source_layout.addWidget(self.processing_source_label)
+        self.processing_source_combo = QComboBox()
+        self.processing_source_combo.setObjectName("mask_processing_source")
+        self.processing_source_combo.addItem("", "original")
+        self.processing_source_combo.addItem("", "active_view")
+        source_layout.addWidget(self.processing_source_combo, 1)
+        detection_layout.addLayout(source_layout)
+
 
         self.detect_button = QPushButton()
         self.detect_button.clicked.connect(self._run_detection)
@@ -1094,6 +1139,9 @@ class MaskViewerDialog(QDialog):
             checkbox.setText(t[self.LAYER_TEXT_KEYS[layer_id]])
         self.opacity_label.setText(t["opacity"])
         self.param_controls.setTitle(t["detection_parameters"])
+        self.processing_source_label.setText(t["processing_source"])
+        self.processing_source_combo.setItemText(0, t["source_original"])
+        self.processing_source_combo.setItemText(1, t["source_active_view"])
         for param_name, label in self.param_labels.items():
             label.setText(t[param_name] + ":")
         self.advanced_toggle.setText(t["advanced"])
@@ -1170,6 +1218,10 @@ class MaskViewerDialog(QDialog):
         preset_id = self.preset_combo.currentData()
         return preset_id if preset_id in DETECTION_PRESETS else "Basic"
 
+    def _get_detection_image(self) -> Optional[np.ndarray]:
+        use_active_view = self.processing_source_combo.currentData() == "active_view"
+        return self.viewer.get_processing_image(use_active_view=use_active_view)
+
     def _on_preset_changed(self, *_args):
         preset_id = self._selected_preset_id()
         self._apply_preset_params(DETECTION_PRESETS[preset_id]["params"])
@@ -1229,7 +1281,7 @@ class MaskViewerDialog(QDialog):
         self.advanced_widget.setVisible(state == Qt.CheckState.Checked.value)
 
     def _run_detection(self):
-        image = getattr(self.scene, "image", None)
+        image = self._get_detection_image()
         if image is None:
             QMessageBox.warning(
                 self, self.t["no_image_title"], self.t["no_image_message"]
