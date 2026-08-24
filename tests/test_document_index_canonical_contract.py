@@ -18,7 +18,9 @@ class CanonicalDocumentIndexContractTests(unittest.TestCase):
         text = index.read_text(encoding="utf-8")
         self.assertIn(registry.name, text)
         self.assertIn("INDICE_DOCUMENTAL_ATIVO_2026-08-24.md", text)
-        self.assertIn("SUPERSEDED", text)
+        self.assertIn("INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` | ATIVO |", text)
+        self.assertIn("REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml` | ATIVO |", text)
+        self.assertNotIn("SUPERSEDED", text.split("## 3.")[0])
 
 
 if __name__ == "__main__":

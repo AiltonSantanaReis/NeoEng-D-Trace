@@ -5,7 +5,8 @@
 **ID:** DOC-INDEX-ACTIVE-CANONICAL-20260824  
 **Status:** ativo e prevalente
 
-Este é o índice documental vigente. O índice anterior `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` fica marcado como `SUPERSEDED` por não apontar para o registro canônico completo de IDs.
+Este é o índice documental consolidado e prevalente. O índice `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` permanece **ATIVO** e integra o conjunto documental vigente. Em caso de divergência, este índice canônico prevalece e a execução deve ser bloqueada até a resolução formal do conflito.
+
 
 ## 1. Prevalência
 
@@ -28,6 +29,8 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md` | ATIVO / PREVALENTE | integridade, testes reais, no-bypass, sequência e baseline | decisões aprovadas |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | arquitetura, renderer, 2.5D, 3D e encerramento | governança |
 | `ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md` | ATIVO / ESPECIALIZADO | IDs e evidências antes da Fase 4 | governança e plano |
+| `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` | ATIVO | índice normativo de referência mantido para continuidade documental | este índice prevalece em conflito |
+| `REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml` | ATIVO | registro de IDs já adotado, mantido para continuidade e auditoria | registro canônico prevalece para novos IDs |
 | `REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml` | ATIVO / FONTE CANÔNICA | declarações de IDs e rastreabilidade | adendo |
 | `ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md` | ATIVO / ADR | limites técnicos de runtime e efeitos | governança |
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | requisitos visuais e UX | plano normativo |
@@ -37,8 +40,6 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 
 | Documento | Estado | Substituto | Motivo |
 |---|---|---|---|
-| `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` | SUPERSEDED | este índice | não apontava para o registro canônico completo |
-| `REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml` | SUPERSEDED | registro canônico v2 | possuía referências sem declaração própria |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_2026-08-24.md` | DRAFT / SUPERSEDED | plano normativo completo | rascunho incompleto |
 
 Documentos superseded permanecem preservados para auditoria e não podem governar implementação ou aprovação.

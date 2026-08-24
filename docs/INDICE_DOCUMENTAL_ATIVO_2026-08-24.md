@@ -6,17 +6,19 @@
 
 Este índice define quais documentos estão ativos, quais são históricos e como eles se relacionam. Nenhum documento poderá ser usado como autoridade sem estar listado aqui.
 
+
 ## 1. Ordem de prevalência
 
 1. Decisões formais de produto aprovadas.
-2. [Governança de Integridade, Execução e Antialucinação](GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md).
-3. [Plano Normativo Completo do Produto Profissional](PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md).
-4. [Adendo de Automação de Evidências e IDs](ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md).
-5. ADRs técnicos ativos.
-6. Especificações das etapas.
-7. Registro canônico de IDs.
-8. Evidências e relatórios de auditoria.
-9. Documentos históricos.
+2. [Índice Documental Ativo Canônico](INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md).
+3. [Governança de Integridade, Execução e Antialucinação](GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md).
+4. [Plano Normativo Completo do Produto Profissional](PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md).
+5. [Adendo de Automação de Evidências e IDs](ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md).
+6. ADRs técnicos ativos.
+7. Especificações das etapas.
+8. Registros de IDs ativos, com o registro canônico prevalente.
+9. Evidências e relatórios de auditoria.
+10. Documentos históricos.
 
 Quando dois documentos ativos discordarem, a execução deverá ser bloqueada até que exista uma decisão formal de mudança. Não é permitido escolher informalmente o trecho mais conveniente.
 
@@ -24,10 +26,12 @@ Quando dois documentos ativos discordarem, a execução deverá ser bloqueada at
 
 | Documento | Status | Função | Depende de | Governa |
 |---|---|---|---|---|
+| `INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md` | ATIVO / PREVALENTE | Índice consolidado e resolução formal de conflitos documentais | decisões aprovadas | cadeia documental |
 | `GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md` | ATIVO / PREVALENTE | Integridade, anti-bypass, testes reais, avanço sequencial e baseline | decisões aprovadas | todos os documentos e etapas |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | Produto, arquitetura, renderer, 2.5D, 3D e encerramento | governança | execução do produto |
 | `ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md` | ATIVO / ESPECIALIZADO | IDs e automação de evidências antes da Fase 4 | governança e plano | rastreabilidade e CI |
 | `REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml` | ATIVO / FONTE DE IDS | IDs canônicos e matriz inicial | adendo de IDs | código, testes, docs e artefatos |
+| `REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml` | ATIVO / FONTE CANÔNICA PREVALENTE | Declarações completas e rastreabilidade | adendo de IDs | IDs novos e validação |
 | `ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md` | ATIVO / ADR | Limites técnicos de runtime e efeitos | governança | runtime e claims de capacidade |
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | Requisitos e direção visual da interface | plano normativo | UI, inspector e shell |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | Escopo e reconciliação da Etapa 5 | etapa e governança | prova da Etapa 5 |
