@@ -457,3 +457,17 @@ validação pós-merge continuam pendentes.
 
 A Etapa 7 está aprovada somente no escopo dos painéis laterais. Release não
 foi aprovada; as Etapas 8–14 continuam planejadas.
+
+## Encerramento pós-merge — Etapa 9 — 2026-08-23
+
+- `ETAPA_9_RESPONSIVIDADE_DPI_2026-08-23.md` — evidência pré-merge da matriz
+  Qt 100/125/150/200%, três resoluções, auditoria automatizada e revisão visual
+  humana.
+- `ETAPA_9_ENCERRAMENTO_POS_MERGE_2026-08-23.md` — PR #160, merge
+  `98ffba1`, CI Linux/Windows aprovado, `1647 passed, 2 skipped`, `119
+  manifests`, baseline `2878 files` e sincronização pós-merge confirmada.
+- `artifacts/stage9-responsive-dpi-local-20260823/` — pacote versionado com
+  relatórios, índices, workers e capturas originais da matriz.
+
+A Etapa 9 está aprovada no escopo de responsividade e DPI. Release não foi
+aprovada; os limites de driver/GPU e as demais etapas permanecem declarados.
