@@ -77,6 +77,41 @@ def main() -> int:
         "status": "PASS" if all(int(suite_node.attrib.get(key, 0)) == 0 for key in ("failures", "errors")) else "FAIL",
         "junit": {"path": args.full_suite.resolve().relative_to(output).as_posix(), "sha256": sha256(args.full_suite.resolve())},
     }
+    audit_checks = audit.get("checks", {})
+    live_status = audit_checks.get("live_contract", {}).get("status", "FAIL")
+    visual_status = audit_checks.get("visual_status", "FAIL")
+    capture_status = audit_checks.get("capture_status", "FAIL")
+    checks = [
+        {
+            "id": "stage3.live_contract",
+            "classification": "EXPECTED_EVOLUTION",
+            "justification": "The current visible rail and compatibility ToolPalette were exercised through the real MainWindow against the normative Stage 3 contract.",
+            "result": live_status,
+        },
+        {
+            "id": "stage3.visual_capture",
+            "classification": "EXPECTED_EVOLUTION",
+            "justification": "Three real MainWindow resolutions were captured and checked by the existing Qt/Pillow/OpenCV visual auditor.",
+            "result": visual_status,
+        },
+        {
+            "id": "stage3.capture_pipeline",
+            "classification": "EXPECTED_EVOLUTION",
+            "justification": "The reproducible capture pipeline completed and produced the referenced raw manifest.",
+            "result": capture_status,
+        },
+        {
+            "id": "stage3.full_suite",
+            "classification": "EXPECTED_EVOLUTION",
+            "justification": "The complete repository pytest suite was executed on the exact commit under review and its JUnit output is hash-referenced.",
+            "result": suite["status"],
+        },
+    ]
+    artifacts = []
+    excluded = {"stage3-report.json", "stage3-manifest.json", "stage3-inventory.json"}
+    for item in sorted(output.rglob("*")):
+        if item.is_file() and item.name not in excluded:
+            artifacts.append({"path": item.relative_to(output).as_posix(), "sha256": sha256(item), "purpose": "Etapa 3 technical evidence.", "visual": item.suffix.lower() == ".png"})
     report = {
         "schema": "neoeng.stage-audit-report",
         "schema_version": 1,
@@ -85,22 +120,20 @@ def main() -> int:
         "baseline_id": "FINAL_TARGET",
         "parent_snapshot_id": parent["snapshot_id"],
         "commit": commit,
+        "command": "python scripts/generate_stage3_snapshot.py --output artifacts/stage3-snapshot-20260824 --parent artifacts/stage2-snapshot-20260824/stage2-manifest.json --audit artifacts/stage3-snapshot-20260824/stage3-contract-audit.json --full-suite artifacts/stage3-snapshot-20260824/full-suite-junit.xml",
         "ci_exact_commit": None,
         "environment": {"platform": platform.platform(), "python": sys.version, "dpi_percent": [100, 125, 150, 200], "resolutions": ["1280x720", "1366x768", "1920x1080"]},
         "audit": {"path": "stage3-contract-audit.json", "sha256": sha256(output / "stage3-contract-audit.json")},
         "full_suite": suite,
+        "checks": checks,
+        "artifacts": artifacts,
         "decision": "REVIEW_REQUIRED",
         "current_contract_result": "PASS",
         "human_review": None,
-        "limitations": json.loads(args.audit.resolve().read_text(encoding="utf-8")).get("limitations", []),
+        "limitations": audit.get("limitations", []),
     }
     report_path = output / "stage3-report.json"
     write_json(report_path, report)
-    artifacts = []
-    excluded = {"stage3-report.json", "stage3-manifest.json", "stage3-inventory.json"}
-    for item in sorted(output.rglob("*")):
-        if item.is_file() and item.name not in excluded:
-            artifacts.append({"path": item.relative_to(output).as_posix(), "sha256": sha256(item), "purpose": "Etapa 3 technical evidence.", "visual": item.suffix.lower() == ".png"})
     manifest = {
         "schema": "neoeng.stage3-snapshot",
         "schema_version": 1,
