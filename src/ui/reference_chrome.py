@@ -26,8 +26,22 @@ def _add_action_group(toolbar: QToolBar, actions: tuple[Any, ...]) -> None:
     for item in actions:
         if isinstance(item, QWidget):
             toolbar.addWidget(item)
+            if item.objectName() == "focus_button":
+                item.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         else:
             toolbar.addAction(item)
+            button = toolbar.widgetForAction(item)
+            if button is not None:
+                action_id = item.property("iconKey") or item.objectName() or item.text()
+                button.setObjectName(
+                    f"reference_top_action_{str(action_id).replace(' ', '_').lower()}"
+                )
+                button.setAccessibleName(item.text().replace("\n", " "))
+                button.setToolTip(item.toolTip())
+                button.setStatusTip(item.statusTip())
+                button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+                button.setProperty("iconKey", item.property("iconKey"))
+                button.setProperty("uiRole", "reference_top_action")
     toolbar.addSeparator()
 
 
@@ -35,9 +49,12 @@ def _command_button(
     window: Any, key: str, text: str, accessible_name: str
 ) -> QToolButton:
     button = QToolButton(window)
+    button.setObjectName(f"reference_command_button_{key}")
     button.setText(text)
     button.setAccessibleName(accessible_name)
     button.setToolTip(text)
+    button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+    button.setProperty("uiRole", "reference_command_button")
     button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
     configure_widget(button, key, accessible_name=accessible_name)
     return button
@@ -99,20 +116,41 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     toolbar.setObjectName("reference_top_toolbar")
     toolbar.setMovable(False)
     toolbar.setFloatable(False)
-    toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+    toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
     toolbar.setIconSize(QSize(24, 24))
     toolbar.setProperty("uiRole", "reference_top_toolbar")
 
     _add_action_group(
         toolbar,
-        (window.open_project_action, window.save_project_action, window.act_export),
+        (
+            window.open_project_action,
+            window.open_image_action,
+            window.save_project_action,
+            window.act_export,
+        ),
     )
-    _add_action_group(toolbar, (window.act_fit, window.focus_button))
+    fit_action = window.tool_palette.navigation_actions["fit_view"]
+    focus_action = window.tool_palette.navigation_actions["focus_selected"]
+    _add_action_group(toolbar, (fit_action, window.act_100, focus_action))
+    reference_focus_button = toolbar.widgetForAction(focus_action)
+    if reference_focus_button is None:
+        raise RuntimeError("reference focus action did not create a toolbar button")
+    reference_focus_button.setObjectName("reference_focus_button")
 
-    view_button = _command_button(window, "view", "View", "View mode menu")
+    view_button = _command_button(window, "view", "View", "View and navigation menu")
+    _menu_button(view_button, (window.act_grid, window.act_snap))
+    render_button = _command_button(
+        window, "lit", "Render", "Render and mask menu"
+    )
     _menu_button(
-        view_button,
-        (window.act_lit, window.act_xray1, window.act_xray2, window.act_xray3, window.act_grid, window.act_snap),
+        render_button,
+        (
+            window.act_lit,
+            window.act_xray1,
+            window.act_xray2,
+            window.act_xray3,
+            window.mask_viewer_action,
+        ),
     )
     collision_button = _command_button(
         window, "collision", "Collision", "Collision menu"
@@ -129,22 +167,23 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window, "parallax", "Parallax", "Open scenario editor"
     )
     parallax_button.clicked.connect(window.open_scenario_editor)
-    _add_action_group(toolbar, (view_button, collision_button, parallax_button))
-
-    pan_button = _command_button(window, "pan", "Pan", "Pan viewport")
-    pan_button.setCheckable(True)
-    pan_button.toggled.connect(window.canvas.set_pan_mode)
-    window.canvas.pan_mode_changed.connect(pan_button.setChecked)
-    select_button = _command_button(window, "selection", "Select", "Select objects")
-    select_button.clicked.connect(
-        lambda: (
-            window.canvas.set_pan_mode(False),
-            window.tool_palette.select_tool_by_name("selection"),
-        )
+    _add_action_group(
+        toolbar, (view_button, render_button, collision_button, parallax_button)
     )
-    _add_action_group(toolbar, (pan_button, select_button))
 
-    _add_action_group(toolbar, (window.undo_action, window.redo_action))
+    pan_action = window.tool_palette.navigation_actions["move_viewport"]
+    select_action = window.tool_palette._tool_actions["selection"]
+    _add_action_group(toolbar, (pan_action, select_action))
+    pan_button = toolbar.widgetForAction(pan_action)
+    select_button = toolbar.widgetForAction(select_action)
+    if pan_button is None or select_button is None:
+        raise RuntimeError("reference navigation actions did not create toolbar buttons")
+    pan_button.setObjectName("reference_pan_button")
+    select_button.setObjectName("reference_select_button")
+
+    edit_button = _command_button(window, "settings", "Edit", "Edit commands menu")
+    _menu_button(edit_button, (window.act_clean, window.settings_action))
+    _add_action_group(toolbar, (window.undo_action, window.redo_action, edit_button))
 
     menu_button = QToolButton(toolbar)
     menu_button.setObjectName("reference_menu_button")
@@ -179,6 +218,11 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_command_search = search
     window.reference_pan_button = pan_button
     window.reference_select_button = select_button
+    window.reference_focus_button = reference_focus_button
+    window.reference_view_button = view_button
+    window.reference_render_button = render_button
+    window.reference_collision_button = collision_button
+    window.reference_edit_button = edit_button
 
     return toolbar
 

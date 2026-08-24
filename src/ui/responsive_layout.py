@@ -107,7 +107,7 @@ class ResponsivePanelLayout:
         style = (
             Qt.ToolButtonStyle.ToolButtonIconOnly
             if compact
-            else Qt.ToolButtonStyle.ToolButtonTextUnderIcon
+            else Qt.ToolButtonStyle.ToolButtonTextBesideIcon
         )
         toolbar.setToolButtonStyle(style)
         for button in toolbar.findChildren(QToolButton):
@@ -124,7 +124,9 @@ class ResponsivePanelLayout:
             search.setMinimumWidth(180 if compact else 260)
             search.setMaximumWidth(240 if compact else 440)
 
-        focus_button = getattr(self.owner, "focus_button", None)
+        focus_button = getattr(
+            self.owner, "reference_focus_button", None
+        ) or getattr(self.owner, "focus_button", None)
         if focus_button is not None:
             focus_button.setText("Focus" if compact else "Focus Selected")
 

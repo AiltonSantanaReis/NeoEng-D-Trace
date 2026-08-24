@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 
 import pytest
-from PySide6.QtWidgets import QApplication, QCheckBox, QDialog, QWidgetAction
+from PySide6.QtWidgets import QApplication, QCheckBox, QDialog, QToolButton, QWidgetAction
 
 from scripts.audit_ui_capture import AuditConfig
 from src.models.scene import Scene
@@ -118,6 +118,46 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
         ) == original
         assert window.undo_action in window.edit_menu.actions()
         assert window.mask_viewer_action in window.view_menu.actions()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_modes(qt_app):
+    window = _window(qt_app)
+    try:
+        toolbar = window.reference_top_toolbar
+        assert toolbar.isVisibleTo(window)
+        assert toolbar.toolButtonStyle().name == "ToolButtonIconOnly"
+        for action in toolbar.actions():
+            if action.isSeparator():
+                continue
+            button = toolbar.widgetForAction(action)
+            if isinstance(button, QToolButton):
+                assert button.accessibleName(), action.text()
+                assert button.toolTip(), action.text()
+                assert button.focusPolicy().name != "NoFocus", action.text()
+                if button.objectName() == "reference_menu_button":
+                    continue
+                if isinstance(action, QWidgetAction):
+                    assert button.property("uiRole") == "reference_command_button"
+                    assert button.property("iconKey")
+                else:
+                    assert button.property("uiRole") == "reference_top_action"
+                    assert button.property("iconKey") == action.property("iconKey")
+        assert window.reference_focus_button.isVisibleTo(window)
+        assert window.reference_focus_button.focusPolicy().name != "NoFocus"
+        assert window.reference_focus_button.accessibleName()
+        assert all(ord(character) <= 0xFFFF for character in window.act_clean.text())
+        assert not window.act_clean.icon().isNull()
+        window.resize(1920, 1080)
+        qt_app.processEvents()
+        assert toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
+        assert window.reference_focus_button.text() == "Focus Selected"
+        window.resize(1280, 720)
+        qt_app.processEvents()
+        assert toolbar.toolButtonStyle().name == "ToolButtonIconOnly"
+        assert window.reference_focus_button.text() == "Focus"
     finally:
         window.close()
         qt_app.processEvents()

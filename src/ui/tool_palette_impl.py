@@ -345,6 +345,13 @@ class ToolPalette(QToolBar):
         self.canvas_view.set_tool(CollisionBrushTool(self.canvas_view).interface())
 
     def select_selection(self):
+        # Selection is the canonical non-pan navigation state. Keep every
+        # public route (rail, top toolbar, menus and shortcuts) synchronized.
+        move_action = self._auxiliary_actions.get("move_viewport")
+        if move_action is not None:
+            move_action.setChecked(False)
+        if hasattr(self.canvas_view, "set_pan_mode"):
+            self.canvas_view.set_pan_mode(False)
         self.canvas_view.set_tool(SelectionTool(self.canvas_view).interface())
 
     def update_language(self, lang):
