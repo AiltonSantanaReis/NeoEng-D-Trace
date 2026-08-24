@@ -610,26 +610,37 @@ class MaskViewer(QWidget):
 
         try:
             source = self._compose_layer_overlays(np.asarray(source))
-            self._composed_image = source
-            if HAS_CV2:
-                # Ensure RGB
-                if len(source.shape) == 3 and source.shape[2] == 3:
-                    rgb = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
-                else:
-                    rgb = source
-            else:
-                rgb = source
-
-            height, width = rgb.shape[:2]
-
-            if len(rgb.shape) == 2:
+            source = np.asarray(source)
+            if source.ndim == 2:
                 fmt = QImage.Format.Format_Grayscale8
-                step = rgb.strides[0]
-            else:
+                display = source
+            elif source.ndim == 3 and source.shape[2] == 3:
+                display = (
+                    cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
+                    if HAS_CV2
+                    else source
+                )
                 fmt = QImage.Format.Format_RGB888
-                step = rgb.strides[0]
+            elif source.ndim == 3 and source.shape[2] == 4:
+                display = (
+                    cv2.cvtColor(source, cv2.COLOR_BGRA2RGBA)
+                    if HAS_CV2
+                    else source
+                )
+                fmt = QImage.Format.Format_RGBA8888
+            else:
+                raise ValueError(
+                    f"unsupported image shape for Mask Viewer: {source.shape!r}"
+                )
 
-            self._qimage_cache = QImage(rgb.data, width, height, step, fmt)
+            display = np.ascontiguousarray(display)
+            self._composed_image = display
+            height, width = display.shape[:2]
+            step = display.strides[0]
+
+            self._qimage_cache = QImage(
+                display.data, width, height, step, fmt
+            ).copy()
             return self._qimage_cache
         except Exception as e:
             logger.error(f"Image conversion error: {e}")

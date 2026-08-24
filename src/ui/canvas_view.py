@@ -851,9 +851,11 @@ class CanvasView(QWidget):
         gizmo = "ON" if self._gizmo_enabled else "OFF"
         selection = ",".join(str(item) for item in selected) if selected else "NONE"
         cursor = f"{self._cursor_image[0]},{self._cursor_image[1]}"
+        pan = f"{self._pan.x():.0f},{self._pan.y():.0f}"
         return (
             f"{self.viewport_state_text()}  |  SNAP: {snap}  |  GRID: {grid}"
-            f"  |  GIZMO: {gizmo}  |  SEL: {selection}  |  CURSOR: {cursor}"
+            f"  |  GIZMO: {gizmo}  |  PAN: {pan}  |  SEL: {selection}"
+            f"  |  CURSOR: {cursor}"
         )
 
     def viewport_compact_details_text(self) -> str:

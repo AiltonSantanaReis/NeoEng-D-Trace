@@ -78,6 +78,7 @@ class ViewportOverlayBar(QWidget):
         super().__init__(parent)
         self.host_window = window
         self.canvas = canvas
+        self._compact = False
         self.setObjectName("viewport_overlay_bar")
         self.setFixedHeight(38)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
@@ -121,19 +122,29 @@ class ViewportOverlayBar(QWidget):
         canvas.viewport_state_changed.connect(self._sync)
         self._sync(canvas.viewport_state_text())
 
+    def set_compact(self, compact: bool) -> None:
+        self._compact = bool(compact)
+        self._sync(self.canvas.viewport_state_text())
+
+
     def _set_snap(self, enabled: bool) -> None:
         self.canvas.set_vertex_snapping(enabled, grid_size=16)
         self._sync(self.canvas.viewport_state_text())
 
     def _sync(self, state: str) -> None:
         mode = state.split("  |  ", 1)[0].replace("VIEW: ", "").title()
-        self.view_button.setText(f"View: {mode}")
-        self.zoom_button.setText(f"Zoom: {self.canvas.get_zoom():.2f}x")
+        if self._compact:
+            self.view_button.setText(mode)
+            self.zoom_button.setText(f"{self.canvas.get_zoom():.2f}x")
+        else:
+            self.view_button.setText(f"View: {mode}")
+            self.zoom_button.setText(f"Zoom: {self.canvas.get_zoom():.2f}x")
         settings = self.canvas._vertex_snap_settings
         self.snap_button.setChecked(bool(settings.enabled))
         grid = int(getattr(settings, "grid_size", 1))
+        snap_state = f"{'On' if settings.enabled else 'Off'} ({grid})"
         self.snap_button.setText(
-            f"Snap: {'On' if settings.enabled else 'Off'} ({grid})"
+            f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
         )
 
 
@@ -176,6 +187,7 @@ class ViewportChrome(QWidget):
 
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
+        self.overlay.set_compact(self.canvas_stack.width() < 900)
         self.overlay.move(
             8, max(8, self.canvas_stack.height() - self.overlay.height() - 10)
         )
