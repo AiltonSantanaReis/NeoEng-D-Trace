@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 from datetime import datetime, timezone
@@ -15,11 +16,16 @@ def git_commit() -> str:
     ).stdout.strip()
 
 
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("report", type=Path)
     parser.add_argument("--reviewer", default="project owner")
     parser.add_argument("--ci-commit", required=True)
+    parser.add_argument("--manifest", type=Path)
     args = parser.parse_args()
     report = json.loads(args.report.read_text(encoding="utf-8"))
     commit = report.get("commit") or git_commit()
@@ -39,6 +45,17 @@ def main() -> int:
         encoding="utf-8",
         newline="\n",
     )
+    if args.manifest:
+        manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+        report_hash = sha256(args.report)
+        for key in ("stage1_report", "report"):
+            if key in manifest:
+                manifest[key]["sha256"] = report_hash
+        args.manifest.write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
     print(json.dumps({"decision": report["decision"], "snapshot": report["human_review"]["snapshot"]}, sort_keys=True))
     return 0
 
