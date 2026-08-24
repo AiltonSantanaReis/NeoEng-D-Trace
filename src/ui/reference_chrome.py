@@ -61,15 +61,21 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
     toolbar.setFloatable(False)
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
     toolbar.setIconSize(QSize(24, 24))
-    # Reserve the effective rail width after production QSS borders/padding.
-    toolbar.setMinimumWidth(80)
-    toolbar.setMaximumWidth(88)
+    # Keep the rail within the reference contract while leaving room for QSS.
+    toolbar.setMinimumWidth(56)
+    toolbar.setMaximumWidth(72)
     toolbar.setProperty("uiRole", "reference_tool_palette")
     for action in window.tool_palette.actions():
         if action.isSeparator():
             toolbar.addSeparator()
         else:
             toolbar.addAction(action)
+            button = toolbar.widgetForAction(action)
+            if button is not None:
+                button.setMinimumSize(QSize(44, 32))
+                button.setMaximumSize(QSize(56, 36))
+                button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+                button.setIconSize(QSize(18, 18))
     window.reference_tool_palette = toolbar
     return toolbar
 
@@ -94,7 +100,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     view_button = _command_button(window, "view", "View", "View mode menu")
     _menu_button(
         view_button,
-        (window.act_lit, window.act_xray1, window.act_xray2, window.act_xray3),
+        (window.act_lit, window.act_xray1, window.act_xray2, window.act_xray3, window.act_grid, window.act_snap),
     )
     collision_button = _command_button(
         window, "collision", "Collision", "Collision menu"

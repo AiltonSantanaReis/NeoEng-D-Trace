@@ -144,7 +144,36 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         "parallax",
         '<path d="M4 7h10M4 12h16M4 17h10"/><path d="m14 5 4 2-4 2M10 15l-4 2 4 2"/>',
     ),
-    "add": (
+    "settings": (
+        "view settings",
+        '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.06.06-1.41 1.41-.06-.06A1.8 1.8 0 0 0 16.37 18a1.8 1.8 0 0 0-1.1 1.65V20h-2v-.35A1.8 1.8 0 0 0 12.17 18a1.8 1.8 0 0 0-1.98.36l-.06.06-1.41-1.41.06-.06A1.8 1.8 0 0 0 9.14 15a1.8 1.8 0 0 0-1.65-1.1H7v-2h.49A1.8 1.8 0 0 0 9.14 10a1.8 1.8 0 0 0-.36-1.98l-.06-.06 1.41-1.41.06.06A1.8 1.8 0 0 0 12.17 7a1.8 1.8 0 0 0 1.1-1.65V5h2v.35A1.8 1.8 0 0 0 16.37 7a1.8 1.8 0 0 0 1.98-.36l.06-.06 1.41 1.41-.06.06A1.8 1.8 0 0 0 19.4 10a1.8 1.8 0 0 0 1.6 1.1v2a1.8 1.8 0 0 0-1.6 1.9z"/>',
+    ),
+    "move": (
+        "move viewport",
+        '<path d="M12 3v18M3 12h18"/><path d="m8 7 4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4"/>',
+    ),
+    "zoom": (
+        "zoom viewport",
+        '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M8 10.5h5M10.5 8v5"/>',
+    ),
+    "grid": (
+        "toggle grid",
+        '<path d="M4 4h16v16H4z"/><path d="M10 4v16M16 4v16M4 10h16M4 16h16"/>',
+    ),
+    "scenario": (
+        "scenario editor",
+        '<path d="M4 6h10v12H4zM10 9h10v10H10z"/><path d="M7 9v5M13 12h4"/>',
+    ),
+    "validation": (
+        "validate collision geometry",
+        '<circle cx="12" cy="12" r="8.5"/><path d="m8 12 2.5 2.5L16.5 9"/>',
+    ),
+    "collider_edit": (
+        "edit collider vertices",
+        '<path d="m5 5 14 3-3 12-11-5z"/><circle cx="5" cy="5" r="1.8"/>'
+        '<circle cx="19" cy="8" r="1.8"/><circle cx="16" cy="20" r="1.8"/>'
+        '<path d="m8 17 8-8"/>',
+    ),    "add": (
         "add layer",
         '<circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/>',
     ),
@@ -340,6 +369,9 @@ def configure_main_window_controls(window: Any) -> None:
         "act_export_collision_txt": "collision",
         "act_fit": "fit",
         "act_100": "zoom_100",
+        "act_grid": "grid",
+        "act_snap": "grid",
+        "settings_action": "settings",
         "act_lit": "lit",
         "act_xray1": "xray_1",
         "act_xray2": "xray_2",

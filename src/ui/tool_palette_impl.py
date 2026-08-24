@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize, Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import QButtonGroup, QSizePolicy, QToolBar, QToolButton
 
@@ -38,9 +38,19 @@ _TOOL_SPECS: Final[tuple[tuple[str, str, str, str | None], ...]] = (
     ("selection", "selection", "selection", None),
 )
 
+_AUXILIARY_SPECS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("validation", "validation", "Validate collision geometry"),
+    ("move_viewport", "move", "Move viewport"),
+    ("zoom_viewport", "zoom", "Zoom viewport"),
+    ("fit_view", "fit", "Fit viewport"),
+    ("focus_selected", "focus", "Focus selected object"),
+)
+
 
 class ToolPalette(QToolBar):
     """Compact vertical toolbar preserving the historical tool API."""
+
+    auxiliary_action_requested = Signal(str)
 
     def tool_names(self) -> list[str]:
         return [spec[0] for spec in _TOOL_SPECS]
@@ -121,6 +131,7 @@ class ToolPalette(QToolBar):
             },
         }
         self._tool_actions: dict[str, QAction] = {}
+        self._auxiliary_actions: dict[str, QAction] = {}
         self.tool_buttons: dict[str, QToolButton] = {}
         self.action_group = QActionGroup(self)
         self.action_group.setExclusive(True)
@@ -170,8 +181,39 @@ class ToolPalette(QToolBar):
         self.btn_polygon_edit = self.tool_buttons["polygon_edit"]
         self.btn_collision_brush = self.tool_buttons["collision_brush"]
         self.btn_selection = self.tool_buttons["selection"]
+        self._build_auxiliary_actions()
         self._refresh_button_geometry()
         self._refresh_tool_feedback()
+
+    def _build_auxiliary_actions(self) -> None:
+        """Expose the remaining source-required rail groups as real actions."""
+
+        self.addSeparator()
+        for action_name, icon_key, label in _AUXILIARY_SPECS:
+            action = QAction(self)
+            action.setObjectName(f"rail_action_{action_name}")
+            action.setData(action_name)
+            action.setCheckable(action_name == "move_viewport")
+            configure_action(
+                action,
+                icon_key,
+                text=label,
+                tooltip=label,
+                accessible_name=label,
+            )
+            action.setProperty(
+                "railGroup",
+                "navigation" if action_name != "validation" else "collision",
+            )
+            action.triggered.connect(
+                lambda _checked=False, name=action_name:
+                self.auxiliary_action_requested.emit(name)
+            )
+            self.addAction(action)
+            self._auxiliary_actions[action_name] = action
+            if action_name == "validation":
+                self.addSeparator()
+        self.navigation_actions = dict(self._auxiliary_actions)
 
     @staticmethod
     def _callback_name(tool_name: str) -> str:
@@ -264,6 +306,8 @@ class ToolPalette(QToolBar):
             return
         action.setChecked(True)
         button.setChecked(True)
+        if "move_viewport" in self._auxiliary_actions:
+            self._auxiliary_actions["move_viewport"].setChecked(False)
         getattr(self, f"select_{self._callback_name(tool_name)}")()
 
     def select_lasso(self):

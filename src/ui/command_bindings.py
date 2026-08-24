@@ -19,10 +19,13 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("app.exit", window.close_application_action),
             ("edit.undo", window.undo_action),
             ("edit.redo", window.redo_action),
+            ("view.settings", window.settings_action),
             ("view.mask_viewer", window.mask_viewer_action),
             ("view.collision_overlay", window.collision_overlay_action),
             ("view.fit", window.act_fit),
             ("view.zoom_100", window.act_100),
+            ("view.grid", window.act_grid),
+            ("view.snap", window.act_snap),
             ("view.lit", window.act_lit),
             ("view.xray_1", window.act_xray1),
             ("view.xray_2", window.act_xray2),
@@ -36,5 +39,12 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("scenario.load", window.scenario_load_action),
             ("scenario.reset", window.scenario_reset_action),
             ("scenario.export", window.scenario_export_action),
+            ("tool.validation", window.tool_palette.navigation_actions["validation"]),
+            ("tool.move_viewport", window.tool_palette.navigation_actions["move_viewport"]),
+            ("tool.zoom_viewport", window.tool_palette.navigation_actions["zoom_viewport"]),
+            ("tool.fit_view", window.tool_palette.navigation_actions["fit_view"]),
+            ("tool.focus_selected", window.tool_palette.navigation_actions["focus_selected"]),
         ]
     )
+    for tool_name, action in window.tool_palette._tool_actions.items():
+        registry.register(f"tool.{tool_name}", action)

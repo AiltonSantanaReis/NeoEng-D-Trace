@@ -35,6 +35,7 @@ class CommandRegistry(QObject):
         super().__init__(parent)
         self._actions: dict[str, QAction] = {}
         self._action_ids: dict[int, str] = {}
+        self._recent_ids: list[str] = []
 
     def register(self, command_id: str, action: QAction) -> None:
         """Register one action under a validated, globally unique ID."""
@@ -90,6 +91,10 @@ class CommandRegistry(QObject):
 
         return tuple(self._actions)
 
+    def recent_ids(self) -> tuple[str, ...]:
+        """Return successfully triggered commands, newest first."""
+
+        return tuple(self._recent_ids)
     def action(self, command_id: str) -> QAction:
         """Return the source QAction for a registered ID."""
 
@@ -127,4 +132,7 @@ class CommandRegistry(QObject):
         if not action.isEnabled():
             return False
         action.trigger()
+        self._recent_ids = [command_id] + [
+            item for item in self._recent_ids if item != command_id
+        ]
         return True

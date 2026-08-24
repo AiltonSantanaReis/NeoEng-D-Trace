@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 
 import pytest
-from PySide6.QtWidgets import QApplication, QWidgetAction
+from PySide6.QtWidgets import QApplication, QCheckBox, QDialog, QWidgetAction
 
 from scripts.audit_ui_capture import AuditConfig
 from src.models.scene import Scene
@@ -59,12 +59,14 @@ def test_stage4_groups_are_native_and_action_backed(qt_app):
             window.save_project_action,
             window.save_project_as_action,
         )
-        assert groups["edit"] == (window.undo_action, window.redo_action)
+        assert groups["edit"] == (window.undo_action, window.redo_action, window.settings_action)
         assert groups["view"] == (
             window.mask_viewer_action,
             window.collision_overlay_action,
             window.act_fit,
             window.act_100,
+            window.act_grid,
+            window.act_snap,
         )
         assert groups["export"] == (window.act_export, window.export_collision_button)
 
@@ -87,6 +89,7 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
     try:
         assert window.undo_action in window.edit_menu.actions()
         assert window.redo_action in window.edit_menu.actions()
+        assert window.settings_action in window.edit_menu.actions()
         assert window.mask_viewer_action in window.view_menu.actions()
         assert window.collision_overlay_action in window.view_menu.actions()
         assert window.act_fit in window.toolbar.actions()
@@ -115,6 +118,25 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
         ) == original
         assert window.undo_action in window.edit_menu.actions()
         assert window.mask_viewer_action in window.view_menu.actions()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage4_settings_dialog_commits_grid_and_snap(qt_app, monkeypatch):
+    window = _window(qt_app)
+    try:
+        def accept_with_changes(dialog):
+            dialog.findChild(QCheckBox, "view_settings_grid").setChecked(False)
+            dialog.findChild(QCheckBox, "view_settings_snap").setChecked(True)
+            return QDialog.DialogCode.Accepted
+
+        monkeypatch.setattr(QDialog, "exec", accept_with_changes)
+        window.settings_action.trigger()
+        assert window.canvas.is_grid_visible() is False
+        assert window.act_grid.isChecked() is False
+        assert window.canvas._vertex_snap_settings.enabled is True
+        assert window.act_snap.isChecked() is True
     finally:
         window.close()
         qt_app.processEvents()

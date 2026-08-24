@@ -12,6 +12,10 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QToolBar,
+    QCheckBox,
+    QDialog,
+    QDialogButtonBox,
+    QVBoxLayout,
 )
 
 # Imports de lógica e colisão estática
@@ -227,6 +231,9 @@ class MainWindow(QMainWindow):
         self.file_menu.addAction(self.act_export_collision_txt)
         self.canvas = CanvasView(scene)
         self.tool_palette = ToolPalette(self.canvas)
+        self.tool_palette.auxiliary_action_requested.connect(
+            self._handle_tool_palette_auxiliary
+        )
         self.side_panel = SidePanel(scene, self.canvas)
         self.layers = LayersPanel(scene)
         self.groups = GroupsPanel(scene)
@@ -299,6 +306,23 @@ class MainWindow(QMainWindow):
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_3)
         )
         self.xray_toolbar.addAction(self.act_xray3)
+
+        self.act_grid = QAction("Grid", self)
+        self.act_grid.setCheckable(True)
+        self.act_grid.setChecked(True)
+        self.act_grid.triggered.connect(self.canvas.set_grid_visible)
+
+        self.act_snap = QAction("Snap", self)
+        self.act_snap.setCheckable(True)
+        self.act_snap.triggered.connect(
+            lambda enabled: self.canvas.set_vertex_snapping(enabled, grid_size=16)
+        )
+        self.view_menu.addAction(self.act_grid)
+        self.view_menu.addAction(self.act_snap)
+
+        self.settings_action = QAction("View Settings", self)
+        self.settings_action.triggered.connect(self._open_view_settings)
+        self.edit_menu.addAction(self.settings_action)
 
         self.focus_button = QPushButton("Focus Selected", self)
         self.focus_button.setFlat(True)
@@ -466,6 +490,71 @@ class MainWindow(QMainWindow):
         self._update_undo_redo_actions()
         return result
 
+    def _handle_tool_palette_auxiliary(self, action_name: str) -> None:
+        """Execute auxiliary rail actions through the canonical MainWindow APIs."""
+
+        action = self.tool_palette.navigation_actions.get(action_name)
+        if action_name == "move_viewport":
+            self.canvas.set_pan_mode(bool(action and action.isChecked()))
+        elif action_name == "zoom_viewport":
+            self.canvas.set_zoom(min(50.0, self.canvas.get_zoom() * 1.25))
+        elif action_name == "fit_view":
+            self.canvas.fit_to_window()
+        elif action_name == "focus_selected":
+            self._focus_selected()
+        elif action_name == "validation":
+            self._show_panel(self.collision_panel)
+            self.collision_panel._sync_collision_manager_from_scene()
+
+    def _show_panel(self, panel) -> None:
+        """Select a panel in whichever responsive tab stack is visible."""
+
+        for tabs in (
+            getattr(self, "compact_panel_tabs", None),
+            getattr(self, "reference_panel_tabs", None),
+        ):
+            if tabs is None:
+                continue
+            index = tabs.indexOf(panel)
+            if index >= 0:
+                tabs.setCurrentIndex(index)
+                panel.setVisible(True)
+    def _open_view_settings(self) -> None:
+        """Open the live viewport settings dialog used by menus and palette."""
+
+        dialog = QDialog(self)
+        dialog.setObjectName("view_settings_dialog")
+        dialog.setWindowTitle(self.translations[self.current_lang]["view_settings"])
+        dialog.setModal(True)
+        layout = QVBoxLayout(dialog)
+
+        grid = QCheckBox(self.translations[self.current_lang]["grid"], dialog)
+        grid.setObjectName("view_settings_grid")
+        grid.setChecked(self.canvas.is_grid_visible())
+        grid.setAccessibleName(self.translations[self.current_lang]["grid"])
+        layout.addWidget(grid)
+
+        snap = QCheckBox(self.translations[self.current_lang]["snap"], dialog)
+        snap.setObjectName("view_settings_snap")
+        snap.setChecked(self.canvas._vertex_snap_settings.enabled)
+        snap.setAccessibleName(self.translations[self.current_lang]["snap"])
+        layout.addWidget(snap)
+
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel,
+            parent=dialog,
+        )
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+
+        self.view_settings_dialog = dialog
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.canvas.set_grid_visible(grid.isChecked())
+            self.act_grid.setChecked(grid.isChecked())
+            self.canvas.set_vertex_snapping(snap.isChecked(), grid_size=16)
+            self.act_snap.setChecked(snap.isChecked())
+
     def _select_tool(self, tool_name):
         if hasattr(self.tool_palette, "select_tool_by_name"):
             self.tool_palette.select_tool_by_name(tool_name)
@@ -602,6 +691,7 @@ class MainWindow(QMainWindow):
         self.edit_menu.setTitle(t["edit_menu"])
         self.undo_action.setText(t["undo"])
         self.redo_action.setText(t["redo"])
+        self.settings_action.setText(t["view_settings"])
 
         # View Menu
         self.view_menu.setTitle(t["view_menu"])

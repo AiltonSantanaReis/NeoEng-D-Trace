@@ -12,11 +12,11 @@ class ToolPalette(_ActionToolPalette):
 
     def _refresh_button_geometry(self) -> None:
         super()._refresh_button_geometry()
-        self.setMinimumWidth(148)
-        self.setMaximumWidth(164)
+        self.setMinimumWidth(56)
+        self.setMaximumWidth(72)
         for button in self.tool_buttons.values():
-            button.setMinimumSize(QSize(132, 40))
-            button.setMaximumWidth(132)
+            button.setMinimumSize(QSize(44, 40))
+            button.setMaximumWidth(56)
             button.updateGeometry()
         self.updateGeometry()
 

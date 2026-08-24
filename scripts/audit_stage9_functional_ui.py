@@ -22,9 +22,9 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import numpy as np  # noqa: E402
 from PIL import Image, ImageDraw  # noqa: E402
-from PySide6.QtCore import QPoint, QRect, QSize  # noqa: E402
+from PySide6.QtCore import QPoint, QPointF, QRect, QSize  # noqa: E402
 from PySide6.QtTest import QTest  # noqa: E402
-from PySide6.QtWidgets import QApplication, QScrollArea, QWidget  # noqa: E402
+from PySide6.QtWidgets import QApplication, QMenu, QScrollArea, QWidget  # noqa: E402
 
 from scripts.audit_ui_defect_capture import AuditConfig, fixture_scene  # noqa: E402
 from src.ui.main_window import MainWindow  # noqa: E402
@@ -251,6 +251,31 @@ def run(output: Path | None = None) -> dict[str, Any]:
         gizmo_off = (
             window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
         )
+
+        from src.core.transform_gesture import capture_transform_state
+
+        window.canvas.gizmo_toggle.click()
+        window.canvas._update_gizmo_screen_position()
+        before_gizmo = capture_transform_state(scene, ["audit_object"])
+        if window.canvas.gizmo is None:
+            raise RuntimeError("gizmo was not initialized for gesture audit")
+        window.canvas._gizmo_operation = window.canvas.gizmo.AXIS_X
+        gesture_started = window.canvas._begin_gizmo_object_gesture()
+        if gesture_started:
+            window.canvas._preview_gizmo_transform(translation=(20.0, 0.0))
+            gesture_result = window.canvas._finish_gizmo_gesture()
+        else:
+            gesture_result = None
+        committed = gesture_result is not None and gesture_result.status.name == "APPLIED"
+        after_gizmo = capture_transform_state(scene, ["audit_object"])
+        undo_result = scene.cmd.undo(scene)
+        restored = capture_transform_state(scene, ["audit_object"]) == before_gizmo
+        _record_action(
+            result["functional"],
+            "gizmo_gesture_transaction",
+            gesture_started and committed and after_gizmo != before_gizmo and restored and undo_result.status.name == "APPLIED",
+            {"started": gesture_started, "committed": committed, "restored_after_undo": restored},
+        )
         _record_action(
             result["functional"],
             "gizmo_toggle",
@@ -260,6 +285,21 @@ def run(output: Path | None = None) -> dict[str, Any]:
                 "state_roundtrip": gizmo_on and gizmo_off,
             },
         )
+
+        menu = window.reference_menu_button.menu()
+        menu.popup(window.reference_menu_button.mapToGlobal(QPoint(0, window.reference_menu_button.height())))
+        settle(app)
+        menu_rect = menu.geometry()
+        screen_geometry = app.primaryScreen().availableGeometry()
+        menus_on_screen = menu.isVisible() and screen_geometry.contains(menu_rect.topLeft()) and screen_geometry.contains(menu_rect.bottomRight())
+        menu.close()
+        _record_action(result["functional"], "menus_on_screen", menus_on_screen, {"geometry": [menu_rect.x(), menu_rect.y(), menu_rect.width(), menu_rect.height()], "screen": [screen_geometry.x(), screen_geometry.y(), screen_geometry.width(), screen_geometry.height()]})
+
+        scroll_checks = []
+        for scroll_area in window.findChildren(QScrollArea):
+            scroll_area.verticalScrollBar().setValue(scroll_area.verticalScrollBar().maximum())
+            scroll_checks.append(scroll_area.verticalScrollBar().value() == scroll_area.verticalScrollBar().maximum())
+        _record_action(result["functional"], "inspector_scroll", bool(scroll_checks) and all(scroll_checks), {"areas": len(scroll_checks), "passed": scroll_checks})
 
         window.open_scenario_editor()
         editor = window.scenario_editor_window
@@ -382,7 +422,8 @@ def run(output: Path | None = None) -> dict[str, Any]:
             "human_review": False,
             "source_tree_clean": result["source"]["worktree_clean"],
         }
-        result["status"] = "PASS" if all(result["checks"].values()) else "FAIL"
+        result["automated_status"] = "PASS" if result["checks"]["functional_actions"] and result["checks"]["visual_geometry"] else "FAIL"
+        result["status"] = "PASS_AUTOMATED_HUMAN_PENDING" if result["automated_status"] == "PASS" else "FAIL"
     except Exception as exc:
         result["fatal_error"] = {"type": type(exc).__name__, "message": str(exc)}
         result["status"] = "FAIL"

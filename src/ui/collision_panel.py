@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.logger import logger
+from src.core.polygon_validation import is_valid_polygon
 from src.ui.icon_library import configure_widget
 
 
@@ -124,6 +125,12 @@ class CollisionPanel(QWidget):
         button_layout.addWidget(self.strategy_combo)
         layout.addLayout(button_layout)
 
+        self.validation_text = QLabel("Validation: no collision shapes")
+        self.validation_text.setObjectName("collision_validation_summary")
+        self.validation_text.setWordWrap(True)
+        self.validation_text.setToolTip("Vertex count, convexity and topology for every collider")
+        layout.addWidget(self.validation_text)
+
         results_group = QGroupBox("Collision Results")
         results_layout = QVBoxLayout()
 
@@ -150,6 +157,38 @@ class CollisionPanel(QWidget):
 
         layout.addStretch()
 
+    def _update_validation_display(self) -> None:
+        """Show deterministic collider diagnostics required by the inspector."""
+
+        if not self.scene.collision_shapes:
+            self.validation_text.setText("Validation: no collision shapes")
+            return
+        rows = []
+        for object_id, shape in self.scene.collision_shapes.items():
+            points = [tuple(point) for point in shape]
+            convex = self._is_convex(points)
+            topology = "simple" if is_valid_polygon(list(points)) else "invalid"
+            rows.append(
+                f"{object_id}: vertices={len(points)} | "
+                f"convex={'yes' if convex else 'no'} | topology={topology}"
+            )
+        self.validation_text.setText("Validation: " + " ; ".join(rows))
+
+    @staticmethod
+    def _is_convex(points) -> bool:
+        if len(points) < 3:
+            return False
+        signs = []
+        for index, current in enumerate(points):
+            previous = points[index - 1]
+            following = points[(index + 1) % len(points)]
+            cross = (
+                (current[0] - previous[0]) * (following[1] - current[1])
+                - (current[1] - previous[1]) * (following[0] - current[0])
+            )
+            if abs(cross) > 1e-9:
+                signs.append(cross > 0)
+        return bool(signs) and all(value == signs[0] for value in signs)
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self)
         for toolbar_action in self.action_toolbar.actions():
@@ -173,6 +212,7 @@ class CollisionPanel(QWidget):
 
     def _on_scene_changed(self):
         self._sync_collision_manager_from_scene()
+        self._update_validation_display()
 
     def _sync_collision_manager_from_scene(self) -> bool:
         if self.collision_manager is None:
@@ -195,6 +235,7 @@ class CollisionPanel(QWidget):
                         )
                 else:
                     self.collision_manager.register(object_id, copy.deepcopy(shape))
+            self._update_validation_display()
             return True
         except Exception as exc:
             logger.error(

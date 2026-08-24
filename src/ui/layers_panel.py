@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QListWidget,
     QListWidgetItem,
+    QLineEdit,
     QMenu,
     QMessageBox,
     QPushButton,
@@ -40,8 +41,15 @@ class LayersPanel(QWidget):
         self.project_layers_page = QWidget()
         self.project_layers_layout = QVBoxLayout(self.project_layers_page)
         self.list = QListWidget()
+        self.search_input = QLineEdit()
+        self.search_input.setObjectName("layers_search")
+        self.search_input.setPlaceholderText("Search layers")
+        self.search_input.setAccessibleName("Search project layers")
+        self.search_input.setToolTip("Filter layers by name or ID")
+        self.search_input.textChanged.connect(self.refresh)
         self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._show_context_menu)
+        self.project_layers_layout.addWidget(self.search_input)
         self.project_layers_layout.addWidget(self.list)
 
         buttons = QGridLayout()
@@ -127,7 +135,10 @@ class LayersPanel(QWidget):
 
         self.list.blockSignals(True)
         self.list.clear()
+        query = self.search_input.text().strip().casefold()
         for layer in self.scene.layers:
+            if query and query not in layer.name.casefold() and query not in layer.id.casefold():
+                continue
             status = []
             if layer.locked:
                 status.append("[LOCKED]")

@@ -134,6 +134,7 @@ class ToolInterface:
 
 class CanvasView(QWidget):
     viewport_state_changed = Signal(str)
+    viewport_details_changed = Signal(str)
     pan_mode_changed = Signal(bool)
 
     VIEW_LIT = 0
@@ -303,6 +304,8 @@ class CanvasView(QWidget):
         self._dragging = False
         self._last_mouse = QPointF()
         self._pan_mode = False
+        self._grid_visible = True
+        self._cursor_image = (0, 0)
 
         # Flags de Estado
         self._preview_mode = False  # Modo de exportação (esconde UI helpers)
@@ -527,6 +530,7 @@ class CanvasView(QWidget):
     def _toggle_gizmo(self):
         self._gizmo_enabled = self.gizmo_toggle.isChecked()
         self.update()
+        self._emit_viewport_state()
 
     def set_vertex_snapping(
         self,
@@ -539,6 +543,17 @@ class CanvasView(QWidget):
         self._vertex_snap_settings = SnapSettings(
             enabled=bool(enabled), grid_size=grid_size, origin=origin
         )
+        self._emit_viewport_state()
+
+    def set_grid_visible(self, visible: bool) -> None:
+        """Show or hide the editor grid without changing scene coordinates."""
+
+        self._grid_visible = bool(visible)
+        self.update()
+        self._emit_viewport_state()
+
+    def is_grid_visible(self) -> bool:
+        return self._grid_visible
 
     def snap_vertex_position(self, position: tuple[float, float]) -> tuple[int, int]:
         """Apply the current vertex snap settings to an image-space point."""
@@ -825,6 +840,47 @@ class CanvasView(QWidget):
 
     def _emit_viewport_state(self) -> None:
         self.viewport_state_changed.emit(self.viewport_state_text())
+        self.viewport_details_changed.emit(self.viewport_details_text())
+
+    def viewport_details_text(self) -> str:
+        """Return the complete persistent HUD state required by the editor."""
+
+        selected = self._selected_object_ids()
+        snap = "ON" if self._vertex_snap_settings.enabled else "OFF"
+        grid = "ON" if self._grid_visible else "OFF"
+        gizmo = "ON" if self._gizmo_enabled else "OFF"
+        selection = ",".join(str(item) for item in selected) if selected else "NONE"
+        cursor = f"{self._cursor_image[0]},{self._cursor_image[1]}"
+        return (
+            f"{self.viewport_state_text()}  |  SNAP: {snap}  |  GRID: {grid}"
+            f"  |  GIZMO: {gizmo}  |  SEL: {selection}  |  CURSOR: {cursor}"
+        )
+
+    def viewport_compact_details_text(self) -> str:
+        """Return a compact status representation that fits the smallest layout."""
+
+        modes = {
+            self.VIEW_LIT: "LIT",
+            self.VIEW_XRAY_1: "XR1",
+            self.VIEW_XRAY_2: "XR2",
+            self.VIEW_XRAY_3: "XR3",
+            self.VIEW_COLLISION: "COL",
+        }
+        selected = len(self._selected_object_ids())
+        snap = "ON" if self._vertex_snap_settings.enabled else "OFF"
+        grid = "ON" if self._grid_visible else "OFF"
+        gizmo = "ON" if self._gizmo_enabled else "OFF"
+        return (
+            f"VIEW:{modes.get(self._view_mode, '?')} | Z:{self._zoom:.2f}x | "
+            f"S:{snap} | G:{grid} | GIZ:{gizmo} | SEL:{selected} | "
+            f"CUR:{self._cursor_image[0]},{self._cursor_image[1]}"
+        )
+    def _update_cursor_position(self, pos: QPointF) -> None:
+        cursor = self.widget_to_image(pos)
+        if cursor == self._cursor_image:
+            return
+        self._cursor_image = cursor
+        self.viewport_details_changed.emit(self.viewport_details_text())
 
     def set_view_mode(self, mode: int):
         self._view_mode = mode
@@ -1219,6 +1275,7 @@ class CanvasView(QWidget):
 
     def mouseMoveEvent(self, event: QMouseEvent):
         pos = event.position()
+        self._update_cursor_position(pos)
 
         if self._scenario_preview_enabled:
             if self._dragging:
@@ -1629,6 +1686,8 @@ class CanvasView(QWidget):
                 painter.drawPolygon(qpoly)
 
     def _draw_grid(self, painter: QPainter, w: int, h: int):
+        if not self._grid_visible:
+            return
         # Grid leve para referência
         step = 64
         painter.setPen(QPen(QColor(255, 255, 255, 30), 1))

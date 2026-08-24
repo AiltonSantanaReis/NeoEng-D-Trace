@@ -153,7 +153,7 @@ def configure_top_toolbars(window: Any) -> None:
     groups["edit"] = _add_group(
         main_toolbar,
         "edit",
-        (window.undo_action, window.redo_action),
+        (window.undo_action, window.redo_action, window.settings_action),
     )
     groups["view"] = _add_group(
         main_toolbar,
@@ -163,6 +163,8 @@ def configure_top_toolbars(window: Any) -> None:
             window.collision_overlay_action,
             window.act_fit,
             window.act_100,
+            window.act_grid,
+            window.act_snap,
         ),
     )
     groups["export"] = _add_group(

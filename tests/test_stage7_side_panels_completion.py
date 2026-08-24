@@ -83,6 +83,13 @@ def test_objects_panel_has_compact_commands_and_real_selection(qt_app):
         _assert_toolbar_contract(panel.export_action_toolbar, 2)
         assert panel.scroll_area.verticalScrollBar().maximum() >= 0
         assert panel.list.count() == 2
+        assert panel.search_input.objectName() == "objects_search"
+        panel.search_input.setText("B")
+        qt_app.processEvents()
+        assert panel.list.count() == 1
+        assert panel.list.item(0).text().startswith("B")
+        panel.search_input.clear()
+        qt_app.processEvents()
 
         scene.selected_id = None
         panel.refresh()
@@ -96,6 +103,13 @@ def test_objects_panel_has_compact_commands_and_real_selection(qt_app):
         )
         qt_app.processEvents()
         assert scene.selected_id == "A"
+        assert panel.pivot_x.value() == pytest.approx(0.5)
+        assert panel.pivot_y.value() == pytest.approx(0.5)
+        panel.pivot_x.setValue(0.25)
+        panel.pivot_y.setValue(0.75)
+        panel.btn_apply_transform.click()
+        qt_app.processEvents()
+        assert scene.objects["A"].pivot == pytest.approx((0.25, 0.75))
         assert panel.transform_group.isEnabled()
         assert panel.btn_apply_transform.isEnabled()
         assert panel.properties_action_toolbar.actions()[2].isEnabled()
@@ -140,6 +154,10 @@ def test_layers_panel_toolbar_and_selection_are_live(qt_app):
         qt_app.processEvents()
 
         _assert_toolbar_contract(panel.action_toolbar, 6)
+        assert panel.list.count() == len(scene.layers)
+        assert panel.search_input.objectName() == "layers_search"
+        panel.search_input.setText("Layer")
+        qt_app.processEvents()
         assert panel.list.count() == len(scene.layers)
         panel.list.setCurrentRow(0)
         assert panel.list.currentItem() is not None
@@ -186,6 +204,8 @@ def test_collision_panel_toolbar_and_real_batch_action(qt_app):
         assert panel.auto_gen_btn.isHidden()
 
         assert panel._sync_collision_manager_from_scene()
+        assert "A: vertices=4" in panel.validation_text.text()
+        assert "topology=simple" in panel.validation_text.text()
         panel.action_toolbar.actions()[0].trigger()
         qt_app.processEvents()
         assert "Collision Test Results" in panel.results_text.toPlainText()
