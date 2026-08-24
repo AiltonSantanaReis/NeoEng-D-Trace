@@ -1,0 +1,206 @@
+version: 1
+status: normative
+description: >-
+  Registro canônico de identificadores estáveis do produto profissional.
+  IDs são imutáveis depois de publicados. Nomes de UI podem mudar sem alterar IDs.
+
+id_rules:
+  charset: "A-Z, 0-9 e hífen"
+  case: uppercase
+  separator: "-"
+  no_spaces: true
+  no_accents: true
+  no_sequential_only_ids: true
+  immutable_after_publication: true
+  deprecated_ids_must_remain_reserved: true
+  display_names_are_not_identifiers: true
+
+formats:
+  module: "MOD-[LAYER]-[NAME]"
+  requirement: "REQ-F[PHASE]-[DOMAIN]-[NAME]"
+  feature: "FEAT-[DOMAIN]-[ACTION]"
+  component: "CMP-[TYPE]"
+  test: "TEST-[DOMAIN]-[BEHAVIOR]"
+  evidence: "EVID-F[PHASE]-[TYPE]-[NAME]"
+  build: "BUILD-F[PHASE]-[PURPOSE]-[DATE]-[SHORTSHA]"
+  baseline: "BASE-F[PHASE]-[DATE]-[SHORTSHA]"
+  adr: "ADR-[DOMAIN]-[DECISION]"
+  risk: "RISK-[DOMAIN]-[NAME]"
+
+modules:
+  - id: MOD-DOMAIN-SCENE
+    owner: scene-domain
+    status: planned
+  - id: MOD-RENDER-CORE
+    owner: renderer
+    status: planned
+  - id: MOD-RENDER-BACKEND
+    owner: renderer
+    status: planned
+  - id: MOD-EDITOR-SCENE-VIEWPORT
+    owner: editor
+    status: planned
+  - id: MOD-EDITOR-INSPECTOR
+    owner: editor
+    status: planned
+  - id: MOD-EDITOR-LAYER-STACK
+    owner: editor
+    status: planned
+  - id: MOD-EDITOR-CANVAS-VIEW
+    owner: editor
+    status: existing-specialized
+  - id: MOD-RUNTIME-PLAYBACK
+    owner: runtime
+    status: planned
+  - id: MOD-TOOLS-EVIDENCE
+    owner: qa-governance
+    status: planned
+
+components:
+  - id: CMP-SCENE-ENTITY
+    status: planned
+  - id: CMP-CAMERA-ORTHOGRAPHIC
+    status: planned
+  - id: CMP-PARALLAX-LAYER
+    status: planned
+  - id: CMP-LIGHT-AMBIENT
+    status: planned
+  - id: CMP-LIGHT-DIRECTIONAL
+    status: planned
+  - id: CMP-LIGHT-POINT
+    status: planned
+  - id: CMP-PARTICLE-EMITTER
+    status: planned
+  - id: CMP-MATERIAL-SPRITE
+    status: planned
+  - id: CMP-MASK-COMPOSITOR
+    status: planned
+
+requirements:
+  - id: REQ-F01-GOV-ID-REGISTRY
+    title: canonical stable ID registry
+    status: planned
+  - id: REQ-F01-GOV-TRACEABILITY
+    title: requirement to test to evidence traceability
+    status: planned
+  - id: REQ-F02-RENDER-VERTICAL-SLICE
+    title: real renderer vertical slice
+    status: planned
+  - id: REQ-F02-EVIDENCE-AUTOMATION
+    title: automated evidence package collection
+    status: planned
+  - id: REQ-F03-SCENE-PERSISTENCE
+    title: deterministic scene persistence and migration
+    status: planned
+  - id: REQ-F04-SCENE-VIEWPORT
+    title: professional scene viewport as primary viewport
+    status: planned
+  - id: REQ-F05-PRO-INSPECTOR
+    title: professional inspector and layer stack
+    status: planned
+  - id: REQ-F06-2P5D-CAMERA
+    title: orthographic camera and depth composition
+    status: planned
+  - id: REQ-F06-2P5D-PARALLAX
+    title: depth-based parallax
+    status: planned
+  - id: REQ-F07-LIGHT-AMBIENT
+    title: visible ambient lighting
+    status: planned
+  - id: REQ-F07-LIGHT-DIR
+    title: visible directional lighting
+    status: planned
+  - id: REQ-F07-LIGHT-POINT
+    title: visible point lighting
+    status: planned
+  - id: REQ-F08-PARTICLE-RENDER
+    title: visible particle rendering
+    status: planned
+  - id: REQ-F08-PARTICLE-REPLAY
+    title: deterministic particle replay
+    status: planned
+  - id: REQ-F09-PLAYBACK-CONTROL
+    title: play pause stop and frame-step playback
+    status: planned
+  - id: REQ-F09-RUNTIME-EQUIVALENCE
+    title: editor and runtime visual equivalence
+    status: planned
+  - id: REQ-F10-COMPOSITE-PASSES
+    title: explicit composition passes and post-processing
+    status: planned
+  - id: REQ-F11-CLEAN-DISTRIBUTION
+    title: clean installation and reproducible package
+    status: planned
+  - id: REQ-F12-QUALITY-GATES
+    title: functional visual performance and compatibility gates
+    status: planned
+  - id: REQ-F13-HUMAN-REVIEW
+    title: formal human review and release approval
+    status: planned
+
+features:
+  - id: FEAT-CAM-ORTHO-ZOOM
+    display_name: Zoom da câmera ortográfica
+    requirement: REQ-F06-2P5D-CAMERA
+  - id: FEAT-CAM-DEPTH-PARALLAX
+    display_name: Parallax por profundidade
+    requirement: REQ-F06-2P5D-PARALLAX
+  - id: FEAT-LIGHT-AMBIENT
+    display_name: Luz ambiente
+    requirement: REQ-F07-LIGHT-AMBIENT
+  - id: FEAT-LIGHT-DIRECTIONAL
+    display_name: Luz direcional
+    requirement: REQ-F07-LIGHT-DIR
+  - id: FEAT-LIGHT-POINT
+    display_name: Luz pontual
+    requirement: REQ-F07-LIGHT-POINT
+  - id: FEAT-PARTICLE-EMIT
+    display_name: Emissão de partículas
+    requirement: REQ-F08-PARTICLE-RENDER
+  - id: FEAT-PARTICLE-REPLAY
+    display_name: Replay determinístico de partículas
+    requirement: REQ-F08-PARTICLE-REPLAY
+  - id: FEAT-INSP-TRANSFORM
+    display_name: Inspector de transformação
+    requirement: REQ-F05-PRO-INSPECTOR
+  - id: FEAT-VIEWPORT-MINIMAP
+    display_name: Minimap do viewport
+    requirement: REQ-F04-SCENE-VIEWPORT
+
+traceability:
+  REQ-F02-EVIDENCE-AUTOMATION:
+    features:
+      - FEAT-QA-EVIDENCE-PACKAGE
+    tests:
+      - TEST-QA-EVIDENCE-MANIFEST
+      - TEST-QA-EVIDENCE-HASH
+      - TEST-QA-EVIDENCE-COMMIT
+    evidence:
+      - EVID-F02-AUTOMATION-MANIFEST
+      - EVID-F02-AUTOMATION-REPORT
+
+  REQ-F07-LIGHT-DIR:
+    features:
+      - FEAT-LIGHT-DIRECTIONAL
+    components:
+      - CMP-LIGHT-DIRECTIONAL
+    tests:
+      - TEST-LIGHT-DIRECTIONAL-PIXELS
+      - TEST-LIGHT-DIRECTIONAL-PERSISTENCE
+      - TEST-LIGHT-DIRECTIONAL-RUNTIME
+    evidence:
+      - EVID-F07-GOLDEN-LIGHT-DIR
+      - EVID-F07-RUNTIME-LIGHT-DIR
+
+  REQ-F08-PARTICLE-RENDER:
+    features:
+      - FEAT-PARTICLE-EMIT
+    components:
+      - CMP-PARTICLE-EMITTER
+    tests:
+      - TEST-PARTICLE-EMIT-PIXELS
+      - TEST-PARTICLE-LIFECYCLE
+      - TEST-PARTICLE-STRESS
+    evidence:
+      - EVID-F08-GOLDEN-PARTICLE
+      - EVID-F08-PERFORMANCE-PARTICLE
