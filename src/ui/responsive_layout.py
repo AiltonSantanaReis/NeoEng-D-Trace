@@ -244,6 +244,13 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     desktop_panel_splitter.addWidget(reference_panel_tabs)
 
     compact_panel_tabs = QTabWidget()
+    compact_panel_tabs.setObjectName('compact_panel_tabs')
+    compact_panel_tabs.setAccessibleName('Compact inspector panel tabs')
+    compact_panel_tabs.setAccessibleDescription('Switch between objects, layers, groups and collision panels')
+    compact_panel_tabs.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+    compact_panel_tabs.tabBar().setAccessibleName('Compact inspector panel tabs')
+    compact_panel_tabs.tabBar().setAccessibleDescription('Switch between objects, layers, groups and collision panels')
+    compact_panel_tabs.tabBar().setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     compact_panel_tabs.setDocumentMode(True)
     compact_panel_tabs.setElideMode(Qt.TextElideMode.ElideRight)
     compact_panel_tabs.setSizePolicy(

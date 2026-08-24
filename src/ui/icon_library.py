@@ -14,7 +14,7 @@ from typing import Any, Final
 from PySide6.QtCore import QByteArray, QSize, Qt
 from PySide6.QtGui import QAction, QIcon, QPainter, QPixmap
 from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QAbstractButton, QWidget
 
 from src.core.logger import logger
 from src.ui.theme_tokens import THEME_TOKENS
@@ -359,12 +359,20 @@ def configure_widget(
     *,
     tooltip: str | None = None,
     accessible_name: str | None = None,
+    accessible_description: str | None = None,
 ) -> QWidget:
     """Apply icon metadata to an icon-capable widget without removing text."""
 
     spec = ICON_SPECS[key]
-    widget.setToolTip(tooltip or spec.accessible_name)
-    widget.setAccessibleName(accessible_name or spec.accessible_name)
+    resolved_name = accessible_name or spec.accessible_name
+    resolved_tooltip = tooltip or spec.accessible_name
+    widget.setToolTip(resolved_tooltip)
+    widget.setAccessibleName(resolved_name)
+    widget.setAccessibleDescription(
+        accessible_description or ('Activate ' + resolved_name)
+    )
+    if isinstance(widget, QAbstractButton):
+        widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     widget.setProperty("iconKey", key)
     try:
         icon_setter = getattr(widget, "setIcon")

@@ -35,6 +35,7 @@ Quando dois documentos ativos discordarem, a execução deverá ser bloqueada at
 | `ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md` | ATIVO / ADR | Limites técnicos de runtime e efeitos | governança | runtime e claims de capacidade |
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | Requisitos e direção visual da interface | plano normativo | UI, inspector e shell |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | Escopo e reconciliação da Etapa 5 | etapa e governança | prova da Etapa 5 |
+| vidence/ETAPA_10_ACESSIBILIDADE_ANALISE_IMPACTO_2026-08-24.md | ATIVO / EVIDÊNCIA | Análise de impacto e auditoria inicial da Etapa 10 | governança, plano de interface e registro de IDs | acessibilidade e usabilidade da Etapa 10 |
 
 ## 3. Documentos históricos
 
