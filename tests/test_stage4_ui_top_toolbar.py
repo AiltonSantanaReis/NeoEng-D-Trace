@@ -164,12 +164,75 @@ def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_mode
         assert not window.act_clean.icon().isNull()
         window.resize(1920, 1080)
         qt_app.processEvents()
-        assert toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-        assert window.reference_focus_button.text() == "Focus Selected"
+        assert toolbar.toolButtonStyle().name == "ToolButtonTextUnderIcon"
+        assert window.reference_focus_button.text() == "Focus"
         window.resize(1280, 720)
         qt_app.processEvents()
         assert toolbar.toolButtonStyle().name == "ToolButtonIconOnly"
         assert window.reference_focus_button.text() == "Focus"
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_app):
+    window = _window(qt_app)
+    try:
+        window.resize(1920, 1080)
+        window.show()
+        qt_app.processEvents()
+
+        visible = (
+            window.reference_open_button,
+            window.reference_save_button,
+            window.reference_export_button,
+            window.reference_fit_button,
+            window.reference_focus_button,
+            window.reference_view_button,
+            window.reference_collision_button,
+            window.reference_parallax_button,
+            window.reference_pan_button,
+            window.reference_select_button,
+            window.reference_undo_button,
+            window.reference_redo_button,
+        )
+        assert [button.text() for button in visible] == [
+            "Open",
+            "Save",
+            "Export",
+            "Fit View",
+            "Focus",
+            "View",
+            "Collision",
+            "Parallax",
+            "Pan",
+            "Select",
+            "Undo",
+            "Redo",
+        ]
+        assert all("..." not in button.text() for button in visible)
+        assert all(button.width() >= button.minimumWidth() for button in visible)
+
+        assert [
+            action.text() for action in window.reference_open_button.menu().actions()
+        ] == [
+            "Open Project...",
+            "Open Image",
+        ]
+        assert [
+            action.text() for action in window.reference_save_button.menu().actions()
+        ] == [
+            "Save",
+            "Save As...",
+        ]
+        assert [
+            action.text() for action in window.reference_export_button.menu().actions()
+        ] == [
+            "Export...",
+            "Export Collision (JSON)",
+            "Export Collision (TXT)",
+        ]
+        assert window.reference_menu_button.isVisible() is False
     finally:
         window.close()
         qt_app.processEvents()

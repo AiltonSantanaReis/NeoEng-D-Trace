@@ -107,7 +107,7 @@ class ResponsivePanelLayout:
         style = (
             Qt.ToolButtonStyle.ToolButtonIconOnly
             if compact
-            else Qt.ToolButtonStyle.ToolButtonTextBesideIcon
+            else Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         )
         toolbar.setToolButtonStyle(style)
         for button in toolbar.findChildren(QToolButton):
@@ -128,7 +128,7 @@ class ResponsivePanelLayout:
             self.owner, "focus_button", None
         )
         if focus_button is not None:
-            focus_button.setText("Focus" if compact else "Focus Selected")
+            focus_button.setText("Focus")
 
     def _apply_geometry(self) -> None:
         """Reserve the visible reference palette, viewport and inspector dock."""

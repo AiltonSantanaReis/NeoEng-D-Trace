@@ -79,9 +79,9 @@ QToolBar#reference_top_toolbar QToolButton#reference_menu_button {{
     padding: 0px;
 }}
 QToolBar#reference_top_toolbar QToolButton {{
-    min-width: 54px;
+    min-width: 60px;
     min-height: 58px;
-    padding: 4px 7px 2px;
+    padding: 3px 5px 2px;
     border: 1px solid transparent;
     border-radius: 4px;
 }}
