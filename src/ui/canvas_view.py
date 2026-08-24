@@ -877,6 +877,7 @@ class CanvasView(QWidget):
             f"S:{snap} | G:{grid} | GIZ:{gizmo} | SEL:{selected} | "
             f"CUR:{self._cursor_image[0]},{self._cursor_image[1]}"
         )
+
     def _update_cursor_position(self, pos: QPointF) -> None:
         cursor = self.widget_to_image(pos)
         if cursor == self._cursor_image:

@@ -16,8 +16,8 @@ from PySide6.QtGui import QIcon, QPainter, QPixmap
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import QToolBar, QWidget
 
-from src.ui.theme_tokens import THEME_TOKENS
 from src.ui.icon_library import ICON_SPECS, icon_for
+from src.ui.theme_tokens import THEME_TOKENS
 
 _TOOLBAR_ICON_SIZE = QSize(18, 18)
 _TOOLBAR_STYLE = Qt.ToolButtonStyle.ToolButtonTextBesideIcon
@@ -67,7 +67,11 @@ def _configure_semantic_action_icons(window: Any) -> None:
     ):
         action = getattr(window, name)
         action.setIcon(_action_icon(key))
-        label = ICON_SPECS[key].accessible_name if key in ICON_SPECS else _ACTION_ICON_BODIES[key][0]
+        label = (
+            ICON_SPECS[key].accessible_name
+            if key in ICON_SPECS
+            else _ACTION_ICON_BODIES[key][0]
+        )
         action.setToolTip(label)
         action.setStatusTip(label)
         action.setProperty("accessibleName", label)

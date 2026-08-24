@@ -126,7 +126,6 @@ class ViewportOverlayBar(QWidget):
         self._compact = bool(compact)
         self._sync(self.canvas.viewport_state_text())
 
-
     def _set_snap(self, enabled: bool) -> None:
         self.canvas.set_vertex_snapping(enabled, grid_size=16)
         self._sync(self.canvas.viewport_state_text())

@@ -7,7 +7,7 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
-from PySide6.QtCore import QObject, QPointF, QRectF, QTimer, Qt, QThread, Signal
+from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import (
     QAction,
     QColor,
@@ -370,14 +370,20 @@ class MaskViewer(QWidget):
         """Get the current image as numpy array."""
         return self._image.copy() if self._image is not None else None
 
-    def get_processing_image(self, use_active_view: bool = False) -> Optional[np.ndarray]:
+    def get_processing_image(
+        self, use_active_view: bool = False
+    ) -> Optional[np.ndarray]:
         """Return the explicit image source selected for a processing tool.
 
         The original scene image remains the default. When requested, the
         currently selected X-Ray result is returned without mutating the
         original scene image.
         """
-        if use_active_view and self._display_mode != 0 and self._display_image is not None:
+        if (
+            use_active_view
+            and self._display_mode != 0
+            and self._display_image is not None
+        ):
             return self._display_image.copy()
         return self._image.copy() if self._image is not None else None
 
@@ -644,17 +650,11 @@ class MaskViewer(QWidget):
                 fmt = QImage.Format.Format_Grayscale8
                 display = source
             elif source.ndim == 3 and source.shape[2] == 3:
-                display = (
-                    cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
-                    if HAS_CV2
-                    else source
-                )
+                display = cv2.cvtColor(source, cv2.COLOR_BGR2RGB) if HAS_CV2 else source
                 fmt = QImage.Format.Format_RGB888
             elif source.ndim == 3 and source.shape[2] == 4:
                 display = (
-                    cv2.cvtColor(source, cv2.COLOR_BGRA2RGBA)
-                    if HAS_CV2
-                    else source
+                    cv2.cvtColor(source, cv2.COLOR_BGRA2RGBA) if HAS_CV2 else source
                 )
                 fmt = QImage.Format.Format_RGBA8888
             else:
@@ -667,9 +667,7 @@ class MaskViewer(QWidget):
             height, width = display.shape[:2]
             step = display.strides[0]
 
-            self._qimage_cache = QImage(
-                display.data, width, height, step, fmt
-            ).copy()
+            self._qimage_cache = QImage(display.data, width, height, step, fmt).copy()
             return self._qimage_cache
         except Exception as e:
             logger.error(f"Image conversion error: {e}")
@@ -964,7 +962,6 @@ class MaskViewerDialog(QDialog):
         self.processing_source_combo.addItem("", "active_view")
         source_layout.addWidget(self.processing_source_combo, 1)
         detection_layout.addLayout(source_layout)
-
 
         self.detect_button = QPushButton()
         self.detect_button.clicked.connect(self._run_detection)

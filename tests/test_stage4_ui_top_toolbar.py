@@ -5,7 +5,13 @@ from __future__ import annotations
 import sys
 
 import pytest
-from PySide6.QtWidgets import QApplication, QCheckBox, QDialog, QToolButton, QWidgetAction
+from PySide6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QDialog,
+    QToolButton,
+    QWidgetAction,
+)
 
 from scripts.audit_ui_capture import AuditConfig
 from src.models.scene import Scene
@@ -59,7 +65,11 @@ def test_stage4_groups_are_native_and_action_backed(qt_app):
             window.save_project_action,
             window.save_project_as_action,
         )
-        assert groups["edit"] == (window.undo_action, window.redo_action, window.settings_action)
+        assert groups["edit"] == (
+            window.undo_action,
+            window.redo_action,
+            window.settings_action,
+        )
         assert groups["view"] == (
             window.mask_viewer_action,
             window.collision_overlay_action,
@@ -123,7 +133,9 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
         qt_app.processEvents()
 
 
-def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_modes(qt_app):
+def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_modes(
+    qt_app,
+):
     window = _window(qt_app)
     try:
         toolbar = window.reference_top_toolbar
@@ -166,6 +178,7 @@ def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_mode
 def test_stage4_settings_dialog_commits_grid_and_snap(qt_app, monkeypatch):
     window = _window(qt_app)
     try:
+
         def accept_with_changes(dialog):
             dialog.findChild(QCheckBox, "view_settings_grid").setChecked(False)
             dialog.findChild(QCheckBox, "view_settings_snap").setChecked(True)

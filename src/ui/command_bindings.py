@@ -40,10 +40,19 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("scenario.reset", window.scenario_reset_action),
             ("scenario.export", window.scenario_export_action),
             ("tool.validation", window.tool_palette.navigation_actions["validation"]),
-            ("tool.move_viewport", window.tool_palette.navigation_actions["move_viewport"]),
-            ("tool.zoom_viewport", window.tool_palette.navigation_actions["zoom_viewport"]),
+            (
+                "tool.move_viewport",
+                window.tool_palette.navigation_actions["move_viewport"],
+            ),
+            (
+                "tool.zoom_viewport",
+                window.tool_palette.navigation_actions["zoom_viewport"],
+            ),
             ("tool.fit_view", window.tool_palette.navigation_actions["fit_view"]),
-            ("tool.focus_selected", window.tool_palette.navigation_actions["focus_selected"]),
+            (
+                "tool.focus_selected",
+                window.tool_palette.navigation_actions["focus_selected"],
+            ),
         ]
     )
     for tool_name, action in window.tool_palette._tool_actions.items():

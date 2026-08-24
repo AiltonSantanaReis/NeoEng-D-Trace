@@ -88,7 +88,7 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
         else:
             toolbar.addAction(action)
             button = toolbar.widgetForAction(action)
-            if button is not None:
+            if isinstance(button, QToolButton):
                 button.setMinimumSize(QSize(44, 32))
                 button.setMaximumSize(QSize(56, 36))
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -139,9 +139,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
 
     view_button = _command_button(window, "view", "View", "View and navigation menu")
     _menu_button(view_button, (window.act_grid, window.act_snap))
-    render_button = _command_button(
-        window, "lit", "Render", "Render and mask menu"
-    )
+    render_button = _command_button(window, "lit", "Render", "Render and mask menu")
     _menu_button(
         render_button,
         (
@@ -177,7 +175,9 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     pan_button = toolbar.widgetForAction(pan_action)
     select_button = toolbar.widgetForAction(select_action)
     if pan_button is None or select_button is None:
-        raise RuntimeError("reference navigation actions did not create toolbar buttons")
+        raise RuntimeError(
+            "reference navigation actions did not create toolbar buttons"
+        )
     pan_button.setObjectName("reference_pan_button")
     select_button.setObjectName("reference_select_button")
 

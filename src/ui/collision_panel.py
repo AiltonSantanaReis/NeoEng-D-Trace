@@ -128,7 +128,9 @@ class CollisionPanel(QWidget):
         self.validation_text = QLabel("Validation: no collision shapes")
         self.validation_text.setObjectName("collision_validation_summary")
         self.validation_text.setWordWrap(True)
-        self.validation_text.setToolTip("Vertex count, convexity and topology for every collider")
+        self.validation_text.setToolTip(
+            "Vertex count, convexity and topology for every collider"
+        )
         layout.addWidget(self.validation_text)
 
         results_group = QGroupBox("Collision Results")
@@ -182,13 +184,13 @@ class CollisionPanel(QWidget):
         for index, current in enumerate(points):
             previous = points[index - 1]
             following = points[(index + 1) % len(points)]
-            cross = (
-                (current[0] - previous[0]) * (following[1] - current[1])
-                - (current[1] - previous[1]) * (following[0] - current[0])
-            )
+            cross = (current[0] - previous[0]) * (following[1] - current[1]) - (
+                current[1] - previous[1]
+            ) * (following[0] - current[0])
             if abs(cross) > 1e-9:
                 signs.append(cross > 0)
         return bool(signs) and all(value == signs[0] for value in signs)
+
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self)
         for toolbar_action in self.action_toolbar.actions():

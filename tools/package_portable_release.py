@@ -12,11 +12,17 @@ from pathlib import Path
 
 from PyInstaller import __version__ as PYINSTALLER_VERSION
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-if str(REPOSITORY_ROOT) not in os.sys.path:
-    os.sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
+def _load_app_identity():
+    repository_root = Path(__file__).resolve().parents[1]
+    if str(repository_root) not in os.sys.path:
+        os.sys.path.insert(0, str(repository_root))
+    from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
+
+    return APP_DISPLAY_NAME, APP_VERSION
+
+
+APP_DISPLAY_NAME, APP_VERSION = _load_app_identity()
 
 MANIFEST_NAME = "release-manifest.json"
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)

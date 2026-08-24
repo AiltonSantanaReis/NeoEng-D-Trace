@@ -5,9 +5,9 @@ from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QGridLayout,
+    QLineEdit,
     QListWidget,
     QListWidgetItem,
-    QLineEdit,
     QMenu,
     QMessageBox,
     QPushButton,
@@ -137,7 +137,11 @@ class LayersPanel(QWidget):
         self.list.clear()
         query = self.search_input.text().strip().casefold()
         for layer in self.scene.layers:
-            if query and query not in layer.name.casefold() and query not in layer.id.casefold():
+            if (
+                query
+                and query not in layer.name.casefold()
+                and query not in layer.id.casefold()
+            ):
                 continue
             status = []
             if layer.locked:

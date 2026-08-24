@@ -2,6 +2,7 @@
 import os
 import time
 from pathlib import Path
+
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
@@ -12,6 +13,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QToolBar,
 )
+
 # Imports de lógica e colisão estática
 from src.collision import StaticCollisionManager
 from src.core.app_identity import build_window_title
@@ -54,6 +56,7 @@ from src.ui.scenario_preview_actions import install_scenario_preview_actions
 from src.ui.side_panel import SidePanel
 from src.ui.tool_palette import ToolPalette
 from src.ui.viewport_actions import install_viewport_actions
+
 
 class MainWindow(QMainWindow):
 
@@ -596,19 +599,16 @@ class MainWindow(QMainWindow):
         if hasattr(self, "act_portuguese"):
             self.act_portuguese.setText(t["portuguese"])
 
-        # --- ATUALIZAÇÃO DO MENU (CORRIGIDA) ---
-        # Edit Menu
         self.edit_menu.setTitle(t["edit_menu"])
         self.undo_action.setText(t["undo"])
         self.redo_action.setText(t["redo"])
-        self.settings_action.setText(t["view_settings"])
+        getattr(self, "settings_action").setText(t["view_settings"])
 
         # View Menu
         self.view_menu.setTitle(t["view_menu"])
         self.mask_viewer_action.setText(t["mask_viewer"])
         self.collision_overlay_action.setText(t["collision_overlay"])
 
-        # Update other components
         self.command_palette.update_language(self.current_lang)
         if hasattr(self.side_panel, "update_language"):
             self.side_panel.update_language(self.current_lang)

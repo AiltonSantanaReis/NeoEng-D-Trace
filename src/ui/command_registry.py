@@ -95,6 +95,7 @@ class CommandRegistry(QObject):
         """Return successfully triggered commands, newest first."""
 
         return tuple(self._recent_ids)
+
     def action(self, command_id: str) -> QAction:
         """Return the source QAction for a registered ID."""
 

@@ -1,15 +1,15 @@
 # src/ui/side_panel.py
 from PySide6.QtCore import QSignalBlocker, QSize, Qt
 from PySide6.QtWidgets import (
+    QCheckBox,
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
     QGroupBox,
     QInputDialog,
     QLabel,
-    QCheckBox,
-    QLineEdit,
     QLayout,
+    QLineEdit,
     QListWidget,
     QMenu,
     QMessageBox,
@@ -188,7 +188,9 @@ class SidePanel(QWidget):
         metadata_layout.addWidget(self.metadata_label)
         scenario_button = QPushButton("Open Scenario Editor")
         scenario_button.setObjectName("open_scenario_editor_from_inspector")
-        scenario_button.clicked.connect(lambda: getattr(self.window(), "open_scenario_editor", lambda: None)())
+        scenario_button.clicked.connect(
+            lambda: getattr(self.window(), "open_scenario_editor", lambda: None)()
+        )
         metadata_layout.addWidget(scenario_button)
         layout.addWidget(metadata_group)
 
@@ -463,9 +465,15 @@ class SidePanel(QWidget):
             self.metadata_label.setText("No object selected")
             return
         self.metadata_label.setText(
-            f"ID: {obj.id} | Vertices: {len(obj.polygon)} | Collision: {'yes' if oid in self.scene.collision_shapes else 'no'}"
+            f"ID: {obj.id} | Vertices: {len(obj.polygon)} | "
+            f"Collision: {'yes' if oid in self.scene.collision_shapes else 'no'}"
         )
-        values = (*tuple(obj.position), *tuple(obj.rotation), *tuple(obj.scale), *tuple(getattr(obj, "pivot", (0.5, 0.5))))
+        values = (
+            *tuple(obj.position),
+            *tuple(obj.rotation),
+            *tuple(obj.scale),
+            *tuple(getattr(obj, "pivot", (0.5, 0.5))),
+        )
         for widget, value in zip(widgets, values):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))

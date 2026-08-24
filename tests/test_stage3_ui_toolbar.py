@@ -34,18 +34,33 @@ def test_stage3_toolbar_is_vertical_action_backed_and_grouped(qt_app):
         assert toolbar.isFloatable() is False
 
         actions = toolbar.actions()
-        tool_actions = [action for action in actions if action.objectName().startswith("tool_action_")]
+        tool_actions = [
+            action
+            for action in actions
+            if action.objectName().startswith("tool_action_")
+        ]
         assert len(tool_actions) == 9
-        rail_actions = [action for action in actions if action.objectName().startswith("rail_action_")]
+        rail_actions = [
+            action
+            for action in actions
+            if action.objectName().startswith("rail_action_")
+        ]
         assert len(rail_actions) == 5
         assert sum(action.isSeparator() for action in actions) == 3
         assert all(action in toolbar.action_group.actions() for action in tool_actions)
         assert toolbar.action_group.isExclusive() is True
         assert toolbar.button_group.exclusive() is True
         assert set(toolbar.navigation_actions) == {
-            "validation", "move_viewport", "zoom_viewport", "fit_view", "focus_selected"
+            "validation",
+            "move_viewport",
+            "zoom_viewport",
+            "fit_view",
+            "focus_selected",
         }
-        assert all(action.icon().isNull() is False for action in toolbar.navigation_actions.values())
+        assert all(
+            action.icon().isNull() is False
+            for action in toolbar.navigation_actions.values()
+        )
         assert [action.data() for action in tool_actions] == [
             "selection",
             "rect_selection",
@@ -57,11 +72,11 @@ def test_stage3_toolbar_is_vertical_action_backed_and_grouped(qt_app):
             "polygon_edit",
             "collision_brush",
         ]
-        assert [
-            action.data()
-            for action in actions
-            if action.isSeparator()
-        ] == [None, None, None]
+        assert [action.data() for action in actions if action.isSeparator()] == [
+            None,
+            None,
+            None,
+        ]
     finally:
         window.close()
         qt_app.processEvents()

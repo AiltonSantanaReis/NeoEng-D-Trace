@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from PySide6.QtCore import QPoint, QPointF, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QMessageBox, QScrollArea
+from PySide6.QtWidgets import QApplication, QScrollArea
 
 from src.models.scene import Scene
 from src.ui.canvas_view import CanvasView
@@ -207,4 +207,3 @@ def test_stage5_xray_mode_is_requeued_after_image_refresh(qt_app, monkeypatch):
         assert len(started) == 2
     finally:
         canvas.close()
-

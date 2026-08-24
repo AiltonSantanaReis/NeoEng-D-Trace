@@ -7,13 +7,20 @@ from pathlib import Path
 from unittest.mock import patch
 
 import scripts.collect_evidence_package_canonical as canonical
-from scripts.validate_evidence_registry import validate_document_index, validate_registry
+from scripts.validate_evidence_registry import (
+    validate_document_index,
+    validate_registry,
+)
 
 
 class CanonicalEvidenceContractTests(unittest.TestCase):
     def test_canonical_registry_and_index(self) -> None:
         workspace = Path(__file__).resolve().parents[1]
-        registry = workspace / "docs" / "REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml"
+        registry = (
+            workspace
+            / "docs"
+            / "REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml"
+        )
         index = workspace / "docs" / "INDICE_DOCUMENTAL_ATIVO_2026-08-24.md"
         registry_report = validate_registry(registry)
         index_report = validate_document_index(index, workspace)
@@ -51,9 +58,14 @@ class CanonicalEvidenceContractTests(unittest.TestCase):
                 encoding="utf-8",
             )
             junit = source / "junit.xml"
-            junit.write_text('<testsuite tests="1"><testcase name="pass" /></testsuite>', encoding="utf-8")
+            junit.write_text(
+                '<testsuite tests="1"><testcase name="pass" /></testsuite>',
+                encoding="utf-8",
+            )
             fallback = source / "fallback.json"
-            fallback.write_text(json.dumps({"backend": "CPU-EXPLICIT", "used": False}), encoding="utf-8")
+            fallback.write_text(
+                json.dumps({"backend": "CPU-EXPLICIT", "used": False}), encoding="utf-8"
+            )
             performance = source / "performance.json"
             performance.write_text(
                 json.dumps({"frame_time_ms": [1.0, 2.0, 3.0], "minimum_samples": 3}),
@@ -62,7 +74,9 @@ class CanonicalEvidenceContractTests(unittest.TestCase):
             sample = source / "sample.txt"
             sample.write_text("sample", encoding="utf-8")
             output = workspace / "artifacts" / "BUILD-F02-AUDIT-TEST"
-            with patch("scripts.collect_evidence_package.git_commit", return_value="b" * 40):
+            with patch(
+                "scripts.collect_evidence_package.git_commit", return_value="b" * 40
+            ):
                 result = canonical.collector.run(
                     [
                         "--workspace",
@@ -88,7 +102,9 @@ class CanonicalEvidenceContractTests(unittest.TestCase):
                 )
             self.assertEqual(result, 0)
             self.assertEqual(
-                json.loads((output / "package-report.json").read_text(encoding="utf-8"))["status"],
+                json.loads(
+                    (output / "package-report.json").read_text(encoding="utf-8")
+                )["status"],
                 "PASS",
             )
 

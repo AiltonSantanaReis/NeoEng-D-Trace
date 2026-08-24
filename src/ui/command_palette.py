@@ -157,11 +157,13 @@ class CommandPaletteDialog(QDialog):
         query = self.search_input.text().strip().casefold()
         selected_id = self._current_command_id()
         self.results.clear()
-        states = self.registry.states()
+        states: list[CommandState] = list(self.registry.states())
         if not query:
             recent = self.registry.recent_ids()
             rank = {command_id: index for index, command_id in enumerate(recent)}
-            states = sorted(states, key=lambda state: rank.get(state.command_id, len(rank) + 1))
+            states = sorted(
+                states, key=lambda state: rank.get(state.command_id, len(rank) + 1)
+            )
         matching = [state for state in states if self._matches(state, query)]
         for state in matching:
             item = QListWidgetItem(self._display_text(state))

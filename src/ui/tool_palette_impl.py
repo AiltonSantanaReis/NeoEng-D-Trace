@@ -206,10 +206,13 @@ class ToolPalette(QToolBar):
                 "railGroup",
                 "navigation" if action_name != "validation" else "collision",
             )
-            action.triggered.connect(
-                lambda _checked=False, name=action_name:
+
+            def emit_auxiliary_action(
+                _checked: bool = False, name: str = action_name
+            ) -> None:
                 self.auxiliary_action_requested.emit(name)
-            )
+
+            action.triggered.connect(emit_auxiliary_action)
             self.addAction(action)
             self._auxiliary_actions[action_name] = action
             if action_name == "validation":
