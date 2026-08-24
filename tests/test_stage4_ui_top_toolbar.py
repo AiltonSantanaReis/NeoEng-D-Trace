@@ -232,7 +232,35 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
-        assert window.reference_menu_button.isVisible() is False
+        # The complete application menu remains constructed for integrations,
+        # while the visible chrome follows the supplied reference exactly.
+        assert window.reference_menu_button.isVisibleTo(window) is False
+        submenus = [
+            submenu for submenu, _source in window.reference_application_submenus
+        ]
+        assert [menu.title() for menu in submenus] == ["File", "Edit", "View"]
+        assert [
+            action.text()
+            for action in submenus[0].actions()
+            if not action.isSeparator()
+        ] == [
+            "Open Project...",
+            "Open Image",
+            "Save",
+            "Save As...",
+            "Exit",
+            "Export...",
+            "Export Collision (JSON)",
+            "Export Collision (TXT)",
+        ]
+        for button in (
+            window.reference_open_button,
+            window.reference_save_button,
+            window.reference_export_button,
+            window.reference_view_button,
+            window.reference_collision_button,
+        ):
+            assert button.popupMode().name == "MenuButtonPopup"
     finally:
         window.close()
         qt_app.processEvents()

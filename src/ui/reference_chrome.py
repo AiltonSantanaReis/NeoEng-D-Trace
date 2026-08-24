@@ -93,7 +93,10 @@ def _menu_button(button: QToolButton, actions: tuple[Any, ...]) -> None:
     for action in actions:
         menu.addAction(action)
     button.setMenu(menu)
-    button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+    button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
+    # The command buttons have no standalone action in their body; keep
+    # both the main surface and the native arrow wired to the same menu.
+    button.clicked.connect(button.showMenu)
 
 
 def configure_reference_tool_palette(window: Any) -> QToolBar:
@@ -170,18 +173,14 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
 
     fit_action = window.tool_palette.navigation_actions["fit_view"]
     focus_action = window.tool_palette.navigation_actions["focus_selected"]
-    _add_action_group(toolbar, (fit_action, window.act_100, focus_action))
+    _add_action_group(toolbar, (fit_action, focus_action))
     fit_button = _style_action_button(
         toolbar, fit_action, display_text="Fit View", width=82
-    )
-    pixel_button = _style_action_button(
-        toolbar, window.act_100, display_text="1:1", width=64
     )
     reference_focus_button = _style_action_button(
         toolbar, focus_action, display_text="Focus", width=72
     )
     fit_button.setObjectName("reference_fit_button")
-    pixel_button.setObjectName("reference_pixel_button")
     reference_focus_button.setObjectName("reference_focus_button")
 
     view_button = _command_button(window, "view", "View", "View and navigation menu")
@@ -213,6 +212,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window, "parallax", "Parallax", "Open scenario editor"
     )
     parallax_button.clicked.connect(window.open_scenario_editor)
+    view_button.setProperty("referenceActive", True)
     _add_action_group(toolbar, (view_button, collision_button, parallax_button))
 
     pan_action = window.tool_palette.navigation_actions["move_viewport"]
@@ -225,11 +225,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     pan_button.setObjectName("reference_pan_button")
     select_button.setObjectName("reference_select_button")
 
-    edit_button = _command_button(window, "settings", "Edit", "Edit commands menu")
-    _menu_button(
-        edit_button, (window.act_clean, window.undo_action, window.redo_action)
-    )
-    _add_action_group(toolbar, (window.undo_action, window.redo_action, edit_button))
+    _add_action_group(toolbar, (window.undo_action, window.redo_action))
     undo_button = _style_action_button(
         toolbar, window.undo_action, display_text="Undo", width=68
     )
@@ -239,22 +235,28 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     undo_button.setObjectName("reference_undo_button")
     redo_button.setObjectName("reference_redo_button")
 
-    # Keep the application menu object for integrations and compact-mode
-    # fallback, but do not spend visible toolbar width on a second menu button.
+    # Keep the complete application menu available to integrations and
+    # keyboard/menu consumers without adding a control absent from the reference.
     menu_button = QToolButton(toolbar)
     menu_button.setObjectName("reference_menu_button")
     menu_button.setText("≡")
     menu_button.setAccessibleName("Application menu")
     menu_button.setToolTip("Application menu")
-    menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+    menu_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+    menu_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+    menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
     menu = QMenu(menu_button)
+    application_submenus = []
     for source in (window.file_menu, window.edit_menu, window.view_menu):
         submenu = menu.addMenu(source.title())
         for action in source.actions():
             submenu.addAction(action)
+        application_submenus.append((submenu, source))
     menu_button.setMenu(menu)
+    menu_button.clicked.connect(menu_button.showMenu)
     menu_button.setVisible(False)
     window.reference_menu_button = menu_button
+    window.reference_application_submenus = tuple(application_submenus)
     window.menuBar().setVisible(False)
 
     spacer = QWidget(toolbar)
@@ -275,7 +277,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_save_button = save_button
     window.reference_export_button = export_button
     window.reference_fit_button = fit_button
-    window.reference_pixel_button = pixel_button
+    window.reference_pixel_button = None
     window.reference_pan_button = pan_button
     window.reference_select_button = select_button
     window.reference_focus_button = reference_focus_button
@@ -284,7 +286,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_render_button = view_button
     window.reference_collision_button = collision_button
     window.reference_parallax_button = parallax_button
-    window.reference_edit_button = edit_button
+    window.reference_edit_button = None
     window.reference_undo_button = undo_button
     window.reference_redo_button = redo_button
 
@@ -298,7 +300,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window.save_project_as_action,
         window.act_export,
         window.act_fit,
-        window.act_100,
         focus_action,
         window.act_grid,
         window.act_snap,
@@ -374,6 +375,9 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "redo": "Redo",
             "edit": "Edit",
         }
+
+    for submenu, source in getattr(window, "reference_application_submenus", ()):
+        submenu.setTitle(source.title())
 
     for name, key in (
         ("reference_open_button", "open"),

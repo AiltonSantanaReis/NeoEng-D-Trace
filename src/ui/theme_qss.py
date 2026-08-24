@@ -85,6 +85,15 @@ QToolBar#reference_top_toolbar QToolButton {{
     border: 1px solid transparent;
     border-radius: 4px;
 }}
+QToolBar#reference_top_toolbar QToolButton::menu-indicator {{
+    image: none;
+    width: 0px;
+}}
+QToolBar#reference_top_toolbar QToolButton[referenceActive="true"] {{
+    background: {tokens.rgba(tokens.accent, 28)};
+    border-color: {tokens.accent};
+    color: {tokens.accent};
+}}
 QToolBar#reference_top_toolbar QToolButton:hover {{
     background: {tokens.surface_raised};
     border-color: {tokens.border_strong};
