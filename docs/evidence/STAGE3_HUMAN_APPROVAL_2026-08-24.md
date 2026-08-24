@@ -2,8 +2,8 @@
 
 Decisão: `APROVADO`
 
-Data do registro: 2026-08-24  
-Revisor: usuário responsável pelo projeto, aprovação explícita registrada na tarefa  
+Data do registro: 2026-08-24
+Revisor: usuário responsável pelo projeto, aprovação explícita registrada na tarefa
 Snapshot técnico revisado antes do commit: `STAGE_3_SNAPSHOT:5eb6aea05b4cd76bbde9df2be098a24a5aea3a86`
 
 A aprovação refere-se ao pacote técnico da Etapa 3 em
