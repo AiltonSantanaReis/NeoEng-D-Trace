@@ -9,9 +9,9 @@ Este índice define quais documentos estão ativos, quais são históricos e com
 ## 1. Ordem de prevalência
 
 1. Decisões formais de produto aprovadas.
-2. [Governança de Integridade, Execução e Antialucinação](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md).
-3. [Plano Normativo Completo do Produto Profissional](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md).
-4. [Adendo de Automação de Evidências e IDs](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md).
+2. [Governança de Integridade, Execução e Antialucinação](GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md).
+3. [Plano Normativo Completo do Produto Profissional](PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md).
+4. [Adendo de Automação de Evidências e IDs](ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md).
 5. ADRs técnicos ativos.
 6. Especificações das etapas.
 7. Registro canônico de IDs.
@@ -70,3 +70,4 @@ A atualização deverá informar:
 - commit de inclusão.
 
 Se o status não estiver definido, o documento será considerado `DRAFT` e não poderá governar implementação ou aprovação.
+

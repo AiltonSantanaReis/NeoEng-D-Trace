@@ -10,12 +10,12 @@ Este é o índice documental vigente. O índice anterior `INDICE_DOCUMENTAL_ATIV
 ## 1. Prevalência
 
 1. decisões formais aprovadas;
-2. [Governança de Integridade, Execução e Antialucinação](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md);
-3. [Plano Normativo Completo do Produto Profissional](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md);
-4. [Adendo Normativo de Automação e IDs](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md);
+2. [Governança de Integridade, Execução e Antialucinação](GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md);
+3. [Plano Normativo Completo do Produto Profissional](PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md);
+4. [Adendo Normativo de Automação e IDs](ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md);
 5. ADRs técnicos ativos;
 6. especificação da etapa atual;
-7. [Registro Canônico de IDs](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml);
+7. [Registro Canônico de IDs](REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml);
 8. testes, builds, baselines e evidências;
 9. documentos históricos.
 
@@ -64,3 +64,4 @@ Nenhum item da cadeia poderá ser omitido para declarar `PASS`.
 Documento novo será `DRAFT` até ser registrado aqui com caminho, versão, autoridade, dependências, documentos afetados, IDs afetados e commit de inclusão.
 
 Documento sem entrada neste índice não possui autoridade normativa.
+

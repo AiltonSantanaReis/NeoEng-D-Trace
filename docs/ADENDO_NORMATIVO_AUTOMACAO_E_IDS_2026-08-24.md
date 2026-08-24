@@ -19,7 +19,7 @@ Este adendo complementa o plano normativo completo. Em caso de conflito, este ad
 
 O registro canônico dos IDs está em:
 
-[REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml](C:/Users/atnco/Pictures/NeoEng-D-Trace/docs/REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml)
+[REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml](REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml)
 
 ## 2. Taxonomia obrigatória de IDs
 
@@ -249,3 +249,4 @@ Também deverá existir uma execução positiva que gere `PASS` com manifesto, r
 O trabalho da Fase 4 será bloqueado até o gate de evidências passar em ambos os sistemas operacionais suportados. A automação não poderá ser adiada para o fim do projeto porque os artefatos precisam acompanhar a implementação desde a primeira funcionalidade do renderer.
 
 O objetivo não é criar burocracia manual. O objetivo é que a governança seja executada automaticamente, com falha rápida, rastreabilidade objetiva e baixo custo operacional.
+
