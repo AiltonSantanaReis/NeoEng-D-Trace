@@ -46,6 +46,7 @@ def inventory(repo_root: Path, commit: str) -> dict[str, Any]:
         Path("scripts/audit_stage1_contract.py"),
         Path("scripts/capture_stage1_theme_states.py"),
         Path("scripts/generate_stage1_snapshot.py"),
+        Path("scripts/record_stage1_approval.py"),
         Path("docs/evidence/STAGE1_SCOPE_AND_RECONCILIATION.md"),
     ]
     files = []
