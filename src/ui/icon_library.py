@@ -61,6 +61,14 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/>'
         '<path d="M5 13.5v6h14v-6"/>',
     ),
+    "undo": (
+        "undo",
+        '<path d="M9 7 4 12l5 5"/><path d="M4 12h9a7 7 0 0 1 7 7"/>',
+    ),
+    "redo": (
+        "redo",
+        '<path d="m15 7 5 5-5 5"/><path d="M20 12h-9a7 7 0 0 0-7 7"/>',
+    ),
     "collision": (
         "collision export",
         '<path d="m12 3.5 7.5 4.25v8.5L12 20.5l-7.5-4.25v-8.5z"/>'
@@ -159,6 +167,11 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
     "grid": (
         "toggle grid",
         '<path d="M4 4h16v16H4z"/><path d="M10 4v16M16 4v16M4 10h16M4 16h16"/>',
+    ),
+    "snap": (
+        "toggle snapping",
+        '<path d="M6 4v6a6 6 0 0 0 12 0V4"/>'
+        '<path d="M6 4h4M14 4h4M8 20h8M12 16v4"/>',
     ),
     "scenario": (
         "scenario editor",
@@ -365,12 +378,14 @@ def configure_main_window_controls(window: Any) -> None:
         "save_project_action": "save",
         "save_project_as_action": "save_as",
         "act_export": "export",
+        "undo_action": "undo",
+        "redo_action": "redo",
         "act_export_collision_json": "collision",
         "act_export_collision_txt": "collision",
         "act_fit": "fit",
         "act_100": "zoom_100",
         "act_grid": "grid",
-        "act_snap": "grid",
+        "act_snap": "snap",
         "settings_action": "settings",
         "act_lit": "lit",
         "act_xray1": "xray_1",
