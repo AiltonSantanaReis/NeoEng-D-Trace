@@ -43,6 +43,10 @@ Documentos históricos podem ser consultados para contexto e auditoria, mas não
 
 Todo documento histórico deverá ser identificado como `HISTORICAL` ou `SUPERSEDED` quando houver um substituto ativo.
 
+| Documento | Status | Versão | Autoridade | Dependências | IDs | Commit de inclusão |
+|---|---|---|---|---|---|---|
+| docs/evidence/ETAPA_10_ACESSIBILIDADE_ENCERRAMENTO_2026-08-24.md | PENDING_HUMAN_REVIEW | 1.0 | Evidência técnica subordinada à governança ativa | Governança, índice, registro de IDs, adendo, plano de interface e análise de impacto da Etapa 10 | REQ-F10-UI-ACCESSIBILITY, FEAT-UI-ACCESSIBILITY, EVID-F10-ACCESSIBILITY-AUDIT | 6ba06acd75e401f03228f949c9bf4279830c63cb |
+
 ## 4. Cadeia obrigatória de rastreabilidade
 
 ```text

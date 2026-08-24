@@ -249,8 +249,8 @@
       "size": 2092
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_2026-08-24.md": {
-      "sha256": "c72f091d1d4ee244a17b3f0497daf5fceb27376aef1dbfc8b3d92bf04e106a31",
-      "size": 4500
+      "sha256": "0c790e44b1864e3a6c2dcd7c8026f24601ace04a94387dd2a9175ccbe2d50b7b",
+      "size": 4999
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md": {
       "sha256": "e0551dbaf2d2280d7942fe97b4f1a3269abd1572905fd43c68d8872de66357a1",
@@ -447,6 +447,10 @@
     "docs/evidence/ETAPA_10_ACESSIBILIDADE_ANALISE_IMPACTO_2026-08-24.md": {
       "sha256": "3bb23a2bec16b7b1ed96115bf2426232c43881d8281590272bda62378b05ea88",
       "size": 4074
+    },
+    "docs/evidence/ETAPA_10_ACESSIBILIDADE_ENCERRAMENTO_2026-08-24.md": {
+      "sha256": "82fe3460a232fd01132be8c277fc915b331cdcacbda7f4f7419190cb8dca425c",
+      "size": 6302
     },
     "docs/evidence/ETAPA_10_ADAPTADORES_NATIVOS_ENCERRAMENTO_2026-08-17.md": {
       "sha256": "6831900bdea2e424811a6dd89399ed15e12fc41613bd50bf9ddfaedec1809269",
@@ -4727,6 +4731,38 @@
     "docs/evidence/artifacts/runtime-triggers-phase6-postmerge-2026-08-20/triggers.json": {
       "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
       "size": 2005
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/hashes.sha256": {
+      "sha256": "025f5b1510523eb0664009efe0c0511b3b651e6e6f9feefb873af06de87051e9",
+      "size": 644
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/manifest.json": {
+      "sha256": "93b23f91e4ad92ab8ca30c2e6bdae93ab3571cb0037f25102f0f5ea918ccc7bb",
+      "size": 1452
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/report.json": {
+      "sha256": "5e30ba472e405220fca191a24ab3ab192f3a775553bc1ccbd98345694083b30d",
+      "size": 4452
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/visual/compact-1280x720.png": {
+      "sha256": "b0f418bd3431332bbf35636a7de463a5e91b4d3980735c07fa0c3cfd84ef226f",
+      "size": 22472
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/visual/compact-inspector-focus.png": {
+      "sha256": "b0f418bd3431332bbf35636a7de463a5e91b4d3980735c07fa0c3cfd84ef226f",
+      "size": 22472
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/visual/desktop-1920x1080.png": {
+      "sha256": "e457488397972c3c999440d81c709160feb4f9d87ea927af80666e5834065340",
+      "size": 27473
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/visual/desktop-mouse-state.png": {
+      "sha256": "c9ee12f95d4a896d6e3d53976cde8bbc1cd8010e81a6c437e305e26d795c9e9f",
+      "size": 29954
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/visual/desktop-xray-keyboard.png": {
+      "sha256": "0175e172d821eccf5f08197b2895a068fefbd6383261dc437c1d1aeea6037ac2",
+      "size": 29215
     },
     "docs/evidence/artifacts/stage2-professional-scene-model-2026-08-19/manifest.json": {
       "sha256": "ffc779e948f94975c5ee12254052d150979ea5343887bfe1ba9e03a46b0213b2",
