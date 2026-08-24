@@ -60,7 +60,7 @@ def validate_document_index(path: Path, workspace: Path) -> dict[str, object]:
         target = raw_target.replace("%20", " ")
         candidate = Path(target)
         if not candidate.is_absolute():
-            candidate = workspace / candidate
+            candidate = path.parent / candidate
         links.append(str(candidate))
         if not candidate.is_file():
             missing.append(str(candidate))
@@ -91,3 +91,4 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
+
