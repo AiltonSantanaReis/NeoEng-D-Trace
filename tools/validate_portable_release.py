@@ -12,6 +12,10 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_ROOT) not in os.sys.path:
+    os.sys.path.insert(0, str(REPOSITORY_ROOT))
+
 from src.core.app_identity import APP_VERSION
 
 
