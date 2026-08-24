@@ -9,8 +9,8 @@ def test_stage1_current_contract_passes_without_unclassified_chrome_colors() -> 
     report = run(
         Path.cwd(),
         Path(
-            "artifacts/stage0-9-final-audit-20260824/"
-            "source-ui-capture/stage1-baseline-report.json"
+            "docs/evidence/artifacts/"
+            "ui-modernization-stage1-final-20260821/stage1-baseline-report.json"
         ),
     )
 
