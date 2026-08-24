@@ -228,3 +228,35 @@ A declaração profissional correta neste momento é:
 > **Etapas 0–9 implementadas parcialmente e aprovadas apenas nos escopos comprovados; conformidade integral com o texto-fonte ainda não demonstrada.**
 
 O principal próximo passo não é repetir genericamente a suíte, mas fechar os itens concretos acima e atualizar a reconciliação documental para que cada requisito original tenha uma decisão verificável.
+
+## 8. Reauditoria de remediação — 2026-08-23
+
+A auditoria original deste documento permanece imutável como registro do estado anterior. Após seus achados, foram aplicadas correções nos commits 976d077, 163ae83 e 9903e82.
+
+Reprodução objetiva:
+
+- suíte ampla: 1649 passed, 2 skipped, 0 failed;
+- foco de interface: 40 passed;
+- auditor funcional Stage 9: ações PASS, geometria PASS, zero findings;
+- matriz DPI: quatro workers PASS em 100%, 125%, 150% e 200%;
+- resoluções: 1280×720, 1366×768 e 1920×1080;
+- gesto real do gizmo: commit e undo PASS;
+- menus on-screen e scroll efetivo: PASS;
+- sizing bilíngue do ToolPalette, hygiene e limite arquitetural: PASS.
+
+Reclassificação dos achados técnicos:
+
+| Etapa | Estado após remediação | Limite que permanece |
+|---|---|---|
+| 0 | **Conformidade técnica de inventário** | worktree, cobertura histórica completa e revisão humana continuam separados |
+| 1 | **Conforme no escopo anterior** | sem alteração neste ciclo |
+| 2 | **Conforme tecnicamente** | monitor físico Windows ainda não observado |
+| 3 | **Conforme tecnicamente** | rail textual legado e rail icon-only são camadas distintas por compatibilidade |
+| 4 | **Conforme tecnicamente** | organização visual final ainda requer revisão humana |
+| 5 | **Conforme tecnicamente** | coordenadas detalhadas de transformação permanecem no contexto de transformação, não como texto sobreposto ao canvas |
+| 6 | **Conforme automatizado** | revisão física de DPI e aparência do gizmo continuam pendentes |
+| 7 | **Conforme tecnicamente no inventário implementado** | Parallax e Sockets continuam pertencendo ao editor de cenário separado |
+| 8 | **Conforme no escopo anterior** | sem alteração neste ciclo |
+| 9 | **Conforme automatizado** | decisão visual humana e CI pós-remediação permanecem pendentes |
+
+A decisão profissional atual é: os achados técnicos de implementação identificados pela auditoria foram corrigidos e comprovados por testes; a conformidade visual humana, a execução física de DPI e o CI dos commits locais não devem ser inferidos automaticamente. A evidência detalhada está em docs/evidence/REMEDIACAO_ACHADOS_AUDITORIA_ETAPAS_0_9_2026-08-23.md e o inventário público está em docs/evidence/INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md.
