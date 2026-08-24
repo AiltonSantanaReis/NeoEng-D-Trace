@@ -12,7 +12,17 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from src.core.app_identity import APP_VERSION
+
+def _load_app_version():
+    repository_root = Path(__file__).resolve().parents[1]
+    if str(repository_root) not in os.sys.path:
+        os.sys.path.insert(0, str(repository_root))
+    from src.core.app_identity import APP_VERSION
+
+    return APP_VERSION
+
+
+APP_VERSION = _load_app_version()
 
 
 def sha256_file(path: Path) -> str:

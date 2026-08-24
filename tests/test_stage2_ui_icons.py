@@ -27,6 +27,8 @@ def test_icon_catalog_is_embedded_and_complete(qt_app):
         "save",
         "save_as",
         "export",
+        "undo",
+        "redo",
         "collision",
         "clean",
         "fit",
@@ -38,6 +40,12 @@ def test_icon_catalog_is_embedded_and_complete(qt_app):
         "gizmo",
         "focus",
         "language",
+        "settings",
+        "grid",
+        "snap",
+        "scenario",
+        "validation",
+        "collider_edit",
         *TOOL_ICON_KEYS.values(),
     }
     assert expected <= set(ICON_SPECS)
@@ -82,6 +90,10 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         window.act_xray2,
         window.act_xray3,
         window.act_clean,
+        window.undo_action,
+        window.redo_action,
+        window.act_snap,
+        window.settings_action,
     )
     for action in actions:
         assert not action.icon().isNull(), action.objectName()

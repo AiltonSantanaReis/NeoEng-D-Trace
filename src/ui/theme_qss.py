@@ -40,18 +40,19 @@ QToolBar::separator {{
     margin: 5px 3px;
 }}
 QToolBar#reference_tool_palette {{
-    min-width: 80px;
-    max-width: 88px;
-    padding: 4px 4px;
-    spacing: 4px;
+    min-width: 56px;
+    max-width: 72px;
+    padding: 2px 2px;
+    spacing: 2px;
     background: {tokens.surface_alt};
     border-right: 1px solid {tokens.border};
 }}
 QToolBar#reference_tool_palette QToolButton {{
-    min-width: 56px;
-    max-width: 64px;
-    min-height: 42px;
-    padding: 8px;
+    min-width: 44px;
+    max-width: 56px;
+    min-height: 32px;
+    max-height: 36px;
+    padding: 2px;
     border: 1px solid transparent;
     border-radius: 4px;
 }}
@@ -78,11 +79,25 @@ QToolBar#reference_top_toolbar QToolButton#reference_menu_button {{
     padding: 0px;
 }}
 QToolBar#reference_top_toolbar QToolButton {{
-    min-width: 54px;
+    min-width: 60px;
     min-height: 58px;
-    padding: 4px 7px 2px;
+    padding: 3px 5px 2px;
     border: 1px solid transparent;
     border-radius: 4px;
+}}
+QToolBar#reference_top_toolbar QToolButton::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QToolBar#reference_top_toolbar QToolButton::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
+QToolBar#reference_top_toolbar QToolButton[referenceActive="true"] {{
+    background: {tokens.rgba(tokens.accent, 28)};
+    border-color: {tokens.accent};
+    color: {tokens.accent};
 }}
 QToolBar#reference_top_toolbar QToolButton:hover {{
     background: {tokens.surface_raised};

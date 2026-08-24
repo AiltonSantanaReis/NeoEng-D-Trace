@@ -56,5 +56,7 @@ def build_window_title(
 
     if document_name:
         return f"{APP_DISPLAY_NAME} - {document_name}"
-    lang = normalize_language(language)
-    return f"{APP_DISPLAY_NAME} {APP_UI_EDITION} - " f"{_ENGINE_MODE_LABELS[lang]}"
+    # The reference shell uses the product brand alone in the native title
+    # bar. The edition and engine-mode labels remain metadata for
+    # About/diagnostic surfaces and must not change the reference chrome.
+    return APP_DISPLAY_NAME

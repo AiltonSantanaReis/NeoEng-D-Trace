@@ -16,7 +16,7 @@ class ToolPalette(_ActionToolPalette):
         self.setMaximumWidth(164)
         for button in self.tool_buttons.values():
             button.setMinimumSize(QSize(132, 40))
-            button.setMaximumWidth(132)
+            button.setMaximumWidth(148)
             button.updateGeometry()
         self.updateGeometry()
 

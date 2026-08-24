@@ -2,7 +2,7 @@
 
 **Projeto:** NeoEng-D-Trace
 **Data de criação:** 2026-08-21
-**Status do plano em 2026-08-23:** ETAPAS 0–7 APROVADAS SOMENTE NOS ESCOPOS COMPROVADOS / ETAPAS 8–14 PLANEJADAS E NÃO INICIADAS. Esta linha é o estado vivo canônico; registros anteriores que indiquem outro estado são snapshots históricos.
+**Status do plano em 2026-08-23:** ETAPAS 0–9 RECONCILIADAS APÓS REMEDIAÇÃO; conformidade técnica automatizada comprovada nos itens corrigidos, revisão visual humana e CI dos commits locais ainda pendentes. Esta linha é o estado vivo canônico; registros anteriores são snapshots históricos.
 **Tipo:** documento vivo de planejamento; não é evidência de execução, não é aprovação de release e não autoriza merge automaticamente.
 
 ## 1. Finalidade e autoridade
@@ -26,7 +26,7 @@ Este plano não é uma autorização para alterar regras, thresholds, scanners, 
 
 O estado vivo atual foi reconciliado após a Etapa 0 no merge \`61165a58bfa6d5b6a10bcbee89dd8d7e7c6fe643\`, com \`main\` local sincronizado a \`origin/main\`.
 
-O histórico recente registra correções responsivas e auditorias de painéis. Isso não é tratado como validação automática deste plano. A Etapa 0 foi concluída somente como caracterização reproduzível da baseline. As Etapas 1–7 foram encerradas nos escopos comprovados nos respectivos snapshots pós-merge em docs/evidence/; isso não transforma requisitos fora desses escopos em implementados. As Etapas 8–14 permanecem planejadas e não podem iniciar sem o ciclo de autorização e baseline correspondente.
+A Etapa 0 possui agora inventário público versionado e baseline reproduzível; a cobertura histórica completa e a revisão humana continuam separadas. As Etapas 1–8 permanecem encerradas nos escopos comprovados pelos snapshots e pelos testes existentes. A reauditoria de 2026-08-23 corrigiu os achados técnicos das Etapas 2, 3, 4, 5, 6, 7 e 9, com suíte ampla 1649 passed e matriz DPI automatizada PASS. A decisão não afirma aprovação visual humana, monitor físico, CI local ou árvore limpa.
 
 Na reconciliação de 2026-08-22, o `main` observado foi o merge `425f21df2bbf9a67c01a577b59ae6bbba25995b7`, que incorpora a documentação pós-merge da Etapa 5. A branch de trabalho do baseline da Etapa 6 parte desse mesmo conteúdo. Os diretórios locais de artefatos históricos não rastreados foram preservados e não são usados como evidência de árvore limpa, release ou aprovação.
 
@@ -221,7 +221,7 @@ Corrigir tamanho mínimo, rolagem, hierarquia, estados disabled/enabled e separa
 
 **Gate:** geometrias Qt reais, ações clicáveis, seleção de itens, propriedades editáveis, painéis visíveis em DPI/resoluções alvo e ausência de falsos positivos do auditor.
 
-**Estado vivo em 2026-08-23:** APROVADA NO ESCOPO COMPROVADO nos quatro painéis e no inspector, conforme docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md. A aprovação não declara concluídas as Etapas 8–14 nem requisitos de editor de cenário que pertençam a essas etapas.
+**Registro histórico de 2026-08-23:** APROVADA NO ESCOPO COMPROVADO nos quatro painéis e no inspector, conforme docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md. O estado vivo posterior está na reconciliação pós-merge da seção 12 e não deve ser lido como declaração de Etapas 8–14 não iniciadas.
 
 ### Etapa 8 — Editor de cenário separado
 
@@ -449,3 +449,21 @@ Sem abreviação: ler governança; confirmar ponto/autorização; baseline; impl
 
 ### 11.18 Critério final único
 Encerramento somente quando cada etapa tiver decisão individual; funções existentes operarem; três resoluções e quatro escalas forem validadas; painéis acessíveis; auditoria sem achados reais; capturas/relatórios hashados; revisão humana registrada; build limpa aprovada; Godot/Unity documentados; documentos reconciliados; CI verde no SHA correto; push/PR/merge autorizado; e pós-merge aprovado. Isso não aprova release; release tem gates próprios.
+## 12. Reconciliação pós-merge dos achados
+
+A auditoria documental e a remediação não substituem os snapshots históricos. A matriz atual é:
+
+| Etapa | Estado vivo | Evidência |
+|---|---|---|
+| 0 | Inventário e baseline técnicos reconciliados; limitações humanas e de cobertura histórica declaradas | INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md |
+| 1 | Conforme no escopo anterior | snapshots da Etapa 1 |
+| 2 | Catálogo SVG técnico completo e testado | tests/test_stage2_ui_icons.py |
+| 3 | Rail de referência e ações auxiliares funcionais; compatibilidade textual preservada | tests/test_stage3_ui_toolbar.py |
+| 4 | Toolbar, Settings, Grid, Snap e command palette reconciliados | tests/test_stage4_ui_top_toolbar.py e test_stage2_command_registry.py |
+| 5 | HUD completo e compacto, com tooltip detalhado | tests/test_stage5_viewport_hud.py |
+| 6 | Gestos e undo/redo automatizados, inclusive na matriz DPI | tests/test_stage6_gizmo_gap_closure.py e auditor Stage 9 |
+| 7 | Busca, Pivot, Snap, Metadata e validação de colisão implementados | tests/test_stage7_side_panels_completion.py |
+| 8 | Conforme no escopo anterior e separado | snapshots da Etapa 8 |
+| 9 | Matriz 3 × 4, menus, scroll, gizmo e clipping automatizados | REMEDIACAO_ACHADOS_AUDITORIA_ETAPAS_0_9_2026-08-23.md |
+
+A decisão atual é técnica e automatizada. A revisão humana deve ser executada antes de uma declaração de aprovação visual ou release.

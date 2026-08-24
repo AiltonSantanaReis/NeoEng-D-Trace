@@ -1,0 +1,45 @@
+{
+  "schema": "neoeng.stage-audit-report",
+  "schema_version": 1,
+  "baseline_id": "FINAL_TARGET",
+  "stage": 0,
+  "commit": "<exact-git-commit>",
+  "environment": {
+    "platform": "windows",
+    "resolution": "1280x720",
+    "dpi_percent": 100,
+    "python": "<version>",
+    "dependencies_lock": "<hash-or-version>"
+  },
+  "command": "<exact-command>",
+  "decision": "AUTOMATED_PASS",
+  "historical_result": "NOT_APPLICABLE",
+  "current_contract_result": "PENDING",
+  "consolidated_decision": "PENDING",
+  "tracks": [],
+  "checks": [
+    {
+      "id": "<contract-id>",
+      "result": "PASS",
+      "classification": "EXPECTED_EVOLUTION",
+      "justification": "<required when classification is EXPECTED_EVOLUTION>",
+      "observations": [],
+      "negative_case": {
+        "executed": false,
+        "observable_result": "<required when contract requires a negative case>"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "<relative-artifact-path>",
+      "sha256": "<64-lowercase-hex>",
+      "visual": false,
+      "purpose": "<what this artifact proves>"
+    }
+  ],
+  "human_review": null,
+  "ci_exact_commit": null,
+  "limitations": [],
+  "notes": []
+}

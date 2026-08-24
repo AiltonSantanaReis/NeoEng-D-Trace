@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-23 — reconciliação pós-merge da Etapa 9
+
+- registra o encerramento de responsividade e DPI após a PR #160, merge
+  98ffba1353941fd67ce46fc06be77f2f2abfcbb5 e CI Linux/Windows aprovado;
+- confirma no main integrado 1647 passed, 2 skipped, 119 manifests íntegros,
+  baseline de 2878 files e nenhuma alteração rastreada pendente;
+- referencia a matriz Qt de 100%, 125%, 150% e 200% nas resoluções 1280x720,
+  1366x768 e 1920x1080, com revisão visual humana aprovada;
+- mantém a release não aprovada e os limites de driver/GPU como restrições
+  explícitas do escopo encerrado.
+
 ## [0.3.0] — 2026-08-18
 
 Release baseada no estado integrado do `main` após a PR `#101`.
@@ -37,7 +48,7 @@ alegadas nem são gates técnicos obrigatórios.
 
 ## [Unreleased] — programa de estabilização, Etapas 1 a 14
 
-Registro documental contínuo, atualizado em 18 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
+Registro documental contínuo, atualizado em 23 de agosto de 2026. O estado real da branch, da PR e do CI deve ser verificado antes de qualquer transição.
 
 ### Reconciliação documental e plano de novas funcionalidades
 

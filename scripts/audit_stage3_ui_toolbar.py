@@ -112,7 +112,7 @@ def _live_contract() -> dict[str, Any]:
         failures.append("toolbar is not icon-first")
     if toolbar.isMovable() or toolbar.isFloatable():
         failures.append("toolbar is user-movable")
-    if len(tool_actions) != 9 or sum(action.isSeparator() for action in actions) != 2:
+    if len(tool_actions) != 9 or sum(action.isSeparator() for action in actions) != 3:
         failures.append("tool action grouping changed")
     if not toolbar.action_group.isExclusive() or not toolbar.button_group.exclusive():
         failures.append("exclusive selection groups are disabled")

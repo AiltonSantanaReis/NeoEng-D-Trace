@@ -23,10 +23,15 @@ from src.tools.ellipse_selection import EllipseSelectionTool
 from src.ui import canvas_view as canvas_view_module
 from src.ui import export_dialog as export_dialog_module
 from src.ui import export_preview as export_preview_module
+from src.ui import tool_palette_commands as tool_palette_commands_module
+from src.ui import top_toolbar as top_toolbar_module
+from src.ui import viewport_settings as viewport_settings_module
 from src.ui.canvas_view import CanvasView
 from src.ui.export_dialog import ExportDialog
 from src.ui.export_preview import ExportPreviewDialog, export_preview_headless
+from src.ui.responsive_layout import ResponsivePanelLayout
 from src.ui.tool_palette import ToolPalette
+from src.utils import selection_tools as selection_tools_module
 
 
 @pytest.fixture(scope="module")
@@ -582,3 +587,146 @@ def test_canvas_modes_tools_and_gizmo_guard_branches(qt_app, monkeypatch):
     scene.selected_id = "missing"
     assert canvas._begin_gizmo_object_gesture() is False
     canvas.close()
+
+
+def test_tool_palette_command_adapters_cover_auxiliary_actions():
+    class TabsProbe:
+        def __init__(self, index):
+            self.index = index
+            self.current_index = None
+
+        def indexOf(self, panel):
+            return self.index
+
+        def setCurrentIndex(self, index):
+            self.current_index = index
+
+    panel = object()
+    reference_tabs = TabsProbe(-1)
+    tool_palette_commands_module.show_panel(
+        SimpleNamespace(reference_panel_tabs=reference_tabs), panel
+    )
+    assert reference_tabs.current_index is None
+
+    compact_tabs = TabsProbe(-1)
+    window = SimpleNamespace(
+        compact_panel_tabs=compact_tabs,
+        reference_panel_tabs=None,
+    )
+    tool_palette_commands_module.show_panel(window, panel)
+    assert compact_tabs.current_index is None
+
+    class PanelProbe:
+        def __init__(self):
+            self.visible = False
+
+        def setVisible(self, visible):
+            self.visible = visible
+
+    visible_panel = PanelProbe()
+    visible_tabs = TabsProbe(1)
+    visible_window = SimpleNamespace(
+        compact_panel_tabs=visible_tabs,
+        reference_panel_tabs=None,
+    )
+    visible_tabs.indexOf = lambda candidate: 1 if candidate is visible_panel else -1
+    tool_palette_commands_module.show_panel(visible_window, visible_panel)
+    assert visible_tabs.current_index == 1
+    assert visible_panel.visible is True
+
+    canvas = SimpleNamespace(
+        pan_calls=[],
+        zoom=2.0,
+        zoom_calls=[],
+        fit_calls=0,
+        set_pan_mode=lambda enabled: canvas.pan_calls.append(enabled),
+        get_zoom=lambda: canvas.zoom,
+        set_zoom=lambda value: canvas.zoom_calls.append(value),
+        fit_to_window=lambda: setattr(canvas, "fit_calls", canvas.fit_calls + 1),
+    )
+    collision_panel = SimpleNamespace(
+        _sync_collision_manager_from_scene=Mock(),
+    )
+    window = SimpleNamespace(
+        canvas=canvas,
+        collision_panel=collision_panel,
+        tool_palette=SimpleNamespace(navigation_actions={}),
+        _focus_selected=Mock(),
+        compact_panel_tabs=None,
+        reference_panel_tabs=None,
+    )
+
+    tool_palette_commands_module.handle_auxiliary_action(window, "move_viewport")
+    move_action = SimpleNamespace(isChecked=lambda: True)
+    window.tool_palette.navigation_actions["move_viewport"] = move_action
+    tool_palette_commands_module.handle_auxiliary_action(window, "move_viewport")
+    assert canvas.pan_calls == [False, True]
+
+    tool_palette_commands_module.handle_auxiliary_action(window, "zoom_viewport")
+    tool_palette_commands_module.handle_auxiliary_action(window, "fit_view")
+    tool_palette_commands_module.handle_auxiliary_action(window, "focus_selected")
+    tool_palette_commands_module.handle_auxiliary_action(window, "validation")
+    assert canvas.zoom_calls == [2.5]
+    assert canvas.fit_calls == 1
+    window._focus_selected.assert_called_once_with()
+    collision_panel._sync_collision_manager_from_scene.assert_called_once_with()
+    tool_palette_commands_module.handle_auxiliary_action(window, "unknown")
+
+
+def test_remaining_integrated_branch_outcomes(qt_app, monkeypatch):
+    class ToolbarProbe:
+        def setToolButtonStyle(self, style):
+            self.style = style
+
+        def findChildren(self, child_type):
+            return []
+
+    layout = ResponsivePanelLayout.__new__(ResponsivePanelLayout)
+    layout.owner = SimpleNamespace()
+    layout._set_reference_toolbar_mode(compact=False)
+    layout.owner = SimpleNamespace(reference_top_toolbar=ToolbarProbe())
+    layout._set_reference_toolbar_mode(compact=True)
+
+    window = QWidget()
+    window.translations = {
+        "en": {
+            "view_settings": "View Settings",
+            "grid": "Grid",
+            "snap": "Snap",
+        }
+    }
+    window.current_lang = "en"
+    window.canvas = SimpleNamespace(
+        is_grid_visible=lambda: True,
+        _vertex_snap_settings=SimpleNamespace(enabled=True),
+        set_grid_visible=Mock(),
+        set_vertex_snapping=Mock(),
+    )
+    window.act_grid = Mock()
+    window.act_snap = Mock()
+    monkeypatch.setattr(
+        viewport_settings_module.QDialog,
+        "exec",
+        lambda dialog: viewport_settings_module.QDialog.DialogCode.Rejected,
+    )
+    viewport_settings_module.open_view_settings(window)
+    window.canvas.set_grid_visible.assert_not_called()
+    window.canvas.set_vertex_snapping.assert_not_called()
+    window.close()
+
+    mask = np.zeros((20, 20), dtype=np.uint8)
+    mask[4:12, 5:14] = 255
+    polygon = selection_tools_module.mask_to_polygon(mask, approx_dp=0.0)
+    assert len(polygon) > 0
+    monkeypatch.setattr(
+        selection_tools_module.cv2,
+        "approxPolyDP",
+        lambda *_args: None,
+    )
+    assert selection_tools_module.mask_to_polygon(mask, approx_dp=1.0) == []
+
+    class EmptyToolbar:
+        def actions(self):
+            return []
+
+    top_toolbar_module._remove_trailing_separator(EmptyToolbar())

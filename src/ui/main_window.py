@@ -55,6 +55,7 @@ from src.ui.scenario_authoring_actions import install_scenario_authoring
 from src.ui.scenario_preview_actions import install_scenario_preview_actions
 from src.ui.side_panel import SidePanel
 from src.ui.tool_palette import ToolPalette
+from src.ui.viewport_actions import install_viewport_actions
 
 
 class MainWindow(QMainWindow):
@@ -227,6 +228,7 @@ class MainWindow(QMainWindow):
         self.file_menu.addAction(self.act_export_collision_txt)
         self.canvas = CanvasView(scene)
         self.tool_palette = ToolPalette(self.canvas)
+        install_viewport_actions(self)
         self.side_panel = SidePanel(scene, self.canvas)
         self.layers = LayersPanel(scene)
         self.groups = GroupsPanel(scene)
@@ -597,18 +599,16 @@ class MainWindow(QMainWindow):
         if hasattr(self, "act_portuguese"):
             self.act_portuguese.setText(t["portuguese"])
 
-        # --- ATUALIZAÇÃO DO MENU (CORRIGIDA) ---
-        # Edit Menu
         self.edit_menu.setTitle(t["edit_menu"])
         self.undo_action.setText(t["undo"])
         self.redo_action.setText(t["redo"])
+        getattr(self, "settings_action").setText(t["view_settings"])
 
         # View Menu
         self.view_menu.setTitle(t["view_menu"])
         self.mask_viewer_action.setText(t["mask_viewer"])
         self.collision_overlay_action.setText(t["collision_overlay"])
 
-        # Update other components
         self.command_palette.update_language(self.current_lang)
         if hasattr(self.side_panel, "update_language"):
             self.side_panel.update_language(self.current_lang)

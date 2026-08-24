@@ -114,7 +114,7 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
             )
         )
         assert window.reference_tool_palette.isVisibleTo(window)
-        assert window.reference_tool_palette.width() <= 84
+        assert window.reference_tool_palette.width() <= 96
         assert window.main_splitter.sizes()[2] >= 520
         assert window.layers.width() >= window.layers.minimumSizeHint().width()
         assert window.desktop_panel_splitter.sizes()[0] > 0

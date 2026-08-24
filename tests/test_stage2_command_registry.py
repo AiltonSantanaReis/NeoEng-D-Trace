@@ -75,6 +75,9 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "app.exit",
             "edit.undo",
             "edit.redo",
+            "view.settings",
+            "view.grid",
+            "view.snap",
             "view.mask_viewer",
             "view.collision_overlay",
             "view.fit",
@@ -92,6 +95,12 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "scenario.load",
             "scenario.reset",
             "scenario.export",
+            "tool.validation",
+            "tool.move_viewport",
+            "tool.zoom_viewport",
+            "tool.fit_view",
+            "tool.focus_selected",
+            *[f"tool.{name}" for name in window.tool_palette._tool_actions],
         }
         assert set(window.command_registry.command_ids()) == expected
         assert window.command_registry.action("file.save") is window.save_project_action
@@ -108,6 +117,19 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
     finally:
         window.close()
         app.processEvents()
+
+
+def test_registry_recent_commands_are_newest_first() -> None:
+    _app()
+    first = QAction("First")
+    second = QAction("Second")
+    registry = CommandRegistry()
+    registry.register_many([("test.first", first), ("test.second", second)])
+
+    assert registry.trigger("test.first") is True
+    assert registry.trigger("test.second") is True
+    assert registry.trigger("test.first") is True
+    assert registry.recent_ids() == ("test.first", "test.second")
 
 
 def test_ctrl_k_emits_request_and_opens_palette() -> None:

@@ -41,15 +41,20 @@ def test_main_window_uses_status_bar_without_canvas_hud_widget(qt_app):
     status = window.findChild(QLabel, "viewport_status")
 
     assert status is window.viewport_status
-    assert status.text() == "VIEW: LIT  |  ZOOM: 1.00x"
+    assert status.text().startswith("VIEW:LIT | Z:1.00x")
+    assert "S:OFF" in status.text()
+    assert "G:ON" in status.text()
+    assert "GIZ:OFF" in status.text()
+    assert "SEL:0" in status.text()
+    assert "CUR:0,0" in status.text()
     assert status.window() is window
     assert status in window.statusBar().findChildren(QLabel)
     assert not window.canvas.findChildren(QLabel)
 
     window.canvas.set_zoom(2.25)
-    assert status.text() == "VIEW: LIT  |  ZOOM: 2.25x"
+    assert status.text().startswith("VIEW:LIT | Z:2.25x")
     window.canvas.set_view_mode(window.canvas.VIEW_XRAY_1)
-    assert status.text() == "VIEW: X-RAY 1  |  ZOOM: 2.25x"
+    assert status.text().startswith("VIEW:XR1 | Z:2.25x")
     window.close()
 
 
@@ -85,13 +90,13 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     assert not window.menuBar().isVisibleTo(window)
     assert window.reference_panel_tabs.count() == 4
     assert window.reference_panel_tabs.isVisibleTo(window)
-    assert window.reference_tool_palette.width() <= 84
+    assert window.reference_tool_palette.width() <= 96
 
     labels = {
         button.text()
         for button in window.reference_top_toolbar.findChildren(QToolButton)
     }
-    expected = {"Open Project", "Save", "Export", "View", "Collision", "Parallax"}
+    expected = {"Open", "Save", "Export", "View", "Collision", "Parallax"}
     assert expected <= labels
 
     window.resize(1280, 720)

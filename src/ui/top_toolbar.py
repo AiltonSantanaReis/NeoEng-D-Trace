@@ -16,20 +16,13 @@ from PySide6.QtGui import QIcon, QPainter, QPixmap
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import QToolBar, QWidget
 
+from src.ui.icon_library import ICON_SPECS, icon_for
 from src.ui.theme_tokens import THEME_TOKENS
 
 _TOOLBAR_ICON_SIZE = QSize(18, 18)
 _TOOLBAR_STYLE = Qt.ToolButtonStyle.ToolButtonTextBesideIcon
 
 _ACTION_ICON_BODIES = {
-    "undo": (
-        "undo",
-        '<path d="M9 7 4 12l5 5"/><path d="M4 12h9a7 7 0 0 1 7 7"/>',
-    ),
-    "redo": (
-        "redo",
-        '<path d="m15 7 5 5-5 5"/><path d="M20 12h-9a7 7 0 0 0-7 7"/>',
-    ),
     "mask": (
         "mask viewer",
         '<path d="M4 5h16v14H4z"/><path d="m7 15 3-3 2 2 2-3 3 4"/>'
@@ -43,6 +36,8 @@ _ACTION_ICON_BODIES = {
 
 
 def _action_icon(key: str) -> QIcon:
+    if key in {"undo", "redo"}:
+        return icon_for(key)
     accessible_name, body = _ACTION_ICON_BODIES[key]
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">'
@@ -72,9 +67,14 @@ def _configure_semantic_action_icons(window: Any) -> None:
     ):
         action = getattr(window, name)
         action.setIcon(_action_icon(key))
-        action.setToolTip(_ACTION_ICON_BODIES[key][0])
-        action.setStatusTip(_ACTION_ICON_BODIES[key][0])
-        action.setProperty("accessibleName", _ACTION_ICON_BODIES[key][0])
+        label = (
+            ICON_SPECS[key].accessible_name
+            if key in ICON_SPECS
+            else _ACTION_ICON_BODIES[key][0]
+        )
+        action.setToolTip(label)
+        action.setStatusTip(label)
+        action.setProperty("accessibleName", label)
         action.setProperty("iconKey", f"stage4_{key}")
         action.setProperty("iconFallback", False)
 
@@ -153,7 +153,7 @@ def configure_top_toolbars(window: Any) -> None:
     groups["edit"] = _add_group(
         main_toolbar,
         "edit",
-        (window.undo_action, window.redo_action),
+        (window.undo_action, window.redo_action, window.settings_action),
     )
     groups["view"] = _add_group(
         main_toolbar,
@@ -163,6 +163,8 @@ def configure_top_toolbars(window: Any) -> None:
             window.collision_overlay_action,
             window.act_fit,
             window.act_100,
+            window.act_grid,
+            window.act_snap,
         ),
     )
     groups["export"] = _add_group(

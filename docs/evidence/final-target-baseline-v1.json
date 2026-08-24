@@ -1,0 +1,60 @@
+{
+  "schema": "neoeng.final-target-baseline",
+  "schema_version": 1,
+  "baseline_id": "FINAL_TARGET",
+  "status": "contract_v1",
+  "scope": {
+    "current_acceptance_stages": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "future_compatibility_stages": [10, 11, 12, 13, 14],
+    "future_stage_details": "Only approved requirements may be added; capability envelopes below are forward-compatibility constraints, not invented feature specifications."
+  },
+  "environment_matrix": {
+    "resolutions": ["1280x720", "1366x768", "1920x1080"],
+    "dpi_percent": [100, 125, 150, 200],
+    "platforms": ["windows", "linux"]
+  },
+  "invariants": [
+    {"id": "layout.no_critical_clipping", "severity": "blocker"},
+    {"id": "layout.no_interactive_overlap", "severity": "blocker"},
+    {"id": "accessibility.focus_visible", "severity": "blocker"},
+    {"id": "accessibility.contrast_meets_contract", "severity": "blocker"},
+    {"id": "interaction.keyboard_and_mouse_feedback", "severity": "blocker"},
+    {"id": "state.undo_redo_is_deterministic", "severity": "blocker"},
+    {"id": "state.preview_isolation", "severity": "blocker"},
+    {"id": "persistence.save_reload_preserves_state", "severity": "blocker"},
+    {"id": "export.deterministic_or_versioned", "severity": "blocker"},
+    {"id": "errors.invalid_operations_are_observable", "severity": "blocker"}
+  ],
+  "extension_points": [
+    {"id": "commands.registry", "requirement": "New commands use stable identifiers and do not require positional index changes."},
+    {"id": "tools.palette", "requirement": "New tools can be added without violating states, shortcuts, tooltip or accessibility contracts."},
+    {"id": "panels.inspector", "requirement": "New inspector sections can be added without clipping or breaking scroll and selection synchronization."},
+    {"id": "viewport.overlays", "requirement": "Camera, parallax, sockets, masks and future overlays have isolated state and explicit z/interaction rules."},
+    {"id": "schemas.versioning", "requirement": "Persisted and exported data are versioned and support explicit migration or safe unknown-field handling."},
+    {"id": "runtime.effects", "requirement": "Future lighting, particles, shaders and post-processing remain separate contracts and do not constrain editor foundations."}
+  ],
+  "stage_contracts": {
+    "1": ["tokens.palette", "tokens.states", "accessibility.contrast", "accessibility.focus"],
+    "5": ["viewport.lit_xray", "viewport.zoom", "viewport.coordinates", "viewport.grid_snap", "viewport.gizmo_state", "mask_viewer.modes", "mask_viewer.real_input"],
+    "8": ["scenario.viewport", "scenario.layers", "scenario.inspector", "scenario.camera", "scenario.parallax", "scenario.sockets", "scenario.overlays", "scenario.undo_redo", "scenario.persistence", "scenario.export"]
+  },
+  "allowed_classifications": [
+    "INVARIANT_REGRESSION",
+    "EXPECTED_EVOLUTION",
+    "FORWARD_COMPATIBILITY_RISK",
+    "UNCLASSIFIED_CHANGE",
+    "HISTORICAL_ONLY"
+  ],
+  "blocking_classifications": [
+    "INVARIANT_REGRESSION",
+    "FORWARD_COMPATIBILITY_RISK",
+    "UNCLASSIFIED_CHANGE"
+  ],
+  "minimum_evidence": {
+    "required_fields": ["stage", "commit", "environment", "command", "decision", "checks", "artifacts"],
+    "artifact_hash_algorithm": "sha256",
+    "visual_checks_require_png": true,
+    "negative_contracts_require_observable_result": true,
+    "formal_completion_requires": ["automated_pass", "human_review", "ci_exact_commit", "no_unclassified_change"]
+  }
+}

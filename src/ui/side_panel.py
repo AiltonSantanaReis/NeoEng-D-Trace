@@ -1,6 +1,7 @@
 # src/ui/side_panel.py
 from PySide6.QtCore import QSignalBlocker, QSize, Qt
 from PySide6.QtWidgets import (
+    QCheckBox,
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
@@ -8,6 +9,7 @@ from PySide6.QtWidgets import (
     QInputDialog,
     QLabel,
     QLayout,
+    QLineEdit,
     QListWidget,
     QMenu,
     QMessageBox,
@@ -48,6 +50,12 @@ class SidePanel(QWidget):
         self._last_validation_selection_marker = None
 
         self.list = QListWidget()
+        self.search_input = QLineEdit()
+        self.search_input.setObjectName("objects_search")
+        self.search_input.setPlaceholderText("Search objects")
+        self.search_input.setAccessibleName("Search scene objects")
+        self.search_input.setToolTip("Filter objects by name or ID")
+        self.search_input.textChanged.connect(self.refresh)
         self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._show_context_menu)
 
@@ -72,6 +80,15 @@ class SidePanel(QWidget):
         self.scale_x = self._transform_spin(0.001, 1000.0, 0.1)
         self.scale_y = self._transform_spin(0.001, 1000.0, 0.1)
         self.scale_z = self._transform_spin(0.001, 1000.0, 0.1)
+        self.pivot_x = self._transform_spin(0.0, 1.0, 0.01)
+        self.pivot_y = self._transform_spin(0.0, 1.0, 0.01)
+        self.snap_enabled = QCheckBox("Snap vertices to grid")
+        self.snap_enabled.setObjectName("objects_snap_enabled")
+        self.snap_enabled.toggled.connect(
+            lambda enabled: self.canvas.set_vertex_snapping(enabled, grid_size=16)
+        )
+        self.metadata_label = QLabel("No object selected")
+        self.metadata_label.setObjectName("objects_metadata")
         transform_form = QFormLayout(self.transform_group)
         transform_form.addRow("Position X", self.position_x)
         transform_form.addRow("Position Y", self.position_y)
@@ -82,6 +99,9 @@ class SidePanel(QWidget):
         transform_form.addRow("Scale X", self.scale_x)
         transform_form.addRow("Scale Y", self.scale_y)
         transform_form.addRow("Scale Z", self.scale_z)
+        transform_form.addRow("Pivot X", self.pivot_x)
+        transform_form.addRow("Pivot Y", self.pivot_y)
+        transform_form.addRow(self.snap_enabled)
         self.btn_apply_transform = QPushButton("Apply Transform")
         self.btn_apply_transform.setObjectName("apply_transform")
         transform_form.addRow(self.btn_apply_transform)
@@ -153,6 +173,7 @@ class SidePanel(QWidget):
         layout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.scene_objects_label = QLabel("Scene Objects:")
         layout.addWidget(self.scene_objects_label)
+        layout.addWidget(self.search_input)
         layout.addWidget(self.list)
 
         # Grupo 1: edição e colisão
@@ -162,6 +183,16 @@ class SidePanel(QWidget):
         self.properties_group.setLayout(l_edit)
         layout.addWidget(self.properties_group)
         layout.addWidget(self.transform_group)
+        metadata_group = QGroupBox("Metadata / Scenario")
+        metadata_layout = QVBoxLayout(metadata_group)
+        metadata_layout.addWidget(self.metadata_label)
+        scenario_button = QPushButton("Open Scenario Editor")
+        scenario_button.setObjectName("open_scenario_editor_from_inspector")
+        scenario_button.clicked.connect(
+            lambda: getattr(self.window(), "open_scenario_editor", lambda: None)()
+        )
+        metadata_layout.addWidget(scenario_button)
+        layout.addWidget(metadata_group)
 
         # Grupo 2: Modificadores
         self.modify_shape_group = QGroupBox("Modify Shape")
@@ -368,9 +399,14 @@ class SidePanel(QWidget):
             self.list.clear()
             selected_item = None
 
+            query = self.search_input.text().strip().casefold()
             for oid, obj in sorted(self.scene.objects.items()):
                 suffix = " [P]" if oid in self.scene.collision_shapes else ""
-                self.list.addItem(f"{oid}{suffix}")
+                label = f"{oid}{suffix}"
+                searchable = f"{oid} {getattr(obj, 'name', '')}".casefold()
+                if query and query not in searchable:
+                    continue
+                self.list.addItem(label)
                 if oid == selected_id:
                     selected_item = self.list.item(self.list.count() - 1)
 
@@ -419,13 +455,25 @@ class SidePanel(QWidget):
             self.scale_x,
             self.scale_y,
             self.scale_z,
+            self.pivot_x,
+            self.pivot_y,
         )
         enabled = obj is not None
         self.transform_group.setEnabled(enabled)
         self.btn_apply_transform.setEnabled(enabled)
         if obj is None:
+            self.metadata_label.setText("No object selected")
             return
-        values = (*tuple(obj.position), *tuple(obj.rotation), *tuple(obj.scale))
+        self.metadata_label.setText(
+            f"ID: {obj.id} | Vertices: {len(obj.polygon)} | "
+            f"Collision: {'yes' if oid in self.scene.collision_shapes else 'no'}"
+        )
+        values = (
+            *tuple(obj.position),
+            *tuple(obj.rotation),
+            *tuple(obj.scale),
+            *tuple(getattr(obj, "pivot", (0.5, 0.5))),
+        )
         for widget, value in zip(widgets, values):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))
@@ -521,6 +569,7 @@ class SidePanel(QWidget):
             )
             state = after[oid]
             state.position = target_position
+            state.pivot = (self.pivot_x.value(), self.pivot_y.value())
             state.rotation = target_rotation
             state.scale = target_scale
             result = self._execute_edit_command(TransformObjectsCommand(before, after))
