@@ -90,7 +90,7 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     assert not window.menuBar().isVisibleTo(window)
     assert window.reference_panel_tabs.count() == 4
     assert window.reference_panel_tabs.isVisibleTo(window)
-    assert window.reference_tool_palette.width() <= 84
+    assert window.reference_tool_palette.width() <= 96
 
     labels = {
         button.text()

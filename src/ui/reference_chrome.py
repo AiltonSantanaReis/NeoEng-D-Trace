@@ -110,8 +110,8 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
     toolbar.setIconSize(QSize(24, 24))
     # Keep the rail within the reference contract while leaving room for QSS.
-    toolbar.setMinimumWidth(72)
-    toolbar.setMaximumWidth(84)
+    toolbar.setMinimumWidth(84)
+    toolbar.setMaximumWidth(96)
     toolbar.setProperty("uiRole", "reference_tool_palette")
     for action in window.tool_palette.actions():
         if action.isSeparator():

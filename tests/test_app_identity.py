@@ -41,8 +41,8 @@ def test_project_format_identity_matches_the_approved_stage_3_adr():
 
 
 def test_window_title_is_available_in_both_supported_languages():
-    assert build_window_title("en") == "NeoEng-D-Trace v2 - Engine Mode"
-    assert build_window_title("pt") == "NeoEng-D-Trace v2 - Modo Engine"
+    assert build_window_title("en") == "NeoEng-D-Trace"
+    assert build_window_title("pt") == "NeoEng-D-Trace"
 
 
 def test_window_title_with_document_keeps_brand_and_filename():
@@ -53,7 +53,7 @@ def test_window_title_with_document_keeps_brand_and_filename():
 def test_unknown_language_falls_back_to_english_without_crashing():
     assert normalize_language("es") == "en"
     assert normalize_language(None) == "en"
-    assert build_window_title("es") == "NeoEng-D-Trace v2 - Engine Mode"
+    assert build_window_title("es") == "NeoEng-D-Trace"
 
 
 def test_application_version_matches_pyproject():

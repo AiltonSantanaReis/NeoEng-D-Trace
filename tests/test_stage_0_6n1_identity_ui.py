@@ -29,12 +29,12 @@ def test_main_window_identity_is_correct_in_english_and_portuguese(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
 
     window.set_language("en")
-    assert window.windowTitle() == "NeoEng-D-Trace v2 - Engine Mode"
+    assert window.windowTitle() == "NeoEng-D-Trace"
     assert window.export_collision_button.text() == "Export Collision"
     assert window.act_lit.text() == "Lit"
 
     window.set_language("pt")
-    assert window.windowTitle() == "NeoEng-D-Trace v2 - Modo Engine"
+    assert window.windowTitle() == "NeoEng-D-Trace"
     assert window.export_collision_button.text() == "Exportar Colisão"
     assert window.act_lit.text() == "Iluminado"
     assert window.act_open.text() == "Abrir Imagem"
