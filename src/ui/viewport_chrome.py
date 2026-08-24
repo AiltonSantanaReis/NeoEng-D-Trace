@@ -7,6 +7,7 @@ from PySide6.QtGui import QColor, QFont, QPainter, QPen
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QMenu,
+    QSizePolicy,
     QStackedLayout,
     QToolButton,
     QVBoxLayout,
@@ -155,7 +156,12 @@ class ViewportChrome(QWidget):
         stack.setAlignment(
             self.overlay, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom
         )
-        self.overlay.setFixedWidth(520)
+        # Let the overlay use the measured width of its controls so Qt
+        # cannot compress their labels below their minimum size hint.
+        self.overlay.setSizePolicy(
+            QSizePolicy.Policy.Minimum,
+            QSizePolicy.Policy.Fixed,
+        )
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)

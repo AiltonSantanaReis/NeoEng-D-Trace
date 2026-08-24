@@ -40,10 +40,10 @@ QToolBar::separator {{
     margin: 5px 3px;
 }}
 QToolBar#reference_tool_palette {{
-    min-width: 72px;
-    max-width: 84px;
-    padding: 8px 4px;
-    spacing: 6px;
+    min-width: 80px;
+    max-width: 88px;
+    padding: 4px 4px;
+    spacing: 4px;
     background: {tokens.surface_alt};
     border-right: 1px solid {tokens.border};
 }}
@@ -72,8 +72,8 @@ QToolBar#reference_tool_palette QToolButton:checked {{
     border-bottom: 1px solid {tokens.border};
 }}
 QToolBar#reference_top_toolbar QToolButton#reference_menu_button {{
-    min-width: 34px;
-    max-width: 34px;
+    min-width: 46px;
+    max-width: 46px;
     font-size: 20px;
     padding: 0px;
 }}

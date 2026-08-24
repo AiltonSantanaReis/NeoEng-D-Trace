@@ -110,7 +110,9 @@ def scoped_clipping(widget: QWidget) -> list[dict[str, Any]]:
 
 
 def capture(widget: QWidget, path: Path) -> dict[str, Any]:
-    if not widget.grab().save(str(path), "PNG"):
+    pixmap = widget.grab()
+    device_pixel_ratio = float(pixmap.devicePixelRatio())
+    if not pixmap.save(str(path), "PNG"):
         raise RuntimeError(f"capture failed: {path.name}")
     with Image.open(path) as image:
         rgba = image.convert("RGBA")
@@ -119,8 +121,16 @@ def capture(widget: QWidget, path: Path) -> dict[str, Any]:
         border = np.concatenate(
             [pixels[0], pixels[-1], pixels[:, 0], pixels[:, -1]], axis=0
         )
-        if (image.width, image.height) != (widget.width(), widget.height()):
-            raise RuntimeError(f"Qt/PNG dimensions disagree: {path.name}")
+        expected_size = (
+            round(widget.width() * device_pixel_ratio),
+            round(widget.height() * device_pixel_ratio),
+        )
+        if (image.width, image.height) != expected_size:
+            raise RuntimeError(
+                f"Qt/PNG dimensions disagree: {path.name}; "
+                f"expected={expected_size}; actual={(image.width, image.height)}; "
+                f"dpr={device_pixel_ratio}"
+            )
         if int(alpha.min()) != 255 or int(alpha.max()) != 255:
             raise RuntimeError(f"alpha contract failed: {path.name}")
         if not np.any(border[:, :3] != 0):
@@ -129,6 +139,8 @@ def capture(widget: QWidget, path: Path) -> dict[str, Any]:
             "file": path.name,
             "width": image.width,
             "height": image.height,
+            "logical_size": [widget.width(), widget.height()],
+            "device_pixel_ratio": device_pixel_ratio,
             "mode": image.mode,
             "alpha": [int(alpha.min()), int(alpha.max())],
             "bytes": path.stat().st_size,
@@ -281,17 +293,16 @@ def run(output: Path | None = None) -> dict[str, Any]:
             editor_path = output / f"{label}_scenario_editor.png"
             main_capture = capture(window, main_path)
             editor_capture = capture(editor, editor_path)
-            main_boxes = {
-                "canvas": rect_in(window.canvas, window),
-                "navigation_toolbar": rect_in(window.nav_toolbar, window),
-            }
+            main_boxes = {"canvas": rect_in(window.canvas, window)}
+            if window.nav_toolbar.isVisible():
+                main_boxes["navigation_toolbar"] = rect_in(window.nav_toolbar, window)
             editor_boxes = {
                 "scenario_canvas": rect_in(editor.canvas, editor),
                 "scenario_inspector": rect_in(panel, editor),
             }
-            main_overlap = main_boxes["canvas"].intersects(
-                main_boxes["navigation_toolbar"]
-            )
+            main_overlap = "navigation_toolbar" in main_boxes and main_boxes[
+                "canvas"
+            ].intersects(main_boxes["navigation_toolbar"])
             editor_overlap = editor_boxes["scenario_canvas"].intersects(
                 editor_boxes["scenario_inspector"]
             )

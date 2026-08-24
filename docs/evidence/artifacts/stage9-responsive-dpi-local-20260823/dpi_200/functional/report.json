@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "status": "FAIL",
+  "source": {
+    "commit": "c425fa53ab607d7ac1d73171b55786ffd3b65186",
+    "branch": "main",
+    "worktree_clean": false
+  },
+  "environment": {
+    "platform": "win32",
+    "python": "3.11.9",
+    "qt_platform": "offscreen"
+  },
+  "command_scope": "local-only; no commit/push/PR/merge",
+  "functional": {
+    "tool_palette": {
+      "lasso_tool": {
+        "status": "PASS",
+        "button_text": "Lasso",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "polygonal_lasso": {
+        "status": "PASS",
+        "button_text": "Polygonal\nLasso",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "magnetic_lasso": {
+        "status": "PASS",
+        "button_text": "Magnetic\nLasso",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "pen_tool": {
+        "status": "PASS",
+        "button_text": "Pen",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "rect_selection": {
+        "status": "PASS",
+        "button_text": "Rect",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "ellipse_selection": {
+        "status": "PASS",
+        "button_text": "Ellipse",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "polygon_edit": {
+        "status": "PASS",
+        "button_text": "Edit\nPolygon",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "collision_brush": {
+        "status": "PASS",
+        "button_text": "Collision\nBrush",
+        "checked": true,
+        "tool_object_created": true
+      },
+      "selection": {
+        "status": "PASS",
+        "button_text": "Selection",
+        "checked": true,
+        "tool_object_created": true
+      }
+    },
+    "main_xray_actions": {
+      "Lit": {
+        "status": "PASS",
+        "mode": 0,
+        "expected": 0
+      },
+      "X-Ray 1": {
+        "status": "PASS",
+        "mode": 1,
+        "expected": 1
+      },
+      "X-Ray 2": {
+        "status": "PASS",
+        "mode": 2,
+        "expected": 2
+      },
+      "X-Ray 3": {
+        "status": "PASS",
+        "mode": 3,
+        "expected": 3
+      }
+    },
+    "gizmo_toggle": {
+      "status": "PASS",
+      "detail": {
+        "toolbar_parent": "navigation_toolbar",
+        "state_roundtrip": true
+      }
+    },
+    "scenario_layer_actions": {
+      "status": "PASS",
+      "detail": {
+        "before": 1,
+        "after_add": 2,
+        "after_remove": 1,
+        "dedicated_window": true
+      }
+    },
+    "mask_viewer_capture": {
+      "file": "mask_viewer_xray_controls.png",
+      "width": 2400,
+      "height": 1600,
+      "logical_size": [
+        1200,
+        800
+      ],
+      "device_pixel_ratio": 2.0,
+      "mode": "RGB",
+      "alpha": [
+        255,
+        255
+      ],
+      "bytes": 23950,
+      "sha256": "d7f3199473653acb4c7da85f8af8843122ca5ec26d04f3754608d65980217138"
+    },
+    "mask_viewer_modes": [
+      {
+        "index": 0,
+        "text": "Original",
+        "checked": true,
+        "mode": 0,
+        "status": "PASS"
+      },
+      {
+        "index": 1,
+        "text": "X-Ray Sobel",
+        "checked": true,
+        "mode": 1,
+        "status": "PASS"
+      },
+      {
+        "index": 2,
+        "text": "X-Ray Canny",
+        "checked": true,
+        "mode": 2,
+        "status": "PASS"
+      },
+      {
+        "index": 3,
+        "text": "X-Ray Laplacian",
+        "checked": true,
+        "mode": 3,
+        "status": "PASS"
+      }
+    ]
+  },
+  "visual": {
+    "viewports": {
+      "compact_1280x720": {
+        "main": {
+          "file": "compact_1280x720_main.png",
+          "width": 2560,
+          "height": 1440,
+          "logical_size": [
+            1280,
+            720
+          ],
+          "device_pixel_ratio": 2.0,
+          "mode": "RGB",
+          "alpha": [
+            255,
+            255
+          ],
+          "bytes": 89626,
+          "sha256": "e69709495503fb5a0bdcda015aff8d3194f02f59cf05d99fabdb0b11615c6e45"
+        },
+        "main_annotated": {
+          "file": "compact_1280x720_main_annotated.png",
+          "sha256": "1236a8522f452b90a570042cd97a6df0fa1f13b4f88d57e3119295b21b5f3ca7"
+        },
+        "scenario_editor": {
+          "file": "compact_1280x720_scenario_editor.png",
+          "width": 2560,
+          "height": 1440,
+          "logical_size": [
+            1280,
+            720
+          ],
+          "device_pixel_ratio": 2.0,
+          "mode": "RGB",
+          "alpha": [
+            255,
+            255
+          ],
+          "bytes": 23571,
+          "sha256": "a8fdfaaf978c2b058f4bc6a8808f73f70fb36b26cc5fa6688da3331016605374"
+        },
+        "scenario_annotated": {
+          "file": "compact_1280x720_scenario_editor_annotated.png",
+          "sha256": "ebd385fb76e2e1aa7e9abe4c27972cb567fa85719e4e4ca013ce38fee995c947"
+        },
+        "geometry": {
+          "main": {
+            "canvas": [
+              121,
+              111,
+              695,
+              587
+            ]
+          },
+          "scenario": {
+            "scenario_canvas": [
+              0,
+              35,
+              400,
+              300
+            ],
+            "scenario_inspector": [
+              851,
+              36,
+              390,
+              803
+            ]
+          }
+        },
+        "overlap": {
+          "main": false,
+          "scenario": false
+        },
+        "clipping": {
+          "main": [],
+          "scenario": []
+        }
+      },
+      "compact_1366x768": {
+        "main": {
+          "file": "compact_1366x768_main.png",
+          "width": 2732,
+          "height": 1536,
+          "logical_size": [
+            1366,
+            768
+          ],
+          "device_pixel_ratio": 2.0,
+          "mode": "RGB",
+          "alpha": [
+            255,
+            255
+          ],
+          "bytes": 90299,
+          "sha256": "9588330a1e3dfb08deae0dd14fa7cc482e4be14a2401e9bc3096b52bc998ff4e"
+        },
+        "main_annotated": {
+          "file": "compact_1366x768_main_annotated.png",
+          "sha256": "2b68bd4e9f9d5f12d86b52cd2bd71a10c7b3f6de4213d669f0f9f13959a688b3"
+        },
+        "scenario_editor": {
+          "file": "compact_1366x768_scenario_editor.png",
+          "width": 2732,
+          "height": 1536,
+          "logical_size": [
+            1366,
+            768
+          ],
+          "device_pixel_ratio": 2.0,
+          "mode": "RGB",
+          "alpha": [
+            255,
+            255
+          ],
+          "bytes": 26547,
+          "sha256": "ab3be340715871c962df20ba40f6bc784af31f9f0d5f75330b03637401762a0b"
+        },
+        "scenario_annotated": {
+          "file": "compact_1366x768_scenario_editor_annotated.png",
+          "sha256": "b7391c656b01eabedcb1c997536ad7b7fdd502e97810a4b9f6516091172dfa7b"
+        },
+        "geometry": {
+          "main": {
+            "canvas": [
+              121,
+              111,
+              781,
+              635
+            ]
+          },
+          "scenario": {
+            "scenario_canvas": [
+              0,
+              35,
+              400,
+              300
+            ],
+            "scenario_inspector": [
+              937,
+              36,
+              390,
+              803
+            ]
+          }
+        },
+        "overlap": {
+          "main": false,
+          "scenario": false
+        },
+        "clipping": {
+          "main": [],
+          "scenario": []
+        }
+      },
+      "desktop_1920x1080": {
+        "main": {
+          "file": "desktop_1920x1080_main.png",
+          "width": 3840,
+          "height": 2160,
+          "logical_size": [
+            1920,
+            1080
+          ],
+          "device_pixel_ratio": 2.0,
+          "mode": "RGB",
+          "alpha": [
+            255,
+            255
+          ],
+          "bytes": 106648,
+          "sha256": "15564fd4c723968268b8bfc0eb275896f32f3c67c4251abb07cb92e81cff4cc0"
+        },
+        "main_annotated": {
+          "file": "desktop_1920x1080_main_annotated.png",
+          "sha256": "ae9658d95750836e6228db3bbca515aaf6ad20c6c2635c5f477259feb66f40b8"
+        },
+        "scenario_editor": {
+          "file": "desktop_1920x1080_scenario_editor.png",
+          "width": 3840,
+          "height": 2160,
+          "logical_size": [
+            1920,
+            1080
+          ],
+          "device_pixel_ratio": 2.0,
+          "mode": "RGB",
+          "alpha": [
+            255,
+            255
+          ],
+          "bytes": 46076,
+          "sha256": "6c61cbe33924fc73082380ed1a8d94d879798cc3b4bfe1692375280af1b7d87f"
+        },
+        "scenario_annotated": {
+          "file": "desktop_1920x1080_scenario_editor_annotated.png",
+          "sha256": "a3e06026a8e8c6694b8ce6a8914947e259a2556734801c08bbe57efa9337db62"
+        },
+        "geometry": {
+          "main": {
+            "canvas": [
+              121,
+              105,
+              1255,
+              953
+            ]
+          },
+          "scenario": {
+            "scenario_canvas": [
+              0,
+              35,
+              400,
+              300
+            ],
+            "scenario_inspector": [
+              1491,
+              36,
+              390,
+              803
+            ]
+          }
+        },
+        "overlap": {
+          "main": false,
+          "scenario": false
+        },
+        "clipping": {
+          "main": [],
+          "scenario": []
+        }
+      }
+    },
+    "findings": []
+  },
+  "human_review": {
+    "status": "NOT_CONFIRMED",
+    "checklist": "HUMAN_REVIEW_REQUIRED.md",
+    "reason": "aparência e usabilidade final exigem observação humana"
+  },
+  "artifacts": [
+    {
+      "file": "compact_1280x720_main.png",
+      "bytes": 89626,
+      "sha256": "e69709495503fb5a0bdcda015aff8d3194f02f59cf05d99fabdb0b11615c6e45"
+    },
+    {
+      "file": "compact_1280x720_main_annotated.png",
+      "bytes": 99131,
+      "sha256": "1236a8522f452b90a570042cd97a6df0fa1f13b4f88d57e3119295b21b5f3ca7"
+    },
+    {
+      "file": "compact_1280x720_scenario_editor.png",
+      "bytes": 23571,
+      "sha256": "a8fdfaaf978c2b058f4bc6a8808f73f70fb36b26cc5fa6688da3331016605374"
+    },
+    {
+      "file": "compact_1280x720_scenario_editor_annotated.png",
+      "bytes": 31141,
+      "sha256": "ebd385fb76e2e1aa7e9abe4c27972cb567fa85719e4e4ca013ce38fee995c947"
+    },
+    {
+      "file": "compact_1366x768_main.png",
+      "bytes": 90299,
+      "sha256": "9588330a1e3dfb08deae0dd14fa7cc482e4be14a2401e9bc3096b52bc998ff4e"
+    },
+    {
+      "file": "compact_1366x768_main_annotated.png",
+      "bytes": 99915,
+      "sha256": "2b68bd4e9f9d5f12d86b52cd2bd71a10c7b3f6de4213d669f0f9f13959a688b3"
+    },
+    {
+      "file": "compact_1366x768_scenario_editor.png",
+      "bytes": 26547,
+      "sha256": "ab3be340715871c962df20ba40f6bc784af31f9f0d5f75330b03637401762a0b"
+    },
+    {
+      "file": "compact_1366x768_scenario_editor_annotated.png",
+      "bytes": 34498,
+      "sha256": "b7391c656b01eabedcb1c997536ad7b7fdd502e97810a4b9f6516091172dfa7b"
+    },
+    {
+      "file": "desktop_1920x1080_main.png",
+      "bytes": 106648,
+      "sha256": "15564fd4c723968268b8bfc0eb275896f32f3c67c4251abb07cb92e81cff4cc0"
+    },
+    {
+      "file": "desktop_1920x1080_main_annotated.png",
+      "bytes": 120745,
+      "sha256": "ae9658d95750836e6228db3bbca515aaf6ad20c6c2635c5f477259feb66f40b8"
+    },
+    {
+      "file": "desktop_1920x1080_scenario_editor.png",
+      "bytes": 46076,
+      "sha256": "6c61cbe33924fc73082380ed1a8d94d879798cc3b4bfe1692375280af1b7d87f"
+    },
+    {
+      "file": "desktop_1920x1080_scenario_editor_annotated.png",
+      "bytes": 58904,
+      "sha256": "a3e06026a8e8c6694b8ce6a8914947e259a2556734801c08bbe57efa9337db62"
+    },
+    {
+      "file": "HUMAN_REVIEW_REQUIRED.md",
+      "bytes": 730,
+      "sha256": "50701c94b904e3c8d059ab7e2e6eeedf1f3098654297eb9909f34ed4a94e5787"
+    },
+    {
+      "file": "mask_viewer_xray_controls.png",
+      "bytes": 23950,
+      "sha256": "d7f3199473653acb4c7da85f8af8843122ca5ec26d04f3754608d65980217138"
+    },
+    {
+      "file": "ui_fixture.ndtproj",
+      "bytes": 32,
+      "sha256": "6d5ffcb680d08b73e8271c8beccbb279e14eb11ce33f1004bb2e3c117e257fd6"
+    }
+  ],
+  "checks": {
+    "functional_actions": true,
+    "visual_geometry": true,
+    "human_review": false,
+    "source_tree_clean": false
+  }
+}

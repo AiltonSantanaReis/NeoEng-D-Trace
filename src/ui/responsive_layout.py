@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QSplitter,
     QStackedWidget,
     QTabWidget,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -73,6 +74,7 @@ class ResponsivePanelLayout:
             self.panel_stack.setCurrentWidget(self.desktop_panel_splitter)
 
         self.toolbar.setVisible(not compact)
+        self._set_reference_toolbar_mode(compact)
         self.is_compact = compact
         self.owner._compact_layout = compact
         self._apply_geometry()
@@ -94,6 +96,37 @@ class ResponsivePanelLayout:
     def _apply_scheduled_geometry(self) -> None:
         self._geometry_update_pending = False
         self._apply_geometry()
+        self._set_reference_toolbar_mode(self.is_compact)
+
+    def _set_reference_toolbar_mode(self, compact: bool) -> None:
+        """Keep the visible reference toolbar usable at compact widths."""
+
+        toolbar = getattr(self.owner, "reference_top_toolbar", None)
+        if toolbar is None:
+            return
+        style = (
+            Qt.ToolButtonStyle.ToolButtonIconOnly
+            if compact
+            else Qt.ToolButtonStyle.ToolButtonTextUnderIcon
+        )
+        toolbar.setToolButtonStyle(style)
+        for button in toolbar.findChildren(QToolButton):
+            if button.objectName() != "reference_menu_button":
+                button.setToolButtonStyle(style)
+
+        menu_button = getattr(self.owner, "reference_menu_button", None)
+        if menu_button is not None:
+            menu_button.setMinimumWidth(51)
+            menu_button.setMaximumWidth(51)
+
+        search = getattr(self.owner, "reference_command_search", None)
+        if search is not None:
+            search.setMinimumWidth(180 if compact else 260)
+            search.setMaximumWidth(240 if compact else 440)
+
+        focus_button = getattr(self.owner, "focus_button", None)
+        if focus_button is not None:
+            focus_button.setText("Focus" if compact else "Focus Selected")
 
     def _apply_geometry(self) -> None:
         """Reserve the visible reference palette, viewport and inspector dock."""
