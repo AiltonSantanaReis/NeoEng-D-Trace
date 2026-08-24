@@ -34,7 +34,7 @@ Portanto, a resposta objetiva é: **as etapas foram aplicadas parcialmente; não
 
 Foram confrontados:
 
-1. O texto-fonte completo, em `C:\Users\atnco\.codex\attachments\9872a9f3-1037-42fa-8535-edb471ffed8e\pasted-text.txt` — 409 linhas, Etapas 0–9.
+1. O texto-fonte completo fornecido pelo usuário — 409 linhas, Etapas 0–9.
 2. O plano derivado em `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md`.
 3. Código de produção em `src/`.
 4. Testes focados e suíte registrados nas evidências.
