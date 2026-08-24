@@ -11545,8 +11545,8 @@
       "size": 14312
     },
     "tests/test_stage_11_priority_branch_coverage.py": {
-      "sha256": "cc42807dba925370b9910d2bdbbe0d6ef77cff03ff8a0848ed30ebc26fe555a5",
-      "size": 19495
+      "sha256": "8dee388b8fa68f5f0e1789102413560b9c5e81f471414ccc70d2a64a0597ac77",
+      "size": 24766
     },
     "tests/test_stage_11_scene_branch_coverage.py": {
       "sha256": "2bcff290cfaa4bd49d315221986a3912847b31d54b080a2914545b2e59b99ec1",
