@@ -34,7 +34,9 @@ def _color(token: str, *, rgba: bool) -> tuple[int, ...]:
     return (*rgb, 128) if rgba else rgb
 
 
-def _make_capture(root: Path, *, rgba: bool = False) -> Path:
+def _make_capture(
+    root: Path, *, rgba: bool = False, schema_version: int = 3
+) -> Path:
     root.mkdir()
     image_path = root / "1080p_FHD_01_sem_projeto.png"
     background = _color(THEME_TOKENS.window, rgba=rgba)
@@ -75,9 +77,6 @@ def _make_capture(root: Path, *, rgba: bool = False) -> Path:
         "layers": _widget(220, 80, 60, 60, False),
         "groups": _widget(220, 140, 60, 60, False),
         "collision_panel": _widget(280, 20, 40, 180, False),
-        "toolbar": _widget(0, 0, 100, 20),
-        "nav_toolbar": _widget(100, 0, 100, 20),
-        "xray_toolbar": _widget(200, 0, 120, 20),
         "tab_visibility": {
             "reference_panel_tabs": {
                 "current_index": 0,
@@ -96,8 +95,35 @@ def _make_capture(root: Path, *, rgba: bool = False) -> Path:
             },
         },
     }
+    if schema_version >= 3:
+        widgets["reference_top_toolbar"] = _widget(0, 0, 320, 20)
+        widgets["top_command_contract"] = {
+            "stage": 4,
+            "group_order": [
+                "file",
+                "edit",
+                "view",
+                "export",
+                "context",
+                "render",
+            ],
+            "group_roles": {
+                "file": "commands",
+                "edit": "commands",
+                "view": "commands",
+                "export": "commands",
+                "context": "context",
+                "render": "render",
+            },
+            "action_identity_preserved": True,
+            "physical_toolbar_required": False,
+        }
+    else:
+        widgets["toolbar"] = _widget(0, 0, 100, 20)
+        widgets["nav_toolbar"] = _widget(100, 0, 100, 20)
+        widgets["xray_toolbar"] = _widget(200, 0, 120, 20)
     manifest = {
-        "schema_version": 2,
+        "schema_version": schema_version,
         "generator": "tests",
         "captures": {
             "1080p_FHD": {
@@ -150,6 +176,42 @@ def test_visual_auditor_passes_valid_png_and_generates_annotation(
     annotation = tmp_path / "output" / "1080p_FHD_01_sem_projeto_annotated.png"
     assert annotation.is_file()
     assert (tmp_path / "output" / "visual-audit-report.json").is_file()
+
+
+def test_visual_auditor_accepts_historical_schema2_toolbar_geometry(
+    tmp_path: Path,
+) -> None:
+    _make_capture(tmp_path / "input", schema_version=2)
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "PASS"
+    assert report["finding_count"] == 0
+
+
+def test_visual_auditor_fails_when_schema3_requires_physical_toolbar(
+    tmp_path: Path,
+) -> None:
+    _make_capture(tmp_path / "input", schema_version=3)
+    manifest_path = tmp_path / "input" / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    contract = manifest["captures"]["1080p_FHD"]["widget_geometry"][
+        "sem_projeto"
+    ]["top_command_contract"]
+    contract["physical_toolbar_required"] = True
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "FAIL"
+    assert any(
+        item["check"] == "contract"
+        and "requires a physical legacy toolbar" in item["message"]
+        for item in report["findings"]
+    )
 
 
 def test_visual_auditor_detects_inactive_tab_page_visible(tmp_path: Path) -> None:

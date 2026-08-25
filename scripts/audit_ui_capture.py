@@ -38,6 +38,7 @@ from src.ui.main_window import MainWindow  # noqa: E402
 from src.ui.theme_qss import QSS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
+CAPTURE_SCHEMA_VERSION = 3
 DEFAULT_OUTPUT = ROOT / "docs" / "evidence" / "artifacts" / "ui-audit"
 RESOLUTIONS = {
     "1080p_FHD": (1920, 1080),
@@ -244,9 +245,17 @@ def _widget_snapshot(window: QWidget, *, root: QWidget | None = None) -> dict[st
     }
 
 
-def _main_window_widgets(window: MainWindow) -> dict[str, dict[str, Any]]:
+def _main_window_widgets(window: MainWindow) -> dict[str, Any]:
+    """Capture current visible chrome plus the semantic command contract.
+
+    Schema 3 deliberately excludes the three historical MainWindow toolbar
+    hosts.  Their zero-sized geometry is an implementation detail of the
+    compatibility boundary, not a product-level visual contract.
+    """
+
     required = {
         "main_splitter": window.main_splitter,
+        "reference_top_toolbar": window.reference_top_toolbar,
         "tool_palette": window.tool_palette,
         "reference_tool_palette": window.reference_tool_palette,
         "canvas": window.canvas,
@@ -259,15 +268,13 @@ def _main_window_widgets(window: MainWindow) -> dict[str, dict[str, Any]]:
         "layers": window.layers,
         "groups": window.groups,
         "collision_panel": window.collision_panel,
-        "toolbar": window.toolbar,
-        "nav_toolbar": window.nav_toolbar,
-        "xray_toolbar": window.xray_toolbar,
     }
     if any(not isinstance(widget, QWidget) for widget in required.values()):
         raise RuntimeError("MainWindow layout contract has a non-widget member")
-    snapshots = {
+    snapshots: dict[str, Any] = {
         name: _widget_snapshot(widget, root=window) for name, widget in required.items()
     }
+    snapshots["top_command_contract"] = window.top_command_contract.descriptor()
     snapshots["tab_visibility"] = {
         "reference_panel_tabs": _tab_visibility_snapshot(
             window.reference_panel_tabs, window
@@ -339,7 +346,7 @@ def run(output: Path) -> dict[str, Any]:
     scene, project_path = _prepare_project(output)
 
     manifest: dict[str, Any] = {
-        "schema_version": 2,
+        "schema_version": CAPTURE_SCHEMA_VERSION,
         "generator": "scripts/audit_ui_capture.py",
         "platform": platform.platform(),
         "python": sys.version,
