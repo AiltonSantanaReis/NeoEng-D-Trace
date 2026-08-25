@@ -15,6 +15,7 @@ from src.ui.top_command_contract import (
     TopCommandContract,
     build_top_command_contract,
 )
+from src.ui.top_toolbar import configure_top_toolbars
 
 
 @pytest.fixture(scope="module")
@@ -125,6 +126,33 @@ def test_semantic_descriptor_contains_no_physical_toolbar_contract(qt_app):
             for group in window.top_command_contract.groups
             for item in group.items
         )
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+def test_compatibility_entrypoint_does_not_read_legacy_toolbar_hosts(qt_app):
+    window = _window(qt_app)
+    try:
+        proxy = _NoLegacyToolbarAccess(window)
+        configure_top_toolbars(proxy)
+        assert proxy.top_command_contract.group_names() == TOP_COMMAND_GROUP_ORDER
+        assert proxy.top_command_contract.physical_toolbar_required is False
+        assert proxy.top_toolbar_groups is proxy.top_command_groups
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_legacy_toolbar_hosts_are_quarantined_not_reprojected(qt_app):
+    window = _window(qt_app)
+    try:
+        hosts = (window.toolbar, window.nav_toolbar, window.xray_toolbar)
+        before = tuple(tuple(host.actions()) for host in hosts)
+        configure_top_toolbars(window)
+        after = tuple(tuple(host.actions()) for host in hosts)
+
+        assert before == after
+        assert all(not host.isVisible() for host in hosts)
     finally:
         window.close()
         qt_app.processEvents()

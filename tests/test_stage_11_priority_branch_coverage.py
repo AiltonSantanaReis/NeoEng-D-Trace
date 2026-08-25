@@ -24,7 +24,6 @@ from src.ui import canvas_view as canvas_view_module
 from src.ui import export_dialog as export_dialog_module
 from src.ui import export_preview as export_preview_module
 from src.ui import tool_palette_commands as tool_palette_commands_module
-from src.ui import top_toolbar as top_toolbar_module
 from src.ui import viewport_settings as viewport_settings_module
 from src.ui.canvas_view import CanvasView
 from src.ui.export_dialog import ExportDialog
@@ -724,9 +723,3 @@ def test_remaining_integrated_branch_outcomes(qt_app, monkeypatch):
         lambda *_args: None,
     )
     assert selection_tools_module.mask_to_polygon(mask, approx_dp=1.0) == []
-
-    class EmptyToolbar:
-        def actions(self):
-            return []
-
-    top_toolbar_module._remove_trailing_separator(EmptyToolbar())

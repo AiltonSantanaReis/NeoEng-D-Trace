@@ -388,10 +388,6 @@ def configure_widget(
 def configure_main_window_controls(window: Any) -> None:
     """Configure the MainWindow icon contract after all controls are created."""
 
-    for toolbar in (window.toolbar, window.nav_toolbar, window.xray_toolbar):
-        toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        toolbar.setIconSize(QSize(18, 18))
-
     action_keys = {
         "open_project_action": "open",
         "open_image_action": "open_image",
@@ -435,9 +431,9 @@ def configure_main_window_controls(window: Any) -> None:
     configure_reference_top_toolbar(window)
     window.reference_tool_palette.setEnabled(window.tool_palette.isEnabled())
     # The reference toolbar is the visible product chrome. Historical toolbar
-    # hosts remain temporarily available only as non-rendered compatibility
-    # surfaces while their remaining consumers are migrated. Responsive layout
-    # must not control their visibility.
+    # hosts remain temporarily quarantined here until their physical creation
+    # boundary is removed in a later cleanup stage. They are not semantic
+    # command-family surfaces and are never populated by ``top_toolbar``.
     window.toolbar.setMinimumHeight(0)
     window.toolbar.setMaximumHeight(0)
     window.toolbar.setMinimumWidth(0)

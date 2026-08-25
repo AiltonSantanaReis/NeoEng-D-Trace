@@ -3,9 +3,8 @@
 The visible application chrome and command dispatch need stable command families,
 not stable physical toolbar widgets.  This module defines that semantic boundary
 without reading or owning ``MainWindow.toolbar``, ``nav_toolbar`` or
-``xray_toolbar``.  Legacy toolbar composition can consume this contract during
-the migration period, while tests and other consumers gain a toolbar-free source
-of truth.
+``xray_toolbar``.  Visible chrome and other consumers use this toolbar-free
+source of truth directly.
 """
 
 from __future__ import annotations
