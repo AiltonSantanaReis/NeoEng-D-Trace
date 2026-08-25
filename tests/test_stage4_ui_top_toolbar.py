@@ -30,34 +30,27 @@ def _window(qt_app: QApplication) -> MainWindow:
     return window
 
 
-def _toolbar_objects(toolbar):
-    objects = []
-    for action in toolbar.actions():
-        if action.isSeparator():
-            continue
-        if isinstance(action, QWidgetAction):
-            objects.append(action.defaultWidget())
-        else:
-            objects.append(action)
-    return objects
 
-
-def test_stage4_groups_are_native_and_action_backed(qt_app):
+def test_stage4_groups_are_semantic_and_action_backed(qt_app):
     window = _window(qt_app)
     try:
-        contract = window.top_toolbar_contract
-        assert contract == {
+        contract = window.top_command_contract
+        assert contract.descriptor() == {
             "stage": 4,
-            "native_separators": True,
-            "action_identity_preserved": True,
-            "toolbar_roles": {
-                "main_toolbar": "commands",
-                "navigation_toolbar": "context",
-                "xray_toolbar": "render",
+            "group_order": ("file", "edit", "view", "export", "context", "render"),
+            "group_roles": {
+                "file": "commands",
+                "edit": "commands",
+                "view": "commands",
+                "export": "commands",
+                "context": "context",
+                "render": "render",
             },
+            "action_identity_preserved": True,
+            "physical_toolbar_required": False,
         }
 
-        groups = window.top_toolbar_groups
+        groups = window.top_command_groups
         assert tuple(groups) == ("file", "edit", "view", "export", "context", "render")
         assert groups["file"] == (
             window.open_project_action,
@@ -80,14 +73,17 @@ def test_stage4_groups_are_native_and_action_backed(qt_app):
         )
         assert groups["export"] == (window.act_export, window.export_collision_button)
 
-        main_objects = _toolbar_objects(window.toolbar)
-        assert main_objects == [
-            item for name in ("file", "edit", "view", "export") for item in groups[name]
-        ]
-        assert sum(action.isSeparator() for action in window.toolbar.actions()) == 3
-        assert sum(action.isSeparator() for action in window.nav_toolbar.actions()) == 0
-        assert (
-            sum(action.isSeparator() for action in window.xray_toolbar.actions()) == 0
+        assert contract.items("context") == (
+            window.canvas.gizmo_toggle,
+            window.focus_button,
+            window.act_clean,
+            window.language_button,
+        )
+        assert contract.items("render") == (
+            window.act_lit,
+            window.act_xray1,
+            window.act_xray2,
+            window.act_xray3,
         )
     finally:
         window.close()
@@ -102,8 +98,8 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
         assert window.settings_action in window.edit_menu.actions()
         assert window.mask_viewer_action in window.view_menu.actions()
         assert window.collision_overlay_action in window.view_menu.actions()
-        assert window.act_fit in window.toolbar.actions()
-        assert window.act_100 in window.toolbar.actions()
+        assert window.act_fit in window.top_command_contract.items("view")
+        assert window.act_100 in window.top_command_contract.items("view")
 
         for action in (
             window.undo_action,
@@ -286,21 +282,18 @@ def test_stage4_settings_dialog_commits_grid_and_snap(qt_app, monkeypatch):
         qt_app.processEvents()
 
 
-def test_stage4_toolbars_share_presentation_contract(qt_app):
+def test_stage4_command_families_define_roles_without_physical_toolbar_contract(qt_app):
     window = _window(qt_app)
     try:
-        for toolbar in (window.toolbar, window.nav_toolbar, window.xray_toolbar):
-            assert toolbar.objectName()
-            assert toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-            assert toolbar.iconSize().width() == 18
-            assert toolbar.iconSize().height() == 18
-            assert toolbar.isMovable() is False
-            assert toolbar.isFloatable() is False
-            assert toolbar.property("toolbarStage") == "stage4"
-            assert toolbar.property("toolbarGroupBoundaries") is True
-        assert window.toolbar.property("toolbarRole") == "commands"
-        assert window.nav_toolbar.property("toolbarRole") == "context"
-        assert window.xray_toolbar.property("toolbarRole") == "render"
+        contract = window.top_command_contract
+        assert contract.physical_toolbar_required is False
+        assert contract.role("file") == "commands"
+        assert contract.role("edit") == "commands"
+        assert contract.role("view") == "commands"
+        assert contract.role("export") == "commands"
+        assert contract.role("context") == "context"
+        assert contract.role("render") == "render"
+        assert window.top_command_groups == contract.as_mapping()
     finally:
         window.close()
         qt_app.processEvents()
