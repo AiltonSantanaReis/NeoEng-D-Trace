@@ -14,6 +14,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.ui.viewport_state import ViewportState
+
 
 class _Ruler(QWidget):
     def __init__(self, canvas, *, horizontal: bool, parent=None) -> None:
@@ -29,7 +31,7 @@ class _Ruler(QWidget):
         else:
             self.setMinimumWidth(28)
             self.setMaximumWidth(28)
-        canvas.viewport_state_changed.connect(self.update)
+        canvas.viewport_state_model_changed.connect(lambda _state: self.update())
 
     def paintEvent(self, event) -> None:  # noqa: N802
         del event
@@ -130,36 +132,40 @@ class ViewportOverlayBar(QWidget):
         layout.addWidget(self.zoom_button)
         layout.addWidget(self.snap_button)
         layout.addStretch(1)
-        canvas.viewport_state_changed.connect(self._sync)
-        self._sync(canvas.viewport_state_text())
+        canvas.viewport_state_model_changed.connect(self._sync)
+        self._sync(canvas.viewport_state())
 
     def set_compact(self, compact: bool) -> None:
         self._compact = bool(compact)
-        self._sync(self.canvas.viewport_state_text())
+        self._sync(self.canvas.viewport_state())
 
     def _set_snap(self, enabled: bool) -> None:
         self.canvas.set_vertex_snapping(enabled, grid_size=16)
-        self._sync(self.canvas.viewport_state_text())
 
-    def _sync(self, state: str) -> None:
-        mode = state.split("  |  ", 1)[0].replace("VIEW: ", "").title()
+    def _sync(self, state: ViewportState) -> None:
+        mode = state.view_mode.title()
         if self._compact:
             self.view_button.setText(mode)
-            self.zoom_button.setText(f"{self.canvas.get_zoom():.2f}x")
+            self.zoom_button.setText(f"{state.zoom:.2f}x")
         else:
             self.view_button.setText(f"View: {mode}")
-            self.zoom_button.setText(f"Zoom: {self.canvas.get_zoom():.2f}x")
-        settings = self.canvas._vertex_snap_settings
-        self.snap_button.setChecked(bool(settings.enabled))
-        grid = int(getattr(settings, "grid_size", 1))
-        snap_state = f"{'On' if settings.enabled else 'Off'} ({grid})"
+            self.zoom_button.setText(f"Zoom: {state.zoom:.2f}x")
+        self.snap_button.blockSignals(True)
+        self.snap_button.setChecked(state.snap_enabled)
+        self.snap_button.blockSignals(False)
+        snap_state = f"{'On' if state.snap_enabled else 'Off'} ({state.snap_grid_size})"
         self.snap_button.setText(
             f'Snap {snap_state}' if self._compact else f'Snap: {snap_state}'
         )
-        self.view_button.setAccessibleDescription(f'Choose viewport rendering mode; current mode: {mode}')
-        self.zoom_button.setAccessibleDescription(f'Choose viewport zoom; current zoom: {self.canvas.get_zoom():.2f}x')
+        self.view_button.setAccessibleDescription(
+            f'Choose viewport rendering mode; current mode: {mode}'
+        )
+        self.zoom_button.setAccessibleDescription(
+            f'Choose viewport zoom; current zoom: {state.zoom:.2f}x'
+        )
         self.snap_button.setAccessibleDescription(
-            f'Enable or disable snapping edited vertices to the active grid; current state: {snap_state}'
+            'Enable or disable snapping edited vertices to the active grid; '
+            f'current state: {snap_state}'
         )
 
 

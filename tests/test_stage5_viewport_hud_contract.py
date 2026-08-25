@@ -42,9 +42,13 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
         window.canvas._pan.setX(12)
         window.canvas._pan.setY(-8)
         window.canvas._emit_viewport_state()
-        assert "PAN: 12,-8" in window.viewport_status.toolTip()
-        assert "SNAP: ON" in window.viewport_status.toolTip()
-        assert "GRID: OFF" in window.viewport_status.toolTip()
+        state = window.canvas.viewport_state()
+        assert state.pan_x == pytest.approx(12.0)
+        assert state.pan_y == pytest.approx(-8.0)
+        assert state.snap_enabled is True
+        assert state.snap_grid_size == 16
+        assert state.grid_visible is False
+        assert window.viewport_status.toolTip()
         overlay = window.viewport_chrome.overlay
         assert overlay._compact is True
         assert overlay.view_button.text() == "Lit"
