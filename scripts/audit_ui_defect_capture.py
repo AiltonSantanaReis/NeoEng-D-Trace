@@ -164,8 +164,17 @@ def run(output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
     try:
         if window.layers.tabs.count() != 1:
             raise RuntimeError("scenario authoring is still embedded in MainWindow Layers")
-        if window.canvas.gizmo_toggle.parent() is not window.nav_toolbar:
-            raise RuntimeError("gizmo toggle is not hosted by navigation toolbar")
+        if window.top_command_contract.physical_toolbar_required:
+            raise RuntimeError(
+                "semantic command contract still requires physical toolbars"
+            )
+        if (
+            window.canvas.gizmo_toggle
+            not in window.top_command_contract.items("context")
+        ):
+            raise RuntimeError(
+                "gizmo toggle is missing from the semantic context group"
+            )
         window.open_scenario_editor()
         editor = window.scenario_editor_window
         if editor is None:
@@ -179,10 +188,14 @@ def run(output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
             main_capture = capture(window, main_path)
             main_boxes = {
                 "canvas": rect_in(window.canvas, window),
-                "navigation_toolbar": rect_in(window.nav_toolbar, window),
+                "reference_top_toolbar": rect_in(window.reference_top_toolbar, window),
             }
-            if main_boxes["canvas"].intersects(main_boxes["navigation_toolbar"]):
-                raise RuntimeError(f"main canvas overlaps navigation toolbar at {label}")
+            if main_boxes["canvas"].intersects(
+                main_boxes["reference_top_toolbar"]
+            ):
+                raise RuntimeError(
+                    f"main canvas overlaps visible top toolbar at {label}"
+                )
             main_clipping = widget_clipping(window)
             window.canvas._gizmo_feedback = "T: (10.0, -2.0, 0.0)  S: (1.0, 1.0, 1.0)"
             window.canvas.update()
@@ -287,7 +300,7 @@ def run(output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
         mask.close()
         results["checks"] = {
             "layers_scenario_separation": True,
-            "gizmo_toolbar_parent": True,
+            "gizmo_semantic_contract": True,
             "mask_xray_modes": True,
             "no_unexpected_clipping": all(
                 not item["main_clipping"] and not item["scenario_clipping"]
@@ -315,6 +328,7 @@ def run(output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
             "src/ui/canvas_view.py",
             "src/ui/mask_viewer.py",
             "src/ui/main_window.py",
+            "src/ui/top_command_contract.py",
             "src/ui/command_bindings.py",
             "tests/test_ui_defect_regressions.py",
         ):

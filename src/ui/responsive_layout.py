@@ -36,7 +36,6 @@ class ResponsivePanelLayout:
         reference_tool_palette,
         desktop_panel_splitter,
         right_splitter,
-        toolbar,
         side_panel,
         layers,
         groups,
@@ -50,7 +49,6 @@ class ResponsivePanelLayout:
         self.reference_tool_palette = reference_tool_palette
         self.desktop_panel_splitter = desktop_panel_splitter
         self.right_splitter = right_splitter
-        self.toolbar = toolbar
         self.side_panel = side_panel
         self.layers = layers
         self.groups = groups
@@ -73,7 +71,6 @@ class ResponsivePanelLayout:
             self._move_panels_to_desktop()
             self.panel_stack.setCurrentWidget(self.desktop_panel_splitter)
 
-        self.toolbar.setVisible(not compact)
         self._set_reference_toolbar_mode(compact)
         self.is_compact = compact
         self.owner._compact_layout = compact
@@ -299,7 +296,6 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
         reference_tool_palette=owner.reference_tool_palette,
         desktop_panel_splitter=desktop_panel_splitter,
         right_splitter=right_splitter,
-        toolbar=owner.toolbar,
         side_panel=owner.side_panel,
         layers=owner.layers,
         groups=owner.groups,

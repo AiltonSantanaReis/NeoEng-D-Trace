@@ -151,16 +151,28 @@ def test_scenario_editor_is_scrollable_and_interactive_after_binding(tmp_path, q
         qt_app.processEvents()
 
 
-def test_gizmo_is_toolbar_control_and_feedback_avoids_gizmo(qt_app):
+def test_gizmo_control_roundtrips_state_and_feedback_avoids_gizmo(qt_app):
     window = MainWindow(_scene(), _Config())
     try:
         window.show()
         qt_app.processEvents()
-        assert window.canvas.gizmo_toggle.parent() is window.nav_toolbar
-        assert window.canvas.gizmo_toggle.geometry().height() >= 20
+        assert window.top_command_contract.physical_toolbar_required is False
+        assert (
+            window.canvas.gizmo_toggle
+            in window.top_command_contract.items("context")
+        )
+        assert window.canvas.gizmo_toggle.objectName() == "gizmo_toggle"
+        assert window.canvas.gizmo_toggle.accessibleName()
 
         canvas = CanvasView(_scene())
         canvas.resize(640, 480)
+        initial_state = canvas.viewport_state()
+        canvas.gizmo_toggle.click()
+        toggled_state = canvas.viewport_state()
+        assert toggled_state.gizmo_enabled is not initial_state.gizmo_enabled
+        canvas.gizmo_toggle.click()
+        restored_state = canvas.viewport_state()
+        assert restored_state.gizmo_enabled is initial_state.gizmo_enabled
         canvas.gizmo = TransformGizmo()
         canvas.gizmo.screen_pos.setX(530)
         canvas.gizmo.screen_pos.setY(360)

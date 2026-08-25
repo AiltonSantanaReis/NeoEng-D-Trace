@@ -243,18 +243,19 @@ def run(output: Path | None = None) -> dict[str, Any]:
             }
         result["functional"]["main_xray_actions"] = xray_results
 
-        window.canvas.gizmo_toggle.click()
-        gizmo_on = (
-            window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
+        gizmo_state = window.canvas.viewport_state().gizmo_enabled
+        gizmo_control_consistent = (
+            gizmo_state == window.canvas.gizmo_toggle.isChecked()
         )
-        window.canvas.gizmo_toggle.click()
-        gizmo_off = (
-            window.canvas._gizmo_enabled == window.canvas.gizmo_toggle.isChecked()
+        gizmo_in_context = (
+            window.canvas.gizmo_toggle
+            in window.top_command_contract.items("context")
         )
+        if not gizmo_state:
+            raise RuntimeError("gizmo is not enabled for the selected audit object")
 
         from src.core.transform_gesture import capture_transform_state
 
-        window.canvas.gizmo_toggle.click()
         window.canvas._update_gizmo_screen_position()
         before_gizmo = capture_transform_state(scene, ["audit_object"])
         if window.canvas.gizmo is None:
@@ -279,10 +280,19 @@ def run(output: Path | None = None) -> dict[str, Any]:
         _record_action(
             result["functional"],
             "gizmo_toggle",
-            gizmo_on and gizmo_off,
+            (
+                gizmo_control_consistent
+                and gizmo_in_context
+                and not window.top_command_contract.physical_toolbar_required
+            ),
             {
-                "toolbar_parent": window.canvas.gizmo_toggle.parent().objectName(),
-                "state_roundtrip": gizmo_on and gizmo_off,
+                "control_object_name": window.canvas.gizmo_toggle.objectName(),
+                "checked": window.canvas.gizmo_toggle.isChecked(),
+                "viewport_state": gizmo_state,
+                "semantic_context_member": gizmo_in_context,
+                "physical_toolbar_required": (
+                    window.top_command_contract.physical_toolbar_required
+                ),
             },
         )
 
@@ -333,16 +343,19 @@ def run(output: Path | None = None) -> dict[str, Any]:
             editor_path = output / f"{label}_scenario_editor.png"
             main_capture = capture(window, main_path)
             editor_capture = capture(editor, editor_path)
-            main_boxes = {"canvas": rect_in(window.canvas, window)}
-            if window.nav_toolbar.isVisible():
-                main_boxes["navigation_toolbar"] = rect_in(window.nav_toolbar, window)
+            main_boxes = {
+                "canvas": rect_in(window.canvas, window),
+                "reference_top_toolbar": rect_in(
+                    window.reference_top_toolbar, window
+                ),
+            }
             editor_boxes = {
                 "scenario_canvas": rect_in(editor.canvas, editor),
                 "scenario_inspector": rect_in(panel, editor),
             }
-            main_overlap = "navigation_toolbar" in main_boxes and main_boxes[
-                "canvas"
-            ].intersects(main_boxes["navigation_toolbar"])
+            main_overlap = main_boxes["canvas"].intersects(
+                main_boxes["reference_top_toolbar"]
+            )
             editor_overlap = editor_boxes["scenario_canvas"].intersects(
                 editor_boxes["scenario_inspector"]
             )

@@ -186,22 +186,42 @@ def _runtime_icon_contract() -> dict[str, Any]:
     for name, button in window.tool_palette.tool_buttons.items():
         action_checks[f"tool:{name}"] = check_icon(f"tool:{name}", button)
 
-    toolbar_checks = {
-        name: {
-            "tool_button_style": toolbar.toolButtonStyle().name,
-            "icon_size": [toolbar.iconSize().width(), toolbar.iconSize().height()],
-        }
-        for name, toolbar in (
-            ("main", window.toolbar),
-            ("navigation", window.nav_toolbar),
-            ("xray", window.xray_toolbar),
+    command_contract = window.top_command_contract.descriptor()
+    if command_contract["physical_toolbar_required"]:
+        failures.append(
+            "semantic command contract unexpectedly requires legacy toolbars"
         )
+    if tuple(command_contract["group_order"]) != (
+        "file",
+        "edit",
+        "view",
+        "export",
+        "context",
+        "render",
+    ):
+        failures.append("semantic command group order drifted")
+
+    visible_toolbar = window.reference_top_toolbar
+    toolbar_checks = {
+        "reference_top_toolbar": {
+            "object_name": visible_toolbar.objectName(),
+            "visible": visible_toolbar.isVisibleTo(window),
+            "tool_button_style": visible_toolbar.toolButtonStyle().name,
+            "icon_size": [
+                visible_toolbar.iconSize().width(),
+                visible_toolbar.iconSize().height(),
+            ],
+        }
     }
-    for name, record in toolbar_checks.items():
-        if record["tool_button_style"] != "ToolButtonTextBesideIcon":
-            failures.append(f"{name}: toolbar style is not text beside icon")
-        if record["icon_size"] != [18, 18]:
-            failures.append(f"{name}: toolbar icon size drifted")
+    if (
+        toolbar_checks["reference_top_toolbar"]["object_name"]
+        != "reference_top_toolbar"
+    ):
+        failures.append("visible reference toolbar object name drifted")
+    if not toolbar_checks["reference_top_toolbar"]["visible"]:
+        failures.append("visible reference toolbar is hidden")
+    if toolbar_checks["reference_top_toolbar"]["icon_size"] != [24, 24]:
+        failures.append("visible reference toolbar icon size drifted")
 
     shortcut_sequences = sorted(
         str(shortcut.key().toString())
@@ -232,6 +252,7 @@ def _runtime_icon_contract() -> dict[str, Any]:
         "actions": action_checks,
         "widgets": widget_checks,
         "translated": translated_icon_checks,
+        "top_command_contract": command_contract,
         "toolbars": toolbar_checks,
         "shortcuts": {
             "actual": shortcut_sequences,

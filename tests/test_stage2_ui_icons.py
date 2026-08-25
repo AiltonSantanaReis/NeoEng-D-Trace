@@ -117,9 +117,16 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         assert widget.accessibleName()
         assert widget.property("iconFallback") is False
 
-    assert window.toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-    assert window.nav_toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-    assert window.xray_toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
+    assert window.top_command_contract.physical_toolbar_required is False
+    assert window.top_command_contract.group_names() == (
+        "file",
+        "edit",
+        "view",
+        "export",
+        "context",
+        "render",
+    )
+    assert window.reference_top_toolbar.iconSize() == QSize(24, 24)
     for button in window.tool_palette.tool_buttons.values():
         assert not button.icon().isNull()
         assert button.text()
