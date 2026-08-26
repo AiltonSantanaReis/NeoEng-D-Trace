@@ -164,10 +164,6 @@ def run(output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
     try:
         if window.layers.tabs.count() != 1:
             raise RuntimeError("scenario authoring is still embedded in MainWindow Layers")
-        if window.top_command_contract.physical_toolbar_required:
-            raise RuntimeError(
-                "semantic command contract still requires physical toolbars"
-            )
         if (
             window.act_gizmo not in window.top_command_contract.items("context")
         ):

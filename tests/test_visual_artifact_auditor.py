@@ -35,7 +35,7 @@ def _color(token: str, *, rgba: bool) -> tuple[int, ...]:
 
 
 def _make_capture(
-    root: Path, *, rgba: bool = False, schema_version: int = 3
+    root: Path, *, rgba: bool = False, schema_version: int = 4
 ) -> Path:
     root.mkdir()
     image_path = root / "1080p_FHD_01_sem_projeto.png"
@@ -116,8 +116,9 @@ def _make_capture(
                 "render": "render",
             },
             "action_identity_preserved": True,
-            "physical_toolbar_required": False,
         }
+        if schema_version == 3:
+            widgets["top_command_contract"]["physical_toolbar_required"] = False
     else:
         widgets["toolbar"] = _widget(0, 0, 100, 20)
         widgets["nav_toolbar"] = _widget(100, 0, 100, 20)
@@ -188,7 +189,7 @@ def test_visual_auditor_accepts_historical_schema2_toolbar_geometry(
     assert report["finding_count"] == 0
 
 
-def test_visual_auditor_fails_when_schema3_requires_physical_toolbar(
+def test_visual_auditor_fails_when_historical_schema3_requires_physical_toolbar(
     tmp_path: Path,
 ) -> None:
     _make_capture(tmp_path / "input", schema_version=3)
@@ -209,7 +210,34 @@ def test_visual_auditor_fails_when_schema3_requires_physical_toolbar(
     assert report["status"] == "FAIL"
     assert any(
         item["check"] == "contract"
-        and "requires a physical legacy toolbar" in item["message"]
+        and "historical schema3 semantic contract requires a physical legacy toolbar"
+        in item["message"]
+        for item in report["findings"]
+    )
+
+
+def test_visual_auditor_rejects_retired_toolbar_metadata_in_schema4(
+    tmp_path: Path,
+) -> None:
+    _make_capture(tmp_path / "input", schema_version=4)
+    manifest_path = tmp_path / "input" / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    contract = manifest["captures"]["1080p_FHD"]["widget_geometry"][
+        "sem_projeto"
+    ]["top_command_contract"]
+    contract["physical_toolbar_required"] = False
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    report = run_audit(tmp_path / "input", tmp_path / "output")
+
+    assert report["status"] == "FAIL"
+    assert any(
+        item["check"] == "contract"
+        and "retired physical-toolbar metadata" in item["message"]
         for item in report["findings"]
     )
 

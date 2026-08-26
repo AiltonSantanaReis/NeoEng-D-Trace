@@ -281,19 +281,12 @@ def run(output: Path | None = None) -> dict[str, Any]:
         _record_action(
             result["functional"],
             "gizmo_action",
-            (
-                gizmo_control_consistent
-                and gizmo_in_context
-                and not window.top_command_contract.physical_toolbar_required
-            ),
+            gizmo_control_consistent and gizmo_in_context,
             {
                 "control_object_name": window.act_gizmo.objectName(),
                 "checked": window.act_gizmo.isChecked(),
                 "viewport_state": gizmo_state,
                 "semantic_context_member": gizmo_in_context,
-                "physical_toolbar_required": (
-                    window.top_command_contract.physical_toolbar_required
-                ),
             },
         )
 

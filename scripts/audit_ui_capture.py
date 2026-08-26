@@ -38,7 +38,7 @@ from src.ui.main_window import MainWindow  # noqa: E402
 from src.ui.theme_qss import QSS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-CAPTURE_SCHEMA_VERSION = 3
+CAPTURE_SCHEMA_VERSION = 4
 DEFAULT_OUTPUT = ROOT / "docs" / "evidence" / "artifacts" / "ui-audit"
 RESOLUTIONS = {
     "1080p_FHD": (1920, 1080),

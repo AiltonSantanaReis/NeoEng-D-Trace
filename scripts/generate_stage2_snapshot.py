@@ -34,7 +34,7 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 def inventory(repo_root: Path, commit: str) -> dict[str, Any]:
     paths = [
         Path("src/ui/icon_library.py"),
-        Path("src/ui/top_toolbar.py"),
+        Path("src/ui/top_command_contract.py"),
         Path("tests/test_stage2_ui_icons.py"),
         Path("tests/test_stage2_icon_dpi_matrix.py"),
         Path("tests/test_stage2_contract_audit.py"),

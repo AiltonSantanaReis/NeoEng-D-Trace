@@ -35,7 +35,7 @@ def test_all_tool_palette_actions_create_a_real_canvas_tool(qt_app):
         settle(qt_app)
 
 
-def test_main_toolbar_xray_actions_update_canvas_state(qt_app):
+def test_xray_actions_update_canvas_state(qt_app):
     window = _window()
     try:
         actions = (

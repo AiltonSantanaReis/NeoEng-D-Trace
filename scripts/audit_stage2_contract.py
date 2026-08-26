@@ -72,7 +72,7 @@ def _git(*args: str) -> str:
 
 
 def _duplicate_stage2_svg_keys(repo_root: Path) -> list[str]:
-    source = (repo_root / "src/ui/top_toolbar.py").read_text(encoding="utf-8")
+    source = (repo_root / "src/ui/top_command_contract.py").read_text(encoding="utf-8")
     tree = ast.parse(source)
     keys: set[str] = set()
     for node in ast.walk(tree):

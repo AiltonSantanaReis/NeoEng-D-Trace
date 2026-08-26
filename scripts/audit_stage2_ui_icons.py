@@ -188,10 +188,6 @@ def _runtime_icon_contract() -> dict[str, Any]:
         action_checks[f"tool:{name}"] = check_icon(f"tool:{name}", button)
 
     command_contract = window.top_command_contract.descriptor()
-    if command_contract["physical_toolbar_required"]:
-        failures.append(
-            "semantic command contract unexpectedly requires legacy toolbars"
-        )
     if tuple(command_contract["group_order"]) != (
         "file",
         "edit",

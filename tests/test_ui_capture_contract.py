@@ -27,7 +27,7 @@ def test_capture_schema_uses_visible_chrome_and_semantic_commands(qt_app):
     try:
         snapshot = _main_window_widgets(window)
 
-        assert CAPTURE_SCHEMA_VERSION == 3
+        assert CAPTURE_SCHEMA_VERSION == 4
         assert "reference_top_toolbar" in snapshot
         assert (
             snapshot["reference_top_toolbar"]["object_name"]
@@ -46,7 +46,7 @@ def test_capture_schema_uses_visible_chrome_and_semantic_commands(qt_app):
             "render",
         )
         assert contract["action_identity_preserved"] is True
-        assert contract["physical_toolbar_required"] is False
+        assert "physical_toolbar_required" not in contract
     finally:
         window._mark_document_clean()
         window.close()

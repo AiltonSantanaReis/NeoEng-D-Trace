@@ -47,10 +47,9 @@ def test_stage4_groups_are_semantic_and_action_backed(qt_app):
                 "render": "render",
             },
             "action_identity_preserved": True,
-            "physical_toolbar_required": False,
         }
 
-        groups = window.top_command_groups
+        groups = contract.as_mapping()
         assert tuple(groups) == ("file", "edit", "view", "export", "context", "render")
         assert groups["file"] == (
             window.open_project_action,
@@ -291,14 +290,12 @@ def test_stage4_command_families_define_roles_without_physical_toolbar_contract(
     window = _window(qt_app)
     try:
         contract = window.top_command_contract
-        assert contract.physical_toolbar_required is False
         assert contract.role("file") == "commands"
         assert contract.role("edit") == "commands"
         assert contract.role("view") == "commands"
         assert contract.role("export") == "commands"
         assert contract.role("context") == "context"
         assert contract.role("render") == "render"
-        assert window.top_command_groups == contract.as_mapping()
     finally:
         window.close()
         qt_app.processEvents()

@@ -15,7 +15,6 @@ from src.ui.top_command_contract import (
     TopCommandContract,
     build_top_command_contract,
 )
-from src.ui.top_toolbar import configure_top_toolbars
 
 
 @pytest.fixture(scope="module")
@@ -50,7 +49,6 @@ def test_semantic_contract_builds_without_reading_legacy_toolbars(qt_app):
         contract = build_top_command_contract(_NoLegacyToolbarAccess(window))
         assert isinstance(contract, TopCommandContract)
         assert contract.group_names() == TOP_COMMAND_GROUP_ORDER
-        assert contract.physical_toolbar_required is False
         assert contract.action_identity_preserved is True
     finally:
         window.close()
@@ -97,8 +95,6 @@ def test_semantic_groups_preserve_existing_command_and_control_identity(qt_app):
             window.act_xray2,
             window.act_xray3,
         )
-        assert window.top_command_groups == contract.as_mapping()
-        assert window.top_toolbar_groups is window.top_command_groups
     finally:
         window.close()
         qt_app.processEvents()
@@ -120,7 +116,6 @@ def test_semantic_descriptor_contains_no_physical_toolbar_contract(qt_app):
                 "render": "render",
             },
             "action_identity_preserved": True,
-            "physical_toolbar_required": False,
         }
         assert all(
             not isinstance(item, QToolBar)
@@ -131,14 +126,13 @@ def test_semantic_descriptor_contains_no_physical_toolbar_contract(qt_app):
         window.close()
         qt_app.processEvents()
 
-def test_compatibility_entrypoint_does_not_read_legacy_toolbar_hosts(qt_app):
+def test_main_window_exposes_only_canonical_top_command_contract(qt_app):
     window = _window(qt_app)
     try:
-        proxy = _NoLegacyToolbarAccess(window)
-        configure_top_toolbars(proxy)
-        assert proxy.top_command_contract.group_names() == TOP_COMMAND_GROUP_ORDER
-        assert proxy.top_command_contract.physical_toolbar_required is False
-        assert proxy.top_toolbar_groups is proxy.top_command_groups
+        assert window.top_command_contract.group_names() == TOP_COMMAND_GROUP_ORDER
+        assert not hasattr(window, "top_command_groups")
+        assert not hasattr(window, "top_toolbar_groups")
+        assert not hasattr(window, "top_toolbar_contract")
     finally:
         window.close()
         qt_app.processEvents()
@@ -170,8 +164,6 @@ def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
         window.act_gizmo.trigger()
         assert window.canvas.is_gizmo_enabled() is False
 
-        configure_top_toolbars(window)
-        assert window.top_command_contract.physical_toolbar_required is False
     finally:
         window.close()
         qt_app.processEvents()

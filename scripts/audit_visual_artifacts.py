@@ -24,7 +24,7 @@ from src.ui.theme_qss import QSS
 from src.ui.theme_tokens import THEME_TOKENS
 
 COLOR_RE = re.compile(r"#[0-9A-Fa-f]{6}")
-SUPPORTED_CAPTURE_SCHEMAS = {2, 3}
+SUPPORTED_CAPTURE_SCHEMAS = {2, 3, 4}
 TOP_COMMAND_GROUP_ORDER = (
     "file",
     "edit",
@@ -323,6 +323,8 @@ def _semantic_command_contract_checks(
     filename: str,
     state_widgets: dict[str, Any],
     findings: list[dict[str, Any]],
+    *,
+    capture_schema_version: int,
 ) -> None:
     contract = state_widgets.get("top_command_contract")
     if not isinstance(contract, dict):
@@ -358,11 +360,19 @@ def _semantic_command_contract_checks(
             "semantic top command action identity is not preserved",
             image=filename,
         )
-    if contract.get("physical_toolbar_required") is not False:
+    if capture_schema_version == 3:
+        if contract.get("physical_toolbar_required") is not False:
+            _finding(
+                findings,
+                "contract",
+                "historical schema3 semantic contract requires a physical legacy toolbar",
+                image=filename,
+            )
+    elif capture_schema_version >= 4 and "physical_toolbar_required" in contract:
         _finding(
             findings,
             "contract",
-            "semantic top command contract requires a physical legacy toolbar",
+            "schema4 semantic contract contains retired physical-toolbar metadata",
             image=filename,
         )
 
@@ -514,7 +524,12 @@ def _geometry_checks(
         return
     _tab_visibility_checks(filename, state_widgets, findings)
     if capture_schema_version >= 3:
-        _semantic_command_contract_checks(filename, state_widgets, findings)
+        _semantic_command_contract_checks(
+            filename,
+            state_widgets,
+            findings,
+            capture_schema_version=capture_schema_version,
+        )
     rects: dict[str, tuple[int, int, int, int]] = {}
     visible: set[str] = set()
     width, height = image_size
@@ -737,7 +752,7 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
             "capture manifest schema must be one of "
             f"{sorted(SUPPORTED_CAPTURE_SCHEMAS)}",
         )
-        capture_schema_version = 3
+        capture_schema_version = 4
     expected = _validate_hashes(input_dir, manifest, findings)
     captures = manifest.get("captures", {})
     image_reports: dict[str, Any] = {}

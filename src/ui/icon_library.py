@@ -418,9 +418,9 @@ def configure_main_window_controls(window: Any) -> None:
         configure_reference_tool_palette,
         configure_reference_top_toolbar,
     )
-    from src.ui.top_toolbar import configure_top_toolbars
+    from src.ui.top_command_contract import build_top_command_contract
 
-    configure_top_toolbars(window)
+    window.top_command_contract = build_top_command_contract(window)
     configure_reference_tool_palette(window)
     configure_reference_top_toolbar(window)
     window.reference_tool_palette.setEnabled(window.tool_palette.isEnabled())

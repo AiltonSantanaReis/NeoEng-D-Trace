@@ -41,7 +41,11 @@ def _tracked_files() -> list[Path]:
         capture_output=True,
         check=True,
     )
-    return [ROOT / item.decode("utf-8") for item in result.stdout.split(b"\0") if item]
+    return [
+        path
+        for item in result.stdout.split(b"\0")
+        if item and (path := ROOT / item.decode("utf-8")).is_file()
+    ]
 
 
 def _scan_payload(label: str, data: bytes, depth: int = 0) -> list[str]:

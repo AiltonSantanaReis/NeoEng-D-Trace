@@ -1,10 +1,7 @@
-"""Semantic Stage 4 command grouping independent of legacy ``QToolBar`` hosts.
+"""Semantic Stage 4 command grouping for visible chrome and dispatch.
 
-The visible application chrome and command dispatch need stable command families,
-not stable physical toolbar widgets.  This module defines that semantic boundary
-without reading or owning ``MainWindow.toolbar``, ``nav_toolbar`` or
-``xray_toolbar``.  Visible chrome and other consumers use this toolbar-free
-source of truth directly.
+The application chrome and command dispatch consume stable command families
+without depending on presentation-widget ownership.
 """
 
 from __future__ import annotations
@@ -53,12 +50,11 @@ class TopCommandGroup:
 
 @dataclass(frozen=True, slots=True)
 class TopCommandContract:
-    """Immutable semantic contract consumed independently of physical toolbars."""
+    """Immutable semantic contract for command-family consumers."""
 
     stage: int
     groups: tuple[TopCommandGroup, ...]
     action_identity_preserved: bool = True
-    physical_toolbar_required: bool = False
 
     def group_names(self) -> tuple[str, ...]:
         return tuple(group.name for group in self.groups)
@@ -76,7 +72,7 @@ class TopCommandContract:
         raise KeyError(group_name)
 
     def as_mapping(self) -> dict[str, tuple[Any, ...]]:
-        """Return a compatibility mapping without exposing mutable source state."""
+        """Return the semantic command groups without mutable source state."""
 
         return {group.name: group.items for group in self.groups}
 
@@ -88,7 +84,6 @@ class TopCommandContract:
             "group_order": self.group_names(),
             "group_roles": {group.name: group.role for group in self.groups},
             "action_identity_preserved": self.action_identity_preserved,
-            "physical_toolbar_required": self.physical_toolbar_required,
         }
 
 
@@ -116,7 +111,7 @@ def _action_icon(key: str) -> QIcon:
 
 
 def configure_semantic_action_icons(window: Any) -> None:
-    """Apply Stage 4 semantic metadata without touching physical toolbars."""
+    """Apply Stage 4 semantic metadata to canonical actions."""
 
     for name, key in (
         ("undo_action", "undo"),
@@ -141,10 +136,8 @@ def configure_semantic_action_icons(window: Any) -> None:
 def build_top_command_contract(window: Any) -> TopCommandContract:
     """Build the canonical command-family contract from existing controls.
 
-    The function intentionally never reads the historical ``toolbar``,
-    ``nav_toolbar`` or ``xray_toolbar`` attributes.  It only references the
-    already-created actions and controls whose behavior must survive toolbar
-    removal.
+    The function references only the already-created canonical actions and
+    controls; presentation-widget ownership is outside this contract.
     """
 
     configure_semantic_action_icons(window)

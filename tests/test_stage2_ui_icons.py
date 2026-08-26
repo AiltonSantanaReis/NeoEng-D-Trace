@@ -115,7 +115,6 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         assert widget.accessibleName()
         assert widget.property("iconFallback") is False
 
-    assert window.top_command_contract.physical_toolbar_required is False
     assert window.top_command_contract.group_names() == (
         "file",
         "edit",

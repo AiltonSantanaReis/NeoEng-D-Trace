@@ -233,8 +233,7 @@ class MainWindow(QMainWindow):
 
         self.canvas.set_collision_overlay(self.collision_overlay)
         install_scenario_authoring(self)
-        # Navigation/render commands remain stable QActions.  They no longer
-        # require physical toolbar hosts.
+        # Navigation/render commands remain stable canonical QActions.
         self.act_fit = QAction("Fit View (F)", self)
         self.act_fit.triggered.connect(self.canvas.fit_to_window)
 
