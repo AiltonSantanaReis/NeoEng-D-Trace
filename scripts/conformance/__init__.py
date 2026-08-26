@@ -23,6 +23,7 @@ from scripts.conformance.contracts import (
     MultiAxisConformance,
     aggregate_status,
 )
+from scripts.conformance.stage1_visual_adapter import Stage1VisualSystemAdapter
 from scripts.conformance.stage9_geometry_adapter import Stage9ResponsiveGeometryAdapter
 from scripts.conformance.evidence import (
     EVIDENCE_KIND,
@@ -45,6 +46,7 @@ __all__ = [
     "ConformanceAxis",
     "ConformanceCheck",
     "ConformanceStatus",
+    "Stage1VisualSystemAdapter",
     "Stage9ResponsiveGeometryAdapter",
     "MultiAxisConformance",
     "aggregate_status",
