@@ -104,9 +104,7 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
 
     for widget in (
         window.canvas.gizmo_toggle,
-        window.focus_button,
         window.language_button,
-        window.export_collision_button,
         window.collision_panel.batch_test_btn,
         window.collision_panel.export_btn,
         window.collision_panel.auto_gen_btn,

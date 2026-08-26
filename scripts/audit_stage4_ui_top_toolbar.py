@@ -138,10 +138,14 @@ def _live_contract() -> dict[str, Any]:
             window.act_grid,
             window.act_snap,
         ),
-        "export": (window.act_export, window.export_collision_button),
+        "export": (
+            window.act_export,
+            window.act_export_collision_json,
+            window.act_export_collision_txt,
+        ),
         "context": (
             window.canvas.gizmo_toggle,
-            window.focus_button,
+            window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
             window.language_button,
         ),

@@ -26,8 +26,6 @@ def _add_action_group(toolbar: QToolBar, actions: tuple[Any, ...]) -> None:
     for item in actions:
         if isinstance(item, QWidget):
             toolbar.addWidget(item)
-            if item.objectName() == "focus_button":
-                item.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         else:
             toolbar.addAction(item)
             button = toolbar.widgetForAction(item)

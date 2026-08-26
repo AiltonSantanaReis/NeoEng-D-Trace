@@ -413,8 +413,6 @@ def configure_main_window_controls(window: Any) -> None:
         configure_action(getattr(window, name), key)
 
     widget_keys = {
-        "export_collision_button": "collision",
-        "focus_button": "focus",
         "language_button": "language",
     }
     for name, key in widget_keys.items():

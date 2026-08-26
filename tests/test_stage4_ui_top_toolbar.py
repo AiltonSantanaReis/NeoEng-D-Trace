@@ -71,11 +71,15 @@ def test_stage4_groups_are_semantic_and_action_backed(qt_app):
             window.act_grid,
             window.act_snap,
         )
-        assert groups["export"] == (window.act_export, window.export_collision_button)
+        assert groups["export"] == (
+            window.act_export,
+            window.act_export_collision_json,
+            window.act_export_collision_txt,
+        )
 
         assert contract.items("context") == (
             window.canvas.gizmo_toggle,
-            window.focus_button,
+            window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
             window.language_button,
         )

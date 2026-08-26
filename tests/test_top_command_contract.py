@@ -82,11 +82,12 @@ def test_semantic_groups_preserve_existing_command_and_control_identity(qt_app):
         )
         assert contract.items("export") == (
             window.act_export,
-            window.export_collision_button,
+            window.act_export_collision_json,
+            window.act_export_collision_txt,
         )
         assert contract.items("context") == (
             window.canvas.gizmo_toggle,
-            window.focus_button,
+            window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
             window.language_button,
         )
@@ -153,9 +154,9 @@ def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
         host = window._legacy_control_host
         assert host.objectName() == "legacy_command_control_host"
         assert not host.isVisible()
-        assert window.export_collision_button.parentWidget() is host
+        assert not hasattr(window, "export_collision_button")
+        assert not hasattr(window, "focus_button")
         assert window.canvas.gizmo_toggle.parentWidget() is host
-        assert window.focus_button.parentWidget() is host
         assert window.language_button.parentWidget() is host
 
         # Canvas preview toggles the compatibility button's own visibility.
@@ -164,13 +165,32 @@ def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
         window.canvas.set_preview_mode(False)
         qt_app.processEvents()
         assert not window.canvas.gizmo_toggle.isVisibleTo(window)
-        assert not window.focus_button.isVisibleTo(window)
         assert not window.language_button.isVisibleTo(window)
-        assert not window.export_collision_button.isVisibleTo(window)
 
         configure_top_toolbars(window)
         assert window.top_command_contract.physical_toolbar_required is False
         assert not host.isVisible()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_duplicate_widget_controls_use_canonical_actions(qt_app):
+    window = _window(qt_app)
+    try:
+        assert not hasattr(window, "export_collision_button")
+        assert not hasattr(window, "focus_button")
+
+        assert window.top_command_contract.items("export") == (
+            window.act_export,
+            window.act_export_collision_json,
+            window.act_export_collision_txt,
+        )
+        focus_action = window.tool_palette.navigation_actions["focus_selected"]
+        assert focus_action in window.top_command_contract.items("context")
+        assert window.command_registry.action("tool.focus_selected") is focus_action
+        assert window.act_export_collision_json in window.file_menu.actions()
+        assert window.act_export_collision_txt in window.file_menu.actions()
     finally:
         window.close()
         qt_app.processEvents()

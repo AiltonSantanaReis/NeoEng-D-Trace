@@ -179,14 +179,18 @@ def build_top_command_contract(window: Any) -> TopCommandContract:
         TopCommandGroup(
             "export",
             "commands",
-            (window.act_export, window.export_collision_button),
+            (
+                window.act_export,
+                window.act_export_collision_json,
+                window.act_export_collision_txt,
+            ),
         ),
         TopCommandGroup(
             "context",
             "context",
             (
                 window.canvas.gizmo_toggle,
-                window.focus_button,
+                window.tool_palette.navigation_actions["focus_selected"],
                 window.act_clean,
                 window.language_button,
             ),

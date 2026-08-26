@@ -212,17 +212,10 @@ class MainWindow(QMainWindow):
         self.act_export = QAction("Export...", self)
         self.act_export.triggered.connect(self.open_export)
 
-        export_menu = QMenu(self)
         self.act_export_collision_json = QAction("Export Collision (JSON)", self)
         self.act_export_collision_json.triggered.connect(self.export_collision_json)
-        export_menu.addAction(self.act_export_collision_json)
         self.act_export_collision_txt = QAction("Export Collision (TXT)", self)
         self.act_export_collision_txt.triggered.connect(self.export_collision_txt)
-        export_menu.addAction(self.act_export_collision_txt)
-        self.export_collision_button = QPushButton(
-            "Export Collision", self._legacy_control_host
-        )
-        self.export_collision_button.setMenu(export_menu)
         self.file_menu.addSeparator()
         self.file_menu.addAction(self.act_export)
         self.file_menu.addAction(self.act_export_collision_json)
@@ -286,13 +279,6 @@ class MainWindow(QMainWindow):
         # toggle prevents CanvasView.set_preview_mode(False) from accidentally
         # surfacing it after the old Navigation toolbar is removed.
         self.canvas.gizmo_toggle.setParent(self._legacy_control_host)
-        self.focus_button = QPushButton(
-            "Focus Selected", self._legacy_control_host
-        )
-        self.focus_button.setFlat(True)
-        self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.focus_button.setObjectName("focus_button")
-        self.focus_button.clicked.connect(self._focus_selected)
 
         # Botão: Limpar Tudo (Com Undo)
         self.act_clean = QAction("Clean All", self)
@@ -562,7 +548,6 @@ class MainWindow(QMainWindow):
         self.act_export.setText(t["export"])
         self.act_export_collision_json.setText(t["export_collision_json"])
         self.act_export_collision_txt.setText(t["export_collision_txt"])
-        self.export_collision_button.setText(t["export_collision"])
 
         self.act_fit.setText(t["fit_view"])
         self.act_100.setText(t["pixel_1"])
@@ -571,7 +556,6 @@ class MainWindow(QMainWindow):
         self.act_xray2.setText(t["xray_2"])
         self.act_xray3.setText(t["xray_3"])
         self.act_clean.setText(t["clean_all"])
-        self.focus_button.setText(t["focus_selected"])
         self.language_button.setText(t["language"])
         self._update_compact_panel_titles(t)
         if hasattr(self, "act_english"):

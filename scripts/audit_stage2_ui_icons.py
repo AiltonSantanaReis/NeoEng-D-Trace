@@ -134,9 +134,7 @@ def _runtime_icon_contract() -> dict[str, Any]:
         "act_clean",
     )
     widget_names = (
-        "export_collision_button",
         "canvas.gizmo_toggle",
-        "focus_button",
         "language_button",
     )
     action_checks: dict[str, Any] = {}
@@ -177,6 +175,10 @@ def _runtime_icon_contract() -> dict[str, Any]:
 
     for name in action_names:
         action_checks[name] = check_icon(name, getattr(window, name))
+    action_checks["tool:focus_selected"] = check_icon(
+        "tool:focus_selected",
+        window.tool_palette.navigation_actions["focus_selected"],
+    )
     for name in widget_names:
         target: Any = window
         for part in name.split("."):
