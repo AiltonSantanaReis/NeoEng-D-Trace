@@ -23,6 +23,11 @@ from scripts.conformance.contracts import (
     MultiAxisConformance,
     aggregate_status,
 )
+from scripts.conformance.gate import (
+    AggregateGateResult,
+    GateInput,
+    run_aggregate_gate,
+)
 from scripts.conformance.stage1_visual_adapter import Stage1VisualSystemAdapter
 from scripts.conformance.stage9_geometry_adapter import Stage9ResponsiveGeometryAdapter
 from scripts.conformance.stage9_behavior_adapter import Stage9FunctionalBehaviorAdapter
@@ -41,6 +46,8 @@ __all__ = [
     "AdapterContext",
     "AdapterResult",
     "ConformanceAdapter",
+    "AggregateGateResult",
+    "GateInput",
     "AXIS_DOMAINS",
     "AXIS_ORDER",
     "AxisResult",
@@ -54,6 +61,7 @@ __all__ = [
     "aggregate_status",
     "combine_adapter_results",
     "run_adapter",
+    "run_aggregate_gate",
     "EVIDENCE_KIND",
     "EVIDENCE_SCHEMA_VERSION",
     "HistoricalEvidence",
