@@ -15,6 +15,15 @@ from scripts.conformance.contracts import (
     MultiAxisConformance,
     aggregate_status,
 )
+from scripts.conformance.evidence import (
+    EVIDENCE_KIND,
+    EVIDENCE_SCHEMA_VERSION,
+    HistoricalEvidence,
+    build_evidence_document,
+    read_evidence_json,
+    validate_evidence_document,
+    write_evidence_json,
+)
 
 __all__ = [
     "AXIS_DOMAINS",
@@ -25,4 +34,11 @@ __all__ = [
     "ConformanceStatus",
     "MultiAxisConformance",
     "aggregate_status",
+    "EVIDENCE_KIND",
+    "EVIDENCE_SCHEMA_VERSION",
+    "HistoricalEvidence",
+    "build_evidence_document",
+    "read_evidence_json",
+    "validate_evidence_document",
+    "write_evidence_json",
 ]
