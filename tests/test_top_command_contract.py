@@ -143,16 +143,34 @@ def test_compatibility_entrypoint_does_not_read_legacy_toolbar_hosts(qt_app):
         qt_app.processEvents()
 
 
-def test_legacy_toolbar_hosts_are_quarantined_not_reprojected(qt_app):
+def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
     window = _window(qt_app)
     try:
-        hosts = (window.toolbar, window.nav_toolbar, window.xray_toolbar)
-        before = tuple(tuple(host.actions()) for host in hosts)
-        configure_top_toolbars(window)
-        after = tuple(tuple(host.actions()) for host in hosts)
+        assert not hasattr(window, "toolbar")
+        assert not hasattr(window, "nav_toolbar")
+        assert not hasattr(window, "xray_toolbar")
 
-        assert before == after
-        assert all(not host.isVisible() for host in hosts)
+        host = window._legacy_control_host
+        assert host.objectName() == "legacy_command_control_host"
+        assert not host.isVisible()
+        assert window.export_collision_button.parentWidget() is host
+        assert window.canvas.gizmo_toggle.parentWidget() is host
+        assert window.focus_button.parentWidget() is host
+        assert window.language_button.parentWidget() is host
+
+        # Canvas preview toggles the compatibility button's own visibility.
+        # The hidden host must keep it off the rendered MainWindow surface.
+        window.canvas.set_preview_mode(True)
+        window.canvas.set_preview_mode(False)
+        qt_app.processEvents()
+        assert not window.canvas.gizmo_toggle.isVisibleTo(window)
+        assert not window.focus_button.isVisibleTo(window)
+        assert not window.language_button.isVisibleTo(window)
+        assert not window.export_collision_button.isVisibleTo(window)
+
+        configure_top_toolbars(window)
+        assert window.top_command_contract.physical_toolbar_required is False
+        assert not host.isVisible()
     finally:
         window.close()
         qt_app.processEvents()

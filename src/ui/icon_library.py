@@ -430,16 +430,6 @@ def configure_main_window_controls(window: Any) -> None:
     configure_reference_tool_palette(window)
     configure_reference_top_toolbar(window)
     window.reference_tool_palette.setEnabled(window.tool_palette.isEnabled())
-    # The reference toolbar is the visible product chrome. Historical toolbar
-    # hosts remain temporarily quarantined here until their physical creation
-    # boundary is removed in a later cleanup stage. They are not semantic
-    # command-family surfaces and are never populated by ``top_toolbar``.
-    window.toolbar.setMinimumHeight(0)
-    window.toolbar.setMaximumHeight(0)
-    window.toolbar.setMinimumWidth(0)
-    window.toolbar.setMaximumWidth(0)
-    for legacy_toolbar in (window.toolbar, window.nav_toolbar, window.xray_toolbar):
-        legacy_toolbar.setVisible(False)
     from src.ui.viewport_status import configure_viewport_status
 
     configure_viewport_status(window)

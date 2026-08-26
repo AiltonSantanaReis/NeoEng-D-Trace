@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QToolBar,
+    QWidget,
 )
 
 # Imports de lógica e colisão estática
@@ -197,20 +198,19 @@ class MainWindow(QMainWindow):
         self._setup_menu_bar()
         self.command_registry = CommandRegistry(self)
 
-        self.toolbar = QToolBar("Main")
-        self.toolbar.setObjectName("main_toolbar")
-        self.toolbar.setMovable(False)
-        self.toolbar.setFloatable(False)
-        self.addToolBar(self.toolbar)
+        # The three historical Main/Navigation/X-Ray QToolBars were never part
+        # of the reference chrome.  Keep the old widget controls alive in one
+        # hidden, non-toolbar parent until their remaining compatibility
+        # surfaces can be migrated independently.  No command semantics depend
+        # on this host.
+        self._legacy_control_host = QWidget(self)
+        self._legacy_control_host.setObjectName("legacy_command_control_host")
+        self._legacy_control_host.setVisible(False)
 
         self.act_open = self.open_image_action
-        self.toolbar.addAction(self.open_project_action)
-        self.toolbar.addAction(self.act_open)
-        self.toolbar.addAction(self.save_project_action)
 
         self.act_export = QAction("Export...", self)
         self.act_export.triggered.connect(self.open_export)
-        self.toolbar.addAction(self.act_export)
 
         export_menu = QMenu(self)
         self.act_export_collision_json = QAction("Export Collision (JSON)", self)
@@ -219,9 +219,10 @@ class MainWindow(QMainWindow):
         self.act_export_collision_txt = QAction("Export Collision (TXT)", self)
         self.act_export_collision_txt.triggered.connect(self.export_collision_txt)
         export_menu.addAction(self.act_export_collision_txt)
-        self.export_collision_button = QPushButton("Export Collision", self)
+        self.export_collision_button = QPushButton(
+            "Export Collision", self._legacy_control_host
+        )
         self.export_collision_button.setMenu(export_menu)
-        self.toolbar.addWidget(self.export_collision_button)
         self.file_menu.addSeparator()
         self.file_menu.addAction(self.act_export)
         self.file_menu.addAction(self.act_export_collision_json)
@@ -251,74 +252,53 @@ class MainWindow(QMainWindow):
 
         self.canvas.set_collision_overlay(self.collision_overlay)
         install_scenario_authoring(self)
-        # 5. NAVIGATION TOOLBAR
-        # (Barra de Ferramentas de Navegação e Ações Rápidas)
-        self.nav_toolbar = QToolBar("Navigation")
-        self.nav_toolbar.setObjectName("navigation_toolbar")
-        self.nav_toolbar.setMovable(False)
-        self.nav_toolbar.setFloatable(False)
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.nav_toolbar)
-        self.nav_toolbar.addWidget(self.canvas.gizmo_toggle)
-        self.nav_toolbar.addSeparator()
-
+        # Navigation/render commands remain stable QActions.  They no longer
+        # require physical toolbar hosts.
         self.act_fit = QAction("Fit View (F)", self)
         self.act_fit.triggered.connect(self.canvas.fit_to_window)
-        self.nav_toolbar.addAction(self.act_fit)
 
         # Botão: Zoom 100%
         self.act_100 = QAction("1:1 Pixel", self)
         self.act_100.triggered.connect(lambda: self.canvas.set_zoom(1.0))
-        self.nav_toolbar.addAction(self.act_100)
-
-        self.nav_toolbar.addSeparator()
-
-        self.xray_toolbar = QToolBar("X-Ray Modes")
-        self.xray_toolbar.setObjectName("xray_toolbar")
-        self.xray_toolbar.setMovable(False)
-        self.xray_toolbar.setFloatable(False)
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.xray_toolbar)
 
         self.act_lit = QAction("Lit", self)
         self.act_lit.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_LIT)
         )
-        self.xray_toolbar.addAction(self.act_lit)
 
         self.act_xray1 = QAction("X-Ray 1", self)
         self.act_xray1.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_1)
         )
-        self.xray_toolbar.addAction(self.act_xray1)
 
         self.act_xray2 = QAction("X-Ray 2", self)
         self.act_xray2.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_2)
         )
-        self.xray_toolbar.addAction(self.act_xray2)
 
         self.act_xray3 = QAction("X-Ray 3", self)
         self.act_xray3.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_3)
         )
-        self.xray_toolbar.addAction(self.act_xray3)
 
-        self.focus_button = QPushButton("Focus Selected", self)
+        # These compatibility controls still expose established object-level
+        # behavior, but are intentionally non-visual.  Reparenting the gizmo
+        # toggle prevents CanvasView.set_preview_mode(False) from accidentally
+        # surfacing it after the old Navigation toolbar is removed.
+        self.canvas.gizmo_toggle.setParent(self._legacy_control_host)
+        self.focus_button = QPushButton(
+            "Focus Selected", self._legacy_control_host
+        )
         self.focus_button.setFlat(True)
         self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.focus_button.setObjectName("focus_button")
         self.focus_button.clicked.connect(self._focus_selected)
-        self.nav_toolbar.addWidget(self.focus_button)
-
-        self.nav_toolbar.addSeparator()
 
         # Botão: Limpar Tudo (Com Undo)
         self.act_clean = QAction("Clean All", self)
         self.act_clean.triggered.connect(self.canvas.clean_all)
-        self.nav_toolbar.addAction(self.act_clean)
-        self.nav_toolbar.addSeparator()
 
-        self.language_button = QPushButton("Language", self)
-        self.nav_toolbar.addWidget(self.language_button)
+        self.language_button = QPushButton("Language", self._legacy_control_host)
         self.language_button.clicked.connect(self.show_language_menu)
         self.reference_tool_palette: QToolBar
         configure_main_window_controls(self)
