@@ -30,6 +30,13 @@ def install_viewport_actions(window: Any) -> None:
     )
     window.view_menu.addAction(window.act_snap)
 
+    window.act_gizmo = QAction("Gizmo", window)
+    window.act_gizmo.setObjectName("gizmo_action")
+    window.act_gizmo.setCheckable(True)
+    window.act_gizmo.setChecked(window.canvas.is_gizmo_enabled())
+    window.act_gizmo.triggered.connect(window.canvas.set_gizmo_enabled)
+    window.canvas.gizmo_enabled_changed.connect(window.act_gizmo.setChecked)
+
     window.settings_action = QAction("View Settings", window)
     window.settings_action.triggered.connect(lambda: open_view_settings(window))
     window.edit_menu.addAction(window.settings_action)

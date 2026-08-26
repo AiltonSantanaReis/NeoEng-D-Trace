@@ -19,7 +19,7 @@ from PySide6.QtGui import (
     QTransform,
     QWheelEvent,
 )
-from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QWidget
+from PySide6.QtWidgets import QMenu, QMessageBox, QWidget
 
 from src.core.commands import (
     AddPolygonCommand,
@@ -145,6 +145,7 @@ class CanvasView(QWidget):
     viewport_state_changed = Signal(str)
     viewport_details_changed = Signal(str)
     pan_mode_changed = Signal(bool)
+    gizmo_enabled_changed = Signal(bool)
 
     VIEW_LIT = 0
     VIEW_XRAY_1 = 1  # Sobel gradients
@@ -368,22 +369,6 @@ class CanvasView(QWidget):
         self._temp_mask = None
         self._flash_color = None
         self.current_lang = "en"
-        self.translations = {"en": {"gizmo": "Gizmo"}, "pt": {"gizmo": "Eixo"}}
-
-        # Gizmo Toggle Button
-        self.gizmo_toggle = QPushButton(
-            self.translations[self.current_lang]["gizmo"], self
-        )
-        self.gizmo_toggle.setCheckable(True)
-        self.gizmo_toggle.setChecked(False)
-        self.gizmo_toggle.clicked.connect(self._toggle_gizmo)
-        self.gizmo_toggle.setObjectName("gizmo_toggle")
-        self.gizmo_toggle.setMinimumWidth(92)
-        self.gizmo_toggle.setAccessibleName("Transform gizmo toggle")
-        self.gizmo_toggle.setAccessibleDescription(
-            "Enable or disable the interactive 2D transform gizmo"
-        )
-        self.gizmo_toggle.setToolTip("Toggle interactive transform gizmo")
 
         self.threadpool = QThreadPool()
 
@@ -536,10 +521,29 @@ class CanvasView(QWidget):
                 str(exc),
             )
 
-    def _toggle_gizmo(self):
-        self._gizmo_enabled = self.gizmo_toggle.isChecked()
+    def is_gizmo_enabled(self) -> bool:
+        """Return the canonical gizmo-enabled state without reading a UI widget."""
+
+        return bool(self._gizmo_enabled)
+
+    def set_gizmo_enabled(
+        self, enabled: bool, *, publish_viewport_state: bool = True
+    ) -> None:
+        """Set canonical gizmo state and optionally publish viewport-state text/model."""
+
+        enabled = bool(enabled)
+        if self._gizmo_enabled == enabled:
+            return
+        self._gizmo_enabled = enabled
         self.update()
-        self._emit_viewport_state()
+        self.gizmo_enabled_changed.emit(enabled)
+        if publish_viewport_state:
+            self._emit_viewport_state()
+
+    def toggle_gizmo(self) -> None:
+        """Toggle the canonical gizmo state."""
+
+        self.set_gizmo_enabled(not self._gizmo_enabled)
 
     def set_vertex_snapping(
         self,
@@ -935,8 +939,7 @@ class CanvasView(QWidget):
             self._qimage_xray_1 = None
             self._qimage_xray_2 = None
             self._qimage_xray_3 = None
-            self._gizmo_enabled = False
-            self.gizmo_toggle.setChecked(False)
+            self.set_gizmo_enabled(False, publish_viewport_state=False)
             self.update()
             return
 
@@ -949,8 +952,9 @@ class CanvasView(QWidget):
         self._qimage_xray_2 = None
         self._qimage_xray_3 = None
         self._queue_xray_generation(self._view_mode)
-        self._gizmo_enabled = bool(self._selected_object_ids())
-        self.gizmo_toggle.setChecked(self._gizmo_enabled)
+        self.set_gizmo_enabled(
+            bool(self._selected_object_ids()), publish_viewport_state=False
+        )
         self.update()
 
     def get_transform(self) -> QTransform:
@@ -1020,8 +1024,6 @@ class CanvasView(QWidget):
         if mode and self._scenario_preview_enabled:
             self._scenario_preview_enabled = False
         self._preview_mode = mode
-        # Esconde/Mostra botão do gizmo
-        self.gizmo_toggle.setVisible(not mode)
         self.update()
 
     def _scenario_camera_from_current_view(self) -> OrthographicCamera:
@@ -1829,6 +1831,5 @@ class CanvasView(QWidget):
 
     def update_language(self, lang):
         self.current_lang = lang
-        self.gizmo_toggle.setText(self.translations[self.current_lang]["gizmo"])
         if self._tool and self._tool.update_language:
             self._tool.update_language(lang)

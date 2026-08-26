@@ -189,7 +189,7 @@ def build_top_command_contract(window: Any) -> TopCommandContract:
             "context",
             "context",
             (
-                window.canvas.gizmo_toggle,
+                window.act_gizmo,
                 window.tool_palette.navigation_actions["focus_selected"],
                 window.act_clean,
                 window.language_action,

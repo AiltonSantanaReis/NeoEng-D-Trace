@@ -28,6 +28,7 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("view.zoom_100", window.act_100),
             ("view.grid", window.act_grid),
             ("view.snap", window.act_snap),
+            ("view.gizmo", window.act_gizmo),
             ("view.lit", window.act_lit),
             ("view.xray_1", window.act_xray1),
             ("view.xray_2", window.act_xray2),

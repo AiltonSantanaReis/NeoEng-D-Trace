@@ -10,7 +10,6 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QToolBar,
-    QWidget,
 )
 
 # Imports de lógica e colisão estática
@@ -196,14 +195,6 @@ class MainWindow(QMainWindow):
         self._setup_menu_bar()
         self.command_registry = CommandRegistry(self)
 
-        # The three historical Main/Navigation/X-Ray QToolBars were never part
-        # of the reference chrome.  The only remaining widget compatibility
-        # surface is CanvasView.gizmo_toggle; keep it under one hidden,
-        # non-toolbar parent until gizmo state is detached from that widget.
-        self._legacy_control_host = QWidget(self)
-        self._legacy_control_host.setObjectName("legacy_command_control_host")
-        self._legacy_control_host.setVisible(False)
-
         self.act_open = self.open_image_action
 
         self.act_export = QAction("Export...", self)
@@ -270,12 +261,6 @@ class MainWindow(QMainWindow):
         self.act_xray3.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_3)
         )
-
-        # These compatibility controls still expose established object-level
-        # behavior, but are intentionally non-visual.  Reparenting the gizmo
-        # toggle prevents CanvasView.set_preview_mode(False) from accidentally
-        # surfacing it after the old Navigation toolbar is removed.
-        self.canvas.gizmo_toggle.setParent(self._legacy_control_host)
 
         # Botão: Limpar Tudo (Com Undo)
         self.act_clean = QAction("Clean All", self)
@@ -568,6 +553,7 @@ class MainWindow(QMainWindow):
         self.act_xray2.setText(t["xray_2"])
         self.act_xray3.setText(t["xray_3"])
         self.act_clean.setText(t["clean_all"])
+        self.act_gizmo.setText(t["gizmo"])
         self.language_menu.setTitle(t["language"])
         self.act_english.setText(t["english"])
         self.act_portuguese.setText(t["portuguese"])

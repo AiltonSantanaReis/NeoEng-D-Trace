@@ -491,9 +491,8 @@ def test_canvas_command_success_rejection_and_failure_paths(qt_app, monkeypatch)
     scene.cmd = None
     canvas.clean_all()
     assert messages[-1][0] == "critical"
-    canvas.gizmo_toggle.setChecked(True)
-    canvas._toggle_gizmo()
-    assert canvas._gizmo_enabled is True
+    canvas.set_gizmo_enabled(True)
+    assert canvas.is_gizmo_enabled() is True
     canvas.close()
 
 

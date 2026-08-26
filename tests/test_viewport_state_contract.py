@@ -72,3 +72,24 @@ def test_legacy_text_signal_is_adapter_not_canonical_contract(qt_app):
         assert canvas.viewport_state().zoom == pytest.approx(2.0)
     finally:
         canvas.close()
+
+
+def test_gizmo_state_is_structured_and_emits_without_widget(qt_app):
+    canvas = CanvasView(Scene())
+    states: list[ViewportState] = []
+    toggles: list[bool] = []
+    canvas.viewport_state_model_changed.connect(states.append)
+    canvas.gizmo_enabled_changed.connect(toggles.append)
+    try:
+        assert not hasattr(canvas, "gizmo_toggle")
+        canvas.set_gizmo_enabled(True)
+        assert canvas.is_gizmo_enabled() is True
+        assert states[-1].gizmo_enabled is True
+        assert toggles[-1] is True
+
+        canvas.toggle_gizmo()
+        assert canvas.is_gizmo_enabled() is False
+        assert states[-1].gizmo_enabled is False
+        assert toggles[-1] is False
+    finally:
+        canvas.close()

@@ -245,11 +245,12 @@ def run(output: Path | None = None) -> dict[str, Any]:
 
         gizmo_state = window.canvas.viewport_state().gizmo_enabled
         gizmo_control_consistent = (
-            gizmo_state == window.canvas.gizmo_toggle.isChecked()
+            gizmo_state
+            == window.canvas.is_gizmo_enabled()
+            == window.act_gizmo.isChecked()
         )
         gizmo_in_context = (
-            window.canvas.gizmo_toggle
-            in window.top_command_contract.items("context")
+            window.act_gizmo in window.top_command_contract.items("context")
         )
         if not gizmo_state:
             raise RuntimeError("gizmo is not enabled for the selected audit object")
@@ -279,15 +280,15 @@ def run(output: Path | None = None) -> dict[str, Any]:
         )
         _record_action(
             result["functional"],
-            "gizmo_toggle",
+            "gizmo_action",
             (
                 gizmo_control_consistent
                 and gizmo_in_context
                 and not window.top_command_contract.physical_toolbar_required
             ),
             {
-                "control_object_name": window.canvas.gizmo_toggle.objectName(),
-                "checked": window.canvas.gizmo_toggle.isChecked(),
+                "control_object_name": window.act_gizmo.objectName(),
+                "checked": window.act_gizmo.isChecked(),
                 "viewport_state": gizmo_state,
                 "semantic_context_member": gizmo_in_context,
                 "physical_toolbar_required": (

@@ -158,19 +158,18 @@ def test_gizmo_control_roundtrips_state_and_feedback_avoids_gizmo(qt_app):
         qt_app.processEvents()
         assert window.top_command_contract.physical_toolbar_required is False
         assert (
-            window.canvas.gizmo_toggle
-            in window.top_command_contract.items("context")
+            window.act_gizmo in window.top_command_contract.items("context")
         )
-        assert window.canvas.gizmo_toggle.objectName() == "gizmo_toggle"
-        assert window.canvas.gizmo_toggle.accessibleName()
+        assert window.act_gizmo.objectName() == "gizmo_action"
+        assert window.act_gizmo.property("accessibleName")
 
         canvas = CanvasView(_scene())
         canvas.resize(640, 480)
         initial_state = canvas.viewport_state()
-        canvas.gizmo_toggle.click()
+        canvas.toggle_gizmo()
         toggled_state = canvas.viewport_state()
         assert toggled_state.gizmo_enabled is not initial_state.gizmo_enabled
-        canvas.gizmo_toggle.click()
+        canvas.toggle_gizmo()
         restored_state = canvas.viewport_state()
         assert restored_state.gizmo_enabled is initial_state.gizmo_enabled
         canvas.gizmo = TransformGizmo()

@@ -86,7 +86,7 @@ def test_semantic_groups_preserve_existing_command_and_control_identity(qt_app):
             window.act_export_collision_txt,
         )
         assert contract.items("context") == (
-            window.canvas.gizmo_toggle,
+            window.act_gizmo,
             window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
             window.language_action,
@@ -151,24 +151,27 @@ def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
         assert not hasattr(window, "nav_toolbar")
         assert not hasattr(window, "xray_toolbar")
 
-        host = window._legacy_control_host
-        assert host.objectName() == "legacy_command_control_host"
-        assert not host.isVisible()
+        assert not hasattr(window, "_legacy_control_host")
         assert not hasattr(window, "export_collision_button")
         assert not hasattr(window, "focus_button")
-        assert window.canvas.gizmo_toggle.parentWidget() is host
         assert not hasattr(window, "language_button")
+        assert not hasattr(window.canvas, "gizmo_toggle")
+        assert window.act_gizmo.objectName() == "gizmo_action"
+        assert window.act_gizmo.isCheckable()
+        assert window.act_gizmo in window.top_command_contract.items("context")
 
-        # Canvas preview toggles the compatibility button's own visibility.
-        # The hidden host must keep it off the rendered MainWindow surface.
         window.canvas.set_preview_mode(True)
         window.canvas.set_preview_mode(False)
         qt_app.processEvents()
-        assert not window.canvas.gizmo_toggle.isVisibleTo(window)
+        assert window.act_gizmo.isChecked() == window.canvas.is_gizmo_enabled()
+
+        window.canvas.set_gizmo_enabled(True)
+        assert window.act_gizmo.isChecked() is True
+        window.act_gizmo.trigger()
+        assert window.canvas.is_gizmo_enabled() is False
 
         configure_top_toolbars(window)
         assert window.top_command_contract.physical_toolbar_required is False
-        assert not host.isVisible()
     finally:
         window.close()
         qt_app.processEvents()

@@ -169,11 +169,10 @@ def run(output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
                 "semantic command contract still requires physical toolbars"
             )
         if (
-            window.canvas.gizmo_toggle
-            not in window.top_command_contract.items("context")
+            window.act_gizmo not in window.top_command_contract.items("context")
         ):
             raise RuntimeError(
-                "gizmo toggle is missing from the semantic context group"
+                "gizmo action is missing from the semantic context group"
             )
         window.open_scenario_editor()
         editor = window.scenario_editor_window

@@ -13,7 +13,7 @@ from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtWidgets import QApplication, QPushButton
+from PySide6.QtWidgets import QApplication
 
 from src.models.scene import Scene
 from src.ui.main_window import MainWindow
@@ -48,10 +48,7 @@ def main() -> int:
     save(window, "panels")
     window.act_xray1.trigger()
     save(window, "xray")
-    button = window.findChild(QPushButton, "gizmo_toggle")
-    if button is None:
-        raise RuntimeError("gizmo_toggle not found")
-    button.click()
+    window.act_gizmo.trigger()
     save(window, "gizmo")
     tabs = getattr(window, "reference_panel_tabs", None)
     if tabs is not None:

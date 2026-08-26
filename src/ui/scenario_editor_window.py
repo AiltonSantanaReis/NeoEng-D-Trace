@@ -185,7 +185,6 @@ class ScenarioEditorWindow(QMainWindow):
         canvas = CanvasView(self.scene, self)
         canvas.set_scenario_preview_enabled(True)
         canvas.set_scenario_overlays_visible(True)
-        canvas.gizmo_toggle.setVisible(False)
         return canvas
 
     def _build_professional_viewport(self) -> None:

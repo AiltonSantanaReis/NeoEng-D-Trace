@@ -144,7 +144,7 @@ def _live_contract() -> dict[str, Any]:
             window.act_export_collision_txt,
         ),
         "context": (
-            window.canvas.gizmo_toggle,
+            window.act_gizmo,
             window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
             window.language_action,

@@ -93,6 +93,7 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         window.undo_action,
         window.redo_action,
         window.act_snap,
+        window.act_gizmo,
         window.settings_action,
         window.language_action,
     )
@@ -104,7 +105,6 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         assert action.property("iconFallback") is False
 
     for widget in (
-        window.canvas.gizmo_toggle,
         window.collision_panel.batch_test_btn,
         window.collision_panel.export_btn,
         window.collision_panel.auto_gen_btn,
@@ -145,7 +145,7 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
     assert window.reference_tool_palette.iconSize() == QSize(24, 24)
     window.set_language("pt")
     assert window.open_project_action.text()
-    assert window.canvas.gizmo_toggle.text() == "Eixo"
+    assert window.act_gizmo.text() == "Eixo"
     assert window.language_action.text() == "Idioma"
     assert window.act_portuguese.text() == "Português"
     assert all(

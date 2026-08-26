@@ -95,8 +95,7 @@ def _viewport_track(app: QApplication, raw: Path) -> dict[str, Any]:
         _settle(app, 80)
         scene.select_object("rectangle-object")
         window.canvas.update_image()
-        window.canvas.gizmo_toggle.setChecked(True)
-        window.canvas._toggle_gizmo()
+        window.canvas.set_gizmo_enabled(True)
         QTest.mouseMove(window.canvas, QPoint(max(30, window.canvas.width() // 3), 80))
         window.canvas.set_vertex_snapping(True, grid_size=16)
         CAPTURE_GEOMETRY[label] = {"projeto_paineis": _main_window_widgets(window)}

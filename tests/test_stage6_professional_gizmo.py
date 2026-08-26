@@ -139,11 +139,14 @@ def test_scenario_gizmo_preserves_center_translation_contract():
     assert gizmo._mode_for(QPointF(0.0, -30.0)) == "translate_y"
 
 
-def test_accessible_toggle_contract_is_present(qt_app):
+def test_gizmo_state_contract_is_widget_independent(qt_app):
     view = CanvasView(Scene())
     try:
-        assert view.gizmo_toggle.accessibleName() == "Transform gizmo toggle"
-        assert "interactive 2D" in view.gizmo_toggle.accessibleDescription()
+        assert not hasattr(view, "gizmo_toggle")
+        assert view.is_gizmo_enabled() is False
+        view.set_gizmo_enabled(True)
+        assert view.is_gizmo_enabled() is True
+        assert view.viewport_state().gizmo_enabled is True
         assert view.focusPolicy() == Qt.FocusPolicy.StrongFocus
     finally:
         view.close()

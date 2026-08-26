@@ -78,7 +78,7 @@ def test_stage4_groups_are_semantic_and_action_backed(qt_app):
         )
 
         assert contract.items("context") == (
-            window.canvas.gizmo_toggle,
+            window.act_gizmo,
             window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
             window.language_action,

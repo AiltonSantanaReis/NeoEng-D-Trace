@@ -402,6 +402,7 @@ def configure_main_window_controls(window: Any) -> None:
         "act_100": "zoom_100",
         "act_grid": "grid",
         "act_snap": "snap",
+        "act_gizmo": "gizmo",
         "settings_action": "settings",
         "act_lit": "lit",
         "act_xray1": "xray_1",
@@ -413,7 +414,6 @@ def configure_main_window_controls(window: Any) -> None:
     for name, key in action_keys.items():
         configure_action(getattr(window, name), key)
 
-    configure_widget(window.canvas.gizmo_toggle, "gizmo")
     from src.ui.reference_chrome import (
         configure_reference_tool_palette,
         configure_reference_top_toolbar,
