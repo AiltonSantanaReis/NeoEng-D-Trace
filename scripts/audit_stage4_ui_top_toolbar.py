@@ -147,7 +147,7 @@ def _live_contract() -> dict[str, Any]:
             window.canvas.gizmo_toggle,
             window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
-            window.language_button,
+            window.language_action,
         ),
         "render": (
             window.act_lit,
@@ -168,6 +168,8 @@ def _live_contract() -> dict[str, Any]:
         failures.append("Mask Viewer QAction is not shared with View menu")
     if window.collision_overlay_action not in window.view_menu.actions():
         failures.append("Collision Overlay QAction is not shared with View menu")
+    if window.language_action not in window.view_menu.actions():
+        failures.append("Language QAction is not shared with View menu")
 
     action_records: dict[str, Any] = {}
     for name in (

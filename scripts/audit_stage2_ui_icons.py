@@ -132,10 +132,10 @@ def _runtime_icon_contract() -> dict[str, Any]:
         "act_xray2",
         "act_xray3",
         "act_clean",
+        "language_action",
     )
     widget_names = (
         "canvas.gizmo_toggle",
-        "language_button",
     )
     action_checks: dict[str, Any] = {}
     widget_checks: dict[str, Any] = {}
@@ -243,6 +243,9 @@ def _runtime_icon_contract() -> dict[str, Any]:
         ),
         "gizmo_toggle": check_icon(
             "translated:gizmo_toggle", window.canvas.gizmo_toggle
+        ),
+        "language_action": check_icon(
+            "translated:language_action", window.language_action
         ),
     }
     window.close()

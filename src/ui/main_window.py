@@ -8,9 +8,7 @@ from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QFileDialog,
     QMainWindow,
-    QMenu,
     QMessageBox,
-    QPushButton,
     QToolBar,
     QWidget,
 )
@@ -199,10 +197,9 @@ class MainWindow(QMainWindow):
         self.command_registry = CommandRegistry(self)
 
         # The three historical Main/Navigation/X-Ray QToolBars were never part
-        # of the reference chrome.  Keep the old widget controls alive in one
-        # hidden, non-toolbar parent until their remaining compatibility
-        # surfaces can be migrated independently.  No command semantics depend
-        # on this host.
+        # of the reference chrome.  The only remaining widget compatibility
+        # surface is CanvasView.gizmo_toggle; keep it under one hidden,
+        # non-toolbar parent until gizmo state is detached from that widget.
         self._legacy_control_host = QWidget(self)
         self._legacy_control_host.setObjectName("legacy_command_control_host")
         self._legacy_control_host.setVisible(False)
@@ -284,8 +281,6 @@ class MainWindow(QMainWindow):
         self.act_clean = QAction("Clean All", self)
         self.act_clean.triggered.connect(self.canvas.clean_all)
 
-        self.language_button = QPushButton("Language", self._legacy_control_host)
-        self.language_button.clicked.connect(self.show_language_menu)
         self.reference_tool_palette: QToolBar
         configure_main_window_controls(self)
         self._responsive_layout = build_responsive_layout(self)
@@ -498,6 +493,23 @@ class MainWindow(QMainWindow):
         self.collision_overlay_action.setChecked(False)
         self.collision_overlay_action.triggered.connect(self._toggle_collision_overlay)
         self.view_menu.addAction(self.collision_overlay_action)
+
+        # Language selection is a persistent QAction contract, not a hidden
+        # QPushButton.  The submenu action provides one semantic command-family
+        # item while the concrete locale actions remain directly triggerable
+        # from menus, the command registry and the command palette.
+        self.language_menu = self.view_menu.addMenu("Language")
+        self.language_action = self.language_menu.menuAction()
+        self.language_action.setObjectName("language_action")
+        self.act_english = QAction("English", self)
+        self.act_english.setCheckable(True)
+        self.act_english.triggered.connect(lambda: self.set_language("en"))
+        self.language_menu.addAction(self.act_english)
+        self.act_portuguese = QAction("Portuguese", self)
+        self.act_portuguese.setCheckable(True)
+        self.act_portuguese.triggered.connect(lambda: self.set_language("pt"))
+        self.language_menu.addAction(self.act_portuguese)
+
         install_scenario_preview_actions(self)
 
     def set_language(self, lang):
@@ -556,12 +568,12 @@ class MainWindow(QMainWindow):
         self.act_xray2.setText(t["xray_2"])
         self.act_xray3.setText(t["xray_3"])
         self.act_clean.setText(t["clean_all"])
-        self.language_button.setText(t["language"])
+        self.language_menu.setTitle(t["language"])
+        self.act_english.setText(t["english"])
+        self.act_portuguese.setText(t["portuguese"])
+        self.act_english.setChecked(self.current_lang == "en")
+        self.act_portuguese.setChecked(self.current_lang == "pt")
         self._update_compact_panel_titles(t)
-        if hasattr(self, "act_english"):
-            self.act_english.setText(t["english"])
-        if hasattr(self, "act_portuguese"):
-            self.act_portuguese.setText(t["portuguese"])
 
         self.edit_menu.setTitle(t["edit_menu"])
         self.undo_action.setText(t["undo"])
@@ -592,20 +604,6 @@ class MainWindow(QMainWindow):
             self._mask_viewer_dialog, "update_language"
         ):
             self._mask_viewer_dialog.update_language(self.current_lang)
-
-    def show_language_menu(self):
-        menu = QMenu(self)
-        self.act_english = menu.addAction(
-            self.translations[self.current_lang]["english"]
-        )
-        self.act_portuguese = menu.addAction(
-            self.translations[self.current_lang]["portuguese"]
-        )
-        self.act_english.triggered.connect(lambda: self.set_language("en"))
-        self.act_portuguese.triggered.connect(lambda: self.set_language("pt"))
-        menu.exec(
-            self.language_button.mapToGlobal(self.language_button.rect().bottomLeft())
-        )
 
     def set_last_folder(self, folder):
         self._last_folder = folder

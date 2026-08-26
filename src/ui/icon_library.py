@@ -408,15 +408,11 @@ def configure_main_window_controls(window: Any) -> None:
         "act_xray2": "xray_2",
         "act_xray3": "xray_3",
         "act_clean": "clean",
+        "language_action": "language",
     }
     for name, key in action_keys.items():
         configure_action(getattr(window, name), key)
 
-    widget_keys = {
-        "language_button": "language",
-    }
-    for name, key in widget_keys.items():
-        configure_widget(getattr(window, name), key)
     configure_widget(window.canvas.gizmo_toggle, "gizmo")
     from src.ui.reference_chrome import (
         configure_reference_tool_palette,

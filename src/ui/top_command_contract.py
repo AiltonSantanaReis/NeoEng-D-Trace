@@ -192,7 +192,7 @@ def build_top_command_contract(window: Any) -> TopCommandContract:
                 window.canvas.gizmo_toggle,
                 window.tool_palette.navigation_actions["focus_selected"],
                 window.act_clean,
-                window.language_button,
+                window.language_action,
             ),
         ),
         TopCommandGroup(

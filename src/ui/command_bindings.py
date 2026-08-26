@@ -17,6 +17,8 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("file.save", window.save_project_action),
             ("file.save_as", window.save_project_as_action),
             ("app.exit", window.close_application_action),
+            ("app.language_en", window.act_english),
+            ("app.language_pt", window.act_portuguese),
             ("edit.undo", window.undo_action),
             ("edit.redo", window.redo_action),
             ("view.settings", window.settings_action),

@@ -89,7 +89,7 @@ def test_semantic_groups_preserve_existing_command_and_control_identity(qt_app):
             window.canvas.gizmo_toggle,
             window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
-            window.language_button,
+            window.language_action,
         )
         assert contract.items("render") == (
             window.act_lit,
@@ -157,7 +157,7 @@ def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
         assert not hasattr(window, "export_collision_button")
         assert not hasattr(window, "focus_button")
         assert window.canvas.gizmo_toggle.parentWidget() is host
-        assert window.language_button.parentWidget() is host
+        assert not hasattr(window, "language_button")
 
         # Canvas preview toggles the compatibility button's own visibility.
         # The hidden host must keep it off the rendered MainWindow surface.
@@ -165,7 +165,6 @@ def test_legacy_toolbar_hosts_are_physically_removed(qt_app):
         window.canvas.set_preview_mode(False)
         qt_app.processEvents()
         assert not window.canvas.gizmo_toggle.isVisibleTo(window)
-        assert not window.language_button.isVisibleTo(window)
 
         configure_top_toolbars(window)
         assert window.top_command_contract.physical_toolbar_required is False
@@ -188,7 +187,13 @@ def test_duplicate_widget_controls_use_canonical_actions(qt_app):
         )
         focus_action = window.tool_palette.navigation_actions["focus_selected"]
         assert focus_action in window.top_command_contract.items("context")
+        assert window.language_action in window.top_command_contract.items("context")
+        assert window.language_action is window.language_menu.menuAction()
         assert window.command_registry.action("tool.focus_selected") is focus_action
+        assert window.command_registry.action("app.language_en") is window.act_english
+        assert window.command_registry.action("app.language_pt") is window.act_portuguese
+        assert window.act_english in window.language_menu.actions()
+        assert window.act_portuguese in window.language_menu.actions()
         assert window.act_export_collision_json in window.file_menu.actions()
         assert window.act_export_collision_txt in window.file_menu.actions()
     finally:

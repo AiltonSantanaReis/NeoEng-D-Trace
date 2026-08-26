@@ -94,6 +94,7 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         window.redo_action,
         window.act_snap,
         window.settings_action,
+        window.language_action,
     )
     for action in actions:
         assert not action.icon().isNull(), action.objectName()
@@ -104,7 +105,6 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
 
     for widget in (
         window.canvas.gizmo_toggle,
-        window.language_button,
         window.collision_panel.batch_test_btn,
         window.collision_panel.export_btn,
         window.collision_panel.auto_gen_btn,
@@ -146,6 +146,8 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
     window.set_language("pt")
     assert window.open_project_action.text()
     assert window.canvas.gizmo_toggle.text() == "Eixo"
+    assert window.language_action.text() == "Idioma"
+    assert window.act_portuguese.text() == "Português"
     assert all(
         not button.icon().isNull()
         for button in window.tool_palette.tool_buttons.values()

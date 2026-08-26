@@ -81,7 +81,7 @@ def test_stage4_groups_are_semantic_and_action_backed(qt_app):
             window.canvas.gizmo_toggle,
             window.tool_palette.navigation_actions["focus_selected"],
             window.act_clean,
-            window.language_button,
+            window.language_action,
         )
         assert contract.items("render") == (
             window.act_lit,
@@ -102,6 +102,7 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
         assert window.settings_action in window.edit_menu.actions()
         assert window.mask_viewer_action in window.view_menu.actions()
         assert window.collision_overlay_action in window.view_menu.actions()
+        assert window.language_action in window.view_menu.actions()
         assert window.act_fit in window.top_command_contract.items("view")
         assert window.act_100 in window.top_command_contract.items("view")
 
