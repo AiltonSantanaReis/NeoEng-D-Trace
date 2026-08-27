@@ -94,18 +94,16 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"/><path d="M9 9h6v6H9z"/>',
     ),
     "zoom_100": (
-        "one to one zoom",
-        '<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/>'
-        '<path d="M8 10.5h5M10.5 8v5"/>',
+        'one to one zoom',
+        '<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/><path d="m8.75 9.25 1.5-1.25v5.25"/>',
     ),
     "lit": (
         'lit view',
         '<circle cx="12" cy="12" r="3.25"/><path d="M12 3v2.25M12 18.75V21M3 12h2.25M18.75 12H21"/><path d="m5.65 5.65 1.6 1.6M16.75 16.75l1.6 1.6M18.35 5.65l-1.6 1.6M7.25 16.75l-1.6 1.6"/>',
     ),
     "xray_1": (
-        "x-ray one",
-        '<path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5z"/>'
-        '<circle cx="12" cy="12" r="2.5"/>',
+        'x-ray one',
+        '<path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5z"/><path d="M12 9v6M9 12h6"/>',
     ),
     "xray_2": (
         "x-ray two",
@@ -138,8 +136,8 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="M8.25 12V7.25a1.5 1.5 0 0 1 3 0V11M11.25 11V5.75a1.5 1.5 0 0 1 3 0V11M14.25 11V7a1.5 1.5 0 0 1 3 0v5M17.25 12v-2a1.5 1.5 0 0 1 3 0v4.25c0 4-2.5 6.25-6.25 6.25h-1.5c-3.25 0-5.5-1.75-6.5-4.5l-1.25-2.5a1.5 1.5 0 0 1 2.4-1.7l1.1.95z"/>',
     ),
     "parallax": (
-        "parallax",
-        '<path d="M4 7h10M4 12h16M4 17h10"/><path d="m14 5 4 2-4 2M10 15l-4 2 4 2"/>',
+        'parallax',
+        '<rect x="4" y="5" width="11" height="7" rx="1"/><rect x="9" y="12" width="11" height="7" rx="1"/><path d="M16.5 8.5H21m-2-2 2 2-2 2M7.5 15.5H3m2-2-2 2 2 2"/>',
     ),
     "settings": (
         'view settings',
