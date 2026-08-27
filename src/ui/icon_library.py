@@ -80,9 +80,8 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="m7.5 10.5 2 2 4-4"/>',
     ),
     "collision_auto_generate": (
-        "auto-generate collision",
-        '<path d="m5 16 5-5 6 6-5 5z"/><path d="m10 11 5-5 4 4-5 5z"/>'
-        '<path d="M17 3.5v4M15 5.5h4"/>',
+        'auto-generate collision',
+        '<path d="m5 7 7-3 7 4-2 9-8 3-5-6z"/><path d="M17.5 3v4M15.5 5h4"/>',
     ),
     "clean": (
         "clean",
@@ -232,16 +231,12 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<ellipse cx="12" cy="12" rx="8" ry="5.5"/>',
     ),
     "polygon_edit": (
-        "polygon edit tool",
-        '<path d="m5 5 14 3-3 12-11-5z"/>'
-        '<circle cx="5" cy="5" r="1.6"/>'
-        '<circle cx="19" cy="8" r="1.6"/>'
-        '<circle cx="16" cy="20" r="1.6"/><circle cx="5" cy="15" r="1.6"/>',
+        'polygon edit tool',
+        '<path d="m5 5 14 3-3 12-11-5z"/><rect x="3.5" y="3.5" width="3" height="3" rx=".4"/><rect x="17.5" y="6.5" width="3" height="3" rx=".4"/><rect x="14.5" y="18.5" width="3" height="3" rx=".4"/><rect x="3.5" y="13.5" width="3" height="3" rx=".4"/>',
     ),
     "collision_brush": (
-        "collision brush tool",
-        '<path d="m5 19 4-4 6 6-4 1z"/><path d="m9 15 5-5 5 5-4 4z"/>'
-        '<path d="M17 3.5v4M15 5.5h4"/>',
+        'collision brush tool',
+        '<path d="m5 17 8.5-8.5 4 4L9 21H5z"/><path d="m13.5 8.5 2.5-2.5 4 4-2.5 2.5"/><path d="M5 17c0 2-1 3-3 3 2 0 3-1 3-3"/>',
     ),
     "selection": (
         'selection tool',
