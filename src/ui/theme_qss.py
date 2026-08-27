@@ -61,6 +61,9 @@ QToolBar#reference_tool_palette QToolButton:hover {{
     background: {accent_hover_soft};
     border-color: {tokens.border_strong};
 }}
+QToolBar#reference_tool_palette QToolButton:focus {{
+    border-color: {tokens.focus};
+}}
 QToolBar#reference_tool_palette QToolButton:checked {{
     background: {accent_soft};
     border-color: {tokens.accent};
@@ -103,6 +106,9 @@ QToolBar#reference_top_toolbar QToolButton[referenceActive="true"] {{
 QToolBar#reference_top_toolbar QToolButton:hover {{
     background: {accent_hover_soft};
     border-color: {tokens.border_strong};
+}}
+QToolBar#reference_top_toolbar QToolButton:focus {{
+    border-color: {tokens.focus};
 }}
 QToolBar#reference_top_toolbar QToolButton:checked {{
     background: {accent_soft};
@@ -159,6 +165,10 @@ QWidget#viewport_overlay_bar QToolButton {{
     border: 0px;
     padding: 5px 8px;
     color: {tokens.text_primary};
+}}
+QWidget#viewport_overlay_bar QToolButton:focus {{
+    background: {accent_hover_soft};
+    color: {tokens.focus};
 }}
 QWidget#viewport_overlay_bar QToolButton:hover {{
     background: {accent_hover_soft};
