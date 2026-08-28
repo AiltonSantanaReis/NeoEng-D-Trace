@@ -207,7 +207,7 @@ class MaskViewer(QWidget):
 
     def _refresh_polygon_validation(self) -> Tuple[int, int]:
         """Refresh diagnostics after a user edits an overlay vertex."""
-        from src.tools.auto_detect import polygon_validation_error
+        from src.tools.auto_detect import polygon_validation_details
 
         valid_count = 0
         invalid_count = 0
@@ -217,16 +217,23 @@ class MaskViewer(QWidget):
                 if isinstance(polygon_data, dict)
                 else polygon_data
             )
-            reason = polygon_validation_error(polygon)
+            details = polygon_validation_details(polygon)
+            reason = details["error"]
             if isinstance(polygon_data, dict):
-                polygon_data["is_valid"] = reason is None
-            if reason is None:
+                polygon_data["is_valid"] = details["is_valid"]
+            if details["is_valid"]:
                 if isinstance(polygon_data, dict):
                     polygon_data.pop("validation_error", None)
+                    polygon_data.pop("validation_details", None)
                 valid_count += 1
             else:
                 if isinstance(polygon_data, dict):
                     polygon_data["validation_error"] = reason
+                    polygon_data["validation_details"] = {
+                        "invalid_vertices": details["invalid_vertices"],
+                        "invalid_edges": details["invalid_edges"],
+                        "invalid_intersections": details["invalid_intersections"],
+                    }
                 invalid_count += 1
         return valid_count, invalid_count
 
@@ -703,16 +710,38 @@ class MaskViewer(QWidget):
                         qpoints = [QPointF(float(p[0]), float(p[1])) for p in polygon]
                         qpoly = QPolygonF(qpoints)
 
-                        # Set style based on selection
+                        # Invalid geometry keeps an orange body; only the
+                        # exact offending edges and vertices are marked red.
                         invalid = (
                             isinstance(poly_data, dict)
                             and poly_data.get("is_valid") is False
                         )
+                        invalid_vertex_indexes = set()
+                        invalid_intersection_points = []
+                        invalid_edge_indexes = []
+                        if invalid and isinstance(poly_data, dict):
+                            validation_details = poly_data.get(
+                                "validation_details", {}
+                            )
+                            invalid_vertex_indexes = {
+                                index
+                                for index in validation_details.get(
+                                    "invalid_vertices", []
+                                )
+                                if isinstance(index, int) and not isinstance(index, bool)
+                            }
+                            invalid_edge_indexes = validation_details.get(
+                                "invalid_edges", []
+                            )
+                            invalid_intersection_points = validation_details.get(
+                                "invalid_intersections", []
+                            )
+
                         if invalid:
-                            pen = QPen(QColor(255, 50, 50), 3)
+                            pen = QPen(QColor(255, 165, 0), 3)
                             pen.setCosmetic(True)
                             painter.setPen(pen)
-                            painter.setBrush(QColor(255, 0, 0, 70))
+                            painter.setBrush(QColor(255, 165, 0, 55))
                         elif i == self._selected_polygon_index:
                             pen = QPen(
                                 QColor(255, 255, 0), 3
@@ -731,17 +760,63 @@ class MaskViewer(QWidget):
                             )  # Semi-transparent green fill
 
                         painter.drawPolygon(qpoly)
+
+                        if invalid:
+                            invalid_pen = QPen(QColor(255, 50, 50), 4)
+                            invalid_pen.setCosmetic(True)
+                            painter.setPen(invalid_pen)
+                            painter.setBrush(Qt.BrushStyle.NoBrush)
+                            for edge_entry in invalid_edge_indexes:
+                                edge_indexes = (
+                                    edge_entry
+                                    if isinstance(edge_entry, (list, tuple))
+                                    else [edge_entry]
+                                )
+                                for edge_index in edge_indexes:
+                                    if (
+                                        isinstance(edge_index, int)
+                                        and not isinstance(edge_index, bool)
+                                        and 0 <= edge_index < len(qpoints)
+                                    ):
+                                        painter.drawLine(
+                                            qpoints[edge_index],
+                                            qpoints[(edge_index + 1) % len(qpoints)],
+                                        )
+                            for vertex_index in invalid_vertex_indexes:
+                                if 0 <= vertex_index < len(qpoints):
+                                    painter.setBrush(QColor(255, 50, 50, 235))
+                                    painter.drawEllipse(
+                                        qpoints[vertex_index],
+                                        4.5 / self._zoom,
+                                        4.5 / self._zoom,
+                                    )
+                            for intersection in invalid_intersection_points:
+                                if (
+                                    isinstance(intersection, (list, tuple))
+                                    and len(intersection) == 2
+                                ):
+                                    painter.setBrush(QColor(255, 50, 50, 235))
+                                    painter.drawEllipse(
+                                        QPointF(
+                                            float(intersection[0]), float(intersection[1])
+                                        ),
+                                        5.5 / self._zoom,
+                                        5.5 / self._zoom,
+                                    )
+
                         if i == self._selected_polygon_index:
                             handle_pen = QPen(QColor(255, 255, 255), 1)
                             handle_pen.setCosmetic(True)
                             painter.setPen(handle_pen)
-                            painter.setBrush(
-                                QColor(255, 50, 50, 220)
-                                if invalid
-                                else QColor(255, 255, 255, 220)
-                            )
-                            for point in qpoints:
-                                painter.drawEllipse(point, 3.5 / self._zoom, 3.5 / self._zoom)
+                            for vertex_index, point in enumerate(qpoints):
+                                painter.setBrush(
+                                    QColor(255, 50, 50, 235)
+                                    if vertex_index in invalid_vertex_indexes
+                                    else QColor(255, 255, 255, 220)
+                                )
+                                painter.drawEllipse(
+                                    point, 3.5 / self._zoom, 3.5 / self._zoom
+                                )
 
             painter.restore()
 
@@ -853,7 +928,8 @@ class MaskViewerDialog(QDialog):
             "selected": "Selected polygon {index}",
             "validation_summary": "Detected {count} polygons: {valid} valid, {invalid} invalid.",
             "invalid_polygon": "Polygon {index}: {reason}",
-            "invalid_hint": "Invalid polygons are shown in red. Drag their vertices until all are valid.",
+            "invalid_location": "Location: vertices {vertices}; edges {edges}; crossings {intersections}.",
+            "invalid_hint": "Invalid polygons have an orange body; red marks identify the exact invalid edges, vertices, or crossings. Drag vertices until all are valid.",
             "valid_hint": "All detected polygons are valid and ready to apply.",
         },
         "pt": {
@@ -922,7 +998,8 @@ class MaskViewerDialog(QDialog):
             "selected": "Polígono {index} selecionado",
             "validation_summary": "Detectados {count} polígonos: {valid} válidos, {invalid} inválidos.",
             "invalid_polygon": "Polígono {index}: {reason}",
-            "invalid_hint": "Polígonos inválidos aparecem em vermelho. Arraste seus vértices até que todos sejam válidos.",
+            "invalid_location": "Localização: vértices {vertices}; arestas {edges}; cruzamentos {intersections}.",
+            "invalid_hint": "Polígonos inválidos têm o corpo laranja; o vermelho marca as arestas, vértices ou cruzamentos exatos. Arraste os vértices até que todos sejam válidos.",
             "valid_hint": "Todos os polígonos detectados são válidos e podem ser aplicados.",
         },
     }
@@ -1246,6 +1323,45 @@ class MaskViewerDialog(QDialog):
         }
         return translations.get(reason, reason)
 
+    def _polygon_validation_location(self, polygon_data: Dict[str, Any]) -> str:
+        """Format exact invalid geometry locations for the user-facing feedback."""
+        details = polygon_data.get("validation_details", {})
+        polygon = polygon_data.get("polygon", [])
+        vertex_count = len(polygon) if isinstance(polygon, list) else 0
+
+        vertices = ", ".join(
+            str(index + 1)
+            for index in details.get("invalid_vertices", [])
+            if isinstance(index, int) and not isinstance(index, bool)
+        )
+        edge_labels = []
+        for edge_entry in details.get("invalid_edges", []):
+            edge_indexes = (
+                edge_entry
+                if isinstance(edge_entry, (list, tuple))
+                else [edge_entry]
+            )
+            for edge_index in edge_indexes:
+                if (
+                    isinstance(edge_index, int)
+                    and not isinstance(edge_index, bool)
+                    and vertex_count >= 3
+                    and 0 <= edge_index < vertex_count
+                ):
+                    edge_labels.append(
+                        f"{edge_index + 1}-{(edge_index + 1) % vertex_count + 1}"
+                    )
+        intersections = "; ".join(
+            f"({float(point[0]):.1f}, {float(point[1]):.1f})"
+            for point in details.get("invalid_intersections", [])
+            if isinstance(point, (list, tuple))
+            and len(point) == 2
+        )
+        return self.t["invalid_location"].format(
+            vertices=vertices or "—",
+            edges=", ".join(edge_labels) or "—",
+            intersections=intersections or "—",
+        )
     def _update_polygon_validation_feedback(self) -> None:
         if self.viewer._overlay_polygons is not self._last_polygons:
             self.viewer.set_overlay_polygons(self._last_polygons)
@@ -1267,6 +1383,7 @@ class MaskViewerDialog(QDialog):
                         str(polygon_data.get("validation_error", "invalid geometry"))
                     )
                     lines.append(self.t["invalid_polygon"].format(index=index + 1, reason=reason))
+                    lines.append(self._polygon_validation_location(polygon_data))
             lines.append(self.t["invalid_hint"])
         else:
             lines.append(self.t["valid_hint"])
