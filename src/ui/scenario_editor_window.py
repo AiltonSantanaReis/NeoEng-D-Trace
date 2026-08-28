@@ -10,7 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import (
     QLabel,
@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.scenario_authoring import ScenarioAuthoringState
-from src.core.scene_authoring_factory import document_from_scene
+from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.exporters.scene_authoring_export import save_scene_authoring_export
@@ -41,6 +41,8 @@ from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
 class ScenarioEditorWindow(QMainWindow):
     """Interactive authoring surface for the versioned scenario sidecar."""
+
+    document_changed = Signal()
 
     def __init__(
         self,
@@ -195,8 +197,10 @@ class ScenarioEditorWindow(QMainWindow):
         if scene_path.is_file():
             document = load_scene_authoring_v2(scene_path)
         else:
-            document = upgrade_scene_authoring_document(
-                document_from_scene(self.scene, project_path)
+            document = professional_document_from_scene(
+                self.scene,
+                project_path,
+                self.authoring.document,
             )
         session = SceneAuthoringSession(SceneAuthoringModel(document))
         viewport = SceneAuthoringViewport(
@@ -251,27 +255,33 @@ class ScenarioEditorWindow(QMainWindow):
         self._professional_project = project_path
         self.professional_scene_path = scene_path
         session.subscribe(self._update_professional_status)
+        session.subscribe(self._emit_document_changed)
 
-    def _save_professional(self) -> None:
+    def _emit_document_changed(self) -> None:
+        self.document_changed.emit()
+
+    def _save_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
             self.status_label.setText("Save a project before saving the scenario")
-            return
+            return False
         try:
             save_scene_authoring(
                 self.professional_session.document, self.professional_scene_path
             )
             self.professional_session.mark_saved()
             self.status_label.setText("Scenario saved")
+            return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario save failed: {exc}")
+            return False
 
-    def _load_professional(self) -> None:
+    def _load_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
             self.status_label.setText("Save a project before reloading the scenario")
-            return
+            return False
         if not self.professional_scene_path.is_file():
             self.status_label.setText("No saved scenario exists yet")
-            return
+            return False
         try:
             document = load_scene_authoring_v2(self.professional_scene_path)
             self.professional_session.model.document = document
@@ -281,15 +291,17 @@ class ScenarioEditorWindow(QMainWindow):
             if self.professional_viewport is not None:
                 self.professional_viewport.sync()
             self.status_label.setText("Scenario reloaded")
+            return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario reload failed: {exc}")
+            return False
 
-    def _reset_professional(self) -> None:
+    def _reset_professional(self) -> bool:
         if self._professional_project is None or self.professional_session is None:
             self.status_label.setText("Save a project before resetting the scenario")
-            return
+            return False
         document = upgrade_scene_authoring_document(
-            document_from_scene(self.scene, self._professional_project)
+            professional_document_from_scene(self.scene, self._professional_project)
         )
         self.professional_session.model.document = document
         self.professional_session.clear_history()
@@ -297,11 +309,12 @@ class ScenarioEditorWindow(QMainWindow):
         if self.professional_viewport is not None:
             self.professional_viewport.sync()
         self.status_label.setText("Scenario reset from project")
+        return True
 
-    def _export_professional(self) -> None:
+    def _export_professional(self) -> bool:
         if self.professional_session is None or self._professional_project is None:
             self.status_label.setText("Save a project before exporting the scenario")
-            return
+            return False
         destination = self._professional_project.with_suffix(".ndtscene.runtime.json")
         try:
             save_scene_authoring_export(
@@ -310,8 +323,10 @@ class ScenarioEditorWindow(QMainWindow):
                 target="generic",
             )
             self.status_label.setText("Scenario runtime exported")
+            return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario export failed: {exc}")
+            return False
 
     def _update_professional_status(self) -> None:
         if self.professional_session is None:
