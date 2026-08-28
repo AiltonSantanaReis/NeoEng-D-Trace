@@ -91,12 +91,15 @@ def _command_button(
 def _menu_button(button: QToolButton, actions: tuple[Any, ...]) -> None:
     menu = QMenu(button)
     for action in actions:
-        menu.addAction(action)
+        if action is None:
+            menu.addSeparator()
+        else:
+            menu.addAction(action)
     button.setMenu(menu)
-    button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
-    # The command buttons have no standalone action in their body; keep
-    # both the main surface and the native arrow wired to the same menu.
-    button.clicked.connect(button.showMenu)
+    # The entire button is a single clean command surface. InstantPopup
+    # removes the split arrow affordance while keeping the menu available on
+    # the complete button, matching the reference View command.
+    button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
 
 
 class ReferenceToolPalette(QToolBar):
@@ -254,14 +257,28 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     _add_action_group(toolbar, (view_button, collision_button, parallax_button))
 
     pan_action = window.tool_palette.navigation_actions["move_viewport"]
-    select_action = window.tool_palette._tool_actions["selection"]
-    _add_action_group(toolbar, (pan_action, select_action))
+    _add_action_group(toolbar, (pan_action,))
     pan_button = _style_action_button(toolbar, pan_action, display_text="Pan", width=64)
-    select_button = _style_action_button(
-        toolbar, select_action, display_text="Select", width=72
+    select_button = _command_button(
+        window, "selection", "Select", "Selection tools menu"
+    )
+    _menu_button(
+        select_button,
+        tuple(
+            window.tool_palette._tool_actions[name]
+            for name in (
+                "selection",
+                "rect_selection",
+                "ellipse_selection",
+                "lasso_tool",
+                "polygonal_lasso",
+                "magnetic_lasso",
+            )
+        ),
     )
     pan_button.setObjectName("reference_pan_button")
     select_button.setObjectName("reference_select_button")
+    toolbar.addWidget(select_button)
 
     _add_action_group(toolbar, (window.undo_action, window.redo_action))
     undo_button = _style_action_button(
@@ -360,7 +377,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window.mask_viewer_action,
         window.collision_overlay_action,
         pan_action,
-        select_action,
+        window.tool_palette._tool_actions["selection"],
         window.undo_action,
         window.redo_action,
     )

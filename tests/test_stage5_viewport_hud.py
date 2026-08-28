@@ -146,7 +146,7 @@ def test_reference_pan_and_select_controls_drive_existing_canvas_contract(qt_app
     assert window.canvas.is_pan_mode() is True
     assert window.reference_pan_button.isChecked() is True
 
-    window.reference_select_button.click()
+    window.reference_select_button.menu().actions()[0].trigger()
     assert window.canvas.is_pan_mode() is False
     assert window.reference_pan_button.isChecked() is False
     window.close()

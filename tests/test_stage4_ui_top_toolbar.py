@@ -232,6 +232,16 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
+        assert [
+            action.text() for action in window.reference_select_button.menu().actions()
+        ] == [
+            "Selection",
+            "Rect",
+            "Ellipse",
+            "Lasso",
+            "Polygonal\nLasso",
+            "Magnetic\nLasso",
+        ]
         # The complete application menu is the isolated control at the bottom
         # of the visible left rail because the native menu bar is hidden.
         assert window.reference_menu_button.isVisibleTo(window) is True
@@ -276,8 +286,9 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             window.reference_export_button,
             window.reference_view_button,
             window.reference_collision_button,
+            window.reference_select_button,
         ):
-            assert button.popupMode().name == "MenuButtonPopup"
+            assert button.popupMode().name == "InstantPopup"
     finally:
         window.close()
         qt_app.processEvents()

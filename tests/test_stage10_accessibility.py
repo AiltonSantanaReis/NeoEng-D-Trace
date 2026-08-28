@@ -110,10 +110,10 @@ def test_mouse_interactions_and_state_feedback_are_independent_of_keyboard(windo
     assert window.canvas.is_pan_mode() is True
     assert window.reference_pan_button.isChecked() is True
 
-    QTest.mouseClick(window.reference_select_button, Qt.MouseButton.LeftButton)
+    window.reference_select_button.menu().actions()[0].trigger()
     qt_app.processEvents()
     assert window.canvas.is_pan_mode() is False
-    assert window.reference_select_button.isChecked() is True
+    assert window.tool_palette._tool_actions["selection"].isChecked() is True
 
     snap_button = window.viewport_chrome.overlay.snap_button
     before = snap_button.isChecked()
