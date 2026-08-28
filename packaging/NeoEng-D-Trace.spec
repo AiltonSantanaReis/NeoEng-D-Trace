@@ -28,12 +28,16 @@ analysis = Analysis(
 # discovered from developer-toolkit PATH entries during PyInstaller analysis,
 # but must never be copied into a portable bundle where they can shadow the
 # host runtime and break Qt loading.
+# ICU DLLs can also be discovered from unrelated PATH entries (for example,
+# Poppler). They are not part of the PySide6 wheel used by this project and
+# must not shadow the Windows ICU implementation used by Qt.
 analysis.binaries = [
     item
     for item in analysis.binaries
     if not (
         Path(item[0]).name.lower().startswith("api-ms-win-")
         or Path(item[0]).name.lower() == "ucrtbase.dll"
+        or Path(item[0]).name.lower() in {"icuuc.dll", "icudt78.dll"}
     )
 ]
 
