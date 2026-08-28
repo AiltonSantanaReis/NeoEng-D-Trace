@@ -204,7 +204,7 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Focus",
             "View",
             "Collision",
-            "Parallax",
+            "Scenario",
             "Pan",
             "Select",
             "Undo",
@@ -232,13 +232,23 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
-        # The complete application menu remains constructed for integrations,
-        # while the visible chrome follows the supplied reference exactly.
-        assert window.reference_menu_button.isVisibleTo(window) is False
+        # The complete application menu is the isolated control at the bottom
+        # of the visible left rail because the native menu bar is hidden.
+        assert window.reference_menu_button.isVisibleTo(window) is True
+        assert window.reference_menu_button.parent() is window.reference_tool_palette
+        rail = window.reference_tool_palette
+        menu_geometry = window.reference_menu_button.geometry()
+        assert rail.height() - (menu_geometry.y() + menu_geometry.height()) == 4
+        assert window.reference_menu_button.accessibleName() == "Application menu"
         submenus = [
             submenu for submenu, _source in window.reference_application_submenus
         ]
-        assert [menu.title() for menu in submenus] == ["File", "Edit", "View"]
+        assert [menu.title() for menu in submenus] == [
+            "File",
+            "Edit",
+            "View",
+            "Scenario",
+        ]
         assert [
             action.text()
             for action in submenus[0].actions()
@@ -253,6 +263,13 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
+        assert window.undo_action.shortcut().toString() == "Ctrl+Z"
+        assert window.redo_action.shortcut().toString() == "Ctrl+Y"
+        assert window.act_fit.shortcut().toString() == "F"
+        assert window.undo_action in submenus[1].actions()
+        assert window.redo_action in submenus[1].actions()
+        assert window.act_fit in submenus[2].actions()
+        assert window.scenario_open_action in submenus[3].actions()
         for button in (
             window.reference_open_button,
             window.reference_save_button,

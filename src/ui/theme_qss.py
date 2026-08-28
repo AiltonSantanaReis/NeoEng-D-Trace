@@ -76,7 +76,8 @@ QToolBar#reference_tool_palette QToolButton:checked {{
     background: {tokens.surface};
     border-bottom: 1px solid {tokens.border};
 }}
-QToolBar#reference_top_toolbar QToolButton#reference_menu_button {{
+QToolBar#reference_top_toolbar QToolButton#reference_menu_button,
+QToolBar#reference_tool_palette QToolButton#reference_menu_button {{
     min-width: 46px;
     max-width: 46px;
     font-size: 20px;

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize, QTimer, Qt
 from PySide6.QtWidgets import (
     QLineEdit,
     QMenu,
@@ -99,10 +99,46 @@ def _menu_button(button: QToolButton, actions: tuple[Any, ...]) -> None:
     button.clicked.connect(button.showMenu)
 
 
+class ReferenceToolPalette(QToolBar):
+    """Keep the application menu enabled while tools follow document state."""
+
+    def __init__(self, title: str, parent: QWidget) -> None:
+        super().__init__(title, parent)
+        self._tool_buttons: list[QToolButton] = []
+        self._application_menu_button: QToolButton | None = None
+
+    def register_tool_button(self, button: QToolButton) -> None:
+        self._tool_buttons.append(button)
+
+    def register_application_menu(self, button: QToolButton) -> None:
+        self._application_menu_button = button
+        QTimer.singleShot(0, self._position_application_menu)
+
+    def _position_application_menu(self) -> None:
+        button = self._application_menu_button
+        if button is None:
+            return
+        button.adjustSize()
+        x = max(0, (self.width() - button.width()) // 2)
+        y = max(0, self.height() - button.height() - 4)
+        button.move(x, y)
+
+    def resizeEvent(self, event: Any) -> None:
+        super().resizeEvent(event)
+        QTimer.singleShot(0, self._position_application_menu)
+
+    def setEnabled(self, enabled: bool) -> None:
+        # The toolbar container must remain enabled so the application menu
+        # remains usable before a document/image is loaded.
+        super().setEnabled(True)
+        for button in self._tool_buttons:
+            button.setEnabled(bool(enabled))
+
+
 def configure_reference_tool_palette(window: Any) -> QToolBar:
     """Expose the existing tool actions in the narrow reference palette."""
 
-    toolbar = QToolBar("Reference tool palette", window)
+    toolbar = ReferenceToolPalette("Reference tool palette", window)
     toolbar.setObjectName("reference_tool_palette")
     toolbar.setOrientation(Qt.Orientation.Vertical)
     toolbar.setMovable(False)
@@ -137,6 +173,7 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
                 button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
                 button.setProperty("iconKey", action.property("iconKey"))
                 button.setProperty("uiRole", "reference_tool")
+                toolbar.register_tool_button(button)
     window.reference_tool_palette = toolbar
     return toolbar
 
@@ -210,7 +247,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         ),
     )
     parallax_button = _command_button(
-        window, "parallax", "Parallax", "Open scenario editor"
+        window, "parallax", "Scenario", "Open scenario editor"
     )
     parallax_button.clicked.connect(window.open_scenario_editor)
     view_button.setProperty("referenceActive", True)
@@ -238,32 +275,42 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
 
     # Keep the complete application menu available to integrations and
     # keyboard/menu consumers without adding a control absent from the reference.
-    menu_button = QToolButton(toolbar)
+    menu_button = QToolButton(window.reference_tool_palette)
     menu_button.setObjectName("reference_menu_button")
     menu_button.setText("≡")
     menu_button.setAccessibleName('Application menu')
-    menu_button.setAccessibleDescription('Open the application menu with file, edit and view commands')
+    menu_button.setAccessibleDescription('Open the application menu with file, edit, view and scenario commands')
     menu_button.setToolTip('Application menu')
+    menu_button.setStatusTip('Open the application menu')
+    menu_button.setMinimumSize(QSize(44, 32))
+    menu_button.setMaximumSize(QSize(56, 36))
+    menu_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+    menu_button.setProperty("uiRole", "reference_application_menu")
     menu_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     menu_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
     menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
     menu = QMenu(menu_button)
     application_submenus = []
-    for source in (window.file_menu, window.edit_menu, window.view_menu):
+    for source in (
+        window.file_menu,
+        window.edit_menu,
+        window.view_menu,
+        getattr(window, "scenario_menu", None),
+    ):
+        if source is None:
+            continue
         submenu = menu.addMenu(source.title())
         for action in source.actions():
             submenu.addAction(action)
         application_submenus.append((submenu, source))
     menu_button.setMenu(menu)
     menu_button.clicked.connect(menu_button.showMenu)
-    menu_button.setVisible(False)
+    menu_button.setVisible(True)
     window.reference_menu_button = menu_button
     window.reference_application_submenus = tuple(application_submenus)
+    window.reference_tool_palette.register_application_menu(menu_button)
     window.menuBar().setVisible(False)
 
-    spacer = QWidget(toolbar)
-    spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
-    toolbar.addWidget(spacer)
     search = QLineEdit(toolbar)
     search.setObjectName("reference_command_search")
     search.setPlaceholderText("Ctrl+K")
@@ -337,7 +384,7 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "focus": "Focus",
             "view": "View",
             "collision": "Collision",
-            "parallax": "Parallax",
+            "parallax": "Scenario",
             "pan": "Pan",
             "select": "Select",
             "undo": "Undo",
@@ -353,7 +400,7 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "focus": "Focar",
             "view": "Visualizar",
             "collision": "Colisão",
-            "parallax": "Parallax",
+            "parallax": "Cenário",
             "pan": "Mover",
             "select": "Selecionar",
             "undo": "Desfazer",
@@ -371,7 +418,7 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "focus": "Focus",
             "view": "View",
             "collision": "Collision",
-            "parallax": "Parallax",
+            "parallax": "Scenario",
             "pan": "Pan",
             "select": "Select",
             "undo": "Undo",

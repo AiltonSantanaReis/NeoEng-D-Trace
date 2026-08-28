@@ -107,7 +107,7 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
         button.text()
         for button in window.reference_top_toolbar.findChildren(QToolButton)
     }
-    expected = {"Open", "Save", "Export", "View", "Collision", "Parallax"}
+    expected = {"Open", "Save", "Export", "View", "Collision", "Scenario"}
     assert expected <= labels
 
     window.resize(1280, 720)

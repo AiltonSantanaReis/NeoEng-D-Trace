@@ -234,7 +234,8 @@ class MainWindow(QMainWindow):
         self.canvas.set_collision_overlay(self.collision_overlay)
         install_scenario_authoring(self)
         # Navigation/render commands remain stable canonical QActions.
-        self.act_fit = QAction("Fit View (F)", self)
+        self.act_fit = QAction("Fit View", self)
+        self.act_fit.setShortcut(QKeySequence("F"))
         self.act_fit.triggered.connect(self.canvas.fit_to_window)
 
         # Botão: Zoom 100%
@@ -260,6 +261,20 @@ class MainWindow(QMainWindow):
         self.act_xray3.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_3)
         )
+
+        # Keep navigation and rendering commands available from the complete
+        # application menu. The same QAction instances remain the source of
+        # truth for toolbar, command registry and keyboard behavior.
+        self.view_menu.addSeparator()
+        self.view_menu.addAction(self.act_fit)
+        self.view_menu.addAction(self.act_100)
+        self.view_menu.addAction(self.act_grid)
+        self.view_menu.addAction(self.act_snap)
+        self.view_menu.addSeparator()
+        self.view_menu.addAction(self.act_lit)
+        self.view_menu.addAction(self.act_xray1)
+        self.view_menu.addAction(self.act_xray2)
+        self.view_menu.addAction(self.act_xray3)
 
         # Botão: Limpar Tudo (Com Undo)
         self.act_clean = QAction("Clean All", self)
@@ -320,7 +335,6 @@ class MainWindow(QMainWindow):
 
     def _setup_shortcuts(self):
         # View Shortcuts
-        QShortcut(QKeySequence("F"), self, self.canvas.fit_to_window)
         QShortcut(QKeySequence("X"), self, self.canvas.toggle_xray)
         QShortcut(QKeySequence("A"), self, lambda: self.canvas.set_view_mode(0))
 
@@ -355,12 +369,6 @@ class MainWindow(QMainWindow):
             self,
             lambda: self._select_tool("magnetic_lasso"),
         )
-
-        # Undo/Redo Shortcuts
-        # Nota: Mantemos isso para garantir o funcionamento do atalho,
-        # mesmo que também exista no menu.
-        QShortcut(QKeySequence.StandardKey.Undo, self, self._undo)
-        QShortcut(QKeySequence.StandardKey.Redo, self, self._redo)
 
         self.command_palette_shortcut = QShortcut(QKeySequence("Ctrl+K"), self)
         self.command_palette_shortcut.setObjectName("command_palette_shortcut")
@@ -456,11 +464,13 @@ class MainWindow(QMainWindow):
         self.edit_menu = menubar.addMenu("Edit")
 
         self.undo_action = QAction("Undo", self)
+        self.undo_action.setShortcut(QKeySequence.StandardKey.Undo)
         # Conecta diretamente à função _undo já existente e correta
         self.undo_action.triggered.connect(self._undo)
         self.edit_menu.addAction(self.undo_action)
 
         self.redo_action = QAction("Redo", self)
+        self.redo_action.setShortcut(QKeySequence.StandardKey.Redo)
         # Conecta diretamente à função _redo já existente e correta
         self.redo_action.triggered.connect(self._redo)
         self.edit_menu.addAction(self.redo_action)
