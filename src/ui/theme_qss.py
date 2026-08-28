@@ -167,6 +167,15 @@ QWidget#viewport_overlay_bar QToolButton {{
     padding: 5px 8px;
     color: {tokens.text_primary};
 }}
+QWidget#viewport_overlay_bar QToolButton::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QWidget#viewport_overlay_bar QToolButton::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
 QWidget#viewport_overlay_bar QToolButton:focus {{
     background: {accent_hover_soft};
     color: {tokens.focus};

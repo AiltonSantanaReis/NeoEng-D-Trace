@@ -31,6 +31,8 @@ def test_qss_is_generated_from_tokens_and_exposes_focus_states() -> None:
     assert "QToolButton:focus" in generated
     assert THEME_TOKENS.accent_hover in generated
     assert 'QPushButton[uiRole="tool"]' in generated
+    assert "QWidget#viewport_overlay_bar QToolButton::menu-indicator" in generated
+    assert "QWidget#viewport_overlay_bar QToolButton::menu-button" in generated
     assert "#FF4500" not in generated
     assert "#00BFFF" not in generated
     for color in THEME_TOKENS.audit_palette:
