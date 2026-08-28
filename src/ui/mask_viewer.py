@@ -3,11 +3,13 @@
 Mask Viewer widget with pan/zoom capabilities for visualizing images and masks.
 """
 
+import copy
 import logging
 import math
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
+from src.core.operational_limits import MAX_POLYGON_POINTS
 from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import (
     QAction,
@@ -27,9 +29,11 @@ from PySide6.QtWidgets import (
     QDialog,
     QDoubleSpinBox,
     QGroupBox,
+    QInputDialog,
     QHBoxLayout,
     QLabel,
     QMessageBox,
+    QMenu,
     QPushButton,
     QScrollArea,
     QSlider,
@@ -179,6 +183,17 @@ class MaskViewer(QWidget):
         self._selected_polygon_index = -1  # Index of selected polygon, -1 for none
         self._editing_polygon_index = -1
         self._editing_vertex_index = -1
+        self._show_polygon_handles = True
+        self._show_polygon_diagnostics = True
+        self._gizmo_enabled = False
+        self._gizmo_drag_mode: Optional[str] = None
+        self._gizmo_drag_start = QPointF()
+        self._gizmo_original_polygon = None
+        self._context_polygon_index = -1
+        self._context_vertex_index = -1
+        self._context_image_point = QPointF()
+        self._undo_polygons = []
+        self._redo_polygons = []
         self._roi_mode = False
         self._roi_start: Optional[QPointF] = None
         self._roi_rect: Optional[Tuple[float, float, float, float]] = None
@@ -202,6 +217,8 @@ class MaskViewer(QWidget):
         self._selected_polygon_index = -1  # Reset selection when polygons change
         self._editing_polygon_index = -1
         self._editing_vertex_index = -1
+        self._undo_polygons.clear()
+        self._redo_polygons.clear()
         self._refresh_polygon_validation()
         self.update()
 
@@ -279,6 +296,381 @@ class MaskViewer(QWidget):
         self._refresh_polygon_validation()
         self.polygonsChanged.emit()
         self.update()
+    def _polygon_points_at_index(self, index: int):
+        if index < 0 or index >= len(self._overlay_polygons):
+            return None
+        polygon_data = self._overlay_polygons[index]
+        return (
+            polygon_data.get("polygon")
+            if isinstance(polygon_data, dict)
+            else polygon_data
+        )
+
+    def _begin_local_edit(self) -> None:
+        self._undo_polygons.append(copy.deepcopy(self._overlay_polygons))
+        self._redo_polygons.clear()
+
+    def _emit_polygon_edit(self) -> None:
+        self._refresh_polygon_validation()
+        self.polygonsChanged.emit()
+        self.update()
+
+    def _restore_local_snapshot(self, snapshot) -> None:
+        self._overlay_polygons[:] = copy.deepcopy(snapshot)
+        self._editing_polygon_index = -1
+        self._editing_vertex_index = -1
+        self._emit_polygon_edit()
+
+    def undo_polygon_edit(self) -> None:
+        if not self._undo_polygons:
+            return
+        self._redo_polygons.append(copy.deepcopy(self._overlay_polygons))
+        self._restore_local_snapshot(self._undo_polygons.pop())
+
+    def redo_polygon_edit(self) -> None:
+        if not self._redo_polygons:
+            return
+        self._undo_polygons.append(copy.deepcopy(self._overlay_polygons))
+        self._restore_local_snapshot(self._redo_polygons.pop())
+
+    def _clamp_image_point(self, point: QPointF) -> QPointF:
+        x, y = point.x(), point.y()
+        if self._image is not None:
+            height, width = self._image.shape[:2]
+            x = min(max(x, 0.0), float(max(0, width - 1)))
+            y = min(max(y, 0.0), float(max(0, height - 1)))
+        return QPointF(x, y)
+
+    def _nearest_polygon_edge(self, polygon, image_point: QPointF) -> int:
+        best_index = 0
+        best_distance = float("inf")
+        for index, start in enumerate(polygon):
+            end = polygon[(index + 1) % len(polygon)]
+            start_x, start_y = float(start[0]), float(start[1])
+            end_x, end_y = float(end[0]), float(end[1])
+            dx = end_x - start_x
+            dy = end_y - start_y
+            length_squared = dx * dx + dy * dy
+            if length_squared <= 1e-12:
+                projection_x, projection_y = start_x, start_y
+            else:
+                ratio = (
+                    (image_point.x() - start_x) * dx
+                    + (image_point.y() - start_y) * dy
+                ) / length_squared
+                ratio = min(1.0, max(0.0, ratio))
+                projection_x = start_x + ratio * dx
+                projection_y = start_y + ratio * dy
+            distance = math.hypot(
+                image_point.x() - projection_x,
+                image_point.y() - projection_y,
+            )
+            if distance < best_distance:
+                best_index = index
+                best_distance = distance
+        return best_index
+
+    def add_context_vertex(self) -> None:
+        polygon = self._polygon_points_at_index(self._context_polygon_index)
+        if not isinstance(polygon, list) or len(polygon) >= MAX_POLYGON_POINTS:
+            return
+        image_point = self._clamp_image_point(self._context_image_point)
+        edge_index = self._nearest_polygon_edge(polygon, image_point)
+        self._begin_local_edit()
+        polygon.insert(
+            edge_index + 1,
+            (int(round(image_point.x())), int(round(image_point.y()))),
+        )
+        self.set_selected_polygon_index(self._context_polygon_index)
+        self._emit_polygon_edit()
+
+    def remove_context_vertex(self) -> None:
+        polygon = self._polygon_points_at_index(self._context_polygon_index)
+        index = self._context_vertex_index
+        if (
+            not isinstance(polygon, list)
+            or len(polygon) <= 3
+            or index < 0
+            or index >= len(polygon)
+        ):
+            return
+        self._begin_local_edit()
+        polygon.pop(index)
+        self._context_vertex_index = -1
+        self._emit_polygon_edit()
+
+    def _polygon_center(self, polygon):
+        return QPointF(
+            sum(float(point[0]) for point in polygon) / len(polygon),
+            sum(float(point[1]) for point in polygon) / len(polygon),
+        )
+
+    def _transform_selected_polygon(self, transform) -> None:
+        polygon = self._polygon_points_at_index(self._context_polygon_index)
+        if not isinstance(polygon, list) or len(polygon) < 3:
+            return
+        self._begin_local_edit()
+        center = self._polygon_center(polygon)
+        polygon[:] = [
+            (
+                int(round(point.x())),
+                int(round(point.y())),
+            )
+            for point in (
+                transform(QPointF(float(x), float(y)), center)
+                for x, y in polygon
+            )
+        ]
+        self._emit_polygon_edit()
+
+    def scale_context_polygon(self) -> None:
+        factor, accepted = QInputDialog.getDouble(
+            self,
+            "Scale polygon / Escalonar polígono",
+            "Scale percentage / Percentual:",
+            100.0,
+            1.0,
+            1000.0,
+            1,
+        )
+        if not accepted:
+            return
+        scale = factor / 100.0
+        self._transform_selected_polygon(
+            lambda point, center: QPointF(
+                center.x() + (point.x() - center.x()) * scale,
+                center.y() + (point.y() - center.y()) * scale,
+            )
+        )
+
+    def rotate_context_polygon(self) -> None:
+        degrees, accepted = QInputDialog.getDouble(
+            self,
+            "Rotate polygon / Rotacionar polígono",
+            "Angle in degrees / Ângulo em graus:",
+            15.0,
+            -3600.0,
+            3600.0,
+            1,
+        )
+        if not accepted:
+            return
+        radians = math.radians(degrees)
+        cosine = math.cos(radians)
+        sine = math.sin(radians)
+        self._transform_selected_polygon(
+            lambda point, center: QPointF(
+                center.x()
+                + (point.x() - center.x()) * cosine
+                - (point.y() - center.y()) * sine,
+                center.y()
+                + (point.x() - center.x()) * sine
+                + (point.y() - center.y()) * cosine,
+            )
+        )
+
+    def _gizmo_handle_positions(self):
+        if not self._gizmo_enabled:
+            return {}
+        polygon = self._polygon_points_at_index(self._selected_polygon_index)
+        if not isinstance(polygon, list) or len(polygon) < 3:
+            return {}
+        try:
+            center = self._polygon_center(polygon)
+            radius = max(
+                20.0,
+                max(
+                    math.hypot(float(point[0]) - center.x(), float(point[1]) - center.y())
+                    for point in polygon
+                ),
+            )
+        except (TypeError, ValueError, IndexError, ZeroDivisionError):
+            return {}
+        return {
+            "move": center,
+            "scale": QPointF(center.x() + radius, center.y()),
+            "rotate": QPointF(center.x(), center.y() - radius),
+        }
+
+    def _find_gizmo_handle_at(self, view_point: QPointF) -> Optional[str]:
+        threshold = 10.0
+        for mode, image_point in self._gizmo_handle_positions().items():
+            handle = self.image_to_view(image_point)
+            if math.hypot(
+                handle.x() - view_point.x(),
+                handle.y() - view_point.y(),
+            ) <= threshold:
+                return mode
+        return None
+
+    def _begin_gizmo_drag(self, mode: str, view_point: QPointF) -> None:
+        polygon = self._polygon_points_at_index(self._selected_polygon_index)
+        if not isinstance(polygon, list) or len(polygon) < 3:
+            return
+        self._begin_local_edit()
+        self._gizmo_drag_mode = mode
+        self._gizmo_drag_start = QPointF(view_point)
+        self._gizmo_original_polygon = copy.deepcopy(polygon)
+        self.setCursor(Qt.CursorShape.ClosedHandCursor)
+
+    def _move_gizmo(self, view_point: QPointF) -> None:
+        if self._gizmo_drag_mode is None or not self._gizmo_original_polygon:
+            return
+        original = self._gizmo_original_polygon
+        center = self._polygon_center(original)
+        start = self.view_to_image(self._gizmo_drag_start)
+        current = self.view_to_image(view_point)
+        if self._gizmo_drag_mode == "move":
+            dx = current[0] - start[0]
+            dy = current[1] - start[1]
+            transformed = [(x + dx, y + dy) for x, y in original]
+        elif self._gizmo_drag_mode in {"scale", "rotate"}:
+            start_dx = start[0] - center.x()
+            start_dy = start[1] - center.y()
+            current_dx = current[0] - center.x()
+            current_dy = current[1] - center.y()
+            start_distance = math.hypot(start_dx, start_dy)
+            current_distance = math.hypot(current_dx, current_dy)
+            if start_distance <= 1e-9:
+                return
+            if self._gizmo_drag_mode == "scale":
+                factor = max(0.05, current_distance / start_distance)
+                transformed = [
+                    (
+                        center.x() + (x - center.x()) * factor,
+                        center.y() + (y - center.y()) * factor,
+                    )
+                    for x, y in original
+                ]
+            else:
+                start_angle = math.atan2(start_dy, start_dx)
+                current_angle = math.atan2(current_dy, current_dx)
+                angle = current_angle - start_angle
+                cosine = math.cos(angle)
+                sine = math.sin(angle)
+                transformed = [
+                    (
+                        center.x()
+                        + (x - center.x()) * cosine
+                        - (y - center.y()) * sine,
+                        center.y()
+                        + (x - center.x()) * sine
+                        + (y - center.y()) * cosine,
+                    )
+                    for x, y in original
+                ]
+        else:
+            return
+        polygon = self._polygon_points_at_index(self._selected_polygon_index)
+        if isinstance(polygon, list):
+            polygon[:] = [
+                (
+                    int(round(self._clamp_image_point(QPointF(x, y)).x())),
+                    int(round(self._clamp_image_point(QPointF(x, y)).y())),
+                )
+                for x, y in transformed
+            ]
+            self._emit_polygon_edit()
+
+    def _finish_gizmo_drag(self) -> None:
+        self._gizmo_drag_mode = None
+        self._gizmo_original_polygon = None
+        self.setCursor(Qt.CursorShape.ArrowCursor)
+
+    def set_gizmo_enabled(self, enabled: bool) -> None:
+        self._gizmo_enabled = bool(enabled)
+        if not self._gizmo_enabled:
+            self._finish_gizmo_drag()
+        self.update()
+
+    def set_polygon_handles_visible(self, visible: bool) -> None:
+        self._show_polygon_handles = bool(visible)
+        self.update()
+
+    def set_polygon_diagnostics_visible(self, visible: bool) -> None:
+        self._show_polygon_diagnostics = bool(visible)
+        self.update()
+
+    def contextMenuEvent(self, event) -> None:
+        if self._roi_mode:
+            event.ignore()
+            return
+        local_position = (
+            event.position().toPoint()
+            if hasattr(event, "position")
+            else event.pos()
+        )
+        self._context_vertex_index = -1
+        vertex_hit = self._find_vertex_at(local_position)
+        if vertex_hit != (-1, -1):
+            self._context_polygon_index, self._context_vertex_index = vertex_hit
+            self.set_selected_polygon_index(self._context_polygon_index)
+        elif self._image is not None:
+            image_x, image_y = self.view_to_image(local_position)
+            polygon_index = self._find_polygon_at(QPointF(image_x, image_y))
+            if polygon_index >= 0:
+                self._context_polygon_index = polygon_index
+                self.set_selected_polygon_index(polygon_index)
+            else:
+                self._context_polygon_index = -1
+        self._context_image_point = QPointF(*self.view_to_image(local_position))
+
+        menu = QMenu(self)
+        add_action = menu.addAction(
+            "Add vertex / Adicionar vértice"
+        )
+        add_action.setEnabled(self._context_polygon_index >= 0)
+        add_action.triggered.connect(self.add_context_vertex)
+        remove_action = menu.addAction(
+            "Remove vertex / Remover vértice"
+        )
+        polygon = self._polygon_points_at_index(self._context_polygon_index)
+        remove_action.setEnabled(
+            self._context_vertex_index >= 0
+            and isinstance(polygon, list)
+            and len(polygon) > 3
+        )
+        remove_action.triggered.connect(self.remove_context_vertex)
+        menu.addSeparator()
+        scale_action = menu.addAction(
+            "Scale polygon… / Escalonar polígono…"
+        )
+        scale_action.setEnabled(self._context_polygon_index >= 0)
+        scale_action.triggered.connect(self.scale_context_polygon)
+        rotate_action = menu.addAction(
+            "Rotate polygon… / Rotacionar polígono…"
+        )
+        rotate_action.setEnabled(self._context_polygon_index >= 0)
+        rotate_action.triggered.connect(self.rotate_context_polygon)
+        menu.addSeparator()
+        gizmo_action = menu.addAction("Enable gizmo / Ativar gizmo")
+        gizmo_action.setCheckable(True)
+        gizmo_action.setChecked(self._gizmo_enabled)
+        gizmo_action.triggered.connect(self.set_gizmo_enabled)
+        handles_action = menu.addAction("Show vertex handles / Exibir vértices")
+        handles_action.setCheckable(True)
+        handles_action.setChecked(self._show_polygon_handles)
+        handles_action.triggered.connect(self.set_polygon_handles_visible)
+        diagnostics_action = menu.addAction(
+            "Show diagnostics / Exibir diagnósticos"
+        )
+        diagnostics_action.setCheckable(True)
+        diagnostics_action.setChecked(self._show_polygon_diagnostics)
+        diagnostics_action.triggered.connect(self.set_polygon_diagnostics_visible)
+        menu.addSeparator()
+        undo_action = menu.addAction("Undo mask edit / Desfazer edição")
+        undo_action.setEnabled(bool(self._undo_polygons))
+        undo_action.triggered.connect(self.undo_polygon_edit)
+        redo_action = menu.addAction("Redo mask edit / Refazer edição")
+        redo_action.setEnabled(bool(self._redo_polygons))
+        redo_action.triggered.connect(self.redo_polygon_edit)
+        global_position = (
+            event.globalPosition().toPoint()
+            if hasattr(event, "globalPosition")
+            else event.globalPos()
+        )
+        menu.exec(global_position)
+        event.accept()
     def set_roi_mode(self, enabled: bool) -> None:
         """Enable rectangle selection for the assisted GrabCut workflow."""
         self._roi_mode = bool(enabled)
@@ -574,8 +966,16 @@ class MaskViewer(QWidget):
                 self._roi_rect = None
                 event.accept()
                 return
+            if self._gizmo_enabled:
+                gizmo_mode = self._find_gizmo_handle_at(event.position())
+                if gizmo_mode is not None:
+                    self._begin_gizmo_drag(gizmo_mode, event.position())
+                    event.accept()
+                    return
+
             editing = self._find_vertex_at(event.position())
             if editing != (-1, -1):
+                self._begin_local_edit()
                 self._editing_polygon_index, self._editing_vertex_index = editing
                 self.set_selected_polygon_index(self._editing_polygon_index)
                 self.setCursor(Qt.CursorShape.CrossCursor)
@@ -605,6 +1005,9 @@ class MaskViewer(QWidget):
     def mouseMoveEvent(self, event: QMouseEvent):
         if self._roi_mode and self._roi_start is not None:
             self._update_roi(event.position())
+            event.accept()
+        elif self._gizmo_drag_mode is not None:
+            self._move_gizmo(event.position())
             event.accept()
         elif self._editing_polygon_index >= 0:
             self._move_editing_vertex(event.position())
@@ -761,7 +1164,7 @@ class MaskViewer(QWidget):
 
                         painter.drawPolygon(qpoly)
 
-                        if invalid:
+                        if invalid and self._show_polygon_diagnostics:
                             invalid_pen = QPen(QColor(255, 50, 50), 4)
                             invalid_pen.setCosmetic(True)
                             painter.setPen(invalid_pen)
@@ -804,7 +1207,7 @@ class MaskViewer(QWidget):
                                         5.5 / self._zoom,
                                     )
 
-                        if i == self._selected_polygon_index:
+                        if i == self._selected_polygon_index and self._show_polygon_handles:
                             handle_pen = QPen(QColor(255, 255, 255), 1)
                             handle_pen.setCosmetic(True)
                             painter.setPen(handle_pen)
@@ -818,6 +1221,30 @@ class MaskViewer(QWidget):
                                     point, 3.5 / self._zoom, 3.5 / self._zoom
                                 )
 
+            if self._gizmo_enabled:
+                gizmo_points = self._gizmo_handle_positions()
+                if gizmo_points:
+                    center = gizmo_points["move"]
+                    gizmo_pen = QPen(QColor(80, 210, 255), 2)
+                    gizmo_pen.setCosmetic(True)
+                    painter.setPen(gizmo_pen)
+                    painter.setBrush(Qt.BrushStyle.NoBrush)
+                    painter.drawLine(center, gizmo_points["scale"])
+                    painter.drawLine(center, gizmo_points["rotate"])
+                    painter.setBrush(QColor(80, 210, 255, 230))
+                    painter.drawEllipse(center, 5.0 / self._zoom, 5.0 / self._zoom)
+                    painter.setBrush(QColor(80, 255, 140, 230))
+                    painter.drawEllipse(
+                        gizmo_points["scale"],
+                        5.0 / self._zoom,
+                        5.0 / self._zoom,
+                    )
+                    painter.setBrush(QColor(210, 120, 255, 230))
+                    painter.drawEllipse(
+                        gizmo_points["rotate"],
+                        5.0 / self._zoom,
+                        5.0 / self._zoom,
+                    )
             painter.restore()
 
     def _get_qimage(self) -> Optional[QImage]:

@@ -149,6 +149,38 @@ def test_mask_viewer_allows_vertex_edit_until_all_polygons_are_valid(
     assert len(messages["information"]) == 1
 
 
+def test_mask_viewer_context_edits_are_local_and_undoable(
+    qt_app, monkeypatch, messages
+):
+    scene = Scene()
+    dialog, close = make_mask_dialog(qt_app, monkeypatch, scene)
+    dialog._last_polygons = [
+        {"polygon": [(20, 20), (80, 20), (80, 80), (20, 80)]},
+    ]
+    viewer = dialog.viewer
+    viewer.set_overlay_polygons(dialog._last_polygons)
+    viewer._context_polygon_index = 0
+    viewer._context_vertex_index = 1
+    viewer._context_image_point = QPointF(50, 20)
+
+    viewer.add_context_vertex()
+    assert len(dialog._last_polygons[0]["polygon"]) == 5
+    viewer.undo_polygon_edit()
+    assert len(dialog._last_polygons[0]["polygon"]) == 4
+    viewer.redo_polygon_edit()
+    assert len(dialog._last_polygons[0]["polygon"]) == 5
+
+    viewer.set_selected_polygon_index(0)
+    viewer.set_gizmo_enabled(True)
+    assert set(viewer._gizmo_handle_positions()) == {"move", "scale", "rotate"}
+    viewer._begin_gizmo_drag("move", QPointF(0, 0))
+    viewer._move_gizmo(QPointF(10, 5))
+    viewer._finish_gizmo_drag()
+    assert dialog._last_polygons[0]["polygon"][0] == (30, 25)
+    viewer.undo_polygon_edit()
+    assert dialog._last_polygons[0]["polygon"][0] == (20, 20)
+    assert scene.objects == {}
+    assert close.call_count == 0
 def test_mask_viewer_rejected_result_does_not_claim_success(
     qt_app, monkeypatch, messages
 ):
