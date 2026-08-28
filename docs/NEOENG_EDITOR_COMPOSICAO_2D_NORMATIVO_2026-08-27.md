@@ -2,12 +2,14 @@
 
 **Versão do documento:** 1.0 — referência operacional para esta linha de produto
 **Data de emissão:** 27/08/2026 — horário local do usuário, UTC-03
-**Repositório:** C:/Users/atnco/Pictures/NeoEng-D-Trace
+**Repositório:** REPO_ROOT
 **Branch de referência:** modernization/multiaxis-ui
 **HEAD de referência:** 7df73f21f5a609196e6cadac85065c89a989ecb4 — fix(ui): consolidate menu and toolbar integration
 **Natureza:** documento normativo, plano de execução, contrato de evidência e checklist de aceite
 **Preset editorial do DOCX:** compact_reference_guide
 **Padrão de abertura:** memo_masthead
+
+**Símbolos de caminho:** REPO_ROOT significa a raiz local do checkout do repositório; DOWNLOAD_ROOT significa o diretório local destinado a artefatos baixados ou gerados fora do repositório. Os símbolos são deliberadamente usados para evitar vazamento de caminhos de usuário em artefatos versionados.
 
 > **REGRA DE AUTORIDADE:** este documento deve ser lido integralmente antes de qualquer nova etapa de implementação, alteração de escopo, execução de gate, commit, build, release ou encerramento. A leitura não é uma recomendação. É uma pré-condição operacional. Nenhuma etapa pode ser marcada como concluída sem que a equipe registre que este documento foi consultado e que todos os itens obrigatórios da etapa foram atendidos.
 
@@ -95,14 +97,14 @@ O estado de referência informado para este documento é:
 
 | Item | Valor obrigatório de referência |
 |---|---|
-| Diretório | C:/Users/atnco/Pictures/NeoEng-D-Trace |
+| Diretório | REPO_ROOT |
 | Branch | modernization/multiaxis-ui |
 | HEAD | 7df73f2 |
 | Último commit | fix(ui): consolidate menu and toolbar integration |
 | Commit anterior relevante | bb0fc0d — feat(scenario): bind professional document to main preview |
 | Tracked tree | limpo após os commits consolidados |
 | Untracked | existem artefatos históricos legítimos; não devem ser apagados nem tratados isoladamente como dirty tracked tree |
-| Python de qualificação | C:/Users/atnco/Pictures/NeoEng-D-Trace/.venv/Scripts/python.exe |
+| Python de qualificação | REPO_ROOT/.venv/Scripts/python.exe |
 | Python esperado | 3.11.9 |
 | PySide6 esperado | 6.10.1 |
 | pytest esperado | 9.1.1 |
@@ -140,7 +142,7 @@ O pacote C3 é a referência criptograficamente congelada da conformance multiax
 | Propriedade | Valor imutável |
 |---|---|
 | Commit C3 | 9b3ab0f9edfd338c44da6118fa6b7a9c3906a8b4 |
-| Pacote | C:/Users/atnco/Downloads/neoeng-conformance-c3-freeze-9b3ab0f.zip |
+| Pacote | DOWNLOAD_ROOT/neoeng-conformance-c3-freeze-9b3ab0f.zip |
 | Manifest SHA-256 | 0f876447f365ba0f0205a3229597e86e70f7b527e2f3b85476fcd5795189e969 |
 | ZIP SHA-256 | f96b19af50aad18a00cd140abc5b0a0e055f1c1952548e9cc470365532d01598 |
 | Tamanho do ZIP | 8.293.076 bytes |
@@ -855,8 +857,8 @@ REVISOR:
 
 Os comandos abaixo são referências operacionais. Antes de executar, confirmar que os caminhos e scripts ainda existem. Se um comando estiver desatualizado, registrar a divergência e atualizar a referência por mudança documental controlada.
 
-Diretório de trabalho: C:/Users/atnco/Pictures/NeoEng-D-Trace
-Python de qualificação: C:/Users/atnco/Pictures/NeoEng-D-Trace/.venv/Scripts/python.exe
+Diretório de trabalho: REPO_ROOT
+Python de qualificação: REPO_ROOT/.venv/Scripts/python.exe
 
 Comandos mínimos:
 
