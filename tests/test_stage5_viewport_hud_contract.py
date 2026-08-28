@@ -56,18 +56,18 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
         assert overlay.snap_button.text().startswith("Snap ")
         for child in (overlay.view_button, overlay.zoom_button, overlay.snap_button):
             assert overlay.rect().contains(child.geometry())
-        top_position = overlay.pos().y()
-        assert 0 <= top_position <= 16
+        initial_geometry = overlay.geometry()
+        assert 0 <= initial_geometry.y() <= 16
         overlay.snap_button.click()
         qt_app.processEvents()
-        assert overlay.pos().y() == top_position
+        assert overlay.geometry() == initial_geometry
 
         window.resize(1920, 1080)
         qt_app.processEvents()
         assert overlay._compact is False
         assert overlay.view_button.text().startswith("View: ")
         assert overlay.zoom_button.text().startswith("Zoom: ")
-        assert 0 <= overlay.pos().y() <= 16
+        assert 0 <= overlay.geometry().y() <= 16
     finally:
         window.close()
 

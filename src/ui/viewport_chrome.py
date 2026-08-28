@@ -7,7 +7,6 @@ from PySide6.QtGui import QColor, QFont, QPainter, QPen
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QMenu,
-    QSizePolicy,
     QStackedLayout,
     QToolButton,
     QVBoxLayout,
@@ -183,17 +182,10 @@ class ViewportChrome(QWidget):
         stack.setStackingMode(QStackedLayout.StackingMode.StackAll)
         stack.setContentsMargins(0, 0, 0, 0)
         stack.addWidget(canvas)
+        # Keep the HUD out of the layout-managed stack. Text/state changes in
+        # View, Zoom or Snap must not trigger a layout pass that repositions
+        # the overlay by a few pixels.
         self.overlay = ViewportOverlayBar(window, canvas, self.canvas_stack)
-        stack.addWidget(self.overlay)
-        stack.setAlignment(
-            self.overlay, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop
-        )
-        # Let the overlay use the measured width of its controls so Qt
-        # cannot compress their labels below their minimum size hint.
-        self.overlay.setSizePolicy(
-            QSizePolicy.Policy.Minimum,
-            QSizePolicy.Policy.Fixed,
-        )
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -209,7 +201,12 @@ class ViewportChrome(QWidget):
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
         self.overlay.set_compact(self.canvas_stack.width() < 900)
-        self.overlay.move(8, 10)
+        self.overlay.setGeometry(
+            8,
+            10,
+            max(1, self.canvas_stack.width() - 16),
+            self.overlay.height(),
+        )
         self.overlay.raise_()
 
 
