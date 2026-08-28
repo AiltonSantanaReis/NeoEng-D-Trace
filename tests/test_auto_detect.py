@@ -143,6 +143,26 @@ class TestAutoDetect(unittest.TestCase):
             auto_detect.detect_polygons(self.image, mode="unknown_mode")
 
 
+    def test_polygon_validation_diagnostics_are_specific_without_repairing(self):
+        self.assertIsNone(
+            auto_detect.polygon_validation_error([(0, 0), (0, 10), (10, 0)])
+        )
+        self.assertEqual(
+            auto_detect.polygon_validation_error(
+                [(0, 0), (10, 10), (0, 10), (10, 0)]
+            ),
+            "has self-intersecting edges",
+        )
+        self.assertEqual(
+            auto_detect.polygon_validation_error([(0, 0), (5, 0), (10, 0)]),
+            "has zero area",
+        )
+        self.assertEqual(
+            auto_detect.polygon_validation_error([(0, 0), (5, 0), (5, 0), (0, 5)]),
+            "contains duplicate consecutive vertices",
+        )
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("🧪 EXECUTANDO TESTES DE DETECÇÃO AUTOMÁTICA")

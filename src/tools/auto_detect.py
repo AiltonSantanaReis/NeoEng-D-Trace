@@ -22,6 +22,11 @@ from src.core.operational_limits import (
     MAX_PROJECT_OBJECTS,
     MAX_PROJECT_POINTS,
 )
+from src.core.polygon_validation import (
+    has_self_intersections,
+    is_valid_polygon,
+    signed_polygon_area2,
+)
 
 from .edge_utils import enhanced_edge_detection, multi_scale_edges
 from .mask_utils import (
@@ -235,6 +240,76 @@ def _validate_detection_result(polygons: Sequence[Dict[str, Any]]) -> None:
         )
 
 
+def polygon_validation_error(points: Any) -> Optional[str]:
+    """Return a stable diagnostic for geometry that cannot enter a Scene.
+
+    Detection remains observable when a contour is not suitable for
+    persistence. This helper mirrors Scene's winding normalization only for
+    diagnostics; it never repairs or changes the detected polygon.
+    """
+
+    if not isinstance(points, list):
+        return "polygon data is not a list"
+    normalized = list(points)
+    if len(normalized) > 1 and normalized[0] == normalized[-1]:
+        normalized.pop()
+    if len(normalized) < 3:
+        return "fewer than 3 distinct vertices"
+    if len(normalized) > MAX_POLYGON_POINTS:
+        return f"more than {MAX_POLYGON_POINTS} vertices"
+
+    numeric_points: List[Tuple[float, float]] = []
+    for index, point in enumerate(normalized):
+        if not isinstance(point, (list, tuple)) or len(point) != 2:
+            return f"vertex {index + 1} is not a coordinate pair"
+        x, y = point
+        if isinstance(x, bool) or isinstance(y, bool):
+            return f"vertex {index + 1} contains a boolean coordinate"
+        if not isinstance(x, Real) or not isinstance(y, Real):
+            return f"vertex {index + 1} contains a non-numeric coordinate"
+        try:
+            numeric = (float(x), float(y))
+        except (OverflowError, TypeError, ValueError):
+            return f"vertex {index + 1} contains an unreadable coordinate"
+        if not math.isfinite(numeric[0]) or not math.isfinite(numeric[1]):
+            return f"vertex {index + 1} contains a non-finite coordinate"
+        numeric_points.append(numeric)
+
+    if any(
+        numeric_points[index] == numeric_points[(index + 1) % len(numeric_points)]
+        for index in range(len(numeric_points))
+    ):
+        return "contains duplicate consecutive vertices"
+
+    if has_self_intersections(numeric_points):
+        return "has self-intersecting edges"
+    area2 = signed_polygon_area2(numeric_points)
+    if not math.isfinite(area2) or area2 == 0.0:
+        return "has zero area"
+    if area2 < 0.0:
+        numeric_points.reverse()
+    if not is_valid_polygon(numeric_points):
+        return "does not satisfy the scene polygon contract"
+    return None
+
+
+def _annotate_polygon_validation(
+    polygons: List[Dict[str, Any]],
+) -> Tuple[int, int]:
+    """Annotate every detection without hiding invalid geometry."""
+
+    valid_count = 0
+    invalid_count = 0
+    for polygon_data in polygons:
+        reason = polygon_validation_error(polygon_data.get("polygon", []))
+        polygon_data["is_valid"] = reason is None
+        if reason is None:
+            polygon_data.pop("validation_error", None)
+            valid_count += 1
+        else:
+            polygon_data["validation_error"] = reason
+            invalid_count += 1
+    return valid_count, invalid_count
 class DetectResult(list):
     """List-like result that also supports dict-style access."""
 
@@ -278,10 +353,13 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
         else:
             result = _detect_polygons_enhanced(image, **kwargs)
 
+        valid_count, invalid_count = _annotate_polygon_validation(result)
         feedback = {
             "status": "ok",
             "message": f"Detected {len(result)} polygons in mode {mode}",
             "mode": mode,
+            "valid_polygon_count": valid_count,
+            "invalid_polygon_count": invalid_count,
             "polygon_count": len(result),
         }
         if mode == "grabcut":

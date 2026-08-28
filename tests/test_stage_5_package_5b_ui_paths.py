@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock
 
 import pytest
+from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.collision import StaticCollisionManager
@@ -96,7 +97,39 @@ def test_mask_viewer_invalid_polygon_rolls_back_entire_batch(
     assert scene.objects == {}
     assert scene.cmd.undo_count == 0
     assert close.call_count == 0
-    assert len(messages["critical"]) == 1
+    assert not messages["critical"]
+    assert "invalid" in dialog.validation_label.text().lower()
+
+
+def test_mask_viewer_allows_vertex_edit_until_all_polygons_are_valid(
+    qt_app, monkeypatch, messages
+):
+    scene = Scene()
+    scene.cmd = CommandManager()
+    dialog, close = make_mask_dialog(qt_app, monkeypatch, scene)
+    dialog._last_polygons = [
+        {"polygon": TRIANGLE_A},
+        {"polygon": [(20, 20), (80, 20), (80, 20), (20, 80)]},
+    ]
+
+    dialog.viewer.set_overlay_polygons(dialog._last_polygons)
+    dialog._update_polygon_validation_feedback()
+    assert dialog.apply_button.isEnabled() is False
+    assert dialog._last_polygons[1]["is_valid"] is False
+    assert "duplicate" in dialog.validation_label.text().lower()
+
+    dialog.viewer._editing_polygon_index = 1
+    dialog.viewer._editing_vertex_index = 2
+    dialog.viewer._move_editing_vertex(QPointF(80, 80))
+
+    assert dialog._last_polygons[1]["is_valid"] is True
+    assert dialog.apply_button.isEnabled() is True
+    dialog._apply_to_scene()
+
+    assert len(scene.objects) == 2
+    assert scene.cmd.undo_count == 1
+    assert close.call_count == 1
+    assert len(messages["information"]) == 1
 
 
 def test_mask_viewer_rejected_result_does_not_claim_success(
