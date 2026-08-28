@@ -35,6 +35,7 @@ def test_qss_is_generated_from_tokens_and_exposes_focus_states() -> None:
     assert "QWidget#viewport_overlay_bar QToolButton::menu-button" in generated
     assert "QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-indicator" in generated
     assert "QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-button" in generated
+    assert "QMenu::right-arrow" in generated
     assert "#FF4500" not in generated
     assert "#00BFFF" not in generated
     for color in THEME_TOKENS.audit_palette:

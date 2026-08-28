@@ -217,6 +217,11 @@ QMenu {{
     border: 1px solid {tokens.border_strong};
     padding: 4px;
 }}
+QMenu::right-arrow {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
 QMenu::item {{ padding: 5px 20px 5px 8px; }}
 QMenu::item:selected {{
     background: {tokens.selection};
