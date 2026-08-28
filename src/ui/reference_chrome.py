@@ -305,7 +305,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     menu_button.setProperty("uiRole", "reference_application_menu")
     menu_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     menu_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
-    menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
+    menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
     menu = QMenu(menu_button)
     application_submenus = []
     for source in (
@@ -321,7 +321,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
             submenu.addAction(action)
         application_submenus.append((submenu, source))
     menu_button.setMenu(menu)
-    menu_button.clicked.connect(menu_button.showMenu)
     menu_button.setVisible(True)
     window.reference_menu_button = menu_button
     window.reference_application_submenus = tuple(application_submenus)

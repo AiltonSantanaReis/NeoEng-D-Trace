@@ -186,7 +186,7 @@ class ViewportChrome(QWidget):
         self.overlay = ViewportOverlayBar(window, canvas, self.canvas_stack)
         stack.addWidget(self.overlay)
         stack.setAlignment(
-            self.overlay, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom
+            self.overlay, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop
         )
         # Let the overlay use the measured width of its controls so Qt
         # cannot compress their labels below their minimum size hint.
@@ -209,9 +209,7 @@ class ViewportChrome(QWidget):
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
         self.overlay.set_compact(self.canvas_stack.width() < 900)
-        self.overlay.move(
-            8, max(8, self.canvas_stack.height() - self.overlay.height() - 10)
-        )
+        self.overlay.move(8, 10)
         self.overlay.raise_()
 
 

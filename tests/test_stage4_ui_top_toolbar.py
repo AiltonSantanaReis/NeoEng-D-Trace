@@ -250,6 +250,7 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
         menu_geometry = window.reference_menu_button.geometry()
         assert rail.height() - (menu_geometry.y() + menu_geometry.height()) == 4
         assert window.reference_menu_button.accessibleName() == "Application menu"
+        assert window.reference_menu_button.popupMode().name == "InstantPopup"
         submenus = [
             submenu for submenu, _source in window.reference_application_submenus
         ]

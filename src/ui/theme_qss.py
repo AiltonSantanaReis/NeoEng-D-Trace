@@ -99,6 +99,15 @@ QToolBar#reference_top_toolbar QToolButton::menu-indicator {{
     width: 0px;
     height: 0px;
 }}
+QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
 QToolBar#reference_top_toolbar QToolButton[referenceActive="true"] {{
     background: {accent_soft};
     border-color: {tokens.accent};
