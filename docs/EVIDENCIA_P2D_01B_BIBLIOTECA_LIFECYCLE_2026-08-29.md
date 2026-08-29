@@ -87,16 +87,18 @@ Até essa revisão, o estado correto é `GATE AUTOMATIZADO PASS — REVISÃO HUM
 
 ## 6. Build, remoto e próximo passo
 
-A build portátil candidata foi gerada a partir do commit `09c8de90181e15089e2b9d38703702bf8a35b793` em checkout temporário limpo, sem tocar nos artefatos untracked do workspace principal.
+A build portátil candidata foi gerada a partir do commit `fb30b5f57d214ebc34f6359a80413e15f6471e11` em checkout temporário limpo, sem tocar nos artefatos untracked do workspace principal.
 
 | Verificação da build | Resultado |
 |---|---|
 | PyInstaller | 6.22.0; build concluído |
 | Python | 3.11.9 da .venv; 3.11.9 |
 | Smoke test oficial | SUCCESS; 11 checks; 13 artefatos |
-| Manifest | 314 arquivos; SHA-256 14CD0370A8E607EE500245C63F21273C29AA52267B48B87982C6C10DD707F56C |
-| ZIP | 124035432 bytes; SHA-256 9522F8537C698753399B6BFE1390CF9E9C882305C3C2DE80BE7593AAEEEEB565 |
+| Manifest | 314 arquivos; SHA-256 13759BA881F8F89E5238A42CB8C7B08095C2E75770F9E855FB5600816B1AB41E |
+| ZIP | 124035432 bytes; SHA-256 87076FAC0805E23375A867538D862D278A89BABA22B3DBB575459E8678572150 |
 | Extração independente | 314/314 arquivos verificados; 0 falhas |
+
+**Arquivo portátil:** NeoEng-D-Trace-0.3.0-p2d-01b-fb30b5f-win64-portable.zip
 
 O próximo passo é a revisão humana da build e das capturas em Windows. O ciclo remoto só deve ocorrer depois de:
 
