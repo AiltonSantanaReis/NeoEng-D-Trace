@@ -1,8 +1,8 @@
 # Índice Documental Ativo Canônico — NeoEng-D-Trace
 
-**Versão:** 2.0  
-**Data:** 2026-08-24  
-**ID:** DOC-INDEX-ACTIVE-CANONICAL-20260824  
+**Versão:** 2.1
+**Data:** 2026-08-29
+**ID:** DOC-INDEX-ACTIVE-CANONICAL-20260829
 **Status:** ativo e prevalente
 
 Este é o índice documental consolidado e prevalente. O índice `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` permanece **ATIVO** e integra o conjunto documental vigente. Em caso de divergência, este índice canônico prevalece e a execução deve ser bloqueada até a resolução formal do conflito.
@@ -13,12 +13,13 @@ Este é o índice documental consolidado e prevalente. O índice `INDICE_DOCUMEN
 1. decisões formais aprovadas;
 2. [Governança de Integridade, Execução e Antialucinação](GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md);
 3. [Plano Normativo Completo do Produto Profissional](PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md);
-4. [Adendo Normativo de Automação e IDs](ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md);
-5. ADRs técnicos ativos;
-6. especificação da etapa atual;
-7. [Registro Canônico de IDs](REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml);
-8. testes, builds, baselines e evidências;
-9. documentos históricos.
+4. [Normativo do Editor de Composição 2D](NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.md);
+5. [Adendo Normativo de Automação e IDs](ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md);
+6. ADRs técnicos ativos;
+7. especificação da etapa atual;
+8. [Registro Canônico de IDs](REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml);
+9. testes, builds, baselines e evidências;
+10. documentos históricos.
 
 Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informalmente o trecho mais conveniente.
 
@@ -28,6 +29,9 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 |---|---|---|---|
 | `GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md` | ATIVO / PREVALENTE | integridade, testes reais, no-bypass, sequência e baseline | decisões aprovadas |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | arquitetura, renderer, 2.5D, 3D e encerramento | governança |
+| `NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.md` | ATIVO / PREVALENTE PARA P2D-COMP-01 | contrato, requisitos, ordem, gates e aceite do editor de composição 2D | governança, C3 e decisões aprovadas |
+| `EVIDENCIA_P2D_00_RECONCILIACAO_2026-08-29.md` | ATIVO / EVIDÊNCIA ACEITA | reconciliação do checkout, P2D-00 e abertura das linhas futuras | normativo do editor e baseline local |
+| `PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md` | ATIVO / PLANO DE EXTENSÕES | caminho 2D, extensão 2.5D/3D e separação dos workstreams futuros | normativo do editor e P2D-00 |
 | `ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md` | ATIVO / ESPECIALIZADO | IDs e evidências antes da Fase 4 | governança e plano |
 | `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` | ATIVO | índice normativo de referência mantido para continuidade documental | este índice prevalece em conflito |
 | `REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml` | ATIVO | registro de IDs já adotado, mantido para continuidade e auditoria | registro canônico prevalece para novos IDs |

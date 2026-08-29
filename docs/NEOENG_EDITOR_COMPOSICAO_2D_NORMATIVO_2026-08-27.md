@@ -4,7 +4,7 @@
 **Data de emissão:** 27/08/2026 — horário local do usuário, UTC-03
 **Repositório:** REPO_ROOT
 **Branch de referência:** modernization/multiaxis-ui
-**HEAD de referência:** 7df73f21f5a609196e6cadac85065c89a989ecb4 — fix(ui): consolidate menu and toolbar integration
+**HEAD de referência:** 4824e7bf7b4a82dbf664485aed6b509c96d59851 — feat(mask-viewer): add isolated polygon editing tools
 **Natureza:** documento normativo, plano de execução, contrato de evidência e checklist de aceite
 **Preset editorial do DOCX:** compact_reference_guide
 **Padrão de abertura:** memo_masthead
@@ -99,16 +99,17 @@ O estado de referência informado para este documento é:
 |---|---|
 | Diretório | REPO_ROOT |
 | Branch | modernization/multiaxis-ui |
-| HEAD | 7df73f2 |
-| Último commit | fix(ui): consolidate menu and toolbar integration |
-| Commit anterior relevante | bb0fc0d — feat(scenario): bind professional document to main preview |
+| HEAD | 4824e7bf7b4a82dbf664485aed6b509c96d59851 |
+| Último commit | feat(mask-viewer): add isolated polygon editing tools |
+| Integração documental/toolbar anterior | 7df73f21f5a609196e6cadac85065c89a989ecb4 — fix(ui): consolidate menu and toolbar integration |
+| Integração do documento profissional no preview | bb0fc0d — feat(scenario): bind professional document to main preview |
 | Tracked tree | limpo após os commits consolidados |
 | Untracked | existem artefatos históricos legítimos; não devem ser apagados nem tratados isoladamente como dirty tracked tree |
 | Python de qualificação | REPO_ROOT/.venv/Scripts/python.exe |
 | Python esperado | 3.11.9 |
 | PySide6 esperado | 6.10.1 |
 | pytest esperado | 9.1.1 |
-| Suíte completa mais recente no worktree consolidado | 1758 passed / 2 skipped / 0 failed |
+| Suíte completa mais recente no worktree consolidado | 1762 passed / 2 skipped / 0 failed |
 
 Se qualquer linha acima não corresponder ao repositório real, o responsável deve parar e classificar a divergência antes de qualquer mutação. Não é permitido corrigir o documento por suposição.
 
@@ -311,7 +312,7 @@ Esta seção é um inventário técnico. Ela deve ser atualizada somente quando 
 | NavMesh 2D | ausente | fora do primeiro escopo |
 | Luzes e VFX reais | ausente | sockets e marcadores não são preview de luz, sombra ou efeito |
 | Exportação | existente com limites | adapters devem declarar capacidades reais e rejeitar silenciosamente nenhum recurso não suportado |
-| Documentação do plano | precisa de consolidação | plano histórico anterior não refletia os commits bb0fc0d e 7df73f2; este documento passa a ser a referência operacional |
+| Documentação do plano | reconciliada em P2D-00 | este documento permanece a referência operacional; o registro de reconciliação e o plano de extensões estão em docs/EVIDENCIA_P2D_00_RECONCILIACAO_2026-08-29.md e docs/PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md |
 
 ### 4.1 Regra de interpretação do inventário
 
@@ -582,7 +583,7 @@ Obrigatório para mudanças de editor:
 
 O responsável deve executar o conjunto proporcional à mudança e registrar comando, ambiente, saída e exit code. Para o fechamento de P2D-COMP-01, a suíte completa é obrigatória.
 
-O resultado esperado do último estado conhecido é 1758 passed / 2 skipped / 0 failed, mas esse número é uma referência histórica, não autorização para ignorar testes novos. Se novos testes forem adicionados, o resultado deve ser atualizado e explicado.
+O resultado esperado do último estado conhecido é 1762 passed / 2 skipped / 0 failed, mas esse número é uma referência histórica, não autorização para ignorar testes novos. Se novos testes forem adicionados, o resultado deve ser atualizado e explicado.
 
 ### 7.4 Gate G/V/B
 
@@ -984,13 +985,15 @@ Este registro preserva decisões para impedir reinterpretação posterior:
 - M2.3B3-r1 alterou somente collision_auto_generate, collision_brush e polygon_edit.
 - A integração do documento profissional no preview principal foi consolidada em bb0fc0d.
 - A integração do menu e toolbar foi consolidada em 7df73f2.
+- O editor isolado do visualizador de máscara foi consolidado em 4824e7b.
+- A reconciliação documental P2D-00 foi registrada em docs/EVIDENCIA_P2D_00_RECONCILIACAO_2026-08-29.md.
 - O trabalho permanece local; não há autorização geral para publicação remota.
 
 ---
 
 ## 17. Ponto exato de continuidade
 
-Após a emissão deste documento, a próxima ação correta não é iniciar uma funcionalidade aleatória nem declarar o editor concluído. É executar a Etapa P2D-00 de reconciliação e, se os valores permanecerem consistentes, abrir a Etapa P2D-01 para resolver a visualização real de assets.
+Após a reconciliação P2D-00 registrada em 2026-08-29, a próxima etapa obrigatória é P2D-01: resolver a visualização real de assets, seu ciclo de vida e seus diagnósticos. As linhas de Tilemap, colisão de cenário, NavMesh, entidades/componentes/prefabs e iluminação/VFX permanecem independentes e bloqueadas até o aceite formal de P2D-COMP-01, conforme o plano de extensões.
 
 O próximo responsável deve:
 
