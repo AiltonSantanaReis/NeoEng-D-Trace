@@ -29,6 +29,11 @@ class SceneAuthoringLayerStack(QWidget):
         self.session = session
         self.setObjectName("scenario_layer_stack")
         self.title = QLabel("Layer Stack", self)
+        self.order_hint = QLabel("Render order: Back → Front", self)
+        self.order_hint.setObjectName("scenario_layer_order_hint")
+        self.order_hint.setToolTip(
+            "Layers are rendered from the first row (back) to the last row (front)."
+        )
         self.title.setObjectName("scenario_layer_stack_title")
         self.layer_list = QListWidget(self)
         self.layer_list.setObjectName("scenario_layer_stack_list")
@@ -61,6 +66,7 @@ class SceneAuthoringLayerStack(QWidget):
         toggles.addWidget(self.locked_box)
         layout = QVBoxLayout(self)
         layout.addWidget(self.title)
+        layout.addWidget(self.order_hint)
         layout.addWidget(self.layer_list)
         layout.addWidget(QLabel("Name", self))
         layout.addWidget(self.name_edit)

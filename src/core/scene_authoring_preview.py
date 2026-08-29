@@ -12,6 +12,7 @@ from src.persistence.scene_authoring_schema import (
 )
 
 from .parallax_camera import OrthographicCamera, ParallaxLayer, Point2
+from .scene_authoring_order import ordered_scene_objects
 
 
 @dataclass(frozen=True)
@@ -117,7 +118,7 @@ def build_scene_authoring_preview(
     )
     layers = {item.id: item for item in document.layers}
     projected_objects: list[ProjectedSceneObject] = []
-    for item in document.objects:
+    for item in ordered_scene_objects(document):
         layer = layers[item.layer_id]
         if not item.visible or not layer.visible:
             continue

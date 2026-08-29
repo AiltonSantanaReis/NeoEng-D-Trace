@@ -35,6 +35,11 @@ from src.core.scene_asset_library import (
 )
 from src.core.scenario_preview import build_overlay_geometry
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_authoring_order import (
+    layer_index_by_id,
+    layer_visual_priority,
+    ordered_scene_objects,
+)
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
@@ -57,6 +62,8 @@ class SceneObjectGraphicsItem(QGraphicsObject):
         polygon: QPolygonF,
         pixmap: QPixmap | None = None,
         parent=None,
+        *,
+        z_value: float = 10.0,
     ) -> None:
         super().__init__(parent)
         self.object_id = object_id
@@ -66,7 +73,7 @@ class SceneObjectGraphicsItem(QGraphicsObject):
         self.setAcceptHoverEvents(True)
         self._brush = QBrush(QColor("#2387b8"))
         self._pen = QPen(QColor("#65d7ff"), 2.0)
-        self.setZValue(10.0)
+        self.setZValue(float(z_value))
 
     def set_selected_style(self, selected: bool) -> None:
         self._brush = QBrush(QColor("#2aa8d8") if selected else QColor("#2387b8"))
@@ -301,6 +308,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._asset_diagnostics: tuple[str, ...] = ()
         self._last_asset_diagnostics: tuple[str, ...] = ()
         self._asset_state_snapshot: tuple[tuple[str, str, str, str | None], ...] = ()
+        self._layer_order_snapshot: tuple[str, ...] = ()
         self.sync()
         self.session.subscribe(self._on_session_change)
 
@@ -425,6 +433,12 @@ class SceneAuthoringViewport(QGraphicsView):
             ]
         )
 
+    def _overlay_z(self, offset: float) -> float:
+        return max(
+            (visual.zValue() for visual in self._items.values()),
+            default=0.0,
+        ) + float(offset)
+
     def sync(self) -> None:
         self.graphics_scene.clear()
         self._items.clear()
@@ -433,7 +447,11 @@ class SceneAuthoringViewport(QGraphicsView):
         diagnostics: list[str] = []
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
         pixmap_cache: dict[str, QPixmap | None] = {}
-        for item in self.session.document.objects:
+        ordered_objects = ordered_scene_objects(self.session.document)
+        layer_order = layer_index_by_id(self.session.document)
+        objects_in_layer: dict[str, int] = {}
+        object_count = len(ordered_objects)
+        for item in ordered_objects:
             layer = next(
                 (
                     layer
@@ -460,8 +478,16 @@ class SceneAuthoringViewport(QGraphicsView):
                         pixmap_cache[asset.id] = None
             pixmap = pixmap_cache.get(asset.id) if asset is not None else None
             visual = SceneObjectGraphicsItem(
-                item.id, self._polygon_for(item.id), pixmap
+                item.id,
+                self._polygon_for(item.id),
+                pixmap,
+                z_value=layer_visual_priority(
+                    layer_order[item.layer_id],
+                    objects_in_layer.get(item.layer_id, 0),
+                    object_count,
+                ),
             )
+            objects_in_layer[item.layer_id] = objects_in_layer.get(item.layer_id, 0) + 1
             visual.pressed.connect(self._object_pressed)
             visual.moved.connect(self._object_moved)
             visual.released.connect(self._object_released)
@@ -479,6 +505,7 @@ class SceneAuthoringViewport(QGraphicsView):
                     else ("#c78cff" if socket.type == "vfx" else "#ffcf65")
                 )
                 marker = SceneSocketGraphicsItem(socket.id, socket.type, color)
+                marker.setZValue(self._overlay_z(100.0))
                 marker.pressed.connect(
                     lambda socket_id: self.status_message.emit(
                         f"Socket selected: {socket_id}"
@@ -492,6 +519,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self._asset_state_snapshot = tuple(
             (asset.id, asset.path, asset.sha256, asset.source_path)
             for asset in self.session.document.assets
+        )
+        self._layer_order_snapshot = tuple(
+            layer.id for layer in self.session.document.layers
         )
         self._asset_diagnostics = tuple(dict.fromkeys(diagnostics))
         if self._asset_diagnostics != self._last_asset_diagnostics:
@@ -547,6 +577,7 @@ class SceneAuthoringViewport(QGraphicsView):
         if record is None or primary not in self._items:
             return
         self._gizmo = SceneTransformGizmo()
+        self._gizmo.setZValue(self._overlay_z(200.0))
         self._gizmo.setPos(
             self._project_position(record.transform.position, record.layer_id)
         )
@@ -588,10 +619,36 @@ class SceneAuthoringViewport(QGraphicsView):
             visible_ids != set(self._items)
             or visible_socket_ids != set(self._socket_items)
             or current_asset_snapshot != self._asset_state_snapshot
+            or tuple(layer.id for layer in self.session.document.layers)
+            != self._layer_order_snapshot
         ):
             self.sync()
         else:
             self._refresh_after_model_change()
+
+    def _edit_block_reason(self, object_id: str) -> str | None:
+        item = next(
+            (value for value in self.session.document.objects if value.id == object_id),
+            None,
+        )
+        if item is None:
+            return None
+        if item.locked:
+            return f"Cannot edit '{object_id}': the object is locked."
+        layer = next(
+            (value for value in self.session.document.layers if value.id == item.layer_id),
+            None,
+        )
+        if layer is not None and layer.locked:
+            return f"Cannot edit '{object_id}': its layer is locked."
+        return None
+
+    def _selection_edit_block_reason(self) -> str | None:
+        for object_id in self.session.selection.ids:
+            reason = self._edit_block_reason(object_id)
+            if reason is not None:
+                return reason
+        return None
 
     def _object_pressed(self, object_id: str, scene_pos: QPointF, modifiers) -> None:
         current = list(self.session.selection.ids)
@@ -610,8 +667,15 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit("Preview mode is read-only")
             return
         item = next(
-            item for item in self.session.document.objects if item.id == object_id
+            (value for value in self.session.document.objects if value.id == object_id),
+            None,
         )
+        if item is None:
+            return
+        reason = self._edit_block_reason(object_id)
+        if reason is not None:
+            self.status_message.emit(reason)
+            return
         self._item_gesture_id = object_id
         self._gesture_layer_id = item.layer_id
         self._gesture_start = scene_pos
@@ -629,9 +693,20 @@ class SceneAuthoringViewport(QGraphicsView):
         start = self._world_position(self._gesture_start, layer_id)
         current = self._world_position(scene_pos, layer_id)
         delta = current - start
-        self.session.preview_transform_selected(
-            translation=Point3Record(x=delta.x(), y=delta.y(), z=0.0)
-        )
+        try:
+            self.session.preview_transform_selected(
+                translation=Point3Record(x=delta.x(), y=delta.y(), z=0.0)
+            )
+        except PermissionError:
+            self.session.cancel_gesture()
+            self._item_gesture_id = None
+            self._gesture_layer_id = None
+            self._gesture_start = None
+            self.status_message.emit(
+                self._edit_block_reason(object_id)
+                or f"Cannot move '{object_id}': editing is locked."
+            )
+            return
         self._refresh_after_model_change()
 
     def _object_released(self, object_id: str, scene_pos: QPointF) -> None:
@@ -650,12 +725,20 @@ class SceneAuthoringViewport(QGraphicsView):
         if not self._authoring_enabled:
             self.status_message.emit("Preview mode is read-only")
             return
+        reason = self._selection_edit_block_reason()
+        if reason is not None:
+            self.status_message.emit(reason)
+            return
         self._gesture_mode = mode
         self._gizmo_start = scene_pos
         self.session.begin_gesture()
 
     def _gizmo_changed(self, mode: str, scene_pos: QPointF) -> None:
-        if not self._authoring_enabled or self._gizmo_start is None:
+        if (
+            not self._authoring_enabled
+            or self._gizmo_start is None
+            or self._gesture_mode != mode
+        ):
             return
         primary = self.session.selection.primary
         if primary is None:
@@ -670,35 +753,47 @@ class SceneAuthoringViewport(QGraphicsView):
             delta.setY(0.0)
         elif mode == "translate_y":
             delta.setX(0.0)
-        if mode in {"translate", "translate_x", "translate_y"}:
-            self.session.preview_transform_selected(
-                translation=Point3Record(x=delta.x(), y=delta.y(), z=0.0)
-            )
-        elif mode == "scale":
-            factor = max(0.05, 1.0 + (delta.x() + delta.y()) / 160.0)
-            self.session.preview_transform_selected(scale_factor=factor)
-        elif mode == "rotate":
-            center = self._project_position(record.transform.position, record.layer_id)
-            start_angle = math.degrees(
-                math.atan2(
-                    self._gizmo_start.y() - center.y(),
-                    self._gizmo_start.x() - center.x(),
+        try:
+            if mode in {"translate", "translate_x", "translate_y"}:
+                self.session.preview_transform_selected(
+                    translation=Point3Record(x=delta.x(), y=delta.y(), z=0.0)
                 )
-            )
-            current_angle = math.degrees(
-                math.atan2(
-                    scene_pos.y() - center.y(),
-                    scene_pos.x() - center.x(),
+            elif mode == "scale":
+                factor = max(0.05, 1.0 + (delta.x() + delta.y()) / 160.0)
+                self.session.preview_transform_selected(scale_factor=factor)
+            elif mode == "rotate":
+                center = self._project_position(record.transform.position, record.layer_id)
+                start_angle = math.degrees(
+                    math.atan2(
+                        self._gizmo_start.y() - center.y(),
+                        self._gizmo_start.x() - center.x(),
+                    )
                 )
+                current_angle = math.degrees(
+                    math.atan2(
+                        scene_pos.y() - center.y(),
+                        scene_pos.x() - center.x(),
+                    )
+                )
+                self.session.preview_transform_selected(
+                    rotation_z=current_angle - start_angle
+                )
+        except PermissionError:
+            self.session.cancel_gesture()
+            self._gesture_mode = None
+            self._gizmo_start = None
+            self.status_message.emit(
+                self._selection_edit_block_reason()
+                or "Cannot transform the selection: editing is locked."
             )
-            self.session.preview_transform_selected(
-                rotation_z=current_angle - start_angle
-            )
+            return
         self._refresh_after_model_change()
 
     def _gizmo_finished(self, mode: str, scene_pos: QPointF) -> None:
         del scene_pos
         if not self._authoring_enabled:
+            return
+        if self._gizmo_start is None or self._gesture_mode != mode:
             return
         self.session.finish_gesture(f"Apply {mode} gizmo transform")
         self._gesture_mode = None

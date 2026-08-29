@@ -9,6 +9,8 @@
 **Decisão P2D-01A:** docs/DECISAO_P2D_01_ASSETS_ORIGINAIS_E_IMPORTACAO_2026-08-29.md
 **Evidência P2D-01A:** docs/EVIDENCIA_P2D_01A_ASSETS_IMPORTACAO_E_RENDERIZACAO_2026-08-29.md
 **Evidência P2D-01B:** docs/EVIDENCIA_P2D_01B_BIBLIOTECA_LIFECYCLE_2026-08-29.md
+**Decisão P2D-02A:** docs/DECISAO_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
+**Evidência P2D-02A:** docs/EVIDENCIA_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
 
 ## 1. Finalidade
 
@@ -69,6 +71,10 @@ P2D-01 será executado em subetapas fecháveis:
 - **P2D-01B:** biblioteca/UX de assets, lifecycle de relink/replace/missing e evidência de uso no produto.
 
 Nenhuma subetapa pode declarar P2D-01 completo antes de seu próprio código, testes, evidências, gates e revisão humana.
+
+### 3.4 Abertura P2D-02A
+
+P2D-02A foi aberto após auditoria do fluxo de usuária e cobre ordem visual efetiva, visibilidade e bloqueio seguro no editor profissional. Sua decisão técnica, fronteira, evidências e critérios estão nos documentos P2D-02A referenciados acima. Grupos e isolamento permanecem reservados à subetapa P2D-02B e não são considerados implementados.
 
 ## 4. Arquitetura de extensão 2.5D/3D
 
