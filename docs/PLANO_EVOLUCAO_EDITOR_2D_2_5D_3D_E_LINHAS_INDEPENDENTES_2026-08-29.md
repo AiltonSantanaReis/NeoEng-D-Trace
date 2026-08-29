@@ -186,7 +186,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B permanece pendente. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está em implementação conforme a decisão própria e permanece aberto somente até seu aceite. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;
