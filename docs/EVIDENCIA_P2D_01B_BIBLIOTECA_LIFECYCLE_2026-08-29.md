@@ -4,11 +4,11 @@
 
 **Data:** 2026-08-29 (UTC-03)
 **Linha:** P2D-COMP-01 / P2D-01B
-**Estado:** GATE AUTOMATIZADO PASS — REVISÃO HUMANA FINAL PENDENTE
+**Estado:** ACCEPTED — SUBETAPA FECHADA
 **Parent checkpoint:** 11b6970be7b44d22fa44105043915d12e335a179
 **Commit de implementação:** 6c051020fd5b35c2c2e41cb0fff7a85d96caf76f
 **P2D-COMP-01:** OPEN — esta evidência não representa aceite do produto completo.
-**P2D-01:** OPEN — P2D-01B ainda requer revisão humana final para aceite formal.
+**P2D-01:** OPEN — P2D-01B está aceita e fechada; P2D-01 maior continua aberto.
 
 ## 1. Decisão aplicada
 
@@ -44,7 +44,7 @@ Não foram alterados tilemaps, colisão de cenário, NavMesh, entidades/componen
 | Verificação | Resultado |
 |---|---|
 | Python | `.venv\\Scripts\\python.exe`, Python 3.11.9 |
-| Commit/worktree final | `6c051020fd5b35c2c2e41cb0fff7a85d96caf76f`; branch `modernization/multiaxis-ui`; tracked clean |
+| Implementação/requalificação | 6c051020fd5b35c2c2e41cb0fff7a85d96caf76f; branch modernization/multiaxis-ui; worktree tracked clean na verificação |
 | Testes focalizados e integração | **69 passed, 0 failed** |
 | Suíte completa pós-commit | **1774 passed, 2 skipped, 0 failed** |
 | Gate visual pré-commit | PASS; 4 PNGs; auditoria com 0 findings |
@@ -73,9 +73,9 @@ O código e a evidência automatizada de P2D-01B estão aprovados para a etapa d
 
 Este resultado não mascara nem aprova polígonos, assets inválidos ou referências ausentes. A validação continua bloqueante quando o conteúdo não é decodificável ou não pode ser resolvido com segurança.
 
-## 5. Revisão humana obrigatória
+## 5. Revisão humana e aceite
 
-O aceite formal ainda depende da revisão humana da build/capturas em Windows. A revisão deve confirmar, nas resoluções-alvo:
+A revisão humana final da build e das capturas em Windows foi concluída pelo usuário, que registrou o aceite formal de P2D-01B. O aceite cobre a build portátil candidata, a biblioteca de assets, os estados diagnósticos e os fluxos relink/replace previamente apresentados nas resoluções-alvo.
 
 - legibilidade dos estados `ready`, `missing`, `modified`, `invalid` e `unavailable`;
 - clareza dos diagnósticos e das ações `Relink`, `Replace` e `Refresh`;
@@ -83,7 +83,7 @@ O aceite formal ainda depende da revisão humana da build/capturas em Windows. A
 - preservação de foco, teclado, navegação e comportamento do editor profissional;
 - distinção visual suficiente entre asset pronto, asset ausente e asset com conteúdo alterado.
 
-Até essa revisão, o estado correto é `GATE AUTOMATIZADO PASS — REVISÃO HUMANA FINAL PENDENTE`; não é correto declarar P2D-01B como `ACCEPTED`.
+Com o aceite humano registrado, o estado correto de P2D-01B é ACCEPTED. O aceite não altera o escopo nem libera as linhas independentes futuras.
 
 ## 6. Build, remoto e próximo passo
 
@@ -100,12 +100,12 @@ A build portátil candidata foi gerada a partir do commit `fb30b5f57d214ebc34f63
 
 **Arquivo portátil:** NeoEng-D-Trace-0.3.0-p2d-01b-fb30b5f-win64-portable.zip
 
-O próximo passo é a revisão humana da build e das capturas em Windows. O ciclo remoto só deve ocorrer depois de:
+A revisão humana está concluída e a build foi validada pelo smoke test e pela extração independente. O próximo passo operacional é executar o ciclo remoto seguro da branch atual:
 
-1. revisão humana final aprovada;
-2. build portátil e smoke test aprovados;
-3. reconciliação do estado tracked clean;
-4. eventual seal de evidência concluído.
+1. verificar divergência entre a branch local e origin;
+2. publicar somente a branch atual, sem force-push;
+3. confirmar o commit remoto e registrar o resultado;
+4. não criar tag, merge ou limpeza de untracked.
 
 Por autorização do usuário, o ciclo remoto poderá então executar somente a publicação segura da branch atual em `origin`, sem force-push, merge, tag ou limpeza de untracked, salvo nova autorização explícita.
 
@@ -115,4 +115,4 @@ P2D-01B não adiciona tilesets/tilemaps, pincéis, balde, borracha, autotiling, 
 
 ## 8. Rollback e imutáveis
 
-O rollback do código de P2D-01B é o commit `11b6970be7b44d22fa44105043915d12e335a179`. C3, baselines, tolerâncias, auditores, contratos G/V/B e artefatos selados anteriores não foram modificados. Nenhum push, tag, merge ou limpeza de untracked foi executado nesta etapa até a revisão humana final.
+O rollback do código de P2D-01B é o commit 11b6970be7b44d22fa44105043915d12e335a179. C3, baselines, tolerâncias, auditores, contratos G/V/B e artefatos selados anteriores não foram modificados. Nenhum push, tag, merge ou limpeza de untracked foi executado até este ponto; o ciclo remoto será executado separadamente após a formalização deste aceite.
