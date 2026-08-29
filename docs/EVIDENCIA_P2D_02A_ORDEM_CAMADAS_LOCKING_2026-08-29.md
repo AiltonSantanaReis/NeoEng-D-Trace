@@ -1,8 +1,9 @@
 # NeoEng-D-Trace — Evidência P2D-02A
 
-**Status:** PASS LOCAL — subetapa pronta para commit e requalificação
+**Status:** ACCEPTED LOCAL — P2D-02A fechada e requalificada pós-commit
 **Data:** 29/08/2026 (UTC-03)
 **Baseline de entrada:** `eb941e60a06a065c54433f852970a50b7ebeb56a`
+**Commit da subetapa:** `2118266df6daeafee8eafa82e80c953abc866b00`
 **Subetapa:** P2D-02A — ordem visual, camadas, visibilidade e bloqueio seguro
 **Decisão:** `docs/DECISAO_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md`
 
@@ -120,10 +121,40 @@ P2D-02A:
 Esses itens exigirão P2D-02B com contrato, modelo, UI, persistência e fluxo
 próprios. Não há declaração de que estejam implementados.
 
-## 6. Próxima decisão operacional
+## 6. Requalificação pós-commit e fechamento
 
-Antes do commit, deve ser feita a prova final de branch/HEAD/tracked boundary e
-o stage deve conter somente os oito arquivos listados na seção 2. Depois do
-commit, repetir suíte, auditoria Windows e captura pós-commit; só então marcar
-P2D-02A como fechada. Push remoto, tag ou merge continuam dependentes de
-autorização explícita.
+O commit local `2118266df6daeafee8eafa82e80c953abc866b00` foi criado após a
+conferência da fronteira staged. A requalificação pós-commit repetiu os gates
+essenciais sem alterar o remoto:
+
+| Gate pós-commit | Resultado |
+|---|---:|
+| HEAD/branch | `2118266df6daeafee8eafa82e80c953abc866b00` / `modernization/multiaxis-ui` |
+| tracked status | 0 modificações |
+| suíte completa | 1776 passed / 2 skipped / 0 failed em 47.02s |
+| auditoria Qt end-to-end Windows | exit 0 |
+| plataforma/resolução | `windows` / `1280×820` |
+| exceção na tentativa bloqueada | nenhuma (`exception=null`) |
+| documento/histórico após rejeição | `true` / `true` |
+| gesto ativo após rejeição | `false` |
+| igualdade das cinco capturas pré/pós-commit | 5/5 SHA-256 idênticas |
+
+A auditoria pós-commit está em:
+
+```text
+C:\Users\atnco\Pictures\NeoEng-D-Trace\tmp-p2d-02a-flow-windows-postcommit-20260829
+```
+
+As capturas pós-commit foram comparadas, por nome e SHA-256, às capturas
+pré-commit do mesmo fluxo em:
+
+```text
+C:\Users\atnco\Pictures\NeoEng-D-Trace\tmp-p2d-02a-flow-windows-20260829
+```
+
+O resultado fecha a subetapa **P2D-02A — ordem visual, camadas,
+visibilidade e bloqueio seguro** como `ACCEPTED LOCAL`. P2D-02 continua aberta
+porque grupos, hierarquia/membership e isolamento ainda estão reservados para
+P2D-02B; não há declaração de que esses recursos estejam implementados.
+
+Push remoto, tag e merge continuam dependentes de autorização explícita.

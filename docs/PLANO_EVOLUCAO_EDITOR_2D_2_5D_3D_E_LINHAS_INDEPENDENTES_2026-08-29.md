@@ -74,7 +74,7 @@ Nenhuma subetapa pode declarar P2D-01 completo antes de seu próprio código, te
 
 ### 3.4 Abertura P2D-02A
 
-P2D-02A foi aberto após auditoria do fluxo de usuária e cobre ordem visual efetiva, visibilidade e bloqueio seguro no editor profissional. Sua decisão técnica, fronteira, evidências e critérios estão nos documentos P2D-02A referenciados acima. Grupos e isolamento permanecem reservados à subetapa P2D-02B e não são considerados implementados.
+P2D-02A foi aberto após auditoria do fluxo de usuária e cobre ordem visual efetiva, visibilidade e bloqueio seguro no editor profissional. A subetapa foi aceita e fechada no commit `2118266df6daeafee8eafa82e80c953abc866b00`, com requalificação pós-commit e auditoria nativa Windows documentadas na evidência P2D-02A. Grupos, hierarquia/membership e isolamento permanecem reservados à subetapa P2D-02B e não são considerados implementados.
 
 ## 4. Arquitetura de extensão 2.5D/3D
 
