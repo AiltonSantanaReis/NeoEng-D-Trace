@@ -142,14 +142,14 @@ essenciais sem alterar o remoto:
 A auditoria pós-commit está em:
 
 ```text
-C:\Users\atnco\Pictures\NeoEng-D-Trace\tmp-p2d-02a-flow-windows-postcommit-20260829
+WORKSPACE_ROOT/tmp-p2d-02a-flow-windows-postcommit-20260829
 ```
 
 As capturas pós-commit foram comparadas, por nome e SHA-256, às capturas
 pré-commit do mesmo fluxo em:
 
 ```text
-C:\Users\atnco\Pictures\NeoEng-D-Trace\tmp-p2d-02a-flow-windows-20260829
+WORKSPACE_ROOT/tmp-p2d-02a-flow-windows-20260829
 ```
 
 O resultado fecha a subetapa **P2D-02A — ordem visual, camadas,

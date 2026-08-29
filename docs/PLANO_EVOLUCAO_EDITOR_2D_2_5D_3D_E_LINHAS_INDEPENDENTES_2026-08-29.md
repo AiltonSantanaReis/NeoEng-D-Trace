@@ -11,6 +11,8 @@
 **Evidência P2D-01B:** docs/EVIDENCIA_P2D_01B_BIBLIOTECA_LIFECYCLE_2026-08-29.md
 **Decisão P2D-02A:** docs/DECISAO_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
 **Evidência P2D-02A:** docs/EVIDENCIA_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
+**Decisão P2D-02B:** docs/DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
+**Evidência P2D-02B (precommit):** docs/EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
 
 ## 1. Finalidade
 
@@ -76,6 +78,9 @@ Nenhuma subetapa pode declarar P2D-01 completo antes de seu próprio código, te
 
 P2D-02A foi aberto após auditoria do fluxo de usuária e cobre ordem visual efetiva, visibilidade e bloqueio seguro no editor profissional. A subetapa foi aceita e fechada no commit `2118266df6daeafee8eafa82e80c953abc866b00`, com requalificação pós-commit e auditoria nativa Windows documentadas na evidência P2D-02A. Grupos, hierarquia/membership e isolamento permanecem reservados à subetapa P2D-02B e não são considerados implementados.
 
+### 3.5 Abertura P2D-02B
+
+P2D-02B foi aberta a partir do checkpoint limpo `d152b214b1bccb717911001396936c1f93b23714`. A decisão técnica define a implementação de grupos, hierarquia/membership e isolamento exclusivamente no editor profissional, preservando o modelo legado, o schema V1 e os baselines imutáveis. A subetapa está `ACTIVE`; seu aceite depende dos critérios e evidências definidos em `DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md`.
 ## 4. Arquitetura de extensão 2.5D/3D
 
 ### 4.1 Núcleo estável

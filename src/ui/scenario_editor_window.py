@@ -37,6 +37,7 @@ from src.persistence.scene_authoring_schema import upgrade_scene_authoring_docum
 from src.ui.scenario_panel import ScenarioPanel
 from src.ui.scene_asset_panel import SceneAssetLibrary
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
+from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
@@ -70,6 +71,7 @@ class ScenarioEditorWindow(QMainWindow):
         self._professional_project: Path | None = None
         self.professional_scene_path: Path | None = None
         self.layer_stack: SceneAuthoringLayerStack | None = None
+        self.group_stack: SceneAuthoringGroupStack | None = None
         self.asset_library: SceneAssetLibrary | None = None
         self.canvas = self._build_canvas()
         self.legacy_canvas = self.canvas
@@ -240,6 +242,7 @@ class ScenarioEditorWindow(QMainWindow):
             )
         inspector = SceneAuthoringInspector(session)
         self.layer_stack = SceneAuthoringLayerStack(session)
+        self.group_stack = SceneAuthoringGroupStack(session)
         self.asset_library = SceneAssetLibrary(
             session, project_path.parent, parent=inspector
         )
@@ -248,8 +251,10 @@ class ScenarioEditorWindow(QMainWindow):
         if not isinstance(inspector_layout, QVBoxLayout):
             raise RuntimeError("professional inspector has no vertical layout")
         inspector_layout.insertWidget(0, self.layer_stack)
+        inspector_layout.insertWidget(0, self.group_stack)
         inspector_layout.insertWidget(0, self.asset_library)
         self.layer_stack.status_message.connect(self._show_professional_status)
+        self.group_stack.status_message.connect(self._show_professional_status)
         self.asset_library.status_message.connect(self._show_professional_status)
         inspector_scroll = QScrollArea(self.right_pages)
         inspector_scroll.setObjectName("professional_inspector_scroll")
@@ -302,6 +307,7 @@ class ScenarioEditorWindow(QMainWindow):
         try:
             document = self._load_professional_document(self.professional_scene_path)
             self.professional_session.model.document = document
+            self.professional_session.clear_isolation()
             self.professional_session.clear_history()
             self.professional_session.clear_selection()
             self.professional_session.mark_saved()
@@ -321,6 +327,7 @@ class ScenarioEditorWindow(QMainWindow):
             professional_document_from_scene(self.scene, self._professional_project)
         )
         self.professional_session.model.document = document
+        self.professional_session.clear_isolation()
         self.professional_session.clear_history()
         self.professional_session.clear_selection()
         if self.professional_viewport is not None:

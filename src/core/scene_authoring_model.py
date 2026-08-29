@@ -12,6 +12,11 @@ import math
 from dataclasses import dataclass
 from typing import Iterable
 
+from src.core.scene_authoring_groups import (
+    group_ancestry,
+    group_parent_id,
+    locked_group_for_object,
+)
 from src.persistence.project_schema import Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
@@ -110,6 +115,9 @@ class SceneAuthoringModel:
         for layer in self.document.layers:
             if layer.id == item.layer_id and layer.locked:
                 raise PermissionError(f"layer {layer.id!r} is locked")
+        locked_group = locked_group_for_object(self.document, object_id)
+        if locked_group is not None:
+            raise PermissionError(f"group {locked_group.id!r} is locked")
 
     def set_selection(
         self, object_ids: Iterable[str], primary: str | None = None
@@ -429,3 +437,101 @@ class SceneAuthoringModel:
             raise ValueError("cannot group an empty selection")
         group = group.model_copy(update={"members": list(self.selection.ids)})
         self.add_group(group)
+
+    def _group(self, group_id: str) -> SceneGroupAuthoringRecord:
+        for item in self.document.groups:
+            if item.id == group_id:
+                return item
+        raise KeyError(group_id)
+
+    def _replace_group(self, group_id: str, **changes: object) -> None:
+        self._group(group_id)
+        self._replace(
+            groups=[
+                item.model_copy(update=changes) if item.id == group_id else item
+                for item in self.document.groups
+            ]
+        )
+
+    def rename_group(self, group_id: str, name: str) -> None:
+        if not name.strip():
+            raise ValueError("group name cannot be blank")
+        self._replace_group(group_id, name=name.strip())
+
+    def remove_group(self, group_id: str) -> None:
+        group = self._group(group_id)
+        parent_id = group_parent_id(group)
+        groups = [item for item in self.document.groups if item.id != group_id]
+        if hasattr(group, "parent_group_id"):
+            groups = [
+                item.model_copy(update={"parent_group_id": parent_id})
+                if group_parent_id(item) == group_id
+                else item
+                for item in groups
+            ]
+        self._replace(groups=groups)
+
+    def reorder_group(self, group_id: str, target_index: int) -> None:
+        group = self._group(group_id)
+        siblings = [
+            item for item in self.document.groups
+            if group_parent_id(item) == group_parent_id(group)
+        ]
+        positions = [
+            index for index, item in enumerate(self.document.groups)
+            if group_parent_id(item) == group_parent_id(group)
+        ]
+        sibling_ids = [item.id for item in siblings]
+        current_index = sibling_ids.index(group_id)
+        moved_id = sibling_ids.pop(current_index)
+        target = max(0, min(int(target_index), len(sibling_ids)))
+        sibling_ids.insert(target, moved_id)
+        by_id = {item.id: item for item in self.document.groups}
+        groups = list(self.document.groups)
+        for position, sibling_id in zip(positions, sibling_ids):
+            groups[position] = by_id[sibling_id]
+        self._replace(groups=groups)
+
+    def set_group_parent(self, group_id: str, parent_group_id: str | None) -> None:
+        document = self.document
+        group = self._group(group_id)
+        if not hasattr(group, "parent_group_id"):
+            if parent_group_id is not None:
+                raise ValueError("nested groups require schema V2")
+            return
+        if parent_group_id == group_id:
+            raise ValueError("group cannot be its own parent")
+        if parent_group_id is not None:
+            self._group(parent_group_id)
+            if parent_group_id in group_ancestry(document, group_id):
+                raise ValueError("group hierarchy contains a cycle")
+        self._replace_group(group_id, parent_group_id=parent_group_id)
+
+    def set_group_visibility(self, group_id: str, visible: bool) -> None:
+        self._replace_group(group_id, visible=bool(visible))
+
+    def set_group_locked(self, group_id: str, locked: bool) -> None:
+        self._replace_group(group_id, locked=bool(locked))
+
+    def add_objects_to_group(self, group_id: str, object_ids: Iterable[str]) -> None:
+        group = self._group(group_id)
+        selected = list(dict.fromkeys(object_ids))
+        known = {item.id for item in self.document.objects}
+        missing = [item for item in selected if item not in known]
+        if missing:
+            raise KeyError(missing[0])
+        members = list(group.members)
+        members.extend(item for item in selected if item not in members)
+        self._replace_group(group_id, members=members)
+
+    def remove_objects_from_group(
+        self,
+        group_id: str,
+        object_ids: Iterable[str],
+    ) -> None:
+        group = self._group(group_id)
+        selected = set(object_ids)
+        self._replace_group(
+            group_id,
+            members=[item for item in group.members if item not in selected],
+        )

@@ -12,6 +12,7 @@ from src.persistence.scene_authoring_schema import (
 )
 
 from .parallax_camera import OrthographicCamera, ParallaxLayer, Point2
+from .scene_authoring_groups import object_is_effectively_visible
 from .scene_authoring_order import ordered_scene_objects
 
 
@@ -103,6 +104,8 @@ def build_scene_authoring_preview(
     document: SceneAuthoringDocumentV2,
     viewport_size: Sequence[float],
     geometries: Mapping[str, Iterable[Sequence[float]]],
+    *,
+    isolated_group_id: str | None = None,
 ) -> SceneAuthoringPreviewFrame:
     """Project visible objects and sockets without mutating the document."""
 
@@ -120,7 +123,9 @@ def build_scene_authoring_preview(
     projected_objects: list[ProjectedSceneObject] = []
     for item in ordered_scene_objects(document):
         layer = layers[item.layer_id]
-        if not item.visible or not layer.visible:
+        if not object_is_effectively_visible(
+            document, item.id, isolated_group_id=isolated_group_id
+        ):
             continue
         geometry = geometries.get(item.id, ())
         world = _world_points(item, geometry)

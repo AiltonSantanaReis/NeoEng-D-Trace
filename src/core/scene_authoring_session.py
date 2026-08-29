@@ -9,6 +9,7 @@ from src.core.scene_authoring_model import SceneAuthoringModel, SceneSelection
 from src.persistence.project_schema import Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
+    SceneGroupAuthoringRecord,
     SceneAuthoringDocument,
     SceneCameraAuthoringRecord,
     SceneLayerAuthoringRecord,
@@ -45,6 +46,7 @@ class SceneAuthoringSession:
         self._redo: list[_HistoryEntry] = []
         self._listeners: list[Callable[[], None]] = []
         self._gesture_before: SceneAuthoringSnapshot | None = None
+        self._isolated_group_id: str | None = None
         self._saved_document = self.document.model_copy(deep=True)
 
     @property
@@ -88,6 +90,10 @@ class SceneAuthoringSession:
             self._listeners.append(callback)
 
     def _notify(self) -> None:
+        if self._isolated_group_id is not None and not any(
+            item.id == self._isolated_group_id for item in self.document.groups
+        ):
+            self._isolated_group_id = None
         for callback in list(self._listeners):
             callback()
 
@@ -341,6 +347,92 @@ class SceneAuthoringSession:
         self._notify()
         return True
 
+    @property
+    def isolated_group_id(self) -> str | None:
+        """Return the transient group currently isolated in the viewport."""
+
+        return self._isolated_group_id
+
+    def set_isolated_group(self, group_id: str | None) -> bool:
+        if group_id is not None and not any(
+            item.id == group_id for item in self.document.groups
+        ):
+            raise KeyError(group_id)
+        if self._isolated_group_id == group_id:
+            return False
+        self._isolated_group_id = group_id
+        self._notify()
+        return True
+
+    def clear_isolation(self) -> bool:
+        return self.set_isolated_group(None)
+    def add_group(self, group: SceneGroupAuthoringRecord) -> bool:
+        return self.apply(
+            lambda: self.model.add_group(group),
+            "Create scene group",
+        )
+
+    def group_selection(self, group: SceneGroupAuthoringRecord) -> bool:
+        return self.apply(
+            lambda: self.model.group_selection(group),
+            "Group selected objects",
+        )
+
+    def remove_group(self, group_id: str) -> bool:
+        return self.apply(
+            lambda: self.model.remove_group(group_id),
+            "Delete scene group",
+        )
+
+    def rename_group(self, group_id: str, name: str) -> bool:
+        return self.apply(
+            lambda: self.model.rename_group(group_id, name),
+            "Rename scene group",
+        )
+
+    def reorder_group(self, group_id: str, target_index: int) -> bool:
+        return self.apply(
+            lambda: self.model.reorder_group(group_id, target_index),
+            "Reorder scene group",
+        )
+
+    def set_group_parent(self, group_id: str, parent_group_id: str | None) -> bool:
+        return self.apply(
+            lambda: self.model.set_group_parent(group_id, parent_group_id),
+            "Reparent scene group",
+        )
+
+    def set_group_visibility(self, group_id: str, visible: bool) -> bool:
+        return self.apply(
+            lambda: self.model.set_group_visibility(group_id, visible),
+            "Set scene group visibility",
+        )
+
+    def set_group_locked(self, group_id: str, locked: bool) -> bool:
+        return self.apply(
+            lambda: self.model.set_group_locked(group_id, locked),
+            "Set scene group lock",
+        )
+
+    def add_objects_to_group(
+        self,
+        group_id: str,
+        object_ids: Iterable[str],
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.add_objects_to_group(group_id, object_ids),
+            "Add objects to scene group",
+        )
+
+    def remove_objects_from_group(
+        self,
+        group_id: str,
+        object_ids: Iterable[str],
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.remove_objects_from_group(group_id, object_ids),
+            "Remove objects from scene group",
+        )
     def clear_history(self) -> None:
         self._undo.clear()
         self._redo.clear()

@@ -35,6 +35,10 @@ from src.core.scene_asset_library import (
 )
 from src.core.scenario_preview import build_overlay_geometry
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_authoring_groups import (
+    locked_group_for_object,
+    object_is_effectively_visible,
+)
 from src.core.scene_authoring_order import (
     layer_index_by_id,
     layer_visual_priority,
@@ -460,7 +464,11 @@ class SceneAuthoringViewport(QGraphicsView):
                 ),
                 None,
             )
-            if not item.visible or (layer is not None and not layer.visible):
+            if not object_is_effectively_visible(
+                self.session.document,
+                item.id,
+                isolated_group_id=self.session.isolated_group_id,
+            ):
                 continue
             pixmap: QPixmap | None = None
             asset = assets_by_id.get(item.asset_id)
@@ -595,10 +603,10 @@ class SceneAuthoringViewport(QGraphicsView):
         visible_ids = {
             item.id
             for item in self.session.document.objects
-            if item.visible
-            and any(
-                layer.id == item.layer_id and layer.visible
-                for layer in self.session.document.layers
+            if object_is_effectively_visible(
+                self.session.document,
+                item.id,
+                isolated_group_id=self.session.isolated_group_id,
             )
         }
         visible_socket_ids = set()
@@ -641,6 +649,11 @@ class SceneAuthoringViewport(QGraphicsView):
         )
         if layer is not None and layer.locked:
             return f"Cannot edit '{object_id}': its layer is locked."
+        locked_group = locked_group_for_object(self.session.document, object_id)
+        if locked_group is not None:
+            return (
+                f"Cannot edit '{object_id}': group '{locked_group.name}' is locked."
+            )
         return None
 
     def _selection_edit_block_reason(self) -> str | None:
