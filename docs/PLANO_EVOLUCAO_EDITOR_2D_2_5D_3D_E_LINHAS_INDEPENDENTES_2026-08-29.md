@@ -13,6 +13,8 @@
 **Evidência P2D-02A:** docs/EVIDENCIA_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
 **Decisão P2D-02B:** docs/DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
 **Evidência P2D-02B:** docs/EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
+**Decisão P2D-02 (fechamento):** docs/DECISAO_P2D_02_FECHAMENTO_2026-08-29.md
+**Evidência P2D-02 (consolidação):** docs/EVIDENCIA_P2D_02_CONSOLIDACAO_2026-08-29.md
 
 ## 1. Finalidade
 
@@ -47,7 +49,7 @@ O usuário deve conseguir criar ou abrir uma composição, adicionar assets supo
 |---|---|---|
 | P2D-00 | adoção, reconciliação e baseline local | registro de checkpoint e divergências; ACCEPTED |
 | P2D-01 | assets, biblioteca, lifecycle, diagnósticos e renderização real | asset real visível, portable e testado |
-| P2D-02 | ordem visual, camadas, grupos e isolamento | ordem observável, persistente e editável |
+| P2D-02 | ordem visual, camadas, grupos e isolamento | ordem observável, persistente e editável; ACCEPTED / CLOSED |
 | P2D-03 | seleção, teclado, mouse, nudge, duplicate, copy/paste, marquee e fit | produtividade comprovada por testes e captura |
 | P2D-04 | save atômico, recovery, preview, export e orientação de coordenadas | round-trip e adapters aceitos |
 | P2D-05 | performance, limites, formatos e erros | testes positivos/negativos e limites documentados |
@@ -198,7 +200,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;

@@ -1,9 +1,11 @@
 # NeoEng-D-Trace — Decisão P2D-02B
 
-**Status:** ACTIVE — execução autorizada
+**Status:** ACCEPTED — execução concluída e requalificada
 **Data:** 29/08/2026 (UTC-03)
 **Baseline de entrada:** `d152b214b1bccb717911001396936c1f93b23714`
 **Subetapa:** P2D-02B — grupos, hierarquia/membership e isolamento
+**Commit funcional:** `af02f3ef513487bd176c939085fea0ca56a7da6b`
+**Evidência de aceite:** `docs/EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md`
 **Dependência fechada:** P2D-02A — ordem visual, camadas, visibilidade e locking seguro
 
 ## 1. Evidência que abriu a subetapa
@@ -116,5 +118,7 @@ evidências:
 9. fronteira tracked revisada e commit local próprio;
 10. documentação e índice canônicos reconciliados com o hash final.
 
-Até esses itens serem comprovados, esta decisão permanece `ACTIVE` e nenhuma
-capacidade de P2D-02B será apresentada como concluída.
+Todos os itens acima foram comprovados na evidência de aceite, no commit
+funcional e na requalificação pós-commit. Esta decisão fica marcada como
+`ACCEPTED`; a capacidade de P2D-02B pode ser apresentada como concluída dentro
+dos limites explicitamente definidos neste documento.
