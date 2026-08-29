@@ -61,7 +61,7 @@ As capturas foram produzidas em 1280x720, 1366x768 e 1920x1080. O quarto frame �
 
 ## 4. Resultado do gate
 
-O código e a evidência automatizada de P2D-01B estão aprovados para a etapa de revisão final:
+P2D-01B está formalmente aceita e fechada, com código, evidências automatizadas, build, gates e revisão humana concluídos:
 
 - biblioteca visível no editor profissional;
 - asset pronto e asset ausente distinguidos na interface;
