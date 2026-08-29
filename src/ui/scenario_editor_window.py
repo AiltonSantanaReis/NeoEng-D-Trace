@@ -29,11 +29,13 @@ from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.exporters.scene_authoring_export import save_scene_authoring_export
 from src.persistence.scene_authoring_io import (
+    SceneAuthoringAssetError,
     load_scene_authoring_v2,
     save_scene_authoring,
 )
 from src.persistence.scene_authoring_schema import upgrade_scene_authoring_document
 from src.ui.scenario_panel import ScenarioPanel
+from src.ui.scene_asset_panel import SceneAssetLibrary
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
@@ -68,6 +70,7 @@ class ScenarioEditorWindow(QMainWindow):
         self._professional_project: Path | None = None
         self.professional_scene_path: Path | None = None
         self.layer_stack: SceneAuthoringLayerStack | None = None
+        self.asset_library: SceneAssetLibrary | None = None
         self.canvas = self._build_canvas()
         self.legacy_canvas = self.canvas
         self.professional_pages = QStackedWidget(self)
@@ -189,13 +192,21 @@ class ScenarioEditorWindow(QMainWindow):
         canvas.set_scenario_overlays_visible(True)
         return canvas
 
+    def _load_professional_document(self, path: Path):
+        """Load valid scenes while exposing missing/tampered assets to the UI."""
+
+        try:
+            return load_scene_authoring_v2(path)
+        except SceneAuthoringAssetError:
+            return load_scene_authoring_v2(path, verify_assets=False)
+
     def _build_professional_viewport(self) -> None:
         project_path = self.authoring.project_path
         if project_path is None:
             return
         scene_path = project_path.with_suffix(".ndtscene.json")
         if scene_path.is_file():
-            document = load_scene_authoring_v2(scene_path)
+            document = self._load_professional_document(scene_path)
         else:
             document = professional_document_from_scene(
                 self.scene,
@@ -229,11 +240,17 @@ class ScenarioEditorWindow(QMainWindow):
             )
         inspector = SceneAuthoringInspector(session)
         self.layer_stack = SceneAuthoringLayerStack(session)
+        self.asset_library = SceneAssetLibrary(
+            session, project_path.parent, parent=inspector
+        )
+        self.asset_library.update_language(self.current_lang)
         inspector_layout = inspector.layout()
         if not isinstance(inspector_layout, QVBoxLayout):
             raise RuntimeError("professional inspector has no vertical layout")
         inspector_layout.insertWidget(0, self.layer_stack)
+        inspector_layout.insertWidget(0, self.asset_library)
         self.layer_stack.status_message.connect(self._show_professional_status)
+        self.asset_library.status_message.connect(self._show_professional_status)
         inspector_scroll = QScrollArea(self.right_pages)
         inspector_scroll.setObjectName("professional_inspector_scroll")
         inspector_scroll.setWidgetResizable(True)
@@ -283,7 +300,7 @@ class ScenarioEditorWindow(QMainWindow):
             self.status_label.setText("No saved scenario exists yet")
             return False
         try:
-            document = load_scene_authoring_v2(self.professional_scene_path)
+            document = self._load_professional_document(self.professional_scene_path)
             self.professional_session.model.document = document
             self.professional_session.clear_history()
             self.professional_session.clear_selection()
@@ -478,6 +495,8 @@ class ScenarioEditorWindow(QMainWindow):
         ):
             action.setText(label)
         self.scenario_panel.update_language(self.current_lang)
+        if self.asset_library is not None:
+            self.asset_library.update_language(self.current_lang)
 
     def closeEvent(self, event) -> None:
         if self.professional_session is not None and self.professional_session.is_dirty:

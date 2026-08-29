@@ -130,6 +130,20 @@ class SceneAuthoringModel:
             raise ValueError("asset ID exists")
         self._replace(assets=[*self.document.assets, asset])
 
+    def update_asset(self, asset: AssetReferenceRecord) -> None:
+        current = next(
+            (item for item in self.document.assets if item.id == asset.id), None
+        )
+        if current is None:
+            raise KeyError(asset.id)
+        if asset.id != current.id:
+            raise ValueError("asset ID cannot change")
+        self._replace(
+            assets=[
+                asset if item.id == asset.id else item for item in self.document.assets
+            ]
+        )
+
     def add_object(
         self, obj: SceneObjectAuthoringRecord, *, select: bool = False
     ) -> None:

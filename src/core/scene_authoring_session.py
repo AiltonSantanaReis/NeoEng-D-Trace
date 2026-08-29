@@ -231,6 +231,12 @@ class SceneAuthoringSession:
             "Import scene asset",
         )
 
+    def update_asset(self, asset: AssetReferenceRecord) -> bool:
+        return self.apply(
+            lambda: self.model.update_asset(asset),
+            "Update scene asset",
+        )
+
     def add_object(
         self,
         obj: SceneObjectAuthoringRecord,

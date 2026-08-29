@@ -15,6 +15,7 @@ import shutil
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
+from typing import Literal
 
 from src.persistence.scene_authoring_schema import AssetReferenceRecord
 
@@ -36,6 +37,19 @@ class PreparedSceneAsset:
     sha256: str
     source_path: str | None
     resolved_path: Path
+
+
+SceneAssetState = Literal["ready", "missing", "modified", "invalid", "unavailable"]
+
+
+@dataclass(frozen=True)
+class SceneAssetInspection:
+    """Hash-backed availability state used by the asset library UI."""
+
+    asset: AssetReferenceRecord
+    state: SceneAssetState
+    resolved_path: Path | None = None
+    issue: str | None = None
 
 
 def sha256_file(path: Path) -> str:
@@ -197,11 +211,35 @@ def resolve_scene_asset(
     return candidate, None
 
 
+def inspect_scene_asset(
+    asset: AssetReferenceRecord,
+    project_root: Path | None,
+) -> SceneAssetInspection:
+    """Classify one asset without using non-portable provenance as a fallback."""
+
+    resolved, issue = resolve_scene_asset(asset, project_root)
+    if issue is None:
+        return SceneAssetInspection(asset, "ready", resolved, None)
+    lowered = issue.lower()
+    if "missing" in lowered:
+        state: SceneAssetState = "missing"
+    elif "hash mismatch" in lowered:
+        state = "modified"
+    elif "unavailable" in lowered:
+        state = "unavailable"
+    else:
+        state = "invalid"
+    return SceneAssetInspection(asset, state, None, issue)
+
+
 __all__ = [
     "PreparedSceneAsset",
     "SCENE_ASSET_DIRECTORY",
     "SUPPORTED_SCENE_ASSET_SUFFIXES",
     "SceneAssetError",
+    "SceneAssetInspection",
+    "SceneAssetState",
+    "inspect_scene_asset",
     "prepare_scene_asset",
     "resolve_scene_asset",
     "sha256_file",

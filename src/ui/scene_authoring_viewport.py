@@ -300,6 +300,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._gizmo_start: QPointF | None = None
         self._asset_diagnostics: tuple[str, ...] = ()
         self._last_asset_diagnostics: tuple[str, ...] = ()
+        self._asset_state_snapshot: tuple[tuple[str, str, str, str | None], ...] = ()
         self.sync()
         self.session.subscribe(self._on_session_change)
 
@@ -488,6 +489,10 @@ class SceneAuthoringViewport(QGraphicsView):
         self._refresh_transforms()
         self._refresh_selection()
         self._refresh_gizmo()
+        self._asset_state_snapshot = tuple(
+            (asset.id, asset.path, asset.sha256, asset.source_path)
+            for asset in self.session.document.assets
+        )
         self._asset_diagnostics = tuple(dict.fromkeys(diagnostics))
         if self._asset_diagnostics != self._last_asset_diagnostics:
             self._last_asset_diagnostics = self._asset_diagnostics
@@ -575,8 +580,14 @@ class SceneAuthoringViewport(QGraphicsView):
                     for layer in self.session.document.layers
                 )
             }
-        if visible_ids != set(self._items) or visible_socket_ids != set(
-            self._socket_items
+        current_asset_snapshot = tuple(
+            (asset.id, asset.path, asset.sha256, asset.source_path)
+            for asset in self.session.document.assets
+        )
+        if (
+            visible_ids != set(self._items)
+            or visible_socket_ids != set(self._socket_items)
+            or current_asset_snapshot != self._asset_state_snapshot
         ):
             self.sync()
         else:
