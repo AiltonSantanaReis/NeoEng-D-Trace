@@ -87,7 +87,18 @@ Até essa revisão, o estado correto é `GATE AUTOMATIZADO PASS — REVISÃO HUM
 
 ## 6. Build, remoto e próximo passo
 
-O próximo passo operacional é gerar a build portátil a partir do commit `6c051020fd5b35c2c2e41cb0fff7a85d96caf76f`, executar o smoke test da build e disponibilizar as capturas para revisão humana. O ciclo remoto só deve ocorrer depois de:
+A build portátil candidata foi gerada a partir do commit `09c8de90181e15089e2b9d38703702bf8a35b793` em checkout temporário limpo, sem tocar nos artefatos untracked do workspace principal.
+
+| Verificação da build | Resultado |
+|---|---|
+| PyInstaller | 6.22.0; build concluído |
+| Python | 3.11.9 da .venv; 3.11.9 |
+| Smoke test oficial | SUCCESS; 11 checks; 13 artefatos |
+| Manifest | 314 arquivos; SHA-256 14CD0370A8E607EE500245C63F21273C29AA52267B48B87982C6C10DD707F56C |
+| ZIP | 124035432 bytes; SHA-256 9522F8537C698753399B6BFE1390CF9E9C882305C3C2DE80BE7593AAEEEEB565 |
+| Extração independente | 314/314 arquivos verificados; 0 falhas |
+
+O próximo passo é a revisão humana da build e das capturas em Windows. O ciclo remoto só deve ocorrer depois de:
 
 1. revisão humana final aprovada;
 2. build portátil e smoke test aprovados;
