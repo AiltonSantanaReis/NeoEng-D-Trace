@@ -1,8 +1,9 @@
 # NeoEng-D-Trace — Evidência P2D-02B: grupos, hierarquia, membership e isolamento
 
-**Status:** PRECOMMIT VERIFIED LOCAL — commit funcional pendente de consolidação
+**Status:** ACCEPTED LOCAL — P2D-02B fechada e requalificada pós-commit
 **Data:** 29/08/2026 (UTC-03)
 **Baseline de entrada:** `d152b214b1bccb717911001396936c1f93b23714`
+**Commit da subetapa:** `af02f3ef513487bd176c939085fea0ca56a7da6b`
 **Branch:** `modernization/multiaxis-ui`
 **Subetapa:** P2D-02B — grupos, hierarquia/membership e isolamento
 **Decisão:** `docs/DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md`
@@ -161,25 +162,49 @@ declarada por este documento.
 
 Os critérios de schema, modelo, session, árvore, membership, herança de
 visibilidade/lock, isolamento transitório, undo/redo, round-trip, testes e
-fluxo Windows foram satisfeitos nesta evidência precommit.
+fluxo Windows foram satisfeitos nesta evidência pós-commit.
 
-O lote ainda não está fechado como commit até executar:
+O lote foi fechado localmente após a revisão da fronteira staged, o commit
+funcional, a requalificação pós-commit e a confirmação da árvore rastreada.
+Nenhuma mutação remota foi realizada durante esta consolidação.
 
-1. revisão final da fronteira staged;
-2. commit funcional com exatamente os arquivos previstos;
-3. requalificação pós-commit;
-4. confirmação de tracked tree limpa;
-5. atualização desta evidência com hash do commit e resultado pós-commit.
+## 8. Requalificação pós-commit e fechamento
 
-Nenhuma mutação remota foi realizada. Push, tag e merge continuam proibidos
-sem autorização explícita.
+| Gate pós-commit | Resultado |
+|---|---:|
+| HEAD/branch | af02f3ef513487bd176c939085fea0ca56a7da6b / modernization/multiaxis-ui |
+| tracked status após commit funcional | 0 modificações |
+| suíte completa | 1779 passed / 2 skipped / 0 failed em 47.01s |
+| auditoria Qt Windows | exit 0 |
+| auditoria Qt offscreen | exit 0 |
+| resolução auditada | 1280×820 |
+| tentativa em grupo bloqueado | exception=null |
+| documento/histórico após rejeição | true / true |
+| gesto ativo após rejeição | false |
+| isolamento após reload | null |
+| igualdade das sete capturas pré/pós-commit | 7/7 SHA-256 idênticas |
 
-## 8. Continuidade segura
+Auditoria Windows pós-commit:
 
-Se qualquer gate pós-commit divergir, o commit não deve ser promovido como
-aceito. A investigação deve usar os relatórios deste documento e os diretórios
-de auditoria; não se deve alterar tolerância, baseline, auditor ou o contrato
-V1 para forçar aprovação.
+WORKSPACE_ROOT/tmp-p2d-02b-flow-windows-postcommit-20260829
+
+Auditoria offscreen pós-commit:
+
+WORKSPACE_ROOT/tmp-p2d-02b-flow-offscreen-postcommit-20260829
+
+A evidência precommit e pós-commit foi preservada nos diretórios de auditoria.
+A implementação não altera o modelo legado, o schema V1, transformações,
+camadas, assets, menus globais ou linhas independentes.
+
+O resultado fecha a subetapa P2D-02B — grupos, hierarquia/membership e
+isolamento — como ACCEPTED LOCAL. Push, tag e merge permanecem limitados à
+branch desta linha e ao procedimento de autorização explícita.
+
+## 9. Continuidade segura
+
+Se uma requalificação futura divergir, a decisão de aceite deverá ser reaberta
+formalmente usando os relatórios preservados; não se deve alterar tolerância,
+baseline, auditor ou o contrato V1 para forçar aprovação.
 
 Após o fechamento de P2D-02B, P2D-02 continuará aberta somente para os itens
 explicitamente previstos em estágio posterior, sem reabrir este lote sem novo

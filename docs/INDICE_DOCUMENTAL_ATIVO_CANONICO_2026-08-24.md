@@ -37,7 +37,7 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `DECISAO_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md` | ATIVO / DECISÃO ACEITA | ordem visual, camadas, visibility e locking seguro do P2D-02A | normativo do editor e plano de evolução |
 | `EVIDENCIA_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md` | ATIVO / EVIDÊNCIA ACEITA | fluxo Qt/Windows, reorder, visibility, lock, save/load e gates P2D-02A | decisão P2D-02A e plano de evolução |
 | `DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md` | ATIVO / DECISÃO APROVADA | contrato, invariantes e aceite de grupos, hierarquia/membership e isolamento | normativo do editor e plano de evolução |
-| EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md | ATIVO / EVIDÊNCIA PRECOMMIT VERIFICADA | gates, fluxo Qt Windows/offscreen, persistência, herança, isolamento e revisão visual do P2D-02B | decisão P2D-02B e plano de evolução |
+| `EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md` | ATIVO / EVIDÊNCIA ACEITA | gates, fluxo Qt Windows/offscreen, persistência, herança, isolamento e revisão visual do P2D-02B | decisão P2D-02B e plano de evolução |
 | `EVIDENCIA_P2D_01A_ASSETS_IMPORTACAO_E_RENDERIZACAO_2026-08-29.md` | ATIVO / EVIDÊNCIA ACEITA | implementação e testes de P2D-01A | decisão P2D-01A e plano de evolução |
 | `PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md` | ATIVO / PLANO DE EXTENSÕES | caminho 2D, extensão 2.5D/3D e separação dos workstreams futuros | normativo do editor e P2D-00 |
 | `ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md` | ATIVO / ESPECIALIZADO | IDs e evidências antes da Fase 4 | governança e plano |

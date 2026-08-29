@@ -12,7 +12,7 @@
 **Decisão P2D-02A:** docs/DECISAO_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
 **Evidência P2D-02A:** docs/EVIDENCIA_P2D_02A_ORDEM_CAMADAS_LOCKING_2026-08-29.md
 **Decisão P2D-02B:** docs/DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
-**Evidência P2D-02B (precommit):** docs/EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
+**Evidência P2D-02B:** docs/EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
 
 ## 1. Finalidade
 
@@ -80,7 +80,7 @@ P2D-02A foi aberto após auditoria do fluxo de usuária e cobre ordem visual efe
 
 ### 3.5 Abertura P2D-02B
 
-P2D-02B foi aberta a partir do checkpoint limpo `d152b214b1bccb717911001396936c1f93b23714`. A decisão técnica define a implementação de grupos, hierarquia/membership e isolamento exclusivamente no editor profissional, preservando o modelo legado, o schema V1 e os baselines imutáveis. A subetapa está `ACTIVE`; seu aceite depende dos critérios e evidências definidos em `DECISAO_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md`.
+P2D-02B foi aberta a partir do checkpoint limpo d152b214b1bccb717911001396936c1f93b23714 e fechada no commit af02f3ef513487bd176c939085fea0ca56a7da6b. A decisão técnica foi implementada exclusivamente no editor profissional, preservando o modelo legado, o schema V1 e os baselines imutáveis. A requalificação pós-commit, as auditorias Qt Windows/offscreen e a evidência aceita estão registradas em EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md.
 ## 4. Arquitetura de extensão 2.5D/3D
 
 ### 4.1 Núcleo estável
