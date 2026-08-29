@@ -4,8 +4,9 @@
 
 **Data:** 2026-08-29 (UTC-03)
 **Linha:** P2D-COMP-01 / P2D-01A
-**Estado:** GATE PRÉ-COMMIT PASS; COMMIT PENDENTE
-**Parent checkpoint:** `9cb39fbc629931b4e88d3108bca3319453277673`
+**Estado:** ACCEPTED — SUBETAPA FECHADA
+**Parent checkpoint:** 9cb39fbc629931b4e88d3108bca3319453277673
+**Commit P2D-01A:** e4af231c3c490245240d90e70857b98995446581
 **P2D-COMP-01:** OPEN — esta evidência não representa aceite do produto completo.
 
 ## 1. Decisão aplicada
@@ -32,6 +33,7 @@ A política aprovada no registro `DECISAO_P2D_01_ASSETS_ORIGINAIS_E_IMPORTACAO_2
 | testes | cobertura focada do contrato e atualização do caso que antes exigia rejeição externa |
 | scripts/audit_p2d_01_scene_assets.py | capturador focal com nomes atuais, overlay real e verificação de pixmap |
 | captura Windows 1:1 | PASS; 6 PNGs em três resoluções, 0 findings; manifest SHA-256 c5151733036c965e65469cb059dbb22a350b90a36d7e9506beed2c885b6d89b5 |
+| captura Windows pós-commit | PASS; 6/6 PNGs byte-identical ao pré-commit; manifest SHA-256 e20ccfa609e4b04558912b5f102368dabb29d8f97bebd900d118029794ce872b |
 
 Não foram alterados camada, ordem de desenho, seleção, gizmo, transformações, exportadores, colisão, NavMesh, entidades, iluminação, VFX, C3 ou gates G/V/B.
 
@@ -50,31 +52,25 @@ Não foram alterados camada, ordem de desenho, seleção, gizmo, transformaçõe
 | SVG original | PASS; viewport carrega dimensões e pinta SVG via `QSvgRenderer` |
 | Rollback de importação | registro da cena permanece transacional; cópia órfã não é apagada automaticamente |
 
-## 4. Resultado do gate visual pré-commit
+## 4. Resultado final da subetapa
 
-O gate visual pré-commit está PASS:
+P2D-01A está ACCEPTED e fechada:
 
-- o capturador focal executou em Windows com escala determinística 1:1;
+- o gate visual pré-commit executou em Windows com escala determinística 1:1;
 - as resoluções lógicas e físicas coincidiram em 1280x720, 1366x768 e 1920x1080;
 - Pillow/OpenCV, dimensões, transparência, SHA-256, clipping, geometria, overlap e paleta passaram;
 - o viewport carregou o asset como pixmap real de 180x120;
 - o overlay profissional foi ativado para exercer a cor interativa no estado real;
-- o auditor produziu 0 findings.
+- o auditor produziu 0 findings no pré-commit e 0 findings no pós-commit;
+- a comparação commit-to-commit produziu 6/6 PNGs byte-identical, sem delta visual fora do estado controlado;
+- a full suite pós-commit produziu 1768 passed, 2 skipped, 0 failed.
 
 A captura anterior em escala 200% permanece preservada como evidência de variância DPI e não foi usada para forçar PASS.
 
-## 4.1 Gates ainda obrigatórios
+### 4.1 Fechamento e próximo estágio
 
-P2D-01A ainda não deve ser declarado concluído. Faltam, nesta ordem:
+O commit e4af231c3c490245240d90e70857b98995446581 é o fechamento da subetapa P2D-01A. A subetapa seguinte é P2D-01B, ainda pendente, para biblioteca/UX de assets, lifecycle de relink/replace/missing e evidência de uso no produto. P2D-01 maior e P2D-COMP-01 continuam OPEN.
 
-1. revisão final do diff e boundary tracked;
-2. commit isolado da subetapa;
-3. requalificação pós-commit com full suite;
-4. nova captura Windows pós-commit e auditoria comparável;
-5. revisão humana da captura pós-commit;
-6. decisão formal de aceite da subetapa.
-
-O lote P2D-01 maior continuará aberto até a biblioteca/UX de assets e os diagnósticos de lifecycle definidos no plano também possuírem aceite próprio.
 ## 5. Não implementado por decisão de escopo
 
 Esta subetapa não adiciona tilesets/tilemaps, pincéis, balde, borracha, autotiling, grids isométricos/hexagonais, colliders de cenário, NavMesh, entidades/componentes/prefabs, iluminação, sombras, VFX, 2.5D ou 3D. Esses itens permanecem nas linhas independentes ou etapas posteriores documentadas.
