@@ -25,6 +25,7 @@ from src.core.operational_limits import (
 from src.persistence.project_schema import (
     MAX_ID_LENGTH,
     MAX_NAME_LENGTH,
+    MAX_PATH_LENGTH,
     Point3Record,
     PointRecord,
     StrictProjectModel,
@@ -73,6 +74,15 @@ class AssetReferenceRecord(StrictProjectModel):
     path: str = Field(min_length=1, max_length=32_768)
     path_kind: Literal["relative"] = "relative"
     sha256: str = Field(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")
+    # Optional non-portable provenance; never used to resolve project assets.
+    source_path: str | None = Field(default=None, max_length=MAX_PATH_LENGTH)
+
+    @field_validator("source_path")
+    @classmethod
+    def validate_source_path(cls, value: str | None) -> str | None:
+        if value is not None and (not value.strip() or chr(0) in value):
+            raise ValueError("asset source path must be non-empty and NUL-free")
+        return value
 
     @field_validator("path")
     @classmethod

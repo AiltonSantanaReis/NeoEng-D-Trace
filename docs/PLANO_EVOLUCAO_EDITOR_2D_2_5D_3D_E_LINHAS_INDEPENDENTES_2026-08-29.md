@@ -6,6 +6,8 @@
 **Data:** 2026-08-29 (UTC-03)
 **Documento normativo principal:** docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.md
 **Registro de adoção:** docs/EVIDENCIA_P2D_00_RECONCILIACAO_2026-08-29.md
+**Decisão P2D-01A:** docs/DECISAO_P2D_01_ASSETS_ORIGINAIS_E_IMPORTACAO_2026-08-29.md
+**Evidência P2D-01A:** docs/EVIDENCIA_P2D_01A_ASSETS_IMPORTACAO_E_RENDERIZACAO_2026-08-29.md
 
 ## 1. Finalidade
 
@@ -49,15 +51,23 @@ O usuário deve conseguir criar ou abrir uma composição, adicionar assets supo
 
 Nenhuma etapa posterior pode ser aceita enquanto a anterior estiver aberta, bloqueada ou rejeitada.
 
-### 3.3 Primeiro ponto de decisão de P2D-01
+### 3.3 Decisão aprovada de P2D-01
 
-Antes do código, deve ser escolhida e registrada a política para asset externo, porque ela afeta portabilidade e persistência:
+A política de assets foi aprovada e está registrada no documento de decisão P2D-01A. Ela afeta portabilidade e persistência e, portanto, passa a ser requisito obrigatório do código e dos testes:
 
-- copiar o asset para uma área controlada do projeto;
-- manter referência externa, com relink e diagnóstico explícitos;
-- rejeitar asset externo e explicar ao usuário o motivo.
+- copiar asset externo para a área controlada assets/scene/;
+- preservar source_path somente como provenance não resolvível;
+- manter apenas caminho relativo e SHA-256 no vínculo operacional da cena;
+- preservar referências já internas ao projeto sem duplicação;
+- rejeitar formato não suportado, conteúdo não decodificável, tamper e destino inseguro com diagnóstico explícito;
+- não incluir conteúdo de terceiros sem licença/provenance comprováveis.
 
-A implementação pode suportar mais de uma opção, mas o comportamento deve ser explícito, testado e consistente. Não haverá referência externa quebrada silenciosamente.
+P2D-01 será executado em subetapas fecháveis:
+
+- **P2D-01A:** contrato, importação controlada, hash, diagnostics e renderização real raster/SVG;
+- **P2D-01B:** biblioteca/UX de assets, lifecycle de relink/replace/missing e evidência de uso no produto.
+
+Nenhuma subetapa pode declarar P2D-01 completo antes de seu próprio código, testes, evidências, gates e revisão humana.
 
 ## 4. Arquitetura de extensão 2.5D/3D
 
@@ -176,7 +186,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começa formalmente em P2D-01 após P2D-00 ACCEPTED. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está em implementação pré-gate conforme sua decisão e evidência próprias; P2D-01B permanece pendente. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;

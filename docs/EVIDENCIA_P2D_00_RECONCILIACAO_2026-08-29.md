@@ -26,7 +26,7 @@ Nenhuma funcionalidade foi marcada como existente somente porque está planejada
 
 | Verificação | Resultado comprovado |
 |---|---|
-| Diretório | C:\Users\atnco\Pictures\NeoEng-D-Trace |
+| Diretório | <workspace-root> (caminho local omitido pelo gate de higiene) |
 | Branch | modernization/multiaxis-ui |
 | HEAD | 4824e7bf7b4a82dbf664485aed6b509c96d59851 |
 | Último commit | feat(mask-viewer): add isolated polygon editing tools |

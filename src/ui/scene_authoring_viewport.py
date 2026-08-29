@@ -2,13 +2,22 @@
 
 from __future__ import annotations
 
-import hashlib
 import math
 from pathlib import Path
 from typing import Iterable
 
 from PySide6.QtCore import QPointF, QRect, QRectF, Qt, Signal
-from PySide6.QtGui import QBrush, QColor, QPainter, QPen, QPolygonF, QTransform
+from PySide6.QtGui import (
+    QBrush,
+    QColor,
+    QImage,
+    QPainter,
+    QPen,
+    QPixmap,
+    QPolygonF,
+    QTransform,
+)
+from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
     QGraphicsItem,
     QGraphicsObject,
@@ -18,6 +27,12 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
+from src.core.scene_asset_library import (
+    SceneAssetError,
+    prepare_scene_asset,
+    resolve_scene_asset,
+    validate_scene_asset_source,
+)
 from src.core.scenario_preview import build_overlay_geometry
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.persistence.project_schema import Point3Record, PointRecord
@@ -28,16 +43,6 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
 )
 
-_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"}
-
-
-def _hash_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
 
 class SceneObjectGraphicsItem(QGraphicsObject):
     """Selectable, draggable visual representation of one authored object."""
@@ -46,10 +51,17 @@ class SceneObjectGraphicsItem(QGraphicsObject):
     moved = Signal(str, QPointF)
     released = Signal(str, QPointF)
 
-    def __init__(self, object_id: str, polygon: QPolygonF, parent=None) -> None:
+    def __init__(
+        self,
+        object_id: str,
+        polygon: QPolygonF,
+        pixmap: QPixmap | None = None,
+        parent=None,
+    ) -> None:
         super().__init__(parent)
         self.object_id = object_id
         self._polygon = polygon
+        self._pixmap = pixmap
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setAcceptHoverEvents(True)
         self._brush = QBrush(QColor("#2387b8"))
@@ -69,7 +81,16 @@ class SceneObjectGraphicsItem(QGraphicsObject):
 
     def paint(self, painter: QPainter, option, widget=None) -> None:
         del option, widget
-        painter.setBrush(self._brush)
+        if self._pixmap is not None:
+            painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
+            painter.drawPixmap(
+                self._polygon.boundingRect(),
+                self._pixmap,
+                QRectF(self._pixmap.rect()),
+            )
+            painter.setBrush(QBrush(Qt.BrushStyle.NoBrush))
+        else:
+            painter.setBrush(self._brush)
         painter.setPen(self._pen)
         painter.drawPolygon(self._polygon)
 
@@ -277,6 +298,8 @@ class SceneAuthoringViewport(QGraphicsView):
         self._gesture_layer_id: str | None = None
         self._gesture_mode: str | None = None
         self._gizmo_start: QPointF | None = None
+        self._asset_diagnostics: tuple[str, ...] = ()
+        self._last_asset_diagnostics: tuple[str, ...] = ()
         self.sync()
         self.session.subscribe(self._on_session_change)
 
@@ -406,6 +429,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self._items.clear()
         self._socket_items.clear()
         self._gizmo = None
+        diagnostics: list[str] = []
+        assets_by_id = {asset.id: asset for asset in self.session.document.assets}
+        pixmap_cache: dict[str, QPixmap | None] = {}
         for item in self.session.document.objects:
             layer = next(
                 (
@@ -417,7 +443,24 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             if not item.visible or (layer is not None and not layer.visible):
                 continue
-            visual = SceneObjectGraphicsItem(item.id, self._polygon_for(item.id))
+            pixmap: QPixmap | None = None
+            asset = assets_by_id.get(item.asset_id)
+            if asset is None:
+                diagnostics.append(f"{item.id}: asset record is missing")
+            elif asset.id not in pixmap_cache:
+                asset_path, issue = resolve_scene_asset(asset, self.project_root)
+                if issue is not None:
+                    diagnostics.append(f"{item.id}: {issue}")
+                else:
+                    try:
+                        pixmap_cache[asset.id] = self._load_asset_pixmap(asset_path)
+                    except (OSError, ValueError) as exc:
+                        diagnostics.append(f"{item.id}: {exc}")
+                        pixmap_cache[asset.id] = None
+            pixmap = pixmap_cache.get(asset.id) if asset is not None else None
+            visual = SceneObjectGraphicsItem(
+                item.id, self._polygon_for(item.id), pixmap
+            )
             visual.pressed.connect(self._object_pressed)
             visual.moved.connect(self._object_moved)
             visual.released.connect(self._object_released)
@@ -445,6 +488,13 @@ class SceneAuthoringViewport(QGraphicsView):
         self._refresh_transforms()
         self._refresh_selection()
         self._refresh_gizmo()
+        self._asset_diagnostics = tuple(dict.fromkeys(diagnostics))
+        if self._asset_diagnostics != self._last_asset_diagnostics:
+            self._last_asset_diagnostics = self._asset_diagnostics
+            if self._asset_diagnostics:
+                self.status_message.emit(
+                    "Scene asset diagnostics: " + " | ".join(self._asset_diagnostics)
+                )
 
     def _refresh_transforms(self) -> None:
         by_id = {item.id: item for item in self.session.document.objects}
@@ -683,23 +733,19 @@ class SceneAuthoringViewport(QGraphicsView):
             event.ignore()
             return
         path = paths[0].resolve(strict=False)
-        if path.suffix.lower() not in _IMAGE_SUFFIXES:
-            self.status_message.emit("Unsupported scene asset format")
-            event.ignore()
-            return
         if self.project_root is None:
             self.status_message.emit("Save the project before importing scene assets")
             event.ignore()
             return
         try:
-            relative = path.relative_to(self.project_root)
-            if not path.is_file():
-                raise ValueError("asset file does not exist")
-            digest = _hash_file(path)
-            asset_id = "asset_" + digest[:16]
+            source = validate_scene_asset_source(path)
+            # Decode before copying so invalid content never enters the project.
+            self._image_size(source)
+            prepared = prepare_scene_asset(source, self.project_root)
+            width, height = self._image_size(prepared.resolved_path)
+            asset_id = "asset_" + prepared.sha256[:16]
             layer_id = self.session.document.layers[0].id
             object_id = asset_id
-            width, height = self._image_size(path)
             while asset_id in {asset.id for asset in self.session.document.assets}:
                 asset_id += "_1"
             while object_id in {item.id for item in self.session.document.objects}:
@@ -708,8 +754,9 @@ class SceneAuthoringViewport(QGraphicsView):
             scene_pos = self.mapToScene(position.toPoint())
             asset = AssetReferenceRecord(
                 id=asset_id,
-                path=relative.as_posix(),
-                sha256=digest,
+                path=prepared.path,
+                sha256=prepared.sha256,
+                source_path=prepared.source_path,
             )
             obj = SceneObjectAuthoringRecord(
                 id=object_id,
@@ -738,18 +785,36 @@ class SceneAuthoringViewport(QGraphicsView):
             self.selection_changed.emit()
             self.status_message.emit(f"Imported {path.name}")
             event.acceptProposedAction()
-        except (OSError, ValueError) as exc:
+        except (OSError, ValueError, SceneAssetError) as exc:
             self.status_message.emit(str(exc))
             event.ignore()
 
     @staticmethod
-    def _image_size(path: Path) -> tuple[float, float]:
-        from PySide6.QtGui import QImage
-
+    def _load_asset_pixmap(path: Path) -> QPixmap:
+        if path.suffix.lower() == ".svg":
+            renderer = QSvgRenderer(str(path))
+            if not renderer.isValid():
+                raise ValueError("asset SVG could not be decoded")
+            size = renderer.defaultSize()
+            width, height = max(1, size.width()), max(1, size.height())
+            pixmap = QPixmap(width, height)
+            pixmap.fill(Qt.GlobalColor.transparent)
+            painter = QPainter(pixmap)
+            renderer.render(painter)
+            painter.end()
+            return pixmap
         image = QImage(str(path))
         if image.isNull():
             raise ValueError("asset image could not be decoded")
-        return float(max(1, image.width())), float(max(1, image.height()))
+        pixmap = QPixmap.fromImage(image)
+        if pixmap.isNull():
+            raise ValueError("asset image could not be converted for rendering")
+        return pixmap
+
+    @classmethod
+    def _image_size(cls, path: Path) -> tuple[float, float]:
+        pixmap = cls._load_asset_pixmap(path)
+        return float(max(1, pixmap.width())), float(max(1, pixmap.height()))
 
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)

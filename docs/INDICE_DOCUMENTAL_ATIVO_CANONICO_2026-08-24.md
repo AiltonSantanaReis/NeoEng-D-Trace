@@ -31,6 +31,8 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | arquitetura, renderer, 2.5D, 3D e encerramento | governança |
 | `NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.md` | ATIVO / PREVALENTE PARA P2D-COMP-01 | contrato, requisitos, ordem, gates e aceite do editor de composição 2D | governança, C3 e decisões aprovadas |
 | `EVIDENCIA_P2D_00_RECONCILIACAO_2026-08-29.md` | ATIVO / EVIDÊNCIA ACEITA | reconciliação do checkout, P2D-00 e abertura das linhas futuras | normativo do editor e baseline local |
+| `DECISAO_P2D_01_ASSETS_ORIGINAIS_E_IMPORTACAO_2026-08-29.md` | ATIVO / DECISÃO APROVADA | política de assets originais, cópia controlada e provenance | normativo do editor e P2D-00 |
+| `EVIDENCIA_P2D_01A_ASSETS_IMPORTACAO_E_RENDERIZACAO_2026-08-29.md` | ATIVO / EVIDÊNCIA PRÉ-GATE | implementação e testes de P2D-01A | decisão P2D-01A e plano de evolução |
 | `PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md` | ATIVO / PLANO DE EXTENSÕES | caminho 2D, extensão 2.5D/3D e separação dos workstreams futuros | normativo do editor e P2D-00 |
 | `ADENDO_NORMATIVO_AUTOMACAO_E_IDS_2026-08-24.md` | ATIVO / ESPECIALIZADO | IDs e evidências antes da Fase 4 | governança e plano |
 | `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` | ATIVO | índice normativo de referência mantido para continuidade documental | este índice prevalece em conflito |
