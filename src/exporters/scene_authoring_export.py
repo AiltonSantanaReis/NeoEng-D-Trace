@@ -247,6 +247,7 @@ def build_scene_authoring_export(
     if target not in _CAPABILITIES:
         raise SceneAuthoringExportError("unsupported scene export target")
     validated = SceneAuthoringDocumentV2.model_validate(document, strict=True)
+    scene_payload: dict[str, Any] = validated.model_dump(mode="json")
     payload = {
         "format_id": SCENE_EXPORT_FORMAT_ID,
         "schema_version": SCENE_EXPORT_SCHEMA_VERSION,
@@ -262,11 +263,11 @@ def build_scene_authoring_export(
             "supported": list(_CAPABILITIES[target]["supported"]),
             "unsupported": list(_CAPABILITIES[target]["unsupported"]),
         },
-        "scene": validated.model_dump(mode="json"),
+        "scene": scene_payload,
     }
     # ``source_path`` is local authoring metadata and must never cross the
     # portable export boundary. Consumers resolve only the safe relative path.
-    for asset in payload["scene"]["assets"]:
+    for asset in scene_payload["assets"]:
         asset.pop("source_path", None)
     _validate_export(payload)
     return payload

@@ -29,7 +29,10 @@ from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
-from src.exporters.scene_authoring_export import save_scene_authoring_export
+from src.exporters.scene_authoring_export import (
+    SceneExportTarget,
+    save_scene_authoring_export,
+)
 from src.persistence.scene_authoring_io import (
     SceneAuthoringAssetError,
     SceneAuthoringFormatError,
@@ -601,7 +604,10 @@ class ScenarioEditorWindow(QMainWindow):
         if self.professional_session is None or self._professional_project is None:
             self.status_label.setText("Save a project before exporting the scenario")
             return False
-        target = str(self.export_target_combo.currentData() or "generic")
+        target_value = self.export_target_combo.currentData()
+        target: SceneExportTarget = (
+            target_value if target_value in {"generic", "godot", "unity"} else "generic"
+        )
         destination = self._professional_project.with_suffix(
             ".ndtscene.runtime.json"
             if target == "generic"

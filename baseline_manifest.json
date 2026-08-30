@@ -10985,8 +10985,8 @@
       "size": 9339
     },
     "src/exporters/scene_authoring_export.py": {
-      "sha256": "eeab96f3f9b2a78d2b55e8673361b8e2bb87f131766f7b67e39c745dcd4ce422",
-      "size": 11754
+      "sha256": "3cbf871811174bed167d133587e20814244daec2faed1096c7620702a66e83ae",
+      "size": 11801
     },
     "src/exporters/sprite_exporter.py": {
       "sha256": "9cd55c379fe0fd12c1ff194e42dfb7efc0fc703572730e32b1749797f836b5c4",
@@ -11269,8 +11269,8 @@
       "size": 9755
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "f1e41ebced730ca3ccac4ef65b7d39eed5be1daedf16bc8be50553a67140fb34",
-      "size": 34559
+      "sha256": "1280508d7df96d7b33598d2dc375d60607d4183544b6d244b0512d3841652be6",
+      "size": 34716
     },
     "src/ui/scenario_panel.py": {
       "sha256": "3589d5f4d83d9e42ca51e7a79d75976ac4a4eb1eb23c7ab624371b7edf50650a",
