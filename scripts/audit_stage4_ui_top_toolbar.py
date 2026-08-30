@@ -1,9 +1,10 @@
 """Run the reproducible Stage 4 top-toolbar audit.
 
-The audit exercises the real ``MainWindow`` and records both structural Qt
-facts and PNG captures. A green result requires action identity, menu
-identity, native separator boundaries, accessibility metadata and successful
-execution of the existing visual-audit pipeline.
+The audit exercises the real ``MainWindow`` and records the semantic Stage 4
+command-family contract plus PNG captures. A green result requires stable
+command-group membership, action/menu identity, accessibility metadata and
+successful execution of the existing visual-audit pipeline. Physical legacy
+``QToolBar`` geometry and parentage are deliberately not product contracts.
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ from typing import Any
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtWidgets import QApplication, QWidgetAction  # noqa: E402
+from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from scripts.audit_ui_capture import AuditConfig  # noqa: E402
 from src.models.scene import Scene  # noqa: E402
@@ -91,17 +92,6 @@ def _run(command: list[str], log_name: str) -> dict[str, Any]:
     }
 
 
-def _toolbar_objects(toolbar):
-    objects = []
-    for action in toolbar.actions():
-        if action.isSeparator():
-            continue
-        if isinstance(action, QWidgetAction):
-            objects.append(action.defaultWidget())
-        else:
-            objects.append(action)
-    return objects
-
 
 def _live_contract() -> dict[str, Any]:
     app = QApplication.instance() or QApplication(sys.argv)
@@ -111,14 +101,60 @@ def _live_contract() -> dict[str, Any]:
     app.processEvents()
     failures: list[str] = []
 
-    groups = window.top_toolbar_groups
-    expected_main = [
-        item for name in ("file", "edit", "view", "export") for item in groups[name]
-    ]
-    if _toolbar_objects(window.toolbar) != expected_main:
-        failures.append("main toolbar group order or membership drifted")
-    if sum(action.isSeparator() for action in window.toolbar.actions()) != 3:
-        failures.append("main toolbar does not have three native group boundaries")
+    contract = window.top_command_contract
+    groups = contract.as_mapping()
+    descriptor = contract.descriptor()
+    expected_order = ("file", "edit", "view", "export", "context", "render")
+    expected_roles = {
+        "file": "commands",
+        "edit": "commands",
+        "view": "commands",
+        "export": "commands",
+        "context": "context",
+        "render": "render",
+    }
+    if contract.group_names() != expected_order:
+        failures.append("semantic command group order drifted")
+    if descriptor.get("group_roles") != expected_roles:
+        failures.append("semantic command group roles drifted")
+
+    expected_groups = {
+        "file": (
+            window.open_project_action,
+            window.open_image_action,
+            window.save_project_action,
+            window.save_project_as_action,
+        ),
+        "edit": (window.undo_action, window.redo_action, window.settings_action),
+        "view": (
+            window.mask_viewer_action,
+            window.collision_overlay_action,
+            window.act_fit,
+            window.act_100,
+            window.act_grid,
+            window.act_snap,
+        ),
+        "export": (
+            window.act_export,
+            window.act_export_collision_json,
+            window.act_export_collision_txt,
+        ),
+        "context": (
+            window.act_gizmo,
+            window.tool_palette.navigation_actions["focus_selected"],
+            window.act_clean,
+            window.language_action,
+        ),
+        "render": (
+            window.act_lit,
+            window.act_xray1,
+            window.act_xray2,
+            window.act_xray3,
+        ),
+    }
+    for name, expected in expected_groups.items():
+        if contract.items(name) != expected:
+            failures.append(f"semantic command membership/order drifted: {name}")
 
     if window.undo_action not in window.edit_menu.actions():
         failures.append("Undo QAction is not shared with Edit menu")
@@ -128,6 +164,8 @@ def _live_contract() -> dict[str, Any]:
         failures.append("Mask Viewer QAction is not shared with View menu")
     if window.collision_overlay_action not in window.view_menu.actions():
         failures.append("Collision Overlay QAction is not shared with View menu")
+    if window.language_action not in window.view_menu.actions():
+        failures.append("Language QAction is not shared with View menu")
 
     action_records: dict[str, Any] = {}
     for name in (
@@ -160,16 +198,6 @@ def _live_contract() -> dict[str, Any]:
         ):
             failures.append(f"action metadata/icon incomplete: {name}")
 
-    for name, toolbar in (
-        ("main_toolbar", window.toolbar),
-        ("navigation_toolbar", window.nav_toolbar),
-        ("xray_toolbar", window.xray_toolbar),
-    ):
-        if toolbar.property("toolbarStage") != "stage4":
-            failures.append(f"missing Stage 4 marker: {name}")
-        if toolbar.isMovable() or toolbar.isFloatable():
-            failures.append(f"toolbar unexpectedly movable: {name}")
-
     identities_before = (window.undo_action, window.mask_viewer_action, window.act_fit)
     window.set_language("pt")
     app.processEvents()
@@ -185,19 +213,13 @@ def _live_contract() -> dict[str, Any]:
     ):
         failures.append("menu identity was lost during language update")
 
-    records = {
-        name: {
-            "object_name": toolbar.objectName(),
-            "role": toolbar.property("toolbarRole"),
-            "geometry": [toolbar.x(), toolbar.y(), toolbar.width(), toolbar.height()],
-            "action_count": len([a for a in toolbar.actions() if not a.isSeparator()]),
-            "separator_count": sum(a.isSeparator() for a in toolbar.actions()),
+    group_records = {
+        group.name: {
+            "role": group.role,
+            "item_count": len(group.items),
+            "item_types": [type(item).__name__ for item in group.items],
         }
-        for name, toolbar in (
-            ("main_toolbar", window.toolbar),
-            ("navigation_toolbar", window.nav_toolbar),
-            ("xray_toolbar", window.xray_toolbar),
-        )
+        for group in contract.groups
     }
     window.close()
     app.processEvents()
@@ -205,8 +227,8 @@ def _live_contract() -> dict[str, Any]:
         "status": "PASS" if not failures else "FAIL",
         "failure_count": len(failures),
         "failures": failures,
-        "contract": window.top_toolbar_contract,
-        "toolbars": records,
+        "contract": descriptor,
+        "groups": group_records,
         "actions": action_records,
     }
 

@@ -36,7 +36,6 @@ class ResponsivePanelLayout:
         reference_tool_palette,
         desktop_panel_splitter,
         right_splitter,
-        toolbar,
         side_panel,
         layers,
         groups,
@@ -50,7 +49,6 @@ class ResponsivePanelLayout:
         self.reference_tool_palette = reference_tool_palette
         self.desktop_panel_splitter = desktop_panel_splitter
         self.right_splitter = right_splitter
-        self.toolbar = toolbar
         self.side_panel = side_panel
         self.layers = layers
         self.groups = groups
@@ -73,7 +71,6 @@ class ResponsivePanelLayout:
             self._move_panels_to_desktop()
             self.panel_stack.setCurrentWidget(self.desktop_panel_splitter)
 
-        self.toolbar.setVisible(not compact)
         self._set_reference_toolbar_mode(compact)
         self.is_compact = compact
         self.owner._compact_layout = compact
@@ -124,9 +121,7 @@ class ResponsivePanelLayout:
             search.setMinimumWidth(180 if compact else 260)
             search.setMaximumWidth(240 if compact else 440)
 
-        focus_button = getattr(self.owner, "reference_focus_button", None) or getattr(
-            self.owner, "focus_button", None
-        )
+        focus_button = getattr(self.owner, "reference_focus_button", None)
         if focus_button is not None:
             focus_button.setText("Focus")
 
@@ -244,6 +239,17 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     desktop_panel_splitter.addWidget(reference_panel_tabs)
 
     compact_panel_tabs = QTabWidget()
+    compact_panel_tabs.setObjectName("compact_panel_tabs")
+    compact_panel_tabs.setAccessibleName("Compact inspector panel tabs")
+    compact_panel_tabs.setAccessibleDescription(
+        "Switch between objects, layers, groups and collision panels"
+    )
+    compact_panel_tabs.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+    compact_panel_tabs.tabBar().setAccessibleName("Compact inspector panel tabs")
+    compact_panel_tabs.tabBar().setAccessibleDescription(
+        "Switch between objects, layers, groups and collision panels"
+    )
+    compact_panel_tabs.tabBar().setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     compact_panel_tabs.setDocumentMode(True)
     compact_panel_tabs.setElideMode(Qt.TextElideMode.ElideRight)
     compact_panel_tabs.setSizePolicy(
@@ -292,7 +298,6 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
         reference_tool_palette=owner.reference_tool_palette,
         desktop_panel_splitter=desktop_panel_splitter,
         right_splitter=right_splitter,
-        toolbar=owner.toolbar,
         side_panel=owner.side_panel,
         layers=owner.layers,
         groups=owner.groups,

@@ -9,6 +9,11 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMessageBox
 
 from src.core.scenario_authoring import ScenarioAuthoringState
+from src.core.scene_authoring_bridge import (
+    preview_camera_from_professional_document,
+    preview_layers_from_professional_document,
+)
+from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
@@ -17,6 +22,12 @@ def _report(window: Any, title: str, message: str) -> None:
 
 
 def _save(window: Any) -> bool:
+    editor = _open_professional_editor(window)
+    if editor is not None and editor.professional_session is not None:
+        if not editor._save_professional():
+            return False
+        window.statusBar().showMessage("Scenario saved successfully.", 5000)
+        return True
     try:
         window.scenario_authoring.save()
     except Exception as exc:
@@ -27,6 +38,12 @@ def _save(window: Any) -> bool:
 
 
 def _load(window: Any) -> bool:
+    editor = _open_professional_editor(window, only_if_canonical=True)
+    if editor is not None and editor.professional_session is not None:
+        if not editor._load_professional():
+            return False
+        window.statusBar().showMessage("Scenario loaded successfully.", 5000)
+        return True
     try:
         window.scenario_authoring.load()
     except Exception as exc:
@@ -50,6 +67,11 @@ def _reset(window: Any) -> bool:
     except Exception as exc:
         _report(window, "Scenario reset failed", str(exc))
         return False
+    editor = _open_professional_editor(window, only_if_canonical=True)
+    if editor is not None and editor.professional_session is not None:
+        if not editor._reset_professional():
+            return False
+    window.statusBar().showMessage("Scenario reset successfully.", 5000)
     return True
 
 
@@ -57,6 +79,22 @@ def _sync_preview(window: Any) -> None:
     state = window.scenario_authoring
     if not state.is_available:
         window.canvas.set_scenario_preview_layers(())
+        return
+    try:
+        document = _professional_document(window)
+    except Exception as exc:
+        window.canvas.set_scenario_preview_layers(())
+        window.statusBar().showMessage(f"Scenario preview unavailable: {exc}", 5000)
+        return
+    if document is not None:
+        viewport = (float(window.canvas.width()), float(window.canvas.height()))
+        window.canvas.set_scenario_preview_layers(
+            preview_layers_from_professional_document(document)
+        )
+        window.canvas.set_scenario_camera(
+            preview_camera_from_professional_document(document, viewport)
+        )
+        window.canvas.update()
         return
     window.canvas.set_scenario_preview_layers(state.preview_layers())
     window.canvas.set_scenario_camera(
@@ -67,7 +105,32 @@ def _sync_preview(window: Any) -> None:
     window.canvas.update()
 
 
+def _professional_document(window: Any):
+    """Return the active or persisted V2 document, if one exists."""
+
+    state = window.scenario_authoring
+    editor = getattr(window, "scenario_editor_window", None)
+    session = getattr(editor, "professional_session", None)
+    if (
+        session is not None
+        and getattr(editor, "_professional_project", None) == state.project_path
+    ):
+        return session.document
+    if state.project_path is None:
+        return None
+    path = state.project_path.with_suffix(".ndtscene.json")
+    if path.is_file():
+        return load_scene_authoring_v2(path)
+    return None
+
+
 def _export(window: Any) -> bool:
+    editor = _open_professional_editor(window, only_if_canonical=True)
+    if editor is not None and editor.professional_session is not None:
+        if not editor._export_professional():
+            return False
+        window.statusBar().showMessage("Scenario runtime export completed.", 5000)
+        return True
     try:
         destination = window.scenario_authoring.export_runtime()
     except Exception as exc:
@@ -77,6 +140,26 @@ def _export(window: Any) -> bool:
         f"Scenario runtime export written to {destination.name}.", 5000
     )
     return True
+
+
+def _open_professional_editor(
+    window: Any,
+    *,
+    only_if_canonical: bool = False,
+) -> Any:
+    """Return the V2 editor, opening it when the canonical flow is available."""
+
+    state = window.scenario_authoring
+    if not state.is_available:
+        return None
+    canonical_path = state.project_path.with_suffix(".ndtscene.json")
+    editor = getattr(window, "scenario_editor_window", None)
+    if only_if_canonical and editor is None and not canonical_path.is_file():
+        return None
+    if editor is None:
+        window.open_scenario_editor()
+        editor = getattr(window, "scenario_editor_window", None)
+    return editor
 
 
 def install_scenario_authoring(window: Any) -> None:
@@ -101,6 +184,7 @@ def install_scenario_authoring(window: Any) -> None:
                 parent=window,
             )
             window.scenario_editor_window = editor
+            editor.document_changed.connect(lambda: _sync_preview(window))
         editor.show()
         editor.raise_()
         editor.activateWindow()

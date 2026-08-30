@@ -5,12 +5,25 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Iterable
 
-from src.core.scene_authoring_model import SceneAuthoringModel, SceneSelection
-from src.persistence.project_schema import Point3Record
+from src.core.scene_authoring_clipboard import (
+    SceneClipboardGroupRecord,
+    decode_scene_clipboard,
+    encode_scene_clipboard,
+)
+from src.core.scene_authoring_model import (
+    SceneAuthoringModel,
+    SceneSelection,
+    snap_transform,
+)
+from src.core.scene_authoring_order import ordered_scene_objects
+from src.persistence.project_schema import MAX_ID_LENGTH, MAX_NAME_LENGTH, Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocument,
+    SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
+    SceneGroupAuthoringRecord,
+    SceneGroupAuthoringRecordV2,
     SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
@@ -33,6 +46,29 @@ class _HistoryEntry:
     description: str
 
 
+_DEFAULT_EDIT_OFFSET = Point3Record(x=16.0, y=16.0, z=0.0)
+
+
+def _allocate_copy_id(source_id: str, used: set[str]) -> str:
+    """Allocate a valid deterministic ID without colliding in the document."""
+
+    suffix = "__copy"
+    candidate = (source_id[: MAX_ID_LENGTH - len(suffix)] + suffix)[:MAX_ID_LENGTH]
+    index = 2
+    while candidate in used:
+        suffix = f"__copy_{index}"
+        candidate = (source_id[: MAX_ID_LENGTH - len(suffix)] + suffix)[:MAX_ID_LENGTH]
+        index += 1
+    used.add(candidate)
+    return candidate
+
+
+def _copy_group_name(name: str) -> str:
+    suffix = " Copy"
+    prefix = name[: max(1, MAX_NAME_LENGTH - len(suffix))]
+    return (prefix + suffix)[:MAX_NAME_LENGTH]
+
+
 class SceneAuthoringSession:
     """Transactional facade used by the viewport and numeric inspector."""
 
@@ -45,6 +81,7 @@ class SceneAuthoringSession:
         self._redo: list[_HistoryEntry] = []
         self._listeners: list[Callable[[], None]] = []
         self._gesture_before: SceneAuthoringSnapshot | None = None
+        self._isolated_group_id: str | None = None
         self._saved_document = self.document.model_copy(deep=True)
 
     @property
@@ -88,6 +125,10 @@ class SceneAuthoringSession:
             self._listeners.append(callback)
 
     def _notify(self) -> None:
+        if self._isolated_group_id is not None and not any(
+            item.id == self._isolated_group_id for item in self.document.groups
+        ):
+            self._isolated_group_id = None
         for callback in list(self._listeners):
             callback()
 
@@ -231,6 +272,12 @@ class SceneAuthoringSession:
             "Import scene asset",
         )
 
+    def update_asset(self, asset: AssetReferenceRecord) -> bool:
+        return self.apply(
+            lambda: self.model.update_asset(asset),
+            "Update scene asset",
+        )
+
     def add_object(
         self,
         obj: SceneObjectAuthoringRecord,
@@ -247,6 +294,180 @@ class SceneAuthoringSession:
             lambda: self.model.remove_object(object_id),
             "Remove scene object",
         )
+
+    def _selected_objects_in_document_order(
+        self,
+    ) -> tuple[SceneObjectAuthoringRecord, ...]:
+        selected = set(self.selection.ids)
+        objects = tuple(
+            item for item in ordered_scene_objects(self.document) if item.id in selected
+        )
+        if len(objects) != len(selected):
+            missing = next(
+                item for item in selected if item not in {obj.id for obj in objects}
+            )
+            raise KeyError(missing)
+        return objects
+
+    def nudge_selected(self, delta: Point3Record) -> bool:
+        """Move the current selection through the existing transactional path."""
+
+        return self.translate_selected(delta, "Nudge selected objects")
+
+    def duplicate_selected(
+        self,
+        offset: Point3Record = _DEFAULT_EDIT_OFFSET,
+    ) -> tuple[str, ...]:
+        """Duplicate selection as independent objects with deterministic IDs."""
+
+        selected = self._selected_objects_in_document_order()
+        if not selected:
+            return ()
+        created: list[str] = []
+
+        def operation() -> None:
+            for item in selected:
+                self.model.assert_editable(item.id)
+            used = {item.id for item in self.document.objects}
+            for item in selected:
+                object_id = _allocate_copy_id(item.id, used)
+                position = Point3Record(
+                    x=item.transform.position.x + offset.x,
+                    y=item.transform.position.y + offset.y,
+                    z=item.transform.position.z + offset.z,
+                )
+                transform = snap_transform(
+                    item.transform.model_copy(update={"position": position}),
+                    self.document.snap,
+                )
+                self.model.add_object(
+                    item.model_copy(update={"id": object_id, "transform": transform})
+                )
+                created.append(object_id)
+            self.model.set_selection(created, created[-1])
+
+        self.apply(operation, "Duplicate selected objects")
+        return tuple(created)
+
+    def delete_selected(self) -> bool:
+        """Delete the complete selection after atomic lock preflight."""
+
+        ids = tuple(self.selection.ids)
+        if not ids:
+            return False
+        return self.apply(
+            lambda: self.model.remove_objects(ids),
+            "Delete selected objects",
+        )
+
+    def copy_selected_payload(self) -> bytes | None:
+        """Return a strict clipboard payload without mutating document state."""
+
+        objects = list(self._selected_objects_in_document_order())
+        if not objects:
+            return None
+        object_ids = {item.id for item in objects}
+        complete_groups = [
+            group
+            for group in self.document.groups
+            if group.members and set(group.members).issubset(object_ids)
+        ]
+        complete_group_ids = {group.id for group in complete_groups}
+        groups = [
+            SceneClipboardGroupRecord(
+                id=group.id,
+                name=group.name,
+                members=list(group.members),
+                visible=group.visible,
+                locked=group.locked,
+                parent_group_id=(
+                    getattr(group, "parent_group_id", None)
+                    if getattr(group, "parent_group_id", None) in complete_group_ids
+                    else None
+                ),
+            )
+            for group in complete_groups
+        ]
+        return encode_scene_clipboard(objects, groups)
+
+    def paste_payload(
+        self,
+        value: bytes | bytearray,
+        offset: Point3Record = _DEFAULT_EDIT_OFFSET,
+    ) -> tuple[str, ...]:
+        """Paste a validated payload atomically, allocating new identities."""
+
+        payload = decode_scene_clipboard(value)
+        created: list[str] = []
+
+        def operation() -> None:
+            asset_ids = {item.id for item in self.document.assets}
+            layer_ids = {item.id for item in self.document.layers}
+            for item in payload.objects:
+                if item.asset_id not in asset_ids:
+                    raise ValueError(f"asset {item.asset_id!r} is not available")
+                if item.layer_id not in layer_ids:
+                    raise ValueError(f"layer {item.layer_id!r} is not available")
+            if payload.groups and not isinstance(
+                self.document, SceneAuthoringDocumentV2
+            ):
+                if any(group.parent_group_id is not None for group in payload.groups):
+                    raise ValueError("nested group paste requires schema V2")
+
+            used_objects = {item.id for item in self.document.objects}
+            object_id_map: dict[str, str] = {}
+            for item in payload.objects:
+                object_id = _allocate_copy_id(item.id, used_objects)
+                object_id_map[item.id] = object_id
+                position = Point3Record(
+                    x=item.transform.position.x + offset.x,
+                    y=item.transform.position.y + offset.y,
+                    z=item.transform.position.z + offset.z,
+                )
+                transform = snap_transform(
+                    item.transform.model_copy(update={"position": position}),
+                    self.document.snap,
+                )
+                self.model.add_object(
+                    item.model_copy(update={"id": object_id, "transform": transform})
+                )
+                created.append(object_id)
+
+            used_groups = {group.id for group in self.document.groups}
+            group_id_map = {
+                group.id: _allocate_copy_id(group.id, used_groups)
+                for group in payload.groups
+            }
+            for group in payload.groups:
+                members = [object_id_map[item] for item in group.members]
+                parent_id = (
+                    group_id_map.get(group.parent_group_id)
+                    if group.parent_group_id is not None
+                    else None
+                )
+                record: SceneGroupAuthoringRecord
+                if isinstance(self.document, SceneAuthoringDocumentV2):
+                    record = SceneGroupAuthoringRecordV2(
+                        id=group_id_map[group.id],
+                        name=_copy_group_name(group.name),
+                        members=members,
+                        visible=group.visible,
+                        locked=group.locked,
+                        parent_group_id=parent_id,
+                    )
+                else:
+                    record = SceneGroupAuthoringRecord(
+                        id=group_id_map[group.id],
+                        name=_copy_group_name(group.name),
+                        members=members,
+                        visible=group.visible,
+                        locked=group.locked,
+                    )
+                self.model.add_group(record)
+            self.model.set_selection(created, created[-1])
+
+        self.apply(operation, "Paste scene objects")
+        return tuple(created)
 
     def set_snap(self, snap: SceneSnapRecord) -> bool:
         return self.apply(
@@ -334,6 +555,94 @@ class SceneAuthoringSession:
         self._undo.append(entry)
         self._notify()
         return True
+
+    @property
+    def isolated_group_id(self) -> str | None:
+        """Return the transient group currently isolated in the viewport."""
+
+        return self._isolated_group_id
+
+    def set_isolated_group(self, group_id: str | None) -> bool:
+        if group_id is not None and not any(
+            item.id == group_id for item in self.document.groups
+        ):
+            raise KeyError(group_id)
+        if self._isolated_group_id == group_id:
+            return False
+        self._isolated_group_id = group_id
+        self._notify()
+        return True
+
+    def clear_isolation(self) -> bool:
+        return self.set_isolated_group(None)
+
+    def add_group(self, group: SceneGroupAuthoringRecord) -> bool:
+        return self.apply(
+            lambda: self.model.add_group(group),
+            "Create scene group",
+        )
+
+    def group_selection(self, group: SceneGroupAuthoringRecord) -> bool:
+        return self.apply(
+            lambda: self.model.group_selection(group),
+            "Group selected objects",
+        )
+
+    def remove_group(self, group_id: str) -> bool:
+        return self.apply(
+            lambda: self.model.remove_group(group_id),
+            "Delete scene group",
+        )
+
+    def rename_group(self, group_id: str, name: str) -> bool:
+        return self.apply(
+            lambda: self.model.rename_group(group_id, name),
+            "Rename scene group",
+        )
+
+    def reorder_group(self, group_id: str, target_index: int) -> bool:
+        return self.apply(
+            lambda: self.model.reorder_group(group_id, target_index),
+            "Reorder scene group",
+        )
+
+    def set_group_parent(self, group_id: str, parent_group_id: str | None) -> bool:
+        return self.apply(
+            lambda: self.model.set_group_parent(group_id, parent_group_id),
+            "Reparent scene group",
+        )
+
+    def set_group_visibility(self, group_id: str, visible: bool) -> bool:
+        return self.apply(
+            lambda: self.model.set_group_visibility(group_id, visible),
+            "Set scene group visibility",
+        )
+
+    def set_group_locked(self, group_id: str, locked: bool) -> bool:
+        return self.apply(
+            lambda: self.model.set_group_locked(group_id, locked),
+            "Set scene group lock",
+        )
+
+    def add_objects_to_group(
+        self,
+        group_id: str,
+        object_ids: Iterable[str],
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.add_objects_to_group(group_id, object_ids),
+            "Add objects to scene group",
+        )
+
+    def remove_objects_from_group(
+        self,
+        group_id: str,
+        object_ids: Iterable[str],
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.remove_objects_from_group(group_id, object_ids),
+            "Remove objects from scene group",
+        )
 
     def clear_history(self) -> None:
         self._undo.clear()

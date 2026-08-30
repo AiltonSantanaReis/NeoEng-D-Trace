@@ -204,7 +204,9 @@ def test_viewport_inspector_and_drop_import_are_interactive(
         qt_app.processEvents()
 
 
-def test_viewport_rejects_outside_and_unsupported_drop(tmp_path: Path, qt_app) -> None:
+def test_viewport_copies_outside_and_rejects_unsupported_drop(
+    tmp_path: Path, qt_app
+) -> None:
     project = tmp_path / "scene.ndtproj"
     project.write_bytes(b"project bytes")
     outside = tmp_path.parent / "outside-stage3.txt"
@@ -229,8 +231,14 @@ def test_viewport_rejects_outside_and_unsupported_drop(tmp_path: Path, qt_app) -
                 Qt.KeyboardModifier.NoModifier,
             )
             viewport.dropEvent(event)
-        assert len(session.document.assets) == 1
-        assert len(session.document.objects) == 2
+        assert len(session.document.assets) == 2
+        copied = next(
+            item for item in session.document.assets if item.source_path is not None
+        )
+        assert copied.path.startswith("assets/scene/")
+        assert copied.source_path == str(outside_image.resolve())
+        assert (tmp_path / copied.path).is_file()
+        assert len(session.document.objects) == 3
     finally:
         viewport.close()
         qt_app.processEvents()
@@ -259,6 +267,8 @@ def test_window_binds_professional_editor_only_after_saved_project(
         window.show()
         qt_app.processEvents()
         assert window.professional_viewport is not None
+        assert window.professional_viewport.hasFocus()
+        assert window.focusWidget() is window.professional_viewport
         assert window.professional_inspector is not None
         assert isinstance(window.right_pages.currentWidget(), QScrollArea)
         assert (

@@ -30,34 +30,25 @@ def _window(qt_app: QApplication) -> MainWindow:
     return window
 
 
-def _toolbar_objects(toolbar):
-    objects = []
-    for action in toolbar.actions():
-        if action.isSeparator():
-            continue
-        if isinstance(action, QWidgetAction):
-            objects.append(action.defaultWidget())
-        else:
-            objects.append(action)
-    return objects
-
-
-def test_stage4_groups_are_native_and_action_backed(qt_app):
+def test_stage4_groups_are_semantic_and_action_backed(qt_app):
     window = _window(qt_app)
     try:
-        contract = window.top_toolbar_contract
-        assert contract == {
+        contract = window.top_command_contract
+        assert contract.descriptor() == {
             "stage": 4,
-            "native_separators": True,
-            "action_identity_preserved": True,
-            "toolbar_roles": {
-                "main_toolbar": "commands",
-                "navigation_toolbar": "context",
-                "xray_toolbar": "render",
+            "group_order": ("file", "edit", "view", "export", "context", "render"),
+            "group_roles": {
+                "file": "commands",
+                "edit": "commands",
+                "view": "commands",
+                "export": "commands",
+                "context": "context",
+                "render": "render",
             },
+            "action_identity_preserved": True,
         }
 
-        groups = window.top_toolbar_groups
+        groups = contract.as_mapping()
         assert tuple(groups) == ("file", "edit", "view", "export", "context", "render")
         assert groups["file"] == (
             window.open_project_action,
@@ -78,16 +69,23 @@ def test_stage4_groups_are_native_and_action_backed(qt_app):
             window.act_grid,
             window.act_snap,
         )
-        assert groups["export"] == (window.act_export, window.export_collision_button)
+        assert groups["export"] == (
+            window.act_export,
+            window.act_export_collision_json,
+            window.act_export_collision_txt,
+        )
 
-        main_objects = _toolbar_objects(window.toolbar)
-        assert main_objects == [
-            item for name in ("file", "edit", "view", "export") for item in groups[name]
-        ]
-        assert sum(action.isSeparator() for action in window.toolbar.actions()) == 3
-        assert sum(action.isSeparator() for action in window.nav_toolbar.actions()) == 0
-        assert (
-            sum(action.isSeparator() for action in window.xray_toolbar.actions()) == 0
+        assert contract.items("context") == (
+            window.act_gizmo,
+            window.tool_palette.navigation_actions["focus_selected"],
+            window.act_clean,
+            window.language_action,
+        )
+        assert contract.items("render") == (
+            window.act_lit,
+            window.act_xray1,
+            window.act_xray2,
+            window.act_xray3,
         )
     finally:
         window.close()
@@ -102,8 +100,9 @@ def test_stage4_preserves_menu_identity_and_shortcut_targets(qt_app):
         assert window.settings_action in window.edit_menu.actions()
         assert window.mask_viewer_action in window.view_menu.actions()
         assert window.collision_overlay_action in window.view_menu.actions()
-        assert window.act_fit in window.toolbar.actions()
-        assert window.act_100 in window.toolbar.actions()
+        assert window.language_action in window.view_menu.actions()
+        assert window.act_fit in window.top_command_contract.items("view")
+        assert window.act_100 in window.top_command_contract.items("view")
 
         for action in (
             window.undo_action,
@@ -204,7 +203,7 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Focus",
             "View",
             "Collision",
-            "Parallax",
+            "Scenario",
             "Pan",
             "Select",
             "Undo",
@@ -232,13 +231,34 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
-        # The complete application menu remains constructed for integrations,
-        # while the visible chrome follows the supplied reference exactly.
-        assert window.reference_menu_button.isVisibleTo(window) is False
+        assert [
+            action.text() for action in window.reference_select_button.menu().actions()
+        ] == [
+            "Selection",
+            "Rect",
+            "Ellipse",
+            "Lasso",
+            "Polygonal\nLasso",
+            "Magnetic\nLasso",
+        ]
+        # The complete application menu is the isolated control at the bottom
+        # of the visible left rail because the native menu bar is hidden.
+        assert window.reference_menu_button.isVisibleTo(window) is True
+        assert window.reference_menu_button.parent() is window.reference_tool_palette
+        rail = window.reference_tool_palette
+        menu_geometry = window.reference_menu_button.geometry()
+        assert rail.height() - (menu_geometry.y() + menu_geometry.height()) == 4
+        assert window.reference_menu_button.accessibleName() == "Application menu"
+        assert window.reference_menu_button.popupMode().name == "InstantPopup"
         submenus = [
             submenu for submenu, _source in window.reference_application_submenus
         ]
-        assert [menu.title() for menu in submenus] == ["File", "Edit", "View"]
+        assert [menu.title() for menu in submenus] == [
+            "File",
+            "Edit",
+            "View",
+            "Scenario",
+        ]
         assert [
             action.text()
             for action in submenus[0].actions()
@@ -253,14 +273,22 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
+        assert window.undo_action.shortcut().toString() == "Ctrl+Z"
+        assert window.redo_action.shortcut().toString() == "Ctrl+Y"
+        assert window.act_fit.shortcut().toString() == "F"
+        assert window.undo_action in submenus[1].actions()
+        assert window.redo_action in submenus[1].actions()
+        assert window.act_fit in submenus[2].actions()
+        assert window.scenario_open_action in submenus[3].actions()
         for button in (
             window.reference_open_button,
             window.reference_save_button,
             window.reference_export_button,
             window.reference_view_button,
             window.reference_collision_button,
+            window.reference_select_button,
         ):
-            assert button.popupMode().name == "MenuButtonPopup"
+            assert button.popupMode().name == "InstantPopup"
     finally:
         window.close()
         qt_app.processEvents()
@@ -286,21 +314,16 @@ def test_stage4_settings_dialog_commits_grid_and_snap(qt_app, monkeypatch):
         qt_app.processEvents()
 
 
-def test_stage4_toolbars_share_presentation_contract(qt_app):
+def test_stage4_command_families_define_roles_without_physical_toolbar_contract(qt_app):
     window = _window(qt_app)
     try:
-        for toolbar in (window.toolbar, window.nav_toolbar, window.xray_toolbar):
-            assert toolbar.objectName()
-            assert toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-            assert toolbar.iconSize().width() == 18
-            assert toolbar.iconSize().height() == 18
-            assert toolbar.isMovable() is False
-            assert toolbar.isFloatable() is False
-            assert toolbar.property("toolbarStage") == "stage4"
-            assert toolbar.property("toolbarGroupBoundaries") is True
-        assert window.toolbar.property("toolbarRole") == "commands"
-        assert window.nav_toolbar.property("toolbarRole") == "context"
-        assert window.xray_toolbar.property("toolbarRole") == "render"
+        contract = window.top_command_contract
+        assert contract.role("file") == "commands"
+        assert contract.role("edit") == "commands"
+        assert contract.role("view") == "commands"
+        assert contract.role("export") == "commands"
+        assert contract.role("context") == "context"
+        assert contract.role("render") == "render"
     finally:
         window.close()
         qt_app.processEvents()

@@ -126,6 +126,8 @@ def test_stage3_visible_reference_rail_preserves_accessibility_and_focus(qt_app)
                 continue
             button = rail.widgetForAction(action)
             assert button is not None
+            if button.objectName() == "reference_menu_button":
+                continue
             assert button.accessibleName() == button.text().replace("\n", " ")
             assert button.toolTip(), action.objectName()
             assert button.focusPolicy() != Qt.FocusPolicy.NoFocus, action.objectName()

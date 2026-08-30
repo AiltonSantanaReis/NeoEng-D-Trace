@@ -6,6 +6,12 @@ import pytest
 from PySide6.QtWidgets import QApplication
 
 from scripts.audit_stage9_functional_ui import AuditConfig, fixture_scene, settle
+from src.persistence.project_schema import PointRecord
+from src.persistence.scene_authoring_io import load_scene_authoring_v2
+from src.persistence.scene_authoring_schema import (
+    SceneCameraAuthoringRecord,
+    SceneParallaxLayerRecord,
+)
 from src.ui.main_window import MainWindow
 
 
@@ -35,7 +41,7 @@ def test_all_tool_palette_actions_create_a_real_canvas_tool(qt_app):
         settle(qt_app)
 
 
-def test_main_toolbar_xray_actions_update_canvas_state(qt_app):
+def test_xray_actions_update_canvas_state(qt_app):
     window = _window()
     try:
         actions = (
@@ -72,6 +78,115 @@ def test_scenario_editor_actions_change_the_authoring_document(qt_app, tmp_path)
         assert panel.list.count() == before + 1
         panel.btn_remove.click()
         assert panel.list.count() == before
+    finally:
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.close()
+        window.close()
+        settle(qt_app)
+
+
+def test_professional_v2_document_drives_main_preview_and_menu_save(qt_app, tmp_path):
+    project = tmp_path / "canonical-preview.ndtproj"
+    project.write_bytes(b"canonical-preview-project\n")
+    window = _window()
+    second_window = None
+    try:
+        window._project_path = project
+        window.scenario_authoring.bind_project(project)
+        window.open_scenario_editor()
+        editor = window.scenario_editor_window
+        assert editor is not None and editor.professional_session is not None
+        session = editor.professional_session
+        layer_id = session.document.layers[0].id
+        assert session.set_layer_visibility(layer_id, False) is True
+        assert (
+            session.set_parallax_layer(
+                SceneParallaxLayerRecord(layer_id=layer_id, depth=0.75)
+            )
+            is True
+        )
+        assert (
+            session.set_camera(
+                SceneCameraAuthoringRecord(
+                    position=PointRecord(x=24.0, y=-12.0), zoom=1.5
+                )
+            )
+            is True
+        )
+        settle(qt_app)
+
+        assert window.canvas._scenario_layers[0].visible is False
+        assert window.canvas._scenario_layers[0].parallax.depth == 0.75
+        assert window.canvas._scenario_camera.position == (24.0, -12.0)
+
+        window.scenario_save_action.trigger()
+        settle(qt_app)
+        canonical_path = project.with_suffix(".ndtscene.json")
+        assert canonical_path.is_file()
+        saved = load_scene_authoring_v2(canonical_path)
+        assert saved.layers[0].visible is False
+        assert saved.parallax_layers[0].depth == 0.75
+        assert saved.camera.position == PointRecord(x=24.0, y=-12.0)
+        assert not project.with_name("canonical-preview.ndtscenario.json").exists()
+
+        second_window = _window()
+        second_window._project_path = project
+        second_window._refresh_document_views(project_loaded=True)
+        settle(qt_app)
+        assert second_window.canvas._scenario_layers[0].visible is False
+        assert second_window.canvas._scenario_layers[0].parallax.depth == 0.75
+        assert second_window.canvas._scenario_camera.position == (24.0, -12.0)
+    finally:
+        if second_window is not None:
+            second_window.close()
+            settle(qt_app)
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.close()
+        window.close()
+        settle(qt_app)
+
+
+def test_existing_v1_document_is_explicitly_migrated_into_professional_v2(
+    qt_app, tmp_path
+):
+    project = tmp_path / "legacy-migration.ndtproj"
+    project.write_bytes(b"legacy-migration-project\n")
+    window = _window()
+    try:
+        window._project_path = project
+        window.scenario_authoring.bind_project(project)
+        legacy = window.scenario_authoring.document
+        assert legacy is not None
+        layer_id = legacy.layers[0].id
+        window.scenario_authoring.rename_layer(layer_id, "Legacy Background")
+        window.scenario_authoring.set_layer_visible(layer_id, False)
+        window.scenario_authoring.set_layer_parallax(layer_id, depth=0.25)
+        window.scenario_authoring.set_camera(x=-8.0, y=16.0, zoom=1.25)
+        legacy_path = project.with_suffix(".ndtscenario.json")
+        window.scenario_authoring.save()
+        assert legacy_path.is_file()
+        assert not project.with_suffix(".ndtscene.json").exists()
+
+        window.open_scenario_editor()
+        editor = window.scenario_editor_window
+        assert editor is not None and editor.professional_session is not None
+        migrated = editor.professional_session.document
+        assert migrated.layers[0].name == "Legacy Background"
+        assert migrated.layers[0].visible is False
+        assert migrated.parallax_layers[0].depth == 0.25
+        assert migrated.camera.position == PointRecord(x=-8.0, y=16.0)
+        assert migrated.camera.zoom == 1.25
+
+        window.scenario_save_action.trigger()
+        settle(qt_app)
+        canonical_path = project.with_suffix(".ndtscene.json")
+        assert canonical_path.is_file()
+        saved = load_scene_authoring_v2(canonical_path)
+        assert saved.layers[0].name == "Legacy Background"
+        assert saved.layers[0].visible is False
+        assert saved.parallax_layers[0].depth == 0.25
+        assert saved.camera.position == PointRecord(x=-8.0, y=16.0)
+        assert saved.camera.zoom == 1.25
     finally:
         if window.scenario_editor_window is not None:
             window.scenario_editor_window.close()

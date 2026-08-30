@@ -8,6 +8,7 @@ import os
 import platform
 import subprocess
 import sys
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
@@ -94,8 +95,7 @@ def _viewport_track(app: QApplication, raw: Path) -> dict[str, Any]:
         _settle(app, 80)
         scene.select_object("rectangle-object")
         window.canvas.update_image()
-        window.canvas.gizmo_toggle.setChecked(True)
-        window.canvas._toggle_gizmo()
+        window.canvas.set_gizmo_enabled(True)
         QTest.mouseMove(window.canvas, QPoint(max(30, window.canvas.width() // 3), 80))
         window.canvas.set_vertex_snapping(True, grid_size=16)
         CAPTURE_GEOMETRY[label] = {"projeto_paineis": _main_window_widgets(window)}
@@ -118,19 +118,31 @@ def _viewport_track(app: QApplication, raw: Path) -> dict[str, Any]:
             chrome_rect = _rect(window.viewport_chrome, window)
             overlay = window.viewport_chrome.overlay
             overlay_rect = _rect(overlay, window)
-            required = (
-                "VIEW:",
-                "ZOOM:",
-                "SNAP:",
-                "GRID:",
-                "GIZMO:",
-                "PAN:",
-                "SEL:",
-                "CURSOR:",
-            )
-            missing = [token for token in required if token not in status.toolTip()]
-            if missing:
-                failures.append(f"{label}/{state_name}: missing status {missing}")
+            viewport_state = window.canvas.viewport_state()
+            expected_modes = {
+                "lit": "LIT",
+                "xray1": "X-RAY 1",
+                "xray2": "X-RAY 2",
+                "xray3": "X-RAY 3",
+            }
+            expected_mode = expected_modes[state_name]
+            if viewport_state.view_mode != expected_mode:
+                failures.append(
+                    f"{label}/{state_name}: view mode "
+                    f"{viewport_state.view_mode!r} != {expected_mode!r}"
+                )
+            if not viewport_state.snap_enabled or viewport_state.snap_grid_size != 16:
+                failures.append(
+                    f"{label}/{state_name}: structured snap state is invalid"
+                )
+            if viewport_state.grid_visible:
+                failures.append(
+                    f"{label}/{state_name}: structured grid state should be disabled"
+                )
+            if viewport_state.selection_count < 1:
+                failures.append(
+                    f"{label}/{state_name}: structured selection state is empty"
+                )
             if not _inside(status_rect["root_geometry"], bar_rect["root_geometry"]):
                 failures.append(f"{label}/{state_name}: status escapes QStatusBar")
             if not _inside(overlay_rect["root_geometry"], chrome_rect["root_geometry"]):
@@ -141,6 +153,7 @@ def _viewport_track(app: QApplication, raw: Path) -> dict[str, Any]:
                 "size": [width, height],
                 "status": status.text(),
                 "tooltip": status.toolTip(),
+                "viewport_state": asdict(viewport_state),
                 "viewport": window.canvas.viewport_details_text(),
                 "status_geometry": status_rect,
                 "status_bar_geometry": bar_rect,

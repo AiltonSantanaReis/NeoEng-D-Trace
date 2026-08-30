@@ -36,6 +36,7 @@ class SceneAuthoringInspector(QWidget):
 
     status_message = Signal(str)
     request_fit = Signal()
+    request_fit_all = Signal()
 
     def __init__(self, session: SceneAuthoringSession, parent=None) -> None:
         super().__init__(parent)
@@ -72,6 +73,11 @@ class SceneAuthoringInspector(QWidget):
         self.redo_button = QPushButton("Redo")
         self.delete_button = QPushButton("Delete Selected")
         self.fit_button = QPushButton("Fit Selection")
+        self.fit_all_button = QPushButton("Fit All")
+        self.fit_button.setObjectName("scene_fit_selection_button")
+        self.fit_all_button.setObjectName("scene_fit_all_button")
+        self.fit_button.setToolTip("Frame the visible selected objects in the viewport")
+        self.fit_all_button.setToolTip("Frame all visible objects in the viewport")
         self.camera_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.camera_y = self._spin(-1_000_000.0, 1_000_000.0)
         self.camera_zoom = self._spin(0.001, 1000.0, step=0.1)
@@ -117,6 +123,7 @@ class SceneAuthoringInspector(QWidget):
             self.redo_button,
             self.delete_button,
             self.fit_button,
+            self.fit_all_button,
         ):
             button.setAutoDefault(False)
 
@@ -147,6 +154,7 @@ class SceneAuthoringInspector(QWidget):
         layout.addWidget(self.redo_button)
         layout.addWidget(self.delete_button)
         layout.addWidget(self.fit_button)
+        layout.addWidget(self.fit_all_button)
         layout.addWidget(self.stage4_group)
         layout.addStretch(1)
 
@@ -155,6 +163,7 @@ class SceneAuthoringInspector(QWidget):
         self.redo_button.clicked.connect(self._redo)
         self.delete_button.clicked.connect(self._delete)
         self.fit_button.clicked.connect(self.request_fit)
+        self.fit_all_button.clicked.connect(self.request_fit_all)
         self.camera_apply_button.clicked.connect(self._apply_camera)
         self.parallax_apply_button.clicked.connect(self._apply_parallax)
         self.layer_combo.currentIndexChanged.connect(self._refresh_parallax_fields)
@@ -510,6 +519,13 @@ class SceneAuthoringInspector(QWidget):
             self.status_message.emit("Redo applied")
 
     def _delete(self) -> None:
-        primary = self._primary()
-        if primary is not None and self.session.remove_object(primary.id):
-            self.status_message.emit("Object removed")
+        count = len(self.session.selection.ids)
+        try:
+            changed = self.session.delete_selected()
+        except (KeyError, PermissionError, ValueError) as exc:
+            self.status_message.emit(str(exc))
+            return
+        if changed:
+            self.status_message.emit(f"Deleted {count} object(s)")
+        else:
+            self.status_message.emit("No objects selected")

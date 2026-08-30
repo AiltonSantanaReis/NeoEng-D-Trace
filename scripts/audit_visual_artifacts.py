@@ -24,7 +24,16 @@ from src.ui.theme_qss import QSS
 from src.ui.theme_tokens import THEME_TOKENS
 
 COLOR_RE = re.compile(r"#[0-9A-Fa-f]{6}")
-MAIN_WIDGETS = (
+SUPPORTED_CAPTURE_SCHEMAS = {2, 3, 4}
+TOP_COMMAND_GROUP_ORDER = (
+    "file",
+    "edit",
+    "view",
+    "export",
+    "context",
+    "render",
+)
+MAIN_WIDGETS_V2 = (
     "main_splitter",
     "tool_palette",
     "reference_tool_palette",
@@ -41,6 +50,22 @@ MAIN_WIDGETS = (
     "toolbar",
     "nav_toolbar",
     "xray_toolbar",
+)
+MAIN_WIDGETS_V3 = (
+    "main_splitter",
+    "reference_top_toolbar",
+    "tool_palette",
+    "reference_tool_palette",
+    "canvas",
+    "panel_stack",
+    "desktop_panel_splitter",
+    "reference_panel_tabs",
+    "right_splitter",
+    "compact_panel_tabs",
+    "side_panel",
+    "layers",
+    "groups",
+    "collision_panel",
 )
 PARENT_RELATIONS = {
     "reference_tool_palette": "main_splitter",
@@ -294,12 +319,72 @@ def _tab_visibility_checks(
                 )
 
 
+def _semantic_command_contract_checks(
+    filename: str,
+    state_widgets: dict[str, Any],
+    findings: list[dict[str, Any]],
+    *,
+    capture_schema_version: int,
+) -> None:
+    contract = state_widgets.get("top_command_contract")
+    if not isinstance(contract, dict):
+        _finding(
+            findings,
+            "contract",
+            "missing semantic top command contract",
+            image=filename,
+        )
+        return
+    if contract.get("stage") != 4:
+        _finding(
+            findings,
+            "contract",
+            "semantic top command contract stage drifted",
+            image=filename,
+        )
+    group_order = contract.get("group_order")
+    if (
+        not isinstance(group_order, (list, tuple))
+        or tuple(group_order) != TOP_COMMAND_GROUP_ORDER
+    ):
+        _finding(
+            findings,
+            "contract",
+            "semantic top command group order drifted",
+            image=filename,
+        )
+    if contract.get("action_identity_preserved") is not True:
+        _finding(
+            findings,
+            "contract",
+            "semantic top command action identity is not preserved",
+            image=filename,
+        )
+    if capture_schema_version == 3:
+        if contract.get("physical_toolbar_required") is not False:
+            _finding(
+                findings,
+                "contract",
+                "historical schema3 semantic contract requires a physical legacy toolbar",
+                image=filename,
+            )
+    elif capture_schema_version >= 4 and "physical_toolbar_required" in contract:
+        _finding(
+            findings,
+            "contract",
+            "schema4 semantic contract contains retired physical-toolbar metadata",
+            image=filename,
+        )
+
+
 def _geometry_checks(
     filename: str,
     state: str,
     geometry: Any,
     image_size: tuple[int, int],
     findings: list[dict[str, Any]],
+    *,
+    capture_schema_version: int,
 ) -> None:
     if not isinstance(geometry, dict):
         _finding(findings, "geometry", "missing widget_geometry state", image=filename)
@@ -438,10 +523,20 @@ def _geometry_checks(
         _finding(findings, "geometry", f"missing widget state: {state}", image=filename)
         return
     _tab_visibility_checks(filename, state_widgets, findings)
+    if capture_schema_version >= 3:
+        _semantic_command_contract_checks(
+            filename,
+            state_widgets,
+            findings,
+            capture_schema_version=capture_schema_version,
+        )
     rects: dict[str, tuple[int, int, int, int]] = {}
     visible: set[str] = set()
     width, height = image_size
-    for name in MAIN_WIDGETS:
+    main_widgets = (
+        MAIN_WIDGETS_V3 if capture_schema_version >= 3 else MAIN_WIDGETS_V2
+    )
+    for name in main_widgets:
         widget = state_widgets.get(name)
         if not isinstance(widget, dict):
             _finding(
@@ -645,8 +740,19 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise ValueError(f"invalid manifest: {exc}") from exc
-    if manifest.get("schema_version", 0) < 2:
-        _finding(findings, "contract", "manifest schema 2 with Qt geometry is required")
+    capture_schema_version = manifest.get("schema_version")
+    if (
+        isinstance(capture_schema_version, bool)
+        or not isinstance(capture_schema_version, int)
+        or capture_schema_version not in SUPPORTED_CAPTURE_SCHEMAS
+    ):
+        _finding(
+            findings,
+            "contract",
+            "capture manifest schema must be one of "
+            f"{sorted(SUPPORTED_CAPTURE_SCHEMAS)}",
+        )
+        capture_schema_version = 4
     expected = _validate_hashes(input_dir, manifest, findings)
     captures = manifest.get("captures", {})
     image_reports: dict[str, Any] = {}
@@ -725,6 +831,7 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
                 capture.get("widget_geometry"),
                 tuple(metadata["size"]),
                 findings,
+                capture_schema_version=capture_schema_version,
             )
         palette_profile = (
             capture.get("widget_geometry", {}).get("profile")
@@ -780,6 +887,8 @@ def run_audit(input_dir: Path, output_dir: Path) -> dict[str, Any]:
         },
         "environment": {"platform": platform.platform(), "python": sys.version},
         "checks": [
+            "capture_schema",
+            "semantic_command_contract",
             "pillow_decode",
             "opencv_decode",
             "dimensions",

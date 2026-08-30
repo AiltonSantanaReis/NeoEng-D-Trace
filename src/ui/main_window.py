@@ -8,9 +8,7 @@ from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QFileDialog,
     QMainWindow,
-    QMenu,
     QMessageBox,
-    QPushButton,
     QToolBar,
 )
 
@@ -61,6 +59,9 @@ from src.ui.viewport_actions import install_viewport_actions
 class MainWindow(QMainWindow):
 
     command_palette_requested = Signal()
+    act_grid: QAction
+    act_snap: QAction
+    act_gizmo: QAction
 
     @property
     def _project_path(self) -> Path | None:
@@ -197,31 +198,15 @@ class MainWindow(QMainWindow):
         self._setup_menu_bar()
         self.command_registry = CommandRegistry(self)
 
-        self.toolbar = QToolBar("Main")
-        self.toolbar.setObjectName("main_toolbar")
-        self.toolbar.setMovable(False)
-        self.toolbar.setFloatable(False)
-        self.addToolBar(self.toolbar)
-
         self.act_open = self.open_image_action
-        self.toolbar.addAction(self.open_project_action)
-        self.toolbar.addAction(self.act_open)
-        self.toolbar.addAction(self.save_project_action)
 
         self.act_export = QAction("Export...", self)
         self.act_export.triggered.connect(self.open_export)
-        self.toolbar.addAction(self.act_export)
 
-        export_menu = QMenu(self)
         self.act_export_collision_json = QAction("Export Collision (JSON)", self)
         self.act_export_collision_json.triggered.connect(self.export_collision_json)
-        export_menu.addAction(self.act_export_collision_json)
         self.act_export_collision_txt = QAction("Export Collision (TXT)", self)
         self.act_export_collision_txt.triggered.connect(self.export_collision_txt)
-        export_menu.addAction(self.act_export_collision_txt)
-        self.export_collision_button = QPushButton("Export Collision", self)
-        self.export_collision_button.setMenu(export_menu)
-        self.toolbar.addWidget(self.export_collision_button)
         self.file_menu.addSeparator()
         self.file_menu.addAction(self.act_export)
         self.file_menu.addAction(self.act_export_collision_json)
@@ -251,75 +236,53 @@ class MainWindow(QMainWindow):
 
         self.canvas.set_collision_overlay(self.collision_overlay)
         install_scenario_authoring(self)
-        # 5. NAVIGATION TOOLBAR
-        # (Barra de Ferramentas de Navegação e Ações Rápidas)
-        self.nav_toolbar = QToolBar("Navigation")
-        self.nav_toolbar.setObjectName("navigation_toolbar")
-        self.nav_toolbar.setMovable(False)
-        self.nav_toolbar.setFloatable(False)
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.nav_toolbar)
-        self.nav_toolbar.addWidget(self.canvas.gizmo_toggle)
-        self.nav_toolbar.addSeparator()
-
-        self.act_fit = QAction("Fit View (F)", self)
+        # Navigation/render commands remain stable canonical QActions.
+        self.act_fit = QAction("Fit View", self)
+        self.act_fit.setShortcut(QKeySequence("F"))
         self.act_fit.triggered.connect(self.canvas.fit_to_window)
-        self.nav_toolbar.addAction(self.act_fit)
 
         # Botão: Zoom 100%
         self.act_100 = QAction("1:1 Pixel", self)
         self.act_100.triggered.connect(lambda: self.canvas.set_zoom(1.0))
-        self.nav_toolbar.addAction(self.act_100)
-
-        self.nav_toolbar.addSeparator()
-
-        self.xray_toolbar = QToolBar("X-Ray Modes")
-        self.xray_toolbar.setObjectName("xray_toolbar")
-        self.xray_toolbar.setMovable(False)
-        self.xray_toolbar.setFloatable(False)
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.xray_toolbar)
 
         self.act_lit = QAction("Lit", self)
         self.act_lit.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_LIT)
         )
-        self.xray_toolbar.addAction(self.act_lit)
 
         self.act_xray1 = QAction("X-Ray 1", self)
         self.act_xray1.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_1)
         )
-        self.xray_toolbar.addAction(self.act_xray1)
 
         self.act_xray2 = QAction("X-Ray 2", self)
         self.act_xray2.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_2)
         )
-        self.xray_toolbar.addAction(self.act_xray2)
 
         self.act_xray3 = QAction("X-Ray 3", self)
         self.act_xray3.triggered.connect(
             lambda: self.canvas.set_view_mode(self.canvas.VIEW_XRAY_3)
         )
-        self.xray_toolbar.addAction(self.act_xray3)
 
-        self.focus_button = QPushButton("Focus Selected", self)
-        self.focus_button.setFlat(True)
-        self.focus_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.focus_button.setObjectName("focus_button")
-        self.focus_button.clicked.connect(self._focus_selected)
-        self.nav_toolbar.addWidget(self.focus_button)
-
-        self.nav_toolbar.addSeparator()
+        # Keep navigation and rendering commands available from the complete
+        # application menu. The same QAction instances remain the source of
+        # truth for toolbar, command registry and keyboard behavior.
+        self.view_menu.addSeparator()
+        self.view_menu.addAction(self.act_fit)
+        self.view_menu.addAction(self.act_100)
+        self.view_menu.addAction(self.act_grid)
+        self.view_menu.addAction(self.act_snap)
+        self.view_menu.addSeparator()
+        self.view_menu.addAction(self.act_lit)
+        self.view_menu.addAction(self.act_xray1)
+        self.view_menu.addAction(self.act_xray2)
+        self.view_menu.addAction(self.act_xray3)
 
         # Botão: Limpar Tudo (Com Undo)
         self.act_clean = QAction("Clean All", self)
         self.act_clean.triggered.connect(self.canvas.clean_all)
-        self.nav_toolbar.addAction(self.act_clean)
-        self.nav_toolbar.addSeparator()
 
-        self.language_button = QPushButton("Language", self)
-        self.nav_toolbar.addWidget(self.language_button)
-        self.language_button.clicked.connect(self.show_language_menu)
         self.reference_tool_palette: QToolBar
         configure_main_window_controls(self)
         self._responsive_layout = build_responsive_layout(self)
@@ -375,7 +338,6 @@ class MainWindow(QMainWindow):
 
     def _setup_shortcuts(self):
         # View Shortcuts
-        QShortcut(QKeySequence("F"), self, self.canvas.fit_to_window)
         QShortcut(QKeySequence("X"), self, self.canvas.toggle_xray)
         QShortcut(QKeySequence("A"), self, lambda: self.canvas.set_view_mode(0))
 
@@ -410,12 +372,6 @@ class MainWindow(QMainWindow):
             self,
             lambda: self._select_tool("magnetic_lasso"),
         )
-
-        # Undo/Redo Shortcuts
-        # Nota: Mantemos isso para garantir o funcionamento do atalho,
-        # mesmo que também exista no menu.
-        QShortcut(QKeySequence.StandardKey.Undo, self, self._undo)
-        QShortcut(QKeySequence.StandardKey.Redo, self, self._redo)
 
         self.command_palette_shortcut = QShortcut(QKeySequence("Ctrl+K"), self)
         self.command_palette_shortcut.setObjectName("command_palette_shortcut")
@@ -511,11 +467,13 @@ class MainWindow(QMainWindow):
         self.edit_menu = menubar.addMenu("Edit")
 
         self.undo_action = QAction("Undo", self)
+        self.undo_action.setShortcut(QKeySequence.StandardKey.Undo)
         # Conecta diretamente à função _undo já existente e correta
         self.undo_action.triggered.connect(self._undo)
         self.edit_menu.addAction(self.undo_action)
 
         self.redo_action = QAction("Redo", self)
+        self.redo_action.setShortcut(QKeySequence.StandardKey.Redo)
         # Conecta diretamente à função _redo já existente e correta
         self.redo_action.triggered.connect(self._redo)
         self.edit_menu.addAction(self.redo_action)
@@ -532,6 +490,23 @@ class MainWindow(QMainWindow):
         self.collision_overlay_action.setChecked(False)
         self.collision_overlay_action.triggered.connect(self._toggle_collision_overlay)
         self.view_menu.addAction(self.collision_overlay_action)
+
+        # Language selection is a persistent QAction contract, not a hidden
+        # QPushButton.  The submenu action provides one semantic command-family
+        # item while the concrete locale actions remain directly triggerable
+        # from menus, the command registry and the command palette.
+        self.language_menu = self.view_menu.addMenu("Language")
+        self.language_action = self.language_menu.menuAction()
+        self.language_action.setObjectName("language_action")
+        self.act_english = QAction("English", self)
+        self.act_english.setCheckable(True)
+        self.act_english.triggered.connect(lambda: self.set_language("en"))
+        self.language_menu.addAction(self.act_english)
+        self.act_portuguese = QAction("Portuguese", self)
+        self.act_portuguese.setCheckable(True)
+        self.act_portuguese.triggered.connect(lambda: self.set_language("pt"))
+        self.language_menu.addAction(self.act_portuguese)
+
         install_scenario_preview_actions(self)
 
     def set_language(self, lang):
@@ -582,7 +557,6 @@ class MainWindow(QMainWindow):
         self.act_export.setText(t["export"])
         self.act_export_collision_json.setText(t["export_collision_json"])
         self.act_export_collision_txt.setText(t["export_collision_txt"])
-        self.export_collision_button.setText(t["export_collision"])
 
         self.act_fit.setText(t["fit_view"])
         self.act_100.setText(t["pixel_1"])
@@ -591,13 +565,13 @@ class MainWindow(QMainWindow):
         self.act_xray2.setText(t["xray_2"])
         self.act_xray3.setText(t["xray_3"])
         self.act_clean.setText(t["clean_all"])
-        self.focus_button.setText(t["focus_selected"])
-        self.language_button.setText(t["language"])
+        self.act_gizmo.setText(t["gizmo"])
+        self.language_menu.setTitle(t["language"])
+        self.act_english.setText(t["english"])
+        self.act_portuguese.setText(t["portuguese"])
+        self.act_english.setChecked(self.current_lang == "en")
+        self.act_portuguese.setChecked(self.current_lang == "pt")
         self._update_compact_panel_titles(t)
-        if hasattr(self, "act_english"):
-            self.act_english.setText(t["english"])
-        if hasattr(self, "act_portuguese"):
-            self.act_portuguese.setText(t["portuguese"])
 
         self.edit_menu.setTitle(t["edit_menu"])
         self.undo_action.setText(t["undo"])
@@ -628,20 +602,6 @@ class MainWindow(QMainWindow):
             self._mask_viewer_dialog, "update_language"
         ):
             self._mask_viewer_dialog.update_language(self.current_lang)
-
-    def show_language_menu(self):
-        menu = QMenu(self)
-        self.act_english = menu.addAction(
-            self.translations[self.current_lang]["english"]
-        )
-        self.act_portuguese = menu.addAction(
-            self.translations[self.current_lang]["portuguese"]
-        )
-        self.act_english.triggered.connect(lambda: self.set_language("en"))
-        self.act_portuguese.triggered.connect(lambda: self.set_language("pt"))
-        menu.exec(
-            self.language_button.mapToGlobal(self.language_button.rect().bottomLeft())
-        )
 
     def set_last_folder(self, folder):
         self._last_folder = folder

@@ -151,44 +151,27 @@ def test_focus_tools_and_command_history_branches(window, monkeypatch) -> None:
     assert selected == ["pen_tool"]
 
 
-def test_language_success_fallback_menu_and_exception(window, monkeypatch) -> None:
-    window.set_language("pt")
+def test_language_success_fallback_actions_and_exception(window, monkeypatch) -> None:
+    assert not hasattr(window, "language_button")
+    assert window.language_action is window.language_menu.menuAction()
+    assert window.act_english in window.language_menu.actions()
+    assert window.act_portuguese in window.language_menu.actions()
+
+    window.command_registry.trigger("app.language_pt")
     assert window.current_lang == "pt"
+    assert window.act_portuguese.isChecked()
+    assert not window.act_english.isChecked()
+
+    window.command_registry.trigger("app.language_en")
+    assert window.current_lang == "en"
+    assert window.act_english.isChecked()
+    assert not window.act_portuguese.isChecked()
+
     window.set_language("unsupported")
     assert window.current_lang == "en"
-
-    class _Signal:
-        def connect(self, callback):
-            self.callback = callback
-
-    class _Action:
-        def __init__(self, text):
-            self._text = text
-            self.triggered = _Signal()
-
-        def text(self):
-            return self._text
-
-        def setText(self, text):
-            self._text = text
-
-    class _Menu:
-        def __init__(self, parent):
-            self.actions = []
-
-        def addAction(self, text):
-            action = _Action(text)
-            self.actions.append(action)
-            return action
-
-        def exec(self, position):
-            return None
-
-    monkeypatch.setattr(main_window_module, "QMenu", _Menu)
-    window.show_language_menu()
+    window.update_language()
     assert window.act_english.text()
     assert window.act_portuguese.text()
-    window.update_language()
 
     original = window.update_language
     monkeypatch.setattr(

@@ -25,6 +25,7 @@ from src.core.operational_limits import (
 from src.persistence.project_schema import (
     MAX_ID_LENGTH,
     MAX_NAME_LENGTH,
+    MAX_PATH_LENGTH,
     Point3Record,
     PointRecord,
     StrictProjectModel,
@@ -73,6 +74,15 @@ class AssetReferenceRecord(StrictProjectModel):
     path: str = Field(min_length=1, max_length=32_768)
     path_kind: Literal["relative"] = "relative"
     sha256: str = Field(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")
+    # Optional non-portable provenance; never used to resolve project assets.
+    source_path: str | None = Field(default=None, max_length=MAX_PATH_LENGTH)
+
+    @field_validator("source_path")
+    @classmethod
+    def validate_source_path(cls, value: str | None) -> str | None:
+        if value is not None and (not value.strip() or chr(0) in value):
+            raise ValueError("asset source path must be non-empty and NUL-free")
+        return value
 
     @field_validator("path")
     @classmethod
@@ -149,6 +159,12 @@ class SceneGroupAuthoringRecord(StrictProjectModel):
         if len(values) != len(set(values)):
             raise ValueError("group members must be unique")
         return values
+
+
+class SceneGroupAuthoringRecordV2(SceneGroupAuthoringRecord):
+    """V2 group record with optional nested-group parentage."""
+
+    parent_group_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
 
 
 class SceneSnapRecord(StrictProjectModel):
@@ -331,7 +347,7 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
     assets: list[AssetReferenceRecord] = Field(max_length=MAX_SCENE_ASSETS)
     layers: list[SceneLayerAuthoringRecord] = Field(max_length=MAX_PROJECT_LAYERS)
     objects: list[SceneObjectAuthoringRecord] = Field(max_length=MAX_PROJECT_OBJECTS)
-    groups: list[SceneGroupAuthoringRecord] = Field(max_length=MAX_PROJECT_GROUPS)
+    groups: list[SceneGroupAuthoringRecordV2] = Field(max_length=MAX_PROJECT_GROUPS)
     snap: SceneSnapRecord = SceneSnapRecord()
     camera: SceneCameraAuthoringRecord = SceneCameraAuthoringRecord()
     parallax_layers: list[SceneParallaxLayerRecord] = Field(
@@ -368,6 +384,27 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
                 raise ValueError(
                     f"group {group.id!r} references unknown object {missing[0]!r}"
                 )
+        group_by_id = {item.id: item for item in self.groups}
+        for group in self.groups:
+            parent_id = group.parent_group_id
+            if parent_id is None:
+                continue
+            if parent_id not in group_by_id:
+                raise ValueError(
+                    f"group {group.id!r} references unknown parent group {parent_id!r}"
+                )
+            seen = {group.id}
+            current: str | None = parent_id
+            while current is not None:
+                if current in seen:
+                    raise ValueError("group hierarchy contains a cycle")
+                seen.add(current)
+                parent = group_by_id.get(current)
+                if parent is None:
+                    raise ValueError(
+                        f"group hierarchy references unknown parent {current!r}"
+                    )
+                current = parent.parent_group_id
         parallax_ids = [item.layer_id for item in self.parallax_layers]
         if len(parallax_ids) != len(set(parallax_ids)):
             raise ValueError("parallax layer IDs must be unique")

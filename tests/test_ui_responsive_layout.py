@@ -78,7 +78,11 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
             assert (window.width(), window.height()) == (width, height)
             assert window._compact_layout is True
             assert window.panel_stack.currentWidget() is window.compact_panel_tabs
-            assert window.toolbar.isVisible() is False
+            assert window.reference_top_toolbar.isVisibleTo(window)
+            assert (
+                window.reference_top_toolbar.toolButtonStyle().name
+                == "ToolButtonIconOnly"
+            )
             assert window.main_splitter.sizes()[2] >= 450
             assert window.compact_panel_tabs.width() >= 450
             assert window.compact_panel_tabs.currentWidget() is window.side_panel
@@ -99,7 +103,11 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
 
         assert window._compact_layout is False
         assert window.panel_stack.currentWidget() is window.desktop_panel_splitter
-        assert window.toolbar.isVisible() is True
+        assert window.reference_top_toolbar.isVisibleTo(window)
+        assert (
+            window.reference_top_toolbar.toolButtonStyle().name
+            == "ToolButtonTextUnderIcon"
+        )
         assert window.compact_panel_tabs.count() == 0
         assert window.reference_panel_tabs.count() == 4
         assert window.desktop_panel_splitter.count() == 1

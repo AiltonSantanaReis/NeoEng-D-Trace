@@ -22,6 +22,11 @@ from src.core.operational_limits import (
     MAX_PROJECT_OBJECTS,
     MAX_PROJECT_POINTS,
 )
+from src.core.polygon_validation import (
+    is_valid_polygon,
+    lines_intersect,
+    signed_polygon_area2,
+)
 
 from .edge_utils import enhanced_edge_detection, multi_scale_edges
 from .mask_utils import (
@@ -235,6 +240,215 @@ def _validate_detection_result(polygons: Sequence[Dict[str, Any]]) -> None:
         )
 
 
+def _segment_intersection_point(
+    first_start: Tuple[float, float],
+    first_end: Tuple[float, float],
+    second_start: Tuple[float, float],
+    second_end: Tuple[float, float],
+) -> Optional[Tuple[float, float]]:
+    """Return the crossing point for a non-collinear segment intersection."""
+
+    first_dx = first_end[0] - first_start[0]
+    first_dy = first_end[1] - first_start[1]
+    second_dx = second_end[0] - second_start[0]
+    second_dy = second_end[1] - second_start[1]
+    denominator = first_dx * second_dy - first_dy * second_dx
+    if abs(denominator) <= 1e-9:
+        return None
+    offset_x = second_start[0] - first_start[0]
+    offset_y = second_start[1] - first_start[1]
+    first_ratio = (offset_x * second_dy - offset_y * second_dx) / denominator
+    second_ratio = (offset_x * first_dy - offset_y * first_dx) / denominator
+    if not (-1e-9 <= first_ratio <= 1.0 + 1e-9 and -1e-9 <= second_ratio <= 1.0 + 1e-9):
+        return None
+    return (
+        first_start[0] + first_ratio * first_dx,
+        first_start[1] + first_ratio * first_dy,
+    )
+
+
+def polygon_validation_details(points: Any) -> Dict[str, Any]:
+    """Return non-mutating validity diagnostics with exact geometry locations.
+
+    The returned vertex and edge indexes are zero-based and refer to the
+    supplied polygon. A repeated terminal point is accepted by the Scene
+    contract and is therefore omitted from the diagnostic working copy; its
+    original index is retained when a later diagnostic points to a vertex.
+    This function never repairs, reorders, or changes the supplied polygon.
+    """
+
+    details: Dict[str, Any] = {
+        "is_valid": False,
+        "error": None,
+        "invalid_vertices": [],
+        "invalid_intersections": [],
+        "invalid_edges": [],
+    }
+    if not isinstance(points, list):
+        details["error"] = "polygon data is not a list"
+        return details
+
+    normalized = list(points)
+    original_indexes = list(range(len(normalized)))
+    if len(normalized) > 1 and normalized[0] == normalized[-1]:
+        normalized.pop()
+        original_indexes.pop()
+    if len(normalized) < 3:
+        details["error"] = "fewer than 3 distinct vertices"
+        details["invalid_vertices"] = original_indexes
+        return details
+    if len(normalized) > MAX_POLYGON_POINTS:
+        details["error"] = f"more than {MAX_POLYGON_POINTS} vertices"
+        details["invalid_vertices"] = original_indexes[MAX_POLYGON_POINTS:]
+        return details
+
+    numeric_points: List[Tuple[float, float]] = []
+    for index, point in enumerate(normalized):
+        if not isinstance(point, (list, tuple)) or len(point) != 2:
+            details["error"] = (
+                f"vertex {original_indexes[index] + 1} is not a coordinate pair"
+            )
+            details["invalid_vertices"] = [original_indexes[index]]
+            return details
+        x, y = point
+        if isinstance(x, bool) or isinstance(y, bool):
+            details["error"] = (
+                f"vertex {original_indexes[index] + 1} contains a boolean coordinate"
+            )
+            details["invalid_vertices"] = [original_indexes[index]]
+            return details
+        if not isinstance(x, Real) or not isinstance(y, Real):
+            details["error"] = (
+                f"vertex {original_indexes[index] + 1} contains a "
+                "non-numeric coordinate"
+            )
+            details["invalid_vertices"] = [original_indexes[index]]
+            return details
+        try:
+            numeric = (float(x), float(y))
+        except (OverflowError, TypeError, ValueError):
+            details["error"] = (
+                f"vertex {original_indexes[index] + 1} contains an "
+                "unreadable coordinate"
+            )
+            details["invalid_vertices"] = [original_indexes[index]]
+            return details
+        if not math.isfinite(numeric[0]) or not math.isfinite(numeric[1]):
+            details["error"] = (
+                f"vertex {original_indexes[index] + 1} contains a non-finite coordinate"
+            )
+            details["invalid_vertices"] = [original_indexes[index]]
+            return details
+        numeric_points.append(numeric)
+
+    duplicate_pairs = [
+        index
+        for index in range(len(numeric_points))
+        if numeric_points[index] == numeric_points[(index + 1) % len(numeric_points)]
+    ]
+    if duplicate_pairs:
+        details["error"] = "contains duplicate consecutive vertices"
+        details["invalid_vertices"] = sorted(
+            {original_indexes[index] for index in duplicate_pairs}
+            | {
+                original_indexes[(index + 1) % len(numeric_points)]
+                for index in duplicate_pairs
+            }
+        )
+        details["invalid_edges"] = [[index] for index in duplicate_pairs]
+        return details
+
+    intersecting_edges: List[List[int]] = []
+    intersection_points: List[List[float]] = []
+    count = len(numeric_points)
+    for first_index in range(count):
+        first_end = (first_index + 1) % count
+        for second_index in range(first_index + 1, count):
+            second_end = (second_index + 1) % count
+            if first_end == second_index or second_end == first_index:
+                continue
+            if lines_intersect(
+                numeric_points[first_index],
+                numeric_points[first_end],
+                numeric_points[second_index],
+                numeric_points[second_end],
+            ):
+                intersecting_edges.append([first_index, second_index])
+                intersection_point = _segment_intersection_point(
+                    numeric_points[first_index],
+                    numeric_points[first_end],
+                    numeric_points[second_index],
+                    numeric_points[second_end],
+                )
+                if intersection_point is not None:
+                    intersection_points.append(list(intersection_point))
+    if intersecting_edges:
+        invalid_vertices = sorted(
+            {
+                edge_vertex
+                for edge_pair in intersecting_edges
+                for edge_index in edge_pair
+                for edge_vertex in (edge_index, (edge_index + 1) % count)
+            }
+        )
+        details["error"] = "has self-intersecting edges"
+        details["invalid_vertices"] = [
+            original_indexes[index] for index in invalid_vertices
+        ]
+        details["invalid_edges"] = intersecting_edges
+        details["invalid_intersections"] = intersection_points
+        return details
+
+    area2 = signed_polygon_area2(numeric_points)
+    if not math.isfinite(area2) or area2 == 0.0:
+        details["error"] = "has zero area"
+        details["invalid_vertices"] = original_indexes
+        details["invalid_edges"] = [[index] for index in range(count)]
+        return details
+    if area2 < 0.0:
+        numeric_points.reverse()
+    if not is_valid_polygon(numeric_points):
+        details["error"] = "does not satisfy the scene polygon contract"
+        details["invalid_vertices"] = original_indexes
+        details["invalid_edges"] = [[index] for index in range(count)]
+        return details
+
+    details["is_valid"] = True
+    return details
+
+
+def polygon_validation_error(points: Any) -> Optional[str]:
+    """Return the stable human-readable diagnostic used by existing callers."""
+
+    return polygon_validation_details(points)["error"]
+
+
+def _annotate_polygon_validation(
+    polygons: List[Dict[str, Any]],
+) -> Tuple[int, int]:
+    """Annotate every detection without hiding invalid geometry."""
+
+    valid_count = 0
+    invalid_count = 0
+    for polygon_data in polygons:
+        details = polygon_validation_details(polygon_data.get("polygon", []))
+        reason = details["error"]
+        polygon_data["is_valid"] = details["is_valid"]
+        if details["is_valid"]:
+            polygon_data.pop("validation_error", None)
+            polygon_data.pop("validation_details", None)
+            valid_count += 1
+        else:
+            polygon_data["validation_error"] = reason
+            polygon_data["validation_details"] = {
+                "invalid_vertices": details["invalid_vertices"],
+                "invalid_edges": details["invalid_edges"],
+                "invalid_intersections": details["invalid_intersections"],
+            }
+            invalid_count += 1
+    return valid_count, invalid_count
+
+
 class DetectResult(list):
     """List-like result that also supports dict-style access."""
 
@@ -278,10 +492,13 @@ def detect_polygons(image: np.ndarray, mode: str = "basic", **kwargs: Any) -> An
         else:
             result = _detect_polygons_enhanced(image, **kwargs)
 
+        valid_count, invalid_count = _annotate_polygon_validation(result)
         feedback = {
             "status": "ok",
             "message": f"Detected {len(result)} polygons in mode {mode}",
             "mode": mode,
+            "valid_polygon_count": valid_count,
+            "invalid_polygon_count": invalid_count,
             "polygon_count": len(result),
         }
         if mode == "grabcut":

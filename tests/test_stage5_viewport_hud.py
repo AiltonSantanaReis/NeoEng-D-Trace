@@ -20,19 +20,24 @@ def qt_app():
 
 def test_canvas_state_contract_is_live_for_zoom_fit_and_xray(qt_app, monkeypatch):
     canvas = CanvasView(Scene())
-    states: list[str] = []
-    canvas.viewport_state_changed.connect(states.append)
+    states = []
+    canvas.viewport_state_model_changed.connect(states.append)
 
-    assert canvas.viewport_state_text() == "VIEW: LIT  |  ZOOM: 1.00x"
+    assert canvas.viewport_state().view_mode == "LIT"
+    assert canvas.viewport_state().zoom == pytest.approx(1.0)
     canvas.set_zoom(1.5)
-    assert states[-1] == "VIEW: LIT  |  ZOOM: 1.50x"
+    assert states[-1].view_mode == "LIT"
+    assert states[-1].zoom == pytest.approx(1.5)
 
     monkeypatch.setattr(canvas, "update", lambda: None)
     canvas.set_view_mode(canvas.VIEW_XRAY_2)
-    assert states[-1] == "VIEW: X-RAY 2  |  ZOOM: 1.50x"
+    assert states[-1].view_mode == "X-RAY 2"
+    assert states[-1].zoom == pytest.approx(1.5)
 
+    # Out-of-contract zoom input must leave the structured state unchanged.
     canvas.set_zoom(0.001)
-    assert states[-1] == "VIEW: X-RAY 2  |  ZOOM: 1.50x"
+    assert states[-1].view_mode == "X-RAY 2"
+    assert states[-1].zoom == pytest.approx(1.5)
     canvas.close()
 
 
@@ -41,20 +46,26 @@ def test_main_window_uses_status_bar_without_canvas_hud_widget(qt_app):
     status = window.findChild(QLabel, "viewport_status")
 
     assert status is window.viewport_status
-    assert status.text().startswith("VIEW:LIT | Z:1.00x")
-    assert "S:OFF" in status.text()
-    assert "G:ON" in status.text()
-    assert "GIZ:OFF" in status.text()
-    assert "SEL:0" in status.text()
-    assert "CUR:0,0" in status.text()
+    initial_text = status.text()
+    state = window.canvas.viewport_state()
+    assert state.view_mode == "LIT"
+    assert state.zoom == pytest.approx(1.0)
+    assert state.snap_enabled is False
+    assert state.grid_visible is True
+    assert state.gizmo_enabled is False
+    assert state.selection_count == 0
+    assert (state.cursor_x, state.cursor_y) == (0, 0)
     assert status.window() is window
     assert status in window.statusBar().findChildren(QLabel)
     assert not window.canvas.findChildren(QLabel)
 
     window.canvas.set_zoom(2.25)
-    assert status.text().startswith("VIEW:LIT | Z:2.25x")
+    assert window.canvas.viewport_state().zoom == pytest.approx(2.25)
+    assert status.text() != initial_text
+    zoom_text = status.text()
     window.canvas.set_view_mode(window.canvas.VIEW_XRAY_1)
-    assert status.text().startswith("VIEW:XR1 | Z:2.25x")
+    assert window.canvas.viewport_state().view_mode == "X-RAY 1"
+    assert status.text() != zoom_text
     window.close()
 
 
@@ -96,7 +107,7 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
         button.text()
         for button in window.reference_top_toolbar.findChildren(QToolButton)
     }
-    expected = {"Open", "Save", "Export", "View", "Collision", "Parallax"}
+    expected = {"Open", "Save", "Export", "View", "Collision", "Scenario"}
     assert expected <= labels
 
     window.resize(1280, 720)
@@ -135,7 +146,7 @@ def test_reference_pan_and_select_controls_drive_existing_canvas_contract(qt_app
     assert window.canvas.is_pan_mode() is True
     assert window.reference_pan_button.isChecked() is True
 
-    window.reference_select_button.click()
+    window.reference_select_button.menu().actions()[0].trigger()
     assert window.canvas.is_pan_mode() is False
     assert window.reference_pan_button.isChecked() is False
     window.close()

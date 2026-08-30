@@ -50,10 +50,14 @@ class SidePanel(QWidget):
         self._last_validation_selection_marker = None
 
         self.list = QListWidget()
+        self.list.setObjectName("scene_objects_list")
+        self.list.setAccessibleName("Scene objects list")
+        self.list.setAccessibleDescription("Select an object to inspect or edit it")
         self.search_input = QLineEdit()
         self.search_input.setObjectName("objects_search")
         self.search_input.setPlaceholderText("Search objects")
         self.search_input.setAccessibleName("Search scene objects")
+        self.search_input.setAccessibleDescription("Filter scene objects by name or ID")
         self.search_input.setToolTip("Filter objects by name or ID")
         self.search_input.textChanged.connect(self.refresh)
         self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -167,6 +171,8 @@ class SidePanel(QWidget):
             (self.export_action_toolbar, (self.btn_export, self.btn_export_now)),
         )
 
+        self._configure_accessibility_controls()
+
         # Layout
         content = QWidget(self)
         layout = QVBoxLayout(content)
@@ -188,6 +194,13 @@ class SidePanel(QWidget):
         metadata_layout.addWidget(self.metadata_label)
         scenario_button = QPushButton("Open Scenario Editor")
         scenario_button.setObjectName("open_scenario_editor_from_inspector")
+        self.open_scenario_editor_button = scenario_button
+        scenario_button.setAccessibleName("Open Scenario Editor")
+        scenario_button.setAccessibleDescription(
+            "Open the separate scenario authoring editor"
+        )
+        scenario_button.setToolTip("Open the scenario editor")
+        scenario_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         scenario_button.clicked.connect(
             lambda: getattr(self.window(), "open_scenario_editor", lambda: None)()
         )
@@ -341,7 +354,86 @@ class SidePanel(QWidget):
             action.triggered.connect(button.click)
             action.setCheckable(button.isCheckable())
             button.toggled.connect(action.setChecked)
+            toolbar_button = toolbar.widgetForAction(action)
+            if toolbar_button is not None:
+                toolbar_button.setObjectName(f"{name}_{key}_button")
+                toolbar_button.setAccessibleName(button.text())
+                toolbar_button.setAccessibleDescription(f"Activate {button.text()}")
+                toolbar_button.setToolTip(button.text())
+                toolbar_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         return toolbar
+
+    def _configure_accessibility_controls(self) -> None:
+        """Keep every inspector control usable by name and keyboard focus."""
+
+        labels = {
+            "rename": "Rename selected object",
+            "delete": "Delete selected object",
+            "expand": "Expand selected shape",
+            "contract": "Contract selected shape",
+            "invert": "Invert selected shape",
+            "collision": "Toggle collision for selected object",
+            "apply_transform": "Apply transform to selected object",
+            "apply": "Apply shape preview",
+            "cancel": "Cancel shape preview",
+            "export_mask": "Export selected mask",
+            "export_sprite": "Export selected sprite",
+            "slider": "Adjust shape expansion or contraction preview",
+        }
+        buttons = (
+            (self.btn_rename, labels["rename"]),
+            (self.btn_delete, labels["delete"]),
+            (self.btn_expand, labels["expand"]),
+            (self.btn_contract, labels["contract"]),
+            (self.btn_invert, labels["invert"]),
+            (self.btn_collision, labels["collision"]),
+            (self.btn_apply_transform, labels["apply_transform"]),
+            (self.btn_apply, labels["apply"]),
+            (self.btn_cancel, labels["cancel"]),
+            (self.btn_export, labels["export_mask"]),
+            (self.btn_export_now, labels["export_sprite"]),
+        )
+        for button, description in buttons:
+            button.setAccessibleName(button.text())
+            button.setAccessibleDescription(description)
+            button.setToolTip(description)
+            button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        fields = (
+            (self.position_x, "Position X", "Edit the selected object's X position"),
+            (self.position_y, "Position Y", "Edit the selected object's Y position"),
+            (self.position_z, "Position Z", "Edit the selected object's Z position"),
+            (self.rotation_x, "Rotation X", "Edit the selected object's X rotation"),
+            (self.rotation_y, "Rotation Y", "Edit the selected object's Y rotation"),
+            (self.rotation_z, "Rotation Z", "Edit the selected object's Z rotation"),
+            (self.scale_x, "Scale X", "Edit the selected object's X scale"),
+            (self.scale_y, "Scale Y", "Edit the selected object's Y scale"),
+            (self.scale_z, "Scale Z", "Edit the selected object's Z scale"),
+            (self.pivot_x, "Pivot X", "Edit the selected object's X pivot"),
+            (self.pivot_y, "Pivot Y", "Edit the selected object's Y pivot"),
+        )
+        for field, name, description in fields:
+            field.setObjectName(f"inspector_{name.lower().replace(' ', '_')}")
+            field.setAccessibleName(name)
+            field.setAccessibleDescription(description)
+            field.setToolTip(description)
+            field.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+            line_edit = field.lineEdit()
+            line_edit.setAccessibleName(name)
+            line_edit.setAccessibleDescription(description)
+            line_edit.setToolTip(description)
+            line_edit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        self.snap_enabled.setAccessibleName("Snap vertices to grid")
+        self.snap_enabled.setAccessibleDescription(
+            "Toggle snapping of edited vertices to the 16 pixel grid"
+        )
+        self.snap_enabled.setToolTip("Snap edited vertices to the 16 pixel grid")
+        self.slider.setObjectName("shape_expand_contract_slider")
+        self.slider.setAccessibleName("Shape expansion slider")
+        self.slider.setAccessibleDescription(labels["slider"])
+        self.slider.setToolTip(labels["slider"])
+        self.slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
     def _sync_action_toolbar_texts(self) -> None:
         for toolbar, buttons in self._toolbar_bindings:
@@ -350,6 +442,11 @@ class SidePanel(QWidget):
                 action.setToolTip(button.text())
                 action.setStatusTip(button.text())
                 action.setEnabled(button.isEnabled())
+                action.setProperty("accessibleName", button.text())
+                toolbar_button = toolbar.widgetForAction(action)
+                if toolbar_button is not None:
+                    toolbar_button.setAccessibleName(button.text())
+                    toolbar_button.setToolTip(button.text())
                 if button.isCheckable():
                     action.setChecked(button.isChecked())
 
@@ -865,5 +962,10 @@ class SidePanel(QWidget):
         self.btn_cancel.setText(t["cancel"])
         self.btn_export.setText(t["export_mask"])
         self.btn_export_now.setText(t["export_sprite"])
+        self.open_scenario_editor_button.setAccessibleName(
+            self.open_scenario_editor_button.text()
+        )
+        self.open_scenario_editor_button.setToolTip("Open the scenario editor")
+        self._configure_accessibility_controls()
         # Update collision button state
         self._update_button_states()

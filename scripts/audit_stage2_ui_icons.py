@@ -132,13 +132,10 @@ def _runtime_icon_contract() -> dict[str, Any]:
         "act_xray2",
         "act_xray3",
         "act_clean",
+        "act_gizmo",
+        "language_action",
     )
-    widget_names = (
-        "export_collision_button",
-        "canvas.gizmo_toggle",
-        "focus_button",
-        "language_button",
-    )
+    widget_names: tuple[str, ...] = ()
     action_checks: dict[str, Any] = {}
     widget_checks: dict[str, Any] = {}
 
@@ -177,6 +174,10 @@ def _runtime_icon_contract() -> dict[str, Any]:
 
     for name in action_names:
         action_checks[name] = check_icon(name, getattr(window, name))
+    action_checks["tool:focus_selected"] = check_icon(
+        "tool:focus_selected",
+        window.tool_palette.navigation_actions["focus_selected"],
+    )
     for name in widget_names:
         target: Any = window
         for part in name.split("."):
@@ -186,22 +187,38 @@ def _runtime_icon_contract() -> dict[str, Any]:
     for name, button in window.tool_palette.tool_buttons.items():
         action_checks[f"tool:{name}"] = check_icon(f"tool:{name}", button)
 
+    command_contract = window.top_command_contract.descriptor()
+    if tuple(command_contract["group_order"]) != (
+        "file",
+        "edit",
+        "view",
+        "export",
+        "context",
+        "render",
+    ):
+        failures.append("semantic command group order drifted")
+
+    visible_toolbar = window.reference_top_toolbar
     toolbar_checks = {
-        name: {
-            "tool_button_style": toolbar.toolButtonStyle().name,
-            "icon_size": [toolbar.iconSize().width(), toolbar.iconSize().height()],
+        "reference_top_toolbar": {
+            "object_name": visible_toolbar.objectName(),
+            "visible": visible_toolbar.isVisibleTo(window),
+            "tool_button_style": visible_toolbar.toolButtonStyle().name,
+            "icon_size": [
+                visible_toolbar.iconSize().width(),
+                visible_toolbar.iconSize().height(),
+            ],
         }
-        for name, toolbar in (
-            ("main", window.toolbar),
-            ("navigation", window.nav_toolbar),
-            ("xray", window.xray_toolbar),
-        )
     }
-    for name, record in toolbar_checks.items():
-        if record["tool_button_style"] != "ToolButtonTextBesideIcon":
-            failures.append(f"{name}: toolbar style is not text beside icon")
-        if record["icon_size"] != [18, 18]:
-            failures.append(f"{name}: toolbar icon size drifted")
+    if (
+        toolbar_checks["reference_top_toolbar"]["object_name"]
+        != "reference_top_toolbar"
+    ):
+        failures.append("visible reference toolbar object name drifted")
+    if not toolbar_checks["reference_top_toolbar"]["visible"]:
+        failures.append("visible reference toolbar is hidden")
+    if toolbar_checks["reference_top_toolbar"]["icon_size"] != [24, 24]:
+        failures.append("visible reference toolbar icon size drifted")
 
     shortcut_sequences = sorted(
         str(shortcut.key().toString())
@@ -219,8 +236,11 @@ def _runtime_icon_contract() -> dict[str, Any]:
         "open_image_action": check_icon(
             "translated:open_image_action", window.open_image_action
         ),
-        "gizmo_toggle": check_icon(
-            "translated:gizmo_toggle", window.canvas.gizmo_toggle
+        "gizmo_action": check_icon(
+            "translated:gizmo_action", window.act_gizmo
+        ),
+        "language_action": check_icon(
+            "translated:language_action", window.language_action
         ),
     }
     window.close()
@@ -232,6 +252,7 @@ def _runtime_icon_contract() -> dict[str, Any]:
         "actions": action_checks,
         "widgets": widget_checks,
         "translated": translated_icon_checks,
+        "top_command_contract": command_contract,
         "toolbars": toolbar_checks,
         "shortcuts": {
             "actual": shortcut_sequences,

@@ -16,10 +16,31 @@ analysis = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    # CuPy is an optional GPU accelerator. The portable Windows build must
+    # use the deterministic CPU fallback instead of shipping CUDA runtimes
+    # that can shadow the host Windows CRT and Qt dependencies.
+    excludes=["cupy", "cupyx"],
     noarchive=False,
     optimize=0,
 )
+
+# API-set and Universal CRT DLLs are Windows system components. They can be
+# discovered from developer-toolkit PATH entries during PyInstaller analysis,
+# but must never be copied into a portable bundle where they can shadow the
+# host runtime and break Qt loading.
+# ICU DLLs can also be discovered from unrelated PATH entries (for example,
+# Poppler). They are not part of the PySide6 wheel used by this project and
+# must not shadow the Windows ICU implementation used by Qt.
+analysis.binaries = [
+    item
+    for item in analysis.binaries
+    if not (
+        Path(item[0]).name.lower().startswith("api-ms-win-")
+        or Path(item[0]).name.lower() == "ucrtbase.dll"
+        or Path(item[0]).name.lower() in {"icuuc.dll", "icudt78.dll"}
+    )
+]
+
 python_archive = PYZ(analysis.pure)
 
 gui_executable = EXE(

@@ -598,7 +598,7 @@ def test_canvas_paint_modes_overlays_helpers_and_language(qt_app):
     painter.end()
 
     canvas.update_language("pt")
-    assert canvas.gizmo_toggle.text() == "Eixo"
+    assert canvas.current_lang == "pt"
     canvas._tool.update_language.assert_called_once_with("pt")
     canvas.close()
 

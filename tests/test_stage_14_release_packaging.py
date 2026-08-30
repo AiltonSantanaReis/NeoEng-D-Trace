@@ -84,6 +84,9 @@ def test_packaging_contract_is_versioned() -> None:
     assert 'name="NeoEng-D-Trace-CLI"' in spec
     assert "console=False" in spec
     assert "console=True" in spec
+    assert 'excludes=["cupy", "cupyx"]' in spec
+    assert 'startswith("api-ms-win-")' in spec
+    assert '== "ucrtbase.dll"' in spec
     assert "git status --porcelain --untracked-files=all" in build
     assert build.index("git status --porcelain --untracked-files=all") < build.index(
         "Remove-Item -LiteralPath $releaseRoot -Recurse -Force"

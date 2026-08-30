@@ -11,7 +11,8 @@ from src.ui.theme_tokens import THEME_TOKENS, ThemeTokens
 def build_qss(tokens: ThemeTokens = THEME_TOKENS) -> str:
     """Build the application stylesheet from semantic theme tokens."""
 
-    accent_soft = tokens.rgba(tokens.accent, 32)
+    accent_soft = tokens.rgba(tokens.accent, 40)
+    accent_hover_soft = tokens.rgba(tokens.accent, 18)
     return f"""
 QWidget {{
     background-color: {tokens.window};
@@ -26,7 +27,7 @@ QMainWindow::separator {{
     height: 4px;
 }}
 QSplitter::handle {{ background: {tokens.border}; }}
-QSplitter::handle:hover {{ background: {tokens.accent}; }}
+QSplitter::handle:hover {{ background: {tokens.accent_hover}; }}
 
 QToolBar {{
     background: {tokens.surface};
@@ -44,7 +45,7 @@ QToolBar#reference_tool_palette {{
     max-width: 72px;
     padding: 2px 2px;
     spacing: 2px;
-    background: {tokens.surface_alt};
+    background: {tokens.surface};
     border-right: 1px solid {tokens.border};
 }}
 QToolBar#reference_tool_palette QToolButton {{
@@ -57,11 +58,14 @@ QToolBar#reference_tool_palette QToolButton {{
     border-radius: 4px;
 }}
 QToolBar#reference_tool_palette QToolButton:hover {{
-    background: {tokens.surface_raised};
+    background: {accent_hover_soft};
     border-color: {tokens.border_strong};
 }}
+QToolBar#reference_tool_palette QToolButton:focus {{
+    border-color: {tokens.focus};
+}}
 QToolBar#reference_tool_palette QToolButton:checked {{
-    background: {tokens.rgba(tokens.accent, 28)};
+    background: {accent_soft};
     border-color: {tokens.accent};
     color: {tokens.accent};
 }}QToolBar#reference_top_toolbar {{
@@ -69,10 +73,11 @@ QToolBar#reference_tool_palette QToolButton:checked {{
     max-height: 82px;
     padding: 4px 8px;
     spacing: 6px;
-    background: {tokens.surface_alt};
+    background: {tokens.surface};
     border-bottom: 1px solid {tokens.border};
 }}
-QToolBar#reference_top_toolbar QToolButton#reference_menu_button {{
+QToolBar#reference_top_toolbar QToolButton#reference_menu_button,
+QToolBar#reference_tool_palette QToolButton#reference_menu_button {{
     min-width: 46px;
     max-width: 46px;
     font-size: 20px;
@@ -94,25 +99,37 @@ QToolBar#reference_top_toolbar QToolButton::menu-indicator {{
     width: 0px;
     height: 0px;
 }}
+QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
 QToolBar#reference_top_toolbar QToolButton[referenceActive="true"] {{
-    background: {tokens.rgba(tokens.accent, 28)};
+    background: {accent_soft};
     border-color: {tokens.accent};
     color: {tokens.accent};
 }}
 QToolBar#reference_top_toolbar QToolButton:hover {{
-    background: {tokens.surface_raised};
+    background: {accent_hover_soft};
     border-color: {tokens.border_strong};
 }}
+QToolBar#reference_top_toolbar QToolButton:focus {{
+    border-color: {tokens.focus};
+}}
 QToolBar#reference_top_toolbar QToolButton:checked {{
-    background: {tokens.rgba(tokens.accent, 28)};
+    background: {accent_soft};
     border-color: {tokens.accent};
     color: {tokens.accent};
 }}
 QLineEdit#reference_command_search {{
     min-height: 28px;
     padding: 5px 10px;
-    background: {tokens.window};
-    border: 1px solid {tokens.border};
+    background: {tokens.surface_alt};
+    border: 1px solid {tokens.border_strong};
     border-radius: 5px;
     color: {tokens.text_primary};
 }}
@@ -131,7 +148,7 @@ QTabWidget#reference_panel_tabs QTabBar::tab {{
     min-width: 78px;
     padding: 9px 12px;
     color: {tokens.text_secondary};
-    background: {tokens.surface_alt};
+    background: transparent;
     border: 0px;
     border-bottom: 2px solid transparent;
 }}
@@ -149,7 +166,7 @@ QWidget#viewport_horizontal_ruler, QWidget#viewport_vertical_ruler {{
     border: 0px;
 }}
 QWidget#viewport_overlay_bar {{
-    background: {tokens.surface_alt};
+    background: {tokens.surface_raised};
     border: 1px solid {tokens.border_strong};
     border-radius: 4px;
 }}
@@ -159,15 +176,28 @@ QWidget#viewport_overlay_bar QToolButton {{
     padding: 5px 8px;
     color: {tokens.text_primary};
 }}
+QWidget#viewport_overlay_bar QToolButton::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QWidget#viewport_overlay_bar QToolButton::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
+QWidget#viewport_overlay_bar QToolButton:focus {{
+    background: {accent_hover_soft};
+    color: {tokens.focus};
+}}
 QWidget#viewport_overlay_bar QToolButton:hover {{
-    background: {tokens.surface_raised};
+    background: {accent_hover_soft};
 }}
 QWidget#viewport_overlay_bar QToolButton:checked {{
     color: {tokens.accent};
-    background: {tokens.rgba(tokens.accent, 28)};
+    background: {accent_soft};
 }}
 QStatusBar {{
-    background: {tokens.surface_alt};
+    background: {tokens.surface};
     color: {tokens.text_secondary};
     border-top: 1px solid {tokens.border};
 }}
@@ -179,13 +209,18 @@ QStatusBar QLabel#viewport_status {{
     font-weight: 600;
 }}
 
-QMenuBar {{ background: {tokens.surface_alt}; color: {tokens.text_primary}; }}
+QMenuBar {{ background: {tokens.surface}; color: {tokens.text_primary}; }}
 QMenuBar::item {{ background: transparent; padding: 4px 8px; }}
-QMenuBar::item:selected {{ background: {tokens.surface_raised}; }}
+QMenuBar::item:selected {{ background: {accent_hover_soft}; }}
 QMenu {{
-    background: {tokens.surface_alt};
+    background: {tokens.surface_raised};
     border: 1px solid {tokens.border_strong};
     padding: 4px;
+}}
+QMenu::right-arrow {{
+    image: none;
+    width: 0px;
+    height: 0px;
 }}
 QMenu::item {{ padding: 5px 20px 5px 8px; }}
 QMenu::item:selected {{
@@ -199,14 +234,14 @@ QMenu::separator {{
 }}
 
 QPushButton, QToolButton {{
-    background: {tokens.surface_raised};
+    background: {tokens.surface_alt};
     border: 1px solid {tokens.border};
     color: {tokens.text_primary};
     padding: 5px 12px;
     border-radius: 3px;
 }}
 QPushButton:hover, QToolButton:hover {{
-    background: {tokens.surface_alt};
+    background: {tokens.surface_raised};
     border-color: {tokens.accent_hover};
 }}
 QPushButton:pressed, QToolButton:pressed {{
@@ -240,7 +275,7 @@ QPushButton#collision_toggle:checked {{
 }}
 
 QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox {{
-    background: {tokens.surface_raised};
+    background: {tokens.surface_alt};
     border: 1px solid {tokens.border};
     color: {tokens.text_primary};
     padding: 2px;
@@ -256,7 +291,7 @@ QListWidget::item:selected {{
     background: {tokens.selection};
     color: {tokens.text_primary};
 }}
-QListWidget::item:hover:!selected {{ background: {tokens.surface_alt}; }}
+QListWidget::item:hover:!selected {{ background: {tokens.surface_raised}; }}
 
 QGroupBox {{
     border: 1px solid {tokens.border};
@@ -303,7 +338,7 @@ QScrollBar::handle:horizontal:hover {{ background: {tokens.accent}; }}
 QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {{ width: 0px; }}
 
 QComboBox {{
-    background: {tokens.surface_raised};
+    background: {tokens.surface_alt};
     border: 1px solid {tokens.border};
     padding: 4px;
     color: {tokens.text_primary};
@@ -341,7 +376,7 @@ QLabel#command_palette_hint {{
 }}
 
 QToolTip {{
-    background-color: {tokens.surface_alt};
+    background-color: {tokens.surface_raised};
     color: {tokens.text_primary};
     border: 1px solid {tokens.border_strong};
     padding: 4px;
@@ -349,7 +384,7 @@ QToolTip {{
 QSlider::groove:horizontal {{
     border: 1px solid {tokens.border};
     height: 4px;
-    background: {tokens.surface};
+    background: {tokens.surface_alt};
     margin: 2px 0;
 }}
 QSlider::handle:horizontal {{

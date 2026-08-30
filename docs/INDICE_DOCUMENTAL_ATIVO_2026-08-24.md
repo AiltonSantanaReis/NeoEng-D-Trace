@@ -35,12 +35,20 @@ Quando dois documentos ativos discordarem, a execução deverá ser bloqueada at
 | `ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md` | ATIVO / ADR | Limites técnicos de runtime e efeitos | governança | runtime e claims de capacidade |
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | Requisitos e direção visual da interface | plano normativo | UI, inspector e shell |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | Escopo e reconciliação da Etapa 5 | etapa e governança | prova da Etapa 5 |
+| `docs/evidence/ETAPA_10_ACESSIBILIDADE_ANALISE_IMPACTO_2026-08-24.md` | ATIVO / EVIDÊNCIA | Análise de impacto e auditoria inicial da Etapa 10 | governança, plano de interface e registro de IDs | acessibilidade e usabilidade da Etapa 10 |
+
+### 2.1 Evidência ativa da Etapa 10
+
+| Documento | Status | Versão | Autoridade | Dependências | IDs | Commit de inclusão |
+|---|---|---|---|---|---|---|
+| `docs/evidence/ETAPA_10_ACESSIBILIDADE_ENCERRAMENTO_2026-08-24.md` | `PENDING_HUMAN_REVIEW` | `1.0` | Evidência técnica subordinada à governança ativa | Governança, índice, registro de IDs, adendo, plano de interface e análise de impacto da Etapa 10 | `REQ-F10-UI-ACCESSIBILITY`, `FEAT-UI-ACCESSIBILITY`, `EVID-F10-ACCESSIBILITY-AUDIT` | `6ba06acd75e401f03228f949c9bf4279830c63cb` |
 
 ## 3. Documentos históricos
 
 Documentos históricos podem ser consultados para contexto e auditoria, mas não podem criar requisitos, alterar critérios ou autorizar avanço.
 
 Todo documento histórico deverá ser identificado como `HISTORICAL` ou `SUPERSEDED` quando houver um substituto ativo.
+
 
 ## 4. Cadeia obrigatória de rastreabilidade
 

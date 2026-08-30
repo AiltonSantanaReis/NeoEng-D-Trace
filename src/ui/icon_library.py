@@ -11,10 +11,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Final
 
-from PySide6.QtCore import QByteArray, QSize, Qt
+from PySide6.QtCore import QByteArray, Qt
 from PySide6.QtGui import QAction, QIcon, QPainter, QPixmap
 from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QAbstractButton, QWidget
 
 from src.core.logger import logger
 from src.ui.theme_tokens import THEME_TOKENS
@@ -81,8 +81,7 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
     ),
     "collision_auto_generate": (
         "auto-generate collision",
-        '<path d="m5 16 5-5 6 6-5 5z"/><path d="m10 11 5-5 4 4-5 5z"/>'
-        '<path d="M17 3.5v4M15 5.5h4"/>',
+        '<path d="m5 7 7-3 7 4-2 9-8 3-5-6z"/><path d="M17.5 3v4M15.5 5h4"/>',
     ),
     "clean": (
         "clean",
@@ -91,24 +90,24 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
     ),
     "fit": (
         "fit view",
-        '<path d="M8 4H4v4M16 4h4v4M8 20H4v-4M20 16v4h-4"/>',
+        '<path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"/><path d="M9 9h6v6H9z"/>',
     ),
     "zoom_100": (
         "one to one zoom",
         '<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/>'
-        '<path d="M8 10.5h5M10.5 8v5"/>',
+        '<path d="m8.75 9.25 1.5-1.25v5.25"/>',
     ),
     "lit": (
         "lit view",
-        '<circle cx="12" cy="12" r="3.5"/>'
-        '<path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3'
-        "M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1"
-        'M7.4 16.6l-2.1 2.1"/>',
+        '<circle cx="12" cy="12" r="3.25"/>'
+        '<path d="M12 3v2.25M12 18.75V21M3 12h2.25M18.75 12H21"/>'
+        '<path d="m5.65 5.65 1.6 1.6M16.75 16.75l1.6 1.6'
+        'M18.35 5.65l-1.6 1.6M7.25 16.75l-1.6 1.6"/>',
     ),
     "xray_1": (
         "x-ray one",
         '<path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5z"/>'
-        '<circle cx="12" cy="12" r="2.5"/>',
+        '<path d="M12 9v6M9 12h6"/>',
     ),
     "xray_2": (
         "x-ray two",
@@ -122,62 +121,65 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
     ),
     "gizmo": (
         "transform gizmo",
-        '<circle cx="12" cy="12" r="2.2"/>'
-        '<path d="M12 9.8V3M12 21v-6.8M9.8 12H3M21 12h-6.8"/>'
-        '<path d="m9.5 5.5 2.5-2.5 2.5 2.5M5.5 9.5 3 12l2.5 2.5'
-        'M18.5 9.5 21 12l-2.5 2.5M9.5 18.5 12 21l2.5-2.5"/>',
+        '<circle cx="12" cy="12" r="1.75"/>'
+        '<path d="M12 10.25V4M12 13.75V20M10.25 12H4M13.75 12H20"/>'
+        '<path d="m9.75 6.25 2.25-2.25 2.25 2.25M9.75 17.75 12 20'
+        "l2.25-2.25M6.25 9.75 4 12l2.25 2.25M17.75 9.75 20 12"
+        'l-2.25 2.25"/>',
     ),
     "focus": (
         "focus selected",
-        '<circle cx="12" cy="12" r="5"/>'
-        '<path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/>',
+        '<circle cx="12" cy="12" r="3.25"/><circle cx="12" cy="12" r=".75"/>'
+        '<path d="M12 3.5V7M12 17v3.5M3.5 12H7M17 12h3.5"/>',
     ),
     "language": (
         "language",
-        '<circle cx="12" cy="12" r="8.5"/>'
-        '<path d="M3.5 12h17M12 3.5c2.3 2.3 3.5 5.1 3.5 8.5s-1.2 6.2-3.5 8.5'
-        'c-2.3-2.3-3.5-5.1-3.5-8.5S9.7 5.8 12 3.5z"/>',
+        '<circle cx="12" cy="12" r="8"/>'
+        '<path d="M4 12h16M12 4c2 2.15 3 4.8 3 8s-1 5.85-3 8'
+        'c-2-2.15-3-4.8-3-8s1-5.85 3-8z"/>',
     ),
     "view": (
         "view",
-        '<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M8 12h8M12 8v8"/>',
+        '<path d="M3.5 12s3.25-5 8.5-5 8.5 5 8.5 5-3.25 5-8.5 5-8.5-5-8.5-5z"/>'
+        '<circle cx="12" cy="12" r="2.25"/>',
     ),
     "pan": (
         "pan",
-        '<path d="M8 11V5a1.5 1.5 0 0 1 3 0v5-6a1.5 1.5 0 0 1 3 0'
-        "v6-4a1.5 1.5 0 0 1 3 0v6-2a1.5 1.5 0 0 1 3 0"
-        'v5c0 4-2 6-6 6h-2c-3 0-5-2-5-5l-2-2a1.5 1.5 0 0 1 2-2z"/>',
+        '<path d="M8.25 12V7.25a1.5 1.5 0 0 1 3 0V11'
+        "M11.25 11V5.75a1.5 1.5 0 0 1 3 0V11"
+        "M14.25 11V7a1.5 1.5 0 0 1 3 0v5"
+        "M17.25 12v-2a1.5 1.5 0 0 1 3 0v4.25c0 4-2.5 6.25-6.25 6.25h-1.5"
+        "c-3.25 0-5.5-1.75-6.5-4.5l-1.25-2.5"
+        "a1.5 1.5 0 0 1 2.4-1.7"
+        'l1.1.95z"/>',
     ),
     "parallax": (
         "parallax",
-        '<path d="M4 7h10M4 12h16M4 17h10"/><path d="m14 5 4 2-4 2M10 15l-4 2 4 2"/>',
+        '<rect x="4" y="5" width="11" height="7" rx="1"/>'
+        '<rect x="9" y="12" width="11" height="7" rx="1"/>'
+        '<path d="M16.5 8.5H21m-2-2 2 2-2 2'
+        'M7.5 15.5H3m2-2-2 2 2 2"/>',
     ),
     "settings": (
         "view settings",
-        '<circle cx="12" cy="12" r="3"/>'
-        + '<path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.06.06-1.41 1.41-.06-.06A1.8 '
-        + "1.8 0 0 0 16.37 18a1.8 1.8 0 0 0-1.1 1.65V20h-2v-.35A1.8 1.8 0 0 0 12."
-        + "17 18a1.8 1.8 0 0 0-1.98.36l-.06.06-1.41-1.41.06-.06A1.8 1.8 0 0 0 9.1"
-        + "4 15a1.8 1.8 0 0 0-1.65-1.1H7v-2h.49A1.8 1.8 0 0 0 9.14 10a1.8 1.8 0 0"
-        + " 0-.36-1.98l-.06-.06 1.41-1.41.06.06A1.8 1.8 0 0 0 12.17 7a1.8 1.8 0 0"
-        + " 0 1.1-1.65V5h2v.35A1.8 1.8 0 0 0 16.37 7a1.8 1.8 0 0 0 1.98-.36l.06-."
-        + "06 1.41 1.41-.06.06A1.8 1.8 0 0 0 19.4 10a1.8 1.8 0 0 0 1.6 1.1v2a1.8 "
-        + '1.8 0 0 0-1.6 1.9z"/>',
+        '<path d="M5 7h8M17 7h2M5 12h2M11 12h8M5 17h10M19 17h0"/>'
+        '<circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/>'
+        '<circle cx="17" cy="17" r="2"/>',
     ),
     "move": (
         "move viewport",
-        ""
-        + '<path d="M12 3v18M3 12h18"/><path d="m8 7 4-4 4 4M8 17l4 4 4-4M7 8l-4 '
-        + '4 4 4M17 8l4 4-4 4"/>',
+        '<path d="M12 3v18M3 12h18"/>'
+        '<path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/>',
     ),
     "zoom": (
         "zoom viewport",
-        '<circle cx="10.5" cy="10.5" r="6.5"/>'
-        '<path d="m15.5 15.5 5 5M8 10.5h5M10.5 8v5"/>',
+        '<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5'
+        'M7.75 10.5h5.5M10.5 7.75v5.5"/>',
     ),
     "grid": (
         "toggle grid",
-        '<path d="M4 4h16v16H4z"/><path d="M10 4v16M16 4v16M4 10h16M4 16h16"/>',
+        '<rect x="4" y="4" width="16" height="16" rx="1"/>'
+        '<path d="M9.33 4v16M14.67 4v16M4 9.33h16M4 14.67h16"/>',
     ),
     "snap": (
         "toggle snapping",
@@ -258,18 +260,20 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
     "polygon_edit": (
         "polygon edit tool",
         '<path d="m5 5 14 3-3 12-11-5z"/>'
-        '<circle cx="5" cy="5" r="1.6"/>'
-        '<circle cx="19" cy="8" r="1.6"/>'
-        '<circle cx="16" cy="20" r="1.6"/><circle cx="5" cy="15" r="1.6"/>',
+        '<rect x="3.5" y="3.5" width="3" height="3" rx=".4"/>'
+        '<rect x="17.5" y="6.5" width="3" height="3" rx=".4"/>'
+        '<rect x="14.5" y="18.5" width="3" height="3" rx=".4"/>'
+        '<rect x="3.5" y="13.5" width="3" height="3" rx=".4"/>',
     ),
     "collision_brush": (
         "collision brush tool",
-        '<path d="m5 19 4-4 6 6-4 1z"/><path d="m9 15 5-5 5 5-4 4z"/>'
-        '<path d="M17 3.5v4M15 5.5h4"/>',
+        '<path d="m5 17 8.5-8.5 4 4L9 21H5z"/>'
+        '<path d="m13.5 8.5 2.5-2.5 4 4-2.5 2.5"/>'
+        '<path d="M5 17c0 2-1 3-3 3 2 0 3-1 3-3"/>',
     ),
     "selection": (
         "selection tool",
-        '<path d="m5 3 4 15 3-5 5 6 2-2-5-6 6-1z"/>',
+        '<path d="m5 3.5 4.1 15 3-5.1 4.8 5.7 2.1-1.8-4.8-5.7 5.8-1.5z"/>',
     ),
 }
 
@@ -359,12 +363,20 @@ def configure_widget(
     *,
     tooltip: str | None = None,
     accessible_name: str | None = None,
+    accessible_description: str | None = None,
 ) -> QWidget:
     """Apply icon metadata to an icon-capable widget without removing text."""
 
     spec = ICON_SPECS[key]
-    widget.setToolTip(tooltip or spec.accessible_name)
-    widget.setAccessibleName(accessible_name or spec.accessible_name)
+    resolved_name = accessible_name or spec.accessible_name
+    resolved_tooltip = tooltip or spec.accessible_name
+    widget.setToolTip(resolved_tooltip)
+    widget.setAccessibleName(resolved_name)
+    widget.setAccessibleDescription(
+        accessible_description or ("Activate " + resolved_name)
+    )
+    if isinstance(widget, QAbstractButton):
+        widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     widget.setProperty("iconKey", key)
     try:
         icon_setter = getattr(widget, "setIcon")
@@ -380,10 +392,6 @@ def configure_widget(
 def configure_main_window_controls(window: Any) -> None:
     """Configure the MainWindow icon contract after all controls are created."""
 
-    for toolbar in (window.toolbar, window.nav_toolbar, window.xray_toolbar):
-        toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        toolbar.setIconSize(QSize(18, 18))
-
     action_keys = {
         "open_project_action": "open",
         "open_image_action": "open_image",
@@ -398,46 +406,28 @@ def configure_main_window_controls(window: Any) -> None:
         "act_100": "zoom_100",
         "act_grid": "grid",
         "act_snap": "snap",
+        "act_gizmo": "gizmo",
         "settings_action": "settings",
         "act_lit": "lit",
         "act_xray1": "xray_1",
         "act_xray2": "xray_2",
         "act_xray3": "xray_3",
         "act_clean": "clean",
+        "language_action": "language",
     }
     for name, key in action_keys.items():
         configure_action(getattr(window, name), key)
 
-    widget_keys = {
-        "export_collision_button": "collision",
-        "focus_button": "focus",
-        "language_button": "language",
-    }
-    for name, key in widget_keys.items():
-        configure_widget(getattr(window, name), key)
-    configure_widget(window.canvas.gizmo_toggle, "gizmo")
     from src.ui.reference_chrome import (
         configure_reference_tool_palette,
         configure_reference_top_toolbar,
     )
-    from src.ui.top_toolbar import configure_top_toolbars
+    from src.ui.top_command_contract import build_top_command_contract
 
-    configure_top_toolbars(window)
+    window.top_command_contract = build_top_command_contract(window)
     configure_reference_tool_palette(window)
     configure_reference_top_toolbar(window)
     window.reference_tool_palette.setEnabled(window.tool_palette.isEnabled())
-    # Preserve the Stage 4 toolbar object/visibility contract. The reference
-    # toolbar is the visible chrome; the legacy command bar remains a zero-height
-    # compatibility surface so existing actions and tests retain their identity.
-    window.toolbar.setMinimumHeight(0)
-    window.toolbar.setMaximumHeight(0)
-    # Keep the historical toolbar object/action contract without reserving
-    # width beside the visible reference toolbar.
-    window.toolbar.setMinimumWidth(0)
-    window.toolbar.setMaximumWidth(0)
-
-    window.nav_toolbar.setVisible(False)
-    window.xray_toolbar.setVisible(False)
     from src.ui.viewport_status import configure_viewport_status
 
     configure_viewport_status(window)

@@ -73,11 +73,14 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "file.save",
             "file.save_as",
             "app.exit",
+            "app.language_en",
+            "app.language_pt",
             "edit.undo",
             "edit.redo",
             "view.settings",
             "view.grid",
             "view.snap",
+            "view.gizmo",
             "view.mask_viewer",
             "view.collision_overlay",
             "view.fit",
@@ -104,6 +107,11 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
         }
         assert set(window.command_registry.command_ids()) == expected
         assert window.command_registry.action("file.save") is window.save_project_action
+        assert window.command_registry.action("app.language_en") is window.act_english
+        assert (
+            window.command_registry.action("app.language_pt") is window.act_portuguese
+        )
+        assert window.command_registry.action("view.gizmo") is window.act_gizmo
         assert window.command_registry.is_enabled("edit.undo") is False
         assert window.command_registry.is_enabled("file.save") is True
 

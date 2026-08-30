@@ -10,7 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import (
     QLabel,
@@ -24,16 +24,19 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.scenario_authoring import ScenarioAuthoringState
-from src.core.scene_authoring_factory import document_from_scene
+from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.exporters.scene_authoring_export import save_scene_authoring_export
 from src.persistence.scene_authoring_io import (
+    SceneAuthoringAssetError,
     load_scene_authoring_v2,
     save_scene_authoring,
 )
 from src.persistence.scene_authoring_schema import upgrade_scene_authoring_document
 from src.ui.scenario_panel import ScenarioPanel
+from src.ui.scene_asset_panel import SceneAssetLibrary
+from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
@@ -41,6 +44,8 @@ from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
 class ScenarioEditorWindow(QMainWindow):
     """Interactive authoring surface for the versioned scenario sidecar."""
+
+    document_changed = Signal()
 
     def __init__(
         self,
@@ -61,11 +66,14 @@ class ScenarioEditorWindow(QMainWindow):
 
         self.professional_session: SceneAuthoringSession | None = None
         self.professional_viewport: SceneAuthoringViewport | None = None
+        self._professional_initial_focus_applied = False
         self.professional_inspector: SceneAuthoringInspector | None = None
         self.professional_inspector_scroll: QScrollArea | None = None
         self._professional_project: Path | None = None
         self.professional_scene_path: Path | None = None
         self.layer_stack: SceneAuthoringLayerStack | None = None
+        self.group_stack: SceneAuthoringGroupStack | None = None
+        self.asset_library: SceneAssetLibrary | None = None
         self.canvas = self._build_canvas()
         self.legacy_canvas = self.canvas
         self.professional_pages = QStackedWidget(self)
@@ -185,8 +193,15 @@ class ScenarioEditorWindow(QMainWindow):
         canvas = CanvasView(self.scene, self)
         canvas.set_scenario_preview_enabled(True)
         canvas.set_scenario_overlays_visible(True)
-        canvas.gizmo_toggle.setVisible(False)
         return canvas
+
+    def _load_professional_document(self, path: Path):
+        """Load valid scenes while exposing missing/tampered assets to the UI."""
+
+        try:
+            return load_scene_authoring_v2(path)
+        except SceneAuthoringAssetError:
+            return load_scene_authoring_v2(path, verify_assets=False)
 
     def _build_professional_viewport(self) -> None:
         project_path = self.authoring.project_path
@@ -194,10 +209,12 @@ class ScenarioEditorWindow(QMainWindow):
             return
         scene_path = project_path.with_suffix(".ndtscene.json")
         if scene_path.is_file():
-            document = load_scene_authoring_v2(scene_path)
+            document = self._load_professional_document(scene_path)
         else:
-            document = upgrade_scene_authoring_document(
-                document_from_scene(self.scene, project_path)
+            document = professional_document_from_scene(
+                self.scene,
+                project_path,
+                self.authoring.document,
             )
         session = SceneAuthoringSession(SceneAuthoringModel(document))
         viewport = SceneAuthoringViewport(
@@ -226,11 +243,20 @@ class ScenarioEditorWindow(QMainWindow):
             )
         inspector = SceneAuthoringInspector(session)
         self.layer_stack = SceneAuthoringLayerStack(session)
+        self.group_stack = SceneAuthoringGroupStack(session)
+        self.asset_library = SceneAssetLibrary(
+            session, project_path.parent, parent=inspector
+        )
+        self.asset_library.update_language(self.current_lang)
         inspector_layout = inspector.layout()
         if not isinstance(inspector_layout, QVBoxLayout):
             raise RuntimeError("professional inspector has no vertical layout")
         inspector_layout.insertWidget(0, self.layer_stack)
+        inspector_layout.insertWidget(0, self.group_stack)
+        inspector_layout.insertWidget(0, self.asset_library)
         self.layer_stack.status_message.connect(self._show_professional_status)
+        self.group_stack.status_message.connect(self._show_professional_status)
+        self.asset_library.status_message.connect(self._show_professional_status)
         inspector_scroll = QScrollArea(self.right_pages)
         inspector_scroll.setObjectName("professional_inspector_scroll")
         inspector_scroll.setWidgetResizable(True)
@@ -240,6 +266,8 @@ class ScenarioEditorWindow(QMainWindow):
         inspector_scroll.setWidget(inspector)
         inspector.status_message.connect(self._show_professional_status)
         viewport.status_message.connect(self._show_professional_status)
+        inspector.request_fit.connect(viewport.fit_selection)
+        inspector.request_fit_all.connect(viewport.fit_all)
         inspector.status_message.connect(lambda _message: viewport.sync())
         self.right_pages.addWidget(inspector_scroll)
         self.right_pages.setCurrentWidget(inspector_scroll)
@@ -251,58 +279,133 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector_scroll = inspector_scroll
         self._professional_project = project_path
         self.professional_scene_path = scene_path
+        self._configure_professional_tab_order(viewport, inspector)
         session.subscribe(self._update_professional_status)
+        session.subscribe(self._emit_document_changed)
 
-    def _save_professional(self) -> None:
+    def _configure_professional_tab_order(
+        self,
+        viewport: SceneAuthoringViewport,
+        inspector: SceneAuthoringInspector,
+    ) -> None:
+        """Keep keyboard navigation deterministic across the professional surface."""
+
+        focus_chain = (
+            viewport,
+            inspector.fit_button,
+            inspector.fit_all_button,
+            inspector.apply_button,
+            inspector.undo_button,
+            inspector.redo_button,
+            inspector.delete_button,
+            inspector.position_x,
+            inspector.position_y,
+            inspector.position_z,
+            inspector.rotation_x,
+            inspector.rotation_y,
+            inspector.rotation_z,
+            inspector.scale_x,
+            inspector.scale_y,
+            inspector.scale_z,
+            inspector.pivot_x,
+            inspector.pivot_y,
+            inspector.flip_x,
+            inspector.flip_y,
+            inspector.snap_enabled,
+            inspector.snap_spacing_x,
+            inspector.snap_spacing_y,
+            inspector.camera_x,
+            inspector.camera_y,
+            inspector.camera_zoom,
+            inspector.camera_apply_button,
+            inspector.layer_combo,
+            inspector.parallax_depth,
+            inspector.parallax_translation,
+            inspector.parallax_zoom,
+            inspector.parallax_apply_button,
+            inspector.socket_combo,
+            inspector.socket_type,
+            inspector.socket_id,
+            inspector.socket_x,
+            inspector.socket_y,
+            inspector.socket_z,
+            inspector.add_socket_button,
+            inspector.update_socket_button,
+            inspector.remove_socket_button,
+        )
+        for previous, current in zip(focus_chain, focus_chain[1:]):
+            self.setTabOrder(previous, current)
+        self.setTabOrder(focus_chain[-1], focus_chain[0])
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        if (
+            self.professional_viewport is not None
+            and not self._professional_initial_focus_applied
+        ):
+            self.professional_viewport.setFocus(Qt.FocusReason.OtherFocusReason)
+            self._professional_initial_focus_applied = True
+
+    def _emit_document_changed(self) -> None:
+        self.document_changed.emit()
+
+    def _save_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
             self.status_label.setText("Save a project before saving the scenario")
-            return
+            return False
         try:
             save_scene_authoring(
                 self.professional_session.document, self.professional_scene_path
             )
             self.professional_session.mark_saved()
             self.status_label.setText("Scenario saved")
+            return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario save failed: {exc}")
+            return False
 
-    def _load_professional(self) -> None:
+    def _load_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
             self.status_label.setText("Save a project before reloading the scenario")
-            return
+            return False
         if not self.professional_scene_path.is_file():
             self.status_label.setText("No saved scenario exists yet")
-            return
+            return False
         try:
-            document = load_scene_authoring_v2(self.professional_scene_path)
+            document = self._load_professional_document(self.professional_scene_path)
             self.professional_session.model.document = document
+            self.professional_session.clear_isolation()
             self.professional_session.clear_history()
             self.professional_session.clear_selection()
             self.professional_session.mark_saved()
             if self.professional_viewport is not None:
                 self.professional_viewport.sync()
             self.status_label.setText("Scenario reloaded")
+            return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario reload failed: {exc}")
+            return False
 
-    def _reset_professional(self) -> None:
+    def _reset_professional(self) -> bool:
         if self._professional_project is None or self.professional_session is None:
             self.status_label.setText("Save a project before resetting the scenario")
-            return
+            return False
         document = upgrade_scene_authoring_document(
-            document_from_scene(self.scene, self._professional_project)
+            professional_document_from_scene(self.scene, self._professional_project)
         )
         self.professional_session.model.document = document
+        self.professional_session.clear_isolation()
         self.professional_session.clear_history()
         self.professional_session.clear_selection()
         if self.professional_viewport is not None:
             self.professional_viewport.sync()
         self.status_label.setText("Scenario reset from project")
+        return True
 
-    def _export_professional(self) -> None:
+    def _export_professional(self) -> bool:
         if self.professional_session is None or self._professional_project is None:
             self.status_label.setText("Save a project before exporting the scenario")
-            return
+            return False
         destination = self._professional_project.with_suffix(".ndtscene.runtime.json")
         try:
             save_scene_authoring_export(
@@ -311,8 +414,10 @@ class ScenarioEditorWindow(QMainWindow):
                 target="generic",
             )
             self.status_label.setText("Scenario runtime exported")
+            return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario export failed: {exc}")
+            return False
 
     def _update_professional_status(self) -> None:
         if self.professional_session is None:
@@ -464,8 +569,11 @@ class ScenarioEditorWindow(QMainWindow):
         ):
             action.setText(label)
         self.scenario_panel.update_language(self.current_lang)
+        if self.asset_library is not None:
+            self.asset_library.update_language(self.current_lang)
 
     def closeEvent(self, event) -> None:
+        self._professional_initial_focus_applied = False
         if self.professional_session is not None and self.professional_session.is_dirty:
             self.status_label.setText("Unsaved scenario changes preserved")
         self.hide()

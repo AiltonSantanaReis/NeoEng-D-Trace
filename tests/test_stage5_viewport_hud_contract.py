@@ -42,9 +42,13 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
         window.canvas._pan.setX(12)
         window.canvas._pan.setY(-8)
         window.canvas._emit_viewport_state()
-        assert "PAN: 12,-8" in window.viewport_status.toolTip()
-        assert "SNAP: ON" in window.viewport_status.toolTip()
-        assert "GRID: OFF" in window.viewport_status.toolTip()
+        state = window.canvas.viewport_state()
+        assert state.pan_x == pytest.approx(12.0)
+        assert state.pan_y == pytest.approx(-8.0)
+        assert state.snap_enabled is True
+        assert state.snap_grid_size == 16
+        assert state.grid_visible is False
+        assert window.viewport_status.toolTip()
         overlay = window.viewport_chrome.overlay
         assert overlay._compact is True
         assert overlay.view_button.text() == "Lit"
@@ -52,12 +56,18 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
         assert overlay.snap_button.text().startswith("Snap ")
         for child in (overlay.view_button, overlay.zoom_button, overlay.snap_button):
             assert overlay.rect().contains(child.geometry())
+        initial_geometry = overlay.geometry()
+        assert 0 <= initial_geometry.y() <= 16
+        overlay.snap_button.click()
+        qt_app.processEvents()
+        assert overlay.geometry() == initial_geometry
 
         window.resize(1920, 1080)
         qt_app.processEvents()
         assert overlay._compact is False
         assert overlay.view_button.text().startswith("View: ")
         assert overlay.zoom_button.text().startswith("Zoom: ")
+        assert 0 <= overlay.geometry().y() <= 16
     finally:
         window.close()
 

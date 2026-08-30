@@ -8,6 +8,7 @@ import os
 import platform
 import subprocess
 import sys
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
@@ -99,14 +100,14 @@ def _functional_contract() -> dict[str, Any]:
         _settle(app, 40)
 
         actions = (
-            ("lit_1to1", window.act_lit, window.act_100, "VIEW: LIT  |  ZOOM: 1.00x"),
-            ("xray1", window.act_xray1, None, "VIEW: X-RAY 1  |  ZOOM: 1.00x"),
+            ("lit_1to1", window.act_lit, window.act_100, ("LIT", 1.0)),
+            ("xray1", window.act_xray1, None, ("X-RAY 1", 1.0)),
             ("fit", window.act_fit, None, None),
             (
                 "xray1_1to1",
                 window.act_xray1,
                 window.act_100,
-                "VIEW: X-RAY 1  |  ZOOM: 1.00x",
+                ("X-RAY 1", 1.0),
             ),
         )
         for state, first, second, expected in actions:
@@ -117,11 +118,19 @@ def _functional_contract() -> dict[str, Any]:
             capture_path = FUNCTIONAL_ROOT / f"{label}_{state}.png"
             _capture(window, capture_path)
             status = window.viewport_status
-            actual = status.text()
-            if expected is not None and actual != expected:
-                failures.append(
-                    f"{label}/{state}: status text {actual!r} != {expected!r}"
-                )
+            viewport_state = window.canvas.viewport_state()
+            if expected is not None:
+                expected_mode, expected_zoom = expected
+                if viewport_state.view_mode != expected_mode:
+                    failures.append(
+                        f"{label}/{state}: view mode {viewport_state.view_mode!r} "
+                        f"!= {expected_mode!r}"
+                    )
+                if abs(viewport_state.zoom - expected_zoom) > 1e-9:
+                    failures.append(
+                        f"{label}/{state}: zoom {viewport_state.zoom!r} "
+                        f"!= {expected_zoom!r}"
+                    )
             if not status.isVisibleTo(window):
                 failures.append(f"{label}/{state}: status is not visible")
             if not window.statusBar().rect().contains(status.geometry()):
@@ -130,7 +139,8 @@ def _functional_contract() -> dict[str, Any]:
                 failures.append(f"{label}/{state}: canvas contains a QLabel HUD")
             records[f"{label}/{state}"] = {
                 "size": [width, height],
-                "status_text": actual,
+                "status_text": status.text(),
+                "viewport_state": asdict(viewport_state),
                 "view_mode": window.canvas._view_mode,
                 "zoom": window.canvas.get_zoom(),
                 "status_geometry": [

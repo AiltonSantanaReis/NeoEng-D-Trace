@@ -30,14 +30,20 @@ def test_main_window_identity_is_correct_in_english_and_portuguese(qt_app):
 
     window.set_language("en")
     assert window.windowTitle() == "NeoEng-D-Trace"
-    assert window.export_collision_button.text() == "Export Collision"
+    assert window.act_export_collision_json.text() == "Export Collision (JSON)"
     assert window.act_lit.text() == "Lit"
+    assert window.language_action.text() == "Language"
+    assert window.act_english.text() == "English"
+    assert window.act_english.isChecked()
 
     window.set_language("pt")
     assert window.windowTitle() == "NeoEng-D-Trace"
-    assert window.export_collision_button.text() == "Exportar Colisão"
+    assert window.act_export_collision_json.text() == "Exportar Colisão (JSON)"
     assert window.act_lit.text() == "Iluminado"
     assert window.act_open.text() == "Abrir Imagem"
+    assert window.language_action.text() == "Idioma"
+    assert window.act_portuguese.text() == "Português"
+    assert window.act_portuguese.isChecked()
 
     assert APP_DISPLAY_NAME in window.windowTitle()
     window.close()

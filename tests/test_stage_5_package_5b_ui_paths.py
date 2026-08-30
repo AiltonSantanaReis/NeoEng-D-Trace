@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock
 
 import pytest
+from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.collision import StaticCollisionManager
@@ -96,7 +97,90 @@ def test_mask_viewer_invalid_polygon_rolls_back_entire_batch(
     assert scene.objects == {}
     assert scene.cmd.undo_count == 0
     assert close.call_count == 0
-    assert len(messages["critical"]) == 1
+    assert not messages["critical"]
+    assert "invalid" in dialog.validation_label.text().lower()
+
+
+def test_mask_viewer_reports_exact_crossing_location(qt_app, monkeypatch, messages):
+    scene = Scene()
+    dialog, close = make_mask_dialog(qt_app, monkeypatch, scene)
+    dialog._last_polygons = [
+        {"polygon": [(0, 0), (10, 10), (0, 10), (10, 0)]},
+    ]
+
+    dialog._update_polygon_validation_feedback()
+
+    details = dialog._last_polygons[0]["validation_details"]
+    assert details["invalid_edges"] == [[0, 2]]
+    assert details["invalid_intersections"] == [[5.0, 5.0]]
+    assert "1-2" in dialog.validation_label.text()
+    assert "3-4" in dialog.validation_label.text()
+    assert "5.0" in dialog.validation_label.text()
+
+
+def test_mask_viewer_allows_vertex_edit_until_all_polygons_are_valid(
+    qt_app, monkeypatch, messages
+):
+    scene = Scene()
+    scene.cmd = CommandManager()
+    dialog, close = make_mask_dialog(qt_app, monkeypatch, scene)
+    dialog._last_polygons = [
+        {"polygon": TRIANGLE_A},
+        {"polygon": [(20, 20), (80, 20), (80, 20), (20, 80)]},
+    ]
+
+    dialog.viewer.set_overlay_polygons(dialog._last_polygons)
+    dialog._update_polygon_validation_feedback()
+    assert dialog.apply_button.isEnabled() is False
+    assert dialog._last_polygons[1]["is_valid"] is False
+    assert "duplicate" in dialog.validation_label.text().lower()
+
+    dialog.viewer._editing_polygon_index = 1
+    dialog.viewer._editing_vertex_index = 2
+    dialog.viewer._move_editing_vertex(QPointF(80, 80))
+
+    assert dialog._last_polygons[1]["is_valid"] is True
+    assert dialog.apply_button.isEnabled() is True
+    dialog._apply_to_scene()
+
+    assert len(scene.objects) == 2
+    assert scene.cmd.undo_count == 1
+    assert close.call_count == 1
+    assert len(messages["information"]) == 1
+
+
+def test_mask_viewer_context_edits_are_local_and_undoable(
+    qt_app, monkeypatch, messages
+):
+    scene = Scene()
+    dialog, close = make_mask_dialog(qt_app, monkeypatch, scene)
+    dialog._last_polygons = [
+        {"polygon": [(20, 20), (80, 20), (80, 80), (20, 80)]},
+    ]
+    viewer = dialog.viewer
+    viewer.set_overlay_polygons(dialog._last_polygons)
+    viewer._context_polygon_index = 0
+    viewer._context_vertex_index = 1
+    viewer._context_image_point = QPointF(50, 20)
+
+    viewer.add_context_vertex()
+    assert len(dialog._last_polygons[0]["polygon"]) == 5
+    viewer.undo_polygon_edit()
+    assert len(dialog._last_polygons[0]["polygon"]) == 4
+    viewer.redo_polygon_edit()
+    assert len(dialog._last_polygons[0]["polygon"]) == 5
+
+    viewer.set_selected_polygon_index(0)
+    viewer.set_gizmo_enabled(True)
+    assert set(viewer._gizmo_handle_positions()) == {"move", "scale", "rotate"}
+    viewer._begin_gizmo_drag("move", QPointF(0, 0))
+    viewer._move_gizmo(QPointF(10, 5))
+    viewer._finish_gizmo_drag()
+    assert dialog._last_polygons[0]["polygon"][0] == (30, 25)
+    viewer.undo_polygon_edit()
+    assert dialog._last_polygons[0]["polygon"][0] == (20, 20)
+    assert scene.objects == {}
+    assert close.call_count == 0
 
 
 def test_mask_viewer_rejected_result_does_not_claim_success(

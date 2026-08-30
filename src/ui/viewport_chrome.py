@@ -7,12 +7,13 @@ from PySide6.QtGui import QColor, QFont, QPainter, QPen
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QMenu,
-    QSizePolicy,
     QStackedLayout,
     QToolButton,
     QVBoxLayout,
     QWidget,
 )
+
+from src.ui.viewport_state import ViewportState
 
 
 class _Ruler(QWidget):
@@ -29,7 +30,7 @@ class _Ruler(QWidget):
         else:
             self.setMinimumWidth(28)
             self.setMaximumWidth(28)
-        canvas.viewport_state_changed.connect(self.update)
+        canvas.viewport_state_model_changed.connect(lambda _state: self.update())
 
     def paintEvent(self, event) -> None:  # noqa: N802
         del event
@@ -86,6 +87,12 @@ class ViewportOverlayBar(QWidget):
         self.view_button = QToolButton(self)
         self.view_button.setObjectName("viewport_view_button")
         self.view_button.setText("View: Lit")
+        self.view_button.setAccessibleName("Viewport view menu")
+        self.view_button.setAccessibleDescription(
+            "Choose Lit or X-Ray viewport rendering"
+        )
+        self.view_button.setToolTip("Choose viewport rendering mode")
+        self.view_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.view_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         view_menu = QMenu(self.view_button)
         for action in (
@@ -100,6 +107,12 @@ class ViewportOverlayBar(QWidget):
         self.zoom_button = QToolButton(self)
         self.zoom_button.setObjectName("viewport_zoom_button")
         self.zoom_button.setText("Zoom: 1.00x")
+        self.zoom_button.setAccessibleName("Viewport zoom menu")
+        self.zoom_button.setAccessibleDescription(
+            "Choose fit-to-window or one-to-one viewport zoom"
+        )
+        self.zoom_button.setToolTip("Choose viewport zoom")
+        self.zoom_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.zoom_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         zoom_menu = QMenu(self.zoom_button)
         zoom_menu.addAction(window.act_fit)
@@ -109,7 +122,12 @@ class ViewportOverlayBar(QWidget):
         self.snap_button = QToolButton(self)
         self.snap_button.setObjectName("viewport_snap_button")
         self.snap_button.setCheckable(True)
+        self.snap_button.setAccessibleName("Toggle vertex snapping")
+        self.snap_button.setAccessibleDescription(
+            "Enable or disable snapping edited vertices to the active grid"
+        )
         self.snap_button.setToolTip("Toggle real vertex snapping")
+        self.snap_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.snap_button.toggled.connect(self._set_snap)
 
         layout = QHBoxLayout(self)
@@ -119,31 +137,40 @@ class ViewportOverlayBar(QWidget):
         layout.addWidget(self.zoom_button)
         layout.addWidget(self.snap_button)
         layout.addStretch(1)
-        canvas.viewport_state_changed.connect(self._sync)
-        self._sync(canvas.viewport_state_text())
+        canvas.viewport_state_model_changed.connect(self._sync)
+        self._sync(canvas.viewport_state())
 
     def set_compact(self, compact: bool) -> None:
         self._compact = bool(compact)
-        self._sync(self.canvas.viewport_state_text())
+        self._sync(self.canvas.viewport_state())
 
     def _set_snap(self, enabled: bool) -> None:
         self.canvas.set_vertex_snapping(enabled, grid_size=16)
-        self._sync(self.canvas.viewport_state_text())
 
-    def _sync(self, state: str) -> None:
-        mode = state.split("  |  ", 1)[0].replace("VIEW: ", "").title()
+    def _sync(self, state: ViewportState) -> None:
+        mode = state.view_mode.title()
         if self._compact:
             self.view_button.setText(mode)
-            self.zoom_button.setText(f"{self.canvas.get_zoom():.2f}x")
+            self.zoom_button.setText(f"{state.zoom:.2f}x")
         else:
             self.view_button.setText(f"View: {mode}")
-            self.zoom_button.setText(f"Zoom: {self.canvas.get_zoom():.2f}x")
-        settings = self.canvas._vertex_snap_settings
-        self.snap_button.setChecked(bool(settings.enabled))
-        grid = int(getattr(settings, "grid_size", 1))
-        snap_state = f"{'On' if settings.enabled else 'Off'} ({grid})"
+            self.zoom_button.setText(f"Zoom: {state.zoom:.2f}x")
+        self.snap_button.blockSignals(True)
+        self.snap_button.setChecked(state.snap_enabled)
+        self.snap_button.blockSignals(False)
+        snap_state = f"{'On' if state.snap_enabled else 'Off'} ({state.snap_grid_size})"
         self.snap_button.setText(
             f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
+        )
+        self.view_button.setAccessibleDescription(
+            f"Choose viewport rendering mode; current mode: {mode}"
+        )
+        self.zoom_button.setAccessibleDescription(
+            f"Choose viewport zoom; current zoom: {state.zoom:.2f}x"
+        )
+        self.snap_button.setAccessibleDescription(
+            "Enable or disable snapping edited vertices to the active grid; "
+            f"current state: {snap_state}"
         )
 
 
@@ -161,17 +188,10 @@ class ViewportChrome(QWidget):
         stack.setStackingMode(QStackedLayout.StackingMode.StackAll)
         stack.setContentsMargins(0, 0, 0, 0)
         stack.addWidget(canvas)
+        # Keep the HUD out of the layout-managed stack. Text/state changes in
+        # View, Zoom or Snap must not trigger a layout pass that repositions
+        # the overlay by a few pixels.
         self.overlay = ViewportOverlayBar(window, canvas, self.canvas_stack)
-        stack.addWidget(self.overlay)
-        stack.setAlignment(
-            self.overlay, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom
-        )
-        # Let the overlay use the measured width of its controls so Qt
-        # cannot compress their labels below their minimum size hint.
-        self.overlay.setSizePolicy(
-            QSizePolicy.Policy.Minimum,
-            QSizePolicy.Policy.Fixed,
-        )
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -187,8 +207,11 @@ class ViewportChrome(QWidget):
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
         self.overlay.set_compact(self.canvas_stack.width() < 900)
-        self.overlay.move(
-            8, max(8, self.canvas_stack.height() - self.overlay.height() - 10)
+        self.overlay.setGeometry(
+            8,
+            10,
+            max(1, self.canvas_stack.width() - 16),
+            self.overlay.height(),
         )
         self.overlay.raise_()
 

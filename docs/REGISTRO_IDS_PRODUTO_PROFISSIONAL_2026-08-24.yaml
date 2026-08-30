@@ -128,6 +128,9 @@ requirements:
   - id: REQ-F10-COMPOSITE-PASSES
     title: explicit composition passes and post-processing
     status: planned
+  - id: REQ-F10-UI-ACCESSIBILITY
+    title: accessible editor controls and keyboard usability
+    status: planned
   - id: REQ-F11-CLEAN-DISTRIBUTION
     title: clean installation and reproducible package
     status: planned
@@ -166,8 +169,23 @@ features:
   - id: FEAT-VIEWPORT-MINIMAP
     display_name: Minimap do viewport
     requirement: REQ-F04-SCENE-VIEWPORT
+  - id: FEAT-UI-ACCESSIBILITY
+    display_name: Accessible editor controls
+    requirement: REQ-F10-UI-ACCESSIBILITY
 
 traceability:
+  REQ-F10-UI-ACCESSIBILITY:
+    features:
+      - FEAT-UI-ACCESSIBILITY
+    tests:
+      - TEST-UI-ACCESSIBILITY-METADATA
+      - TEST-UI-KEYBOARD-FOCUS
+      - TEST-UI-MOUSE-FEEDBACK
+      - TEST-UI-ERROR-FEEDBACK
+      - TEST-UI-CONTRAST-STATES
+    evidence:
+      - EVID-F10-ACCESSIBILITY-AUDIT
+
   REQ-F02-EVIDENCE-AUTOMATION:
     features:
       - FEAT-QA-EVIDENCE-PACKAGE

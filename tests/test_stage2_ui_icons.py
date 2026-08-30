@@ -93,7 +93,9 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         window.undo_action,
         window.redo_action,
         window.act_snap,
+        window.act_gizmo,
         window.settings_action,
+        window.language_action,
     )
     for action in actions:
         assert not action.icon().isNull(), action.objectName()
@@ -103,10 +105,6 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         assert action.property("iconFallback") is False
 
     for widget in (
-        window.canvas.gizmo_toggle,
-        window.focus_button,
-        window.language_button,
-        window.export_collision_button,
         window.collision_panel.batch_test_btn,
         window.collision_panel.export_btn,
         window.collision_panel.auto_gen_btn,
@@ -117,9 +115,15 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
         assert widget.accessibleName()
         assert widget.property("iconFallback") is False
 
-    assert window.toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-    assert window.nav_toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
-    assert window.xray_toolbar.toolButtonStyle().name == "ToolButtonTextBesideIcon"
+    assert window.top_command_contract.group_names() == (
+        "file",
+        "edit",
+        "view",
+        "export",
+        "context",
+        "render",
+    )
+    assert window.reference_top_toolbar.iconSize() == QSize(24, 24)
     for button in window.tool_palette.tool_buttons.values():
         assert not button.icon().isNull()
         assert button.text()
@@ -140,7 +144,9 @@ def test_main_window_actions_and_tools_have_icons_and_accessible_text(qt_app):
     assert window.reference_tool_palette.iconSize() == QSize(24, 24)
     window.set_language("pt")
     assert window.open_project_action.text()
-    assert window.canvas.gizmo_toggle.text() == "Eixo"
+    assert window.act_gizmo.text() == "Eixo"
+    assert window.language_action.text() == "Idioma"
+    assert window.act_portuguese.text() == "Português"
     assert all(
         not button.icon().isNull()
         for button in window.tool_palette.tool_buttons.values()
