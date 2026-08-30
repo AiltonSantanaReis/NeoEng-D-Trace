@@ -12057,8 +12057,8 @@
       "size": 12306
     },
     "tools/audit_normative_docx.py": {
-      "sha256": "ed65b1f4fb909e13e439f7b3682bc0a7fa7143a132fce8ef8ab0257ff7ad8188",
-      "size": 1859
+      "sha256": "9d38eb3009eb406fef138414d3777d467808266b4ffc72ebc4c5a9b0aca2f3e3",
+      "size": 1915
     },
     "tools/baseline_integrity.py": {
       "sha256": "683c92e266c17335e880999885256c8466feedfa0b99ca687d726573b9a98aa4",
