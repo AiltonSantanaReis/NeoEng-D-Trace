@@ -68,6 +68,7 @@ def _run(
 
 
 def _write_fixture(workspace: Path) -> tuple[Path, Path, Path]:
+    from src.exporters.scene_authoring_export import save_scene_authoring_export
     from src.persistence.project_schema import Point3Record, PointRecord
     from src.persistence.scenario_schema import ProjectReferenceRecord
     from src.persistence.scene_authoring_io import save_scene_authoring
@@ -78,12 +79,11 @@ def _write_fixture(workspace: Path) -> tuple[Path, Path, Path]:
         SceneCameraAuthoringRecord,
         SceneGroupAuthoringRecordV2,
         SceneLayerAuthoringRecord,
+        SceneObjectAuthoringRecord,
         SceneParallaxLayerRecord,
         SceneTransformRecord,
-        SceneObjectAuthoringRecord,
         upgrade_scene_authoring_document,
     )
-    from src.exporters.scene_authoring_export import save_scene_authoring_export
 
     workspace.mkdir(parents=True, exist_ok=True)
     project = workspace / "scene.ndtproj"
