@@ -11237,8 +11237,8 @@
       "size": 9950
     },
     "src/ui/mask_viewer.py": {
-      "sha256": "58cc2708c8e84d7f41573bd5ddf26f89fa48682e75d3dbc35fe7b2d13f179949",
-      "size": 87690
+      "sha256": "1f2993d9359e43b4c598ca8c62b52bdda3f9fafb7a045dfed4e1d736742193b5",
+      "size": 87642
     },
     "src/ui/reference_chrome.py": {
       "sha256": "41f4f9164e5c1cb1d950ccef76dce80cf2507ee5abf2ea0de563a5589af59138",

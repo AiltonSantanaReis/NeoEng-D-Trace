@@ -1350,8 +1350,7 @@ class MaskViewerDialog(QDialog):
             "apply_error": "Failed to apply polygons:\n{error}",
             "selected": "Selected polygon {index}",
             "validation_summary": (
-                "Detected {count} polygons: {valid} valid, "
-                "{invalid} invalid."
+                "Detected {count} polygons: {valid} valid, " "{invalid} invalid."
             ),
             "invalid_polygon": "Polygon {index}: {reason}",
             "invalid_location": (
@@ -1430,8 +1429,7 @@ class MaskViewerDialog(QDialog):
             "apply_error": "Falha ao aplicar polígonos:\n{error}",
             "selected": "Polígono {index} selecionado",
             "validation_summary": (
-                "Detectados {count} polígonos: {valid} válidos, "
-                "{invalid} inválidos."
+                "Detectados {count} polígonos: {valid} válidos, " "{invalid} inválidos."
             ),
             "invalid_polygon": "Polígono {index}: {reason}",
             "invalid_location": (
@@ -1445,8 +1443,7 @@ class MaskViewerDialog(QDialog):
                 "válidos."
             ),
             "valid_hint": (
-                "Todos os polígonos detectados são válidos e podem ser "
-                "aplicados."
+                "Todos os polígonos detectados são válidos e podem ser " "aplicados."
             ),
         },
     }
