@@ -162,7 +162,9 @@ def test_export_with_source_path_blocks_missing_or_tampered_asset(
     save_scene_authoring(document, source)
 
     asset.write_bytes(b"tampered")
-    with pytest.raises(SceneAuthoringExportError, match="asset is unavailable or changed"):
+    with pytest.raises(
+        SceneAuthoringExportError, match="asset is unavailable or changed"
+    ):
         save_scene_authoring_export(
             document,
             destination,
@@ -200,9 +202,7 @@ def test_real_ui_export_selects_target_and_uses_active_document(
         payload = json.loads(destination.read_text(encoding="utf-8"))
         assert payload["target"] == "godot"
         assert payload["scene"]["objects"]
-        assert all(
-            "source_path" not in asset for asset in payload["scene"]["assets"]
-        )
+        assert all("source_path" not in asset for asset in payload["scene"]["assets"])
 
         image = tmp_path / "scene.png"
         image.write_bytes(b"tampered image")
@@ -264,10 +264,12 @@ def test_native_importers_expose_p2d04_transform_camera_and_parallax_contract() 
         "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd"
     ).read_text(encoding="utf-8")
     unity_editor = Path(
-        "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs"
+        "integrations/unity/package/com.neoeng.dtrace/Editor/"
+        "ProfessionalSceneImportGenerator.cs"
     ).read_text(encoding="utf-8")
     unity_runtime = Path(
-        "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalParallax.cs"
+        "integrations/unity/package/com.neoeng.dtrace/Runtime/"
+        "NeoEngProfessionalParallax.cs"
     ).read_text(encoding="utf-8")
 
     assert "Camera2D.new()" in godot

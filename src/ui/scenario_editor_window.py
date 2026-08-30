@@ -268,20 +268,30 @@ class ScenarioEditorWindow(QMainWindow):
                     SceneAuthoringFormatError,
                     SceneAuthoringReadError,
                     SceneAuthoringValidationError,
-                ) as exc:
+                ):
                     recovery = scene_authoring_recovery_path(scene_path)
                     self._pending_v1_document = None
-                    self._pending_recovery_path = recovery if recovery.is_file() else None
+                    self._pending_recovery_path = (
+                        recovery if recovery.is_file() else None
+                    )
                     self._show_pending_document(
                         "Saved scene could not be validated. "
-                        + ("Use Recover Last Valid." if self._pending_recovery_path else "Repair the scene file before reopening.")
+                        + (
+                            "Use Recover Last Valid."
+                            if self._pending_recovery_path
+                            else "Repair the scene file before reopening."
+                        )
                     )
-                    self.status_label.setText("Scenario unavailable: invalid saved document")
+                    self.status_label.setText(
+                        "Scenario unavailable: invalid saved document"
+                    )
                     return
                 if isinstance(candidate, SceneAuthoringDocumentV1):
                     self._pending_v1_document = candidate
                     recovery = scene_authoring_recovery_path(scene_path)
-                    self._pending_recovery_path = recovery if recovery.is_file() else None
+                    self._pending_recovery_path = (
+                        recovery if recovery.is_file() else None
+                    )
                     self._show_pending_document(
                         "Schema V1 detected. Choose Upgrade V1 to V2 to edit. "
                         "The V1 file remains unchanged until Save."
@@ -296,7 +306,9 @@ class ScenarioEditorWindow(QMainWindow):
                 self.authoring.document,
             )
         if not isinstance(document, SceneAuthoringDocumentV2):
-            raise SceneAuthoringValidationError("professional viewport requires schema V2")
+            raise SceneAuthoringValidationError(
+                "professional viewport requires schema V2"
+            )
         self._pending_v1_document = None
         self._pending_recovery_path = None
         session = SceneAuthoringSession(SceneAuthoringModel(document))
@@ -441,7 +453,8 @@ class ScenarioEditorWindow(QMainWindow):
         answer = QMessageBox.question(
             self,
             "Upgrade scenario schema",
-            "Upgrade this V1 scenario to V2 in memory? The V1 file will remain unchanged until you save.",
+            "Upgrade this V1 scenario to V2 in memory? "
+            "The V1 file will remain unchanged until you save.",
         )
         if answer != QMessageBox.StandardButton.Yes:
             return False
@@ -459,7 +472,13 @@ class ScenarioEditorWindow(QMainWindow):
             candidate = load_scene_authoring_recovery(
                 self.professional_scene_path, verify_assets=False
             )
-        except (OSError, ValueError, SceneAuthoringFormatError, SceneAuthoringReadError, SceneAuthoringValidationError) as exc:
+        except (
+            OSError,
+            ValueError,
+            SceneAuthoringFormatError,
+            SceneAuthoringReadError,
+            SceneAuthoringValidationError,
+        ) as exc:
             self.status_label.setText(f"Scenario recovery failed: {exc}")
             return False
         if isinstance(candidate, SceneAuthoringDocumentV1):
@@ -469,10 +488,14 @@ class ScenarioEditorWindow(QMainWindow):
                 "Recovered V1 scenario is ready. Choose Upgrade V1 to V2; "
                 "the recovered file will not replace the damaged file until Save."
             )
-            self.status_label.setText("Recovered V1 scenario — explicit upgrade required")
+            self.status_label.setText(
+                "Recovered V1 scenario — explicit upgrade required"
+            )
             return True
         self._build_professional_viewport(candidate, mark_unsaved=True)
-        self.status_label.setText("Last valid scenario recovered — save to replace the damaged file")
+        self.status_label.setText(
+            "Last valid scenario recovered — save to replace the damaged file"
+        )
         return True
 
     def _save_professional(self) -> bool:
@@ -526,9 +549,7 @@ class ScenarioEditorWindow(QMainWindow):
                 SceneAuthoringReadError,
                 SceneAuthoringValidationError,
             ):
-                recovery = scene_authoring_recovery_path(
-                    self.professional_scene_path
-                )
+                recovery = scene_authoring_recovery_path(self.professional_scene_path)
                 self.status_label.setText(
                     "Scenario reload failed: "
                     f"{exc}. "
@@ -538,9 +559,7 @@ class ScenarioEditorWindow(QMainWindow):
                         else "Repair the saved scenario before reloading."
                     )
                 )
-                self._pending_recovery_path = (
-                    recovery if recovery.is_file() else None
-                )
+                self._pending_recovery_path = recovery if recovery.is_file() else None
                 self.refresh()
                 return False
             if isinstance(candidate, SceneAuthoringDocumentV1):
@@ -596,7 +615,8 @@ class ScenarioEditorWindow(QMainWindow):
                 source_document_path=self.professional_scene_path,
             )
             self.status_label.setText(
-                f"Scenario {target} export written from active document: {destination.name}"
+                f"Scenario {target} export written from active document: "
+                f"{destination.name}"
             )
             return True
         except (OSError, ValueError) as exc:
@@ -683,8 +703,13 @@ class ScenarioEditorWindow(QMainWindow):
         session = self.professional_session
         self.undo_action.setEnabled(session is not None and session.can_undo)
         self.redo_action.setEnabled(session is not None and session.can_redo)
-        if available and self.professional_session is None and (
-            self._pending_v1_document is not None or self._pending_recovery_path is not None
+        if (
+            available
+            and self.professional_session is None
+            and (
+                self._pending_v1_document is not None
+                or self._pending_recovery_path is not None
+            )
         ):
             self.canvas.set_scenario_preview_layers(())
             self.status_label.setText("Scenario requires migration or recovery action")
@@ -770,7 +795,9 @@ class ScenarioEditorWindow(QMainWindow):
         self.export_target_label.setText(
             "Alvo:" if self.current_lang == "pt" else "Target:"
         )
-        self.export_target_combo.setItemText(0, "Genérico" if self.current_lang == "pt" else "Generic")
+        self.export_target_combo.setItemText(
+            0, "Genérico" if self.current_lang == "pt" else "Generic"
+        )
         self.export_target_combo.setItemText(1, "Godot 4.7")
         self.export_target_combo.setItemText(2, "Unity 6000.5.7f1")
         self.scenario_panel.update_language(self.current_lang)

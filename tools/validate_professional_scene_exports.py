@@ -16,13 +16,29 @@ from typing import Any
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
-GODOT_IMPORTER = ROOT / "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd"
-UNITY_EDITOR_IMPORTER = ROOT / "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs"
-UNITY_METADATA = ROOT / "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalSceneMetadata.cs"
-UNITY_PARALLAX = ROOT / "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalParallax.cs"
+GODOT_IMPORTER = (
+    ROOT / "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd"
+)
+UNITY_EDITOR_IMPORTER = (
+    ROOT
+    / "integrations/unity/package/com.neoeng.dtrace/Editor/"
+    "ProfessionalSceneImportGenerator.cs"
+)
+UNITY_METADATA = (
+    ROOT
+    / "integrations/unity/package/com.neoeng.dtrace/Runtime/"
+    "NeoEngProfessionalSceneMetadata.cs"
+)
+UNITY_PARALLAX = (
+    ROOT
+    / "integrations/unity/package/com.neoeng.dtrace/Runtime/"
+    "NeoEngProfessionalParallax.cs"
+)
 
 
-def _run(command: list[str], *, timeout: int = 900, check: bool = True) -> dict[str, Any]:
+def _run(
+    command: list[str], *, timeout: int = 900, check: bool = True
+) -> dict[str, Any]:
     completed = subprocess.run(
         command,
         check=False,
@@ -192,7 +208,9 @@ def _prepare_unity(workspace: Path, executable: str) -> Path:
     assets = project / "Assets"
     generated = assets / "NeoEngGenerated"
     generated.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(workspace / "scene.unity.runtime.json", generated / "scene-authoring.unity.json")
+    shutil.copy2(
+        workspace / "scene.unity.runtime.json", generated / "scene-authoring.unity.json"
+    )
     asset_destination = assets / "assets" / "hero.png"
     asset_destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(workspace / "assets" / "hero.png", asset_destination)
@@ -269,7 +287,8 @@ def _validate_unity(executable: str, project: Path) -> dict[str, Any]:
             {
                 "attempt": attempt_index + 1,
                 "returncode": attempt["returncode"],
-                "classification": "first_boot_environment_failure_with_successful_validation",
+                "classification": "first_boot_environment_failure_with_"
+                "successful_validation",
             }
         )
     raise RuntimeError(
@@ -293,7 +312,9 @@ def main() -> int:
     else:
         workspace = args.work_dir.resolve()
         if workspace.exists():
-            raise FileExistsError(f"validation work directory already exists: {workspace}")
+            raise FileExistsError(
+                f"validation work directory already exists: {workspace}"
+            )
         workspace.mkdir(parents=True)
     report: dict[str, Any] = {
         "schema_version": 1,
@@ -308,7 +329,9 @@ def main() -> int:
             _prepare_godot(workspace)
             commands = _validate_godot(args.executable, workspace)
             if "P2D04_GODOT_VALIDATION=SUCCESS" not in commands[-1]["output"]:
-                raise RuntimeError("Godot professional validator did not emit success marker")
+                raise RuntimeError(
+                    "Godot professional validator did not emit success marker"
+                )
             report["capture"] = "godot-professional-capture.png"
             report["artifacts"] = [
                 "assets/hero.png",
@@ -319,8 +342,14 @@ def main() -> int:
             validation = _validate_unity(args.executable, unity_project)
             if "P2D04_UNITY_VALIDATION=SUCCESS" not in validation["output"]:
                 result = unity_project / "unity-professional-validation-result.txt"
-                details = result.read_text(encoding="utf-8") if result.is_file() else validation["output"]
-                raise RuntimeError(f"Unity professional validator failed: {details[-4000:]}")
+                details = (
+                    result.read_text(encoding="utf-8")
+                    if result.is_file()
+                    else validation["output"]
+                )
+                raise RuntimeError(
+                    f"Unity professional validator failed: {details[-4000:]}"
+                )
             commands = [validation]
             report["capture"] = "unity-professional-capture.png"
             report["artifacts"] = [
@@ -333,7 +362,9 @@ def main() -> int:
             rf"P2D04_{args.engine.upper()}_VERSION=([^\r\n]+)",
             "\n".join(command["output"] for command in commands),
         )
-        report["engine_version"] = version_match.group(1) if version_match else "unknown"
+        report["engine_version"] = (
+            version_match.group(1) if version_match else "unknown"
+        )
         report["commands"] = commands
         exit_code = 0
     except Exception as exc:
