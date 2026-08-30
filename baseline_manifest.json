@@ -11269,8 +11269,8 @@
       "size": 9755
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "377491469c811be6a25ee57e0aeaf226be761fb54b7d8bc16683e31ac67f2b63",
-      "size": 34110
+      "sha256": "f1e41ebced730ca3ccac4ef65b7d39eed5be1daedf16bc8be50553a67140fb34",
+      "size": 34559
     },
     "src/ui/scenario_panel.py": {
       "sha256": "3589d5f4d83d9e42ca51e7a79d75976ac4a4eb1eb23c7ab624371b7edf50650a",
@@ -11597,8 +11597,8 @@
       "size": 10591
     },
     "tests/test_p2d_04_persistence_recovery_export.py": {
-      "sha256": "750b2dbd5be1495fd1d1a35aab32ed202eb3edecdec5955d7570295517ff8e86",
-      "size": 9996
+      "sha256": "57445bdc0b36402cf3a5bc4a326c2bbba5878ea316df6706b04d3be8942fc7e7",
+      "size": 10010
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",
@@ -12177,8 +12177,8 @@
       "size": 8352
     },
     "tools/validate_professional_scene_exports.py": {
-      "sha256": "fea74a465de298d01dc51b04993a83269633768e03566bb7f3058a8deccbdba0",
-      "size": 13220
+      "sha256": "708754e1325d739cfaa1a1dd58125b1cd8805786c6f77d52a2527ed511f485f5",
+      "size": 13534
     },
     "tools/validate_windows_installer.py": {
       "sha256": "d5dcdebaa92528445fd91f261e7cebc0abdfb0d37f19cb02b6e3031b5e8bcbcd",
