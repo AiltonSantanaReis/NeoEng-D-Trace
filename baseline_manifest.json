@@ -11524,6 +11524,10 @@
       "sha256": "f60bb33a2efd74143fba30f9d3932560c9ec3028da093bd15f01aa569a554b81",
       "size": 979
     },
+    "tests/test_merge_coverage_authoring_contracts.py": {
+      "sha256": "cef131f920a20df6a8c312daf8579c334d04a63c43de1cf3ee373a040cd9aeb5",
+      "size": 54251
+    },
     "tests/test_p2d_01_assets.py": {
       "sha256": "d73f2e4c622ac27d16b6b88b8636fcf910f6e9f7272745c53b5df03c9aa87a52",
       "size": 7260
