@@ -50,6 +50,18 @@ class SceneAuthoringAssetError(ProjectPersistenceError):
     """Raised when a referenced asset is missing, unsafe or hash-different."""
 
 
+SCENE_AUTHORING_RECOVERY_SUFFIX = ".recovery.json"
+
+
+def scene_authoring_recovery_path(
+    path: str | os.PathLike[str],
+) -> Path:
+    """Return the explicit local recovery sidecar for one scene document."""
+
+    destination = Path(path)
+    return destination.with_name(destination.name + SCENE_AUTHORING_RECOVERY_SUFFIX)
+
+
 def _canonical_json_bytes(document: SceneAuthoringDocument) -> bytes:
     payload = validate_scene_authoring_document(document).model_dump(mode="json")
     # Keep legacy canonical bytes stable: omit only the new optional
@@ -198,6 +210,15 @@ def save_scene_authoring(
         raise SceneAuthoringWriteError(
             f"serialized scene exceeds {MAX_PROJECT_FILE_BYTES} bytes"
         )
+    recovery = scene_authoring_recovery_path(destination)
+    previous_valid_bytes: bytes | None = None
+    if destination.is_file():
+        try:
+            _validate_document(_read_json(destination))
+            previous_valid_bytes = destination.read_bytes()
+        except (OSError, ProjectPersistenceError, ValueError):
+            # Never replace a known-good recovery copy with corrupt bytes.
+            previous_valid_bytes = None
     try:
         with AtomicOutputTransaction() as transaction:
             staged = Path(transaction.stage_path(str(destination)))
@@ -205,6 +226,12 @@ def save_scene_authoring(
                 handle.write(payload)
                 handle.flush()
                 os.fsync(handle.fileno())
+            if previous_valid_bytes is not None:
+                staged_recovery = Path(transaction.stage_path(str(recovery)))
+                with staged_recovery.open("wb") as handle:
+                    handle.write(previous_valid_bytes)
+                    handle.flush()
+                    os.fsync(handle.fileno())
             transaction.commit()
     except OSError as exc:
         raise SceneAuthoringWriteError(f"failed to save scene: {exc}") from exc
@@ -239,6 +266,22 @@ def load_scene_authoring_v2(
     return document
 
 
+def load_scene_authoring_recovery(
+    path: str | os.PathLike[str],
+    *,
+    verify_assets: bool = True,
+) -> SceneAuthoringDocument:
+    """Load the last structurally valid saved document from recovery.
+
+    Recovery is explicit and never changes the active scene file. The caller
+    must present the candidate to the user and decide whether to save it.
+    """
+
+    return load_scene_authoring(
+        scene_authoring_recovery_path(path), verify_assets=verify_assets
+    )
+
+
 __all__ = [
     "SceneAuthoringAssetError",
     "SceneAuthoringFormatError",
@@ -246,8 +289,10 @@ __all__ = [
     "SceneAuthoringValidationError",
     "SceneAuthoringWriteError",
     "load_scene_authoring",
+    "load_scene_authoring_recovery",
     "load_scene_authoring_v2",
     "save_scene_authoring",
+    "scene_authoring_recovery_path",
     "scene_authoring_sha256",
     "serialize_scene_authoring",
     "verify_scene_assets",

@@ -54,11 +54,17 @@ def _load(window: Any) -> bool:
 
 
 def _reset(window: Any) -> bool:
-    if window.scenario_authoring.is_dirty:
+    editor = getattr(window, "scenario_editor_window", None)
+    professional_dirty = bool(
+        editor is not None
+        and getattr(editor, "professional_session", None) is not None
+        and editor.professional_session.is_dirty
+    )
+    if window.scenario_authoring.is_dirty or professional_dirty:
         answer = QMessageBox.question(
             window,
             "Reset scenario",
-            "Discard unsaved scenario authoring changes?",
+            "Discard unsaved professional scenario authoring changes?",
         )
         if answer != QMessageBox.StandardButton.Yes:
             return False
@@ -69,7 +75,7 @@ def _reset(window: Any) -> bool:
         return False
     editor = _open_professional_editor(window, only_if_canonical=True)
     if editor is not None and editor.professional_session is not None:
-        if not editor._reset_professional():
+        if not editor._reset_professional(confirm=False):
             return False
     window.statusBar().showMessage("Scenario reset successfully.", 5000)
     return True

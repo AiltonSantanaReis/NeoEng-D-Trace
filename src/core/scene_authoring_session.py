@@ -83,6 +83,7 @@ class SceneAuthoringSession:
         self._gesture_before: SceneAuthoringSnapshot | None = None
         self._isolated_group_id: str | None = None
         self._saved_document = self.document.model_copy(deep=True)
+        self._force_dirty = False
 
     @property
     def document(self) -> SceneAuthoringDocument:
@@ -96,12 +97,19 @@ class SceneAuthoringSession:
     def is_dirty(self) -> bool:
         """Whether the authored document differs from its last saved snapshot."""
 
-        return self.document != self._saved_document
+        return self._force_dirty or self.document != self._saved_document
 
     def mark_saved(self) -> None:
         """Record the current authored document as the persisted baseline."""
 
         self._saved_document = self.document.model_copy(deep=True)
+        self._force_dirty = False
+        self._notify()
+
+    def mark_unsaved(self) -> None:
+        """Mark the active document as requiring an explicit save."""
+
+        self._force_dirty = True
         self._notify()
 
     @property
