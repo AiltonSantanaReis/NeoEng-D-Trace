@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-08-30 — fechamento formal P2D-03C
+
+- registra o aceite final explícito `P2D-03C ACEITO — entrega final`;
+- promove a decisão, a evidência e o índice documental para `ACCEPTED / CLOSED`;
+- registra o seal final com extração, re-hash e verificação independente;
+- mantém C3, G/V/B, baselines, resultados mixed legacy e restrições de publicação
+  preservados.
+
+## 2026-08-30 — qualificação de fechamento P2D-03C
+
+- registra a navegação transitória do viewport profissional, wheel zoom,
+  pan, Fit Selection, Fit All e estados visuais;
+- confirma a requalificação pós-commit no commit técnico
+  `58674dde87ba94082e84f066ebda21d144da65cd`, com aggregate canônico
+  G60/60 + V12/12 + B21/21 e 93/93 checks sem blocking;
+- registra captura/auditoria sem findings, comparação sem deltas e build
+  portátil verificada independentemente;
+- preserva os resultados mixed legacy e mantém o aceite final do
+  proprietário como gate explícito antes de `ACCEPTED / CLOSED`.
+
 ## 2026-08-23 — reconciliação pós-merge da Etapa 9
 
 - registra o encerramento de responsividade e DPI após a PR #160, merge

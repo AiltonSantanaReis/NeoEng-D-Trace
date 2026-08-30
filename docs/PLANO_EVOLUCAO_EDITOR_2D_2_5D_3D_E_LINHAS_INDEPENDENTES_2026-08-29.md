@@ -15,6 +15,9 @@
 **Evidência P2D-02B:** docs/EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md
 **Decisão P2D-02 (fechamento):** docs/DECISAO_P2D_02_FECHAMENTO_2026-08-29.md
 **Evidência P2D-02 (consolidação):** docs/EVIDENCIA_P2D_02_CONSOLIDACAO_2026-08-29.md
+**Decisão P2D-03:** docs/DECISAO_P2D_03_NAVEGACAO_SELECAO_PRODUTIVIDADE_2026-08-29.md
+**Auditoria P2D-03:** docs/EVIDENCIA_P2D_03_AUDITORIA_BASELINE_2026-08-29.md
+**Fechamento P2D-03C:** docs/EVIDENCIA_P2D_03C_FECHAMENTO_2026-08-30.md
 
 ## 1. Finalidade
 
@@ -83,6 +86,37 @@ P2D-02A foi aberto após auditoria do fluxo de usuária e cobre ordem visual efe
 ### 3.5 Abertura P2D-02B
 
 P2D-02B foi aberta a partir do checkpoint limpo d152b214b1bccb717911001396936c1f93b23714 e fechada no commit af02f3ef513487bd176c939085fea0ca56a7da6b. A decisão técnica foi implementada exclusivamente no editor profissional, preservando o modelo legado, o schema V1 e os baselines imutáveis. A requalificação pós-commit, as auditorias Qt Windows/offscreen e a evidência aceita estão registradas em EVIDENCIA_P2D_02B_GRUPOS_HIERARQUIA_ISOLAMENTO_2026-08-29.md.
+### 3.6 Abertura formal P2D-03
+
+P2D-03 foi aberta após a auditoria somente de leitura do checkpoint `3c09f37c140f8a807b8b9006aa095db37729129b`, com branch e remoto alinhados e tracked tree limpo antes da documentação. A auditoria confirmou que o editor profissional já possui seleção básica, multisseleção por Ctrl, transformação por mouse/gizmo, bloqueios, grupos/camadas e undo/redo. Também confirmou que nudge por teclado, duplicate, copy/paste, marquee/select-all e navegação explícita de zoom/pan/fit ainda não estão fechados no viewport profissional; recursos equivalentes do `CanvasView` pertencem ao legado e não contam para P2D-03.
+
+A decisão formal e a evidência da auditoria definem invariantes de identidade/seleção, transações, bloqueios, clipboard, nudge, navegação, foco, limites, testes, evidências e decisões de UX que exigem aceite antes do código. O status de P2D-03 é `OPEN — decisão/contrato`; nenhuma alteração de produto foi feita nesta abertura.
+
+### 3.7 Fechamento P2D-03A
+
+P2D-03A foi implementada exclusivamente no fluxo profissional e fechada como
+`ACCEPTED / CLOSED` após a revisão humana do proprietário. O commit de código é
+`17c3cbcdb244419fc6b69b907652983dac36432a`, a documentação pós-commit é
+`13c8b6a0b39d7411d5f2ee00dc901aca3a3982d3` e a evidência consolidada está em
+`EVIDENCIA_P2D_03A_SELECAO_FOCO_2026-08-29.md`. A entrega cobre foco inicial,
+seleção por clique/Ctrl/Shift, clique vazio, marquee, Ctrl+A, elegibilidade por visibilidade e preservação do drag existente. P2D-03 permanece aberta para o fechamento de P2D-03C; P2D-03B está ACCEPTED / CLOSED e P2D-03C foi aberta posteriormente em ciclo próprio de contrato e qualificação.
+
+### 3.8 Abertura formal P2D-03B
+
+P2D-03B foi aberta no checkpoint limpo
+`24a3178d52f1096e55c73b40daf196bccfe0d8cc`, após auditoria somente de leitura
+das APIs de sessão, modelo, schema, viewport, inspector e janela profissional.
+O sublote cobre nudge, duplicate, delete por seleção, copy/paste versionado e
+undo/redo contextual. A decisão registrada propõe offset `(16, 16)` em unidades
+de mundo, allocator de IDs novos, bloqueio atômico, preservação explícita de
+referências e clipboard sem bytes/caminhos externos.
+
+O proprietário aceitou explicitamente o contrato de P2D-03B com `P2D-03B ACEITO — contrato de operações, histórico e clipboard` e posteriormente registrou o aceite humano final da build com `aceito` em 30/08/2026. A implementação ficou limitada ao sublote, foi requalificada e está registrada como `ACCEPTED / CLOSED` em `EVIDENCIA_P2D_03B_IMPLEMENTACAO_2026-08-29.md`. P2D-03A, C3, G/V/B e o editor legado permanecem intactos; P2D-03C será conduzida pelo ciclo documental próprio abaixo.
+
+### 3.9 Fechamento formal P2D-03C
+
+P2D-03C foi aberta a partir do checkpoint limpo `78f773583b0277fa9b970d1f849538b4fa3fdcc6`, após auditoria somente de leitura do viewport, da janela profissional, da sessão, do modelo, da projeção e dos controles do inspector. O proprietário aceitou o contrato com `P2D-03C ACEITO — contrato de navegação, fit e estados visuais` e, após a revisão final, registrou `P2D-03C ACEITO — entrega final` em 30/08/2026. A implementação foi concluída no commit técnico `58674dde87ba94082e84f066ebda21d144da65cd`, com requalificação pós-commit, captura, auditoria visual, comparação, build portátil, seal e verificação independente documentados em `EVIDENCIA_P2D_03C_FECHAMENTO_2026-08-30.md`. O reteste humano da transição Fit/Focus não reproduziu a lentidão relatada. O estado é `ACCEPTED / CLOSED`. C3, G/V/B, schema, legado e os sublotes P2D-03A/B permanecem fora da mutação.
+
 ## 4. Arquitetura de extensão 2.5D/3D
 
 ### 4.1 Núcleo estável
@@ -209,3 +243,33 @@ O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está A
 - EXT-FX-01 — iluminação e VFX.
 
 Nenhuma delas deve ser apresentada ao usuário como disponível antes de sua própria aceitação formal.
+
+## 9. Emenda obrigatória de escopo do produto — 2026-08-30
+
+A solicitação explícita do proprietário do produto registrada em 30/08/2026
+define que o resultado final não é apenas uma fundação de composição 2D nem um
+fluxo de importação. O documento
+docs/REQUISITOS_EDITOR_CENARIOS_COMPLETO_2026-08-30.md passa a ser a fonte
+prevalente para o escopo final.
+
+O rótulo P2D-COMP-01 permanece preservado como identificação histórica e
+operacional da fundação de composição 2D já trabalhada. Seus sublotes aceitos
+não constituem, isoladamente, o aceite do produto final. A conclusão do produto
+exige todas as capacidades obrigatórias do documento prevalente, incluindo
+autoria a partir de cena vazia, pacote proprietário de assets disponível por
+padrão, tilemaps completos, colisão e navegação de cenário, entidades e
+prefabs, iluminação, sombras, partículas, pós-processamento, shaders editáveis,
+efeitos em tempo real, preview equivalente ao runtime e round-trip visual
+comprovado com as engines de destino.
+
+As linhas EXT-TMAP-01, EXT-COLL-01, EXT-NAV-01, EXT-ENT-01 e
+EXT-FX-01 deixam de ser interpretáveis como melhorias cosméticas ou
+facultativas: são workstreams obrigatórios para o produto final. Cada uma
+deve ter contrato próprio, implementação funcional, testes unitários e de
+integração, fluxo de usuário, evidência visual e aceite formal. Metadados,
+marcadores, sockets, sidecars ou importação estrutural não substituem a
+capacidade funcional correspondente.
+
+Até o aceite integral, o produto permanece OPEN / INCOMPLETE e nenhuma build
+ou release poderá ser apresentada como editor profissional completo de
+cenários.

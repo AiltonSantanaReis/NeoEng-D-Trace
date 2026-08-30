@@ -6,12 +6,15 @@ import math
 from pathlib import Path
 from typing import Iterable
 
-from PySide6.QtCore import QPointF, QRect, QRectF, Qt, Signal
+from PySide6.QtCore import QMimeData, QPointF, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import (
     QBrush,
     QColor,
     QImage,
+    QKeyEvent,
+    QMouseEvent,
     QPainter,
+    QWheelEvent,
     QPen,
     QPixmap,
     QPolygonF,
@@ -19,6 +22,7 @@ from PySide6.QtGui import (
 )
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
+    QApplication,
     QGraphicsItem,
     QGraphicsObject,
     QGraphicsScene,
@@ -27,6 +31,13 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
+from src.core.scene_view_navigation import (
+    anchored_navigation_center,
+    clamp_navigation_zoom,
+    fit_navigation_zoom,
+    panned_navigation_center,
+    wheel_navigation_zoom,
+)
 from src.core.scene_asset_library import (
     SceneAssetError,
     prepare_scene_asset,
@@ -35,6 +46,7 @@ from src.core.scene_asset_library import (
 )
 from src.core.scenario_preview import build_overlay_geometry
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_authoring_clipboard import SCENE_CLIPBOARD_MIME
 from src.core.scene_authoring_groups import (
     locked_group_for_object,
     object_is_effectively_visible,
@@ -73,19 +85,41 @@ class SceneObjectGraphicsItem(QGraphicsObject):
         self.object_id = object_id
         self._polygon = polygon
         self._pixmap = pixmap
+        self._selected = False
+        self._hovered = False
+        self._pressed = False
+        self._enabled = True
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setAcceptHoverEvents(True)
         self._brush = QBrush(QColor("#2387b8"))
         self._pen = QPen(QColor("#65d7ff"), 2.0)
         self.setZValue(float(z_value))
 
-    def set_selected_style(self, selected: bool) -> None:
-        self._brush = QBrush(QColor("#2aa8d8") if selected else QColor("#2387b8"))
-        self._pen = QPen(
-            QColor("#e8fbff") if selected else QColor("#65d7ff"),
-            3.0 if selected else 2.0,
-        )
+    def _refresh_style(self) -> None:
+        if not self._enabled:
+            self._brush = QBrush(QColor("#27313a"))
+            self._pen = QPen(QColor("#65727f"), 2.0)
+        elif self._pressed:
+            self._brush = QBrush(QColor("#4ec9e8"))
+            self._pen = QPen(QColor("#ffffff"), 3.0)
+        elif self._selected:
+            self._brush = QBrush(QColor("#2aa8d8"))
+            self._pen = QPen(QColor("#e8fbff"), 3.0)
+        elif self._hovered:
+            self._brush = QBrush(QColor("#2c9fc8"))
+            self._pen = QPen(QColor("#b9f3ff"), 2.5)
+        else:
+            self._brush = QBrush(QColor("#2387b8"))
+            self._pen = QPen(QColor("#65d7ff"), 2.0)
         self.update()
+
+    def set_selected_style(self, selected: bool) -> None:
+        self._selected = bool(selected)
+        self._refresh_style()
+
+    def set_interaction_enabled(self, enabled: bool) -> None:
+        self._enabled = bool(enabled)
+        self._refresh_style()
 
     def boundingRect(self) -> QRectF:
         return self._polygon.boundingRect().adjusted(-3.0, -3.0, 3.0, 3.0)
@@ -105,8 +139,20 @@ class SceneObjectGraphicsItem(QGraphicsObject):
         painter.setPen(self._pen)
         painter.drawPolygon(self._polygon)
 
+    def hoverEnterEvent(self, event) -> None:
+        self._hovered = True
+        self._refresh_style()
+        event.accept()
+
+    def hoverLeaveEvent(self, event) -> None:
+        self._hovered = False
+        self._refresh_style()
+        event.accept()
+
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
+            self._pressed = True
+            self._refresh_style()
             self.pressed.emit(self.object_id, event.scenePos(), event.modifiers())
             event.accept()
             return
@@ -121,6 +167,8 @@ class SceneObjectGraphicsItem(QGraphicsObject):
 
     def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
+            self._pressed = False
+            self._refresh_style()
             self.released.emit(self.object_id, event.scenePos())
             event.accept()
             return
@@ -294,8 +342,11 @@ class SceneAuthoringViewport(QGraphicsView):
         self.setObjectName("professional_scene_viewport")
         self.setAcceptDrops(True)
         self.setDragMode(QGraphicsView.DragMode.NoDrag)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorViewCenter)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setBackgroundBrush(QBrush(QColor("#111820")))
         self._geometry: dict[str, tuple[tuple[float, float], ...]] = {}
         self._items: dict[str, SceneObjectGraphicsItem] = {}
@@ -303,12 +354,21 @@ class SceneAuthoringViewport(QGraphicsView):
         self._preview_enabled = False
         self._authoring_enabled = True
         self._overlay_visible = False
+        self._navigation_zoom = 1.0
+        self._navigation_center: QPointF | None = None
+        self._pan_origin: QPointF | None = None
+        self._pan_center_start: QPointF | None = None
         self._gizmo: SceneTransformGizmo | None = None
         self._gesture_start: QPointF | None = None
         self._item_gesture_id: str | None = None
         self._gesture_layer_id: str | None = None
         self._gesture_mode: str | None = None
         self._gizmo_start: QPointF | None = None
+        self._marquee_origin: QPointF | None = None
+        self._marquee_current: QPointF | None = None
+        self._marquee_selection_before: tuple[str, ...] | None = None
+        self._marquee_primary_before: str | None = None
+        self._marquee_selection_modifiers = Qt.KeyboardModifier.NoModifier
         self._asset_diagnostics: tuple[str, ...] = ()
         self._last_asset_diagnostics: tuple[str, ...] = ()
         self._asset_state_snapshot: tuple[tuple[str, str, str, str | None], ...] = ()
@@ -328,18 +388,9 @@ class SceneAuthoringViewport(QGraphicsView):
         """Enable camera/parallax projection without changing authored data."""
         if not isinstance(enabled, bool):
             raise TypeError("preview enabled must be boolean")
+        if enabled != self._preview_enabled:
+            self._navigation_center = None
         self._preview_enabled = enabled
-        if enabled:
-            self.graphics_scene.setSceneRect(
-                QRectF(
-                    0.0,
-                    0.0,
-                    max(1, self.viewport().width()),
-                    max(1, self.viewport().height()),
-                )
-            )
-        else:
-            self.graphics_scene.setSceneRect(QRectF())
         self.sync()
 
     def is_preview_enabled(self) -> bool:
@@ -372,6 +423,136 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def is_overlay_visible(self) -> bool:
         return self._overlay_visible
+
+    @property
+    def navigation_zoom(self) -> float:
+        """Return transient presentation zoom; it is never persisted."""
+
+        return self._navigation_zoom
+
+    @property
+    def navigation_center(self) -> QPointF:
+        """Return the transient presentation center in current scene space."""
+
+        if self._navigation_center is None:
+            return self._natural_navigation_center()
+        return QPointF(self._navigation_center)
+
+    def _viewport_center(self) -> QPointF:
+        rect = self.viewport().rect()
+        return QPointF(rect.center())
+
+    def _content_bounds(self, object_ids: Iterable[str] | None = None) -> QRectF | None:
+        ids = tuple(object_ids) if object_ids is not None else tuple(self._items)
+        bounds: QRectF | None = None
+        for object_id in ids:
+            visual = self._items.get(object_id)
+            if visual is None or not visual.isVisible():
+                continue
+            candidate = visual.sceneBoundingRect()
+            bounds = candidate if bounds is None else bounds.united(candidate)
+        return bounds
+
+    def _natural_navigation_center(self) -> QPointF:
+        if self._preview_enabled:
+            return self._viewport_center()
+        bounds = self._content_bounds()
+        return bounds.center() if bounds is not None else QPointF(0.0, 0.0)
+
+    def _refresh_navigation_scene_rect(self) -> None:
+        width = max(1.0, float(self.viewport().width()))
+        height = max(1.0, float(self.viewport().height()))
+        bounds = self._content_bounds()
+        if bounds is None:
+            bounds = (
+                QRectF(0.0, 0.0, width, height)
+                if self._preview_enabled
+                else QRectF(-width / 2.0, -height / 2.0, width, height)
+            )
+        if self._preview_enabled:
+            bounds = bounds.united(QRectF(0.0, 0.0, width, height))
+        padding_x = max(512.0, width * 4.0 / self._navigation_zoom)
+        padding_y = max(512.0, height * 4.0 / self._navigation_zoom)
+        self.graphics_scene.setSceneRect(
+            bounds.adjusted(-padding_x, -padding_y, padding_x, padding_y)
+        )
+
+    def _apply_navigation_transform(self) -> None:
+        self._navigation_zoom = clamp_navigation_zoom(self._navigation_zoom)
+        if self._navigation_center is None:
+            self._navigation_center = self._natural_navigation_center()
+        self._refresh_navigation_scene_rect()
+        self.setTransform(QTransform.fromScale(self._navigation_zoom, self._navigation_zoom))
+        self.centerOn(self._navigation_center)
+        self._navigation_center = self.mapToScene(self.viewport().rect().center())
+        self.viewport().update()
+
+    def _set_navigation_state(self, zoom: float, center: QPointF) -> None:
+        if not math.isfinite(center.x()) or not math.isfinite(center.y()):
+            raise ValueError("navigation center must be finite")
+        self._navigation_zoom = clamp_navigation_zoom(zoom)
+        self._navigation_center = QPointF(center)
+        self._apply_navigation_transform()
+
+    def _zoom_at(self, view_pos: QPointF, angle_delta_y: float) -> bool:
+        new_zoom = wheel_navigation_zoom(self._navigation_zoom, angle_delta_y)
+        if new_zoom == self._navigation_zoom:
+            return False
+        anchor = self.mapToScene(view_pos.toPoint())
+        center = anchored_navigation_center(
+            (anchor.x(), anchor.y()),
+            (view_pos.x(), view_pos.y()),
+            (self._viewport_center().x(), self._viewport_center().y()),
+            new_zoom,
+        )
+        requested_center = QPointF(*center)
+        self._set_navigation_state(new_zoom, requested_center)
+        for _ in range(3):
+            actual_anchor = self.mapToScene(view_pos.toPoint())
+            correction = anchor - actual_anchor
+            if max(abs(correction.x()), abs(correction.y())) <= 0.25:
+                break
+            requested_center += correction
+            self._set_navigation_state(new_zoom, requested_center)
+        self.status_message.emit(f"Viewport zoom: {new_zoom:.2f}x")
+        return True
+
+    def _fit_object_ids(self, object_ids: Iterable[str], label: str) -> bool:
+        ids = tuple(object_id for object_id in object_ids if object_id in self._items)
+        bounds = self._content_bounds(ids)
+        if bounds is None:
+            self.status_message.emit(f"{label}: no visible objects to frame")
+            return False
+        width = max(1.0, bounds.width())
+        height = max(1.0, bounds.height())
+        zoom = fit_navigation_zoom(
+            (float(self.viewport().width()), float(self.viewport().height())),
+            (width, height),
+        )
+        self._set_navigation_state(zoom, bounds.center())
+        self.status_message.emit(f"{label}: framed {len(ids)} object(s) at {zoom:.2f}x")
+        return True
+
+    def fit_selection(self) -> bool:
+        """Frame visible selected objects without changing authoring state."""
+
+        return self._fit_object_ids(self.session.selection.ids, "Fit Selection")
+
+    def fit_all(self) -> bool:
+        """Frame all visible rendered objects, excluding sockets and overlays."""
+
+        return self._fit_object_ids(self._items.keys(), "Fit All")
+
+    def _paint_navigation_state(self) -> None:
+        if not self.hasFocus() and self._pan_origin is None:
+            return
+        painter = QPainter(self.viewport())
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        color = QColor("#ffe36e") if self._pan_origin is not None else QColor("#65d7ff")
+        painter.setPen(QPen(color, 2.0))
+        rect = self.viewport().rect().adjusted(1, 1, -2, -2)
+        painter.drawRect(QRectF(rect))
+        painter.end()
 
     def _camera(self) -> OrthographicCamera:
         document = self.session.document
@@ -524,6 +705,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._refresh_transforms()
         self._refresh_selection()
         self._refresh_gizmo()
+        self._apply_navigation_transform()
         self._asset_state_snapshot = tuple(
             (asset.id, asset.path, asset.sha256, asset.source_path)
             for asset in self.session.document.assets
@@ -634,6 +816,336 @@ class SceneAuthoringViewport(QGraphicsView):
         else:
             self._refresh_after_model_change()
 
+    def _set_selection(self, object_ids: Iterable[str], primary: str | None = None) -> None:
+        """Apply one canonical selection update and refresh all selection affordances."""
+        self.session.set_selection(object_ids, primary)
+        self.selection_changed.emit()
+        self._refresh_selection()
+        self._refresh_gizmo()
+
+    def _visible_object_ids(self) -> tuple[str, ...]:
+        """Return selectable objects in the deterministic visual order."""
+        visible_ids = set(self._items)
+        return tuple(
+            item.id
+            for item in ordered_scene_objects(self.session.document)
+            if item.id in visible_ids
+        )
+
+    def _select_all_visible(self) -> tuple[str, ...]:
+        object_ids = self._visible_object_ids()
+        self._set_selection(object_ids, object_ids[-1] if object_ids else None)
+        return object_ids
+
+    def _apply_marquee_selection(
+        self,
+        origin: QPointF,
+        current: QPointF,
+        modifiers: Qt.KeyboardModifier = Qt.KeyboardModifier.NoModifier,
+    ) -> tuple[str, ...]:
+        """Select visible objects using containment or intersection semantics."""
+        selection_rect = QRectF(origin, current).normalized()
+        left_to_right = current.x() >= origin.x()
+        candidates: list[str] = []
+        for object_id in self._visible_object_ids():
+            bounds = self._items[object_id].sceneBoundingRect()
+            if (
+                selection_rect.contains(bounds)
+                if left_to_right
+                else selection_rect.intersects(bounds)
+            ):
+                candidates.append(object_id)
+
+        visible_ids = set(self._visible_object_ids())
+        existing = [
+            item
+            for item in (
+                self._marquee_selection_before
+                if self._marquee_selection_before is not None
+                else self.session.selection.ids
+            )
+            if item in visible_ids
+        ]
+        if modifiers & Qt.KeyboardModifier.ShiftModifier:
+            selected = existing
+            selected.extend(item for item in candidates if item not in selected)
+        elif modifiers & Qt.KeyboardModifier.ControlModifier:
+            selected = [item for item in existing if item not in candidates]
+            selected.extend(item for item in candidates if item not in existing)
+        else:
+            selected = candidates
+
+        primary = candidates[-1] if candidates else None
+        if primary is None and selected:
+            primary = self._marquee_primary_before
+            if primary not in selected:
+                primary = selected[-1]
+        self._set_selection(selected, primary)
+        return tuple(selected)
+
+    def _clear_marquee(self) -> None:
+        self._marquee_origin = None
+        self._marquee_current = None
+        self._marquee_selection_before = None
+        self._marquee_primary_before = None
+        self._marquee_selection_modifiers = Qt.KeyboardModifier.NoModifier
+        self.viewport().update()
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.MouseButton.MiddleButton:
+            self.setFocus(Qt.FocusReason.MouseFocusReason)
+            self._pan_origin = QPointF(event.position())
+            self._pan_center_start = QPointF(self.navigation_center)
+            self.viewport().setCursor(Qt.CursorShape.ClosedHandCursor)
+            event.accept()
+            self.viewport().update()
+            return
+        if event.button() == Qt.MouseButton.LeftButton:
+            if self.itemAt(event.position().toPoint()) is not None:
+                super().mousePressEvent(event)
+                return
+            self.setFocus(Qt.FocusReason.MouseFocusReason)
+            scene_pos = self.mapToScene(event.position().toPoint())
+            self._marquee_origin = scene_pos
+            self._marquee_current = scene_pos
+            self._marquee_selection_before = tuple(self.session.selection.ids)
+            self._marquee_primary_before = self.session.selection.primary
+            self._marquee_selection_modifiers = event.modifiers()
+            if not (
+                event.modifiers() & Qt.KeyboardModifier.ControlModifier
+                or event.modifiers() & Qt.KeyboardModifier.ShiftModifier
+            ):
+                self._set_selection((), None)
+            event.accept()
+            self.viewport().update()
+            return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        if self._pan_origin is not None and self._pan_center_start is not None:
+            current = QPointF(event.position())
+            center = panned_navigation_center(
+                (self._pan_center_start.x(), self._pan_center_start.y()),
+                (self._pan_origin.x(), self._pan_origin.y()),
+                (current.x(), current.y()),
+                self._navigation_zoom,
+            )
+            self._set_navigation_state(self._navigation_zoom, QPointF(*center))
+            event.accept()
+            return
+        if self._marquee_origin is not None:
+            self._marquee_current = self.mapToScene(event.position().toPoint())
+            event.accept()
+            self.viewport().update()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.MouseButton.MiddleButton and self._pan_origin is not None:
+            self._pan_origin = None
+            self._pan_center_start = None
+            self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
+            self.viewport().update()
+            event.accept()
+            return
+        if (
+            event.button() == Qt.MouseButton.LeftButton
+            and self._marquee_origin is not None
+            and self._marquee_current is not None
+        ):
+            self._apply_marquee_selection(
+                self._marquee_origin,
+                self._marquee_current,
+                self._marquee_selection_modifiers,
+            )
+            self._clear_marquee()
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
+    def _edit_status_error(self, exc: Exception) -> None:
+        self.status_message.emit(str(exc))
+
+    def _block_if_preview(self) -> bool:
+        if self._authoring_enabled:
+            return False
+        self.status_message.emit("Preview mode is read-only")
+        return True
+
+    def _handle_nudge_key(self, key: int, modifiers: Qt.KeyboardModifier) -> bool:
+        if self._block_if_preview():
+            return True
+        step = 10.0 if modifiers & Qt.KeyboardModifier.ShiftModifier else 1.0
+        deltas = {
+            Qt.Key.Key_Left: (-step, 0.0),
+            Qt.Key.Key_Right: (step, 0.0),
+            Qt.Key.Key_Up: (0.0, -step),
+            Qt.Key.Key_Down: (0.0, step),
+        }
+        dx, dy = deltas[key]
+        try:
+            changed = self.session.nudge_selected(
+                Point3Record(x=dx, y=dy, z=0.0)
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+        else:
+            self.status_message.emit(
+                "Moved selected object(s)" if changed else "No movement after snap"
+            )
+        return True
+
+    def _handle_duplicate_key(self) -> bool:
+        if self._block_if_preview():
+            return True
+        try:
+            created = self.session.duplicate_selected()
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+        else:
+            self.status_message.emit(
+                f"Duplicated {len(created)} object(s)" if created else "No objects selected"
+            )
+        return True
+
+    def _handle_delete_key(self) -> bool:
+        if self._block_if_preview():
+            return True
+        try:
+            count = len(self.session.selection.ids)
+            changed = self.session.delete_selected()
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+        else:
+            self.status_message.emit(
+                f"Deleted {count} object(s)" if changed else "No objects selected"
+            )
+        return True
+
+    def _handle_copy_key(self) -> bool:
+        try:
+            payload = self.session.copy_selected_payload()
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            return True
+        if payload is None:
+            self.status_message.emit("No objects selected")
+            return True
+        mime = QMimeData()
+        mime.setData(SCENE_CLIPBOARD_MIME, payload)
+        clipboard = QApplication.clipboard()
+        if clipboard is None:
+            self.status_message.emit("Scene clipboard is unavailable")
+            return True
+        clipboard.setMimeData(mime)
+        self.status_message.emit(
+            f"Copied {len(self.session.selection.ids)} object(s)"
+        )
+        return True
+
+    def _handle_paste_key(self) -> bool:
+        if self._block_if_preview():
+            return True
+        clipboard = QApplication.clipboard()
+        mime = clipboard.mimeData() if clipboard is not None else None
+        if mime is None or not mime.hasFormat(SCENE_CLIPBOARD_MIME):
+            self.status_message.emit("No compatible scene clipboard payload")
+            return True
+        try:
+            created = self.session.paste_payload(
+                bytes(mime.data(SCENE_CLIPBOARD_MIME))
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+        else:
+            self.status_message.emit(
+                f"Pasted {len(created)} object(s)" if created else "No objects pasted"
+            )
+        return True
+
+    def _handle_history_key(self, *, redo: bool) -> bool:
+        if self._block_if_preview():
+            return True
+        changed = self.redo() if redo else self.undo()
+        self.status_message.emit(
+            ("Redo applied" if redo else "Undo applied")
+            if changed
+            else ("Nothing to redo" if redo else "Nothing to undo")
+        )
+        return True
+
+    def wheelEvent(self, event: QWheelEvent) -> None:
+        delta_y = event.angleDelta().y()
+        if delta_y == 0:
+            event.accept()
+            return
+        self._zoom_at(QPointF(event.position()), float(delta_y))
+        event.accept()
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        key = event.key()
+        modifiers = event.modifiers()
+        if key in {
+            Qt.Key.Key_Left,
+            Qt.Key.Key_Right,
+            Qt.Key.Key_Up,
+            Qt.Key.Key_Down,
+        } and not (
+            modifiers
+            & (
+                Qt.KeyboardModifier.ControlModifier
+                | Qt.KeyboardModifier.AltModifier
+                | Qt.KeyboardModifier.MetaModifier
+            )
+        ):
+            self._handle_nudge_key(key, modifiers)
+            event.accept()
+            return
+        if key == Qt.Key.Key_D and modifiers == Qt.KeyboardModifier.ControlModifier:
+            self._handle_duplicate_key()
+            event.accept()
+            return
+        if key == Qt.Key.Key_Delete and modifiers == Qt.KeyboardModifier.NoModifier:
+            self._handle_delete_key()
+            event.accept()
+            return
+        if key == Qt.Key.Key_C and modifiers == Qt.KeyboardModifier.ControlModifier:
+            self._handle_copy_key()
+            event.accept()
+            return
+        if key == Qt.Key.Key_V and modifiers == Qt.KeyboardModifier.ControlModifier:
+            self._handle_paste_key()
+            event.accept()
+            return
+        if key == Qt.Key.Key_Z and modifiers == Qt.KeyboardModifier.ControlModifier:
+            self._handle_history_key(redo=False)
+            event.accept()
+            return
+        if key == Qt.Key.Key_Y and modifiers == Qt.KeyboardModifier.ControlModifier:
+            self._handle_history_key(redo=True)
+            event.accept()
+            return
+        if (
+            key == Qt.Key.Key_A
+            and modifiers & Qt.KeyboardModifier.ControlModifier
+        ):
+            self._select_all_visible()
+            event.accept()
+            return
+        if key == Qt.Key.Key_Escape:
+            if self._marquee_origin is not None:
+                selected = self._marquee_selection_before or ()
+                primary = self._marquee_primary_before
+                if primary not in selected:
+                    primary = selected[-1] if selected else None
+                self._set_selection(selected, primary)
+                self._clear_marquee()
+            else:
+                self._set_selection((), None)
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
     def _edit_block_reason(self, object_id: str) -> str | None:
         item = next(
             (value for value in self.session.document.objects if value.id == object_id),
@@ -664,18 +1176,30 @@ class SceneAuthoringViewport(QGraphicsView):
         return None
 
     def _object_pressed(self, object_id: str, scene_pos: QPointF, modifiers) -> None:
-        current = list(self.session.selection.ids)
-        if modifiers & Qt.KeyboardModifier.ControlModifier:
+        self.setFocus(Qt.FocusReason.MouseFocusReason)
+        visible_ids = set(self._visible_object_ids())
+        current = [item for item in self.session.selection.ids if item in visible_ids]
+        if modifiers & Qt.KeyboardModifier.ShiftModifier and not (
+            modifiers & Qt.KeyboardModifier.ControlModifier
+        ):
+            ordered = self._visible_object_ids()
+            anchor = self.session.selection.primary
+            if anchor in ordered and object_id in ordered:
+                start = ordered.index(anchor)
+                end = ordered.index(object_id)
+                current = list(ordered[min(start, end) : max(start, end) + 1])
+            else:
+                current = [object_id]
+        elif modifiers & Qt.KeyboardModifier.ControlModifier:
             if object_id in current:
                 current.remove(object_id)
             else:
                 current.append(object_id)
         else:
             current = [object_id]
-        self.session.set_selection(current, object_id if object_id in current else None)
-        self.selection_changed.emit()
-        self._refresh_selection()
-        self._refresh_gizmo()
+        self._set_selection(current, object_id if object_id in current else None)
+        if object_id not in self.session.selection.ids:
+            return
         if not self._authoring_enabled:
             self.status_message.emit("Preview mode is read-only")
             return
@@ -937,15 +1461,9 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
+        self._refresh_navigation_scene_rect()
+        self._apply_navigation_transform()
         if self._preview_enabled:
-            self.graphics_scene.setSceneRect(
-                QRectF(
-                    0.0,
-                    0.0,
-                    max(1, self.viewport().width()),
-                    max(1, self.viewport().height()),
-                )
-            )
             self._refresh_after_model_change()
 
     def drawBackground(self, painter, rect: QRectF | QRect) -> None:
@@ -965,7 +1483,17 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def paintEvent(self, event) -> None:
         super().paintEvent(event)
+        if self._marquee_origin is not None and self._marquee_current is not None:
+            painter = QPainter(self.viewport())
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            painter.setBrush(QBrush(QColor(35, 135, 184, 45)))
+            painter.setPen(QPen(QColor("#65d7ff"), 1.0, Qt.PenStyle.DashLine))
+            start = self.mapFromScene(self._marquee_origin)
+            end = self.mapFromScene(self._marquee_current)
+            painter.drawRect(QRectF(start, end).normalized())
+            painter.end()
         if not self._overlay_visible:
+            self._paint_navigation_state()
             return
         size = self.viewport().size()
         geometry = build_overlay_geometry((float(size.width()), float(size.height())))
@@ -990,3 +1518,4 @@ class SceneAuthoringViewport(QGraphicsView):
             "16:9  SAFE 90%",
         )
         painter.end()
+        self._paint_navigation_state()

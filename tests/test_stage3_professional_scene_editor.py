@@ -263,6 +263,8 @@ def test_window_binds_professional_editor_only_after_saved_project(
         window.show()
         qt_app.processEvents()
         assert window.professional_viewport is not None
+        assert window.professional_viewport.hasFocus()
+        assert window.focusWidget() is window.professional_viewport
         assert window.professional_inspector is not None
         assert isinstance(window.right_pages.currentWidget(), QScrollArea)
         assert (

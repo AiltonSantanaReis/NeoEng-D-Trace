@@ -2,7 +2,7 @@
 
 **Data:** 2026-08-29 (UTC-03)
 **Linha:** P2D-COMP-01 / P2D-01B
-**Estado:** APROVADA PARA IMPLEMENTAÇÃO LOCAL
+**Estado:** ACCEPTED / CLOSED
 **Autoridade:** solicitação explícita do proprietário do produto, subordinada ao normativo P2D-COMP-01, à decisão P2D-01A e aos imutáveis C3/G/V/B.
 
 ## 1. Objetivo obrigatório

@@ -66,6 +66,7 @@ class ScenarioEditorWindow(QMainWindow):
 
         self.professional_session: SceneAuthoringSession | None = None
         self.professional_viewport: SceneAuthoringViewport | None = None
+        self._professional_initial_focus_applied = False
         self.professional_inspector: SceneAuthoringInspector | None = None
         self.professional_inspector_scroll: QScrollArea | None = None
         self._professional_project: Path | None = None
@@ -265,6 +266,8 @@ class ScenarioEditorWindow(QMainWindow):
         inspector_scroll.setWidget(inspector)
         inspector.status_message.connect(self._show_professional_status)
         viewport.status_message.connect(self._show_professional_status)
+        inspector.request_fit.connect(viewport.fit_selection)
+        inspector.request_fit_all.connect(viewport.fit_all)
         inspector.status_message.connect(lambda _message: viewport.sync())
         self.right_pages.addWidget(inspector_scroll)
         self.right_pages.setCurrentWidget(inspector_scroll)
@@ -276,8 +279,72 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector_scroll = inspector_scroll
         self._professional_project = project_path
         self.professional_scene_path = scene_path
+        self._configure_professional_tab_order(viewport, inspector)
         session.subscribe(self._update_professional_status)
         session.subscribe(self._emit_document_changed)
+
+    def _configure_professional_tab_order(
+        self,
+        viewport: SceneAuthoringViewport,
+        inspector: SceneAuthoringInspector,
+    ) -> None:
+        """Keep keyboard navigation deterministic across the professional surface."""
+
+        focus_chain = (
+            viewport,
+            inspector.fit_button,
+            inspector.fit_all_button,
+            inspector.apply_button,
+            inspector.undo_button,
+            inspector.redo_button,
+            inspector.delete_button,
+            inspector.position_x,
+            inspector.position_y,
+            inspector.position_z,
+            inspector.rotation_x,
+            inspector.rotation_y,
+            inspector.rotation_z,
+            inspector.scale_x,
+            inspector.scale_y,
+            inspector.scale_z,
+            inspector.pivot_x,
+            inspector.pivot_y,
+            inspector.flip_x,
+            inspector.flip_y,
+            inspector.snap_enabled,
+            inspector.snap_spacing_x,
+            inspector.snap_spacing_y,
+            inspector.camera_x,
+            inspector.camera_y,
+            inspector.camera_zoom,
+            inspector.camera_apply_button,
+            inspector.layer_combo,
+            inspector.parallax_depth,
+            inspector.parallax_translation,
+            inspector.parallax_zoom,
+            inspector.parallax_apply_button,
+            inspector.socket_combo,
+            inspector.socket_type,
+            inspector.socket_id,
+            inspector.socket_x,
+            inspector.socket_y,
+            inspector.socket_z,
+            inspector.add_socket_button,
+            inspector.update_socket_button,
+            inspector.remove_socket_button,
+        )
+        for previous, current in zip(focus_chain, focus_chain[1:]):
+            self.setTabOrder(previous, current)
+        self.setTabOrder(focus_chain[-1], focus_chain[0])
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        if (
+            self.professional_viewport is not None
+            and not self._professional_initial_focus_applied
+        ):
+            self.professional_viewport.setFocus(Qt.FocusReason.OtherFocusReason)
+            self._professional_initial_focus_applied = True
 
     def _emit_document_changed(self) -> None:
         self.document_changed.emit()
@@ -506,6 +573,7 @@ class ScenarioEditorWindow(QMainWindow):
             self.asset_library.update_language(self.current_lang)
 
     def closeEvent(self, event) -> None:
+        self._professional_initial_focus_applied = False
         if self.professional_session is not None and self.professional_session.is_dirty:
             self.status_label.setText("Unsaved scenario changes preserved")
         self.hide()

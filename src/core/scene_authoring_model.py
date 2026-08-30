@@ -119,6 +119,11 @@ class SceneAuthoringModel:
         if locked_group is not None:
             raise PermissionError(f"group {locked_group.id!r} is locked")
 
+    def assert_editable(self, object_id: str) -> None:
+        """Validate that one object can participate in a mutating command."""
+
+        self._assert_editable(object_id)
+
     def set_selection(
         self, object_ids: Iterable[str], primary: str | None = None
     ) -> SceneSelection:
@@ -162,7 +167,7 @@ class SceneAuthoringModel:
             self.set_selection([obj.id])
 
     def remove_object(self, object_id: str) -> None:
-        self._object(object_id)
+        self._assert_editable(object_id)
         self._replace(
             objects=[item for item in self.document.objects if item.id != object_id],
             groups=[
@@ -182,6 +187,34 @@ class SceneAuthoringModel:
                 self.selection.primary if self.selection.primary != object_id else None
             ),
         )
+
+    def remove_objects(self, object_ids: Iterable[str]) -> None:
+        """Remove a complete selection after pre-validating every target."""
+
+        ids = tuple(object_ids)
+        if len(ids) != len(set(ids)):
+            raise ValueError("object IDs must be unique")
+        if not ids:
+            return
+        for object_id in ids:
+            self._assert_editable(object_id)
+        removed = set(ids)
+        self._replace(
+            objects=[item for item in self.document.objects if item.id not in removed],
+            groups=[
+                group.model_copy(
+                    update={
+                        "members": [
+                            member for member in group.members if member not in removed
+                        ]
+                    }
+                )
+                for group in self.document.groups
+            ],
+        )
+        remaining = [item for item in self.selection.ids if item not in removed]
+        primary = self.selection.primary if self.selection.primary in remaining else None
+        self.set_selection(remaining, primary)
 
     def update_transform(self, object_id: str, transform: SceneTransformRecord) -> None:
         self._assert_editable(object_id)
