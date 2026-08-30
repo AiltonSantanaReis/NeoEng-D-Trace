@@ -3,17 +3,19 @@
 **Linha de produto:** P2D-COMP-01 — Editor Profissional de Composição 2D Baseado em Objetos
 **Etapa:** P2D-04 — persistência, recuperação, preview integrado, exportação e orientação de coordenadas
 **Data de abertura:** 30/08/2026
-**Status:** OPEN — contrato proposto; implementação ainda não autorizada
+**Status:** ACCEPTED — contrato aceito em 30/08/2026; implementação autorizada; etapa ainda não concluída
 **Autoridade:** decisão do proprietário do produto, subordinada ao normativo P2D-COMP-01, ao plano de evolução, aos contratos P2D-01/P2D-02/P2D-03 e aos imutáveis C3/G/V/B.
+
+**Registro de aceite explícito:** `P2D-04 ACEITO — contrato de persistência, recovery, preview, exportação e coordenadas` — recebido em 30/08/2026.
 
 ## 1. Finalidade deste documento
 
 Este documento abre formalmente P2D-04 e estabelece a fronteira obrigatória para
-qualquer implementação posterior. Ele não declara P2D-04 concluída, não
-autoriza alteração de código e não transforma a fundação existente em produto
-completo.
+qualquer implementação posterior. O aceite do contrato autoriza somente a
+implementação controlada; ele não declara P2D-04 concluída nem transforma a
+fundação existente em produto completo.
 
-P2D-04 somente poderá ser aceita depois de:
+P2D-04 somente poderá ser considerada concluída depois de:
 
 1. o contrato abaixo ser aceito explicitamente pelo proprietário;
 2. o estado de entrada ser novamente comprovado;

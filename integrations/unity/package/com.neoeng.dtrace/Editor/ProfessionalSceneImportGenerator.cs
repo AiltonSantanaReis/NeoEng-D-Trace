@@ -49,6 +49,19 @@ namespace NeoEng.DTrace.Editor
             sceneMetadata.serializedProject = JsonUtility.ToJson(export.scene.project);
             sceneMetadata.serializedSnap = JsonUtility.ToJson(export.scene.snap);
 
+            GameObject cameraObject = new GameObject("SceneCamera");
+            cameraObject.transform.SetParent(root.transform, false);
+            cameraObject.transform.localPosition = new Vector3(
+                export.scene.camera.position.x,
+                export.scene.camera.position.y * export.coordinate_mapping.position_y_sign,
+                -10f);
+            Camera sceneCamera = cameraObject.AddComponent<Camera>();
+            sceneCamera.orthographic = true;
+            sceneCamera.orthographicSize = 5f / Mathf.Max(export.scene.camera.zoom, 0.0001f);
+            sceneCamera.clearFlags = CameraClearFlags.SolidColor;
+            sceneCamera.backgroundColor = Color.clear;
+            cameraObject.tag = "MainCamera";
+
             foreach (LayerData source in export.scene.layers)
             {
                 GameObject layer = new GameObject("Layer_" + source.id);
@@ -65,6 +78,17 @@ namespace NeoEng.DTrace.Editor
                     metadata.parallaxDepth = parallax.depth;
                     metadata.parallaxTranslationStrength = parallax.translation_strength;
                     metadata.parallaxZoomStrength = parallax.zoom_strength;
+                }
+                if (parallax != null)
+                {
+                    NeoEngProfessionalParallax behavior = layer.AddComponent<NeoEngProfessionalParallax>();
+                    behavior.cameraOrigin = new Vector2(
+                        export.scene.camera.position.x,
+                        export.scene.camera.position.y * export.coordinate_mapping.position_y_sign);
+                    behavior.depth = parallax.depth;
+                    behavior.translationStrength = parallax.translation_strength;
+                    behavior.zoomStrength = parallax.zoom_strength;
+                    behavior.authoringZoom = export.scene.camera.zoom;
                 }
                 layers.Add(source.id, layer);
             }
@@ -94,7 +118,17 @@ namespace NeoEng.DTrace.Editor
                     transform.scale.x * (transform.flip_x ? -1f : 1f),
                     transform.scale.y * (transform.flip_y ? -1f : 1f),
                     transform.scale.z);
-                SpriteRenderer renderer = instance.AddComponent<SpriteRenderer>();
+                GameObject visual = new GameObject("Visual");
+                visual.transform.SetParent(instance.transform, false);
+                Vector2 authoredPivotPixels = new Vector2(
+                    transform.pivot.x * sprite.rect.width,
+                    (1f - transform.pivot.y) * sprite.rect.height);
+                Vector2 importedPivotPixels = sprite.pivot;
+                visual.transform.localPosition = new Vector3(
+                    (importedPivotPixels.x - authoredPivotPixels.x) / sprite.pixelsPerUnit,
+                    (authoredPivotPixels.y - importedPivotPixels.y) / sprite.pixelsPerUnit,
+                    0f);
+                SpriteRenderer renderer = visual.AddComponent<SpriteRenderer>();
                 renderer.sprite = sprite;
                 renderer.sortingOrder = Mathf.RoundToInt(transform.position.z);
                 NeoEngProfessionalObjectMetadata metadata = instance.AddComponent<NeoEngProfessionalObjectMetadata>();

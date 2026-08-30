@@ -40,6 +40,20 @@ static func import_scene(export_path: String) -> Dictionary:
     root.set_meta("neoeng_scene_hash", str(payload["source"]["sha256"]))
     root.set_meta("neoeng_scene_name", str(scene_data["metadata"]["name"]))
     root.set_meta("neoeng_camera", scene_data["camera"])
+    var camera_data: Dictionary = scene_data["camera"]
+    var scene_camera := Camera2D.new()
+    scene_camera.name = "SceneCamera"
+    scene_camera.position = Vector2(
+        float(camera_data["position"]["x"]),
+        float(camera_data["position"]["y"]),
+    )
+    scene_camera.zoom = Vector2(
+        float(camera_data["zoom"]),
+        float(camera_data["zoom"]),
+    )
+    scene_camera.enabled = true
+    scene_camera.set_meta("neoeng_camera_authoring", camera_data)
+    root.add_child(scene_camera)
 
     var assets := {}
     for asset_value in scene_data["assets"]:
@@ -55,8 +69,21 @@ static func import_scene(export_path: String) -> Dictionary:
         layer.set_meta("neoeng_layer_name", str(layer_data["name"]))
         layer.set_meta("neoeng_layer_locked", bool(layer_data["locked"]))
         var parallax := _parallax_for(scene_data["parallax_layers"], str(layer_data["id"]))
+        var camera_zoom := float(camera_data["zoom"])
+        var translation_factor := 1.0 - float(parallax["depth"]) * float(parallax["translation_strength"])
+        var zoom_factor := 1.0 - float(parallax["depth"]) * float(parallax["zoom_strength"])
+        var effective_zoom := 1.0 + (camera_zoom - 1.0) * zoom_factor
+        layer.scale = Vector2(effective_zoom / camera_zoom, effective_zoom / camera_zoom)
         layer.set_meta("neoeng_parallax", parallax)
-        root.add_child(layer)
+        var layer_parent: Node2D = root
+        if float(parallax["depth"]) != 0.0 or float(parallax["translation_strength"]) != 1.0 or float(parallax["zoom_strength"]) != 1.0:
+            var parallax_node := Parallax2D.new()
+            parallax_node.name = "Parallax_" + str(layer_data["id"])
+            parallax_node.scroll_scale = Vector2(translation_factor, translation_factor)
+            parallax_node.set_meta("neoeng_parallax", parallax)
+            root.add_child(parallax_node)
+            layer_parent = parallax_node
+        layer_parent.add_child(layer)
         layers[layer_data["id"]] = layer
 
     for object_value in scene_data["objects"]:
@@ -74,6 +101,11 @@ static func import_scene(export_path: String) -> Dictionary:
         var sprite := Sprite2D.new()
         sprite.name = "Object_" + str(object_data["id"])
         sprite.texture = texture
+        var pivot: Dictionary = transform["pivot"]
+        sprite.offset = Vector2(
+            (0.5 - float(pivot["x"])) * float(texture.get_width()),
+            (0.5 - float(pivot["y"])) * float(texture.get_height()),
+        )
         sprite.position = Vector2(float(position["x"]), float(position["y"]))
         sprite.z_index = int(round(float(position["z"])))
         sprite.rotation_degrees = float(rotation["z"])

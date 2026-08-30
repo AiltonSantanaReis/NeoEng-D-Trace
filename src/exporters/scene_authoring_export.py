@@ -20,7 +20,11 @@ from pydantic import ValidationError
 
 from src.core.app_identity import APP_ID, APP_VERSION
 from src.core.atomic_outputs import AtomicOutputTransaction
-from src.persistence.scene_authoring_io import scene_authoring_sha256
+from src.persistence.scene_authoring_io import (
+    SceneAuthoringAssetError,
+    scene_authoring_sha256,
+    verify_scene_assets,
+)
 from src.persistence.scene_authoring_schema import SceneAuthoringDocumentV2
 
 SCENE_EXPORT_FORMAT_ID = "neoeng-d-trace-scene-authoring-export"
@@ -260,6 +264,10 @@ def build_scene_authoring_export(
         },
         "scene": validated.model_dump(mode="json"),
     }
+    # ``source_path`` is local authoring metadata and must never cross the
+    # portable export boundary. Consumers resolve only the safe relative path.
+    for asset in payload["scene"]["assets"]:
+        asset.pop("source_path", None)
     _validate_export(payload)
     return payload
 
@@ -289,6 +297,7 @@ def save_scene_authoring_export(
     path: str | os.PathLike[str],
     *,
     target: SceneExportTarget,
+    source_document_path: str | os.PathLike[str] | None = None,
 ) -> None:
     """Atomically write one generic, Godot or Unity export."""
 
@@ -297,6 +306,13 @@ def save_scene_authoring_export(
         raise SceneAuthoringExportError("scene export directory does not exist")
     if destination.exists() and destination.is_dir():
         raise SceneAuthoringExportError("scene export destination is a directory")
+    if source_document_path is not None:
+        try:
+            verify_scene_assets(document, source_document_path)
+        except SceneAuthoringAssetError as exc:
+            raise SceneAuthoringExportError(
+                f"cannot export because a scene asset is unavailable or changed: {exc}"
+            ) from exc
     payload = serialize_scene_authoring_export(document, target=target)
     try:
         with AtomicOutputTransaction() as transaction:

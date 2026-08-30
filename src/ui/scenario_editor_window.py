@@ -13,8 +13,10 @@ from typing import Any
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import (
+    QComboBox,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QScrollArea,
     QSplitter,
     QStackedWidget,
@@ -30,10 +32,20 @@ from src.core.scene_authoring_session import SceneAuthoringSession
 from src.exporters.scene_authoring_export import save_scene_authoring_export
 from src.persistence.scene_authoring_io import (
     SceneAuthoringAssetError,
+    SceneAuthoringFormatError,
+    SceneAuthoringReadError,
+    SceneAuthoringValidationError,
+    load_scene_authoring,
+    load_scene_authoring_recovery,
     load_scene_authoring_v2,
     save_scene_authoring,
+    scene_authoring_recovery_path,
 )
-from src.persistence.scene_authoring_schema import upgrade_scene_authoring_document
+from src.persistence.scene_authoring_schema import (
+    SceneAuthoringDocumentV1,
+    SceneAuthoringDocumentV2,
+    upgrade_scene_authoring_document,
+)
 from src.ui.scenario_panel import ScenarioPanel
 from src.ui.scene_asset_panel import SceneAssetLibrary
 from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
@@ -74,20 +86,22 @@ class ScenarioEditorWindow(QMainWindow):
         self.layer_stack: SceneAuthoringLayerStack | None = None
         self.group_stack: SceneAuthoringGroupStack | None = None
         self.asset_library: SceneAssetLibrary | None = None
+        self._pending_v1_document: SceneAuthoringDocumentV1 | None = None
+        self._pending_recovery_path: Path | None = None
         self.canvas = self._build_canvas()
         self.legacy_canvas = self.canvas
         self.professional_pages = QStackedWidget(self)
         self.professional_pages.setObjectName("professional_viewport_pages")
-        professional_empty = QLabel(self.professional_pages)
-        professional_empty.setObjectName("professional_scene_viewport_empty")
-        professional_empty.setWordWrap(True)
-        professional_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        professional_empty.setText(
+        self.professional_empty = QLabel(self.professional_pages)
+        self.professional_empty.setObjectName("professional_scene_viewport_empty")
+        self.professional_empty.setWordWrap(True)
+        self.professional_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.professional_empty.setText(
             "Professional scene viewport\n\n" "Load a saved project to begin authoring."
         )
-        self.professional_pages.addWidget(professional_empty)
+        self.professional_pages.addWidget(self.professional_empty)
         self.professional_pages.addWidget(self.canvas)
-        self.professional_pages.setCurrentWidget(professional_empty)
+        self.professional_pages.setCurrentWidget(self.professional_empty)
         self.scenario_panel = ScenarioPanel(authoring, scene, self)
         self.scenario_panel.setMinimumWidth(390)
         self.scenario_panel.setMaximumWidth(520)
@@ -143,6 +157,15 @@ class ScenarioEditorWindow(QMainWindow):
         self.overlay_action = QAction(self)
         self.preview_action = QAction(self)
         self.authoring_action = QAction(self)
+        self.upgrade_action = QAction(self)
+        self.recover_action = QAction(self)
+        self.export_target_label = QLabel(self.toolbar)
+        self.export_target_label.setObjectName("scenario_export_target_label")
+        self.export_target_combo = QComboBox(self.toolbar)
+        self.export_target_combo.setObjectName("scenario_export_target_combo")
+        self.export_target_combo.addItem("Generic", "generic")
+        self.export_target_combo.addItem("Godot 4.7", "godot")
+        self.export_target_combo.addItem("Unity 6000.5.7f1", "unity")
         self.overlay_action.setCheckable(True)
         self.preview_action.setCheckable(True)
         self.authoring_action.setCheckable(True)
@@ -166,6 +189,10 @@ class ScenarioEditorWindow(QMainWindow):
         ):
             self.toolbar.addAction(action)
         self.toolbar.addSeparator()
+        self.toolbar.addWidget(self.export_target_label)
+        self.toolbar.addWidget(self.export_target_combo)
+        self.toolbar.addAction(self.upgrade_action)
+        self.toolbar.addAction(self.recover_action)
         self.status_label = QLabel(self)
         self.status_label.setObjectName("scenario_editor_status_label")
         self.statusBar().setObjectName("scenario_editor_status_bar")
@@ -178,6 +205,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.load_action.triggered.connect(self._load_professional)
         self.reset_action.triggered.connect(self._reset_professional)
         self.export_action.triggered.connect(self._export_professional)
+        self.upgrade_action.triggered.connect(self._upgrade_professional)
+        self.recover_action.triggered.connect(self._recover_professional)
         self.overlay_action.triggered.connect(self._toggle_overlays)
         self.preview_action.triggered.connect(self._toggle_professional_preview)
         self.authoring_action.triggered.connect(self._toggle_professional_authoring)
@@ -196,26 +225,80 @@ class ScenarioEditorWindow(QMainWindow):
         return canvas
 
     def _load_professional_document(self, path: Path):
-        """Load valid scenes while exposing missing/tampered assets to the UI."""
+        """Load V2, while exposing asset and migration failures to the UI."""
 
         try:
             return load_scene_authoring_v2(path)
         except SceneAuthoringAssetError:
+            # Asset problems remain editable for relink/replace diagnostics.
             return load_scene_authoring_v2(path, verify_assets=False)
 
-    def _build_professional_viewport(self) -> None:
+    def _show_pending_document(self, message: str) -> None:
+        self.professional_pages.setCurrentWidget(self.professional_empty)
+        self.professional_empty.setText(message)
+        self.upgrade_action.setEnabled(self._pending_v1_document is not None)
+        self.recover_action.setEnabled(self._pending_recovery_path is not None)
+
+    def _build_professional_viewport(
+        self,
+        document: SceneAuthoringDocumentV2 | None = None,
+        *,
+        mark_unsaved: bool = False,
+    ) -> None:
         project_path = self.authoring.project_path
         if project_path is None:
             return
         scene_path = project_path.with_suffix(".ndtscene.json")
-        if scene_path.is_file():
-            document = self._load_professional_document(scene_path)
-        else:
+        self._professional_project = project_path
+        self.professional_scene_path = scene_path
+        if document is None and scene_path.is_file():
+            try:
+                document = self._load_professional_document(scene_path)
+            except (
+                ValueError,
+                SceneAuthoringFormatError,
+                SceneAuthoringReadError,
+                SceneAuthoringValidationError,
+            ):
+                try:
+                    candidate = load_scene_authoring(scene_path, verify_assets=False)
+                except (
+                    OSError,
+                    ValueError,
+                    SceneAuthoringFormatError,
+                    SceneAuthoringReadError,
+                    SceneAuthoringValidationError,
+                ) as exc:
+                    recovery = scene_authoring_recovery_path(scene_path)
+                    self._pending_v1_document = None
+                    self._pending_recovery_path = recovery if recovery.is_file() else None
+                    self._show_pending_document(
+                        "Saved scene could not be validated. "
+                        + ("Use Recover Last Valid." if self._pending_recovery_path else "Repair the scene file before reopening.")
+                    )
+                    self.status_label.setText("Scenario unavailable: invalid saved document")
+                    return
+                if isinstance(candidate, SceneAuthoringDocumentV1):
+                    self._pending_v1_document = candidate
+                    recovery = scene_authoring_recovery_path(scene_path)
+                    self._pending_recovery_path = recovery if recovery.is_file() else None
+                    self._show_pending_document(
+                        "Schema V1 detected. Choose Upgrade V1 to V2 to edit. "
+                        "The V1 file remains unchanged until Save."
+                    )
+                    self.status_label.setText("Scenario requires explicit V1 upgrade")
+                    return
+                raise
+        if document is None:
             document = professional_document_from_scene(
                 self.scene,
                 project_path,
                 self.authoring.document,
             )
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            raise SceneAuthoringValidationError("professional viewport requires schema V2")
+        self._pending_v1_document = None
+        self._pending_recovery_path = None
         session = SceneAuthoringSession(SceneAuthoringModel(document))
         viewport = SceneAuthoringViewport(
             session,
@@ -274,6 +357,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_pages.addWidget(viewport)
         self.professional_pages.setCurrentWidget(viewport)
         self.professional_session = session
+        if mark_unsaved:
+            session.mark_unsaved()
         self.professional_viewport = viewport
         self.professional_inspector = inspector
         self.professional_inspector_scroll = inspector_scroll
@@ -349,6 +434,47 @@ class ScenarioEditorWindow(QMainWindow):
     def _emit_document_changed(self) -> None:
         self.document_changed.emit()
 
+    def _upgrade_professional(self) -> bool:
+        if self._pending_v1_document is None:
+            self.status_label.setText("No V1 scenario is waiting for upgrade")
+            return False
+        answer = QMessageBox.question(
+            self,
+            "Upgrade scenario schema",
+            "Upgrade this V1 scenario to V2 in memory? The V1 file will remain unchanged until you save.",
+        )
+        if answer != QMessageBox.StandardButton.Yes:
+            return False
+        candidate = self._pending_v1_document
+        upgraded = upgrade_scene_authoring_document(candidate)
+        self._build_professional_viewport(upgraded, mark_unsaved=True)
+        self.status_label.setText("Scenario upgraded to V2 — save to persist")
+        return True
+
+    def _recover_professional(self) -> bool:
+        if self.professional_scene_path is None or self._pending_recovery_path is None:
+            self.status_label.setText("No recoverable scenario is available")
+            return False
+        try:
+            candidate = load_scene_authoring_recovery(
+                self.professional_scene_path, verify_assets=False
+            )
+        except (OSError, ValueError, SceneAuthoringFormatError, SceneAuthoringReadError, SceneAuthoringValidationError) as exc:
+            self.status_label.setText(f"Scenario recovery failed: {exc}")
+            return False
+        if isinstance(candidate, SceneAuthoringDocumentV1):
+            self._pending_v1_document = candidate
+            self._pending_recovery_path = None
+            self._show_pending_document(
+                "Recovered V1 scenario is ready. Choose Upgrade V1 to V2; "
+                "the recovered file will not replace the damaged file until Save."
+            )
+            self.status_label.setText("Recovered V1 scenario — explicit upgrade required")
+            return True
+        self._build_professional_viewport(candidate, mark_unsaved=True)
+        self.status_label.setText("Last valid scenario recovered — save to replace the damaged file")
+        return True
+
     def _save_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
             self.status_label.setText("Save a project before saving the scenario")
@@ -382,14 +508,64 @@ class ScenarioEditorWindow(QMainWindow):
                 self.professional_viewport.sync()
             self.status_label.setText("Scenario reloaded")
             return True
-        except (OSError, ValueError) as exc:
+        except (
+            OSError,
+            ValueError,
+            SceneAuthoringFormatError,
+            SceneAuthoringReadError,
+            SceneAuthoringValidationError,
+        ) as exc:
+            try:
+                candidate = load_scene_authoring(
+                    self.professional_scene_path, verify_assets=False
+                )
+            except (
+                OSError,
+                ValueError,
+                SceneAuthoringFormatError,
+                SceneAuthoringReadError,
+                SceneAuthoringValidationError,
+            ):
+                recovery = scene_authoring_recovery_path(
+                    self.professional_scene_path
+                )
+                self.status_label.setText(
+                    "Scenario reload failed: "
+                    f"{exc}. "
+                    + (
+                        "Use Recover Last Valid."
+                        if recovery.is_file()
+                        else "Repair the saved scenario before reloading."
+                    )
+                )
+                self._pending_recovery_path = (
+                    recovery if recovery.is_file() else None
+                )
+                self.refresh()
+                return False
+            if isinstance(candidate, SceneAuthoringDocumentV1):
+                self._pending_v1_document = candidate
+                self.status_label.setText(
+                    "Scenario reload requires explicit V1 upgrade; "
+                    "the saved V1 file remains unchanged."
+                )
+                self.refresh()
+                return False
             self.status_label.setText(f"Scenario reload failed: {exc}")
             return False
 
-    def _reset_professional(self) -> bool:
+    def _reset_professional(self, *, confirm: bool = True) -> bool:
         if self._professional_project is None or self.professional_session is None:
             self.status_label.setText("Save a project before resetting the scenario")
             return False
+        if confirm and self.professional_session.is_dirty:
+            answer = QMessageBox.question(
+                self,
+                "Reset scenario",
+                "Discard unsaved professional scenario changes?",
+            )
+            if answer != QMessageBox.StandardButton.Yes:
+                return False
         document = upgrade_scene_authoring_document(
             professional_document_from_scene(self.scene, self._professional_project)
         )
@@ -406,14 +582,22 @@ class ScenarioEditorWindow(QMainWindow):
         if self.professional_session is None or self._professional_project is None:
             self.status_label.setText("Save a project before exporting the scenario")
             return False
-        destination = self._professional_project.with_suffix(".ndtscene.runtime.json")
+        target = str(self.export_target_combo.currentData() or "generic")
+        destination = self._professional_project.with_suffix(
+            ".ndtscene.runtime.json"
+            if target == "generic"
+            else f".ndtscene.{target}.runtime.json"
+        )
         try:
             save_scene_authoring_export(
                 upgrade_scene_authoring_document(self.professional_session.document),
                 destination,
-                target="generic",
+                target=target,
+                source_document_path=self.professional_scene_path,
             )
-            self.status_label.setText("Scenario runtime exported")
+            self.status_label.setText(
+                f"Scenario {target} export written from active document: {destination.name}"
+            )
             return True
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Scenario export failed: {exc}")
@@ -481,10 +665,14 @@ class ScenarioEditorWindow(QMainWindow):
         available = self.authoring.is_available
         if available and self._professional_project != self.authoring.project_path:
             self._build_professional_viewport()
-        self.save_action.setEnabled(available)
-        self.load_action.setEnabled(available)
-        self.reset_action.setEnabled(available)
-        self.export_action.setEnabled(available)
+        ready = available and self.professional_session is not None
+        self.save_action.setEnabled(ready)
+        self.load_action.setEnabled(ready)
+        self.reset_action.setEnabled(ready)
+        self.export_action.setEnabled(ready)
+        self.export_target_combo.setEnabled(ready)
+        self.upgrade_action.setEnabled(self._pending_v1_document is not None)
+        self.recover_action.setEnabled(self._pending_recovery_path is not None)
         self.overlay_action.setEnabled(available)
         self.preview_action.setEnabled(available)
         self.authoring_action.setEnabled(available)
@@ -495,7 +683,12 @@ class ScenarioEditorWindow(QMainWindow):
         session = self.professional_session
         self.undo_action.setEnabled(session is not None and session.can_undo)
         self.redo_action.setEnabled(session is not None and session.can_redo)
-        if available:
+        if available and self.professional_session is None and (
+            self._pending_v1_document is not None or self._pending_recovery_path is not None
+        ):
+            self.canvas.set_scenario_preview_layers(())
+            self.status_label.setText("Scenario requires migration or recovery action")
+        elif available:
             self.canvas.set_scenario_preview_layers(self.authoring.preview_layers())
             self.canvas.set_scenario_camera(
                 self.authoring.preview_camera(
@@ -532,6 +725,8 @@ class ScenarioEditorWindow(QMainWindow):
                 "Recarregar",
                 "Redefinir",
                 "Exportar Runtime",
+                "Atualizar V1 para V2",
+                "Recuperar Último Válido",
                 "Desfazer",
                 "Refazer",
                 "Sobreposições",
@@ -546,6 +741,8 @@ class ScenarioEditorWindow(QMainWindow):
                 "Reload",
                 "Reset",
                 "Export Runtime",
+                "Upgrade V1 to V2",
+                "Recover Last Valid",
                 "Undo",
                 "Redo",
                 "Overlays",
@@ -559,6 +756,8 @@ class ScenarioEditorWindow(QMainWindow):
                 self.load_action,
                 self.reset_action,
                 self.export_action,
+                self.upgrade_action,
+                self.recover_action,
                 self.undo_action,
                 self.redo_action,
                 self.overlay_action,
@@ -568,6 +767,12 @@ class ScenarioEditorWindow(QMainWindow):
             labels,
         ):
             action.setText(label)
+        self.export_target_label.setText(
+            "Alvo:" if self.current_lang == "pt" else "Target:"
+        )
+        self.export_target_combo.setItemText(0, "Genérico" if self.current_lang == "pt" else "Generic")
+        self.export_target_combo.setItemText(1, "Godot 4.7")
+        self.export_target_combo.setItemText(2, "Unity 6000.5.7f1")
         self.scenario_panel.update_language(self.current_lang)
         if self.asset_library is not None:
             self.asset_library.update_language(self.current_lang)
