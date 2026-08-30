@@ -240,6 +240,7 @@ class SceneAuthoringGroupStack(QWidget):
             group_id = f"scenario_group_{index}"
         parent_id = self._current_group_id()
         members = list(self.session.selection.ids)
+        group: SceneGroupAuthoringRecord
         if isinstance(self.session.document, SceneAuthoringDocumentV2):
             group = SceneGroupAuthoringRecordV2(
                 id=group_id,
@@ -354,8 +355,8 @@ class SceneAuthoringGroupStack(QWidget):
                 restored = self._find_item(*selected)
                 if restored is not None:
                     self.tree.setCurrentItem(restored)
-            group_id = self._current_group_id()
-            enabled = group_id is not None
+            selected_group_id = self._current_group_id()
+            enabled = selected_group_id is not None
             for widget in (
                 self.name_edit,
                 self.parent_combo,
@@ -375,9 +376,11 @@ class SceneAuthoringGroupStack(QWidget):
             self.remove_selected_button.setEnabled(
                 enabled and bool(self.session.selection.ids)
             )
-            if enabled:
+            if selected_group_id is not None:
                 group = next(
-                    item for item in self.session.document.groups if item.id == group_id
+                    item
+                    for item in self.session.document.groups
+                    if item.id == selected_group_id
                 )
                 self.name_edit.blockSignals(True)
                 self.name_edit.setText(group.name)
@@ -388,8 +391,8 @@ class SceneAuthoringGroupStack(QWidget):
                 self.locked_box.blockSignals(True)
                 self.locked_box.setChecked(group.locked)
                 self.locked_box.blockSignals(False)
-                self._refresh_parent_combo(group_id)
-                isolated = self.session.isolated_group_id == group_id
+                self._refresh_parent_combo(selected_group_id)
+                isolated = self.session.isolated_group_id == selected_group_id
                 self.isolate_button.blockSignals(True)
                 self.isolate_button.setChecked(isolated)
                 self.isolate_button.setText("Exit Isolation" if isolated else "Isolate")

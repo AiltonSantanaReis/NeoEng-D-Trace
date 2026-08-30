@@ -654,6 +654,7 @@ class SceneAuthoringViewport(QGraphicsView):
                 if issue is not None:
                     diagnostics.append(f"{item.id}: {issue}")
                 else:
+                    assert asset_path is not None
                     try:
                         pixmap_cache[asset.id] = self._load_asset_pixmap(asset_path)
                     except (OSError, ValueError) as exc:
@@ -975,11 +976,11 @@ class SceneAuthoringViewport(QGraphicsView):
         if self._block_if_preview():
             return True
         step = 10.0 if modifiers & Qt.KeyboardModifier.ShiftModifier else 1.0
-        deltas = {
-            Qt.Key.Key_Left: (-step, 0.0),
-            Qt.Key.Key_Right: (step, 0.0),
-            Qt.Key.Key_Up: (0.0, -step),
-            Qt.Key.Key_Down: (0.0, step),
+        deltas: dict[int, tuple[float, float]] = {
+            int(Qt.Key.Key_Left): (-step, 0.0),
+            int(Qt.Key.Key_Right): (step, 0.0),
+            int(Qt.Key.Key_Up): (0.0, -step),
+            int(Qt.Key.Key_Down): (0.0, step),
         }
         dx, dy = deltas[key]
         try:
@@ -1049,7 +1050,9 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit("No compatible scene clipboard payload")
             return True
         try:
-            created = self.session.paste_payload(bytes(mime.data(SCENE_CLIPBOARD_MIME)))
+            created = self.session.paste_payload(
+                bytes(mime.data(SCENE_CLIPBOARD_MIME).data())
+            )
         except (KeyError, PermissionError, ValueError) as exc:
             self._edit_status_error(exc)
         else:

@@ -10861,8 +10861,8 @@
       "size": 5996
     },
     "src/core/scene_authoring_clipboard.py": {
-      "sha256": "3ec6fe497f8dac3557caeefd04fab2b31cfb26ad975a67bbbccdd43e809d0185",
-      "size": 4345
+      "sha256": "15ab0dadbb7cdef0a1b946db3304b462676b4f0529ddf93947159292847c0f2d",
+      "size": 4326
     },
     "src/core/scene_authoring_factory.py": {
       "sha256": "f9717dab5f6309be9ae7656263579da719fb7fa4df5af80b4b9f39fb48650c82",
@@ -10885,8 +10885,8 @@
       "size": 5665
     },
     "src/core/scene_authoring_session.py": {
-      "sha256": "bfe994623ae8da62c6598ee2ed9019155729f7e433f0fb3549c881b4ac1620a3",
-      "size": 22040
+      "sha256": "b6f87f1b85e2d5e1e6a3ef82abbdcd303bc72ff52f0563f7c8d0a65ac62b7311",
+      "size": 22090
     },
     "src/core/scene_view_navigation.py": {
       "sha256": "b2b0920b78611452a73f59f04d41f0ca44e72b7f535fd329084ef7db33fb1022",
@@ -11025,8 +11025,8 @@
       "size": 8556
     },
     "src/persistence/scene_authoring_schema.py": {
-      "sha256": "7b550a368fe22e4a1be28cb8e5d123712f03d4a985a0cc5d3d1c0aa83eec66d2",
-      "size": 17628
+      "sha256": "f4013e13ad204d014438790c310174f0319c0a32ea817a1a37343fd8a4100042",
+      "size": 17640
     },
     "src/physics/__init__.py": {
       "sha256": "8734b0cf141de1a9dc2d75c3b32a3c630ad5b796faff155b173a2e2063215ed3",
@@ -11229,8 +11229,8 @@
       "size": 10179
     },
     "src/ui/main_window.py": {
-      "sha256": "738f0e895fde55cba2c920562bc5a8fd4d0518c703da3911bec4466e99af3eab",
-      "size": 44354
+      "sha256": "d262f0d83e54998c6bd047421f299127f0e4e7b25e00f62a2e155dae2493ae1e",
+      "size": 44421
     },
     "src/ui/main_window_translations.py": {
       "sha256": "aa6d9d9e09b4d482675fd6caebb0f3fc33a313f39f193b03a2f5cf29c61f0c4c",
@@ -11265,12 +11265,12 @@
       "size": 1980
     },
     "src/ui/scene_asset_panel.py": {
-      "sha256": "11255592ee8197315c864b2af796773763b6ec9e83b9f4ac142c7a33833429be",
-      "size": 15235
+      "sha256": "a32110f48390d2db4dc69e0793aa3797b1b5281ce8760ad23e1f11de5d93e912",
+      "size": 15303
     },
     "src/ui/scene_authoring_group_stack.py": {
-      "sha256": "bf23b819901b5425bcbf28e819285ae08fb027532f5ef87d9361b2bc65ebbe8f",
-      "size": 16371
+      "sha256": "8695a0ec5edf2d54870332d127f960a0b17f612269b14194343e99eecb324b75",
+      "size": 16519
     },
     "src/ui/scene_authoring_inspector.py": {
       "sha256": "218f19513c79c0eed3e1718405f708a8d7344667f15961878e4cd29c816b645c",
@@ -11281,8 +11281,8 @@
       "size": 6758
     },
     "src/ui/scene_authoring_viewport.py": {
-      "sha256": "5738a0fc9d993e5cc1fb40deb24e7db2d3cfe2bd99af6b97dd769d03f4388cfc",
-      "size": 59627
+      "sha256": "8d92dbaa4354be3e5ec034726e39755463666c52c7dc209792aaf7409fd238ad",
+      "size": 59766
     },
     "src/ui/side_panel.py": {
       "sha256": "4c91c9c4ac9c0c3552f8174af8bd2db96b18eb1d1d4bb5dc9c3e5cf7f09b901d",

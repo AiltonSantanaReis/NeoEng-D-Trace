@@ -394,7 +394,7 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
                     f"group {group.id!r} references unknown parent group {parent_id!r}"
                 )
             seen = {group.id}
-            current = parent_id
+            current: str | None = parent_id
             while current is not None:
                 if current in seen:
                     raise ValueError("group hierarchy contains a cycle")

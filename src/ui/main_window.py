@@ -59,6 +59,9 @@ from src.ui.viewport_actions import install_viewport_actions
 class MainWindow(QMainWindow):
 
     command_palette_requested = Signal()
+    act_grid: QAction
+    act_snap: QAction
+    act_gizmo: QAction
 
     @property
     def _project_path(self) -> Path | None:

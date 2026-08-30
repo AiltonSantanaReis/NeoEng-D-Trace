@@ -238,7 +238,8 @@ class SceneAssetLibrary(QWidget):
         has_project = self.project_root is not None
         self.import_button.setEnabled(has_project)
         self.replace_button.setEnabled(has_project and selected is not None)
-        state = self._inspections.get(selected.id).state if selected else None
+        inspection = self._inspections.get(selected.id) if selected else None
+        state = inspection.state if inspection is not None else None
         self.relink_button.setEnabled(
             has_project and selected is not None and state != "ready"
         )

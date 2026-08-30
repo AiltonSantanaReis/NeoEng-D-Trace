@@ -445,6 +445,7 @@ class SceneAuthoringSession:
                     if group.parent_group_id is not None
                     else None
                 )
+                record: SceneGroupAuthoringRecord
                 if isinstance(self.document, SceneAuthoringDocumentV2):
                     record = SceneGroupAuthoringRecordV2(
                         id=group_id_map[group.id],

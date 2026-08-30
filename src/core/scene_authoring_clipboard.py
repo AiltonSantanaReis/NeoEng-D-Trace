@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Literal
+from typing import Final, Literal
 
 from pydantic import Field, model_validator
 
@@ -20,8 +20,8 @@ from src.persistence.project_schema import (
 from src.persistence.scene_authoring_schema import SceneObjectAuthoringRecord
 
 SCENE_CLIPBOARD_MIME = "application/x-neoeng-d-trace-scene-objects"
-SCENE_CLIPBOARD_FORMAT_ID = "neoeng-d-trace-scene-objects"
-SCENE_CLIPBOARD_SCHEMA_VERSION = 1
+SCENE_CLIPBOARD_FORMAT_ID: Final = "neoeng-d-trace-scene-objects"
+SCENE_CLIPBOARD_SCHEMA_VERSION: Final = 1
 
 
 class SceneClipboardGroupRecord(StrictProjectModel):
@@ -46,10 +46,8 @@ class SceneClipboardGroupRecord(StrictProjectModel):
 class SceneClipboardPayload(StrictProjectModel):
     """Strict JSON contract carried by the professional scene clipboard."""
 
-    format_id: Literal[SCENE_CLIPBOARD_FORMAT_ID] = SCENE_CLIPBOARD_FORMAT_ID
-    schema_version: Literal[SCENE_CLIPBOARD_SCHEMA_VERSION] = (
-        SCENE_CLIPBOARD_SCHEMA_VERSION
-    )
+    format_id: Literal["neoeng-d-trace-scene-objects"] = SCENE_CLIPBOARD_FORMAT_ID
+    schema_version: Literal[1] = SCENE_CLIPBOARD_SCHEMA_VERSION
     objects: list[SceneObjectAuthoringRecord] = Field(
         min_length=1,
         max_length=MAX_PROJECT_OBJECTS,
