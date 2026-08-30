@@ -16,6 +16,7 @@ from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.exporters.scene_authoring_export import (
     SceneAuthoringExportError,
+    build_scene_authoring_export,
     save_scene_authoring_export,
 )
 from src.models.scene import Scene
@@ -257,6 +258,62 @@ def test_v1_upgrade_is_explicit_and_does_not_rewrite_file_until_save(
     finally:
         window.close()
         qt_app.processEvents()
+
+
+def test_ui_recovery_and_target_fallback_paths_are_explicit(
+    tmp_path: Path,
+    qt_app: QApplication,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    window = _window(tmp_path, qt_app)
+    try:
+        assert window._recover_professional() is False
+
+        v1, _asset = _document(tmp_path)
+        source = window.professional_scene_path
+        assert source is not None
+        save_scene_authoring(v1, source)
+        window._pending_v1_document = v1
+        monkeypatch.setattr(
+            scenario_editor_window_module.QMessageBox,
+            "question",
+            lambda *_args, **_kwargs: QMessageBox.StandardButton.No,
+        )
+        assert window._upgrade_professional() is False
+
+        first_v2 = upgrade_scene_authoring_document(v1)
+        second_v2 = first_v2.model_copy(
+            update={"metadata": first_v2.metadata.model_copy(update={"name": "Second"})}
+        )
+        save_scene_authoring(first_v2, source)
+        save_scene_authoring(second_v2, source)
+        recovery = scene_authoring_recovery_path(source)
+        source.write_bytes(b"broken")
+        window._pending_recovery_path = recovery
+
+        assert window._recover_professional() is True
+        assert window.professional_session is not None
+        assert window.professional_session.is_dirty is True
+
+        window.export_target_combo.setItemData(0, "unsupported")
+        window.export_target_combo.setCurrentIndex(0)
+        assert window._export_professional() is True
+        assert tmp_path.joinpath("scene.ndtscene.runtime.json").is_file()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_export_rejects_unsupported_target_before_serialization(tmp_path: Path) -> None:
+    document, _asset = _document(tmp_path)
+    document_v2 = upgrade_scene_authoring_document(document)
+
+    with pytest.raises(
+        SceneAuthoringExportError, match="unsupported scene export target"
+    ):
+        build_scene_authoring_export(
+            document_v2, target="unsupported"  # type: ignore[arg-type]
+        )
 
 
 def test_native_importers_expose_p2d04_transform_camera_and_parallax_contract() -> None:

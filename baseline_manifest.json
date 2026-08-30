@@ -11597,8 +11597,8 @@
       "size": 10591
     },
     "tests/test_p2d_04_persistence_recovery_export.py": {
-      "sha256": "57445bdc0b36402cf3a5bc4a326c2bbba5878ea316df6706b04d3be8942fc7e7",
-      "size": 10010
+      "sha256": "faf1500610e6083b00704505256faf4a4129da236c2040f41770f12a944e7349",
+      "size": 12094
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",
