@@ -12177,8 +12177,8 @@
       "size": 8352
     },
     "tools/validate_professional_scene_exports.py": {
-      "sha256": "708754e1325d739cfaa1a1dd58125b1cd8805786c6f77d52a2527ed511f485f5",
-      "size": 13534
+      "sha256": "48c59da6dffcf5566492b18cc2f608c61678c5924dc5a3fc81dd689fef9389fc",
+      "size": 13555
     },
     "tools/validate_windows_installer.py": {
       "sha256": "d5dcdebaa92528445fd91f261e7cebc0abdfb0d37f19cb02b6e3031b5e8bcbcd",

@@ -15,6 +15,7 @@ from typing import Any
 
 from PIL import Image, ImageDraw
 
+# fmt: off
 ROOT = Path(__file__).resolve().parents[1]
 GODOT_IMPORTER = (
     ROOT / "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd"
@@ -34,6 +35,7 @@ UNITY_PARALLAX = (
     / "integrations/unity/package/com.neoeng.dtrace/Runtime/"
     "NeoEngProfessionalParallax.cs"
 )
+# fmt: on
 
 
 def _run(
