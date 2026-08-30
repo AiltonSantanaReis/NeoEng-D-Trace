@@ -188,6 +188,10 @@
       "sha256": "569f5084b2e179e2d2ae4745e30945d057f0f07b631cc1ba8100de0cea895990",
       "size": 24084
     },
+    "docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md": {
+      "sha256": "48fb2b76bcbb62346c4ba4b8a38913778c0ed212ac40103b92359c530f244329",
+      "size": 18821
+    },
     "docs/DEFINICAO_DO_PRODUTO.md": {
       "sha256": "2db6c397f5250d85185d73a385eb6d78793561bc9063016156f5690055643195",
       "size": 10219
@@ -340,6 +344,10 @@
       "sha256": "baf4d9b09795bc96fb1448d3eb1c3796d907fabf3e0603f285a7aa5b025dfdf8",
       "size": 4826
     },
+    "docs/EVIDENCIA_P2D_04_PUBLICACAO_2026-08-30.md": {
+      "sha256": "ca3ff7169d545b538a98eddfaf212b56379f3b0be615708fb7eb57f8b76183bd",
+      "size": 2574
+    },
     "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md": {
       "sha256": "4630b27f12a0966cccc20d4413da514c6eb310da9a48cf37e1fc07559e1a02b1",
       "size": 12748
@@ -393,8 +401,8 @@
       "size": 10812
     },
     "docs/PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md": {
-      "sha256": "dbdd31eefd0df483faf0c88faaaa425257fdd179ccb222048ba012c918d5632d",
-      "size": 17903
+      "sha256": "3d9d1f55bc484d043f2c38d87d4dbfb9558887609c6683f0b4df52018ebba9d1",
+      "size": 19350
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
       "sha256": "b03a76b3b45e7a0c9a2a3d29b3bc7812f70c1542f61caa207edc7ebdc07df216",

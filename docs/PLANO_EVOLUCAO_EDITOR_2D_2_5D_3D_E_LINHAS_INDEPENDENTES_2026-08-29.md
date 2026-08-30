@@ -18,6 +18,10 @@
 **Decisão P2D-03:** docs/DECISAO_P2D_03_NAVEGACAO_SELECAO_PRODUTIVIDADE_2026-08-29.md
 **Auditoria P2D-03:** docs/EVIDENCIA_P2D_03_AUDITORIA_BASELINE_2026-08-29.md
 **Fechamento P2D-03C:** docs/EVIDENCIA_P2D_03C_FECHAMENTO_2026-08-30.md
+**Decisão P2D-04:** docs/DECISAO_P2D_04_PERSISTENCIA_RECOVERY_PREVIEW_EXPORT_COORDENADAS_2026-08-30.md
+**Evidência P2D-04:** docs/EVIDENCIA_P2D_04_POSTCOMMIT_2026-08-30.md
+**Publicação P2D-04:** docs/EVIDENCIA_P2D_04_PUBLICACAO_2026-08-30.md
+**Decisão P2D-05:** docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md
 
 ## 1. Finalidade
 
@@ -116,6 +120,12 @@ O proprietário aceitou explicitamente o contrato de P2D-03B com `P2D-03B ACEITO
 ### 3.9 Fechamento formal P2D-03C
 
 P2D-03C foi aberta a partir do checkpoint limpo `78f773583b0277fa9b970d1f849538b4fa3fdcc6`, após auditoria somente de leitura do viewport, da janela profissional, da sessão, do modelo, da projeção e dos controles do inspector. O proprietário aceitou o contrato com `P2D-03C ACEITO — contrato de navegação, fit e estados visuais` e, após a revisão final, registrou `P2D-03C ACEITO — entrega final` em 30/08/2026. A implementação foi concluída no commit técnico `58674dde87ba94082e84f066ebda21d144da65cd`, com requalificação pós-commit, captura, auditoria visual, comparação, build portátil, seal e verificação independente documentados em `EVIDENCIA_P2D_03C_FECHAMENTO_2026-08-30.md`. O reteste humano da transição Fit/Focus não reproduziu a lentidão relatada. O estado é `ACCEPTED / CLOSED`. C3, G/V/B, schema, legado e os sublotes P2D-03A/B permanecem fora da mutação.
+
+### 3.10 Fechamento P2D-04 e abertura P2D-05
+
+P2D-04 foi tecnicamente qualificada no commit b9e9043f98c58752e8e322a7627b4d17e145d6d3, recebeu correções de governança e cobertura nos commits posteriores da mesma linha, e foi publicada pela PR #163. O merge commit efetivo em main é f55b07b85ef2cf65160f2c10ffac5e63b45732ac; os checks protegidos Linux/Windows passaram e a sincronização pós-merge foi reproduzida localmente. O snapshot técnico e o adendo de publicação são mantidos separados para preservar a cronologia.
+
+P2D-05 foi aberta formalmente neste checkpoint, exclusivamente para performance, limites, formatos e erros da fundação já existente. A decisão está em DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md. O status é OPEN — decisão/contrato; implementação e qualificação dependem do aceite explícito do proprietário. Nenhum workstream de tilemap, colisão, NavMesh, entidades/prefabs ou FX pode ser iniciado por esta abertura.
 
 ## 4. Arquitetura de extensão 2.5D/3D
 
@@ -234,7 +244,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits; P2D-03C está ACCEPTED / CLOSED; P2D-04 está ACCEPTED / CLOSED no merge f55b07b8; P2D-05 está OPEN — decisão/contrato. As cinco linhas avançadas continuam documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;
