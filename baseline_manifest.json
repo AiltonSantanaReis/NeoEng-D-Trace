@@ -184,6 +184,10 @@
       "sha256": "a7ef586e19025370e815b339ae0fc641ca219db10f8c2a8a5557b6b62204afb1",
       "size": 19371
     },
+    "docs/DECISAO_P2D_04_PERSISTENCIA_RECOVERY_PREVIEW_EXPORT_COORDENADAS_2026-08-30.md": {
+      "sha256": "569f5084b2e179e2d2ae4745e30945d057f0f07b631cc1ba8100de0cea895990",
+      "size": 24084
+    },
     "docs/DEFINICAO_DO_PRODUTO.md": {
       "sha256": "2db6c397f5250d85185d73a385eb6d78793561bc9063016156f5690055643195",
       "size": 10219
@@ -327,6 +331,14 @@
     "docs/EVIDENCIA_P2D_03_AUDITORIA_BASELINE_2026-08-29.md": {
       "sha256": "a238799f68eb609d5442ecbd5534e504301374c8f23437c1dd6c43f2dbcd62c3",
       "size": 6908
+    },
+    "docs/EVIDENCIA_P2D_04_POSTCOMMIT_2026-08-30.md": {
+      "sha256": "c29a55934e4786eb437a3f3350a49b2d086059d29278bc5585a67318f54c7679",
+      "size": 4162
+    },
+    "docs/EVIDENCIA_P2D_04_PRECOMMIT_2026-08-30.md": {
+      "sha256": "baf4d9b09795bc96fb1448d3eb1c3796d907fabf3e0603f285a7aa5b025dfdf8",
+      "size": 4826
     },
     "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md": {
       "sha256": "4630b27f12a0966cccc20d4413da514c6eb310da9a48cf37e1fc07559e1a02b1",
@@ -10005,8 +10017,8 @@
       "size": 4560
     },
     "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd": {
-      "sha256": "992cc7027174fe91b6324229986e6a73e6465331c6e850b94aa673c6d24309a6",
-      "size": 12722
+      "sha256": "38bdab66563e64bb4650b4c7cb71fcfa071eebcfc64614c5ebc0b12d09d5741a",
+      "size": 14414
     },
     "integrations/godot/addons/neoeng_d_trace/runtime_adapter.gd": {
       "sha256": "85855a3beb1b34c176e0aa82ace53b6aab2153f222c40c876e174be055dade81",
@@ -10045,8 +10057,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs": {
-      "sha256": "7d640774a2443ce2877ecddb8c7c90b689d5018fa3071f071af3ba4409c28672",
-      "size": 18518
+      "sha256": "e575033ac1afb9fd5cf9985e66c06d413e0be0d4f817611a4438b16b60093826",
+      "size": 20577
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs.meta": {
       "sha256": "332b0eba46d31578dfbcbe807ba64a406cd6d8e118e4345e606a2c71baa619d3",
@@ -10139,6 +10151,10 @@
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngImportedTilesetMetadata.cs.meta": {
       "sha256": "5a6925e299ae2c979960fa63e0a913153fdacbfff95c07fa73aab9d484510f6e",
       "size": 60
+    },
+    "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalParallax.cs": {
+      "sha256": "a95f15e61915e3d44ffe9a6283a92b7153929ac7242e369670ac79676d08efb4",
+      "size": 1817
     },
     "integrations/unity/package/com.neoeng.dtrace/Runtime/NeoEngProfessionalSceneMetadata.cs": {
       "sha256": "c7e6a8440071602bffedef6d658d3d2cef449e26fbac1d912cb7cb3e3f75cca4",
@@ -10885,8 +10901,8 @@
       "size": 5665
     },
     "src/core/scene_authoring_session.py": {
-      "sha256": "b6f87f1b85e2d5e1e6a3ef82abbdcd303bc72ff52f0563f7c8d0a65ac62b7311",
-      "size": 22090
+      "sha256": "b4a75f2d77b8e195e84d77e5997acd07f50cf7272779290b3a9b1d9977c83f26",
+      "size": 22343
     },
     "src/core/scene_view_navigation.py": {
       "sha256": "b2b0920b78611452a73f59f04d41f0ca44e72b7f535fd329084ef7db33fb1022",
@@ -10969,8 +10985,8 @@
       "size": 9339
     },
     "src/exporters/scene_authoring_export.py": {
-      "sha256": "ef0696046d8f287237a7840ecc71cc70b9b4f11fbf61207e94c31c902664067a",
-      "size": 11066
+      "sha256": "eeab96f3f9b2a78d2b55e8673361b8e2bb87f131766f7b67e39c745dcd4ce422",
+      "size": 11754
     },
     "src/exporters/sprite_exporter.py": {
       "sha256": "9cd55c379fe0fd12c1ff194e42dfb7efc0fc703572730e32b1749797f836b5c4",
@@ -11021,8 +11037,8 @@
       "size": 5889
     },
     "src/persistence/scene_authoring_io.py": {
-      "sha256": "bfd0892b9ba825d9bad412b7a3c60a5a4c199842ea1e72f71f98b0e68790f2f9",
-      "size": 8556
+      "sha256": "aebf198ce99ff5ef4e82da8e92300ceb28d0d55a456ca8907ea5f4a840c5dccd",
+      "size": 10202
     },
     "src/persistence/scene_authoring_schema.py": {
       "sha256": "f4013e13ad204d014438790c310174f0319c0a32ea817a1a37343fd8a4100042",
@@ -11249,12 +11265,12 @@
       "size": 11525
     },
     "src/ui/scenario_authoring_actions.py": {
-      "sha256": "a9ad7ee1bb328582c6569118f145a2a201ab6deb886a83c039408ff20e545459",
-      "size": 9463
+      "sha256": "9e942d9c9b507a7c38a5802c8c83f47d2d104e4c9f553aa8298b847c13dcfb15",
+      "size": 9755
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "79bacd435be3c6187754d593ebb86eb3190978450945753a9cfae8d2f21d5853",
-      "size": 24471
+      "sha256": "377491469c811be6a25ee57e0aeaf226be761fb54b7d8bc16683e31ac67f2b63",
+      "size": 34110
     },
     "src/ui/scenario_panel.py": {
       "sha256": "3589d5f4d83d9e42ca51e7a79d75976ac4a4eb1eb23c7ab624371b7edf50650a",
@@ -11579,6 +11595,10 @@
     "tests/test_p2d_03c_viewport.py": {
       "sha256": "3ea2ee5431665665b179ccde07d7dc3c0e2d812017d2722d9587cb85eea323ee",
       "size": 10591
+    },
+    "tests/test_p2d_04_persistence_recovery_export.py": {
+      "sha256": "750b2dbd5be1495fd1d1a35aab32ed202eb3edecdec5955d7570295517ff8e86",
+      "size": 9996
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",
@@ -12108,6 +12128,10 @@
       "sha256": "c9640318404b3b7924b98c25bc57e4144ad42bffc69dffd23106ec8b3779c260",
       "size": 2092
     },
+    "tools/godot_professional_scene_validator.gd": {
+      "sha256": "7c10cd3a39ad573e7a3da663708ddfbf7ab00b9d540070a61191cda92768d0b4",
+      "size": 2884
+    },
     "tools/godot_scenario_stage4b4_validator.gd": {
       "sha256": "92a89513e09c5437424f330827f67a344ec4217bbc1c83c5584135c0e3ed0a52",
       "size": 2108
@@ -12140,6 +12164,10 @@
       "sha256": "88804d034c97771e7bda4252eabf1b7288ce80bb286a1168611849a2da057cde",
       "size": 3570
     },
+    "tools/unity_professional_scene_validator.cs": {
+      "sha256": "027de898b3d8edc07345b3c50f36a820a691b3ba7b0531c7947c0cc683169c5e",
+      "size": 5200
+    },
     "tools/validate_engine_exports.py": {
       "sha256": "80a61f8ca9b4137f721d63a42ab9ea963ed861dfe260014d4dca665d46bbbd0e",
       "size": 11559
@@ -12147,6 +12175,10 @@
     "tools/validate_portable_release.py": {
       "sha256": "c220154b912999414cae8cf703eb99f23ad53a8dcdc22859bf09234d34c88591",
       "size": 8352
+    },
+    "tools/validate_professional_scene_exports.py": {
+      "sha256": "fea74a465de298d01dc51b04993a83269633768e03566bb7f3058a8deccbdba0",
+      "size": 13220
     },
     "tools/validate_windows_installer.py": {
       "sha256": "d5dcdebaa92528445fd91f261e7cebc0abdfb0d37f19cb02b6e3031b5e8bcbcd",
