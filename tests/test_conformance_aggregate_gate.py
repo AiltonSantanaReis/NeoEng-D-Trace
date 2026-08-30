@@ -199,9 +199,7 @@ def _gate():
         geometry=GateInput(
             _geometry_payload(), "artifacts/stage9-responsive-dpi-report.json"
         ),
-        visual=GateInput(
-            _visual_payload(), "artifacts/stage1-contract-report.json"
-        ),
+        visual=GateInput(_visual_payload(), "artifacts/stage1-contract-report.json"),
         behavior=GateInput(
             _behavior_payload(), "artifacts/stage9-functional-ui-report.json"
         ),
@@ -330,11 +328,16 @@ def test_aggregate_gate_cli_writes_pass_evidence_and_returns_zero(
 
     code = gate_cli_main(
         [
-            "--source-baseline", _BASELINE,
-            "--geometry-report", str(geometry),
-            "--visual-report", str(visual),
-            "--behavior-report", str(behavior),
-            "--output", str(output),
+            "--source-baseline",
+            _BASELINE,
+            "--geometry-report",
+            str(geometry),
+            "--visual-report",
+            str(visual),
+            "--behavior-report",
+            str(behavior),
+            "--output",
+            str(output),
         ]
     )
 
@@ -354,11 +357,16 @@ def test_aggregate_gate_cli_writes_blocking_evidence_and_returns_one(
 
     code = gate_cli_main(
         [
-            "--source-baseline", _BASELINE,
-            "--geometry-report", str(geometry),
-            "--visual-report", str(visual),
-            "--behavior-report", str(behavior),
-            "--output", str(output),
+            "--source-baseline",
+            _BASELINE,
+            "--geometry-report",
+            str(geometry),
+            "--visual-report",
+            str(visual),
+            "--behavior-report",
+            str(behavior),
+            "--output",
+            str(output),
         ]
     )
 
@@ -380,11 +388,16 @@ def test_aggregate_gate_cli_returns_two_for_invalid_provenance_without_output(
 
     code = gate_cli_main(
         [
-            "--source-baseline", _BASELINE,
-            "--geometry-report", str(geometry),
-            "--visual-report", str(visual),
-            "--behavior-report", str(behavior),
-            "--output", str(output),
+            "--source-baseline",
+            _BASELINE,
+            "--geometry-report",
+            str(geometry),
+            "--visual-report",
+            str(visual),
+            "--behavior-report",
+            str(behavior),
+            "--output",
+            str(output),
         ]
     )
 

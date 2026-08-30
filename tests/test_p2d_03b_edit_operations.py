@@ -22,7 +22,6 @@ from src.persistence.scene_authoring_schema import (
 )
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
-
 SHA = "c" * 64
 
 
@@ -109,11 +108,15 @@ def test_nudge_is_world_space_transactional_and_undoable():
 
 def test_nudge_respects_existing_snap_and_noop_has_no_history():
     session = _session()
-    session.model.set_snap(SceneSnapRecord(enabled=True, spacing=PointRecord(x=16.0, y=16.0)))
+    session.model.set_snap(
+        SceneSnapRecord(enabled=True, spacing=PointRecord(x=16.0, y=16.0))
+    )
     session.set_selection(["a"])
 
     assert session.nudge_selected(Point3Record(x=1.0, y=0.0, z=0.0)) is False
-    assert session.document.objects[0].transform.position == _transform(0.0, 0.0).position
+    assert (
+        session.document.objects[0].transform.position == _transform(0.0, 0.0).position
+    )
     assert session.undo_count == 0
 
 

@@ -7,15 +7,18 @@ from PySide6.QtWidgets import QApplication, QTreeWidgetItem
 
 from src.core.scene_authoring_groups import (
     locked_group_for_object,
+    object_ids_for_group,
     object_is_effectively_locked,
     object_is_effectively_visible,
-    object_ids_for_group,
 )
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scenario_schema import ProjectReferenceRecord
-from src.persistence.scene_authoring_io import load_scene_authoring_v2, save_scene_authoring
+from src.persistence.scene_authoring_io import (
+    load_scene_authoring_v2,
+    save_scene_authoring,
+)
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocumentV1,
@@ -28,7 +31,6 @@ from src.persistence.scene_authoring_schema import (
     upgrade_scene_authoring_document,
 )
 from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
-
 
 SHA = "b" * 64
 
@@ -57,13 +59,22 @@ def _document() -> SceneAuthoringDocumentV2:
         layers=[SceneLayerAuthoringRecord(id="layer", name="Layer")],
         objects=[
             SceneObjectAuthoringRecord(
-                id="hero", asset_id="asset", layer_id="layer", transform=_transform(10, 20)
+                id="hero",
+                asset_id="asset",
+                layer_id="layer",
+                transform=_transform(10, 20),
             ),
             SceneObjectAuthoringRecord(
-                id="prop", asset_id="asset", layer_id="layer", transform=_transform(40, 50)
+                id="prop",
+                asset_id="asset",
+                layer_id="layer",
+                transform=_transform(40, 50),
             ),
             SceneObjectAuthoringRecord(
-                id="free", asset_id="asset", layer_id="layer", transform=_transform(70, 80)
+                id="free",
+                asset_id="asset",
+                layer_id="layer",
+                transform=_transform(70, 80),
             ),
         ],
         groups=[],
@@ -79,14 +90,19 @@ def _grouped_document() -> SceneAuthoringDocumentV2:
                     id="actors", name="Actors", members=["hero"]
                 ),
                 SceneGroupAuthoringRecordV2(
-                    id="details", name="Details", members=["prop"], parent_group_id="actors"
+                    id="details",
+                    name="Details",
+                    members=["prop"],
+                    parent_group_id="actors",
                 ),
             ]
         }
     )
 
 
-def _find_item(panel: SceneAuthoringGroupStack, kind: str, item_id: str) -> QTreeWidgetItem:
+def _find_item(
+    panel: SceneAuthoringGroupStack, kind: str, item_id: str
+) -> QTreeWidgetItem:
     from PySide6.QtWidgets import QTreeWidgetItemIterator
 
     cursor = QTreeWidgetItemIterator(panel.tree)
@@ -171,7 +187,9 @@ def test_group_operations_inherit_visibility_lock_and_isolation() -> None:
     assert session.document.groups[0].parent_group_id is None
 
 
-def test_professional_group_tree_flow_and_transient_isolation(qt_app: QApplication) -> None:
+def test_professional_group_tree_flow_and_transient_isolation(
+    qt_app: QApplication,
+) -> None:
     session = SceneAuthoringSession(SceneAuthoringModel(_grouped_document()))
     panel = SceneAuthoringGroupStack(session)
     try:

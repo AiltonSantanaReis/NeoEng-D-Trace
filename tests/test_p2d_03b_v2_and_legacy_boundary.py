@@ -16,7 +16,6 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
 )
 
-
 SHA = "1" * 64
 
 
@@ -46,9 +45,7 @@ def _v2_session() -> SceneAuthoringSession:
             ),
         ],
         groups=[
-            SceneGroupAuthoringRecordV2(
-                id="parent", name="Parent", members=["a"]
-            ),
+            SceneGroupAuthoringRecordV2(id="parent", name="Parent", members=["a"]),
             SceneGroupAuthoringRecordV2(
                 id="child", name="Child", members=["b"], parent_group_id="parent"
             ),
@@ -79,7 +76,12 @@ def test_v2_paste_clones_complete_nested_group_hierarchy():
 def test_existing_unitary_session_delete_obeys_professional_lock_contract():
     session = _v2_session()
     session.model.document = session.document.model_copy(
-        update={"objects": [session.document.objects[0].model_copy(update={"locked": True}), session.document.objects[1]]}
+        update={
+            "objects": [
+                session.document.objects[0].model_copy(update={"locked": True}),
+                session.document.objects[1],
+            ]
+        }
     )
     before = session.document.model_copy(deep=True)
 

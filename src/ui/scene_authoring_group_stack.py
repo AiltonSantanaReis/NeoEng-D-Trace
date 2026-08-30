@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import QSignalBlocker, Qt, Signal
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -158,7 +158,9 @@ class SceneAuthoringGroupStack(QWidget):
         item.setData(0, self._ID_ROLE, item_id)
 
     def _group_item(self, parent, group_id: str) -> QTreeWidgetItem:
-        group = next(item for item in self.session.document.groups if item.id == group_id)
+        group = next(
+            item for item in self.session.document.groups if item.id == group_id
+        )
         flags = []
         if not group.visible:
             flags.append("hidden")
@@ -283,7 +285,9 @@ class SceneAuthoringGroupStack(QWidget):
         group_id = self._current_group_id()
         if group_id is None:
             return
-        group = next(item for item in self.session.document.groups if item.id == group_id)
+        group = next(
+            item for item in self.session.document.groups if item.id == group_id
+        )
         siblings = list(child_group_ids(self.session.document, group_parent_id(group)))
         index = siblings.index(group_id)
         self._run(lambda: self.session.reorder_group(group_id, index + delta))
@@ -365,10 +369,16 @@ class SceneAuthoringGroupStack(QWidget):
                 self.isolate_button,
             ):
                 widget.setEnabled(enabled)
-            self.add_selected_button.setEnabled(enabled and bool(self.session.selection.ids))
-            self.remove_selected_button.setEnabled(enabled and bool(self.session.selection.ids))
+            self.add_selected_button.setEnabled(
+                enabled and bool(self.session.selection.ids)
+            )
+            self.remove_selected_button.setEnabled(
+                enabled and bool(self.session.selection.ids)
+            )
             if enabled:
-                group = next(item for item in self.session.document.groups if item.id == group_id)
+                group = next(
+                    item for item in self.session.document.groups if item.id == group_id
+                )
                 self.name_edit.blockSignals(True)
                 self.name_edit.setText(group.name)
                 self.name_edit.blockSignals(False)

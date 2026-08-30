@@ -28,7 +28,6 @@ from src.persistence.scene_authoring_schema import (
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
-
 SHA = "c" * 64
 
 
@@ -109,15 +108,12 @@ def test_layer_order_is_observable_in_preview_and_viewport(
             "foreground_object",
         ]
         initial_z = {
-            object_id: visual.zValue()
-            for object_id, visual in viewport._items.items()
+            object_id: visual.zValue() for object_id, visual in viewport._items.items()
         }
         assert initial_z["background_a"] < initial_z["background_b"]
         assert initial_z["background_b"] < initial_z["foreground_object"]
 
-        frame = build_scene_authoring_preview(
-            session.document, (640, 480), _geometry()
-        )
+        frame = build_scene_authoring_preview(session.document, (640, 480), _geometry())
         assert [item.object_id for item in frame.objects] == [
             "background_a",
             "background_b",
@@ -138,8 +134,7 @@ def test_layer_order_is_observable_in_preview_and_viewport(
             "background_b",
         ]
         reordered_z = {
-            object_id: visual.zValue()
-            for object_id, visual in viewport._items.items()
+            object_id: visual.zValue() for object_id, visual in viewport._items.items()
         }
         assert reordered_z["foreground_object"] < reordered_z["background_a"]
         assert reordered_z["background_a"] < reordered_z["background_b"]
@@ -161,7 +156,9 @@ def test_layer_order_is_observable_in_preview_and_viewport(
         loaded = load_scene_authoring_v2(scene_path, verify_assets=False)
         assert [layer.id for layer in loaded.layers] == ["front", "back"]
         assert [item.id for item in loaded.objects] == object_ids_before
-        assert [item.transform.position.z for item in loaded.objects] == positions_z_before
+        assert [
+            item.transform.position.z for item in loaded.objects
+        ] == positions_z_before
     finally:
         viewport.close()
         qt_app.processEvents()

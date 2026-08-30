@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Final
 
-from PySide6.QtCore import QByteArray, QSize, Qt
+from PySide6.QtCore import QByteArray, Qt
 from PySide6.QtGui import QAction, QIcon, QPainter, QPixmap
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import QAbstractButton, QWidget
@@ -80,7 +80,7 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="m7.5 10.5 2 2 4-4"/>',
     ),
     "collision_auto_generate": (
-        'auto-generate collision',
+        "auto-generate collision",
         '<path d="m5 7 7-3 7 4-2 9-8 3-5-6z"/><path d="M17.5 3v4M15.5 5h4"/>',
     ),
     "clean": (
@@ -89,20 +89,25 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="M10 10v7M14 10v7"/>',
     ),
     "fit": (
-        'fit view',
+        "fit view",
         '<path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"/><path d="M9 9h6v6H9z"/>',
     ),
     "zoom_100": (
-        'one to one zoom',
-        '<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/><path d="m8.75 9.25 1.5-1.25v5.25"/>',
+        "one to one zoom",
+        '<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/>'
+        '<path d="m8.75 9.25 1.5-1.25v5.25"/>',
     ),
     "lit": (
-        'lit view',
-        '<circle cx="12" cy="12" r="3.25"/><path d="M12 3v2.25M12 18.75V21M3 12h2.25M18.75 12H21"/><path d="m5.65 5.65 1.6 1.6M16.75 16.75l1.6 1.6M18.35 5.65l-1.6 1.6M7.25 16.75l-1.6 1.6"/>',
+        "lit view",
+        '<circle cx="12" cy="12" r="3.25"/>'
+        '<path d="M12 3v2.25M12 18.75V21M3 12h2.25M18.75 12H21"/>'
+        '<path d="m5.65 5.65 1.6 1.6M16.75 16.75l1.6 1.6'
+        'M18.35 5.65l-1.6 1.6M7.25 16.75l-1.6 1.6"/>',
     ),
     "xray_1": (
-        'x-ray one',
-        '<path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5z"/><path d="M12 9v6M9 12h6"/>',
+        "x-ray one",
+        '<path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5z"/>'
+        '<path d="M12 9v6M9 12h6"/>',
     ),
     "xray_2": (
         "x-ray two",
@@ -115,44 +120,66 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<path d="m9 9 6 6M15 9l-6 6"/>',
     ),
     "gizmo": (
-        'transform gizmo',
-        '<circle cx="12" cy="12" r="1.75"/><path d="M12 10.25V4M12 13.75V20M10.25 12H4M13.75 12H20"/><path d="m9.75 6.25 2.25-2.25 2.25 2.25M9.75 17.75 12 20l2.25-2.25M6.25 9.75 4 12l2.25 2.25M17.75 9.75 20 12l-2.25 2.25"/>',
+        "transform gizmo",
+        '<circle cx="12" cy="12" r="1.75"/>'
+        '<path d="M12 10.25V4M12 13.75V20M10.25 12H4M13.75 12H20"/>'
+        '<path d="m9.75 6.25 2.25-2.25 2.25 2.25M9.75 17.75 12 20'
+        "l2.25-2.25M6.25 9.75 4 12l2.25 2.25M17.75 9.75 20 12"
+        'l-2.25 2.25"/>',
     ),
     "focus": (
-        'focus selected',
-        '<circle cx="12" cy="12" r="3.25"/><circle cx="12" cy="12" r=".75"/><path d="M12 3.5V7M12 17v3.5M3.5 12H7M17 12h3.5"/>',
+        "focus selected",
+        '<circle cx="12" cy="12" r="3.25"/><circle cx="12" cy="12" r=".75"/>'
+        '<path d="M12 3.5V7M12 17v3.5M3.5 12H7M17 12h3.5"/>',
     ),
     "language": (
-        'language',
-        '<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2 2.15 3 4.8 3 8s-1 5.85-3 8c-2-2.15-3-4.8-3-8s1-5.85 3-8z"/>',
+        "language",
+        '<circle cx="12" cy="12" r="8"/>'
+        '<path d="M4 12h16M12 4c2 2.15 3 4.8 3 8s-1 5.85-3 8'
+        'c-2-2.15-3-4.8-3-8s1-5.85 3-8z"/>',
     ),
     "view": (
-        'view',
-        '<path d="M3.5 12s3.25-5 8.5-5 8.5 5 8.5 5-3.25 5-8.5 5-8.5-5-8.5-5z"/><circle cx="12" cy="12" r="2.25"/>',
+        "view",
+        '<path d="M3.5 12s3.25-5 8.5-5 8.5 5 8.5 5-3.25 5-8.5 5-8.5-5-8.5-5z"/>'
+        '<circle cx="12" cy="12" r="2.25"/>',
     ),
     "pan": (
-        'pan',
-        '<path d="M8.25 12V7.25a1.5 1.5 0 0 1 3 0V11M11.25 11V5.75a1.5 1.5 0 0 1 3 0V11M14.25 11V7a1.5 1.5 0 0 1 3 0v5M17.25 12v-2a1.5 1.5 0 0 1 3 0v4.25c0 4-2.5 6.25-6.25 6.25h-1.5c-3.25 0-5.5-1.75-6.5-4.5l-1.25-2.5a1.5 1.5 0 0 1 2.4-1.7l1.1.95z"/>',
+        "pan",
+        '<path d="M8.25 12V7.25a1.5 1.5 0 0 1 3 0V11'
+        "M11.25 11V5.75a1.5 1.5 0 0 1 3 0V11"
+        "M14.25 11V7a1.5 1.5 0 0 1 3 0v5"
+        "M17.25 12v-2a1.5 1.5 0 0 1 3 0v4.25c0 4-2.5 6.25-6.25 6.25h-1.5"
+        "c-3.25 0-5.5-1.75-6.5-4.5l-1.25-2.5"
+        "a1.5 1.5 0 0 1 2.4-1.7"
+        'l1.1.95z"/>',
     ),
     "parallax": (
-        'parallax',
-        '<rect x="4" y="5" width="11" height="7" rx="1"/><rect x="9" y="12" width="11" height="7" rx="1"/><path d="M16.5 8.5H21m-2-2 2 2-2 2M7.5 15.5H3m2-2-2 2 2 2"/>',
+        "parallax",
+        '<rect x="4" y="5" width="11" height="7" rx="1"/>'
+        '<rect x="9" y="12" width="11" height="7" rx="1"/>'
+        '<path d="M16.5 8.5H21m-2-2 2 2-2 2'
+        'M7.5 15.5H3m2-2-2 2 2 2"/>',
     ),
     "settings": (
-        'view settings',
-        '<path d="M5 7h8M17 7h2M5 12h2M11 12h8M5 17h10M19 17h0"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
+        "view settings",
+        '<path d="M5 7h8M17 7h2M5 12h2M11 12h8M5 17h10M19 17h0"/>'
+        '<circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/>'
+        '<circle cx="17" cy="17" r="2"/>',
     ),
     "move": (
-        'move viewport',
-        '<path d="M12 3v18M3 12h18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/>',
+        "move viewport",
+        '<path d="M12 3v18M3 12h18"/>'
+        '<path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/>',
     ),
     "zoom": (
-        'zoom viewport',
-        '<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5M7.75 10.5h5.5M10.5 7.75v5.5"/>',
+        "zoom viewport",
+        '<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5'
+        'M7.75 10.5h5.5M10.5 7.75v5.5"/>',
     ),
     "grid": (
-        'toggle grid',
-        '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M9.33 4v16M14.67 4v16M4 9.33h16M4 14.67h16"/>',
+        "toggle grid",
+        '<rect x="4" y="4" width="16" height="16" rx="1"/>'
+        '<path d="M9.33 4v16M14.67 4v16M4 9.33h16M4 14.67h16"/>',
     ),
     "snap": (
         "toggle snapping",
@@ -231,15 +258,21 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<ellipse cx="12" cy="12" rx="8" ry="5.5"/>',
     ),
     "polygon_edit": (
-        'polygon edit tool',
-        '<path d="m5 5 14 3-3 12-11-5z"/><rect x="3.5" y="3.5" width="3" height="3" rx=".4"/><rect x="17.5" y="6.5" width="3" height="3" rx=".4"/><rect x="14.5" y="18.5" width="3" height="3" rx=".4"/><rect x="3.5" y="13.5" width="3" height="3" rx=".4"/>',
+        "polygon edit tool",
+        '<path d="m5 5 14 3-3 12-11-5z"/>'
+        '<rect x="3.5" y="3.5" width="3" height="3" rx=".4"/>'
+        '<rect x="17.5" y="6.5" width="3" height="3" rx=".4"/>'
+        '<rect x="14.5" y="18.5" width="3" height="3" rx=".4"/>'
+        '<rect x="3.5" y="13.5" width="3" height="3" rx=".4"/>',
     ),
     "collision_brush": (
-        'collision brush tool',
-        '<path d="m5 17 8.5-8.5 4 4L9 21H5z"/><path d="m13.5 8.5 2.5-2.5 4 4-2.5 2.5"/><path d="M5 17c0 2-1 3-3 3 2 0 3-1 3-3"/>',
+        "collision brush tool",
+        '<path d="m5 17 8.5-8.5 4 4L9 21H5z"/>'
+        '<path d="m13.5 8.5 2.5-2.5 4 4-2.5 2.5"/>'
+        '<path d="M5 17c0 2-1 3-3 3 2 0 3-1 3-3"/>',
     ),
     "selection": (
-        'selection tool',
+        "selection tool",
         '<path d="m5 3.5 4.1 15 3-5.1 4.8 5.7 2.1-1.8-4.8-5.7 5.8-1.5z"/>',
     ),
 }
@@ -340,7 +373,7 @@ def configure_widget(
     widget.setToolTip(resolved_tooltip)
     widget.setAccessibleName(resolved_name)
     widget.setAccessibleDescription(
-        accessible_description or ('Activate ' + resolved_name)
+        accessible_description or ("Activate " + resolved_name)
     )
     if isinstance(widget, QAbstractButton):
         widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)

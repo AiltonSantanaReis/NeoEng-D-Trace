@@ -259,15 +259,14 @@ def _segment_intersection_point(
     offset_y = second_start[1] - first_start[1]
     first_ratio = (offset_x * second_dy - offset_y * second_dx) / denominator
     second_ratio = (offset_x * first_dy - offset_y * first_dx) / denominator
-    if not (
-        -1e-9 <= first_ratio <= 1.0 + 1e-9
-        and -1e-9 <= second_ratio <= 1.0 + 1e-9
-    ):
+    if not (-1e-9 <= first_ratio <= 1.0 + 1e-9 and -1e-9 <= second_ratio <= 1.0 + 1e-9):
         return None
     return (
         first_start[0] + first_ratio * first_dx,
         first_start[1] + first_ratio * first_dy,
     )
+
+
 def polygon_validation_details(points: Any) -> Dict[str, Any]:
     """Return non-mutating validity diagnostics with exact geometry locations.
 
@@ -320,7 +319,8 @@ def polygon_validation_details(points: Any) -> Dict[str, Any]:
             return details
         if not isinstance(x, Real) or not isinstance(y, Real):
             details["error"] = (
-                f"vertex {original_indexes[index] + 1} contains a non-numeric coordinate"
+                f"vertex {original_indexes[index] + 1} contains a "
+                "non-numeric coordinate"
             )
             details["invalid_vertices"] = [original_indexes[index]]
             return details
@@ -328,7 +328,8 @@ def polygon_validation_details(points: Any) -> Dict[str, Any]:
             numeric = (float(x), float(y))
         except (OverflowError, TypeError, ValueError):
             details["error"] = (
-                f"vertex {original_indexes[index] + 1} contains an unreadable coordinate"
+                f"vertex {original_indexes[index] + 1} contains an "
+                "unreadable coordinate"
             )
             details["invalid_vertices"] = [original_indexes[index]]
             return details
@@ -348,10 +349,7 @@ def polygon_validation_details(points: Any) -> Dict[str, Any]:
     if duplicate_pairs:
         details["error"] = "contains duplicate consecutive vertices"
         details["invalid_vertices"] = sorted(
-            {
-                original_indexes[index]
-                for index in duplicate_pairs
-            }
+            {original_indexes[index] for index in duplicate_pairs}
             | {
                 original_indexes[(index + 1) % len(numeric_points)]
                 for index in duplicate_pairs
@@ -449,6 +447,8 @@ def _annotate_polygon_validation(
             }
             invalid_count += 1
     return valid_count, invalid_count
+
+
 class DetectResult(list):
     """List-like result that also supports dict-style access."""
 

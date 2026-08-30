@@ -126,6 +126,7 @@ def test_semantic_descriptor_contains_no_physical_toolbar_contract(qt_app):
         window.close()
         qt_app.processEvents()
 
+
 def test_main_window_exposes_only_canonical_top_command_contract(qt_app):
     window = _window(qt_app)
     try:
@@ -186,7 +187,9 @@ def test_duplicate_widget_controls_use_canonical_actions(qt_app):
         assert window.language_action is window.language_menu.menuAction()
         assert window.command_registry.action("tool.focus_selected") is focus_action
         assert window.command_registry.action("app.language_en") is window.act_english
-        assert window.command_registry.action("app.language_pt") is window.act_portuguese
+        assert (
+            window.command_registry.action("app.language_pt") is window.act_portuguese
+        )
         assert window.act_english in window.language_menu.actions()
         assert window.act_portuguese in window.language_menu.actions()
         assert window.act_export_collision_json in window.file_menu.actions()

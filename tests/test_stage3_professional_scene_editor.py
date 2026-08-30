@@ -204,7 +204,9 @@ def test_viewport_inspector_and_drop_import_are_interactive(
         qt_app.processEvents()
 
 
-def test_viewport_copies_outside_and_rejects_unsupported_drop(tmp_path: Path, qt_app) -> None:
+def test_viewport_copies_outside_and_rejects_unsupported_drop(
+    tmp_path: Path, qt_app
+) -> None:
     project = tmp_path / "scene.ndtproj"
     project.write_bytes(b"project bytes")
     outside = tmp_path.parent / "outside-stage3.txt"
@@ -230,7 +232,9 @@ def test_viewport_copies_outside_and_rejects_unsupported_drop(tmp_path: Path, qt
             )
             viewport.dropEvent(event)
         assert len(session.document.assets) == 2
-        copied = next(item for item in session.document.assets if item.source_path is not None)
+        copied = next(
+            item for item in session.document.assets if item.source_path is not None
+        )
         assert copied.path.startswith("assets/scene/")
         assert copied.source_path == str(outside_image.resolve())
         assert (tmp_path / copied.path).is_file()

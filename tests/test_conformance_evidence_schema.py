@@ -79,8 +79,18 @@ def test_checks_are_serialized_deterministically_inside_each_axis():
     report = MultiAxisConformance(
         source_baseline="39002f1",
         checks=(
-            _check("G-VIEWPORT-002", ConformanceAxis.GEOMETRY_PHYSICS, "viewport", ConformanceStatus.PASS),
-            _check("G-LAYOUT-001", ConformanceAxis.GEOMETRY_PHYSICS, "layout", ConformanceStatus.PASS),
+            _check(
+                "G-VIEWPORT-002",
+                ConformanceAxis.GEOMETRY_PHYSICS,
+                "viewport",
+                ConformanceStatus.PASS,
+            ),
+            _check(
+                "G-LAYOUT-001",
+                ConformanceAxis.GEOMETRY_PHYSICS,
+                "layout",
+                ConformanceStatus.PASS,
+            ),
         ),
     )
     document = build_evidence_document(report, producer="tests")
@@ -105,7 +115,10 @@ def test_historical_evidence_is_non_blocking_supporting_context():
         ),
     )
 
-    assert document["historical_evidence"][0]["reference"] == "schema2/reference_top_toolbar"
+    assert (
+        document["historical_evidence"][0]["reference"]
+        == "schema2/reference_top_toolbar"
+    )
     assert document["status"] == "APPROVED_BASELINE_CHANGE"
     assert set(document["axes"]) == {"G", "V", "B"}
 

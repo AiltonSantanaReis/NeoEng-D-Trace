@@ -30,7 +30,6 @@ def _window(qt_app: QApplication) -> MainWindow:
     return window
 
 
-
 def test_stage4_groups_are_semantic_and_action_backed(qt_app):
     window = _window(qt_app)
     try:

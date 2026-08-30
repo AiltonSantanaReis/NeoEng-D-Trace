@@ -5,25 +5,25 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Iterable
 
-from src.core.scene_authoring_model import (
-    SceneAuthoringModel,
-    SceneSelection,
-    snap_transform,
-)
 from src.core.scene_authoring_clipboard import (
     SceneClipboardGroupRecord,
     decode_scene_clipboard,
     encode_scene_clipboard,
 )
+from src.core.scene_authoring_model import (
+    SceneAuthoringModel,
+    SceneSelection,
+    snap_transform,
+)
 from src.core.scene_authoring_order import ordered_scene_objects
 from src.persistence.project_schema import MAX_ID_LENGTH, MAX_NAME_LENGTH, Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
-    SceneGroupAuthoringRecord,
-    SceneGroupAuthoringRecordV2,
     SceneAuthoringDocument,
     SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
+    SceneGroupAuthoringRecord,
+    SceneGroupAuthoringRecordV2,
     SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
@@ -67,6 +67,7 @@ def _copy_group_name(name: str) -> str:
     suffix = " Copy"
     prefix = name[: max(1, MAX_NAME_LENGTH - len(suffix))]
     return (prefix + suffix)[:MAX_NAME_LENGTH]
+
 
 class SceneAuthoringSession:
     """Transactional facade used by the viewport and numeric inspector."""
@@ -303,9 +304,7 @@ class SceneAuthoringSession:
         )
         if len(objects) != len(selected):
             missing = next(
-                item
-                for item in selected
-                if item not in {obj.id for obj in objects}
+                item for item in selected if item not in {obj.id for obj in objects}
             )
             raise KeyError(missing)
         return objects
@@ -409,7 +408,9 @@ class SceneAuthoringSession:
                     raise ValueError(f"asset {item.asset_id!r} is not available")
                 if item.layer_id not in layer_ids:
                     raise ValueError(f"layer {item.layer_id!r} is not available")
-            if payload.groups and not isinstance(self.document, SceneAuthoringDocumentV2):
+            if payload.groups and not isinstance(
+                self.document, SceneAuthoringDocumentV2
+            ):
                 if any(group.parent_group_id is not None for group in payload.groups):
                     raise ValueError("nested group paste requires schema V2")
 
@@ -573,6 +574,7 @@ class SceneAuthoringSession:
 
     def clear_isolation(self) -> bool:
         return self.set_isolated_group(None)
+
     def add_group(self, group: SceneGroupAuthoringRecord) -> bool:
         return self.apply(
             lambda: self.model.add_group(group),
@@ -640,6 +642,7 @@ class SceneAuthoringSession:
             lambda: self.model.remove_objects_from_group(group_id, object_ids),
             "Remove objects from scene group",
         )
+
     def clear_history(self) -> None:
         self._undo.clear()
         self._redo.clear()

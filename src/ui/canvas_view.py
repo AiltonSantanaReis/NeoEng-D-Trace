@@ -529,7 +529,7 @@ class CanvasView(QWidget):
     def set_gizmo_enabled(
         self, enabled: bool, *, publish_viewport_state: bool = True
     ) -> None:
-        """Set canonical gizmo state and optionally publish viewport-state text/model."""
+        """Set gizmo state and optionally publish viewport text/model."""
 
         enabled = bool(enabled)
         if self._gizmo_enabled == enabled:

@@ -13,7 +13,9 @@ from src.persistence.scene_authoring_schema import (
 )
 
 
-def groups_by_id(document: SceneAuthoringDocument) -> dict[str, SceneGroupAuthoringRecord]:
+def groups_by_id(
+    document: SceneAuthoringDocument,
+) -> dict[str, SceneGroupAuthoringRecord]:
     """Return the document groups indexed by stable ID."""
 
     return {group.id: group for group in document.groups}
@@ -76,9 +78,7 @@ def object_group_ids(
 ) -> tuple[str, ...]:
     """Return direct memberships plus all of their group ancestors."""
 
-    direct = [
-        group.id for group in document.groups if object_id in group.members
-    ]
+    direct = [group.id for group in document.groups if object_id in group.members]
     result: list[str] = []
     for group_id in direct:
         for ancestor_id in group_ancestry(document, group_id):
@@ -146,7 +146,9 @@ def object_is_effectively_visible(
     if layer is None or not layer.visible:
         return False
     memberships = object_group_ids(document, object_id)
-    if any(not group_is_effectively_visible(document, group_id) for group_id in memberships):
+    if any(
+        not group_is_effectively_visible(document, group_id) for group_id in memberships
+    ):
         return False
     if isolated_group_id is not None:
         if isolated_group_id not in groups_by_id(document):

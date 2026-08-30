@@ -14,11 +14,11 @@ from PySide6.QtGui import (
     QKeyEvent,
     QMouseEvent,
     QPainter,
-    QWheelEvent,
     QPen,
     QPixmap,
     QPolygonF,
     QTransform,
+    QWheelEvent,
 )
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
@@ -31,21 +31,13 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
-from src.core.scene_view_navigation import (
-    anchored_navigation_center,
-    clamp_navigation_zoom,
-    fit_navigation_zoom,
-    panned_navigation_center,
-    wheel_navigation_zoom,
-)
+from src.core.scenario_preview import build_overlay_geometry
 from src.core.scene_asset_library import (
     SceneAssetError,
     prepare_scene_asset,
     resolve_scene_asset,
     validate_scene_asset_source,
 )
-from src.core.scenario_preview import build_overlay_geometry
-from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.scene_authoring_clipboard import SCENE_CLIPBOARD_MIME
 from src.core.scene_authoring_groups import (
     locked_group_for_object,
@@ -55,6 +47,14 @@ from src.core.scene_authoring_order import (
     layer_index_by_id,
     layer_visual_priority,
     ordered_scene_objects,
+)
+from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_view_navigation import (
+    anchored_navigation_center,
+    clamp_navigation_zoom,
+    fit_navigation_zoom,
+    panned_navigation_center,
+    wheel_navigation_zoom,
 )
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
@@ -482,7 +482,9 @@ class SceneAuthoringViewport(QGraphicsView):
         if self._navigation_center is None:
             self._navigation_center = self._natural_navigation_center()
         self._refresh_navigation_scene_rect()
-        self.setTransform(QTransform.fromScale(self._navigation_zoom, self._navigation_zoom))
+        self.setTransform(
+            QTransform.fromScale(self._navigation_zoom, self._navigation_zoom)
+        )
         self.centerOn(self._navigation_center)
         self._navigation_center = self.mapToScene(self.viewport().rect().center())
         self.viewport().update()
@@ -637,14 +639,6 @@ class SceneAuthoringViewport(QGraphicsView):
         objects_in_layer: dict[str, int] = {}
         object_count = len(ordered_objects)
         for item in ordered_objects:
-            layer = next(
-                (
-                    layer
-                    for layer in self.session.document.layers
-                    if layer.id == item.layer_id
-                ),
-                None,
-            )
             if not object_is_effectively_visible(
                 self.session.document,
                 item.id,
@@ -816,8 +810,10 @@ class SceneAuthoringViewport(QGraphicsView):
         else:
             self._refresh_after_model_change()
 
-    def _set_selection(self, object_ids: Iterable[str], primary: str | None = None) -> None:
-        """Apply one canonical selection update and refresh all selection affordances."""
+    def _set_selection(
+        self, object_ids: Iterable[str], primary: str | None = None
+    ) -> None:
+        """Refresh selection affordances after a canonical selection update."""
         self.session.set_selection(object_ids, primary)
         self.selection_changed.emit()
         self._refresh_selection()
@@ -941,7 +937,10 @@ class SceneAuthoringViewport(QGraphicsView):
         super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
-        if event.button() == Qt.MouseButton.MiddleButton and self._pan_origin is not None:
+        if (
+            event.button() == Qt.MouseButton.MiddleButton
+            and self._pan_origin is not None
+        ):
             self._pan_origin = None
             self._pan_center_start = None
             self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
@@ -984,9 +983,7 @@ class SceneAuthoringViewport(QGraphicsView):
         }
         dx, dy = deltas[key]
         try:
-            changed = self.session.nudge_selected(
-                Point3Record(x=dx, y=dy, z=0.0)
-            )
+            changed = self.session.nudge_selected(Point3Record(x=dx, y=dy, z=0.0))
         except (KeyError, PermissionError, ValueError) as exc:
             self._edit_status_error(exc)
         else:
@@ -1004,7 +1001,9 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Duplicated {len(created)} object(s)" if created else "No objects selected"
+                f"Duplicated {len(created)} object(s)"
+                if created
+                else "No objects selected"
             )
         return True
 
@@ -1038,9 +1037,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit("Scene clipboard is unavailable")
             return True
         clipboard.setMimeData(mime)
-        self.status_message.emit(
-            f"Copied {len(self.session.selection.ids)} object(s)"
-        )
+        self.status_message.emit(f"Copied {len(self.session.selection.ids)} object(s)")
         return True
 
     def _handle_paste_key(self) -> bool:
@@ -1052,9 +1049,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit("No compatible scene clipboard payload")
             return True
         try:
-            created = self.session.paste_payload(
-                bytes(mime.data(SCENE_CLIPBOARD_MIME))
-            )
+            created = self.session.paste_payload(bytes(mime.data(SCENE_CLIPBOARD_MIME)))
         except (KeyError, PermissionError, ValueError) as exc:
             self._edit_status_error(exc)
         else:
@@ -1125,10 +1120,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self._handle_history_key(redo=True)
             event.accept()
             return
-        if (
-            key == Qt.Key.Key_A
-            and modifiers & Qt.KeyboardModifier.ControlModifier
-        ):
+        if key == Qt.Key.Key_A and modifiers & Qt.KeyboardModifier.ControlModifier:
             self._select_all_visible()
             event.accept()
             return
@@ -1156,16 +1148,18 @@ class SceneAuthoringViewport(QGraphicsView):
         if item.locked:
             return f"Cannot edit '{object_id}': the object is locked."
         layer = next(
-            (value for value in self.session.document.layers if value.id == item.layer_id),
+            (
+                value
+                for value in self.session.document.layers
+                if value.id == item.layer_id
+            ),
             None,
         )
         if layer is not None and layer.locked:
             return f"Cannot edit '{object_id}': its layer is locked."
         locked_group = locked_group_for_object(self.session.document, object_id)
         if locked_group is not None:
-            return (
-                f"Cannot edit '{object_id}': group '{locked_group.name}' is locked."
-            )
+            return f"Cannot edit '{object_id}': group '{locked_group.name}' is locked."
         return None
 
     def _selection_edit_block_reason(self) -> str | None:
@@ -1299,7 +1293,9 @@ class SceneAuthoringViewport(QGraphicsView):
                 factor = max(0.05, 1.0 + (delta.x() + delta.y()) / 160.0)
                 self.session.preview_transform_selected(scale_factor=factor)
             elif mode == "rotate":
-                center = self._project_position(record.transform.position, record.layer_id)
+                center = self._project_position(
+                    record.transform.position, record.layer_id
+                )
                 start_angle = math.degrees(
                     math.atan2(
                         self._gizmo_start.y() - center.y(),

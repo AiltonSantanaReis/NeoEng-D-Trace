@@ -36,8 +36,8 @@ from src.persistence.scene_authoring_io import (
 from src.persistence.scene_authoring_schema import upgrade_scene_authoring_document
 from src.ui.scenario_panel import ScenarioPanel
 from src.ui.scene_asset_panel import SceneAssetLibrary
-from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
+from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 

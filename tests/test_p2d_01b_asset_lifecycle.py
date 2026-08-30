@@ -8,9 +8,9 @@ import pytest
 from PySide6.QtGui import QColor, QImage
 from PySide6.QtWidgets import QApplication
 
-from src.core.scene_asset_library import inspect_scene_asset, sha256_file
 from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
+from src.core.scene_asset_library import inspect_scene_asset, sha256_file
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.models.scene import Scene
@@ -26,9 +26,9 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
     upgrade_scene_authoring_document,
 )
+from src.ui.scenario_editor_window import ScenarioEditorWindow
 from src.ui.scene_asset_panel import SceneAssetLibrary
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
-from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
 @pytest.fixture(scope="module")

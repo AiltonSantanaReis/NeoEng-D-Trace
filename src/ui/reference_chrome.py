@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import QSize, QTimer, Qt
+from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtWidgets import (
     QLineEdit,
     QMenu,
@@ -295,10 +295,12 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     menu_button = QToolButton(window.reference_tool_palette)
     menu_button.setObjectName("reference_menu_button")
     menu_button.setText("≡")
-    menu_button.setAccessibleName('Application menu')
-    menu_button.setAccessibleDescription('Open the application menu with file, edit, view and scenario commands')
-    menu_button.setToolTip('Application menu')
-    menu_button.setStatusTip('Open the application menu')
+    menu_button.setAccessibleName("Application menu")
+    menu_button.setAccessibleDescription(
+        "Open the application menu with file, edit, view and scenario commands"
+    )
+    menu_button.setToolTip("Application menu")
+    menu_button.setStatusTip("Open the application menu")
     menu_button.setMinimumSize(QSize(44, 32))
     menu_button.setMaximumSize(QSize(56, 36))
     menu_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -330,9 +332,9 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     search = QLineEdit(toolbar)
     search.setObjectName("reference_command_search")
     search.setPlaceholderText("Ctrl+K")
-    search.setAccessibleName('Command search')
-    search.setAccessibleDescription('Search and execute commands with text or Ctrl+K')
-    search.setToolTip('Search commands (Ctrl+K)')
+    search.setAccessibleName("Command search")
+    search.setAccessibleDescription("Search and execute commands with text or Ctrl+K")
+    search.setToolTip("Search commands (Ctrl+K)")
     search.setMinimumWidth(260)
     search.setMaximumWidth(440)
     toolbar.addWidget(search)
@@ -466,7 +468,7 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             button.setText(labels[key])
             button.setAccessibleName(labels[key])
             button.setAccessibleDescription(button.toolTip() or labels[key])
-            button.setProperty('referenceShortText', labels[key])
+            button.setProperty("referenceShortText", labels[key])
 
 
 def configure_reference_panel_tabs(window: Any) -> None:
@@ -476,10 +478,14 @@ def configure_reference_panel_tabs(window: Any) -> None:
     tabs.clear()
     tabs.setObjectName("reference_panel_tabs")
     tabs.setDocumentMode(True)
-    tabs.setAccessibleName('Inspector panel tabs')
-    tabs.setAccessibleDescription('Switch between objects, layers, groups and collision panels')
-    tabs.tabBar().setAccessibleName('Inspector panel tabs')
-    tabs.tabBar().setAccessibleDescription('Switch between objects, layers, groups and collision panels')
+    tabs.setAccessibleName("Inspector panel tabs")
+    tabs.setAccessibleDescription(
+        "Switch between objects, layers, groups and collision panels"
+    )
+    tabs.tabBar().setAccessibleName("Inspector panel tabs")
+    tabs.tabBar().setAccessibleDescription(
+        "Switch between objects, layers, groups and collision panels"
+    )
     tabs.tabBar().setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     tabs.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     tabs.setTabPosition(QTabWidget.TabPosition.North)

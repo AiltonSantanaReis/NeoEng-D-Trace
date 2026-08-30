@@ -33,8 +33,7 @@ _ACTION_ICON_BODIES = {
     ),
     "overlay": (
         "collision overlay",
-        '<rect x="4" y="4" width="11" height="11" rx="1"/>'
-        '<path d="M9 9h11v11H9z"/>',
+        '<rect x="4" y="4" width="11" height="11" rx="1"/>' '<path d="M9 9h11v11H9z"/>',
     ),
 }
 

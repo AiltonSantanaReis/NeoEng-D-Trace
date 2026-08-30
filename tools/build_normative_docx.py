@@ -2,16 +2,13 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Iterable
 
 from docx import Document
-from docx.enum.section import WD_SECTION
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK, WD_LINE_SPACING
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs" / "NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.md"
@@ -58,7 +55,12 @@ def set_cell_margins(cell, top=80, start=120, bottom=80, end=120):
     if tc_mar is None:
         tc_mar = OxmlElement("w:tcMar")
         tc_pr.append(tc_mar)
-    for tag, value in (("top", top), ("start", start), ("bottom", bottom), ("end", end)):
+    for tag, value in (
+        ("top", top),
+        ("start", start),
+        ("bottom", bottom),
+        ("end", end),
+    ):
         node = tc_mar.find(qn("w:" + tag))
         if node is None:
             node = OxmlElement("w:" + tag)
@@ -231,7 +233,10 @@ def configure_styles(doc):
 
 def add_numbering(doc):
     numbering = doc.part.numbering_part.element
-    existing_abs = [int(x.get(qn("w:abstractNumId"))) for x in numbering.findall(qn("w:abstractNum"))]
+    existing_abs = [
+        int(x.get(qn("w:abstractNumId")))
+        for x in numbering.findall(qn("w:abstractNum"))
+    ]
     existing_num = [int(x.get(qn("w:numId"))) for x in numbering.findall(qn("w:num"))]
     next_abs = max(existing_abs or [0]) + 1
     next_num = max(existing_num or [0]) + 1
@@ -285,8 +290,12 @@ def add_numbering(doc):
         numbering.append(num)
         return num_id
 
-    bullet_id = create_definition(next_abs, next_num, "bullet", "•", 540, 270, "Calibri")
-    decimal_id = create_definition(next_abs + 1, next_num + 1, "decimal", "%1.", 540, 270)
+    bullet_id = create_definition(
+        next_abs, next_num, "bullet", "•", 540, 270, "Calibri"
+    )
+    decimal_id = create_definition(
+        next_abs + 1, next_num + 1, "decimal", "%1.", 540, 270
+    )
     return bullet_id, decimal_id
 
 
@@ -312,7 +321,7 @@ def split_inline(text):
     cursor = 0
     for match in pattern.finditer(text):
         if match.start() > cursor:
-            parts.append((text[cursor:match.start()], False, False))
+            parts.append((text[cursor : match.start()], False, False))
         token = match.group(0)
         if token.startswith("**"):
             parts.append((token[2:-2], True, False))
@@ -327,7 +336,13 @@ def split_inline(text):
 def add_inline(paragraph, text, size=11, color=INK):
     for part, bold, italic in split_inline(text):
         run = paragraph.add_run(part)
-        set_run_font(run, size=size, color=color, bold=bold if bold else None, italic=italic if italic else None)
+        set_run_font(
+            run,
+            size=size,
+            color=color,
+            bold=bold if bold else None,
+            italic=italic if italic else None,
+        )
 
 
 def add_text_paragraph(doc, text, style="Normal", size=11, color=INK):
@@ -346,7 +361,9 @@ def clean_table_row(line):
 
 
 def is_separator_row(cells):
-    return bool(cells) and all(re.fullmatch(r":?-{3,}:?", cell.replace(" ", "")) for cell in cells)
+    return bool(cells) and all(
+        re.fullmatch(r":?-{3,}:?", cell.replace(" ", "")) for cell in cells
+    )
 
 
 def table_widths(count):
@@ -430,7 +447,9 @@ def configure_page_furniture(doc):
     hp = header.paragraphs[0]
     hp.alignment = WD_ALIGN_PARAGRAPH.LEFT
     hp.paragraph_format.space_after = Pt(0)
-    add_inline(hp, "NeoEng-D-Trace  |  Documento normativo de produto", size=8.5, color=MUTED)
+    add_inline(
+        hp, "NeoEng-D-Trace  |  Documento normativo de produto", size=8.5, color=MUTED
+    )
 
     footer = section.footer
     fp = footer.paragraphs[0]
@@ -466,7 +485,13 @@ def render_markdown(doc, lines):
         if line.startswith("# "):
             text = line[2:].strip()
             style = "Normative Title" if first_heading else "Heading 1"
-            p = add_text_paragraph(doc, text, style=style, size=23 if first_heading else 16, color=INK if first_heading else BLUE)
+            p = add_text_paragraph(
+                doc,
+                text,
+                style=style,
+                size=23 if first_heading else 16,
+                color=INK if first_heading else BLUE,
+            )
             if first_heading:
                 first_heading = False
                 metadata_mode = True
@@ -474,17 +499,23 @@ def render_markdown(doc, lines):
             continue
         if line.startswith("## "):
             metadata_mode = False
-            add_text_paragraph(doc, line[3:].strip(), style="Heading 1", size=16, color=BLUE)
+            add_text_paragraph(
+                doc, line[3:].strip(), style="Heading 1", size=16, color=BLUE
+            )
             i += 1
             continue
         if line.startswith("### "):
             metadata_mode = False
-            add_text_paragraph(doc, line[4:].strip(), style="Heading 2", size=13, color=BLUE)
+            add_text_paragraph(
+                doc, line[4:].strip(), style="Heading 2", size=13, color=BLUE
+            )
             i += 1
             continue
         if line.startswith("#### "):
             metadata_mode = False
-            add_text_paragraph(doc, line[5:].strip(), style="Heading 3", size=12, color=DARK_BLUE)
+            add_text_paragraph(
+                doc, line[5:].strip(), style="Heading 3", size=12, color=DARK_BLUE
+            )
             i += 1
             continue
         if line.startswith(">"):
@@ -524,11 +555,18 @@ def render_markdown(doc, lines):
         i += 1
         while i < len(lines):
             candidate = lines[i].strip()
-            if not candidate or candidate == "---" or candidate.startswith(("#", ">", "|", "- ")) or re.match(r"^\d+\.\s+", candidate):
+            if (
+                not candidate
+                or candidate == "---"
+                or candidate.startswith(("#", ">", "|", "- "))
+                or re.match(r"^\d+\.\s+", candidate)
+            ):
                 break
             paragraph_lines.append(candidate)
             i += 1
-        add_text_paragraph(doc, " ".join(paragraph_lines), style="Normal", size=11, color=INK)
+        add_text_paragraph(
+            doc, " ".join(paragraph_lines), style="Normal", size=11, color=INK
+        )
 
 
 def main():
@@ -536,10 +574,17 @@ def main():
     doc = Document()
     configure_styles(doc)
     configure_page_furniture(doc)
-    doc.core_properties.title = "NeoEng-D-Trace — Documento Normativo de Consolidação do Editor Profissional de Composição 2D Baseado em Objetos"
-    doc.core_properties.subject = "Plano obrigatório, imutáveis, gates, evidências e aceite formal"
+    doc.core_properties.title = (
+        "NeoEng-D-Trace — Documento Normativo de Consolidação do "
+        "Editor Profissional de Composição 2D Baseado em Objetos"
+    )
+    doc.core_properties.subject = (
+        "Plano obrigatório, imutáveis, gates, evidências e aceite formal"
+    )
     doc.core_properties.author = "Equipe de desenvolvimento NeoEng-D-Trace"
-    doc.core_properties.comments = "Gerado a partir da fonte Markdown normativa versionável."
+    doc.core_properties.comments = (
+        "Gerado a partir da fonte Markdown normativa versionável."
+    )
     render_markdown(doc, source_text.splitlines())
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)

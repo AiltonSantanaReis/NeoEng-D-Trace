@@ -79,10 +79,26 @@ def test_check_identity_is_axis_owned_and_domain_validated():
 
 def test_status_precedence_is_fail_closed_without_hiding_approved_changes():
     assert aggregate_status(()) == ConformanceStatus.NOT_APPLICABLE
-    assert aggregate_status((ConformanceStatus.NOT_APPLICABLE,)) == ConformanceStatus.NOT_APPLICABLE
-    assert aggregate_status((ConformanceStatus.NOT_APPLICABLE, ConformanceStatus.PASS)) == ConformanceStatus.PASS
-    assert aggregate_status((ConformanceStatus.PASS, ConformanceStatus.APPROVED_BASELINE_CHANGE)) == ConformanceStatus.APPROVED_BASELINE_CHANGE
-    assert aggregate_status((ConformanceStatus.APPROVED_BASELINE_CHANGE, ConformanceStatus.FAIL)) == ConformanceStatus.FAIL
+    assert (
+        aggregate_status((ConformanceStatus.NOT_APPLICABLE,))
+        == ConformanceStatus.NOT_APPLICABLE
+    )
+    assert (
+        aggregate_status((ConformanceStatus.NOT_APPLICABLE, ConformanceStatus.PASS))
+        == ConformanceStatus.PASS
+    )
+    assert (
+        aggregate_status(
+            (ConformanceStatus.PASS, ConformanceStatus.APPROVED_BASELINE_CHANGE)
+        )
+        == ConformanceStatus.APPROVED_BASELINE_CHANGE
+    )
+    assert (
+        aggregate_status(
+            (ConformanceStatus.APPROVED_BASELINE_CHANGE, ConformanceStatus.FAIL)
+        )
+        == ConformanceStatus.FAIL
+    )
 
 
 def test_multiaxis_aggregation_keeps_axis_results_independent():
@@ -110,9 +126,18 @@ def test_multiaxis_aggregation_keeps_axis_results_independent():
         ),
     )
 
-    assert report.axis_result(ConformanceAxis.GEOMETRY_PHYSICS).status == ConformanceStatus.PASS
-    assert report.axis_result(ConformanceAxis.VISUAL_SYSTEM).status == ConformanceStatus.APPROVED_BASELINE_CHANGE
-    assert report.axis_result(ConformanceAxis.BEHAVIOR_INTERACTION).status == ConformanceStatus.PASS
+    assert (
+        report.axis_result(ConformanceAxis.GEOMETRY_PHYSICS).status
+        == ConformanceStatus.PASS
+    )
+    assert (
+        report.axis_result(ConformanceAxis.VISUAL_SYSTEM).status
+        == ConformanceStatus.APPROVED_BASELINE_CHANGE
+    )
+    assert (
+        report.axis_result(ConformanceAxis.BEHAVIOR_INTERACTION).status
+        == ConformanceStatus.PASS
+    )
     assert report.status == ConformanceStatus.APPROVED_BASELINE_CHANGE
     assert report.is_blocking is False
 
@@ -143,8 +168,14 @@ def test_failure_on_one_axis_blocks_aggregate_without_mutating_other_axes():
     )
 
     assert report.axis_result(ConformanceAxis.GEOMETRY_PHYSICS).is_blocking is True
-    assert report.axis_result(ConformanceAxis.VISUAL_SYSTEM).status == ConformanceStatus.PASS
-    assert report.axis_result(ConformanceAxis.BEHAVIOR_INTERACTION).status == ConformanceStatus.PASS
+    assert (
+        report.axis_result(ConformanceAxis.VISUAL_SYSTEM).status
+        == ConformanceStatus.PASS
+    )
+    assert (
+        report.axis_result(ConformanceAxis.BEHAVIOR_INTERACTION).status
+        == ConformanceStatus.PASS
+    )
     assert report.status == ConformanceStatus.FAIL
     assert report.is_blocking is True
 

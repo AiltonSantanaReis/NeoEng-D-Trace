@@ -70,7 +70,11 @@ def panned_navigation_center(
 ) -> tuple[float, float]:
     """Return the scene center after a middle-button presentation pan."""
 
-    if len(start_center) != 2 or len(start_pointer_view) != 2 or len(current_pointer_view) != 2:
+    if (
+        len(start_center) != 2
+        or len(start_pointer_view) != 2
+        or len(current_pointer_view) != 2
+    ):
         raise ValueError("navigation points must contain two coordinates")
     center_x = _finite(start_center[0], "start_center.x")
     center_y = _finite(start_center[1], "start_center.y")

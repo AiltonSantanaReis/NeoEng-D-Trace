@@ -6,7 +6,7 @@ import hashlib
 from pathlib import Path
 
 import pytest
-from PySide6.QtCore import QPointF, QRectF
+from PySide6.QtCore import QRectF
 from PySide6.QtGui import QColor, QImage, QPainter
 from PySide6.QtWidgets import QApplication
 

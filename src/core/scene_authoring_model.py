@@ -213,7 +213,9 @@ class SceneAuthoringModel:
             ],
         )
         remaining = [item for item in self.selection.ids if item not in removed]
-        primary = self.selection.primary if self.selection.primary in remaining else None
+        primary = (
+            self.selection.primary if self.selection.primary in remaining else None
+        )
         self.set_selection(remaining, primary)
 
     def update_transform(self, object_id: str, transform: SceneTransformRecord) -> None:
@@ -497,9 +499,11 @@ class SceneAuthoringModel:
         groups = [item for item in self.document.groups if item.id != group_id]
         if hasattr(group, "parent_group_id"):
             groups = [
-                item.model_copy(update={"parent_group_id": parent_id})
-                if group_parent_id(item) == group_id
-                else item
+                (
+                    item.model_copy(update={"parent_group_id": parent_id})
+                    if group_parent_id(item) == group_id
+                    else item
+                )
                 for item in groups
             ]
         self._replace(groups=groups)
@@ -507,11 +511,13 @@ class SceneAuthoringModel:
     def reorder_group(self, group_id: str, target_index: int) -> None:
         group = self._group(group_id)
         siblings = [
-            item for item in self.document.groups
+            item
+            for item in self.document.groups
             if group_parent_id(item) == group_parent_id(group)
         ]
         positions = [
-            index for index, item in enumerate(self.document.groups)
+            index
+            for index, item in enumerate(self.document.groups)
             if group_parent_id(item) == group_parent_id(group)
         ]
         sibling_ids = [item.id for item in siblings]

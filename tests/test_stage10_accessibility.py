@@ -73,8 +73,14 @@ def test_visible_controls_have_real_accessibility_metadata_and_focus(window):
     assert window.reference_open_button.accessibleName() == "Open"
     assert window.side_panel.position_x.accessibleName() == "Position X"
     assert window.side_panel.position_x.lineEdit().accessibleName() == "Position X"
-    assert window.viewport_chrome.overlay.view_button.accessibleName() == "Viewport view menu"
-    assert window.viewport_chrome.overlay.snap_button.accessibleName() == "Toggle vertex snapping"
+    assert (
+        window.viewport_chrome.overlay.view_button.accessibleName()
+        == "Viewport view menu"
+    )
+    assert (
+        window.viewport_chrome.overlay.snap_button.accessibleName()
+        == "Toggle vertex snapping"
+    )
 
 
 def test_keyboard_shortcuts_and_tab_order_drive_real_commands(window, qt_app):
@@ -104,7 +110,9 @@ def test_keyboard_shortcuts_and_tab_order_drive_real_commands(window, qt_app):
         assert QApplication.focusWidget() is target
 
 
-def test_mouse_interactions_and_state_feedback_are_independent_of_keyboard(window, qt_app):
+def test_mouse_interactions_and_state_feedback_are_independent_of_keyboard(
+    window, qt_app
+):
     QTest.mouseClick(window.reference_pan_button, Qt.MouseButton.LeftButton)
     qt_app.processEvents()
     assert window.canvas.is_pan_mode() is True

@@ -33,9 +33,7 @@ def preview_layers_from_professional_document(
         object_ids_by_layer.setdefault(authored_object.layer_id, []).append(
             authored_object.id
         )
-    parallax_by_layer = {
-        item.layer_id: item for item in document.parallax_layers
-    }
+    parallax_by_layer = {item.layer_id: item for item in document.parallax_layers}
     preview_layers: list[ScenarioPreviewLayer] = []
     for layer in document.layers:
         parallax = parallax_by_layer.get(
@@ -128,26 +126,28 @@ def professional_document_from_scene(
             if object_id in known_objects:
                 object_layer[object_id] = legacy_layer.id
     objects: list[SceneObjectAuthoringRecord] = [
-        item.model_copy(
-            update={"layer_id": object_layer.get(item.id, item.layer_id)}
-        )
+        item.model_copy(update={"layer_id": object_layer.get(item.id, item.layer_id)})
         for item in document.objects
     ]
 
     parallax_layers = [
         SceneParallaxLayerRecord(
             layer_id=layer.id,
-            depth=float(legacy_layers[layer.id].parallax.depth)
-            if layer.id in legacy_layers
-            else 0.0,
-            translation_strength=float(
-                legacy_layers[layer.id].parallax.translation_strength
-            )
-            if layer.id in legacy_layers
-            else 1.0,
-            zoom_strength=float(legacy_layers[layer.id].parallax.zoom_strength)
-            if layer.id in legacy_layers
-            else 1.0,
+            depth=(
+                float(legacy_layers[layer.id].parallax.depth)
+                if layer.id in legacy_layers
+                else 0.0
+            ),
+            translation_strength=(
+                float(legacy_layers[layer.id].parallax.translation_strength)
+                if layer.id in legacy_layers
+                else 1.0
+            ),
+            zoom_strength=(
+                float(legacy_layers[layer.id].parallax.zoom_strength)
+                if layer.id in legacy_layers
+                else 1.0
+            ),
         )
         for layer in ordered_layers
     ]

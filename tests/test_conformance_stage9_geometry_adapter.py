@@ -91,9 +91,7 @@ def test_stage9_geometry_adapter_maps_only_atomic_g_checks() -> None:
     expected_viewport = len(DPI_CASES) * len(RESOLUTIONS)
     expected_layout = expected_viewport * len(CRITICAL_WIDGETS)
     assert len(result.checks) == expected_viewport + expected_layout == 60
-    assert {check.axis for check in result.checks} == {
-        ConformanceAxis.GEOMETRY_PHYSICS
-    }
+    assert {check.axis for check in result.checks} == {ConformanceAxis.GEOMETRY_PHYSICS}
     assert sum(check.domain == "viewport" for check in result.checks) == 12
     assert sum(check.domain == "layout" for check in result.checks) == 48
     assert all(check.status == ConformanceStatus.PASS for check in result.checks)
@@ -136,7 +134,9 @@ def test_stage9_geometry_adapter_propagates_atomic_dimension_failure() -> None:
         payload,
         context=_context(),
     )
-    failed = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    failed = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
     assert [check.check_id for check in failed] == [
         "G-VIEWPORT_DPI100_720P_COMPACTA-001"
     ]
@@ -156,7 +156,9 @@ def test_stage9_geometry_adapter_propagates_atomic_widget_failure() -> None:
         payload,
         context=_context(),
     )
-    failed = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    failed = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
     assert [check.check_id for check in failed] == [
         "G-LAYOUT_DPI100_720P_COMPACTA_CANVAS-001"
     ]
@@ -173,7 +175,9 @@ def test_stage9_geometry_adapter_is_fail_closed_for_missing_expected_worker() ->
         payload,
         context=_context(),
     )
-    failures = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    failures = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
 
     # One missing DPI worker owns 3 viewport atoms + 3*4 critical-widget atoms.
     assert len(failures) == 15

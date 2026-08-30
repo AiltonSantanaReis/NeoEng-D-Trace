@@ -5,13 +5,13 @@ from __future__ import annotations
 import pytest
 from PySide6.QtWidgets import QApplication
 
+from scripts.audit_stage9_functional_ui import AuditConfig, fixture_scene, settle
 from src.persistence.project_schema import PointRecord
 from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.persistence.scene_authoring_schema import (
     SceneCameraAuthoringRecord,
     SceneParallaxLayerRecord,
 )
-from scripts.audit_stage9_functional_ui import AuditConfig, fixture_scene, settle
 from src.ui.main_window import MainWindow
 
 
@@ -85,9 +85,7 @@ def test_scenario_editor_actions_change_the_authoring_document(qt_app, tmp_path)
         settle(qt_app)
 
 
-def test_professional_v2_document_drives_main_preview_and_menu_save(
-    qt_app, tmp_path
-):
+def test_professional_v2_document_drives_main_preview_and_menu_save(qt_app, tmp_path):
     project = tmp_path / "canonical-preview.ndtproj"
     project.write_bytes(b"canonical-preview-project\n")
     window = _window()
@@ -101,14 +99,20 @@ def test_professional_v2_document_drives_main_preview_and_menu_save(
         session = editor.professional_session
         layer_id = session.document.layers[0].id
         assert session.set_layer_visibility(layer_id, False) is True
-        assert session.set_parallax_layer(
-            SceneParallaxLayerRecord(layer_id=layer_id, depth=0.75)
-        ) is True
-        assert session.set_camera(
-            SceneCameraAuthoringRecord(
-                position=PointRecord(x=24.0, y=-12.0), zoom=1.5
+        assert (
+            session.set_parallax_layer(
+                SceneParallaxLayerRecord(layer_id=layer_id, depth=0.75)
             )
-        ) is True
+            is True
+        )
+        assert (
+            session.set_camera(
+                SceneCameraAuthoringRecord(
+                    position=PointRecord(x=24.0, y=-12.0), zoom=1.5
+                )
+            )
+            is True
+        )
         settle(qt_app)
 
         assert window.canvas._scenario_layers[0].visible is False

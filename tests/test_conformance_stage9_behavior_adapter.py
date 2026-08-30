@@ -139,7 +139,9 @@ def test_stage9_behavior_adapter_maps_only_atomic_b_checks() -> None:
     )
 
 
-def test_stage9_behavior_adapter_ignores_legacy_aggregate_and_geometry_failure() -> None:
+def test_stage9_behavior_adapter_ignores_legacy_aggregate_and_geometry_failure() -> (
+    None
+):
     payload = _payload()
     payload["status"] = "FAIL"
     payload["automated_status"] = "FAIL"
@@ -147,11 +149,11 @@ def test_stage9_behavior_adapter_ignores_legacy_aggregate_and_geometry_failure()
     payload["functional"]["menus_on_screen"]["status"] = "FAIL"
     payload["visual"] = {"findings": [{"status": "FAIL"}]}
 
-    result = run_adapter(
-        Stage9FunctionalBehaviorAdapter(), payload, context=_context()
-    )
+    result = run_adapter(Stage9FunctionalBehaviorAdapter(), payload, context=_context())
     assert all(check.status == ConformanceStatus.PASS for check in result.checks)
-    assert not any("menus_on_screen" in item for check in result.checks for item in check.evidence)
+    assert not any(
+        "menus_on_screen" in item for check in result.checks for item in check.evidence
+    )
 
 
 def test_stage9_behavior_adapter_propagates_atomic_tool_failure() -> None:
@@ -160,10 +162,10 @@ def test_stage9_behavior_adapter_propagates_atomic_tool_failure() -> None:
         {"status": "FAIL", "checked": False, "tool_object_created": False}
     )
 
-    result = run_adapter(
-        Stage9FunctionalBehaviorAdapter(), payload, context=_context()
-    )
-    failures = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    result = run_adapter(Stage9FunctionalBehaviorAdapter(), payload, context=_context())
+    failures = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
 
     assert [check.check_id for check in failures] == [
         "B-ACTION_STAGE9_TOOL_PEN_TOOL-001"
@@ -183,10 +185,10 @@ def test_stage9_behavior_adapter_uses_semantic_xray_mode_identity() -> None:
         "Raio X 3": {"status": "PASS", "mode": 3, "expected": 3},
     }
 
-    result = run_adapter(
-        Stage9FunctionalBehaviorAdapter(), payload, context=_context()
-    )
-    failures = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    result = run_adapter(Stage9FunctionalBehaviorAdapter(), payload, context=_context())
+    failures = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
     assert [check.check_id for check in failures] == [
         "B-INTERACTION_STATE_STAGE9_VIEW_XRAY_1-001"
     ]
@@ -202,10 +204,10 @@ def test_stage9_behavior_adapter_is_fail_closed_for_missing_atoms() -> None:
         "mask_viewer_modes"
     ][:-1]
 
-    result = run_adapter(
-        Stage9FunctionalBehaviorAdapter(), payload, context=_context()
-    )
-    failures = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    result = run_adapter(Stage9FunctionalBehaviorAdapter(), payload, context=_context())
+    failures = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
     assert {check.check_id for check in failures} == {
         "B-ACTION_STAGE9_TOOL_COLLISION_BRUSH-001",
         "B-GIZMO_STAGE9_TRANSACTION_UNDO-001",

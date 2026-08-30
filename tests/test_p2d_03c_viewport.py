@@ -16,15 +16,14 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV1,
     SceneAuthoringMetadataRecord,
     SceneCameraAuthoringRecord,
-    SceneLightSocketRecord,
     SceneLayerAuthoringRecord,
+    SceneLightSocketRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
     SceneTransformRecord,
     upgrade_scene_authoring_document,
 )
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
-
 
 SHA = "c" * 64
 
@@ -50,7 +49,10 @@ def _document():
         id="first", asset_id=asset.id, layer_id=layer.id, transform=_transform(100, 80)
     )
     second = SceneObjectAuthoringRecord(
-        id="second", asset_id=asset.id, layer_id=layer.id, transform=_transform(500, 360)
+        id="second",
+        asset_id=asset.id,
+        layer_id=layer.id,
+        transform=_transform(500, 360),
     )
     return upgrade_scene_authoring_document(
         SceneAuthoringDocumentV1(
@@ -70,7 +72,10 @@ def _document():
             ),
             "parallax_layers": [
                 SceneParallaxLayerRecord(
-                    layer_id="background", depth=0.5, translation_strength=1.0, zoom_strength=1.0
+                    layer_id="background",
+                    depth=0.5,
+                    translation_strength=1.0,
+                    zoom_strength=1.0,
                 )
             ],
             "sockets": [
@@ -85,7 +90,9 @@ def _document():
     )
 
 
-def _viewport(qt_app: QApplication, tmp_path: Path) -> tuple[SceneAuthoringSession, SceneAuthoringViewport]:
+def _viewport(
+    qt_app: QApplication, tmp_path: Path
+) -> tuple[SceneAuthoringSession, SceneAuthoringViewport]:
     session = SceneAuthoringSession(SceneAuthoringModel(_document()))
     viewport = SceneAuthoringViewport(session, project_root=tmp_path)
     viewport.resize(640, 480)
@@ -165,8 +172,12 @@ def test_fit_selection_and_fit_all_exclude_non_content_and_are_noop_safe(
         assert selection_bounds is not None
 
         assert viewport.fit_selection() is True
-        assert viewport.navigation_center.x() == pytest.approx(selection_bounds.center().x(), abs=1.0)
-        assert viewport.navigation_center.y() == pytest.approx(selection_bounds.center().y(), abs=1.0)
+        assert viewport.navigation_center.x() == pytest.approx(
+            selection_bounds.center().x(), abs=1.0
+        )
+        assert viewport.navigation_center.y() == pytest.approx(
+            selection_bounds.center().y(), abs=1.0
+        )
         assert session.document.model_dump(mode="json") == before_document
         assert session.is_dirty is False
         assert len(session._undo) == before_history
@@ -174,8 +185,12 @@ def test_fit_selection_and_fit_all_exclude_non_content_and_are_noop_safe(
         all_bounds = viewport._content_bounds()
         assert all_bounds is not None
         assert viewport.fit_all() is True
-        assert viewport.navigation_center.x() == pytest.approx(all_bounds.center().x(), abs=1.0)
-        assert viewport.navigation_center.y() == pytest.approx(all_bounds.center().y(), abs=1.0)
+        assert viewport.navigation_center.x() == pytest.approx(
+            all_bounds.center().x(), abs=1.0
+        )
+        assert viewport.navigation_center.y() == pytest.approx(
+            all_bounds.center().y(), abs=1.0
+        )
         assert viewport.navigation_center.x() < 1000.0
 
         session.clear_selection()
@@ -199,7 +214,9 @@ def test_preview_navigation_keeps_camera_persistence_and_world_round_trip(
         world = Point3Record(x=32.0, y=48.0, z=0.0)
         projected = viewport._project_position(world, "background")
         viewport_point = viewport.mapFromScene(projected)
-        round_trip = viewport._world_position(viewport.mapToScene(viewport_point), "background")
+        round_trip = viewport._world_position(
+            viewport.mapToScene(viewport_point), "background"
+        )
         assert round_trip.x() == pytest.approx(world.x, abs=1.0)
         assert round_trip.y() == pytest.approx(world.y, abs=1.0)
         assert session.document.camera.position.x == 20.0
@@ -211,7 +228,9 @@ def test_preview_navigation_keeps_camera_persistence_and_world_round_trip(
         qt_app.processEvents()
 
 
-def test_fit_all_empty_scene_is_a_safe_noop(qt_app: QApplication, tmp_path: Path) -> None:
+def test_fit_all_empty_scene_is_a_safe_noop(
+    qt_app: QApplication, tmp_path: Path
+) -> None:
     document = _document().model_copy(update={"objects": [], "sockets": []})
     session = SceneAuthoringSession(SceneAuthoringModel(document))
     viewport = SceneAuthoringViewport(session, project_root=tmp_path)
@@ -256,8 +275,12 @@ def test_fit_selection_uses_transformed_scene_bounds(
         expected = viewport._content_bounds(["first"])
         assert expected is not None
         assert viewport.fit_selection() is True
-        assert viewport.navigation_center.x() == pytest.approx(expected.center().x(), abs=1.0)
-        assert viewport.navigation_center.y() == pytest.approx(expected.center().y(), abs=1.0)
+        assert viewport.navigation_center.x() == pytest.approx(
+            expected.center().x(), abs=1.0
+        )
+        assert viewport.navigation_center.y() == pytest.approx(
+            expected.center().y(), abs=1.0
+        )
         assert viewport.navigation_zoom > 0.0
     finally:
         viewport.close()

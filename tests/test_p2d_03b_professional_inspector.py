@@ -1,9 +1,8 @@
 from __future__ import annotations
 
+import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtTest import QTest
-
-import pytest
 from PySide6.QtWidgets import QApplication
 
 from src.core.scene_authoring_model import SceneAuthoringModel
@@ -18,7 +17,6 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
 )
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
-
 
 SHA = "e" * 64
 
@@ -68,6 +66,8 @@ def test_inspector_delete_delegates_to_complete_selection(qt_app):
         inspector.close()
         inspector.deleteLater()
         qt_app.processEvents()
+
+
 def test_inspector_text_fields_keep_native_clipboard_and_history_shortcuts(qt_app):
     session = SceneAuthoringSession(SceneAuthoringModel(_document()))
     session.set_selection(["a"])

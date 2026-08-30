@@ -34,9 +34,7 @@ def _color(token: str, *, rgba: bool) -> tuple[int, ...]:
     return (*rgb, 128) if rgba else rgb
 
 
-def _make_capture(
-    root: Path, *, rgba: bool = False, schema_version: int = 4
-) -> Path:
+def _make_capture(root: Path, *, rgba: bool = False, schema_version: int = 4) -> Path:
     root.mkdir()
     image_path = root / "1080p_FHD_01_sem_projeto.png"
     background = _color(THEME_TOKENS.window, rgba=rgba)
@@ -195,9 +193,9 @@ def test_visual_auditor_fails_when_historical_schema3_requires_physical_toolbar(
     _make_capture(tmp_path / "input", schema_version=3)
     manifest_path = tmp_path / "input" / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    contract = manifest["captures"]["1080p_FHD"]["widget_geometry"][
-        "sem_projeto"
-    ]["top_command_contract"]
+    contract = manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"][
+        "top_command_contract"
+    ]
     contract["physical_toolbar_required"] = True
     manifest_path.write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",
@@ -222,9 +220,9 @@ def test_visual_auditor_rejects_retired_toolbar_metadata_in_schema4(
     _make_capture(tmp_path / "input", schema_version=4)
     manifest_path = tmp_path / "input" / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    contract = manifest["captures"]["1080p_FHD"]["widget_geometry"][
-        "sem_projeto"
-    ]["top_command_contract"]
+    contract = manifest["captures"]["1080p_FHD"]["widget_geometry"]["sem_projeto"][
+        "top_command_contract"
+    ]
     contract["physical_toolbar_required"] = False
     manifest_path.write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",

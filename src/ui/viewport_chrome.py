@@ -86,10 +86,12 @@ class ViewportOverlayBar(QWidget):
 
         self.view_button = QToolButton(self)
         self.view_button.setObjectName("viewport_view_button")
-        self.view_button.setText('View: Lit')
-        self.view_button.setAccessibleName('Viewport view menu')
-        self.view_button.setAccessibleDescription('Choose Lit or X-Ray viewport rendering')
-        self.view_button.setToolTip('Choose viewport rendering mode')
+        self.view_button.setText("View: Lit")
+        self.view_button.setAccessibleName("Viewport view menu")
+        self.view_button.setAccessibleDescription(
+            "Choose Lit or X-Ray viewport rendering"
+        )
+        self.view_button.setToolTip("Choose viewport rendering mode")
         self.view_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.view_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         view_menu = QMenu(self.view_button)
@@ -104,10 +106,12 @@ class ViewportOverlayBar(QWidget):
 
         self.zoom_button = QToolButton(self)
         self.zoom_button.setObjectName("viewport_zoom_button")
-        self.zoom_button.setText('Zoom: 1.00x')
-        self.zoom_button.setAccessibleName('Viewport zoom menu')
-        self.zoom_button.setAccessibleDescription('Choose fit-to-window or one-to-one viewport zoom')
-        self.zoom_button.setToolTip('Choose viewport zoom')
+        self.zoom_button.setText("Zoom: 1.00x")
+        self.zoom_button.setAccessibleName("Viewport zoom menu")
+        self.zoom_button.setAccessibleDescription(
+            "Choose fit-to-window or one-to-one viewport zoom"
+        )
+        self.zoom_button.setToolTip("Choose viewport zoom")
         self.zoom_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.zoom_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         zoom_menu = QMenu(self.zoom_button)
@@ -118,9 +122,11 @@ class ViewportOverlayBar(QWidget):
         self.snap_button = QToolButton(self)
         self.snap_button.setObjectName("viewport_snap_button")
         self.snap_button.setCheckable(True)
-        self.snap_button.setAccessibleName('Toggle vertex snapping')
-        self.snap_button.setAccessibleDescription('Enable or disable snapping edited vertices to the active grid')
-        self.snap_button.setToolTip('Toggle real vertex snapping')
+        self.snap_button.setAccessibleName("Toggle vertex snapping")
+        self.snap_button.setAccessibleDescription(
+            "Enable or disable snapping edited vertices to the active grid"
+        )
+        self.snap_button.setToolTip("Toggle real vertex snapping")
         self.snap_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.snap_button.toggled.connect(self._set_snap)
 
@@ -154,17 +160,17 @@ class ViewportOverlayBar(QWidget):
         self.snap_button.blockSignals(False)
         snap_state = f"{'On' if state.snap_enabled else 'Off'} ({state.snap_grid_size})"
         self.snap_button.setText(
-            f'Snap {snap_state}' if self._compact else f'Snap: {snap_state}'
+            f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
         )
         self.view_button.setAccessibleDescription(
-            f'Choose viewport rendering mode; current mode: {mode}'
+            f"Choose viewport rendering mode; current mode: {mode}"
         )
         self.zoom_button.setAccessibleDescription(
-            f'Choose viewport zoom; current zoom: {state.zoom:.2f}x'
+            f"Choose viewport zoom; current zoom: {state.zoom:.2f}x"
         )
         self.snap_button.setAccessibleDescription(
-            'Enable or disable snapping edited vertices to the active grid; '
-            f'current state: {snap_state}'
+            "Enable or disable snapping edited vertices to the active grid; "
+            f"current state: {snap_state}"
         )
 
 

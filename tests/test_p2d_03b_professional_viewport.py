@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from PySide6.QtCore import QEvent, QPointF, Qt
-from PySide6.QtGui import QKeyEvent
 import pytest
-
+from PySide6.QtCore import QEvent, Qt
+from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QApplication
 
 from src.core.scene_authoring_model import SceneAuthoringModel
@@ -19,8 +18,8 @@ from src.persistence.scene_authoring_schema import (
 )
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
-
 SHA = "d" * 64
+
 
 @pytest.fixture(scope="module")
 def qt_app():
@@ -50,7 +49,10 @@ def _view() -> SceneAuthoringViewport:
                 id="a", asset_id="asset", layer_id="layer", transform=_transform(0, 0)
             ),
             SceneObjectAuthoringRecord(
-                id="b", asset_id="asset", layer_id="layer", transform=_transform(100, 20)
+                id="b",
+                asset_id="asset",
+                layer_id="layer",
+                transform=_transform(100, 20),
             ),
         ],
         groups=[],
@@ -64,7 +66,9 @@ def _view() -> SceneAuthoringViewport:
     return view
 
 
-def _key(view: SceneAuthoringViewport, key: Qt.Key, modifiers=Qt.KeyboardModifier.NoModifier):
+def _key(
+    view: SceneAuthoringViewport, key: Qt.Key, modifiers=Qt.KeyboardModifier.NoModifier
+):
     event = QKeyEvent(QEvent.Type.KeyPress, key, modifiers)
     view.keyPressEvent(event)
     assert event.isAccepted()

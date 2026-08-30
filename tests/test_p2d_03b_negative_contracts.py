@@ -17,7 +17,6 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
 )
 
-
 SHA = "f" * 64
 
 
@@ -78,11 +77,19 @@ def test_duplicate_preflights_every_lock_kind_without_mutation(locked_kind: str)
         )
     elif locked_kind == "layer":
         session.model.document = session.document.model_copy(
-            update={"layers": [session.document.layers[0].model_copy(update={"locked": True})]}
+            update={
+                "layers": [
+                    session.document.layers[0].model_copy(update={"locked": True})
+                ]
+            }
         )
     else:
         session.model.document = session.document.model_copy(
-            update={"groups": [session.document.groups[0].model_copy(update={"locked": True})]}
+            update={
+                "groups": [
+                    session.document.groups[0].model_copy(update={"locked": True})
+                ]
+            }
         )
     session.set_selection(["a", "b"])
     before = session.document.model_copy(deep=True)
@@ -98,7 +105,9 @@ def test_duplicate_preflights_every_lock_kind_without_mutation(locked_kind: str)
 def test_delete_preflights_locked_group_without_mutation():
     session = _session(group=True)
     session.model.document = session.document.model_copy(
-        update={"groups": [session.document.groups[0].model_copy(update={"locked": True})]}
+        update={
+            "groups": [session.document.groups[0].model_copy(update={"locked": True})]
+        }
     )
     session.set_selection(["a", "b"])
     before = session.document.model_copy(deep=True)

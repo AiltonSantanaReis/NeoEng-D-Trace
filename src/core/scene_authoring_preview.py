@@ -122,7 +122,7 @@ def build_scene_authoring_preview(
     layers = {item.id: item for item in document.layers}
     projected_objects: list[ProjectedSceneObject] = []
     for item in ordered_scene_objects(document):
-        layer = layers[item.layer_id]
+        layers[item.layer_id]
         if not object_is_effectively_visible(
             document, item.id, isolated_group_id=isolated_group_id
         ):

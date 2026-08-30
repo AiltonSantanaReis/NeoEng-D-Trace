@@ -52,7 +52,8 @@ class SceneAuthoringAssetError(ProjectPersistenceError):
 
 def _canonical_json_bytes(document: SceneAuthoringDocument) -> bytes:
     payload = validate_scene_authoring_document(document).model_dump(mode="json")
-    # Keep legacy canonical bytes stable: omit only the new optional provenance field when absent.
+    # Keep legacy canonical bytes stable: omit only the new optional
+    # provenance field when absent.
     for asset in payload.get("assets", []):
         if asset.get("source_path") is None:
             asset.pop("source_path", None)

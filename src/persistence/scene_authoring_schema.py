@@ -166,6 +166,7 @@ class SceneGroupAuthoringRecordV2(SceneGroupAuthoringRecord):
 
     parent_group_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
 
+
 class SceneSnapRecord(StrictProjectModel):
     enabled: bool = False
     mode: Literal["pixel", "grid"] = "pixel"

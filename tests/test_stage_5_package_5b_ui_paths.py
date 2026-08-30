@@ -101,9 +101,7 @@ def test_mask_viewer_invalid_polygon_rolls_back_entire_batch(
     assert "invalid" in dialog.validation_label.text().lower()
 
 
-def test_mask_viewer_reports_exact_crossing_location(
-    qt_app, monkeypatch, messages
-):
+def test_mask_viewer_reports_exact_crossing_location(qt_app, monkeypatch, messages):
     scene = Scene()
     dialog, close = make_mask_dialog(qt_app, monkeypatch, scene)
     dialog._last_polygons = [
@@ -118,6 +116,8 @@ def test_mask_viewer_reports_exact_crossing_location(
     assert "1-2" in dialog.validation_label.text()
     assert "3-4" in dialog.validation_label.text()
     assert "5.0" in dialog.validation_label.text()
+
+
 def test_mask_viewer_allows_vertex_edit_until_all_polygons_are_valid(
     qt_app, monkeypatch, messages
 ):
@@ -181,6 +181,8 @@ def test_mask_viewer_context_edits_are_local_and_undoable(
     assert dialog._last_polygons[0]["polygon"][0] == (20, 20)
     assert scene.objects == {}
     assert close.call_count == 0
+
+
 def test_mask_viewer_rejected_result_does_not_claim_success(
     qt_app, monkeypatch, messages
 ):

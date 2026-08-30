@@ -9,7 +9,6 @@ import math
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
-from src.core.operational_limits import MAX_POLYGON_POINTS
 from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import (
     QAction,
@@ -29,11 +28,11 @@ from PySide6.QtWidgets import (
     QDialog,
     QDoubleSpinBox,
     QGroupBox,
-    QInputDialog,
     QHBoxLayout,
+    QInputDialog,
     QLabel,
-    QMessageBox,
     QMenu,
+    QMessageBox,
     QPushButton,
     QScrollArea,
     QSlider,
@@ -43,6 +42,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.core.operational_limits import MAX_POLYGON_POINTS
 from src.core.view_processor import ViewProcessor
 
 logger = logging.getLogger(__name__)
@@ -296,6 +296,7 @@ class MaskViewer(QWidget):
         self._refresh_polygon_validation()
         self.polygonsChanged.emit()
         self.update()
+
     def _polygon_points_at_index(self, index: int):
         if index < 0 or index >= len(self._overlay_polygons):
             return None
@@ -355,8 +356,7 @@ class MaskViewer(QWidget):
                 projection_x, projection_y = start_x, start_y
             else:
                 ratio = (
-                    (image_point.x() - start_x) * dx
-                    + (image_point.y() - start_y) * dy
+                    (image_point.x() - start_x) * dx + (image_point.y() - start_y) * dy
                 ) / length_squared
                 ratio = min(1.0, max(0.0, ratio))
                 projection_x = start_x + ratio * dx
@@ -417,8 +417,7 @@ class MaskViewer(QWidget):
                 int(round(point.y())),
             )
             for point in (
-                transform(QPointF(float(x), float(y)), center)
-                for x, y in polygon
+                transform(QPointF(float(x), float(y)), center) for x, y in polygon
             )
         ]
         self._emit_polygon_edit()
@@ -480,7 +479,9 @@ class MaskViewer(QWidget):
             radius = max(
                 20.0,
                 max(
-                    math.hypot(float(point[0]) - center.x(), float(point[1]) - center.y())
+                    math.hypot(
+                        float(point[0]) - center.x(), float(point[1]) - center.y()
+                    )
                     for point in polygon
                 ),
             )
@@ -496,10 +497,13 @@ class MaskViewer(QWidget):
         threshold = 10.0
         for mode, image_point in self._gizmo_handle_positions().items():
             handle = self.image_to_view(image_point)
-            if math.hypot(
-                handle.x() - view_point.x(),
-                handle.y() - view_point.y(),
-            ) <= threshold:
+            if (
+                math.hypot(
+                    handle.x() - view_point.x(),
+                    handle.y() - view_point.y(),
+                )
+                <= threshold
+            ):
                 return mode
         return None
 
@@ -596,9 +600,7 @@ class MaskViewer(QWidget):
             event.ignore()
             return
         local_position = (
-            event.position().toPoint()
-            if hasattr(event, "position")
-            else event.pos()
+            event.position().toPoint() if hasattr(event, "position") else event.pos()
         )
         self._context_vertex_index = -1
         vertex_hit = self._find_vertex_at(local_position)
@@ -616,14 +618,10 @@ class MaskViewer(QWidget):
         self._context_image_point = QPointF(*self.view_to_image(local_position))
 
         menu = QMenu(self)
-        add_action = menu.addAction(
-            "Add vertex / Adicionar vértice"
-        )
+        add_action = menu.addAction("Add vertex / Adicionar vértice")
         add_action.setEnabled(self._context_polygon_index >= 0)
         add_action.triggered.connect(self.add_context_vertex)
-        remove_action = menu.addAction(
-            "Remove vertex / Remover vértice"
-        )
+        remove_action = menu.addAction("Remove vertex / Remover vértice")
         polygon = self._polygon_points_at_index(self._context_polygon_index)
         remove_action.setEnabled(
             self._context_vertex_index >= 0
@@ -632,14 +630,10 @@ class MaskViewer(QWidget):
         )
         remove_action.triggered.connect(self.remove_context_vertex)
         menu.addSeparator()
-        scale_action = menu.addAction(
-            "Scale polygon… / Escalonar polígono…"
-        )
+        scale_action = menu.addAction("Scale polygon… / Escalonar polígono…")
         scale_action.setEnabled(self._context_polygon_index >= 0)
         scale_action.triggered.connect(self.scale_context_polygon)
-        rotate_action = menu.addAction(
-            "Rotate polygon… / Rotacionar polígono…"
-        )
+        rotate_action = menu.addAction("Rotate polygon… / Rotacionar polígono…")
         rotate_action.setEnabled(self._context_polygon_index >= 0)
         rotate_action.triggered.connect(self.rotate_context_polygon)
         menu.addSeparator()
@@ -651,9 +645,7 @@ class MaskViewer(QWidget):
         handles_action.setCheckable(True)
         handles_action.setChecked(self._show_polygon_handles)
         handles_action.triggered.connect(self.set_polygon_handles_visible)
-        diagnostics_action = menu.addAction(
-            "Show diagnostics / Exibir diagnósticos"
-        )
+        diagnostics_action = menu.addAction("Show diagnostics / Exibir diagnósticos")
         diagnostics_action.setCheckable(True)
         diagnostics_action.setChecked(self._show_polygon_diagnostics)
         diagnostics_action.triggered.connect(self.set_polygon_diagnostics_visible)
@@ -671,6 +663,7 @@ class MaskViewer(QWidget):
         )
         menu.exec(global_position)
         event.accept()
+
     def set_roi_mode(self, enabled: bool) -> None:
         """Enable rectangle selection for the assisted GrabCut workflow."""
         self._roi_mode = bool(enabled)
@@ -1123,15 +1116,14 @@ class MaskViewer(QWidget):
                         invalid_intersection_points = []
                         invalid_edge_indexes = []
                         if invalid and isinstance(poly_data, dict):
-                            validation_details = poly_data.get(
-                                "validation_details", {}
-                            )
+                            validation_details = poly_data.get("validation_details", {})
                             invalid_vertex_indexes = {
                                 index
                                 for index in validation_details.get(
                                     "invalid_vertices", []
                                 )
-                                if isinstance(index, int) and not isinstance(index, bool)
+                                if isinstance(index, int)
+                                and not isinstance(index, bool)
                             }
                             invalid_edge_indexes = validation_details.get(
                                 "invalid_edges", []
@@ -1201,13 +1193,17 @@ class MaskViewer(QWidget):
                                     painter.setBrush(QColor(255, 50, 50, 235))
                                     painter.drawEllipse(
                                         QPointF(
-                                            float(intersection[0]), float(intersection[1])
+                                            float(intersection[0]),
+                                            float(intersection[1]),
                                         ),
                                         5.5 / self._zoom,
                                         5.5 / self._zoom,
                                     )
 
-                        if i == self._selected_polygon_index and self._show_polygon_handles:
+                        if (
+                            i == self._selected_polygon_index
+                            and self._show_polygon_handles
+                        ):
                             handle_pen = QPen(QColor(255, 255, 255), 1)
                             handle_pen.setCosmetic(True)
                             painter.setPen(handle_pen)
@@ -1353,10 +1349,20 @@ class MaskViewerDialog(QDialog):
             "apply_error_title": "Apply Error",
             "apply_error": "Failed to apply polygons:\n{error}",
             "selected": "Selected polygon {index}",
-            "validation_summary": "Detected {count} polygons: {valid} valid, {invalid} invalid.",
+            "validation_summary": (
+                "Detected {count} polygons: {valid} valid, "
+                "{invalid} invalid."
+            ),
             "invalid_polygon": "Polygon {index}: {reason}",
-            "invalid_location": "Location: vertices {vertices}; edges {edges}; crossings {intersections}.",
-            "invalid_hint": "Invalid polygons have an orange body; red marks identify the exact invalid edges, vertices, or crossings. Drag vertices until all are valid.",
+            "invalid_location": (
+                "Location: vertices {vertices}; edges {edges}; "
+                "crossings {intersections}."
+            ),
+            "invalid_hint": (
+                "Invalid polygons have an orange body; red marks identify the "
+                "exact invalid edges, vertices, or crossings. Drag vertices "
+                "until all are valid."
+            ),
             "valid_hint": "All detected polygons are valid and ready to apply.",
         },
         "pt": {
@@ -1423,11 +1429,25 @@ class MaskViewerDialog(QDialog):
             "apply_error_title": "Erro ao Aplicar",
             "apply_error": "Falha ao aplicar polígonos:\n{error}",
             "selected": "Polígono {index} selecionado",
-            "validation_summary": "Detectados {count} polígonos: {valid} válidos, {invalid} inválidos.",
+            "validation_summary": (
+                "Detectados {count} polígonos: {valid} válidos, "
+                "{invalid} inválidos."
+            ),
             "invalid_polygon": "Polígono {index}: {reason}",
-            "invalid_location": "Localização: vértices {vertices}; arestas {edges}; cruzamentos {intersections}.",
-            "invalid_hint": "Polígonos inválidos têm o corpo laranja; o vermelho marca as arestas, vértices ou cruzamentos exatos. Arraste os vértices até que todos sejam válidos.",
-            "valid_hint": "Todos os polígonos detectados são válidos e podem ser aplicados.",
+            "invalid_location": (
+                "Localização: vértices {vertices}; arestas {edges}; "
+                "cruzamentos {intersections}."
+            ),
+            "invalid_hint": (
+                "Polígonos inválidos têm o corpo laranja; o vermelho marca as "
+                "arestas, vértices ou cruzamentos exatos. Arraste os vértices "
+                "até que todos sejam "
+                "válidos."
+            ),
+            "valid_hint": (
+                "Todos os polígonos detectados são válidos e podem ser "
+                "aplicados."
+            ),
         },
     }
 
@@ -1743,10 +1763,14 @@ class MaskViewerDialog(QDialog):
             return reason
         translations = {
             "fewer than 3 distinct vertices": "menos de 3 vértices distintos",
-            "contains duplicate consecutive vertices": "contém vértices consecutivos duplicados",
+            "contains duplicate consecutive vertices": (
+                "contém vértices consecutivos duplicados"
+            ),
             "has zero area": "tem área zero",
             "has self-intersecting edges": "possui arestas que se cruzam",
-            "does not satisfy the scene polygon contract": "não atende ao contrato geométrico da cena",
+            "does not satisfy the scene polygon contract": (
+                "não atende ao contrato geométrico da cena"
+            ),
         }
         return translations.get(reason, reason)
 
@@ -1764,9 +1788,7 @@ class MaskViewerDialog(QDialog):
         edge_labels = []
         for edge_entry in details.get("invalid_edges", []):
             edge_indexes = (
-                edge_entry
-                if isinstance(edge_entry, (list, tuple))
-                else [edge_entry]
+                edge_entry if isinstance(edge_entry, (list, tuple)) else [edge_entry]
             )
             for edge_index in edge_indexes:
                 if (
@@ -1781,14 +1803,14 @@ class MaskViewerDialog(QDialog):
         intersections = "; ".join(
             f"({float(point[0]):.1f}, {float(point[1]):.1f})"
             for point in details.get("invalid_intersections", [])
-            if isinstance(point, (list, tuple))
-            and len(point) == 2
+            if isinstance(point, (list, tuple)) and len(point) == 2
         )
         return self.t["invalid_location"].format(
             vertices=vertices or "—",
             edges=", ".join(edge_labels) or "—",
             intersections=intersections or "—",
         )
+
     def _update_polygon_validation_feedback(self) -> None:
         if self.viewer._overlay_polygons is not self._last_polygons:
             self.viewer.set_overlay_polygons(self._last_polygons)
@@ -1805,11 +1827,16 @@ class MaskViewerDialog(QDialog):
         ]
         if invalid_count:
             for index, polygon_data in enumerate(self._last_polygons):
-                if isinstance(polygon_data, dict) and polygon_data.get("is_valid") is False:
+                if (
+                    isinstance(polygon_data, dict)
+                    and polygon_data.get("is_valid") is False
+                ):
                     reason = self._localized_polygon_reason(
                         str(polygon_data.get("validation_error", "invalid geometry"))
                     )
-                    lines.append(self.t["invalid_polygon"].format(index=index + 1, reason=reason))
+                    lines.append(
+                        self.t["invalid_polygon"].format(index=index + 1, reason=reason)
+                    )
                     lines.append(self._polygon_validation_location(polygon_data))
             lines.append(self.t["invalid_hint"])
         else:
@@ -1819,7 +1846,6 @@ class MaskViewerDialog(QDialog):
 
     def _on_overlay_polygons_changed(self) -> None:
         self._update_polygon_validation_feedback()
-
 
     def update_language(self, lang: str):
         self.current_lang = lang if lang in self.TRANSLATIONS else "en"

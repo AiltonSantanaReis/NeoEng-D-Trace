@@ -125,9 +125,7 @@ def test_combine_adapter_results_is_deterministic() -> None:
                 "palette",
             ),
         ),
-        historical_evidence=(
-            HistoricalEvidence("z-history", "ref-z", "Z context"),
-        ),
+        historical_evidence=(HistoricalEvidence("z-history", "ref-z", "Z context"),),
     )
     second = AdapterResult(
         adapter_name="a-adapter",
@@ -143,9 +141,7 @@ def test_combine_adapter_results_is_deterministic() -> None:
                 "layout",
             ),
         ),
-        historical_evidence=(
-            HistoricalEvidence("a-history", "ref-a", "A context"),
-        ),
+        historical_evidence=(HistoricalEvidence("a-history", "ref-a", "A context"),),
     )
 
     combined = combine_adapter_results(

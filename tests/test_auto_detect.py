@@ -142,7 +142,6 @@ class TestAutoDetect(unittest.TestCase):
         with self.assertRaises(ValueError):
             auto_detect.detect_polygons(self.image, mode="unknown_mode")
 
-
     def test_polygon_validation_diagnostics_are_specific_without_repairing(self):
         valid_details = auto_detect.polygon_validation_details(
             [(0, 0), (0, 10), (10, 0)]
@@ -166,15 +165,13 @@ class TestAutoDetect(unittest.TestCase):
         self.assertEqual(
             duplicate_details["invalid_vertices"],
             [1, 2],
-        self.assertEqual(duplicate_details["invalid_edges"], [[1]])
+            self.assertEqual(duplicate_details["invalid_edges"], [[1]]),
         )
         self.assertIsNone(
             auto_detect.polygon_validation_error([(0, 0), (0, 10), (10, 0)])
         )
         self.assertEqual(
-            auto_detect.polygon_validation_error(
-                [(0, 0), (10, 10), (0, 10), (10, 0)]
-            ),
+            auto_detect.polygon_validation_error([(0, 0), (10, 10), (0, 10), (10, 0)]),
             "has self-intersecting edges",
         )
         self.assertEqual(

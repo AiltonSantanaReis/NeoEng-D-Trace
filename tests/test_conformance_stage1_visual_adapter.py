@@ -16,7 +16,6 @@ from scripts.conformance import (
     run_adapter,
 )
 
-
 _ATOMIC_CHECKS = {
     "required_token_schema": True,
     "hex_colors_valid": True,
@@ -120,7 +119,9 @@ def test_stage1_visual_adapter_propagates_atomic_failure_with_evidence() -> None
     payload["evidence"]["contrast_ratios"]["primary_on_window"] = 2.1
 
     result = run_adapter(Stage1VisualSystemAdapter(), payload, context=_context())
-    failures = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    failures = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
 
     assert [check.check_id for check in failures] == [
         "V-CONTRAST_STAGE1_PRIMARY_TEXT-001"
@@ -135,7 +136,9 @@ def test_stage1_visual_adapter_is_fail_closed_for_missing_expected_atom() -> Non
     del payload["checks"]["qss_required_states"]
 
     result = run_adapter(Stage1VisualSystemAdapter(), payload, context=_context())
-    failures = [check for check in result.checks if check.status == ConformanceStatus.FAIL]
+    failures = [
+        check for check in result.checks if check.status == ConformanceStatus.FAIL
+    ]
 
     assert [check.check_id for check in failures] == [
         "V-VISUAL_STATE_STAGE1_QSS_REQUIRED_STATES-001"

@@ -19,7 +19,6 @@ from src.persistence.project_schema import (
 )
 from src.persistence.scene_authoring_schema import SceneObjectAuthoringRecord
 
-
 SCENE_CLIPBOARD_MIME = "application/x-neoeng-d-trace-scene-objects"
 SCENE_CLIPBOARD_FORMAT_ID = "neoeng-d-trace-scene-objects"
 SCENE_CLIPBOARD_SCHEMA_VERSION = 1
@@ -71,7 +70,10 @@ class SceneClipboardPayload(StrictProjectModel):
                 raise ValueError("clipboard group references an uncopied object")
         known_groups = set(group_ids)
         for group in self.groups:
-            if group.parent_group_id is not None and group.parent_group_id not in known_groups:
+            if (
+                group.parent_group_id is not None
+                and group.parent_group_id not in known_groups
+            ):
                 raise ValueError("clipboard group references an uncopied parent")
         for group in self.groups:
             seen = {group.id}
@@ -80,9 +82,7 @@ class SceneClipboardPayload(StrictProjectModel):
                 if current in seen:
                     raise ValueError("clipboard group hierarchy contains a cycle")
                 seen.add(current)
-                parent = next(
-                    item for item in self.groups if item.id == current
-                )
+                parent = next(item for item in self.groups if item.id == current)
                 current = parent.parent_group_id
         return self
 

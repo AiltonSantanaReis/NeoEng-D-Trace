@@ -30,8 +30,7 @@ def test_capture_schema_uses_visible_chrome_and_semantic_commands(qt_app):
         assert CAPTURE_SCHEMA_VERSION == 4
         assert "reference_top_toolbar" in snapshot
         assert (
-            snapshot["reference_top_toolbar"]["object_name"]
-            == "reference_top_toolbar"
+            snapshot["reference_top_toolbar"]["object_name"] == "reference_top_toolbar"
         )
         assert {"toolbar", "nav_toolbar", "xray_toolbar"}.isdisjoint(snapshot)
 

@@ -22,7 +22,6 @@ from src.persistence.scene_authoring_schema import (
 )
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
-
 SHA = "b" * 64
 
 
@@ -50,13 +49,22 @@ def _document() -> SceneAuthoringDocumentV1:
         layers=[SceneLayerAuthoringRecord(id="background", name="Background")],
         objects=[
             SceneObjectAuthoringRecord(
-                id="a", asset_id="asset", layer_id="background", transform=_transform(0, 0)
+                id="a",
+                asset_id="asset",
+                layer_id="background",
+                transform=_transform(0, 0),
             ),
             SceneObjectAuthoringRecord(
-                id="b", asset_id="asset", layer_id="background", transform=_transform(100, 0)
+                id="b",
+                asset_id="asset",
+                layer_id="background",
+                transform=_transform(100, 0),
             ),
             SceneObjectAuthoringRecord(
-                id="c", asset_id="asset", layer_id="background", transform=_transform(200, 0)
+                id="c",
+                asset_id="asset",
+                layer_id="background",
+                transform=_transform(200, 0),
             ),
         ],
         groups=[],
@@ -65,7 +73,9 @@ def _document() -> SceneAuthoringDocumentV1:
 
 def _viewport(qt_app) -> SceneAuthoringViewport:
     del qt_app
-    view = SceneAuthoringViewport(SceneAuthoringSession(SceneAuthoringModel(_document())))
+    view = SceneAuthoringViewport(
+        SceneAuthoringSession(SceneAuthoringModel(_document()))
+    )
     view.resize(640, 480)
     view.set_geometry("a", [(-20, -20), (20, -20), (20, 20), (-20, 20)])
     view.set_geometry("b", [(-20, -20), (20, -20), (20, 20), (-20, 20)])
@@ -75,7 +85,11 @@ def _viewport(qt_app) -> SceneAuthoringViewport:
     return view
 
 
-def _click(view: SceneAuthoringViewport, object_id: str, modifiers=Qt.KeyboardModifier.NoModifier):
+def _click(
+    view: SceneAuthoringViewport,
+    object_id: str,
+    modifiers=Qt.KeyboardModifier.NoModifier,
+):
     view._object_pressed(object_id, QPointF(0, 0), modifiers)
     view._object_released(object_id, QPointF(0, 0))
 
@@ -169,6 +183,7 @@ def test_marquee_modifier_selection_and_select_all(qt_app):
     finally:
         view.close()
 
+
 def test_hidden_objects_are_not_reintroduced_by_marquee_or_select_all(qt_app):
     view = _viewport(qt_app)
     try:
@@ -178,9 +193,12 @@ def test_hidden_objects_are_not_reintroduced_by_marquee_or_select_all(qt_app):
 
         view._marquee_selection_before = ("a",)
         view._marquee_primary_before = "a"
-        assert view._apply_marquee_selection(
-            QPointF(-25, -25), QPointF(25, 25), Qt.KeyboardModifier.ShiftModifier
-        ) == ()
+        assert (
+            view._apply_marquee_selection(
+                QPointF(-25, -25), QPointF(25, 25), Qt.KeyboardModifier.ShiftModifier
+            )
+            == ()
+        )
         assert view._select_all_visible() == ()
         assert view.session.selection.ids == ()
     finally:

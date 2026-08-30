@@ -156,9 +156,7 @@ def test_gizmo_control_roundtrips_state_and_feedback_avoids_gizmo(qt_app):
     try:
         window.show()
         qt_app.processEvents()
-        assert (
-            window.act_gizmo in window.top_command_contract.items("context")
-        )
+        assert window.act_gizmo in window.top_command_contract.items("context")
         assert window.act_gizmo.objectName() == "gizmo_action"
         assert window.act_gizmo.property("accessibleName")
 

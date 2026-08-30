@@ -50,15 +50,15 @@ class SidePanel(QWidget):
         self._last_validation_selection_marker = None
 
         self.list = QListWidget()
-        self.list.setObjectName('scene_objects_list')
-        self.list.setAccessibleName('Scene objects list')
-        self.list.setAccessibleDescription('Select an object to inspect or edit it')
+        self.list.setObjectName("scene_objects_list")
+        self.list.setAccessibleName("Scene objects list")
+        self.list.setAccessibleDescription("Select an object to inspect or edit it")
         self.search_input = QLineEdit()
         self.search_input.setObjectName("objects_search")
         self.search_input.setPlaceholderText("Search objects")
-        self.search_input.setAccessibleName('Search scene objects')
-        self.search_input.setAccessibleDescription('Filter scene objects by name or ID')
-        self.search_input.setToolTip('Filter objects by name or ID')
+        self.search_input.setAccessibleName("Search scene objects")
+        self.search_input.setAccessibleDescription("Filter scene objects by name or ID")
+        self.search_input.setToolTip("Filter objects by name or ID")
         self.search_input.textChanged.connect(self.refresh)
         self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._show_context_menu)
@@ -192,12 +192,14 @@ class SidePanel(QWidget):
         metadata_group = QGroupBox("Metadata / Scenario")
         metadata_layout = QVBoxLayout(metadata_group)
         metadata_layout.addWidget(self.metadata_label)
-        scenario_button = QPushButton('Open Scenario Editor')
-        scenario_button.setObjectName('open_scenario_editor_from_inspector')
+        scenario_button = QPushButton("Open Scenario Editor")
+        scenario_button.setObjectName("open_scenario_editor_from_inspector")
         self.open_scenario_editor_button = scenario_button
-        scenario_button.setAccessibleName('Open Scenario Editor')
-        scenario_button.setAccessibleDescription('Open the separate scenario authoring editor')
-        scenario_button.setToolTip('Open the scenario editor')
+        scenario_button.setAccessibleName("Open Scenario Editor")
+        scenario_button.setAccessibleDescription(
+            "Open the separate scenario authoring editor"
+        )
+        scenario_button.setToolTip("Open the scenario editor")
         scenario_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         scenario_button.clicked.connect(
             lambda: getattr(self.window(), "open_scenario_editor", lambda: None)()
@@ -354,9 +356,9 @@ class SidePanel(QWidget):
             button.toggled.connect(action.setChecked)
             toolbar_button = toolbar.widgetForAction(action)
             if toolbar_button is not None:
-                toolbar_button.setObjectName(f'{name}_{key}_button')
+                toolbar_button.setObjectName(f"{name}_{key}_button")
                 toolbar_button.setAccessibleName(button.text())
-                toolbar_button.setAccessibleDescription(f'Activate {button.text()}')
+                toolbar_button.setAccessibleDescription(f"Activate {button.text()}")
                 toolbar_button.setToolTip(button.text())
                 toolbar_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         return toolbar
@@ -432,6 +434,7 @@ class SidePanel(QWidget):
         self.slider.setAccessibleDescription(labels["slider"])
         self.slider.setToolTip(labels["slider"])
         self.slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
     def _sync_action_toolbar_texts(self) -> None:
         for toolbar, buttons in self._toolbar_bindings:
             for action, button in zip(toolbar.actions(), buttons):
@@ -439,7 +442,7 @@ class SidePanel(QWidget):
                 action.setToolTip(button.text())
                 action.setStatusTip(button.text())
                 action.setEnabled(button.isEnabled())
-                action.setProperty('accessibleName', button.text())
+                action.setProperty("accessibleName", button.text())
                 toolbar_button = toolbar.widgetForAction(action)
                 if toolbar_button is not None:
                     toolbar_button.setAccessibleName(button.text())
@@ -958,9 +961,11 @@ class SidePanel(QWidget):
         self.btn_apply.setText(t["apply"])
         self.btn_cancel.setText(t["cancel"])
         self.btn_export.setText(t["export_mask"])
-        self.btn_export_now.setText(t['export_sprite'])
-        self.open_scenario_editor_button.setAccessibleName(self.open_scenario_editor_button.text())
-        self.open_scenario_editor_button.setToolTip('Open the scenario editor')
+        self.btn_export_now.setText(t["export_sprite"])
+        self.open_scenario_editor_button.setAccessibleName(
+            self.open_scenario_editor_button.text()
+        )
+        self.open_scenario_editor_button.setToolTip("Open the scenario editor")
         self._configure_accessibility_controls()
         # Update collision button state
         self._update_button_states()
