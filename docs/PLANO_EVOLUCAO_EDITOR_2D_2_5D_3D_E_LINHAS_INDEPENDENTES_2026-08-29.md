@@ -125,7 +125,7 @@ P2D-03C foi aberta a partir do checkpoint limpo `78f773583b0277fa9b970d1f849538b
 
 P2D-04 foi tecnicamente qualificada no commit b9e9043f98c58752e8e322a7627b4d17e145d6d3, recebeu correções de governança e cobertura nos commits posteriores da mesma linha, e foi publicada pela PR #163. O merge commit efetivo em main é f55b07b85ef2cf65160f2c10ffac5e63b45732ac; os checks protegidos Linux/Windows passaram e a sincronização pós-merge foi reproduzida localmente. O snapshot técnico e o adendo de publicação são mantidos separados para preservar a cronologia.
 
-P2D-05 foi aberta formalmente neste checkpoint, exclusivamente para performance, limites, formatos e erros da fundação já existente. A decisão está em DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md. O status é OPEN — decisão/contrato; implementação e qualificação dependem do aceite explícito do proprietário. Nenhum workstream de tilemap, colisão, NavMesh, entidades/prefabs ou FX pode ser iniciado por esta abertura.
+P2D-05 foi aberta formalmente neste checkpoint, exclusivamente para performance, limites, formatos e erros da fundação já existente. A decisão está em DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md e foi aceita pelo proprietário em 30/08/2026. O status atual é ACCEPTED FOR IMPLEMENTATION — qualificação pendente; a implementação controlada está isolada na branch local `p2d-05-quality-hardening`, sem commit técnico nem publicação remota autorizados. Nenhum workstream de tilemap, colisão, NavMesh, entidades/prefabs ou FX pode ser iniciado por esta abertura.
 
 ## 4. Arquitetura de extensão 2.5D/3D
 
@@ -244,7 +244,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits; P2D-03C está ACCEPTED / CLOSED; P2D-04 está ACCEPTED / CLOSED no merge f55b07b8; P2D-05 está OPEN — decisão/contrato. As cinco linhas avançadas continuam documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits; P2D-03C está ACCEPTED / CLOSED; P2D-04 está ACCEPTED / CLOSED no merge f55b07b8; P2D-05 está ACCEPTED FOR IMPLEMENTATION — qualificação pendente. As cinco linhas avançadas continuam documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;

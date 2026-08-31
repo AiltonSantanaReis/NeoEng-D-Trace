@@ -1,0 +1,568 @@
+{
+  "branch": "p2d-05-quality-hardening",
+  "environment": {
+    "logical_cpu_count": 16,
+    "machine": "AMD64",
+    "os": "Windows",
+    "os_release": "10",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "python": "3.11.9",
+    "qt_qpa_platform": "default"
+  },
+  "kind": "p2d-05-performance-report",
+  "normative_performance_status": "MEASURED_ONLY_PENDING_EXPLICIT_EDITOR_BUDGET_ACCEPTANCE",
+  "run_at_utc": "2026-08-30T21:53:02.205715+00:00",
+  "runtime_reference": {
+    "fps": 60,
+    "frame_p95_ms": 16.7,
+    "status": "existing_runtime_contract; not measured by this editor benchmark"
+  },
+  "schema_version": 1,
+  "source_commit": "fc59ff571e4e4d99ddd40a8ec318d50b8edd77f3",
+  "status": "PASS",
+  "tracked_changes": [
+    "docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md",
+    "docs/PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md",
+    "src/core/logger.py",
+    "src/exporters/scene_authoring_export.py",
+    "src/persistence/scene_authoring_io.py",
+    "src/ui/scenario_authoring_actions.py",
+    "src/ui/scenario_editor_window.py",
+    "src/ui/scenario_panel.py",
+    "src/ui/scene_asset_panel.py",
+    "src/ui/scene_authoring_group_stack.py",
+    "src/ui/scene_authoring_inspector.py",
+    "src/ui/scene_authoring_layer_stack.py",
+    "src/ui/scene_authoring_viewport.py"
+  ],
+  "workloads": [
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 3064,
+            "repeat_equal": true,
+            "sha256": "f48fde0ffc281226a07009f4ac05fd7351caff9e97189c01fa617e0f4c714659"
+          },
+          "godot": {
+            "bytes": 3069,
+            "repeat_equal": true,
+            "sha256": "9d46384c29eb0a483593b829446af51a90adc65dd4db45f4c01bca64b6686537"
+          },
+          "unity": {
+            "bytes": 3069,
+            "repeat_equal": true,
+            "sha256": "8ec3f8eb35d950c1a0840c8541d3943340e1858bbf62e1972e33fa77c1ad3a76"
+          }
+        },
+        "scene_bytes": 1970,
+        "scene_repeat_equal": true,
+        "scene_sha256": "eabc639e4f9af416432e42c530460edaafacc40ffbf9c24bce3304092652111c"
+      },
+      "error_count": 0,
+      "iterations": 20,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.085110000167333,
+            "p50_ms": 1.0629999997036066,
+            "p95_ms": 1.2043000006087823,
+            "p99_ms": 1.3644000009662705,
+            "sample_count": 20,
+            "worst_ms": 1.3644000009662705
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.807045000114158,
+            "p50_ms": 11.774399999922025,
+            "p95_ms": 12.08510000105889,
+            "p99_ms": 12.244399998962763,
+            "sample_count": 20,
+            "worst_ms": 12.244399998962763
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 12.04017499994734,
+            "p50_ms": 11.959900000874768,
+            "p95_ms": 12.469100000089384,
+            "p99_ms": 12.569699998493888,
+            "sample_count": 20,
+            "worst_ms": 12.569699998493888
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.80212000017491,
+            "p50_ms": 11.705799999617739,
+            "p95_ms": 12.272399999346817,
+            "p99_ms": 12.906400001156726,
+            "sample_count": 20,
+            "worst_ms": 12.906400001156726
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.546240000265243,
+            "p50_ms": 2.4582999994890997,
+            "p95_ms": 2.841900000930764,
+            "p99_ms": 2.874899999369518,
+            "sample_count": 20,
+            "worst_ms": 2.874899999369518
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.4067149999136745,
+            "p50_ms": 4.396899999846937,
+            "p95_ms": 4.694600000220817,
+            "p99_ms": 4.754900000989437,
+            "sample_count": 20,
+            "worst_ms": 4.754900000989437
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.7741949999835924,
+            "p50_ms": 2.609499999380205,
+            "p95_ms": 2.8442000002542045,
+            "p99_ms": 5.599699999947916,
+            "sample_count": 20,
+            "worst_ms": 5.599699999947916
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 12.351324999963254,
+            "p50_ms": 12.26920000044629,
+            "p95_ms": 12.794700000085868,
+            "p99_ms": 12.824000001273816,
+            "sample_count": 20,
+            "worst_ms": 12.824000001273816
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.9975949998988654,
+            "p50_ms": 0.9943000004568603,
+            "p95_ms": 1.0335999995731981,
+            "p99_ms": 1.0505999998713378,
+            "sample_count": 20,
+            "worst_ms": 1.0505999998713378
+          }
+        }
+      },
+      "memory_tracemalloc_bytes": {
+        "final_bytes": 71222,
+        "initial_bytes": 0,
+        "peak_bytes": 1121244
+      },
+      "prolonged_session_memory": {
+        "error_count": 0,
+        "errors": [],
+        "first_bytes": 91666,
+        "growth_bytes": 376,
+        "interpretation": "observational retained-memory checkpoints; not a standalone leak verdict",
+        "iterations": 100,
+        "last_bytes": 92042,
+        "non_decreasing_steps": 10,
+        "observed_pattern": "all_sample_steps_non_decreasing",
+        "peak_bytes": 92042,
+        "sample_every": 10,
+        "samples_bytes": [
+          91666,
+          91694,
+          91722,
+          91750,
+          91778,
+          91838,
+          91866,
+          91894,
+          91922,
+          92014,
+          92042
+        ]
+      },
+      "warmup_iterations": 2,
+      "workload": {
+        "description": "bounded measurement workload; not a new product ceiling",
+        "id": "small",
+        "input_sha256": "eabc639e4f9af416432e42c530460edaafacc40ffbf9c24bce3304092652111c",
+        "is_product_limit": false,
+        "object_count": 1,
+        "scene_bytes": 1970
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 44748,
+            "repeat_equal": true,
+            "sha256": "d0138b5e84989d110731dbc78fcf7d75f4e123a3d7a683966051ec80e0e2f688"
+          },
+          "godot": {
+            "bytes": 44753,
+            "repeat_equal": true,
+            "sha256": "4f86b116ea85edff8081f0bd364a3b7179d113e09dc341d10c9d181326757cbf"
+          },
+          "unity": {
+            "bytes": 44753,
+            "repeat_equal": true,
+            "sha256": "93a2b3104fcdde14e04c3827ff850bdabede15cf6a281c35bb33d2f9119f5cae"
+          }
+        },
+        "scene_bytes": 39748,
+        "scene_repeat_equal": true,
+        "scene_sha256": "2cbdd7af26ae522605f2afba9797976f5b7b732382310746b18396b1b3e9e523"
+      },
+      "error_count": 0,
+      "iterations": 20,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.453190000222094,
+            "p50_ms": 14.406500000404776,
+            "p95_ms": 14.67650000085996,
+            "p99_ms": 14.681600001495099,
+            "sample_count": 20,
+            "worst_ms": 14.681600001495099
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 81.88235999996323,
+            "p50_ms": 81.6393999994034,
+            "p95_ms": 83.02419999927224,
+            "p99_ms": 83.43100000092818,
+            "sample_count": 20,
+            "worst_ms": 83.43100000092818
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 81.97222499984491,
+            "p50_ms": 81.8717000001925,
+            "p95_ms": 83.01169999867852,
+            "p99_ms": 83.01690000007511,
+            "sample_count": 20,
+            "worst_ms": 83.01690000007511
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 83.14450499992745,
+            "p50_ms": 82.01030000054743,
+            "p95_ms": 87.89310000065598,
+            "p99_ms": 101.72689999853901,
+            "sample_count": 20,
+            "worst_ms": 101.72689999853901
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.086260000414768,
+            "p50_ms": 6.979300000239164,
+            "p95_ms": 7.3551999994379,
+            "p99_ms": 7.879700000557932,
+            "sample_count": 20,
+            "worst_ms": 7.879700000557932
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 38.02046499986318,
+            "p50_ms": 37.80410000035772,
+            "p95_ms": 39.26279999905091,
+            "p99_ms": 39.467799999329145,
+            "sample_count": 20,
+            "worst_ms": 39.467799999329145
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.02354999984891,
+            "p50_ms": 7.023599999229191,
+            "p95_ms": 7.101900000634487,
+            "p99_ms": 7.186199998614029,
+            "sample_count": 20,
+            "worst_ms": 7.186199998614029
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 41.46507500008738,
+            "p50_ms": 41.38440000133414,
+            "p95_ms": 42.43459999997867,
+            "p99_ms": 42.532999999821186,
+            "sample_count": 20,
+            "worst_ms": 42.532999999821186
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.44096499976513,
+            "p50_ms": 16.43560000047728,
+            "p95_ms": 16.68020000033721,
+            "p99_ms": 16.81069999904139,
+            "sample_count": 20,
+            "worst_ms": 16.81069999904139
+          }
+        }
+      },
+      "memory_tracemalloc_bytes": {
+        "final_bytes": 605461,
+        "initial_bytes": 0,
+        "peak_bytes": 1683445
+      },
+      "prolonged_session_memory": {
+        "error_count": 0,
+        "errors": [],
+        "first_bytes": 1200249,
+        "growth_bytes": 408,
+        "interpretation": "observational retained-memory checkpoints; not a standalone leak verdict",
+        "iterations": 100,
+        "last_bytes": 1200657,
+        "non_decreasing_steps": 10,
+        "observed_pattern": "all_sample_steps_non_decreasing",
+        "peak_bytes": 1200657,
+        "sample_every": 10,
+        "samples_bytes": [
+          1200249,
+          1200281,
+          1200309,
+          1200337,
+          1200365,
+          1200425,
+          1200453,
+          1200481,
+          1200509,
+          1200601,
+          1200657
+        ]
+      },
+      "warmup_iterations": 2,
+      "workload": {
+        "description": "bounded measurement workload; not a new product ceiling",
+        "id": "reference",
+        "input_sha256": "2cbdd7af26ae522605f2afba9797976f5b7b732382310746b18396b1b3e9e523",
+        "is_product_limit": false,
+        "object_count": 64,
+        "scene_bytes": 39748
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 87129,
+            "repeat_equal": true,
+            "sha256": "52b959de6ad43f37b5936a4294b6e8902b7814019dbb36ebc9e42e004dd5adb1"
+          },
+          "godot": {
+            "bytes": 87134,
+            "repeat_equal": true,
+            "sha256": "88332b5e646f86efd2657743559d372fc5a19bbcdcab03048767c01770e758b1"
+          },
+          "unity": {
+            "bytes": 87134,
+            "repeat_equal": true,
+            "sha256": "a51046fba208afe8cd6fc3e5490ba739ae4c6307f5ed707f8368af82ab9355fc"
+          }
+        },
+        "scene_bytes": 78161,
+        "scene_repeat_equal": true,
+        "scene_sha256": "3ed0e9a5555d1a16b8032caf30a3317833a6670cbc4be11968265fc196a05393"
+      },
+      "error_count": 0,
+      "iterations": 20,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 28.50240499992651,
+            "p50_ms": 28.224100000443286,
+            "p95_ms": 29.557199999544537,
+            "p99_ms": 31.50639999876148,
+            "sample_count": 20,
+            "worst_ms": 31.50639999876148
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 150.99522999980763,
+            "p50_ms": 150.90189999864378,
+            "p95_ms": 154.49500000067928,
+            "p99_ms": 154.90129999852797,
+            "sample_count": 20,
+            "worst_ms": 154.90129999852797
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 156.14579000030062,
+            "p50_ms": 150.53459999944607,
+            "p95_ms": 185.20619999981136,
+            "p99_ms": 201.3492000005499,
+            "sample_count": 20,
+            "worst_ms": 201.3492000005499
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 170.1805499999864,
+            "p50_ms": 153.2709999992221,
+            "p95_ms": 220.47490000113612,
+            "p99_ms": 222.30540000055043,
+            "sample_count": 20,
+            "worst_ms": 222.30540000055043
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.746845000197936,
+            "p50_ms": 11.751100000765291,
+            "p95_ms": 11.905200000910554,
+            "p99_ms": 11.925900000278489,
+            "sample_count": 20,
+            "worst_ms": 11.925900000278489
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 73.41619500020897,
+            "p50_ms": 72.29480000023614,
+            "p95_ms": 76.02140000017243,
+            "p99_ms": 84.8175999999512,
+            "sample_count": 20,
+            "worst_ms": 84.8175999999512
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.68888500014873,
+            "p50_ms": 11.643399999229587,
+            "p95_ms": 11.885399999300716,
+            "p99_ms": 12.323599999945145,
+            "sample_count": 20,
+            "worst_ms": 12.323599999945145
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 65.0061649998861,
+            "p50_ms": 63.23359999987588,
+            "p95_ms": 73.21849999971164,
+            "p99_ms": 79.0171000007831,
+            "sample_count": 20,
+            "worst_ms": 79.0171000007831
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 32.433585000217136,
+            "p50_ms": 32.390500000474276,
+            "p95_ms": 32.72889999971085,
+            "p99_ms": 33.03779999987455,
+            "sample_count": 20,
+            "worst_ms": 33.03779999987455
+          }
+        }
+      },
+      "memory_tracemalloc_bytes": {
+        "final_bytes": 1098640,
+        "initial_bytes": 0,
+        "peak_bytes": 3227336
+      },
+      "prolonged_session_memory": {
+        "error_count": 0,
+        "errors": [],
+        "first_bytes": 2283188,
+        "growth_bytes": 408,
+        "interpretation": "observational retained-memory checkpoints; not a standalone leak verdict",
+        "iterations": 100,
+        "last_bytes": 2283596,
+        "non_decreasing_steps": 10,
+        "observed_pattern": "all_sample_steps_non_decreasing",
+        "peak_bytes": 2283596,
+        "sample_every": 10,
+        "samples_bytes": [
+          2283188,
+          2283220,
+          2283248,
+          2283276,
+          2283304,
+          2283364,
+          2283392,
+          2283420,
+          2283448,
+          2283540,
+          2283596
+        ]
+      },
+      "warmup_iterations": 2,
+      "workload": {
+        "description": "bounded measurement workload; not a new product ceiling",
+        "id": "bounded-stress",
+        "input_sha256": "3ed0e9a5555d1a16b8032caf30a3317833a6670cbc4be11968265fc196a05393",
+        "is_product_limit": false,
+        "object_count": 128,
+        "scene_bytes": 78161
+      }
+    }
+  ]
+}

@@ -33,6 +33,8 @@ from src.exporters.scene_authoring_export import (
     SceneExportTarget,
     save_scene_authoring_export,
 )
+from src.persistence.errors import ProjectPersistenceError
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.scene_authoring_io import (
     SceneAuthoringAssetError,
     SceneAuthoringFormatError,
@@ -475,14 +477,13 @@ class ScenarioEditorWindow(QMainWindow):
             candidate = load_scene_authoring_recovery(
                 self.professional_scene_path, verify_assets=False
             )
-        except (
-            OSError,
-            ValueError,
-            SceneAuthoringFormatError,
-            SceneAuthoringReadError,
-            SceneAuthoringValidationError,
-        ) as exc:
-            self.status_label.setText(f"Scenario recovery failed: {exc}")
+        except (OSError, ValueError, ProjectPersistenceError) as exc:
+            self.status_label.setText(
+                "Scenario recovery failed: "
+                + user_error_message(
+                    exc, operation="recovery", language=self.current_lang
+                )
+            )
             return False
         if isinstance(candidate, SceneAuthoringDocumentV1):
             self._pending_v1_document = candidate
@@ -512,8 +513,11 @@ class ScenarioEditorWindow(QMainWindow):
             self.professional_session.mark_saved()
             self.status_label.setText("Scenario saved")
             return True
-        except (OSError, ValueError) as exc:
-            self.status_label.setText(f"Scenario save failed: {exc}")
+        except (OSError, ValueError, ProjectPersistenceError) as exc:
+            self.status_label.setText(
+                "Scenario save failed: "
+                + user_error_message(exc, operation="save", language=self.current_lang)
+            )
             return False
 
     def _load_professional(self) -> bool:
@@ -555,7 +559,10 @@ class ScenarioEditorWindow(QMainWindow):
                 recovery = scene_authoring_recovery_path(self.professional_scene_path)
                 self.status_label.setText(
                     "Scenario reload failed: "
-                    f"{exc}. "
+                    + user_error_message(
+                        exc, operation="reload", language=self.current_lang
+                    )
+                    + " "
                     + (
                         "Use Recover Last Valid."
                         if recovery.is_file()
@@ -573,7 +580,12 @@ class ScenarioEditorWindow(QMainWindow):
                 )
                 self.refresh()
                 return False
-            self.status_label.setText(f"Scenario reload failed: {exc}")
+            self.status_label.setText(
+                "Scenario reload failed: "
+                + user_error_message(
+                    exc, operation="reload", language=self.current_lang
+                )
+            )
             return False
 
     def _reset_professional(self, *, confirm: bool = True) -> bool:
@@ -625,8 +637,13 @@ class ScenarioEditorWindow(QMainWindow):
                 f"{destination.name}"
             )
             return True
-        except (OSError, ValueError) as exc:
-            self.status_label.setText(f"Scenario export failed: {exc}")
+        except (OSError, ValueError, ProjectPersistenceError) as exc:
+            self.status_label.setText(
+                "Scenario export failed: "
+                + user_error_message(
+                    exc, operation="export", language=self.current_lang
+                )
+            )
             return False
 
     def _update_professional_status(self) -> None:

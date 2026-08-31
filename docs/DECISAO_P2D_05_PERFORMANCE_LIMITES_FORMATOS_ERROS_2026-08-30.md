@@ -1,11 +1,12 @@
 # NeoEng-D-Trace — Decisão formal P2D-05
 
 **Etapa:** P2D-05 — performance, limites, formatos e erros
-**Status:** OPEN — decisão/contrato; implementação não autorizada
+**Status:** ACCEPTED FOR IMPLEMENTATION — qualificação pendente
 **Data de abertura:** 30/08/2026 (UTC-03)
 **Entrada técnica:** merge commit f55b07b85ef2cf65160f2c10ffac5e63b45732ac
 **Branch de entrada:** main
-**Aceite do proprietário:** pendente
+**Aceite do proprietário:** P2D-05 ACEITO — contrato de performance, limites, formatos e erros
+**Data do aceite:** 30/08/2026 (UTC-03)
 
 ## 1. Finalidade e precedência
 
@@ -113,8 +114,8 @@ mensagens de erro no fluxo real de usuário.
 
 Há benchmark determinístico existente para o pipeline de detecção automática,
 mas ele não constitui uma matriz de performance do editor profissional de
-composição, da persistência, do recovery ou da exportação P2D-04. Não existe
-decisão P2D-05 anterior nem relatório P2D-05 aceito.
+composição, da persistência, do recovery ou da exportação P2D-04. Na abertura
+desta decisão não existia decisão P2D-05 anterior nem relatório P2D-05 aceito.
 
 As APIs já possuem exceções tipadas em pontos importantes, porém a etapa deve
 auditar se cada erro exposto ao usuário informa, sem depender de traceback:
@@ -349,6 +350,88 @@ No mínimo, qualquer implementação deverá declarar antes do código:
 
 Alteração fora dessa fronteira interrompe o lote e exige nova decisão formal.
 
+### 11.1 Fronteira de implementação registrada após o aceite
+
+O trabalho será executado na branch local
+`p2d-05-quality-hardening`. A produção permanece referenciada ao merge
+`f55b07b85ef2cf65160f2c10ffac5e63b45732ac`; a branch também contém o commit
+documental `fc59ff571e4e4d99ddd40a8ec318d50b8edd77f3`, que registra esta
+decisão e não altera a produção. A divergência é intencional, explícita e
+documental; não será apresentada como alteração do baseline de produto.
+
+Arquivos de produção permitidos neste lote:
+
+- `src/core/logger.py`, somente para aplicar a mesma privacidade ao stream e
+  ao arquivo;
+- `src/persistence/scene_authoring_io.py`, somente para tornar o limite de
+  bytes também obrigatório na serialização canônica pública;
+- `src/exporters/scene_authoring_export.py`, somente para aplicar o limite de
+  bytes ao payload exportado antes de qualquer escrita;
+- `src/persistence/p2d05_errors.py`, novo classificador seguro e estável de
+  erros para mensagens de usuário, sem persistência de caminhos ou segredos;
+- `src/ui/scenario_editor_window.py`,
+  `src/ui/scenario_authoring_actions.py` e `src/ui/scenario_panel.py`, somente
+  para usar a classificação nas operações de save, load, recovery, preview e
+  export;
+- `src/ui/scene_asset_panel.py`, `src/ui/scene_authoring_viewport.py`,
+  `src/ui/scene_authoring_inspector.py`,
+  `src/ui/scene_authoring_layer_stack.py` e
+  `src/ui/scene_authoring_group_stack.py`, somente para tornar acionáveis e
+  seguras as falhas de edição e de assets já existentes.
+
+Arquivos de teste permitidos:
+
+- novo `tests/test_p2d_05_quality_contract.py`, cobrindo limites, formatos,
+  privacidade, falhas tipadas, preservação de estado e fluxo Qt;
+- alterações estritamente necessárias nos testes existentes somente quando a
+  nova regra de privacidade ou limite tornar explícita uma garantia já exigida
+  por este contrato. Nenhum teste será removido ou enfraquecido.
+
+Scripts e documentos de evidência permitidos:
+
+- novos `scripts/benchmark_p2d_05.py` e
+  `scripts/audit_p2d_05_evidence.py`;
+- novos relatórios e logs sob a raiz de evidência do lote;
+- atualização deste contrato, do plano vivo e novos documentos de evidência
+  P2D-05, sem reescrever snapshots históricos aceitos.
+
+São explicitamente proibidos: alterações em C3, G/V/B, auditores ou
+tolerâncias; `src/core/operational_limits.py` e os valores normativos já
+vigentes; schemas, versões, IDs, ordenação canônica, hashes, identidade do
+gerador, mapeamentos de coordenadas, recovery, nomes de arquivos, QAction,
+atalhos, árvore de widgets, geometria, editor legado, integrações Godot/Unity,
+runtime de iluminação/partículas/shaders/VFX, tilemap, colisão, NavMesh,
+entidades/prefabs, vetorização e qualquer linha independente reservada.
+
+O impacto esperado é `G=0`. Não haverá mudança de layout, dimensões, QSS,
+renderização ou aparência de estados normais; alterações de texto de erro são
+observabilidade de falha e não uma nova semântica visual. Em `B`, somente a
+classificação e a orientação de recuperação de falhas já existentes serão
+explicitadas; ações válidas, roteamento, mutações bem-sucedidas e histórico
+permanecem inalterados. Os números de performance serão medidos como proposta
+por workload e hardware, sem criar meta normativa nova por inferência.
+
+Captura Windows/offscreen é aplicável porque a mensagem de erro é parte do
+fluxo Qt real. Validação em engines não será alterada pelo lote: os formatos,
+adapters e coordenadas permanecem imutáveis; a não aplicabilidade de uma nova
+prova de engine somente poderá ser declarada se a comparação de bytes e o
+contrato de export permanecerem sem mudança.
+
+Qualquer arquivo, símbolo, formato, limite, comportamento ou eixo fora desta
+lista interrompe o lote antes da continuação e exige nova decisão formal. O
+rollback técnico continua sendo `f55b07b85ef2cf65160f2c10ffac5e63b45732ac`,
+sem apagar evidências, untracked ou histórico.
+
+### 11.2 Emenda formal do sublote O-1
+
+O aceite explícito de `P2D-05-OTIMIZAÇÃO ACEITA — profiling, histórico, preview e exportação` autoriza o sublote subordinado de otimização, ainda sujeito ao seu próprio PRECOMMIT e fechamento. Para manter a fronteira auditável, O-1 acrescenta somente:
+
+- `src/core/scene_authoring_session.py`, restrito ao histórico de transforms e à finalização de gestos, preservando undo/redo, cancelamento, seleção, determinismo e bytes;
+- `tests/test_p2d_05_o1_history.py`, cobrindo o contrato do caminho delta e seu fallback integral;
+- `scripts/calibrate_p2d_05.py` e `scripts/benchmark_p2d_05_o1_gesture_finish.py`, somente para reprodução da medição;
+- evidências O-0/O-1 e seus JSONs sob `docs/` e `artifacts/p2d05/`, sem incluir perfis brutos com caminhos locais em publicação.
+
+O-1 não autoriza O-2, O-3, alteração de preview, persistência, exportação, schema, formato, coordenadas, UI, geometria ou qualquer linha independente. Qualquer arquivo adicional exige nova decisão formal.
 ## 12. Critérios de aceite
 
 P2D-05 só poderá ser marcada ACCEPTED / CLOSED se todos os itens abaixo forem
@@ -389,11 +472,11 @@ Solicita-se aceite explícito deste contrato com a frase:
 
 P2D-05 ACEITO — contrato de performance, limites, formatos e erros
 
-O aceite autoriza a implementação controlada exclusivamente dentro desta
-fronteira. Ele não aceita a implementação, não aceita a build, não aprova
-metas de performance ainda não medidas, não declara o editor completo e não
-autoriza publicação remota.
+O aceite autoriza a implementação controlada exclusivamente dentro da
+fronteira registrada na seção 11.1. Ele não aceita a implementação, não aceita
+a build, não aprova metas de performance ainda não medidas, não declara o
+editor completo e não autoriza publicação remota.
 
-Até esse aceite, o estado formal permanece:
+Após o aceite, o estado formal é:
 
-P2D-05 OPEN — decisão/contrato; implementação e qualificação pendentes.
+P2D-05 ACCEPTED FOR IMPLEMENTATION — qualificação pendente.

@@ -46,6 +46,15 @@ class _HistoryEntry:
     description: str
 
 
+@dataclass(frozen=True)
+class _TransformHistoryEntry:
+    before: tuple[tuple[str, SceneTransformRecord], ...]
+    after: tuple[tuple[str, SceneTransformRecord], ...]
+    selection_before: SceneSelection
+    selection_after: SceneSelection
+    description: str
+
+
 _DEFAULT_EDIT_OFFSET = Point3Record(x=16.0, y=16.0, z=0.0)
 
 
@@ -77,10 +86,15 @@ class SceneAuthoringSession:
             raise ValueError("max_history must be at least 1")
         self.model = model
         self.max_history = int(max_history)
-        self._undo: list[_HistoryEntry] = []
-        self._redo: list[_HistoryEntry] = []
+        self._undo: list[_HistoryEntry | _TransformHistoryEntry] = []
+        self._redo: list[_HistoryEntry | _TransformHistoryEntry] = []
         self._listeners: list[Callable[[], None]] = []
         self._gesture_before: SceneAuthoringSnapshot | None = None
+        self._gesture_transform_before: (
+            tuple[tuple[str, SceneTransformRecord], ...] | None
+        ) = None
+        self._gesture_selection_before: SceneSelection | None = None
+        self._gesture_transform_history_safe = False
         self._isolated_group_id: str | None = None
         self._saved_document = self.document.model_copy(deep=True)
         self._force_dirty = False
@@ -167,9 +181,102 @@ class SceneAuthoringSession:
         self._redo.clear()
         return True
 
+    def _capture_transform_state(
+        self, object_ids: Iterable[str]
+    ) -> tuple[tuple[str, SceneTransformRecord], ...]:
+        requested = tuple(dict.fromkeys(object_ids))
+        requested_set = set(requested)
+        captured = tuple(
+            (item.id, item.transform.model_copy(deep=True))
+            for item in self.document.objects
+            if item.id in requested_set
+        )
+        if len(captured) != len(requested_set):
+            known = {item.id for item in self.document.objects}
+            missing = next(item for item in requested if item not in known)
+            raise KeyError(missing)
+        return captured
+
+    def _restore_transform_state(
+        self,
+        states: tuple[tuple[str, SceneTransformRecord], ...],
+        selection: SceneSelection,
+    ) -> None:
+        state_by_id = dict(states)
+        known = {item.id for item in self.document.objects}
+        missing = next(
+            (item_id for item_id in state_by_id if item_id not in known), None
+        )
+        if missing is not None:
+            raise KeyError(missing)
+        objects = [
+            (
+                item.model_copy(update={"transform": state_by_id[item.id]})
+                if item.id in state_by_id
+                else item
+            )
+            for item in self.document.objects
+        ]
+        self.model.document = self.model.document.__class__.model_validate(
+            self.document.model_copy(update={"objects": objects}), strict=True
+        )
+        known = {item.id for item in self.document.objects}
+        ids = [item for item in selection.ids if item in known]
+        primary = selection.primary if selection.primary in ids else None
+        self.model.selection = SceneSelection.from_ids(ids, primary)
+
+    def _record_transform(
+        self,
+        before: tuple[tuple[str, SceneTransformRecord], ...],
+        selection_before: SceneSelection,
+        description: str,
+    ) -> bool:
+        object_ids = tuple(item_id for item_id, _ in before)
+        after = self._capture_transform_state(object_ids)
+        selection_after = self.selection
+        if before == after and selection_before == selection_after:
+            return False
+        self._undo.append(
+            _TransformHistoryEntry(
+                before,
+                after,
+                selection_before,
+                selection_after,
+                description,
+            )
+        )
+        if len(self._undo) > self.max_history:
+            del self._undo[: len(self._undo) - self.max_history]
+        self._redo.clear()
+        return True
+
+    def _apply_transform_operation(
+        self,
+        object_ids: Iterable[str],
+        operation: Callable[[], None],
+        description: str,
+    ) -> bool:
+        requested = tuple(dict.fromkeys(object_ids))
+        known = {item.id for item in self.document.objects}
+        if any(item_id not in known for item_id in requested):
+            return self.apply(operation, description)
+        before = self._capture_transform_state(requested)
+        selection_before = self.selection
+        try:
+            operation()
+        except Exception:
+            self._restore_transform_state(before, selection_before)
+            self._notify()
+            raise
+        changed = self._record_transform(before, selection_before, description)
+        self._notify()
+        return changed
+
     def apply(self, operation: Callable[[], None], description: str) -> bool:
         """Run an operation atomically and place it in local history."""
 
+        if self._gesture_before is not None:
+            self._gesture_transform_history_safe = False
         before = self.snapshot()
         try:
             operation()
@@ -185,6 +292,11 @@ class SceneAuthoringSession:
         if self._gesture_before is not None:
             raise RuntimeError("an authoring gesture is already active")
         self._gesture_before = self.snapshot()
+        self._gesture_transform_before = self._capture_transform_state(
+            self.selection.ids
+        )
+        self._gesture_selection_before = self.selection
+        self._gesture_transform_history_safe = True
 
     def restore_gesture_base(self) -> None:
         if self._gesture_before is None:
@@ -196,8 +308,23 @@ class SceneAuthoringSession:
         if self._gesture_before is None:
             raise RuntimeError("no authoring gesture is active")
         before = self._gesture_before
+        transform_before = self._gesture_transform_before
+        selection_before = self._gesture_selection_before
+        history_safe = self._gesture_transform_history_safe
         self._gesture_before = None
-        changed = self._record(before, description)
+        self._gesture_transform_before = None
+        self._gesture_selection_before = None
+        self._gesture_transform_history_safe = False
+        if (
+            history_safe
+            and transform_before is not None
+            and selection_before is not None
+        ):
+            changed = self._record_transform(
+                transform_before, selection_before, description
+            )
+        else:
+            changed = self._record(before, description)
         self._notify()
         return changed
 
@@ -206,12 +333,17 @@ class SceneAuthoringSession:
             return
         before = self._gesture_before
         self._gesture_before = None
+        self._gesture_transform_before = None
+        self._gesture_selection_before = None
+        self._gesture_transform_history_safe = False
         self._restore(before)
         self._notify()
 
     def set_selection(
         self, object_ids: Iterable[str], primary: str | None = None
     ) -> SceneSelection:
+        if self._gesture_before is not None:
+            self._gesture_transform_history_safe = False
         selected = self.model.set_selection(object_ids, primary)
         self._notify()
         return selected
@@ -225,7 +357,8 @@ class SceneAuthoringSession:
         delta: Point3Record,
         description: str = "Move objects",
     ) -> bool:
-        return self.apply(
+        return self._apply_transform_operation(
+            self.selection.ids,
             lambda: self.model.translate_selected(delta),
             description,
         )
@@ -238,7 +371,8 @@ class SceneAuthoringSession:
         scale_factor: float = 1.0,
         description: str = "Transform objects",
     ) -> bool:
-        return self.apply(
+        return self._apply_transform_operation(
+            self.selection.ids,
             lambda: self.model.transform_selected(
                 translation=translation,
                 rotation_z=rotation_z,
@@ -269,7 +403,8 @@ class SceneAuthoringSession:
         object_id: str,
         transform: SceneTransformRecord,
     ) -> bool:
-        return self.apply(
+        return self._apply_transform_operation(
+            (object_id,),
             lambda: self.model.update_transform(object_id, transform),
             "Edit object transform",
         )
@@ -546,11 +681,24 @@ class SceneAuthoringSession:
             "Remove scene socket",
         )
 
+    def _restore_history_entry(
+        self,
+        entry: _HistoryEntry | _TransformHistoryEntry,
+        *,
+        before: bool,
+    ) -> None:
+        if isinstance(entry, _TransformHistoryEntry):
+            state = entry.before if before else entry.after
+            selection = entry.selection_before if before else entry.selection_after
+            self._restore_transform_state(state, selection)
+            return
+        self._restore(entry.before if before else entry.after)
+
     def undo(self) -> bool:
         if not self._undo:
             return False
         entry = self._undo.pop()
-        self._restore(entry.before)
+        self._restore_history_entry(entry, before=True)
         self._redo.append(entry)
         self._notify()
         return True
@@ -559,7 +707,7 @@ class SceneAuthoringSession:
         if not self._redo:
             return False
         entry = self._redo.pop()
-        self._restore(entry.after)
+        self._restore_history_entry(entry, before=False)
         self._undo.append(entry)
         self._notify()
         return True
@@ -656,4 +804,7 @@ class SceneAuthoringSession:
         self._undo.clear()
         self._redo.clear()
         self._gesture_before = None
+        self._gesture_transform_before = None
+        self._gesture_selection_before = None
+        self._gesture_transform_history_safe = False
         self._notify()

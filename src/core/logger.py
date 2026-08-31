@@ -23,12 +23,17 @@ _PATH_PATTERNS = (
     re.compile(r"(?<!\w)[A-Za-z]:[\\/][^\r\n\"']+"),
     re.compile(r"/(?:home|mnt|Users|tmp)/[^\r\n\"']+"),
 )
+_SECRET_PATTERN = re.compile(
+    r"(?i)\b(password|passwd|token|secret|api[_-]?key|authorization)\b"
+    r"\s*[:=]\s*[^\s,;]+"
+)
 
 
 def _redact_paths(value: str) -> str:
     text = str(value)
     for pattern in _PATH_PATTERNS:
         text = pattern.sub("<PATH>", text)
+    text = _SECRET_PATTERN.sub(r"\1=<REDACTED>", text)
     if len(text) > MAX_LOG_TEXT_CHARS:
         return text[:MAX_LOG_TEXT_CHARS] + "<TRUNCATED>"
     return text
@@ -80,7 +85,7 @@ def setup_logging(
     }
     level = level_map.get(str(log_level).upper(), logging.INFO)
     format_string = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
-    stream_formatter = logging.Formatter(format_string)
+    stream_formatter = _PrivacyFormatter(format_string)
     file_formatter = _PrivacyFormatter(format_string)
 
     root = logging.getLogger()

@@ -56,6 +56,7 @@ from src.core.scene_view_navigation import (
     panned_navigation_center,
     wheel_navigation_zoom,
 )
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
@@ -964,7 +965,7 @@ class SceneAuthoringViewport(QGraphicsView):
         super().mouseReleaseEvent(event)
 
     def _edit_status_error(self, exc: Exception) -> None:
-        self.status_message.emit(str(exc))
+        self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _block_if_preview(self) -> bool:
         if self._authoring_enabled:
@@ -1428,7 +1429,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit(f"Imported {path.name}")
             event.acceptProposedAction()
         except (OSError, ValueError, SceneAssetError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="asset"))
             event.ignore()
 
     @staticmethod

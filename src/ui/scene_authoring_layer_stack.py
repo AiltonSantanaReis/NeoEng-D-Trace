@@ -79,11 +79,13 @@ class SceneAuthoringLayerStack(QWidget):
         item = self.layer_list.currentItem()
         return item.data(Qt.ItemDataRole.UserRole) if item is not None else None
 
-    def _run(self, operation) -> None:
+    def _run(self, operation) -> bool:
         try:
             operation()
+            return True
         except (KeyError, ValueError, PermissionError) as exc:
             self.status_message.emit(str(exc))
+            return False
 
     def _selection_changed(self, _row: int) -> None:
         layer_id = self._current_id()

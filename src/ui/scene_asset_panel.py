@@ -26,6 +26,7 @@ from src.core.scene_asset_library import (
     validate_scene_asset_source,
 )
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.scene_authoring_schema import AssetReferenceRecord
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 from src.ui.theme_tokens import THEME_TOKENS
@@ -158,7 +159,10 @@ class SceneAssetLibrary(QWidget):
                     asset,
                     "invalid",
                     None,
-                    f"asset cannot be decoded for rendering: {exc}",
+                    "Asset cannot be decoded for rendering: "
+                    + user_error_message(
+                        exc, operation="asset", language=self.current_lang
+                    ),
                 ),
                 None,
             )
@@ -320,7 +324,10 @@ class SceneAssetLibrary(QWidget):
             )
             return changed
         except (OSError, ValueError) as exc:
-            self.status_message.emit(f"Asset import rejected: {exc}")
+            self.status_message.emit(
+                "Asset import rejected: "
+                + user_error_message(exc, operation="asset", language=self.current_lang)
+            )
             return False
 
     def _update_selected_from_path(
@@ -354,7 +361,10 @@ class SceneAssetLibrary(QWidget):
             )
             return changed
         except (OSError, ValueError) as exc:
-            self.status_message.emit(f"{operation} rejected: {exc}")
+            self.status_message.emit(
+                f"{operation} rejected: "
+                + user_error_message(exc, operation="asset", language=self.current_lang)
+            )
             return False
 
     def relink_asset_from_path(self, path: str | Path) -> bool:

@@ -1,0 +1,1351 @@
+{
+  "branch": "p2d-05-quality-hardening",
+  "environment": {
+    "logical_cpu_count": 16,
+    "machine": "AMD64",
+    "memory_measurement": "tracemalloc plus process working-set/private-bytes when available",
+    "os_release": "10",
+    "platform": "Windows",
+    "python": "3.11.9",
+    "qt_qpa_platform": "offscreen",
+    "timing_tracemalloc": false
+  },
+  "kind": "p2d-05-calibrated-performance-report",
+  "method": {
+    "gpu": {
+      "reason": "no GPU counter is part of the current Qt/QGraphicsView calibration path",
+      "status": "not_measured"
+    },
+    "iterations": 50,
+    "memory_iterations": 20,
+    "percentiles": [
+      "p50",
+      "p95",
+      "p99",
+      "worst"
+    ],
+    "timing_clock": "time.perf_counter_ns",
+    "warmup": 5
+  },
+  "normative_performance_status": "MEASURED_ONLY_PENDING_EXPLICIT_BUDGET_ACCEPTANCE",
+  "profiler_artifacts": [
+    "artifacts/p2d05/profile-p2d05-512.prof",
+    "artifacts/p2d05/profile-preview-512.prof",
+    "artifacts/p2d05/profile-gesture-512.prof"
+  ],
+  "runtime_reference": {
+    "frame_p95_ms": 16.7,
+    "status": "not measured by operation calibration",
+    "target": "60 FPS"
+  },
+  "schema_version": 1,
+  "source_commit": "fc59ff571e4e4d99ddd40a8ec318d50b8edd77f3",
+  "status": "PASS",
+  "tracked_changes": 14,
+  "workloads": [
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 44563,
+            "repeat_equal": true,
+            "sha256": "08d8efec7617f5a600384ae56ffbb32d584023c7bedcc43a40dafc3c74ca6cd0"
+          },
+          "godot": {
+            "bytes": 44568,
+            "repeat_equal": true,
+            "sha256": "715c15f0bd22b11fbd37acc40bc4f2d36cba1fcbe1f7d34ec01f3853bf8c8ead"
+          },
+          "unity": {
+            "bytes": 44568,
+            "repeat_equal": true,
+            "sha256": "ef58f920dfcbe462a12607b8ac765503673fab53192210f0e46e1d4d04cf9233"
+          }
+        },
+        "scene_bytes": 39563,
+        "scene_repeat_equal": true,
+        "scene_sha256": "cbd854722ed932744058630e2072e519970fac7267a47f3d9b628cbfcd63e044"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.407136,
+            "p50_ms": 2.40355,
+            "p95_ms": 2.48858,
+            "p99_ms": 2.533924,
+            "sample_count": 50,
+            "worst_ms": 2.5498
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 21.178686000000003,
+            "p50_ms": 20.83865,
+            "p95_ms": 24.617389999999997,
+            "p99_ms": 26.508533999999997,
+            "sample_count": 50,
+            "worst_ms": 27.4363
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 21.266699999999997,
+            "p50_ms": 20.9298,
+            "p95_ms": 22.490265,
+            "p99_ms": 27.635819999999995,
+            "sample_count": 50,
+            "worst_ms": 28.1464
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 21.126775999999996,
+            "p50_ms": 20.9421,
+            "p95_ms": 21.83878,
+            "p99_ms": 26.012559999999986,
+            "sample_count": 50,
+            "worst_ms": 29.3475
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.881322,
+            "p50_ms": 2.88065,
+            "p95_ms": 3.0232099999999997,
+            "p99_ms": 3.070543,
+            "sample_count": 50,
+            "worst_ms": 3.0751
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 10.475846,
+            "p50_ms": 10.46625,
+            "p95_ms": 10.700015,
+            "p99_ms": 10.871497999999999,
+            "sample_count": 50,
+            "worst_ms": 10.9057
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.9512599999999996,
+            "p50_ms": 2.93735,
+            "p95_ms": 3.062185,
+            "p99_ms": 3.22534,
+            "sample_count": 50,
+            "worst_ms": 3.2322
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 22.31786,
+            "p50_ms": 21.96285,
+            "p95_ms": 22.908685,
+            "p99_ms": 31.008879999999987,
+            "sample_count": 50,
+            "worst_ms": 33.9479
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.1850359999999998,
+            "p50_ms": 2.14285,
+            "p95_ms": 2.33635,
+            "p99_ms": 2.753524,
+            "sample_count": 50,
+            "worst_ms": 2.7743
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 39571456,
+            "working_set_bytes": 63602688
+          },
+          "initial": {
+            "private_bytes": 39284736,
+            "working_set_bytes": 63205376
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 171879,
+          "growth_bytes": 171879,
+          "initial_bytes": 0,
+          "peak_bytes": 1152767
+        }
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "object_count": 64,
+        "scene_bytes": 39563
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 86752,
+            "repeat_equal": true,
+            "sha256": "ab75675b170b4907a000506437801cb651657cf8b560aa4195c00f89893aec78"
+          },
+          "godot": {
+            "bytes": 86757,
+            "repeat_equal": true,
+            "sha256": "dc92e02e82a77923ac45541a3a38572770211234ce552e87551c12b38c0e92b6"
+          },
+          "unity": {
+            "bytes": 86757,
+            "repeat_equal": true,
+            "sha256": "37f266812560dca6151fba1ec328d27d877ce99c350a61da6356011491fa2462"
+          }
+        },
+        "scene_bytes": 77784,
+        "scene_repeat_equal": true,
+        "scene_sha256": "ba6efd5733148e0c631cb682878c79773f8f8a6b453128d0414688e2155bd4b6"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.049021999999999,
+            "p50_ms": 4.9948,
+            "p95_ms": 5.471684999999999,
+            "p99_ms": 5.862314,
+            "sample_count": 50,
+            "worst_ms": 5.961
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 30.686837999999998,
+            "p50_ms": 29.897100000000002,
+            "p95_ms": 34.15308499999999,
+            "p99_ms": 42.397928999999976,
+            "sample_count": 50,
+            "worst_ms": 48.0809
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 30.485482,
+            "p50_ms": 30.24325,
+            "p95_ms": 33.14017,
+            "p99_ms": 35.100778999999996,
+            "sample_count": 50,
+            "worst_ms": 36.6555
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 30.301532,
+            "p50_ms": 30.07975,
+            "p95_ms": 32.22322,
+            "p99_ms": 34.582181999999996,
+            "sample_count": 50,
+            "worst_ms": 36.0513
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.169198,
+            "p50_ms": 4.03545,
+            "p95_ms": 4.2322299999999995,
+            "p99_ms": 7.188054999999996,
+            "sample_count": 50,
+            "worst_ms": 8.281
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 18.723226000000007,
+            "p50_ms": 18.57475,
+            "p95_ms": 19.720465,
+            "p99_ms": 20.206172,
+            "sample_count": 50,
+            "worst_ms": 20.4155
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.187678000000002,
+            "p50_ms": 4.040800000000001,
+            "p95_ms": 4.503634999999999,
+            "p99_ms": 7.414173999999994,
+            "sample_count": 50,
+            "worst_ms": 9.0152
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 25.733789999999996,
+            "p50_ms": 25.5576,
+            "p95_ms": 26.858849999999997,
+            "p99_ms": 30.41159799999999,
+            "sample_count": 50,
+            "worst_ms": 32.396
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.315282000000001,
+            "p50_ms": 4.22755,
+            "p95_ms": 4.816205,
+            "p99_ms": 5.461429,
+            "sample_count": 50,
+            "worst_ms": 5.4849
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 41943040,
+            "working_set_bytes": 66318336
+          },
+          "initial": {
+            "private_bytes": 41607168,
+            "working_set_bytes": 65941504
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 277800,
+          "growth_bytes": 277800,
+          "initial_bytes": 0,
+          "peak_bytes": 1170777
+        }
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "object_count": 128,
+        "scene_bytes": 77784
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 171330,
+            "repeat_equal": true,
+            "sha256": "ac540535fbd0f0888a97c9b1f16e7d00c157cdaffc6afaa29b9c831b664d97d3"
+          },
+          "godot": {
+            "bytes": 171335,
+            "repeat_equal": true,
+            "sha256": "11ed9b3db0846c9e2ccd9540161adc0076a9308a04b9d770c095aaf4c5ba715a"
+          },
+          "unity": {
+            "bytes": 171335,
+            "repeat_equal": true,
+            "sha256": "eb059060cae9b132c6406dfd9a9bdbfdbf73500ce2f92edd83ae797ad1fff01d"
+          }
+        },
+        "scene_bytes": 154426,
+        "scene_repeat_equal": true,
+        "scene_sha256": "0e6b584e1574bf7ca7b3d32e3527681eb03719d69dabe43fe4f230f9571f0c78"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.247924000000003,
+            "p50_ms": 11.172550000000001,
+            "p95_ms": 11.817324999999999,
+            "p99_ms": 12.373205,
+            "sample_count": 50,
+            "worst_ms": 12.4004
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 49.35657000000001,
+            "p50_ms": 48.62125,
+            "p95_ms": 52.89239,
+            "p99_ms": 57.949678,
+            "sample_count": 50,
+            "worst_ms": 59.2471
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 48.798500000000004,
+            "p50_ms": 48.30045,
+            "p95_ms": 51.975449999999995,
+            "p99_ms": 56.386354,
+            "sample_count": 50,
+            "worst_ms": 58.4078
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 49.69893400000001,
+            "p50_ms": 48.342,
+            "p95_ms": 55.58761,
+            "p99_ms": 62.831481,
+            "sample_count": 50,
+            "worst_ms": 63.9257
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.442063999999999,
+            "p50_ms": 6.1323,
+            "p95_ms": 9.072034999999993,
+            "p99_ms": 11.128371999999997,
+            "sample_count": 50,
+            "worst_ms": 11.7689
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 35.96382399999999,
+            "p50_ms": 35.68425,
+            "p95_ms": 37.55888,
+            "p99_ms": 38.320187,
+            "sample_count": 50,
+            "worst_ms": 38.616
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.666867999999999,
+            "p50_ms": 6.244,
+            "p95_ms": 9.064964999999994,
+            "p99_ms": 13.408784999999998,
+            "sample_count": 50,
+            "worst_ms": 14.1553
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 33.39036599999999,
+            "p50_ms": 32.59715,
+            "p95_ms": 39.830755,
+            "p99_ms": 41.320636,
+            "sample_count": 50,
+            "worst_ms": 41.5919
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.385951999999996,
+            "p50_ms": 8.3296,
+            "p95_ms": 8.726149999999999,
+            "p99_ms": 9.631867999999997,
+            "sample_count": 50,
+            "worst_ms": 10.1742
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 46501888,
+            "working_set_bytes": 70721536
+          },
+          "initial": {
+            "private_bytes": 45817856,
+            "working_set_bytes": 70426624
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 481547,
+          "growth_bytes": 481547,
+          "initial_bytes": 0,
+          "peak_bytes": 1195905
+        }
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "object_count": 256,
+        "scene_bytes": 154426
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 340376,
+            "repeat_equal": true,
+            "sha256": "7437049025127d56190dddecda1a593459fda1b961f4a14a489ef8a01858f0db"
+          },
+          "godot": {
+            "bytes": 340381,
+            "repeat_equal": true,
+            "sha256": "090e6dc6a324d798435c0370c73d4e01de25b5ab754ce6f9ef019148aeacdd61"
+          },
+          "unity": {
+            "bytes": 340381,
+            "repeat_equal": true,
+            "sha256": "42bb873da00ee3cd1e88bdf88b7df192a28b5e5c865155f1209ae3cc0078adf9"
+          }
+        },
+        "scene_bytes": 307600,
+        "scene_repeat_equal": true,
+        "scene_sha256": "129a651984d818117a1f668da833e6f12e7f8ad7529af7efe83898e3a786c6dd"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 28.783484,
+            "p50_ms": 28.60315,
+            "p95_ms": 29.82434,
+            "p99_ms": 30.237592999999997,
+            "sample_count": 50,
+            "worst_ms": 30.5533
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 87.89062800000002,
+            "p50_ms": 85.93345,
+            "p95_ms": 95.12251,
+            "p99_ms": 96.77443199999999,
+            "sample_count": 50,
+            "worst_ms": 97.315
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 87.21470000000001,
+            "p50_ms": 85.4256,
+            "p95_ms": 95.9436,
+            "p99_ms": 97.58442699999999,
+            "sample_count": 50,
+            "worst_ms": 98.7642
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 87.44749800000001,
+            "p50_ms": 85.54655,
+            "p95_ms": 94.377195,
+            "p99_ms": 94.75931999999999,
+            "sample_count": 50,
+            "worst_ms": 94.8877
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.501224,
+            "p50_ms": 10.6756,
+            "p95_ms": 16.129925,
+            "p99_ms": 17.01266,
+            "sample_count": 50,
+            "worst_ms": 17.3439
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 74.490678,
+            "p50_ms": 74.34635,
+            "p95_ms": 76.47951,
+            "p99_ms": 77.162255,
+            "sample_count": 50,
+            "worst_ms": 77.4565
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.376112000000001,
+            "p50_ms": 10.55815,
+            "p95_ms": 15.554545,
+            "p99_ms": 16.621265,
+            "sample_count": 50,
+            "worst_ms": 16.7053
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 47.31087999999999,
+            "p50_ms": 45.83015,
+            "p95_ms": 54.88050499999999,
+            "p99_ms": 55.936845,
+            "sample_count": 50,
+            "worst_ms": 55.9611
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 17.321874000000005,
+            "p50_ms": 17.08465,
+            "p95_ms": 18.07864,
+            "p99_ms": 22.28507199999999,
+            "sample_count": 50,
+            "worst_ms": 25.2335
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 53321728,
+            "working_set_bytes": 77266944
+          },
+          "initial": {
+            "private_bytes": 53436416,
+            "working_set_bytes": 77225984
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 870091,
+          "growth_bytes": 870091,
+          "initial_bytes": 0,
+          "peak_bytes": 1227327
+        }
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "object_count": 512,
+        "scene_bytes": 307600
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 57481,
+            "repeat_equal": true,
+            "sha256": "b0220d826e47997514ad5ba92a4c2b9da0e4bf7eec2a27a36970f6ef4d0010e8"
+          },
+          "godot": {
+            "bytes": 57486,
+            "repeat_equal": true,
+            "sha256": "4fdbe75346c70bccb3a04e01dad25e94ba9f80b394d21a32b4f8f1f27fb1b242"
+          },
+          "unity": {
+            "bytes": 57486,
+            "repeat_equal": true,
+            "sha256": "6f5e432e0900cb6aa7c4c574b4ea880f20d1827a5f8205adfcdefd2555a8feeb"
+          }
+        },
+        "scene_bytes": 51725,
+        "scene_repeat_equal": true,
+        "scene_sha256": "7a1d86a9d940c96e2b391b60629d89704257e54651e52e497a1ff6019b637716"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.458886,
+            "p50_ms": 2.44515,
+            "p95_ms": 2.536165,
+            "p99_ms": 2.627999,
+            "sample_count": 50,
+            "worst_ms": 2.6941
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 106.14126999999999,
+            "p50_ms": 105.29775000000001,
+            "p95_ms": 111.323465,
+            "p99_ms": 117.74192999999997,
+            "sample_count": 50,
+            "worst_ms": 123.7263
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 106.00098399999999,
+            "p50_ms": 105.37445,
+            "p95_ms": 110.21412,
+            "p99_ms": 112.80376799999999,
+            "sample_count": 50,
+            "worst_ms": 113.6009
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 106.38899,
+            "p50_ms": 105.16895,
+            "p95_ms": 113.775065,
+            "p99_ms": 115.993954,
+            "sample_count": 50,
+            "worst_ms": 116.5601
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 82.15262599999998,
+            "p50_ms": 81.8808,
+            "p95_ms": 84.69013000000001,
+            "p99_ms": 86.816125,
+            "sample_count": 50,
+            "worst_ms": 88.3437
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 112.25552200000004,
+            "p50_ms": 113.16855000000001,
+            "p95_ms": 115.84851499999999,
+            "p99_ms": 116.364592,
+            "sample_count": 50,
+            "worst_ms": 116.5112
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 85.50225199999998,
+            "p50_ms": 85.2846,
+            "p95_ms": 89.71381,
+            "p99_ms": 92.114808,
+            "sample_count": 50,
+            "worst_ms": 92.9384
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 23.17301400000001,
+            "p50_ms": 23.13335,
+            "p95_ms": 24.020265,
+            "p99_ms": 26.246429999999993,
+            "sample_count": 50,
+            "worst_ms": 28.0854
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.5106179999999996,
+            "p50_ms": 2.48485,
+            "p95_ms": 2.547725,
+            "p99_ms": 3.326338999999997,
+            "sample_count": 50,
+            "worst_ms": 4.0706
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 52781056,
+            "working_set_bytes": 76275712
+          },
+          "initial": {
+            "private_bytes": 52776960,
+            "working_set_bytes": 76259328
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 2083939,
+          "growth_bytes": 2083939,
+          "initial_bytes": 0,
+          "peak_bytes": 3165295
+        }
+      },
+      "workload": {
+        "asset_count": 64,
+        "asset_mode": "unique",
+        "object_count": 64,
+        "scene_bytes": 51725
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 112790,
+            "repeat_equal": true,
+            "sha256": "a9aaa449257e939423bd0a6011629645c940660f78575674dc7e8403bcc24c43"
+          },
+          "godot": {
+            "bytes": 112795,
+            "repeat_equal": true,
+            "sha256": "9a4f00592ca47ab2e4ccc2bc13283e7a0038ac1bb506827f1e49fd7ff31d161f"
+          },
+          "unity": {
+            "bytes": 112795,
+            "repeat_equal": true,
+            "sha256": "ee594cd94a350d9ea2fec21ce5469518d15b03bccd9e0e69678b46c199753811"
+          }
+        },
+        "scene_bytes": 102298,
+        "scene_repeat_equal": true,
+        "scene_sha256": "77d29d67ae3ce803d2b1c5870aad38ba91c2d51e43fb8eae0f9d16c386519fe3"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.135175999999999,
+            "p50_ms": 5.0775500000000005,
+            "p95_ms": 5.492649999999999,
+            "p99_ms": 6.088036,
+            "sample_count": 50,
+            "worst_ms": 6.2123
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 202.999052,
+            "p50_ms": 202.3466,
+            "p95_ms": 209.514395,
+            "p99_ms": 216.832013,
+            "sample_count": 50,
+            "worst_ms": 222.4652
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 204.258888,
+            "p50_ms": 204.0067,
+            "p95_ms": 212.70546,
+            "p99_ms": 213.735728,
+            "sample_count": 50,
+            "worst_ms": 213.8547
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 200.26152199999993,
+            "p50_ms": 197.5097,
+            "p95_ms": 212.26512,
+            "p99_ms": 216.995767,
+            "sample_count": 50,
+            "worst_ms": 217.5013
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 176.7234960000001,
+            "p50_ms": 173.24439999999998,
+            "p95_ms": 203.94965,
+            "p99_ms": 225.82205399999998,
+            "sample_count": 50,
+            "worst_ms": 233.1208
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 229.71394000000006,
+            "p50_ms": 228.09969999999998,
+            "p95_ms": 238.55666499999998,
+            "p99_ms": 256.17884399999997,
+            "sample_count": 50,
+            "worst_ms": 260.8507
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 174.64984600000003,
+            "p50_ms": 171.48585,
+            "p95_ms": 180.78553,
+            "p99_ms": 246.68565799999993,
+            "sample_count": 50,
+            "worst_ms": 263.0937
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 34.87280600000001,
+            "p50_ms": 34.52185,
+            "p95_ms": 39.86307,
+            "p99_ms": 44.51207999999999,
+            "sample_count": 50,
+            "worst_ms": 45.4862
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.868605999999999,
+            "p50_ms": 4.8629,
+            "p95_ms": 4.99646,
+            "p99_ms": 5.049744,
+            "sample_count": 50,
+            "worst_ms": 5.0764
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 52375552,
+            "working_set_bytes": 76681216
+          },
+          "initial": {
+            "private_bytes": 52002816,
+            "working_set_bytes": 76394496
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 277861,
+          "growth_bytes": 277861,
+          "initial_bytes": 0,
+          "peak_bytes": 1374403
+        }
+      },
+      "workload": {
+        "asset_count": 128,
+        "asset_mode": "unique",
+        "object_count": 128,
+        "scene_bytes": 102298
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 223608,
+            "repeat_equal": true,
+            "sha256": "03a2ccd717a1f3a960014b31290629f5ceeba836c18e0909a8f58ac4e9631b77"
+          },
+          "godot": {
+            "bytes": 223613,
+            "repeat_equal": true,
+            "sha256": "79f23232915d7b53fb9d48ed7001204d5a970a3e29dbfeceff2dd76f7b2f8ccd"
+          },
+          "unity": {
+            "bytes": 223613,
+            "repeat_equal": true,
+            "sha256": "6a345bef045036bba7f41b72ac071cb8aa4990fc96695589fe322b9b96d7bc51"
+          }
+        },
+        "scene_bytes": 203644,
+        "scene_repeat_equal": true,
+        "scene_sha256": "8a43fa5f0b75b1720577fada1397da7224ff4f4ec9fec24dd1fe87c1d97d1355"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.372932,
+            "p50_ms": 11.31205,
+            "p95_ms": 11.898905,
+            "p99_ms": 12.097148,
+            "sample_count": 50,
+            "worst_ms": 12.1681
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 387.505484,
+            "p50_ms": 387.1194,
+            "p95_ms": 393.72616,
+            "p99_ms": 396.45617200000004,
+            "sample_count": 50,
+            "worst_ms": 397.8464
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 387.085948,
+            "p50_ms": 385.6402,
+            "p95_ms": 394.816465,
+            "p99_ms": 396.62392900000003,
+            "sample_count": 50,
+            "worst_ms": 397.451
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 387.79861600000004,
+            "p50_ms": 386.4347,
+            "p95_ms": 397.375555,
+            "p99_ms": 398.927328,
+            "sample_count": 50,
+            "worst_ms": 399.6686
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 331.4764600000001,
+            "p50_ms": 330.2903,
+            "p95_ms": 339.340665,
+            "p99_ms": 341.433177,
+            "sample_count": 50,
+            "worst_ms": 342.4635
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 450.25773200000003,
+            "p50_ms": 450.53215,
+            "p95_ms": 458.69320999999997,
+            "p99_ms": 463.284719,
+            "sample_count": 50,
+            "worst_ms": 466.0958
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 336.031338,
+            "p50_ms": 335.12595,
+            "p95_ms": 342.321465,
+            "p99_ms": 347.562179,
+            "sample_count": 50,
+            "worst_ms": 347.5636
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 36.072948000000004,
+            "p50_ms": 35.6171,
+            "p95_ms": 39.753505,
+            "p99_ms": 44.203455,
+            "sample_count": 50,
+            "worst_ms": 44.8015
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 9.528178,
+            "p50_ms": 9.4875,
+            "p95_ms": 9.705435,
+            "p99_ms": 10.569187999999999,
+            "sample_count": 50,
+            "worst_ms": 11.1125
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 54087680,
+            "working_set_bytes": 78020608
+          },
+          "initial": {
+            "private_bytes": 55218176,
+            "working_set_bytes": 78864384
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 500162,
+          "growth_bytes": 500162,
+          "initial_bytes": 0,
+          "peak_bytes": 1627983
+        }
+      },
+      "workload": {
+        "asset_count": 256,
+        "asset_mode": "unique",
+        "object_count": 256,
+        "scene_bytes": 203644
+      }
+    },
+    {
+      "determinism": {
+        "exports": {
+          "generic": {
+            "bytes": 445134,
+            "repeat_equal": true,
+            "sha256": "dbe44e60d6c3f4bdd3e31b10a2c099c09fd04e1f543e958c9caaa04e17c111d2"
+          },
+          "godot": {
+            "bytes": 445139,
+            "repeat_equal": true,
+            "sha256": "7cd19c299f9af58c435e05a2aa1fb7b927c501d487a5c466ff2156a36cb6dd00"
+          },
+          "unity": {
+            "bytes": 445139,
+            "repeat_equal": true,
+            "sha256": "01aaf288135dd57e55d278b4ed1b51cf17d39c1235af05f54837336b804e944d"
+          }
+        },
+        "scene_bytes": 406226,
+        "scene_repeat_equal": true,
+        "scene_sha256": "3606b0c9476e53d916d41fee322d99731b3a3c9135f3f9cb3e79bc3c9be6b6c5"
+      },
+      "error_count": 0,
+      "measurements": {
+        "edit_history": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 29.488266000000007,
+            "p50_ms": 29.2836,
+            "p95_ms": 29.794085,
+            "p99_ms": 34.11265299999999,
+            "sample_count": 50,
+            "worst_ms": 37.4252
+          }
+        },
+        "export_generic": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 783.5098619999999,
+            "p50_ms": 783.8391,
+            "p95_ms": 803.7203949999999,
+            "p99_ms": 808.013363,
+            "sample_count": 50,
+            "worst_ms": 808.1414
+          }
+        },
+        "export_godot": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 784.6034599999999,
+            "p50_ms": 787.24755,
+            "p95_ms": 802.237215,
+            "p99_ms": 806.257082,
+            "sample_count": 50,
+            "worst_ms": 809.1472
+          }
+        },
+        "export_unity": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 785.3421000000002,
+            "p50_ms": 783.7553,
+            "p95_ms": 802.03627,
+            "p99_ms": 850.7963169999999,
+            "sample_count": 50,
+            "worst_ms": 881.2874
+          }
+        },
+        "load_validate": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 681.4292520000001,
+            "p50_ms": 681.207,
+            "p95_ms": 693.957065,
+            "p99_ms": 696.47637,
+            "sample_count": 50,
+            "worst_ms": 697.8322
+          }
+        },
+        "preview_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 931.6792580000001,
+            "p50_ms": 929.6087,
+            "p95_ms": 949.59039,
+            "p99_ms": 958.688444,
+            "sample_count": 50,
+            "worst_ms": 964.1345
+          }
+        },
+        "reload": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 679.03693,
+            "p50_ms": 676.8621,
+            "p95_ms": 694.92788,
+            "p99_ms": 717.497316,
+            "sample_count": 50,
+            "worst_ms": 733.1046
+          }
+        },
+        "save_atomic_recovery": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 54.319136,
+            "p50_ms": 52.7491,
+            "p95_ms": 61.060245,
+            "p99_ms": 63.40144699999999,
+            "sample_count": 50,
+            "worst_ms": 65.1849
+          }
+        },
+        "serialize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 19.537547999999997,
+            "p50_ms": 19.3053,
+            "p95_ms": 20.869484999999997,
+            "p99_ms": 21.26447,
+            "sample_count": 50,
+            "worst_ms": 21.3463
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 59764736,
+            "working_set_bytes": 84533248
+          },
+          "initial": {
+            "private_bytes": 59154432,
+            "working_set_bytes": 84086784
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 904676,
+          "growth_bytes": 904676,
+          "initial_bytes": 0,
+          "peak_bytes": 2095736
+        }
+      },
+      "workload": {
+        "asset_count": 512,
+        "asset_mode": "unique",
+        "object_count": 512,
+        "scene_bytes": 406226
+      }
+    }
+  ]
+}

@@ -1,0 +1,502 @@
+{
+  "benchmark": {
+    "privacy_clean": true,
+    "source_commit": "fc59ff571e4e4d99ddd40a8ec318d50b8edd77f3",
+    "status": "PASS",
+    "workload_count": 3
+  },
+  "branch": "p2d-05-quality-hardening",
+  "errors": [
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-FORMAT",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-LIMIT",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-ASSET",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-TARGET",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-READ",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-WRITE",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-RECOVERY",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-LOCK",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-REFERENCE",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-PREVIEW",
+      "trigger": "stable classifier in p2d05_errors"
+    },
+    {
+      "action": "safe actionable message; state preserved",
+      "code": "P2D05-OPERATION",
+      "trigger": "stable classifier in p2d05_errors"
+    }
+  ],
+  "formats": [
+    {
+      "canonical": "UTF-8 JSON, sorted keys, stable indentation, newline, SHA-256",
+      "format_id": "neoeng-d-trace-scene-authoring",
+      "incompatible": "strict format/validation error; no silent migration",
+      "input": ".ndtscene.json",
+      "migration": "V1 to V2 requires explicit upgrade_scene_authoring_document",
+      "output": ".ndtscene.json",
+      "tests": [
+        "tests/test_stage5_scene_authoring_persistence.py::test_v1_roundtrip_is_preserved_and_v2_upgrade_is_explicit",
+        "tests/test_stage5_scene_authoring_persistence.py::test_v2_save_load_is_deterministic_and_verifies_real_asset"
+      ],
+      "versions": [
+        1,
+        2
+      ]
+    },
+    {
+      "canonical": "sorted keys, stable indentation, newline, source hash binding",
+      "format_id": "neoeng-d-trace-scene-authoring-export",
+      "incompatible": "unsupported target/capability/schema is rejected",
+      "input": "SceneAuthoringDocumentV2",
+      "migration": "V1 document rejected until explicit V2 upgrade",
+      "output": ".runtime.json",
+      "portable_boundary": "source_path is removed from the exported payload",
+      "targets": [
+        "generic",
+        "godot",
+        "unity"
+      ],
+      "tests": [
+        "tests/test_p2d_04_persistence_recovery_export.py::test_real_ui_export_selects_target_and_uses_active_document",
+        "tests/test_stage5_scene_authoring_persistence.py::test_target_exports_are_deterministic_and_complete"
+      ],
+      "versions": [
+        1
+      ]
+    }
+  ],
+  "kind": "p2d-05-quality-audit",
+  "limits": [
+    {
+      "application": "reject before parse or atomic replace",
+      "constant": "MAX_PROJECT_FILE_BYTES",
+      "first_excess": "tests/test_p2d_05_quality_contract.py::test_export_serialization_rejects_first_byte_over_limit_and_preserves_file",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage5_scene_authoring_persistence.py::test_scene_reader_rejects_missing_directory_and_oversized_files",
+      "owner": "scene authoring load/save and export",
+      "positive_or_boundary": "tests/test_p2d_05_quality_contract.py::test_scene_serialization_rejects_first_byte_over_limit_before_write",
+      "references_exist": true,
+      "unit": "bytes",
+      "value": 67108864
+    },
+    {
+      "application": "collection validation and controlled editing",
+      "constant": "MAX_PROJECT_OBJECTS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_detection_count_and_aggregate_point_limits",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage3_professional_scene_editor.py::test_session_transaction_guards_and_history_capacity",
+      "owner": "versioned scene schema and editing model",
+      "positive_or_boundary": "tests/test_merge_coverage_authoring_contracts.py::test_model_v2_sockets_camera_parallax_and_group_boundaries",
+      "references_exist": true,
+      "unit": "objects",
+      "value": 100000
+    },
+    {
+      "application": "V1/V2 layer collection validation",
+      "constant": "MAX_PROJECT_LAYERS",
+      "first_excess": "tests/test_stage2_scene_authoring_model.py::test_document_rejects_unknown_asset_and_layer",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_merge_coverage_authoring_contracts.py::test_layer_stack_exercises_editing_and_no_selection_paths",
+      "owner": "versioned scene schema",
+      "positive_or_boundary": "tests/test_merge_coverage_authoring_contracts.py::test_model_v2_sockets_camera_parallax_and_group_boundaries",
+      "references_exist": true,
+      "unit": "layers",
+      "value": 10000
+    },
+    {
+      "application": "hierarchy and membership collection validation",
+      "constant": "MAX_PROJECT_GROUPS",
+      "first_excess": "tests/test_merge_coverage_authoring_contracts.py::test_model_v2_sockets_camera_parallax_and_group_boundaries",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_merge_coverage_authoring_contracts.py::test_group_stack_exercises_user_operations_and_safe_no_selection_paths",
+      "owner": "versioned scene schema and group editor",
+      "positive_or_boundary": "tests/test_p2d_02b_group_hierarchy_flow.py::test_schema_parentage_roundtrip_and_cycles_are_rejected",
+      "references_exist": true,
+      "unit": "groups",
+      "value": 10000
+    },
+    {
+      "application": "membership validation before document mutation",
+      "constant": "MAX_GROUP_MEMBERS",
+      "first_excess": "tests/test_stage2_scene_authoring_model.py::test_schema_rejects_unknown_group_reference_and_invalid_numeric_helper_inputs",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_merge_coverage_authoring_contracts.py::test_group_stack_exercises_user_operations_and_safe_no_selection_paths",
+      "owner": "scene schema and clipboard",
+      "positive_or_boundary": "tests/test_merge_coverage_authoring_contracts.py::test_clipboard_contract_rejects_every_reference_boundary",
+      "references_exist": true,
+      "unit": "members per group",
+      "value": 100000
+    },
+    {
+      "application": "strict field validation",
+      "constant": "MAX_ID_LENGTH",
+      "first_excess": "tests/test_project_schema_contract.py::test_relative_image_path_rejects_traversal_and_invalid_text",
+      "module": "src.persistence.project_schema",
+      "negative": "tests/test_merge_coverage_authoring_contracts.py::test_model_asset_object_layer_and_transform_boundaries",
+      "owner": "all authoring record IDs",
+      "positive_or_boundary": "tests/test_stage2_scene_authoring_model.py::test_schema_rejects_path_separators_and_invalid_group_members",
+      "references_exist": true,
+      "unit": "UTF-8 characters",
+      "value": 256
+    },
+    {
+      "application": "strict field validation",
+      "constant": "MAX_NAME_LENGTH",
+      "first_excess": "tests/test_merge_coverage_authoring_contracts.py::test_model_asset_object_layer_and_transform_boundaries",
+      "module": "src.persistence.project_schema",
+      "negative": "tests/test_stage2_scene_authoring_model.py::test_schema_rejects_unknown_group_reference_and_invalid_numeric_helper_inputs",
+      "owner": "metadata, layers and groups",
+      "positive_or_boundary": "tests/test_stage3_professional_scene_editor.py::test_session_transaction_guards_and_history_capacity",
+      "references_exist": true,
+      "unit": "UTF-8 characters",
+      "value": 1024
+    },
+    {
+      "application": "source path accepted only as bounded non-portable metadata",
+      "constant": "MAX_PATH_LENGTH",
+      "first_excess": "tests/test_stage2_scene_authoring_model.py::test_schema_rejects_path_separators_and_invalid_group_members",
+      "module": "src.persistence.project_schema",
+      "negative": "tests/test_p2d_01_assets.py::test_asset_resolution_reports_missing_and_hash_drift_without_fallback",
+      "owner": "portable asset provenance",
+      "positive_or_boundary": "tests/test_p2d_01_assets.py::test_asset_provenance_is_optional_and_validated",
+      "references_exist": true,
+      "unit": "UTF-8 characters",
+      "value": 32768
+    },
+    {
+      "application": "preflight before decoder allocation",
+      "constant": "MAX_IMAGE_FILE_BYTES",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_image_file_size_is_checked_before_pillow_open",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_p2d_01b_asset_lifecycle.py::test_invalid_import_is_rejected_without_document_mutation",
+      "owner": "image input and project asset import",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_image_file_size_is_checked_before_pillow_open",
+      "references_exist": true,
+      "unit": "bytes",
+      "value": 268435456
+    },
+    {
+      "application": "reject before full decode",
+      "constant": "MAX_IMAGE_DIMENSION",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_detection_array_dimension_byte_and_parameter_limits",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_real_png_metadata_above_pixel_limit_is_rejected",
+      "owner": "image input and detection preflight",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_detection_array_dimension_byte_and_parameter_limits",
+      "references_exist": true,
+      "unit": "pixels per axis",
+      "value": 8192
+    },
+    {
+      "application": "reject dimensions before allocation",
+      "constant": "MAX_IMAGE_PIXELS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_atlas_argument_validation_matrix",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_detection_array_dimension_byte_and_parameter_limits",
+      "owner": "image input and atlas preflight",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_real_png_metadata_above_pixel_limit_is_rejected",
+      "references_exist": true,
+      "unit": "pixels",
+      "value": 16777216
+    },
+    {
+      "application": "reject decoded array before processing",
+      "constant": "MAX_DECODED_IMAGE_BYTES",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_detection_array_dimension_byte_and_parameter_limits",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_detection_array_dimension_byte_and_parameter_limits",
+      "owner": "image input and detection",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_decoded_image_contract_matrix",
+      "references_exist": true,
+      "unit": "decoded bytes",
+      "value": 134217728
+    },
+    {
+      "application": "bounded read before JSON validation",
+      "constant": "MAX_AUTOSAVE_FILE_BYTES",
+      "first_excess": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_rejects_relative_context_path_and_bounds_file_read",
+      "module": "src.persistence.autosave",
+      "negative": "tests/test_stage_13_qt_refactor_autosave.py::test_invalid_autosave_is_quarantined_without_deletion",
+      "owner": "autosave load and quarantine",
+      "positive_or_boundary": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_rejects_duplicate_keys_and_reports_missing_file",
+      "references_exist": true,
+      "unit": "bytes",
+      "value": 67174400
+    },
+    {
+      "application": "strict absolute-path metadata validation",
+      "constant": "MAX_AUTOSAVE_PATH_LENGTH",
+      "first_excess": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_rejects_relative_context_path_and_bounds_file_read",
+      "module": "src.persistence.autosave",
+      "negative": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_rejects_nul_in_text_metadata",
+      "owner": "autosave metadata",
+      "positive_or_boundary": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_paths_and_configuration_are_bounded",
+      "references_exist": true,
+      "unit": "UTF-8 characters",
+      "value": 32768
+    },
+    {
+      "application": "strict field validation",
+      "constant": "MAX_AUTOSAVE_NAME_LENGTH",
+      "first_excess": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_paths_and_configuration_are_bounded",
+      "module": "src.persistence.autosave",
+      "negative": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_rejects_nul_in_text_metadata",
+      "owner": "autosave document metadata",
+      "positive_or_boundary": "tests/test_stage_13_qt_refactor_autosave.py::test_autosave_rejects_invalid_metadata_variants",
+      "references_exist": true,
+      "unit": "UTF-8 characters",
+      "value": 1024
+    },
+    {
+      "application": "rotating file handler",
+      "constant": "MAX_LOG_FILE_BYTES",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_file_logging_rotates_and_redacts_personal_paths",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_p2d_05_quality_contract.py::test_stream_privacy_formatter_redacts_host_data",
+      "owner": "privacy-safe application logging",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_file_logging_rotates_and_redacts_personal_paths",
+      "references_exist": true,
+      "unit": "bytes",
+      "value": 5242880
+    },
+    {
+      "application": "truncate after redaction",
+      "constant": "MAX_LOG_TEXT_CHARS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_file_logging_rotates_and_redacts_personal_paths",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_p2d_05_quality_contract.py::test_stream_privacy_formatter_redacts_host_data",
+      "owner": "privacy-safe log formatter",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_file_logging_rotates_and_redacts_personal_paths",
+      "references_exist": true,
+      "unit": "characters",
+      "value": 32768
+    },
+    {
+      "application": "aggregate geometry validation before apply",
+      "constant": "MAX_PROJECT_POINTS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_detection_count_and_aggregate_point_limits",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_project_persistence_failures.py::test_invalid_references_are_rejected_without_mutating_scene",
+      "owner": "project validation inherited by the editor",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_detection_count_and_aggregate_point_limits",
+      "references_exist": true,
+      "unit": "points",
+      "value": 1000000
+    },
+    {
+      "application": "aggregate geometry validation",
+      "constant": "MAX_PROJECT_POLYGON_COMPLEXITY",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_project_accepts_polygon_at_ceiling_and_rejects_complexity_sum",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_project_rejects_polygon_above_runtime_complexity_ceiling",
+      "owner": "project schema inherited by the editor",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_project_accepts_polygon_at_ceiling_and_rejects_complexity_sum",
+      "references_exist": true,
+      "unit": "complexity points",
+      "value": 4000000
+    },
+    {
+      "application": "schema and geometry operations",
+      "constant": "MAX_POLYGON_POINTS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_project_rejects_polygon_above_runtime_complexity_ceiling",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_chaikin_growth_is_bounded_before_expansion",
+      "owner": "project geometry inherited by the editor",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_project_accepts_polygon_at_ceiling_and_rejects_complexity_sum",
+      "references_exist": true,
+      "unit": "points per polygon",
+      "value": 2000
+    },
+    {
+      "application": "schema and sampling preflight",
+      "constant": "MAX_BEZIER_SEGMENTS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_project_schema_rejects_bezier_segments_above_object_limit",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_project_schema_rejects_bezier_segments_above_object_limit",
+      "owner": "project geometry inherited by the editor",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_bezier_sampling_accepts_exact_ceiling_and_rejects_next_point",
+      "references_exist": true,
+      "unit": "segments per object",
+      "value": 1999
+    },
+    {
+      "application": "reject pathological spatial registration",
+      "constant": "MAX_GRID_CELLS_PER_AABB",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_uniform_grid_rejects_invalid_cell_size_and_pathological_span",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_uniform_grid_failed_update_preserves_previous_registration",
+      "owner": "collision validation inherited by project tools",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_uniform_grid_rejects_invalid_cell_size_and_pathological_span",
+      "references_exist": true,
+      "unit": "broadphase cells",
+      "value": 100000
+    },
+    {
+      "application": "reject index overflow before file output",
+      "constant": "MAX_GLTF_UINT16_INDEX",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_gltf_rejects_uint16_index_overflow_without_partial_file",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_gltf_rejects_uint16_index_overflow_without_partial_file",
+      "owner": "GLTF export inherited by project tools",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_gltf_rejects_uint16_index_overflow_without_partial_file",
+      "references_exist": true,
+      "unit": "vertex index",
+      "value": 65535
+    },
+    {
+      "application": "reject count before canvas allocation",
+      "constant": "MAX_ATLAS_ITEMS",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_atlas_item_and_aggregate_limits",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_atlas_rejects_oversized_dimensions_before_canvas_allocation",
+      "owner": "atlas export inherited by project tools",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_atlas_item_and_aggregate_limits",
+      "references_exist": true,
+      "unit": "items per atlas job",
+      "value": 10000
+    },
+    {
+      "application": "reject page overflow",
+      "constant": "MAX_ATLAS_PAGES",
+      "first_excess": "tests/test_stage_12_operational_limits.py::test_atlas_page_count_has_a_controlled_ceiling",
+      "module": "src.core.operational_limits",
+      "negative": "tests/test_stage_12_operational_limits.py::test_atlas_page_count_has_a_controlled_ceiling",
+      "owner": "atlas export inherited by project tools",
+      "positive_or_boundary": "tests/test_stage_12_operational_limits.py::test_atlas_page_count_has_a_controlled_ceiling",
+      "references_exist": true,
+      "unit": "pages",
+      "value": 16
+    }
+  ],
+  "mapping_errors": [],
+  "run_at_utc": "2026-08-30T21:16:51.082417+00:00",
+  "schema_version": 1,
+  "source_commit": "fc59ff571e4e4d99ddd40a8ec318d50b8edd77f3",
+  "source_files": [
+    {
+      "path": "scripts/audit_p2d_05_evidence.py",
+      "sha256": "d7c5de9c08d8c1a1b7c5cbbc8c5357e7e08e1b5785a204ff3edbabe6ac0cf632"
+    },
+    {
+      "path": "scripts/benchmark_p2d_05.py",
+      "sha256": "5fdaddbf868bab1e8dcb57a50cf198af24edb245772f84f7256beeac590e6af4"
+    },
+    {
+      "path": "src/core/logger.py",
+      "sha256": "ab9035f48d1f2f767e3b6e0129e5cb9725c9f8dcdf55d70a65580106b1108ab2"
+    },
+    {
+      "path": "src/core/operational_limits.py",
+      "sha256": "e88dfb37916a1c1928f53b421ee6de6735d8391b57754c95bae44eec053b9d9c"
+    },
+    {
+      "path": "src/exporters/scene_authoring_export.py",
+      "sha256": "a5e4d19f86b03995ab8eb17e41e476da6009ee1ff17bb14108897362e93cb914"
+    },
+    {
+      "path": "src/persistence/autosave.py",
+      "sha256": "b156701d6aabe6a9f63bf38163a0ab4fbba980b10a4e9a6527494d1eb852834d"
+    },
+    {
+      "path": "src/persistence/p2d05_errors.py",
+      "sha256": "5953bfbce73d8c0513636842605589812fca93af35ab5a4bb3add250e518946a"
+    },
+    {
+      "path": "src/persistence/project_schema.py",
+      "sha256": "1822dc8dbd53a95e2856acb892c70077115fde15c8cfbf84c0fae5b4eca8b599"
+    },
+    {
+      "path": "src/persistence/scene_authoring_io.py",
+      "sha256": "52c437322bb0ccbc8eb52a83bb8686f46b3bafd208cfda41309d2995056d1fa4"
+    },
+    {
+      "path": "src/ui/scenario_authoring_actions.py",
+      "sha256": "b55ea8d020ff038afd0ff08b7829d2e1365f359e837cf38d3727b86468660503"
+    },
+    {
+      "path": "src/ui/scenario_editor_window.py",
+      "sha256": "5d40c87b5c2efa7f34eb5beb24b6ccb569d6194442352822bf42e2ad5bd49d99"
+    },
+    {
+      "path": "src/ui/scenario_panel.py",
+      "sha256": "fb5a77ad46045b16e2f34a74f631056bcb7cd26c16fd04e12b4d58c3676b581e"
+    },
+    {
+      "path": "src/ui/scene_asset_panel.py",
+      "sha256": "e048b9c372981e3653cd43df4af804d8c683e7017d51c8dcc4aa390f8eefc6ec"
+    },
+    {
+      "path": "src/ui/scene_authoring_group_stack.py",
+      "sha256": "77fa63e6b8e8a520953d08eebd814e8132683ffe339e369ca094eb619093bd32"
+    },
+    {
+      "path": "src/ui/scene_authoring_inspector.py",
+      "sha256": "89e53182c98405ee9126e9cda26050bc5e66013b01dc292b359d087e1742758c"
+    },
+    {
+      "path": "src/ui/scene_authoring_layer_stack.py",
+      "sha256": "c00e3d277550edd07fef13011527ef339d7904a4d9deed1b64229a81fd60a113"
+    },
+    {
+      "path": "src/ui/scene_authoring_viewport.py",
+      "sha256": "f21d5f720266329a70318224874b0cca7d9837e80b9e647fb21116ec5517044d"
+    },
+    {
+      "path": "tests/test_p2d_05_quality_contract.py",
+      "sha256": "6105ccffd9be941f0dedbf2fd21eced633d64d6ab552ed4a692e0bf17b951d3f"
+    }
+  ],
+  "status": "PASS",
+  "tracked_changes": [
+    "docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md",
+    "docs/PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md",
+    "src/core/logger.py",
+    "src/exporters/scene_authoring_export.py",
+    "src/persistence/scene_authoring_io.py",
+    "src/ui/scenario_authoring_actions.py",
+    "src/ui/scenario_editor_window.py",
+    "src/ui/scenario_panel.py",
+    "src/ui/scene_asset_panel.py",
+    "src/ui/scene_authoring_group_stack.py",
+    "src/ui/scene_authoring_inspector.py",
+    "src/ui/scene_authoring_layer_stack.py",
+    "src/ui/scene_authoring_viewport.py"
+  ]
+}

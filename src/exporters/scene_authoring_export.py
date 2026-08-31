@@ -20,6 +20,7 @@ from pydantic import ValidationError
 
 from src.core.app_identity import APP_ID, APP_VERSION
 from src.core.atomic_outputs import AtomicOutputTransaction
+from src.core.operational_limits import MAX_PROJECT_FILE_BYTES
 from src.persistence.scene_authoring_io import (
     SceneAuthoringAssetError,
     scene_authoring_sha256,
@@ -121,7 +122,7 @@ class SceneAuthoringExportError(ValueError):
 
 
 def _canonical_json_bytes(payload: Mapping[str, Any]) -> bytes:
-    return (
+    encoded = (
         json.dumps(
             payload,
             ensure_ascii=False,
@@ -131,6 +132,11 @@ def _canonical_json_bytes(payload: Mapping[str, Any]) -> bytes:
         )
         + "\n"
     ).encode("utf-8")
+    if len(encoded) > MAX_PROJECT_FILE_BYTES:
+        raise SceneAuthoringExportError(
+            f"serialized scene export exceeds {MAX_PROJECT_FILE_BYTES} bytes"
+        )
+    return encoded
 
 
 def _hex_hash(value: Any, field: str) -> str:
@@ -231,6 +237,7 @@ def _validate_export(payload: Mapping[str, Any]) -> None:
         raise SceneAuthoringExportError("scene export capability declaration drifted")
     if mapping != _COORDINATE_MAPPINGS[target]:
         raise SceneAuthoringExportError("scene export coordinate mapping drifted")
+    _canonical_json_bytes(payload)
 
 
 def build_scene_authoring_export(

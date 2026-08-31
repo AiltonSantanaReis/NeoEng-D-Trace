@@ -133,11 +133,13 @@ class SceneAuthoringGroupStack(QWidget):
         self.session.subscribe(self.refresh)
         self.refresh()
 
-    def _run(self, operation) -> None:
+    def _run(self, operation) -> bool:
         try:
             operation()
+            return True
         except (KeyError, ValueError, PermissionError) as exc:
             self.status_message.emit(str(exc))
+            return False
 
     def _current_ref(self) -> tuple[str, str] | None:
         item = self.tree.currentItem()
@@ -298,11 +300,11 @@ class SceneAuthoringGroupStack(QWidget):
         if group_id is None:
             return
         if self.session.isolated_group_id == group_id:
-            self._run(self.session.clear_isolation)
-            self.status_message.emit("Group isolation cleared")
+            if self._run(self.session.clear_isolation):
+                self.status_message.emit("Group isolation cleared")
         else:
-            self._run(lambda: self.session.set_isolated_group(group_id))
-            self.status_message.emit("Group isolated in viewport")
+            if self._run(lambda: self.session.set_isolated_group(group_id)):
+                self.status_message.emit("Group isolated in viewport")
 
     def _refresh_parent_combo(self, group_id: str) -> None:
         current_parent = group_parent_id(

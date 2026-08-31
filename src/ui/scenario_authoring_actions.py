@@ -13,12 +13,38 @@ from src.core.scene_authoring_bridge import (
     preview_camera_from_professional_document,
     preview_layers_from_professional_document,
 )
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
-def _report(window: Any, title: str, message: str) -> None:
-    QMessageBox.critical(window, title, message)
+def _report(
+    window: Any,
+    title: str,
+    exc: BaseException,
+    *,
+    operation: str | None = None,
+) -> None:
+    if operation is None:
+        lowered_title = title.lower()
+        operation = (
+            "export"
+            if "export" in lowered_title
+            else (
+                "load"
+                if "load" in lowered_title
+                else "save" if "save" in lowered_title else "edit"
+            )
+        )
+    QMessageBox.critical(
+        window,
+        title,
+        user_error_message(
+            exc,
+            operation=operation,
+            language=getattr(window, "current_lang", "en"),
+        ),
+    )
 
 
 def _save(window: Any) -> bool:
@@ -31,7 +57,7 @@ def _save(window: Any) -> bool:
     try:
         window.scenario_authoring.save()
     except Exception as exc:
-        _report(window, "Scenario save failed", str(exc))
+        _report(window, "Scenario save failed", exc)
         return False
     window.statusBar().showMessage("Scenario saved successfully.", 5000)
     return True
@@ -47,7 +73,7 @@ def _load(window: Any) -> bool:
     try:
         window.scenario_authoring.load()
     except Exception as exc:
-        _report(window, "Scenario load failed", str(exc))
+        _report(window, "Scenario load failed", exc)
         return False
     window.statusBar().showMessage("Scenario loaded successfully.", 5000)
     return True
@@ -71,7 +97,7 @@ def _reset(window: Any) -> bool:
     try:
         window.scenario_authoring.reset()
     except Exception as exc:
-        _report(window, "Scenario reset failed", str(exc))
+        _report(window, "Scenario reset failed", exc)
         return False
     editor = _open_professional_editor(window, only_if_canonical=True)
     if editor is not None and editor.professional_session is not None:
@@ -90,7 +116,15 @@ def _sync_preview(window: Any) -> None:
         document = _professional_document(window)
     except Exception as exc:
         window.canvas.set_scenario_preview_layers(())
-        window.statusBar().showMessage(f"Scenario preview unavailable: {exc}", 5000)
+        window.statusBar().showMessage(
+            "Scenario preview unavailable: "
+            + user_error_message(
+                exc,
+                operation="preview",
+                language=getattr(window, "current_lang", "en"),
+            ),
+            5000,
+        )
         return
     if document is not None:
         viewport = (float(window.canvas.width()), float(window.canvas.height()))
@@ -140,7 +174,7 @@ def _export(window: Any) -> bool:
     try:
         destination = window.scenario_authoring.export_runtime()
     except Exception as exc:
-        _report(window, "Scenario export failed", str(exc))
+        _report(window, "Scenario export failed", exc)
         return False
     window.statusBar().showMessage(
         f"Scenario runtime export written to {destination.name}.", 5000
@@ -240,7 +274,7 @@ def install_scenario_authoring(window: Any) -> None:
             state.bind_project(window._project_path if project_loaded else None)
         except Exception as exc:
             state.bind_project(None)
-            _report(window, "Scenario load failed", str(exc))
+            _report(window, "Scenario load failed", exc)
 
     window._refresh_document_views = refresh_document_views
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "contract": "P2D-04",
+  "engine": "unity",
+  "status": "SUCCESS",
+  "fixture": "asymmetric-real-png",
+  "capture": "unity-professional-capture.png",
+  "artifacts": [
+    "Assets/assets/hero.png",
+    "unity-professional-capture.png",
+    "unity-professional-validation-result.txt"
+  ],
+  "engine_version": "6000.5.7f1",
+  "commands": [
+    {
+      "executable": "Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-force-d3d11",
+        "-projectPath",
+        "unity-project",
+        "-executeMethod",
+        "NeoEng.DTrace.Editor.ProfessionalSceneValidation.Run",
+        "-logFile",
+        "unity-validation.log"
+      ],
+      "returncode": 0,
+      "output": "P2D04_UNITY_VALIDATION=SUCCESS\nP2D04_UNITY_RENDER_PIXELS=266\nP2D04_UNITY_VERSION=6000.5.7f1\n"
+    }
+  ]
+}
