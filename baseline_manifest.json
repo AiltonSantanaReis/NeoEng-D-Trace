@@ -1316,6 +1316,10 @@
       "sha256": "16d4ed161bf4875b4e96a516fa2094914ff04d1fd4d41eb2188f3097e5689540",
       "size": 7769
     },
+    "docs/evidence/FASE0_GATE_ENTRADA_LEGACY_26_2026-09-01.md": {
+      "sha256": "5f403d0c86986c40a79c0bcaeb0b803297a2afd5b378aeb79cabb0b448227942",
+      "size": 12870
+    },
     "docs/evidence/INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md": {
       "sha256": "de579b3aac91db6c601fdcfd41b2cad6c2f00a1d51d43d9d511a7d12e158fd65",
       "size": 5013
