@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "viewport_size_logical": [
+    1280,
+    720
+  ],
+  "object_count": 64,
+  "asset_mode": "shared",
+  "cache_entries_after_sync": 1,
+  "before": {
+    "path": "viewport-before-noop-sync.png",
+    "sha256_rgba": "613e620e726c8f53961c69c6dccdfa7a124b81787471ac7cc78e522445ed2ef2",
+    "size": [
+      2560,
+      1440
+    ],
+    "mode": "RGBA"
+  },
+  "after": {
+    "path": "viewport-after-noop-sync.png",
+    "sha256_rgba": "613e620e726c8f53961c69c6dccdfa7a124b81787471ac7cc78e522445ed2ef2",
+    "size": [
+      2560,
+      1440
+    ],
+    "mode": "RGBA"
+  },
+  "pixel_equivalent_after_noop_sync": true,
+  "settle_ms": 180
+}
