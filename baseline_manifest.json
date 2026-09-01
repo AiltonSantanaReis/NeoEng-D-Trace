@@ -1324,6 +1324,10 @@
       "sha256": "3b765c8ea2796bf6314e11660dc9f73e7746e53100981dbe4247abd59ab4dfe5",
       "size": 8199
     },
+    "docs/evidence/FASE1_CONTRATOS_FIXTURES_LEGACY_26_2026-09-01.md": {
+      "sha256": "b3a3e83ef73a07d57d220f2aa19a9108f9a0eec361a3de443838e41bc01d0475",
+      "size": 8180
+    },
     "docs/evidence/INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md": {
       "sha256": "de579b3aac91db6c601fdcfd41b2cad6c2f00a1d51d43d9d511a7d12e158fd65",
       "size": 5013
@@ -11608,6 +11612,10 @@
       "sha256": "ad50a0cf9ed06e96f3612748ce78cfffe9f2debeba206dc84bb6672277a68d72",
       "size": 715
     },
+    "tests/legacy_phase1_fixtures.py": {
+      "sha256": "0ecfbfa1521f3dfe97ca515fcb825aa29a87502b5c25acf2f4d14b0ee6f13255",
+      "size": 7010
+    },
     "tests/test_app_icon.py": {
       "sha256": "a66f2d3da10ffdac9038120fce8fca63a794684ba1dc623e24511430dc00ed6e",
       "size": 4252
@@ -11759,6 +11767,10 @@
     "tests/test_json_exporter_contract.py": {
       "sha256": "2fe479d579d20ff533dc3389c1a5c29fb212047d2427c6234142f34989e2b141",
       "size": 4160
+    },
+    "tests/test_legacy_phase1_contracts.py": {
+      "sha256": "8d5c8c5407a419de8227822e0a07c30007c28eb46bd2cdfbfb2a908b170bb06a",
+      "size": 6173
     },
     "tests/test_logger_configuration.py": {
       "sha256": "882030c22a39a5d0999af9e238391f25e7b87144a9fb7dcbd9bb2fd9e8ff0889",
