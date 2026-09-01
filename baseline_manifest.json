@@ -5028,6 +5028,38 @@
       "sha256": "22e2699d6ebc04d069fbe7a3b0d7c7d1c1100663bfe6e6d3bc7e4e857c24035c",
       "size": 2005
     },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/hashes.sha256": {
+      "sha256": "f846bff8166729166bf797908593948c4cf34749c258d470f01b942a8ad63c32",
+      "size": 644
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/manifest.json": {
+      "sha256": "eca9a5aef504cc12367a624c5fcca5d0edad56d1f9f4339ba55dae9ab32c449c",
+      "size": 1452
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/report.json": {
+      "sha256": "71b9dad1613c71c1ba3af4c7dd7f080057b6d834a8c212a9b1862fc7efb7ab93",
+      "size": 4878
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/visual/compact-1280x720.png": {
+      "sha256": "b0f418bd3431332bbf35636a7de463a5e91b4d3980735c07fa0c3cfd84ef226f",
+      "size": 22472
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/visual/compact-inspector-focus.png": {
+      "sha256": "b0f418bd3431332bbf35636a7de463a5e91b4d3980735c07fa0c3cfd84ef226f",
+      "size": 22472
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/visual/desktop-1920x1080.png": {
+      "sha256": "e457488397972c3c999440d81c709160feb4f9d87ea927af80666e5834065340",
+      "size": 27473
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/visual/desktop-mouse-state.png": {
+      "sha256": "c9ee12f95d4a896d6e3d53976cde8bbc1cd8010e81a6c437e305e26d795c9e9f",
+      "size": 29954
+    },
+    "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-2151EF1/visual/desktop-xray-keyboard.png": {
+      "sha256": "0175e172d821eccf5f08197b2895a068fefbd6383261dc437c1d1aeea6037ac2",
+      "size": 29215
+    },
     "docs/evidence/artifacts/stage10-accessibility-20260824/BUILD-F10-ACCESSIBILITY-20260824-6BA06AC/hashes.sha256": {
       "sha256": "025f5b1510523eb0664009efe0c0511b3b651e6e6f9feefb873af06de87051e9",
       "size": 644
