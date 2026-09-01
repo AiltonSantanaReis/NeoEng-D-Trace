@@ -1,8 +1,5 @@
 from __future__ import annotations
 
-import os
-import sys
-
 import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel, QToolButton
@@ -73,10 +70,6 @@ def test_main_window_uses_status_bar_without_canvas_hud_widget(qt_app):
     window.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
-)
 def test_status_indicator_fits_resolutions_without_legacy_hud(qt_app, monkeypatch):
     window = MainWindow(Scene(), _ConfigStub())
     calls: list[bool] = []
@@ -102,10 +95,6 @@ def test_status_indicator_fits_resolutions_without_legacy_hud(qt_app, monkeypatc
     window.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
-)
 def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     window.resize(1920, 1080)
@@ -153,10 +142,6 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     window.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
-)
 def test_reference_pan_and_select_controls_drive_existing_canvas_contract(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     window.show()
