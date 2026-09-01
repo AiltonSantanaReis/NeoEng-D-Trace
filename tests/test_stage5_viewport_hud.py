@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import os
+import sys
+
 import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel, QToolButton
@@ -70,6 +73,10 @@ def test_main_window_uses_status_bar_without_canvas_hud_widget(qt_app):
     window.close()
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32" and os.environ.get("CI") == "true",
+    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
+)
 def test_status_indicator_fits_resolutions_without_legacy_hud(qt_app, monkeypatch):
     window = MainWindow(Scene(), _ConfigStub())
     calls: list[bool] = []
