@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "project": "NeoEng-D-Trace",
-  "baseline_date": "2026-08-30",
+  "baseline_date": "2026-08-31",
   "hash_algorithm": "sha256",
   "canonicalization": {
     "utf8_text_line_endings": "LF",
@@ -55,6 +55,90 @@
     "app.py": {
       "sha256": "6eef1fb7c76c4b3648a530c1c3e939ed296ead232fd5c4be4e48708f69389997",
       "size": 218
+    },
+    "artifacts/p2d05/audit-precommit-final-20260830.json": {
+      "sha256": "e6e5e495d430c2674da4f7a7ec349d97e69e51e192ce919af2d92e8dbaaf5af7",
+      "size": 23928
+    },
+    "artifacts/p2d05/audit-precommit.json": {
+      "sha256": "52d0232eb97e60f346e83d3edb48957d7b63ba447292acb158a73b1e7e7403a5",
+      "size": 23885
+    },
+    "artifacts/p2d05/benchmark-investigation-128.json": {
+      "sha256": "a28cd265c44d300fda371103c40b4a5f318b0753e0116d7cd75dbb64b3820647",
+      "size": 17482
+    },
+    "artifacts/p2d05/benchmark-precommit.json": {
+      "sha256": "2a3e19eb4d7eeae0bcab7ded9f6b8f2b445965eadf9a5e0c4f394f576f424b6f",
+      "size": 17482
+    },
+    "artifacts/p2d05/calibration-o0-20260830.json": {
+      "sha256": "b618efed8c7fdd4778514620ad19feee40e6801feada0b1ec6ea0eef2b730c03",
+      "size": 38402
+    },
+    "artifacts/p2d05/calibration-o1-final-20260830.json": {
+      "sha256": "7549993428703069a43006b5e6317c58abe895eceda22f0e839fe1b0d29c9abe",
+      "size": 38405
+    },
+    "artifacts/p2d05/engine-evidence-final/godot-validation.json": {
+      "sha256": "d67b0c150ada187f996da11b3f6ddbfa4863fb324bf34167867145736eec0b70",
+      "size": 3880
+    },
+    "artifacts/p2d05/engine-evidence-final/unity-validation.json": {
+      "sha256": "a3bfa03766a9e9be88a286ee7930f4724e4648143f87ecd7ddf32c3d33e99379",
+      "size": 817
+    },
+    "artifacts/p2d05/o1-fingerprints-20260830.json": {
+      "sha256": "30508f322f59cfdf8f5d4763aaff9e331a8886e1a266e231376ce26646a80e38",
+      "size": 528
+    },
+    "artifacts/p2d05/o1-gesture-ab-20260830.json": {
+      "sha256": "6e64d704304c3369a1d0d0cd87344259e362dc01d54112b8b3ea18a13107d47a",
+      "size": 6959
+    },
+    "artifacts/p2d05/o1-gesture-finish-ab-20260830.json": {
+      "sha256": "216c2d69ed625d691c90030cbf648192b42470ec4a3423479f15cc5595083c12",
+      "size": 6954
+    },
+    "artifacts/p2d05/o1-gesture-finish-ab-precommit-20260830.json": {
+      "sha256": "e4cc552644994b17b36aa818a6a38f2606b6d7d89c044e15a9dbd212eb83f1af",
+      "size": 6970
+    },
+    "artifacts/p2d05/o2-0-baseline-20260830-restarted.json": {
+      "sha256": "c79cb6d06e5db0e620893c4505db1ce75f909d0bea20210d8f363efaca31bbce",
+      "size": 141206
+    },
+    "artifacts/p2d05/o2-implementation-final-20260831.json": {
+      "sha256": "4127b44bc02143296a290431847650ad4b4c028187c92bdf58244349afb7f54f",
+      "size": 140770
+    },
+    "artifacts/p2d05/o2-implementation-postcommit-ffb97eb-r2.json": {
+      "sha256": "858133dbddc0515b45ebda1108a2c7351297476d26b034c015ad5b8c3f1e4d68",
+      "size": 140863
+    },
+    "artifacts/p2d05/o2-viewport-capture-after-acceptance-20260831-r3/manifest.json": {
+      "sha256": "b485826be0c83d1f9261347bf14fd66231ce5cbc4a828dd13d5635de792c4c4f",
+      "size": 645
+    },
+    "artifacts/p2d05/o2-viewport-capture-after-acceptance-20260831-r3/viewport-after-noop-sync.png": {
+      "sha256": "8e0a121bbe91c13f093acf62b1c4d3a7b097312859c0e0efd04e3bd9a66518e6",
+      "size": 45616
+    },
+    "artifacts/p2d05/o2-viewport-capture-after-acceptance-20260831-r3/viewport-before-noop-sync.png": {
+      "sha256": "8e0a121bbe91c13f093acf62b1c4d3a7b097312859c0e0efd04e3bd9a66518e6",
+      "size": 45616
+    },
+    "artifacts/p2d05/o2-viewport-capture-postcommit-ffb97eb/manifest.json": {
+      "sha256": "4d9bb2029eaaa2949acd9db3f7af2d34b9130d79b946a58b0410fc828374f996",
+      "size": 585
+    },
+    "artifacts/p2d05/o2-viewport-capture-postcommit-ffb97eb/viewport-after-noop-sync.png": {
+      "sha256": "838e7c9073bd69359a43a6e2a27c30ca00f4d2fcb137c0228784da4264eb279b",
+      "size": 6103
+    },
+    "artifacts/p2d05/o2-viewport-capture-postcommit-ffb97eb/viewport-before-noop-sync.png": {
+      "sha256": "838e7c9073bd69359a43a6e2a27c30ca00f4d2fcb137c0228784da4264eb279b",
+      "size": 6103
     },
     "assets/branding/neoeng-d-trace-icon-source.png": {
       "sha256": "17dde3dc0d616cef8927403cb3b2b15aa818960776605eb2a7d2b99b8e5adedc",
@@ -188,13 +272,29 @@
       "sha256": "569f5084b2e179e2d2ae4745e30945d057f0f07b631cc1ba8100de0cea895990",
       "size": 24084
     },
+    "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md": {
+      "sha256": "65fb69c34b3be0162d8aa9432073a7990b9337434579cb0985e137c24e497245",
+      "size": 19940
+    },
+    "docs/DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md": {
+      "sha256": "dd48ce93dbb4705a2cc9eec9036c6025ccd9a44420494ecf3a3daaf32817946a",
+      "size": 13357
+    },
+    "docs/DECISAO_P2D_05_OTIMIZACAO_PERFORMANCE_2026-08-30.md": {
+      "sha256": "dacdec3747ef355b093727f12b8d842245d969f714b24fa27e1857088f5eb5f8",
+      "size": 13560
+    },
     "docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md": {
-      "sha256": "48fb2b76bcbb62346c4ba4b8a38913778c0ed212ac40103b92359c530f244329",
-      "size": 18821
+      "sha256": "43c77c36c023615f7590d928a04fcc4d719b4380b016316404a56e7955751929",
+      "size": 24021
     },
     "docs/DEFINICAO_DO_PRODUTO.md": {
       "sha256": "2db6c397f5250d85185d73a385eb6d78793561bc9063016156f5690055643195",
       "size": 10219
+    },
+    "docs/ERRATA_EVIDENCIA_P2D_05_O2_0_BASELINE_2026-08-30.md": {
+      "sha256": "8dd24459d8405b7dcbb021dd9afb54cd3a61cdbf809da57bf3b455bad48160ba",
+      "size": 770
     },
     "docs/ESTRATEGIA_GITHUB.md": {
       "sha256": "2d21b66741d7cc3629e9421268cdb5742809f3e61d923b1b9749d2d3250b5485",
@@ -348,6 +448,42 @@
       "sha256": "ca3ff7169d545b538a98eddfaf212b56379f3b0be615708fb7eb57f8b76183bd",
       "size": 2574
     },
+    "docs/EVIDENCIA_P2D_05_BOUNDARY_2026-08-30.md": {
+      "sha256": "12e461913c1c2229a30dda4f5d9d67aed67a53847db8f23f5233851acee8aff5",
+      "size": 3032
+    },
+    "docs/EVIDENCIA_P2D_05_CALIBRACAO_O0_2026-08-30.md": {
+      "sha256": "50976c2bdaa3ca652f490950ba4bd6f09281a53821dc484307bbaec6a30a703d",
+      "size": 8451
+    },
+    "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md": {
+      "sha256": "210de8b560da57e245ca650d2f926249fed5bfaac90dbd0fcb7fa1a5c7336cc3",
+      "size": 14199
+    },
+    "docs/EVIDENCIA_P2D_05_INVESTIGACAO_PERFORMANCE_2026-08-30.md": {
+      "sha256": "eb385dce749e276ab3afcbbd4cd4623855746c4deae0105074a3179f97750374",
+      "size": 8869
+    },
+    "docs/EVIDENCIA_P2D_05_O1_HISTORICO_GESTOS_2026-08-30.md": {
+      "sha256": "a6c5555cb0ea55ab0d89452fea2ad357c07a4383072432d1bc9f6afd777d9ea3",
+      "size": 7326
+    },
+    "docs/EVIDENCIA_P2D_05_O2_0_BASELINE_2026-08-30.md": {
+      "sha256": "60b057b74216ec31a71045cce3bf2d6b4e11d1cf14555fc15eadd7c8b4eb0a74",
+      "size": 13731
+    },
+    "docs/EVIDENCIA_P2D_05_O2_AUDITORIA_2026-08-30.md": {
+      "sha256": "32c0ef6eeb7c77a48dfdb0377fffa1f98628eeae321d4221cbf46730dc80f1f0",
+      "size": 4877
+    },
+    "docs/EVIDENCIA_P2D_05_PRECOMMIT_2026-08-30.md": {
+      "sha256": "903c9cc67fdb9ee4cbb6013b01d4a1f9811315ac0da7f7b1723db510b1401601",
+      "size": 5133
+    },
+    "docs/EVIDENCIA_P2D_COMP_01_EXPORT_ROUNDTRIP_2026-08-31.md": {
+      "sha256": "5a778e3706c746b8ef034f9590c68aaa60d1f711c09f12a8b8b6b70e4c9b472b",
+      "size": 4036
+    },
     "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md": {
       "sha256": "4630b27f12a0966cccc20d4413da514c6eb310da9a48cf37e1fc07559e1a02b1",
       "size": 12748
@@ -363,6 +499,10 @@
     "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md": {
       "sha256": "458ef52ed7ecff7c9c80d0ef134f469a362a3bf947b8b19bc9484d7b7b737d2d",
       "size": 9194
+    },
+    "docs/INTEGRIDADE_P2D_05_O2_0_2026-08-30.md": {
+      "sha256": "1379336b40d3142b63e7d674739bee1efc25e069cdf793652876f0e76bed680e",
+      "size": 751
     },
     "docs/INVENTARIO_LOCALIZACAO_0_6N1.md": {
       "sha256": "8a3f3122fbe4e20c65e2f2d24adc74dab62fa89b66b7499e4658a725c953fee3",
@@ -401,8 +541,8 @@
       "size": 10812
     },
     "docs/PLANO_EVOLUCAO_EDITOR_2D_2_5D_3D_E_LINHAS_INDEPENDENTES_2026-08-29.md": {
-      "sha256": "3d9d1f55bc484d043f2c38d87d4dbfb9558887609c6683f0b4df52018ebba9d1",
-      "size": 19350
+      "sha256": "f7ee08f633b466d27ea82fad530b008877f2edf47f3d8b5e9cdb568deb09ae24",
+      "size": 22281
     },
     "docs/PLANO_INTEGRACAO_PLUGINS_NATIVOS_2026-08-16.md": {
       "sha256": "b03a76b3b45e7a0c9a2a3d29b3bc7812f70c1542f61caa207edc7ebdc07df216",
@@ -5225,12 +5365,12 @@
       "size": 867
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/godot-negative-hash.log": {
-      "sha256": "a6c538ab5ad44429fb300f058fda5536069433685eb352f138e3357672405b54",
-      "size": 3292
+      "sha256": "12b2603fa24921a8d64ce7b5df384a69950d27846e68e3a7b1846c6a4f02e93b",
+      "size": 3376
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/godot-positive.log": {
-      "sha256": "fadc373f13284e53f63e2db95f2136bda9895ab134d9ba25c11f5da67bfdf4ba",
-      "size": 2641
+      "sha256": "be70207c27fa582a0eed57237b5821ddfbee0ab44cec43b455f0e7c70c27e9a0",
+      "size": 2725
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/hero-unity.png": {
       "sha256": "010217fefacff21fec538b7e961cc4e00fe0e2b3a64b919211603d9d43647a5f",
@@ -5249,19 +5389,19 @@
       "size": 2900
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/stage5-report.json": {
-      "sha256": "7695a9179040c3d41994f90b3284419c5cac2dd57f6c24f1ca1edbd217d47fb5",
+      "sha256": "e7a4f5f3cc429914b7b11c4c3764ebc6027275167c852aa4ab57b9082eae3b55",
       "size": 940
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/unity-negative-hash.log": {
-      "sha256": "8bf359f4475a8d95a5db854ca1761944f138c080a76ab62f2f69a56823a11e26",
-      "size": 55620
+      "sha256": "e6876f9464cb0d963efbcf218d9ee6f1a13f68cccb90761ef368bc1fa3bee494",
+      "size": 55362
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/unity-positive.log": {
-      "sha256": "56bff0612c94116b5f0db4cfbe9a8c4e87e288af4609eaea3815c588e5e0e9cd",
-      "size": 55819
+      "sha256": "dd90a495eb0c60124d0364b847412a76824b09da3e598e0d29e109b953ea3de8",
+      "size": 55405
     },
     "docs/evidence/artifacts/stage5-professional-scene-2026-08-19/unity-stage5-report.json": {
-      "sha256": "551e1d1ea44939c1f030af9983eeed532d0970ca7698df7ed9b9d1f22276b6d0",
+      "sha256": "d46d3aba54f3dd434cfdda2017dc2659148bd056a153bcdae9d66f57b1187257",
       "size": 1149
     },
     "docs/evidence/artifacts/stage6-professional-scene-2026-08-20/artifact-index.json": {
@@ -10065,8 +10205,8 @@
       "size": 59
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs": {
-      "sha256": "e575033ac1afb9fd5cf9985e66c06d413e0be0d4f817611a4438b16b60093826",
-      "size": 20577
+      "sha256": "d170cee2a6935462e923bdee08de8a0a439f8db3bd9f25c0cde5808aaaae0e17",
+      "size": 20671
     },
     "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs.meta": {
       "sha256": "332b0eba46d31578dfbcbe807ba64a406cd6d8e118e4345e606a2c71baa619d3",
@@ -10636,6 +10776,14 @@
       "sha256": "7acd11673a0561828a8641ec1ff2a31d8dbbe365ebe1678fe28af52599068033",
       "size": 33445
     },
+    "scripts/benchmark_p2d_05_o1_gesture_finish.py": {
+      "sha256": "6788aa3e9783d63a218ced93351d3caa50aac310c91f6c9bc4a595ae2375001d",
+      "size": 6467
+    },
+    "scripts/benchmark_p2d_05_o2_preview.py": {
+      "sha256": "1f02a2424508bfbe5522d23c7300fd2094ccd8cb98e399ec7695394f6a143ac1",
+      "size": 25967
+    },
     "scripts/build_installer.ps1": {
       "sha256": "d67b3d1a1e63fc18196ac223e0da638f3ced196476107d7c82a104518c497e53",
       "size": 2876
@@ -10643,6 +10791,10 @@
     "scripts/build_windows.ps1": {
       "sha256": "c02643da500ee069a31ba1374b46a491d4e217f4ac17e53499a38f1adb4807f8",
       "size": 2641
+    },
+    "scripts/calibrate_p2d_05.py": {
+      "sha256": "53e68fbb7a4a010b289405fff1a5462babdb75a2ad6f66f254b845136d5df0d9",
+      "size": 18239
     },
     "scripts/capture_stage0_one_resolution.py": {
       "sha256": "e80560d90c819038e7d9fbf29806649a52a3e83b85dda0d887ebb19c1861c830",
@@ -10740,9 +10892,17 @@
       "sha256": "78ece6944b70d0d493a08ddb3942a107c4fd9268c28eafb3c7eb89193e5ca26f",
       "size": 7919
     },
+    "scripts/inspect_p2d_05_o2_profiles.py": {
+      "sha256": "81ed5a8750c23667232dbfd7f42fd11adf26345e5265056af5f20dcbf1e9eb8f",
+      "size": 1555
+    },
     "scripts/package_godot_plugin.py": {
       "sha256": "a4713410b840476cff869422584ec83252ca936c9fb1baf0c80ffad747e6a08e",
       "size": 1382
+    },
+    "scripts/profile_p2d_05_o2_preview.py": {
+      "sha256": "ba26785cedb658c3f08a6cf9aa3dbb98e9d2827dc2c3e0b3f435f0c47e26dc42",
+      "size": 2878
     },
     "scripts/record_stage0_approval.py": {
       "sha256": "0718a7fc031db0bb0da702d0cde918db06f4c37218aaf476d829dcfefe01911b",
@@ -10845,8 +11005,8 @@
       "size": 6367
     },
     "src/core/logger.py": {
-      "sha256": "5fde82b487b17f29a6590214c2e4a8b0e8fb643669678a6ebb54a212ded05974",
-      "size": 4116
+      "sha256": "a8235d9792230b7b4c0af8a7dbbb9b90d00a1fc00963f906a99604d7652879f6",
+      "size": 4301
     },
     "src/core/object_geometry_gesture.py": {
       "sha256": "d2e776e90d15a594110eabec9acf64877f6f82a129ae186d02a4d9e9e82c0c55",
@@ -10905,12 +11065,12 @@
       "size": 2299
     },
     "src/core/scene_authoring_preview.py": {
-      "sha256": "6d5a230c6e8e26cd442696e0060b8ab0fbc51c06ccfe94e78581354a96360848",
-      "size": 5665
+      "sha256": "e548eabfe15fe73268a76406fcd27f9b5060735aaeb72524969ac2fce10b9b49",
+      "size": 8707
     },
     "src/core/scene_authoring_session.py": {
-      "sha256": "b4a75f2d77b8e195e84d77e5997acd07f50cf7272779290b3a9b1d9977c83f26",
-      "size": 22343
+      "sha256": "9e5e8ddd5277450163681b4d90127cba8594ac54d8645dc5f3dbc97726d094c0",
+      "size": 28299
     },
     "src/core/scene_view_navigation.py": {
       "sha256": "b2b0920b78611452a73f59f04d41f0ca44e72b7f535fd329084ef7db33fb1022",
@@ -10993,8 +11153,8 @@
       "size": 9339
     },
     "src/exporters/scene_authoring_export.py": {
-      "sha256": "3cbf871811174bed167d133587e20814244daec2faed1096c7620702a66e83ae",
-      "size": 11801
+      "sha256": "a5e4d19f86b03995ab8eb17e41e476da6009ee1ff17bb14108897362e93cb914",
+      "size": 12096
     },
     "src/exporters/sprite_exporter.py": {
       "sha256": "9cd55c379fe0fd12c1ff194e42dfb7efc0fc703572730e32b1749797f836b5c4",
@@ -11028,6 +11188,10 @@
       "sha256": "c5457d431b9b669dbf1283d242c4e5016690e9db5b3ab56112f26e1e15b3c19c",
       "size": 955
     },
+    "src/persistence/p2d05_errors.py": {
+      "sha256": "5953bfbce73d8c0513636842605589812fca93af35ab5a4bb3add250e518946a",
+      "size": 9772
+    },
     "src/persistence/project_io.py": {
       "sha256": "a7269b3b0501b36f6397b506e66b88c46e4b62609781319f95732e38473c3626",
       "size": 23088
@@ -11045,8 +11209,8 @@
       "size": 5889
     },
     "src/persistence/scene_authoring_io.py": {
-      "sha256": "aebf198ce99ff5ef4e82da8e92300ceb28d0d55a456ca8907ea5f4a840c5dccd",
-      "size": 10202
+      "sha256": "52c437322bb0ccbc8eb52a83bb8686f46b3bafd208cfda41309d2995056d1fa4",
+      "size": 10396
     },
     "src/persistence/scene_authoring_schema.py": {
       "sha256": "f4013e13ad204d014438790c310174f0319c0a32ea817a1a37343fd8a4100042",
@@ -11273,40 +11437,40 @@
       "size": 11525
     },
     "src/ui/scenario_authoring_actions.py": {
-      "sha256": "9e942d9c9b507a7c38a5802c8c83f47d2d104e4c9f553aa8298b847c13dcfb15",
-      "size": 9755
+      "sha256": "b55ea8d020ff038afd0ff08b7829d2e1365f359e837cf38d3727b86468660503",
+      "size": 10538
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "1280508d7df96d7b33598d2dc375d60607d4183544b6d244b0512d3841652be6",
-      "size": 34716
+      "sha256": "5d40c87b5c2efa7f34eb5beb24b6ccb569d6194442352822bf42e2ad5bd49d99",
+      "size": 35461
     },
     "src/ui/scenario_panel.py": {
-      "sha256": "3589d5f4d83d9e42ca51e7a79d75976ac4a4eb1eb23c7ab624371b7edf50650a",
-      "size": 17136
+      "sha256": "fb5a77ad46045b16e2f34a74f631056bcb7cd26c16fd04e12b4d58c3676b581e",
+      "size": 17640
     },
     "src/ui/scenario_preview_actions.py": {
       "sha256": "becb6d3c526b3adbfb4c824de17cb2d812fe1bde2bfb2c32499cbe44cd9f1600",
       "size": 1980
     },
     "src/ui/scene_asset_panel.py": {
-      "sha256": "a32110f48390d2db4dc69e0793aa3797b1b5281ce8760ad23e1f11de5d93e912",
-      "size": 15303
+      "sha256": "e048b9c372981e3653cd43df4af804d8c683e7017d51c8dcc4aa390f8eefc6ec",
+      "size": 15723
     },
     "src/ui/scene_authoring_group_stack.py": {
-      "sha256": "8695a0ec5edf2d54870332d127f960a0b17f612269b14194343e99eecb324b75",
-      "size": 16519
+      "sha256": "77fa63e6b8e8a520953d08eebd814e8132683ffe339e369ca094eb619093bd32",
+      "size": 16584
     },
     "src/ui/scene_authoring_inspector.py": {
-      "sha256": "218f19513c79c0eed3e1718405f708a8d7344667f15961878e4cd29c816b645c",
-      "size": 21315
+      "sha256": "89e53182c98405ee9126e9cda26050bc5e66013b01dc292b359d087e1742758c",
+      "size": 21639
     },
     "src/ui/scene_authoring_layer_stack.py": {
-      "sha256": "37d9f0bc7fd994e07a59d5ff0be44eb14cf73b77b3cf97ab66b4e7cad83d95bd",
-      "size": 6758
+      "sha256": "c00e3d277550edd07fef13011527ef339d7904a4d9deed1b64229a81fd60a113",
+      "size": 6807
     },
     "src/ui/scene_authoring_viewport.py": {
-      "sha256": "8d92dbaa4354be3e5ec034726e39755463666c52c7dc209792aaf7409fd238ad",
-      "size": 59766
+      "sha256": "b39f28f8f2b149611e79e3abad5a33837e42d9c6cf55ac37b2ea112efe6f656e",
+      "size": 68344
     },
     "src/ui/side_panel.py": {
       "sha256": "4c91c9c4ac9c0c3552f8174af8bd2db96b18eb1d1d4bb5dc9c3e5cf7f09b901d",
@@ -11605,8 +11769,16 @@
       "size": 10591
     },
     "tests/test_p2d_04_persistence_recovery_export.py": {
-      "sha256": "faf1500610e6083b00704505256faf4a4129da236c2040f41770f12a944e7349",
-      "size": 12094
+      "sha256": "4606a23f4ce4ec587ff87c2cf07a07589af2a40cebbcec75097c1a685dee9932",
+      "size": 12441
+    },
+    "tests/test_p2d_05_o1_history.py": {
+      "sha256": "96fcbc366ebc624994523cca0e05f43c0d0991f00df925147bdcd73303138d5b",
+      "size": 4812
+    },
+    "tests/test_p2d_05_o2_preview.py": {
+      "sha256": "9e1be2f9940bed1c0df29721350d6fc79452fbfcd161696cc85729a643474547",
+      "size": 15318
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",
@@ -12133,8 +12305,8 @@
       "size": 9918
     },
     "tools/godot_professional_scene_stage5_validator.gd": {
-      "sha256": "c9640318404b3b7924b98c25bc57e4144ad42bffc69dffd23106ec8b3779c260",
-      "size": 2092
+      "sha256": "bc2fbc89eb7d8248cd936bc30e64e3f5092de93723a2bb0d657308e781dbeb0b",
+      "size": 2484
     },
     "tools/godot_professional_scene_validator.gd": {
       "sha256": "7c10cd3a39ad573e7a3da663708ddfbf7ab00b9d540070a61191cda92768d0b4",
