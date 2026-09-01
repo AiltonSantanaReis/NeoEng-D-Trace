@@ -1,11 +1,12 @@
 # Evidência P2D-05/O-2 — auditoria de preview e viewport
 
 **Fase:** abertura formal de O-2
-**Status:** `AUDIT COMPLETE — PRECOMMIT ACCEPTED — POST-COMMIT REQUALIFICATION PENDING`
+**Status:** `AUDIT COMPLETE — ACCEPTED / CLOSED`
 **Data:** 30/08/2026 (UTC-03)
 **HEAD auditado:** `15300a0d580a57110828d8511ae48a0f68326e3a`
 **Branch:** `p2d-05-quality-hardening`
 **Rollback:** `15300a0d580a57110828d8511ae48a0f68326e3a`
+**Commit técnico:** `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`.
 
 ## 1. Limite da auditoria
 
@@ -102,6 +103,6 @@ aceito pelo proprietário com `P2D-05-O2 ACEITO — contrato de preview e
 viewport` em 31/08/2026.
 
 A implementação foi qualificada com os gates registrados na decisão de lote.
-O aceite específico de PRECOMMIT foi recebido em 31/08/2026 pela instrução
-do proprietário `Continue com o plano`. A etapa seguinte é staging, commit e
-requalificação pós-commit dentro da fronteira qualificada.
+O aceite PRECOMMIT, o commit técnico `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`
+e a requalificação pós-commit foram concluídos em 31/08/2026. O estado final é
+`ACCEPTED / CLOSED` dentro da fronteira O-2.

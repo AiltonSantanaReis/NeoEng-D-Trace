@@ -1,27 +1,32 @@
 # NeoEng-D-Trace — decisão formal de implementação P2D-05/O-2
 
 **Etapa:** P2D-05/O-2 — cache seguro, atualização incremental e equivalência do frame
-**Status:** `PRECOMMIT ACCEPTED — POST-COMMIT REQUALIFICATION PENDING`
+**Status:** `ACCEPTED / CLOSED`
 **Data de abertura:** 30/08/2026 (UTC-03)
 **Branch de trabalho:** `p2d-05-quality-hardening`
 **HEAD de referência e rollback:** `15300a0d580a57110828d8511ae48a0f68326e3a`
+**Commit técnico:** `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`
 **Contrato de abertura:** `docs/DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md`
 **Baseline O-2-0:** `docs/EVIDENCIA_P2D_05_O2_0_BASELINE_2026-08-30.md`
 **Relatório O-2-0:** `artifacts/p2d05/o2-0-baseline-20260830-restarted.json`
 **Integridade O-2-0:** `docs/INTEGRIDADE_P2D_05_O2_0_2026-08-30.md`
 **Aceite do proprietário:** `P2D-05-O2 IMPLEMENTAÇÃO ACEITA — cache/incremental/frame` — recebido em 31/08/2026.
 **Aceite PRECOMMIT:** `Continue com o plano` — recebido em 31/08/2026; autoriza staging, commit e requalificação pós-commit dentro da fronteira qualificada.
-**Qualificação final:** concluída em 31/08/2026; PRECOMMIT aceito; requalificação pós-commit pendente.
+**Qualificação final:** concluída em 31/08/2026; implementação e PRECOMMIT concluídos.
+**Qualificação pós-commit:** concluída em 31/08/2026 no commit `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`.
+**Benchmark pós-commit:** `artifacts/p2d05/o2-implementation-postcommit-ffb97eb-r2.json` — PASS, 26/26 workloads, zero erros, source_commit correto; SHA-256 `3E324DF55E7176F149C9870D9BCC0455DB7ED5B923D5580403EED82E10ECC786`.
+**Captura visual pós-commit:** `artifacts/p2d05/o2-viewport-capture-postcommit-ffb97eb/manifest.json` — PASS, pixel-equivalente após sync sem mudança; SHA-256 `DB4C85FE760630DF7988F891B388454040EB5ADB40D93C934C9C9CC6C78AFF2E`.
+**Regressão pós-commit:** `1871 passed, 2 skipped, 1 warning`.
 **Benchmark final:** `artifacts/p2d05/o2-implementation-final-20260831.json` — PASS, 26/26 workloads, zero erros, determinismo em todos; SHA-256 `8250b3abf6f730696cbf314c3f56cb6bd16fa2a782b0cf8f3c4d82109931a731`.
 **Captura visual pós-correção:** `artifacts/p2d05/o2-viewport-capture-after-acceptance-20260831-r3/manifest.json` — PASS, pixel-equivalente após sync sem mudança.
 **Regressão final:** `1871 passed, 2 skipped, 1 warning`.
 
 Este documento registra o lote controlado de implementação do O-2. O aceite
 explícito foi recebido em 31/08/2026 e autorizou somente a fronteira descrita
-aqui; a implementação e a qualificação foram concluídas com os gates
-registrados acima. O aceite PRECOMMIT foi recebido para esta fronteira; o lote
-entra agora em staging, commit e requalificação pós-commit. Merge, push, tag,
-release e avanço para O-3 seguem bloqueados até essa requalificação.
+aqui; a implementação, o PRECOMMIT e a requalificação pós-commit foram
+concluídos com os gates registrados acima. O lote está `ACCEPTED / CLOSED`
+dentro da fronteira O-2; merge, push, tag, release e avanço para O-3 seguem
+condicionados a decisões próprias.
 
 ## 1. Decisão de engenharia
 

@@ -1,0 +1,28 @@
+{
+  "after": {
+    "mode": "RGBA",
+    "sha256_rgba": "03820a1cf5e6dde1298ea66d7024703c23266e9f324320f975f4de71e89a9608",
+    "size": [
+      1280,
+      720
+    ]
+  },
+  "asset_mode": "shared",
+  "before": {
+    "mode": "RGBA",
+    "sha256_rgba": "03820a1cf5e6dde1298ea66d7024703c23266e9f324320f975f4de71e89a9608",
+    "size": [
+      1280,
+      720
+    ]
+  },
+  "object_count": 64,
+  "pixel_equivalent_after_noop_sync": true,
+  "settle_ms": 180,
+  "source_commit": "ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef",
+  "status": "PASS",
+  "viewport_size_logical": [
+    1280,
+    720
+  ]
+}

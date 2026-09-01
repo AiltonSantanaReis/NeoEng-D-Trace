@@ -1,12 +1,13 @@
 # NeoEng-D-Trace — decisão formal P2D-05/O-2
 
 **Etapa:** O-2 — preview e viewport da composição 2D
-**Status:** `PRECOMMIT ACCEPTED — POST-COMMIT REQUALIFICATION PENDING`
+**Status:** `ACCEPTED / CLOSED`
 **Data de abertura:** 30/08/2026 (UTC-03)
 **Branch de auditoria:** `p2d-05-quality-hardening`
 **HEAD auditado:** `15300a0d580a57110828d8511ae48a0f68326e3a`
 **Rollback de O-2:** `15300a0d580a57110828d8511ae48a0f68326e3a`
 **Aceite PRECOMMIT:** `Continue com o plano` — recebido em 31/08/2026.
+**Commit técnico:** `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`.
 **Baseline de produção anterior:** `f55b07b85ef2cf65160f2c10ffac5e63b45732ac`
 **Contrato pai:** `docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md`
 **Contrato de otimização:** `docs/DECISAO_P2D_05_OTIMIZACAO_PERFORMANCE_2026-08-30.md`

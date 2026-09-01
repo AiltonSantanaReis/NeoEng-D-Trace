@@ -126,7 +126,7 @@ P2D-03C foi aberta a partir do checkpoint limpo `78f773583b0277fa9b970d1f849538b
 
 P2D-04 foi tecnicamente qualificada no commit b9e9043f98c58752e8e322a7627b4d17e145d6d3, recebeu correções de governança e cobertura nos commits posteriores da mesma linha, e foi publicada pela PR #163. O merge commit efetivo em main é f55b07b85ef2cf65160f2c10ffac5e63b45732ac; os checks protegidos Linux/Windows passaram e a sincronização pós-merge foi reproduzida localmente. O snapshot técnico e o adendo de publicação são mantidos separados para preservar a cronologia.
 
-P2D-05 foi aberta formalmente neste checkpoint, exclusivamente para performance, limites, formatos e erros da fundação já existente. A decisão está em DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md e foi aceita pelo proprietário em 30/08/2026. O-1 foi implementado e consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`, com requalificação pós-commit; O-2 foi aceito pelo proprietário em `DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md`, implementado e qualificado dentro da fronteira, com PRECOMMIT aceito e requalificação pós-commit pendente. Nenhum workstream de tilemap, colisão, NavMesh, entidades/prefabs ou FX pode ser iniciado por esta abertura.
+P2D-05 foi aberta formalmente neste checkpoint, exclusivamente para performance, limites, formatos e erros da fundação já existente. A decisão está em DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md e foi aceita pelo proprietário em 30/08/2026. O-1 foi implementado e consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`, com requalificação pós-commit; O-2 foi aceito pelo proprietário em `DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md`, implementado, qualificado e fechado no commit técnico `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`, com requalificação pós-commit concluída. Nenhum workstream de tilemap, colisão, NavMesh, entidades/prefabs ou FX pode ser iniciado por esta abertura.
 
 ### 3.11 Abertura formal P2D-05/O-2
 
@@ -144,9 +144,9 @@ baseline vinculada ao HEAD atual, equivalência de frame, fluxo Qt real,
 memória, privacidade, captura e revisão humana quando aplicáveis. Culling,
 spatial index, virtualização, GPU e paralelismo não são presumidos.
 
-O status de O-2 é `PRECOMMIT ACCEPTED — POST-COMMIT REQUALIFICATION PENDING`. A implementação
-foi qualificada dentro da fronteira aceita e nenhum O-3 pode ser iniciado antes do seu
-encerramento formal.
+O status de O-2 é `ACCEPTED / CLOSED`. A implementação foi qualificada dentro da
+fronteira aceita no commit técnico `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`, com
+requalificação pós-commit concluída; O-3 segue condicionado a decisão própria.
 ## 4. Arquitetura de extensão 2.5D/3D
 
 ### 4.1 Núcleo estável
@@ -264,7 +264,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits; P2D-03C está ACCEPTED / CLOSED; P2D-04 está ACCEPTED / CLOSED no merge f55b07b8; P2D-05 está ACCEPTED FOR IMPLEMENTATION — qualificação concluída, PRECOMMIT aceito; O-1 está consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`; O-2 está `PRECOMMIT ACCEPTED — POST-COMMIT REQUALIFICATION PENDING`; O-3 permanece bloqueado até o encerramento formal de O-2. As cinco linhas avançadas continuam documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits; P2D-03C está ACCEPTED / CLOSED; P2D-04 está ACCEPTED / CLOSED no merge f55b07b8; P2D-05 está ACCEPTED / CLOSED com qualificação concluída; O-1 está consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`; O-2 está `ACCEPTED / CLOSED` no commit `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`; O-3 segue condicionado a decisão própria. As cinco linhas avançadas continuam documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;
