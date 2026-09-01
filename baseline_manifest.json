@@ -11969,8 +11969,8 @@
       "size": 13277
     },
     "tests/test_stage5_viewport_hud.py": {
-      "sha256": "e3410fa48ac2025264022274cf18947e7b8ed2405d7b23152eeb5302e82a7029",
-      "size": 5738
+      "sha256": "f56cc2bba910926e194cafbe816442203e8eb6b4fcd5ee4bbdb8a60324bbb799",
+      "size": 6082
     },
     "tests/test_stage5_viewport_hud_contract.py": {
       "sha256": "99c29673f7c03c7d6ff4cb1cb0f26cff66a3d38e01a8796693b02978872e9604",
