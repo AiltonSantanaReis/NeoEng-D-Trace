@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QApplication
 
 from src.core.commands import (
     CommandManager,
+    CommandResult,
     CommandStatus,
     ToggleCollisionCommand,
 )
@@ -514,10 +515,44 @@ def test_geometry_transaction_defends_its_contract_boundaries():
         (10, 90),
     ]
     assert "A" in scene.collision_shapes
+    with pytest.raises(RuntimeError, match="no longer active"):
+        transaction._require_active_object()
 
     scene = _scene()
     transaction = ObjectGeometryGestureTransaction(scene, "A")
     result = transaction.commit(CommandManager())
+    assert result.status is CommandStatus.NO_CHANGE
+    assert transaction.active is False
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    transaction.preview(
+        [(20, 20), (120, 20), (120, 100), (20, 100)],
+        has_collision=False,
+        collision=None,
+    )
+    scene.objects["A"].polygon = [
+        (30, 30),
+        (130, 30),
+        (130, 110),
+        (30, 110),
+    ]
+    result = transaction.commit(CommandManager())
+    assert result.status is CommandStatus.REJECTED
+    assert transaction.active is False
+
+    class _NoChangeManager:
+        def execute(self, command, scene):
+            return CommandResult.no_change(command, "execute", "stub")
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    transaction.preview(
+        [(20, 20), (120, 20), (120, 100), (20, 100)],
+        has_collision=False,
+        collision=None,
+    )
+    result = transaction.commit(_NoChangeManager())
     assert result.status is CommandStatus.NO_CHANGE
     assert transaction.active is False
 

@@ -12137,8 +12137,8 @@
       "size": 9871
     },
     "tests/test_stage_5_package_4b_collision_transform.py": {
-      "sha256": "71856d9e7b35b8c392be38b44c787aa8c5021cead7649f74272d90d748aeae30",
-      "size": 14628
+      "sha256": "304b1e8b32eb072fa2f750591ac8ade9a0217c094ebeb4c39c081bd5d0943727",
+      "size": 15745
     },
     "tests/test_stage_5_package_4c_layer_group_ui_fallbacks.py": {
       "sha256": "a46a37cf6e85306db08874c58e1c48f33567739d1443be3b5ffe962b63c3dcba",
