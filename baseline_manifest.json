@@ -184,6 +184,10 @@
       "sha256": "2557415267f12d07dda4a40965cb52e84b14545e1326cfbcc12f7cbc8b5f4cff",
       "size": 18796
     },
+    "docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md": {
+      "sha256": "896d1be4f51d12730b60f3b14575535f0af9385371251c2d54f19fa7223f21c7",
+      "size": 9669
+    },
     "docs/AUDITORIA_ESTADO_ATUAL_0_6O2.md": {
       "sha256": "43a1b9dfc05ab285f622e7875bc6823f5fe28f08e7688198c10ca2dfcad9217c",
       "size": 8205
@@ -555,6 +559,10 @@
     "docs/PLANO_CENARIOS_PROFISSIONAL_2026-08-19.md": {
       "sha256": "7844f382e69d86e1250d8239ae98287fd95cb0390791b313114f9f126e105e8e",
       "size": 4286
+    },
+    "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
+      "sha256": "dc94da72b23f157a73d506b6a259918eff465f3687a5d3009b3178b8b26a5524",
+      "size": 32909
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -11005,8 +11013,8 @@
       "size": 9536
     },
     "src/core/commands.py": {
-      "sha256": "e67703b781785096d8c5bfeab73f5428e73ae4e1cb026e829ed4145dddd084ef",
-      "size": 80379
+      "sha256": "e10b1dab3b0c5c24d0a92a8c92be6a0e5fd96a86add87700eda7cfd8385d1c5a",
+      "size": 81469
     },
     "src/core/config.py": {
       "sha256": "f82af15955c002df30310e638bfbbe7e8e2da78241625c6248512055e0d5631f",
@@ -11301,8 +11309,8 @@
       "size": 43119
     },
     "src/tools/base_tool.py": {
-      "sha256": "9254c6f712871ffca98ade0433c0a879d3ef33b1736948602b49737baf4f6730",
-      "size": 8496
+      "sha256": "2b26c522ac62b4801880c8775450529200285f2ef7949d3425a580fa756f0ada",
+      "size": 9293
     },
     "src/tools/collision_brush_tool.py": {
       "sha256": "ffcd5978cc9116c155263f30fc261a967f067082b5c38a41461ed0ccf29fe81b",
@@ -11325,8 +11333,8 @@
       "size": 5224
     },
     "src/tools/magnetic_lasso.py": {
-      "sha256": "7fd764b0c7bab6972ad762bcd21acbb9898bd528a1d3328e243396a48f4a7b54",
-      "size": 46825
+      "sha256": "42ad10f0bb53bbcaff12c95ce32eaaf1537ce9484d84315f69c2a45d3a5dbb0d",
+      "size": 46946
     },
     "src/tools/magnetic_lasso_engine.py": {
       "sha256": "47bcb4126a55484d49e6c5c5445b6cd2ee05d25415cfeacd7f5177f3bb3a15c1",
@@ -11337,8 +11345,8 @@
       "size": 10921
     },
     "src/tools/pen_tool.py": {
-      "sha256": "f26a6cf22609b94c26747043837e7e8df252577bf19b038821885585000b90c2",
-      "size": 28491
+      "sha256": "6f1feb800b935dfa66ca75f2d7b968f46a4efdaf0b35b764f28cfa720ebe7d0e",
+      "size": 28492
     },
     "src/tools/polygon_edit_tool.py": {
       "sha256": "d80463ca8dadeaf520d589f40e42dad72ae9a99e2e7ab4a261485dcc95d11744",
@@ -12085,8 +12093,8 @@
       "size": 9449
     },
     "tests/test_stage_11_command_contract_branch_coverage.py": {
-      "sha256": "80c08ecd15922b9220d8aad86baa1976a5f9d0be6564ad42c2271fea61f99d8d",
-      "size": 18561
+      "sha256": "99278d9b4a732ada3c8250663c901e7a661881abd590810ab4e59c04a23eba6e",
+      "size": 19117
     },
     "tests/test_stage_11_magnetic_lasso_branch_coverage.py": {
       "sha256": "15c3c56863342e2a09406ec948011a8a95ae4073bd9de9da6091d40ec214d1b9",
@@ -12097,8 +12105,8 @@
       "size": 21453
     },
     "tests/test_stage_11_numeric_tool_branch_coverage.py": {
-      "sha256": "5fcc370ee122fcde9f3ba30880fea477073324e3956f2228ba2936379515d21a",
-      "size": 16607
+      "sha256": "b6c6b5973305b4c7c705dd6142a70fe2699a086042f0add9574d429960446086",
+      "size": 16777
     },
     "tests/test_stage_11_pen_tool_branch_coverage.py": {
       "sha256": "a680c7a3ae1b08c84f603e680dc491d83a71d6d318b0f036abe1f7c459ddbfc5",
@@ -12215,6 +12223,10 @@
     "tests/test_tileset_animation_exporters.py": {
       "sha256": "babbd680b17c9f4d7b0563edeacde0ee2f8568e1c8389779ec1fc445ea21540d",
       "size": 9385
+    },
+    "tests/test_tool_adapter_error_contracts.py": {
+      "sha256": "19fc237e04f8a8eaf031b052ad76f1bd025e5427a77d9ef1967542bdf628592d",
+      "size": 1630
     },
     "tests/test_tools_real.py": {
       "sha256": "bef7dadf5a12e5eca4b90173325d76f7eb09d17b83dc2afbe6b23fe44ed4bc8d",

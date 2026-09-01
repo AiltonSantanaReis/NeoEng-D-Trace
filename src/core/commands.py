@@ -138,35 +138,59 @@ _STATE_ATTRIBUTES = (
 )
 
 
-def _freeze_state(value: Any) -> Any:
+def _freeze_state(value: Any, _active: Optional[set[int]] = None) -> Any:
+    """Build a deterministic, immutable token for a scene value.
+
+    Scene state is expected to be acyclic, but command checkpoints are also
+    used by adapters and diagnostic objects. A malformed or externally
+    supplied object graph must not make history handling recurse forever. The
+    active set tracks only the current recursion path, so shared references
+    that are not cycles retain their normal value semantics.
+    """
+
+    active = set() if _active is None else _active
     if value is None or isinstance(value, (bool, int, float, str, bytes)):
         return value
-    if isinstance(value, dict):
-        return tuple(
-            sorted(
+
+    value_id = id(value)
+    if value_id in active:
+        return ("<cycle>", type(value).__module__, type(value).__qualname__)
+
+    active.add(value_id)
+    try:
+        if isinstance(value, dict):
+            items = [
                 (
-                    _freeze_state(key),
-                    _freeze_state(item),
+                    _freeze_state(key, active),
+                    _freeze_state(item, active),
                 )
                 for key, item in value.items()
+            ]
+            return tuple(sorted(items, key=repr))
+        if isinstance(value, (list, tuple)):
+            return tuple(_freeze_state(item, active) for item in value)
+        if isinstance(value, set):
+            return tuple(
+                sorted((_freeze_state(item, active) for item in value), key=repr)
             )
-        )
-    if isinstance(value, (list, tuple)):
-        return tuple(_freeze_state(item) for item in value)
-    if isinstance(value, set):
-        return tuple(sorted(_freeze_state(item) for item in value))
-    if hasattr(value, "__dict__"):
-        return (
-            type(value).__name__,
-            _freeze_state(
-                {
-                    key: item
-                    for key, item in vars(value).items()
-                    if key not in {"cmd", "_listeners"}
-                }
-            ),
-        )
-    return repr(value)
+        if hasattr(value, "__dict__"):
+            value_type = type(value)
+            is_mock = value_type.__module__ == "unittest.mock"
+            return (
+                value_type.__name__,
+                _freeze_state(
+                    {
+                        key: item
+                        for key, item in vars(value).items()
+                        if key not in {"cmd", "_listeners"}
+                        and not (is_mock and key.startswith("_"))
+                    },
+                    active,
+                ),
+            )
+        return repr(value)
+    finally:
+        active.remove(value_id)
 
 
 @dataclass

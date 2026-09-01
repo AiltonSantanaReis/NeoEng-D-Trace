@@ -21,7 +21,11 @@ from PySide6.QtGui import (
     QPen,
     QPolygonF,
 )
-from PySide6.QtWidgets import QMenu, QMessageBox, QWidget
+from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
+    QMenu,
+    QMessageBox,
+    QWidget,
+)
 
 from .base_tool import BaseTool
 from .edge_utils import normalize_array, sobel_magnitude
@@ -345,11 +349,13 @@ class MagneticLassoTool(BaseTool):
 
     def _get_scene_image(self):
         scene = getattr(self.canvas_view, "scene", None)
-        if scene is None:
+        getter = getattr(scene, "get_image", None)
+        if not callable(getter):
             scene = getattr(self.canvas_view, "model", None)
-        if scene is None or not hasattr(scene, "get_image"):
+            getter = getattr(scene, "get_image", None)
+        if not callable(getter):
             return None
-        return scene.get_image()
+        return getter()
 
     @staticmethod
     def _image_token(image):
@@ -724,8 +730,8 @@ class MagneticLassoTool(BaseTool):
         self._last_error = f"{purpose}: {detail}"
         if purpose in {"segment", "finish"}:
             try:
-                QMessageBox.warning(
-                    self.canvas_view,
+                self._show_message(
+                    "warning",
                     self.translations[self.current_lang]["title"],
                     self.translations[self.current_lang]["path_error"],
                 )
@@ -1063,8 +1069,8 @@ class MagneticLassoTool(BaseTool):
         text = self.translations[self.current_lang]["invalid_selection"]
         self._last_error = text
         try:
-            QMessageBox.warning(
-                self.canvas_view,
+            self._show_message(
+                "warning",
                 self.translations[self.current_lang]["title"],
                 text,
             )
