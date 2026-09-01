@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+
 import numpy as np
 import pytest
 from PySide6.QtCore import QPoint, QPointF, Qt
