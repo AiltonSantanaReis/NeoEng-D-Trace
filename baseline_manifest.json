@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "project": "NeoEng-D-Trace",
-  "baseline_date": "2026-08-31",
+  "baseline_date": "2026-09-01",
   "hash_algorithm": "sha256",
   "canonicalization": {
     "utf8_text_line_endings": "LF",
@@ -11969,8 +11969,8 @@
       "size": 13277
     },
     "tests/test_stage5_viewport_hud.py": {
-      "sha256": "8848e80b47c4deb26c53953c08a1c1816293c7f531aac9ca65b113839848bb09",
-      "size": 5362
+      "sha256": "4672cb51b186c449b6e4e701aecac23c149e9723203658a8e6d0d91e197ae6c6",
+      "size": 5544
     },
     "tests/test_stage5_viewport_hud_contract.py": {
       "sha256": "99c29673f7c03c7d6ff4cb1cb0f26cff66a3d38e01a8796693b02978872e9604",
