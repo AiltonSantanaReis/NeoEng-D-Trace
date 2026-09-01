@@ -38,6 +38,24 @@ def test_reference_menu_position_timer_is_owned_by_toolbar(qt_app):
     _flush_deferred_deletes(qt_app)
 
 
+def test_reference_menu_callback_is_cancelled_when_button_is_destroyed(qt_app):
+    owner = QWidget()
+    palette = ReferenceToolPalette("test", owner)
+    button = QToolButton(palette)
+    palette.register_application_menu(button)
+
+    button.deleteLater()
+    _flush_deferred_deletes(qt_app)
+
+    assert palette._application_menu_button is None
+    assert not palette._application_menu_timer.isActive()
+
+    palette.deleteLater()
+    _flush_deferred_deletes(qt_app)
+    owner.deleteLater()
+    _flush_deferred_deletes(qt_app)
+
+
 def test_responsive_geometry_timer_is_owned_by_window(qt_app):
     owner = QWidget()
     layout = ResponsivePanelLayout(
