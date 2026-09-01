@@ -4,8 +4,9 @@
 **Identificador:** `P2D-COMP-01/LEGACY-26-RECON`
 **Fase:** `3 — ferramentas síncronas e histórico`
 **Data da coleta:** 2026-09-01 (America/Sao_Paulo)
-**Status da coleta:** `CANDIDATO PRÉ-COMMIT — fechamento pendente dos gates staged e pós-commit`
+**Status da coleta:** `APROVADO — CONTRATOS DO ESCOPO DA FASE 3`
 **HEAD de entrada:** `3c287ac73925ef0ef33404da63de7401dee43913`
+**Commit de código sob teste:** `7c3b9b2469628ec130b09d06bfdc29d128fdf034`
 **Branch:** `fix/legacy-27-functional-regressions`
 
 Este relatório registra a execução da Fase 3 sem editar snapshots históricos,
@@ -60,8 +61,14 @@ Evidence integrity passed: 121 manifests validated.
 Baseline verified: 3113 files.
 ```
 
-`git diff --name-only HEAD -- quality/legacy_tests` foi vazio. Os gates de
-integridade serão repetidos após staging e após commit.
+`git diff --name-only HEAD -- quality/legacy_tests` foi vazio no HEAD de
+entrada e continua vazio no commit da Fase 3. No commit de código sob teste,
+os gates reais retornaram:
+
+```text
+Baseline verified: 3115 files; baseline_rc=0
+Evidence integrity passed: 121 manifests validated; evidence_rc=0
+```
 
 ## Ambiente
 
@@ -227,8 +234,9 @@ adiciona somente teste e documentação, não há alteração de produção para
 desfazer. Se um gate pós-commit falhar, o status será `BLOQUEADO` e não haverá
 push/merge.
 
-O status ainda é pré-commit. O fechamento exige staging exclusivo, baseline e
-evidence integrity, diff check, suíte focal/combinada/global, commit local,
-repetição pós-commit dos gates, hashes confirmados e atualização deste relatório
-para apontar o commit de código sob teste. Snapshots não serão reescritos para
-fazer o runner passar.
+A Fase 3 está aprovada somente no escopo dos contratos #6–#16, #25 e #26, com
+o #10 mantido como não regressão. O commit de código sob teste é
+`7c3b9b2469628ec130b09d06bfdc29d128fdf034`; baseline e evidence integrity
+foram confirmados depois dele. O plano global dos 26 casos permanece em
+execução: Fases 4–7, reconciliação formal integral e decisão de merge ainda
+não foram executadas. Snapshots históricos não foram reescritos.

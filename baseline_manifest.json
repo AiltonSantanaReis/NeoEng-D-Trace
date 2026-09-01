@@ -1332,6 +1332,10 @@
       "sha256": "ee52d3bd5cd963f819000ab2c4070d8cd7be873ce1c3ac3fc3dc5bc09c494835",
       "size": 14038
     },
+    "docs/evidence/FASE3_FERRAMENTAS_SINCRONAS_HISTORICO_2026-09-01.md": {
+      "sha256": "e606acb2fbe968342af631dfa7bce55b88ff8f7ea720fac6de5872f5a4f83b13",
+      "size": 10416
+    },
     "docs/evidence/INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md": {
       "sha256": "de579b3aac91db6c601fdcfd41b2cad6c2f00a1d51d43d9d511a7d12e158fd65",
       "size": 5013
@@ -11779,6 +11783,10 @@
     "tests/test_legacy_phase2_contracts.py": {
       "sha256": "31d18f06067cd69854e4b904a61fa157c9eb45841b2ef93457aa1da43f8662fd",
       "size": 6941
+    },
+    "tests/test_legacy_phase3_contracts.py": {
+      "sha256": "d97b570e1f6f6fe536505b9d4bbb7f82b24cc229408cf2ec4ea5160134783eaf",
+      "size": 13843
     },
     "tests/test_logger_configuration.py": {
       "sha256": "882030c22a39a5d0999af9e238391f25e7b87144a9fb7dcbd9bb2fd9e8ff0889",
