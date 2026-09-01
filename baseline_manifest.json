@@ -11977,8 +11977,8 @@
       "size": 8543
     },
     "tests/test_stage6_gizmo_gap_closure.py": {
-      "sha256": "0fde32f162714508036011d7143ae8ed076e951ab1758f36dfb81b5be9a53cb3",
-      "size": 5792
+      "sha256": "2ebe022fae1df7eb6347f9f3be44e5697bd33873ad6303a56cb3da9cbdbc87d5",
+      "size": 8680
     },
     "tests/test_stage6_professional_gizmo.py": {
       "sha256": "06eb656e3c00fcc9c36ca51ffbe00de4e02ebc27a4d75243580b1a37a3fab064",
