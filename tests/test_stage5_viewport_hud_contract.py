@@ -178,7 +178,7 @@ def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, siz
 
 @pytest.mark.skipif(
     sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen image-layout processing crashes natively on the hosted Windows runner",
+    reason="Qt offscreen image-layout crashes on the hosted Windows runner",
 )
 def test_stage5_mask_viewer_fits_after_layout_and_selects_processing_source(qt_app):
     viewer = MaskViewer()
