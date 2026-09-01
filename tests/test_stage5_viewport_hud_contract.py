@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 
 import numpy as np
@@ -31,6 +32,10 @@ def _bgr_fixture() -> np.ndarray:
     return image
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32" and os.environ.get("CI") == "true",
+    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
+)
 def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     try:
