@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-import os
-import sys
-
 import pytest
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QImage, QPainter
@@ -91,10 +88,6 @@ def test_transform_gizmo_reference_contract_is_headless(qt_app):
     assert not image.isNull()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen visible widget crashes on the hosted Windows runner",
-)
 def test_vertex_gizmo_exposes_only_xy_handles_and_anchors_selected_vertex(qt_app):
     scene = _scene()
     view = CanvasView(scene)
@@ -182,10 +175,6 @@ def test_vertex_gizmo_xy_preview_commit_undo_and_cancel_are_transactional(qt_app
         view.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen visible widget crashes on the hosted Windows runner",
-)
 def test_main_side_panel_numeric_transform_is_atomic_and_round_trips(qt_app):
     scene = _scene()
     view = CanvasView(scene)
@@ -223,10 +212,6 @@ def test_main_side_panel_numeric_transform_is_atomic_and_round_trips(qt_app):
         view.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen visible widget crashes on the hosted Windows runner",
-)
 def test_main_side_panel_disables_numeric_transform_without_selection(qt_app):
     scene = _scene()
     scene.select_object(None)

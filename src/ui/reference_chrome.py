@@ -109,13 +109,21 @@ class ReferenceToolPalette(QToolBar):
         super().__init__(title, parent)
         self._tool_buttons: list[QToolButton] = []
         self._application_menu_button: QToolButton | None = None
+        self._application_menu_timer = QTimer(self)
+        self._application_menu_timer.setSingleShot(True)
+        self._application_menu_timer.timeout.connect(self._position_application_menu)
 
     def register_tool_button(self, button: QToolButton) -> None:
         self._tool_buttons.append(button)
 
     def register_application_menu(self, button: QToolButton) -> None:
         self._application_menu_button = button
-        QTimer.singleShot(0, self._position_application_menu)
+        button.destroyed.connect(self._on_application_menu_button_destroyed)
+        self._application_menu_timer.start(0)
+
+    def _on_application_menu_button_destroyed(self, *_args: Any) -> None:
+        self._application_menu_button = None
+        self._application_menu_timer.stop()
 
     def _position_application_menu(self) -> None:
         button = self._application_menu_button
@@ -128,7 +136,7 @@ class ReferenceToolPalette(QToolBar):
 
     def resizeEvent(self, event: Any) -> None:
         super().resizeEvent(event)
-        QTimer.singleShot(0, self._position_application_menu)
+        self._application_menu_timer.start(0)
 
     def setEnabled(self, enabled: bool) -> None:
         # The toolbar container must remain enabled so the application menu

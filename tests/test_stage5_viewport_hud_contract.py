@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import sys
 
 import numpy as np
@@ -32,10 +31,6 @@ def _bgr_fixture() -> np.ndarray:
     return image
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
-)
 def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     try:
@@ -150,10 +145,6 @@ def test_stage5_mask_viewer_mouse_keyboard_roi_and_limits(qt_app):
         viewer.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen QDialog crashes natively on the hosted Windows runner",
-)
 @pytest.mark.parametrize("size", [(1280, 720), (1366, 768), (1920, 1080)])
 def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, size):
     scene = Scene()
@@ -176,10 +167,6 @@ def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, siz
         dialog.close()
 
 
-@pytest.mark.skipif(
-    sys.platform == "win32" and os.environ.get("CI") == "true",
-    reason="Qt offscreen image-layout crashes on the hosted Windows runner",
-)
 def test_stage5_mask_viewer_fits_after_layout_and_selects_processing_source(qt_app):
     viewer = MaskViewer()
     dialog = None
