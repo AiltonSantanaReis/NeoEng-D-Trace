@@ -150,6 +150,10 @@ def test_stage5_mask_viewer_mouse_keyboard_roi_and_limits(qt_app):
         viewer.close()
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32" and os.environ.get("CI") == "true",
+    reason="Qt offscreen QDialog crashes natively on the hosted Windows runner",
+)
 @pytest.mark.parametrize("size", [(1280, 720), (1366, 768), (1920, 1080)])
 def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, size):
     scene = Scene()
