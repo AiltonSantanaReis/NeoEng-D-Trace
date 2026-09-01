@@ -184,8 +184,34 @@ jobs:
       - name: Scan high-severity source risks
         run: poetry run bandit -q -r src -lll
 
+      - name: Configure Windows native crash dumps (diagnostic only)
+        id: windows-native-dumps
+        shell: pwsh
+        run: |
+          $dumpDir = Join-Path $env:RUNNER_TEMP "native-crash-dumps"
+          New-Item -ItemType Directory -Path $dumpDir -Force | Out-Null
+          $dumpKey = "HKCU:\Software\Microsoft\Windows\Windows Error Reporting\LocalDumps\python.exe"
+          New-Item -Path $dumpKey -Force | Out-Null
+          New-ItemProperty -Path $dumpKey -Name DumpFolder -PropertyType ExpandString -Value $dumpDir -Force | Out-Null
+          New-ItemProperty -Path $dumpKey -Name DumpType -PropertyType DWord -Value 2 -Force | Out-Null
+          New-ItemProperty -Path $dumpKey -Name DumpCount -PropertyType DWord -Value 5 -Force | Out-Null
+          Write-Output "WINDOWS_NATIVE_DUMP_DIR=$dumpDir"
+
       - name: Run tests with Windows branch coverage
+        id: windows-full-tests
         run: poetry run pytest --cov=src --cov-branch --cov-fail-under=90 --cov-report=term-missing --cov-report=xml
+
+      - name: Collect Windows native crash diagnostics
+        if: ${{ failure() && steps.windows-full-tests.outcome == 'failure' }}
+        shell: pwsh
+        run: |
+          $dumpDir = Join-Path $env:RUNNER_TEMP "native-crash-dumps"
+          if (Test-Path -LiteralPath $dumpDir) {
+            Get-ChildItem -LiteralPath $dumpDir -Force |
+              Select-Object FullName, Length, LastWriteTimeUtc
+          } else {
+            Write-Output "No Windows native dump directory was created."
+          }
 
       - name: Enforce integrated coverage policy
         run: poetry run python tools/check_coverage_policy.py coverage.xml
@@ -202,6 +228,7 @@ jobs:
         run: python tools/baseline_integrity.py --verify --git-blob
 
       - name: Store Windows evidence
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: validation-windows-python-3.11
@@ -211,5 +238,6 @@ jobs:
             docs/evidence/**
             quality/legacy_tests/reconciliation.json
             ${{ runner.temp }}/legacy-tests/summary.json
+            ${{ runner.temp }}/native-crash-dumps/**
           if-no-files-found: error
           retention-days: 30

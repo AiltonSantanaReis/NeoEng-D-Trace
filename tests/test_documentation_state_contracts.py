@@ -390,6 +390,10 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert workflow.count("fetch-depth: 0") == 2
     assert workflow.count("actions/setup-python@v7") == 2
     assert workflow.count("actions/upload-artifact@v7") == 2
+    assert "Configure Windows native crash dumps (diagnostic only)" in workflow
+    assert "Collect Windows native crash diagnostics" in workflow
+    assert "if: always()" in workflow
+    assert "native-crash-dumps/**" in workflow
     assert "GitHub Security Advisory" in security
     expected_failures = reconciliation["expected_failures"]
     failure_ids = {item["id"] for item in expected_failures}

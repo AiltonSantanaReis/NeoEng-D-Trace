@@ -29,8 +29,8 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "43066cd9f1a692af386d3bdc086930a0e81b73c41d4e208e62d9a9a1e9b9b348",
-      "size": 7511
+      "sha256": "35a08b350a26b3568a707a61847291b8bf8297005cfc78e119645c8b56439c16",
+      "size": 8947
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
@@ -11633,8 +11633,8 @@
       "size": 1312
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "cc5d76ea649f656ee6318ed160348b0c778c22c83bcb29c0030e5542760fbbf5",
-      "size": 44102
+      "sha256": "fffa8b51a2c7aa22013f4b302e33d8bce0224ffaf60d440da65ea42aa029b495",
+      "size": 44333
     },
     "tests/test_evidence_integrity.py": {
       "sha256": "96e2a9ac54d75a470cf8c4b2e31e077f7aafb989efd1fa2055fd5dc0649e67e5",
