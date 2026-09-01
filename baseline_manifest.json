@@ -11369,8 +11369,8 @@
       "size": 6003
     },
     "src/ui/canvas_view.py": {
-      "sha256": "cf75e2621925394e1a4d350ed2a445246da55701c01642421ecf00e183c1aaf2",
-      "size": 68919
+      "sha256": "75379b19afd759c35cbdcf56a4b17f1a16a0012c633114b647dafa89c921e3f1",
+      "size": 69060
     },
     "src/ui/collision_overlay.py": {
       "sha256": "5dd981c6fa08ee715f7d32f9b1904cd671fe2bd0e8f92b541c49744e5091af0f",
@@ -11433,16 +11433,16 @@
       "size": 9950
     },
     "src/ui/mask_viewer.py": {
-      "sha256": "1f2993d9359e43b4c598ca8c62b52bdda3f9fafb7a045dfed4e1d736742193b5",
-      "size": 87642
+      "sha256": "65e2966f08247dfe022391a7ec5cdf61f53d8f4d5607ea6fc6475c9b2efddb26",
+      "size": 87749
     },
     "src/ui/reference_chrome.py": {
-      "sha256": "41f4f9164e5c1cb1d950ccef76dce80cf2507ee5abf2ea0de563a5589af59138",
-      "size": 19929
+      "sha256": "86af62a801e679643db780789ea1233c15e99ef5a678a5972ca84ce520017041",
+      "size": 20333
     },
     "src/ui/responsive_layout.py": {
-      "sha256": "762e3c555bc7ecef70c2680203289200f1392993709695240220274909317dd8",
-      "size": 11525
+      "sha256": "e5b3c608650a3e8443a2fd28f61a0347ea96229dd604e1a72bcc9ff0a771caca",
+      "size": 11701
     },
     "src/ui/scenario_authoring_actions.py": {
       "sha256": "b55ea8d020ff038afd0ff08b7829d2e1365f359e837cf38d3727b86468660503",
@@ -11803,6 +11803,10 @@
     "tests/test_project_schema_contract.py": {
       "sha256": "ff1d7406b0332625dd3f576c7901e96b3912b969deae8a95396edecf0a552a07",
       "size": 4908
+    },
+    "tests/test_qt_lifecycle_regression.py": {
+      "sha256": "d03e4c0dc3e08722e7acebf67eefdccfcda82e89db9ee9cf79467857fdb1b17b",
+      "size": 2308
     },
     "tests/test_quality_gate_integrity.py": {
       "sha256": "bdb4ee1948fbac9fbce04a8bbf85ebf4e815a028e819ee09e54bc459eaf500e5",

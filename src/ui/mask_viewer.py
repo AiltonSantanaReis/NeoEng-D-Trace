@@ -173,6 +173,9 @@ class MaskViewer(QWidget):
         self._display_image: Optional[np.ndarray] = None
         self._display_mode = 0
         self._fit_pending = False
+        self._fit_timer = QTimer(self)
+        self._fit_timer.setSingleShot(True)
+        self._fit_timer.timeout.connect(self._fit_after_layout)
         self._qimage_cache: Optional[QImage] = None
         self._composed_image: Optional[np.ndarray] = None
         self._layer_overlays: Dict[str, bool] = {}
@@ -735,7 +738,7 @@ class MaskViewer(QWidget):
         self._fit_pending = self._image is not None
         self._qimage_cache = None
         if self.isVisible():
-            QTimer.singleShot(0, self._fit_after_layout)
+            self._fit_timer.start(0)
         self.set_display_mode(self._display_mode, update=False)
         self.update()
 
@@ -743,7 +746,7 @@ class MaskViewer(QWidget):
         """Fit after the parent layout has assigned the final viewport size."""
         super().showEvent(event)
         if self._fit_pending:
-            QTimer.singleShot(0, self._fit_after_layout)
+            self._fit_timer.start(0)
 
     def _fit_after_layout(self) -> None:
         if not self._fit_pending or self._image is None:

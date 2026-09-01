@@ -6,7 +6,16 @@ from dataclasses import dataclass
 # src/ui/canvas_view.py
 from typing import Any, Callable, Optional, Tuple
 
-from PySide6.QtCore import QObject, QPointF, QRectF, QRunnable, Qt, QThreadPool, Signal
+from PySide6.QtCore import (
+    QObject,
+    QPointF,
+    QRectF,
+    QRunnable,
+    Qt,
+    QThreadPool,
+    QTimer,
+    Signal,
+)
 from PySide6.QtGui import (
     QColor,
     QFont,
@@ -368,6 +377,9 @@ class CanvasView(QWidget):
         self._collision_overlay = None
         self._temp_mask = None
         self._flash_color = None
+        self._flash_timer = QTimer(self)
+        self._flash_timer.setSingleShot(True)
+        self._flash_timer.timeout.connect(self._clear_flash)
         self.current_lang = "en"
 
         self.threadpool = QThreadPool()
@@ -804,9 +816,8 @@ class CanvasView(QWidget):
     def flash_effect(self, color: QColor, duration: int = 300):
         self._flash_color = color
         self.update()
-        from PySide6.QtCore import QTimer
 
-        QTimer.singleShot(duration, lambda: self._clear_flash())
+        self._flash_timer.start(max(0, int(duration)))
 
     def _clear_flash(self):
         self._flash_color = None

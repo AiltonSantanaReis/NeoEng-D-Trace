@@ -55,6 +55,9 @@ class ResponsivePanelLayout:
         self.collision_panel = collision_panel
         self.is_compact = False
         self._geometry_update_pending = False
+        self._geometry_update_timer = QTimer(owner)
+        self._geometry_update_timer.setSingleShot(True)
+        self._geometry_update_timer.timeout.connect(self._apply_scheduled_geometry)
 
     def update(self, *, force: bool = False) -> None:
         compact = self.owner.width() < self.BREAKPOINT
@@ -88,7 +91,7 @@ class ResponsivePanelLayout:
         if self._geometry_update_pending:
             return
         self._geometry_update_pending = True
-        QTimer.singleShot(0, self._apply_scheduled_geometry)
+        self._geometry_update_timer.start(0)
 
     def _apply_scheduled_geometry(self) -> None:
         self._geometry_update_pending = False
