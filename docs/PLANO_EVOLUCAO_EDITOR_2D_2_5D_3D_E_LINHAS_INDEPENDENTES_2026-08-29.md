@@ -18,6 +18,11 @@
 **Decisão P2D-03:** docs/DECISAO_P2D_03_NAVEGACAO_SELECAO_PRODUTIVIDADE_2026-08-29.md
 **Auditoria P2D-03:** docs/EVIDENCIA_P2D_03_AUDITORIA_BASELINE_2026-08-29.md
 **Fechamento P2D-03C:** docs/EVIDENCIA_P2D_03C_FECHAMENTO_2026-08-30.md
+**Decisão P2D-04:** docs/DECISAO_P2D_04_PERSISTENCIA_RECOVERY_PREVIEW_EXPORT_COORDENADAS_2026-08-30.md
+**Evidência P2D-04:** docs/EVIDENCIA_P2D_04_POSTCOMMIT_2026-08-30.md
+**Publicação P2D-04:** docs/EVIDENCIA_P2D_04_PUBLICACAO_2026-08-30.md
+**Decisão P2D-05:** docs/DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md
+**Decisão P2D-05/O-2:** docs/DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md
 
 ## 1. Finalidade
 
@@ -117,6 +122,31 @@ O proprietário aceitou explicitamente o contrato de P2D-03B com `P2D-03B ACEITO
 
 P2D-03C foi aberta a partir do checkpoint limpo `78f773583b0277fa9b970d1f849538b4fa3fdcc6`, após auditoria somente de leitura do viewport, da janela profissional, da sessão, do modelo, da projeção e dos controles do inspector. O proprietário aceitou o contrato com `P2D-03C ACEITO — contrato de navegação, fit e estados visuais` e, após a revisão final, registrou `P2D-03C ACEITO — entrega final` em 30/08/2026. A implementação foi concluída no commit técnico `58674dde87ba94082e84f066ebda21d144da65cd`, com requalificação pós-commit, captura, auditoria visual, comparação, build portátil, seal e verificação independente documentados em `EVIDENCIA_P2D_03C_FECHAMENTO_2026-08-30.md`. O reteste humano da transição Fit/Focus não reproduziu a lentidão relatada. O estado é `ACCEPTED / CLOSED`. C3, G/V/B, schema, legado e os sublotes P2D-03A/B permanecem fora da mutação.
 
+### 3.10 Fechamento P2D-04 e abertura P2D-05
+
+P2D-04 foi tecnicamente qualificada no commit b9e9043f98c58752e8e322a7627b4d17e145d6d3, recebeu correções de governança e cobertura nos commits posteriores da mesma linha, e foi publicada pela PR #163. O merge commit efetivo em main é f55b07b85ef2cf65160f2c10ffac5e63b45732ac; os checks protegidos Linux/Windows passaram e a sincronização pós-merge foi reproduzida localmente. O snapshot técnico e o adendo de publicação são mantidos separados para preservar a cronologia.
+
+P2D-05 foi aberta formalmente neste checkpoint, exclusivamente para performance, limites, formatos e erros da fundação já existente. A decisão está em DECISAO_P2D_05_PERFORMANCE_LIMITES_FORMATOS_ERROS_2026-08-30.md e foi aceita pelo proprietário em 30/08/2026. O-1 foi implementado e consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`, com requalificação pós-commit; O-2 foi aceito pelo proprietário em `DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md`, implementado, qualificado e fechado no commit técnico `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`, com requalificação pós-commit concluída. Nenhum workstream de tilemap, colisão, NavMesh, entidades/prefabs ou FX pode ser iniciado por esta abertura.
+
+### 3.11 Abertura formal P2D-05/O-2
+
+O-1 foi consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`.
+A auditoria do viewport no mesmo checkpoint identificou que
+`SceneAuthoringViewport.sync()` ainda reconstrói a cena gráfica em mudanças
+estruturais, enquanto mudanças sem alteração estrutural seguem um caminho de
+refresh de transforms e gizmo. O contrato O-2 foi aberto para medir esses
+caminhos antes de qualquer implementação.
+
+O-2 cobre exclusivamente preview e viewport: classificação estrutural versus
+incremental, custo de sync, transforms, seleção, gizmo, visibilidade,
+isolamento, sockets, parallax, zoom, pan, fit e resize. O contrato exige
+baseline vinculada ao HEAD atual, equivalência de frame, fluxo Qt real,
+memória, privacidade, captura e revisão humana quando aplicáveis. Culling,
+spatial index, virtualização, GPU e paralelismo não são presumidos.
+
+O status de O-2 é `ACCEPTED / CLOSED`. A implementação foi qualificada dentro da
+fronteira aceita no commit técnico `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`, com
+requalificação pós-commit concluída; O-3 segue condicionado a decisão própria.
 ## 4. Arquitetura de extensão 2.5D/3D
 
 ### 4.1 Núcleo estável
@@ -234,7 +264,7 @@ A prioridade de implementação futura será decidida por valor de produto, risc
 
 ## 8. Decisão vigente
 
-O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits. As cinco linhas avançadas estão documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
+O trabalho começou formalmente em P2D-01 após P2D-00 ACCEPTED. P2D-01A está ACCEPTED e fechada conforme sua decisão, evidência e commit próprios; P2D-01B está ACCEPTED e fechada conforme sua decisão, evidência, gates automatizados e aceite humano; P2D-02 está ACCEPTED e fechada conforme suas decisões, evidências, gates e commits; P2D-03C está ACCEPTED / CLOSED; P2D-04 está ACCEPTED / CLOSED no merge f55b07b8; P2D-05 está ACCEPTED / CLOSED com qualificação concluída; O-1 está consolidado no commit `15300a0d580a57110828d8511ae48a0f68326e3a`; O-2 está `ACCEPTED / CLOSED` no commit `ffb97eb788d1acecc2d874dd84f9fb6f1e51c0ef`; O-3 segue condicionado a decisão própria. As cinco linhas avançadas continuam documentadas como PLANNED/BLOCKED BY P2D-COMP-01:
 
 - EXT-TMAP-01 — Tilemap;
 - EXT-COLL-01 — colisão de cenário;
@@ -273,3 +303,24 @@ capacidade funcional correspondente.
 Até o aceite integral, o produto permanece OPEN / INCOMPLETE e nenhuma build
 ou release poderá ser apresentada como editor profissional completo de
 cenários.
+
+## 10. Atualização de qualificação P2D-COMP-01 — 2026-08-31
+
+A requalificação do gate de exportação e round-trip encontrou e corrigiu um
+bloqueador no próprio harness de validação: a câmera de cena é um filho técnico
+do root e não pode ser contada como layer. Godot agora identifica a layer pelo
+metadado neoeng_layer_id; Unity conta componentes
+NeoEngProfessionalLayerMetadata. A correção preserva a rejeição fail-closed do
+hash incorreto e não altera o schema, a persistência ou o formato exportado.
+
+Com a evidência
+docs/EVIDENCIA_P2D_COMP_01_EXPORT_ROUNDTRIP_2026-08-31.md, a fundação de
+P2D-COMP-01 fica qualificada no contrato atual de composição 2D e exportação de
+objetos suportados, condicionada somente à publicação do commit e à
+requalificação pós-merge. As cinco linhas EXT-TMAP-01, EXT-COLL-01,
+EXT-NAV-01, EXT-ENT-01 e EXT-FX-01 continuam sem aceite próprio e não são
+abertas por esta decisão.
+
+Esta atualização fecha o bloqueador técnico do gate atual; não revoga a emenda
+da seção 9. O produto integral continua OPEN / INCOMPLETE até que os requisitos
+completos tenham implementação funcional, round-trip visual e aceite formal.

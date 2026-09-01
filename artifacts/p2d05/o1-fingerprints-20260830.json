@@ -1,0 +1,11 @@
+{
+  "kind": "p2d-05-o1-source-fingerprints",
+  "schema_version": 1,
+  "source_commit": "fc59ff571e4e4d99ddd40a8ec318d50b8edd77f3",
+  "branch": "p2d-05-quality-hardening",
+  "files": {
+    "src/core/scene_authoring_session.py": "9e5e8ddd5277450163681b4d90127cba8594ac54d8645dc5f3dbc97726d094c0",
+    "tests/test_p2d_05_o1_history.py": "96fcbc366ebc624994523cca0e05f43c0d0991f00df925147bdcd73303138d5b",
+    "scripts/benchmark_p2d_05_o1_gesture_finish.py": "6788aa3e9783d63a218ced93351d3caa50aac310c91f6c9bc4a595ae2375001d"
+  }
+}

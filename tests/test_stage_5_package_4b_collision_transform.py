@@ -10,9 +10,11 @@ from PySide6.QtWidgets import QApplication
 
 from src.core.commands import (
     CommandManager,
+    CommandResult,
     CommandStatus,
     ToggleCollisionCommand,
 )
+from src.core.object_geometry_gesture import ObjectGeometryGestureTransaction
 from src.models.scene import Scene
 from src.tools.collision_brush_tool import CollisionBrushTool
 
@@ -458,6 +460,101 @@ def test_missing_manager_blocks_move_and_scale(monkeypatch):
     assert tool.scaling is False
     assert len(messages) == 2
     assert all("history is unavailable" in str(message) for message in messages)
+
+
+def test_geometry_transaction_defends_its_contract_boundaries():
+    scene = _scene()
+
+    with pytest.raises(KeyError):
+        ObjectGeometryGestureTransaction(scene, "missing")
+
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    with pytest.raises(ValueError, match="Collision geometry is required"):
+        transaction.preview(
+            [(20, 20), (120, 20), (120, 100), (20, 100)],
+            has_collision=True,
+            collision=None,
+        )
+
+    scene.objects["A"].polygon = [
+        (30, 30),
+        (130, 30),
+        (130, 110),
+        (30, 110),
+    ]
+    with pytest.raises(RuntimeError, match="changed outside"):
+        transaction.preview(
+            [(20, 20), (120, 20), (120, 100), (20, 100)],
+            has_collision=False,
+            collision=None,
+        )
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    scene.objects.pop("A")
+    assert transaction._current_geometry() == ([], False, None)
+    with pytest.raises(KeyError, match="A"):
+        transaction._require_active_object()
+    transaction._restore_origin(notify=True)
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    transaction.preview(
+        [(20, 20), (120, 20), (120, 100), (20, 100)],
+        has_collision=False,
+        collision=None,
+    )
+    result = transaction.commit(None)
+    assert result.status is CommandStatus.FAILED
+    assert result.error_type == "CommandManagerUnavailable"
+    assert transaction.active is False
+    assert scene.objects["A"].polygon == [
+        (10, 10),
+        (110, 10),
+        (110, 90),
+        (10, 90),
+    ]
+    assert "A" in scene.collision_shapes
+    with pytest.raises(RuntimeError, match="no longer active"):
+        transaction._require_active_object()
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    result = transaction.commit(CommandManager())
+    assert result.status is CommandStatus.NO_CHANGE
+    assert transaction.active is False
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    transaction.preview(
+        [(20, 20), (120, 20), (120, 100), (20, 100)],
+        has_collision=False,
+        collision=None,
+    )
+    scene.objects["A"].polygon = [
+        (30, 30),
+        (130, 30),
+        (130, 110),
+        (30, 110),
+    ]
+    result = transaction.commit(CommandManager())
+    assert result.status is CommandStatus.REJECTED
+    assert transaction.active is False
+
+    class _NoChangeManager:
+        def execute(self, command, scene):
+            return CommandResult.no_change(command, "execute", "stub")
+
+    scene = _scene()
+    transaction = ObjectGeometryGestureTransaction(scene, "A")
+    transaction.preview(
+        [(20, 20), (120, 20), (120, 100), (20, 100)],
+        has_collision=False,
+        collision=None,
+    )
+    result = transaction.commit(_NoChangeManager())
+    assert result.status is CommandStatus.NO_CHANGE
+    assert transaction.active is False
 
 
 def test_collision_transform_paths_have_no_direct_scene_mutation():

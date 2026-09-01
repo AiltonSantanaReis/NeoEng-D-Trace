@@ -76,7 +76,12 @@ def _canonical_json_bytes(document: SceneAuthoringDocument) -> bytes:
         sort_keys=True,
         allow_nan=False,
     )
-    return (text + "\n").encode("utf-8")
+    encoded = (text + "\n").encode("utf-8")
+    if len(encoded) > MAX_PROJECT_FILE_BYTES:
+        raise SceneAuthoringValidationError(
+            f"serialized scene exceeds {MAX_PROJECT_FILE_BYTES} bytes"
+        )
+    return encoded
 
 
 def _reject_json_constant(value: str) -> Any:

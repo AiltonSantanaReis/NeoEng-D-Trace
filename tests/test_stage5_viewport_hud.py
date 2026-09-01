@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import os
+import sys
+
 import pytest
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel, QToolButton
 
 from src.models.scene import Scene
@@ -69,14 +73,22 @@ def test_main_window_uses_status_bar_without_canvas_hud_widget(qt_app):
     window.close()
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32" and os.environ.get("CI") == "true",
+    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
+)
 def test_status_indicator_fits_resolutions_without_legacy_hud(qt_app, monkeypatch):
     window = MainWindow(Scene(), _ConfigStub())
     calls: list[bool] = []
     monkeypatch.setattr(window.canvas, "_draw_hud", lambda _painter: calls.append(True))
 
+    window.setAttribute(Qt.WidgetAttribute.WA_DontShowOnScreen, True)
+    window.show()
+    qt_app.processEvents()
     for width, height in ((1920, 1080), (1366, 768), (1280, 720)):
         window.resize(width, height)
-        window.show()
+        window.layout().activate()
+        window.statusBar().layout().activate()
         qt_app.processEvents()
         status_rect = window.viewport_status.geometry()
         status_parent_rect = window.statusBar().rect()
@@ -90,6 +102,10 @@ def test_status_indicator_fits_resolutions_without_legacy_hud(qt_app, monkeypatc
     window.close()
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32" and os.environ.get("CI") == "true",
+    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
+)
 def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     window.resize(1920, 1080)
@@ -137,6 +153,10 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     window.close()
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32" and os.environ.get("CI") == "true",
+    reason="Qt offscreen QMainWindow crashes natively on the hosted Windows runner",
+)
 def test_reference_pan_and_select_controls_drive_existing_canvas_contract(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     window.show()

@@ -320,6 +320,9 @@ def test_native_importers_expose_p2d04_transform_camera_and_parallax_contract() 
     godot = Path(
         "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd"
     ).read_text(encoding="utf-8")
+    godot_validator = Path(
+        "tools/godot_professional_scene_stage5_validator.gd"
+    ).read_text(encoding="utf-8")
     unity_editor = Path(
         "integrations/unity/package/com.neoeng.dtrace/Editor/"
         "ProfessionalSceneImportGenerator.cs"
@@ -332,7 +335,13 @@ def test_native_importers_expose_p2d04_transform_camera_and_parallax_contract() 
     assert "Camera2D.new()" in godot
     assert "Parallax2D.new()" in godot
     assert "sprite.offset" in godot
+    assert 'has_meta("neoeng_layer_id")' in godot_validator
+    assert "GODOT_PROFESSIONAL_SCENE_LAYERS=" in godot_validator
     assert "AddComponent<Camera>()" in unity_editor
     assert "AddComponent<NeoEngProfessionalParallax>()" in unity_editor
+    assert (
+        "GetComponentsInChildren<NeoEngProfessionalLayerMetadata>(true).Length"
+        in unity_editor
+    )
     assert "GameObject visual" in unity_editor
     assert "LateUpdate" in unity_runtime

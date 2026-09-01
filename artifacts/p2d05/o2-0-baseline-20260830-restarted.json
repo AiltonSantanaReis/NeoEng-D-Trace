@@ -1,0 +1,4610 @@
+{
+  "branch": "p2d-05-quality-hardening",
+  "environment": {
+    "logical_cpu_count": 16,
+    "machine": "AMD64",
+    "memory_measurement": "tracemalloc plus process working-set/private-bytes when available",
+    "os_release": "10",
+    "platform": "Windows",
+    "python": "3.11.9",
+    "qt_qpa_platform": "offscreen",
+    "timing_tracemalloc": false
+  },
+  "expected_source_commit": "15300a0d580a57110828d8511ae48a0f68326e3a",
+  "historical_comparison": {
+    "report": "artifacts/p2d05/calibration-o1-final-20260830.json",
+    "status": "reference_only_not_o2_baseline"
+  },
+  "kind": "p2d-05-o2-preview-viewport-baseline",
+  "method": {
+    "core_operations": [
+      "full_sync",
+      "incremental_refresh",
+      "selection_refresh",
+      "preview_toggle",
+      "navigation_zoom",
+      "navigation_pan",
+      "navigation_fit",
+      "navigation_resize",
+      "preview_frame_build",
+      "user_gesture_cycle"
+    ],
+    "gpu": {
+      "reason": "no GPU counter is part of the controlled QGraphicsView path",
+      "status": "not_measured"
+    },
+    "harness_scope": "one reusable viewport per workload; fixture reset and teardown outside timed operation",
+    "iterations": 50,
+    "memory_iterations": 20,
+    "percentiles": [
+      "p50",
+      "p95",
+      "p99",
+      "worst"
+    ],
+    "resolution_matrix": [
+      {
+        "height": 720,
+        "width": 1280
+      },
+      {
+        "height": 768,
+        "width": 1366
+      },
+      {
+        "height": 1080,
+        "width": 1920
+      }
+    ],
+    "structural_matrix_scope": "512 objects at 1920x1080 per asset mode",
+    "structural_operations": [
+      "object_add_remove",
+      "asset_update",
+      "layer_visibility_toggle",
+      "layer_reorder_toggle",
+      "group_visibility_toggle",
+      "group_membership_toggle",
+      "group_isolation_toggle"
+    ],
+    "timing_clock": "time.perf_counter_ns",
+    "warmup": 5
+  },
+  "normative_performance_status": "MEASURED_ONLY_PENDING_EXPLICIT_BUDGET_ACCEPTANCE",
+  "runtime_reference": {
+    "frame_p95_ms": 16.7,
+    "status": "not measured by operation calibration",
+    "target": "60 FPS"
+  },
+  "schema_version": 2,
+  "source_commit": "15300a0d580a57110828d8511ae48a0f68326e3a",
+  "status": "PASS",
+  "structural_workloads": [
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "bcf9485fbc2623202a2932751b8b4f9dbede196338abe63e9a4077d0b5ba58ce",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "asset_update": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 107.92153000000002,
+            "p50_ms": 91.57085000000001,
+            "p95_ms": 229.80742499999988,
+            "p99_ms": 327.8287339999999,
+            "sample_count": 50,
+            "worst_ms": 358.3476
+          }
+        },
+        "group_isolation_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 53.624818000000005,
+            "p50_ms": 54.117149999999995,
+            "p95_ms": 64.15555,
+            "p99_ms": 64.942137,
+            "sample_count": 50,
+            "worst_ms": 65.3874
+          }
+        },
+        "group_membership_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 62.15475599999999,
+            "p50_ms": 42.775999999999996,
+            "p95_ms": 186.30360999999982,
+            "p99_ms": 312.96221699999984,
+            "sample_count": 50,
+            "worst_ms": 350.0928
+          }
+        },
+        "group_visibility_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 99.476982,
+            "p50_ms": 89.23205,
+            "p95_ms": 223.10043499999983,
+            "p99_ms": 322.0744969999999,
+            "sample_count": 50,
+            "worst_ms": 353.1036
+          }
+        },
+        "layer_reorder_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 110.21174599999999,
+            "p50_ms": 92.45500000000001,
+            "p95_ms": 232.05500499999988,
+            "p99_ms": 334.47006499999986,
+            "sample_count": 50,
+            "worst_ms": 363.175
+          }
+        },
+        "layer_visibility_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 99.18644399999998,
+            "p50_ms": 87.52595,
+            "p95_ms": 217.1545349999999,
+            "p99_ms": 332.72286799999983,
+            "sample_count": 50,
+            "worst_ms": 364.5762
+          }
+        },
+        "object_add_remove": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 107.584942,
+            "p50_ms": 91.1181,
+            "p95_ms": 229.55016499999988,
+            "p99_ms": 326.9459169999999,
+            "sample_count": 50,
+            "worst_ms": 357.437
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 444059648,
+            "working_set_bytes": 466382848
+          },
+          "initial": {
+            "private_bytes": 444059648,
+            "working_set_bytes": 466382848
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 86819,
+          "growth_bytes": 86819,
+          "initial_bytes": 0,
+          "peak_bytes": 106398
+        }
+      },
+      "operation_details": {
+        "asset_update": "asset-reference revision and scene rebuild",
+        "group_isolation_toggle": "transient isolation and visible-object filtering",
+        "group_membership_toggle": "group membership and effective visibility evaluation",
+        "group_visibility_toggle": "group visibility and membership filtering",
+        "layer_reorder_toggle": "canonical layer order and scene rebuild",
+        "layer_visibility_toggle": "layer visibility and visible-object filtering",
+        "object_add_remove": "structural object change and scene rebuild"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "bcf9485fbc2623202a2932751b8b4f9dbede196338abe63e9a4077d0b5ba58ce",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "asset_update": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 977.4825819999996,
+            "p50_ms": 952.86765,
+            "p95_ms": 1144.25957,
+            "p99_ms": 1269.2198369999999,
+            "sample_count": 50,
+            "worst_ms": 1305.6948
+          }
+        },
+        "group_isolation_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 689.91223,
+            "p50_ms": 689.78565,
+            "p95_ms": 919.13843,
+            "p99_ms": 925.905699,
+            "sample_count": 50,
+            "worst_ms": 930.7738
+          }
+        },
+        "group_membership_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 67.41158599999997,
+            "p50_ms": 47.1887,
+            "p95_ms": 201.85183999999987,
+            "p99_ms": 333.2599479999999,
+            "sample_count": 50,
+            "worst_ms": 367.2977
+          }
+        },
+        "group_visibility_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 744.387592,
+            "p50_ms": 862.9905,
+            "p95_ms": 1018.2831149999998,
+            "p99_ms": 1129.7165249999998,
+            "sample_count": 50,
+            "worst_ms": 1163.8928
+          }
+        },
+        "layer_reorder_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 973.964994,
+            "p50_ms": 949.1807,
+            "p95_ms": 1138.947675,
+            "p99_ms": 1258.541374,
+            "sample_count": 50,
+            "worst_ms": 1288.2096
+          }
+        },
+        "layer_visibility_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 832.261888,
+            "p50_ms": 937.6426,
+            "p95_ms": 1085.157515,
+            "p99_ms": 1165.7511399999999,
+            "sample_count": 50,
+            "worst_ms": 1184.9807
+          }
+        },
+        "object_add_remove": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 984.7816340000002,
+            "p50_ms": 957.45555,
+            "p95_ms": 1157.23507,
+            "p99_ms": 1328.3972459999995,
+            "sample_count": 50,
+            "worst_ms": 1418.1479
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 512192512,
+            "working_set_bytes": 534335488
+          },
+          "initial": {
+            "private_bytes": 513241088,
+            "working_set_bytes": 535384064
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 84521,
+          "growth_bytes": 84521,
+          "initial_bytes": 0,
+          "peak_bytes": 103103
+        }
+      },
+      "operation_details": {
+        "asset_update": "asset-reference revision and scene rebuild",
+        "group_isolation_toggle": "transient isolation and visible-object filtering",
+        "group_membership_toggle": "group membership and effective visibility evaluation",
+        "group_visibility_toggle": "group visibility and membership filtering",
+        "layer_reorder_toggle": "canonical layer order and scene rebuild",
+        "layer_visibility_toggle": "layer visibility and visible-object filtering",
+        "object_add_remove": "structural object change and scene rebuild"
+      },
+      "workload": {
+        "asset_count": 512,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    }
+  ],
+  "tracked_changes": 1,
+  "workloads": [
+    {
+      "determinism": {
+        "preview_object_count": 64,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "db289c7e8d667a021793582bda8e09572eabef0a7955eb2776234665fee78c13",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.545096,
+            "p50_ms": 11.51695,
+            "p95_ms": 11.77056,
+            "p99_ms": 12.348822999999998,
+            "sample_count": 50,
+            "worst_ms": 12.8816
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.932186000000001,
+            "p50_ms": 4.9094999999999995,
+            "p95_ms": 5.02736,
+            "p99_ms": 5.0824419999999995,
+            "sample_count": 50,
+            "worst_ms": 5.1041
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.41731000000000007,
+            "p50_ms": 0.4153,
+            "p95_ms": 0.427675,
+            "p99_ms": 0.43796599999999997,
+            "sample_count": 50,
+            "worst_ms": 0.4461
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.35979000000000005,
+            "p50_ms": 0.36195,
+            "p95_ms": 0.3811,
+            "p99_ms": 0.38617599999999996,
+            "sample_count": 50,
+            "worst_ms": 0.3899
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.446766,
+            "p50_ms": 5.392899999999999,
+            "p95_ms": 5.725195,
+            "p99_ms": 5.851138,
+            "sample_count": 50,
+            "worst_ms": 5.8971
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.291162,
+            "p50_ms": 1.284,
+            "p95_ms": 1.339305,
+            "p99_ms": 1.364657,
+            "sample_count": 50,
+            "worst_ms": 1.3846
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.3672319999999996,
+            "p50_ms": 1.3629,
+            "p95_ms": 1.399305,
+            "p99_ms": 1.411144,
+            "sample_count": 50,
+            "worst_ms": 1.4133
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.912180000000001,
+            "p50_ms": 8.026399999999999,
+            "p95_ms": 8.41369,
+            "p99_ms": 8.837497999999998,
+            "sample_count": 50,
+            "worst_ms": 9.1657
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.180024,
+            "p50_ms": 1.1790500000000002,
+            "p95_ms": 1.210275,
+            "p99_ms": 1.22099,
+            "sample_count": 50,
+            "worst_ms": 1.2254
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 13.994045999999999,
+            "p50_ms": 13.96395,
+            "p95_ms": 14.54876,
+            "p99_ms": 14.655481,
+            "sample_count": 50,
+            "worst_ms": 14.6864
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 41709568,
+            "working_set_bytes": 66453504
+          },
+          "initial": {
+            "private_bytes": 41709568,
+            "working_set_bytes": 66445312
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 22276,
+          "growth_bytes": 22276,
+          "initial_bytes": 0,
+          "peak_bytes": 24592
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 64,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 64,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "820ca87c7cc21fe14ddc3ff3c3ba3885ce87a61aa3067434d4bbd8430d410e30",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 12.187359999999996,
+            "p50_ms": 12.19195,
+            "p95_ms": 13.05372,
+            "p99_ms": 13.157933,
+            "sample_count": 50,
+            "worst_ms": 13.1816
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.234142,
+            "p50_ms": 5.0625,
+            "p95_ms": 5.732665,
+            "p99_ms": 5.941267999999999,
+            "sample_count": 50,
+            "worst_ms": 6.1063
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.42928,
+            "p50_ms": 0.4181,
+            "p95_ms": 0.4528449999999999,
+            "p99_ms": 0.6363719999999997,
+            "sample_count": 50,
+            "worst_ms": 0.7183
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.3986499999999999,
+            "p50_ms": 0.3922,
+            "p95_ms": 0.4820699999999999,
+            "p99_ms": 0.5630939999999998,
+            "sample_count": 50,
+            "worst_ms": 0.6216
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.918172000000001,
+            "p50_ms": 5.86245,
+            "p95_ms": 6.361955,
+            "p99_ms": 7.002101,
+            "sample_count": 50,
+            "worst_ms": 7.2104
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.4192400000000003,
+            "p50_ms": 1.37935,
+            "p95_ms": 1.7481049999999998,
+            "p99_ms": 1.8344909999999999,
+            "sample_count": 50,
+            "worst_ms": 1.8414
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.4246219999999996,
+            "p50_ms": 1.3546,
+            "p95_ms": 1.95653,
+            "p99_ms": 1.963011,
+            "sample_count": 50,
+            "worst_ms": 1.966
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.299165999999998,
+            "p50_ms": 8.55865,
+            "p95_ms": 9.506745,
+            "p99_ms": 10.574896999999998,
+            "sample_count": 50,
+            "worst_ms": 10.8614
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.218828,
+            "p50_ms": 1.1746500000000002,
+            "p95_ms": 1.589815,
+            "p99_ms": 1.6439329999999999,
+            "sample_count": 50,
+            "worst_ms": 1.6823
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.400323999999998,
+            "p50_ms": 14.39545,
+            "p95_ms": 14.776,
+            "p99_ms": 15.152067,
+            "sample_count": 50,
+            "worst_ms": 15.1725
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 46800896,
+            "working_set_bytes": 72339456
+          },
+          "initial": {
+            "private_bytes": 46723072,
+            "working_set_bytes": 72265728
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 30304,
+          "growth_bytes": 30304,
+          "initial_bytes": 0,
+          "peak_bytes": 32384
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 64,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 64,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "18dc4f00e3338977ea629713fa8a4f02c7f69b88f7a4547a1be642c88e9aed20",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 13.271583999999997,
+            "p50_ms": 13.26915,
+            "p95_ms": 13.82593,
+            "p99_ms": 14.141537,
+            "sample_count": 50,
+            "worst_ms": 14.1752
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.269324000000001,
+            "p50_ms": 6.13695,
+            "p95_ms": 6.75887,
+            "p99_ms": 7.088544999999999,
+            "sample_count": 50,
+            "worst_ms": 7.3676
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.4404060000000001,
+            "p50_ms": 0.4279,
+            "p95_ms": 0.49490499999999993,
+            "p99_ms": 0.6455529999999996,
+            "sample_count": 50,
+            "worst_ms": 0.7486
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.5469519999999999,
+            "p50_ms": 0.55365,
+            "p95_ms": 0.6754049999999999,
+            "p99_ms": 0.7572119999999999,
+            "sample_count": 50,
+            "worst_ms": 0.7725
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.570594,
+            "p50_ms": 8.57625,
+            "p95_ms": 9.21901,
+            "p99_ms": 9.476481,
+            "sample_count": 50,
+            "worst_ms": 9.527
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.7953859999999995,
+            "p50_ms": 1.7251500000000002,
+            "p95_ms": 2.12092,
+            "p99_ms": 2.5554239999999986,
+            "sample_count": 50,
+            "worst_ms": 2.9437
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.4133839999999998,
+            "p50_ms": 1.3432,
+            "p95_ms": 1.78607,
+            "p99_ms": 2.021969999999999,
+            "sample_count": 50,
+            "worst_ms": 2.2067
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.365068000000003,
+            "p50_ms": 8.32265,
+            "p95_ms": 8.805869999999999,
+            "p99_ms": 9.550192999999997,
+            "sample_count": 50,
+            "worst_ms": 10.1207
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.2510759999999999,
+            "p50_ms": 1.1808,
+            "p95_ms": 1.6217349999999997,
+            "p99_ms": 1.7106739999999998,
+            "sample_count": 50,
+            "worst_ms": 1.7388
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.860767999999997,
+            "p50_ms": 16.306449999999998,
+            "p95_ms": 18.458994999999998,
+            "p99_ms": 25.127377999999997,
+            "sample_count": 50,
+            "worst_ms": 26.023
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 56999936,
+            "working_set_bytes": 81965056
+          },
+          "initial": {
+            "private_bytes": 56999936,
+            "working_set_bytes": 81969152
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 28688,
+          "growth_bytes": 28688,
+          "initial_bytes": 0,
+          "peak_bytes": 30787
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 64,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 128,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "fb91087600db814b2655a531844ec2189d358e894e9971d9805be3fc4d366fee",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 20.373204,
+            "p50_ms": 20.14075,
+            "p95_ms": 21.722444999999997,
+            "p99_ms": 23.435736999999996,
+            "sample_count": 50,
+            "worst_ms": 24.3367
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.697185999999999,
+            "p50_ms": 8.674949999999999,
+            "p95_ms": 9.264484999999999,
+            "p99_ms": 9.314189,
+            "sample_count": 50,
+            "worst_ms": 9.3259
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.8699680000000002,
+            "p50_ms": 0.83835,
+            "p95_ms": 1.07151,
+            "p99_ms": 1.16742,
+            "sample_count": 50,
+            "worst_ms": 1.2076
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.579234,
+            "p50_ms": 0.56925,
+            "p95_ms": 0.63212,
+            "p99_ms": 0.8921589999999998,
+            "sample_count": 50,
+            "worst_ms": 0.9514
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.319652000000003,
+            "p50_ms": 8.316,
+            "p95_ms": 8.836025,
+            "p99_ms": 9.323096,
+            "sample_count": 50,
+            "worst_ms": 9.6806
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.2964100000000003,
+            "p50_ms": 2.2201500000000003,
+            "p95_ms": 2.7326899999999994,
+            "p99_ms": 3.128630999999999,
+            "sample_count": 50,
+            "worst_ms": 3.3874
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.0037979999999997,
+            "p50_ms": 2.93365,
+            "p95_ms": 3.4592349999999996,
+            "p99_ms": 3.6847289999999995,
+            "sample_count": 50,
+            "worst_ms": 3.8209
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.608578000000005,
+            "p50_ms": 14.70845,
+            "p95_ms": 15.921355,
+            "p99_ms": 16.200905,
+            "sample_count": 50,
+            "worst_ms": 16.3065
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.6220980000000003,
+            "p50_ms": 2.479,
+            "p95_ms": 3.099745,
+            "p99_ms": 3.798846999999997,
+            "sample_count": 50,
+            "worst_ms": 4.4308
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 25.538133999999992,
+            "p50_ms": 25.31445,
+            "p95_ms": 26.23169,
+            "p99_ms": 31.346673999999993,
+            "sample_count": 50,
+            "worst_ms": 33.0163
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 63733760,
+            "working_set_bytes": 88899584
+          },
+          "initial": {
+            "private_bytes": 63733760,
+            "working_set_bytes": 88903680
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 31266,
+          "growth_bytes": 31266,
+          "initial_bytes": 0,
+          "peak_bytes": 36385
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 128,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 128,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "a6865efeede91dc78006d82da3dd2f4b0a0a764ddb19b3581dba98ea72a0b482",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 20.331695999999994,
+            "p50_ms": 20.237,
+            "p95_ms": 21.384065,
+            "p99_ms": 22.040796,
+            "sample_count": 50,
+            "worst_ms": 22.3297
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.771466000000002,
+            "p50_ms": 8.7375,
+            "p95_ms": 8.969940000000001,
+            "p99_ms": 9.903750999999998,
+            "sample_count": 50,
+            "worst_ms": 10.4624
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.894486,
+            "p50_ms": 0.89325,
+            "p95_ms": 0.91784,
+            "p99_ms": 0.931608,
+            "sample_count": 50,
+            "worst_ms": 0.9369
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.6208119999999999,
+            "p50_ms": 0.6226499999999999,
+            "p95_ms": 0.64192,
+            "p99_ms": 0.6477229999999999,
+            "sample_count": 50,
+            "worst_ms": 0.6513
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.64785,
+            "p50_ms": 8.611650000000001,
+            "p95_ms": 8.961775,
+            "p99_ms": 9.304636999999998,
+            "sample_count": 50,
+            "worst_ms": 9.6078
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.4414240000000005,
+            "p50_ms": 2.4404500000000002,
+            "p95_ms": 2.5232249999999996,
+            "p99_ms": 2.6174599999999995,
+            "sample_count": 50,
+            "worst_ms": 2.6988
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.9122839999999997,
+            "p50_ms": 2.92305,
+            "p95_ms": 2.977465,
+            "p99_ms": 2.992974,
+            "sample_count": 50,
+            "worst_ms": 2.9966
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.197622000000006,
+            "p50_ms": 14.1802,
+            "p95_ms": 15.131509999999999,
+            "p99_ms": 16.155272999999998,
+            "sample_count": 50,
+            "worst_ms": 16.8718
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.5382540000000002,
+            "p50_ms": 2.54155,
+            "p95_ms": 2.63532,
+            "p99_ms": 2.725214,
+            "sample_count": 50,
+            "worst_ms": 2.7602
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 25.084938,
+            "p50_ms": 24.9142,
+            "p95_ms": 25.4269,
+            "p99_ms": 29.259010999999987,
+            "sample_count": 50,
+            "worst_ms": 32.7949
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 70496256,
+            "working_set_bytes": 95985664
+          },
+          "initial": {
+            "private_bytes": 70496256,
+            "working_set_bytes": 95977472
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 36101,
+          "growth_bytes": 36101,
+          "initial_bytes": 0,
+          "peak_bytes": 40555
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 128,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 128,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "ca58a951debe2cd1df3b0601de5a0578c329b53d9d86a0d67366fe53ff545644",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 21.030017999999995,
+            "p50_ms": 20.9187,
+            "p95_ms": 21.29568,
+            "p99_ms": 22.796582999999995,
+            "sample_count": 50,
+            "worst_ms": 24.1849
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 9.45379,
+            "p50_ms": 9.44625,
+            "p95_ms": 9.625375,
+            "p99_ms": 9.686611000000001,
+            "sample_count": 50,
+            "worst_ms": 9.6896
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.858086,
+            "p50_ms": 0.8201499999999999,
+            "p95_ms": 1.1517649999999993,
+            "p99_ms": 1.36478,
+            "sample_count": 50,
+            "worst_ms": 1.3687
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.7396340000000001,
+            "p50_ms": 0.7525999999999999,
+            "p95_ms": 0.786735,
+            "p99_ms": 0.7980919999999999,
+            "sample_count": 50,
+            "worst_ms": 0.8075
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.144913999999998,
+            "p50_ms": 11.262350000000001,
+            "p95_ms": 11.566695000000001,
+            "p99_ms": 11.615575,
+            "sample_count": 50,
+            "worst_ms": 11.6217
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.760586,
+            "p50_ms": 2.7443999999999997,
+            "p95_ms": 2.8475,
+            "p99_ms": 2.9210049999999996,
+            "sample_count": 50,
+            "worst_ms": 2.9874
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.898244000000001,
+            "p50_ms": 2.8840500000000002,
+            "p95_ms": 3.03268,
+            "p99_ms": 3.13193,
+            "sample_count": 50,
+            "worst_ms": 3.1334
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.270406000000001,
+            "p50_ms": 14.621099999999998,
+            "p95_ms": 15.23738,
+            "p99_ms": 15.301919,
+            "sample_count": 50,
+            "worst_ms": 15.3445
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.4985480000000004,
+            "p50_ms": 2.50635,
+            "p95_ms": 2.55049,
+            "p99_ms": 2.571485,
+            "sample_count": 50,
+            "worst_ms": 2.5781
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 27.01701600000001,
+            "p50_ms": 26.81325,
+            "p95_ms": 27.234865,
+            "p99_ms": 31.568451999999986,
+            "sample_count": 50,
+            "worst_ms": 35.5204
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 81911808,
+            "working_set_bytes": 107139072
+          },
+          "initial": {
+            "private_bytes": 81911808,
+            "working_set_bytes": 107139072
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 34907,
+          "growth_bytes": 34907,
+          "initial_bytes": 0,
+          "peak_bytes": 39820
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 128,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 256,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "23552303f1e17bfed9ce8cf42d2013e2dc509fe1389bf3da8ee6684dc3e87d17",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 37.776925999999996,
+            "p50_ms": 37.7108,
+            "p95_ms": 39.546475,
+            "p99_ms": 40.835148999999994,
+            "sample_count": 50,
+            "worst_ms": 41.7563
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.444392,
+            "p50_ms": 15.399650000000001,
+            "p95_ms": 15.835455,
+            "p99_ms": 16.316734,
+            "sample_count": 50,
+            "worst_ms": 16.3968
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.6386520000000004,
+            "p50_ms": 1.5951499999999998,
+            "p95_ms": 1.799585,
+            "p99_ms": 1.817471,
+            "sample_count": 50,
+            "worst_ms": 1.8185
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.955772,
+            "p50_ms": 0.94065,
+            "p95_ms": 1.06236,
+            "p99_ms": 1.094644,
+            "sample_count": 50,
+            "worst_ms": 1.1017
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 13.684629999999997,
+            "p50_ms": 13.71195,
+            "p95_ms": 14.09675,
+            "p99_ms": 14.192741,
+            "sample_count": 50,
+            "worst_ms": 14.2217
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.6164559999999994,
+            "p50_ms": 3.5829500000000003,
+            "p95_ms": 3.888945,
+            "p99_ms": 4.349955999999998,
+            "sample_count": 50,
+            "worst_ms": 4.7398
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.709122000000001,
+            "p50_ms": 6.705550000000001,
+            "p95_ms": 6.887495,
+            "p99_ms": 7.023224999999999,
+            "sample_count": 50,
+            "worst_ms": 7.071
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 28.383452000000005,
+            "p50_ms": 29.182650000000002,
+            "p95_ms": 30.646755,
+            "p99_ms": 31.500417,
+            "sample_count": 50,
+            "worst_ms": 31.8516
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.821098000000003,
+            "p50_ms": 5.73675,
+            "p95_ms": 6.06993,
+            "p99_ms": 6.139348,
+            "sample_count": 50,
+            "worst_ms": 6.1809
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 49.13913200000002,
+            "p50_ms": 48.40955,
+            "p95_ms": 53.957314999999994,
+            "p99_ms": 60.056487,
+            "sample_count": 50,
+            "worst_ms": 61.4842
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 92069888,
+            "working_set_bytes": 117010432
+          },
+          "initial": {
+            "private_bytes": 92069888,
+            "working_set_bytes": 117010432
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 46169,
+          "growth_bytes": 46169,
+          "initial_bytes": 0,
+          "peak_bytes": 56229
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 256,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 256,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "5e1ddb4b062879622a494b40b3a398b3ab269cc467fffe5f18099f5394460a06",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 37.275826,
+            "p50_ms": 37.291349999999994,
+            "p95_ms": 38.14315,
+            "p99_ms": 38.786752,
+            "sample_count": 50,
+            "worst_ms": 38.9804
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.361684,
+            "p50_ms": 15.3835,
+            "p95_ms": 15.653365,
+            "p99_ms": 15.754453,
+            "sample_count": 50,
+            "worst_ms": 15.7791
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.646106,
+            "p50_ms": 1.6515,
+            "p95_ms": 1.670055,
+            "p99_ms": 1.7482019999999998,
+            "sample_count": 50,
+            "worst_ms": 1.8169
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.0186139999999997,
+            "p50_ms": 1.0155,
+            "p95_ms": 1.06697,
+            "p99_ms": 1.088231,
+            "sample_count": 50,
+            "worst_ms": 1.0971
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 13.593292000000005,
+            "p50_ms": 13.57055,
+            "p95_ms": 13.981824999999999,
+            "p99_ms": 14.077020999999998,
+            "sample_count": 50,
+            "worst_ms": 14.1442
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.6754040000000003,
+            "p50_ms": 3.7007000000000003,
+            "p95_ms": 3.82912,
+            "p99_ms": 3.8524,
+            "sample_count": 50,
+            "worst_ms": 3.8622
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.792746000000001,
+            "p50_ms": 6.794650000000001,
+            "p95_ms": 7.06907,
+            "p99_ms": 7.519000999999999,
+            "sample_count": 50,
+            "worst_ms": 7.6685
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 28.124460000000003,
+            "p50_ms": 28.035800000000002,
+            "p95_ms": 30.65974,
+            "p99_ms": 33.090568999999995,
+            "sample_count": 50,
+            "worst_ms": 34.6546
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.774992,
+            "p50_ms": 5.7791,
+            "p95_ms": 5.874185,
+            "p99_ms": 5.925746,
+            "sample_count": 50,
+            "worst_ms": 5.9427
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 50.41317000000001,
+            "p50_ms": 49.79085,
+            "p95_ms": 51.72905,
+            "p99_ms": 63.28595599999999,
+            "sample_count": 50,
+            "worst_ms": 64.1903
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 101429248,
+            "working_set_bytes": 125952000
+          },
+          "initial": {
+            "private_bytes": 101429248,
+            "working_set_bytes": 125952000
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 45158,
+          "growth_bytes": 45158,
+          "initial_bytes": 0,
+          "peak_bytes": 54930
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 256,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 256,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "eb0df7c42c2b19285d1854ed59f6975199ec75311be8db24a02b5df0a6a7f4f5",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 38.31906200000001,
+            "p50_ms": 38.29615,
+            "p95_ms": 39.087115000000004,
+            "p99_ms": 39.742683,
+            "sample_count": 50,
+            "worst_ms": 40.0824
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.673500000000004,
+            "p50_ms": 16.596600000000002,
+            "p95_ms": 17.117375000000003,
+            "p99_ms": 17.424399,
+            "sample_count": 50,
+            "worst_ms": 17.4513
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.78171,
+            "p50_ms": 1.76545,
+            "p95_ms": 1.79362,
+            "p99_ms": 2.1265369999999995,
+            "sample_count": 50,
+            "worst_ms": 2.1847
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.15815,
+            "p50_ms": 1.1580499999999998,
+            "p95_ms": 1.1900600000000001,
+            "p99_ms": 1.2970189999999997,
+            "sample_count": 50,
+            "worst_ms": 1.369
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.623292,
+            "p50_ms": 16.713549999999998,
+            "p95_ms": 17.119085000000002,
+            "p99_ms": 17.167982,
+            "sample_count": 50,
+            "worst_ms": 17.1818
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.012468,
+            "p50_ms": 4.0351,
+            "p95_ms": 4.205135,
+            "p99_ms": 4.216156,
+            "sample_count": 50,
+            "worst_ms": 4.2238
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.772230000000002,
+            "p50_ms": 6.783049999999999,
+            "p95_ms": 7.1536599999999995,
+            "p99_ms": 7.204996,
+            "sample_count": 50,
+            "worst_ms": 7.2293
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 28.281368,
+            "p50_ms": 28.04485,
+            "p95_ms": 30.19981,
+            "p99_ms": 31.168770999999996,
+            "sample_count": 50,
+            "worst_ms": 31.6892
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.8728880000000006,
+            "p50_ms": 5.7987,
+            "p95_ms": 6.276415,
+            "p99_ms": 6.314946,
+            "sample_count": 50,
+            "worst_ms": 6.3221
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 51.12415999999999,
+            "p50_ms": 50.42305,
+            "p95_ms": 54.31470999999999,
+            "p99_ms": 63.230958,
+            "sample_count": 50,
+            "worst_ms": 63.7434
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 114470912,
+            "working_set_bytes": 139055104
+          },
+          "initial": {
+            "private_bytes": 114470912,
+            "working_set_bytes": 139059200
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 49719,
+          "growth_bytes": 49719,
+          "initial_bytes": 0,
+          "peak_bytes": 59399
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 256,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "588292d32698ba946a76a2cf3d98f6b5ff82556a4d77f2dc50c405c1bc70510b",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 76.101348,
+            "p50_ms": 75.77244999999999,
+            "p95_ms": 78.567435,
+            "p99_ms": 79.15664100000001,
+            "sample_count": 50,
+            "worst_ms": 79.558
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 29.457440000000002,
+            "p50_ms": 29.430999999999997,
+            "p95_ms": 30.002325,
+            "p99_ms": 30.651978999999997,
+            "sample_count": 50,
+            "worst_ms": 30.8837
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.166022000000001,
+            "p50_ms": 3.16405,
+            "p95_ms": 3.20883,
+            "p99_ms": 3.250883,
+            "sample_count": 50,
+            "worst_ms": 3.2672
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.8099319999999997,
+            "p50_ms": 1.7562,
+            "p95_ms": 2.00628,
+            "p99_ms": 2.1170139999999997,
+            "sample_count": 50,
+            "worst_ms": 2.1912
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 24.37311799999999,
+            "p50_ms": 24.1643,
+            "p95_ms": 25.509059999999998,
+            "p99_ms": 26.24059,
+            "sample_count": 50,
+            "worst_ms": 26.2891
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.866518000000001,
+            "p50_ms": 6.79835,
+            "p95_ms": 7.374999999999999,
+            "p99_ms": 7.438936,
+            "sample_count": 50,
+            "worst_ms": 7.4407
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 18.013308,
+            "p50_ms": 17.90185,
+            "p95_ms": 18.52011,
+            "p99_ms": 19.572462999999996,
+            "sample_count": 50,
+            "worst_ms": 20.0827
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 60.58201799999999,
+            "p50_ms": 60.180949999999996,
+            "p95_ms": 65.50487,
+            "p99_ms": 71.48194799999999,
+            "sample_count": 50,
+            "worst_ms": 75.4092
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.189166000000005,
+            "p50_ms": 15.223949999999999,
+            "p95_ms": 15.421465000000001,
+            "p99_ms": 15.508411,
+            "sample_count": 50,
+            "worst_ms": 15.5261
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 109.24798599999997,
+            "p50_ms": 107.1397,
+            "p95_ms": 127.100625,
+            "p99_ms": 128.485936,
+            "sample_count": 50,
+            "worst_ms": 128.5367
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 129486848,
+            "working_set_bytes": 154218496
+          },
+          "initial": {
+            "private_bytes": 129122304,
+            "working_set_bytes": 154079232
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 82212,
+          "growth_bytes": 82212,
+          "initial_bytes": 0,
+          "peak_bytes": 102011
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "0669540200d6a97e2eface3dd477db054c7033c41a070cf78228ebdfaa35d1d5",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 77.722528,
+            "p50_ms": 76.316,
+            "p95_ms": 81.96837,
+            "p99_ms": 95.90314099999998,
+            "sample_count": 50,
+            "worst_ms": 100.6018
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 29.099910000000005,
+            "p50_ms": 29.052799999999998,
+            "p95_ms": 29.553435,
+            "p99_ms": 29.597334,
+            "sample_count": 50,
+            "worst_ms": 29.6088
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.341574,
+            "p50_ms": 3.31515,
+            "p95_ms": 3.46867,
+            "p99_ms": 3.6605409999999994,
+            "sample_count": 50,
+            "worst_ms": 3.763
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.8312880000000005,
+            "p50_ms": 1.8157999999999999,
+            "p95_ms": 1.9935049999999999,
+            "p99_ms": 2.042035,
+            "sample_count": 50,
+            "worst_ms": 2.0511
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 25.128873999999996,
+            "p50_ms": 25.0402,
+            "p95_ms": 26.06459,
+            "p99_ms": 26.9106,
+            "sample_count": 50,
+            "worst_ms": 27.1311
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.866942000000002,
+            "p50_ms": 6.8677,
+            "p95_ms": 7.0856449999999995,
+            "p99_ms": 7.120889,
+            "sample_count": 50,
+            "worst_ms": 7.1326
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 17.742584000000004,
+            "p50_ms": 17.7436,
+            "p95_ms": 17.880345000000002,
+            "p99_ms": 17.965155,
+            "sample_count": 50,
+            "worst_ms": 18.0144
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 61.24960599999999,
+            "p50_ms": 61.037,
+            "p95_ms": 66.24128,
+            "p99_ms": 66.59209299999999,
+            "sample_count": 50,
+            "worst_ms": 66.6922
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.10779,
+            "p50_ms": 15.08075,
+            "p95_ms": 15.308265,
+            "p99_ms": 15.432717,
+            "sample_count": 50,
+            "worst_ms": 15.4703
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 110.61494399999998,
+            "p50_ms": 108.10165,
+            "p95_ms": 130.87252,
+            "p99_ms": 131.893005,
+            "sample_count": 50,
+            "worst_ms": 132.3122
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 143892480,
+            "working_set_bytes": 168669184
+          },
+          "initial": {
+            "private_bytes": 143892480,
+            "working_set_bytes": 168677376
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 79284,
+          "growth_bytes": 79284,
+          "initial_bytes": 0,
+          "peak_bytes": 98581
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "bcf9485fbc2623202a2932751b8b4f9dbede196338abe63e9a4077d0b5ba58ce",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 76.78792800000001,
+            "p50_ms": 76.8075,
+            "p95_ms": 78.17847,
+            "p99_ms": 79.255145,
+            "sample_count": 50,
+            "worst_ms": 79.9556
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 31.332104000000008,
+            "p50_ms": 30.5751,
+            "p95_ms": 34.175374999999995,
+            "p99_ms": 40.011245999999986,
+            "sample_count": 50,
+            "worst_ms": 43.5464
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.3448379999999998,
+            "p50_ms": 3.2708500000000003,
+            "p95_ms": 3.692795,
+            "p99_ms": 4.0726879999999985,
+            "sample_count": 50,
+            "worst_ms": 4.4249
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.9727619999999992,
+            "p50_ms": 1.9419499999999998,
+            "p95_ms": 2.27739,
+            "p99_ms": 2.395967,
+            "sample_count": 50,
+            "worst_ms": 2.4262
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 27.794648,
+            "p50_ms": 27.4818,
+            "p95_ms": 30.880095,
+            "p99_ms": 31.766778999999996,
+            "sample_count": 50,
+            "worst_ms": 32.3317
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.2845939999999985,
+            "p50_ms": 7.21995,
+            "p95_ms": 7.964944999999999,
+            "p99_ms": 8.225809,
+            "sample_count": 50,
+            "worst_ms": 8.2434
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 18.906992000000002,
+            "p50_ms": 18.651400000000002,
+            "p95_ms": 20.294945,
+            "p99_ms": 23.085158999999997,
+            "sample_count": 50,
+            "worst_ms": 23.5952
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 62.40021200000001,
+            "p50_ms": 62.78965,
+            "p95_ms": 67.76313499999999,
+            "p99_ms": 69.79174499999999,
+            "sample_count": 50,
+            "worst_ms": 70.5461
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.837266,
+            "p50_ms": 15.5994,
+            "p95_ms": 16.83119,
+            "p99_ms": 19.20916999999999,
+            "sample_count": 50,
+            "worst_ms": 21.2657
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 113.885402,
+            "p50_ms": 110.91475,
+            "p95_ms": 135.836255,
+            "p99_ms": 140.792597,
+            "sample_count": 50,
+            "worst_ms": 142.5148
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 162488320,
+            "working_set_bytes": 186175488
+          },
+          "initial": {
+            "private_bytes": 162488320,
+            "working_set_bytes": 186175488
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 75159,
+          "growth_bytes": 75159,
+          "initial_bytes": 0,
+          "peak_bytes": 94838
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 1,
+        "asset_mode": "shared",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 64,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "db289c7e8d667a021793582bda8e09572eabef0a7955eb2776234665fee78c13",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 117.059832,
+            "p50_ms": 116.81825,
+            "p95_ms": 120.25699,
+            "p99_ms": 127.77047099999997,
+            "sample_count": 50,
+            "worst_ms": 134.1072
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.174569999999999,
+            "p50_ms": 4.99555,
+            "p95_ms": 5.56469,
+            "p99_ms": 7.446032999999997,
+            "sample_count": 50,
+            "worst_ms": 8.19
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.436554,
+            "p50_ms": 0.4262,
+            "p95_ms": 0.48238499999999995,
+            "p99_ms": 0.6050249999999999,
+            "sample_count": 50,
+            "worst_ms": 0.6185
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.3697439999999999,
+            "p50_ms": 0.3701,
+            "p95_ms": 0.38943,
+            "p99_ms": 0.5443169999999996,
+            "sample_count": 50,
+            "worst_ms": 0.6505
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.618312,
+            "p50_ms": 5.6612,
+            "p95_ms": 5.99407,
+            "p99_ms": 6.245157999999999,
+            "sample_count": 50,
+            "worst_ms": 6.3803
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.3401319999999999,
+            "p50_ms": 1.32375,
+            "p95_ms": 1.5809199999999999,
+            "p99_ms": 1.65092,
+            "sample_count": 50,
+            "worst_ms": 1.6666
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.394304,
+            "p50_ms": 1.3530000000000002,
+            "p95_ms": 1.648285,
+            "p99_ms": 1.8627779999999998,
+            "sample_count": 50,
+            "worst_ms": 1.9009
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 112.45503000000002,
+            "p50_ms": 112.6599,
+            "p95_ms": 114.885435,
+            "p99_ms": 116.83990499999999,
+            "sample_count": 50,
+            "worst_ms": 118.5625
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.2562799999999998,
+            "p50_ms": 1.21605,
+            "p95_ms": 1.5023199999999999,
+            "p99_ms": 1.6554119999999997,
+            "sample_count": 50,
+            "worst_ms": 1.7099
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.468918000000006,
+            "p50_ms": 14.378499999999999,
+            "p95_ms": 15.064504999999999,
+            "p99_ms": 15.816467999999999,
+            "sample_count": 50,
+            "worst_ms": 16.251
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 167219200,
+            "working_set_bytes": 190857216
+          },
+          "initial": {
+            "private_bytes": 167219200,
+            "working_set_bytes": 190857216
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 25968,
+          "growth_bytes": 25968,
+          "initial_bytes": 0,
+          "peak_bytes": 28214
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 64,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 64,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 64,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "820ca87c7cc21fe14ddc3ff3c3ba3885ce87a61aa3067434d4bbd8430d410e30",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 116.019912,
+            "p50_ms": 115.5677,
+            "p95_ms": 119.462505,
+            "p99_ms": 121.58173899999998,
+            "sample_count": 50,
+            "worst_ms": 123.1884
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.265804,
+            "p50_ms": 5.11425,
+            "p95_ms": 5.727105,
+            "p99_ms": 6.7411059999999985,
+            "sample_count": 50,
+            "worst_ms": 7.1824
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.4357139999999999,
+            "p50_ms": 0.4275,
+            "p95_ms": 0.443385,
+            "p99_ms": 0.6238529999999999,
+            "sample_count": 50,
+            "worst_ms": 0.6436
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.403968,
+            "p50_ms": 0.4066,
+            "p95_ms": 0.43732,
+            "p99_ms": 0.48233699999999996,
+            "sample_count": 50,
+            "worst_ms": 0.4866
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.942382000000001,
+            "p50_ms": 5.94595,
+            "p95_ms": 6.440815,
+            "p99_ms": 6.614262999999999,
+            "sample_count": 50,
+            "worst_ms": 6.7619
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.4327579999999995,
+            "p50_ms": 1.39785,
+            "p95_ms": 1.7654899999999998,
+            "p99_ms": 1.8385399999999998,
+            "sample_count": 50,
+            "worst_ms": 1.8748
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.378248,
+            "p50_ms": 1.3498,
+            "p95_ms": 1.6721949999999999,
+            "p99_ms": 1.767259,
+            "sample_count": 50,
+            "worst_ms": 1.802
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 112.19515999999996,
+            "p50_ms": 112.3012,
+            "p95_ms": 114.8746,
+            "p99_ms": 115.850069,
+            "sample_count": 50,
+            "worst_ms": 116.1303
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.273022,
+            "p50_ms": 1.19705,
+            "p95_ms": 1.639975,
+            "p99_ms": 1.7578009999999997,
+            "sample_count": 50,
+            "worst_ms": 1.8191
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.670587999999999,
+            "p50_ms": 14.605550000000001,
+            "p95_ms": 15.238809999999999,
+            "p99_ms": 15.855196,
+            "sample_count": 50,
+            "worst_ms": 16.149
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 172216320,
+            "working_set_bytes": 195739648
+          },
+          "initial": {
+            "private_bytes": 172216320,
+            "working_set_bytes": 195739648
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 28807,
+          "growth_bytes": 28807,
+          "initial_bytes": 0,
+          "peak_bytes": 31014
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 64,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 64,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 64,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "18dc4f00e3338977ea629713fa8a4f02c7f69b88f7a4547a1be642c88e9aed20",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 116.64308999999997,
+            "p50_ms": 116.39975,
+            "p95_ms": 118.833855,
+            "p99_ms": 121.77058399999999,
+            "sample_count": 50,
+            "worst_ms": 124.2982
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.161372,
+            "p50_ms": 6.0341000000000005,
+            "p95_ms": 6.58159,
+            "p99_ms": 6.752846,
+            "sample_count": 50,
+            "worst_ms": 6.7649
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.436088,
+            "p50_ms": 0.42464999999999997,
+            "p95_ms": 0.4869599999999998,
+            "p99_ms": 0.6161439999999997,
+            "sample_count": 50,
+            "worst_ms": 0.6967
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.554004,
+            "p50_ms": 0.56355,
+            "p95_ms": 0.6399649999999999,
+            "p99_ms": 0.754672,
+            "sample_count": 50,
+            "worst_ms": 0.768
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.98527,
+            "p50_ms": 8.77045,
+            "p95_ms": 10.854019999999998,
+            "p99_ms": 12.159448999999999,
+            "sample_count": 50,
+            "worst_ms": 12.5122
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.8159300000000005,
+            "p50_ms": 1.7835999999999999,
+            "p95_ms": 2.05693,
+            "p99_ms": 2.119127,
+            "sample_count": 50,
+            "worst_ms": 2.1425
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.3812399999999996,
+            "p50_ms": 1.33655,
+            "p95_ms": 1.5959949999999998,
+            "p99_ms": 1.7117409999999997,
+            "sample_count": 50,
+            "worst_ms": 1.7897
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 111.66814000000002,
+            "p50_ms": 111.5341,
+            "p95_ms": 113.057575,
+            "p99_ms": 114.38844999999999,
+            "sample_count": 50,
+            "worst_ms": 115.5914
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.2477160000000003,
+            "p50_ms": 1.2106,
+            "p95_ms": 1.564225,
+            "p99_ms": 1.674496,
+            "sample_count": 50,
+            "worst_ms": 1.6988
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.901548000000002,
+            "p50_ms": 16.8223,
+            "p95_ms": 17.801555,
+            "p99_ms": 18.489376,
+            "sample_count": 50,
+            "worst_ms": 18.8606
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 184295424,
+            "working_set_bytes": 207908864
+          },
+          "initial": {
+            "private_bytes": 184295424,
+            "working_set_bytes": 207880192
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 26201,
+          "growth_bytes": 26201,
+          "initial_bytes": 0,
+          "peak_bytes": 28670
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 64,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 64,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 128,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "fb91087600db814b2655a531844ec2189d358e894e9971d9805be3fc4d366fee",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 230.76117,
+            "p50_ms": 229.96974999999998,
+            "p95_ms": 237.55731999999998,
+            "p99_ms": 240.168962,
+            "sample_count": 50,
+            "worst_ms": 240.7404
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.791358,
+            "p50_ms": 8.8416,
+            "p95_ms": 9.1598,
+            "p99_ms": 10.05114,
+            "sample_count": 50,
+            "worst_ms": 10.2932
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.952706,
+            "p50_ms": 0.9116,
+            "p95_ms": 1.2485000000000002,
+            "p99_ms": 1.5879429999999999,
+            "sample_count": 50,
+            "worst_ms": 1.617
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.6089880000000001,
+            "p50_ms": 0.59915,
+            "p95_ms": 0.7666099999999998,
+            "p99_ms": 0.8484149999999999,
+            "sample_count": 50,
+            "worst_ms": 0.8859
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.481812000000003,
+            "p50_ms": 8.5349,
+            "p95_ms": 8.98641,
+            "p99_ms": 9.109026,
+            "sample_count": 50,
+            "worst_ms": 9.1691
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.054768,
+            "p50_ms": 2.99085,
+            "p95_ms": 3.4423749999999997,
+            "p99_ms": 3.6836029999999993,
+            "sample_count": 50,
+            "worst_ms": 3.8479
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.046638,
+            "p50_ms": 2.8859,
+            "p95_ms": 3.613185,
+            "p99_ms": 4.3707759999999976,
+            "sample_count": 50,
+            "worst_ms": 4.9919
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 225.15414000000004,
+            "p50_ms": 224.24795,
+            "p95_ms": 229.67579999999998,
+            "p99_ms": 236.260518,
+            "sample_count": 50,
+            "worst_ms": 238.9221
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.624291999999999,
+            "p50_ms": 2.5486500000000003,
+            "p95_ms": 3.043365,
+            "p99_ms": 3.067756,
+            "sample_count": 50,
+            "worst_ms": 3.0754
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 26.41125200000001,
+            "p50_ms": 26.320349999999998,
+            "p95_ms": 27.143105000000002,
+            "p99_ms": 27.392871999999997,
+            "sample_count": 50,
+            "worst_ms": 27.6218
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 189644800,
+            "working_set_bytes": 213721088
+          },
+          "initial": {
+            "private_bytes": 189644800,
+            "working_set_bytes": 213725184
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 35463,
+          "growth_bytes": 35463,
+          "initial_bytes": 0,
+          "peak_bytes": 40541
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 128,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 128,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 128,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "a6865efeede91dc78006d82da3dd2f4b0a0a764ddb19b3581dba98ea72a0b482",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 236.25981799999997,
+            "p50_ms": 231.642,
+            "p95_ms": 255.913805,
+            "p99_ms": 286.1649789999999,
+            "sample_count": 50,
+            "worst_ms": 310.5194
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.655479999999997,
+            "p50_ms": 8.6248,
+            "p95_ms": 9.007624999999999,
+            "p99_ms": 9.420914999999999,
+            "sample_count": 50,
+            "worst_ms": 9.7426
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.8410259999999999,
+            "p50_ms": 0.8144,
+            "p95_ms": 0.96533,
+            "p99_ms": 1.164712,
+            "sample_count": 50,
+            "worst_ms": 1.1996
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.6044080000000001,
+            "p50_ms": 0.5992999999999999,
+            "p95_ms": 0.63283,
+            "p99_ms": 0.8532159999999998,
+            "sample_count": 50,
+            "worst_ms": 0.9177
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 8.562924000000002,
+            "p50_ms": 8.45925,
+            "p95_ms": 9.32356,
+            "p99_ms": 9.945434999999998,
+            "sample_count": 50,
+            "worst_ms": 10.4004
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.332406,
+            "p50_ms": 2.30295,
+            "p95_ms": 2.5886,
+            "p99_ms": 2.704488,
+            "sample_count": 50,
+            "worst_ms": 2.7186
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.0507400000000002,
+            "p50_ms": 2.87035,
+            "p95_ms": 3.7222649999999997,
+            "p99_ms": 4.0131239999999995,
+            "sample_count": 50,
+            "worst_ms": 4.176
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 225.168222,
+            "p50_ms": 225.00335,
+            "p95_ms": 229.39527999999999,
+            "p99_ms": 233.576721,
+            "sample_count": 50,
+            "worst_ms": 236.4026
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.6225099999999992,
+            "p50_ms": 2.51645,
+            "p95_ms": 2.94379,
+            "p99_ms": 3.636571999999998,
+            "sample_count": 50,
+            "worst_ms": 4.184
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 26.27231399999999,
+            "p50_ms": 26.173099999999998,
+            "p95_ms": 27.03884,
+            "p99_ms": 28.073227999999997,
+            "sample_count": 50,
+            "worst_ms": 28.7361
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 196825088,
+            "working_set_bytes": 220995584
+          },
+          "initial": {
+            "private_bytes": 196747264,
+            "working_set_bytes": 220966912
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 35565,
+          "growth_bytes": 35565,
+          "initial_bytes": 0,
+          "peak_bytes": 39865
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 128,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 128,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 128,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "ca58a951debe2cd1df3b0601de5a0578c329b53d9d86a0d67366fe53ff545644",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 234.22319799999997,
+            "p50_ms": 231.52545,
+            "p95_ms": 255.72231499999998,
+            "p99_ms": 264.67037799999997,
+            "sample_count": 50,
+            "worst_ms": 269.2655
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 9.835573999999998,
+            "p50_ms": 9.9669,
+            "p95_ms": 10.5135,
+            "p99_ms": 11.307806999999999,
+            "sample_count": 50,
+            "worst_ms": 11.83
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.8553399999999998,
+            "p50_ms": 0.81375,
+            "p95_ms": 1.0970749999999998,
+            "p99_ms": 1.2880239999999998,
+            "sample_count": 50,
+            "worst_ms": 1.3235
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.7400819999999999,
+            "p50_ms": 0.7541,
+            "p95_ms": 0.8196999999999999,
+            "p99_ms": 0.9114099999999999,
+            "sample_count": 50,
+            "worst_ms": 0.9168
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 11.330904,
+            "p50_ms": 11.41485,
+            "p95_ms": 11.82638,
+            "p99_ms": 11.862699000000001,
+            "sample_count": 50,
+            "worst_ms": 11.8651
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.746504000000001,
+            "p50_ms": 2.7024999999999997,
+            "p95_ms": 3.076085,
+            "p99_ms": 3.257377999999999,
+            "sample_count": 50,
+            "worst_ms": 3.4131
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.9726440000000007,
+            "p50_ms": 2.88655,
+            "p95_ms": 3.350405,
+            "p99_ms": 3.446582,
+            "sample_count": 50,
+            "worst_ms": 3.4849
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 223.9536799999999,
+            "p50_ms": 223.1602,
+            "p95_ms": 227.989975,
+            "p99_ms": 229.356948,
+            "sample_count": 50,
+            "worst_ms": 230.0404
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 2.5915239999999993,
+            "p50_ms": 2.5217,
+            "p95_ms": 2.954235,
+            "p99_ms": 3.0109559999999997,
+            "sample_count": 50,
+            "worst_ms": 3.0431
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 28.229782,
+            "p50_ms": 28.00485,
+            "p95_ms": 29.800005,
+            "p99_ms": 30.450664999999997,
+            "sample_count": 50,
+            "worst_ms": 30.5886
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 210780160,
+            "working_set_bytes": 234815488
+          },
+          "initial": {
+            "private_bytes": 210780160,
+            "working_set_bytes": 234819584
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 38861,
+          "growth_bytes": 38861,
+          "initial_bytes": 0,
+          "peak_bytes": 43861
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 128,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 128,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 256,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "23552303f1e17bfed9ce8cf42d2013e2dc509fe1389bf3da8ee6684dc3e87d17",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 460.5663880000001,
+            "p50_ms": 458.35285,
+            "p95_ms": 477.815905,
+            "p99_ms": 484.83277400000003,
+            "sample_count": 50,
+            "worst_ms": 485.101
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.159834000000004,
+            "p50_ms": 15.1202,
+            "p95_ms": 15.481285,
+            "p99_ms": 16.62051,
+            "sample_count": 50,
+            "worst_ms": 17.0473
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.6089400000000007,
+            "p50_ms": 1.5706,
+            "p95_ms": 1.8547999999999998,
+            "p99_ms": 1.9468729999999999,
+            "sample_count": 50,
+            "worst_ms": 1.9578
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.991682,
+            "p50_ms": 0.9456,
+            "p95_ms": 1.2846049999999998,
+            "p99_ms": 1.514433,
+            "sample_count": 50,
+            "worst_ms": 1.5185
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 13.387976000000002,
+            "p50_ms": 13.30115,
+            "p95_ms": 14.133085,
+            "p99_ms": 15.339943,
+            "sample_count": 50,
+            "worst_ms": 15.4621
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.6423159999999997,
+            "p50_ms": 3.6008,
+            "p95_ms": 3.96524,
+            "p99_ms": 4.020666,
+            "sample_count": 50,
+            "worst_ms": 4.0288
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.887669999999998,
+            "p50_ms": 6.74485,
+            "p95_ms": 7.328305,
+            "p99_ms": 8.080005999999997,
+            "sample_count": 50,
+            "worst_ms": 8.7467
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 447.22788400000013,
+            "p50_ms": 445.8306,
+            "p95_ms": 457.598595,
+            "p99_ms": 460.81221,
+            "sample_count": 50,
+            "worst_ms": 462.2631
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.031262000000002,
+            "p50_ms": 5.81245,
+            "p95_ms": 6.590755,
+            "p99_ms": 6.965183999999999,
+            "sample_count": 50,
+            "worst_ms": 7.2094
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 51.823202,
+            "p50_ms": 50.3951,
+            "p95_ms": 52.9695,
+            "p99_ms": 81.51963799999999,
+            "sample_count": 50,
+            "worst_ms": 83.5452
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 222339072,
+            "working_set_bytes": 245866496
+          },
+          "initial": {
+            "private_bytes": 222199808,
+            "working_set_bytes": 245690368
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 49747,
+          "growth_bytes": 49747,
+          "initial_bytes": 0,
+          "peak_bytes": 59759
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 256,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 256,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 256,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "5e1ddb4b062879622a494b40b3a398b3ab269cc467fffe5f18099f5394460a06",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 462.17873199999997,
+            "p50_ms": 459.8723,
+            "p95_ms": 474.353355,
+            "p99_ms": 484.36714599999993,
+            "sample_count": 50,
+            "worst_ms": 492.229
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.293199999999997,
+            "p50_ms": 15.224499999999999,
+            "p95_ms": 16.004205,
+            "p99_ms": 16.529168,
+            "sample_count": 50,
+            "worst_ms": 16.6599
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.672946,
+            "p50_ms": 1.6040999999999999,
+            "p95_ms": 1.9254499999999999,
+            "p99_ms": 2.5364929999999983,
+            "sample_count": 50,
+            "worst_ms": 2.9747
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 0.986338,
+            "p50_ms": 0.9739,
+            "p95_ms": 1.0721149999999997,
+            "p99_ms": 1.2774889999999999,
+            "sample_count": 50,
+            "worst_ms": 1.299
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 14.175646000000002,
+            "p50_ms": 14.062650000000001,
+            "p95_ms": 14.902594999999998,
+            "p99_ms": 17.498764,
+            "sample_count": 50,
+            "worst_ms": 17.6048
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.84423,
+            "p50_ms": 3.7583,
+            "p95_ms": 4.31183,
+            "p99_ms": 4.462534,
+            "sample_count": 50,
+            "worst_ms": 4.5573
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.3881760000000005,
+            "p50_ms": 7.176550000000001,
+            "p95_ms": 9.042275,
+            "p99_ms": 9.304195,
+            "sample_count": 50,
+            "worst_ms": 9.3358
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 458.39458799999977,
+            "p50_ms": 451.534,
+            "p95_ms": 490.84777499999996,
+            "p99_ms": 531.6016099999999,
+            "sample_count": 50,
+            "worst_ms": 552.8926
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 5.921678000000001,
+            "p50_ms": 5.8063,
+            "p95_ms": 6.27437,
+            "p99_ms": 6.369751,
+            "sample_count": 50,
+            "worst_ms": 6.3845
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 53.04255400000001,
+            "p50_ms": 51.039950000000005,
+            "p95_ms": 65.618855,
+            "p99_ms": 84.709171,
+            "sample_count": 50,
+            "worst_ms": 84.8866
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 233525248,
+            "working_set_bytes": 257187840
+          },
+          "initial": {
+            "private_bytes": 233525248,
+            "working_set_bytes": 257196032
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 51185,
+          "growth_bytes": 51185,
+          "initial_bytes": 0,
+          "peak_bytes": 61287
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 256,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 256,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 256,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "eb0df7c42c2b19285d1854ed59f6975199ec75311be8db24a02b5df0a6a7f4f5",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 465.56288800000004,
+            "p50_ms": 462.5815,
+            "p95_ms": 479.63788,
+            "p99_ms": 502.091228,
+            "sample_count": 50,
+            "worst_ms": 507.9481
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.713880000000003,
+            "p50_ms": 16.540149999999997,
+            "p95_ms": 17.299445,
+            "p99_ms": 20.257769,
+            "sample_count": 50,
+            "worst_ms": 20.3714
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.6703519999999992,
+            "p50_ms": 1.6333,
+            "p95_ms": 1.8917849999999996,
+            "p99_ms": 1.9665709999999998,
+            "sample_count": 50,
+            "worst_ms": 1.9823
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.169482,
+            "p50_ms": 1.1347,
+            "p95_ms": 1.4590349999999999,
+            "p99_ms": 1.593306,
+            "sample_count": 50,
+            "worst_ms": 1.623
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 16.957781999999998,
+            "p50_ms": 16.51045,
+            "p95_ms": 19.677955,
+            "p99_ms": 21.570534999999996,
+            "sample_count": 50,
+            "worst_ms": 22.344
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 4.049118,
+            "p50_ms": 4.04355,
+            "p95_ms": 4.437995,
+            "p99_ms": 5.216046999999999,
+            "sample_count": 50,
+            "worst_ms": 5.5589
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.924646,
+            "p50_ms": 6.833,
+            "p95_ms": 7.427035,
+            "p99_ms": 7.725683999999999,
+            "sample_count": 50,
+            "worst_ms": 7.9699
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 451.63600799999995,
+            "p50_ms": 449.92845,
+            "p95_ms": 460.05080499999997,
+            "p99_ms": 484.17541299999993,
+            "sample_count": 50,
+            "worst_ms": 503.1464
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 6.104336000000001,
+            "p50_ms": 5.90565,
+            "p95_ms": 6.563335,
+            "p99_ms": 8.086078999999994,
+            "sample_count": 50,
+            "worst_ms": 9.5232
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 54.260709999999996,
+            "p50_ms": 52.5734,
+            "p95_ms": 55.910709999999995,
+            "p99_ms": 91.412111,
+            "sample_count": 50,
+            "worst_ms": 93.2232
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 248020992,
+            "working_set_bytes": 271896576
+          },
+          "initial": {
+            "private_bytes": 248020992,
+            "working_set_bytes": 271896576
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 50272,
+          "growth_bytes": 50272,
+          "initial_bytes": 0,
+          "peak_bytes": 59889
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 256,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 256,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "588292d32698ba946a76a2cf3d98f6b5ff82556a4d77f2dc50c405c1bc70510b",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 927.6621719999999,
+            "p50_ms": 923.41915,
+            "p95_ms": 945.92319,
+            "p99_ms": 965.1437209999999,
+            "sample_count": 50,
+            "worst_ms": 979.0436
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 29.620824000000002,
+            "p50_ms": 29.483199999999997,
+            "p95_ms": 31.029605,
+            "p99_ms": 31.54179,
+            "sample_count": 50,
+            "worst_ms": 31.9284
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.656218000000001,
+            "p50_ms": 3.5706499999999997,
+            "p95_ms": 3.96252,
+            "p99_ms": 4.040194,
+            "sample_count": 50,
+            "worst_ms": 4.0938
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.7536020000000005,
+            "p50_ms": 1.7199499999999999,
+            "p95_ms": 2.042745,
+            "p99_ms": 2.071323,
+            "sample_count": 50,
+            "worst_ms": 2.0798
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 24.08636999999999,
+            "p50_ms": 23.945349999999998,
+            "p95_ms": 24.922874999999998,
+            "p99_ms": 27.407866999999992,
+            "sample_count": 50,
+            "worst_ms": 28.5798
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.181477999999999,
+            "p50_ms": 7.0278,
+            "p95_ms": 7.80483,
+            "p99_ms": 9.090276999999997,
+            "sample_count": 50,
+            "worst_ms": 9.7531
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 18.224321999999994,
+            "p50_ms": 18.0953,
+            "p95_ms": 18.999019999999998,
+            "p99_ms": 20.061373999999997,
+            "sample_count": 50,
+            "worst_ms": 20.261
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 909.3829940000003,
+            "p50_ms": 907.9195500000001,
+            "p95_ms": 921.01567,
+            "p99_ms": 927.875954,
+            "sample_count": 50,
+            "worst_ms": 929.8141
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.358129999999994,
+            "p50_ms": 15.33,
+            "p95_ms": 15.521175,
+            "p99_ms": 16.405077,
+            "sample_count": 50,
+            "worst_ms": 17.2051
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 114.62570799999996,
+            "p50_ms": 109.64125,
+            "p95_ms": 150.654555,
+            "p99_ms": 151.235148,
+            "sample_count": 50,
+            "worst_ms": 151.2473
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 271728640,
+            "working_set_bytes": 294748160
+          },
+          "initial": {
+            "private_bytes": 271728640,
+            "working_set_bytes": 294756352
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 80391,
+          "growth_bytes": 80391,
+          "initial_bytes": 0,
+          "peak_bytes": 99909
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 512,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 720,
+          "width": 1280
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "0669540200d6a97e2eface3dd477db054c7033c41a070cf78228ebdfaa35d1d5",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 931.1959040000003,
+            "p50_ms": 929.5585,
+            "p95_ms": 945.358445,
+            "p99_ms": 955.098696,
+            "sample_count": 50,
+            "worst_ms": 957.8915
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 30.197508000000003,
+            "p50_ms": 29.833750000000002,
+            "p95_ms": 31.61938,
+            "p99_ms": 37.53678899999999,
+            "sample_count": 50,
+            "worst_ms": 39.6555
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.30922,
+            "p50_ms": 3.2436,
+            "p95_ms": 3.64154,
+            "p99_ms": 3.8711029999999993,
+            "sample_count": 50,
+            "worst_ms": 4.0648
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.8684279999999998,
+            "p50_ms": 1.7649,
+            "p95_ms": 2.33935,
+            "p99_ms": 2.894368999999999,
+            "sample_count": 50,
+            "worst_ms": 3.2187
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 24.779930000000004,
+            "p50_ms": 24.5955,
+            "p95_ms": 25.410819999999998,
+            "p99_ms": 28.488512999999987,
+            "sample_count": 50,
+            "worst_ms": 31.118
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.081649999999999,
+            "p50_ms": 6.8965,
+            "p95_ms": 7.809865,
+            "p99_ms": 7.89061,
+            "sample_count": 50,
+            "worst_ms": 7.9254
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 18.212638000000013,
+            "p50_ms": 18.114649999999997,
+            "p95_ms": 19.09988,
+            "p99_ms": 19.626334999999997,
+            "sample_count": 50,
+            "worst_ms": 19.9441
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 919.1087200000002,
+            "p50_ms": 917.08095,
+            "p95_ms": 938.3584599999999,
+            "p99_ms": 953.900773,
+            "sample_count": 50,
+            "worst_ms": 964.1968
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.521166000000001,
+            "p50_ms": 15.48875,
+            "p95_ms": 15.791044999999999,
+            "p99_ms": 16.594746999999998,
+            "sample_count": 50,
+            "worst_ms": 17.0797
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 116.931902,
+            "p50_ms": 111.2818,
+            "p95_ms": 159.17791,
+            "p99_ms": 162.529978,
+            "sample_count": 50,
+            "worst_ms": 162.6269
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 289427456,
+            "working_set_bytes": 313204736
+          },
+          "initial": {
+            "private_bytes": 289427456,
+            "working_set_bytes": 313204736
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 85486,
+          "growth_bytes": 85486,
+          "initial_bytes": 0,
+          "peak_bytes": 104962
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 512,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 768,
+          "width": 1366
+        },
+        "socket_count": 3
+      }
+    },
+    {
+      "determinism": {
+        "preview_object_count": 512,
+        "preview_repeat_equal": true,
+        "preview_repr_sha256": "bcf9485fbc2623202a2932751b8b4f9dbede196338abe63e9a4077d0b5ba58ce",
+        "preview_socket_count": 3
+      },
+      "error_count": 0,
+      "measurements": {
+        "full_sync": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 937.4725339999999,
+            "p50_ms": 933.4783500000001,
+            "p95_ms": 959.49569,
+            "p99_ms": 985.294941,
+            "sample_count": 50,
+            "worst_ms": 990.7139
+          }
+        },
+        "incremental_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 30.563599999999997,
+            "p50_ms": 30.5003,
+            "p95_ms": 31.444185,
+            "p99_ms": 32.47027,
+            "sample_count": 50,
+            "worst_ms": 32.4835
+          }
+        },
+        "navigation_fit": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 3.3592539999999995,
+            "p50_ms": 3.27975,
+            "p95_ms": 3.7019699999999998,
+            "p99_ms": 3.712594,
+            "sample_count": 50,
+            "worst_ms": 3.7172
+          }
+        },
+        "navigation_pan": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 1.9958540000000005,
+            "p50_ms": 1.9421499999999998,
+            "p95_ms": 2.3334599999999996,
+            "p99_ms": 2.639754,
+            "sample_count": 50,
+            "worst_ms": 2.6963
+          }
+        },
+        "navigation_resize": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 27.32961,
+            "p50_ms": 27.29725,
+            "p95_ms": 28.3289,
+            "p99_ms": 28.838659,
+            "sample_count": 50,
+            "worst_ms": 29.0645
+          }
+        },
+        "navigation_zoom": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 7.206312000000001,
+            "p50_ms": 7.2283,
+            "p95_ms": 7.621985,
+            "p99_ms": 7.83504,
+            "sample_count": 50,
+            "worst_ms": 7.8517
+          }
+        },
+        "preview_frame_build": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 18.004820000000006,
+            "p50_ms": 17.9174,
+            "p95_ms": 18.838325,
+            "p99_ms": 19.220484,
+            "sample_count": 50,
+            "worst_ms": 19.4402
+          }
+        },
+        "preview_toggle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 916.7712760000002,
+            "p50_ms": 914.2594,
+            "p95_ms": 933.13864,
+            "p99_ms": 937.298567,
+            "sample_count": 50,
+            "worst_ms": 937.3827
+          }
+        },
+        "selection_refresh": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 15.649368000000004,
+            "p50_ms": 15.583649999999999,
+            "p95_ms": 16.509355,
+            "p99_ms": 16.976271999999998,
+            "sample_count": 50,
+            "worst_ms": 17.2052
+          }
+        },
+        "user_gesture_cycle": {
+          "error_count": 0,
+          "errors": [],
+          "timing_ms": {
+            "mean_ms": 119.15770800000004,
+            "p50_ms": 112.6872,
+            "p95_ms": 165.881075,
+            "p99_ms": 168.744743,
+            "sample_count": 50,
+            "worst_ms": 169.0433
+          }
+        }
+      },
+      "memory": {
+        "error_count": 0,
+        "errors": [],
+        "interpretation": "observational checkpoints; not a standalone leak verdict",
+        "iterations": 20,
+        "process_memory": {
+          "final": {
+            "private_bytes": 311799808,
+            "working_set_bytes": 335044608
+          },
+          "initial": {
+            "private_bytes": 311799808,
+            "working_set_bytes": 335044608
+          }
+        },
+        "python_tracemalloc": {
+          "final_bytes": 83217,
+          "growth_bytes": 83217,
+          "initial_bytes": 0,
+          "peak_bytes": 102593
+        }
+      },
+      "operation_details": {
+        "full_sync": "complete QGraphicsScene rebuild with asset resolution",
+        "incremental_refresh": "transform, selection, gizmo and viewport repaint refresh",
+        "navigation_fit": "fit-all bounds calculation and navigation transform",
+        "navigation_pan": "transient viewport pan and navigation transform",
+        "navigation_resize": "real resize event and navigation reflow",
+        "navigation_zoom": "anchored user-wheel zoom path",
+        "preview_frame_build": "deterministic non-Qt preview frame projection",
+        "preview_toggle": "authoring/preview toggle including the current full sync path",
+        "selection_refresh": "real session selection notification and refresh",
+        "user_gesture_cycle": "real preview-transform plus cancel flow"
+      },
+      "workload": {
+        "asset_count": 512,
+        "asset_mode": "unique",
+        "group_count": 2,
+        "layer_count": 3,
+        "object_count": 512,
+        "resolution": {
+          "height": 1080,
+          "width": 1920
+        },
+        "socket_count": 3
+      }
+    }
+  ]
+}

@@ -6,7 +6,15 @@ import math
 from pathlib import Path
 from typing import Iterable
 
-from PySide6.QtCore import QMimeData, QPointF, QRect, QRectF, Qt, Signal
+from PySide6.QtCore import (
+    QFileSystemWatcher,
+    QMimeData,
+    QPointF,
+    QRect,
+    QRectF,
+    Qt,
+    Signal,
+)
 from PySide6.QtGui import (
     QBrush,
     QColor,
@@ -56,6 +64,7 @@ from src.core.scene_view_navigation import (
     panned_navigation_center,
     wheel_navigation_zoom,
 )
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
@@ -373,6 +382,15 @@ class SceneAuthoringViewport(QGraphicsView):
         self._last_asset_diagnostics: tuple[str, ...] = ()
         self._asset_state_snapshot: tuple[tuple[str, str, str, str | None], ...] = ()
         self._layer_order_snapshot: tuple[str, ...] = ()
+        self._asset_pixmap_cache: dict[tuple[str, str, str], QPixmap] = {}
+        self._asset_watcher = QFileSystemWatcher(self)
+        self._asset_watcher.fileChanged.connect(self._on_asset_file_changed)
+        self._object_transform_snapshot: dict[str, tuple[float | bool, ...]] = {}
+        self._selection_snapshot: tuple[str, ...] = ()
+        self._primary_selection_snapshot: str | None = None
+        self._visible_object_ids_snapshot: tuple[str, ...] = ()
+        self._structure_snapshot: tuple[object, ...] = ()
+        self._presentation_snapshot: tuple[object, ...] = ()
         self.sync()
         self.session.subscribe(self._on_session_change)
 
@@ -486,7 +504,6 @@ class SceneAuthoringViewport(QGraphicsView):
             QTransform.fromScale(self._navigation_zoom, self._navigation_zoom)
         )
         self.centerOn(self._navigation_center)
-        self._navigation_center = self.mapToScene(self.viewport().rect().center())
         self.viewport().update()
 
     def _set_navigation_state(self, zoom: float, center: QPointF) -> None:
@@ -626,6 +643,115 @@ class SceneAuthoringViewport(QGraphicsView):
             default=0.0,
         ) + float(offset)
 
+    def _document_structure_snapshot(self) -> tuple[object, ...]:
+        """Capture only state that can change the set/order/content of items."""
+
+        document = self.session.document
+        groups = tuple(
+            (
+                group.id,
+                tuple(group.members),
+                group.visible,
+                group.locked,
+                getattr(group, "parent_group_id", None),
+            )
+            for group in document.groups
+        )
+        sockets = tuple(
+            socket.model_dump_json() for socket in getattr(document, "sockets", ())
+        )
+        return (
+            tuple(
+                (item.id, item.asset_id, item.layer_id, item.visible)
+                for item in document.objects
+            ),
+            tuple((layer.id, layer.visible, layer.locked) for layer in document.layers),
+            tuple(
+                (asset.id, asset.path, asset.sha256, asset.source_path)
+                for asset in document.assets
+            ),
+            groups,
+            sockets,
+            self.session.isolated_group_id,
+        )
+
+    def _document_presentation_snapshot(self) -> tuple[object, ...]:
+        """Capture camera/parallax state that projects every visible item."""
+
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return ()
+        return (
+            (
+                float(document.camera.position.x),
+                float(document.camera.position.y),
+                float(document.camera.zoom),
+            ),
+            tuple(
+                (
+                    record.layer_id,
+                    float(record.depth),
+                    float(record.translation_strength),
+                    float(record.zoom_strength),
+                )
+                for record in document.parallax_layers
+            ),
+        )
+
+    @staticmethod
+    def _transform_signature(
+        item: SceneObjectAuthoringRecord,
+    ) -> tuple[float | bool, ...]:
+        transform = item.transform
+        return (
+            float(transform.position.x),
+            float(transform.position.y),
+            float(transform.position.z),
+            float(transform.rotation.x),
+            float(transform.rotation.y),
+            float(transform.rotation.z),
+            float(transform.scale.x),
+            float(transform.scale.y),
+            float(transform.scale.z),
+            float(transform.pivot.x),
+            float(transform.pivot.y),
+            bool(transform.flip_x),
+            bool(transform.flip_y),
+        )
+
+    def _document_transform_snapshot(
+        self,
+    ) -> dict[str, tuple[float | bool, ...]]:
+        return {
+            item.id: self._transform_signature(item)
+            for item in self.session.document.objects
+        }
+
+    @staticmethod
+    def _asset_cache_key(asset: AssetReferenceRecord) -> tuple[str, str, str]:
+        return asset.id, asset.path, asset.sha256
+
+    def _prune_asset_pixmap_cache(self, active_keys: set[tuple[str, str, str]]) -> None:
+        for key in tuple(self._asset_pixmap_cache):
+            if key not in active_keys:
+                del self._asset_pixmap_cache[key]
+
+    def _sync_asset_watcher(self, paths: Iterable[Path]) -> None:
+        desired = {str(path) for path in paths}
+        current = set(self._asset_watcher.files())
+        removed = current - desired
+        added = desired - current
+        if removed:
+            self._asset_watcher.removePaths(sorted(removed))
+        if added:
+            self._asset_watcher.addPaths(sorted(added))
+
+    def _on_asset_file_changed(self, path: str) -> None:
+        """Revalidate a displayed asset after an external filesystem change."""
+
+        del path
+        self.sync()
+
     def sync(self) -> None:
         self.graphics_scene.clear()
         self._items.clear()
@@ -634,6 +760,8 @@ class SceneAuthoringViewport(QGraphicsView):
         diagnostics: list[str] = []
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
         pixmap_cache: dict[str, QPixmap | None] = {}
+        active_asset_cache_keys: set[tuple[str, str, str]] = set()
+        watched_asset_paths: list[Path] = []
         ordered_objects = ordered_scene_objects(self.session.document)
         layer_order = layer_index_by_id(self.session.document)
         objects_in_layer: dict[str, int] = {}
@@ -655,8 +783,15 @@ class SceneAuthoringViewport(QGraphicsView):
                     diagnostics.append(f"{item.id}: {issue}")
                 else:
                     assert asset_path is not None
+                    watched_asset_paths.append(asset_path)
+                    cache_key = self._asset_cache_key(asset)
                     try:
-                        pixmap_cache[asset.id] = self._load_asset_pixmap(asset_path)
+                        pixmap = self._asset_pixmap_cache.get(cache_key)
+                        if pixmap is None:
+                            pixmap = self._load_asset_pixmap(asset_path)
+                            self._asset_pixmap_cache[cache_key] = pixmap
+                        active_asset_cache_keys.add(cache_key)
+                        pixmap_cache[asset.id] = pixmap
                     except (OSError, ValueError) as exc:
                         diagnostics.append(f"{item.id}: {exc}")
                         pixmap_cache[asset.id] = None
@@ -697,6 +832,8 @@ class SceneAuthoringViewport(QGraphicsView):
                 )
                 self.graphics_scene.addItem(marker)
                 self._socket_items[socket.id] = marker
+        self._prune_asset_pixmap_cache(active_asset_cache_keys)
+        self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
         self._refresh_selection()
         self._refresh_gizmo()
@@ -708,6 +845,12 @@ class SceneAuthoringViewport(QGraphicsView):
         self._layer_order_snapshot = tuple(
             layer.id for layer in self.session.document.layers
         )
+        self._object_transform_snapshot = self._document_transform_snapshot()
+        self._selection_snapshot = tuple(self.session.selection.ids)
+        self._primary_selection_snapshot = self.session.selection.primary
+        self._visible_object_ids_snapshot = tuple(self._items)
+        self._structure_snapshot = self._document_structure_snapshot()
+        self._presentation_snapshot = self._document_presentation_snapshot()
         self._asset_diagnostics = tuple(dict.fromkeys(diagnostics))
         if self._asset_diagnostics != self._last_asset_diagnostics:
             self._last_asset_diagnostics = self._asset_diagnostics
@@ -716,18 +859,52 @@ class SceneAuthoringViewport(QGraphicsView):
                     "Scene asset diagnostics: " + " | ".join(self._asset_diagnostics)
                 )
 
-    def _refresh_transforms(self) -> None:
-        by_id = {item.id: item for item in self.session.document.objects}
-        for object_id, visual in self._items.items():
-            item = by_id[object_id]
+    def _refresh_transforms(
+        self,
+        object_ids: Iterable[str] | None = None,
+        *,
+        refresh_sockets: bool | None = None,
+    ) -> None:
+        """Refresh only the requested items using one projection context."""
+
+        all_objects = object_ids is None
+        requested_ids = (
+            tuple(self._items)
+            if all_objects
+            else tuple(dict.fromkeys(object_ids or ()))
+        )
+        if refresh_sockets is None:
+            refresh_sockets = all_objects
+
+        document = self.session.document
+        by_id = {item.id: item for item in document.objects}
+        camera = self._camera() if self._preview_enabled else None
+        parallax_by_layer: dict[str, ParallaxLayer] = {}
+        if camera is not None:
+            layer_ids = {item.layer_id for item in document.objects}
+            if isinstance(document, SceneAuthoringDocumentV2):
+                layer_ids.update(socket.layer_id for socket in document.sockets)
+            parallax_by_layer = {
+                layer_id: self._layer_parallax(layer_id) for layer_id in layer_ids
+            }
+
+        selected_ids = set(self.session.selection.ids)
+        for object_id in requested_ids:
+            visual = self._items.get(object_id)
+            item = by_id.get(object_id)
+            if visual is None or item is None:
+                continue
             record = item.transform
-            parallax = self._layer_parallax(item.layer_id)
-            zoom = (
-                self._camera().effective_zoom(parallax)
-                if self._preview_enabled
-                else 1.0
-            )
-            position = self._project_position(record.position, item.layer_id)
+            parallax = parallax_by_layer.get(item.layer_id, ParallaxLayer())
+            if camera is None:
+                position = QPointF(float(record.position.x), float(record.position.y))
+                zoom = 1.0
+            else:
+                x, y = camera.project(
+                    (float(record.position.x), float(record.position.y)), parallax
+                )
+                position = QPointF(x, y)
+                zoom = camera.effective_zoom(parallax)
             visual.setPos(position)
             visual.setRotation(record.rotation.z)
             visual.setTransform(
@@ -736,17 +913,35 @@ class SceneAuthoringViewport(QGraphicsView):
                     record.scale.y * zoom * (-1.0 if record.flip_y else 1.0),
                 )
             )
-            visual.set_selected_style(object_id in self.session.selection.ids)
-        document = self.session.document
-        if isinstance(document, SceneAuthoringDocumentV2):
+            visual.set_selected_style(object_id in selected_ids)
+
+        if refresh_sockets and isinstance(document, SceneAuthoringDocumentV2):
             by_socket = {item.id: item for item in document.sockets}
             for socket_id, marker in self._socket_items.items():
                 socket = by_socket[socket_id]
-                marker.setPos(self._project_position(socket.position, socket.layer_id))
+                if camera is None:
+                    position = QPointF(
+                        float(socket.position.x), float(socket.position.y)
+                    )
+                else:
+                    x, y = camera.project(
+                        (float(socket.position.x), float(socket.position.y)),
+                        parallax_by_layer.get(socket.layer_id, ParallaxLayer()),
+                    )
+                    position = QPointF(x, y)
+                marker.setPos(position)
 
-    def _refresh_selection(self) -> None:
-        for object_id, visual in self._items.items():
-            visual.set_selected_style(object_id in self.session.selection.ids)
+    def _refresh_selection(self, object_ids: Iterable[str] | None = None) -> None:
+        requested_ids = (
+            tuple(self._items)
+            if object_ids is None
+            else tuple(dict.fromkeys(object_ids))
+        )
+        selected_ids = set(self.session.selection.ids)
+        for object_id in requested_ids:
+            visual = self._items.get(object_id)
+            if visual is not None:
+                visual.set_selected_style(object_id in selected_ids)
 
     def _refresh_gizmo(self) -> None:
         if self._gizmo is not None:
@@ -771,45 +966,79 @@ class SceneAuthoringViewport(QGraphicsView):
         self._gizmo.gesture_finished.connect(self._gizmo_finished)
         self.graphics_scene.addItem(self._gizmo)
 
-    def _refresh_after_model_change(self) -> None:
-        self._refresh_transforms()
-        self._refresh_gizmo()
+    def _refresh_after_model_change(
+        self,
+        object_ids: Iterable[str] | None = None,
+        *,
+        refresh_sockets: bool | None = None,
+        selection_ids: Iterable[str] | None = None,
+        refresh_gizmo: bool = True,
+    ) -> None:
+        self._refresh_transforms(object_ids, refresh_sockets=refresh_sockets)
+        if selection_ids is None:
+            self._refresh_selection()
+        else:
+            self._refresh_selection(selection_ids)
+        if refresh_gizmo:
+            self._refresh_gizmo()
         self.viewport().update()
 
     def _on_session_change(self) -> None:
-        visible_ids = {
+        current_visible_ids = tuple(
             item.id
-            for item in self.session.document.objects
+            for item in ordered_scene_objects(self.session.document)
             if object_is_effectively_visible(
                 self.session.document,
                 item.id,
                 isolated_group_id=self.session.isolated_group_id,
             )
-        }
-        visible_socket_ids = set()
-        if isinstance(self.session.document, SceneAuthoringDocumentV2):
-            visible_socket_ids = {
-                socket.id
-                for socket in self.session.document.sockets
-                if any(
-                    layer.id == socket.layer_id and layer.visible
-                    for layer in self.session.document.layers
-                )
-            }
-        current_asset_snapshot = tuple(
-            (asset.id, asset.path, asset.sha256, asset.source_path)
-            for asset in self.session.document.assets
         )
-        if (
-            visible_ids != set(self._items)
-            or visible_socket_ids != set(self._socket_items)
-            or current_asset_snapshot != self._asset_state_snapshot
-            or tuple(layer.id for layer in self.session.document.layers)
-            != self._layer_order_snapshot
-        ):
+        if current_visible_ids != self._visible_object_ids_snapshot:
             self.sync()
-        else:
-            self._refresh_after_model_change()
+            return
+
+        current_structure = self._document_structure_snapshot()
+        if current_structure != self._structure_snapshot:
+            self.sync()
+            return
+
+        current_presentation = self._document_presentation_snapshot()
+        current_transforms = self._document_transform_snapshot()
+        changed_object_ids = tuple(
+            object_id
+            for object_id in self._items
+            if self._object_transform_snapshot.get(object_id)
+            != current_transforms.get(object_id)
+        )
+        current_selection = tuple(self.session.selection.ids)
+        selection_changed = (
+            current_selection != self._selection_snapshot
+            or self.session.selection.primary != self._primary_selection_snapshot
+        )
+        changed_selection_ids = (
+            tuple(dict.fromkeys((*self._selection_snapshot, *current_selection)))
+            if selection_changed
+            else ()
+        )
+        presentation_changed = current_presentation != self._presentation_snapshot
+        refresh_ids: Iterable[str] = (
+            tuple(self._items) if presentation_changed else changed_object_ids
+        )
+        primary_changed = (
+            self.session.selection.primary != self._primary_selection_snapshot
+        )
+        self._refresh_after_model_change(
+            refresh_ids,
+            refresh_sockets=presentation_changed,
+            selection_ids=changed_selection_ids,
+            refresh_gizmo=presentation_changed
+            or primary_changed
+            or self.session.selection.primary in changed_object_ids,
+        )
+        self._object_transform_snapshot = current_transforms
+        self._selection_snapshot = current_selection
+        self._primary_selection_snapshot = self.session.selection.primary
+        self._presentation_snapshot = current_presentation
 
     def _set_selection(
         self, object_ids: Iterable[str], primary: str | None = None
@@ -817,8 +1046,6 @@ class SceneAuthoringViewport(QGraphicsView):
         """Refresh selection affordances after a canonical selection update."""
         self.session.set_selection(object_ids, primary)
         self.selection_changed.emit()
-        self._refresh_selection()
-        self._refresh_gizmo()
 
     def _visible_object_ids(self) -> tuple[str, ...]:
         """Return selectable objects in the deterministic visual order."""
@@ -964,7 +1191,7 @@ class SceneAuthoringViewport(QGraphicsView):
         super().mouseReleaseEvent(event)
 
     def _edit_status_error(self, exc: Exception) -> None:
-        self.status_message.emit(str(exc))
+        self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _block_if_preview(self) -> bool:
         if self._authoring_enabled:
@@ -1215,8 +1442,6 @@ class SceneAuthoringViewport(QGraphicsView):
         self._gesture_start = scene_pos
         self.session.begin_gesture()
         self.selection_changed.emit()
-        self._refresh_selection()
-        self._refresh_gizmo()
 
     def _object_moved(self, object_id: str, scene_pos: QPointF) -> None:
         if not self._authoring_enabled:
@@ -1241,7 +1466,6 @@ class SceneAuthoringViewport(QGraphicsView):
                 or f"Cannot move '{object_id}': editing is locked."
             )
             return
-        self._refresh_after_model_change()
 
     def _object_released(self, object_id: str, scene_pos: QPointF) -> None:
         del scene_pos
@@ -1252,7 +1476,6 @@ class SceneAuthoringViewport(QGraphicsView):
         self._item_gesture_id = None
         self._gesture_layer_id = None
         self._gesture_start = None
-        self._refresh_after_model_change()
         self.status_message.emit("Objects moved")
 
     def _gizmo_started(self, mode: str, scene_pos: QPointF) -> None:
@@ -1323,7 +1546,6 @@ class SceneAuthoringViewport(QGraphicsView):
                 or "Cannot transform the selection: editing is locked."
             )
             return
-        self._refresh_after_model_change()
 
     def _gizmo_finished(self, mode: str, scene_pos: QPointF) -> None:
         del scene_pos
@@ -1334,19 +1556,14 @@ class SceneAuthoringViewport(QGraphicsView):
         self.session.finish_gesture(f"Apply {mode} gizmo transform")
         self._gesture_mode = None
         self._gizmo_start = None
-        self._refresh_after_model_change()
         self.status_message.emit("Transform applied")
 
     def undo(self) -> bool:
         changed = self.session.undo()
-        if changed:
-            self.sync()
         return changed
 
     def redo(self) -> bool:
         changed = self.session.redo()
-        if changed:
-            self.sync()
         return changed
 
     def dragEnterEvent(self, event) -> None:
@@ -1428,7 +1645,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit(f"Imported {path.name}")
             event.acceptProposedAction()
         except (OSError, ValueError, SceneAssetError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="asset"))
             event.ignore()
 
     @staticmethod

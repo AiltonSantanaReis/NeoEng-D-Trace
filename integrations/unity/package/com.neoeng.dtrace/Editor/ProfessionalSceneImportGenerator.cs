@@ -165,7 +165,8 @@ namespace NeoEng.DTrace.Editor
                 string path = Environment.GetEnvironmentVariable("NEOENG_PROFESSIONAL_SCENE_EXPORT");
                 GameObject root = Import(string.IsNullOrWhiteSpace(path) ? DefaultExportPath : path);
                 Debug.Log("UNITY_NATIVE_PROFESSIONAL_SCENE_STAGE5=SUCCESS");
-                Debug.Log("UNITY_PROFESSIONAL_SCENE_LAYERS=" + root.transform.childCount);
+                int layerCount = root.GetComponentsInChildren<NeoEngProfessionalLayerMetadata>(true).Length;
+                Debug.Log("UNITY_PROFESSIONAL_SCENE_LAYERS=" + layerCount);
                 Debug.Log("UNITY_PROFESSIONAL_SCENE_OBJECTS=" + root.GetComponentsInChildren<NeoEngProfessionalObjectMetadata>().Length);
                 UnityEngine.Object.DestroyImmediate(root);
                 AssetDatabase.SaveAssets();

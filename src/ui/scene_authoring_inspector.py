@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV2,
@@ -369,7 +370,7 @@ class SceneAuthoringInspector(QWidget):
                 "Camera updated" if changed else "No camera changes"
             )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _apply_parallax(self) -> None:
         layer_id = self.layer_combo.currentData()
@@ -389,7 +390,7 @@ class SceneAuthoringInspector(QWidget):
                 "Parallax updated" if changed else "No parallax changes"
             )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _add_socket(self) -> None:
         layer_id = self.layer_combo.currentData()
@@ -432,7 +433,7 @@ class SceneAuthoringInspector(QWidget):
             self.session.add_socket(socket)
             self.status_message.emit("Socket added")
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _update_socket(self) -> None:
         socket_id = self.socket_combo.currentData()
@@ -450,7 +451,7 @@ class SceneAuthoringInspector(QWidget):
             )
             self.status_message.emit("Socket updated")
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _remove_socket(self) -> None:
         socket_id = self.socket_combo.currentData()
@@ -461,7 +462,7 @@ class SceneAuthoringInspector(QWidget):
             self.session.remove_socket(socket_id)
             self.status_message.emit("Socket removed")
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def apply_transform(self) -> None:
         primary = self._primary()
@@ -494,7 +495,7 @@ class SceneAuthoringInspector(QWidget):
             else:
                 self.status_message.emit("No transform changes")
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _apply_snap(self) -> None:
         try:
@@ -508,7 +509,7 @@ class SceneAuthoringInspector(QWidget):
                 )
             )
         except ValueError as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _undo(self) -> None:
         if self.session.undo():
@@ -523,7 +524,7 @@ class SceneAuthoringInspector(QWidget):
         try:
             changed = self.session.delete_selected()
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(str(exc))
+            self.status_message.emit(user_error_message(exc, operation="edit"))
             return
         if changed:
             self.status_message.emit(f"Deleted {count} object(s)")

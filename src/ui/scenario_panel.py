@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.scenario_authoring import ScenarioAuthoringError, ScenarioAuthoringState
+from src.persistence.p2d05_errors import user_error_message
 
 
 class ScenarioPanel(QWidget):
@@ -169,7 +170,15 @@ class ScenarioPanel(QWidget):
         try:
             callback()
         except Exception as exc:
-            QMessageBox.critical(self, "Scenario authoring error", str(exc))
+            QMessageBox.critical(
+                self,
+                "Scenario authoring error",
+                user_error_message(
+                    exc,
+                    operation="edit",
+                    language=getattr(self, "current_lang", "en"),
+                ),
+            )
             self.refresh()
 
     def refresh(self) -> None:
@@ -393,7 +402,15 @@ class ScenarioPanel(QWidget):
         try:
             result = self.authoring.export_runtime()
         except Exception as exc:
-            QMessageBox.critical(self, "Scenario export failed", str(exc))
+            QMessageBox.critical(
+                self,
+                "Scenario export failed",
+                user_error_message(
+                    exc,
+                    operation="export",
+                    language=getattr(self, "current_lang", "en"),
+                ),
+            )
         return result
 
     def update_language(self, lang: str) -> None:
