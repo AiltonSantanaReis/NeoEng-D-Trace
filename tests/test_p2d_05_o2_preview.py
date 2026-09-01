@@ -294,8 +294,7 @@ def test_viewport_prunes_removed_asset_and_reloads_after_restore(
         view.sync()
         assert not view._asset_pixmap_cache
         assert any(
-            "asset file is missing" in message
-            for message in view._asset_diagnostics
+            "asset file is missing" in message for message in view._asset_diagnostics
         )
 
         _write_png(asset_path, "#2aa7ff")
@@ -385,24 +384,33 @@ def test_viewport_camera_and_parallax_refresh_without_rebuild(
 
     monkeypatch.setattr(view, "sync", counted_sync)
     try:
-        assert session.set_camera(
-            SceneCameraAuthoringRecord(position=PointRecord(x=10.0, y=-6.0), zoom=1.5)
-        ) is True
+        assert (
+            session.set_camera(
+                SceneCameraAuthoringRecord(
+                    position=PointRecord(x=10.0, y=-6.0), zoom=1.5
+                )
+            )
+            is True
+        )
         assert sync_calls == []
         assert all(
-            view._items[object_id] is item
-            for object_id, item in before_items.items()
+            view._items[object_id] is item for object_id, item in before_items.items()
         )
 
-        assert session.set_parallax_layer(
-            SceneParallaxLayerRecord(
-                layer_id="back", depth=0.6, translation_strength=0.8, zoom_strength=0.9
+        assert (
+            session.set_parallax_layer(
+                SceneParallaxLayerRecord(
+                    layer_id="back",
+                    depth=0.6,
+                    translation_strength=0.8,
+                    zoom_strength=0.9,
+                )
             )
-        ) is True
+            is True
+        )
         assert sync_calls == []
         assert all(
-            view._items[object_id] is item
-            for object_id, item in before_items.items()
+            view._items[object_id] is item for object_id, item in before_items.items()
         )
     finally:
         view.close()

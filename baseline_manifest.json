@@ -11769,16 +11769,16 @@
       "size": 10591
     },
     "tests/test_p2d_04_persistence_recovery_export.py": {
-      "sha256": "4606a23f4ce4ec587ff87c2cf07a07589af2a40cebbcec75097c1a685dee9932",
-      "size": 12441
+      "sha256": "2ed993ccfd486511372b119d8ebc31a2667a37ee7494773b1ed62ddd69d6c44d",
+      "size": 12465
     },
     "tests/test_p2d_05_o1_history.py": {
       "sha256": "96fcbc366ebc624994523cca0e05f43c0d0991f00df925147bdcd73303138d5b",
       "size": 4812
     },
     "tests/test_p2d_05_o2_preview.py": {
-      "sha256": "9e1be2f9940bed1c0df29721350d6fc79452fbfcd161696cc85729a643474547",
-      "size": 15318
+      "sha256": "661ef2ec4fa901eb8a5e99c851e3a4ddeec8b60b958ff6bb334f2a6e9c45bff6",
+      "size": 15477
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",
