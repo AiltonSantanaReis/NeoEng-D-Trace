@@ -303,3 +303,24 @@ capacidade funcional correspondente.
 Até o aceite integral, o produto permanece OPEN / INCOMPLETE e nenhuma build
 ou release poderá ser apresentada como editor profissional completo de
 cenários.
+
+## 10. Atualização de qualificação P2D-COMP-01 — 2026-08-31
+
+A requalificação do gate de exportação e round-trip encontrou e corrigiu um
+bloqueador no próprio harness de validação: a câmera de cena é um filho técnico
+do root e não pode ser contada como layer. Godot agora identifica a layer pelo
+metadado neoeng_layer_id; Unity conta componentes
+NeoEngProfessionalLayerMetadata. A correção preserva a rejeição fail-closed do
+hash incorreto e não altera o schema, a persistência ou o formato exportado.
+
+Com a evidência
+docs/EVIDENCIA_P2D_COMP_01_EXPORT_ROUNDTRIP_2026-08-31.md, a fundação de
+P2D-COMP-01 fica qualificada no contrato atual de composição 2D e exportação de
+objetos suportados, condicionada somente à publicação do commit e à
+requalificação pós-merge. As cinco linhas EXT-TMAP-01, EXT-COLL-01,
+EXT-NAV-01, EXT-ENT-01 e EXT-FX-01 continuam sem aceite próprio e não são
+abertas por esta decisão.
+
+Esta atualização fecha o bloqueador técnico do gate atual; não revoga a emenda
+da seção 9. O produto integral continua OPEN / INCOMPLETE até que os requisitos
+completos tenham implementação funcional, round-trip visual e aceite formal.
