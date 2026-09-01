@@ -74,9 +74,10 @@ def test_status_indicator_fits_resolutions_without_legacy_hud(qt_app, monkeypatc
     calls: list[bool] = []
     monkeypatch.setattr(window.canvas, "_draw_hud", lambda _painter: calls.append(True))
 
+    window.show()
+    qt_app.processEvents()
     for width, height in ((1920, 1080), (1366, 768), (1280, 720)):
         window.resize(width, height)
-        window.show()
         qt_app.processEvents()
         status_rect = window.viewport_status.geometry()
         status_parent_rect = window.statusBar().rect()
