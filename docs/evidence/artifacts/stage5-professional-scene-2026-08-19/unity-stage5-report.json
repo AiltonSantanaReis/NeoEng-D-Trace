@@ -19,7 +19,7 @@
     "expected_hash_rejection": true,
     "failure_marker": true,
     "layers": null,
-    "log_sha256": "1b8641355566c6ce0cfcd8c569024e68721712c509f48ef587be1941a24ac106",
+    "log_sha256": "e6876f9464cb0d963efbcf218d9ee6f1a13f68cccb90761ef368bc1fa3bee494",
     "objects": null,
     "returncode": 1,
     "success_marker": false
@@ -31,7 +31,7 @@
     ],
     "failure_marker": false,
     "layers": 1,
-    "log_sha256": "01b0d45aa4b4400afc9f8b04671bce18c88ed3473a93d833d09e7f63f06ae932",
+    "log_sha256": "dd90a495eb0c60124d0364b847412a76824b09da3e598e0d29e109b953ea3de8",
     "objects": 1,
     "returncode": 0,
     "success_marker": true

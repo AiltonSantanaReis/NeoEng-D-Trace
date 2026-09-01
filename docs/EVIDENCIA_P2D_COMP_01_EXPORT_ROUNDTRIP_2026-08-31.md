@@ -2,7 +2,7 @@
 
 **Data:** 31/08/2026 (UTC-03)
 
-**Estado:** QUALIFICATION PASS — publicação commit/push/merge pendente
+**Estado:** POSTCOMMIT QUALIFICATION PASS — push/merge pendentes
 
 ## 1. Escopo
 
@@ -39,7 +39,7 @@ correção, preservando logs positivos, negativos e hashes sanitizados.
 | Gate | Resultado |
 | --- | --- |
 | Suíte completa | 1871 passed, 2 skipped, 1 warning, 47,50 s |
-| Teste focado P2D-04/persistência/exportação | 9 passed, 2,18 s |
+| Teste focado P2D-04/persistência/exportação | 9 passed, 1,58 s no HEAD pós-commit |
 | Auditoria real Godot | PASS; 4.7.stable.official.5b4e0cb0f; 1 layer; 1 objeto |
 | Auditoria real Unity | PASS; 6000.5.7f1; 1 layer; 1 objeto |
 | Hash incorreto em Godot | PASS negativo; rejeição observada |
@@ -74,5 +74,14 @@ evidência e aceite próprios.
 
 ## 6. Publicação
 
-Os hashes do commit técnico, do commit documental, do push, do merge e da
-requalificação pós-merge serão adicionados no fechamento da publicação.
+O commit técnico qualificado é
+f9cac41b2f94198e507b28f3ac11453b1be942c1. A requalificação pós-commit nesse
+HEAD passou nos dois engines e no teste focado. Os logs dessa execução estão
+vinculados pelos hashes Godot positivo
+be70207c27fa582a0eed57237b5821ddfbee0ab44cec43b455f0e7c70c27e9a e negativo
+12b2603fa24921a8d64ce7b5df384a69950d27846e68e3a7b1846c6a4f02e93b, e Unity
+positivo dd90a495eb0c60124d0364b847412a76824b09da3e598e0d29e109b953ea3de8
+e negativo e6876f9464cb0d963efbcf218d9ee6f1a13f68cccb90761ef368bc1fa3bee494.
+
+A publicação push/merge permanece pendente neste ponto; nenhum resultado aqui
+é apresentado como release final.
