@@ -1,3 +1,8 @@
+- `ETAPA_7_CI_CORRECAO_HASH_CROSS_PLATFORM_2026-09-03.md` — registra o CI
+  inicial da PR `#166`, a falha Linux reproduzida por divergência LF/CRLF, a
+  correção do gate formal, a preservação dos snapshots e os gates locais no
+  SHA `42dcb63`; o rerun remoto permanece pendente do push.
+  Pacote: `artifacts/etapa7-cross-platform-formal-hash-2026-09-03/`.
 - `ETAPA_7_CANDIDATA_GATES_2026-09-03.md` — validação da árvore limpa no SHA `d6e02cd`, suíte `1909 passed, 2 skipped`, cobertura `90.82%`, integridade de `124` manifests e build portátil com smoke `SUCCESS`; runner legado permanece bloqueado e CI remoto não foi executado.
 - `ETAPA_7_WINDOWS_RUNNER_CANDIDATA_2026-09-03.md` — candidata técnica no
   SHA `8e0ada3`; runner Windows isolado aceito em duas execuções, reconciliação

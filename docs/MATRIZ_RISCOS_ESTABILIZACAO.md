@@ -26,7 +26,31 @@
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
 ## Estado operacional atual dos riscos
+
+### Verificação viva — correção cross-platform do CI — 03/09/2026
+
+A falha inicial do job Linux da PR `#166` foi classificada como defeito de
+portabilidade do gate formal: o hash do snapshot era comparado em bytes brutos
+e dependia de CRLF/LF. A correção adicionou o digest canônico LF explícito e
+teste de regressão, mantendo o digest bruto histórico e os snapshots imutáveis.
+
+A suíte local e os gates de qualidade passaram no SHA `42dcb63`; o runner Windows
+passou em `189/189` arquivos. O risco `R-009` não está encerrado: a evidência
+remota do SHA corrigido ainda depende do push e de dois jobs Linux/Windows
+passarem. Estado: `R-009 EM VALIDAÇÃO PRÉ-MERGE`; merge, tag e release bloqueados.
 ## Atualização viva — runner Windows e Fase 7 — 03 de setembro de 2026
+
+### Verificação viva — correção cross-platform do CI — 03/09/2026
+
+A falha inicial do job Linux da PR `#166` foi classificada como defeito de
+portabilidade do gate formal: o hash do snapshot era comparado em bytes brutos
+e dependia de CRLF/LF. A correção adicionou o digest canônico LF explícito e
+teste de regressão, mantendo o digest bruto histórico e os snapshots imutáveis.
+
+A suíte local e os gates de qualidade passaram no SHA `42dcb63`; o runner Windows
+passou em `189/189` arquivos. O risco `R-009` não está encerrado: a evidência
+remota do SHA corrigido ainda depende do push e de dois jobs Linux/Windows
+passarem. Estado: `R-009 EM VALIDAÇÃO PRÉ-MERGE`; merge, tag e release bloqueados.
 
 A candidata `8e0ada3fcf1d08058240e5263732d14087b5335c` substituiu o caminho
 operacional de cobertura Windows no mesmo processo por shards isolados em

@@ -5,8 +5,8 @@
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
 **Status:** `EM EXECUÇÃO — FASE 7 EXECUTADA; B-04 PARCIAL; INTEGRAÇÃO BLOQUEADA`
-**Última atualização:** 03/09/2026 — gates locais e empacotamento executados na candidata limpa; CI remoto pendente
-**HEAD de validação local/empacotamento:** `d6e02cd9ee3445a02ef21faefb4c05d17e0d0fad`
+**Última atualização:** 03/09/2026 — falha Linux do CI analisada, correção cross-platform aplicada e gates locais repetidos; CI remoto pendente
+**HEAD de validação local/empacotamento:** `42dcb63d032d9e973664850222241ae9e9666bb5`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
 **Branch de trabalho:** `fix/legacy-27-functional-regressions`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
@@ -18,6 +18,33 @@ evidências produzidas até a revisão candidata atual, mas não declara aprova�
 global, encerramento da etapa, commit, push ou merge. A etapa somente poderá ser
 encerrada quando todos os critérios deste documento forem comprovados em um
 pacote integral e reproduzível.
+
+## 0.14 Registro vivo de execução — correção cross-platform do CI — 03/09/2026
+
+A execução inicial da PR `#166`, run `33758279765`, foi preservada como falha
+histórica: o job Linux `100657937566` reprovou três testes do contrato formal,
+enquanto o job Windows `100657937266` passou. A causa foi uma comparação
+dependente de finais de linha: o Linux verificava o digest LF do checkout contra
+o campo histórico bruto CRLF.
+
+A decisão de engenharia foi corrigir a regra de validação, não alterar os
+snapshots. O campo histórico bruto permanece preservado; foi adicionado o
+digest canônico LF `34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587`,
+e o gate passou a compará-lo por normalização explícita. A regressão LF/CRLF foi
+coberta por teste dedicado. Commits: correção semântica
+`78e47d75a17775f8f38ceddb2551ed570cc0cf2f` e formatação
+`42dcb63d032d9e973664850222241ae9e9666bb5`.
+
+No SHA `42dcb63`, a suíte completa passou com `1917 passed, 2 skipped`, cobertura
+de `92,59%` de linhas e `85,02%` de branches; o runner Windows passou em
+`189/189` arquivos, com `1919` testes, `0` falhas e `2` skips. Lock, compileall,
+Flake8, Black, isort, mypy, pip-audit, Bandit, Stage 4B.5 e empacotamento
+também passaram. A prova VMware de symlink continua separada e scoped ao
+ZIP/patch reconstruído, não ao SHA atual.
+
+Estado: `PASS_LOCAL / BLOCKED_REMOTE_RERUN`. O registro final de baseline e
+evidências ainda precisa ser concluído antes do push. Merge, tag, release e
+aprovação global permanecem bloqueados.
 
 ## 0. Registro vivo de execução — atualização de 01/09/2026
 

@@ -1,3 +1,18 @@
+## 2026-09-03 — correção cross-platform do gate formal legado
+
+- registra o CI inicial da PR `#166` (`33758279765`), com Windows aprovado e
+  Linux reprovado nos três testes do contrato formal;
+- identifica a causa raiz: o gate comparava no Linux o hash bruto LF do
+  snapshot `reconciliation.json` com o digest histórico CRLF armazenado na
+  decisão formal;
+- corrige a validação para usar o digest canônico LF explícito, preserva o
+  digest bruto histórico e mantém os snapshots legados byte a byte intactos;
+- adiciona teste de regressão para equivalência de hash entre LF e CRLF;
+- confirma localmente no SHA `42dcb63` a suíte completa, runner Windows,
+  reconciliação formal, estática, segurança, Stage 4B.5 e empacotamento;
+- mantém o rerun remoto, push, merge, tag, release e aprovação bloqueados até
+  nova execução remota comprovada.
+
 ## 2026-09-03 — validação do SHA efetivo da candidata Windows
 
 - registra a repetição dos gates no SHA `33abb59`, em worktree limpo, com

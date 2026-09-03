@@ -1,0 +1,78 @@
+{
+  "schema": "neoeng.dtrace.etapa7.cross_platform_formal_hash",
+  "schema_version": 1,
+  "date": "2026-09-03",
+  "branch": "fix/legacy-27-functional-regressions",
+  "tested_commit": "42dcb63d032d9e973664850222241ae9e9666bb5",
+  "status": "PASS_LOCAL / BLOCKED_REMOTE_RERUN",
+  "remote_initial_run": {
+    "pr": 166,
+    "run_id": "33758279765",
+    "head_before_correction": "5aed083e0daf9436d720bef3f2b0e5e889f1233f",
+    "linux": {"job_id": "100657937566", "status": "FAIL", "failed": 3},
+    "windows": {"job_id": "100657937266", "status": "PASS"},
+    "rerun": "PENDING_PUSH"
+  },
+  "correction": {
+    "semantic_commit": "78e47d75a17775f8f38ceddb2551ed570cc0cf2f",
+    "format_commit": "42dcb63d032d9e973664850222241ae9e9666bb5",
+    "raw_historical_reconciliation_sha256": "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493",
+    "canonical_reconciliation_sha256": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587",
+    "formal_decisions_sha256": "61374e9fc84811c1a17576b9d5a6afa1f84338d07369d6a7b6877411d17193b4",
+    "formal_decisions_bytes": 37049,
+    "snapshots_preserved": true
+  },
+  "full_pytest": {
+    "collected": 1919, "passed": 1917, "failed": 0, "errors": 0,
+    "skipped": 2, "warnings": 1,
+    "coverage_lines": {"covered": 23887, "valid": 25798, "percent": 92.59},
+    "coverage_branches": {"covered": 6664, "valid": 7838, "percent": 85.02}
+  },
+  "windows_runner": {
+    "files": 189, "tests": 1919, "failures": 0, "errors": 0,
+    "skipped": 2, "accepted": true,
+    "summary": {"bytes": 167718, "sha256": "ef3342507907a784bd939c22ab0ac54c025607a455294259f7afeeda3da1e1a2"},
+    "coverage_xml": {"bytes": 1184099, "sha256": "47700133af237f0e1dd9339278c10eae0b8933cdc5d158c08bbde7947526d237"}
+  },
+  "formal_legacy": {
+    "accepted_current_contract": true,
+    "historical": {"tests": 196, "failures": 26, "errors": 0, "skipped": 0, "returncode": 1},
+    "historical_exact_signatures": 15,
+    "unexpected_signatures": 11,
+    "historical_missing_expected_failures": 12,
+    "current_missing_observations": 1,
+    "resolved_cases": 27,
+    "substitutes": {"tests": 42, "failures": 0, "errors": 0, "skipped": 0, "returncode": 0},
+    "external_artifacts": [
+      {"path": "formal-legacy/formal-gate.json", "bytes": 11083, "sha256": "68f4ec4f694429beb8a641896db75e42bfe36554fb0f722ab0a15e65391eb692"},
+      {"path": "formal-legacy/historical/summary.json", "bytes": 42857, "sha256": "6ef5498a5f4077f978219e0baf96ce070405c863eaa7b2793b842ebfc1740b59"},
+      {"path": "formal-legacy/substitutes.xml", "bytes": 6515, "sha256": "d56b37ebd18dd221fb4a6b4fb9c0ef27de9db0df12f4d4a98dec923584af2882"}
+    ]
+  },
+  "quality_and_security": {
+    "lock": "PASS", "compileall": "PASS", "flake8": "PASS", "black": "PASS",
+    "isort": "PASS", "mypy": "PASS", "pip_audit": "PASS_NO_KNOWN_VULNERABILITIES; local package not published to PyPI",
+    "bandit": "PASS", "stage4b5": "PASS"
+  },
+  "stage4b5": {
+    "deterministic": true, "input_unchanged": true, "runtime_bytes": 867,
+    "runtime_sha256": "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+    "benchmark": {"runtime_export_serialization_500_seconds": 0.056891, "preview_projection_10000_seconds": 0.696388, "overlay_geometry_10000_seconds": 0.025195},
+    "external_artifacts": [
+      {"path": "stage4b5/artifact-index.json", "bytes": 836, "sha256": "6cd04d2bc4fa1f909dadcdad72510fe861e4e7f5c0cdee4ffbff8ac4d9f9cc37"},
+      {"path": "stage4b5/benchmark-report.json", "bytes": 2937, "sha256": "7fb3666cfa290b287c70bba362bf6dcfb88f06cb681dc71d580185c92c55caec"}
+    ]
+  },
+  "package": {
+    "status": "SUCCESS", "smoke_checks": 11, "files": 314,
+    "archive": {"bytes": 124181836, "sha256": "8deb27102ffec728e153c0595f2d66bc654e1b608a95ddac5c9a4ed6fd176c8a"},
+    "manifest": {"bytes": 55754, "sha256": "f073d1bcbb87a88145797a45e2fe6e14fd47cb93213cfbd3da1e71032e6d653d"}
+  },
+  "symlink": {
+    "current_checkout": "BLOCKED_FOR_THIS_HOST", "current_result": "2 skipped; 29 deselected",
+    "cause": "WinError 1314",
+    "vmware_scoped_result": "2 passed, 0 skipped on the identified reconstructed ZIP/patch scope"
+  },
+  "integrity": {"baseline": "PASS", "baseline_files": 3206, "evidence": "PASS", "evidence_manifests": 128},
+  "decision": "PASS_LOCAL / BLOCKED_REMOTE_RERUN; final evidence registration complete; push permitted; merge, tag, release and global approval remain blocked"
+}

@@ -88,10 +88,10 @@ versões e evidências indicados em `docs/evidence`.
 
 O estado vivo desta revisão é uma candidata técnica pré-merge com gates locais
 concluídos, não uma release. A árvore limpa foi derivada exatamente do commit
-`33abb5955f41f89f18f2a5fbe42d2ffc36274099`, na branch
+`42dcb63d032d9e973664850222241ae9e9666bb5`, na branch
 `fix/legacy-27-functional-regressions`:
 
-- runner Windows isolado: `189/189` arquivos, `1918` testes, `0` falhas,
+- runner Windows isolado: `189/189` arquivos, `1919` testes, `0` falhas,
   `0` erros e `2` skips condicionais; política de cobertura `PASS`;
 - cobertura: `23887/25798` linhas (92,59%) e `6664/7838` branches
   (85,02%);
@@ -100,18 +100,25 @@ concluídos, não uma release. A árvore limpa foi derivada exatamente do commit
 - runner histórico preservado: `196` testes, `26` falhas, retorno `1`;
   reconciliação formal com `11` assinaturas divergentes, `12` ausências e
   `42` substitutos aprovados, sem editar snapshots;
-- baseline Git-blob: `PASS` com `3202 files`; evidence integrity: `PASS` com
-  `127 manifests`;
+- o CI inicial da PR `#166` foi executado no run `33758279765`: o job Linux
+  falhou nos três testes do contrato formal por comparar o hash bruto CRLF do
+  artefato histórico com o checkout LF; o job Windows passou. A causa foi
+  corrigida no commit `78e47d7` e formatada em `42dcb63`; o rerun remoto ainda
+  depende do push desta correção;
+- baseline Git-blob: `PASS` com `3206 files`; evidence integrity: `PASS` com
+  `128 manifests`;
 - symlink no host atual: `2 skipped` por `WinError 1314`; a prova VMware
   registrada continua scoped ao ZIP/patch identificado e não ao SHA atual;
-- ZIP final: `124181835` bytes, SHA-256
-  `c51855fd60841048b7464d43034229789210dc36c96e060c64ccf7fe42271099`.
+- ZIP final: `124181836` bytes, SHA-256
+  `8deb27102ffec728e153c0595f2d66bc654e1b608a95ddac5c9a4ed6fd176c8a`.
 
 O relatório final está em
 `docs/evidence/ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md` e o resumo
 hashado em `docs/evidence/artifacts/windows-runner-effective-sha-2026-09-03/`.
-O CI remoto só será executado após o push técnico; merge, tag, release e
-aprovação global continuam bloqueados.
+O registro da falha remota e da correção está em
+`docs/evidence/ETAPA_7_CI_CORRECAO_HASH_CROSS_PLATFORM_2026-09-03.md`.
+O rerun remoto somente poderá ser avaliado após o push técnico; merge, tag,
+release e aprovação global continuam bloqueados.
 
 Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
 `docs/evidence`; o README não substitui os logs nem reclassifica testes não

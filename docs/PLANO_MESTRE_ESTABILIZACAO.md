@@ -4,6 +4,25 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
+## Atualização viva — correção cross-platform do CI — 03 de setembro de 2026
+
+A execução inicial da PR `#166` (`33758279765`) foi analisada antes de qualquer
+autorização de merge. O job Linux falhou em três testes do gate formal porque
+comparava o hash bruto CRLF registrado na decisão histórica com o arquivo LF do
+checkout; o job Windows passou por coincidir com CRLF. A falha é de
+portabilidade da validação, não do produto nem dos fixtures legados.
+
+A correção nos commits `78e47d7` e `42dcb63` preserva o campo bruto histórico,
+adiciona o digest canônico LF e compara o arquivo por normalização explícita.
+A suíte completa local passou com `1917 passed, 2 skipped`; cobertura foi
+`92,59%` de linhas e `85,02%` de branches; o runner Windows passou em
+`189/189` arquivos, `1919` testes, sem falhas. O pacote foi construído com
+`SUCCESS`, `11` smoke checks e `314` arquivos.
+
+Estado atual: `PASS_LOCAL / BLOCKED_REMOTE_RERUN`. Baseline/evidências estão em
+fechamento para o push técnico. O rerun remoto deve ser observado antes de
+qualquer decisão de merge; tag, release e aprovação global continuam bloqueados.
+
 ## Atualização viva — candidata Windows/legado de 03 de setembro de 2026
 
 A revisão candidata em `8e0ada3fcf1d08058240e5263732d14087b5335c`, na branch

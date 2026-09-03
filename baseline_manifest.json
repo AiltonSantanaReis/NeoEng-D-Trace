@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "f456faa8145e9345b2c7922c82a689e0af3bc6d16a1a8cb14ab2255e1b446320",
-      "size": 55392
+      "sha256": "7b4c67a01b0d569c29578342fe67bfcc678e42319ae4afbfe84aa8fe822d214f",
+      "size": 56262
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "091152a42fc6a2bac6ee416e4fae0e6e1a911c2abef0f4b359047e79007307b8",
-      "size": 12130
+      "sha256": "453a785fb97a9d23034fe25369dbf7e7c420efdbb1348cb886703061355ca90e",
+      "size": 12610
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -545,8 +545,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "2eb45e339edc4aa3ff44eaceacc3341b275426b2c85d2a9430381aa3e5370920",
-      "size": 23864
+      "sha256": "684ffb90d7d68435a7b1c3e88676e617d3fbe22f5bf61da0c5f28ce8b245068f",
+      "size": 25304
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -565,8 +565,8 @@
       "size": 4286
     },
     "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
-      "sha256": "b3e464b3cde5d32b308883f98b416065d1cc2dbb2fe26158d43059b41e4013be",
-      "size": 64261
+      "sha256": "a6c74610c7d48eac834f1b80c969fbc99b07416b693502625323cff2385ec39e",
+      "size": 65844
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -585,8 +585,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "aa27012f894ecfac890ed9a8d3ce076ad21e29388449f1138f9cd38599a55d62",
-      "size": 21167
+      "sha256": "3d5fa03100b01d3f7ccd689054a222763cd514e5facaeaccd098f80e136e1480",
+      "size": 22316
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1196,6 +1196,10 @@
       "sha256": "981cdf04e0db9f42108efd8a32350c26ba1339dd400218f7f32d8726df5fc43e",
       "size": 6409
     },
+    "docs/evidence/ETAPA_7_CI_CORRECAO_HASH_CROSS_PLATFORM_2026-09-03.md": {
+      "sha256": "a0ef0dd2c338126c3158df36ac399f92aac030b355eebc5397733e35defde644",
+      "size": 4335
+    },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
       "size": 5554
@@ -1401,8 +1405,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "7fbbd6b7e2f0fb7e612192d56b48976faffe1718eea99430b65f9051861a3159",
-      "size": 47191
+      "sha256": "6b759993e6b3d554410cfd07b755692456d4dc6ba0074e03fceb394d6d390630",
+      "size": 47554
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -1984,6 +1988,18 @@
       "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
       "size": 229
     },
+    "docs/evidence/artifacts/etapa7-cross-platform-formal-hash-2026-09-03/artifact-index.json": {
+      "sha256": "a5d22d0bdb29f858022b355a09829424d8e6328dccafe248e9e0ba25613ea3a8",
+      "size": 452
+    },
+    "docs/evidence/artifacts/etapa7-cross-platform-formal-hash-2026-09-03/final-execution-summary.json": {
+      "sha256": "8a8ec3e854cf3e2429431b649097c31dc119553cfb121861cbb74a2f2e00bb12",
+      "size": 4415
+    },
+    "docs/evidence/artifacts/etapa7-cross-platform-formal-hash-2026-09-03/remote-ci-initial-failure.json": {
+      "sha256": "00d5ff918b07bd52fe8544fac974c7fba05d9c2efa11ec2871011408a2748d16",
+      "size": 1573
+    },
     "docs/evidence/artifacts/export-pipeline-audit/animation/animation.json": {
       "sha256": "58400b75eb089ea8d88a36d674138c932ea33691b09d35c47ee655fe14643592",
       "size": 1641
@@ -2205,15 +2221,15 @@
       "size": 2069
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/case_decisions.json": {
-      "sha256": "90691f359bbf946c37106098e5f47ad530be23aea8743db9ce4ff77d6189a082",
-      "size": 36940
+      "sha256": "61374e9fc84811c1a17576b9d5a6afa1f84338d07369d6a7b6877411d17193b4",
+      "size": 37049
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/formal_reconciliation.json": {
       "sha256": "0999fc616e177601cf37813a7507034200abf874fc2a316248ed6081b3e7737b",
       "size": 4127
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/manifest.json": {
-      "sha256": "19414df4206f94ff04479e2c22de646aa781a69c4765ba04cc03a1ca8ca06f30",
+      "sha256": "416b95885b89ea7bbda7ad16d3eb75a8e3b77144c27f184e4cb2f3568e7abb27",
       "size": 1955
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/manifest_resolution.json": {
@@ -10797,7 +10813,7 @@
       "size": 2873
     },
     "quality/legacy_tests/current_contract.json": {
-      "sha256": "e633c8cba4c5f1abe5ea73052988436ba6b6405c9fabfb69915334e8163b6e95",
+      "sha256": "2f598a974cc713b8b0d06845e860826fc7ff89d514faabe3922467306cea44c9",
       "size": 10175
     },
     "quality/legacy_tests/manifest.json": {
@@ -12053,8 +12069,8 @@
       "size": 7427
     },
     "tests/test_formal_legacy_gate.py": {
-      "sha256": "461462aa2cb66f6d61ee1ff7d363c137b14e4eb42c6fbc644bf6149d23109ce2",
-      "size": 1965
+      "sha256": "8c4d022cd30fe18816cf39da6bb5a17574bb13a62fd056d170a3c54f3399bb43",
+      "size": 2259
     },
     "tests/test_formal_legacy_reconciliation.py": {
       "sha256": "c223091be47ec49fc58705b759d155f36c0615d7a62affb198c4a8f3ca0d8ad2",
@@ -12769,8 +12785,8 @@
       "size": 17523
     },
     "tools/run_formal_legacy_gate.py": {
-      "sha256": "258adb1bedbe6976818bd984a1bcf2ee32b1b781318e6b0ec565ace1f2b30f12",
-      "size": 25453
+      "sha256": "5bceb35eddf496a54cd2cd8546f3926436cb66a500478d7fba649eb67aed3cbd",
+      "size": 25449
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",
