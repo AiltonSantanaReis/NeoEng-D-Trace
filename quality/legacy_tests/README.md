@@ -40,3 +40,26 @@ Também é possível usar diretamente:
 ```
 
 Os relatórios são gravados por padrão em uma pasta temporária, fora do repositório.
+
+## Contrato atual e CI
+
+`reconciliation.json` continua sendo o snapshot histórico de assinatura exata.
+Ele não deve ser editado para fazer a execução atual passar. O contrato separado
+`current_contract.json` registra as 11 assinaturas atuais revisadas e a ausência
+histórica explícita do caso #10, preservando a distinção entre histórico e
+contrato vigente.
+
+Para executar o gate completo, que mantém o resultado bruto histórico visível e
+também executa os testes substitutos reais:
+
+```powershell
+.\.venv\Scripts\python.exe tools\run_formal_legacy_gate.py `
+  --group all `
+  --output C:\Temp\neoeng-formal-legacy
+```
+
+O runner histórico isolado pode retornar `1` quando uma assinatura mudou ou uma
+falha esperada não reapareceu. Isso é um resultado deliberadamente visível. O
+gate formal somente retorna `0` quando o resultado bruto corresponde exatamente
+às 15 assinaturas históricas coincidentes, às 11 assinaturas atuais e à ausência
+revisada, e os 42 testes substitutos passam sem erro ou skip.

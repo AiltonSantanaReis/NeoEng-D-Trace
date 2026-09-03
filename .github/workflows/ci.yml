@@ -219,8 +219,8 @@ jobs:
       - name: Run Stage 4B.5 quality audit
         run: poetry run python scripts/audit_stage4b5_quality.py --output "${{ runner.temp }}/stage4b5-quality"
 
-      - name: Run reconciled preserved legacy suite
-        run: poetry run python tools/run_legacy_tests.py --group all --output "${{ runner.temp }}/legacy-tests"
+      - name: Run preserved legacy and current-contract gate
+        run: poetry run python tools/run_formal_legacy_gate.py --group all --output "${{ runner.temp }}/legacy-tests"
         env:
           NEOENG_SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
@@ -236,8 +236,9 @@ jobs:
             coverage.xml
             ${{ runner.temp }}/environment-freeze.txt
             docs/evidence/**
+            quality/legacy_tests/current_contract.json
             quality/legacy_tests/reconciliation.json
-            ${{ runner.temp }}/legacy-tests/summary.json
+            ${{ runner.temp }}/legacy-tests/**
             ${{ runner.temp }}/native-crash-dumps/**
           if-no-files-found: error
           retention-days: 30

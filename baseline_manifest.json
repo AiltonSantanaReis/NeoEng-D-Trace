@@ -29,8 +29,8 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "35a08b350a26b3568a707a61847291b8bf8297005cfc78e119645c8b56439c16",
-      "size": 8947
+      "sha256": "c8dc12742244ff9eebb3227cc41586416c1fa73695655293c8ce9d56330d0b9f",
+      "size": 9007
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
@@ -10737,8 +10737,12 @@
       "size": 18
     },
     "quality/legacy_tests/README.md": {
-      "sha256": "964d4b46e45a0027e2d0e34074cac5b09c41b954ce2bd99f1391a455a63d4d23",
-      "size": 1669
+      "sha256": "9267c0f09c0ca9b84e1d1e45b2bef78035d62e57d7dc284adb730fc75aee0f04",
+      "size": 2694
+    },
+    "quality/legacy_tests/current_contract.json": {
+      "sha256": "98df82825b3462078cc33f313fa558393c281deed1f29bd34ca21fa61791a269",
+      "size": 9961
     },
     "quality/legacy_tests/manifest.json": {
       "sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
@@ -11992,6 +11996,10 @@
       "sha256": "81ab1631ed046c4d0e55d23c30ee0e70a44e1086b38c01b8a3baf74a33772b04",
       "size": 7427
     },
+    "tests/test_formal_legacy_gate.py": {
+      "sha256": "f716cff2e51b55e546ff6ad7f79ba07f2ac518630b9de65cb85d4c319102c1a6",
+      "size": 1905
+    },
     "tests/test_formal_legacy_reconciliation.py": {
       "sha256": "c223091be47ec49fc58705b759d155f36c0615d7a62affb198c4a8f3ca0d8ad2",
       "size": 1626
@@ -12699,6 +12707,10 @@
     "tools/package_windows_msi.py": {
       "sha256": "a73161412f339cb3740543cf2e13b9a8394170c0371a5f88768bde9b53aa6de0",
       "size": 17523
+    },
+    "tools/run_formal_legacy_gate.py": {
+      "sha256": "e96ad98a59ad559d3511ebee0499ab1e0d22acb50388a41d2af4f71be722622f",
+      "size": 24361
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",
