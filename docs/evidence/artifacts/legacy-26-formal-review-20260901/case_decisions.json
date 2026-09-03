@@ -6,6 +6,7 @@
   "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
   "historical_manifest_sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
   "historical_reconciliation_sha256": "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493",
+  "historical_reconciliation_sha256_lf": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587",
   "raw_summary_sha256": "75b9724a8c1782a8f0b8dd53c88f8bb4f2b51a2aa83156eb8e99aa1545744c5",
   "status": "BLOCKED",
   "accepted": false,

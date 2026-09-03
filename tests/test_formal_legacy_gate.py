@@ -6,12 +6,21 @@ from pathlib import Path
 import pytest
 
 from tools.run_formal_legacy_gate import (
+    _canonical_sha256,
     load_current_contract,
     validate_current_contract,
 )
 from tools.run_legacy_tests import load_reconciliation
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_canonical_hash_is_independent_of_text_line_endings(tmp_path):
+    crlf = tmp_path / "crlf.json"
+    lf = tmp_path / "lf.json"
+    crlf.write_bytes(b"one\r\ntwo\r\n")
+    lf.write_bytes(b"one\ntwo\n")
+    assert _canonical_sha256(crlf) == _canonical_sha256(lf)
 
 
 def test_current_contract_resolves_all_legacy_cases_without_rewriting_history():

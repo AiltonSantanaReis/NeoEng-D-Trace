@@ -127,10 +127,12 @@ def validate_current_contract(
     ):
         raise ValueError("Formal decisions source manifest hash does not match")
     if (
-        formal_decisions.get("historical_reconciliation_sha256")
-        != hashlib.sha256(reconciliation_path.read_bytes()).hexdigest()
+        formal_decisions.get("historical_reconciliation_sha256_lf")
+        != _canonical_sha256(reconciliation_path)
     ):
-        raise ValueError("Formal decisions source reconciliation hash does not match")
+        raise ValueError(
+            "Formal decisions source reconciliation LF hash does not match"
+        )
     formal_cases = formal_decisions.get("cases")
     if not isinstance(formal_cases, list):
         raise ValueError("Formal decisions source cases must be a list")
