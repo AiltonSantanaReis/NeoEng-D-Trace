@@ -12709,8 +12709,8 @@
       "size": 17523
     },
     "tools/run_formal_legacy_gate.py": {
-      "sha256": "e96ad98a59ad559d3511ebee0499ab1e0d22acb50388a41d2af4f71be722622f",
-      "size": 24361
+      "sha256": "814c70c8018398a03040d75a5ca1a805d8c4b925909198a269f6975cbc214f45",
+      "size": 24329
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",

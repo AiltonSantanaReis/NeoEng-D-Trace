@@ -116,9 +116,8 @@ def validate_current_contract(
         raise ValueError(
             "Formal decisions source legacy commit does not match manifest"
         )
-    if (
-        formal_decisions.get("historical_manifest_sha256")
-        != hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    if formal_decisions.get("historical_manifest_sha256") != _canonical_sha256(
+        manifest_path
     ):
         raise ValueError("Formal decisions source manifest hash does not match")
     if (
