@@ -23,7 +23,8 @@ def test_current_contract_resolves_all_legacy_cases_without_rewriting_history():
     assert len(expectations) == 27
     assert len(result["exact_ids"]) == 15
     assert len(result["observations"]) == 12
-    assert len(result["substitute_references"]) == 17
+    assert len(result["formal_substitute_references"]) == 27
+    assert len(result["substitute_references"]) == 4
     assert contract["historical_snapshots"]["manifest"]["path"] == (
         "quality/legacy_tests/manifest.json"
     )

@@ -61,5 +61,7 @@ também executa os testes substitutos reais:
 O runner histórico isolado pode retornar `1` quando uma assinatura mudou ou uma
 falha esperada não reapareceu. Isso é um resultado deliberadamente visível. O
 gate formal somente retorna `0` quando o resultado bruto corresponde exatamente
-às 15 assinaturas históricas coincidentes, às 11 assinaturas atuais e à ausência
-revisada, e os 42 testes substitutos passam sem erro ou skip.
+às 15 assinaturas históricas coincidentes, às 11 assinaturas atuais e às 12
+ausências da reconciliação, e os 42 contratos nativos das Fases 1–4 passam sem
+erro ou skip. As 27 decisões formais continuam sendo a fonte das referências de
+substituição; a Fase 1 é executada como base nativa comum da suíte aprovada.

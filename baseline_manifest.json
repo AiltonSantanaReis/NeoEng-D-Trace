@@ -10737,12 +10737,12 @@
       "size": 18
     },
     "quality/legacy_tests/README.md": {
-      "sha256": "9267c0f09c0ca9b84e1d1e45b2bef78035d62e57d7dc284adb730fc75aee0f04",
-      "size": 2694
+      "sha256": "429797d59e2e55cf7f0500314d97bf7630722d0317e1a40069cf0eb71fb2a70c",
+      "size": 2873
     },
     "quality/legacy_tests/current_contract.json": {
-      "sha256": "98df82825b3462078cc33f313fa558393c281deed1f29bd34ca21fa61791a269",
-      "size": 9961
+      "sha256": "e633c8cba4c5f1abe5ea73052988436ba6b6405c9fabfb69915334e8163b6e95",
+      "size": 10175
     },
     "quality/legacy_tests/manifest.json": {
       "sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
@@ -11997,8 +11997,8 @@
       "size": 7427
     },
     "tests/test_formal_legacy_gate.py": {
-      "sha256": "f716cff2e51b55e546ff6ad7f79ba07f2ac518630b9de65cb85d4c319102c1a6",
-      "size": 1905
+      "sha256": "461462aa2cb66f6d61ee1ff7d363c137b14e4eb42c6fbc644bf6149d23109ce2",
+      "size": 1965
     },
     "tests/test_formal_legacy_reconciliation.py": {
       "sha256": "c223091be47ec49fc58705b759d155f36c0615d7a62affb198c4a8f3ca0d8ad2",
@@ -12709,8 +12709,8 @@
       "size": 17523
     },
     "tools/run_formal_legacy_gate.py": {
-      "sha256": "814c70c8018398a03040d75a5ca1a805d8c4b925909198a269f6975cbc214f45",
-      "size": 24329
+      "sha256": "258adb1bedbe6976818bd984a1bcf2ee32b1b781318e6b0ec565ace1f2b30f12",
+      "size": 25453
     },
     "tools/run_legacy_tests.ps1": {
       "sha256": "e2e5f7dfc415e46ea4d78931b084a2ee06eaa07ea3ce24be41e1347c33292aa0",

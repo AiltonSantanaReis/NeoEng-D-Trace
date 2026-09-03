@@ -185,6 +185,12 @@
     }
   ],
   "substitute_suite": {
+    "test_files": [
+      "tests/test_legacy_phase1_contracts.py",
+      "tests/test_legacy_phase2_contracts.py",
+      "tests/test_legacy_phase3_contracts.py",
+      "tests/test_legacy_phase4_contracts.py"
+    ],
     "expected_tests": 42,
     "expected_failures": 0,
     "expected_errors": 0,

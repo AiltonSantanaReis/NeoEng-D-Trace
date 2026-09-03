@@ -29,6 +29,12 @@ from tools.run_legacy_tests import (
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT_CONTRACT_RELATIVE = Path("quality/legacy_tests/current_contract.json")
+NATIVE_CONTRACT_FILES = (
+    "tests/test_legacy_phase1_contracts.py",
+    "tests/test_legacy_phase2_contracts.py",
+    "tests/test_legacy_phase3_contracts.py",
+    "tests/test_legacy_phase4_contracts.py",
+)
 
 
 def write_json_lf(path: Path, value: Any) -> None:
@@ -140,6 +146,21 @@ def validate_current_contract(
         raise ValueError(
             "Formal decisions source does not cover exactly the historical cases"
         )
+    formal_substitute_references = sorted(
+        {
+            reference
+            for formal_case in formal_cases
+            for reference in formal_case.get("substitute_tests", [])
+        }
+    )
+    if not formal_substitute_references:
+        raise ValueError("Formal decisions source has no substitute tests")
+    native_files = {
+        Path(reference.split("::", 1)[0]).as_posix()
+        for reference in formal_substitute_references
+    }
+    if not native_files.issubset(set(NATIVE_CONTRACT_FILES)):
+        raise ValueError("Formal substitute test points outside native contract suite")
 
     observations = contract.get("current_observations")
     if not isinstance(observations, list):
@@ -233,6 +254,10 @@ def validate_current_contract(
     ):
         if not isinstance(substitute_suite.get(key), int):
             raise ValueError(f"Substitute suite contract field is invalid: {key}")
+    if substitute_suite.get("test_files") != list(NATIVE_CONTRACT_FILES):
+        raise ValueError(
+            "Substitute suite files do not match the reviewed native suite"
+        )
 
     return {
         "historical_manifest": manifest_path,
@@ -241,13 +266,8 @@ def validate_current_contract(
         "expectations": expectations,
         "observations": observation_map,
         "exact_ids": exact_ids,
-        "substitute_references": sorted(
-            {
-                reference
-                for expectation in expectations.values()
-                for reference in expectation["replacement_tests"]
-            }
-        ),
+        "formal_substitute_references": formal_substitute_references,
+        "substitute_references": list(NATIVE_CONTRACT_FILES),
     }
 
 
@@ -561,7 +581,12 @@ def main(argv: list[str] | None = None) -> int:
                 item["classification"] == "unexpected_signature"
                 for item in validated["observations"].values()
             ),
-            "missing_expected_failures": sum(
+            "historical_missing_expected_failures": len(
+                historical_summary.get("reconciliation", {}).get(
+                    "missing_expected_failures", []
+                )
+            ),
+            "current_missing_observations": sum(
                 item["classification"] == "missing_expected_failure"
                 for item in validated["observations"].values()
             ),
@@ -577,7 +602,7 @@ def main(argv: list[str] | None = None) -> int:
         f"historical_returncode={historical_returncode}; "
         f"exact={report['case_resolution']['historical_exact']}; "
         f"changed={report['case_resolution']['unexpected_signatures']}; "
-        f"missing={report['case_resolution']['missing_expected_failures']}; "
+        f"missing={report['case_resolution']['historical_missing_expected_failures']}; "
         f"substitutes={substitutes['tests']} tests"
     )
     if errors:
