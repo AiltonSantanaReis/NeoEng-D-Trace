@@ -301,6 +301,48 @@ técnico comprovado, não uma release. CI remoto não foi executado; merge, tag,
 release e declaração de aprovação permanecem proibidos. A evidência detalhada
 está em `docs/evidence/ETAPA_7_CANDIDATA_GATES_2026-09-03.md`.
 
+### 0.11 Atualização de 03/09/2026 — runner Windows isolado e gates da candidata
+
+Antes desta atualização foram consultados `docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`,
+`docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md`, `docs/POLITICA_NAO_REGRESSAO.md`,
+`docs/evidence/README.md`, este plano, a ADR do runner e os snapshots
+`quality/legacy_tests/`. A regra aplicada mantém falhas históricas e snapshots
+imutáveis, exige evidência rastreável e permite somente o checkpoint técnico
+reversível previsto na seção 10.1; não autoriza merge, tag ou release.
+
+- A candidata limpa foi derivada e testada no commit
+  `8e0ada3fcf1d08058240e5263732d14087b5335c`, na branch
+  `fix/legacy-27-functional-regressions`. Nenhum arquivo não relacionado do
+  usuário foi rastreado.
+- O runner/CI Windows foi definido formalmente pela
+  `docs/ADR_WINDOWS_COVERAGE_SHARD_RUNNER_2026-09-03.md`: cada arquivo
+  top-level `tests/test_*.py` roda em subprocesso separado, sem filtros, com
+  cobertura acumulada, JUnit por shard, timeout e falha fechada. Duas
+  execuções reproduzíveis aceitaram `189/189` arquivos, `1918` testes, `0`
+  falhas, `0` erros e `2` skips condicionais.
+- A reconciliação formal preservou o runner histórico bruto (`196` testes,
+  `26` falhas, retorno `1`) e o contrato atual classificou explicitamente as
+  `11` assinaturas divergentes e as `12` ausências; os `42` contratos
+  substitutos passaram sem falhas, erros ou skips. Os snapshots
+  `quality/legacy_tests/manifest.json` e `reconciliation.json` não foram
+  editados.
+- Cobertura acumulada foi `92,59%` de linhas e `85,02%` de branches; compile,
+  Flake8, Black, isort, mypy, Bandit, pip-audit, Stage 4B.5 e empacotamento
+  passaram na candidata. O teste de symlink deste checkout permaneceu
+  condicionado a `WinError 1314`; a prova VMware anterior continua limitada
+  ao ZIP/patch que identifica e não é promovida a prova do SHA atual.
+- A primeira verificação Git-blob do baseline encontrou o hash antigo do ADR
+  após um ajuste de whitespace. Esse achado foi mantido explícito e exige
+  regeneração e verificação do baseline somente a partir do staged final. A
+  integridade de evidências passou com `124` manifests.
+
+Decisão corrente: `PARCIAL / BLOQUEADA`. A mitigação do abort Qt e a
+reconciliação formal estão comprovadas, mas a etapa ainda exige baseline final,
+revisão do pacote e CI remoto no SHA publicado. O próximo avanço permitido é
+um commit/push técnico de candidata conforme a seção 10.1, sem equivaler a
+integração. Merge, tag, release e qualquer declaração `APROVADO`, `CONCLUÍDO`,
+`INTEGRADO` ou `PRONTO` permanecem proibidos.
+
 ## 1. Regra de governança antes de qualquer decisão
 
 Antes de decidir sobre código, fixture, teste, harness, reconciliação,

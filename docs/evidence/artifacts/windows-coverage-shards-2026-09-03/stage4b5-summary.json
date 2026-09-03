@@ -1,0 +1,27 @@
+{
+  "schema": "neoeng.evidence.stage4b5-summary.v1",
+  "source_commit": "8e0ada3fcf1d08058240e5263732d14087b5335c",
+  "status": "PASS",
+  "environment": {"platform": "Windows", "python": "3.11.9"},
+  "input_hashes": {
+    "scenario_input_ndtproj": {"bytes": 30, "sha256": "6b112cd645d9b382303cebd7c78a8408137ed6aba9e033db4e2ac273a05159db"},
+    "scenario_input_ndtscenario_json": {"bytes": 733, "sha256": "c4fb3456d8ca49baf4dc1c456b9413bef9945f56cbb53ef136ca9e572888d7fe"}
+  },
+  "determinism": {
+    "runtime_export": true,
+    "preview_projection": true,
+    "overlay_geometry": true,
+    "input_unchanged": true,
+    "runtime_hash": "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+    "runtime_bytes": 867
+  },
+  "benchmark": {
+    "runtime_export_serialization": {"operations": 500, "elapsed_seconds": 0.059531, "within_limit": true},
+    "preview_projection": {"operations": 10000, "elapsed_seconds": 0.690962, "within_limit": true},
+    "overlay_geometry": {"operations": 10000, "elapsed_seconds": 0.025589, "within_limit": true}
+  },
+  "limitations": [
+    "No historical timing baseline existed before Stage 4B.5.",
+    "The audit measures editor-side pure preview/export contracts, not engine runtime or FPS."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "neoeng.evidence.windows-coverage-shards.v1",
+  "source_commit": "8e0ada3fcf1d08058240e5263732d14087b5335c",
+  "environment": {
+    "platform": "win32",
+    "python": "3.11.9",
+    "poetry": "2.4.1",
+    "pytest": "9.1.1",
+    "pytest_cov": "7.1.0",
+    "qt_qpa_platform": "offscreen"
+  },
+  "commands": [
+    "poetry check --lock --strict",
+    "poetry sync --no-interaction --no-ansi",
+    "poetry run python tools/run_windows_coverage_shards.py --output <runner-temp>",
+    "poetry run python tools/check_coverage_policy.py <runner-temp>/coverage.xml"
+  ],
+  "runner_policy": {
+    "official_glob": "tests/test_*.py",
+    "subprocess_per_file": true,
+    "selection_filters": [],
+    "coverage_flags": ["--cov=src", "--cov-branch", "--cov-append"],
+    "threshold": "90% lines; 85% branches",
+    "final_report": "coverage.xml",
+    "fail_closed_on_error_timeout_abort_or_missing_junit": true
+  },
+  "runs": [
+    {
+      "id": "r1",
+      "status": "ACCEPTED",
+      "files": 189,
+      "tests": 1918,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "summary_bytes": 152988,
+      "summary_sha256": "1eacd7b5cd66a92207c04b0bdd2eeeb0a455d9e4b2cf3ef59c94e031c54831a8",
+      "coverage_xml_bytes": 1184099,
+      "coverage_xml_sha256": "7ccb25e9572e971d61860dd0176968037bbc3f3bf10be3e38763f73d603004bb"
+    },
+    {
+      "id": "r2",
+      "status": "ACCEPTED",
+      "files": 189,
+      "tests": 1918,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "summary_bytes": 152988,
+      "summary_sha256": "e94652c0c0090235290c21271e661081318aec26530394ff62a09755a5035f0a",
+      "coverage_xml_bytes": 1184099,
+      "coverage_xml_sha256": "7bf2eb4ec35aed965bb675c4b87b3cffca3e50eeb852855f8e809c759c31c76a"
+    }
+  ],
+  "coverage": {
+    "lines": {"covered": 23887, "valid": 25798, "percent": 92.59},
+    "branches": {"covered": 6664, "valid": 7838, "percent": 85.02},
+    "policy": "PASS"
+  },
+  "interpretation": "The single-process Windows/Qt abort was not reproduced when each official test file received a fresh process. Both complete repetitions passed."
+}

@@ -1,0 +1,15 @@
+source_commit=8e0ada3fcf1d08058240e5263732d14087b5335c
+environment=Windows host win32; current process did not have symlink privilege
+python=3.11.9
+poetry=2.4.1
+pytest=9.1.1
+command=poetry run pytest "tests\test_integration_sync.py" -k symlink -q -rs
+collected=31
+selected=2
+deselected=29
+exit_code=0
+result=2 skipped, 29 deselected in 0.26s
+skip_reason=WinError 1314; symlink creation unavailable in this checkout
+status=BLOCKED_FOR_THIS_HOST
+prior_vmware_evidence=docs/evidence/ETAPA_7_SYMLINK_VMWARE_2026-09-02.md
+prior_vmware_result=2 passed, 0 skipped with Developer Mode flag 1; scoped to ZIP/patch transport hashes recorded there

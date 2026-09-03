@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-03 — candidata técnica do runner Windows
+
+- registra a decisão de engenharia do runner Windows por shards isolados em
+  subprocessos, com cobertura acumulada, JUnit, timeout e falha fechada;
+- registra duas execuções locais aceitas (`189/189` arquivos, `1918` testes,
+  `0` falhas, `0` erros e `2` skips condicionais);
+- formaliza a reconciliação das `11` assinaturas divergentes e `12` ausências,
+  preservando o runner histórico e os snapshots legados;
+- mantém symlink, baseline final e CI remoto como limitações/pendências
+  explícitas da candidata;
+- esta entrada não declara merge, release ou aprovação.
+
 ## 2026-08-30 — fechamento formal P2D-03C
 
 - registra o aceite final explícito `P2D-03C ACEITO — entrega final`;

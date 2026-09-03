@@ -86,15 +86,29 @@ versões e evidências indicados em `docs/evidence`.
 
 ## Validação do estado atual
 
-Os gates executados no checkout atual comprovaram:
+O estado vivo desta revisão é uma candidata técnica pré-merge, não uma release.
+Os gates locais foram executados em árvore limpa derivada do commit
+`8e0ada3fcf1d08058240e5263732d14087b5335c`, na branch
+`fix/legacy-27-functional-regressions`:
 
-- `1326 passed, 2 skipped` na suíte Python; os skips são condicionais e explícitos;
-- cobertura total de linhas acima de 90% e branches acima de 85%, com a política
-  oficial aprovada;
-- Flake8, Black, isort, mypy e Bandit aprovados;
-- baseline e manifestos de evidência íntegros contra os bytes Git;
-- auditoria visual reproduzível aprovada nas resoluções previstas, sem achados;
-- worktree limpo e sincronizado com `origin/main` antes da preparação da release.
+- o runner Windows isolado passou duas vezes, sem filtros, em `189/189` arquivos,
+  com `1918` testes, `0` falhas, `0` erros e `2` skips condicionais;
+- a cobertura acumulada foi `92,59%` de linhas e `85,02%` de branches;
+- compileall, Flake8, Black, isort, mypy, Bandit, pip-audit, Stage 4B.5 e o
+  empacotamento portátil passaram; o pacote teve `11` smoke checks e `314`
+  arquivos;
+- o runner histórico continua preservado com `196` testes, `26` falhas e
+  retorno `1`; a reconciliação formal registra as `11` assinaturas divergentes
+  e as `12` ausências sem editar snapshots, além de `42` substitutos aprovados;
+- o teste de symlink no host atual permanece bloqueado por `WinError 1314`; a
+  prova VMware registrada é scoped ao ZIP/patch identificado e não ao SHA
+  atual;
+- a primeira conferência do baseline encontrou um hash desatualizado do ADR e
+  ainda exige regeneração/verificação a partir do staged final. A integridade
+  de evidências passou com `124` manifests e o CI remoto ainda está pendente.
+
+Enquanto baseline final e CI do SHA publicado não forem comprovados, não há
+autorização para merge, tag, release ou declaração de aprovação.
 
 Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
 `docs/evidence`; o README não substitui os logs nem reclassifica testes não

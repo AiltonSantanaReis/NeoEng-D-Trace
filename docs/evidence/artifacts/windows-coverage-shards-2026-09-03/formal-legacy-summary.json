@@ -1,0 +1,61 @@
+{
+  "schema": "neoeng.evidence.formal-legacy-summary.v1",
+  "source_commit": "8e0ada3fcf1d08058240e5263732d14087b5335c",
+  "formal_gate": {
+    "status": "ACCEPTED",
+    "report_bytes": 11028,
+    "report_sha256": "0c298e4957eed1bc0b1b322753bc55deea921e15583c0f1cd4ffd7b7e1ecaa1b",
+    "historical_summary_bytes": 42523,
+    "historical_summary_sha256": "7d08667b3d2c043c82374eb61b29652e33a7c5543462e12ad4550403fc51a061",
+    "substitutes_junit_bytes": 6515,
+    "substitutes_junit_sha256": "a14dc63175e3a1b8c1514a0e33d380992ba8aa7f17902a28e086f5c8eb1f6a6e"
+  },
+  "historical_runner_raw": {
+    "selected_files": 24,
+    "tests": 196,
+    "failures": 26,
+    "errors": 0,
+    "skipped": 0,
+    "returncode": 1,
+    "exact_matches": 15,
+    "accepted": false
+  },
+  "formal_reconciliation": {
+    "resolved_cases": 27,
+    "divergent_signatures": 11,
+    "historical_missing_expected_failures": 12,
+    "current_missing_observations": 1,
+    "substitute_tests": 42,
+    "substitute_failures": 0,
+    "substitute_errors": 0,
+    "substitute_skipped": 0
+  },
+  "divergent_signature_ids": [
+    "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection",
+    "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid",
+    "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit",
+    "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices",
+    "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection",
+    "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection",
+    "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands",
+    "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands",
+    "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands",
+    "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands",
+    "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo"
+  ],
+  "historical_snapshots": {
+    "quality/legacy_tests/manifest.json": {
+      "canonical_lf_bytes": 21489,
+      "canonical_lf_sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
+      "raw_bytes": 22123,
+      "raw_sha256": "5163ff4d27ddd2f080c577ea7ebaa0fca0a96dec17e28f25f3646ed83ba6eb96"
+    },
+    "quality/legacy_tests/reconciliation.json": {
+      "canonical_lf_bytes": 19901,
+      "canonical_lf_sha256": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587",
+      "raw_bytes": 20210,
+      "raw_sha256": "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493"
+    }
+  },
+  "decision": "Historical snapshots and the raw runner remain failed by design; the current reviewed contract is accepted without rewriting them."
+}

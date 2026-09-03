@@ -1,4 +1,12 @@
 - `ETAPA_7_CANDIDATA_GATES_2026-09-03.md` — validação da árvore limpa no SHA `d6e02cd`, suíte `1909 passed, 2 skipped`, cobertura `90.82%`, integridade de `124` manifests e build portátil com smoke `SUCCESS`; runner legado permanece bloqueado e CI remoto não foi executado.
+- `ETAPA_7_WINDOWS_RUNNER_CANDIDATA_2026-09-03.md` — candidata técnica no
+  SHA `8e0ada3`; runner Windows isolado aceito em duas execuções, reconciliação
+  formal das 11 assinaturas divergentes e 12 ausências, snapshots preservados,
+  gates locais e empacotamento registrados. O estado permanece
+  `PARCIAL/BLOCKED`; baseline final e CI remoto ainda são necessários. O pacote
+  hashado está em `artifacts/windows-coverage-shards-2026-09-03/`, com índice
+  `artifact-index.json`.
+
 
 - `ETAPA_7_SYMLINK_VMWARE_2026-09-02.md` — prova autorizada de criação real de symlinks e dos dois contratos de rejeição no Windows 11/VMware; `2 passed`, `0 skipped`; CI/empacotamento permanecem pendentes.
 

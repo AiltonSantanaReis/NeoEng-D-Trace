@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "format_id": "neoeng-d-trace-windows-runner-candidate-artifacts",
+  "artifacts": [
+    {
+      "path": "formal-legacy-summary.json",
+      "bytes": 3037,
+      "sha256": "4369ce359720043b24da39228941e383abaa2bda6934a019fc72d5dda1937478"
+    },
+    {
+      "path": "package-summary.json",
+      "bytes": 679,
+      "sha256": "6d36d7d2f1243c72b92932281ae8c4acddf91a9fd5c832994f386c269cf8ff8b"
+    },
+    {
+      "path": "runner-summary.json",
+      "bytes": 2108,
+      "sha256": "ff51b6dd38cf6d4fda0d2c076994128c3a2f5907200f42f1d2b367c250f9b13d"
+    },
+    {
+      "path": "stage4b5-summary.json",
+      "bytes": 1245,
+      "sha256": "5abd3745e095f3b5564cc95f50805ab76fee049ff085c605ab71d25ab08bd903"
+    },
+    {
+      "path": "symlink-current-check.log",
+      "bytes": 637,
+      "sha256": "15ff4afc45a78de139fe7415a66bc14ce612e427a7115669305c12c55c4873ee"
+    }
+  ]
+}

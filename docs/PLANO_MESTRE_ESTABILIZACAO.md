@@ -4,6 +4,27 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
+## Atualização viva — candidata Windows/legado de 03 de setembro de 2026
+
+A revisão candidata em `8e0ada3fcf1d08058240e5263732d14087b5335c`, na branch
+`fix/legacy-27-functional-regressions`, definiu o comportamento operacional do
+runner Windows/Qt por subprocessos isolados por arquivo de teste. O runner
+versionado passou duas vezes com `189/189` arquivos, `1918` testes, `0` falhas,
+`0` erros e `2` skips condicionais, com cobertura acumulada de `92,59%` de
+linhas e `85,02%` de branches.
+
+A reconciliação formal mantém o runner histórico em `196` testes, `26` falhas e
+retorno `1`, classifica as `11` assinaturas divergentes e as `12` ausências, e
+preserva os snapshots legados sem edição. Os `42` contratos substitutos
+passaram. Compile, estática, segurança, Stage 4B.5 e empacotamento local
+passaram; o symlink no host atual continua condicionado a `WinError 1314`,
+enquanto a prova VMware permanece scoped à reconstrução ZIP/patch registrada.
+
+O estado é `PARCIAL / BLOQUEADO`: a primeira conferência do baseline ainda exige
+regeneração a partir do staged final, e o CI remoto do SHA candidato ainda não
+foi executado. Merge, tag, release e qualquer declaração de aprovação continuam
+proibidos até os gates correspondentes serem comprovados na mesma revisão.
+
 ## Estado operacional de referência — 18 de agosto de 2026
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
