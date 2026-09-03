@@ -25,7 +25,20 @@
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
-### Verificação pós-merge — PR #166 — 03/09/2026
+### Verificação viva — encerramento final do plano LEGACY-26 — 03/09/2026
+
+No merge `bcaf5b079881800899d121b071108fe404fa48da` da PR `#167`, o CI
+pós-merge `33800311976` passou nos jobs Linux `100797952263` e Windows
+`100797952611`. O Windows aceitou `189/189` arquivos e `1919` testes, sem
+falhas, erros ou skips. B-04 está resolvido no escopo comprovado; a auditoria
+dos critérios da seção 9 está registrada em
+`docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md`, com C01–C13
+como `PASS` após a revisão humana C12. O plano global está
+`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`; a prova VMware permanece
+`PASS_SCOPED` e o empacotamento portátil mantém a limitação ancestral
+documentada. Tag e release continuam sem aprovação.
+
+### Verificação histórica pós-merge — PR #166 — 03/09/2026
 
 A PR `#166` foi integrada no merge commit
 `8a97ae14e8f84eb86fcacfaefed61f014830fbf9`. O CI pós-merge `33794660766`

@@ -1,0 +1,37 @@
+{
+  "schema": "neoeng.evidence-artifact-index",
+  "package": "legacy-26-closure-final-2026-09-03",
+  "status": "PASS",
+  "audited_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+  "run": 33800311976,
+  "files": [
+    {
+      "path": "human-review-c12.json",
+      "bytes": 868,
+      "sha256": "713cbe0f21bcd60433370b89160a4b259446cb61eba329678c05eb485b7017bf"
+    },
+    {
+      "path": "final-audit-summary.json",
+      "bytes": 887,
+      "sha256": "080bb1668a7344be06fec862526904f000f5438f5690516bad22209629eb9934"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "<github-artifact>/validation-linux-python-3.11",
+      "id": 9910870622,
+      "digest": "sha256:b84cda3d9bf55ec42276d63a057587cc860474e12e7f7ca871099af950515c68"
+    },
+    {
+      "path": "<github-artifact>/validation-windows-python-3.11",
+      "id": 9911162210,
+      "digest": "sha256:37cb1f01c71bb8f4d7fe952b2443c583c7af9bfb145f151a30210fe61e8a5d4b3"
+    }
+  ],
+  "index_excludes_itself": true,
+  "limitations": [
+    "o run 33800311976 não executou novamente o script de empacotamento",
+    "o build portátil referenciado é ancestral e permanece explicitamente limitado",
+    "C13 e os gates finais foram revalidados e registrados neste pacote"
+  ]
+}

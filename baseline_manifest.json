@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "2aed4aa9de768b7f75c62bd834bbab8b24ce3e465bd0db625e4a48705ea45477",
-      "size": 58158
+      "sha256": "96baaad7615692df6e115aad981096044ed6d0d5bc2b0ebc43d52e69bb94d21d",
+      "size": 59339
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "b16ce30afea0cab713bc657f8e589aaf081657ca239da36ca24a623df8b1143b",
-      "size": 13698
+      "sha256": "9280c5c4042b83c1ab3ff103b81b97a2d9fe33b95e3acb79ad81fd3c570f8c9c",
+      "size": 14675
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -545,8 +545,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "2aa65a21ad7851a721602aa3545a24ba487a5dae8911f6e89be578e11d3e1868",
-      "size": 28612
+      "sha256": "398c76808d86c4f9755b27375eb8bf511d1010bbdb2b3ade6dadc032b8de0a69",
+      "size": 29388
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -565,8 +565,8 @@
       "size": 4286
     },
     "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
-      "sha256": "402d9f6c21bb85e85f8fa220e1017d6e7abf6e6940f5c18694bf8baebf816186",
-      "size": 72271
+      "sha256": "a3df98bc8a3ad058148a4440287ae5aa50069ff5978115ca8040d2e975c50cad",
+      "size": 77023
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -585,8 +585,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "fa7cc0c76210679227195fc712def777696ed467b637d778eeb0446876b15630",
-      "size": 26138
+      "sha256": "3d882310a56603857ff3de4338966b7a4786d9816fe9f530a6f2f29266394aa2",
+      "size": 26958
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1192,6 +1192,14 @@
       "sha256": "285672b98e6926c2134bfe7f0358538c9f4ce28e680cd1f6ba84eac3007fa6cb",
       "size": 3870
     },
+    "docs/evidence/ETAPA_7_AUDITORIA_ENCERRAMENTO_PLANO_26_2026-09-03.md": {
+      "sha256": "9632fb49adbcdc234eb6b62692ed6d65fa937872d4dee61812b180f559cb9fe6",
+      "size": 8681
+    },
+    "docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md": {
+      "sha256": "d15ed2f0ad56f1d19600edf46ed229220e9d274b15c2b06726c958dfe77ca23e",
+      "size": 4870
+    },
     "docs/evidence/ETAPA_7_CANDIDATA_GATES_2026-09-03.md": {
       "sha256": "981cdf04e0db9f42108efd8a32350c26ba1339dd400218f7f32d8726df5fc43e",
       "size": 6409
@@ -1235,6 +1243,10 @@
     "docs/evidence/ETAPA_7_PAINEIS_LATERAIS_ENCERRAMENTO_POS_MERGE_2026-08-23.md": {
       "sha256": "739df0379e871f79cbf8f88bcdcdb51dfaaaf569f547454a8da7acb6a635e9e6",
       "size": 1635
+    },
+    "docs/evidence/ETAPA_7_REVISAO_HUMANA_C12_2026-09-03.md": {
+      "sha256": "327685d09ee89bd886c2803e1561c0d848b83ecc5e48d08ccfcd8df33457d400",
+      "size": 2099
     },
     "docs/evidence/ETAPA_7_REVISAO_VISUAL_HUMANA_2026-08-23.md": {
       "sha256": "3fead50fb56480e0c84d1dfd5f16c05c2dc1be566040913b6746eaca74b560b7",
@@ -1417,8 +1429,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "74d88be977e1993fefc6928c95fc5c510df13580ac63cdef98f53e6ca2d52d7a",
-      "size": 48830
+      "sha256": "e2217c011923b5d7d28671326934af10c2486d844a236f97fd84ddda0ee945b9",
+      "size": 49828
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -2259,6 +2271,26 @@
     "docs/evidence/artifacts/integration-manifest/unity.integration.json": {
       "sha256": "723a360b115814751afb4c60bcdfef2fbd7d53a30fba0e1f5a3f8474d3f842f8",
       "size": 2069
+    },
+    "docs/evidence/artifacts/legacy-26-closure-audit-2026-09-03/artifact-index.json": {
+      "sha256": "737f5fd03505ca83dc972f93cef51b8ffd1bc223c4922b927e90657f9bd1c583",
+      "size": 1785
+    },
+    "docs/evidence/artifacts/legacy-26-closure-audit-2026-09-03/current-ci-33800311976.json": {
+      "sha256": "98c94bc927f7cf6de30184652a98845c668cd9b426f4f7faaca365f3a19bdf72",
+      "size": 3491
+    },
+    "docs/evidence/artifacts/legacy-26-closure-final-2026-09-03/artifact-index.json": {
+      "sha256": "2c127db598aa9e47de6c7a87cbb19b39875c7437d64e805b07eb856eec8c0549",
+      "size": 1243
+    },
+    "docs/evidence/artifacts/legacy-26-closure-final-2026-09-03/final-audit-summary.json": {
+      "sha256": "080bb1668a7344be06fec862526904f000f5438f5690516bad22209629eb9934",
+      "size": 887
+    },
+    "docs/evidence/artifacts/legacy-26-closure-final-2026-09-03/human-review-c12.json": {
+      "sha256": "713cbe0f21bcd60433370b89160a4b259446cb61eba329678c05eb485b7017bf",
+      "size": 868
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/case_decisions.json": {
       "sha256": "61374e9fc84811c1a17576b9d5a6afa1f84338d07369d6a7b6877411d17193b4",

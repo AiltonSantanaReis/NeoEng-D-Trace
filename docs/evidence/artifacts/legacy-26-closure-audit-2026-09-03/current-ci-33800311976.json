@@ -1,0 +1,111 @@
+{
+  "schema": "neoeng.legacy26.current-post-merge-ci",
+  "status": "PASS",
+  "audited_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+  "pull_request": 167,
+  "merge_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+  "previous_technical_merge": "8a97ae14e8f84eb86fcacfaefed61f014830fbf9",
+  "run": {
+    "id": 33800311976,
+    "event": "push",
+    "branch": "main",
+    "conclusion": "success",
+    "jobs": {
+      "linux": {
+        "id": 100797952263,
+        "conclusion": "success",
+        "tests": 1919,
+        "failures": 0,
+        "errors": 0,
+        "warnings": 1,
+        "line_covered": 23890,
+        "line_total": 25799,
+        "branch_covered": 6665,
+        "branch_total": 7838,
+        "baseline_files": 3216,
+        "evidence_manifests": 131
+      },
+      "windows": {
+        "id": 100797952611,
+        "conclusion": "success",
+        "tests": 1919,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "runner_accepted": true,
+        "runner_expected_files": 189,
+        "runner_completed_files": 189,
+        "runner_duration_seconds": 285.109,
+        "line_covered": 23890,
+        "line_total": 25799,
+        "branch_covered": 6666,
+        "branch_total": 7838,
+        "baseline_files": 3216,
+        "evidence_manifests": 131,
+        "symlink_junit_tests": 31,
+        "symlink_junit_failures": 0,
+        "symlink_junit_errors": 0,
+        "symlink_junit_skipped": 0
+      }
+    }
+  },
+  "formal_legacy_gate": {
+    "accepted": true,
+    "tested_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+    "historical_tests": 196,
+    "historical_failures": 26,
+    "historical_errors": 0,
+    "historical_skipped": 0,
+    "historical_returncode": 1,
+    "historical_exact": 15,
+    "unexpected_signatures": 11,
+    "missing_expected_failures": 12,
+    "current_missing_observations": 1,
+    "substitute_tests": 42,
+    "substitute_failures": 0,
+    "substitute_errors": 0,
+    "substitute_skipped": 0
+  },
+  "vmware_symlink": {
+    "status": "PASS_SCOPED",
+    "environment": "Windows 11 in VMware with Developer Mode",
+    "tests": 2,
+    "passed": 2,
+    "skipped": 0,
+    "base_zip_sha256": "5668b579260ff0e098e407f9c5a588d2113cfd5cd37f6cf7a763d7a331545e8e",
+    "candidate_patch_sha256": "ed477bb5c6d204005fa684b866886456bce9d5010d25cc47fb49eebde4f5950d"
+  },
+  "external_artifacts": {
+    "linux": {
+      "id": 9910870622,
+      "digest": "sha256:b84cda3d9bf55ec42276d63a057587cc860474e12e7f7ca871099af950515c68"
+    },
+    "windows": {
+      "id": 9911162210,
+      "digest": "sha256:37cb1f01c71bb8f4d7fe952b2443c5837af9bfb145f151a30210fe61e8a5d4b3"
+    },
+    "windows_summary": {
+      "bytes": 152965,
+      "sha256": "b7d9e7c7e31e96572a7837c41152b53bfc61c188d6853769b14da58ed9a0c987"
+    },
+    "formal_gate": {
+      "bytes": 10743,
+      "sha256": "80b759495e6dd14b83a74d973619a6949e2642178ead918177e8a3a36f3e9225"
+    },
+    "symlink_junit": {
+      "bytes": 4218,
+      "sha256": "e98437ead23dcee34ef7a406b127c845c7ae4d4b796723db85c5796e536e29b3"
+    },
+    "linux_coverage_xml": {
+      "bytes": 1157539,
+      "sha256": "bc59df003e39704df32e858f51cddcbdf8729fe0fbfa5eea21d5c89bce8f667b"
+    },
+    "windows_coverage_xml": {
+      "bytes": 1184094,
+      "sha256": "840cba1e0e4d93b4b99dc33d0c3a06d1fb4834a2669d9d95fe4b049f8e331708"
+    }
+  },
+  "decision": "PENDING_EVIDENCE_C12_HUMAN_FINAL_REVIEW",
+  "global_plan_status": "IN_PROGRESS",
+  "commit_push_merge_tag_release": "NOT_AUTHORIZED_BY_THIS_AUDIT"
+}

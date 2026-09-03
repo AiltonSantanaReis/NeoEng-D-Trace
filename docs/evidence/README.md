@@ -1,3 +1,21 @@
+- `ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md` — auditoria final dos 13
+  critérios da seção 9 no SHA `bcaf5b079881800899d121b071108fe404fa48da`;
+  C01–C13 `PASS` após a revisão humana final C12. O plano está
+  `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`, com snapshots legados
+  preservados e limitações de proveniência explícitas. O pacote final está em
+  `artifacts/legacy-26-closure-final-2026-09-03/`.
+
+- `ETAPA_7_REVISAO_HUMANA_C12_2026-09-03.md` — confirmação humana final
+  dos seis pontos no SHA auditado, com declaração de escopo e limitações.
+  O espelho estruturado está em
+  `artifacts/legacy-26-closure-final-2026-09-03/human-review-c12.json`.
+
+- `ETAPA_7_AUDITORIA_ENCERRAMENTO_PLANO_26_2026-09-03.md` — snapshot
+  histórico pré-C12; preserva C12 `PENDING_EVIDENCE` e C13 `BLOCKED` como
+  estado observado antes da confirmação humana, sem reescrita retroativa.
+  O pacote histórico permanece em
+  `artifacts/legacy-26-closure-audit-2026-09-03/`.
+
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md` — encerramento da PR
   `#166` no merge `8a97ae14`, com CI pós-merge `33794660766` aprovado em Linux
   e Windows, baseline de `3213` arquivos, `130` manifestos, runner Windows

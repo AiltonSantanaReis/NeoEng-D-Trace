@@ -1,0 +1,23 @@
+{
+  "schema": "neoeng.legacy26.human-review-c12",
+  "status": "PASS",
+  "audited_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+  "reviewed_at": "2026-09-03",
+  "reviewer": "proprietario do projeto",
+  "statement": "Confirmo a revisão humana final C12 no SHA bcaf5b079881800899d121b071108fe404fa48da: os seis pontos foram revisados e preservados no escopo documentado.",
+  "scope": [
+    "funcionalidades",
+    "dados",
+    "formatos e round-trip",
+    "mensagens e tratamento de erros",
+    "compatibilidade Windows/CI",
+    "rollback"
+  ],
+  "source_report": "docs/evidence/ETAPA_7_REVISAO_HUMANA_C12_2026-09-03.md",
+  "limitations": [
+    "não reescreve snapshots históricos",
+    "não transforma o build ancestral em build do SHA atual",
+    "não aprova tag, release ou assinatura de artefatos",
+    "C13 depende da revalidação final dos gates"
+  ]
+}

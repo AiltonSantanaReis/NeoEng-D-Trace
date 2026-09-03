@@ -8,7 +8,25 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Estado operacional após integração da Etapa 7
+## Estado operacional atual — auditoria de encerramento da Etapa 7
+
+A revisão corrente é o merge da PR `#167`, commit
+`bcaf5b079881800899d121b071108fe404fa48da`. O CI pós-merge `33800311976`
+passou em Linux e Windows: Linux `1919 passed`, Windows `189/189` arquivos,
+`1919` testes, `0` falhas, `0` erros e `0` skips. Baseline, integridade,
+cobertura, estática, segurança, Stage 4B.5 e o gate formal passaram no escopo
+declarado.
+
+A auditoria final da seção 9 está registrada em
+`docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md`, com o registro
+humano C12 em `docs/evidence/ETAPA_7_REVISAO_HUMANA_C12_2026-09-03.md`.
+C01–C13 estão `PASS` no escopo comprovado e o plano está
+`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`. Os snapshots legados foram
+preservados; a prova VMware continua scoped à reconstrução identificada e o
+build portátil continua atribuído à candidata ancestral documentada. Tag e
+release não foram aprovadas.
+
+## Snapshot histórico — pós-merge técnico da Etapa 7 / PR #166
 
 A PR `#166`, originada na branch
 `fix/legacy-27-functional-regressions`, foi integrada no merge commit

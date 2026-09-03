@@ -1,0 +1,52 @@
+{
+  "schema": "neoeng.evidence-artifact-index",
+  "package": "legacy-26-closure-audit-2026-09-03",
+  "status": "PENDING_EVIDENCE",
+  "audited_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+  "run": 33800311976,
+  "files": [
+    {
+      "path": "current-ci-33800311976.json",
+      "bytes": 3491,
+      "sha256": "98c94bc927f7cf6de30184652a98845c668cd9b426f4f7faaca365f3a19bdf72"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "<github-artifact>/validation-linux-python-3.11",
+      "id": 9910870622,
+      "digest": "sha256:b84cda3d9bf55ec42276d63a057587cc860474e12e7f7ca871099af950515c68"
+    },
+    {
+      "path": "<github-artifact>/validation-windows-python-3.11",
+      "id": 9911162210,
+      "digest": "sha256:37cb1f01c71bb8f4d7fe952b2443c5837af9bfb145f151a30210fe61e8a5d4b3"
+    },
+    {
+      "path": "<github-artifact>/windows-coverage/summary.json",
+      "bytes": 152965,
+      "sha256": "b7d9e7c7e31e96572a7837c41152b53bfc61c188d6853769b14da58ed9a0c987"
+    },
+    {
+      "path": "<github-artifact>/windows-legacy-tests/formal-gate.json",
+      "bytes": 10743,
+      "sha256": "80b759495e6dd14b83a74d973619a6949e2642178ead918177e8a3a36f3e9225"
+    },
+    {
+      "path": "<github-artifact>/windows-coverage/junit/039-test_integration_sync.xml",
+      "bytes": 4218,
+      "sha256": "e98437ead23dcee34ef7a406b127c845c7ae4d4b796723db85c5796e536e29b3"
+    },
+    {
+      "path": "<github-artifact>/coverage.xml (Linux)",
+      "bytes": 1157539,
+      "sha256": "bc59df003e39704df32e858f51cddcbdf8729fe0fbfa5eea21d5c89bce8f667b"
+    },
+    {
+      "path": "<github-artifact>/windows-coverage/coverage.xml",
+      "bytes": 1184094,
+      "sha256": "840cba1e0e4d93b4b99dc33d0c3a06d1fb4834a2669d9d95fe4b049f8e331708"
+    }
+  ],
+  "index_excludes_itself": true
+}
