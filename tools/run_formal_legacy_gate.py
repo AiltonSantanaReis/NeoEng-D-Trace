@@ -126,9 +126,8 @@ def validate_current_contract(
         manifest_path
     ):
         raise ValueError("Formal decisions source manifest hash does not match")
-    if (
-        formal_decisions.get("historical_reconciliation_sha256_lf")
-        != _canonical_sha256(reconciliation_path)
+    if formal_decisions.get("historical_reconciliation_sha256_lf") != _canonical_sha256(
+        reconciliation_path
     ):
         raise ValueError(
             "Formal decisions source reconciliation LF hash does not match"
