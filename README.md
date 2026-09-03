@@ -8,6 +8,20 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
+## Estado operacional da candidata de correção
+
+A candidata da PR `#166` está no commit local `febc85471e5ced519f47626665f5d995e7cf60a9`,
+na branch `fix/legacy-27-functional-regressions`. O job remoto anterior
+`33767197026` foi preservado como falha Windows de medição de timeout; o defeito
+foi corrigido medindo a vida da solicitação desde a construção do worker,
+incluindo a fila do `QThreadPool`, sem remover a asserção.
+
+No worktree limpo, o runner Windows passou em `189/189` arquivos, `1919` testes,
+`0` falhas, `0` erros e `2` skips; cobertura `92,59%` de linhas e `85,02%` de
+branches. Os gates complementares e o empacotamento também passaram. O estado
+é `PASS_LOCAL / BLOCKED_REMOTE_RERUN`: o push técnico ainda deve disparar os
+dois jobs remotos, que precisam ser analisados antes de qualquer merge.
+
 ## Snapshot técnico e rastreabilidade
 
 O estado integrado anterior à preparação da `v0.3.0` é o merge da PR `#101`, commit

@@ -1,3 +1,8 @@
+- `ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md` — registra a falha Windows do
+  rerun `33767197026` (`47,0 ms` contra `50 ms`), a causa da medição após a
+  fila do `QThreadPool`, a correção no SHA `febc854` e a validação local limpa;
+  mantém o novo CI remoto, merge, tag e release bloqueados. Pacote hashado em
+  `artifacts/etapa7-windows-timeout-2026-09-03/`.
 - `ETAPA_7_CI_CORRECAO_HASH_CROSS_PLATFORM_2026-09-03.md` — registra o CI
   inicial da PR `#166`, a falha Linux reproduzida por divergência LF/CRLF, a
   correção do gate formal, a preservação dos snapshots e os gates locais no

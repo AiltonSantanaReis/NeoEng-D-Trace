@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "7b4c67a01b0d569c29578342fe67bfcc678e42319ae4afbfe84aa8fe822d214f",
-      "size": 56262
+      "sha256": "f2c1ce1b5b42888aeaca2473b0cfda314c2b42e0e35c47047c8d327284d24d84",
+      "size": 56896
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "453a785fb97a9d23034fe25369dbf7e7c420efdbb1348cb886703061355ca90e",
-      "size": 12610
+      "sha256": "06e3188070dac50024b5e9e967149fc1a45823d83b401eab88deda70759505bf",
+      "size": 13436
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -545,8 +545,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "684ffb90d7d68435a7b1c3e88676e617d3fbe22f5bf61da0c5f28ce8b245068f",
-      "size": 25304
+      "sha256": "a49f22b064bde87d2e8fbce38d54ca4f6a2aecb7dd9bc3b390abd2955414f757",
+      "size": 26429
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -565,8 +565,8 @@
       "size": 4286
     },
     "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
-      "sha256": "a6c74610c7d48eac834f1b80c969fbc99b07416b693502625323cff2385ec39e",
-      "size": 65844
+      "sha256": "6860521b0b89b50d7ddb7c9fb3f4c4cfc061c9d6b89753ff6046e2248def1672",
+      "size": 68331
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -585,8 +585,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "3d5fa03100b01d3f7ccd689054a222763cd514e5facaeaccd098f80e136e1480",
-      "size": 22316
+      "sha256": "e7514c59048cf12231c7916f97c14a6ce124acd9cda538ef5294dbed0d40c30d",
+      "size": 23338
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1200,6 +1200,10 @@
       "sha256": "a0ef0dd2c338126c3158df36ac399f92aac030b355eebc5397733e35defde644",
       "size": 4335
     },
+    "docs/evidence/ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md": {
+      "sha256": "209ec3e92bba68e8d0aafe67529c6205f4a279f8611a23c36f314bc3a65c8f7a",
+      "size": 5958
+    },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
       "size": 5554
@@ -1405,8 +1409,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "6b759993e6b3d554410cfd07b755692456d4dc6ba0074e03fceb394d6d390630",
-      "size": 47554
+      "sha256": "0051b4362d5730ce2ec1b02de10fb241e5dc45a7c91352dd5d7e7acf0a206399",
+      "size": 47923
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -1999,6 +2003,18 @@
     "docs/evidence/artifacts/etapa7-cross-platform-formal-hash-2026-09-03/remote-ci-initial-failure.json": {
       "sha256": "00d5ff918b07bd52fe8544fac974c7fba05d9c2efa11ec2871011408a2748d16",
       "size": 1573
+    },
+    "docs/evidence/artifacts/etapa7-windows-timeout-2026-09-03/artifact-index.json": {
+      "sha256": "0d07ddd665896ad0ee0b5e921b063551d3e1c28324a42e7135087373c0ec143a",
+      "size": 1176
+    },
+    "docs/evidence/artifacts/etapa7-windows-timeout-2026-09-03/final-execution-summary.json": {
+      "sha256": "5f75f5b061ee4e19c2fe1b843eb46b6db8c7c5defd43010e38888fc4dcc82149",
+      "size": 2620
+    },
+    "docs/evidence/artifacts/etapa7-windows-timeout-2026-09-03/remote-ci-windows-timeout.json": {
+      "sha256": "d3283dcba6065ec3c8bcd086e3bff59309786093b036e826af9d594d39c7530e",
+      "size": 1147
     },
     "docs/evidence/artifacts/export-pipeline-audit/animation/animation.json": {
       "sha256": "58400b75eb089ea8d88a36d674138c932ea33691b09d35c47ee655fe14643592",

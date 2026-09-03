@@ -4,6 +4,24 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
+## Atualização viva — correção do timeout Windows — 03 de setembro de 2026
+
+O rerun remoto `33767197026` foi analisado antes de nova autorização de merge:
+Linux `100687993442` passou e Windows `100687993643` falhou no shard `44/189`
+porque `elapsed_ms=47,0` ficou abaixo do timeout contratual de `50 ms`. A causa
+foi medida de início tardia no worker, depois da fila do `QThreadPool`.
+
+A correção está no commit local `febc85471e5ced519f47626665f5d995e7cf60a9`:
+o relógio começa na construção do worker, a asserção permanece e os snapshots
+legados não foram editados. Em árvore limpa, o runner Windows passou em
+`189/189` arquivos e `1919` testes, sem falhas ou erros e com `2` skips; cobertura
+`92,59%` de linhas e `85,02%` de branches. Os demais gates e o empacotamento
+também passaram.
+
+Estado: `PASS_LOCAL / BLOCKED_REMOTE_RERUN`. O próximo passo permitido é o
+registro final, push técnico e observação dos dois jobs remotos. Merge, tag,
+release e aprovação global continuam bloqueados.
+
 ## Atualização viva — correção cross-platform do CI — 03 de setembro de 2026
 
 A execução inicial da PR `#166` (`33758279765`) foi analisada antes de qualquer

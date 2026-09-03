@@ -27,6 +27,26 @@
 
 ## Estado operacional atual dos riscos
 
+### Verificação viva — correção do timeout Windows — 03/09/2026
+
+O rerun remoto `33767197026` passou no Linux (`100687993442`) e falhou no
+Windows (`100687993643`) no shard `44/189`, em
+`test_phase4_real_segment_timeout_cancels_and_discards_late_result`: o request
+registrou `47,0 ms` quando o contrato exigia pelo menos `50 ms`. A causa foi a
+exclusão da latência de fila do `QThreadPool` na medição do worker; a falha foi
+preservada no pacote histórico e não classificada como flake sem causa.
+
+No commit `febc85471e5ced519f47626665f5d995e7cf60a9`, o instante inicial passou
+a ser capturado na construção do worker. O runner Windows limpo passou em
+`189/189` arquivos e `1919` testes, com `0` falhas, `0` erros e `2` skips;
+cobertura `92,59%/85,02%`. Baseline, evidência, estática, segurança, Stage 4B.5,
+gate formal e empacotamento também passaram.
+
+`R-009` permanece `EM VALIDAÇÃO PRÉ-MERGE`: o novo SHA ainda precisa ser
+publicado e validado pelos dois jobs remotos. Symlink continua com prova VMware
+scoped à reconstrução ZIP/patch, e merge, tag, release e aprovação permanecem
+bloqueados.
+
 ### Verificação viva — correção cross-platform do CI — 03/09/2026
 
 A falha inicial do job Linux da PR `#166` foi classificada como defeito de

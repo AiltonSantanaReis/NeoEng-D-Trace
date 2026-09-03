@@ -1,3 +1,14 @@
+## 2026-09-03 — correção da medição de timeout no runner Windows
+
+- preserva como snapshot a falha do job Windows `100687993643` no run
+  `33767197026` (`47,0 ms` observado contra timeout de `50 ms`);
+- corrige a origem da medição em `src/tools/magnetic_lasso.py`, incluindo a
+  latência de fila do `QThreadPool` e preservando a asserção do contrato;
+- confirma no worktree limpo do commit `febc854` o runner integral Windows,
+  os gates de qualidade, a reconciliação formal e o empacotamento;
+- mantém o novo rerun remoto, merge, tag, release e aprovação bloqueados até
+  Linux e Windows passarem no SHA publicado.
+
 ## 2026-09-03 — correção cross-platform do gate formal legado
 
 - registra o CI inicial da PR `#166` (`33758279765`), com Windows aprovado e

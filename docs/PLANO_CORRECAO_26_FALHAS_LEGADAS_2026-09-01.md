@@ -5,8 +5,8 @@
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
 **Status:** `EM EXECUÇÃO — FASE 7 EXECUTADA; B-04 PARCIAL; INTEGRAÇÃO BLOQUEADA`
-**Última atualização:** 03/09/2026 — falha Linux do CI analisada, correção cross-platform aplicada e gates locais repetidos; CI remoto pendente
-**HEAD de validação local/empacotamento:** `42dcb63d032d9e973664850222241ae9e9666bb5`
+**Última atualização:** 03/09/2026 — falha Windows do rerun analisada, medição corrigida no worktree limpo e gates repetidos; novo CI remoto pendente
+**HEAD de validação local/empacotamento:** `febc85471e5ced519f47626665f5d995e7cf60a9`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
 **Branch de trabalho:** `fix/legacy-27-functional-regressions`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
@@ -18,6 +18,49 @@ evidências produzidas até a revisão candidata atual, mas não declara aprova�
 global, encerramento da etapa, commit, push ou merge. A etapa somente poderá ser
 encerrada quando todos os critérios deste documento forem comprovados em um
 pacote integral e reproduzível.
+
+## 0.15 Registro vivo de execução — correção do timeout Windows — 03/09/2026
+
+Antes desta atualização foram relidas a governança de integridade e
+antialucinação, as políticas de qualidade e não regressão, a ADR do runner
+Windows, os snapshots protegidos, este plano e os validadores de baseline e
+evidência. A falha remota anterior foi preservada; nenhum resultado foi
+apagado ou reclassificado para obter `PASS`.
+
+O rerun `33767197026` passou no Linux (`100687993442`) e falhou no Windows
+(`100687993643`) no shard `44/189`. O teste
+`test_phase4_real_segment_timeout_cancels_and_discards_late_result` observou
+`47,0 ms` contra o timeout de `50 ms`. O worker media a partir de `run()`,
+depois de possível espera na fila do `QThreadPool`, enquanto o timer media a
+vida do request desde o agendamento. A causa foi confirmada no JUnit/log do
+artefato remoto; não houve crash dump nativo.
+
+A correção no commit `febc85471e5ced519f47626665f5d995e7cf60a9` captura
+`time.monotonic()` na construção do worker e reutiliza esse instante em
+`run()`. A asserção de timeout foi preservada. O teste falho passou em `20/20`
+repetições locais.
+
+No worktree limpo do SHA corrigido, o runner oficial passou em `189/189`
+arquivos, `1919` testes, `0` falhas, `0` erros e `2` skips; cobertura foi
+`23888/25799` linhas (`92,59%`) e `6664/7838` branches (`85,02%`). Lock,
+compileall, Flake8, Black, isort, mypy, pip-audit, Bandit, política de
+cobertura, Stage 4B.5, gate formal, baseline, evidência e empacotamento
+passaram. Baseline e evidência foram verificadas em `3206` arquivos e `128`
+manifests; o pacote portátil teve `314` arquivos, `11` smoke checks, ZIP de
+`124181911` bytes e SHA-256
+`89cfb73482ed6b44f616fdd642c21a748c49512a23d142e99e76f6c06ac56b4f`.
+
+A prova VMware de symlink permanece `PASS_SCOPED` somente para a reconstrução
+ZIP/patch identificada; no host atual, `WinError 1314` continua sendo uma
+limitação observada. O relatório completo e a falha preservada estão em
+`docs/evidence/ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md` e no pacote
+`docs/evidence/artifacts/etapa7-windows-timeout-2026-09-03/`.
+
+Decisão corrente: `PASS_LOCAL / BLOCKED_REMOTE_RERUN`. O registro documental
+pode ser commitado e o push técnico é o próximo passo permitido. Merge, tag,
+release e qualquer declaração `APROVADO`, `CONCLUÍDO`, `INTEGRADO` ou `PRONTO`
+continuam proibidos até os dois jobs remotos passarem neste SHA e a revisão
+humana autorizar o avanço.
 
 ## 0.14 Registro vivo de execução — correção cross-platform do CI — 03/09/2026
 
