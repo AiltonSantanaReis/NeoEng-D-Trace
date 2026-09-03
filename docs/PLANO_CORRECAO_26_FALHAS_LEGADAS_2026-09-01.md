@@ -5,8 +5,8 @@
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
 **Status:** `EM EXECUÇÃO — FASE 7 EXECUTADA; B-04 PARCIAL; INTEGRAÇÃO BLOQUEADA`
-**Última atualização:** 02/09/2026 — após validação autorizada de symlink no Windows 11/VMware
-**HEAD de execução:** `eaa28b9a75194d25741323b4b72911426a740349`
+**Última atualização:** 03/09/2026 — gates locais e empacotamento executados na candidata limpa; CI remoto pendente
+**HEAD de validação local/empacotamento:** `d6e02cd9ee3445a02ef21faefb4c05d17e0d0fad`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
 **Branch de trabalho:** `fix/legacy-27-functional-regressions`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
@@ -87,8 +87,8 @@ residual permanecem explícitos. Nenhuma divergência foi reescrita para produzi
 | Fase 3 — ferramentas síncronas e histórico | `EXECUTADA — DECISÕES REGISTRADAS` | Casos #6–#9, #11–#16, #25 e #26 foram cobertos com objetos reais, histórico, erro, seleção e undo/redo; o #10 permanece como não regressão. O #25 é `CORRIGIDO` somente no defeito cycle-safe; os demais têm decisão `NO_CHANGE`, sem converter divergência histórica em aprovação. |
 | Fase 4 — Magnetic Lasso, cache e assincronia | `EXECUTADA — TESTADA E REPRODUZIDA` | Casos #17–#22 e #27 foram exercitados com imagem real, solver/cache/worker, sinais Qt, timeout, cancelamento e descarte de resposta tardia; os testes de timeout/stale-result/end-to-end passaram em duas repetições. |
 | Fase 5 — reconciliação formal | `EXECUTADA — GATE FORMAL ACEITO; HISTÓRICO PRESERVADO` | O gate `formal_reconciliation.json` retornou `accepted=true` no escopo de equivalência do contrato atual; 27/27 decisões e 63/63 manifests resolvidos formalmente. O runner histórico exato permanece `accepted=false`, com 196 testes, 26 falhas, 11 assinaturas divergentes e 12 ausências, sem alteração de snapshots. |
-| Fase 6 — pacote e integridade | `EXECUTADA — PACOTE FORMAL RASTREADO` | `evidence_integrity --require-tracked --git-blob` passou com 123 manifests; a resolução atual preserva bytes/hashes dos 63 fontes, registra owner/origem/escopo/referências/tratamento e declara as 706 referências históricas ausentes dos 2 releases. |
-| Fase 7 — gates finais e integração | `EXECUTADA — INTEGRAÇÃO BLOQUEADA` | Reexecução final: suíte oficial `1925 passed, 2 skipped, 1 warning em 48.66s`; substitutos `42 passed em 2.71s`; runner histórico `196/26/0/0`; cobertura `92.65%` de linhas e `85.12%` de branches; estática, segurança, benchmarks O1/O2, determinismo, baseline `3179 files` e evidence integrity passaram. A validação autorizada na VM Windows 11/VMware executou os dois testes de symlink com `2 passed, 0 skipped`; permanecem a confirmação de CI/empacotamento e a repetição dos gates em pacote completo. |
+| Fase 6 — pacote e integridade | `EXECUTADA — PACOTE FORMAL RASTREADO` | `evidence_integrity --require-tracked --git-blob` passou com 124 manifests; a resolução atual preserva bytes/hashes dos 63 fontes, registra owner/origem/escopo/referências/tratamento e declara as 706 referências históricas ausentes dos 2 releases. |
+| Fase 7 — gates finais e integração | `EXECUTADA — INTEGRAÇÃO BLOQUEADA` | Na candidata limpa `d6e02cd`: suíte oficial `1909 passed, 2 skipped, 1 warning`; cobertura `90.82%`; runner histórico `196/26/0/0`, reconciliação `15/27`, `11` inesperadas e `12` ausentes; estática, segurança, Stage 4B.5, baseline `3182 files` e evidence integrity `124 manifests` passaram. O build portátil também passou com smoke `SUCCESS`/`11 checks` e ZIP de `124181819` bytes; CI remoto continua pendente. |
 
 Os estados acima distinguem execução de teste, integridade do pacote e aceite
 formal. Nenhuma linha que diga `EXECUTADA` equivale a `APROVADO / CONCLUÍDO`.
@@ -222,7 +222,7 @@ FORMAL ATUAL ACEITO / INTEGRAÇÃO PENDENTE`. Há evidência rastreada de execu�
 decisões por caso e integridade de pacote. O gate formal atual é `accepted=true`
 no escopo declarado; isso não converte o runner histórico em pass nem equivale a
 aceite histórico global. A capacidade de symlink foi comprovada na VM autorizada,
-mas CI e empacotamento ainda não foram confirmados. O projeto ainda não pode
+o empacotamento local foi confirmado na candidata `d6e02cd`, mas CI remoto ainda não foi confirmado. O projeto ainda não pode
 declarar `APROVADO`, `CONCLUÍDO`, pronto para integração ou equivalência histórica
 final.
 
@@ -267,6 +267,39 @@ por não conter o manifesto F02 exigido; CI e empacotamento continuam pendentes.
 
 A documentação continuará aceitando somente resultados que possam ser repetidos
 a partir do comando, entrada, hash, ambiente e artefatos registrados.
+
+### 0.10 Atualização de 03/09/2026 — candidata limpa para CI e empacotamento
+
+Antes desta atualização foram consultados `docs/POLITICA_NAO_REGRESSAO.md`,
+`docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md`, `docs/evidence/README.md`, este plano,
+`tools/run_legacy_tests.py` e os snapshots históricos protegidos. A decisão aplica
+a regra de parada para falha de gate e a exceção controlada da seção 10.1 somente
+para checkpoint reversível; não autoriza merge ou release.
+
+- A árvore limpa foi derivada exatamente do SHA
+  `d6e02cd9ee3445a02ef21faefb4c05d17e0d0fad`, sem o manifesto F02 ausente e sem
+  qualquer arquivo do usuário rastreado automaticamente.
+- Ambiente local: Windows `win32`, Python `3.11.9`, Poetry `2.4.1`, pytest
+  `9.1.1`, PyInstaller `6.22.0`; dependências sincronizadas pelo lock.
+- Estática e segurança passaram; cobertura total foi `90.82%`, com `1909 passed`,
+  `2 skipped`, `1 warning`; Stage 4B.5 passou.
+- Baseline passou com `3182 files` e integridade de evidências passou com `124`
+  manifests.
+- O build portátil passou com smoke `SUCCESS` em `11` checks; o ZIP possui
+  `124181819` bytes e SHA-256
+  `1559638225fe9e664ba5ebbc5d023b2ec4565b9d8dfb268fae5207c05401e33e`.
+- O runner legado integral retornou código `1`: `196` testes, `26` falhas,
+  `0` erros, `0` skips, reconciliação `15/27`, `11` inesperadas e `12` ausentes.
+  Essa divergência é a condição histórica já formalmente preservada; nenhum
+  snapshot, expectativa, skip, xfail ou threshold foi alterado.
+- A prova VMware de symlink permanece válida somente no escopo registrado em
+  `ETAPA_7_SYMLINK_VMWARE_2026-09-02.md`; ela não substitui CI nem certifica o
+  SHA Git acima por ter sido reconstruída do ZIP/patch.
+
+Decisão corrente: `PARCIAL / BLOQUEADA`. O empacotamento local é um resultado
+técnico comprovado, não uma release. CI remoto não foi executado; merge, tag,
+release e declaração de aprovação permanecem proibidos. A evidência detalhada
+está em `docs/evidence/ETAPA_7_CANDIDATA_GATES_2026-09-03.md`.
 
 ## 1. Regra de governança antes de qualquer decisão
 

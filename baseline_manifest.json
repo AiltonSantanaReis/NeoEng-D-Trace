@@ -561,8 +561,8 @@
       "size": 4286
     },
     "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
-      "sha256": "070b2917567e2c9775f96c427f747957e6c5baa4e1c4279ebc54cc9b22968a04",
-      "size": 56612
+      "sha256": "dbbf634e7058004bf35d366d5cb6be8b7a4edfd7737496b17cabc757573b1db9",
+      "size": 58646
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -1188,6 +1188,10 @@
       "sha256": "285672b98e6926c2134bfe7f0358538c9f4ce28e680cd1f6ba84eac3007fa6cb",
       "size": 3870
     },
+    "docs/evidence/ETAPA_7_CANDIDATA_GATES_2026-09-03.md": {
+      "sha256": "981cdf04e0db9f42108efd8a32350c26ba1339dd400218f7f32d8726df5fc43e",
+      "size": 6409
+    },
     "docs/evidence/ETAPA_7_CLI_PRE_MERGE.md": {
       "sha256": "97e18cc536e0d393862262a8b86c3c69a484f9df72a09c94ac90228cdd26e73e",
       "size": 5554
@@ -1381,8 +1385,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "929dfc777cb9482f9ba4a6312215df6f166ade6431299d825c44dc0022eae2da",
-      "size": 45135
+      "sha256": "658291bef853900e92ceb4c337878b5369d0730d76eba8c27586ddeae7aeafaa",
+      "size": 45418
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
