@@ -86,29 +86,32 @@ versões e evidências indicados em `docs/evidence`.
 
 ## Validação do estado atual
 
-O estado vivo desta revisão é uma candidata técnica pré-merge, não uma release.
-Os gates locais foram executados em árvore limpa derivada do commit
-`8e0ada3fcf1d08058240e5263732d14087b5335c`, na branch
+O estado vivo desta revisão é uma candidata técnica pré-merge com gates locais
+concluídos, não uma release. A árvore limpa foi derivada exatamente do commit
+`55110c03a84a560823586d34e12e514592e6948b`, na branch
 `fix/legacy-27-functional-regressions`:
 
-- o runner Windows isolado passou duas vezes, sem filtros, em `189/189` arquivos,
-  com `1918` testes, `0` falhas, `0` erros e `2` skips condicionais;
-- a cobertura acumulada foi `92,59%` de linhas e `85,02%` de branches;
-- compileall, Flake8, Black, isort, mypy, Bandit, pip-audit, Stage 4B.5 e o
-  empacotamento portátil passaram; o pacote teve `11` smoke checks e `314`
-  arquivos;
-- o runner histórico continua preservado com `196` testes, `26` falhas e
-  retorno `1`; a reconciliação formal registra as `11` assinaturas divergentes
-  e as `12` ausências sem editar snapshots, além de `42` substitutos aprovados;
-- o teste de symlink no host atual permanece bloqueado por `WinError 1314`; a
-  prova VMware registrada é scoped ao ZIP/patch identificado e não ao SHA
-  atual;
-- a primeira conferência do baseline encontrou um hash desatualizado do ADR e
-  ainda exige regeneração/verificação a partir do staged final. A integridade
-  de evidências passou com `124` manifests e o CI remoto ainda está pendente.
+- runner Windows isolado: `189/189` arquivos, `1918` testes, `0` falhas,
+  `0` erros e `2` skips condicionais; política de cobertura `PASS`;
+- cobertura: `23887/25798` linhas (92,59%) e `6664/7838` branches
+  (85,02%);
+- compileall, Flake8, Black, isort, mypy, Bandit, pip-audit e Stage 4B.5:
+  `PASS`; empacotamento: `SUCCESS`, `11` smoke checks e `314` arquivos;
+- runner histórico preservado: `196` testes, `26` falhas, retorno `1`;
+  reconciliação formal com `11` assinaturas divergentes, `12` ausências e
+  `42` substitutos aprovados, sem editar snapshots;
+- baseline Git-blob: `PASS` com `3196 files`; evidence integrity: `PASS` com
+  `125 manifests`;
+- symlink no host atual: `2 skipped` por `WinError 1314`; a prova VMware
+  registrada continua scoped ao ZIP/patch identificado e não ao SHA atual;
+- ZIP final: `124181833` bytes, SHA-256
+  `de3c8f4a3b3e7550e4ea9f1e868e2f25a3dea06b1f9e3fead11d80c5907daf93`.
 
-Enquanto baseline final e CI do SHA publicado não forem comprovados, não há
-autorização para merge, tag, release ou declaração de aprovação.
+O relatório final está em
+`docs/evidence/ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md` e o resumo hashado
+em `docs/evidence/artifacts/windows-runner-final-2026-09-03/`. O CI remoto só
+será executado após o push técnico; merge, tag, release e aprovação global
+continuam bloqueados.
 
 Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
 `docs/evidence`; o README não substitui os logs nem reclassifica testes não

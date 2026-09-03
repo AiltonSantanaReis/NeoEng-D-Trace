@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "affd87c2204f35a0cf2ff3beec4aa4c38cd3ed97f6dc374d8fb857be1cd53ba4",
-      "size": 54182
+      "sha256": "2d72c46982c36ebf33db96703572515430507697997c4b1764446e9ece6c55e2",
+      "size": 54756
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "1d8e0fa18fa4e40b2631ae967f7e168a83688aed095834d2a9f0dbc194ddc1bd",
-      "size": 12074
+      "sha256": "5dbe9338260bdcb64953a77881f337b08ce801d96e3f9b057867a708daba5df1",
+      "size": 12116
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -545,8 +545,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "c2270794ddf2e1b8d36d56fe6bd78c197c94778faf89758a579e85279f21fc6a",
-      "size": 22551
+      "sha256": "c74ded8d01e5e15efa21292b76483d087c0727aff82c5ff140dcc968d49e8183",
+      "size": 23275
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -565,8 +565,8 @@
       "size": 4286
     },
     "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
-      "sha256": "82df0046991a325326cef6905fa5bf4430cf9466516da8288843e302b1c3f1ae",
-      "size": 61324
+      "sha256": "8078e4ae6ff5ffc74ecf2035817988e5e2717df768a29af93fed313504417331",
+      "size": 62935
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -585,8 +585,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "dd4bb126d9a7c31b58cca17e2df9b32ab3a54b6cb8339d8951cdde791d9e2293",
-      "size": 19082
+      "sha256": "e36f0457d845d945e7f411887de31c2301bd3967a15596acc368a5024cf46221",
+      "size": 20165
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1244,6 +1244,10 @@
       "sha256": "817cc62edbde2f5ad8a1d95ae97a5c4db495b3172389cd7deb8c05cf4bd19ef2",
       "size": 5579
     },
+    "docs/evidence/ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md": {
+      "sha256": "860a614af386afdfa989620f590461b6f4b6ea98877f92d7c959d8bd594d21ea",
+      "size": 4375
+    },
     "docs/evidence/ETAPA_8_ADAPTADORES_REAIS_2026-08-20.md": {
       "sha256": "2300bb4ffe8b55ca53426e2f2f65258dd10e9ed3e698ecad696c2bcc0eeb6dd6",
       "size": 4008
@@ -1393,8 +1397,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "6ec25305b37fb294e22805ff0c4764786e4dea44b42e2749f5bd937b3ad4c5bc",
-      "size": 45910
+      "sha256": "1eeadf3aa8db61948808d6376ce02b5f3bb29f9c26d8fb215b51071e6d1137f9",
+      "size": 46366
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -10467,6 +10471,14 @@
     "docs/evidence/artifacts/windows-coverage-shards-2026-09-03/symlink-current-check.log": {
       "sha256": "15ff4afc45a78de139fe7415a66bc14ce612e427a7115669305c12c55c4873ee",
       "size": 637
+    },
+    "docs/evidence/artifacts/windows-runner-final-2026-09-03/artifact-index.json": {
+      "sha256": "01d3455bbe0a202baad2336f253a189ce75cf6b1aa98130c64b1c711445d7821",
+      "size": 274
+    },
+    "docs/evidence/artifacts/windows-runner-final-2026-09-03/final-execution-summary.json": {
+      "sha256": "387e3611d779684add357fdeadb02524b9dbaded65f97e49e67066ba09fcbca9",
+      "size": 6239
     },
     "docs/evidence/final-target-baseline-v1.json": {
       "sha256": "f6c0bc71f919d05504522473d643715ef601407b3fe6b71172a9682d3bf2a15c",

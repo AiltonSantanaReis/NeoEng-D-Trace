@@ -1,0 +1,186 @@
+{
+  "schema": "neoeng.dtrace.final-validation-summary",
+  "schema_version": 1,
+  "tested_commit": "55110c03a84a560823586d34e12e514592e6948b",
+  "branch": "fix/legacy-27-functional-regressions",
+  "status": "LOCAL_GATES_PASS_REMOTE_CI_PENDING",
+  "environment": {
+    "platform": "Windows win32",
+    "platform_release": "10.0.26200",
+    "python": "3.11.9",
+    "poetry": "2.4.1",
+    "pytest": "9.1.1",
+    "pytest_cov": "7.1.0",
+    "pyinstaller": "6.22.0",
+    "qt_qpa_platform": "offscreen"
+  },
+  "commands": [
+    "poetry check --lock --strict",
+    "poetry sync --no-interaction --no-ansi",
+    "poetry run python tools/run_windows_coverage_shards.py --output <runner-temp>",
+    "poetry run python tools/check_coverage_policy.py <runner-temp>/coverage.xml",
+    "poetry run python tools/run_formal_legacy_gate.py --group all --output <formal-temp>",
+    "poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools",
+    "poetry run flake8 src tests tools app.py pack_for_ai.py",
+    "poetry run black --check --diff src tests tools app.py pack_for_ai.py",
+    "poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py",
+    "poetry run mypy src",
+    "poetry run bandit -q -r src -lll",
+    "poetry run pip-audit",
+    "poetry run python scripts/audit_stage4b5_quality.py --output <stage4b5-temp>",
+    "poetry run pytest tests\\test_integration_sync.py -k symlink -q -rs",
+    ".\\scripts\\build_windows.ps1 -OutputRoot release",
+    "poetry run python tools/baseline_integrity.py --verify --git-blob",
+    "poetry run python tools/evidence_integrity.py --require-tracked --git-blob"
+  ],
+  "runner": {
+    "official_glob": "tests/test_*.py",
+    "files": 189,
+    "tests": 1918,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "accepted": true,
+    "coverage_policy": "PASS",
+    "summary": {
+      "bytes": 167731,
+      "sha256": "62ad58655177bea9dffea9f581bf62beb78e7caa2daa7b37ad43eae3bcbe2851"
+    },
+    "coverage_xml": {
+      "bytes": 1184099,
+      "sha256": "1321dfe691ce200f8027dfbb15e48683a2e8077ed5154e368ee7a033209322ca"
+    }
+  },
+  "coverage": {
+    "lines": {
+      "covered": 23887,
+      "valid": 25798,
+      "percent": 92.59
+    },
+    "branches": {
+      "covered": 6664,
+      "valid": 7838,
+      "percent": 85.02
+    }
+  },
+  "formal_legacy": {
+    "accepted_current_contract": true,
+    "historical_raw": {
+      "tests": 196,
+      "failures": 26,
+      "errors": 0,
+      "skipped": 0,
+      "returncode": 1
+    },
+    "historical_exact_signatures": 15,
+    "unexpected_signatures": 11,
+    "historical_missing_expected_failures": 12,
+    "current_missing_observations": 1,
+    "resolved_cases": 27,
+    "substitutes": {
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "returncode": 0
+    },
+    "snapshots_preserved": true,
+    "snapshot_paths": [
+      "quality/legacy_tests/manifest.json",
+      "quality/legacy_tests/reconciliation.json"
+    ],
+    "external_artifacts": [
+      {
+        "path": "formal-legacy/formal-gate.json",
+        "bytes": 11078,
+        "sha256": "417ea47fb630ab533781f2fd1009290b1669d72940e3ef2451c3a1bcdbdf0e43"
+      },
+      {
+        "path": "formal-legacy/historical/summary.json",
+        "bytes": 42810,
+        "sha256": "097365afeba110ee6cdbc524e1f212ec7589f9119d63680ea5972b147496c33b"
+      },
+      {
+        "path": "formal-legacy/substitutes.xml",
+        "bytes": 6515,
+        "sha256": "088bfbc564265890fa876fc5abe6cab8aee92889f4a8473cd9b3c58745d76df4"
+      }
+    ]
+  },
+  "quality_and_security": {
+    "compileall": "PASS",
+    "flake8": "PASS",
+    "black": "PASS",
+    "isort": "PASS",
+    "mypy": "PASS",
+    "bandit": "PASS",
+    "pip_audit": "PASS_NO_KNOWN_VULNERABILITIES; local package not published to PyPI",
+    "stage4b5": "PASS"
+  },
+  "stage4b5": {
+    "deterministic": true,
+    "input_unchanged": true,
+    "runtime_sha256": "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+    "runtime_bytes": 867,
+    "external_artifacts": [
+      {
+        "path": "stage4b5/artifact-index.json",
+        "bytes": 836,
+        "sha256": "e1c0aee70c21f0e33aa843c149511446cf67e8e0a1e7e26ea576a568b02dfe6b"
+      },
+      {
+        "path": "stage4b5/benchmark-report.json",
+        "bytes": 2937,
+        "sha256": "fac5f1da4f527f2da9d7ac21e34bd6bbc2db64a3e9360fb0625abdd5fd38a5eb"
+      }
+    ]
+  },
+  "symlink": {
+    "current_checkout": "BLOCKED_FOR_THIS_HOST",
+    "current_result": "2 skipped",
+    "cause": "WinError 1314; Windows symlink privilege unavailable",
+    "vmware_scoped_evidence": {
+      "report": {
+        "path": "docs/evidence/ETAPA_7_SYMLINK_VMWARE_2026-09-02.md",
+        "bytes": 5168,
+        "sha256": "76eb480edf7a922f96b6a9a618592891bf858b156abf06f0aa3c16347e5f1948"
+      },
+      "index": {
+        "path": "docs/evidence/artifacts/symlink-vmware-2026-09-02/symlink-vmware-index.json",
+        "bytes": 732,
+        "sha256": "4acf255de5a93756219af26a9e463dc85855a9ad0ff9f5df0125ff021a31a40d"
+      },
+      "result": "2 passed, 0 skipped on the reconstructed ZIP/patch scope"
+    }
+  },
+  "package": {
+    "status": "SUCCESS",
+    "smoke_checks": 11,
+    "files": 314,
+    "archive": {
+      "bytes": 124181833,
+      "sha256": "de3c8f4a3b3e7550e4ea9f1e868e2f25a3dea06b1f9e3fead11d80c5907daf93"
+    },
+    "manifest": {
+      "bytes": 55754,
+      "sha256": "e93316f32643ef7bc00367a1dfd56b18d2ac9e7790cd9ff46df5cba9bff50e7e"
+    }
+  },
+  "integrity": {
+    "lock": "PASS",
+    "baseline": {
+      "status": "PASS",
+      "files": 3196
+    },
+    "evidence": {
+      "status": "PASS",
+      "manifests": 125
+    }
+  },
+  "limitations": [
+    "Remote CI was not executed because this final SHA has not been pushed.",
+    "The current host cannot create symlinks; the VMware proof is scoped to its identified ZIP/patch reconstruction and is not proof of the current SHA.",
+    "Raw shard logs/JUnit and formal/stage audit outputs remain external; their summary/XML/report hashes are recorded above and the committed evidence declares the limitation."
+  ],
+  "decision": "LOCAL_CANDIDATE_READY_FOR_TECHNICAL_PUSH; merge, tag, release and global approval remain blocked pending remote CI and residual governance criteria"
+}

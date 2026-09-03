@@ -26,6 +26,26 @@ foi executado. Merge, tag, release e qualquer declaração de aprovação contin
 proibidos até os gates correspondentes serem comprovados na mesma revisão.
 
 ## Estado operacional de referência — 18 de agosto de 2026
+## Atualização viva final — candidata Windows/legado — 03 de setembro de 2026
+
+O commit candidato `55110c03a84a560823586d34e12e514592e6948b` foi validado em
+árvore limpa. O runner Windows isolado passou com `189/189` arquivos, `1918`
+testes, `0` falhas, `0` erros e `2` skips condicionais; cobertura de
+`92,59%` de linhas e `85,02%` de branches. A reconciliação formal preservou o
+runner histórico (196 testes, 26 falhas, retorno 1), as `11` assinaturas
+divergentes e as `12` ausências, com `42` substitutos aprovados e snapshots
+legados imutáveis.
+
+Compileall, estática, segurança, Stage 4B.5, baseline (3196 files),
+evidence integrity (125 manifests) e empacotamento passaram (SUCCESS, `11`
+smoke checks, `314` arquivos). Symlink no host atual permanece `2 skipped`
+por `WinError 1314`; a prova VMware é scoped à reconstrução ZIP/patch. O CI
+remoto ainda não foi executado.
+
+Estado: `PASS_LOCAL / BLOCKED_REMOTE`. O próximo passo permitido é o push
+técnico da candidata conforme a seção 10.1; merge, tag, release e aprovação
+global permanecem proibidos.
+
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 

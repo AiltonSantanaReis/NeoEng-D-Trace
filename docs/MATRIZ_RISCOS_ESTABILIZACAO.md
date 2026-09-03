@@ -44,6 +44,19 @@ Estado operacional desta revisão: `R-009 EM VALIDAÇÃO PRÉ-MERGE`; merge, tag
 release e aprovação permanecem bloqueados até os critérios da Fase 7.
 
 Atualização corrente de 20 de agosto de 2026: o baseline das Etapas 1–4 é o merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`; a RUNTIME-ETAPA-5 foi integrada no merge `159b1241b012`, com auditoria limpa PASS, artefatos hashados, CI Linux/Windows e validação pós-merge; a RUNTIME-ETAPA-6 foi integrada no merge `46604d336af7867e0dd59f9af6e07e5b39a5827f`, com CI da PR, auditoria, artefatos hashados e validação local pós-merge. R-020 está encerrado no escopo aprovado. R-021 está encerrado no escopo aprovado, permanecendo explícita a ausência de adaptadores nativos Godot/Unity. R-018, R-019 e os snapshots históricos permanecem preservados nos estados registrados abaixo. R-022 está encerrado no escopo aprovado pela PR #125, merge `f0d350ad7b61e2e9bc7865515768f3662804c953`, CI `32430267567` e validação pós-merge reproduzida; streaming GPU, VRAM e integração nativa Godot/Unity permanecem fora do escopo.
+### Verificação final da candidata — 03 de setembro de 2026
+
+No commit `55110c03a84a560823586d34e12e514592e6948b`, o runner Windows isolado
+passou com `189/189` arquivos, `1918` testes, `0` falhas, `0` erros e `2` skips
+condicionais. A cobertura passou com `92,59%` de linhas e `85,02%` de branches.
+O histórico legado, as `11` assinaturas divergentes, as `12` ausências e os
+snapshots foram preservados; `42` substitutos passaram.
+
+Baseline (3196 files), evidence integrity (125 manifests), estática,
+segurança, Stage 4B.5 e empacotamento passaram. O symlink local segue limitado
+por `WinError 1314`, e o CI remoto ainda está pendente; a prova VMware continua
+scoped. R-009 permanece `EM VALIDAÇÃO PRÉ-MERGE`.
+
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 

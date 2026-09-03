@@ -344,6 +344,34 @@ integração. Merge, tag, release e qualquer declaração `APROVADO`, `CONCLUÍD
 `INTEGRADO` ou `PRONTO` permanecem proibidos.
 
 ## 1. Regra de governança antes de qualquer decisão
+### 0.12 Atualização de 03/09/2026 — validação final local da candidata
+
+Após o commit documental `55110c03a84a560823586d34e12e514592e6948b`, foram
+consultadas novamente as regras da seção 1, a `POLITICA_QUALIDADE_E_EVIDENCIAS`,
+a `POLITICA_NAO_REGRESSAO`, a ADR do runner, os snapshots protegidos e os
+validadores de baseline/evidência. A árvore limpa foi derivada exatamente desse
+SHA, sem arquivos não relacionados.
+
+- O runner oficial passou com `189/189` arquivos, `1918` testes, `0` falhas,
+  `0` erros e `2` skips condicionais; cobertura de `23887/25798` linhas
+  (92,59%) e `6664/7838` branches (85,02%).
+- O gate formal preservou o bruto histórico (196/26/0/0, retorno 1),
+  manteve `15` assinaturas exatas, classificou as `11` divergentes e as `12`
+  ausências, e aprovou `42` substitutos. Os snapshots legados não foram
+  editados.
+- Compileall, Flake8, Black, isort, mypy, Bandit, pip-audit, Stage 4B.5,
+  baseline (3196 files), evidence integrity (125 manifests) e
+  empacotamento (SUCCESS, `11` smoke checks, `314` arquivos) passaram.
+- O teste de symlink do checkout final permaneceu em `2 skipped` por
+  `WinError 1314`; a prova VMware anterior é `PASS_SCOPED` apenas para o
+  ZIP/patch identificado. O CI remoto ainda não foi executado.
+
+Decisão corrente: `PASS_LOCAL / BLOCKED_REMOTE`. A exceção da seção 10.1 permite
+o push técnico desta candidata para disparar CI, mas não autoriza merge, tag,
+release ou qualquer declaração `APROVADO`, `CONCLUÍDO`, `INTEGRADO` ou `PRONTO`.
+O relatório final está em
+`docs/evidence/ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md`.
+
 
 Antes de decidir sobre código, fixture, teste, harness, reconciliação,
 evidência, commit ou merge, a equipe deverá consultar, na versão efetivamente

@@ -6,6 +6,13 @@
   `PARCIAL/BLOCKED`; baseline final e CI remoto ainda são necessários. O pacote
   hashado está em `artifacts/windows-coverage-shards-2026-09-03/`, com índice
   `artifact-index.json`.
+- `ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md` — validação final local no SHA
+  `55110c0`; runner `189/189`, `1918` testes, `0` falhas, `0` erros e `2`
+  skips condicionais; cobertura, formal, estática, segurança, baseline,
+  evidência e empacotamento registrados. Estado `PASS_LOCAL/BLOCKED_REMOTE`;
+  symlink local limitado por `WinError 1314`, com prova VMware scoped. Consulte
+  `artifacts/windows-runner-final-2026-09-03/artifact-index.json`.
+
 
 
 - `ETAPA_7_SYMLINK_VMWARE_2026-09-02.md` — prova autorizada de criação real de symlinks e dos dois contratos de rejeição no Windows 11/VMware; `2 passed`, `0 skipped`; CI/empacotamento permanecem pendentes.

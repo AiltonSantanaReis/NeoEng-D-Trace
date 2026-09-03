@@ -1,3 +1,15 @@
+## 2026-09-03 — validação final local da candidata Windows
+
+- registra o commit candidato `55110c0` com runner Windows isolado aprovado em
+  `189/189` arquivos, `1918` testes, `0` falhas, `0` erros e `2` skips
+  condicionais;
+- registra cobertura de `92,59%` de linhas e `85,02%` de branches, baseline de
+  `3196` arquivos e integridade de `125` manifests;
+- registra reconciliação histórica preservada, pacote portátil `SUCCESS` e
+  symlink VMware como prova scoped;
+- autoriza somente push técnico para disparar CI; não declara merge, release ou
+  aprovação.
+
 # Changelog
 
 ## 2026-09-03 — candidata técnica do runner Windows
