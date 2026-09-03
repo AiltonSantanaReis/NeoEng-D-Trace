@@ -29,8 +29,8 @@
       "size": 3620
     },
     ".github/workflows/ci.yml": {
-      "sha256": "c8dc12742244ff9eebb3227cc41586416c1fa73695655293c8ce9d56330d0b9f",
-      "size": 9007
+      "sha256": "6d9570a0289a0e181d7fe891f5f139a57389417e9834c7dfa607d7a11a9d9f13",
+      "size": 9069
     },
     ".gitignore": {
       "sha256": "5793c97fceb8fb678dfd2411019a21b6b6b630ef26fcbcec4c12d9bfcb53a176",
@@ -183,6 +183,10 @@
     "docs/ADR_RUNTIME_CENARIOS_EFEITOS_2026-08-20.md": {
       "sha256": "2557415267f12d07dda4a40965cb52e84b14545e1326cfbcc12f7cbc8b5f4cff",
       "size": 18796
+    },
+    "docs/ADR_WINDOWS_COVERAGE_SHARD_RUNNER_2026-09-03.md": {
+      "sha256": "0861184770cd0cf1be846e30fcb684be7b15b673ff95d62bcdc117270398a3db",
+      "size": 3523
     },
     "docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md": {
       "sha256": "896d1be4f51d12730b60f3b14575535f0af9385371251c2d54f19fa7223f21c7",
@@ -11977,8 +11981,8 @@
       "size": 1312
     },
     "tests/test_documentation_state_contracts.py": {
-      "sha256": "bdd866d2a342e1d1de7df9212481a2ec6f7814fc10b3927107de8e5eec0f0f54",
-      "size": 44527
+      "sha256": "f67f32c6503f6928499d85eaddc9ba1a8328cc9b72af1a98d3c4f150b8b78d60",
+      "size": 44727
     },
     "tests/test_evidence_integrity.py": {
       "sha256": "96e2a9ac54d75a470cf8c4b2e31e077f7aafb989efd1fa2055fd5dc0649e67e5",
@@ -12640,6 +12644,10 @@
       "sha256": "9a3eef12ca401e6ad869477353e59a6b0f36e29f6fadd2bc0e9903205bba78de",
       "size": 12300
     },
+    "tests/test_windows_coverage_shards.py": {
+      "sha256": "688ece30ce11a4d8f2a9dee6836f78b4ee60687bb059b38d123d73ae9c8b7c0e",
+      "size": 2037
+    },
     "tools/audit_normative_docx.py": {
       "sha256": "c86c3e8f80f1f48465198686548f8488a5d73929e83918ab81dfd97b6f6e5079",
       "size": 2139
@@ -12719,6 +12727,10 @@
     "tools/run_legacy_tests.py": {
       "sha256": "4d7f00b1db1985e455c2c638d758515ed87acc6ce23132044403b68269dcc525",
       "size": 18053
+    },
+    "tools/run_windows_coverage_shards.py": {
+      "sha256": "df933cc4dce950c976365698fb3fe628ce72425450148cadd11eec7e6976fb4e",
+      "size": 10447
     },
     "tools/sanitize_evidence_archives.py": {
       "sha256": "9071cdab5896d6e84b795323e08fb18228f61038562f2258cf6ec355ff1bb731",

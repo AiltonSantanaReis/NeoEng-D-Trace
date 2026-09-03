@@ -384,6 +384,9 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "tools/run_formal_legacy_gate.py" in workflow
     assert "quality/legacy_tests/current_contract.json" in workflow
     assert "${{ runner.temp }}/legacy-tests/**" in workflow
+    assert "tools/run_windows_coverage_shards.py" in workflow
+    assert "${{ runner.temp }}/windows-coverage/coverage.xml" in workflow
+    assert "${{ runner.temp }}/windows-coverage/**" in workflow
     assert "docs/evidence/**" in workflow
     assert (
         "docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md" not in workflow
