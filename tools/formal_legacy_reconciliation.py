@@ -24,7 +24,7 @@ HISTORICAL_MANIFEST_SHA256 = (
     "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a"
 )
 HISTORICAL_RECONCILIATION_SHA256 = (
-    "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493"
+    "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587"
 )
 
 RULES_CONSULTED = [
@@ -109,6 +109,10 @@ FAMILY_EVIDENCE = {
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def canonical_snapshot_bytes(data: bytes) -> bytes:
+    return data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
 
 
 def load_json(path: Path) -> Any:
@@ -354,10 +358,14 @@ def build_formal_gate(root: Path = ROOT) -> dict[str, Any]:
     inventory = resolve_manifest_inventory(root)
     junit_values = parse_substitute_junit(root)
     historical_manifest_hash = sha256_bytes(
-        (root / HISTORICAL_MANIFEST.relative_to(ROOT)).read_bytes()
+        canonical_snapshot_bytes(
+            (root / HISTORICAL_MANIFEST.relative_to(ROOT)).read_bytes()
+        )
     )
     historical_reconciliation_hash = sha256_bytes(
-        (root / HISTORICAL_RECONCILIATION.relative_to(ROOT)).read_bytes()
+        canonical_snapshot_bytes(
+            (root / HISTORICAL_RECONCILIATION.relative_to(ROOT)).read_bytes()
+        )
     )
     if historical_manifest_hash != HISTORICAL_MANIFEST_SHA256:
         raise AssertionError("quality/legacy_tests/manifest.json foi alterado")

@@ -2189,7 +2189,7 @@
       "size": 36940
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/formal_reconciliation.json": {
-      "sha256": "5239919ade38cbdcb74deacdca5e5a202f4d13a3bddf9395afafb98e77a07f6c",
+      "sha256": "0999fc616e177601cf37813a7507034200abf874fc2a316248ed6081b3e7737b",
       "size": 4127
     },
     "docs/evidence/artifacts/legacy-26-formal-review-20260901/manifest.json": {
@@ -12653,8 +12653,8 @@
       "size": 20187
     },
     "tools/formal_legacy_reconciliation.py": {
-      "sha256": "4d1428d437e86537d2012dd4fb2943dcf5770ab3249aeb04fb9fd835e2c6f31c",
-      "size": 20869
+      "sha256": "60c21688e32d1a6681e98743b60799d1a738bdf75dc48264cd56e51047185fc9",
+      "size": 21081
     },
     "tools/generate_app_icon.py": {
       "sha256": "25c5727c4a5efe0262cdac0089e3bcd9c1f0efc83de374dc18e62ff579b6769c",

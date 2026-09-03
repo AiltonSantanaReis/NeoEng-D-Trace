@@ -34,7 +34,7 @@
     },
     "reconciliation": {
       "path": "quality/legacy_tests/reconciliation.json",
-      "sha256": "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493"
+      "sha256": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587"
     }
   },
   "historical_runner": {
