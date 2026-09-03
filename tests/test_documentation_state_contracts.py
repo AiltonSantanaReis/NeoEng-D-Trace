@@ -380,7 +380,10 @@ def test_audit_remediation_and_security_gates_are_fail_closed():
     assert "poetry run bandit -q -r src -lll" in workflow
     assert "--cov-branch --cov-fail-under=90" in workflow
     assert "tools/check_coverage_policy.py coverage.xml" in workflow
-    assert "Run reconciled preserved legacy suite" in workflow
+    assert "Run preserved legacy and current-contract gate" in workflow
+    assert "tools/run_formal_legacy_gate.py" in workflow
+    assert "quality/legacy_tests/current_contract.json" in workflow
+    assert "${{ runner.temp }}/legacy-tests/**" in workflow
     assert "docs/evidence/**" in workflow
     assert (
         "docs/evidence/ETAPA_2_INVENTARIO_FUNCIONAL_CARACTERIZACAO.md" not in workflow
