@@ -1,0 +1,39 @@
+{
+  "schema": "neoeng.evidence-artifact-index",
+  "package": "etapa7-windows-timeout-2026-09-03",
+  "status": "PASS_LOCAL_BLOCKED_REMOTE_RERUN",
+  "tested_commit": "febc85471e5ced519f47626665f5d995e7cf60a9",
+  "files": [
+    {
+      "path": "remote-ci-windows-timeout.json",
+      "bytes": 1147,
+      "sha256": "d3283dcba6065ec3c8bcd086e3bff59309786093b036e826af9d594d39c7530e"
+    },
+    {
+      "path": "final-execution-summary.json",
+      "bytes": 2620,
+      "sha256": "5f75f5b061ee4e19c2fe1b843eb46b6db8c7c5defd43010e38888fc4dcc82149"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "<temp>/neoeng-windows-coverage-febc854-r1/summary.json",
+      "bytes": 152988,
+      "sha256": "56700ec4a6268d2d509086a4e1f5a3b8fe94dd5c5c85c36eb13852e643bd8fff"
+    },
+    {
+      "path": "<temp>/neoeng-windows-coverage-febc854-r1/coverage.xml",
+      "bytes": 1184138,
+      "sha256": "51e64e97278ffc54e90941eba560aa6b8386092c11d644684f21d2b640590aa6"
+    },
+    {
+      "path": "<temp>/neoeng-stage4b5-febc854-r1",
+      "status": "PASS"
+    },
+    {
+      "path": "<temp>/neoeng-formal-febc854-r1",
+      "status": "ACCEPTED"
+    }
+  ],
+  "index_excludes_itself": true
+}

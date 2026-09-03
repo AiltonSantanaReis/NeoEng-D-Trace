@@ -1,0 +1,205 @@
+{
+  "schema": "neoeng.legacy.current-contract-reconciliation",
+  "schema_version": 1,
+  "purpose": "Accept only reviewed current-contract outcomes while preserving the immutable historical runner and snapshots.",
+  "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+  "historical_snapshots": {
+    "manifest": {
+      "path": "quality/legacy_tests/manifest.json",
+      "sha256_lf": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a"
+    },
+    "reconciliation": {
+      "path": "quality/legacy_tests/reconciliation.json",
+      "sha256_lf": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587"
+    }
+  },
+  "formal_decisions_source": {
+    "path": "docs/evidence/artifacts/legacy-26-formal-review-20260901/case_decisions.json",
+    "sha256": "61374e9fc84811c1a17576b9d5a6afa1f84338d07369d6a7b6877411d17193b4"
+  },
+  "historical_runner": {
+    "selected_files": 24,
+    "tests": 196,
+    "failures": 26,
+    "errors": 0,
+    "skipped": 0,
+    "returncode": 1,
+    "exact_matches": 15
+  },
+  "current_observations": [
+    {
+      "id": "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert self.tool._points == []"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_case_06_lasso_native_gesture_is_one_reversible_creation",
+        "tests/test_legacy_phase3_contracts.py::test_phase3_case_06_lasso_rejection_preserves_preview_and_history"
+      ],
+      "rationale": "The preserved fixture uses Mock objects that do not model the current real Scene and CanvasView contract; the native replacement covers creation, rejection, history and rollback."
+    },
+    {
+      "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert None == 'oid123'"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_07_08_pen_native_double_click_preserves_bezier_history"
+      ],
+      "rationale": "The preserved fixture passes a generic Mock as Scene and expects the obsolete object-id return path; the native replacement verifies the current Bezier creation and history contract."
+    },
+    {
+      "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert self.tool._nodes == []"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_07_08_pen_native_double_click_preserves_bezier_history"
+      ],
+      "rationale": "The preserved fixture uses the obsolete Mock scene/parent path; the native replacement verifies a valid Bezier gesture and one reversible history entry."
+    },
+    {
+      "id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert self.tool._vertices == []"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_09_10_polygonal_lasso_closes_and_rejects_without_loss"
+      ],
+      "rationale": "The preserved fixture uses the obsolete Mock scene/parent path; the native replacement verifies valid closure and fail-closed rejection without losing state."
+    },
+    {
+      "id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_commit_selection_converts_to_integers",
+      "classification": "missing_expected_failure",
+      "decision": "NO_CHANGE",
+      "current_signature": null,
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_09_10_polygonal_lasso_closes_and_rejects_without_loss"
+      ],
+      "rationale": "The historical failure is absent in the current run; the case remains explicitly retained as a non-regression and its current integer/closure behavior is covered by the native replacement."
+    },
+    {
+      "id": "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert self.tool._start_point is None"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_shape_native_gesture_is_reversible",
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_degenerate_gesture_is_fail_closed"
+      ],
+      "rationale": "The preserved fixture uses an obsolete Mock scene/parent path; the native replacement verifies shape creation, one history entry and fail-closed degenerate gestures."
+    },
+    {
+      "id": "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert self.tool._center is None"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_shape_native_gesture_is_reversible",
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_degenerate_gesture_is_fail_closed"
+      ],
+      "rationale": "The preserved fixture uses an obsolete Mock scene/parent path; the native replacement verifies ellipse creation, one history entry and fail-closed degenerate gestures."
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert len(self.scene.objects) == 1"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "rationale": "The preserved integrated fixture uses a generic Mock model and does not exercise the current real Scene/CommandManager mutation contract; the native replacement verifies the complete sequence and order."
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert len(self.scene.objects) == 1"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "rationale": "The preserved integrated fixture uses a generic Mock model and does not exercise the current real Scene/CommandManager mutation contract; the native replacement verifies the complete sequence and order."
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands",
+      "classification": "unexpected_signature",
+      "decision": "CORRIGIDO",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert result is not None"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "rationale": "The cycle-safe state freeze was corrected and passes with real Scene/CommandManager objects; the preserved Mock fixture still fails on its obsolete return path, so the historical signature remains visible."
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert len(self.scene.objects) == 1"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "rationale": "The preserved integrated fixture uses a generic Mock model and does not exercise the current real Scene/CommandManager mutation contract; the native replacement verifies the complete sequence and order."
+    },
+    {
+      "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo",
+      "classification": "unexpected_signature",
+      "decision": "NO_CHANGE",
+      "current_signature": {
+        "kind": "failure",
+        "body_contains": "assert len(self.scene.objects) == 2"
+      },
+      "replacement_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "rationale": "The preserved integrated fixture uses a generic Mock model and does not exercise the current real Scene/CommandManager mutation contract; the native replacement verifies the complete sequence and undo/redo order."
+    }
+  ],
+  "substitute_suite": {
+    "test_files": [
+      "tests/test_legacy_phase1_contracts.py",
+      "tests/test_legacy_phase2_contracts.py",
+      "tests/test_legacy_phase3_contracts.py",
+      "tests/test_legacy_phase4_contracts.py"
+    ],
+    "expected_tests": 42,
+    "expected_failures": 0,
+    "expected_errors": 0,
+    "expected_skipped": 0
+  },
+  "rules_consulted": [
+    "docs/POLITICA_NAO_REGRESSAO.md",
+    "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md",
+    "docs/evidence/README.md",
+    "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md"
+  ]
+}

@@ -1,0 +1,24 @@
+# Etapa 7 — validação de symlink no VMware
+provenance=operator_terminal_transcript_supplied_in_conversation
+base_commit=eaa28b9a75194d25741323b4b72911426a740349
+branch=fix/legacy-27-functional-regressions
+system=Windows 11 VMware
+developer_mode_flag=1
+python=3.11.0
+poetry=2.4.1
+pytest=9.1.1
+pluggy=1.6.0
+pytest_cov=7.1.0
+base_zip=neoeng-base-eaa.zip
+base_zip_bytes=64977183
+base_zip_sha256=5668b579260ff0e098e407f9c5a588d2113cfd5cd37f6cf7a763d7a331545e8e
+candidate_patch=neoeng-candidate.patch
+candidate_patch_bytes=621637
+candidate_patch_sha256=ed477bb5c6d204005fa684b866886456bce9d5010d25cc47fb49eebde4f5950d
+command=poetry run pytest "tests\test_integration_sync.py" -k symlink -q -rs
+collected=31
+selected=2
+deselected=29
+selected_tests=test_plan_rejects_symlink_escape,test_plan_rejects_symlink_destination
+exit_code=0
+result=2 passed, 0 skipped in 0.15s

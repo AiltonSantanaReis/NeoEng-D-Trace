@@ -1,0 +1,10 @@
+.F..........                                                             [100%]
+================================== FAILURES ===================================
+______________________ TestExporters.test_atlas_rotation ______________________
+quality\legacy_tests\tests\test_exporters.py:189: in test_atlas_rotation
+    self.assertEqual(len(atlases), 2)  # Since rotation not implemented, tall and wide don't fit together
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: 1 != 2
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_exporters.py::TestExporters::test_atlas_rotation
+1 failed, 11 passed in 0.68s

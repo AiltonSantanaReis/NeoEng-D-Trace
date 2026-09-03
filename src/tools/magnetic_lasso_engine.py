@@ -9,7 +9,7 @@ from __future__ import annotations
 import heapq
 import math
 from dataclasses import dataclass, replace
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 import cv2
 import numpy as np
@@ -36,6 +36,10 @@ class MagneticLassoSettings:
     max_expansions: int = 350_000
     max_vertices: int = 1_200
     close_radius_screen: float = 11.0
+    prepare_timeout_ms: int = 100
+    preview_timeout_ms: int = 500
+    segment_timeout_ms: int = 5_000
+    finish_timeout_ms: int = 5_000
     show_edge_map: bool = False
 
     def apply_preset(self, preset: str) -> None:
@@ -71,6 +75,10 @@ class MagneticLassoSettings:
             max_expansions=max(10_000, min(int(self.max_expansions), 5_000_000)),
             max_vertices=max(16, min(int(self.max_vertices), 20_000)),
             close_radius_screen=max(3.0, min(float(self.close_radius_screen), 64.0)),
+            prepare_timeout_ms=max(20, min(int(self.prepare_timeout_ms), 5_000)),
+            preview_timeout_ms=max(50, min(int(self.preview_timeout_ms), 10_000)),
+            segment_timeout_ms=max(50, min(int(self.segment_timeout_ms), 30_000)),
+            finish_timeout_ms=max(50, min(int(self.finish_timeout_ms), 30_000)),
         )
 
 
@@ -340,6 +348,7 @@ def _astar_directional(
     start: Point,
     end: Point,
     settings: MagneticLassoSettings,
+    cancel_check: Optional[Callable[[], bool]] = None,
 ) -> List[Point]:
     if start == end:
         return [start]
@@ -359,6 +368,8 @@ def _astar_directional(
     expansions = 0
 
     while queue and expansions < settings.max_expansions:
+        if cancel_check is not None and expansions % 256 == 0 and cancel_check():
+            return []
         _, current_g, x, y, previous_direction = heapq.heappop(queue)
         state = (x, y, previous_direction)
         if current_g > best.get(state, float("inf")) + 1e-9:
@@ -441,6 +452,7 @@ def _astar_preview(
     start: Point,
     end: Point,
     settings: MagneticLassoSettings,
+    cancel_check: Optional[Callable[[], bool]] = None,
 ) -> List[Point]:
     """Fast single-state A* used only for interactive previews.
 
@@ -463,6 +475,8 @@ def _astar_preview(
     expansions = 0
 
     while queue and expansions < settings.max_expansions:
+        if cancel_check is not None and expansions % 256 == 0 and cancel_check():
+            return []
         _, current_g, x, y = heapq.heappop(queue)
         if current_g > float(best[y, x]) + 1e-9:
             continue
@@ -519,6 +533,7 @@ def live_wire_preview_path(
     start: Sequence[float],
     end: Sequence[float],
     settings: Optional[MagneticLassoSettings] = None,
+    cancel_check: Optional[Callable[[], bool]] = None,
 ) -> List[Point]:
     """Calculate a bounded, responsive preview without changing final quality.
 
@@ -556,7 +571,10 @@ def live_wire_preview_path(
         start_search,
         end_search,
         settings,
+        cancel_check=cancel_check,
     )
+    if cancel_check is not None and cancel_check():
+        return []
     if not path:
         return []
 
@@ -566,6 +584,8 @@ def live_wire_preview_path(
         for px, py in path:
             local_x = int(round(px / scale))
             local_y = int(round(py / scale))
+            if cancel_check is not None and cancel_check():
+                return []
             global_point = clamp_point((local_x + x0, local_y + y0), shape)
             global_point = snap_to_edge(
                 features.strength,
@@ -590,6 +610,7 @@ def live_wire_path(
     start: Sequence[float],
     end: Sequence[float],
     settings: Optional[MagneticLassoSettings] = None,
+    cancel_check: Optional[Callable[[], bool]] = None,
 ) -> List[Point]:
     """Calculate a direction-aware edge-following path between two anchors."""
     settings = (settings or MagneticLassoSettings()).normalized()
@@ -623,7 +644,10 @@ def live_wire_path(
         start_search,
         end_search,
         settings,
+        cancel_check=cancel_check,
     )
+    if cancel_check is not None and cancel_check():
+        return []
     if not path:
         return []
 
@@ -633,6 +657,8 @@ def live_wire_path(
         for px, py in path:
             local_x = int(round(px / scale))
             local_y = int(round(py / scale))
+            if cancel_check is not None and cancel_check():
+                return []
             global_point = clamp_point((local_x + x0, local_y + y0), shape)
             global_point = snap_to_edge(
                 features.strength,

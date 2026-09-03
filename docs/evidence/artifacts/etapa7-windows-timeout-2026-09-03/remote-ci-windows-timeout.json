@@ -1,0 +1,36 @@
+{
+  "schema": "neoeng.remote-ci-failure",
+  "status": "FAIL",
+  "captured_at": "2026-09-03",
+  "pr": 166,
+  "run_id": 33767197026,
+  "tested_commit": "59e82cf",
+  "jobs": {
+    "linux": {
+      "job_id": 100687993442,
+      "status": "SUCCESS"
+    },
+    "windows": {
+      "job_id": 100687993643,
+      "status": "FAIL",
+      "shard": "44/189",
+      "artifact": "validation-windows-python-3.11"
+    }
+  },
+  "failure": {
+    "file": "tests/test_legacy_phase4_contracts.py",
+    "test": "test_phase4_real_segment_timeout_cancels_and_discards_late_result",
+    "assertion": "float(payloads[0][\"elapsed_ms\"]) >= settings.segment_timeout_ms",
+    "observed_elapsed_ms": 47.0,
+    "configured_timeout_ms": 50.0,
+    "other_tests_in_file_passed": 10,
+    "native_crash_dump": false
+  },
+  "root_cause": "request lifetime was measured at worker execution instead of worker construction, excluding QThreadPool queue latency",
+  "preserved": [
+    "historical failure snapshot",
+    "legacy snapshots",
+    "timeout assertion"
+  ],
+  "analysis": "remote failure is not overwritten by the local correction; it remains the baseline for the new rerun"
+}

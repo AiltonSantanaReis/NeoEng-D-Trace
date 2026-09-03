@@ -26,7 +26,7 @@ from typing import Any, Iterable
 ID_PATTERN = re.compile(
     r"\b(?:MOD|REQ|FEAT|CMP|TEST|EVID|BUILD|BASE|ADR|RISK)-[A-Z0-9]+(?:-[A-Z0-9]+)+\b"
 )
-PHASE_PATTERN = re.compile(r"^F(?:0|[1-9][0-9]*)$", re.IGNORECASE)
+PHASE_PATTERN = re.compile(r"^F[0-9]+$", re.IGNORECASE)
 
 
 class EvidenceError(RuntimeError):

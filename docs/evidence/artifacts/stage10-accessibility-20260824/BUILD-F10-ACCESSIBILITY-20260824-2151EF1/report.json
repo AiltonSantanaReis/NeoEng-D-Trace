@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "requirement_id": "REQ-F10-UI-ACCESSIBILITY",
+  "feature_ids": [
+    "FEAT-UI-ACCESSIBILITY"
+  ],
+  "test_ids": [
+    "TEST-UI-ACCESSIBILITY-METADATA",
+    "TEST-UI-KEYBOARD-FOCUS",
+    "TEST-UI-MOUSE-FEEDBACK",
+    "TEST-UI-ERROR-FEEDBACK",
+    "TEST-UI-CONTRAST-STATES"
+  ],
+  "evidence_id": "EVID-F10-ACCESSIBILITY-AUDIT",
+  "commit": "2151ef1aed06e2660a5e04f1d9d0b4651cb5bcce",
+  "branch": "main",
+  "worktree_status": "M docs/REGISTRO_IDS_PRODUTO_PROFISSIONAL_2026-08-24.yaml\n M docs/REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml\n M src/ui/icon_library.py\n M src/ui/reference_chrome.py\n M src/ui/responsive_layout.py\n M src/ui/side_panel.py\n M src/ui/viewport_chrome.py\n?? artifacts/\n?? coverage-stage9-20260823.xml\n?? docs/evidence/ETAPA_10_ACESSIBILIDADE_ANALISE_IMPACTO_2026-08-24.md\n?? docs/evidence/artifacts/stage10-accessibility-20260824/\n?? release-stage5-current-local-20260822/\n?? release-stage9-fix-fresh-20260821-102742/\n?? release-stage9-fresh-20260821-093400/\n?? release-stage9-ui-fix-b11b5f6-20260821-final-verified/\n?? release-stage9-ui-fix-b11b5f6-20260821-final/\n?? release-stage9-ui-fix-final-20260821-103934/\n?? scripts/audit_stage10_accessibility.py\n?? stage7-after-groups-toolbar-audit-local-20260822/\n?? stage7-after-groups-toolbar-local-20260822/\n?? stage7-baseline-audit-local-20260822-v2/\n?? stage7-baseline-local-20260822/\n?? stage7-post-checkpoint-ui-audit-local-20260822/\n?? stage7-post-checkpoint-ui-captures-local-20260822/\n?? stage7-post-merge-audit-local-20260822/\n?? stage7-post-merge-closure-audit-local-20260822/\n?? stage7-side-panels-audit-local-20260822-v2/\n?? stage7-side-panels-audit-local-20260822-v3/\n?? stage7-side-panels-audit-local-20260822/\n?? stage8-capture-local-20260823-annotated/\n?? stage8-capture-local-20260823/\n?? stage8-contract-audit-20260823-annotated/\n?? stage8-contract-audit-20260823/\n?? stage8-final-local-20260823-annotated/\n?? stage8-final-local-20260823-postcoverage-annotated/\n?? stage8-final-local-20260823-postcoverage/\n?? stage8-final-local-20260823/\n?? stage8-post-evidence-local-20260823-annotated/\n?? stage8-post-evidence-local-20260823/\n?? stage8-postmerge-final-validation-local-20260823-dpi1-annotated/\n?? stage8-postmerge-final-validation-local-20260823-dpi1/\n?? stage8-postmerge-final-validation-local-20260823/\n?? stage8-postmerge-local-20260823-annotated/\n?? stage8-postmerge-local-20260823/\n?? stage9-after-responsive-fix-local-20260823/\n?? stage9-after-responsive-fix-v2-local-20260823/\n?? stage9-after-responsive-fix-v3-local-20260823/\n?? stage9-after-responsive-fix-v4-local-20260823/\n?? stage9-after-responsive-fix-v5-local-20260823/\n?? stage9-after-responsive-fix-v6-local-20260823/\n?? stage9-after-responsive-fix-v7-local-20260823/\n?? stage9-baseline-dpi-matrix-local-20260823/\n?? stage9-baseline-local-20260823/\n?? stage9-responsive-dpi-local-20260823-v2/\n?? stage9-responsive-dpi-local-20260823-v3/\n?? stage9-responsive-dpi-local-20260823-v4/\n?? stage9-responsive-dpi-local-20260823-v5/\n?? stage9-responsive-dpi-local-20260823-v6/\n?? stage9-responsive-dpi-local-20260823-v7/\n?? stage9-responsive-dpi-local-20260823/\n?? stage9-responsive-dpi-worker100-local-20260823-v2/\n?? stage9-responsive-dpi-worker100-local-20260823/\n?? tests/test_stage10_accessibility.py",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "pyside6": "6.10.1",
+    "qt_platform": "offscreen"
+  },
+  "controls_discovered": 68,
+  "failures": [],
+  "contrast_ratios": {
+    "primary_on_window": 14.933437768389412,
+    "secondary_on_surface": 7.640091924409196,
+    "focus_on_window": 10.963491091388182
+  },
+  "captures": [
+    {
+      "path": "visual/desktop-1920x1080.png",
+      "sha256": "e457488397972c3c999440d81c709160feb4f9d87ea927af80666e5834065340",
+      "bytes": 27473
+    },
+    {
+      "path": "visual/desktop-xray-keyboard.png",
+      "sha256": "0175e172d821eccf5f08197b2895a068fefbd6383261dc437c1d1aeea6037ac2",
+      "bytes": 29215
+    },
+    {
+      "path": "visual/desktop-mouse-state.png",
+      "sha256": "c9ee12f95d4a896d6e3d53976cde8bbc1cd8010e81a6c437e305e26d795c9e9f",
+      "bytes": 29954
+    },
+    {
+      "path": "visual/compact-1280x720.png",
+      "sha256": "b0f418bd3431332bbf35636a7de463a5e91b4d3980735c07fa0c3cfd84ef226f",
+      "bytes": 22472
+    },
+    {
+      "path": "visual/compact-inspector-focus.png",
+      "sha256": "b0f418bd3431332bbf35636a7de463a5e91b4d3980735c07fa0c3cfd84ef226f",
+      "bytes": 22472
+    }
+  ],
+  "limitations": [
+    "The offscreen Qt backend proves deterministic Qt behavior and pixels; native monitor DPI switching remains an environment-specific check.",
+    "This package proves Stage 10 accessibility/usability only; it does not prove renderer, scenario runtime, particles, lights or later stages."
+  ]
+}

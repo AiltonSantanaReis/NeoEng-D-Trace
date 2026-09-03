@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "format_id": "neoeng-d-trace-windows-runner-final-artifacts",
+  "artifacts": [
+    {
+      "path": "final-execution-summary.json",
+      "bytes": 6239,
+      "sha256": "387e3611d779684add357fdeadb02524b9dbaded65f97e49e67066ba09fcbca9"
+    }
+  ]
+}

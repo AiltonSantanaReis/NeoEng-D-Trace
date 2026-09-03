@@ -1,0 +1,76 @@
+{
+  "schema": "neoeng.windows-timeout-fix",
+  "status": "PASS_LOCAL_BLOCKED_REMOTE_RERUN",
+  "branch": "fix/legacy-27-functional-regressions",
+  "tested_commit": "febc85471e5ced519f47626665f5d995e7cf60a9",
+  "previous_remote_failure": {
+    "run_id": 33767197026,
+    "windows_job_id": 100687993643,
+    "linux_job_id": 100687993442,
+    "tested_commit": "59e82cf"
+  },
+  "fix": {
+    "file": "src/tools/magnetic_lasso.py",
+    "behavior": "measure request lifetime from worker construction, including QThreadPool queue latency",
+    "assertion_preserved": true,
+    "focused_repetitions": 20,
+    "focused_failures": 0
+  },
+  "windows_runner": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "expected_files": 189,
+    "completed_files": 189,
+    "tests": 1919,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "duration_seconds": 449.735,
+    "coverage_lines": {"covered": 23888, "valid": 25799, "percent": 92.59},
+    "coverage_branches": {"covered": 6664, "valid": 7838, "percent": 85.02},
+    "summary": {"bytes": 152988, "sha256": "56700ec4a6268d2d509086a4e1f5a3b8fe94dd5c5c85c36eb13852e643bd8fff"},
+    "coverage_xml": {"bytes": 1184138, "sha256": "51e64e97278ffc54e90941eba560aa6b8386092c11d644684f21d2b640590aa6"}
+  },
+  "formal_legacy": {
+    "historical_tests": 196,
+    "historical_failures": 26,
+    "historical_errors": 0,
+    "historical_skipped": 0,
+    "historical_returncode": 1,
+    "exact": 15,
+    "changed_signatures": 11,
+    "missing": 12,
+    "substitutes": 42,
+    "snapshots_edited": false
+  },
+  "integrity": {
+    "baseline_files": 3206,
+    "evidence_manifests": 128,
+    "baseline": "PASS",
+    "evidence": "PASS"
+  },
+  "quality": {
+    "lock": "PASS",
+    "compileall": "PASS",
+    "flake8": "PASS",
+    "black": "PASS",
+    "isort": "PASS",
+    "mypy": "PASS; 145 source files",
+    "pip_audit": "PASS_NO_KNOWN_VULNERABILITIES; local package not published to PyPI",
+    "bandit": "PASS",
+    "coverage_policy": "PASS",
+    "stage4b5": "PASS"
+  },
+  "package": {
+    "status": "SUCCESS",
+    "smoke_checks": 11,
+    "files": 314,
+    "archive": {"bytes": 124181911, "sha256": "89cfb73482ed6b44f616fdd642c21a748c49512a23d142e99e76f6c06ac56b4f"},
+    "manifest": {"bytes": 55754, "sha256": "3d9d7284c54c679a9422da2c8c85be1c23ca455dbaeddf448d4c6dffb993e157"}
+  },
+  "symlink": {
+    "host": "WinError 1314",
+    "vmware": "PASS_SCOPED for the identified ZIP/patch reconstruction; not proof of this SHA"
+  },
+  "decision": "push is allowed after evidence registration; merge, tag and release remain blocked until remote Linux and Windows pass this SHA"
+}

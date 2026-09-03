@@ -1,0 +1,103 @@
+{
+  "schema": "neoeng.legacy.formal-reconciliation-gate",
+  "schema_version": 1,
+  "acceptance_scope": "formal_equivalence_current_contract",
+  "accepted": true,
+  "status": "ACCEPTED_WITH_DECLARED_LIMITATIONS",
+  "candidate": {
+    "source_head_commit": "eaa28b9a75194d25741323b4b72911426a740349",
+    "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+    "rules_consulted": [
+      "docs/POLITICA_NAO_REGRESSAO.md",
+      "docs/POLITICA_QUALIDADE_E_EVIDENCIAS.md",
+      "docs/evidence/README.md",
+      "tools/run_legacy_tests.py",
+      "quality/legacy_tests/manifest.json (read-only)",
+      "quality/legacy_tests/reconciliation.json (read-only)",
+      "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md",
+      "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md",
+      "docs/evidence/STAGE1_HUMAN_APPROVAL_2026-08-24.md",
+      "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md",
+      "docs/evidence/STAGE3_HUMAN_APPROVAL_2026-08-24.md",
+      "docs/evidence/STAGE4_SCOPE_AND_RECONCILIATION.md",
+      "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md",
+      "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+      "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md",
+      "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md"
+    ]
+  },
+  "historical_snapshots": {
+    "unchanged": true,
+    "manifest": {
+      "path": "quality/legacy_tests/manifest.json",
+      "sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a"
+    },
+    "reconciliation": {
+      "path": "quality/legacy_tests/reconciliation.json",
+      "sha256": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587"
+    }
+  },
+  "historical_runner": {
+    "tests": 196,
+    "failures": 26,
+    "errors": 0,
+    "skipped": 0,
+    "expected_failures": 27,
+    "matched": 15,
+    "unexpected": 11,
+    "missing": 12,
+    "accepted": false,
+    "reason": "immutable historical exact-signature contract is not rewritten"
+  },
+  "case_decisions": {
+    "accepted": true,
+    "count": 27,
+    "decision_counts": {
+      "CORRIGIDO": 1,
+      "NO_CHANGE": 26
+    },
+    "category_counts": {
+      "matched": 15,
+      "missing_expected_failure": 1,
+      "unexpected_signature": 11
+    },
+    "case_10": "NO_CHANGE; expected historical failure absent in current run and retained in the inventory",
+    "case_25": "CORRIGIDO; cycle-safe snapshot behavior fixed, historical Mock signature remains visible",
+    "source": "docs/evidence/artifacts/legacy-26-formal-review-20260901/case_decisions.json"
+  },
+  "substitutes": {
+    "accepted": true,
+    "junit": "docs/evidence/artifacts/legacy-26-phase5-20260901/native-substitutes.xml",
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "manifest_resolution": {
+    "accepted": true,
+    "count": 63,
+    "unresolved": 0,
+    "source": "docs/evidence/artifacts/legacy-26-formal-review-20260901/untracked_manifest_audit.json",
+    "resolution_status": "ACCEPTED_WITH_DECLARED_LIMITATIONS",
+    "declared_missing_historical_references": [
+      {
+        "manifest": "artifacts/stage0-snapshot-20260824/build-poetry-official-final/release-manifest.json",
+        "declared_count": 353,
+        "missing_count": 353,
+        "reason": "historical build output is not present in the current workspace"
+      },
+      {
+        "manifest": "artifacts/stage0-snapshot-20260824/build-poetry-official/release-manifest.json",
+        "declared_count": 353,
+        "missing_count": 353,
+        "reason": "historical build output is not present in the current workspace"
+      }
+    ]
+  },
+  "limitations": [
+    "The historical runner exact acceptance remains false by design; its snapshots and signatures are immutable.",
+    "Formal acceptance is based on the current contract, real substitute suite, case-by-case decisions, and authorized manifest treatment.",
+    "The two stage0 release manifests declare 353 missing historical build-output references each; no file was recreated or silently removed from the declaration.",
+    "This gate does not authorize commit, push, merge, or bypass any remaining Fase 7 gate."
+  ]
+}

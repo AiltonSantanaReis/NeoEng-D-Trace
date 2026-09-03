@@ -1,3 +1,49 @@
+- `ETAPA_7_CI_RERUN_PR166_2026-09-03.md` — snapshot do run remoto
+  `33785352331` da PR `#166`: Linux e Windows em `SUCCESS`, runner
+  Windows `189/189`, `1919` testes, reconciliação formal aceita e os dois
+  contratos de symlink aprovados sem skip. O merge sintético e a cabeça-fonte
+  foram registrados separadamente. Estado do gate: `PASS`; integração:
+  `BLOCKED` até revisão humana. Pacote em
+  `artifacts/etapa7-ci-rerun-pr166-2026-09-03/`.
+
+- `ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md` — registra a falha Windows do
+  rerun `33767197026` (`47,0 ms` contra `50 ms`), a causa da medição após a
+  fila do `QThreadPool`, a correção no SHA `febc854` e a validação local limpa;
+  mantém o novo CI remoto, merge, tag e release bloqueados. Pacote hashado em
+  `artifacts/etapa7-windows-timeout-2026-09-03/`.
+- `ETAPA_7_CI_CORRECAO_HASH_CROSS_PLATFORM_2026-09-03.md` — registra o CI
+  inicial da PR `#166`, a falha Linux reproduzida por divergência LF/CRLF, a
+  correção do gate formal, a preservação dos snapshots e os gates locais no
+  SHA `42dcb63`; o rerun remoto permanece pendente do push.
+  Pacote: `artifacts/etapa7-cross-platform-formal-hash-2026-09-03/`.
+- `ETAPA_7_CANDIDATA_GATES_2026-09-03.md` — validação da árvore limpa no SHA `d6e02cd`, suíte `1909 passed, 2 skipped`, cobertura `90.82%`, integridade de `124` manifests e build portátil com smoke `SUCCESS`; runner legado permanece bloqueado e CI remoto não foi executado.
+- `ETAPA_7_WINDOWS_RUNNER_CANDIDATA_2026-09-03.md` — candidata técnica no
+  SHA `8e0ada3`; runner Windows isolado aceito em duas execuções, reconciliação
+  formal das 11 assinaturas divergentes e 12 ausências, snapshots preservados,
+  gates locais e empacotamento registrados. O estado permanece
+  `PARCIAL/BLOCKED`; baseline final e CI remoto ainda são necessários. O pacote
+  hashado está em `artifacts/windows-coverage-shards-2026-09-03/`, com índice
+  `artifact-index.json`.
+- `ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md` — validação final local no SHA
+  `55110c0`; runner `189/189`, `1918` testes, `0` falhas, `0` erros e `2`
+  skips condicionais; cobertura, formal, estática, segurança, baseline,
+  evidência e empacotamento registrados. Estado `PASS_LOCAL/BLOCKED_REMOTE`;
+  symlink local limitado por `WinError 1314`, com prova VMware scoped. Consulte
+  `artifacts/windows-runner-final-2026-09-03/artifact-index.json`.
+- `ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md` — repetição dos gates
+  no SHA `33abb59` em worktree limpo: runner `189/189`, `1918`
+  testes, `0` falhas, `0` erros e `2` skips; reconciliação formal,
+  snapshots preservados, estática, segurança, Stage 4B.5, integridade final
+  (`3202` arquivos/`127` manifestos) e pacote registrados. Estado
+  `PASS_LOCAL/BLOCKED_REMOTE`; symlink local limitado
+  por `WinError 1314`, com prova VMware scoped. Índice em
+  `artifacts/windows-runner-effective-sha-2026-09-03/artifact-index.json`.
+- `ETAPA_7_CANDIDATA_GATES_2026-09-03.md` — validação da árvore limpa no SHA `d6e02cd`, suíte `1909 passed, 2 skipped`, cobertura `90.82%`, integridade de `124` manifests e build portátil com smoke `SUCCESS`; runner legado permanece bloqueado e CI remoto não foi executado.
+
+
+
+- `ETAPA_7_SYMLINK_VMWARE_2026-09-02.md` — prova autorizada de criação real de symlinks e dos dois contratos de rejeição no Windows 11/VMware; `2 passed`, `0 skipped`; CI/empacotamento permanecem pendentes.
+
 - INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md — inventário público de ações, sinais, ferramentas, painéis, menus, atalhos, exportadores e estados observáveis.
 - REMEDIACAO_ACHADOS_AUDITORIA_ETAPAS_0_9_2026-08-23.md — reexecução dos gates, correções, hashes, resultados e limitações residuais da remediação.
 - AUDITORIA_CONFORMIDADE_TEXTO_FONTE_ETAPAS_0_9_2026-08-23.md — auditoria original preservada com reauditoria anexada.- `ETAPA_7_PAINEIS_LATERAIS_2026-08-22.md` — snapshot pré-merge PASS_LOCAL do escopo comprovado do GroupsPanel; preservado sem reescrita retroativa.

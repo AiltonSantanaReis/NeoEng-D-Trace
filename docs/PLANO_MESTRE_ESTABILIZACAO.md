@@ -4,7 +4,131 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
+## Atualização viva — CI remoto verde da PR #166 — 03 de setembro de 2026
+
+O commit-fonte publicado da candidata é
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9), na branch
+`fix/legacy-27-functional-regressions`. O run remoto
+`33785352331` concluiu com os dois jobs obrigatórios em `SUCCESS`:
+Linux `100748662139` e Windows `100748662510`.
+
+O Windows executou o runner oficial sem seleção parcial: `189/189` arquivos,
+`1919` testes, `0` falhas, `0` erros e `0` skips. O JUnit confirmou os
+dois contratos de symlink. Linux passou com `1919 passed` e um warning. A
+cobertura extraída dos XMLs foi `23890/25799` linhas (92,60%) nos dois
+sistemas; branches `6665/7838` (85,03%) no Linux e `6666/7838` (85,05%)
+no Windows. Baseline, integridade de evidências, política de cobertura e
+Stage 4B.5 passaram.
+
+O checkout do evento `pull_request` testou o merge sintético
+`1eb297dec2faea82b06779778b6463b94a625897`, cujo segundo pai é
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O gate formal registrou a cabeça
+da fonte separadamente e aceitou a reconciliação: histórico bruto
+`196/26/0/0`, retorno `1`, `15` exatas, `11` divergentes, `12`
+ausências e `42` substitutos. Os snapshots legados permaneceram imutáveis.
+
+Estado remoto desta revisão: `PASS`. Estado do plano: `IN_PROGRESS`. A
+integração segue `BLOCKED` até revisão humana e autorização explícita; não
+foram executados merge, tag ou release. Evidência:
+`docs/evidence/ETAPA_7_CI_RERUN_PR166_2026-09-03.md`.
+
+## Atualização viva — correção do timeout Windows — 03 de setembro de 2026
+
+O rerun remoto `33767197026` foi analisado antes de nova autorização de merge:
+Linux `100687993442` passou e Windows `100687993643` falhou no shard `44/189`
+porque `elapsed_ms=47,0` ficou abaixo do timeout contratual de `50 ms`. A causa
+foi medida de início tardia no worker, depois da fila do `QThreadPool`.
+
+A correção está no commit local `febc85471e5ced519f47626665f5d995e7cf60a9`:
+o relógio começa na construção do worker, a asserção permanece e os snapshots
+legados não foram editados. Em árvore limpa, o runner Windows passou em
+`189/189` arquivos e `1919` testes, sem falhas ou erros e com `2` skips; cobertura
+`92,59%` de linhas e `85,02%` de branches. Os demais gates e o empacotamento
+também passaram.
+
+Estado: `PASS_LOCAL / BLOCKED_REMOTE_RERUN`. O próximo passo permitido é o
+registro final, push técnico e observação dos dois jobs remotos. Merge, tag,
+release e aprovação global continuam bloqueados.
+
+## Atualização viva — correção cross-platform do CI — 03 de setembro de 2026
+
+A execução inicial da PR `#166` (`33758279765`) foi analisada antes de qualquer
+autorização de merge. O job Linux falhou em três testes do gate formal porque
+comparava o hash bruto CRLF registrado na decisão histórica com o arquivo LF do
+checkout; o job Windows passou por coincidir com CRLF. A falha é de
+portabilidade da validação, não do produto nem dos fixtures legados.
+
+A correção nos commits `78e47d7` e `42dcb63` preserva o campo bruto histórico,
+adiciona o digest canônico LF e compara o arquivo por normalização explícita.
+A suíte completa local passou com `1917 passed, 2 skipped`; cobertura foi
+`92,59%` de linhas e `85,02%` de branches; o runner Windows passou em
+`189/189` arquivos, `1919` testes, sem falhas. O pacote foi construído com
+`SUCCESS`, `11` smoke checks e `314` arquivos.
+
+Estado atual: `PASS_LOCAL / BLOCKED_REMOTE_RERUN`. Baseline/evidências estão em
+fechamento para o push técnico. O rerun remoto deve ser observado antes de
+qualquer decisão de merge; tag, release e aprovação global continuam bloqueados.
+
+## Atualização viva — candidata Windows/legado de 03 de setembro de 2026
+
+A revisão candidata em `8e0ada3fcf1d08058240e5263732d14087b5335c`, na branch
+`fix/legacy-27-functional-regressions`, definiu o comportamento operacional do
+runner Windows/Qt por subprocessos isolados por arquivo de teste. O runner
+versionado passou duas vezes com `189/189` arquivos, `1918` testes, `0` falhas,
+`0` erros e `2` skips condicionais, com cobertura acumulada de `92,59%` de
+linhas e `85,02%` de branches.
+
+A reconciliação formal mantém o runner histórico em `196` testes, `26` falhas e
+retorno `1`, classifica as `11` assinaturas divergentes e as `12` ausências, e
+preserva os snapshots legados sem edição. Os `42` contratos substitutos
+passaram. Compile, estática, segurança, Stage 4B.5 e empacotamento local
+passaram; o symlink no host atual continua condicionado a `WinError 1314`,
+enquanto a prova VMware permanece scoped à reconstrução ZIP/patch registrada.
+
+O estado é `PARCIAL / BLOQUEADO`: a primeira conferência do baseline ainda exige
+regeneração a partir do staged final, e o CI remoto do SHA candidato ainda não
+foi executado. Merge, tag, release e qualquer declaração de aprovação continuam
+proibidos até os gates correspondentes serem comprovados na mesma revisão.
+
 ## Estado operacional de referência — 18 de agosto de 2026
+## Atualização viva final — candidata Windows/legado — 03 de setembro de 2026
+
+O commit candidato `55110c03a84a560823586d34e12e514592e6948b` foi validado em
+árvore limpa. O runner Windows isolado passou com `189/189` arquivos, `1918`
+testes, `0` falhas, `0` erros e `2` skips condicionais; cobertura de
+`92,59%` de linhas e `85,02%` de branches. A reconciliação formal preservou o
+runner histórico (196 testes, 26 falhas, retorno 1), as `11` assinaturas
+divergentes e as `12` ausências, com `42` substitutos aprovados e snapshots
+legados imutáveis.
+
+Compileall, estática, segurança, Stage 4B.5, baseline (3196 files),
+evidence integrity (125 manifests) e empacotamento passaram (SUCCESS, `11`
+smoke checks, `314` arquivos). Symlink no host atual permanece `2 skipped`
+por `WinError 1314`; a prova VMware é scoped à reconstrução ZIP/patch. O CI
+remoto ainda não foi executado.
+
+Estado: `PASS_LOCAL / BLOCKED_REMOTE`. O próximo passo permitido é o push
+técnico da candidata conforme a seção 10.1; merge, tag, release e aprovação
+global permanecem proibidos.
+
+
+## Atualização viva — validação do SHA efetivo — 03 de setembro de 2026
+
+A execução final foi repetida no worktree limpo do SHA
+`33abb5955f41f89f18f2a5fbe42d2ffc36274099`. O runner Windows isolado
+passou com `189/189` arquivos, `1918` testes, `0` falhas, `0`
+erros e `2` skips condicionais; cobertura de `92,59%` de linhas e
+`85,02%` de branches. O gate formal preservou o histórico
+`196/26/0/0`, retorno `1`, as `11` divergências, as `12`
+ausências e os snapshots legados, com `42` substitutos aprovados.
+
+Estática, segurança, Stage 4B.5, baseline (`3202 files`), evidence integrity
+(`127 manifests`) e empacotamento (`SUCCESS`, `11` smoke checks,
+`314` arquivos) passaram. O symlink local permanece limitado por
+`WinError 1314`; a prova VMware segue scoped. Estado:
+`PASS_LOCAL / BLOCKED_REMOTE`. O próximo passo permitido é o push técnico;
+merge, tag, release e aprovação global continuam proibidos. Evidência:
+`docs/evidence/ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md`.
 
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 

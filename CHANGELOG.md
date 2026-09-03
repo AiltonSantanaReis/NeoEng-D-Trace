@@ -1,4 +1,79 @@
+## 2026-09-03 — CI remoto verde da candidata da PR #166
+
+- registra o run `33785352331`, com Linux e Windows concluídos em
+  `SUCCESS`;
+- confirma no Windows o runner oficial em `189/189` arquivos e `1919`
+  testes, sem falhas, erros ou skips;
+- confirma os dois contratos reais de symlink no CI Windows, mantendo separada
+  a prova VMware scoped da reconstrução ZIP/patch;
+- confirma a reconciliação formal aceita com `11` assinaturas divergentes,
+  `12` ausências e snapshots legados preservados;
+- mantém o plano em execução e merge, tag, release e aprovação global bloqueados
+  até revisão humana e autorização explícita.
+
+## 2026-09-03 — correção da medição de timeout no runner Windows
+
+- preserva como snapshot a falha do job Windows `100687993643` no run
+  `33767197026` (`47,0 ms` observado contra timeout de `50 ms`);
+- corrige a origem da medição em `src/tools/magnetic_lasso.py`, incluindo a
+  latência de fila do `QThreadPool` e preservando a asserção do contrato;
+- confirma no worktree limpo do commit `febc854` o runner integral Windows,
+  os gates de qualidade, a reconciliação formal e o empacotamento;
+- mantém o novo rerun remoto, merge, tag, release e aprovação bloqueados até
+  Linux e Windows passarem no SHA publicado.
+
+## 2026-09-03 — correção cross-platform do gate formal legado
+
+- registra o CI inicial da PR `#166` (`33758279765`), com Windows aprovado e
+  Linux reprovado nos três testes do contrato formal;
+- identifica a causa raiz: o gate comparava no Linux o hash bruto LF do
+  snapshot `reconciliation.json` com o digest histórico CRLF armazenado na
+  decisão formal;
+- corrige a validação para usar o digest canônico LF explícito, preserva o
+  digest bruto histórico e mantém os snapshots legados byte a byte intactos;
+- adiciona teste de regressão para equivalência de hash entre LF e CRLF;
+- confirma localmente no SHA `42dcb63` a suíte completa, runner Windows,
+  reconciliação formal, estática, segurança, Stage 4B.5 e empacotamento;
+- mantém o rerun remoto, push, merge, tag, release e aprovação bloqueados até
+  nova execução remota comprovada.
+
+## 2026-09-03 — validação do SHA efetivo da candidata Windows
+
+- registra a repetição dos gates no SHA `33abb59`, em worktree limpo, com
+  runner Windows aceito em `189/189` arquivos, `1918` testes, `0`
+  falhas, `0` erros e `2` skips condicionais;
+- confirma cobertura de `92,59%` de linhas e `85,02%` de branches,
+  reconciliação das `11` divergências e `12` ausências, snapshots
+  preservados e `42` substitutos aprovados;
+- confirma estática, segurança, Stage 4B.5, baseline final (`3202` arquivos,
+  `127` manifestos), evidências e pacote portátil; mantém CI remoto, merge,
+  tag, release e aprovação bloqueados.
+
+## 2026-09-03 — validação final local da candidata Windows
+
+- registra o commit candidato `55110c0` com runner Windows isolado aprovado em
+  `189/189` arquivos, `1918` testes, `0` falhas, `0` erros e `2` skips
+  condicionais;
+- registra cobertura de `92,59%` de linhas e `85,02%` de branches, baseline de
+  `3196` arquivos e integridade de `125` manifests;
+- registra reconciliação histórica preservada, pacote portátil `SUCCESS` e
+  symlink VMware como prova scoped;
+- autoriza somente push técnico para disparar CI; não declara merge, release ou
+  aprovação.
+
 # Changelog
+
+## 2026-09-03 — candidata técnica do runner Windows
+
+- registra a decisão de engenharia do runner Windows por shards isolados em
+  subprocessos, com cobertura acumulada, JUnit, timeout e falha fechada;
+- registra duas execuções locais aceitas (`189/189` arquivos, `1918` testes,
+  `0` falhas, `0` erros e `2` skips condicionais);
+- formaliza a reconciliação das `11` assinaturas divergentes e `12` ausências,
+  preservando o runner histórico e os snapshots legados;
+- mantém symlink, baseline final e CI remoto como limitações/pendências
+  explícitas da candidata;
+- esta entrada não declara merge, release ou aprovação.
 
 ## 2026-08-30 — fechamento formal P2D-03C
 

@@ -1,0 +1,71 @@
+FFFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+______________ TestToolsIntegrated.test_lasso_tool_with_commands ______________
+quality\legacy_tests\tests\test_tools_integrated.py:75: in test_lasso_tool_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = <Mock name='mock.model' id='1983021849296'>.objects
+E    +      where <Mock name='mock.model' id='1983021849296'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB53C04D0>.scene
+------------------------------ Captured log call ------------------------------
+ERROR    NeoEng-D-Trace:commands.py:249 Command AddPolygonCommand execute failed (TypeError)
+WARNING  NeoEng-D-Trace:base_tool.py:131 Lasso Creation Failed: The operation failed and its state was restored.
+___________ TestToolsIntegrated.test_polygonal_lasso_with_commands ____________
+quality\legacy_tests\tests\test_tools_integrated.py:108: in test_polygonal_lasso_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = <Mock name='mock.model' id='1983020789456'>.objects
+E    +      where <Mock name='mock.model' id='1983020789456'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F2E50>.scene
+------------------------------ Captured log call ------------------------------
+ERROR    NeoEng-D-Trace:commands.py:249 Command AddPolygonCommand execute failed (TypeError)
+WARNING  NeoEng-D-Trace:base_tool.py:131 Polygonal Lasso Creation Failed: The operation failed and its state was restored.
+_______________ TestToolsIntegrated.test_pen_tool_with_commands _______________
+quality\legacy_tests\tests\test_tools_integrated.py:131: in test_pen_tool_with_commands
+    assert result is not None
+E   assert None is not None
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Pen Creation Rejected: cannot unpack non-iterable Mock object
+______________ TestToolsIntegrated.test_rect_tool_with_commands _______________
+quality\legacy_tests\tests\test_tools_integrated.py:159: in test_rect_tool_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = <Mock name='mock.model' id='1983040518608'>.objects
+E    +      where <Mock name='mock.model' id='1983040518608'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3C90>.scene
+_____________ TestToolsIntegrated.test_ellipse_tool_with_commands _____________
+quality\legacy_tests\tests\test_tools_integrated.py:191: in test_ellipse_tool_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = <Mock name='mock.model' id='1983040493200'>.objects
+E    +      where <Mock name='mock.model' id='1983040493200'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3E90>.scene
+------------------------------ Captured log call ------------------------------
+ERROR    NeoEng-D-Trace:commands.py:249 Command AddPolygonCommand execute failed (TypeError)
+WARNING  NeoEng-D-Trace:base_tool.py:131 Ellipse Creation Failed: The operation failed and its state was restored.
+___________ TestToolsIntegrated.test_multiple_operations_undo_redo ____________
+quality\legacy_tests\tests\test_tools_integrated.py:238: in test_multiple_operations_undo_redo
+    assert len(self.scene.objects) == 2
+E   AssertionError: assert 0 == 2
+E    +  where 0 = len({})
+E    +    where {} = <Mock name='mock.model' id='1983041143632'>.objects
+E    +      where <Mock name='mock.model' id='1983041143632'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500210>.scene
+------------------------------ Captured log call ------------------------------
+ERROR    NeoEng-D-Trace:commands.py:249 Command AddPolygonCommand execute failed (TypeError)
+WARNING  NeoEng-D-Trace:base_tool.py:131 Polygonal Lasso Creation Failed: The operation failed and its state was restored.
+____________ TestToolsIntegrated.test_magnetic_lasso_with_commands ____________
+quality\legacy_tests\tests\test_tools_integrated.py:289: in test_magnetic_lasso_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = <Mock name='mock.model' id='1983041454544'>.objects
+E    +      where <Mock name='mock.model' id='1983041454544'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500710>.scene
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_lasso_tool_with_commands
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_polygonal_lasso_with_commands
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_pen_tool_with_commands
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_rect_tool_with_commands
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_ellipse_tool_with_commands
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_multiple_operations_undo_redo
+FAILED quality\legacy_tests\tests\test_tools_integrated.py::TestToolsIntegrated::test_magnetic_lasso_with_commands
+7 failed in 0.86s

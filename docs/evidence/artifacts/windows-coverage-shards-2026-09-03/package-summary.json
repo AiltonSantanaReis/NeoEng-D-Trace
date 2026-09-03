@@ -1,0 +1,17 @@
+{
+  "schema": "neoeng.evidence.windows-package-summary.v1",
+  "source_commit": "8e0ada3fcf1d08058240e5263732d14087b5335c",
+  "command": ".\\scripts\\build_windows.ps1 -OutputRoot release",
+  "status": "SUCCESS",
+  "smoke_checks": 11,
+  "portable_files": 314,
+  "archive": "NeoEng-D-Trace-0.3.0-win64-portable.zip",
+  "archive_bytes": 124181818,
+  "archive_sha256": "4db44b144ffa0774893583454716c18344e36d740ce7d6536b6a1cf3ea1d04e6",
+  "manifest_bytes": 55754,
+  "manifest_sha256": "300937e3b2fddfa0d604d47d882a9e9da0c904c1093c45ff6a6df4a3852b5d01",
+  "limitations": [
+    "The bundle is a local technical candidate, not a release.",
+    "Digital signature is not claimed."
+  ]
+}

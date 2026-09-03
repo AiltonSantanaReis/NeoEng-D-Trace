@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.376" timestamp="2026-09-01T18:21:06.644584-03:00" hostname="SANITIZED_HOST"><testcase classname="tests.test_handle_command.TestHandleMove" name="test_handle_move_undo_redo" time="0.001"><failure message="ValueError: Invalid polygon">quality\legacy_tests\tests\test_handle_command.py:10: in test_handle_move_undo_redo
+    s.add_object('o1', [(0,0),(10,0),(20,0)])
+src\models\scene.py:373: in add_object
+    raise ValueError("Invalid polygon")
+E   ValueError: Invalid polygon</failure></testcase></testsuite></testsuites>

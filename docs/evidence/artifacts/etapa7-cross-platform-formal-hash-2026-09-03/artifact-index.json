@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "format_id": "neoeng-d-trace-etapa7-cross-platform-formal-hash-artifacts",
+  "artifacts": [
+    {
+      "path": "final-execution-summary.json",
+      "bytes": 4415,
+      "sha256": "8a8ec3e854cf3e2429431b649097c31dc119553cfb121861cbb74a2f2e00bb12"
+    },
+    {
+      "path": "remote-ci-initial-failure.json",
+      "bytes": 1573,
+      "sha256": "00d5ff918b07bd52fe8544fac974c7fba05d9c2efa11ec2871011408a2748d16"
+    }
+  ]
+}

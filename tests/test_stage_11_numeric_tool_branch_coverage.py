@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import pytest
 from PySide6.QtCore import QPointF
+from PySide6.QtWidgets import QApplication, QWidget
 
 import src.core.view_processor as view_module
 import src.tools.auto_detect as detect_module
@@ -468,7 +469,12 @@ def test_base_tool_polygon_command_boundaries(monkeypatch):
         lambda *args: messages.append(("warning", args[1], args[2])),
     )
 
-    canvas = SimpleNamespace(model=SimpleNamespace(cmd=None))
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication([])
+    assert app is not None
+    canvas = QWidget()
+    canvas.model = SimpleNamespace(cmd=None)
     tool = BaseTool(canvas)
     tool._last_error = ""
     assert tool.commit_polygon_command([(0, 0), (5, 0), (0, 5)]) is None

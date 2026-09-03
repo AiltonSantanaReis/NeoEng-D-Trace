@@ -1,0 +1,10 @@
+....F....                                                                [100%]
+================================== FAILURES ===================================
+_______________________ TestMaskViewer.test_reset_view ________________________
+quality\legacy_tests\tests\test_mask_viewer.py:161: in test_reset_view
+    self.assertEqual(zoom, 1.0)  # Should be 1.0 since we don't zoom in
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: 1.5 != 1.0
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_mask_viewer.py::TestMaskViewer::test_reset_view
+1 failed, 8 passed in 1.39s

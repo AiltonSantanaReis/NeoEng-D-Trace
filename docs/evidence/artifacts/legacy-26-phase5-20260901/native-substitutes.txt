@@ -1,0 +1,14 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: <REPO_ROOT>
+configfile: pytest.ini
+plugins: anyio-4.14.2, cov-7.1.0
+collected 42 items
+
+tests\test_legacy_phase1_contracts.py ........                           [ 19%]
+tests\test_legacy_phase2_contracts.py ............                       [ 47%]
+tests\test_legacy_phase3_contracts.py ...........                        [ 73%]
+tests\test_legacy_phase4_contracts.py ...........                        [100%]
+
+- generated xml file: <RUN_TMP>\native-substitutes.xml -
+============================= 42 passed in 2.86s ==============================

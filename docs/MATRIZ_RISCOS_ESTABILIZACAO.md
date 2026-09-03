@@ -25,9 +25,115 @@
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
+### Verificação viva — CI remoto da PR #166 — 03/09/2026
+
+O run remoto `33785352331` foi concluído com Linux
+(`100748662139`) e Windows (`100748662510`) em `SUCCESS`, no commit-fonte
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O checkout do evento
+`pull_request` usou o merge sintético
+`1eb297dec2faea82b06779778b6463b94a625897`; a cabeça-fonte foi registrada
+separadamente e sua ancestralidade foi confirmada.
+
+O runner Windows aceitou `189/189` arquivos e `1919` testes, sem falhas,
+erros ou skips. Os testes `test_plan_rejects_symlink_escape` e
+`test_plan_rejects_symlink_destination` passaram. O gate formal aceitou a
+reconciliação de `11` assinaturas divergentes e `12` ausências, com
+`42` substitutos, sem alteração dos snapshots legados. Baseline,
+integridade, cobertura e Stage 4B.5 passaram.
+
+No escopo do risco `R-009`, a exigência de um job Windows real foi comprovada
+na PR. A prova VMware permanece registrada como validação scoped da reconstrução
+ZIP/patch, sem ser promovida a prova do SHA Git. `R-009` está
+`ENCERRADO NO ESCOPO DA PR #166`; isso não encerra o plano global nem substitui
+revisão humana, merge ou validação pós-merge.
+
 ## Estado operacional atual dos riscos
 
+### Verificação viva — correção do timeout Windows — 03/09/2026
+
+O rerun remoto `33767197026` passou no Linux (`100687993442`) e falhou no
+Windows (`100687993643`) no shard `44/189`, em
+`test_phase4_real_segment_timeout_cancels_and_discards_late_result`: o request
+registrou `47,0 ms` quando o contrato exigia pelo menos `50 ms`. A causa foi a
+exclusão da latência de fila do `QThreadPool` na medição do worker; a falha foi
+preservada no pacote histórico e não classificada como flake sem causa.
+
+No commit `febc85471e5ced519f47626665f5d995e7cf60a9`, o instante inicial passou
+a ser capturado na construção do worker. O runner Windows limpo passou em
+`189/189` arquivos e `1919` testes, com `0` falhas, `0` erros e `2` skips;
+cobertura `92,59%/85,02%`. Baseline, evidência, estática, segurança, Stage 4B.5,
+gate formal e empacotamento também passaram.
+
+`R-009` permanece `EM VALIDAÇÃO PRÉ-MERGE`: o novo SHA ainda precisa ser
+publicado e validado pelos dois jobs remotos. Symlink continua com prova VMware
+scoped à reconstrução ZIP/patch, e merge, tag, release e aprovação permanecem
+bloqueados.
+
+### Verificação viva — correção cross-platform do CI — 03/09/2026
+
+A falha inicial do job Linux da PR `#166` foi classificada como defeito de
+portabilidade do gate formal: o hash do snapshot era comparado em bytes brutos
+e dependia de CRLF/LF. A correção adicionou o digest canônico LF explícito e
+teste de regressão, mantendo o digest bruto histórico e os snapshots imutáveis.
+
+A suíte local e os gates de qualidade passaram no SHA `42dcb63`; o runner Windows
+passou em `189/189` arquivos. O risco `R-009` não está encerrado: a evidência
+remota do SHA corrigido ainda depende do push e de dois jobs Linux/Windows
+passarem. Estado: `R-009 EM VALIDAÇÃO PRÉ-MERGE`; merge, tag e release bloqueados.
+## Atualização viva — runner Windows e Fase 7 — 03 de setembro de 2026
+
+### Verificação viva — correção cross-platform do CI — 03/09/2026
+
+A falha inicial do job Linux da PR `#166` foi classificada como defeito de
+portabilidade do gate formal: o hash do snapshot era comparado em bytes brutos
+e dependia de CRLF/LF. A correção adicionou o digest canônico LF explícito e
+teste de regressão, mantendo o digest bruto histórico e os snapshots imutáveis.
+
+A suíte local e os gates de qualidade passaram no SHA `42dcb63`; o runner Windows
+passou em `189/189` arquivos. O risco `R-009` não está encerrado: a evidência
+remota do SHA corrigido ainda depende do push e de dois jobs Linux/Windows
+passarem. Estado: `R-009 EM VALIDAÇÃO PRÉ-MERGE`; merge, tag e release bloqueados.
+
+A candidata `8e0ada3fcf1d08058240e5263732d14087b5335c` substituiu o caminho
+operacional de cobertura Windows no mesmo processo por shards isolados em
+subprocessos, conforme a ADR `docs/ADR_WINDOWS_COVERAGE_SHARD_RUNNER_2026-09-03.md`.
+Essa decisão foi motivada por abort/violação de acesso Qt observados sob
+cobertura; duas execuções do runner versionado passaram com `189/189` arquivos,
+`1918` testes, `0` falhas, `0` erros e `2` skips condicionais.
+
+O risco não está encerrado: o CI remoto ainda não validou o SHA, o baseline
+precisa ser regenerado/verificado após o staged final e o symlink do host atual
+permanece limitado por `WinError 1314`. A prova VMware anterior é mantida como
+evidência scoped da capacidade, sem ser apresentada como prova do SHA atual.
+
+Estado operacional desta revisão: `R-009 EM VALIDAÇÃO PRÉ-MERGE`; merge, tag,
+release e aprovação permanecem bloqueados até os critérios da Fase 7.
+
 Atualização corrente de 20 de agosto de 2026: o baseline das Etapas 1–4 é o merge `27b2baffa7701ae5ad90f458c3ba5923a030157f`; a RUNTIME-ETAPA-5 foi integrada no merge `159b1241b012`, com auditoria limpa PASS, artefatos hashados, CI Linux/Windows e validação pós-merge; a RUNTIME-ETAPA-6 foi integrada no merge `46604d336af7867e0dd59f9af6e07e5b39a5827f`, com CI da PR, auditoria, artefatos hashados e validação local pós-merge. R-020 está encerrado no escopo aprovado. R-021 está encerrado no escopo aprovado, permanecendo explícita a ausência de adaptadores nativos Godot/Unity. R-018, R-019 e os snapshots históricos permanecem preservados nos estados registrados abaixo. R-022 está encerrado no escopo aprovado pela PR #125, merge `f0d350ad7b61e2e9bc7865515768f3662804c953`, CI `32430267567` e validação pós-merge reproduzida; streaming GPU, VRAM e integração nativa Godot/Unity permanecem fora do escopo.
+### Verificação final da candidata — 03 de setembro de 2026
+
+No commit `55110c03a84a560823586d34e12e514592e6948b`, o runner Windows isolado
+passou com `189/189` arquivos, `1918` testes, `0` falhas, `0` erros e `2` skips
+condicionais. A cobertura passou com `92,59%` de linhas e `85,02%` de branches.
+O histórico legado, as `11` assinaturas divergentes, as `12` ausências e os
+snapshots foram preservados; `42` substitutos passaram.
+
+Baseline (3196 files), evidence integrity (125 manifests), estática,
+segurança, Stage 4B.5 e empacotamento passaram. O symlink local segue limitado
+por `WinError 1314`, e o CI remoto ainda está pendente; a prova VMware continua
+scoped. R-009 permanece `EM VALIDAÇÃO PRÉ-MERGE`.
+
+### Verificação do SHA efetivo — 03 de setembro de 2026
+
+A repetição no SHA `33abb5955f41f89f18f2a5fbe42d2ffc36274099` confirmou
+`189/189` arquivos, `1918` testes, `0` falhas, `0` erros e
+`2` skips, cobertura `92,59%/85,02%`, reconciliação formal das
+`11` divergências e `12` ausências, e snapshots preservados.
+Estática, segurança, Stage 4B.5, integridade e empacotamento também passaram.
+Symlink continua `WinError 1314` no host atual, com prova VMware scoped.
+R-009 permanece `EM VALIDAÇÃO PRÉ-MERGE`; CI remoto, merge, tag, release e
+aprovação continuam bloqueados.
+
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 

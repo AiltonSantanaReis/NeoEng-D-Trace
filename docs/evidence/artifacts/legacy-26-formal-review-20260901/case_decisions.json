@@ -1,0 +1,546 @@
+{
+  "schema": "neoeng.legacy.phase5.formal-case-decisions",
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-01T23:21:42.3785530Z",
+  "source_head_commit": "eaa28b9a75194d25741323b4b72911426a740349",
+  "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+  "historical_manifest_sha256": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
+  "historical_reconciliation_sha256": "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493",
+  "historical_reconciliation_sha256_lf": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587",
+  "raw_summary_sha256": "75b9724a8c1782a8f0b8dd53c88f8bb4f2b51a2aa83156eb8e99aa1545744c5",
+  "status": "BLOCKED",
+  "accepted": false,
+  "merge_ready": false,
+  "decision_scope": "27 IDs reconciled individually; historical snapshots remain read-only.",
+  "decision_counts": {
+    "CORRIGIDO": 1,
+    "NO_CHANGE": 26,
+    "BLOQUEADO": 0
+  },
+  "historical_runner": {
+    "tests": 196,
+    "failures": 26,
+    "errors": 0,
+    "skipped": 0,
+    "expected_failures": 27,
+    "matched": 15,
+    "unexpected": 11,
+    "missing": 12
+  },
+  "substitute_validation": {
+    "tests": 42,
+    "passed": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "rerun_seconds": 4.97,
+    "junit_reference": "docs/evidence/artifacts/legacy-26-phase5-20260901/native-substitutes.xml"
+  },
+  "special_cases": {
+    "10": "NO_CHANGE; no failure was observed in the current historical run, but the expected historical entry remains in the inventory and is not erased.",
+    "25": "CORRIGIDO for the cycle-safe snapshot defect; current historical fixture still produces a changed signature and is not counted as a pass."
+  },
+  "cases": [
+    {
+      "case": 1,
+      "legacy_id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_convex_decompose_l_shape",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "ValueError: Triangulation did not preserve polygon geometry",
+        "expected_message_contains": "Triangulation did not preserve polygon geometry",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_01_valid_l_decomposes_without_losing_area",
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_02_self_intersection_remains_rejected"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 2,
+      "legacy_id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_ear_clipping_concave_l_shape",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "ValueError: Triangulation did not preserve polygon geometry",
+        "expected_message_contains": "Triangulation did not preserve polygon geometry",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_02_triangulation_preserves_valid_l_geometry",
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_02_self_intersection_remains_rejected"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 3,
+      "legacy_id": "test_edge_utils::tests.test_edge_utils.TestEdgeUtils::test_sobel_magnitude",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert dtype('float32') == <class 'numpy.float64'>\n +  where dtype('float32') = array([[0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n    ... 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.]], shape=(100, 100), dtype=float32).dtype\n +  and   <class 'numpy.float64'> = np.float64",
+        "expected_message_contains": "dtype('float32')",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_03_sobel_contract_is_float32_finite_and_unclipped"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é superseded_contract; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 4,
+      "legacy_id": "test_exporters::tests.test_exporters.TestExporters::test_atlas_rotation",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: 1 != 2",
+        "expected_message_contains": "1 != 2",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_04_rotated_atlas_preserves_rect_and_derivable_uv"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é superseded_contract; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 5,
+      "legacy_id": "test_handle_command::tests.test_handle_command.TestHandleMove::test_handle_move_undo_redo",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "ValueError: Invalid polygon",
+        "expected_message_contains": "Invalid polygon",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_05_real_bezier_history_round_trips_valid_geometry",
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_05_invalid_bezier_is_rejected_without_history"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 6,
+      "legacy_id": "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert [(0.0, 0.0), ...0), (50, 100)] == []\n  \n  Left contains 3 more items, first extra item: (0.0, 0.0)\n  Use -v to get more diff",
+        "expected_message_contains": "QMessageBox.warning' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_case_06_lasso_native_gesture_is_one_reversible_creation",
+        "tests/test_legacy_phase3_contracts.py::test_phase3_case_06_lasso_rejection_preserves_preview_and_history"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 7,
+      "legacy_id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert None == 'oid123'",
+        "expected_message_contains": "QMessageBox.critical' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_07_08_pen_native_double_click_preserves_bezier_history"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 8,
+      "legacy_id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert [<src.tools.p...0217B56D1750>] == []\n  \n  Left contains 2 more items, first extra item: <src.tools.pen_tool.BezierNode object at 0x00000217B56D1690>\n  Use -v to get more diff",
+        "expected_message_contains": "QMessageBox.critical' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_07_08_pen_native_double_click_preserves_bezier_history"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 9,
+      "legacy_id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert [(0, 0), (100, 0), (50, 100)] == []\n  \n  Left contains 3 more items, first extra item: (0, 0)\n  Use -v to get more diff",
+        "expected_message_contains": "QMessageBox.warning' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_09_10_polygonal_lasso_closes_and_rejects_without_loss"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 10,
+      "legacy_id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_commit_selection_converts_to_integers",
+      "historical_observation": {
+        "status": "passed",
+        "failure": null,
+        "expected_message_contains": "QMessageBox.warning' called with wrong argument types",
+        "reconciliation": "missing_expected_failure"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_09_10_polygonal_lasso_closes_and_rejects_without_loss"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 11,
+      "legacy_id": "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert (10, 10) is None\n +  where (10, 10) = <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550>._start_point\n +    where <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550> = <test_rect_ellipse.TestRectSelectionTool object at 0x000001AB8ECE3F50>.tool",
+        "expected_message_contains": "QMessageBox.warning' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_shape_native_gesture_is_reversible",
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_degenerate_gesture_is_fail_closed"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 12,
+      "legacy_id": "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert (50, 50) is None\n +  where (50, 50) = <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0>._center\n +    where <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0> = <test_rect_ellipse.TestEllipseSelectionTool object at 0x000001AB8ECF32D0>.tool",
+        "expected_message_contains": "QMessageBox.warning' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_shape_native_gesture_is_reversible",
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_11_12_degenerate_gesture_is_fail_closed"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 13,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983021849296'>.objects\n +      where <Mock name='mock.model' id='1983021849296'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB53C04D0>.scene",
+        "expected_message_contains": "QMessageBox.critical' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 14,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983020789456'>.objects\n +      where <Mock name='mock.model' id='1983020789456'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F2E50>.scene",
+        "expected_message_contains": "QMessageBox.critical' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 15,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983040493200'>.objects\n +      where <Mock name='mock.model' id='1983040493200'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3E90>.scene",
+        "expected_message_contains": "QMessageBox.critical' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 16,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert 0 == 2\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983041143632'>.objects\n +      where <Mock name='mock.model' id='1983041143632'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500210>.scene",
+        "expected_message_contains": "QMessageBox.critical' called with wrong argument types",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 17,
+      "legacy_id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_get_image_array",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert None is not None",
+        "expected_message_contains": "assert None is not None",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_17_accepts_real_ndarray_and_qimage"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 18,
+      "legacy_id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_compute_edge_map",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert None is not None\n +  where None = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90>._edge_map\n +    where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB579B210>.tool",
+        "expected_message_contains": "assert None is not None",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_18_cache_hit_and_invalidation_are_observable"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 19,
+      "legacy_id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_mouse_press_computes_path_between_anchors",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert 1 == 2\n +  where 1 = len([(10.0, 10.0)])\n +    where [(10.0, 10.0)] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290>._anchors\n +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4050>.tool",
+        "expected_message_contains": "assert 1 == 2",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_19_worker_delivers_real_success_and_error",
+        "tests/test_legacy_phase4_contracts.py::test_phase4_cases_19_20_stale_result_cannot_overwrite_new_preview"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 20,
+      "legacy_id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_mouse_move_updates_preview",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert 0 > 0\n +  where 0 = len([])\n +    where [] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0>._preview_path\n +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4750>.tool",
+        "expected_message_contains": "assert 0 > 0",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_20_preview_is_delivered_by_real_qt_worker",
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_20_cancel_discards_pending_result_without_history",
+        "tests/test_legacy_phase4_contracts.py::test_phase4_cases_19_20_stale_result_cannot_overwrite_new_preview",
+        "tests/test_legacy_phase4_contracts.py::test_phase4_real_segment_timeout_cancels_and_discards_late_result"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 21,
+      "legacy_id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_double_click_closes_selection",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: Expected 'execute' to have been called once. Called 0 times.",
+        "expected_message_contains": "Expected 'execute' to have been called once",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_21_real_double_click_closes_and_invalid_path_stays_out"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 22,
+      "legacy_id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_compute_magnetic_path_with_edge_map",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert 0 > 0\n +  where 0 = len([])",
+        "expected_message_contains": "assert 0 > 0",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_22_solver_is_fail_closed_without_image_and_works_with_edges"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 23,
+      "legacy_id": "test_mask_utils_curvature::tests.test_mask_utils_curvature.TestCurvatureAdaptiveSimplify::test_circle_contour",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert 4 >= 8\n +  where 4 = len([(80, 50), (28, 71), (28, 28), (79, 44)])",
+        "expected_message_contains": "assert 4 >= 8",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_23_min_points_is_explicit_and_default_stays_permissive"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é superseded_contract; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 24,
+      "legacy_id": "test_mask_viewer::tests.test_mask_viewer.TestMaskViewer::test_reset_view",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: 1.5 != 1.0",
+        "expected_message_contains": "1.5 != 1.0",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase2_contracts.py::test_phase2_case_24_reset_view_uses_real_fit_and_center"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é superseded_contract; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 25,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "assert None is not None",
+        "expected_message_contains": "maximum recursion depth exceeded",
+        "reconciliation": "unexpected_signature"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order"
+      ],
+      "substitute_status": "passed",
+      "decision": "CORRIGIDO",
+      "decision_basis": "CORRIGIDO: o commit 96ab35d introduziu _freeze_state cycle-safe; o teste nativo com Scene/CommandManager reais confirma undo/redo com metadata cíclica. A execução histórica atual ainda falha com assinatura diferente porque a fixture Mock não pode ser desempacotada; essa divergência permanece registrada e o snapshot não é alterado.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 26,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_rect_tool_with_commands",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983040518608'>.objects\n +      where <Mock name='mock.model' id='1983040518608'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3C90>.scene",
+        "expected_message_contains": "assert 0 == 1",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase3_contracts.py::test_phase3_case_26_rectangle_round_trip_and_history_use_real_scene"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    },
+    {
+      "case": 27,
+      "legacy_id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_magnetic_lasso_with_commands",
+      "historical_observation": {
+        "status": "failed",
+        "failure": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983041454544'>.objects\n +      where <Mock name='mock.model' id='1983041454544'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500710>.scene",
+        "expected_message_contains": "assert 0 == 1",
+        "reconciliation": "matched"
+      },
+      "substitute_tests": [
+        "tests/test_legacy_phase4_contracts.py::test_phase4_case_27_end_to_end_real_image_worker_cache_scene_history"
+      ],
+      "substitute_status": "passed",
+      "decision": "NO_CHANGE",
+      "decision_basis": "NO_CHANGE: a evidência substituta real passou e a própria classificação histórica é obsolete_fixture; não foi demonstrado defeito remanescente no contrato atual. A assinatura/ausência histórica permanece preservada para reconciliação, sem reescrita.",
+      "residual_condition": "A aceitação histórica global permanece bloqueada até a divergência ser formalmente representada sem alterar os snapshots.",
+      "evidence_status": "REGISTERED_NOT_MERGE_ACCEPTANCE"
+    }
+  ],
+  "blocking_reasons": [
+    "historical runner remains accepted=false with 15/27 matched, 11 unexpected signatures and 12 missing expected signatures",
+    "the 63 untracked manifests have been individually inventoried but ownership, final scope and authorized treatment remain unresolved",
+    "Fase 7 has not been executed as a complete same-candidate gate"
+  ]
+}

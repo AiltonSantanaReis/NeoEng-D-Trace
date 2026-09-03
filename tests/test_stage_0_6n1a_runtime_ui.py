@@ -155,7 +155,7 @@ def test_magnetic_preview_returns_immediately_and_completes_in_worker(qt_app):
     tool._anchors = [(109, 20)]
     tool._path = [(109, 20)]
 
-    def deliberately_slow_preview(_features, start, end, _settings):
+    def deliberately_slow_preview(_features, start, end, _settings, cancel_check=None):
         time.sleep(0.25)
         return [tuple(start), tuple(end)]
 
@@ -186,7 +186,7 @@ def test_magnetic_confirmed_segment_also_runs_outside_gui_thread(qt_app):
     tool._anchors = [(109, 20)]
     tool._path = [(109, 20)]
 
-    def deliberately_slow_commit(_features, start, end, _settings):
+    def deliberately_slow_commit(_features, start, end, _settings, cancel_check=None):
         time.sleep(0.25)
         return [tuple(start), tuple(end)]
 

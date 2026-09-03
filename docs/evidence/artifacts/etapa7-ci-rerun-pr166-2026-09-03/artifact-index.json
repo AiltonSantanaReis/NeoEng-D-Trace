@@ -1,0 +1,41 @@
+{
+  "schema": "neoeng.evidence-artifact-index",
+  "package": "etapa7-ci-rerun-pr166-2026-09-03",
+  "status": "PASS_REMOTE_BLOCKED_INTEGRATION",
+  "source_head_commit": "f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9",
+  "tested_commit": "1eb297dec2faea82b06779778b6463b94a625897",
+  "files": [
+    {
+      "path": "remote-ci-rerun.json",
+      "bytes": 4802,
+      "sha256": "800052507b82c280310f60bd4b116cae53add477bc98ed827fc96813afb234ea"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "<github-artifact>/validation-linux-python-3.11",
+      "id": 9905289811,
+      "size_bytes": 75862,
+      "digest": "sha256:3b6074db0895d1a28d2803f7ccb6944d5ebd1def93b97e6ed2edab27c00f8233",
+      "retention_days": 30
+    },
+    {
+      "path": "<github-artifact>/validation-windows-python-3.11",
+      "id": 9905574609,
+      "size_bytes": 63220911,
+      "digest": "sha256:1ae8d5e744727bce0d4f6aaa2e8318a53055f2452586aba5079954a0e2bd9522",
+      "retention_days": 30
+    },
+    {
+      "path": "<github-artifact>/windows-coverage/summary.json",
+      "bytes": 152979,
+      "sha256": "5e00659aadb205c2e48c2790fc178f207fee311994fb8113b726bb80a9ef37aa"
+    },
+    {
+      "path": "<github-artifact>/windows-legacy-tests/formal-gate.json",
+      "bytes": 10743,
+      "sha256": "9d49a6f44a1d1ae3e89a71ee5fb4659c700570c3ca24574744e182a4ac62731f"
+    }
+  ],
+  "index_excludes_itself": true
+}

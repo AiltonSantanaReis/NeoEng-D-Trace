@@ -130,6 +130,30 @@ def test_command_base_helpers_and_empty_history_adapter():
     assert _EmptyHistoryCommand().undo(None) is None
 
 
+def test_freeze_state_terminates_on_cycles_and_keeps_changes_observable():
+    value = {}
+    value["self"] = value
+
+    first = _freeze_state(value)
+    assert first == _freeze_state(value)
+
+    value["changed"] = True
+    assert _freeze_state(value) != first
+
+
+def test_freeze_state_preserves_private_state_on_real_objects():
+    class State:
+        def __init__(self):
+            self.visible = True
+            self._private = 1
+
+    value = State()
+    first = _freeze_state(value)
+    value._private = 2
+
+    assert _freeze_state(value) != first
+
+
 def test_manager_restores_snapshot_execution_and_contract_failures():
     scene = _scene()
 

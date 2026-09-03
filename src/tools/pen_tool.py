@@ -10,7 +10,10 @@ from typing import List, Optional, Tuple
 
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
-from PySide6.QtWidgets import QMenu, QMessageBox
+from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
+    QMenu,
+    QMessageBox,
+)
 
 from src.core.bezier_geometry import (
     BezierSegments,
@@ -401,8 +404,8 @@ class PenTool(BaseTool):
         manager = getattr(model, "cmd", None) if model is not None else None
         if manager is None:
             self._last_error = "Undo/Redo command history is unavailable."
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 "Bézier Edit Unavailable",
                 self._last_error,
             )
@@ -421,15 +424,15 @@ class PenTool(BaseTool):
         self._last_command_result = result
         if result.status is CommandStatus.REJECTED:
             self._last_error = result.message
-            QMessageBox.warning(
-                self.canvas_view,
+            self._show_message(
+                "warning",
                 "Bézier Edit Rejected",
                 result.message or "The handle movement was rejected.",
             )
         elif result.status is CommandStatus.FAILED:
             self._last_error = result.message
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 "Bézier Edit Failed",
                 result.message or "The handle movement failed.",
             )
@@ -610,8 +613,8 @@ class PenTool(BaseTool):
         manager = getattr(model, "cmd", None) if model is not None else None
         if manager is None:
             self._last_error = "Undo/Redo command history is unavailable."
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 "Pen Creation Unavailable",
                 self._last_error,
             )
@@ -634,24 +637,24 @@ class PenTool(BaseTool):
         self._last_command_result = result
         if result.status is CommandStatus.REJECTED:
             self._last_error = result.message
-            QMessageBox.warning(
-                self.canvas_view,
+            self._show_message(
+                "warning",
                 "Pen Creation Rejected",
                 result.message or "The Bézier object creation was rejected.",
             )
             return None
         if result.status is CommandStatus.FAILED:
             self._last_error = result.message
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 "Pen Creation Failed",
                 result.message or "The Bézier object creation failed.",
             )
             return None
         if not result.changed or command.object_id is None:
             self._last_error = result.message or "No Bézier object was created."
-            QMessageBox.warning(
-                self.canvas_view,
+            self._show_message(
+                "warning",
                 "Pen Creation Unchanged",
                 self._last_error,
             )

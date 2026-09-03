@@ -111,7 +111,9 @@ def test_legacy_pathfinder_and_workers_cover_all_solver_modes(monkeypatch) -> No
 
     features = build_edge_features(image)
     monkeypatch.setattr(
-        magnetic_module, "live_wire_preview_path", lambda *args: [(1, 1), (2, 2)]
+        magnetic_module,
+        "live_wire_preview_path",
+        lambda *args, **kwargs: [(1, 1), (2, 2)],
     )
     preview = _MagneticPathWorker(
         3,
@@ -132,7 +134,7 @@ def test_legacy_pathfinder_and_workers_cover_all_solver_modes(monkeypatch) -> No
     monkeypatch.setattr(
         magnetic_module,
         "dijkstra_pathfinding",
-        lambda *args: (_ for _ in ()).throw(RuntimeError("solver failed")),
+        lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("solver failed")),
     )
     failed = _MagneticPathWorker(
         4,

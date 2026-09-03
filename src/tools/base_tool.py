@@ -4,7 +4,9 @@ from typing import TYPE_CHECKING, Any, Optional, Sequence, Tuple
 
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QMouseEvent, QPainter
-from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox, QWidget
+
+from src.core.logger import logger
 
 # Evita importação circular apenas para tipagem
 if TYPE_CHECKING:
@@ -116,6 +118,20 @@ class BaseTool:
         pan_x, pan_y = pan if pan is not None else (0.0, 0.0)
         return int(round((x - pan_x) / zoom)), int(round((y - pan_y) / zoom))
 
+    def _message_parent(self) -> Optional[QWidget]:
+        """Return a valid Qt parent while keeping adapter/headless tools usable."""
+        return self.canvas_view if isinstance(self.canvas_view, QWidget) else None
+
+    def _show_message(self, level: str, title: str, message: str) -> None:
+        """Show a tool message without replacing the original error with Qt
+        type errors.
+        """
+        parent = self._message_parent()
+        if parent is None:
+            logger.warning("%s: %s", title, message)
+            return
+        getattr(QMessageBox, level)(parent, title, message)
+
     def commit_polygon_command(
         self,
         polygon: Sequence[Tuple[int, int]],
@@ -129,8 +145,8 @@ class BaseTool:
             message = "Undo/Redo command history is unavailable."
             if hasattr(self, "_last_error"):
                 setattr(self, "_last_error", message)
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 f"{action_name} Unavailable",
                 message,
             )
@@ -142,11 +158,17 @@ class BaseTool:
         try:
             result = manager.execute(command, model)
         except Exception as exc:
+            logger.error(
+                "%s command execution failed (%s)",
+                action_name,
+                type(exc).__name__,
+                exc_info=True,
+            )
             message = f"The creation request failed ({type(exc).__name__})."
             if hasattr(self, "_last_error"):
                 setattr(self, "_last_error", message)
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 f"{action_name} Failed",
                 message,
             )
@@ -156,8 +178,8 @@ class BaseTool:
         if result.status is CommandStatus.REJECTED:
             if hasattr(self, "_last_error"):
                 setattr(self, "_last_error", result.message)
-            QMessageBox.warning(
-                self.canvas_view,
+            self._show_message(
+                "warning",
                 f"{action_name} Rejected",
                 result.message or "The polygon creation was rejected.",
             )
@@ -165,8 +187,8 @@ class BaseTool:
         if result.status is CommandStatus.FAILED:
             if hasattr(self, "_last_error"):
                 setattr(self, "_last_error", result.message)
-            QMessageBox.critical(
-                self.canvas_view,
+            self._show_message(
+                "critical",
                 f"{action_name} Failed",
                 result.message or "The polygon creation failed.",
             )
@@ -175,8 +197,8 @@ class BaseTool:
             message = result.message or "No polygon was created."
             if hasattr(self, "_last_error"):
                 setattr(self, "_last_error", message)
-            QMessageBox.warning(
-                self.canvas_view,
+            self._show_message(
+                "warning",
                 f"{action_name} Unchanged",
                 message,
             )

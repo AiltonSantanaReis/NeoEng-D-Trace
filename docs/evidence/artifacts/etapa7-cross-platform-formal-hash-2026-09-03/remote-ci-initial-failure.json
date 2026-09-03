@@ -1,0 +1,31 @@
+{
+  "schema": "neoeng.dtrace.remote-ci-failure-analysis",
+  "schema_version": 1,
+  "pr": 166,
+  "run_id": "33758279765",
+  "head_before_correction": "5aed083e0daf9436d720bef3f2b0e5e889f1233f",
+  "jobs": {
+    "linux": {"job_id": "100657937566", "status": "FAIL", "passed": 1915, "failed": 3, "warnings": 1},
+    "windows": {"job_id": "100657937266", "status": "PASS"}
+  },
+  "failed_tests": [
+    "tests/test_formal_legacy_gate.py::test_current_contract_resolves_all_legacy_cases_without_rewriting_history",
+    "tests/test_formal_legacy_gate.py::test_current_contract_rejects_an_unreviewed_case",
+    "tests/test_formal_legacy_gate.py::test_current_contract_rejects_a_changed_replacement_mapping"
+  ],
+  "failure_message": "Formal decisions source reconciliation hash does not match",
+  "root_cause": {
+    "old_comparison": "raw bytes of reconciliation.json against historical_reconciliation_sha256",
+    "historical_raw_crlf_sha256": "296ca97f07341eedd99ef8aae57d7053fe6110bdddbc01a55b872d3bf20fb493",
+    "linux_checkout_lf_sha256": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587",
+    "classification": "cross-platform validation defect; not a product or fixture failure"
+  },
+  "correction": {
+    "preserve_raw_historical_field": true,
+    "new_field": "historical_reconciliation_sha256_lf",
+    "comparison": "canonical LF digest via _canonical_sha256(reconciliation_path)",
+    "semantic_commit": "78e47d75a17775f8f38ceddb2551ed570cc0cf2f",
+    "tested_commit": "42dcb63d032d9e973664850222241ae9e9666bb5"
+  },
+  "remote_rerun": "PENDING_PUSH"
+}
