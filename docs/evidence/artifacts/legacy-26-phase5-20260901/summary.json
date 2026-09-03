@@ -1,0 +1,700 @@
+{
+  "schema_version": 5,
+  "created_at_utc": "2026-09-01T21:21:22.688754+00:00",
+  "project_root": "<REPO_ROOT>",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "group": "all",
+  "integrity": "passed",
+  "tested_commit": "eaa28b9a75194d25741323b4b72911426a740349",
+  "source_head_commit": "eaa28b9a75194d25741323b4b72911426a740349",
+  "working_tree_dirty": true,
+  "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+  "reconciliation_manifest": "<REPO_ROOT>\\quality\\legacy_tests\\reconciliation.json",
+  "reconciliation": {
+    "status": "failed",
+    "accepted": false,
+    "expected_failures": 27,
+    "matched_failures": 15,
+    "unexpected_failures": [
+      {
+        "id": "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection",
+        "reason": "failure signature changed; expected substring \"QMessageBox.warning' called with wrong argument types\""
+      },
+      {
+        "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid",
+        "reason": "failure signature changed; expected substring \"QMessageBox.critical' called with wrong argument types\""
+      },
+      {
+        "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit",
+        "reason": "failure signature changed; expected substring \"QMessageBox.critical' called with wrong argument types\""
+      },
+      {
+        "id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices",
+        "reason": "failure signature changed; expected substring \"QMessageBox.warning' called with wrong argument types\""
+      },
+      {
+        "id": "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection",
+        "reason": "failure signature changed; expected substring \"QMessageBox.warning' called with wrong argument types\""
+      },
+      {
+        "id": "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection",
+        "reason": "failure signature changed; expected substring \"QMessageBox.warning' called with wrong argument types\""
+      },
+      {
+        "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands",
+        "reason": "failure signature changed; expected substring \"QMessageBox.critical' called with wrong argument types\""
+      },
+      {
+        "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands",
+        "reason": "failure signature changed; expected substring \"QMessageBox.critical' called with wrong argument types\""
+      },
+      {
+        "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands",
+        "reason": "failure signature changed; expected substring 'maximum recursion depth exceeded'"
+      },
+      {
+        "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands",
+        "reason": "failure signature changed; expected substring \"QMessageBox.critical' called with wrong argument types\""
+      },
+      {
+        "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo",
+        "reason": "failure signature changed; expected substring \"QMessageBox.critical' called with wrong argument types\""
+      }
+    ],
+    "missing_expected_failures": [
+      "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection",
+      "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid",
+      "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit",
+      "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_commit_selection_converts_to_integers",
+      "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices",
+      "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection",
+      "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection",
+      "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands",
+      "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands",
+      "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo",
+      "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands",
+      "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands"
+    ]
+  },
+  "replacement_test_validation": {
+    "status": "collected",
+    "references": 17,
+    "pytest_returncode": 0
+  },
+  "selected_files": 24,
+  "raw_test_status": "failed",
+  "totals": {
+    "tests": 196,
+    "failures": 26,
+    "errors": 0,
+    "skipped": 0,
+    "failed_files": 12
+  },
+  "results": [
+    {
+      "file": "test_auto_detect_basic.py",
+      "group": "non-qt",
+      "declared_test_count": 8,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_auto_detect_basic.xml",
+      "log": "<RUN_TMP>\\test_auto_detect_basic.txt",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.231,
+      "failure_details": []
+    },
+    {
+      "file": "test_auto_detect_enhanced.py",
+      "group": "non-qt",
+      "declared_test_count": 6,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_auto_detect_enhanced.xml",
+      "log": "<RUN_TMP>\\test_auto_detect_enhanced.txt",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.256,
+      "failure_details": []
+    },
+    {
+      "file": "test_auto_detect_integration.py",
+      "group": "non-qt",
+      "declared_test_count": 7,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_auto_detect_integration.xml",
+      "log": "<RUN_TMP>\\test_auto_detect_integration.txt",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.255,
+      "failure_details": []
+    },
+    {
+      "file": "test_auto_detect_perfect.py",
+      "group": "non-qt",
+      "declared_test_count": 9,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_auto_detect_perfect.xml",
+      "log": "<RUN_TMP>\\test_auto_detect_perfect.txt",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.251,
+      "failure_details": []
+    },
+    {
+      "file": "test_broadphase.py",
+      "group": "non-qt",
+      "declared_test_count": 14,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_broadphase.xml",
+      "log": "<RUN_TMP>\\test_broadphase.txt",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.157,
+      "failure_details": []
+    },
+    {
+      "file": "test_commands_layers.py",
+      "group": "non-qt",
+      "declared_test_count": 2,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_commands_layers.xml",
+      "log": "<RUN_TMP>\\test_commands_layers.txt",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.163,
+      "failure_details": []
+    },
+    {
+      "file": "test_convex_decomp.py",
+      "group": "non-qt",
+      "declared_test_count": 19,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_convex_decomp.xml",
+      "log": "<RUN_TMP>\\test_convex_decomp.txt",
+      "tests": 19,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.378,
+      "failure_details": [
+        {
+          "classname": "tests.test_convex_decomp.TestConvexDecomp",
+          "name": "test_ear_clipping_concave_l_shape",
+          "kind": "failure",
+          "message": "ValueError: Triangulation did not preserve polygon geometry",
+          "body": "quality\\legacy_tests\\tests\\test_convex_decomp.py:111: in test_ear_clipping_concave_l_shape\n    triangles = ear_clipping_triangulation(l_shape)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\core\\convex_decomp.py:277: in ear_clipping_triangulation\n    return _validated_triangulation(canonical, triangles)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\core\\convex_decomp.py:89: in _validated_triangulation\n    raise ValueError(\"Triangulation did not preserve polygon geometry\")\nE   ValueError: Triangulation did not preserve polygon geometry",
+          "id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_ear_clipping_concave_l_shape"
+        },
+        {
+          "classname": "tests.test_convex_decomp.TestConvexDecomp",
+          "name": "test_convex_decompose_l_shape",
+          "kind": "failure",
+          "message": "ValueError: Triangulation did not preserve polygon geometry",
+          "body": "quality\\legacy_tests\\tests\\test_convex_decomp.py:132: in test_convex_decompose_l_shape\n    convex_polygons = convex_decompose_polygon(l_shape)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\core\\convex_decomp.py:447: in convex_decompose_polygon\n    for triangle in triangulate_to_convex(polygon)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\core\\convex_decomp.py:209: in triangulate_to_convex\n    return ear_clipping_triangulation(canonical)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\core\\convex_decomp.py:277: in ear_clipping_triangulation\n    return _validated_triangulation(canonical, triangles)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\core\\convex_decomp.py:89: in _validated_triangulation\n    raise ValueError(\"Triangulation did not preserve polygon geometry\")\nE   ValueError: Triangulation did not preserve polygon geometry",
+          "id": "test_convex_decomp::tests.test_convex_decomp.TestConvexDecomp::test_convex_decompose_l_shape"
+        }
+      ]
+    },
+    {
+      "file": "test_edge_utils.py",
+      "group": "non-qt",
+      "declared_test_count": 8,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_edge_utils.xml",
+      "log": "<RUN_TMP>\\test_edge_utils.txt",
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.404,
+      "failure_details": [
+        {
+          "classname": "tests.test_edge_utils.TestEdgeUtils",
+          "name": "test_sobel_magnitude",
+          "kind": "failure",
+          "message": "AssertionError: assert dtype('float32') == <class 'numpy.float64'>\n +  where dtype('float32') = array([[0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n    ... 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.]], shape=(100, 100), dtype=float32).dtype\n +  and   <class 'numpy.float64'> = np.float64",
+          "body": "quality\\legacy_tests\\tests\\test_edge_utils.py:50: in test_sobel_magnitude\n    assert magnitude.dtype == np.float64\nE   AssertionError: assert dtype('float32') == <class 'numpy.float64'>\nE    +  where dtype('float32') = array([[0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n    ... 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.],\\n       [0., 0., 0., ..., 0., 0., 0.]], shape=(100, 100), dtype=float32).dtype\nE    +  and   <class 'numpy.float64'> = np.float64",
+          "id": "test_edge_utils::tests.test_edge_utils.TestEdgeUtils::test_sobel_magnitude"
+        }
+      ]
+    },
+    {
+      "file": "test_expand_contract_command.py",
+      "group": "non-qt",
+      "declared_test_count": 1,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_expand_contract_command.xml",
+      "log": "<RUN_TMP>\\test_expand_contract_command.txt",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.162,
+      "failure_details": []
+    },
+    {
+      "file": "test_export_preview.py",
+      "group": "qt",
+      "declared_test_count": 2,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_export_preview.xml",
+      "log": "<RUN_TMP>\\test_export_preview.txt",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.23,
+      "failure_details": []
+    },
+    {
+      "file": "test_exporters.py",
+      "group": "non-qt",
+      "declared_test_count": 12,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_exporters.xml",
+      "log": "<RUN_TMP>\\test_exporters.txt",
+      "tests": 12,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.658,
+      "failure_details": [
+        {
+          "classname": "tests.test_exporters.TestExporters",
+          "name": "test_atlas_rotation",
+          "kind": "failure",
+          "message": "AssertionError: 1 != 2",
+          "body": "quality\\legacy_tests\\tests\\test_exporters.py:189: in test_atlas_rotation\n    self.assertEqual(len(atlases), 2)  # Since rotation not implemented, tall and wide don't fit together\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: 1 != 2",
+          "id": "test_exporters::tests.test_exporters.TestExporters::test_atlas_rotation"
+        }
+      ]
+    },
+    {
+      "file": "test_groups.py",
+      "group": "non-qt",
+      "declared_test_count": 2,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_groups.xml",
+      "log": "<RUN_TMP>\\test_groups.txt",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.165,
+      "failure_details": []
+    },
+    {
+      "file": "test_handle_command.py",
+      "group": "non-qt",
+      "declared_test_count": 1,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_handle_command.xml",
+      "log": "<RUN_TMP>\\test_handle_command.txt",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.376,
+      "failure_details": [
+        {
+          "classname": "tests.test_handle_command.TestHandleMove",
+          "name": "test_handle_move_undo_redo",
+          "kind": "failure",
+          "message": "ValueError: Invalid polygon",
+          "body": "quality\\legacy_tests\\tests\\test_handle_command.py:10: in test_handle_move_undo_redo\n    s.add_object('o1', [(0,0),(10,0),(20,0)])\nsrc\\models\\scene.py:373: in add_object\n    raise ValueError(\"Invalid polygon\")\nE   ValueError: Invalid polygon",
+          "id": "test_handle_command::tests.test_handle_command.TestHandleMove::test_handle_move_undo_redo"
+        }
+      ]
+    },
+    {
+      "file": "test_lasso.py",
+      "group": "qt",
+      "declared_test_count": 7,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_lasso.xml",
+      "log": "<RUN_TMP>\\test_lasso.txt",
+      "tests": 7,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 1.349,
+      "failure_details": [
+        {
+          "classname": "tests.test_lasso.TestLassoTool",
+          "name": "test_mouse_release_commits_selection",
+          "kind": "failure",
+          "message": "assert [(0.0, 0.0), ...0), (50, 100)] == []\n  \n  Left contains 3 more items, first extra item: (0.0, 0.0)\n  Use -v to get more diff",
+          "body": "quality\\legacy_tests\\tests\\test_lasso.py:132: in test_mouse_release_commits_selection\n    assert self.tool._points == []  # Reset after commit\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   assert [(0.0, 0.0), ...0), (50, 100)] == []\nE     \nE     Left contains 3 more items, first extra item: (0.0, 0.0)\nE     Use -v to get more diff",
+          "id": "test_lasso::tests.test_lasso.TestLassoTool::test_mouse_release_commits_selection"
+        }
+      ]
+    },
+    {
+      "file": "test_magnetic_lasso.py",
+      "group": "qt",
+      "declared_test_count": 15,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_magnetic_lasso.xml",
+      "log": "<RUN_TMP>\\test_magnetic_lasso.txt",
+      "tests": 15,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0,
+      "time": 1.465,
+      "failure_details": [
+        {
+          "classname": "tests.test_magnetic_lasso.TestMagneticLassoTool",
+          "name": "test_get_image_array",
+          "kind": "failure",
+          "message": "assert None is not None",
+          "body": "quality\\legacy_tests\\tests\\test_magnetic_lasso.py:124: in test_get_image_array\n    assert array is not None\nE   assert None is not None",
+          "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_get_image_array"
+        },
+        {
+          "classname": "tests.test_magnetic_lasso.TestMagneticLassoTool",
+          "name": "test_compute_edge_map",
+          "kind": "failure",
+          "message": "assert None is not None\n +  where None = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90>._edge_map\n +    where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB579B210>.tool",
+          "body": "quality\\legacy_tests\\tests\\test_magnetic_lasso.py:133: in test_compute_edge_map\n    assert self.tool._edge_map is not None\nE   assert None is not None\nE    +  where None = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90>._edge_map\nE    +    where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB579B210>.tool",
+          "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_compute_edge_map"
+        },
+        {
+          "classname": "tests.test_magnetic_lasso.TestMagneticLassoTool",
+          "name": "test_mouse_press_computes_path_between_anchors",
+          "kind": "failure",
+          "message": "assert 1 == 2\n +  where 1 = len([(10.0, 10.0)])\n +    where [(10.0, 10.0)] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290>._anchors\n +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4050>.tool",
+          "body": "quality\\legacy_tests\\tests\\test_magnetic_lasso.py:168: in test_mouse_press_computes_path_between_anchors\n    assert len(self.tool._anchors) == 2\nE   assert 1 == 2\nE    +  where 1 = len([(10.0, 10.0)])\nE    +    where [(10.0, 10.0)] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290>._anchors\nE    +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4050>.tool",
+          "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_mouse_press_computes_path_between_anchors"
+        },
+        {
+          "classname": "tests.test_magnetic_lasso.TestMagneticLassoTool",
+          "name": "test_mouse_move_updates_preview",
+          "kind": "failure",
+          "message": "assert 0 > 0\n +  where 0 = len([])\n +    where [] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0>._preview_path\n +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4750>.tool",
+          "body": "quality\\legacy_tests\\tests\\test_magnetic_lasso.py:184: in test_mouse_move_updates_preview\n    assert len(self.tool._preview_path) > 0\nE   assert 0 > 0\nE    +  where 0 = len([])\nE    +    where [] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0>._preview_path\nE    +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4750>.tool",
+          "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_mouse_move_updates_preview"
+        },
+        {
+          "classname": "tests.test_magnetic_lasso.TestMagneticLassoTool",
+          "name": "test_double_click_closes_selection",
+          "kind": "failure",
+          "message": "AssertionError: Expected 'execute' to have been called once. Called 0 times.",
+          "body": "quality\\legacy_tests\\tests\\test_magnetic_lasso.py:199: in test_double_click_closes_selection\n    self.scene.cmd.execute.assert_called_once()\n<PYTHON_RUNTIME>\\Lib\\unittest\\mock.py:918: in assert_called_once\n    raise AssertionError(msg)\nE   AssertionError: Expected 'execute' to have been called once. Called 0 times.",
+          "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_double_click_closes_selection"
+        },
+        {
+          "classname": "tests.test_magnetic_lasso.TestMagneticLassoTool",
+          "name": "test_compute_magnetic_path_with_edge_map",
+          "kind": "failure",
+          "message": "assert 0 > 0\n +  where 0 = len([])",
+          "body": "quality\\legacy_tests\\tests\\test_magnetic_lasso.py:273: in test_compute_magnetic_path_with_edge_map\n    assert len(path) > 0\nE   assert 0 > 0\nE    +  where 0 = len([])",
+          "id": "test_magnetic_lasso::tests.test_magnetic_lasso.TestMagneticLassoTool::test_compute_magnetic_path_with_edge_map"
+        }
+      ]
+    },
+    {
+      "file": "test_mask_utils_curvature.py",
+      "group": "non-qt",
+      "declared_test_count": 7,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_mask_utils_curvature.xml",
+      "log": "<RUN_TMP>\\test_mask_utils_curvature.txt",
+      "tests": 7,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.43,
+      "failure_details": [
+        {
+          "classname": "tests.test_mask_utils_curvature.TestCurvatureAdaptiveSimplify",
+          "name": "test_circle_contour",
+          "kind": "failure",
+          "message": "assert 4 >= 8\n +  where 4 = len([(80, 50), (28, 71), (28, 28), (79, 44)])",
+          "body": "quality\\legacy_tests\\tests\\test_mask_utils_curvature.py:68: in test_circle_contour\n    assert len(result) >= 8  # Should keep reasonable number of points\n    ^^^^^^^^^^^^^^^^^^^^^^^\nE   assert 4 >= 8\nE    +  where 4 = len([(80, 50), (28, 71), (28, 28), (79, 44)])",
+          "id": "test_mask_utils_curvature::tests.test_mask_utils_curvature.TestCurvatureAdaptiveSimplify::test_circle_contour"
+        }
+      ]
+    },
+    {
+      "file": "test_mask_viewer.py",
+      "group": "qt",
+      "declared_test_count": 9,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_mask_viewer.xml",
+      "log": "<RUN_TMP>\\test_mask_viewer.txt",
+      "tests": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 1.39,
+      "failure_details": [
+        {
+          "classname": "tests.test_mask_viewer.TestMaskViewer",
+          "name": "test_reset_view",
+          "kind": "failure",
+          "message": "AssertionError: 1.5 != 1.0",
+          "body": "quality\\legacy_tests\\tests\\test_mask_viewer.py:161: in test_reset_view\n    self.assertEqual(zoom, 1.0)  # Should be 1.0 since we don't zoom in\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: 1.5 != 1.0",
+          "id": "test_mask_viewer::tests.test_mask_viewer.TestMaskViewer::test_reset_view"
+        }
+      ]
+    },
+    {
+      "file": "test_pen_tool.py",
+      "group": "qt",
+      "declared_test_count": 19,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_pen_tool.xml",
+      "log": "<RUN_TMP>\\test_pen_tool.txt",
+      "tests": 19,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.716,
+      "failure_details": [
+        {
+          "classname": "tests.test_pen_tool.TestPenTool",
+          "name": "test_commit_selection_valid",
+          "kind": "failure",
+          "message": "AssertionError: assert None == 'oid123'",
+          "body": "quality\\legacy_tests\\tests\\test_pen_tool.py:168: in test_commit_selection_valid\n    assert result == \"oid123\"  # Should return object ID\n    ^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: assert None == 'oid123'",
+          "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_commit_selection_valid"
+        },
+        {
+          "classname": "tests.test_pen_tool.TestPenTool",
+          "name": "test_double_click_commit",
+          "kind": "failure",
+          "message": "assert [<src.tools.p...0217B56D1750>] == []\n  \n  Left contains 2 more items, first extra item: <src.tools.pen_tool.BezierNode object at 0x00000217B56D1690>\n  Use -v to get more diff",
+          "body": "quality\\legacy_tests\\tests\\test_pen_tool.py:246: in test_double_click_commit\n    assert self.tool._nodes == []\nE   assert [<src.tools.p...0217B56D1750>] == []\nE     \nE     Left contains 2 more items, first extra item: <src.tools.pen_tool.BezierNode object at 0x00000217B56D1690>\nE     Use -v to get more diff",
+          "id": "test_pen_tool::tests.test_pen_tool.TestPenTool::test_double_click_commit"
+        }
+      ]
+    },
+    {
+      "file": "test_polygonal_lasso.py",
+      "group": "qt",
+      "declared_test_count": 10,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_polygonal_lasso.xml",
+      "log": "<RUN_TMP>\\test_polygonal_lasso.txt",
+      "tests": 10,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 1.329,
+      "failure_details": [
+        {
+          "classname": "tests.test_polygonal_lasso.TestPolygonalLassoTool",
+          "name": "test_double_click_commits_selection_with_enough_vertices",
+          "kind": "failure",
+          "message": "assert [(0, 0), (100, 0), (50, 100)] == []\n  \n  Left contains 3 more items, first extra item: (0, 0)\n  Use -v to get more diff",
+          "body": "quality\\legacy_tests\\tests\\test_polygonal_lasso.py:98: in test_double_click_commits_selection_with_enough_vertices\n    assert self.tool._vertices == []\nE   assert [(0, 0), (100, 0), (50, 100)] == []\nE     \nE     Left contains 3 more items, first extra item: (0, 0)\nE     Use -v to get more diff",
+          "id": "test_polygonal_lasso::tests.test_polygonal_lasso.TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices"
+        }
+      ]
+    },
+    {
+      "file": "test_rect_ellipse.py",
+      "group": "qt",
+      "declared_test_count": 14,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_rect_ellipse.xml",
+      "log": "<RUN_TMP>\\test_rect_ellipse.txt",
+      "tests": 14,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "time": 1.354,
+      "failure_details": [
+        {
+          "classname": "tests.test_rect_ellipse.TestRectSelectionTool",
+          "name": "test_mouse_release_commits_selection",
+          "kind": "failure",
+          "message": "assert (10, 10) is None\n +  where (10, 10) = <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550>._start_point\n +    where <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550> = <test_rect_ellipse.TestRectSelectionTool object at 0x000001AB8ECE3F50>.tool",
+          "body": "quality\\legacy_tests\\tests\\test_rect_ellipse.py:137: in test_mouse_release_commits_selection\n    assert self.tool._start_point is None\nE   assert (10, 10) is None\nE    +  where (10, 10) = <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550>._start_point\nE    +    where <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550> = <test_rect_ellipse.TestRectSelectionTool object at 0x000001AB8ECE3F50>.tool",
+          "id": "test_rect_ellipse::tests.test_rect_ellipse.TestRectSelectionTool::test_mouse_release_commits_selection"
+        },
+        {
+          "classname": "tests.test_rect_ellipse.TestEllipseSelectionTool",
+          "name": "test_mouse_release_commits_selection",
+          "kind": "failure",
+          "message": "assert (50, 50) is None\n +  where (50, 50) = <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0>._center\n +    where <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0> = <test_rect_ellipse.TestEllipseSelectionTool object at 0x000001AB8ECF32D0>.tool",
+          "body": "quality\\legacy_tests\\tests\\test_rect_ellipse.py:295: in test_mouse_release_commits_selection\n    assert self.tool._center is None\nE   assert (50, 50) is None\nE    +  where (50, 50) = <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0>._center\nE    +    where <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0> = <test_rect_ellipse.TestEllipseSelectionTool object at 0x000001AB8ECF32D0>.tool",
+          "id": "test_rect_ellipse::tests.test_rect_ellipse.TestEllipseSelectionTool::test_mouse_release_commits_selection"
+        }
+      ]
+    },
+    {
+      "file": "test_sat2d.py",
+      "group": "non-qt",
+      "declared_test_count": 13,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_sat2d.xml",
+      "log": "<RUN_TMP>\\test_sat2d.txt",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.155,
+      "failure_details": []
+    },
+    {
+      "file": "test_scene_layers.py",
+      "group": "non-qt",
+      "declared_test_count": 2,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_scene_layers.xml",
+      "log": "<RUN_TMP>\\test_scene_layers.txt",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.065,
+      "failure_details": []
+    },
+    {
+      "file": "test_smoothing.py",
+      "group": "non-qt",
+      "declared_test_count": 2,
+      "returncode": 0,
+      "status": "passed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_smoothing.xml",
+      "log": "<RUN_TMP>\\test_smoothing.txt",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.05,
+      "failure_details": []
+    },
+    {
+      "file": "test_tools_integrated.py",
+      "group": "qt",
+      "declared_test_count": 7,
+      "returncode": 1,
+      "status": "failed",
+      "timed_out": false,
+      "junit": "<RUN_TMP>\\test_tools_integrated.xml",
+      "log": "<RUN_TMP>\\test_tools_integrated.txt",
+      "tests": 7,
+      "failures": 7,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.842,
+      "failure_details": [
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_lasso_tool_with_commands",
+          "kind": "failure",
+          "message": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983021849296'>.objects\n +      where <Mock name='mock.model' id='1983021849296'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB53C04D0>.scene",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:75: in test_lasso_tool_with_commands\n    assert len(self.scene.objects) == 1\nE   AssertionError: assert 0 == 1\nE    +  where 0 = len({})\nE    +    where {} = <Mock name='mock.model' id='1983021849296'>.objects\nE    +      where <Mock name='mock.model' id='1983021849296'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB53C04D0>.scene",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_lasso_tool_with_commands"
+        },
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_polygonal_lasso_with_commands",
+          "kind": "failure",
+          "message": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983020789456'>.objects\n +      where <Mock name='mock.model' id='1983020789456'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F2E50>.scene",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:108: in test_polygonal_lasso_with_commands\n    assert len(self.scene.objects) == 1\nE   AssertionError: assert 0 == 1\nE    +  where 0 = len({})\nE    +    where {} = <Mock name='mock.model' id='1983020789456'>.objects\nE    +      where <Mock name='mock.model' id='1983020789456'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F2E50>.scene",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_polygonal_lasso_with_commands"
+        },
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_pen_tool_with_commands",
+          "kind": "failure",
+          "message": "assert None is not None",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:131: in test_pen_tool_with_commands\n    assert result is not None\nE   assert None is not None",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_pen_tool_with_commands"
+        },
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_rect_tool_with_commands",
+          "kind": "failure",
+          "message": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983040518608'>.objects\n +      where <Mock name='mock.model' id='1983040518608'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3C90>.scene",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:159: in test_rect_tool_with_commands\n    assert len(self.scene.objects) == 1\nE   AssertionError: assert 0 == 1\nE    +  where 0 = len({})\nE    +    where {} = <Mock name='mock.model' id='1983040518608'>.objects\nE    +      where <Mock name='mock.model' id='1983040518608'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3C90>.scene",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_rect_tool_with_commands"
+        },
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_ellipse_tool_with_commands",
+          "kind": "failure",
+          "message": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983040493200'>.objects\n +      where <Mock name='mock.model' id='1983040493200'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3E90>.scene",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:191: in test_ellipse_tool_with_commands\n    assert len(self.scene.objects) == 1\nE   AssertionError: assert 0 == 1\nE    +  where 0 = len({})\nE    +    where {} = <Mock name='mock.model' id='1983040493200'>.objects\nE    +      where <Mock name='mock.model' id='1983040493200'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3E90>.scene",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_ellipse_tool_with_commands"
+        },
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_multiple_operations_undo_redo",
+          "kind": "failure",
+          "message": "AssertionError: assert 0 == 2\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983041143632'>.objects\n +      where <Mock name='mock.model' id='1983041143632'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500210>.scene",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:238: in test_multiple_operations_undo_redo\n    assert len(self.scene.objects) == 2\nE   AssertionError: assert 0 == 2\nE    +  where 0 = len({})\nE    +    where {} = <Mock name='mock.model' id='1983041143632'>.objects\nE    +      where <Mock name='mock.model' id='1983041143632'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500210>.scene",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_multiple_operations_undo_redo"
+        },
+        {
+          "classname": "tests.test_tools_integrated.TestToolsIntegrated",
+          "name": "test_magnetic_lasso_with_commands",
+          "kind": "failure",
+          "message": "AssertionError: assert 0 == 1\n +  where 0 = len({})\n +    where {} = <Mock name='mock.model' id='1983041454544'>.objects\n +      where <Mock name='mock.model' id='1983041454544'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500710>.scene",
+          "body": "quality\\legacy_tests\\tests\\test_tools_integrated.py:289: in test_magnetic_lasso_with_commands\n    assert len(self.scene.objects) == 1\nE   AssertionError: assert 0 == 1\nE    +  where 0 = len({})\nE    +    where {} = <Mock name='mock.model' id='1983041454544'>.objects\nE    +      where <Mock name='mock.model' id='1983041454544'> = <test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500710>.scene",
+          "id": "test_tools_integrated::tests.test_tools_integrated.TestToolsIntegrated::test_magnetic_lasso_with_commands"
+        }
+      ]
+    }
+  ]
+}

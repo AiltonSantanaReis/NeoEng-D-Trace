@@ -1,3 +1,5 @@
+- `ETAPA_7_SYMLINK_VMWARE_2026-09-02.md` — prova autorizada de criação real de symlinks e dos dois contratos de rejeição no Windows 11/VMware; `2 passed`, `0 skipped`; CI/empacotamento permanecem pendentes.
+
 - INVENTARIO_PUBLICO_INTERFACE_ETAPAS_0_9_2026-08-23.md — inventário público de ações, sinais, ferramentas, painéis, menus, atalhos, exportadores e estados observáveis.
 - REMEDIACAO_ACHADOS_AUDITORIA_ETAPAS_0_9_2026-08-23.md — reexecução dos gates, correções, hashes, resultados e limitações residuais da remediação.
 - AUDITORIA_CONFORMIDADE_TEXTO_FONTE_ETAPAS_0_9_2026-08-23.md — auditoria original preservada com reauditoria anexada.- `ETAPA_7_PAINEIS_LATERAIS_2026-08-22.md` — snapshot pré-merge PASS_LOCAL do escopo comprovado do GroupsPanel; preservado sem reescrita retroativa.

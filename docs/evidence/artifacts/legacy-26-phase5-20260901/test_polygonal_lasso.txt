@@ -1,0 +1,14 @@
+...F......                                                               [100%]
+================================== FAILURES ===================================
+_ TestPolygonalLassoTool.test_double_click_commits_selection_with_enough_vertices _
+quality\legacy_tests\tests\test_polygonal_lasso.py:98: in test_double_click_commits_selection_with_enough_vertices
+    assert self.tool._vertices == []
+E   assert [(0, 0), (100, 0), (50, 100)] == []
+E
+E     Left contains 3 more items, first extra item: (0, 0)
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Polygonal Lasso Creation Unchanged: <Mock name='mock.scene.cmd.execute().message' id='1883887987600'>
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_polygonal_lasso.py::TestPolygonalLassoTool::test_double_click_commits_selection_with_enough_vertices
+1 failed, 9 passed in 1.33s

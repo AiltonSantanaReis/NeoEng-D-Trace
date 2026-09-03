@@ -13,7 +13,7 @@ import pytest
 from PySide6.QtCore import QEvent, Qt
 from PySide6.QtWidgets import QApplication
 
-from src.core.commands import AddPolygonCommand, CommandStatus, CommandManager
+from src.core.commands import AddPolygonCommand, CommandStatus
 from src.models.scene import SceneObject
 from src.tools.ellipse_selection import EllipseSelectionTool
 from src.tools.lasso_tool import LassoTool
@@ -139,7 +139,8 @@ def test_phase3_case_06_lasso_native_gesture_is_one_reversible_creation(
 
 
 def test_phase3_case_06_lasso_rejection_preserves_preview_and_history(
-    scene_canvas, monkeypatch: pytest.MonkeyPatch,
+    scene_canvas,
+    monkeypatch: pytest.MonkeyPatch,
 ):
     """#6: invalid native geometry is rejected without partial mutation."""
 
@@ -164,6 +165,7 @@ def test_phase3_case_06_lasso_rejection_preserves_preview_and_history(
         CommandStatus.REJECTED,
         CommandStatus.FAILED,
     }
+
 
 def test_phase3_cases_07_08_pen_native_double_click_preserves_bezier_history(
     scene_canvas,
@@ -304,6 +306,7 @@ def test_phase3_cases_11_12_degenerate_gesture_is_fail_closed(
     assert scene_state_token(scene) == before
     assert scene.cmd.undo_count == 0
     assert getattr(tool, state_attribute) == point
+
 
 def test_phase3_cases_13_16_real_tools_restore_full_sequence_in_order(
     scene_canvas, tmp_path: Path

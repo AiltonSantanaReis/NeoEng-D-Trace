@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="1.349" timestamp="2026-09-01T18:21:07.589202-03:00" hostname="SANITIZED_HOST"><testcase classname="tests.test_lasso.TestLassoTool" name="test_initialization" time="0.001" /><testcase classname="tests.test_lasso.TestLassoTool" name="test_rdp_simplify" time="0.001" /><testcase classname="tests.test_lasso.TestLassoTool" name="test_mouse_press_starts_drawing" time="0.096" /><testcase classname="tests.test_lasso.TestLassoTool" name="test_mouse_move_adds_points_with_distance_threshold" time="0.002" /><testcase classname="tests.test_lasso.TestLassoTool" name="test_mouse_release_commits_selection" time="0.011"><failure message="assert [(0.0, 0.0), ...0), (50, 100)] == []&#10;  &#10;  Left contains 3 more items, first extra item: (0.0, 0.0)&#10;  Use -v to get more diff">quality\legacy_tests\tests\test_lasso.py:132: in test_mouse_release_commits_selection
+    assert self.tool._points == []  # Reset after commit
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   assert [(0.0, 0.0), ...0), (50, 100)] == []
+E
+E     Left contains 3 more items, first extra item: (0.0, 0.0)
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.test_lasso.TestLassoTool" name="test_interface_returns_tool_interface" time="0.601" /><testcase classname="tests.test_lasso.TestLassoTool" name="test_draw_overlay_renders_points" time="0.002" /></testsuite></testsuites>

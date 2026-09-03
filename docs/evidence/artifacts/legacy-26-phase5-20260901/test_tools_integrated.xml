@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="0.842" timestamp="2026-09-01T18:21:21.720698-03:00" hostname="SANITIZED_HOST"><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_lasso_tool_with_commands" time="0.105"><failure message="AssertionError: assert 0 == 1&#10; +  where 0 = len({})&#10; +    where {} = &lt;Mock name='mock.model' id='1983021849296'&gt;.objects&#10; +      where &lt;Mock name='mock.model' id='1983021849296'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB53C04D0&gt;.scene">quality\legacy_tests\tests\test_tools_integrated.py:75: in test_lasso_tool_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = &lt;Mock name='mock.model' id='1983021849296'&gt;.objects
+E    +      where &lt;Mock name='mock.model' id='1983021849296'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB53C04D0&gt;.scene</failure></testcase><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_polygonal_lasso_with_commands" time="0.009"><failure message="AssertionError: assert 0 == 1&#10; +  where 0 = len({})&#10; +    where {} = &lt;Mock name='mock.model' id='1983020789456'&gt;.objects&#10; +      where &lt;Mock name='mock.model' id='1983020789456'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F2E50&gt;.scene">quality\legacy_tests\tests\test_tools_integrated.py:108: in test_polygonal_lasso_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = &lt;Mock name='mock.model' id='1983020789456'&gt;.objects
+E    +      where &lt;Mock name='mock.model' id='1983020789456'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F2E50&gt;.scene</failure></testcase><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_pen_tool_with_commands" time="0.009"><failure message="assert None is not None">quality\legacy_tests\tests\test_tools_integrated.py:131: in test_pen_tool_with_commands
+    assert result is not None
+E   assert None is not None</failure></testcase><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_rect_tool_with_commands" time="0.002"><failure message="AssertionError: assert 0 == 1&#10; +  where 0 = len({})&#10; +    where {} = &lt;Mock name='mock.model' id='1983040518608'&gt;.objects&#10; +      where &lt;Mock name='mock.model' id='1983040518608'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3C90&gt;.scene">quality\legacy_tests\tests\test_tools_integrated.py:159: in test_rect_tool_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = &lt;Mock name='mock.model' id='1983040518608'&gt;.objects
+E    +      where &lt;Mock name='mock.model' id='1983040518608'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3C90&gt;.scene</failure></testcase><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_ellipse_tool_with_commands" time="0.008"><failure message="AssertionError: assert 0 == 1&#10; +  where 0 = len({})&#10; +    where {} = &lt;Mock name='mock.model' id='1983040493200'&gt;.objects&#10; +      where &lt;Mock name='mock.model' id='1983040493200'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3E90&gt;.scene">quality\legacy_tests\tests\test_tools_integrated.py:191: in test_ellipse_tool_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = &lt;Mock name='mock.model' id='1983040493200'&gt;.objects
+E    +      where &lt;Mock name='mock.model' id='1983040493200'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB54F3E90&gt;.scene</failure></testcase><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_multiple_operations_undo_redo" time="0.010"><failure message="AssertionError: assert 0 == 2&#10; +  where 0 = len({})&#10; +    where {} = &lt;Mock name='mock.model' id='1983041143632'&gt;.objects&#10; +      where &lt;Mock name='mock.model' id='1983041143632'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500210&gt;.scene">quality\legacy_tests\tests\test_tools_integrated.py:238: in test_multiple_operations_undo_redo
+    assert len(self.scene.objects) == 2
+E   AssertionError: assert 0 == 2
+E    +  where 0 = len({})
+E    +    where {} = &lt;Mock name='mock.model' id='1983041143632'&gt;.objects
+E    +      where &lt;Mock name='mock.model' id='1983041143632'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500210&gt;.scene</failure></testcase><testcase classname="tests.test_tools_integrated.TestToolsIntegrated" name="test_magnetic_lasso_with_commands" time="0.003"><failure message="AssertionError: assert 0 == 1&#10; +  where 0 = len({})&#10; +    where {} = &lt;Mock name='mock.model' id='1983041454544'&gt;.objects&#10; +      where &lt;Mock name='mock.model' id='1983041454544'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500710&gt;.scene">quality\legacy_tests\tests\test_tools_integrated.py:289: in test_magnetic_lasso_with_commands
+    assert len(self.scene.objects) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len({})
+E    +    where {} = &lt;Mock name='mock.model' id='1983041454544'&gt;.objects
+E    +      where &lt;Mock name='mock.model' id='1983041454544'&gt; = &lt;test_tools_integrated.TestToolsIntegrated object at 0x000001CDB5500710&gt;.scene</failure></testcase></testsuite></testsuites>

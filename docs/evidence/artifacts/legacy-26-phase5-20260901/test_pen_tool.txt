@@ -1,0 +1,22 @@
+..........F....F...                                                      [100%]
+================================== FAILURES ===================================
+___________________ TestPenTool.test_commit_selection_valid ___________________
+quality\legacy_tests\tests\test_pen_tool.py:168: in test_commit_selection_valid
+    assert result == "oid123"  # Should return object ID
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: assert None == 'oid123'
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Pen Creation Unavailable: Undo/Redo command history is unavailable.
+____________________ TestPenTool.test_double_click_commit _____________________
+quality\legacy_tests\tests\test_pen_tool.py:246: in test_double_click_commit
+    assert self.tool._nodes == []
+E   assert [<src.tools.p...0217B56D1750>] == []
+E
+E     Left contains 2 more items, first extra item: <src.tools.pen_tool.BezierNode object at 0x00000217B56D1690>
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Pen Creation Unavailable: Undo/Redo command history is unavailable.
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_pen_tool.py::TestPenTool::test_commit_selection_valid
+FAILED quality\legacy_tests\tests\test_pen_tool.py::TestPenTool::test_double_click_commit
+2 failed, 17 passed in 0.74s

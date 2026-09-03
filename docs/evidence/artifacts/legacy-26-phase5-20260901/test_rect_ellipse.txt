@@ -1,0 +1,22 @@
+....F......F..                                                           [100%]
+================================== FAILURES ===================================
+_________ TestRectSelectionTool.test_mouse_release_commits_selection __________
+quality\legacy_tests\tests\test_rect_ellipse.py:137: in test_mouse_release_commits_selection
+    assert self.tool._start_point is None
+E   assert (10, 10) is None
+E    +  where (10, 10) = <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550>._start_point
+E    +    where <src.tools.rect_selection.RectSelectionTool object at 0x000001AB8EE2A550> = <test_rect_ellipse.TestRectSelectionTool object at 0x000001AB8ECE3F50>.tool
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Rectangle Creation Unchanged: <Mock name='mock.scene.cmd.execute().message' id='1836855277456'>
+________ TestEllipseSelectionTool.test_mouse_release_commits_selection ________
+quality\legacy_tests\tests\test_rect_ellipse.py:295: in test_mouse_release_commits_selection
+    assert self.tool._center is None
+E   assert (50, 50) is None
+E    +  where (50, 50) = <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0>._center
+E    +    where <src.tools.ellipse_selection.EllipseSelectionTool object at 0x000001ABAE50B4D0> = <test_rect_ellipse.TestEllipseSelectionTool object at 0x000001AB8ECF32D0>.tool
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Ellipse Creation Unchanged: <Mock name='mock.scene.cmd.execute().message' id='1836875817104'>
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_rect_ellipse.py::TestRectSelectionTool::test_mouse_release_commits_selection
+FAILED quality\legacy_tests\tests\test_rect_ellipse.py::TestEllipseSelectionTool::test_mouse_release_commits_selection
+2 failed, 12 passed in 1.35s

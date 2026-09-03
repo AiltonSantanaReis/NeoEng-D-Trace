@@ -1,0 +1,48 @@
+{
+  "schema": "neoeng.legacy.phase5.formal-review",
+  "schema_version": 1,
+  "evidence_id": "EVID-P2D-COMP-01-LEGACY-26-FORMAL-REVIEW-20260901",
+  "status": "BLOCKED",
+  "accepted": false,
+  "commit": "eaa28b9a75194d25741323b4b72911426a740349",
+  "legacy_source_commit": "cf749564ab5d961772d66dc363d0e990cebf8da3",
+  "command": "pytest -q tests/test_legacy_phase1_contracts.py tests/test_legacy_phase2_contracts.py tests/test_legacy_phase3_contracts.py tests/test_legacy_phase4_contracts.py",
+  "hash_source": "Git index blobs via git show :path",
+  "sanitization": {
+    "applied": true,
+    "technical_content_preserved": true,
+    "untracked_sources_not_copied_or_modified": true
+  },
+  "decision_scope": {
+    "case_decisions": "27/27 individually classified",
+    "untracked_manifest_audit": "63/63 individually inventoried",
+    "historical_snapshots": "read-only"
+  },
+  "files": [
+    {
+      "path": "docs/evidence/FASE5_RECONCILIACAO_FORMAL_2026-09-01.md",
+      "bytes": 11995,
+      "sha256": "7ca5447386933ec1f339495355dc05a3338ea6aaca79513a14eccbf4011dd2bc"
+    },
+    {
+      "path": "docs/evidence/artifacts/legacy-26-formal-review-20260901/case_decisions.json",
+      "bytes": 36940,
+      "sha256": "90691f359bbf946c37106098e5f47ad530be23aea8743db9ce4ff77d6189a082"
+    },
+    {
+      "path": "docs/evidence/artifacts/legacy-26-formal-review-20260901/untracked_manifest_audit.json",
+      "bytes": 107358,
+      "sha256": "8060a2156ca7d3c750a7d75b7261a0e1f746e6a9fe9939c3f37afa12c10cb0b3"
+    },
+    {
+      "path": "docs/evidence/artifacts/legacy-26-formal-review-20260901/manifest_resolution.json",
+      "bytes": 142225,
+      "sha256": "eff6425c3ef690fda96234c6ae6208f1772c6f15e2b626d36d6eca19093ae350"
+    },
+    {
+      "path": "docs/evidence/artifacts/legacy-26-formal-review-20260901/formal_reconciliation.json",
+      "bytes": 4127,
+      "sha256": "5239919ade38cbdcb74deacdca5e5a202f4d13a3bddf9395afafb98e77a07f6c"
+    }
+  ]
+}

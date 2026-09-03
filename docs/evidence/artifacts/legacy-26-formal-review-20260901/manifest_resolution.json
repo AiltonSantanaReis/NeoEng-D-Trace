@@ -1,0 +1,3553 @@
+{
+  "schema": "neoeng.workspace.untracked-manifest-resolution",
+  "schema_version": 1,
+  "status": "ACCEPTED_WITH_DECLARED_LIMITATIONS",
+  "accepted": true,
+  "resolution_scope": "formal ownership/origin/scope/reference/treatment classification; source manifests are read-only",
+  "source_inventory": "docs/evidence/artifacts/legacy-26-formal-review-20260901/untracked_manifest_audit.json",
+  "source_inventory_sha256": "8060a2156ca7d3c750a7d75b7261a0e1f746e6a9fe9939c3f37afa12c10cb0b3",
+  "authorization": {
+    "owner_classification": "current project custodian",
+    "basis": "explicit current user authorization",
+    "automatic_source_alteration": false
+  },
+  "summary": {
+    "expected": 63,
+    "observed": 63,
+    "resolved": 63,
+    "unresolved": 0,
+    "status_counts": {
+      "COMPLETE": 26,
+      "COMPLETE_WITH_DECLARED_MISSING_HISTORICAL_ARTIFACTS": 2,
+      "NOT_APPLICABLE_DEPENDENCY_MANIFEST": 1,
+      "NO_REFERENCES_DECLARED_METADATA_MANIFEST": 34
+    },
+    "family_counts": {
+      "F02 governance evidence": 3,
+      "P2D-05 evidence": 5,
+      "legacy cleanup lot1 stage5": 1,
+      "legacy cleanup lot2": 15,
+      "stage0 snapshot": 3,
+      "stage0-9 final audit": 10,
+      "stage1 snapshot": 2,
+      "stage2 snapshot": 17,
+      "stage3 snapshot": 2,
+      "stage4 snapshot": 2,
+      "stage5 adjustment": 1,
+      "stage5 snapshot": 2
+    },
+    "declared_missing_historical_references": [
+      {
+        "manifest": "artifacts/stage0-snapshot-20260824/build-poetry-official-final/release-manifest.json",
+        "declared_count": 353,
+        "missing_count": 353,
+        "reason": "historical build output is not present in the current workspace"
+      },
+      {
+        "manifest": "artifacts/stage0-snapshot-20260824/build-poetry-official/release-manifest.json",
+        "declared_count": 353,
+        "missing_count": 353,
+        "reason": "historical build output is not present in the current workspace"
+      }
+    ]
+  },
+  "limitations": [
+    "Exact creator identity and filesystem creation event are not proven; this is recorded rather than inferred.",
+    "The two historical stage0 release manifests each reference 353 absent build-output files; those references remain declared missing.",
+    "The Unity Packages manifest is a dependency manifest and has no evidence references to resolve."
+  ],
+  "entries": [
+    {
+      "path": "artifacts/evidence/F02/BUILD-F02-GOVERNANCE-20260824-4E05A34/manifest.json",
+      "family": "F02 governance evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/README.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 13,
+        "sample": [
+          "environment.json",
+          "fallback-summary.json",
+          "input/artifacts/evidence/F02-governance-fallback-report.json",
+          "input/artifacts/evidence/F02-governance-junit-final-1.xml",
+          "input/artifacts/evidence/F02-governance-performance-final.json"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/README.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 2214,
+        "sha256": "e8fad416b48ed024532fcf3de248b6d12a32a94afc58f660237d649e1f0c177b",
+        "source_audit_sha256": "e8fad416b48ed024532fcf3de248b6d12a32a94afc58f660237d649e1f0c177b",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "GOVERNANCE_EVIDENCE_EXISTING"
+    },
+    {
+      "path": "artifacts/evidence/F02/BUILD-F02-GOVERNANCE-20260824-5C35EB4-FULL/manifest.json",
+      "family": "F02 governance evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/README.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 14,
+        "sample": [
+          "environment.json",
+          "fallback-summary.json",
+          "input/artifacts/evidence/F02-full-suite-final-corrected.xml",
+          "input/artifacts/evidence/F02-governance-fallback-report.json",
+          "input/artifacts/evidence/F02-governance-junit-final-corrected-1.xml"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/README.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 2424,
+        "sha256": "68195e77cbe41073fde22f87fcef777217ef091995d132db76333bac24919b4e",
+        "source_audit_sha256": "68195e77cbe41073fde22f87fcef777217ef091995d132db76333bac24919b4e",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "GOVERNANCE_EVIDENCE_EXISTING"
+    },
+    {
+      "path": "artifacts/evidence/F02/BUILD-F02-GOVERNANCE-20260824-5C35EB4/manifest.json",
+      "family": "F02 governance evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/README.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 13,
+        "sample": [
+          "environment.json",
+          "fallback-summary.json",
+          "input/artifacts/evidence/F02-governance-fallback-report.json",
+          "input/artifacts/evidence/F02-governance-junit-final-corrected-1.xml",
+          "input/artifacts/evidence/F02-governance-performance-final-corrected.json"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/README.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 2234,
+        "sha256": "dbf6b65134161888ad1d40d2325e6cece16ddf038f8d6df0de8b4bca6e88d1d8",
+        "source_audit_sha256": "dbf6b65134161888ad1d40d2325e6cece16ddf038f8d6df0de8b4bca6e88d1d8",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "GOVERNANCE_EVIDENCE_EXISTING"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot1-stage5/raw-captures/manifest.json",
+      "family": "legacy cleanup lot1 stage5",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_stage5_contract.py",
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "scripts/audit_stage5_contract.py",
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 37334,
+        "sha256": "8f3cd898f8398592f1d2c8836a7b1ebe3eaf3a6234300df8900b591e21fa1827",
+        "source_audit_sha256": "8f3cd898f8398592f1d2c8836a7b1ebe3eaf3a6234300df8900b591e21fa1827",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage3-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130290,
+        "sha256": "00c5df82585874d2f9b5aeba919494d08defe22eed8004a799bae2fdf67008ce",
+        "source_audit_sha256": "00c5df82585874d2f9b5aeba919494d08defe22eed8004a799bae2fdf67008ce",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage3-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130362,
+        "sha256": "b5550f1704562bc61826884dcf6d1e4a5fe6f831b628039941278371c2183f39",
+        "source_audit_sha256": "b5550f1704562bc61826884dcf6d1e4a5fe6f831b628039941278371c2183f39",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage4-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage4-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130290,
+        "sha256": "00c5df82585874d2f9b5aeba919494d08defe22eed8004a799bae2fdf67008ce",
+        "source_audit_sha256": "00c5df82585874d2f9b5aeba919494d08defe22eed8004a799bae2fdf67008ce",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage5-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage5-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage6-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage6-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage7a-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage7a-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage7b-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage7b-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage7c-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage7c-before/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 125310,
+        "sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "source_audit_sha256": "f411cdff501100bf6dd815524e19e2e36088e0a0ce6b5ec9b5f9ef5e65ca069a",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/legacy-cleanup-lot2-stage8a-after/manifest.json",
+      "family": "legacy cleanup lot2",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "scripts/audit_ui_capture.py",
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 124734,
+        "sha256": "06899bbcc18bf876e902a0642c54ef11166e2b710db01a24c19de3d1a469a95b",
+        "source_audit_sha256": "06899bbcc18bf876e902a0642c54ef11166e2b710db01a24c19de3d1a469a95b",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/p2d05/o2-viewport-capture-after-acceptance-20260831-r2/manifest.json",
+      "family": "P2D-05 evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 2,
+        "sample": [
+          "viewport-before-noop-sync.png",
+          "viewport-after-noop-sync.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 675,
+        "sha256": "f8689b8e958d28977e0fb419e2fbd6e8e1601d3f8eaef7c947362c23723dc17d",
+        "source_audit_sha256": "f8689b8e958d28977e0fb419e2fbd6e8e1601d3f8eaef7c947362c23723dc17d",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "P2D_EVIDENCE_REFERENCE"
+    },
+    {
+      "path": "artifacts/p2d05/o2-viewport-capture-after-acceptance-20260831/manifest.json",
+      "family": "P2D-05 evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 2,
+        "sample": [
+          "viewport-before-noop-sync.png",
+          "viewport-after-noop-sync.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 646,
+        "sha256": "390eb99df012f9c06048b491ecb73fee9ee1d961bd6534765301d5d5ecd4ca0e",
+        "source_audit_sha256": "390eb99df012f9c06048b491ecb73fee9ee1d961bd6534765301d5d5ecd4ca0e",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "P2D_EVIDENCE_REFERENCE"
+    },
+    {
+      "path": "artifacts/p2d05/ui-capture-windows/manifest.json",
+      "family": "P2D-05 evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 124884,
+        "sha256": "ffd3d02c8e4b63184f24c8ab3fee77e1a63765114a65ad023dcd525d6f976618",
+        "source_audit_sha256": "ffd3d02c8e4b63184f24c8ab3fee77e1a63765114a65ad023dcd525d6f976618",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "P2D_EVIDENCE_REFERENCE"
+    },
+    {
+      "path": "artifacts/p2d05/ui-capture/manifest.json",
+      "family": "P2D-05 evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 12,
+        "sample": [
+          "commands",
+          "commands",
+          "commands",
+          "commands",
+          "commands"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 124875,
+        "sha256": "abf87272769d951c7ec91e7cf32078444046990ee4ade6fe1e57f9b929eff2c9",
+        "source_audit_sha256": "abf87272769d951c7ec91e7cf32078444046990ee4ade6fe1e57f9b929eff2c9",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "P2D_EVIDENCE_REFERENCE"
+    },
+    {
+      "path": "artifacts/p2d05/unity-engine-validation-final/unity-project/Packages/manifest.json",
+      "family": "P2D-05 evidence",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NOT_APPLICABLE_DEPENDENCY_MANIFEST",
+        "basis": [
+          "docs/EVIDENCIA_P2D_05_IMPLEMENTACAO_2026-08-30.md",
+          "docs/DECISAO_P2D_05_O2_IMPLEMENTACAO_2026-08-30.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 1626,
+        "sha256": "786564029cfde06d9cf831f27fffe78b15df0af820c7c0ba074764f2278246bb",
+        "source_audit_sha256": "786564029cfde06d9cf831f27fffe78b15df0af820c7c0ba074764f2278246bb",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "P2D_EVIDENCE_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage2-dpi/dpi-100/raw-captures/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage2-dpi/dpi-125/raw-captures/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "53558359eaacd26f9d289a1fe4d48640449413bdbafc36ab1aae59ba0186f41d",
+        "source_audit_sha256": "53558359eaacd26f9d289a1fe4d48640449413bdbafc36ab1aae59ba0186f41d",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage2-dpi/dpi-150/raw-captures/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130148,
+        "sha256": "ab679beeb073df1e1726c0dbc07f4198bfa34e00ddc8153823830c216e299cd6",
+        "source_audit_sha256": "ab679beeb073df1e1726c0dbc07f4198bfa34e00ddc8153823830c216e299cd6",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage2-dpi/dpi-200/raw-captures/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130154,
+        "sha256": "c70b679a828895157f7124287e651e7ce961086d840ebf84eb1f2738d2d67862",
+        "source_audit_sha256": "c70b679a828895157f7124287e651e7ce961086d840ebf84eb1f2738d2d67862",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage8-scenario/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 10296,
+        "sha256": "108e4a053e6e44ce94b58d02bbd52b7c30793bfeb13ccfec556878b15edc2de2",
+        "source_audit_sha256": "108e4a053e6e44ce94b58d02bbd52b7c30793bfeb13ccfec556878b15edc2de2",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage9-dpi/dpi_100/visual-input/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage9-dpi/dpi_125/visual-input/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "d0ec5a12cb368af97c8a6c99e8b9b53d123af9dae79b99a0157e825d7de24070",
+        "source_audit_sha256": "d0ec5a12cb368af97c8a6c99e8b9b53d123af9dae79b99a0157e825d7de24070",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage9-dpi/dpi_150/visual-input/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130148,
+        "sha256": "7c621e63df3f8742fe3261c37ebafbd492ef2c7a5d5b958bdcb4d99a55c4a8e9",
+        "source_audit_sha256": "7c621e63df3f8742fe3261c37ebafbd492ef2c7a5d5b958bdcb4d99a55c4a8e9",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-stage9-dpi/dpi_200/visual-input/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130154,
+        "sha256": "c70b679a828895157f7124287e651e7ce961086d840ebf84eb1f2738d2d67862",
+        "source_audit_sha256": "c70b679a828895157f7124287e651e7ce961086d840ebf84eb1f2738d2d67862",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-9-final-audit-20260824/source-ui-capture/raw-captures/manifest.json",
+      "family": "stage0-9 final audit",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/AUDITORIA_FECHAMENTO_ETAPAS_0_9_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HISTORICAL_AUDIT_REFERENCE"
+    },
+    {
+      "path": "artifacts/stage0-snapshot-20260824/build-poetry-official-final/release-manifest.json",
+      "family": "stage0 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 353,
+        "sample": [
+          "_internal/_asyncio.pyd",
+          "_internal/_bz2.pyd",
+          "_internal/_ctypes.pyd",
+          "_internal/_decimal.pyd",
+          "_internal/_elementtree.pyd"
+        ],
+        "missing_count": 353,
+        "missing_sample": [
+          "_internal/_asyncio.pyd",
+          "_internal/_bz2.pyd",
+          "_internal/_ctypes.pyd",
+          "_internal/_decimal.pyd",
+          "_internal/_elementtree.pyd"
+        ],
+        "status": "COMPLETE_WITH_DECLARED_MISSING_HISTORICAL_ARTIFACTS",
+        "basis": [
+          "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 62750,
+        "sha256": "835b82de90b9eacb43dfd24fc4c5527d49ac4832aad5e3a11966301b38d74919",
+        "source_audit_sha256": "835b82de90b9eacb43dfd24fc4c5527d49ac4832aad5e3a11966301b38d74919",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage0-snapshot-20260824/build-poetry-official/release-manifest.json",
+      "family": "stage0 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 353,
+        "sample": [
+          "_internal/_asyncio.pyd",
+          "_internal/_bz2.pyd",
+          "_internal/_ctypes.pyd",
+          "_internal/_decimal.pyd",
+          "_internal/_elementtree.pyd"
+        ],
+        "missing_count": 353,
+        "missing_sample": [
+          "_internal/_asyncio.pyd",
+          "_internal/_bz2.pyd",
+          "_internal/_ctypes.pyd",
+          "_internal/_decimal.pyd",
+          "_internal/_elementtree.pyd"
+        ],
+        "status": "COMPLETE_WITH_DECLARED_MISSING_HISTORICAL_ARTIFACTS",
+        "basis": [
+          "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 62750,
+        "sha256": "b5fa33828a0cba7bee7e8ca5edff50147d5a7f90b4e8f20f86bc08d8a6bd8199",
+        "source_audit_sha256": "b5fa33828a0cba7bee7e8ca5edff50147d5a7f90b4e8f20f86bc08d8a6bd8199",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage0-snapshot-20260824/stage0-manifest.json",
+      "family": "stage0 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 45,
+        "sample": [
+          "stage0-inventory.json",
+          "visual-evidence/1080p_FHD_01_sem_projeto_annotated.png",
+          "visual-evidence/1080p_FHD_02_projeto_paineis_annotated.png",
+          "visual-evidence/1080p_FHD_03_validacao_janela_annotated.png",
+          "visual-evidence/1080p_FHD_03_validacao_modal_annotated.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE0_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 11443,
+        "sha256": "7ce65e5d80f39fff0b8451bb9f7547f33234770cb584595cdb60f6d08d391302",
+        "source_audit_sha256": "7ce65e5d80f39fff0b8451bb9f7547f33234770cb584595cdb60f6d08d391302",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage1-snapshot-20260824/stage1-manifest.json",
+      "family": "stage1 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE1_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 27,
+        "sample": [
+          "historical-reference/stage1-baseline-report.json",
+          "source-full-suite-commit-133184e.xml",
+          "source-full-suite-commit-18f13c6.xml",
+          "source-full-suite-commit-9992ee1.xml",
+          "stage1-contract-audit.json"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE1_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 6405,
+        "sha256": "a365cf9add70ba74ca53be2ebcda5d93ba516d9d7055a12c668478b5296e4e39",
+        "source_audit_sha256": "a365cf9add70ba74ca53be2ebcda5d93ba516d9d7055a12c668478b5296e4e39",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage1-snapshot-20260824/theme-state-captures/manifest.json",
+      "family": "stage1 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE1_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 18,
+        "sample": [
+          "1080p_FHD_stage1_checked.png",
+          "1080p_FHD_stage1_disabled.png",
+          "1080p_FHD_stage1_focus.png",
+          "1080p_FHD_stage1_hover.png",
+          "1080p_FHD_stage1_normal.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE1_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 14460,
+        "sha256": "f15405aa75d8400acc2932553f0456ad5b8c295940b1b4e289e22dbf5b2511ba",
+        "source_audit_sha256": "f15405aa75d8400acc2932553f0456ad5b8c295940b1b4e289e22dbf5b2511ba",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-2a94cfc/dpi-100/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-2a94cfc/dpi-125/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "source_audit_sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-2a94cfc/dpi-150/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130148,
+        "sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "source_audit_sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-2a94cfc/dpi-200/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130154,
+        "sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "source_audit_sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-5eb6aea/dpi-100/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-5eb6aea/dpi-125/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "source_audit_sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-5eb6aea/dpi-150/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130148,
+        "sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "source_audit_sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-5eb6aea/dpi-200/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130154,
+        "sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "source_audit_sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-f922924/dpi-100/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-f922924/dpi-125/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "source_audit_sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-f922924/dpi-150/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130148,
+        "sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "source_audit_sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix-commit-f922924/dpi-200/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130154,
+        "sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "source_audit_sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix/dpi-100/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "source_audit_sha256": "2c5715c6994856786660ae554187946b03bc8fc15465c4c1a0da51387f1c4193",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix/dpi-125/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "source_audit_sha256": "c8767dbf7c1463a9a27ce8cb2e779a934774ee936bc51c023b5f2359cd55a544",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix/dpi-150/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130148,
+        "sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "source_audit_sha256": "ce1e44b93037a1b4ac11cbe281e8d97b6b547fbbe05bddca1e940390999d8086",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/dpi-matrix/dpi-200/raw-captures/manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130154,
+        "sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "source_audit_sha256": "e696cf2a62f143e0dbe8b89d3a7aac2841358c319845b53307cb1f3f50443afd",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage2-snapshot-20260824/stage2-manifest.json",
+      "family": "stage2 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 676,
+        "sample": [
+          "dpi-matrix/artifact-index.json",
+          "dpi-matrix/dpi-100/gallery-runtime.json",
+          "dpi-matrix/dpi-100/icon-gallery.png",
+          "dpi-matrix/dpi-100/raw-captures/1080p_FHD_01_sem_projeto.png",
+          "dpi-matrix/dpi-100/raw-captures/1080p_FHD_02_projeto_paineis.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE2_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 174665,
+        "sha256": "a3789e8a74439b2eb19937747fdf7e4490c4d6ea707a47d725854e4915046c5b",
+        "source_audit_sha256": "a3789e8a74439b2eb19937747fdf7e4490c4d6ea707a47d725854e4915046c5b",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage3-snapshot-20260824/raw-captures/manifest.json",
+      "family": "stage3 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE3_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE3_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "e8495e1ed282f191d344be483d5b751a260a1f8dee98e8a01bc6e799cf3bff98",
+        "source_audit_sha256": "e8495e1ed282f191d344be483d5b751a260a1f8dee98e8a01bc6e799cf3bff98",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage3-snapshot-20260824/stage3-manifest.json",
+      "family": "stage3 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE3_HUMAN_APPROVAL_2026-08-24.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 45,
+        "sample": [
+          "capture.log",
+          "full-suite-junit.xml",
+          "raw-captures/1080p_FHD_01_sem_projeto.png",
+          "raw-captures/1080p_FHD_02_projeto_paineis.png",
+          "raw-captures/1080p_FHD_03_validacao_janela.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE3_HUMAN_APPROVAL_2026-08-24.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 10469,
+        "sha256": "017e1ce9c7b35149e0cae97917bffc2d506efc98a3ffed27ffff68f81bd88a8e",
+        "source_audit_sha256": "017e1ce9c7b35149e0cae97917bffc2d506efc98a3ffed27ffff68f81bd88a8e",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "HUMAN_APPROVAL_RECORDED"
+    },
+    {
+      "path": "artifacts/stage4-snapshot-20260824/raw-captures/manifest.json",
+      "family": "stage4 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE4_SCOPE_AND_RECONCILIATION.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE4_SCOPE_AND_RECONCILIATION.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 130146,
+        "sha256": "32168bb8d143b9947b590b10257de95e25dc3ce1b7624189858661a3b95474f3",
+        "source_audit_sha256": "32168bb8d143b9947b590b10257de95e25dc3ce1b7624189858661a3b95474f3",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "SCOPE_RECORDED_NO_HUMAN_APPROVAL_FILE_FOUND"
+    },
+    {
+      "path": "artifacts/stage4-snapshot-20260824/stage4-manifest.json",
+      "family": "stage4 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE4_SCOPE_AND_RECONCILIATION.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 45,
+        "sample": [
+          "capture.log",
+          "full-suite-junit.xml",
+          "raw-captures/1080p_FHD_01_sem_projeto.png",
+          "raw-captures/1080p_FHD_02_projeto_paineis.png",
+          "raw-captures/1080p_FHD_03_validacao_janela.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE4_SCOPE_AND_RECONCILIATION.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 10469,
+        "sha256": "262b40e1c1904b08409ea189dc53c13e4021481e53cf9f1d05d492b39a81455e",
+        "source_audit_sha256": "262b40e1c1904b08409ea189dc53c13e4021481e53cf9f1d05d492b39a81455e",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "SCOPE_RECORDED_NO_HUMAN_APPROVAL_FILE_FOUND"
+    },
+    {
+      "path": "artifacts/stage5-adjustment-20260824/raw-captures/manifest.json",
+      "family": "stage5 adjustment",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 37280,
+        "sha256": "8033c7076cb5d05d44eb50dc27cb3c51472543a0bf503d49fbbc3df087378013",
+        "source_audit_sha256": "8033c7076cb5d05d44eb50dc27cb3c51472543a0bf503d49fbbc3df087378013",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "SCOPE_RECORDED_REVIEW_REQUIRED_WHERE_DECLARED"
+    },
+    {
+      "path": "artifacts/stage5-snapshot-20260824/raw-captures/manifest.json",
+      "family": "stage5 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 0,
+        "sample": [],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "NO_REFERENCES_DECLARED_METADATA_MANIFEST",
+        "basis": [
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 41327,
+        "sha256": "3f456f088a4dc11264ca08998246cc440163172931b2c3609263181b364af1e7",
+        "source_audit_sha256": "3f456f088a4dc11264ca08998246cc440163172931b2c3609263181b364af1e7",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "SCOPE_RECORDED_REVIEW_REQUIRED_WHERE_DECLARED"
+    },
+    {
+      "path": "artifacts/stage5-snapshot-20260824/stage5-manifest.json",
+      "family": "stage5 snapshot",
+      "owner": {
+        "classification": "PROJECT_CUSTODIAN_UNDER_CURRENT_AUTHORIZATION",
+        "identity": "current project custodian",
+        "evidence": "explicit user authorization in the active engineering task",
+        "original_creator_proven": false
+      },
+      "origin": {
+        "classification": "PREEXISTING_ARTIFACT_FAMILY",
+        "basis": [
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ],
+        "creator_or_creation_event": "NOT_PROVEN_BY_GIT_HISTORY_OR_FILESYSTEM_METADATA",
+        "limitation": "the artifact's technical family and references are proven; exact creator/event is not"
+      },
+      "scope": {
+        "classification": "OUTSIDE_CURRENT_LEGACY26_PHASE5_PACKAGE",
+        "current_package_reference": "docs/evidence/artifacts/legacy-26-formal-review-20260901",
+        "scope_basis": "path family and historical evidence references"
+      },
+      "references": {
+        "declared_count": 110,
+        "sample": [
+          "full-suite-junit.xml",
+          "raw-captures/manifest.json",
+          "raw-captures/mask_1280x720_canny.png",
+          "raw-captures/mask_1280x720_laplacian.png",
+          "raw-captures/mask_1280x720_original.png"
+        ],
+        "missing_count": 0,
+        "missing_sample": [],
+        "status": "COMPLETE",
+        "basis": [
+          "docs/evidence/STAGE5_SCOPE_AND_RECONCILIATION.md"
+        ]
+      },
+      "observed_integrity": {
+        "bytes": 25972,
+        "sha256": "6e416dd9f4b790488adecf0df1773bfc86e1d808a59f3d8e49d6db6609705f04",
+        "source_audit_sha256": "6e416dd9f4b790488adecf0df1773bfc86e1d808a59f3d8e49d6db6609705f04",
+        "unchanged_since_inventory": true,
+        "json_valid": true
+      },
+      "treatment": {
+        "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
+        "actions": [
+          "do_not_delete",
+          "do_not_move",
+          "do_not_overwrite",
+          "do_not_auto_track"
+        ],
+        "authorization": "current user instruction to resolve formally without automatic alteration"
+      },
+      "audit_decision": "RESOLVED_WITH_DECLARED_LIMITATIONS",
+      "review_status": "SCOPE_RECORDED_REVIEW_REQUIRED_WHERE_DECLARED"
+    }
+  ]
+}

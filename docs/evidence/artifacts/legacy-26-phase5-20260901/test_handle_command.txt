@@ -1,0 +1,13 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________________ TestHandleMove.test_handle_move_undo_redo __________________
+quality\legacy_tests\tests\test_handle_command.py:10: in test_handle_move_undo_redo
+    s.add_object('o1', [(0,0),(10,0),(20,0)])
+src\models\scene.py:373: in add_object
+    raise ValueError("Invalid polygon")
+E   ValueError: Invalid polygon
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:scene.py:370 Invalid polygon for object o1; auto_repair=disabled
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_handle_command.py::TestHandleMove::test_handle_move_undo_redo
+1 failed in 0.39s

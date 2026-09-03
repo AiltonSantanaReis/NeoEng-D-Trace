@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="19" time="0.378" timestamp="2026-09-01T18:21:01.319898-03:00" hostname="SANITIZED_HOST"><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_polygon_area_triangle" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_polygon_area_rectangle" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_polygon_area_empty" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_polygon_area_single_point" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_point_in_triangle_inside" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_point_in_triangle_outside" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_point_in_triangle_vertex" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_point_in_triangle_edge" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_is_ear_convex_vertex" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_is_ear_concave_vertex" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_ear_clipping_triangle" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_ear_clipping_quadrilateral" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_ear_clipping_concave_l_shape" time="0.000"><failure message="ValueError: Triangulation did not preserve polygon geometry">quality\legacy_tests\tests\test_convex_decomp.py:111: in test_ear_clipping_concave_l_shape
+    triangles = ear_clipping_triangulation(l_shape)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\core\convex_decomp.py:277: in ear_clipping_triangulation
+    return _validated_triangulation(canonical, triangles)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\core\convex_decomp.py:89: in _validated_triangulation
+    raise ValueError("Triangulation did not preserve polygon geometry")
+E   ValueError: Triangulation did not preserve polygon geometry</failure></testcase><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_convex_decompose_triangle" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_convex_decompose_l_shape" time="0.000"><failure message="ValueError: Triangulation did not preserve polygon geometry">quality\legacy_tests\tests\test_convex_decomp.py:132: in test_convex_decompose_l_shape
+    convex_polygons = convex_decompose_polygon(l_shape)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\core\convex_decomp.py:447: in convex_decompose_polygon
+    for triangle in triangulate_to_convex(polygon)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\core\convex_decomp.py:209: in triangulate_to_convex
+    return ear_clipping_triangulation(canonical)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\core\convex_decomp.py:277: in ear_clipping_triangulation
+    return _validated_triangulation(canonical, triangles)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\core\convex_decomp.py:89: in _validated_triangulation
+    raise ValueError("Triangulation did not preserve polygon geometry")
+E   ValueError: Triangulation did not preserve polygon geometry</failure></testcase><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_convex_decompose_empty_polygon" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_convex_decompose_single_point" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_convex_decompose_two_points" time="0.000" /><testcase classname="tests.test_convex_decomp.TestConvexDecomp" name="test_area_preservation_complex_polygon" time="0.000" /></testsuite></testsuites>

@@ -1,0 +1,47 @@
+....FF.FFF....F                                                          [100%]
+================================== FAILURES ===================================
+_________________ TestMagneticLassoTool.test_get_image_array __________________
+quality\legacy_tests\tests\test_magnetic_lasso.py:124: in test_get_image_array
+    assert array is not None
+E   assert None is not None
+_________________ TestMagneticLassoTool.test_compute_edge_map _________________
+quality\legacy_tests\tests\test_magnetic_lasso.py:133: in test_compute_edge_map
+    assert self.tool._edge_map is not None
+E   assert None is not None
+E    +  where None = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90>._edge_map
+E    +    where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB576FC90> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB579B210>.tool
+____ TestMagneticLassoTool.test_mouse_press_computes_path_between_anchors _____
+quality\legacy_tests\tests\test_magnetic_lasso.py:168: in test_mouse_press_computes_path_between_anchors
+    assert len(self.tool._anchors) == 2
+E   assert 1 == 2
+E    +  where 1 = len([(10.0, 10.0)])
+E    +    where [(10.0, 10.0)] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290>._anchors
+E    +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB5909290> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4050>.tool
+____________ TestMagneticLassoTool.test_mouse_move_updates_preview ____________
+quality\legacy_tests\tests\test_magnetic_lasso.py:184: in test_mouse_move_updates_preview
+    assert len(self.tool._preview_path) > 0
+E   assert 0 > 0
+E    +  where 0 = len([])
+E    +    where [] = <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0>._preview_path
+E    +      where <src.tools.magnetic_lasso.MagneticLassoTool object at 0x0000020AB59263D0> = <test_magnetic_lasso.TestMagneticLassoTool object at 0x0000020AB57A4750>.tool
+__________ TestMagneticLassoTool.test_double_click_closes_selection ___________
+quality\legacy_tests\tests\test_magnetic_lasso.py:199: in test_double_click_closes_selection
+    self.scene.cmd.execute.assert_called_once()
+<PYTHON_RUNTIME>\Lib\unittest\mock.py:918: in assert_called_once
+    raise AssertionError(msg)
+E   AssertionError: Expected 'execute' to have been called once. Called 0 times.
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Magnetic Lasso: The magnetic path could not create a valid polygon. The anchors were preserved so you can adjust or cancel the selection.
+_______ TestMagneticLassoTool.test_compute_magnetic_path_with_edge_map ________
+quality\legacy_tests\tests\test_magnetic_lasso.py:273: in test_compute_magnetic_path_with_edge_map
+    assert len(path) > 0
+E   assert 0 > 0
+E    +  where 0 = len([])
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_magnetic_lasso.py::TestMagneticLassoTool::test_get_image_array
+FAILED quality\legacy_tests\tests\test_magnetic_lasso.py::TestMagneticLassoTool::test_compute_edge_map
+FAILED quality\legacy_tests\tests\test_magnetic_lasso.py::TestMagneticLassoTool::test_mouse_press_computes_path_between_anchors
+FAILED quality\legacy_tests\tests\test_magnetic_lasso.py::TestMagneticLassoTool::test_mouse_move_updates_preview
+FAILED quality\legacy_tests\tests\test_magnetic_lasso.py::TestMagneticLassoTool::test_double_click_closes_selection
+FAILED quality\legacy_tests\tests\test_magnetic_lasso.py::TestMagneticLassoTool::test_compute_magnetic_path_with_edge_map
+6 failed, 9 passed in 1.46s

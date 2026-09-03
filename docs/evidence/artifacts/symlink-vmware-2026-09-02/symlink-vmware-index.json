@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "stage": 7,
+  "status": "PASS_SCOPED",
+  "provenance": "operator_terminal_transcript_supplied_in_conversation",
+  "base_commit": "eaa28b9a75194d25741323b4b72911426a740349",
+  "branch": "fix/legacy-27-functional-regressions",
+  "environment": "Windows 11 VMware with Developer Mode flag 1",
+  "command": "poetry run pytest \"tests\\test_integration_sync.py\" -k symlink -q -rs",
+  "result": {
+    "collected": 31,
+    "selected": 2,
+    "deselected": 29,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "files": {
+    "symlink-vmware-console-normalized.log": {
+      "bytes": 865,
+      "sha256": "fda4ebb6197ea8b1c9b51f0cb061fea9c851615be5328430a5d46ec4ae7ccd81"
+    }
+  }
+}

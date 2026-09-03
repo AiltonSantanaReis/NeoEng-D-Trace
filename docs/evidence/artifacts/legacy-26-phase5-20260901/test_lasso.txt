@@ -1,0 +1,15 @@
+....F..                                                                  [100%]
+================================== FAILURES ===================================
+_____________ TestLassoTool.test_mouse_release_commits_selection ______________
+quality\legacy_tests\tests\test_lasso.py:132: in test_mouse_release_commits_selection
+    assert self.tool._points == []  # Reset after commit
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   assert [(0.0, 0.0), ...0), (50, 100)] == []
+E
+E     Left contains 3 more items, first extra item: (0.0, 0.0)
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  NeoEng-D-Trace:base_tool.py:131 Lasso Creation Unchanged: <Mock name='mock.scene.cmd.execute().message' id='2331975332752'>
+=========================== short test summary info ===========================
+FAILED quality\legacy_tests\tests\test_lasso.py::TestLassoTool::test_mouse_release_commits_selection
+1 failed, 6 passed in 1.35s
