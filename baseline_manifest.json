@@ -11153,8 +11153,8 @@
       "size": 6563
     },
     "scripts/collect_evidence_package.py": {
-      "sha256": "1d84c4c7e10057447f277b5391555efc5a70716b47b4e62cb75be9e8eeed4d4c",
-      "size": 13848
+      "sha256": "1315faca5cee5e19b85f7cf330178cf20d73a750f23aaa5801e15f0cdcdfeaa5",
+      "size": 13837
     },
     "scripts/collect_evidence_package_canonical.py": {
       "sha256": "1c17ebd5ab5871e7506205402d4aa5a10a59601e2cdde4175886370356d1e9c9",
