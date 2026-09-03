@@ -1,3 +1,15 @@
+## 2026-09-03 — validação do SHA efetivo da candidata Windows
+
+- registra a repetição dos gates no SHA `33abb59`, em worktree limpo, com
+  runner Windows aceito em `189/189` arquivos, `1918` testes, `0`
+  falhas, `0` erros e `2` skips condicionais;
+- confirma cobertura de `92,59%` de linhas e `85,02%` de branches,
+  reconciliação das `11` divergências e `12` ausências, snapshots
+  preservados e `42` substitutos aprovados;
+- confirma estática, segurança, Stage 4B.5, baseline final (`3202` arquivos,
+  `127` manifestos), evidências e pacote portátil; mantém CI remoto, merge,
+  tag, release e aprovação bloqueados.
+
 ## 2026-09-03 — validação final local da candidata Windows
 
 - registra o commit candidato `55110c0` com runner Windows isolado aprovado em

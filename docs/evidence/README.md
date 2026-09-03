@@ -12,6 +12,15 @@
   evidência e empacotamento registrados. Estado `PASS_LOCAL/BLOCKED_REMOTE`;
   symlink local limitado por `WinError 1314`, com prova VMware scoped. Consulte
   `artifacts/windows-runner-final-2026-09-03/artifact-index.json`.
+- `ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md` — repetição dos gates
+  no SHA `33abb59` em worktree limpo: runner `189/189`, `1918`
+  testes, `0` falhas, `0` erros e `2` skips; reconciliação formal,
+  snapshots preservados, estática, segurança, Stage 4B.5, integridade final
+  (`3202` arquivos/`127` manifestos) e pacote registrados. Estado
+  `PASS_LOCAL/BLOCKED_REMOTE`; symlink local limitado
+  por `WinError 1314`, com prova VMware scoped. Índice em
+  `artifacts/windows-runner-effective-sha-2026-09-03/artifact-index.json`.
+- `ETAPA_7_CANDIDATA_GATES_2026-09-03.md` — validação da árvore limpa no SHA `d6e02cd`, suíte `1909 passed, 2 skipped`, cobertura `90.82%`, integridade de `124` manifests e build portátil com smoke `SUCCESS`; runner legado permanece bloqueado e CI remoto não foi executado.
 
 
 

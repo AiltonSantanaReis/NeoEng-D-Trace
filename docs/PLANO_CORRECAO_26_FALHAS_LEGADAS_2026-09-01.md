@@ -372,6 +372,31 @@ release ou qualquer declaração `APROVADO`, `CONCLUÍDO`, `INTEGRADO` ou `PRONT
 O relatório final está em
 `docs/evidence/ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md`.
 
+### 0.13 Atualização de 03/09/2026 — validação no SHA efetivo
+
+Antes deste registro foram relidos os documentos normativos da seção 1, as
+políticas de qualidade, não regressão e publicação, a ADR do runner, os
+snapshots protegidos e os validadores de baseline/evidência. A execução foi
+repetida no worktree limpo do SHA
+`33abb5955f41f89f18f2a5fbe42d2ffc36274099`.
+
+- Runner Windows: `189/189` arquivos, `1918` testes, `0` falhas,
+  `0` erros e `2` skips; cobertura `92,59%` de linhas e
+  `85,02%` de branches.
+- Gate formal: histórico bruto `196/26/0/0`, retorno `1`, `15`
+  assinaturas exatas, `11` divergentes, `12` ausências e `42`
+  substitutos aprovados; snapshots sem alteração.
+- Lock, compilação, lint, formatação, tipos, segurança, Stage 4B.5, pacote e
+  integridade passaram; baseline `3202 files`, evidence integrity
+  `127 manifests`.
+- Symlink no host atual: `2 skipped` por `WinError 1314`; a prova VMware
+  permanece `PASS_SCOPED` para a reconstrução ZIP/patch identificada.
+
+Decisão corrente: `PASS_LOCAL / BLOCKED_REMOTE`. O próximo passo permitido é
+o push técnico controlado conforme a seção 10.1; merge, tag, release e qualquer
+declaração de aprovação continuam bloqueados. O relatório exato está em
+`docs/evidence/ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md`.
+
 
 Antes de decidir sobre código, fixture, teste, harness, reconciliação,
 evidência, commit ou merge, a equipe deverá consultar, na versão efetivamente

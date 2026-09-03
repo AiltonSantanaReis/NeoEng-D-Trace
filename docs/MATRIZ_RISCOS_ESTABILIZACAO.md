@@ -57,6 +57,17 @@ segurança, Stage 4B.5 e empacotamento passaram. O symlink local segue limitado
 por `WinError 1314`, e o CI remoto ainda está pendente; a prova VMware continua
 scoped. R-009 permanece `EM VALIDAÇÃO PRÉ-MERGE`.
 
+### Verificação do SHA efetivo — 03 de setembro de 2026
+
+A repetição no SHA `33abb5955f41f89f18f2a5fbe42d2ffc36274099` confirmou
+`189/189` arquivos, `1918` testes, `0` falhas, `0` erros e
+`2` skips, cobertura `92,59%/85,02%`, reconciliação formal das
+`11` divergências e `12` ausências, e snapshots preservados.
+Estática, segurança, Stage 4B.5, integridade e empacotamento também passaram.
+Symlink continua `WinError 1314` no host atual, com prova VMware scoped.
+R-009 permanece `EM VALIDAÇÃO PRÉ-MERGE`; CI remoto, merge, tag, release e
+aprovação continuam bloqueados.
+
 
 Snapshot histórico de 15 de agosto de 2026. Atualização vigente de 17 de agosto de 2026: a release oficial `v0.2.0` foi publicada pelo proprietário. `R-014` e `R-015` são riscos aceitos e não bloqueiam release; `R-016` foi revisado e aprovado. A execução dinâmica de Godot/Unity no CI não é requisito; as execuções reais locais reproduzíveis permanecem válidas. Os artefatos sem assinatura continuam declarados, não mascarados. A decisão completa está em `docs/evidence/RECONCILIACAO_GATES_RELEASE_2026-08-17.md`.
 

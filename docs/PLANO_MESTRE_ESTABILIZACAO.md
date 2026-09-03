@@ -47,6 +47,24 @@ técnico da candidata conforme a seção 10.1; merge, tag, release e aprovação
 global permanecem proibidos.
 
 
+## Atualização viva — validação do SHA efetivo — 03 de setembro de 2026
+
+A execução final foi repetida no worktree limpo do SHA
+`33abb5955f41f89f18f2a5fbe42d2ffc36274099`. O runner Windows isolado
+passou com `189/189` arquivos, `1918` testes, `0` falhas, `0`
+erros e `2` skips condicionais; cobertura de `92,59%` de linhas e
+`85,02%` de branches. O gate formal preservou o histórico
+`196/26/0/0`, retorno `1`, as `11` divergências, as `12`
+ausências e os snapshots legados, com `42` substitutos aprovados.
+
+Estática, segurança, Stage 4B.5, baseline (`3202 files`), evidence integrity
+(`127 manifests`) e empacotamento (`SUCCESS`, `11` smoke checks,
+`314` arquivos) passaram. O symlink local permanece limitado por
+`WinError 1314`; a prova VMware segue scoped. Estado:
+`PASS_LOCAL / BLOCKED_REMOTE`. O próximo passo permitido é o push técnico;
+merge, tag, release e aprovação global continuam proibidos. Evidência:
+`docs/evidence/ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md`.
+
 Este bloco é um snapshot vivo condicionado à verificação do repositório e do GitHub.
 
 ## Reconciliação corrente do estado e do novo plano

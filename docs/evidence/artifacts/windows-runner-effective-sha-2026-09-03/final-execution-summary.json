@@ -1,0 +1,195 @@
+{
+  "schema": "neoeng.dtrace.final-validation-summary",
+  "schema_version": 1,
+  "tested_commit": "33abb5955f41f89f18f2a5fbe42d2ffc36274099",
+  "branch": "fix/legacy-27-functional-regressions",
+  "status": "LOCAL_GATES_PASS_REMOTE_CI_PENDING",
+  "environment": {
+    "platform": "Windows win32",
+    "platform_release": "10.0.26200",
+    "python": "3.11.9",
+    "poetry": "2.4.1",
+    "pytest": "9.1.1",
+    "pytest_cov": "7.1.0",
+    "pyinstaller": "6.22.0",
+    "qt_qpa_platform": "offscreen"
+  },
+  "commands": [
+    "poetry check --lock --strict",
+    "poetry sync --no-interaction --no-ansi",
+    "poetry run python tools/run_windows_coverage_shards.py --output <runner-temp>",
+    "poetry run python tools/check_coverage_policy.py <runner-temp>/coverage.xml",
+    "poetry run python tools/run_formal_legacy_gate.py --group all --output <formal-temp>",
+    "poetry run python -m compileall -q -f app.py src tests pack_for_ai.py tools",
+    "poetry run flake8 src tests tools app.py pack_for_ai.py",
+    "poetry run black --check --diff src tests tools app.py pack_for_ai.py",
+    "poetry run isort --check-only --diff src tests tools app.py pack_for_ai.py",
+    "poetry run mypy src",
+    "poetry run pip-audit",
+    "poetry run bandit -q -r src -lll",
+    "poetry run python scripts/audit_stage4b5_quality.py --output <stage4b5-temp>",
+    "poetry run pytest tests\\test_integration_sync.py -k symlink -q -rs",
+    ".\\scripts\\build_windows.ps1 -OutputRoot release",
+    "poetry run python tools/baseline_integrity.py --verify --git-blob",
+    "poetry run python tools/evidence_integrity.py --require-tracked --git-blob"
+  ],
+  "runner": {
+    "official_glob": "tests/test_*.py",
+    "files": 189,
+    "tests": 1918,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "accepted": true,
+    "coverage_policy": "PASS",
+    "summary": {
+      "bytes": 167726,
+      "sha256": "dcd0a85b59d0dd9f89559970d7de11b96b8e82e5d0e848deae0d11ce1464e1fe"
+    },
+    "coverage_xml": {
+      "bytes": 1184099,
+      "sha256": "59aca183cb84fe0ae0fb4557a827d4f42b6023e374f1c00b5e7e0d3372b0e657"
+    }
+  },
+  "coverage": {
+    "lines": {
+      "covered": 23887,
+      "valid": 25798,
+      "percent": 92.59
+    },
+    "branches": {
+      "covered": 6664,
+      "valid": 7838,
+      "percent": 85.02
+    }
+  },
+  "formal_legacy": {
+    "accepted_current_contract": true,
+    "historical_raw": {
+      "tests": 196,
+      "failures": 26,
+      "errors": 0,
+      "skipped": 0,
+      "returncode": 1
+    },
+    "historical_exact_signatures": 15,
+    "unexpected_signatures": 11,
+    "historical_missing_expected_failures": 12,
+    "current_missing_observations": 1,
+    "resolved_cases": 27,
+    "substitutes": {
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "returncode": 0
+    },
+    "snapshots_preserved": true,
+    "snapshot_paths": [
+      "quality/legacy_tests/manifest.json",
+      "quality/legacy_tests/reconciliation.json"
+    ],
+    "snapshot_canonical_sha256": {
+      "quality/legacy_tests/manifest.json": "061e5981084e962f71f6357e765a0fe66defda5af521c9b7e22ae1e2bbf9833a",
+      "quality/legacy_tests/reconciliation.json": "34a186435d35936fc340ed2935bb6cb69756e13323f5c89fb82f9a632c733587"
+    },
+    "external_artifacts": [
+      {
+        "path": "formal-legacy/formal-gate.json",
+        "bytes": 11078,
+        "sha256": "88eb085b06bf90ca6d671f19bc8cb814ff7b5f28ea7bb0a59532080ca5cc5b68"
+      },
+      {
+        "path": "formal-legacy/historical/summary.json",
+        "bytes": 42811,
+        "sha256": "9b9b6a1f141e547d12f61a6c2f5614214d13331e3bb846480a41fe9eb514f9a1"
+      },
+      {
+        "path": "formal-legacy/substitutes.xml",
+        "bytes": 6515,
+        "sha256": "390f42f93945e4c40366260c04d02b44d66eb1f86887e28981ed1f6d8e089032"
+      }
+    ]
+  },
+  "quality_and_security": {
+    "compileall": "PASS",
+    "flake8": "PASS",
+    "black": "PASS",
+    "isort": "PASS",
+    "mypy": "PASS",
+    "bandit": "PASS",
+    "pip_audit": "PASS_NO_KNOWN_VULNERABILITIES; local package not published to PyPI",
+    "stage4b5": "PASS"
+  },
+  "stage4b5": {
+    "deterministic": true,
+    "input_unchanged": true,
+    "runtime_sha256": "28d64edc4e599e01fa1c1cbaa03a86b0f46e48bdf45787f4fb9d1649b626c04c",
+    "runtime_bytes": 867,
+    "measurements_seconds": {
+      "runtime_export_serialization_500": 0.056864,
+      "preview_projection_10000": 0.682276,
+      "overlay_geometry_10000": 0.025445
+    },
+    "external_artifacts": [
+      {
+        "path": "stage4b5/artifact-index.json",
+        "bytes": 836,
+        "sha256": "8ffa583462e4458062e60f32947ec9d2b8223c55b1ab8634a6c925f28c3173b4"
+      },
+      {
+        "path": "stage4b5/benchmark-report.json",
+        "bytes": 2937,
+        "sha256": "222754367908918570c7cbd269bb97bb11e922195cedaf4487af8589a15744c9"
+      }
+    ]
+  },
+  "symlink": {
+    "current_checkout": "BLOCKED_FOR_THIS_HOST",
+    "current_result": "2 skipped; 29 deselected",
+    "cause": "WinError 1314; Windows symlink privilege unavailable",
+    "vmware_scoped_evidence": {
+      "report": {
+        "path": "docs/evidence/ETAPA_7_SYMLINK_VMWARE_2026-09-02.md",
+        "bytes": 5168,
+        "sha256": "76eb480edf7a922f96b6a9a618592891bf858b156abf06f0aa3c16347e5f1948"
+      },
+      "index": {
+        "path": "docs/evidence/artifacts/symlink-vmware-2026-09-02/symlink-vmware-index.json",
+        "bytes": 732,
+        "sha256": "4acf255de5a93756219af26a9e463dc85855a9ad0ff9f5df0125ff021a31a40d"
+      },
+      "result": "2 passed, 0 skipped on the reconstructed ZIP/patch scope"
+    }
+  },
+  "package": {
+    "status": "SUCCESS",
+    "smoke_checks": 11,
+    "files": 314,
+    "archive": {
+      "bytes": 124181835,
+      "sha256": "c51855fd60841048b7464d43034229789210dc36c96e060c64ccf7fe42271099"
+    },
+    "manifest": {
+      "bytes": 55754,
+      "sha256": "ab3962cdbb5f9f1528c910059c25fb44420e629f1ff9d4dab66492756bf674b9"
+    }
+  },
+  "integrity": {
+    "lock": "PASS",
+    "baseline": {
+      "status": "PASS",
+      "files": 3199
+    },
+    "evidence": {
+      "status": "PASS",
+      "manifests": 126
+    }
+  },
+  "limitations": [
+    "Remote CI was not executed because the tested SHA has not been pushed.",
+    "The current host cannot create symlinks; the VMware proof is scoped to its identified ZIP/patch reconstruction and is not proof of the tested SHA.",
+    "Raw shard logs/JUnit and formal/stage audit outputs remain external; their summary/XML/report hashes are recorded above and the committed evidence declares the limitation."
+  ],
+  "decision": "LOCAL_CANDIDATE_READY_FOR_TECHNICAL_PUSH; merge, tag, release and global approval remain blocked pending remote CI and residual governance criteria"
+}

@@ -88,7 +88,7 @@ versões e evidências indicados em `docs/evidence`.
 
 O estado vivo desta revisão é uma candidata técnica pré-merge com gates locais
 concluídos, não uma release. A árvore limpa foi derivada exatamente do commit
-`55110c03a84a560823586d34e12e514592e6948b`, na branch
+`33abb5955f41f89f18f2a5fbe42d2ffc36274099`, na branch
 `fix/legacy-27-functional-regressions`:
 
 - runner Windows isolado: `189/189` arquivos, `1918` testes, `0` falhas,
@@ -100,18 +100,18 @@ concluídos, não uma release. A árvore limpa foi derivada exatamente do commit
 - runner histórico preservado: `196` testes, `26` falhas, retorno `1`;
   reconciliação formal com `11` assinaturas divergentes, `12` ausências e
   `42` substitutos aprovados, sem editar snapshots;
-- baseline Git-blob: `PASS` com `3196 files`; evidence integrity: `PASS` com
-  `125 manifests`;
+- baseline Git-blob: `PASS` com `3202 files`; evidence integrity: `PASS` com
+  `127 manifests`;
 - symlink no host atual: `2 skipped` por `WinError 1314`; a prova VMware
   registrada continua scoped ao ZIP/patch identificado e não ao SHA atual;
-- ZIP final: `124181833` bytes, SHA-256
-  `de3c8f4a3b3e7550e4ea9f1e868e2f25a3dea06b1f9e3fead11d80c5907daf93`.
+- ZIP final: `124181835` bytes, SHA-256
+  `c51855fd60841048b7464d43034229789210dc36c96e060c64ccf7fe42271099`.
 
 O relatório final está em
-`docs/evidence/ETAPA_7_WINDOWS_RUNNER_FINAL_2026-09-03.md` e o resumo hashado
-em `docs/evidence/artifacts/windows-runner-final-2026-09-03/`. O CI remoto só
-será executado após o push técnico; merge, tag, release e aprovação global
-continuam bloqueados.
+`docs/evidence/ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md` e o resumo
+hashado em `docs/evidence/artifacts/windows-runner-effective-sha-2026-09-03/`.
+O CI remoto só será executado após o push técnico; merge, tag, release e
+aprovação global continuam bloqueados.
 
 Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
 `docs/evidence`; o README não substitui os logs nem reclassifica testes não
