@@ -138,7 +138,8 @@ def is_historical_release_manifest(path: str) -> bool:
 
 
 def resolve_manifest_inventory(root: Path = ROOT) -> dict[str, Any]:
-    audit = load_json(root / AUDIT_PATH.relative_to(ROOT))
+    audit_path = root / AUDIT_PATH.relative_to(ROOT)
+    audit = load_json(audit_path)
     entries = []
     status_counts: Counter[str] = Counter()
     family_counts: Counter[str] = Counter()
@@ -146,12 +147,17 @@ def resolve_manifest_inventory(root: Path = ROOT) -> dict[str, Any]:
     for source in audit["entries"]:
         path_text = source["path"].replace("\\", "/")
         path = root / Path(path_text)
-        if not path.is_file():
-            raise AssertionError(f"manifest inventariado não existe: {path_text}")
-        raw = path.read_bytes()
-        observed_sha = sha256_bytes(raw)
-        if observed_sha != source["sha256"]:
-            raise AssertionError(f"hash mudou durante a reconciliação: {path_text}")
+        recorded_bytes = int(source["bytes"])
+        recorded_sha = source["sha256"]
+        if path.is_file():
+            raw = path.read_bytes()
+            observed_sha = sha256_bytes(raw)
+            if observed_sha != recorded_sha:
+                raise AssertionError(f"hash mudou durante a reconciliação: {path_text}")
+            if len(raw) != recorded_bytes:
+                raise AssertionError(
+                    f"tamanho mudou durante a reconciliação: {path_text}"
+                )
         family = source["family"]
         if family not in FAMILY_EVIDENCE:
             raise ValueError(f"família sem evidência autorizada: {family}")
@@ -233,12 +239,20 @@ def resolve_manifest_inventory(root: Path = ROOT) -> dict[str, Any]:
                     "status": reference_status,
                     "basis": basis["basis"],
                 },
-                "observed_integrity": {
-                    "bytes": len(raw),
-                    "sha256": observed_sha,
-                    "source_audit_sha256": source["sha256"],
-                    "unchanged_since_inventory": True,
+                "recorded_integrity": {
+                    "bytes": recorded_bytes,
+                    "sha256": recorded_sha,
                     "json_valid": bool(source["json_valid"]),
+                },
+                "source_validation": {
+                    "mode": "READ_ONLY_IF_PRESENT",
+                    "source_is_tracked": False,
+                    "absence_in_clean_checkout_is_allowed": True,
+                },
+                "inventory_provenance": {
+                    "source_audit_sha256": recorded_sha,
+                    "integrity_basis": "tracked_audit_record",
+                    "live_source_not_required_for_resolution": True,
                 },
                 "treatment": {
                     "decision": "PRESERVE_UNMODIFIED_OUTSIDE_SCOPE",
@@ -261,7 +275,7 @@ def resolve_manifest_inventory(root: Path = ROOT) -> dict[str, Any]:
         raise AssertionError(f"inventário esperado: 63; observado: {len(entries)}")
     return {
         "schema": "neoeng.workspace.untracked-manifest-resolution",
-        "schema_version": 1,
+        "schema_version": 2,
         "status": "ACCEPTED_WITH_DECLARED_LIMITATIONS",
         "accepted": True,
         "resolution_scope": (
@@ -283,6 +297,9 @@ def resolve_manifest_inventory(root: Path = ROOT) -> dict[str, Any]:
             "status_counts": dict(sorted(status_counts.items())),
             "family_counts": dict(sorted(family_counts.items())),
             "declared_missing_historical_references": missing_reference_paths,
+            "integrity_basis": "tracked_audit_record",
+            "source_files_required_for_resolution": False,
+            "source_files_validated_read_only_when_present": True,
         },
         "limitations": [
             (
@@ -296,6 +313,13 @@ def resolve_manifest_inventory(root: Path = ROOT) -> dict[str, Any]:
             (
                 "The Unity Packages manifest is a dependency manifest and has no "
                 "evidence references to resolve."
+            ),
+            (
+                "The 63 source manifests intentionally remain outside the tracked "
+                "candidate; their recorded bytes and SHA-256 values come from the "
+                "tracked read-only audit. A source file present in a checkout is "
+                "validated read-only against that record, but live source presence "
+                "is not required for formal resolution."
             ),
         ],
         "entries": entries,
