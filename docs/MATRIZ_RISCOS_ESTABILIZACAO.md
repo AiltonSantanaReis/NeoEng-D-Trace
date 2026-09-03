@@ -25,6 +25,25 @@
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
+### Verificação pós-merge — PR #166 — 03/09/2026
+
+A PR `#166` foi integrada no merge commit
+`8a97ae14e8f84eb86fcacfaefed61f014830fbf9`. O CI pós-merge `33794660766`
+passou em Linux (`100779319495`) e Windows (`100779319836`). A execução
+confirmou baseline de `3213` arquivos, `130` manifestos, Linux com `1919`
+testes aprovados e Windows com runner `189/189`, `1919` testes, zero falhas,
+erros ou skips. Cobertura, Stage 4B.5 e o gate formal passaram.
+
+O JUnit Windows confirmou `test_plan_rejects_symlink_escape` e
+`test_plan_rejects_symlink_destination` sem falhas ou skips. A reconciliação
+formal preservou `11` assinaturas divergentes, `12` ausências e `42`
+substitutos, sem alterar snapshots legados. A evidência VMware continua
+`PASS_SCOPED` para a reconstrução identificada do ZIP/patch.
+
+**R-009 — ENCERRADO NO ESCOPO DA PR #166.** O risco de CI sem Windows real foi
+comprovadamente encerrado no escopo desta etapa; isso não encerra os riscos
+globais nem autoriza tag ou release.
+
 ### Verificação viva — CI remoto da PR #166 — 03/09/2026
 
 O run remoto `33785352331` foi concluído com Linux

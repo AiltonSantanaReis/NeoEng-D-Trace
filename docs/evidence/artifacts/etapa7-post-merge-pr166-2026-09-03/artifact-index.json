@@ -1,0 +1,46 @@
+{
+  "schema": "neoeng.evidence-artifact-index",
+  "package": "etapa7-post-merge-pr166-2026-09-03",
+  "status": "PASS_POST_MERGE_BLOCKED_RELEASE",
+  "source_head_commit": "c6a2d18f9c6bcd48dba65b0df333a813ad6b86b3",
+  "merge_commit": "8a97ae14e8f84eb86fcacfaefed61f014830fbf9",
+  "files": [
+    {
+      "path": "post-merge-ci.json",
+      "bytes": 3619,
+      "sha256": "77e0ab9b3aa2a29f34ad36ddaa46d92fc8ea01c13c3b171f9bc4e7cf685f4ba3"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "<github-artifact>/validation-linux-python-3.11",
+      "id": 9908775913,
+      "size_bytes": 75858,
+      "digest": "sha256:07398be2486114d9f3b87ed15bf8ba7f76c4f81657112279274bb79964d20bcb",
+      "retention_days": 30
+    },
+    {
+      "path": "<github-artifact>/validation-windows-python-3.11",
+      "id": 9909082655,
+      "size_bytes": 63227454,
+      "digest": "sha256:e6daf3250469a13e548fc14d4df6b4a08ffd0591ef730fa9f7411e68be62682a",
+      "retention_days": 30
+    },
+    {
+      "path": "<github-artifact>/windows-coverage/summary.json",
+      "bytes": 152985,
+      "sha256": "20d9f0924375eb679238b1e66142890712010250d2d05fceb3e2f711dc02121f"
+    },
+    {
+      "path": "<github-artifact>/windows-legacy-tests/formal-gate.json",
+      "bytes": 10743,
+      "sha256": "bf7a68da069627348469ba37a15ee88a9e481040de8d729a38c0b98ab8e464d0"
+    },
+    {
+      "path": "<github-artifact>/windows-coverage/junit/039-test_integration_sync.xml",
+      "bytes": 4218,
+      "sha256": "49aa9c07e80787a780c0417290c604cbe28db1cdb996a37f983f8ae1c2345612"
+    }
+  ],
+  "index_excludes_itself": true
+}

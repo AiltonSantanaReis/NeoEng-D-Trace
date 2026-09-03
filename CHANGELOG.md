@@ -1,3 +1,16 @@
+## 2026-09-03 — encerramento pós-merge da PR #166
+
+- registra a integração da PR `#166` no merge commit
+  `8a97ae14e8f84eb86fcacfaefed61f014830fbf9`;
+- confirma o CI pós-merge `33794660766` em Linux e Windows, sem falhas;
+- confirma baseline de `3213` arquivos, integridade de `130` manifestos e
+  cobertura mínima aprovada;
+- confirma no Windows o runner `189/189`, `1919` testes, `0` falhas,
+  `0` erros e `0` skips;
+- confirma a reconciliação formal e os contratos de symlink no escopo integrado;
+- encerra a Etapa 7 somente no escopo da PR `#166`; tag, release e o plano
+  global permanecem bloqueados.
+
 ## 2026-09-03 — CI remoto verde da candidata da PR #166
 
 - registra o run `33785352331`, com Linux e Windows concluídos em

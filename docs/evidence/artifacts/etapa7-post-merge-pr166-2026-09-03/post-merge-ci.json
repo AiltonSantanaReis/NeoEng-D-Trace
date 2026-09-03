@@ -1,0 +1,117 @@
+{
+  "schema": "neoeng.post-merge-ci",
+  "status": "PASS",
+  "scope_status": "APPROVED_IN_PR_166_SCOPE",
+  "pull_request": 166,
+  "source_head_commit": "c6a2d18f9c6bcd48dba65b0df333a813ad6b86b3",
+  "merge_commit": "8a97ae14e8f84eb86fcacfaefed61f014830fbf9",
+  "base_commit": "7f3799c1b29835f6db5ab6d35c0cab5deda5765b",
+  "run": {
+    "id": 33794660766,
+    "event": "push",
+    "branch": "main",
+    "conclusion": "success",
+    "created_at": "2026-09-03T19:08:20Z",
+    "updated_at": "2026-09-03T19:19:45Z"
+  },
+  "jobs": {
+    "linux": {
+      "id": 100779319495,
+      "conclusion": "success",
+      "tests": 1919,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "warnings": 1,
+      "line_covered": 23890,
+      "line_total": 25799,
+      "branch_covered": 6665,
+      "branch_total": 7838,
+      "line_rate": 0.926,
+      "branch_rate": 0.8503,
+      "baseline_files": 3213,
+      "evidence_manifests": 130
+    },
+    "windows": {
+      "id": 100779319836,
+      "conclusion": "success",
+      "tests": 1919,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runner_accepted": true,
+      "runner_expected_files": 189,
+      "runner_completed_files": 189,
+      "runner_duration_seconds": 307.25,
+      "line_covered": 23890,
+      "line_total": 25799,
+      "branch_covered": 6666,
+      "branch_total": 7838,
+      "line_rate": 0.926,
+      "branch_rate": 0.8505,
+      "baseline_files": 3213,
+      "evidence_manifests": 130,
+      "symlink_junit_tests": 31,
+      "symlink_junit_failures": 0,
+      "symlink_junit_errors": 0,
+      "symlink_junit_skipped": 0
+    }
+  },
+  "formal_legacy_gate": {
+    "accepted": true,
+    "tested_commit": "8a97ae14e8f84eb86fcacfaefed61f014830fbf9",
+    "source_head_commit": "8a97ae14e8f84eb86fcacfaefed61f014830fbf9",
+    "historical_tests": 196,
+    "historical_failures": 26,
+    "historical_errors": 0,
+    "historical_skipped": 0,
+    "historical_returncode": 1,
+    "historical_exact": 15,
+    "unexpected_signatures": 11,
+    "missing_expected_failures": 12,
+    "current_missing_observations": 1,
+    "substitute_tests": 42,
+    "substitute_failures": 0,
+    "substitute_errors": 0,
+    "substitute_skipped": 0
+  },
+  "artifacts": {
+    "linux": {
+      "name": "validation-linux-python-3.11",
+      "id": 9908775913,
+      "size_bytes": 75858,
+      "digest": "sha256:07398be2486114d9f3b87ed15bf8ba7f76c4f81657112279274bb79964d20bcb"
+    },
+    "windows": {
+      "name": "validation-windows-python-3.11",
+      "id": 9909082655,
+      "size_bytes": 63227454,
+      "digest": "sha256:e6daf3250469a13e548fc14d4df6b4a08ffd0591ef730fa9f7411e68be62682a"
+    },
+    "windows_summary": {
+      "bytes": 152985,
+      "sha256": "20d9f0924375eb679238b1e66142890712010250d2d05fceb3e2f711dc02121f"
+    },
+    "formal_gate": {
+      "bytes": 10743,
+      "sha256": "bf7a68da069627348469ba37a15ee88a9e481040de8d729a38c0b98ab8e464d0"
+    },
+    "symlink_junit": {
+      "path": "windows-coverage/junit/039-test_integration_sync.xml",
+      "bytes": 4218,
+      "sha256": "49aa9c07e80787a780c0417290c604cbe28db1cdb996a37f983f8ae1c2345612"
+    },
+    "linux_coverage_xml": {
+      "bytes": 1157539,
+      "sha256": "49c5458dd509da069aaf6702a5e1b18ea13d61fb4115902d3c236143cc2f1c66"
+    },
+    "windows_coverage_xml": {
+      "bytes": 1184094,
+      "sha256": "cdbe2eff22499a2ef77dc478434354c174fdac9c7bdb1032b361e7bcca240a62"
+    }
+  },
+  "preserved_failure_snapshot": "docs/evidence/ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md",
+  "vmware_evidence_status": "PASS_SCOPED",
+  "global_plan_status": "IN_PROGRESS",
+  "release_authorization": "BLOCKED"
+}
