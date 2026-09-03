@@ -4,10 +4,34 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
+## Atualização viva — encerramento pós-merge da PR #166 — 03 de setembro de 2026
+
+A PR `#166` foi integrada no merge commit
+`8a97ae14e8f84eb86fcacfaefed61f014830fbf9`, originada no commit-fonte
+`c6a2d18f9c6bcd48dba65b0df333a813ad6b86b3`. O CI pós-merge `33794660766`,
+disparado por `push` em `main`, passou nos jobs Linux `100779319495` e Windows
+`100779319836`.
+
+A execução pós-merge confirmou baseline de `3213` arquivos e integridade de
+`130` manifestos. Linux passou com `1919 passed` e um warning. Windows aceitou
+`189/189` arquivos, `1919` testes, `0` falhas, `0` erros e `0` skips. A
+cobertura foi `92,60%` de linhas e `85,03%`/`85,05%` de branches em Linux e
+Windows, respectivamente. Lock, compilação, estática, segurança, Stage 4B.5
+e o gate formal também passaram.
+
+O gate formal preservou o histórico bruto `196/26/0/0`, retorno `1`, com `15`
+falhas exatas, `11` assinaturas divergentes, `12` ausências e `42` substitutos.
+Os snapshots legados continuam imutáveis. O JUnit Windows confirmou os dois
+contratos de symlink; a prova VMware permanece scoped à reconstrução ZIP/patch.
+
+Estado atual: Etapa 7 `APROVADA NO ESCOPO DA PR #166`; plano global
+`IN_PROGRESS`; tag e release `BLOCKED`. Evidência pós-merge:
+`docs/evidence/ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md`.
+
 ## Atualização viva — CI remoto verde da PR #166 — 03 de setembro de 2026
 
 O commit-fonte publicado da candidata é
-`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9), na branch
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`, na branch
 `fix/legacy-27-functional-regressions`. O run remoto
 `33785352331` concluiu com os dois jobs obrigatórios em `SUCCESS`:
 Linux `100748662139` e Windows `100748662510`.

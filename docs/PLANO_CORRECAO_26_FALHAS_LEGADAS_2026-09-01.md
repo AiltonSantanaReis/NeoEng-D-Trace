@@ -4,10 +4,11 @@
 **Etapa:** Reconciliação técnica pós-auditoria — 26 falhas legadas restantes
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
-**Status:** `EM EXECUÇÃO — FASE 7 EXECUTADA; B-04 PARCIAL; INTEGRAÇÃO BLOQUEADA`
-**Última atualização:** 03/09/2026 — CI remoto da PR #166 passou nos dois jobs; integração ainda bloqueada por revisão humana
+**Status:** `EM EXECUÇÃO — FASE 7 INTEGRADA NO ESCOPO; B-04 RESOLVIDO; PLANO GLOBAL IN_PROGRESS`
+**Última atualização:** 03/09/2026 — PR #166 mergeada e CI pós-merge passou; plano global continua em execução
 **HEAD de validação local/empacotamento:** `febc85471e5ced519f47626665f5d995e7cf60a9`
 **HEAD publicado e validado pelo CI remoto:** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
+**HEAD integrado e validado pós-merge:** `8a97ae14e8f84eb86fcacfaefed61f014830fbf9`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
 **Branch de trabalho:** `fix/legacy-27-functional-regressions`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
@@ -16,9 +17,41 @@
 
 Este documento é um plano vivo de execução. Ele registra as decisões e as
 evidências produzidas até a revisão candidata atual, mas não declara aprovação
-global, encerramento da etapa, commit, push ou merge. A etapa somente poderá ser
+global nem encerramento do plano ou release. Commits, pushes e merges já
+realizados são registrados nas seções correspondentes. A etapa somente poderá ser
 encerrada quando todos os critérios deste documento forem comprovados em um
 pacote integral e reproduzível.
+
+## 0.17 Encerramento pós-merge da Fase 7 — PR #166 — 03/09/2026
+
+Antes deste registro foram relidas a governança de integridade e
+antialucinação, as políticas de qualidade e não regressão, a ADR do runner
+Windows, este plano, os validadores, o índice de evidências e os snapshots
+protegidos. O snapshot pré-merge e a falha Windows anterior permanecem
+preservados; nenhum resultado histórico foi apagado ou reclassificado.
+
+A PR `#166` foi mergeada sem force no commit
+`8a97ae14e8f84eb86fcacfaefed61f014830fbf9`, a partir do commit-fonte
+`c6a2d18f9c6bcd48dba65b0df333a813ad6b86b3`. O CI pós-merge `33794660766`
+passou em Linux (`100779319495`) e Windows (`100779319836`).
+
+- Linux: `1919 passed`, 1 warning; cobertura `23890/25799` linhas e
+  `6665/7838` branches;
+- Windows: runner `ACCEPTED`, `189/189` arquivos, `1919` testes, `0` falhas,
+  `0` erros e `0` skips; cobertura `23890/25799` linhas e `6666/7838`
+  branches;
+- ambos: baseline `3213` arquivos, integridade de `130` manifestos, lock,
+  estática, segurança, cobertura e Stage 4B.5 passaram;
+- formal: histórico `196/26/0/0`, retorno `1`, `15` exatas, `11` divergentes,
+  `12` ausências e `42` substitutos; snapshots preservados;
+- symlink: os dois contratos passaram no JUnit Windows sem skip; VMware segue
+  `PASS_SCOPED` para a reconstrução identificada do ZIP/patch.
+
+Decisão corrente: Fase 7 `APROVADA NO ESCOPO DA PR #166`, B-04 resolvido no
+escopo comprovado e plano global `IN_PROGRESS`. Tag, release e encerramento
+global permanecem bloqueados. O relatório e o pacote estão em
+`docs/evidence/ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md` e
+`docs/evidence/artifacts/etapa7-post-merge-pr166-2026-09-03/`.
 
 ## 0.16 Registro vivo de execução — CI remoto verde da PR #166 — 03/09/2026
 

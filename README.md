@@ -8,27 +8,26 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Estado operacional da candidata de correção
+## Estado operacional após integração da Etapa 7
 
-A candidata da PR `#166` está publicada na branch
-`fix/legacy-27-functional-regressions`, com cabeça-fonte
-`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O run remoto
-`33785352331` passou nos jobs Linux `100748662139` e Windows
-`100748662510`. O Windows executou o runner integral em `189/189` arquivos,
-`1919` testes, sem falhas, erros ou skips, e os dois contratos de symlink
-passaram.
+A PR `#166`, originada na branch
+`fix/legacy-27-functional-regressions`, foi integrada no merge commit
+`8a97ae14e8f84eb86fcacfaefed61f014830fbf9`, a partir do commit-fonte
+`c6a2d18f9c6bcd48dba65b0df333a813ad6b86b3`. O CI pós-merge
+`33794660766` passou nos jobs Linux `100779319495` e Windows
+`100779319836`.
 
-A revisão remota foi executada no merge sintético
-`1eb297dec2faea82b06779778b6463b94a625897`, com
-`source_head_commit=f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`; essa relação foi
-confirmada pela ancestralidade dos pais do commit. Baseline, integridade de
-evidências, cobertura, Stage 4B.5 e gate formal passaram. A falha anterior
-`33767197026` permanece preservada como snapshot.
+O pós-merge confirmou baseline de `3213` arquivos, integridade de `130`
+manifestos, Linux com `1919 passed` e Windows com runner `ACCEPTED` em
+`189/189` arquivos, `1919` testes, `0` falhas, `0` erros e `0` skips. Cobertura,
+Stage 4B.5, lock, tipos, segurança e gate formal passaram. Os contratos de
+symlink continuam comprovados no JUnit Windows; a prova VMware permanece
+scoped à reconstrução identificada do ZIP/patch.
 
-O estado do gate remoto é `PASS`, mas a integração global permanece
-`BLOCKED` até revisão humana e autorização explícita. Merge, tag, release e
-qualquer declaração de encerramento global continuam proibidos. Evidência:
-`docs/evidence/ETAPA_7_CI_RERUN_PR166_2026-09-03.md`.
+O estado da Etapa 7 é `APROVADO NO ESCOPO DA PR #166`; o plano global continua
+`IN_PROGRESS` e tag, release e aprovação global continuam bloqueados. A falha
+anterior e o snapshot pré-merge permanecem preservados. Evidência:
+`docs/evidence/ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md`.
 
 ## Snapshot técnico e rastreabilidade
 

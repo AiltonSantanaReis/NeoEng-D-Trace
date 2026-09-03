@@ -1,3 +1,10 @@
+- `ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md` — encerramento da PR
+  `#166` no merge `8a97ae14`, com CI pós-merge `33794660766` aprovado em Linux
+  e Windows, baseline de `3213` arquivos, `130` manifestos, runner Windows
+  `189/189`, `1919` testes, reconciliação formal e contratos de symlink
+  confirmados no escopo integrado. Tag e release permanecem bloqueados.
+  Pacote hashado em `artifacts/etapa7-post-merge-pr166-2026-09-03/`.
+
 - `ETAPA_7_CI_RERUN_PR166_2026-09-03.md` — snapshot do run remoto
   `33785352331` da PR `#166`: Linux e Windows em `SUCCESS`, runner
   Windows `189/189`, `1919` testes, reconciliação formal aceita e os dois
