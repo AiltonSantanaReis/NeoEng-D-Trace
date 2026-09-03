@@ -1,0 +1,134 @@
+{
+  "schema": "neoeng.remote-ci-rerun",
+  "status": "PASS",
+  "captured_at": "2026-09-03",
+  "pr": 166,
+  "run_id": 33785352331,
+  "event": "pull_request",
+  "source_head_commit": "f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9",
+  "tested_commit": "1eb297dec2faea82b06779778b6463b94a625897",
+  "base_commit": "7f3799c1b29835f6db5ab6d35c0cab5deda5765b",
+  "tested_commit_relation": "synthetic pull-request merge; source head is second parent and ancestor",
+  "run_url": "https://github.com/AiltonSantanaReis/NeoEng-D-Trace/actions/runs/33785352331",
+  "jobs": {
+    "linux": {
+      "job_id": 100748662139,
+      "status": "SUCCESS",
+      "url": "https://github.com/AiltonSantanaReis/NeoEng-D-Trace/actions/runs/33785352331/job/100748662139",
+      "python": "3.11.16",
+      "platform": "ubuntu-latest",
+      "tests_passed": 1919,
+      "warnings": 1,
+      "failures": 0,
+      "errors": 0,
+      "coverage": {
+        "lines_covered": 23890,
+        "lines_valid": 25799,
+        "branches_covered": 6665,
+        "branches_valid": 7838,
+        "line_percent": 92.6,
+        "branch_percent": 85.03,
+        "xml_bytes": 1157539,
+        "xml_sha256": "02d1de472493690f69eea9fbf8458928737c1672b85257183a45242ce1c91783"
+      },
+      "environment_freeze": {
+        "bytes": 1435,
+        "sha256": "18d5d127504639ca47edddb93fd7a21e322946dba06fa101bacc6c1a14cec99"
+      },
+      "artifact": {
+        "name": "validation-linux-python-3.11",
+        "id": 9905289811,
+        "size_bytes": 75862,
+        "digest": "sha256:3b6074db0895d1a28d2803f7ccb6944d5ebd1def93b97e6ed2edab27c00f8233"
+      },
+      "baseline_files": 3210,
+      "evidence_manifests": 129,
+      "coverage_policy": "PASS",
+      "stage4b5": "PASS"
+    },
+    "windows": {
+      "job_id": 100748662510,
+      "status": "SUCCESS",
+      "url": "https://github.com/AiltonSantanaReis/NeoEng-D-Trace/actions/runs/33785352331/job/100748662510",
+      "python": "3.11.9",
+      "platform": "Windows-10-10.0.26100-SP0",
+      "tests_passed": 1919,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "runner": {
+        "schema": "neoeng.windows.coverage-shards",
+        "expected_files": 189,
+        "completed_files": 189,
+        "accepted": true,
+        "duration_seconds": 290.954,
+        "summary_bytes": 152979,
+        "summary_sha256": "5e00659aadb205c2e48c2790fc178f207fee311994fb8113b726bb80a9ef37aa"
+      },
+      "coverage": {
+        "lines_covered": 23890,
+        "lines_valid": 25799,
+        "branches_covered": 6666,
+        "branches_valid": 7838,
+        "line_percent": 92.6,
+        "branch_percent": 85.05,
+        "xml_bytes": 1184094,
+        "xml_sha256": "5a87a7ac05bb214e97d2ec41c5bf2e4dc1488e7a390a62d2f72274246b431acc"
+      },
+      "symlink": {
+        "file": "tests/test_integration_sync.py",
+        "tests": [
+          "test_plan_rejects_symlink_escape",
+          "test_plan_rejects_symlink_destination"
+        ],
+        "passed": 2,
+        "skipped": 0,
+        "failures": 0
+      },
+      "formal_gate": {
+        "status": "ACCEPTED",
+        "tested_commit": "1eb297dec2faea82b06779778b6463b94a625897",
+        "source_head_commit": "f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9",
+        "historical_tests": 196,
+        "historical_failures": 26,
+        "historical_errors": 0,
+        "historical_skips": 0,
+        "historical_returncode": 1,
+        "historical_exact": 15,
+        "changed_signatures": 11,
+        "missing_expected_failures": 12,
+        "substitutes": 42
+      },
+      "environment_freeze": {
+        "bytes": 1566,
+        "sha256": "a0d5481a57735a7081b7634a99438a3394de285768782a5c8598b207674256fc"
+      },
+      "formal_gate_file": {
+        "bytes": 10743,
+        "sha256": "9d49a6f44a1d1ae3e89a71ee5fb4659c700570c3ca24574744e182a4ac62731f"
+      },
+      "artifact": {
+        "name": "validation-windows-python-3.11",
+        "id": 9905574609,
+        "size_bytes": 63220911,
+        "digest": "sha256:1ae8d5e744727bce0d4f6aaa2e8318a53055f2452586aba5079954a0e2bd9522"
+      },
+      "baseline_files": 3210,
+      "evidence_manifests": 129,
+      "coverage_policy": "PASS",
+      "stage4b5": "PASS"
+    }
+  },
+  "preserved_failure": {
+    "run_id": 33767197026,
+    "job_id": 100687993643,
+    "failure": "elapsed_ms=47.0 < timeout_ms=50.0",
+    "snapshot": "docs/evidence/ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md"
+  },
+  "limitations": [
+    "CI pre-merge uses the synthetic pull-request merge commit; source_head_commit is recorded separately and ancestry was verified.",
+    "VMware symlink evidence remains scoped to the ZIP/patch reconstruction and is not promoted to proof of this Git SHA.",
+    "This PASS covers the PR gate; it is not a post-merge or release validation."
+  ],
+  "merge_authorization": "BLOCKED_PENDING_HUMAN_REVIEW"
+}

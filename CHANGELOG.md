@@ -1,3 +1,16 @@
+## 2026-09-03 — CI remoto verde da candidata da PR #166
+
+- registra o run `33785352331`, com Linux e Windows concluídos em
+  `SUCCESS`;
+- confirma no Windows o runner oficial em `189/189` arquivos e `1919`
+  testes, sem falhas, erros ou skips;
+- confirma os dois contratos reais de symlink no CI Windows, mantendo separada
+  a prova VMware scoped da reconstrução ZIP/patch;
+- confirma a reconciliação formal aceita com `11` assinaturas divergentes,
+  `12` ausências e snapshots legados preservados;
+- mantém o plano em execução e merge, tag, release e aprovação global bloqueados
+  até revisão humana e autorização explícita.
+
 ## 2026-09-03 — correção da medição de timeout no runner Windows
 
 - preserva como snapshot a falha do job Windows `100687993643` no run

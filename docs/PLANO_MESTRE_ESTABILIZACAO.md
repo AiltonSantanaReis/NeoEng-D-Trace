@@ -4,6 +4,34 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
+## Atualização viva — CI remoto verde da PR #166 — 03 de setembro de 2026
+
+O commit-fonte publicado da candidata é
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9), na branch
+`fix/legacy-27-functional-regressions`. O run remoto
+`33785352331` concluiu com os dois jobs obrigatórios em `SUCCESS`:
+Linux `100748662139` e Windows `100748662510`.
+
+O Windows executou o runner oficial sem seleção parcial: `189/189` arquivos,
+`1919` testes, `0` falhas, `0` erros e `0` skips. O JUnit confirmou os
+dois contratos de symlink. Linux passou com `1919 passed` e um warning. A
+cobertura extraída dos XMLs foi `23890/25799` linhas (92,60%) nos dois
+sistemas; branches `6665/7838` (85,03%) no Linux e `6666/7838` (85,05%)
+no Windows. Baseline, integridade de evidências, política de cobertura e
+Stage 4B.5 passaram.
+
+O checkout do evento `pull_request` testou o merge sintético
+`1eb297dec2faea82b06779778b6463b94a625897`, cujo segundo pai é
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O gate formal registrou a cabeça
+da fonte separadamente e aceitou a reconciliação: histórico bruto
+`196/26/0/0`, retorno `1`, `15` exatas, `11` divergentes, `12`
+ausências e `42` substitutos. Os snapshots legados permaneceram imutáveis.
+
+Estado remoto desta revisão: `PASS`. Estado do plano: `IN_PROGRESS`. A
+integração segue `BLOCKED` até revisão humana e autorização explícita; não
+foram executados merge, tag ou release. Evidência:
+`docs/evidence/ETAPA_7_CI_RERUN_PR166_2026-09-03.md`.
+
 ## Atualização viva — correção do timeout Windows — 03 de setembro de 2026
 
 O rerun remoto `33767197026` foi analisado antes de nova autorização de merge:

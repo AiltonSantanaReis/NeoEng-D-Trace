@@ -1,3 +1,11 @@
+- `ETAPA_7_CI_RERUN_PR166_2026-09-03.md` — snapshot do run remoto
+  `33785352331` da PR `#166`: Linux e Windows em `SUCCESS`, runner
+  Windows `189/189`, `1919` testes, reconciliação formal aceita e os dois
+  contratos de symlink aprovados sem skip. O merge sintético e a cabeça-fonte
+  foram registrados separadamente. Estado do gate: `PASS`; integração:
+  `BLOCKED` até revisão humana. Pacote em
+  `artifacts/etapa7-ci-rerun-pr166-2026-09-03/`.
+
 - `ETAPA_7_CI_TIMEOUT_WINDOWS_2026-09-03.md` — registra a falha Windows do
   rerun `33767197026` (`47,0 ms` contra `50 ms`), a causa da medição após a
   fila do `QThreadPool`, a correção no SHA `febc854` e a validação local limpa;

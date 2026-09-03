@@ -25,6 +25,28 @@
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
+### Verificação viva — CI remoto da PR #166 — 03/09/2026
+
+O run remoto `33785352331` foi concluído com Linux
+(`100748662139`) e Windows (`100748662510`) em `SUCCESS`, no commit-fonte
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O checkout do evento
+`pull_request` usou o merge sintético
+`1eb297dec2faea82b06779778b6463b94a625897`; a cabeça-fonte foi registrada
+separadamente e sua ancestralidade foi confirmada.
+
+O runner Windows aceitou `189/189` arquivos e `1919` testes, sem falhas,
+erros ou skips. Os testes `test_plan_rejects_symlink_escape` e
+`test_plan_rejects_symlink_destination` passaram. O gate formal aceitou a
+reconciliação de `11` assinaturas divergentes e `12` ausências, com
+`42` substitutos, sem alteração dos snapshots legados. Baseline,
+integridade, cobertura e Stage 4B.5 passaram.
+
+No escopo do risco `R-009`, a exigência de um job Windows real foi comprovada
+na PR. A prova VMware permanece registrada como validação scoped da reconstrução
+ZIP/patch, sem ser promovida a prova do SHA Git. `R-009` está
+`ENCERRADO NO ESCOPO DA PR #166`; isso não encerra o plano global nem substitui
+revisão humana, merge ou validação pós-merge.
+
 ## Estado operacional atual dos riscos
 
 ### Verificação viva — correção do timeout Windows — 03/09/2026

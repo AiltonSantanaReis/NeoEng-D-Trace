@@ -10,17 +10,25 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 
 ## Estado operacional da candidata de correção
 
-A candidata da PR `#166` está no commit local `febc85471e5ced519f47626665f5d995e7cf60a9`,
-na branch `fix/legacy-27-functional-regressions`. O job remoto anterior
-`33767197026` foi preservado como falha Windows de medição de timeout; o defeito
-foi corrigido medindo a vida da solicitação desde a construção do worker,
-incluindo a fila do `QThreadPool`, sem remover a asserção.
+A candidata da PR `#166` está publicada na branch
+`fix/legacy-27-functional-regressions`, com cabeça-fonte
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O run remoto
+`33785352331` passou nos jobs Linux `100748662139` e Windows
+`100748662510`. O Windows executou o runner integral em `189/189` arquivos,
+`1919` testes, sem falhas, erros ou skips, e os dois contratos de symlink
+passaram.
 
-No worktree limpo, o runner Windows passou em `189/189` arquivos, `1919` testes,
-`0` falhas, `0` erros e `2` skips; cobertura `92,59%` de linhas e `85,02%` de
-branches. Os gates complementares e o empacotamento também passaram. O estado
-é `PASS_LOCAL / BLOCKED_REMOTE_RERUN`: o push técnico ainda deve disparar os
-dois jobs remotos, que precisam ser analisados antes de qualquer merge.
+A revisão remota foi executada no merge sintético
+`1eb297dec2faea82b06779778b6463b94a625897`, com
+`source_head_commit=f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`; essa relação foi
+confirmada pela ancestralidade dos pais do commit. Baseline, integridade de
+evidências, cobertura, Stage 4B.5 e gate formal passaram. A falha anterior
+`33767197026` permanece preservada como snapshot.
+
+O estado do gate remoto é `PASS`, mas a integração global permanece
+`BLOCKED` até revisão humana e autorização explícita. Merge, tag, release e
+qualquer declaração de encerramento global continuam proibidos. Evidência:
+`docs/evidence/ETAPA_7_CI_RERUN_PR166_2026-09-03.md`.
 
 ## Snapshot técnico e rastreabilidade
 

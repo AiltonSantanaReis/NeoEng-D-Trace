@@ -5,8 +5,9 @@
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
 **Status:** `EM EXECUÇÃO — FASE 7 EXECUTADA; B-04 PARCIAL; INTEGRAÇÃO BLOQUEADA`
-**Última atualização:** 03/09/2026 — falha Windows do rerun analisada, medição corrigida no worktree limpo e gates repetidos; novo CI remoto pendente
+**Última atualização:** 03/09/2026 — CI remoto da PR #166 passou nos dois jobs; integração ainda bloqueada por revisão humana
 **HEAD de validação local/empacotamento:** `febc85471e5ced519f47626665f5d995e7cf60a9`
+**HEAD publicado e validado pelo CI remoto:** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
 **Branch de trabalho:** `fix/legacy-27-functional-regressions`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
@@ -18,6 +19,43 @@ evidências produzidas até a revisão candidata atual, mas não declara aprova�
 global, encerramento da etapa, commit, push ou merge. A etapa somente poderá ser
 encerrada quando todos os critérios deste documento forem comprovados em um
 pacote integral e reproduzível.
+
+## 0.16 Registro vivo de execução — CI remoto verde da PR #166 — 03/09/2026
+
+Antes deste registro foram relidas a governança de integridade e
+antialucinação, as políticas de qualidade e não regressão, a ADR do runner
+Windows, este plano, o índice de evidências, o workflow oficial, os validadores
+e os snapshots protegidos. A falha do run anterior permaneceu preservada; nenhum
+resultado histórico foi apagado, reclassificado ou substituído.
+
+O commit-fonte publicado da candidata é
+`f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`. O run remoto
+`33785352331` concluiu com Linux `100748662139` e Windows
+`100748662510` em `SUCCESS`. O checkout do evento `pull_request` testou o
+merge sintético `1eb297dec2faea82b06779778b6463b94a625897`; a API confirmou
+`f61ba61` como segundo pai e o gate formal registrou a cabeça-fonte
+separadamente, com ancestralidade válida.
+
+- Linux: `1919 passed`, 1 warning; cobertura XML de
+  `23890/25799` linhas e `6665/7838` branches.
+- Windows: runner `ACCEPTED`, `189/189` arquivos, `1919` testes,
+  `0` falhas, `0` erros e `0` skips; cobertura XML de
+  `23890/25799` linhas e `6666/7838` branches.
+- Ambos: política de cobertura, Stage 4B.5, baseline de `3210` arquivos e
+  integridade de `129` manifestos passaram.
+- Symlink no Windows remoto: os dois contratos focais passaram sem skip.
+  A prova VMware continua `PASS_SCOPED` para a reconstrução identificada do
+  ZIP/patch e permanece separada da prova do SHA Git.
+- Gate formal: histórico bruto `196/26/0/0`, retorno `1`, `15` exatas,
+  `11` divergentes, `12` ausências e `42` substitutos; snapshots legados
+  preservados.
+
+Decisão corrente: o gate remoto desta revisão está `PASS`; o plano segue
+`IN_PROGRESS` e a integração segue `BLOCKED` até revisão humana e
+autorização explícita. Não foram executados merge, tag ou release. O relatório
+e o índice hashado estão em
+`docs/evidence/ETAPA_7_CI_RERUN_PR166_2026-09-03.md` e
+`docs/evidence/artifacts/etapa7-ci-rerun-pr166-2026-09-03/`.
 
 ## 0.15 Registro vivo de execução — correção do timeout Windows — 03/09/2026
 
