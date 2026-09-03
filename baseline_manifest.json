@@ -11721,8 +11721,8 @@
       "size": 5224
     },
     "src/tools/magnetic_lasso.py": {
-      "sha256": "b8db5c4a239a54377d7a7660739ba07a6f325f7cd6df9a45c8390deaba960254",
-      "size": 52674
+      "sha256": "351123378e39bde9ea0e4741f81a3ef3a41df130debd44d168fddebc59d1949c",
+      "size": 52795
     },
     "src/tools/magnetic_lasso_engine.py": {
       "sha256": "43a4575f07713a8f8a7ebdc97e23bd71d490c776658a2a3832694bd2eb373911",

@@ -178,6 +178,8 @@ class _MagneticPathWorker(QRunnable):
         self.end = end
         self.signals = _MagneticPathSignals()
         self.setAutoDelete(True)
+        # Measure the request lifetime, including QThreadPool queue latency.
+        self._started_at = time.monotonic()
         self._cancel_event = cancel_event if cancel_event is not None else Event()
 
     def cancel(self) -> None:
@@ -186,7 +188,7 @@ class _MagneticPathWorker(QRunnable):
 
     @Slot()
     def run(self):
-        started_at = time.monotonic()
+        started_at = self._started_at
         error = None
         path: List[Point] = []
         edge_map = self.edge_map
