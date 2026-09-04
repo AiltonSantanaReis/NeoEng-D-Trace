@@ -337,10 +337,10 @@ def test_layers_panel_blocks_every_action_without_command_manager(
     second = scene.create_layer("Second")
     scene.cmd = None
     panel = LayersPanel(scene)
-    messages = []
+    presentations = []
     monkeypatch.setattr(
-        "src.ui.layers_panel.QMessageBox.critical",
-        lambda *args, **kwargs: messages.append(args),
+        "src.ui.layers_panel.show_p2d05_error",
+        lambda *args, **kwargs: presentations.append(kwargs) or None,
     )
 
     if action == "create":
@@ -365,8 +365,10 @@ def test_layers_panel_blocks_every_action_without_command_manager(
     invoke()
 
     assert _layer_state(scene) == origin
-    assert len(messages) == 1
-    assert "history is unavailable" in str(messages[0]).lower()
+    assert len(presentations) == 1
+    assert presentations[0]["severity"] == "critical"
+    assert presentations[0]["channel"] == "modal"
+    assert presentations[0]["operation"] == "edit"
     panel.close()
 
 
