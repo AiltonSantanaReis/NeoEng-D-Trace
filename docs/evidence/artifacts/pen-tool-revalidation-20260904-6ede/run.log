@@ -1,0 +1,5 @@
+start real-Qt Pen tool audit
+closed path, undo and redo: PASS
+invalid close preserves preview, model and history: PASS
+double-click open path: PASS
+QApplication lifecycle: PASS

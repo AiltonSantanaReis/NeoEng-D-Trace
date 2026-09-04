@@ -1,0 +1,115 @@
+{
+  "artifacts": [
+    {
+      "bytes": 29020,
+      "dimensions": [
+        1200,
+        800
+      ],
+      "path": "pen-close-preview.png",
+      "sha256": "37279f8377e6b9413b72c86352ea505683c95da8a190ccb3c2b454e54b0b62f0"
+    },
+    {
+      "bytes": 33373,
+      "dimensions": [
+        1200,
+        800
+      ],
+      "path": "pen-closed-persisted.png",
+      "sha256": "edb88d53511d983f434c4c2cec83a229197160f5e90d061570c5cd3d7bcfe9cf"
+    },
+    {
+      "bytes": 23683,
+      "dimensions": [
+        1200,
+        800
+      ],
+      "path": "pen-after-undo.png",
+      "sha256": "cb71c1071a1a9f56e9090ebc10c93a6126d3d1f8cc5156c25518680d38504ebc"
+    },
+    {
+      "bytes": 30470,
+      "dimensions": [
+        1200,
+        800
+      ],
+      "path": "pen-after-redo.png",
+      "sha256": "c8bd261434ef8781406ff742753f860dc5aa11dc0516aa2eab69ae2739a999ce"
+    },
+    {
+      "bytes": 28526,
+      "dimensions": [
+        1200,
+        800
+      ],
+      "path": "pen-invalid-close.png",
+      "sha256": "f99a5a1923783c6aa3c14728409053ba036ec1eab04e73ac938c88a211f87f62"
+    },
+    {
+      "bytes": 31965,
+      "dimensions": [
+        1200,
+        800
+      ],
+      "path": "pen-double-click-open.png",
+      "sha256": "4be1941dcad4fc9caabf2716b3cb5a1d3474307fb892692fe4e6629baeb32ead"
+    },
+    {
+      "bytes": 177,
+      "path": "run.log",
+      "sha256": "e7126f2b26be1df469d2125893d0fefced03e1ec363207d9562d1b61f9cd2a82"
+    }
+  ],
+  "checks": {
+    "closed_path": "PASS",
+    "double_click_open_path": "PASS",
+    "invalid_close_preserves_state": "PASS",
+    "undo_redo": "PASS"
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pyside6": "6.10.1",
+    "python": "3.11.9",
+    "qt": "6.10.1",
+    "qt_platform": "offscreen"
+  },
+  "human_visual_review": {
+    "record": "human-review.json",
+    "reviewed_on": "2026-09-04",
+    "reviewer": "project owner (explicit confirmation in task conversation)",
+    "source_commit": "6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4",
+    "status": "PASS"
+  },
+  "inputs": [
+    {
+      "bytes": 864,
+      "path": "positive-work/fixture.png",
+      "sha256": "6eb2d31d123551cfa6c7077db6a2c38e5798bf5c70f8d0c4f49ac0db7dee7067"
+    },
+    {
+      "bytes": 864,
+      "path": "invalid-work/fixture.png",
+      "sha256": "6eb2d31d123551cfa6c7077db6a2c38e5798bf5c70f8d0c4f49ac0db7dee7067"
+    },
+    {
+      "bytes": 864,
+      "path": "double-click-work/fixture.png",
+      "sha256": "6eb2d31d123551cfa6c7077db6a2c38e5798bf5c70f8d0c4f49ac0db7dee7067"
+    }
+  ],
+  "limitations": [
+    "This package covers the Pen visual-flow audit only.",
+    "Repository-wide gates and CI remain separate acceptance criteria."
+  ],
+  "manifest_normalization": {
+    "normalizer": "scripts/normalize_pen_tool_visual_audit.py",
+    "producer": "scripts/audit_pen_tool_visual.py",
+    "status": "PASS"
+  },
+  "schema": "neoeng.pen-tool-visual-audit",
+  "source": {
+    "branch": "Ailton/legacy26-closure-audit",
+    "commit": "6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4"
+  },
+  "status": "PASS_AUTOMATED_AND_HUMAN_VISUAL"
+}

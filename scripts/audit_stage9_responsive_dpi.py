@@ -52,6 +52,60 @@ def source_state() -> dict[str, Any]:
     }
 
 
+def _run_functional_isolated(output: Path, scale: float) -> dict[str, Any]:
+    """Run the functional audit without sharing its QApplication instance."""
+
+    output = output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    command = [
+        sys.executable,
+        "-c",
+        (
+            "import sys; "
+            "from pathlib import Path; "
+            "from scripts.audit_stage9_functional_ui import run; "
+            "result = run(Path(sys.argv[1])); "
+            "print('AUTOMATED_STATUS=' + result.get('automated_status', 'FAIL'))"
+        ),
+        str(output),
+    ]
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        env={
+            **os.environ,
+            "QT_QPA_PLATFORM": "offscreen",
+            "QT_SCALE_FACTOR": str(scale),
+            "QT_AUTO_SCREEN_SCALE_FACTOR": "0",
+        },
+        capture_output=True,
+        text=True,
+    )
+    if completed.stdout:
+        (output / "functional-worker.stdout.log").write_text(
+            completed.stdout, encoding="utf-8", newline="\n"
+        )
+    if completed.stderr:
+        (output / "functional-worker.stderr.log").write_text(
+            completed.stderr, encoding="utf-8", newline="\n"
+        )
+    report_path = output / "report.json"
+    if not report_path.is_file():
+        return {
+            "automated_status": "FAIL",
+            "fatal_error": {
+                "type": "FunctionalAuditProcessError",
+                "message": "The isolated functional audit did not produce report.json.",
+            },
+            "process_returncode": completed.returncode,
+        }
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    report["process_returncode"] = completed.returncode
+    if completed.returncode != 0:
+        report["automated_status"] = "FAIL"
+    return report
+
+
 def widget_presence(manifest: dict[str, Any]) -> dict[str, Any]:
     failures: list[dict[str, Any]] = []
     states: dict[str, Any] = {}
@@ -164,12 +218,11 @@ def run_worker(output: Path, dpi_label: str, scale: float) -> int:
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "0"
     from PySide6.QtWidgets import QApplication
 
-    from scripts.audit_stage9_functional_ui import run as run_functional
     from scripts.audit_ui_capture import run as run_capture
     from scripts.audit_visual_artifacts import run_audit
 
     output.mkdir(parents=True, exist_ok=True)
-    functional = run_functional(output / "functional")
+    functional = _run_functional_isolated(output / "functional", scale)
     manifest = run_capture(output / "visual-input")
     visual = run_audit(output / "visual-input", output / "visual-audit")
     dimensions = capture_dimensions(manifest, scale)

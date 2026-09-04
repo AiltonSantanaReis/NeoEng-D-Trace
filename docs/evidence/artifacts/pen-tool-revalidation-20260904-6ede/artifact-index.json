@@ -1,0 +1,70 @@
+{
+  "audited_branch": "Ailton/legacy26-closure-audit",
+  "audited_commit": "6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4",
+  "files": [
+    {
+      "bytes": 864,
+      "path": "double-click-work/fixture.png",
+      "sha256": "6eb2d31d123551cfa6c7077db6a2c38e5798bf5c70f8d0c4f49ac0db7dee7067"
+    },
+    {
+      "bytes": 1549,
+      "path": "human-review.json",
+      "sha256": "b97aad6c5b6e7b13eeab4d346b92d29dea7c9d86bf3b7fa9febf6095a77dc2e7"
+    },
+    {
+      "bytes": 864,
+      "path": "invalid-work/fixture.png",
+      "sha256": "6eb2d31d123551cfa6c7077db6a2c38e5798bf5c70f8d0c4f49ac0db7dee7067"
+    },
+    {
+      "bytes": 30470,
+      "path": "pen-after-redo.png",
+      "sha256": "c8bd261434ef8781406ff742753f860dc5aa11dc0516aa2eab69ae2739a999ce"
+    },
+    {
+      "bytes": 23683,
+      "path": "pen-after-undo.png",
+      "sha256": "cb71c1071a1a9f56e9090ebc10c93a6126d3d1f8cc5156c25518680d38504ebc"
+    },
+    {
+      "bytes": 29020,
+      "path": "pen-close-preview.png",
+      "sha256": "37279f8377e6b9413b72c86352ea505683c95da8a190ccb3c2b454e54b0b62f0"
+    },
+    {
+      "bytes": 33373,
+      "path": "pen-closed-persisted.png",
+      "sha256": "edb88d53511d983f434c4c2cec83a229197160f5e90d061570c5cd3d7bcfe9cf"
+    },
+    {
+      "bytes": 31965,
+      "path": "pen-double-click-open.png",
+      "sha256": "4be1941dcad4fc9caabf2716b3cb5a1d3474307fb892692fe4e6629baeb32ead"
+    },
+    {
+      "bytes": 28526,
+      "path": "pen-invalid-close.png",
+      "sha256": "f99a5a1923783c6aa3c14728409053ba036ec1eab04e73ac938c88a211f87f62"
+    },
+    {
+      "bytes": 864,
+      "path": "positive-work/fixture.png",
+      "sha256": "6eb2d31d123551cfa6c7077db6a2c38e5798bf5c70f8d0c4f49ac0db7dee7067"
+    },
+    {
+      "bytes": 3075,
+      "path": "report.json",
+      "sha256": "0830d96a1f7f8fa542a6b984be789d07c467b8d10e3842d3a883e4fe7ea6e7fd"
+    },
+    {
+      "bytes": 177,
+      "path": "run.log",
+      "sha256": "e7126f2b26be1df469d2125893d0fefced03e1ec363207d9562d1b61f9cd2a82"
+    }
+  ],
+  "index_excludes_itself": true,
+  "package": "pen-tool-revalidation-20260904-6ede",
+  "schema": "neoeng.evidence-artifact-index",
+  "status": "PASS_AUTOMATED_AND_HUMAN_VISUAL"
+}

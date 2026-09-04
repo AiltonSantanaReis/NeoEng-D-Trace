@@ -1,0 +1,44 @@
+{
+  "artifacts": [
+    {
+      "bytes": 29020,
+      "path": "pen-close-preview.png",
+      "sha256": "37279f8377e6b9413b72c86352ea505683c95da8a190ccb3c2b454e54b0b62f0"
+    },
+    {
+      "bytes": 33373,
+      "path": "pen-closed-persisted.png",
+      "sha256": "edb88d53511d983f434c4c2cec83a229197160f5e90d061570c5cd3d7bcfe9cf"
+    },
+    {
+      "bytes": 28526,
+      "path": "pen-invalid-close.png",
+      "sha256": "f99a5a1923783c6aa3c14728409053ba036ec1eab04e73ac938c88a211f87f62"
+    },
+    {
+      "bytes": 23683,
+      "path": "pen-after-undo.png",
+      "sha256": "cb71c1071a1a9f56e9090ebc10c93a6126d3d1f8cc5156c25518680d38504ebc"
+    },
+    {
+      "bytes": 30470,
+      "path": "pen-after-redo.png",
+      "sha256": "c8bd261434ef8781406ff742753f860dc5aa11dc0516aa2eab69ae2739a999ce"
+    },
+    {
+      "bytes": 31965,
+      "path": "pen-double-click-open.png",
+      "sha256": "4be1941dcad4fc9caabf2716b3cb5a1d3474307fb892692fe4e6629baeb32ead"
+    }
+  ],
+  "confirmation": "Confirmo a revisão visual humana das seis capturas vinculadas ao SHA 6ede2f6…; os estados estão corretos.",
+  "reviewed_on": "2026-09-04",
+  "reviewer": "project owner (explicit confirmation in task conversation)",
+  "schema": "neoeng.pen-tool-human-visual-review",
+  "scope": "Human visual inspection of the six reproducible Qt capture states; this does not approve merge, release, or the global correction plan.",
+  "source": {
+    "branch": "Ailton/legacy26-closure-audit",
+    "commit": "6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4"
+  },
+  "status": "PASS"
+}

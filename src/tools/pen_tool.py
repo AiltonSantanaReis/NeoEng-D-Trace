@@ -88,6 +88,9 @@ class PenTool(BaseTool):
         self._is_placing_handle = False
         self._curve_segments = 20
         self._editing_object_id: Optional[str] = None
+        self._closed = False
+        self._close_tolerance = 12.0
+        self._cursor_position: Optional[Tuple[float, float]] = None
         self._active_handle_edit: Optional[_HandleEditState] = None
         self._last_command_result = None
         self._last_error = ""
@@ -155,6 +158,8 @@ class PenTool(BaseTool):
         self._selected_node = None
         self._selected_handle = None
         self._is_placing_handle = False
+        self._closed = False
+        self._cursor_position = None
         return True
 
     def _cancel_active_handle_edit(self) -> bool:
@@ -238,6 +243,8 @@ class PenTool(BaseTool):
         self._nodes = nodes
         self._selected_node = None
         self._selected_handle = None
+        self._closed = len(canonical) >= 2 and canonical[-1][3] == canonical[0][0]
+        self._cursor_position = None
 
     def _nodes_to_beziers(self) -> BezierSegments:
         if len(self._nodes) < 2:
@@ -253,6 +260,30 @@ class PenTool(BaseTool):
                 for index, node in enumerate(self._nodes[:-1])
             ]
         )
+
+    def _beziers_for_commit(self, *, closed: bool = False) -> BezierSegments:
+        """Build the canonical open or closed path represented by the nodes."""
+
+        beziers = self._nodes_to_beziers()
+        if not closed:
+            return beziers
+        if len(self._nodes) < 3:
+            raise ValueError(
+                "At least three Bézier nodes are required to close a path."
+            )
+
+        first_node = self._nodes[0]
+        last_node = self._nodes[-1]
+        segments = list(beziers)
+        segments.append(
+            (
+                last_node.anchor,
+                last_node.handle_out,
+                first_node.handle_in,
+                first_node.anchor,
+            )
+        )
+        return canonicalize_beziers(segments)
 
     def _node_index(self, node: BezierNode) -> Optional[int]:
         for index, candidate in enumerate(self._nodes):
@@ -283,6 +314,16 @@ class PenTool(BaseTool):
             if not self._nodes:
                 self._load_selected_bezier_object()
             click_point = (float(position[0]), float(position[1]))
+            self._cursor_position = click_point
+            if (
+                self._editing_object_id is None
+                and len(self._nodes) >= 3
+                and self._is_near_first_anchor(click_point)
+                and self._get_handle_at_point(click_point) is None
+            ):
+                self.commit_selection(closed=True)
+                self.canvas_view.update()
+                return
             handle_hit = self._get_handle_at_point(click_point)
             if handle_hit:
                 self._selected_node, self._selected_handle = handle_hit
@@ -325,6 +366,7 @@ class PenTool(BaseTool):
         self.canvas_view.update()
 
     def on_mouse_move(self, event: QMouseEvent, position: Tuple[float, float]):
+        self._cursor_position = (float(position[0]), float(position[1]))
         if (
             self._editing_object_id is not None
             and not self._synchronize_selected_bezier_object()
@@ -508,6 +550,17 @@ class PenTool(BaseTool):
                 return node
         return None
 
+    def _is_near_first_anchor(self, point: Tuple[float, float]) -> bool:
+        """Return whether an image-space click requests closing the path."""
+
+        if not self._nodes or self._closed:
+            return False
+        first_anchor = self._nodes[0].anchor
+        distance = math.hypot(point[0] - first_anchor[0], point[1] - first_anchor[1])
+        zoom = self.get_canvas_zoom()
+        tolerance = self._close_tolerance / zoom if zoom > 0 else self._close_tolerance
+        return distance <= tolerance
+
     def _get_handle_at_point(
         self, point: Tuple[float, float], tolerance_screen: float = 6.0
     ) -> Optional[Tuple[BezierNode, str]]:
@@ -606,7 +659,7 @@ class PenTool(BaseTool):
 
     # Package 5C supersedes the former commit_polygon_command( path because
     # Bézier controls and the sampled polygon must be created atomically.
-    def commit_selection(self):
+    def commit_selection(self, *, closed: bool = False):
         if self._editing_object_id is not None:
             return self._editing_object_id
         model = self._model()
@@ -620,8 +673,12 @@ class PenTool(BaseTool):
             )
             return None
         try:
+            if closed and len(self._nodes) < 3:
+                raise ValueError(
+                    "At least three Bézier nodes are required to close a path."
+                )
             beziers = (
-                self._nodes_to_beziers()
+                self._beziers_for_commit(closed=closed)
                 if len(self._nodes) >= 2
                 else self._beziers_from_sampled_points(self._generate_curve_points())
             )
@@ -685,12 +742,27 @@ class PenTool(BaseTool):
                     QPolygonF([QPointF(float(x), float(y)) for x, y in curve_points])
                 )
 
-        handle_pen = QPen(QColor(128, 128, 128), 1)
+        handle_radius = 5.0 / zoom if zoom > 0 else 5.0
+        anchor_radius = 6.0 / zoom if zoom > 0 else 6.0
+        close_ready = (
+            self._editing_object_id is None
+            and not self._closed
+            and len(self._nodes) >= 3
+            and self._cursor_position is not None
+            and self._is_near_first_anchor(self._cursor_position)
+        )
+        if close_ready:
+            close_pen = QPen(QColor(255, 210, 0), 2)
+            close_pen.setCosmetic(True)
+            close_pen.setStyle(Qt.PenStyle.DashLine)
+            painter.setPen(close_pen)
+            painter.drawLine(
+                QPointF(*self._nodes[-1].anchor), QPointF(*self._nodes[0].anchor)
+            )
+
+        handle_pen = QPen(QColor(80, 210, 255), 2)
         handle_pen.setCosmetic(True)
         painter.setPen(handle_pen)
-        handle_radius = 3.0 / zoom if zoom > 0 else 3.0
-        anchor_radius = 4.0 / zoom if zoom > 0 else 4.0
-
         for node in self._nodes:
             if node.handle_in != node.anchor:
                 painter.drawLine(QPointF(*node.anchor), QPointF(*node.handle_in))
@@ -706,11 +778,20 @@ class PenTool(BaseTool):
                     QPointF(*node.handle_out), handle_radius, handle_radius
                 )
 
-        anchor_pen = QPen(QColor(255, 0, 0), 1)
+        anchor_pen = QPen(QColor(255, 72, 72), 2)
         anchor_pen.setCosmetic(True)
         painter.setPen(anchor_pen)
-        painter.setBrush(QColor(255, 0, 0))
-        for node in self._nodes:
+        painter.setBrush(QColor(255, 72, 72))
+        for index, node in enumerate(self._nodes):
+            if index == 0 and self._editing_object_id is None and not self._closed:
+                ring_pen = QPen(QColor(255, 210, 0), 2)
+                ring_pen.setCosmetic(True)
+                painter.setPen(ring_pen)
+                painter.setBrush(QColor(255, 210, 0))
+                ring_radius = anchor_radius + (3.0 / zoom if zoom > 0 else 3.0)
+                painter.drawEllipse(QPointF(*node.anchor), ring_radius, ring_radius)
+                painter.setPen(anchor_pen)
+                painter.setBrush(QColor(255, 72, 72))
             painter.drawEllipse(QPointF(*node.anchor), anchor_radius, anchor_radius)
         painter.restore()
 
@@ -751,6 +832,8 @@ class PenTool(BaseTool):
         self._selected_handle = None
         self._is_placing_handle = False
         self._editing_object_id = None
+        self._closed = False
+        self._cursor_position = None
         self.canvas_view.update()
 
     def on_cancel(self):

@@ -1,3 +1,35 @@
+## 2026-09-04 — validação remota da candidata LEGACY-26
+
+- registra o CI remoto da PR `#168`, run `33863522514`, sobre o HEAD
+  documental `ac96825fa36edf686a173f7fad9e51d9ff41705d`;
+- confirma os jobs Linux (`test`) e Windows (`test-windows`) como `PASS`, com
+  todos os gates obrigatórios verdes;
+- confirma C12 e C13 como `PASS` no escopo comprovado, preservando os
+  snapshots históricos e a limitação de proveniência do teste VMware;
+- mantém a candidata sem merge e não autoriza tag ou release.
+
+## 2026-09-03 — encerramento final do plano das 26 falhas após C12
+
+- registra a confirmação humana final C12 no SHA
+  `bcaf5b079881800899d121b071108fe404fa48da`, com os seis pontos revisados;
+- revalida baseline, integridade, contratos documentais, suíte, cobertura,
+  gate formal limpo, Stage 4B.5 e os resultados CI do SHA integrado;
+- promove C01–C13 a `PASS` e o plano a `APROVADO / CONCLUÍDO NO ESCOPO
+  COMPROVADO`, preservando snapshots e limitações de proveniência;
+- mantém tag e release sem aprovação; o empacotamento portátil continua
+  referenciado somente na candidata ancestral documentada.
+
+## 2026-09-03 — auditoria de encerramento do plano das 26 falhas
+
+- registra a revisão corrente no merge `bcaf5b079881800899d121b071108fe404fa48da`;
+- confirma o CI pós-merge `33800311976` em Linux e Windows, com `1919` testes
+  e zero falhas no Windows;
+- reconcilia B-04 como resolvido no escopo comprovado e preserva o runner
+  histórico com `11` assinaturas divergentes e `12` ausências;
+- registra C01–C11 como `PASS`, C12 como `PENDING_EVIDENCE` e C13 como
+  `BLOCKED`; o plano permanece `IN_PROGRESS` e não há fechamento, tag ou
+  release.
+
 ## 2026-09-03 — encerramento pós-merge da PR #166
 
 - registra a integração da PR `#166` no merge commit

@@ -4,7 +4,21 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
-## Atualização viva — encerramento pós-merge da PR #166 — 03 de setembro de 2026
+## Atualização viva — candidata pré-merge LEGACY-26 — 04 de setembro de 2026
+
+A revisão corrente é a candidata técnica da PR `#168`, base `main`, na branch
+`Ailton/legacy26-closure-audit`. O produto foi validado no SHA
+`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o HEAD documental publicado é
+`ac96825fa36edf686a173f7fad9e51d9ff41705d`, sem merge.
+
+O run remoto `33863522514` passou em Linux e Windows, incluindo baseline,
+integridade de evidências, suíte/cobertura, estática, segurança, Stage 4B.5,
+runner legado formal e verificação da árvore-fonte. C01–C13 estão `PASS` no
+escopo comprovado e o plano mestre está `APROVADO / CONCLUÍDO NO ESCOPO
+COMPROVADO`. Os snapshots legados e as limitações de proveniência permanecem
+explícitos. Tag e release continuam sem aprovação.
+
+## Snapshot histórico — encerramento pós-merge da PR #166 — 03 de setembro de 2026
 
 A PR `#166` foi integrada no merge commit
 `8a97ae14e8f84eb86fcacfaefed61f014830fbf9`, originada no commit-fonte

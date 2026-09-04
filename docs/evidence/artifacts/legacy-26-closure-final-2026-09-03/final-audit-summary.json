@@ -1,0 +1,28 @@
+{
+  "schema": "neoeng.legacy26.final-closure-audit",
+  "status": "PASS",
+  "audited_commit": "bcaf5b079881800899d121b071108fe404fa48da",
+  "ci_run": 33800311976,
+  "criteria": {
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "PASS",
+    "C04": "PASS",
+    "C05": "PASS",
+    "C06": "PASS",
+    "C07": "PASS",
+    "C08": "PASS",
+    "C09": "PASS",
+    "C10": "PASS",
+    "C11": "PASS",
+    "C12": "PASS",
+    "C13": "PASS"
+  },
+  "plan_status": "APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO",
+  "release_approved": false,
+  "tag_approved": false,
+  "human_review": "docs/evidence/artifacts/legacy-26-closure-final-2026-09-03/human-review-c12.json",
+  "final_report": "docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md",
+  "historical_pre_c12_report": "docs/evidence/ETAPA_7_AUDITORIA_ENCERRAMENTO_PLANO_26_2026-09-03.md",
+  "decision": "CLOSURE_APPROVED_IN_DOCUMENTED_SCOPE"
+}

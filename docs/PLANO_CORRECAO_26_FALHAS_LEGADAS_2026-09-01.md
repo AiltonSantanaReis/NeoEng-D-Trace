@@ -4,16 +4,53 @@
 **Etapa:** Reconciliação técnica pós-auditoria — 26 falhas legadas restantes
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
-**Status:** `EM EXECUÇÃO — FASE 7 INTEGRADA NO ESCOPO; B-04 RESOLVIDO; PLANO GLOBAL IN_PROGRESS`
-**Última atualização:** 03/09/2026 — PR #166 mergeada e CI pós-merge passou; plano global continua em execução
-**HEAD de validação local/empacotamento:** `febc85471e5ced519f47626665f5d995e7cf60a9`
-**HEAD publicado e validado pelo CI remoto:** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
-**HEAD integrado e validado pós-merge:** `8a97ae14e8f84eb86fcacfaefed61f014830fbf9`
+**Status:** `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO — C12/C13 PASS; merge/tag/release pendentes`
+**Última atualização:** 04/09/2026 — PR `#168`/run `33863522514` passou em Linux e Windows no HEAD `ac96825fa36edf686a173f7fad9e51d9ff41705d`; C12/C13 PASS no escopo comprovado
+**HEAD de validação local/empacotamento (snapshot histórico):** `febc85471e5ced519f47626665f5d995e7cf60a9`
+**HEAD publicado e validado pelo CI remoto (snapshot histórico):** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
+**HEAD integrado e auditado pós-merge:** `bcaf5b079881800899d121b071108fe404fa48da`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
-**Branch de trabalho:** `fix/legacy-27-functional-regressions`
+**Branch de trabalho:** `Ailton/legacy26-closure-audit`
+**SHA da candidata rastreável de produto:** `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`
+**HEAD da candidata publicada e da PR `#168`:** `ac96825fa36edf686a173f7fad9e51d9ff41705d`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
 **Snapshot histórico de origem:** `cf749564ab5d961772d66dc363d0e990cebf8da3`
 **Documento de diagnóstico:** `docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md`
+
+## 0.18 Auditoria formal de encerramento — snapshot pré-C12 — 03/09/2026
+
+Antes desta atualização foram relidas a governança de integridade e
+antialucinação, as políticas de qualidade e não regressão, a ADR do runner
+Windows, este plano, o índice de evidências e os validadores oficiais. A
+auditoria foi executada contra o mesmo commit integrado
+`bcaf5b079881800899d121b071108fe404fa48da`, que é o merge da PR `#167`.
+
+O CI pós-merge `33800311976` passou em Linux (`100797952263`) e Windows
+(`100797952611`). O Linux registrou `1919 passed` e 1 warning. O Windows
+aceitou `189/189` arquivos, `1919` testes, `0` falhas, `0` erros e `0` skips.
+Baseline (`3216` arquivos), integridade (`131` manifests), cobertura,
+estática, segurança e Stage 4B.5 passaram. O gate formal aceitou o contrato
+atual e preservou o runner histórico `196/26/0/0`, retorno `1`, com 11
+assinaturas divergentes e 12 ausências. A prova VMware permanece
+`PASS_SCOPED`, com `2 passed` e `0 skipped` na reconstrução identificada.
+
+O build portátil foi validado separadamente na candidata limpa ancestral
+`d6e02cd9ee3445a02ef21faefb4c05d17e0d0fad`, com smoke `SUCCESS` em `11` checks,
+ZIP de `124181819` bytes e SHA-256
+`1559638225fe9e664ba5ebbc5d023b2ec4565b9d8dfb268fae5207c05401e33e`. O run
+`33800311976` não executou novamente `scripts/build_windows.ps1`; essa
+limitação de proveniência permanece explícita.
+
+O registro completo por critério está em
+`docs/evidence/ETAPA_7_AUDITORIA_ENCERRAMENTO_PLANO_26_2026-09-03.md` e o
+índice hashado em
+`docs/evidence/artifacts/legacy-26-closure-audit-2026-09-03/`. C01–C11 estão
+`PASS`; C12 está `PENDING_EVIDENCE` porque não há revisão humana final formal
+registrada para esta matriz integral; C13 está `BLOCKED` enquanto C12 não for
+resolvido. Portanto, B-04 está resolvido no escopo comprovado, mas o plano
+global permanece `IN_PROGRESS`. Não há base para declarar
+`APROVADO / CONCLUÍDO`, nem para executar novo commit, push, merge, tag ou
+release nesta auditoria.
 
 Este documento é um plano vivo de execução. Ele registra as decisões e as
 evidências produzidas até a revisão candidata atual, mas não declara aprovação
@@ -47,7 +84,7 @@ passou em Linux (`100779319495`) e Windows (`100779319836`).
 - symlink: os dois contratos passaram no JUnit Windows sem skip; VMware segue
   `PASS_SCOPED` para a reconstrução identificada do ZIP/patch.
 
-Decisão corrente: Fase 7 `APROVADA NO ESCOPO DA PR #166`, B-04 resolvido no
+Decisão registrada naquela revisão: Fase 7 `APROVADA NO ESCOPO DA PR #166`, B-04 resolvido no
 escopo comprovado e plano global `IN_PROGRESS`. Tag, release e encerramento
 global permanecem bloqueados. O relatório e o pacote estão em
 `docs/evidence/ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md` e
@@ -220,6 +257,10 @@ residual permanecem explícitos. Nenhuma divergência foi reescrita para produzi
 
 ### 0.3 Estado comprovado por fase
 
+> A tabela abaixo preserva o snapshot de estados da revisão anterior. O estado
+> operacional corrente e a reconciliação de suas instruções estão na seção
+> 0.18; nenhuma linha histórica é reescrita retroativamente.
+
 | Fase | Estado vivo | Comprovação e limite da decisão |
 |---|---|---|
 | Fase 0 — entrada e congelamento | `EXECUTADA — BLOQUEIO DE INTEGRAÇÃO MANTIDO` | Branch, HEAD, ambiente, hashes históricos, fronteira staged, rollback, inventário dos 63 manifests e reconciliação formal foram registrados. O gate de integração permanece bloqueado somente pelos itens residuais documentados em B-04. |
@@ -353,19 +394,24 @@ podem ser convertidas em integridade histórica retroativa.
 | B-01 | Reconciliação histórica exata preservada, equivalência formal aceita | `formal_reconciliation.json` registra `accepted=true` no escopo atual; `historical_runner.accepted=false` permanece por imutabilidade dos snapshots. | Resolvido para o contrato atual; não converter o runner histórico em pass nem alterar a origem. |
 | B-02 | Divergências históricas reconciliadas formalmente | As 11 assinaturas divergentes e as 12 ausências permanecem enumeradas, incluindo #10 e #25; a decisão individual e a causa/substituto estão registradas sem remapeamento silencioso. | Resolvido como reconciliação formal atual; a divergência histórica continua visível. |
 | B-03 | Manifests preexistentes classificados formalmente | `manifest_resolution.json` resolve 63/63 com proprietário operacional autorizado, origem limitada ao que é provado, escopo fora do pacote atual, referências e tratamento preservador; 2 releases declaram 353 referências ausentes cada. | Resolvido formalmente sem alterar, mover, excluir ou rastrear automaticamente os fontes. |
-| B-04 | Confirmação final de CI/empacotamento; capacidade residual de symlink resolvida na prova autorizada | A validação autorizada na VM Windows 11/VMware registrou `DEVELOPER_MODE_FLAG=1`, executou `poetry run pytest \"tests\test_integration_sync.py\" -k symlink -q -rs` e obteve `2 passed, 0 skipped`; a evidência está em `docs/evidence/ETAPA_7_SYMLINK_VMWARE_2026-09-02.md`. | Manter integração bloqueada; repetir os gates completos em pacote integral e reproduzível e confirmar CI/empacotamento. |
+| B-04 | Confirmação final de CI/empacotamento; capacidade residual de symlink resolvida na prova autorizada | VMware registrou `DEVELOPER_MODE_FLAG=1` e `2 passed, 0 skipped`; o build portátil foi validado na candidata limpa ancestral `d6e02cd9ee3445a02ef21faefb4c05d17e0d0fad` com smoke `SUCCESS`/`11 checks`; o CI pós-merge `33800311976` passou em Linux e Windows, com Windows `189/189`. | Resolvido no escopo composto comprovado; C12 e C13 estão `PASS` na revisão final. O run atual não executou novo `scripts/build_windows.ps1`, e a prova VMware não é promovida a evidência de outro SHA. |
 | B-05 | Divergência documental corrigida | O plano vivo e o adendo formal agora refletem a resolução 63/63, o gate `accepted=true` atual e os bloqueios residuais reais. | Resolvido; históricos e snapshots permanecem intactos. |
 
 ### 0.8 Decisão vigente e operações proibidas
 
-A decisão vigente é `BLOQUEADA / DECISÕES INDIVIDUAIS REGISTRADAS / ACEITE
-FORMAL ATUAL ACEITO / INTEGRAÇÃO PENDENTE`. Há evidência rastreada de execução,
-decisões por caso e integridade de pacote. O gate formal atual é `accepted=true`
-no escopo declarado; isso não converte o runner histórico em pass nem equivale a
-aceite histórico global. A capacidade de symlink foi comprovada na VM autorizada,
-o empacotamento local foi confirmado na candidata `d6e02cd`, mas CI remoto ainda não foi confirmado. O projeto ainda não pode
-declarar `APROVADO`, `CONCLUÍDO`, pronto para integração ou equivalência histórica
-final.
+A decisão vigente é `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`. C01–C13
+estão `PASS` na revisão final do SHA `bcaf5b079881800899d121b071108fe404fa48da`,
+com a revisão humana C12 registrada, a reconciliação formal aceita, os
+snapshots legados preservados, os gates finais revalidados e B-04 resolvido.
+O runner histórico continua visível como histórico divergente; isso não o
+converte retroativamente em pass. Tag e release permanecem bloqueados por
+não terem sido aprovados nesta decisão.
+
+### 0.8.1 Registro histórico das restrições pré-merge
+
+O bloco abaixo foi a decisão vigente antes da confirmação do CI pós-merge
+`33800311976`. Ele é preservado para auditoria histórica, mas não deve ser
+interpretado como o estado operacional atual; consulte as seções 0.18 e 11.1.
 
 Enquanto B-04 existir, ficam proibidas:
 
@@ -1075,7 +1121,7 @@ após consulta à `POLITICA_QUALIDADE_E_EVIDENCIAS.md`, à
 `POLITICA_NAO_REGRESSAO.md` e ao contrato de árvore limpa de
 `scripts/build_windows.ps1`.
 
-## 11. Próximo passo exato e condição de avanço
+## 11. Próximo passo exato e condição de avanço — snapshot histórico pré-auditoria
 
 A reconciliação dos 27 casos e a auditoria formal dos 63 manifests foram
 resolvidas e incorporadas como evidência rastreada. O gate atual
@@ -1108,3 +1154,130 @@ Esta atualização não altera `quality/legacy_tests/manifest.json`,
 `quality/legacy_tests/reconciliation.json`, snapshots históricos ou os 63
 manifests preexistentes. Também não declara que qualquer caso foi aprovado
 apenas porque um substituto passou.
+
+## 11.1 Próximo passo vigente na auditoria pré-C12 — snapshot histórico
+
+O resultado corrente, no SHA `bcaf5b079881800899d121b071108fe404fa48da`, está
+registrado por critério na auditoria de encerramento. C01–C11 são `PASS`; C12
+é `PENDING_EVIDENCE`; C13 é `BLOCKED`. Assim, a sequência profissional é:
+
+1. obter e registrar a revisão humana final com escopo explícito sobre
+   funcionalidade, dados, formatos, mensagens, compatibilidade e rollback;
+2. repetir a verificação da seção 9 no mesmo commit auditado ou em novo commit
+   identificado, sem reclassificar snapshots;
+3. somente se todos os critérios forem `PASS`, atualizar o status para
+   `APROVADO / CONCLUÍDO`, vincular baseline e evidências, criar o commit e
+   publicar o push conforme a autorização operacional correspondente;
+4. executar e auditar o CI pós-merge do SHA efetivamente integrado antes de
+   qualquer tag ou release.
+
+Até a resolução de C12, não há autorização para declarar encerramento, gerar
+commit/push de fechamento, merge adicional, tag ou release. Os artefatos
+preexistentes não rastreados continuam preservados e fora da fronteira.
+
+## 11.2 Decisão vigente após C12 e gates finais
+
+A revisão humana final C12 foi confirmada pelo proprietário no SHA
+`bcaf5b079881800899d121b071108fe404fa48da`; os seis pontos foram revisados
+e preservados no escopo documentado. A revalidação subsequente registrou C01–C13
+como `PASS` no relatório final
+`docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md`.
+
+O plano está `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`. Baseline, integridade
+de evidências, contratos documentais, suíte, cobertura, gate formal limpo,
+Stage 4B.5 e CI remoto estão referenciados no pacote final. Os snapshots
+legados permanecem preservados; a limitação do empacotamento ancestral e o
+escopo `PASS_SCOPED` do VMware continuam explícitos.
+
+A ação operacional autorizada desta etapa é criar o commit e publicar o push
+da fronteira documental/evidencial desta transição. Tag, release e merge
+adicional continuam fora do escopo e sem aprovação.
+
+**Estado atual da candidata:** IN_PROGRESS / PENDING_EVIDENCE.
+**HEAD atual:** 5aec9aed6dc2fc725ff59e8f2c0057f737d2052d.
+**Escopo da C12 existente:** limitado ao SHA bcaf5b079881800899d121b071108fe404fa48da.
+As alterações posteriores de Caneta, responsividade, testes e runner exigem nova
+validação no mesmo HEAD antes de qualquer encerramento operacional.
+
+## 11.3 Reabertura da validação do HEAD posterior à C12 — 03/09/2026
+
+Foi identificada uma divergência de escopo que não reescreve nem invalida os
+snapshots históricos, mas impede promovê-los como prova da candidata atual.
+O registro C12 e a auditoria final da seção 11.2 referem-se ao SHA
+bcaf5b079881800899d121b071108fe404fa48da. Depois desse SHA, a branch atual
+Ailton/legacy26-closure-audit recebeu os commits 382d2ef e 5aec9ae, que
+alteram a Caneta, a geometria responsiva, os testes de fluxo de usuário e o
+runner Stage 9.
+
+Assim, para o HEAD atual
+5aec9aed6dc2fc725ff59e8f2c0057f737d2052d, C12 é PENDING_EVIDENCE e C13
+é BLOCKED até que funcionalidade, evidência visual, proveniência, gates e
+revisão humana sejam repetidos no mesmo SHA. As capturas temporárias da Caneta
+geradas anteriormente não constituem evidência: não possuem pacote rastreado,
+manifesto, comando produtor e revisão visual humana vinculados ao HEAD atual.
+
+O código histórico, os snapshots legados e os commits publicados são
+preservados. Não há autorização para merge, tag ou release. A sequência de
+revalidação é: checkout limpo do HEAD atual; fluxo Qt real positivo e negativo
+da Caneta; captura reproduzível com hashes e logs; inspeção visual humana
+explícita; gates completos, incluindo empacotamento atual; nova C12 no mesmo
+SHA; somente então novo commit/push e PR sem merge.
+
+## 11.4 Registro da revisão visual humana da Caneta — 04/09/2026
+
+A inspeção visual humana das seis capturas do pacote
+`docs/evidence/artifacts/pen-tool-revalidation-20260904-5aec/` foi confirmada
+pelo proprietário do projeto. O resultado é `PASS` somente para a subetapa
+visual e permanece vinculado ao SHA do produto
+`5aec9aed6dc2fc725ff59e8f2c0057f737d2052d`.
+
+O HEAD local atual da branch é `93b8e53f8086bcc5e7ecf61b6539c408b40c0ab0`,
+que adiciona apenas o produtor versionado da auditoria. Essa diferença é
+intencional e não promove o commit de ferramenta como se fosse o SHA do
+produto validado. O registro estruturado está em `human-review.json`, com
+`artifact-index.json` contendo `12/12` arquivos e hashes.
+
+A C12 formal continua `PENDING_EVIDENCE` até a execução comprovada dos
+gates globais no SHA de produto, incluindo empacotamento atual, integridade
+de evidências, suíte completa, cobertura, análise estática, segurança e CI.
+
+## 11.5 Revalidação visual pós-correção do gate — 04/09/2026
+
+O SHA `5aec9aed6dc2fc725ff59e8f2c0057f737d2052d` foi mantido como
+histórico, mas não promovido: o gate local encontrou três violações de
+Flake8 e, durante a correção, uma regressão de tipo nas tooltips da Caneta.
+O commit técnico `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4` corrigiu
+somente essas questões, com teste focal passando.
+
+A nova auditoria foi executada em checkout limpo de `6ede2f6…`, com
+`QApplication`, `QTest` e eventos Qt reais. O pacote
+`docs/evidence/artifacts/pen-tool-revalidation-20260904-6ede/` registra
+quatro checks automatizados `PASS`, seis capturas, `human-review.json`
+com confirmação humana explícita e `artifact-index.json` com `12/12`
+arquivos íntegros.
+
+A subetapa visual e a C12 local estão `PASS` no SHA `6ede2f6…`; os gates
+locais completos e o empacotamento atual estão consolidados em
+`docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md`. O CI remoto da PR
+`#168`, no run `33863522514` e no HEAD publicado `ac96825…`, passou nos jobs
+Linux (`test`, `3m23s`) e Windows (`test-windows`, `11m24s`). C13 está
+`PASS` no escopo de CI remoto comprovado. Merge, tag e release continuam sem
+autorização.
+
+## 11.7 Aprovação remota da candidata — 04/09/2026
+
+A candidata foi publicada na branch `Ailton/legacy26-closure-audit` pelo
+commit `ac96825fa36edf686a173f7fad9e51d9ff41705d`, sem merge. A PR `#168`
+tem base `main`, e o run remoto `33863522514` foi executado sobre esse HEAD.
+
+| Job remoto | Resultado | Duração observada |
+| --- | --- | --- |
+| Linux — `test` (`100993095663`) | `PASS` | `3m23s` |
+| Windows — `test-windows` (`100993095571`) | `PASS` | `11m24s` |
+
+Todos os passos obrigatórios dos dois jobs passaram, incluindo baseline,
+integridade de evidências, suíte, cobertura, análise estática, segurança,
+Stage 4B.5, runner legado formal e verificação de árvore-fonte. Assim, C13
+fica formalmente `PASS` no escopo da PR/CI comprovado. Esta decisão não
+autoriza merge, tag ou release; essas operações permanecem pendentes de
+autorização explícita e fora do escopo desta sequência.

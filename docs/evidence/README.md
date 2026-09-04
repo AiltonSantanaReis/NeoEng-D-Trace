@@ -1,3 +1,21 @@
+- `ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md` — auditoria final dos 13
+  critérios da seção 9 no SHA `bcaf5b079881800899d121b071108fe404fa48da`;
+  C01–C13 `PASS` após a revisão humana final C12. O plano está
+  `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`, com snapshots legados
+  preservados e limitações de proveniência explícitas. O pacote final está em
+  `artifacts/legacy-26-closure-final-2026-09-03/`.
+
+- `ETAPA_7_REVISAO_HUMANA_C12_2026-09-03.md` — confirmação humana final
+  dos seis pontos no SHA auditado, com declaração de escopo e limitações.
+  O espelho estruturado está em
+  `artifacts/legacy-26-closure-final-2026-09-03/human-review-c12.json`.
+
+- `ETAPA_7_AUDITORIA_ENCERRAMENTO_PLANO_26_2026-09-03.md` — snapshot
+  histórico pré-C12; preserva C12 `PENDING_EVIDENCE` e C13 `BLOCKED` como
+  estado observado antes da confirmação humana, sem reescrita retroativa.
+  O pacote histórico permanece em
+  `artifacts/legacy-26-closure-audit-2026-09-03/`.
+
 - `ETAPA_7_ENCERRAMENTO_POS_MERGE_PR166_2026-09-03.md` — encerramento da PR
   `#166` no merge `8a97ae14`, com CI pós-merge `33794660766` aprovado em Linux
   e Windows, baseline de `3213` arquivos, `130` manifestos, runner Windows
@@ -526,3 +544,44 @@ foi aprovada; as Etapas 8–14 continuam planejadas.
 
 A Etapa 9 está aprovada no escopo de responsividade e DPI. Release não foi
 aprovada; os limites de driver/GPU e as demais etapas permanecem declarados.
+
+**AVISO DE ESCOPO — 03/09/2026:** a C12 e a auditoria final acima cobrem
+especificamente o SHA bcaf5b079881800899d121b071108fe404fa48da. A branch atual
+Ailton/legacy26-closure-audit está no HEAD
+5aec9aed6dc2fc725ff59e8f2c0057f737d2052d, posterior àquela revisão, e contém
+alterações de produto/testes ainda sujeitas a revalidação. Capturas temporárias
+sem manifesto, comando produtor e revisão humana vinculados ao HEAD atual não
+são evidência formal. Até nova C12 e gates no mesmo SHA, a candidata atual
+permanece PENDING_EVIDENCE; snapshots históricos não foram reescritos.
+
+## Revalidação da Caneta — pacote visual de 04/09/2026
+
+A revisão visual humana foi confirmada para as seis capturas reproduzíveis
+vinculadas ao SHA de produto `5aec9aed6dc2fc725ff59e8f2c0057f737d2052d`.
+O pacote e o registro estruturado estão em
+`artifacts/pen-tool-revalidation-20260904-5aec/`; o manifesto registra
+`12/12` arquivos com bytes e SHA-256. O resultado `PASS` é restrito à
+subetapa visual; os gates globais e a nova C12 formal ainda estão pendentes.
+Snapshots históricos e capturas temporárias anteriores permanecem intactos
+
+## Candidata pós-correção — SHA `6ede2f6`
+
+A validação visual humana foi repetida e confirmada no SHA de produto
+`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o pacote correspondente
+`artifacts/pen-tool-revalidation-20260904-6ede/` registra `12/12` arquivos
+íntegros. A C12 local está `PASS` no escopo comprovado; os gates locais
+passaram. O CI remoto da PR `#168`, run `33863522514`, passou nos jobs Linux
+(`test`) e Windows (`test-windows`) sobre o HEAD `ac96825…`; C13 está `PASS`
+no escopo comprovado. Não houve merge, tag ou release; históricos não foram
+alterados.
+
+## Gates locais finais — candidata `6ede2f6` — 04/09/2026
+
+`ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md` consolida a execução no SHA de
+produto `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`: suíte completa,
+runner Windows com cobertura, política de cobertura, estática, segurança,
+runner legado formal, Stage 4B.5, Stage 9, empacotamento e integridade.
+C12 e C13 estão `PASS` no escopo comprovado: C12 pela revisão visual humana
+e pelos gates locais no SHA de produto `6ede2f6…`, e C13 pelo run remoto
+`33863522514` da PR `#168` no HEAD `ac96825…`. Não houve merge, tag ou release;
+essas operações permanecem sem autorização.
