@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "95b02f3ce5fca3443920c1a801c28793ec282de53198529b9c8f990040f72866",
-      "size": 59852
+      "sha256": "86b7b120a4528355a648ec0581b1e5c4dc7e56373c6a562ad13907b038e81806",
+      "size": 60313
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "175dd2a5b5bef70a65138338f0ee39e54c60e844446d9c7c6c8990e6c0ba14ab",
-      "size": 14011
+      "sha256": "ab091c0738de58ab251f7c6d05d66cb50ba9200bdfcef441e7d19d022509670f",
+      "size": 14104
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -185,8 +185,8 @@
       "size": 18796
     },
     "docs/ADR_WINDOWS_COVERAGE_SHARD_RUNNER_2026-09-03.md": {
-      "sha256": "3dbe0308f487a7b48b846a22435baa7ec93b934b6147a11da59ebdbba9922fd8",
-      "size": 3920
+      "sha256": "db230ba06fb2e50f75cca0b50358f7cd47c6af08e8dd0e43fea54df84c98b785",
+      "size": 4394
     },
     "docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md": {
       "sha256": "896d1be4f51d12730b60f3b14575535f0af9385371251c2d54f19fa7223f21c7",
@@ -545,8 +545,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "f8e89a8df9a8ff4f597c20416005c1b82ebb7822c2d83cc625b512039464e3c2",
-      "size": 29198
+      "sha256": "241590545c35e67f0efbb8cbfe6511239b303fe3e450ff3905e0229548a602cc",
+      "size": 29191
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -565,8 +565,8 @@
       "size": 4286
     },
     "docs/PLANO_CORRECAO_26_FALHAS_LEGADAS_2026-09-01.md": {
-      "sha256": "d4339a33b0ed01e59b6a5afec28a8383709a282d01bd45a84591ff1f44476c6b",
-      "size": 82095
+      "sha256": "c756f44916842bc77de7695774e554f3f9427e4a4b30f5f0c81f41e626f86651",
+      "size": 83148
     },
     "docs/PLANO_DE_DESENVOLVIMENTO.md": {
       "sha256": "0a9cf2eaa0198fd563438ccc536433bf491d636b494711e75fe2f3a101e50e7b",
@@ -585,8 +585,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "e088d9f277589b88f218e8798609acc86bdc7b3b4f1f950fa2bdc15fc6fcab53",
-      "size": 26945
+      "sha256": "5e5fd6ae8eb6e03ec0ab1dd5cb33977b81c1c32843b843b8a79a67532b2b965f",
+      "size": 26943
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1229,8 +1229,8 @@
       "size": 7044
     },
     "docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md": {
-      "sha256": "1f9673a29016d7a966af220e885b96625f30ae2abba648911109f9ef8dcbf95e",
-      "size": 4195
+      "sha256": "9e95bf59cf6419acc1a744bd9e5eac620739efe9863612defb75f6447da89f13",
+      "size": 4823
     },
     "docs/evidence/ETAPA_7_PAINEIS_LATERAIS_2026-08-22.md": {
       "sha256": "b463e0e329ab0d39100e135f8c4dc6f4c66609cb2e1a9db44843c8650a73debd",
@@ -1257,8 +1257,8 @@
       "size": 2914
     },
     "docs/evidence/ETAPA_7_REVISAO_VISUAL_PEN_2026-09-04-6EDE.md": {
-      "sha256": "b4a1db6587bc7b41dfea8d0e39832991342b9a425805843b1d54d59bea2adca4",
-      "size": 3041
+      "sha256": "15fe8b7db389df67808217517ce8fbcebf604ec8c7903955fbbe220a70fab3bf",
+      "size": 3444
     },
     "docs/evidence/ETAPA_7_RUNTIME_STREAMING_2026-08-20.md": {
       "sha256": "ee9714380cb8b0637948c400788ea2bd0dbab33fc0f34dc724d6412c405b59fc",
@@ -1437,8 +1437,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "a05275a2e513abff8df6f82f9e0cbdc2f61242c228b8d1dab83b22de2a58d64c",
-      "size": 52202
+      "sha256": "8c0623c96b1f13fb4a53968d352f889929cb8a01ed2b66acff6d63638dc6cd66",
+      "size": 52316
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",

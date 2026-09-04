@@ -54,3 +54,12 @@ remoto comprovado e C12 permanece `PASS` no SHA de produto `6ede2f6…`.
 
 A atualização não altera as seis capturas, seus hashes ou a confirmação
 humana; não houve merge, tag ou release.
+
+## Atualização pós-merge — 04/09/2026
+
+A PR `#168` foi integrada no merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`; o CI pós-merge
+`33871734689` passou em Linux e Windows sobre o commit efetivamente integrado.
+A confirmação humana das seis capturas e seus hashes permanece vinculada ao
+SHA de produto `6ede2f6…`; não houve alteração retroativa das capturas ou do
+registro visual.

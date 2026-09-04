@@ -1,3 +1,13 @@
+## 2026-09-04 — encerramento pós-merge da PR #168
+
+- registra a integração da PR `#168` em `main` pelo merge commit
+  `9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`;
+- confirma o CI pós-merge `33871734689` em Linux e Windows, com todos os gates
+  obrigatórios aprovados;
+- preserva a confirmação humana C12, C13 e os snapshots legados no escopo
+  comprovado, mantendo as limitações de proveniência explícitas;
+- mantém tag e release sem aprovação.
+
 ## 2026-09-04 — validação remota da candidata LEGACY-26
 
 - registra o CI remoto da PR `#168`, run `33863522514`, sobre o HEAD

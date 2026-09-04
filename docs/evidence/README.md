@@ -564,16 +564,17 @@ O pacote e o registro estruturado estão em
 subetapa visual; os gates globais e a nova C12 formal ainda estão pendentes.
 Snapshots históricos e capturas temporárias anteriores permanecem intactos
 
-## Candidata pós-correção — SHA `6ede2f6`
+## Candidata integrada — SHA `6ede2f6`
 
 A validação visual humana foi repetida e confirmada no SHA de produto
 `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o pacote correspondente
 `artifacts/pen-tool-revalidation-20260904-6ede/` registra `12/12` arquivos
 íntegros. A C12 local está `PASS` no escopo comprovado; os gates locais
-passaram. O CI remoto da PR `#168`, run `33863522514`, passou nos jobs Linux
-(`test`) e Windows (`test-windows`) sobre o HEAD `ac96825…`; C13 está `PASS`
-no escopo comprovado. Não houve merge, tag ou release; históricos não foram
-alterados.
+passaram. O CI pré-merge `33863522514` passou sobre o HEAD da candidata;
+em seguida, a PR `#168` foi integrada no merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O CI pós-merge
+`33871734689` também passou em Linux e Windows; C12/C13 permanecem `PASS`
+no escopo comprovado. Não houve tag ou release; históricos não foram alterados.
 
 ## Gates locais finais — candidata `6ede2f6` — 04/09/2026
 
@@ -582,6 +583,6 @@ produto `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`: suíte completa,
 runner Windows com cobertura, política de cobertura, estática, segurança,
 runner legado formal, Stage 4B.5, Stage 9, empacotamento e integridade.
 C12 e C13 estão `PASS` no escopo comprovado: C12 pela revisão visual humana
-e pelos gates locais no SHA de produto `6ede2f6…`, e C13 pelo run remoto
-`33863522514` da PR `#168` no HEAD `ac96825…`. Não houve merge, tag ou release;
-essas operações permanecem sem autorização.
+e pelos gates locais no SHA de produto `6ede2f6…`; C13 pelo CI pré-merge
+`33863522514` da PR `#168` no HEAD `ac96825…` e pelo CI pós-merge
+`33871734689` no merge `9a25f0be…`. Tag e release permanecem sem autorização.

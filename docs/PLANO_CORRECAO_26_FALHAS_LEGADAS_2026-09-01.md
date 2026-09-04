@@ -4,8 +4,8 @@
 **Etapa:** Reconciliação técnica pós-auditoria — 26 falhas legadas restantes
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
-**Status:** `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO — C12/C13 PASS; merge/tag/release pendentes`
-**Última atualização:** 04/09/2026 — PR `#168`/run `33863522514` passou em Linux e Windows no HEAD `ac96825fa36edf686a173f7fad9e51d9ff41705d`; C12/C13 PASS no escopo comprovado
+**Status:** `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO — PR #168 integrada; CI pós-merge PASS; tag/release pendentes`
+**Última atualização:** 04/09/2026 — PR `#168` integrada no merge `9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`; CI pós-merge `33871734689` passou em Linux e Windows; C12/C13 PASS no escopo comprovado
 **HEAD de validação local/empacotamento (snapshot histórico):** `febc85471e5ced519f47626665f5d995e7cf60a9`
 **HEAD publicado e validado pelo CI remoto (snapshot histórico):** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
 **HEAD integrado e auditado pós-merge:** `bcaf5b079881800899d121b071108fe404fa48da`
@@ -13,6 +13,7 @@
 **Branch de trabalho:** `Ailton/legacy26-closure-audit`
 **SHA da candidata rastreável de produto:** `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`
 **HEAD da candidata publicada e da PR `#168`:** `ac96825fa36edf686a173f7fad9e51d9ff41705d`
+**Merge commit da PR `#168`:** `9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
 **Snapshot histórico de origem:** `cf749564ab5d961772d66dc363d0e990cebf8da3`
 **Documento de diagnóstico:** `docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md`
@@ -1264,7 +1265,7 @@ Linux (`test`, `3m23s`) e Windows (`test-windows`, `11m24s`). C13 está
 `PASS` no escopo de CI remoto comprovado. Merge, tag e release continuam sem
 autorização.
 
-## 11.7 Aprovação remota da candidata — 04/09/2026
+## 11.7 Aprovação remota pré-merge da candidata — 04/09/2026
 
 A candidata foi publicada na branch `Ailton/legacy26-closure-audit` pelo
 commit `ac96825fa36edf686a173f7fad9e51d9ff41705d`, sem merge. A PR `#168`
@@ -1281,3 +1282,20 @@ Stage 4B.5, runner legado formal e verificação de árvore-fonte. Assim, C13
 fica formalmente `PASS` no escopo da PR/CI comprovado. Esta decisão não
 autoriza merge, tag ou release; essas operações permanecem pendentes de
 autorização explícita e fora do escopo desta sequência.
+
+## 11.8 Encerramento pós-merge — 04/09/2026
+
+A PR `#168` foi integrada em `main` sem force pelo merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`, preservando a branch
+`Ailton/legacy26-closure-audit` e o commit-fonte `9adb66a…`.
+
+O CI pós-merge `33871734689` foi executado sobre o merge commit efetivamente
+integrado. Linux (`test`, `101019069838`) passou em `3m12s`; Windows
+(`test-windows`, `101019069767`) passou em `9m07s`. Todos os gates obrigatórios
+passaram, incluindo baseline, integridade de evidências, suíte/cobertura,
+estática, segurança, Stage 4B.5, runner legado formal e verificação da
+árvore-fonte. A etapa permanece `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`.
+
+A integração não autoriza tag ou release. Essas operações continuam sujeitas
+a decisão e gates próprios; a limitação de proveniência da prova VMware e do
+empacotamento ancestral permanece explicitamente documentada.
