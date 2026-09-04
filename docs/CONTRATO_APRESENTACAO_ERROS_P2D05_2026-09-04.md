@@ -1,7 +1,7 @@
 # NeoEng-D-Trace — Contrato global de apresentação de erros
 
 **ID:** `C-GLOBAL-ERROR-PRESENTATION-P2D05-2026-09-04`
-**Status:** `DRAFT / PENDING_HUMAN_APPROVAL`
+**Status:** `ACTIVE / APPROVED FOR IMPLEMENTATION`
 **Data:** 2026-09-04 (UTC-03)
 **Escopo:** apresentação de falhas na UI Qt e nos fluxos acessíveis ao usuário
 **Base auditada:** `9adb66a5ab9cfaabc1703d4b9b225b141473ec52`
@@ -157,7 +157,7 @@ não deve simplesmente retornar sem informar o usuário.
 
 ## 8. Critérios de aceitação
 
-O contrato só poderá mudar para `ACTIVE` quando houver evidência de que:
+Este contrato está ativo para orientar a implementação. A implementação só poderá ser declarada conforme quando houver evidência de que:
 
 - cada ponto de apresentação de erro foi inventariado;
 - nenhuma exceção técnica bruta chega à UI;
@@ -178,15 +178,19 @@ normativa e a conformidade global da UI permanece `PARCIAL`.
 
 ## 9. Registro de aprovação
 
-Este registro permanece pendente e não pode ser preenchido pelo agente:
+O proprietário do projeto aprovou formalmente o conteúdo deste contrato no
+commit `333c1e8` em 2026-09-04 (UTC-03). Esta aprovação torna o contrato ativo
+para orientar a implementação; não declara a implementação funcional da UI
+concluída nem autoriza push, merge, tag ou release por si só.
 
 | Campo | Valor |
 |---|---|
-| Revisor humano | `PENDING` |
-| Data da aprovação | `PENDING` |
-| Decisão | `PENDING_HUMAN_APPROVAL` |
-| Observações | `PENDING` |
+| Revisor humano | Proprietário do projeto |
+| Data da aprovação | 2026-09-04 (UTC-03) |
+| Decisão | `APPROVED FOR IMPLEMENTATION` |
+| Conteúdo aprovado | commit `333c1e8` |
+| Observações | A conformidade global da UI permanece `PARCIAL` até a migração e os gates da seção 8. |
 
-Após a aprovação humana, este documento deverá receber um commit próprio. A
-implementação funcional e a atualização dos documentos vivos dependerão desse
-registro e dos gates correspondentes.
+Este registro é versionado neste commit de aprovação. A implementação
+funcional e a atualização dos documentos vivos continuam dependendo dos
+critérios da seção 8 e dos gates correspondentes.
