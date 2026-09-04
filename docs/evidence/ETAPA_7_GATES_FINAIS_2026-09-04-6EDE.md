@@ -75,3 +75,16 @@ formal e verificação da árvore-fonte. C13 está `PASS` no escopo remoto
 comprovado; C12 permanece `PASS` no SHA de produto `6ede2f6…`. O estado
 global desta candidata é `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`; não houve
 merge e tag/release continuam sem autorização.
+
+## Atualização pós-merge no `main` — 04/09/2026
+
+A PR `#168` foi integrada sem force pelo merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O CI pós-merge
+`33871734689`, executado sobre esse commit efetivo, passou nos dois jobs:
+Linux (`test`, `101019069838`, `3m12s`) e Windows (`test-windows`,
+`101019069767`, `9m07s`).
+
+Todos os gates obrigatórios do workflow passaram, incluindo baseline,
+integridade de evidências, dependências, estática, segurança, suíte/cobertura,
+Stage 4B.5, runner legado formal e verificação da árvore-fonte. O resultado
+pós-merge é `PASS`; nenhuma tag ou release foi criada.

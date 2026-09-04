@@ -1,7 +1,7 @@
 # ADR — Runner Windows de cobertura por subprocessos
 
 **ID:** ADR-WIN-COVERAGE-SHARDS-2026-09-03
-**Status:** `ACTIVE — CANDIDATE ONLY`
+**Status:** `ACTIVE — INTEGRATED IN MAIN`
 **Data:** 2026-09-03
 **Escopo:** execução oficial do job Windows do CI; não altera o produto, o
 threshold, a suíte histórica ou os snapshots legados.
@@ -48,14 +48,16 @@ separadamente pelo gate formal e os snapshots `quality/legacy_tests/manifest.jso
 e `quality/legacy_tests/reconciliation.json` não são tocados.
 
 
-## Atualização de verificação — 04/09/2026
+## Atualização de verificação pré-merge — 04/09/2026
 
 O CI remoto da PR `#168`, run `33863522514`, confirmou os jobs Linux e
 Windows sobre o HEAD documental `ac96825fa36edf686a173f7fad9e51d9ff41705d`.
 Todos os passos do runner Windows, inclusive os shards de cobertura e a
-política de cobertura, passaram. A decisão permanece `CANDIDATE ONLY`: a
-confirmação remota não autoriza merge, tag ou release.
+política de cobertura, passaram. Naquele estado pré-merge, a decisão permanecia
+`CANDIDATE ONLY`; a confirmação remota não autorizava merge, tag ou release.
+
 ## Comparação e impacto
+
 
 Antes, o job Windows fazia uma única chamada `pytest` para a suíte inteira e
 produzia `coverage.xml` na raiz. Depois, a mesma seleção oficial é distribuída
@@ -65,6 +67,14 @@ tempo de inicialização, compensado pela eliminação do estado Qt compartilhad
 que causou o abort observado. O resultado permanece bloqueado até o CI remoto
 confirmar o SHA candidato.
 
+## Atualização pós-merge — 04/09/2026
+
+A PR `#168` integrou a decisão desta ADR em `main` pelo merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O CI pós-merge
+`33871734689` confirmou o runner Windows de cobertura e a política de
+cobertura como `PASS`. A decisão permanece ativa no código integrado; tag e
+release continuam fora do escopo desta ADR.
+
 ## Verificação e aprovação
 
 - testes unitários do construtor, descoberta e leitura JUnit: incluídos no lote;
@@ -73,4 +83,5 @@ confirmar o SHA candidato.
 - gates completos, empacotamento e CI remoto: obrigatórios antes de merge/tag/
   release;
 - aprovação operacional: solicitação explícita do proprietário em 2026-09-03;
-  isso autoriza a candidata técnica, não a integração.
+  isso autorizou a candidata técnica; a integração posterior da PR `#168` está
+  registrada no adendo pós-merge.
