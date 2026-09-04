@@ -268,7 +268,9 @@ class PenTool(BaseTool):
         if not closed:
             return beziers
         if len(self._nodes) < 3:
-            raise ValueError("At least three Bézier nodes are required to close a path.")
+            raise ValueError(
+                "At least three Bézier nodes are required to close a path."
+            )
 
         first_node = self._nodes[0]
         last_node = self._nodes[-1]
@@ -554,9 +556,7 @@ class PenTool(BaseTool):
         if not self._nodes or self._closed:
             return False
         first_anchor = self._nodes[0].anchor
-        distance = math.hypot(
-            point[0] - first_anchor[0], point[1] - first_anchor[1]
-        )
+        distance = math.hypot(point[0] - first_anchor[0], point[1] - first_anchor[1])
         zoom = self.get_canvas_zoom()
         tolerance = self._close_tolerance / zoom if zoom > 0 else self._close_tolerance
         return distance <= tolerance

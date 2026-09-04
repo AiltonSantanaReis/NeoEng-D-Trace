@@ -111,7 +111,10 @@ class ToolPalette(QToolBar):
                 "magnetic_lasso": (
                     "Magnetic lasso (6). Right-click the canvas for modes and presets."
                 ),
-                "pen": "Pen tool (5). Click the first anchor to close; double-click to finish open.",
+                "pen": (
+                    "Pen tool (5). Click the first anchor to close; "
+                    "double-click to finish open."
+                ),
                 "rect": "Rectangle selection (3)",
                 "ellipse": "Ellipse selection (4)",
                 "polygon_edit": "Edit polygon vertices",
@@ -124,7 +127,10 @@ class ToolPalette(QToolBar):
                 "magnetic_lasso": (
                     "Laço magnético (6). Clique direito no canvas para modos e presets."
                 ),
-                "pen": "Ferramenta caneta (5). Clique no primeiro vértice para fechar; clique duas vezes para finalizar aberto.",
+                "pen": (
+                    "Ferramenta caneta (5). Clique no primeiro vértice para fechar; "
+                    "clique duas vezes para finalizar aberto."
+                ),
                 "rect": "Seleção retangular (3)",
                 "ellipse": "Seleção elíptica (4)",
                 "polygon_edit": "Editar vértices do polígono",
