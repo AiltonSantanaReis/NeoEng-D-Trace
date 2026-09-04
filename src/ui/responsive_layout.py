@@ -114,6 +114,22 @@ class ResponsivePanelLayout:
             if button.objectName() != "reference_menu_button":
                 button.setToolButtonStyle(style)
 
+        action_widths = {
+            "reference_fit_button": 76 if compact else 136,
+            "reference_focus_button": 76 if compact else 100,
+            "reference_pan_button": 76 if compact else 76,
+            "reference_undo_button": 76 if compact else 88,
+            "reference_redo_button": 76 if compact else 88,
+        }
+        for name, width in action_widths.items():
+            button = getattr(self.owner, name, None)
+            if button is None:
+                continue
+            button.setMinimumWidth(width)
+            button.setMaximumWidth(width)
+            button.setMinimumHeight(78)
+            button.setMaximumHeight(88)
+
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
             menu_button.setMinimumWidth(51)

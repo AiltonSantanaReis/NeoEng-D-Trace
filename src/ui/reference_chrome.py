@@ -61,8 +61,8 @@ def _style_action_button(
     button.setProperty("referenceShortText", display_text)
     button.setMinimumWidth(width)
     button.setMaximumWidth(width)
-    button.setMinimumHeight(58)
-    button.setMaximumHeight(66)
+    button.setMinimumHeight(78)
+    button.setMaximumHeight(88)
     button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
     button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
     button.setAccessibleName(action.text().replace("\n", " "))
@@ -157,8 +157,8 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
     toolbar.setIconSize(QSize(24, 24))
     # Keep the rail within the reference contract while leaving room for QSS.
-    toolbar.setMinimumWidth(84)
-    toolbar.setMaximumWidth(96)
+    toolbar.setMinimumWidth(96)
+    toolbar.setMaximumWidth(112)
     toolbar.setProperty("uiRole", "reference_tool_palette")
     for action in window.tool_palette.actions():
         if action.isSeparator():
@@ -167,10 +167,10 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
             toolbar.addAction(action)
             button = toolbar.widgetForAction(action)
             if isinstance(button, QToolButton):
-                button.setMinimumSize(QSize(44, 32))
-                button.setMaximumSize(QSize(56, 36))
+                button.setMinimumSize(QSize(52, 32))
+                button.setMaximumSize(QSize(76, 36))
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-                button.setIconSize(QSize(18, 18))
+                button.setIconSize(QSize(22, 22))
                 # The visible rail creates a new QToolButton for the shared
                 # QAction. QAction metadata is not guaranteed to populate
                 # the widget's accessibility/focus surface, so copy the

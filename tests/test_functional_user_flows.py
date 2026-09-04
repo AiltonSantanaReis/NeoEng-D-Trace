@@ -14,10 +14,11 @@ from pathlib import Path
 import numpy as np
 import pytest
 from PIL import Image
-from PySide6.QtCore import QPoint, QTimer, Qt
+from PySide6.QtCore import QPoint, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QMessageBox
+from PySide6.QtWidgets import QApplication, QMessageBox, QToolButton
 
+import src.tools.base_tool as base_tool_module
 import src.ui.main_window as main_window_module
 from src.core.commands import CommandManager
 from src.models.scene import Scene
@@ -211,26 +212,13 @@ def test_every_palette_tool_completes_a_user_like_operation(
         _click_image(window, (225, 35))
         _click_image(window, (305, 35))
         _click_image(window, (305, 115))
-        closer = QTimer()
-        closer.timeout.connect(
-            lambda: [
-                widget.close()
-                for widget in qt_app.topLevelWidgets()
-                if isinstance(widget, QMessageBox)
-            ]
-        )
-        closer.start(25)
-        QTest.mouseDClick(
-            window.canvas,
-            Qt.MouseButton.LeftButton,
-            Qt.KeyboardModifier.NoModifier,
-            _screen_point(window, (270, 140)),
-        )
-        closer.stop()
+        _click_image(window, (225, 35))
         _settle(qt_app)
         created = set(window.scene.objects) - before
         assert len(created) == 1
-        assert window.scene.objects[next(iter(created))].beziers is not None
+        beziers = window.scene.objects[next(iter(created))].beziers
+        assert beziers is not None
+        assert beziers[-1][3] == beziers[0][0]
 
     def polygon_edit(window: MainWindow) -> None:
         window.tool_palette.tool_buttons["polygon_edit"].click()
@@ -261,6 +249,38 @@ def test_every_palette_tool_completes_a_user_like_operation(
     )
     for index, operation in enumerate(cases):
         _run_isolated(tmp_path / f"tool-{index}", qt_app, operation)
+
+
+def test_pen_invalid_close_preserves_preview_and_history(
+    tmp_path: Path, qt_app: QApplication, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A rejected close must leave the in-progress gesture and model untouched."""
+
+    monkeypatch.setattr(
+        base_tool_module.QMessageBox,
+        "warning",
+        lambda *_args, **_kwargs: QMessageBox.StandardButton.Ok,
+    )
+    window = _make_window(tmp_path, qt_app)
+    try:
+        window.tool_palette.tool_buttons["pen_tool"].click()
+        tool = window.canvas._active_tool_object()
+        before_objects = set(window.scene.objects)
+        before_history = window.scene.cmd.undo_count
+        for point in ((225, 35), (285, 35), (285, 95)):
+            _click_image(window, point)
+        before_nodes = tuple(node.anchor for node in tool._nodes)
+
+        _click_image(window, (225, 35))
+        _settle(qt_app)
+
+        assert set(window.scene.objects) == before_objects
+        assert tuple(node.anchor for node in tool._nodes) == before_nodes
+        assert tool._editing_object_id is None
+        assert window.scene.cmd.undo_count == before_history
+        assert "Invalid sampled" in tool._last_error
+    finally:
+        _close_clean(window, qt_app)
 
 
 def test_user_flow_persists_and_exports_through_main_window_actions(
@@ -395,5 +415,45 @@ def test_auxiliary_rail_actions_complete_user_like_flows(
         navigation["focus_selected"].trigger()
         after_focus = (window.canvas._pan.x(), window.canvas._pan.y())
         assert after_focus != before_focus
+    finally:
+        _close_clean(window, qt_app)
+
+
+def test_reference_shell_preserves_control_geometry_and_tool_visibility(
+    tmp_path: Path, qt_app: QApplication
+) -> None:
+    """Every supported shell size keeps controls and the complete tool rail usable."""
+
+    window = _make_window(tmp_path / "responsive-shell", qt_app)
+    try:
+        top_controls = tuple(
+            getattr(window, name)
+            for name in (
+                "reference_fit_button",
+                "reference_focus_button",
+                "reference_pan_button",
+                "reference_undo_button",
+                "reference_redo_button",
+            )
+        )
+        for width, height in ((1280, 720), (1366, 768), (1920, 1080)):
+            window.resize(width, height)
+            _settle(qt_app)
+            for button in top_controls:
+                assert button.isVisible()
+                assert button.width() >= button.minimumSizeHint().width()
+                assert button.height() >= button.minimumSizeHint().height()
+
+        rail_buttons = [
+            button
+            for button in window.reference_tool_palette.findChildren(QToolButton)
+            if button.property("uiRole") == "reference_tool"
+        ]
+        expected_rail_buttons = sum(
+            not action.isSeparator() for action in window.tool_palette.actions()
+        )
+        assert len(rail_buttons) == expected_rail_buttons
+        assert all(button.isVisible() for button in rail_buttons)
+        assert all(button.iconSize().width() >= 22 for button in rail_buttons)
     finally:
         _close_clean(window, qt_app)
