@@ -4,13 +4,14 @@
 **Etapa:** Reconciliação técnica pós-auditoria — 26 falhas legadas restantes
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
-**Status:** `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO — C13 PASS; PLANO GLOBAL APROVADO / CONCLUÍDO`
-**Última atualização:** 03/09/2026 — C12 revisado pelo proprietário no SHA `bcaf5b079881800899d121b071108fe404fa48da`; gates finais revalidados
+**Status:** `IN_PROGRESS / PENDING_REMOTE_CI — C12 local PASS no SHA 6ede2f6; C13 remoto pendente`
+**Última atualização:** 04/09/2026 — C12 local revalidada no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; gates locais e empacotamento passaram; CI remoto pendente
 **HEAD de validação local/empacotamento (snapshot histórico):** `febc85471e5ced519f47626665f5d995e7cf60a9`
 **HEAD publicado e validado pelo CI remoto (snapshot histórico):** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
 **HEAD integrado e auditado pós-merge:** `bcaf5b079881800899d121b071108fe404fa48da`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
-**Branch de trabalho:** `fix/legacy-27-functional-regressions`
+**Branch de trabalho:** `Ailton/legacy26-closure-audit`
+**SHA da candidata rastreável de produto:** `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
 **Snapshot histórico de origem:** `cf749564ab5d961772d66dc363d0e990cebf8da3`
 **Documento de diagnóstico:** `docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md`
@@ -1190,3 +1191,72 @@ escopo `PASS_SCOPED` do VMware continuam explícitos.
 A ação operacional autorizada desta etapa é criar o commit e publicar o push
 da fronteira documental/evidencial desta transição. Tag, release e merge
 adicional continuam fora do escopo e sem aprovação.
+
+**Estado atual da candidata:** IN_PROGRESS / PENDING_EVIDENCE.
+**HEAD atual:** 5aec9aed6dc2fc725ff59e8f2c0057f737d2052d.
+**Escopo da C12 existente:** limitado ao SHA bcaf5b079881800899d121b071108fe404fa48da.
+As alterações posteriores de Caneta, responsividade, testes e runner exigem nova
+validação no mesmo HEAD antes de qualquer encerramento operacional.
+
+## 11.3 Reabertura da validação do HEAD posterior à C12 — 03/09/2026
+
+Foi identificada uma divergência de escopo que não reescreve nem invalida os
+snapshots históricos, mas impede promovê-los como prova da candidata atual.
+O registro C12 e a auditoria final da seção 11.2 referem-se ao SHA
+bcaf5b079881800899d121b071108fe404fa48da. Depois desse SHA, a branch atual
+Ailton/legacy26-closure-audit recebeu os commits 382d2ef e 5aec9ae, que
+alteram a Caneta, a geometria responsiva, os testes de fluxo de usuário e o
+runner Stage 9.
+
+Assim, para o HEAD atual
+5aec9aed6dc2fc725ff59e8f2c0057f737d2052d, C12 é PENDING_EVIDENCE e C13
+é BLOCKED até que funcionalidade, evidência visual, proveniência, gates e
+revisão humana sejam repetidos no mesmo SHA. As capturas temporárias da Caneta
+geradas anteriormente não constituem evidência: não possuem pacote rastreado,
+manifesto, comando produtor e revisão visual humana vinculados ao HEAD atual.
+
+O código histórico, os snapshots legados e os commits publicados são
+preservados. Não há autorização para merge, tag ou release. A sequência de
+revalidação é: checkout limpo do HEAD atual; fluxo Qt real positivo e negativo
+da Caneta; captura reproduzível com hashes e logs; inspeção visual humana
+explícita; gates completos, incluindo empacotamento atual; nova C12 no mesmo
+SHA; somente então novo commit/push e PR sem merge.
+
+## 11.4 Registro da revisão visual humana da Caneta — 04/09/2026
+
+A inspeção visual humana das seis capturas do pacote
+`docs/evidence/artifacts/pen-tool-revalidation-20260904-5aec/` foi confirmada
+pelo proprietário do projeto. O resultado é `PASS` somente para a subetapa
+visual e permanece vinculado ao SHA do produto
+`5aec9aed6dc2fc725ff59e8f2c0057f737d2052d`.
+
+O HEAD local atual da branch é `93b8e53f8086bcc5e7ecf61b6539c408b40c0ab0`,
+que adiciona apenas o produtor versionado da auditoria. Essa diferença é
+intencional e não promove o commit de ferramenta como se fosse o SHA do
+produto validado. O registro estruturado está em `human-review.json`, com
+`artifact-index.json` contendo `12/12` arquivos e hashes.
+
+A C12 formal continua `PENDING_EVIDENCE` até a execução comprovada dos
+gates globais no SHA de produto, incluindo empacotamento atual, integridade
+de evidências, suíte completa, cobertura, análise estática, segurança e CI.
+
+## 11.5 Revalidação visual pós-correção do gate — 04/09/2026
+
+O SHA `5aec9aed6dc2fc725ff59e8f2c0057f737d2052d` foi mantido como
+histórico, mas não promovido: o gate local encontrou três violações de
+Flake8 e, durante a correção, uma regressão de tipo nas tooltips da Caneta.
+O commit técnico `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4` corrigiu
+somente essas questões, com teste focal passando.
+
+A nova auditoria foi executada em checkout limpo de `6ede2f6…`, com
+`QApplication`, `QTest` e eventos Qt reais. O pacote
+`docs/evidence/artifacts/pen-tool-revalidation-20260904-6ede/` registra
+quatro checks automatizados `PASS`, seis capturas, `human-review.json`
+com confirmação humana explícita e `artifact-index.json` com `12/12`
+arquivos íntegros.
+
+A subetapa visual e a C12 local estão `PASS` no SHA `6ede2f6…`; os gates
+locais completos e o empacotamento atual estão consolidados em
+`docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md`. C13 permanece
+`PENDING_REMOTE_CI` até push, PR sem merge e análise dos jobs remotos. Merge,
+tag e release continuam bloqueados.

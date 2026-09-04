@@ -11,8 +11,6 @@ import argparse
 import hashlib
 import json
 import platform
-import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -142,9 +140,7 @@ def run(output: Path, source_commit: str, source_branch: str) -> dict[str, objec
             _settle(app)
             if not tool._is_near_first_anchor((225.0, 35.0)):
                 raise AssertionError("first anchor was not close-ready")
-            captures.append(
-                _save_capture(positive, output, "pen-close-preview.png")
-            )
+            captures.append(_save_capture(positive, output, "pen-close-preview.png"))
             _click_image(positive, (225, 35))
             _settle(app)
             created = set(positive.scene.objects) - before
@@ -156,9 +152,7 @@ def run(output: Path, source_commit: str, source_branch: str) -> dict[str, objec
                 raise AssertionError("closed path terminal does not equal first anchor")
             if positive.scene.cmd.undo_count != 1:
                 raise AssertionError("close did not create exactly one history entry")
-            captures.append(
-                _save_capture(positive, output, "pen-closed-persisted.png")
-            )
+            captures.append(_save_capture(positive, output, "pen-closed-persisted.png"))
             positive.reference_undo_button.click()
             _settle(app)
             if object_id in positive.scene.objects:
@@ -178,7 +172,9 @@ def run(output: Path, source_commit: str, source_branch: str) -> dict[str, objec
         invalid = _make_window(output / "invalid-work", app)
         original_warning = base_tool_module.QMessageBox.warning
         try:
-            base_tool_module.QMessageBox.warning = lambda *_args, **_kwargs: QMessageBox.StandardButton.Ok
+            base_tool_module.QMessageBox.warning = (
+                lambda *_args, **_kwargs: QMessageBox.StandardButton.Ok
+            )
             invalid.tool_palette.tool_buttons["pen_tool"].click()
             tool = invalid.canvas._active_tool_object()
             before_objects = set(invalid.scene.objects)
@@ -195,7 +191,9 @@ def run(output: Path, source_commit: str, source_branch: str) -> dict[str, objec
             if invalid.scene.cmd.undo_count != before_history:
                 raise AssertionError("invalid close changed history")
             if "Invalid sampled" not in tool._last_error:
-                raise AssertionError(f"unexpected invalid-close error: {tool._last_error!r}")
+                raise AssertionError(
+                    f"unexpected invalid-close error: {tool._last_error!r}"
+                )
             captures.append(_save_capture(invalid, output, "pen-invalid-close.png"))
             checks["invalid_close_preserves_state"] = "PASS"
             log("invalid close preserves preview, model and history: PASS")
@@ -223,7 +221,9 @@ def run(output: Path, source_commit: str, source_branch: str) -> dict[str, objec
             beziers = double_click.scene.objects[object_id].beziers
             if not beziers or beziers[-1][3] == beziers[0][0]:
                 raise AssertionError("double-click unexpectedly closed the path")
-            captures.append(_save_capture(double_click, output, "pen-double-click-open.png"))
+            captures.append(
+                _save_capture(double_click, output, "pen-double-click-open.png")
+            )
             checks["double_click_open_path"] = "PASS"
             log("double-click open path: PASS")
         finally:
@@ -237,7 +237,9 @@ def run(output: Path, source_commit: str, source_branch: str) -> dict[str, objec
         raise
     finally:
         app.processEvents()
-        (output / "run.log").write_text("\n".join(log_lines) + "\n", encoding="utf-8", newline="\n")
+        (output / "run.log").write_text(
+            "\n".join(log_lines) + "\n", encoding="utf-8", newline="\n"
+        )
 
     artifacts = captures + [
         _artifact_record(output / "run.log", "run.log"),

@@ -544,3 +544,39 @@ foi aprovada; as Etapas 8–14 continuam planejadas.
 
 A Etapa 9 está aprovada no escopo de responsividade e DPI. Release não foi
 aprovada; os limites de driver/GPU e as demais etapas permanecem declarados.
+
+**AVISO DE ESCOPO — 03/09/2026:** a C12 e a auditoria final acima cobrem
+especificamente o SHA bcaf5b079881800899d121b071108fe404fa48da. A branch atual
+Ailton/legacy26-closure-audit está no HEAD
+5aec9aed6dc2fc725ff59e8f2c0057f737d2052d, posterior àquela revisão, e contém
+alterações de produto/testes ainda sujeitas a revalidação. Capturas temporárias
+sem manifesto, comando produtor e revisão humana vinculados ao HEAD atual não
+são evidência formal. Até nova C12 e gates no mesmo SHA, a candidata atual
+permanece PENDING_EVIDENCE; snapshots históricos não foram reescritos.
+
+## Revalidação da Caneta — pacote visual de 04/09/2026
+
+A revisão visual humana foi confirmada para as seis capturas reproduzíveis
+vinculadas ao SHA de produto `5aec9aed6dc2fc725ff59e8f2c0057f737d2052d`.
+O pacote e o registro estruturado estão em
+`artifacts/pen-tool-revalidation-20260904-5aec/`; o manifesto registra
+`12/12` arquivos com bytes e SHA-256. O resultado `PASS` é restrito à
+subetapa visual; os gates globais e a nova C12 formal ainda estão pendentes.
+Snapshots históricos e capturas temporárias anteriores permanecem intactos
+
+## Candidata pós-correção — SHA `6ede2f6`
+
+A validação visual humana foi repetida e confirmada no SHA de produto
+`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o pacote correspondente
+`artifacts/pen-tool-revalidation-20260904-6ede/` registra `12/12` arquivos
+íntegros. A C12 local está `PASS` no escopo comprovado; os gates locais
+passaram. C13 permanece `PENDING_REMOTE_CI` até push, PR sem merge e análise
+dos jobs remotos; históricos não foram alterados.
+
+## Gates locais finais — candidata `6ede2f6` — 04/09/2026
+
+`ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md` consolida a execução no SHA de
+produto `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`: suíte completa,
+runner Windows com cobertura, política de cobertura, estática, segurança,
+runner legado formal, Stage 4B.5, Stage 9, empacotamento e integridade.
+C12 está `PASS` no escopo local comprovado; C13 permanece
