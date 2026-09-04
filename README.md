@@ -8,7 +8,15 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Estado operacional atual — candidata pré-merge da Etapa 7
+## Estado operacional atual — requalificação P2D-05
+
+Na branch `Ailton/error-presentation-contract-20260904`, base `7283e40`,
+a correção de tipagem e a requalificação isolada estão `IN_PROGRESS`.
+Publicação permanece `BLOCKED`; o CI e a revisão humana de versões anteriores
+não aprovam esta candidata. Consulte o [acompanhamento vivo](docs/P2D05_REQUALIFICACAO_ATUAL.md)
+para escopo, integridade, limitações e próximos gates.
+
+## Snapshot histórico — candidata pré-merge da Etapa 7
 
 A revisão corrente é a candidata da branch `Ailton/legacy26-closure-audit`,
 com produto validado no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4` e

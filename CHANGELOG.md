@@ -1,4 +1,13 @@
-## 2026-09-04 — validação remota da candidata LEGACY-26
+## 2026-09-04 — requalificação local P2D-05 em andamento
+
+- explicita dois guardas de modelo na edição de polígonos e adiciona seis
+  regressões de ausência de modelo/histórico, sem mudar semântica;
+- reconcilia o manifesto vivo com a fronteira rastreada dos lotes aprovados;
+- distingue evidências rastreadas de pacotes locais históricos não rastreados,
+  preservando ambos; qualificação completa e publicação continuam pendentes;
+- detalhes em `docs/P2D05_REQUALIFICACAO_ATUAL.md`.
+
+## 2026-09-04 — validação remota da candidata LEGACY-26 (histórico)
 
 - registra o CI remoto da PR `#168`, run `33863522514`, sobre o HEAD
   documental `ac96825fa36edf686a173f7fad9e51d9ff41705d`;

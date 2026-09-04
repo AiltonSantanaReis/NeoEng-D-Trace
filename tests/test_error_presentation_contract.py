@@ -43,6 +43,49 @@ class _StatusWindow(QWidget):
         return self._status_bar
 
 
+@pytest.mark.parametrize("model_state", ["missing", "none", "no_history"])
+@pytest.mark.parametrize("operation", ["gesture", "delete"])
+def test_polygon_missing_model_or_history_rejects_before_mutation(
+    model_state, operation, monkeypatch
+):
+    scene = Scene()
+    scene.add_object("poly", [(0, 0), (20, 0), (20, 20), (0, 20)])
+    scene.cmd = None
+    canvas = _Canvas(scene)
+    if model_state == "missing":
+        del canvas.model
+    elif model_state == "none":
+        canvas.model = None
+    tool = PolygonEditTool(canvas)
+    tool.selected_polygon_id = "poly"
+    tool.selected_vertex = 0
+    before_polygon = list(scene.objects["poly"].polygon)
+    messages = []
+    monkeypatch.setattr(
+        tool,
+        "_present_p2d05_error",
+        lambda exc, **kwargs: messages.append((str(exc), kwargs)),
+    )
+
+    if operation == "gesture":
+        assert tool._begin_vertex_gesture() is False
+    else:
+        assert tool._execute_object_deletion(["poly"], "Delete") is None
+
+    assert len(messages) == 1
+    assert messages[0][0] == "Undo/Redo command history is unavailable."
+    assert messages[0][1] == {
+        "operation": "edit",
+        "severity": "critical",
+        "channel": "modal",
+    }
+    assert scene.objects["poly"].polygon == before_polygon
+    assert tool.selected_polygon_id == "poly"
+    assert tool.selected_vertex == 0
+    assert tool._vertex_transaction is None
+    assert canvas.updates == 0
+
+
 @pytest.fixture(scope="module")
 def qt_app():
     return QApplication.instance() or QApplication([])

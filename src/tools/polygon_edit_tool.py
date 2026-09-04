@@ -148,7 +148,7 @@ class PolygonEditTool(BaseTool):
 
         model = getattr(self.canvas_view, "model", None)
         manager = getattr(model, "cmd", None)
-        if manager is None:
+        if model is None or manager is None:
             self._present_p2d05_error(
                 RuntimeError("Undo/Redo command history is unavailable."),
                 operation="edit",
@@ -732,7 +732,7 @@ class PolygonEditTool(BaseTool):
     ) -> Optional[CommandResult]:
         model = getattr(self.canvas_view, "model", None)
         manager = getattr(model, "cmd", None)
-        if manager is None:
+        if model is None or manager is None:
             self._present_p2d05_error(
                 RuntimeError("Undo/Redo command history is unavailable."),
                 operation="edit",

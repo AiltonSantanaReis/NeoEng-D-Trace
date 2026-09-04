@@ -1,5 +1,13 @@
 # Matriz de Riscos de Estabilização
 
+## Verificação viva — P2D-05 — 04/09/2026
+
+Base `7283e40`: a correção dos três erros globais de tipagem está em validação.
+Integridade passou em 134 manifestos da base limpa; três pacotes locais não
+rastreados continuam preservados e não aprovados. Há risco de atribuir provas
+pré-commit ou CI histórico ao novo SHA. Mitigação e gates pendentes:
+`docs/P2D05_REQUALIFICACAO_ATUAL.md`. Publicação `BLOCKED`.
+
 | ID | Severidade | Risco confirmado | Impacto | Evidência exigida para encerramento |
 |---|---|---|---|---|
 | R-001 | P0 | Persistência incompleta do projeto | Perda silenciosa de dados | Testes de round-trip completos, migração e falha de gravação |
