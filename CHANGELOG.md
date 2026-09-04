@@ -1,4 +1,16 @@
-## 2026-09-04 — requalificação local P2D-05 em andamento
+## 2026-09-04 — resultados locais P2D-05 no SHA efb0caf
+
+- tipagem global e baseline corrigidos; 134 manifestos rastreados validados em
+  checkout limpo, sem alterações de snapshots ou remoção de arquivos locais;
+- runner Windows: 1.954 passed, dois skips por privilégio de symlink, zero
+  falhas/erros; cobertura 92,70% de linhas e 85,17% de branches;
+- estática, segurança, Stage 4B.5, gate formal, build portátil, smoke e digests
+  dos 314 arquivos do ZIP passaram; relatório e pacote hashado em
+  `docs/evidence/P2D05_REQUALIFICACAO_TIPAGEM_INTEGRIDADE_2026-09-04.md`;
+- estado global `PARCIAL`, publicação `BLOCKED`; os resultados pertencem ao
+  SHA-fonte, não ao commit documental descendente ou a um CI não executado.
+
+## 2026-09-04 — abertura da requalificação local P2D-05 (histórico)
 
 - explicita dois guardas de modelo na edição de polígonos e adiciona seis
   regressões de ausência de modelo/histórico, sem mudar semântica;

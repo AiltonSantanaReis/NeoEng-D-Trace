@@ -2,8 +2,11 @@
 
 ## Atualização viva — P2D-05 — 04/09/2026
 
-Base local `7283e40`, branch `Ailton/error-presentation-contract-20260904`:
-correção de tipagem e requalificação estão `IN_PROGRESS`; publicação `BLOCKED`.
+Fonte local `efb0caf`, branch `Ailton/error-presentation-contract-20260904`:
+tipagem e baseline corrigidos; integridade rastreada aprovada no checkout limpo.
+Requalificação `PARCIAL` pelos dois skips de symlink e pelos gates humanos e
+remotos pendentes; publicação `BLOCKED`. O commit documental descendente não
+é apresentado como tendo executado a suíte completa do SHA-fonte.
 O [registro vivo P2D-05](P2D05_REQUALIFICACAO_ATUAL.md) discrimina escopo,
 integridade versionada, artefatos locais preservados e gates pendentes.
 Os registros abaixo conservam os fatos de suas revisões anteriores; não

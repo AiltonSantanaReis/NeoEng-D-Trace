@@ -1,7 +1,13 @@
-Estado vivo P2D-05 em 04/09/2026: requalificação sobre a base `7283e40`
-`IN_PROGRESS`, publicação `BLOCKED`. Consulte
+Estado vivo P2D-05 em 04/09/2026: fonte `efb0caf` requalificada localmente,
+`PARCIAL` pelos dois skips de symlink; publicação `BLOCKED`. Consulte
 [`P2D05_REQUALIFICACAO_ATUAL.md`](../P2D05_REQUALIFICACAO_ATUAL.md).
 Os relatórios históricos abaixo não são prova do HEAD P2D-05.
+
+- `P2D05_REQUALIFICACAO_TIPAGEM_INTEGRIDADE_2026-09-04.md` — correção de
+  tipagem, baseline sem remoções, 134 manifestos rastreados, 1.954 testes
+  aprovados/dois skips, cobertura, gate legado, build e smoke no SHA-fonte
+  `efb0caf`. Pacote em `artifacts/p2d05-requalification-efb0caf-20260904/`;
+  não aprova CI remoto, revisão humana ou o commit documental descendente.
 
 - `ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md` — auditoria final dos 13
   critérios da seção 9 no SHA `bcaf5b079881800899d121b071108fe404fa48da`;

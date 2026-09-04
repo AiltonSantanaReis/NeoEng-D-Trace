@@ -2,11 +2,12 @@
 
 ## Verificação viva — P2D-05 — 04/09/2026
 
-Base `7283e40`: a correção dos três erros globais de tipagem está em validação.
-Integridade passou em 134 manifestos da base limpa; três pacotes locais não
+Fonte `efb0caf`: os três erros globais de tipagem foram corrigidos e o baseline
+reconciliado. Integridade passou em 134 manifestos limpos; três pacotes locais não
 rastreados continuam preservados e não aprovados. Há risco de atribuir provas
 pré-commit ou CI histórico ao novo SHA. Mitigação e gates pendentes:
-`docs/P2D05_REQUALIFICACAO_ATUAL.md`. Publicação `BLOCKED`.
+`docs/P2D05_REQUALIFICACAO_ATUAL.md`. Dois symlinks exigem ambiente com privilégio;
+revisão humana e CI remoto continuam pendentes. Publicação `BLOCKED`.
 
 | ID | Severidade | Risco confirmado | Impacto | Evidência exigida para encerramento |
 |---|---|---|---|---|

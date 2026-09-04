@@ -10,8 +10,9 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 
 ## Estado operacional atual — requalificação P2D-05
 
-Na branch `Ailton/error-presentation-contract-20260904`, base `7283e40`,
-a correção de tipagem e a requalificação isolada estão `IN_PROGRESS`.
+Na branch `Ailton/error-presentation-contract-20260904`, a fonte `efb0caf`
+passou em tipagem, baseline, evidências rastreadas, cobertura e build local.
+A requalificação é `PARCIAL`: dois testes de symlink dependem de privilégio.
 Publicação permanece `BLOCKED`; o CI e a revisão humana de versões anteriores
 não aprovam esta candidata. Consulte o [acompanhamento vivo](docs/P2D05_REQUALIFICACAO_ATUAL.md)
 para escopo, integridade, limitações e próximos gates.
