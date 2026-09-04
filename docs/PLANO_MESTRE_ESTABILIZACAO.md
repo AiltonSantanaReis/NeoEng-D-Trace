@@ -4,20 +4,19 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
-## Atualização viva — auditoria de encerramento do plano LEGACY-26 — 03 de setembro de 2026
+## Atualização viva — candidata pré-merge LEGACY-26 — 04 de setembro de 2026
 
-A revisão corrente é o merge `bcaf5b079881800899d121b071108fe404fa48da` da PR
-`#167`. O CI pós-merge `33800311976` passou em Linux e Windows; Windows
-aceitou `189/189` arquivos e `1919` testes sem falhas, erros ou skips. A
-reconciliação formal, a preservação dos snapshots, os gates de cobertura,
-estática, segurança, Stage 4B.5, baseline e integridade passaram no escopo
-declarado.
+A revisão corrente é a candidata técnica da PR `#168`, base `main`, na branch
+`Ailton/legacy26-closure-audit`. O produto foi validado no SHA
+`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o HEAD documental publicado é
+`ac96825fa36edf686a173f7fad9e51d9ff41705d`, sem merge.
 
-`docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md`: C01–C13 estão
-`PASS` após a confirmação humana C12 no SHA auditado. O plano mestre está
-`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`; os snapshots legados e as
-limitações de proveniência permanecem explícitos. Tag e release continuam
-sem aprovação.
+O run remoto `33863522514` passou em Linux e Windows, incluindo baseline,
+integridade de evidências, suíte/cobertura, estática, segurança, Stage 4B.5,
+runner legado formal e verificação da árvore-fonte. C01–C13 estão `PASS` no
+escopo comprovado e o plano mestre está `APROVADO / CONCLUÍDO NO ESCOPO
+COMPROVADO`. Os snapshots legados e as limitações de proveniência permanecem
+explícitos. Tag e release continuam sem aprovação.
 
 ## Snapshot histórico — encerramento pós-merge da PR #166 — 03 de setembro de 2026
 

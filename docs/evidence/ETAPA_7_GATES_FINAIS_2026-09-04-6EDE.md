@@ -56,3 +56,22 @@ em resultado funcional.
 O estado atual é aprovado localmente, mas não é encerramento global: C13 só
 será decidido após push, abertura da PR sem merge e análise dos jobs remotos.
 Não há autorização para merge, tag ou release nesta etapa.
+
+## Atualização controlada pós-CI remoto — 04/09/2026
+
+O estado `PENDING_REMOTE_CI` registrado acima era válido no momento da
+execução local e foi preservado como histórico de decisão. Após o push do
+commit de documentação `ac96825fa36edf686a173f7fad9e51d9ff41705d`, a PR
+`#168` foi validada pelo run remoto `33863522514`, executado sobre esse HEAD.
+
+| Job remoto | ID | Resultado | Duração observada |
+| --- | --- | --- | --- |
+| Linux — `test` | `100993095663` | `PASS` | `3m23s` |
+| Windows — `test-windows` | `100993095571` | `PASS` | `11m24s` |
+
+Todos os passos obrigatórios ficaram verdes, incluindo os gates de baseline,
+evidências, suíte/cobertura, estática, segurança, Stage 4B.5, runner legado
+formal e verificação da árvore-fonte. C13 está `PASS` no escopo remoto
+comprovado; C12 permanece `PASS` no SHA de produto `6ede2f6…`. O estado
+global desta candidata é `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`; não houve
+merge e tag/release continuam sem autorização.

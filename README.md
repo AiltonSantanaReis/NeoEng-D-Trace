@@ -8,23 +8,18 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Estado operacional atual — auditoria de encerramento da Etapa 7
+## Estado operacional atual — candidata pré-merge da Etapa 7
 
-A revisão corrente é o merge da PR `#167`, commit
-`bcaf5b079881800899d121b071108fe404fa48da`. O CI pós-merge `33800311976`
-passou em Linux e Windows: Linux `1919 passed`, Windows `189/189` arquivos,
-`1919` testes, `0` falhas, `0` erros e `0` skips. Baseline, integridade,
-cobertura, estática, segurança, Stage 4B.5 e o gate formal passaram no escopo
-declarado.
+A revisão corrente é a candidata da branch `Ailton/legacy26-closure-audit`,
+com produto validado no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4` e
+HEAD publicado `ac96825fa36edf686a173f7fad9e51d9ff41705d`. A PR `#168`, base
+`main`, permanece aberta e sem merge.
 
-A auditoria final da seção 9 está registrada em
-`docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md`, com o registro
-humano C12 em `docs/evidence/ETAPA_7_REVISAO_HUMANA_C12_2026-09-03.md`.
-C01–C13 estão `PASS` no escopo comprovado e o plano está
-`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`. Os snapshots legados foram
-preservados; a prova VMware continua scoped à reconstrução identificada e o
-build portátil continua atribuído à candidata ancestral documentada. Tag e
-release não foram aprovadas.
+O run remoto `33863522514` passou integralmente em Linux (`test`) e Windows
+(`test-windows`). C12 e C13 estão `PASS` no escopo comprovado; a prova VMware
+continua scoped à reconstrução identificada e o empacotamento portátil mantém
+a limitação de proveniência documentada. Snapshots legados foram preservados.
+Tag e release não foram aprovadas.
 
 ## Snapshot histórico — pós-merge técnico da Etapa 7 / PR #166
 
@@ -126,38 +121,32 @@ versões e evidências indicados em `docs/evidence`.
 ## Validação do estado atual
 
 O estado vivo desta revisão é uma candidata técnica pré-merge com gates locais
-concluídos, não uma release. A árvore limpa foi derivada exatamente do commit
-`42dcb63d032d9e973664850222241ae9e9666bb5`, na branch
-`fix/legacy-27-functional-regressions`:
+e CI remoto concluídos no escopo comprovado, não uma release. O produto foi
+validado no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; a documentação da
+candidata foi publicada no HEAD `ac96825fa36edf686a173f7fad9e51d9ff41705d`,
+na branch `Ailton/legacy26-closure-audit`, PR `#168`, sem merge:
 
-- runner Windows isolado: `189/189` arquivos, `1919` testes, `0` falhas,
-  `0` erros e `2` skips condicionais; política de cobertura `PASS`;
-- cobertura: `23887/25798` linhas (92,59%) e `6664/7838` branches
-  (85,02%);
-- compileall, Flake8, Black, isort, mypy, Bandit, pip-audit e Stage 4B.5:
-  `PASS`; empacotamento: `SUCCESS`, `11` smoke checks e `314` arquivos;
-- runner histórico preservado: `196` testes, `26` falhas, retorno `1`;
-  reconciliação formal com `11` assinaturas divergentes, `12` ausências e
-  `42` substitutos aprovados, sem editar snapshots;
-- o CI inicial da PR `#166` foi executado no run `33758279765`: o job Linux
-  falhou nos três testes do contrato formal por comparar o hash bruto CRLF do
-  artefato histórico com o checkout LF; o job Windows passou. A causa foi
-  corrigida no commit `78e47d7` e formatada em `42dcb63`; o rerun remoto ainda
-  depende do push desta correção;
-- baseline Git-blob: `PASS` com `3206 files`; evidence integrity: `PASS` com
-  `128 manifests`;
-- symlink no host atual: `2 skipped` por `WinError 1314`; a prova VMware
-  registrada continua scoped ao ZIP/patch identificado e não ao SHA atual;
-- ZIP final: `124181836` bytes, SHA-256
-  `8deb27102ffec728e153c0595f2d66bc654e1b608a95ddac5c9a4ed6fd176c8a`.
+- gates locais completos no produto: suíte `1922 passed, 2 skipped`, runner
+  Windows `190/190` arquivos e `1924` testes, cobertura `92,67%` de linhas e
+  `85,15%` de branches; política, estática, segurança, Stage 4B.5, Stage 9,
+  runner formal e integridade: `PASS`;
+- empacotamento: `SUCCESS`, `11` smoke checks, ZIP de `314` arquivos,
+  `124214125` bytes, SHA-256
+  `2e9df7157aa55411fabdd2336df30f3697a573c41748f18d972ab41dc6c345fd`;
+- runner histórico preservado: retorno `1`, `15` exatos, `11` assinaturas
+  divergentes e `12` ausências; `42` testes substitutos passaram sem editar
+  snapshots;
+- VMware: validação dos symlinks ficou scoped ao ZIP/patch identificado; no
+  host atual, os dois testes dependentes de privilégio continuam `skip` por
+  `WinError 1314`;
+- CI remoto `33863522514`: Linux `test` e Windows `test-windows`, `PASS`.
 
 O relatório final está em
-`docs/evidence/ETAPA_7_WINDOWS_RUNNER_SHA_EFETIVO_2026-09-03.md` e o resumo
-hashado em `docs/evidence/artifacts/windows-runner-effective-sha-2026-09-03/`.
-O registro da falha remota e da correção está em
-`docs/evidence/ETAPA_7_CI_CORRECAO_HASH_CROSS_PLATFORM_2026-09-03.md`.
-O rerun remoto somente poderá ser avaliado após o push técnico; merge, tag,
-release e aprovação global continuam bloqueados.
+`docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md`, com a atualização
+pós-CI remoto e os artefatos hashados em
+`docs/evidence/artifacts/pen-tool-revalidation-20260904-6ede/`. O plano está
+`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO` para C12/C13; merge, tag e release
+continuam sem autorização.
 
 Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
 `docs/evidence`; o README não substitui os logs nem reclassifica testes não

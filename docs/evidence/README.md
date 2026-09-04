@@ -570,8 +570,10 @@ A validação visual humana foi repetida e confirmada no SHA de produto
 `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o pacote correspondente
 `artifacts/pen-tool-revalidation-20260904-6ede/` registra `12/12` arquivos
 íntegros. A C12 local está `PASS` no escopo comprovado; os gates locais
-passaram. C13 permanece `PENDING_REMOTE_CI` até push, PR sem merge e análise
-dos jobs remotos; históricos não foram alterados.
+passaram. O CI remoto da PR `#168`, run `33863522514`, passou nos jobs Linux
+(`test`) e Windows (`test-windows`) sobre o HEAD `ac96825…`; C13 está `PASS`
+no escopo comprovado. Não houve merge, tag ou release; históricos não foram
+alterados.
 
 ## Gates locais finais — candidata `6ede2f6` — 04/09/2026
 
@@ -579,4 +581,7 @@ dos jobs remotos; históricos não foram alterados.
 produto `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`: suíte completa,
 runner Windows com cobertura, política de cobertura, estática, segurança,
 runner legado formal, Stage 4B.5, Stage 9, empacotamento e integridade.
-C12 está `PASS` no escopo local comprovado; C13 permanece
+C12 e C13 estão `PASS` no escopo comprovado: C12 pela revisão visual humana
+e pelos gates locais no SHA de produto `6ede2f6…`, e C13 pelo run remoto
+`33863522514` da PR `#168` no HEAD `ac96825…`. Não houve merge, tag ou release;
+essas operações permanecem sem autorização.

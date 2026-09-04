@@ -25,18 +25,15 @@
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
-### Verificação viva — encerramento final do plano LEGACY-26 — 03/09/2026
+### Verificação viva — candidata pré-merge LEGACY-26 — 04/09/2026
 
-No merge `bcaf5b079881800899d121b071108fe404fa48da` da PR `#167`, o CI
-pós-merge `33800311976` passou nos jobs Linux `100797952263` e Windows
-`100797952611`. O Windows aceitou `189/189` arquivos e `1919` testes, sem
-falhas, erros ou skips. B-04 está resolvido no escopo comprovado; a auditoria
-dos critérios da seção 9 está registrada em
-`docs/evidence/ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md`, com C01–C13
-como `PASS` após a revisão humana C12. O plano global está
-`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO`; a prova VMware permanece
-`PASS_SCOPED` e o empacotamento portátil mantém a limitação ancestral
-documentada. Tag e release continuam sem aprovação.
+Na candidata da PR `#168`, o produto foi validado no SHA `6ede2f6…` e a
+documentação no HEAD `ac96825…`, sem merge. O run remoto `33863522514` passou
+nos jobs Linux e Windows; C01–C13 estão `PASS` no escopo comprovado. B-04 está
+resolvido, os snapshots do runner legado foram preservados e a prova VMware
+permanece `PASS_SCOPED` à reconstrução ZIP/patch identificada. O empacotamento
+portátil mantém a limitação de proveniência documentada. Tag e release
+continuam sem aprovação.
 
 ### Verificação histórica pós-merge — PR #166 — 03/09/2026
 

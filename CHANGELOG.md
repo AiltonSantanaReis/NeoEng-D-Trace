@@ -1,3 +1,13 @@
+## 2026-09-04 — validação remota da candidata LEGACY-26
+
+- registra o CI remoto da PR `#168`, run `33863522514`, sobre o HEAD
+  documental `ac96825fa36edf686a173f7fad9e51d9ff41705d`;
+- confirma os jobs Linux (`test`) e Windows (`test-windows`) como `PASS`, com
+  todos os gates obrigatórios verdes;
+- confirma C12 e C13 como `PASS` no escopo comprovado, preservando os
+  snapshots históricos e a limitação de proveniência do teste VMware;
+- mantém a candidata sem merge e não autoriza tag ou release.
+
 ## 2026-09-03 — encerramento final do plano das 26 falhas após C12
 
 - registra a confirmação humana final C12 no SHA

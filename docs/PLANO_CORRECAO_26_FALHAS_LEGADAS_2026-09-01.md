@@ -4,14 +4,15 @@
 **Etapa:** Reconciliação técnica pós-auditoria — 26 falhas legadas restantes
 **Identificador operacional:** `P2D-COMP-01/LEGACY-26-RECON`
 **Data de abertura:** 01/09/2026 (America/Sao_Paulo)
-**Status:** `IN_PROGRESS / PENDING_REMOTE_CI — C12 local PASS no SHA 6ede2f6; C13 remoto pendente`
-**Última atualização:** 04/09/2026 — C12 local revalidada no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; gates locais e empacotamento passaram; CI remoto pendente
+**Status:** `APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO — C12/C13 PASS; merge/tag/release pendentes`
+**Última atualização:** 04/09/2026 — PR `#168`/run `33863522514` passou em Linux e Windows no HEAD `ac96825fa36edf686a173f7fad9e51d9ff41705d`; C12/C13 PASS no escopo comprovado
 **HEAD de validação local/empacotamento (snapshot histórico):** `febc85471e5ced519f47626665f5d995e7cf60a9`
 **HEAD publicado e validado pelo CI remoto (snapshot histórico):** `f61ba6108f1c13ffe2c3d9b6b03aca132f3e4fe9`
 **HEAD integrado e auditado pós-merge:** `bcaf5b079881800899d121b071108fe404fa48da`
 **Aceite do proprietário:** recebido nesta conversa em 01/09/2026, incluindo as recomendações para os 26 casos
 **Branch de trabalho:** `Ailton/legacy26-closure-audit`
 **SHA da candidata rastreável de produto:** `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`
+**HEAD da candidata publicada e da PR `#168`:** `ac96825fa36edf686a173f7fad9e51d9ff41705d`
 **Base de reprodução:** `7f3799c1b29835f6db5ab6d35c0cab5deda5765b`
 **Snapshot histórico de origem:** `cf749564ab5d961772d66dc363d0e990cebf8da3`
 **Documento de diagnóstico:** `docs/AUDITORIA_27_FALHAS_TECNICAS_2026-09-01.md`
@@ -1257,6 +1258,26 @@ arquivos íntegros.
 
 A subetapa visual e a C12 local estão `PASS` no SHA `6ede2f6…`; os gates
 locais completos e o empacotamento atual estão consolidados em
-`docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md`. C13 permanece
-`PENDING_REMOTE_CI` até push, PR sem merge e análise dos jobs remotos. Merge,
-tag e release continuam bloqueados.
+`docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md`. O CI remoto da PR
+`#168`, no run `33863522514` e no HEAD publicado `ac96825…`, passou nos jobs
+Linux (`test`, `3m23s`) e Windows (`test-windows`, `11m24s`). C13 está
+`PASS` no escopo de CI remoto comprovado. Merge, tag e release continuam sem
+autorização.
+
+## 11.7 Aprovação remota da candidata — 04/09/2026
+
+A candidata foi publicada na branch `Ailton/legacy26-closure-audit` pelo
+commit `ac96825fa36edf686a173f7fad9e51d9ff41705d`, sem merge. A PR `#168`
+tem base `main`, e o run remoto `33863522514` foi executado sobre esse HEAD.
+
+| Job remoto | Resultado | Duração observada |
+| --- | --- | --- |
+| Linux — `test` (`100993095663`) | `PASS` | `3m23s` |
+| Windows — `test-windows` (`100993095571`) | `PASS` | `11m24s` |
+
+Todos os passos obrigatórios dos dois jobs passaram, incluindo baseline,
+integridade de evidências, suíte, cobertura, análise estática, segurança,
+Stage 4B.5, runner legado formal e verificação de árvore-fonte. Assim, C13
+fica formalmente `PASS` no escopo da PR/CI comprovado. Esta decisão não
+autoriza merge, tag ou release; essas operações permanecem pendentes de
+autorização explícita e fora do escopo desta sequência.

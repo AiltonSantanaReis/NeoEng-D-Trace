@@ -43,3 +43,14 @@ incluindo empacotamento atual, estão consolidados em
 SHA de produto. A C12 local está `PASS`; C13 permanece `PENDING_REMOTE_CI`
 até o push, a PR sem merge e a análise dos jobs remotos. Esta evidência não
 autoriza merge, tag ou release.
+
+## Atualização controlada após o CI remoto — 04/09/2026
+
+A pendência `PENDING_REMOTE_CI` registrada no fechamento acima foi resolvida
+pela validação da PR `#168`, run `33863522514`, sobre o HEAD documental
+`ac96825fa36edf686a173f7fad9e51d9ff41705d`. Os jobs Linux (`test`) e Windows
+(`test-windows`) passaram integralmente. Portanto, C13 está `PASS` no escopo
+remoto comprovado e C12 permanece `PASS` no SHA de produto `6ede2f6…`.
+
+A atualização não altera as seis capturas, seus hashes ou a confirmação
+humana; não houve merge, tag ou release.

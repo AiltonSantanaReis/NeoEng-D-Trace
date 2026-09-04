@@ -47,6 +47,14 @@ O Linux mantém o executor único atual. O runner legado continua sendo chamado
 separadamente pelo gate formal e os snapshots `quality/legacy_tests/manifest.json`
 e `quality/legacy_tests/reconciliation.json` não são tocados.
 
+
+## Atualização de verificação — 04/09/2026
+
+O CI remoto da PR `#168`, run `33863522514`, confirmou os jobs Linux e
+Windows sobre o HEAD documental `ac96825fa36edf686a173f7fad9e51d9ff41705d`.
+Todos os passos do runner Windows, inclusive os shards de cobertura e a
+política de cobertura, passaram. A decisão permanece `CANDIDATE ONLY`: a
+confirmação remota não autoriza merge, tag ou release.
 ## Comparação e impacto
 
 Antes, o job Windows fazia uma única chamada `pytest` para a suíte inteira e
