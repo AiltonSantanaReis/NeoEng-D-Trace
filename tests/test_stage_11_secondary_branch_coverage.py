@@ -630,7 +630,8 @@ def test_polygon_edit_vertex_guards_deletion_and_history(qt_app, monkeypatch):
     monkeypatch.setattr("src.tools.polygon_edit_tool.QMessageBox.critical", critical)
 
     tool.start_adding_new()
-    information.assert_called_once()
+    assert "P2D05-OPERATION" in tool._last_error
+    assert "Verify the selected item and document state" in tool._last_error
     tool.selected_polygon_id = "A"
     tool.start_adding_new()
     assert tool.adding_new is True
@@ -652,7 +653,8 @@ def test_polygon_edit_vertex_guards_deletion_and_history(qt_app, monkeypatch):
     tool.selected_polygon_ids = {"A", "missing"}
     tool.delete_selected_polygon()
     assert "A" in scene.objects
-    warnings.assert_called()
+    assert "P2D05-REFERENCE" in tool._last_error
+    assert "No change was applied" in tool._last_error
     tool.selected_polygon_ids = {"A"}
     tool.delete_selected_polygon()
     assert "A" not in scene.objects

@@ -779,7 +779,9 @@ def test_pen_invalid_handle_preview_is_visual_only_and_release_rejects(monkeypat
     assert scene.objects[object_id].__dict__ == old
     assert tool._nodes[0].handle_out == invalid_handle
     assert tool._active_handle_edit is not None
-    assert tool._last_error == "Invalid sampled Bézier polygon"
+    assert "P2D05-PREVIEW" in tool._last_error
+    assert "The authored document was not changed" in tool._last_error
+    assert "Invalid sampled Bézier polygon" in tool._last_error
 
     tool.on_mouse_release(event, invalid_handle)
 

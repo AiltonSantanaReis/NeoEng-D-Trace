@@ -3,7 +3,10 @@ from typing import List, Optional, Tuple
 
 from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
-from PySide6.QtWidgets import QMenu, QMessageBox
+from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
+    QMenu,
+    QMessageBox,
+)
 
 from src.core.commands import (
     CommandResult,
@@ -29,6 +32,7 @@ class PolygonEditTool(BaseTool):
         self._vertex_transaction: Optional[PolygonGestureTransaction] = None
         self._vertex_origin_index: Optional[int] = None
         self._vertex_preview_position: Optional[Tuple[int, int]] = None
+        self._last_error = ""
 
     def set_mode(self, mode: str):
         """Set the current tool mode."""
@@ -42,16 +46,18 @@ class PolygonEditTool(BaseTool):
         operation: str,
     ) -> None:
         if result.status is CommandStatus.REJECTED:
-            QMessageBox.warning(
-                self.canvas_view,
-                f"{operation} Rejected",
-                result.message or "The vertex edit was rejected.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The vertex edit was rejected."),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
         elif result.status is CommandStatus.FAILED:
-            QMessageBox.critical(
-                self.canvas_view,
-                f"{operation} Failed",
-                result.message or "The vertex edit failed.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The vertex edit failed."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
 
     def _execute_polygon_update(
@@ -61,12 +67,14 @@ class PolygonEditTool(BaseTool):
         new_polygon: List[Tuple[int, int]],
         operation: str,
     ) -> Optional[CommandResult]:
-        manager = getattr(self.canvas_view.model, "cmd", None)
+        model = getattr(self.canvas_view, "model", None)
+        manager = getattr(model, "cmd", None)
         if manager is None:
-            QMessageBox.critical(
-                self.canvas_view,
-                f"{operation} Unavailable",
-                "Undo/Redo command history is unavailable.",
+            self._present_p2d05_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return None
 
@@ -77,19 +85,21 @@ class PolygonEditTool(BaseTool):
                     old_polygon,
                     new_polygon,
                 ),
-                self.canvas_view.model,
+                model,
             )
         except Exception as exc:
-            QMessageBox.critical(
-                self.canvas_view,
-                f"{operation} Failed",
-                str(exc),
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return None
 
         self._report_vertex_result(result, operation)
         if result.changed:
             self.canvas_view.update()
+            self._last_error = ""
         return result
 
     @staticmethod
@@ -128,42 +138,54 @@ class PolygonEditTool(BaseTool):
         object_id = self.selected_polygon_id
         vertex_index = self.selected_vertex
         if object_id is None or vertex_index is None:
-            return False
-
-        manager = getattr(self.canvas_view.model, "cmd", None)
-        if manager is None:
-            QMessageBox.critical(
-                self.canvas_view,
-                "Vertex Movement Unavailable",
-                "Undo/Redo command history is unavailable.",
+            self._present_p2d05_error(
+                RuntimeError("Select a vertex before moving it."),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return False
 
-        obj = self.canvas_view.model.objects.get(object_id)
+        model = getattr(self.canvas_view, "model", None)
+        manager = getattr(model, "cmd", None)
+        if manager is None:
+            self._present_p2d05_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
+            )
+            return False
+
+        obj = model.objects.get(object_id)
         if (
             obj is None
             or not obj.polygon
+            or not isinstance(vertex_index, int)
+            or isinstance(vertex_index, bool)
             or vertex_index < 0
             or vertex_index >= len(obj.polygon)
         ):
-            QMessageBox.warning(
-                self.canvas_view,
-                "Vertex Movement Rejected",
-                "The selected vertex is no longer available.",
+            self._present_p2d05_error(
+                KeyError("selected vertex"),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return False
 
         try:
             self._vertex_transaction = PolygonGestureTransaction(
-                self.canvas_view.model,
+                model,
                 object_id,
             )
         except Exception as exc:
             self._vertex_transaction = None
-            QMessageBox.critical(
-                self.canvas_view,
-                "Vertex Movement Failed",
-                str(exc),
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return False
 
@@ -222,34 +244,40 @@ class PolygonEditTool(BaseTool):
         origin = transaction.origin_polygon
         if vertex_index < 0 or vertex_index >= len(origin):
             self._cancel_vertex_gesture()
-            QMessageBox.warning(
-                self.canvas_view,
-                "Vertex Movement Rejected",
-                "The selected vertex is no longer available.",
+            self._present_p2d05_error(
+                KeyError("selected vertex"),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return
 
-        snapper = getattr(self.canvas_view, "snap_vertex_position", None)
-        if callable(snapper):
-            target = tuple(snapper(position))
-        else:
-            target = (int(position[0]), int(position[1]))
-        candidate = list(origin)
-        candidate[vertex_index] = target
-
         try:
+            snapper = getattr(self.canvas_view, "snap_vertex_position", None)
+            if callable(snapper):
+                target = tuple(snapper(position))
+            else:
+                target = (int(position[0]), int(position[1]))
+            candidate = list(origin)
+            candidate[vertex_index] = target
             preview = transaction.preview(candidate)
         except Exception as exc:
             try:
                 if transaction.active:
                     transaction.cancel()
-            except Exception:
-                pass
+            except Exception as cleanup_exc:
+                self._present_p2d05_error(
+                    cleanup_exc,
+                    operation="edit",
+                    severity="critical",
+                    channel="modal",
+                )
             self._reset_vertex_gesture_state()
-            QMessageBox.critical(
-                self.canvas_view,
-                "Vertex Movement Failed",
-                str(exc),
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             self.canvas_view.update()
             return
@@ -271,18 +299,29 @@ class PolygonEditTool(BaseTool):
 
         try:
             if transaction is not None and transaction.active:
-                result = transaction.commit(
-                    getattr(self.canvas_view.model, "cmd", None)
-                )
-                self._report_vertex_result(
-                    result,
-                    "Vertex Movement",
-                )
-                if result.changed and object_id is not None:
-                    self.selected_vertex = self._find_current_vertex_index(
-                        object_id,
-                        target,
+                try:
+                    result = transaction.commit(
+                        getattr(self.canvas_view.model, "cmd", None)
                     )
+                except Exception as exc:
+                    self._present_p2d05_error(
+                        exc,
+                        operation="edit",
+                        severity="critical",
+                        channel="modal",
+                    )
+                else:
+                    self._report_vertex_result(
+                        result,
+                        "Vertex Movement",
+                    )
+                    if result.changed and object_id is not None:
+                        self.selected_vertex = self._find_current_vertex_index(
+                            object_id,
+                            target,
+                        )
+                    if result.changed:
+                        self._last_error = ""
         finally:
             self._reset_vertex_gesture_state()
             self.canvas_view.update()
@@ -295,6 +334,13 @@ class PolygonEditTool(BaseTool):
         try:
             if transaction is not None and transaction.active:
                 restored = transaction.cancel()
+        except Exception as exc:
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
+            )
         finally:
             self._reset_vertex_gesture_state()
             self.canvas_view.update()
@@ -556,26 +602,49 @@ class PolygonEditTool(BaseTool):
         if self.selected_polygon_id:
             self.adding_new = True
         else:
-            QMessageBox.information(
-                self.canvas_view,
-                "Info",
-                "Select a polygon first to add vertices.",
+            self._present_p2d05_error(
+                RuntimeError("Select a polygon before adding vertices."),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
 
     def delete_selected_vertex(self):
         object_id = self.selected_polygon_id
         vertex_index = self.selected_vertex
         if object_id is None or vertex_index is None:
+            self._present_p2d05_error(
+                RuntimeError("Select a vertex before deleting it."),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             return
 
-        obj = self.canvas_view.model.objects.get(object_id)
+        model = getattr(self.canvas_view, "model", None)
+        obj = model.objects.get(object_id) if model is not None else None
         if (
             obj is None
             or not obj.polygon
-            or len(obj.polygon) <= 3
+            or not isinstance(vertex_index, int)
+            or isinstance(vertex_index, bool)
             or vertex_index < 0
             or vertex_index >= len(obj.polygon)
         ):
+            self._present_p2d05_error(
+                KeyError("selected vertex"),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
+            return
+        if len(obj.polygon) <= 3:
+            self._present_p2d05_error(
+                ValueError("A polygon must keep at least three vertices."),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             return
 
         old_polygon = [tuple(point) for point in obj.polygon]
@@ -594,15 +663,37 @@ class PolygonEditTool(BaseTool):
 
     def add_vertex_at_pos(self, pos: Tuple[int, int]):
         object_id = self.selected_polygon_id
+        model = getattr(self.canvas_view, "model", None)
         if object_id is None:
+            self._present_p2d05_error(
+                RuntimeError("Select a polygon before adding a vertex."),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             return
 
-        obj = self.canvas_view.model.objects.get(object_id)
+        obj = model.objects.get(object_id) if model is not None else None
         if obj is None or not obj.polygon:
+            self._present_p2d05_error(
+                KeyError("selected polygon"),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             return
 
         old_polygon = [tuple(point) for point in obj.polygon]
-        target = (int(pos[0]), int(pos[1]))
+        try:
+            target = (int(pos[0]), int(pos[1]))
+        except (OverflowError, TypeError, ValueError) as exc:
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
+            return
 
         min_dist = float("inf")
         insert_idx = len(old_polygon)
@@ -639,35 +730,35 @@ class PolygonEditTool(BaseTool):
         object_ids: List[str],
         operation: str,
     ) -> Optional[CommandResult]:
-        manager = getattr(self.canvas_view.model, "cmd", None)
+        model = getattr(self.canvas_view, "model", None)
+        manager = getattr(model, "cmd", None)
         if manager is None:
-            QMessageBox.critical(
-                self.canvas_view,
-                f"{operation} Unavailable",
-                "Undo/Redo command history is unavailable.",
+            self._present_p2d05_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return None
 
         requested = set(object_ids)
-        missing = requested.difference(self.canvas_view.model.objects)
+        missing = requested.difference(model.objects)
         if missing:
-            QMessageBox.warning(
-                self.canvas_view,
-                f"{operation} Rejected",
-                "The selection changed before deletion; " "no objects were removed.",
+            self._present_p2d05_error(
+                KeyError("selected object"),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return None
 
-        targets = [
-            object_id
-            for object_id in self.canvas_view.model.objects
-            if object_id in requested
-        ]
+        targets = [object_id for object_id in model.objects if object_id in requested]
         if not targets:
-            QMessageBox.warning(
-                self.canvas_view,
-                f"{operation} Rejected",
-                "No selected object is available for deletion.",
+            self._present_p2d05_error(
+                KeyError("selected object"),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return None
 
@@ -682,28 +773,33 @@ class PolygonEditTool(BaseTool):
         try:
             result = manager.execute(
                 command,
-                self.canvas_view.model,
+                model,
             )
         except Exception as exc:
-            QMessageBox.critical(
-                self.canvas_view,
-                f"{operation} Failed",
-                str(exc),
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return None
 
         if result.status is CommandStatus.REJECTED:
-            QMessageBox.warning(
-                self.canvas_view,
-                f"{operation} Rejected",
-                result.message or "The deletion was rejected.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The deletion was rejected."),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
         elif result.status is CommandStatus.FAILED:
-            QMessageBox.critical(
-                self.canvas_view,
-                f"{operation} Failed",
-                result.message or "The deletion failed.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The deletion failed."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
+        elif result.changed:
+            self._last_error = ""
         return result
 
     def delete_selected_polygon(self):
@@ -714,6 +810,12 @@ class PolygonEditTool(BaseTool):
             object_ids = [self.selected_polygon_id]
             operation = "Delete Polygon"
         else:
+            self._present_p2d05_error(
+                RuntimeError("Select a polygon before deleting it."),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             return
 
         result = self._execute_object_deletion(
@@ -724,6 +826,7 @@ class PolygonEditTool(BaseTool):
             self.selected_polygon_ids.clear()
             self.selected_polygon_id = None
             self.selected_vertex = None
+            self._last_error = ""
             self.canvas_view.update()
 
     def select_all_vertices(self):
