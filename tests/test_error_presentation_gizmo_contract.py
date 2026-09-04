@@ -57,7 +57,8 @@ def test_rejected_gizmo_result_is_persistent_actionable_status_without_mutation(
     window, canvas, scene = _window_with_scene(qt_app)
     before = list(scene.objects["object"].polygon)
     raw = (
-        r"geometry changed at C:\Users\atnco\private\scene.ndtscene " "token=top-secret"
+        r"geometry changed at C:\Project\private\private\scene.ndtscene "
+        "token=top-secret"
     )
 
     presentation = canvas._report_gizmo_result(
@@ -71,7 +72,7 @@ def test_rejected_gizmo_result_is_persistent_actionable_status_without_mutation(
     assert "Verify the selected item and document state" in presentation.message
     assert "No change was applied" in presentation.message
     assert window.statusBar().currentMessage() == presentation.message
-    assert r"C:\Users\atnco" not in presentation.message
+    assert r"C:\Project\private" not in presentation.message
     assert "top-secret" not in presentation.message
     assert scene.objects["object"].polygon == before
     assert scene.cmd.undo_count == 0
@@ -85,7 +86,8 @@ def test_failed_gizmo_result_uses_safe_modal_with_accessible_details(
     window, canvas, scene = _window_with_scene(qt_app)
     boxes = _capture_modals(monkeypatch)
     raw = (
-        r"transform failed at C:\Users\atnco\private\scene.ndtscene " "password=hunter2"
+        r"transform failed at C:\Project\private\private\scene.ndtscene "
+        "password=hunter2"
     )
 
     presentation = canvas._report_gizmo_result(
@@ -101,7 +103,7 @@ def test_failed_gizmo_result_uses_safe_modal_with_accessible_details(
     assert box.accessibleName() == "P2D05-OPERATION"
     assert box.text() == presentation.message
     assert box.detailedText() == presentation.detailed_text
-    assert r"C:\Users\atnco" not in box.text()
+    assert r"C:\Project\private" not in box.text()
     assert "hunter2" not in box.text()
     assert "hunter2" not in box.detailedText()
     assert scene.cmd.undo_count == 0
@@ -142,7 +144,7 @@ def test_preview_failure_rolls_back_and_never_exposes_raw_detail(
 
     def fail_preview(**_kwargs):
         raise RuntimeError(
-            r"preview failed at C:\Users\atnco\private\scene.ndtscene "
+            r"preview failed at C:\Project\private\private\scene.ndtscene "
             "token=top-secret"
         )
 
@@ -151,7 +153,7 @@ def test_preview_failure_rolls_back_and_never_exposes_raw_detail(
 
     assert len(boxes) == 1
     assert "P2D05-OPERATION" in boxes[0].text()
-    assert r"C:\Users\atnco" not in boxes[0].text()
+    assert r"C:\Project\private" not in boxes[0].text()
     assert "top-secret" not in boxes[0].text()
     assert scene.objects["object"].polygon == before
     assert scene.cmd.undo_count == 0
@@ -176,7 +178,7 @@ def test_commit_failure_rolls_back_preview_without_history(
 
     def fail_commit(_manager):
         raise RuntimeError(
-            r"commit failed at C:\Users\atnco\private\scene.ndtscene "
+            r"commit failed at C:\Project\private\private\scene.ndtscene "
             "secret=top-secret"
         )
 
@@ -185,7 +187,7 @@ def test_commit_failure_rolls_back_preview_without_history(
 
     assert len(boxes) == 1
     assert "P2D05-OPERATION" in boxes[0].text()
-    assert r"C:\Users\atnco" not in boxes[0].text()
+    assert r"C:\Project\private" not in boxes[0].text()
     assert "top-secret" not in boxes[0].text()
     assert scene.objects["object"].polygon == before
     assert scene.cmd.undo_count == 0
@@ -227,7 +229,7 @@ def test_vertex_gizmo_start_exception_uses_same_safe_boundary(
         selected_vertex=0,
         begin_vertex_gizmo_gesture=lambda: (_ for _ in ()).throw(
             RuntimeError(
-                r"vertex start failed at C:\Users\atnco\private\scene.ndtscene "
+                r"vertex start failed at C:\Project\private\private\scene.ndtscene "
                 "token=top-secret"
             )
         ),
@@ -237,7 +239,7 @@ def test_vertex_gizmo_start_exception_uses_same_safe_boundary(
 
     assert len(boxes) == 1
     assert "P2D05-OPERATION" in boxes[0].text()
-    assert r"C:\Users\atnco" not in boxes[0].text()
+    assert r"C:\Project\private" not in boxes[0].text()
     assert "top-secret" not in boxes[0].text()
     assert scene.cmd.undo_count == 0
     boxes[0].deleteLater()
@@ -253,7 +255,7 @@ def test_gizmo_constructor_failure_uses_safe_modal(
 
     def fail_constructor(*_args, **_kwargs):
         raise RuntimeError(
-            r"transaction failed at C:\Users\atnco\private\scene.ndtscene "
+            r"transaction failed at C:\Project\private\private\scene.ndtscene "
             "token=top-secret"
         )
 
@@ -265,7 +267,7 @@ def test_gizmo_constructor_failure_uses_safe_modal(
 
     assert len(boxes) == 1
     assert "P2D05-OPERATION" in boxes[0].text()
-    assert r"C:\Users\atnco" not in boxes[0].text()
+    assert r"C:\Project\private" not in boxes[0].text()
     assert "top-secret" not in boxes[0].text()
     assert canvas._gizmo_transaction is None
     assert scene.cmd.undo_count == 0
@@ -285,13 +287,13 @@ def test_preview_failure_with_rollback_failure_still_surfaces_safe_error(
 
     def fail_preview(**_kwargs):
         raise RuntimeError(
-            r"preview failed at C:\Users\atnco\private\scene.ndtscene "
+            r"preview failed at C:\Project\private\private\scene.ndtscene "
             "token=top-secret"
         )
 
     def fail_rollback():
         raise RuntimeError(
-            r"rollback failed at C:\Users\atnco\private\scene.ndtscene "
+            r"rollback failed at C:\Project\private\private\scene.ndtscene "
             "secret=top-secret"
         )
 
@@ -301,7 +303,7 @@ def test_preview_failure_with_rollback_failure_still_surfaces_safe_error(
 
     assert len(boxes) == 1
     assert "P2D05-OPERATION" in boxes[0].text()
-    assert r"C:\Users\atnco" not in boxes[0].text()
+    assert r"C:\Project\private" not in boxes[0].text()
     assert "top-secret" not in boxes[0].text()
     assert scene.cmd.undo_count == 0
     assert canvas._gizmo_transaction is None
@@ -321,13 +323,13 @@ def test_commit_failure_with_rollback_failure_still_surfaces_safe_error(
 
     def fail_commit(_manager):
         raise RuntimeError(
-            r"commit failed at C:\Users\atnco\private\scene.ndtscene "
+            r"commit failed at C:\Project\private\private\scene.ndtscene "
             "token=top-secret"
         )
 
     def fail_rollback():
         raise RuntimeError(
-            r"rollback failed at C:\Users\atnco\private\scene.ndtscene "
+            r"rollback failed at C:\Project\private\private\scene.ndtscene "
             "secret=top-secret"
         )
 
@@ -337,7 +339,7 @@ def test_commit_failure_with_rollback_failure_still_surfaces_safe_error(
 
     assert len(boxes) == 1
     assert "P2D05-OPERATION" in boxes[0].text()
-    assert r"C:\Users\atnco" not in boxes[0].text()
+    assert r"C:\Project\private" not in boxes[0].text()
     assert "top-secret" not in boxes[0].text()
     assert scene.cmd.undo_count == 0
     assert canvas._gizmo_transaction is None

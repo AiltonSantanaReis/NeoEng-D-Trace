@@ -49,7 +49,9 @@ def qt_app():
 
 
 def test_build_p2d05_presentation_localizes_action_and_redacts_detail():
-    exc = OSError(r"write failed at C:\Users\atnco\private\scene.json token=top-secret")
+    exc = OSError(
+        r"write failed at C:\Project\private\private\scene.json token=top-secret"
+    )
 
     presentation = build_p2d05_presentation(
         exc,
@@ -73,7 +75,7 @@ def test_build_p2d05_presentation_localizes_action_and_redacts_detail():
     assert "Não foi possível salvar o cenário" in presentation.message
     assert "Verifique a permissão de gravação" in presentation.message
     assert "arquivo salvo anteriormente permanece inalterado" in presentation.message
-    assert r"C:\Users\atnco" not in presentation.message
+    assert r"C:\Project\private" not in presentation.message
     assert "top-secret" not in presentation.message
     assert "<path>" in presentation.safe_detail
     assert "top-secret" not in presentation.detailed_text
@@ -89,7 +91,9 @@ def test_modal_uses_real_qt_box_with_safe_details(qt_app, monkeypatch):
         return QMessageBox.StandardButton.Ok
 
     monkeypatch.setattr(QMessageBox, "exec", capture_exec)
-    exc = OSError(r"write failed at C:\Users\atnco\private\scene.json token=top-secret")
+    exc = OSError(
+        r"write failed at C:\Project\private\private\scene.json token=top-secret"
+    )
 
     presentation = show_p2d05_error(
         parent,
@@ -112,8 +116,8 @@ def test_modal_uses_real_qt_box_with_safe_details(qt_app, monkeypatch):
     assert box.accessibleName() == "P2D05-WRITE"
     assert box.text() == presentation.message
     assert box.detailedText() == presentation.detailed_text
-    assert r"C:\Users\atnco" not in box.text()
-    assert r"C:\Users\atnco" not in box.detailedText()
+    assert r"C:\Project\private" not in box.text()
+    assert r"C:\Project\private" not in box.detailedText()
     assert "top-secret" not in box.text()
     assert "top-secret" not in box.detailedText()
 
@@ -125,7 +129,7 @@ def test_modal_uses_real_qt_box_with_safe_details(qt_app, monkeypatch):
 def test_status_channel_is_persistent_and_actionable(qt_app):
     window = _StatusWindow()
     exc = ValueError(
-        r"Invalid sampled geometry at C:\Users\atnco\private\scene.json "
+        r"Invalid sampled geometry at C:\Project\private\private\scene.json "
         "token=top-secret"
     )
 
@@ -146,7 +150,7 @@ def test_status_channel_is_persistent_and_actionable(qt_app):
     assert status_message == presentation.message
     assert "Verify the selected item and document state" in status_message
     assert "No change was applied" in status_message
-    assert r"C:\Users\atnco" not in status_message
+    assert r"C:\Project\private" not in status_message
     assert "top-secret" not in status_message
 
     window.deleteLater()
@@ -187,7 +191,7 @@ def test_pen_rejection_preserves_state_and_redacts_command_detail(monkeypatch):
             status=CommandStatus.REJECTED,
             changed=False,
             message=(
-                r"Invalid sampled geometry at C:\Users\atnco\private\scene.json "
+                r"Invalid sampled geometry at C:\Project\private\private\scene.json "
                 "token=top-secret"
             ),
         )
@@ -203,7 +207,7 @@ def test_pen_rejection_preserves_state_and_redacts_command_detail(monkeypatch):
     assert "P2D05-OPERATION" in tool._last_error
     assert "Verify the selected item and document state" in tool._last_error
     assert "No change was applied" in tool._last_error
-    assert r"C:\Users\atnco" not in tool._last_error
+    assert r"C:\Project\private" not in tool._last_error
     assert "top-secret" not in tool._last_error
 
 
@@ -231,7 +235,7 @@ def test_polygon_selection_and_rejection_are_actionable_without_mutation(monkeyp
             status=CommandStatus.REJECTED,
             changed=False,
             message=(
-                r"geometry rejected at C:\Users\atnco\private\scene.json "
+                r"geometry rejected at C:\Project\private\private\scene.json "
                 "token=top-secret"
             ),
         )
@@ -243,5 +247,5 @@ def test_polygon_selection_and_rejection_are_actionable_without_mutation(monkeyp
     assert scene.cmd.undo_count == before_history
     assert "P2D05-OPERATION" in tool._last_error
     assert "No change was applied" in tool._last_error
-    assert r"C:\Users\atnco" not in tool._last_error
+    assert r"C:\Project\private" not in tool._last_error
     assert "top-secret" not in tool._last_error
