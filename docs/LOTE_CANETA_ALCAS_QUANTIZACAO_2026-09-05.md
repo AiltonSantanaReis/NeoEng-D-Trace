@@ -3,9 +3,28 @@
 ID: PEN-HANDLES-20260905. Estado: IN_PROGRESS / BLOCKED.
 Base: `5b3e6b15cee93ef5c9d1d550745293fb8372b5b9`.
 Branch: `Ailton/pen-handles-quantization-20260905`.
-Commit qualificado localmente: `1068166f3c046e008928d98e68fdb187838c87bc`.
+Commit qualificado: `fd4a67e0d2bf60f07b710c002c0be88eeee94424`.
 
-## Atualização pós-commit — 05/09/2026
+## Atualização pós-correção do modal residual — 05/09/2026
+
+O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424` adicionou somente
+isolamento de `QMessageBox` residual entre testes no harness Qt e atualizou o
+baseline correspondente. A causa imediata observada no CI Linux anterior era
+`QApplication.activeModalWidget()` ainda apontando para um `QMessageBox` no
+primeiro fluxo `[pt]` de rejeição por STATUS. O teste continua verificando a
+ausência de modal durante o próprio fluxo; a proteção não remove modais
+criados pelo teste para obter aprovação.
+
+O runner Windows oficial passou `196/196` arquivos, `2019` testes, `0` falhas,
+`0` erros e `2` skips previstos no SHA. O CI remoto `33990872253` passou nos
+jobs Linux e Windows, incluindo cobertura, integridade, estática, segurança,
+Stage 4B.5 e gate legado. Evidência:
+`docs/evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md`.
+
+O estado permanece `IN_PROGRESS / BLOCKED`: a auditoria nativa de cliques do
+SO no executável continua pendente. O merge, tag e release não foram feitos.
+
+## Snapshot anterior — qualificação pós-commit — 05/09/2026
 
 O commit `1068166f3c046e008928d98e68fdb187838c87bc` foi requalificado em
 árvore limpa. O runner Windows oficial passou `196/196` arquivos, `2019`

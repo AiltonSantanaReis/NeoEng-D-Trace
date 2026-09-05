@@ -1,7 +1,7 @@
 # Índice Documental Ativo Canônico — NeoEng-D-Trace
 
-**Versão:** 2.2
-**Data:** 2026-08-29
+**Versão:** 2.3
+**Data:** 2026-09-05
 **ID:** DOC-INDEX-ACTIVE-CANONICAL-20260829
 **Status:** ativo e prevalente
 
@@ -70,13 +70,13 @@ decisão P2D-05, política e governança; informa README, plano mestre, matriz,
 acompanhamento e evidências. Não substitui snapshots ou requisitos.
 
 Registro ativo adicional: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md,
-ID PEN-HANDLES-20260905, versão 1, IN_PROGRESS / BLOCKED; commit
-`1068166f3c046e008928d98e68fdb187838c87bc` requalificado localmente, sem CI
-remoto ou auditoria nativa. A autorização do proprietário para corrigir alças
-explícitas e quantização não relaxa a validação. Subordinado ao contrato
-global, decisão P2D-05, política e governança; informa README, plano mestre,
-matriz, acompanhamento e evidências. Não substitui snapshots, requisitos ou
-gates dos lotes anteriores.
+ID PEN-HANDLES-20260905, versão 1, IN_PROGRESS / BLOCKED; commit qualificado
+`fd4a67e0d2bf60f07b710c002c0be88eeee94424`; CI remoto `33990872253` passou em
+Linux e Windows, sem auditoria nativa de cliques concluída. A autorização do
+proprietário para corrigir alças explícitas e quantização não relaxa a
+validação. Subordinado ao contrato global, decisão P2D-05, política e
+governança; informa README, plano mestre, matriz, acompanhamento e evidências.
+Não substitui snapshots, requisitos ou gates dos lotes anteriores.
 
 Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md,
 ID EVID-PEN-HANDLES-QUANTIZATION-20260905, estado ATIVO / SNAPSHOT PRÉ-COMMIT;
@@ -87,6 +87,15 @@ Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_20
 ID EVID-PEN-HANDLES-QUANTIZATION-POSTCOMMIT-20260905, estado IN_PROGRESS /
 BLOCKED; qualificação local do commit `1068166f3c046e008928d98e68fdb187838c87bc`,
 recibos, hashes, falhas ambientais reproduzidas e limitações remotas/nativas.
+
+Registro de evidência associado: evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md,
+ID EVID-PEN-HANDLES-MODAL-ISOLATION-20260905, versão 1, IN_PROGRESS / BLOCKED;
+qualificação do commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424`, CI remoto verde,
+recibos locais hashados e auditoria nativa de cliques ainda pendente. Subordinado
+à governança, política de qualidade, lote PEN-HANDLES-20260905 e P2D-05; informa
+README, plano mestre, acompanhamento vivo e índice de evidências. Documento novo
+registrado nesta revisão; o commit de inclusão é o commit documental que o
+incorporar.
 
 ## 3. Documentos superseded
 

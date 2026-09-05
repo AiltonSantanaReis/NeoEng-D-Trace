@@ -1,6 +1,20 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
-## Atualização viva — qualificação pós-commit do lote da Caneta — 05/09/2026
+## Atualização viva — correção do modal residual e CI da Caneta — 05/09/2026
+
+O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424`, na branch
+`Ailton/pen-handles-quantization-20260905`, adicionou isolamento no harness Qt
+para impedir que um `QMessageBox` residual de um caso contaminasse o seguinte.
+O CI remoto `33990872253` passou integralmente em Linux e Windows; a suíte
+Windows oficial local também passou `196/196` arquivos e `2019` testes, sem
+falhas ou erros e com dois skips previstos. Cobertura, política, estática,
+segurança, Stage 4B.5, baseline, evidências e gate legado passaram.
+
+O estado permanece `IN_PROGRESS / BLOCKED`: a auditoria nativa de cliques do
+executável continua pendente. O push foi autorizado e realizado para a PR #171
+em rascunho; merge, tag e release não foram realizados. [Evidência](evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md).
+
+## Snapshot anterior — qualificação pós-commit do lote da Caneta — 05/09/2026
 
 O commit `1068166f3c046e008928d98e68fdb187838c87bc`, na branch
 `Ailton/pen-handles-quantization-20260905`, foi requalificado em árvore limpa.

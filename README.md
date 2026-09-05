@@ -1,13 +1,12 @@
 # NeoEng-D-Trace
 
-> Lote corretivo da Caneta — 05/09/2026: o commit
-> `1068166f3c046e008928d98e68fdb187838c87bc` da branch
-> Ailton/pen-handles-quantization-20260905 foi requalificado em árvore limpa.
-> O runner oficial passou 196/196 arquivos, 2019 testes, 0 falhas, 0 erros e
-> 2 skips previstos; cobertura, estática, segurança, Stage 4B.5, integridade,
-> gate legado e build portátil também passaram. O lote permanece
-> IN_PROGRESS / BLOCKED até CI remoto e auditoria nativa do executável; não há
-> push, merge, tag ou release. Registro:
+> Atualização do lote corretivo da Caneta — 05/09/2026: o commit
+> `fd4a67e0d2bf60f07b710c002c0be88eeee94424` isolou modais Qt residuais entre
+> casos de teste. O runner Windows oficial local passou 196/196 arquivos e
+> 2019 testes; o CI remoto `33990872253` passou integralmente em Linux e
+> Windows. O lote permanece IN_PROGRESS / BLOCKED porque a auditoria nativa
+> de cliques do executável continua pendente. A PR #171 recebeu push para CI;
+> não houve merge, tag ou release. Registro:
 > docs/LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
 
 > **P2D-05 — lote de idioma/status, atualizado em 05/09/2026:** sobre
@@ -25,7 +24,14 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Estado operacional atual — requalificação P2D-05
+## Estado operacional atual — lote PEN-HANDLES-20260905
+
+O SHA `fd4a67e` passou a suíte e os gates CI em Linux e Windows no run
+`33990872253`. O resultado qualifica a correção do isolamento de modal e não
+substitui a auditoria nativa de cliques, que permanece pendente. PR #171 segue
+em rascunho, sem merge, tag ou release.
+
+## Estado operacional relacionado — requalificação P2D-05
 
 Na branch `Ailton/error-presentation-contract-20260904`, o SHA `35727d9`
 passou no CI Linux/Windows `33932398814`; os dois symlinks passaram sem skip

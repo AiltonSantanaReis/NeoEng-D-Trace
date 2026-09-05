@@ -1,6 +1,22 @@
 # P2D-05 — acompanhamento vivo da requalificação
 
-## Revisão corrente — qualificação pós-commit da Caneta — 05/09/2026
+## Revisão corrente — correção do modal residual e CI — 05/09/2026
+
+O lote `PEN-HANDLES-20260905` está no SHA
+`fd4a67e0d2bf60f07b710c002c0be88eeee94424`. A proteção de isolamento foi
+adicionada ao harness para fechar modal Qt residual entre testes e verificar o
+estado limpo antes do caso seguinte. O teste P2D-05 mantém sua asserção de que
+nenhum modal está ativo durante o fluxo; não houve relaxamento de contrato.
+
+O CI remoto `33990872253` passou integralmente em Linux e Windows no mesmo SHA;
+o runner Windows local também passou `196/196` arquivos e `2019` testes.
+Evidência: [isolamento e CI](evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md).
+
+Estado `IN_PROGRESS / BLOCKED`: a auditoria nativa de cliques do SO no
+executável permanece pendente. O push foi feito para a PR #171 somente para
+CI; merge, tag e release continuam bloqueados.
+
+## Snapshot anterior — qualificação pós-commit da Caneta — 05/09/2026
 
 O lote `PEN-HANDLES-20260905` está no commit
 `1068166f3c046e008928d98e68fdb187838c87bc`, em árvore limpa. O runner

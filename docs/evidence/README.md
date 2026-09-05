@@ -1,4 +1,14 @@
-## Lote corretivo da Caneta — qualificação pós-commit — 05/09/2026
+## Revisão corrente — isolamento de modal residual e CI da Caneta — 05/09/2026
+
+O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424` corrigiu o modal residual
+observado no CI Linux, com proteção de isolamento no harness de testes. O CI
+`33990872253` passou em Linux e Windows, incluindo suíte, cobertura,
+integridade, estática, segurança, Stage 4B.5 e gate legado. O lote permanece
+`IN_PROGRESS / BLOCKED` porque a auditoria nativa de cliques do executável
+continua pendente. Consulte
+[`PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md`](PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md).
+
+## Snapshot anterior — qualificação pós-commit — 05/09/2026
 
 O commit `1068166f3c046e008928d98e68fdb187838c87bc` foi requalificado em
 árvore limpa. O runner Windows passou `196/196` arquivos, `2019` testes, zero
