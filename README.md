@@ -1,5 +1,21 @@
 # NeoEng-D-Trace
 
+> Atualização do lote corretivo da Caneta — 05/09/2026: o commit
+> `fd4a67e0d2bf60f07b710c002c0be88eeee94424` isolou modais Qt residuais entre
+> casos de teste. O runner Windows oficial local passou 196/196 arquivos e
+> 2019 testes; o CI remoto `33990872253` passou integralmente em Linux e
+> Windows. O lote permanece IN_PROGRESS / BLOCKED porque a auditoria nativa
+> de cliques do executável continua pendente. A PR #171 recebeu push para CI;
+> não houve merge, tag ou release. Registro:
+> docs/LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
+> **P2D-05 — lote de idioma/status, atualizado em 05/09/2026:** sobre
+> `4b873c3`, ainda em pré-commit. Mensagens legíveis, detalhes seguros e idioma
+> tiveram a rodada local registrada: 1.968 testes passaram, dois symlinks
+> pulados por privilégio; revisão humana, PRECOMMIT e gates limpos pendentes.
+> PR #170 permanece em rascunho, sem merge/tag/release.
+> [Fronteira e acompanhamento do lote](docs/P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
 **Ferramenta desktop local-first para preparação, edição e exportação de assets 2D para jogos.**
 
 O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, criação e correção de máscaras, edição de contornos, polígonos e curvas Bézier, configuração de colisões, preparação de sprites/atlas e integração com engines. O produto não é apresentado como editor de imagens completo, engine de jogos ou modelador 3D.
@@ -8,7 +24,25 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 > **Plataforma oficial:** Windows 11. Linux é utilizado no CI para validação automatizada, mas não é anunciado como plataforma pública suportada.
 > **Operação:** local/offline por padrão; imagens, projetos e assets permanecem no ambiente do usuário.
 
-## Estado operacional atual — candidata integrada da Etapa 7
+## Estado operacional atual — lote PEN-HANDLES-20260905
+
+O SHA `fd4a67e` passou a suíte e os gates CI em Linux e Windows no run
+`33990872253`. O resultado qualifica a correção do isolamento de modal e não
+substitui a auditoria nativa de cliques, que permanece pendente. PR #171 segue
+em rascunho, sem merge, tag ou release.
+
+## Estado operacional relacionado — requalificação P2D-05
+
+Na branch `Ailton/error-presentation-contract-20260904`, o SHA `35727d9`
+passou no CI Linux/Windows `33932398814`; os dois symlinks passaram sem skip
+no Windows. A PR `#170` permanece em rascunho. O proprietário autorizou
+preservação privada e sincronização de `main` na candidata, sem merge da PR.
+A integração documental com `b9557e6` exige requalificação do SHA resultante;
+revisão humana atual, Ready for review, merge, tag e release não estão aprovados.
+Consulte o [acompanhamento vivo](docs/P2D05_REQUALIFICACAO_ATUAL.md) para
+evidências, fronteira de autorização e roteiro de revisão.
+
+## Snapshot histórico — candidata integrada da Etapa 7
 
 A revisão corrente é a integração da PR `#168` em `main`, pelo merge commit
 `9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O produto foi validado no SHA
@@ -118,11 +152,11 @@ As integrações não carregam binários ou dependências baixadas automaticamen
 validação real registrada para Godot e Unity permanece vinculada aos fixtures,
 versões e evidências indicados em `docs/evidence`.
 
-## Validação do estado atual
+## Validação histórica — Etapa 7 / PR #168
 
-O estado vivo desta revisão é uma candidata técnica integrada em `main`, com
+O estado documentado abaixo é a candidata da PR #168 integrada em `main`, com
 gates locais e CI pós-merge concluídos no escopo comprovado, não uma release.
-O produto foi
+Não qualifica o HEAD P2D-05 ou a sincronização da PR #170. O produto foi
 validado no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; a documentação da
 candidata foi publicada no HEAD `ac96825fa36edf686a173f7fad9e51d9ff41705d`,
 na branch-fonte `Ailton/legacy26-closure-audit`, integrada pela PR `#168` no merge `9a25f0be…`:

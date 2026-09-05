@@ -112,7 +112,8 @@ class ToolPalette(QToolBar):
                     "Magnetic lasso (6). Right-click the canvas for modes and presets."
                 ),
                 "pen": (
-                    "Pen tool (5). Click the first anchor to close; "
+                    "Pen tool (5). Click for corners; drag new anchors for curves. "
+                    "Click the first anchor to close; "
                     "double-click to finish open."
                 ),
                 "rect": "Rectangle selection (3)",
@@ -128,7 +129,8 @@ class ToolPalette(QToolBar):
                     "Laço magnético (6). Clique direito no canvas para modos e presets."
                 ),
                 "pen": (
-                    "Ferramenta caneta (5). Clique no primeiro vértice para fechar; "
+                    "Ferramenta caneta (5). Clique para cantos; arraste novos "
+                    "vértices para curvas. Clique no primeiro vértice para fechar; "
                     "clique duas vezes para finalizar aberto."
                 ),
                 "rect": "Seleção retangular (3)",

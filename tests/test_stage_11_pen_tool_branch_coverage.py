@@ -205,7 +205,9 @@ def test_mouse_press_anchor_handle_right_click_and_move_failures(monkeypatch) ->
         lambda *args, **kwargs: (_ for _ in ()).throw(ValueError("bad preview")),
     )
     editing.on_mouse_move(left, (8, -8))
-    assert editing._last_error == "bad preview"
+    assert "P2D05-PREVIEW" in editing._last_error
+    assert "The authored document was not changed" in editing._last_error
+    assert "bad preview" in editing._last_error
 
 
 def test_restore_finish_release_key_and_double_click_branches(monkeypatch) -> None:
@@ -323,7 +325,9 @@ def test_commit_selection_all_result_contracts(monkeypatch) -> None:
         lambda: (_ for _ in ()).throw(ValueError("invalid curve")),
     )
     assert tool.commit_selection() is None
-    assert tool._last_error == "invalid curve"
+    assert "P2D05-OPERATION" in tool._last_error
+    assert "No change was applied" in tool._last_error
+    assert "invalid curve" in tool._last_error
 
     for status, changed, object_id in (
         (CommandStatus.REJECTED, False, None),

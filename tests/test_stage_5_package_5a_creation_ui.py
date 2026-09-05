@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import pytest
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.core.commands import CommandManager
 from src.models.scene import Scene
@@ -91,17 +91,33 @@ def test_active_tool_blocks_creation_without_manager(
     canvas = _canvas(with_manager=False)
     _, commit = _configured_tool(tool_name, canvas)
     critical = []
+    modal_boxes = []
     monkeypatch.setattr(
         "src.tools.base_tool.QMessageBox.critical",
         lambda *args, **kwargs: critical.append(args),
+    )
+
+    def capture_modal(box):
+        modal_boxes.append(box)
+        return QMessageBox.StandardButton.Ok
+
+    monkeypatch.setattr(
+        "src.ui.error_presentation.QMessageBox.exec",
+        capture_modal,
     )
 
     object_id = commit()
 
     assert object_id is None
     assert canvas.model.objects == {}
-    assert len(critical) == 1
-    assert "Undo/Redo command history is unavailable" in critical[0][2]
+    if tool_name == "pen":
+        assert not critical
+        assert len(modal_boxes) == 1
+        assert modal_boxes[0].accessibleName() == "P2D05-OPERATION"
+        assert "No change was applied" in modal_boxes[0].text()
+    else:
+        assert len(critical) == 1
+        assert "Undo/Redo command history is unavailable" in critical[0][2]
 
 
 def test_canvas_native_creation_uses_command_history(qt_app):

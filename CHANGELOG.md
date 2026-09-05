@@ -1,3 +1,75 @@
+# 2026-09-05 — qualificação pós-commit do lote da Caneta
+
+- registra o commit `1068166f3c046e008928d98e68fdb187838c87bc` na branch
+  `Ailton/pen-handles-quantization-20260905`;
+- runner Windows oficial em ambiente limpo corrigido para o qsb do venv:
+  `196/196` arquivos, `2019` testes, `0` falhas, `0` erros e `2` skips
+  previstos; cobertura integrada passou os limiares;
+- confirma estática, segurança, Stage 4B.5, baseline `3261` arquivos,
+  integridade de `135` manifestos e gate formal legado aceito com `15` exatos,
+  `11` divergentes, `12` ausentes e `42` substitutos;
+- confirma build portátil oficial com smoke `SUCCESS`, `314` arquivos e ZIP
+  de `124243242` bytes, SHA-256
+  `49108fc45c41ee8cbcd54beb7f487f5ed5d0000fe5b58b5364ce0255590f2ba2`;
+- a falha inicial de qsb global foi reproduzida na base `5b3e6b1` e não é
+  regressão do lote; CI remoto e auditoria nativa de cliques do SO continuam
+  pendentes. Estado `IN_PROGRESS / BLOCKED`; sem push, merge, tag ou release.
+  [Evidência](docs/evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
+## 2026-09-05 — lote da Caneta em pré-commit
+
+- remove tangentes implícitas da criação por clique e adiciona alças somente
+  por arraste explícito;
+- preserva rejeições de polígonos inválidos, histórico transacional,
+  cancelamento, persistência e exportação;
+- estado IN_PROGRESS / PRECOMMIT_PENDING; rodada focada 69/69, sem commit,
+  push, merge, tag ou release.
+
+## 2026-09-05 — resultado local do lote de idioma e status (pré-commit)
+
+- aplica o idioma ativo à ferramenta selecionada;
+- acrescenta aviso com quebra de texto, detalhes não modais por solicitação,
+  cópia de diagnóstico redigido, descarte e retorno de foco;
+- preserva geometria, comandos, histórico e snapshots; rodada R2 sobre
+  `4b873c3` com patch: 1.968 testes aprovados, dois skips de symlink;
+- cobertura 92,74% de linhas / 85,17% de branches; estática e integridade
+  locais passaram; runner legado e build exigem commit limpo e seguem pendentes;
+- PRECOMMIT e revisão humana pendentes; sem merge, tag ou release.
+  [Registro do lote](docs/P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
+## 2026-09-04 — sincronização documental da candidata P2D-05
+
+- registra o CI Linux/Windows do SHA `35727d9`, incluindo 1.956 testes
+  aprovados no Windows, sem skips; resultados não transferidos ao novo SHA;
+- reconcilia o encerramento da PR #168 presente em `main` com o estado
+  P2D-05 da PR #170, preservando ambos os históricos e sem alterar o produto;
+- preserva referências privadas e verifica restauração de um bundle completo;
+  o teste antigo `f9f39ed` permanece separado, sem incorporação automática;
+- mantém a PR em rascunho, a requalificação da integração e o aceite humano
+  pendentes; não autoriza merge da PR, tag ou release;
+- evidência: `docs/evidence/P2D05_SINCRONIZACAO_MAIN_2026-09-04.md`.
+
+## 2026-09-04 — resultados locais P2D-05 no SHA efb0caf
+
+- tipagem global e baseline corrigidos; 134 manifestos rastreados validados em
+  checkout limpo, sem alterações de snapshots ou remoção de arquivos locais;
+- runner Windows: 1.954 passed, dois skips por privilégio de symlink, zero
+  falhas/erros; cobertura 92,70% de linhas e 85,17% de branches;
+- estática, segurança, Stage 4B.5, gate formal, build portátil, smoke e digests
+  dos 314 arquivos do ZIP passaram; relatório e pacote hashado em
+  `docs/evidence/P2D05_REQUALIFICACAO_TIPAGEM_INTEGRIDADE_2026-09-04.md`;
+- estado global `PARCIAL`, publicação `BLOCKED`; os resultados pertencem ao
+  SHA-fonte, não ao commit documental descendente ou a um CI não executado.
+
+## 2026-09-04 — abertura da requalificação local P2D-05 (histórico)
+
+- explicita dois guardas de modelo na edição de polígonos e adiciona seis
+  regressões de ausência de modelo/histórico, sem mudar semântica;
+- reconcilia o manifesto vivo com a fronteira rastreada dos lotes aprovados;
+- distingue evidências rastreadas de pacotes locais históricos não rastreados,
+  preservando ambos; qualificação completa e publicação continuam pendentes;
+- detalhes em `docs/P2D05_REQUALIFICACAO_ATUAL.md`.
+
 ## 2026-09-04 — encerramento pós-merge da PR #168
 
 - registra a integração da PR `#168` em `main` pelo merge commit
@@ -8,7 +80,7 @@
   comprovado, mantendo as limitações de proveniência explícitas;
 - mantém tag e release sem aprovação.
 
-## 2026-09-04 — validação remota da candidata LEGACY-26
+## 2026-09-04 — validação remota da candidata LEGACY-26 (histórico)
 
 - registra o CI remoto da PR `#168`, run `33863522514`, sobre o HEAD
   documental `ac96825fa36edf686a173f7fad9e51d9ff41705d`;

@@ -243,6 +243,7 @@ class PenTool(BaseTool):
         self._nodes = nodes
         self._selected_node = None
         self._selected_handle = None
+        self._is_placing_handle = False
         self._closed = len(canonical) >= 2 and canonical[-1][3] == canonical[0][0]
         self._cursor_position = None
 
@@ -306,6 +307,7 @@ class PenTool(BaseTool):
         return None
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
+        self._is_placing_handle = False
         if event.button() == Qt.MouseButton.LeftButton:
             had_loaded_object = self._editing_object_id is not None
             if had_loaded_object and not self._synchronize_selected_bezier_object():
@@ -358,7 +360,9 @@ class PenTool(BaseTool):
                 return
 
             if self._editing_object_id is None:
+                node_count = len(self._nodes)
                 self._place_anchor(click_point)
+                self._is_placing_handle = len(self._nodes) > node_count
 
         elif event.button() == Qt.MouseButton.RightButton:
             self.show_context_menu(event)
@@ -373,7 +377,10 @@ class PenTool(BaseTool):
         ):
             self.canvas_view.update()
             return
-        if self._selected_node and self._selected_handle:
+        if self._is_placing_handle:
+            if event.buttons() & Qt.MouseButton.LeftButton:
+                self._update_placement_handles(position)
+        elif self._selected_node and self._selected_handle:
             point = (float(position[0]), float(position[1]))
             if self._selected_handle == "in":
                 self._selected_node.handle_in = point
@@ -396,7 +403,10 @@ class PenTool(BaseTool):
                         # Invalid continuous geometry remains visual-only. The
                         # accepted model stays at the last valid preview so a
                         # release can reject without installing corrupt state.
-                        self._last_error = str(exc)
+                        self._last_error = self._safe_p2d05_message(
+                            exc,
+                            operation="preview",
+                        )
                     else:
                         self._last_error = ""
                         edit.preview_beziers = copy.deepcopy(beziers)
@@ -425,8 +435,15 @@ class PenTool(BaseTool):
         if not self._active_preview_matches_model():
             self._discard_active_handle_edit(restore_preview=False)
             self._load_selected_bezier_object()
+            self._present_p2d05_error(
+                RuntimeError("The selected Bezier object changed during this edit."),
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             self.canvas_view.update()
             return
+
         model = self._model()
         object_id = edit.object_id
         segment_index = edit.segment_index
@@ -445,11 +462,11 @@ class PenTool(BaseTool):
 
         manager = getattr(model, "cmd", None) if model is not None else None
         if manager is None:
-            self._last_error = "Undo/Redo command history is unavailable."
-            self._show_message(
-                "critical",
-                "Bézier Edit Unavailable",
-                self._last_error,
+            self._present_p2d05_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             self._load_selected_bezier_object()
             return
@@ -462,28 +479,48 @@ class PenTool(BaseTool):
             new_pos,
             steps_per_segment=self._curve_segments,
         )
-        result = manager.execute(command, model)
+        try:
+            result = manager.execute(command, model)
+        except Exception as exc:
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
+            )
+            self._load_selected_bezier_object()
+            return
+
         self._last_command_result = result
         if result.status is CommandStatus.REJECTED:
-            self._last_error = result.message
-            self._show_message(
-                "warning",
-                "Bézier Edit Rejected",
-                result.message or "The handle movement was rejected.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The handle movement was rejected."),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
         elif result.status is CommandStatus.FAILED:
-            self._last_error = result.message
-            self._show_message(
-                "critical",
-                "Bézier Edit Failed",
-                result.message or "The handle movement failed.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The handle movement failed."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
         elif result.status is CommandStatus.NO_CHANGE:
-            self._last_error = result.message
+            self._last_error = self._safe_p2d05_message(
+                RuntimeError(
+                    result.message or "The handle movement produced no change."
+                ),
+                operation="edit",
+            )
+        else:
+            self._last_error = ""
         self._load_selected_bezier_object()
 
     def on_mouse_release(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
+            if self._is_placing_handle:
+                self._update_placement_handles(position)
             self._synchronize_selected_bezier_object()
             self._finish_handle_edit()
             self._selected_handle = None
@@ -496,44 +533,52 @@ class PenTool(BaseTool):
             self.canvas_view.update()
 
     def on_key_press(self, event) -> bool:
-        if event.key() == Qt.Key.Key_Escape and self._active_handle_edit is not None:
-            return self._cancel_active_handle_edit()
+        if event.key() == Qt.Key.Key_Escape:
+            return self._cancel_active_handle_edit() or self._cancel_creation_preview()
         return False
 
     def on_undo(self) -> bool:
-        return self._cancel_active_handle_edit()
+        return self._cancel_active_handle_edit() or self._cancel_creation_preview()
 
     def on_redo(self) -> bool:
-        return self._cancel_active_handle_edit()
+        return self._cancel_active_handle_edit() or self._cancel_creation_preview()
+
+    def _cancel_creation_preview(self) -> bool:
+        if self._editing_object_id is not None or not self._nodes:
+            return False
+        self.cancel()
+        return True
+
+    def _update_placement_handles(self, position: Tuple[float, float]) -> None:
+        node = self._selected_node
+        if node is None or self._editing_object_id is not None:
+            return
+        dx = float(position[0]) - node.anchor[0]
+        dy = float(position[1]) - node.anchor[1]
+        # Ignore click jitter in logical screen pixels, independently of zoom.
+        if math.hypot(dx, dy) * self.get_canvas_zoom() < 3.0:
+            node.handle_in = node.anchor
+            node.handle_out = node.anchor
+            return
+        node.handle_out = (node.anchor[0] + dx, node.anchor[1] + dy)
+        node.handle_in = (node.anchor[0] - dx, node.anchor[1] - dy)
 
     def _place_anchor(self, point: Tuple[float, float]):
         max_nodes = ((MAX_POLYGON_POINTS - 1) // self._curve_segments) + 1
         if len(self._nodes) >= max_nodes:
-            self._last_error = (
-                f"Bézier geometry cannot exceed {MAX_POLYGON_POINTS} sampled points."
+            self._present_p2d05_error(
+                ValueError(
+                    f"Bezier geometry cannot exceed {MAX_POLYGON_POINTS} "
+                    "sampled points."
+                ),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return
         new_node = BezierNode(point)
-
-        if self._nodes:
-            last_node = self._nodes[-1]
-            if len(self._nodes) >= 2:
-                prev_node = self._nodes[-2]
-                dx = last_node.anchor[0] - prev_node.anchor[0]
-                dy = last_node.anchor[1] - prev_node.anchor[1]
-                dist = math.sqrt(dx * dx + dy * dy)
-                if dist > 0:
-                    handle_dist = min(dist * 0.3, 50)
-                    new_node.handle_in = (
-                        point[0] + dx / dist * handle_dist,
-                        point[1] + dy / dist * handle_dist,
-                    )
-
-            last_node.handle_out = (
-                last_node.anchor[0] - (new_node.handle_in[0] - point[0]),
-                last_node.anchor[1] - (new_node.handle_in[1] - point[1]),
-            )
-
+        # A click creates a corner. Only an explicit drag authors handles;
+        # adding a neighbour must never rewrite controls already chosen.
         self._nodes.append(new_node)
         self._selected_node = new_node
 
@@ -665,11 +710,11 @@ class PenTool(BaseTool):
         model = self._model()
         manager = getattr(model, "cmd", None) if model is not None else None
         if manager is None:
-            self._last_error = "Undo/Redo command history is unavailable."
-            self._show_message(
-                "critical",
-                "Pen Creation Unavailable",
-                self._last_error,
+            self._present_p2d05_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return None
         try:
@@ -682,43 +727,61 @@ class PenTool(BaseTool):
                 if len(self._nodes) >= 2
                 else self._beziers_from_sampled_points(self._generate_curve_points())
             )
-        except (OverflowError, ValueError) as exc:
-            self._last_error = str(exc)
+        except (OverflowError, TypeError, ValueError) as exc:
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="warning",
+                channel="status",
+            )
             return None
 
         command = CreateBezierObjectCommand(
             beziers,
             steps_per_segment=self._curve_segments,
         )
-        result = manager.execute(command, model)
+        try:
+            result = manager.execute(command, model)
+        except Exception as exc:
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
+            )
+            return None
+
         self._last_command_result = result
         if result.status is CommandStatus.REJECTED:
-            self._last_error = result.message
-            self._show_message(
-                "warning",
-                "Pen Creation Rejected",
-                result.message or "The Bézier object creation was rejected.",
+            self._present_p2d05_error(
+                RuntimeError(
+                    result.message or "The Bezier object creation was rejected."
+                ),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return None
         if result.status is CommandStatus.FAILED:
-            self._last_error = result.message
-            self._show_message(
-                "critical",
-                "Pen Creation Failed",
-                result.message or "The Bézier object creation failed.",
+            self._present_p2d05_error(
+                RuntimeError(result.message or "The Bezier object creation failed."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
             )
             return None
         if not result.changed or command.object_id is None:
-            self._last_error = result.message or "No Bézier object was created."
-            self._show_message(
-                "warning",
-                "Pen Creation Unchanged",
-                self._last_error,
+            self._present_p2d05_error(
+                RuntimeError(result.message or "No Bezier object was created."),
+                operation="edit",
+                severity="warning",
+                channel="status",
             )
             return None
 
         self._editing_object_id = str(command.object_id)
         self._load_selected_bezier_object()
+        self._last_error = ""
         return self._editing_object_id
 
     def draw_overlay(self, painter: QPainter):

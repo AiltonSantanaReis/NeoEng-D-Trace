@@ -35,6 +35,7 @@ from src.core.transform_gesture import (
     transformed_snapshot,
 )
 from src.core.validation_events import object_token, record_validation_event
+from src.ui.error_presentation import show_p2d05_error
 from src.utils.selection_tools import (
     expand_contract_polygon,
     invert_selection,
@@ -605,24 +606,54 @@ class SidePanel(QWidget):
                 pass
         self._refresh_transform_fields()
 
-    def _execute_edit_command(self, command):
+    def _present_transform_error(
+        self,
+        exc: BaseException,
+        *,
+        severity: str,
+        channel: str,
+    ):
+        return show_p2d05_error(
+            self,
+            exc,
+            operation="transform",
+            language=self.current_lang,
+            severity=severity,
+            channel=channel,
+        )
+
+    def _execute_edit_command(self, command, *, p2d05_operation=None):
         manager = getattr(self.scene, "cmd", None)
         if manager is None:
             raise RuntimeError("Undo/Redo command history is unavailable.")
 
         result = manager.execute(command, self.scene)
         if result.status is CommandStatus.REJECTED:
-            QMessageBox.warning(
-                self,
-                self.translations[self.current_lang]["error"],
-                result.message or "The edit operation was rejected.",
-            )
+            if p2d05_operation == "transform":
+                self._present_transform_error(
+                    RuntimeError(result.message or "The edit operation was rejected."),
+                    severity="warning",
+                    channel="status",
+                )
+            else:
+                QMessageBox.warning(
+                    self,
+                    self.translations[self.current_lang]["error"],
+                    result.message or "The edit operation was rejected.",
+                )
         elif result.status is CommandStatus.FAILED:
-            QMessageBox.critical(
-                self,
-                self.translations[self.current_lang]["error"],
-                result.message or "The edit operation failed.",
-            )
+            if p2d05_operation == "transform":
+                self._present_transform_error(
+                    RuntimeError(result.message or "The edit operation failed."),
+                    severity="critical",
+                    channel="modal",
+                )
+            else:
+                QMessageBox.critical(
+                    self,
+                    self.translations[self.current_lang]["error"],
+                    result.message or "The edit operation failed.",
+                )
         return result
 
     def _on_apply_transform(self) -> None:
@@ -669,14 +700,29 @@ class SidePanel(QWidget):
             state.pivot = (self.pivot_x.value(), self.pivot_y.value())
             state.rotation = target_rotation
             state.scale = target_scale
-            result = self._execute_edit_command(TransformObjectsCommand(before, after))
+            result = self._execute_edit_command(
+                TransformObjectsCommand(before, after),
+                p2d05_operation="transform",
+            )
             if result.changed:
                 self.canvas.update()
-        except (KeyError, ValueError, RuntimeError) as exc:
-            QMessageBox.warning(
-                self,
-                self.translations[self.current_lang]["error"],
-                str(exc),
+        except ValueError as exc:
+            self._present_transform_error(
+                exc,
+                severity="warning",
+                channel="status",
+            )
+        except (KeyError, RuntimeError) as exc:
+            self._present_transform_error(
+                exc,
+                severity="critical",
+                channel="modal",
+            )
+        except Exception as exc:
+            self._present_transform_error(
+                exc,
+                severity="critical",
+                channel="modal",
             )
 
     def _on_toggle_collision(self):

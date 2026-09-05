@@ -1,3 +1,65 @@
+## Revisão corrente — isolamento de modal residual e CI da Caneta — 05/09/2026
+
+O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424` corrigiu o modal residual
+observado no CI Linux, com proteção de isolamento no harness de testes. O CI
+`33990872253` passou em Linux e Windows, incluindo suíte, cobertura,
+integridade, estática, segurança, Stage 4B.5 e gate legado. O lote permanece
+`IN_PROGRESS / BLOCKED` porque a auditoria nativa de cliques do executável
+continua pendente. Consulte
+[`PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md`](PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md).
+
+## Snapshot anterior — qualificação pós-commit — 05/09/2026
+
+O commit `1068166f3c046e008928d98e68fdb187838c87bc` foi requalificado em
+árvore limpa. O runner Windows passou `196/196` arquivos, `2019` testes, zero
+falhas/erros e dois skips previstos; cobertura, estática, segurança, Stage
+4B.5, integridade, gate legado e build portátil com smoke `SUCCESS` passaram.
+O estado permanece `IN_PROGRESS / BLOCKED` porque CI remoto e auditoria nativa
+do executável ainda não foram executados. Consulte
+[`PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md`](PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
+## Lote corretivo da Caneta — estado pré-commit — 05/09/2026
+
+PEN-HANDLES-20260905 permanece IN_PROGRESS / PRECOMMIT_PENDING na branch
+Ailton/pen-handles-quantization-20260905, base 5b3e6b1. A rodada Qt focada
+passou 69/69; a suíte agregada local registrou 2016 passed, 2 skipped,
+1 failed, com a mesma falha modal reproduzida no worktree limpo da base.
+Os recibos locais estão sob build/pen-handles-qualification-20260905/ e
+não constituem, sozinhos, evidência versionada de SHA. Não há commit, push,
+merge, tag ou release deste lote.
+Registro: ../LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
+Estado vivo P2D-05 em 05/09/2026: lote corretivo de idioma/status autorizado
+sobre `4b873c3`, em pré-commit. Resultados da base não aprovam o patch;
+PRECOMMIT, revisão humana e qualificação do futuro SHA permanecem pendentes.
+[Fronteira do lote](../P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+Não houve merge da PR, tag ou release.
+
+R2 local: 1.968 testes aprovados, dois skips de symlink, cobertura/estática/
+integridade passaram. Runner legado FAIL por árvore não limpa; build não
+executado. Dez capturas Qt reais aguardam revisão humana. Os recibos e o
+pacote pré-commit são privados locais, não qualificação de SHA versionado.
+
+Snapshot de entrada: CI `33932398814` passou no SHA
+`35727d9`, com dois symlinks Windows aprovados sem skip. A sincronização
+autorizada com main `b9557e6` exige novos gates e revisão humana. PR #170
+em rascunho, sem merge, tag ou release.
+
+- [P2D05_SINCRONIZACAO_MAIN_2026-09-04.md](P2D05_SINCRONIZACAO_MAIN_2026-09-04.md)
+  — preservação privada verificada, escopo documental de integração,
+  referência exata ao CI de entrada e roteiro da revisão humana pendente.
+
+Snapshot anterior P2D-05: fonte `efb0caf` requalificada localmente,
+`PARCIAL` pelos dois skips de symlink; publicação `BLOCKED`. Consulte
+[`P2D05_REQUALIFICACAO_ATUAL.md`](../P2D05_REQUALIFICACAO_ATUAL.md).
+Os relatórios históricos abaixo não são prova do HEAD P2D-05.
+
+- `P2D05_REQUALIFICACAO_TIPAGEM_INTEGRIDADE_2026-09-04.md` — correção de
+  tipagem, baseline sem remoções, 134 manifestos rastreados, 1.954 testes
+  aprovados/dois skips, cobertura, gate legado, build e smoke no SHA-fonte
+  `efb0caf`. Pacote em `artifacts/p2d05-requalification-efb0caf-20260904/`;
+  não aprova CI remoto, revisão humana ou o commit documental descendente.
+
 - `ETAPA_7_AUDITORIA_FINAL_PLANO_26_2026-09-03.md` — auditoria final dos 13
   critérios da seção 9 no SHA `bcaf5b079881800899d121b071108fe404fa48da`;
   C01–C13 `PASS` após a revisão humana final C12. O plano está

@@ -310,6 +310,26 @@ class CanvasView(QWidget):
         result = self._finish_gizmo_gesture()
         return result is not None and result.status is CommandStatus.APPLIED
 
+    def _present_gizmo_error(
+        self,
+        exc: BaseException,
+        *,
+        severity: str,
+        channel: str,
+    ):
+        """Present a transform failure through the approved P2D-05 boundary."""
+
+        from src.ui.error_presentation import show_p2d05_error
+
+        return show_p2d05_error(
+            self,
+            exc,
+            operation="transform",
+            language=self.current_lang,
+            severity=severity,
+            channel=channel,
+        )
+
     def __init__(self, model, parent=None):
         super().__init__(parent)
         self.model = model
@@ -598,7 +618,16 @@ class CanvasView(QWidget):
         begin = getattr(tool, "begin_vertex_gizmo_gesture", None)
         if target is None or not callable(begin):
             return False
-        if not begin():
+        try:
+            started = begin()
+        except Exception as exc:
+            self._present_gizmo_error(
+                exc,
+                severity="critical",
+                channel="modal",
+            )
+            return False
+        if not started:
             return False
         self._gizmo_vertex_active = True
         self._gizmo_vertex_origin = target[2]
@@ -636,29 +665,34 @@ class CanvasView(QWidget):
 
     def _report_gizmo_result(self, result):
         if result is None:
-            return
+            return None
         if result.status is CommandStatus.REJECTED:
-            QMessageBox.warning(
-                self,
-                "Gizmo Movement Rejected",
-                result.message or "The movement was rejected.",
+            return self._present_gizmo_error(
+                RuntimeError(
+                    getattr(result, "message", None) or "The transform was rejected."
+                ),
+                severity="warning",
+                channel="status",
             )
         elif result.status is CommandStatus.FAILED:
-            QMessageBox.critical(
-                self,
-                "Gizmo Movement Failed",
-                result.message or "The movement failed.",
+            return self._present_gizmo_error(
+                RuntimeError(
+                    getattr(result, "message", None) or "The transform failed."
+                ),
+                severity="critical",
+                channel="modal",
             )
+        return None
 
     def _begin_gizmo_object_gesture(self) -> bool:
         object_ids = self._selected_object_ids()
         if not object_ids:
             return False
         if getattr(self.model, "cmd", None) is None:
-            QMessageBox.critical(
-                self,
-                "Gizmo Movement Unavailable",
-                "Undo/Redo command history is unavailable.",
+            self._present_gizmo_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                severity="critical",
+                channel="modal",
             )
             return False
         anchor = self._selection_anchor_image(object_ids)
@@ -673,7 +707,11 @@ class CanvasView(QWidget):
             return True
         except Exception as exc:
             self._gizmo_transaction = None
-            QMessageBox.critical(self, "Gizmo Movement Failed", str(exc))
+            self._present_gizmo_error(
+                exc,
+                severity="critical",
+                channel="modal",
+            )
             return False
 
     def _set_gizmo_feedback(
@@ -710,13 +748,26 @@ class CanvasView(QWidget):
             )
             self._set_gizmo_feedback(translation, rotation, scale)
         except Exception as exc:
+            cleanup_error = None
             try:
                 if transaction.active:
                     transaction.cancel()
+            except Exception as rollback_exc:
+                cleanup_error = rollback_exc
             finally:
                 self._reset_gizmo_interaction()
                 self.update()
-            QMessageBox.critical(self, "Gizmo Movement Failed", str(exc))
+            if cleanup_error is not None:
+                logger.error(
+                    "Gizmo preview rollback failed (%s)",
+                    type(cleanup_error).__name__,
+                    exc_info=True,
+                )
+            self._present_gizmo_error(
+                exc,
+                severity="critical",
+                channel="modal",
+            )
 
     def _move_selected_object(self, dx, dy):
         """Compatibility path for callers that submit incremental XY motion."""
@@ -741,8 +792,25 @@ class CanvasView(QWidget):
         result = None
         try:
             if transaction is not None and transaction.active:
-                result = transaction.commit(getattr(self.model, "cmd", None))
-                self._report_gizmo_result(result)
+                try:
+                    result = transaction.commit(getattr(self.model, "cmd", None))
+                except Exception as exc:
+                    try:
+                        if transaction.active:
+                            transaction.cancel()
+                    except Exception as rollback_exc:
+                        logger.error(
+                            "Gizmo commit rollback failed (%s)",
+                            type(rollback_exc).__name__,
+                            exc_info=True,
+                        )
+                    self._present_gizmo_error(
+                        exc,
+                        severity="critical",
+                        channel="modal",
+                    )
+                else:
+                    self._report_gizmo_result(result)
         finally:
             self._reset_gizmo_interaction()
             self.update()
@@ -762,6 +830,12 @@ class CanvasView(QWidget):
         try:
             if transaction is not None and transaction.active:
                 restored = transaction.cancel()
+        except Exception as exc:
+            self._present_gizmo_error(
+                exc,
+                severity="critical",
+                channel="modal",
+            )
         finally:
             self._reset_gizmo_interaction()
             self.update()
@@ -1001,6 +1075,8 @@ class CanvasView(QWidget):
         if self._tool and self._tool.on_cancel:
             self._tool.on_cancel()
         self._tool = tool
+        if self._tool and self._tool.update_language:
+            self._tool.update_language(self.current_lang)
         self.update()
 
     def set_pan_mode(self, enabled: bool) -> None:

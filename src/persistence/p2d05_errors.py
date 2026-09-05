@@ -255,11 +255,17 @@ def _kind_for(exc: BaseException, operation: str) -> str:
     return "operation"
 
 
-def classify_p2d05_error(exc: BaseException, *, operation: str) -> P2D05ErrorMessage:
+def classify_p2d05_error(
+    exc: BaseException,
+    *,
+    operation: str,
+    language: str = "en",
+) -> P2D05ErrorMessage:
     """Classify a failure without changing its domain exception."""
 
     kind = _kind_for(exc, operation)
-    headline, action, preserved_state = _MESSAGES[kind]["en"]
+    lang = language if language in {"en", "pt"} else "en"
+    headline, action, preserved_state = _MESSAGES[kind][lang]
     return P2D05ErrorMessage(_CODES[kind], headline, action, preserved_state)
 
 
@@ -271,13 +277,17 @@ def user_error_message(
 ) -> str:
     """Format a safe, actionable message for Qt status bars and dialogs."""
 
-    kind = _kind_for(exc, operation)
-    lang = language if language in {"en", "pt"} else "en"
-    headline, action, preserved_state = _MESSAGES[kind][lang]
-    code = _CODES[kind]
+    classification = classify_p2d05_error(
+        exc,
+        operation=operation,
+        language=language,
+    )
     detail = redact_p2d05_detail(exc)
     suffix = f" Detail: {detail}." if detail else "."
-    return f"{headline} [{code}]. {action}. {preserved_state}.{suffix}"
+    return (
+        f"{classification.headline} [{classification.code}]. "
+        f"{classification.action}. {classification.preserved_state}.{suffix}"
+    )
 
 
 __all__ = [

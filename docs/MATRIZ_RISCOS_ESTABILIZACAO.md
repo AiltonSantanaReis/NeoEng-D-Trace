@@ -1,5 +1,54 @@
 # Matriz de Riscos de Estabilização
 
+## Verificação viva — qualificação pós-commit da Caneta — 05/09/2026
+
+O SHA `1068166f3c046e008928d98e68fdb187838c87bc` passou o runner oficial
+Windows (`196/196` arquivos, `2019` testes, zero falhas/erros e dois skips
+previstos), cobertura, estática, segurança, Stage 4B.5, integridade, gate
+legado e build portátil com smoke `SUCCESS`. A divergência inicial do qsb foi
+reproduzida na base limpa e é ambiental/herdada. O risco restante é de
+proveniência: CI remoto e auditoria nativa do executável ainda não comprovam
+publicação. Estado `IN_PROGRESS / BLOCKED`; [evidência](evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
+## Verificação viva — lote corretivo da Caneta — 05/09/2026
+
+O lote PEN-HANDLES-20260905 está em IN_PROGRESS / PRECOMMIT_PENDING na
+branch Ailton/pen-handles-quantization-20260905, base 5b3e6b1. A proteção
+focada passou 69/69; a suíte agregada reproduziu uma falha modal já presente
+na base limpa (2016 passed, 2 skipped, 1 failed). A correção não relaxa
+validação nem repara geometrias inválidas. Qualificação limpa, runner oficial,
+build e CI permanecem pendentes.
+Registro: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
+## Verificação viva — correção de idioma/status P2D-05 — 05/09/2026
+
+Base `4b873c3` com patch autorizado, não SHA limpo qualificado. Riscos do lote:
+idioma incorreto, truncamento, rodapé excessivo, foco perdido e retenção de
+widget destruído. Proteções Qt e rodada completa local executadas; faltam
+dois symlinks habilitados, runner/build limpos e revisão humana.
+Geometria e critérios não mudam; a candidata não está pronta
+para publicação final. [Registro](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
+## Verificação viva — sincronização P2D-05 — 04/09/2026
+
+CI Linux/Windows `33932398814` comprovado no SHA `35727d9`; os dois
+symlinks passaram sem skip. O risco remanescente é atribuir esse resultado ao
+merge de sincronização com `b9557e6` antes dos novos gates. Revisão humana
+atual segue pendente. A PR #170 permanece em rascunho; publicação final
+`BLOCKED`. Históricos privados e teste `f9f39ed` foram preservados fora
+da publicação; não são incorporados ao P2D-05. A restauração privada foi
+verificada, mas a cópia local não protege contra perda do disco.
+Fronteira: `docs/P2D05_REQUALIFICACAO_ATUAL.md`.
+
+## Snapshot anterior — fonte efb0caf
+
+Fonte `efb0caf`: os três erros globais de tipagem foram corrigidos e o baseline
+reconciliado. Integridade passou em 134 manifestos limpos; três pacotes locais não
+rastreados continuam preservados e não aprovados. Há risco de atribuir provas
+pré-commit ou CI histórico ao novo SHA. Mitigação e gates pendentes:
+`docs/P2D05_REQUALIFICACAO_ATUAL.md`. Dois symlinks exigem ambiente com privilégio;
+revisão humana e CI remoto continuam pendentes. Publicação `BLOCKED`.
+
 | ID | Severidade | Risco confirmado | Impacto | Evidência exigida para encerramento |
 |---|---|---|---|---|
 | R-001 | P0 | Persistência incompleta do projeto | Perda silenciosa de dados | Testes de round-trip completos, migração e falha de gravação |
@@ -25,7 +74,7 @@
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
-### Verificação viva — encerramento pós-merge LEGACY-26 — 04/09/2026
+### Verificação histórica — encerramento pós-merge LEGACY-26 — 04/09/2026
 
 Na integração da PR `#168`, o produto foi validado no SHA `6ede2f6…` e o
 merge efetivo é `9a25f0be…`. O CI pós-merge `33871734689` passou nos jobs Linux

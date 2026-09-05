@@ -179,8 +179,8 @@ def test_polygon_delete_blocks_when_history_is_unavailable(monkeypatch):
 
     assert _snapshot(scene) == before
     assert tool.selected_polygon_ids == {"B", "C"}
-    assert messages
-    assert "history is unavailable" in str(messages[-1])
+    assert "P2D05-OPERATION" in tool._last_error
+    assert "No change was applied" in tool._last_error
 
 
 def test_stale_polygon_selection_is_rejected_without_history(monkeypatch):
@@ -200,7 +200,8 @@ def test_stale_polygon_selection_is_rejected_without_history(monkeypatch):
     assert list(scene.objects) == ["A", "B", "C", "D"]
     assert scene.cmd.undo_count == 0
     assert tool.selected_polygon_id == "missing"
-    assert messages
+    assert "P2D05-REFERENCE" in tool._last_error
+    assert "No change was applied" in tool._last_error
 
 
 def test_mixed_stale_multi_selection_is_rejected_atomically(monkeypatch):
@@ -224,8 +225,8 @@ def test_mixed_stale_multi_selection_is_rejected_atomically(monkeypatch):
     assert scene.cmd.redo_count == 0
     assert tool.selected_polygon_id == "B"
     assert tool.selected_polygon_ids == {"B", "missing"}
-    assert messages
-    assert "no objects were removed" in str(messages[-1])
+    assert "P2D05-REFERENCE" in tool._last_error
+    assert "No change was applied" in tool._last_error
 
 
 def test_collision_brush_remove_round_trips_exact_relations(monkeypatch):

@@ -159,17 +159,23 @@ def test_canvas_blocks_gizmo_when_history_is_unavailable(
     scene.cmd = None
     canvas = CanvasView(scene)
     qt_app.processEvents()
-    critical_calls = []
+    modal_boxes = []
+
+    def capture_modal(box):
+        modal_boxes.append(box)
+        return 0
 
     monkeypatch.setattr(
-        "src.ui.canvas_view.QMessageBox.critical",
-        lambda *args, **kwargs: critical_calls.append(args),
+        "src.ui.error_presentation.QMessageBox.exec",
+        capture_modal,
     )
 
     assert canvas._begin_gizmo_object_gesture() is False
     assert canvas._gizmo_transaction is None
     assert scene.objects["object"].polygon == _square()
-    assert critical_calls
+    assert len(modal_boxes) == 1
+    assert "P2D05-OPERATION" in modal_boxes[0].text()
+    modal_boxes[0].deleteLater()
     canvas.close()
 
 
