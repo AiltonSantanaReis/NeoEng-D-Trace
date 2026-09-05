@@ -541,8 +541,8 @@
       "size": 1220
     },
     "docs/LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md": {
-      "sha256": "e9e16af0a2f16574ae0f0c17089115afa6021a8bbed5d2c5dfc40bb39e335277",
-      "size": 9418
+      "sha256": "93ce8529614de5d8dec6f4a48ea5414ee60ea7c6d552fd11d2f76e39ee96d323",
+      "size": 11156
     },
     "docs/MATRIZ_FUNCIONALIDADES.md": {
       "sha256": "dfb92fe4f1ae5ebc6bf61fb62422e9792e6eb24674bec8b484693b6a89c63304",
@@ -601,8 +601,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "e2c281e234836d6c051378205b4acde0c455071e04e03e7d3e0adcf47712879b",
-      "size": 31732
+      "sha256": "8eed044a1ef80277dfd1e79877f5b545a64e094476b5c2f6c5bc66083a2be81c",
+      "size": 32969
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1436,6 +1436,10 @@
       "sha256": "1a7586efce0977b526a6e231cbcb39f2eff2cf7093b32bdecef26090551e20cb",
       "size": 8384
     },
+    "docs/evidence/PEN_EMPTY_CLICK_EDIT_EXIT_2026-09-05.md": {
+      "sha256": "ac2042c90225b74a76d4d1a30823a578dab813e1e53080cb4b12190e5c72bffc",
+      "size": 5438
+    },
     "docs/evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md": {
       "sha256": "977e087edad882764ff84b59c4d318474abe0fbe93f9fd9fe0d4b7b6c6255573",
       "size": 5837
@@ -1473,8 +1477,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "34b0434f057bafb191b427791b43925081cb5c04e1f90fd7b758f7c71ff88dce",
-      "size": 55908
+      "sha256": "6ca4524409c54c28896ddcf3075853afc54aa2136b764f42b5b6939741518b14",
+      "size": 56679
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -11925,8 +11929,8 @@
       "size": 10921
     },
     "src/tools/pen_tool.py": {
-      "sha256": "db707f4bf9ac7337e3c27162dcc6aa5a628367e7b5c5e6e4975eedf3e0ef3c4f",
-      "size": 34370
+      "sha256": "34f9b323df8306d10b85271330358348f195d1208515d1397a2dd9adb7da89e5",
+      "size": 35146
     },
     "src/tools/polygon_edit_tool.py": {
       "sha256": "901c01317b1c3440e07ccf3e837064f26b40ed06ff01235b3bde8670e60e82c7",
@@ -12109,8 +12113,8 @@
       "size": 1322
     },
     "src/ui/tool_palette_impl.py": {
-      "sha256": "e4a468d48aea83d2854a832ca9f81545fa225abeb69b5cbcf2e21c4a2639f1d7",
-      "size": 15181
+      "sha256": "c255ea1f1f2baac941c02b0b175a7b7850ef5646cb86e45211bd586e25b2299b",
+      "size": 15441
     },
     "src/ui/top_command_contract.py": {
       "sha256": "4fcfdcc33523a4885195a4a305da5d5ef6801b72bdc72b2d81d14e59ee4a7ec8",
@@ -12449,8 +12453,8 @@
       "size": 15477
     },
     "tests/test_pen_creation_gestures.py": {
-      "sha256": "6dd1fe7cf55f0a47fe60c2a3a311df815ac355830f4634f365f5466b060d0885",
-      "size": 13045
+      "sha256": "5af2b4cf20f8fb5c65b16aff03d8d65ae19a8ce57bcd00ecce9a7d4b2b9d1316",
+      "size": 14616
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",

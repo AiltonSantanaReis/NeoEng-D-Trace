@@ -1,3 +1,15 @@
+## Revisão corrente — ciclo de edição da Caneta por clique vazio — 05/09/2026
+
+O commit local `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f` corrigiu a transição
+da Caneta: o primeiro clique fora do Bézier carregado apenas encerra a
+edição/deseleciona; o clique seguinte inicia um novo caminho. A suíte
+específica passou `51/51`, a suíte oficial passou `2019 passed, 2 skipped` e
+os gates estáticos passaram. A build portátil do mesmo SHA passou `11` smoke
+checks. O resultado é `PASS_LOCAL / BLOCKED_NATIVE_REMOTE`: a auditoria de
+cliques no executável não foi executada porque o helper visual continuou
+indisponível; CI remoto e push permanecem pendentes. Consulte
+[`PEN_EMPTY_CLICK_EDIT_EXIT_2026-09-05.md`](PEN_EMPTY_CLICK_EDIT_EXIT_2026-09-05.md).
+
 ## Revisão corrente — isolamento de modal residual e CI da Caneta — 05/09/2026
 
 O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424` corrigiu o modal residual

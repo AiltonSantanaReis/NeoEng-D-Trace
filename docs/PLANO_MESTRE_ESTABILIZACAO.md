@@ -1,5 +1,26 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — saída segura da edição Bézier — 05/09/2026
+
+O commit local `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f`, na branch
+`Ailton/pen-handles-quantization-20260905`, corrige o ciclo da Caneta após o
+fechamento de um Bézier: clique fora de âncora/alça encerra a edição e
+deseleciona sem iniciar criação; o clique seguinte inicia um novo caminho.
+O estado `_closed` também é redefinido ao descarregar o objeto. O tooltip em
+inglês e português documenta o fluxo. A decisão foi comparada aos handlers
+da Seleção e das demais ferramentas de criação; validador, quantização,
+rejeições e histórico permanecem preservados.
+
+No mesmo SHA, `tests/test_pen_creation_gestures.py` passou `51/51` e a suíte
+oficial sem filtros passou `2019 passed, 2 skipped`, com um warning de
+depreciação já conhecido. Flake8, Black, isort e mypy passaram. A build
+portátil oficial e os `11` smoke checks também passaram. [Evidência da
+qualificação local](evidence/PEN_EMPTY_CLICK_EDIT_EXIT_2026-09-05.md).
+
+Estado: `PASS_LOCAL / BLOCKED_NATIVE_REMOTE`. A auditoria nativa do
+executável continua pendente por indisponibilidade do helper visual; não há
+push, CI remoto, merge, tag ou release desta candidata.
+
 ## Atualização viva — correção do modal residual e CI da Caneta — 05/09/2026
 
 O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424`, na branch

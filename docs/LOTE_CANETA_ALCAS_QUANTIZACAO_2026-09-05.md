@@ -3,7 +3,36 @@
 ID: PEN-HANDLES-20260905. Estado: IN_PROGRESS / BLOCKED.
 Base: `5b3e6b15cee93ef5c9d1d550745293fb8372b5b9`.
 Branch: `Ailton/pen-handles-quantization-20260905`.
-Commit qualificado: `fd4a67e0d2bf60f07b710c002c0be88eeee94424`.
+Commit candidato local: `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f`.
+
+## Atualização viva — saída segura da edição Bézier — 05/09/2026
+
+O commit `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f`, descendente de
+`cab473a40d13927a90e025a5b37c97efc1e96ec3`, corrigiu o ciclo observado após
+o fechamento de um objeto. A causa era o estado local `_closed` permanecer
+ativo quando o objeto selecionado era descarregado; além disso, a Caneta não
+definia um limite claro entre editar um Bézier existente e iniciar outro.
+
+O contrato agora é deliberadamente de dois passos: (1) clique fora de uma
+âncora/alça carregada encerra a edição local e deseleciona sem criar ponto;
+(2) o clique seguinte, já com a ferramenta limpa, inicia o novo caminho.
+Âncoras/alças continuam editáveis, fechamento no primeiro vértice continua
+transacional e rejeições continuam preservando modelo, prévia e histórico.
+O tooltip em inglês e português torna o fluxo descobrível. Essa decisão foi
+comparada com a Seleção (clique vazio deseleciona) e com as ferramentas de
+criação (gesto separado e limpeza após commit); não altera o validador ou a
+quantização.
+
+O teste Qt do CanvasView passou `51/51` na suíte específica da Caneta; a
+suíte oficial sem filtros passou `2019` testes, com `2` skips previstos e
+`1` warning de depreciação já existente. Flake8, Black, isort e mypy passaram.
+A build portátil oficial deste SHA passou os `11` smoke checks; o manifesto
+da build identifica o mesmo commit. Evidência detalhada:
+`docs/evidence/PEN_EMPTY_CLICK_EDIT_EXIT_2026-09-05.md`.
+
+O estado permanece `IN_PROGRESS / BLOCKED`: a auditoria nativa de cliques no
+executável não foi executada porque o helper visual continuou indisponível;
+CI remoto, push, merge, tag e release não foram realizados.
 
 ## Atualização pós-correção do modal residual — 05/09/2026
 
