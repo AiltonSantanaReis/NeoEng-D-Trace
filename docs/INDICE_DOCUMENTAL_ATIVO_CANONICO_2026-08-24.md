@@ -63,6 +63,12 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | prova da Etapa 5 | governança e etapa |
 | `evidence/P2D05_SINCRONIZACAO_MAIN_2026-09-04.md` | ATIVO / EVIDÊNCIA DE SINCRONIZAÇÃO | registro v1, P2D-05, bases 35727d9/b9557e6; commit de inclusão é o merge que introduz este registro | política de qualidade, governança, contrato global P2D-05; informa README, plano mestre, matriz e acompanhamento vivo; não altera requisitos ou IDs |
 
+Registro ativo adicional: [P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md),
+ID P2D05-LANG-STATUS-20260904, versão 1, IN_PROGRESS; controle de mudança
+aprovado para implementação sobre 4b873c3. Subordinado ao contrato global,
+decisão P2D-05, política e governança; informa README, plano mestre, matriz,
+acompanhamento e evidências. Não substitui snapshots ou requisitos.
+
 ## 3. Documentos superseded
 
 | Documento | Estado | Substituto | Motivo |

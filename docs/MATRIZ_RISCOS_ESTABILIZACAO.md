@@ -1,5 +1,14 @@
 # Matriz de Riscos de Estabilização
 
+## Verificação viva — correção de idioma/status P2D-05 — 05/09/2026
+
+Base `4b873c3` com patch autorizado, não SHA limpo qualificado. Riscos do lote:
+idioma incorreto, truncamento, rodapé excessivo, foco perdido e retenção de
+widget destruído. Proteções Qt e rodada completa local executadas; faltam
+dois symlinks habilitados, runner/build limpos e revisão humana.
+Geometria e critérios não mudam; a candidata não está pronta
+para publicação final. [Registro](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
 ## Verificação viva — sincronização P2D-05 — 04/09/2026
 
 CI Linux/Windows `33932398814` comprovado no SHA `35727d9`; os dois

@@ -1075,6 +1075,8 @@ class CanvasView(QWidget):
         if self._tool and self._tool.on_cancel:
             self._tool.on_cancel()
         self._tool = tool
+        if self._tool and self._tool.update_language:
+            self._tool.update_language(self.current_lang)
         self.update()
 
     def set_pan_mode(self, enabled: bool) -> None:

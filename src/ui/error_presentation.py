@@ -12,6 +12,7 @@ from src.persistence.p2d05_presentation import (
     P2D05Presentation,
     build_p2d05_presentation,
 )
+from src.ui.p2d05_status_notice import P2D05StatusNotice
 
 _STATUS_PERSISTENT_TIMEOUT_MS = 0
 _TITLES = {
@@ -96,6 +97,11 @@ def show_p2d05_error(
     if presentation.channel == "STATUS":
         status_bar = _status_bar_for(parent)
         if status_bar is not None:
+            notice = status_bar.findChild(P2D05StatusNotice, "p2d05_status_notice")
+            if notice is None:
+                notice = P2D05StatusNotice(status_bar)
+                status_bar.insertPermanentWidget(0, notice, 1)
+            notice.present(presentation, parent)
             status_bar.showMessage(
                 presentation.message,
                 _STATUS_PERSISTENT_TIMEOUT_MS,

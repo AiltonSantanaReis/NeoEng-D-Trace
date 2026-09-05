@@ -1,3 +1,15 @@
+## 2026-09-05 — resultado local do lote de idioma e status (pré-commit)
+
+- aplica o idioma ativo à ferramenta selecionada;
+- acrescenta aviso com quebra de texto, detalhes não modais por solicitação,
+  cópia de diagnóstico redigido, descarte e retorno de foco;
+- preserva geometria, comandos, histórico e snapshots; rodada R2 sobre
+  `4b873c3` com patch: 1.968 testes aprovados, dois skips de symlink;
+- cobertura 92,74% de linhas / 85,17% de branches; estática e integridade
+  locais passaram; runner legado e build exigem commit limpo e seguem pendentes;
+- PRECOMMIT e revisão humana pendentes; sem merge, tag ou release.
+  [Registro do lote](docs/P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
 ## 2026-09-04 — sincronização documental da candidata P2D-05
 
 - registra o CI Linux/Windows do SHA `35727d9`, incluindo 1.956 testes

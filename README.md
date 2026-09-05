@@ -1,5 +1,12 @@
 # NeoEng-D-Trace
 
+> **P2D-05 — lote de idioma/status, atualizado em 05/09/2026:** sobre
+> `4b873c3`, ainda em pré-commit. Mensagens legíveis, detalhes seguros e idioma
+> tiveram a rodada local registrada: 1.968 testes passaram, dois symlinks
+> pulados por privilégio; revisão humana, PRECOMMIT e gates limpos pendentes.
+> PR #170 permanece em rascunho, sem merge/tag/release.
+> [Fronteira e acompanhamento do lote](docs/P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
 **Ferramenta desktop local-first para preparação, edição e exportação de assets 2D para jogos.**
 
 O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, criação e correção de máscaras, edição de contornos, polígonos e curvas Bézier, configuração de colisões, preparação de sprites/atlas e integração com engines. O produto não é apresentado como editor de imagens completo, engine de jogos ou modelador 3D.

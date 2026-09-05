@@ -1,5 +1,19 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — correção de idioma/status P2D-05 — 05/09/2026
+
+Base `4b873c3`; o proprietário autorizou corrigir os achados de idioma da
+Caneta e leitura/acesso aos detalhes do canal STATUS. Estado IN_PROGRESS,
+em pré-commit; geometria e histórico protegidos. Não herda CI, symlinks ou
+revisões humanas de pais. PRECOMMIT e qualificação pós-commit pendentes;
+PR #170 em rascunho, Ready/merge/tag/release BLOCKED.
+[Fronteira e gates](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
+R2 local registrada: 1.968 testes aprovados, dois symlinks com WinError 1314;
+cobertura/estática/integridade passaram. Runner legado FAIL por árvore suja,
+build limpo e revisão humana pendentes. Próximo ponto: aceite PRECOMMIT do
+pacote exato, sem declarar etapa concluída ou iniciar outro workstream.
+
 ## Atualização viva — sincronização P2D-05 — 04/09/2026
 
 O SHA `35727d9` passou no CI Linux/Windows `33932398814`, com 1.956

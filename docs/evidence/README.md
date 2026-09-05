@@ -1,4 +1,15 @@
-Estado vivo P2D-05 em 04/09/2026: CI `33932398814` passou no SHA
+Estado vivo P2D-05 em 05/09/2026: lote corretivo de idioma/status autorizado
+sobre `4b873c3`, em pré-commit. Resultados da base não aprovam o patch;
+PRECOMMIT, revisão humana e qualificação do futuro SHA permanecem pendentes.
+[Fronteira do lote](../P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+Não houve merge da PR, tag ou release.
+
+R2 local: 1.968 testes aprovados, dois skips de symlink, cobertura/estática/
+integridade passaram. Runner legado FAIL por árvore não limpa; build não
+executado. Dez capturas Qt reais aguardam revisão humana. Os recibos e o
+pacote pré-commit são privados locais, não qualificação de SHA versionado.
+
+Snapshot de entrada: CI `33932398814` passou no SHA
 `35727d9`, com dois symlinks Windows aprovados sem skip. A sincronização
 autorizada com main `b9557e6` exige novos gates e revisão humana. PR #170
 em rascunho, sem merge, tag ou release.

@@ -1,6 +1,22 @@
 # P2D-05 — acompanhamento vivo da requalificação
 
-## Revisão corrente — sincronização autorizada em 04/09/2026
+## Revisão corrente — lote autorizado em 04/09, atualizado em 05/09/2026
+
+A coleta no merge documental `4b873c3` encontrou idioma incorreto na Caneta
+recém-selecionada e truncamento do canal STATUS. O proprietário autorizou um
+lote limitado a apresentação/idioma, sem mudança de matemática ou histórico.
+Estado IN_PROGRESS, em pré-commit; os resultados são do patch sobre a base,
+não qualificação limpa de 4b873c3. PRECOMMIT, revisão humana, build/CI do
+futuro SHA e symlinks correspondentes seguem pendentes; publicação final
+BLOCKED. [Registro de mudança e gates](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
+Rodada local R2: 1.968 testes aprovados, dois skips WinError 1314; cobertura
+92,74% de linhas / 85,17% de branches e gates de estática/integridade passaram.
+Runner legado retornou FAIL por árvore não limpa; build não executado.
+Código/testes congelados para revisão pré-commit; dez capturas Qt reais
+disponíveis, sem aceite visual humano. Não representa encerramento do lote.
+
+## Snapshot anterior — sincronização autorizada em 04/09/2026
 
 Estado: `IN_PROGRESS`; PR #170 em rascunho. O proprietário aprovou a
 recomendação de preservar o histórico privado, manter `f9f39ed` separado,
