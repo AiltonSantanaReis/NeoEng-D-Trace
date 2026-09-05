@@ -305,6 +305,41 @@ def test_close_uses_both_explicit_handles_of_first_anchor(window):
     assert is_valid_polygon(obj.polygon) and window.scene.cmd.undo_count == 1
 
 
+def test_clicking_empty_after_close_exits_edit_before_next_path(window):
+    first_path = [(80, 80), (200, 80), (200, 200), (80, 200)]
+    for point in [*first_path, first_path[0]]:
+        _click(window, point)
+
+    first_id = window.scene.selected_id
+    assert first_id is not None
+    tool = _tool(window)
+    assert tool._editing_object_id == first_id
+    assert window.scene.cmd.undo_count == 1
+
+    next_start = (300, 220)
+    _click(window, next_start)
+
+    assert len(window.scene.objects) == 1
+    assert window.scene.selected_id is None
+    assert tool._editing_object_id is None
+    assert tool._nodes == []
+    assert window.scene.cmd.undo_count == 1
+    assert first_id in window.scene.objects
+
+    _click(window, next_start)
+    assert [node.anchor for node in tool._nodes] == [
+        (float(next_start[0]), float(next_start[1]))
+    ]
+
+    second_path = [next_start, (350, 220), (350, 270), (300, 270)]
+    for point in [*second_path[1:], second_path[0]]:
+        _click(window, point)
+
+    assert len(window.scene.objects) == 2, tool._last_error
+    assert window.scene.cmd.undo_count == 2
+    assert is_valid_polygon(window.scene.objects[window.scene.selected_id].polygon)
+
+
 def test_explicit_controls_reproducing_old_quantization_defect_still_reject(window):
     # Recreate the old automatic tangent by explicit gestures. The resulting
     # integer overlap must remain invalid; there is no repair or validator bypass.

@@ -176,6 +176,8 @@ class PenTool(BaseTool):
         self._selected_node = None
         self._selected_handle = None
         self._is_placing_handle = False
+        self._closed = False
+        self._cursor_position = None
 
     def _load_selected_bezier_object(self) -> bool:
         model = self._model()
@@ -356,6 +358,19 @@ class PenTool(BaseTool):
             if anchor_hit:
                 self._selected_node = anchor_hit
                 self._selected_handle = None
+                self.canvas_view.update()
+                return
+
+            # A committed object remains loaded so its handles can be edited.
+            # A click that misses every handle and anchor exits that editing
+            # context, matching the selection tool's empty-canvas behavior.
+            # The click itself must not also create a new path; the following
+            # click is the explicit start of a separate creation gesture.
+            if self._editing_object_id is not None:
+                self._clear_loaded_bezier_object()
+                model = self._model()
+                if model is not None and hasattr(model, "select_object"):
+                    model.select_object(None)
                 self.canvas_view.update()
                 return
 
