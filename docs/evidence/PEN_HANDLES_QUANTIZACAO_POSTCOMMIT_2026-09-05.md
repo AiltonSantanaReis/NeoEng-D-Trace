@@ -88,8 +88,8 @@ oficial do SHA commitado.
 
 A primeira execução pós-commit do runner falhou no shard
 `test_stage3_runtime_shaders.py` com `14` testes, `2` falhas, porque o PATH
-resolveu `C:\Users\atnco\AppData\Local\Programs\Python\Python313\Scripts\pyside6-qsb.exe`,
-que não encontrou PySide6. O mesmo shard foi executado no worktree limpo da
+resolveu o `pyside6-qsb.exe` do Python 3.13 global, que não encontrou PySide6.
+O mesmo shard foi executado no worktree limpo da
 base `5b3e6b1` e reproduziu exatamente `12 passed, 2 failed` com a mesma causa.
 Essa falha foi preservada como diagnóstico ambiental herdado; não foi ocultada
 nem atribuída ao patch. Com o qsb do venv explicitamente resolvido, o runner
