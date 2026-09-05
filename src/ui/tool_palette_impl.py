@@ -114,7 +114,8 @@ class ToolPalette(QToolBar):
                 "pen": (
                     "Pen tool (5). Click for corners; drag new anchors for curves. "
                     "Click the first anchor to close; "
-                    "double-click to finish open."
+                    "double-click to finish open. After closing, click empty space "
+                    "to exit editing; click again to start another path."
                 ),
                 "rect": "Rectangle selection (3)",
                 "ellipse": "Ellipse selection (4)",
@@ -131,7 +132,9 @@ class ToolPalette(QToolBar):
                 "pen": (
                     "Ferramenta caneta (5). Clique para cantos; arraste novos "
                     "vértices para curvas. Clique no primeiro vértice para fechar; "
-                    "clique duas vezes para finalizar aberto."
+                    "clique duas vezes para finalizar aberto. Após fechar, clique "
+                    "em espaço vazio para sair da edição; clique novamente para "
+                    "iniciar outro caminho."
                 ),
                 "rect": "Seleção retangular (3)",
                 "ellipse": "Seleção elíptica (4)",

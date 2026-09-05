@@ -93,6 +93,14 @@ def _tool(window):
     return window.canvas._active_tool_object()
 
 
+def test_pen_tooltip_explains_empty_click_transition(window):
+    tooltip = window.tool_palette.tool_buttons["pen_tool"].toolTip()
+    assert "click empty space to exit editing" in tooltip
+    window.tool_palette.update_language("pt")
+    tooltip = window.tool_palette.tool_buttons["pen_tool"].toolTip()
+    assert "clique em espaço vazio para sair da edição" in tooltip
+
+
 @pytest.mark.parametrize("size", [20, 40, 60, 80, 100])
 @pytest.mark.parametrize("reverse", [False, True])
 @pytest.mark.parametrize("zoom", [0.75, 1.0, 2.0])
