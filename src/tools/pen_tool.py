@@ -243,6 +243,7 @@ class PenTool(BaseTool):
         self._nodes = nodes
         self._selected_node = None
         self._selected_handle = None
+        self._is_placing_handle = False
         self._closed = len(canonical) >= 2 and canonical[-1][3] == canonical[0][0]
         self._cursor_position = None
 
@@ -306,6 +307,7 @@ class PenTool(BaseTool):
         return None
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
+        self._is_placing_handle = False
         if event.button() == Qt.MouseButton.LeftButton:
             had_loaded_object = self._editing_object_id is not None
             if had_loaded_object and not self._synchronize_selected_bezier_object():
@@ -358,7 +360,9 @@ class PenTool(BaseTool):
                 return
 
             if self._editing_object_id is None:
+                node_count = len(self._nodes)
                 self._place_anchor(click_point)
+                self._is_placing_handle = len(self._nodes) > node_count
 
         elif event.button() == Qt.MouseButton.RightButton:
             self.show_context_menu(event)
@@ -373,7 +377,10 @@ class PenTool(BaseTool):
         ):
             self.canvas_view.update()
             return
-        if self._selected_node and self._selected_handle:
+        if self._is_placing_handle:
+            if event.buttons() & Qt.MouseButton.LeftButton:
+                self._update_placement_handles(position)
+        elif self._selected_node and self._selected_handle:
             point = (float(position[0]), float(position[1]))
             if self._selected_handle == "in":
                 self._selected_node.handle_in = point
@@ -512,6 +519,8 @@ class PenTool(BaseTool):
 
     def on_mouse_release(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
+            if self._is_placing_handle:
+                self._update_placement_handles(position)
             self._synchronize_selected_bezier_object()
             self._finish_handle_edit()
             self._selected_handle = None
@@ -524,15 +533,35 @@ class PenTool(BaseTool):
             self.canvas_view.update()
 
     def on_key_press(self, event) -> bool:
-        if event.key() == Qt.Key.Key_Escape and self._active_handle_edit is not None:
-            return self._cancel_active_handle_edit()
+        if event.key() == Qt.Key.Key_Escape:
+            return self._cancel_active_handle_edit() or self._cancel_creation_preview()
         return False
 
     def on_undo(self) -> bool:
-        return self._cancel_active_handle_edit()
+        return self._cancel_active_handle_edit() or self._cancel_creation_preview()
 
     def on_redo(self) -> bool:
-        return self._cancel_active_handle_edit()
+        return self._cancel_active_handle_edit() or self._cancel_creation_preview()
+
+    def _cancel_creation_preview(self) -> bool:
+        if self._editing_object_id is not None or not self._nodes:
+            return False
+        self.cancel()
+        return True
+
+    def _update_placement_handles(self, position: Tuple[float, float]) -> None:
+        node = self._selected_node
+        if node is None or self._editing_object_id is not None:
+            return
+        dx = float(position[0]) - node.anchor[0]
+        dy = float(position[1]) - node.anchor[1]
+        # Ignore click jitter in logical screen pixels, independently of zoom.
+        if math.hypot(dx, dy) * self.get_canvas_zoom() < 3.0:
+            node.handle_in = node.anchor
+            node.handle_out = node.anchor
+            return
+        node.handle_out = (node.anchor[0] + dx, node.anchor[1] + dy)
+        node.handle_in = (node.anchor[0] - dx, node.anchor[1] - dy)
 
     def _place_anchor(self, point: Tuple[float, float]):
         max_nodes = ((MAX_POLYGON_POINTS - 1) // self._curve_segments) + 1
@@ -548,26 +577,8 @@ class PenTool(BaseTool):
             )
             return
         new_node = BezierNode(point)
-
-        if self._nodes:
-            last_node = self._nodes[-1]
-            if len(self._nodes) >= 2:
-                prev_node = self._nodes[-2]
-                dx = last_node.anchor[0] - prev_node.anchor[0]
-                dy = last_node.anchor[1] - prev_node.anchor[1]
-                dist = math.sqrt(dx * dx + dy * dy)
-                if dist > 0:
-                    handle_dist = min(dist * 0.3, 50)
-                    new_node.handle_in = (
-                        point[0] + dx / dist * handle_dist,
-                        point[1] + dy / dist * handle_dist,
-                    )
-
-            last_node.handle_out = (
-                last_node.anchor[0] - (new_node.handle_in[0] - point[0]),
-                last_node.anchor[1] - (new_node.handle_in[1] - point[1]),
-            )
-
+        # A click creates a corner. Only an explicit drag authors handles;
+        # adding a neighbour must never rewrite controls already chosen.
         self._nodes.append(new_node)
         self._selected_node = new_node
 

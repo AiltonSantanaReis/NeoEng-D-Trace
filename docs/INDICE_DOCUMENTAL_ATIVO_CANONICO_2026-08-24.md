@@ -69,6 +69,18 @@ aprovado para implementação sobre 4b873c3. Subordinado ao contrato global,
 decisão P2D-05, política e governança; informa README, plano mestre, matriz,
 acompanhamento e evidências. Não substitui snapshots ou requisitos.
 
+Registro ativo adicional: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md,
+ID PEN-HANDLES-20260905, versão 1, IN_PROGRESS / PRECOMMIT_PENDING; autorização
+do proprietário para corrigir alças explícitas e quantização sem relaxar a
+validação. Subordinado ao contrato global, decisão P2D-05, política e
+governança; informa README, plano mestre, matriz, acompanhamento e evidências.
+Não substitui snapshots, requisitos ou gates dos lotes anteriores.
+
+Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md,
+ID EVID-PEN-HANDLES-QUANTIZATION-20260905, estado IN_PROGRESS /
+PRECOMMIT_PENDING; relatório dos testes do candidato não commitado, seus
+limites e a decisão de não publicar antes do aceite do patch exato.
+
 ## 3. Documentos superseded
 
 | Documento | Estado | Substituto | Motivo |

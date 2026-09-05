@@ -1,5 +1,17 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — lote corretivo da Caneta — 05/09/2026
+
+A branch Ailton/pen-handles-quantization-20260905, baseada em 5b3e6b1,
+corrige a origem de tangentes implícitas e implementa alças apenas por arraste
+explícito. Os controles existentes do validador e da quantização não foram
+alterados. A rodada focada passou 69/69; a suíte agregada local permanece
+FAIL diagnóstico (2016 passed, 2 skipped, 1 failed), com a mesma falha
+modal reproduzida na base limpa. Estado IN_PROGRESS / PRECOMMIT_PENDING;
+runner oficial, build, CI e publicação continuam bloqueados até aceite do
+patch exato e requalificação limpa.
+Registro: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
 ## Atualização viva — correção de idioma/status P2D-05 — 05/09/2026
 
 Base `4b873c3`; o proprietário autorizou corrigir os achados de idioma da

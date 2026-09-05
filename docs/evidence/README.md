@@ -1,3 +1,14 @@
+## Lote corretivo da Caneta — estado pré-commit — 05/09/2026
+
+PEN-HANDLES-20260905 permanece IN_PROGRESS / PRECOMMIT_PENDING na branch
+Ailton/pen-handles-quantization-20260905, base 5b3e6b1. A rodada Qt focada
+passou 69/69; a suíte agregada local registrou 2016 passed, 2 skipped,
+1 failed, com a mesma falha modal reproduzida no worktree limpo da base.
+Os recibos locais estão sob build/pen-handles-qualification-20260905/ e
+não constituem, sozinhos, evidência versionada de SHA. Não há commit, push,
+merge, tag ou release deste lote.
+Registro: ../LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
 Estado vivo P2D-05 em 05/09/2026: lote corretivo de idioma/status autorizado
 sobre `4b873c3`, em pré-commit. Resultados da base não aprovam o patch;
 PRECOMMIT, revisão humana e qualificação do futuro SHA permanecem pendentes.

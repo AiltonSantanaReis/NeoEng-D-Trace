@@ -26,6 +26,8 @@ Quando dois documentos ativos discordarem, a execução deverá ser bloqueada at
 
 | Documento | Status | Função | Depende de | Governa |
 |---|---|---|---|---|
+| LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md | IN_PROGRESS / PRECOMMIT_PENDING | Alças explícitas, fechamento e proteção da validação Bézier | governança, política, decisão P2D-05 e plano mestre | Caneta, testes e evidências do lote |
+| docs/evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md | IN_PROGRESS / PRECOMMIT_PENDING | Evidência do candidato não commitado, seus testes, limitações e decisão de não publicação | lote PEN-HANDLES-20260905 e governança | revisão PRECOMMIT e requalificação posterior |
 | `INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md` | ATIVO / PREVALENTE | Índice consolidado e resolução formal de conflitos documentais | decisões aprovadas | cadeia documental |
 | `GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md` | ATIVO / PREVALENTE | Integridade, anti-bypass, testes reais, avanço sequencial e baseline | decisões aprovadas | todos os documentos e etapas |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | Produto, arquitetura, renderer, 2.5D, 3D e encerramento | governança | execução do produto |

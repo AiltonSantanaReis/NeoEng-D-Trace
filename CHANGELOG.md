@@ -1,3 +1,12 @@
+## 2026-09-05 — lote da Caneta em pré-commit
+
+- remove tangentes implícitas da criação por clique e adiciona alças somente
+  por arraste explícito;
+- preserva rejeições de polígonos inválidos, histórico transacional,
+  cancelamento, persistência e exportação;
+- estado IN_PROGRESS / PRECOMMIT_PENDING; rodada focada 69/69, sem commit,
+  push, merge, tag ou release.
+
 ## 2026-09-05 — resultado local do lote de idioma e status (pré-commit)
 
 - aplica o idioma ativo à ferramenta selecionada;

@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "d8bc6955ade147da9664676bf752cf40d138a5b42585c7484875e01cdbd4d240",
-      "size": 63018
+      "sha256": "46aed63a29977e76a9e797e7e5982cfdb73a12fe4df00f0b584498f41b748864",
+      "size": 63401
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "c91d742f38da3551a8ea7530ac809430f42ed0fb041864e92c815f8f84560d4c",
-      "size": 15293
+      "sha256": "ab503a1531a890b2a7e88c3fec499ef7b05aaba1df12616ac7c231bd06815657",
+      "size": 15865
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -525,12 +525,12 @@
       "size": 2092
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_2026-08-24.md": {
-      "sha256": "fca9078263a5ec1f781ba8f1200cd2e8a917f2936f306027ad8d3a177dbe14cc",
-      "size": 5059
+      "sha256": "fa59ae33df2ebb20ef45124367247557c3dcbad007d9f54eaa6a9bc97550c765",
+      "size": 5598
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md": {
-      "sha256": "edcc9813c0dcdeeae6dfb090628426e42ce2dddc536d3a0078effb8912848256",
-      "size": 9957
+      "sha256": "622619cfacc28006cee83d0924305f60949de22b167caaa297b99c65279e5d72",
+      "size": 10717
     },
     "docs/INTEGRIDADE_P2D_05_O2_0_2026-08-30.md": {
       "sha256": "1379336b40d3142b63e7d674739bee1efc25e069cdf793652876f0e76bed680e",
@@ -539,6 +539,10 @@
     "docs/INVENTARIO_LOCALIZACAO_0_6N1.md": {
       "sha256": "8a3f3122fbe4e20c65e2f2d24adc74dab62fa89b66b7499e4658a725c953fee3",
       "size": 1220
+    },
+    "docs/LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md": {
+      "sha256": "3d81fb51ba6a0e4b6eef94d88f702fec700cd93362a4cf5d6049085c3e9d5282",
+      "size": 7121
     },
     "docs/MATRIZ_FUNCIONALIDADES.md": {
       "sha256": "dfb92fe4f1ae5ebc6bf61fb62422e9792e6eb24674bec8b484693b6a89c63304",
@@ -549,8 +553,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "69012075cf9682ada8afecd7052833dbaf096abe16dbc4a4c8d5b44b195ea308",
-      "size": 30871
+      "sha256": "bfd0362c524435cdda67585c30833f1132f6d2f1cc2f0dd94b59d5c8892d10ca",
+      "size": 31413
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -565,8 +569,8 @@
       "size": 7965
     },
     "docs/P2D05_REQUALIFICACAO_ATUAL.md": {
-      "sha256": "cfe809178140cb6891ec72e28bc947ff0fb39bc6418d5579fda4125d0b69d7e6",
-      "size": 7580
+      "sha256": "54741eceb5b1ba10363232a39d28c5f055380be0ef5162832ffd6274c7bd5601",
+      "size": 8504
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "59de520a30f0f4fad9474ed56466aabf02881512da5e1d99e7975916cb479ed7",
@@ -597,8 +601,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "7018d0b71e24f71104a9fa86b91de890206aa082822f32d068ba36d7736359aa",
-      "size": 29125
+      "sha256": "ca6f7f61d10cd7448c5fb2f414bbc06ee360497b4fffeac928bd7af56b722494",
+      "size": 29814
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1432,6 +1436,10 @@
       "sha256": "1a7586efce0977b526a6e231cbcb39f2eff2cf7093b32bdecef26090551e20cb",
       "size": 8384
     },
+    "docs/evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md": {
+      "sha256": "5d20dbfa0e226fb12073c3cd13ec6ccaf2e3d2b6d67fb8e1e8a6ca9714de1ed7",
+      "size": 6151
+    },
     "docs/evidence/PLANO_INTERFACE_CONSOLIDACAO_ENCERRAMENTO_POS_MERGE_2026-08-23.md": {
       "sha256": "43f7e820676576a9d9a113cdfa7c561d0058528efc6d6d15e530e9a8e64b93c9",
       "size": 2775
@@ -1457,8 +1465,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "60d9af59f2813f750d71e81f2f06fa3d1df2f45aac5bd07f83cbdbc9f2aa6e0a",
-      "size": 54097
+      "sha256": "b2ce0579d7a4827e2857a38dd7dc3be692aeeb50969aac65d1bbe473089f679a",
+      "size": 54703
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",
@@ -11909,8 +11917,8 @@
       "size": 10921
     },
     "src/tools/pen_tool.py": {
-      "sha256": "9227de5494550b2910faa93a443a7ae8b3498103d7803e920638c10ab5557d98",
-      "size": 33642
+      "sha256": "db707f4bf9ac7337e3c27162dcc6aa5a628367e7b5c5e6e4975eedf3e0ef3c4f",
+      "size": 34370
     },
     "src/tools/polygon_edit_tool.py": {
       "sha256": "901c01317b1c3440e07ccf3e837064f26b40ed06ff01235b3bde8670e60e82c7",
@@ -12093,8 +12101,8 @@
       "size": 1322
     },
     "src/ui/tool_palette_impl.py": {
-      "sha256": "e24b4058e7530a542789a5442dc24d359bab64b780fc317f734492dcb423f731",
-      "size": 15030
+      "sha256": "e4a468d48aea83d2854a832ca9f81545fa225abeb69b5cbcf2e21c4a2639f1d7",
+      "size": 15181
     },
     "src/ui/top_command_contract.py": {
       "sha256": "4fcfdcc33523a4885195a4a305da5d5ef6801b72bdc72b2d81d14e59ee4a7ec8",
@@ -12281,8 +12289,8 @@
       "size": 5244
     },
     "tests/test_functional_user_flows.py": {
-      "sha256": "123cd7d6124ad716b3c19f714065ee0292a6b67b61075ee3e18e5e246d73685c",
-      "size": 16101
+      "sha256": "e4ebb51a9add61738c667f3df32b8a2f993a65849d771b68368def3eca423f3f",
+      "size": 16195
     },
     "tests/test_gltf_exporter_contract.py": {
       "sha256": "9afaac660d0401e70262fa00485abeae6b43be6db71579d892251cfc108c51fd",
@@ -12431,6 +12439,10 @@
     "tests/test_p2d_05_o2_preview.py": {
       "sha256": "661ef2ec4fa901eb8a5e99c851e3a4ddeec8b60b958ff6bb334f2a6e9c45bff6",
       "size": 15477
+    },
+    "tests/test_pen_creation_gestures.py": {
+      "sha256": "6dd1fe7cf55f0a47fe60c2a3a311df815ac355830f4634f365f5466b060d0885",
+      "size": 13045
     },
     "tests/test_project_persistence_atomic.py": {
       "sha256": "ddf80c6e44a76ead0ae34d3ee50bf3e1738766aee5a659185b4ad8d0705e9ce5",

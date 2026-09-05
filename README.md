@@ -1,5 +1,14 @@
 # NeoEng-D-Trace
 
+> Lote corretivo da Caneta — 05/09/2026: a branch
+> Ailton/pen-handles-quantization-20260905 contém uma candidata ainda sem
+> commit para alças explícitas e quantização. A rodada focada passou 69/69;
+> a suíte agregada local registrou 2016 passed, 2 skipped, 1 failed, sendo a
+> falha modal reproduzida também na base limpa. O resultado permanece
+> IN_PROGRESS / PRECOMMIT_PENDING; runner oficial, build, CI e publicação
+> estão bloqueados até o aceite e a requalificação do SHA limpo. Registro do
+> lote: docs/LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
 > **P2D-05 — lote de idioma/status, atualizado em 05/09/2026:** sobre
 > `4b873c3`, ainda em pré-commit. Mensagens legíveis, detalhes seguros e idioma
 > tiveram a rodada local registrada: 1.968 testes passaram, dois symlinks

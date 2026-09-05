@@ -1,5 +1,15 @@
 # Matriz de Riscos de Estabilização
 
+## Verificação viva — lote corretivo da Caneta — 05/09/2026
+
+O lote PEN-HANDLES-20260905 está em IN_PROGRESS / PRECOMMIT_PENDING na
+branch Ailton/pen-handles-quantization-20260905, base 5b3e6b1. A proteção
+focada passou 69/69; a suíte agregada reproduziu uma falha modal já presente
+na base limpa (2016 passed, 2 skipped, 1 failed). A correção não relaxa
+validação nem repara geometrias inválidas. Qualificação limpa, runner oficial,
+build e CI permanecem pendentes.
+Registro: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
 ## Verificação viva — correção de idioma/status P2D-05 — 05/09/2026
 
 Base `4b873c3` com patch autorizado, não SHA limpo qualificado. Riscos do lote:

@@ -1,5 +1,22 @@
 # P2D-05 — acompanhamento vivo da requalificação
 
+## Revisão corrente — lote corretivo da Caneta — 05/09/2026
+
+O lote PEN-HANDLES-20260905 é uma alteração geométrica separada do lote
+anterior de idioma/status. Na base 5b3e6b1, a criação por clique introduzia
+controles implícitos que podiam produzir auto-retorno após a quantização. A
+candidata elimina essa mutação implícita e cria alças somente por arraste
+explícito, preservando o validador de polígonos inválidos.
+
+Estado IN_PROGRESS / PRECOMMIT_PENDING, sem SHA de commit candidato. A
+rodada focada passou 69/69, com persistência/exportação e cancelamento
+incluídos. A suíte agregada local deu 2016 passed, 2 skipped, 1 failed;
+essa falha modal foi reproduzida na base limpa e permanece classificada como
+diagnóstico herdado. Runner oficial, cobertura, build, CI remoto e revisão
+humana ainda não qualificam este lote.
+Fronteira e resultados:
+LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
 ## Revisão corrente — lote autorizado em 04/09, atualizado em 05/09/2026
 
 A coleta no merge documental `4b873c3` encontrou idioma incorreto na Caneta
