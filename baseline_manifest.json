@@ -12145,8 +12145,8 @@
       "size": 20
     },
     "tests/conftest.py": {
-      "sha256": "e659188f07ea3ebd47125c85fbb588e684642d8030a6ac1476183470f11d4629",
-      "size": 133
+      "sha256": "615d4a447d1b6b6487224a4b203a1873b2517a28faf007b29f2f27e2a54ec6e1",
+      "size": 740
     },
     "tests/fixtures/release_smoke.ndtproj": {
       "sha256": "ad50a0cf9ed06e96f3612748ce78cfffe9f2debeba206dc84bb6672277a68d72",
