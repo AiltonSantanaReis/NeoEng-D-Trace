@@ -10,21 +10,23 @@ O NeoEng-D-Trace concentra em um fluxo verificável a seleção assistida, cria�
 
 ## Estado operacional atual — requalificação P2D-05
 
-Na branch `Ailton/error-presentation-contract-20260904`, a fonte `efb0caf`
-passou em tipagem, baseline, evidências rastreadas, cobertura e build local.
-A requalificação é `PARCIAL`: dois testes de symlink dependem de privilégio.
-Publicação permanece `BLOCKED`; o CI e a revisão humana de versões anteriores
-não aprovam esta candidata. Consulte o [acompanhamento vivo](docs/P2D05_REQUALIFICACAO_ATUAL.md)
-para escopo, integridade, limitações e próximos gates.
+Na branch `Ailton/error-presentation-contract-20260904`, o SHA `35727d9`
+passou no CI Linux/Windows `33932398814`; os dois symlinks passaram sem skip
+no Windows. A PR `#170` permanece em rascunho. O proprietário autorizou
+preservação privada e sincronização de `main` na candidata, sem merge da PR.
+A integração documental com `b9557e6` exige requalificação do SHA resultante;
+revisão humana atual, Ready for review, merge, tag e release não estão aprovados.
+Consulte o [acompanhamento vivo](docs/P2D05_REQUALIFICACAO_ATUAL.md) para
+evidências, fronteira de autorização e roteiro de revisão.
 
-## Snapshot histórico — candidata pré-merge da Etapa 7
+## Snapshot histórico — candidata integrada da Etapa 7
 
-A revisão corrente é a candidata da branch `Ailton/legacy26-closure-audit`,
-com produto validado no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4` e
-HEAD publicado `ac96825fa36edf686a173f7fad9e51d9ff41705d`. A PR `#168`, base
-`main`, permanece aberta e sem merge.
+A revisão corrente é a integração da PR `#168` em `main`, pelo merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O produto foi validado no SHA
+`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o commit-fonte da PR foi
+`9adb66a5ab9cfaabc1703d4b9b225b141473ec52`.
 
-O run remoto `33863522514` passou integralmente em Linux (`test`) e Windows
+O CI pós-merge `33871734689` passou integralmente em Linux (`test`) e Windows
 (`test-windows`). C12 e C13 estão `PASS` no escopo comprovado; a prova VMware
 continua scoped à reconstrução identificada e o empacotamento portátil mantém
 a limitação de proveniência documentada. Snapshots legados foram preservados.
@@ -127,13 +129,14 @@ As integrações não carregam binários ou dependências baixadas automaticamen
 validação real registrada para Godot e Unity permanece vinculada aos fixtures,
 versões e evidências indicados em `docs/evidence`.
 
-## Validação do estado atual
+## Validação histórica — Etapa 7 / PR #168
 
-O estado vivo desta revisão é uma candidata técnica pré-merge com gates locais
-e CI remoto concluídos no escopo comprovado, não uma release. O produto foi
+O estado documentado abaixo é a candidata da PR #168 integrada em `main`, com
+gates locais e CI pós-merge concluídos no escopo comprovado, não uma release.
+Não qualifica o HEAD P2D-05 ou a sincronização da PR #170. O produto foi
 validado no SHA `6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; a documentação da
 candidata foi publicada no HEAD `ac96825fa36edf686a173f7fad9e51d9ff41705d`,
-na branch `Ailton/legacy26-closure-audit`, PR `#168`, sem merge:
+na branch-fonte `Ailton/legacy26-closure-audit`, integrada pela PR `#168` no merge `9a25f0be…`:
 
 - gates locais completos no produto: suíte `1922 passed, 2 skipped`, runner
   Windows `190/190` arquivos e `1924` testes, cobertura `92,67%` de linhas e
@@ -148,14 +151,14 @@ na branch `Ailton/legacy26-closure-audit`, PR `#168`, sem merge:
 - VMware: validação dos symlinks ficou scoped ao ZIP/patch identificado; no
   host atual, os dois testes dependentes de privilégio continuam `skip` por
   `WinError 1314`;
-- CI remoto `33863522514`: Linux `test` e Windows `test-windows`, `PASS`.
+- CI pós-merge `33871734689`: Linux `test` e Windows `test-windows`, `PASS`.
 
 O relatório final está em
 `docs/evidence/ETAPA_7_GATES_FINAIS_2026-09-04-6EDE.md`, com a atualização
-pós-CI remoto e os artefatos hashados em
+pós-merge e os artefatos hashados em
 `docs/evidence/artifacts/pen-tool-revalidation-20260904-6ede/`. O plano está
-`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO` para C12/C13; merge, tag e release
-continuam sem autorização.
+`APROVADO / CONCLUÍDO NO ESCOPO COMPROVADO` para C12/C13; o merge está
+registrado no commit `9a25f0be…`. Tag e release continuam sem autorização.
 
 Os artefatos e hashes que sustentam essas afirmações estão nos documentos de
 `docs/evidence`; o README não substitui os logs nem reclassifica testes não

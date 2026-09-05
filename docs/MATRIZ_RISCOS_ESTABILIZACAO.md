@@ -1,6 +1,17 @@
 # Matriz de Riscos de Estabilização
 
-## Verificação viva — P2D-05 — 04/09/2026
+## Verificação viva — sincronização P2D-05 — 04/09/2026
+
+CI Linux/Windows `33932398814` comprovado no SHA `35727d9`; os dois
+symlinks passaram sem skip. O risco remanescente é atribuir esse resultado ao
+merge de sincronização com `b9557e6` antes dos novos gates. Revisão humana
+atual segue pendente. A PR #170 permanece em rascunho; publicação final
+`BLOCKED`. Históricos privados e teste `f9f39ed` foram preservados fora
+da publicação; não são incorporados ao P2D-05. A restauração privada foi
+verificada, mas a cópia local não protege contra perda do disco.
+Fronteira: `docs/P2D05_REQUALIFICACAO_ATUAL.md`.
+
+## Snapshot anterior — fonte efb0caf
 
 Fonte `efb0caf`: os três erros globais de tipagem foram corrigidos e o baseline
 reconciliado. Integridade passou em 134 manifestos limpos; três pacotes locais não
@@ -34,15 +45,15 @@ revisão humana e CI remoto continuam pendentes. Publicação `BLOCKED`.
 | R-021 | P1 | Runtime de triggers CPU foi integrado sem adaptadores nativos de engine | Consumidores podem interpretar o sidecar CPU como suporte Godot/Unity ou receber eventos fora de ordem | Contrato lateral hash-bound, fixed update, ordenação determinística, replay, cancelamento atômico, limites, auditor fail-closed e declaração explícita de não integração |
 | R-022 | P1 | Streaming pode produzir carregamento não determinístico, descarte inseguro ou uso lógico de memória sem limite | Assets ausentes, cache inconsistente, falhas silenciosas ou crescimento não controlado | Sidecar hash-bound, raiz confinada, prioridades estáveis, limite de pendências, cache LRU, cancelamento observável, retry explícito, rollback atômico, auditor fail-closed e CI
 
-### Verificação viva — candidata pré-merge LEGACY-26 — 04/09/2026
+### Verificação histórica — encerramento pós-merge LEGACY-26 — 04/09/2026
 
-Na candidata da PR `#168`, o produto foi validado no SHA `6ede2f6…` e a
-documentação no HEAD `ac96825…`, sem merge. O run remoto `33863522514` passou
-nos jobs Linux e Windows; C01–C13 estão `PASS` no escopo comprovado. B-04 está
-resolvido, os snapshots do runner legado foram preservados e a prova VMware
-permanece `PASS_SCOPED` à reconstrução ZIP/patch identificada. O empacotamento
-portátil mantém a limitação de proveniência documentada. Tag e release
-continuam sem aprovação.
+Na integração da PR `#168`, o produto foi validado no SHA `6ede2f6…` e o
+merge efetivo é `9a25f0be…`. O CI pós-merge `33871734689` passou nos jobs Linux
+e Windows; C01–C13 estão `PASS` no escopo comprovado. B-04 está resolvido,
+os snapshots do runner legado foram preservados e a prova VMware permanece
+`PASS_SCOPED` à reconstrução ZIP/patch identificada. O empacotamento portátil
+mantém a limitação de proveniência documentada. Tag e release continuam sem
+aprovação.
 
 ### Verificação histórica pós-merge — PR #166 — 03/09/2026
 

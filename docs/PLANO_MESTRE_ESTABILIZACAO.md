@@ -1,6 +1,17 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
-## Atualização viva — P2D-05 — 04/09/2026
+## Atualização viva — sincronização P2D-05 — 04/09/2026
+
+O SHA `35727d9` passou no CI Linux/Windows `33932398814`, com 1.956
+testes Windows e zero skips, incluindo os dois symlinks. A PR #170 continua
+em rascunho. O proprietário autorizou preservar o histórico privado e
+sincronizar main `b9557e6` na candidata, sem merge da PR ou publicação de
+históricos privados. A integração exige gates próprios e revisão humana
+vinculada à candidata exata; o CI de entrada não aprova seu descendente.
+Estado global `IN_PROGRESS`; Ready, merge, tag e release `BLOCKED`.
+Fronteira e evidência: [registro vivo P2D-05](P2D05_REQUALIFICACAO_ATUAL.md).
+
+## Snapshot anterior — P2D-05 — fonte efb0caf
 
 Fonte local `efb0caf`, branch `Ailton/error-presentation-contract-20260904`:
 tipagem e baseline corrigidos; integridade rastreada aprovada no checkout limpo.
@@ -16,14 +27,14 @@ O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a font
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
-## Atualização viva — candidata pré-merge LEGACY-26 — 04 de setembro de 2026
+## Snapshot histórico — encerramento pós-merge LEGACY-26 — 04 de setembro de 2026
 
-A revisão corrente é a candidata técnica da PR `#168`, base `main`, na branch
-`Ailton/legacy26-closure-audit`. O produto foi validado no SHA
-`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o HEAD documental publicado é
-`ac96825fa36edf686a173f7fad9e51d9ff41705d`, sem merge.
+A revisão corrente é a integração da PR `#168` em `main`, pelo merge commit
+`9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O produto foi validado no SHA
+`6ede2f6073f6d2aaf5a394e4043019a3ac85a5e4`; o commit-fonte da PR é
+`9adb66a5ab9cfaabc1703d4b9b225b141473ec52`.
 
-O run remoto `33863522514` passou em Linux e Windows, incluindo baseline,
+O CI pós-merge `33871734689` passou em Linux e Windows, incluindo baseline,
 integridade de evidências, suíte/cobertura, estática, segurança, Stage 4B.5,
 runner legado formal e verificação da árvore-fonte. C01–C13 estão `PASS` no
 escopo comprovado e o plano mestre está `APROVADO / CONCLUÍDO NO ESCOPO

@@ -1,3 +1,15 @@
+## 2026-09-04 — sincronização documental da candidata P2D-05
+
+- registra o CI Linux/Windows do SHA `35727d9`, incluindo 1.956 testes
+  aprovados no Windows, sem skips; resultados não transferidos ao novo SHA;
+- reconcilia o encerramento da PR #168 presente em `main` com o estado
+  P2D-05 da PR #170, preservando ambos os históricos e sem alterar o produto;
+- preserva referências privadas e verifica restauração de um bundle completo;
+  o teste antigo `f9f39ed` permanece separado, sem incorporação automática;
+- mantém a PR em rascunho, a requalificação da integração e o aceite humano
+  pendentes; não autoriza merge da PR, tag ou release;
+- evidência: `docs/evidence/P2D05_SINCRONIZACAO_MAIN_2026-09-04.md`.
+
 ## 2026-09-04 — resultados locais P2D-05 no SHA efb0caf
 
 - tipagem global e baseline corrigidos; 134 manifestos rastreados validados em
@@ -18,6 +30,16 @@
 - distingue evidências rastreadas de pacotes locais históricos não rastreados,
   preservando ambos; qualificação completa e publicação continuam pendentes;
 - detalhes em `docs/P2D05_REQUALIFICACAO_ATUAL.md`.
+
+## 2026-09-04 — encerramento pós-merge da PR #168
+
+- registra a integração da PR `#168` em `main` pelo merge commit
+  `9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`;
+- confirma o CI pós-merge `33871734689` em Linux e Windows, com todos os gates
+  obrigatórios aprovados;
+- preserva a confirmação humana C12, C13 e os snapshots legados no escopo
+  comprovado, mantendo as limitações de proveniência explícitas;
+- mantém tag e release sem aprovação.
 
 ## 2026-09-04 — validação remota da candidata LEGACY-26 (histórico)
 

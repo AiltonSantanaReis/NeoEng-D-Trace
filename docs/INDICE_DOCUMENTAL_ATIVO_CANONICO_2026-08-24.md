@@ -61,6 +61,7 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | requisitos visuais e UX | plano normativo |
 | `EVIDENCIA_AUDITORIA_PUBLICACAO_PRIVACIDADE_2026-08-30.md` | ATIVO / EVIDÊNCIA DE PUBLICAÇÃO | auditoria repository-wide, revisão dos commits locais e saneamento da linha publicada | governança e requisitos de escopo final |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | prova da Etapa 5 | governança e etapa |
+| `evidence/P2D05_SINCRONIZACAO_MAIN_2026-09-04.md` | ATIVO / EVIDÊNCIA DE SINCRONIZAÇÃO | registro v1, P2D-05, bases 35727d9/b9557e6; commit de inclusão é o merge que introduz este registro | política de qualidade, governança, contrato global P2D-05; informa README, plano mestre, matriz e acompanhamento vivo; não altera requisitos ou IDs |
 
 ## 3. Documentos superseded
 

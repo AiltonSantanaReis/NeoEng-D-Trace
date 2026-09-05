@@ -1,5 +1,31 @@
 # P2D-05 — acompanhamento vivo da requalificação
 
+## Revisão corrente — sincronização autorizada em 04/09/2026
+
+Estado: `IN_PROGRESS`; PR #170 em rascunho. O proprietário aprovou a
+recomendação de preservar o histórico privado, manter `f9f39ed` separado,
+sincronizar `origin/main` na candidata e requalificar antes da revisão humana.
+A autorização não permite merge da PR, tag, release ou aceite humano automático.
+
+Entrada: `35727d99c7002ad26c3277dff8542f82dad4c3f8`; main incorporada:
+`b9557e6e85c7b28adf90ea616c171e222c96e84c`. O merge de sincronização
+preserva ambos os pais, sem rebase/force-push. A alteração recebida de main é
+documental; código, testes, dependências, workflows e snapshots binários não
+serão modificados por este lote. O manifesto vivo deve conter a união da
+fronteira aprovada, sem remoções para obter PASS.
+
+O CI `33932398814` passou em Linux e Windows no SHA de entrada: Windows
+1.956 testes, zero falhas, erros ou skips; os dois testes de symlink foram
+conferidos nominalmente no JUnit. Isso resolve a pendência no SHA `35727d9`,
+não aprova o novo commit de integração. Revisão humana da UI continua
+`PENDING_EVIDENCE`; Ready/merge/release permanecem `BLOCKED`.
+
+Evidência e roteiro: [sincronização da candidata](evidence/P2D05_SINCRONIZACAO_MAIN_2026-09-04.md).
+Os registros anteriores abaixo conservam seus resultados e limitações de
+época; não descrevem o resultado de gates posteriores.
+
+## Snapshot anterior — fonte efb0caf
+
 **Data:** 2026-09-04. **Estado:** `PARCIAL / BLOCKED` para publicação.
 **Base:** `7283e40dea58f039e9d16b1584739ca339058e5f`.
 **SHA-fonte requalificado localmente:** `efb0caf6fcf34b2ccdcf2d70314a6b2ea69991d3`.
