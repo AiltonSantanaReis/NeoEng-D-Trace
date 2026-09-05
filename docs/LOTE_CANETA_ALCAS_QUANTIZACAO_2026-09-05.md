@@ -1,8 +1,27 @@
 # Lote corretivo da Caneta — alças explícitas e fechamento
 
-ID: PEN-HANDLES-20260905. Estado: IN_PROGRESS.
+ID: PEN-HANDLES-20260905. Estado: IN_PROGRESS / BLOCKED.
 Base: `5b3e6b15cee93ef5c9d1d550745293fb8372b5b9`.
 Branch: `Ailton/pen-handles-quantization-20260905`.
+Commit qualificado localmente: `1068166f3c046e008928d98e68fdb187838c87bc`.
+
+## Atualização pós-commit — 05/09/2026
+
+O commit `1068166f3c046e008928d98e68fdb187838c87bc` foi requalificado em
+árvore limpa. O runner Windows oficial passou `196/196` arquivos, `2019`
+testes, zero falhas/erros e dois skips condicionais previstos. Cobertura,
+estática, segurança, Stage 4B.5, baseline/evidências, gate formal legado e
+build portátil com smoke `SUCCESS` passaram no mesmo SHA.
+
+A primeira falha do runner veio de `pyside6-qsb` resolvido no Python 3.13 sem
+PySide6; a mesma falha foi reproduzida na base limpa `5b3e6b1`. Com o qsb do
+venv correto, o runner passou, portanto não há regressão da Caneta nesse
+diagnóstico. A evidência permanente está em
+`docs/evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md`.
+
+O estado permanece `IN_PROGRESS / BLOCKED`: a auditoria nativa de cliques do
+SO e o CI remoto ainda não foram executados. Push, merge, tag e release não
+foram realizados.
 
 ## Autorização, precedência e escopo
 
@@ -95,7 +114,11 @@ Build oficial e runner legado requerem árvore limpa; não serão contornados.
 Rollback: reversão específica do futuro commit deste lote sobre `5b3e6b1`,
 preservando arquivos locais, snapshots, branches e commits anteriores.
 
-## Resultados observados — atualização 05/09/2026
+## Snapshot de pré-commit — resultados observados em 05/09/2026
+
+> Este bloco preserva o estado anterior ao commit. A qualificação pós-commit
+> vigente está registrada acima e na evidência separada; não reinterpretar
+> estes resultados como prova do SHA atual.
 
 O worktree candidato permanece sem commit sobre a base declarada.
 

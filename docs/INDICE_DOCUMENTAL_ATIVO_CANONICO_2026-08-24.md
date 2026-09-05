@@ -70,16 +70,23 @@ decisão P2D-05, política e governança; informa README, plano mestre, matriz,
 acompanhamento e evidências. Não substitui snapshots ou requisitos.
 
 Registro ativo adicional: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md,
-ID PEN-HANDLES-20260905, versão 1, IN_PROGRESS / PRECOMMIT_PENDING; autorização
-do proprietário para corrigir alças explícitas e quantização sem relaxar a
-validação. Subordinado ao contrato global, decisão P2D-05, política e
-governança; informa README, plano mestre, matriz, acompanhamento e evidências.
-Não substitui snapshots, requisitos ou gates dos lotes anteriores.
+ID PEN-HANDLES-20260905, versão 1, IN_PROGRESS / BLOCKED; commit
+`1068166f3c046e008928d98e68fdb187838c87bc` requalificado localmente, sem CI
+remoto ou auditoria nativa. A autorização do proprietário para corrigir alças
+explícitas e quantização não relaxa a validação. Subordinado ao contrato
+global, decisão P2D-05, política e governança; informa README, plano mestre,
+matriz, acompanhamento e evidências. Não substitui snapshots, requisitos ou
+gates dos lotes anteriores.
 
 Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md,
-ID EVID-PEN-HANDLES-QUANTIZATION-20260905, estado IN_PROGRESS /
-PRECOMMIT_PENDING; relatório dos testes do candidato não commitado, seus
-limites e a decisão de não publicar antes do aceite do patch exato.
+ID EVID-PEN-HANDLES-QUANTIZATION-20260905, estado ATIVO / SNAPSHOT PRÉ-COMMIT;
+relatório histórico dos testes do candidato antes do commit, seus limites e a
+decisão então vigente de não publicar.
+
+Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md,
+ID EVID-PEN-HANDLES-QUANTIZATION-POSTCOMMIT-20260905, estado IN_PROGRESS /
+BLOCKED; qualificação local do commit `1068166f3c046e008928d98e68fdb187838c87bc`,
+recibos, hashes, falhas ambientais reproduzidas e limitações remotas/nativas.
 
 ## 3. Documentos superseded
 

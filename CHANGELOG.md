@@ -1,3 +1,21 @@
+# 2026-09-05 — qualificação pós-commit do lote da Caneta
+
+- registra o commit `1068166f3c046e008928d98e68fdb187838c87bc` na branch
+  `Ailton/pen-handles-quantization-20260905`;
+- runner Windows oficial em ambiente limpo corrigido para o qsb do venv:
+  `196/196` arquivos, `2019` testes, `0` falhas, `0` erros e `2` skips
+  previstos; cobertura integrada passou os limiares;
+- confirma estática, segurança, Stage 4B.5, baseline `3261` arquivos,
+  integridade de `135` manifestos e gate formal legado aceito com `15` exatos,
+  `11` divergentes, `12` ausentes e `42` substitutos;
+- confirma build portátil oficial com smoke `SUCCESS`, `314` arquivos e ZIP
+  de `124243242` bytes, SHA-256
+  `49108fc45c41ee8cbcd54beb7f487f5ed5d0000fe5b58b5364ce0255590f2ba2`;
+- a falha inicial de qsb global foi reproduzida na base `5b3e6b1` e não é
+  regressão do lote; CI remoto e auditoria nativa de cliques do SO continuam
+  pendentes. Estado `IN_PROGRESS / BLOCKED`; sem push, merge, tag ou release.
+  [Evidência](docs/evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
 ## 2026-09-05 — lote da Caneta em pré-commit
 
 - remove tangentes implícitas da criação por clique e adiciona alças somente

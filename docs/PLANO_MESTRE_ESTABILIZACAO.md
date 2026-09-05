@@ -1,5 +1,22 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — qualificação pós-commit do lote da Caneta — 05/09/2026
+
+O commit `1068166f3c046e008928d98e68fdb187838c87bc`, na branch
+`Ailton/pen-handles-quantization-20260905`, foi requalificado em árvore limpa.
+O runner Windows oficial passou `196/196` arquivos e `2019` testes, com zero
+falhas/erros e dois skips condicionais previstos. Cobertura, estática,
+segurança, Stage 4B.5, baseline/evidências, gate legado e empacotamento
+portátil com smoke `SUCCESS` passaram no mesmo commit. O ZIP tem
+`124243242` bytes e SHA-256
+`49108fc45c41ee8cbcd54beb7f487f5ed5d0000fe5b58b5364ce0255590f2ba2`.
+
+O lote permanece `IN_PROGRESS / BLOCKED`: CI remoto e auditoria nativa do
+executável ainda não foram executados. A falha inicial do `pyside6-qsb` global
+foi reproduzida na base `5b3e6b1` e não foi atribuída ao patch. Não há push,
+merge, tag ou release. [Registro do lote](LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md)
+e [evidência pós-commit](evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
 ## Atualização viva — lote corretivo da Caneta — 05/09/2026
 
 A branch Ailton/pen-handles-quantization-20260905, baseada em 5b3e6b1,

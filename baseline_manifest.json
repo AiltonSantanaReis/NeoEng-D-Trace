@@ -37,16 +37,16 @@
       "size": 853
     },
     "CHANGELOG.md": {
-      "sha256": "46aed63a29977e76a9e797e7e5982cfdb73a12fe4df00f0b584498f41b748864",
-      "size": 63401
+      "sha256": "d4854e212021ef9f403e8b9c3e0d03c4f141479bf0bc65d1bc0aed2e816b8537",
+      "size": 64477
     },
     "NOTICE.md": {
       "sha256": "883bcfdf492c52613384afb1ff7da976d4ec2e7d4849ebdaf2ccc3914cf93a4b",
       "size": 1673
     },
     "README.md": {
-      "sha256": "ab503a1531a890b2a7e88c3fec499ef7b05aaba1df12616ac7c231bd06815657",
-      "size": 15865
+      "sha256": "12f2e52fd7aaa5168ee1aba59b81ca7a7387105a153dd83c3dca626181488c2d",
+      "size": 15880
     },
     "SECURITY.md": {
       "sha256": "7431f94b9b2811cea3f1b53ab3146df250ce6d1552fd7e98a88d8e500473666c",
@@ -525,12 +525,12 @@
       "size": 2092
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_2026-08-24.md": {
-      "sha256": "fa59ae33df2ebb20ef45124367247557c3dcbad007d9f54eaa6a9bc97550c765",
-      "size": 5598
+      "sha256": "11d6f52167ea771f320aa543728c2f98d0945a99bffbef0b95c5ffb1c8f4b599",
+      "size": 5827
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md": {
-      "sha256": "622619cfacc28006cee83d0924305f60949de22b167caaa297b99c65279e5d72",
-      "size": 10717
+      "sha256": "7409549f648e41600af8820603a8698003e67a9d9ad535c4033a6b83840c4aa9",
+      "size": 11146
     },
     "docs/INTEGRIDADE_P2D_05_O2_0_2026-08-30.md": {
       "sha256": "1379336b40d3142b63e7d674739bee1efc25e069cdf793652876f0e76bed680e",
@@ -541,8 +541,8 @@
       "size": 1220
     },
     "docs/LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md": {
-      "sha256": "3d81fb51ba6a0e4b6eef94d88f702fec700cd93362a4cf5d6049085c3e9d5282",
-      "size": 7121
+      "sha256": "37ea1e67391f870cb3614c39b593cdc8ec21350bef1a51628a34eecd1598fa46",
+      "size": 8345
     },
     "docs/MATRIZ_FUNCIONALIDADES.md": {
       "sha256": "dfb92fe4f1ae5ebc6bf61fb62422e9792e6eb24674bec8b484693b6a89c63304",
@@ -553,8 +553,8 @@
       "size": 6922
     },
     "docs/MATRIZ_RISCOS_ESTABILIZACAO.md": {
-      "sha256": "bfd0362c524435cdda67585c30833f1132f6d2f1cc2f0dd94b59d5c8892d10ca",
-      "size": 31413
+      "sha256": "de4c1c49ca16e96346432f3e1282da83caffbc00cec942eb05225fe35218b055",
+      "size": 32069
     },
     "docs/NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.docx": {
       "sha256": "4d62624c43e4e47e4fff584dd3971abdc3a748d1541f4823634e4aa5956fc2f7",
@@ -569,8 +569,8 @@
       "size": 7965
     },
     "docs/P2D05_REQUALIFICACAO_ATUAL.md": {
-      "sha256": "54741eceb5b1ba10363232a39d28c5f055380be0ef5162832ffd6274c7bd5601",
-      "size": 8504
+      "sha256": "14462b590049eaeda5e90188130c24d07233701991455d600f1b2523359e8575",
+      "size": 9290
     },
     "docs/PLANO_CENARIOS_PARALLAX_E_PALETA_2026-08-18.md": {
       "sha256": "59de520a30f0f4fad9474ed56466aabf02881512da5e1d99e7975916cb479ed7",
@@ -601,8 +601,8 @@
       "size": 51372
     },
     "docs/PLANO_MESTRE_ESTABILIZACAO.md": {
-      "sha256": "ca6f7f61d10cd7448c5fb2f414bbc06ee360497b4fffeac928bd7af56b722494",
-      "size": 29814
+      "sha256": "02b42c397bf0d3faa13babd12275412fd2da060e7f4dd2831905b711cc0a00da",
+      "size": 30841
     },
     "docs/PLANO_MIGRACAO_BUILDER_MSI_R016.md": {
       "sha256": "271842307679dccd26885b318b5d43be1605e480107468ffacaa5178e9bc206c",
@@ -1436,6 +1436,10 @@
       "sha256": "1a7586efce0977b526a6e231cbcb39f2eff2cf7093b32bdecef26090551e20cb",
       "size": 8384
     },
+    "docs/evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md": {
+      "sha256": "81acdc8e0fe76379276209aacdcc2bff74061cb90857eeb7f0cd8ecce5c8c155",
+      "size": 7997
+    },
     "docs/evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md": {
       "sha256": "5d20dbfa0e226fb12073c3cd13ec6ccaf2e3d2b6d67fb8e1e8a6ca9714de1ed7",
       "size": 6151
@@ -1465,8 +1469,8 @@
       "size": 1654
     },
     "docs/evidence/README.md": {
-      "sha256": "b2ce0579d7a4827e2857a38dd7dc3be692aeeb50969aac65d1bbe473089f679a",
-      "size": 54703
+      "sha256": "32f2c198b18927d5eeb3dcf27c46b511479519c2bbe2b5bdbf3dda59710f1900",
+      "size": 55323
     },
     "docs/evidence/RECONCILIACAO_DOCUMENTAL_2026-08-18.md": {
       "sha256": "853168b6cb5b8a92bb30931b2ba2782779670f194f682acb57ff967d1a0e390c",

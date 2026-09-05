@@ -1,5 +1,19 @@
 # P2D-05 — acompanhamento vivo da requalificação
 
+## Revisão corrente — qualificação pós-commit da Caneta — 05/09/2026
+
+O lote `PEN-HANDLES-20260905` está no commit
+`1068166f3c046e008928d98e68fdb187838c87bc`, em árvore limpa. O runner
+Windows oficial passou `196/196` arquivos e `2019` testes, com `0` falhas,
+`0` erros e `2` skips previstos; cobertura, estática, segurança, Stage 4B.5,
+baseline/evidências, gate legado e build portátil com smoke `SUCCESS` também
+passaram. A falha inicial de qsb foi reproduzida no SHA-base `5b3e6b1` e não
+é regressão deste lote.
+
+Estado `IN_PROGRESS / BLOCKED`: o CI remoto e a auditoria nativa de cliques do
+SO no executável ainda não foram executados. Push, merge, tag e release não
+estão autorizados. [Evidência](evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
 ## Revisão corrente — lote corretivo da Caneta — 05/09/2026
 
 O lote PEN-HANDLES-20260905 é uma alteração geométrica separada do lote

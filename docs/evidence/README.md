@@ -1,3 +1,13 @@
+## Lote corretivo da Caneta — qualificação pós-commit — 05/09/2026
+
+O commit `1068166f3c046e008928d98e68fdb187838c87bc` foi requalificado em
+árvore limpa. O runner Windows passou `196/196` arquivos, `2019` testes, zero
+falhas/erros e dois skips previstos; cobertura, estática, segurança, Stage
+4B.5, integridade, gate legado e build portátil com smoke `SUCCESS` passaram.
+O estado permanece `IN_PROGRESS / BLOCKED` porque CI remoto e auditoria nativa
+do executável ainda não foram executados. Consulte
+[`PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md`](PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
 ## Lote corretivo da Caneta — estado pré-commit — 05/09/2026
 
 PEN-HANDLES-20260905 permanece IN_PROGRESS / PRECOMMIT_PENDING na branch

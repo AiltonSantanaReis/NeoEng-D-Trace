@@ -1,5 +1,15 @@
 # Matriz de Riscos de Estabilização
 
+## Verificação viva — qualificação pós-commit da Caneta — 05/09/2026
+
+O SHA `1068166f3c046e008928d98e68fdb187838c87bc` passou o runner oficial
+Windows (`196/196` arquivos, `2019` testes, zero falhas/erros e dois skips
+previstos), cobertura, estática, segurança, Stage 4B.5, integridade, gate
+legado e build portátil com smoke `SUCCESS`. A divergência inicial do qsb foi
+reproduzida na base limpa e é ambiental/herdada. O risco restante é de
+proveniência: CI remoto e auditoria nativa do executável ainda não comprovam
+publicação. Estado `IN_PROGRESS / BLOCKED`; [evidência](evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
 ## Verificação viva — lote corretivo da Caneta — 05/09/2026
 
 O lote PEN-HANDLES-20260905 está em IN_PROGRESS / PRECOMMIT_PENDING na
