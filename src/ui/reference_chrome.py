@@ -393,7 +393,8 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
 
     # Undo/Redo are high-priority actions. Keep their buttons outside the
     # native QToolBar overflow area so they remain directly available when
-    # the window is maximized or fullscreen at a compact display width.
+    # the window is maximized or fullscreen at a compact display width. They
+    # follow the toolbar's final Select control and precede the search field.
     history_container = QWidget(top_toolbar_container)
     history_container.setObjectName("reference_history_container")
     history_container.setSizePolicy(
@@ -413,8 +414,8 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     undo_button.setObjectName("reference_undo_button")
     redo_button.setObjectName("reference_redo_button")
 
-    top_toolbar_layout.addWidget(search, 0, Qt.AlignmentFlag.AlignVCenter)
     top_toolbar_layout.addWidget(history_container, 0, Qt.AlignmentFlag.AlignVCenter)
+    top_toolbar_layout.addWidget(search, 0, Qt.AlignmentFlag.AlignVCenter)
 
     window.reference_top_toolbar_container = top_toolbar_container
     window.reference_top_toolbar = toolbar

@@ -12049,8 +12049,8 @@
       "size": 8031
     },
     "src/ui/reference_chrome.py": {
-      "sha256": "b4a2102788382e9b081f4fc411b184d25258971b12ffd2d12668e8e2e8ab0447",
-      "size": 25863
+      "sha256": "90aa05104cd82796ab409edea4a98cbc4272d9208c7999582dfa7ec8eea9e09d",
+      "size": 25946
     },
     "src/ui/responsive_layout.py": {
       "sha256": "0cda10e27c66e1ddc139edf47125a99b9cc6be2defc98bb65342e4f804511ede",
@@ -12617,8 +12617,8 @@
       "size": 10746
     },
     "tests/test_stage4_ui_top_toolbar.py": {
-      "sha256": "6017ced00116bcade84151189053a1536319ae2e1bb129bd30ca874ca4163982",
-      "size": 15615
+      "sha256": "03fd62492015ab08e9c004b5b44179565b07edbdab9f8ed3afb1de77e6209a37",
+      "size": 17175
     },
     "tests/test_stage4b2_preview_overlays.py": {
       "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f",

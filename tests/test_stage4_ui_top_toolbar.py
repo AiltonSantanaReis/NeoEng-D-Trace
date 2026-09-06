@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 
 import pytest
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QPoint, QSize
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -198,6 +198,44 @@ def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_mode
         assert {(button.width(), button.height()) for button in compact_buttons} == {
             (76, 78)
         }
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage4_history_follows_select_before_command_search(qt_app):
+    window = _window(qt_app)
+    try:
+        container = window.reference_top_toolbar_container
+        layout = container.layout()
+        assert layout is not None
+        assert layout.indexOf(window.reference_top_toolbar) == 0
+        assert layout.indexOf(window.reference_history_container) == 1
+        assert layout.indexOf(window.reference_command_search) == 2
+
+        window.resize(1920, 1080)
+        qt_app.processEvents()
+        assert window.reference_select_button.isVisibleTo(window)
+
+        select_right = window.reference_select_button.mapTo(
+            window, QPoint(window.reference_select_button.width(), 0)
+        ).x()
+        history_left = window.reference_undo_button.mapTo(window, QPoint(0, 0)).x()
+        search_left = window.reference_command_search.mapTo(window, QPoint(0, 0)).x()
+        assert select_right <= history_left
+        assert history_left < search_left
+        assert (
+            window.reference_undo_button.size() == window.reference_select_button.size()
+        )
+        assert (
+            window.reference_redo_button.size() == window.reference_select_button.size()
+        )
+        assert window.reference_undo_button.toolButtonStyle() == (
+            window.reference_select_button.toolButtonStyle()
+        )
+        assert window.reference_redo_button.toolButtonStyle() == (
+            window.reference_select_button.toolButtonStyle()
+        )
     finally:
         window.close()
         qt_app.processEvents()
