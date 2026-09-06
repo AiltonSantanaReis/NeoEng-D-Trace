@@ -49,8 +49,8 @@ QToolBar#reference_tool_palette {{
     border-right: 1px solid {tokens.border};
 }}
 QToolBar#reference_tool_palette QToolButton {{
-    min-width: 52px;
-    max-width: 52px;
+    min-width: 88px;
+    max-width: 88px;
     min-height: 32px;
     max-height: 32px;
     padding: 2px;
@@ -83,14 +83,24 @@ QWidget#reference_top_toolbar_container {{
 }}
 QToolBar#reference_top_toolbar QToolButton#reference_menu_button,
 QToolBar#reference_tool_palette QToolButton#reference_menu_button {{
-    min-width: 52px;
-    max-width: 52px;
+    min-width: 88px;
+    max-width: 88px;
     min-height: 32px;
     max-height: 32px;
     font-size: 20px;
     padding: 0px;
 }}
 QToolBar#reference_top_toolbar QToolButton {{
+    min-width: 60px;
+    min-height: 68px;
+    padding: 3px 5px 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}}
+QWidget#reference_history_container {{
+    background: {tokens.surface};
+}}
+QWidget#reference_history_container QToolButton {{
     min-width: 60px;
     min-height: 68px;
     padding: 3px 5px 2px;

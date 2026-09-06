@@ -25,7 +25,7 @@ from src.ui.icon_library import configure_widget
 _REFERENCE_TOP_BUTTON_COMPACT_WIDTH = 76
 _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH = 140
 _REFERENCE_TOP_BUTTON_HEIGHT = 78
-_REFERENCE_RAIL_BUTTON_SIZE = QSize(52, 32)
+_REFERENCE_RAIL_BUTTON_SIZE = QSize(88, 32)
 
 
 def _normalize_reference_top_toolbar_buttons(toolbar: QToolBar, *, width: int) -> None:
@@ -88,6 +88,33 @@ def _style_action_button(
     button.setAccessibleDescription(action.toolTip() or action.text())
     button.setToolTip(action.toolTip())
     button.setStatusTip(action.statusTip())
+    return button
+
+
+def _style_standalone_action_button(
+    parent: QWidget,
+    action: Any,
+    *,
+    display_text: str,
+    width: int,
+) -> QToolButton:
+    """Style an action-backed button outside the native toolbar overflow."""
+
+    button = QToolButton(parent)
+    button.setDefaultAction(action)
+    button.setText(display_text)
+    button.setProperty("referenceShortText", display_text)
+    button.setFixedSize(QSize(width, _REFERENCE_TOP_BUTTON_HEIGHT))
+    button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+    button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+    button.setAccessibleName(action.text().replace("\n", " "))
+    button.setAccessibleDescription(action.toolTip() or action.text())
+    button.setToolTip(action.toolTip())
+    button.setStatusTip(action.statusTip())
+    button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+    button.setAutoRaise(False)
+    button.setProperty("iconKey", action.property("iconKey"))
+    button.setProperty("uiRole", "reference_top_history_action")
     return button
 
 
@@ -307,16 +334,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     select_button.setObjectName("reference_select_button")
     toolbar.addWidget(select_button)
 
-    _add_action_group(toolbar, (window.undo_action, window.redo_action))
-    undo_button = _style_action_button(
-        toolbar, window.undo_action, display_text="Undo", width=68
-    )
-    redo_button = _style_action_button(
-        toolbar, window.redo_action, display_text="Redo", width=68
-    )
-    undo_button.setObjectName("reference_undo_button")
-    redo_button.setObjectName("reference_redo_button")
-
     # Keep the complete application menu available to integrations and
     # keyboard/menu consumers without adding a control absent from the reference.
     menu_button = QToolButton(window.reference_tool_palette)
@@ -373,11 +390,36 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     search.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
     search.setMinimumWidth(180)
     search.setMaximumWidth(260)
+
+    # Undo/Redo are high-priority actions. Keep their buttons outside the
+    # native QToolBar overflow area so they remain directly available when
+    # the window is maximized or fullscreen at a compact display width.
+    history_container = QWidget(top_toolbar_container)
+    history_container.setObjectName("reference_history_container")
+    history_container.setSizePolicy(
+        QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
+    )
+    history_layout = QHBoxLayout(history_container)
+    history_layout.setContentsMargins(6, 0, 0, 0)
+    history_layout.setSpacing(6)
+    undo_button = _style_standalone_action_button(
+        history_container, window.undo_action, display_text="Undo", width=140
+    )
+    redo_button = _style_standalone_action_button(
+        history_container, window.redo_action, display_text="Redo", width=140
+    )
+    history_layout.addWidget(undo_button)
+    history_layout.addWidget(redo_button)
+    undo_button.setObjectName("reference_undo_button")
+    redo_button.setObjectName("reference_redo_button")
+
     top_toolbar_layout.addWidget(search, 0, Qt.AlignmentFlag.AlignVCenter)
+    top_toolbar_layout.addWidget(history_container, 0, Qt.AlignmentFlag.AlignVCenter)
 
     window.reference_top_toolbar_container = top_toolbar_container
     window.reference_top_toolbar = toolbar
     window.reference_command_search = search
+    window.reference_history_container = history_container
     window.reference_open_button = open_button
     window.reference_save_button = save_button
     window.reference_export_button = export_button

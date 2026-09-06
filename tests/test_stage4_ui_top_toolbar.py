@@ -5,6 +5,7 @@ from __future__ import annotations
 import sys
 
 import pytest
+from PySide6.QtCore import QSize
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -282,7 +283,7 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             if not action.isSeparator() and rail.widgetForAction(action) is not None
         )
         assert window.reference_menu_button.size() == rail_tool_button.size()
-        assert window.reference_menu_button.size().width() == 52
+        assert window.reference_menu_button.size().width() == 88
         assert window.reference_menu_button.size().height() == 32
         assert window.reference_menu_button.accessibleName() == "Application menu"
         assert window.reference_menu_button.popupMode().name == "InstantPopup"
@@ -358,10 +359,30 @@ def test_stage4_rail_buttons_keep_button_affordance(qt_app):
         rail_buttons = window.reference_tool_palette._tool_buttons
         assert rail_buttons
         assert all(not button.autoRaise() for button in rail_buttons)
-        assert all(button.size().width() == 52 for button in rail_buttons)
+        assert all(button.size().width() == 88 for button in rail_buttons)
         assert all(button.size().height() == 32 for button in rail_buttons)
         assert window.reference_menu_button.autoRaise() is False
         assert window.reference_menu_button.size() == rail_buttons[0].size()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage4_history_actions_remain_visible_outside_toolbar_overflow(qt_app):
+    window = _window(qt_app)
+    try:
+        for width in (800, 1024, 1280, 1366, 1450, 1600, 1920):
+            window.resize(width, 720)
+            qt_app.processEvents()
+            for button, action in (
+                (window.reference_undo_button, window.undo_action),
+                (window.reference_redo_button, window.redo_action),
+            ):
+                assert button.isVisibleTo(window), width
+                assert button.defaultAction() is action
+                assert button.parent() is window.reference_history_container
+                expected_width = 76 if width < 1450 else 140
+                assert button.size() == QSize(expected_width, 78)
     finally:
         window.close()
         qt_app.processEvents()

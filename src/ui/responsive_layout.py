@@ -137,6 +137,23 @@ class ResponsivePanelLayout:
             search.setMinimumWidth(180)
             search.setMaximumWidth(240 if compact else 180)
 
+        history_container = getattr(self.owner, "reference_history_container", None)
+        if history_container is not None:
+            history_buttons = history_container.findChildren(QToolButton)
+            for button in history_buttons:
+                button.setToolButtonStyle(style)
+                button.setFixedSize(QSize(button_width, _REFERENCE_TOP_BUTTON_HEIGHT))
+                button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+            layout = history_container.layout()
+            if layout is not None:
+                margins = layout.contentsMargins()
+                history_container.setFixedWidth(
+                    (button_width * len(history_buttons))
+                    + layout.spacing() * max(0, len(history_buttons) - 1)
+                    + margins.left()
+                    + margins.right()
+                )
+
         focus_button = getattr(self.owner, "reference_focus_button", None)
         if focus_button is not None:
             focus_button.setText("Focus")
