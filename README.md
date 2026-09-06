@@ -1,5 +1,26 @@
 # NeoEng-D-Trace
 
+> Atualização operacional — 06/09/2026: a auditoria do estado local encontrou a
+> branch `Ailton/pen-handles-quantization-20260905` com sete commits não
+> publicados além de `origin/Ailton/pen-handles-quantization-20260905`.
+> O último commit funcional auditado localmente é
+> `bedfd30a4f5505e5de9ecfddbf701f8874ccf63d` e organiza a barra como
+> Selecionar → Desfazer/Refazer → pesquisa Ctrl+K, preservando os comandos e
+> atalhos existentes. A PR #171 continua `OPEN / DRAFT` e ainda aponta para
+> `850c6c660470f7ef395915907bc39079ba98a220`; os sucessos remotos anteriores
+> não aprovam estes sete commits. No SHA funcional foram registrados: foco
+> `25 passed`; runner Windows por shards `196/196` arquivos, `2026` testes,
+> zero falhas/erros e dois skips previstos; cobertura, tipagem, estilo,
+> segurança, integridade e empacotamento portátil passaram. A inspeção visual
+> disponível é automatizada/offscreen; não é apresentada como revisão nativa
+> humana. O executável auditado localmente tem SHA-256
+> `47317b64fe80ab75ec4ad8ca0863cccd88056ecbbe5ece392b9868701a3e95dc` e o ZIP
+> portátil tem SHA-256
+> `547845990bc042c019b001d3d67973425136663278e82b6ec96293c92fb45be4`.
+> Esta reconciliação documental altera o SHA do HEAD e, por isso, a candidata
+> final será requalificada em árvore limpa antes do push. Ainda não há push,
+> merge, tag ou release desta sequência.
+
 > Atualização do lote corretivo da Caneta — 05/09/2026: o commit
 > `fd4a67e0d2bf60f07b710c002c0be88eeee94424` isolou modais Qt residuais entre
 > casos de teste. O runner Windows oficial local passou 196/196 arquivos e

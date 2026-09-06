@@ -1,3 +1,32 @@
+## Registro corrente — candidata de barra superior — 06/09/2026
+
+O SHA funcional auditado em árvore limpa foi
+`bedfd30a4f5505e5de9ecfddbf701f8874ccf63d`, na branch
+`Ailton/pen-handles-quantization-20260905`. A sequência final verificada é
+Selecionar → Desfazer/Refazer → pesquisa Ctrl+K. Foram registrados foco `25
+passed`, runner Windows `196/196` arquivos e `2026` testes, zero falhas/erros,
+dois skips previstos, cobertura/estática/segurança/integridade aprovadas e
+build portátil com smoke `SUCCESS`.
+
+O executável local é
+`build/ui-toolbar-clean-bedfd30-20260906/release/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe`,
+SHA-256
+`47317b64fe80ab75ec4ad8ca0863cccd88056ecbbe5ece392b9868701a3e95dc`.
+O ZIP é
+`build/ui-toolbar-clean-bedfd30-20260906/release/NeoEng-D-Trace-0.3.0-win64-portable.zip`,
+SHA-256
+`547845990bc042c019b001d3d67973425136663278e82b6ec96293c92fb45be4`.
+As capturas e o relatório automatizado offscreen estão no diretório local
+`build/ui-history-order-bedfd30-captures-20260906-rerun` e no relatório
+`build/ui-history-order-bedfd30-visual-audit-20260906-rerun/visual-audit-report.json`;
+isso não constitui revisão nativa humana.
+
+A branch tem sete commits além do upstream e a PR #171 ainda está em rascunho
+no head remoto `850c6c…`. Os resultados remotos anteriores não são atribuídos
+ao SHA funcional atual. Este registro documental exige nova requalificação do
+SHA resultante antes do push; nenhum push, merge, tag ou release foi feito
+nesta etapa.
+
 ## Revisão corrente — ciclo de edição da Caneta por clique vazio — 05/09/2026
 
 O commit local `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f` corrigiu a transição

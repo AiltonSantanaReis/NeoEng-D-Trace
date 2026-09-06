@@ -1,5 +1,33 @@
 # Lote corretivo da Caneta — alças explícitas e fechamento
 
+## Atualização viva — reconciliação da barra superior — 06/09/2026
+
+O último SHA funcional qualificado localmente é
+`bedfd30a4f5505e5de9ecfddbf701f8874ccf63d`, na branch
+`Ailton/pen-handles-quantization-20260905`. A alteração final deste ciclo
+mantém Desfazer/Refazer fora do overflow nativo da `QToolBar` e os posiciona
+depois de Selecionar e antes da pesquisa Ctrl+K, com o mesmo padrão visual;
+atalhos, menus, sinais e a lógica das ferramentas não foram alterados.
+
+Na árvore limpa desse SHA, a rodada focada passou `25` testes. O runner
+Windows oficial por shards aceitou `196/196` arquivos, `2026` testes, zero
+falhas/erros e dois skips previstos; cobertura, estilo, tipagem, segurança,
+integridade de baseline/evidências e empacotamento portátil passaram. A
+captura/auditoria visual automatizada offscreen retornou `finding_count: 0`;
+ela não substitui a revisão visual nativa humana e não é declarada como tal.
+
+A build portátil correspondente foi gerada em
+`build/ui-toolbar-clean-bedfd30-20260906/release`, com executável de
+SHA-256 `47317b64fe80ab75ec4ad8ca0863cccd88056ecbbe5ece392b9868701a3e95dc`
+e ZIP de SHA-256
+`547845990bc042c019b001d3d67973425136663278e82b6ec96293c92fb45be4`.
+
+A comparação remota confirmou sete commits locais ainda não publicados. A PR
+`#171` permanece `OPEN / DRAFT` e seu head remoto ainda é `850c6c…`; os jobs
+`SUCCESS` anteriores não qualificam `bedfd30…`. Estado: `PASS_LOCAL /
+BLOCKED_REMOTE_PUBLICATION`. Este adendo será seguido de requalificação do
+SHA documental resultante; até então não há push, merge, tag ou release.
+
 ID: PEN-HANDLES-20260905. Estado: IN_PROGRESS / BLOCKED.
 Base: `5b3e6b15cee93ef5c9d1d550745293fb8372b5b9`.
 Branch: `Ailton/pen-handles-quantization-20260905`.

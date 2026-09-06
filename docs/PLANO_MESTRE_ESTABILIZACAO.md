@@ -1,5 +1,27 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — candidata de barra superior e publicação controlada — 06/09/2026
+
+A auditoria de rastreabilidade encontrou sete commits locais ainda não
+publicados na branch `Ailton/pen-handles-quantization-20260905`. O último SHA
+funcional qualificado antes desta reconciliação é
+`bedfd30a4f5505e5de9ecfddbf701f8874ccf63d`; ele coloca a sequência visual
+Selecionar → Desfazer/Refazer → Ctrl+K e mantém os comandos existentes.
+
+Em árvore limpa, passaram a rodada focada (`25` testes), o runner Windows
+oficial (`196/196` arquivos, `2026` testes, zero falhas/erros, dois skips
+previstos), cobertura, estilo, tipagem, segurança, integridade e build portátil
+com smoke. A auditoria visual automatizada offscreen não encontrou achados;
+revisão nativa humana não é inferida desse resultado.
+
+A PR #171 está `OPEN / DRAFT`, mas seu head remoto ainda é `850c6c…`; os dois
+jobs remotos bem-sucedidos registrados anteriormente pertencem ao head antigo.
+O próximo gate obrigatório é requalificar em árvore limpa o SHA produzido por
+este adendo documental, depois fazer push normal, aguardar os jobs do novo SHA,
+analisar falhas e somente então realizar o merge autorizado. Estado atual:
+`PASS_LOCAL / BLOCKED_REMOTE_PUBLICATION`; tag e release continuam fora do
+escopo autorizado.
+
 ## Atualização viva — saída segura da edição Bézier — 05/09/2026
 
 O commit local `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f`, na branch
