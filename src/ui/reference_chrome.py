@@ -21,6 +21,27 @@ from PySide6.QtWidgets import (
 
 from src.ui.icon_library import configure_widget
 
+_REFERENCE_TOP_BUTTON_COMPACT_WIDTH = 76
+_REFERENCE_TOP_BUTTON_DESKTOP_WIDTH = 144
+_REFERENCE_TOP_BUTTON_HEIGHT = 78
+_REFERENCE_RAIL_BUTTON_SIZE = QSize(52, 32)
+
+
+def _normalize_reference_top_toolbar_buttons(toolbar: QToolBar, *, width: int) -> None:
+    """Keep every visible top command on one geometry contract.
+
+    The toolbar extension control is owned by Qt and is intentionally excluded
+    from the application button contract. All application controls retain
+    their existing actions, menus and signals; only their presentation bounds
+    are normalized here.
+    """
+
+    for button in toolbar.findChildren(QToolButton):
+        if button.objectName() == "qt_toolbar_ext_button":
+            continue
+        button.setFixedSize(QSize(width, _REFERENCE_TOP_BUTTON_HEIGHT))
+        button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+
 
 def _add_action_group(toolbar: QToolBar, actions: tuple[Any, ...]) -> None:
     for item in actions:
@@ -59,10 +80,7 @@ def _style_action_button(
         )
     button.setText(display_text)
     button.setProperty("referenceShortText", display_text)
-    button.setMinimumWidth(width)
-    button.setMaximumWidth(width)
-    button.setMinimumHeight(78)
-    button.setMaximumHeight(88)
+    button.setFixedSize(QSize(width, _REFERENCE_TOP_BUTTON_HEIGHT))
     button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
     button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
     button.setAccessibleName(action.text().replace("\n", " "))
@@ -167,8 +185,7 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
             toolbar.addAction(action)
             button = toolbar.widgetForAction(action)
             if isinstance(button, QToolButton):
-                button.setMinimumSize(QSize(52, 32))
-                button.setMaximumSize(QSize(76, 36))
+                button.setFixedSize(_REFERENCE_RAIL_BUTTON_SIZE)
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
                 button.setIconSize(QSize(22, 22))
                 # The visible rail creates a new QToolButton for the shared
@@ -366,6 +383,10 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_undo_button = undo_button
     window.reference_redo_button = redo_button
 
+    _normalize_reference_top_toolbar_buttons(
+        toolbar, width=_REFERENCE_TOP_BUTTON_DESKTOP_WIDTH
+    )
+
     # QAction remains the source of truth for localization. Refresh the short
     # visible labels whenever any source command changes, without enlarging
     # MainWindow or duplicating command state there.
@@ -452,6 +473,58 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "edit": "Edit",
         }
 
+    tooltips = {
+        "en": {
+            "open": "Open project or image",
+            "save": "Save project",
+            "export": "Export project data",
+            "fit": "Fit viewport to content",
+            "pixel": "View at 1:1 pixel scale",
+            "focus": "Focus selected object",
+            "view": "Open view and navigation menu",
+            "collision": "Open collision menu",
+            "parallax": "Open scenario editor",
+            "pan": "Move viewport",
+            "select": "Open selection tools menu",
+            "undo": "Undo last change",
+            "redo": "Redo last change",
+            "edit": "Open editing menu",
+        },
+        "pt": {
+            "open": "Abrir projeto ou imagem",
+            "save": "Salvar projeto",
+            "export": "Exportar dados do projeto",
+            "fit": "Ajustar a visualização ao conteúdo",
+            "pixel": "Visualizar na escala de pixels 1:1",
+            "focus": "Focar no objeto selecionado",
+            "view": "Abrir menu de visualização e navegação",
+            "collision": "Abrir menu de colisão",
+            "parallax": "Abrir editor de cenário",
+            "pan": "Mover a área de visualização",
+            "select": "Abrir menu de ferramentas de seleção",
+            "undo": "Desfazer a última alteração",
+            "redo": "Refazer a última alteração",
+            "edit": "Abrir menu de edição",
+        },
+    }.get(getattr(window, "current_lang", "en"), None)
+    if tooltips is None:
+        tooltips = {
+            "open": "Open project or image",
+            "save": "Save project",
+            "export": "Export project data",
+            "fit": "Fit viewport to content",
+            "pixel": "View at 1:1 pixel scale",
+            "focus": "Focus selected object",
+            "view": "Open view and navigation menu",
+            "collision": "Open collision menu",
+            "parallax": "Open scenario editor",
+            "pan": "Move viewport",
+            "select": "Open selection tools menu",
+            "undo": "Undo last change",
+            "redo": "Redo last change",
+            "edit": "Open editing menu",
+        }
+
     for submenu, source in getattr(window, "reference_application_submenus", ()):
         submenu.setTitle(source.title())
 
@@ -475,7 +548,8 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
         if button is not None:
             button.setText(labels[key])
             button.setAccessibleName(labels[key])
-            button.setAccessibleDescription(button.toolTip() or labels[key])
+            button.setToolTip(tooltips[key])
+            button.setAccessibleDescription(tooltips[key])
             button.setProperty("referenceShortText", labels[key])
 
 

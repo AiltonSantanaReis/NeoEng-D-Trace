@@ -12049,12 +12049,12 @@
       "size": 8031
     },
     "src/ui/reference_chrome.py": {
-      "sha256": "e0b00bb5b4b368c572ac2fd244fbcb54e3bcb13e08f2faff2710f4c99810cb70",
-      "size": 20334
+      "sha256": "504aaba620421692990db2caca2c3dab369d7188c74e361806b06f5f55054364",
+      "size": 23412
     },
     "src/ui/responsive_layout.py": {
-      "sha256": "a25cbf073f78900d3f63e2538872113e226e73a4e75846c897c6dcdd6bac5482",
-      "size": 12362
+      "sha256": "6db426b6a0ae7552c147fae5fb47f4da23f0c16ccc79d2e9a373d05a7055c427",
+      "size": 12223
     },
     "src/ui/scenario_authoring_actions.py": {
       "sha256": "b55ea8d020ff038afd0ff08b7829d2e1365f359e837cf38d3727b86468660503",
@@ -12097,8 +12097,8 @@
       "size": 39748
     },
     "src/ui/theme_qss.py": {
-      "sha256": "910375816da46c4d5d61969cf51b16acf94056ab5814d05f8f424c01f34efd41",
-      "size": 10954
+      "sha256": "a3ea869c065f335c9952dd0d6ffa51b8ba02bfd599eef90cfd2e44b3893be26d",
+      "size": 10998
     },
     "src/ui/theme_tokens.py": {
       "sha256": "f74511465ad3bd0b008cb3834d566c4f07f5d743fec4917bd191bf10db54ab21",
@@ -12113,8 +12113,8 @@
       "size": 1322
     },
     "src/ui/tool_palette_impl.py": {
-      "sha256": "c255ea1f1f2baac941c02b0b175a7b7850ef5646cb86e45211bd586e25b2299b",
-      "size": 15441
+      "sha256": "f53ee7ba819b3047641179bca73c74c24a0159380168f804ca739a45c064a32f",
+      "size": 15393
     },
     "src/ui/top_command_contract.py": {
       "sha256": "4fcfdcc33523a4885195a4a305da5d5ef6801b72bdc72b2d81d14e59ee4a7ec8",
@@ -12597,8 +12597,8 @@
       "size": 10149
     },
     "tests/test_stage3_ui_toolbar.py": {
-      "sha256": "53f84ad9845e5cf819484aa831f9d993aa174b72f81526d76c3b9cd04fa58888",
-      "size": 5634
+      "sha256": "9c0e4fe0b61cb9891e5cfedd5a752ed7f8ae09901274187b8a7705d16c0e3e9b",
+      "size": 6357
     },
     "tests/test_stage4_global_transaction_contract.py": {
       "sha256": "410606f719aeca0655c5bce74e1035d3c11d4375f379082367d62d3e543b5438",
@@ -12617,8 +12617,8 @@
       "size": 10746
     },
     "tests/test_stage4_ui_top_toolbar.py": {
-      "sha256": "5191dc9b9dc0c0e345371a906a9e1d24980fcb93c4b1a4a43015384bcc041618",
-      "size": 11793
+      "sha256": "70cd4ef333c4d82e2cf05b54663f8764237765bdd8c3c02283d8b50d53b813b9",
+      "size": 13316
     },
     "tests/test_stage4b2_preview_overlays.py": {
       "sha256": "2c33e74208ad331d92d1bbcbbff990fe7b28368ef990c226f107e2edecf0714f",

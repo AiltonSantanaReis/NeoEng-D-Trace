@@ -165,10 +165,38 @@ def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_mode
         qt_app.processEvents()
         assert toolbar.toolButtonStyle().name == "ToolButtonTextUnderIcon"
         assert window.reference_focus_button.text() == "Focus"
+        desktop_buttons = [
+            toolbar.widgetForAction(action)
+            for action in toolbar.actions()
+            if not action.isSeparator()
+        ]
+        desktop_buttons = [
+            button
+            for button in desktop_buttons
+            if isinstance(button, QToolButton)
+            and button.objectName() != "qt_toolbar_ext_button"
+        ]
+        assert {(button.width(), button.height()) for button in desktop_buttons} == {
+            (144, 78)
+        }
         window.resize(1280, 720)
         qt_app.processEvents()
         assert toolbar.toolButtonStyle().name == "ToolButtonIconOnly"
         assert window.reference_focus_button.text() == "Focus"
+        compact_buttons = [
+            toolbar.widgetForAction(action)
+            for action in toolbar.actions()
+            if not action.isSeparator()
+        ]
+        compact_buttons = [
+            button
+            for button in compact_buttons
+            if isinstance(button, QToolButton)
+            and button.objectName() != "qt_toolbar_ext_button"
+        ]
+        assert {(button.width(), button.height()) for button in compact_buttons} == {
+            (76, 78)
+        }
     finally:
         window.close()
         qt_app.processEvents()
@@ -248,6 +276,14 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
         rail = window.reference_tool_palette
         menu_geometry = window.reference_menu_button.geometry()
         assert rail.height() - (menu_geometry.y() + menu_geometry.height()) == 4
+        rail_tool_button = next(
+            rail.widgetForAction(action)
+            for action in rail.actions()
+            if not action.isSeparator() and rail.widgetForAction(action) is not None
+        )
+        assert window.reference_menu_button.size() == rail_tool_button.size()
+        assert window.reference_menu_button.size().width() == 52
+        assert window.reference_menu_button.size().height() == 32
         assert window.reference_menu_button.accessibleName() == "Application menu"
         assert window.reference_menu_button.popupMode().name == "InstantPopup"
         submenus = [
@@ -289,6 +325,8 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             window.reference_select_button,
         ):
             assert button.popupMode().name == "InstantPopup"
+            assert button.toolTip()
+        assert "scenario" in window.reference_parallax_button.toolTip().casefold()
     finally:
         window.close()
         qt_app.processEvents()

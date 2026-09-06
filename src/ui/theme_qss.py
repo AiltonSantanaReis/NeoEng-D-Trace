@@ -50,9 +50,9 @@ QToolBar#reference_tool_palette {{
 }}
 QToolBar#reference_tool_palette QToolButton {{
     min-width: 52px;
-    max-width: 76px;
+    max-width: 52px;
     min-height: 32px;
-    max-height: 36px;
+    max-height: 32px;
     padding: 2px;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -78,8 +78,10 @@ QToolBar#reference_tool_palette QToolButton:checked {{
 }}
 QToolBar#reference_top_toolbar QToolButton#reference_menu_button,
 QToolBar#reference_tool_palette QToolButton#reference_menu_button {{
-    min-width: 46px;
-    max-width: 46px;
+    min-width: 52px;
+    max-width: 52px;
+    min-height: 32px;
+    max-height: 32px;
     font-size: 20px;
     padding: 0px;
 }}

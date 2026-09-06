@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import sys
 
 import pytest
@@ -152,6 +153,27 @@ def test_stage3_preserves_global_tool_shortcuts(qt_app):
         QTest.keyClick(window, Qt.Key.Key_1)
         qt_app.processEvents()
         assert window.tool_palette.btn_polygonal_lasso.isChecked()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage3_tooltips_omit_shortcut_suffixes_without_changing_shortcuts(qt_app):
+    window = _window(qt_app)
+    try:
+        for language in ("en", "pt"):
+            window.tool_palette.update_language(language)
+            qt_app.processEvents()
+            assert all(
+                re.search(r"\(\d+\)", button.toolTip()) is None
+                for button in window.tool_palette.tool_buttons.values()
+            )
+
+        shortcuts = {
+            shortcut.key().toString()
+            for shortcut in window.findChildren(type(window.command_palette_shortcut))
+        }
+        assert {"1", "2", "3", "4", "5", "6"} <= shortcuts
     finally:
         window.close()
         qt_app.processEvents()

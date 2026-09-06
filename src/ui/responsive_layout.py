@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtWidgets import (
     QSizePolicy,
     QSplitter,
@@ -15,6 +15,12 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.ui.reference_chrome import (
+    _REFERENCE_RAIL_BUTTON_SIZE,
+    _REFERENCE_TOP_BUTTON_COMPACT_WIDTH,
+    _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH,
+    _REFERENCE_TOP_BUTTON_HEIGHT,
+)
 from src.ui.viewport_chrome import ViewportChrome
 
 
@@ -109,31 +115,22 @@ class ResponsivePanelLayout:
             if compact
             else Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         )
+        button_width = (
+            _REFERENCE_TOP_BUTTON_COMPACT_WIDTH
+            if compact
+            else _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH
+        )
         toolbar.setToolButtonStyle(style)
         for button in toolbar.findChildren(QToolButton):
-            if button.objectName() != "reference_menu_button":
-                button.setToolButtonStyle(style)
-
-        action_widths = {
-            "reference_fit_button": 76 if compact else 136,
-            "reference_focus_button": 76 if compact else 100,
-            "reference_pan_button": 76 if compact else 76,
-            "reference_undo_button": 76 if compact else 88,
-            "reference_redo_button": 76 if compact else 88,
-        }
-        for name, width in action_widths.items():
-            button = getattr(self.owner, name, None)
-            if button is None:
+            if button.objectName() == "qt_toolbar_ext_button":
                 continue
-            button.setMinimumWidth(width)
-            button.setMaximumWidth(width)
-            button.setMinimumHeight(78)
-            button.setMaximumHeight(88)
+            button.setToolButtonStyle(style)
+            button.setFixedSize(QSize(button_width, _REFERENCE_TOP_BUTTON_HEIGHT))
+            button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
-            menu_button.setMinimumWidth(51)
-            menu_button.setMaximumWidth(51)
+            menu_button.setFixedSize(_REFERENCE_RAIL_BUTTON_SIZE)
 
         search = getattr(self.owner, "reference_command_search", None)
         if search is not None:
