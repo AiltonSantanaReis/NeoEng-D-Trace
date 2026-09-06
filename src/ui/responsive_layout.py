@@ -134,8 +134,8 @@ class ResponsivePanelLayout:
 
         search = getattr(self.owner, "reference_command_search", None)
         if search is not None:
-            search.setMinimumWidth(180 if compact else 260)
-            search.setMaximumWidth(240 if compact else 440)
+            search.setMinimumWidth(180)
+            search.setMaximumWidth(240 if compact else 180)
 
         focus_button = getattr(self.owner, "reference_focus_button", None)
         if focus_button is not None:
@@ -297,7 +297,7 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     central_layout = QVBoxLayout(central_container)
     central_layout.setContentsMargins(0, 0, 0, 0)
     central_layout.setSpacing(0)
-    central_layout.addWidget(owner.reference_top_toolbar)
+    central_layout.addWidget(owner.reference_top_toolbar_container)
     central_layout.addWidget(main_splitter, 1)
     owner.reference_central_container = central_container
     owner.setCentralWidget(central_container)

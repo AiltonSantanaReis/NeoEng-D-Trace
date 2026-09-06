@@ -177,7 +177,7 @@ def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_mode
             and button.objectName() != "qt_toolbar_ext_button"
         ]
         assert {(button.width(), button.height()) for button in desktop_buttons} == {
-            (144, 78)
+            (140, 78)
         }
         window.resize(1280, 720)
         qt_app.processEvents()
@@ -327,6 +327,41 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             assert button.popupMode().name == "InstantPopup"
             assert button.toolTip()
         assert "scenario" in window.reference_parallax_button.toolTip().casefold()
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage4_command_search_remains_visible_when_toolbar_overflows(qt_app):
+    window = _window(qt_app)
+    try:
+        search = window.reference_command_search
+        container = window.reference_top_toolbar_container
+        for width in (1024, 1152, 1280, 1366, 1440, 1450, 1600, 1920):
+            window.resize(width, 720)
+            qt_app.processEvents()
+            geometry = search.geometry()
+            assert search.isVisibleTo(window), width
+            assert geometry.width() > 0, width
+            assert geometry.left() >= 0, width
+            assert geometry.right() < container.width(), width
+            assert search.placeholderText() == "Ctrl+K"
+            assert search.toolTip() == "Search commands (Ctrl+K)"
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_stage4_rail_buttons_keep_button_affordance(qt_app):
+    window = _window(qt_app)
+    try:
+        rail_buttons = window.reference_tool_palette._tool_buttons
+        assert rail_buttons
+        assert all(not button.autoRaise() for button in rail_buttons)
+        assert all(button.size().width() == 52 for button in rail_buttons)
+        assert all(button.size().height() == 32 for button in rail_buttons)
+        assert window.reference_menu_button.autoRaise() is False
+        assert window.reference_menu_button.size() == rail_buttons[0].size()
     finally:
         window.close()
         qt_app.processEvents()

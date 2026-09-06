@@ -10,6 +10,7 @@ from typing import Any
 
 from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtWidgets import (
+    QHBoxLayout,
     QLineEdit,
     QMenu,
     QSizePolicy,
@@ -22,7 +23,7 @@ from PySide6.QtWidgets import (
 from src.ui.icon_library import configure_widget
 
 _REFERENCE_TOP_BUTTON_COMPACT_WIDTH = 76
-_REFERENCE_TOP_BUTTON_DESKTOP_WIDTH = 144
+_REFERENCE_TOP_BUTTON_DESKTOP_WIDTH = 140
 _REFERENCE_TOP_BUTTON_HEIGHT = 78
 _REFERENCE_RAIL_BUTTON_SIZE = QSize(52, 32)
 
@@ -187,6 +188,7 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
             if isinstance(button, QToolButton):
                 button.setFixedSize(_REFERENCE_RAIL_BUTTON_SIZE)
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+                button.setAutoRaise(False)
                 button.setIconSize(QSize(22, 22))
                 # The visible rail creates a new QToolButton for the shared
                 # QAction. QAction metadata is not guaranteed to populate
@@ -329,6 +331,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     menu_button.setMinimumSize(QSize(44, 32))
     menu_button.setMaximumSize(QSize(56, 36))
     menu_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+    menu_button.setAutoRaise(False)
     menu_button.setProperty("uiRole", "reference_application_menu")
     menu_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     menu_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
@@ -354,16 +357,25 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_tool_palette.register_application_menu(menu_button)
     window.menuBar().setVisible(False)
 
-    search = QLineEdit(toolbar)
+    top_toolbar_container = QWidget(window)
+    top_toolbar_container.setObjectName("reference_top_toolbar_container")
+    top_toolbar_layout = QHBoxLayout(top_toolbar_container)
+    top_toolbar_layout.setContentsMargins(0, 0, 0, 0)
+    top_toolbar_layout.setSpacing(0)
+    top_toolbar_layout.addWidget(toolbar, 1)
+
+    search = QLineEdit(top_toolbar_container)
     search.setObjectName("reference_command_search")
     search.setPlaceholderText("Ctrl+K")
     search.setAccessibleName("Command search")
     search.setAccessibleDescription("Search and execute commands with text or Ctrl+K")
     search.setToolTip("Search commands (Ctrl+K)")
-    search.setMinimumWidth(260)
-    search.setMaximumWidth(440)
-    toolbar.addWidget(search)
+    search.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+    search.setMinimumWidth(180)
+    search.setMaximumWidth(260)
+    top_toolbar_layout.addWidget(search, 0, Qt.AlignmentFlag.AlignVCenter)
 
+    window.reference_top_toolbar_container = top_toolbar_container
     window.reference_top_toolbar = toolbar
     window.reference_command_search = search
     window.reference_open_button = open_button

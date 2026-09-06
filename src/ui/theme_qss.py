@@ -54,7 +54,8 @@ QToolBar#reference_tool_palette QToolButton {{
     min-height: 32px;
     max-height: 32px;
     padding: 2px;
-    border: 1px solid transparent;
+    background: {tokens.surface_alt};
+    border: 1px solid {tokens.border};
     border-radius: 4px;
 }}
 QToolBar#reference_tool_palette QToolButton:hover {{
@@ -73,6 +74,10 @@ QToolBar#reference_tool_palette QToolButton:checked {{
     max-height: 82px;
     padding: 4px 8px;
     spacing: 6px;
+    background: {tokens.surface};
+    border-bottom: 0px;
+}}
+QWidget#reference_top_toolbar_container {{
     background: {tokens.surface};
     border-bottom: 1px solid {tokens.border};
 }}
