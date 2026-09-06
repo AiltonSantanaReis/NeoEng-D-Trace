@@ -1,5 +1,23 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — pós-merge e validação independente — 06/09/2026
+
+A PR `#171` foi integrada em `main` no merge
+`18a82bcab0b9319ede29e05b39673e7dbf066e63`, com origem no head
+`ab0753fcc45d466e4c571d7d9603c9ef3703b6b3`. O CI `34025199115` passou nos
+jobs Linux e Windows. A validação independente pós-merge passou o foco da
+Caneta/barra (`66/66`), a suíte completa (`2024 passed, 2 skipped, 1 warning`),
+baseline por Git blob (`3264 files`) e integridade de evidências (`135`
+manifestos). Os dois skips de symlink permanecem atribuídos à ausência de
+privilégio Windows.
+
+A build portátil de `main` foi produzida com manifesto do merge commit, `314`
+arquivos e smoke `SUCCESS`. Seus hashes são executável
+`a8fe50c1836369d10c8887c29f3ed805d1bc93492dd35801db13e6a48955a282` e ZIP
+`ef9346d6cf074c506d8076390b61161ae115c28cbd0a1fc5faaaa0b5eb84afdf`.
+O estado desta integração é `MERGED / PASS_POST_MERGE`; tag e release seguem
+fora do escopo autorizado.
+
 ## Atualização viva — candidata de barra superior e publicação controlada — 06/09/2026
 
 A auditoria de rastreabilidade encontrou sete commits locais ainda não
