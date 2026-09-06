@@ -132,6 +132,51 @@ class BaseTool:
             return
         getattr(QMessageBox, level)(parent, title, message)
 
+    def _p2d05_language(self) -> str:
+        """Return the active language for the P2D-05 presentation boundary."""
+
+        language = getattr(self, "current_lang", None)
+        if not isinstance(language, str):
+            language = getattr(self.canvas_view, "current_lang", "en")
+        if not isinstance(language, str):
+            return "en"
+        return language if language in {"en", "pt"} else "en"
+
+    def _present_p2d05_error(
+        self,
+        exc: BaseException,
+        *,
+        operation: str,
+        severity: str = "warning",
+        channel: str = "modal",
+    ) -> str:
+        """Present a safe P2D-05 error and retain its user-facing message."""
+
+        from src.ui.error_presentation import show_p2d05_error
+
+        presentation = show_p2d05_error(
+            self._message_parent(),
+            exc,
+            operation=operation,
+            language=self._p2d05_language(),
+            severity=severity,
+            channel=channel,
+        )
+        if hasattr(self, "_last_error"):
+            setattr(self, "_last_error", presentation.message)
+        return presentation.message
+
+    def _safe_p2d05_message(self, exc: BaseException, *, operation: str) -> str:
+        """Build a safe message without interrupting a continuous preview."""
+
+        from src.ui.error_presentation import build_p2d05_presentation
+
+        return build_p2d05_presentation(
+            exc,
+            operation=operation,
+            language=self._p2d05_language(),
+        ).message
+
     def commit_polygon_command(
         self,
         polygon: Sequence[Tuple[int, int]],

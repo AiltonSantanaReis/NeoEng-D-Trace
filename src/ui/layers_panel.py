@@ -9,7 +9,6 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QMenu,
-    QMessageBox,
     QPushButton,
     QTabWidget,
     QToolBar,
@@ -26,6 +25,7 @@ from src.core.commands import (
     ToggleLayerLockCommand,
     ToggleLayerVisibilityCommand,
 )
+from src.ui.error_presentation import show_p2d05_error
 
 
 class LayersPanel(QWidget):
@@ -34,6 +34,7 @@ class LayersPanel(QWidget):
     def __init__(self, scene, parent=None):
         super().__init__(parent)
         self.scene = scene
+        self.current_lang = "en"
         self.setMinimumWidth(200)
 
         self.main_layout = QVBoxLayout()
@@ -120,7 +121,9 @@ class LayersPanel(QWidget):
             self.tabs.addTab(panel, "Scenario")
 
     def update_language(self, lang: str) -> None:
-        del lang
+        self.current_lang = (
+            lang if isinstance(lang, str) and lang in {"en", "pt"} else "en"
+        )
         if self.tabs.count() >= 2:
             self.tabs.setTabText(0, "Project Layers")
             self.tabs.setTabText(1, "Scenario")
@@ -195,28 +198,44 @@ class LayersPanel(QWidget):
         self.list.setCurrentRow(self.list.row(item))
         self._build_context_menu().exec(self.list.mapToGlobal(position))
 
+    def _present_layer_error(
+        self,
+        exc: BaseException,
+        *,
+        severity: str,
+        channel: str,
+    ):
+        return show_p2d05_error(
+            self,
+            exc,
+            operation="edit",
+            language=self.current_lang,
+            severity=severity,
+            channel=channel,
+        )
+
     def _execute_edit_command(self, command) -> Optional[CommandResult]:
         manager = getattr(self.scene, "cmd", None)
         if manager is None:
-            QMessageBox.critical(
-                self,
-                "Layer Edit Unavailable",
-                "Undo/Redo command history is unavailable.",
+            self._present_layer_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                severity="critical",
+                channel="modal",
             )
             return None
 
         result = manager.execute(command, self.scene)
         if result.status is CommandStatus.REJECTED:
-            QMessageBox.warning(
-                self,
-                "Layer Edit Rejected",
-                result.message or "The layer operation was rejected.",
+            self._present_layer_error(
+                RuntimeError(result.message or "The layer operation was rejected."),
+                severity="warning",
+                channel="status",
             )
         elif result.status is CommandStatus.FAILED:
-            QMessageBox.critical(
-                self,
-                "Layer Edit Failed",
-                result.message or "The layer operation failed.",
+            self._present_layer_error(
+                RuntimeError(result.message or "The layer operation failed."),
+                severity="critical",
+                channel="modal",
             )
         return result
 
@@ -227,7 +246,7 @@ class LayersPanel(QWidget):
             if result is not None and result.changed and command.layer_id:
                 self._select_layer_id(command.layer_id)
         except Exception as exc:
-            QMessageBox.critical(self, "Error", str(exc))
+            self._present_layer_error(exc, severity="critical", channel="modal")
 
     def _delete(self):
         _, layer_id, _ = self._selected_layer()
@@ -236,7 +255,7 @@ class LayersPanel(QWidget):
         try:
             self._execute_edit_command(RemoveLayerCommand(layer_id))
         except Exception as exc:
-            QMessageBox.critical(self, "Error", str(exc))
+            self._present_layer_error(exc, severity="critical", channel="modal")
 
     def _up(self):
         _, layer_id, index = self._selected_layer()
@@ -245,7 +264,7 @@ class LayersPanel(QWidget):
         try:
             self._execute_edit_command(MoveLayerCommand(layer_id, index - 1))
         except Exception as exc:
-            QMessageBox.critical(self, "Error", str(exc))
+            self._present_layer_error(exc, severity="critical", channel="modal")
 
     def _down(self):
         _, layer_id, index = self._selected_layer()
@@ -254,7 +273,7 @@ class LayersPanel(QWidget):
         try:
             self._execute_edit_command(MoveLayerCommand(layer_id, index + 1))
         except Exception as exc:
-            QMessageBox.critical(self, "Error", str(exc))
+            self._present_layer_error(exc, severity="critical", channel="modal")
 
     def _toggle_vis(self):
         _, layer_id, _ = self._selected_layer()
@@ -263,7 +282,7 @@ class LayersPanel(QWidget):
         try:
             self._execute_edit_command(ToggleLayerVisibilityCommand(layer_id))
         except Exception as exc:
-            QMessageBox.critical(self, "Error", str(exc))
+            self._present_layer_error(exc, severity="critical", channel="modal")
 
     def _toggle_lock(self):
         _, layer_id, _ = self._selected_layer()
@@ -272,4 +291,4 @@ class LayersPanel(QWidget):
         try:
             self._execute_edit_command(ToggleLayerLockCommand(layer_id))
         except Exception as exc:
-            QMessageBox.critical(self, "Error", str(exc))
+            self._present_layer_error(exc, severity="critical", channel="modal")

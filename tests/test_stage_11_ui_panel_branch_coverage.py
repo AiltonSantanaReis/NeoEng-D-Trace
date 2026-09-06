@@ -115,7 +115,12 @@ def test_layers_panel_status_and_exception_messages(qt_app, monkeypatch):
     layer = scene.create_layer("Layer")
     panel = LayersPanel(scene)
     panel._select_layer_id(layer.id)
-    messages = _messages(monkeypatch, layers_module)
+    presentations = []
+    monkeypatch.setattr(
+        layers_module,
+        "show_p2d05_error",
+        lambda *args, **kwargs: presentations.append(kwargs) or None,
+    )
     command = CreateGroupCommand("unused")
 
     scene.cmd = _ResultManager(CommandResult.rejected(command, "execute", "rejected"))
@@ -124,7 +129,10 @@ def test_layers_panel_status_and_exception_messages(qt_app, monkeypatch):
         CommandResult.failed(command, "execute", "Failure", "failed")
     )
     panel._execute_edit_command(command)
-    assert [kind for kind, _ in messages] == ["warning", "critical"]
+    assert [(item["severity"], item["channel"]) for item in presentations[:2]] == [
+        ("warning", "status"),
+        ("critical", "modal"),
+    ]
 
     monkeypatch.setattr(
         panel,
@@ -139,7 +147,11 @@ def test_layers_panel_status_and_exception_messages(qt_app, monkeypatch):
     panel._up()
     panel._select_layer_id(scene.layers[0].id)
     panel._down()
-    assert sum(kind == "critical" for kind, _ in messages) == 7
+    assert len(presentations) == 8
+    assert all(
+        (item["severity"], item["channel"]) == ("critical", "modal")
+        for item in presentations[2:]
+    )
     panel.close()
 
 

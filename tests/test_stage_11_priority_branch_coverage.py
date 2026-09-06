@@ -562,13 +562,21 @@ def test_canvas_modes_tools_and_gizmo_guard_branches(qt_app, monkeypatch):
     canvas.clear_temp_mask()
     assert canvas._temp_mask is None
 
+    presentations = []
+    monkeypatch.setattr(
+        "src.ui.error_presentation.show_p2d05_error",
+        lambda *args, **kwargs: presentations.append(kwargs) or None,
+    )
     canvas._report_gizmo_result(
         SimpleNamespace(status=CommandStatus.REJECTED, message="")
     )
     canvas._report_gizmo_result(
         SimpleNamespace(status=CommandStatus.FAILED, message="failed")
     )
-    assert [kind for kind, _ in messages[-2:]] == ["warning", "critical"]
+    assert [(item["severity"], item["channel"]) for item in presentations[:2]] == [
+        ("warning", "status"),
+        ("critical", "modal"),
+    ]
 
     scene.selected_id = None
     assert canvas._begin_gizmo_object_gesture() is False

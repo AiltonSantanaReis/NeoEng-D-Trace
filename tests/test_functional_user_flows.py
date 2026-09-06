@@ -206,9 +206,8 @@ def test_every_palette_tool_completes_a_user_like_operation(
     def pen(window: MainWindow) -> None:
         window.tool_palette.tool_buttons["pen_tool"].click()
         before = set(window.scene.objects)
-        # Keep the same 80 px triangle used by the legacy native Pen contract;
-        # smaller turns can be correctly rejected by the sampled-polygon
-        # invariant even though the gesture itself is valid.
+        # Simple clicks create corners; the size/zoom regression matrix lives
+        # in test_pen_creation_gestures.py, including the former 60 px failure.
         _click_image(window, (225, 35))
         _click_image(window, (305, 35))
         _click_image(window, (305, 115))
@@ -267,7 +266,9 @@ def test_pen_invalid_close_preserves_preview_and_history(
         tool = window.canvas._active_tool_object()
         before_objects = set(window.scene.objects)
         before_history = window.scene.cmd.undo_count
-        for point in ((225, 35), (285, 35), (285, 95)):
+        # Collinear anchors are genuinely invalid. The former 60 px triangle
+        # is now a positive regression, not an invalid-polygon fixture.
+        for point in ((225, 35), (265, 35), (305, 35)):
             _click_image(window, point)
         before_nodes = tuple(node.anchor for node in tool._nodes)
 

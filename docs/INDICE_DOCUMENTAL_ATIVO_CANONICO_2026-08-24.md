@@ -1,7 +1,7 @@
 # Índice Documental Ativo Canônico — NeoEng-D-Trace
 
-**Versão:** 2.2
-**Data:** 2026-08-29
+**Versão:** 2.3
+**Data:** 2026-09-05
 **ID:** DOC-INDEX-ACTIVE-CANONICAL-20260829
 **Status:** ativo e prevalente
 
@@ -61,6 +61,41 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | requisitos visuais e UX | plano normativo |
 | `EVIDENCIA_AUDITORIA_PUBLICACAO_PRIVACIDADE_2026-08-30.md` | ATIVO / EVIDÊNCIA DE PUBLICAÇÃO | auditoria repository-wide, revisão dos commits locais e saneamento da linha publicada | governança e requisitos de escopo final |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | prova da Etapa 5 | governança e etapa |
+| `evidence/P2D05_SINCRONIZACAO_MAIN_2026-09-04.md` | ATIVO / EVIDÊNCIA DE SINCRONIZAÇÃO | registro v1, P2D-05, bases 35727d9/b9557e6; commit de inclusão é o merge que introduz este registro | política de qualidade, governança, contrato global P2D-05; informa README, plano mestre, matriz e acompanhamento vivo; não altera requisitos ou IDs |
+
+Registro ativo adicional: [P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md),
+ID P2D05-LANG-STATUS-20260904, versão 1, IN_PROGRESS; controle de mudança
+aprovado para implementação sobre 4b873c3. Subordinado ao contrato global,
+decisão P2D-05, política e governança; informa README, plano mestre, matriz,
+acompanhamento e evidências. Não substitui snapshots ou requisitos.
+
+Registro ativo adicional: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md,
+ID PEN-HANDLES-20260905, versão 1, IN_PROGRESS / BLOCKED; commit qualificado
+`fd4a67e0d2bf60f07b710c002c0be88eeee94424`; CI remoto `33990872253` passou em
+Linux e Windows, sem auditoria nativa de cliques concluída. A autorização do
+proprietário para corrigir alças explícitas e quantização não relaxa a
+validação. Subordinado ao contrato global, decisão P2D-05, política e
+governança; informa README, plano mestre, matriz, acompanhamento e evidências.
+Não substitui snapshots, requisitos ou gates dos lotes anteriores.
+
+Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_PRECOMMIT_2026-09-05.md,
+ID EVID-PEN-HANDLES-QUANTIZATION-20260905, estado ATIVO / SNAPSHOT PRÉ-COMMIT;
+relatório histórico dos testes do candidato antes do commit, seus limites e a
+decisão então vigente de não publicar.
+
+Registro de evidência associado: evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md,
+ID EVID-PEN-HANDLES-QUANTIZATION-POSTCOMMIT-20260905, estado IN_PROGRESS /
+BLOCKED; qualificação local do commit `1068166f3c046e008928d98e68fdb187838c87bc`,
+recibos, hashes, falhas ambientais reproduzidas e limitações remotas/nativas.
+
+Registro de evidência associado: evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md,
+ID EVID-PEN-HANDLES-MODAL-ISOLATION-20260905, versão 1, IN_PROGRESS / BLOCKED;
+qualificação do commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424`, CI remoto verde,
+recibos locais hashados e auditoria nativa de cliques ainda pendente. Subordinado
+à governança, política de qualidade, lote PEN-HANDLES-20260905 e P2D-05; informa
+README, plano mestre, acompanhamento vivo e índice de evidências. Documento novo
+registrado nesta revisão; o commit de inclusão é o commit documental que o
+incorporar.
 
 ## 3. Documentos superseded
 

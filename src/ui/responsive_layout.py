@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtWidgets import (
     QSizePolicy,
     QSplitter,
@@ -15,6 +15,12 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.ui.reference_chrome import (
+    _REFERENCE_RAIL_BUTTON_SIZE,
+    _REFERENCE_TOP_BUTTON_COMPACT_WIDTH,
+    _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH,
+    _REFERENCE_TOP_BUTTON_HEIGHT,
+)
 from src.ui.viewport_chrome import ViewportChrome
 
 
@@ -109,36 +115,44 @@ class ResponsivePanelLayout:
             if compact
             else Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         )
+        button_width = (
+            _REFERENCE_TOP_BUTTON_COMPACT_WIDTH
+            if compact
+            else _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH
+        )
         toolbar.setToolButtonStyle(style)
         for button in toolbar.findChildren(QToolButton):
-            if button.objectName() != "reference_menu_button":
-                button.setToolButtonStyle(style)
-
-        action_widths = {
-            "reference_fit_button": 76 if compact else 136,
-            "reference_focus_button": 76 if compact else 100,
-            "reference_pan_button": 76 if compact else 76,
-            "reference_undo_button": 76 if compact else 88,
-            "reference_redo_button": 76 if compact else 88,
-        }
-        for name, width in action_widths.items():
-            button = getattr(self.owner, name, None)
-            if button is None:
+            if button.objectName() == "qt_toolbar_ext_button":
                 continue
-            button.setMinimumWidth(width)
-            button.setMaximumWidth(width)
-            button.setMinimumHeight(78)
-            button.setMaximumHeight(88)
+            button.setToolButtonStyle(style)
+            button.setFixedSize(QSize(button_width, _REFERENCE_TOP_BUTTON_HEIGHT))
+            button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
-            menu_button.setMinimumWidth(51)
-            menu_button.setMaximumWidth(51)
+            menu_button.setFixedSize(_REFERENCE_RAIL_BUTTON_SIZE)
 
         search = getattr(self.owner, "reference_command_search", None)
         if search is not None:
-            search.setMinimumWidth(180 if compact else 260)
-            search.setMaximumWidth(240 if compact else 440)
+            search.setMinimumWidth(180)
+            search.setMaximumWidth(240 if compact else 180)
+
+        history_container = getattr(self.owner, "reference_history_container", None)
+        if history_container is not None:
+            history_buttons = history_container.findChildren(QToolButton)
+            for button in history_buttons:
+                button.setToolButtonStyle(style)
+                button.setFixedSize(QSize(button_width, _REFERENCE_TOP_BUTTON_HEIGHT))
+                button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+            layout = history_container.layout()
+            if layout is not None:
+                margins = layout.contentsMargins()
+                history_container.setFixedWidth(
+                    (button_width * len(history_buttons))
+                    + layout.spacing() * max(0, len(history_buttons) - 1)
+                    + margins.left()
+                    + margins.right()
+                )
 
         focus_button = getattr(self.owner, "reference_focus_button", None)
         if focus_button is not None:
@@ -300,7 +314,7 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
     central_layout = QVBoxLayout(central_container)
     central_layout.setContentsMargins(0, 0, 0, 0)
     central_layout.setSpacing(0)
-    central_layout.addWidget(owner.reference_top_toolbar)
+    central_layout.addWidget(owner.reference_top_toolbar_container)
     central_layout.addWidget(main_splitter, 1)
     owner.reference_central_container = central_container
     owner.setCentralWidget(central_container)

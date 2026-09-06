@@ -252,7 +252,8 @@ def test_missing_manager_blocks_move_add_and_delete(
     assert scene.objects["object"].polygon == original_polygon
     assert scene.collision_shapes["object"] == original_collision
     assert tool._vertex_transaction is None
-    assert len(messages) >= 3
+    assert "P2D05-OPERATION" in tool._last_error
+    assert "No change was applied" in tool._last_error
 
 
 def test_add_vertex_uses_one_command_and_round_trips_collision():

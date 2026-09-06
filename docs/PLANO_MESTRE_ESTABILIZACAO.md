@@ -1,10 +1,133 @@
 # Plano Mestre de Estabilização — NeoEng-D-Trace
 
+## Atualização viva — candidata de barra superior e publicação controlada — 06/09/2026
+
+A auditoria de rastreabilidade encontrou sete commits locais ainda não
+publicados na branch `Ailton/pen-handles-quantization-20260905`. O último SHA
+funcional qualificado antes desta reconciliação é
+`bedfd30a4f5505e5de9ecfddbf701f8874ccf63d`; ele coloca a sequência visual
+Selecionar → Desfazer/Refazer → Ctrl+K e mantém os comandos existentes.
+
+Em árvore limpa, passaram a rodada focada (`25` testes), o runner Windows
+oficial (`196/196` arquivos, `2026` testes, zero falhas/erros, dois skips
+previstos), cobertura, estilo, tipagem, segurança, integridade e build portátil
+com smoke. A auditoria visual automatizada offscreen não encontrou achados;
+revisão nativa humana não é inferida desse resultado.
+
+A PR #171 está `OPEN / DRAFT`, mas seu head remoto ainda é `850c6c…`; os dois
+jobs remotos bem-sucedidos registrados anteriormente pertencem ao head antigo.
+O próximo gate obrigatório é requalificar em árvore limpa o SHA produzido por
+este adendo documental, depois fazer push normal, aguardar os jobs do novo SHA,
+analisar falhas e somente então realizar o merge autorizado. Estado atual:
+`PASS_LOCAL / BLOCKED_REMOTE_PUBLICATION`; tag e release continuam fora do
+escopo autorizado.
+
+## Atualização viva — saída segura da edição Bézier — 05/09/2026
+
+O commit local `a554e4dc9e63890ac2436e7aa4f19fe1fbd99b6f`, na branch
+`Ailton/pen-handles-quantization-20260905`, corrige o ciclo da Caneta após o
+fechamento de um Bézier: clique fora de âncora/alça encerra a edição e
+deseleciona sem iniciar criação; o clique seguinte inicia um novo caminho.
+O estado `_closed` também é redefinido ao descarregar o objeto. O tooltip em
+inglês e português documenta o fluxo. A decisão foi comparada aos handlers
+da Seleção e das demais ferramentas de criação; validador, quantização,
+rejeições e histórico permanecem preservados.
+
+No mesmo SHA, `tests/test_pen_creation_gestures.py` passou `51/51` e a suíte
+oficial sem filtros passou `2019 passed, 2 skipped`, com um warning de
+depreciação já conhecido. Flake8, Black, isort e mypy passaram. A build
+portátil oficial e os `11` smoke checks também passaram. [Evidência da
+qualificação local](evidence/PEN_EMPTY_CLICK_EDIT_EXIT_2026-09-05.md).
+
+Estado: `PASS_LOCAL / BLOCKED_NATIVE_REMOTE`. A auditoria nativa do
+executável continua pendente por indisponibilidade do helper visual; não há
+push, CI remoto, merge, tag ou release desta candidata.
+
+## Atualização viva — correção do modal residual e CI da Caneta — 05/09/2026
+
+O commit `fd4a67e0d2bf60f07b710c002c0be88eeee94424`, na branch
+`Ailton/pen-handles-quantization-20260905`, adicionou isolamento no harness Qt
+para impedir que um `QMessageBox` residual de um caso contaminasse o seguinte.
+O CI remoto `33990872253` passou integralmente em Linux e Windows; a suíte
+Windows oficial local também passou `196/196` arquivos e `2019` testes, sem
+falhas ou erros e com dois skips previstos. Cobertura, política, estática,
+segurança, Stage 4B.5, baseline, evidências e gate legado passaram.
+
+O estado permanece `IN_PROGRESS / BLOCKED`: a auditoria nativa de cliques do
+executável continua pendente. O push foi autorizado e realizado para a PR #171
+em rascunho; merge, tag e release não foram realizados. [Evidência](evidence/PEN_HANDLES_MODAL_ISOLATION_CI_2026-09-05.md).
+
+## Snapshot anterior — qualificação pós-commit do lote da Caneta — 05/09/2026
+
+O commit `1068166f3c046e008928d98e68fdb187838c87bc`, na branch
+`Ailton/pen-handles-quantization-20260905`, foi requalificado em árvore limpa.
+O runner Windows oficial passou `196/196` arquivos e `2019` testes, com zero
+falhas/erros e dois skips condicionais previstos. Cobertura, estática,
+segurança, Stage 4B.5, baseline/evidências, gate legado e empacotamento
+portátil com smoke `SUCCESS` passaram no mesmo commit. O ZIP tem
+`124243242` bytes e SHA-256
+`49108fc45c41ee8cbcd54beb7f487f5ed5d0000fe5b58b5364ce0255590f2ba2`.
+
+O lote permanece `IN_PROGRESS / BLOCKED`: CI remoto e auditoria nativa do
+executável ainda não foram executados. A falha inicial do `pyside6-qsb` global
+foi reproduzida na base `5b3e6b1` e não foi atribuída ao patch. Não há push,
+merge, tag ou release. [Registro do lote](LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md)
+e [evidência pós-commit](evidence/PEN_HANDLES_QUANTIZACAO_POSTCOMMIT_2026-09-05.md).
+
+## Atualização viva — lote corretivo da Caneta — 05/09/2026
+
+A branch Ailton/pen-handles-quantization-20260905, baseada em 5b3e6b1,
+corrige a origem de tangentes implícitas e implementa alças apenas por arraste
+explícito. Os controles existentes do validador e da quantização não foram
+alterados. A rodada focada passou 69/69; a suíte agregada local permanece
+FAIL diagnóstico (2016 passed, 2 skipped, 1 failed), com a mesma falha
+modal reproduzida na base limpa. Estado IN_PROGRESS / PRECOMMIT_PENDING;
+runner oficial, build, CI e publicação continuam bloqueados até aceite do
+patch exato e requalificação limpa.
+Registro: LOTE_CANETA_ALCAS_QUANTIZACAO_2026-09-05.md.
+
+## Atualização viva — correção de idioma/status P2D-05 — 05/09/2026
+
+Base `4b873c3`; o proprietário autorizou corrigir os achados de idioma da
+Caneta e leitura/acesso aos detalhes do canal STATUS. Estado IN_PROGRESS,
+em pré-commit; geometria e histórico protegidos. Não herda CI, symlinks ou
+revisões humanas de pais. PRECOMMIT e qualificação pós-commit pendentes;
+PR #170 em rascunho, Ready/merge/tag/release BLOCKED.
+[Fronteira e gates](P2D05_LOTE_IDIOMA_STATUS_2026-09-04.md).
+
+R2 local registrada: 1.968 testes aprovados, dois symlinks com WinError 1314;
+cobertura/estática/integridade passaram. Runner legado FAIL por árvore suja,
+build limpo e revisão humana pendentes. Próximo ponto: aceite PRECOMMIT do
+pacote exato, sem declarar etapa concluída ou iniciar outro workstream.
+
+## Atualização viva — sincronização P2D-05 — 04/09/2026
+
+O SHA `35727d9` passou no CI Linux/Windows `33932398814`, com 1.956
+testes Windows e zero skips, incluindo os dois symlinks. A PR #170 continua
+em rascunho. O proprietário autorizou preservar o histórico privado e
+sincronizar main `b9557e6` na candidata, sem merge da PR ou publicação de
+históricos privados. A integração exige gates próprios e revisão humana
+vinculada à candidata exata; o CI de entrada não aprova seu descendente.
+Estado global `IN_PROGRESS`; Ready, merge, tag e release `BLOCKED`.
+Fronteira e evidência: [registro vivo P2D-05](P2D05_REQUALIFICACAO_ATUAL.md).
+
+## Snapshot anterior — P2D-05 — fonte efb0caf
+
+Fonte local `efb0caf`, branch `Ailton/error-presentation-contract-20260904`:
+tipagem e baseline corrigidos; integridade rastreada aprovada no checkout limpo.
+Requalificação `PARCIAL` pelos dois skips de symlink e pelos gates humanos e
+remotos pendentes; publicação `BLOCKED`. O commit documental descendente não
+é apresentado como tendo executado a suíte completa do SHA-fonte.
+O [registro vivo P2D-05](P2D05_REQUALIFICACAO_ATUAL.md) discrimina escopo,
+integridade versionada, artefatos locais preservados e gates pendentes.
+Os registros abaixo conservam os fatos de suas revisões anteriores; não
+atestam o HEAD atual nem autorizam avançar para outro lote.
+
 O plano vivo `docs/PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` é a fonte de verdade do escopo específico de modernização da interface. Ele permanece subordinado a este plano mestre e às demais governanças; em 21 de agosto de 2026 a Etapa 0 está aprovada somente no escopo de baseline visual, enquanto as Etapas 1–14 permanecem planejadas. O plano não autoriza, por si só, implementação, merge ou release.
 
 Baseline deste snapshot: `baseline_manifest.json`, atualizado em 18 de agosto de 2026.
 
-## Atualização viva — encerramento pós-merge LEGACY-26 — 04 de setembro de 2026
+## Snapshot histórico — encerramento pós-merge LEGACY-26 — 04 de setembro de 2026
 
 A revisão corrente é a integração da PR `#168` em `main`, pelo merge commit
 `9a25f0be0ea47a092e90c0194797ddcaf33a7dcf`. O produto foi validado no SHA
