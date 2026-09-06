@@ -1,5 +1,22 @@
 # NeoEng-D-Trace
 
+> Atualização pós-merge — 06/09/2026: a PR #171 foi integrada em `main` no
+> merge commit `18a82bcab0b9319ede29e05b39673e7dbf066e63`, a partir do head
+> requalificado `ab0753fcc45d466e4c571d7d9603c9ef3703b6b3`. O CI remoto
+> `34025199115` passou nos jobs Linux e Windows. A validação independente do
+> conteúdo integrado passou foco Caneta/barra `66/66`, suíte completa
+> `2024 passed, 2 skipped, 1 warning`, baseline `3264 files` e integridade de
+> evidências `135 manifests`. Os dois skips continuam documentados como
+> limitação de privilégio Windows para criar symlinks. A build portátil de
+> `main` tem executável de SHA-256
+> `a8fe50c1836369d10c8887c29f3ed805d1bc93492dd35801db13e6a48955a282` e ZIP
+> de SHA-256
+> `ef9346d6cf074c506d8076390b61161ae115c28cbd0a1fc5faaaa0b5eb84afdf`;
+> ambos foram gerados com manifesto apontando para `18a82bc…`, 314 arquivos e
+> smoke `SUCCESS`. Este registro corrige o estado vivo publicado antes do
+> merge; snapshots históricos permanecem inalterados. Tag e release continuam
+> fora do escopo autorizado.
+
 > Atualização operacional — 06/09/2026: a auditoria do estado local encontrou a
 > branch `Ailton/pen-handles-quantization-20260905` com sete commits não
 > publicados além de `origin/Ailton/pen-handles-quantization-20260905`.

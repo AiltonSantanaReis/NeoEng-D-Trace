@@ -1,3 +1,21 @@
+## Registro corrente — pós-merge em `main` — 06/09/2026
+
+A PR `#171` foi integrada no merge commit
+`18a82bcab0b9319ede29e05b39673e7dbf066e63`, originado do head
+`ab0753fcc45d466e4c571d7d9603c9ef3703b6b3`. O CI remoto `34025199115` passou
+em Linux e Windows. A validação independente do conteúdo integrado passou
+foco `66/66`, suíte completa `2024 passed, 2 skipped, 1 warning`, baseline
+`3264 files` e `135` manifestos de evidências.
+
+A build portátil correspondente está em
+`build/release-postmerge-18a82bc-20260906`; o manifesto declara o merge
+commit, `314` arquivos e smoke `SUCCESS`. O executável tem SHA-256
+`a8fe50c1836369d10c8887c29f3ed805d1bc93492dd35801db13e6a48955a282`; o ZIP
+tem SHA-256
+`ef9346d6cf074c506d8076390b61161ae115c28cbd0a1fc5faaaa0b5eb84afdf`.
+Os dois skips de symlink continuam explicitamente limitados ao privilégio
+Windows. Tag e release não fazem parte deste registro.
+
 ## Registro corrente — candidata de barra superior — 06/09/2026
 
 O SHA funcional auditado em árvore limpa foi
