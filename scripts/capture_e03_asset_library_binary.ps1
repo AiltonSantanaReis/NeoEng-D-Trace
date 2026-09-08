@@ -10,6 +10,7 @@ param(
     [switch]$CaptureNavMeshFlow,
     [switch]$CaptureEntityPrefabFlow,
     [switch]$CaptureRendererFlow,
+    [switch]$CaptureMaterialFlow,
     [switch]$CaptureParallaxFlow,
     [switch]$DirectProjectLoad
 )
@@ -294,6 +295,19 @@ try {
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.56, 0.046)
         Start-Sleep -Milliseconds 500
         $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-authoring.png")
+    }
+    if ($CaptureMaterialFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # Select the large receiver through the real canvas, as a user would
+        # before editing its persisted material in the inspector.
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.17, 0.27)
+        Start-Sleep -Milliseconds 700
+        for ($scrollStep = 0; $scrollStep -lt 100; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.992, 0.60, -120)
+            Start-Sleep -Milliseconds 100
+        }
+        Start-Sleep -Milliseconds 700
+        $records.material_authoring_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-material-authoring-selected.png")
     }
     if ($CaptureParallaxFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
