@@ -290,7 +290,7 @@ class IndependentSceneWindow(QMainWindow):
         self.objects_label = QLabel(root)
         self.object_list = QListWidget(root)
         self.object_list.setObjectName("independent_scene_object_list")
-        self.object_list.setMaximumHeight(120)
+        self.object_list.setMaximumHeight(160)
         self.object_list.setSelectionMode(
             QAbstractItemView.SelectionMode.ExtendedSelection
         )

@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$OutputDirectory,
     [switch]$CaptureSaveDialog,
-    [switch]$CapturePrimitiveFlow
+    [switch]$CapturePrimitiveFlow,
+    [switch]$CaptureAuthoringOps
 )
 
 $ErrorActionPreference = "Stop"
@@ -134,6 +135,22 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x11, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlD()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x44, 0, 0, UIntPtr.Zero);
+        keybd_event(0x44, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendDelete()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x2E, 0, 0, UIntPtr.Zero);
+        keybd_event(0x2E, 0, up, UIntPtr.Zero);
+    }
+
     public static void ClickScreen(int x, int y)
     {
         SetCursorPos(x, y);
@@ -224,6 +241,50 @@ try {
         }
     }
 
+    $authoringOpsRecord = $null
+    if ($CaptureAuthoringOps -and $child) {
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        # The PT-BR object X editor is visible in the standard 1986x1431 window.
+        [NeoEngIndependentSceneCapture]::ClickWindow($child.Handle, 420, 1285)
+        Start-Sleep -Milliseconds 150
+        [System.Windows.Forms.SendKeys]::SendWait("^a42{ENTER}")
+        Start-Sleep -Milliseconds 500
+        $transformPath = Join-Path $OutputDirectory "04-independent-scene-after-transform.png"
+        $transformSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $transformPath)
+
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlD()
+        Start-Sleep -Milliseconds 500
+        $duplicatePath = Join-Path $OutputDirectory "05-independent-scene-after-duplicate.png"
+        $duplicateSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $duplicatePath)
+
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::ClickWindow($child.Handle, 1580, 90)
+        Start-Sleep -Milliseconds 500
+        $removePath = Join-Path $OutputDirectory "06-independent-scene-after-remove.png"
+        $removeSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $removePath)
+        $authoringOpsRecord = [ordered]@{
+            transform = [ordered]@{
+                window = $transformSize
+                path = $transformPath
+                sha256 = (Get-FileHash -LiteralPath $transformPath -Algorithm SHA256).Hash
+                input = "Object X=42"
+            }
+            duplicate = [ordered]@{
+                window = $duplicateSize
+                path = $duplicatePath
+                sha256 = (Get-FileHash -LiteralPath $duplicatePath -Algorithm SHA256).Hash
+                input = "Ctrl+D"
+            }
+            remove = [ordered]@{
+                window = $removeSize
+                path = $removePath
+                sha256 = (Get-FileHash -LiteralPath $removePath -Algorithm SHA256).Hash
+                input = "Remover toolbar"
+            }
+        }
+    }
+
     $saveDialogRecord = $null
     if ($CaptureSaveDialog -and $child) {
         [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
@@ -257,6 +318,7 @@ try {
         }
         independent_scene = $childRecord
         primitive_flow = $primitiveFlowRecord
+        authoring_ops = $authoringOpsRecord
         save_dialog = $saveDialogRecord
         observed_windows = @($windows | ForEach-Object { [ordered]@{ title = $_.Title } })
     } | ConvertTo-Json -Depth 6
