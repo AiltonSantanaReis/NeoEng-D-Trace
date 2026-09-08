@@ -102,11 +102,16 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
                 "stage progression is inconsistent with active E02 continuation state"
             )
     else:
+        expected_e03 = (
+            "IN_PROGRESS"
+            if active.get("status") == "IN_PROGRESS"
+            else "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
+        )
         expected = (
             "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
             "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
             "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-            "IN_PROGRESS",
+            expected_e03,
         )
         if (
             stages.get("E00"),

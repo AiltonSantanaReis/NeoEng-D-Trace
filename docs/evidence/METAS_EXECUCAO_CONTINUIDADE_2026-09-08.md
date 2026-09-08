@@ -11,13 +11,13 @@ do proprietário for indispensável.
 |---|---|---|---|
 | M00 | Governança e continuidade | CONCLUÍDA PARA O CHECKPOINT TÉCNICO | Registro único atualizado, worktree E01 identificado, proveniência conferida e nenhuma decisão material implícita |
 | M01 | Checkpoint técnico de E00 | CONCLUÍDO — auditoria final pendente | Base restaurável, rastreabilidade/decisões E00 reconciliadas, suite/estática/build/runtime/capturas documentados; symlink e revisão humana ficam para auditoria final |
-| M02 | Corrigir findings reproduzíveis | CONTÍNUA — negativo de pontos quase coincidentes corrigido; r10 em validação | Cada finding recebe causa, correção, teste focado, suíte proporcional, build oficial, captura real e commit rastreável |
+| M02 | Corrigir findings reproduzíveis | CONTÍNUA — E03 r13 selado no checkpoint técnico | Cada finding recebe causa, correção, teste focado, suíte proporcional, build oficial, captura real e commit rastreável |
 | M03 | Validar experiência visual e usabilidade | CHECKPOINT TÉCNICO PASS — revisão final pendente | Fluxos reais do binário testados; layout, tradução, scroll, abas, toolbar, acessibilidade e erros sem finding aberto |
 | M04 | Symlinks | ADIADA CONTROLADAMENTE | Executar somente na auditoria final do plano; 31 casos, relatório completo e skips locais mantidos separados |
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
 | M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
-| M08 | E02–E13 | E03 IN_PROGRESS — E03-A/B/C ativos | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
+| M08 | E02–E13 | E03 checkpoint técnico concluído; E04 em abertura controlada | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
 
@@ -45,8 +45,9 @@ do proprietário for indispensável.
   autorização do proprietário.
 - E01: checkpoint técnico concluído; aceite final pendente.
 - E02: checkpoint técnico aprovado, com aceite final pendente.
-- E03: `IN_PROGRESS`, branch própria `Ailton/e03-assets-20260908`.
-- E04–E13: ainda não iniciadas.
+- E03: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`, build r13 e captura real registrados; branch `Ailton/e03-assets-20260908`.
+- E04: próxima etapa operacional; abrir branch própria após o commit de selamento deste checkpoint.
+- E05–E13: ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -56,17 +57,17 @@ do proprietário for indispensável.
 | E01-B bancada de backend | `PASS_LOCAL` | `docs/evidence/E01_B_BACKEND_BANCADA_EVIDENCIA_2026-09-08.md` | repetir somente se houver mudança de renderer/backend |
 | E01-C implementação independente | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E01_C_FLUXO_INDEPENDENTE_EVIDENCIA_2026-09-08.md` | manter E01 aberto até auditoria final |
 | E02-A contrato/modelo | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E02_A_CONTRATO_PRIMITIVAS_EVIDENCIA_2026-09-08.md` | preservar evidência; aceite final permanece na auditoria do plano |
-| E02-B operações de autoria | `IN_PROGRESS` | `docs/evidence/E02_B_OPERACOES_AUTORIA_EVIDENCIA_2026-09-08.md` | edição/seleção/transformação e save/reopen observável |
+| E02-B operações de autoria | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E02_B_OPERACOES_AUTORIA_EVIDENCIA_2026-09-08.md` | edição/seleção/transformação e save/reopen observável |
 | E02-C edição de pontos e gestos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E02_C_EDICAO_PONTOS_GESTOS_EVIDENCIA_2026-09-08.md` | edição livre, estados de gesto, negativos, captura real e save/reopen |
-| E03-A pacote/proveniência | `IN_PROGRESS` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | categorias, estados, hashes, licença/proveniência |
-| E03-B biblioteca/UX | `IN_PROGRESS` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | pesquisa, miniaturas, filtros, drag/drop e tradução |
-| E03-C lifecycle/negativos | `IN_PROGRESS` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | import, relink, replace, Undo/Redo, missing/tamper/invalid |
+| E03-A pacote/proveniência | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | categorias, estados, hashes, licença/proveniência |
+| E03-B biblioteca/UX | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | pesquisa, miniaturas, filtros, drag/drop e tradução |
+| E03-C lifecycle/negativos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | import, relink, replace, Undo/Redo, missing/tamper/invalid |
 
 ## Ordem fixa de execução
 
 1. Confirmar branch, SHA, registry e worktree antes de cada lote.
 2. Implementar somente o lote ativo ou um artefato explicitamente marcado como `PREPARATORY_ONLY`.
-3. Executar testes focados, suíte oficial, estática, build oficial e captura real do binário quando houver alteração executável.
+3. Executar testes focados, suíte oficial, estática, build oficial e captura real do binário quando houver alteração executável; E03 r13 cumpriu todos esses gates.
 4. Registrar causa, correção, teste, hash, limitação e rollback no mesmo pacote de evidências.
 5. Não executar novamente symlinks durante E01/E02 preparatório; o gate fica reservado à auditoria final.
 6. Não converter captura automatizada em revisão humana; a revisão final permanece pendente.
@@ -79,8 +80,8 @@ do proprietário for indispensável.
 | E00 | preservar, reconciliar e qualificar a base | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | auditoria final, symlink, revisão humana e decisão formal |
 | E01 | contrato, backend e cena independente | `IN_PROGRESS` — checkpoint técnico dos sub-lotes A/B/C | aceite formal com fluxo, negativos, build, captura e rollback |
 | E02 | primitivas, edição, persistência e histórico | `IN_PROGRESS` — E02-C | três primitivas, edição, Undo/Redo, save/reopen e negativos |
-| E03 | biblioteca própria e lifecycle de assets | `PLANNED` | assets rastreáveis, offline, relink/replace e licença |
-| E04 | tilemaps, grids e regras de terreno | `PLANNED` | três grids, chunks, regras e persistência |
+| E03 | biblioteca própria e lifecycle de assets | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | assets rastreáveis, offline, relink/replace e licença |
+| E04 | tilemaps, grids e regras de terreno | `PLANNED` — abertura após selamento documental de E03 | três grids, chunks, regras e persistência |
 | E05 | colisão própria de cenário | `PLANNED` | tipos físicos, occluders e validação de contato |
 | E06 | NavMesh 2D e consumo real | `PLANNED` | navegação de superfície/plataforma no fluxo real |
 | E07 | componentes e instâncias | `PLANNED` | relações, parent/grupos e conflitos de prefab |

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "stage": "E03",
+  "lot": "E03-A/B/C",
+  "source_commit": "6899d20a20cc6efe343e575744754c3d8b2f632b",
+  "source_branch": "Ailton/e03-assets-20260908",
+  "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+  "binary": {
+    "path": "release/e03-assets-20260908-r13/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "sha256": "882EC881E55CF3212DC360AF7F78D2FE58F21660BB3DFCF76EDA9A93D87EACD2",
+    "smoke": "SUCCESS",
+    "smoke_checks": 11
+  },
+  "archive": {
+    "path": "release/e03-assets-20260908-r13/NeoEng-D-Trace-0.3.0-win64-portable.zip",
+    "sha256": "032CAFB6E743A9B2392FE40610552399090A95F648586E677882ECB7C7A9CB5B"
+  },
+  "focused_tests": {
+    "command": "python -m pytest -q tests/test_p2d_01_assets.py tests/test_p2d_01b_asset_lifecycle.py",
+    "result": "14 passed"
+  },
+  "official_suite": {
+    "command": "python -m pytest -q",
+    "result": "1995 passed, 2 skipped, 1 warning"
+  },
+  "offscreen_audit": {
+    "path": "artifacts/e03-assets-20260908/offscreen-audit-r13",
+    "result": "PASS",
+    "finding_count": 0
+  },
+  "real_binary_capture": {
+    "script": "scripts/capture_e03_asset_library_binary.ps1",
+    "manifest": "artifacts/e03-assets-20260908/binary-capture-r13/manifest.json",
+    "window_title": "Editor de Cenário — NeoEng-D-Trace",
+    "window_rect": "-13,-13,3853,2077",
+    "captures": [
+      {
+        "path": "artifacts/e03-assets-20260908/binary-capture-r13/01-main.png",
+        "sha256": "60A586B1B395DC6204D2E9C89B83FC918634880E790440FEFE2472076A9C8803"
+      },
+      {
+        "path": "artifacts/e03-assets-20260908/binary-capture-r13/02-project-open-dialog.png",
+        "sha256": "41AEB289238CEFC04D7860E9040F3E746EE03971E9F7D76EA0A9AB8DEE3EC513"
+      },
+      {
+        "path": "artifacts/e03-assets-20260908/binary-capture-r13/03-main-after-project-load.png",
+        "sha256": "D98F55C9B024200288C08D8E2EF44693A38D2420853A331E616CB9D34CFE6F90"
+      },
+      {
+        "path": "artifacts/e03-assets-20260908/binary-capture-r13/05-asset-library-ready.png",
+        "sha256": "233559402A0F0AC13CFD6A1C1D5E27D61F0F6A068717BDB72DCDCB8E1D703A2C"
+      }
+    ],
+    "visual_observation": "PT-BR labels, search, category filter, READY state, thumbnail, dimensions, usage count, diagnostics and hierarchy legible; no clipping observed."
+  },
+  "deferred_gates": {
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "human_review": "PENDING_EVIDENCE"
+  }
+}

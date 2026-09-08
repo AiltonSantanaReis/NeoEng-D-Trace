@@ -10,7 +10,7 @@
   },
   "active_work": {
     "stage": "E03",
-    "status": "IN_PROGRESS",
+    "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "E03 biblioteca e lifecycle de assets; findings reproduziveis continuam sujeitos a correcao controlada.",
@@ -28,10 +28,10 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Gerar a build oficial r12 de E03, executar smoke e captura real do asset library pelo binário; depois atualizar a evidência e promover o checkpoint técnico.",
+    "next_action": "Abrir E04 em branch própria após selar E03; manter symlink e revisão humana reservados para a auditoria final.",
     "active_lot": {
       "id": "E03-A/B/C",
-      "status": "IN_PROGRESS",
+      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
       "scope": "biblioteca pesquisável, categorias, miniaturas, drag-drop, relink/replace e negativos",
       "evidence": "docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
@@ -41,7 +41,7 @@
       "status": "PLANNED",
       "evidence": null,
       "functional_implementation_allowed": false,
-      "promotion_rule": "Somente apos checkpoint tecnico E02 e atualizacao deste registro."
+      "promotion_rule": "E03 selado tecnicamente; E04 pode iniciar em branch própria, sem antecipar symlink ou revisão humana."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e03-assets-20260908",
-    "head": "5fbea54bec3690c3bf64d88acce43166db54bd8e",
+    "head": "6899d20a20cc6efe343e575744754c3d8b2f632b",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E03_WORKTREE"
@@ -66,7 +66,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1993,
+      "passed": 1995,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -94,26 +94,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/05-independent-scene-point-preview-invalid.png",
-      "latest_binary_capture_sha256": "9654669D8BD255320F20D173B37D5771A316B8ED77B9BC183B7A4ED26677D2C3",
-      "latest_binary_capture_window": "1986x1431",
-      "observed_finding": "Build r11 executou criação, edição válida, prévia inválida com handles vermelhos, Escape sem mutação, finalização e save/reopen real; após reabrir, os 3 objetos e a geometria editada foram observados. Revisão humana continua pendente.",
+      "latest_binary_capture": "artifacts/e03-assets-20260908/binary-capture-r13/05-asset-library-ready.png",
+      "latest_binary_capture_sha256": "233559402A0F0AC13CFD6A1C1D5E27D61F0F6A068717BDB72DCDCB8E1D703A2C",
+      "latest_binary_capture_window": "-13,-13,3853,2077",
+      "observed_finding": "Build r13 abriu projeto pelo diálogo nativo e expôs o editor profissional; pesquisa, filtro de categoria, miniatura, estado READY, contagem de uso, diagnóstico e hierarquia ficaram legíveis sem clipping. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r11/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "880888345CE1E8D38F5DA7F59FD32FF85EFAA250EF0DF8FD76982AF0FF42663B",
-      "latest_observed_binary_last_write": "2026-09-08T16:23:18.1745194Z",
-      "source_commit": "dc2d586c3e1b541a0579615e6899a8ed97f3e62b",
-      "source_branch": "Ailton/e02-primitives-20260908",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e03-assets-20260908-r13/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "882EC881E55CF3212DC360AF7F78D2FE58F21660BB3DFCF76EDA9A93D87EACD2",
+      "latest_observed_binary_last_write": "2026-09-08T18:13:30.1589249Z",
+      "source_commit": "6899d20a20cc6efe343e575744754c3d8b2f632b",
+      "source_branch": "Ailton/e03-assets-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "C4094C0F211A675B8CD1C7527D4C88350C9E32EECA14427F6F8414F402CFDB8D",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r11/continuity-provenance.json",
+      "continuity_registry_sha256": "890693B6D6943F61F47F46543286B8F80B13CF7C015AD13EAC5685C346D998EA",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e03-assets-20260908-r13/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "A437DF526CEE48D646EE1C37E8F6064823E9A4A2A1127DD8AE69BFF896B3A4E3",
-      "reason": "E02-C possui contrato transacional de gestos, rejeicao deterministica de pontos quase coincidentes, suite completa, tipagem, build r11, smoke e capturas reais de estados invalidos/cancelados/finalizados e save/reopen."
+      "portable_archive_sha256": "032CAFB6E743A9B2392FE406105523990A95F648586E677882ECB7C7A9CB5B",
+      "reason": "E03-A/B/C possui biblioteca pesquisável, categorias, miniaturas, drag-drop sem duplicação, lifecycle relink/replace e negativos; suite completa, tipagem, build r13, smoke e captura real do editor profissional."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
@@ -136,7 +136,7 @@
     "E00": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E01": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E02": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E03": "IN_PROGRESS",
+    "E03": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E04": "PLANNED",
     "E05": "PLANNED",
     "E06": "PLANNED",
