@@ -35,12 +35,21 @@ public static class NeoEngE03Capture
     [DllImport("user32.dll")] private static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
     [DllImport("user32.dll")] private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint flags);
     [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern bool SetProcessDpiAwarenessContext(IntPtr value);
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int command);
     [DllImport("user32.dll")] private static extern bool BringWindowToTop(IntPtr hWnd);
     [DllImport("user32.dll")] private static extern IntPtr SetFocus(IntPtr hWnd);
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] private static extern void mouse_event(uint flags, uint dx, uint dy, uint data, UIntPtr extra);
     [DllImport("user32.dll")] private static extern void keybd_event(byte key, byte scan, uint flags, UIntPtr extra);
+
+    public static void EnablePerMonitorDpiAwareness()
+    {
+        // DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2.  Without this, the
+        // PowerShell host virtualizes PrintWindow and clips the Qt surface to
+        // the left half of the maximized 200% editor.
+        SetProcessDpiAwarenessContext(new IntPtr(-4));
+    }
 
     public static WindowInfo[] GetWindows(int pid)
     {
@@ -89,6 +98,8 @@ public static class NeoEngE03Capture
     }
 }
 "@ -ReferencedAssemblies $references
+
+[NeoEngE03Capture]::EnablePerMonitorDpiAwareness()
 
 function Set-DialogPath {
     param([IntPtr]$Handle, [string]$Path)
@@ -227,15 +238,15 @@ try {
         # 1926x1038 maximized surface on this 200% host, while Qt layout sizes
         # are logical pixels.  Fixed logical coordinates silently missed the
         # inspector and produced false-identical screenshots.
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.76, 0.23)
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.82, 0.23)
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.23)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.75, 0.135)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.80, 0.135)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.85, 0.135)
         Start-Sleep -Milliseconds 900
         $records.navmesh_baked = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-navmesh-baked.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.94, 0.23)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.90, 0.135)
         Start-Sleep -Milliseconds 700
         $records.navmesh_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-navmesh-saved.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.76, 0.23)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.135)
         Start-Sleep -Milliseconds 700
         $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-navmesh-reopened.png")
     }
