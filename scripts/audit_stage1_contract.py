@@ -55,6 +55,8 @@ FORBIDDEN_COLORS = ("#FF4500", "#00BFFF")
 CONTENT_COLOR_FILES = {
     "src/ui/scene_authoring_inspector.py",
     "src/ui/scene_authoring_viewport.py",
+    # Tilemap cells and grid lines are scene content semantics, not chrome.
+    "src/ui/tilemap_authoring_panel.py",
     "src/ui/viewport_chrome.py",
 }
 TOKEN_DEFINITION_FILES = {"src/ui/theme_tokens.py"}
