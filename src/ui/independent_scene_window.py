@@ -320,7 +320,11 @@ class IndependentSceneWindow(QMainWindow):
         else:
             raise ValueError(f"unsupported independent primitive kind: {kind}")
         try:
-            self.session.add_primitive(kind=kind, points=points)
+            self.session.add_primitive(
+                kind=kind,
+                points=points,
+                name=self._t(kind),
+            )
         except (ValueError, PermissionError) as exc:
             self._show_error(exc)
             return False

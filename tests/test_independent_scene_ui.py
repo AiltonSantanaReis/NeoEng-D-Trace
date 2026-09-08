@@ -121,6 +121,9 @@ def test_independent_scene_window_creates_primitives_and_history(
     assert window.create_primitive("polygon")
     assert window.object_count == 3
     assert window.object_list.count() == 3
+    assert window.object_list.item(0).text().startswith("Retângulo · rectangle")
+    assert window.object_list.item(1).text().startswith("Elipse · ellipse")
+    assert window.object_list.item(2).text().startswith("Polígono · polygon")
     assert window.rectangle_action.text() == "Retângulo"
     assert window.polygon_action.text() == "Polígono"
     assert window.rectangle_action.shortcut().toString() == "Ctrl+Shift+R"

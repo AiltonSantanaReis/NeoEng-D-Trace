@@ -3,7 +3,8 @@ param(
     [string]$Executable,
     [Parameter(Mandatory = $true)]
     [string]$OutputDirectory,
-    [switch]$CaptureSaveDialog
+    [switch]$CaptureSaveDialog,
+    [switch]$CapturePrimitiveFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -122,6 +123,17 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x11, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlShift(byte key)
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(key, 0, 0, UIntPtr.Zero);
+        keybd_event(key, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
     public static void ClickScreen(int x, int y)
     {
         SetCursorPos(x, y);
@@ -182,6 +194,7 @@ try {
     $windows = [NeoEngIndependentSceneCapture]::GetWindows($process.Id)
     $child = $windows | Where-Object { $_.Title -match "Independent Scene|Cen.rio Independente|Novo Cen.rio" } | Select-Object -First 1
     $childRecord = $null
+    $primitiveFlowRecord = $null
     if ($child) {
         $childPath = Join-Path $OutputDirectory "02-independent-scene-after-shortcut.png"
         $childSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $childPath)
@@ -190,6 +203,24 @@ try {
             window = $childSize
             path = $childPath
             sha256 = (Get-FileHash -LiteralPath $childPath -Algorithm SHA256).Hash
+        }
+    }
+
+    if ($CapturePrimitiveFlow -and $child) {
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlShift(0x52)
+        Start-Sleep -Milliseconds 250
+        [NeoEngIndependentSceneCapture]::SendCtrlShift(0x45)
+        Start-Sleep -Milliseconds 250
+        [NeoEngIndependentSceneCapture]::SendCtrlShift(0x50)
+        Start-Sleep -Milliseconds 700
+        $primitivePath = Join-Path $OutputDirectory "03-independent-scene-primitives.png"
+        $primitiveSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $primitivePath)
+        $primitiveFlowRecord = [ordered]@{
+            window = $primitiveSize
+            path = $primitivePath
+            sha256 = (Get-FileHash -LiteralPath $primitivePath -Algorithm SHA256).Hash
+            shortcuts = @("Ctrl+Shift+R", "Ctrl+Shift+E", "Ctrl+Shift+P")
         }
     }
 
@@ -225,6 +256,7 @@ try {
             sha256 = (Get-FileHash -LiteralPath $mainPath -Algorithm SHA256).Hash
         }
         independent_scene = $childRecord
+        primitive_flow = $primitiveFlowRecord
         save_dialog = $saveDialogRecord
         observed_windows = @($windows | ForEach-Object { [ordered]@{ title = $_.Title } })
     } | ConvertTo-Json -Depth 6
