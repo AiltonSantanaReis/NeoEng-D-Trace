@@ -62,6 +62,11 @@ do proprietário for indispensável.
 | E03-A pacote/proveniência | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | categorias, estados, hashes, licença/proveniência |
 | E03-B biblioteca/UX | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | pesquisa, miniaturas, filtros, drag/drop e tradução |
 | E03-C lifecycle/negativos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | import, relink, replace, Undo/Redo, missing/tamper/invalid |
+| E04-A TileSet/células/camadas | `IN_PROGRESS` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | contrato, limites, chunks e benchmark |
+| E04-B ferramentas transacionais | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | paleta, pincel, balde limitado, borracha, retângulo e clipboard |
+| E04-C três grids | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | ortogonal, isométrico, hexagonal, picking e vizinhança |
+| E04-D Rule Tiles | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | regras determinísticas, fallback e invalidação incremental |
+| E04-E persistência/destino | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | save/reopen, validação, desempenho e import/export representativo |
 
 ## Ordem fixa de execução
 

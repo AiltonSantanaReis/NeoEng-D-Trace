@@ -9,11 +9,11 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E03",
-    "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "stage": "E04",
+    "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E03 biblioteca e lifecycle de assets; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E04 tilemaps, grids, ferramentas transacionais e regras de terreno; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,20 +28,20 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Abrir E04 em branch própria após selar E03; manter symlink e revisão humana reservados para a auditoria final.",
+    "next_action": "Ler e registrar o contrato E04; iniciar E04-A com benchmark de chunks e modelo TileSet/células/camadas antes de adicionar ferramentas de edição.",
     "active_lot": {
-      "id": "E03-A/B/C",
-      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-      "scope": "biblioteca pesquisável, categorias, miniaturas, drag-drop, relink/replace e negativos",
-      "evidence": "docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md",
+      "id": "E04-A/B/C/D/E",
+      "status": "IN_PROGRESS",
+      "scope": "TileSet, células, camadas, ferramentas transacionais, três grids, Rule Tiles, persistência, desempenho e destino",
+      "evidence": "docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-      "stage": "E04",
+      "stage": "E05",
       "status": "PLANNED",
       "evidence": null,
       "functional_implementation_allowed": false,
-      "promotion_rule": "E03 selado tecnicamente; E04 pode iniciar em branch própria, sem antecipar symlink ou revisão humana."
+      "promotion_rule": "Somente após checkpoint técnico E04 e atualização deste registro."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e03-assets-20260908",
-    "head": "6899d20a20cc6efe343e575744754c3d8b2f632b",
+    "head": "464f7c92be9fd7ca588a8676d153d91e52c8032b",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E03_WORKTREE"
@@ -137,7 +137,7 @@
     "E01": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E02": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E03": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E04": "PLANNED",
+    "E04": "IN_PROGRESS",
     "E05": "PLANNED",
     "E06": "PLANNED",
     "E07": "PLANNED",

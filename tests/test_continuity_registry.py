@@ -3,7 +3,7 @@ from tools.validate_continuity_registry import validate_registry
 
 def test_current_continuity_registry_is_internally_consistent():
     registry = validate_registry()
-    assert registry["active_work"]["stage"] == "E03"
+    assert registry["active_work"]["stage"] == "E04"
     assert registry["active_work"]["technical_continuation_authorized"] is True
     assert registry["stage_status"]["E00"] == (
         "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
@@ -17,6 +17,7 @@ def test_current_continuity_registry_is_internally_consistent():
     assert registry["stage_status"]["E03"] == (
         "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
     )
+    assert registry["stage_status"]["E04"] == "IN_PROGRESS"
 
 
 def test_symlink_results_remain_separate():
