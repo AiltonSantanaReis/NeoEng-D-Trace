@@ -19,6 +19,11 @@ da seção 11 do Plano Mestre e da matriz de dependências E00.
 - E04-E: salvar/reabrir, validar limites, medir chunk size e produzir destino
   representativo sem afirmar capacidade não implementada de engine.
 
+O benchmark de E04-A (`scripts/benchmark_e04_chunks.py`) comparou 16, 32 e 64
+em três repetições sobre 4096 células. O menor tempo mediano observado foi
+26.1121 ms para chunk 64, com 1 chunk populado; esse é o padrão inicial do
+modelo e a decisão permanece mensurável, não presumida.
+
 ## Gates deste lote
 
 Ainda não há build E04 nem captura final. O próximo artefato obrigatório é o

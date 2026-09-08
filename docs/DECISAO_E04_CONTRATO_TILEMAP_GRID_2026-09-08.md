@@ -24,7 +24,11 @@ prefabs, renderer externo ou os gates de E00–E03.
   assinadas e carrega somente tile ID e metadados mínimos.
 - O armazenamento é esparso por chunks. O tamanho será escolhido por benchmark
   entre candidatos explícitos (16, 32 e 64), sem criar um widget Qt por célula.
-  Nenhuma operação pode preencher um vazio ilimitado.
+  No benchmark Windows do E04-A, com 3 repetições e 4096 células, o resultado
+  foi 16→27.7265 ms/16 chunks, 32→26.5834 ms/4 chunks e 64→26.1121 ms/1
+  chunk; o padrão técnico selecionado é 64, sujeito a requalificação se o
+  perfil de edição real mostrar outra necessidade. Nenhuma operação pode
+  preencher um vazio ilimitado.
 - Todas as mutações geram deltas de células e regras afetadas dentro de uma
   transação; Undo/Redo não copia o mapa inteiro por pincelada.
 
