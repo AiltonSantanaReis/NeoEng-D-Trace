@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E06-A/B: validar fonte de superfície, bake determinístico, caminho, persistência e negativos; depois gerar build e captura reais.",
+    "next_action": "Gerar build oficial E06 r16 em checkout limpo, executar smoke e capturar o fluxo real do painel NavMesh; depois selar o checkpoint técnico.",
     "active_lot": {
       "id": "E06-A/B/C/D/E",
       "status": "IN_PROGRESS",
@@ -58,15 +58,15 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e06-navmesh-20260908",
-    "head": "db88f2b",
-    "tracked_changes_present": true,
+    "head": "5d2654d",
+    "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "E06_SOURCE_IN_PROGRESS"
+    "status": "CLEAN_E06_SOURCE_CHECKPOINT"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2038,
+      "passed": 2040,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
