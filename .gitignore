@@ -35,6 +35,9 @@ dist/
 # Evidence logs are reproducibility inputs, not disposable local logs.
 !/docs/evidence/artifacts/**/*.log
 
+# E01-B exploratory reruns stay local; the accepted r11 package is tracked.
+/artifacts/e01-independent-scene-20260908/backend-bench-r*/
+
 # Generated exports and local samples
 /*.glb
 /*.gltf
