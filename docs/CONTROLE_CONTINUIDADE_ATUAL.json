@@ -63,7 +63,7 @@
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "C:\\Users\\atnco\\Pictures\\NeoEng-D-Trace\\build\\e00-continuity-20260908-official\\release\\e00-20260908\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe",
+      "latest_observed_binary": "build/e00-continuity-20260908-official/release/e00-20260908/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
       "latest_observed_binary_sha256": "2C5B91A9C5145C69FCAB986FF8D73BD67C0E411995A09BF655565ACF690E32FF",
       "latest_observed_binary_last_write": "2026-09-08T11:13:08Z",
       "source_commit": "2722ac1cf39b222931ed440a0eb935ee5d1dcc50",
