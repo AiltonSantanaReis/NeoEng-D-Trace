@@ -58,15 +58,15 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e02-primitives-20260908",
-    "head": "5e1f886ebb7933a5b15a8b5786975941f60c03a6",
+    "head": "2c3cd0f24f10d1136b4f4e2e1fcbe7e28ab41ba2",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E02_B_WORKTREE"
+    "status": "CLEAN_E02_C_WORKTREE"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1988,
+      "passed": 1992,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -113,7 +113,7 @@
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
       "portable_archive_sha256": "42936A0CB10248CB06478651805A1078EB9FA3063C7155A2FE062CF4053F5932",
-      "reason": "Build oficial E02-B executada em worktree limpo apos correcoes controladas de autoria e foco; proveniencia, hashes, smoke test e capturas reais de autoria e save/reopen registrados."
+      "reason": "Checkpoint tecnico E02-B preservado; E02-C implementado em worktree limpo com contrato transacional de gestos, validacao de pontos, suite completa e tipagem aprovadas. Build r8 sera gerada para capturas reais de edicao."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
