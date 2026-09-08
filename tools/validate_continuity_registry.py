@@ -39,8 +39,10 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         raise ValueError("master_plan_commit must be explicit")
 
     active = _require(data, "active_work")
-    if active["stage"] not in {"E00", "E01", "E02"}:
-        raise ValueError("continuity registry must remain anchored at E00, E01 or E02")
+    if active["stage"] not in {"E00", "E01", "E02", "E03"}:
+        raise ValueError(
+            "continuity registry must remain anchored at E00, E01, E02 or E03"
+        )
     if active["stage"] == "E00" and active["implementation_allowed"]:
         raise ValueError("E00 preparatory registry cannot allow implementation")
     if active["stage"] in {"E01", "E02"} and not active.get(
@@ -85,7 +87,7 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
             raise ValueError(
                 "stage progression is inconsistent with active E01 continuation state"
             )
-    else:
+    elif active["stage"] == "E02":
         expected = (
             "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
             "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
@@ -98,6 +100,22 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         ) != expected:
             raise ValueError(
                 "stage progression is inconsistent with active E02 continuation state"
+            )
+    else:
+        expected = (
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "IN_PROGRESS",
+        )
+        if (
+            stages.get("E00"),
+            stages.get("E01"),
+            stages.get("E02"),
+            stages.get("E03"),
+        ) != expected:
+            raise ValueError(
+                "stage progression is inconsistent with active E03 continuation state"
             )
     invalid = [
         (stage, status)
