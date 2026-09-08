@@ -66,7 +66,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2091,
+      "passed": 2095,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -74,7 +74,7 @@
     },
     "static": {
       "status": "PASS_LOCAL",
-      "checks": ["compileall", "flake8 E09-A scope", "black E09-A scope", "pytest", "git diff --check"],
+      "checks": ["compileall", "flake8 E09-A/B/C scope", "black E09-A/B/C scope", "pytest", "git diff --check"],
       "legacy_baseline_note": "Os comandos globais continuam reportando violações históricas fora do escopo do lote; os arquivos E06 novos passam nos gates focados."
     },
     "symlink": {
