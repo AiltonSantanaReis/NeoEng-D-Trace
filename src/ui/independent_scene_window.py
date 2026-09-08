@@ -15,12 +15,14 @@ from PySide6.QtGui import (
     QPolygonF,
 )
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
     QFrame,
     QLabel,
     QListWidget,
+    QListWidgetItem,
     QMainWindow,
     QMessageBox,
     QSpinBox,
@@ -75,8 +77,12 @@ class IndependentSceneCanvas(QFrame):
 
         for primitive in getattr(self.document, "objects", []):
             points = primitive.geometry.points
+            position = primitive.transform.position
             mapped = [
-                (origin_x + float(point.x) * scale, origin_y + float(point.y) * scale)
+                (
+                    origin_x + (float(point.x) + float(position.x)) * scale,
+                    origin_y + (float(point.y) + float(position.y)) * scale,
+                )
                 for point in points
             ]
             selected = primitive.id in self.selected_ids
@@ -139,6 +145,11 @@ class IndependentSceneWindow(QMainWindow):
             "rectangle": "Rectangle",
             "ellipse": "Ellipse",
             "polygon": "Polygon",
+            "duplicate": "Duplicate",
+            "remove": "Remove",
+            "object_position": "Object position",
+            "object_x": "Object X",
+            "object_y": "Object Y",
             "undo": "Undo",
             "redo": "Redo",
             "created": "{item} created.",
@@ -171,6 +182,11 @@ class IndependentSceneWindow(QMainWindow):
             "rectangle": "Retângulo",
             "ellipse": "Elipse",
             "polygon": "Polígono",
+            "duplicate": "Duplicar",
+            "remove": "Remover",
+            "object_position": "Posição do objeto",
+            "object_x": "Objeto X",
+            "object_y": "Objeto Y",
             "undo": "Desfazer",
             "redo": "Refazer",
             "created": "{item} criado.",
@@ -211,6 +227,8 @@ class IndependentSceneWindow(QMainWindow):
         self.rectangle_action = QAction(self)
         self.ellipse_action = QAction(self)
         self.polygon_action = QAction(self)
+        self.duplicate_action = QAction(self)
+        self.remove_action = QAction(self)
         self.undo_action = QAction(self)
         self.redo_action = QAction(self)
         self.new_action.setShortcut("Ctrl+N")
@@ -222,6 +240,8 @@ class IndependentSceneWindow(QMainWindow):
         self.rectangle_action.setShortcut("Ctrl+Shift+R")
         self.ellipse_action.setShortcut("Ctrl+Shift+E")
         self.polygon_action.setShortcut("Ctrl+Shift+P")
+        self.duplicate_action.setShortcut("Ctrl+D")
+        self.remove_action.setShortcut("Delete")
         for action in (
             self.new_action,
             self.open_action,
@@ -230,6 +250,8 @@ class IndependentSceneWindow(QMainWindow):
             self.rectangle_action,
             self.ellipse_action,
             self.polygon_action,
+            self.duplicate_action,
+            self.remove_action,
             self.undo_action,
             self.redo_action,
         ):
@@ -243,6 +265,8 @@ class IndependentSceneWindow(QMainWindow):
         )
         self.ellipse_action.triggered.connect(lambda: self.create_primitive("ellipse"))
         self.polygon_action.triggered.connect(lambda: self.create_primitive("polygon"))
+        self.duplicate_action.triggered.connect(self.duplicate_selected)
+        self.remove_action.triggered.connect(self.remove_selected)
         self.undo_action.triggered.connect(self.undo_scene)
         self.redo_action.triggered.connect(self.redo_scene)
 
@@ -267,6 +291,10 @@ class IndependentSceneWindow(QMainWindow):
         self.object_list = QListWidget(root)
         self.object_list.setObjectName("independent_scene_object_list")
         self.object_list.setMaximumHeight(120)
+        self.object_list.setSelectionMode(
+            QAbstractItemView.SelectionMode.ExtendedSelection
+        )
+        self.object_list.itemSelectionChanged.connect(self._selection_changed)
         layout.addWidget(self.objects_label)
         layout.addWidget(self.object_list)
 
@@ -279,6 +307,8 @@ class IndependentSceneWindow(QMainWindow):
         self.camera_y_spin = self._double_spin(root)
         self.zoom_spin = self._double_spin(root)
         self.zoom_spin.setRange(0.01, 100.0)
+        self.object_x_spin = self._double_spin(root)
+        self.object_y_spin = self._double_spin(root)
         self.resolution_label = QLabel(root)
         self.camera_label = QLabel(root)
         self.width_label = QLabel(root)
@@ -286,6 +316,9 @@ class IndependentSceneWindow(QMainWindow):
         self.camera_x_label = QLabel(root)
         self.camera_y_label = QLabel(root)
         self.zoom_label = QLabel(root)
+        self.object_position_label = QLabel(root)
+        self.object_x_label = QLabel(root)
+        self.object_y_label = QLabel(root)
         form.addRow(self.resolution_label, QWidget(root))
         form.addRow(self.width_label, self.width_spin)
         form.addRow(self.height_label, self.height_spin)
@@ -293,6 +326,9 @@ class IndependentSceneWindow(QMainWindow):
         form.addRow(self.camera_x_label, self.camera_x_spin)
         form.addRow(self.camera_y_label, self.camera_y_spin)
         form.addRow(self.zoom_label, self.zoom_spin)
+        form.addRow(self.object_position_label, QWidget(root))
+        form.addRow(self.object_x_label, self.object_x_spin)
+        form.addRow(self.object_y_label, self.object_y_spin)
         layout.addLayout(form)
         self.setCentralWidget(root)
 
@@ -304,6 +340,8 @@ class IndependentSceneWindow(QMainWindow):
             self.zoom_spin,
         ):
             widget.valueChanged.connect(self._fields_changed)
+        self.object_x_spin.valueChanged.connect(self._object_transform_changed)
+        self.object_y_spin.valueChanged.connect(self._object_transform_changed)
         self.update_language(self.current_lang)
         self.refresh()
 
@@ -330,6 +368,41 @@ class IndependentSceneWindow(QMainWindow):
             zoom=self.zoom_spin.value(),
         )
 
+    def _selection_changed(self) -> None:
+        ids = [
+            item.data(Qt.ItemDataRole.UserRole)
+            for item in self.object_list.selectedItems()
+        ]
+        try:
+            self.session.set_selection([item for item in ids if item])
+        except KeyError as exc:
+            self._show_error(exc)
+            return
+        self.refresh()
+
+    def _object_transform_changed(self) -> None:
+        if not self.session_selection:
+            return
+        primitive_id = self.session_selection[0]
+        primitive = next(
+            item for item in self.session.document.objects if item.id == primitive_id
+        )
+        transform = primitive.transform.model_copy(
+            update={
+                "position": PointRecord(
+                    x=self.object_x_spin.value(),
+                    y=self.object_y_spin.value(),
+                )
+            }
+        )
+        try:
+            self.session.update_primitive_transform(primitive_id, transform)
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._show_error(exc)
+            return
+        self.refresh()
+        self.document_changed.emit()
+
     def refresh(self) -> None:
         document = self.session.document
         widgets = (
@@ -352,13 +425,47 @@ class IndependentSceneWindow(QMainWindow):
             f"{self.object_count} {self._t('objects').lower()}"
         )
         self.canvas.set_document(document, self.session_selection)
+        list_signals_blocked = self.object_list.blockSignals(True)
         self.object_list.clear()
         for primitive in getattr(document, "objects", []):
-            self.object_list.addItem(
+            item = QListWidgetItem(
                 f"{primitive.name} · {primitive.geometry.kind} · {primitive.id}"
             )
+            item.setData(Qt.ItemDataRole.UserRole, primitive.id)
+            self.object_list.addItem(item)
+            if primitive.id in self.session_selection:
+                item.setSelected(True)
+        self.object_list.blockSignals(list_signals_blocked)
+        selected = self.session_selection[0] if self.session_selection else None
+        selected_primitive = next(
+            (item for item in getattr(document, "objects", []) if item.id == selected),
+            None,
+        )
+        for widget, value in (
+            (
+                self.object_x_spin,
+                (
+                    float(selected_primitive.transform.position.x)
+                    if selected_primitive
+                    else 0.0
+                ),
+            ),
+            (
+                self.object_y_spin,
+                (
+                    float(selected_primitive.transform.position.y)
+                    if selected_primitive
+                    else 0.0
+                ),
+            ),
+        ):
+            blocked = widget.blockSignals(True)
+            widget.setValue(value)
+            widget.blockSignals(blocked)
         self.undo_action.setEnabled(self.session.can_undo)
         self.redo_action.setEnabled(self.session.can_redo)
+        self.duplicate_action.setEnabled(bool(self.session_selection))
+        self.remove_action.setEnabled(bool(self.session_selection))
 
     def update_language(self, language: str) -> None:
         self.current_lang = language if language in self._TEXT else "en"
@@ -369,6 +476,8 @@ class IndependentSceneWindow(QMainWindow):
         self.rectangle_action.setText(self._t("rectangle"))
         self.ellipse_action.setText(self._t("ellipse"))
         self.polygon_action.setText(self._t("polygon"))
+        self.duplicate_action.setText(self._t("duplicate"))
+        self.remove_action.setText(self._t("remove"))
         self.undo_action.setText(self._t("undo"))
         self.redo_action.setText(self._t("redo"))
         self.toolbar.setWindowTitle(self._t("toolbar"))
@@ -379,6 +488,9 @@ class IndependentSceneWindow(QMainWindow):
         self.camera_x_label.setText(self._t("camera_x"))
         self.camera_y_label.setText(self._t("camera_y"))
         self.zoom_label.setText(self._t("zoom"))
+        self.object_position_label.setText(self._t("object_position"))
+        self.object_x_label.setText(self._t("object_x"))
+        self.object_y_label.setText(self._t("object_y"))
         self.objects_label.setText(self._t("objects"))
         self.refresh()
 
@@ -429,6 +541,32 @@ class IndependentSceneWindow(QMainWindow):
             self._t("created").format(item=self._t(kind)),
             5000,
         )
+        self.document_changed.emit()
+        return True
+
+    def duplicate_selected(self) -> bool:
+        if not self.session_selection:
+            return False
+        try:
+            self.session.duplicate_selection()
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._show_error(exc)
+            return False
+        self.refresh()
+        self.statusBar().showMessage(self._t("duplicate"), 5000)
+        self.document_changed.emit()
+        return True
+
+    def remove_selected(self) -> bool:
+        if not self.session_selection:
+            return False
+        try:
+            self.session.remove_selection()
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._show_error(exc)
+            return False
+        self.refresh()
+        self.statusBar().showMessage(self._t("remove"), 5000)
         self.document_changed.emit()
         return True
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication
 
 from src.ui.independent_scene_window import IndependentSceneWindow
@@ -138,4 +139,50 @@ def test_independent_scene_window_creates_primitives_and_history(
     assert window.object_count == 3
 
     window.session.new()
+    window.close()
+
+
+def test_independent_scene_window_selection_transform_duplicate_remove_reopen(
+    tmp_path: Path,
+    qt_app: QApplication,
+) -> None:
+    window = IndependentSceneWindow(language="pt")
+    window.show()
+    window.create_primitive("rectangle")
+    window.create_primitive("ellipse")
+    window.create_primitive("polygon")
+    qt_app.processEvents()
+
+    window.object_list.clearSelection()
+    window.object_list.item(0).setSelected(True)
+    qt_app.processEvents()
+    selected_id = window.object_list.item(0).data(Qt.ItemDataRole.UserRole)
+    assert window.session.selection == (selected_id,)
+    assert window.canvas.selected_ids == (selected_id,)
+
+    window.object_x_spin.setValue(42.0)
+    qt_app.processEvents()
+    selected = window.session.document.objects[0]
+    assert selected.transform.position.x == 42.0
+
+    assert window.duplicate_selected()
+    assert window.object_count == 4
+    assert window.remove_selected()
+    assert window.object_count == 3
+
+    path = tmp_path / "authoring-flow.ndtscene"
+    assert window._save_to(path)
+    reopened = IndependentSceneWindow(language="en")
+    reopened.session.load(path)
+    reopened.refresh()
+    qt_app.processEvents()
+    assert reopened.object_count == 3
+    assert [item.geometry.kind for item in reopened.session.document.objects] == [
+        "rectangle",
+        "ellipse",
+        "polygon",
+    ]
+    assert reopened.session.document.objects[0].transform.position.x == 42.0
+
+    reopened.close()
     window.close()

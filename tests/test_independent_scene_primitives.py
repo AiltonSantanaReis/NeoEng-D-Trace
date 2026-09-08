@@ -183,3 +183,48 @@ def test_session_rejects_locked_primitive_without_mutating_document() -> None:
         session.remove_primitive("locked")
 
     assert session.document == before
+
+
+def test_session_batch_selection_translate_duplicate_and_remove() -> None:
+    session = IndependentSceneSession()
+    session.add_primitive(
+        kind="rectangle",
+        points=_points((0, 0), (10, 10)),
+        primitive_id="rect",
+    )
+    session.add_primitive(
+        kind="ellipse",
+        points=_points((20, 20), (30, 30)),
+        primitive_id="ellipse",
+    )
+
+    assert session.set_selection(["rect", "ellipse"]) == ("rect", "ellipse")
+    session.translate_selection(delta_x=12, delta_y=8)
+    assert session.document.objects[0].transform.position == PointRecord(x=12, y=8)
+    assert session.document.objects[1].transform.position == PointRecord(x=12, y=8)
+
+    copies = session.duplicate_selection()
+    assert len(copies) == 2
+    assert session.selection == tuple(item.id for item in copies)
+    assert session.object_count == 4
+    session.remove_selection()
+    assert session.object_count == 2
+    assert session.selection == ()
+
+
+def test_session_batch_selection_respects_locked_objects() -> None:
+    session = IndependentSceneSession()
+    session.add_primitive(
+        kind="rectangle",
+        points=_points((0, 0), (10, 10)),
+        primitive_id="locked",
+    )
+    session.document = session.document.model_copy(
+        update={
+            "objects": [session.document.objects[0].model_copy(update={"locked": True})]
+        }
+    )
+    session.set_selection(["locked"])
+
+    with pytest.raises(PermissionError, match="locked"):
+        session.translate_selection(delta_x=1, delta_y=1)

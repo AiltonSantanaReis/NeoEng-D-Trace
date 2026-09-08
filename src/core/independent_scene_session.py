@@ -42,6 +42,7 @@ class IndependentSceneSession:
         self.clean_signature = independent_scene_sha256(self.document)
         self._undo: list[IndependentSceneDocumentV2] = []
         self._redo: list[IndependentSceneDocumentV2] = []
+        self._selection: tuple[str, ...] = ()
 
     @property
     def document_name(self) -> str:
@@ -68,12 +69,18 @@ class IndependentSceneSession:
         self.clean_signature = independent_scene_sha256(self.document)
         self._undo.clear()
         self._redo.clear()
+        self._selection = ()
         return self.document
 
     def update_document(self, document: IndependentSceneDocument) -> None:
         self.document = document
         self._undo.clear()
         self._redo.clear()
+        self._selection = tuple(
+            item.id
+            for item in getattr(document, "objects", [])
+            if item.id in self._selection
+        )
 
     def _authoring_document(self) -> IndependentSceneDocumentV2:
         upgraded = upgrade_independent_scene_document(self.document)
@@ -84,7 +91,13 @@ class IndependentSceneSession:
     def _mutate_authoring(self, operation):
         before = upgrade_independent_scene_document(self.document).model_copy(deep=True)
         model = IndependentSceneAuthoringModel(before)
+        model.set_selection(
+            item
+            for item in self._selection
+            if any(primitive.id == item for primitive in before.objects)
+        )
         result = operation(model)
+        self._selection = model.selection
         if model.document != before:
             self.document = model.document
             self._undo.append(before)
@@ -102,6 +115,16 @@ class IndependentSceneSession:
     @property
     def object_count(self) -> int:
         return len(getattr(self.document, "objects", []))
+
+    @property
+    def selection(self) -> tuple[str, ...]:
+        return self._selection
+
+    def set_selection(self, primitive_ids: Sequence[str]) -> tuple[str, ...]:
+        return self._mutate_authoring(lambda model: model.set_selection(primitive_ids))
+
+    def clear_selection(self) -> None:
+        self._selection = ()
 
     def add_primitive(
         self,
@@ -146,6 +169,20 @@ class IndependentSceneSession:
             lambda model: model.duplicate_primitive(primitive_id, new_id=new_id)
         )
 
+    def translate_selection(self, *, delta_x: float, delta_y: float) -> tuple[str, ...]:
+        return self._mutate_authoring(
+            lambda model: model.translate_selection(
+                delta_x=delta_x,
+                delta_y=delta_y,
+            )
+        )
+
+    def duplicate_selection(self) -> tuple[IndependentScenePrimitiveRecord, ...]:
+        return self._mutate_authoring(lambda model: model.duplicate_selection())
+
+    def remove_selection(self) -> tuple[str, ...]:
+        return self._mutate_authoring(lambda model: model.remove_selection())
+
     def undo(self) -> bool:
         if not self._undo:
             return False
@@ -154,6 +191,11 @@ class IndependentSceneSession:
         )
         self._redo.append(current)
         self.document = self._undo.pop()
+        self._selection = tuple(
+            item
+            for item in self._selection
+            if item in {obj.id for obj in self.document.objects}
+        )
         return True
 
     def redo(self) -> bool:
@@ -164,6 +206,11 @@ class IndependentSceneSession:
         )
         self._undo.append(current)
         self.document = self._redo.pop()
+        self._selection = tuple(
+            item
+            for item in self._selection
+            if item in {obj.id for obj in self.document.objects}
+        )
         return True
 
     def set_resolution(self, width: int, height: int) -> None:
@@ -242,6 +289,7 @@ class IndependentSceneSession:
         self.clean_signature = independent_scene_sha256(document)
         self._undo.clear()
         self._redo.clear()
+        self._selection = ()
         return document
 
 

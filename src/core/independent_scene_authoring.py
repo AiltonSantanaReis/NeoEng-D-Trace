@@ -160,5 +160,75 @@ class IndependentSceneAuthoringModel:
             transform=transform,
         )
 
+    def translate_selection(self, *, delta_x: float, delta_y: float) -> tuple[str, ...]:
+        """Translate all selected editable primitives in one authoring operation."""
+
+        if not self.selection:
+            raise ValueError("selection is empty")
+        for primitive_id in self.selection:
+            self._assert_editable(primitive_id)
+        updated_objects = []
+        selected = set(self.selection)
+        for item in self.document.objects:
+            if item.id not in selected:
+                updated_objects.append(item)
+                continue
+            position = item.transform.position
+            transform = item.transform.model_copy(
+                update={
+                    "position": PointRecord(
+                        x=position.x + delta_x,
+                        y=position.y + delta_y,
+                    )
+                }
+            )
+            updated_objects.append(item.model_copy(update={"transform": transform}))
+        self._replace(objects=updated_objects)
+        return self.selection
+
+    def duplicate_selection(self) -> tuple[IndependentScenePrimitiveRecord, ...]:
+        """Duplicate the current editable selection and select the copies."""
+
+        if not self.selection:
+            raise ValueError("selection is empty")
+        selected = [self._primitive(item) for item in self.selection]
+        copies: list[IndependentScenePrimitiveRecord] = []
+        for source in selected:
+            self._assert_editable(source.id)
+            position = source.transform.position
+            copies.append(
+                source.model_copy(
+                    update={
+                        "id": f"primitive_{uuid4().hex[:12]}",
+                        "name": f"{source.name} Copy",
+                        "transform": source.transform.model_copy(
+                            update={
+                                "position": PointRecord(
+                                    x=position.x + 16.0,
+                                    y=position.y + 16.0,
+                                )
+                            }
+                        ),
+                    }
+                )
+            )
+        self._replace(objects=[*self.document.objects, *copies])
+        self.selection = tuple(item.id for item in copies)
+        return tuple(copies)
+
+    def remove_selection(self) -> tuple[str, ...]:
+        """Remove the current editable selection in one authoring operation."""
+
+        if not self.selection:
+            raise ValueError("selection is empty")
+        for primitive_id in self.selection:
+            self._assert_editable(primitive_id)
+        selected = set(self.selection)
+        self._replace(
+            objects=[item for item in self.document.objects if item.id not in selected]
+        )
+        self.clear_selection()
+        return ()
+
 
 __all__ = ["IndependentSceneAuthoringModel"]
