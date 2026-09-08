@@ -48,6 +48,7 @@ MAIN_WINDOW_TRANSLATIONS = {
             "verified: {path}"
         ),
         "open_image": "Open Image",
+        "new_independent_scene": "New Independent Scene...",
         "open_image_dialog": "Open Image",
         "image_files": "Images (*.png *.jpg *.jpeg *.bmp *.tiff)",
         "export": "Export...",
@@ -159,6 +160,7 @@ MAIN_WINDOW_TRANSLATIONS = {
             "pôde ser verificado: {path}"
         ),
         "open_image": "Abrir Imagem",
+        "new_independent_scene": "Novo Cenário Independente...",
         "open_image_dialog": "Abrir Imagem",
         "image_files": "Imagens (*.png *.jpg *.jpeg *.bmp *.tiff)",
         "export": "Exportar...",

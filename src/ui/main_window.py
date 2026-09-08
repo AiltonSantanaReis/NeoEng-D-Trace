@@ -44,6 +44,7 @@ from src.ui.command_registry import CommandRegistry
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
 from src.ui.icon_library import configure_main_window_controls
+from src.ui.independent_scene_window import IndependentSceneWindow
 from src.ui.layers_panel import LayersPanel
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
@@ -70,6 +71,7 @@ class MainWindow(QMainWindow):
     scenario_load_action: QAction
     scenario_reset_action: QAction
     scenario_export_action: QAction
+    open_independent_scene_action: QAction
 
     @property
     def _project_path(self) -> Path | None:
@@ -197,6 +199,7 @@ class MainWindow(QMainWindow):
         self._autosave_store = autosave_store
         self._autosave_coordinator: AutosaveCoordinator | None = None
         self.autosave_timer = None
+        self._independent_scene_window: IndependentSceneWindow | None = None
 
         # Configuração da Janela Principal
         configured_language = config.get("language", "en")
@@ -456,6 +459,14 @@ class MainWindow(QMainWindow):
         self.open_image_action.triggered.connect(self.open_image)
         self.file_menu.addAction(self.open_image_action)
 
+        self.open_independent_scene_action = QAction(
+            "New Independent Scene...", self
+        )
+        self.open_independent_scene_action.triggered.connect(
+            self.open_independent_scene
+        )
+        self.file_menu.addAction(self.open_independent_scene_action)
+
         self.file_menu.addSeparator()
 
         self.save_project_action = QAction("Save", self)
@@ -565,6 +576,7 @@ class MainWindow(QMainWindow):
         self.file_menu.setTitle(t["file_menu"])
         self.open_project_action.setText(t["open_project"])
         self.open_image_action.setText(t["open_image"])
+        self.open_independent_scene_action.setText(t["new_independent_scene"])
         self.save_project_action.setText(t["save_project"])
         self.save_project_as_action.setText(t["save_project_as"])
         self.close_application_action.setText(t["close_application"])
@@ -605,6 +617,8 @@ class MainWindow(QMainWindow):
             self.scenario_load_action.setText(t["scenario_load"])
             self.scenario_reset_action.setText(t["scenario_reset"])
             self.scenario_export_action.setText(t["scenario_export"])
+        if self._independent_scene_window is not None:
+            self._independent_scene_window.update_language(self.current_lang)
 
         refresh_reference_top_toolbar_labels(self)
         command_search = getattr(self, "reference_command_search", None)
@@ -853,6 +867,19 @@ class MainWindow(QMainWindow):
             t["project_warnings_title"],
             "\n".join(f"• {warning}" for warning in warnings),
         )
+
+    def open_independent_scene(self) -> bool:
+        """Open the E01 document surface without requiring a project."""
+
+        if self._independent_scene_window is None:
+            self._independent_scene_window = IndependentSceneWindow(
+                language=self.current_lang,
+                parent=self,
+            )
+        self._independent_scene_window.show()
+        self._independent_scene_window.raise_()
+        self._independent_scene_window.activateWindow()
+        return True
 
     def open_project(self) -> bool:
         started_at = time.perf_counter()
