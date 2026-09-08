@@ -107,6 +107,14 @@ ela não interrompe a execução técnica autorizada.
 | 9 | E13 fechamento/portabilidade | `PLANNED` | instaladores, documentação e baseline final |
 | 10 | Auditoria final | `PLANNED` | symlinks, revisão humana, findings e decisão formal |
 
+### Sublotes ativos de E08-C
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E08-C.1 passe raster determinístico | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | ambiente, luz, material, normal perturbada, emissão e oclusão alteram pixels no binário |
+| E08-C.2 integração V2 e autoria | `IN_PROGRESS` | fixture V2 real, estado persistido, controles autorais e fallback explícito |
+| E08-C.3 build/captura/requalificação | `PENDING_EVIDENCE` | build após C.2, captura V2, negativos e manifesto hashado |
+
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
 indispensável. O gate de symlinks permanece exclusivamente na linha 10.

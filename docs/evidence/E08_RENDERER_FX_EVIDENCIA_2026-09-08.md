@@ -93,3 +93,36 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
   persistidos nesta fase; renderização visual de atlas/alpha/tile permanece
   deliberadamente fora do claim até o lote de renderer correspondente.
 - Symlink e revisão humana: `DEFERRED_UNTIL_FINAL_AUDIT`, sem reexecução.
+
+## E08-C — materiais, normal maps, luzes e sombras em execução
+
+### Estado do sublote técnico
+
+- `E08-C.1` — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: passe raster
+  determinístico conectado ao `CanvasView`, com ambiente, luz pontual,
+  material/albedo, emissão, normal perturbada, opacidade e oclusão explícita.
+- `E08-C.2` — `IN_PROGRESS`: conectar o mesmo contrato ao fluxo profissional
+  V2 com material/luz persistidos e controles autorais; a fixture V1 já prova o
+  caminho legado, mas não substitui a qualificação V2.
+- `E08-C.3` — `PENDING_EVIDENCE`: build final do sublote, captura V2, teste de
+  intensidade zero, receptor/emissor e fallback documentados no manifesto.
+
+### Evidência do sublote E08-C.1
+
+- Commit do núcleo: `5e6d188`; integração no passe legado: `255c4e1`.
+- Testes: `tests/test_e08_lighting_pixels.py` cobre intensidade zero,
+  alteração por normal map, oclusão e emissão; regressão completa registrou
+  `2066 passed, 2 skipped, 1 warning`.
+- Build r37: source commit `255c4e1cec7482154203ddecd96c4aeec62ab15c`,
+  binário SHA-256 `17512C197D7EDD638826FB73E048DDA415072248FD14FB4BC8695ADF14AF5BDB`,
+  pacote portátil SHA-256 `af562ad48bf8ca69ed4364a86f824de7c60aca1970acb9fa66be08b243807fd5`,
+  smoke `SUCCESS` com 11 checks.
+- Captura real: `artifacts/e08-renderer-20260908/binary-capture-r37-lighting/03-main-after-project-load.png`,
+  SHA-256 `A7EF6FD7A8610CA8524CA45880F75E063DF1EB7EEC00C064E8A6C2ABA7D2F180`.
+  A fixture `tests/fixtures/e08_lighting_smoke.ndtproj` contém um receptor e um
+  occluder grandes; a imagem mostra os pixels do receptor alterados pelo passe
+  de luz no executável portátil.
+- Limitação observada: o carregamento direto dessa fixture é V1 e abre no
+  canvas legado; Preview Parallax trabalha em sessão V2 e permanece vazio para
+  essa entrada. Isso é uma fronteira de compatibilidade a resolver em E08-C.2,
+  não uma aprovação por extrapolação.
