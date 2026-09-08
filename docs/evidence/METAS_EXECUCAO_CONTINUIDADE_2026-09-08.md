@@ -63,3 +63,22 @@ do proprietário for indispensável.
 5. Não executar novamente symlinks durante E01/E02 preparatório; o gate fica reservado à auditoria final.
 6. Não converter captura automatizada em revisão humana; a revisão final permanece pendente.
 7. Só promover E01/E02 após todos os critérios obrigatórios e decisão formal correspondente.
+
+## Mapa mestre de etapas e metas
+
+| Etapa | Meta | Estado central | Saída obrigatória |
+|---|---|---|---|
+| E00 | preservar, reconciliar e qualificar a base | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | auditoria final, symlink, revisão humana e decisão formal |
+| E01 | contrato, backend e cena independente | `IN_PROGRESS` — checkpoint técnico dos sub-lotes A/B/C | aceite formal com fluxo, negativos, build, captura e rollback |
+| E02 | primitivas, edição, persistência e histórico | `PLANNED` / preparação separada | três primitivas, edição, Undo/Redo, save/reopen e negativos |
+| E03 | biblioteca própria e lifecycle de assets | `PLANNED` | assets rastreáveis, offline, relink/replace e licença |
+| E04 | tilemaps, grids e regras de terreno | `PLANNED` | três grids, chunks, regras e persistência |
+| E05 | colisão própria de cenário | `PLANNED` | tipos físicos, occluders e validação de contato |
+| E06 | NavMesh 2D e consumo real | `PLANNED` | navegação de superfície/plataforma no fluxo real |
+| E07 | componentes e instâncias | `PLANNED` | relações, parent/grupos e conflitos de prefab |
+| E08 | materiais, paralaxe, efeitos e determinismo | `PLANNED` | renderer/FX qualificados com budgets e tolerâncias |
+| E09 | autoria e exportação vetorial | `PLANNED` | objetos editáveis, persistentes e exportáveis |
+| E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
+| E11 | composição e runtime completo | `PLANNED` | cena executada no binário, não apenas estrutura descritiva |
+| E12 | recursos avançados, animação e híbrido 3D | `PLANNED` | contrato aprovado e fluxo completo de recursos |
+| E13 | fechamento, portabilidade e publicação | `PLANNED` | auditoria final, instaladores, documentação e autorização |
