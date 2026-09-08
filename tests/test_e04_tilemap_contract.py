@@ -5,8 +5,8 @@ import json
 
 import pytest
 
-from src.core.tilemap_grids import GridKind, GridSpec, grid_round_trip
 from src.core.tilemap_benchmark import benchmark_chunk_sizes
+from src.core.tilemap_grids import GridKind, GridSpec, grid_round_trip
 from src.core.tilemap_model import (
     TileCell,
     TileCellDelta,
@@ -19,6 +19,7 @@ from src.core.tilemap_model import (
     TileMapLockedError,
     TileSet,
 )
+from src.core.tilemap_rules import NeighborCondition, TerrainRule, TileRuleSet
 from src.core.tilemap_tools import (
     bucket_fill,
     copy_cells,
@@ -28,7 +29,6 @@ from src.core.tilemap_tools import (
     paint_rectangle,
     paste_cells,
 )
-from src.core.tilemap_rules import NeighborCondition, TerrainRule, TileRuleSet
 from src.persistence.tilemap_io import (
     TileMapPersistenceError,
     load_tilemap,
