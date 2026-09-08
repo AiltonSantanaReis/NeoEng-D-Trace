@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Ler e registrar o contrato E04; iniciar E04-A com benchmark de chunks e modelo TileSet/células/camadas antes de adicionar ferramentas de edição.",
+    "next_action": "Gerar a build oficial E04 em checkout limpo, executar smoke portátil e capturar o fluxo real do binário antes de promover o checkpoint técnico.",
     "active_lot": {
       "id": "E04-A/B/C/D/E",
       "status": "IN_PROGRESS",
@@ -57,16 +57,16 @@
     ]
   },
     "checkout_under_audit": {
-    "branch": "Ailton/e03-assets-20260908",
-    "head": "464f7c92be9fd7ca588a8676d153d91e52c8032b",
+    "branch": "Ailton/e04-tilemaps-20260908",
+    "head": "0568429",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E03_WORKTREE"
+    "status": "CLEAN_E04_SOURCE_CHECKPOINT"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1995,
+      "passed": 2021,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -74,7 +74,8 @@
     },
     "static": {
       "status": "PASS_LOCAL",
-      "checks": ["compileall", "mypy", "black", "isort", "flake8", "git diff --check"]
+      "checks": ["compileall", "mypy src", "black E04 scope", "isort E04 tests", "pytest", "git diff --check"],
+      "legacy_baseline_note": "Os comandos black/isort/flake8 globais continuam reportando violações históricas fora do escopo E04; nenhum arquivo E04 novo permanece pendente nos gates focados."
     },
     "symlink": {
       "sandbox_status": "PASS_SANDBOX_DIAGNOSTIC_ONLY",
