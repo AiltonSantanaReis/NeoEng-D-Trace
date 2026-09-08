@@ -1,10 +1,11 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00/E01 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E02 IN_PROGRESS`
+**Estado:** `E00/E01/E02 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E03 IN_PROGRESS`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
-**E02:** `IN_PROGRESS` — E02-C em checkpoint técnico aprovado; E03 será aberto após a transição formal
+**E02:** checkpoint técnico aprovado; aceite final pendente
+**E03:** `IN_PROGRESS` — biblioteca e lifecycle de assets
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -51,7 +52,8 @@ aparecem completos. O finding anterior permanece preservado no pacote
 
 ## Próximo passo permitido
 
-Abrir E03 em branch própria. E02-C possui checkpoint técnico aprovado; a revisão
+Executar E03-A/B/C no branch próprio `Ailton/e03-assets-20260908`. E02-C
+possui checkpoint técnico aprovado; a revisão
 visual/humana e a requalificação final de symlink foram deferidas por
 autorização explícita para a auditoria final; continuam obrigatórias antes de
 marcar qualquer etapa como `PASS` ou concluir o plano.
