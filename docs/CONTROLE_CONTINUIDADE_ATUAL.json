@@ -13,7 +13,7 @@
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E01-A contrato/fluxo e E01-B bancada de backend; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E01-A contrato/fluxo, E01-B bancada de backend e E01-C fluxo independente; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,7 +28,14 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Consolidar aceite tecnico E01-C, manter E01 aberto para auditoria final e preparar transicao formal para E02.",
+    "next_action": "Fechar o pacote tecnico E01-A/B/C, registrar a analise preparatoria de E02 sem promover a etapa, e manter symlink/revisao humana para a auditoria final.",
+    "preparatory_next_stage": {
+      "stage": "E02",
+      "status": "PREPARATORY_ONLY",
+      "evidence": "docs/evidence/E02_PREPARATORY_ONLY_ANALISE_IMPACTO_2026-09-08.md",
+      "functional_implementation_allowed": false,
+      "promotion_rule": "Somente apos aceite formal de E01 e atualizacao deste registro."
+    },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
       "executar symlink antes da auditoria final",
@@ -44,7 +51,7 @@
   },
     "checkout_under_audit": {
       "branch": "Ailton/e01-independent-scene-20260908",
-    "head": "4394b124a74cf452979fe909a4df98db4da9a047",
+    "head": "b24582d78fb6ed953187db16247bbe57cce49bce",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E01_WORKTREE"

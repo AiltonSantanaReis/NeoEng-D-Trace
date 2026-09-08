@@ -12,11 +12,11 @@ do proprietário for indispensável.
 | M00 | Governança e continuidade | CONCLUÍDA PARA O CHECKPOINT TÉCNICO | Registro único atualizado, worktree E01 identificado, proveniência conferida e nenhuma decisão material implícita |
 | M01 | Checkpoint técnico de E00 | CONCLUÍDO — auditoria final pendente | Base restaurável, rastreabilidade/decisões E00 reconciliadas, suite/estática/build/runtime/capturas documentados; symlink e revisão humana ficam para auditoria final |
 | M02 | Corrigir findings reproduzíveis | CONTÍNUA | Cada finding recebe causa, correção, teste focado, suíte proporcional, build oficial, captura real e commit rastreável |
-| M03 | Validar experiência visual e usabilidade | EM ANDAMENTO | Fluxos reais do binário testados; layout, tradução, scroll, abas, toolbar, acessibilidade e erros sem finding aberto |
+| M03 | Validar experiência visual e usabilidade | CHECKPOINT TÉCNICO PASS — revisão final pendente | Fluxos reais do binário testados; layout, tradução, scroll, abas, toolbar, acessibilidade e erros sem finding aberto |
 | M04 | Symlinks | ADIADA CONTROLADAMENTE | Executar somente na auditoria final do plano; 31 casos, relatório completo e skips locais mantidos separados |
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
-| M07 | E01 — contratos e cena vazia independente | EM ANDAMENTO | Schema/backend decididos, fluxo novo/abrir/salvar/reabrir funcionando no binário, testes e evidências concluídos |
+| M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
 | M08 | E02–E13 | PLANEJADAS | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
@@ -44,3 +44,22 @@ do proprietário for indispensável.
 - Revisão humana: `PENDING_EVIDENCE`, deferida até a auditoria final por
   autorização do proprietário.
 - E01: `IN_PROGRESS`; E02–E13 ainda não iniciadas.
+
+## Metas executáveis do lote E01
+
+| Sub-lote | Estado | Evidência principal | Próxima verificação |
+|---|---|---|---|
+| E01-A contrato e fluxo | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E01_A_CENA_INDEPENDENTE_EVIDENCIA_2026-09-08.md` | preservar contrato e revalidar no pacote final |
+| E01-B bancada de backend | `PASS_LOCAL` | `docs/evidence/E01_B_BACKEND_BANCADA_EVIDENCIA_2026-09-08.md` | repetir somente se houver mudança de renderer/backend |
+| E01-C implementação independente | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E01_C_FLUXO_INDEPENDENTE_EVIDENCIA_2026-09-08.md` | manter E01 aberto até auditoria final |
+| E02 preparatório | `PREPARATORY_ONLY` | análise de impacto/contrato separada, sem promoção de etapa | não implementar funcionalidade E02 antes do aceite formal de E01 |
+
+## Ordem fixa de execução
+
+1. Confirmar branch, SHA, registry e worktree antes de cada lote.
+2. Implementar somente o lote ativo ou um artefato explicitamente marcado como `PREPARATORY_ONLY`.
+3. Executar testes focados, suíte oficial, estática, build oficial e captura real do binário quando houver alteração executável.
+4. Registrar causa, correção, teste, hash, limitação e rollback no mesmo pacote de evidências.
+5. Não executar novamente symlinks durante E01/E02 preparatório; o gate fica reservado à auditoria final.
+6. Não converter captura automatizada em revisão humana; a revisão final permanece pendente.
+7. Só promover E01/E02 após todos os critérios obrigatórios e decisão formal correspondente.
