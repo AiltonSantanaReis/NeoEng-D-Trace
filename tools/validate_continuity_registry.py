@@ -49,9 +49,10 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         "E06",
         "E07",
         "E08",
+        "E09",
     }:
         raise ValueError(
-            "continuity registry must remain anchored at E00 through E08"
+            "continuity registry must remain anchored at E00 through E09"
         )
     if active["stage"] == "E00" and active["implementation_allowed"]:
         raise ValueError("E00 preparatory registry cannot allow implementation")
@@ -219,7 +220,7 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
             raise ValueError(
                 "stage progression is inconsistent with active E07 continuation state"
             )
-    else:
+    elif active["stage"] == "E08":
         expected_e08 = (
             "IN_PROGRESS"
             if active.get("status") == "IN_PROGRESS"
@@ -239,6 +240,28 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         if tuple(stages.get(f"E{index:02d}") for index in range(9)) != expected:
             raise ValueError(
                 "stage progression is inconsistent with active E08 continuation state"
+            )
+    else:
+        expected_e09 = (
+            "IN_PROGRESS"
+            if active.get("status") == "IN_PROGRESS"
+            else "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
+        )
+        expected = (
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            expected_e09,
+        )
+        if tuple(stages.get(f"E{index:02d}") for index in range(10)) != expected:
+            raise ValueError(
+                "stage progression is inconsistent with active E09 continuation state"
             )
     invalid = [
         (stage, status)

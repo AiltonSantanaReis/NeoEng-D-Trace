@@ -1,6 +1,6 @@
 # E08 — Composição 2.5D, iluminação, sombras e FX reais
 
-Status: `IN_PROGRESS`.
+Status: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`.
 
 Contrato ativo: `docs/DECISAO_E08_CONTRATO_RENDERER_25D_FX_2026-09-08.md`.
 Dependência técnica: E07 checkpoint `d35bc84`.
@@ -272,3 +272,13 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 - Limitações mantidas: o backend é CPU-preview determinístico, sem claim de
   rasterização GPU; adaptadores de pós para Godot/Unity, VRAM, FPS por driver
   e render específico de backend continuam fora deste sublote.
+
+### Evidência do sublote E08-E — determinismo e destinos
+
+E08-E está em checkpoint técnico com evidência própria em
+`docs/evidence/E08_E_R48_TEMPORAL_CAPABILITIES_EVIDENCIA_2026-09-08.md` e
+manifesto hashado em
+`docs/evidence/E08_E_R48_TEMPORAL_CAPABILITIES_MANIFESTO.json`. O contrato
+registra fixed timestep, seed, tolerâncias temporais/visuais e a matriz
+local-raster/Godot/Unity. A implementação não promove metadata de adapter a
+execução nativa de engine; limitações permanecem explícitas.
