@@ -193,7 +193,7 @@ hashes e snapshots integrais ficam em pacote local próprio; não inventar uma
 execução Linux, CI, captura, build ou revisão humana nesta alteração documental.
 Suíte funcional, cobertura, estática, segurança, G/V/B e empacotamento de produto
 não são executados por este sublote e continuam obrigatórios no lote aplicável.
-O responsável técnico é o agente Codex; não existe revisão independente presumida.
+O responsável técnico é o agente executor desta rodada; não existe revisão independente presumida.
 
 Rollback: revisar e reverter somente o commit documental, preservando trabalho
 posterior e artefatos. A decisão anterior continua no histórico; reversão não
