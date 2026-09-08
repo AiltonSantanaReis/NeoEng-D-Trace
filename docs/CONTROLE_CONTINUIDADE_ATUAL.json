@@ -9,8 +9,8 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E07",
-    "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "stage": "E08",
+    "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
       "controlled_correction_scope": "E07 entidades, componentes, hierarquia e prefabs; findings reproduziveis continuam sujeitos a correcao controlada.",
@@ -28,16 +28,16 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Abrir E08 após registrar o checkpoint técnico E07 e preservar o manifesto r24; manter symlink e revisão humana para a auditoria final.",
+    "next_action": "Implementar E08-A: plano de composição 2.5D, ordenação, backend raster de referência e diagnóstico explícito de fallback.",
     "active_lot": {
-      "id": "E07-A/B/C",
-      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-      "scope": "Entidades, componentes tipados/versionados, instâncias, hierarquia espacial e ciclo completo de prefabs",
-      "evidence": "docs/evidence/E07_ENTIDADES_PREFABS_EVIDENCIA_2026-09-08.md; docs/evidence/E07_R24_CAPTURAS_MANIFESTO.json",
+      "id": "E08-A",
+      "status": "IN_PROGRESS",
+      "scope": "Plano de composição 2.5D, ordenação, backend raster de referência, cache/invalidação, resize e cleanup",
+      "evidence": "docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-      "stage": "E08",
+      "stage": "E09",
       "status": "PLANNED",
       "evidence": null,
       "functional_implementation_allowed": false,
@@ -57,7 +57,7 @@
     ]
   },
     "checkout_under_audit": {
-    "branch": "Ailton/e07-entities-20260908",
+    "branch": "Ailton/e08-renderer-20260908",
     "head": "d5c6dcbfd71d38b1360add2b8846f62f67226b08",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
@@ -142,7 +142,7 @@
     "E05": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E06": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E07": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E08": "PLANNED",
+    "E08": "IN_PROGRESS",
     "E09": "PLANNED",
     "E10": "PLANNED",
     "E11": "PLANNED",
