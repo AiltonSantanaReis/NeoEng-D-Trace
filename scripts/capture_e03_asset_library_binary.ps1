@@ -84,7 +84,7 @@ public static class NeoEngE03Capture
     public static string RectText(IntPtr hWnd)
     {
         RECT rect; if (!GetWindowRect(hWnd, out rect)) return "unknown";
-        return $"{rect.Left},{rect.Top},{rect.Right},{rect.Bottom}";
+        return String.Format("{0},{1},{2},{3}", rect.Left, rect.Top, rect.Right, rect.Bottom);
     }
     public static void CtrlO() { const uint up = 0x0002; keybd_event(0x11,0,0,UIntPtr.Zero); keybd_event(0x4F,0,0,UIntPtr.Zero); keybd_event(0x4F,0,up,UIntPtr.Zero); keybd_event(0x11,0,up,UIntPtr.Zero); }
     public static string Capture(IntPtr hWnd, string path)
