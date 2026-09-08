@@ -10,7 +10,7 @@
   },
   "active_work": {
     "stage": "E06",
-    "status": "IN_PROGRESS",
+    "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
       "controlled_correction_scope": "E06 NavMesh 2D de superfície; findings reproduziveis continuam sujeitos a correcao controlada.",
@@ -28,10 +28,10 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Gerar build oficial E06 r16 em checkout limpo, executar smoke e capturar o fluxo real do painel NavMesh; depois selar o checkpoint técnico.",
+    "next_action": "Abrir E07 em branch declarada após o checkpoint técnico E06; preservar symlink e revisão humana para a auditoria final.",
     "active_lot": {
       "id": "E06-A/B/C/D/E",
-      "status": "IN_PROGRESS",
+      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
       "scope": "NavMesh 2D de superfície, regiões, obstáculos, margem de agente, bake, caminho, persistência e UI",
       "evidence": "docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e06-navmesh-20260908",
-    "head": "5d2654d",
+    "head": "3eba4cc",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E06_SOURCE_CHECKPOINT"
@@ -95,26 +95,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e04-tilemaps-20260908/binary-capture-r14-final/09-tilemap-reopened.png",
-      "latest_binary_capture_sha256": "A0DF3B7B55689B9D8189A6312CEEF704FE802774AA3354D03E5A5C5B1E566740",
+      "latest_binary_capture": "artifacts/e06-navmesh-20260908/binary-capture-r22-final/08-navmesh-reopened.png",
+      "latest_binary_capture_sha256": "90AF2B8A82AFF3BB122E942D8459C6E22F18B8855BFF92C7CA606DB04C192835",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r14 abriu projeto pelo diálogo nativo; o fluxo real criou, pintou, salvou e reabriu um tilemap ortogonal com 2 células preservadas. Painel, paleta, status, tradução e hierarquia ficaram legíveis sem clipping. Revisão humana continua pendente.",
+      "observed_finding": "Build r22 abriu o projeto pelo carregamento direto; o fluxo real exibiu o inspector NavMesh, criou região e obstáculo, executou bake com caminho de 12 pontos, salvou e reabriu o sidecar com a mensagem correta de bake obsoleto. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e04-tilemaps-20260908-r14/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "809D7ECD3E0CF0D721898FD99748A276B6328ADFBCB6EE4F905C393B23EB1FD3",
-      "latest_observed_binary_last_write": "2026-09-08T18:52:06.0000000Z",
-      "source_commit": "cc1ebaa3001f9cf533df8093aac1efec5c81dc10",
-      "source_branch": "Ailton/e04-tilemaps-20260908",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e06-navmesh-20260908-r22/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "F704E4CAA552B352718FAC0AFC970B36226DAF9EBA14CB61F63F524FF4D3D7C3",
+      "latest_observed_binary_last_write": "2026-09-08T20:16:00.0000000Z",
+      "source_commit": "3eba4cc461386f4a37bd03e0597400eb6feb68bf",
+      "source_branch": "Ailton/e06-navmesh-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "C8642BD76A66142995754204D021FCC5B6A7520BD826B0C0D6FBD11E6405FC27",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e04-tilemaps-20260908-r14/continuity-provenance.json",
+      "continuity_registry_sha256": "786760395C59CE88012D958641A5D42E1A7DB16C552202CBBFDFB6E3EE0FF6E9",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e06-navmesh-20260908-r22/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "89EE347D430B699D6F877BD9CC21D4E12DC5AEBB43CC205C2F24AE1BF463323B",
-      "reason": "E04-A/B/C/D/E possui TileSet/células/camadas, ferramentas transacionais, três grids, Rule Tiles determinísticos, persistência save/reopen, suite completa, estática focada, build r14, smoke e captura real do fluxo do editor."
+      "portable_archive_sha256": "E5E627F092F15B9AF0600FE235B5090B487EC872BA2070E1D548DD0AAE8415D6",
+      "reason": "E06-A/B/C/D/E possui fonte NavMesh separada do bake, regiões, obstáculos, caminho determinístico, persistência versionada, suite completa, estática focada, build r22, smoke e captura real do fluxo do editor."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
@@ -140,8 +140,7 @@
     "E03": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E04": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E05": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E06": "IN_PROGRESS",
-    "E06": "IN_PROGRESS",
+    "E06": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E07": "PLANNED",
     "E08": "PLANNED",
     "E09": "PLANNED",

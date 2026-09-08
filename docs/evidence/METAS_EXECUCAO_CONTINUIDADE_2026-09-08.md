@@ -17,7 +17,7 @@ do proprietário for indispensável.
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
 | M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
-| M08 | E02–E13 | E06 em andamento — E05 checkpoint técnico selado | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
+| M08 | E02–E13 | E06 checkpoint técnico selado — E07 é o próximo lote | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
 
@@ -48,8 +48,9 @@ do proprietário for indispensável.
 - E03: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`, build r13 e captura real registrados; branch `Ailton/e03-assets-20260908`.
 - E04: checkpoint técnico concluído; aceite final permanece pendente até a auditoria final; branch `Ailton/e04-tilemaps-20260908`, build r14 e captura real registrados.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
-- E06: etapa operacional ativa; branch `Ailton/e06-navmesh-20260908` aberta após o checkpoint técnico E05.
-- E07–E13: ainda não iniciadas.
+- E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
+- E07: próximo lote a abrir após este checkpoint, com decisão e evidência próprias.
+- E08–E13: ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -74,11 +75,11 @@ do proprietário for indispensável.
 | E05-C formas e triggers | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | caixa, círculo, polígono, cadeia, categorias/máscaras |
 | E05-D persistência/destino | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | save/reopen e consumidor mínimo real |
 | E05-E UI/capturas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | overlay, fluxo visual, negativos e build |
-| E06-A fonte/bake | `IN_PROGRESS` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | regiões, obstáculos, margem, hash e bake determinístico |
-| E06-B caminho/negativos | `IN_PROGRESS` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | origem/destino, conectividade, corredor estreito e bake obsoleto |
-| E06-C persistência | `IN_PROGRESS` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | save/reopen versionado e fonte preservada |
-| E06-D UI/consumo | `IN_PROGRESS` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | painel, bake, caminho e estado obsoleto observáveis |
-| E06-E build/capturas | `PLANNED` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | binário r16, smoke, captura real e manifesto |
+| E06-A fonte/bake | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | regiões, obstáculos, margem, hash e bake determinístico |
+| E06-B caminho/negativos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | origem/destino, conectividade, corredor estreito e bake obsoleto |
+| E06-C persistência | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | save/reopen versionado e fonte preservada |
+| E06-D UI/consumo | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md` | painel, bake, caminho e estado obsoleto observáveis |
+| E06-E build/capturas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_R22_CAPTURAS_MANIFESTO.json` | binário r22, smoke, captura real e manifesto |
 
 ## Ordem fixa de execução
 
@@ -100,7 +101,7 @@ do proprietário for indispensável.
 | E03 | biblioteca própria e lifecycle de assets | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | assets rastreáveis, offline, relink/replace e licença |
 | E04 | tilemaps, grids e regras de terreno | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — r14 validado no binário | três grids, chunks, regras e persistência |
 | E05 | colisão própria de cenário | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | tipos físicos, triggers, persistência e validação de contato |
-| E06 | NavMesh 2D e consumo real | `IN_PROGRESS` — E06-A ativo | navegação de superfície, bake, caminho e persistência |
+| E06 | NavMesh 2D e consumo real | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | navegação de superfície, bake, caminho e persistência |
 | E07 | componentes e instâncias | `PLANNED` | relações, parent/grupos e conflitos de prefab |
 | E08 | materiais, paralaxe, efeitos e determinismo | `PLANNED` | renderer/FX qualificados com budgets e tolerâncias |
 | E09 | autoria e exportação vetorial | `PLANNED` | objetos editáveis, persistentes e exportáveis |
