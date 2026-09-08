@@ -9,7 +9,7 @@ Dependência E06 confirmada no checkpoint técnico `df841ef`.
 
 - E07-A — `IMPLEMENTED_TESTED`: modelo de entidade, componentes e instâncias.
 - E07-B — `IMPLEMENTED_TESTED`: hierarquia espacial, grupos e validações.
-- E07-C — `PLANNED`: ciclo completo de prefab e persistência.
+- E07-C — `IMPLEMENTED_TESTED`: ciclo completo de prefab e persistência.
 
 Nenhuma alegação funcional é feita antes dos testes focados, suíte oficial,
 estática, build limpa e captura real do binário. Symlink e revisão humana ficam
@@ -27,3 +27,13 @@ E07-B acrescenta `parent_entity_id` como relação espacial independente de
 membership em grupos, valida ciclos e referências inexistentes no schema e
 expõe operação transacional `set_entity_parent` no modelo Qt-independent.
 Suíte oficial após esta extensão: `2044 passed, 2 skipped, 1 warning`.
+
+E07-C adiciona operações atômicas de criar prefab, instanciar, aplicar e
+reverter override, atualizar a fonte preservando overrides e desvincular.
+`EntityPrefabPanel` expõe o fluxo em português no inspector profissional;
+testes Qt cobrem o percurso completo. Suíte oficial após a UI:
+`2047 passed, 2 skipped, 1 warning`.
+
+O lote E07 continua aberto até build limpa, smoke, captura real do binário e
+manifesto; nenhum sucesso de runtime é inferido somente do código ou dos
+testes locais.
