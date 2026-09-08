@@ -1779,9 +1779,10 @@ class SceneAuthoringViewport(QGraphicsView):
             painter.setPen(QPen(QColor("#b8f4ff"), 1.0))
             backend = plan.backend.selected.upper()
             mode = plan.backend.status.upper()
+            editor_mode = "PREVIEW" if self._preview_enabled else "AUTHORING"
             painter.drawText(
                 QPointF(12.0, 20.0),
-                f"RENDERER {backend} | {mode} | {len(plan.passes)} PASSES | R{plan.revision}",
+                f"RENDERER {backend} | {mode} | {editor_mode} | {len(plan.passes)} PASSES | R{plan.revision}",
             )
             painter.end()
         if self._marquee_origin is not None and self._marquee_current is not None:
