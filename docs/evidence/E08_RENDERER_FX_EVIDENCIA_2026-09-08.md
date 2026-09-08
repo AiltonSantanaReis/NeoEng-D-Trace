@@ -11,7 +11,8 @@ Dependência técnica: E07 checkpoint `d35bc84`.
 - E08-B — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: câmera e paralaxe profissional.
 - E08-C — `IN_PROGRESS`: C1–C4 têm checkpoint técnico comprovado; E08-C
   permanece aberto somente para auditoria final antes da promoção formal.
-- E08-D — `PLANNED`: partículas, shaders e pós-processamento.
+- E08-D — `IN_PROGRESS`: D1 partículas em checkpoint técnico; D2 shaders e
+  D3 pós-processamento ainda ativos.
 - E08-E — `PLANNED`: determinismo temporal e matriz de destino.
 
 Nenhum efeito visual será declarado suportado antes de saída observável,
@@ -188,3 +189,27 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 - Limitações preservadas: a captura automatizada não substitui a revisão
   humana final; o normal map é vetor autoral nesta etapa e sombras híbridas 3D
   permanecem posteriores, especialmente E12.
+
+### Evidência do sublote E08-D.1 — partículas
+
+- Commit de integração: `c5ca9f6fb559997ecdfa388a8244da68fb3bbc14`.
+- O viewport V2 resolve sockets `type: vfx` persistidos em uma simulação
+  `ParticleSimulation` com seed derivada do `effect_id`, fixed timestep,
+  lifecycle inicializado e limite explícito de partículas. Os estados são
+  desenhados como pixels QGraphics; o socket continua sendo o dado autoral e a
+  simulação não é salva como fonte de verdade.
+- Testes focados: `46 passed`, incluindo repetibilidade por seed e integração
+  do socket com o viewport profissional, além do contrato runtime existente.
+- Build r43: source commit `c5ca9f6fb559997ecdfa388a8244da68fb3bbc14`, binário
+  SHA-256 `692178B725846275B362B965E76CF03AE8630CFDF4F23A5CA412E36907D69AC1`,
+  pacote portátil SHA-256
+  `C86275C2521CCB045D4E033881AFE18423A458A13A52C950EAF081DAB467ED44`, smoke
+  `SUCCESS` com 11 checks.
+- Suíte oficial atual: `2072 passed, 2 skipped, 1 warning`.
+- Captura real: `06-renderer-preview.png` e `07-renderer-authoring.png` mostram
+  partículas amarelas observáveis no socket `spark-fx`; a captura inferior
+  mostra o socket VFX persistido no inspector. Manifesto e hashes:
+  `docs/evidence/E08_D1_R43_PARTICULAS_CAPTURAS_MANIFESTO.json`.
+- Limitação controlada: o perfil `spark-fx` é um preview determinístico
+  associado ao socket; parâmetros avançados autorais, compilação de shader e
+  cadeia de pós-processamento permanecem nos sublotes seguintes de E08-D.
