@@ -31,6 +31,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.core.independent_scene_gestures import IndependentScenePointEditGesture
 from src.core.independent_scene_session import IndependentSceneSession
 from src.persistence.independent_scene_io import (
     IndependentSceneReadError,
@@ -44,17 +45,64 @@ from src.ui.theme_tokens import THEME_TOKENS
 class IndependentSceneCanvas(QFrame):
     """Small deterministic preview of the authoring document."""
 
+    point_pressed = Signal(int)
+    point_preview = Signal(int, object)
+    point_released = Signal(int, object)
+    empty_clicked = Signal()
+    double_clicked = Signal()
+    escape_pressed = Signal()
+    finalize_pressed = Signal()
+
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.document = None
         self.selected_ids: tuple[str, ...] = ()
         self.object_count = 0
+        self.editing_primitive_id: str | None = None
+        self.editing_points: tuple[PointRecord, ...] | None = None
+        self.editing_state = "idle"
+        self._dragging_index: int | None = None
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
     def set_document(self, document: Any, selected_ids: tuple[str, ...] = ()) -> None:
         self.document = document
         self.selected_ids = selected_ids
         self.object_count = len(getattr(document, "objects", []))
         self.update()
+
+    def set_editing_state(
+        self,
+        primitive_id: str | None,
+        points: tuple[PointRecord, ...] | None,
+        state: str = "idle",
+    ) -> None:
+        self.editing_primitive_id = primitive_id
+        self.editing_points = points
+        self.editing_state = state
+        self._dragging_index = None
+        self.update()
+
+    def _viewport(self) -> tuple[float, float, float, float, float]:
+        if self.document is None:
+            return 0.0, 0.0, 1.0, 0.0, 0.0
+        width = float(self.document.resolution.width)
+        height = float(self.document.resolution.height)
+        scale = min((self.width() - 48) / width, (self.height() - 48) / height)
+        scale = max(0.01, scale)
+        return (
+            width,
+            height,
+            scale,
+            (self.width() - width * scale) / 2.0,
+            (self.height() - height * scale) / 2.0,
+        )
+
+    def _screen_to_document(self, point: QPointF) -> PointRecord:
+        _, _, scale, origin_x, origin_y = self._viewport()
+        return PointRecord(
+            x=(point.x() - origin_x) / scale,
+            y=(point.y() - origin_y) / scale,
+        )
 
     def paintEvent(self, event: Any) -> None:
         super().paintEvent(event)
@@ -63,20 +111,20 @@ class IndependentSceneCanvas(QFrame):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         painter.fillRect(self.rect(), QColor(THEME_TOKENS.canvas))
-        width = float(self.document.resolution.width)
-        height = float(self.document.resolution.height)
-        scale = min((self.width() - 48) / width, (self.height() - 48) / height)
-        scale = max(0.01, scale)
+        width, height, scale, origin_x, origin_y = self._viewport()
         canvas_width = width * scale
         canvas_height = height * scale
-        origin_x = (self.width() - canvas_width) / 2.0
-        origin_y = (self.height() - canvas_height) / 2.0
         painter.setPen(QPen(QColor(THEME_TOKENS.border), 1))
         painter.setBrush(QBrush(QColor(THEME_TOKENS.surface)))
         painter.drawRect(origin_x, origin_y, canvas_width, canvas_height)
 
         for primitive in getattr(self.document, "objects", []):
             points = primitive.geometry.points
+            if (
+                primitive.id == self.editing_primitive_id
+                and self.editing_points is not None
+            ):
+                points = self.editing_points
             position = primitive.transform.position
             mapped = [
                 (
@@ -117,7 +165,88 @@ class IndependentSceneCanvas(QFrame):
                     painter.drawPolygon(polygon)
                 else:
                     painter.drawPolyline(polygon)
+            if primitive.id == self.editing_primitive_id:
+                handle_color = QColor(
+                    THEME_TOKENS.error
+                    if self.editing_state == "preview_invalid"
+                    else THEME_TOKENS.focus
+                )
+                painter.setPen(QPen(handle_color, 2))
+                painter.setBrush(QBrush(QColor(THEME_TOKENS.surface)))
+                for x, y in mapped:
+                    painter.drawEllipse(QPointF(x, y), 7.0, 7.0)
         painter.end()
+
+    def mousePressEvent(self, event: Any) -> None:
+        if (
+            self.editing_primitive_id is None
+            or self.editing_points is None
+            or event.button() != Qt.MouseButton.LeftButton
+        ):
+            self.empty_clicked.emit()
+            super().mousePressEvent(event)
+            return
+        primitive = next(
+            (
+                item
+                for item in getattr(self.document, "objects", [])
+                if item.id == self.editing_primitive_id
+            ),
+            None,
+        )
+        if primitive is None:
+            self.empty_clicked.emit()
+            return
+        _, _, scale, origin_x, origin_y = self._viewport()
+        position = primitive.transform.position
+        screen_points = [
+            QPointF(
+                origin_x + (float(point.x) + float(position.x)) * scale,
+                origin_y + (float(point.y) + float(position.y)) * scale,
+            )
+            for point in self.editing_points
+        ]
+        cursor = event.position()
+        nearest = min(
+            enumerate(screen_points),
+            key=lambda pair: (pair[1] - cursor).manhattanLength(),
+            default=None,
+        )
+        if nearest is None or (nearest[1] - cursor).manhattanLength() > 18.0:
+            self.empty_clicked.emit()
+            return
+        self._dragging_index = nearest[0]
+        self.point_pressed.emit(nearest[0])
+        self.setFocus(Qt.FocusReason.MouseFocusReason)
+
+    def mouseMoveEvent(self, event: Any) -> None:
+        if self._dragging_index is not None:
+            self.point_preview.emit(
+                self._dragging_index,
+                self._screen_to_document(event.position()),
+            )
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: Any) -> None:
+        if self._dragging_index is not None:
+            index = self._dragging_index
+            self._dragging_index = None
+            self.point_released.emit(index, self._screen_to_document(event.position()))
+        super().mouseReleaseEvent(event)
+
+    def mouseDoubleClickEvent(self, event: Any) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.double_clicked.emit()
+        super().mouseDoubleClickEvent(event)
+
+    def keyPressEvent(self, event: Any) -> None:
+        if event.key() == Qt.Key.Key_Escape:
+            self.escape_pressed.emit()
+            return
+        if event.key() in {Qt.Key.Key_Return, Qt.Key.Key_Enter}:
+            self.finalize_pressed.emit()
+            return
+        super().keyPressEvent(event)
 
 
 class IndependentSceneWindow(QMainWindow):
@@ -145,6 +274,7 @@ class IndependentSceneWindow(QMainWindow):
             "rectangle": "Rectangle",
             "ellipse": "Ellipse",
             "polygon": "Polygon",
+            "edit_points": "Edit Points",
             "duplicate": "Duplicate",
             "remove": "Remove",
             "object_position": "Object position",
@@ -162,6 +292,14 @@ class IndependentSceneWindow(QMainWindow):
             "unsaved_title": "Unsaved scene",
             "unsaved": "Save changes to the independent scene?",
             "error": "Independent scene operation failed: ",
+            "editing_points": (
+                "Editing points — drag a handle; Enter/double-click finalizes; "
+                "Esc cancels."
+            ),
+            "edit_finalized": "Point edit finalized.",
+            "edit_cancelled": "Point edit cancelled.",
+            "edit_invalid": "Invalid preview: {error}",
+            "edit_no_selection": "Select one object before editing points.",
         },
         "pt": {
             "title": "Cenário Independente",
@@ -182,6 +320,7 @@ class IndependentSceneWindow(QMainWindow):
             "rectangle": "Retângulo",
             "ellipse": "Elipse",
             "polygon": "Polígono",
+            "edit_points": "Editar pontos",
             "duplicate": "Duplicar",
             "remove": "Remover",
             "object_position": "Posição do objeto",
@@ -199,6 +338,14 @@ class IndependentSceneWindow(QMainWindow):
             "unsaved_title": "Cenário não salvo",
             "unsaved": "Salvar as alterações do cenário independente?",
             "error": "Falha na operação do cenário independente: ",
+            "editing_points": (
+                "Editando pontos — arraste um ponto; Enter/duplo clique finaliza; "
+                "Esc cancela."
+            ),
+            "edit_finalized": "Edição de pontos finalizada.",
+            "edit_cancelled": "Edição de pontos cancelada.",
+            "edit_invalid": "Prévia inválida: {error}",
+            "edit_no_selection": "Selecione um objeto antes de editar os pontos.",
         },
     }
 
@@ -227,6 +374,7 @@ class IndependentSceneWindow(QMainWindow):
         self.rectangle_action = QAction(self)
         self.ellipse_action = QAction(self)
         self.polygon_action = QAction(self)
+        self.edit_action = QAction(self)
         self.duplicate_action = QAction(self)
         self.remove_action = QAction(self)
         self.undo_action = QAction(self)
@@ -240,6 +388,8 @@ class IndependentSceneWindow(QMainWindow):
         self.rectangle_action.setShortcut("Ctrl+Shift+R")
         self.ellipse_action.setShortcut("Ctrl+Shift+E")
         self.polygon_action.setShortcut("Ctrl+Shift+P")
+        self.edit_action.setShortcut("Ctrl+Alt+E")
+        self.edit_action.setCheckable(True)
         self.duplicate_action.setShortcut("Ctrl+D")
         self.remove_action.setShortcut("Ctrl+Shift+Delete")
         for action in (
@@ -250,6 +400,7 @@ class IndependentSceneWindow(QMainWindow):
             self.rectangle_action,
             self.ellipse_action,
             self.polygon_action,
+            self.edit_action,
             self.duplicate_action,
             self.remove_action,
             self.undo_action,
@@ -265,6 +416,7 @@ class IndependentSceneWindow(QMainWindow):
         )
         self.ellipse_action.triggered.connect(lambda: self.create_primitive("ellipse"))
         self.polygon_action.triggered.connect(lambda: self.create_primitive("polygon"))
+        self.edit_action.triggered.connect(self.toggle_point_edit)
         self.duplicate_action.triggered.connect(self.duplicate_selected)
         self.remove_action.triggered.connect(self.remove_selected)
         self.undo_action.triggered.connect(self.undo_scene)
@@ -285,6 +437,16 @@ class IndependentSceneWindow(QMainWindow):
         self.canvas_label.setAttribute(
             Qt.WidgetAttribute.WA_TranslucentBackground, True
         )
+        self.canvas_label.setAttribute(
+            Qt.WidgetAttribute.WA_TransparentForMouseEvents, True
+        )
+        self.point_gesture = IndependentScenePointEditGesture()
+        self.canvas.point_preview.connect(self._preview_point)
+        self.canvas.point_released.connect(self._release_point)
+        self.canvas.empty_clicked.connect(self.cancel_point_edit)
+        self.canvas.double_clicked.connect(self.finalize_point_edit)
+        self.canvas.escape_pressed.connect(self.cancel_point_edit)
+        self.canvas.finalize_pressed.connect(self.finalize_point_edit)
         layout.addWidget(self.canvas, 1)
 
         self.objects_label = QLabel(root)
@@ -424,7 +586,15 @@ class IndependentSceneWindow(QMainWindow):
             f"{document.coordinates.origin}, {document.coordinates.unit}\n"
             f"{self.object_count} {self._t('objects').lower()}"
         )
+        edit_points = (
+            self.point_gesture.working_points
+            if self.point_gesture.primitive_id is not None
+            and self.point_gesture.state in {"creating", "editing", "preview_invalid"}
+            else None
+        )
+        edit_id = self.point_gesture.primitive_id if edit_points is not None else None
         self.canvas.set_document(document, self.session_selection)
+        self.canvas.set_editing_state(edit_id, edit_points, self.point_gesture.state)
         list_signals_blocked = self.object_list.blockSignals(True)
         self.object_list.clear()
         for primitive in getattr(document, "objects", []):
@@ -466,6 +636,8 @@ class IndependentSceneWindow(QMainWindow):
         self.redo_action.setEnabled(self.session.can_redo)
         self.duplicate_action.setEnabled(bool(self.session_selection))
         self.remove_action.setEnabled(bool(self.session_selection))
+        self.edit_action.setEnabled(len(self.session_selection) == 1)
+        self.edit_action.setChecked(edit_points is not None)
 
     def update_language(self, language: str) -> None:
         self.current_lang = language if language in self._TEXT else "en"
@@ -476,6 +648,7 @@ class IndependentSceneWindow(QMainWindow):
         self.rectangle_action.setText(self._t("rectangle"))
         self.ellipse_action.setText(self._t("ellipse"))
         self.polygon_action.setText(self._t("polygon"))
+        self.edit_action.setText(self._t("edit_points"))
         self.duplicate_action.setText(self._t("duplicate"))
         self.remove_action.setText(self._t("remove"))
         self.undo_action.setText(self._t("undo"))
@@ -542,6 +715,99 @@ class IndependentSceneWindow(QMainWindow):
             5000,
         )
         self.document_changed.emit()
+        return True
+
+    @property
+    def point_edit_active(self) -> bool:
+        return self.point_gesture.state in {
+            "creating",
+            "editing",
+            "preview_invalid",
+        }
+
+    def toggle_point_edit(self) -> bool:
+        if self.point_edit_active:
+            return self.finalize_point_edit()
+        if len(self.session_selection) != 1:
+            self.edit_action.setChecked(False)
+            self.statusBar().showMessage(self._t("edit_no_selection"), 5000)
+            return False
+        primitive_id = self.session_selection[0]
+        primitive = next(
+            item for item in self.session.document.objects if item.id == primitive_id
+        )
+        try:
+            self.point_gesture.begin(
+                primitive_id,
+                primitive.geometry,
+                locked=primitive.locked,
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self.edit_action.setChecked(False)
+            self._show_error(exc)
+            return False
+        self.canvas.set_editing_state(
+            primitive_id,
+            self.point_gesture.working_points,
+            self.point_gesture.state,
+        )
+        self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
+        self.edit_action.setChecked(True)
+        self.statusBar().showMessage(self._t("editing_points"), 5000)
+        return True
+
+    def _preview_point(self, point_index: int, point: PointRecord) -> None:
+        if not self.point_edit_active:
+            return
+        valid = self.point_gesture.preview_point(point_index, point)
+        self.canvas.set_editing_state(
+            self.point_gesture.primitive_id,
+            self.point_gesture.working_points,
+            self.point_gesture.state,
+        )
+        if not valid:
+            self.statusBar().showMessage(
+                self._t("edit_invalid").format(
+                    error=self.point_gesture.last_error or "invalid geometry",
+                ),
+                5000,
+            )
+
+    def _release_point(self, point_index: int, point: PointRecord) -> None:
+        if not self.point_edit_active:
+            return
+        self._preview_point(point_index, point)
+        if self.point_gesture.state == "editing":
+            self.finalize_point_edit()
+
+    def finalize_point_edit(self) -> bool:
+        if not self.point_edit_active:
+            return False
+        try:
+            points = self.point_gesture.commit()
+            self.session.update_primitive_geometry(
+                self.point_gesture.primitive_id or "",
+                points=points,
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self.point_gesture.state = "preview_invalid"
+            self._show_error(exc)
+            return False
+        self.canvas.set_editing_state(None, None, "idle")
+        self.edit_action.setChecked(False)
+        self.statusBar().showMessage(self._t("edit_finalized"), 5000)
+        self.refresh()
+        self.document_changed.emit()
+        return True
+
+    def cancel_point_edit(self) -> bool:
+        if not self.point_edit_active:
+            return False
+        self.point_gesture.cancel()
+        self.canvas.set_editing_state(None, None, "idle")
+        self.edit_action.setChecked(False)
+        self.statusBar().showMessage(self._t("edit_cancelled"), 5000)
+        self.refresh()
         return True
 
     def duplicate_selected(self) -> bool:

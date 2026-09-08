@@ -156,6 +156,23 @@ class IndependentSceneSession:
             lambda model: model.update_transform(primitive_id, transform)
         )
 
+    def update_primitive_geometry(
+        self,
+        primitive_id: str,
+        *,
+        points: Sequence,
+        closed: bool | None = None,
+        filled: bool | None = None,
+    ) -> IndependentScenePrimitiveRecord:
+        return self._mutate_authoring(
+            lambda model: model.update_geometry(
+                primitive_id,
+                points=points,
+                closed=closed,
+                filled=filled,
+            )
+        )
+
     def remove_primitive(self, primitive_id: str) -> None:
         self._mutate_authoring(lambda model: model.remove_primitive(primitive_id))
 

@@ -187,3 +187,27 @@ def test_independent_scene_window_selection_transform_duplicate_remove_reopen(
 
     reopened.close()
     window.close()
+
+
+def test_independent_scene_window_point_edit_commit_and_cancel(
+    qt_app: QApplication,
+) -> None:
+    window = IndependentSceneWindow(language="pt")
+    window.show()
+    window.create_primitive("polygon")
+    qt_app.processEvents()
+    original = tuple(window.session.document.objects[0].geometry.points)
+
+    assert window.toggle_point_edit()
+    assert window.point_edit_active
+    assert window.edit_action.text() == "Editar pontos"
+    window._preview_point(1, original[1].model_copy(update={"x": original[1].x + 50}))
+    assert window.finalize_point_edit()
+    assert window.session.document.objects[0].geometry.points[1].x == original[1].x + 50
+
+    assert window.toggle_point_edit()
+    window._preview_point(1, original[1])
+    assert window.cancel_point_edit()
+    assert window.session.document.objects[0].geometry.points[1].x == original[1].x + 50
+    window.session.new()
+    window.close()

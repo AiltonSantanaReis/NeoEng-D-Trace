@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from src.core.independent_scene_gestures import IndependentScenePointEditGesture
 from src.core.independent_scene_session import IndependentSceneSession
 from src.persistence.independent_scene_schema import (
     IndependentScenePrimitiveGeometryRecord,
@@ -228,3 +229,50 @@ def test_session_batch_selection_respects_locked_objects() -> None:
 
     with pytest.raises(PermissionError, match="locked"):
         session.translate_selection(delta_x=1, delta_y=1)
+
+
+def test_point_edit_gesture_commits_and_supports_double_click_finalize() -> None:
+    session = IndependentSceneSession()
+    primitive = session.add_primitive(
+        kind="polygon",
+        points=_points((0, 0), (100, 0), (50, 100)),
+        primitive_id="poly",
+    )
+    gesture = IndependentScenePointEditGesture()
+    gesture.begin(primitive.id, primitive.geometry)
+
+    assert gesture.preview_point(1, PointRecord(x=120, y=0))
+    points = gesture.double_click_finalize()
+    session.update_primitive_geometry("poly", points=points)
+
+    assert gesture.state == "finalized"
+    assert session.document.objects[0].geometry.points[1] == PointRecord(x=120, y=0)
+
+
+def test_point_edit_invalid_preview_does_not_mutate_and_escape_cancels() -> None:
+    session = IndependentSceneSession()
+    primitive = session.add_primitive(
+        kind="polygon",
+        points=_points((0, 0), (100, 0), (50, 100)),
+        primitive_id="poly",
+    )
+    original = tuple(primitive.geometry.points)
+    gesture = IndependentScenePointEditGesture()
+    gesture.begin(primitive.id, primitive.geometry)
+
+    assert not gesture.preview_point(1, PointRecord(x=50, y=100))
+    assert gesture.state == "preview_invalid"
+    assert tuple(session.document.objects[0].geometry.points) == original
+    assert gesture.escape() == original
+    assert gesture.state == "cancelled"
+    assert tuple(gesture.working_points) == original
+
+
+def test_point_edit_gesture_rejects_locked_primitive() -> None:
+    geometry = IndependentScenePrimitiveGeometryRecord(
+        kind="rectangle",
+        points=_points((0, 0), (100, 50)),
+    )
+    gesture = IndependentScenePointEditGesture()
+    with pytest.raises(PermissionError, match="locked"):
+        gesture.begin("locked", geometry, locked=True)
