@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ProjectPath,
     [Parameter(Mandatory = $true)]
-    [string]$OutputDirectory
+    [string]$OutputDirectory,
+    [switch]$CaptureTilemapFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -152,7 +153,32 @@ try {
     # covered by the focused Qt contract tests; this binary capture remains
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
+    if ($CaptureTilemapFlow) {
+        # The tilemap panel is in the right inspector at the top of the
+        # shipped editor.  These are native screen offsets for the current
+        # 200% DPI capture host; the resulting state is always verified by
+        # PrintWindow and the manifest hashes below.
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3110, 320)
+        Start-Sleep -Milliseconds 500
+        $records.tilemap_new = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-tilemap-new.png")
+        # Paint three cells, save the sidecar, then reopen it through the
+        # same shipped controls.  Coordinates are native offsets in the
+        # maximized editor rect recorded above.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3210, 550)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 550)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3270, 550)
+        Start-Sleep -Milliseconds 500
+        $records.tilemap_painted = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-tilemap-painted.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3395, 320)
+        Start-Sleep -Milliseconds 700
+        $records.tilemap_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tilemap-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 320)
+        Start-Sleep -Milliseconds 700
+        $records.tilemap_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tilemap-reopened.png")
+    }
     $records.editor_title = $editor.Title
+    $records.editor_window_rect_before_tilemap_flow = [NeoEngE03Capture]::RectText($editor.Handle)
     $records.window = "captured by PrintWindow from binary window handle"
     $records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $OutputDirectory "manifest.json") -Encoding utf8
     $records | ConvertTo-Json -Depth 6
