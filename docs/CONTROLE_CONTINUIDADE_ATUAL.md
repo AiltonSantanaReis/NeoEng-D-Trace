@@ -37,6 +37,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `BLOCKED` | host de Computer Use sem janela de aplicação |
 | Build oficial | `PASS_LOCAL` | commit `2722ac1`, manifesto, hashes e smoke test com 11 verificações |
+| Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 
 A execução direta da build oficial `2722ac1` gerou as capturas em
 `artifacts/e00-continuity-20260908/official-build-2722ac1/captures/`.

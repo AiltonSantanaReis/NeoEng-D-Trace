@@ -75,6 +75,14 @@
       "portable_smoke_checks": 11,
       "portable_archive_sha256": "385731D0F0593BE3F6A1C8D6646DC7A2F1AB2E22F9B827752613F77ED00320BF",
       "reason": "Build oficial executada em worktree limpo; manifesto, hash do binario, pacote e smoke test registrados."
+    },
+    "functional_runtime": {
+      "status": "PASS_LOCAL",
+      "binary": "build/e00-continuity-20260908-official/release/e00-20260908/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "validation_log": "artifacts/e00-continuity-20260908/official-build-2722ac1/functional-flow-validation.jsonl",
+      "expected_events": ["application.opened", "window.geometry.restored", "application.state.saved", "application.closed"],
+      "failure_count": 0,
+      "warning": "CuPy ausente; fallback para processamento CPU registrado, sem falha funcional."
     }
   },
   "stage_status": {
