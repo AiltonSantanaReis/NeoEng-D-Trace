@@ -167,6 +167,50 @@ class SceneGroupAuthoringRecordV2(SceneGroupAuthoringRecord):
     parent_group_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
 
 
+class SceneComponentAuthoringRecord(StrictProjectModel):
+    """Versioned, data-only component attached to one authored entity."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    type: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
+    version: int = Field(ge=1, le=10_000)
+    properties: dict[str, str | int | float | bool | None] = Field(
+        default_factory=dict
+    )
+
+    @model_validator(mode="after")
+    def validate_property_values(self) -> "SceneComponentAuthoringRecord":
+        for key, value in self.properties.items():
+            if not key.strip() or len(key) > MAX_NAME_LENGTH:
+                raise ValueError("component property names must be non-empty")
+            if isinstance(value, float) and not math.isfinite(value):
+                raise ValueError("component property numbers must be finite")
+        return self
+
+
+class SceneEntityAuthoringRecord(StrictProjectModel):
+    """Stable authored identity with typed components and optional instance source."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    name: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
+    layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    transform: SceneTransformRecord
+    components: list[SceneComponentAuthoringRecord] = Field(
+        default_factory=list, max_length=MAX_PROJECT_OBJECTS
+    )
+    instance_of: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
+    visible: bool = True
+    locked: bool = False
+
+    @model_validator(mode="after")
+    def validate_component_identity(self) -> "SceneEntityAuthoringRecord":
+        component_ids = [component.id for component in self.components]
+        if len(component_ids) != len(set(component_ids)):
+            raise ValueError("entity component IDs must be unique")
+        if self.instance_of == self.id:
+            raise ValueError("entity cannot instance itself")
+        return self
+
+
 class SceneSnapRecord(StrictProjectModel):
     enabled: bool = False
     mode: Literal["pixel", "grid"] = "pixel"
@@ -348,6 +392,11 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
     layers: list[SceneLayerAuthoringRecord] = Field(max_length=MAX_PROJECT_LAYERS)
     objects: list[SceneObjectAuthoringRecord] = Field(max_length=MAX_PROJECT_OBJECTS)
     groups: list[SceneGroupAuthoringRecordV2] = Field(max_length=MAX_PROJECT_GROUPS)
+    entities: list[SceneEntityAuthoringRecord] = Field(
+        default_factory=list,
+        max_length=MAX_PROJECT_OBJECTS,
+        exclude_if=lambda value: not value,
+    )
     snap: SceneSnapRecord = SceneSnapRecord()
     camera: SceneCameraAuthoringRecord = SceneCameraAuthoringRecord()
     parallax_layers: list[SceneParallaxLayerRecord] = Field(
@@ -371,6 +420,19 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         known_assets = {item.id for item in self.assets}
         known_layers = {item.id for item in self.layers}
         known_objects = {item.id for item in self.objects}
+        entity_ids = [item.id for item in self.entities]
+        if len(entity_ids) != len(set(entity_ids)):
+            raise ValueError("entity IDs must be unique")
+        known_entities = set(entity_ids)
+        for entity in self.entities:
+            if entity.layer_id not in known_layers:
+                raise ValueError(
+                    f"entity {entity.id!r} references unknown layer {entity.layer_id!r}"
+                )
+            if entity.instance_of is not None and entity.instance_of not in known_entities:
+                raise ValueError(
+                    f"entity {entity.id!r} references unknown source entity"
+                )
         for item in self.objects:
             if item.asset_id not in known_assets:
                 raise ValueError(f"object {item.id!r} references unknown asset")
