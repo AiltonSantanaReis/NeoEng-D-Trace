@@ -11,9 +11,10 @@ Dependência técnica: E07 checkpoint `d35bc84`.
 - E08-B — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: câmera e paralaxe profissional.
 - E08-C — `IN_PROGRESS`: C1–C4 têm checkpoint técnico comprovado; E08-C
   permanece aberto somente para auditoria final antes da promoção formal.
-- E08-D — `IN_PROGRESS`: D1 partículas e D2 shaders em checkpoint técnico; D3
-  pós-processamento ativo.
-- E08-E — `PLANNED`: determinismo temporal e matriz de destino.
+- E08-D — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: D1 partículas,
+  D2 shaders e D3 pós-processamento comprovados em checkpoint técnico.
+- E08-E — `IN_PROGRESS`: determinismo temporal e matriz de capacidade por
+  backend/destino.
 
 Nenhum efeito visual será declarado suportado antes de saída observável,
 comparação, teste de falha e captura real do binário. Symlink e revisão humana
@@ -238,3 +239,36 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
   observável; não há claim de shader GPU aplicado sem backend acelerado. O
   manifesto hashado está em
   `docs/evidence/E08_D2_R44_SHADERS_CAPTURAS_MANIFESTO.json`.
+
+### Evidência do sublote E08-D.3 — pós-processamento
+
+- Implementação integrada no commit `b5baf5c7676b85a7319e1280362e4b8d005909a7`.
+  Sockets VFX `post-*` resolvem uma cadeia determinística ordenada no runtime
+  CPU-preview, com fallback explícito e sem substituir o documento autoral.
+- Correção visual aplicada após a primeira captura: o raio inicial deixava o
+  efeito praticamente transparente dentro da fixture. O raio foi reduzido e
+  recebeu um stop central de baixa opacidade; a revalidação r47 mostrou a
+  vinheta radial de forma perceptível, preservando a leitura do objeto e o
+  marcador VFX.
+- Auditoria oficial: `PASS` em round-trip canônico, vínculo por hash,
+  ordenação determinística, efeitos desabilitados, alpha, limites, fallback,
+  persistência atômica e privacidade. Relatório:
+  `artifacts/e08-renderer-20260908/runtime-post-audit-d3-r47/stage5-runtime-post-processing-report.json`.
+- Testes focados: `13 passed`; suíte oficial: `2075 passed, 2 skipped,
+  1 warning`.
+- Build r47: source commit `b5baf5c7676b85a7319e1280362e4b8d005909a7`, binário
+  SHA-256 `414DFE697F2095BA5996EF79D41CA3F8DF83085E5A38265F0B099FCED5FBDC52`,
+  pacote portátil SHA-256
+  `62c91373def4e3a898bc645d85fae7c1d4b2f6ef68ac6c1414ac6a149dcaf860`, smoke
+  `SUCCESS` com 11 checks.
+- Captura real do binário portátil com a fixture
+  `tests/fixtures/e08_post_smoke.ndtproj`: Preview
+  `54BD892508DF62B2C1AD45D8F856E21E88226E7D144A613452261BDB5E22DB6D`,
+  Autoria `F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30`,
+  Parallax inferior `A612AA2D2AABC6CD6D256017E3A2EA422E32203D0AF97ECF529B8CF2D094BF7D`
+  e PageUp `9D25D7214BC9C2499E0893FCB0B3A15D79A4CC36E7CBAAB4CF36A7FF8A707D62`.
+  Manifesto completo:
+  `docs/evidence/E08_D3_R47_POST_PROCESSING_CAPTURAS_MANIFESTO.json`.
+- Limitações mantidas: o backend é CPU-preview determinístico, sem claim de
+  rasterização GPU; adaptadores de pós para Godot/Unity, VRAM, FPS por driver
+  e render específico de backend continuam fora deste sublote.

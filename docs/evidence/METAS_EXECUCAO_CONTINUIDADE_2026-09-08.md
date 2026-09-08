@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D é o próximo lote após este commit; E09–E13 ainda não iniciadas.
+- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 comprovados tecnicamente até a build r47; E08-E é o lote ativo; E09–E13 ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -98,8 +98,8 @@ ela não interrompe a execução técnica autorizada.
 |---:|---|---|---|
 | 1 | E08-B câmera/paralaxe | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato, testes, build e captura real |
 | 2 | E08-C materiais/normal maps/luzes/sombras | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pixels observáveis, negativos, persistência, captura r42 e fallback |
-| 3 | E08-D partículas/shaders/pós | `IN_PROGRESS` | D1 e D2 comprovados; D3 cadeia de pós em execução |
-| 4 | E08-E determinismo/destinos | `PLANNED` | timestep, tolerâncias e matriz de capacidades |
+| 3 | E08-D partículas/shaders/pós | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | D1, D2 e D3 comprovados; auditoria final pendente |
+| 4 | E08-E determinismo/destinos | `IN_PROGRESS` | timestep, tolerâncias e matriz de capacidades |
 | 5 | E09 autoria/exportação vetorial | `PLANNED` | fluxo editável, persistente e exportável |
 | 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
 | 7 | E11 composição/runtime | `PLANNED` | cena executada fora do editor |
@@ -122,7 +122,14 @@ ela não interrompe a execução técnica autorizada.
 |---|---|---|
 | E08-D.1 partículas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | socket VFX persistido, seed/lifecycle/fixed-step, limite, pixels no binário e manifesto r43 |
 | E08-D.2 shaders | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato editável, compilação real, diagnóstico recuperável, último estado válido e captura r44 |
-| E08-D.3 pós-processamento | `IN_PROGRESS` | cadeia ordenada, parâmetros persistidos, resultado visível e fallback explícito |
+| E08-D.3 pós-processamento | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | cadeia ordenada, parâmetros persistidos, resultado visível, fallback explícito, auditoria r47 e manifesto hashado |
+
+### Sublotes ativos de E08-E
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E08-E.1 determinismo temporal | `IN_PROGRESS` | timestep/fixed-step, seed, repetibilidade e comparação temporal com tolerância registrada |
+| E08-E.2 matriz de capacidades | `PLANNED` | matriz por backend/destino, fallback explícito, limites e evidência executável |
 
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
