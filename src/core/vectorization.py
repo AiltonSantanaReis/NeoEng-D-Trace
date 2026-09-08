@@ -91,7 +91,7 @@ class VectorizationResult:
     threshold: int
     approximation_epsilon: float
     minimum_area: float
-    polygon: tuple[tuple[int, int], ...]
+    polygon: tuple[tuple[float, float], ...]
     contour_area: float
     algorithm: str = VECTORISATION_ALGORITHM
 
