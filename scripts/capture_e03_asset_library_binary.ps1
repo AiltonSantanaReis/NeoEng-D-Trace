@@ -9,6 +9,7 @@ param(
     [switch]$CaptureColliderFlow,
     [switch]$CaptureNavMeshFlow,
     [switch]$CaptureEntityPrefabFlow,
+    [switch]$CaptureRendererFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -273,6 +274,18 @@ try {
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.826)
         Start-Sleep -Milliseconds 650
         $records.prefab_detached = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-prefab-detached.png")
+    }
+    if ($CaptureRendererFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # Preview Parallax is the toolbar toggle near the center of the
+        # DPI-aware editor surface.  The capture proves the shipped raster
+        # renderer plan and its explicit backend/fallback HUD.
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.50, 0.025)
+        Start-Sleep -Milliseconds 900
+        $records.renderer_preview = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-renderer-preview.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.50, 0.025)
+        Start-Sleep -Milliseconds 500
+        $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-authoring.png")
     }
     $records.editor_title = $editor.Title
     $records.editor_window_rect_before_tilemap_flow = [NeoEngE03Capture]::RectText($editor.Handle)

@@ -29,6 +29,7 @@ from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_render_plan import build_scene_render_plan
 from src.exporters.scene_authoring_export import (
     SceneExportTarget,
     save_scene_authoring_export,
@@ -805,6 +806,17 @@ class ScenarioEditorWindow(QMainWindow):
                     (float(self.canvas.width()), float(self.canvas.height()))
                 )
             )
+            if self.professional_session is not None and isinstance(
+                self.professional_session.document, SceneAuthoringDocumentV2
+            ):
+                self.canvas.set_scenario_render_plan(
+                    build_scene_render_plan(
+                        self.professional_session.document,
+                        (max(1, self.canvas.width()), max(1, self.canvas.height())),
+                    )
+                )
+            else:
+                self.canvas.set_scenario_render_plan(None)
             mode_status = (
                 "Scenario preview — read-only"
                 if self.preview_action.isChecked()

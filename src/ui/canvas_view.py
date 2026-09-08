@@ -45,6 +45,7 @@ from src.core.scenario_preview import (
     build_overlay_geometry,
     project_layer_points,
 )
+from src.core.scene_render_plan import SceneRenderPlan
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.image_conversion import to_qimage
@@ -354,6 +355,7 @@ class CanvasView(QWidget):
         self._scenario_safe_fraction = 0.9
         self._scenario_camera: Optional[OrthographicCamera] = None
         self._scenario_layers: tuple[ScenarioPreviewLayer, ...] = ()
+        self._scenario_render_plan: SceneRenderPlan | None = None
         self._scenario_overlay_geometry: Optional[ScenarioOverlayGeometry] = None
 
         # --- Configurações Críticas de Interação ---
@@ -1195,6 +1197,14 @@ class CanvasView(QWidget):
         self._scenario_camera = camera
         self.update()
 
+    def set_scenario_render_plan(self, plan: SceneRenderPlan | None) -> None:
+        """Install the immutable render ordering used by the preview backend."""
+
+        if plan is not None and not isinstance(plan, SceneRenderPlan):
+            raise ValueError("scenario render plan must be a SceneRenderPlan")
+        self._scenario_render_plan = plan
+        self.update()
+
     def set_scenario_overlays_visible(
         self,
         visible: bool,
@@ -1603,7 +1613,16 @@ class CanvasView(QWidget):
             for layer in self._scenario_layers
             for object_id in layer.object_ids
         }
-        for oid, obj in getattr(self.model, "objects", {}).items():
+        render_order = (
+            self._scenario_render_plan.object_order()
+            if self._scenario_render_plan is not None
+            else {}
+        )
+        objects = sorted(
+            getattr(self.model, "objects", {}).items(),
+            key=lambda item: render_order.get(item[0], (10_000, 10_000, 0.0)),
+        )
+        for oid, obj in objects:
             poly = getattr(obj, "polygon", [])
             if len(poly) <= 1:
                 continue
@@ -1675,6 +1694,15 @@ class CanvasView(QWidget):
         painter.setPen(QColor(170, 245, 255))
         painter.setFont(QFont("Consolas", 9, QFont.Weight.Bold))
         painter.drawText(10, 62, "SCENARIO PREVIEW | READ-ONLY")
+        plan = self._scenario_render_plan
+        if plan is not None:
+            backend = plan.backend.selected.upper()
+            mode = plan.backend.status.upper()
+            painter.drawText(
+                10,
+                80,
+                f"RENDERER {backend} | {mode} | {len(plan.passes)} PASSES | R{plan.revision}",
+            )
 
     def paintEvent(self, event):
         painter = QPainter(self)
