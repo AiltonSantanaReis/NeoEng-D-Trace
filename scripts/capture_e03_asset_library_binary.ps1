@@ -7,7 +7,8 @@ param(
     [string]$OutputDirectory,
     [switch]$CaptureTilemapFlow,
     [switch]$CaptureColliderFlow,
-    [switch]$CaptureNavMeshFlow
+    [switch]$CaptureNavMeshFlow,
+    [switch]$DirectProjectLoad
 )
 
 $ErrorActionPreference = "Stop"
@@ -102,7 +103,15 @@ function Save-Capture {
 $exePath = (Resolve-Path -LiteralPath $Executable).Path
 $projectPath = (Resolve-Path -LiteralPath $ProjectPath).Path
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
-$process = Start-Process -FilePath $exePath -PassThru
+$startArguments = @()
+if ($DirectProjectLoad) {
+    $startArguments = @("--open-project-gui", $projectPath, "--open-scenario-editor-gui")
+}
+$process = if ($startArguments.Count) {
+    Start-Process -FilePath $exePath -ArgumentList $startArguments -PassThru
+} else {
+    Start-Process -FilePath $exePath -PassThru
+}
 try {
     $deadline = (Get-Date).AddSeconds(20)
     do { Start-Sleep -Milliseconds 250; $process.Refresh(); $mainHandle = $process.MainWindowHandle } while ($mainHandle -eq 0 -and (Get-Date) -lt $deadline)
@@ -110,53 +119,42 @@ try {
 
     $records = [ordered]@{}
     $records.main = Save-Capture $mainHandle (Join-Path $OutputDirectory "01-main.png")
-    [NeoEngE03Capture]::Focus($mainHandle)
-    [NeoEngE03Capture]::Focus($mainHandle)
-    [System.Windows.Forms.SendKeys]::SendWait("^o")
-    Start-Sleep -Milliseconds 1200
-    $dialog = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
-    if (-not $dialog) {
-        # Fallback for hosts where the global shortcut is intercepted.
+    if ($DirectProjectLoad) {
+        Start-Sleep -Milliseconds 3200
         [NeoEngE03Capture]::Focus($mainHandle)
-        Start-Sleep -Milliseconds 300
-        [NeoEngE03Capture]::ClickWindow($mainHandle, 80, 150)
+        $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
+        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
+        if (-not $editor) { throw "professional scenario editor was not exposed by direct GUI load" }
+        $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
+    } else {
+        [NeoEngE03Capture]::Focus($mainHandle)
+        [System.Windows.Forms.SendKeys]::SendWait("^o")
         Start-Sleep -Milliseconds 1200
         $dialog = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
-    }
-    if (-not $dialog) { throw "project open dialog was not exposed" }
-    $records.project_dialog = Save-Capture $dialog.Handle (Join-Path $OutputDirectory "02-project-open-dialog.png")
-    Set-DialogPath $dialog.Handle $projectPath
-    Start-Sleep -Milliseconds 1800
-
-    [NeoEngE03Capture]::Focus($mainHandle)
-    $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
-    $records.main_window_rect = [NeoEngE03Capture]::RectText($mainHandle)
-    $projectWindows = [NeoEngE03Capture]::GetWindows($process.Id)
-    $records.windows_after_project_load = @($projectWindows | ForEach-Object { [ordered]@{ title = $_.Title } })
-    $errorWindow = $projectWindows | Where-Object { $_.Title -eq "Erro" } | Select-Object -First 1
-    if ($errorWindow) {
-        $records.project_error = Save-Capture $errorWindow.Handle (Join-Path $OutputDirectory "04-project-load-error.png")
-        [NeoEngE03Capture]::Focus($errorWindow.Handle)
-        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-        Start-Sleep -Milliseconds 350
-    }
-    [NeoEngE03Capture]::Focus($mainHandle)
-    # PrintWindow reports physical pixels on this 200% DPI desktop; the
-    # visible toolbar center is approximately (758,75) in the 2048px capture,
-    # therefore the native screen coordinate is scaled to (1421,142).
-    [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
-    Start-Sleep -Milliseconds 2200
-    $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
-    if (-not $editor) {
+        if (-not $dialog) {
+            [NeoEngE03Capture]::Focus($mainHandle)
+            Start-Sleep -Milliseconds 300
+            [NeoEngE03Capture]::ClickWindow($mainHandle, 80, 150)
+            Start-Sleep -Milliseconds 1200
+            $dialog = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
+        }
+        if (-not $dialog) { throw "project open dialog was not exposed" }
+        $records.project_dialog = Save-Capture $dialog.Handle (Join-Path $OutputDirectory "02-project-open-dialog.png")
+        Set-DialogPath $dialog.Handle $projectPath
+        Start-Sleep -Milliseconds 1800
         [NeoEngE03Capture]::Focus($mainHandle)
+        $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
         [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
         Start-Sleep -Milliseconds 2200
-        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle -and $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
-    }
-    if (-not $editor) {
-        $records.windows_after_scenario_attempt = @([NeoEngE03Capture]::GetWindows($process.Id) | ForEach-Object { [ordered]@{ title = $_.Title } })
-        $records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $OutputDirectory "diagnostic-manifest.json") -Encoding utf8
-        throw "professional scenario editor was not exposed"
+        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
+        if (-not $editor) {
+            [NeoEngE03Capture]::Focus($mainHandle)
+            [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
+            Start-Sleep -Milliseconds 2200
+            $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle -and $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
+        }
+        if (-not $editor) { throw "professional scenario editor was not exposed" }
+        $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     }
     $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     # The editor has no Alt+P mnemonic.  Sending it can open an unrelated

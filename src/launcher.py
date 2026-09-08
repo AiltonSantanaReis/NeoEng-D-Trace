@@ -399,7 +399,7 @@ def main() -> int:
             def open_capture_project() -> None:
                 open_editor = getattr(win, "open_scenario_editor", None)
                 if (
-                    win.open_project_from_path(args.open_project_gui)
+                    win.open_project(args.open_project_gui)
                     and args.open_scenario_editor_gui
                     and open_editor
                 ):
