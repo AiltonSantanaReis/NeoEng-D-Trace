@@ -367,6 +367,7 @@ class ScenarioEditorWindow(QMainWindow):
                 ),
             )
         inspector = SceneAuthoringInspector(session)
+        inspector.update_language(self.current_lang)
         self.layer_stack = SceneAuthoringLayerStack(session)
         self.group_stack = SceneAuthoringGroupStack(session)
         self.asset_library = SceneAssetLibrary(

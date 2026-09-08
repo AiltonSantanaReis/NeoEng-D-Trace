@@ -45,6 +45,7 @@ class SceneAuthoringInspector(QWidget):
         self.setObjectName("professional_scene_inspector")
         self.setMinimumWidth(300)
         self._refreshing = False
+        self._field_labels: dict[str, QLabel] = {}
 
         self.title = QLabel("Scene Inspector")
         self.selection_label = QLabel("No object selected")
@@ -108,29 +109,41 @@ class SceneAuthoringInspector(QWidget):
         self.remove_socket_button = QPushButton("Remove Socket")
         self.stage4_group = QGroupBox("Camera, Parallax & Sockets")
         stage4_form = QFormLayout(self.stage4_group)
-        stage4_form.addRow("Camera X", self.camera_x)
-        stage4_form.addRow("Camera Y", self.camera_y)
-        stage4_form.addRow("Camera Zoom", self.camera_zoom)
+        self._add_labeled_row(stage4_form, "camera_x", "Camera X", self.camera_x)
+        self._add_labeled_row(stage4_form, "camera_y", "Camera Y", self.camera_y)
+        self._add_labeled_row(
+            stage4_form, "camera_zoom", "Camera Zoom", self.camera_zoom
+        )
         stage4_form.addRow(self.camera_apply_button)
-        stage4_form.addRow("Layer", self.layer_combo)
-        stage4_form.addRow("Depth", self.parallax_depth)
-        stage4_form.addRow("Translation", self.parallax_translation)
-        stage4_form.addRow("Zoom", self.parallax_zoom)
-        stage4_form.addRow("Scroll X", self.parallax_scroll_x)
-        stage4_form.addRow("Scroll Y", self.parallax_scroll_y)
-        stage4_form.addRow("Offset X", self.parallax_offset_x)
-        stage4_form.addRow("Offset Y", self.parallax_offset_y)
+        self._add_labeled_row(stage4_form, "layer", "Layer", self.layer_combo)
+        self._add_labeled_row(stage4_form, "depth", "Depth", self.parallax_depth)
+        self._add_labeled_row(
+            stage4_form, "translation", "Translation", self.parallax_translation
+        )
+        self._add_labeled_row(stage4_form, "zoom", "Zoom", self.parallax_zoom)
+        self._add_labeled_row(
+            stage4_form, "scroll_x", "Scroll X", self.parallax_scroll_x
+        )
+        self._add_labeled_row(
+            stage4_form, "scroll_y", "Scroll Y", self.parallax_scroll_y
+        )
+        self._add_labeled_row(
+            stage4_form, "offset_x", "Offset X", self.parallax_offset_x
+        )
+        self._add_labeled_row(
+            stage4_form, "offset_y", "Offset Y", self.parallax_offset_y
+        )
         stage4_form.addRow(self.parallax_repeat_x)
         stage4_form.addRow(self.parallax_repeat_y)
         stage4_form.addRow(self.parallax_mirror_x)
         stage4_form.addRow(self.parallax_mirror_y)
         stage4_form.addRow(self.parallax_apply_button)
-        stage4_form.addRow("Socket", self.socket_combo)
-        stage4_form.addRow("Type", self.socket_type)
-        stage4_form.addRow("ID", self.socket_id)
-        stage4_form.addRow("Socket X", self.socket_x)
-        stage4_form.addRow("Socket Y", self.socket_y)
-        stage4_form.addRow("Socket Z", self.socket_z)
+        self._add_labeled_row(stage4_form, "socket", "Socket", self.socket_combo)
+        self._add_labeled_row(stage4_form, "socket_type", "Type", self.socket_type)
+        self._add_labeled_row(stage4_form, "socket_id", "ID", self.socket_id)
+        self._add_labeled_row(stage4_form, "socket_x", "Socket X", self.socket_x)
+        self._add_labeled_row(stage4_form, "socket_y", "Socket Y", self.socket_y)
+        self._add_labeled_row(stage4_form, "socket_z", "Socket Z", self.socket_z)
         stage4_form.addRow(self.add_socket_button)
         stage4_form.addRow(self.update_socket_button)
         stage4_form.addRow(self.remove_socket_button)
@@ -193,6 +206,14 @@ class SceneAuthoringInspector(QWidget):
         self.snap_spacing_y.editingFinished.connect(self._apply_snap)
         self.session.subscribe(self.refresh)
         self.refresh()
+
+    def _add_labeled_row(
+        self, layout: QFormLayout, key: str, text: str, widget: QWidget
+    ) -> None:
+        layout.addRow(text, widget)
+        label = layout.labelForField(widget)
+        if isinstance(label, QLabel):
+            self._field_labels[key] = label
 
     @staticmethod
     def _spin(
@@ -546,6 +567,84 @@ class SceneAuthoringInspector(QWidget):
             )
         except ValueError as exc:
             self.status_message.emit(user_error_message(exc, operation="edit"))
+
+    def update_language(self, language: str) -> None:
+        """Translate the professional inspector without changing its model."""
+
+        is_pt = language == "pt"
+        labels = (
+            {
+                "camera_x": "Câmera X",
+                "camera_y": "Câmera Y",
+                "camera_zoom": "Zoom da Câmera",
+                "layer": "Camada",
+                "depth": "Profundidade",
+                "translation": "Translação",
+                "zoom": "Zoom",
+                "scroll_x": "Rolagem X",
+                "scroll_y": "Rolagem Y",
+                "offset_x": "Deslocamento X",
+                "offset_y": "Deslocamento Y",
+                "socket": "Socket",
+                "socket_type": "Tipo",
+                "socket_id": "ID",
+                "socket_x": "Socket X",
+                "socket_y": "Socket Y",
+                "socket_z": "Socket Z",
+            }
+            if is_pt
+            else {
+                "camera_x": "Camera X",
+                "camera_y": "Camera Y",
+                "camera_zoom": "Camera Zoom",
+                "layer": "Layer",
+                "depth": "Depth",
+                "translation": "Translation",
+                "zoom": "Zoom",
+                "scroll_x": "Scroll X",
+                "scroll_y": "Scroll Y",
+                "offset_x": "Offset X",
+                "offset_y": "Offset Y",
+                "socket": "Socket",
+                "socket_type": "Type",
+                "socket_id": "ID",
+                "socket_x": "Socket X",
+                "socket_y": "Socket Y",
+                "socket_z": "Socket Z",
+            }
+        )
+        for key, label in self._field_labels.items():
+            label.setText(labels[key])
+        if is_pt:
+            self.title.setText("Inspetor da Cena")
+            self.selection_label.setText("Nenhum objeto selecionado")
+            self.stage4_group.setTitle("Câmera, Paralaxe e Sockets")
+            self.camera_apply_button.setText("Aplicar Câmera")
+            self.parallax_apply_button.setText("Aplicar Paralaxe da Camada")
+            self.flip_x.setText("Inverter X")
+            self.flip_y.setText("Inverter Y")
+            self.snap_enabled.setText("Snap habilitado")
+            self.repeat_x_label = "Repetir X"
+            self.repeat_y_label = "Repetir Y"
+            self.mirror_x_label = "Espelhar X"
+            self.mirror_y_label = "Espelhar Y"
+        else:
+            self.title.setText("Scene Inspector")
+            self.selection_label.setText("No object selected")
+            self.stage4_group.setTitle("Camera, Parallax & Sockets")
+            self.camera_apply_button.setText("Apply Camera")
+            self.parallax_apply_button.setText("Apply Layer Parallax")
+            self.flip_x.setText("Flip X")
+            self.flip_y.setText("Flip Y")
+            self.snap_enabled.setText("Snap enabled")
+            self.repeat_x_label = "Repeat X"
+            self.repeat_y_label = "Repeat Y"
+            self.mirror_x_label = "Mirror X"
+            self.mirror_y_label = "Mirror Y"
+        self.parallax_repeat_x.setText(self.repeat_x_label)
+        self.parallax_repeat_y.setText(self.repeat_y_label)
+        self.parallax_mirror_x.setText(self.mirror_x_label)
+        self.parallax_mirror_y.setText(self.mirror_y_label)
 
     def _undo(self) -> None:
         if self.session.undo():

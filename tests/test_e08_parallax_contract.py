@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pytest
+from PySide6.QtWidgets import QApplication
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
 from src.core.scene_authoring_bridge import preview_layers_from_professional_document
@@ -22,8 +23,14 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
     upgrade_scene_authoring_document,
 )
+from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 
 SHA = "c" * 64
+
+
+@pytest.fixture(scope="module")
+def qt_app():
+    return QApplication.instance() or QApplication([])
 
 
 def _document() -> SceneAuthoringDocumentV2:
@@ -157,3 +164,19 @@ def test_transactional_edit_updates_preview_without_double_application() -> None
     assert session.undo() is True
     assert session.document.parallax_layers == []
     assert first.objects[0].origin == pytest.approx((422.0, 288.0))
+
+
+def test_professional_inspector_localizes_e08b_controls(qt_app) -> None:
+    session = SceneAuthoringSession(SceneAuthoringModel(_document()))
+    inspector = SceneAuthoringInspector(session)
+    try:
+        inspector.update_language("pt")
+        assert inspector.stage4_group.title() == "Câmera, Paralaxe e Sockets"
+        assert inspector.parallax_scroll_x is not None
+        assert inspector.parallax_repeat_x.text() == "Repetir X"
+        inspector.update_language("en")
+        assert inspector.stage4_group.title() == "Camera, Parallax & Sockets"
+        assert inspector.parallax_mirror_y.text() == "Mirror Y"
+    finally:
+        inspector.deleteLater()
+        qt_app.processEvents()

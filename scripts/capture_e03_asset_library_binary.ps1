@@ -10,6 +10,7 @@ param(
     [switch]$CaptureNavMeshFlow,
     [switch]$CaptureEntityPrefabFlow,
     [switch]$CaptureRendererFlow,
+    [switch]$CaptureParallaxFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -286,6 +287,20 @@ try {
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.56, 0.046)
         Start-Sleep -Milliseconds 500
         $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-authoring.png")
+    }
+    if ($CaptureParallaxFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # The professional inspector is intentionally scrollable because it
+        # hosts E03-E07 panels before the camera/parallax group.  Use the
+        # native keyboard scroll path a user would use, then capture the
+        # resulting shipped surface instead of relying on Qt internals.
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.72)
+        [System.Windows.Forms.SendKeys]::SendWait("^{END}")
+        Start-Sleep -Milliseconds 700
+        $records.parallax_controls_bottom = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-parallax-controls-bottom.png")
+        [System.Windows.Forms.SendKeys]::SendWait("{PGUP}")
+        Start-Sleep -Milliseconds 500
+        $records.parallax_controls_pageup = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-parallax-controls-pageup.png")
     }
     $records.editor_title = $editor.Title
     $records.editor_window_rect_before_tilemap_flow = [NeoEngE03Capture]::RectText($editor.Handle)
