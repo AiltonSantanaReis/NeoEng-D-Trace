@@ -105,7 +105,13 @@ $projectPath = (Resolve-Path -LiteralPath $ProjectPath).Path
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 $startArguments = @()
 if ($DirectProjectLoad) {
-    $startArguments = @("--open-project-gui", $projectPath, "--open-scenario-editor-gui")
+    $directProjectFile = if (Test-Path -LiteralPath $projectPath -PathType Leaf) {
+        $projectPath
+    } else {
+        Get-ChildItem -LiteralPath $projectPath -Filter "*.ndtproj" -File | Select-Object -First 1 -ExpandProperty FullName
+    }
+    if (-not $directProjectFile) { throw "direct GUI capture requires an .ndtproj file" }
+    $startArguments = @("--open-project-gui", $directProjectFile, "--open-scenario-editor-gui")
 }
 $process = if ($startArguments.Count) {
     Start-Process -FilePath $exePath -ArgumentList $startArguments -PassThru
@@ -125,7 +131,6 @@ try {
         $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
         $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
         if (-not $editor) { throw "professional scenario editor was not exposed by direct GUI load" }
-        $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     } else {
         [NeoEngE03Capture]::Focus($mainHandle)
         [System.Windows.Forms.SendKeys]::SendWait("^o")
@@ -154,8 +159,10 @@ try {
             $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle -and $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
         }
         if (-not $editor) { throw "professional scenario editor was not exposed" }
-        $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     }
+    [NeoEngE03Capture]::Focus($editor.Handle)
+    Start-Sleep -Milliseconds 800
+    $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     # The editor has no Alt+P mnemonic.  Sending it can open an unrelated
     # native action and block PrintWindow.  Search/category behavior is
