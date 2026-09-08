@@ -32,14 +32,14 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS_LOCAL` | 1973 aprovados, 2 skips, 1 warning |
+| Suíte oficial | `PASS_LOCAL` | 1993 aprovados, 2 skips, 1 warning |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
 | Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY / PENDING_EVIDENCE / DEFERRED_UNTIL_FINAL_AUDIT` | 31/31 é diagnóstico de SHA anterior; a nova tentativa sem relatório foi registrada e a requalificação foi adiada para a auditoria final |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r5 de E01 preservada; nova build obrigatória após o primeiro código E02 |
+| Build oficial | `PASS_LOCAL` | r7 preservada historicamente; r10 obrigatória para promover E02-C após o SHA atual |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -51,7 +51,7 @@ aparecem completos. O finding anterior permanece preservado no pacote
 
 ## Próximo passo permitido
 
-Executar o lote E02-A de contrato e modelo de primitivas. A revisão
+Concluir tecnicamente o lote E02-C com build r10 e capturas reais. A revisão
 visual/humana e a requalificação final de symlink foram deferidas por
 autorização explícita para a auditoria final; continuam obrigatórias antes de
 marcar qualquer etapa como `PASS` ou concluir o plano.

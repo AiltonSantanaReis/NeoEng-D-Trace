@@ -3,7 +3,7 @@
 Data de abertura: 2026-09-08
 Estado: IN_PROGRESS
 Branch: Ailton/e02-primitives-20260908
-Commit de implementação: `2c3cd0f24f10d1136b4f4e2e1fcbe7e28ab41ba2`
+Commit de implementação atual: `41ef2f55b5250d0be37dd39580a9f930428c3ab4`
 
 ## Escopo
 
@@ -37,17 +37,26 @@ auditoria final.
 
 ## Gates locais antes da build
 
-- Testes focados: `23 passed`.
-- Suíte oficial: `1992 passed, 2 skipped, 1 warning`.
+- Testes focados: `24 passed`.
+- Suíte oficial: `1993 passed, 2 skipped, 1 warning`.
 - `mypy src`: `Success: no issues found in 154 source files`.
 - Black, isort, Flake8, compileall e `git diff --check`: aprovados.
 - Symlink: não executado; reservado à auditoria final conforme decisão vigente.
 
 ## Evidência pendente
 
-Build r8, smoke, captura automatizada do binário, arraste real de ponto,
-prévia inválida/cancelamento e save/reopen serão anexados antes da promoção
-do lote.
+Build r10, smoke, captura automatizada do binário, arraste real de ponto,
+prévia inválida/cancelamento, finalização e save/reopen serão anexados antes
+da promoção do lote. A captura r9 não será promovida porque foi gerada antes
+do endurecimento do negativo de pontos quase coincidentes.
+
+## Correção adicional registrada
+
+O preview agora rejeita pontos quase coincidentes antes da validação/mutação,
+com distância mínima determinística de 24 pixels documentais. O estado muda
+para `preview_invalid`, a geometria aceita permanece intacta e o canvas deve
+exibir handles/status de erro; `Escape` continua cancelando sem deixar
+alteração parcial. O teste focado negativo cobre este contrato.
 
 ## Finding visual intermediário r8
 

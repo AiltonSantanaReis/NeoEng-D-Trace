@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E02-C: edição de pontos/curvas e gestos com negativos observáveis; manter a revisão humana/symlink para a auditoria final.",
+    "next_action": "Gerar a build oficial r10 a partir do SHA atual, executar smoke/capturas reais de E02-C e somente depois promover o checkpoint técnico; manter a revisão humana/symlink para a auditoria final.",
     "active_lot": {
       "id": "E02-C",
       "status": "IN_PROGRESS",
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e02-primitives-20260908",
-    "head": "7daf83aa18f64c54bd9f1b0033c1707e2ba3980c",
+    "head": "41ef2f55b5250d0be37dd39580a9f930428c3ab4",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E02_C_WORKTREE"
@@ -66,7 +66,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1992,
+      "passed": 1993,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
