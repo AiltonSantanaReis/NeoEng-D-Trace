@@ -2,11 +2,13 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Executable,
     [Parameter(Mandatory = $true)]
-    [string]$OutputDirectory
+    [string]$OutputDirectory,
+    [switch]$CaptureSaveDialog
 )
 
 $ErrorActionPreference = "Stop"
 Add-Type -AssemblyName System.Drawing
+Add-Type -AssemblyName System.Windows.Forms
 $drawingAssembly = [System.Drawing.Bitmap].Assembly.Location
 $drawingPrimitivesAssembly = [System.Drawing.Size].Assembly.Location
 $windowsAssemblies = @(Get-ChildItem -LiteralPath $PSHOME -Filter "System.Private.Windows*.dll" | ForEach-Object { $_.FullName })
@@ -38,6 +40,8 @@ public static class NeoEngIndependentSceneCapture
     [DllImport("user32.dll")] private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint flags);
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int command);
     [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern bool SetCursorPos(int x, int y);
+    [DllImport("user32.dll")] private static extern void mouse_event(uint flags, uint dx, uint dy, uint data, UIntPtr extra);
     [DllImport("user32.dll")] private static extern void keybd_event(byte key, byte scan, uint flags, UIntPtr extra);
 
     public static WindowInfo[] GetWindows(int pid)
@@ -74,6 +78,31 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x4E, 0, up, UIntPtr.Zero);
         keybd_event(0x12, 0, up, UIntPtr.Zero);
         keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendCtrlShiftS()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(0x53, 0, 0, UIntPtr.Zero);
+        keybd_event(0x53, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void ClickScreen(int x, int y)
+    {
+        SetCursorPos(x, y);
+        mouse_event(0x0002, 0, 0, 0, UIntPtr.Zero);
+        mouse_event(0x0004, 0, 0, 0, UIntPtr.Zero);
+    }
+
+    public static void ClickWindow(IntPtr hWnd, int offsetX, int offsetY)
+    {
+        RECT rect;
+        if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        ClickScreen(rect.Left + offsetX, rect.Top + offsetY);
     }
 
     public static string Capture(IntPtr hWnd, string path)
@@ -133,6 +162,28 @@ try {
         }
     }
 
+    $saveDialogRecord = $null
+    if ($CaptureSaveDialog -and $child) {
+        [NeoEngIndependentSceneCapture]::ClickWindow($child.Handle, 260, 80)
+        Start-Sleep -Milliseconds 300
+        [NeoEngIndependentSceneCapture]::SendCtrlShiftS()
+        Start-Sleep -Milliseconds 1200
+        $dialogWindows = [NeoEngIndependentSceneCapture]::GetWindows($process.Id)
+        $dialog = $dialogWindows |
+            Where-Object { $_.Title -and $_.Title -notmatch "Independent Scene|Cen.rio Independente|^NeoEng-D-Trace$" } |
+            Select-Object -First 1
+        if ($dialog) {
+            $dialogPath = Join-Path $OutputDirectory "03-save-dialog.png"
+            $dialogSize = [NeoEngIndependentSceneCapture]::Capture($dialog.Handle, $dialogPath)
+            $saveDialogRecord = [ordered]@{
+                title = $dialog.Title
+                window = $dialogSize
+                path = $dialogPath
+                sha256 = (Get-FileHash -LiteralPath $dialogPath -Algorithm SHA256).Hash
+            }
+        }
+    }
+
     [ordered]@{
         executable = $relativeExecutable
         pid = $process.Id
@@ -142,6 +193,7 @@ try {
             sha256 = (Get-FileHash -LiteralPath $mainPath -Algorithm SHA256).Hash
         }
         independent_scene = $childRecord
+        save_dialog = $saveDialogRecord
         observed_windows = @($windows | ForEach-Object { [ordered]@{ title = $_.Title } })
     } | ConvertTo-Json -Depth 6
 }
