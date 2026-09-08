@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Formalizar e implementar E09-A: importar imagem real, executar detecção controlada e produzir contorno/polígono revisável; preservar source/provenance e manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Implementar E09-B: tornar o contorno E09-A revisável com correção manual, simplificação limitada, validação explícita e cancelamento seguro; preservar source/provenance e manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
       "id": "E09",
       "status": "IN_PROGRESS",
-      "scope": "E08-A–E comprovados em checkpoint técnico; E09-A ativo para importação de imagem, detecção controlada e contorno/polígono revisável; E09-B/C ainda planejados",
+      "scope": "E08-A–E comprovados em checkpoint técnico; E09-A comprovado tecnicamente na build r49; E09-B ativo para correção/simplificação/validação do contorno; E09-C planejado",
       "evidence": "docs/evidence/E09_VETOR_COLISAO_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "194d23cacbcda52d151c1584fde5542662001406",
+    "head": "d2acca784a78d3d730b412300d88fe2c12811105",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E08_D_ACTIVE"
@@ -66,7 +66,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2079,
+      "passed": 2086,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -74,7 +74,7 @@
     },
     "static": {
       "status": "PASS_LOCAL",
-      "checks": ["compileall", "mypy E08-C scope", "black E08-C scope", "pytest", "git diff --check"],
+      "checks": ["compileall", "flake8 E09-A scope", "black E09-A scope", "pytest", "git diff --check"],
       "legacy_baseline_note": "Os comandos globais continuam reportando violações históricas fora do escopo do lote; os arquivos E06 novos passam nos gates focados."
     },
     "symlink": {
@@ -95,18 +95,18 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r48-post/07-renderer-authoring.png",
+      "latest_binary_capture": "artifacts/e09-vectorization-20260908/binary-capture-r49-regression/07-renderer-authoring.png",
       "latest_binary_capture_sha256": "F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r48 abriu a fixture V2 de pós-processamento no binário portátil; Preview e Autoria exibiram a vinheta radial de r47 sem regressão, e os hashes de Preview/Autoria/Parallax coincidiram byte a byte. E08-E acrescentou a qualificação temporal sem alterar o fluxo visual. Revisão humana continua pendente.",
+      "observed_finding": "Build r49 abriu a fixture V2 de pós-processamento no binário portátil; Preview e Autoria exibiram a vinheta radial sem regressão, e os hashes de Preview/Autoria/Parallax coincidiram com r48. E09-A é um contrato técnico sem UI manual ainda; E09-B permanece ativo. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r48/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "4EF02616209C4F9AD3F1ADFC277C0C9F9EF8B4179075338D01C7584AEA8BEF52",
-      "latest_observed_binary_last_write": "2026-09-08T23:18:21.3997552Z",
-      "source_commit": "18257a316708039228f8117d27fb521d92e096c6",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e09-vectorization-20260908-r49/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "6DD781889B4FD8AEAD089E2955A23E45D86DF31948DDA744ECB8079897F2AC9A",
+      "latest_observed_binary_last_write": "2026-09-08T23:30:44.3870600Z",
+      "source_commit": "d2acca784a78d3d730b412300d88fe2c12811105",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
       "continuity_registry_sha256": "3391B04283445B16176058A057AC07EB14FEC5D0500D9269A22BB6E909983B78",
@@ -114,7 +114,7 @@
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
       "portable_archive_sha256": "544b4042493b252bc39cddc51f941c5334ac932e7f465ebe34bd9599c44668a0",
-      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; suíte oficial 2079, build r48, smoke e captura real. E09-A é o próximo lote ativo."
+      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A possui contrato de importação/detecção hash-bound, negativos, suíte oficial 2086, build r49, smoke e captura real. E09-B é o sublote ativo."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

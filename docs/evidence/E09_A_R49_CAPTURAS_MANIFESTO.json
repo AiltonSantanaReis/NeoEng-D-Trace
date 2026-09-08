@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "stage": "E09-A",
+  "status": "PASS_AUTOMATED_CAPTURE_ONLY",
+  "source_commit": "d2acca784a78d3d730b412300d88fe2c12811105",
+  "source_branch": "Ailton/e08-renderer-20260908",
+  "binary": {
+    "path": "release/e09-vectorization-20260908-r49/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "sha256": "6DD781889B4FD8AEAD089E2955A23E45D86DF31948DDA744ECB8079897F2AC9A"
+  },
+  "capture_command": "scripts/capture_e03_asset_library_binary.ps1 -Executable release/e09-vectorization-20260908-r49/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe -ProjectPath tests/fixtures/e08_post_smoke.ndtproj -OutputDirectory artifacts/e09-vectorization-20260908/binary-capture-r49-regression -DirectProjectLoad -CaptureRendererFlow -CaptureParallaxFlow",
+  "capture_directory": "artifacts/e09-vectorization-20260908/binary-capture-r49-regression",
+  "captures": [
+    {
+      "path": "03-main-after-project-load.png",
+      "sha256": "2CB784E02F7213AA1CE1963A918D1111DD24BE6830F2E492BC845A26498E54CA"
+    },
+    {
+      "path": "05-asset-library-ready.png",
+      "sha256": "35347A8B854C513534F88E70C1E3AFC498A2C339B2EAB640FED0C1329D05B665"
+    },
+    {
+      "path": "06-renderer-preview.png",
+      "sha256": "54BD892508DF62B2C1AD45D8F856E21E88226E7D144A613452261BDB5E22DB6D"
+    },
+    {
+      "path": "07-renderer-authoring.png",
+      "sha256": "F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30"
+    },
+    {
+      "path": "08-parallax-controls-bottom.png",
+      "sha256": "A612AA2D2AABC6CD6D256017E3A2EA422E32203D0AF97ECF529B8CF2D094BF7D"
+    },
+    {
+      "path": "09-parallax-controls-pageup.png",
+      "sha256": "9D25D7214BC9C2499E0893FCB0B3A15D79A4CC36E7CBAAB4CF36A7FF8A707D62"
+    }
+  ],
+  "human_review": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
+  "limitation": "The binary capture is a real regression/continuity flow; E09-B manual contour correction is not yet claimed."
+}

@@ -17,7 +17,7 @@ do proprietário for indispensável.
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
 | M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
-| M08 | E02–E13 | E08 em execução — E08-A selado tecnicamente e E08-B ativo | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
+| M08 | E02–E13 | E09 em execução — E09-A selado tecnicamente e E09-B ativo | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
 
@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 e E08-E comprovados tecnicamente até a build r48; E09 é o lote ativo; E10–E13 ainda não iniciadas.
+- E08: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 e E08-E comprovados tecnicamente até a build r48; E09-A foi comprovado na build r49; E09-B é o sublote ativo; E10–E13 ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -100,7 +100,7 @@ ela não interrompe a execução técnica autorizada.
 | 2 | E08-C materiais/normal maps/luzes/sombras | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pixels observáveis, negativos, persistência, captura r42 e fallback |
 | 3 | E08-D partículas/shaders/pós | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | D1, D2 e D3 comprovados; auditoria final pendente |
 | 4 | E08-E determinismo/destinos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | timestep, tolerâncias e matriz de capacidades comprovados; auditoria final pendente |
-| 5 | E09 autoria/exportação vetorial | `IN_PROGRESS` | fluxo editável, persistente e exportável |
+| 5 | E09 autoria/exportação vetorial | `E09-A TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING; E09-B IN_PROGRESS` | fluxo editável, persistente e exportável |
 | 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
 | 7 | E11 composição/runtime | `PLANNED` | cena executada fora do editor |
 | 8 | E12 recursos avançados/híbrido 3D | `PLANNED` | contrato, implementação e destinos |
@@ -131,6 +131,14 @@ ela não interrompe a execução técnica autorizada.
 | E08-E.1 determinismo temporal | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | timestep/fixed-step, seed, repetibilidade e comparação temporal com tolerância registrada |
 | E08-E.2 matriz de capacidades | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | matriz por backend/destino, fallback explícito, limites e evidência executável |
 
+### Sublotes ativos de E09
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E09-A importação/detecção | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | imagem real, hash/proveniência, contorno determinístico, negativos, suíte, build r49 e captura real |
+| E09-B correção/simplificação | `IN_PROGRESS` | contorno editável, histórico, simplificação limitada, validação e cancelamento observáveis |
+| E09-C colisão/objeto/persistência | `PLANNED` | colisão válida, objeto de cena reutilizável, save/reopen, combinação e export/import |
+
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
 indispensável. O gate de symlinks permanece exclusivamente na linha 10.
@@ -158,7 +166,7 @@ indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 | E06 | NavMesh 2D e consumo real | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | navegação de superfície, bake, caminho e persistência |
 | E07 | componentes e instâncias | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | relações, parent/grupos, ciclo completo de prefab, build r24 e captura real |
 | E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A/E08-B e E08-C.1–C.3 em checkpoint técnico; E08-C.4 ativo | renderer/FX qualificados com budgets e tolerâncias |
-| E09 | autoria e exportação vetorial | `PLANNED` | objetos editáveis, persistentes e exportáveis |
+| E09 | autoria e exportação vetorial | `IN_PROGRESS` — E09-A checkpoint técnico; E09-B ativo | objetos editáveis, persistentes e exportáveis |
 | E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
 | E11 | composição e runtime completo | `PLANNED` | cena executada no binário, não apenas estrutura descritiva |
 | E12 | recursos avançados, animação e híbrido 3D | `PLANNED` | contrato aprovado e fluxo completo de recursos |
