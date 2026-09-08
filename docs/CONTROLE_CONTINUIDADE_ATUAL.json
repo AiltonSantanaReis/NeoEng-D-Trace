@@ -9,11 +9,11 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E05",
+    "stage": "E06",
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E05 colisores próprios de cenário; findings reproduziveis continuam sujeitos a correcao controlada.",
+      "controlled_correction_scope": "E06 NavMesh 2D de superfície; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,20 +28,20 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Ler e registrar o contrato E05; implementar primeiro o modelo físico versionado e o validador canônico antes da UI e do destino.",
+    "next_action": "Executar E06-A/B: validar fonte de superfície, bake determinístico, caminho, persistência e negativos; depois gerar build e captura reais.",
     "active_lot": {
-      "id": "E05-A/B/C/D/E",
+      "id": "E06-A/B/C/D/E",
       "status": "IN_PROGRESS",
-      "scope": "coleção física, caixas, círculos, polígonos, segmentos/cadeias, triggers, validação, transações, persistência e destino",
-      "evidence": "docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md",
+      "scope": "NavMesh 2D de superfície, regiões, obstáculos, margem de agente, bake, caminho, persistência e UI",
+      "evidence": "docs/evidence/E06_NAVMESH_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-    "stage": "E06",
+      "stage": "E07",
     "status": "PLANNED",
       "evidence": null,
       "functional_implementation_allowed": false,
-      "promotion_rule": "Somente após checkpoint técnico E04 e atualização deste registro."
+      "promotion_rule": "Somente após checkpoint técnico E06 e atualização deste registro."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -57,16 +57,16 @@
     ]
   },
     "checkout_under_audit": {
-    "branch": "Ailton/e05-colliders-20260908",
-    "head": "503043d",
-    "tracked_changes_present": false,
+    "branch": "Ailton/e06-navmesh-20260908",
+    "head": "db88f2b",
+    "tracked_changes_present": true,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E05_SOURCE_CHECKPOINT"
+    "status": "E06_SOURCE_IN_PROGRESS"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2033,
+      "passed": 2038,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -74,8 +74,8 @@
     },
     "static": {
       "status": "PASS_LOCAL",
-      "checks": ["compileall", "mypy src", "black E04 scope", "isort E04 tests", "pytest", "git diff --check"],
-      "legacy_baseline_note": "Os comandos black/isort/flake8 globais continuam reportando violações históricas fora do escopo E04; nenhum arquivo E04 novo permanece pendente nos gates focados."
+      "checks": ["compileall", "mypy E06 scope", "black E06 scope", "pytest", "git diff --check"],
+      "legacy_baseline_note": "Os comandos globais continuam reportando violações históricas fora do escopo do lote; os arquivos E06 novos passam nos gates focados."
     },
     "symlink": {
       "sandbox_status": "PASS_SANDBOX_DIAGNOSTIC_ONLY",
@@ -139,8 +139,9 @@
     "E02": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E03": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E04": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E05": "IN_PROGRESS",
-    "E06": "PLANNED",
+    "E05": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "E06": "IN_PROGRESS",
+    "E06": "IN_PROGRESS",
     "E07": "PLANNED",
     "E08": "PLANNED",
     "E09": "PLANNED",
