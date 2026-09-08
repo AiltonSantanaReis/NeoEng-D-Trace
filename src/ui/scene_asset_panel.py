@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PySide6.QtCore import QSignalBlocker, Qt, Signal
-from PySide6.QtGui import QBrush, QColor
+from PySide6.QtCore import QByteArray, QMimeData, QSignalBlocker, Qt, Signal
+from PySide6.QtGui import QBrush, QColor, QDrag, QIcon
 from PySide6.QtWidgets import (
+    QComboBox,
     QFileDialog,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QListWidget,
     QListWidgetItem,
     QPushButton,
@@ -50,6 +52,34 @@ _STATE_LABELS = {
 }
 
 
+def _asset_category(asset: AssetReferenceRecord) -> str:
+    return "Vector" if asset.path.lower().endswith(".svg") else "Raster"
+
+
+class _AssetListWidget(QListWidget):
+    """Asset list with an explicit, inspectable MIME contract for drops."""
+
+    ASSET_MIME = "application/x-neoeng-scene-asset"
+
+    @classmethod
+    def mime_for_asset(cls, asset_id: str) -> QMimeData:
+        mime = QMimeData()
+        mime.setData(cls.ASSET_MIME, QByteArray(asset_id.encode("utf-8")))
+        mime.setText(f"asset://{asset_id}")
+        return mime
+
+    def startDrag(self, supported_actions: Qt.DropActions) -> None:
+        item = self.currentItem()
+        if item is None:
+            return
+        asset_id = item.data(Qt.ItemDataRole.UserRole)
+        if not asset_id:
+            return
+        drag = QDrag(self)
+        drag.setMimeData(self.mime_for_asset(str(asset_id)))
+        drag.exec(Qt.DropAction.CopyAction)
+
+
 class SceneAssetLibrary(QWidget):
     """Inspectable asset list with transactional relink and replace actions."""
 
@@ -75,7 +105,15 @@ class SceneAssetLibrary(QWidget):
         self.summary_label = QLabel()
         self.summary_label.setObjectName("scene_asset_library_summary")
         self.summary_label.setWordWrap(True)
-        self.asset_list = QListWidget()
+        self.search_edit = QLineEdit()
+        self.search_edit.setObjectName("scene_asset_search")
+        self.category_combo = QComboBox()
+        self.category_combo.setObjectName("scene_asset_category")
+        self.category_combo.addItem("All categories", "all")
+        self.category_combo.addItem("Raster", "raster")
+        self.category_combo.addItem("Vector", "vector")
+        self.asset_list = _AssetListWidget()
+        self.asset_list.setDragEnabled(True)
         self.asset_list.setObjectName("scene_asset_library_list")
         self.asset_list.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
         self.asset_list.setMinimumHeight(140)
@@ -108,11 +146,17 @@ class SceneAssetLibrary(QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(self.title)
         layout.addWidget(self.summary_label)
+        filters = QHBoxLayout()
+        filters.addWidget(self.search_edit, 1)
+        filters.addWidget(self.category_combo)
+        layout.addLayout(filters)
         layout.addWidget(self.asset_list)
         layout.addWidget(self.diagnostics_label)
         layout.addLayout(actions)
 
         self.asset_list.currentRowChanged.connect(self._selection_changed)
+        self.search_edit.textChanged.connect(self.refresh)
+        self.category_combo.currentIndexChanged.connect(self.refresh)
         self.import_button.clicked.connect(self._choose_import)
         self.relink_button.clicked.connect(self._choose_relink)
         self.replace_button.clicked.connect(self._choose_replace)
@@ -178,7 +222,17 @@ class SceneAssetLibrary(QWidget):
             dimensions: dict[str, tuple[int, int]] = {}
             with QSignalBlocker(self.asset_list):
                 self.asset_list.clear()
+                query = self.search_edit.text().strip().lower()
+                category = str(self.category_combo.currentData() or "all")
+                visible_count = 0
                 for asset in self.session.document.assets:
+                    asset_category = _asset_category(asset)
+                    searchable = (f"{asset.id} {asset.path} {asset_category}").lower()
+                    if query and query not in searchable:
+                        continue
+                    if category != "all" and asset_category.lower() != category:
+                        continue
+                    visible_count += 1
                     inspection, size = self._inspection_for(asset)
                     inspections[asset.id] = inspection
                     if size is not None:
@@ -195,6 +249,19 @@ class SceneAssetLibrary(QWidget):
                     )
                     item.setData(Qt.ItemDataRole.UserRole, asset.id)
                     item.setForeground(QBrush(QColor(_STATE_COLORS[inspection.state])))
+                    if inspection.resolved_path is not None:
+                        try:
+                            thumbnail = SceneAuthoringViewport._load_asset_pixmap(
+                                inspection.resolved_path
+                            ).scaled(
+                                40,
+                                40,
+                                Qt.AspectRatioMode.KeepAspectRatio,
+                                Qt.TransformationMode.SmoothTransformation,
+                            )
+                            item.setIcon(QIcon(thumbnail))
+                        except (OSError, ValueError):
+                            pass
                     issue = inspection.issue or "No issue detected"
                     item.setToolTip(
                         f"ID: {asset.id}\n"
@@ -220,12 +287,15 @@ class SceneAssetLibrary(QWidget):
                 item.asset_id in inspections for item in self.session.document.objects
             )
             self.summary_label.setText(
-                f"Assets: {len(inspections)} · Issues: {issues} · Used: {used}"
+                f"Assets: {len(self.session.document.assets)} · "
+                f"Showing: {visible_count}"
+                f" · Issues: {issues} · Used: {used}"
             )
             messages = [
                 f"{asset.id}: {inspection.issue}"
                 for asset in self.session.document.assets
-                if (inspection := inspections[asset.id]).issue
+                if asset.id in inspections
+                and (inspection := inspections[asset.id]).issue
             ]
             self.diagnostics_label.setText(
                 "No asset issues detected." if not messages else " | ".join(messages)
@@ -391,12 +461,20 @@ class SceneAssetLibrary(QWidget):
             self.relink_button.setText("Relink")
             self.replace_button.setText("Substituir")
             self.refresh_button.setText("Atualizar")
+            self.search_edit.setPlaceholderText("Pesquisar assets por ID ou caminho")
+            self.category_combo.setItemText(0, "Todas as categorias")
+            self.category_combo.setItemText(1, "Raster")
+            self.category_combo.setItemText(2, "Vetorial")
         else:
             self.title.setText("Scene Assets")
             self.import_button.setText("Import")
             self.relink_button.setText("Relink")
             self.replace_button.setText("Replace")
             self.refresh_button.setText("Refresh")
+            self.search_edit.setPlaceholderText("Search assets by ID or path")
+            self.category_combo.setItemText(0, "All categories")
+            self.category_combo.setItemText(1, "Raster")
+            self.category_combo.setItemText(2, "Vector")
         self.refresh()
 
 

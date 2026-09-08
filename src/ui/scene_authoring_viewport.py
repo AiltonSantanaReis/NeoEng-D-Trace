@@ -1570,7 +1570,11 @@ class SceneAuthoringViewport(QGraphicsView):
         if not self._authoring_enabled:
             event.ignore()
             return
-        if event.mimeData().hasUrls() or event.mimeData().hasText():
+        if (
+            event.mimeData().hasFormat("application/x-neoeng-scene-asset")
+            or event.mimeData().hasUrls()
+            or event.mimeData().hasText()
+        ):
             event.acceptProposedAction()
         else:
             event.ignore()
@@ -1580,6 +1584,62 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit("Preview mode is read-only")
             event.ignore()
             return
+        asset_mime = "application/x-neoeng-scene-asset"
+        if event.mimeData().hasFormat(asset_mime):
+            raw_id = bytes(event.mimeData().data(asset_mime)).decode("utf-8")
+            asset = next(
+                (item for item in self.session.document.assets if item.id == raw_id),
+                None,
+            )
+            if asset is None:
+                self.status_message.emit("The dragged scene asset is unavailable")
+                event.ignore()
+                return
+            resolved, issue = resolve_scene_asset(asset, self.project_root)
+            if resolved is None:
+                self.status_message.emit(
+                    issue or "The dragged scene asset is unavailable"
+                )
+                event.ignore()
+                return
+            try:
+                width, height = self._image_size(resolved)
+                layer_id = self.session.document.layers[0].id
+                object_id = asset.id
+                while object_id in {item.id for item in self.session.document.objects}:
+                    object_id += "_1"
+                scene_pos = self.mapToScene(event.position().toPoint())
+                obj = SceneObjectAuthoringRecord(
+                    id=object_id,
+                    asset_id=asset.id,
+                    layer_id=layer_id,
+                    transform=SceneTransformRecord(
+                        position=Point3Record(x=scene_pos.x(), y=scene_pos.y(), z=0.0),
+                        rotation=Point3Record(x=0.0, y=0.0, z=0.0),
+                        scale=Point3Record(x=1.0, y=1.0, z=1.0),
+                        pivot=PointRecord(x=0.5, y=0.5),
+                    ),
+                )
+                self.session.apply(
+                    lambda: self.session.model.add_object(obj, select=True),
+                    "Place scene asset",
+                )
+                self._geometry[object_id] = (
+                    (-width / 2, -height / 2),
+                    (width / 2, -height / 2),
+                    (width / 2, height / 2),
+                    (-width / 2, height / 2),
+                )
+                self.sync()
+                self.selection_changed.emit()
+                self.status_message.emit(f"Placed {asset.id}")
+                event.acceptProposedAction()
+                return
+            except (OSError, ValueError) as exc:
+                self.status_message.emit(user_error_message(exc, operation="asset"))
+                event.ignore()
+                return
+
         paths = [
             Path(url.toLocalFile())
             for url in event.mimeData().urls()
