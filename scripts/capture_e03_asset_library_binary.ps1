@@ -64,6 +64,12 @@ public static class NeoEngE03Capture
         const uint down = 0x0002, up = 0x0004;
         mouse_event(down, 0, 0, 0, UIntPtr.Zero); mouse_event(up, 0, 0, 0, UIntPtr.Zero);
     }
+    public static void ClickWindowFraction(IntPtr hWnd, double fractionX, double fractionY)
+    {
+        RECT rect; if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        int width = rect.Right - rect.Left, height = rect.Bottom - rect.Top;
+        ClickWindow(hWnd, (int)(width * fractionX), (int)(height * fractionY));
+    }
     public static string RectText(IntPtr hWnd)
     {
         RECT rect; if (!GetWindowRect(hWnd, out rect)) return "unknown";
@@ -217,17 +223,19 @@ try {
     }
     if ($CaptureNavMeshFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
-        # The E06 panel is the first inspector panel: region, obstacle and
-        # bake controls share its first action row at the current 200% host.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3110, 250)
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3180, 250)
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 250)
+        # Use normalized native coordinates: PrintWindow captures the actual
+        # 1926x1038 maximized surface on this 200% host, while Qt layout sizes
+        # are logical pixels.  Fixed logical coordinates silently missed the
+        # inspector and produced false-identical screenshots.
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.76, 0.23)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.82, 0.23)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.23)
         Start-Sleep -Milliseconds 900
         $records.navmesh_baked = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-navmesh-baked.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3380, 250)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.94, 0.23)
         Start-Sleep -Milliseconds 700
         $records.navmesh_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-navmesh-saved.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3120, 250)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.76, 0.23)
         Start-Sleep -Milliseconds 700
         $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-navmesh-reopened.png")
     }
