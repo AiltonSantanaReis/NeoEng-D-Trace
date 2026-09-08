@@ -295,7 +295,13 @@ try {
         # native keyboard scroll path a user would use, then capture the
         # resulting shipped surface instead of relying on Qt internals.
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.72)
-        [System.Windows.Forms.SendKeys]::SendWait("^{END}")
+        # Ctrl+End is consumed by the focused child list on some Qt builds.
+        # Clicking the visible scrollbar track is deterministic at the native
+        # DPI-aware surface and follows the same interaction a user performs.
+        for ($scrollStep = 0; $scrollStep -lt 10; $scrollStep++) {
+            [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.997, 0.95)
+            Start-Sleep -Milliseconds 100
+        }
         Start-Sleep -Milliseconds 700
         $records.parallax_controls_bottom = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-parallax-controls-bottom.png")
         [System.Windows.Forms.SendKeys]::SendWait("{PGUP}")
