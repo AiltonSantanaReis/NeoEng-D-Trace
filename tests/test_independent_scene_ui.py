@@ -123,6 +123,8 @@ def test_independent_scene_window_creates_primitives_and_history(
     assert window.object_list.count() == 3
     assert window.rectangle_action.text() == "Retângulo"
     assert window.polygon_action.text() == "Polígono"
+    assert window.rectangle_action.shortcut().toString() == "Ctrl+Shift+R"
+    assert window.polygon_action.shortcut().toString() == "Ctrl+Shift+P"
     assert window.undo_action.isEnabled()
 
     assert window.undo_scene()

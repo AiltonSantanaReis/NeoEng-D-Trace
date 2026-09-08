@@ -136,6 +136,9 @@ class IndependentSceneWindow(QMainWindow):
         self.save_as_action.setShortcut("Ctrl+Shift+S")
         self.undo_action.setShortcut("Ctrl+Z")
         self.redo_action.setShortcut("Ctrl+Y")
+        self.rectangle_action.setShortcut("Ctrl+Shift+R")
+        self.ellipse_action.setShortcut("Ctrl+Shift+E")
+        self.polygon_action.setShortcut("Ctrl+Shift+P")
         for action in (
             self.new_action,
             self.open_action,
