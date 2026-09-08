@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import hashlib
+from collections.abc import Sequence
 from pathlib import Path
 
+from src.core.independent_scene_authoring import IndependentSceneAuthoringModel
 from src.persistence.independent_scene_io import (
     IndependentSceneWriteError,
     independent_scene_sha256,
@@ -14,9 +16,13 @@ from src.persistence.independent_scene_io import (
 from src.persistence.independent_scene_schema import (
     INDEPENDENT_SCENE_FILE_EXTENSION,
     IndependentSceneCameraRecord,
-    IndependentSceneDocumentV1,
+    IndependentSceneDocument,
+    IndependentSceneDocumentV2,
+    IndependentScenePrimitiveRecord,
+    IndependentScenePrimitiveTransformRecord,
     SceneResolutionRecord,
-    default_independent_scene_document,
+    default_independent_scene_document_v2,
+    upgrade_independent_scene_document,
 )
 
 
@@ -25,15 +31,17 @@ class IndependentSceneSession:
 
     def __init__(
         self,
-        document: IndependentSceneDocumentV1 | None = None,
+        document: IndependentSceneDocument | None = None,
         *,
         last_folder: str | None = None,
     ) -> None:
-        self.document = document or default_independent_scene_document()
+        self.document = document or default_independent_scene_document_v2()
         self.path: Path | None = None
         self.last_folder = last_folder
         self.persisted_file_sha256: str | None = None
         self.clean_signature = independent_scene_sha256(self.document)
+        self._undo: list[IndependentSceneDocumentV2] = []
+        self._redo: list[IndependentSceneDocumentV2] = []
 
     @property
     def document_name(self) -> str:
@@ -49,8 +57,8 @@ class IndependentSceneSession:
         name: str = "Untitled Scene",
         width: int = 1920,
         height: int = 1080,
-    ) -> IndependentSceneDocumentV1:
-        self.document = default_independent_scene_document(
+    ) -> IndependentSceneDocumentV2:
+        self.document = default_independent_scene_document_v2(
             name=name,
             width=width,
             height=height,
@@ -58,16 +66,108 @@ class IndependentSceneSession:
         self.path = None
         self.persisted_file_sha256 = None
         self.clean_signature = independent_scene_sha256(self.document)
+        self._undo.clear()
+        self._redo.clear()
         return self.document
 
-    def update_document(self, document: IndependentSceneDocumentV1) -> None:
-        self.document = IndependentSceneDocumentV1.model_validate(
-            document,
-            strict=True,
+    def update_document(self, document: IndependentSceneDocument) -> None:
+        self.document = document
+        self._undo.clear()
+        self._redo.clear()
+
+    def _authoring_document(self) -> IndependentSceneDocumentV2:
+        upgraded = upgrade_independent_scene_document(self.document)
+        if upgraded is not self.document:
+            self.document = upgraded
+        return upgraded
+
+    def _mutate_authoring(self, operation):
+        before = upgrade_independent_scene_document(self.document).model_copy(deep=True)
+        model = IndependentSceneAuthoringModel(before)
+        result = operation(model)
+        if model.document != before:
+            self.document = model.document
+            self._undo.append(before)
+            self._redo.clear()
+        return result
+
+    @property
+    def can_undo(self) -> bool:
+        return bool(self._undo)
+
+    @property
+    def can_redo(self) -> bool:
+        return bool(self._redo)
+
+    @property
+    def object_count(self) -> int:
+        return len(getattr(self.document, "objects", []))
+
+    def add_primitive(
+        self,
+        *,
+        kind: str,
+        points: Sequence,
+        name: str | None = None,
+        primitive_id: str | None = None,
+        closed: bool | None = None,
+        filled: bool | None = None,
+    ) -> IndependentScenePrimitiveRecord:
+        return self._mutate_authoring(
+            lambda model: model.add_primitive(
+                kind=kind,
+                points=points,
+                name=name,
+                primitive_id=primitive_id,
+                closed=closed,
+                filled=filled,
+            )
         )
 
+    def update_primitive_transform(
+        self,
+        primitive_id: str,
+        transform: IndependentScenePrimitiveTransformRecord,
+    ) -> IndependentScenePrimitiveRecord:
+        return self._mutate_authoring(
+            lambda model: model.update_transform(primitive_id, transform)
+        )
+
+    def remove_primitive(self, primitive_id: str) -> None:
+        self._mutate_authoring(lambda model: model.remove_primitive(primitive_id))
+
+    def duplicate_primitive(
+        self,
+        primitive_id: str,
+        *,
+        new_id: str | None = None,
+    ) -> IndependentScenePrimitiveRecord:
+        return self._mutate_authoring(
+            lambda model: model.duplicate_primitive(primitive_id, new_id=new_id)
+        )
+
+    def undo(self) -> bool:
+        if not self._undo:
+            return False
+        current = upgrade_independent_scene_document(self.document).model_copy(
+            deep=True
+        )
+        self._redo.append(current)
+        self.document = self._undo.pop()
+        return True
+
+    def redo(self) -> bool:
+        if not self._redo:
+            return False
+        current = upgrade_independent_scene_document(self.document).model_copy(
+            deep=True
+        )
+        self._undo.append(current)
+        self.document = self._redo.pop()
+        return True
+
     def set_resolution(self, width: int, height: int) -> None:
-        self.document = IndependentSceneDocumentV1.model_validate(
+        self.document = type(self.document).model_validate(
             self.document.model_copy(
                 update={"resolution": SceneResolutionRecord(width=width, height=height)}
             ),
@@ -75,7 +175,7 @@ class IndependentSceneSession:
         )
 
     def set_camera(self, *, x: float, y: float, zoom: float) -> None:
-        self.document = IndependentSceneDocumentV1.model_validate(
+        self.document = type(self.document).model_validate(
             self.document.model_copy(
                 update={
                     "camera": IndependentSceneCameraRecord(
@@ -123,12 +223,14 @@ class IndependentSceneSession:
             destination.read_bytes()
         ).hexdigest()
         self.clean_signature = independent_scene_sha256(self.document)
+        self._undo.clear()
+        self._redo.clear()
         return self.path
 
     def save_as(self, path: str | Path) -> Path:
         return self.save(path)
 
-    def load(self, path: str | Path) -> IndependentSceneDocumentV1:
+    def load(self, path: str | Path) -> IndependentSceneDocument:
         destination = self.normalized_path(path).resolve(strict=False)
         document = load_independent_scene(destination)
         self.document = document
@@ -138,6 +240,8 @@ class IndependentSceneSession:
             destination.read_bytes()
         ).hexdigest()
         self.clean_signature = independent_scene_sha256(document)
+        self._undo.clear()
+        self._redo.clear()
         return document
 
 

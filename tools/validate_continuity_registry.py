@@ -39,12 +39,16 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         raise ValueError("master_plan_commit must be explicit")
 
     active = _require(data, "active_work")
-    if active["stage"] not in {"E00", "E01"}:
-        raise ValueError("continuity registry must remain anchored at E00 or E01")
+    if active["stage"] not in {"E00", "E01", "E02"}:
+        raise ValueError("continuity registry must remain anchored at E00, E01 or E02")
     if active["stage"] == "E00" and active["implementation_allowed"]:
         raise ValueError("E00 preparatory registry cannot allow implementation")
-    if active["stage"] == "E01" and not active.get("technical_continuation_authorized"):
-        raise ValueError("E01 continuation requires explicit technical authorization")
+    if active["stage"] in {"E01", "E02"} and not active.get(
+        "technical_continuation_authorized"
+    ):
+        raise ValueError(
+            f"{active['stage']} continuation requires explicit technical authorization"
+        )
 
     checkout = _require(data, "checkout_under_audit")
     if not checkout["branch"] or not checkout["head"]:
@@ -75,10 +79,26 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
     stages = _require(data, "stage_status")
     if active["stage"] == "E00":
         expected = ("IN_PROGRESS", "NOT_STARTED")
-    else:
+    elif active["stage"] == "E01":
         expected = ("TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING", "IN_PROGRESS")
-    if (stages.get("E00"), stages.get("E01")) != expected:
-        raise ValueError("stage progression is inconsistent with active continuation state")
+        if (stages.get("E00"), stages.get("E01")) != expected:
+            raise ValueError(
+                "stage progression is inconsistent with active E01 continuation state"
+            )
+    else:
+        expected = (
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+            "IN_PROGRESS",
+        )
+        if (
+            stages.get("E00"),
+            stages.get("E01"),
+            stages.get("E02"),
+        ) != expected:
+            raise ValueError(
+                "stage progression is inconsistent with active E02 continuation state"
+            )
     invalid = [
         (stage, status)
         for stage, status in stages.items()

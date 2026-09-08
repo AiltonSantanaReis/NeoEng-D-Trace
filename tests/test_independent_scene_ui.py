@@ -107,3 +107,28 @@ def test_independent_scene_save_as_cancel_preserves_unsaved_document(
     assert window.session.is_modified
     window.session.new()
     window.close()
+
+
+def test_independent_scene_window_creates_primitives_and_history(
+    qt_app: QApplication,
+) -> None:
+    window = IndependentSceneWindow(language="pt")
+    window.show()
+    qt_app.processEvents()
+
+    assert window.create_primitive("rectangle")
+    assert window.create_primitive("ellipse")
+    assert window.create_primitive("polygon")
+    assert window.object_count == 3
+    assert window.object_list.count() == 3
+    assert window.rectangle_action.text() == "Retângulo"
+    assert window.polygon_action.text() == "Polígono"
+    assert window.undo_action.isEnabled()
+
+    assert window.undo_scene()
+    assert window.object_count == 2
+    assert window.redo_scene()
+    assert window.object_count == 3
+
+    window.session.new()
+    window.close()

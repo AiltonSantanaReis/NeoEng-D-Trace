@@ -9,15 +9,15 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E01",
+    "stage": "E02",
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E01-A contrato/fluxo, E01-B bancada de backend e E01-C fluxo independente; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E02-A contrato de primitivas e E02-B modelo/operacoes de autoria; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
-    "continuation_decision": "docs/evidence/DECISAO_CONTINUIDADE_POS_E00_GATES_DEFERIDOS_2026-09-08.md",
+    "continuation_decision": "docs/evidence/DECISAO_CONTINUIDADE_TECNICA_E01_E13_AUDITORIA_FINAL_2026-09-08.md",
     "dependency_traceability": {
       "status": "PASS_DOCUMENTAL_PREPARATORY_ONLY",
       "decision": "docs/DECISAO_E00_DEPENDENCIAS_RASTREABILIDADE_2026-09-07.md",
@@ -28,13 +28,20 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Fechar o pacote tecnico E01-A/B/C, registrar a analise preparatoria de E02 sem promover a etapa, e manter symlink/revisao humana para a auditoria final.",
+    "next_action": "Executar E02-A: contrato versionado de primitivas autorais, validação geométrica e fixtures; manter a revisão humana/symlink para a auditoria final.",
+    "active_lot": {
+      "id": "E02-A",
+      "status": "IN_PROGRESS",
+      "scope": "contrato de retângulo, elipse e polígono/caminho; estados geométricos e negativos",
+      "evidence": "docs/evidence/E02_A_CONTRATO_PRIMITIVAS_EVIDENCIA_2026-09-08.md",
+      "functional_implementation_allowed": true
+    },
     "preparatory_next_stage": {
-      "stage": "E02",
-      "status": "PREPARATORY_ONLY",
-      "evidence": "docs/evidence/E02_PREPARATORY_ONLY_ANALISE_IMPACTO_2026-09-08.md",
+      "stage": "E03",
+      "status": "PLANNED",
+      "evidence": null,
       "functional_implementation_allowed": false,
-      "promotion_rule": "Somente apos aceite formal de E01 e atualizacao deste registro."
+      "promotion_rule": "Somente apos checkpoint tecnico E02 e atualizacao deste registro."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -50,8 +57,8 @@
     ]
   },
     "checkout_under_audit": {
-      "branch": "Ailton/e01-independent-scene-20260908",
-    "head": "baeb7091148e67a38b31997800c46034342801c1",
+    "branch": "Ailton/e02-primitives-20260908",
+    "head": "dd65102e184565dfa7e8873faafd723ae8ed25c3",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E01_WORKTREE"
@@ -127,8 +134,8 @@
   },
   "stage_status": {
     "E00": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E01": "IN_PROGRESS",
-    "E02": "PLANNED",
+    "E01": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "E02": "IN_PROGRESS",
     "E03": "PLANNED",
     "E04": "PLANNED",
     "E05": "PLANNED",

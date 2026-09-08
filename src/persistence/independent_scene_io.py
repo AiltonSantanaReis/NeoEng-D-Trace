@@ -17,7 +17,10 @@ from .errors import ProjectPersistenceError
 from .independent_scene_schema import (
     INDEPENDENT_SCENE_FORMAT_ID,
     INDEPENDENT_SCENE_SCHEMA_VERSION,
+    INDEPENDENT_SCENE_SCHEMA_VERSION_V2,
+    IndependentSceneDocument,
     IndependentSceneDocumentV1,
+    IndependentSceneDocumentV2,
 )
 
 MAX_INDEPENDENT_SCENE_FILE_BYTES = MAX_PROJECT_FILE_BYTES
@@ -54,7 +57,7 @@ def _reject_duplicate_object_keys(
     return result
 
 
-def _canonical_json_bytes(document: IndependentSceneDocumentV1) -> bytes:
+def _canonical_json_bytes(document: IndependentSceneDocument) -> bytes:
     payload = document.model_dump(mode="json")
     text = json.dumps(
         payload,
@@ -112,7 +115,7 @@ def _read_json(path: Path) -> Any:
         ) from exc
 
 
-def _validate_document(value: Any) -> IndependentSceneDocumentV1:
+def _validate_document(value: Any) -> IndependentSceneDocument:
     if not isinstance(value, Mapping):
         raise IndependentSceneFormatError("independent scene root must be an object")
     if value.get("format_id") != INDEPENDENT_SCENE_FORMAT_ID:
@@ -120,35 +123,55 @@ def _validate_document(value: Any) -> IndependentSceneDocumentV1:
             "unsupported independent scene format identifier: "
             f"{value.get('format_id')!r}"
         )
-    if value.get("schema_version") != INDEPENDENT_SCENE_SCHEMA_VERSION:
+    schema_version = value.get("schema_version")
+    if schema_version not in {
+        INDEPENDENT_SCENE_SCHEMA_VERSION,
+        INDEPENDENT_SCENE_SCHEMA_VERSION_V2,
+    }:
         raise IndependentSceneFormatError(
-            "unsupported independent scene schema version: "
-            f"{value.get('schema_version')!r}"
+            "unsupported independent scene schema version: " f"{schema_version!r}"
         )
     try:
-        return IndependentSceneDocumentV1.model_validate(value, strict=True)
+        if schema_version == INDEPENDENT_SCENE_SCHEMA_VERSION:
+            return IndependentSceneDocumentV1.model_validate(value, strict=True)
+        if "objects" not in value:
+            raise IndependentSceneFormatError(
+                "schema version 2 requires an objects collection"
+            )
+        return IndependentSceneDocumentV2.model_validate(value, strict=True)
+    except IndependentSceneFormatError:
+        raise
     except ValidationError as exc:
         raise IndependentSceneValidationError(str(exc)) from exc
 
 
-def serialize_independent_scene(document: IndependentSceneDocumentV1) -> bytes:
+def serialize_independent_scene(document: IndependentSceneDocument) -> bytes:
     """Validate and serialize an independent scene deterministically."""
 
     try:
-        validated = IndependentSceneDocumentV1.model_validate(document, strict=True)
+        if isinstance(document, IndependentSceneDocumentV2):
+            validated = IndependentSceneDocumentV2.model_validate(
+                document,
+                strict=True,
+            )
+        else:
+            validated = IndependentSceneDocumentV1.model_validate(
+                document,
+                strict=True,
+            )
     except ValidationError as exc:
         raise IndependentSceneValidationError(str(exc)) from exc
     return _canonical_json_bytes(validated)
 
 
-def independent_scene_sha256(document: IndependentSceneDocumentV1) -> str:
+def independent_scene_sha256(document: IndependentSceneDocument) -> str:
     """Return the SHA-256 of the exact canonical document bytes."""
 
     return hashlib.sha256(serialize_independent_scene(document)).hexdigest()
 
 
 def save_independent_scene(
-    document: IndependentSceneDocumentV1,
+    document: IndependentSceneDocument,
     path: str | os.PathLike[str],
 ) -> None:
     """Atomically replace an independent scene without partial output."""
@@ -187,7 +210,7 @@ def save_independent_scene(
 
 def load_independent_scene(
     path: str | os.PathLike[str],
-) -> IndependentSceneDocumentV1:
+) -> IndependentSceneDocument:
     """Read and validate one independent scene document."""
 
     return _validate_document(_read_json(Path(path)))
