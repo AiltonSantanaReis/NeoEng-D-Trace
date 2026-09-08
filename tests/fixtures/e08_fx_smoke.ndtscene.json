@@ -1,0 +1,47 @@
+{
+  "format_id": "neoeng-d-trace-scene-authoring",
+  "schema_version": 2,
+  "metadata": {"name": "E08-D FX V2 Fixture", "generator": "NeoEng-D-Trace E08-D FX fixture", "app_version": "0.3.0"},
+  "project": {"sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+  "assets": [{"id": "fx-asset", "path": "assets/e08-fx.png", "path_kind": "relative", "sha256": "0000000000000000000000000000000000000000000000000000000000000000"}],
+  "layers": [{"id": "layer_default", "name": "Default", "visible": true, "locked": false}],
+  "objects": [{
+    "id": "fx-receiver",
+    "asset_id": "fx-asset",
+    "layer_id": "layer_default",
+    "transform": {
+      "position": {"x": -60.0, "y": 0.0, "z": 0.0},
+      "rotation": {"x": 0.0, "y": 0.0, "z": 0.0},
+      "scale": {"x": 1.0, "y": 1.0, "z": 1.0},
+      "pivot": {"x": 0.5, "y": 0.5},
+      "flip_x": false,
+      "flip_y": false
+    },
+    "visible": true,
+    "locked": false,
+    "material": {
+      "albedo": "#405070",
+      "normal_map_xy": {"x": 0.0, "y": 0.0},
+      "normal_strength": 0.0,
+      "emission": "#101820",
+      "emission_strength": 0.1,
+      "opacity": 1.0,
+      "receives_shadow": true,
+      "casts_shadow": true
+    }
+  }],
+  "groups": [],
+  "snap": {"enabled": false, "mode": "pixel", "spacing": {"x": 1.0, "y": 1.0}},
+  "camera": {"position": {"x": 0.0, "y": 0.0}, "zoom": 1.0},
+  "parallax_layers": [{"layer_id": "layer_default", "depth": 0.0, "translation_strength": 1.0, "zoom_strength": 1.0}],
+  "sockets": [{
+    "id": "spark-fx",
+    "type": "vfx",
+    "layer_id": "layer_default",
+    "object_id": null,
+    "position": {"x": 180.0, "y": 0.0, "z": 0.0},
+    "effect_id": "spark-fx",
+    "scale": 1.25,
+    "enabled": true
+  }]
+}

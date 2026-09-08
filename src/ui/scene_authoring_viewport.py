@@ -81,6 +81,13 @@ from src.persistence.scene_authoring_schema import (
     SceneObjectAuthoringRecord,
     SceneTransformRecord,
 )
+from src.runtime.particles import (
+    ParticleDocumentV1,
+    ParticleEmitterRecord,
+    ParticleStateRecord,
+    ParticleSimulation,
+    ParticleSourceBindingRecord,
+)
 
 
 class SceneObjectGraphicsItem(QGraphicsObject):
@@ -346,6 +353,76 @@ class SceneSocketGraphicsItem(QGraphicsObject):
         super().mousePressEvent(event)
 
 
+class SceneParticleGraphicsItem(QGraphicsObject):
+    """Deterministic particle pixels resolved from one authored VFX socket."""
+
+    def __init__(self, effect_id: str, scale: float, parent=None) -> None:
+        super().__init__(parent)
+        self.effect_id = effect_id
+        self._scale = max(0.01, float(scale))
+        self._states: tuple[ParticleStateRecord, ...] = ()
+        self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
+        self.setZValue(90.0)
+        self._refresh_states()
+
+    def _refresh_states(self) -> None:
+        seed = sum((index + 1) * ord(char) for index, char in enumerate(self.effect_id))
+        document = ParticleDocumentV1(
+            source=ParticleSourceBindingRecord(sha256="0" * 64),
+            fixed_dt=1.0 / 60.0,
+            max_substeps=8,
+            emitters=[
+                ParticleEmitterRecord(
+                    id="preview",
+                    seed=seed & 0xFFFFFFFF,
+                    origin=Point3Record(x=0.0, y=0.0, z=0.0),
+                    initial_velocity=Point3Record(x=0.0, y=-42.0, z=0.0),
+                    velocity_spread=Point3Record(x=34.0, y=24.0, z=0.0),
+                    acceleration=Point3Record(x=0.0, y=42.0, z=0.0),
+                    emission_rate=24.0,
+                    lifetime=1.2,
+                    max_particles=32,
+                    burst_count=8,
+                )
+            ],
+        )
+        simulation = ParticleSimulation(document)
+        simulation.start()
+        simulation.advance(0.125)
+        self._states = simulation.states()
+        self.prepareGeometryChange()
+        self.update()
+
+    def set_scale(self, scale: float) -> None:
+        value = max(0.01, float(scale))
+        if value != self._scale:
+            self._scale = value
+            self.update()
+
+    def boundingRect(self) -> QRectF:
+        extent = 96.0 * self._scale
+        return QRectF(-extent, -extent, extent * 2.0, extent * 2.0)
+
+    def paint(self, painter: QPainter, option, widget=None) -> None:
+        del option, widget
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        for state in self._states:
+            position = state.position
+            age = min(1.0, max(0.0, float(state.age) / 1.2))
+            radius = max(1.5, (5.0 - 3.0 * age) * self._scale)
+            alpha = max(48, int(235.0 * (1.0 - age)))
+            painter.setBrush(QBrush(QColor(255, 196, 92, alpha)))
+            painter.setPen(QPen(QColor(255, 241, 184, alpha), 1.0))
+            painter.drawEllipse(
+                QRectF(
+                    float(position[0]) * self._scale - radius,
+                    float(position[1]) * self._scale - radius,
+                    radius * 2.0,
+                    radius * 2.0,
+                )
+            )
+
+
 class SceneAuthoringViewport(QGraphicsView):
     """Canvas for selecting and transforming authored scene objects."""
 
@@ -376,6 +453,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._geometry: dict[str, tuple[tuple[float, float], ...]] = {}
         self._items: dict[str, SceneObjectGraphicsItem] = {}
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
+        self._particle_items: dict[str, SceneParticleGraphicsItem] = {}
         self._preview_enabled = False
         self._render_plan: SceneRenderPlan | None = None
         self._lighting_settings = default_scene_lighting()
@@ -863,6 +941,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self.graphics_scene.clear()
         self._items.clear()
         self._socket_items.clear()
+        self._particle_items.clear()
         self._gizmo = None
         diagnostics: list[str] = []
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
@@ -939,6 +1018,14 @@ class SceneAuthoringViewport(QGraphicsView):
                 )
                 self.graphics_scene.addItem(marker)
                 self._socket_items[socket.id] = marker
+                if socket.type == "vfx" and socket.enabled:
+                    particle_item = SceneParticleGraphicsItem(
+                        socket.effect_id,
+                        float(socket.scale),
+                    )
+                    particle_item.setZValue(self._overlay_z(90.0))
+                    self.graphics_scene.addItem(particle_item)
+                    self._particle_items[socket.id] = particle_item
         self._prune_asset_pixmap_cache(active_asset_cache_keys)
         self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
@@ -1074,6 +1161,10 @@ class SceneAuthoringViewport(QGraphicsView):
                     )
                     position = QPointF(x, y)
                 marker.setPos(position)
+                particle_item = self._particle_items.get(socket_id)
+                if particle_item is not None and socket.type == "vfx":
+                    particle_item.setPos(position)
+                    particle_item.set_scale(float(socket.scale))
 
     def _refresh_selection(self, object_ids: Iterable[str] | None = None) -> None:
         requested_ids = (
