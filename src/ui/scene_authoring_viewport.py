@@ -58,6 +58,12 @@ from src.core.scene_authoring_order import (
 )
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.scene_render_plan import SceneRenderPlan
+from src.core.scene_lighting import (
+    SceneLightingMaterial,
+    SceneLightingSettings,
+    default_scene_lighting,
+    shade_color,
+)
 from src.core.scene_view_navigation import (
     anchored_navigation_center,
     clamp_navigation_zoom,
@@ -99,6 +105,7 @@ class SceneObjectGraphicsItem(QGraphicsObject):
         self._hovered = False
         self._pressed = False
         self._enabled = True
+        self._lighting_color: QColor | None = None
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setAcceptHoverEvents(True)
         self._brush = QBrush(QColor("#2387b8"))
@@ -119,7 +126,7 @@ class SceneObjectGraphicsItem(QGraphicsObject):
             self._brush = QBrush(QColor("#2c9fc8"))
             self._pen = QPen(QColor("#b9f3ff"), 2.5)
         else:
-            self._brush = QBrush(QColor("#2387b8"))
+            self._brush = QBrush(self._lighting_color or QColor("#2387b8"))
             self._pen = QPen(QColor("#65d7ff"), 2.0)
         self.update()
 
@@ -129,6 +136,12 @@ class SceneObjectGraphicsItem(QGraphicsObject):
 
     def set_interaction_enabled(self, enabled: bool) -> None:
         self._enabled = bool(enabled)
+        self._refresh_style()
+
+    def set_lighting_color(self, color: QColor | None) -> None:
+        """Apply the renderer's pixel-derived fill while preserving selection UI."""
+
+        self._lighting_color = QColor(color) if color is not None else None
         self._refresh_style()
 
     def boundingRect(self) -> QRectF:
@@ -363,6 +376,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
         self._preview_enabled = False
         self._render_plan: SceneRenderPlan | None = None
+        self._lighting_settings = default_scene_lighting()
         self._authoring_enabled = True
         self._overlay_visible = False
         self._navigation_zoom = 1.0
@@ -907,6 +921,41 @@ class SceneAuthoringViewport(QGraphicsView):
 
         document = self.session.document
         by_id = {item.id: item for item in document.objects}
+        lighting_by_object: dict[str, QColor] = {}
+        if isinstance(document, SceneAuthoringDocumentV2):
+            for item in document.objects:
+                occluders = tuple(
+                    tuple(
+                        (
+                            float(point[0]) + float(other.transform.position.x),
+                            float(point[1]) + float(other.transform.position.y),
+                        )
+                        for point in self._geometry.get(other.id, ())
+                    )
+                    for other in document.objects
+                    if other.id != item.id
+                    and len(self._geometry.get(other.id, ())) >= 3
+                )
+                settings = SceneLightingSettings(
+                    ambient_color=self._lighting_settings.ambient_color,
+                    ambient_intensity=self._lighting_settings.ambient_intensity,
+                    lights=self._lighting_settings.lights,
+                    occluders=occluders,
+                )
+                color, opacity, _ = shade_color(
+                    (
+                        float(item.transform.position.x),
+                        float(item.transform.position.y),
+                    ),
+                    SceneLightingMaterial(),
+                    settings,
+                )
+                lighting_by_object[item.id] = QColor(
+                    int(round(color[0] * 255.0)),
+                    int(round(color[1] * 255.0)),
+                    int(round(color[2] * 255.0)),
+                    int(round(opacity * 255.0)),
+                )
         camera = self._camera() if self._preview_enabled else None
         parallax_by_layer: dict[str, ParallaxLayer] = {}
         if camera is not None:
@@ -920,11 +969,11 @@ class SceneAuthoringViewport(QGraphicsView):
         selected_ids = set(self.session.selection.ids)
         for object_id in requested_ids:
             visual = self._items.get(object_id)
-            item = by_id.get(object_id)
-            if visual is None or item is None:
+            object_record = by_id.get(object_id)
+            if visual is None or object_record is None:
                 continue
-            record = item.transform
-            parallax = parallax_by_layer.get(item.layer_id, ParallaxLayer())
+            record = object_record.transform
+            parallax = parallax_by_layer.get(object_record.layer_id, ParallaxLayer())
             if camera is None:
                 position = QPointF(float(record.position.x), float(record.position.y))
                 zoom = 1.0
@@ -942,6 +991,7 @@ class SceneAuthoringViewport(QGraphicsView):
                     record.scale.y * zoom * (-1.0 if record.flip_y else 1.0),
                 )
             )
+            visual.set_lighting_color(lighting_by_object.get(object_id))
             visual.set_selected_style(object_id in selected_ids)
 
         if refresh_sockets and isinstance(document, SceneAuthoringDocumentV2):
