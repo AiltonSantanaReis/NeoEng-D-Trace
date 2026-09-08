@@ -280,10 +280,10 @@ try {
         # Preview Parallax is the toolbar toggle near the center of the
         # DPI-aware editor surface.  The capture proves the shipped raster
         # renderer plan and its explicit backend/fallback HUD.
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.50, 0.025)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.52, 0.028)
         Start-Sleep -Milliseconds 900
         $records.renderer_preview = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-renderer-preview.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.50, 0.025)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.52, 0.028)
         Start-Sleep -Milliseconds 500
         $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-authoring.png")
     }

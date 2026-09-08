@@ -486,6 +486,7 @@ class ScenarioEditorWindow(QMainWindow):
 
     def showEvent(self, event) -> None:
         super().showEvent(event)
+        render_plan = None
         if (
             self.professional_viewport is not None
             and not self._professional_initial_focus_applied
@@ -789,6 +790,7 @@ class ScenarioEditorWindow(QMainWindow):
         session = self.professional_session
         self.undo_action.setEnabled(session is not None and session.can_undo)
         self.redo_action.setEnabled(session is not None and session.can_redo)
+        render_plan = None
         if (
             available
             and self.professional_session is None
@@ -809,12 +811,22 @@ class ScenarioEditorWindow(QMainWindow):
             if self.professional_session is not None and isinstance(
                 self.professional_session.document, SceneAuthoringDocumentV2
             ):
-                self.canvas.set_scenario_render_plan(
-                    build_scene_render_plan(
-                        self.professional_session.document,
-                        (max(1, self.canvas.width()), max(1, self.canvas.height())),
-                    )
+                render_plan = build_scene_render_plan(
+                    self.professional_session.document,
+                    (
+                        (
+                            max(1, self.professional_viewport.width())
+                            if self.professional_viewport is not None
+                            else max(1, self.canvas.width())
+                        ),
+                        (
+                            max(1, self.professional_viewport.height())
+                            if self.professional_viewport is not None
+                            else max(1, self.canvas.height())
+                        ),
+                    ),
                 )
+                self.canvas.set_scenario_render_plan(render_plan)
             else:
                 self.canvas.set_scenario_render_plan(None)
             mode_status = (
@@ -835,6 +847,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.status_label.setText(
                 "Open and save a project to enable scenario authoring"
             )
+        if self.professional_viewport is not None:
+            self.professional_viewport.set_scene_render_plan(render_plan)
         self.canvas.update()
 
     def update_language(self, language: str) -> None:

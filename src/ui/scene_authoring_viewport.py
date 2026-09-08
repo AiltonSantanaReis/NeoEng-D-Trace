@@ -57,6 +57,7 @@ from src.core.scene_authoring_order import (
     ordered_scene_objects,
 )
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_render_plan import SceneRenderPlan
 from src.core.scene_view_navigation import (
     anchored_navigation_center,
     clamp_navigation_zoom,
@@ -361,6 +362,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._items: dict[str, SceneObjectGraphicsItem] = {}
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
         self._preview_enabled = False
+        self._render_plan: SceneRenderPlan | None = None
         self._authoring_enabled = True
         self._overlay_visible = False
         self._navigation_zoom = 1.0
@@ -413,6 +415,17 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def is_preview_enabled(self) -> bool:
         return self._preview_enabled
+
+    def set_scene_render_plan(self, plan: SceneRenderPlan | None) -> None:
+        """Install the explicit backend/order diagnostic for the viewport."""
+
+        if plan is not None and not isinstance(plan, SceneRenderPlan):
+            raise ValueError("scene render plan must be a SceneRenderPlan")
+        self._render_plan = plan
+        self.viewport().update()
+
+    def scene_render_plan(self) -> SceneRenderPlan | None:
+        return self._render_plan
 
     def set_authoring_enabled(self, enabled: bool) -> None:
         if not isinstance(enabled, bool):
@@ -1759,6 +1772,18 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def paintEvent(self, event) -> None:
         super().paintEvent(event)
+        if self._render_plan is not None:
+            plan = self._render_plan
+            painter = QPainter(self.viewport())
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            painter.setPen(QPen(QColor("#b8f4ff"), 1.0))
+            backend = plan.backend.selected.upper()
+            mode = plan.backend.status.upper()
+            painter.drawText(
+                QPointF(12.0, 20.0),
+                f"RENDERER {backend} | {mode} | {len(plan.passes)} PASSES | R{plan.revision}",
+            )
+            painter.end()
         if self._marquee_origin is not None and self._marquee_current is not None:
             painter = QPainter(self.viewport())
             painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
