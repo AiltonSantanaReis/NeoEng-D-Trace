@@ -44,10 +44,10 @@
   },
     "checkout_under_audit": {
       "branch": "Ailton/e01-independent-scene-20260908",
-    "head": "4e26f49",
-    "tracked_changes_present": true,
+    "head": "8916fa1306dea43be9546efbc0a1787df6b1ff23",
+    "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "E01_WORKTREE_PRECOMMIT"
+    "status": "CLEAN_E01_WORKTREE"
   },
   "gates": {
     "official_suite": {
