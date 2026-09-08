@@ -5,7 +5,8 @@ param(
     [string]$ProjectPath,
     [Parameter(Mandatory = $true)]
     [string]$OutputDirectory,
-    [switch]$CaptureTilemapFlow
+    [switch]$CaptureTilemapFlow,
+    [switch]$CaptureColliderFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -109,9 +110,18 @@ try {
     $records = [ordered]@{}
     $records.main = Save-Capture $mainHandle (Join-Path $OutputDirectory "01-main.png")
     [NeoEngE03Capture]::Focus($mainHandle)
+    [NeoEngE03Capture]::Focus($mainHandle)
     [NeoEngE03Capture]::CtrlO()
     Start-Sleep -Milliseconds 1200
     $dialog = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
+    if (-not $dialog) {
+        # Fallback for hosts where the global shortcut is intercepted.
+        [NeoEngE03Capture]::Focus($mainHandle)
+        Start-Sleep -Milliseconds 300
+        [NeoEngE03Capture]::ClickWindow($mainHandle, 80, 150)
+        Start-Sleep -Milliseconds 1200
+        $dialog = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
+    }
     if (-not $dialog) { throw "project open dialog was not exposed" }
     $records.project_dialog = Save-Capture $dialog.Handle (Join-Path $OutputDirectory "02-project-open-dialog.png")
     Set-DialogPath $dialog.Handle $projectPath
@@ -133,12 +143,12 @@ try {
     # PrintWindow reports physical pixels on this 200% DPI desktop; the
     # visible toolbar center is approximately (758,75) in the 2048px capture,
     # therefore the native screen coordinate is scaled to (1421,142).
-    [NeoEngE03Capture]::ClickWindow($mainHandle, 1421, 142)
+    [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
     Start-Sleep -Milliseconds 2200
     $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
     if (-not $editor) {
         [NeoEngE03Capture]::Focus($mainHandle)
-        [NeoEngE03Capture]::ClickWindow($mainHandle, 3280, 1787)
+        [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
         Start-Sleep -Milliseconds 2200
         $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle -and $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
     }
@@ -176,6 +186,28 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 320)
         Start-Sleep -Milliseconds 700
         $records.tilemap_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tilemap-reopened.png")
+    }
+    if ($CaptureColliderFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # Maximize first so the inspector has a stable native coordinate.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 240)
+        Start-Sleep -Milliseconds 500
+        $records.collider_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-collider-created.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3140, 240)
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 240)
+        Start-Sleep -Milliseconds 500
+        $records.collider_circle_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-collider-circle-created.png")
+        # Save/Reopen are on the second action row of the collider panel.
+        # Use the same physical window offsets as the tilemap flow instead
+        # of relying on Qt tab order, which is not stable across DPI hosts.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3315, 320)
+        Start-Sleep -Milliseconds 700
+        $records.collider_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-collider-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3125, 320)
+        Start-Sleep -Milliseconds 700
+        $records.collider_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-collider-reopened.png")
     }
     $records.editor_title = $editor.Title
     $records.editor_window_rect_before_tilemap_flow = [NeoEngE03Capture]::RectText($editor.Handle)
