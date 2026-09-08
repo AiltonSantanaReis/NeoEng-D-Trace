@@ -12,10 +12,10 @@ registro não cria aceite funcional nem autorização de publicação.
 
 ## Fronteira única
 
-O trabalho em andamento está sendo auditado contra o checkout
-`Ailton/error-presentation-contract-20260904` em `35727d9`. A existência de
-outras branches, worktrees, builds ou pastas de captura não muda a base ativa.
-Nenhum artefato externo pode ser promovido sem `source_commit` verificável.
+O trabalho em andamento está sendo auditado contra o worktree oficial limpo
+`Ailton/e00-continuity-build-20260908` em `2722ac1`. A existência de outras
+branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
+artefato externo pode ser promovido sem `source_commit` verificável.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
