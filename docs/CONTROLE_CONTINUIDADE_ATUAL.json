@@ -13,7 +13,7 @@
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E02-A contrato de primitivas e E02-B modelo/operacoes de autoria; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E02-B operacoes de autoria e persistencia observavel; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,12 +28,12 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E02-A: contrato versionado de primitivas autorais, validação geométrica e fixtures; manter a revisão humana/symlink para a auditoria final.",
+    "next_action": "Executar E02-B: edição/seleção/transformação e persistência observável no fluxo do usuário; manter a revisão humana/symlink para a auditoria final.",
     "active_lot": {
-      "id": "E02-A",
+      "id": "E02-B",
       "status": "IN_PROGRESS",
-      "scope": "contrato de retângulo, elipse e polígono/caminho; estados geométricos e negativos",
-      "evidence": "docs/evidence/E02_A_CONTRATO_PRIMITIVAS_EVIDENCIA_2026-09-08.md",
+      "scope": "edição, seleção, transformação, remoção/duplicação, histórico e save/reopen observável",
+      "evidence": "docs/evidence/E02_B_OPERACOES_AUTORIA_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
@@ -58,15 +58,15 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e02-primitives-20260908",
-    "head": "dd65102e184565dfa7e8873faafd723ae8ed25c3",
+    "head": "d709f24f07b3576ae220d9c77e16ae7fe4279975",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E01_WORKTREE"
+    "status": "CLEAN_E02_A_WORKTREE"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1973,
+      "passed": 1985,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -94,26 +94,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e01-independent-scene-20260908/captures-r5/02-independent-scene-after-shortcut.png",
-      "latest_binary_capture_sha256": "2975F04978004ED66172A131F56E215C5CA97F299B6E0C19AE0824DB584652B8",
+      "latest_binary_capture": "artifacts/e02-primitives-20260908/captures-r4/03-independent-scene-primitives.png",
+      "latest_binary_capture_sha256": "C60B12A45CD3FA60C4479CBE6D8B8368C79C57478230A951CA9EC329297DA62B",
       "latest_binary_capture_window": "1986x1431",
-      "observed_finding": "Atalho Ctrl+Alt+N abriu a janela real Cenário Independente; toolbar PT-BR, canvas vazio 1920x1080 e coordenadas top_left/pixel foram observados. Revisao humana continua pendente.",
+      "observed_finding": "Build r4 abriu a janela real Cenário Independente; toolbar PT-BR, retângulo/elipse/polígono desenhados no canvas, lista PT-BR e 3 objetos observados. Revisao humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e01-independent-scene-20260908-r5/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "8B17406ECB394B4C3D25D7E37721F8244141B2B985F4B137FD2DB907CCF92188",
-      "latest_observed_binary_last_write": "2026-09-08T14:18:08.2176566Z",
-      "source_commit": "39c414b87b119a803e3752ea46d13107edb1ac44",
-      "source_branch": "Ailton/e01-independent-scene-20260908",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r4/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "2C445EC4A9C21DFBF96E423D1079D00D112F3A3ECE27996540342C87EEE6A970",
+      "latest_observed_binary_last_write": "2026-09-08T15:08:14Z",
+      "source_commit": "d709f24f07b3576ae220d9c77e16ae7fe4279975",
+      "source_branch": "Ailton/e02-primitives-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "EDE1ED72624062DD2DEE0D8CF4276576AE4F5A2B7728BA510695129477BC353F",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e01-independent-scene-20260908-r5/continuity-provenance.json",
+      "continuity_registry_sha256": "A6691C1F7B507BFE7F769D23CA18CD720D539197378DF3487084EF795547AB93",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r4/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "84267B57BD1594BB3E85DF01DDB11E33E6FDD3021FAA4ABE866ED8F4D8B4093E",
-      "reason": "Build oficial E01-C executada em worktree limpo apos correcao controlada; proveniencia, hashes, smoke test e captura real do fluxo de abertura registrados."
+      "portable_archive_sha256": "3C8C66F26F445017DD794A5110A09CEBFA213393627D8D8FDBEFEE0848CADF0D",
+      "reason": "Build oficial E02-A executada em worktree limpo apos correcao controlada do preview; proveniencia, hashes, smoke test e captura real do fluxo de primitivas registrados."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
