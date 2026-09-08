@@ -36,7 +36,7 @@ dist/
 !/docs/evidence/artifacts/**/*.log
 
 # E01-B exploratory reruns stay local; the accepted r11 package is tracked.
-/artifacts/e01-independent-scene-20260908/backend-bench-r*/
+/artifacts/e01-independent-scene-20260908/backend-bench-*/
 
 # Generated exports and local samples
 /*.glb
