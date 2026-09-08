@@ -25,8 +25,8 @@
     ]
   },
   "checkout_under_audit": {
-    "branch": "Ailton/e00-continuity-build-20260908",
-    "head": "2722ac1cf39b222931ed440a0eb935ee5d1dcc50",
+    "branch": "Ailton/e00-continuity-final-20260908",
+    "head": "4c3ab573f50b73b672ddff51cec150bf2408d96f",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_OFFICIAL_WORKTREE"
@@ -34,7 +34,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1976,
+      "passed": 1959,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -48,43 +48,46 @@
       "sandbox_status": "PASS_SANDBOX_DIAGNOSTIC_ONLY",
       "sandbox_cases": 31,
       "sandbox_skips": 0,
+      "sandbox_source_commit": "35727d99c7002ad26c3277dff8542f82dad4c3f8",
+      "final_source_requalification_status": "PENDING_EVIDENCE",
+      "final_source_requalification_attempt": "WindowsSandbox encerrou sem produzir report.json; nenhuma aprovação foi inferida.",
       "local_suite_status": "SKIP_PRIVILEGE_LIMITATION",
       "local_suite_skips": 2,
       "rule": "Nunca converter SKIP_LOCAL em PASS; manter os dois resultados separados."
     },
     "visual": {
-      "automated_capture_status": "PASS_AUTOMATED_CAPTURE_ONLY",
+      "automated_capture_status": "PENDING_EVIDENCE",
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e00-continuity-20260908/official-build-2722ac1/captures/01-official-maximized.png",
-      "latest_binary_capture_sha256": "FBA8E1EAABBA7B3F16230245B28F3EF735304F88DE612479CBB36DA5CCB53EDD",
-      "latest_binary_capture_window": "1933x1045",
-      "observed_finding": "Toolbar labels are truncated in the maximized capture; this finding is scoped to the captured binary/state and is not transferred to another SHA.",
+      "latest_binary_capture": null,
+      "latest_binary_capture_sha256": null,
+      "latest_binary_capture_window": null,
+      "observed_finding": "Nova captura do SHA atual pendente; findings da build anterior permanecem preservados no pacote historico.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
-      "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e00-continuity-20260908-official/release/e00-20260908/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "2C5B91A9C5145C69FCAB986FF8D73BD67C0E411995A09BF655565ACF690E32FF",
-      "latest_observed_binary_last_write": "2026-09-08T11:13:08Z",
-      "source_commit": "2722ac1cf39b222931ed440a0eb935ee5d1dcc50",
-      "source_branch": "Ailton/e00-continuity-build-20260908",
+      "status": "PENDING_PROVENANCE",
+      "latest_observed_binary": null,
+      "latest_observed_binary_sha256": null,
+      "latest_observed_binary_last_write": null,
+      "source_commit": null,
+      "source_branch": null,
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
       "continuity_registry_sha256": "FCACDA011A17B50EE68550CD2027CA950650F623A38181FF75F5C3181DAC1F46",
-      "provenance_manifest": "build/e00-continuity-20260908-official/release/e00-20260908/continuity-provenance.json",
-      "portable_smoke_status": "SUCCESS",
-      "portable_smoke_checks": 11,
-      "portable_archive_sha256": "385731D0F0593BE3F6A1C8D6646DC7A2F1AB2E22F9B827752613F77ED00320BF",
-      "reason": "Build oficial executada em worktree limpo; manifesto, hash do binario, pacote e smoke test registrados."
+      "provenance_manifest": null,
+      "portable_smoke_status": "PENDING_PROVENANCE",
+      "portable_smoke_checks": 0,
+      "portable_archive_sha256": null,
+      "reason": "Nova build obrigatoria apos a correcao de formatacao do validador; build anterior preservada como evidencia historica."
     },
     "functional_runtime": {
-      "status": "PASS_LOCAL",
-      "binary": "build/e00-continuity-20260908-official/release/e00-20260908/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "validation_log": "artifacts/e00-continuity-20260908/official-build-2722ac1/functional-flow-validation.jsonl",
+      "status": "PENDING_PROVENANCE",
+      "binary": null,
+      "validation_log": null,
       "expected_events": ["application.opened", "window.geometry.restored", "application.state.saved", "application.closed"],
-      "failure_count": 0,
-      "warning": "CuPy ausente; fallback para processamento CPU registrado, sem falha funcional."
+      "failure_count": null,
+      "warning": "A reexecucao do binario do novo SHA ainda esta pendente."
     }
   },
   "stage_status": {
