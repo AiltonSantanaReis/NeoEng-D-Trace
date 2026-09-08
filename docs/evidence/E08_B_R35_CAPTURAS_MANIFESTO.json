@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "stage": "E08-B",
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r35",
+    "source_commit": "5838485a44122bf5f8071a32ae5a8ceac4287edb",
+    "source_branch": "Ailton/e08-renderer-20260908",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256": "587B6B3F6784B843B6AA01FE209B0293D5E1D1D8A020D719DEDE6D79F95A0745",
+    "binary": "release/e08-renderer-20260908-r35/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "F8DFBDE36615946A827FB18D8101229E8159A14E81013599F71B07331628A111",
+    "portable_archive_sha256": "a926ac951bc633571629d92b1ab84bb97f0dd9089edea35ce1591d53006350e0",
+    "portable_smoke": {
+      "status": "SUCCESS",
+      "checks": 11
+    }
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r35-final",
+    "method": "PrintWindow from the real portable binary window handle; native mouse-wheel interaction for inspector scrolling",
+    "command": "scripts\\capture_e03_asset_library_binary.ps1 -Executable release\\e08-renderer-20260908-r35\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe -ProjectPath tests\\fixtures\\release_smoke.ndtproj -OutputDirectory artifacts\\e08-renderer-20260908\\binary-capture-r35-final -DirectProjectLoad -CaptureRendererFlow -CaptureParallaxFlow",
+    "screenshots": {
+      "renderer_preview": {
+        "path": "06-renderer-preview.png",
+        "sha256": "AD182D8232329C6C666859F2162A3F23C17C8C1D2C4E9C64D9E7F4A6CA1C8BF7",
+        "finding": "HUD RENDERER RASTER | NATIVE | PREVIEW | 8 PASSES | R1; controls disabled in preview."
+      },
+      "renderer_authoring": {
+        "path": "07-renderer-authoring.png",
+        "sha256": "7F4A5A049243B58CB8CB6F99C7BB83FBF457EF6E55A98D07EBB23270DF0297FF",
+        "finding": "HUD RENDERER RASTER | NATIVE | AUTHORING | 8 PASSES | R1; authoring controls restored."
+      },
+      "parallax_controls_bottom": {
+        "path": "08-parallax-controls-bottom.png",
+        "sha256": "11F1D533F4690FE88C59325E5DE0D3FE271E4689DFCDBE952FA113DF57418BEF",
+        "finding": "Real inspector bottom view shows Câmera, Paralaxe e Sockets, Rolagem X/Y, Deslocamento X/Y and Repetir/Espelhar controls in Portuguese."
+      },
+      "parallax_controls_pageup": {
+        "path": "09-parallax-controls-pageup.png",
+        "sha256": "E3ACD54A2B63F3CEFEB57A762AFE658DC55B8161A1039ED47D3C3342C7086308",
+        "finding": "Reverse native wheel navigation returns to the preceding scene-inspector area; hash differs from bottom capture."
+      }
+    },
+    "window_rect": "-13,-13,3853,2077",
+    "editor_title": "Editor de Cenário — NeoEng-D-Trace"
+  },
+  "verification": {
+    "focused_e08b_tests": "12 passed",
+    "official_suite": "2063 passed, 2 skipped, 1 warning",
+    "static": [
+      "compileall PASS",
+      "mypy E08-B scope PASS",
+      "black E08-B scope PASS",
+      "git diff --check PASS"
+    ],
+    "human_review": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT"
+  },
+  "scope_boundary": "Repeat/mirror are persisted deterministic renderer metadata in E08-B; texture/atlas/alpha tiled rendering remains deferred to the relevant E08 renderer batch."
+}

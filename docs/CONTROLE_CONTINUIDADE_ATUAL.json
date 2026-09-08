@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar build limpa e captura real do binário E08-B; depois avançar sequencialmente para E08-C.",
+    "next_action": "Iniciar E08-C: materiais, normal maps, luzes e sombras; manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
-      "id": "E08-B",
+      "id": "E08-C",
       "status": "IN_PROGRESS",
-      "scope": "Câmera e paralaxe profissional: scroll X/Y, offset, repetição/espelhamento, preview transitório e persistência transacional",
+      "scope": "Materiais, normal maps, luzes e sombras com preservação do fallback raster",
       "evidence": "docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
@@ -58,10 +58,10 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "d8cd50f4ab42b790ddce4f09b1aed7d6343eac5c",
+    "head": "5838485a44122bf5f8071a32ae5a8ceac4287edb",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E08_B_IMPLEMENTATION_CHECKPOINT"
+    "status": "CLEAN_E08_B_TECHNICAL_CHECKPOINT_E08_C_ACTIVE"
   },
   "gates": {
     "official_suite": {
@@ -95,26 +95,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r28-final/07-renderer-authoring.png",
-      "latest_binary_capture_sha256": "05E18BD762548B7F521DE4C8CB63BAE80807AA16B3CBFC565101CC03C6C07B1E",
+      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r35-final/08-parallax-controls-bottom.png",
+      "latest_binary_capture_sha256": "11F1D533F4690FE88C59325E5DE0D3FE271E4689DFCDBE952FA113DF57418BEF",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r28 abriu o projeto pelo carregamento direto; o fluxo real alternou Preview Parallax e Autoria no viewport profissional. O HUD comprovou RENDERER RASTER, NATIVE, 8 PASSES e estados PREVIEW/AUTHORING; controles ficaram bloqueados somente no preview. Interface em português, sem clipping observável; revisão humana continua pendente.",
+      "observed_finding": "Build r35 abriu o projeto pelo carregamento direto; o fluxo real alternou Preview Parallax e Autoria e navegou o inspector com roda nativa. O HUD comprovou RENDERER RASTER, NATIVE, 8 PASSES e estados PREVIEW/AUTHORING; a captura final mostrou Câmera, Paralaxe e Sockets com Rolagem X/Y, Deslocamento X/Y e Repetir/Espelhar em português. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r28/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "7F4F8E95DB57C7E6713CDAA9AA3F7E43A1CAD73F767809EC0FCBBC2567CF0199",
-      "latest_observed_binary_last_write": "2026-09-08T21:04:00.0000000Z",
-      "source_commit": "2bd85fc52bf76edcbe0626718eaea839997e8e44",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r35/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "F8DFBDE36615946A827FB18D8101229E8159A14E81013599F71B07331628A111",
+      "latest_observed_binary_last_write": "2026-09-08T21:39:46.8270247Z",
+      "source_commit": "5838485a44122bf5f8071a32ae5a8ceac4287edb",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "696A6952B9D9C195B2B5094FF513E3213A402BDD6D7B95154CE3A1EB740DAD0A",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r28/continuity-provenance.json",
+      "continuity_registry_sha256": "587B6B3F6784B843B6AA01FE209B0293D5E1D1D8A020D719DEDE6D79F95A0745",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r35/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "d58e581129fe9382f31ad71c17997771001ccb73212b8a2d3e6062d77e5fed2e",
-      "reason": "E08-A possui plano de composição 2.5D com passes explícitos, ordenação estável, cache/invalidação, resize, fallback raster transparente, suite completa, estática focada, build r28, smoke e captura real de Preview/Autoria."
+      "portable_archive_sha256": "a926ac951bc633571629d92b1ab84bb97f0dd9089edea35ce1591d53006350e0",
+      "reason": "E08-B possui contrato retrocompatível de câmera/paralaxe, suite oficial, estática focada, build r35, smoke e captura real de Preview/Autoria com inspector de paralaxe em português; E08-C foi ativado sequencialmente."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

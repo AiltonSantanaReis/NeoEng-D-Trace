@@ -8,7 +8,7 @@ Dependência técnica: E07 checkpoint `d35bc84`.
 ## Estado dos lotes
 
 - E08-A — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: plano de composição e fronteira de backend.
-- E08-B — `IN_PROGRESS`: câmera e paralaxe profissional.
+- E08-B — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: câmera e paralaxe profissional.
 - E08-C — `PLANNED`: materiais, normal maps, luzes e sombras.
 - E08-D — `PLANNED`: partículas, shaders e pós-processamento.
 - E08-E — `PLANNED`: determinismo temporal e matriz de destino.
@@ -45,7 +45,7 @@ ficam reservados à auditoria final.
 - Inspeção visual: português preservado, HUD legível, sem clipping observável,
   viewport e inspector estáveis na superfície 3866×2090.
 
-E08-A está selado apenas como checkpoint técnico; E08-B permanece ativo. Symlink
+E08-A e E08-B estão selados apenas como checkpoints técnicos; E08-C permanece ativo. Symlink
 e revisão humana continuam pendentes por autorização e serão executados somente
 na auditoria final do Plano Mestre.
 
@@ -63,8 +63,8 @@ na auditoria final do Plano Mestre.
   transacional Undo/Redo.
 - [x] Cobrir movimento negativo, zoom, âncoras, round-trip, variantes de tile,
   limites inválidos e proteção contra aplicação dupla.
-- [ ] Executar suíte oficial, estática, build limpa e captura real do binário
-  após o lote; estes gates ainda estão pendentes neste commit de implementação.
+- [x] Executar suíte oficial, estática, build limpa e captura real do binário
+  após o lote; evidência final em `docs/evidence/E08_B_R35_CAPTURAS_MANIFESTO.json`.
 
 ### Semântica aprovada
 
@@ -76,9 +76,20 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 
 ### Estado da implementação
 
-- Commit de implementação: `2c344805cc3fdebcdb2c3ad264e20a367a021ecc`.
-- Teste focado: `85 passed` (E08-B, câmera legado, inspector/viewport, preview e exportação).
-- Suíte oficial pré-build: `2062 passed, 2 skipped, 1 warning`.
-- Limitação declarada: captura/build oficial ainda não foram refeitas; não há
-  checkpoint técnico E08-B nem afirmação de suporte de atlas/alpha nesta fase.
+- Commits de implementação e validação: `2c344805cc3fdebcdb2c3ad264e20a367a021ecc`,
+  `75d360e`, `c86707b`, `92c0a1f` e `5838485`.
+- Teste focado: `12 passed` para o contrato E08-B, câmera legada,
+  inspector/viewport, preview e exportação; a suíte oficial registrou
+  `2063 passed, 2 skipped, 1 warning`.
+- Build r35: source commit `5838485a44122bf5f8071a32ae5a8ceac4287edb`,
+  binário SHA-256 `F8DFBDE36615946A827FB18D8101229E8159A14E81013599F71B07331628A111`,
+  pacote portátil SHA-256 `a926ac951bc633571629d92b1ab84bb97f0dd9089edea35ce1591d53006350e0`,
+  smoke `SUCCESS` com 11 checks.
+- Captura real: Preview, Authoring e inspector foram executados pelo binário
+  portátil; a captura final mostra `Câmera, Paralaxe e Sockets`, `Rolagem X/Y`,
+  `Deslocamento X/Y` e `Repetir/Espelhar` em português. O manifesto com hashes
+  está em `docs/evidence/E08_B_R35_CAPTURAS_MANIFESTO.json`.
+- Limitação declarada: repetição/espelhamento são metadados determinísticos
+  persistidos nesta fase; renderização visual de atlas/alpha/tile permanece
+  deliberadamente fora do claim até o lote de renderer correspondente.
 - Symlink e revisão humana: `DEFERRED_UNTIL_FINAL_AUDIT`, sem reexecução.

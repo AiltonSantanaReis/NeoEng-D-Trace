@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B ativo para câmera e paralaxe; E09–E13 ainda não iniciadas.
+- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C ativo para materiais, normal maps, luzes e sombras; E09–E13 ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -82,10 +82,10 @@ do proprietário for indispensável.
 | E06-E build/capturas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_R22_CAPTURAS_MANIFESTO.json` | binário r22, smoke, captura real e manifesto |
 | E07-A/B/C | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E07_ENTIDADES_PREFABS_EVIDENCIA_2026-09-08.md` e `docs/evidence/E07_R24_CAPTURAS_MANIFESTO.json` | entidades/componentes, hierarquia, ciclo de prefab, build r24, smoke e captura real |
 | E08-A | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` e `docs/evidence/E08_A_R28_CAPTURAS_MANIFESTO.json` | plano 2.5D, ordenação, fallback raster, cache, build r28, smoke e captura real |
-| E08-B.1 contrato/schema | `IN_PROGRESS` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | scroll X/Y, offset, repeat/mirror, defaults e limites |
-| E08-B.2 runtime/preview | `IN_PROGRESS` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | projeção, round-trip, variantes determinísticas, sem dupla aplicação |
-| E08-B.3 UI transacional | `IN_PROGRESS` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | inspetor, Undo/Redo, fluxo do usuário e tradução |
-| E08-B.4 build/capturas | `PENDING_EVIDENCE` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | build limpa, smoke, captura real e manifesto hashado |
+| E08-B.1 contrato/schema | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | scroll X/Y, offset, repeat/mirror, defaults e limites |
+| E08-B.2 runtime/preview | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | projeção, round-trip, variantes determinísticas, sem dupla aplicação |
+| E08-B.3 UI transacional | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | inspetor, Undo/Redo, fluxo do usuário e tradução |
+| E08-B.4 build/capturas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E08_B_R35_CAPTURAS_MANIFESTO.json` | build limpa, smoke, captura real e manifesto hashado |
 
 ## Fila operacional única — não parar antes do fechamento
 
@@ -96,8 +96,8 @@ ela não interrompe a execução técnica autorizada.
 
 | Ordem | Meta | Status | Saída obrigatória |
 |---:|---|---|---|
-| 1 | E08-B câmera/paralaxe | `IN_PROGRESS` | contrato, testes, build e captura real |
-| 2 | E08-C materiais/normal maps/luzes/sombras | `PLANNED` | pixels observáveis, negativos e fallback |
+| 1 | E08-B câmera/paralaxe | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato, testes, build e captura real |
+| 2 | E08-C materiais/normal maps/luzes/sombras | `IN_PROGRESS` | pixels observáveis, negativos e fallback |
 | 3 | E08-D partículas/shaders/pós | `PLANNED` | seed/lifecycle, erro recuperável e cadeia |
 | 4 | E08-E determinismo/destinos | `PLANNED` | timestep, tolerâncias e matriz de capacidades |
 | 5 | E09 autoria/exportação vetorial | `PLANNED` | fluxo editável, persistente e exportável |
@@ -133,7 +133,7 @@ indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 | E05 | colisão própria de cenário | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | tipos físicos, triggers, persistência e validação de contato |
 | E06 | NavMesh 2D e consumo real | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | navegação de superfície, bake, caminho e persistência |
 | E07 | componentes e instâncias | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | relações, parent/grupos, ciclo completo de prefab, build r24 e captura real |
-| E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A checkpoint técnico, E08-B ativo | renderer/FX qualificados com budgets e tolerâncias |
+| E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A/E08-B checkpoints técnicos, E08-C ativo | renderer/FX qualificados com budgets e tolerâncias |
 | E09 | autoria e exportação vetorial | `PLANNED` | objetos editáveis, persistentes e exportáveis |
 | E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
 | E11 | composição e runtime completo | `PLANNED` | cena executada no binário, não apenas estrutura descritiva |
