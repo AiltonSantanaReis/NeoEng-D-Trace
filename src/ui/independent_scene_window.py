@@ -368,6 +368,11 @@ class IndependentSceneWindow(QMainWindow):
         self.toolbar.setMovable(False)
         self.toolbar.setFloatable(False)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolbar)
+        self.edit_toolbar = QToolBar(self)
+        self.edit_toolbar.setMovable(False)
+        self.edit_toolbar.setFloatable(False)
+        self.addToolBarBreak(Qt.ToolBarArea.TopToolBarArea)
+        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.edit_toolbar)
         self.new_action = QAction(self)
         self.open_action = QAction(self)
         self.save_action = QAction(self)
@@ -402,12 +407,15 @@ class IndependentSceneWindow(QMainWindow):
             self.ellipse_action,
             self.polygon_action,
             self.edit_action,
+        ):
+            self.toolbar.addAction(action)
+        for action in (
             self.duplicate_action,
             self.remove_action,
             self.undo_action,
             self.redo_action,
         ):
-            self.toolbar.addAction(action)
+            self.edit_toolbar.addAction(action)
         self.new_action.triggered.connect(self.new_scene)
         self.open_action.triggered.connect(self.open_scene)
         self.save_action.triggered.connect(self.save_scene)
@@ -657,6 +665,7 @@ class IndependentSceneWindow(QMainWindow):
         self.undo_action.setText(self._t("undo"))
         self.redo_action.setText(self._t("redo"))
         self.toolbar.setWindowTitle(self._t("toolbar"))
+        self.edit_toolbar.setWindowTitle(self._t("toolbar"))
         self.resolution_label.setText(self._t("resolution"))
         self.width_label.setText(self._t("width"))
         self.height_label.setText(self._t("height"))
