@@ -39,6 +39,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS_LOCAL` | commit `5a6275f`, manifesto, hashes e smoke test com 11 verificações |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
+| Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
 A execução direta da build corrigida `5a6275f` gerou as capturas em
 `artifacts/e00-continuity-20260908/official-build-5a6275f/captures/`.

@@ -104,6 +104,14 @@
       "expected_events": ["application.opened", "window.geometry.restored", "application.state.saved", "application.closed"],
       "failure_count": 0,
       "warning": "CuPy ausente; fallback para processamento CPU registrado, sem falha funcional."
+    },
+    "restoration": {
+      "status": "PASS_LOCAL_TRACKED_CHECKOUT",
+      "source_head": "3705fa834d75730b1a7164c2ec5bd52ad1abd8a1",
+      "bundle_sha256": "A543EF083759556BA8E26E1870E59592B2C65A1FEFF78805EC56429EFEA2DD9B",
+      "suite": "1959 passed, 2 skipped, 1 warning",
+      "evidence": "docs/evidence/RESTAURACAO_FUNCIONAL_E00_3705FA8_2026-09-08.md",
+      "scope": "Checkout rastreado restaurado; binario portatil, symlink final e revisao humana continuam fora deste subgate."
     }
   },
   "stage_status": {
