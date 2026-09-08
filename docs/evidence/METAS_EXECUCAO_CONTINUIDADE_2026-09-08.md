@@ -46,7 +46,7 @@ do proprietário for indispensável.
 - E01: checkpoint técnico concluído; aceite final pendente.
 - E02: checkpoint técnico aprovado, com aceite final pendente.
 - E03: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`, build r13 e captura real registrados; branch `Ailton/e03-assets-20260908`.
-- E04: próxima etapa operacional; abrir branch própria após o commit de selamento deste checkpoint.
+- E04: checkpoint técnico concluído; aceite final permanece pendente até a auditoria final; branch `Ailton/e04-tilemaps-20260908`, build r14 e captura real registrados.
 - E05–E13: ainda não iniciadas.
 
 ## Metas executáveis do lote E01
@@ -62,11 +62,11 @@ do proprietário for indispensável.
 | E03-A pacote/proveniência | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | categorias, estados, hashes, licença/proveniência |
 | E03-B biblioteca/UX | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | pesquisa, miniaturas, filtros, drag/drop e tradução |
 | E03-C lifecycle/negativos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E03_ASSET_LIBRARY_EVIDENCIA_2026-09-08.md` | import, relink, replace, Undo/Redo, missing/tamper/invalid |
-| E04-A TileSet/células/camadas | `IN_PROGRESS` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | contrato, limites, chunks e benchmark |
-| E04-B ferramentas transacionais | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | paleta, pincel, balde limitado, borracha, retângulo e clipboard |
-| E04-C três grids | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | ortogonal, isométrico, hexagonal, picking e vizinhança |
-| E04-D Rule Tiles | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | regras determinísticas, fallback e invalidação incremental |
-| E04-E persistência/destino | `PLANNED` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | save/reopen, validação, desempenho e import/export representativo |
+| E04-A TileSet/células/camadas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | contrato, limites, chunks e benchmark |
+| E04-B ferramentas transacionais | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | paleta, pincel, balde limitado, borracha, retângulo e clipboard |
+| E04-C três grids | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | ortogonal, isométrico, hexagonal, picking e vizinhança |
+| E04-D Rule Tiles | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | regras determinísticas, fallback e invalidação incremental |
+| E04-E persistência/destino | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | save/reopen, validação, desempenho e import/export representativo |
 
 ## Ordem fixa de execução
 
@@ -86,7 +86,7 @@ do proprietário for indispensável.
 | E01 | contrato, backend e cena independente | `IN_PROGRESS` — checkpoint técnico dos sub-lotes A/B/C | aceite formal com fluxo, negativos, build, captura e rollback |
 | E02 | primitivas, edição, persistência e histórico | `IN_PROGRESS` — E02-C | três primitivas, edição, Undo/Redo, save/reopen e negativos |
 | E03 | biblioteca própria e lifecycle de assets | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | assets rastreáveis, offline, relink/replace e licença |
-| E04 | tilemaps, grids e regras de terreno | `PLANNED` — abertura após selamento documental de E03 | três grids, chunks, regras e persistência |
+| E04 | tilemaps, grids e regras de terreno | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — r14 validado no binário | três grids, chunks, regras e persistência |
 | E05 | colisão própria de cenário | `PLANNED` | tipos físicos, occluders e validação de contato |
 | E06 | NavMesh 2D e consumo real | `PLANNED` | navegação de superfície/plataforma no fluxo real |
 | E07 | componentes e instâncias | `PLANNED` | relações, parent/grupos e conflitos de prefab |

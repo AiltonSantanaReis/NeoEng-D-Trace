@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "stage": "E04",
+  "status": "PASS_AUTOMATED_CAPTURE_ONLY",
+  "source_commit": "cc1ebaa3001f9cf533df8093aac1efec5c81dc10",
+  "source_branch": "Ailton/e04-tilemaps-20260908",
+  "binary": {
+    "path": "release/e04-tilemaps-20260908-r14/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "sha256": "809D7ECD3E0CF0D721898FD99748A276B6328ADFBCB6EE4F905C393B23EB1FD3"
+  },
+  "archive": {
+    "path": "release/e04-tilemaps-20260908-r14/NeoEng-D-Trace-0.3.0-win64-portable.zip",
+    "sha256": "89ee347d430b699d6f877bd9cc21d4e12dc5aebb43cc205c2f24ae1bf463323b"
+  },
+  "continuity_provenance": {
+    "path": "release/e04-tilemaps-20260908-r14/continuity-provenance.json",
+    "registry_sha256_at_build": "C8642BD76A66142995754204D021FCC5B6A7520BD826B0C0D6FBD11E6405FC27",
+    "portable_smoke": "SUCCESS",
+    "portable_smoke_checks": 11
+  },
+  "capture": {
+    "method": "PrintWindow from the shipped Windows binary window handle",
+    "directory": "artifacts/e04-tilemaps-20260908/binary-capture-r14-final",
+    "window_rect": "-13,-13,3853,2077",
+    "files": {
+      "01-main.png": "73CA570737D9293C973A533C3B825CC5BEC917586A32B1FD98DCDE34950E54C6",
+      "02-project-open-dialog.png": "41AEB289238CEFC04D7860E9040F3E746EE03971E9F7D76EA0A9AB8DEE3EC513",
+      "03-main-after-project-load.png": "D98F55C9B024200288C08D8E2EF44693A38D2420853A331E616CB9D34CFE6F90",
+      "05-asset-library-ready.png": "A3BAAF9C3A7A48AF246FF45F4092451B667364BC78AC77FF010B9E5B0BB23EC7",
+      "06-tilemap-new.png": "CB07A13B477088577C0F4B0493E23FF7443E027963AB886FBACCDA6C90A4DE52",
+      "07-tilemap-painted.png": "B93734B1DBD962D6A423CDB74816DB491DA7861483557D4945B7543286322B05",
+      "08-tilemap-saved.png": "E15857DB886C34C4E66BFD378D479AC39217196823AFC1C741DB0DD0B919AF2E",
+      "09-tilemap-reopened.png": "A0DF3B7B55689B9D8189A6312CEEF704FE802774AA3354D03E5A5C5B1E566740"
+    }
+  },
+  "flow_observations": [
+    "Project was opened through the shipped native project dialog.",
+    "New created an orthogonal tilemap and exposed the grass palette.",
+    "Painting produced 2 populated cells in 1 sparse chunk; the status and rendered cells were visible.",
+    "Save reported 'Tilemap salvo: scenario.tilemap.json'.",
+    "Reopen reported 'Tilemap reaberto' and preserved the 2 cells.",
+    "The inspected captures showed no clipping, untranslated E04 controls, or broken panel scroll state."
+  ],
+  "sidecar": {
+    "path": "artifacts/e03-assets-20260908/binary-fixture/assets/tilemaps/scenario.tilemap.json",
+    "sha256": "D4EA72A848A3A17704E9414E7FA7847B45B484CF0FB5C2C00A3666ACCF4F0C61",
+    "persisted_cells": 2,
+    "grid": "orthogonal",
+    "chunk_size": 64
+  },
+  "human_review": "PENDING_EVIDENCE_DEFERRED_UNTIL_FINAL_AUDIT"
+}

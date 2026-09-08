@@ -17,7 +17,7 @@ def test_current_continuity_registry_is_internally_consistent():
     assert registry["stage_status"]["E03"] == (
         "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
     )
-    assert registry["stage_status"]["E04"] == "IN_PROGRESS"
+    assert registry["stage_status"]["E04"] == "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
 
 
 def test_symlink_results_remain_separate():
