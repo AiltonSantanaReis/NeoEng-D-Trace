@@ -53,7 +53,7 @@
       "sandbox_skips": 0,
       "sandbox_source_commit": "35727d99c7002ad26c3277dff8542f82dad4c3f8",
       "final_source_requalification_status": "PENDING_EVIDENCE",
-      "final_source_requalification_attempt": "WindowsSandbox encerrou sem produzir report.json; nenhuma aprovação foi inferida.",
+      "final_source_requalification_attempt": "Tentativa no SHA 5a6275f: WindowsSandbox encerrou com codigo 0 sem produzir report.json; nenhuma aprovacao foi inferida. Evidencia: docs/evidence/REQUALIFICACAO_SYMLINK_5A6275F8_2026-09-08.md.",
       "local_suite_status": "SKIP_PRIVILEGE_LIMITATION",
       "local_suite_skips": 2,
       "rule": "Nunca converter SKIP_LOCAL em PASS; manter os dois resultados separados."

@@ -32,7 +32,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 |---|---|---|
 | Suíte oficial | `PASS_LOCAL` | 1959 aprovados, 2 skips, 1 warning |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
-| Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY` | 31 casos, 0 skips; não substitui o gate oficial |
+| Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY / PENDING_EVIDENCE` | 31/31 é diagnóstico de SHA anterior; tentativa no SHA final terminou sem relatório, registrada em `docs/evidence/REQUALIFICACAO_SYMLINK_5A6275F8_2026-09-08.md` |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
