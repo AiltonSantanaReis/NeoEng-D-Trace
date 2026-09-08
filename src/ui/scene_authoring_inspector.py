@@ -23,6 +23,7 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
     SceneLightSocketRecord,
+    SceneMaterialAuthoringRecord,
     SceneParallaxLayerRecord,
     SceneSnapRecord,
     SceneSocketRecord,
@@ -97,6 +98,16 @@ class SceneAuthoringInspector(QWidget):
         self.parallax_mirror_x = QCheckBox("Mirror X")
         self.parallax_mirror_y = QCheckBox("Mirror Y")
         self.parallax_apply_button = QPushButton("Apply Layer Parallax")
+        self.material_albedo = QLineEdit("#ffffff")
+        self.material_emission = QLineEdit("#000000")
+        self.material_normal_x = self._spin(-1.0, 1.0, step=0.05)
+        self.material_normal_y = self._spin(-1.0, 1.0, step=0.05)
+        self.material_normal_strength = self._spin(0.0, 1.0, step=0.05)
+        self.material_emission_strength = self._spin(0.0, 16.0, step=0.1)
+        self.material_opacity = self._spin(0.0, 1.0, step=0.05)
+        self.material_receives_shadow = QCheckBox("Receives shadows")
+        self.material_casts_shadow = QCheckBox("Casts shadows")
+        self.material_apply_button = QPushButton("Apply Material")
         self.socket_combo = QComboBox()
         self.socket_type = QComboBox()
         self.socket_type.addItems(["light", "vfx", "trigger"])
@@ -138,6 +149,36 @@ class SceneAuthoringInspector(QWidget):
         stage4_form.addRow(self.parallax_mirror_x)
         stage4_form.addRow(self.parallax_mirror_y)
         stage4_form.addRow(self.parallax_apply_button)
+        self._add_labeled_row(
+            stage4_form, "material_albedo", "Albedo", self.material_albedo
+        )
+        self._add_labeled_row(
+            stage4_form, "material_emission", "Emission", self.material_emission
+        )
+        self._add_labeled_row(
+            stage4_form, "material_normal_x", "Normal X", self.material_normal_x
+        )
+        self._add_labeled_row(
+            stage4_form, "material_normal_y", "Normal Y", self.material_normal_y
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "material_normal_strength",
+            "Normal Strength",
+            self.material_normal_strength,
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "material_emission_strength",
+            "Emission Strength",
+            self.material_emission_strength,
+        )
+        self._add_labeled_row(
+            stage4_form, "material_opacity", "Opacity", self.material_opacity
+        )
+        stage4_form.addRow(self.material_receives_shadow)
+        stage4_form.addRow(self.material_casts_shadow)
+        stage4_form.addRow(self.material_apply_button)
         self._add_labeled_row(stage4_form, "socket", "Socket", self.socket_combo)
         self._add_labeled_row(stage4_form, "socket_type", "Type", self.socket_type)
         self._add_labeled_row(stage4_form, "socket_id", "ID", self.socket_id)
@@ -196,6 +237,7 @@ class SceneAuthoringInspector(QWidget):
         self.fit_all_button.clicked.connect(self.request_fit_all)
         self.camera_apply_button.clicked.connect(self._apply_camera)
         self.parallax_apply_button.clicked.connect(self._apply_parallax)
+        self.material_apply_button.clicked.connect(self._apply_material)
         self.layer_combo.currentIndexChanged.connect(self._refresh_parallax_fields)
         self.socket_combo.currentIndexChanged.connect(self._refresh_socket_fields)
         self.add_socket_button.clicked.connect(self._add_socket)
@@ -341,6 +383,7 @@ class SceneAuthoringInspector(QWidget):
             index = self.layer_combo.findData(selected_layer)
             self.layer_combo.setCurrentIndex(max(0, index))
         self._refresh_parallax_fields()
+        self._refresh_material_fields()
         selected_socket = self.socket_combo.currentData()
         with QSignalBlocker(self.socket_combo):
             self.socket_combo.clear()
@@ -351,6 +394,50 @@ class SceneAuthoringInspector(QWidget):
                 index = len(document.sockets) - 1
             self.socket_combo.setCurrentIndex(index)
         self._refresh_socket_fields()
+
+    def _material_widgets(self) -> tuple[QWidget, ...]:
+        return (
+            self.material_albedo,
+            self.material_emission,
+            self.material_normal_x,
+            self.material_normal_y,
+            self.material_normal_strength,
+            self.material_emission_strength,
+            self.material_opacity,
+            self.material_receives_shadow,
+            self.material_casts_shadow,
+            self.material_apply_button,
+        )
+
+    def _refresh_material_fields(self) -> None:
+        primary = self._primary()
+        material = getattr(primary, "material", None)
+        enabled = isinstance(
+            self.session.document, SceneAuthoringDocumentV2
+        ) and isinstance(material, SceneMaterialAuthoringRecord)
+        for widget in self._material_widgets():
+            widget.setEnabled(enabled)
+        if not enabled or not isinstance(material, SceneMaterialAuthoringRecord):
+            return
+        with QSignalBlocker(self.material_albedo):
+            self.material_albedo.setText(material.albedo)
+        with QSignalBlocker(self.material_emission):
+            self.material_emission.setText(material.emission)
+        for widget, value in (
+            (self.material_normal_x, material.normal_map_xy.x),
+            (self.material_normal_y, material.normal_map_xy.y),
+            (self.material_normal_strength, material.normal_strength),
+            (self.material_emission_strength, material.emission_strength),
+            (self.material_opacity, material.opacity),
+        ):
+            with QSignalBlocker(widget):
+                widget.setValue(float(value))
+        for widget, value in (
+            (self.material_receives_shadow, material.receives_shadow),
+            (self.material_casts_shadow, material.casts_shadow),
+        ):
+            with QSignalBlocker(widget):
+                widget.setChecked(bool(value))
 
     def _refresh_parallax_fields(self) -> None:
         document = self.session.document
@@ -447,6 +534,34 @@ class SceneAuthoringInspector(QWidget):
                 "Parallax updated" if changed else "No parallax changes"
             )
         except (ValueError, KeyError) as exc:
+            self.status_message.emit(user_error_message(exc, operation="edit"))
+
+    def _apply_material(self) -> None:
+        primary = self._primary()
+        if primary is None:
+            self.status_message.emit("Select an object before editing its material")
+            return
+        try:
+            changed = self.session.update_material(
+                primary.id,
+                SceneMaterialAuthoringRecord(
+                    albedo=self.material_albedo.text().strip(),
+                    emission=self.material_emission.text().strip(),
+                    normal_map_xy=PointRecord(
+                        x=self.material_normal_x.value(),
+                        y=self.material_normal_y.value(),
+                    ),
+                    normal_strength=self.material_normal_strength.value(),
+                    emission_strength=self.material_emission_strength.value(),
+                    opacity=self.material_opacity.value(),
+                    receives_shadow=self.material_receives_shadow.isChecked(),
+                    casts_shadow=self.material_casts_shadow.isChecked(),
+                ),
+            )
+            self.status_message.emit(
+                "Material updated" if changed else "No material changes"
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
             self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def _add_socket(self) -> None:
@@ -591,6 +706,13 @@ class SceneAuthoringInspector(QWidget):
                 "socket_x": "Socket X",
                 "socket_y": "Socket Y",
                 "socket_z": "Socket Z",
+                "material_albedo": "Albedo",
+                "material_emission": "Emissão",
+                "material_normal_x": "Normal X",
+                "material_normal_y": "Normal Y",
+                "material_normal_strength": "Força da Normal",
+                "material_emission_strength": "Força da Emissão",
+                "material_opacity": "Opacidade",
             }
             if is_pt
             else {
@@ -611,6 +733,13 @@ class SceneAuthoringInspector(QWidget):
                 "socket_x": "Socket X",
                 "socket_y": "Socket Y",
                 "socket_z": "Socket Z",
+                "material_albedo": "Albedo",
+                "material_emission": "Emission",
+                "material_normal_x": "Normal X",
+                "material_normal_y": "Normal Y",
+                "material_normal_strength": "Normal Strength",
+                "material_emission_strength": "Emission Strength",
+                "material_opacity": "Opacity",
             }
         )
         for key, label in self._field_labels.items():
@@ -621,6 +750,9 @@ class SceneAuthoringInspector(QWidget):
             self.stage4_group.setTitle("Câmera, Paralaxe e Sockets")
             self.camera_apply_button.setText("Aplicar Câmera")
             self.parallax_apply_button.setText("Aplicar Paralaxe da Camada")
+            self.material_apply_button.setText("Aplicar Material")
+            self.material_receives_shadow.setText("Recebe sombras")
+            self.material_casts_shadow.setText("Projeta sombras")
             self.flip_x.setText("Inverter X")
             self.flip_y.setText("Inverter Y")
             self.snap_enabled.setText("Snap habilitado")
@@ -634,6 +766,9 @@ class SceneAuthoringInspector(QWidget):
             self.stage4_group.setTitle("Camera, Parallax & Sockets")
             self.camera_apply_button.setText("Apply Camera")
             self.parallax_apply_button.setText("Apply Layer Parallax")
+            self.material_apply_button.setText("Apply Material")
+            self.material_receives_shadow.setText("Receives shadows")
+            self.material_casts_shadow.setText("Casts shadows")
             self.flip_x.setText("Flip X")
             self.flip_y.setText("Flip Y")
             self.snap_enabled.setText("Snap enabled")

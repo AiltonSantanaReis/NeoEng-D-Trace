@@ -25,6 +25,7 @@ from src.persistence.scene_authoring_schema import (
     SceneGroupAuthoringRecord,
     SceneGroupAuthoringRecordV2,
     SceneLayerAuthoringRecord,
+    SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
     SceneSnapRecord,
@@ -407,6 +408,16 @@ class SceneAuthoringSession:
             (object_id,),
             lambda: self.model.update_transform(object_id, transform),
             "Edit object transform",
+        )
+
+    def update_material(
+        self,
+        object_id: str,
+        material: SceneMaterialAuthoringRecord,
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.update_material(object_id, material),
+            "Edit object material",
         )
 
     def add_asset(self, asset: AssetReferenceRecord) -> bool:

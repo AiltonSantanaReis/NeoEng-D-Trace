@@ -147,6 +147,41 @@ class SceneLayerAuthoringRecord(StrictProjectModel):
     locked: bool = False
 
 
+class SceneMaterialAuthoringRecord(StrictProjectModel):
+    """Persisted material inputs consumed by the deterministic raster pass."""
+
+    albedo: str = Field(default="#ffffff", pattern=r"^#[0-9a-fA-F]{6}$")
+    normal_map_xy: PointRecord = PointRecord(x=0.0, y=0.0)
+    normal_strength: int | float = 1.0
+    emission: str = Field(default="#000000", pattern=r"^#[0-9a-fA-F]{6}$")
+    emission_strength: int | float = 0.0
+    opacity: int | float = 1.0
+    receives_shadow: bool = True
+    casts_shadow: bool = True
+
+    @field_validator("albedo", "emission")
+    @classmethod
+    def normalize_color(cls, value: str) -> str:
+        return value.lower()
+
+    @field_validator("normal_map_xy")
+    @classmethod
+    def validate_normal_map(cls, value: PointRecord) -> PointRecord:
+        _bounded(value.x, "material.normal_map_xy.x", -1.0, 1.0)
+        _bounded(value.y, "material.normal_map_xy.y", -1.0, 1.0)
+        return value
+
+    @field_validator("normal_strength", "opacity")
+    @classmethod
+    def validate_unit_material_values(cls, value: int | float) -> int | float:
+        return _unit(value, "material unit value")
+
+    @field_validator("emission_strength")
+    @classmethod
+    def validate_emission_strength(cls, value: int | float) -> int | float:
+        return _bounded(value, "material.emission_strength", 0.0, 16.0)
+
+
 class SceneObjectAuthoringRecord(StrictProjectModel):
     id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     asset_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
@@ -154,6 +189,9 @@ class SceneObjectAuthoringRecord(StrictProjectModel):
     transform: SceneTransformRecord
     visible: bool = True
     locked: bool = False
+    material: SceneMaterialAuthoringRecord | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
 
 class SceneGroupAuthoringRecord(StrictProjectModel):

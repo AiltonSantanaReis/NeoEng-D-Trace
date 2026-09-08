@@ -32,7 +32,17 @@
         "flip_y": false
       },
       "visible": true,
-      "locked": false
+      "locked": false,
+      "material": {
+        "albedo": "#405070",
+        "normal_map_xy": {"x": 0.7, "y": -0.3},
+        "normal_strength": 0.8,
+        "emission": "#101820",
+        "emission_strength": 0.1,
+        "opacity": 0.92,
+        "receives_shadow": true,
+        "casts_shadow": true
+      }
     },
     {
       "id": "lighting-occluder",
@@ -47,7 +57,17 @@
         "flip_y": false
       },
       "visible": true,
-      "locked": false
+      "locked": false,
+      "material": {
+        "albedo": "#8b5a2b",
+        "normal_map_xy": {"x": -0.35, "y": 0.2},
+        "normal_strength": 0.65,
+        "emission": "#000000",
+        "emission_strength": 0.0,
+        "opacity": 1.0,
+        "receives_shadow": true,
+        "casts_shadow": true
+      }
     }
   ],
   "groups": [],

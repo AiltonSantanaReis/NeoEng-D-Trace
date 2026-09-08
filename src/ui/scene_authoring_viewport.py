@@ -77,6 +77,7 @@ from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocumentV2,
+    SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneTransformRecord,
 )
@@ -677,6 +678,34 @@ class SceneAuthoringViewport(QGraphicsView):
             occluders=self._lighting_settings.occluders,
         )
 
+    @staticmethod
+    def _lighting_material_for_object(record: object) -> SceneLightingMaterial:
+        material = getattr(record, "material", None)
+        if not isinstance(material, SceneMaterialAuthoringRecord):
+            return SceneLightingMaterial()
+
+        def color(value: str) -> tuple[float, float, float]:
+            color_text = value.lstrip("#")
+            return (
+                int(color_text[0:2], 16) / 255.0,
+                int(color_text[2:4], 16) / 255.0,
+                int(color_text[4:6], 16) / 255.0,
+            )
+
+        return SceneLightingMaterial(
+            albedo=color(material.albedo),
+            normal_xy=(
+                float(material.normal_map_xy.x),
+                float(material.normal_map_xy.y),
+            ),
+            normal_strength=float(material.normal_strength),
+            emission=color(material.emission),
+            emission_strength=float(material.emission_strength),
+            opacity=float(material.opacity),
+            receives_shadow=material.receives_shadow,
+            casts_shadow=material.casts_shadow,
+        )
+
     def _project_position(self, position: Point3Record, layer_id: str) -> QPointF:
         if not self._preview_enabled:
             return QPointF(float(position.x), float(position.y))
@@ -983,7 +1012,7 @@ class SceneAuthoringViewport(QGraphicsView):
                         float(item.transform.position.x),
                         float(item.transform.position.y),
                     ),
-                    SceneLightingMaterial(),
+                    self._lighting_material_for_object(item),
                     settings,
                 )
                 lighting_by_object[item.id] = QColor(

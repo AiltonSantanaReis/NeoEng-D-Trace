@@ -26,6 +26,7 @@ from src.persistence.scene_authoring_schema import (
     SceneEntityAuthoringRecord,
     SceneGroupAuthoringRecord,
     SceneLayerAuthoringRecord,
+    SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
     SceneSnapRecord,
@@ -129,14 +130,18 @@ class SceneAuthoringModel:
         if parent_entity_id is not None:
             self._entity(parent_entity_id)
         updated = [
-            item.model_copy(update={"parent_entity_id": parent_entity_id})
-            if item.id == entity_id
-            else item
+            (
+                item.model_copy(update={"parent_entity_id": parent_entity_id})
+                if item.id == entity_id
+                else item
+            )
             for item in document.entities
         ]
         self._replace(entities=updated)
 
-    def add_entity_from_object(self, object_id: str, entity_id: str | None = None) -> str:
+    def add_entity_from_object(
+        self, object_id: str, entity_id: str | None = None
+    ) -> str:
         """Create one stable entity identity from an existing authored object."""
 
         if not isinstance(self.document, SceneAuthoringDocumentV2):
@@ -273,6 +278,27 @@ class SceneAuthoringModel:
         objects = [
             (
                 item.model_copy(update={"transform": transform})
+                if item.id == object_id
+                else item
+            )
+            for item in self.document.objects
+        ]
+        self._replace(objects=objects)
+
+    def update_material(
+        self,
+        object_id: str,
+        material: SceneMaterialAuthoringRecord,
+    ) -> None:
+        """Replace one V2 object's persisted material after edit preflight."""
+
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("material authoring requires scene schema V2")
+        self._assert_editable(object_id)
+        item = self._object(object_id)
+        objects = [
+            (
+                item.model_copy(update={"material": material})
                 if item.id == object_id
                 else item
             )
