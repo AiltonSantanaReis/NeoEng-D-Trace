@@ -386,15 +386,10 @@ try {
         Start-Sleep -Milliseconds 200
         [NeoEngIndependentSceneCapture]::MoveCursorWindow($child.Handle, $InvalidTargetX, $InvalidTargetY)
         Start-Sleep -Milliseconds 400
-        $probePath = Join-Path $OutputDirectory "05-point-preview-probe.png"
-        [NeoEngIndependentSceneCapture]::Capture($child.Handle, $probePath) | Out-Null
-        [NeoEngIndependentSceneCapture]::EndDrag()
-        Start-Sleep -Milliseconds 250
-        [NeoEngIndependentSceneCapture]::SendEscape()
-        Start-Sleep -Milliseconds 500
         $invalidPath = Join-Path $OutputDirectory "05-independent-scene-point-preview-invalid.png"
         $invalidSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $invalidPath)
-
+        [NeoEngIndependentSceneCapture]::EndDrag()
+        Start-Sleep -Milliseconds 250
         [NeoEngIndependentSceneCapture]::SendEscape()
         Start-Sleep -Milliseconds 500
         $cancelPath = Join-Path $OutputDirectory "06-independent-scene-point-edit-cancelled.png"
