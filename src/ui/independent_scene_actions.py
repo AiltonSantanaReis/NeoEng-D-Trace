@@ -14,6 +14,7 @@ def install_independent_scene(window: Any) -> None:
 
     window._independent_scene_window = None
     action = QAction(window)
+    action.setShortcut("Ctrl+Alt+N")
     window.open_independent_scene_action = action
     window.scenario_menu.addSeparator()
     window.scenario_menu.addAction(action)
