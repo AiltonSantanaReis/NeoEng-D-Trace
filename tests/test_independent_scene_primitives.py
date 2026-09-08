@@ -268,6 +268,19 @@ def test_point_edit_invalid_preview_does_not_mutate_and_escape_cancels() -> None
     assert tuple(gesture.working_points) == original
 
 
+def test_point_edit_rejects_near_duplicate_preview_points() -> None:
+    geometry = IndependentScenePrimitiveGeometryRecord(
+        kind="polygon",
+        points=_points((0, 0), (100, 0), (50, 100)),
+    )
+    gesture = IndependentScenePointEditGesture()
+    gesture.begin("poly", geometry)
+
+    assert not gesture.preview_point(1, PointRecord(x=50, y=101))
+    assert gesture.state == "preview_invalid"
+    assert "24 pixels" in (gesture.last_error or "")
+
+
 def test_point_edit_gesture_rejects_locked_primitive() -> None:
     geometry = IndependentScenePrimitiveGeometryRecord(
         kind="rectangle",

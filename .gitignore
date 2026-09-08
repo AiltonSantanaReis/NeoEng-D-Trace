@@ -65,3 +65,8 @@ Thumbs.db
 Desktop.ini
 release/
 !packaging/*.spec
+# E02-C DPI calibration probes are reproducible diagnostics; final captures are
+# promoted explicitly in the evidence package instead of being auto-tracked.
+/artifacts/e02-primitives-20260908/probe-*/
+/artifacts/e02-primitives-20260908/captures-r9-point-edit/
+/artifacts/e02-primitives-20260908/captures-r9-point-edit-v*/

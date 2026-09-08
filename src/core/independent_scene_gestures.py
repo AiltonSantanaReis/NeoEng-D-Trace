@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Literal
 
@@ -19,6 +20,7 @@ PointEditState = Literal[
     "finalized",
     "cancelled",
 ]
+MIN_POINT_DISTANCE = 24.0
 
 
 @dataclass
@@ -68,6 +70,16 @@ class IndependentScenePointEditGesture:
         candidate = list(self.working_points)
         candidate[point_index] = point
         try:
+            for index, other in enumerate(candidate):
+                if index == point_index:
+                    continue
+                if (
+                    math.hypot(point.x - other.x, point.y - other.y)
+                    < MIN_POINT_DISTANCE
+                ):
+                    raise ValueError(
+                        "preview points must remain at least 24 pixels apart"
+                    )
             IndependentScenePrimitiveGeometryRecord(
                 kind=self.kind,
                 points=candidate,

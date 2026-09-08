@@ -6,7 +6,10 @@ param(
     [switch]$CaptureSaveDialog,
     [switch]$CapturePrimitiveFlow,
     [switch]$CaptureAuthoringOps,
-    [switch]$CaptureSaveReopen
+    [switch]$CaptureSaveReopen,
+    [switch]$CapturePointEditing,
+    [int]$InvalidTargetX = 958,
+    [int]$InvalidTargetY = 372
 )
 
 $ErrorActionPreference = "Stop"
@@ -172,6 +175,33 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x11, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlAlt(byte key)
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x12, 0, 0, UIntPtr.Zero);
+        keybd_event(key, 0, 0, UIntPtr.Zero);
+        keybd_event(key, 0, up, UIntPtr.Zero);
+        keybd_event(0x12, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendEscape()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x1B, 0, 0, UIntPtr.Zero);
+        keybd_event(0x1B, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendCtrlZ()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x5A, 0, 0, UIntPtr.Zero);
+        keybd_event(0x5A, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
     public static void ClickScreen(int x, int y)
     {
         SetCursorPos(x, y);
@@ -184,6 +214,27 @@ public static class NeoEngIndependentSceneCapture
         RECT rect;
         if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
         ClickScreen(rect.Left + offsetX, rect.Top + offsetY);
+    }
+
+    public static void BeginDragWindow(IntPtr hWnd, int startX, int startY)
+    {
+        RECT rect;
+        if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        SetCursorPos(rect.Left + startX, rect.Top + startY);
+        mouse_event(0x0002, 0, 0, 0, UIntPtr.Zero);
+    }
+
+    public static void MoveCursorWindow(IntPtr hWnd, int offsetX, int offsetY)
+    {
+        RECT rect;
+        if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        SetCursorPos(rect.Left + offsetX, rect.Top + offsetY);
+        mouse_event(0x0001, 0, 0, 0, UIntPtr.Zero);
+    }
+
+    public static void EndDrag()
+    {
+        mouse_event(0x0004, 0, 0, 0, UIntPtr.Zero);
     }
 
     public static string Capture(IntPtr hWnd, string path)
@@ -319,6 +370,70 @@ try {
         }
     }
 
+    $pointEditingRecord = $null
+    if ($CapturePointEditing -and $child) {
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        # The primitive-creation flow leaves the polygon selected deterministically.
+        [NeoEngIndependentSceneCapture]::SendCtrlAlt(0x45)
+        Start-Sleep -Milliseconds 500
+        $editModePath = Join-Path $OutputDirectory "04-independent-scene-point-edit-mode.png"
+        $editModeSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $editModePath)
+
+        # Move the upper-right handle onto the lower handle while pressed.
+        # This produces a duplicate-point preview without committing the document.
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::BeginDragWindow($child.Handle, 991, 341)
+        Start-Sleep -Milliseconds 200
+        [NeoEngIndependentSceneCapture]::MoveCursorWindow($child.Handle, $InvalidTargetX, $InvalidTargetY)
+        Start-Sleep -Milliseconds 400
+        $probePath = Join-Path $OutputDirectory "05-point-preview-probe.png"
+        [NeoEngIndependentSceneCapture]::Capture($child.Handle, $probePath) | Out-Null
+        [NeoEngIndependentSceneCapture]::EndDrag()
+        Start-Sleep -Milliseconds 250
+        [NeoEngIndependentSceneCapture]::SendEscape()
+        Start-Sleep -Milliseconds 500
+        $invalidPath = Join-Path $OutputDirectory "05-independent-scene-point-preview-invalid.png"
+        $invalidSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $invalidPath)
+
+        [NeoEngIndependentSceneCapture]::SendEscape()
+        Start-Sleep -Milliseconds 500
+        $cancelPath = Join-Path $OutputDirectory "06-independent-scene-point-edit-cancelled.png"
+        $cancelSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $cancelPath)
+
+        [NeoEngIndependentSceneCapture]::SendCtrlAlt(0x45)
+        Start-Sleep -Milliseconds 400
+        [NeoEngIndependentSceneCapture]::BeginDragWindow($child.Handle, 991, 341)
+        Start-Sleep -Milliseconds 200
+        [NeoEngIndependentSceneCapture]::MoveCursorWindow($child.Handle, 1015, 358)
+        [NeoEngIndependentSceneCapture]::EndDrag()
+        Start-Sleep -Milliseconds 500
+        $finalPath = Join-Path $OutputDirectory "07-independent-scene-point-edit-finalized.png"
+        $finalSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $finalPath)
+        $pointEditingRecord = [ordered]@{
+            edit_mode = [ordered]@{
+                window = $editModeSize
+                path = $editModePath
+                sha256 = (Get-FileHash -LiteralPath $editModePath -Algorithm SHA256).Hash
+            }
+            invalid_preview = [ordered]@{
+                window = $invalidSize
+                path = $invalidPath
+                sha256 = (Get-FileHash -LiteralPath $invalidPath -Algorithm SHA256).Hash
+            }
+            cancelled = [ordered]@{
+                window = $cancelSize
+                path = $cancelPath
+                sha256 = (Get-FileHash -LiteralPath $cancelPath -Algorithm SHA256).Hash
+            }
+            finalized = [ordered]@{
+                window = $finalSize
+                path = $finalPath
+                sha256 = (Get-FileHash -LiteralPath $finalPath -Algorithm SHA256).Hash
+            }
+            inputs = @("select polygon row", "Ctrl+Alt+E", "native drag", "Escape", "native drag")
+        }
+    }
+
     $saveReopenRecord = $null
     if ($CaptureSaveReopen -and $child) {
         $scenePath = (Join-Path (Resolve-Path -LiteralPath $OutputDirectory).Path "e02-b-flow.ndtscene")
@@ -422,6 +537,7 @@ try {
         independent_scene = $childRecord
         primitive_flow = $primitiveFlowRecord
         authoring_ops = $authoringOpsRecord
+        point_editing = $pointEditingRecord
         save_reopen = $saveReopenRecord
         save_dialog = $saveDialogRecord
         observed_windows = @($windows | ForEach-Object { [ordered]@{ title = $_.Title } })
