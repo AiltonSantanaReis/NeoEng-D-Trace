@@ -36,22 +36,21 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `BLOCKED` | host de Computer Use sem janela de aplicação |
-| Build mais recente | `PENDING_PROVENANCE` | hash localizado, mas sem `source_commit` verificável |
+| Build oficial | `PASS_LOCAL` | commit `2722ac1`, manifesto, hashes e smoke test com 11 verificações |
 
-A execução direta da build mais recente observada (`D9422D02…`) gerou a captura
-`artifacts/e00-continuity-20260908/captures/01-latest-binary-maximized.png`.
+A execução direta da build oficial `2722ac1` gerou as capturas em
+`artifacts/e00-continuity-20260908/official-build-2722ac1/captures/`.
 Ela registra truncamento de rótulos da toolbar em `1933x1045`. Esse achado é
-diagnóstico da combinação binário/estado/resolução capturada; não pode ser
-transferido para outra build nem usado para reabrir correções já qualificadas
-em outro SHA sem uma nova execução no mesmo pacote.
+diagnóstico da combinação binário/estado/resolução capturada e permanece
+vinculado ao hash `2C5B91A9…`; não pode ser transferido para outra build sem
+uma nova execução no mesmo pacote.
 
 ## Próximo passo permitido
 
-Produzir uma build oficial a partir de uma única árvore limpa e explicitamente
-identificada, com o manifesto de proveniência obrigatório. Depois executar o
-binário dessa build, capturar os fluxos do usuário e atualizar este registro
-no mesmo pacote. Até isso acontecer, a build `fixed2` é apenas um artefato
-observado, não a build canônica do projeto.
+Executar os fluxos de usuário na build oficial `2722ac1`, registrar capturas
+dos estados críticos e concluir a revisão visual/humana. A build já possui
+manifesto de proveniência e smoke test; a revisão nativa/humana continua
+bloqueada enquanto o host não expuser uma janela de aplicação.
 
 Não iniciar E01, não refazer funcionalidades já corrigidas em outra base e não
 reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada

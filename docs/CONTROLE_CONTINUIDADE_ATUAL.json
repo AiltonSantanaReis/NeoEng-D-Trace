@@ -26,7 +26,7 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/error-presentation-contract-20260904",
-    "head": "35727d99c7002ad26c3277dff8542f82dad4c3f8",
+    "head": "2722ac1cf39b222931ed440a0eb935ee5d1dcc50",
     "tracked_changes_present": true,
     "untracked_artifacts_present": true,
     "status": "LOCAL_WORKTREE_NOT_RELEASE_ELIGIBLE"
@@ -55,19 +55,26 @@
     "visual": {
       "automated_capture_status": "PASS_AUTOMATED_CAPTURE_ONLY",
       "native_human_status": "BLOCKED",
-      "latest_binary_capture": "artifacts/e00-continuity-20260908/captures/01-latest-binary-maximized.png",
+      "latest_binary_capture": "artifacts/e00-continuity-20260908/official-build-2722ac1/captures/01-official-maximized.png",
       "latest_binary_capture_sha256": "FBA8E1EAABBA7B3F16230245B28F3EF735304F88DE612479CBB36DA5CCB53EDD",
       "latest_binary_capture_window": "1933x1045",
       "observed_finding": "Toolbar labels are truncated in the maximized capture; this finding is scoped to the captured binary/state and is not transferred to another SHA.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
-      "status": "PENDING_PROVENANCE",
-      "latest_observed_binary": "C:\\Users\\atnco\\AppData\\Local\\Temp\\neoeng-visual-audit-fixed2-20260908\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "D9422D021FCC4558A4C484790D02B6CE7A61D614E2EB97ECEA2E4040B9489F58",
-      "latest_observed_binary_last_write": "2026-09-08T06:40:46-03:00",
-      "source_commit": null,
-      "reason": "O artefato mais recente foi localizado por data/hash, mas nao possui manifesto com source_commit verificavel; nao pode ser promovido como build canonica."
+      "status": "PASS_LOCAL",
+      "latest_observed_binary": "C:\\Users\\atnco\\Pictures\\NeoEng-D-Trace\\build\\e00-continuity-20260908-official\\release\\e00-20260908\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "2C5B91A9C5145C69FCAB986FF8D73BD67C0E411995A09BF655565ACF690E32FF",
+      "latest_observed_binary_last_write": "2026-09-08T11:13:08Z",
+      "source_commit": "2722ac1cf39b222931ed440a0eb935ee5d1dcc50",
+      "source_branch": "Ailton/e00-continuity-build-20260908",
+      "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+      "continuity_registry_sha256": "FCACDA011A17B50EE68550CD2027CA950650F623A38181FF75F5C3181DAC1F46",
+      "provenance_manifest": "build/e00-continuity-20260908-official/release/e00-20260908/continuity-provenance.json",
+      "portable_smoke_status": "SUCCESS",
+      "portable_smoke_checks": 11,
+      "portable_archive_sha256": "385731D0F0593BE3F6A1C8D6646DC7A2F1AB2E22F9B827752613F77ED00320BF",
+      "reason": "Build oficial executada em worktree limpo; manifesto, hash do binario, pacote e smoke test registrados."
     }
   },
   "stage_status": {
