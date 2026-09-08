@@ -1,5 +1,5 @@
 {
-  "executable": "C:\\Users\\atnco\\Pictures\\NeoEng-D-Trace\\build\\e01-independent-scene-20260908\\release\\e01-independent-scene-20260908-r4\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe",
+  "executable": "release/e01-independent-scene-20260908-r4/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
   "pid": 29020,
   "main": {
     "window": "2426x1719",

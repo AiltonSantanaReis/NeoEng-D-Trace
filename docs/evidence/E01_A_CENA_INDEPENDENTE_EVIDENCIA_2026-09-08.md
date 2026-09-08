@@ -34,7 +34,7 @@ Manifesto: `artifacts/e01-independent-scene-20260908/captures-r4/capture-manifes
 - Janela principal: [01-main-before-independent.png](../../artifacts/e01-independent-scene-20260908/captures-r4/01-main-before-independent.png), `2426x1719`, SHA-256 `B2BD49194AAFD6F32114C3B9E7A76B9CC2B8FDF39504EDE6767FCEB5F7582BC3`.
 - Janela independente: [02-independent-scene-after-shortcut.png](../../artifacts/e01-independent-scene-20260908/captures-r4/02-independent-scene-after-shortcut.png), `1986x1431`, SHA-256 `2975F04978004ED66172A131F56E215C5CA97F299B6E0C19AE0824DB584652B8`.
 - A captura da segunda janela foi obtida após iniciar o `.exe` acima, ativar a janela principal e enviar `Ctrl+Alt+N` por Win32; o título observado foi `Cenário Independente — Untitled Scene`.
-- Observação visual: a janela exibe toolbar PT-BR, canvas vazio `1920 × 1080`, `top_left, pixel` e campos de resolução/câmera. Não foi usada captura do host do Codex.
+- Observação visual: a janela exibe toolbar PT-BR, canvas vazio `1920 × 1080`, `top_left, pixel` e campos de resolução/câmera. A captura veio exclusivamente do executável do projeto.
 
 ## Limitações ainda abertas
 

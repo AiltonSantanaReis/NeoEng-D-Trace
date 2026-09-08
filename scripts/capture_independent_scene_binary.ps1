@@ -100,6 +100,7 @@ public static class NeoEngIndependentSceneCapture
 "@ -ReferencedAssemblies $references
 
 $exePath = (Resolve-Path -LiteralPath $Executable).Path
+$relativeExecutable = [IO.Path]::GetRelativePath((Get-Location).Path, $exePath).Replace('\', '/')
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 $process = Start-Process -FilePath $exePath -PassThru
 try {
@@ -133,7 +134,7 @@ try {
     }
 
     [ordered]@{
-        executable = $exePath
+        executable = $relativeExecutable
         pid = $process.Id
         main = [ordered]@{
             window = $mainSize
