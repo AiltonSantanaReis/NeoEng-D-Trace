@@ -488,15 +488,15 @@ class ScenePostProcessGraphicsItem(QGraphicsObject):
             self.update()
 
     def boundingRect(self) -> QRectF:
-        extent = 2000.0 * self._scale
+        extent = 600.0 * self._scale
         return QRectF(-extent, -extent, extent * 2.0, extent * 2.0)
 
     def paint(self, painter: QPainter, option, widget=None) -> None:
         del option, widget
-        radius = 1500.0 * self._scale
+        radius = 450.0 * self._scale
         gradient = QRadialGradient(QPointF(0.0, 0.0), radius)
         center = QColor(self._edge_color)
-        center.setAlpha(0)
+        center.setAlpha(28)
         gradient.setColorAt(0.0, center)
         gradient.setColorAt(0.58, center)
         gradient.setColorAt(1.0, self._edge_color)

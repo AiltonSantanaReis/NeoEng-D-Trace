@@ -109,7 +109,7 @@ def test_post_process_preview_is_ordered_and_observable() -> None:
     assert item._applied_effect_ids == ("warm-tint", "vignette")
     assert item._edge_color.alpha() == 135
     assert item._edge_color.red() < 255
-    assert item.boundingRect().width() == pytest.approx(4000.0)
+    assert item.boundingRect().width() == pytest.approx(1200.0)
 
 
 def test_post_process_socket_creates_overlay_in_professional_viewport(
