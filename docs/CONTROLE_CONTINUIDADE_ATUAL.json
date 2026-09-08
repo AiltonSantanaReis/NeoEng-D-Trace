@@ -28,10 +28,10 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Gerar a build oficial r11 a partir do SHA atual, executar smoke/capturas reais de E02-C com estados nomeados corretamente e somente depois promover o checkpoint técnico; manter a revisão humana/symlink para a auditoria final.",
+    "next_action": "Abrir E03 em branch própria após este checkpoint técnico; manter a revisão humana/symlink para a auditoria final do plano.",
     "active_lot": {
       "id": "E02-C",
-      "status": "IN_PROGRESS",
+      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
       "scope": "edição de pontos/curvas, estados de gesto, Escape, finalização e negativos",
       "evidence": "docs/evidence/E02_C_EDICAO_PONTOS_GESTOS_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
@@ -94,26 +94,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e02-primitives-20260908/captures-r7-save-reopen/10-independent-scene-after-reopen.png",
-      "latest_binary_capture_sha256": "F0552D3D6AED055B17027CE49F081D150E04F909AFF80415E6D75C287B59878F",
+      "latest_binary_capture": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/05-independent-scene-point-preview-invalid.png",
+      "latest_binary_capture_sha256": "9654669D8BD255320F20D173B37D5771A316B8ED77B9BC183B7A4ED26677D2C3",
       "latest_binary_capture_window": "1986x1431",
-      "observed_finding": "Build r7 executou criação, seleção, transformação, duplicação, remoção, salvar e reabrir; após reabrir, retângulo/elipse/polígono e 3 objetos foram observados. Revisao humana continua pendente.",
+      "observed_finding": "Build r11 executou criação, edição válida, prévia inválida com handles vermelhos, Escape sem mutação, finalização e save/reopen real; após reabrir, os 3 objetos e a geometria editada foram observados. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r7/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "8366905A82BB3756ACBFEB89F7FC217F0233437C7939EBAD44A9104FB50F4E3C",
-      "latest_observed_binary_last_write": "2026-09-08T15:58:00Z",
-      "source_commit": "5e1f886ebb7933a5b15a8b5786975941f60c03a6",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r11/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "880888345CE1E8D38F5DA7F59FD32FF85EFAA250EF0DF8FD76982AF0FF42663B",
+      "latest_observed_binary_last_write": "2026-09-08T16:23:18.1745194Z",
+      "source_commit": "dc2d586c3e1b541a0579615e6899a8ed97f3e62b",
       "source_branch": "Ailton/e02-primitives-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "A6691C1F7B507BFE7F769D23CA18CD720D539197378DF3487084EF795547AB93",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r7/continuity-provenance.json",
+      "continuity_registry_sha256": "C4094C0F211A675B8CD1C7527D4C88350C9E32EECA14427F6F8414F402CFDB8D",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e02-primitives-20260908-r11/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "42936A0CB10248CB06478651805A1078EB9FA3063C7155A2FE062CF4053F5932",
-      "reason": "E02-C implementado em worktree limpo com contrato transacional de gestos, validacao de pontos, suite completa e tipagem aprovadas; r8 registrou finding de overflow da toolbar e r9 sera a build corrigida."
+      "portable_archive_sha256": "A437DF526CEE48D646EE1C37E8F6064823E9A4A2A1127DD8AE69BFF896B3A4E3",
+      "reason": "E02-C possui contrato transacional de gestos, rejeicao deterministica de pontos quase coincidentes, suite completa, tipagem, build r11, smoke e capturas reais de estados invalidos/cancelados/finalizados e save/reopen."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

@@ -1,7 +1,7 @@
 # E02-C — edição de pontos, curvas e gestos
 
 Data de abertura: 2026-09-08
-Estado: IN_PROGRESS
+Estado: TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING
 Branch: Ailton/e02-primitives-20260908
 Commit de implementação atual: `f5d2f30bd184e809d3e3321fedff9ce2ad4f9754`
 
@@ -43,14 +43,48 @@ auditoria final.
 - Black, isort, Flake8, compileall e `git diff --check`: aprovados.
 - Symlink: não executado; reservado à auditoria final conforme decisão vigente.
 
-## Evidência pendente
+## Gates concluídos e proveniência
 
-Build r11, smoke, captura automatizada do binário, arraste real de ponto,
-prévia inválida/cancelamento, finalização e save/reopen serão anexados antes
-da promoção do lote. A captura r9 não será promovida porque foi gerada antes
-do endurecimento do negativo de pontos quase coincidentes. O roteiro de
-captura foi corrigido para registrar a imagem durante a prévia inválida antes
-do `Escape`, separada da captura posterior de cancelamento.
+- Testes focados: `24 passed`.
+- Suíte oficial: `1993 passed, 2 skipped, 1 warning`.
+- Estática: mypy sem erros em 154 arquivos; Black, isort, Flake8,
+  compileall e `git diff --check` aprovados.
+- Build: r11, source commit `dc2d586c3e1b541a0579615e6899a8ed97f3e62b`,
+  branch `Ailton/e02-primitives-20260908`.
+- Binário: SHA-256
+  `880888345CE1E8D38F5DA7F59FD32FF85EFAA250EF0DF8FD76982AF0FF42663B`.
+- Arquivo portátil: SHA-256
+  `A437DF526CEE48D646EE1C37E8F6064823E9A4A2A1127DD8AE69BFF896B3A4E3`.
+- Smoke portátil: 11 checks, `SUCCESS`.
+- Registro usado na build: SHA-256
+  `C4094C0F211A675B8CD1C7527D4C88350C9E32EECA14427F6F8414F402CFDB8D`.
+- Manifesto das capturas: `docs/evidence/E02_C_R11_CAPTURAS_MANIFESTO.json`.
+
+O roteiro de captura foi corrigido para registrar a imagem durante a prévia
+inválida antes do `Escape`, separada da captura posterior de cancelamento.
+
+## Capturas reais do binário r11
+
+Pacote `artifacts/e02-primitives-20260908/captures-r11-point-edit-save/`,
+janela do cenário `1986x1431`:
+
+- `04-independent-scene-point-edit-mode.png`: modo de edição e três handles.
+- `05-independent-scene-point-preview-invalid.png`: handles vermelhos e
+  mensagem PT-BR `Prévia inválida` durante o arraste nativo.
+- `06-independent-scene-point-edit-cancelled.png`: `Escape` cancela e
+  restaura a geometria aceita.
+- `07-independent-scene-point-edit-finalized.png`: arraste válido finalizado.
+- `10-independent-scene-after-reopen.png`: save/reopen após edição válida,
+  com três objetos e geometria persistida.
+
+O lote também foi executado no pacote `captures-r11-authoring-save` para
+transformação, duplicação, remoção, diálogos de salvar/abrir e reabertura.
+
+## Decisão do checkpoint
+
+E02-C está aprovado como checkpoint técnico. A revisão humana final continua
+`PENDING_EVIDENCE` por autorização explícita, e symlink continua
+`DEFERRED_UNTIL_FINAL_AUDIT`; nenhum dos dois estados foi convertido em PASS.
 
 ## Correção adicional registrada
 

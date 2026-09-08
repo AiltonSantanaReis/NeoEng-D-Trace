@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "source_commit": "dc2d586c3e1b541a0579615e6899a8ed97f3e62b",
+  "binary_sha256": "880888345CE1E8D38F5DA7F59FD32FF85EFAA250EF0DF8FD76982AF0FF42663B",
+  "window": "1986x1431",
+  "command": "scripts/capture_independent_scene_binary.ps1 -Executable release/e02-primitives-20260908-r11/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe -OutputDirectory artifacts/e02-primitives-20260908/captures-r11-point-edit-save -CapturePrimitiveFlow -CapturePointEditing -CaptureSaveReopen -InvalidTargetX 960 -InvalidTargetY 365",
+  "captures": {
+    "edit_mode": {
+      "path": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/04-independent-scene-point-edit-mode.png",
+      "sha256": "EE0809BCBAEF77F399A9414807B13EEAC3D0F4BE40D5E1C5FB40C13DA84B73C7"
+    },
+    "invalid_preview": {
+      "path": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/05-independent-scene-point-preview-invalid.png",
+      "sha256": "9654669D8BD255320F20D173B37D5771A316B8ED77B9BC183B7A4ED26677D2C3"
+    },
+    "cancelled": {
+      "path": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/06-independent-scene-point-edit-cancelled.png",
+      "sha256": "EFC5804476BAF5D777AD746567680EEB730490E404DA49E84187314493952E21"
+    },
+    "finalized": {
+      "path": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/07-independent-scene-point-edit-finalized.png",
+      "sha256": "41F448D4001FE5FD5F62722F6591599F4867C43B33751F61D585CEF1F0E210C4"
+    },
+    "after_reopen": {
+      "path": "artifacts/e02-primitives-20260908/captures-r11-point-edit-save/10-independent-scene-after-reopen.png",
+      "sha256": "791EA42DA0A3B878ECE94D40D9F1EE596B29992FEC043F5478B4AF572F0FAC0C"
+    }
+  },
+  "scene_sha256": "222140696172E0C8F2ABDB0589FE3F42A1FBC478B7DE1547E90B57761FF41209",
+  "observed": [
+    "native point drag",
+    "invalid preview without document mutation",
+    "Escape cancellation",
+    "valid finalization",
+    "save and reopen with edited geometry"
+  ]
+}
