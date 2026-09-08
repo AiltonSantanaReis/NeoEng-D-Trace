@@ -31,7 +31,13 @@ from src.persistence.scene_authoring_schema import (
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
+    SceneVectorGeometryRecord,
 )
+from src.core.vector_scene_resource import (
+    CollisionStrategy,
+    create_vector_scene_object,
+)
+from src.core.vectorization import VectorizationResult
 
 
 @dataclass(frozen=True)
@@ -441,6 +447,41 @@ class SceneAuthoringSession:
         return self.apply(
             lambda: self.model.add_object(obj, select=select),
             "Add scene object",
+        )
+
+    def add_vector_object(
+        self,
+        result: VectorizationResult,
+        *,
+        object_id: str,
+        asset_id: str,
+        layer_id: str,
+        transform: SceneTransformRecord,
+        edited_polygon: object | None = None,
+        collision_strategy: CollisionStrategy = "polygon",
+        select: bool = True,
+    ) -> bool:
+        """Insert a vectorized object as one undoable authoring operation."""
+
+        record = create_vector_scene_object(
+            result,
+            object_id=object_id,
+            asset_id=asset_id,
+            layer_id=layer_id,
+            transform=transform,
+            edited_polygon=edited_polygon,
+            collision_strategy=collision_strategy,
+        )
+        return self.add_object(record, select=select)
+
+    def update_vector_geometry(
+        self, object_id: str, geometry: SceneVectorGeometryRecord
+    ) -> bool:
+        """Update a vector object and preserve Undo/Redo semantics."""
+
+        return self.apply(
+            lambda: self.model.update_vector_geometry(object_id, geometry),
+            "Update vector geometry",
         )
 
     def remove_object(self, object_id: str) -> bool:

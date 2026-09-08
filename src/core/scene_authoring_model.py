@@ -32,6 +32,7 @@ from src.persistence.scene_authoring_schema import (
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
+    SceneVectorGeometryRecord,
     validate_scene_authoring_document,
 )
 
@@ -283,6 +284,24 @@ class SceneAuthoringModel:
             )
             for item in self.document.objects
         ]
+        self._replace(objects=objects)
+
+    def update_vector_geometry(
+        self, object_id: str, geometry: SceneVectorGeometryRecord
+    ) -> None:
+        """Replace one vector object geometry after strict pre-validation."""
+
+        self._assert_editable(object_id)
+        objects = [
+            (
+                item.model_copy(update={"vector_geometry": geometry})
+                if item.id == object_id
+                else item
+            )
+            for item in self.document.objects
+        ]
+        if not any(item.id == object_id for item in self.document.objects):
+            raise KeyError(object_id)
         self._replace(objects=objects)
 
     def update_material(

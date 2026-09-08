@@ -21,7 +21,9 @@ from src.core.operational_limits import (
     MAX_PROJECT_GROUPS,
     MAX_PROJECT_LAYERS,
     MAX_PROJECT_OBJECTS,
+    MAX_POLYGON_POINTS,
 )
+from src.core.polygon_validation import is_valid_polygon
 from src.persistence.project_schema import (
     MAX_ID_LENGTH,
     MAX_NAME_LENGTH,
@@ -182,6 +184,47 @@ class SceneMaterialAuthoringRecord(StrictProjectModel):
         return _bounded(value, "material.emission_strength", 0.0, 16.0)
 
 
+class SceneVectorImageSizeRecord(StrictProjectModel):
+    """Decoded source dimensions retained with a vectorized object."""
+
+    width: int = Field(gt=0, le=8192)
+    height: int = Field(gt=0, le=8192)
+
+
+class SceneVectorGeometryRecord(StrictProjectModel):
+    """Portable vector geometry plus source/detection provenance."""
+
+    algorithm: str = Field(min_length=1, max_length=128)
+    source_sha256: str = Field(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")
+    image_size: SceneVectorImageSizeRecord
+    original_polygon: list[PointRecord] = Field(
+        min_length=3, max_length=MAX_POLYGON_POINTS
+    )
+    polygon: list[PointRecord] = Field(min_length=3, max_length=MAX_POLYGON_POINTS)
+    collision_polygon: list[PointRecord] = Field(
+        min_length=3, max_length=MAX_POLYGON_POINTS
+    )
+    detection_parameters: dict[str, str | int | float | bool] = Field(
+        default_factory=dict
+    )
+
+    @model_validator(mode="after")
+    def validate_geometry(self) -> "SceneVectorGeometryRecord":
+        for name, points in (
+            ("original_polygon", self.original_polygon),
+            ("polygon", self.polygon),
+            ("collision_polygon", self.collision_polygon),
+        ):
+            if not is_valid_polygon([(point.x, point.y) for point in points]):
+                raise ValueError(f"vector geometry {name} must be a valid polygon")
+        for key, value in self.detection_parameters.items():
+            if not key.strip() or len(key) > 128:
+                raise ValueError("vector detection parameter names must be non-empty")
+            if isinstance(value, float) and not math.isfinite(value):
+                raise ValueError("vector detection parameters must be finite")
+        return self
+
+
 class SceneObjectAuthoringRecord(StrictProjectModel):
     id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     asset_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
@@ -189,6 +232,9 @@ class SceneObjectAuthoringRecord(StrictProjectModel):
     transform: SceneTransformRecord
     visible: bool = True
     locked: bool = False
+    vector_geometry: SceneVectorGeometryRecord | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     material: SceneMaterialAuthoringRecord | None = Field(
         default=None, exclude_if=lambda value: value is None
     )
