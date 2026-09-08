@@ -34,7 +34,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 1975,
+      "passed": 1976,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,

@@ -4,6 +4,9 @@
 **Escopo:** E00 / build oficial `2722ac1`  
 **Estado resultante:** `IN_PROGRESS / PENDING_EVIDENCE`
 
+Após a inclusão do contrato de deferimento, a suíte integral passou com
+`1976 passed, 2 skipped, 1 warning`.
+
 ## Autorização
 
 O responsável pelo projeto autorizou que a revisão humana/nativa seja realizada
