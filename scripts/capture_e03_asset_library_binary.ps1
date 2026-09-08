@@ -283,7 +283,7 @@ try {
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.52, 0.046)
         Start-Sleep -Milliseconds 900
         $records.renderer_preview = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-renderer-preview.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.52, 0.046)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.56, 0.046)
         Start-Sleep -Milliseconds 500
         $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-authoring.png")
     }
