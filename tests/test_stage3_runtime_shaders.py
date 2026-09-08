@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import math
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -146,6 +147,11 @@ def test_qt_qsb_compiles_both_stages_and_publishes_hashable_outputs(
         assert path.is_file()
         assert path.stat().st_size == stage.bytes
         assert hashlib.sha256(path.read_bytes()).hexdigest() == stage.sha256
+
+
+def test_qt_qsb_prefers_the_active_python_environment() -> None:
+    compiler = shader_module.resolve_qt_qsb()
+    assert Path(sys.prefix) in compiler.parents
 
 
 def test_qt_qsb_failure_preserves_previous_outputs(tmp_path: Path) -> None:
