@@ -9,7 +9,8 @@ Dependência técnica: E07 checkpoint `d35bc84`.
 
 - E08-A — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: plano de composição e fronteira de backend.
 - E08-B — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: câmera e paralaxe profissional.
-- E08-C — `PLANNED`: materiais, normal maps, luzes e sombras.
+- E08-C — `IN_PROGRESS`: materiais, normal maps, luzes e sombras; C2/C3 têm
+  checkpoint técnico comprovado e C4 permanece ativo.
 - E08-D — `PLANNED`: partículas, shaders e pós-processamento.
 - E08-E — `PLANNED`: determinismo temporal e matriz de destino.
 
@@ -101,11 +102,15 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 - `E08-C.1` — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: passe raster
   determinístico conectado ao `CanvasView`, com ambiente, luz pontual,
   material/albedo, emissão, normal perturbada, opacidade e oclusão explícita.
-- `E08-C.2` — `IN_PROGRESS`: conectar o mesmo contrato ao fluxo profissional
-  V2 com material/luz persistidos e controles autorais; a fixture V1 já prova o
-  caminho legado, mas não substitui a qualificação V2.
-- `E08-C.3` — `PENDING_EVIDENCE`: build final do sublote, captura V2, teste de
-  intensidade zero, receptor/emissor e fallback documentados no manifesto.
+- `E08-C.2` — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: o contrato foi
+  conectado ao viewport profissional V2; sockets de luz persistidos são
+  resolvidos pelo passe e os controles autorais permanecem acessíveis.
+- `E08-C.3` — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: build r39,
+  smoke, suíte oficial e capturas V2 reais estão documentados no manifesto
+  hashado `E08_C_R39_LIGHTING_V2_CAPTURAS_MANIFESTO.json`.
+- `E08-C.4` — `IN_PROGRESS`: completar autoria e persistência explícitas de
+  material/albedo/normal map no fluxo V2; não promover E08-C enquanto esse
+  contrato permanecer apenas determinístico/interno.
 
 ### Evidência do sublote E08-C.1
 
@@ -126,3 +131,28 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
   canvas legado; Preview Parallax trabalha em sessão V2 e permanece vazio para
   essa entrada. Isso é uma fronteira de compatibilidade a resolver em E08-C.2,
   não uma aprovação por extrapolação.
+
+### Evidência dos sublotes E08-C.2 e E08-C.3
+
+- Commit auditado: `bd8101d6c39f6d140b104fe68c685a582de380a6` na branch
+  `Ailton/e08-renderer-20260908`.
+- A fixture V2 `tests/fixtures/e08_lighting_smoke.ndtscene.json` contém dois
+  objetos e o socket persistido `key-light (light)` em `(160, 220)`, com cor,
+  intensidade e raio definidos. O viewport resolve esses parâmetros para
+  `ScenePointLight` antes de calcular a cor dos objetos.
+- Build r39: binário SHA-256
+  `10EF967993EA2C5578356C28E57A006BAF692A28EBC64C66737A80C9015DDE51`,
+  pacote portátil SHA-256
+  `9DCFE4FF5BAD9DE3B6DD283AF527F3ECEEADB13BB477623B7CDB1A0AFF319E7B`,
+  smoke `SUCCESS` com 11 checks.
+- Suíte oficial: `2067 passed, 2 skipped, 1 warning`. A primeira execução
+  apresentou access violation transitório em `test_stage4_ui_top_toolbar.py`;
+  o teste isolado e a repetição completa passaram, portanto o incidente fica
+  preservado como ressalva de execução e não como finding funcional do E08-C.
+- Capturas reais do binário: Preview
+  `06-renderer-preview.png` (`02E03498...B7F81`), Autoria
+  `07-renderer-authoring.png` (`75C04363...3136BA`) e inspector/paralaxe
+  `08-parallax-controls-bottom.png` (`E51A9304...F69BF2`). Elas mostram os
+  objetos iluminados, o HUD `RENDERER RASTER | NATIVE`, o modo Preview/Autoria,
+  os controles em português e o socket persistido no inspector.
+- Manifesto completo e hashes: `docs/evidence/E08_C_R39_LIGHTING_V2_CAPTURAS_MANIFESTO.json`.

@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C ativo para materiais, normal maps, luzes e sombras; E09–E13 ainda não iniciadas.
+- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.3 em checkpoint técnico na build r39 e C.4 ativo para autoria/persistência de materiais e normal maps; E09–E13 ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -112,8 +112,9 @@ ela não interrompe a execução técnica autorizada.
 | Sublote | Status | Critério de saída |
 |---|---|---|
 | E08-C.1 passe raster determinístico | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | ambiente, luz, material, normal perturbada, emissão e oclusão alteram pixels no binário |
-| E08-C.2 integração V2 e autoria | `IN_PROGRESS` | fixture V2 real, estado persistido, controles autorais e fallback explícito |
-| E08-C.3 build/captura/requalificação | `PENDING_EVIDENCE` | build após C.2, captura V2, negativos e manifesto hashado |
+| E08-C.2 integração V2 e autoria | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | fixture V2 real, estado persistido, controles autorais e fallback explícito |
+| E08-C.3 build/captura/requalificação | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | build após C.2, captura V2, negativos e manifesto hashado |
+| E08-C.4 autoria de material/normal map | `IN_PROGRESS` | edição, save/reopen e pixels observáveis para material e normal map |
 
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
@@ -141,7 +142,7 @@ indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 | E05 | colisão própria de cenário | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | tipos físicos, triggers, persistência e validação de contato |
 | E06 | NavMesh 2D e consumo real | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | navegação de superfície, bake, caminho e persistência |
 | E07 | componentes e instâncias | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | relações, parent/grupos, ciclo completo de prefab, build r24 e captura real |
-| E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A/E08-B checkpoints técnicos, E08-C ativo | renderer/FX qualificados com budgets e tolerâncias |
+| E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A/E08-B e E08-C.1–C.3 em checkpoint técnico; E08-C.4 ativo | renderer/FX qualificados com budgets e tolerâncias |
 | E09 | autoria e exportação vetorial | `PLANNED` | objetos editáveis, persistentes e exportáveis |
 | E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
 | E11 | composição e runtime completo | `PLANNED` | cena executada no binário, não apenas estrutura descritiva |

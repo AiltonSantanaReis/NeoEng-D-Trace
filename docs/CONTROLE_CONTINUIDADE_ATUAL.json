@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Completar E08-C.2: integrar o passe de iluminação ao fluxo V2 com fixture, persistência, controles autorais e captura real; manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Completar E08-C.4: expor e persistir material, albedo e normal map no fluxo V2 com pixels observáveis; manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
       "id": "E08-C",
       "status": "IN_PROGRESS",
-      "scope": "E08-C.1 comprovado no passe raster legado; E08-C.2 ativo para integração V2, persistência e controles autorais",
+      "scope": "E08-C.1 comprovado; E08-C.2/C.3 comprovados em checkpoint técnico no V2; E08-C.4 ativo para autoria/persistência de material e normal map",
       "evidence": "docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
@@ -58,15 +58,15 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "255c4e1cec7482154203ddecd96c4aeec62ab15c",
+    "head": "bd8101d6c39f6d140b104fe68c685a582de380a6",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E08_C1_TECHNICAL_CHECKPOINT_E08_C2_ACTIVE"
+    "status": "CLEAN_E08_C2_C3_TECHNICAL_CHECKPOINT_E08_C4_ACTIVE"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2066,
+      "passed": 2067,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -95,26 +95,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r37-lighting/03-main-after-project-load.png",
-      "latest_binary_capture_sha256": "A7EF6FD7A8610CA8524CA45880F75E063DF1EB7EEC00C064E8A6C2ABA7D2F180",
+      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r39-lighting-v2/08-parallax-controls-bottom.png",
+      "latest_binary_capture_sha256": "E51A93043061401A95EE3688B533D5F6CC06A475E5C5C43C515B6CB347F69BF2",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r37 abriu a fixture V1 pelo carregamento direto; o fluxo real mostrou dois objetos grandes e o passe de iluminação alterou os pixels do receptor para tons iluminados no canvas legado. A fronteira Preview Parallax V2 permanece explicitamente pendente para E08-C.2. Revisão humana continua pendente.",
+      "observed_finding": "Build r39 abriu a fixture V2 no binário portátil; Preview e Autoria mostraram os dois objetos com pixels alterados pelo passe de iluminação, e o inspector exibiu o socket persistido key-light com coordenadas em português. A autoria/persistência explícita de material e normal map permanece em E08-C.4. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r37/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "17512C197D7EDD638826FB73E048DDA415072248FD14FB4BC8695ADF14AF5BDB",
-      "latest_observed_binary_last_write": "2026-09-08T21:53:09.4341801Z",
-      "source_commit": "255c4e1cec7482154203ddecd96c4aeec62ab15c",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r39/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "10EF967993EA2C5578356C28E57A006BAF692A28EBC64C66737A80C9015DDE51",
+      "latest_observed_binary_last_write": "2026-09-08T22:04:48.3922077Z",
+      "source_commit": "bd8101d6c39f6d140b104fe68c685a582de380a6",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "86AEB2A56A5E156929119C27104E8C5EE5FF80E73A01D9D5FA361190098C1C2C",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r37/continuity-provenance.json",
+      "continuity_registry_sha256": "EE35B069D1C42223222F0D62369FA1BA9CD11C887A3684D4F0AE895AE5B9F339",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r39/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "af562ad48bf8ca69ed4364a86f824de7c60aca1970acb9fa66be08b243807fd5",
-      "reason": "E08-C.1 possui passe raster determinístico com material, normal perturbada, luz pontual, ambiente, emissão e oclusão, suíte oficial 2066, estática focada, build r37, smoke e captura real; E08-C.2 permanece ativo para integração V2."
+      "portable_archive_sha256": "9DCFE4FF5BAD9DE3B6DD283AF527F3ECEEADB13BB477623B7CDB1A0AFF319E7B",
+      "reason": "E08-C.1 possui passe raster determinístico; E08-C.2/C.3 têm integração V2, persistência de socket, controles autorais, suíte oficial 2067, estática focada, build r39, smoke e captura real. E08-C.4 permanece ativo para autoria/persistência de material e normal map."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
