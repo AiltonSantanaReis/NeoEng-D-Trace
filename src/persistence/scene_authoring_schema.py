@@ -214,6 +214,59 @@ class SceneEntityAuthoringRecord(StrictProjectModel):
         return self
 
 
+class ScenePrefabOverrideRecord(StrictProjectModel):
+    """Scalar override kept separate from the prefab source definition."""
+
+    path: str = Field(min_length=1, max_length=MAX_PATH_LENGTH)
+    value: str | int | float | bool | None
+
+    @field_validator("value")
+    @classmethod
+    def validate_value(cls, value: str | int | float | bool | None):
+        if isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("prefab override numbers must be finite")
+        return value
+
+
+class ScenePrefabAuthoringRecord(StrictProjectModel):
+    """Versioned prefab asset referencing a stable source entity selection."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    name: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
+    source_entity_ids: list[str] = Field(
+        min_length=1, max_length=MAX_PROJECT_OBJECTS
+    )
+    version: int = Field(default=1, ge=1, le=10_000)
+
+    @field_validator("source_entity_ids")
+    @classmethod
+    def validate_source_ids(cls, values: list[str]) -> list[str]:
+        if any(not value.strip() for value in values):
+            raise ValueError("prefab source entity IDs must be non-empty")
+        if len(values) != len(set(values)):
+            raise ValueError("prefab source entity IDs must be unique")
+        return values
+
+
+class ScenePrefabInstanceAuthoringRecord(StrictProjectModel):
+    """Independent prefab instance identity with explicit overrides."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    prefab_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    root_entity_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    overrides: list[ScenePrefabOverrideRecord] = Field(
+        default_factory=list, max_length=MAX_PROJECT_OBJECTS
+    )
+    detached: bool = False
+
+    @model_validator(mode="after")
+    def validate_overrides(self) -> "ScenePrefabInstanceAuthoringRecord":
+        paths = [override.path for override in self.overrides]
+        if len(paths) != len(set(paths)):
+            raise ValueError("prefab override paths must be unique")
+        return self
+
+
 class SceneSnapRecord(StrictProjectModel):
     enabled: bool = False
     mode: Literal["pixel", "grid"] = "pixel"
@@ -400,6 +453,16 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         max_length=MAX_PROJECT_OBJECTS,
         exclude_if=lambda value: not value,
     )
+    prefabs: list[ScenePrefabAuthoringRecord] = Field(
+        default_factory=list,
+        max_length=MAX_PROJECT_OBJECTS,
+        exclude_if=lambda value: not value,
+    )
+    prefab_instances: list[ScenePrefabInstanceAuthoringRecord] = Field(
+        default_factory=list,
+        max_length=MAX_PROJECT_OBJECTS,
+        exclude_if=lambda value: not value,
+    )
     snap: SceneSnapRecord = SceneSnapRecord()
     camera: SceneCameraAuthoringRecord = SceneCameraAuthoringRecord()
     parallax_layers: list[SceneParallaxLayerRecord] = Field(
@@ -427,6 +490,34 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         if len(entity_ids) != len(set(entity_ids)):
             raise ValueError("entity IDs must be unique")
         known_entities = set(entity_ids)
+        prefab_ids = [item.id for item in self.prefabs]
+        if len(prefab_ids) != len(set(prefab_ids)):
+            raise ValueError("prefab IDs must be unique")
+        known_prefabs = set(prefab_ids)
+        for prefab in self.prefabs:
+            missing_sources = [
+                source_id
+                for source_id in prefab.source_entity_ids
+                if source_id not in known_entities
+            ]
+            if missing_sources:
+                raise ValueError(
+                    f"prefab {prefab.id!r} references unknown source entity"
+                )
+        instance_ids = [item.id for item in self.prefab_instances]
+        if len(instance_ids) != len(set(instance_ids)):
+            raise ValueError("prefab instance IDs must be unique")
+        if set(instance_ids) & known_entities:
+            raise ValueError("prefab instance IDs must not collide with entity IDs")
+        for instance in self.prefab_instances:
+            if instance.prefab_id not in known_prefabs:
+                raise ValueError(
+                    f"prefab instance {instance.id!r} references unknown prefab"
+                )
+            if instance.root_entity_id not in known_entities:
+                raise ValueError(
+                    f"prefab instance {instance.id!r} references unknown root entity"
+                )
         for entity in self.entities:
             if entity.layer_id not in known_layers:
                 raise ValueError(

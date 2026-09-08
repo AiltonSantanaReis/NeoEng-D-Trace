@@ -4,6 +4,14 @@ import pytest
 
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.core.scene_authoring_model import SceneAuthoringModel
+from src.core.prefab_authoring import (
+    create_prefab,
+    detach_prefab_instance,
+    instantiate_prefab,
+    revert_prefab_override,
+    set_prefab_override,
+    update_prefab_sources,
+)
 from src.persistence.scenario_schema import ProjectReferenceRecord
 from src.persistence.scene_authoring_io import load_scene_authoring, save_scene_authoring
 from src.persistence.scene_authoring_schema import (
@@ -128,3 +136,36 @@ def test_e07_spatial_parent_is_distinct_and_cycle_safe():
 
     with pytest.raises(ValueError, match="unknown parent entity"):
         _document(_entity("child").model_copy(update={"parent_entity_id": "missing"}))
+
+
+def test_e07_prefab_lifecycle_preserves_overrides_and_detaches(tmp_path):
+    document = _document(_entity("root"))
+    document = create_prefab(document, "enemy", "Enemy", ["root"])
+    document = instantiate_prefab(document, "enemy", "enemy-instance", "root")
+    document = set_prefab_override(document, "enemy-instance", "speed", 4.0)
+    document = update_prefab_sources(document, "enemy", ["root"])
+
+    assert document.prefabs[0].version == 2
+    assert document.prefab_instances[0].overrides[0].value == 4.0
+
+    document = revert_prefab_override(document, "enemy-instance", "speed")
+    document = detach_prefab_instance(document, "enemy-instance")
+    path = tmp_path / "prefab-scene.ndtscene.json"
+    save_scene_authoring(document, path)
+    reopened = load_scene_authoring(path, verify_assets=False)
+
+    assert isinstance(reopened, SceneAuthoringDocumentV2)
+    assert reopened.prefab_instances[0].detached is True
+    assert reopened.prefab_instances[0].overrides == []
+
+
+def test_e07_prefab_operations_reject_missing_and_duplicate_identity():
+    document = _document(_entity("root"))
+    with pytest.raises(ValueError, match="source entity does not exist"):
+        create_prefab(document, "enemy", "Enemy", ["missing"])
+
+    document = create_prefab(document, "enemy", "Enemy", ["root"])
+    with pytest.raises(ValueError, match="prefab ID already exists"):
+        create_prefab(document, "enemy", "Enemy 2", ["root"])
+    with pytest.raises(ValueError, match="prefab does not exist"):
+        instantiate_prefab(document, "missing", "instance", "root")

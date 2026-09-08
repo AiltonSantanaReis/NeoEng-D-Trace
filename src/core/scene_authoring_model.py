@@ -136,6 +136,28 @@ class SceneAuthoringModel:
         ]
         self._replace(entities=updated)
 
+    def add_entity_from_object(self, object_id: str, entity_id: str | None = None) -> str:
+        """Create one stable entity identity from an existing authored object."""
+
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("entity authoring requires scene schema V2")
+        source = self._object(object_id)
+        used = {item.id for item in self.document.entities}
+        used.update(item.id for item in self.document.prefab_instances)
+        candidate_id = entity_id or object_id
+        if candidate_id in used:
+            raise ValueError("entity ID already exists")
+        entity = SceneEntityAuthoringRecord(
+            id=candidate_id,
+            name=object_id,
+            layer_id=source.layer_id,
+            transform=source.transform,
+            visible=source.visible,
+            locked=source.locked,
+        )
+        self._replace(entities=[*self.document.entities, entity])
+        return candidate_id
+
     def _assert_editable(self, object_id: str) -> None:
         item = self._object(object_id)
         if item.locked:
