@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-    [string]$OutputRoot = "release"
+    [string]$OutputRoot = "release",
+    [string]$PythonExecutable = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +24,22 @@ try {
         throw "OutputRoot must be a child directory inside the repository workspace"
     }
 
+    $pythonCommand = $null
+    $pythonPrefix = @()
+    if ($PythonExecutable) {
+        $pythonCommand = (Resolve-Path -LiteralPath $PythonExecutable -ErrorAction Stop).Path
+    } elseif (Get-Command poetry -ErrorAction SilentlyContinue) {
+        $pythonCommand = (Get-Command poetry).Source
+        $pythonPrefix = @("run")
+    } else {
+        $localPython = Join-Path $repositoryRoot ".venv\Scripts\python.exe"
+        if (Test-Path -LiteralPath $localPython) {
+            $pythonCommand = (Resolve-Path -LiteralPath $localPython).Path
+        } else {
+            throw "No project Python runner found. Pass -PythonExecutable or install Poetry."
+        }
+    }
+
     $sourceStatus = git status --porcelain --untracked-files=all
     if ($LASTEXITCODE -ne 0) { throw "Unable to inspect source tree" }
     if ($sourceStatus) {
@@ -42,7 +59,7 @@ try {
     if (-not (Test-Path -LiteralPath $continuityRegistryPath)) {
         throw "Continuity registry is missing: $continuityRegistryPath"
     }
-    poetry run python tools/validate_continuity_registry.py
+    & $pythonCommand @pythonPrefix "tools/validate_continuity_registry.py"
     if ($LASTEXITCODE -ne 0) { throw "Continuity registry validation failed" }
     $continuityRegistrySha256 = (Get-FileHash -LiteralPath $continuityRegistryPath -Algorithm SHA256).Hash
     $continuityRegistry = Get-Content -LiteralPath $continuityRegistryPath -Raw | ConvertFrom-Json
@@ -54,16 +71,16 @@ try {
 
     $distPath = Join-Path $releaseRoot "portable"
     $workPath = Join-Path $releaseRoot "work"
-    poetry run pyinstaller --noconfirm --clean --distpath $distPath --workpath $workPath "packaging/NeoEng-D-Trace.spec"
+    & $pythonCommand @pythonPrefix "-m" "PyInstaller" --noconfirm --clean --distpath $distPath --workpath $workPath "packaging/NeoEng-D-Trace.spec"
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller build failed" }
 
     $bundle = Join-Path $distPath "NeoEng-D-Trace"
     $smokeOutput = Join-Path $releaseRoot "smoke"
-    poetry run python tools/validate_portable_release.py --bundle $bundle --output $smokeOutput --fixture "tests/fixtures/release_smoke.ndtproj"
+    & $pythonCommand @pythonPrefix "tools/validate_portable_release.py" --bundle $bundle --output $smokeOutput --fixture "tests/fixtures/release_smoke.ndtproj"
     if ($LASTEXITCODE -ne 0) { throw "Portable smoke validation failed" }
 
     $archive = Join-Path $releaseRoot "NeoEng-D-Trace-0.3.0-win64-portable.zip"
-    poetry run python tools/package_portable_release.py --bundle $bundle --output $archive --source-commit $sourceCommit
+    & $pythonCommand @pythonPrefix "tools/package_portable_release.py" --bundle $bundle --output $archive --source-commit $sourceCommit
     if ($LASTEXITCODE -ne 0) { throw "Portable package creation failed" }
 
     $binaryPath = Join-Path $bundle "NeoEng-D-Trace.exe"
@@ -78,6 +95,8 @@ try {
         source_branch = $sourceBranch
         master_plan_commit = $masterPlanCommit
         continuity_registry_sha256 = $continuityRegistrySha256
+        python_command = $pythonCommand
+        python_prefix = $pythonPrefix
         binary = [ordered]@{
             path = "portable/NeoEng-D-Trace/NeoEng-D-Trace.exe"
             sha256 = $binarySha256
