@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "cbf90f28818381400ae42902b0167a9437f5065d",
+    "head": "194d23cacbcda52d151c1584fde5542662001406",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E08_D_ACTIVE"
