@@ -76,8 +76,9 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 
 ### Estado da implementação
 
-- Commit de implementação: `PENDENTE — lote em execução`.
-- Teste focado preliminar: `47 passed` (E08-B, câmera legado, inspector/viewport e E08-A).
+- Commit de implementação: `2c344805cc3fdebcdb2c3ad264e20a367a021ecc`.
+- Teste focado: `85 passed` (E08-B, câmera legado, inspector/viewport, preview e exportação).
+- Suíte oficial pré-build: `2062 passed, 2 skipped, 1 warning`.
 - Limitação declarada: captura/build oficial ainda não foram refeitas; não há
   checkpoint técnico E08-B nem afirmação de suporte de atlas/alpha nesta fase.
 - Symlink e revisão humana: `DEFERRED_UNTIL_FINAL_AUDIT`, sem reexecução.

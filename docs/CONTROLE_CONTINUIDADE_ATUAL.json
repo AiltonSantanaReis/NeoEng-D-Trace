@@ -13,7 +13,7 @@
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-      "controlled_correction_scope": "E07 entidades, componentes, hierarquia e prefabs; findings reproduziveis continuam sujeitos a correcao controlada.",
+      "controlled_correction_scope": "E08-B camera/paralaxe profissional; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Implementar E08-B: câmera/paralaxe com scroll X/Y, offset, repetição/espelhamento e preview transitório sem dupla aplicação.",
+    "next_action": "Executar build limpa e captura real do binário E08-B; depois avançar sequencialmente para E08-C.",
     "active_lot": {
       "id": "E08-B",
       "status": "IN_PROGRESS",
@@ -58,15 +58,15 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "3131158c13afd3e6fe6b104fe7b51093136b5c9e",
+    "head": "2c344805cc3fdebcdb2c3ad264e20a367a021ecc",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E07_SOURCE_CHECKPOINT"
+    "status": "CLEAN_E08_B_IMPLEMENTATION_CHECKPOINT"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2051,
+      "passed": 2062,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -74,7 +74,7 @@
     },
     "static": {
       "status": "PASS_LOCAL",
-      "checks": ["compileall", "mypy E08-A scope", "black E08-A scope", "pytest", "git diff --check"],
+      "checks": ["compileall", "mypy E08-B scope", "black E08-B scope", "pytest", "git diff --check"],
       "legacy_baseline_note": "Os comandos globais continuam reportando violações históricas fora do escopo do lote; os arquivos E06 novos passam nos gates focados."
     },
     "symlink": {
