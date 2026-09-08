@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E03-A/B/C: biblioteca pesquisável com categorias/miniaturas/drag-drop, lifecycle relink/replace, negativos, build e captura real; manter a revisão humana/symlink para a auditoria final.",
+    "next_action": "Gerar a build oficial r12 de E03, executar smoke e captura real do asset library pelo binário; depois atualizar a evidência e promover o checkpoint técnico.",
     "active_lot": {
       "id": "E03-A/B/C",
       "status": "IN_PROGRESS",
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e03-assets-20260908",
-    "head": "911ad0b471ec720331175271852d0df4a7783b41",
+    "head": "5fbea54bec3690c3bf64d88acce43166db54bd8e",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E03_WORKTREE"
