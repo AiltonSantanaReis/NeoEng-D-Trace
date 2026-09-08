@@ -151,6 +151,17 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x2E, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlShiftDelete()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(0x2E, 0, 0, UIntPtr.Zero);
+        keybd_event(0x2E, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
     public static void ClickScreen(int x, int y)
     {
         SetCursorPos(x, y);
@@ -259,7 +270,7 @@ try {
         $duplicateSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $duplicatePath)
 
         [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
-        [NeoEngIndependentSceneCapture]::ClickWindow($child.Handle, 1580, 90)
+        [NeoEngIndependentSceneCapture]::SendCtrlShiftDelete()
         Start-Sleep -Milliseconds 500
         $removePath = Join-Path $OutputDirectory "06-independent-scene-after-remove.png"
         $removeSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $removePath)
@@ -280,7 +291,7 @@ try {
                 window = $removeSize
                 path = $removePath
                 sha256 = (Get-FileHash -LiteralPath $removePath -Algorithm SHA256).Hash
-                input = "Remover toolbar"
+                input = "Ctrl+Shift+Delete"
             }
         }
     }

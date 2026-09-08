@@ -241,7 +241,7 @@ class IndependentSceneWindow(QMainWindow):
         self.ellipse_action.setShortcut("Ctrl+Shift+E")
         self.polygon_action.setShortcut("Ctrl+Shift+P")
         self.duplicate_action.setShortcut("Ctrl+D")
-        self.remove_action.setShortcut("Delete")
+        self.remove_action.setShortcut("Ctrl+Shift+Delete")
         for action in (
             self.new_action,
             self.open_action,
