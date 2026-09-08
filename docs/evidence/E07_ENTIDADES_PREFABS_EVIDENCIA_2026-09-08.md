@@ -8,7 +8,7 @@ Dependência E06 confirmada no checkpoint técnico `df841ef`.
 ## Estado dos lotes
 
 - E07-A — `IMPLEMENTED_TESTED`: modelo de entidade, componentes e instâncias.
-- E07-B — `PLANNED`: hierarquia espacial, grupos e validações.
+- E07-B — `IMPLEMENTED_TESTED`: hierarquia espacial, grupos e validações.
 - E07-C — `PLANNED`: ciclo completo de prefab e persistência.
 
 Nenhuma alegação funcional é feita antes dos testes focados, suíte oficial,
@@ -22,3 +22,8 @@ inexistente, origem inexistente e auto-instância estão cobertos. Testes focado
 e regressão relevante passaram; a suíte oficial atual está em `2043 passed,
 2 skipped, 1 warning`. Mypy do schema e compileall passaram. Build e captura
 real permanecem pendentes até E07-A/B/C formarem o fluxo executável completo.
+
+E07-B acrescenta `parent_entity_id` como relação espacial independente de
+membership em grupos, valida ciclos e referências inexistentes no schema e
+expõe operação transacional `set_entity_parent` no modelo Qt-independent.
+Suíte oficial após esta extensão: `2044 passed, 2 skipped, 1 warning`.

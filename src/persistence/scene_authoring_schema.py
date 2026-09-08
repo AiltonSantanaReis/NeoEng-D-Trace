@@ -198,6 +198,7 @@ class SceneEntityAuthoringRecord(StrictProjectModel):
         default_factory=list, max_length=MAX_PROJECT_OBJECTS
     )
     instance_of: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
+    parent_entity_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
     visible: bool = True
     locked: bool = False
 
@@ -208,6 +209,8 @@ class SceneEntityAuthoringRecord(StrictProjectModel):
             raise ValueError("entity component IDs must be unique")
         if self.instance_of == self.id:
             raise ValueError("entity cannot instance itself")
+        if self.parent_entity_id == self.id:
+            raise ValueError("entity cannot parent itself")
         return self
 
 
@@ -433,6 +436,23 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
                 raise ValueError(
                     f"entity {entity.id!r} references unknown source entity"
                 )
+            if (
+                entity.parent_entity_id is not None
+                and entity.parent_entity_id not in known_entities
+            ):
+                raise ValueError(
+                    f"entity {entity.id!r} references unknown parent entity"
+                )
+            seen = {entity.id}
+            entity_current = entity.parent_entity_id
+            while entity_current is not None:
+                if entity_current in seen:
+                    raise ValueError("entity hierarchy contains a cycle")
+                seen.add(entity_current)
+                entity_parent = next(
+                    item for item in self.entities if item.id == entity_current
+                )
+                entity_current = entity_parent.parent_entity_id
         for item in self.objects:
             if item.asset_id not in known_assets:
                 raise ValueError(f"object {item.id!r} references unknown asset")
@@ -456,17 +476,17 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
                     f"group {group.id!r} references unknown parent group {parent_id!r}"
                 )
             seen = {group.id}
-            current: str | None = parent_id
-            while current is not None:
-                if current in seen:
+            group_current: str | None = parent_id
+            while group_current is not None:
+                if group_current in seen:
                     raise ValueError("group hierarchy contains a cycle")
-                seen.add(current)
-                parent = group_by_id.get(current)
+                seen.add(group_current)
+                parent = group_by_id.get(group_current)
                 if parent is None:
                     raise ValueError(
-                        f"group hierarchy references unknown parent {current!r}"
+                        f"group hierarchy references unknown parent {group_current!r}"
                     )
-                current = parent.parent_group_id
+                group_current = parent.parent_group_id
         parallax_ids = [item.layer_id for item in self.parallax_layers]
         if len(parallax_ids) != len(set(parallax_ids)):
             raise ValueError("parallax layer IDs must be unique")

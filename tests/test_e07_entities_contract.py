@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from src.persistence.project_schema import Point3Record, PointRecord
+from src.core.scene_authoring_model import SceneAuthoringModel
 from src.persistence.scenario_schema import ProjectReferenceRecord
 from src.persistence.scene_authoring_io import load_scene_authoring, save_scene_authoring
 from src.persistence.scene_authoring_schema import (
@@ -110,3 +111,20 @@ def test_e07_rejects_invalid_component_version_layer_and_instance_source():
 
     with pytest.raises(ValueError, match="cannot instance itself"):
         _document(_entity("hero", instance_of="hero"))
+
+
+def test_e07_spatial_parent_is_distinct_and_cycle_safe():
+    root = _entity("root")
+    child = _entity("child").model_copy(update={"parent_entity_id": "root"})
+    document = _document(root, child)
+    model = SceneAuthoringModel(document)
+
+    model.set_entity_parent("root", None)
+    assert model.document.entities[1].parent_entity_id == "root"
+    assert model.document.groups == []
+
+    with pytest.raises(ValueError, match="entity hierarchy contains a cycle"):
+        model.set_entity_parent("root", "child")
+
+    with pytest.raises(ValueError, match="unknown parent entity"):
+        _document(_entity("child").model_copy(update={"parent_entity_id": "missing"}))

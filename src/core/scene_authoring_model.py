@@ -23,6 +23,7 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocument,
     SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
+    SceneEntityAuthoringRecord,
     SceneGroupAuthoringRecord,
     SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
@@ -107,6 +108,33 @@ class SceneAuthoringModel:
             if item.id == object_id:
                 return item
         raise KeyError(object_id)
+
+    def _entity(self, entity_id: str) -> SceneEntityAuthoringRecord:
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("entity authoring requires scene schema V2")
+        for item in self.document.entities:
+            if item.id == entity_id:
+                return item
+        raise KeyError(entity_id)
+
+    def set_entity_parent(self, entity_id: str, parent_entity_id: str | None) -> None:
+        """Set spatial parent while preserving group membership semantics."""
+
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("entity authoring requires scene schema V2")
+        document = self.document
+        entity = self._entity(entity_id)
+        if parent_entity_id == entity_id:
+            raise ValueError("entity cannot parent itself")
+        if parent_entity_id is not None:
+            self._entity(parent_entity_id)
+        updated = [
+            item.model_copy(update={"parent_entity_id": parent_entity_id})
+            if item.id == entity_id
+            else item
+            for item in document.entities
+        ]
+        self._replace(entities=updated)
 
     def _assert_editable(self, object_id: str) -> None:
         item = self._object(object_id)
