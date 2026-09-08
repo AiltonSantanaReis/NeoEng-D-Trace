@@ -82,6 +82,13 @@ public static class NeoEngE03Capture
         int width = rect.Right - rect.Left, height = rect.Bottom - rect.Top;
         ClickWindow(hWnd, (int)(width * fractionX), (int)(height * fractionY));
     }
+    public static void ScrollWindowFraction(IntPtr hWnd, double fractionX, double fractionY, int delta)
+    {
+        RECT rect; if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        int width = rect.Right - rect.Left, height = rect.Bottom - rect.Top;
+        SetCursorPos(rect.Left + (int)(width * fractionX), rect.Top + (int)(height * fractionY));
+        mouse_event(0x0800, 0, 0, (uint)delta, UIntPtr.Zero);
+    }
     public static string RectText(IntPtr hWnd)
     {
         RECT rect; if (!GetWindowRect(hWnd, out rect)) return "unknown";
@@ -298,13 +305,16 @@ try {
         # Ctrl+End is consumed by the focused child list on some Qt builds.
         # Clicking the visible scrollbar track is deterministic at the native
         # DPI-aware surface and follows the same interaction a user performs.
-        for ($scrollStep = 0; $scrollStep -lt 10; $scrollStep++) {
-            [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.997, 0.95)
+        for ($scrollStep = 0; $scrollStep -lt 12; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.992, 0.60, -120)
             Start-Sleep -Milliseconds 100
         }
         Start-Sleep -Milliseconds 700
         $records.parallax_controls_bottom = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-parallax-controls-bottom.png")
-        [System.Windows.Forms.SendKeys]::SendWait("{PGUP}")
+        for ($scrollStep = 0; $scrollStep -lt 4; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.992, 0.60, 120)
+            Start-Sleep -Milliseconds 100
+        }
         Start-Sleep -Milliseconds 500
         $records.parallax_controls_pageup = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-parallax-controls-pageup.png")
     }
