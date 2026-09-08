@@ -17,7 +17,7 @@ do proprietário for indispensável.
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
 | M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
-| M08 | E02–E13 | E02 EM ANDAMENTO — E02-B ATIVO | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
+| M08 | E02–E13 | E02 EM ANDAMENTO — E02-C ATIVO | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
 
@@ -44,7 +44,7 @@ do proprietário for indispensável.
 - Revisão humana: `PENDING_EVIDENCE`, deferida até a auditoria final por
   autorização do proprietário.
 - E01: checkpoint técnico concluído; aceite final pendente.
-- E02: `IN_PROGRESS`, E02-A em checkpoint técnico e sub-lote E02-B aberto na mesma branch própria.
+- E02: `IN_PROGRESS`, E02-A/E02-B em checkpoint técnico e sub-lote E02-C aberto na mesma branch própria.
 - E03–E13: ainda não iniciadas.
 
 ## Metas executáveis do lote E01
@@ -56,6 +56,7 @@ do proprietário for indispensável.
 | E01-C implementação independente | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E01_C_FLUXO_INDEPENDENTE_EVIDENCIA_2026-09-08.md` | manter E01 aberto até auditoria final |
 | E02-A contrato/modelo | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E02_A_CONTRATO_PRIMITIVAS_EVIDENCIA_2026-09-08.md` | preservar evidência; aceite final permanece na auditoria do plano |
 | E02-B operações de autoria | `IN_PROGRESS` | `docs/evidence/E02_B_OPERACOES_AUTORIA_EVIDENCIA_2026-09-08.md` | edição/seleção/transformação e save/reopen observável |
+| E02-C edição de pontos e gestos | `IN_PROGRESS` | `docs/evidence/E02_C_EDICAO_PONTOS_GESTOS_EVIDENCIA_2026-09-08.md` | edição livre, estados de gesto e negativos |
 
 ## Ordem fixa de execução
 
@@ -73,7 +74,7 @@ do proprietário for indispensável.
 |---|---|---|---|
 | E00 | preservar, reconciliar e qualificar a base | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | auditoria final, symlink, revisão humana e decisão formal |
 | E01 | contrato, backend e cena independente | `IN_PROGRESS` — checkpoint técnico dos sub-lotes A/B/C | aceite formal com fluxo, negativos, build, captura e rollback |
-| E02 | primitivas, edição, persistência e histórico | `IN_PROGRESS` — E02-B | três primitivas, edição, Undo/Redo, save/reopen e negativos |
+| E02 | primitivas, edição, persistência e histórico | `IN_PROGRESS` — E02-C | três primitivas, edição, Undo/Redo, save/reopen e negativos |
 | E03 | biblioteca própria e lifecycle de assets | `PLANNED` | assets rastreáveis, offline, relink/replace e licença |
 | E04 | tilemaps, grids e regras de terreno | `PLANNED` | três grids, chunks, regras e persistência |
 | E05 | colisão própria de cenário | `PLANNED` | tipos físicos, occluders e validação de contato |

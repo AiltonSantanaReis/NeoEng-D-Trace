@@ -5,7 +5,8 @@ param(
     [string]$OutputDirectory,
     [switch]$CaptureSaveDialog,
     [switch]$CapturePrimitiveFlow,
-    [switch]$CaptureAuthoringOps
+    [switch]$CaptureAuthoringOps,
+    [switch]$CaptureSaveReopen
 )
 
 $ErrorActionPreference = "Stop"
@@ -144,6 +145,15 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x11, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlO()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x4F, 0, 0, UIntPtr.Zero);
+        keybd_event(0x4F, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
     public static void SendDelete()
     {
         const uint up = 0x0002;
@@ -198,6 +208,19 @@ public static class NeoEngIndependentSceneCapture
     }
 }
 "@ -ReferencedAssemblies $references
+
+function Set-DialogPath {
+    param(
+        [IntPtr]$Handle,
+        [string]$Path
+    )
+    [NeoEngIndependentSceneCapture]::FocusWindow($Handle) | Out-Null
+    Start-Sleep -Milliseconds 150
+    [System.Windows.Forms.Clipboard]::SetText($Path)
+    [System.Windows.Forms.SendKeys]::SendWait("^a")
+    [System.Windows.Forms.SendKeys]::SendWait("^v")
+    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+}
 
 $exePath = (Resolve-Path -LiteralPath $Executable).Path
 $relativeExecutable = [IO.Path]::GetRelativePath((Get-Location).Path, $exePath).Replace('\', '/')
@@ -296,6 +319,75 @@ try {
         }
     }
 
+    $saveReopenRecord = $null
+    if ($CaptureSaveReopen -and $child) {
+        $scenePath = (Join-Path (Resolve-Path -LiteralPath $OutputDirectory).Path "e02-b-flow.ndtscene")
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlShiftS()
+        Start-Sleep -Milliseconds 1000
+        $saveDialogWindows = [NeoEngIndependentSceneCapture]::GetWindows($process.Id)
+        $saveDialog = $saveDialogWindows |
+            Where-Object { $_.Title -and $_.Title -ne $child.Title -and $_.Title -ne "NeoEng-D-Trace" } |
+            Select-Object -First 1
+        $saveDialogRecord = $null
+        if ($saveDialog) {
+            $saveDialogPath = Join-Path $OutputDirectory "07-save-dialog.png"
+            $saveDialogSize = [NeoEngIndependentSceneCapture]::Capture($saveDialog.Handle, $saveDialogPath)
+            $saveDialogRecord = [ordered]@{
+                title = $saveDialog.Title
+                window = $saveDialogSize
+                path = $saveDialogPath
+                sha256 = (Get-FileHash -LiteralPath $saveDialogPath -Algorithm SHA256).Hash
+            }
+            Set-DialogPath -Handle $saveDialog.Handle -Path $scenePath
+            Start-Sleep -Milliseconds 1200
+        }
+        if (-not (Test-Path -LiteralPath $scenePath)) {
+            throw "Native save did not create the expected scene file: $scenePath"
+        }
+        $savedPath = Join-Path $OutputDirectory "08-independent-scene-after-save.png"
+        $savedSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $savedPath)
+
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlO()
+        Start-Sleep -Milliseconds 1000
+        $openDialogWindows = [NeoEngIndependentSceneCapture]::GetWindows($process.Id)
+        $openDialog = $openDialogWindows |
+            Where-Object { $_.Title -and $_.Title -ne $child.Title -and $_.Title -ne "NeoEng-D-Trace" } |
+            Select-Object -First 1
+        $openDialogRecord = $null
+        if ($openDialog) {
+            $openDialogPath = Join-Path $OutputDirectory "09-open-dialog.png"
+            $openDialogSize = [NeoEngIndependentSceneCapture]::Capture($openDialog.Handle, $openDialogPath)
+            $openDialogRecord = [ordered]@{
+                title = $openDialog.Title
+                window = $openDialogSize
+                path = $openDialogPath
+                sha256 = (Get-FileHash -LiteralPath $openDialogPath -Algorithm SHA256).Hash
+            }
+            Set-DialogPath -Handle $openDialog.Handle -Path $scenePath
+            Start-Sleep -Milliseconds 1500
+        }
+        $reopenPath = Join-Path $OutputDirectory "10-independent-scene-after-reopen.png"
+        $reopenSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $reopenPath)
+        $saveReopenRecord = [ordered]@{
+            scene_path = $scenePath
+            scene_sha256 = (Get-FileHash -LiteralPath $scenePath -Algorithm SHA256).Hash
+            save_dialog = $saveDialogRecord
+            after_save = [ordered]@{
+                window = $savedSize
+                path = $savedPath
+                sha256 = (Get-FileHash -LiteralPath $savedPath -Algorithm SHA256).Hash
+            }
+            open_dialog = $openDialogRecord
+            after_reopen = [ordered]@{
+                window = $reopenSize
+                path = $reopenPath
+                sha256 = (Get-FileHash -LiteralPath $reopenPath -Algorithm SHA256).Hash
+            }
+        }
+    }
+
     $saveDialogRecord = $null
     if ($CaptureSaveDialog -and $child) {
         [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
@@ -330,6 +422,7 @@ try {
         independent_scene = $childRecord
         primitive_flow = $primitiveFlowRecord
         authoring_ops = $authoringOpsRecord
+        save_reopen = $saveReopenRecord
         save_dialog = $saveDialogRecord
         observed_windows = @($windows | ForEach-Object { [ordered]@{ title = $_.Title } })
     } | ConvertTo-Json -Depth 6

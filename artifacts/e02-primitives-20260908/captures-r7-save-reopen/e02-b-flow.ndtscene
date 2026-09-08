@@ -1,0 +1,149 @@
+{
+  "assets_root": "assets",
+  "camera": {
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "zoom": 1.0
+  },
+  "compatibility": {
+    "reader_min_schema_version": 1,
+    "writer_schema_version": 2
+  },
+  "coordinates": {
+    "origin": "top_left",
+    "unit": "pixel",
+    "x_axis": "right",
+    "y_axis": "down"
+  },
+  "format_id": "neoeng-d-trace-independent-scene",
+  "metadata": {
+    "app_version": "0.3.0",
+    "generator": "NeoEng-D-Trace",
+    "name": "Untitled Scene"
+  },
+  "objects": [
+    {
+      "geometry": {
+        "closed": true,
+        "filled": true,
+        "kind": "rectangle",
+        "points": [
+          {
+            "x": 384.0,
+            "y": 216.0
+          },
+          {
+            "x": 864.0,
+            "y": 432.0
+          }
+        ]
+      },
+      "id": "primitive_91096e770573",
+      "locked": false,
+      "name": "Retângulo",
+      "transform": {
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        }
+      },
+      "visible": true
+    },
+    {
+      "geometry": {
+        "closed": true,
+        "filled": true,
+        "kind": "ellipse",
+        "points": [
+          {
+            "x": 960.0,
+            "y": 216.0
+          },
+          {
+            "x": 1440.0,
+            "y": 432.0
+          }
+        ]
+      },
+      "id": "primitive_f562a200ff81",
+      "locked": false,
+      "name": "Elipse",
+      "transform": {
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotation": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        }
+      },
+      "visible": true
+    },
+    {
+      "geometry": {
+        "closed": true,
+        "filled": true,
+        "kind": "polygon",
+        "points": [
+          {
+            "x": 384.0,
+            "y": 648.0
+          },
+          {
+            "x": 864.0,
+            "y": 648.0
+          },
+          {
+            "x": 624.0,
+            "y": 918.0
+          }
+        ]
+      },
+      "id": "primitive_6ccd16551352",
+      "locked": false,
+      "name": "Polígono",
+      "transform": {
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 42.0,
+          "y": 0.0
+        },
+        "rotation": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        }
+      },
+      "visible": true
+    }
+  ],
+  "resolution": {
+    "height": 1080,
+    "width": 1920
+  },
+  "root": {
+    "id": "scene_root",
+    "name": "Untitled Scene"
+  },
+  "schema_version": 2
+}

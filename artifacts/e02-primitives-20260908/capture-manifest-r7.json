@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "stage": "E02-B",
+  "source_commit": "5e1f886ebb7933a5b15a8b5786975941f60c03a6",
+  "source_branch": "Ailton/e02-primitives-20260908",
+  "binary": {
+    "path": "release/e02-primitives-20260908-r7/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "sha256": "8366905A82BB3756ACBFEB89F7FC217F0233437C7939EBAD44A9104FB50F4E3C"
+  },
+  "portable_archive_sha256": "42936A0CB10248CB06478651805A1078EB9FA3063C7155A2FE062CF4053F5932",
+  "capture_method": "scripts/capture_independent_scene_binary.ps1 via PowerShell 7; Win32 PrintWindow against project binary",
+  "primitive_inputs": ["Ctrl+Shift+R", "Ctrl+Shift+E", "Ctrl+Shift+P"],
+  "authoring_inputs": ["Object X=42", "Ctrl+D", "Ctrl+Shift+Delete"],
+  "save_reopen": {
+    "saved_scene": "artifacts/e02-primitives-20260908/captures-r7-save-reopen/e02-b-flow.ndtscene",
+    "saved_scene_sha256": "105108408839C41F8BCDB0980E663AB1239DC593392FC73445387A6F9F84DA6E",
+    "save_dialog": "artifacts/e02-primitives-20260908/captures-r7-save-reopen/07-save-dialog.png",
+    "open_dialog": "artifacts/e02-primitives-20260908/captures-r7-save-reopen/09-open-dialog.png",
+    "after_reopen": "artifacts/e02-primitives-20260908/captures-r7-save-reopen/10-independent-scene-after-reopen.png",
+    "after_reopen_sha256": "F0552D3D6AED055B17027CE49F081D150E04F909AFF80415E6D75C287B59878F"
+  },
+  "limitations": [
+    "Automated capture is not human review.",
+    "Free point/curve gesture editing is E02-C.",
+    "Symlink gate remains deferred to final audit."
+  ]
+}
