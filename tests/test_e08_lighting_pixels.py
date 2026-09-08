@@ -6,6 +6,8 @@ from src.core.scene_lighting import (
     ScenePointLight,
     shade_color,
 )
+from src.persistence.project_schema import Point3Record
+from src.persistence.scene_authoring_schema import SceneLightSocketRecord
 
 
 def test_zero_intensity_is_observable_and_deterministic() -> None:
@@ -55,3 +57,28 @@ def test_occluder_blocks_light_but_emission_survives() -> None:
     assert color == (0.1, 0.0, 0.0)
     assert opacity == 1.0
     assert contributors == ()
+
+
+def test_authored_light_socket_parameters_are_valid_renderer_inputs() -> None:
+    socket = SceneLightSocketRecord(
+        id="key-light",
+        layer_id="layer",
+        position=Point3Record(x=10.0, y=20.0, z=0.0),
+        color="#ff8040",
+        intensity=1.5,
+        radius=300.0,
+    )
+    color = tuple(
+        int(socket.color[index : index + 2], 16) / 255.0 for index in (1, 3, 5)
+    )
+    light = ScenePointLight(
+        socket.id,
+        (socket.position.x, socket.position.y),
+        color=color,
+        intensity=socket.intensity,
+        radius=socket.radius,
+    )
+
+    assert light.position == (10.0, 20.0)
+    assert light.color == (1.0, 128.0 / 255.0, 64.0 / 255.0)
+    assert light.intensity == 1.5

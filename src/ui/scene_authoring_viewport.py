@@ -61,6 +61,7 @@ from src.core.scene_render_plan import SceneRenderPlan
 from src.core.scene_lighting import (
     SceneLightingMaterial,
     SceneLightingSettings,
+    ScenePointLight,
     default_scene_lighting,
     shade_color,
 )
@@ -642,6 +643,40 @@ class SceneAuthoringViewport(QGraphicsView):
             mirror_y=record.mirror_y,
         )
 
+    def _lighting_for_document(self) -> SceneLightingSettings:
+        """Resolve authored light sockets into the deterministic raster pass."""
+
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return self._lighting_settings
+        lights: list[ScenePointLight] = []
+        for socket in document.sockets:
+            if socket.type != "light":
+                continue
+            color_text = socket.color.lstrip("#")
+            color: tuple[float, float, float] = (
+                int(color_text[0:2], 16) / 255.0,
+                int(color_text[2:4], 16) / 255.0,
+                int(color_text[4:6], 16) / 255.0,
+            )
+            lights.append(
+                ScenePointLight(
+                    id=socket.id,
+                    position=(float(socket.position.x), float(socket.position.y)),
+                    color=color,
+                    intensity=float(socket.intensity),
+                    radius=float(socket.radius),
+                )
+            )
+        if not lights:
+            return self._lighting_settings
+        return SceneLightingSettings(
+            ambient_color=self._lighting_settings.ambient_color,
+            ambient_intensity=self._lighting_settings.ambient_intensity,
+            lights=tuple(lights),
+            occluders=self._lighting_settings.occluders,
+        )
+
     def _project_position(self, position: Point3Record, layer_id: str) -> QPointF:
         if not self._preview_enabled:
             return QPointF(float(position.x), float(position.y))
@@ -921,6 +956,7 @@ class SceneAuthoringViewport(QGraphicsView):
 
         document = self.session.document
         by_id = {item.id: item for item in document.objects}
+        document_lighting = self._lighting_for_document()
         lighting_by_object: dict[str, QColor] = {}
         if isinstance(document, SceneAuthoringDocumentV2):
             for item in document.objects:
@@ -937,9 +973,9 @@ class SceneAuthoringViewport(QGraphicsView):
                     and len(self._geometry.get(other.id, ())) >= 3
                 )
                 settings = SceneLightingSettings(
-                    ambient_color=self._lighting_settings.ambient_color,
-                    ambient_intensity=self._lighting_settings.ambient_intensity,
-                    lights=self._lighting_settings.lights,
+                    ambient_color=document_lighting.ambient_color,
+                    ambient_intensity=document_lighting.ambient_intensity,
+                    lights=document_lighting.lights,
                     occluders=occluders,
                 )
                 color, opacity, _ = shade_color(
