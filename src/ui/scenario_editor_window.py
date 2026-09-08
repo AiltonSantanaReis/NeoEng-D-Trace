@@ -114,7 +114,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_pages.addWidget(self.canvas)
         self.professional_pages.setCurrentWidget(self.professional_empty)
         self.scenario_panel = ScenarioPanel(authoring, scene, self)
-        self.scenario_panel.setMinimumWidth(390)
+        self.scenario_panel.setMinimumWidth(280)
         self.scenario_panel.setMaximumWidth(520)
 
         scroll = QScrollArea(self)
@@ -145,11 +145,15 @@ class ScenarioEditorWindow(QMainWindow):
 
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.setObjectName("scenario_editor_splitter")
+        self.professional_pages.setMinimumWidth(420)
+        self.right_pages.setMinimumWidth(280)
+        splitter.setCollapsible(0, False)
+        splitter.setCollapsible(1, False)
         splitter.addWidget(self.professional_pages)
         splitter.addWidget(self.right_pages)
         splitter.setStretchFactor(0, 1)
         splitter.setStretchFactor(1, 0)
-        splitter.setSizes([850, 430])
+        splitter.setSizes([650, 300])
         self.setCentralWidget(splitter)
 
         self.toolbar = QToolBar("Scenario", self)

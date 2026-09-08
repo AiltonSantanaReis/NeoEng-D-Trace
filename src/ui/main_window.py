@@ -859,6 +859,11 @@ class MainWindow(QMainWindow):
     def open_project(self, path: str | os.PathLike[str] | None = None) -> bool:
         started_at = time.perf_counter()
         t = self.translations[self.current_lang]
+        # QAction.triggered emits its checked-state boolean when this method is
+        # connected directly.  It is not a project path; keep the same method
+        # usable both as a Qt slot and as the deterministic capture entrypoint.
+        if isinstance(path, bool):
+            path = None
         if path is None:
             initial_dir = (
                 str(self._project_path.parent)
