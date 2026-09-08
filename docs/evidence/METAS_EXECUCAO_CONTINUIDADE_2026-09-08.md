@@ -100,7 +100,7 @@ ela não interrompe a execução técnica autorizada.
 | 2 | E08-C materiais/normal maps/luzes/sombras | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pixels observáveis, negativos, persistência, captura r42 e fallback |
 | 3 | E08-D partículas/shaders/pós | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | D1, D2 e D3 comprovados; auditoria final pendente |
 | 4 | E08-E determinismo/destinos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | timestep, tolerâncias e matriz de capacidades comprovados; auditoria final pendente |
-| 5 | E09 autoria/exportação vetorial | `E09-A TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING; E09-B IN_PROGRESS` | fluxo editável, persistente e exportável |
+| 5 | E09 autoria/exportação vetorial | `E09-A/B TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING; E09-C IN_PROGRESS` | fluxo editável, persistente e exportável |
 | 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
 | 7 | E11 composição/runtime | `PLANNED` | cena executada fora do editor |
 | 8 | E12 recursos avançados/híbrido 3D | `PLANNED` | contrato, implementação e destinos |
@@ -136,8 +136,8 @@ ela não interrompe a execução técnica autorizada.
 | Sublote | Status | Critério de saída |
 |---|---|---|
 | E09-A importação/detecção | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | imagem real, hash/proveniência, contorno determinístico, negativos, suíte, build r49 e captura real |
-| E09-B correção/simplificação | `IN_PROGRESS` | contorno editável, histórico, simplificação limitada, validação e cancelamento observáveis |
-| E09-C colisão/objeto/persistência | `PLANNED` | colisão válida, objeto de cena reutilizável, save/reopen, combinação e export/import |
+| E09-B correção/simplificação | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contorno editável, histórico, simplificação limitada, validação e cancelamento observáveis |
+| E09-C colisão/objeto/persistência | `IN_PROGRESS` | colisão válida, objeto de cena reutilizável, save/reopen, combinação e export/import |
 
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
@@ -166,7 +166,7 @@ indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 | E06 | NavMesh 2D e consumo real | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | navegação de superfície, bake, caminho e persistência |
 | E07 | componentes e instâncias | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | relações, parent/grupos, ciclo completo de prefab, build r24 e captura real |
 | E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A/E08-B e E08-C.1–C.3 em checkpoint técnico; E08-C.4 ativo | renderer/FX qualificados com budgets e tolerâncias |
-| E09 | autoria e exportação vetorial | `IN_PROGRESS` — E09-A checkpoint técnico; E09-B ativo | objetos editáveis, persistentes e exportáveis |
+| E09 | autoria e exportação vetorial | `IN_PROGRESS` — E09-A/B checkpoints técnicos; E09-C ativo | objetos editáveis, persistentes e exportáveis |
 | E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
 | E11 | composição e runtime completo | `PLANNED` | cena executada no binário, não apenas estrutura descritiva |
 | E12 | recursos avançados, animação e híbrido 3D | `PLANNED` | contrato aprovado e fluxo completo de recursos |

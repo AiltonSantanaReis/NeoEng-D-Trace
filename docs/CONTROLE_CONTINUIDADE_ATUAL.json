@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Implementar E09-B: tornar o contorno E09-A revisável com correção manual, simplificação limitada, validação explícita e cancelamento seguro; preservar source/provenance e manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Implementar E09-C: gerar colisão válida, integrar o contorno como objeto/recurso reutilizável, persistir save/reopen e validar combinação/export-import; preservar source/provenance e manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
       "id": "E09",
       "status": "IN_PROGRESS",
-      "scope": "E08-A–E comprovados em checkpoint técnico; E09-A comprovado tecnicamente na build r49; E09-B ativo para correção/simplificação/validação do contorno; E09-C planejado",
+      "scope": "E08-A–E e E09-A/B comprovados em checkpoint técnico; E09-C ativo para colisão, objeto, persistência e export/import",
       "evidence": "docs/evidence/E09_VETOR_COLISAO_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
@@ -95,18 +95,18 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e09-vectorization-20260908/binary-capture-r49-regression/07-renderer-authoring.png",
+      "latest_binary_capture": "artifacts/e09-vectorization-20260908/binary-capture-r50-regression/07-renderer-authoring.png",
       "latest_binary_capture_sha256": "F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r49 abriu a fixture V2 de pós-processamento no binário portátil; Preview e Autoria exibiram a vinheta radial sem regressão, e os hashes de Preview/Autoria/Parallax coincidiram com r48. E09-A é um contrato técnico sem UI manual ainda; E09-B permanece ativo. Revisão humana continua pendente.",
+      "observed_finding": "Build r50 abriu a fixture V2 de pós-processamento no binário portátil; Preview e Autoria exibiram a vinheta radial sem regressão, e os hashes de Preview/Autoria/Parallax coincidiram com r49. E09-B foi qualificado no núcleo reversível; E09-C permanece ativo. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e09-vectorization-20260908-r49/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "6DD781889B4FD8AEAD089E2955A23E45D86DF31948DDA744ECB8079897F2AC9A",
-      "latest_observed_binary_last_write": "2026-09-08T23:30:44.3870600Z",
-      "source_commit": "d2acca784a78d3d730b412300d88fe2c12811105",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e09-contour-editing-20260908-r50/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "8D03A986EDE5E26966E464661E48E444082A1EE837A5507F027E91C0CFF0EE94",
+      "latest_observed_binary_last_write": "2026-09-08T23:40:14.3645697Z",
+      "source_commit": "efa3b97fa37906675afd3588439bfb3bfc489c0c",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
       "continuity_registry_sha256": "3391B04283445B16176058A057AC07EB14FEC5D0500D9269A22BB6E909983B78",
@@ -114,7 +114,7 @@
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
       "portable_archive_sha256": "544b4042493b252bc39cddc51f941c5334ac932e7f465ebe34bd9599c44668a0",
-      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A possui contrato de importação/detecção hash-bound, negativos, suíte oficial 2086, build r49, smoke e captura real. E09-B é o sublote ativo."
+      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B possuem detecção hash-bound, edição reversível, negativos, suíte oficial 2091, builds r49/r50, smoke e captura real. E09-C é o sublote ativo."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

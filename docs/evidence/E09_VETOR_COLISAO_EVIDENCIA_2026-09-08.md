@@ -64,4 +64,29 @@ objeto de cena e save/reopen permanecem no E09-B/C e não são anunciadas como
 concluídas. A próxima meta é E09-B: tornar o contorno revisável com histórico,
 validação explícita e diagnóstico de cancelamento/limites.
 
+## E09-B — edição reversível do contorno
+
+- Implementação: commit `2c4b17c`; suíte oficial após o lote: `2091 passed,
+  2 skipped, 1 warning`.
+- `src/core/contour_editing.py` preserva o polígono original e a proveniência,
+  suporta mover/inserir/remover vértices, simplificação RDP/OpenCV limitada,
+  Undo/Redo, validação transacional e cancelamento explícito.
+- Uma edição inválida não altera o estado; o cancelamento restaura o original e
+  impede o uso posterior da sessão cancelada.
+- Auditoria oficial:
+  `python -m scripts.audit_e09_contour_editing_phase2 --output artifacts/e09-vectorization-20260908/audit-e09-b-2c4b17c`
+  — `PASS`, Undo/Redo exato, proveniência preservada, simplificação de 10 para
+  4 vértices e cancelamento restaurando o contorno original.
+- Build r50: `release/e09-contour-editing-20260908-r50`, source commit
+  `efa3b97fa37906675afd3588439bfb3bfc489c0c`, executável SHA-256
+  `8D03A986EDE5E26966E464661E48E444082A1EE837A5507F027E91C0CFF0EE94`.
+- Smoke portátil: `SUCCESS`, 11 checks. Captura real do binário em
+  `artifacts/e09-vectorization-20260908/binary-capture-r50-regression/`;
+  Preview e Autoria mantiveram hashes `54BD8925...DB6D` e `F7D6BF3E...BBE30`.
+
+E09-B comprova o núcleo reversível de edição, mas ainda não reivindica um
+ painel nativo de contorno. Colisão, integração como objeto de cenário,
+ persistência sem dependência de path externo, combinação, duplicação e
+ export/import permanecem E09-C.
+
 Symlink e revisão humana continuam reservados à auditoria final autorizada.
