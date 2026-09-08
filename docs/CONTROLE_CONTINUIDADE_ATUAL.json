@@ -16,6 +16,16 @@
     "controlled_correction_scope": "Somente findings reproduziveis de preservacao detectados em E00; E01-E13 continuam fechadas.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
+    "dependency_traceability": {
+      "status": "PASS_DOCUMENTAL_PREPARATORY_ONLY",
+      "decision": "docs/DECISAO_E00_DEPENDENCIAS_RASTREABILIDADE_2026-09-07.md",
+      "matrix": "docs/RASTREABILIDADE_E00_DEPENDENCIAS_2026-09-07.json",
+      "source_base_sha": "e2cab04cf375f455e96205e0bcd96a62507420ed",
+      "product_requirements": 42,
+      "foundation_requirements": 46,
+      "canonical_requirements": 21,
+      "functional_acceptance": false
+    },
     "next_action": "Continuar as atividades de E00 que nao dependem de symlink; manter essa verificacao adiada para a auditoria final e executar a revisao visual/humana somente no fechamento.",
     "forbidden_until_e00_closes": [
       "iniciar E01",
