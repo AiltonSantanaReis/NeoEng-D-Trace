@@ -305,13 +305,13 @@ try {
         # Ctrl+End is consumed by the focused child list on some Qt builds.
         # Clicking the visible scrollbar track is deterministic at the native
         # DPI-aware surface and follows the same interaction a user performs.
-        for ($scrollStep = 0; $scrollStep -lt 36; $scrollStep++) {
+        for ($scrollStep = 0; $scrollStep -lt 100; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.992, 0.60, -120)
             Start-Sleep -Milliseconds 100
         }
         Start-Sleep -Milliseconds 700
         $records.parallax_controls_bottom = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-parallax-controls-bottom.png")
-        for ($scrollStep = 0; $scrollStep -lt 8; $scrollStep++) {
+        for ($scrollStep = 0; $scrollStep -lt 20; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.992, 0.60, 120)
             Start-Sleep -Milliseconds 100
         }
