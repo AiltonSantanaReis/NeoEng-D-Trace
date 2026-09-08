@@ -49,7 +49,7 @@ do proprietário for indispensável.
 - E04: checkpoint técnico concluído; aceite final permanece pendente até a auditoria final; branch `Ailton/e04-tilemaps-20260908`, build r14 e captura real registrados.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
-- E07: próximo lote a abrir após este checkpoint, com decisão e evidência próprias.
+- E07: lote ativo em `Ailton/e07-entities-20260908`; decisão e evidência próprias registradas; E07-A aberto.
 - E08–E13: ainda não iniciadas.
 
 ## Metas executáveis do lote E01
@@ -102,7 +102,7 @@ do proprietário for indispensável.
 | E04 | tilemaps, grids e regras de terreno | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — r14 validado no binário | três grids, chunks, regras e persistência |
 | E05 | colisão própria de cenário | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | tipos físicos, triggers, persistência e validação de contato |
 | E06 | NavMesh 2D e consumo real | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | navegação de superfície, bake, caminho e persistência |
-| E07 | componentes e instâncias | `PLANNED` | relações, parent/grupos e conflitos de prefab |
+| E07 | componentes e instâncias | `IN_PROGRESS` — E07-A aberto | relações, parent/grupos e conflitos de prefab |
 | E08 | materiais, paralaxe, efeitos e determinismo | `PLANNED` | renderer/FX qualificados com budgets e tolerâncias |
 | E09 | autoria e exportação vetorial | `PLANNED` | objetos editáveis, persistentes e exportáveis |
 | E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
