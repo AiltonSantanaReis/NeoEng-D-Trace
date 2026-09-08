@@ -8,6 +8,7 @@ param(
     [switch]$CaptureTilemapFlow,
     [switch]$CaptureColliderFlow,
     [switch]$CaptureNavMeshFlow,
+    [switch]$CaptureEntityPrefabFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -249,6 +250,29 @@ try {
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.135)
         Start-Sleep -Milliseconds 700
         $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-navmesh-reopened.png")
+    }
+    if ($CaptureEntityPrefabFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # The E07 panel is the first inspector panel.  Coordinates are
+        # normalized against the DPI-aware native surface; they remain valid
+        # when the maximized logical Qt surface is 3866x2090.
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.78, 0.345)
+        Start-Sleep -Milliseconds 650
+        $records.entity_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-entity-created.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.78, 0.585)
+        Start-Sleep -Milliseconds 500
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.87, 0.585)
+        Start-Sleep -Milliseconds 650
+        $records.prefab_instantiated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-prefab-instantiated.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.78, 0.826)
+        Start-Sleep -Milliseconds 650
+        $records.prefab_override = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-prefab-override.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.585)
+        Start-Sleep -Milliseconds 650
+        $records.prefab_updated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-prefab-updated.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.826)
+        Start-Sleep -Milliseconds 650
+        $records.prefab_detached = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-prefab-detached.png")
     }
     $records.editor_title = $editor.Title
     $records.editor_window_rect_before_tilemap_flow = [NeoEngE03Capture]::RectText($editor.Handle)
