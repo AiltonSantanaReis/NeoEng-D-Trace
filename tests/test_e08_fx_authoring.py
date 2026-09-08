@@ -24,6 +24,7 @@ from src.persistence.scene_authoring_schema import (
 from src.ui.scene_authoring_viewport import (
     SceneAuthoringViewport,
     SceneParticleGraphicsItem,
+    ScenePostProcessGraphicsItem,
 )
 
 SHA = "d" * 64
@@ -97,6 +98,48 @@ def test_vfx_socket_creates_particle_pixels_in_professional_viewport(
         assert particle._states
         assert particle.pos().x() == pytest.approx(80.0)
         assert particle.pos().y() == pytest.approx(60.0)
+    finally:
+        viewport.close()
+        qt_app.processEvents()
+
+
+def test_post_process_preview_is_ordered_and_observable() -> None:
+    item = ScenePostProcessGraphicsItem("post-vignette", 1.0)
+
+    assert item._applied_effect_ids == ("warm-tint", "vignette")
+    assert item._edge_color.alpha() == 135
+    assert item._edge_color.red() < 255
+    assert item.boundingRect().width() == pytest.approx(4000.0)
+
+
+def test_post_process_socket_creates_overlay_in_professional_viewport(
+    qt_app: QApplication, tmp_path: Path
+) -> None:
+    document = _document().model_copy(
+        update={
+            "sockets": [
+                SceneVfxSocketRecord(
+                    id="post-vignette",
+                    layer_id="layer",
+                    position=Point3Record(x=0.0, y=0.0, z=0.0),
+                    effect_id="post-vignette",
+                    scale=1.0,
+                    enabled=True,
+                )
+            ]
+        }
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    viewport = SceneAuthoringViewport(session, project_root=tmp_path)
+    viewport.resize(640, 480)
+    viewport.show()
+    qt_app.processEvents()
+    try:
+        assert "post-vignette" in viewport._post_process_items
+        post_process = viewport._post_process_items["post-vignette"]
+        assert post_process._applied_effect_ids == ("warm-tint", "vignette")
+        assert post_process.pos().x() == pytest.approx(0.0)
+        assert post_process.pos().y() == pytest.approx(0.0)
     finally:
         viewport.close()
         qt_app.processEvents()

@@ -6,6 +6,7 @@ import math
 from pathlib import Path
 from typing import Iterable
 
+import numpy as np
 from PySide6.QtCore import (
     QFileSystemWatcher,
     QMimeData,
@@ -25,6 +26,7 @@ from PySide6.QtGui import (
     QPen,
     QPixmap,
     QPolygonF,
+    QRadialGradient,
     QTransform,
     QWheelEvent,
 )
@@ -87,6 +89,13 @@ from src.runtime.particles import (
     ParticleStateRecord,
     ParticleSimulation,
     ParticleSourceBindingRecord,
+)
+from src.runtime.post_processing import (
+    PostProcessingDocumentV1,
+    PostProcessingEffectRecord,
+    PostProcessingFallbackRecord,
+    PostProcessingRuntime,
+    PostProcessingSourceBindingRecord,
 )
 
 
@@ -423,6 +432,79 @@ class SceneParticleGraphicsItem(QGraphicsObject):
             )
 
 
+class ScenePostProcessGraphicsItem(QGraphicsObject):
+    """Visible deterministic post-process overlay backed by the CPU runtime."""
+
+    def __init__(self, effect_id: str, scale: float, parent=None) -> None:
+        super().__init__(parent)
+        self.effect_id = effect_id
+        self._scale = max(0.01, float(scale))
+        self._edge_color = QColor(8, 12, 20, 0)
+        self._refresh_preview()
+        self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
+        self.setZValue(95.0)
+
+    def _refresh_preview(self) -> None:
+        document = PostProcessingDocumentV1(
+            source=PostProcessingSourceBindingRecord(sha256="0" * 64),
+            fallback=PostProcessingFallbackRecord(
+                mode="cpu-preview",
+                reason="Raster reference backend is active.",
+            ),
+            effects=[
+                PostProcessingEffectRecord(
+                    id="warm-tint",
+                    kind="tint",
+                    order=10,
+                    parameters={"amount": 0.22, "color": [1.0, 0.46, 0.18]},
+                ),
+                PostProcessingEffectRecord(
+                    id="vignette",
+                    kind="vignette",
+                    order=20,
+                    parameters={"amount": 0.55, "radius": 0.48},
+                ),
+            ],
+        )
+        runtime = PostProcessingRuntime()
+        runtime.load_manifest(document)
+        source = np.ones((3, 3, 4), dtype=np.float64)
+        source[:, :, :3] = (0.18, 0.26, 0.38)
+        preview = runtime.preview(source)
+        edge = preview.image[0, 0, :3]
+        self._edge_color = QColor(
+            int(round(float(edge[0]) * 255.0)),
+            int(round(float(edge[1]) * 255.0)),
+            int(round(float(edge[2]) * 255.0)),
+            135,
+        )
+        self._applied_effect_ids = preview.applied_effect_ids
+        self.update()
+
+    def set_scale(self, scale: float) -> None:
+        value = max(0.01, float(scale))
+        if value != self._scale:
+            self._scale = value
+            self.update()
+
+    def boundingRect(self) -> QRectF:
+        extent = 2000.0 * self._scale
+        return QRectF(-extent, -extent, extent * 2.0, extent * 2.0)
+
+    def paint(self, painter: QPainter, option, widget=None) -> None:
+        del option, widget
+        radius = 1500.0 * self._scale
+        gradient = QRadialGradient(QPointF(0.0, 0.0), radius)
+        center = QColor(self._edge_color)
+        center.setAlpha(0)
+        gradient.setColorAt(0.0, center)
+        gradient.setColorAt(0.58, center)
+        gradient.setColorAt(1.0, self._edge_color)
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QBrush(gradient))
+        painter.drawEllipse(QRectF(-radius, -radius, radius * 2.0, radius * 2.0))
+
+
 class SceneAuthoringViewport(QGraphicsView):
     """Canvas for selecting and transforming authored scene objects."""
 
@@ -454,6 +536,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._items: dict[str, SceneObjectGraphicsItem] = {}
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
         self._particle_items: dict[str, SceneParticleGraphicsItem] = {}
+        self._post_process_items: dict[str, ScenePostProcessGraphicsItem] = {}
         self._preview_enabled = False
         self._render_plan: SceneRenderPlan | None = None
         self._lighting_settings = default_scene_lighting()
@@ -942,6 +1025,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._items.clear()
         self._socket_items.clear()
         self._particle_items.clear()
+        self._post_process_items.clear()
         self._gizmo = None
         diagnostics: list[str] = []
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
@@ -1018,7 +1102,11 @@ class SceneAuthoringViewport(QGraphicsView):
                 )
                 self.graphics_scene.addItem(marker)
                 self._socket_items[socket.id] = marker
-                if socket.type == "vfx" and socket.enabled:
+                if (
+                    socket.type == "vfx"
+                    and socket.enabled
+                    and not socket.effect_id.startswith("post-")
+                ):
                     particle_item = SceneParticleGraphicsItem(
                         socket.effect_id,
                         float(socket.scale),
@@ -1026,6 +1114,18 @@ class SceneAuthoringViewport(QGraphicsView):
                     particle_item.setZValue(self._overlay_z(90.0))
                     self.graphics_scene.addItem(particle_item)
                     self._particle_items[socket.id] = particle_item
+                if (
+                    socket.type == "vfx"
+                    and socket.enabled
+                    and socket.effect_id.startswith("post-")
+                ):
+                    post_process_item = ScenePostProcessGraphicsItem(
+                        socket.effect_id,
+                        float(socket.scale),
+                    )
+                    post_process_item.setZValue(self._overlay_z(95.0))
+                    self.graphics_scene.addItem(post_process_item)
+                    self._post_process_items[socket.id] = post_process_item
         self._prune_asset_pixmap_cache(active_asset_cache_keys)
         self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
@@ -1165,6 +1265,10 @@ class SceneAuthoringViewport(QGraphicsView):
                 if particle_item is not None and socket.type == "vfx":
                     particle_item.setPos(position)
                     particle_item.set_scale(float(socket.scale))
+                post_process_item = self._post_process_items.get(socket_id)
+                if post_process_item is not None and socket.type == "vfx":
+                    post_process_item.setPos(position)
+                    post_process_item.set_scale(float(socket.scale))
 
     def _refresh_selection(self, object_ids: Iterable[str] | None = None) -> None:
         requested_ids = (
