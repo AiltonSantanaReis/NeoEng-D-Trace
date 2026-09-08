@@ -15,6 +15,7 @@
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "Somente findings reproduziveis de preservacao detectados em E00; E01-E13 continuam fechadas.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
+    "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "next_action": "Continuar as atividades de E00 que nao dependem de symlink; manter essa verificacao adiada para a auditoria final e executar a revisao visual/humana somente no fechamento.",
     "forbidden_until_e00_closes": [
       "iniciar E01",
