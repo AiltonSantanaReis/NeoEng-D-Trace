@@ -48,3 +48,36 @@ ficam reservados à auditoria final.
 E08-A está selado apenas como checkpoint técnico; E08-B permanece ativo. Symlink
 e revisão humana continuam pendentes por autorização e serão executados somente
 na auditoria final do Plano Mestre.
+
+## E08-B — contrato de câmera/paralaxe em execução
+
+### Escopo e critérios rastreáveis
+
+- [x] Separar a matemática da câmera do widget Qt e preservar os campos
+  legados de profundidade/força.
+- [x] Persistir `scroll_x`, `scroll_y`, `offset_x`, `offset_y` e os quatro
+  flags de repetição/espelhamento com defaults retrocompatíveis.
+- [x] Propagar os novos campos por schema V2, bridge, preview determinístico e
+  viewport profissional.
+- [x] Expor a edição no inspetor com limites, labels explícitos e operação
+  transacional Undo/Redo.
+- [x] Cobrir movimento negativo, zoom, âncoras, round-trip, variantes de tile,
+  limites inválidos e proteção contra aplicação dupla.
+- [ ] Executar suíte oficial, estática, build limpa e captura real do binário
+  após o lote; estes gates ainda estão pendentes neste commit de implementação.
+
+### Semântica aprovada
+
+`scroll_x/y` são fatores assinados independentes em `[-4, 4]`; offsets são
+finitos em unidades de mundo; repetição/espelhamento são metadados persistidos
+que geram variantes determinísticas para o renderer sem reinterpretar `z`.
+Defaults (`1, 1, 0, 0, false, false, false, false`) preservam a projeção
+anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
+
+### Estado da implementação
+
+- Commit de implementação: `PENDENTE — lote em execução`.
+- Teste focado preliminar: `47 passed` (E08-B, câmera legado, inspector/viewport e E08-A).
+- Limitação declarada: captura/build oficial ainda não foram refeitas; não há
+  checkpoint técnico E08-B nem afirmação de suporte de atlas/alpha nesta fase.
+- Symlink e revisão humana: `DEFERRED_UNTIL_FINAL_AUDIT`, sem reexecução.

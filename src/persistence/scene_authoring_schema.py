@@ -61,6 +61,18 @@ def _unit(value: int | float, field: str) -> int | float:
     return number
 
 
+def _bounded(
+    value: int | float,
+    field: str,
+    lower: float,
+    upper: float,
+) -> int | float:
+    number = _finite(value, field)
+    if number < lower or number > upper:
+        raise ValueError(f"{field} must be between {lower} and {upper}")
+    return number
+
+
 class SceneAuthoringMetadataRecord(StrictProjectModel):
     name: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
     generator: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
@@ -173,9 +185,7 @@ class SceneComponentAuthoringRecord(StrictProjectModel):
     id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     type: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
     version: int = Field(ge=1, le=10_000)
-    properties: dict[str, str | int | float | bool | None] = Field(
-        default_factory=dict
-    )
+    properties: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def validate_property_values(self) -> "SceneComponentAuthoringRecord":
@@ -233,9 +243,7 @@ class ScenePrefabAuthoringRecord(StrictProjectModel):
 
     id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     name: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
-    source_entity_ids: list[str] = Field(
-        min_length=1, max_length=MAX_PROJECT_OBJECTS
-    )
+    source_entity_ids: list[str] = Field(min_length=1, max_length=MAX_PROJECT_OBJECTS)
     version: int = Field(default=1, ge=1, le=10_000)
 
     @field_validator("source_entity_ids")
@@ -300,17 +308,41 @@ class SceneCameraAuthoringRecord(StrictProjectModel):
 
 
 class SceneParallaxLayerRecord(StrictProjectModel):
-    """Versioned layer parameters for deterministic professional preview."""
+    """Versioned layer parameters for deterministic professional preview.
+
+    The original depth/strength fields remain unchanged.  E08-B adds signed
+    axis-specific scroll and manual offsets with defaults that reproduce the
+    previous projection exactly; repeat/mirror flags are explicit render
+    metadata and never reinterpret ``position.z``.
+    """
 
     layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     depth: int | float = 0.0
     translation_strength: int | float = 1.0
     zoom_strength: int | float = 1.0
+    scroll_x: int | float = 1.0
+    scroll_y: int | float = 1.0
+    offset_x: int | float = 0.0
+    offset_y: int | float = 0.0
+    repeat_x: bool = False
+    repeat_y: bool = False
+    mirror_x: bool = False
+    mirror_y: bool = False
 
     @field_validator("depth", "translation_strength", "zoom_strength")
     @classmethod
     def validate_normalized(cls, value: int | float) -> int | float:
         return _unit(value, "parallax parameter")
+
+    @field_validator("scroll_x", "scroll_y")
+    @classmethod
+    def validate_scroll(cls, value: int | float, info) -> int | float:
+        return _bounded(value, f"parallax.{info.field_name}", -4.0, 4.0)
+
+    @field_validator("offset_x", "offset_y")
+    @classmethod
+    def validate_offset(cls, value: int | float, info) -> int | float:
+        return _finite(value, f"parallax.{info.field_name}")
 
 
 class _SceneSocketBase(StrictProjectModel):
@@ -523,7 +555,10 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
                 raise ValueError(
                     f"entity {entity.id!r} references unknown layer {entity.layer_id!r}"
                 )
-            if entity.instance_of is not None and entity.instance_of not in known_entities:
+            if (
+                entity.instance_of is not None
+                and entity.instance_of not in known_entities
+            ):
                 raise ValueError(
                     f"entity {entity.id!r} references unknown source entity"
                 )

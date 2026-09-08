@@ -82,6 +82,34 @@ do proprietário for indispensável.
 | E06-E build/capturas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E06_R22_CAPTURAS_MANIFESTO.json` | binário r22, smoke, captura real e manifesto |
 | E07-A/B/C | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E07_ENTIDADES_PREFABS_EVIDENCIA_2026-09-08.md` e `docs/evidence/E07_R24_CAPTURAS_MANIFESTO.json` | entidades/componentes, hierarquia, ciclo de prefab, build r24, smoke e captura real |
 | E08-A | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` e `docs/evidence/E08_A_R28_CAPTURAS_MANIFESTO.json` | plano 2.5D, ordenação, fallback raster, cache, build r28, smoke e captura real |
+| E08-B.1 contrato/schema | `IN_PROGRESS` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | scroll X/Y, offset, repeat/mirror, defaults e limites |
+| E08-B.2 runtime/preview | `IN_PROGRESS` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | projeção, round-trip, variantes determinísticas, sem dupla aplicação |
+| E08-B.3 UI transacional | `IN_PROGRESS` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | inspetor, Undo/Redo, fluxo do usuário e tradução |
+| E08-B.4 build/capturas | `PENDING_EVIDENCE` | `docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md` | build limpa, smoke, captura real e manifesto hashado |
+
+## Fila operacional única — não parar antes do fechamento
+
+Esta é a fila de execução central. Cada linha só muda para `PASS` depois de
+teste proporcional, regressão, artefato, hash, documentação e commit. A única
+decisão ainda reservada ao proprietário é a revisão humana da auditoria final;
+ela não interrompe a execução técnica autorizada.
+
+| Ordem | Meta | Status | Saída obrigatória |
+|---:|---|---|---|
+| 1 | E08-B câmera/paralaxe | `IN_PROGRESS` | contrato, testes, build e captura real |
+| 2 | E08-C materiais/normal maps/luzes/sombras | `PLANNED` | pixels observáveis, negativos e fallback |
+| 3 | E08-D partículas/shaders/pós | `PLANNED` | seed/lifecycle, erro recuperável e cadeia |
+| 4 | E08-E determinismo/destinos | `PLANNED` | timestep, tolerâncias e matriz de capacidades |
+| 5 | E09 autoria/exportação vetorial | `PLANNED` | fluxo editável, persistente e exportável |
+| 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
+| 7 | E11 composição/runtime | `PLANNED` | cena executada fora do editor |
+| 8 | E12 recursos avançados/híbrido 3D | `PLANNED` | contrato, implementação e destinos |
+| 9 | E13 fechamento/portabilidade | `PLANNED` | instaladores, documentação e baseline final |
+| 10 | Auditoria final | `PLANNED` | symlinks, revisão humana, findings e decisão formal |
+
+Regra de parada: continuar automaticamente entre essas metas; parar somente
+quando todas estiverem concluídas ou quando uma decisão do proprietário for
+indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 
 ## Ordem fixa de execução
 

@@ -67,6 +67,14 @@ def _parallax(document: SceneAuthoringDocumentV2, layer_id: str) -> ParallaxLaye
         depth=float(record.depth),
         translation_strength=float(record.translation_strength),
         zoom_strength=float(record.zoom_strength),
+        scroll_x=float(record.scroll_x),
+        scroll_y=float(record.scroll_y),
+        offset_x=float(record.offset_x),
+        offset_y=float(record.offset_y),
+        repeat_x=record.repeat_x,
+        repeat_y=record.repeat_y,
+        mirror_x=record.mirror_x,
+        mirror_y=record.mirror_y,
     )
 
 
@@ -195,6 +203,14 @@ def build_scene_authoring_preview(
             depth=float(record.depth),
             translation_strength=float(record.translation_strength),
             zoom_strength=float(record.zoom_strength),
+            scroll_x=float(record.scroll_x),
+            scroll_y=float(record.scroll_y),
+            offset_x=float(record.offset_x),
+            offset_y=float(record.offset_y),
+            repeat_x=record.repeat_x,
+            repeat_y=record.repeat_y,
+            mirror_x=record.mirror_x,
+            mirror_y=record.mirror_y,
         )
         for record in document.parallax_layers
     }

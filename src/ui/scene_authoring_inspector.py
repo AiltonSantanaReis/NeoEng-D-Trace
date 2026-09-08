@@ -87,6 +87,14 @@ class SceneAuthoringInspector(QWidget):
         self.parallax_depth = self._spin(0.0, 1.0, step=0.05)
         self.parallax_translation = self._spin(0.0, 1.0, step=0.05)
         self.parallax_zoom = self._spin(0.0, 1.0, step=0.05)
+        self.parallax_scroll_x = self._spin(-4.0, 4.0, step=0.1)
+        self.parallax_scroll_y = self._spin(-4.0, 4.0, step=0.1)
+        self.parallax_offset_x = self._spin(-1_000_000.0, 1_000_000.0)
+        self.parallax_offset_y = self._spin(-1_000_000.0, 1_000_000.0)
+        self.parallax_repeat_x = QCheckBox("Repeat X")
+        self.parallax_repeat_y = QCheckBox("Repeat Y")
+        self.parallax_mirror_x = QCheckBox("Mirror X")
+        self.parallax_mirror_y = QCheckBox("Mirror Y")
         self.parallax_apply_button = QPushButton("Apply Layer Parallax")
         self.socket_combo = QComboBox()
         self.socket_type = QComboBox()
@@ -108,6 +116,14 @@ class SceneAuthoringInspector(QWidget):
         stage4_form.addRow("Depth", self.parallax_depth)
         stage4_form.addRow("Translation", self.parallax_translation)
         stage4_form.addRow("Zoom", self.parallax_zoom)
+        stage4_form.addRow("Scroll X", self.parallax_scroll_x)
+        stage4_form.addRow("Scroll Y", self.parallax_scroll_y)
+        stage4_form.addRow("Offset X", self.parallax_offset_x)
+        stage4_form.addRow("Offset Y", self.parallax_offset_y)
+        stage4_form.addRow(self.parallax_repeat_x)
+        stage4_form.addRow(self.parallax_repeat_y)
+        stage4_form.addRow(self.parallax_mirror_x)
+        stage4_form.addRow(self.parallax_mirror_y)
         stage4_form.addRow(self.parallax_apply_button)
         stage4_form.addRow("Socket", self.socket_combo)
         stage4_form.addRow("Type", self.socket_type)
@@ -329,9 +345,21 @@ class SceneAuthoringInspector(QWidget):
             (self.parallax_depth, values.depth),
             (self.parallax_translation, values.translation_strength),
             (self.parallax_zoom, values.zoom_strength),
+            (self.parallax_scroll_x, values.scroll_x),
+            (self.parallax_scroll_y, values.scroll_y),
+            (self.parallax_offset_x, values.offset_x),
+            (self.parallax_offset_y, values.offset_y),
         ):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))
+        for check_widget, value in (
+            (self.parallax_repeat_x, values.repeat_x),
+            (self.parallax_repeat_y, values.repeat_y),
+            (self.parallax_mirror_x, values.mirror_x),
+            (self.parallax_mirror_y, values.mirror_y),
+        ):
+            with QSignalBlocker(check_widget):
+                check_widget.setChecked(bool(value))
 
     def _refresh_socket_fields(self) -> None:
         document = self.session.document
@@ -384,6 +412,14 @@ class SceneAuthoringInspector(QWidget):
                     depth=self.parallax_depth.value(),
                     translation_strength=self.parallax_translation.value(),
                     zoom_strength=self.parallax_zoom.value(),
+                    scroll_x=self.parallax_scroll_x.value(),
+                    scroll_y=self.parallax_scroll_y.value(),
+                    offset_x=self.parallax_offset_x.value(),
+                    offset_y=self.parallax_offset_y.value(),
+                    repeat_x=self.parallax_repeat_x.isChecked(),
+                    repeat_y=self.parallax_repeat_y.isChecked(),
+                    mirror_x=self.parallax_mirror_x.isChecked(),
+                    mirror_y=self.parallax_mirror_y.isChecked(),
                 )
             )
             self.status_message.emit(

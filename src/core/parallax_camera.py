@@ -57,6 +57,14 @@ class ParallaxLayer:
     depth: float = 0.0
     translation_strength: float = 1.0
     zoom_strength: float = 1.0
+    scroll_x: float = 1.0
+    scroll_y: float = 1.0
+    offset_x: float = 0.0
+    offset_y: float = 0.0
+    repeat_x: bool = False
+    repeat_y: bool = False
+    mirror_x: bool = False
+    mirror_y: bool = False
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "depth", _bounded(self.depth, "depth", 0.0, 1.0))
@@ -75,6 +83,18 @@ class ParallaxLayer:
             "zoom_strength",
             _bounded(self.zoom_strength, "zoom_strength", 0.0, 1.0),
         )
+        object.__setattr__(
+            self, "scroll_x", _bounded(self.scroll_x, "scroll_x", -4.0, 4.0)
+        )
+        object.__setattr__(
+            self, "scroll_y", _bounded(self.scroll_y, "scroll_y", -4.0, 4.0)
+        )
+        object.__setattr__(self, "offset_x", _finite(self.offset_x, "offset_x"))
+        object.__setattr__(self, "offset_y", _finite(self.offset_y, "offset_y"))
+        for field in ("repeat_x", "repeat_y", "mirror_x", "mirror_y"):
+            value = getattr(self, field)
+            if not isinstance(value, bool):
+                raise ValueError(f"{field} must be boolean")
 
     @property
     def translation_factor(self) -> float:
@@ -87,6 +107,49 @@ class ParallaxLayer:
         """Fraction of camera zoom delta applied to this layer."""
 
         return 1.0 - self.depth * self.zoom_strength
+
+    @property
+    def camera_scroll_x(self) -> float:
+        """Effective signed horizontal camera response for this layer."""
+
+        return self.translation_factor * self.scroll_x
+
+    @property
+    def camera_scroll_y(self) -> float:
+        """Effective signed vertical camera response for this layer."""
+
+        return self.translation_factor * self.scroll_y
+
+    def tile_variants(
+        self,
+        tile_size: Sequence[float],
+        *,
+        radius: int = 1,
+    ) -> tuple[tuple[float, float, bool, bool], ...]:
+        """Return deterministic repeat/mirror variants around the anchor.
+
+        This is renderer-neutral metadata: the caller supplies the actual
+        texture/geometry tile size and decides how to draw each variant.
+        With both repeat flags disabled the result is exactly one anchor.
+        """
+
+        width, height = _point(tile_size, "tile_size")
+        if width <= 0.0 or height <= 0.0:
+            raise ValueError("tile_size coordinates must be positive")
+        if isinstance(radius, bool) or not isinstance(radius, int) or radius < 0:
+            raise ValueError("radius must be a non-negative integer")
+        x_indices = range(-radius, radius + 1) if self.repeat_x else (0,)
+        y_indices = range(-radius, radius + 1) if self.repeat_y else (0,)
+        return tuple(
+            (
+                index_x * width,
+                index_y * height,
+                bool(self.mirror_x and index_x % 2),
+                bool(self.mirror_y and index_y % 2),
+            )
+            for index_y in y_indices
+            for index_x in x_indices
+        )
 
 
 @dataclass(frozen=True)
@@ -135,8 +198,8 @@ class OrthographicCamera:
         world = _point(world_point, "world_point")
         resolved = layer or ParallaxLayer()
         zoom = self.effective_zoom(resolved)
-        camera_x = self.position[0] * resolved.translation_factor
-        camera_y = self.position[1] * resolved.translation_factor
+        camera_x = self.position[0] * resolved.camera_scroll_x - resolved.offset_x
+        camera_y = self.position[1] * resolved.camera_scroll_y - resolved.offset_y
         center_x, center_y = self.viewport_center
         return (
             (world[0] - camera_x) * zoom + center_x,
@@ -154,8 +217,8 @@ class OrthographicCamera:
         resolved = layer or ParallaxLayer()
         zoom = self.effective_zoom(resolved)
         center_x, center_y = self.viewport_center
-        camera_x = self.position[0] * resolved.translation_factor
-        camera_y = self.position[1] * resolved.translation_factor
+        camera_x = self.position[0] * resolved.camera_scroll_x - resolved.offset_x
+        camera_y = self.position[1] * resolved.camera_scroll_y - resolved.offset_y
         return (
             (screen[0] - center_x) / zoom + camera_x,
             (screen[1] - center_y) / zoom + camera_y,
