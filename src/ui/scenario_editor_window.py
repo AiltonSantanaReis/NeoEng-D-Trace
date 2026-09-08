@@ -154,6 +154,8 @@ class ScenarioEditorWindow(QMainWindow):
         splitter.setStretchFactor(0, 1)
         splitter.setStretchFactor(1, 0)
         splitter.setSizes([650, 300])
+        self.editor_splitter = splitter
+        self._last_splitter_width = 0
         self.setCentralWidget(splitter)
 
         self.toolbar = QToolBar("Scenario", self)
@@ -228,6 +230,16 @@ class ScenarioEditorWindow(QMainWindow):
         self.authoring.subscribe(self.refresh)
         self.update_language(language)
         self.refresh()
+
+    def resizeEvent(self, event: Any) -> None:
+        super().resizeEvent(event)
+        width = self.width()
+        if width <= 0 or width == self._last_splitter_width:
+            return
+        self._last_splitter_width = width
+        inspector_width = max(320, int(width * 0.27))
+        viewport_width = max(420, width - inspector_width)
+        self.editor_splitter.setSizes([viewport_width, inspector_width])
 
     def _build_canvas(self):
         # Local import avoids making MainWindow and the scenario surface depend
