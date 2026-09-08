@@ -34,12 +34,17 @@ public static class NeoEngIndependentSceneCapture
 
     [DllImport("user32.dll")] private static extern bool EnumWindows(EnumWindowsProc callback, IntPtr extra);
     [DllImport("user32.dll")] private static extern bool IsWindowVisible(IntPtr hWnd);
-    [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int length);
     [DllImport("user32.dll")] private static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
     [DllImport("user32.dll")] private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint flags);
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int command);
     [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+    [DllImport("kernel32.dll")] private static extern uint GetCurrentThreadId();
+    [DllImport("user32.dll")] private static extern bool AttachThreadInput(uint sourceThreadId, uint targetThreadId, bool attach);
+    [DllImport("user32.dll")] private static extern bool BringWindowToTop(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern IntPtr SetFocus(IntPtr hWnd);
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] private static extern void mouse_event(uint flags, uint dx, uint dy, uint data, UIntPtr extra);
     [DllImport("user32.dll")] private static extern void keybd_event(byte key, byte scan, uint flags, UIntPtr extra);
@@ -67,6 +72,32 @@ public static class NeoEngIndependentSceneCapture
     public static bool Activate(IntPtr hWnd)
     {
         return ShowWindow(hWnd, 3) && SetForegroundWindow(hWnd);
+    }
+
+    public static bool FocusWindow(IntPtr hWnd)
+    {
+        IntPtr foreground = GetForegroundWindow();
+        uint foregroundProcess;
+        uint foregroundThread = GetWindowThreadProcessId(foreground, out foregroundProcess);
+        uint targetProcess;
+        uint targetThread = GetWindowThreadProcessId(hWnd, out targetProcess);
+        uint currentThread = GetCurrentThreadId();
+        bool attachedForeground = foregroundThread != 0 && foregroundThread != currentThread &&
+            AttachThreadInput(currentThread, foregroundThread, true);
+        bool attachedTarget = targetThread != 0 && targetThread != currentThread &&
+            AttachThreadInput(currentThread, targetThread, true);
+        try
+        {
+            BringWindowToTop(hWnd);
+            SetForegroundWindow(hWnd);
+            SetFocus(hWnd);
+            return true;
+        }
+        finally
+        {
+            if (attachedTarget) AttachThreadInput(currentThread, targetThread, false);
+            if (attachedForeground) AttachThreadInput(currentThread, foregroundThread, false);
+        }
     }
 
     public static void SendCtrlAltN()
@@ -164,6 +195,7 @@ try {
 
     $saveDialogRecord = $null
     if ($CaptureSaveDialog -and $child) {
+        [NeoEngIndependentSceneCapture]::FocusWindow($child.Handle) | Out-Null
         [NeoEngIndependentSceneCapture]::ClickWindow($child.Handle, 260, 80)
         Start-Sleep -Milliseconds 300
         [NeoEngIndependentSceneCapture]::SendCtrlShiftS()
