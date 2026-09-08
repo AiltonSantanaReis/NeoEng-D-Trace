@@ -84,3 +84,26 @@ def test_independent_scene_action_opens_the_real_child_window(
 
     child.close()
     main.close()
+
+
+def test_independent_scene_save_as_cancel_preserves_unsaved_document(
+    monkeypatch,
+    qt_app: QApplication,
+) -> None:
+    from src.ui import independent_scene_window as window_module
+
+    window = IndependentSceneWindow(language="pt")
+    window.show()
+    window.width_spin.setValue(1280)
+    assert window.session.is_modified
+    monkeypatch.setattr(
+        window_module.QFileDialog,
+        "getSaveFileName",
+        staticmethod(lambda *args, **kwargs: ("", "")),
+    )
+
+    assert window.save_scene_as() is False
+    assert window.session.path is None
+    assert window.session.is_modified
+    window.session.new()
+    window.close()

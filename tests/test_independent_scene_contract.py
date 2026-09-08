@@ -125,3 +125,21 @@ def test_malformed_json_bom_and_wrong_extension_are_rejected(tmp_path: Path) -> 
             default_independent_scene_document(),
             tmp_path / "wrong.json",
         )
+
+
+def test_external_change_is_rejected_without_overwriting_previous_file(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "conflict.ndtscene"
+    session = IndependentSceneSession()
+    session.save(target)
+    session.set_resolution(800, 450)
+
+    external_document = default_independent_scene_document(width=640, height=360)
+    save_independent_scene(external_document, target)
+    external_bytes = target.read_bytes()
+
+    with pytest.raises(IndependentSceneWriteError, match="changed externally"):
+        session.save()
+
+    assert target.read_bytes() == external_bytes

@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 from src.persistence.independent_scene_io import (
+    IndependentSceneWriteError,
     independent_scene_sha256,
     load_independent_scene,
     save_independent_scene,
@@ -30,6 +32,7 @@ class IndependentSceneSession:
         self.document = document or default_independent_scene_document()
         self.path: Path | None = None
         self.last_folder = last_folder
+        self.persisted_file_sha256: str | None = None
         self.clean_signature = independent_scene_sha256(self.document)
 
     @property
@@ -53,6 +56,7 @@ class IndependentSceneSession:
             height=height,
         )
         self.path = None
+        self.persisted_file_sha256 = None
         self.clean_signature = independent_scene_sha256(self.document)
         return self.document
 
@@ -97,9 +101,27 @@ class IndependentSceneSession:
 
     def save(self, path: str | Path | None = None) -> Path:
         destination = self.normalized_path(path or self.path or self.dialog_start())
+        resolved_destination = destination.resolve(strict=False)
+        if (
+            self.path is not None
+            and resolved_destination == self.path
+            and self.persisted_file_sha256 is not None
+        ):
+            if not destination.is_file():
+                raise IndependentSceneWriteError(
+                    "independent scene file changed externally or was removed"
+                )
+            current_hash = hashlib.sha256(destination.read_bytes()).hexdigest()
+            if current_hash != self.persisted_file_sha256:
+                raise IndependentSceneWriteError(
+                    "independent scene file changed externally; refusing to overwrite"
+                )
         save_independent_scene(self.document, destination)
-        self.path = destination.resolve(strict=False)
+        self.path = resolved_destination
         self.last_folder = str(self.path.parent)
+        self.persisted_file_sha256 = hashlib.sha256(
+            destination.read_bytes()
+        ).hexdigest()
         self.clean_signature = independent_scene_sha256(self.document)
         return self.path
 
@@ -112,6 +134,9 @@ class IndependentSceneSession:
         self.document = document
         self.path = destination
         self.last_folder = str(destination.parent)
+        self.persisted_file_sha256 = hashlib.sha256(
+            destination.read_bytes()
+        ).hexdigest()
         self.clean_signature = independent_scene_sha256(document)
         return document
 
