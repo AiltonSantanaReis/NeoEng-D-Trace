@@ -407,6 +407,7 @@ def main() -> int:
                     editor = getattr(win, "scenario_editor_window", None)
                     if editor is not None:
                         editor.showMaximized()
+                        editor.resize(3800, 2000)
 
             QTimer.singleShot(500, open_capture_project)
         offer_autosave_recovery = getattr(win, "offer_autosave_recovery", None)
