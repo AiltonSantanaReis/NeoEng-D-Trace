@@ -39,7 +39,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r7 preservada historicamente; r10 obrigatória para promover E02-C após o SHA atual |
+| Build oficial | `PASS_LOCAL` | r10 preservada historicamente; r11 obrigatória para promover E02-C após a correção do roteiro de captura |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -51,7 +51,7 @@ aparecem completos. O finding anterior permanece preservado no pacote
 
 ## Próximo passo permitido
 
-Concluir tecnicamente o lote E02-C com build r10 e capturas reais. A revisão
+Concluir tecnicamente o lote E02-C com build r11 e capturas reais. A revisão
 visual/humana e a requalificação final de symlink foram deferidas por
 autorização explícita para a auditoria final; continuam obrigatórias antes de
 marcar qualquer etapa como `PASS` ou concluir o plano.

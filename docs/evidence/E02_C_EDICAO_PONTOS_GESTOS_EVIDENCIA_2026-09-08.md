@@ -3,7 +3,7 @@
 Data de abertura: 2026-09-08
 Estado: IN_PROGRESS
 Branch: Ailton/e02-primitives-20260908
-Commit de implementação atual: `41ef2f55b5250d0be37dd39580a9f930428c3ab4`
+Commit de implementação atual: `f5d2f30bd184e809d3e3321fedff9ce2ad4f9754`
 
 ## Escopo
 
@@ -45,10 +45,12 @@ auditoria final.
 
 ## Evidência pendente
 
-Build r10, smoke, captura automatizada do binário, arraste real de ponto,
+Build r11, smoke, captura automatizada do binário, arraste real de ponto,
 prévia inválida/cancelamento, finalização e save/reopen serão anexados antes
 da promoção do lote. A captura r9 não será promovida porque foi gerada antes
-do endurecimento do negativo de pontos quase coincidentes.
+do endurecimento do negativo de pontos quase coincidentes. O roteiro de
+captura foi corrigido para registrar a imagem durante a prévia inválida antes
+do `Escape`, separada da captura posterior de cancelamento.
 
 ## Correção adicional registrada
 
