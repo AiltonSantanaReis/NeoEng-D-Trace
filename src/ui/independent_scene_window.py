@@ -109,6 +109,10 @@ class IndependentSceneWindow(QMainWindow):
         self.open_action = QAction(self)
         self.save_action = QAction(self)
         self.save_as_action = QAction(self)
+        self.new_action.setShortcut("Ctrl+N")
+        self.open_action.setShortcut("Ctrl+O")
+        self.save_action.setShortcut("Ctrl+S")
+        self.save_as_action.setShortcut("Ctrl+Shift+S")
         for action in (
             self.new_action,
             self.open_action,
