@@ -1,9 +1,9 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00 IN_PROGRESS / PREPARATORY_ONLY`  
+**Estado:** `E00 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E01 IN_PROGRESS`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
-**E01:** `NOT_STARTED`
+**E01:** `IN_PROGRESS`
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -12,8 +12,9 @@ registro não cria aceite funcional nem autorização de publicação.
 
 ## Fronteira única
 
-O trabalho em andamento está sendo auditado contra o worktree oficial limpo
-`Ailton/e00-continuity-final-20260908` em `5a6275f`. A existência de outras
+O trabalho em andamento está sendo auditado contra o worktree E01 dedicado
+`Ailton/e01-independent-scene-20260908`, derivado do checkpoint técnico
+`4e26f49`. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
 
@@ -49,19 +50,21 @@ aparecem completos. O finding anterior permanece preservado no pacote
 
 ## Próximo passo permitido
 
-Continuar os gates automatizados e as correções controladas de preservação da E00. A revisão
-visual/humana foi deferida por autorização explícita para a auditoria final;
-ela continua obrigatória antes de marcar E00 como `PASS` ou concluir o plano.
+Executar o lote E01-A de contrato e fluxo de cena independente. A revisão
+visual/humana e a requalificação final de symlink foram deferidas por autorização
+explícita para a auditoria final; continuam obrigatórias antes de marcar E00 como
+`PASS` ou concluir o plano.
 
-Não iniciar E01, não refazer funcionalidades já corrigidas em outra base e não
-reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada
+Não iniciar E02 enquanto E01 não estiver formalmente aceita, não refazer
+funcionalidades já corrigidas em outra base e não reutilizar capturas de SHA
+diferente. A validação de symlink deve ser reportada
 em duas linhas: `PASS_SANDBOX` quando os 31 casos passarem no Sandbox e
 `SKIP_LOCAL` quando o checkout não tiver privilégio; uma linha nunca substitui
 a outra.
 
 ## Critério de encerramento de E00
 
-E00 somente pode mudar para `PASS` após a mesma revisão possuir proveniência,
+E00 somente pode mudar do checkpoint técnico para `PASS` após a mesma revisão possuir proveniência,
 suíte completa, tipagem/estática, build limpa, restauração funcional, symlink
 aplicável, captura do binário, revisão visual/humana final e documentação vinculada. Sem
 qualquer um desses itens, o estado correto permanece `IN_PROGRESS`,

@@ -9,13 +9,15 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E00",
+    "stage": "E01",
     "status": "IN_PROGRESS",
-    "implementation_allowed": false,
+    "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "Somente findings reproduziveis de preservacao detectados em E00; E01-E13 continuam fechadas.",
+    "controlled_correction_scope": "E01-A contrato e fluxo de cena independente; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
+    "technical_continuation_authorized": true,
+    "continuation_decision": "docs/evidence/DECISAO_CONTINUIDADE_POS_E00_GATES_DEFERIDOS_2026-09-08.md",
     "dependency_traceability": {
       "status": "PASS_DOCUMENTAL_PREPARATORY_ONLY",
       "decision": "docs/DECISAO_E00_DEPENDENCIAS_RASTREABILIDADE_2026-09-07.md",
@@ -26,9 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Continuar as atividades de E00 que nao dependem de symlink; manter essa verificacao adiada para a auditoria final e executar a revisao visual/humana somente no fechamento.",
-    "forbidden_until_e00_closes": [
-      "iniciar E01",
+    "next_action": "Executar E01-A: contrato e fluxo de cena independente, com testes de novo/abrir/salvar/salvar como/reabrir.",
+    "forbidden_until_final_audit": [
+      "encerrar o plano sem auditoria final",
+      "executar symlink antes da auditoria final",
+      "promover revisao automatizada a revisao humana",
       "misturar worktrees",
       "usar build sem source_commit",
       "reclassificar skip local como PASS",
@@ -39,11 +43,11 @@
     ]
   },
     "checkout_under_audit": {
-      "branch": "Ailton/e00-continuity-final-20260908",
-    "head": "5a6275f8ef050abbc28c98726acd879ade37fa86",
-    "tracked_changes_present": false,
+      "branch": "Ailton/e01-independent-scene-20260908",
+    "head": "4e26f49",
+    "tracked_changes_present": true,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_OFFICIAL_WORKTREE"
+    "status": "E01_WORKTREE_PRECOMMIT"
   },
   "gates": {
     "official_suite": {
@@ -115,8 +119,8 @@
     }
   },
   "stage_status": {
-    "E00": "IN_PROGRESS",
-    "E01": "NOT_STARTED",
+    "E00": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "E01": "IN_PROGRESS",
     "E02": "PLANNED",
     "E03": "PLANNED",
     "E04": "PLANNED",
