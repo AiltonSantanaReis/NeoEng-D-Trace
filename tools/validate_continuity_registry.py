@@ -49,9 +49,8 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
 
     gates = _require(data, "gates")
     visual = gates["visual"]
-    if (
-        visual["native_human_status"] == "PENDING_EVIDENCE"
-        and not visual.get("human_review_required_before_close", False)
+    if visual["native_human_status"] == "PENDING_EVIDENCE" and not visual.get(
+        "human_review_required_before_close", False
     ):
         raise ValueError("deferred human review must remain required before close")
     symlink = gates["symlink"]
