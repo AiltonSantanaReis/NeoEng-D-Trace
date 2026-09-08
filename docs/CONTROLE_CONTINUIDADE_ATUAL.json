@@ -26,7 +26,7 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/e00-continuity-final-20260908",
-    "head": "4c3ab573f50b73b672ddff51cec150bf2408d96f",
+    "head": "1a1a0e9905d66a969f3ceb03f3e2d223c4d1aa4f",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_OFFICIAL_WORKTREE"
