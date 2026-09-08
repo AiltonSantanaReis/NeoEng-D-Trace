@@ -316,6 +316,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help=argparse.SUPPRESS,
     )
+    parser.add_argument(
+        "--open-project-gui",
+        type=str,
+        help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
+        "--open-scenario-editor-gui",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
     return parser
 
 
@@ -384,6 +394,18 @@ def main() -> int:
         if autosave_store is not None and enable_autosave is not None:
             enable_autosave(autosave_store)
         win.show()
+        if args.open_project_gui:
+
+            def open_capture_project() -> None:
+                open_editor = getattr(win, "open_scenario_editor", None)
+                if (
+                    win.open_project_from_path(args.open_project_gui)
+                    and args.open_scenario_editor_gui
+                    and open_editor
+                ):
+                    open_editor()
+
+            QTimer.singleShot(500, open_capture_project)
         offer_autosave_recovery = getattr(win, "offer_autosave_recovery", None)
         if offer_autosave_recovery is not None:
             offer_autosave_recovery()

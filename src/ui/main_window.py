@@ -886,7 +886,27 @@ class MainWindow(QMainWindow):
             )
             return False
 
-        destination = Path(path).resolve(strict=False)
+        return self._open_project_destination(
+            Path(path).resolve(strict=False), started_at=started_at
+        )
+
+    def open_project_from_path(self, path: str | os.PathLike[str]) -> bool:
+        """Open a project through the same canonical path as the file dialog.
+
+        This is intentionally explicit for deterministic GUI capture and
+        automated functional tests; it does not create a second load path.
+        """
+
+        if not self._confirm_unsaved_changes():
+            return False
+        return self._open_project_destination(
+            Path(path).resolve(strict=False), started_at=time.perf_counter()
+        )
+
+    def _open_project_destination(
+        self, destination: Path, *, started_at: float
+    ) -> bool:
+        t = self.translations[self.current_lang]
         try:
             staged_scene = type(self.scene)()
             migration_warnings = list(staged_scene.load_project(str(destination)))

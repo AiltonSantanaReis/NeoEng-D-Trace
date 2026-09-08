@@ -6,7 +6,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$OutputDirectory,
     [switch]$CaptureTilemapFlow,
-    [switch]$CaptureColliderFlow
+    [switch]$CaptureColliderFlow,
+    [switch]$CaptureNavMeshFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -111,7 +112,7 @@ try {
     $records.main = Save-Capture $mainHandle (Join-Path $OutputDirectory "01-main.png")
     [NeoEngE03Capture]::Focus($mainHandle)
     [NeoEngE03Capture]::Focus($mainHandle)
-    [NeoEngE03Capture]::CtrlO()
+    [System.Windows.Forms.SendKeys]::SendWait("^o")
     Start-Sleep -Milliseconds 1200
     $dialog = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
     if (-not $dialog) {
@@ -208,6 +209,22 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3125, 320)
         Start-Sleep -Milliseconds 700
         $records.collider_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-collider-reopened.png")
+    }
+    if ($CaptureNavMeshFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # The E06 panel is the first inspector panel: region, obstacle and
+        # bake controls share its first action row at the current 200% host.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3110, 250)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3180, 250)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 250)
+        Start-Sleep -Milliseconds 900
+        $records.navmesh_baked = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-navmesh-baked.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3380, 250)
+        Start-Sleep -Milliseconds 700
+        $records.navmesh_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-navmesh-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3120, 250)
+        Start-Sleep -Milliseconds 700
+        $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-navmesh-reopened.png")
     }
     $records.editor_title = $editor.Title
     $records.editor_window_rect_before_tilemap_flow = [NeoEngE03Capture]::RectText($editor.Handle)
