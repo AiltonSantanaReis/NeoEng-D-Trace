@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e02-primitives-20260908",
-    "head": "2c3cd0f24f10d1136b4f4e2e1fcbe7e28ab41ba2",
+    "head": "7569854f0f42d2a410ff5b62864888133685ee6b",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E02_C_WORKTREE"
@@ -113,7 +113,7 @@
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
       "portable_archive_sha256": "42936A0CB10248CB06478651805A1078EB9FA3063C7155A2FE062CF4053F5932",
-      "reason": "Checkpoint tecnico E02-B preservado; E02-C implementado em worktree limpo com contrato transacional de gestos, validacao de pontos, suite completa e tipagem aprovadas. Build r8 sera gerada para capturas reais de edicao."
+      "reason": "E02-C implementado em worktree limpo com contrato transacional de gestos, validacao de pontos, suite completa e tipagem aprovadas; r8 registrou finding de overflow da toolbar e r9 sera a build corrigida."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

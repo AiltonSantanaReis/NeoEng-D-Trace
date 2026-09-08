@@ -48,3 +48,12 @@ auditoria final.
 Build r8, smoke, captura automatizada do binário, arraste real de ponto,
 prévia inválida/cancelamento e save/reopen serão anexados antes da promoção
 do lote.
+
+## Finding visual intermediário r8
+
+A captura real `artifacts/e02-primitives-20260908/captures-r8-baseline/03-independent-scene-primitives.png`
+mostrou que a nova ação `Editar pontos` empurrou `Remover/Desfazer/Refazer`
+para o overflow da primeira barra. O finding foi corrigido em
+`7569854f0f42d2a410ff5b62864888133685ee6b` separando a barra de arquivo/criação
+da barra de edição/histórico; r9 deve ser a única build usada para a validação
+final deste lote.
