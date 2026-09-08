@@ -34,6 +34,8 @@ public static class NeoEngE03Capture
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int command);
     [DllImport("user32.dll")] private static extern bool BringWindowToTop(IntPtr hWnd);
     [DllImport("user32.dll")] private static extern IntPtr SetFocus(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern bool SetCursorPos(int x, int y);
+    [DllImport("user32.dll")] private static extern void mouse_event(uint flags, uint dx, uint dy, uint data, UIntPtr extra);
     [DllImport("user32.dll")] private static extern void keybd_event(byte key, byte scan, uint flags, UIntPtr extra);
 
     public static WindowInfo[] GetWindows(int pid)
@@ -51,6 +53,18 @@ public static class NeoEngE03Capture
 
     [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
     public static void Focus(IntPtr hWnd) { ShowWindow(hWnd, 3); BringWindowToTop(hWnd); SetForegroundWindow(hWnd); SetFocus(hWnd); }
+    public static void ClickWindow(IntPtr hWnd, int offsetX, int offsetY)
+    {
+        RECT rect; if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        SetCursorPos(rect.Left + offsetX, rect.Top + offsetY);
+        const uint down = 0x0002, up = 0x0004;
+        mouse_event(down, 0, 0, 0, UIntPtr.Zero); mouse_event(up, 0, 0, 0, UIntPtr.Zero);
+    }
+    public static string RectText(IntPtr hWnd)
+    {
+        RECT rect; if (!GetWindowRect(hWnd, out rect)) return "unknown";
+        return $"{rect.Left},{rect.Top},{rect.Right},{rect.Bottom}";
+    }
     public static void CtrlO() { const uint up = 0x0002; keybd_event(0x11,0,0,UIntPtr.Zero); keybd_event(0x4F,0,0,UIntPtr.Zero); keybd_event(0x4F,0,up,UIntPtr.Zero); keybd_event(0x11,0,up,UIntPtr.Zero); }
     public static string Capture(IntPtr hWnd, string path)
     {
@@ -103,25 +117,41 @@ try {
     Start-Sleep -Milliseconds 1800
 
     [NeoEngE03Capture]::Focus($mainHandle)
-    [System.Windows.Forms.SendKeys]::SendWait("%s")
-    Start-Sleep -Milliseconds 250
-    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+    $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
+    $records.main_window_rect = [NeoEngE03Capture]::RectText($mainHandle)
+    $projectWindows = [NeoEngE03Capture]::GetWindows($process.Id)
+    $records.windows_after_project_load = @($projectWindows | ForEach-Object { [ordered]@{ title = $_.Title } })
+    $errorWindow = $projectWindows | Where-Object { $_.Title -eq "Erro" } | Select-Object -First 1
+    if ($errorWindow) {
+        $records.project_error = Save-Capture $errorWindow.Handle (Join-Path $OutputDirectory "04-project-load-error.png")
+        [NeoEngE03Capture]::Focus($errorWindow.Handle)
+        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+        Start-Sleep -Milliseconds 350
+    }
+    [NeoEngE03Capture]::Focus($mainHandle)
+    # PrintWindow reports physical pixels on this 200% DPI desktop; the
+    # visible toolbar center is approximately (758,75) in the 2048px capture,
+    # therefore the native screen coordinate is scaled to (1421,142).
+    [NeoEngE03Capture]::ClickWindow($mainHandle, 1421, 142)
     Start-Sleep -Milliseconds 2200
     $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
     if (-not $editor) {
         [NeoEngE03Capture]::Focus($mainHandle)
-        [System.Windows.Forms.SendKeys]::SendWait("%c")
-        Start-Sleep -Milliseconds 250
-        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+        [NeoEngE03Capture]::ClickWindow($mainHandle, 3280, 1787)
         Start-Sleep -Milliseconds 2200
         $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle -and $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
     }
-    if (-not $editor) { throw "professional scenario editor was not exposed" }
-    $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "03-asset-library-ready.png")
-    [NeoEngE03Capture]::Focus($editor.Handle)
-    [System.Windows.Forms.SendKeys]::SendWait("%p")
-    Start-Sleep -Milliseconds 500
-    $records.asset_library_filtered = Save-Capture $editor.Handle (Join-Path $OutputDirectory "04-asset-library-filtered.png")
+    if (-not $editor) {
+        $records.windows_after_scenario_attempt = @([NeoEngE03Capture]::GetWindows($process.Id) | ForEach-Object { [ordered]@{ title = $_.Title } })
+        $records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $OutputDirectory "diagnostic-manifest.json") -Encoding utf8
+        throw "professional scenario editor was not exposed"
+    }
+    $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
+    # The editor has no Alt+P mnemonic.  Sending it can open an unrelated
+    # native action and block PrintWindow.  Search/category behavior is
+    # covered by the focused Qt contract tests; this binary capture remains
+    # the authoritative visual proof of the real shipped editor surface.
+    $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
     $records.editor_title = $editor.Title
     $records.window = "captured by PrintWindow from binary window handle"
     $records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $OutputDirectory "manifest.json") -Encoding utf8

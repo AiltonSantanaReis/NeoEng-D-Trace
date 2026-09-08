@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from PySide6.QtCore import QByteArray, QMimeData, QSignalBlocker, Qt, Signal
 from PySide6.QtGui import QBrush, QColor, QDrag, QIcon
@@ -68,7 +69,7 @@ class _AssetListWidget(QListWidget):
         mime.setText(f"asset://{asset_id}")
         return mime
 
-    def startDrag(self, supported_actions: Qt.DropActions) -> None:
+    def startDrag(self, supported_actions: Any) -> None:
         item = self.currentItem()
         if item is None:
             return
