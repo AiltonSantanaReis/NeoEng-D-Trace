@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 from PySide6.QtCore import QSize
-from PySide6.QtWidgets import QApplication, QSizePolicy
+from PySide6.QtWidgets import QApplication, QSizePolicy, QToolButton
 
 from src.core.commands import CommandManager
 from src.models.scene import Scene
@@ -107,6 +107,12 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
         assert (
             window.reference_top_toolbar.toolButtonStyle().name
             == "ToolButtonTextUnderIcon"
+        )
+        desktop_buttons = window.reference_top_toolbar.findChildren(QToolButton)
+        assert all(
+            button.width() >= button.sizeHint().width()
+            for button in desktop_buttons
+            if button.objectName() != "reference_menu_button"
         )
         assert window.compact_panel_tabs.count() == 0
         assert window.reference_panel_tabs.count() == 4

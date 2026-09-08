@@ -144,6 +144,17 @@ class ResponsivePanelLayout:
                 if button.objectName() != "reference_menu_button":
                     button.setMinimumWidth(62)
                     button.setMaximumWidth(62)
+        else:
+            # Text-under-icon buttons must honor their rendered size hint.
+            # The QSS minimum of 60px is appropriate for compact icon-only
+            # mode, but clips localized desktop labels such as "Visualizar"
+            # and "Selecionar" when it remains active after the mode switch.
+            for button in toolbar.findChildren(QToolButton):
+                if button.objectName() == "reference_menu_button":
+                    continue
+                width = max(button.minimumWidth(), button.sizeHint().width())
+                button.setMinimumWidth(width)
+                button.setMaximumWidth(width)
 
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
