@@ -98,7 +98,7 @@ ela não interrompe a execução técnica autorizada.
 |---:|---|---|---|
 | 1 | E08-B câmera/paralaxe | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato, testes, build e captura real |
 | 2 | E08-C materiais/normal maps/luzes/sombras | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pixels observáveis, negativos, persistência, captura r42 e fallback |
-| 3 | E08-D partículas/shaders/pós | `IN_PROGRESS` | D1 partículas comprovado; D2 shader com erro recuperável; D3 cadeia de pós |
+| 3 | E08-D partículas/shaders/pós | `IN_PROGRESS` | D1 e D2 comprovados; D3 cadeia de pós em execução |
 | 4 | E08-E determinismo/destinos | `PLANNED` | timestep, tolerâncias e matriz de capacidades |
 | 5 | E09 autoria/exportação vetorial | `PLANNED` | fluxo editável, persistente e exportável |
 | 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
@@ -121,8 +121,8 @@ ela não interrompe a execução técnica autorizada.
 | Sublote | Status | Critério de saída |
 |---|---|---|
 | E08-D.1 partículas | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | socket VFX persistido, seed/lifecycle/fixed-step, limite, pixels no binário e manifesto r43 |
-| E08-D.2 shaders | `IN_PROGRESS` | contrato editável, compilação real, diagnóstico recuperável e último estado válido |
-| E08-D.3 pós-processamento | `PLANNED` | cadeia ordenada, parâmetros persistidos, resultado visível e fallback explícito |
+| E08-D.2 shaders | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato editável, compilação real, diagnóstico recuperável, último estado válido e captura r44 |
+| E08-D.3 pós-processamento | `IN_PROGRESS` | cadeia ordenada, parâmetros persistidos, resultado visível e fallback explícito |
 
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for

@@ -11,8 +11,8 @@ Dependência técnica: E07 checkpoint `d35bc84`.
 - E08-B — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: câmera e paralaxe profissional.
 - E08-C — `IN_PROGRESS`: C1–C4 têm checkpoint técnico comprovado; E08-C
   permanece aberto somente para auditoria final antes da promoção formal.
-- E08-D — `IN_PROGRESS`: D1 partículas em checkpoint técnico; D2 shaders e
-  D3 pós-processamento ainda ativos.
+- E08-D — `IN_PROGRESS`: D1 partículas e D2 shaders em checkpoint técnico; D3
+  pós-processamento ativo.
 - E08-E — `PLANNED`: determinismo temporal e matriz de destino.
 
 Nenhum efeito visual será declarado suportado antes de saída observável,
@@ -213,3 +213,28 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 - Limitação controlada: o perfil `spark-fx` é um preview determinístico
   associado ao socket; parâmetros avançados autorais, compilação de shader e
   cadeia de pós-processamento permanecem nos sublotes seguintes de E08-D.
+
+### Evidência do sublote E08-D.2 — shaders
+
+- Correção auditada: `6c39412219a62531eda341fc6fea0d84371a37eb`.
+- Finding reproduzido: o PATH apontava para o wrapper `pyside6-qsb` do Python
+  3.13, sem PySide6, e a compilação falhava antes do Qt Shader Tools. A função
+  `resolve_qt_qsb` passou a priorizar o `qsb.exe` instalado no `sys.prefix` do
+  interpretador ativo; o teste `test_qt_qsb_prefers_the_active_python_environment`
+  protege essa decisão.
+- Auditoria real limpa: `python -m scripts.audit_runtime_shaders_phase3`
+  passou com `source_tree_clean`, sidecar canônico, `qsb.exe` real, vertex e
+  fragment compilados, shader inválido rejeitado e binários anteriores
+  preservados. Relatório:
+  `artifacts/e08-renderer-20260908/runtime-shader-audit-d2-r44-clean2/stage3-runtime-shaders-report.json`.
+- Testes focados: `15 passed`; suíte oficial: `2073 passed, 2 skipped,
+  1 warning`.
+- Build r44: source commit `6c39412219a62531eda341fc6fea0d84371a37eb`, binário
+  SHA-256 `DB7BB062C46F5BB7D092F3DB1A5C486ACDF0D5411B4099ACC303A25580FF034F`,
+  pacote portátil SHA-256
+  `6A7BC6FD6F48D52738092FF401CB2F1F5E2B6944D90D03E077933AAE4D6E1029`, smoke
+  `SUCCESS` com 11 checks.
+- A captura real r44 mantém o fallback raster explícito e o socket VFX
+  observável; não há claim de shader GPU aplicado sem backend acelerado. O
+  manifesto hashado está em
+  `docs/evidence/E08_D2_R44_SHADERS_CAPTURAS_MANIFESTO.json`.
