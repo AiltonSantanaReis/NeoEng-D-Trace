@@ -1861,18 +1861,56 @@ class CanvasView(QWidget):
 
     def _draw_scene_objects(self, painter: QPainter):
         selected_oids = set(self._selected_object_ids())
+        objects = list(getattr(self.model, "objects", {}).items())
+        world_polygons = {
+            oid: tuple(
+                (float(point[0]), float(point[1]))
+                for point in getattr(obj, "polygon", [])
+            )
+            for oid, obj in objects
+        }
 
         # Otimização: Itera apenas objetos visíveis se possível, mas aqui iteramos tudo
-        for oid, obj in getattr(self.model, "objects", {}).items():
+        for oid, obj in objects:
             poly = getattr(obj, "polygon", [])
             if len(poly) > 1:
-                # Estilo
+                if self._scenario_lighting_enabled and len(world_polygons[oid]) >= 3:
+                    center = (
+                        sum(point[0] for point in world_polygons[oid])
+                        / len(world_polygons[oid]),
+                        sum(point[1] for point in world_polygons[oid])
+                        / len(world_polygons[oid]),
+                    )
+                    settings = SceneLightingSettings(
+                        ambient_color=self._scenario_lighting.ambient_color,
+                        ambient_intensity=self._scenario_lighting.ambient_intensity,
+                        lights=self._scenario_lighting.lights,
+                        occluders=tuple(
+                            polygon
+                            for other_id, polygon in world_polygons.items()
+                            if other_id != oid and len(polygon) >= 3
+                        ),
+                    )
+                    color, opacity, _ = shade_color(
+                        center, SceneLightingMaterial(), settings
+                    )
+                    brush = QColor(
+                        int(round(color[0] * 255.0)),
+                        int(round(color[1] * 255.0)),
+                        int(round(color[2] * 255.0)),
+                        int(round(opacity * 210.0)),
+                    )
+                else:
+                    brush = (
+                        self._brush_selected
+                        if oid in selected_oids
+                        else self._brush_poly
+                    )
                 if oid in selected_oids:
                     painter.setPen(self._pen_selected)
-                    painter.setBrush(self._brush_selected)
                 else:
                     painter.setPen(self._pen_poly)
-                    painter.setBrush(self._brush_poly)
+                painter.setBrush(brush)
 
                 qpoly = QPolygonF([QPointF(x, y) for x, y in poly])
                 painter.drawPolygon(qpoly)
