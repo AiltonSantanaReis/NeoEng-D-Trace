@@ -38,6 +38,7 @@ from src.persistence.independent_scene_io import (
     IndependentSceneValidationError,
     IndependentSceneWriteError,
 )
+from src.persistence.independent_scene_schema import upgrade_independent_scene_document
 from src.persistence.project_schema import PointRecord
 from src.ui.theme_tokens import THEME_TOKENS
 
@@ -546,9 +547,8 @@ class IndependentSceneWindow(QMainWindow):
         if not self.session_selection:
             return
         primitive_id = self.session_selection[0]
-        primitive = next(
-            item for item in self.session.document.objects if item.id == primitive_id
-        )
+        document = upgrade_independent_scene_document(self.session.document)
+        primitive = next(item for item in document.objects if item.id == primitive_id)
         transform = primitive.transform.model_copy(
             update={
                 "position": PointRecord(
@@ -566,7 +566,7 @@ class IndependentSceneWindow(QMainWindow):
         self.document_changed.emit()
 
     def refresh(self) -> None:
-        document = self.session.document
+        document = upgrade_independent_scene_document(self.session.document)
         widgets = (
             (self.width_spin, document.resolution.width),
             (self.height_spin, document.resolution.height),
@@ -576,7 +576,10 @@ class IndependentSceneWindow(QMainWindow):
         )
         for widget, value in widgets:
             blocked = widget.blockSignals(True)
-            widget.setValue(value)
+            if isinstance(widget, QSpinBox):
+                widget.setValue(int(value))
+            else:
+                widget.setValue(float(value))
             widget.blockSignals(blocked)
         dirty = " *" if self.session.is_modified else ""
         self.setWindowTitle(f"{self._t('title')} — {self.session.document_name}{dirty}")
@@ -733,9 +736,8 @@ class IndependentSceneWindow(QMainWindow):
             self.statusBar().showMessage(self._t("edit_no_selection"), 5000)
             return False
         primitive_id = self.session_selection[0]
-        primitive = next(
-            item for item in self.session.document.objects if item.id == primitive_id
-        )
+        document = upgrade_independent_scene_document(self.session.document)
+        primitive = next(item for item in document.objects if item.id == primitive_id)
         try:
             self.point_gesture.begin(
                 primitive_id,

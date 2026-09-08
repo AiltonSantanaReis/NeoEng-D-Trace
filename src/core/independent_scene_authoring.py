@@ -10,6 +10,7 @@ from src.persistence.independent_scene_schema import (
     IndependentScenePrimitiveGeometryRecord,
     IndependentScenePrimitiveRecord,
     IndependentScenePrimitiveTransformRecord,
+    PrimitiveKind,
 )
 from src.persistence.project_schema import PointRecord
 
@@ -55,7 +56,7 @@ class IndependentSceneAuthoringModel:
     def add_primitive(
         self,
         *,
-        kind: str,
+        kind: PrimitiveKind,
         points: Sequence[PointRecord],
         name: str | None = None,
         primitive_id: str | None = None,

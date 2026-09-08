@@ -7,6 +7,7 @@ from typing import Literal
 
 from src.persistence.independent_scene_schema import (
     IndependentScenePrimitiveGeometryRecord,
+    PrimitiveKind,
 )
 from src.persistence.project_schema import PointRecord
 
@@ -31,7 +32,7 @@ class IndependentScenePointEditGesture:
     working_points: tuple[PointRecord, ...] = ()
     closed: bool = True
     filled: bool = True
-    kind: str = "path"
+    kind: PrimitiveKind = "path"
     last_error: str | None = None
 
     def begin(

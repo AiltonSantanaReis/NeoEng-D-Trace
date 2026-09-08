@@ -24,6 +24,7 @@ from src.persistence.independent_scene_schema import (
     default_independent_scene_document_v2,
     upgrade_independent_scene_document,
 )
+from src.persistence.project_schema import PointRecord
 
 
 class IndependentSceneSession:
@@ -243,7 +244,7 @@ class IndependentSceneSession:
             self.document.model_copy(
                 update={
                     "camera": IndependentSceneCameraRecord(
-                        position={"x": x, "y": y},
+                        position=PointRecord(x=x, y=y),
                         zoom=zoom,
                     )
                 }

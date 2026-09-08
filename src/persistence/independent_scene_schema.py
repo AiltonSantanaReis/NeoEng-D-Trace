@@ -22,9 +22,11 @@ from src.persistence.project_schema import (
     StrictProjectModel,
 )
 
-INDEPENDENT_SCENE_FORMAT_ID = "neoeng-d-trace-independent-scene"
-INDEPENDENT_SCENE_SCHEMA_VERSION = 1
-INDEPENDENT_SCENE_SCHEMA_VERSION_V2 = 2
+INDEPENDENT_SCENE_FORMAT_ID: Literal["neoeng-d-trace-independent-scene"] = (
+    "neoeng-d-trace-independent-scene"
+)
+INDEPENDENT_SCENE_SCHEMA_VERSION: Literal[1] = 1
+INDEPENDENT_SCENE_SCHEMA_VERSION_V2: Literal[2] = 2
 INDEPENDENT_SCENE_FILE_EXTENSION = ".ndtscene"
 MAX_SCENE_WIDTH = 32_768
 MAX_SCENE_HEIGHT = 32_768

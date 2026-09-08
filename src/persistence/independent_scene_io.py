@@ -148,6 +148,7 @@ def _validate_document(value: Any) -> IndependentSceneDocument:
 def serialize_independent_scene(document: IndependentSceneDocument) -> bytes:
     """Validate and serialize an independent scene deterministically."""
 
+    validated: IndependentSceneDocument
     try:
         if isinstance(document, IndependentSceneDocumentV2):
             validated = IndependentSceneDocumentV2.model_validate(
