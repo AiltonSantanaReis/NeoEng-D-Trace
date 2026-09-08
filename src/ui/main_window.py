@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QLocale, Qt, Signal
 from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
 
 # Imports de lógica e colisão estática
 from src.collision import StaticCollisionManager
-from src.core.app_identity import build_window_title
+from src.core.app_identity import build_window_title, normalize_language
 from src.core.document_session import DocumentSession
 from src.core.image_input import (
     hash_validated_image_file,
@@ -47,7 +47,10 @@ from src.ui.icon_library import configure_main_window_controls
 from src.ui.layers_panel import LayersPanel
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
-from src.ui.reference_chrome import connect_reference_search
+from src.ui.reference_chrome import (
+    connect_reference_search,
+    refresh_reference_top_toolbar_labels,
+)
 from src.ui.responsive_layout import build_responsive_layout
 from src.ui.scenario_authoring_actions import install_scenario_authoring
 from src.ui.scenario_preview_actions import install_scenario_preview_actions
@@ -62,6 +65,11 @@ class MainWindow(QMainWindow):
     act_grid: QAction
     act_snap: QAction
     act_gizmo: QAction
+    scenario_open_action: QAction
+    scenario_save_action: QAction
+    scenario_load_action: QAction
+    scenario_reset_action: QAction
+    scenario_export_action: QAction
 
     @property
     def _project_path(self) -> Path | None:
@@ -191,7 +199,12 @@ class MainWindow(QMainWindow):
         self.autosave_timer = None
 
         # Configuração da Janela Principal
-        self.current_lang = "en"
+        configured_language = config.get("language", "en")
+        if configured_language == "auto":
+            configured_language = (
+                "pt" if QLocale.system().name().lower().startswith("pt") else "en"
+            )
+        self.current_lang = normalize_language(configured_language)
         self.setWindowTitle(build_window_title(self.current_lang))
         self.resize(1200, 800)
 
@@ -516,6 +529,9 @@ class MainWindow(QMainWindow):
         try:
             self.current_lang = lang if lang in self.translations else "en"
             self.update_language()
+            config_set = getattr(self.config, "set", None)
+            if callable(config_set):
+                config_set("language", self.current_lang)
             expected_title = self._expected_window_title()
             applied = (
                 self.current_lang in self.translations
@@ -582,10 +598,28 @@ class MainWindow(QMainWindow):
         self.view_menu.setTitle(t["view_menu"])
         self.mask_viewer_action.setText(t["mask_viewer"])
         self.collision_overlay_action.setText(t["collision_overlay"])
+        if hasattr(self, "scenario_menu"):
+            self.scenario_menu.setTitle(t["scenario_menu"])
+            self.scenario_open_action.setText(t["scenario_open"])
+            self.scenario_save_action.setText(t["scenario_save"])
+            self.scenario_load_action.setText(t["scenario_load"])
+            self.scenario_reset_action.setText(t["scenario_reset"])
+            self.scenario_export_action.setText(t["scenario_export"])
+
+        refresh_reference_top_toolbar_labels(self)
+        command_search = getattr(self, "reference_command_search", None)
+        if command_search is not None:
+            command_search.setAccessibleName(t["command_palette_search_name"])
+            command_search.setAccessibleDescription(
+                t["command_palette_search_description"]
+            )
+            command_search.setToolTip(t["command_palette_search_description"])
 
         self.command_palette.update_language(self.current_lang)
         if hasattr(self.side_panel, "update_language"):
             self.side_panel.update_language(self.current_lang)
+        if hasattr(self.layers, "update_language"):
+            self.layers.update_language(self.current_lang)
         if hasattr(self.tool_palette, "update_language"):
             self.tool_palette.update_language(self.current_lang)
         if hasattr(self.groups, "update_language"):

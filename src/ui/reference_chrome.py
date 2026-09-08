@@ -8,7 +8,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import QSize, Qt, QTimer
+from PySide6.QtCore import QPoint, QSize, Qt, QTimer
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import (
     QLineEdit,
     QMenu,
@@ -119,6 +120,13 @@ class ReferenceToolPalette(QToolBar):
     def register_application_menu(self, button: QToolButton) -> None:
         self._application_menu_button = button
         button.destroyed.connect(self._on_application_menu_button_destroyed)
+        if button.menu() is not None:
+            button.menu().aboutToShow.connect(
+                lambda: QTimer.singleShot(
+                    0,
+                    lambda: self._position_application_menu_popup(button),
+                )
+            )
         self._application_menu_timer.start(0)
 
     def _on_application_menu_button_destroyed(self, *_args: Any) -> None:
@@ -133,6 +141,31 @@ class ReferenceToolPalette(QToolBar):
         x = max(0, (self.width() - button.width()) // 2)
         y = max(0, self.height() - button.height() - 4)
         button.move(x, y)
+
+    @staticmethod
+    def _position_application_menu_popup(button: QToolButton) -> None:
+        """Keep the rail menu fully visible near the screen edges."""
+
+        menu = button.menu()
+        if menu is None or not menu.isVisible():
+            return
+        menu.adjustSize()
+        button_top_left = button.mapToGlobal(QPoint(0, 0))
+        menu_size = menu.sizeHint()
+        screen = QGuiApplication.screenAt(button_top_left)
+        if screen is None:
+            screen = QGuiApplication.primaryScreen()
+        if screen is None:
+            return
+        available = screen.availableGeometry()
+        x = button_top_left.x() + button.width()
+        y = button_top_left.y()
+        if x + menu_size.width() > available.right() + 1:
+            x = button_top_left.x() - menu_size.width()
+        if y + menu_size.height() > available.bottom() + 1:
+            y = button_top_left.y() + button.height() - menu_size.height()
+        y = max(available.top(), y)
+        menu.move(x, y)
 
     def resizeEvent(self, event: Any) -> None:
         super().resizeEvent(event)
@@ -197,6 +230,8 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     toolbar.setMovable(False)
     toolbar.setFloatable(False)
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+    toolbar.setMinimumWidth(0)
+    toolbar.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
     toolbar.setIconSize(QSize(24, 24))
     toolbar.setProperty("uiRole", "reference_top_toolbar")
 
@@ -451,6 +486,24 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "redo": "Redo",
             "edit": "Edit",
         }
+
+    menu_button = getattr(window, "reference_menu_button", None)
+    if menu_button is not None:
+        if getattr(window, "current_lang", "en") == "pt":
+            menu_button.setAccessibleName("Menu do aplicativo")
+            menu_button.setAccessibleDescription(
+                "Abrir o menu do aplicativo com comandos de arquivo, edição, "
+                "visualização e cenário"
+            )
+            menu_button.setToolTip("Menu do aplicativo")
+            menu_button.setStatusTip("Abrir o menu do aplicativo")
+        else:
+            menu_button.setAccessibleName("Application menu")
+            menu_button.setAccessibleDescription(
+                "Open the application menu with file, edit, view and scenario commands"
+            )
+            menu_button.setToolTip("Application menu")
+            menu_button.setStatusTip("Open the application menu")
 
     for submenu, source in getattr(window, "reference_application_submenus", ()):
         submenu.setTitle(source.title())

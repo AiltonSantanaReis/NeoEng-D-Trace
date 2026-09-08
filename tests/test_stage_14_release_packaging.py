@@ -103,6 +103,11 @@ def test_packaging_contract_is_versioned() -> None:
     assert build.index("validate_portable_release.py") < build.index(
         "package_portable_release.py"
     )
+    assert "validate_continuity_registry.py" in build
+    assert "continuity-provenance.json" in build
+    assert "master_plan_commit" in build
+    assert "continuity_registry_sha256" in build
+    assert "binarySha256" in build
     fixture = root / "tests" / "fixtures" / "release_smoke.ndtproj"
     assert fixture.is_file()
     local_user_prefix = "C:" + "\\Users\\"

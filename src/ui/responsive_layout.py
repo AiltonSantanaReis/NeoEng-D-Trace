@@ -104,6 +104,13 @@ class ResponsivePanelLayout:
         toolbar = getattr(self.owner, "reference_top_toolbar", None)
         if toolbar is None:
             return
+        if hasattr(toolbar, "setMinimumWidth"):
+            toolbar.setMinimumWidth(0)
+        if hasattr(toolbar, "setSizePolicy"):
+            toolbar.setSizePolicy(
+                QSizePolicy.Policy.Ignored,
+                QSizePolicy.Policy.Fixed,
+            )
         style = (
             Qt.ToolButtonStyle.ToolButtonIconOnly
             if compact
@@ -115,11 +122,11 @@ class ResponsivePanelLayout:
                 button.setToolButtonStyle(style)
 
         action_widths = {
-            "reference_fit_button": 76 if compact else 136,
-            "reference_focus_button": 76 if compact else 100,
-            "reference_pan_button": 76 if compact else 76,
-            "reference_undo_button": 76 if compact else 88,
-            "reference_redo_button": 76 if compact else 88,
+            "reference_fit_button": 62 if compact else 136,
+            "reference_focus_button": 62 if compact else 100,
+            "reference_pan_button": 62 if compact else 76,
+            "reference_undo_button": 62 if compact else 88,
+            "reference_redo_button": 62 if compact else 88,
         }
         for name, width in action_widths.items():
             button = getattr(self.owner, name, None)
@@ -130,6 +137,14 @@ class ResponsivePanelLayout:
             button.setMinimumHeight(78)
             button.setMaximumHeight(88)
 
+        if compact:
+            # Keep Qt's overflow affordance inside the window at compact
+            # resolutions instead of expanding the toolbar past the edge.
+            for button in toolbar.findChildren(QToolButton):
+                if button.objectName() != "reference_menu_button":
+                    button.setMinimumWidth(62)
+                    button.setMaximumWidth(62)
+
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
             menu_button.setMinimumWidth(51)
@@ -137,8 +152,8 @@ class ResponsivePanelLayout:
 
         search = getattr(self.owner, "reference_command_search", None)
         if search is not None:
-            search.setMinimumWidth(180 if compact else 260)
-            search.setMaximumWidth(240 if compact else 440)
+            search.setMinimumWidth(128 if compact else 260)
+            search.setMaximumWidth(160 if compact else 440)
 
         focus_button = getattr(self.owner, "reference_focus_button", None)
         if focus_button is not None:
@@ -275,6 +290,7 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
         QSizePolicy.Policy.Expanding,
         QSizePolicy.Policy.Expanding,
     )
+    compact_panel_tabs.setMinimumWidth(0)
 
     panel_stack = QStackedWidget()
     panel_stack.setSizePolicy(

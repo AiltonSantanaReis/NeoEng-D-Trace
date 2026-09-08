@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSlider,
     QToolBar,
     QVBoxLayout,
@@ -176,8 +177,16 @@ class SidePanel(QWidget):
 
         # Layout
         content = QWidget(self)
+        content.setMinimumWidth(0)
+        content.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Preferred,
+        )
         layout = QVBoxLayout(content)
-        layout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        # The scroll area's viewport owns the available width. A historical
+        # SetMinimumSize here kept the inspector at desktop width and caused
+        # clipping at compact resolutions.
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
         self.scene_objects_label = QLabel("Scene Objects:")
         layout.addWidget(self.scene_objects_label)
         layout.addWidget(self.search_input)
@@ -227,6 +236,9 @@ class SidePanel(QWidget):
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("side_panel_scroll")
         self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
         self.scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
         self.scroll_area.setWidget(content)
         root_layout = QVBoxLayout(self)
@@ -266,6 +278,11 @@ class SidePanel(QWidget):
         self.translations = {
             "en": {
                 "scene_objects": "Scene Objects:",
+                "search_objects": "Search objects",
+                "scenario_open": "Open Scenario Editor",
+                "scenario_open_description": (
+                    "Open the separate scenario authoring editor"
+                ),
                 "rename": "Rename",
                 "delete": "Delete",
                 "expand": "Expand",
@@ -298,6 +315,11 @@ class SidePanel(QWidget):
             },
             "pt": {
                 "scene_objects": "Objetos da Cena:",
+                "search_objects": "Pesquisar objetos",
+                "scenario_open": "Abrir Editor de Cenário",
+                "scenario_open_description": (
+                    "Abrir o editor separado de autoria de cenários"
+                ),
                 "rename": "Renomear",
                 "delete": "Excluir",
                 "expand": "Expandir",
@@ -993,6 +1015,10 @@ class SidePanel(QWidget):
         t = self.translations[self.current_lang]
         # Update labels
         self.scene_objects_label.setText(t["scene_objects"])
+        self.search_input.setPlaceholderText(t["search_objects"])
+        self.search_input.setAccessibleName(t["search_objects"])
+        self.search_input.setAccessibleDescription(t["search_objects"])
+        self.search_input.setToolTip(t["search_objects"])
         # Buttons
         self.btn_rename.setText(t["rename"])
         self.btn_delete.setText(t["delete"])
@@ -1008,10 +1034,12 @@ class SidePanel(QWidget):
         self.btn_cancel.setText(t["cancel"])
         self.btn_export.setText(t["export_mask"])
         self.btn_export_now.setText(t["export_sprite"])
-        self.open_scenario_editor_button.setAccessibleName(
-            self.open_scenario_editor_button.text()
+        self.open_scenario_editor_button.setText(t["scenario_open"])
+        self.open_scenario_editor_button.setAccessibleName(t["scenario_open"])
+        self.open_scenario_editor_button.setAccessibleDescription(
+            t["scenario_open_description"]
         )
-        self.open_scenario_editor_button.setToolTip("Open the scenario editor")
+        self.open_scenario_editor_button.setToolTip(t["scenario_open_description"])
         self._configure_accessibility_controls()
         # Update collision button state
         self._update_button_states()

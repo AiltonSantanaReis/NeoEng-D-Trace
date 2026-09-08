@@ -36,6 +36,18 @@ try {
 
     $sourceCommit = (git rev-parse HEAD).Trim()
     if ($LASTEXITCODE -ne 0) { throw "Unable to resolve source commit" }
+    $sourceBranch = (git branch --show-current).Trim()
+    if (-not $sourceBranch) { $sourceBranch = "(detached)" }
+    $continuityRegistryPath = Join-Path $repositoryRoot "docs\CONTROLE_CONTINUIDADE_ATUAL.json"
+    if (-not (Test-Path -LiteralPath $continuityRegistryPath)) {
+        throw "Continuity registry is missing: $continuityRegistryPath"
+    }
+    poetry run python tools/validate_continuity_registry.py
+    if ($LASTEXITCODE -ne 0) { throw "Continuity registry validation failed" }
+    $continuityRegistrySha256 = (Get-FileHash -LiteralPath $continuityRegistryPath -Algorithm SHA256).Hash
+    $continuityRegistry = Get-Content -LiteralPath $continuityRegistryPath -Raw | ConvertFrom-Json
+    $masterPlanCommit = [string]$continuityRegistry.authority.master_plan_commit
+    if (-not $masterPlanCommit) { throw "Continuity registry has no master plan commit" }
     $env:SOURCE_DATE_EPOCH = (git show -s --format=%ct HEAD).Trim()
     if ($LASTEXITCODE -ne 0) { throw "Unable to resolve source timestamp" }
     $env:PYTHONHASHSEED = "0"
@@ -54,9 +66,34 @@ try {
     poetry run python tools/package_portable_release.py --bundle $bundle --output $archive --source-commit $sourceCommit
     if ($LASTEXITCODE -ne 0) { throw "Portable package creation failed" }
 
+    $binaryPath = Join-Path $bundle "NeoEng-D-Trace.exe"
+    if (-not (Test-Path -LiteralPath $binaryPath)) {
+        throw "Portable GUI binary is missing: $binaryPath"
+    }
+    $binarySha256 = (Get-FileHash -LiteralPath $binaryPath -Algorithm SHA256).Hash
+    $provenance = [ordered]@{
+        schema_version = 1
+        status = "PASS"
+        source_commit = $sourceCommit
+        source_branch = $sourceBranch
+        master_plan_commit = $masterPlanCommit
+        continuity_registry_sha256 = $continuityRegistrySha256
+        binary = [ordered]@{
+            path = "portable/NeoEng-D-Trace/NeoEng-D-Trace.exe"
+            sha256 = $binarySha256
+            size = (Get-Item -LiteralPath $binaryPath).Length
+        }
+        release_root = $releaseRoot
+        portable_smoke_report = "smoke/portable-smoke-report.json"
+        generated_at_utc = (Get-Date).ToUniversalTime().ToString("o")
+    }
+    $provenancePath = Join-Path $releaseRoot "continuity-provenance.json"
+    $provenance | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $provenancePath -Encoding utf8
+
     Write-Output "PORTABLE_BUNDLE=$bundle"
     Write-Output "PORTABLE_ARCHIVE=$archive"
     Write-Output "SOURCE_COMMIT=$sourceCommit"
+    Write-Output "CONTINUITY_PROVENANCE=$provenancePath"
 } finally {
     Pop-Location
 }

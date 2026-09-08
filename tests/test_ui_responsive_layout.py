@@ -185,3 +185,43 @@ def test_panel_splitters_cannot_collapse_during_responsive_switch(qt_app):
     finally:
         window._mark_document_clean()
         window.close()
+
+
+def test_compact_layout_constrains_toolbar_and_inspector_content(qt_app):
+    window = _window()
+    window.resize(QSize(1280, 720))
+    window.show()
+    qt_app.processEvents()
+
+    try:
+        toolbar_rect = window.reference_top_toolbar.geometry()
+        panel_rect = window.compact_panel_tabs.geometry()
+        content = window.side_panel.scroll_area.widget()
+        viewport = window.side_panel.scroll_area.viewport()
+
+        assert toolbar_rect.right() <= window.centralWidget().rect().right()
+        assert panel_rect.right() <= window.main_splitter.rect().right()
+        assert content.width() <= viewport.width()
+        assert window.reference_top_toolbar.minimumWidth() == 0
+    finally:
+        window._mark_document_clean()
+        window.close()
+
+
+def test_compact_language_updates_search_prompts_and_scenario_menu(qt_app):
+    window = _window()
+    window.resize(QSize(1280, 720))
+    window.show()
+    qt_app.processEvents()
+
+    try:
+        window.set_language("pt")
+        qt_app.processEvents()
+        assert window.side_panel.search_input.placeholderText() == "Pesquisar objetos"
+        assert window.layers.search_input.placeholderText() == "Pesquisar camadas"
+        assert window.scenario_menu.title() == "Cenário"
+        assert window.scenario_open_action.text() == "Abrir Editor de Cenário"
+        assert window.reference_open_button.text() == "Abrir"
+    finally:
+        window._mark_document_clean()
+        window.close()

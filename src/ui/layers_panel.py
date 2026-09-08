@@ -35,6 +35,20 @@ class LayersPanel(QWidget):
         super().__init__(parent)
         self.scene = scene
         self.current_lang = "en"
+        self._ui_text = {
+            "en": {
+                "search": "Search layers",
+                "search_description": "Filter project layers by name or ID",
+                "project_layers": "Project Layers",
+                "scenario": "Scenario",
+            },
+            "pt": {
+                "search": "Pesquisar camadas",
+                "search_description": "Filtrar camadas do projeto por nome ou ID",
+                "project_layers": "Camadas do Projeto",
+                "scenario": "Cenário",
+            },
+        }
         self.setMinimumWidth(200)
 
         self.main_layout = QVBoxLayout()
@@ -124,9 +138,18 @@ class LayersPanel(QWidget):
         self.current_lang = (
             lang if isinstance(lang, str) and lang in {"en", "pt"} else "en"
         )
+        text = self._ui_text[self.current_lang]
+        self.search_input.setPlaceholderText(text["search"])
+        self.search_input.setAccessibleName(text["search"])
+        self.search_input.setAccessibleDescription(text["search_description"])
+        self.search_input.setToolTip(text["search_description"])
         if self.tabs.count() >= 2:
-            self.tabs.setTabText(0, "Project Layers")
-            self.tabs.setTabText(1, "Scenario")
+            self.tabs.setTabText(0, text["project_layers"])
+            self.tabs.setTabText(1, text["scenario"])
+        for button, action in self._toolbar_actions.items():
+            action.setText(button.text())
+            action.setToolTip(button.text())
+            action.setStatusTip(button.text())
 
     def refresh(self):
         current_item = self.list.currentItem()
