@@ -47,7 +47,8 @@ do proprietário for indispensável.
 - E02: checkpoint técnico aprovado, com aceite final pendente.
 - E03: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`, build r13 e captura real registrados; branch `Ailton/e03-assets-20260908`.
 - E04: checkpoint técnico concluído; aceite final permanece pendente até a auditoria final; branch `Ailton/e04-tilemaps-20260908`, build r14 e captura real registrados.
-- E05–E13: ainda não iniciadas.
+- E05: etapa operacional ativa; branch `Ailton/e05-colliders-20260908` aberta após o checkpoint técnico E04.
+- E06–E13: ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -67,6 +68,11 @@ do proprietário for indispensável.
 | E04-C três grids | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | ortogonal, isométrico, hexagonal, picking e vizinhança |
 | E04-D Rule Tiles | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | regras determinísticas, fallback e invalidação incremental |
 | E04-E persistência/destino | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | `docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md` | save/reopen, validação, desempenho e import/export representativo |
+| E05-A modelo/validação | `IN_PROGRESS` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | coleção física versionada e negativos canônicos |
+| E05-B comandos transacionais | `PLANNED` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | criar, editar, mover, duplicar, remover e Undo/Redo |
+| E05-C formas e triggers | `PLANNED` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | caixa, círculo, polígono, cadeia, categorias/máscaras |
+| E05-D persistência/destino | `PLANNED` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | save/reopen e consumidor mínimo real |
+| E05-E UI/capturas | `PLANNED` | `docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md` | overlay, fluxo visual, negativos e build |
 
 ## Ordem fixa de execução
 
@@ -87,7 +93,7 @@ do proprietário for indispensável.
 | E02 | primitivas, edição, persistência e histórico | `IN_PROGRESS` — E02-C | três primitivas, edição, Undo/Redo, save/reopen e negativos |
 | E03 | biblioteca própria e lifecycle de assets | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | assets rastreáveis, offline, relink/replace e licença |
 | E04 | tilemaps, grids e regras de terreno | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — r14 validado no binário | três grids, chunks, regras e persistência |
-| E05 | colisão própria de cenário | `PLANNED` | tipos físicos, occluders e validação de contato |
+| E05 | colisão própria de cenário | `IN_PROGRESS` — E05-A ativo | tipos físicos, triggers, persistência e validação de contato |
 | E06 | NavMesh 2D e consumo real | `PLANNED` | navegação de superfície/plataforma no fluxo real |
 | E07 | componentes e instâncias | `PLANNED` | relações, parent/grupos e conflitos de prefab |
 | E08 | materiais, paralaxe, efeitos e determinismo | `PLANNED` | renderer/FX qualificados com budgets e tolerâncias |

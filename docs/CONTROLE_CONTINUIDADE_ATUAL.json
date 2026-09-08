@@ -9,11 +9,11 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E04",
-    "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "stage": "E05",
+    "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E04 tilemaps, grids, ferramentas transacionais e regras de terreno; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E05 colisores próprios de cenário; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,17 +28,17 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Abrir E05 em branch própria após registrar o checkpoint técnico E04; manter symlink e revisão humana reservados para a auditoria final.",
+    "next_action": "Ler e registrar o contrato E05; implementar primeiro o modelo físico versionado e o validador canônico antes da UI e do destino.",
     "active_lot": {
-      "id": "E04-A/B/C/D/E",
-      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-      "scope": "TileSet, células, camadas, ferramentas transacionais, três grids, Rule Tiles, persistência, desempenho e destino",
-      "evidence": "docs/evidence/E04_TILEMAP_GRID_EVIDENCIA_2026-09-08.md",
+      "id": "E05-A/B/C/D/E",
+      "status": "IN_PROGRESS",
+      "scope": "coleção física, caixas, círculos, polígonos, segmentos/cadeias, triggers, validação, transações, persistência e destino",
+      "evidence": "docs/evidence/E05_COLLIDERS_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-      "stage": "E05",
-      "status": "PLANNED",
+    "stage": "E06",
+    "status": "PLANNED",
       "evidence": null,
       "functional_implementation_allowed": false,
       "promotion_rule": "Somente após checkpoint técnico E04 e atualização deste registro."
@@ -57,11 +57,11 @@
     ]
   },
     "checkout_under_audit": {
-    "branch": "Ailton/e04-tilemaps-20260908",
-    "head": "87da31a",
+    "branch": "Ailton/e05-colliders-20260908",
+    "head": "4a09aa5",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E04_SOURCE_CHECKPOINT"
+    "status": "E05_OPENING_CHECKPOINT"
   },
   "gates": {
     "official_suite": {
@@ -139,7 +139,7 @@
     "E02": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E03": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E04": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E05": "PLANNED",
+    "E05": "IN_PROGRESS",
     "E06": "PLANNED",
     "E07": "PLANNED",
     "E08": "PLANNED",
