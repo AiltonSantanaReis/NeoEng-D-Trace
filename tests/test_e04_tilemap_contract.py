@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 
 import pytest
 
@@ -17,6 +18,21 @@ from src.core.tilemap_model import (
     TileMapLimitError,
     TileMapLockedError,
     TileSet,
+)
+from src.core.tilemap_tools import (
+    bucket_fill,
+    copy_cells,
+    deterministic_tile_id,
+    erase_line,
+    paint_line,
+    paint_rectangle,
+    paste_cells,
+)
+from src.core.tilemap_rules import NeighborCondition, TerrainRule, TileRuleSet
+from src.persistence.tilemap_io import (
+    TileMapPersistenceError,
+    load_tilemap,
+    save_tilemap,
 )
 
 
@@ -166,3 +182,177 @@ def test_chunk_benchmark_reports_sparse_geometry_for_each_candidate() -> None:
     assert [result.chunk_size for result in results] == [16, 32, 64]
     assert all(result.populated_cells == 16 for result in results)
     assert [result.populated_chunks for result in results] == [1, 1, 1]
+
+
+def test_paint_line_is_one_undoable_transaction_and_redoable() -> None:
+    document = _map()
+    transaction = paint_line(document, "ground", (0, 0), (3, 0), "grass")
+    assert document.populated_cell_count == 4
+    transaction.undo()
+    assert document.populated_cell_count == 0
+    transaction.redo()
+    assert document.populated_cell_count == 4
+
+
+def test_rectangle_and_eraser_cover_cells_without_snapshot_copy() -> None:
+    document = _map()
+    paint_rectangle(document, "ground", (-1, -1), (1, 1), "grass")
+    assert document.populated_cell_count == 9
+    erase_line(document, "ground", (-1, -1), (1, 1))
+    assert document.populated_cell_count == 6
+
+
+def test_bucket_fill_is_bounded_and_uses_grid_neighborhood() -> None:
+    document = _map(bounds=TileMapBounds(0, 0, 3, 3))
+    paint_line(document, "ground", (1, 0), (1, 3), "grass")
+    transaction = bucket_fill(
+        document,
+        "ground",
+        (0, 0),
+        "water",
+        grid=GridSpec(GridKind.ORTHOGONAL),
+    )
+    assert document.populated_cell_count == 8
+    transaction.undo()
+    assert document.populated_cell_count == 4
+    with pytest.raises(TileMapLimitError, match="finite map bounds"):
+        bucket_fill(
+            _map(),
+            "ground",
+            (0, 0),
+            "grass",
+            grid=GridSpec(GridKind.ORTHOGONAL),
+        )
+
+
+def test_bucket_fill_limit_rejects_unbounded_work() -> None:
+    document = _map(bounds=TileMapBounds(0, 0, 4, 4))
+    with pytest.raises(TileMapLimitError, match="max_cells"):
+        bucket_fill(
+            document,
+            "ground",
+            (0, 0),
+            "grass",
+            grid=GridSpec(GridKind.ORTHOGONAL),
+            max_cells=4,
+        )
+
+
+def test_copy_paste_is_relative_and_deterministic_variation_is_order_independent() -> (
+    None
+):
+    document = _map()
+    paint_line(document, "ground", (2, 3), (3, 3), "grass")
+    clipboard = copy_cells(document, "ground", ((3, 3), (2, 3)))
+    paste_cells(document, "ground", (-2, -1), clipboard)
+    assert document.get_cell("ground", (-2, -1)) == TileCell("grass")
+    assert document.get_cell("ground", (-1, -1)) == TileCell("grass")
+    ids = ("grass", "water")
+    assert deterministic_tile_id(
+        ids, seed=7, coordinate=(-2, 4)
+    ) == deterministic_tile_id(ids, seed=7, coordinate=(-2, 4))
+    with pytest.raises(TileMapError, match="at least one tile"):
+        deterministic_tile_id((), seed=1, coordinate=(0, 0))
+
+
+def test_rule_tiles_use_priority_fallback_and_neighbor_invalidation() -> None:
+    document = _map(bounds=TileMapBounds(-2, -2, 2, 2))
+    rules = TileRuleSet(
+        (
+            TerrainRule(
+                "grass-next-to-water",
+                "grass",
+                conditions=(NeighborCondition((1, 0), ("water",)),),
+                priority=10,
+            ),
+        ),
+        fallback_tile_id="water",
+    )
+    document.set_cell("ground", (1, 0), TileCell("water"))
+    result = rules.resolve(
+        document,
+        "ground",
+        (0, 0),
+        grid=GridSpec(GridKind.ORTHOGONAL),
+        seed=5,
+    )
+    assert result.tile_id == "grass"
+    assert result.rule_id == "grass-next-to-water"
+    assert (1, 0) in result.invalidated
+    assert (
+        rules.resolve(
+            document,
+            "ground",
+            (2, 0),
+            grid=GridSpec(GridKind.ORTHOGONAL),
+        ).rule_id
+        is None
+    )
+    resolutions, transaction = rules.apply(
+        document,
+        "ground",
+        ((0, 0),),
+        grid=GridSpec(GridKind.ORTHOGONAL),
+        seed=5,
+    )
+    assert resolutions[0].tile_id == "grass"
+    transaction.undo()
+    assert document.get_cell("ground", (0, 0)) is None
+
+
+def test_rule_tiles_reject_ambiguity_unknown_dependency_and_cycles() -> None:
+    document = _map()
+    ambiguous = TileRuleSet(
+        (
+            TerrainRule("a", "grass", priority=3),
+            TerrainRule("b", "water", priority=3),
+        ),
+        fallback_tile_id="grass",
+    )
+    with pytest.raises(TileMapError, match="ambiguous"):
+        ambiguous.resolve(
+            document,
+            "ground",
+            (0, 0),
+            grid=GridSpec(GridKind.ORTHOGONAL),
+        )
+    with pytest.raises(TileMapError, match="unknown rule"):
+        TileRuleSet(
+            (TerrainRule("a", "grass", depends_on=("missing",)),),
+            fallback_tile_id="grass",
+        )
+
+
+def test_tilemap_save_reopen_preserves_cells_layers_and_lock(tmp_path) -> None:
+    document = _map(bounds=TileMapBounds(-2, -2, 2, 2))
+    document.set_cell("ground", (-1, 2), TileCell("grass", metadata=(("biome", "a"),)))
+    document.set_layer_lock("ground", True)
+    path = save_tilemap(document, tmp_path / "map.ndttilemap.json")
+    reopened = load_tilemap(path)
+    assert reopened.to_dict() == document.to_dict()
+    with pytest.raises(TileMapLockedError):
+        reopened.set_cell("ground", (0, 0), TileCell("grass"))
+
+
+def test_tilemap_loader_rejects_invalid_format_and_duplicate_cells(tmp_path) -> None:
+    invalid = tmp_path / "invalid.json"
+    invalid.write_text('{"format_id":"wrong"}', encoding="utf-8")
+    with pytest.raises(TileMapPersistenceError, match="unsupported tilemap format"):
+        load_tilemap(invalid)
+    duplicate = _map().to_dict()
+    duplicate["cells"] = [
+        {"layer_id": "ground", "x": 0, "y": 0, "cell": TileCell("grass").to_dict()},
+        {"layer_id": "ground", "x": 0, "y": 0, "cell": TileCell("water").to_dict()},
+    ]
+    duplicate_path = tmp_path / "duplicate.json"
+    duplicate_path.write_text(json.dumps(duplicate), encoding="utf-8")
+    with pytest.raises(TileMapPersistenceError, match="duplicate"):
+        load_tilemap(duplicate_path)
+    with pytest.raises(TileMapError, match="cycle"):
+        TileRuleSet(
+            (
+                TerrainRule("a", "grass", depends_on=("b",)),
+                TerrainRule("b", "water", depends_on=("a",)),
+            ),
+            fallback_tile_id="grass",
+        )

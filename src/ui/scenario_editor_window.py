@@ -57,6 +57,7 @@ from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
+from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
 
 
 class ScenarioEditorWindow(QMainWindow):
@@ -91,6 +92,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.layer_stack: SceneAuthoringLayerStack | None = None
         self.group_stack: SceneAuthoringGroupStack | None = None
         self.asset_library: SceneAssetLibrary | None = None
+        self.tilemap_panel: TileMapAuthoringPanel | None = None
         self._pending_v1_document: SceneAuthoringDocumentV1 | None = None
         self._pending_recovery_path: Path | None = None
         self.canvas = self._build_canvas()
@@ -348,15 +350,21 @@ class ScenarioEditorWindow(QMainWindow):
             session, project_path.parent, parent=inspector
         )
         self.asset_library.update_language(self.current_lang)
+        self.tilemap_panel = TileMapAuthoringPanel(
+            project_path.parent, parent=inspector
+        )
+        self.tilemap_panel.update_language(self.current_lang)
         inspector_layout = inspector.layout()
         if not isinstance(inspector_layout, QVBoxLayout):
             raise RuntimeError("professional inspector has no vertical layout")
         inspector_layout.insertWidget(0, self.layer_stack)
         inspector_layout.insertWidget(0, self.group_stack)
         inspector_layout.insertWidget(0, self.asset_library)
+        inspector_layout.insertWidget(0, self.tilemap_panel)
         self.layer_stack.status_message.connect(self._show_professional_status)
         self.group_stack.status_message.connect(self._show_professional_status)
         self.asset_library.status_message.connect(self._show_professional_status)
+        self.tilemap_panel.status_message.connect(self._show_professional_status)
         inspector_scroll = QScrollArea(self.right_pages)
         inspector_scroll.setObjectName("professional_inspector_scroll")
         inspector_scroll.setWidgetResizable(True)
@@ -692,6 +700,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.professional_viewport.set_authoring_enabled(not preview)
         if self.professional_inspector is not None:
             self.professional_inspector.setEnabled(not preview)
+        if self.tilemap_panel is not None:
+            self.tilemap_panel.setEnabled(not preview)
         self.status_label.setText(
             "Scenario preview — read-only" if preview else "Scenario authoring"
         )
@@ -721,6 +731,10 @@ class ScenarioEditorWindow(QMainWindow):
         self.authoring_action.setEnabled(available)
         if self.professional_inspector is not None:
             self.professional_inspector.setEnabled(
+                available and not self.preview_action.isChecked()
+            )
+        if self.tilemap_panel is not None:
+            self.tilemap_panel.setEnabled(
                 available and not self.preview_action.isChecked()
             )
         session = self.professional_session
@@ -826,6 +840,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.scenario_panel.update_language(self.current_lang)
         if self.asset_library is not None:
             self.asset_library.update_language(self.current_lang)
+        if self.tilemap_panel is not None:
+            self.tilemap_panel.update_language(self.current_lang)
 
     def closeEvent(self, event) -> None:
         self._professional_initial_focus_applied = False
