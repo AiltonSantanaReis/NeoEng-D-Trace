@@ -58,10 +58,10 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "e8a602e5f4e66f53503ce8f1e3d91dc36cd1e4c3",
+    "head": "61ed6d20a751fbd0f1489c16331d107a62a222f6",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E08_C4_ACTIVE"
+    "status": "CLEAN_E08_C4_CAPTURE_HARNESS_ACTIVE"
   },
   "gates": {
     "official_suite": {
