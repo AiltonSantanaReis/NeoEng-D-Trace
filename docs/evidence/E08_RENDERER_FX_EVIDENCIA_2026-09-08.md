@@ -9,8 +9,8 @@ Dependência técnica: E07 checkpoint `d35bc84`.
 
 - E08-A — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: plano de composição e fronteira de backend.
 - E08-B — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: câmera e paralaxe profissional.
-- E08-C — `IN_PROGRESS`: materiais, normal maps, luzes e sombras; C2/C3 têm
-  checkpoint técnico comprovado e C4 permanece ativo.
+- E08-C — `IN_PROGRESS`: C1–C4 têm checkpoint técnico comprovado; E08-C
+  permanece aberto somente para auditoria final antes da promoção formal.
 - E08-D — `PLANNED`: partículas, shaders e pós-processamento.
 - E08-E — `PLANNED`: determinismo temporal e matriz de destino.
 
@@ -108,9 +108,11 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
 - `E08-C.3` — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: build r39,
   smoke, suíte oficial e capturas V2 reais estão documentados no manifesto
   hashado `E08_C_R39_LIGHTING_V2_CAPTURAS_MANIFESTO.json`.
-- `E08-C.4` — `IN_PROGRESS`: completar autoria e persistência explícitas de
-  material/albedo/normal map no fluxo V2; não promover E08-C enquanto esse
-  contrato permanecer apenas determinístico/interno.
+- `E08-C.4` — `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`: autoria e
+  persistência explícitas de material/albedo/normal map no fluxo V2, seleção
+  nativa no binário, pixels observáveis e controles habilitados comprovados em
+  build r42; manifesto hashado em
+  `docs/evidence/E08_C_R42_MATERIAL_AUTORIA_CAPTURAS_MANIFESTO.json`.
 
 ### Evidência do sublote E08-C.1
 
@@ -156,3 +158,33 @@ anterior. Positivos em `offset_x/y` deslocam o conteúdo para a direita/baixo.
   objetos iluminados, o HUD `RENDERER RASTER | NATIVE`, o modo Preview/Autoria,
   os controles em português e o socket persistido no inspector.
 - Manifesto completo e hashes: `docs/evidence/E08_C_R39_LIGHTING_V2_CAPTURAS_MANIFESTO.json`.
+
+### Evidência do sublote E08-C.4
+
+- Commit de implementação auditado: `e8a602e`; harness de captura e
+  requalificação nativa: `175b2ec8a40c2dfa664deec5a3b16a1a33007d24`.
+- O schema V2 persiste albedo, normal map vetorial, força da normal, emissão,
+  força da emissão, opacidade e flags de receber/projetar sombra. A sessão
+  aplica a alteração de forma transacional e permite Undo/Redo; save/reopen
+  preserva os campos.
+- Testes focados: `40 passed`, incluindo pixels alterados pelo material,
+  round-trip de persistência e edição transacional do inspector.
+- Suíte oficial atual: `2070 passed, 2 skipped, 1 warning`; Black, mypy e
+  `git diff --check` passaram no escopo E08-C.
+- Build r42: source commit
+  `175b2ec8a40c2dfa664deec5a3b16a1a33007d24`, binário SHA-256
+  `10E2813F7FD4A3095E62007A89A3FF26A68917A76F1DD4B2E8E45DCF1A1C605C`,
+  pacote portátil SHA-256
+  `56C0053985EF6564172CC9AABB8C5C68AD2C764CB8E62C10F4B649B0BBF01487`,
+  smoke `SUCCESS` com 11 checks.
+- Captura real: o clique nativo no receptor produz seleção e gizmo em
+  `10-material-selection.png`; após a navegação do inspector,
+  `11-material-authoring-selected.png` exibe os valores persistidos e os
+  controles habilitados. Os hashes e o comando estão em
+  `docs/evidence/E08_C_R42_MATERIAL_AUTORIA_CAPTURAS_MANIFESTO.json`.
+- Finding corrigido: o harness usava `(650,550)`, ponto fora do receptor na
+  superfície DPI-aware 3866×2090 apesar de parecer interno na imagem reduzida;
+  o clique foi centralizado em `(1250,700)` e a captura foi repetida com sucesso.
+- Limitações preservadas: a captura automatizada não substitui a revisão
+  humana final; o normal map é vetor autoral nesta etapa e sombras híbridas 3D
+  permanecem posteriores, especialmente E12.

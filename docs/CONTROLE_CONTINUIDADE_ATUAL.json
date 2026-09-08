@@ -13,7 +13,7 @@
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-      "controlled_correction_scope": "E08-C materiais, normal maps, luzes e sombras; findings reproduziveis continuam sujeitos a correcao controlada.",
+      "controlled_correction_scope": "E08-D partículas, shaders e pós-processamento; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Completar E08-C.4: expor e persistir material, albedo e normal map no fluxo V2 com pixels observáveis; manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Completar E08-D: implementar partículas, shaders e pós-processamento com seed/lifecycle determinísticos, erro recuperável, pixels observáveis e captura real; manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
-      "id": "E08-C",
+      "id": "E08-D",
       "status": "IN_PROGRESS",
-      "scope": "E08-C.1 comprovado; E08-C.2/C.3 comprovados em checkpoint técnico no V2; E08-C.4 ativo para autoria/persistência de material e normal map",
+      "scope": "E08-C.1–C.4 comprovados em checkpoint técnico; E08-D ativo para partículas, shaders, pós-processamento, seed/lifecycle e erro recuperável",
       "evidence": "docs/evidence/E08_RENDERER_FX_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
@@ -58,15 +58,15 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "3ddd74a9e7a6ba63f3fbac070f90a79d9ea921d8",
+    "head": "175b2ec8a40c2dfa664deec5a3b16a1a33007d24",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E08_C4_CAPTURE_HARNESS_ACTIVE"
+    "status": "CLEAN_E08_D_ACTIVE"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2067,
+      "passed": 2070,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -95,26 +95,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r39-lighting-v2/08-parallax-controls-bottom.png",
-      "latest_binary_capture_sha256": "E51A93043061401A95EE3688B533D5F6CC06A475E5C5C43C515B6CB347F69BF2",
+      "latest_binary_capture": "artifacts/e08-renderer-20260908/binary-capture-r42-material-v3/11-material-authoring-selected.png",
+      "latest_binary_capture_sha256": "B0A429074AF720CAD31D8D66FA5C0B0D226213B96316C32AFB9F58EB36ACD230",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r39 abriu a fixture V2 no binário portátil; Preview e Autoria mostraram os dois objetos com pixels alterados pelo passe de iluminação, e o inspector exibiu o socket persistido key-light com coordenadas em português. A autoria/persistência explícita de material e normal map permanece em E08-C.4. Revisão humana continua pendente.",
+      "observed_finding": "Build r42 abriu a fixture V2 no binário portátil; Preview e Autoria mostraram os dois objetos com pixels alterados pelo passe de iluminação, o clique nativo selecionou o receptor com gizmo e o inspector exibiu material, normal map, emissão, opacidade e sombras habilitados. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r39/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "10EF967993EA2C5578356C28E57A006BAF692A28EBC64C66737A80C9015DDE51",
-      "latest_observed_binary_last_write": "2026-09-08T22:04:48.3922077Z",
-      "source_commit": "bd8101d6c39f6d140b104fe68c685a582de380a6",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r42/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "10E2813F7FD4A3095E62007A89A3FF26A68917A76F1DD4B2E8E45DCF1A1C605C",
+      "latest_observed_binary_last_write": "2026-09-08T22:30:07.9830609Z",
+      "source_commit": "175b2ec8a40c2dfa664deec5a3b16a1a33007d24",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "EE35B069D1C42223222F0D62369FA1BA9CD11C887A3684D4F0AE895AE5B9F339",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r39/continuity-provenance.json",
+      "continuity_registry_sha256": "10F7FBCE37849B0558F0AF2D0361918C464E820AFA6D4E10BB86A8BBAE18E96E",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r42/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "9DCFE4FF5BAD9DE3B6DD283AF527F3ECEEADB13BB477623B7CDB1A0AFF319E7B",
-      "reason": "E08-C.1 possui passe raster determinístico; E08-C.2/C.3 têm integração V2, persistência de socket, controles autorais, suíte oficial 2067, estática focada, build r39, smoke e captura real. E08-C.4 permanece ativo para autoria/persistência de material e normal map."
+      "portable_archive_sha256": "56C0053985EF6564172CC9AABB8C5C68AD2C764CB8E62C10F4B649B0BBF01487",
+      "reason": "E08-C.1–C.4 possuem passe raster determinístico, integração V2, persistência de socket e material, seleção nativa, controles autorais habilitados, suíte oficial 2070, estática focada, build r42, smoke e captura real. E08-D é o próximo lote técnico ativo."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

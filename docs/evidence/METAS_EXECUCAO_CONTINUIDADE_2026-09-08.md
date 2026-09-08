@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.3 em checkpoint técnico na build r39 e C.4 ativo para autoria/persistência de materiais e normal maps; E09–E13 ainda não iniciadas.
+- E08: `IN_PROGRESS`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D é o próximo lote após este commit; E09–E13 ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -97,8 +97,8 @@ ela não interrompe a execução técnica autorizada.
 | Ordem | Meta | Status | Saída obrigatória |
 |---:|---|---|---|
 | 1 | E08-B câmera/paralaxe | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato, testes, build e captura real |
-| 2 | E08-C materiais/normal maps/luzes/sombras | `IN_PROGRESS` | pixels observáveis, negativos e fallback |
-| 3 | E08-D partículas/shaders/pós | `PLANNED` | seed/lifecycle, erro recuperável e cadeia |
+| 2 | E08-C materiais/normal maps/luzes/sombras | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pixels observáveis, negativos, persistência, captura r42 e fallback |
+| 3 | E08-D partículas/shaders/pós | `IN_PROGRESS` | seed/lifecycle, erro recuperável e cadeia |
 | 4 | E08-E determinismo/destinos | `PLANNED` | timestep, tolerâncias e matriz de capacidades |
 | 5 | E09 autoria/exportação vetorial | `PLANNED` | fluxo editável, persistente e exportável |
 | 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
@@ -114,7 +114,7 @@ ela não interrompe a execução técnica autorizada.
 | E08-C.1 passe raster determinístico | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | ambiente, luz, material, normal perturbada, emissão e oclusão alteram pixels no binário |
 | E08-C.2 integração V2 e autoria | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | fixture V2 real, estado persistido, controles autorais e fallback explícito |
 | E08-C.3 build/captura/requalificação | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | build após C.2, captura V2, negativos e manifesto hashado |
-| E08-C.4 autoria de material/normal map | `IN_PROGRESS` | edição, save/reopen e pixels observáveis para material e normal map |
+| E08-C.4 autoria de material/normal map | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | edição, save/reopen, seleção nativa, captura r42 e pixels observáveis para material e normal map |
 
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
