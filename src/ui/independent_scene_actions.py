@@ -31,6 +31,11 @@ def install_independent_scene(window: Any) -> None:
         child.activateWindow()
         return True
 
+    # Keep the QAction, menu entry, and keyboard shortcut on the same
+    # executable path.  Without this connection the command was visible but
+    # inert when invoked by the real user-facing menu or shortcut.
+    action.triggered.connect(open_independent_scene)
+
     original_update_language = window.update_language
 
     def update_language() -> None:

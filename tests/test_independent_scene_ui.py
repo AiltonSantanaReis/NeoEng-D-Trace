@@ -65,3 +65,22 @@ def test_independent_scene_window_is_reachable_from_main_window(
     assert child.session.document.resolution.width == 1920
     child.close()
     main.close()
+
+
+def test_independent_scene_action_opens_the_real_child_window(
+    qt_app: QApplication,
+) -> None:
+    from src.models.scene import Scene
+    from src.ui.main_window import MainWindow
+
+    main = MainWindow(Scene(), {})
+    main.open_independent_scene_action.trigger()
+    qt_app.processEvents()
+
+    child = main._independent_scene_window
+    assert child is not None
+    assert child.isVisible()
+    assert child.windowTitle().startswith(("Independent Scene", "Novo Cenário"))
+
+    child.close()
+    main.close()
