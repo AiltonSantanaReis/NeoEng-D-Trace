@@ -12,6 +12,7 @@ param(
     [switch]$CaptureRendererFlow,
     [switch]$CaptureMaterialFlow,
     [switch]$CaptureParallaxFlow,
+    [switch]$CaptureVectorContourFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -131,6 +132,36 @@ function Save-Capture {
 $exePath = (Resolve-Path -LiteralPath $Executable).Path
 $projectPath = (Resolve-Path -LiteralPath $ProjectPath).Path
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
+if ($CaptureVectorContourFlow) {
+    $fixtureRoot = Join-Path (Resolve-Path -LiteralPath $OutputDirectory).Path "vector-contour-fixture"
+    $fixtureAssetDir = Join-Path $fixtureRoot "assets\scene"
+    New-Item -ItemType Directory -Path $fixtureAssetDir -Force | Out-Null
+    $sourceFixture = (Resolve-Path -LiteralPath "docs\evidence\artifacts\roi-grabcut-collision\source.png").Path
+    $fixtureAsset = Join-Path $fixtureAssetDir "vector-source.png"
+    Copy-Item -LiteralPath $sourceFixture -Destination $fixtureAsset -Force
+    $fixtureHash = (Get-FileHash -LiteralPath $fixtureAsset -Algorithm SHA256).Hash.ToLowerInvariant()
+    $baseProjectFile = if (Test-Path -LiteralPath $projectPath -PathType Leaf) {
+        $projectPath
+    } else {
+        Get-ChildItem -LiteralPath $projectPath -Filter "*.ndtproj" -File | Select-Object -First 1 -ExpandProperty FullName
+    }
+    if (-not $baseProjectFile) { throw "vector contour capture requires a base .ndtproj" }
+    $vectorProject = Join-Path $fixtureRoot "vector-contour.ndtproj"
+    Copy-Item -LiteralPath $baseProjectFile -Destination $vectorProject -Force
+    $vectorScene = @"
+{
+  ""format_id"": ""neoeng-d-trace-scene-authoring"",
+  ""schema_version"": 1,
+  ""metadata"": {""name"": ""E09 Vector Contour Fixture"", ""generator"": ""NeoEng-D-Trace E09"", ""app_version"": ""0.3.0""},
+  ""project"": {""sha256"": ""0000000000000000000000000000000000000000000000000000000000000000""},
+  ""assets"": [{""id"": ""vector-source"", ""path"": ""assets/scene/vector-source.png"", ""path_kind"": ""relative"", ""sha256"": ""$fixtureHash""}],
+  ""layers"": [{""id"": ""layer_default"", ""name"": ""Default"", ""visible"": true, ""locked"": false}],
+  ""objects"": [], ""groups"": [], ""snap"": {""enabled"": false, ""mode"": ""pixel"", ""spacing"": {""x"": 1.0, ""y"": 1.0}}
+}
+"@
+    Set-Content -LiteralPath (Join-Path $fixtureRoot "vector-contour.ndtscene.json") -Value $vectorScene -Encoding utf8
+    $projectPath = (Resolve-Path -LiteralPath $vectorProject).Path
+}
 $startArguments = @()
 if ($DirectProjectLoad) {
     $directProjectFile = if (Test-Path -LiteralPath $projectPath -PathType Leaf) {
@@ -197,6 +228,27 @@ try {
     # covered by the focused Qt contract tests; this binary capture remains
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
+    if ($CaptureVectorContourFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        $records.vector_contour_initial = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-vector-contour-initial.png")
+        # The asset library is below the contour panel in the inspector. Scroll
+        # the real native surface until the asset row is visible, select it,
+        # then return to the contour controls like a user would.
+        for ($scrollStep = 0; $scrollStep -lt 6; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.985, 0.66, -120)
+            Start-Sleep -Milliseconds 100
+        }
+        Start-Sleep -Milliseconds 600
+        $records.vector_contour_asset = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-vector-contour-asset.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.32)
+        Start-Sleep -Milliseconds 500
+        for ($scrollStep = 0; $scrollStep -lt 6; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.985, 0.25, 120)
+            Start-Sleep -Milliseconds 100
+        }
+        Start-Sleep -Milliseconds 600
+        $records.vector_contour_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-vector-contour-selected.png")
+    }
     if ($CaptureTilemapFlow) {
         # The tilemap panel is in the right inspector at the top of the
         # shipped editor.  These are native screen offsets for the current

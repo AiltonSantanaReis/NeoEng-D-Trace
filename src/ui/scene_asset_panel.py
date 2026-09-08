@@ -85,6 +85,7 @@ class SceneAssetLibrary(QWidget):
     """Inspectable asset list with transactional relink and replace actions."""
 
     status_message = Signal(str)
+    asset_selected = Signal(object)
 
     def __init__(
         self,
@@ -307,6 +308,7 @@ class SceneAssetLibrary(QWidget):
 
     def _selection_changed(self, _row: int) -> None:
         self._refresh_actions()
+        self.asset_selected.emit(self.selected_asset_id)
 
     def _refresh_actions(self) -> None:
         selected = self.selected_asset

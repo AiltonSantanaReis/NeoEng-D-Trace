@@ -62,6 +62,7 @@ from src.ui.scenario_collider_panel import ScenarioColliderPanel
 from src.ui.navmesh_panel import NavMeshPanel
 from src.ui.entity_prefab_panel import EntityPrefabPanel
 from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
+from src.ui.vector_contour_panel import VectorContourPanel
 
 
 class ScenarioEditorWindow(QMainWindow):
@@ -100,6 +101,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.collider_panel: ScenarioColliderPanel | None = None
         self.navmesh_panel: NavMeshPanel | None = None
         self.entity_prefab_panel: EntityPrefabPanel | None = None
+        self.vector_contour_panel: VectorContourPanel | None = None
         self._pending_v1_document: SceneAuthoringDocumentV1 | None = None
         self._pending_recovery_path: Path | None = None
         self.canvas = self._build_canvas()
@@ -386,6 +388,13 @@ class ScenarioEditorWindow(QMainWindow):
         self.navmesh_panel.update_language(self.current_lang)
         self.entity_prefab_panel = EntityPrefabPanel(session, parent=inspector)
         self.entity_prefab_panel.update_language(self.current_lang)
+        self.vector_contour_panel = VectorContourPanel(
+            session, project_path.parent, parent=inspector
+        )
+        self.vector_contour_panel.update_language(self.current_lang)
+        self.asset_library.asset_selected.connect(
+            self.vector_contour_panel.set_selected_asset
+        )
         inspector_layout = inspector.layout()
         if not isinstance(inspector_layout, QVBoxLayout):
             raise RuntimeError("professional inspector has no vertical layout")
@@ -396,6 +405,7 @@ class ScenarioEditorWindow(QMainWindow):
         inspector_layout.insertWidget(0, self.collider_panel)
         inspector_layout.insertWidget(0, self.navmesh_panel)
         inspector_layout.insertWidget(0, self.entity_prefab_panel)
+        inspector_layout.insertWidget(0, self.vector_contour_panel)
         self.layer_stack.status_message.connect(self._show_professional_status)
         self.group_stack.status_message.connect(self._show_professional_status)
         self.asset_library.status_message.connect(self._show_professional_status)
@@ -403,6 +413,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.collider_panel.status_message.connect(self._show_professional_status)
         self.navmesh_panel.status_message.connect(self._show_professional_status)
         self.entity_prefab_panel.status_message.connect(self._show_professional_status)
+        self.vector_contour_panel.status_message.connect(self._show_professional_status)
         inspector_scroll = QScrollArea(self.right_pages)
         inspector_scroll.setObjectName("professional_inspector_scroll")
         inspector_scroll.setWidgetResizable(True)
@@ -753,6 +764,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.collider_panel.setEnabled(not preview)
         if self.entity_prefab_panel is not None:
             self.entity_prefab_panel.setEnabled(not preview)
+        if self.vector_contour_panel is not None:
+            self.vector_contour_panel.setEnabled(not preview)
         self.status_label.setText(
             "Scenario preview — read-only" if preview else "Scenario authoring"
         )
@@ -794,6 +807,10 @@ class ScenarioEditorWindow(QMainWindow):
             )
         if self.entity_prefab_panel is not None:
             self.entity_prefab_panel.setEnabled(
+                available and not self.preview_action.isChecked()
+            )
+        if self.vector_contour_panel is not None:
+            self.vector_contour_panel.setEnabled(
                 available and not self.preview_action.isChecked()
             )
         session = self.professional_session
@@ -929,6 +946,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.collider_panel.update_language(self.current_lang)
         if self.entity_prefab_panel is not None:
             self.entity_prefab_panel.update_language(self.current_lang)
+        if self.vector_contour_panel is not None:
+            self.vector_contour_panel.update_language(self.current_lang)
 
     def closeEvent(self, event) -> None:
         self._professional_initial_focus_applied = False
