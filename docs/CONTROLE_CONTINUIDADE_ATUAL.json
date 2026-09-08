@@ -10,7 +10,7 @@
   },
   "active_work": {
     "stage": "E07",
-    "status": "IN_PROGRESS",
+    "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
       "controlled_correction_scope": "E07 entidades, componentes, hierarquia e prefabs; findings reproduziveis continuam sujeitos a correcao controlada.",
@@ -28,12 +28,12 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Implementar E07-A em lotes pequenos, começando pelo contrato de entidades/componentes e seus negativos canônicos.",
+    "next_action": "Abrir E08 após registrar o checkpoint técnico E07 e preservar o manifesto r24; manter symlink e revisão humana para a auditoria final.",
     "active_lot": {
       "id": "E07-A/B/C",
-      "status": "IN_PROGRESS",
+      "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
       "scope": "Entidades, componentes tipados/versionados, instâncias, hierarquia espacial e ciclo completo de prefabs",
-      "evidence": "docs/evidence/E07_ENTIDADES_PREFABS_EVIDENCIA_2026-09-08.md",
+      "evidence": "docs/evidence/E07_ENTIDADES_PREFABS_EVIDENCIA_2026-09-08.md; docs/evidence/E07_R24_CAPTURAS_MANIFESTO.json",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e07-entities-20260908",
-    "head": "5a3604a",
+    "head": "7c44496a2e93ecfe54eb0612d8edbd389826d72b",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E07_SOURCE_CHECKPOINT"
@@ -95,26 +95,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e06-navmesh-20260908/binary-capture-r22-final/08-navmesh-reopened.png",
-      "latest_binary_capture_sha256": "90AF2B8A82AFF3BB122E942D8459C6E22F18B8855BFF92C7CA606DB04C192835",
+      "latest_binary_capture": "artifacts/e07-entities-20260908/binary-capture-r24-final/10-prefab-detached.png",
+      "latest_binary_capture_sha256": "D1F78297106F9E3DDDC2E1CDD26C3219E6A9D587EBD1E349682B7735BD97DB1F",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r22 abriu o projeto pelo carregamento direto; o fluxo real exibiu o inspector NavMesh, criou região e obstáculo, executou bake com caminho de 12 pontos, salvou e reabriu o sidecar com a mensagem correta de bake obsoleto. Revisão humana continua pendente.",
+      "observed_finding": "Build r24 abriu o projeto pelo carregamento direto; o fluxo real exibiu o painel de entidades, criou entidade, prefab v1, instância, override, atualização para v2 e detach preservando override. Interface em português, sem clipping observável; revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e06-navmesh-20260908-r22/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "F704E4CAA552B352718FAC0AFC970B36226DAF9EBA14CB61F63F524FF4D3D7C3",
-      "latest_observed_binary_last_write": "2026-09-08T20:16:00.0000000Z",
-      "source_commit": "3eba4cc461386f4a37bd03e0597400eb6feb68bf",
-      "source_branch": "Ailton/e06-navmesh-20260908",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e07-entities-20260908-r24/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "AA335278578929CA5AAA7BAC73270C7752C7C711B4B922D2EE1F1D7790AF02A5",
+      "latest_observed_binary_last_write": "2026-09-08T20:41:49.0000000Z",
+      "source_commit": "7c44496a2e93ecfe54eb0612d8edbd389826d72b",
+      "source_branch": "Ailton/e07-entities-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "786760395C59CE88012D958641A5D42E1A7DB16C552202CBBFDFB6E3EE0FF6E9",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e06-navmesh-20260908-r22/continuity-provenance.json",
+      "continuity_registry_sha256": "A35BEC915B452A9002BD68892DDF0EB7ECD25D7B0FD8D9AAD176A84A3433A018",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e07-entities-20260908-r24/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "E5E627F092F15B9AF0600FE235B5090B487EC872BA2070E1D548DD0AAE8415D6",
-      "reason": "E06-A/B/C/D/E possui fonte NavMesh separada do bake, regiões, obstáculos, caminho determinístico, persistência versionada, suite completa, estática focada, build r22, smoke e captura real do fluxo do editor."
+      "portable_archive_sha256": "281660a1c98751141ce1ddcb1898667f9a394e4d0da0490c94b9d4f293ace988",
+      "reason": "E07-A/B/C possui entidades, componentes tipados/versionados, hierarquia espacial, ciclo completo de prefabs, suite completa, estática focada, build r24, smoke e captura real do fluxo do editor."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
@@ -141,7 +141,7 @@
     "E04": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E05": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E06": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E07": "IN_PROGRESS",
+    "E07": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E08": "PLANNED",
     "E09": "PLANNED",
     "E10": "PLANNED",
