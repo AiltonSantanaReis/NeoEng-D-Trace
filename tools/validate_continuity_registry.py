@@ -48,6 +48,12 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         raise ValueError("checkout branch and head must be explicit")
 
     gates = _require(data, "gates")
+    visual = gates["visual"]
+    if (
+        visual["native_human_status"] == "PENDING_EVIDENCE"
+        and not visual.get("human_review_required_before_close", False)
+    ):
+        raise ValueError("deferred human review must remain required before close")
     symlink = gates["symlink"]
     if (
         symlink["sandbox_status"] == "PASS_SANDBOX_DIAGNOSTIC_ONLY"

@@ -35,7 +35,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY` | 31 casos, 0 skips; não substitui o gate oficial |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
-| Auditoria nativa/humana | `BLOCKED` | host de Computer Use sem janela de aplicação |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Build oficial | `PASS_LOCAL` | commit `2722ac1`, manifesto, hashes e smoke test com 11 verificações |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 
@@ -48,10 +48,9 @@ uma nova execução no mesmo pacote.
 
 ## Próximo passo permitido
 
-Executar os fluxos de usuário na build oficial `2722ac1`, registrar capturas
-dos estados críticos e concluir a revisão visual/humana. A build já possui
-manifesto de proveniência e smoke test; a revisão nativa/humana continua
-bloqueada enquanto o host não expuser uma janela de aplicação.
+Continuar os gates automatizados e a preparação controlada da E00. A revisão
+visual/humana foi deferida por autorização explícita para a auditoria final;
+ela continua obrigatória antes de marcar E00 como `PASS` ou concluir o plano.
 
 Não iniciar E01, não refazer funcionalidades já corrigidas em outra base e não
 reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada
@@ -63,6 +62,6 @@ a outra.
 
 E00 somente pode mudar para `PASS` após a mesma revisão possuir proveniência,
 suíte completa, tipagem/estática, build limpa, restauração funcional, symlink
-aplicável, captura do binário, revisão visual e documentação vinculada. Sem
+aplicável, captura do binário, revisão visual/humana final e documentação vinculada. Sem
 qualquer um desses itens, o estado correto permanece `IN_PROGRESS`,
 `PENDING_EVIDENCE` ou `BLOCKED`.

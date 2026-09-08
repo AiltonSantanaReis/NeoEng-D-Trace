@@ -12,3 +12,13 @@ def test_symlink_results_remain_separate():
     symlink = registry["gates"]["symlink"]
     assert symlink["sandbox_status"] == "PASS_SANDBOX_DIAGNOSTIC_ONLY"
     assert symlink["local_suite_status"] == "SKIP_PRIVILEGE_LIMITATION"
+
+
+def test_human_review_deferral_remains_pending_until_final_audit():
+    registry = validate_registry()
+    visual = registry["gates"]["visual"]
+    assert visual["native_human_status"] == "PENDING_EVIDENCE"
+    assert visual["human_review_policy"] == (
+        "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION"
+    )
+    assert visual["human_review_required_before_close"] is True

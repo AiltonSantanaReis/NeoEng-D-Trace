@@ -25,6 +25,7 @@ nem reclassificadas nesta execução.
 
 ## Limitações
 
-A captura é automatizada por handle Win32. A revisão humana/nativa permanece
-`BLOCKED` porque o host de Computer Use não expôs uma janela de aplicação.
+A captura é automatizada por handle Win32. Por autorização explícita do
+responsável pelo projeto, a revisão humana/nativa foi deferida para a auditoria
+final e permanece `PENDING_EVIDENCE`; ela não é considerada aprovação parcial.
 Symlink continua reportado separadamente: 31/31 no Sandbox e 2 skips locais.

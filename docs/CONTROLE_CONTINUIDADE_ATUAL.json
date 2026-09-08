@@ -12,7 +12,7 @@
     "stage": "E00",
     "status": "IN_PROGRESS",
     "implementation_allowed": false,
-    "next_action": "Obter revisao visual/humana do binario oficial 2722ac1; se o truncamento for confirmado, abrir correcao controlada sem reutilizar captura de outro SHA.",
+    "next_action": "Continuar os gates automatizados e a preparacao E00; executar a revisao visual/humana somente na auditoria final antes do fechamento.",
     "forbidden_until_e00_closes": [
       "iniciar E01",
       "misturar worktrees",
@@ -54,7 +54,9 @@
     },
     "visual": {
       "automated_capture_status": "PASS_AUTOMATED_CAPTURE_ONLY",
-      "native_human_status": "BLOCKED",
+      "native_human_status": "PENDING_EVIDENCE",
+      "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
+      "human_review_required_before_close": true,
       "latest_binary_capture": "artifacts/e00-continuity-20260908/official-build-2722ac1/captures/01-official-maximized.png",
       "latest_binary_capture_sha256": "FBA8E1EAABBA7B3F16230245B28F3EF735304F88DE612479CBB36DA5CCB53EDD",
       "latest_binary_capture_window": "1933x1045",
