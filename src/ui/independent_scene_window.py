@@ -5,8 +5,15 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QAction
+from PySide6.QtCore import QPointF, Qt, Signal
+from PySide6.QtGui import (
+    QAction,
+    QBrush,
+    QColor,
+    QPainter,
+    QPen,
+    QPolygonF,
+)
 from PySide6.QtWidgets import (
     QDoubleSpinBox,
     QFileDialog,
@@ -29,6 +36,82 @@ from src.persistence.independent_scene_io import (
     IndependentSceneWriteError,
 )
 from src.persistence.project_schema import PointRecord
+from src.ui.theme_tokens import THEME_TOKENS
+
+
+class IndependentSceneCanvas(QFrame):
+    """Small deterministic preview of the authoring document."""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.document = None
+        self.selected_ids: tuple[str, ...] = ()
+        self.object_count = 0
+
+    def set_document(self, document: Any, selected_ids: tuple[str, ...] = ()) -> None:
+        self.document = document
+        self.selected_ids = selected_ids
+        self.object_count = len(getattr(document, "objects", []))
+        self.update()
+
+    def paintEvent(self, event: Any) -> None:
+        super().paintEvent(event)
+        if self.document is None:
+            return
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        painter.fillRect(self.rect(), QColor(THEME_TOKENS.canvas))
+        width = float(self.document.resolution.width)
+        height = float(self.document.resolution.height)
+        scale = min((self.width() - 48) / width, (self.height() - 48) / height)
+        scale = max(0.01, scale)
+        canvas_width = width * scale
+        canvas_height = height * scale
+        origin_x = (self.width() - canvas_width) / 2.0
+        origin_y = (self.height() - canvas_height) / 2.0
+        painter.setPen(QPen(QColor(THEME_TOKENS.border), 1))
+        painter.setBrush(QBrush(QColor(THEME_TOKENS.surface)))
+        painter.drawRect(origin_x, origin_y, canvas_width, canvas_height)
+
+        for primitive in getattr(self.document, "objects", []):
+            points = primitive.geometry.points
+            mapped = [
+                (origin_x + float(point.x) * scale, origin_y + float(point.y) * scale)
+                for point in points
+            ]
+            selected = primitive.id in self.selected_ids
+            color = QColor(THEME_TOKENS.warning if selected else THEME_TOKENS.accent)
+            painter.setPen(QPen(color, 3 if selected else 2))
+            painter.setBrush(
+                QBrush(QColor(color.red(), color.green(), color.blue(), 70))
+                if primitive.geometry.filled
+                else Qt.BrushStyle.NoBrush
+            )
+            if primitive.geometry.kind == "rectangle":
+                left, top = mapped[0]
+                right, bottom = mapped[1]
+                painter.drawRect(
+                    min(left, right),
+                    min(top, bottom),
+                    abs(right - left),
+                    abs(bottom - top),
+                )
+            elif primitive.geometry.kind == "ellipse":
+                left, top = mapped[0]
+                right, bottom = mapped[1]
+                painter.drawEllipse(
+                    min(left, right),
+                    min(top, bottom),
+                    abs(right - left),
+                    abs(bottom - top),
+                )
+            else:
+                polygon = QPolygonF([QPointF(x, y) for x, y in mapped])
+                if primitive.geometry.closed:
+                    painter.drawPolygon(polygon)
+                else:
+                    painter.drawPolyline(polygon)
+        painter.end()
 
 
 class IndependentSceneWindow(QMainWindow):
@@ -165,15 +248,19 @@ class IndependentSceneWindow(QMainWindow):
 
         root = QWidget(self)
         layout = QVBoxLayout(root)
-        self.canvas = QFrame(root)
+        self.canvas = IndependentSceneCanvas(root)
         self.canvas.setObjectName("independent_scene_canvas")
         self.canvas.setFrameShape(QFrame.Shape.StyledPanel)
         canvas_layout = QVBoxLayout(self.canvas)
         self.canvas_label = QLabel(self.canvas)
         self.canvas_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        canvas_layout.addStretch(1)
         canvas_layout.addWidget(self.canvas_label)
-        canvas_layout.addStretch(1)
+        self.canvas_label.setAlignment(
+            Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft
+        )
+        self.canvas_label.setAttribute(
+            Qt.WidgetAttribute.WA_TranslucentBackground, True
+        )
         layout.addWidget(self.canvas, 1)
 
         self.objects_label = QLabel(root)
@@ -259,11 +346,12 @@ class IndependentSceneWindow(QMainWindow):
         dirty = " *" if self.session.is_modified else ""
         self.setWindowTitle(f"{self._t('title')} — {self.session.document_name}{dirty}")
         self.canvas_label.setText(
-            f"{self._t('canvas')}\n"
+            f"{self._t('canvas') if self.object_count == 0 else self._t('objects')}\n"
             f"{document.resolution.width} × {document.resolution.height}\n"
             f"{document.coordinates.origin}, {document.coordinates.unit}\n"
             f"{self.object_count} {self._t('objects').lower()}"
         )
+        self.canvas.set_document(document, self.session_selection)
         self.object_list.clear()
         for primitive in getattr(document, "objects", []):
             self.object_list.addItem(
@@ -297,6 +385,14 @@ class IndependentSceneWindow(QMainWindow):
     @property
     def object_count(self) -> int:
         return self.session.object_count
+
+    @property
+    def session_selection(self) -> tuple[str, ...]:
+        return tuple(
+            getattr(self.session, "selection", ())
+            if hasattr(self.session, "selection")
+            else ()
+        )
 
     def create_primitive(self, kind: str) -> bool:
         width = float(self.session.document.resolution.width)

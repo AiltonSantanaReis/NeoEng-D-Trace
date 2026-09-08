@@ -120,6 +120,8 @@ def test_independent_scene_window_creates_primitives_and_history(
     assert window.create_primitive("ellipse")
     assert window.create_primitive("polygon")
     assert window.object_count == 3
+    qt_app.processEvents()
+    assert window.canvas.object_count == 3
     assert window.object_list.count() == 3
     assert window.object_list.item(0).text().startswith("Retângulo · rectangle")
     assert window.object_list.item(1).text().startswith("Elipse · ellipse")
