@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e02-primitives-20260908",
-    "head": "f5d2f30bd184e809d3e3321fedff9ce2ad4f9754",
+    "head": "dc2d586c3e1b541a0579615e6899a8ed97f3e62b",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E02_C_WORKTREE"

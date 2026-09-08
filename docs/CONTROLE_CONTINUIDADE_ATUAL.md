@@ -4,7 +4,7 @@
 **Estado:** `E00/E01 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E02 IN_PROGRESS`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
-**E02:** `IN_PROGRESS` — lote E02-A de contrato e modelo de primitivas
+**E02:** `IN_PROGRESS` — E02-C em checkpoint técnico aprovado; E03 será aberto após a transição formal
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -39,7 +39,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r10 preservada historicamente; r11 obrigatória para promover E02-C após a correção do roteiro de captura |
+| Build oficial | `PASS_LOCAL` | r11, source `dc2d586`, smoke com 11 checks e arquivo portátil rastreado |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -51,7 +51,7 @@ aparecem completos. O finding anterior permanece preservado no pacote
 
 ## Próximo passo permitido
 
-Concluir tecnicamente o lote E02-C com build r11 e capturas reais. A revisão
+Abrir E03 em branch própria. E02-C possui checkpoint técnico aprovado; a revisão
 visual/humana e a requalificação final de symlink foram deferidas por
 autorização explícita para a auditoria final; continuam obrigatórias antes de
 marcar qualquer etapa como `PASS` ou concluir o plano.
