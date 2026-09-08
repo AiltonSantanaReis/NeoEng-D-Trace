@@ -46,6 +46,12 @@ from src.core.scenario_preview import (
     project_layer_points,
 )
 from src.core.scene_render_plan import SceneRenderPlan
+from src.core.scene_lighting import (
+    SceneLightingMaterial,
+    SceneLightingSettings,
+    default_scene_lighting,
+    shade_color,
+)
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.image_conversion import to_qimage
@@ -356,6 +362,8 @@ class CanvasView(QWidget):
         self._scenario_camera: Optional[OrthographicCamera] = None
         self._scenario_layers: tuple[ScenarioPreviewLayer, ...] = ()
         self._scenario_render_plan: SceneRenderPlan | None = None
+        self._scenario_lighting = default_scene_lighting()
+        self._scenario_lighting_enabled = True
         self._scenario_overlay_geometry: Optional[ScenarioOverlayGeometry] = None
 
         # --- Configurações Críticas de Interação ---
@@ -1205,6 +1213,23 @@ class CanvasView(QWidget):
         self._scenario_render_plan = plan
         self.update()
 
+    def set_scenario_lighting(
+        self, settings: SceneLightingSettings | None, *, enabled: bool = True
+    ) -> None:
+        """Install deterministic material/light state for the raster preview."""
+
+        if settings is not None and not isinstance(settings, SceneLightingSettings):
+            raise ValueError("scenario lighting must be SceneLightingSettings")
+        self._scenario_lighting = settings or default_scene_lighting()
+        self._scenario_lighting_enabled = bool(enabled)
+        self.update()
+
+    def set_scenario_lighting_enabled(self, enabled: bool) -> None:
+        """Toggle the lighting pass without mutating authored scene data."""
+
+        self._scenario_lighting_enabled = bool(enabled)
+        self.update()
+
     def set_scenario_overlays_visible(
         self,
         visible: bool,
@@ -1622,6 +1647,13 @@ class CanvasView(QWidget):
             getattr(self.model, "objects", {}).items(),
             key=lambda item: render_order.get(item[0], (10_000, 10_000, 0.0)),
         )
+        world_polygons = {
+            oid: tuple(
+                (float(point[0]), float(point[1]))
+                for point in getattr(obj, "polygon", [])
+            )
+            for oid, obj in objects
+        }
         for oid, obj in objects:
             poly = getattr(obj, "polygon", [])
             if len(poly) <= 1:
@@ -1635,12 +1667,41 @@ class CanvasView(QWidget):
             projected = project_layer_points(camera, resolved_layer, poly)
             if len(projected) <= 1:
                 continue
+            if self._scenario_lighting_enabled:
+                center = (
+                    sum(point[0] for point in world_polygons[oid])
+                    / len(world_polygons[oid]),
+                    sum(point[1] for point in world_polygons[oid])
+                    / len(world_polygons[oid]),
+                )
+                settings = SceneLightingSettings(
+                    ambient_color=self._scenario_lighting.ambient_color,
+                    ambient_intensity=self._scenario_lighting.ambient_intensity,
+                    lights=self._scenario_lighting.lights,
+                    occluders=tuple(
+                        polygon
+                        for other_id, polygon in world_polygons.items()
+                        if other_id != oid and len(polygon) >= 3
+                    ),
+                )
+                color, opacity, _ = shade_color(
+                    center, SceneLightingMaterial(opacity=1.0), settings
+                )
+                brush = QColor(
+                    int(round(color[0] * 255.0)),
+                    int(round(color[1] * 255.0)),
+                    int(round(color[2] * 255.0)),
+                    int(round(opacity * 210.0)),
+                )
+            else:
+                brush = (
+                    self._brush_selected if oid in selected_oids else self._brush_poly
+                )
             if oid in selected_oids:
                 painter.setPen(self._pen_selected)
-                painter.setBrush(self._brush_selected)
             else:
                 painter.setPen(self._pen_poly)
-                painter.setBrush(self._brush_poly)
+            painter.setBrush(brush)
             painter.drawPolygon(QPolygonF([QPointF(x, y) for x, y in projected]))
 
     def _draw_scenario_overlays(self, painter: QPainter) -> None:
