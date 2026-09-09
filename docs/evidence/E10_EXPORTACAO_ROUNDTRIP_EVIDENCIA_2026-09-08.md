@@ -87,3 +87,21 @@ capturas e limitações reproduzíveis.
   de importação/execução real permanece aberto até existir runtime qualificável.
   Enquanto isso, a execução continua com validações estáticas e Godot, sem
   declarar E10 concluída.
+
+## Build e captura do produto após a correção
+
+- Build oficial limpa r53:
+  `release/e10-vector-import-20260908-r53`, source commit
+  `a09a0819494e01c0bbc5531bbdedc3604f6d07a0`, executável SHA-256
+  `067427523A63C75493CFE3E3A9E5A6811A7744EB0E4A98E06CB1E4BE3BAE8D69`,
+  archive SHA-256
+  `a0afd5c33c36a86f839ea39938e8f4f6c8dffdcdd23b47eb3771882261e0d6e4` e
+  smoke `SUCCESS` com 11 verificações.
+- Captura nativa do binário r53:
+  `artifacts/e10-godot-c6-20260908/binary-capture-r53-regression/`.
+  O fluxo E09 foi repetido após a build: `11-vector-contour-created.png`,
+  SHA-256 `E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02`, confirma detecção,
+  correção manual, criação do objeto, gizmo e feedback no produto.
+
+E10-D permanece aberto exclusivamente pela ausência de runtime Unity
+qualificável no host; essa ausência não é mascarada como PASS.

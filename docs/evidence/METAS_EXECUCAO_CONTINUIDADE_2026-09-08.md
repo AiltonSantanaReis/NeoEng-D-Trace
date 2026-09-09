@@ -139,6 +139,16 @@ ela não interrompe a execução técnica autorizada.
 | E09-B correção/simplificação | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contorno editável, histórico, simplificação limitada, validação e cancelamento observáveis |
 | E09-C colisão/objeto/persistência | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | colisão válida, objeto de cena reutilizável, save/reopen, combinação, export/import e fluxo nativo r52 |
 
+### Sublotes ativos de E10
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E10-A contrato/capacidades | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | matriz por destino/versão, propriedades preservadas, conversões e limites |
+| E10-B exportação efetiva | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pacote validado, hash, atomicidade e negativos |
+| E10-C importação/execução Godot | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | Godot 4.7 real, objeto vetorial, colisão, execução e negativo de hash |
+| E10-D importação/execução Unity | `IN_PROGRESS` | runtime Unity real, ou lacuna de disponibilidade explicitamente mantida |
+| E10-E round-trip/fechamento | `PLANNED` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
+
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
 indispensável. O gate de symlinks permanece exclusivamente na linha 10.
