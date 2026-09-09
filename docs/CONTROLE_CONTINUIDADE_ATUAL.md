@@ -1,14 +1,20 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
+> **Base ativa única (pós-E13):** este checkout e o branch
+> `Ailton/e08-renderer-20260908`. Todas as referências a E00–E13, branches,
+> worktrees e builds anteriores neste documento são somente histórico e não
+> podem ser usados como base de implementação, teste ou promoção.
+
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00–E12 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E13-D FINAL_AUDIT_PENDING_EVIDENCE`
+**Estado:** `POST_E13_CORRECTIONS_IN_PROGRESS / E13-D histórico`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
 **E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
 **E12:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados tecnicamente no r69; auditoria final permanece pendente
-**E13:** `IN_PROGRESS` — E13-A/B/C comprovados; E13-D é a auditoria final em execução
+**Pós-E13:** correções finas de UX, seleção, edição vetorial e validação nativa
+continuam somente sobre o HEAD deste checkout.
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -54,13 +60,14 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir E13-D com a decisão formal do Sandbox e a revisão humana do
-proprietário sobre as capturas r72. Só depois encerrar o Plano Mestre.
+Concluir o lote pós-E13 com testes focados, build canônica e capturas reais do
+binário. A revisão humana do proprietário permanece reservada para a auditoria
+final do plano.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.
 
-Não misturar E01/E02, não refazer funcionalidades já corrigidas em outra base e
+Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada
 em duas linhas: `PASS_SANDBOX` quando os 31 casos passarem no Sandbox e
 `SKIP_LOCAL` quando o checkout não tiver privilégio; uma linha nunca substitui

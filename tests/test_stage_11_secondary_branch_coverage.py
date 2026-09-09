@@ -654,7 +654,9 @@ def test_polygon_edit_context_menu_uses_selected_language(qt_app, monkeypatch):
     labels = [action.text for action in actions]
     assert "Mover vértice" in labels
     assert "Excluir vértice" in labels
-    assert "Excluir polígono" in labels
+    # A vertex-targeted context menu must not expose the destructive
+    # object/polygon deletion action.
+    assert "Excluir polígono" not in labels
     assert "Move Vertex" not in labels
     assert "Delete Polygon" not in labels
 

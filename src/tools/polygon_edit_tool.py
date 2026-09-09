@@ -28,6 +28,7 @@ class PolygonEditTool(BaseTool):
             "en": {
                 "move_vertex": "Move Vertex",
                 "delete_vertex": "Delete Vertex",
+                "delete_vertices": "Delete {count} Vertices",
                 "add_vertex_here": "Add Vertex Here",
                 "delete_polygon": "Delete Polygon",
                 "delete_polygons": "Delete {count} Polygons",
@@ -40,6 +41,7 @@ class PolygonEditTool(BaseTool):
             "pt": {
                 "move_vertex": "Mover vértice",
                 "delete_vertex": "Excluir vértice",
+                "delete_vertices": "Excluir {count} vértices",
                 "add_vertex_here": "Adicionar vértice aqui",
                 "delete_polygon": "Excluir polígono",
                 "delete_polygons": "Excluir {count} polígonos",
@@ -52,6 +54,9 @@ class PolygonEditTool(BaseTool):
         }
         self.selected_polygon_id: Optional[str] = None
         self.selected_vertex: Optional[int] = None
+        # Each entry is (object_id, vertex_index). ``selected_vertex`` remains
+        # the primary vertex for the existing gizmo contract.
+        self.selected_vertices: set[Tuple[str, int]] = set()
         self.drag_start_pos: Optional[QPointF] = None
         self.adding_new = False
         self.multi_select = False
@@ -60,6 +65,9 @@ class PolygonEditTool(BaseTool):
         self._vertex_transaction: Optional[PolygonGestureTransaction] = None
         self._vertex_origin_index: Optional[int] = None
         self._vertex_preview_position: Optional[Tuple[int, int]] = None
+        self._hovered_vertex: Optional[Tuple[str, int]] = None
+        self._context_image_pos: Optional[Tuple[int, int]] = None
+        self._context_target: Optional[Tuple[str, str, Optional[int]]] = None
         self._last_error = ""
 
     def update_language(self, lang: str) -> None:
@@ -381,6 +389,7 @@ class PolygonEditTool(BaseTool):
 
     def on_mouse_press(self, event: QMouseEvent, pos: Tuple[int, int]):
         if event.button() == Qt.MouseButton.RightButton:
+            self._context_image_pos = (int(pos[0]), int(pos[1]))
             if self._vertex_transaction is not None:
                 self._cancel_vertex_gesture()
                 return
@@ -406,28 +415,92 @@ class PolygonEditTool(BaseTool):
                 else:
                     self.selected_polygon_ids.add(oid)
                 self.selected_vertex = None
+                self.selected_vertices.clear()
+                self._hovered_vertex = None
                 self.canvas_view.update()
             return
 
-        self.selected_polygon_id, self.selected_vertex = self.find_vertex_at(pos)
-        if self.selected_polygon_id is None:
-            self.selected_polygon_id = self.find_polygon_at(pos)
-            self.selected_vertex = None
-            self.selected_polygon_ids = (
-                {self.selected_polygon_id} if self.selected_polygon_id else set()
+        try:
+            additive = bool(
+                event.modifiers()
+                & (
+                    Qt.KeyboardModifier.ControlModifier
+                    | Qt.KeyboardModifier.ShiftModifier
+                )
             )
-            self.drag_start_pos = None
-        else:
-            self.selected_polygon_ids = {self.selected_polygon_id}
-            if self._begin_vertex_gesture():
-                self.drag_start_pos = QPointF(pos[0], pos[1])
+        except (AttributeError, TypeError):
+            additive = False
+
+        clicked_polygon_id, clicked_vertex = self._find_vertex_for_interaction(pos)
+        if clicked_polygon_id is not None and clicked_vertex is not None:
+            if not additive:
+                self.selected_vertices = {(clicked_polygon_id, clicked_vertex)}
+                self.selected_polygon_ids = {clicked_polygon_id}
+            elif (clicked_polygon_id, clicked_vertex) in self.selected_vertices:
+                self.selected_vertices.remove((clicked_polygon_id, clicked_vertex))
+                remaining = sorted(self.selected_vertices)
+                if remaining:
+                    self.selected_polygon_id, self.selected_vertex = remaining[0]
+                else:
+                    self.selected_vertex = None
+            else:
+                self.selected_vertices.add((clicked_polygon_id, clicked_vertex))
+                self.selected_polygon_ids.add(clicked_polygon_id)
+
+            if (clicked_polygon_id, clicked_vertex) in self.selected_vertices:
+                self.selected_polygon_id = clicked_polygon_id
+                self.selected_vertex = clicked_vertex
+            # A drag edits one vertex at a time. Multi-selection is still
+            # retained for batch operations and is not accidentally collapsed.
+            if not additive and len(self.selected_vertices) == 1:
+                if self._begin_vertex_gesture():
+                    self.drag_start_pos = QPointF(pos[0], pos[1])
+                else:
+                    self.drag_start_pos = None
             else:
                 self.drag_start_pos = None
+        else:
+            clicked_polygon_id = self.find_polygon_at(pos)
+            self.selected_vertex = None
+            self.selected_vertices.clear()
+            if additive:
+                if clicked_polygon_id in self.selected_polygon_ids:
+                    self.selected_polygon_ids.remove(clicked_polygon_id)
+                elif clicked_polygon_id is not None:
+                    self.selected_polygon_ids.add(clicked_polygon_id)
+            else:
+                self.selected_polygon_ids = (
+                    {clicked_polygon_id} if clicked_polygon_id else set()
+                )
+            self.selected_polygon_id = (
+                clicked_polygon_id
+                if clicked_polygon_id is not None
+                else next(iter(self.selected_polygon_ids), None)
+            )
+            self.drag_start_pos = None
+        self._hovered_vertex = (
+            (clicked_polygon_id, clicked_vertex)
+            if clicked_polygon_id is not None and clicked_vertex is not None
+            else None
+        )
         self.canvas_view.update()
 
     def on_mouse_move(self, event: QMouseEvent, pos: Tuple[int, int]):
         if self.drag_start_pos is not None and self._vertex_transaction is not None:
             self._preview_vertex_position(pos)
+        else:
+            oid, vertex_index = self._find_vertex_for_interaction(pos)
+            self._hovered_vertex = (
+                (oid, vertex_index)
+                if oid is not None and vertex_index is not None
+                else None
+            )
+            if hasattr(self.canvas_view, "setCursor"):
+                self.canvas_view.setCursor(
+                    Qt.CursorShape.PointingHandCursor
+                    if self._hovered_vertex is not None
+                    else Qt.CursorShape.ArrowCursor
+                )
         self.canvas_view.update()
 
     def on_mouse_release(self, event: QMouseEvent, pos: Tuple[int, int]):
@@ -466,19 +539,102 @@ class PolygonEditTool(BaseTool):
             return True
         return False
 
+    def _resolve_context_target(
+        self, pos: Optional[Tuple[int, int]]
+    ) -> Optional[Tuple[str, str, Optional[int]]]:
+        """Bind the context menu to the geometry under the pointer.
+
+        The previous implementation reused the last left-click selection. That
+        made a right-click on a vertex open the polygon/object deletion path.
+        Context actions must be based on the right-click hit test itself.
+        """
+
+        if pos is None:
+            if (
+                self.selected_polygon_id is not None
+                and self.selected_vertex is not None
+            ):
+                self._context_target = (
+                    "vertex",
+                    self.selected_polygon_id,
+                    self.selected_vertex,
+                )
+            elif self.selected_polygon_id is not None:
+                self._context_target = (
+                    "polygon",
+                    self.selected_polygon_id,
+                    None,
+                )
+            return self._context_target
+
+        oid, vertex_index = self._find_vertex_for_interaction(pos)
+        if oid is not None and vertex_index is not None:
+            if (oid, vertex_index) not in self.selected_vertices:
+                self.selected_polygon_id = oid
+                self.selected_polygon_ids = {oid}
+                self.selected_vertices = {(oid, vertex_index)}
+            else:
+                self.selected_polygon_id = oid
+                self.selected_polygon_ids.add(oid)
+            self.selected_vertex = vertex_index
+            self._hovered_vertex = (oid, vertex_index)
+            self._context_target = ("vertex", oid, vertex_index)
+            self.canvas_view.update()
+            return self._context_target
+
+        oid = self.find_polygon_at(pos)
+        if oid is not None:
+            if oid not in self.selected_polygon_ids:
+                self.selected_polygon_id = oid
+                self.selected_polygon_ids = {oid}
+            else:
+                self.selected_polygon_id = oid
+            self.selected_vertex = None
+            self.selected_vertices.clear()
+            self._hovered_vertex = None
+            self._context_target = ("polygon", oid, None)
+            self.canvas_view.update()
+            return self._context_target
+
+        self._context_target = None
+        self._hovered_vertex = None
+        return None
+
+    def _find_vertex_for_interaction(
+        self, pos: Tuple[int, int]
+    ) -> Tuple[Optional[str], Optional[int]]:
+        """Hit-test with preference for the active polygon.
+
+        The compatibility fallback keeps lightweight tool doubles that expose
+        the original one-argument ``find_vertex_at`` contract working.
+        """
+
+        try:
+            return self.find_vertex_at(
+                pos,
+                preferred_polygon_id=self.selected_polygon_id,
+            )
+        except TypeError as exc:
+            if "preferred_polygon_id" not in str(exc):
+                raise
+            return self.find_vertex_at(pos)
+
     def show_context_menu(self, event: QMouseEvent):
+        target = self._resolve_context_target(self._context_image_pos)
         menu = QMenu(self.canvas_view)
         text = self.translations[self.current_lang]
 
-        # Check what's selected
-        has_selection = self.selected_polygon_id is not None or bool(
-            self.selected_polygon_ids
-        )
-        has_vertex = self.selected_vertex is not None
-        multiple_selected = len(self.selected_polygon_ids) > 1
+        # The target is captured at menu-open time; actions cannot fall back to
+        # a stale selection after the menu is displayed.
+        has_selection = target is not None
+        has_vertex = target is not None and target[0] == "vertex"
+        vertex_count = len(self.selected_vertices)
+        multiple_selected = len(self.selected_polygon_ids) > 1 and target is not None
 
         if has_selection and not multiple_selected:
-            obj = self.canvas_view.model.objects.get(self.selected_polygon_id)
+            target_object_id = target[1]
+            target_vertex_index = target[2]
+            obj = self.canvas_view.model.objects.get(target_object_id)
             poly_len = len(obj.polygon) if obj and obj.polygon else 0
 
             if has_vertex:
@@ -486,18 +642,39 @@ class PolygonEditTool(BaseTool):
                 act_move_vertex = menu.addAction(text["move_vertex"])
                 act_move_vertex.triggered.connect(lambda: self.set_mode("move_vertex"))
 
-                if poly_len > 3:  # Can't delete if it would make polygon invalid
+                if vertex_count > 1:
+                    act_del_vertex = menu.addAction(
+                        text["delete_vertices"].format(count=vertex_count)
+                    )
+                    act_del_vertex.triggered.connect(
+                        lambda _checked=False: self.delete_selected_vertices()
+                    )
+                elif poly_len > 3:  # Can't delete if it would make polygon invalid
                     act_del_vertex = menu.addAction(text["delete_vertex"])
-                    act_del_vertex.triggered.connect(self.delete_selected_vertex)
+                    act_del_vertex.triggered.connect(
+                        lambda _checked=False, oid=target_object_id, index=target_vertex_index: self.delete_selected_vertex(
+                            oid, index
+                        )
+                    )
 
-            menu.addSeparator()
+                # Do not put object/polygon deletion next to a vertex target.
+                # This prevents the destructive fallback that caused the
+                # reported regression.
+            else:
+                menu.addSeparator()
 
-            # Polygon actions
-            act_add_vertex = menu.addAction(text["add_vertex_here"])
-            act_add_vertex.triggered.connect(lambda: self.add_vertex_at_cursor(event))
+                # Polygon actions
+                act_add_vertex = menu.addAction(text["add_vertex_here"])
+                act_add_vertex.triggered.connect(
+                    lambda _checked=False: self.add_vertex_at_cursor(event)
+                )
 
-            act_del_polygon = menu.addAction(text["delete_polygon"])
-            act_del_polygon.triggered.connect(self.delete_selected_polygon)
+                act_del_polygon = menu.addAction(text["delete_polygon"])
+                act_del_polygon.triggered.connect(
+                    lambda _checked=False, oid=target_object_id: self.delete_selected_polygon(
+                        [oid]
+                    )
+                )
 
             menu.addSeparator()
 
@@ -543,18 +720,22 @@ class PolygonEditTool(BaseTool):
         painter.save()
         painter.setTransform(transform, combine=True)
 
-        # Scale handle size inversely to zoom to keep constant screen size
-        handle_size = 8.0 / zoom if zoom > 0 else 8.0
-        selected_handle_size = 12.0 / zoom if zoom > 0 else 12.0
+        # Scale handle size inversely to zoom to keep constant screen size.
+        # Handles use an outer contrast ring so they remain discoverable on
+        # both the light image and the dark canvas.
+        safe_zoom = zoom if zoom > 0 else 1.0
+        handle_size = 10.0 / safe_zoom
+        selected_handle_size = 16.0 / safe_zoom
+        hovered_handle_size = 14.0 / safe_zoom
 
         for oid in self.selected_polygon_ids:
             obj = self.canvas_view.model.objects.get(oid)
             if obj and obj.polygon:
                 # Draw selected polygon outline
-                pen = QPen(QColor(255, 255, 0), 2)
+                pen = QPen(QColor(255, 235, 80), 3)
                 pen.setCosmetic(True)  # Width stays constant (2px)
                 painter.setPen(pen)
-                painter.setBrush(Qt.BrushStyle.NoBrush)
+                painter.setBrush(QColor(255, 235, 80, 28))
 
                 points = [QPointF(float(x), float(y)) for x, y in obj.polygon]
                 painter.drawPolygon(QPolygonF(points))
@@ -563,43 +744,67 @@ class PolygonEditTool(BaseTool):
                 for i, (x, y) in enumerate(obj.polygon):
                     pt = QPointF(float(x), float(y))
 
-                    if oid == self.selected_polygon_id and i == self.selected_vertex:
-                        # Selected vertex: larger red square
-                        painter.setPen(QPen(QColor(255, 0, 0), 2))
-                        painter.setBrush(QColor(255, 0, 0, 150))
+                    is_selected = (
+                        oid == self.selected_polygon_id and i == self.selected_vertex
+                    )
+                    is_hovered = self._hovered_vertex == (oid, i)
+                    if is_selected:
                         size = selected_handle_size
+                        painter.setPen(QPen(QColor(255, 255, 255), 2))
+                        painter.setBrush(QColor(0, 220, 255, 235))
+                        painter.drawEllipse(
+                            QRectF(
+                                pt.x() - size / 2 - 2.0 / safe_zoom,
+                                pt.y() - size / 2 - 2.0 / safe_zoom,
+                                size + 4.0 / safe_zoom,
+                                size + 4.0 / safe_zoom,
+                            )
+                        )
+                    elif is_hovered:
+                        size = hovered_handle_size
+                        painter.setPen(QPen(QColor(255, 255, 255), 2))
+                        painter.setBrush(QColor(0, 220, 255, 210))
                     else:
-                        # Normal vertex: blue square
-                        pen_handle = QPen(QColor(0, 150, 255), 1)
+                        size = handle_size
+                        pen_handle = QPen(QColor(255, 255, 255), 2)
                         pen_handle.setCosmetic(True)
                         painter.setPen(pen_handle)
-                        painter.setBrush(QColor(0, 150, 255, 100))
-                        size = handle_size
+                        painter.setBrush(QColor(20, 130, 210, 230))
 
-                    # Draw rect centered on point
-                    painter.drawRect(
+                    # Draw a circular target: it is easier to acquire than a
+                    # small square and remains legible at high zoom levels.
+                    painter.drawEllipse(
                         QRectF(pt.x() - size / 2, pt.y() - size / 2, size, size)
                     )
 
         painter.restore()
 
     def find_vertex_at(
-        self, pos: Tuple[int, int]
+        self,
+        pos: Tuple[int, int],
+        preferred_polygon_id: Optional[str] = None,
     ) -> Tuple[Optional[str], Optional[int]]:
         tolerance_screen = 10  # pixels on screen
         # Adjust tolerance to Image Space
         zoom = self.canvas_view.get_zoom()
         tolerance_image = tolerance_screen / zoom if zoom > 0 else tolerance_screen
 
-        for oid, obj in self.canvas_view.model.objects.items():
+        object_items = list(self.canvas_view.model.objects.items())
+        if preferred_polygon_id is not None:
+            object_items.sort(key=lambda item: item[0] != preferred_polygon_id)
+        else:
+            object_items.reverse()
+
+        best: Optional[Tuple[float, str, int]] = None
+        for oid, obj in object_items:
             if obj.polygon:
                 for i, (x, y) in enumerate(obj.polygon):
-                    if (
-                        abs(x - pos[0]) < tolerance_image
-                        and abs(y - pos[1]) < tolerance_image
+                    distance = ((x - pos[0]) ** 2 + (y - pos[1]) ** 2) ** 0.5
+                    if distance <= tolerance_image and (
+                        best is None or distance < best[0]
                     ):
-                        return oid, i
-        return None, None
+                        best = (distance, oid, i)
+        return (best[1], best[2]) if best is not None else (None, None)
 
     def find_polygon_at(self, pos: Tuple[int, int]) -> Optional[str]:
         # Simple point-in-polygon check
@@ -643,9 +848,15 @@ class PolygonEditTool(BaseTool):
                 channel="status",
             )
 
-    def delete_selected_vertex(self):
-        object_id = self.selected_polygon_id
-        vertex_index = self.selected_vertex
+    def delete_selected_vertex(
+        self,
+        object_id: Optional[str] = None,
+        vertex_index: Optional[int] = None,
+    ):
+        # Context-menu actions pass an immutable target captured at menu-open
+        # time. Keyboard/toolbar callers continue to use the current selection.
+        object_id = self.selected_polygon_id if object_id is None else object_id
+        vertex_index = self.selected_vertex if vertex_index is None else vertex_index
         if object_id is None or vertex_index is None:
             self._present_p2d05_error(
                 RuntimeError("Select a vertex before deleting it."),
@@ -692,6 +903,91 @@ class PolygonEditTool(BaseTool):
             "Delete Vertex",
         )
         if result is not None and result.changed:
+            self.selected_vertices.discard((object_id, vertex_index))
+            self.selected_vertex = None
+            self.canvas_view.update()
+
+    def delete_selected_vertices(self):
+        """Delete all selected vertices as one undoable operation."""
+
+        selections = sorted(self.selected_vertices)
+        if not selections:
+            if (
+                self.selected_polygon_id is not None
+                and self.selected_vertex is not None
+            ):
+                selections = [(self.selected_polygon_id, self.selected_vertex)]
+            else:
+                self._present_p2d05_error(
+                    RuntimeError("Select one or more vertices before deleting them."),
+                    operation="edit",
+                    severity="warning",
+                    channel="status",
+                )
+                return
+
+        grouped: dict[str, list[int]] = {}
+        for object_id, vertex_index in selections:
+            grouped.setdefault(object_id, []).append(vertex_index)
+
+        commands = []
+        model = getattr(self.canvas_view, "model", None)
+        manager = getattr(model, "cmd", None)
+        if model is None or manager is None:
+            self._present_p2d05_error(
+                RuntimeError("Undo/Redo command history is unavailable."),
+                operation="edit",
+                severity="critical",
+                channel="modal",
+            )
+            return
+
+        for object_id, indices in grouped.items():
+            obj = model.objects.get(object_id)
+            if obj is None or not obj.polygon:
+                self._present_p2d05_error(
+                    KeyError(object_id),
+                    operation="edit",
+                    severity="warning",
+                    channel="status",
+                )
+                return
+            unique_indices = sorted(set(indices), reverse=True)
+            if len(obj.polygon) - len(unique_indices) < 3:
+                self._present_p2d05_error(
+                    ValueError("A polygon must keep at least three vertices."),
+                    operation="edit",
+                    severity="warning",
+                    channel="status",
+                )
+                return
+            old_polygon = [tuple(point) for point in obj.polygon]
+            new_polygon = list(old_polygon)
+            for index in unique_indices:
+                if index < 0 or index >= len(new_polygon):
+                    self._present_p2d05_error(
+                        KeyError("selected vertex"),
+                        operation="edit",
+                        severity="warning",
+                        channel="status",
+                    )
+                    return
+                new_polygon.pop(index)
+            commands.append(UpdatePolygonCommand(object_id, old_polygon, new_polygon))
+
+        try:
+            result = manager.execute(CompositeCommand(commands), model)
+        except Exception as exc:
+            self._present_p2d05_error(
+                exc,
+                operation="edit",
+                severity="critical",
+                channel="modal",
+            )
+            return
+        self._report_vertex_result(result, "Delete Vertices")
+        if result.changed:
+            self.selected_vertices.clear()
             self.selected_vertex = None
             self.canvas_view.update()
 
@@ -836,8 +1132,11 @@ class PolygonEditTool(BaseTool):
             self._last_error = ""
         return result
 
-    def delete_selected_polygon(self):
-        if self.multi_select and self.selected_polygon_ids:
+    def delete_selected_polygon(self, object_ids: Optional[List[str]] = None):
+        if object_ids is not None:
+            object_ids = list(object_ids)
+            operation = "Delete Polygon"
+        elif self.multi_select and self.selected_polygon_ids:
             object_ids = list(self.selected_polygon_ids)
             operation = "Delete Polygons"
         elif self.selected_polygon_id:
@@ -864,14 +1163,26 @@ class PolygonEditTool(BaseTool):
             self.canvas_view.update()
 
     def select_all_vertices(self):
-        # Select the first vertex of the current polygon
-        if self.selected_polygon_id:
-            self.selected_vertex = 0
+        self.selected_vertices.clear()
+        polygon_ids = set(self.selected_polygon_ids)
+        if self.selected_polygon_id is not None:
+            polygon_ids.add(self.selected_polygon_id)
+        for object_id in polygon_ids:
+            obj = self.canvas_view.model.objects.get(object_id)
+            if obj is not None:
+                self.selected_vertices.update(
+                    (object_id, index) for index in range(len(obj.polygon))
+                )
+        if self.selected_vertices:
+            self.selected_polygon_id, self.selected_vertex = sorted(
+                self.selected_vertices
+            )[0]
             self.canvas_view.update()
 
     def clear_selection(self):
         self.selected_polygon_id = None
         self.selected_vertex = None
+        self.selected_vertices.clear()
         self.selected_polygon_ids.clear()
         self.canvas_view.update()
 

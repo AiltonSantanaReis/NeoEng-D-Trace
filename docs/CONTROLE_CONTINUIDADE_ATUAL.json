@@ -11,6 +11,10 @@
   "active_work": {
     "stage": "E13",
     "status": "IN_PROGRESS",
+    "phase": "POST_E13_CORRECTIONS",
+    "active_base_policy": "ONLY_CURRENT_CHECKOUT",
+    "previous_bases_are_historical_only": true,
+    "current_focus": "Seleção múltipla e contextual de objetos, polígonos e vértices; edição vetorial e captura nativa.",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "E13 fechamento técnico, portabilidade e instaladores; findings reproduziveis continuam sujeitos a correcao controlada.",
@@ -28,7 +32,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Concluir E13-D: obter revisão humana do proprietário sobre as capturas r72 e registrar a decisão formal de encerramento.",
+    "next_action": "Concluir o lote pós-E13 com testes focados, build canônica e capturas reais; revisão humana permanece na auditoria final.",
     "active_lot": {
       "id": "E13",
       "status": "IN_PROGRESS",
