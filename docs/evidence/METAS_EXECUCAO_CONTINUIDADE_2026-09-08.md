@@ -17,7 +17,7 @@ do proprietário for indispensável.
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
 | M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
-| M08 | E02–E13 | E09 concluída no checkpoint técnico; E10 é o próximo lote ativo | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
+| M08 | E02–E13 | E09 concluída no checkpoint técnico; E10-D é o lote ativo e E11–E13 permanecem planejadas | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
 
@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 e E08-E comprovados tecnicamente até a build r48; E09-A/B/C foram comprovados tecnicamente até a build r52; E10–E13 ainda não iniciadas.
+- E08: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 e E08-E comprovados tecnicamente até a build r48; E09-A/B/C foram comprovados tecnicamente até a build r52; E10-A/B/C foram comprovados com Godot 4.7 na build r53; E10-D aguarda runtime Unity qualificável; E11–E13 ainda não iniciadas.
 
 ## Metas executáveis do lote E01
 
@@ -90,9 +90,10 @@ do proprietário for indispensável.
 ## Fila operacional única — não parar antes do fechamento
 
 Esta é a fila de execução central. Cada linha só muda para `PASS` depois de
-teste proporcional, regressão, artefato, hash, documentação e commit. A única
-decisão ainda reservada ao proprietário é a revisão humana da auditoria final;
-ela não interrompe a execução técnica autorizada.
+teste proporcional, regressão, artefato, hash, documentação e commit. A revisão
+humana final e a disponibilidade de um runtime Unity qualificável são as
+decisões externas ainda reservadas ao proprietário; a primeira está autorizada
+a permanecer no encerramento e a segunda é necessária para concluir E10-D.
 
 | Ordem | Meta | Status | Saída obrigatória |
 |---:|---|---|---|
@@ -101,7 +102,7 @@ ela não interrompe a execução técnica autorizada.
 | 3 | E08-D partículas/shaders/pós | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | D1, D2 e D3 comprovados; auditoria final pendente |
 | 4 | E08-E determinismo/destinos | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | timestep, tolerâncias e matriz de capacidades comprovados; auditoria final pendente |
 | 5 | E09 autoria/exportação vetorial | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | fluxo editável, persistente, exportável e comprovado no binário r52 |
-| 6 | E10 integração com engines | `PLANNED` | importação/execução real por destino aplicável |
+| 6 | E10 integração com engines | `IN_PROGRESS — E10-D` | importação/execução real por destino aplicável; gate Unity documentado |
 | 7 | E11 composição/runtime | `PLANNED` | cena executada fora do editor |
 | 8 | E12 recursos avançados/híbrido 3D | `PLANNED` | contrato, implementação e destinos |
 | 9 | E13 fechamento/portabilidade | `PLANNED` | instaladores, documentação e baseline final |
@@ -177,7 +178,7 @@ indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 | E07 | componentes e instâncias | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | relações, parent/grupos, ciclo completo de prefab, build r24 e captura real |
 | E08 | materiais, paralaxe, efeitos e determinismo | `IN_PROGRESS` — E08-A/E08-B e E08-C.1–C.3 em checkpoint técnico; E08-C.4 ativo | renderer/FX qualificados com budgets e tolerâncias |
 | E09 | autoria e exportação vetorial | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — E09-A/B/C comprovados tecnicamente | objetos editáveis, persistentes e exportáveis |
-| E10 | capacidades e integração com engines | `PLANNED` | importação/execução real nas engines aplicáveis |
+| E10 | capacidades e integração com engines | `IN_PROGRESS` — A/B/C em Godot, D aguardando Unity | importação/execução real nas engines aplicáveis |
 | E11 | composição e runtime completo | `PLANNED` | cena executada no binário, não apenas estrutura descritiva |
 | E12 | recursos avançados, animação e híbrido 3D | `PLANNED` | contrato aprovado e fluxo completo de recursos |
 | E13 | fechamento, portabilidade e publicação | `PLANNED` | auditoria final, instaladores, documentação e autorização |
