@@ -106,8 +106,8 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e29-polygon-selection-real-capture-20260909/06-multiple-vertex-selection.png",
-      "latest_binary_capture_sha256": "49B808754CF52A63BF69FCF0843E25AC9CC5A70C9389BA97AC233227AABFF15E",
+      "latest_binary_capture": "artifacts/e29-polygon-selection-real-capture-20260909/07-multiple-polygon-selection.png",
+      "latest_binary_capture_sha256": "4FE5D05F1604494B8ACDCFF87AD7C28498116B799F72C9D8EEB105B4883150D8",
       "latest_binary_capture_window": "3866x2090",
       "observed_finding": "Build r3 executou o binário portátil canônico com smoke de 11 checks; captura nativa confirmou menu de vértice em PT-BR com mover/excluir vértice, exclusão preservando o objeto e duas seleções de vértices destacadas simultaneamente. Revisão humana final continua separada e autorizada apenas após a conclusão técnica.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
