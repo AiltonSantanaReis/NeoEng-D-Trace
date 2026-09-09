@@ -24,7 +24,7 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. O HEAD ativo pós-E13 é `9ec1fa6`; a nova build
+`Ailton/e08-renderer-20260908`. O HEAD ativo pós-E13 é `e40e80b`; a nova build
 canônica será gerada somente deste commit. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
