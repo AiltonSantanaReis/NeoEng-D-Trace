@@ -154,8 +154,8 @@ class ResponsivePanelLayout:
             for button in toolbar.findChildren(QToolButton):
                 if button.objectName() == "reference_menu_button":
                     continue
-                button.setMinimumWidth(100)
-                button.setMaximumWidth(100)
+                button.setMinimumWidth(140)
+                button.setMaximumWidth(140)
 
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:

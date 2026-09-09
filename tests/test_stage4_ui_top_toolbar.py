@@ -211,7 +211,7 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
         ]
         assert all("..." not in button.text() for button in visible)
         assert all(button.width() >= button.minimumWidth() for button in visible)
-        assert {button.width() for button in visible} == {100}
+        assert {button.width() for button in visible} == {140}
 
         assert [
             action.text() for action in window.reference_open_button.menu().actions()
