@@ -274,7 +274,10 @@ function Set-DialogPath {
 }
 
 $exePath = (Resolve-Path -LiteralPath $Executable).Path
-$relativeExecutable = [IO.Path]::GetRelativePath((Get-Location).Path, $exePath).Replace('\', '/')
+# Windows PowerShell 5 does not expose System.IO.Path.GetRelativePath. Keep
+# the resolved executable path as the provenance value instead of failing
+# before the real binary is launched.
+$relativeExecutable = $exePath.Replace('\', '/')
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 $process = Start-Process -FilePath $exePath -PassThru
 try {
@@ -288,7 +291,7 @@ try {
 
     $mainPath = Join-Path $OutputDirectory "01-main-before-independent.png"
     $mainSize = [NeoEngIndependentSceneCapture]::Capture($mainHandle, $mainPath)
-    [NeoEngIndependentSceneCapture]::Activate($mainHandle) | Out-Null
+    [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
     Start-Sleep -Milliseconds 300
     [NeoEngIndependentSceneCapture]::SendCtrlAltN()
     Start-Sleep -Milliseconds 1500
@@ -297,6 +300,11 @@ try {
     $child = $windows | Where-Object { $_.Title -match "Independent Scene|Cen.rio Independente|Novo Cen.rio" } | Select-Object -First 1
     $childRecord = $null
     $primitiveFlowRecord = $null
+    $requestedFlow = $CapturePrimitiveFlow -or $CaptureAuthoringOps -or $CaptureSaveReopen -or $CapturePointEditing
+    if ($requestedFlow -and -not $child) {
+        $observed = ($windows | ForEach-Object { $_.Title }) -join "; "
+        throw "independent scene window was not exposed after Ctrl+Alt+N; observed windows: $observed"
+    }
     if ($child) {
         $childPath = Join-Path $OutputDirectory "02-independent-scene-after-shortcut.png"
         $childSize = [NeoEngIndependentSceneCapture]::Capture($child.Handle, $childPath)
