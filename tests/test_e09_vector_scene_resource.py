@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 
 import cv2
 import numpy as np
 import pytest
 
+from src.exporters.scene_authoring_export import (
+    serialize_scene_authoring_export,
+    validate_scene_authoring_export,
+)
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.vector_scene_resource import (
@@ -29,6 +34,7 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringMetadataRecord,
     SceneLayerAuthoringRecord,
     SceneTransformRecord,
+    upgrade_scene_authoring_document,
 )
 
 
@@ -142,3 +148,24 @@ def test_vector_object_persistence_rejects_tampered_source_asset(
     asset_path.write_bytes(b"tampered")
     with pytest.raises(SceneAuthoringAssetError, match="asset hash"):
         load_scene_authoring(path)
+
+
+def test_vector_object_export_roundtrip_preserves_geometry(tmp_path: Path) -> None:
+    project, asset_path, result = _source(tmp_path)
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(project, asset_path)))
+    session.add_vector_object(
+        result,
+        object_id="subject-object",
+        asset_id="subject",
+        layer_id="foreground",
+        transform=_transform(),
+    )
+
+    document_v2 = upgrade_scene_authoring_document(session.document)
+    payload = json.loads(
+        serialize_scene_authoring_export(document_v2, target="generic")
+    )
+    validate_scene_authoring_export(payload)
+    exported_geometry = payload["scene"]["objects"][0]["vector_geometry"]
+    assert exported_geometry["source_sha256"] == result.source_sha256
+    assert exported_geometry["collision_polygon"]

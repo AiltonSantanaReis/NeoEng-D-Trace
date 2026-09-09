@@ -11,6 +11,10 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from src.exporters.scene_authoring_export import (
+    serialize_scene_authoring_export,
+    validate_scene_authoring_export,
+)
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.vectorization import vectorize_image_file
@@ -27,6 +31,7 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringMetadataRecord,
     SceneLayerAuthoringRecord,
     SceneTransformRecord,
+    upgrade_scene_authoring_document,
 )
 
 
@@ -103,6 +108,16 @@ def run(output: Path) -> dict[str, object]:
     restored = load_scene_authoring(scene_path)
     if len(restored.objects) != 2 or restored.objects[1].vector_geometry is None:
         raise AssertionError("vector geometry was not preserved by save/reopen")
+    exported_payload = json.loads(
+        serialize_scene_authoring_export(
+            upgrade_scene_authoring_document(restored), target="generic"
+        )
+    )
+    validate_scene_authoring_export(exported_payload)
+    if not exported_payload["scene"]["objects"][0]["vector_geometry"][
+        "collision_polygon"
+    ]:
+        raise AssertionError("vector collision geometry was dropped by export")
 
     asset.write_bytes(b"tampered")
     try:
@@ -122,13 +137,20 @@ def run(output: Path) -> dict[str, object]:
         "collision_vertex_count": len(first.vector_geometry.collision_polygon),
         "save_reopen_preserved_geometry": restored.objects[0].vector_geometry
         == first.vector_geometry,
+        "generic_export_preserved_geometry": bool(
+            exported_payload["scene"]["objects"][0]["vector_geometry"][
+                "collision_polygon"
+            ]
+        ),
         "tampered_asset_rejected": "hash" in tamper_code.lower(),
         "tampered_asset_diagnostic": tamper_code,
         "limitations": [
             "The E09-C contract is integrated into the professional scene "
-            "document; native vector contour panel rendering remains a UI follow-up.",
-            "Engine export/import consumes this persisted resource in E10; this "
-            "phase proves internal save/reopen and collision data, not engine runtime.",
+            "document; native vector contour panel rendering remains a UI "
+            "follow-up.",
+            "Engine runtime consumption remains an E10 concern; this phase proves "
+            "the generic export/import boundary and collision data, not engine "
+            "runtime.",
         ],
     }
     (output / "stage3-e09-c-vector-scene-report.json").write_text(
