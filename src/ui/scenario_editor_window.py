@@ -180,9 +180,9 @@ class ScenarioEditorWindow(QMainWindow):
 
         self.open_action = QAction(self)
         self.save_action = QAction(self)
-        self.save_action.setShortcut(QKeySequence("Ctrl+S"))
+        self.save_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+S"))
         self.load_action = QAction(self)
-        self.load_action.setShortcut(QKeySequence("Ctrl+R"))
+        self.load_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+L"))
         self.reset_action = QAction(self)
         self.export_action = QAction(self)
         self.composition_action = QAction(self)

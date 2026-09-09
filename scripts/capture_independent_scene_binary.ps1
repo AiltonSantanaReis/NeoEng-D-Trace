@@ -206,6 +206,54 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x11, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlAltShiftS()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x12, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(0x53, 0, 0, UIntPtr.Zero);
+        keybd_event(0x53, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x12, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendCtrlAltShiftL()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x12, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(0x4C, 0, 0, UIntPtr.Zero);
+        keybd_event(0x4C, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x12, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendCtrlAltShiftR()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x12, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(0x52, 0, 0, UIntPtr.Zero);
+        keybd_event(0x52, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x12, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
+    public static void SendAltF4()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x12, 0, 0, UIntPtr.Zero);
+        keybd_event(0x73, 0, 0, UIntPtr.Zero);
+        keybd_event(0x73, 0, up, UIntPtr.Zero);
+        keybd_event(0x12, 0, up, UIntPtr.Zero);
+    }
+
     public static void SendDelete()
     {
         const uint up = 0x0002;
@@ -352,7 +400,15 @@ $exePath = (Resolve-Path -LiteralPath $Executable).Path
 # before the real binary is launched.
 $relativeExecutable = $exePath.Replace('\', '/')
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
-$process = Start-Process -FilePath $exePath -PassThru
+$launchProjectPath = $null
+if ($CaptureComposition -and $ProjectPath) {
+    $launchProjectPath = (Resolve-Path -LiteralPath $ProjectPath).Path
+}
+$process = if ($launchProjectPath) {
+    Start-Process -FilePath $exePath -ArgumentList @("--open-project-gui", $launchProjectPath, "--open-scenario-editor-gui") -PassThru
+} else {
+    Start-Process -FilePath $exePath -PassThru
+}
 try {
     $deadline = (Get-Date).AddSeconds(20)
     do {
@@ -373,8 +429,8 @@ try {
     $child = $windows | Where-Object { $_.Title -match "Independent Scene|Cen.rio Independente|Novo Cen.rio" } | Select-Object -First 1
     $childRecord = $null
     $primitiveFlowRecord = $null
-    $requestedFlow = $CapturePrimitiveFlow -or $CaptureAuthoringOps -or $CaptureSaveReopen -or $CapturePointEditing -or $CaptureComposition
-    if ($requestedFlow -and -not $child) {
+    $requestedIndependentSceneFlow = $CapturePrimitiveFlow -or $CaptureAuthoringOps -or $CaptureSaveReopen -or $CapturePointEditing
+    if ($requestedIndependentSceneFlow -and -not $child) {
         $observed = ($windows | ForEach-Object { $_.Title }) -join "; "
         throw "independent scene window was not exposed after Ctrl+Alt+N; observed windows: $observed"
     }
@@ -606,39 +662,97 @@ try {
     if ($CaptureComposition) {
         if (-not $ProjectPath) { throw "-ProjectPath is required with -CaptureComposition" }
         $projectPathResolved = (Resolve-Path -LiteralPath $ProjectPath).Path
-        [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
-        [NeoEngIndependentSceneCapture]::SendCtrlO()
-        Start-Sleep -Milliseconds 1000
-        $projectDialog = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+        if (-not $launchProjectPath) {
+            [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
+            [NeoEngIndependentSceneCapture]::SendCtrlO()
+            Start-Sleep -Milliseconds 1000
+            $projectDialog = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
             Where-Object {
                 $_.Title -and
                 $_.Title -notmatch "NeoEng-D-Trace|Independent Scene|Cen.rio Independente|Scenario Editor|Editor de Cen.rio"
             } |
             Select-Object -First 1
-        if (-not $projectDialog) { throw "project open dialog was not exposed" }
-        [NeoEngIndependentSceneCapture]::Capture(
+            if (-not $projectDialog) {
+            # The packaged Qt shortcut can be consumed by the focused canvas;
+            # click the visible Open button as a deterministic native fallback.
+            [NeoEngIndependentSceneCapture]::ClickWindow($mainHandle, 95, 145)
+            Start-Sleep -Milliseconds 250
+            [System.Windows.Forms.SendKeys]::SendWait("{DOWN}{ENTER}")
+            Start-Sleep -Milliseconds 1000
+            $projectDialog = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+                Where-Object {
+                    $_.Title -and
+                    $_.Title -notmatch "NeoEng-D-Trace|Independent Scene|Cen.rio Independente|Scenario Editor|Editor de Cen.rio"
+                } |
+                Select-Object -First 1
+            }
+            if (-not $projectDialog) {
+            [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
+            [System.Windows.Forms.SendKeys]::SendWait("%f{ENTER}")
+            Start-Sleep -Milliseconds 1000
+            $projectDialog = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+                Where-Object {
+                    $_.Title -and
+                    $_.Title -notmatch "NeoEng-D-Trace|Independent Scene|Cen.rio Independente|Scenario Editor|Editor de Cen.rio"
+                } |
+                Select-Object -First 1
+            }
+            if (-not $projectDialog) {
+            $observed = ([NeoEngIndependentSceneCapture]::GetWindows($process.Id) | ForEach-Object { $_.Title }) -join "; "
+            throw "project open dialog was not exposed; observed windows: $observed"
+            }
+            [NeoEngIndependentSceneCapture]::Capture(
             $projectDialog.Handle,
             (Join-Path $OutputDirectory "composition-00-project-dialog-before.png")
-        ) | Out-Null
-        Set-DialogPath -Handle $projectDialog.Handle -Path $projectPathResolved
-        Start-Sleep -Milliseconds 800
-        $projectDialogAfter = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+            ) | Out-Null
+            Set-DialogPath -Handle $projectDialog.Handle -Path $projectPathResolved
+            Start-Sleep -Milliseconds 800
+            $projectDialogAfter = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
             Where-Object { $_.Title -eq $projectDialog.Title } |
             Select-Object -First 1
-        if ($projectDialogAfter) {
+            if ($projectDialogAfter) {
             [NeoEngIndependentSceneCapture]::Capture(
                 $projectDialogAfter.Handle,
                 (Join-Path $OutputDirectory "composition-00-project-dialog-after.png")
             ) | Out-Null
+            }
+            Start-Sleep -Milliseconds 700
+        } else {
+            Start-Sleep -Milliseconds 1200
         }
-        Start-Sleep -Milliseconds 700
+        [NeoEngIndependentSceneCapture]::Capture(
+            $mainHandle,
+            (Join-Path $OutputDirectory "composition-00-project-loaded.png")
+        ) | Out-Null
 
-        [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
-        [NeoEngIndependentSceneCapture]::SendCtrlAlt(0x53)
-        Start-Sleep -Milliseconds 1800
         $scenarioWindow = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
             Where-Object { $_.Title -match "Scenario Editor|Editor de Cen.rio" } |
             Select-Object -First 1
+        if (-not $scenarioWindow) {
+            [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
+            [NeoEngIndependentSceneCapture]::SendCtrlAlt(0x53)
+            Start-Sleep -Milliseconds 1800
+            $scenarioWindow = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+                Where-Object { $_.Title -match "Scenario Editor|Editor de Cen.rio" } |
+                Select-Object -First 1
+        }
+        if (-not $scenarioWindow) {
+            # The packaged shortcut may remain scoped to the main canvas after
+            # --open-project-gui; use the visible Scenario button as fallback.
+            [NeoEngIndependentSceneCapture]::ClickWindow($mainHandle, 1415, 145)
+            Start-Sleep -Milliseconds 1800
+            $scenarioWindow = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+                Where-Object { $_.Title -match "Scenario Editor|Editor de Cen.rio" } |
+                Select-Object -First 1
+            if (-not $scenarioWindow) {
+                [NeoEngIndependentSceneCapture]::SendEscape()
+                [NeoEngIndependentSceneCapture]::ClickWindow($mainHandle, 945, 100)
+                Start-Sleep -Milliseconds 1800
+                $scenarioWindow = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+                    Where-Object { $_.Title -match "Scenario Editor|Editor de Cen.rio" } |
+                    Select-Object -First 1
+            }
+        }
         if (-not $scenarioWindow) {
             $observed = ([NeoEngIndependentSceneCapture]::GetWindows($process.Id) | ForEach-Object { $_.Title }) -join "; "
             throw "scenario editor window was not exposed; observed windows: $observed"
@@ -660,6 +774,73 @@ try {
         if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
             throw "native composition export did not create manifest: $manifestPath"
         }
+        [NeoEngIndependentSceneCapture]::FocusWindow($scenarioWindow.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlAltShiftS()
+        Start-Sleep -Milliseconds 1200
+        $afterSavePath = Join-Path $OutputDirectory "composition-03-after-save.png"
+        $afterSaveSize = [NeoEngIndependentSceneCapture]::Capture($scenarioWindow.Handle, $afterSavePath)
+        $scenePath = Join-Path $projectRoot ((Split-Path -Leaf $projectPathResolved) -replace '\.ndtproj$', '.ndtscene.json')
+        $recoveryPath = "$scenePath.recovery.json"
+        if (-not (Test-Path -LiteralPath $recoveryPath -PathType Leaf)) {
+            [NeoEngIndependentSceneCapture]::ClickWindow($scenarioWindow.Handle, 210, 95)
+            Start-Sleep -Milliseconds 1200
+        }
+        if (-not (Test-Path -LiteralPath $scenePath -PathType Leaf)) {
+            throw "composition save did not preserve the scene document: $scenePath"
+        }
+        if (-not (Test-Path -LiteralPath $recoveryPath -PathType Leaf)) {
+            throw "composition save did not preserve the last valid recovery sidecar: $recoveryPath"
+        }
+        [NeoEngIndependentSceneCapture]::SendAltF4()
+        Start-Sleep -Milliseconds 900
+        [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlAlt(0x53)
+        Start-Sleep -Milliseconds 1200
+        $reopenedScenarioWindow = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+            Where-Object { $_.Title -match "Scenario Editor|Editor de Cen.rio" } |
+            Select-Object -First 1
+        if (-not $reopenedScenarioWindow) { throw "scenario editor did not reopen after Alt+F4" }
+        $reopenedPath = Join-Path $OutputDirectory "composition-04-after-reopen.png"
+        $reopenedSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $reopenedPath)
+        [IO.File]::WriteAllText($scenePath, "{ broken composition document")
+        [NeoEngIndependentSceneCapture]::FocusWindow($reopenedScenarioWindow.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlAltShiftL()
+        Start-Sleep -Milliseconds 1000
+        $recoveryPromptPath = Join-Path $OutputDirectory "composition-05-recovery-prompt.png"
+        $recoveryPromptSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $recoveryPromptPath)
+        [NeoEngIndependentSceneCapture]::SendCtrlAltShiftR()
+        Start-Sleep -Milliseconds 1200
+        $afterRecoveryPath = Join-Path $OutputDirectory "composition-06-after-recovery.png"
+        $afterRecoverySize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $afterRecoveryPath)
+        [NeoEngIndependentSceneCapture]::SendCtrlAltShiftS()
+        Start-Sleep -Milliseconds 1200
+        $afterRecoverySavePath = Join-Path $OutputDirectory "composition-07-after-recovery-save.png"
+        $afterRecoverySaveSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $afterRecoverySavePath)
+        if (-not (Test-Path -LiteralPath $scenePath -PathType Leaf)) {
+            [NeoEngIndependentSceneCapture]::ClickWindow($reopenedScenarioWindow.Handle, 210, 95)
+            Start-Sleep -Milliseconds 1200
+        }
+        if (-not (Test-Path -LiteralPath $scenePath -PathType Leaf)) {
+            throw "recovery save did not restore the scene document: $scenePath"
+        }
+        try {
+            $null = Get-Content -LiteralPath $scenePath -Raw | ConvertFrom-Json
+        } catch {
+            throw "recovery save did not restore valid JSON: $scenePath"
+        }
+        [NeoEngIndependentSceneCapture]::SendCtrlAltShiftE()
+        Start-Sleep -Milliseconds 1800
+        $afterRecoveryExportPath = Join-Path $OutputDirectory "composition-08-exported-after-recovery.png"
+        $afterRecoveryExportSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $afterRecoveryExportPath)
+        $recoveredPackagePath = Get-ChildItem -LiteralPath (Join-Path $projectRoot "exports") -Directory |
+            Where-Object { $_.Name -match '^composition-e11(?:-r\d+)?$' } |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1 -ExpandProperty FullName
+        if (-not $recoveredPackagePath) { throw "recovery export did not create a package directory" }
+        $recoveredManifestPath = Join-Path $recoveredPackagePath "composition.json"
+        if (-not (Test-Path -LiteralPath $recoveredManifestPath -PathType Leaf)) {
+            throw "recovery export did not create a manifest: $recoveredManifestPath"
+        }
         $compositionRecord = [ordered]@{
             project = $projectPathResolved
             title = $scenarioWindow.Title
@@ -675,7 +856,43 @@ try {
                 path = $afterPath
                 sha256 = (Get-FileHash -LiteralPath $afterPath -Algorithm SHA256).Hash
             }
-            inputs = @("Ctrl+O", "open project fixture", "Ctrl+Alt+S", "Ctrl+Alt+Shift+E")
+            after_save = [ordered]@{
+                window = $afterSaveSize
+                path = $afterSavePath
+                sha256 = (Get-FileHash -LiteralPath $afterSavePath -Algorithm SHA256).Hash
+                scene_sha256 = (Get-FileHash -LiteralPath $scenePath -Algorithm SHA256).Hash
+                recovery_sha256 = (Get-FileHash -LiteralPath $recoveryPath -Algorithm SHA256).Hash
+            }
+            after_reopen = [ordered]@{
+                window = $reopenedSize
+                path = $reopenedPath
+                sha256 = (Get-FileHash -LiteralPath $reopenedPath -Algorithm SHA256).Hash
+            }
+            recovery_prompt = [ordered]@{
+                window = $recoveryPromptSize
+                path = $recoveryPromptPath
+                sha256 = (Get-FileHash -LiteralPath $recoveryPromptPath -Algorithm SHA256).Hash
+                corrupted_scene_sha256 = (Get-FileHash -LiteralPath $scenePath -Algorithm SHA256).Hash
+            }
+            after_recovery = [ordered]@{
+                window = $afterRecoverySize
+                path = $afterRecoveryPath
+                sha256 = (Get-FileHash -LiteralPath $afterRecoveryPath -Algorithm SHA256).Hash
+            }
+            after_recovery_save = [ordered]@{
+                window = $afterRecoverySaveSize
+                path = $afterRecoverySavePath
+                sha256 = (Get-FileHash -LiteralPath $afterRecoverySavePath -Algorithm SHA256).Hash
+                scene_sha256 = (Get-FileHash -LiteralPath $scenePath -Algorithm SHA256).Hash
+            }
+            recovered_export = [ordered]@{
+                package = $recoveredPackagePath
+                manifest_sha256 = (Get-FileHash -LiteralPath $recoveredManifestPath -Algorithm SHA256).Hash
+                window = $afterRecoveryExportSize
+                path = $afterRecoveryExportPath
+                sha256 = (Get-FileHash -LiteralPath $afterRecoveryExportPath -Algorithm SHA256).Hash
+            }
+            inputs = @("--open-project-gui", "--open-scenario-editor-gui", "Ctrl+Alt+Shift+E", "Ctrl+Alt+Shift+S", "Alt+F4", "Ctrl+Alt+S", "Ctrl+Alt+Shift+L", "Ctrl+Alt+Shift+R", "Ctrl+Alt+Shift+S", "Ctrl+Alt+Shift+E")
         }
     }
 
