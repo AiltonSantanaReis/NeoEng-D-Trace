@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "stage": "E10-E",
+  "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+  "worktree": "build/e01-independent-scene-20260908",
+  "branch": "Ailton/e08-renderer-20260908",
+  "source_commit": "2486cd1b7684b02f01aae483ca2440b5ab454004",
+  "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+  "comparison": {
+    "fixture": "asymmetric-real-png",
+    "positive_contract": "same authoring fixture exported and consumed by clean Godot and Unity projects",
+    "preserved_properties": [
+      "relative asset path and source SHA-256",
+      "position, rotation, scale, pivot and flip",
+      "four-point original/polygon/collision geometry",
+      "visible layer and object identity"
+    ],
+    "godot": {
+      "version": "4.7-stable (official)",
+      "professional_report": "artifacts/e10-e-godot-c7-20260909-report.json",
+      "professional_report_sha256": "83D0BC8ECFF3348EA0535CC3E403FC17D218B2733866EBC66B17E127EDBD9CE9",
+      "capture": "artifacts/e10-e-godot-c7-20260909/godot-professional-capture.png",
+      "capture_sha256": "7C86374E401B67C6CB41514CC30BFAEAD3174126ED6FB2034CEB0F2541345692",
+      "capture_size": [640, 360],
+      "validation": "SUCCESS",
+      "collision_points": 4,
+      "render_pixels": 14400
+    },
+    "unity": {
+      "version": "6000.5.7f1",
+      "professional_report": "artifacts/e10-e-unity-c9-20260909-report.json",
+      "professional_report_sha256": "A96E7718BC96BE58E3B233BF6744A972C6A3FD5AF39EF383EDF76FF25E92EA32",
+      "capture": "artifacts/e10-e-unity-c9-20260909/unity-project/unity-professional-capture.png",
+      "capture_sha256": "4F96FEB7A3CA0681538A02108BE0D4A1007C21429DBDF2D3783132BBCE8D829C",
+      "capture_size": [640, 360],
+      "validation": "SUCCESS",
+      "collision_points": 4,
+      "render_pixels": 266,
+      "negative_hash_rejected": true
+    }
+  },
+  "native_closure": {
+    "report": "artifacts/e10-e-native-stage10-20260909/stage10-report.json",
+    "report_sha256": "23AAA11A317DD275B15F7CADB19DFDA55EB191C311DABC45232A101AAEBA6BA7",
+    "status": "SUCCESS",
+    "godot_real_closure": "PASS",
+    "unity_real_closure": "PASS",
+    "deterministic_fixtures": "PASS",
+    "regression_fixtures": "PASS",
+    "negative_cases": [
+      "dry-run does not write generated output",
+      "repeat import reports unchanged",
+      "manual generated resource is blocked",
+      "asset hash drift is rejected",
+      "unsafe path is rejected"
+    ]
+  },
+  "round_trip_policy": {
+    "internal_save_reopen": "covered by the product regression suite and E09 evidence",
+    "export_to_engine_import_and_execute": "PASS",
+    "engine_to_neoeng_reverse_import": "NOT_IMPLEMENTED_NOT_CLAIMED",
+    "reason": "E10 contains forward adapters only; no reverse identity/conflict policy is present, so visual return round-trip is not asserted."
+  },
+  "product_build": {
+    "release_root": "release/e10-real-captures-20260909-r55",
+    "provenance": "release/e10-real-captures-20260909-r55/continuity-provenance.json",
+    "provenance_sha256": "718190C5281C72E4A97BC7055C94987F8CBB37CE70FDBA85FDC5A82773D79696",
+    "binary_sha256": "BB2C511E01C21D908EB2787F2CF9BAC34E968F9229566B26AFB55F21543E2B30",
+    "archive_sha256": "433C5381D340A8D00BA933ADC9B63E073FE7EF81D6543F514272AF6211AC5972",
+    "portable_smoke": "SUCCESS_11_CHECKS",
+    "product_capture": "artifacts/e10-e-product-r55-20260909/11-vector-contour-created.png",
+    "product_capture_sha256": "E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02"
+  },
+  "limitations": [
+    "Automated captures prove the recorded pixels and do not replace final human review.",
+    "Symlink verification remains deferred to the final audit; local skips remain separate from sandbox evidence.",
+    "The release build is portable only; publication, merge, tag and push remain forbidden."
+  ]
+}

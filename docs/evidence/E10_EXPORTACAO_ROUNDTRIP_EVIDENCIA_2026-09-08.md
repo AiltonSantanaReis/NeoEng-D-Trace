@@ -4,7 +4,7 @@
 **Worktree oficial:** `build/e01-independent-scene-20260908`  
 **Branch:** `Ailton/e08-renderer-20260908`  
 **Plano Mestre:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
-**Status:** `IN_PROGRESS` — E10-A/B/C/D technical checkpoints passed; E10-E é o gate ativo de fechamento
+**Status:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — E10-A/B/C/D/E comprovados; E11 pode ser aberto tecnicamente
 
 ## Contrato de execução
 
@@ -41,7 +41,7 @@ logs e capturas nativas.
 | E10-B exportação efetiva | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pacote temporário validado, hash, atomicidade e negativos |
 | E10-C importação/execução Godot | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | projeto limpo, importador real, runtime, logs e capturas |
 | E10-D importação/execução Unity | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | runtime Unity real, collider vetorial, captura e negativo de hash |
-| E10-E round-trip/fechamento | `IN_PROGRESS` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
+| E10-E round-trip/fechamento | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
 
 ## Regras de evidência
 
@@ -110,23 +110,52 @@ capturas e limitações reproduzíveis.
 
 ## Build e captura do produto após a correção
 
-- Build oficial limpa r54:
-  `release/e10-unity-vector-20260908-r54`, source commit
-  `781c85d1ac0a704570d4af070fcf40323a6fbac0`, executável SHA-256
-  `140A04B7E80C0B135ABC3F7637593CF1CBE438D7997F89768623687A65969909`,
+- Build oficial limpa r55:
+  `release/e10-real-captures-20260909-r55`, source commit
+  `2486cd1b7684b02f01aae483ca2440b5ab454004`, executável SHA-256
+  `BB2C511E01C21D908EB2787F2CF9BAC34E968F9229566B26AFB55F21543E2B30`,
   archive SHA-256
-  `F1D1D607FEBC5F683AC762B9C4EBE34A6F339E2293BECD8FBD06586E8ED7120B` e
+  `433C5381D340A8D00BA933ADC9B63E073FE7EF81D6543F514272AF6211AC5972` e
   smoke `SUCCESS` com 11 verificações. O manifesto de proveniência registra
   o SHA do registro de continuidade usado durante a build.
-- Captura nativa do binário r54:
-  `artifacts/e10-unity-d-20260908/binary-capture-r54-regression/`.
+- Captura nativa do binário r55:
+  `artifacts/e10-e-product-r55-20260909/`.
   O fluxo E09 foi repetido após a build: `11-vector-contour-created.png`,
   SHA-256 `E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02`, confirma detecção,
   correção manual, criação do objeto, gizmo e feedback no produto.
 
-E10-D possui checkpoint técnico `PASS` nos dois destinos executados. E10-E
-permanece ativo para consolidar comparação, round-trip permitido pelo
-contrato, manifesto e fechamento do lote.
+E10-D possui checkpoint técnico `PASS` nos dois destinos executados.
+
+## E10-E — comparação e política de round-trip
+
+- O fechamento nativo foi executado por
+  `scripts/audit_native_stage10.py` com Godot real `4.7.stable` e Unity real
+  `6000.5.7f1`, em projetos limpos independentes. O relatório
+  `artifacts/e10-e-native-stage10-20260909/stage10-report.json` tem SHA-256
+  `23AAA11A317DD275B15F7CADB19DFDA55EB191C311DABC45232A101AAEBA6BA7` e
+  terminou com `SUCCESS`, `GODOT_REAL_CLOSURE=PASS`,
+  `UNITY_REAL_CLOSURE=PASS`, `DETERMINISTIC_FIXTURES=PASS` e
+  `REGRESSION_FIXTURES=PASS`.
+- A mesma fixture assimétrica foi consumida em cada engine com captura nativa
+  real `640x360`: Godot em
+  `artifacts/e10-e-godot-c7-20260909/godot-professional-capture.png`, SHA
+  `7C86374E401B67C6CB41514CC30BFAEAD3174126ED6FB2034CEB0F2541345692`, e
+  Unity em `artifacts/e10-e-unity-c9-20260909/unity-project/`
+  `unity-professional-capture.png`, SHA
+  `4F96FEB7A3CA0681538A02108BE0D4A1007C21429DBDF2D3783132BBCE8D829C`.
+- A comparação funcional preservou caminho/hash do asset, transform, pivô,
+  flip, visibilidade e os quatro vértices de `vector_geometry`; ambos os
+  runtimes materializaram o collider. Os negativos de dry-run, repetição,
+  conflito manual, caminho inseguro e adulteração de hash foram rejeitados
+  conforme o relatório nativo.
+- O manifesto rastreável é
+  `docs/evidence/E10_E_COMPARACAO_MANIFESTO_2026-09-09.json`. Ele declara
+  explicitamente `engine_to_neoeng_reverse_import` como
+  `NOT_IMPLEMENTED_NOT_CLAIMED`: o contrato implementado é exportação →
+  importação/execução, não retorno visual para a autoria NeoEng.
+
+E10-E recebeu checkpoint técnico `PASS`, mantendo a revisão humana e o
+symlink exclusivamente para a auditoria final.
 
 ## E10-D — diagnóstico de disponibilidade resolvido
 

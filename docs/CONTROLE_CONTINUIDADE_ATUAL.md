@@ -1,11 +1,12 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00–E09 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E10 IN_PROGRESS`
+**Estado:** `E00–E10 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E11 IN_PROGRESS`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
-**E10:** `IN_PROGRESS` — E10-A/B/C/D comprovados em Godot 4.7 e Unity 6000.5.7f1; E10-E ativo
+**E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
+**E11:** `IN_PROGRESS` — composição e runtime completo no binário
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -16,8 +17,8 @@ registro não cria aceite funcional nem autorização de publicação.
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
 `Ailton/e08-renderer-20260908`. O SHA-fonte executável do código E10 é
-`9708861cd0dadfdb356b953202f7493bece2d2e6`; a build r54 foi gerada com o
-checkpoint documental `781c85d1ac0a704570d4af070fcf40323a6fbac0`. A existência de outras
+`2486cd1b7684b02f01aae483ca2440b5ab454004`; a build r55 foi gerada com este
+SHA-fonte. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
 
@@ -41,19 +42,19 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r54; hash do executável `140A04B7E80C0B135ABC3F7637593CF1CBE438D7997F89768623687A65969909`; smoke com 11 checks |
+| Build oficial | `PASS_LOCAL` | r55; hash do executável `BB2C511E01C21D908EB2787F2CF9BAC34E968F9229566B26AFB55F21543E2B30`; smoke com 11 checks |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
-A execução direta da build r54 gerou capturas reais em
-`artifacts/e10-unity-d-20260908/binary-capture-r54-regression/`, incluindo
+A execução direta da build r55 gerou capturas reais em
+`artifacts/e10-e-product-r55-20260909/`, incluindo
 detecção, edição e criação do objeto vetorial. A captura automatizada não
 substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir E10-E com a comparação formal Godot/Unity, o manifesto e a política de
-round-trip documentada. Depois, promover E11–E13. A revisão visual/humana e a
+Executar E11 com o fluxo integral de composição, recuperação, exportação e
+consumo nas engines. Depois, promover E12–E13. A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.
 
