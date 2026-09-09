@@ -1,12 +1,12 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00–E10 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E11 IN_PROGRESS`
+**Estado:** `E00–E10 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E11 TECHNICAL_CHECKPOINT_PASS / E12 IN_PROGRESS`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
-**E11:** `IN_PROGRESS` — composição e runtime completo no binário
+**E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -35,7 +35,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS_LOCAL` | 2098 aprovados, 2 skips, 1 warning |
+| Suíte oficial | `PASS_LOCAL` | 2101 aprovados, 2 skips, 1 warning |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
 | Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY / PENDING_EVIDENCE / DEFERRED_UNTIL_FINAL_AUDIT` | 31/31 é diagnóstico de SHA anterior; a nova tentativa sem relatório foi registrada e a requalificação foi adiada para a auditoria final |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
@@ -53,8 +53,8 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Executar E11 com o fluxo integral de composição, recuperação, exportação e
-consumo nas engines. Depois, promover E12–E13. A revisão visual/humana e a
+Executar E12 conforme o Plano Mestre e a fila central. Depois, promover E13.
+A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.
 

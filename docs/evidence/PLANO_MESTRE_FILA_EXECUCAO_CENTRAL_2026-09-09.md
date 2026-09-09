@@ -36,8 +36,8 @@ reservados exclusivamente para `AUDITORIA_FINAL`. Um `SKIP` local nunca vira
 | 08 | Renderer, materiais, paralaxe e FX | `CHECKPOINT_TECNICO_PASS` | pixels, determinismo, fallback e destinos |
 | 09 | Autoria e exportação vetorial | `CHECKPOINT_TECNICO_PASS` | edição, colisão, persistência e exportação |
 | 10 | Integração real com Godot e Unity | `CHECKPOINT_TECNICO_PASS` | importação, execução, comparação, negativos e capturas |
-| 11 | Composição e runtime completo | `EM_EXECUÇÃO` | cena composta, recovery, exportação, consumo e UX no binário |
-| 12 | Recursos avançados e híbrido 3D | `PLANEJADA` | contrato aprovado, implementação, testes e destinos |
+| 11 | Composição e runtime completo | `CHECKPOINT_TECNICO_PASS` | composição, recovery, exportação, consumo, UX e suíte r67 |
+| 12 | Recursos avançados e híbrido 3D | `EM_EXECUÇÃO` | contrato aprovado, implementação, testes e destinos |
 | 13 | Fechamento técnico e portabilidade | `PLANEJADA` | portátil/MSI, smoke, documentação e pacote final |
 | F | Auditoria final do Plano Mestre | `BLOQUEADA_POR_FLUXO` | symlinks, revisão humana, findings e decisão formal |
 
@@ -48,26 +48,20 @@ itens continuam sujeitos à auditoria final, conforme a decisão de continuidade
 
 | ID | Meta | Estado | Critério objetivo |
 |---|---|---|---|
-| E11-A | Compor capacidades em uma cena do produto | `PARCIAL_PASS` | recursos de E03–E09 usados na mesma cena e captura real |
-| E11-B | Persistência e recovery | `PARCIAL_PASS` | salvar, fechar, reabrir, erro recuperável e saída válida preservada |
-| E11-C | Exportar e consumir fora do editor | `EM EXECUÇÃO` | exportação da cena composta, Godot e Unity executando o resultado |
-| E11-D | Usabilidade e acessibilidade operacional | `EM EXECUÇÃO` | foco, teclado/mouse, tradução, mensagens, cancelamento e tempos |
-| E11-E | Fechar tecnicamente E11 | `PENDENTE` | suíte, estática, build, manifesto, regressão e promoção documentada |
+| E11-A | Compor capacidades em uma cena do produto | `CONCLUÍDO_TECNICAMENTE` | fixture composta no r67, recursos E03–E10, exportação e captura nativa |
+| E11-B | Persistência e recovery | `CONCLUÍDO_TECNICAMENTE` | save, close/reopen, corrupção controlada, recovery, JSON válido e reexport |
+| E11-C | Exportar e consumir fora do editor | `CONCLUÍDO_TECNICAMENTE` | pacote autocontido, Godot 4.7 e Unity 6000.5.7f1 com asset real |
+| E11-D | Usabilidade e acessibilidade operacional | `CONCLUÍDO_TECNICAMENTE` | toolbar responsiva, português, atalhos exclusivos, foco e capturas r67 |
+| E11-E | Fechar tecnicamente E11 | `CONCLUÍDO_TECNICAMENTE` | suíte 2101/2/1, estática, build r67, manifesto e promoção documentada |
 
 ### Próxima sequência obrigatória
 
-1. Construir uma fixture composta rastreável com as capacidades realmente
-   suportadas pelo schema atual; não inventar suporte a campos inexistentes.
-2. Executar essa fixture no binário portátil r55 ou em nova build somente se
-   uma correção de código exigir a reconstrução.
-3. Capturar o fluxo completo no processo real, incluindo erro recuperável,
-   cancelamento e preservação do último estado válido.
-4. Exportar o mesmo resultado e repetir o consumo nos projetos reais Godot e
-   Unity, com hashes, logs e capturas nativas.
-5. Corrigir findings reproduzíveis, repetir os gates afetados e fazer commit
-   da etapa comprovada.
-6. Reexecutar a suíte proporcional e a suíte oficial; atualizar o registro e
-   só então abrir E12.
+1. Reexecutar a suíte proporcional e a suíte oficial no SHA/build r67, além
+   dos gates estáticos e do diff check.
+2. Consolidar manifesto, hashes, limitações e promoção técnica de E11-E.
+3. Corrigir qualquer finding reproduzível e repetir os gates afetados com
+   commit rastreável.
+4. Atualizar o registro e só então abrir E12, relendo governança e plano.
 
 ## Gates finais reservados
 
@@ -85,4 +79,4 @@ aceitas, o pacote portátil/MSI estiver qualificado, a auditoria final executar
 symlinks e revisão humana, e o registro canônico apontar para o SHA/build final.
 
 **Última atualização:** 2026-09-09  
-**Próximo status esperado:** resultado da fixture composta e do consumo real de E11-C.
+**Próximo status esperado:** fechar E12-A/B/C/D/E com pacote determinístico e destinos reais.
