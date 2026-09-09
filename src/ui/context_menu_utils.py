@@ -38,7 +38,8 @@ def fit_context_menu(menu: QMenu) -> QMenu:
     # Account for the QMenu item padding, frame, and a small safety margin for
     # native font rounding without introducing a fixed global width.
     if longest:
-        menu.setMinimumWidth(longest + 48)
+        scale = max(1.0, float(getattr(menu, "devicePixelRatioF", lambda: 1.0)()))
+        menu.setMinimumWidth(int((longest + 48) * scale))
     menu.adjustSize()
     return menu
 
