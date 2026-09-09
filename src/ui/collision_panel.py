@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
 
 from src.core.logger import logger
 from src.core.polygon_validation import is_valid_polygon
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.icon_library import configure_widget
 
 
@@ -306,7 +307,7 @@ class CollisionPanel(QWidget):
         return menu
 
     def _show_context_menu(self, position) -> None:
-        self._build_context_menu().exec(self.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(self.mapToGlobal(position))
 
     def set_collision_manager(self, collision_manager):
         self.collision_manager = collision_manager

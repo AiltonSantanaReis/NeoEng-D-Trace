@@ -55,6 +55,7 @@ from src.core.scene_render_plan import SceneRenderPlan
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.image_conversion import to_qimage
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.viewport_state import (
@@ -494,8 +495,7 @@ class CanvasView(QWidget):
         act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
 
-        # Let Qt measure the localized labels and keep the popup compact.
-        menu.adjustSize()
+        fit_context_menu(menu)
         menu.exec(global_pos)
 
     def _find_object_at(self, point: QPointF) -> Optional[str]:

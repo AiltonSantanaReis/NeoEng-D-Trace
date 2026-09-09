@@ -25,6 +25,7 @@ from src.core.commands import (
     ToggleGroupLockCommand,
     ToggleGroupVisibilityCommand,
 )
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class GroupsPanel(QWidget):
@@ -217,7 +218,9 @@ class GroupsPanel(QWidget):
         if item is None:
             return
         self.list.setCurrentRow(self.list.row(item))
-        self._build_context_menu().exec(self.list.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(
+            self.list.mapToGlobal(position)
+        )
 
     def _execute_edit_command(self, command) -> Optional[CommandResult]:
         manager = getattr(self.scene, "cmd", None)

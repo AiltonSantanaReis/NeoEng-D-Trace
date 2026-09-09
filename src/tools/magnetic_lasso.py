@@ -37,6 +37,8 @@ from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
     QWidget,
 )
 
+from src.ui.context_menu_utils import fit_context_menu
+
 from .base_tool import BaseTool
 from .edge_utils import normalize_array, sobel_magnitude
 from .magnetic_lasso_engine import (
@@ -1403,7 +1405,7 @@ class MagneticLassoTool(BaseTool):
         redo_project.setEnabled(not self._anchors)
         redo_project.triggered.connect(self._redo_project)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def _undo_project(self):
         model = self.canvas_view.model

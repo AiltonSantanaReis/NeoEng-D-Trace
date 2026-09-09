@@ -17,6 +17,7 @@ from src.core.commands import (
 )
 from src.core.polygon_gesture import PolygonGestureTransaction
 from src.tools.base_tool import BaseTool
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class PolygonEditTool(BaseTool):
@@ -529,7 +530,7 @@ class PolygonEditTool(BaseTool):
         act_redo = menu.addAction(text["redo"])
         act_redo.triggered.connect(self.redo_last_action)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def draw_overlay(self, painter: QPainter):
         """Draws selected polygons and handles directly in Image Space."""

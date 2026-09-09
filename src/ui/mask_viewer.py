@@ -48,6 +48,7 @@ from PySide6.QtWidgets import (
 from src.core.operational_limits import MAX_POLYGON_POINTS
 from src.core.view_processor import ViewProcessor
 from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
+from src.ui.context_menu_utils import fit_context_menu
 
 logger = logging.getLogger(__name__)
 
@@ -668,7 +669,7 @@ class MaskViewer(QWidget):
             if hasattr(event, "globalPosition")
             else event.globalPos()
         )
-        menu.exec(global_position)
+        fit_context_menu(menu).exec(global_position)
         event.accept()
 
     def set_roi_mode(self, enabled: bool) -> None:

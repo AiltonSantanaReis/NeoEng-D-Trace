@@ -37,6 +37,7 @@ from src.core.transform_gesture import (
     transformed_snapshot,
 )
 from src.core.validation_events import object_token, record_validation_event
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.error_presentation import show_p2d05_error
 from src.utils.selection_tools import (
     expand_contract_polygon,
@@ -671,7 +672,9 @@ class SidePanel(QWidget):
         if item is None:
             return
         self.list.setCurrentRow(self.list.row(item))
-        self._build_context_menu().exec(self.list.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(
+            self.list.mapToGlobal(position)
+        )
 
     @staticmethod
     def _transform_spin(

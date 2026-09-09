@@ -16,6 +16,7 @@ from src.core.object_geometry_gesture import (
 )
 from src.tools.base_tool import BaseTool
 from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class CollisionBrushTool(BaseTool):
@@ -211,7 +212,7 @@ class CollisionBrushTool(BaseTool):
         act_remove = menu.addAction(self.translations[self.current_lang]["remove"])
         act_remove.triggered.connect(lambda: self._remove(oid))
 
-        menu.exec(pos)
+        fit_context_menu(menu).exec(pos)
 
     def _show_scale_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
@@ -250,7 +251,7 @@ class CollisionBrushTool(BaseTool):
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self._redo)
 
-        menu.exec(pos)
+        fit_context_menu(menu).exec(pos)
 
     def _reset_transform_state(self) -> None:
         self._transform_transaction = None

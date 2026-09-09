@@ -25,6 +25,7 @@ from src.core.commands import (
     ToggleLayerLockCommand,
     ToggleLayerVisibilityCommand,
 )
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.error_presentation import show_p2d05_error
 
 
@@ -244,7 +245,9 @@ class LayersPanel(QWidget):
         if item is None:
             return
         self.list.setCurrentRow(self.list.row(item))
-        self._build_context_menu().exec(self.list.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(
+            self.list.mapToGlobal(position)
+        )
 
     def _present_layer_error(
         self,

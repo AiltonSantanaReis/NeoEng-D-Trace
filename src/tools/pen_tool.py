@@ -27,6 +27,7 @@ from src.core.commands import (
     HandleMoveCommand,
 )
 from src.core.operational_limits import MAX_POLYGON_POINTS
+from src.ui.context_menu_utils import fit_context_menu
 
 from .base_tool import BaseTool
 
@@ -898,7 +899,7 @@ class PenTool(BaseTool):
         act_undo.triggered.connect(self.undo_last_action)
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self.redo_last_action)
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def undo_last_action(self):
         if self.on_undo():
