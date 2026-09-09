@@ -108,6 +108,7 @@ def test_scenario_editor_portuguese_hover_metadata(qt_app):
         assert window.professional_inspector.parallax_repeat_x.text() == "Repetir X"
         assert window.professional_inspector.parallax_mirror_y.text() == "Espelhar Y"
         assert window.professional_inspector.socket_type.itemText(0) == "Luz"
+        assert window.professional_inspector.socket_type.itemData(0) == "light"
         assert window.professional_viewport.current_lang == "pt"
         assert window.vector_contour_panel.source_label.text().startswith("Selecione")
         assert window.vector_contour_panel.undo_button.text() == "Desfazer"

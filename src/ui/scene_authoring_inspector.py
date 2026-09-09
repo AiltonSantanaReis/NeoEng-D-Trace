@@ -111,6 +111,8 @@ class SceneAuthoringInspector(QWidget):
         self.socket_combo = QComboBox()
         self.socket_type = QComboBox()
         self.socket_type.addItems(["light", "vfx", "trigger"])
+        for index, socket_type in enumerate(("light", "vfx", "trigger")):
+            self.socket_type.setItemData(index, socket_type)
         self.socket_id = QLineEdit()
         self.socket_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.socket_y = self._spin(-1_000_000.0, 1_000_000.0)
@@ -483,7 +485,9 @@ class SceneAuthoringInspector(QWidget):
             return
         self.socket_id.setText(socket.id)
         with QSignalBlocker(self.socket_type):
-            self.socket_type.setCurrentText(socket.type)
+            socket_index = self.socket_type.findData(socket.type)
+            if socket_index >= 0:
+                self.socket_type.setCurrentIndex(socket_index)
         for widget, value in (
             (self.socket_x, socket.position.x),
             (self.socket_y, socket.position.y),
@@ -573,7 +577,7 @@ class SceneAuthoringInspector(QWidget):
         position = Point3Record(
             x=self.socket_x.value(), y=self.socket_y.value(), z=self.socket_z.value()
         )
-        socket_type = self.socket_type.currentText()
+        socket_type = self.socket_type.currentData() or self.socket_type.currentText()
         object_id = self.session.selection.primary
         try:
             socket: SceneSocketRecord
