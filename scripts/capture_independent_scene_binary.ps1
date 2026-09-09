@@ -651,7 +651,11 @@ try {
         $afterPath = Join-Path $OutputDirectory "composition-02-exported.png"
         $afterSize = [NeoEngIndependentSceneCapture]::Capture($scenarioWindow.Handle, $afterPath)
         $projectRoot = Split-Path -Parent $projectPathResolved
-        $packagePath = Join-Path $projectRoot "exports\composition-e11"
+        $packagePath = Get-ChildItem -LiteralPath (Join-Path $projectRoot "exports") -Directory |
+            Where-Object { $_.Name -match '^composition-e11(?:-r\d+)?$' } |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1 -ExpandProperty FullName
+        if (-not $packagePath) { throw "native composition export did not create a package directory" }
         $manifestPath = Join-Path $packagePath "composition.json"
         if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
             throw "native composition export did not create manifest: $manifestPath"

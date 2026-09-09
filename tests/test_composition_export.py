@@ -46,7 +46,8 @@ def _inputs(root: Path) -> CompositionInputs:
 
 @pytest.fixture
 def valid_composition_inputs(tmp_path: Path) -> CompositionInputs:
-    asset = tmp_path / "asset.png"
+    asset = tmp_path / "assets" / "asset.png"
+    asset.parent.mkdir()
     Image.new("RGBA", (8, 8), (20, 120, 220, 255)).save(asset)
     asset_hash = hashlib.sha256(asset.read_bytes()).hexdigest()
     project = tmp_path / "project.ndtproj"
@@ -58,7 +59,7 @@ def valid_composition_inputs(tmp_path: Path) -> CompositionInputs:
         project=ProjectReferenceRecord(
             sha256=hashlib.sha256(project.read_bytes()).hexdigest()
         ),
-        assets=[AssetReferenceRecord(id="asset", path="asset.png", sha256=asset_hash)],
+        assets=[AssetReferenceRecord(id="asset", path="assets/asset.png", sha256=asset_hash)],
         layers=[SceneLayerAuthoringRecord(id="foreground", name="Foreground")],
         objects=[
             SceneObjectAuthoringRecord(
@@ -134,7 +135,7 @@ def test_composition_binds_and_revalidates_components(
     }
     validated = validate_composition_package(package)
     assert validated["format_id"] == "neoeng-d-trace-composition-package"
-    assert (package / "asset.png").is_file()
+    assert (package / "assets" / "asset.png").is_file()
 
     tilemap = package / "tilemap.json"
     tilemap.write_bytes(tilemap.read_bytes() + b"\n")

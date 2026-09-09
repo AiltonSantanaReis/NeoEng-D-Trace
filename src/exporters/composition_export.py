@@ -167,7 +167,9 @@ def build_composition_package(
     for asset in validated["scene"].assets:
         relative = _safe_asset_path(asset.path)
         source = scene_root / relative
-        components.append(_copy_bound(source, target / relative, "asset"))
+        asset_component = _copy_bound(source, target / relative, "asset")
+        asset_component["path"] = relative.as_posix()
+        components.append(asset_component)
 
     if inputs.runtime_bundle is not None:
         components.append(
@@ -213,8 +215,14 @@ def validate_composition_package(package: str | os.PathLike[str]) -> dict[str, A
     for component in payload["components"]:
         if not isinstance(component, dict) or not component.get("required"):
             raise CompositionExportError("composition component record is invalid")
-        path = root / str(component.get("path", ""))
-        if not path.is_file() or path.parent != root:
+        path = root / Path(str(component.get("path", "")))
+        try:
+            path.relative_to(root)
+        except ValueError as exc:
+            raise CompositionExportError(
+                "composition component path is unsafe or missing"
+            ) from exc
+        if not path.is_file() or path.is_symlink():
             raise CompositionExportError(
                 "composition component path is unsafe or missing"
             )
