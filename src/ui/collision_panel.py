@@ -37,8 +37,73 @@ class CollisionPanel(QWidget):
     def __init__(self, scene, parent=None):
         super().__init__(parent)
         self.scene = scene
+        self.current_lang = "en"
         self.collision_results: List[Dict] = []
         self.collision_manager = None
+        self._translations = {
+            "en": {
+                "title": "Static Collision Testing",
+                "batch": "Batch Test",
+                "export": "Export Collisions",
+                "strategy": (
+                    "Choose the collider representation used by the physics manager"
+                ),
+                "auto": "Auto-Generate from Scene Objects",
+                "validation": "Vertex count, convexity and topology for every collider",
+                "results": "Collision Results",
+                "stats": "Statistics",
+                "no_tests": "No collision tests run yet.",
+                "no_stats": "No statistics available.",
+                "batch_tip": "Run collision detection on all collision shapes",
+                "export_tip": "Export collision results to JSON file",
+                "auto_tip": "Generate collision shapes from current scene polygons",
+                "outline": "Outline (legacy)",
+                "convex_hull": "Convex hull",
+                "convex_decomposition": "Convex decomposition",
+                "validation_none": "Validation: no collision shapes",
+                "validation_prefix": "Validation: ",
+                "topology_simple": "simple",
+                "topology_invalid": "invalid",
+                "convex_yes": "yes",
+                "convex_no": "no",
+                "no_results": "No collision results.",
+                "results_heading": "Collision Test Results",
+                "collision_status": "COLLISION ⚠️",
+                "no_collision_status": "No Collision ✓",
+                "summary": "Summary: {count} collisions detected out of {total} tests.",
+                "stats_heading": "Static Collision Statistics:",
+            },
+            "pt": {
+                "title": "Teste de Colisão Estática",
+                "batch": "Testar em Lote",
+                "export": "Exportar Colisões",
+                "strategy": "Escolher a representação usada pelo gerenciador de física",
+                "auto": "Gerar Automaticamente dos Objetos da Cena",
+                "validation": "Quantidade de vértices, convexidade e topologia de cada colisor",
+                "results": "Resultados de Colisão",
+                "stats": "Estatísticas",
+                "no_tests": "Nenhum teste de colisão foi executado ainda.",
+                "no_stats": "Nenhuma estatística disponível.",
+                "batch_tip": "Executar detecção de colisão em todas as formas",
+                "export_tip": "Exportar resultados de colisão para JSON",
+                "auto_tip": "Gerar formas de colisão dos polígonos atuais da cena",
+                "outline": "Contorno (legado)",
+                "convex_hull": "Envoltória convexa",
+                "convex_decomposition": "Decomposição convexa",
+                "validation_none": "Validação: nenhuma forma de colisão",
+                "validation_prefix": "Validação: ",
+                "topology_simple": "simples",
+                "topology_invalid": "inválida",
+                "convex_yes": "sim",
+                "convex_no": "não",
+                "no_results": "Nenhum resultado de colisão.",
+                "results_heading": "Resultados do Teste de Colisão",
+                "collision_status": "COLISÃO ⚠️",
+                "no_collision_status": "Sem colisão ✓",
+                "summary": "Resumo: {count} colisões detectadas em {total} testes.",
+                "stats_heading": "Estatísticas de Colisão Estática:",
+            },
+        }
 
         self._setup_ui()
         if hasattr(self.scene, "subscribe"):
@@ -47,9 +112,9 @@ class CollisionPanel(QWidget):
     def _setup_ui(self):
         layout = QVBoxLayout(self)
 
-        title = QLabel("Static Collision Testing")
-        title.setObjectName("panel_section_title")
-        layout.addWidget(title)
+        self.title = QLabel("Static Collision Testing")
+        self.title.setObjectName("panel_section_title")
+        layout.addWidget(self.title)
 
         button_layout = QVBoxLayout()
 
@@ -133,7 +198,7 @@ class CollisionPanel(QWidget):
         )
         layout.addWidget(self.validation_text)
 
-        results_group = QGroupBox("Collision Results")
+        self.results_group = QGroupBox("Collision Results")
         results_layout = QVBoxLayout()
 
         self.results_text = QTextEdit()
@@ -142,10 +207,10 @@ class CollisionPanel(QWidget):
         self.results_text.setPlainText("No collision tests run yet.")
         results_layout.addWidget(self.results_text)
 
-        results_group.setLayout(results_layout)
-        layout.addWidget(results_group)
+        self.results_group.setLayout(results_layout)
+        layout.addWidget(self.results_group)
 
-        stats_group = QGroupBox("Statistics")
+        self.stats_group = QGroupBox("Statistics")
         stats_layout = QVBoxLayout()
 
         self.stats_text = QTextEdit()
@@ -154,27 +219,64 @@ class CollisionPanel(QWidget):
         self.stats_text.setPlainText("No statistics available.")
         stats_layout.addWidget(self.stats_text)
 
-        stats_group.setLayout(stats_layout)
-        layout.addWidget(stats_group)
+        self.stats_group.setLayout(stats_layout)
+        layout.addWidget(self.stats_group)
 
         layout.addStretch()
+        self.update_language("en")
+
+    def update_language(self, language: str) -> None:
+        self.current_lang = language if language in self._translations else "en"
+        t = self._translations[self.current_lang]
+        self.title.setText(t["title"])
+        self.batch_test_btn.setText(t["batch"])
+        self.export_btn.setText(t["export"])
+        self.auto_gen_btn.setText(t["auto"])
+        self.strategy_combo.setToolTip(t["strategy"])
+        self.auto_gen_btn.setToolTip(t["auto_tip"])
+        self.batch_test_btn.setToolTip(t["batch_tip"])
+        self.export_btn.setToolTip(t["export_tip"])
+        self.validation_text.setToolTip(t["validation"])
+        for index, key in enumerate(("outline", "convex_hull", "convex_decomposition")):
+            self.strategy_combo.setItemText(index, t[key])
+        self.results_group.setTitle(t["results"])
+        self.stats_group.setTitle(t["stats"])
+        self.results_text.setPlainText(t["no_tests"])
+        self.stats_text.setPlainText(t["no_stats"])
+        for action, key in zip(
+            self.action_toolbar.actions(), ("batch_tip", "export_tip", "auto_tip")
+        ):
+            action.setToolTip(t[key])
+            action.setStatusTip(t[key])
+            button = self.action_toolbar.widgetForAction(action)
+            if button is not None:
+                button.setToolTip(t[key])
+                button.setStatusTip(t[key])
 
     def _update_validation_display(self) -> None:
         """Show deterministic collider diagnostics required by the inspector."""
 
         if not self.scene.collision_shapes:
-            self.validation_text.setText("Validation: no collision shapes")
+            self.validation_text.setText(
+                self._translations[self.current_lang]["validation_none"]
+            )
             return
+        t = self._translations[self.current_lang]
         rows = []
         for object_id, shape in self.scene.collision_shapes.items():
             points = [tuple(point) for point in shape]
             convex = self._is_convex(points)
-            topology = "simple" if is_valid_polygon(list(points)) else "invalid"
+            topology = (
+                t["topology_simple"]
+                if is_valid_polygon(list(points))
+                else t["topology_invalid"]
+            )
+            convex_text = t["convex_yes"] if convex else t["convex_no"]
             rows.append(
                 f"{object_id}: vertices={len(points)} | "
-                f"convex={'yes' if convex else 'no'} | topology={topology}"
+                f"convex={convex_text} | topology={topology}"
             )
-        self.validation_text.setText("Validation: " + " ; ".join(rows))
+        self.validation_text.setText(t["validation_prefix"] + " ; ".join(rows))
 
     @staticmethod
     def _is_convex(points) -> bool:
@@ -260,11 +362,12 @@ class CollisionPanel(QWidget):
         self._update_results_display()
 
     def update_statistics(self, stats: Dict):
+        t = self._translations[self.current_lang]
         if not stats:
-            self.stats_text.setPlainText("No statistics available.")
+            self.stats_text.setPlainText(t["no_stats"])
             return
 
-        stats_text = f"""Static Collision Statistics:
+        stats_text = f"""{t["stats_heading"]}
 • Total Objects: {stats.get('total_objects', 0)}
 • Grid Cell Size: {stats.get('grid_cell_size', 0)}
 • Occupied Cells: {stats.get('occupied_cells', 0)}
@@ -276,12 +379,14 @@ class CollisionPanel(QWidget):
         self.stats_text.setPlainText(stats_text)
 
     def _update_results_display(self):
+        t = self._translations[self.current_lang]
         if not self.collision_results:
-            self.results_text.setPlainText("No collision results.")
+            self.results_text.setPlainText(t["no_results"])
             return
 
         results_text = (
-            f"Collision Test Results " f"({len(self.collision_results)} tests):\n\n"
+            f"{t['results_heading']} "
+            f"({len(self.collision_results)} tests):\n\n"
         )
 
         collision_count = 0
@@ -290,7 +395,7 @@ class CollisionPanel(QWidget):
             obj2 = result.get("obj2_id", "Unknown")
             colliding = result.get("colliding", False)
 
-            status = "COLLISION ⚠️" if colliding else "No Collision ✓"
+            status = t["collision_status"] if colliding else t["no_collision_status"]
             results_text += f"{i+1}. {obj1} ↔ {obj2}: {status}\n"
 
             if colliding:
@@ -299,9 +404,8 @@ class CollisionPanel(QWidget):
                 if mtv:
                     results_text += f"   MTV: ({mtv[0]:.2f}, {mtv[1]:.2f})\n"
 
-        results_text += (
-            f"\nSummary: {collision_count} collisions detected "
-            f"out of {len(self.collision_results)} tests."
+        results_text += "\n" + t["summary"].format(
+            count=collision_count, total=len(self.collision_results)
         )
         self.results_text.setPlainText(results_text)
 

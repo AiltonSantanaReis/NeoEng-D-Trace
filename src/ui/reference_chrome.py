@@ -181,6 +181,22 @@ class ReferenceToolPalette(QToolBar):
         for button in self._tool_buttons:
             button.setEnabled(bool(enabled))
 
+    def refresh_action_feedback(self) -> None:
+        """Copy localized QAction metadata to the rail buttons users see."""
+
+        for action in self.actions():
+            if action.isSeparator():
+                continue
+            button = self.widgetForAction(action)
+            if not isinstance(button, QToolButton):
+                continue
+            description = action.toolTip() or action.text()
+            button.setText(action.text())
+            button.setAccessibleName(action.text().replace("\n", " "))
+            button.setAccessibleDescription(description)
+            button.setToolTip(description)
+            button.setStatusTip(action.statusTip() or description)
+
 
 def configure_reference_tool_palette(window: Any) -> QToolBar:
     """Expose the existing tool actions in the narrow reference palette."""
@@ -490,6 +506,41 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "edit": "Edit",
         }
 
+    descriptions = {
+        "en": {
+            "open": "Open a project or image",
+            "save": "Save the current project",
+            "export": "Export the current project",
+            "fit": "Fit the image to the viewport",
+            "pixel": "Show the image at 1:1 pixels",
+            "focus": "Focus the selected object",
+            "view": "Open viewport and mask-view controls",
+            "collision": "Open collision export controls",
+            "parallax": "Open the scenario editor",
+            "pan": "Move the viewport",
+            "select": "Select objects and tools",
+            "undo": "Undo the last operation",
+            "redo": "Redo the last undone operation",
+            "edit": "Edit the selected object",
+        },
+        "pt": {
+            "open": "Abrir um projeto ou imagem",
+            "save": "Salvar o projeto atual",
+            "export": "Exportar o projeto atual",
+            "fit": "Ajustar a imagem à viewport",
+            "pixel": "Exibir a imagem em pixels 1:1",
+            "focus": "Focar o objeto selecionado",
+            "view": "Abrir controles da viewport e da máscara",
+            "collision": "Abrir controles de exportação de colisão",
+            "parallax": "Abrir o editor de cenários",
+            "pan": "Mover a viewport",
+            "select": "Selecionar objetos e ferramentas",
+            "undo": "Desfazer a última operação",
+            "redo": "Refazer a última operação desfeita",
+            "edit": "Editar o objeto selecionado",
+        },
+    }.get(getattr(window, "current_lang", "en"), {})
+
     menu_button = getattr(window, "reference_menu_button", None)
     if menu_button is not None:
         if getattr(window, "current_lang", "en") == "pt":
@@ -531,7 +582,10 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
         if button is not None:
             button.setText(labels[key])
             button.setAccessibleName(labels[key])
-            button.setAccessibleDescription(button.toolTip() or labels[key])
+            description = descriptions.get(key, labels[key])
+            button.setAccessibleDescription(description)
+            button.setToolTip(description)
+            button.setStatusTip(description)
             button.setProperty("referenceShortText", labels[key])
 
 

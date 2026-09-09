@@ -1074,6 +1074,7 @@ class ScenarioEditorWindow(QMainWindow):
 
     def update_language(self, language: str) -> None:
         self.current_lang = language if language in {"en", "pt"} else "en"
+        self.setProperty("language", self.current_lang)
         if self.current_lang == "pt":
             self.setWindowTitle("Editor de Cenário — NeoEng-D-Trace")
             labels = (
@@ -1089,7 +1090,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Desfazer",
                 "Refazer",
                 "Sobreposições",
-                "Preview Parallax",
+                "Pré-visualização de Paralaxe",
                 "Autoria",
             )
         else:
@@ -1124,7 +1125,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Desfazer",
                 "Refazer",
                 "Sobreposições",
-                "Preview Parallax",
+                "Pré-visualização de Paralaxe",
                 "Autoria",
             )
             if self.current_lang == "pt"
@@ -1209,6 +1210,14 @@ class ScenarioEditorWindow(QMainWindow):
         self.export_target_combo.setItemText(1, "Godot 4.7")
         self.export_target_combo.setItemText(2, "Unity 6000.5.7f1")
         self.scenario_panel.update_language(self.current_lang)
+        if self.professional_inspector is not None:
+            self.professional_inspector.update_language(self.current_lang)
+        if self.layer_stack is not None:
+            self.layer_stack.setProperty("language", self.current_lang)
+            self.layer_stack.update_language(self.current_lang)
+        if self.group_stack is not None:
+            self.group_stack.setProperty("language", self.current_lang)
+            self.group_stack.update_language(self.current_lang)
         if self.asset_library is not None:
             self.asset_library.update_language(self.current_lang)
         if self.tilemap_panel is not None:

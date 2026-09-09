@@ -102,10 +102,12 @@ class SceneAuthoringGroupStack(QWidget):
         self.isolate_button.clicked.connect(self._toggle_isolation)
 
         fields = QHBoxLayout()
-        fields.addWidget(QLabel("Name", self))
+        self.name_label = QLabel("Name", self)
+        fields.addWidget(self.name_label)
         fields.addWidget(self.name_edit, 1)
         parent_row = QHBoxLayout()
-        parent_row.addWidget(QLabel("Parent", self))
+        self.parent_label = QLabel("Parent", self)
+        parent_row.addWidget(self.parent_label)
         parent_row.addWidget(self.parent_combo, 1)
         toggles = QHBoxLayout()
         toggles.addWidget(self.visible_box)
@@ -132,6 +134,31 @@ class SceneAuthoringGroupStack(QWidget):
         layout.addLayout(membership_buttons)
         layout.addLayout(order_buttons)
         self.session.subscribe(self.refresh)
+        self.refresh()
+
+    def update_language(self, language: str) -> None:
+        is_pt = language == "pt"
+        self.title.setText("Grupos e Hierarquia" if is_pt else "Groups & Hierarchy")
+        self.hint.setText(
+            "Grupos contêm objetos; grupos aninhados herdam visibilidade e bloqueio."
+            if is_pt
+            else "Groups contain objects; nested groups inherit visibility and lock."
+        )
+        self.tree.setHeaderLabels(["Grupos e objetos" if is_pt else "Groups and objects"])
+        self.name_label.setText("Nome" if is_pt else "Name")
+        self.parent_label.setText("Pai" if is_pt else "Parent")
+        self.visible_box.setText("Visível" if is_pt else "Visible")
+        self.locked_box.setText("Bloqueado" if is_pt else "Locked")
+        labels = (
+            ("Novo Grupo", "Excluir Grupo", "Adicionar Selecionados", "Remover Selecionados", "Subir", "Descer", "Isolar")
+            if is_pt
+            else ("New Group", "Delete Group", "Add Selected", "Remove Selected", "Up", "Down", "Isolate")
+        )
+        for button, label in zip(
+            (self.new_button, self.delete_button, self.add_selected_button, self.remove_selected_button, self.up_button, self.down_button, self.isolate_button),
+            labels,
+        ):
+            button.setText(label)
         self.refresh()
 
     def _run(self, operation) -> bool:
@@ -343,13 +370,20 @@ class SceneAuthoringGroupStack(QWidget):
                 for object_record in self.session.document.objects
                 if object_group_ids(self.session.document, object_record.id)
             }
-            ungrouped = QTreeWidgetItem(self.tree, ["Ungrouped Objects"])
+            ungrouped = QTreeWidgetItem(
+                self.tree,
+                ["Objetos sem grupo" if self.property("language") == "pt" else "Ungrouped Objects"],
+            )
             for object_record in self.session.document.objects:
                 if object_record.id in grouped:
                     continue
                 child = QTreeWidgetItem(
                     ungrouped,
-                    [f"Object: {object_record.id} ({object_record.layer_id})"],
+                    [
+                        f"Objeto: {object_record.id} ({object_record.layer_id})"
+                        if self.property("language") == "pt"
+                        else f"Object: {object_record.id} ({object_record.layer_id})"
+                    ],
                 )
                 self._set_ref(child, "object", object_record.id)
             self.tree.expandAll()
@@ -398,12 +432,18 @@ class SceneAuthoringGroupStack(QWidget):
                 isolated = self.session.isolated_group_id == selected_group_id
                 self.isolate_button.blockSignals(True)
                 self.isolate_button.setChecked(isolated)
-                self.isolate_button.setText("Exit Isolation" if isolated else "Isolate")
+                self.isolate_button.setText(
+                    ("Sair do Isolamento" if isolated else "Isolar")
+                    if self.property("language") == "pt"
+                    else ("Exit Isolation" if isolated else "Isolate")
+                )
                 self.isolate_button.blockSignals(False)
             else:
                 self.name_edit.clear()
                 self.parent_combo.clear()
                 self.isolate_button.setChecked(False)
-                self.isolate_button.setText("Isolate")
+                self.isolate_button.setText(
+                    "Isolar" if self.property("language") == "pt" else "Isolate"
+                )
         finally:
             self._refreshing = False

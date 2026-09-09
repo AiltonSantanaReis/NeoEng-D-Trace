@@ -199,23 +199,23 @@ class SceneAuthoringInspector(QWidget):
             button.setAutoDefault(False)
 
         form = QFormLayout()
-        form.addRow("Selection", self.selection_label)
-        form.addRow("Position X", self.position_x)
-        form.addRow("Position Y", self.position_y)
-        form.addRow("Depth Z", self.position_z)
-        form.addRow("Rotation X", self.rotation_x)
-        form.addRow("Rotation Y", self.rotation_y)
-        form.addRow("Rotation Z", self.rotation_z)
-        form.addRow("Scale X", self.scale_x)
-        form.addRow("Scale Y", self.scale_y)
-        form.addRow("Scale Z", self.scale_z)
-        form.addRow("Pivot X", self.pivot_x)
-        form.addRow("Pivot Y", self.pivot_y)
+        self._add_labeled_row(form, "selection", "Selection", self.selection_label)
+        self._add_labeled_row(form, "position_x", "Position X", self.position_x)
+        self._add_labeled_row(form, "position_y", "Position Y", self.position_y)
+        self._add_labeled_row(form, "position_z", "Depth Z", self.position_z)
+        self._add_labeled_row(form, "rotation_x", "Rotation X", self.rotation_x)
+        self._add_labeled_row(form, "rotation_y", "Rotation Y", self.rotation_y)
+        self._add_labeled_row(form, "rotation_z", "Rotation Z", self.rotation_z)
+        self._add_labeled_row(form, "scale_x", "Scale X", self.scale_x)
+        self._add_labeled_row(form, "scale_y", "Scale Y", self.scale_y)
+        self._add_labeled_row(form, "scale_z", "Scale Z", self.scale_z)
+        self._add_labeled_row(form, "pivot_x", "Pivot X", self.pivot_x)
+        self._add_labeled_row(form, "pivot_y", "Pivot Y", self.pivot_y)
         form.addRow(self.flip_x)
         form.addRow(self.flip_y)
         form.addRow(self.snap_enabled)
-        form.addRow("Grid X", self.snap_spacing_x)
-        form.addRow("Grid Y", self.snap_spacing_y)
+        self._add_labeled_row(form, "grid_x", "Grid X", self.snap_spacing_x)
+        self._add_labeled_row(form, "grid_y", "Grid Y", self.snap_spacing_y)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.title)
@@ -689,6 +689,20 @@ class SceneAuthoringInspector(QWidget):
         is_pt = language == "pt"
         labels = (
             {
+                "selection": "Seleção",
+                "position_x": "Posição X",
+                "position_y": "Posição Y",
+                "position_z": "Profundidade Z",
+                "rotation_x": "Rotação X",
+                "rotation_y": "Rotação Y",
+                "rotation_z": "Rotação Z",
+                "scale_x": "Escala X",
+                "scale_y": "Escala Y",
+                "scale_z": "Escala Z",
+                "pivot_x": "Pivô X",
+                "pivot_y": "Pivô Y",
+                "grid_x": "Grade X",
+                "grid_y": "Grade Y",
                 "camera_x": "Câmera X",
                 "camera_y": "Câmera Y",
                 "camera_zoom": "Zoom da Câmera",
@@ -716,6 +730,20 @@ class SceneAuthoringInspector(QWidget):
             }
             if is_pt
             else {
+                "selection": "Selection",
+                "position_x": "Position X",
+                "position_y": "Position Y",
+                "position_z": "Depth Z",
+                "rotation_x": "Rotation X",
+                "rotation_y": "Rotation Y",
+                "rotation_z": "Rotation Z",
+                "scale_x": "Scale X",
+                "scale_y": "Scale Y",
+                "scale_z": "Scale Z",
+                "pivot_x": "Pivot X",
+                "pivot_y": "Pivot Y",
+                "grid_x": "Grid X",
+                "grid_y": "Grid Y",
                 "camera_x": "Camera X",
                 "camera_y": "Camera Y",
                 "camera_zoom": "Camera Zoom",
@@ -744,10 +772,87 @@ class SceneAuthoringInspector(QWidget):
         )
         for key, label in self._field_labels.items():
             label.setText(labels[key])
+        tooltip_text = (
+            {
+                "position": "Posição do objeto no espaço da cena",
+                "rotation": "Rotação do objeto em graus",
+                "scale": "Escala do objeto por eixo",
+                "pivot": "Ponto de pivô normalizado do objeto",
+                "depth": "Profundidade Z usada na ordenação de renderização",
+                "grid": "Espaçamento do encaixe na grade",
+                "apply": "Aplicar as alterações de transformação",
+                "undo": "Desfazer a última alteração do inspetor",
+                "redo": "Refazer a última alteração do inspetor",
+                "fit": "Enquadrar os objetos selecionados visíveis no viewport",
+                "fit_all": "Enquadrar todos os objetos visíveis no viewport",
+                "camera": "Aplicar a posição e o zoom da câmera",
+                "material": "Aplicar as propriedades visuais do material",
+                "parallax": "Aplicar a configuração de paralaxe da camada",
+                "socket_add": "Adicionar um socket à cena",
+                "socket_update": "Atualizar a posição do socket selecionado",
+                "socket_remove": "Remover o socket selecionado",
+            }
+            if is_pt
+            else {
+                "position": "Object position in scene space",
+                "rotation": "Object rotation in degrees",
+                "scale": "Object scale by axis",
+                "pivot": "Normalized object pivot point",
+                "depth": "Z depth used for render ordering",
+                "grid": "Grid snap spacing",
+                "apply": "Apply transform changes",
+                "undo": "Undo the last inspector change",
+                "redo": "Redo the last inspector change",
+                "fit": "Frame the visible selected objects in the viewport",
+                "fit_all": "Frame all visible objects in the viewport",
+                "camera": "Apply the camera position and zoom",
+                "material": "Apply the material visual properties",
+                "parallax": "Apply the layer parallax settings",
+                "socket_add": "Add a socket to the scene",
+                "socket_update": "Update the selected socket position",
+                "socket_remove": "Remove the selected socket",
+            }
+        )
+        widget_tooltips = {
+            self.position_x: tooltip_text["position"],
+            self.position_y: tooltip_text["position"],
+            self.position_z: tooltip_text["depth"],
+            self.rotation_x: tooltip_text["rotation"],
+            self.rotation_y: tooltip_text["rotation"],
+            self.rotation_z: tooltip_text["rotation"],
+            self.scale_x: tooltip_text["scale"],
+            self.scale_y: tooltip_text["scale"],
+            self.scale_z: tooltip_text["scale"],
+            self.pivot_x: tooltip_text["pivot"],
+            self.pivot_y: tooltip_text["pivot"],
+            self.snap_spacing_x: tooltip_text["grid"],
+            self.snap_spacing_y: tooltip_text["grid"],
+            self.apply_button: tooltip_text["apply"],
+            self.undo_button: tooltip_text["undo"],
+            self.redo_button: tooltip_text["redo"],
+            self.fit_button: tooltip_text["fit"],
+            self.fit_all_button: tooltip_text["fit_all"],
+            self.camera_apply_button: tooltip_text["camera"],
+            self.material_apply_button: tooltip_text["material"],
+            self.parallax_apply_button: tooltip_text["parallax"],
+            self.add_socket_button: tooltip_text["socket_add"],
+            self.update_socket_button: tooltip_text["socket_update"],
+            self.remove_socket_button: tooltip_text["socket_remove"],
+        }
+        for widget, tooltip in widget_tooltips.items():
+            widget.setToolTip(tooltip)
+            widget.setStatusTip(tooltip)
+            widget.setAccessibleDescription(tooltip)
         if is_pt:
             self.title.setText("Inspetor da Cena")
             self.selection_label.setText("Nenhum objeto selecionado")
             self.stage4_group.setTitle("Câmera, Paralaxe e Sockets")
+            self.apply_button.setText("Aplicar Transformação")
+            self.undo_button.setText("Desfazer")
+            self.redo_button.setText("Refazer")
+            self.delete_button.setText("Excluir Selecionado")
+            self.fit_button.setText("Enquadrar Seleção")
+            self.fit_all_button.setText("Enquadrar Tudo")
             self.camera_apply_button.setText("Aplicar Câmera")
             self.parallax_apply_button.setText("Aplicar Paralaxe da Camada")
             self.material_apply_button.setText("Aplicar Material")
@@ -764,6 +869,12 @@ class SceneAuthoringInspector(QWidget):
             self.title.setText("Scene Inspector")
             self.selection_label.setText("No object selected")
             self.stage4_group.setTitle("Camera, Parallax & Sockets")
+            self.apply_button.setText("Apply Transform")
+            self.undo_button.setText("Undo")
+            self.redo_button.setText("Redo")
+            self.delete_button.setText("Delete Selected")
+            self.fit_button.setText("Fit Selection")
+            self.fit_all_button.setText("Fit All")
             self.camera_apply_button.setText("Apply Camera")
             self.parallax_apply_button.setText("Apply Layer Parallax")
             self.material_apply_button.setText("Apply Material")

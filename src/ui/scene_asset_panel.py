@@ -244,7 +244,17 @@ class SceneAssetLibrary(QWidget):
                         item.asset_id == asset.id
                         for item in self.session.document.objects
                     )
-                    state = _state_label(inspection.state)
+                    state = (
+                        {
+                            "ready": "PRONTO",
+                            "missing": "AUSENTE",
+                            "modified": "MODIFICADO",
+                            "invalid": "INVÁLIDO",
+                            "unavailable": "INDISPONÍVEL",
+                        }.get(inspection.state, inspection.state.upper())
+                        if self.current_lang == "pt"
+                        else _state_label(inspection.state)
+                    )
                     size_text = f" · {size[0]}×{size[1]}" if size else ""
                     item = QListWidgetItem(
                         f"{state}  {asset.id} — {asset.path}"
@@ -265,14 +275,23 @@ class SceneAssetLibrary(QWidget):
                             item.setIcon(QIcon(thumbnail))
                         except (OSError, ValueError):
                             pass
-                    issue = inspection.issue or "No issue detected"
+                    issue = inspection.issue or (
+                        "Nenhum problema detectado"
+                        if self.current_lang == "pt"
+                        else "No issue detected"
+                    )
+                    tooltip_labels = (
+                        ("ID", "Caminho", "Estado", "Objetos", "Diagnóstico")
+                        if self.current_lang == "pt"
+                        else ("ID", "Path", "State", "Objects", "Diagnostic")
+                    )
                     item.setToolTip(
-                        f"ID: {asset.id}\n"
-                        f"Path: {asset.path}\n"
+                        f"{tooltip_labels[0]}: {asset.id}\n"
+                        f"{tooltip_labels[1]}: {asset.path}\n"
                         f"SHA-256: {asset.sha256}\n"
-                        f"State: {state}\n"
-                        f"Objects: {uses}\n"
-                        f"Diagnostic: {issue}"
+                        f"{tooltip_labels[2]}: {state}\n"
+                        f"{tooltip_labels[3]}: {uses}\n"
+                        f"{tooltip_labels[4]}: {issue}"
                     )
                     self.asset_list.addItem(item)
                 if selected_id:
@@ -289,11 +308,17 @@ class SceneAssetLibrary(QWidget):
             used = sum(
                 item.asset_id in inspections for item in self.session.document.objects
             )
-            self.summary_label.setText(
-                f"Assets: {len(self.session.document.assets)} · "
-                f"Showing: {visible_count}"
-                f" · Issues: {issues} · Used: {used}"
-            )
+            if self.current_lang == "pt":
+                self.summary_label.setText(
+                    f"Assets: {len(self.session.document.assets)} · "
+                    f"Exibindo: {visible_count} · Problemas: {issues} · "
+                    f"Em uso: {used}"
+                )
+            else:
+                self.summary_label.setText(
+                    f"Assets: {len(self.session.document.assets)} · "
+                    f"Showing: {visible_count} · Issues: {issues} · Used: {used}"
+                )
             messages = [
                 f"{asset.id}: {inspection.issue}"
                 for asset in self.session.document.assets
@@ -301,7 +326,13 @@ class SceneAssetLibrary(QWidget):
                 and (inspection := inspections[asset.id]).issue
             ]
             self.diagnostics_label.setText(
-                "No asset issues detected." if not messages else " | ".join(messages)
+                (
+                    "Nenhum problema de asset detectado."
+                    if self.current_lang == "pt"
+                    else "No asset issues detected."
+                )
+                if not messages
+                else " | ".join(messages)
             )
             self._refresh_actions()
         finally:
@@ -462,13 +493,17 @@ class SceneAssetLibrary(QWidget):
         if self.current_lang == "pt":
             self.title.setText("Assets da Cena")
             self.import_button.setText("Importar")
-            self.relink_button.setText("Relink")
+            self.relink_button.setText("Vincular novamente")
             self.replace_button.setText("Substituir")
             self.refresh_button.setText("Atualizar")
             self.search_edit.setPlaceholderText("Pesquisar assets por ID ou caminho")
             self.category_combo.setItemText(0, "Todas as categorias")
             self.category_combo.setItemText(1, "Raster")
             self.category_combo.setItemText(2, "Vetorial")
+            self.import_button.setToolTip("Importar um asset para a biblioteca da cena")
+            self.relink_button.setToolTip("Vincular novamente um asset ausente ou modificado")
+            self.replace_button.setToolTip("Substituir o arquivo do asset selecionado")
+            self.refresh_button.setToolTip("Atualizar a biblioteca e os diagnósticos")
         else:
             self.title.setText("Scene Assets")
             self.import_button.setText("Import")
@@ -479,6 +514,10 @@ class SceneAssetLibrary(QWidget):
             self.category_combo.setItemText(0, "All categories")
             self.category_combo.setItemText(1, "Raster")
             self.category_combo.setItemText(2, "Vector")
+            self.import_button.setToolTip("Import an asset into the scene library")
+            self.relink_button.setToolTip("Relink a missing or modified asset")
+            self.replace_button.setToolTip("Replace the selected asset file")
+            self.refresh_button.setToolTip("Refresh the library and diagnostics")
         self.refresh()
 
 

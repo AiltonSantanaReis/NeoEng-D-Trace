@@ -389,20 +389,38 @@ class SidePanel(QWidget):
     def _configure_accessibility_controls(self) -> None:
         """Keep every inspector control usable by name and keyboard focus."""
 
-        labels = {
-            "rename": "Rename selected object",
-            "delete": "Delete selected object",
-            "expand": "Expand selected shape",
-            "contract": "Contract selected shape",
-            "invert": "Invert selected shape",
-            "collision": "Toggle collision for selected object",
-            "apply_transform": "Apply transform to selected object",
-            "apply": "Apply shape preview",
-            "cancel": "Cancel shape preview",
-            "export_mask": "Export selected mask",
-            "export_sprite": "Export selected sprite",
-            "slider": "Adjust shape expansion or contraction preview",
-        }
+        is_pt = getattr(self, "current_lang", "en") == "pt"
+        labels = (
+            {
+                "rename": "Renomear o objeto selecionado",
+                "delete": "Excluir o objeto selecionado",
+                "expand": "Expandir a forma selecionada",
+                "contract": "Contrair a forma selecionada",
+                "invert": "Inverter a forma selecionada",
+                "collision": "Alternar colisão do objeto selecionado",
+                "apply_transform": "Aplicar transformação ao objeto selecionado",
+                "apply": "Aplicar prévia da forma",
+                "cancel": "Cancelar prévia da forma",
+                "export_mask": "Exportar a máscara selecionada",
+                "export_sprite": "Exportar o sprite selecionado",
+                "slider": "Ajustar a prévia de expansão ou contração da forma",
+            }
+            if is_pt
+            else {
+                "rename": "Rename selected object",
+                "delete": "Delete selected object",
+                "expand": "Expand selected shape",
+                "contract": "Contract selected shape",
+                "invert": "Invert selected shape",
+                "collision": "Toggle collision for selected object",
+                "apply_transform": "Apply transform to selected object",
+                "apply": "Apply shape preview",
+                "cancel": "Cancel shape preview",
+                "export_mask": "Export selected mask",
+                "export_sprite": "Export selected sprite",
+                "slider": "Adjust shape expansion or contraction preview",
+            }
+        )
         buttons = (
             (self.btn_rename, labels["rename"]),
             (self.btn_delete, labels["delete"]),
@@ -422,18 +440,22 @@ class SidePanel(QWidget):
             button.setToolTip(description)
             button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        fields = (
-            (self.position_x, "Position X", "Edit the selected object's X position"),
-            (self.position_y, "Position Y", "Edit the selected object's Y position"),
-            (self.position_z, "Position Z", "Edit the selected object's Z position"),
-            (self.rotation_x, "Rotation X", "Edit the selected object's X rotation"),
-            (self.rotation_y, "Rotation Y", "Edit the selected object's Y rotation"),
-            (self.rotation_z, "Rotation Z", "Edit the selected object's Z rotation"),
-            (self.scale_x, "Scale X", "Edit the selected object's X scale"),
-            (self.scale_y, "Scale Y", "Edit the selected object's Y scale"),
-            (self.scale_z, "Scale Z", "Edit the selected object's Z scale"),
-            (self.pivot_x, "Pivot X", "Edit the selected object's X pivot"),
-            (self.pivot_y, "Pivot Y", "Edit the selected object's Y pivot"),
+        field_names = (
+            (self.position_x, "Position X", "Posição X", "Edit the selected object's X position", "Editar a posição X do objeto selecionado"),
+            (self.position_y, "Position Y", "Posição Y", "Edit the selected object's Y position", "Editar a posição Y do objeto selecionado"),
+            (self.position_z, "Position Z", "Posição Z", "Edit the selected object's Z position", "Editar a posição Z do objeto selecionado"),
+            (self.rotation_x, "Rotation X", "Rotação X", "Edit the selected object's X rotation", "Editar a rotação X do objeto selecionado"),
+            (self.rotation_y, "Rotation Y", "Rotação Y", "Edit the selected object's Y rotation", "Editar a rotação Y do objeto selecionado"),
+            (self.rotation_z, "Rotation Z", "Rotação Z", "Edit the selected object's Z rotation", "Editar a rotação Z do objeto selecionado"),
+            (self.scale_x, "Scale X", "Escala X", "Edit the selected object's X scale", "Editar a escala X do objeto selecionado"),
+            (self.scale_y, "Scale Y", "Escala Y", "Edit the selected object's Y scale", "Editar a escala Y do objeto selecionado"),
+            (self.scale_z, "Scale Z", "Escala Z", "Edit the selected object's Z scale", "Editar a escala Z do objeto selecionado"),
+            (self.pivot_x, "Pivot X", "Pivô X", "Edit the selected object's X pivot", "Editar o pivô X do objeto selecionado"),
+            (self.pivot_y, "Pivot Y", "Pivô Y", "Edit the selected object's Y pivot", "Editar o pivô Y do objeto selecionado"),
+        )
+        fields = tuple(
+            (field, pt_name if is_pt else en_name, pt_tip if is_pt else en_tip)
+            for field, en_name, pt_name, en_tip, pt_tip in field_names
         )
         for field, name, description in fields:
             field.setObjectName(f"inspector_{name.lower().replace(' ', '_')}")
@@ -447,11 +469,17 @@ class SidePanel(QWidget):
             line_edit.setToolTip(description)
             line_edit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        self.snap_enabled.setAccessibleName("Snap vertices to grid")
-        self.snap_enabled.setAccessibleDescription(
-            "Toggle snapping of edited vertices to the 16 pixel grid"
+        snap_name = "Encaixar vértices na grade" if is_pt else "Snap vertices to grid"
+        snap_description = (
+            "Alternar o encaixe dos vértices editados na grade de 16 pixels"
+            if is_pt
+            else "Toggle snapping of edited vertices to the 16 pixel grid"
         )
-        self.snap_enabled.setToolTip("Snap edited vertices to the 16 pixel grid")
+        self.snap_enabled.setAccessibleName(snap_name)
+        self.snap_enabled.setAccessibleDescription(
+            snap_description
+        )
+        self.snap_enabled.setToolTip(snap_description)
         self.slider.setObjectName("shape_expand_contract_slider")
         self.slider.setAccessibleName("Shape expansion slider")
         self.slider.setAccessibleDescription(labels["slider"])
@@ -462,14 +490,17 @@ class SidePanel(QWidget):
         for toolbar, buttons in self._toolbar_bindings:
             for action, button in zip(toolbar.actions(), buttons):
                 action.setText(button.text())
-                action.setToolTip(button.text())
-                action.setStatusTip(button.text())
+                action.setToolTip(button.toolTip() or button.text())
+                action.setStatusTip(button.toolTip() or button.text())
                 action.setEnabled(button.isEnabled())
                 action.setProperty("accessibleName", button.text())
                 toolbar_button = toolbar.widgetForAction(action)
                 if toolbar_button is not None:
                     toolbar_button.setAccessibleName(button.text())
-                    toolbar_button.setToolTip(button.text())
+                    toolbar_button.setAccessibleDescription(
+                        button.accessibleDescription() or button.toolTip() or button.text()
+                    )
+                    toolbar_button.setToolTip(button.toolTip() or button.text())
                 if button.isCheckable():
                     action.setChecked(button.isChecked())
 
@@ -1019,6 +1050,14 @@ class SidePanel(QWidget):
         self.search_input.setAccessibleName(t["search_objects"])
         self.search_input.setAccessibleDescription(t["search_objects"])
         self.search_input.setToolTip(t["search_objects"])
+        self.list.setAccessibleName(
+            "Lista de objetos da cena" if self.current_lang == "pt" else "Scene objects list"
+        )
+        self.list.setAccessibleDescription(
+            "Selecione um objeto para inspecioná-lo ou editá-lo"
+            if self.current_lang == "pt"
+            else "Select an object to inspect or edit it"
+        )
         # Buttons
         self.btn_rename.setText(t["rename"])
         self.btn_delete.setText(t["delete"])

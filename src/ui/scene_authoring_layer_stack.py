@@ -68,12 +68,39 @@ class SceneAuthoringLayerStack(QWidget):
         layout.addWidget(self.title)
         layout.addWidget(self.order_hint)
         layout.addWidget(self.layer_list)
-        layout.addWidget(QLabel("Name", self))
+        self.name_label = QLabel("Name", self)
+        layout.addWidget(self.name_label)
         layout.addWidget(self.name_edit)
         layout.addLayout(toggles)
         layout.addLayout(buttons)
         self.session.subscribe(self.refresh)
         self.refresh()
+
+    def update_language(self, language: str) -> None:
+        is_pt = language == "pt"
+        self.title.setText("Pilha de Camadas" if is_pt else "Layer Stack")
+        self.order_hint.setText(
+            "Ordem de renderização: Trás → Frente"
+            if is_pt
+            else "Render order: Back → Front"
+        )
+        self.order_hint.setToolTip(
+            "As camadas são renderizadas da primeira linha (trás) para a última (frente)."
+            if is_pt
+            else "Layers are rendered from the first row (back) to the last row (front)."
+        )
+        self.name_label.setText("Nome" if is_pt else "Name")
+        self.visible_box.setText("Visível" if is_pt else "Visible")
+        self.locked_box.setText("Bloqueada" if is_pt else "Locked")
+        self.add_button.setText("Adicionar" if is_pt else "Add")
+        self.remove_button.setText("Remover" if is_pt else "Remove")
+        self.up_button.setText("Subir" if is_pt else "Up")
+        self.down_button.setText("Descer" if is_pt else "Down")
+        self.layer_list.setToolTip(
+            "Selecione uma camada para editar visibilidade, bloqueio e ordem."
+            if is_pt
+            else "Select a layer to edit visibility, locking and order."
+        )
 
     def _current_id(self) -> str | None:
         item = self.layer_list.currentItem()

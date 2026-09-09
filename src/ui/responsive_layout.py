@@ -248,6 +248,16 @@ class ResponsivePanelLayout:
                 continue
             for index, title in enumerate(titles):
                 tabs.setTabText(index, title)
+        language = translations.get("language", "Language")
+        is_pt = language == "Idioma"
+        description = (
+            "Alternar entre os painéis de objetos, camadas, grupos e colisão"
+            if is_pt
+            else "Switch between objects, layers, groups and collision panels"
+        )
+        for tabs in (self.compact_panel_tabs, self.reference_panel_tabs):
+            tabs.setAccessibleDescription(description)
+            tabs.tabBar().setAccessibleDescription(description)
 
 
 def build_responsive_layout(owner) -> ResponsivePanelLayout:

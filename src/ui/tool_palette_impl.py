@@ -48,6 +48,23 @@ _AUXILIARY_SPECS: Final[tuple[tuple[str, str, str], ...]] = (
     ("focus_selected", "focus", "Focus selected object"),
 )
 
+_AUXILIARY_TRANSLATIONS: Final[dict[str, dict[str, str]]] = {
+    "en": {
+        "validation": "Validate collision geometry",
+        "move_viewport": "Move viewport",
+        "zoom_viewport": "Zoom viewport",
+        "fit_view": "Fit viewport",
+        "focus_selected": "Focus selected object",
+    },
+    "pt": {
+        "validation": "Validar geometria de colisão",
+        "move_viewport": "Mover viewport",
+        "zoom_viewport": "Aplicar zoom na viewport",
+        "fit_view": "Ajustar viewport",
+        "focus_selected": "Focar objeto selecionado",
+    },
+}
+
 
 class ToolPalette(QToolBar):
     """Compact vertical toolbar preserving the historical tool API."""
@@ -205,7 +222,7 @@ class ToolPalette(QToolBar):
                 action,
                 icon_key,
                 text=label,
-                tooltip=label,
+                tooltip=_AUXILIARY_TRANSLATIONS["en"][action_name],
                 accessible_name=label,
             )
             action.setProperty(
@@ -284,6 +301,23 @@ class ToolPalette(QToolBar):
             button.setToolTip(tooltip)
             button.setStatusTip(tooltip)
             button.setAccessibleName(label.replace("\n", " "))
+            button.setAccessibleDescription(tooltip)
+
+        auxiliary_labels = _AUXILIARY_TRANSLATIONS.get(
+            language, _AUXILIARY_TRANSLATIONS["en"]
+        )
+        for action_name, action in self._auxiliary_actions.items():
+            label = auxiliary_labels[action_name]
+            action.setText(label)
+            action.setToolTip(label)
+            action.setStatusTip(label)
+            action.setProperty("accessibleName", label)
+            button = self.widgetForAction(action)
+            if button is not None:
+                button.setToolTip(label)
+                button.setStatusTip(label)
+                button.setAccessibleName(label)
+                button.setAccessibleDescription(label)
 
     def select_next_tool(self) -> None:
         names = self.tool_names()

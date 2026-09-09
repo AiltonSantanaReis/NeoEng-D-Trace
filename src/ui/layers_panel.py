@@ -49,6 +49,24 @@ class LayersPanel(QWidget):
                 "scenario": "Cenário",
             },
         }
+        self._tooltip_text = {
+            "en": {
+                "add": "Create a new layer",
+                "remove": "Delete the selected layer",
+                "up": "Move the selected layer backward",
+                "down": "Move the selected layer forward",
+                "visible": "Toggle the selected layer visibility",
+                "lock": "Toggle the selected layer lock",
+            },
+            "pt": {
+                "add": "Criar uma nova camada",
+                "remove": "Excluir a camada selecionada",
+                "up": "Mover a camada selecionada para trás",
+                "down": "Mover a camada selecionada para frente",
+                "visible": "Alternar a visibilidade da camada selecionada",
+                "lock": "Alternar o bloqueio da camada selecionada",
+            },
+        }
         self.setMinimumWidth(200)
 
         self.main_layout = QVBoxLayout()
@@ -147,9 +165,16 @@ class LayersPanel(QWidget):
             self.tabs.setTabText(0, text["project_layers"])
             self.tabs.setTabText(1, text["scenario"])
         for button, action in self._toolbar_actions.items():
+            command_key = action.property("commandKey")
             action.setText(button.text())
-            action.setToolTip(button.text())
-            action.setStatusTip(button.text())
+            tooltip = self._tooltip_text[self.current_lang][command_key]
+            action.setToolTip(tooltip)
+            action.setStatusTip(tooltip)
+            toolbar_button = self.action_toolbar.widgetForAction(action)
+            if toolbar_button is not None:
+                toolbar_button.setToolTip(tooltip)
+                toolbar_button.setStatusTip(tooltip)
+                toolbar_button.setAccessibleDescription(tooltip)
 
     def refresh(self):
         current_item = self.list.currentItem()
