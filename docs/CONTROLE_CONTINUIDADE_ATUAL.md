@@ -24,8 +24,8 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. O SHA-fonte de abertura do E13 é `510cee7`; a build
-r70 será gerada após o fechamento documental deste lote. A existência de outras
+`Ailton/e08-renderer-20260908`. O HEAD ativo pós-E13 é `9ec1fa6`; a nova build
+canônica será gerada somente deste commit. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
 
