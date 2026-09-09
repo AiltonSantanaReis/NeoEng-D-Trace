@@ -84,7 +84,7 @@
       "sandbox_skips": 0,
       "sandbox_source_commit": "35727d99c7002ad26c3277dff8542f82dad4c3f8",
       "final_source_requalification_status": "PENDING_EVIDENCE",
-      "final_source_requalification_attempt": "Tentativa final no SHA f8fa83e: WindowsSandbox.exe encerrou com codigo 0 e não produziu marcador nem report.json; nenhuma aprovação foi inferida. O checkout local repetiu os 2 skips por WinError 1314. Evidência formal: docs/evidence/E13_FECHAMENTO_PORTABILIDADE_EVIDENCIA_2026-09-09.md.",
+      "final_source_requalification_attempt": "Tentativa final no SHA f8fa83e: WindowsSandbox.exe encerrou com codigo 0 e não produziu marcador nem report.json; probe mínimo independente teve o mesmo resultado. Nenhuma aprovação foi inferida. O checkout local repetiu os 2 skips por WinError 1314. Evidência formal: docs/evidence/E13_FECHAMENTO_PORTABILIDADE_EVIDENCIA_2026-09-09.md.",
       "deferred_until_final_audit": true,
       "deferral_decision": "docs/evidence/DECISAO_ADIAMENTO_SYMLINKS_E00_2026-09-08.md",
       "local_suite_status": "SKIP_PRIVILEGE_LIMITATION",

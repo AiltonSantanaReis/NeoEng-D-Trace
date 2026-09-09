@@ -191,6 +191,14 @@ nem o marcador de início nem `report.json`. Portanto o resultado normativo é
 `PENDING_EVIDENCE`, não `PASS_SANDBOX`; o diagnóstico histórico `31/31` de SHA
 anterior não foi transferido para o SHA final.
 
+Como controle de isolamento, foi executado um probe mínimo sem o projeto: um
+`.wsb` com uma única pasta de saída e um script PowerShell que deveria gravar
+`started.txt` imediatamente, aguardar cinco segundos e gravar `report.json`.
+O resultado foi idêntico: atividade de Hyper-V e nenhum arquivo produzido.
+Esse controle confirma uma limitação operacional do mecanismo Sandbox nesta
+sessão, mas não altera o requisito: somente um relatório real no SHA final
+pode promover o gate a `PASS_SANDBOX`.
+
 ### Gates repetidos e findings
 
 - `tools/evidence_integrity.py --require-tracked --git-blob`: `Evidence integrity passed: 135 manifests validated.`
