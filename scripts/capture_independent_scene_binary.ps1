@@ -815,6 +815,7 @@ try {
         $reopenedPath = Join-Path $OutputDirectory "composition-04-after-reopen.png"
         $reopenedSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $reopenedPath)
         [IO.File]::WriteAllText($scenePath, "{ broken composition document")
+        $corruptedSceneSha256 = (Get-FileHash -LiteralPath $scenePath -Algorithm SHA256).Hash
         [NeoEngIndependentSceneCapture]::FocusWindow($reopenedScenarioWindow.Handle) | Out-Null
         [System.Windows.Forms.SendKeys]::SendWait("^%+l")
         Start-Sleep -Milliseconds 1000
@@ -890,7 +891,7 @@ try {
                 window = $recoveryPromptSize
                 path = $recoveryPromptPath
                 sha256 = (Get-FileHash -LiteralPath $recoveryPromptPath -Algorithm SHA256).Hash
-                corrupted_scene_sha256 = (Get-FileHash -LiteralPath $scenePath -Algorithm SHA256).Hash
+                corrupted_scene_sha256 = $corruptedSceneSha256
             }
             after_recovery = [ordered]@{
                 window = $afterRecoverySize
