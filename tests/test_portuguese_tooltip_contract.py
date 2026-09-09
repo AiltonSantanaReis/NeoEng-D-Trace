@@ -102,6 +102,13 @@ def test_scenario_editor_portuguese_hover_metadata(qt_app):
         _assert_no_english_leaks(_visible_feedback(window))
         assert "Aplicar" in window.professional_inspector.apply_button.text()
         assert "Posição" in window.professional_inspector._field_labels["position_x"].text()
+        assert window.professional_inspector.add_socket_button.text() == "Adicionar socket"
+        assert window.professional_inspector.update_socket_button.text() == "Atualizar posição do socket"
+        assert window.professional_inspector.remove_socket_button.text() == "Remover socket"
+        assert window.professional_inspector.parallax_repeat_x.text() == "Repetir X"
+        assert window.professional_inspector.parallax_mirror_y.text() == "Espelhar Y"
+        assert window.professional_inspector.socket_type.itemText(0) == "Luz"
+        assert window.professional_viewport.current_lang == "pt"
         assert window.vector_contour_panel.source_label.text().startswith("Selecione")
         assert window.vector_contour_panel.undo_button.text() == "Desfazer"
         assert "Autoria" in window.status_label.text()

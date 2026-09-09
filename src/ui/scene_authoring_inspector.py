@@ -861,6 +861,12 @@ class SceneAuthoringInspector(QWidget):
             self.flip_x.setText("Inverter X")
             self.flip_y.setText("Inverter Y")
             self.snap_enabled.setText("Snap habilitado")
+            self.add_socket_button.setText("Adicionar socket")
+            self.update_socket_button.setText("Atualizar posição do socket")
+            self.remove_socket_button.setText("Remover socket")
+            self.socket_type.setItemText(0, "Luz")
+            self.socket_type.setItemText(1, "VFX")
+            self.socket_type.setItemText(2, "Gatilho")
             self.repeat_x_label = "Repetir X"
             self.repeat_y_label = "Repetir Y"
             self.mirror_x_label = "Espelhar X"
@@ -883,6 +889,12 @@ class SceneAuthoringInspector(QWidget):
             self.flip_x.setText("Flip X")
             self.flip_y.setText("Flip Y")
             self.snap_enabled.setText("Snap enabled")
+            self.add_socket_button.setText("Add Socket")
+            self.update_socket_button.setText("Update Socket Position")
+            self.remove_socket_button.setText("Remove Socket")
+            self.socket_type.setItemText(0, "light")
+            self.socket_type.setItemText(1, "vfx")
+            self.socket_type.setItemText(2, "trigger")
             self.repeat_x_label = "Repeat X"
             self.repeat_y_label = "Repeat Y"
             self.mirror_x_label = "Mirror X"

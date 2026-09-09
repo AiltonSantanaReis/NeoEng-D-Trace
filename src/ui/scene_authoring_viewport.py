@@ -538,6 +538,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._particle_items: dict[str, SceneParticleGraphicsItem] = {}
         self._post_process_items: dict[str, ScenePostProcessGraphicsItem] = {}
         self._preview_enabled = False
+        self.current_lang = "en"
         self._render_plan: SceneRenderPlan | None = None
         self._lighting_settings = default_scene_lighting()
         self._authoring_enabled = True
@@ -572,6 +573,11 @@ class SceneAuthoringViewport(QGraphicsView):
         self._presentation_snapshot: tuple[object, ...] = ()
         self.sync()
         self.session.subscribe(self._on_session_change)
+
+    def update_language(self, language: str) -> None:
+        """Keep viewport status messages aligned with the editor language."""
+
+        self.current_lang = language if language in {"en", "pt"} else "en"
 
     def set_geometry(
         self,
@@ -1535,7 +1541,11 @@ class SceneAuthoringViewport(QGraphicsView):
     def _block_if_preview(self) -> bool:
         if self._authoring_enabled:
             return False
-        self.status_message.emit("Preview mode is read-only")
+        self.status_message.emit(
+            "O modo de pré-visualização é somente leitura"
+            if self.current_lang == "pt"
+            else "Preview mode is read-only"
+        )
         return True
 
     def _handle_nudge_key(self, key: int, modifiers: Qt.KeyboardModifier) -> bool:
@@ -1555,7 +1565,15 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                "Moved selected object(s)" if changed else "No movement after snap"
+                (
+                    (
+                        "Objeto(s) selecionado(s) movido(s)"
+                        if changed
+                        else "Nenhum movimento após o encaixe"
+                    )
+                    if self.current_lang == "pt"
+                    else ("Moved selected object(s)" if changed else "No movement after snap")
+                )
             )
         return True
 

@@ -1247,6 +1247,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.export_target_combo.setItemText(1, "Godot 4.7")
         self.export_target_combo.setItemText(2, "Unity 6000.5.7f1")
         self.scenario_panel.update_language(self.current_lang)
+        if self.professional_viewport is not None:
+            self.professional_viewport.update_language(self.current_lang)
         if self.professional_inspector is not None:
             self.professional_inspector.update_language(self.current_lang)
         if self.layer_stack is not None:
