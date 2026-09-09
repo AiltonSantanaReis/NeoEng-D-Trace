@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import shutil
@@ -97,6 +98,9 @@ def _godot_project(root: Path, package: Path) -> Path:
                 var tilemap := read_json("res://composition/tilemap.json")
                 var colliders := read_json("res://composition/colliders.json")
                 var navmesh := read_json("res://composition/navmesh.json")
+                var asset = Image.new()
+                if asset.load("res://composition/assets/scene/hero.png") != OK:
+                    quit(1); return
                 if manifest.get("format_id") != "neoeng-d-trace-composition-package":
                     quit(1); return
                 var root := Node2D.new()
@@ -193,6 +197,8 @@ def _unity_project(root: Path, package: Path) -> Path:
                         Tilemap tilemap = JsonUtility.FromJson<Tilemap>(File.ReadAllText(root + "/tilemap.json"));
                         Colliders colliders = JsonUtility.FromJson<Colliders>(File.ReadAllText(root + "/colliders.json"));
                         Navmesh navmesh = JsonUtility.FromJson<Navmesh>(File.ReadAllText(root + "/navmesh.json"));
+                        Texture2D asset = AssetDatabase.LoadAssetAtPath<Texture2D>(root + "/assets/scene/hero.png");
+                        if (asset == null) throw new Exception("composition asset could not be imported");
                         if (tilemap == null || tilemap.cells == null || colliders == null || colliders.colliders == null || navmesh == null || navmesh.regions == null)
                             throw new Exception("composition payload is incomplete");
                         GameObject rootObject = new GameObject("NeoEngE11Composition");
@@ -260,7 +266,18 @@ def _unity_project(root: Path, package: Path) -> Path:
 
 
 def _discover_unity() -> Path:
-    from scripts.audit_unity_import_stage6 import discover_unity
+    try:
+        from scripts.audit_unity_import_stage6 import discover_unity
+    except ModuleNotFoundError as exc:
+        if exc.name != "scripts":
+            raise
+        module_path = Path(__file__).with_name("audit_unity_import_stage6.py")
+        spec = importlib.util.spec_from_file_location("audit_unity_import_stage6", module_path)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"could not load Unity discovery helper: {module_path}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        discover_unity = module.discover_unity
 
     discovered = discover_unity()
     if isinstance(discovered, tuple):
