@@ -125,3 +125,25 @@ def test_ctrl_click_selects_multiple_vertices_and_deletes_them_as_one_command(qt
         assert tool.selected_vertices == set()
     finally:
         view.close()
+
+
+def test_ctrl_click_selects_multiple_polygons(qt_app):
+    scene, view = _view(qt_app)
+    scene.add_object(
+        "B",
+        [(80, 80), (115, 80), (100, 115)],
+        select=False,
+    )
+    scene.cmd.clear()
+    tool = PolygonEditTool(view)
+    try:
+        tool.on_mouse_press(_event(), (30, 30))
+        tool.on_mouse_press(
+            _event(modifiers=Qt.KeyboardModifier.ControlModifier),
+            (95, 95),
+        )
+
+        assert tool.selected_polygon_ids == {"A", "B"}
+        assert tool.selected_polygon_id == "B"
+    finally:
+        view.close()
