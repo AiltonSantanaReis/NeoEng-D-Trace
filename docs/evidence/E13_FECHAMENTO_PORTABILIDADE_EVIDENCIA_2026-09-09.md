@@ -219,3 +219,46 @@ E13-A, E13-B e E13-C permanecem tecnicamente comprovados. O gate Sandbox de
 E13-D está `PASS_SANDBOX`; a única pendência restante é a revisão humana do
 proprietário sobre as capturas r72 e a decisão formal de encerramento. O teste
 local pulado permanece separado e não reduz o resultado do Sandbox.
+
+## Pacote completo de revisão do proprietário — r73
+
+Para permitir a revisão manual e novos testes do proprietário, foi gerada uma
+build completa a partir do SHA-fonte `f37b6d32ec086b4e7e07a8d17ca7457638b371d5`,
+sem alterar o binário depois da captura. O pacote é candidato de revisão, não
+uma autorização de release.
+
+### Artefatos entregues
+
+| Artefato | Resultado | SHA-256 |
+|---|---|---|
+| Binário GUI | `release/e13-complete-review-20260909-r73/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe` — 10.624.222 bytes | `4541C48C218878702F0F9CFBC7D71FB44629166DAFF5A2F09DA4CF3B7D537B0C` |
+| Binário CLI | `release/e13-complete-review-20260909-r73/portable/NeoEng-D-Trace/NeoEng-D-Trace-CLI.exe` — 10.512.606 bytes | `F6EBA7626E6E8502C242E2368544CB96C1B793B4A585D88F01F7BD4509AD81DF` |
+| ZIP portátil | `release/e13-complete-review-20260909-r73/NeoEng-D-Trace-0.3.0-win64-portable.zip` — 124.931.223 bytes | `914428A1E79937D491B5744D4CEB6C3E6EFE72A980EBBC437307EF500B0F667E` |
+| MSI WiX | `release/e13-complete-review-20260909-r73/NeoEng-D-Trace-0.3.0-win64.msi` — 105.504.768 bytes | `DB063C66C4FDC885104A3C4795B4928AF70F437563D3F336A2C04562FAA63D1A` |
+| Manifesto portátil | `release/e13-complete-review-20260909-r73/portable/NeoEng-D-Trace/release-manifest.json` | `F01BB79F7CAF2725AC4A2FED36A0886459D5A75148AED2367D60622FCEFD88B2` |
+| Proveniência | `release/e13-complete-review-20260909-r73/continuity-provenance.json` | `C7498B136E94D7A056A082801560C538CD7AFC621FCE83068A83C80033016077` |
+
+### Testes e capturas do pacote r73
+
+- Smoke portátil fora do checkout: `SUCCESS`, 11 checks, CLI `0.3.0`; relatório
+  `artifacts/e13-complete-review-outside-r73-20260909/portable-smoke-report.json`,
+  SHA-256 `0C3B876717B0153494DB515C48C72CCBF9A3054B7BF932B9C45A4FED7D5A6DFB`.
+- Validação MSI: `SUCCESS`, instalação exit `0`, desinstalação exit `0`,
+  CLI/projeto/JSON/GLB/GUI executados e estado do usuário preservado; relatório
+  `artifacts/e13-complete-review-msi-validation-r73-20260909/installer-validation-report.json`,
+  SHA-256 `A4D8BE0B68D2CE2EADA648FDC9BAC49616F18A7299809D298829FE724126B66C`.
+- Captura real do binário GUI: `artifacts/e13-complete-review-capture-r73-20260909/01-main-before-independent.png`,
+  SHA-256 `DD7F36BBEA1CBD095B4F7AA04E0D188834264A90C12E79B7D173A08684F82723`.
+- Captura real da Cena Independente: `artifacts/e13-complete-review-capture-r73-20260909/02-independent-scene-after-shortcut.png`,
+  SHA-256 `2464B49EBA3378ED0252A5EE941C00746E56F8A94FD11B82C7D1C7CC17BE0A6F`.
+
+A inspeção automatizada das capturas confirmou textos PT-BR, toolbar, painel
+`Objetos`, título da Cena Independente, canvas `1920 × 1080` e `0 objetos`.
+Isso é evidência técnica de execução e não substitui a revisão visual humana.
+O empacotamento registrou o aviso não bloqueante do PyInstaller sobre o import
+oculto `tzdata`; todos os checks do build e das validações terminaram com
+sucesso.
+
+O pacote r73 está pronto para os testes do proprietário. A decisão formal de
+encerramento do E13-D permanece `PENDING_HUMAN_REVIEW` até que esses artefatos
+sejam revisados.
