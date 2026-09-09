@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "stage": "E09-C",
+  "status": "PASS_AUTOMATED_CAPTURE_ONLY",
+  "date": "2026-09-08",
+  "worktree": "build/e01-independent-scene-20260908",
+  "branch": "Ailton/e08-renderer-20260908",
+  "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+  "source_commit": "f1fbebbbd2de79e359c7b5126d9e98c37507a35f",
+  "build": {
+    "release_root": "release/e09-vector-ui-20260908-r52",
+    "binary": "release/e09-vector-ui-20260908-r52/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "E99C54B7C3754FEDC3A1E8324C3FFC01C523E9B5ED3CB18B2CEB71BC2BFBD135",
+    "portable_archive_sha256": "43f8d83cececcb01cb4acae814d8cf4a5fe454f8474c2e40b035cb9c64ddd1e8",
+    "smoke": "SUCCESS; 11 checks",
+    "provenance": "release/e09-vector-ui-20260908-r52/continuity-provenance.json"
+  },
+  "capture": {
+    "root": "artifacts/e09-vectorization-20260908/binary-capture-r52-vector10",
+    "method": "PrintWindow from the real portable binary window handle",
+    "fixture": "real tracked PNG copied into a staged V2 project with relative asset path and SHA-256",
+    "steps": [
+      {
+        "file": "01-main.png",
+        "sha256": "500FDC8C7D7112639392C32902AD7FB3FC14A4C7D5CD0711B3151C8888CBE48D",
+        "observation": "binary opened"
+      },
+      {
+        "file": "03-main-after-project-load.png",
+        "sha256": "0C1220F5447B665F8FE6A9CE694B89DC39A21727506F8A0ED56C61AEF6E4D61E",
+        "observation": "V2 scene loaded"
+      },
+      {
+        "file": "05-asset-library-ready.png",
+        "sha256": "9B7F75BF68D999A3F35208A8978C4061FE92945441FD6F8D7302B715AC240085",
+        "observation": "native inspector and vector panel visible"
+      },
+      {
+        "file": "07-vector-contour-asset.png",
+        "sha256": "4BE1E56D30936AF383D8998FFC6A8C76619C74CAB2490F4AAD53455159BE3BA0",
+        "observation": "real asset row visible in the scrollable asset library"
+      },
+      {
+        "file": "08-vector-contour-selected.png",
+        "sha256": "16E428894A926E026947B26B25ABA8900BFB5CE0C22649313DC52D8EB6A3716F",
+        "observation": "vector-source selected and provenance-bound panel enabled"
+      },
+      {
+        "file": "09-vector-contour-detected.png",
+        "sha256": "CA4F61AB9BED6E92545117FF326E6495A7577FC69A2A8A98BC048ACFDD49CC51",
+        "observation": "controlled detection produced 4 vertices and source hash diagnostic"
+      },
+      {
+        "file": "10-vector-contour-edited.png",
+        "sha256": "C7CCE3B891C035D4D65D16AE94DBE3E6EB42BF14025F4BE7DB41952CB48A96EE",
+        "observation": "manual vertex correction applied to X=-5 and Y=-5"
+      },
+      {
+        "file": "11-vector-contour-created.png",
+        "sha256": "E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02",
+        "observation": "vector scene object created; viewport gizmo and status feedback visible"
+      }
+    ]
+  },
+  "official_suite": {
+    "command": ".venv\\Scripts\\python.exe -m pytest -q",
+    "result": "2098 passed, 2 skipped, 1 warning",
+    "warning": "known QMouseEvent deprecation in tests/test_merge_coverage_authoring_contracts.py"
+  },
+  "limitations": [
+    "Automated capture is not human review; human review remains deferred until the final audit by explicit authorization.",
+    "Symlink qualification remains deferred exclusively to the final audit.",
+    "Engine runtime consumption is the E10 gate; E09-C proves generic export/import, collision data and portable scene persistence."
+  ]
+}

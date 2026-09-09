@@ -9,11 +9,11 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E09",
+    "stage": "E10",
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E09 imagem, vetor, colisão e integração de objeto; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E10 exportação, adaptadores, integração e round-trip; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
     "technical_continuation_authorized": true,
@@ -28,20 +28,20 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Implementar E09-C: gerar colisão válida, integrar o contorno como objeto/recurso reutilizável, persistir save/reopen e validar combinação/export-import; preservar source/provenance e manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Ler a seção E10 do Plano Mestre e executar a matriz por destino: contrato de capacidades, exportação efetiva, importação em projetos limpos Godot/Unity quando disponíveis, execução real, negativos e round-trip; manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
-      "id": "E09",
+      "id": "E10",
       "status": "IN_PROGRESS",
-      "scope": "E08-A–E e E09-A/B comprovados em checkpoint técnico; E09-C ativo para colisão, objeto, persistência e export/import",
-      "evidence": "docs/evidence/E09_VETOR_COLISAO_EVIDENCIA_2026-09-08.md",
+      "scope": "E00–E09 comprovados em checkpoint técnico; E10 ativo para exportação efetiva, adaptadores, execução e round-trip por destino",
+      "evidence": "docs/evidence/E10_EXPORTACAO_ROUNDTRIP_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-      "stage": "E10",
+      "stage": "E11",
       "status": "PLANNED",
       "evidence": null,
       "functional_implementation_allowed": false,
-      "promotion_rule": "Somente após checkpoint técnico E07 e atualização deste registro."
+      "promotion_rule": "Somente após checkpoint técnico E10 e atualização deste registro."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -58,7 +58,7 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "2c4b17cd46e7bbce181a34504b19273f0b8a0626",
+    "head": "fee6cf50e9f205b36d12e02f9137e029a975b51c",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
     "status": "CLEAN_E08_D_ACTIVE"
@@ -66,7 +66,7 @@
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2095,
+      "passed": 2098,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -95,26 +95,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e09-vectorization-20260908/binary-capture-r50-regression/07-renderer-authoring.png",
-      "latest_binary_capture_sha256": "F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30",
+      "latest_binary_capture": "artifacts/e09-vectorization-20260908/binary-capture-r52-vector10/11-vector-contour-created.png",
+      "latest_binary_capture_sha256": "E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r50 abriu a fixture V2 de pós-processamento no binário portátil; Preview e Autoria exibiram a vinheta radial sem regressão, e os hashes de Preview/Autoria/Parallax coincidiram com r49. E09-B foi qualificado no núcleo reversível; E09-C permanece ativo. Revisão humana continua pendente.",
+      "observed_finding": "Build r52 abriu uma fixture V2 no binário portátil; a biblioteca nativa rolou até o asset real, o painel detectou 4 vértices, a correção manual foi aplicada e o objeto vetorial foi criado com gizmo/status observáveis. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e09-contour-editing-20260908-r50/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "8D03A986EDE5E26966E464661E48E444082A1EE837A5507F027E91C0CFF0EE94",
-      "latest_observed_binary_last_write": "2026-09-08T23:40:14.3645697Z",
-      "source_commit": "efa3b97fa37906675afd3588439bfb3bfc489c0c",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e09-vector-ui-20260908-r52/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "E99C54B7C3754FEDC3A1E8324C3FFC01C523E9B5ED3CB18B2CEB71BC2BFBD135",
+      "latest_observed_binary_last_write": "2026-09-08T23:56:58.7762435Z",
+      "source_commit": "f1fbebbbd2de79e359c7b5126d9e98c37507a35f",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "3391B04283445B16176058A057AC07EB14FEC5D0500D9269A22BB6E909983B78",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e08-renderer-20260908-r48/continuity-provenance.json",
+      "continuity_registry_sha256": "34E9ED5E8F1E362CD0C22A6ACD0FEA2D25032A314B38B5679B3E81B72D00A44D",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e09-vector-ui-20260908-r52/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "544b4042493b252bc39cddc51f941c5334ac932e7f465ebe34bd9599c44668a0",
-      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B possuem detecção hash-bound, edição reversível, negativos, suíte oficial 2091, builds r49/r50, smoke e captura real. E09-C é o sublote ativo."
+      "portable_archive_sha256": "43f8d83cececcb01cb4acae814d8cf4a5fe454f8474c2e40b035cb9c64ddd1e8",
+      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial 2098, build r52, smoke e captura real. E10 é o sublote ativo."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
@@ -143,8 +143,8 @@
     "E06": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E07": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E08": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E09": "IN_PROGRESS",
-    "E10": "PLANNED",
+    "E09": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "E10": "IN_PROGRESS",
     "E11": "PLANNED",
     "E12": "PLANNED",
     "E13": "PLANNED"

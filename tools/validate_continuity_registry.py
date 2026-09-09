@@ -39,21 +39,8 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         raise ValueError("master_plan_commit must be explicit")
 
     active = _require(data, "active_work")
-    if active["stage"] not in {
-        "E00",
-        "E01",
-        "E02",
-        "E03",
-        "E04",
-        "E05",
-        "E06",
-        "E07",
-        "E08",
-        "E09",
-    }:
-        raise ValueError(
-            "continuity registry must remain anchored at E00 through E09"
-        )
+    if active["stage"] not in {f"E{index:02d}" for index in range(14)}:
+        raise ValueError("continuity registry must remain anchored at E00 through E13")
     if active["stage"] == "E00" and active["implementation_allowed"]:
         raise ValueError("E00 preparatory registry cannot allow implementation")
     if active["stage"] in {"E01", "E02"} and not active.get(
@@ -241,7 +228,7 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
             raise ValueError(
                 "stage progression is inconsistent with active E08 continuation state"
             )
-    else:
+    elif active["stage"] == "E09":
         expected_e09 = (
             "IN_PROGRESS"
             if active.get("status") == "IN_PROGRESS"
@@ -262,6 +249,24 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         if tuple(stages.get(f"E{index:02d}") for index in range(10)) != expected:
             raise ValueError(
                 "stage progression is inconsistent with active E09 continuation state"
+            )
+    else:
+        active_index = int(active["stage"][1:])
+        expected_active = (
+            "IN_PROGRESS"
+            if active.get("status") == "IN_PROGRESS"
+            else "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
+        )
+        expected = tuple(
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING" for _ in range(active_index)
+        ) + (expected_active,)
+        if (
+            tuple(stages.get(f"E{index:02d}") for index in range(active_index + 1))
+            != expected
+        ):
+            raise ValueError(
+                "stage progression is inconsistent with active "
+                f"{active['stage']} continuation state"
             )
     invalid = [
         (stage, status)

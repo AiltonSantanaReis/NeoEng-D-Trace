@@ -4,7 +4,7 @@
 **Worktree oficial:** `build/e01-independent-scene-20260908`  
 **Branch:** `Ailton/e08-renderer-20260908`  
 **Plano Mestre:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
-**Estado:** `E09-A TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING; E09-B ACTIVE`
+**Estado:** `E09-A/B/C TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING; E10 é o próximo lote técnico`
 
 ## E09-A — importação e detecção controlada
 
@@ -90,3 +90,46 @@ E09-B comprova o núcleo reversível de edição, mas ainda não reivindica um
  export/import permanecem E09-C.
 
 Symlink e revisão humana continuam reservados à auditoria final autorizada.
+
+## E09-C — colisão, objeto reutilizável, persistência e exportação
+
+- Implementação de recurso vetorial e colisão: commit `eb8152a`; ancoragem da
+  suíte: `6ce6cf5`.
+- `SceneVectorGeometryRecord` preserva algoritmo, hash SHA-256 da fonte,
+  dimensões, parâmetros de detecção, polígono original, polígono editado e
+  polígono de colisão. O objeto é criado transacionalmente no documento e pode
+  ser duplicado sem perder proveniência.
+- Save/reopen verifica os hashes dos assets relativos e rejeita a fonte
+  adulterada. O export genérico V2 foi validado para manter a geometria de
+  colisão; consumo de engine continua no E10.
+- Auditoria oficial:
+  `python -m scripts.audit_e09_vector_scene_phase3 --output artifacts/e09-vectorization-20260908/audit-e09-c-fee6cf5`
+  — `PASS`; colisão com 4 vértices, duplicação determinística, save/reopen,
+  export genérico e rejeição de tamper.
+- Testes focados E09-C + UI: `7 passed`. Suíte oficial após o lote:
+  `2098 passed, 2 skipped, 1 warning`.
+
+## E09-C — fluxo nativo no binário portátil r52
+
+- Integração da UI nativa: commit `f1fbebb`; correção do harness de captura:
+  `a05b5fa`.
+- Build oficial:
+  `release/e09-vector-ui-20260908-r52`, source commit
+  `f1fbebbbd2de79e359c7b5126d9e98c37507a35f`, executável SHA-256
+  `E99C54B7C3754FEDC3A1E8324C3FFC01C523E9B5ED3CB18B2CEB71BC2BFBD135`,
+  smoke `SUCCESS` com 11 verificações.
+- Manifesto completo: `docs/evidence/E09_C_R52_VECTOR_UI_CAPTURAS_MANIFESTO.json`.
+- Captura real válida:
+  `artifacts/e09-vectorization-20260908/binary-capture-r52-vector10/`.
+  O roteiro abriu o binário, carregou uma cena V2 com asset real, rolou a
+  biblioteca, selecionou `vector-source`, detectou 4 vértices, aplicou uma
+  correção manual (`X=-5`, `Y=-5`) e criou o objeto de cena. As imagens
+  `09-vector-contour-detected.png`, `10-vector-contour-edited.png` e
+  `11-vector-contour-created.png` foram inspecionadas por captura nativa.
+- O harness inicialmente expôs dois defeitos reproduzíveis: BOM UTF-8 em
+  PowerShell e fixture V1 que exigia migração explícita. Ambos foram corrigidos
+  em `a05b5fa`; a captura r52-vector10 foi repetida após as correções.
+
+E09-C está tecnicamente concluído com auditoria final pendente. E10 é o próximo
+lote e deve validar importação/execução real por destino aplicável; symlink e
+revisão humana permanecem reservados à auditoria final autorizada.
