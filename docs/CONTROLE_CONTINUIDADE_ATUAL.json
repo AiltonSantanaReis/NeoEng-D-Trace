@@ -15,7 +15,7 @@
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "E11 composição, runtime, recuperação, exportação e consumo; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
-    "execution_checklist": "docs/evidence/METAS_EXECUCAO_CONTINUIDADE_2026-09-08.md",
+    "execution_checklist": "docs/evidence/PLANO_MESTRE_FILA_EXECUCAO_CENTRAL_2026-09-09.md",
     "technical_continuation_authorized": true,
     "continuation_decision": "docs/evidence/DECISAO_CONTINUIDADE_TECNICA_E01_E13_AUDITORIA_FINAL_2026-09-08.md",
     "dependency_traceability": {
@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E11: composição e runtime completo no binário, com fluxo integral, recuperação, exportação e consumo nas engines; manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Executar E11-C/D: fixture composta no binário r55, recovery observável, exportação e consumo real em Godot/Unity; manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
       "id": "E11",
       "status": "IN_PROGRESS",
@@ -61,8 +61,8 @@
     "head": "47e7d7495e6f7d5ecf3180d0153f412155cd9896",
     "head_role": "EXECUTABLE_SOURCE_ANCHOR_E11_CAPTURE_HARNESS",
     "tracked_changes_present": false,
-    "untracked_artifacts_present": false,
-    "status": "CLEAN_E11_ACTIVE"
+    "untracked_artifacts_present": true,
+    "status": "TRACKED_CLEAN_E11_ARTIFACTS_PRESERVED"
   },
   "gates": {
     "official_suite": {
