@@ -130,9 +130,11 @@ def test_composition_binds_and_revalidates_components(
         "tilemap",
         "colliders",
         "navmesh",
+        "asset",
     }
     validated = validate_composition_package(package)
     assert validated["format_id"] == "neoeng-d-trace-composition-package"
+    assert (package / "asset.png").is_file()
 
     tilemap = package / "tilemap.json"
     tilemap.write_bytes(tilemap.read_bytes() + b"\n")

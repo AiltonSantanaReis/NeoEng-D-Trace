@@ -73,6 +73,18 @@ def _copy_bound(source: Path, destination: Path, kind: str) -> dict[str, Any]:
     }
 
 
+def _safe_asset_path(value: str) -> Path:
+    relative = Path(value)
+    if (
+        relative.is_absolute()
+        or not value
+        or "\\" in value
+        or any(part in {"", ".", ".."} for part in relative.parts)
+    ):
+        raise CompositionExportError("scene asset path is unsafe")
+    return relative
+
+
 def _validate_json_file(path: Path, kind: str) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -151,6 +163,12 @@ def build_composition_package(
     ):
         components.append(_copy_bound(source, target / name, kind))
 
+    scene_root = inputs.scene.parent
+    for asset in validated["scene"].assets:
+        relative = _safe_asset_path(asset.path)
+        source = scene_root / relative
+        components.append(_copy_bound(source, target / relative, "asset"))
+
     if inputs.runtime_bundle is not None:
         components.append(
             _copy_bound(
@@ -217,6 +235,9 @@ def validate_composition_package(package: str | os.PathLike[str]) -> dict[str, A
             _validate_json_file(path, kind)
         elif kind == "runtime-adapters":
             _validate_json_file(path, kind)
+        elif kind == "asset":
+            if path.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp", ".bin"}:
+                raise CompositionExportError("unsupported composition asset type")
         else:
             raise CompositionExportError(f"unknown composition component: {kind}")
     return payload
