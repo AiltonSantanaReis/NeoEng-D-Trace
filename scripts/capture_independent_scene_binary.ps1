@@ -8,6 +8,8 @@ param(
     [switch]$CaptureAuthoringOps,
     [switch]$CaptureSaveReopen,
     [switch]$CapturePointEditing,
+    [switch]$CaptureComposition,
+    [string]$ProjectPath,
     [int]$InvalidTargetX = 958,
     [int]$InvalidTargetY = 372
 )
@@ -37,10 +39,15 @@ public static class NeoEngIndependentSceneCapture
     }
 
     private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+    private delegate bool EnumChildWindowsProc(IntPtr hWnd, IntPtr lParam);
 
     [DllImport("user32.dll")] private static extern bool EnumWindows(EnumWindowsProc callback, IntPtr extra);
+    [DllImport("user32.dll")] private static extern bool EnumChildWindows(IntPtr parent, EnumChildWindowsProc callback, IntPtr extra);
     [DllImport("user32.dll")] private static extern bool IsWindowVisible(IntPtr hWnd);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int length);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetClassName(IntPtr hWnd, StringBuilder text, int length);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "SendMessageW")] private static extern IntPtr SendMessageText(IntPtr hWnd, uint message, IntPtr wParam, string lParam);
+    [DllImport("user32.dll", EntryPoint = "SendMessageW")] private static extern IntPtr SendMessageNoText(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll")] private static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
     [DllImport("user32.dll")] private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint flags);
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int command);
@@ -54,6 +61,9 @@ public static class NeoEngIndependentSceneCapture
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] private static extern void mouse_event(uint flags, uint dx, uint dy, uint data, UIntPtr extra);
     [DllImport("user32.dll")] private static extern void keybd_event(byte key, byte scan, uint flags, UIntPtr extra);
+
+    private const uint WM_SETTEXT = 0x000C;
+    private const uint BM_CLICK = 0x00F5;
 
     public static WindowInfo[] GetWindows(int pid)
     {
@@ -73,6 +83,45 @@ public static class NeoEngIndependentSceneCapture
         var final = new WindowInfo[count];
         Array.Copy(result, final, count);
         return final;
+    }
+
+    public static bool SetNativeDialogPath(IntPtr dialog, string path)
+    {
+        IntPtr edit = IntPtr.Zero;
+        IntPtr openButton = IntPtr.Zero;
+        EnumChildWindows(dialog, (hWnd, _) =>
+        {
+            var className = new StringBuilder(128);
+            GetClassName(hWnd, className, className.Capacity);
+            var title = new StringBuilder(256);
+            GetWindowText(hWnd, title, title.Capacity);
+            if (className.ToString().Equals("Edit", StringComparison.OrdinalIgnoreCase) && edit == IntPtr.Zero)
+                edit = hWnd;
+            if (className.ToString().Equals("Button", StringComparison.OrdinalIgnoreCase) &&
+                (title.ToString().Replace("&", "").Equals("Abrir", StringComparison.OrdinalIgnoreCase) ||
+                 title.ToString().Replace("&", "").Equals("Open", StringComparison.OrdinalIgnoreCase)))
+                openButton = hWnd;
+            return true;
+        }, IntPtr.Zero);
+        if (edit == IntPtr.Zero || openButton == IntPtr.Zero) return false;
+        SendMessageText(edit, WM_SETTEXT, IntPtr.Zero, path);
+        SendMessageNoText(openButton, BM_CLICK, IntPtr.Zero, IntPtr.Zero);
+        return true;
+    }
+
+    public static string DescribeNativeDialog(IntPtr dialog)
+    {
+        var items = new System.Collections.Generic.List<string>();
+        EnumChildWindows(dialog, (hWnd, _) =>
+        {
+            var className = new StringBuilder(128);
+            GetClassName(hWnd, className, className.Capacity);
+            var title = new StringBuilder(256);
+            GetWindowText(hWnd, title, title.Capacity);
+            items.Add(className + "|" + title);
+            return true;
+        }, IntPtr.Zero);
+        return string.Join("; ", items);
     }
 
     public static bool Activate(IntPtr hWnd)
@@ -186,6 +235,19 @@ public static class NeoEngIndependentSceneCapture
         keybd_event(0x11, 0, up, UIntPtr.Zero);
     }
 
+    public static void SendCtrlAltShiftE()
+    {
+        const uint up = 0x0002;
+        keybd_event(0x11, 0, 0, UIntPtr.Zero);
+        keybd_event(0x12, 0, 0, UIntPtr.Zero);
+        keybd_event(0x10, 0, 0, UIntPtr.Zero);
+        keybd_event(0x45, 0, 0, UIntPtr.Zero);
+        keybd_event(0x45, 0, up, UIntPtr.Zero);
+        keybd_event(0x10, 0, up, UIntPtr.Zero);
+        keybd_event(0x12, 0, up, UIntPtr.Zero);
+        keybd_event(0x11, 0, up, UIntPtr.Zero);
+    }
+
     public static void SendEscape()
     {
         const uint up = 0x0002;
@@ -267,9 +329,20 @@ function Set-DialogPath {
     )
     [NeoEngIndependentSceneCapture]::FocusWindow($Handle) | Out-Null
     Start-Sleep -Milliseconds 150
+    if ([NeoEngIndependentSceneCapture]::SetNativeDialogPath($Handle, $Path)) {
+        Start-Sleep -Milliseconds 400
+        return
+    }
+    Write-Host ("native dialog controls: " + [NeoEngIndependentSceneCapture]::DescribeNativeDialog($Handle))
     [System.Windows.Forms.Clipboard]::SetText($Path)
+    [System.Windows.Forms.SendKeys]::SendWait("%n")
+    Start-Sleep -Milliseconds 100
+    [System.Windows.Forms.SendKeys]::SendWait("^l")
+    Start-Sleep -Milliseconds 100
     [System.Windows.Forms.SendKeys]::SendWait("^a")
     [System.Windows.Forms.SendKeys]::SendWait("^v")
+    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+    Start-Sleep -Milliseconds 250
     [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
 }
 
@@ -300,7 +373,7 @@ try {
     $child = $windows | Where-Object { $_.Title -match "Independent Scene|Cen.rio Independente|Novo Cen.rio" } | Select-Object -First 1
     $childRecord = $null
     $primitiveFlowRecord = $null
-    $requestedFlow = $CapturePrimitiveFlow -or $CaptureAuthoringOps -or $CaptureSaveReopen -or $CapturePointEditing
+    $requestedFlow = $CapturePrimitiveFlow -or $CaptureAuthoringOps -or $CaptureSaveReopen -or $CapturePointEditing -or $CaptureComposition
     if ($requestedFlow -and -not $child) {
         $observed = ($windows | ForEach-Object { $_.Title }) -join "; "
         throw "independent scene window was not exposed after Ctrl+Alt+N; observed windows: $observed"
@@ -529,6 +602,79 @@ try {
         }
     }
 
+    $compositionRecord = $null
+    if ($CaptureComposition) {
+        if (-not $ProjectPath) { throw "-ProjectPath is required with -CaptureComposition" }
+        $projectPathResolved = (Resolve-Path -LiteralPath $ProjectPath).Path
+        [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlO()
+        Start-Sleep -Milliseconds 1000
+        $projectDialog = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+            Where-Object {
+                $_.Title -and
+                $_.Title -notmatch "NeoEng-D-Trace|Independent Scene|Cen.rio Independente|Scenario Editor|Editor de Cen.rio"
+            } |
+            Select-Object -First 1
+        if (-not $projectDialog) { throw "project open dialog was not exposed" }
+        [NeoEngIndependentSceneCapture]::Capture(
+            $projectDialog.Handle,
+            (Join-Path $OutputDirectory "composition-00-project-dialog-before.png")
+        ) | Out-Null
+        Set-DialogPath -Handle $projectDialog.Handle -Path $projectPathResolved
+        Start-Sleep -Milliseconds 800
+        $projectDialogAfter = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+            Where-Object { $_.Title -eq $projectDialog.Title } |
+            Select-Object -First 1
+        if ($projectDialogAfter) {
+            [NeoEngIndependentSceneCapture]::Capture(
+                $projectDialogAfter.Handle,
+                (Join-Path $OutputDirectory "composition-00-project-dialog-after.png")
+            ) | Out-Null
+        }
+        Start-Sleep -Milliseconds 700
+
+        [NeoEngIndependentSceneCapture]::FocusWindow($mainHandle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlAlt(0x53)
+        Start-Sleep -Milliseconds 1800
+        $scenarioWindow = [NeoEngIndependentSceneCapture]::GetWindows($process.Id) |
+            Where-Object { $_.Title -match "Scenario Editor|Editor de Cen.rio" } |
+            Select-Object -First 1
+        if (-not $scenarioWindow) {
+            $observed = ([NeoEngIndependentSceneCapture]::GetWindows($process.Id) | ForEach-Object { $_.Title }) -join "; "
+            throw "scenario editor window was not exposed; observed windows: $observed"
+        }
+        $beforePath = Join-Path $OutputDirectory "composition-01-scenario-editor.png"
+        $beforeSize = [NeoEngIndependentSceneCapture]::Capture($scenarioWindow.Handle, $beforePath)
+        [NeoEngIndependentSceneCapture]::FocusWindow($scenarioWindow.Handle) | Out-Null
+        [NeoEngIndependentSceneCapture]::SendCtrlAltShiftE()
+        Start-Sleep -Milliseconds 1800
+        $afterPath = Join-Path $OutputDirectory "composition-02-exported.png"
+        $afterSize = [NeoEngIndependentSceneCapture]::Capture($scenarioWindow.Handle, $afterPath)
+        $projectRoot = Split-Path -Parent $projectPathResolved
+        $packagePath = Join-Path $projectRoot "exports\composition-e11"
+        $manifestPath = Join-Path $packagePath "composition.json"
+        if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+            throw "native composition export did not create manifest: $manifestPath"
+        }
+        $compositionRecord = [ordered]@{
+            project = $projectPathResolved
+            title = $scenarioWindow.Title
+            package = $packagePath
+            manifest_sha256 = (Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash
+            before = [ordered]@{
+                window = $beforeSize
+                path = $beforePath
+                sha256 = (Get-FileHash -LiteralPath $beforePath -Algorithm SHA256).Hash
+            }
+            after_export = [ordered]@{
+                window = $afterSize
+                path = $afterPath
+                sha256 = (Get-FileHash -LiteralPath $afterPath -Algorithm SHA256).Hash
+            }
+            inputs = @("Ctrl+O", "open project fixture", "Ctrl+Alt+S", "Ctrl+Alt+Shift+E")
+        }
+    }
+
     [ordered]@{
         executable = $relativeExecutable
         pid = $process.Id
@@ -543,6 +689,7 @@ try {
         point_editing = $pointEditingRecord
         save_reopen = $saveReopenRecord
         save_dialog = $saveDialogRecord
+        composition = $compositionRecord
         observed_windows = @($windows | ForEach-Object { [ordered]@{ title = $_.Title } })
     } | ConvertTo-Json -Depth 6
 }

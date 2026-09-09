@@ -17,10 +17,12 @@ from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
     QMessageBox,
+    QMenu,
     QScrollArea,
     QSplitter,
     QStackedWidget,
     QToolBar,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -195,6 +197,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.export_target_combo.addItem("Generic", "generic")
         self.export_target_combo.addItem("Godot 4.7", "godot")
         self.export_target_combo.addItem("Unity 6000.5.7f1", "unity")
+        self._toolbar_menu_buttons: dict[str, QToolButton] = {}
         self.overlay_action.setCheckable(True)
         self.preview_action.setCheckable(True)
         self.authoring_action.setCheckable(True)
@@ -209,20 +212,31 @@ class ScenarioEditorWindow(QMainWindow):
             self.save_action,
             self.load_action,
             self.reset_action,
-            self.export_action,
-            self.composition_action,
-            self.undo_action,
-            self.redo_action,
-            self.overlay_action,
-            self.preview_action,
-            self.authoring_action,
         ):
             self.toolbar.addAction(action)
+        self._add_toolbar_menu(
+            "export",
+            "Exportar",
+            (self.export_action, self.composition_action),
+        )
+        self._add_toolbar_menu(
+            "edit",
+            "Editar",
+            (self.undo_action, self.redo_action),
+        )
+        self._add_toolbar_menu(
+            "view",
+            "Visualizar",
+            (self.overlay_action, self.preview_action, self.authoring_action),
+        )
+        self._add_toolbar_menu(
+            "more",
+            "Mais",
+            (self.upgrade_action, self.recover_action),
+        )
         self.toolbar.addSeparator()
         self.toolbar.addWidget(self.export_target_label)
         self.toolbar.addWidget(self.export_target_combo)
-        self.toolbar.addAction(self.upgrade_action)
-        self.toolbar.addAction(self.recover_action)
         self.status_label = QLabel(self)
         self.status_label.setObjectName("scenario_editor_status_label")
         self.statusBar().setObjectName("scenario_editor_status_bar")
@@ -244,6 +258,23 @@ class ScenarioEditorWindow(QMainWindow):
         self.authoring.subscribe(self.refresh)
         self.update_language(language)
         self.refresh()
+
+    def _add_toolbar_menu(
+        self, key: str, label: str, actions: tuple[QAction, ...]
+    ) -> None:
+        button = QToolButton(self.toolbar)
+        button.setObjectName(f"scenario_toolbar_menu_{key}")
+        button.setText(label)
+        button.setToolTip(label)
+        button.setAccessibleName(label)
+        button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        menu = QMenu(button)
+        for action in actions:
+            menu.addAction(action)
+        button.setMenu(menu)
+        self.toolbar.addWidget(button)
+        self._toolbar_menu_buttons[key] = button
 
     def resizeEvent(self, event: Any) -> None:
         super().resizeEvent(event)
@@ -993,6 +1024,21 @@ class ScenarioEditorWindow(QMainWindow):
             labels,
         ):
             action.setText(label)
+        menu_labels = (
+            ("export", "Exportar" if self.current_lang == "pt" else "Export"),
+            ("edit", "Editar" if self.current_lang == "pt" else "Edit"),
+            (
+                "view",
+                "Visualizar" if self.current_lang == "pt" else "View",
+            ),
+            ("more", "Mais" if self.current_lang == "pt" else "More"),
+        )
+        for key, label in menu_labels:
+            button = self._toolbar_menu_buttons.get(key)
+            if button is not None:
+                button.setText(label)
+                button.setToolTip(label)
+                button.setAccessibleName(label)
         self.export_target_label.setText(
             "Alvo:" if self.current_lang == "pt" else "Target:"
         )
