@@ -429,9 +429,6 @@ def test_reference_shell_preserves_control_geometry_and_tool_visibility(
         top_controls = tuple(
             getattr(window, name)
             for name in (
-                "reference_fit_button",
-                "reference_focus_button",
-                "reference_pan_button",
                 "reference_undo_button",
                 "reference_redo_button",
             )

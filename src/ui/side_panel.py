@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QSlider,
     QToolBar,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -42,6 +43,66 @@ from src.utils.selection_tools import (
     invert_selection,
     polygon_to_mask,
 )
+
+
+class CollapsibleGroupBox(QGroupBox):
+    """Inspector category with an engine-style expandable header."""
+
+    def __init__(self, title: str, parent=None, *, expanded: bool = True):
+        super().__init__(parent)
+        self._section_title = title
+        super().setTitle("")
+        self.toggle_button = QToolButton(self)
+        self.toggle_button.setObjectName("inspector_section_toggle")
+        self.toggle_button.setCheckable(True)
+        self.toggle_button.setAutoRaise(True)
+        self.toggle_button.setToolButtonStyle(
+            Qt.ToolButtonStyle.ToolButtonTextBesideIcon
+        )
+        self.toggle_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.toggle_button.clicked.connect(self._on_toggled)
+
+        self.content_widget = QWidget(self)
+        self.content_widget.setObjectName("inspector_section_content")
+        self.content_layout = QVBoxLayout(self.content_widget)
+        self.content_layout.setContentsMargins(0, 0, 0, 0)
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(2)
+        layout.addWidget(self.toggle_button)
+        layout.addWidget(self.content_widget)
+        self.setTitle(title)
+        self.setExpanded(expanded)
+
+    def title(self) -> str:
+        return self._section_title
+
+    def setTitle(self, title: str) -> None:  # noqa: N802
+        self._section_title = title
+        if hasattr(self, "toggle_button"):
+            self.toggle_button.setText(title)
+            self.toggle_button.setAccessibleName(title)
+            self.toggle_button.setAccessibleDescription(
+                f"Expand or collapse the {title} inspector section"
+            )
+            self.toggle_button.setToolTip(self.toggle_button.accessibleDescription())
+
+    def setExpanded(self, expanded: bool) -> None:  # noqa: N802
+        expanded = bool(expanded)
+        self.toggle_button.blockSignals(True)
+        self.toggle_button.setChecked(expanded)
+        self.toggle_button.blockSignals(False)
+        self.toggle_button.setArrowType(
+            Qt.ArrowType.DownArrow if expanded else Qt.ArrowType.RightArrow
+        )
+        self.content_widget.setVisible(expanded)
+
+    def isExpanded(self) -> bool:  # noqa: N802
+        return self.toggle_button.isChecked()
+
+    def _on_toggled(self, expanded: bool) -> None:
+        self.setExpanded(expanded)
 
 
 class SidePanel(QWidget):
@@ -76,7 +137,7 @@ class SidePanel(QWidget):
         # Botão de forma de colisão
         self.btn_collision = QPushButton("Collision: OFF")
 
-        self.transform_group = QGroupBox("Transform")
+        self.transform_group = CollapsibleGroupBox("Transform", expanded=True)
         self.position_x = self._transform_spin(-1_000_000.0, 1_000_000.0)
         self.position_y = self._transform_spin(-1_000_000.0, 1_000_000.0)
         self.position_z = self._transform_spin(-1_000_000.0, 1_000_000.0)
@@ -95,7 +156,8 @@ class SidePanel(QWidget):
         )
         self.metadata_label = QLabel("No object selected")
         self.metadata_label.setObjectName("objects_metadata")
-        transform_form = QFormLayout(self.transform_group)
+        transform_form = QFormLayout()
+        self.transform_group.content_layout.addLayout(transform_form)
         self._transform_form_labels = {}
         for key, text, field in (
             ("position_x", "Position X", self.position_x),
@@ -198,14 +260,12 @@ class SidePanel(QWidget):
         layout.addWidget(self.list)
 
         # Grupo 1: edição e colisão
-        self.properties_group = QGroupBox("Properties")
-        l_edit = QVBoxLayout()
-        l_edit.addWidget(self.properties_action_toolbar)
-        self.properties_group.setLayout(l_edit)
+        self.properties_group = CollapsibleGroupBox("Properties", expanded=True)
+        self.properties_group.content_layout.addWidget(self.properties_action_toolbar)
         layout.addWidget(self.properties_group)
         layout.addWidget(self.transform_group)
-        self.metadata_group = QGroupBox("Metadata / Scenario")
-        metadata_layout = QVBoxLayout(self.metadata_group)
+        self.metadata_group = CollapsibleGroupBox("Metadata / Scenario", expanded=False)
+        metadata_layout = self.metadata_group.content_layout
         metadata_layout.addWidget(self.metadata_label)
         scenario_button = QPushButton("Open Scenario Editor")
         scenario_button.setObjectName("open_scenario_editor_from_inspector")
@@ -223,19 +283,16 @@ class SidePanel(QWidget):
         layout.addWidget(self.metadata_group)
 
         # Grupo 2: Modificadores
-        self.modify_shape_group = QGroupBox("Modify Shape")
-        l_tools = QVBoxLayout()
+        self.modify_shape_group = CollapsibleGroupBox("Modify Shape", expanded=False)
+        l_tools = self.modify_shape_group.content_layout
         l_tools.addWidget(self.modify_action_toolbar)
         l_tools.addWidget(self.slider_label)
         l_tools.addWidget(self.slider)
-        self.modify_shape_group.setLayout(l_tools)
         layout.addWidget(self.modify_shape_group)
 
         # Grupo 3: Exportação
-        self.export_group = QGroupBox("Export")
-        l_export = QVBoxLayout()
-        l_export.addWidget(self.export_action_toolbar)
-        self.export_group.setLayout(l_export)
+        self.export_group = CollapsibleGroupBox("Export", expanded=False)
+        self.export_group.content_layout.addWidget(self.export_action_toolbar)
         layout.addWidget(self.export_group)
 
         self.scroll_area = QScrollArea(self)
@@ -454,25 +511,89 @@ class SidePanel(QWidget):
             button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         field_names = (
-            (self.position_x, "Position X", "Posição X", "Edit the selected object's X position", "Editar a posição X do objeto selecionado"),
-            (self.position_y, "Position Y", "Posição Y", "Edit the selected object's Y position", "Editar a posição Y do objeto selecionado"),
-            (self.position_z, "Position Z", "Posição Z", "Edit the selected object's Z position", "Editar a posição Z do objeto selecionado"),
-            (self.rotation_x, "Rotation X", "Rotação X", "Edit the selected object's X rotation", "Editar a rotação X do objeto selecionado"),
-            (self.rotation_y, "Rotation Y", "Rotação Y", "Edit the selected object's Y rotation", "Editar a rotação Y do objeto selecionado"),
-            (self.rotation_z, "Rotation Z", "Rotação Z", "Edit the selected object's Z rotation", "Editar a rotação Z do objeto selecionado"),
-            (self.scale_x, "Scale X", "Escala X", "Edit the selected object's X scale", "Editar a escala X do objeto selecionado"),
-            (self.scale_y, "Scale Y", "Escala Y", "Edit the selected object's Y scale", "Editar a escala Y do objeto selecionado"),
-            (self.scale_z, "Scale Z", "Escala Z", "Edit the selected object's Z scale", "Editar a escala Z do objeto selecionado"),
-            (self.pivot_x, "Pivot X", "Pivô X", "Edit the selected object's X pivot", "Editar o pivô X do objeto selecionado"),
-            (self.pivot_y, "Pivot Y", "Pivô Y", "Edit the selected object's Y pivot", "Editar o pivô Y do objeto selecionado"),
+            (
+                self.position_x,
+                "Position X",
+                "Posição X",
+                "Edit the selected object's X position",
+                "Editar a posição X do objeto selecionado",
+            ),
+            (
+                self.position_y,
+                "Position Y",
+                "Posição Y",
+                "Edit the selected object's Y position",
+                "Editar a posição Y do objeto selecionado",
+            ),
+            (
+                self.position_z,
+                "Position Z",
+                "Posição Z",
+                "Edit the selected object's Z position",
+                "Editar a posição Z do objeto selecionado",
+            ),
+            (
+                self.rotation_x,
+                "Rotation X",
+                "Rotação X",
+                "Edit the selected object's X rotation",
+                "Editar a rotação X do objeto selecionado",
+            ),
+            (
+                self.rotation_y,
+                "Rotation Y",
+                "Rotação Y",
+                "Edit the selected object's Y rotation",
+                "Editar a rotação Y do objeto selecionado",
+            ),
+            (
+                self.rotation_z,
+                "Rotation Z",
+                "Rotação Z",
+                "Edit the selected object's Z rotation",
+                "Editar a rotação Z do objeto selecionado",
+            ),
+            (
+                self.scale_x,
+                "Scale X",
+                "Escala X",
+                "Edit the selected object's X scale",
+                "Editar a escala X do objeto selecionado",
+            ),
+            (
+                self.scale_y,
+                "Scale Y",
+                "Escala Y",
+                "Edit the selected object's Y scale",
+                "Editar a escala Y do objeto selecionado",
+            ),
+            (
+                self.scale_z,
+                "Scale Z",
+                "Escala Z",
+                "Edit the selected object's Z scale",
+                "Editar a escala Z do objeto selecionado",
+            ),
+            (
+                self.pivot_x,
+                "Pivot X",
+                "Pivô X",
+                "Edit the selected object's X pivot",
+                "Editar o pivô X do objeto selecionado",
+            ),
+            (
+                self.pivot_y,
+                "Pivot Y",
+                "Pivô Y",
+                "Edit the selected object's Y pivot",
+                "Editar o pivô Y do objeto selecionado",
+            ),
         )
         fields = tuple(
             (field, pt_name if is_pt else en_name, pt_tip if is_pt else en_tip)
             for field, en_name, pt_name, en_tip, pt_tip in field_names
         )
-        for key, (field, name, description) in zip(
-            self._transform_form_labels, fields
-        ):
+        for key, (field, name, description) in zip(self._transform_form_labels, fields):
             label = self._transform_form_labels[key]
             if label is not None:
                 label.setText(name)
@@ -495,9 +616,7 @@ class SidePanel(QWidget):
         )
         self.snap_enabled.setAccessibleName(snap_name)
         self.snap_enabled.setText(snap_name)
-        self.snap_enabled.setAccessibleDescription(
-            snap_description
-        )
+        self.snap_enabled.setAccessibleDescription(snap_description)
         self.snap_enabled.setToolTip(snap_description)
         self.slider.setObjectName("shape_expand_contract_slider")
         self.slider.setAccessibleName(
@@ -519,7 +638,9 @@ class SidePanel(QWidget):
                 if toolbar_button is not None:
                     toolbar_button.setAccessibleName(button.text())
                     toolbar_button.setAccessibleDescription(
-                        button.accessibleDescription() or button.toolTip() or button.text()
+                        button.accessibleDescription()
+                        or button.toolTip()
+                        or button.text()
                     )
                     toolbar_button.setToolTip(button.toolTip() or button.text())
                 if button.isCheckable():
@@ -647,9 +768,7 @@ class SidePanel(QWidget):
             else ("yes" if oid in self.scene.collision_shapes else "no")
         )
         metadata_labels = (
-            ("ID", "Vértices", "Colisão")
-            if is_pt
-            else ("ID", "Vertices", "Collision")
+            ("ID", "Vértices", "Colisão") if is_pt else ("ID", "Vertices", "Collision")
         )
         self.metadata_label.setText(
             f"{metadata_labels[0]}: {obj.id} | "
@@ -1088,7 +1207,9 @@ class SidePanel(QWidget):
         self.search_input.setAccessibleDescription(t["search_objects"])
         self.search_input.setToolTip(t["search_objects"])
         self.list.setAccessibleName(
-            "Lista de objetos da cena" if self.current_lang == "pt" else "Scene objects list"
+            "Lista de objetos da cena"
+            if self.current_lang == "pt"
+            else "Scene objects list"
         )
         self.list.setAccessibleDescription(
             "Selecione um objeto para inspecioná-lo ou editá-lo"

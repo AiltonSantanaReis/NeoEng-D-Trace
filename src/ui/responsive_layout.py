@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.ui.reference_chrome import REFERENCE_COMMAND_WIDTH, REFERENCE_TOOL_RAIL_WIDTH
 from src.ui.viewport_chrome import ViewportChrome
 
 
@@ -22,8 +23,8 @@ class ResponsivePanelLayout:
     """Switch between the desktop splitters and compact panel tabs."""
 
     BREAKPOINT = 1450
-    COMPACT_PANEL_WIDTH = 460
-    DESKTOP_PANEL_WIDTH = 540
+    COMPACT_PANEL_WIDTH = 380
+    DESKTOP_PANEL_WIDTH = 420
 
     def __init__(
         self,
@@ -122,11 +123,8 @@ class ResponsivePanelLayout:
                 button.setToolButtonStyle(style)
 
         action_widths = {
-            "reference_fit_button": 78 if compact else 136,
-            "reference_focus_button": 78 if compact else 100,
-            "reference_pan_button": 78 if compact else 76,
-            "reference_undo_button": 78 if compact else 88,
-            "reference_redo_button": 78 if compact else 88,
+            "reference_undo_button": 78 if compact else REFERENCE_COMMAND_WIDTH,
+            "reference_redo_button": 78 if compact else REFERENCE_COMMAND_WIDTH,
         }
         for name, width in action_widths.items():
             button = getattr(self.owner, name, None)
@@ -141,7 +139,7 @@ class ResponsivePanelLayout:
             # Keep Qt's overflow affordance inside the window at compact
             # resolutions instead of expanding the toolbar past the edge.
             for button in toolbar.findChildren(QToolButton):
-                if button.objectName().startswith("reference_command_button_") or button.objectName() == "reference_select_button":
+                if button.objectName().startswith("reference_command_button_"):
                     button.setMinimumWidth(78)
                     button.setMaximumWidth(78)
                 elif button.objectName() != "reference_menu_button":
@@ -154,8 +152,8 @@ class ResponsivePanelLayout:
             for button in toolbar.findChildren(QToolButton):
                 if button.objectName() == "reference_menu_button":
                     continue
-                button.setMinimumWidth(140)
-                button.setMaximumWidth(140)
+                button.setMinimumWidth(REFERENCE_COMMAND_WIDTH)
+                button.setMaximumWidth(REFERENCE_COMMAND_WIDTH)
 
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
@@ -164,12 +162,12 @@ class ResponsivePanelLayout:
 
         search = getattr(self.owner, "reference_command_search", None)
         if search is not None:
-            search.setMinimumWidth(128 if compact else 260)
-            search.setMaximumWidth(160 if compact else 440)
-
-        focus_button = getattr(self.owner, "reference_focus_button", None)
-        if focus_button is not None:
-            focus_button.setText("Focus")
+            search.setSizePolicy(
+                QSizePolicy.Policy.Expanding,
+                QSizePolicy.Policy.Fixed,
+            )
+            search.setMinimumWidth(128 if compact else 240)
+            search.setMaximumWidth(240 if compact else 520)
 
     def _apply_geometry(self) -> None:
         """Reserve the visible reference palette, viewport and inspector dock."""
@@ -332,7 +330,9 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
 
     main_splitter.addWidget(panel_stack)
     main_splitter.setChildrenCollapsible(False)
-    main_splitter.setSizes([owner.reference_tool_palette.minimumWidth(), 800, 460])
+    main_splitter.setSizes(
+        [REFERENCE_TOOL_RAIL_WIDTH, 800, ResponsivePanelLayout.DESKTOP_PANEL_WIDTH]
+    )
     main_splitter.setStretchFactor(1, 1)
     central_container = QWidget(owner)
     central_layout = QVBoxLayout(central_container)

@@ -22,6 +22,10 @@ from PySide6.QtWidgets import (
 
 from src.ui.icon_library import configure_widget
 
+REFERENCE_COMMAND_WIDTH = 140
+REFERENCE_TOOL_RAIL_WIDTH = 148
+REFERENCE_TOOL_BUTTON_WIDTH = 140
+
 
 def _add_action_group(toolbar: QToolBar, actions: tuple[Any, ...]) -> None:
     for item in actions:
@@ -209,8 +213,8 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
     toolbar.setIconSize(QSize(24, 24))
     # Keep the rail within the reference contract while leaving room for QSS.
-    toolbar.setMinimumWidth(96)
-    toolbar.setMaximumWidth(112)
+    toolbar.setMinimumWidth(REFERENCE_TOOL_RAIL_WIDTH)
+    toolbar.setMaximumWidth(REFERENCE_TOOL_RAIL_WIDTH)
     toolbar.setProperty("uiRole", "reference_tool_palette")
     for action in window.tool_palette.actions():
         if action.isSeparator():
@@ -219,8 +223,8 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
             toolbar.addAction(action)
             button = toolbar.widgetForAction(action)
             if isinstance(button, QToolButton):
-                button.setMinimumSize(QSize(52, 32))
-                button.setMaximumSize(QSize(76, 36))
+                button.setMinimumSize(QSize(REFERENCE_TOOL_BUTTON_WIDTH, 42))
+                button.setMaximumSize(QSize(REFERENCE_TOOL_BUTTON_WIDTH, 46))
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
                 button.setIconSize(QSize(22, 22))
                 # The visible rail creates a new QToolButton for the shared
@@ -274,18 +278,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     )
     _add_action_group(toolbar, (open_button, save_button, export_button))
 
-    fit_action = window.tool_palette.navigation_actions["fit_view"]
-    focus_action = window.tool_palette.navigation_actions["focus_selected"]
-    _add_action_group(toolbar, (fit_action, focus_action))
-    fit_button = _style_action_button(
-        toolbar, fit_action, display_text="Fit View", width=82
-    )
-    reference_focus_button = _style_action_button(
-        toolbar, focus_action, display_text="Focus", width=72
-    )
-    fit_button.setObjectName("reference_fit_button")
-    reference_focus_button.setObjectName("reference_focus_button")
-
     view_button = _command_button(window, "view", "View", "View and navigation menu")
     _menu_button(
         view_button,
@@ -317,30 +309,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     parallax_button.clicked.connect(window.open_scenario_editor)
     view_button.setProperty("referenceActive", True)
     _add_action_group(toolbar, (view_button, collision_button, parallax_button))
-
-    pan_action = window.tool_palette.navigation_actions["move_viewport"]
-    _add_action_group(toolbar, (pan_action,))
-    pan_button = _style_action_button(toolbar, pan_action, display_text="Pan", width=64)
-    select_button = _command_button(
-        window, "selection", "Select", "Selection tools menu"
-    )
-    _menu_button(
-        select_button,
-        tuple(
-            window.tool_palette._tool_actions[name]
-            for name in (
-                "selection",
-                "rect_selection",
-                "ellipse_selection",
-                "lasso_tool",
-                "polygonal_lasso",
-                "magnetic_lasso",
-            )
-        ),
-    )
-    pan_button.setObjectName("reference_pan_button")
-    select_button.setObjectName("reference_select_button")
-    toolbar.addWidget(select_button)
 
     _add_action_group(toolbar, (window.undo_action, window.redo_action))
     undo_button = _style_action_button(
@@ -397,8 +365,9 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     search.setAccessibleName("Command search")
     search.setAccessibleDescription("Search and execute commands with text or Ctrl+K")
     search.setToolTip("Search commands (Ctrl+K)")
-    search.setMinimumWidth(260)
-    search.setMaximumWidth(440)
+    search.setMinimumWidth(240)
+    search.setMaximumWidth(520)
+    search.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
     toolbar.addWidget(search)
 
     window.reference_top_toolbar = toolbar
@@ -406,11 +375,11 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_open_button = open_button
     window.reference_save_button = save_button
     window.reference_export_button = export_button
-    window.reference_fit_button = fit_button
+    window.reference_fit_button = None
     window.reference_pixel_button = None
-    window.reference_pan_button = pan_button
-    window.reference_select_button = select_button
-    window.reference_focus_button = reference_focus_button
+    window.reference_pan_button = None
+    window.reference_select_button = None
+    window.reference_focus_button = None
     window.reference_view_button = view_button
     # Compatibility alias: rendering/mask controls now belong to the View menu.
     window.reference_render_button = view_button
@@ -429,8 +398,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window.save_project_action,
         window.save_project_as_action,
         window.act_export,
-        window.act_fit,
-        focus_action,
         window.act_grid,
         window.act_snap,
         window.act_lit,
@@ -439,8 +406,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window.act_xray3,
         window.mask_viewer_action,
         window.collision_overlay_action,
-        pan_action,
-        window.tool_palette._tool_actions["selection"],
         window.undo_action,
         window.redo_action,
     )
@@ -566,15 +531,10 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
         ("reference_open_button", "open"),
         ("reference_save_button", "save"),
         ("reference_export_button", "export"),
-        ("reference_fit_button", "fit"),
-        ("reference_pixel_button", "pixel"),
-        ("reference_focus_button", "focus"),
         ("reference_view_button", "view"),
         ("reference_collision_button", "collision"),
         ("reference_parallax_button", "parallax"),
         ("reference_edit_button", "edit"),
-        ("reference_pan_button", "pan"),
-        ("reference_select_button", "select"),
         ("reference_undo_button", "undo"),
         ("reference_redo_button", "redo"),
     ):

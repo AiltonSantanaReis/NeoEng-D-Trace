@@ -156,19 +156,21 @@ def test_stage4_visible_reference_toolbar_preserves_accessibility_focus_and_mode
                 else:
                     assert button.property("uiRole") == "reference_top_action"
                     assert button.property("iconKey") == action.property("iconKey")
-        assert window.reference_focus_button.isVisibleTo(window)
-        assert window.reference_focus_button.focusPolicy().name != "NoFocus"
-        assert window.reference_focus_button.accessibleName()
+        assert window.reference_fit_button is None
+        assert window.reference_focus_button is None
+        assert window.reference_pan_button is None
+        assert window.reference_select_button is None
         assert all(ord(character) <= 0xFFFF for character in window.act_clean.text())
         assert not window.act_clean.icon().isNull()
         window.resize(1920, 1080)
         qt_app.processEvents()
         assert toolbar.toolButtonStyle().name == "ToolButtonTextUnderIcon"
-        assert window.reference_focus_button.text() == "Focus"
+        assert window.reference_command_search.isVisibleTo(window)
+        assert window.reference_command_search.width() >= 240
         window.resize(1280, 720)
         qt_app.processEvents()
         assert toolbar.toolButtonStyle().name == "ToolButtonIconOnly"
-        assert window.reference_focus_button.text() == "Focus"
+        assert window.reference_command_search.isVisibleTo(window)
     finally:
         window.close()
         qt_app.processEvents()
@@ -185,13 +187,9 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             window.reference_open_button,
             window.reference_save_button,
             window.reference_export_button,
-            window.reference_fit_button,
-            window.reference_focus_button,
             window.reference_view_button,
             window.reference_collision_button,
             window.reference_parallax_button,
-            window.reference_pan_button,
-            window.reference_select_button,
             window.reference_undo_button,
             window.reference_redo_button,
         )
@@ -199,13 +197,9 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Open",
             "Save",
             "Export",
-            "Fit View",
-            "Focus",
             "View",
             "Collision",
             "Scenario",
-            "Pan",
-            "Select",
             "Undo",
             "Redo",
         ]
@@ -232,16 +226,14 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             "Export Collision (JSON)",
             "Export Collision (TXT)",
         ]
-        assert [
-            action.text() for action in window.reference_select_button.menu().actions()
-        ] == [
-            "Selection",
-            "Rect",
-            "Ellipse",
-            "Lasso",
-            "Polygonal\nLasso",
-            "Magnetic\nLasso",
-        ]
+        assert (
+            window.tool_palette._tool_actions["selection"]
+            in window.tool_palette.actions()
+        )
+        assert (
+            window.tool_palette._tool_actions["magnetic_lasso"]
+            in window.tool_palette.actions()
+        )
         # The complete application menu is the isolated control at the bottom
         # of the visible left rail because the native menu bar is hidden.
         assert window.reference_menu_button.isVisibleTo(window) is True
@@ -287,7 +279,6 @@ def test_reference_toolbar_uses_short_labels_and_preserves_composite_menus(qt_ap
             window.reference_export_button,
             window.reference_view_button,
             window.reference_collision_button,
-            window.reference_select_button,
         ):
             assert button.popupMode().name == "InstantPopup"
     finally:

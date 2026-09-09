@@ -160,7 +160,11 @@ class ViewportOverlayBar(QWidget):
             "xray_2": "Raio-X 2",
             "xray_3": "Raio-X 3",
         }
-        mode = mode_labels.get(state.view_mode, state.view_mode.title()) if is_pt else state.view_mode.title()
+        mode = (
+            mode_labels.get(state.view_mode, state.view_mode.title())
+            if is_pt
+            else state.view_mode.title()
+        )
         if self._compact:
             self.view_button.setText(mode)
             self.zoom_button.setText(f"{state.zoom:.2f}x")
@@ -178,16 +182,20 @@ class ViewportOverlayBar(QWidget):
         self.snap_button.setText(
             f"Encaixe {snap_state}"
             if is_pt and self._compact
-            else f"Encaixe: {snap_state}"
-            if is_pt
-            else f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
+            else (
+                f"Encaixe: {snap_state}"
+                if is_pt
+                else f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
+            )
         )
         if is_pt:
             view_tip = "Escolher o modo de renderização da viewport"
             zoom_tip = "Escolher o zoom da viewport"
             snap_tip = "Alternar o encaixe de vértices na grade ativa"
             view_description = f"Escolher o modo de renderização; modo atual: {mode}"
-            zoom_description = f"Escolher o zoom da viewport; zoom atual: {state.zoom:.2f}x"
+            zoom_description = (
+                f"Escolher o zoom da viewport; zoom atual: {state.zoom:.2f}x"
+            )
             snap_description = (
                 "Alternar o encaixe de vértices na grade ativa; "
                 f"estado atual: {snap_state}"
@@ -205,15 +213,9 @@ class ViewportOverlayBar(QWidget):
         self.view_button.setToolTip(view_tip)
         self.zoom_button.setToolTip(zoom_tip)
         self.snap_button.setToolTip(snap_tip)
-        self.view_button.setAccessibleDescription(
-            view_description
-        )
-        self.zoom_button.setAccessibleDescription(
-            zoom_description
-        )
-        self.snap_button.setAccessibleDescription(
-            snap_description
-        )
+        self.view_button.setAccessibleDescription(view_description)
+        self.zoom_button.setAccessibleDescription(zoom_description)
+        self.snap_button.setAccessibleDescription(snap_description)
 
 
 class ViewportChrome(QWidget):
@@ -249,10 +251,16 @@ class ViewportChrome(QWidget):
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
         self.overlay.set_compact(self.canvas_stack.width() < 900)
+        self.overlay.adjustSize()
+        overlay_width = min(
+            max(self.overlay.sizeHint().width(), 320),
+            560,
+            max(1, self.canvas_stack.width() - 16),
+        )
         self.overlay.setGeometry(
             8,
             10,
-            max(1, self.canvas_stack.width() - 16),
+            overlay_width,
             self.overlay.height(),
         )
         self.overlay.raise_()

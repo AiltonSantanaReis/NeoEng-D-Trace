@@ -70,6 +70,7 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
             assert overlay.rect().contains(child.geometry())
         initial_geometry = overlay.geometry()
         assert 0 <= initial_geometry.y() <= 16
+        assert initial_geometry.width() < window.viewport_chrome.canvas_stack.width()
         overlay.snap_button.click()
         qt_app.processEvents()
         assert overlay.geometry() == initial_geometry
@@ -80,6 +81,7 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
         assert overlay.view_button.text().startswith("View: ")
         assert overlay.zoom_button.text().startswith("Zoom: ")
         assert 0 <= overlay.geometry().y() <= 16
+        assert overlay.geometry().width() < window.viewport_chrome.canvas_stack.width()
     finally:
         window.close()
 

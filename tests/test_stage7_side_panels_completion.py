@@ -79,6 +79,8 @@ def test_objects_panel_has_compact_commands_and_real_selection(qt_app):
         qt_app.processEvents()
 
         _assert_toolbar_contract(panel.properties_action_toolbar, 3)
+        panel.modify_shape_group.setExpanded(True)
+        panel.export_group.setExpanded(True)
         _assert_toolbar_contract(panel.modify_action_toolbar, 5)
         _assert_toolbar_contract(panel.export_action_toolbar, 2)
         assert panel.scroll_area.verticalScrollBar().maximum() >= 0

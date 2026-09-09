@@ -55,18 +55,18 @@ QToolBar#scenario_editor_toolbar QToolButton::menu-button {{
     width: 14px;
 }}
 QToolBar#reference_tool_palette {{
-    min-width: 96px;
-    max-width: 112px;
+    min-width: 148px;
+    max-width: 148px;
     padding: 2px 2px;
     spacing: 2px;
     background: {tokens.surface};
     border-right: 1px solid {tokens.border};
 }}
 QToolBar#reference_tool_palette QToolButton {{
-    min-width: 52px;
-    max-width: 76px;
-    min-height: 32px;
-    max-height: 36px;
+    min-width: 140px;
+    max-width: 140px;
+    min-height: 42px;
+    max-height: 46px;
     padding: 2px;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -158,6 +158,17 @@ QLineEdit#reference_command_search {{
 }}
 QLineEdit#reference_command_search:focus {{
     border-color: {tokens.focus};
+}}
+QGroupBox QToolButton#inspector_section_toggle {{
+    text-align: left;
+    font-weight: 600;
+    color: {tokens.text_primary};
+    padding: 4px 6px;
+    border: 0px;
+    background: transparent;
+}}
+QGroupBox QToolButton#inspector_section_toggle:hover {{
+    background: {accent_hover_soft};
 }}
 QTabWidget#reference_panel_tabs {{
     background: {tokens.surface};
