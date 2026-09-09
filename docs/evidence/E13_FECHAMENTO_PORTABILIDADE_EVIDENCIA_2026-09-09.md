@@ -61,7 +61,8 @@ hash, resultado observado, limitação e commit correspondente.
 ## Comandos previstos e artefatos obrigatórios
 
 Os comandos devem ser executados a partir do worktree oficial, com o Python
-canônico `C:\Users\atnco\Pictures\NeoEng-D-Trace\.venv\Scripts\python.exe`:
+canônico do workspace (`<workspace-root>/.venv/Scripts/python.exe`). Caminhos
+pessoais não devem ser gravados em manifestos, relatórios ou pacotes:
 
 1. `tools/validate_continuity_registry.py`;
 2. suíte oficial completa e gates estáticos;

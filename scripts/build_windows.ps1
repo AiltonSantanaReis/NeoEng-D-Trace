@@ -55,6 +55,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Unable to resolve source commit" }
     $sourceBranch = (git branch --show-current).Trim()
     if (-not $sourceBranch) { $sourceBranch = "(detached)" }
+    $releaseRootRelative = $releaseRoot.Substring($repositoryRoot.Length + 1).Replace('\', '/')
     $continuityRegistryPath = Join-Path $repositoryRoot "docs\CONTROLE_CONTINUIDADE_ATUAL.json"
     if (-not (Test-Path -LiteralPath $continuityRegistryPath)) {
         throw "Continuity registry is missing: $continuityRegistryPath"
@@ -95,14 +96,14 @@ try {
         source_branch = $sourceBranch
         master_plan_commit = $masterPlanCommit
         continuity_registry_sha256 = $continuityRegistrySha256
-        python_command = $pythonCommand
+        python_command = "canonical-project-python"
         python_prefix = $pythonPrefix
         binary = [ordered]@{
             path = "portable/NeoEng-D-Trace/NeoEng-D-Trace.exe"
             sha256 = $binarySha256
             size = (Get-Item -LiteralPath $binaryPath).Length
         }
-        release_root = $releaseRoot
+        release_root = $releaseRootRelative
         portable_smoke_report = "smoke/portable-smoke-report.json"
         generated_at_utc = (Get-Date).ToUniversalTime().ToString("o")
     }
