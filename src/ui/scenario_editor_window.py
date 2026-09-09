@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QAction, QActionGroup
+from PySide6.QtGui import QAction, QActionGroup, QKeySequence
 from PySide6.QtWidgets import (
     QComboBox,
     QLabel,
@@ -180,6 +180,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.reset_action = QAction(self)
         self.export_action = QAction(self)
         self.composition_action = QAction(self)
+        self.composition_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+E"))
         self.undo_action = QAction(self)
         self.redo_action = QAction(self)
         self.overlay_action = QAction(self)
