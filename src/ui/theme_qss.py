@@ -345,6 +345,10 @@ QLabel#panel_section_title {{
     font-weight: bold;
     font-size: 14px;
 }}
+QLabel#scenario_group_drop_hint {{
+    color: {tokens.accent};
+    font-weight: 600;
+}}
 
 QScrollBar:vertical {{
     background: {tokens.window};

@@ -121,7 +121,6 @@ class SceneAuthoringGroupStack(QWidget):
         self.tree.drop_preview_changed.connect(self._show_drop_preview)
         self.drop_hint = QLabel("", self)
         self.drop_hint.setObjectName("scenario_group_drop_hint")
-        self.drop_hint.setStyleSheet("color: #59d8e8; font-weight: 600;")
 
         self.name_edit = QLineEdit(self)
         self.name_edit.setObjectName("scenario_group_name")
