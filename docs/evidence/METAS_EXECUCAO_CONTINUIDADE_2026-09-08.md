@@ -123,8 +123,8 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 |---|---|---|
 | E13-A pacote portátil final | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | r71 limpo, hashes, smoke e execução fora do checkout |
 | E13-B MSI/instalador | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | WiX 4.0.6, instalação/desinstalação e preservação de estado |
-| E13-C documentação/privacidade | `IN_PROGRESS` | auditoria de referências locais, manifestos e limites; findings históricos preservados |
-| E13-D auditoria final | `DEFERRED_UNTIL_FINAL_AUDIT` | symlink e revisão humana no SHA/build final |
+| E13-C documentação/privacidade | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | 135 manifests no gate oficial, privacidade, limites e rollback |
+| E13-D auditoria final | `IN_PROGRESS` | build final r72, symlink e revisão humana |
 
 ### Sublotes ativos de E08-C
 

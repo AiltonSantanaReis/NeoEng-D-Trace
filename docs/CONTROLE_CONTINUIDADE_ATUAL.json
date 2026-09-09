@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Concluir E13-C com auditoria documental/privacidade; manter symlink e revisão humana exclusivamente para a auditoria final.",
+    "next_action": "Executar E13-D: auditoria final com build r72, symlink final, revisão humana e findings formais.",
     "active_lot": {
       "id": "E13",
       "status": "IN_PROGRESS",
-      "scope": "E13-C: auditoria documental, privacidade, manifestos e limitações após E13-A/B",
+      "scope": "E13-D: auditoria final do pacote r72, symlink e revisão humana",
       "evidence": "docs/evidence/PLANO_MESTRE_FILA_EXECUCAO_CENTRAL_2026-09-09.md",
       "functional_implementation_allowed": true
     },
@@ -62,7 +62,7 @@
     "head_role": "E13_A_B_R71_SOURCE_ANCHOR_E13_C_OPEN",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_E13_R71_ARTIFACTS_PRESERVED_E13_C_OPEN"
+    "status": "TRACKED_CLEAN_E13_R71_ARTIFACTS_PRESERVED_FINAL_AUDIT_PENDING"
   },
   "gates": {
     "official_suite": {

@@ -8,7 +8,7 @@
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
 **E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
 **E12:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados tecnicamente no r69; auditoria final permanece pendente
-**E13:** `IN_PROGRESS` — E13-A/B comprovados no r71; E13-C em auditoria documental/privacidade
+**E13:** `IN_PROGRESS` — E13-A/B/C comprovados; E13-D é a auditoria final em execução
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -54,8 +54,8 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir E13-C com auditoria documental/privacidade, referências locais,
-manifestos e limitações. Depois, executar a auditoria final reservada.
+Executar E13-D com build final r72, symlink, revisão humana, findings e
+decisão formal. Só depois encerrar o Plano Mestre.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.

@@ -25,8 +25,8 @@ reservados para E13-D na auditoria final.
 |---|---|---|
 | E13-A — pacote portátil final | `IN_PROGRESS` | build limpa r70 ou posterior, `source_commit`, manifesto, hash do binário e ZIP, smoke completo e execução fora do checkout |
 | E13-B — MSI/instalador | `PLANNED` | WiX 4.0.6 pinado, MSI hashado, instalação per-user, execução CLI/GUI/exportação, desinstalação sem resíduos e estado do usuário preservado |
-| E13-C — documentação/privacidade | `PLANNED` | referências locais removidas dos artefatos versionados, manifestos coerentes, limitações e rollback documentados |
-| E13-D — auditoria final | `DEFERRED_UNTIL_FINAL_AUDIT` | somente no pacote final: symlink, revisão humana, findings e decisão formal |
+| E13-C — documentação/privacidade | `PASS` | 135 manifests no gate oficial, referências locais removidas dos novos artefatos, limitações e rollback documentados |
+| E13-D — auditoria final | `IN_PROGRESS` | somente no pacote final: symlink, revisão humana, findings e decisão formal |
 
 Nenhuma meta muda para `PASS` antes de possuir teste executado, artefato,
 hash, resultado observado, limitação e commit correspondente.
@@ -81,10 +81,9 @@ reclassificada como evidência de E13.
 
 ## Decisão de abertura
 
-`E13` está autorizado para execução técnica contínua no mesmo worktree. E13-A
-e E13-B passaram o checkpoint técnico no r71; E13-C permanece `IN_PROGRESS`
-até concluir a auditoria documental corrente. E13-D continua explicitamente
-adiado para a auditoria final; não há aprovação de release, push, merge ou tag.
+`E13` está autorizado para execução técnica contínua no mesmo worktree. E13-A,
+E13-B e E13-C passaram o checkpoint técnico. E13-D está em execução com a
+auditoria final reservada; não há aprovação de release, push, merge ou tag.
 
 ## Evidência corrente do r71
 
@@ -120,14 +119,18 @@ O MSI foi gerado com WiX `4.0.6`, mantendo `UpgradeCode` estável:
 - relatório SHA-256:
   `86C643BA5430D0579433C4F7D7A2A610DE3AC66249C9155B63EE15EBD54932EF`.
 
-## Auditoria documental e privacidade — finding preservado
+## Auditoria documental e privacidade — E13-C
 
-O verificador global `tools/evidence_integrity.py --require-tracked` foi
-executado e falhou em manifests históricos de `docs/evidence/artifacts/`, com
-hash/bytes divergentes de fontes que evoluíram depois dos snapshots e um
-relatório histórico com CRLF. Esses findings não foram apagados nem
-reclassificados; os snapshots não foram reescritos porque a política proíbe
-alteração retroativa para fabricar `PASS`.
+Uma execução diagnóstica sem `--git-blob` foi preservada como `DIAGNOSTIC_ONLY`:
+ela comparou snapshots históricos de `docs/evidence/artifacts/` com o worktree
+atual e reportou hash/bytes divergentes e CRLF. Esses findings não foram
+apagados nem reclassificados; os snapshots não foram reescritos.
+
+O gate oficial foi então executado com o contrato do CI:
+`tools/evidence_integrity.py --require-tracked --git-blob`. Resultado observado:
+`Evidence integrity passed: 135 manifests validated.` O modo `git-blob` leu
+cada snapshot contra o `source_commit` registrado, preservando a imutabilidade
+histórica sem mascarar alterações correntes.
 
 O gerador de proveniência foi corrigido no commit `b7244ca` para eliminar
 caminhos pessoais de novos artefatos. O manifesto portátil r71 e a
@@ -135,7 +138,9 @@ proveniência corrente foram inspecionados sem referências a perfis de usuário
 `/Users`, `/home` ou `AppData`. A validação de manifestos de evidência nova
 permanece limitada pela regra de rastreamento/ignore do pacote portátil; o
 resultado global histórico continua registrado como `FAIL` e mantém E13-C em
-`IN_PROGRESS` até a reconciliação documental aprovada.
+`PASS` para E13-C: os 135 manifests versionados passaram no modo oficial, os
+novos manifestos de proveniência r71 não possuem caminhos pessoais, e os
+limites/rollback estão documentados.
 
 O roteiro de captura de recuperação E11 também produziu um finding
 `DIAGNOSTIC_ONLY`: a ação automatizada não acionou “Recuperar Último Válido”,

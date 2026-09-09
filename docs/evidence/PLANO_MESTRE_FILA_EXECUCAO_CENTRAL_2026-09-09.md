@@ -79,8 +79,8 @@ itens continuam sujeitos à auditoria final, conforme a decisão de continuidade
 |---|---|---|---|
 | E13-A | Qualificar pacote portátil final | `CONCLUÍDO_TECNICAMENTE` | build r71, hashes, smoke e execução fora do checkout |
 | E13-B | Qualificar MSI/instalador | `CONCLUÍDO_TECNICAMENTE` | WiX 4.0.6, instalação/desinstalação, smoke instalado e rollback de estado |
-| E13-C | Auditoria técnica de documentação e privacidade | `EM_EXECUÇÃO` | referências locais removidas, manifestos e limites consistentes; finding histórico preservado |
-| E13-D | Auditoria final reservada | `PENDENTE` | symlink, revisão humana e findings finais somente no pacote final |
+| E13-C | Auditoria técnica de documentação e privacidade | `CONCLUÍDO_TECNICAMENTE` | 135 manifests no gate oficial, referências locais removidas, limites e rollback documentados |
+| E13-D | Auditoria final reservada | `EM_EXECUÇÃO` | build final r72, symlink, revisão humana e findings formais |
 
 ## Gates finais reservados
 
@@ -98,6 +98,5 @@ aceitas, o pacote portátil/MSI estiver qualificado, a auditoria final executar
 symlinks e revisão humana, e o registro canônico apontar para o SHA/build final.
 
 **Última atualização:** 2026-09-09  
-**Próximo status esperado:** concluir E13-A/B/C com build portátil final,
-MSI/instalador, rollback, auditoria documental e pacote hashado; então executar
-E13-D na auditoria final reservada.
+**Próximo status esperado:** concluir E13-D com build final r72, symlink,
+revisão humana, findings e decisão formal; somente então encerrar o Plano Mestre.
