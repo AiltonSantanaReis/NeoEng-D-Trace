@@ -163,7 +163,7 @@
     "E10": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E11": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E12": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E13": "COMPLETED_POST_E13_CORRECTIONS_IN_PROGRESS"
+    "E13": "IN_PROGRESS"
   },
   "handoff_requirements": [
     "Uma unica branch/base declarada antes de qualquer teste.",
