@@ -20,11 +20,58 @@ sem inferir suporte a rigging, UV editing, culling ou desempenho de produção.
 
 | Meta | Estado | Saída obrigatória |
 |---|---|---|
-| E12-A contrato/schema e limites | `EM_EXECUÇÃO` | pacote determinístico, hashes e negativos |
-| E12-B animação e playback | `PENDENTE` | frames, timeline, seed/timestep e destino |
-| E12-C vertical slice híbrida 3D | `PENDENTE` | Godot e Unity reais materializando câmera, mesh, material e luz |
-| E12-D UX/documentação | `PENDENTE` | mensagens, limitação explícita e captura do binário |
+| E12-A contrato/schema e limites | `CONCLUÍDO_TECNICAMENTE` | pacote determinístico, hashes e negativos |
+| E12-B animação e playback | `CONCLUÍDO_TECNICAMENTE` | frames coerentes, timeline, timestep e destino |
+| E12-C vertical slice híbrida 3D | `CONCLUÍDO_TECNICAMENTE` | Godot e Unity reais materializando câmera, mesh, material e luz |
+| E12-D UX/documentação | `EM_EXECUÇÃO` | mensagens, limitação explícita e captura do binário |
 | E12-E fechamento técnico | `PENDENTE` | suíte, build, smoke, manifesto e promoção |
 
 Symlinks e revisão humana permanecem reservados exclusivamente à auditoria
 final. Nenhum `SKIP` será promovido a `PASS` neste lote.
+
+## Implementação e evidência técnica
+
+O commit `6275baf` adiciona o exportador determinístico
+`src/exporters/hybrid_composition_export.py`, a operação `--export-hybrid` do
+launcher, a fixture `scripts/prepare_e12_hybrid_fixture.py` e o harness real
+`scripts/audit_e12_hybrid_engines.py`. O contrato falha fechado para schema,
+perspectiva, limites de câmera, IDs duplicados, triângulos inválidos,
+componentes fora do pacote, symlinks, manifests aninhados e divergência de
+hash. O status `VERTICAL_SLICE_ONLY` é obrigatório e não representa o release
+3D profissional completo.
+
+O pacote foi gerado a partir do pacote E11 validado e asset real `hero.png` em:
+
+`artifacts/e12-hybrid-fixture-20260909-r3/package/`
+
+- manifest híbrido SHA-256: `98ED8A92EFA9372504E0D683BE608B14FEE166DD1F8A720DC906B7765426BFC3`;
+- 11 componentes vinculados, 2 frames PNG e 1 clip com keyframes `0.0 → 1.0`;
+- exportação pelo CLI do produto: `Hybrid composition exported successfully (VERTICAL_SLICE_ONLY)`;
+- testes focados de composição/animação/CLI: `55 passed`;
+- compileall, Black, Flake8 focado e `git diff --check`: `PASS`.
+
+## Destinos reais
+
+O harness `scripts/audit_e12_hybrid_engines.py` executou o mesmo pacote em
+Godot `4.7-stable (official)` e Unity `6000.5.7f1`. O relatório final é
+`artifacts/e12-engine-audit-20260909-r4/e12-engine-report.json`, SHA-256
+`FF67312CFF83E07173D26B2067021E844AB5F91B00039AE53403628604646119`.
+
+Ambos retornaram `SUCCESS` com câmera perspectiva, 1 mesh, 1 material, 1 luz,
+1 clip, 2 frames, asset carregado e playback em `y=0.125`. Unity também gerou
+a captura real renderizada
+`artifacts/e12-engine-audit-20260909-r4/e12-hybrid-unity-capture.png`, SHA-256
+`3A46871D37989370D472E6D05F4E06CADED0485C32EA3ABB90D883A108A970D6`. Godot
+foi validado em modo headless com rendering dummy; por isso a captura visual
+de destino Godot permanece ausente e não é inferida como existente. As mensagens
+externas de UnityConnect/debugger permanecem limitações ambientais conhecidas,
+sem falha do relatório do harness.
+
+## Findings corrigidos durante o lote
+
+1. A primeira fixture registrava caminhos absolutos nos componentes copiados;
+   o exporter foi corrigido para registrar caminhos relativos ao pacote e a
+   validação positiva foi repetida.
+2. A primeira execução real encontrou acesso inválido à textura headless do
+   Godot e erro de compilação no harness Unity. O harness foi corrigido,
+   repetido em nova pasta de auditoria e o relatório final acima passou.

@@ -63,6 +63,16 @@ itens continuam sujeitos à auditoria final, conforme a decisão de continuidade
    commit rastreável.
 4. Atualizar o registro e só então abrir E12, relendo governança e plano.
 
+## Metas ativas de E12
+
+| ID | Meta | Estado | Evidência objetiva |
+|---|---|---|---|
+| E12-A | Contrato/schema e limites | `CONCLUÍDO_TECNICAMENTE` | exporter versionado, pacote hash-bound e negativos focados |
+| E12-B | Animação e playback | `CONCLUÍDO_TECNICAMENTE` | 2 frames coerentes, clip `0.0 → 1.0`, CLI e teste de persistência do manifesto |
+| E12-C | Vertical slice híbrida 3D | `CONCLUÍDO_TECNICAMENTE` | Godot 4.7 e Unity 6000.5.7f1 reais, relatório `e12-engine-audit-20260909-r4` |
+| E12-D | UX, mensagens e documentação | `EM_EXECUÇÃO` | limitação `VERTICAL_SLICE_ONLY` documentada; captura do binário ainda será registrada após r68 |
+| E12-E | Fechamento técnico | `PENDENTE` | suíte oficial, build r68, smoke, manifesto e promoção |
+
 ## Gates finais reservados
 
 | Gate | Estado | Regra |
@@ -79,4 +89,5 @@ aceitas, o pacote portátil/MSI estiver qualificado, a auditoria final executar
 symlinks e revisão humana, e o registro canônico apontar para o SHA/build final.
 
 **Última atualização:** 2026-09-09  
-**Próximo status esperado:** fechar E12-A/B/C/D/E com pacote determinístico e destinos reais.
+**Próximo status esperado:** concluir E12-D com captura do binário, gerar a
+build oficial E12 e então fechar E12-E antes de abrir E13.

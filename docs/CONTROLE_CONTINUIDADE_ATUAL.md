@@ -1,12 +1,13 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00–E10 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E11 TECHNICAL_CHECKPOINT_PASS / E12 IN_PROGRESS`
+**Estado:** `E00–E11 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E12 IN_PROGRESS (D/E)`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
 **E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
+**E12:** `IN_PROGRESS` — A/B/C comprovados; D/E aguardam captura do binário e build r68
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -16,9 +17,8 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. O SHA-fonte executável do código E10 é
-`2486cd1b7684b02f01aae483ca2440b5ab454004`; a build r55 foi gerada com este
-SHA-fonte. A existência de outras
+`Ailton/e08-renderer-20260908`. O SHA-fonte E12 atual é `6275baf`; a build
+r68 será gerada após o fechamento documental deste checkpoint. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
 
@@ -53,7 +53,8 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Executar E12 conforme o Plano Mestre e a fila central. Depois, promover E13.
+Concluir E12-D/E12-E com captura do binário, build r68, smoke, suíte e
+promoção técnica. Depois, promover E13.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.

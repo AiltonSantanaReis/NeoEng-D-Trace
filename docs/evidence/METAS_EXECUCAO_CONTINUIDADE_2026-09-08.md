@@ -103,9 +103,19 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 | 5 | E09 autoria/exportação vetorial | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | fluxo editável, persistente, exportável e comprovado no binário r52 |
 | 6 | E10 integração com engines | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | importação/execução real, comparação e fechamento |
 | 7 | E11 composição/runtime | `TECHNICAL_CHECKPOINT_PASS` | cena executada fora do editor, recovery, suíte e r67 |
-| 8 | E12 recursos avançados/híbrido 3D | `IN_PROGRESS` | reler contrato, implementar e validar destinos |
+| 8 | E12 recursos avançados/híbrido 3D | `IN_PROGRESS — D/E` | captura do binário, build r68, smoke, suíte e fechamento |
 | 9 | E13 fechamento/portabilidade | `PLANNED` | instaladores, documentação e baseline final |
 | 10 | Auditoria final | `PLANNED` | symlinks, revisão humana, findings e decisão formal |
+
+### Sublotes ativos de E12
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E12-A contrato/schema e limites | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pacote hash-bound, rejeições e caminhos seguros |
+| E12-B animação/playback | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | frames coerentes, timeline e CLI |
+| E12-C vertical slice híbrida | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | Godot e Unity reais com câmera, mesh, material, luz e playback |
+| E12-D UX/documentação | `IN_PROGRESS` | captura real do binário, limitação explícita e mensagem operacional |
+| E12-E fechamento técnico | `PLANNED` | build r68, smoke, suíte, manifesto e promoção |
 
 ### Sublotes ativos de E08-C
 
