@@ -74,9 +74,11 @@ capturas e limitações reproduzíveis.
   recusou a cena com `professional scene asset hash does not match`; o relatório
   marca `negative_hash.rejected=true` e restaura a fonte válida.
 - Regressão Python focada: `80 passed` em persistência/exportação, adapters,
-  E09 e registro de continuidade. A suíte oficial anterior ao lote permanece
-  `2098 passed, 2 skipped, 1 warning`; uma nova suíte completa será executada
-  depois de E10-D/E10-E.
+  E09 e registro de continuidade. A suíte oficial executada na fronteira atual
+  permanece `2098 passed, 2 skipped, 1 warning` (`python -m pytest -q`, 73,46 s).
+  Os dois `SKIP` continuam sendo os testes de symlink, deliberadamente adiados
+  para a auditoria final; o aviso é uma depreciação do construtor Qt e não
+  alterou o resultado.
 
 ## E10-D — Unity
 
