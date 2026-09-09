@@ -1510,6 +1510,7 @@ class MaskViewerDialog(QDialog):
         self.param_labels: Dict[str, QLabel] = {}
         self.layer_checkboxes: Dict[str, QCheckBox] = {}
         self.preset_actions: Dict[str, QAction] = {}
+        self.preset_buttons: Dict[str, QToolButton] = {}
         self.view_mode_buttons: list[QPushButton] = []
         self.view_mode_button_group: QButtonGroup | None = None
 
@@ -1695,7 +1696,9 @@ class MaskViewerDialog(QDialog):
             button.setSizePolicy(
                 QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
             )
+            button.setToolTip(action.toolTip())
             preset_layout.addWidget(button, 1)
+            self.preset_buttons[preset_id] = button
         self.preset_actions["Basic"].setChecked(True)
         self.toolbar.addWidget(preset_container)
         self.view_mode_label = QLabel()
@@ -1886,8 +1889,17 @@ class MaskViewerDialog(QDialog):
             # Keep all four primary commands visible in the narrow controls
             # rail. The full translated command remains discoverable through
             # tooltip and accessibility text instead of QToolBar overflow.
-            action.setText(label)
+            compact_label = label
+            if preset_id == "Enhanced" and self.current_lang == "pt":
+                compact_label = "Aprim."
+            elif preset_id == "GrabCut":
+                compact_label = "GrabCut"
+            action.setText(compact_label)
             action.setToolTip(t["detection_action"].format(preset=label))
+            button = self.preset_buttons.get(preset_id)
+            if button is not None:
+                button.setToolTip(t["detection_action"].format(preset=label))
+                button.setAccessibleName(label)
         self.view_mode_label.setText(t["view_mode"])
         self.view_mode_group.setTitle(t["view_mode"])
         view_keys = (
