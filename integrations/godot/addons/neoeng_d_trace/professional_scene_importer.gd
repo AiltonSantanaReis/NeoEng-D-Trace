@@ -119,6 +119,18 @@ static func import_scene(export_path: String) -> Dictionary:
         sprite.set_meta("neoeng_object_locked", bool(object_data["locked"]))
         sprite.set_meta("neoeng_pivot", transform["pivot"])
         layer.add_child(sprite)
+        if object_data.has("vector_geometry"):
+            var geometry: Dictionary = object_data["vector_geometry"]
+            var collision_body := StaticBody2D.new()
+            collision_body.name = "VectorCollision_" + str(object_data["id"])
+            collision_body.position = sprite.position
+            collision_body.rotation = sprite.rotation
+            collision_body.scale = sprite.scale
+            collision_body.set_meta("neoeng_source_sha256", str(geometry["source_sha256"]))
+            var collision := CollisionPolygon2D.new()
+            collision.polygon = _polygon_from_points(geometry["collision_polygon"])
+            collision_body.add_child(collision)
+            layer.add_child(collision_body)
 
     for socket_value in scene_data["sockets"]:
         var socket: Dictionary = socket_value
@@ -180,10 +192,13 @@ static func _validate_payload(payload: Dictionary, errors: Array) -> void:
     var object_ids := {}
     for object_value in scene["objects"]:
         var object: Variant = object_value
-        if not _exact_keys(object, ["id", "asset_id", "layer_id", "transform", "visible", "locked"]) or object_ids.has(object["id"]) or not asset_ids.has(object["asset_id"]) or not layer_ids.has(object["layer_id"]) or not _valid_transform(object["transform"]):
+        var object_keys_valid := _exact_keys(object, ["id", "asset_id", "layer_id", "transform", "visible", "locked"]) or _exact_keys(object, ["id", "asset_id", "layer_id", "transform", "visible", "locked", "vector_geometry"])
+        if not object_keys_valid or object_ids.has(object["id"]) or not asset_ids.has(object["asset_id"]) or not layer_ids.has(object["layer_id"]) or not _valid_transform(object["transform"]):
             errors.append("professional scene object references are invalid")
         else:
             object_ids[object["id"]] = true
+            if object.has("vector_geometry") and not _valid_vector_geometry(object["vector_geometry"]):
+                errors.append("professional scene vector geometry is invalid")
     for socket_value in scene["sockets"]:
         var socket: Variant = socket_value
         if not _valid_socket(socket, layer_ids, object_ids):
@@ -194,6 +209,33 @@ static func _valid_transform(value: Variant) -> bool:
     if not _exact_keys(value, ["position", "rotation", "scale", "pivot", "flip_x", "flip_y"]):
         return false
     return _vector3(value["position"]) and _vector3(value["rotation"]) and _vector3_positive(value["scale"]) and _vector2_unit(value["pivot"]) and typeof(value["flip_x"]) == TYPE_BOOL and typeof(value["flip_y"]) == TYPE_BOOL
+
+
+static func _valid_vector_geometry(value: Variant) -> bool:
+    if not _exact_keys(value, ["algorithm", "source_sha256", "image_size", "original_polygon", "polygon", "collision_polygon", "detection_parameters"]):
+        return false
+    if not _lower_hex_hash(value["source_sha256"]) or typeof(value["algorithm"]) != TYPE_STRING or typeof(value["detection_parameters"]) != TYPE_DICTIONARY:
+        return false
+    var image_size: Variant = value["image_size"]
+    if not _exact_keys(image_size, ["width", "height"]) or int(image_size["width"]) <= 0 or int(image_size["height"]) <= 0:
+        return false
+    return _valid_polygon(value["original_polygon"]) and _valid_polygon(value["polygon"]) and _valid_polygon(value["collision_polygon"])
+
+
+static func _valid_polygon(value: Variant) -> bool:
+    if typeof(value) != TYPE_ARRAY or value.size() < 3:
+        return false
+    for point_value in value:
+        if not _exact_keys(point_value, ["x", "y"]) or not _finite(point_value["x"]) or not _finite(point_value["y"]):
+            return false
+    return true
+
+
+static func _polygon_from_points(value: Array) -> PackedVector2Array:
+    var points := PackedVector2Array()
+    for point_value in value:
+        points.append(Vector2(float(point_value["x"]), float(point_value["y"])))
+    return points
 
 
 static func _valid_socket(value: Variant, layer_ids: Dictionary, object_ids: Dictionary) -> bool:

@@ -137,6 +137,17 @@ namespace NeoEng.DTrace.Editor
                 metadata.layerId = source.layer_id;
                 metadata.locked = source.locked;
                 metadata.pivot = new Vector2(transform.pivot.x, transform.pivot.y);
+                if (source.vector_geometry != null)
+                {
+                    if (source.vector_geometry.collision_polygon == null || source.vector_geometry.collision_polygon.Length < 3)
+                        throw new InvalidDataException("professional scene vector collision is invalid");
+                    PolygonCollider2D collider = instance.AddComponent<PolygonCollider2D>();
+                    collider.SetPath(
+                        0,
+                        source.vector_geometry.collision_polygon
+                            .Select(point => new Vector2(point.x, point.y))
+                            .ToArray());
+                }
                 instance.SetActive(source.visible);
             }
 
@@ -225,6 +236,17 @@ namespace NeoEng.DTrace.Editor
                 if (source == null || string.IsNullOrWhiteSpace(source.id) || !objectIds.Add(source.id) || !assetIds.Contains(source.asset_id) || !layerIds.Contains(source.layer_id) || source.transform == null)
                     throw new InvalidDataException("professional scene object references are invalid");
                 RequireFiniteTransform(source.transform);
+                if (source.vector_geometry != null)
+                {
+                    RequireHash(source.vector_geometry.source_sha256, "professional scene vector source hash");
+                    if (source.vector_geometry.collision_polygon == null || source.vector_geometry.collision_polygon.Length < 3)
+                        throw new InvalidDataException("professional scene vector collision is invalid");
+                    foreach (PointData point in source.vector_geometry.collision_polygon)
+                    {
+                        RequireFinite(point.x, "vector collision point.x");
+                        RequireFinite(point.y, "vector collision point.y");
+                    }
+                }
             }
             HashSet<string> socketIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (SocketData socket in export.scene.sockets)
@@ -317,7 +339,9 @@ namespace NeoEng.DTrace.Editor
         [Serializable] private sealed class SnapData { public bool enabled; public string mode; public PointData spacing; }
         [Serializable] private sealed class AssetData { public string id; public string path; public string path_kind; public string sha256; }
         [Serializable] private sealed class LayerData { public string id; public string name; public bool visible; public bool locked; }
-        [Serializable] private sealed class ObjectData { public string id; public string asset_id; public string layer_id; public TransformData transform; public bool visible; public bool locked; }
+        [Serializable] private sealed class ObjectData { public string id; public string asset_id; public string layer_id; public TransformData transform; public bool visible; public bool locked; public VectorGeometryData vector_geometry; }
+        [Serializable] private sealed class VectorGeometryData { public string algorithm; public string source_sha256; public ImageSizeData image_size; public PointData[] original_polygon; public PointData[] polygon; public PointData[] collision_polygon; }
+        [Serializable] private sealed class ImageSizeData { public int width; public int height; }
         [Serializable] private sealed class GroupData { public string id; public string name; public string[] members; public bool visible; public bool locked; }
         [Serializable] private sealed class CameraData { public PointData position; public float zoom; }
         [Serializable] private sealed class TransformData { public Point3Data position; public Point3Data rotation; public Point3Data scale; public PointData pivot; public bool flip_x; public bool flip_y; }
