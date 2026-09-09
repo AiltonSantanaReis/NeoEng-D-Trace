@@ -424,6 +424,7 @@ class ScenarioEditorWindow(QMainWindow):
             project_root=project_path.parent,
             parent=self.professional_pages,
         )
+        viewport.update_language(self.current_lang)
         viewport.set_preview_enabled(self.preview_action.isChecked())
         viewport.set_authoring_enabled(self.authoring_action.isChecked())
         viewport.set_overlay_visible(self.overlay_action.isChecked())
