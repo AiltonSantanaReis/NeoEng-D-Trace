@@ -83,6 +83,9 @@ def test_main_window_portuguese_hover_metadata(qt_app):
         _assert_no_english_leaks(_visible_feedback(window))
         assert "Laço magnético" in window.tool_palette.btn_magnetic_lasso.toolTip()
         assert "colisão" in window.collision_panel.batch_test_btn.toolTip()
+        assert window.side_panel.transform_group.title() == "Transformação"
+        assert "Posição X" in window.side_panel._transform_form_labels["position_x"].text()
+        assert window.side_panel.snap_enabled.text() == "Encaixar vértices na grade"
     finally:
         window.close()
 

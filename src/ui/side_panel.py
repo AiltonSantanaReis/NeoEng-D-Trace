@@ -96,17 +96,22 @@ class SidePanel(QWidget):
         self.metadata_label = QLabel("No object selected")
         self.metadata_label.setObjectName("objects_metadata")
         transform_form = QFormLayout(self.transform_group)
-        transform_form.addRow("Position X", self.position_x)
-        transform_form.addRow("Position Y", self.position_y)
-        transform_form.addRow("Position Z", self.position_z)
-        transform_form.addRow("Rotation X", self.rotation_x)
-        transform_form.addRow("Rotation Y", self.rotation_y)
-        transform_form.addRow("Rotation Z", self.rotation_z)
-        transform_form.addRow("Scale X", self.scale_x)
-        transform_form.addRow("Scale Y", self.scale_y)
-        transform_form.addRow("Scale Z", self.scale_z)
-        transform_form.addRow("Pivot X", self.pivot_x)
-        transform_form.addRow("Pivot Y", self.pivot_y)
+        self._transform_form_labels = {}
+        for key, text, field in (
+            ("position_x", "Position X", self.position_x),
+            ("position_y", "Position Y", self.position_y),
+            ("position_z", "Position Z", self.position_z),
+            ("rotation_x", "Rotation X", self.rotation_x),
+            ("rotation_y", "Rotation Y", self.rotation_y),
+            ("rotation_z", "Rotation Z", self.rotation_z),
+            ("scale_x", "Scale X", self.scale_x),
+            ("scale_y", "Scale Y", self.scale_y),
+            ("scale_z", "Scale Z", self.scale_z),
+            ("pivot_x", "Pivot X", self.pivot_x),
+            ("pivot_y", "Pivot Y", self.pivot_y),
+        ):
+            transform_form.addRow(text, field)
+            self._transform_form_labels[key] = transform_form.labelForField(field)
         transform_form.addRow(self.snap_enabled)
         self.btn_apply_transform = QPushButton("Apply Transform")
         self.btn_apply_transform.setObjectName("apply_transform")
@@ -390,6 +395,7 @@ class SidePanel(QWidget):
         """Keep every inspector control usable by name and keyboard focus."""
 
         is_pt = getattr(self, "current_lang", "en") == "pt"
+        self.transform_group.setTitle("Transformação" if is_pt else "Transform")
         labels = (
             {
                 "rename": "Renomear o objeto selecionado",
@@ -457,7 +463,12 @@ class SidePanel(QWidget):
             (field, pt_name if is_pt else en_name, pt_tip if is_pt else en_tip)
             for field, en_name, pt_name, en_tip, pt_tip in field_names
         )
-        for field, name, description in fields:
+        for key, (field, name, description) in zip(
+            self._transform_form_labels, fields
+        ):
+            label = self._transform_form_labels[key]
+            if label is not None:
+                label.setText(name)
             field.setObjectName(f"inspector_{name.lower().replace(' ', '_')}")
             field.setAccessibleName(name)
             field.setAccessibleDescription(description)
@@ -476,12 +487,15 @@ class SidePanel(QWidget):
             else "Toggle snapping of edited vertices to the 16 pixel grid"
         )
         self.snap_enabled.setAccessibleName(snap_name)
+        self.snap_enabled.setText(snap_name)
         self.snap_enabled.setAccessibleDescription(
             snap_description
         )
         self.snap_enabled.setToolTip(snap_description)
         self.slider.setObjectName("shape_expand_contract_slider")
-        self.slider.setAccessibleName("Shape expansion slider")
+        self.slider.setAccessibleName(
+            "Controle de expansão da forma" if is_pt else "Shape expansion slider"
+        )
         self.slider.setAccessibleDescription(labels["slider"])
         self.slider.setToolTip(labels["slider"])
         self.slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
@@ -613,11 +627,27 @@ class SidePanel(QWidget):
         self.transform_group.setEnabled(enabled)
         self.btn_apply_transform.setEnabled(enabled)
         if obj is None:
-            self.metadata_label.setText("No object selected")
+            self.metadata_label.setText(
+                "Nenhum objeto selecionado"
+                if self.current_lang == "pt"
+                else "No object selected"
+            )
             return
+        is_pt = self.current_lang == "pt"
+        collision = (
+            ("sim" if oid in self.scene.collision_shapes else "não")
+            if is_pt
+            else ("yes" if oid in self.scene.collision_shapes else "no")
+        )
+        metadata_labels = (
+            ("ID", "Vértices", "Colisão")
+            if is_pt
+            else ("ID", "Vertices", "Collision")
+        )
         self.metadata_label.setText(
-            f"ID: {obj.id} | Vertices: {len(obj.polygon)} | "
-            f"Collision: {'yes' if oid in self.scene.collision_shapes else 'no'}"
+            f"{metadata_labels[0]}: {obj.id} | "
+            f"{metadata_labels[1]}: {len(obj.polygon)} | "
+            f"{metadata_labels[2]}: {collision}"
         )
         values = (
             *tuple(obj.position),
