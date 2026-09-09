@@ -30,6 +30,11 @@ from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.scene_render_plan import build_scene_render_plan
+from src.exporters.composition_export import (
+    CompositionExportError,
+    CompositionInputs,
+    build_composition_package,
+)
 from src.exporters.scene_authoring_export import (
     SceneExportTarget,
     save_scene_authoring_export,
@@ -174,6 +179,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.load_action = QAction(self)
         self.reset_action = QAction(self)
         self.export_action = QAction(self)
+        self.composition_action = QAction(self)
         self.undo_action = QAction(self)
         self.redo_action = QAction(self)
         self.overlay_action = QAction(self)
@@ -203,6 +209,7 @@ class ScenarioEditorWindow(QMainWindow):
             self.load_action,
             self.reset_action,
             self.export_action,
+            self.composition_action,
             self.undo_action,
             self.redo_action,
             self.overlay_action,
@@ -227,6 +234,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.load_action.triggered.connect(self._load_professional)
         self.reset_action.triggered.connect(self._reset_professional)
         self.export_action.triggered.connect(self._export_professional)
+        self.composition_action.triggered.connect(self._export_composition)
         self.upgrade_action.triggered.connect(self._upgrade_professional)
         self.recover_action.triggered.connect(self._recover_professional)
         self.overlay_action.triggered.connect(self._toggle_overlays)
@@ -506,7 +514,6 @@ class ScenarioEditorWindow(QMainWindow):
 
     def showEvent(self, event) -> None:
         super().showEvent(event)
-        render_plan = None
         if (
             self.professional_viewport is not None
             and not self._professional_initial_focus_applied
@@ -712,6 +719,58 @@ class ScenarioEditorWindow(QMainWindow):
             )
             return False
 
+    def _export_composition(self) -> bool:
+        """Export one validated package for the complete authored composition."""
+
+        if self.professional_session is None or self._professional_project is None:
+            self.status_label.setText("Save a project before exporting the composition")
+            return False
+        scene_path = self.professional_scene_path
+        project_root = self._professional_project.parent
+        if scene_path is None or not scene_path.is_file():
+            self.status_label.setText(
+                "Save the scenario before exporting the composition"
+            )
+            return False
+        runtime_bundle = project_root / "assets" / "runtime" / "adapters.json"
+        inputs = CompositionInputs(
+            scene=scene_path,
+            tilemap=project_root / "assets" / "tilemaps" / "scenario.tilemap.json",
+            colliders=project_root / "assets" / "colliders" / "scenario.colliders.json",
+            navmesh=project_root / "assets" / "navmesh" / "scenario.navmesh.json",
+            runtime_bundle=runtime_bundle if runtime_bundle.is_file() else None,
+        )
+        exports_root = project_root / "exports"
+        exports_root.mkdir(parents=True, exist_ok=True)
+        destination = exports_root / "composition-e11"
+        suffix = 2
+        while destination.exists():
+            destination = exports_root / f"composition-e11-r{suffix}"
+            suffix += 1
+        try:
+            manifest = build_composition_package(inputs, destination)
+        except (CompositionExportError, OSError, ValueError) as exc:
+            self.status_label.setText(
+                "Composition export failed: "
+                + user_error_message(
+                    exc, operation="export", language=self.current_lang
+                )
+            )
+            return False
+        runtime_note = (
+            " + runtime adapters"
+            if any(
+                item["kind"] == "runtime-adapters" for item in manifest["components"]
+            )
+            else ""
+        )
+        self.status_label.setText(
+            "Composition exported ("
+            f"{len(manifest['components'])} components{runtime_note}): "
+            f"{destination.name}"
+        )
+        return True
+
     def _update_professional_status(self) -> None:
         if self.professional_session is None:
             return
@@ -787,6 +846,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.load_action.setEnabled(ready)
         self.reset_action.setEnabled(ready)
         self.export_action.setEnabled(ready)
+        self.composition_action.setEnabled(ready)
         self.export_target_combo.setEnabled(ready)
         self.upgrade_action.setEnabled(self._pending_v1_document is not None)
         self.recover_action.setEnabled(self._pending_recovery_path is not None)
@@ -887,6 +947,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Recarregar",
                 "Redefinir",
                 "Exportar Runtime",
+                "Exportar Composição",
                 "Atualizar V1 para V2",
                 "Recuperar Último Válido",
                 "Desfazer",
@@ -903,6 +964,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Reload",
                 "Reset",
                 "Export Runtime",
+                "Export Composition",
                 "Upgrade V1 to V2",
                 "Recover Last Valid",
                 "Undo",
@@ -918,6 +980,7 @@ class ScenarioEditorWindow(QMainWindow):
                 self.load_action,
                 self.reset_action,
                 self.export_action,
+                self.composition_action,
                 self.upgrade_action,
                 self.recover_action,
                 self.undo_action,
