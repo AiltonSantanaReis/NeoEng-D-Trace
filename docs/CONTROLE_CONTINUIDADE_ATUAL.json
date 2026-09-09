@@ -9,7 +9,7 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "POST_E13_CORRECTIONS",
+    "stage": "E13",
     "status": "IN_PROGRESS",
     "phase": "POST_E13_CORRECTIONS",
     "active_base_policy": "ONLY_CURRENT_CHECKOUT",
