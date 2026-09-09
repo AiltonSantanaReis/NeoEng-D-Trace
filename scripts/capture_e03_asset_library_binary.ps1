@@ -150,16 +150,17 @@ if ($CaptureVectorContourFlow) {
     Copy-Item -LiteralPath $baseProjectFile -Destination $vectorProject -Force
     $vectorScene = @"
 {
-  ""format_id"": ""neoeng-d-trace-scene-authoring"",
-  ""schema_version"": 1,
-  ""metadata"": {""name"": ""E09 Vector Contour Fixture"", ""generator"": ""NeoEng-D-Trace E09"", ""app_version"": ""0.3.0""},
-  ""project"": {""sha256"": ""0000000000000000000000000000000000000000000000000000000000000000""},
-  ""assets"": [{""id"": ""vector-source"", ""path"": ""assets/scene/vector-source.png"", ""path_kind"": ""relative"", ""sha256"": ""$fixtureHash""}],
-  ""layers"": [{""id"": ""layer_default"", ""name"": ""Default"", ""visible"": true, ""locked"": false}],
-  ""objects"": [], ""groups"": [], ""snap"": {""enabled"": false, ""mode"": ""pixel"", ""spacing"": {""x"": 1.0, ""y"": 1.0}}
+  "format_id": "neoeng-d-trace-scene-authoring",
+  "schema_version": 2,
+  "metadata": {"name": "E09 Vector Contour Fixture", "generator": "NeoEng-D-Trace E09", "app_version": "0.3.0"},
+  "project": {"sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+  "assets": [{"id": "vector-source", "path": "assets/scene/vector-source.png", "path_kind": "relative", "sha256": "$fixtureHash"}],
+  "layers": [{"id": "layer_default", "name": "Default", "visible": true, "locked": false}],
+  "objects": [], "groups": [], "snap": {"enabled": false, "mode": "pixel", "spacing": {"x": 1.0, "y": 1.0}}
 }
 "@
-    Set-Content -LiteralPath (Join-Path $fixtureRoot "vector-contour.ndtscene.json") -Value $vectorScene -Encoding utf8
+    $sceneBytes = [System.Text.UTF8Encoding]::new($false).GetBytes($vectorScene)
+    [System.IO.File]::WriteAllBytes((Join-Path $fixtureRoot "vector-contour.ndtscene.json"), $sceneBytes)
     $projectPath = (Resolve-Path -LiteralPath $vectorProject).Path
 }
 $startArguments = @()
@@ -234,20 +235,35 @@ try {
         # The asset library is below the contour panel in the inspector. Scroll
         # the real native surface until the asset row is visible, select it,
         # then return to the contour controls like a user would.
-        for ($scrollStep = 0; $scrollStep -lt 6; $scrollStep++) {
+        for ($scrollStep = 0; $scrollStep -lt 30; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.985, 0.66, -120)
             Start-Sleep -Milliseconds 100
         }
         Start-Sleep -Milliseconds 600
         $records.vector_contour_asset = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-vector-contour-asset.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.32)
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.24)
         Start-Sleep -Milliseconds 500
-        for ($scrollStep = 0; $scrollStep -lt 6; $scrollStep++) {
+        for ($scrollStep = 0; $scrollStep -lt 30; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.985, 0.25, 120)
             Start-Sleep -Milliseconds 100
         }
         Start-Sleep -Milliseconds 600
         $records.vector_contour_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-vector-contour-selected.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.775, 0.166)
+        Start-Sleep -Milliseconds 900
+        $records.vector_contour_detected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-vector-contour-detected.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.826, 0.198)
+        [System.Windows.Forms.SendKeys]::SendWait("^a")
+        [System.Windows.Forms.SendKeys]::SendWait("-5")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.887, 0.198)
+        [System.Windows.Forms.SendKeys]::SendWait("^a")
+        [System.Windows.Forms.SendKeys]::SendWait("-5")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.950, 0.198)
+        Start-Sleep -Milliseconds 700
+        $records.vector_contour_edited = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-vector-contour-edited.png")
+        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.859, 0.232)
+        Start-Sleep -Milliseconds 900
+        $records.vector_contour_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-vector-contour-created.png")
     }
     if ($CaptureTilemapFlow) {
         # The tilemap panel is in the right inspector at the top of the
