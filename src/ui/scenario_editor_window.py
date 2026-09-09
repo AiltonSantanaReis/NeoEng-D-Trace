@@ -974,8 +974,8 @@ class ScenarioEditorWindow(QMainWindow):
         if self.current_lang == "pt":
             self.setWindowTitle("Editor de Cenário — NeoEng-D-Trace")
             labels = (
-                "Abrir Projeto",
-                "Salvar Cenário",
+                "Abrir",
+                "Salvar",
                 "Recarregar",
                 "Redefinir",
                 "Exportar Runtime",
@@ -991,8 +991,8 @@ class ScenarioEditorWindow(QMainWindow):
         else:
             self.setWindowTitle("Scenario Editor — NeoEng-D-Trace")
             labels = (
-                "Open Project",
-                "Save Scenario",
+                "Open",
+                "Save",
                 "Reload",
                 "Reset",
                 "Export Runtime",
@@ -1005,6 +1005,39 @@ class ScenarioEditorWindow(QMainWindow):
                 "Parallax Preview",
                 "Authoring",
             )
+        tooltips = (
+            (
+                "Abrir Projeto",
+                "Salvar Cenário",
+                "Recarregar Cenário",
+                "Redefinir Cenário",
+                "Exportar Runtime",
+                "Exportar Composição",
+                "Atualizar V1 para V2",
+                "Recuperar Último Válido",
+                "Desfazer",
+                "Refazer",
+                "Sobreposições",
+                "Preview Parallax",
+                "Autoria",
+            )
+            if self.current_lang == "pt"
+            else (
+                "Open Project",
+                "Save Scenario",
+                "Reload Scenario",
+                "Reset Scenario",
+                "Export Runtime",
+                "Export Composition",
+                "Upgrade V1 to V2",
+                "Recover Last Valid",
+                "Undo",
+                "Redo",
+                "Overlays",
+                "Parallax Preview",
+                "Authoring",
+            )
+        )
         for action, label in zip(
             (
                 self.open_action,
@@ -1024,12 +1057,31 @@ class ScenarioEditorWindow(QMainWindow):
             labels,
         ):
             action.setText(label)
+        for action, tooltip in zip(
+            (
+                self.open_action,
+                self.save_action,
+                self.load_action,
+                self.reset_action,
+                self.export_action,
+                self.composition_action,
+                self.upgrade_action,
+                self.recover_action,
+                self.undo_action,
+                self.redo_action,
+                self.overlay_action,
+                self.preview_action,
+                self.authoring_action,
+            ),
+            tooltips,
+        ):
+            action.setToolTip(tooltip)
         menu_labels = (
             ("export", "Exportar" if self.current_lang == "pt" else "Export"),
             ("edit", "Editar" if self.current_lang == "pt" else "Edit"),
             (
                 "view",
-                "Visualizar" if self.current_lang == "pt" else "View",
+                "Ver" if self.current_lang == "pt" else "View",
             ),
             ("more", "Mais" if self.current_lang == "pt" else "More"),
         )
