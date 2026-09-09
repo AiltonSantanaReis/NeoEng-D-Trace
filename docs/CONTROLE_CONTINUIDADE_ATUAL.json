@@ -9,11 +9,11 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E12",
+    "stage": "E13",
     "status": "IN_PROGRESS",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
-    "controlled_correction_scope": "E12 recursos avançados, animação e híbrido 3D; findings reproduziveis continuam sujeitos a correcao controlada.",
+    "controlled_correction_scope": "E13 fechamento técnico, portabilidade e instaladores; findings reproduziveis continuam sujeitos a correcao controlada.",
     "controlled_correction_decision": "docs/evidence/DECISAO_CORRECOES_CONTROLADAS_E00_2026-09-08.md",
     "execution_checklist": "docs/evidence/PLANO_MESTRE_FILA_EXECUCAO_CENTRAL_2026-09-09.md",
     "technical_continuation_authorized": true,
@@ -28,20 +28,20 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Concluir E12-D com captura do binário, gerar build oficial E12 r68, repetir smoke/suíte e fechar E12-E; symlink e revisão humana continuam reservados à auditoria final.",
+    "next_action": "Executar E13-A/B/C para qualificar pacote portátil/MSI, documentação e rollback; manter symlink e revisão humana exclusivamente para a auditoria final.",
     "active_lot": {
-      "id": "E12",
+      "id": "E13",
       "status": "IN_PROGRESS",
-      "scope": "E12-D/E12-E: captura do binário, build oficial, smoke e fechamento técnico após E12-A/B/C",
-      "evidence": "docs/evidence/E12_AVANCADO_HIBRIDO3D_EVIDENCIA_2026-09-09.md",
+      "scope": "E13-A/B/C: pacote portátil final, MSI/instalador, documentação e rollback",
+      "evidence": "docs/evidence/PLANO_MESTRE_FILA_EXECUCAO_CENTRAL_2026-09-09.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-      "stage": "E12",
-      "status": "PLANNED",
-      "evidence": null,
-      "functional_implementation_allowed": false,
-      "promotion_rule": "Somente após checkpoint técnico E10 e atualização deste registro."
+      "stage": "E13",
+      "status": "IN_PROGRESS",
+      "evidence": "docs/evidence/E13_FECHAMENTO_PORTABILIDADE_EVIDENCIA_2026-09-09.md",
+      "functional_implementation_allowed": true,
+      "promotion_rule": "E13-A/B/C permanecem no mesmo worktree e só podem ser promovidos após evidências, hashes, testes e commit rastreável."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -58,16 +58,16 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "6275baf",
-    "head_role": "E12_IMPLEMENTATION_SOURCE_ANCHOR",
+    "head": "510cee7",
+    "head_role": "E12_FINAL_BUILD_SOURCE_ANCHOR_E13_OPEN",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_E12_ARTIFACTS_PRESERVED"
+    "status": "TRACKED_CLEAN_E12_ARTIFACTS_PRESERVED_E13_OPEN"
   },
   "gates": {
     "official_suite": {
       "status": "PASS_LOCAL",
-      "passed": 2101,
+      "passed": 2104,
       "skipped": 2,
       "failed": 0,
       "warnings": 1,
@@ -96,26 +96,26 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e11-native-composition-r67-r34-20260909/composition-08-exported-after-recovery.png",
-      "latest_binary_capture_sha256": "14FD2923A3BCC2FF8EEF0549EF6F482F6A03CEBDE0674434282B82CB35A51E31",
+      "latest_binary_capture": "artifacts/e12-binary-capture-r69-20260909/01-main-before-independent.png",
+      "latest_binary_capture_sha256": "28AA060935049CD6CED2195351ACF18E94B8A2661429873CA4BEE23683BA5D64",
       "latest_binary_capture_window": "1933x1045",
-      "observed_finding": "Build r67 abriu o fixture E11 pelo binário portátil, exportou composition-e11-r9, executou save/close/reopen, corrupção controlada, recovery e reexport composition-e11-r10. A captura pós-recovery mudou para o estado restaurado e o documento voltou ao hash válido; Godot 4.7 e Unity 6000.5.7f1 consumiram o pacote autocontido com asset, 4 células, 2 colliders e 1 região navmesh. O sidecar de recovery válido foi semeado pela fixture validada antes da corrupção; revisão humana continua pendente.",
+      "observed_finding": "Build r69 executou a exportação E12 pelo CLI real com status VERTICAL_SLICE_ONLY e repetiu a captura nativa da interface PT-BR em 1933x1045 e da Cena Independente em 993x716; nenhuma regressão automatizada de toolbar, tradução ou painel Objetos foi observada. Unity renderizou a vertical slice híbrida com sucesso; revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e11-composition-20260909-r67/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "94B653D2B87D810E3398AA95307DCF66B9C8673FC4C71AD67A85F7145D2B0CB4",
-      "latest_observed_binary_last_write": "2026-09-09T03:16:17.2507689Z",
-      "source_commit": "e404086",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e12-hybrid-20260909-r69/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "07D3B3FBFAD22518628A8E8405FEA69E783750BBBD9593786A8E049781203152",
+      "latest_observed_binary_last_write": "2026-09-09T05:57:44.5771646Z",
+      "source_commit": "510cee7",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "FA0E63E6B789590085F6CC2DA19A1ABDE0317016BB75EA9EC55A11649896FED1",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e11-composition-20260909-r67/continuity-provenance.json",
+      "continuity_registry_sha256": "8C2D5B5E9EE38115C38A3226F95571BD949BA2C3F1A015BCEFA2C57800066120",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e12-hybrid-20260909-r69/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "7D5F2364D9C0EA29D0AE438289149BCD861EFA2CA2ECE75CAF280159C6A3399A",
-      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial, build r52, smoke e captura real. E10-A/B/C/D/E foram comprovados com export, Godot 4.7 e Unity 6000.5.7f1 reais, comparação, negativos e capturas nativas. E11-A/B/C/D possuem composição no binário, save/close/reopen/recovery observável, pacote autocontido, captura nativa, toolbar responsiva, smoke r67 e consumo comprovado em Godot 4.7 e Unity 6000.5.7f1; E11-E ainda exige suíte oficial/estática e promoção técnica; revisão final humana e symlinks permanecem reservados à auditoria final."
+      "portable_archive_sha256": "82713FBDC7B47578C49AA357F9E013CD407B9AF5EC031032AC9DFFFF0E8166A1",
+      "reason": "E12-A/B/C/D/E possuem contrato hash-bound, animação coerente, vertical slice 3D limitada, consumo real em Godot 4.7 e Unity 6000.5.7f1, exportação pelo CLI real, captura nativa do r69, suíte 2104/2/1, smoke com 11 checks e manifesto de proveniência; revisão final humana e symlinks permanecem reservados à auditoria final."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
@@ -147,8 +147,8 @@
     "E09": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E10": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E11": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E12": "IN_PROGRESS",
-    "E13": "PLANNED"
+    "E12": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+    "E13": "IN_PROGRESS"
   },
   "handoff_requirements": [
     "Uma unica branch/base declarada antes de qualquer teste.",

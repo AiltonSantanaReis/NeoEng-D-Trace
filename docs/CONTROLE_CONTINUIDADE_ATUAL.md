@@ -1,13 +1,14 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00–E11 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E12 IN_PROGRESS (D/E)`
+**Estado:** `E00–E12 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E13 IN_PROGRESS`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
 **E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
-**E12:** `IN_PROGRESS` — A/B/C comprovados; D/E aguardam captura do binário e build r68
+**E12:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados tecnicamente no r69; auditoria final permanece pendente
+**E13:** `IN_PROGRESS` — pacote portátil final, MSI/instalador e auditoria documental/privacidade
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -17,8 +18,8 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. O SHA-fonte E12 atual é `6275baf`; a build
-r68 será gerada após o fechamento documental deste checkpoint. A existência de outras
+`Ailton/e08-renderer-20260908`. O SHA-fonte de abertura do E13 é `510cee7`; a build
+r70 será gerada após o fechamento documental deste lote. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
 
@@ -35,14 +36,14 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS_LOCAL` | 2101 aprovados, 2 skips, 1 warning |
+| Suíte oficial | `PASS_LOCAL` | 2104 aprovados, 2 skips, 1 warning |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
 | Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY / PENDING_EVIDENCE / DEFERRED_UNTIL_FINAL_AUDIT` | 31/31 é diagnóstico de SHA anterior; a nova tentativa sem relatório foi registrada e a requalificação foi adiada para a auditoria final |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r55; hash do executável `BB2C511E01C21D908EB2787F2CF9BAC34E968F9229566B26AFB55F21543E2B30`; smoke com 11 checks |
+| Build oficial | `PASS_LOCAL` | r69; hash do executável `07D3B3FBFAD22518628A8E8405FEA69E783750BBBD9593786A8E049781203152`; smoke com 11 checks |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -53,8 +54,9 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir E12-D/E12-E com captura do binário, build r68, smoke, suíte e
-promoção técnica. Depois, promover E13.
+Executar E13-A/B/C com build portátil r70 ou posterior, MSI/instalador,
+rollback, auditoria documental e evidências hashadas. Depois, executar a
+auditoria final reservada.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.

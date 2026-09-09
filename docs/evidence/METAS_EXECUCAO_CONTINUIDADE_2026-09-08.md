@@ -17,7 +17,7 @@ do proprietário for indispensável.
 | M05 | Revisão humana final | ADIADA CONTROLADAMENTE | Proprietário revisar o SHA/build final, roteiro, capturas e findings; todas as observações resolvidas ou formalmente aceitas |
 | M06 | Fechar E00 | PENDENTE — auditoria final | Symlink, revisão humana, findings finais e demais critérios de fechamento; não é pré-requisito para o checkpoint técnico |
 | M07 | E01 — contratos e cena vazia independente | CHECKPOINT TÉCNICO PASS — aceite final pendente | Sublotes E01-A/B/C têm implementação, testes, build r5 e evidências; aceite formal continua pendente até auditoria final |
-| M08 | E02–E13 | E11 concluída no checkpoint técnico; E12 é o lote ativo e E13 permanece planejada | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
+| M08 | E02–E13 | E12 checkpoint técnico concluído; E13 ativa | Executar em lotes pequenos, na ordem do Plano Mestre, sem pular dependências |
 | M09 | Auditoria final do plano | PENDENTE | Suítes, estática, segurança, portabilidade, engines aplicáveis, capturas e documentação finais aprovadas |
 | M10 | Encerramento/publicação | PENDENTE | Auditoria humana concluída, critérios finais satisfeitos e autorização explícita para qualquer push, merge, tag ou release |
 
@@ -50,7 +50,7 @@ do proprietário for indispensável.
 - E05: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e05-colliders-20260908`, build r15 e captura real registrados.
 - E06: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e06-navmesh-20260908`, build r22 e captura real final registrados.
 - E07: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; branch `Ailton/e07-entities-20260908`, build r24 e captura real final registrados; E08 pode ser aberto após atualização do registro central.
-- E08: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 e E08-E comprovados tecnicamente até a build r48; E09-A/B/C comprovados tecnicamente até a build r52; E10-A/B/C/D/E comprovados tecnicamente com Godot 4.7 e Unity 6000.5.7f1, comparação, negativos e capturas reais; E11-A/B/C/D/E concluídos tecnicamente no r67; E12 é o lote ativo; E13 permanece planejada.
+- E08: `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING`; E08-A checkpoint técnico selado em build r28; E08-B checkpoint técnico selado em build r35; E08-C.1–C.4 em checkpoint técnico, com C.4 comprovado na build r42 por seleção nativa, controles habilitados, persistência e pixels observáveis; E08-D.1–D.3 e E08-E comprovados tecnicamente até a build r48; E09-A/B/C comprovados tecnicamente até a build r52; E10-A/B/C/D/E comprovados tecnicamente com Godot 4.7 e Unity 6000.5.7f1, comparação, negativos e capturas reais; E11-A/B/C/D/E concluídos tecnicamente no r67; E12 concluído tecnicamente no r69; E13 é o lote ativo.
 
 ## Metas executáveis do lote E01
 
@@ -103,8 +103,8 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 | 5 | E09 autoria/exportação vetorial | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | fluxo editável, persistente, exportável e comprovado no binário r52 |
 | 6 | E10 integração com engines | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | importação/execução real, comparação e fechamento |
 | 7 | E11 composição/runtime | `TECHNICAL_CHECKPOINT_PASS` | cena executada fora do editor, recovery, suíte e r67 |
-| 8 | E12 recursos avançados/híbrido 3D | `IN_PROGRESS — D/E` | captura do binário, build r68, smoke, suíte e fechamento |
-| 9 | E13 fechamento/portabilidade | `PLANNED` | instaladores, documentação e baseline final |
+| 8 | E12 recursos avançados/híbrido 3D | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | captura r69, build, smoke, suíte e fechamento |
+| 9 | E13 fechamento/portabilidade | `IN_PROGRESS` | pacote portátil/MSI, documentação e baseline final |
 | 10 | Auditoria final | `PLANNED` | symlinks, revisão humana, findings e decisão formal |
 
 ### Sublotes ativos de E12
@@ -114,8 +114,17 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 | E12-A contrato/schema e limites | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pacote hash-bound, rejeições e caminhos seguros |
 | E12-B animação/playback | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | frames coerentes, timeline e CLI |
 | E12-C vertical slice híbrida | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | Godot e Unity reais com câmera, mesh, material, luz e playback |
-| E12-D UX/documentação | `IN_PROGRESS` | captura real do binário, limitação explícita e mensagem operacional |
-| E12-E fechamento técnico | `PLANNED` | build r68, smoke, suíte, manifesto e promoção |
+| E12-D UX/documentação | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | captura real r69, limitação explícita e mensagem operacional |
+| E12-E fechamento técnico | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | build r69, smoke, suíte 2104/2/1, manifesto e promoção |
+
+### Sublotes ativos de E13
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E13-A pacote portátil final | `IN_PROGRESS` | nova build limpa, hashes, smoke e execução fora do checkout |
+| E13-B MSI/instalador | `PLANNED` | geração, instalação, desinstalação e rollback |
+| E13-C documentação/privacidade | `PLANNED` | auditoria de referências locais, manifestos e limites |
+| E13-D auditoria final | `DEFERRED_UNTIL_FINAL_AUDIT` | symlink e revisão humana no SHA/build final |
 
 ### Sublotes ativos de E08-C
 
@@ -199,5 +208,5 @@ indispensável. O gate de symlinks permanece exclusivamente na linha 10.
 | E09 | autoria e exportação vetorial | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — E09-A/B/C comprovados tecnicamente | objetos editáveis, persistentes e exportáveis |
 | E10 | capacidades e integração com engines | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados | importação/execução real nas engines aplicáveis |
 | E11 | composição e runtime completo | `TECHNICAL_CHECKPOINT_PASS` | cena executada no binário, recovery, exportação, engines e regressão |
-| E12 | recursos avançados, animação e híbrido 3D | `IN_PROGRESS` | contrato aprovado e fluxo completo de recursos |
-| E13 | fechamento, portabilidade e publicação | `PLANNED` | auditoria final, instaladores, documentação e autorização |
+| E12 | recursos avançados, animação e híbrido 3D | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | contrato, pacote, destinos, captura r69, smoke e suíte |
+| E13 | fechamento, portabilidade e publicação | `IN_PROGRESS` | auditoria técnica, pacote final, instaladores, documentação e autorização |
