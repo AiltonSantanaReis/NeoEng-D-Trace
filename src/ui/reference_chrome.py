@@ -84,6 +84,9 @@ def _command_button(
     button.setToolTip(text)
     button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     button.setProperty("uiRole", "reference_command_button")
+    # Compact mode still needs enough room for the text-under-icon command
+    # surface; 62 px clips localized labels.
+    button.setMinimumWidth(78)
     button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
     configure_widget(button, key, accessible_name=accessible_name)
     return button

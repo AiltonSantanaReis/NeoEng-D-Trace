@@ -8,6 +8,7 @@ from PIL import Image
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
     QDoubleSpinBox,
+    QGridLayout,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -85,7 +86,8 @@ class VectorContourPanel(QWidget):
         self.diagnostics_label.setObjectName("vector_contour_diagnostics")
         self.diagnostics_label.setWordWrap(True)
 
-        actions = QHBoxLayout()
+        actions = QGridLayout()
+        actions.setHorizontalSpacing(6)
         for button in (
             self.detect_button,
             self.simplify_button,
@@ -93,15 +95,17 @@ class VectorContourPanel(QWidget):
             self.redo_button,
             self.cancel_button,
         ):
-            actions.addWidget(button)
-        edit = QHBoxLayout()
-        edit.addWidget(QLabel("Vertex"))
-        edit.addWidget(self.vertex_index)
-        edit.addWidget(QLabel("X"))
-        edit.addWidget(self.vertex_x)
-        edit.addWidget(QLabel("Y"))
-        edit.addWidget(self.vertex_y)
-        edit.addWidget(self.apply_vertex_button)
+            index = actions.count()
+            actions.addWidget(button, index // 2, index % 2)
+        edit = QGridLayout()
+        edit.setHorizontalSpacing(6)
+        edit.addWidget(QLabel("Vertex"), 0, 0)
+        edit.addWidget(self.vertex_index, 0, 1)
+        edit.addWidget(QLabel("X"), 1, 0)
+        edit.addWidget(self.vertex_x, 1, 1)
+        edit.addWidget(QLabel("Y"), 2, 0)
+        edit.addWidget(self.vertex_y, 2, 1)
+        edit.addWidget(self.apply_vertex_button, 3, 0, 1, 2)
         layout = QVBoxLayout(self)
         layout.addWidget(self.title)
         layout.addWidget(self.source_label)

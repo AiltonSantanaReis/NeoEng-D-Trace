@@ -12,6 +12,7 @@ import numpy as np
 from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import (
     QAction,
+    QActionGroup,
     QColor,
     QImage,
     QKeyEvent,
@@ -37,7 +38,9 @@ from PySide6.QtWidgets import (
     QScrollArea,
     QSlider,
     QSpinBox,
+    QSizePolicy,
     QToolBar,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -1533,6 +1536,7 @@ class MaskViewerDialog(QDialog):
         control_layout.addWidget(self.toolbar)
         self._setup_explicit_view_modes()
         control_layout.addWidget(self.view_mode_group)
+        control_layout.addWidget(self.view_mode_toolbar_row)
         self._setup_layer_controls()
         control_layout.addWidget(self.layer_controls)
         self._setup_parameter_controls()
@@ -1666,26 +1670,49 @@ class MaskViewerDialog(QDialog):
 
     def _setup_toolbar(self):
         self.toolbar = QToolBar()
-        self.toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        self.toolbar.setObjectName("mask_detection_preset_toolbar")
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        self.preset_action_group = QActionGroup(self)
+        self.preset_action_group.setExclusive(True)
+        preset_container = QWidget(self.toolbar)
+        preset_container.setObjectName("mask_detection_preset_buttons")
+        preset_layout = QHBoxLayout(preset_container)
+        preset_layout.setContentsMargins(0, 0, 0, 0)
+        preset_layout.setSpacing(4)
         for preset_id in self.PRESET_ORDER:
-            action = self.toolbar.addAction("")
+            action = QAction(self)
             action.setData(preset_id)
+            action.setCheckable(True)
+            action.setProperty("uiRole", "mask_detection_preset")
+            self.preset_action_group.addAction(action)
             action.triggered.connect(
                 lambda checked=False, name=preset_id: self._apply_preset(name)
             )
             self.preset_actions[preset_id] = action
-        self.toolbar.addSeparator()
+            button = QToolButton(preset_container)
+            button.setDefaultAction(action)
+            button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+            button.setSizePolicy(
+                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
+            )
+            preset_layout.addWidget(button, 1)
+        self.preset_actions["Basic"].setChecked(True)
+        self.toolbar.addWidget(preset_container)
         self.view_mode_label = QLabel()
-        self.toolbar.addWidget(self.view_mode_label)
         self.view_mode_combo = QComboBox()
         self.view_mode_combo.addItem("", 0)
         self.view_mode_combo.addItem("", 1)
         self.view_mode_combo.addItem("", 2)
         self.view_mode_combo.addItem("", 3)
         self.view_mode_combo.currentIndexChanged.connect(self._on_view_mode_changed)
-        self.toolbar.addWidget(self.view_mode_combo)
         self.perf_label = QLabel()
-        self.toolbar.addWidget(self.perf_label)
+        self.view_mode_toolbar_row = QWidget()
+        self.view_mode_toolbar_row.setObjectName("mask_view_mode_toolbar_row")
+        row_layout = QHBoxLayout(self.view_mode_toolbar_row)
+        row_layout.setContentsMargins(0, 0, 0, 0)
+        row_layout.addWidget(self.view_mode_label)
+        row_layout.addWidget(self.view_mode_combo, 1)
+        row_layout.addWidget(self.perf_label, 1)
 
     def _setup_layer_controls(self):
         self.layer_controls = QGroupBox()
@@ -1854,7 +1881,11 @@ class MaskViewerDialog(QDialog):
         self.toolbar.setWindowTitle(t["toolbar"])
         for preset_id, action in self.preset_actions.items():
             label = t[self.PRESET_TEXT_KEYS[preset_id]]
-            action.setText(t["detection_action"].format(preset=label))
+            # Keep all four primary commands visible in the narrow controls
+            # rail. The full translated command remains discoverable through
+            # tooltip and accessibility text instead of QToolBar overflow.
+            action.setText(label)
+            action.setToolTip(t["detection_action"].format(preset=label))
         self.view_mode_label.setText(t["view_mode"])
         self.view_mode_group.setTitle(t["view_mode"])
         view_keys = (
@@ -1957,6 +1988,8 @@ class MaskViewerDialog(QDialog):
 
     def _on_preset_changed(self, *_args):
         preset_id = self._selected_preset_id()
+        if preset_id in self.preset_actions:
+            self.preset_actions[preset_id].setChecked(True)
         self._apply_preset_params(DETECTION_PRESETS[preset_id]["params"])
         self._update_performance_label()
 
@@ -1974,6 +2007,8 @@ class MaskViewerDialog(QDialog):
         index = self.preset_combo.findData(preset_id)
         if index >= 0:
             self.preset_combo.setCurrentIndex(index)
+        if preset_id in self.preset_actions:
+            self.preset_actions[preset_id].setChecked(True)
         self._on_preset_changed()
 
     def _apply_preset_params(self, params):

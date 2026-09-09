@@ -88,7 +88,8 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
         window.open_scenario_editor()
         qt_app.processEvents()
         editor = window.scenario_editor_window
-        assert editor is not None and editor.isVisible()
+        assert editor is not None
+        assert editor.isVisible()
         empty = editor.professional_pages.currentWidget()
         assert empty is not None and empty.isVisible()
         assert empty.objectName() == "professional_scene_viewport_empty"
@@ -101,6 +102,28 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
         assert editor.scenario_panel.btn_add.isEnabled() is False
         assert window.layers.tabs.count() == 1
         assert window.scenario_open_action in window.view_menu.actions()
+    finally:
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.close()
+        window.close()
+        qt_app.processEvents()
+
+
+def test_scenario_editor_can_start_from_zero_without_saved_project(qt_app):
+    window = MainWindow(_scene(), _Config())
+    try:
+        window.open_scenario_editor()
+        qt_app.processEvents()
+        editor = window.scenario_editor_window
+        assert editor is not None
+        assert editor.professional_session is None
+        assert editor.open_action.text() == "New Scenario"
+        assert editor._new_professional() is True
+        qt_app.processEvents()
+        assert editor.professional_session is not None
+        assert editor.professional_viewport is not None
+        assert editor._temporary_project_path is not None
+        assert "unsaved" in editor.status_label.text().lower()
     finally:
         if window.scenario_editor_window is not None:
             window.scenario_editor_window.close()

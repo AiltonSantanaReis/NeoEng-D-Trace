@@ -816,6 +816,16 @@ class MagneticLassoTool(BaseTool):
             self._set_path_busy(False)
             if path and self._anchors and self._anchors[-1] == start:
                 self._append_anchor(end, precomputed_segment=path)
+                # A close request may have arrived while this segment was
+                # running. Rebase that intent to the newly committed anchor
+                # before the next worker starts.
+                queued_finish = self._queued_action_request
+                if queued_finish is not None and queued_finish.get("purpose") == "finish":
+                    queued_finish.update(
+                        start=self._anchors[-1],
+                        end=self._anchors[0],
+                        revision=self._state_revision,
+                    )
                 self._preview_path = []
                 self._preview_path_start = None
                 self._preview_path_endpoint = None
@@ -1013,10 +1023,10 @@ class MagneticLassoTool(BaseTool):
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
-            if self._segment_pending:
-                return
             if self._can_close_at(position):
                 self.finish_selection()
+                return
+            if self._segment_pending:
                 return
             anchor = self._snap_anchor(position)
             if not self._anchors:
@@ -1139,6 +1149,14 @@ class MagneticLassoTool(BaseTool):
 
     def finish_selection(self) -> Optional[str]:
         if self._segment_pending:
+            # A real canvas can receive the closing click/double-click while
+            # the previous precise segment is still being solved in the
+            # worker thread.  Preserve that user intent; dropping it makes
+            # precise mode appear unable to close while legacy mode works.
+            if len(self._anchors) >= 3:
+                self._request_async_path(
+                    "finish", self._anchors[-1], self._anchors[0]
+                )
             return None
         if self._uses_background_pathfinding() and len(self._anchors) >= 3:
             start = self._anchors[-1]

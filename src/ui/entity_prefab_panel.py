@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QListWidget, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QGridLayout, QLabel, QListWidget, QPushButton, QVBoxLayout, QWidget
 
 from src.core.prefab_authoring import (
     create_prefab,
@@ -30,6 +30,7 @@ class EntityPrefabPanel(QWidget):
         self.setObjectName("entity_prefab_panel")
         self.title_label = QLabel(self)
         self.summary_label = QLabel(self)
+        self.summary_label.setWordWrap(True)
         self.entity_list = QListWidget(self)
         self.prefab_list = QListWidget(self)
         self.instance_list = QListWidget(self)
@@ -42,29 +43,30 @@ class EntityPrefabPanel(QWidget):
         self.update_button = QPushButton(self)
         self.detach_button = QPushButton(self)
         self.status_label = QLabel(self)
+        self.status_label.setWordWrap(True)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.title_label)
         layout.addWidget(self.summary_label)
         layout.addWidget(QLabel("Entidades / parent espacial"))
         layout.addWidget(self.entity_list)
-        entity_actions = QHBoxLayout()
-        entity_actions.addWidget(self.add_entity_button)
-        entity_actions.addWidget(self.parent_button)
+        entity_actions = QGridLayout()
+        entity_actions.addWidget(self.add_entity_button, 0, 0)
+        entity_actions.addWidget(self.parent_button, 0, 1)
         layout.addLayout(entity_actions)
         layout.addWidget(QLabel("Prefabs"))
         layout.addWidget(self.prefab_list)
-        prefab_actions = QHBoxLayout()
-        prefab_actions.addWidget(self.create_prefab_button)
-        prefab_actions.addWidget(self.instantiate_button)
-        prefab_actions.addWidget(self.update_button)
+        prefab_actions = QGridLayout()
+        prefab_actions.addWidget(self.create_prefab_button, 0, 0)
+        prefab_actions.addWidget(self.instantiate_button, 0, 1)
+        prefab_actions.addWidget(self.update_button, 1, 0, 1, 2)
         layout.addLayout(prefab_actions)
         layout.addWidget(QLabel("Instâncias / overrides"))
         layout.addWidget(self.instance_list)
-        instance_actions = QHBoxLayout()
-        instance_actions.addWidget(self.override_button)
-        instance_actions.addWidget(self.revert_button)
-        instance_actions.addWidget(self.detach_button)
+        instance_actions = QGridLayout()
+        instance_actions.addWidget(self.override_button, 0, 0)
+        instance_actions.addWidget(self.revert_button, 0, 1)
+        instance_actions.addWidget(self.detach_button, 1, 0, 1, 2)
         layout.addLayout(instance_actions)
         layout.addWidget(self.status_label)
 

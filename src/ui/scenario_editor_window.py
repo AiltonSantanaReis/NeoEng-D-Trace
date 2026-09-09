@@ -8,12 +8,14 @@ compress or intercept the main editor panels.
 from __future__ import annotations
 
 from pathlib import Path
+import tempfile
 from typing import Any
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup, QKeySequence
 from PySide6.QtWidgets import (
     QComboBox,
+    QFileDialog,
     QHBoxLayout,
     QLabel,
     QMainWindow,
@@ -56,6 +58,7 @@ from src.persistence.scene_authoring_io import (
     save_scene_authoring,
     scene_authoring_recovery_path,
 )
+from src.persistence.scenario_io import project_reference_for
 from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV1,
     SceneAuthoringDocumentV2,
@@ -102,6 +105,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector: SceneAuthoringInspector | None = None
         self.professional_inspector_scroll: QScrollArea | None = None
         self._professional_project: Path | None = None
+        self._temporary_project_dir: tempfile.TemporaryDirectory[str] | None = None
+        self._temporary_project_path: Path | None = None
         self.professional_scene_path: Path | None = None
         self.layer_stack: SceneAuthoringLayerStack | None = None
         self.group_stack: SceneAuthoringGroupStack | None = None
@@ -122,7 +127,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_empty.setWordWrap(True)
         self.professional_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.professional_empty.setText(
-            "Professional scene viewport\n\n" "Load a saved project to begin authoring."
+            "Professional scene viewport\n\n"
+            "Choose New Scenario to start from an empty scene, or load a saved project."
         )
         self.professional_pages.addWidget(self.professional_empty)
         self.professional_pages.addWidget(self.canvas)
@@ -147,8 +153,8 @@ class ScenarioEditorWindow(QMainWindow):
         empty_label.setWordWrap(True)
         empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         empty_label.setText(
-            "Save a project to enable the professional scene inspector.\n\n"
-            "Drag image assets into the viewport after the project is loaded."
+            "No scene selected yet.\n\n"
+            "Choose New Scenario or open a project to populate the inspector."
         )
         empty_layout.addStretch(1)
         empty_layout.addWidget(empty_label)
@@ -160,7 +166,7 @@ class ScenarioEditorWindow(QMainWindow):
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.setObjectName("scenario_editor_splitter")
         self.professional_pages.setMinimumWidth(420)
-        self.right_pages.setMinimumWidth(280)
+        self.right_pages.setMinimumWidth(540)
         splitter.setCollapsible(0, False)
         splitter.setCollapsible(1, False)
         splitter.addWidget(self.professional_pages)
@@ -179,6 +185,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolbar)
 
         self.open_action = QAction(self)
+        self.save_project_action = QAction(self)
         self.save_action = QAction(self)
         self.save_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+S"))
         self.load_action = QAction(self)
@@ -222,6 +229,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.mode_group.addAction(self.preview_action)
         for action in (
             self.open_action,
+            self.save_project_action,
             self.save_action,
             self.load_action,
             self.reset_action,
@@ -265,7 +273,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.statusBar().setObjectName("scenario_editor_status_bar")
         self.statusBar().addPermanentWidget(self.status_label)
 
-        self.open_action.triggered.connect(self._open_project_hint)
+        self.open_action.triggered.connect(self._new_professional)
+        self.save_project_action.triggered.connect(self._save_new_project_as)
         self.undo_action.triggered.connect(self._undo_professional)
         self.redo_action.triggered.connect(self._redo_professional)
         self.save_action.triggered.connect(self._save_professional)
@@ -291,6 +300,9 @@ class ScenarioEditorWindow(QMainWindow):
         button.setToolTip(label)
         button.setAccessibleName(label)
         button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        # The command surface follows the project's flat-button pattern; the
+        # complete button opens its menu without an extra arrow affordance.
+        button.setArrowType(Qt.ArrowType.NoArrow)
         button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         menu = QMenu(button)
         for action in actions:
@@ -305,7 +317,7 @@ class ScenarioEditorWindow(QMainWindow):
         if width <= 0 or width == self._last_splitter_width:
             return
         self._last_splitter_width = width
-        inspector_width = max(320, int(width * 0.27))
+        inspector_width = max(540, int(width * 0.40))
         viewport_width = max(420, width - inspector_width)
         self.editor_splitter.setSizes([viewport_width, inspector_width])
 
@@ -632,8 +644,10 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _save_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
-            self.status_label.setText("Save a project before saving the scenario")
+            self.status_label.setText("Create a scenario before saving")
             return False
+        if self._temporary_project_path is not None:
+            return self._save_new_project_as()
         try:
             save_scene_authoring(
                 self.professional_session.document, self.professional_scene_path
@@ -849,8 +863,74 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _open_project_hint(self) -> None:
         self.status_label.setText(
-            "Open and save a project in the main editor before authoring a scenario."
+            "Open and save a project in the main editor before authoring a scenario, "
+            "or choose New Scenario to start without one."
         )
+
+    def _new_professional(self) -> bool:
+        """Start an editable professional scene without requiring a project file."""
+
+        try:
+            if self._temporary_project_dir is not None:
+                self._temporary_project_dir.cleanup()
+            self._temporary_project_dir = tempfile.TemporaryDirectory(
+                prefix="neoeng-d-trace-scenario-"
+            )
+            project_path = Path(self._temporary_project_dir.name) / "Untitled.ndtproj"
+            self.scene.save_project(str(project_path))
+            self._temporary_project_path = project_path
+            self.authoring.bind_project(project_path)
+            self._build_professional_viewport()
+            self.refresh()
+            self.status_label.setText(
+                "New unsaved scenario — use Save Project to choose a location"
+            )
+            return True
+        except (OSError, ValueError, ProjectPersistenceError) as exc:
+            self.status_label.setText(
+                "New scenario failed: "
+                + user_error_message(exc, operation="save", language=self.current_lang)
+            )
+            return False
+
+    def _save_new_project_as(self) -> bool:
+        """Persist a newly authored scene and its professional sidecar."""
+
+        if self.professional_session is None:
+            self.status_label.setText("Create a scenario before saving")
+            return False
+        path_text, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save Project As",
+            "Untitled.ndtproj",
+            "NeoEng project (*.ndtproj)",
+        )
+        if not path_text:
+            return False
+        destination = Path(path_text)
+        if destination.suffix.lower() != ".ndtproj":
+            destination = destination.with_suffix(".ndtproj")
+        try:
+            self.scene.save_project(str(destination))
+            document = self.professional_session.document
+            if isinstance(document, SceneAuthoringDocumentV2):
+                document = document.model_copy(
+                    update={"project": project_reference_for(destination)}
+                )
+            scene_path = destination.with_suffix(".ndtscene.json")
+            save_scene_authoring(document, scene_path)
+            self.authoring.bind_project(destination)
+            self._temporary_project_path = None
+            self._build_professional_viewport(document=document)
+            self.professional_scene_path = scene_path
+            self.status_label.setText(f"Project saved: {destination.name}")
+            return True
+        except (OSError, ValueError, ProjectPersistenceError) as exc:
+            self.status_label.setText(
+                "Project save failed: "
+                + user_error_message(exc, operation="save", language=self.current_lang)
+            )
+            return False
 
     def _toggle_overlays(self) -> None:
         if self.professional_viewport is not None:
@@ -986,7 +1066,7 @@ class ScenarioEditorWindow(QMainWindow):
         else:
             self.canvas.set_scenario_preview_layers(())
             self.status_label.setText(
-                "Open and save a project to enable scenario authoring"
+                "Choose New Scenario to begin authoring"
             )
         if self.professional_viewport is not None:
             self.professional_viewport.set_scene_render_plan(render_plan)
@@ -997,7 +1077,8 @@ class ScenarioEditorWindow(QMainWindow):
         if self.current_lang == "pt":
             self.setWindowTitle("Editor de Cenário — NeoEng-D-Trace")
             labels = (
-                "Abrir",
+                "Novo Cenário",
+                "Salvar Projeto",
                 "Salvar",
                 "Recarregar",
                 "Redefinir",
@@ -1014,7 +1095,8 @@ class ScenarioEditorWindow(QMainWindow):
         else:
             self.setWindowTitle("Scenario Editor — NeoEng-D-Trace")
             labels = (
-                "Open",
+                "New Scenario",
+                "Save Project",
                 "Save",
                 "Reload",
                 "Reset",
@@ -1030,7 +1112,8 @@ class ScenarioEditorWindow(QMainWindow):
             )
         tooltips = (
             (
-                "Abrir Projeto",
+                "Novo Cenário",
+                "Salvar Projeto Como",
                 "Salvar Cenário",
                 "Recarregar Cenário",
                 "Redefinir Cenário",
@@ -1046,7 +1129,8 @@ class ScenarioEditorWindow(QMainWindow):
             )
             if self.current_lang == "pt"
             else (
-                "Open Project",
+                "New Scenario",
+                "Save Project As",
                 "Save Scenario",
                 "Reload Scenario",
                 "Reset Scenario",
@@ -1064,6 +1148,7 @@ class ScenarioEditorWindow(QMainWindow):
         for action, label in zip(
             (
                 self.open_action,
+                self.save_project_action,
                 self.save_action,
                 self.load_action,
                 self.reset_action,
@@ -1083,6 +1168,7 @@ class ScenarioEditorWindow(QMainWindow):
         for action, tooltip in zip(
             (
                 self.open_action,
+                self.save_project_action,
                 self.save_action,
                 self.load_action,
                 self.reset_action,

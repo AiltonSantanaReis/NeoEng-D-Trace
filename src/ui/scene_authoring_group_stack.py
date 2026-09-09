@@ -58,6 +58,7 @@ class SceneAuthoringGroupStack(QWidget):
         self.tree.setObjectName("scenario_group_hierarchy_tree")
         self.tree.setHeaderLabels(["Groups and objects"])
         self.tree.setSelectionMode(QTreeWidget.SelectionMode.SingleSelection)
+        self.tree.header().setVisible(False)
         self.tree.currentItemChanged.connect(self._selection_changed)
 
         self.name_edit = QLineEdit(self)

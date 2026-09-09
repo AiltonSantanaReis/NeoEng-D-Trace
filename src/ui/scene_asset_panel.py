@@ -132,13 +132,14 @@ class SceneAssetLibrary(QWidget):
         self.replace_button.setObjectName("scene_asset_replace_button")
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.setObjectName("scene_asset_refresh_button")
-        for button in (
-            self.import_button,
-            self.relink_button,
-            self.replace_button,
-            self.refresh_button,
+        for button, minimum_width in (
+            (self.import_button, 98),
+            (self.relink_button, 98),
+            (self.replace_button, 110),
+            (self.refresh_button, 110),
         ):
             button.setAutoDefault(False)
+            button.setMinimumWidth(minimum_width)
 
         actions = QHBoxLayout()
         actions.addWidget(self.import_button)

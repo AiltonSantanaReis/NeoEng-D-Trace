@@ -122,11 +122,11 @@ class ResponsivePanelLayout:
                 button.setToolButtonStyle(style)
 
         action_widths = {
-            "reference_fit_button": 62 if compact else 136,
-            "reference_focus_button": 62 if compact else 100,
-            "reference_pan_button": 62 if compact else 76,
-            "reference_undo_button": 62 if compact else 88,
-            "reference_redo_button": 62 if compact else 88,
+            "reference_fit_button": 78 if compact else 136,
+            "reference_focus_button": 78 if compact else 100,
+            "reference_pan_button": 78 if compact else 76,
+            "reference_undo_button": 78 if compact else 88,
+            "reference_redo_button": 78 if compact else 88,
         }
         for name, width in action_widths.items():
             button = getattr(self.owner, name, None)
@@ -141,9 +141,12 @@ class ResponsivePanelLayout:
             # Keep Qt's overflow affordance inside the window at compact
             # resolutions instead of expanding the toolbar past the edge.
             for button in toolbar.findChildren(QToolButton):
-                if button.objectName() != "reference_menu_button":
-                    button.setMinimumWidth(62)
-                    button.setMaximumWidth(62)
+                if button.objectName().startswith("reference_command_button_") or button.objectName() == "reference_select_button":
+                    button.setMinimumWidth(78)
+                    button.setMaximumWidth(78)
+                elif button.objectName() != "reference_menu_button":
+                    button.setMinimumWidth(78)
+                    button.setMaximumWidth(78)
         else:
             # Text-under-icon buttons must honor their rendered size hint.
             # The QSS minimum of 60px is appropriate for compact icon-only
