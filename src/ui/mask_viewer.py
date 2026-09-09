@@ -1898,7 +1898,20 @@ class MaskViewerDialog(QDialog):
         )
         for index, key in enumerate(view_keys):
             self.view_mode_combo.setItemText(index, t[key])
-            self.view_mode_buttons[index].setText(t[key])
+            full_label = t[key]
+            # The four-button rail is intentionally compact. Keep the full
+            # translated mode name in the combo, tooltip, and accessibility
+            # tree while using the algorithm name in the button so it cannot
+            # be visually elided at the narrow control-panel width.
+            compact_label = full_label
+            if index > 0:
+                compact_label = full_label.replace("Raio-X ", "").replace(
+                    "X-Ray ", ""
+                )
+            button = self.view_mode_buttons[index]
+            button.setText(compact_label)
+            button.setToolTip(full_label)
+            button.setAccessibleName(full_label)
         self.layer_controls.setTitle(t["layer_visualization"])
         for layer_id, checkbox in self.layer_checkboxes.items():
             checkbox.setText(t[self.LAYER_TEXT_KEYS[layer_id]])
