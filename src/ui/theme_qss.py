@@ -40,6 +40,18 @@ QToolBar::separator {{
     width: 1px;
     margin: 5px 3px;
 }}
+QToolBar#scenario_editor_toolbar {{
+    spacing: 2px;
+    padding: 3px 4px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton {{
+    min-width: 0px;
+    padding: 3px 7px;
+    font-size: 14px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton::menu-button {{
+    width: 14px;
+}}
 QToolBar#reference_tool_palette {{
     min-width: 96px;
     max-width: 112px;
