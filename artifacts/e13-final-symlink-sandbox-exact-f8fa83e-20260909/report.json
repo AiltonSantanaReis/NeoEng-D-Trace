@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "PASS_SANDBOX",
+  "source_commit": "f8fa83e219c42413c02f9436c9a9a7a9c26f9812",
+  "source_branch": "Ailton/e08-renderer-20260908",
+  "source_mount": "immutable-git-archive-f8fa83e",
+  "observed_in_sandbox": true,
+  "report_materialization": "host_reconciliation_from_sandbox_junit",
+  "cases": 2,
+  "passed": 2,
+  "skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "junit_report": "symlink-junit.xml",
+  "junit_sha256": "885FF1A505F0251C6F87E7B2A5E17D7757C832C18A117A020569A7269C0E3A9B",
+  "wrapper_limitation": "Sandbox produced the JUnit, but terminated before the wrapper could write pytest-output.txt and the in-VM report. The status is derived only from the raw JUnit attributes and named test cases."
+}

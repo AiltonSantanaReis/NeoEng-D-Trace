@@ -184,20 +184,25 @@ No checkout final, o comando focado executou 2 casos e preservou ambos como
 `SKIP_LOCAL`: `WinError 1314 — O cliente não tem o privilégio necessário`.
 O conjunto de integração completo executou `29 passed, 2 skipped`.
 
-Depois, o gate foi reexecutado no Windows Sandbox com um `.wsb` que montou o
-checkout r72 somente para leitura, Python canônico/venv somente para leitura e
-uma pasta de evidências externa. O `LogonCommand` executou `cmd.exe` dentro da
-VM; o marcador, o JUnit e o relatório foram produzidos fora da VM:
+Depois, o gate foi reexecutado no Windows Sandbox sobre um arquivo Git
+imutável exatamente no SHA `f8fa83e`, com Python canônico/venv somente para
+leitura e uma pasta de evidências externa. O JUnit bruto foi produzido dentro
+da VM e registra `tests=2`, `skipped=0`, `failures=0` e os dois casos de
+symlink. O wrapper foi encerrado antes de escrever seu log/relatório; por isso
+o `report.json` abaixo é uma reconciliação host explicitamente derivada apenas
+dos atributos e casos do JUnit, não uma afirmação de que o wrapper o gravou:
 
-- `artifacts/e13-final-symlink-sandbox-rerun-20260909/report.json`, SHA-256
-  `6AB82EB78CDB52FDCCA3A962F2F4CE39BF03C7802E4EFDAE0F3D1740F405`;
-- `artifacts/e13-final-symlink-sandbox-rerun-20260909/symlink-junit.xml`, SHA-256
-  `29D6721ABA2889D36B9E103A019704CFA082BEF2B4C7FD0E377C6A3E7370F611`;
-- resultado observado: `2 passed, 0 skipped, 0 failures`, exit `0`,
+- `artifacts/e13-final-symlink-sandbox-exact-f8fa83e-20260909/report.json`,
+  SHA-256 `11551736A8B7BB380E504B6D224AAD17E8A4D9FEE10C971D5B75525C005DB79A`;
+- `artifacts/e13-final-symlink-sandbox-exact-f8fa83e-20260909/symlink-junit.xml`,
+  SHA-256 `885FF1A505F0251C6F87E7B2A5E17D7757C832C18A117A020569A7269C0E3A9B`;
+- resultado observado no Sandbox: `2 passed, 0 skipped, 0 failures`, exit `0`,
   `status=PASS_SANDBOX`.
 
-O resultado histórico `31/31` de SHA anterior continua separado; a evidência
-acima é a requalificação do SHA final `f8fa83e`.
+O resultado histórico `31/31` e o primeiro relatório de reexecução em worktree
+posterior continuam preservados como históricos; não são usados como a
+proveniência principal. A evidência acima é a requalificação do SHA final
+imutável `f8fa83e`.
 
 ### Gates repetidos e findings
 
