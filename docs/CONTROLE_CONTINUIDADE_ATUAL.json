@@ -104,18 +104,18 @@
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e11-composition-20260909-r56/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "A76F8B0B1074BBD79F3B04CFECB7A79563FEE1D3F3FF718BBF14762254951530",
-      "latest_observed_binary_last_write": "2026-09-09T01:42:57.1662060Z",
-      "source_commit": "f52203afa85b49a969fb9d7bf6a4b19773093687",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e11-composition-20260909-r57/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "6C0AFF82723549D4953532AF17C8192A5FF6016CFFB068E0EBC5B7807A906997",
+      "latest_observed_binary_last_write": "2026-09-09T01:48:31.0219745Z",
+      "source_commit": "d8df39bbcfc71e9a08f71ab931ccd971789ae9b4",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "5C8727E8F7D69A70AE797210B2190C9C6DA0D87F50380956907014D9719C0CBE",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e11-composition-20260909-r56/continuity-provenance.json",
+      "continuity_registry_sha256": "CAF75B2B52F6748981F1F1461E78F9A4EF6938000FE43AAEB4AAC32B1088A6F1",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e11-composition-20260909-r57/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "57289F5DAB178EB47DD6D7F620C19A1D674C4840784D4D94984A56B9428AEE6C",
-      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial, build r52, smoke e captura real. E10-A/B/C/D/E foram comprovados com export, Godot 4.7 e Unity 6000.5.7f1 reais, comparação, negativos e capturas nativas. E11-C iniciou o pacote de composição validado e a build r56; consumo composto nos engines permanece em execução."
+      "portable_archive_sha256": "279F25A560BA111324227887CD7DD67AB314B2E80B7B145FE8E5DB0E28C30BBD",
+      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial, build r52, smoke e captura real. E10-A/B/C/D/E foram comprovados com export, Godot 4.7 e Unity 6000.5.7f1 reais, comparação, negativos e capturas nativas. E11-C iniciou o pacote de composição validado e a build r57; consumo composto nos engines permanece em execução."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",
