@@ -36,9 +36,9 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSlider,
     QSpinBox,
-    QSizePolicy,
     QToolBar,
     QToolButton,
     QVBoxLayout,
@@ -1537,7 +1537,11 @@ class MaskViewerDialog(QDialog):
         control_layout.addWidget(self.toolbar)
         self._setup_explicit_view_modes()
         control_layout.addWidget(self.view_mode_group)
-        control_layout.addWidget(self.view_mode_toolbar_row)
+        # The four explicit buttons above are the single visible control for
+        # the display mode. Keep the combo as an internal state bridge for
+        # detection-source compatibility and tests, but do not render a
+        # second, duplicate mode selector below the buttons.
+        self.view_mode_toolbar_row.setVisible(False)
         self._setup_layer_controls()
         control_layout.addWidget(self.layer_controls)
         self._setup_parameter_controls()
@@ -1693,9 +1697,7 @@ class MaskViewerDialog(QDialog):
             button = QToolButton(preset_container)
             button.setDefaultAction(action)
             button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
-            button.setSizePolicy(
-                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
-            )
+            button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             button.setToolTip(action.toolTip())
             preset_layout.addWidget(button, 1)
             self.preset_buttons[preset_id] = button
@@ -1711,7 +1713,7 @@ class MaskViewerDialog(QDialog):
         self.view_mode_combo.currentIndexChanged.connect(self._on_view_mode_changed)
         self.perf_label = QLabel()
         self.perf_label.setWordWrap(True)
-        self.view_mode_toolbar_row = QWidget()
+        self.view_mode_toolbar_row = QWidget(self)
         self.view_mode_toolbar_row.setObjectName("mask_view_mode_toolbar_row")
         row_layout = QHBoxLayout(self.view_mode_toolbar_row)
         row_layout.setContentsMargins(0, 0, 0, 0)
@@ -1917,9 +1919,7 @@ class MaskViewerDialog(QDialog):
             # be visually elided at the narrow control-panel width.
             compact_label = full_label
             if index > 0:
-                compact_label = full_label.replace("Raio-X ", "").replace(
-                    "X-Ray ", ""
-                )
+                compact_label = full_label.replace("Raio-X ", "").replace("X-Ray ", "")
             button = self.view_mode_buttons[index]
             button.setText(compact_label)
             button.setToolTip(full_label)

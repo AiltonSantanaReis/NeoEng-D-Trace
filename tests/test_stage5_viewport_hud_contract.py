@@ -171,6 +171,8 @@ def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, siz
         scroll = dialog.findChild(QScrollArea, "mask_controls_scroll")
         assert scroll is not None and scroll.isVisibleTo(dialog)
         assert dialog.viewer.isVisibleTo(dialog)
+        assert not dialog.view_mode_toolbar_row.isVisibleTo(dialog)
+        assert all(button.isVisibleTo(dialog) for button in dialog.view_mode_buttons)
         assert dialog.rect().contains(scroll.geometry())
         assert dialog.rect().contains(dialog.viewer.geometry())
         assert all(button.isEnabled() for button in dialog.view_mode_buttons)
