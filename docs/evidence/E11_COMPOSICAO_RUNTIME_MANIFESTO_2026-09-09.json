@@ -34,6 +34,17 @@
     "focused_e11": "149 passed",
     "independent_scene_and_user_flow": "32 passed",
     "official_suite": "2098 passed, 2 skipped, 1 warning",
+    "runtime_adapter_closure": {
+      "status": "PASS",
+      "report": "artifacts/e11-runtime-adapters-clean-20260909/stage8-report.json",
+      "report_sha256": "C0D23E82D0A5F41453657CE5312A6C012DF5B297293F272C29C0AACACBEF1965",
+      "godot": "PASS",
+      "unity": "PASS",
+      "functional": "PASS",
+      "fixed_ticks": 3,
+      "sidecars": 6,
+      "clean_worktree": true
+    },
     "symlink_policy": "deferred_until_final_audit"
   },
   "open_criteria": [

@@ -44,6 +44,22 @@ usuário executou `32 passed`. A suíte oficial da mesma fronteira havia
 executado `2098 passed, 2 skipped, 1 warning`; os skips continuam restritos a
 symlink e não foram convertidos em aprovação.
 
+## Consumo runtime fora do editor
+
+O fechamento de adapters foi repetido em worktree limpo, com projetos reais
+gerados para Godot `4.7.stable` e Unity `6000.5.7f1`. O relatório
+`artifacts/e11-runtime-adapters-clean-20260909/stage8-report.json` tem SHA-256
+`C0D23E82D0A5F41453657CE5312A6C012DF5B297293F272C29C0AACACBEF1965` e registra
+`status=PASS`, `functional_status=PASS`, `godot=PASS`, `unity=PASS`, dois
+layers e três fixed ticks. Os seis sidecars de lighting, particles,
+post-processing, shaders, streaming e triggers foram validados com o mesmo
+bundle; a matriz mantém `degraded` onde o destino consome metadata/sidecar,
+sem promover isso silenciosamente a execução nativa.
+
+A primeira execução no worktree com evidências presentes foi preservada como
+diagnóstico `FAIL` por `worktree_clean=false`; ela não foi usada como PASS. A
+repetição limpa acima é a evidência oficial do sublote.
+
 ## Fila E11 e critérios ainda abertos
 
 | Sublote | Estado | Próxima prova obrigatória |
