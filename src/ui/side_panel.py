@@ -204,8 +204,8 @@ class SidePanel(QWidget):
         self.properties_group.setLayout(l_edit)
         layout.addWidget(self.properties_group)
         layout.addWidget(self.transform_group)
-        metadata_group = QGroupBox("Metadata / Scenario")
-        metadata_layout = QVBoxLayout(metadata_group)
+        self.metadata_group = QGroupBox("Metadata / Scenario")
+        metadata_layout = QVBoxLayout(self.metadata_group)
         metadata_layout.addWidget(self.metadata_label)
         scenario_button = QPushButton("Open Scenario Editor")
         scenario_button.setObjectName("open_scenario_editor_from_inspector")
@@ -220,7 +220,7 @@ class SidePanel(QWidget):
             lambda: getattr(self.window(), "open_scenario_editor", lambda: None)()
         )
         metadata_layout.addWidget(scenario_button)
-        layout.addWidget(metadata_group)
+        layout.addWidget(self.metadata_group)
 
         # Grupo 2: Modificadores
         self.modify_shape_group = QGroupBox("Modify Shape")
@@ -396,6 +396,13 @@ class SidePanel(QWidget):
 
         is_pt = getattr(self, "current_lang", "en") == "pt"
         self.transform_group.setTitle("Transformação" if is_pt else "Transform")
+        if hasattr(self, "metadata_group"):
+            self.metadata_group.setTitle(
+                "Metadados / Cenário" if is_pt else "Metadata / Scenario"
+            )
+        self.btn_apply_transform.setText(
+            "Aplicar Transformação" if is_pt else "Apply Transform"
+        )
         labels = (
             {
                 "rename": "Renomear o objeto selecionado",
