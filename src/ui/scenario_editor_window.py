@@ -237,25 +237,18 @@ class ScenarioEditorWindow(QMainWindow):
             (self.upgrade_action, self.recover_action),
         )
         self.toolbar.addSeparator()
-        target_button = QToolButton(self.toolbar)
-        target_button.setObjectName("scenario_toolbar_menu_target")
-        target_button.setText("Alvo")
-        target_button.setToolTip("Alvo de exportação")
-        target_button.setAccessibleName("Alvo de exportação")
-        target_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
-        target_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
-        target_menu = QMenu(target_button)
-        target_widget = QWidget(target_menu)
+        export_menu = self._toolbar_menu_buttons["export"].menu()
+        if export_menu is None:
+            raise RuntimeError("Export toolbar menu was not created")
+        target_widget = QWidget(export_menu)
         target_layout = QHBoxLayout(target_widget)
         target_layout.setContentsMargins(8, 6, 8, 6)
         target_layout.addWidget(self.export_target_label)
         target_layout.addWidget(self.export_target_combo)
-        target_action = QWidgetAction(target_menu)
+        target_action = QWidgetAction(export_menu)
         target_action.setDefaultWidget(target_widget)
-        target_menu.addAction(target_action)
-        target_button.setMenu(target_menu)
-        self.toolbar.addWidget(target_button)
-        self._toolbar_menu_buttons["target"] = target_button
+        export_menu.addSeparator()
+        export_menu.addAction(target_action)
         self.status_label = QLabel(self)
         self.status_label.setObjectName("scenario_editor_status_label")
         self.statusBar().setObjectName("scenario_editor_status_bar")
@@ -1103,7 +1096,6 @@ class ScenarioEditorWindow(QMainWindow):
                 "Ver" if self.current_lang == "pt" else "View",
             ),
             ("more", "Mais" if self.current_lang == "pt" else "More"),
-            ("target", "Alvo" if self.current_lang == "pt" else "Target"),
         )
         for key, label in menu_labels:
             button = self._toolbar_menu_buttons.get(key)
