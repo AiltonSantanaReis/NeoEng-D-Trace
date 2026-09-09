@@ -11,6 +11,7 @@ from src.core.commands import CommandManager
 from src.models.scene import Scene
 from src.tools import polygon_edit_tool as polygon_module
 from src.tools.polygon_edit_tool import PolygonEditTool
+from src.tools.selection_tool import SelectionTool
 from src.ui.canvas_view import CanvasView
 
 
@@ -145,5 +146,27 @@ def test_ctrl_click_selects_multiple_polygons(qt_app):
 
         assert tool.selected_polygon_ids == {"A", "B"}
         assert tool.selected_polygon_id == "B"
+    finally:
+        view.close()
+
+
+def test_selection_tool_ctrl_click_selects_multiple_objects(qt_app):
+    scene, view = _view(qt_app)
+    scene.add_object(
+        "B",
+        [(80, 80), (115, 80), (100, 115)],
+        select=False,
+    )
+    scene.cmd.clear()
+    interface = SelectionTool(view).interface()
+    try:
+        interface.on_mouse_press(_event(), (30, 30))
+        interface.on_mouse_press(
+            _event(modifiers=Qt.KeyboardModifier.ControlModifier),
+            (95, 95),
+        )
+
+        assert scene.selected_ids == ["A", "B"]
+        assert scene.selected_id == "B"
     finally:
         view.close()
