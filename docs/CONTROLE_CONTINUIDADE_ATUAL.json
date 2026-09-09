@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Decisão externa necessária para E10-D: fornecer caminho de Unity Editor qualificável ou autorizar instalação de versão compatível; após isso abrir projeto limpo, importar o export V2 com objeto vetorial, executar e registrar comparação/negativos. Manter symlink e revisão humana reservados à auditoria final.",
+    "next_action": "Concluir E10-E: consolidar comparação Godot/Unity, round-trip somente no sentido implementado, manifesto e fechamento do lote; manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
       "id": "E10",
       "status": "IN_PROGRESS",
-      "scope": "E00–E09 comprovados em checkpoint técnico; E10-A/B/C comprovados em Godot 4.7 e E10-D ativo para runtime Unity/limitação de disponibilidade",
+      "scope": "E00–E09 comprovados em checkpoint técnico; E10-A/B/C/D comprovados em Godot 4.7 e Unity 6000.5.7f1; E10-E ativo para fechamento",
       "evidence": "docs/evidence/E10_EXPORTACAO_ROUNDTRIP_EVIDENCIA_2026-09-08.md",
       "functional_implementation_allowed": true
     },
@@ -58,11 +58,11 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "a09a0819494e01c0bbc5531bbdedc3604f6d07a0",
-    "head_role": "EXECUTABLE_SOURCE_ANCHOR_R53",
+    "head": "9708861cd0dadfdb356b953202f7493bece2d2e6",
+    "head_role": "EXECUTABLE_SOURCE_ANCHOR_E10_UNITY_VECTOR",
     "tracked_changes_present": false,
     "untracked_artifacts_present": false,
-    "status": "CLEAN_E10_D_ACTIVE"
+    "status": "CLEAN_E10_E_ACTIVE"
   },
   "gates": {
     "official_suite": {
@@ -99,7 +99,7 @@
       "latest_binary_capture": "artifacts/e10-godot-c6-20260908/binary-capture-r53-regression/11-vector-contour-created.png",
       "latest_binary_capture_sha256": "E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r53 abriu uma fixture V2 no binário portátil; o fluxo nativo E09 foi repetido sem regressão. Godot 4.7 importou o export vetorial, materializou colisão com 4 pontos e rejeitou asset adulterado. Runtime Unity não foi localizado; revisão humana continua pendente.",
+      "observed_finding": "Build r53 abriu uma fixture V2 no binário portátil; o fluxo nativo E09 foi repetido sem regressão. Godot 4.7 e Unity 6000.5.7f1 importaram a fixture profissional, materializaram o collider vetorial e rejeitaram asset adulterado; revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
@@ -115,7 +115,7 @@
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
       "portable_archive_sha256": "a0afd5c33c36a86f839ea39938e8f4f6c8dffdcdd23b47eb3771882261e0d6e4",
-      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial 2098, build r52, smoke e captura real. E10-A/B/C foram comprovados com export e Godot 4.7 real na build r53; E10-D permanece ativo pela disponibilidade Unity."
+      "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial 2098, build r52, smoke e captura real. E10-A/B/C/D foram comprovados com export, Godot 4.7 e Unity 6000.5.7f1 reais; E10-E permanece ativo para comparação e fechamento."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

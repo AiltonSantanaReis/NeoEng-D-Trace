@@ -4,7 +4,7 @@
 **Worktree oficial:** `build/e01-independent-scene-20260908`  
 **Branch:** `Ailton/e08-renderer-20260908`  
 **Plano Mestre:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
-**Status:** `IN_PROGRESS` — E10-A/B/C technical checkpoints passed; E10-D é o próximo gate
+**Status:** `IN_PROGRESS` — E10-A/B/C/D technical checkpoints passed; E10-E é o próximo gate
 
 ## Contrato de execução
 
@@ -26,10 +26,9 @@ logs e capturas nativas.
 
 - Godot foi localizado no host como `C:\ProgramData\chocolatey\bin\godot.exe`;
   a versão e a execução headless serão registradas no primeiro sublote.
-- Nenhum executável Unity foi localizado pelos comandos de descoberta do host;
-  a integração Unity permanece uma lacuna de disponibilidade externa até que
-  um runtime qualificável seja encontrado, sem converter scaffold C# em prova
-  de engine real.
+- Unity Editor foi localizado e qualificado no host em `6000.5.7f1`; a
+  integração somente foi promovida após execução real do projeto limpo e
+  captura nativa.
 - O repositório já contém adapters, validadores e plugins Godot/Unity; eles
   serão usados como implementação candidata e não como evidência de consumo
   até a execução correspondente.
@@ -38,10 +37,10 @@ logs e capturas nativas.
 
 | Sublote | Status | Saída obrigatória |
 |---|---|---|
-| E10-A contrato/capacidades | `IN_PROGRESS` | matriz por destino e versão, propriedades preservadas, conversões e limites |
-| E10-B exportação efetiva | `PLANNED` | pacote temporário validado, hash, atomicidade e negativos |
-| E10-C importação/execução Godot | `PLANNED` | projeto limpo, importador real, runtime, logs e capturas |
-| E10-D importação/execução Unity | `PLANNED` | runtime Unity real, ou lacuna de disponibilidade explicitamente mantida |
+| E10-A contrato/capacidades | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | matriz por destino e versão, propriedades preservadas, conversões e limites |
+| E10-B exportação efetiva | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pacote temporário validado, hash, atomicidade e negativos |
+| E10-C importação/execução Godot | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | projeto limpo, importador real, runtime, logs e capturas |
+| E10-D importação/execução Unity | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | runtime Unity real, collider vetorial, captura e negativo de hash |
 | E10-E round-trip/fechamento | `PLANNED` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
 
 ## Regras de evidência
@@ -82,13 +81,32 @@ capturas e limitações reproduzíveis.
 
 ## E10-D — Unity
 
-- Nenhum executável Unity foi localizado no host (`Get-Command Unity` e
-  `Get-Command Unity.exe` sem resultado). O scaffold e o código C# não são
-  promovidos a prova de engine real.
-- O adapter Unity já recebeu a preservação de `vector_geometry`, mas o gate
-  de importação/execução real permanece aberto até existir runtime qualificável.
-  Enquanto isso, a execução continua com validações estáticas e Godot, sem
-  declarar E10 concluída.
+- Runtime real localizado via registro do Unity Hub:
+  `C:\Program Files\Unity\Hub\Editor\6000.5.7f1\Editor\Unity.exe`.
+  O harness básico confirmou criação de projeto limpo, importação GLB e
+  `ENGINE_VALIDATION=SUCCESS`; relatório:
+  `artifacts/e10-unity-d-20260908/report.json`.
+- A primeira execução profissional revelou um defeito real de compatibilidade:
+  `JsonUtility` materializa uma classe opcional vazia e o importador interpretava
+  isso como `vector_geometry` inválido. A correção foi registrada no commit
+  `9708861`: o importador distingue payload ausente de payload parcial, sem
+  relaxar a validação quando a geometria está presente.
+- Fixture profissional assimétrica agora inclui `vector_geometry` ligado ao
+  SHA da imagem e um polígono de quatro pontos. O validator Unity verifica
+  transformações, pivô, flip, renderização e `PolygonCollider2D` com quatro
+  pontos.
+- Execução real aprovada no Unity `6000.5.7f1`:
+  `artifacts/e10-unity-d-20260908/professional-work-report.json` —
+  `P2D04_UNITY_VALIDATION=SUCCESS`, `P2D04_UNITY_RENDER_PIXELS=266` e
+  `negative_hash.rejected=true`. A captura real é
+  `professional-work/unity-project/unity-professional-capture.png`, SHA-256
+  `4F96FEB7A3CA0681538A02108BE0D4A1007C21429DBDF2D3783132BBCE8D829C`.
+- O negativo executado no mesmo projeto adulterou `Assets/assets/hero.png` e
+  foi recusado com `asset hash does not match`; o asset foi restaurado e o SHA
+  válido final é `252E9339BE02074658C2AE8DA520281C8B1A1799F56C48825F9CECCE78A09C8B`.
+- O harness profissional foi corrigido para inserir explicitamente o root do
+  worktree no `sys.path`; o Godot foi reexecutado com a mesma fixture e passou
+  em `4.7-stable (official)`, com `P2D04_GODOT_RENDER_PIXELS=14400`.
 
 ## Build e captura do produto após a correção
 
@@ -105,21 +123,16 @@ capturas e limitações reproduzíveis.
   SHA-256 `E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02`, confirma detecção,
   correção manual, criação do objeto, gizmo e feedback no produto.
 
-E10-D permanece aberto exclusivamente pela ausência de runtime Unity
-qualificável no host; essa ausência não é mascarada como PASS.
+E10-D possui checkpoint técnico `PASS` nos dois destinos executados. E10-E
+permanece aberto para consolidar comparação, round-trip permitido pelo
+contrato, manifesto e fechamento do lote.
 
-## E10-D — diagnóstico de disponibilidade
+## E10-D — diagnóstico de disponibilidade resolvido
 
 - Comando formal:
   `python tools/validate_engine_exports.py --engine unity --report artifacts/e10-unity-d-20260908/report.json`.
-- Resultado: `FAILED` esperado, `FileNotFoundError: unity executable not found`;
-  o relatório não é convertido em PASS nem em falha funcional do produto.
-- Busca adicional em `Program Files`, `Program Files (x86)`, `ProgramData`,
-  `AppData/Local` e `AppData/Roaming` não encontrou `Unity.exe`,
-  `UnityEditor.exe` ou `UnityHub.exe`. O .NET SDK instalado não substitui o
-  runtime Unity e não permite declarar importação/execução real.
-
-Este é o único ponto que exige decisão externa: fornecer o caminho de um Unity
-Editor qualificável ou autorizar a instalação de uma versão compatível. Sem uma
-dessas opções, E10-D/EXP-003 não pode ser concluído honestamente; o registro
-central permanece `IN_PROGRESS`, sem marcar `BLOCKED` ou mascarar a lacuna.
+- Resultado do harness básico: `SUCCESS`, Unity `6000.5.7f1`.
+- Resultado profissional: `SUCCESS`, com collider vetorial, captura e negativo
+  de hash no relatório `professional-work-report.json`.
+- A limitação anterior de disponibilidade foi encerrada com evidência real;
+  nenhuma ausência de runtime permanece aberta em E10-D.
