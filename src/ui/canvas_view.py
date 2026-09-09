@@ -45,16 +45,17 @@ from src.core.scenario_preview import (
     build_overlay_geometry,
     project_layer_points,
 )
-from src.core.scene_render_plan import SceneRenderPlan
 from src.core.scene_lighting import (
     SceneLightingMaterial,
     SceneLightingSettings,
     default_scene_lighting,
     shade_color,
 )
+from src.core.scene_render_plan import SceneRenderPlan
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
 from src.ui.image_conversion import to_qimage
+from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.viewport_state import (
     ViewportState,
     format_compact_viewport_details,
@@ -435,14 +436,20 @@ class CanvasView(QWidget):
 
         clicked_obj_id = self._find_object_at(img_pt)
 
+        labels = MAIN_WINDOW_TRANSLATIONS.get(
+            self.current_lang, MAIN_WINDOW_TRANSLATIONS["en"]
+        )
         menu = QMenu(self)
 
         if clicked_obj_id:
-            label = menu.addAction(f"Selected: {clicked_obj_id[:8]}...")
+            label = menu.addAction(
+                f"{labels['context_selected_object']}: {clicked_obj_id[:8]}..."
+            )
             label.setEnabled(False)
             menu.addSeparator()
 
-            act_focus = menu.addAction("🔍 Focus Object")
+            act_focus = menu.addAction(f"🔍 {labels['context_focus_object']}")
+            act_focus.setStatusTip(labels["context_focus_object"])
             act_focus.triggered.connect(lambda: self.focus_on_object(clicked_obj_id))
 
             # Forma de colisão
@@ -450,29 +457,36 @@ class CanvasView(QWidget):
                 self.model, "has_collision"
             ) and self.model.has_collision(clicked_obj_id)
             collision_text = (
-                "Disable Collision Shape" if has_collision else "Enable Collision Shape"
+                labels["context_disable_collision"]
+                if has_collision
+                else labels["context_enable_collision"]
             )
             collision_action = menu.addAction(f"⚛️ {collision_text}")
+            collision_action.setStatusTip(collision_text)
             collision_action.triggered.connect(
                 lambda: self._toggle_collision(clicked_obj_id)
             )
 
             menu.addSeparator()
 
-            act_del = menu.addAction("❌ Delete Object")
+            act_del = menu.addAction(f"❌ {labels['context_delete_object']}")
+            act_del.setStatusTip(labels["context_delete_object"])
             act_del.triggered.connect(lambda: self._delete_object(clicked_obj_id))
 
             menu.addSeparator()
 
-        act_fit = menu.addAction("Fit Image (F)")
+        act_fit = menu.addAction(labels["context_fit_image"])
+        act_fit.setStatusTip(labels["context_fit_image"])
         act_fit.triggered.connect(self.fit_to_window)
 
-        act_100 = menu.addAction("Zoom 100%")
+        act_100 = menu.addAction(labels["context_zoom_100"])
+        act_100.setStatusTip(labels["context_zoom_100"])
         act_100.triggered.connect(lambda: self.set_zoom(1.0))
 
         menu.addSeparator()
 
-        act_clean = menu.addAction("🗑️ Clean All Polygons")
+        act_clean = menu.addAction(f"🗑️ {labels['context_clean_all_polygons']}")
+        act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
 
         menu.exec(event.globalPos())
@@ -2042,6 +2056,6 @@ class CanvasView(QWidget):
         painter.restore()
 
     def update_language(self, lang):
-        self.current_lang = lang
+        self.current_lang = lang if lang in MAIN_WINDOW_TRANSLATIONS else "en"
         if self._tool and self._tool.update_language:
             self._tool.update_language(lang)

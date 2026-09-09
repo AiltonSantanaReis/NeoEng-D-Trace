@@ -46,11 +46,11 @@ from src.ui.groups_panel import GroupsPanel
 from src.ui.icon_library import configure_main_window_controls
 from src.ui.independent_scene_actions import install_independent_scene
 from src.ui.layers_panel import LayersPanel
-from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.main_window_language import (
     apply_action_tooltips,
     refresh_language_components,
 )
+from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
 from src.ui.reference_chrome import (
     connect_reference_search,
@@ -624,6 +624,9 @@ class MainWindow(QMainWindow):
             command_search.setToolTip(t["command_palette_search_description"])
 
         self.command_palette.update_language(self.current_lang)
+        canvas_update_language = getattr(self.canvas, "update_language", None)
+        if callable(canvas_update_language):
+            canvas_update_language(self.current_lang)
         refresh_language_components(self)
 
     def set_last_folder(self, folder):
