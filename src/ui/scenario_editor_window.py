@@ -195,6 +195,14 @@ class ScenarioEditorWindow(QMainWindow):
         self.upgrade_action = QAction(self)
         self.recover_action = QAction(self)
         self.recover_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+R"))
+        for persistence_action in (
+            self.save_action,
+            self.load_action,
+            self.recover_action,
+        ):
+            persistence_action.setShortcutContext(
+                Qt.ShortcutContext.ApplicationShortcut
+            )
         self.export_target_label = QLabel(self.toolbar)
         self.export_target_label.setObjectName("scenario_export_target_label")
         self.export_target_combo = QComboBox(self.toolbar)

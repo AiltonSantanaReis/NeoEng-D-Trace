@@ -312,6 +312,9 @@ def test_scenario_editor_persistence_actions_have_explicit_keyboard_paths(
         assert window.save_action.shortcut().toString() == "Ctrl+Alt+Shift+S"
         assert window.load_action.shortcut().toString() == "Ctrl+Alt+Shift+L"
         assert window.recover_action.shortcut().toString() == "Ctrl+Alt+Shift+R"
+        assert (
+            window.save_action.shortcutContext().name == "ApplicationShortcut"
+        )
     finally:
         window.close()
         qt_app.processEvents()

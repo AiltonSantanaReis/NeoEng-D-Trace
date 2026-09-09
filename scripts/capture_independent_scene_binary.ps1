@@ -326,6 +326,13 @@ public static class NeoEngIndependentSceneCapture
         ClickScreen(rect.Left + offsetX, rect.Top + offsetY);
     }
 
+    public static string WindowRectInfo(IntPtr hWnd)
+    {
+        RECT rect;
+        if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        return rect.Left + "," + rect.Top + "," + rect.Right + "," + rect.Bottom;
+    }
+
     public static void BeginDragWindow(IntPtr hWnd, int startX, int startY)
     {
         RECT rect;
@@ -782,6 +789,11 @@ try {
         $scenePath = Join-Path $projectRoot ((Split-Path -Leaf $projectPathResolved) -replace '\.ndtproj$', '.ndtscene.json')
         $recoveryPath = "$scenePath.recovery.json"
         if (-not (Test-Path -LiteralPath $recoveryPath -PathType Leaf)) {
+            Write-Host ("SCENARIO_RECT=" + [NeoEngIndependentSceneCapture]::WindowRectInfo($scenarioWindow.Handle))
+            [System.Windows.Forms.SendKeys]::SendWait("^%+s")
+            Start-Sleep -Milliseconds 1200
+        }
+        if (-not (Test-Path -LiteralPath $recoveryPath -PathType Leaf)) {
             [NeoEngIndependentSceneCapture]::ClickWindow($scenarioWindow.Handle, 210, 95)
             Start-Sleep -Milliseconds 1200
         }
@@ -804,6 +816,8 @@ try {
         $reopenedSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $reopenedPath)
         [IO.File]::WriteAllText($scenePath, "{ broken composition document")
         [NeoEngIndependentSceneCapture]::FocusWindow($reopenedScenarioWindow.Handle) | Out-Null
+        [System.Windows.Forms.SendKeys]::SendWait("^%+l")
+        Start-Sleep -Milliseconds 1000
         [NeoEngIndependentSceneCapture]::SendCtrlAltShiftL()
         Start-Sleep -Milliseconds 1000
         $recoveryPromptPath = Join-Path $OutputDirectory "composition-05-recovery-prompt.png"
@@ -816,6 +830,10 @@ try {
         Start-Sleep -Milliseconds 1200
         $afterRecoverySavePath = Join-Path $OutputDirectory "composition-07-after-recovery-save.png"
         $afterRecoverySaveSize = [NeoEngIndependentSceneCapture]::Capture($reopenedScenarioWindow.Handle, $afterRecoverySavePath)
+        if (-not (Test-Path -LiteralPath $scenePath -PathType Leaf)) {
+            [System.Windows.Forms.SendKeys]::SendWait("^%+s")
+            Start-Sleep -Milliseconds 1200
+        }
         if (-not (Test-Path -LiteralPath $scenePath -PathType Leaf)) {
             [NeoEngIndependentSceneCapture]::ClickWindow($reopenedScenarioWindow.Handle, 210, 95)
             Start-Sleep -Milliseconds 1200
