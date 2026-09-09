@@ -144,6 +144,9 @@ def test_global_canvas_context_menu_does_not_add_empty_separator(qt_app, monkeyp
         def setMinimumWidth(self, value):
             self.minimum_width = value
 
+        def adjustSize(self):
+            self.adjusted = True
+
         def exec(self, position):
             self.position = position
 

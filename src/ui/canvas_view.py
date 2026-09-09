@@ -494,6 +494,8 @@ class CanvasView(QWidget):
         act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
 
+        # Let Qt measure the localized labels and keep the popup compact.
+        menu.adjustSize()
         menu.exec(global_pos)
 
     def _find_object_at(self, point: QPointF) -> Optional[str]:

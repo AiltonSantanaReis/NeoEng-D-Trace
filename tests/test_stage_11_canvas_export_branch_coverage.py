@@ -429,6 +429,9 @@ def test_canvas_context_menu_selection_and_manual_polygon(qt_app, monkeypatch):
         def setStyleSheet(self, value):
             self.style = value
 
+        def adjustSize(self):
+            self.adjusted = True
+
         def addAction(self, text):
             action = ActionProbe(text)
             self.actions.append(action)
