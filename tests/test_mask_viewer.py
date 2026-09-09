@@ -42,6 +42,7 @@ def test_mask_detection_presets_are_visible_and_keep_active_state(qt_app):
         assert dialog.preset_actions["Enhanced"].isChecked()
         assert not dialog.preset_actions["Basic"].isChecked()
         assert dialog.view_mode_toolbar_row.isVisible()
+        assert dialog.view_mode_combo.minimumWidth() >= 170
     finally:
         dialog.close()
 

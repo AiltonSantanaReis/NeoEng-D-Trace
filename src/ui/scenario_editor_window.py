@@ -303,6 +303,9 @@ class ScenarioEditorWindow(QMainWindow):
         # The command surface follows the project's flat-button pattern; the
         # complete button opens its menu without an extra arrow affordance.
         button.setArrowType(Qt.ArrowType.NoArrow)
+        button.setStyleSheet(
+            "QToolButton::menu-indicator { image: none; width: 0px; }"
+        )
         button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         menu = QMenu(button)
         for action in actions:

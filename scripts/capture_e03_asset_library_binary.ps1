@@ -13,6 +13,7 @@ param(
     [switch]$CaptureMaterialFlow,
     [switch]$CaptureParallaxFlow,
     [switch]$CaptureVectorContourFlow,
+    [switch]$CaptureMaskViewerFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -189,7 +190,7 @@ try {
         Start-Sleep -Milliseconds 3200
         [NeoEngE03Capture]::Focus($mainHandle)
         $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
-        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
+        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
         if (-not $editor) { throw "professional scenario editor was not exposed by direct GUI load" }
     } else {
         [NeoEngE03Capture]::Focus($mainHandle)
@@ -211,14 +212,30 @@ try {
         $records.main_after_project_load = Save-Capture $mainHandle (Join-Path $OutputDirectory "03-main-after-project-load.png")
         [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
         Start-Sleep -Milliseconds 2200
-        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
+        $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
         if (-not $editor) {
             [NeoEngE03Capture]::Focus($mainHandle)
             [NeoEngE03Capture]::ClickWindow($mainHandle, 1430, 160)
             Start-Sleep -Milliseconds 2200
-            $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle -and $_.Title -match "Scenario|Cen.rio" } | Select-Object -First 1
+            $editor = [NeoEngE03Capture]::GetWindows($process.Id) | Where-Object { $_.Handle -ne $mainHandle } | Select-Object -First 1
         }
         if (-not $editor) { throw "professional scenario editor was not exposed" }
+    }
+    if ($CaptureMaskViewerFlow) {
+        [NeoEngE03Capture]::Focus($mainHandle)
+        # The shipped reference toolbar places View/Visualizar at this
+        # native-DPI-relative location. Select the real mask-viewer action
+        # from that menu with keyboard navigation so the capture remains
+        # language-independent.
+        [NeoEngE03Capture]::ClickWindow($mainHandle, 1125, 150)
+        Start-Sleep -Milliseconds 250
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN 7}{ENTER}")
+        Start-Sleep -Milliseconds 1800
+        $mask = [NeoEngE03Capture]::GetWindows($process.Id) |
+            Where-Object { $_.Handle -ne $mainHandle } |
+            Select-Object -First 1
+        if (-not $mask) { throw "Mask Viewer was not exposed by portable binary" }
+        $records.mask_viewer = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer.png")
     }
     [NeoEngE03Capture]::Focus($editor.Handle)
     Start-Sleep -Milliseconds 800
