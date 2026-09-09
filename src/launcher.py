@@ -118,6 +118,7 @@ _HEADLESS_FIELDS = (
     "object_id",
     "export_json",
     "save_project",
+    "export_hybrid",
 )
 
 
@@ -140,6 +141,29 @@ def _headless_contract_error(args: argparse.Namespace) -> str | None:
         return "--object-id requires --export-object-gltf"
     if getattr(args, "export_profile", "default") != "default" and not args.export_json:
         return "--export-profile requires --export-json"
+    hybrid_values = (
+        args.export_hybrid,
+        args.hybrid_composition,
+        args.hybrid_animation,
+        args.hybrid_scene,
+    )
+    if any(hybrid_values) and not all(hybrid_values):
+        return (
+            "--export-hybrid requires --hybrid-composition, --hybrid-animation "
+            "and --hybrid-scene"
+        )
+    if args.export_hybrid and any(
+        getattr(args, field, None)
+        for field in (
+            "image",
+            "project",
+            "export_scene_gltf",
+            "export_object_gltf",
+            "export_json",
+            "save_project",
+        )
+    ):
+        return "--export-hybrid cannot be combined with another headless operation"
     if not any(
         getattr(args, field, None) for field in _HEADLESS_FIELDS if field != "object_id"
     ):
@@ -168,6 +192,25 @@ def run_headless(args: argparse.Namespace) -> int:
         )
 
         logger.info("Starting %s in headless mode", APP_DISPLAY_NAME)
+        if args.export_hybrid:
+            try:
+                from src.exporters.hybrid_composition_export import (
+                    build_hybrid_composition_package,
+                )
+
+                manifest = build_hybrid_composition_package(
+                    args.hybrid_composition,
+                    args.hybrid_animation,
+                    args.hybrid_scene,
+                    args.export_hybrid,
+                )
+            except (OSError, TypeError, ValueError, RuntimeError) as exc:
+                return _cli_failure(f"Failed to export hybrid composition: {exc}")
+            print(
+                "Hybrid composition exported successfully "
+                f"({manifest['support_status']})"
+            )
+            return EXIT_SUCCESS
         scene = Scene()
         scene.cmd = CommandManager()
 
@@ -306,6 +349,26 @@ def build_parser() -> argparse.ArgumentParser:
         help="Select the JSON metadata profile used by --export-json",
     )
     parser.add_argument("--save-project", type=str, help="Save project to file")
+    parser.add_argument(
+        "--export-hybrid",
+        type=str,
+        help="Export an E12 hybrid composition package to a new directory",
+    )
+    parser.add_argument(
+        "--hybrid-composition",
+        type=str,
+        help="Existing E11 composition package used by --export-hybrid",
+    )
+    parser.add_argument(
+        "--hybrid-animation",
+        type=str,
+        help="Animation frame directory used by --export-hybrid",
+    )
+    parser.add_argument(
+        "--hybrid-scene",
+        type=str,
+        help="Versioned hybrid 3D scene JSON used by --export-hybrid",
+    )
     parser.add_argument(
         "--validation-log",
         type=str,

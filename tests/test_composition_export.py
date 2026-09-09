@@ -1,8 +1,9 @@
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from src.core.navmesh_2d import NavMeshSource, NavObstacle, NavRegion
 from src.exporters.composition_export import (
@@ -10,6 +11,13 @@ from src.exporters.composition_export import (
     CompositionInputs,
     build_composition_package,
     validate_composition_package,
+)
+from src.exporters.animation_batch import export_animation_frames
+from src.exporters.hybrid_composition_export import (
+    HybridCompositionExportError,
+    build_hybrid_composition_package,
+    validate_hybrid_composition_package,
+    validate_hybrid_scene,
 )
 from src.persistence.navmesh_io import save_navmesh
 from src.persistence.project_schema import Point3Record, PointRecord
@@ -32,6 +40,7 @@ from src.core.tilemap_model import (
     TileMapDocument,
     TileSet,
 )
+from src.launcher import build_parser, run_headless
 from src.persistence.tilemap_io import save_tilemap
 
 
@@ -59,7 +68,9 @@ def valid_composition_inputs(tmp_path: Path) -> CompositionInputs:
         project=ProjectReferenceRecord(
             sha256=hashlib.sha256(project.read_bytes()).hexdigest()
         ),
-        assets=[AssetReferenceRecord(id="asset", path="assets/asset.png", sha256=asset_hash)],
+        assets=[
+            AssetReferenceRecord(id="asset", path="assets/asset.png", sha256=asset_hash)
+        ],
         layers=[SceneLayerAuthoringRecord(id="foreground", name="Foreground")],
         objects=[
             SceneObjectAuthoringRecord(
@@ -141,3 +152,132 @@ def test_composition_binds_and_revalidates_components(
     tilemap.write_bytes(tilemap.read_bytes() + b"\n")
     with pytest.raises(CompositionExportError, match="hash mismatch"):
         validate_composition_package(package)
+
+
+def _hybrid_scene() -> dict:
+    return {
+        "format_id": "neoeng-d-trace-hybrid-3d-scene",
+        "schema_version": 1,
+        "support_status": "VERTICAL_SLICE_ONLY",
+        "camera": {
+            "projection": "perspective",
+            "fov_degrees": 55,
+            "near": 0.1,
+            "far": 100,
+            "position": [0, 0, 8],
+            "target": [0, 0, 0],
+        },
+        "materials": [{"id": "hero-material", "metallic": 0.0, "roughness": 0.6}],
+        "meshes": [
+            {
+                "id": "hero-mesh",
+                "material_id": "hero-material",
+                "position": [0, 0, 0],
+                "vertices": [[-1, -1, 0], [1, -1, 0], [0, 1, 0]],
+                "triangles": [[0, 1, 2]],
+            }
+        ],
+        "lights": [
+            {
+                "id": "key-light",
+                "type": "directional",
+                "intensity": 1.2,
+                "position": [2, 3, 4],
+            }
+        ],
+        "animation_clips": [
+            {
+                "id": "hero-bob",
+                "mesh_id": "hero-mesh",
+                "keyframes": [
+                    {"time": 0.0, "position": [0, 0, 0]},
+                    {"time": 1.0, "position": [0, 0.25, 0]},
+                ],
+            }
+        ],
+    }
+
+
+def _animation_directory(tmp_path: Path) -> Path:
+    source = tmp_path / "animation-source"
+    output = tmp_path / "animation"
+    source.mkdir()
+    for index, offset in enumerate((0, 1)):
+        image = Image.new("RGBA", (20, 20), (0, 0, 0, 0))
+        ImageDraw.Draw(image).rectangle(
+            (2 + offset, 2, 16 + offset, 16), fill=(255, 255, 255, 255)
+        )
+        image.save(source / f"input_{index}.png")
+    export_animation_frames(source, output, mode="basic", min_area=10)
+    return output
+
+
+def test_hybrid_package_preserves_animation_and_validates_3d_slice(
+    tmp_path: Path, valid_composition_inputs: CompositionInputs
+) -> None:
+    composition = tmp_path / "composition"
+    build_composition_package(valid_composition_inputs, composition)
+    animation = _animation_directory(tmp_path)
+    package = tmp_path / "hybrid"
+
+    manifest = build_hybrid_composition_package(
+        composition, animation, _hybrid_scene(), package
+    )
+
+    assert manifest["support_status"] == "VERTICAL_SLICE_ONLY"
+    assert validate_hybrid_composition_package(package)["schema_version"] == 1
+    assert (package / "composition" / "composition.json").is_file()
+    assert (package / "animation" / "frame_0001.png").is_file()
+    assert (
+        validate_hybrid_scene(_hybrid_scene())["camera"]["projection"] == "perspective"
+    )
+
+
+def test_hybrid_package_rejects_tampered_component_and_invalid_scene(
+    tmp_path: Path, valid_composition_inputs: CompositionInputs
+) -> None:
+    composition = tmp_path / "composition"
+    build_composition_package(valid_composition_inputs, composition)
+    package = tmp_path / "hybrid"
+    build_hybrid_composition_package(
+        composition, _animation_directory(tmp_path), _hybrid_scene(), package
+    )
+    hybrid_scene_path = package / "hybrid3d.json"
+    hybrid_scene_path.write_text(
+        hybrid_scene_path.read_text(encoding="utf-8") + "\n", encoding="utf-8"
+    )
+    with pytest.raises(HybridCompositionExportError, match="hash mismatch"):
+        validate_hybrid_composition_package(package)
+
+    invalid = _hybrid_scene()
+    invalid["camera"]["projection"] = "orthographic"
+    with pytest.raises(HybridCompositionExportError, match="perspective"):
+        validate_hybrid_scene(invalid)
+
+
+def test_hybrid_export_is_available_through_product_cli(
+    tmp_path: Path, valid_composition_inputs: CompositionInputs
+) -> None:
+    composition = tmp_path / "composition"
+    build_composition_package(valid_composition_inputs, composition)
+    animation = _animation_directory(tmp_path)
+    scene_path = tmp_path / "hybrid-scene.json"
+    scene_path.write_text(json.dumps(_hybrid_scene()), encoding="utf-8", newline="\n")
+    output = tmp_path / "hybrid-cli"
+    args = build_parser().parse_args(
+        [
+            "--headless",
+            "--export-hybrid",
+            str(output),
+            "--hybrid-composition",
+            str(composition),
+            "--hybrid-animation",
+            str(animation),
+            "--hybrid-scene",
+            str(scene_path),
+        ]
+    )
+    assert run_headless(args) == 0
+    assert validate_hybrid_composition_package(output)["support_status"] == (
+        "VERTICAL_SLICE_ONLY"
+    )
