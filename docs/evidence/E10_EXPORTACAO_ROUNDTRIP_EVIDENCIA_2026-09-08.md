@@ -105,3 +105,19 @@ capturas e limitações reproduzíveis.
 
 E10-D permanece aberto exclusivamente pela ausência de runtime Unity
 qualificável no host; essa ausência não é mascarada como PASS.
+
+## E10-D — diagnóstico de disponibilidade
+
+- Comando formal:
+  `python tools/validate_engine_exports.py --engine unity --report artifacts/e10-unity-d-20260908/report.json`.
+- Resultado: `FAILED` esperado, `FileNotFoundError: unity executable not found`;
+  o relatório não é convertido em PASS nem em falha funcional do produto.
+- Busca adicional em `Program Files`, `Program Files (x86)`, `ProgramData`,
+  `AppData/Local` e `AppData/Roaming` não encontrou `Unity.exe`,
+  `UnityEditor.exe` ou `UnityHub.exe`. O .NET SDK instalado não substitui o
+  runtime Unity e não permite declarar importação/execução real.
+
+Este é o único ponto que exige decisão externa: fornecer o caminho de um Unity
+Editor qualificável ou autorizar a instalação de uma versão compatível. Sem uma
+dessas opções, E10-D/EXP-003 não pode ser concluído honestamente; o registro
+central permanece `IN_PROGRESS`, sem marcar `BLOCKED` ou mascarar a lacuna.

@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E10-D: localizar runtime Unity qualificável; se disponível, abrir projeto limpo, importar o export V2 com objeto vetorial, executar e registrar comparação/negativos. Manter a ausência explicitamente documentada caso o runtime continue indisponível; symlink e revisão humana ficam reservados à auditoria final.",
+    "next_action": "Decisão externa necessária para E10-D: fornecer caminho de Unity Editor qualificável ou autorizar instalação de versão compatível; após isso abrir projeto limpo, importar o export V2 com objeto vetorial, executar e registrar comparação/negativos. Manter symlink e revisão humana reservados à auditoria final.",
     "active_lot": {
       "id": "E10",
       "status": "IN_PROGRESS",
