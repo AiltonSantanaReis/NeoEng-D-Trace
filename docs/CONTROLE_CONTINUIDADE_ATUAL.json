@@ -28,7 +28,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E13-D: auditoria final com build r72, symlink final, revisão humana e findings formais.",
+    "next_action": "Concluir E13-D: preservar o resultado PENDING_EVIDENCE do Sandbox, obter revisão humana do proprietário e registrar a decisão formal de encerramento.",
     "active_lot": {
       "id": "E13",
       "status": "IN_PROGRESS",
@@ -58,11 +58,11 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "b7244ca",
-    "head_role": "E13_A_B_R71_SOURCE_ANCHOR_E13_C_OPEN",
+    "head": "f8fa83e",
+    "head_role": "E13_D_R72_FINAL_AUDIT_SOURCE",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_E13_R71_ARTIFACTS_PRESERVED_FINAL_AUDIT_PENDING"
+    "status": "TRACKED_CLEAN_E13_R72_ARTIFACTS_PRESERVED_FINAL_AUDIT_PENDING"
   },
   "gates": {
     "official_suite": {
@@ -84,7 +84,7 @@
       "sandbox_skips": 0,
       "sandbox_source_commit": "35727d99c7002ad26c3277dff8542f82dad4c3f8",
       "final_source_requalification_status": "PENDING_EVIDENCE",
-      "final_source_requalification_attempt": "Tentativa no SHA 5a6275f: WindowsSandbox encerrou com codigo 0 sem produzir report.json; nenhuma aprovacao foi inferida. Evidencia: docs/evidence/REQUALIFICACAO_SYMLINK_5A6275F8_2026-09-08.md.",
+      "final_source_requalification_attempt": "Tentativa final no SHA f8fa83e: WindowsSandbox.exe encerrou com codigo 0 e não produziu marcador nem report.json; nenhuma aprovação foi inferida. O checkout local repetiu os 2 skips por WinError 1314. Evidência formal: docs/evidence/E13_FECHAMENTO_PORTABILIDADE_EVIDENCIA_2026-09-09.md.",
       "deferred_until_final_audit": true,
       "deferral_decision": "docs/evidence/DECISAO_ADIAMENTO_SYMLINKS_E00_2026-09-08.md",
       "local_suite_status": "SKIP_PRIVILEGE_LIMITATION",
@@ -96,29 +96,31 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e13-binary-capture-r71-20260909/01-main-before-independent.png",
+      "latest_binary_capture": "artifacts/e13-final-capture-r72-20260909/01-main-before-independent.png",
       "latest_binary_capture_sha256": "28AA060935049CD6CED2195351ACF18E94B8A2661429873CA4BEE23683BA5D64",
       "latest_binary_capture_window": "1933x1045",
-      "observed_finding": "Build r71 executou fora do checkout a suíte portátil com 11 checks e captura nativa repetida da interface PT-BR em 1933x1045 e da Cena Independente em 993x716; hashes visuais permaneceram estáveis contra r69, sem regressão automatizada de toolbar, tradução ou painel Objetos. Revisão humana continua pendente.",
+      "observed_finding": "Build r72 executou fora do checkout a suíte portátil com 11 checks e CLI 0.3.0; capturas nativas da interface PT-BR em 1933x1045 e da Cena Independente em 993x716 foram reabertas. Não foi observada regressão automatizada de toolbar, tradução ou painel Objetos; revisão humana do proprietário continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e13-portable-20260909-r71/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "5F897449D7F712C0CBA2DE4141934E065D4CA5F5F41ABD91A74CE57AD9998E8B",
-      "latest_observed_binary_last_write": "2026-09-09T06:17:02.1502852Z",
-      "source_commit": "b7244ca769f3f3331f1bd3d9be1c06f9026b2671",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e13-final-20260909-r72/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "909051E78F09BA009EEAD4082E2A5829F09DA285E62DC835CA0376024D2F9AF6",
+      "latest_observed_binary_last_write": "2026-09-09T06:29:01.4390760Z",
+      "source_commit": "f8fa83e219c42413c02f9436c9a9a7a9c26f9812",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "650C71B4CB421EC80FFE4499A2760B8BDE4C45D58260A76D4FA4F5FC14DC6595",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e13-portable-20260909-r71/continuity-provenance.json",
+      "continuity_registry_sha256": "930B577CDE1FF524368EC6DB5794585FBDCFF01D1BECFCB1F8FDFE1A7A269AF6",
+      "current_registry_sha256_note": "Hash gravado no manifesto é o registro no instante da build; este JSON é atualizado depois da auditoria para preservar a proveniência temporal.",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e13-final-20260909-r72/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "C21D3A717F934DA014AFD181E3E2CCF507A975306EA8A2DFCF941D884F8306E7",
-      "installer": "build/e01-independent-scene-20260908/release/e13-portable-20260909-r71/NeoEng-D-Trace-0.3.0-win64.msi",
-      "installer_sha256": "6F4DB9EBD3FF4DA224F90066CC3EB2B2A2B62ED3F827DCE78761F2057E000B62",
-      "installer_validation": "artifacts/e13-msi-validation-r71-20260909/installer-validation-report.json",
-      "reason": "E13-A/B comprovados no r71: build portátil limpa, execução fora do checkout, smoke com 11 checks, captura nativa estável, MSI WiX 4.0.6, instalação/desinstalação per-user com exit 0, smoke instalado e estado do usuário preservado. E13-C mantém auditoria documental em execução; revisão final humana e symlinks permanecem reservados à auditoria final."
+      "portable_archive_sha256": "1CA07263268B489D6E357F879A98BA9D2C1485E6C0C1E5EA03BC4268F4E0F646",
+      "installer": "build/e01-independent-scene-20260908/release/e13-final-20260909-r72/NeoEng-D-Trace-0.3.0-win64.msi",
+      "installer_sha256": "C4D4A646F2963F0491F9CAA9355FC8C9C67B06CE54ABFB5131517CF18F6F29F7",
+      "installer_validation": "artifacts/e13-final-msi-validation-r72-20260909/installer-validation-report.json",
+      "outside_checkout_smoke": "artifacts/e13-final-outside-smoke-r72-20260909/portable-smoke-report.json",
+      "reason": "E13-A/B comprovados no r72: build portátil limpa, execução fora do checkout, smoke com 11 checks, CLI 0.3.0, captura nativa, MSI WiX 4.0.6, instalação/desinstalação per-user com exit 0, smoke instalado e estado do usuário preservado. E13-D permanece em execução somente pelos gates finais de Sandbox e revisão humana."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

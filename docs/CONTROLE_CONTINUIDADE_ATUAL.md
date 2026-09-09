@@ -1,7 +1,7 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `E00–E12 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E13 IN_PROGRESS`
+**Estado:** `E00–E12 TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING / E13-D FINAL_AUDIT_PENDING_EVIDENCE`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
@@ -38,12 +38,12 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 |---|---|---|
 | Suíte oficial | `PASS_LOCAL` | 2104 aprovados, 2 skips, 1 warning |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
-| Symlink no Sandbox | `PASS_SANDBOX_DIAGNOSTIC_ONLY / PENDING_EVIDENCE / DEFERRED_UNTIL_FINAL_AUDIT` | 31/31 é diagnóstico de SHA anterior; a nova tentativa sem relatório foi registrada e a requalificação foi adiada para a auditoria final |
+| Symlink no Sandbox | `PENDING_EVIDENCE` | tentativa final no SHA `f8fa83e` iniciou o WindowsSandbox, mas terminou sem marcador ou `report.json`; nenhuma aprovação foi inferida |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r71; hash do executável `5F897449D7F712C0CBA2DE4141934E065D4CA5F5F41ABD91A74CE57AD9998E8B`; smoke com 11 checks |
+| Build oficial | `PASS_LOCAL` | r72; hash do executável `909051E78F09BA009EEAD4082E2A5829F09DA285E62DC835CA0376024D2F9AF6`; smoke externo com 11 checks e CLI 0.3.0 |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -54,8 +54,8 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Executar E13-D com build final r72, symlink, revisão humana, findings e
-decisão formal. Só depois encerrar o Plano Mestre.
+Concluir E13-D com a decisão formal do Sandbox e a revisão humana do
+proprietário sobre as capturas r72. Só depois encerrar o Plano Mestre.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.

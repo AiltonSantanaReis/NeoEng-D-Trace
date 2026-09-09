@@ -77,10 +77,10 @@ itens continuam sujeitos à auditoria final, conforme a decisão de continuidade
 
 | ID | Meta | Estado | Critério objetivo |
 |---|---|---|---|
-| E13-A | Qualificar pacote portátil final | `CONCLUÍDO_TECNICAMENTE` | build r71, hashes, smoke e execução fora do checkout |
-| E13-B | Qualificar MSI/instalador | `CONCLUÍDO_TECNICAMENTE` | WiX 4.0.6, instalação/desinstalação, smoke instalado e rollback de estado |
+| E13-A | Qualificar pacote portátil final | `CONCLUÍDO_TECNICAMENTE` | build r72, hashes, smoke e execução fora do checkout |
+| E13-B | Qualificar MSI/instalador | `CONCLUÍDO_TECNICAMENTE` | WiX 4.0.6, instalação/desinstalação, smoke instalado e rollback de estado no r72 |
 | E13-C | Auditoria técnica de documentação e privacidade | `CONCLUÍDO_TECNICAMENTE` | 135 manifests no gate oficial, referências locais removidas, limites e rollback documentados |
-| E13-D | Auditoria final reservada | `EM_EXECUÇÃO` | build final r72, symlink, revisão humana e findings formais |
+| E13-D | Auditoria final reservada | `EM_EXECUÇÃO` | r72 concluído; evidência Sandbox, revisão humana e decisão formal pendentes |
 
 ## Gates finais reservados
 

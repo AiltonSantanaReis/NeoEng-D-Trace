@@ -150,3 +150,60 @@ restaurado dele. Isso não é usado como prova de PASS nem é ocultado.
 Após a correção de proveniência, a suíte oficial corrente foi repetida no
 mesmo worktree: `2104 passed, 2 skipped, 1 warning` em `59.08s`. Compileall,
 validador de continuidade e `git diff --check` também passaram.
+
+## Auditoria final E13-D — build r72
+
+O SHA final auditado é `f8fa83e219c42413c02f9436c9a9a7a9c26f9812`, na branch
+`Ailton/e08-renderer-20260908`, com arquivos rastreados limpos. A build final
+foi gerada antes desta atualização documental e registra no manifesto a
+proveniência temporal do registro canônico no instante da build:
+
+- binário: `release/e13-final-20260909-r72/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe`, SHA-256 `909051E78F09BA009EEAD4082E2A5829F09DA285E62DC835CA0376024D2F9AF6`;
+- ZIP portátil: `release/e13-final-20260909-r72/NeoEng-D-Trace-0.3.0-win64-portable.zip`, SHA-256 `1CA07263268B489D6E357F879A98BA9D2C1485E6C0C1E5EA03BC4268F4E0F646`;
+- manifesto de proveniência: `release/e13-final-20260909-r72/continuity-provenance.json`, SHA-256 `818709AFF2543CA86DB3574E7657F3FC3CF1B81565CEF63C0CD5A9D0DCA28F24`;
+- relatório local do pacote: `release/e13-final-20260909-r72/smoke/portable-smoke-report.json`, SHA-256 `058441DAECC97F6C8A51020F1526ADA13F4A82CB93675EABB2B68C2490A8A58D6`;
+- smoke fora do checkout: `artifacts/e13-final-outside-smoke-r72-20260909/portable-smoke-report.json`, SHA-256 `B069CE2FD214271EDD97100B9CADC2238F0752B478030C55721ACE8FE3BB24DC`, `SUCCESS`, 11 checks, CLI `0.3.0`;
+- MSI WiX `4.0.6`: `release/e13-final-20260909-r72/NeoEng-D-Trace-0.3.0-win64.msi`, SHA-256 `C4D4A646F2963F0491F9CAA9355FC8C9C67B06CE54ABFB5131517CF18F6F29F7`;
+- validação MSI: `artifacts/e13-final-msi-validation-r72-20260909/installer-validation-report.json`, SHA-256 `78C7E4E5079CCA1EB8DBB34192D246BD54798437228360922C9DF08C320ADDD4`, `SUCCESS`, instalação/desinstalação exit `0`, estado de usuário preservado.
+
+O fluxo fora do checkout foi executado novamente no binário r72 e as capturas
+reais foram preservadas em `artifacts/e13-final-capture-r72-20260909/`:
+
+- janela principal `01-main-before-independent.png`, 1933x1045, SHA-256 `28AA060935049CD6CED2195351ACF18E94B8A2661429873CA4BEE23683BA5D64`;
+- Cena Independente `02-independent-scene-after-shortcut.png`, 993x716, SHA-256 `2464B49EBA3378ED0252A5EE941C00746E56F8A94FD11B82C7D1C7CC17BE0A6F`.
+
+As capturas foram abertas para inspeção automatizada. Foram observados os
+textos PT-BR `Abrir`, `Salvar`, `Exportar`, `Visualizar`, `Cenário` e
+`Objetos`, a toolbar da cena independente, o canvas vazio `1920 x 1080` e a
+contagem `0 objetos`; não foi observado achado automatizado de tradução,
+toolbar ou painel Objetos. Esta inspeção não é revisão humana do proprietário.
+
+### Gate final de symlink
+
+No checkout final, o comando focado executou 2 casos e preservou ambos como
+`SKIP_LOCAL`: `WinError 1314 — O cliente não tem o privilégio necessário`.
+O conjunto de integração completo executou `29 passed, 2 skipped`.
+
+Também foi preparada uma execução do `WindowsSandbox.exe` com o checkout r72
+montado somente para leitura e saída externa. Nas duas tentativas controladas,
+o processo retornou código `0`, houve atividade de Hyper-V, mas não foi gerado
+nem o marcador de início nem `report.json`. Portanto o resultado normativo é
+`PENDING_EVIDENCE`, não `PASS_SANDBOX`; o diagnóstico histórico `31/31` de SHA
+anterior não foi transferido para o SHA final.
+
+### Gates repetidos e findings
+
+- `tools/evidence_integrity.py --require-tracked --git-blob`: `Evidence integrity passed: 135 manifests validated.`
+- `tools/validate_continuity_registry.py`: `CONTINUITY_REGISTRY=PASS`.
+- suíte oficial: `2104 passed, 2 skipped, 1 warning` em `61.03s`;
+- finding conhecido de automação de recovery E11 permanece `DIAGNOSTIC_ONLY` e não foi promovido a PASS;
+- nenhum novo finding de produto foi reproduzido no pacote r72;
+- não houve push, merge, tag ou release.
+
+## Decisão pendente de encerramento
+
+E13-A, E13-B e E13-C permanecem tecnicamente comprovados. E13-D ainda não
+pode ser promovido a concluído porque o Sandbox final não forneceu evidência
+executável e a revisão humana do proprietário ainda não foi registrada. O
+registro canônico preserva ambas as pendências separadamente; não há inferência
+de aprovação a partir de captura, código `0` ou teste local pulado.
