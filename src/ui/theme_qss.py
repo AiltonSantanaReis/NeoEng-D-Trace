@@ -111,6 +111,15 @@ QToolBar#reference_top_toolbar QToolButton::menu-indicator {{
     width: 0px;
     height: 0px;
 }}
+QToolBar#scenario_editor_toolbar QToolButton::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
 QToolBar#reference_tool_palette QToolButton#reference_menu_button::menu-button {{
     width: 0px;
     border: 0px;
