@@ -180,7 +180,9 @@ class ScenarioEditorWindow(QMainWindow):
 
         self.open_action = QAction(self)
         self.save_action = QAction(self)
+        self.save_action.setShortcut(QKeySequence("Ctrl+S"))
         self.load_action = QAction(self)
+        self.load_action.setShortcut(QKeySequence("Ctrl+R"))
         self.reset_action = QAction(self)
         self.export_action = QAction(self)
         self.composition_action = QAction(self)
@@ -192,6 +194,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.authoring_action = QAction(self)
         self.upgrade_action = QAction(self)
         self.recover_action = QAction(self)
+        self.recover_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+R"))
         self.export_target_label = QLabel(self.toolbar)
         self.export_target_label.setObjectName("scenario_export_target_label")
         self.export_target_combo = QComboBox(self.toolbar)
