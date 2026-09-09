@@ -149,6 +149,16 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 | E10-D importação/execução Unity | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | runtime Unity real, collider vetorial, captura e negativo de hash |
 | E10-E round-trip/fechamento | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
 
+### Sublotes ativos de E11
+
+| Sublote | Status | Critério de saída |
+|---|---|---|
+| E11-A composição no binário | `PASS_LOCAL` | cena independente, primitivas, edição, organização e captura real |
+| E11-B persistência/recovery | `PASS_LOCAL` | salvar, fechar/reabrir, erro recuperável e saída válida preservada |
+| E11-C exportação/consumo final | `IN_PROGRESS` | cena composta exportada e executada no runtime Godot/Unity |
+| E11-D acessibilidade/usabilidade | `IN_PROGRESS` | roteiro integral, foco, cancelamento, mensagens e tempos observáveis |
+| E11-E fechamento técnico | `PLANNED` | suíte, build, manifesto e promoção sem lacunas obrigatórias |
+
 Regra de parada: continuar automaticamente entre essas metas; parar somente
 quando todas estiverem concluídas ou quando uma decisão do proprietário for
 indispensável. O gate de symlinks permanece exclusivamente na linha 10.
