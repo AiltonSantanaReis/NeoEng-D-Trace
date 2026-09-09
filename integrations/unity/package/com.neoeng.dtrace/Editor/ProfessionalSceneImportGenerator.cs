@@ -137,7 +137,7 @@ namespace NeoEng.DTrace.Editor
                 metadata.layerId = source.layer_id;
                 metadata.locked = source.locked;
                 metadata.pivot = new Vector2(transform.pivot.x, transform.pivot.y);
-                if (source.vector_geometry != null)
+                if (HasVectorGeometry(source.vector_geometry))
                 {
                     if (source.vector_geometry.collision_polygon == null || source.vector_geometry.collision_polygon.Length < 3)
                         throw new InvalidDataException("professional scene vector collision is invalid");
@@ -236,7 +236,7 @@ namespace NeoEng.DTrace.Editor
                 if (source == null || string.IsNullOrWhiteSpace(source.id) || !objectIds.Add(source.id) || !assetIds.Contains(source.asset_id) || !layerIds.Contains(source.layer_id) || source.transform == null)
                     throw new InvalidDataException("professional scene object references are invalid");
                 RequireFiniteTransform(source.transform);
-                if (source.vector_geometry != null)
+                if (HasVectorGeometry(source.vector_geometry))
                 {
                     RequireHash(source.vector_geometry.source_sha256, "professional scene vector source hash");
                     if (source.vector_geometry.collision_polygon == null || source.vector_geometry.collision_polygon.Length < 3)
@@ -257,6 +257,20 @@ namespace NeoEng.DTrace.Editor
                 RequireFinite(socket.position.y, "socket.position.y");
                 RequireFinite(socket.position.z, "socket.position.z");
             }
+        }
+
+        private static bool HasVectorGeometry(VectorGeometryData value)
+        {
+            // Unity JsonUtility materializes an empty nested class even when
+            // the optional field is absent. Treat that compatibility shape as
+            // absent, while validating any partially populated vector payload.
+            return value != null && (
+                !string.IsNullOrWhiteSpace(value.algorithm)
+                || !string.IsNullOrWhiteSpace(value.source_sha256)
+                || value.image_size != null
+                || value.original_polygon != null
+                || value.polygon != null
+                || value.collision_polygon != null);
         }
 
         private static string FileSha256(string path)

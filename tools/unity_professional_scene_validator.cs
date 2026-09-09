@@ -44,6 +44,9 @@ namespace NeoEng.DTrace.Editor
                 Require(Mathf.Abs(instance.localPosition.y + 0.4f) < 0.0001f, "unity-object-y-mapping");
                 Require(Mathf.Abs(Mathf.DeltaAngle(instance.localEulerAngles.z, -17.0f)) < 0.0001f, "unity-object-rotation-mapping");
                 Require(instance.localScale.x < -1.19f && instance.localScale.x > -1.21f, "unity-object-flip-scale");
+                PolygonCollider2D vectorCollider = instance.GetComponent<PolygonCollider2D>();
+                Require(vectorCollider != null, "unity-vector-collider-materialization");
+                Require(vectorCollider.pathCount == 1 && vectorCollider.GetTotalPointCount() == 4, "unity-vector-collider-points");
                 Transform visual = instance.Find("Visual");
                 Require(visual != null, "unity-pivot-visual-child");
                 Require(Mathf.Abs(visual.localPosition.x) > 0.0001f, "unity-pivot-offset-x");
