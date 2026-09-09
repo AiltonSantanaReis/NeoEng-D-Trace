@@ -171,6 +171,9 @@ class CanvasView(QWidget):
     VIEW_XRAY_2 = 2  # Canny edges
     VIEW_XRAY_3 = 3  # Laplacian edges
     VIEW_COLLISION = 4
+    # Screen-space distance required for a predictable 2x/0.5x scale change.
+    # The previous arm-length-only divisor made axis scaling too aggressive.
+    GIZMO_SCALE_PIXELS_PER_DOUBLING = 190.0
 
     def _active_tool_object(self):
         tool = self._tool
@@ -762,6 +765,13 @@ class CanvasView(QWidget):
             f"S: ({values[0]:.2f}, {values[1]:.2f}, {values[2]:.2f})  "
             f"Z-Depth: {position[2]:.1f}"
         )
+
+    def _gizmo_scale_factor(self, screen_delta: float) -> float:
+        """Map screen-space drag distance to a controlled multiplicative scale."""
+
+        reference = max(1.0, float(self.GIZMO_SCALE_PIXELS_PER_DOUBLING))
+        factor = math.exp(float(screen_delta) * math.log(2.0) / reference)
+        return max(0.05, min(20.0, factor))
 
     def _preview_gizmo_transform(
         self, *, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)
@@ -1494,7 +1504,7 @@ class CanvasView(QWidget):
                     ),
                     1.0,
                 )
-                factor = max(0.05, min(20.0, current_radius / start_radius))
+                factor = self._gizmo_scale_factor(current_radius - start_radius)
                 self._preview_gizmo_transform(scale=(factor, factor))
             elif operation == self.gizmo.ROTATE_Z:
                 center_screen = self.gizmo.screen_pos
@@ -1513,33 +1523,12 @@ class CanvasView(QWidget):
                 while angle < -180.0:
                     angle += 360.0
                 self._preview_gizmo_transform(rotation=angle)
-            elif operation == self.gizmo.SCALE_UNIFORM:
-                start_radius = max(
-                    math.hypot(
-                        self._gizmo_press_vector.x(), self._gizmo_press_vector.y()
-                    ),
-                    1.0,
-                )
-                current_radius = max(
-                    math.hypot(
-                        (pos - self.gizmo.screen_pos).x(),
-                        (pos - self.gizmo.screen_pos).y(),
-                    ),
-                    1.0,
-                )
-                factor = max(0.05, min(20.0, current_radius / start_radius))
-                self._preview_gizmo_transform(scale=(factor, factor))
             elif operation == self.gizmo.SCALE_X:
-                factor = max(0.05, min(20.0, 1.0 + dx / self.gizmo.arm_length))
+                factor = self._gizmo_scale_factor(delta_screen.x())
                 self._preview_gizmo_transform(scale=(factor, 1.0))
             elif operation == self.gizmo.SCALE_Y:
-                factor = max(
-                    0.05,
-                    min(
-                        20.0,
-                        1.0
-                        - dy * self._gizmo_y_screen_direction / self.gizmo.arm_length,
-                    ),
+                factor = self._gizmo_scale_factor(
+                    -delta_screen.y() * self._gizmo_y_screen_direction
                 )
                 self._preview_gizmo_transform(scale=(1.0, factor))
             self.update()

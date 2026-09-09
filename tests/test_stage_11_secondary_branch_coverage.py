@@ -538,6 +538,7 @@ def test_collision_brush_outcomes_remove_overlay_and_edit(qt_app, monkeypatch):
     warnings.assert_called()
     critical.assert_called()
 
+    tool.selected_polygon_id = "A"
     tool._start_edit(None)
     palette = SimpleNamespace(select_tool_by_name=Mock())
     tool._start_edit(SimpleNamespace(tool_palette=palette))
