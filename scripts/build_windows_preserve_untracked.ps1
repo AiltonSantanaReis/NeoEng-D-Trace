@@ -35,7 +35,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Clean Windows build failed with exit code $LASTEXITCODE" }
 }
 finally {
-    foreach ($relativePath in @($moved | Select-Object -Reverse)) {
+    for ($index = $moved.Count - 1; $index -ge 0; $index--) {
+        $relativePath = $moved[$index]
         $source = Join-Path $stageRoot $relativePath
         $destination = Join-Path $repositoryRoot $relativePath
         if (Test-Path -LiteralPath $source -PathType Leaf) {
