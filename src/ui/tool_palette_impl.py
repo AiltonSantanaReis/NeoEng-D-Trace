@@ -123,33 +123,33 @@ class ToolPalette(QToolBar):
         }
         self._tooltips = {
             "en": {
-                "lasso": "Lasso tool (2)",
-                "polygonal_lasso": "Polygonal lasso (1)",
+                "lasso": "Lasso tool",
+                "polygonal_lasso": "Polygonal lasso",
                 "magnetic_lasso": (
-                    "Magnetic lasso (6). Right-click the canvas for modes and presets."
+                    "Magnetic lasso. Right-click the canvas for modes and presets."
                 ),
                 "pen": (
-                    "Pen tool (5). Click the first anchor to close; "
+                    "Pen tool. Click the first anchor to close; "
                     "double-click to finish open."
                 ),
-                "rect": "Rectangle selection (3)",
-                "ellipse": "Ellipse selection (4)",
+                "rect": "Rectangle selection",
+                "ellipse": "Ellipse selection",
                 "polygon_edit": "Edit polygon vertices",
                 "collision_brush": "Paint collision geometry",
                 "selection": "Select objects",
             },
             "pt": {
-                "lasso": "Ferramenta laço (2)",
-                "polygonal_lasso": "Laço poligonal (1)",
+                "lasso": "Ferramenta laço",
+                "polygonal_lasso": "Laço poligonal",
                 "magnetic_lasso": (
-                    "Laço magnético (6). Clique direito no canvas para modos e presets."
+                    "Laço magnético. Clique direito no canvas para modos e presets."
                 ),
                 "pen": (
-                    "Ferramenta caneta (5). Clique no primeiro vértice para fechar; "
+                    "Ferramenta caneta. Clique no primeiro vértice para fechar; "
                     "clique duas vezes para finalizar aberto."
                 ),
-                "rect": "Seleção retangular (3)",
-                "ellipse": "Seleção elíptica (4)",
+                "rect": "Seleção retangular",
+                "ellipse": "Seleção elíptica",
                 "polygon_edit": "Editar vértices do polígono",
                 "collision_brush": "Pintar geometria de colisão",
                 "selection": "Selecionar objetos",

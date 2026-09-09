@@ -13,6 +13,8 @@ def build_qss(tokens: ThemeTokens = THEME_TOKENS) -> str:
 
     accent_soft = tokens.rgba(tokens.accent, 40)
     accent_hover_soft = tokens.rgba(tokens.accent, 18)
+    viewport_overlay_surface = tokens.rgba(tokens.surface_raised, 150)
+    viewport_overlay_border = tokens.rgba(tokens.border_strong, 170)
     return f"""
 QWidget {{
     background-color: {tokens.window};
@@ -187,8 +189,8 @@ QWidget#viewport_horizontal_ruler, QWidget#viewport_vertical_ruler {{
     border: 0px;
 }}
 QWidget#viewport_overlay_bar {{
-    background: {tokens.surface_raised};
-    border: 1px solid {tokens.border_strong};
+    background: {viewport_overlay_surface};
+    border: 1px solid {viewport_overlay_border};
     border-radius: 4px;
 }}
 QWidget#viewport_overlay_bar QToolButton {{

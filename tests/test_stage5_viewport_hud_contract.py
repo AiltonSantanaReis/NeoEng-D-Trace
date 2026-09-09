@@ -12,6 +12,7 @@ from src.models.scene import Scene
 from src.ui.canvas_view import CanvasView
 from src.ui.main_window import MainWindow
 from src.ui.mask_viewer import MaskViewer, MaskViewerDialog
+from src.ui.theme_qss import build_qss
 
 
 class _ConfigStub:
@@ -29,6 +30,17 @@ def _bgr_fixture() -> np.ndarray:
     image[:, :] = (30, 20, 10)
     image[30:90, 40:120] = (0, 0, 255)
     return image
+
+
+def test_stage5_viewport_overlay_uses_translucent_surface(qt_app):
+    del qt_app
+    qss = build_qss()
+    assert "QWidget#viewport_overlay_bar" in qss
+    overlay_block = qss.split("QWidget#viewport_overlay_bar", 1)[1].split(
+        "QWidget#viewport_overlay_bar QToolButton", 1
+    )[0]
+    assert "background: rgba(45, 54, 62, 150);" in overlay_block
+    assert "background: #2d363e;" not in overlay_block
 
 
 def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_app):
