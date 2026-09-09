@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "PASS_SANDBOX",
+  "exit_code": 0,
+  "source_commit": "f8fa83e219c42413c02f9436c9a9a7a9c26f9812",
+  "source_branch": "Ailton/e08-renderer-20260908",
+  "command": "canonical-project-python -m pytest -q -rs tests/test_integration_sync.py -k symlink",
+  "started_marker": "started.txt",
+  "junit_report": "symlink-junit.xml",
+  "pytest_output": "pytest-output.txt"
+}

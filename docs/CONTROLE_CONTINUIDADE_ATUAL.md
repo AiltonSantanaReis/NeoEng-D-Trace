@@ -38,7 +38,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 |---|---|---|
 | Suíte oficial | `PASS_LOCAL` | 2104 aprovados, 2 skips, 1 warning |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
-| Symlink no Sandbox | `PENDING_EVIDENCE` | tentativa final no SHA `f8fa83e` iniciou o WindowsSandbox, mas terminou sem marcador ou `report.json`; nenhuma aprovação foi inferida |
+| Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |

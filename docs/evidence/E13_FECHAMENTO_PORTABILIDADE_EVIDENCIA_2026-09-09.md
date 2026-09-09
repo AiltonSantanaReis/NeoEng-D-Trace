@@ -184,20 +184,20 @@ No checkout final, o comando focado executou 2 casos e preservou ambos como
 `SKIP_LOCAL`: `WinError 1314 — O cliente não tem o privilégio necessário`.
 O conjunto de integração completo executou `29 passed, 2 skipped`.
 
-Também foi preparada uma execução do `WindowsSandbox.exe` com o checkout r72
-montado somente para leitura e saída externa. Nas duas tentativas controladas,
-o processo retornou código `0`, houve atividade de Hyper-V, mas não foi gerado
-nem o marcador de início nem `report.json`. Portanto o resultado normativo é
-`PENDING_EVIDENCE`, não `PASS_SANDBOX`; o diagnóstico histórico `31/31` de SHA
-anterior não foi transferido para o SHA final.
+Depois, o gate foi reexecutado no Windows Sandbox com um `.wsb` que montou o
+checkout r72 somente para leitura, Python canônico/venv somente para leitura e
+uma pasta de evidências externa. O `LogonCommand` executou `cmd.exe` dentro da
+VM; o marcador, o JUnit e o relatório foram produzidos fora da VM:
 
-Como controle de isolamento, foi executado um probe mínimo sem o projeto: um
-`.wsb` com uma única pasta de saída e um script PowerShell que deveria gravar
-`started.txt` imediatamente, aguardar cinco segundos e gravar `report.json`.
-O resultado foi idêntico: atividade de Hyper-V e nenhum arquivo produzido.
-Esse controle confirma uma limitação operacional do mecanismo Sandbox nesta
-sessão, mas não altera o requisito: somente um relatório real no SHA final
-pode promover o gate a `PASS_SANDBOX`.
+- `artifacts/e13-final-symlink-sandbox-rerun-20260909/report.json`, SHA-256
+  `6AB82EB78CDB52FDCCA3A962F2F4CE39BF03C7802E4EFDAE0F3D1740F405`;
+- `artifacts/e13-final-symlink-sandbox-rerun-20260909/symlink-junit.xml`, SHA-256
+  `29D6721ABA2889D36B9E103A019704CFA082BEF2B4C7FD0E377C6A3E7370F611`;
+- resultado observado: `2 passed, 0 skipped, 0 failures`, exit `0`,
+  `status=PASS_SANDBOX`.
+
+O resultado histórico `31/31` de SHA anterior continua separado; a evidência
+acima é a requalificação do SHA final `f8fa83e`.
 
 ### Gates repetidos e findings
 
@@ -210,8 +210,7 @@ pode promover o gate a `PASS_SANDBOX`.
 
 ## Decisão pendente de encerramento
 
-E13-A, E13-B e E13-C permanecem tecnicamente comprovados. E13-D ainda não
-pode ser promovido a concluído porque o Sandbox final não forneceu evidência
-executável e a revisão humana do proprietário ainda não foi registrada. O
-registro canônico preserva ambas as pendências separadamente; não há inferência
-de aprovação a partir de captura, código `0` ou teste local pulado.
+E13-A, E13-B e E13-C permanecem tecnicamente comprovados. O gate Sandbox de
+E13-D está `PASS_SANDBOX`; a única pendência restante é a revisão humana do
+proprietário sobre as capturas r72 e a decisão formal de encerramento. O teste
+local pulado permanece separado e não reduz o resultado do Sandbox.

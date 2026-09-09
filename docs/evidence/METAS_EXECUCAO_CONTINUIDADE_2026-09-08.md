@@ -105,7 +105,7 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 | 7 | E11 composição/runtime | `TECHNICAL_CHECKPOINT_PASS` | cena executada fora do editor, recovery, suíte e r67 |
 | 8 | E12 recursos avançados/híbrido 3D | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | captura r69, build, smoke, suíte e fechamento |
 | 9 | E13 fechamento/portabilidade | `IN_PROGRESS_FINAL_AUDIT_PENDING_EVIDENCE` | r72 portátil/MSI, smoke, documentação e findings registrados |
-| 10 | Auditoria final | `IN_PROGRESS_FINAL_AUDIT_PENDING_EVIDENCE` | Sandbox sem relatório, revisão humana do proprietário e decisão formal |
+| 10 | Auditoria final | `IN_PROGRESS_HUMAN_REVIEW_PENDING` | Sandbox final aprovado; revisão humana do proprietário e decisão formal |
 
 ### Sublotes ativos de E12
 
@@ -124,7 +124,7 @@ autorizada a permanecer no encerramento sem interromper a execução técnica.
 | E13-A pacote portátil final | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | r72 limpo, hashes, smoke e execução fora do checkout |
 | E13-B MSI/instalador | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | WiX 4.0.6, instalação/desinstalação e preservação de estado no r72 |
 | E13-C documentação/privacidade | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | 135 manifests no gate oficial, privacidade, limites e rollback |
-| E13-D auditoria final | `IN_PROGRESS_FINAL_AUDIT_PENDING_EVIDENCE` | r72 concluído; evidência Sandbox e revisão humana ainda pendentes |
+| E13-D auditoria final | `IN_PROGRESS_HUMAN_REVIEW_PENDING` | r72 e Sandbox concluídos; revisão humana e decisão formal pendentes |
 
 ### Sublotes ativos de E08-C
 

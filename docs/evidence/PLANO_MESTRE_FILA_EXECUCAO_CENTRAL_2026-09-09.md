@@ -86,8 +86,8 @@ itens continuam sujeitos à auditoria final, conforme a decisão de continuidade
 
 | Gate | Estado | Regra |
 |---|---|---|
-| Symlinks | `ADIADO_ATÉ_AUDITORIA_FINAL` | executar apenas no SHA/build final; preservar `SKIP_LOCAL` separado |
-| Revisão humana | `ADIADA_ATÉ_AUDITORIA_FINAL` | revisar capturas e roteiro reais no SHA/build final |
+| Symlinks | `PASS_SANDBOX` | 2/2 casos no SHA/build final; `SKIP_LOCAL` preservado separadamente |
+| Revisão humana | `EM_EXECUÇÃO` | revisar capturas e roteiro reais no SHA/build final; aceite do proprietário ainda necessário |
 | Publicação | `NÃO_AUTORIZADA` | push, merge, tag e release exigem autorização separada |
 
 ## Definição de término
