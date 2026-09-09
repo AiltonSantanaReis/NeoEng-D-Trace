@@ -651,11 +651,15 @@ class PolygonEditTool(BaseTool):
                     )
                 elif poly_len > 3:  # Can't delete if it would make polygon invalid
                     act_del_vertex = menu.addAction(text["delete_vertex"])
-                    act_del_vertex.triggered.connect(
-                        lambda _checked=False, oid=target_object_id, index=target_vertex_index: self.delete_selected_vertex(
-                            oid, index
-                        )
-                    )
+
+                    def delete_vertex_action(
+                        _checked=False,
+                        oid=target_object_id,
+                        index=target_vertex_index,
+                    ):
+                        self.delete_selected_vertex(oid, index)
+
+                    act_del_vertex.triggered.connect(delete_vertex_action)
 
                 # Do not put object/polygon deletion next to a vertex target.
                 # This prevents the destructive fallback that caused the
@@ -670,11 +674,11 @@ class PolygonEditTool(BaseTool):
                 )
 
                 act_del_polygon = menu.addAction(text["delete_polygon"])
-                act_del_polygon.triggered.connect(
-                    lambda _checked=False, oid=target_object_id: self.delete_selected_polygon(
-                        [oid]
-                    )
-                )
+
+                def delete_polygon_action(_checked=False, oid=target_object_id):
+                    self.delete_selected_polygon([oid])
+
+                act_del_polygon.triggered.connect(delete_polygon_action)
 
             menu.addSeparator()
 
