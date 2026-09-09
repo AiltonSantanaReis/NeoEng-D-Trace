@@ -422,13 +422,19 @@ class CanvasView(QWidget):
             self.update_image()
 
     def contextMenuEvent(self, event):
+        self.show_context_menu_at(event.pos(), event.globalPos())
+
+    def show_context_menu_at(self, pos, global_pos) -> None:
+        """Show the localized canvas menu for a screen position.
+
+        The selection tool consumes mouse presses before Qt emits the widget
+        context-menu event, so both paths must share the same menu builder.
+        """
         if self._scenario_preview_enabled:
-            event.accept()
             return
-        if self._tool or len(self._current_polygon) > 0:
+        if len(self._current_polygon) > 0:
             return
 
-        pos = event.pos()
         transform_inv, ok = self.get_transform().inverted()
         if not ok:
             return
@@ -489,7 +495,7 @@ class CanvasView(QWidget):
         act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
 
-        menu.exec(event.globalPos())
+        menu.exec(global_pos)
 
     def _find_object_at(self, point: QPointF) -> Optional[str]:
         objects = getattr(self.model, "objects", {})
@@ -1776,7 +1782,8 @@ class CanvasView(QWidget):
             painter.drawText(
                 10,
                 80,
-                f"RENDERER {backend} | {mode} | {len(plan.passes)} PASSES | R{plan.revision}",
+                f"RENDERER {backend} | {mode} | {len(plan.passes)} PASSES | "
+                f"R{plan.revision}",
             )
 
     def paintEvent(self, event):

@@ -88,6 +88,21 @@ def test_selection_tool_ignores_non_left_and_short_polygons(qt_app):
     assert tool._find_object_at(QPointF(0, 0)) is None
 
 
+def test_selection_tool_routes_right_click_to_canvas_context_menu(qt_app):
+    canvas = CanvasProbe()
+    canvas.show_context_menu_at = Mock()
+    tool = SelectionTool(canvas)
+    right = _event(Qt.MouseButton.RightButton)
+    right.position.return_value = QPointF(12, 14)
+    right.globalPosition.return_value = QPointF(120, 140)
+
+    tool.on_mouse_press(right, (12, 14))
+
+    canvas.show_context_menu_at.assert_called_once_with(
+        QPointF(12, 14), QPoint(120, 140)
+    )
+
+
 def test_lasso_mouse_flow_sampling_commit_undo_redo_and_cancel(qt_app):
     canvas = CanvasProbe()
     tool = LassoTool(canvas)

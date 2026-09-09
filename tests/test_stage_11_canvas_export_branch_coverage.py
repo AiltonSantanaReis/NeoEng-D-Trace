@@ -451,6 +451,12 @@ def test_canvas_context_menu_selection_and_manual_polygon(qt_app, monkeypatch):
     assert "Excluir objeto" in portuguese_text
     assert "Ajustar imagem (F)" in portuguese_text
     assert "Limpar todos os polígonos" in portuguese_text
+    scene.collision_shapes["A"] = list(scene.objects["A"].polygon)
+    canvas.contextMenuEvent(event(position=(20, 20)))
+    collision_text = " ".join(
+        action.text for action in menus[-1].actions if action is not None
+    )
+    assert "Desativar forma de colisão" in collision_text
     canvas.contextMenuEvent(event(position=(200, 200)))
     assert not any(
         action and "Objeto selecionado" in action.text for action in menus[-1].actions

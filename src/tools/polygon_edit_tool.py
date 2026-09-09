@@ -22,6 +22,33 @@ from src.tools.base_tool import BaseTool
 class PolygonEditTool(BaseTool):
     def __init__(self, canvas_view):
         super().__init__(canvas_view)
+        self.current_lang = "en"
+        self.translations = {
+            "en": {
+                "move_vertex": "Move Vertex",
+                "delete_vertex": "Delete Vertex",
+                "add_vertex_here": "Add Vertex Here",
+                "delete_polygon": "Delete Polygon",
+                "delete_polygons": "Delete {count} Polygons",
+                "select_all_vertices": "Select All Vertices",
+                "clear_selection": "Clear Selection",
+                "add_new_polygon": "Add New Polygon",
+                "undo": "Undo",
+                "redo": "Redo",
+            },
+            "pt": {
+                "move_vertex": "Mover vértice",
+                "delete_vertex": "Excluir vértice",
+                "add_vertex_here": "Adicionar vértice aqui",
+                "delete_polygon": "Excluir polígono",
+                "delete_polygons": "Excluir {count} polígonos",
+                "select_all_vertices": "Selecionar todos os vértices",
+                "clear_selection": "Limpar seleção",
+                "add_new_polygon": "Adicionar novo polígono",
+                "undo": "Desfazer",
+                "redo": "Refazer",
+            },
+        }
         self.selected_polygon_id: Optional[str] = None
         self.selected_vertex: Optional[int] = None
         self.drag_start_pos: Optional[QPointF] = None
@@ -33,6 +60,11 @@ class PolygonEditTool(BaseTool):
         self._vertex_origin_index: Optional[int] = None
         self._vertex_preview_position: Optional[Tuple[int, int]] = None
         self._last_error = ""
+
+    def update_language(self, lang: str) -> None:
+        """Update labels used by the polygon editor context menu."""
+
+        self.current_lang = lang if lang in self.translations else "en"
 
     def set_mode(self, mode: str):
         """Set the current tool mode."""
@@ -435,6 +467,7 @@ class PolygonEditTool(BaseTool):
 
     def show_context_menu(self, event: QMouseEvent):
         menu = QMenu(self.canvas_view)
+        text = self.translations[self.current_lang]
 
         # Check what's selected
         has_selection = self.selected_polygon_id is not None or bool(
@@ -449,20 +482,20 @@ class PolygonEditTool(BaseTool):
 
             if has_vertex:
                 # Vertex-specific actions
-                act_move_vertex = menu.addAction("Move Vertex")
+                act_move_vertex = menu.addAction(text["move_vertex"])
                 act_move_vertex.triggered.connect(lambda: self.set_mode("move_vertex"))
 
                 if poly_len > 3:  # Can't delete if it would make polygon invalid
-                    act_del_vertex = menu.addAction("Delete Vertex")
+                    act_del_vertex = menu.addAction(text["delete_vertex"])
                     act_del_vertex.triggered.connect(self.delete_selected_vertex)
 
             menu.addSeparator()
 
             # Polygon actions
-            act_add_vertex = menu.addAction("Add Vertex Here")
+            act_add_vertex = menu.addAction(text["add_vertex_here"])
             act_add_vertex.triggered.connect(lambda: self.add_vertex_at_cursor(event))
 
-            act_del_polygon = menu.addAction("Delete Polygon")
+            act_del_polygon = menu.addAction(text["delete_polygon"])
             act_del_polygon.triggered.connect(self.delete_selected_polygon)
 
             menu.addSeparator()
@@ -470,30 +503,30 @@ class PolygonEditTool(BaseTool):
         elif multiple_selected:
             # Multiple polygons selected
             act_del_polygons = menu.addAction(
-                f"Delete {len(self.selected_polygon_ids)} Polygons"
+                text["delete_polygons"].format(count=len(self.selected_polygon_ids))
             )
             act_del_polygons.triggered.connect(self.delete_selected_polygon)
 
             menu.addSeparator()
 
         # Global actions
-        act_select_all = menu.addAction("Select All Vertices")
+        act_select_all = menu.addAction(text["select_all_vertices"])
         act_select_all.triggered.connect(self.select_all_vertices)
 
-        act_clear_selection = menu.addAction("Clear Selection")
+        act_clear_selection = menu.addAction(text["clear_selection"])
         act_clear_selection.triggered.connect(self.clear_selection)
 
         menu.addSeparator()
 
-        act_add_new = menu.addAction("Add New Polygon")
+        act_add_new = menu.addAction(text["add_new_polygon"])
         act_add_new.triggered.connect(self.start_adding_new)
 
         menu.addSeparator()
 
-        act_undo = menu.addAction("Undo")
+        act_undo = menu.addAction(text["undo"])
         act_undo.triggered.connect(self.undo_last_action)
 
-        act_redo = menu.addAction("Redo")
+        act_redo = menu.addAction(text["redo"])
         act_redo.triggered.connect(self.redo_last_action)
 
         menu.exec(event.globalPos())

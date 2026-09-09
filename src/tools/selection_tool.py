@@ -42,6 +42,18 @@ class SelectionTool(BaseTool):
                 if hasattr(self.canvas_view.model, "select_object"):
                     self.canvas_view.model.select_object(None)
                 self.canvas_view.update()
+        elif event.button() == Qt.MouseButton.RightButton:
+            show_menu = getattr(self.canvas_view, "show_context_menu_at", None)
+            if callable(show_menu):
+                local_pos = (
+                    event.position() if hasattr(event, "position") else event.pos()
+                )
+                global_position = getattr(event, "globalPosition", None)
+                if callable(global_position):
+                    global_pos = global_position().toPoint()
+                else:
+                    global_pos = event.globalPos()
+                show_menu(local_pos, global_pos)
 
     def on_mouse_move(self, event: QMouseEvent, position: tuple):
         pass
