@@ -77,9 +77,9 @@ itens continuam sujeitos à auditoria final, conforme a decisão de continuidade
 
 | ID | Meta | Estado | Critério objetivo |
 |---|---|---|---|
-| E13-A | Qualificar pacote portátil final | `EM_EXECUÇÃO` | build r70 ou posterior, hashes, smoke e execução fora do checkout |
-| E13-B | Qualificar MSI/instalador | `PENDENTE` | instalador gerado, instalação/desinstalação e rollback verificáveis |
-| E13-C | Auditoria técnica de documentação e privacidade | `PENDENTE` | referências locais removidas, manifestos e limites consistentes |
+| E13-A | Qualificar pacote portátil final | `CONCLUÍDO_TECNICAMENTE` | build r71, hashes, smoke e execução fora do checkout |
+| E13-B | Qualificar MSI/instalador | `CONCLUÍDO_TECNICAMENTE` | WiX 4.0.6, instalação/desinstalação, smoke instalado e rollback de estado |
+| E13-C | Auditoria técnica de documentação e privacidade | `EM_EXECUÇÃO` | referências locais removidas, manifestos e limites consistentes; finding histórico preservado |
 | E13-D | Auditoria final reservada | `PENDENTE` | symlink, revisão humana e findings finais somente no pacote final |
 
 ## Gates finais reservados

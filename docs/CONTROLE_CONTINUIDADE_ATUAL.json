@@ -28,11 +28,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar E13-A/B/C para qualificar pacote portátil/MSI, documentação e rollback; manter symlink e revisão humana exclusivamente para a auditoria final.",
+    "next_action": "Concluir E13-C com auditoria documental/privacidade; manter symlink e revisão humana exclusivamente para a auditoria final.",
     "active_lot": {
       "id": "E13",
       "status": "IN_PROGRESS",
-      "scope": "E13-A/B/C: pacote portátil final, MSI/instalador, documentação e rollback",
+      "scope": "E13-C: auditoria documental, privacidade, manifestos e limitações após E13-A/B",
       "evidence": "docs/evidence/PLANO_MESTRE_FILA_EXECUCAO_CENTRAL_2026-09-09.md",
       "functional_implementation_allowed": true
     },
@@ -58,11 +58,11 @@
   },
     "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "510cee7",
-    "head_role": "E12_FINAL_BUILD_SOURCE_ANCHOR_E13_OPEN",
+    "head": "b7244ca",
+    "head_role": "E13_A_B_R71_SOURCE_ANCHOR_E13_C_OPEN",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_E12_ARTIFACTS_PRESERVED_E13_OPEN"
+    "status": "TRACKED_CLEAN_E13_R71_ARTIFACTS_PRESERVED_E13_C_OPEN"
   },
   "gates": {
     "official_suite": {
@@ -96,26 +96,29 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e12-binary-capture-r69-20260909/01-main-before-independent.png",
+      "latest_binary_capture": "artifacts/e13-binary-capture-r71-20260909/01-main-before-independent.png",
       "latest_binary_capture_sha256": "28AA060935049CD6CED2195351ACF18E94B8A2661429873CA4BEE23683BA5D64",
       "latest_binary_capture_window": "1933x1045",
-      "observed_finding": "Build r69 executou a exportação E12 pelo CLI real com status VERTICAL_SLICE_ONLY e repetiu a captura nativa da interface PT-BR em 1933x1045 e da Cena Independente em 993x716; nenhuma regressão automatizada de toolbar, tradução ou painel Objetos foi observada. Unity renderizou a vertical slice híbrida com sucesso; revisão humana continua pendente.",
+      "observed_finding": "Build r71 executou fora do checkout a suíte portátil com 11 checks e captura nativa repetida da interface PT-BR em 1933x1045 e da Cena Independente em 993x716; hashes visuais permaneceram estáveis contra r69, sem regressão automatizada de toolbar, tradução ou painel Objetos. Revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e12-hybrid-20260909-r69/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "07D3B3FBFAD22518628A8E8405FEA69E783750BBBD9593786A8E049781203152",
-      "latest_observed_binary_last_write": "2026-09-09T05:57:44.5771646Z",
-      "source_commit": "510cee7",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e13-portable-20260909-r71/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "5F897449D7F712C0CBA2DE4141934E065D4CA5F5F41ABD91A74CE57AD9998E8B",
+      "latest_observed_binary_last_write": "2026-09-09T06:17:02.1502852Z",
+      "source_commit": "b7244ca769f3f3331f1bd3d9be1c06f9026b2671",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "8C2D5B5E9EE38115C38A3226F95571BD949BA2C3F1A015BCEFA2C57800066120",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e12-hybrid-20260909-r69/continuity-provenance.json",
+      "continuity_registry_sha256": "650C71B4CB421EC80FFE4499A2760B8BDE4C45D58260A76D4FA4F5FC14DC6595",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e13-portable-20260909-r71/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "82713FBDC7B47578C49AA357F9E013CD407B9AF5EC031032AC9DFFFF0E8166A1",
-      "reason": "E12-A/B/C/D/E possuem contrato hash-bound, animação coerente, vertical slice 3D limitada, consumo real em Godot 4.7 e Unity 6000.5.7f1, exportação pelo CLI real, captura nativa do r69, suíte 2104/2/1, smoke com 11 checks e manifesto de proveniência; revisão final humana e symlinks permanecem reservados à auditoria final."
+      "portable_archive_sha256": "C21D3A717F934DA014AFD181E3E2CCF507A975306EA8A2DFCF941D884F8306E7",
+      "installer": "build/e01-independent-scene-20260908/release/e13-portable-20260909-r71/NeoEng-D-Trace-0.3.0-win64.msi",
+      "installer_sha256": "6F4DB9EBD3FF4DA224F90066CC3EB2B2A2B62ED3F827DCE78761F2057E000B62",
+      "installer_validation": "artifacts/e13-msi-validation-r71-20260909/installer-validation-report.json",
+      "reason": "E13-A/B comprovados no r71: build portátil limpa, execução fora do checkout, smoke com 11 checks, captura nativa estável, MSI WiX 4.0.6, instalação/desinstalação per-user com exit 0, smoke instalado e estado do usuário preservado. E13-C mantém auditoria documental em execução; revisão final humana e symlinks permanecem reservados à auditoria final."
     },
     "functional_runtime": {
       "status": "PASS_LOCAL",

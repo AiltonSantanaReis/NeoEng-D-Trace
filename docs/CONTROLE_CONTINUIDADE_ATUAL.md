@@ -8,7 +8,7 @@
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
 **E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
 **E12:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados tecnicamente no r69; auditoria final permanece pendente
-**E13:** `IN_PROGRESS` — pacote portátil final, MSI/instalador e auditoria documental/privacidade
+**E13:** `IN_PROGRESS` — E13-A/B comprovados no r71; E13-C em auditoria documental/privacidade
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -43,7 +43,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r69; hash do executável `07D3B3FBFAD22518628A8E8405FEA69E783750BBBD9593786A8E049781203152`; smoke com 11 checks |
+| Build oficial | `PASS_LOCAL` | r71; hash do executável `5F897449D7F712C0CBA2DE4141934E065D4CA5F5F41ABD91A74CE57AD9998E8B`; smoke com 11 checks |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -54,9 +54,8 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Executar E13-A/B/C com build portátil r70 ou posterior, MSI/instalador,
-rollback, auditoria documental e evidências hashadas. Depois, executar a
-auditoria final reservada.
+Concluir E13-C com auditoria documental/privacidade, referências locais,
+manifestos e limitações. Depois, executar a auditoria final reservada.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.
