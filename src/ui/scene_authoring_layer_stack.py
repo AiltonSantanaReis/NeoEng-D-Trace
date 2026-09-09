@@ -85,9 +85,11 @@ class SceneAuthoringLayerStack(QWidget):
             else "Render order: Back → Front"
         )
         self.order_hint.setToolTip(
-            "As camadas são renderizadas da primeira linha (trás) para a última (frente)."
+            "As camadas são renderizadas da primeira linha (trás) "
+            "para a última (frente)."
             if is_pt
-            else "Layers are rendered from the first row (back) to the last row (front)."
+            else "Layers are rendered from the first row (back) "
+            "to the last row (front)."
         )
         self.name_label.setText("Nome" if is_pt else "Name")
         self.visible_box.setText("Visível" if is_pt else "Visible")
@@ -178,8 +180,12 @@ class SceneAuthoringLayerStack(QWidget):
         selected_row = -1
         for index, layer in enumerate(self.session.document.layers):
             suffix = "  [locked]" if layer.locked else ""
-            item = QListWidgetItem(f"{layer.name}{suffix}")
+            item = QListWidgetItem(f"Z{index:02d}  {layer.name}{suffix}")
             item.setData(Qt.ItemDataRole.UserRole, layer.id)
+            item.setToolTip(
+                f"Layer order Z{index:02d} · "
+                f"{'locked' if layer.locked else 'editable'}"
+            )
             self.layer_list.addItem(item)
             if layer.id == selected:
                 selected_row = index

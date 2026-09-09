@@ -32,10 +32,67 @@ from src.persistence.scene_authoring_schema import (
 )
 
 
+class _AssetDropTree(QTreeWidget):
+    """Hierarchy target for assets dragged from the scene asset library."""
+
+    asset_drop_requested = Signal(str, object)
+    drop_preview_changed = Signal(str)
+
+    ASSET_MIME = "application/x-neoeng-scene-asset"
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setAcceptDrops(True)
+        self.setDropIndicatorShown(True)
+        self._drop_item: QTreeWidgetItem | None = None
+
+    def _target_group(self, item: QTreeWidgetItem | None) -> str | None:
+        current = item
+        while current is not None:
+            if current.data(Qt.ItemDataRole.UserRole) == "group":
+                value = current.data(Qt.ItemDataRole.UserRole + 1)
+                return str(value) if value else None
+            current = current.parent()
+        return None
+
+    def dragMoveEvent(self, event) -> None:  # noqa: N802
+        if not event.mimeData().hasFormat(self.ASSET_MIME):
+            event.ignore()
+            return
+        item = self.itemAt(event.position().toPoint())
+        group_id = self._target_group(item)
+        if group_id is None:
+            self.drop_preview_changed.emit("")
+            event.ignore()
+            return
+        self._drop_item = item
+        self.setCurrentItem(item)
+        self.drop_preview_changed.emit(f"Solte o asset no grupo: {item.text(0)}")
+        event.acceptProposedAction()
+
+    def dragLeaveEvent(self, event) -> None:  # noqa: N802
+        self._drop_item = None
+        self.drop_preview_changed.emit("")
+        event.accept()
+
+    def dropEvent(self, event) -> None:  # noqa: N802
+        raw_id = bytes(event.mimeData().data(self.ASSET_MIME)).decode("utf-8")
+        item = self.itemAt(event.position().toPoint()) or self._drop_item
+        group_id = self._target_group(item)
+        self._drop_item = None
+        self.drop_preview_changed.emit("")
+        if not group_id:
+            event.ignore()
+            return
+        self.asset_drop_requested.emit(raw_id, group_id)
+        event.acceptProposedAction()
+
+
 class SceneAuthoringGroupStack(QWidget):
     """Undoable group tree with explicit membership and transient isolation."""
 
     status_message = Signal(str)
+    asset_drop_requested = Signal(str, object)
 
     _KIND_ROLE = Qt.ItemDataRole.UserRole
     _ID_ROLE = Qt.ItemDataRole.UserRole + 1
@@ -54,12 +111,17 @@ class SceneAuthoringGroupStack(QWidget):
         )
         self.hint.setWordWrap(True)
         self.hint.setObjectName("scenario_group_hierarchy_hint")
-        self.tree = QTreeWidget(self)
+        self.tree = _AssetDropTree(self)
         self.tree.setObjectName("scenario_group_hierarchy_tree")
         self.tree.setHeaderLabels(["Groups and objects"])
         self.tree.setSelectionMode(QTreeWidget.SelectionMode.SingleSelection)
         self.tree.header().setVisible(False)
         self.tree.currentItemChanged.connect(self._selection_changed)
+        self.tree.asset_drop_requested.connect(self.asset_drop_requested)
+        self.tree.drop_preview_changed.connect(self._show_drop_preview)
+        self.drop_hint = QLabel("", self)
+        self.drop_hint.setObjectName("scenario_group_drop_hint")
+        self.drop_hint.setStyleSheet("color: #59d8e8; font-weight: 600;")
 
         self.name_edit = QLineEdit(self)
         self.name_edit.setObjectName("scenario_group_name")
@@ -127,6 +189,7 @@ class SceneAuthoringGroupStack(QWidget):
         layout.addWidget(self.title)
         layout.addWidget(self.hint)
         layout.addWidget(self.tree)
+        layout.addWidget(self.drop_hint)
         layout.addLayout(fields)
         layout.addLayout(parent_row)
         layout.addLayout(toggles)
@@ -136,6 +199,10 @@ class SceneAuthoringGroupStack(QWidget):
         self.session.subscribe(self.refresh)
         self.refresh()
 
+    def _show_drop_preview(self, message: str) -> None:
+        self.drop_hint.setText(message)
+        self.drop_hint.setVisible(bool(message))
+
     def update_language(self, language: str) -> None:
         is_pt = language == "pt"
         self.title.setText("Grupos e Hierarquia" if is_pt else "Groups & Hierarchy")
@@ -144,18 +211,44 @@ class SceneAuthoringGroupStack(QWidget):
             if is_pt
             else "Groups contain objects; nested groups inherit visibility and lock."
         )
-        self.tree.setHeaderLabels(["Grupos e objetos" if is_pt else "Groups and objects"])
+        self.tree.setHeaderLabels(
+            ["Grupos e objetos" if is_pt else "Groups and objects"]
+        )
         self.name_label.setText("Nome" if is_pt else "Name")
         self.parent_label.setText("Pai" if is_pt else "Parent")
         self.visible_box.setText("Visível" if is_pt else "Visible")
         self.locked_box.setText("Bloqueado" if is_pt else "Locked")
         labels = (
-            ("Novo Grupo", "Excluir Grupo", "Adicionar Selecionados", "Remover Selecionados", "Subir", "Descer", "Isolar")
+            (
+                "Novo Grupo",
+                "Excluir Grupo",
+                "Adicionar Selecionados",
+                "Remover Selecionados",
+                "Subir",
+                "Descer",
+                "Isolar",
+            )
             if is_pt
-            else ("New Group", "Delete Group", "Add Selected", "Remove Selected", "Up", "Down", "Isolate")
+            else (
+                "New Group",
+                "Delete Group",
+                "Add Selected",
+                "Remove Selected",
+                "Up",
+                "Down",
+                "Isolate",
+            )
         )
         for button, label in zip(
-            (self.new_button, self.delete_button, self.add_selected_button, self.remove_selected_button, self.up_button, self.down_button, self.isolate_button),
+            (
+                self.new_button,
+                self.delete_button,
+                self.add_selected_button,
+                self.remove_selected_button,
+                self.up_button,
+                self.down_button,
+                self.isolate_button,
+            ),
             labels,
         ):
             button.setText(label)
@@ -372,7 +465,13 @@ class SceneAuthoringGroupStack(QWidget):
             }
             ungrouped = QTreeWidgetItem(
                 self.tree,
-                ["Objetos sem grupo" if self.property("language") == "pt" else "Ungrouped Objects"],
+                [
+                    (
+                        "Objetos sem grupo"
+                        if self.property("language") == "pt"
+                        else "Ungrouped Objects"
+                    )
+                ],
             )
             for object_record in self.session.document.objects:
                 if object_record.id in grouped:
@@ -380,9 +479,14 @@ class SceneAuthoringGroupStack(QWidget):
                 child = QTreeWidgetItem(
                     ungrouped,
                     [
-                        f"Objeto: {object_record.id} ({object_record.layer_id})"
-                        if self.property("language") == "pt"
-                        else f"Object: {object_record.id} ({object_record.layer_id})"
+                        (
+                            f"Objeto: {object_record.id} ({object_record.layer_id})"
+                            if self.property("language") == "pt"
+                            else (
+                                f"Object: {object_record.id} "
+                                f"({object_record.layer_id})"
+                            )
+                        )
                     ],
                 )
                 self._set_ref(child, "object", object_record.id)

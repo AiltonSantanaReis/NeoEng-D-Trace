@@ -395,7 +395,9 @@ def test_canvas_navigation_geometry_and_transform_branches(qt_app, monkeypatch):
     canvas.focus_on_object("missing")
     canvas.focus_on_object("square")
     assert len(centers) == 2
-    assert len(flashes) == 1
+    # Contextual Focus must match the toolbar's quiet framing behavior; it
+    # must not flash the viewport with a blue/cyan overlay.
+    assert flashes == []
 
     canvas._current_polygon = []
     assert canvas._distance_to_last_point(1, 1) == float("inf")

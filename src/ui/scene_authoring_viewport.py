@@ -59,7 +59,6 @@ from src.core.scene_authoring_order import (
     ordered_scene_objects,
 )
 from src.core.scene_authoring_session import SceneAuthoringSession
-from src.core.scene_render_plan import SceneRenderPlan
 from src.core.scene_lighting import (
     SceneLightingMaterial,
     SceneLightingSettings,
@@ -67,6 +66,7 @@ from src.core.scene_lighting import (
     default_scene_lighting,
     shade_color,
 )
+from src.core.scene_render_plan import SceneRenderPlan
 from src.core.scene_view_navigation import (
     anchored_navigation_center,
     clamp_navigation_zoom,
@@ -86,9 +86,9 @@ from src.persistence.scene_authoring_schema import (
 from src.runtime.particles import (
     ParticleDocumentV1,
     ParticleEmitterRecord,
-    ParticleStateRecord,
     ParticleSimulation,
     ParticleSourceBindingRecord,
+    ParticleStateRecord,
 )
 from src.runtime.post_processing import (
     PostProcessingDocumentV1,
@@ -569,6 +569,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._selection_snapshot: tuple[str, ...] = ()
         self._primary_selection_snapshot: str | None = None
         self._visible_object_ids_snapshot: tuple[str, ...] = ()
+        self._drop_preview: tuple[QPointF, float, float, str] | None = None
         self._structure_snapshot: tuple[object, ...] = ()
         self._presentation_snapshot: tuple[object, ...] = ()
         self.sync()
@@ -1572,7 +1573,11 @@ class SceneAuthoringViewport(QGraphicsView):
                         else "Nenhum movimento após o encaixe"
                     )
                     if self.current_lang == "pt"
-                    else ("Moved selected object(s)" if changed else "No movement after snap")
+                    else (
+                        "Moved selected object(s)"
+                        if changed
+                        else "No movement after snap"
+                    )
                 )
             )
         return True
@@ -1932,11 +1937,63 @@ class SceneAuthoringViewport(QGraphicsView):
             or event.mimeData().hasUrls()
             or event.mimeData().hasText()
         ):
+            self._update_drop_preview(event)
             event.acceptProposedAction()
         else:
             event.ignore()
 
+    def dragMoveEvent(self, event) -> None:
+        """Show the exact viewport landing point before the drop is committed."""
+
+        if not self._authoring_enabled:
+            event.ignore()
+            return
+        if (
+            event.mimeData().hasFormat("application/x-neoeng-scene-asset")
+            or event.mimeData().hasUrls()
+            or event.mimeData().hasText()
+        ):
+            self._update_drop_preview(event)
+            event.acceptProposedAction()
+            return
+        event.ignore()
+
+    def dragLeaveEvent(self, event) -> None:
+        self._drop_preview = None
+        self.viewport().update()
+        event.accept()
+
+    def _update_drop_preview(self, event) -> None:
+        """Resolve a lightweight ghost rectangle for drag feedback."""
+
+        position = self.mapToScene(event.position().toPoint())
+        width, height = 96.0, 96.0
+        label = "Soltar asset aqui" if self.current_lang == "pt" else "Drop asset here"
+        asset_mime = "application/x-neoeng-scene-asset"
+        if event.mimeData().hasFormat(asset_mime):
+            raw_id = bytes(event.mimeData().data(asset_mime)).decode("utf-8")
+            asset = next(
+                (item for item in self.session.document.assets if item.id == raw_id),
+                None,
+            )
+            if asset is not None:
+                resolved, _issue = resolve_scene_asset(asset, self.project_root)
+                if resolved is not None:
+                    try:
+                        width, height = self._image_size(resolved)
+                    except (OSError, ValueError):
+                        pass
+                label = (
+                    f"Soltar {asset.id} aqui"
+                    if self.current_lang == "pt"
+                    else f"Drop {asset.id} here"
+                )
+        self._drop_preview = (position, width, height, label)
+        self.viewport().update()
+
     def dropEvent(self, event) -> None:
+        self._drop_preview = None
+        self.viewport().update()
         if not self._authoring_enabled:
             self.status_message.emit("Preview mode is read-only")
             event.ignore()
@@ -2065,6 +2122,84 @@ class SceneAuthoringViewport(QGraphicsView):
             self.status_message.emit(user_error_message(exc, operation="asset"))
             event.ignore()
 
+    def place_asset_from_library(
+        self, asset_id: str, group_id: str | None = None
+    ) -> bool:
+        """Place a library asset at the viewport center or into a group drop target."""
+
+        if not self._authoring_enabled:
+            self.status_message.emit(
+                "O modo de pré-visualização é somente leitura"
+                if self.current_lang == "pt"
+                else "Preview mode is read-only"
+            )
+            return False
+        asset = next(
+            (item for item in self.session.document.assets if item.id == asset_id),
+            None,
+        )
+        if asset is None:
+            self.status_message.emit(
+                "Asset arrastado indisponível"
+                if self.current_lang == "pt"
+                else "The dragged scene asset is unavailable"
+            )
+            return False
+        resolved, issue = resolve_scene_asset(asset, self.project_root)
+        if resolved is None:
+            self.status_message.emit(issue or "Asset indisponível")
+            return False
+        try:
+            width, height = self._image_size(resolved)
+            layer_id = self.session.document.layers[0].id
+            object_id = asset.id
+            while object_id in {item.id for item in self.session.document.objects}:
+                object_id += "_1"
+            center = self.mapToScene(self.viewport().rect().center())
+            obj = SceneObjectAuthoringRecord(
+                id=object_id,
+                asset_id=asset.id,
+                layer_id=layer_id,
+                transform=SceneTransformRecord(
+                    position=Point3Record(x=center.x(), y=center.y(), z=0.0),
+                    rotation=Point3Record(x=0.0, y=0.0, z=0.0),
+                    scale=Point3Record(x=1.0, y=1.0, z=1.0),
+                    pivot=PointRecord(x=0.5, y=0.5),
+                ),
+            )
+
+            def operation() -> None:
+                self.session.model.add_object(obj, select=True)
+                if group_id is not None:
+                    self.session.model.add_objects_to_group(group_id, [object_id])
+
+            self.session.apply(operation, "Place scene asset")
+            self._geometry[object_id] = (
+                (-width / 2, -height / 2),
+                (width / 2, -height / 2),
+                (width / 2, height / 2),
+                (-width / 2, height / 2),
+            )
+            self.sync()
+            self.selection_changed.emit()
+            self.status_message.emit(
+                f"Asset colocado no grupo: {asset.id}"
+                if self.current_lang == "pt" and group_id is not None
+                else (
+                    f"Asset placed in group: {asset.id}"
+                    if group_id is not None
+                    else (
+                        f"Asset colocado: {asset.id}"
+                        if self.current_lang == "pt"
+                        else f"Placed {asset.id}"
+                    )
+                )
+            )
+            return True
+        except (OSError, ValueError, SceneAssetError, KeyError) as exc:
+            self.status_message.emit(user_error_message(exc, operation="asset"))
+            return False
+
     @staticmethod
     def _load_asset_pixmap(path: Path) -> QPixmap:
         if path.suffix.lower() == ".svg":
@@ -2126,7 +2261,8 @@ class SceneAuthoringViewport(QGraphicsView):
             editor_mode = "PREVIEW" if self._preview_enabled else "AUTHORING"
             painter.drawText(
                 QPointF(12.0, 20.0),
-                f"RENDERER {backend} | {mode} | {editor_mode} | {len(plan.passes)} PASSES | R{plan.revision}",
+                f"RENDERER {backend} | {mode} | {editor_mode} | "
+                f"{len(plan.passes)} PASSES | R{plan.revision}",
             )
             painter.end()
         if self._marquee_origin is not None and self._marquee_current is not None:
@@ -2137,6 +2273,35 @@ class SceneAuthoringViewport(QGraphicsView):
             start = self.mapFromScene(self._marquee_origin)
             end = self.mapFromScene(self._marquee_current)
             painter.drawRect(QRectF(start, end).normalized())
+            painter.end()
+        if self._drop_preview is not None:
+            center, width, height, label = self._drop_preview
+            painter = QPainter(self.viewport())
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            point = self.mapFromScene(center)
+            rect = QRectF(
+                point.x() - width / 2.0,
+                point.y() - height / 2.0,
+                width,
+                height,
+            )
+            painter.setBrush(QBrush(QColor(89, 216, 232, 42)))
+            painter.setPen(QPen(QColor("#59d8e8"), 2.0, Qt.PenStyle.DashLine))
+            painter.drawRect(rect)
+            painter.drawLine(
+                QPointF(point.x() - 10.0, point.y()),
+                QPointF(point.x() + 10.0, point.y()),
+            )
+            painter.drawLine(
+                QPointF(point.x(), point.y() - 10.0),
+                QPointF(point.x(), point.y() + 10.0),
+            )
+            painter.setPen(QPen(QColor("#e8edf2"), 1.0))
+            painter.drawText(
+                QRectF(rect.left(), rect.bottom() + 6.0, rect.width(), 20.0),
+                Qt.AlignmentFlag.AlignHCenter,
+                label,
+            )
             painter.end()
         if not self._overlay_visible:
             self._paint_navigation_state()

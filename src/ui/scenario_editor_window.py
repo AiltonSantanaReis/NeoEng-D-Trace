@@ -7,8 +7,8 @@ compress or intercept the main editor panels.
 
 from __future__ import annotations
 
-from pathlib import Path
 import tempfile
+from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt, Signal
@@ -19,8 +19,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
-    QMessageBox,
     QMenu,
+    QMessageBox,
     QScrollArea,
     QSplitter,
     QStackedWidget,
@@ -47,6 +47,7 @@ from src.exporters.scene_authoring_export import (
 )
 from src.persistence.errors import ProjectPersistenceError
 from src.persistence.p2d05_errors import user_error_message
+from src.persistence.scenario_io import project_reference_for
 from src.persistence.scene_authoring_io import (
     SceneAuthoringAssetError,
     SceneAuthoringFormatError,
@@ -58,21 +59,20 @@ from src.persistence.scene_authoring_io import (
     save_scene_authoring,
     scene_authoring_recovery_path,
 )
-from src.persistence.scenario_io import project_reference_for
 from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV1,
     SceneAuthoringDocumentV2,
     upgrade_scene_authoring_document,
 )
+from src.ui.entity_prefab_panel import EntityPrefabPanel
+from src.ui.navmesh_panel import NavMeshPanel
+from src.ui.scenario_collider_panel import ScenarioColliderPanel
 from src.ui.scenario_panel import ScenarioPanel
 from src.ui.scene_asset_panel import SceneAssetLibrary
 from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
-from src.ui.scenario_collider_panel import ScenarioColliderPanel
-from src.ui.navmesh_panel import NavMeshPanel
-from src.ui.entity_prefab_panel import EntityPrefabPanel
 from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
 from src.ui.vector_contour_panel import VectorContourPanel
 
@@ -502,6 +502,11 @@ class ScenarioEditorWindow(QMainWindow):
         inspector.request_fit.connect(viewport.fit_selection)
         inspector.request_fit_all.connect(viewport.fit_all)
         inspector.status_message.connect(lambda _message: viewport.sync())
+        self.group_stack.asset_drop_requested.connect(
+            lambda asset_id, group_id: viewport.place_asset_from_library(
+                asset_id, group_id
+            )
+        )
         self.right_pages.addWidget(inspector_scroll)
         self.right_pages.setCurrentWidget(inspector_scroll)
         self.professional_pages.addWidget(viewport)
@@ -858,9 +863,7 @@ class ScenarioEditorWindow(QMainWindow):
         suffix = (
             " — alterações não salvas"
             if self.current_lang == "pt" and self.professional_session.is_dirty
-            else " — unsaved changes"
-            if self.professional_session.is_dirty
-            else ""
+            else " — unsaved changes" if self.professional_session.is_dirty else ""
         )
         self.status_label.setText(mode_status + suffix)
 
@@ -974,11 +977,7 @@ class ScenarioEditorWindow(QMainWindow):
         if self.vector_contour_panel is not None:
             self.vector_contour_panel.setEnabled(not preview)
         self.status_label.setText(
-            (
-                "Prévia do cenário — somente leitura"
-                if preview
-                else "Autoria de cenário"
-            )
+            ("Prévia do cenário — somente leitura" if preview else "Autoria de cenário")
             if self.current_lang == "pt"
             else ("Scenario preview — read-only" if preview else "Scenario authoring")
         )
@@ -1094,9 +1093,7 @@ class ScenarioEditorWindow(QMainWindow):
                 + (
                     " — alterações não salvas"
                     if self.current_lang == "pt" and session_dirty
-                    else " — unsaved changes"
-                    if session_dirty
-                    else ""
+                    else " — unsaved changes" if session_dirty else ""
                 )
             )
         else:

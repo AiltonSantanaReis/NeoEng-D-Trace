@@ -850,10 +850,11 @@ class MainWindow(QMainWindow):
         if not warnings:
             return
         t = self.translations[self.current_lang]
-        QMessageBox.warning(
-            self,
-            t["project_warnings_title"],
-            "\n".join(f"• {warning}" for warning in warnings),
+        # Recoverable asset diagnostics must not block the viewport or hide
+        # the relink workflow behind a modal dialog.
+        self.statusBar().showMessage(
+            f"{t['project_warnings_title']}: " + " | ".join(warnings),
+            0,
         )
 
     def open_project(self, path: str | os.PathLike[str] | None = None) -> bool:

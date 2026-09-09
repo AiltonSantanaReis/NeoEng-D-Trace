@@ -31,6 +31,7 @@ from src.persistence.scene_authoring_schema import (
     SceneTriggerSocketRecord,
     SceneVfxSocketRecord,
 )
+from src.ui.numeric_controls import ProtectedDoubleSpinBox, ScrubbableLabel
 
 
 class SceneAuthoringInspector(QWidget):
@@ -45,12 +46,15 @@ class SceneAuthoringInspector(QWidget):
         self.session = session
         self.setObjectName("professional_scene_inspector")
         self.setMinimumWidth(300)
+        self.current_lang = "en"
         self._refreshing = False
         self._field_labels: dict[str, QLabel] = {}
 
         self.title = QLabel("Scene Inspector")
         self.selection_label = QLabel("No object selected")
         self.selection_label.setObjectName("scene_selection_summary")
+        self.spatial_summary = QLabel("Layer/depth: —")
+        self.spatial_summary.setObjectName("scene_spatial_summary")
 
         self.position_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.position_y = self._spin(-1_000_000.0, 1_000_000.0)
@@ -221,6 +225,8 @@ class SceneAuthoringInspector(QWidget):
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.title)
+        layout.addWidget(self.selection_label)
+        layout.addWidget(self.spatial_summary)
         layout.addLayout(form)
         layout.addWidget(self.apply_button)
         layout.addWidget(self.undo_button)
@@ -254,7 +260,7 @@ class SceneAuthoringInspector(QWidget):
     def _add_labeled_row(
         self, layout: QFormLayout, key: str, text: str, widget: QWidget
     ) -> None:
-        layout.addRow(text, widget)
+        layout.addRow(ScrubbableLabel(text, widget), widget)
         label = layout.labelForField(widget)
         if isinstance(label, QLabel):
             self._field_labels[key] = label
@@ -265,7 +271,7 @@ class SceneAuthoringInspector(QWidget):
         maximum: float,
         step: float = 1.0,
     ) -> QDoubleSpinBox:
-        widget = QDoubleSpinBox()
+        widget = ProtectedDoubleSpinBox()
         widget.setRange(minimum, maximum)
         widget.setSingleStep(step)
         widget.setDecimals(4)
@@ -309,6 +315,11 @@ class SceneAuthoringInspector(QWidget):
                 ", ".join(self.session.selection.ids)
                 if self.session.selection.ids
                 else "No object selected"
+            )
+            self.spatial_summary.setText(
+                self._spatial_summary(primary)
+                if primary is not None
+                else "Layer/depth: —"
             )
             for widget in self._transform_widgets():
                 widget.setEnabled(enabled)
@@ -364,6 +375,33 @@ class SceneAuthoringInspector(QWidget):
                 self.snap_spacing_y.setValue(float(snap.spacing.y))
         finally:
             self._refreshing = False
+
+    def _spatial_summary(self, primary) -> str:
+        """Expose layer order and Z depth beside the active object ID."""
+
+        layer = next(
+            (
+                item
+                for item in self.session.document.layers
+                if item.id == primary.layer_id
+            ),
+            None,
+        )
+        layer_index = next(
+            (
+                index
+                for index, item in enumerate(self.session.document.layers)
+                if item.id == primary.layer_id
+            ),
+            0,
+        )
+        layer_name = layer.name if layer is not None else primary.layer_id
+        z_value = float(primary.transform.position.z)
+        if self.current_lang == "pt":
+            return (
+                f"Camada Z{layer_index:02d}: {layer_name} · Profundidade: {z_value:.2f}"
+            )
+        return f"Layer Z{layer_index:02d}: {layer_name} · Depth: {z_value:.2f}"
 
     def _refresh_stage4_controls(self) -> None:
         document = self.session.document
@@ -690,6 +728,7 @@ class SceneAuthoringInspector(QWidget):
     def update_language(self, language: str) -> None:
         """Translate the professional inspector without changing its model."""
 
+        self.current_lang = language
         is_pt = language == "pt"
         labels = (
             {
@@ -850,6 +889,7 @@ class SceneAuthoringInspector(QWidget):
         if is_pt:
             self.title.setText("Inspetor da Cena")
             self.selection_label.setText("Nenhum objeto selecionado")
+            self.spatial_summary.setText("Camada/profundidade: —")
             self.stage4_group.setTitle("Câmera, Paralaxe e Sockets")
             self.apply_button.setText("Aplicar Transformação")
             self.undo_button.setText("Desfazer")
@@ -878,6 +918,7 @@ class SceneAuthoringInspector(QWidget):
         else:
             self.title.setText("Scene Inspector")
             self.selection_label.setText("No object selected")
+            self.spatial_summary.setText("Layer/depth: —")
             self.stage4_group.setTitle("Camera, Parallax & Sockets")
             self.apply_button.setText("Apply Transform")
             self.undo_button.setText("Undo")

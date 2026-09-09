@@ -225,7 +225,7 @@ class CollisionBrushTool(BaseTool):
         # Center
         act_center = menu.addAction(self.translations[self.current_lang]["center"])
         act_center.triggered.connect(
-            lambda: self.canvas_view.focus_on_object(oid)
+            lambda: self.canvas_view.center_on_object(oid)
         )  # type: ignore
 
         # Move

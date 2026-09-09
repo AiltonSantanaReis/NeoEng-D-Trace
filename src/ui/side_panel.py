@@ -39,6 +39,7 @@ from src.core.transform_gesture import (
 from src.core.validation_events import object_token, record_validation_event
 from src.ui.context_menu_utils import fit_context_menu
 from src.ui.error_presentation import show_p2d05_error
+from src.ui.numeric_controls import ProtectedDoubleSpinBox, ScrubbableLabel
 from src.utils.selection_tools import (
     expand_contract_polygon,
     invert_selection,
@@ -174,7 +175,7 @@ class SidePanel(QWidget):
             ("pivot_x", "Pivot X", self.pivot_x),
             ("pivot_y", "Pivot Y", self.pivot_y),
         ):
-            transform_form.addRow(text, field)
+            transform_form.addRow(ScrubbableLabel(text, field), field)
             self._transform_form_labels[key] = transform_form.labelForField(field)
         transform_form.addRow(self.snap_enabled)
         self.btn_apply_transform = QPushButton("Apply Transform")
@@ -680,7 +681,7 @@ class SidePanel(QWidget):
     def _transform_spin(
         minimum: float, maximum: float, step: float = 1.0
     ) -> QDoubleSpinBox:
-        widget = QDoubleSpinBox()
+        widget = ProtectedDoubleSpinBox()
         widget.setRange(minimum, maximum)
         widget.setSingleStep(step)
         widget.setDecimals(4)

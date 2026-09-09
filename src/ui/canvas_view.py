@@ -519,10 +519,14 @@ class CanvasView(QWidget):
             self.center_on_polygon(obj.polygon, margin=50)
 
     def focus_on_object(self, oid: str):
-        obj = self.model.objects.get(oid)
-        if obj and obj.polygon:
-            self.center_on_polygon(obj.polygon, margin=50)
-            self.flash_effect(QColor(0, 255, 255, 100), 300)
+        """Use the same quiet framing behavior as the toolbar Focus action.
+
+        The old contextual path added a full-viewport cyan flash, which made
+        the context-menu action visually different from the toolbar and could
+        be mistaken for a modal overlay.
+        """
+
+        self.center_on_object(oid)
 
     def _execute_edit_command(self, command):
         manager = getattr(self.model, "cmd", None)
