@@ -99,7 +99,8 @@ class VectorContourPanel(QWidget):
             actions.addWidget(button, index // 2, index % 2)
         edit = QGridLayout()
         edit.setHorizontalSpacing(6)
-        edit.addWidget(QLabel("Vertex"), 0, 0)
+        self.vertex_label = QLabel("Vertex")
+        edit.addWidget(self.vertex_label, 0, 0)
         edit.addWidget(self.vertex_index, 0, 1)
         edit.addWidget(QLabel("X"), 1, 0)
         edit.addWidget(self.vertex_x, 1, 1)
@@ -130,7 +131,11 @@ class VectorContourPanel(QWidget):
         self._result = None
         self._editing = None
         if asset_id is None:
-            self.source_label.setText("Select a raster asset to begin")
+            self.source_label.setText(
+                "Selecione um asset raster para começar"
+                if self.current_lang == "pt"
+                else "Select a raster asset to begin"
+            )
         else:
             self.source_label.setText(f"Asset: {asset_id}")
         self._refresh()
@@ -296,8 +301,13 @@ class VectorContourPanel(QWidget):
         if self._editing is not None:
             polygon = self._editing.current_polygon
             self.state_label.setText(
-                f"Detected · {len(polygon)} vertices · "
-                f"source {self._result.source_sha256[:12]}…"
+                (
+                    f"Detectado · {len(polygon)} vértices · "
+                    f"origem {self._result.source_sha256[:12]}…"
+                    if self.current_lang == "pt"
+                    else f"Detected · {len(polygon)} vertices · "
+                    f"source {self._result.source_sha256[:12]}…"
+                )
             )
             self.vertex_index.setRange(0, max(0, len(polygon) - 1))
             point = polygon[min(self.vertex_index.value(), len(polygon) - 1)]
@@ -306,27 +316,59 @@ class VectorContourPanel(QWidget):
             self.undo_button.setEnabled(self._editing.can_undo)
             self.redo_button.setEnabled(self._editing.can_redo)
         else:
-            self.state_label.setText("No detection")
+            self.state_label.setText(
+                "Nenhuma detecção" if self.current_lang == "pt" else "No detection"
+            )
 
     def update_language(self, language: str) -> None:
         self.current_lang = language if language in {"en", "pt"} else "en"
         if self.current_lang == "pt":
             self.title.setText("Contorno vetorial")
+            self.source_label.setText(
+                "Selecione um asset raster para começar"
+                if self._asset_id is None
+                else f"Asset: {self._asset_id}"
+            )
+            self.vertex_label.setText("Vértice")
             self.detect_button.setText("Detectar contorno")
             self.simplify_button.setText("Simplificar")
+            self.undo_button.setText("Desfazer")
+            self.redo_button.setText("Refazer")
             self.cancel_button.setText("Cancelar detecção")
             self.create_button.setText("Criar objeto de cena")
             self.apply_vertex_button.setText("Aplicar vértice")
+            self.detect_button.setToolTip("Detectar o contorno do asset selecionado")
+            self.simplify_button.setToolTip("Simplificar o contorno mantendo a geometria válida")
+            self.undo_button.setToolTip("Desfazer a última edição do contorno")
+            self.redo_button.setToolTip("Refazer a última edição do contorno")
+            self.cancel_button.setToolTip("Cancelar a detecção e preservar a origem")
+            self.create_button.setToolTip("Criar um objeto de cena a partir do contorno")
+            self.apply_vertex_button.setToolTip("Aplicar a posição do vértice editado")
             self.diagnostics_label.setText(
                 "A detecção é vinculada por hash ao asset selecionado."
             )
         else:
             self.title.setText("Vector contour")
+            self.source_label.setText(
+                "Select a raster asset to begin"
+                if self._asset_id is None
+                else f"Asset: {self._asset_id}"
+            )
+            self.vertex_label.setText("Vertex")
             self.detect_button.setText("Detect contour")
             self.simplify_button.setText("Simplify")
+            self.undo_button.setText("Undo")
+            self.redo_button.setText("Redo")
             self.cancel_button.setText("Cancel detection")
             self.create_button.setText("Create scene object")
             self.apply_vertex_button.setText("Apply vertex")
+            self.detect_button.setToolTip("Detect the contour of the selected asset")
+            self.simplify_button.setToolTip("Simplify the contour while preserving valid geometry")
+            self.undo_button.setToolTip("Undo the last contour edit")
+            self.redo_button.setToolTip("Redo the last contour edit")
+            self.cancel_button.setToolTip("Cancel detection and preserve the source")
+            self.create_button.setToolTip("Create a scene object from the contour")
+            self.apply_vertex_button.setToolTip("Apply the edited vertex position")
 
 
 __all__ = ["VectorContourPanel"]

@@ -99,5 +99,8 @@ def test_scenario_editor_portuguese_hover_metadata(qt_app):
         _assert_no_english_leaks(_visible_feedback(window))
         assert "Aplicar" in window.professional_inspector.apply_button.text()
         assert "Posição" in window.professional_inspector._field_labels["position_x"].text()
+        assert window.vector_contour_panel.source_label.text().startswith("Selecione")
+        assert window.vector_contour_panel.undo_button.text() == "Desfazer"
+        assert "Autoria" in window.status_label.text()
     finally:
         window.close()

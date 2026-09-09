@@ -64,7 +64,7 @@ def test_native_contour_flow_detect_edit_undo_redo_cancel_and_create(
     panel.set_selected_asset("subject")
 
     assert panel.detect_selected()
-    assert "source" in panel.state_label.text()
+    assert "source" in panel.state_label.text() or "origem" in panel.state_label.text()
     panel.vertex_index.setValue(1)
     panel.vertex_x.setValue(110.0)
     panel.vertex_y.setValue(20.0)

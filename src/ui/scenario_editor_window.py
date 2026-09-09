@@ -844,11 +844,23 @@ class ScenarioEditorWindow(QMainWindow):
         if self.professional_session is None:
             return
         mode_status = (
-            "Scenario preview — read-only"
+            "Prévia do cenário — somente leitura"
             if self.preview_action.isChecked()
-            else "Scenario authoring"
+            else "Autoria de cenário"
         )
-        suffix = " — unsaved changes" if self.professional_session.is_dirty else ""
+        if self.current_lang != "pt":
+            mode_status = (
+                "Scenario preview — read-only"
+                if self.preview_action.isChecked()
+                else "Scenario authoring"
+            )
+        suffix = (
+            " — alterações não salvas"
+            if self.current_lang == "pt" and self.professional_session.is_dirty
+            else " — unsaved changes"
+            if self.professional_session.is_dirty
+            else ""
+        )
         self.status_label.setText(mode_status + suffix)
 
     def _show_professional_status(self, message: str) -> None:
@@ -961,7 +973,13 @@ class ScenarioEditorWindow(QMainWindow):
         if self.vector_contour_panel is not None:
             self.vector_contour_panel.setEnabled(not preview)
         self.status_label.setText(
-            "Scenario preview — read-only" if preview else "Scenario authoring"
+            (
+                "Prévia do cenário — somente leitura"
+                if preview
+                else "Autoria de cenário"
+            )
+            if self.current_lang == "pt"
+            else ("Scenario preview — read-only" if preview else "Scenario authoring")
         )
 
     def _undo_professional(self) -> None:
@@ -1021,7 +1039,11 @@ class ScenarioEditorWindow(QMainWindow):
             )
         ):
             self.canvas.set_scenario_preview_layers(())
-            self.status_label.setText("Scenario requires migration or recovery action")
+            self.status_label.setText(
+                "O cenário requer migração ou recuperação"
+                if self.current_lang == "pt"
+                else "Scenario requires migration or recovery action"
+            )
         elif available:
             self.canvas.set_scenario_preview_layers(self.authoring.preview_layers())
             self.canvas.set_scenario_camera(
@@ -1051,22 +1073,37 @@ class ScenarioEditorWindow(QMainWindow):
             else:
                 self.canvas.set_scenario_render_plan(None)
             mode_status = (
-                "Scenario preview — read-only"
+                "Prévia do cenário — somente leitura"
                 if self.preview_action.isChecked()
-                else "Scenario authoring"
+                else "Autoria de cenário"
             )
+            if self.current_lang != "pt":
+                mode_status = (
+                    "Scenario preview — read-only"
+                    if self.preview_action.isChecked()
+                    else "Scenario authoring"
+                )
             session_dirty = (
                 self.professional_session.is_dirty
                 if self.professional_session is not None
                 else False
             )
             self.status_label.setText(
-                mode_status + (" — unsaved changes" if session_dirty else "")
+                mode_status
+                + (
+                    " — alterações não salvas"
+                    if self.current_lang == "pt" and session_dirty
+                    else " — unsaved changes"
+                    if session_dirty
+                    else ""
+                )
             )
         else:
             self.canvas.set_scenario_preview_layers(())
             self.status_label.setText(
-                "Choose New Scenario to begin authoring"
+                "Escolha Novo Cenário para começar a autoria"
+                if self.current_lang == "pt"
+                else "Choose New Scenario to begin authoring"
             )
         if self.professional_viewport is not None:
             self.professional_viewport.set_scene_render_plan(render_plan)
@@ -1228,6 +1265,7 @@ class ScenarioEditorWindow(QMainWindow):
             self.entity_prefab_panel.update_language(self.current_lang)
         if self.vector_contour_panel is not None:
             self.vector_contour_panel.update_language(self.current_lang)
+        self.refresh()
 
     def closeEvent(self, event) -> None:
         self._professional_initial_focus_applied = False
