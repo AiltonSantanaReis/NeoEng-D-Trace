@@ -262,3 +262,82 @@ sucesso.
 O pacote r73 está pronto para os testes do proprietário. A decisão formal de
 encerramento do E13-D permanece `PENDING_HUMAN_REVIEW` até que esses artefatos
 sejam revisados.
+
+## Correções confirmadas e pacote final r78 — 2026-09-09
+
+Após a reprodução dos problemas na build portátil, foram aplicadas e
+versionadas as correções abaixo:
+
+- `8173659`: fechamento do laço magnético preciso com clique no primeiro ponto
+  e duplo clique durante segmento assíncrono; restauração dos estados ativos
+  do Visualizador de Máscaras; Editor de Cenário iniciável sem projeto salvo;
+  correções de layout dos painéis e do inspector;
+- `d8b9191` e `e3cb11a`: largura responsiva dos controles, remoção das setas
+  dos botões do editor via QSS centralizado, sem estilos inline proibidos pela
+  governança Stage 1;
+- `5193e31` e `7fce6d2`: rótulos dos modos e presets do Visualizador de
+  Máscaras compactados de forma responsiva, mantendo o texto completo em
+  tooltip, acessibilidade e combo de seleção.
+
+O commit final auditado é `7fce6d2eef8389fdbb27230de0a1ebb9b7ce6098`, na
+branch `Ailton/e08-renderer-20260908`. A build portátil r78 foi gerada a partir
+desse SHA, sem alterar o executável depois das capturas:
+
+| Artefato | SHA-256 |
+|---|---|
+| GUI `release/e13-complete-review-20260909-r78/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe` | `4177AB5535E49DFF4A901095A4AF7F945C4CDEEA2EC391A70D894F887276129F` |
+| CLI `release/e13-complete-review-20260909-r78/portable/NeoEng-D-Trace/NeoEng-D-Trace-CLI.exe` | `A58D4FCC4BA2432887791734C89223AB778DDC2DEB8D9230E9C93F850A4D7D65` |
+| ZIP portátil `release/e13-complete-review-20260909-r78/NeoEng-D-Trace-0.3.0-win64-portable.zip` | `DDDF2A8765CCDC7DBD856EE1FA4156301A6E15506245FE15A63E5FB020A82C8C` |
+| MSI WiX 4.0.6 `release/e13-complete-review-20260909-r78/NeoEng-D-Trace-0.3.0-win64.msi` | `8D5803A8D7DEC57E7D3797E5B351A1A279F0AB2186CA3ED96397536BAA1AD472` |
+| Proveniência `release/e13-complete-review-20260909-r78/continuity-provenance.json` | `873A7DE31AAC7D21AEEC9EB992C55E137E127A6ED0D8F5C6412AAD06900F7FA1` |
+| Manifesto portátil | `8096B5710547D341F93C932C90DBE6201EB38334F1270FE79B6EAD2F167E7BE6` |
+
+Os checks internos da build portátil passaram: `SUCCESS`, 11 checks, CLI
+`0.3.0`. A validação do MSI também passou: instalação per-user exit `0`,
+desinstalação exit `0`, smoke instalado `SUCCESS` e estado do usuário
+preservado. Relatório MSI:
+`artifacts/e13-complete-review-msi-validation-r78-20260909/installer-validation-report.json`,
+SHA-256 `F862098D9EE2B9983B33C71C85BFD3A133753E57272764A15FF7EA78A3297B93`.
+
+### Capturas reais do executável portátil r78
+
+As capturas foram feitas pelo handle da janela do executável portátil com
+`PrintWindow`, usando um projeto real com imagem (`compound-project.ndtproj`):
+
+- conjunto: `artifacts/e13-portable-final-capture-r78-20260909/`;
+- manifesto das capturas: SHA-256
+  `616A64B4567ADE18DCD66F93CA3EF5479517946D118CE3E3707E576BB9F2537D`;
+- Visualizador de Máscaras carregado:
+  `04-mask-viewer.png`, SHA-256
+  `26C427C756D1FE2E3DF835B0A921F1478B4F300A3CFF57F3978DC4F848A63791`;
+- Editor de Cenário real:
+  `05-asset-library-ready.png`, SHA-256
+  `04E2BF15F1EC01137CF5B91AACCCB8FFA7F63B46A1673676CFFCC733A47C6214`.
+
+A inspeção das imagens r78 confirmou visualmente que os quatro presets e os
+quatro modos do Visualizador estão visíveis, o estado ativo é distinguível,
+os textos não são truncados, a barra de rolagem permanece presente e o
+Editor de Cenário usa os botões planos do projeto sem setas. A captura também
+mostra a imagem carregada e seus elementos no canvas; não é uma tela vazia de
+fixture.
+
+A auditoria visual automatizada final da fonte passou no commit r78:
+`artifacts/e13-ui-defect-audit-r78-final-20260909/manifest.json`, SHA-256
+`45947E5C585DB961F97EE90A78EB64CF243799179AA87FF9F1BB2899AF72D16D`, com
+`no_unexpected_clipping=true`, modos X-Ray presentes e separação de canvas,
+layers e cenário confirmada. O aviso do OpenCV sobre fallback GPU/CPU é
+ambiental e não bloqueou a auditoria.
+
+### Gates repetidos após as correções
+
+- suíte oficial: `2108 passed, 2 skipped, 1 warning` em `59.44s`;
+- testes focados de Máscaras, Cenário e regressões: `27 passed`;
+- auditoria visual final: `exit 0`;
+- smoke portátil r78: `SUCCESS`, 11 checks;
+- MSI r78: `SUCCESS`, instalação/desinstalação completas;
+- symlinks: permanecem reservados para o final do plano, conforme decisão
+  registrada; não foram reexecutados nesta etapa.
+
+O pacote r78 é o artefato portátil mais recente para revisão e testes do
+proprietário. A revisão humana continua pendente apenas para o fechamento
+formal do plano, não como bloqueio da execução técnica desta etapa.
