@@ -75,7 +75,7 @@
     },
     "static": {
       "status": "PASS_LOCAL",
-      "checks": ["compileall", "flake8 E09-A/B/C scope", "black E09-A/B/C scope", "pytest", "git diff --check"],
+      "checks": ["compileall", "flake8 E09-A/B/C scope", "flake8 E10 harness", "black E09-A/B/C scope", "pytest", "git diff --check"],
       "legacy_baseline_note": "Os comandos globais continuam reportando violações históricas fora do escopo do lote; os arquivos E06 novos passam nos gates focados."
     },
     "symlink": {
@@ -96,25 +96,25 @@
       "native_human_status": "PENDING_EVIDENCE",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/e10-godot-c6-20260908/binary-capture-r53-regression/11-vector-contour-created.png",
+      "latest_binary_capture": "artifacts/e10-unity-d-20260908/binary-capture-r54-regression/11-vector-contour-created.png",
       "latest_binary_capture_sha256": "E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02",
       "latest_binary_capture_window": "-13,-13,3853,2077",
-      "observed_finding": "Build r53 abriu uma fixture V2 no binário portátil; o fluxo nativo E09 foi repetido sem regressão. Godot 4.7 e Unity 6000.5.7f1 importaram a fixture profissional, materializaram o collider vetorial e rejeitaram asset adulterado; revisão humana continua pendente.",
+      "observed_finding": "Build r54 abriu uma fixture V2 no binário portátil; o fluxo nativo E09 foi repetido sem regressão. Godot 4.7 e Unity 6000.5.7f1 importaram a fixture profissional, materializaram o collider vetorial e rejeitaram asset adulterado; revisão humana continua pendente.",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e10-vector-import-20260908-r53/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "067427523A63C75493CFE3E3A9E5A6811A7744EB0E4A98E06CB1E4BE3BAE8D69",
-      "latest_observed_binary_last_write": "2026-09-09T00:28:57.5453346Z",
-      "source_commit": "a09a0819494e01c0bbc5531bbdedc3604f6d07a0",
+      "latest_observed_binary": "build/e01-independent-scene-20260908/release/e10-unity-vector-20260908-r54/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "140A04B7E80C0B135ABC3F7637593CF1CBE438D7997F89768623687A65969909",
+      "latest_observed_binary_last_write": "2026-09-09T01:00:04.4938688Z",
+      "source_commit": "781c85d1ac0a704570d4af070fcf40323a6fbac0",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "34E9ED5E8F1E362CD0C22A6ACD0FEA2D25032A314B38B5679B3E81B72D00A44D",
-      "provenance_manifest": "build/e01-independent-scene-20260908/release/e10-vector-import-20260908-r53/continuity-provenance.json",
+      "continuity_registry_sha256": "84F5E721D29F84D824F002038AC7EDBB60875A9A79E0A3A9364E3A236ACC56EF",
+      "provenance_manifest": "build/e01-independent-scene-20260908/release/e10-unity-vector-20260908-r54/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "a0afd5c33c36a86f839ea39938e8f4f6c8dffdcdd23b47eb3771882261e0d6e4",
+      "portable_archive_sha256": "F1D1D607FEBC5F683AC762B9C4EBE34A6F339E2293BECD8FBD06586E8ED7120B",
       "reason": "E08-A–E possuem passe raster determinístico, integração V2, persistência, partículas, compilação qsb real, cadeia de pós ordenada, fallback explícito, determinismo temporal, tolerâncias registradas e matriz de destinos; E09-A/B/C possuem detecção hash-bound, edição reversível, colisão, objeto persistente/exportável, negativos, suíte oficial 2098, build r52, smoke e captura real. E10-A/B/C/D foram comprovados com export, Godot 4.7 e Unity 6000.5.7f1 reais; E10-E permanece ativo para comparação e fechamento."
     },
     "functional_runtime": {

@@ -414,6 +414,16 @@ def main() -> int:
                 raise RuntimeError(
                     "Godot professional validator did not emit success marker"
                 )
+            capture = workspace / "godot-professional-capture.png"
+            if not capture.is_file() or not capture.stat().st_size:
+                raise RuntimeError(
+                    "Godot professional validator did not produce a real capture"
+                )
+            with Image.open(capture) as rendered:
+                report["capture_size"] = list(rendered.size)
+                report["capture_sha256"] = hashlib.sha256(
+                    capture.read_bytes()
+                ).hexdigest()
             report["capture"] = "godot-professional-capture.png"
             report["artifacts"] = [
                 "assets/hero.png",
@@ -440,6 +450,16 @@ def main() -> int:
                 args.executable, unity_project, original_asset
             )
             commands.append(negative_hash)
+            capture = unity_project / "unity-professional-capture.png"
+            if not capture.is_file() or not capture.stat().st_size:
+                raise RuntimeError(
+                    "Unity professional validator did not produce a real capture"
+                )
+            with Image.open(capture) as rendered:
+                report["capture_size"] = list(rendered.size)
+                report["capture_sha256"] = hashlib.sha256(
+                    capture.read_bytes()
+                ).hexdigest()
             report["capture"] = "unity-professional-capture.png"
             report["artifacts"] = [
                 "Assets/assets/hero.png",

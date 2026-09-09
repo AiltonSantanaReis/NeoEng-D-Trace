@@ -39,4 +39,13 @@ func _initialize() -> void:
     print("E10_GODOT_VECTOR_VALIDATION=SUCCESS")
     print("E10_GODOT_VERSION=" + Engine.get_version_info().string)
     print("E10_GODOT_COLLISION_POINTS=" + str(collision.polygon.size()))
+    var capture := get_viewport().get_texture().get_image()
+    if capture == null or capture.is_empty():
+        fail("godot-professional-capture-empty")
+        return
+    var capture_status := capture.save_png("godot-professional-capture.png")
+    if capture_status != OK:
+        fail("godot-professional-capture-save-failed:" + str(capture_status))
+        return
+    print("E10_GODOT_CAPTURE_PIXELS=" + str(capture.get_used_rect().size.x * capture.get_used_rect().size.y))
     quit(0)

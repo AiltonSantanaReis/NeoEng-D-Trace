@@ -4,7 +4,7 @@
 **Worktree oficial:** `build/e01-independent-scene-20260908`  
 **Branch:** `Ailton/e08-renderer-20260908`  
 **Plano Mestre:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
-**Status:** `IN_PROGRESS` — E10-A/B/C/D technical checkpoints passed; E10-E é o próximo gate
+**Status:** `IN_PROGRESS` — E10-A/B/C/D technical checkpoints passed; E10-E é o gate ativo de fechamento
 
 ## Contrato de execução
 
@@ -41,7 +41,7 @@ logs e capturas nativas.
 | E10-B exportação efetiva | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | pacote temporário validado, hash, atomicidade e negativos |
 | E10-C importação/execução Godot | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | projeto limpo, importador real, runtime, logs e capturas |
 | E10-D importação/execução Unity | `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` | runtime Unity real, collider vetorial, captura e negativo de hash |
-| E10-E round-trip/fechamento | `PLANNED` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
+| E10-E round-trip/fechamento | `IN_PROGRESS` | comparação visual/funcional, retorno somente se implementado, suíte e manifesto |
 
 ## Regras de evidência
 
@@ -110,21 +110,22 @@ capturas e limitações reproduzíveis.
 
 ## Build e captura do produto após a correção
 
-- Build oficial limpa r53:
-  `release/e10-vector-import-20260908-r53`, source commit
-  `a09a0819494e01c0bbc5531bbdedc3604f6d07a0`, executável SHA-256
-  `067427523A63C75493CFE3E3A9E5A6811A7744EB0E4A98E06CB1E4BE3BAE8D69`,
+- Build oficial limpa r54:
+  `release/e10-unity-vector-20260908-r54`, source commit
+  `781c85d1ac0a704570d4af070fcf40323a6fbac0`, executável SHA-256
+  `140A04B7E80C0B135ABC3F7637593CF1CBE438D7997F89768623687A65969909`,
   archive SHA-256
-  `a0afd5c33c36a86f839ea39938e8f4f6c8dffdcdd23b47eb3771882261e0d6e4` e
-  smoke `SUCCESS` com 11 verificações.
-- Captura nativa do binário r53:
-  `artifacts/e10-godot-c6-20260908/binary-capture-r53-regression/`.
+  `F1D1D607FEBC5F683AC762B9C4EBE34A6F339E2293BECD8FBD06586E8ED7120B` e
+  smoke `SUCCESS` com 11 verificações. O manifesto de proveniência registra
+  o SHA do registro de continuidade usado durante a build.
+- Captura nativa do binário r54:
+  `artifacts/e10-unity-d-20260908/binary-capture-r54-regression/`.
   O fluxo E09 foi repetido após a build: `11-vector-contour-created.png`,
   SHA-256 `E8ADA633B2E1E4E5DEF443893DA8B15EF896F6DF3DE5B8A8E5089249CB2A3A02`, confirma detecção,
   correção manual, criação do objeto, gizmo e feedback no produto.
 
 E10-D possui checkpoint técnico `PASS` nos dois destinos executados. E10-E
-permanece aberto para consolidar comparação, round-trip permitido pelo
+permanece ativo para consolidar comparação, round-trip permitido pelo
 contrato, manifesto e fechamento do lote.
 
 ## E10-D — diagnóstico de disponibilidade resolvido
