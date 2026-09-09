@@ -748,7 +748,7 @@ class PolygonEditTool(BaseTool):
                 for i, (x, y) in enumerate(obj.polygon):
                     pt = QPointF(float(x), float(y))
 
-                    is_selected = (
+                    is_selected = (oid, i) in self.selected_vertices or (
                         oid == self.selected_polygon_id and i == self.selected_vertex
                     )
                     is_hovered = self._hovered_vertex == (oid, i)
