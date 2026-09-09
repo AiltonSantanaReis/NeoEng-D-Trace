@@ -788,7 +788,9 @@ class PolygonEditTool(BaseTool):
         pos: Tuple[int, int],
         preferred_polygon_id: Optional[str] = None,
     ) -> Tuple[Optional[str], Optional[int]]:
-        tolerance_screen = 10  # pixels on screen
+        # Keep the hit target aligned with the visible 16px selected handle and
+        # absorb small DPI/rounding differences from native mouse events.
+        tolerance_screen = 14  # pixels on screen
         # Adjust tolerance to Image Space
         zoom = self.canvas_view.get_zoom()
         tolerance_image = tolerance_screen / zoom if zoom > 0 else tolerance_screen
