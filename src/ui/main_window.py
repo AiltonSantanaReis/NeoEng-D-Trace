@@ -237,7 +237,10 @@ class MainWindow(QMainWindow):
         self.groups = GroupsPanel(scene)
 
         self.tool_palette.setEnabled(False)
-        self.side_panel.setEnabled(False)
+        # The Objects tab is useful as an empty-state surface before an image
+        # or project is opened. Individual object actions remain unavailable
+        # until a selection exists.
+        self.side_panel.setEnabled(True)
 
         self.collision_manager = StaticCollisionManager(grid_cell_size=64)
         self.collision_overlay = CollisionOverlay(scene)
@@ -686,7 +689,10 @@ class MainWindow(QMainWindow):
         has_image = self.scene.image is not None
         self.tool_palette.setEnabled(has_image)
         self.reference_tool_palette.setEnabled(has_image)
-        self.side_panel.setEnabled(project_loaded or has_image)
+        # Keep the inspector tab navigable in the empty state; its list and
+        # empty-state labels provide the correct affordance without blocking
+        # the user from switching panels.
+        self.side_panel.setEnabled(True)
         self.side_panel.refresh()
         if hasattr(self.layers, "refresh"):
             self.layers.refresh()

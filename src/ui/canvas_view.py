@@ -489,8 +489,6 @@ class CanvasView(QWidget):
         act_100.setStatusTip(labels["context_zoom_100"])
         act_100.triggered.connect(lambda: self.set_zoom(1.0))
 
-        menu.addSeparator()
-
         act_clean = menu.addAction(f"🗑️ {labels['context_clean_all_polygons']}")
         act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
@@ -1107,6 +1105,11 @@ class CanvasView(QWidget):
         if self._tool and self._tool.on_cancel:
             self._tool.on_cancel()
         self._tool = tool
+        # Tools are recreated when the user changes the rail selection. Apply
+        # the canvas language at installation time so context menus never
+        # regress to English after the application is already in Portuguese.
+        if self._tool and self._tool.update_language:
+            self._tool.update_language(self.current_lang)
         self.update()
 
     def set_pan_mode(self, enabled: bool) -> None:

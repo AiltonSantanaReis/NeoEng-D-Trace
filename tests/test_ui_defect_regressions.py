@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from PySide6.QtCore import QRectF, QSize
+from PySide6.QtCore import QRectF, QSize, Qt
 from PySide6.QtGui import QImage, QPainter
 from PySide6.QtWidgets import QApplication
 
@@ -105,6 +105,34 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
     finally:
         if window.scenario_editor_window is not None:
             window.scenario_editor_window.close()
+        window.close()
+        qt_app.processEvents()
+
+
+def test_objects_inspector_remains_navigable_without_image(qt_app):
+    window = MainWindow(Scene(), _Config())
+    try:
+        assert window.side_panel.isEnabled()
+        assert window.side_panel.list.count() == 0
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_inspector_sections_are_collapsible_without_arrow_icons(qt_app):
+    window = MainWindow(_scene(), _Config())
+    try:
+        groups = (
+            window.side_panel.properties_group,
+            window.side_panel.transform_group,
+            window.side_panel.metadata_group,
+            window.side_panel.modify_shape_group,
+            window.side_panel.export_group,
+        )
+        assert all(
+            group.toggle_button.arrowType() == Qt.ArrowType.NoArrow for group in groups
+        )
+    finally:
         window.close()
         qt_app.processEvents()
 

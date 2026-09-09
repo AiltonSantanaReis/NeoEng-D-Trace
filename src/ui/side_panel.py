@@ -93,9 +93,10 @@ class CollapsibleGroupBox(QGroupBox):
         self.toggle_button.blockSignals(True)
         self.toggle_button.setChecked(expanded)
         self.toggle_button.blockSignals(False)
-        self.toggle_button.setArrowType(
-            Qt.ArrowType.DownArrow if expanded else Qt.ArrowType.RightArrow
-        )
+        # Keep the section collapsible without the extra arrow affordance. The
+        # checked state, accessible description and header emphasis already
+        # communicate the interaction without competing with property values.
+        self.toggle_button.setArrowType(Qt.ArrowType.NoArrow)
         self.content_widget.setVisible(expanded)
 
     def isExpanded(self) -> bool:  # noqa: N802

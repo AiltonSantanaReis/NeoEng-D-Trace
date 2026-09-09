@@ -456,6 +456,28 @@ def main() -> int:
         enable_autosave = getattr(win, "enable_autosave", None)
         if autosave_store is not None and enable_autosave is not None:
             enable_autosave(autosave_store)
+        geometry = config.get("window_geometry")
+        if geometry:
+            try:
+                geom_data = base64.b64decode(geometry)
+                restored = win.restoreGeometry(geom_data)
+                record_validation_event(
+                    "window.geometry.restored",
+                    "SUCCESS" if restored else "WARNING",
+                    restored=bool(restored),
+                    before_show=True,
+                )
+            except Exception as exc:
+                logger.error(
+                    "Failed to restore window geometry: %s",
+                    exc,
+                    extra={"validation_event_recorded": True},
+                )
+                record_validation_exception("window.geometry.restored", exc)
+
+        # Show only after the persisted geometry has been applied. This avoids
+        # exposing the constructor's compact 1200x800 size for one frame before
+        # Windows restores the user's maximized/fullscreen placement.
         win.show()
         if args.open_project_gui:
 
@@ -489,24 +511,6 @@ def main() -> int:
 
         tool = config.get("tool", "polygonal_lasso")
         win.select_tool(tool)
-
-        geometry = config.get("window_geometry")
-        if geometry:
-            try:
-                geom_data = base64.b64decode(geometry)
-                restored = win.restoreGeometry(geom_data)
-                record_validation_event(
-                    "window.geometry.restored",
-                    "SUCCESS" if restored else "WARNING",
-                    restored=bool(restored),
-                )
-            except Exception as exc:
-                logger.error(
-                    "Failed to restore window geometry: %s",
-                    exc,
-                    extra={"validation_event_recorded": True},
-                )
-                record_validation_exception("window.geometry.restored", exc)
 
         def on_close():
             try:
