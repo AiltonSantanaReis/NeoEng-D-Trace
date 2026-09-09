@@ -54,6 +54,7 @@ from src.core.scene_lighting import (
 from src.core.scene_render_plan import SceneRenderPlan
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
+from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
 from src.ui.image_conversion import to_qimage
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.viewport_state import (
@@ -454,7 +455,7 @@ class CanvasView(QWidget):
             label.setEnabled(False)
             menu.addSeparator()
 
-            act_focus = menu.addAction(f"🔍 {labels['context_focus_object']}")
+            act_focus = menu.addAction(labels["context_focus_object"])
             act_focus.setStatusTip(labels["context_focus_object"])
             act_focus.triggered.connect(lambda: self.focus_on_object(clicked_obj_id))
 
@@ -467,7 +468,7 @@ class CanvasView(QWidget):
                 if has_collision
                 else labels["context_enable_collision"]
             )
-            collision_action = menu.addAction(f"⚛️ {collision_text}")
+            collision_action = menu.addAction(collision_text)
             collision_action.setStatusTip(collision_text)
             collision_action.triggered.connect(
                 lambda: self._toggle_collision(clicked_obj_id)
@@ -475,7 +476,7 @@ class CanvasView(QWidget):
 
             menu.addSeparator()
 
-            act_del = menu.addAction(f"❌ {labels['context_delete_object']}")
+            act_del = menu.addAction(labels["context_delete_object"])
             act_del.setStatusTip(labels["context_delete_object"])
             act_del.triggered.connect(lambda: self._delete_object(clicked_obj_id))
 
@@ -489,12 +490,10 @@ class CanvasView(QWidget):
         act_100.setStatusTip(labels["context_zoom_100"])
         act_100.triggered.connect(lambda: self.set_zoom(1.0))
 
-        act_clean = menu.addAction(f"🗑️ {labels['context_clean_all_polygons']}")
+        act_clean = menu.addAction(labels["context_clean_all_polygons"])
         act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
 
-        # Keep localized actions readable on high-DPI Windows themes.
-        menu.setMinimumWidth(360)
         menu.exec(global_pos)
 
     def _find_object_at(self, point: QPointF) -> Optional[str]:
@@ -1926,6 +1925,11 @@ class CanvasView(QWidget):
                         int(round(color[2] * 255.0)),
                         int(round(opacity * 210.0)),
                     )
+                elif hasattr(self.model, "has_collision") and self.model.has_collision(
+                    oid
+                ):
+                    brush = collision_fill_brush()
+                    painter.setPen(collision_outline_pen())
                 else:
                     brush = (
                         self._brush_selected

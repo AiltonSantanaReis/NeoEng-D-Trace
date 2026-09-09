@@ -317,6 +317,7 @@ class MagneticLassoTool(BaseTool):
         self._last_preview_time = 0.0
         self._last_preview_endpoint: Optional[Point] = None
         self._hover_can_close = False
+        self._ignore_next_click_after_commit = False
         self._last_error: Optional[str] = None
         self._preview_path_start: Optional[Point] = None
         self._preview_path_endpoint: Optional[Point] = None
@@ -820,7 +821,10 @@ class MagneticLassoTool(BaseTool):
                 # running. Rebase that intent to the newly committed anchor
                 # before the next worker starts.
                 queued_finish = self._queued_action_request
-                if queued_finish is not None and queued_finish.get("purpose") == "finish":
+                if (
+                    queued_finish is not None
+                    and queued_finish.get("purpose") == "finish"
+                ):
                     queued_finish.update(
                         start=self._anchors[-1],
                         end=self._anchors[0],
@@ -1023,6 +1027,11 @@ class MagneticLassoTool(BaseTool):
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
+            if self._ignore_next_click_after_commit:
+                self._ignore_next_click_after_commit = False
+                self._preview_path = []
+                self.canvas_view.update()
+                return
             if self._can_close_at(position):
                 self.finish_selection()
                 return
@@ -1144,6 +1153,7 @@ class MagneticLassoTool(BaseTool):
                 self._show_invalid_selection()
             return None
         self._reset_selection_state()
+        self._ignore_next_click_after_commit = True
         self.canvas_view.update()
         return object_id
 
@@ -1154,9 +1164,7 @@ class MagneticLassoTool(BaseTool):
             # worker thread.  Preserve that user intent; dropping it makes
             # precise mode appear unable to close while legacy mode works.
             if len(self._anchors) >= 3:
-                self._request_async_path(
-                    "finish", self._anchors[-1], self._anchors[0]
-                )
+                self._request_async_path("finish", self._anchors[-1], self._anchors[0])
             return None
         if self._uses_background_pathfinding() and len(self._anchors) >= 3:
             start = self._anchors[-1]
@@ -1182,6 +1190,7 @@ class MagneticLassoTool(BaseTool):
                 self._show_invalid_selection()
             return None
         self._reset_selection_state()
+        self._ignore_next_click_after_commit = True
         self.canvas_view.update()
         return object_id
 

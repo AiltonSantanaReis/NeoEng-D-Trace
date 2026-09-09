@@ -66,6 +66,7 @@ def _assert_context_menu_contract(menu, expected_count):
     assert len(actions) == expected_count
     for action in actions:
         assert action.text()
+        assert action.icon().isNull()
         assert action.toolTip()
         assert action.property("commandKey")
 

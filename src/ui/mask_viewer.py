@@ -47,6 +47,7 @@ from PySide6.QtWidgets import (
 
 from src.core.operational_limits import MAX_POLYGON_POINTS
 from src.core.view_processor import ViewProcessor
+from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
 
 logger = logging.getLogger(__name__)
 
@@ -1153,12 +1154,8 @@ class MaskViewer(QWidget):
                                 QColor(255, 255, 0, 80)
                             )  # Semi-transparent yellow fill
                         else:
-                            pen = QPen(QColor(0, 255, 0), 2)  # Green outline
-                            pen.setCosmetic(True)
-                            painter.setPen(pen)
-                            painter.setBrush(
-                                QColor(0, 255, 0, 50)
-                            )  # Semi-transparent green fill
+                            painter.setPen(collision_outline_pen())
+                            painter.setBrush(collision_fill_brush())
 
                         painter.drawPolygon(qpoly)
 

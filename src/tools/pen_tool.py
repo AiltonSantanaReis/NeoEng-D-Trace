@@ -94,6 +94,10 @@ class PenTool(BaseTool):
         self._active_handle_edit: Optional[_HandleEditState] = None
         self._last_command_result = None
         self._last_error = ""
+        self._creation_undo_stack: List[List[BezierNode]] = []
+        self._creation_redo_stack: List[List[BezierNode]] = []
+        self._ignore_next_click_after_commit = False
+        self._ready_for_new_creation = False
 
         self.current_lang = "en"
         self.translations = {
@@ -307,12 +311,21 @@ class PenTool(BaseTool):
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
+            if self._ignore_next_click_after_commit:
+                self._ignore_next_click_after_commit = False
+                self._ready_for_new_creation = True
+                self._cursor_position = None
+                self.canvas_view.update()
+                return
+            if self._ready_for_new_creation:
+                self._clear_loaded_bezier_object()
+                self._creation_undo_stack.clear()
+                self._creation_redo_stack.clear()
+                self._ready_for_new_creation = False
             had_loaded_object = self._editing_object_id is not None
             if had_loaded_object and not self._synchronize_selected_bezier_object():
                 self.canvas_view.update()
                 return
-            if not self._nodes:
-                self._load_selected_bezier_object()
             click_point = (float(position[0]), float(position[1]))
             self._cursor_position = click_point
             if (
@@ -321,7 +334,8 @@ class PenTool(BaseTool):
                 and self._is_near_first_anchor(click_point)
                 and self._get_handle_at_point(click_point) is None
             ):
-                self.commit_selection(closed=True)
+                if self.commit_selection(closed=True) is not None:
+                    self._ignore_next_click_after_commit = True
                 self.canvas_view.update()
                 return
             handle_hit = self._get_handle_at_point(click_point)
@@ -520,7 +534,8 @@ class PenTool(BaseTool):
 
     def on_double_click(self, event: QMouseEvent, position: Tuple[float, float]):
         if self._editing_object_id is None and len(self._nodes) >= 2:
-            self.commit_selection()
+            if self.commit_selection() is not None:
+                self._ignore_next_click_after_commit = True
             self.canvas_view.update()
 
     def on_key_press(self, event) -> bool:
@@ -529,10 +544,32 @@ class PenTool(BaseTool):
         return False
 
     def on_undo(self) -> bool:
-        return self._cancel_active_handle_edit()
+        if self._cancel_active_handle_edit():
+            return True
+        if (
+            self._editing_object_id is None
+            and self._nodes
+            and self._creation_undo_stack
+        ):
+            self._creation_redo_stack.append(copy.deepcopy(self._nodes))
+            self._nodes = self._creation_undo_stack.pop()
+            self._selected_node = self._nodes[-1] if self._nodes else None
+            self._selected_handle = None
+            self.canvas_view.update()
+            return True
+        return False
 
     def on_redo(self) -> bool:
-        return self._cancel_active_handle_edit()
+        if self._cancel_active_handle_edit():
+            return True
+        if self._editing_object_id is None and self._creation_redo_stack:
+            self._creation_undo_stack.append(copy.deepcopy(self._nodes))
+            self._nodes = self._creation_redo_stack.pop()
+            self._selected_node = self._nodes[-1] if self._nodes else None
+            self._selected_handle = None
+            self.canvas_view.update()
+            return True
+        return False
 
     def _place_anchor(self, point: Tuple[float, float]):
         max_nodes = ((MAX_POLYGON_POINTS - 1) // self._curve_segments) + 1
@@ -547,6 +584,8 @@ class PenTool(BaseTool):
                 channel="status",
             )
             return
+        self._creation_undo_stack.append(copy.deepcopy(self._nodes))
+        self._creation_redo_stack.clear()
         new_node = BezierNode(point)
 
         if self._nodes:
@@ -886,6 +925,10 @@ class PenTool(BaseTool):
         self._editing_object_id = None
         self._closed = False
         self._cursor_position = None
+        self._creation_undo_stack.clear()
+        self._creation_redo_stack.clear()
+        self._ignore_next_click_after_commit = False
+        self._ready_for_new_creation = False
         self.canvas_view.update()
 
     def on_cancel(self):

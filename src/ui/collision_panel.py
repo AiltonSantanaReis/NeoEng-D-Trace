@@ -79,7 +79,9 @@ class CollisionPanel(QWidget):
                 "export": "Exportar Colisões",
                 "strategy": "Escolher a representação usada pelo gerenciador de física",
                 "auto": "Gerar Automaticamente dos Objetos da Cena",
-                "validation": "Quantidade de vértices, convexidade e topologia de cada colisor",
+                "validation": (
+                    "Quantidade de vértices, convexidade e topologia de cada colisor"
+                ),
                 "results": "Resultados de Colisão",
                 "stats": "Estatísticas",
                 "no_tests": "Nenhum teste de colisão foi executado ainda.",
@@ -296,7 +298,7 @@ class CollisionPanel(QWidget):
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self)
         for toolbar_action in self.action_toolbar.actions():
-            action = menu.addAction(toolbar_action.icon(), toolbar_action.text())
+            action = menu.addAction(toolbar_action.text())
             action.setToolTip(toolbar_action.toolTip())
             action.setProperty("commandKey", toolbar_action.property("commandKey"))
             action.setEnabled(toolbar_action.isEnabled())
@@ -385,8 +387,7 @@ class CollisionPanel(QWidget):
             return
 
         results_text = (
-            f"{t['results_heading']} "
-            f"({len(self.collision_results)} tests):\n\n"
+            f"{t['results_heading']} " f"({len(self.collision_results)} tests):\n\n"
         )
 
         collision_count = 0

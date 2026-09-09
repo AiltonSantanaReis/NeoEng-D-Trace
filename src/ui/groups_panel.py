@@ -205,7 +205,7 @@ class GroupsPanel(QWidget):
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self.list)
         for button, toolbar_action in self._toolbar_actions.items():
-            action = menu.addAction(toolbar_action.icon(), button.text())
+            action = menu.addAction(button.text())
             action.setToolTip(button.toolTip() or button.text())
             action.setProperty("commandKey", toolbar_action.property("commandKey"))
             action.setEnabled(toolbar_action.isEnabled())

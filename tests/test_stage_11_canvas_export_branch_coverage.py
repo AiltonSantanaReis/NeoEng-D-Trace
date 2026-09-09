@@ -454,7 +454,7 @@ def test_canvas_context_menu_selection_and_manual_polygon(qt_app, monkeypatch):
     assert "Excluir objeto" in portuguese_text
     assert "Ajustar imagem (F)" in portuguese_text
     assert "Limpar todos os polígonos" in portuguese_text
-    assert menus[-1].minimum_width == 360
+    assert not hasattr(menus[-1], "minimum_width")
     scene.collision_shapes["A"] = list(scene.objects["A"].polygon)
     canvas.contextMenuEvent(event(position=(20, 20)))
     collision_text = " ".join(

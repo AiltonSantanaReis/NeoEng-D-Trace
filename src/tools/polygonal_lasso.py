@@ -30,6 +30,7 @@ class PolygonalLassoTool(BaseTool):
         self._vertices: List[Tuple[float, float]] = []
         self._preview_point: Optional[Tuple[float, float]] = None
         self._close_tolerance = 10.0  # Pixels de tolerância para fechar o polígono
+        self._ignore_next_click_after_commit = False
 
         self.current_lang = "en"
         self.translations = {
@@ -50,6 +51,11 @@ class PolygonalLassoTool(BaseTool):
         Add vertex on mouse press or close polygon if near start.
         """
         if event.button() == Qt.MouseButton.LeftButton:
+            if self._ignore_next_click_after_commit:
+                self._ignore_next_click_after_commit = False
+                self._preview_point = None
+                self.canvas_view.update()
+                return
             try:
                 x, y = float(position[0]), float(position[1])
             except Exception:
@@ -74,6 +80,7 @@ class PolygonalLassoTool(BaseTool):
                     if object_id is not None:
                         self._vertices = []
                         self._preview_point = None
+                        self._ignore_next_click_after_commit = True
                     self.canvas_view.update()
                     return
 
@@ -112,6 +119,7 @@ class PolygonalLassoTool(BaseTool):
 
         self._vertices = []
         self._preview_point = None
+        self._ignore_next_click_after_commit = True
         self.canvas_view.update()
 
     def commit_selection(self):

@@ -15,6 +15,7 @@ from src.core.object_geometry_gesture import (
     ObjectGeometryGestureTransaction,
 )
 from src.tools.base_tool import BaseTool
+from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
 
 
 class CollisionBrushTool(BaseTool):
@@ -39,30 +40,30 @@ class CollisionBrushTool(BaseTool):
         self.current_lang = "en"
         self.translations = {
             "en": {
-                "move": "🏃 Move",
-                "edit": "✏️ Edit",
-                "scale": "📏 Scale",
-                "undo": "↶ Undo",
-                "redo": "↷ Redo",
-                "remove": "🗑️ Remove",
-                "cancel": "❌ Cancel",
-                "center": "🎯 Center",
-                "increase": "➕ Increase",
-                "decrease": "➖ Decrease",
+                "move": "Move",
+                "edit": "Edit",
+                "scale": "Scale",
+                "undo": "Undo",
+                "redo": "Redo",
+                "remove": "Remove",
+                "cancel": "Cancel",
+                "center": "Center",
+                "increase": "Increase",
+                "decrease": "Decrease",
                 "remove_title": "Remove",
                 "remove_question": "Remove object {oid}?",
             },
             "pt": {
-                "move": "🏃 Mover",
-                "edit": "✏️ Editar",
-                "scale": "📏 Escalar",
-                "undo": "↶ Desfazer",
-                "redo": "↷ Refazer",
-                "remove": "🗑️ Remover",
-                "cancel": "❌ Cancelar",
-                "center": "🎯 Centro",
-                "increase": "➕ Aumentar",
-                "decrease": "➖ Diminuir",
+                "move": "Mover",
+                "edit": "Editar",
+                "scale": "Escalar",
+                "undo": "Desfazer",
+                "redo": "Refazer",
+                "remove": "Remover",
+                "cancel": "Cancelar",
+                "center": "Centro",
+                "increase": "Aumentar",
+                "decrease": "Diminuir",
                 "remove_title": "Remover",
                 "remove_question": "Remover objeto {oid}?",
             },
@@ -660,20 +661,8 @@ class CollisionBrushTool(BaseTool):
             for oid in self.canvas_view.model.collision_shapes:
                 obj = self.canvas_view.model.objects.get(oid)
                 if obj and obj.polygon:
-                    # Vermelho para colisão aplicada, azul se selecionado, verde padrão
-                    if oid == self.selected_polygon_id:
-                        pen_selected = QPen(QColor(0, 128, 255), 3)
-                        pen_selected.setCosmetic(True)
-                        painter.setPen(pen_selected)
-                    elif self.canvas_view.model.has_collision(oid):
-                        pen_collision = QPen(QColor(255, 0, 0), 3)
-                        pen_collision.setCosmetic(True)
-                        painter.setPen(pen_collision)
-                    else:
-                        pen = QPen(QColor(0, 255, 0), 2)
-                        pen.setCosmetic(True)
-                        painter.setPen(pen)
-                    painter.setBrush(Qt.BrushStyle.NoBrush)
+                    painter.setPen(collision_outline_pen())
+                    painter.setBrush(collision_fill_brush())
                     points = [QPointF(float(x), float(y)) for x, y in obj.polygon]
                     painter.drawPolygon(QPolygonF(points))
 

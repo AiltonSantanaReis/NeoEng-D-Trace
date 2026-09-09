@@ -421,6 +421,7 @@ class MainWindow(QMainWindow):
     def _undo(self):
         if self.canvas.request_tool_undo():
             self.canvas.update()
+            self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
             self._update_undo_redo_actions()
             return None
         result = None
@@ -429,12 +430,14 @@ class MainWindow(QMainWindow):
         self.canvas.update()
         self.side_panel.refresh()
         self._on_scene_changed()
+        self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
         self._update_undo_redo_actions()
         return result
 
     def _redo(self):
         if self.canvas.request_tool_redo():
             self.canvas.update()
+            self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
             self._update_undo_redo_actions()
             return None
         result = None
@@ -443,6 +446,7 @@ class MainWindow(QMainWindow):
         self.canvas.update()
         self.side_panel.refresh()
         self._on_scene_changed()
+        self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
         self._update_undo_redo_actions()
         return result
 

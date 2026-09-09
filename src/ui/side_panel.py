@@ -657,7 +657,7 @@ class SidePanel(QWidget):
         for title, toolbar in sections:
             submenu = menu.addMenu(title)
             for toolbar_action in toolbar.actions():
-                action = submenu.addAction(toolbar_action.icon(), toolbar_action.text())
+                action = submenu.addAction(toolbar_action.text())
                 action.setToolTip(toolbar_action.toolTip())
                 action.setProperty("commandKey", toolbar_action.property("commandKey"))
                 action.setEnabled(toolbar_action.isEnabled())
