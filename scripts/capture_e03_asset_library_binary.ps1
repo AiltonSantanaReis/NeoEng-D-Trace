@@ -339,10 +339,23 @@ try {
         Start-Sleep -Milliseconds 250
         [System.Windows.Forms.SendKeys]::SendWait("{DOWN 7}{ENTER}")
         Start-Sleep -Milliseconds 1800
+        # The professional scenario editor is already another top-level
+        # window in this flow.  Do not accept it as a mask capture merely
+        # because it is the first window returned by EnumWindows; require the
+        # semantic title emitted by MaskViewerDialog instead.
         $mask = [NeoEngE03Capture]::GetWindows($process.Id) |
-            Where-Object { $_.Handle -ne $mainHandle } |
+            Where-Object {
+                $_.Handle -ne $mainHandle -and
+                $_.Title -match "(?i)mask|máscara|mascara|raio-x|x-ray"
+            } |
             Select-Object -First 1
-        if (-not $mask) { throw "Mask Viewer was not exposed by portable binary" }
+        if (-not $mask) {
+            $titles = [NeoEngE03Capture]::GetWindows($process.Id) |
+                ForEach-Object { $_.Title } |
+                Where-Object { $_ -and $_.Trim() } |
+                Select-Object -Unique
+            throw "Mask Viewer was not exposed by portable binary; observed windows: $($titles -join ' | ')"
+        }
         $records.mask_viewer = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer.png")
     }
     [NeoEngE03Capture]::Focus($editor.Handle)
