@@ -1,7 +1,7 @@
 # Pacotes próprios de assets — proposta pós-E13
 
 Estado: IN_PROGRESS. Data: 2026-09-10.
-Base inspecionada: be0b672206c34c4ea5f8fda7bb80bce882eb611a.
+Base inspecionada: 8c14aac8c4dfcc7b30d2c966dc401845090c9033.
 Escopo deste documento: análise, especificação e acompanhamento do lote adicional pós-E13.
 Autoridade: solicitação do usuário para analisar produção e disponibilização de pacotes próprios com miniaturas.
 
@@ -96,9 +96,11 @@ arquivos estão em `assets/scene/packs/floresta/`, com hashes no manifesto e
 proveniência em `PROVENIENCIA.md`. O catálogo não altera o registro de assets da
 cena até o usuário acionar `Adicionar ao projeto`.
 
-Estado de aceite deste incremento: `PENDING_EVIDENCE` para a execução no binário.
-Os testes Qt e a suíte oficial passaram, mas ainda faltam captura nativa por
-cliques reais, build limpa auditada e revisão visual dos assets. O piloto completo
-(3 planos, 6 objetos, 9 peças de terreno e composição real) ainda não foi entregue;
-os seis objetos são somente a primeira parte dessa meta. Ruínas e Cidade futurista
-continuam `PLANNED`.
+Estado de aceite deste incremento: `PENDING_EVIDENCE`.
+A build limpa foi auditada e o fluxo nativo por cliques reais foi capturado para
+catálogo, busca, prévia, importação, inserção por clique, salvamento, fechamento e
+reabertura. O arraste direto ainda falha na execução observada e o menu contextual
+do editor não foi comprovado em português; por isso não há `PASS` global. O piloto
+completo (3 planos, 6 objetos, 9 peças de terreno e composição real) ainda não foi
+entregue; os seis objetos são somente a primeira parte dessa meta. Ruínas e Cidade
+futurista continuam `PLANNED`.
