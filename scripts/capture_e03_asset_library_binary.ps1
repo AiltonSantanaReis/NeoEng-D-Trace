@@ -14,6 +14,8 @@ param(
     [switch]$CaptureParallaxFlow,
     [switch]$CaptureVectorContourFlow,
     [switch]$CaptureMaskViewerFlow,
+    [switch]$CaptureContextMenuFlow,
+    [switch]$CaptureSequenceStudioFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -44,6 +46,7 @@ public static class NeoEngE03Capture
     [DllImport("user32.dll")] private static extern bool SetProcessDpiAwarenessContext(IntPtr value);
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int command);
     [DllImport("user32.dll")] private static extern bool BringWindowToTop(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] private static extern IntPtr SetFocus(IntPtr hWnd);
     [DllImport("user32.dll")] private static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] private static extern void mouse_event(uint flags, uint dx, uint dy, uint data, UIntPtr extra);
@@ -79,6 +82,14 @@ public static class NeoEngE03Capture
         const uint down = 0x0002, up = 0x0004;
         mouse_event(down, 0, 0, 0, UIntPtr.Zero); mouse_event(up, 0, 0, 0, UIntPtr.Zero);
     }
+    public static void RightClickWindow(IntPtr hWnd, int offsetX, int offsetY)
+    {
+        RECT rect; if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
+        SetCursorPos(rect.Left + offsetX, rect.Top + offsetY);
+        const uint down = 0x0008, up = 0x0010;
+        mouse_event(down, 0, 0, 0, UIntPtr.Zero); mouse_event(up, 0, 0, 0, UIntPtr.Zero);
+    }
+    public static IntPtr Foreground() { return GetForegroundWindow(); }
     public static void ClickWindowFraction(IntPtr hWnd, double fractionX, double fractionY)
     {
         RECT rect; if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
@@ -128,6 +139,21 @@ function Save-Capture {
     param([IntPtr]$Handle, [string]$Path)
     [NeoEngE03Capture]::Capture($Handle, $Path) | Out-Null
     return [ordered]@{ path = $Path; sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash }
+}
+
+function Enter-AdvancedTool {
+    param([IntPtr]$Handle, [int]$TabY)
+    [NeoEngE03Capture]::Focus($Handle)
+    # The integrated tools are reachable through the same user-visible path:
+    # add a timeline clip, open Ferramentas, then choose the west-side tool
+    # tab.  All coordinates are native window offsets for this DPI-aware
+    # binary capture host.
+    [NeoEngE03Capture]::ClickWindow($Handle, 2640, 1670)
+    Start-Sleep -Milliseconds 800
+    [NeoEngE03Capture]::ClickWindow($Handle, 3290, 150)
+    Start-Sleep -Milliseconds 500
+    [NeoEngE03Capture]::ClickWindow($Handle, 2970, $TabY)
+    Start-Sleep -Milliseconds 700
 }
 
 $exePath = (Resolve-Path -LiteralPath $Executable).Path
@@ -246,18 +272,84 @@ try {
     # covered by the focused Qt contract tests; this binary capture remains
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
-    if ($CaptureVectorContourFlow) {
+    if ($CaptureContextMenuFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
-        $records.vector_contour_initial = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-vector-contour-initial.png")
-        # The asset library is below the contour panel in the inspector. Scroll
-        # the real native surface until the asset row is visible, select it,
-        # then return to the contour controls like a user would.
-        for ($scrollStep = 0; $scrollStep -lt 30; $scrollStep++) {
-            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.985, 0.66, -120)
-            Start-Sleep -Milliseconds 100
-        }
+        # Open the layer-stack context menu with a native right click. The
+        # menu is part of the user's Portuguese localization surface.
+        [NeoEngE03Capture]::RightClickWindow($editor.Handle, 1450, 830)
         Start-Sleep -Milliseconds 600
-        $records.vector_contour_asset = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-vector-contour-asset.png")
+        $foregroundHandle = [NeoEngE03Capture]::Foreground()
+        $menuWindow = [NeoEngE03Capture]::GetWindows($process.Id) |
+            Where-Object { $_.Handle -ne $mainHandle -and $_.Handle -ne $editor.Handle } |
+            Select-Object -First 1
+        if ($foregroundHandle -eq $mainHandle -or $foregroundHandle -eq $editor.Handle) {
+            # Native Qt also exposes the same menu through the standard
+            # keyboard context-menu gesture. Use it only as a diagnostic
+            # fallback when the mouse popup is not exposed by PrintWindow.
+            [NeoEngE03Capture]::Focus($editor.Handle)
+            [NeoEngE03Capture]::ClickWindow($editor.Handle, 260, 390)
+            [System.Windows.Forms.SendKeys]::SendWait("+{F10}")
+            Start-Sleep -Milliseconds 400
+            $foregroundHandle = [NeoEngE03Capture]::Foreground()
+            $menuWindow = [NeoEngE03Capture]::GetWindows($process.Id) |
+                Where-Object { $_.Handle -ne $mainHandle -and $_.Handle -ne $editor.Handle } |
+                Select-Object -First 1
+        }
+        if ($foregroundHandle -ne [IntPtr]::Zero -and $foregroundHandle -ne $mainHandle -and $foregroundHandle -ne $editor.Handle) {
+            $records.context_menu_layer = Save-Capture $foregroundHandle (Join-Path $OutputDirectory "06-context-menu-layer.png")
+            $records.context_menu_window_title = "foreground popup"
+        } elseif ($menuWindow) {
+            $records.context_menu_layer = Save-Capture $menuWindow.Handle (Join-Path $OutputDirectory "06-context-menu-layer.png")
+            $records.context_menu_window_title = $menuWindow.Title
+        } else {
+            $records.context_menu_layer = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-context-menu-layer.png")
+            $records.context_menu_window_title = "not exposed as a top-level window"
+        }
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 600, 600)
+    }
+    if ($CaptureSequenceStudioFlow) {
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        # A real user reaches the integrated studio tools by creating/selecting
+        # a timeline clip.  The clip selection emits editor_requested and
+        # switches the right dock from the numeric inspector to Ferramentas.
+        # This is intentionally a native mouse click on the shipped binary.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2640, 1670)
+        Start-Sleep -Milliseconds 900
+        $records.sequence_studio_after_clip = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-sequence-studio-after-clip.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2280, 1670)
+        Start-Sleep -Milliseconds 250
+        [System.Windows.Forms.SendKeys]::SendWait("{HOME}{DOWN 2}{ENTER}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2640, 1670)
+        Start-Sleep -Milliseconds 900
+        $records.sequence_studio_text_clip = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-sequence-studio-text-clip.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2280, 1670)
+        Start-Sleep -Milliseconds 250
+        [System.Windows.Forms.SendKeys]::SendWait("{HOME}{DOWN 3}{ENTER}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2640, 1670)
+        Start-Sleep -Milliseconds 900
+        $records.sequence_studio_particle_clip = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-sequence-studio-particle-clip.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2280, 1670)
+        Start-Sleep -Milliseconds 250
+        [System.Windows.Forms.SendKeys]::SendWait("{HOME}{DOWN 8}{ENTER}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2640, 1670)
+        Start-Sleep -Milliseconds 900
+        $records.sequence_studio_text_clip_real = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-sequence-studio-text-clip-real.png")
+    }
+    if ($CaptureVectorContourFlow) {
+        Enter-AdvancedTool $editor.Handle 230
+        $records.vector_contour_initial = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-vector-contour-initial.png")
+        # The real user path is the composition-side Biblioteca tab, not a
+        # guessed inspector scroll. Select the fixture asset from that list so
+        # the signal reaches Contorno vetorial.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 420, 198)
+        Start-Sleep -Milliseconds 700
+        $records.vector_library_open = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-vector-library-open.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 170, 435)
+        Start-Sleep -Milliseconds 700
+        $records.vector_library_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-vector-library-selected.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 230)
+        Start-Sleep -Milliseconds 700
+        $records.vector_contour_asset = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-vector-contour-asset.png")
         [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.24)
         Start-Sleep -Milliseconds 500
         for ($scrollStep = 0; $scrollStep -lt 30; $scrollStep++) {
@@ -265,32 +357,38 @@ try {
             Start-Sleep -Milliseconds 100
         }
         Start-Sleep -Milliseconds 600
-        $records.vector_contour_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-vector-contour-selected.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.775, 0.166)
+        $records.vector_contour_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-vector-contour-selected.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 860)
         Start-Sleep -Milliseconds 900
-        $records.vector_contour_detected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-vector-contour-detected.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.826, 0.198)
+        $records.vector_contour_detected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-vector-contour-detected.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3480, 1120)
         [System.Windows.Forms.SendKeys]::SendWait("^a")
         [System.Windows.Forms.SendKeys]::SendWait("-5")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.887, 0.198)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3480, 1180)
         [System.Windows.Forms.SendKeys]::SendWait("^a")
         [System.Windows.Forms.SendKeys]::SendWait("-5")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.950, 0.198)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1250)
         Start-Sleep -Milliseconds 700
-        $records.vector_contour_edited = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-vector-contour-edited.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.859, 0.232)
+        $records.vector_contour_edited = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-vector-contour-edited.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1315)
         Start-Sleep -Milliseconds 900
-        $records.vector_contour_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-vector-contour-created.png")
+        $records.vector_contour_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-vector-contour-created.png")
     }
     if ($CaptureTilemapFlow) {
-        # The tilemap panel is in the right inspector at the top of the
-        # shipped editor.  These are native screen offsets for the current
-        # 200% DPI capture host; the resulting state is always verified by
-        # PrintWindow and the manifest hashes below.
-        [NeoEngE03Capture]::Focus($editor.Handle)
+        # A user first creates/selects a timeline clip, opens Ferramentas,
+        # then selects Tiles.  Without this transition the numeric inspector
+        # remains visible and a coordinate-only click is not evidence of a
+        # Tilemap operation.
+        Enter-AdvancedTool $editor.Handle 380
+        $records.tilemap_tools_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-tilemap-tools-entry.png")
+        # The west tab bar is vertically laid out in the native surface;
+        # Tiles is the second tab, below Formas, on the current DPI layout.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 380)
+        Start-Sleep -Milliseconds 500
+        $records.tilemap_panel_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-tilemap-panel-entry.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3110, 320)
         Start-Sleep -Milliseconds 500
-        $records.tilemap_new = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-tilemap-new.png")
+        $records.tilemap_new = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tilemap-new.png")
         # Paint three cells, save the sidecar, then reopen it through the
         # same shipped controls.  Coordinates are native offsets in the
         # maximized editor rect recorded above.
@@ -298,24 +396,24 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 550)
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3270, 550)
         Start-Sleep -Milliseconds 500
-        $records.tilemap_painted = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-tilemap-painted.png")
+        $records.tilemap_painted = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tilemap-painted.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3395, 320)
         Start-Sleep -Milliseconds 700
-        $records.tilemap_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tilemap-saved.png")
+        $records.tilemap_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-tilemap-saved.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 320)
         Start-Sleep -Milliseconds 700
-        $records.tilemap_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tilemap-reopened.png")
+        $records.tilemap_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-tilemap-reopened.png")
     }
     if ($CaptureColliderFlow) {
-        [NeoEngE03Capture]::Focus($editor.Handle)
+        Enter-AdvancedTool $editor.Handle 520
         # Maximize first so the inspector has a stable native coordinate.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 240)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 270)
         Start-Sleep -Milliseconds 500
         $records.collider_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-collider-created.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3140, 240)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3140, 270)
         [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 240)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 270)
         Start-Sleep -Milliseconds 500
         $records.collider_circle_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-collider-circle-created.png")
         # Save/Reopen are on the second action row of the collider panel.
@@ -329,57 +427,113 @@ try {
         $records.collider_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-collider-reopened.png")
     }
     if ($CaptureNavMeshFlow) {
-        [NeoEngE03Capture]::Focus($editor.Handle)
-        # Use normalized native coordinates: PrintWindow captures the actual
-        # 1926x1038 maximized surface on this 200% host, while Qt layout sizes
-        # are logical pixels.  Fixed logical coordinates silently missed the
-        # inspector and produced false-identical screenshots.
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.75, 0.135)
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.80, 0.135)
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.85, 0.135)
+        Enter-AdvancedTool $editor.Handle 650
+        $records.navmesh_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-navmesh-entry.png")
+        # The native panel places Região, Obstáculo, Bake, Salvar and Reabrir
+        # on one action row near the lower half of the inspector.  Use the
+        # observed native coordinates so the clicks reach real controls.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3080, 1095)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3260, 1095)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3430, 1095)
         Start-Sleep -Milliseconds 900
-        $records.navmesh_baked = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-navmesh-baked.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.90, 0.135)
+        $records.navmesh_baked = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-navmesh-baked.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3590, 1095)
         Start-Sleep -Milliseconds 700
-        $records.navmesh_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-navmesh-saved.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.135)
+        $records.navmesh_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-navmesh-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3745, 1095)
         Start-Sleep -Milliseconds 700
-        $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-navmesh-reopened.png")
+        $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-navmesh-reopened.png")
     }
     if ($CaptureEntityPrefabFlow) {
-        [NeoEngE03Capture]::Focus($editor.Handle)
-        # The E07 panel is the first inspector panel.  Coordinates are
-        # normalized against the DPI-aware native surface; they remain valid
-        # when the maximized logical Qt surface is 3866x2090.
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.78, 0.345)
+        Enter-AdvancedTool $editor.Handle 800
+        # These controls are visible in the shipped panel: add one entity,
+        # create a prefab from it, then instantiate that prefab.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 752)
         Start-Sleep -Milliseconds 650
         $records.entity_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-entity-created.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.78, 0.585)
+        # Creating an entity selects it and intentionally returns the right
+        # dock to the numeric inspector.  Re-enter Ferramentas > Entidades as
+        # a user must do before continuing with prefab authoring.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
+        Start-Sleep -Milliseconds 450
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        Start-Sleep -Milliseconds 650
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 1255)
         Start-Sleep -Milliseconds 500
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.87, 0.585)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
+        Start-Sleep -Milliseconds 450
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        Start-Sleep -Milliseconds 650
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3600, 1255)
         Start-Sleep -Milliseconds 650
         $records.prefab_instantiated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-prefab-instantiated.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.78, 0.826)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
+        Start-Sleep -Milliseconds 450
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
         Start-Sleep -Milliseconds 650
-        $records.prefab_override = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-prefab-override.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.585)
+        $records.prefab_state_visible = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-prefab-state-visible.png")
+        for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
+            Start-Sleep -Milliseconds 80
+        }
+        Start-Sleep -Milliseconds 500
+        $records.instance_controls_visible = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-instance-controls-visible.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 1415)
         Start-Sleep -Milliseconds 650
-        $records.prefab_updated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-prefab-updated.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.95, 0.826)
+        $records.prefab_override = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-prefab-override.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
+        Start-Sleep -Milliseconds 450
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
         Start-Sleep -Milliseconds 650
-        $records.prefab_detached = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-prefab-detached.png")
+        for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
+            Start-Sleep -Milliseconds 80
+        }
+        Start-Sleep -Milliseconds 500
+        $records.prefab_override_state = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-prefab-override-state.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 915)
+        Start-Sleep -Milliseconds 650
+        $records.prefab_updated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-prefab-updated.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
+        Start-Sleep -Milliseconds 450
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        Start-Sleep -Milliseconds 650
+        for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
+            Start-Sleep -Milliseconds 80
+        }
+        Start-Sleep -Milliseconds 500
+        $records.prefab_updated_state = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-prefab-updated-state.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1485)
+        Start-Sleep -Milliseconds 650
+        $records.prefab_detached = Save-Capture $editor.Handle (Join-Path $OutputDirectory "14-prefab-detached.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
+        Start-Sleep -Milliseconds 450
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        Start-Sleep -Milliseconds 650
+        for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
+            Start-Sleep -Milliseconds 80
+        }
+        Start-Sleep -Milliseconds 500
+        $records.prefab_detached_state = Save-Capture $editor.Handle (Join-Path $OutputDirectory "15-prefab-detached-state.png")
     }
     if ($CaptureRendererFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
-        # Preview Parallax is the toolbar toggle near the center of the
-        # DPI-aware editor surface.  The capture proves the shipped raster
-        # renderer plan and its explicit backend/fallback HUD.
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.52, 0.046)
+        # The real shipped UI exposes preview through Ver >
+        # Pré-visualização de Paralaxe. Open the menu, capture it, then use
+        # keyboard navigation to activate the visible action.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1360, 92)
+        Start-Sleep -Milliseconds 400
+        $records.renderer_view_menu = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-renderer-view-menu.png")
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN 2}{ENTER}")
         Start-Sleep -Milliseconds 900
-        $records.renderer_preview = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-renderer-preview.png")
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.56, 0.046)
+        $records.renderer_preview = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-preview.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1360, 92)
+        Start-Sleep -Milliseconds 250
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN 3}{ENTER}")
         Start-Sleep -Milliseconds 500
-        $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-renderer-authoring.png")
+        $records.renderer_authoring = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-renderer-authoring.png")
     }
     if ($CaptureMaterialFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
@@ -390,23 +544,38 @@ try {
         # point well inside the receiver's native bounds rather than a point
         # inferred from the resized preview; this keeps the test deterministic
         # and proves the real user click reaches the graphics item.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1250, 700)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1760, 860)
         Start-Sleep -Milliseconds 700
         $records.material_selection = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-material-selection.png")
-        for ($scrollStep = 0; $scrollStep -lt 100; $scrollStep++) {
-            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.992, 0.60, -120)
-            Start-Sleep -Milliseconds 100
-        }
+        # Material is an explicit inspector category. Select it after the
+        # canvas selection so the capture proves the user-visible context.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3440, 257)
         Start-Sleep -Milliseconds 700
         $records.material_authoring_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-material-authoring-selected.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3450, 322)
+        [System.Windows.Forms.SendKeys]::SendWait("^a")
+        [System.Windows.Forms.SendKeys]::SendWait("#ff0000")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 875)
+        Start-Sleep -Milliseconds 700
+        $records.material_applied = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-material-applied.png")
     }
     if ($CaptureParallaxFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
-        # The professional inspector is intentionally scrollable because it
-        # hosts E03-E07 panels before the camera/parallax group.  Use the
-        # native keyboard scroll path a user would use, then capture the
-        # resulting shipped surface instead of relying on Qt internals.
-        [NeoEngE03Capture]::ClickWindowFraction($editor.Handle, 0.88, 0.72)
+        # Select the layer in the real composition stack, then open the
+        # explicit Camada category. This avoids treating an unselected,
+        # scrolled inspector as parallax evidence.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 260, 390)
+        Start-Sleep -Milliseconds 500
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3280, 257)
+        Start-Sleep -Milliseconds 700
+        $records.parallax_panel_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-parallax-panel-entry.png")
+        # Use the visible spin arrows to avoid any keyboard-locale ambiguity
+        # in the native QDoubleSpinBox controls.
+        1..2 | ForEach-Object { [NeoEngE03Capture]::ClickWindow($editor.Handle, 3750, 378); Start-Sleep -Milliseconds 100 }
+        1..5 | ForEach-Object { [NeoEngE03Capture]::ClickWindow($editor.Handle, 3750, 430); Start-Sleep -Milliseconds 100 }
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1065)
+        Start-Sleep -Milliseconds 700
+        $records.parallax_applied = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-parallax-applied.png")
         # Ctrl+End is consumed by the focused child list on some Qt builds.
         # Clicking the visible scrollbar track is deterministic at the native
         # DPI-aware surface and follows the same interaction a user performs.
