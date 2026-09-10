@@ -307,6 +307,37 @@ def test_asset_library_drag_drop_places_existing_asset_without_duplicate_record(
         qt_app.processEvents()
 
 
+def test_asset_library_native_drop_surface_routes_to_viewport_contract(
+    qt_app, tmp_path: Path
+) -> None:
+    root = tmp_path / "project"
+    raster_path = root / "assets" / "scene" / "hero.png"
+    _write_image(raster_path, 18, 12, "#32a8ff")
+    hero = _record("hero", raster_path)
+    session = SceneAuthoringSession(SceneAuthoringModel(_document([hero])))
+    viewport = SceneAuthoringViewport(session, project_root=root)
+    viewport.resize(640, 480)
+    viewport.show()
+    qt_app.processEvents()
+    try:
+        mime = _AssetListWidget.mime_for_asset("hero")
+        event = QDropEvent(
+            QPointF(160, 140),
+            Qt.DropAction.CopyAction,
+            mime,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        assert viewport.eventFilter(viewport.viewport(), event)
+        assert event.isAccepted()
+        assert len(session.document.assets) == 1
+        assert len(session.document.objects) == 3
+        assert session.document.objects[-1].asset_id == "hero"
+    finally:
+        viewport.close()
+        qt_app.processEvents()
+
+
 def test_professional_window_opens_missing_sidecar_for_diagnostics(
     qt_app, tmp_path: Path
 ) -> None:

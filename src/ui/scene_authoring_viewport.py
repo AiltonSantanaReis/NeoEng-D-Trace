@@ -8,6 +8,7 @@ from typing import Iterable
 
 import numpy as np
 from PySide6.QtCore import (
+    QEvent,
     QFileSystemWatcher,
     QMimeData,
     QPointF,
@@ -529,6 +530,7 @@ class SceneAuthoringViewport(QGraphicsView):
         # Keep both surfaces enabled so a real OS drag from the asset list reaches
         # the same drop contract exercised by the direct event tests.
         self.viewport().setAcceptDrops(True)
+        self.viewport().installEventFilter(self)
         self.setDragMode(QGraphicsView.DragMode.NoDrag)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
@@ -1968,6 +1970,31 @@ class SceneAuthoringViewport(QGraphicsView):
         if layer_id not in {item.id for item in self.session.document.layers}:
             raise ValueError("unknown destination layer")
         self._active_layer_id = layer_id
+
+    def eventFilter(self, watched, event) -> bool:  # noqa: N802
+        """Route native drag events from QAbstractScrollArea's viewport child.
+
+        The visible canvas is a ``QGraphicsView`` backed by an internal viewport
+        widget.  Native OS drags can target that child directly, so keep the
+        mutation contract in this class instead of maintaining a second drop
+        implementation on the child.
+        """
+
+        if watched is self.viewport():
+            event_type = event.type()
+            if event_type == QEvent.Type.DragEnter:
+                self.dragEnterEvent(event)
+                return True
+            if event_type == QEvent.Type.DragMove:
+                self.dragMoveEvent(event)
+                return True
+            if event_type == QEvent.Type.DragLeave:
+                self.dragLeaveEvent(event)
+                return True
+            if event_type == QEvent.Type.Drop:
+                self.dropEvent(event)
+                return True
+        return super().eventFilter(watched, event)
 
     def _destination_layer(self) -> str:
         layers = self.session.document.layers
