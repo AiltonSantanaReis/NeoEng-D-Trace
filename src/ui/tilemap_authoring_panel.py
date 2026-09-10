@@ -188,6 +188,9 @@ class TileMapAuthoringPanel(QWidget):
         self._build_layout()
         self.update_language("pt")
 
+    def _status(self, pt: str, en: str) -> str:
+        return pt if self.current_lang == "pt" else en
+
     def _build_layout(self) -> None:
         layout = QVBoxLayout(self)
         header = QHBoxLayout()
@@ -265,7 +268,9 @@ class TileMapAuthoringPanel(QWidget):
             self._redo.clear()
             self._refresh_summary()
             self.canvas.update()
-            self.status_message.emit("Tilemap edit applied")
+            self.status_message.emit(
+                self._status("Edição do tilemap aplicada", "Tilemap edit applied")
+            )
 
     def new_map(self) -> None:
         self.document = _default_document()
@@ -274,13 +279,20 @@ class TileMapAuthoringPanel(QWidget):
         self.canvas.set_document(self.document)
         self._refresh_palette()
         self._refresh_summary()
-        self.status_message.emit("Novo tilemap criado")
+        self.status_message.emit(
+            self._status("Novo tilemap criado", "New tilemap created")
+        )
 
     def open_map(self) -> None:
         try:
             self.document = load_tilemap(self.map_path)
         except Exception as exc:
-            self.status_message.emit(f"Tilemap open failed: {exc}")
+            self.status_message.emit(
+                self._status(
+                    f"Falha ao abrir o tilemap: {exc}",
+                    f"Tilemap open failed: {exc}",
+                )
+            )
             return
         self._undo.clear()
         self._redo.clear()
@@ -289,18 +301,33 @@ class TileMapAuthoringPanel(QWidget):
         self.canvas.set_document(self.document)
         self._refresh_palette()
         self._refresh_summary()
-        self.status_message.emit("Tilemap reaberto")
+        self.status_message.emit(self._status("Tilemap reaberto", "Tilemap reopened"))
 
     def save_map(self) -> None:
         if self.document is None:
-            self.status_message.emit("Crie um tilemap antes de salvar")
+            self.status_message.emit(
+                self._status(
+                    "Crie um tilemap antes de salvar",
+                    "Create a tilemap before saving",
+                )
+            )
             return
         try:
             save_tilemap(self.document, self.map_path)
         except Exception as exc:
-            self.status_message.emit(f"Tilemap save failed: {exc}")
+            self.status_message.emit(
+                self._status(
+                    f"Falha ao salvar o tilemap: {exc}",
+                    f"Tilemap save failed: {exc}",
+                )
+            )
             return
-        self.status_message.emit(f"Tilemap salvo: {self.map_path.name}")
+        self.status_message.emit(
+            self._status(
+                f"Tilemap salvo: {self.map_path.name}",
+                f"Tilemap saved: {self.map_path.name}",
+            )
+        )
 
     def undo(self) -> None:
         if self._undo:

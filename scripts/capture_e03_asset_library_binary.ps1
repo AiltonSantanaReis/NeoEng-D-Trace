@@ -395,7 +395,10 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 420, 198)
         Start-Sleep -Milliseconds 700
         $records.vector_library_open = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-vector-library-open.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 170, 435)
+        # The native capture is 3866x2090; the visible raster row is centered
+        # at client y~505 after the library is open. Keep the click on the
+        # actual asset row so contour authoring starts from a selected asset.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 170, 505)
         Start-Sleep -Milliseconds 700
         $records.vector_library_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-vector-library-selected.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 230)

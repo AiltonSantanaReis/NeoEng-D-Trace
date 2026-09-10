@@ -45,3 +45,35 @@ def test_tilemap_panel_undo_redo_and_grid_switch_are_observable(
     assert panel.document.populated_cell_count == 1
     panel.grid_combo.setCurrentIndex(1)
     assert panel.document.grid == "isometric"
+
+
+def test_tilemap_panel_localizes_status_messages(
+    qt_app: QApplication, tmp_path: Path
+) -> None:
+    panel = TileMapAuthoringPanel(tmp_path)
+    messages: list[str] = []
+    panel.status_message.connect(messages.append)
+
+    panel.new_map()
+    panel._paint_cells((0, 0), (0, 0))
+    panel.save_map()
+    panel.document = None
+    panel.open_map()
+
+    assert messages == [
+        "Novo tilemap criado",
+        "Edição do tilemap aplicada",
+        "Tilemap salvo: scenario.tilemap.json",
+        "Tilemap reaberto",
+    ]
+
+    panel.update_language("en")
+    panel.new_map()
+    panel._paint_cells((0, 0), (0, 0))
+    panel.save_map()
+
+    assert messages[-3:] == [
+        "New tilemap created",
+        "Tilemap edit applied",
+        "Tilemap saved: scenario.tilemap.json",
+    ]

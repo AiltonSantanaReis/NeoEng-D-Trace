@@ -63,6 +63,7 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md` | ATIVO / DECISÃO APROVADA | continuidade pós-E13, lote ativo, escopo autorizado e decisões reservadas | governança, plano mestre e base pós-E13 |
 | `evidence/CHG_POS_E13_MATERIAL_DEFAULT_EDIT_20260910.md` | ATIVO / REGISTRO DE MUDANÇA EM IMPLEMENTAÇÃO | correção controlada dos defaults editáveis do Material V2 | decisão de continuidade pós-E13, governança e E08-C.4 |
 | `evidence/CHG_POS_E13_PTBR_STATUS_20260910.md` | ATIVO / REGISTRO DE MUDANÇA EM IMPLEMENTAÇÃO | estados PT-BR do recarregamento e do Inspector | decisão de continuidade pós-E13, governança e P13-B |
+| `evidence/CHG_POS_E13_TILEMAP_VECTOR_FLOW_20260910.md` | ATIVO / REGISTRO DE MUDANÇA EM IMPLEMENTAÇÃO | localização do Tilemap e seleção vetorial no fluxo nativo | decisão de continuidade pós-E13, governança, REQ-F03, REQ-F04, REQ-F10 e REQ-F02 |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | prova da Etapa 5 | governança e etapa |
 | `evidence/PROPOSTA_PACOTES_ASSETS_PROPRIOS_20260910.md` | ATIVO / ESPECIFICAÇÃO EM IMPLEMENTAÇÃO | direção, limites e sequência dos pacotes de assets pós-E13 | governança, base pós-E13 e decisão P2D-01 |
 | `evidence/PACK_01_03_PILOTO_FLORESTA_20260910.md` | ATIVO / EVIDÊNCIA PENDENTE | rastreabilidade do primeiro incremento do piloto Floresta e catálogo | proposta de pacotes e decisão P2D-01 |
