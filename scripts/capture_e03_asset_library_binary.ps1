@@ -648,6 +648,14 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 875)
         Start-Sleep -Milliseconds 700
         $records.material_applied = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-material-applied.png")
+        # Persist the material through the real project controls, then reload
+        # it so the final capture proves the user-visible round-trip.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 370, 90)
+        Start-Sleep -Milliseconds 800
+        $records.material_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-material-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 708, 90)
+        Start-Sleep -Milliseconds 1000
+        $records.material_reloaded = Save-Capture $editor.Handle (Join-Path $OutputDirectory "14-material-reloaded.png")
     }
     if ($CaptureParallaxFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)

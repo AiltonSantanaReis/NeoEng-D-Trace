@@ -123,3 +123,38 @@ def test_material_inspector_can_initialize_material_for_new_v2_object() -> None:
         assert session.can_undo is True
     finally:
         inspector.close()
+
+
+def test_material_inspector_initialized_material_survives_save_reopen(
+    tmp_path: Path,
+) -> None:
+    app = QApplication.instance() or QApplication([])
+    del app
+    document = _document()
+    document = document.model_copy(
+        update={
+            "objects": [
+                (
+                    item.model_copy(update={"material": None})
+                    if item.id == "lighting-receiver"
+                    else item
+                )
+                for item in document.objects
+            ]
+        }
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    session.set_selection(["lighting-receiver"])
+    inspector = SceneAuthoringInspector(session)
+    try:
+        inspector.material_albedo.setText("#ff0000")
+        inspector.material_apply_button.click()
+        destination = tmp_path / "initialized-material.ndtscene.json"
+        save_scene_authoring(session.document, destination)
+    finally:
+        inspector.close()
+
+    reopened = load_scene_authoring_v2(destination, verify_assets=False)
+    receiver = next(item for item in reopened.objects if item.id == "lighting-receiver")
+    assert receiver.material is not None
+    assert receiver.material.albedo == "#ff0000"
