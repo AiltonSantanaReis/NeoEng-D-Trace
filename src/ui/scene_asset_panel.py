@@ -132,6 +132,10 @@ class SceneAssetLibrary(QWidget):
         self.replace_button.setObjectName("scene_asset_replace_button")
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.setObjectName("scene_asset_refresh_button")
+        self.packs_button = QPushButton("NeoEng Packs")
+        self.packs_button.setObjectName("scene_asset_packs_button")
+        self.packs_button.setAutoDefault(False)
+        self.packs_button.clicked.connect(self._open_packs)
         for button, minimum_width in (
             (self.import_button, 98),
             (self.relink_button, 98),
@@ -149,6 +153,7 @@ class SceneAssetLibrary(QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(self.title)
         layout.addWidget(self.summary_label)
+        layout.addWidget(self.packs_button)
         filters = QHBoxLayout()
         filters.addWidget(self.search_edit, 1)
         filters.addWidget(self.category_combo)
@@ -175,6 +180,13 @@ class SceneAssetLibrary(QWidget):
             return None
         value = item.data(Qt.ItemDataRole.UserRole)
         return str(value) if value else None
+
+    def _open_packs(self) -> None:
+        from src.ui.asset_pack_dialog import AssetPackDialog
+
+        dialog = AssetPackDialog(self)
+        dialog.exec()
+        dialog.deleteLater()
 
     @property
     def selected_asset(self) -> AssetReferenceRecord | None:
@@ -497,6 +509,8 @@ class SceneAssetLibrary(QWidget):
         self.current_lang = language if language in {"en", "pt"} else "en"
         if self.current_lang == "pt":
             self.title.setText("Assets da Cena")
+            self.packs_button.setText("Pacotes NeoEng")
+            self.packs_button.setToolTip("Explorar pacotes e adicionar assets ao projeto")
             self.import_button.setText("Importar")
             self.relink_button.setText("Vincular novamente")
             self.replace_button.setText("Substituir")
@@ -511,6 +525,8 @@ class SceneAssetLibrary(QWidget):
             self.refresh_button.setToolTip("Atualizar a biblioteca e os diagnósticos")
         else:
             self.title.setText("Scene Assets")
+            self.packs_button.setText("NeoEng Packs")
+            self.packs_button.setToolTip("Browse packs and add assets to the project")
             self.import_button.setText("Import")
             self.relink_button.setText("Relink")
             self.replace_button.setText("Replace")

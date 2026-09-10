@@ -61,6 +61,8 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | requisitos visuais e UX | plano normativo |
 | `EVIDENCIA_AUDITORIA_PUBLICACAO_PRIVACIDADE_2026-08-30.md` | ATIVO / EVIDÊNCIA DE PUBLICAÇÃO | auditoria repository-wide, revisão dos commits locais e saneamento da linha publicada | governança e requisitos de escopo final |
 | `evidence/STAGE5_SCOPE_AND_RECONCILIATION.md` | ATIVO / EVIDÊNCIA | prova da Etapa 5 | governança e etapa |
+| `evidence/PROPOSTA_PACOTES_ASSETS_PROPRIOS_20260910.md` | ATIVO / ESPECIFICAÇÃO EM IMPLEMENTAÇÃO | direção, limites e sequência dos pacotes de assets pós-E13 | governança, base pós-E13 e decisão P2D-01 |
+| `evidence/PACK_01_03_PILOTO_FLORESTA_20260910.md` | ATIVO / EVIDÊNCIA PENDENTE | rastreabilidade do primeiro incremento do piloto Floresta e catálogo | proposta de pacotes e decisão P2D-01 |
 
 ## 3. Documentos superseded
 

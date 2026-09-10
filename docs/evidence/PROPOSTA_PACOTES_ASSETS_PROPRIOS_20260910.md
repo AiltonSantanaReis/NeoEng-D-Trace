@@ -1,8 +1,8 @@
 # Pacotes próprios de assets — proposta pós-E13
 
-Estado: PLANNED. Data: 2026-09-10.
+Estado: IN_PROGRESS. Data: 2026-09-10.
 Base inspecionada: be0b672206c34c4ea5f8fda7bb80bce882eb611a.
-Escopo deste documento: análise e especificação; assets e catálogo ainda não implementados.
+Escopo deste documento: análise, especificação e acompanhamento do lote adicional pós-E13.
 Autoridade: solicitação do usuário para analisar produção e disponibilização de pacotes próprios com miniaturas.
 
 Dependências: [governança](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md),
@@ -87,4 +87,18 @@ Capturar cliques reais no binário novo: descobrir coleção, pesquisar, pré-vi
 
 Inspecionar miniaturas e transparência em 100%, 150% e 200% de DPI. Medir tempo de abertura/busca e memória num catálogo representativo de 1.000 entradas antes de fixar orçamento de desempenho. A aprovação exige resultado observado, artefatos, hashes, commit e limitações; a existência de imagens ou cartões não basta.
 
-Nenhum código, asset existente, build ou configuração foi modificado para produzir esta proposta. A implementação e a produção artística permanecem PLANNED.
+## Estado do lote iniciado em 2026-09-10
+
+O primeiro incremento foi implementado de forma aditiva: leitor somente leitura do
+manifesto, catálogo Qt integrado à Biblioteca, busca tolerante a acentos, prévia,
+importação pelo fluxo existente e cópia de seis objetos do piloto Floresta. Os
+arquivos estão em `assets/scene/packs/floresta/`, com hashes no manifesto e
+proveniência em `PROVENIENCIA.md`. O catálogo não altera o registro de assets da
+cena até o usuário acionar `Adicionar ao projeto`.
+
+Estado de aceite deste incremento: `PENDING_EVIDENCE` para a execução no binário.
+Os testes Qt e a suíte oficial passaram, mas ainda faltam captura nativa por
+cliques reais, build limpa auditada e revisão visual dos assets. O piloto completo
+(3 planos, 6 objetos, 9 peças de terreno e composição real) ainda não foi entregue;
+os seis objetos são somente a primeira parte dessa meta. Ruínas e Cidade futurista
+continuam `PLANNED`.
