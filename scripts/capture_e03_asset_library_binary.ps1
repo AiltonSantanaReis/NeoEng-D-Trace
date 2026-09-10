@@ -75,6 +75,8 @@ public static class NeoEngE03Capture
 
     [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
     public static void Focus(IntPtr hWnd) { ShowWindow(hWnd, 3); BringWindowToTop(hWnd); SetForegroundWindow(hWnd); SetFocus(hWnd); }
+    public static void Hide(IntPtr hWnd) { ShowWindow(hWnd, 0); }
+    public static void Restore(IntPtr hWnd) { ShowWindow(hWnd, 9); BringWindowToTop(hWnd); SetForegroundWindow(hWnd); }
     public static void ClickWindow(IntPtr hWnd, int offsetX, int offsetY)
     {
         RECT rect; if (!GetWindowRect(hWnd, out rect)) throw new InvalidOperationException("GetWindowRect failed");
@@ -139,6 +141,30 @@ function Save-Capture {
     param([IntPtr]$Handle, [string]$Path)
     [NeoEngE03Capture]::Capture($Handle, $Path) | Out-Null
     return [ordered]@{ path = $Path; sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash }
+}
+
+function Save-ScreenCapture {
+    param([string]$Path)
+    $bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+    $bitmap = New-Object System.Drawing.Bitmap($bounds.Width, $bounds.Height)
+    $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+    try {
+        $graphics.CopyFromScreen(
+            $bounds.Location,
+            [System.Drawing.Point]::Empty,
+            $bounds.Size
+        )
+        $bitmap.Save($Path, [System.Drawing.Imaging.ImageFormat]::Png)
+    } finally {
+        $graphics.Dispose()
+        $bitmap.Dispose()
+    }
+    return [ordered]@{
+        path = $Path
+        sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
+        capture = "primary screen CopyFromScreen"
+        bounds = "$($bounds.Left),$($bounds.Top),$($bounds.Right),$($bounds.Bottom)"
+    }
 }
 
 function Enter-AdvancedTool {
@@ -273,21 +299,28 @@ try {
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
     if ($CaptureContextMenuFlow) {
-        [NeoEngE03Capture]::Focus($editor.Handle)
-        # Open the layer-stack context menu with a native right click. The
-        # menu is part of the user's Portuguese localization surface.
-        [NeoEngE03Capture]::RightClickWindow($editor.Handle, 1450, 830)
+        # The main editor and professional editor are separate top-level
+        # windows. Hide the latter for this main-editor interaction so the
+        # native list and its popup are actually foreground surfaces.
+        [NeoEngE03Capture]::Hide($editor.Handle)
+        [NeoEngE03Capture]::Focus($mainHandle)
+        Start-Sleep -Milliseconds 500
+        $records.main_before_context = Save-Capture $mainHandle (Join-Path $OutputDirectory "05-main-before-context.png")
+        # The context menu belongs to the main editor's scene-object list, not
+        # to the separate professional scenario window.  Select the first
+        # fixture object through the visible list and open its menu with a
+        # native right click at the DPI-aware coordinates of that list.
+        [NeoEngE03Capture]::RightClickWindow($mainHandle, 3120, 460)
         Start-Sleep -Milliseconds 600
         $foregroundHandle = [NeoEngE03Capture]::Foreground()
         $menuWindow = [NeoEngE03Capture]::GetWindows($process.Id) |
             Where-Object { $_.Handle -ne $mainHandle -and $_.Handle -ne $editor.Handle } |
             Select-Object -First 1
         if ($foregroundHandle -eq $mainHandle -or $foregroundHandle -eq $editor.Handle) {
-            # Native Qt also exposes the same menu through the standard
-            # keyboard context-menu gesture. Use it only as a diagnostic
-            # fallback when the mouse popup is not exposed by PrintWindow.
-            [NeoEngE03Capture]::Focus($editor.Handle)
-            [NeoEngE03Capture]::ClickWindow($editor.Handle, 260, 390)
+            # Use the standard keyboard context-menu gesture only as a
+            # diagnostic fallback after the real mouse attempt.
+            [NeoEngE03Capture]::Focus($mainHandle)
+            [NeoEngE03Capture]::ClickWindow($mainHandle, 3120, 460)
             [System.Windows.Forms.SendKeys]::SendWait("+{F10}")
             Start-Sleep -Milliseconds 400
             $foregroundHandle = [NeoEngE03Capture]::Foreground()
@@ -302,10 +335,14 @@ try {
             $records.context_menu_layer = Save-Capture $menuWindow.Handle (Join-Path $OutputDirectory "06-context-menu-layer.png")
             $records.context_menu_window_title = $menuWindow.Title
         } else {
-            $records.context_menu_layer = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-context-menu-layer.png")
-            $records.context_menu_window_title = "not exposed as a top-level window"
+            # QMenu can remain an unenumerated popup on this Qt/Windows host.
+            # A full primary-screen capture still records the real popup if it
+            # was painted, and is stronger evidence than recapturing the editor.
+            $records.context_menu_layer = Save-ScreenCapture (Join-Path $OutputDirectory "06-context-menu-layer.png")
+            $records.context_menu_window_title = "screen capture; popup not exposed as a top-level window"
         }
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 600, 600)
+        [NeoEngE03Capture]::ClickWindow($mainHandle, 600, 600)
+        [NeoEngE03Capture]::Restore($editor.Handle)
     }
     if ($CaptureSequenceStudioFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
@@ -569,10 +606,19 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3280, 257)
         Start-Sleep -Milliseconds 700
         $records.parallax_panel_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-parallax-panel-entry.png")
-        # Use the visible spin arrows to avoid any keyboard-locale ambiguity
-        # in the native QDoubleSpinBox controls.
-        1..2 | ForEach-Object { [NeoEngE03Capture]::ClickWindow($editor.Handle, 3750, 378); Start-Sleep -Milliseconds 100 }
-        1..5 | ForEach-Object { [NeoEngE03Capture]::ClickWindow($editor.Handle, 3750, 430); Start-Sleep -Milliseconds 100 }
+        # Edit the visible native fields. Pasting the localized decimal keeps
+        # the interaction equivalent to a normal user edit while avoiding
+        # guesses about which half of a spin-arrow was hit on a DPI host.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3450, 394)
+        [System.Windows.Forms.SendKeys]::SendWait("^a")
+        [System.Windows.Forms.Clipboard]::SetText("0,75")
+        [System.Windows.Forms.SendKeys]::SendWait("^v")
+        [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3450, 455)
+        [System.Windows.Forms.SendKeys]::SendWait("^a")
+        [System.Windows.Forms.Clipboard]::SetText("0,75")
+        [System.Windows.Forms.SendKeys]::SendWait("^v")
+        [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1065)
         Start-Sleep -Milliseconds 700
         $records.parallax_applied = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-parallax-applied.png")

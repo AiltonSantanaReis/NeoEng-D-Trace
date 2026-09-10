@@ -246,3 +246,17 @@ def test_all_stage7_panels_are_reachable_at_compact_resolution(qt_app):
         window._mark_document_clean()
         window.close()
         qt_app.processEvents()
+
+
+def test_side_panel_context_menu_uses_portuguese_section_labels(qt_app):
+    scene = _scene()
+    window = _show_window(qt_app, scene)
+    try:
+        panel = window.side_panel
+        panel.update_language("pt")
+        labels = [action.text() for action in panel._build_context_menu().actions()]
+        assert labels == ["Propriedades", "Modificar Forma", "Exportar"]
+    finally:
+        window._mark_document_clean()
+        window.close()
+        qt_app.processEvents()

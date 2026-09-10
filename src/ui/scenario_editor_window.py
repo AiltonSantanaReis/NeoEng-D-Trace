@@ -80,6 +80,7 @@ from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
+from src.ui.tileset_authoring_panel import TilesetAuthoringPanel
 from src.ui.vector_contour_panel import VectorContourPanel
 from src.ui.scene_sequence_panel import SceneSequencePanel
 
@@ -121,6 +122,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.group_stack: SceneAuthoringGroupStack | None = None
         self.asset_library: SceneAssetLibrary | None = None
         self.tilemap_panel: TileMapAuthoringPanel | None = None
+        self.tileset_panel: TilesetAuthoringPanel | None = None
         self.collider_panel: ScenarioColliderPanel | None = None
         self.navmesh_panel: NavMeshPanel | None = None
         self.entity_prefab_panel: EntityPrefabPanel | None = None
@@ -465,6 +467,10 @@ class ScenarioEditorWindow(QMainWindow):
             project_path.parent, parent=inspector
         )
         self.tilemap_panel.update_language(self.current_lang)
+        self.tileset_panel = TilesetAuthoringPanel(
+            project_path.parent, parent=inspector
+        )
+        self.tileset_panel.update_language(self.current_lang)
         self.collider_panel = ScenarioColliderPanel(
             project_path.parent, parent=inspector
         )
@@ -495,6 +501,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.group_stack.status_message.connect(self._show_professional_status)
         self.asset_library.status_message.connect(self._show_professional_status)
         self.tilemap_panel.status_message.connect(self._show_professional_status)
+        self.tileset_panel.status_message.connect(self._show_professional_status)
         self.collider_panel.status_message.connect(self._show_professional_status)
         self.navmesh_panel.status_message.connect(self._show_professional_status)
         self.entity_prefab_panel.status_message.connect(self._show_professional_status)
@@ -571,7 +578,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.studio_inspector_tabs.addTab(self.sequence_panel.editor, "Clipe" if pt else "Clip")
         advanced = QTabWidget()
         advanced.setTabPosition(QTabWidget.TabPosition.West)
-        for panel, title in ((self.vector_contour_panel, "Formas" if pt else "Shapes"), (self.tilemap_panel, "Tiles"), (self.collider_panel, "Colisão" if pt else "Collision"), (self.navmesh_panel, "Navegação" if pt else "Navigation"), (self.entity_prefab_panel, "Entidades" if pt else "Entities")):
+        for panel, title in ((self.vector_contour_panel, "Formas" if pt else "Shapes"), (self.tileset_panel, "Tileset"), (self.tilemap_panel, "Tilemap"), (self.collider_panel, "Colisão" if pt else "Collision"), (self.navmesh_panel, "Navegação" if pt else "Navigation"), (self.entity_prefab_panel, "Entidades" if pt else "Entities")):
             advanced.addTab(scroll_for(panel), title)
         self.studio_inspector_tabs.addTab(advanced, "Ferramentas" if pt else "Tools")
         inspector_bridge = QWidget()
@@ -1082,6 +1089,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.professional_inspector.setEnabled(not preview)
         if self.tilemap_panel is not None:
             self.tilemap_panel.setEnabled(not preview)
+        if self.tileset_panel is not None:
+            self.tileset_panel.setEnabled(not preview)
         if self.collider_panel is not None:
             self.collider_panel.setEnabled(not preview)
         if self.entity_prefab_panel is not None:
@@ -1124,6 +1133,10 @@ class ScenarioEditorWindow(QMainWindow):
             )
         if self.tilemap_panel is not None:
             self.tilemap_panel.setEnabled(
+                available and not self.preview_action.isChecked()
+            )
+        if self.tileset_panel is not None:
+            self.tileset_panel.setEnabled(
                 available and not self.preview_action.isChecked()
             )
         if self.collider_panel is not None:
@@ -1378,6 +1391,8 @@ class ScenarioEditorWindow(QMainWindow):
             self.asset_library.update_language(self.current_lang)
         if self.tilemap_panel is not None:
             self.tilemap_panel.update_language(self.current_lang)
+        if self.tileset_panel is not None:
+            self.tileset_panel.update_language(self.current_lang)
         if self.collider_panel is not None:
             self.collider_panel.update_language(self.current_lang)
         if self.entity_prefab_panel is not None:

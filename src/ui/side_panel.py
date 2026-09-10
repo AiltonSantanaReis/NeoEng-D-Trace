@@ -651,10 +651,11 @@ class SidePanel(QWidget):
 
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self.list)
+        labels = self.translations[self.current_lang]
         sections = (
-            ("Properties", self.properties_action_toolbar),
-            ("Modify Shape", self.modify_action_toolbar),
-            ("Export", self.export_action_toolbar),
+            (labels["properties"], self.properties_action_toolbar),
+            (labels["modify_shape"], self.modify_action_toolbar),
+            (labels["export"], self.export_action_toolbar),
         )
         for title, toolbar in sections:
             submenu = menu.addMenu(title)
