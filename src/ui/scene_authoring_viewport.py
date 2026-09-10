@@ -528,9 +528,11 @@ class SceneAuthoringViewport(QGraphicsView):
         self.setAcceptDrops(True)
         # QAbstractScrollArea routes native drag/drop through its viewport child.
         # Keep both surfaces enabled so a real OS drag from the asset list reaches
-        # the same drop contract exercised by the direct event tests.
+        # the same drop contract exercised by the direct event tests.  The
+        # QGraphicsView viewportEvent hook below is the canonical Qt delivery
+        # path for the native Drop event; the filter remains as a compatibility
+        # bridge for callers that already route viewport events explicitly.
         self.viewport().setAcceptDrops(True)
-        self.viewport().installEventFilter(self)
         self.setDragMode(QGraphicsView.DragMode.NoDrag)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
@@ -1995,6 +1997,30 @@ class SceneAuthoringViewport(QGraphicsView):
                 self.dropEvent(event)
                 return True
         return super().eventFilter(watched, event)
+
+    def viewportEvent(self, event) -> bool:  # noqa: N802
+        """Handle native drag/drop events delivered by ``QGraphicsView``.
+
+        ``QGraphicsView`` receives drag events on its internal viewport child.
+        Overriding ``viewportEvent`` keeps the real OS drop on the same
+        transactional path as the explicit placement command without relying
+        on a second widget event filter to intercept the final Drop event.
+        """
+
+        event_type = event.type()
+        if event_type == QEvent.Type.DragEnter:
+            self.dragEnterEvent(event)
+            return True
+        if event_type == QEvent.Type.DragMove:
+            self.dragMoveEvent(event)
+            return True
+        if event_type == QEvent.Type.DragLeave:
+            self.dragLeaveEvent(event)
+            return True
+        if event_type == QEvent.Type.Drop:
+            self.dropEvent(event)
+            return True
+        return super().viewportEvent(event)
 
     def _destination_layer(self) -> str:
         layers = self.session.document.layers

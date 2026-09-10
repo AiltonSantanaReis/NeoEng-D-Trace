@@ -328,7 +328,7 @@ def test_asset_library_native_drop_surface_routes_to_viewport_contract(
             Qt.MouseButton.LeftButton,
             Qt.KeyboardModifier.NoModifier,
         )
-        assert viewport.eventFilter(viewport.viewport(), event)
+        assert viewport.viewportEvent(event)
         assert event.isAccepted()
         assert len(session.document.assets) == 1
         assert len(session.document.objects) == 3
