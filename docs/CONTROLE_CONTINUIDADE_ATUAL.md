@@ -26,10 +26,11 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. O HEAD ativo pós-E13 é `978fa6a`; a build
-canônica histórica foi gerada somente deste commit. A existência de outras
-branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
-artefato externo pode ser promovido sem `source_commit` verificável.
+`Ailton/e08-renderer-20260908`. A fonte de produto da build final10 é o commit
+`cf829b7583c4a6a63fb86d8a0cafc5103808f498`; o harness complementar de menu
+contextual foi versionado em `072427e`. A existência de outras branches,
+worktrees, builds ou pastas de captura não muda a base ativa. Nenhum artefato
+externo pode ser promovido sem `source_commit` verificável.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
@@ -44,30 +45,30 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS_LOCAL` | 2170 aprovados, 2 skips, 1 warning no último gate executado |
-| Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
+| Suíte oficial | `ABORTED_FATAL_PRESERVED` | 2176 itens coletados; abort reproduzido no teste legado de timeout do magnetic lasso, sem filtro ou ocultação |
+| Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
-| Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
+| Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
+| Auditoria nativa/humana | `IN_PROGRESS / EVIDENCE_CAPTURED` | matriz nativa final10 passou; revisão/aceite humano formal continua pendente |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PENDENTE_REQUALIFICAÇÃO` | a build final do lote pós-E13 ainda será gerada após o commit das correções |
-| Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
+| Build oficial | `PASS_LOCAL / FINAL_AUDIT_PENDING` | build limpa final10, proveniência `PASS`, executável/ZIP hashados e smoke `SUCCESS` em 11 checks |
+| Runtime funcional | `PASS_LOCAL` | build final10 abriu/fechou e executou smoke; fluxos de autoria foram exercitados separadamente |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
-A execução direta da build r55 gerou capturas reais em
-`artifacts/e10-e-product-r55-20260909/`, incluindo
-detecção, edição e criação do objeto vetorial. A captura automatizada não
-substitui a revisão humana final.
+A execução direta da build final10 gerou capturas reais em
+`artifacts/post-e13-binary-final10-20260910/`, incluindo catálogo, vetor,
+tilemap, tileset, colisores, NavMesh, entidades/prefabs, renderer, material,
+parallax, timeline, menus e máscara. A captura automatizada não substitui a
+revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir o lote pós-E13 com testes focados, build canônica, fluxo nativo real,
-capturas e documentação. A revisão humana do proprietário permanece reservada
-para a auditoria final do plano.
-A revisão visual/humana e a
-requalificação final de symlink permanecem deferidas por autorização explícita
-para a auditoria final; continuam obrigatórias antes de concluir o plano.
+Registrar as decisões finais do proprietário e os gates formais da
+[auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md).
+O trabalho técnico do lote, a build final10 e as capturas nativas foram
+executados; revisão visual/humana, licença/proveniência de distribuição e o
+tratamento do abort legado continuam explicitamente separados.
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada

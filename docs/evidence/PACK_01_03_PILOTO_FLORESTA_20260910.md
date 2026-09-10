@@ -119,16 +119,27 @@ registrou `Hidden import "tzdata" not found!`. Ambos permanecem explícitos.
 
 ## Pendências observadas na execução nativa
 
-- O arraste direto da linha da biblioteca para o viewport foi tentado na execução anterior e permaneceu em `0 object(s)`. O resultado foi preservado como falha observada; o botão de inserção é um fallback híbrido funcional, não uma correção declarada do arraste.
-- O clique direito no viewport não abriu menu contextual e deixou a mensagem inglesa `Objects moved`. O sidecar permaneceu sem alteração (`x=-1`, `y=-1`, `z=0`). A localização e o contrato de menu contextual continuam pendentes.
+- O arraste direto está `PASS` no registro controlado
+  `CHG_POS_E13_DIRECT_ASSET_DRAG_20260910.md`, commit `0a2f18e`, e esse
+  commit é ancestral da build final10. A captura final10 não repetiu esse
+  gesto porque o harness dedicado não faz parte da bateria E03; a prova
+  anterior permanece válida e não é apresentada como captura final10.
+- O menu contextual do viewport profissional foi requalificado em PT-BR no
+  build final10: [popup do viewport](../../artifacts/post-e13-binary-final10-20260910/context-professional-object/07-professional-context-menu.png),
+  SHA-256 `C486E629B5DB30320B51D0E14D44ADDC2018B1FEEA8CDE079719D8EE978F35EDD`.
+  O fluxo mostra `Objeto`, `Mostrar propriedades`, `Enquadrar seleção` e
+  `Enquadrar tudo`, sem ação destrutiva.
 - A primeira execução oficial após a adição do botão foi preservada em `artifacts/pack-pilot-pytest-20260910-place-button.log`; ela falhou na higiene de referências porque os PNGs gerados carregavam metadados C2PA com o termo proibido. Os metadados foram removidos sem alterar pixels, dimensões, modo ou alpha; a execução histórica posterior registrou `2165 passed`, antes da correção de localização atual.
-- A execução oficial mais recente, após a correção de localização, está preservada em `artifacts/pack-pilot-pytest-20260910-localization.log` com `2166 passed, 2 skipped, 1 warning` e código de saída 0. O warning é a depreciação conhecida de `QMouseEvent` em `tests/test_merge_coverage_authoring_contracts.py:1341`.
+- A suíte oficial atual, sem filtros, foi reexecutada no checkout e abortou
+  no teste legado de timeout do magnetic lasso; o fato é preservado no
+  relatório final e não é atribuído ao catálogo.
 
 ## Limitações preservadas
 
 Os seis objetos são um piloto visual assistido por IA para avaliação interna. O
-acabamento de bordas/halos ainda precisa de revisão humana, especialmente no
-tronco. A árvore gerada com fundo quadriculado foi rejeitada e não entrou no
+acabamento de bordas/halos ainda precisa de revisão humana, especialmente em
+`Arbusto com flores`, `Samambaia` e `Pinheiro`. A árvore gerada com fundo
+quadriculado foi rejeitada e não entrou no
 catálogo. Ainda não foram incluídos os planos de parallax, terreno/tileset, cena
 exemplo, instalador de pacotes ou as coleções Ruínas e Cidade futurista.
 
@@ -143,9 +154,39 @@ preservar estes originais e preparar uma revisão visual separada, com recorte
 alpha e iluminação aprovados por revisão humana; não aplicar limpeza automática
 destrutiva no catálogo atual.
 
-## Próxima prova obrigatória
+## Evidência nativa do build final10
 
-Corrigir e comprovar o arraste direto com uma captura nativa, definir o contrato do
-menu contextual do editor de cenário e repetir a suíte completa. Depois disso ainda
-serão necessárias a revisão humana dos seis PNGs, a medição de catálogo grande e os
-pacotes Ruínas/Cidade futurista. O estado do piloto permanece `PENDING_EVIDENCE`.
+Build limpa executada a partir do commit
+`cf829b7583c4a6a63fb86d8a0cafc5103808f498`:
+
+- Diretório: `build/_clean-post-e13-final10-20260910/`.
+- Executável: `portable/NeoEng-D-Trace/NeoEng-D-Trace.exe`;
+  SHA-256 `754B6EAD8E56FB87CEC09E4AFFFF7ABB5EC3E309C45933042C5B461B94E9F856`.
+- Pacote portátil: `NeoEng-D-Trace-0.3.0-win64-portable.zip`;
+  SHA-256 `C4831D3493671D512EDA2CA168A345F26A7430B159E08B04667E4B5E14D64F03`.
+- Proveniência: `continuity-provenance.json`, `PASS`, SHA-256
+  `41DF28C1F46B244284FBEA05313EBC31DE4FB0C12D45D0F6541C8DFDE0052DC3`.
+- Smoke: `smoke/portable-smoke-report.json`, `SUCCESS` com 11 checks.
+
+Captura nativa real do catálogo: [Pacotes NeoEng — Floresta](../../artifacts/post-e13-binary-final10-20260910/asset-pack/06-asset-pack-dialog.png),
+SHA-256 `4C6AF75116A4E4478C90BB2C882C6BD10F19A69A7918DC4D385ACBA0E9E9B0FA`.
+Ela mostra seis miniaturas com nomes comuns: `Pedra com musgo`, `Arbusto com
+flores`, `Tronco caído`, `Samambaia`, `Cogumelos` e `Pinheiro`, além da
+descrição do piloto e do aviso explícito de licença de distribuição pendente.
+Não houve erro de carregamento; o botão de adição permanece corretamente
+desabilitado enquanto nenhum asset é selecionado.
+
+A mesma build foi exercitada nos fluxos nativos de vetor, tilemap, tileset,
+colisão, navegação, entidades/prefabs, renderer, material, parallax, timeline
+e menus. Os manifests individuais em
+`artifacts/post-e13-binary-final10-20260910/` preservam os hashes de cada
+captura; o relatório consolidado é
+`docs/evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md`.
+
+## Decisões finais e próximos gates
+
+Ainda são necessárias a revisão humana dos seis PNGs, a medição de DPI e
+desempenho para catálogo grande, a definição de licenças/proveniência de
+distribuição e a decisão sobre os pacotes Ruínas/Cidade futurista. O estado do
+piloto permanece `PENDING_EVIDENCE`; a aprovação funcional do catálogo não é
+tratada como aprovação artística ou de publicação.

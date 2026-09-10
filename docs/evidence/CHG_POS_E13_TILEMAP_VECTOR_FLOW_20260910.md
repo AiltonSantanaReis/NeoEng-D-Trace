@@ -8,7 +8,7 @@
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
-**Base de execução:** `a299e653dbaba2d60a7c551eaa1012d8132775d0`
+**Base de execução requalificada:** `cf829b7583c4a6a63fb86d8a0cafc5103808f498`
 
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
@@ -57,18 +57,32 @@ diagnóstico e não é promovida a `PASS`.
   `27 passed`.
 - Matriz focada pós-E13: `231 passed`.
 - Black, isort, Flake8 e compileall nos arquivos alterados: `PASS`.
-- Commit de implementação e build final: serão anexados após a reexecução
-  nativa controlada; este registro permanece `IN_PROGRESS` até essa
-  reconciliação.
+- Commit de implementação e build final: `cf829b7`, build limpa final10,
+  smoke `SUCCESS` em 11 checks.
+- A reexecução específica atual registrou `152 passed em 8,74s`; a matriz
+  focada mais ampla pós-E13 anterior registrou `231 passed`.
+
+## Requalificação nativa final10
+
+- Tilemap: `artifacts/post-e13-binary-final10-20260910/tilemap/11-tilemap-reopened.png`;
+  SHA-256 `8CCFB88526042B14E29F29715BAB78B3BE6272E6EE16BBCE34909D70662AB68E`.
+  O painel mostrou `2 células · 1 chunks` depois de novo, pintura, salvar e
+  reabrir, com `Edição do tilemap aplicada` em PT-BR.
+- Vetor: `artifacts/post-e13-binary-final10-20260910/vector/13-vector-contour-created.png`;
+  SHA-256 `2DC75915D02BC390546AF806A9E227E91F308DF6F34D3C18F4F3764FB26CC28E`.
+  A sequência nativa selecionou o asset, detectou, editou e criou o objeto.
+- A captura intermediária do vetor que clicava acima da linha continua
+  preservada como diagnóstico; não foi promovida a sucesso.
 
 ## Evidência e limitações obrigatórias
 
 - Evidência anterior do vetor permanece preservada em
   `artifacts/post-e13-binary-final3-20260910/vector/`.
-- A nova evidência será gerada em
-  `artifacts/post-e13-binary-final5-20260910/vector/` e deverá mostrar asset
-  selecionado, detecção, edição, persistência e objeto criado antes de ser
-  classificada como `PASS`.
+- A evidência final10 foi gerada em
+  `artifacts/post-e13-binary-final10-20260910/vector/` e mostra asset
+  selecionado, detecção, edição e objeto criado; a persistência do documento
+  vetorial continua coberta pelos testes de contrato e pelo fluxo anterior
+  preservado.
 - O serviço CUA de janelas nativas não está disponível nesta sessão; a
   captura usa o harness Win32 versionado (`SendInput`/`PrintWindow`) sobre o
   executável real. Isso é fallback declarado, não clique CUA disfarçado.
@@ -78,6 +92,6 @@ diagnóstico e não é promovida a `PASS`.
 
 ## Critério de promoção
 
-Promover para `PASS` somente após commit identificado, build limpa, nova
-captura nativa sem a falha de seleção vetorial, persistência observada,
-hashes dos artefatos, revisão técnica e atualização do relatório final.
+O critério técnico da seleção vetorial e da localização do Tilemap passou na
+build final10. O registro permanece `IN_PROGRESS` até o gate oficial sem
+abort, revisão humana e atualização/aceite formal do relatório final.

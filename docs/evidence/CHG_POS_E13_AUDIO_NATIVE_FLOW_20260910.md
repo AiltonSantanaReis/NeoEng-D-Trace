@@ -8,7 +8,7 @@
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
-**Base de implementação:** `d62908aa96a5eeb840ae1d695f3867fbba054738`
+**Base de implementação requalificada:** `cf829b7583c4a6a63fb86d8a0cafc5103808f498`
 
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
@@ -57,11 +57,28 @@ tratada como prova de funcionamento.
   vinculados às evidências específicas do painel e não serão inferidos desta
   única captura.
 
+## Requalificação final10
+
+- A build limpa final10 foi gerada do commit `cf829b7`, com smoke `SUCCESS`
+  em 11 checks.
+- O fluxo abriu o seletor nativo por clique Win32, informou uma fixture WAV
+  PCM silenciosa de um segundo, criou o clip na linha `Áudio` e prosseguiu
+  até o clip real de `Texto / cutscene`.
+- Diálogo de áudio: `artifacts/post-e13-binary-final10-20260910/sequence/09-sequence-studio-audio-dialog.png`;
+  SHA-256 `373B5428B0B1541A96EFC5B1CABF8F5A2DB61883DBA4E15B59D673411BDFFFAE`.
+- Clip de áudio: `artifacts/post-e13-binary-final10-20260910/sequence/10-sequence-studio-audio-clip.png`;
+  SHA-256 `7FCE9CF499AB614588D452FBFCAD8B7E4CC6006E2F31251A477E8EA582543DD7`.
+- Clip final de texto/cutscene: `artifacts/post-e13-binary-final10-20260910/sequence/11-sequence-studio-text-clip-real.png`;
+  SHA-256 `818AF471F12ACCB376BCD1F391065D8F4A6169279C8783ADD0BEF7015E5E8825`.
+- A execução confirmou câmera, luz, chuva/partículas, áudio e texto. A
+  timeline oferece rolagem vertical quando o número de trilhas cresce; isso
+  é registrado como melhoria de densidade, não como perda de clip.
+
 ## Evidência anterior preservada
 
 O pacote anterior `artifacts/post-e13-binary-final5-20260910/sequence/` não é
 apagado nem reclassificado; ele permanece como diagnóstico que comprovava os
 outros quatro tipos de clip, mas não o áudio.
 
-Até a nova build e a revisão das capturas, este registro permanece
-`IN_PROGRESS`.
+O fluxo técnico passou. Este registro permanece `IN_PROGRESS` até o gate
+oficial sem abort e a revisão/aceite humano formal.

@@ -8,6 +8,8 @@
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
+**Base de implementação requalificada:** `cf829b7583c4a6a63fb86d8a0cafc5103808f498`
+
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
@@ -78,3 +80,22 @@ Este registro só poderá ser promovido a `PASS` após:
 
 Até esses gates, este registro permanece `IN_PROGRESS`; a falha original não é
 reclassificada nem ocultada.
+
+## Requalificação nativa final10
+
+- A build limpa final10 foi produzida do commit `cf829b7`, com smoke
+  `SUCCESS` em 11 checks.
+- A captura `artifacts/post-e13-binary-final10-20260910/material-clean/11-material-authoring-selected.png`
+  mostra os controles habilitados para o objeto V2 sem material prévio.
+- A entrada real `#ff0000` foi aplicada e persistida; captura do estado
+  aplicado: `12-material-applied.png`, SHA-256
+  `4C28B5A6D077B65B958BE6776E3365A981833E61CB88B146865FE957DD562C6E`.
+- Após salvar e recarregar, a captura
+  `14-material-reloaded.png` mostra `Albedo #ff0000` e o status localizado
+  `Cenário recarregado`; SHA-256
+  `EEAC6CED18C07D82ED1073A9087AF9862074500EA33BB16CD9E250F2862D2D2C`.
+- O finding do binário anterior permanece preservado e não foi tratado como
+  se tivesse passado.
+
+O fluxo técnico passou; o registro permanece `IN_PROGRESS` até a suíte oficial
+sem abort e a revisão/aceite humano formal.

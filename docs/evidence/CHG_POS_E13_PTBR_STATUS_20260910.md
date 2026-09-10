@@ -8,6 +8,8 @@
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
+**Base de implementação requalificada:** `cf829b7583c4a6a63fb86d8a0cafc5103808f498`
+
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
@@ -42,8 +44,24 @@ Essas capturas permanecem preservadas como evidência anterior à correção.
   e da interface EN permanecem válidos.
 - Nenhuma operação, asset, camada, objeto ou ação destrutiva foi removida.
 
+## Requalificação nativa final10
+
+- O teste focado de localização passou e a build final10 foi gerada do
+  commit `cf829b7`, com smoke `SUCCESS` em 11 checks.
+- O material reaberto mostra `Cenário recarregado` em PT-BR;
+  `artifacts/post-e13-binary-final10-20260910/material-clean/14-material-reloaded.png`,
+  SHA-256 `EEAC6CED18C07D82ED1073A9087AF9862074500EA33BB16CD9E250F2862D2D2C`.
+- O Tilemap mostra `Edição do tilemap aplicada` e os painéis nativos exibem
+  rótulos em português; evidência
+  `artifacts/post-e13-binary-final10-20260910/tilemap/09-tilemap-painted.png`,
+  SHA-256 `F3AEA2FA363036436F8656A1D15379FDA90D6132CF6D49D7F9D5E9B75B6FE18B`.
+- O menu contextual do viewport profissional foi capturado em PT-BR com
+  `Objeto`, `Mostrar propriedades`, `Enquadrar seleção` e `Enquadrar tudo`;
+  evidência `artifacts/post-e13-binary-final10-20260910/context-professional-object/07-professional-context-menu.png`,
+  SHA-256 `C486E629B5DB30320B51D0E14D44ADDC2018B1FEEA8CDE079719D8EE978F35EDD`.
+
 ## Verificação exigida
 
-Este registro só poderá ser promovido a `PASS` após teste PT-BR focado, suíte
-oficial sem filtros, build limpa e nova captura do fluxo nativo no binário
-final. O finding anterior não será sobrescrito.
+O fluxo técnico de localização passou. Este registro permanece `IN_PROGRESS`
+até a suíte oficial sem abort e a revisão/aceite humano formal; o finding
+anterior não foi sobrescrito.
