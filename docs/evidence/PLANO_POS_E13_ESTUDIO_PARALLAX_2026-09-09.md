@@ -1,11 +1,10 @@
 # Pós-E13 — Estúdio de cenários parallax
 
-Estado: EM IMPLEMENTAÇÃO. STUDIO-01, STUDIO-02 e STUDIO-03 possuem evidência
-técnica `PASS`; STUDIO-04 permanece `IN_PROGRESS` até a nova build do commit
-final desta correção.
-Entrada: commit `fd77ab9d658a043ea8f47b41d51e98d9e0e19cc9`, na única worktree ativa registrada em
-BASE_ATIVA_POS_E13_2026-09-09.md. A build anterior permanece apenas como
-evidência histórica; o pacote final desta correção ainda será reconstruído.
+Estado: PASS para o lote pós-E13 do estúdio. STUDIO-01, STUDIO-02, STUDIO-03
+e STUDIO-04 possuem evidência técnica `PASS`.
+Entrada: commit `fd77ab9d658a043ea8f47b41d51e98d9e0e19cc9`, na única worktree
+ativa registrada em BASE_ATIVA_POS_E13_2026-09-09.md. A build e o pacote final
+estão registrados na auditoria nativa correspondente.
 
 ## Decisão autorizada pelo usuário
 
@@ -21,7 +20,7 @@ persistência e exportadores existentes. Não reabrir E00–E13.
 | STUDIO-01 | Molduras, destino explícito de arraste, biblioteca e inspetor por categoria | PASS | Testes de drop/mover/lock/undo/redo e fluxo nativo capturado |
 | STUDIO-02 | Sequência versionada, timeline editável, câmera e animação | PASS | Seek/play/pause/stop, não mutação de autoria, save/reopen e captura nativa |
 | STUDIO-03 | Luz, partículas, áudio e texto/cutscenes sincronizados | PASS | R7: efeitos, WAV real, cutscene textual, erro de asset e recuperação, save/reopen |
-| STUDIO-04 | Regressão integral, build e fluxo nativo capturado | IN_PROGRESS | Suíte e R7 passaram; build portátil final do commit `fd77ab9d658a043ea8f47b41d51e98d9e0e19cc9` ainda pendente |
+| STUDIO-04 | Regressão integral, build e fluxo nativo capturado | PASS | Suíte integral, R7, build portátil, smoke oficial/direto e hashes |
 
 ## Fronteiras de engenharia
 
