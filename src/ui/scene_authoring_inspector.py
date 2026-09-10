@@ -12,8 +12,8 @@ from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
-    QVBoxLayout,
     QTabWidget,
+    QVBoxLayout,
     QWidget,
 )
 
@@ -128,7 +128,9 @@ class SceneAuthoringInspector(QWidget):
         self.stage4_group = QGroupBox("Camera, Parallax & Sockets")
         self.category_tabs = QTabWidget()
         self.category_tabs.setObjectName("scene_inspector_categories")
-        camera_page, parallax_page, material_page, socket_page = (QWidget() for _ in range(4))
+        camera_page, parallax_page, material_page, socket_page = (
+            QWidget() for _ in range(4)
+        )
         stage4_form = QFormLayout(camera_page)
         self._add_labeled_row(stage4_form, "camera_x", "Camera X", self.camera_x)
         self._add_labeled_row(stage4_form, "camera_y", "Camera Y", self.camera_y)
@@ -244,8 +246,13 @@ class SceneAuthoringInspector(QWidget):
         layout.addWidget(self.fit_button)
         layout.addWidget(self.fit_all_button)
         layout.addStretch(1)
-        for page, title in ((transform_page, "Object"), (camera_page, "Camera"),
-                            (parallax_page, "Layer"), (material_page, "Material"), (socket_page, "Effects")):
+        for page, title in (
+            (transform_page, "Object"),
+            (camera_page, "Camera"),
+            (parallax_page, "Layer"),
+            (material_page, "Material"),
+            (socket_page, "Effects"),
+        ):
             self.category_tabs.addTab(page, title)
         # Compatibility enable-state for callers; controls themselves live in
         # categorized pages, no longer in a single unbounded inspector column.
@@ -429,7 +436,9 @@ class SceneAuthoringInspector(QWidget):
     def _refresh_stage4_controls(self) -> None:
         document = self.session.document
         for index in range(1, self.category_tabs.count()):
-            self.category_tabs.setTabEnabled(index, isinstance(document, SceneAuthoringDocumentV2))
+            self.category_tabs.setTabEnabled(
+                index, isinstance(document, SceneAuthoringDocumentV2)
+            )
         if not isinstance(document, SceneAuthoringDocumentV2):
             self.stage4_group.setEnabled(False)
             return
@@ -477,13 +486,19 @@ class SceneAuthoringInspector(QWidget):
     def _refresh_material_fields(self) -> None:
         primary = self._primary()
         material = getattr(primary, "material", None)
-        enabled = isinstance(
-            self.session.document, SceneAuthoringDocumentV2
-        ) and isinstance(material, SceneMaterialAuthoringRecord)
+        # A newly placed V2 object may intentionally have no material record
+        # yet.  Keep the authoring controls usable and materialize the typed
+        # defaults only when the user confirms Apply Material; V1 and the
+        # no-selection state remain read-only/disabled.
+        enabled = isinstance(self.session.document, SceneAuthoringDocumentV2) and (
+            primary is not None
+        )
         for widget in self._material_widgets():
             widget.setEnabled(enabled)
-        if not enabled or not isinstance(material, SceneMaterialAuthoringRecord):
+        if not enabled:
             return
+        if not isinstance(material, SceneMaterialAuthoringRecord):
+            material = SceneMaterialAuthoringRecord()
         with QSignalBlocker(self.material_albedo):
             self.material_albedo.setText(material.albedo)
         with QSignalBlocker(self.material_emission):
@@ -751,7 +766,11 @@ class SceneAuthoringInspector(QWidget):
             self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def update_language(self, language: str) -> None:
-        for index, title in enumerate(("Objeto", "Câmera", "Camada", "Material", "Efeitos") if language == "pt" else ("Object", "Camera", "Layer", "Material", "Effects")):
+        for index, title in enumerate(
+            ("Objeto", "Câmera", "Camada", "Material", "Efeitos")
+            if language == "pt"
+            else ("Object", "Camera", "Layer", "Material", "Effects")
+        ):
             self.category_tabs.setTabText(index, title)
         """Translate the professional inspector without changing its model."""
 

@@ -86,3 +86,40 @@ def test_material_inspector_edit_is_transactional_and_undoable() -> None:
     )
     assert restored.material.albedo == "#405070"
     inspector.close()
+
+
+def test_material_inspector_can_initialize_material_for_new_v2_object() -> None:
+    app = QApplication.instance() or QApplication([])
+    del app
+    document = _document()
+    document = document.model_copy(
+        update={
+            "objects": [
+                (
+                    item.model_copy(update={"material": None})
+                    if item.id == "lighting-receiver"
+                    else item
+                )
+                for item in document.objects
+            ]
+        }
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    session.set_selection(["lighting-receiver"])
+    inspector = SceneAuthoringInspector(session)
+    try:
+        assert inspector.material_albedo.isEnabled()
+        assert inspector.material_apply_button.isEnabled()
+        assert inspector.material_albedo.text() == "#ffffff"
+
+        inspector.material_albedo.setText("#ff2200")
+        inspector.material_apply_button.click()
+
+        changed = next(
+            item for item in session.document.objects if item.id == "lighting-receiver"
+        )
+        assert changed.material is not None
+        assert changed.material.albedo == "#ff2200"
+        assert session.can_undo is True
+    finally:
+        inspector.close()

@@ -482,7 +482,10 @@ try {
         $records.tilemap_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-tilemap-reopened.png")
     }
     if ($CaptureColliderFlow) {
-        Enter-AdvancedTool $editor.Handle 520
+        # Tileset is now a first-class tab between Formas and Tilemap.  The
+        # collision tab therefore moved down one slot from the pre-Tileset
+        # coordinate; keep this aligned with the shipped west-side tab bar.
+        Enter-AdvancedTool $editor.Handle 660
         # Maximize first so the inspector has a stable native coordinate.
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3420, 270)
         Start-Sleep -Milliseconds 500
@@ -525,7 +528,10 @@ try {
         $records.navmesh_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-navmesh-reopened.png")
     }
     if ($CaptureEntityPrefabFlow) {
-        Enter-AdvancedTool $editor.Handle 800
+        # Tileset is now a first-class tab between Formas and Tilemap.  The
+        # entities tab therefore moved down one slot from the pre-Tileset
+        # coordinate; keep this aligned with the shipped west-side tab bar.
+        Enter-AdvancedTool $editor.Handle 950
         # These controls are visible in the shipped panel: add one entity,
         # create a prefab from it, then instantiate that prefab.
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 752)
@@ -536,20 +542,20 @@ try {
         # a user must do before continuing with prefab authoring.
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
         Start-Sleep -Milliseconds 450
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 950)
         Start-Sleep -Milliseconds 650
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 1255)
         Start-Sleep -Milliseconds 500
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
         Start-Sleep -Milliseconds 450
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 950)
         Start-Sleep -Milliseconds 650
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3600, 1255)
         Start-Sleep -Milliseconds 650
         $records.prefab_instantiated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-prefab-instantiated.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
         Start-Sleep -Milliseconds 450
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 950)
         Start-Sleep -Milliseconds 650
         $records.prefab_state_visible = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-prefab-state-visible.png")
         for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
@@ -563,7 +569,7 @@ try {
         $records.prefab_override = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-prefab-override.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
         Start-Sleep -Milliseconds 450
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 950)
         Start-Sleep -Milliseconds 650
         for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
@@ -576,7 +582,7 @@ try {
         $records.prefab_updated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-prefab-updated.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
         Start-Sleep -Milliseconds 450
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 950)
         Start-Sleep -Milliseconds 650
         for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
@@ -589,7 +595,7 @@ try {
         $records.prefab_detached = Save-Capture $editor.Handle (Join-Path $OutputDirectory "14-prefab-detached.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3290, 150)
         Start-Sleep -Milliseconds 450
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 800)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 950)
         Start-Sleep -Milliseconds 650
         for ($scrollStep = 0; $scrollStep -lt 18; $scrollStep++) {
             [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
@@ -634,7 +640,11 @@ try {
         $records.material_authoring_selected = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-material-authoring-selected.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3450, 322)
         [System.Windows.Forms.SendKeys]::SendWait("^a")
-        [System.Windows.Forms.SendKeys]::SendWait("#ff0000")
+        [System.Windows.Forms.Clipboard]::SetText("#ff0000")
+        [System.Windows.Forms.SendKeys]::SendWait("^v")
+        [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
+        Start-Sleep -Milliseconds 350
+        $records.material_albedo_edited = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-material-albedo-edited.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 875)
         Start-Sleep -Milliseconds 700
         $records.material_applied = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-material-applied.png")
