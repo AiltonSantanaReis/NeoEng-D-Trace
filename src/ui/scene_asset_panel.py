@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QListWidget,
     QListWidgetItem,
+    QMenu,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -31,6 +32,7 @@ from src.core.scene_asset_library import (
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.persistence.p2d05_errors import user_error_message
 from src.persistence.scene_authoring_schema import AssetReferenceRecord
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 from src.ui.theme_tokens import THEME_TOKENS
 
@@ -121,6 +123,8 @@ class SceneAssetLibrary(QWidget):
         self.asset_list.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
         self.asset_list.setMinimumHeight(140)
         self.asset_list.setAlternatingRowColors(True)
+        self.asset_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.asset_list.customContextMenuRequested.connect(self._show_context_menu)
         self.diagnostics_label = QLabel()
         self.diagnostics_label.setObjectName("scene_asset_library_diagnostics")
         self.diagnostics_label.setWordWrap(True)
@@ -194,6 +198,36 @@ class SceneAssetLibrary(QWidget):
         dialog = AssetPackDialog(self)
         dialog.exec()
         dialog.deleteLater()
+
+    def _build_context_menu(self) -> QMenu:
+        menu = QMenu(self.asset_list)
+        if self.current_lang == "pt":
+            place_text = "Inserir na cena"
+            place_tip = "Inserir o asset selecionado no centro da moldura ativa"
+            refresh_text = "Atualizar"
+            refresh_tip = "Atualizar a biblioteca e os diagnósticos"
+        else:
+            place_text = "Place in scene"
+            place_tip = "Place the selected asset at the active frame center"
+            refresh_text = "Refresh"
+            refresh_tip = "Refresh the library and diagnostics"
+        place = menu.addAction(place_text)
+        place.setToolTip(place_tip)
+        place.setEnabled(self.place_button.isEnabled())
+        place.triggered.connect(self._place_selected_asset)
+        refresh = menu.addAction(refresh_text)
+        refresh.setToolTip(refresh_tip)
+        refresh.triggered.connect(self.refresh)
+        return menu
+
+    def _show_context_menu(self, position) -> None:
+        item = self.asset_list.itemAt(position)
+        if item is None:
+            return
+        self.asset_list.setCurrentItem(item)
+        fit_context_menu(self._build_context_menu()).exec(
+            self.asset_list.mapToGlobal(position)
+        )
 
     @property
     def selected_asset(self) -> AssetReferenceRecord | None:

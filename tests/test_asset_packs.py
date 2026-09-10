@@ -145,6 +145,19 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
         assert library.place_button.isEnabled()
         QTest.mouseClick(library.place_button, Qt.MouseButton.LeftButton)
         assert requested == [imported.id]
+        assert (
+            library.asset_list.contextMenuPolicy()
+            == Qt.ContextMenuPolicy.CustomContextMenu
+        )
+        context_menu = library._build_context_menu()
+        assert [action.text() for action in context_menu.actions()] == [
+            "Inserir na cena",
+            "Atualizar",
+        ]
+        requested.clear()
+        context_menu.actions()[0].trigger()
+        assert requested == [imported.id]
+        context_menu.deleteLater()
         QTest.mouseClick(dialog.add_button, Qt.MouseButton.LeftButton)
         assert "já disponível" in dialog.status.text()
         assert len(library.session.document.assets) == 1

@@ -1838,7 +1838,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self._item_gesture_id = None
         self._gesture_layer_id = None
         self._gesture_start = None
-        self.status_message.emit("Objects moved")
+        self.status_message.emit(
+            "Objeto(s) movido(s)" if self.current_lang == "pt" else "Objects moved"
+        )
 
     def _gizmo_started(self, mode: str, scene_pos: QPointF) -> None:
         if not self._authoring_enabled:
