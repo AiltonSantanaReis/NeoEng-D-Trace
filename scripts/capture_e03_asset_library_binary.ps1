@@ -138,6 +138,42 @@ function Set-DialogPath {
     [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
 }
 
+function New-SilentWave {
+    param([string]$Path)
+    $sampleRate = 44100
+    $channels = 1
+    $bitsPerSample = 16
+    $sampleCount = $sampleRate
+    $blockAlign = $channels * ($bitsPerSample / 8)
+    $byteRate = $sampleRate * $blockAlign
+    $dataSize = $sampleCount * $blockAlign
+    $stream = New-Object System.IO.MemoryStream
+    $writer = New-Object System.IO.BinaryWriter($stream)
+    try {
+        $writer.Write([System.Text.Encoding]::ASCII.GetBytes("RIFF"))
+        $writer.Write([int](36 + $dataSize))
+        $writer.Write([System.Text.Encoding]::ASCII.GetBytes("WAVE"))
+        $writer.Write([System.Text.Encoding]::ASCII.GetBytes("fmt "))
+        $writer.Write([int]16)
+        $writer.Write([int16]1)
+        $writer.Write([int16]$channels)
+        $writer.Write([int]$sampleRate)
+        $writer.Write([int]$byteRate)
+        $writer.Write([int16]$blockAlign)
+        $writer.Write([int16]$bitsPerSample)
+        $writer.Write([System.Text.Encoding]::ASCII.GetBytes("data"))
+        $writer.Write([int]$dataSize)
+        for ($sample = 0; $sample -lt $sampleCount; $sample++) {
+            $writer.Write([int16]0)
+        }
+        $writer.Flush()
+        [System.IO.File]::WriteAllBytes($Path, $stream.ToArray())
+    } finally {
+        $writer.Dispose()
+        $stream.Dispose()
+    }
+}
+
 function Save-Capture {
     param([IntPtr]$Handle, [string]$Path)
     [NeoEngE03Capture]::Capture($Handle, $Path) | Out-Null
@@ -229,6 +265,12 @@ if ($tilesetFlow) {
     $sourceFixture = (Resolve-Path -LiteralPath "docs\evidence\artifacts\roi-grabcut-collision\source.png").Path
     Copy-Item -LiteralPath $sourceFixture -Destination (Join-Path $fixtureAssetDir "tileset-atlas.png") -Force
     $projectPath = (Get-ChildItem -LiteralPath $fixtureRoot -Filter "*.ndtproj" -File | Select-Object -First 1 -ExpandProperty FullName)
+}
+$audioFixturePath = $null
+if ($CaptureSequenceStudioFlow -and -not $tilesetFlow) {
+    $audioFixturePath = Join-Path (Split-Path -Path $projectPath -Parent) "assets\audio\sequence-theme.wav"
+    New-Item -ItemType Directory -Path (Split-Path -Path $audioFixturePath -Parent) -Force | Out-Null
+    New-SilentWave $audioFixturePath
 }
 $startArguments = @()
 if ($DirectProjectLoad) {
@@ -381,10 +423,28 @@ try {
         $records.sequence_studio_particle_clip = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-sequence-studio-particle-clip.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 2280, 1670)
         Start-Sleep -Milliseconds 250
+        [System.Windows.Forms.SendKeys]::SendWait("{HOME}{DOWN 7}{ENTER}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2640, 1670)
+        Start-Sleep -Milliseconds 1000
+        $audioDialog = [NeoEngE03Capture]::GetWindows($process.Id) |
+            Where-Object { $_.Handle -ne $mainHandle -and $_.Handle -ne $editor.Handle -and $_.Title -match "(?i)áudio|audio|open|abrir" } |
+            Select-Object -First 1
+        if (-not $audioDialog) {
+            $audioDialog = [NeoEngE03Capture]::GetWindows($process.Id) |
+                Where-Object { $_.Handle -ne $mainHandle -and $_.Handle -ne $editor.Handle } |
+                Select-Object -First 1
+        }
+        if (-not $audioDialog) { throw "audio file dialog was not exposed by native editor flow" }
+        $records.sequence_studio_audio_dialog = Save-Capture $audioDialog.Handle (Join-Path $OutputDirectory "09-sequence-studio-audio-dialog.png")
+        Set-DialogPath $audioDialog.Handle $audioFixturePath
+        Start-Sleep -Milliseconds 1400
+        $records.sequence_studio_audio_clip = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-sequence-studio-audio-clip.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2280, 1670)
+        Start-Sleep -Milliseconds 250
         [System.Windows.Forms.SendKeys]::SendWait("{HOME}{DOWN 8}{ENTER}")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 2640, 1670)
         Start-Sleep -Milliseconds 900
-        $records.sequence_studio_text_clip_real = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-sequence-studio-text-clip-real.png")
+        $records.sequence_studio_text_clip_real = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-sequence-studio-text-clip-real.png")
     }
     if ($CaptureVectorContourFlow) {
         Enter-AdvancedTool $editor.Handle 230
