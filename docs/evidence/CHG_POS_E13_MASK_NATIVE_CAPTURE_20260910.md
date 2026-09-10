@@ -26,6 +26,10 @@ Máscara.
 
 - O harness agora identifica a janela por título semântico (`Mask`, `Máscara`,
   `Raio-X` ou equivalente) e falha explicitamente se ela não aparecer.
+- A investigação do primeiro `BLOCKED` confirmou que o índice do menu compacto
+  estava uma posição adiante; a entrada real da máscara é a sétima opção
+  (`DOWN 6` a partir do primeiro item). O índice foi corrigido sem aceitar a
+  janela de configurações como evidência.
 - Nenhum produto, asset ou contrato de dados foi alterado.
 - A próxima execução usará uma fixture de projeto com imagem carregada para
   que o visualizador seja comprovado com conteúdo real.

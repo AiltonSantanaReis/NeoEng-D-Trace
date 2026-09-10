@@ -337,7 +337,9 @@ try {
         # language-independent.
         [NeoEngE03Capture]::ClickWindow($mainHandle, 1125, 150)
         Start-Sleep -Milliseconds 250
-        [System.Windows.Forms.SendKeys]::SendWait("{DOWN 7}{ENTER}")
+        # View's compact toolbar menu contains six entries before the mask
+        # action (grid, snap, lit and three X-Ray modes).
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN 6}{ENTER}")
         Start-Sleep -Milliseconds 1800
         # The professional scenario editor is already another top-level
         # window in this flow.  Do not accept it as a mask capture merely
