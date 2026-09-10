@@ -16,6 +16,7 @@ param(
     [switch]$CaptureMaskViewerFlow,
     [switch]$CaptureContextMenuFlow,
     [switch]$CaptureSequenceStudioFlow,
+    [switch]$CaptureAssetPackFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -374,6 +375,12 @@ try {
     }
     [NeoEngE03Capture]::Focus($editor.Handle)
     Start-Sleep -Milliseconds 800
+    # Make the library assertion observable: the user-visible catalog is a
+    # sibling tab of Molduras/Hierarquia, so select it with a native click
+    # before capturing the ready state.  The controlled workstation uses the
+    # native-DPI offset below; no catalog data is changed.
+    [NeoEngE03Capture]::ClickWindow($editor.Handle, 420, 195)
+    Start-Sleep -Milliseconds 600
     $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     $records.asset_library_ready = Save-Capture $editor.Handle (Join-Path $OutputDirectory "05-asset-library-ready.png")
     # The editor has no Alt+P mnemonic.  Sending it can open an unrelated
@@ -381,6 +388,31 @@ try {
     # covered by the focused Qt contract tests; this binary capture remains
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
+    if ($CaptureAssetPackFlow) {
+        # Open the bundled, read-only catalog through the same Biblioteca
+        # surface a user sees. Require its semantic dialog title before
+        # capturing; a generic secondary window is not acceptable evidence.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 420, 355)
+        Start-Sleep -Milliseconds 1800
+        $pack = [NeoEngE03Capture]::GetWindows($process.Id) |
+            Where-Object {
+                $_.Handle -ne $mainHandle -and
+                $_.Handle -ne $editor.Handle -and
+                $_.Title -match "(?i)pacotes|packs"
+            } |
+            Select-Object -First 1
+        if (-not $pack) {
+            $titles = [NeoEngE03Capture]::GetWindows($process.Id) |
+                ForEach-Object { $_.Title } |
+                Where-Object { $_ -and $_.Trim() } |
+                Select-Object -Unique
+            throw "Asset pack dialog was not exposed by portable binary; observed windows: $($titles -join ' | ')"
+        }
+        $records.asset_pack_dialog = Save-Capture $pack.Handle (Join-Path $OutputDirectory "06-asset-pack-dialog.png")
+        [NeoEngE03Capture]::Focus($pack.Handle)
+        [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+        Start-Sleep -Milliseconds 500
+    }
     if ($CaptureContextMenuFlow -and -not $tilesetFlow) {
         # The main editor and professional editor are separate top-level
         # windows. Hide the latter for this main-editor interaction so the
