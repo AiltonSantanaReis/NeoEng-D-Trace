@@ -454,11 +454,13 @@ try {
         # then selects Tiles.  Without this transition the numeric inspector
         # remains visible and a coordinate-only click is not evidence of a
         # Tilemap operation.
-        Enter-AdvancedTool $editor.Handle 380
+        # Tileset now occupies the second vertical tab; Tilemap is the next
+        # tab down at the observed native-DPI coordinate.
+        Enter-AdvancedTool $editor.Handle 520
         $records.tilemap_tools_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-tilemap-tools-entry.png")
         # The west tab bar is vertically laid out in the native surface;
-        # Tiles is the second tab, below Formas, on the current DPI layout.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 380)
+        # Tiles is below the new Tileset tab on the current DPI layout.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 520)
         Start-Sleep -Milliseconds 500
         $records.tilemap_panel_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-tilemap-panel-entry.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3110, 320)

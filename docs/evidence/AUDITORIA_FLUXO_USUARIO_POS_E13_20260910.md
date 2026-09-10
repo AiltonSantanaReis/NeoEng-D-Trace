@@ -26,37 +26,34 @@ O procedimento foi orientado por:
 
 | ID | Fluxo verificado | Evidência real | Estado | Observação |
 |---|---|---|---|---|
-| AUDIT-UI-01 | Abrir projeto/editor e entrar no fluxo de autoria | `sequence-studio-v3/06-sequence-studio-camera.png` | PASS | Janela nativa e timeline visíveis. |
-| AUDIT-UI-02 | Biblioteca de assets e ferramenta vetorial | `vector-v4/13-vector-contour-created.png` | PASS | Asset selecionado, contorno detectado/corrigido e objeto criado. |
-| AUDIT-UI-03 | Criar tilemap, pintar, salvar e reabrir | `tilemap-v3/11-tilemap-reopened.png` | PASS | 2 células persistiram após reabertura; mensagens em PT-BR. |
-| AUDIT-UI-04 | Criar/editar tileset dedicado | `tileset-v5/10-tileset-reopened.png` | PASS | Atlas real, 300 tiles gerados, `tileset.json` salvo, limpo e reaberto com os 300 tiles preservados. |
-| AUDIT-UI-05 | Criar colisores box/circle, salvar e reabrir | `collider-v2/09-collider-reopened.png` | PASS | 2 colisores persistiram após reabertura. |
+| AUDIT-UI-01 | Abrir projeto/editor e entrar no fluxo de autoria | `sequence-c35/06-sequence-studio-after-clip.png` | PASS | Janela nativa, projeto carregado e timeline visíveis na build c35. |
+| AUDIT-UI-02 | Biblioteca de assets e ferramenta vetorial | `vector-c35/13-vector-contour-created.png` | PASS | Asset selecionado, contorno detectado/corrigido e objeto criado. |
+| AUDIT-UI-03 | Criar tilemap, pintar, salvar e reabrir | `tilemap-c35-rerun/11-tilemap-reopened.png` | PASS | 2 células persistiram após reabertura; painel nativo `Tilemap / Terreno` e mensagem em PT-BR confirmados. |
+| AUDIT-UI-04 | Criar/editar tileset dedicado | `tileset-c35/10-tileset-reopened.png` | PASS | Atlas real, 300 tiles gerados, `tileset.json` salvo, limpo e reaberto com os 300 tiles preservados. |
+| AUDIT-UI-05 | Criar colisores box/circle, salvar e reabrir | `collider-c35/09-collider-reopened.png` | PASS | 2 colisores persistiram após reabertura. |
 | AUDIT-UI-06 | Criar região/obstáculo, fazer bake, salvar e reabrir | `navmesh-c35-rerun/09-navmesh-reopened.png` | PASS | Região, obstáculo e bake persistem; a captura reaberta mostra `bake disponível` e a mensagem nativa `NavMesh reaberta; bake disponível`. |
-| AUDIT-UI-07 | Criar entidade, prefab, instância, override, atualizar e desvincular | `entities-v8/15-prefab-detached-state.png` | PASS | Estados de override, versão do prefab e detach foram observados. |
-| AUDIT-UI-08 | Alternar renderer preview/authoring | `renderer-v2/08-renderer-authoring.png` | PASS | HUD nativo alternou `PREVIEW` e `AUTHORING`; preview ficou somente leitura. |
-| AUDIT-UI-09 | Selecionar objeto e editar material/albedo | `material-v6-v2object/12-material-applied.png` | PASS | Edição real com fixture de objeto V2 e mensagem de alteração não salva. Fixture V1 não editável foi preservada como diagnóstico, não como sucesso. |
-| AUDIT-UI-10 | Editar parallax de camada | `parallax-v6-depth-field/07-parallax-applied.png` | PASS | Profundidade e translação alteradas para `0,7500`; aplicação e mensagem de alteração não salva confirmadas. |
-| AUDIT-UI-11 | Timeline com câmera, luz, partículas/chuva e texto/cutscene | `sequence-studio-v3/09-sequence-studio-text-clip-real.png` | PASS | Quatro tracks visíveis; clips de Luz, Chuva e Texto/cutscene adicionados por fluxo real. |
-| AUDIT-UI-12 | Menu de contexto do mouse | `context-menu-c21/06-context-menu-layer.png` | PASS | Clique direito nativo no primeiro objeto da lista principal abriu o popup real com `Propriedades`, `Modificar Forma` e `Exportar`. |
-| AUDIT-UI-13 | Localização PT-BR de painéis, controles e tooltips | Capturas `tilemap-v3`, `collider-v2`, `navmesh-v3`, `parallax-v6-depth-field`, `context-menu-c21` | PASS | Painéis, mensagens, popup de contexto e contratos de tooltip verificados em português. |
+| AUDIT-UI-07 | Criar entidade, prefab, instância, override, atualizar e desvincular | `entities-c35/15-prefab-detached-state.png` | PASS | Estados de override, versão do prefab e detach foram observados. |
+| AUDIT-UI-08 | Alternar renderer preview/authoring | `renderer-c35/08-renderer-authoring.png` | PASS | HUD nativo alternou `PREVIEW` e `AUTHORING`; preview ficou somente leitura. |
+| AUDIT-UI-09 | Selecionar objeto e editar material/albedo | `material-c35/12-material-applied.png` | PASS | Edição real com fixture de objeto V2 e mensagem de alteração não salva. Fixture V1 não editável foi preservada como diagnóstico, não como sucesso. |
+| AUDIT-UI-10 | Editar parallax de camada | `parallax-c35/07-parallax-applied.png` | PASS | Profundidade e translação alteradas para `0,7500`; aplicação e mensagem de alteração não salva confirmadas. |
+| AUDIT-UI-11 | Timeline com câmera, luz, partículas/chuva e texto/cutscene | `sequence-c35/09-sequence-studio-text-clip-real.png` | PASS | Quatro tracks visíveis; clips de Luz, Chuva e Texto/cutscene adicionados por fluxo real. |
+| AUDIT-UI-12 | Menu de contexto do mouse | `context-menu-c35/06-context-menu-layer.png` | PASS | Clique direito nativo no primeiro objeto da lista principal abriu o popup real com `Propriedades`, `Modificar Forma` e `Exportar`. |
+| AUDIT-UI-13 | Localização PT-BR de painéis, controles e tooltips | Capturas `tilemap-c35-rerun`, `collider-c35`, `navmesh-c35-rerun`, `parallax-c35`, `context-menu-c35` | PASS | Painéis, mensagens, popup de contexto e contratos de tooltip verificados em português. |
 | AUDIT-UI-14 | Build nova, execução do binário e smoke runtime | `release/user-flow-audit-c35d458e-20260910/smoke/portable-smoke-report.json` | PASS | 11 checks com status `SUCCESS`; ZIP e executável da build baseada em `35d458e` foram hash-confirmados. |
 
 ## Evidências principais
 
-- [Tilemap reaberto](../../artifacts/user-flow-binary-20260910/tilemap-v3/11-tilemap-reopened.png) — SHA-256 `ACDD3F7E2607135CE8ED670FA1579981AF2CC1ACD57DB453EC18E5EA1B8E87B8`.
-- [Colisores reabertos](../../artifacts/user-flow-binary-20260910/collider-v2/09-collider-reopened.png) — SHA-256 `9EEC0833D989ED819DDE4A6673C1181CB72095CCB5CF5D2CB3CAE39A129B4581`.
+- [Tilemap reaberto](../../artifacts/user-flow-binary-20260910/tilemap-c35-rerun/11-tilemap-reopened.png) — SHA-256 `34420CD7E816D649EECD06A7FBD601352AC7C2DBE7BD2C24D37983E817E1DA3C`.
+- [Colisores reabertos](../../artifacts/user-flow-binary-20260910/collider-c35/09-collider-reopened.png) — SHA-256 `8E79E4C4D02DA4345D501491BD450027290D525985FAA8D2F6B33DD4297CFAA9`.
 - [NavMesh reaberta — bake persistido](../../artifacts/user-flow-binary-20260910/navmesh-c35-rerun/09-navmesh-reopened.png) — SHA-256 `E0B242E6A2A614BC70BCB834CF3D7B063C670A5BA89B48B75945203EE55350B8`.
-- [Prefab desvinculado](../../artifacts/user-flow-binary-20260910/entities-v8/15-prefab-detached-state.png) — SHA-256 `43738AC99529BAF9254719F8D45104A42D4D2FF85200E8BFE0A68DCF7EEAEAFE`.
-- [Objeto vetorial criado](../../artifacts/user-flow-binary-20260910/vector-v4/13-vector-contour-created.png) — SHA-256 `C6D906074C8038C39F7E1DCEC4A73464BCF44B42740D8E1827A7CDA6AB1B7FF6`.
-- [Renderer em preview](../../artifacts/user-flow-binary-20260910/renderer-v2/07-renderer-preview.png) — SHA-256 `0D6E25E9C9B77FF1DF42E1A0454269518584B60545968615CF915215AD309834`.
-- [Material aplicado](../../artifacts/user-flow-binary-20260910/material-v6-v2object/12-material-applied.png) — SHA-256 `33F53FC1B1DBACED8C2605B9DFF9CE99AA83C9B8198681F94FC8CD1607DBD3B3`.
-- [Parallax atualizado](../../artifacts/user-flow-binary-20260910/parallax-v5-v2object/07-parallax-applied.png) — SHA-256 `869731A04C426ED998CA6813F608AC69C3F8E689730EF8EEEE8A3A8906D6322D`.
-- [Parallax com profundidade e translação atualizadas](../../artifacts/user-flow-binary-20260910/parallax-v6-depth-field/07-parallax-applied.png) — SHA-256 `F5165D52539A322588D83A1E4871450BE207C3ED990B0DB9CD705B2004C819EE`.
-- [Tileset dedicado gerado](../../artifacts/user-flow-binary-20260910/tileset-v5/07-tileset-generated.png) — SHA-256 `1DE10F53E0FA93AEB4B5529611DAB4E64A4C7F9B06154EDB3F31E61C5B47A6C9`.
-- [Tileset dedicado salvo](../../artifacts/user-flow-binary-20260910/tileset-v5/08-tileset-saved.png) — SHA-256 `C6F5D5E23E02849DFA6C667D697082ACDB8A7D85AF4678A51FDE30D245D9C025`.
-- [Tileset dedicado reaberto](../../artifacts/user-flow-binary-20260910/tileset-v5/10-tileset-reopened.png) — SHA-256 `0889C84E25266F8748F5FE837535582587E585802C9E0CB87CD6783DA9BC9C9C`.
-- [Timeline com Texto/cutscene](../../artifacts/user-flow-binary-20260910/sequence-studio-v3/09-sequence-studio-text-clip-real.png) — SHA-256 `9C2004734FB53EF2E4FCD2A2F333BA2CE09A035B643B08A0D72E04B3E821A183`.
-- [Menu de contexto nativo em PT-BR](../../artifacts/user-flow-binary-20260910/context-menu-c21/06-context-menu-layer.png) — SHA-256 `C609C6AACA9F5A95D94619471F565A3E62E7F235863BA67757FDF1DF41C1C4DF`.
+- [Prefab desvinculado](../../artifacts/user-flow-binary-20260910/entities-c35/15-prefab-detached-state.png) — SHA-256 `825630BF90C0D34AE71F73F2A50A466B9C93231065D5872D48592BD74FEF34D0`.
+- [Objeto vetorial criado](../../artifacts/user-flow-binary-20260910/vector-c35/13-vector-contour-created.png) — SHA-256 `C6D906074C8038C39F7E1DCEC4A73464BCF44B42740D8E1827A7CDA6AB1B7FF6`.
+- [Renderer em preview](../../artifacts/user-flow-binary-20260910/renderer-c35/07-renderer-preview.png) — SHA-256 `0D6E25E9C9B77FF1DF42E1A0454269518584B60545968615CF915215AD309834`.
+- [Material aplicado](../../artifacts/user-flow-binary-20260910/material-c35/12-material-applied.png) — SHA-256 `24570BD4958E1ABDEF2456BA93E043B60BED4602DDD02C81614EB39F96634BA8`.
+- [Parallax com profundidade e translação atualizadas](../../artifacts/user-flow-binary-20260910/parallax-c35/07-parallax-applied.png) — SHA-256 `18BFB664C8308E609AEE59DD0292A72570DB8F35642B91B73FCD83032CAB6882`.
+- [Tileset dedicado reaberto](../../artifacts/user-flow-binary-20260910/tileset-c35/10-tileset-reopened.png) — SHA-256 `C0DD13830B8074368B9C77A96AE0140F10AD6A1DAEA49502884AB16655826901`.
+- [Timeline com Texto/cutscene](../../artifacts/user-flow-binary-20260910/sequence-c35/09-sequence-studio-text-clip-real.png) — SHA-256 `9C2004734FB53EF2E4FCD2A2F333BA2CE09A035B643B08A0D72E04B3E821A183`.
+- [Menu de contexto nativo em PT-BR](../../artifacts/user-flow-binary-20260910/context-menu-c35/06-context-menu-layer.png) — SHA-256 `C609C6AACA9F5A95D94619471F565A3E62E7F235863BA67757FDF1DF41C1C4DF`.
 - [Tentativa histórica preservada do menu](../../artifacts/user-flow-binary-20260910/context-menu-v5/06-context-menu-layer.png) — SHA-256 `234D5DE7904A553AAE47C9DB9C9DD3550E39C9BF97BDFB769F4F341873B8C60C`; mantida como diagnóstico anterior.
 
 ## Testes automatizados
@@ -88,6 +85,7 @@ A única advertência registrada é a construção depreciada de `QMouseEvent` e
 
 - A primeira tentativa com o binário c35 foi preservada em `artifacts/user-flow-binary-20260910/navmesh-c35/`; ela selecionou `Colisores / Física` porque a nova aba Tileset deslocou a coordenada do harness. Não foi promovida a evidência de sucesso.
 - A captura corrigida em `navmesh-c35-rerun/` foi executada novamente por cliques nativos e é a evidência oficial de `AUDIT-UI-06`.
+- A primeira rodada agregada `tilemap-c35/` também foi preservada como diagnóstico: o fluxo selecionou Tileset após o deslocamento da aba; `tilemap-c35-rerun/` é a evidência oficial de `AUDIT-UI-03` após a correção do harness.
 - O empacotamento ainda emite o warning de hidden import `tzdata` não encontrado. O smoke passou, mas a limpeza desse warning permanece como melhoria de release; ele não foi ocultado.
 
 Esta auditoria não declara o projeto inteiro concluído; registra o lote pós-E13 auditado com as limitações acima.
