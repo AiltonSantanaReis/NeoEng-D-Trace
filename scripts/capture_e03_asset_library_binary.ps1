@@ -330,6 +330,11 @@ try {
         if (-not $editor) { throw "professional scenario editor was not exposed" }
     }
     if ($CaptureMaskViewerFlow) {
+        # Direct project load opens the professional scenario editor as a
+        # second top-level window.  The mask command belongs to the main
+        # editor; hide the secondary window so the real native click reaches
+        # the intended View/Visualizar button.
+        [NeoEngE03Capture]::Hide($editor.Handle)
         [NeoEngE03Capture]::Focus($mainHandle)
         # The shipped reference toolbar places View/Visualizar at this
         # native-DPI-relative location. Select the real mask-viewer action
@@ -337,9 +342,16 @@ try {
         # language-independent.
         [NeoEngE03Capture]::ClickWindow($mainHandle, 1125, 150)
         Start-Sleep -Milliseconds 250
-        # View's compact toolbar menu contains six entries before the mask
-        # action (grid, snap, lit and three X-Ray modes).
-        [System.Windows.Forms.SendKeys]::SendWait("{DOWN 6}{ENTER}")
+        # Preserve the actual popup state when a semantic dialog is not
+        # exposed.  This is a diagnostic screen capture only; it must never
+        # be used as proof that the mask viewer opened.
+        $records.view_menu_popup_screen = Save-ScreenCapture (Join-Path $OutputDirectory "03-view-menu-popup-screen.png")
+        # The real popup is visible in the preceding screen capture.  Click
+        # the semantic Mask Viewer row directly instead of relying on
+        # keyboard focus, which can remain with the PowerShell host even
+        # though Qt has painted the menu.  The offset is measured from the
+        # native-DPI main window on the controlled capture workstation.
+        [NeoEngE03Capture]::ClickWindow($mainHandle, 1140, 560)
         Start-Sleep -Milliseconds 1800
         # The professional scenario editor is already another top-level
         # window in this flow.  Do not accept it as a mask capture merely
