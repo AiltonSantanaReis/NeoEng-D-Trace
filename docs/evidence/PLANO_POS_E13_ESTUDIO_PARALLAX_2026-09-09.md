@@ -1,9 +1,11 @@
 # Pós-E13 — Estúdio de cenários parallax
 
-Estado: EM IMPLEMENTAÇÃO. Nenhuma capacidade deste lote foi aceita ainda.
-Entrada: HEAD 1e9eebde70592ce810dafa6109448eedbbea4566, na única worktree
-ativa registrada em BASE_ATIVA_POS_E13_2026-09-09.md. A build oficial anterior
-permanece válida até uma substituta ser construída e qualificada.
+Estado: EM IMPLEMENTAÇÃO. STUDIO-01, STUDIO-02 e STUDIO-03 possuem evidência
+técnica `PASS`; STUDIO-04 permanece `IN_PROGRESS` até a nova build do commit
+final desta correção.
+Entrada: commit `fd77ab9d658a043ea8f47b41d51e98d9e0e19cc9`, na única worktree ativa registrada em
+BASE_ATIVA_POS_E13_2026-09-09.md. A build anterior permanece apenas como
+evidência histórica; o pacote final desta correção ainda será reconstruído.
 
 ## Decisão autorizada pelo usuário
 
@@ -16,10 +18,10 @@ persistência e exportadores existentes. Não reabrir E00–E13.
 
 | ID | Entrega | Estado | Aceite exigido |
 |---|---|---|---|
-| STUDIO-01 | Molduras, destino explícito de arraste, biblioteca e inspetor por categoria | EM IMPLEMENTAÇÃO | Criar camadas, inserir/mover imagens, reorder, lock, undo/redo |
-| STUDIO-02 | Sequência versionada, timeline editável, câmera e animação | PENDENTE | Seek/loop/play/pause/stop determinísticos, sem mutar autoria, salvar/reabrir |
-| STUDIO-03 | Luz, partículas, áudio e texto/cutscenes sincronizados | PENDENTE | Efeito efetivo, parâmetros, duração/loop, erro acionável e persistência |
-| STUDIO-04 | Regressão integral, build e fluxo nativo capturado | PENDENTE | Suíte integral, execução do binário novo, capturas inspecionadas, hashes |
+| STUDIO-01 | Molduras, destino explícito de arraste, biblioteca e inspetor por categoria | PASS | Testes de drop/mover/lock/undo/redo e fluxo nativo capturado |
+| STUDIO-02 | Sequência versionada, timeline editável, câmera e animação | PASS | Seek/play/pause/stop, não mutação de autoria, save/reopen e captura nativa |
+| STUDIO-03 | Luz, partículas, áudio e texto/cutscenes sincronizados | PASS | R7: efeitos, WAV real, cutscene textual, erro de asset e recuperação, save/reopen |
+| STUDIO-04 | Regressão integral, build e fluxo nativo capturado | IN_PROGRESS | Suíte e R7 passaram; build portátil final do commit `fd77ab9d658a043ea8f47b41d51e98d9e0e19cc9` ainda pendente |
 
 ## Fronteiras de engenharia
 
