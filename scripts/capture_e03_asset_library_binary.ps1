@@ -17,6 +17,7 @@ param(
     [switch]$CaptureContextMenuFlow,
     [switch]$CaptureSequenceStudioFlow,
     [switch]$CaptureAssetPackFlow,
+    [switch]$CaptureProfessionalContextMenuFlow,
     [switch]$DirectProjectLoad
 )
 
@@ -388,6 +389,34 @@ try {
     # covered by the focused Qt contract tests; this binary capture remains
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
+    if ($CaptureProfessionalContextMenuFlow) {
+        # The professional viewport is a separate top-level window from the
+        # main editor.  Keep it visible and exercise the actual right-click
+        # surface over the fixture object; this is distinct from the main
+        # editor's list context-menu flow below.
+        [NeoEngE03Capture]::Focus($editor.Handle)
+        Start-Sleep -Milliseconds 500
+        $records.professional_context_before = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-professional-context-before.png")
+        # Right-click before selecting so itemAt() resolves the authored
+        # graphics item rather than the transform gizmo drawn above it.  The
+        # viewport itself then performs the normal selection as part of the
+        # context-menu event.
+        [NeoEngE03Capture]::RightClickWindow($editor.Handle, 1760, 860)
+        Start-Sleep -Milliseconds 700
+        $foregroundHandle = [NeoEngE03Capture]::Foreground()
+        # QMenu can be painted without a separately enumerable title on this
+        # Qt/Windows host.  Capture the real primary screen so the popup and
+        # its localized labels remain visible for human review.
+        $records.professional_context_menu = Save-ScreenCapture (Join-Path $OutputDirectory "07-professional-context-menu.png")
+        if ($foregroundHandle -eq $mainHandle -or $foregroundHandle -eq $editor.Handle) {
+            $records.professional_context_window_title = "foreground remained editor; screen capture requires human popup review"
+            Write-Warning "professional viewport context menu handle was not exposed; preserved primary-screen diagnostic"
+        } else {
+            $records.professional_context_window_title = "foreground popup handle $foregroundHandle"
+        }
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 600, 600)
+        Start-Sleep -Milliseconds 300
+    }
     if ($CaptureAssetPackFlow) {
         # Open the bundled, read-only catalog through the same Biblioteca
         # surface a user sees. Require its semantic dialog title before
