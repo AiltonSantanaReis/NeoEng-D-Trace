@@ -650,7 +650,9 @@ try {
         $records.material_applied = Save-Capture $editor.Handle (Join-Path $OutputDirectory "12-material-applied.png")
         # Persist the material through the real project controls, then reload
         # it so the final capture proves the user-visible round-trip.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 370, 90)
+        # The first toolbar action is Save Project/Save As; the direct
+        # scenario save action is the third button at native x=557.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 557, 90)
         Start-Sleep -Milliseconds 800
         $records.material_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-material-saved.png")
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 708, 90)
