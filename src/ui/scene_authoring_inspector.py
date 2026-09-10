@@ -309,6 +309,9 @@ class SceneAuthoringInspector(QWidget):
             None,
         )
 
+    def _status(self, pt: str, en: str) -> str:
+        return pt if self.current_lang == "pt" else en
+
     def _transform_widgets(self):
         return (
             self.position_x,
@@ -585,15 +588,25 @@ class SceneAuthoringInspector(QWidget):
                 )
             )
             self.status_message.emit(
-                "Camera updated" if changed else "No camera changes"
+                self._status(
+                    "Câmera atualizada" if changed else "Nenhuma alteração na câmera",
+                    "Camera updated" if changed else "No camera changes",
+                )
             )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _apply_parallax(self) -> None:
         layer_id = self.layer_combo.currentData()
         if not layer_id:
-            self.status_message.emit("Select a layer before editing parallax")
+            self.status_message.emit(
+                self._status(
+                    "Selecione uma camada antes de editar a paralaxe",
+                    "Select a layer before editing parallax",
+                )
+            )
             return
         try:
             changed = self.session.set_parallax_layer(
@@ -613,15 +626,29 @@ class SceneAuthoringInspector(QWidget):
                 )
             )
             self.status_message.emit(
-                "Parallax updated" if changed else "No parallax changes"
+                self._status(
+                    (
+                        "Paralaxe atualizada"
+                        if changed
+                        else "Nenhuma alteração na paralaxe"
+                    ),
+                    "Parallax updated" if changed else "No parallax changes",
+                )
             )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _apply_material(self) -> None:
         primary = self._primary()
         if primary is None:
-            self.status_message.emit("Select an object before editing its material")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um objeto antes de editar o material",
+                    "Select an object before editing its material",
+                )
+            )
             return
         try:
             changed = self.session.update_material(
@@ -641,16 +668,30 @@ class SceneAuthoringInspector(QWidget):
                 ),
             )
             self.status_message.emit(
-                "Material updated" if changed else "No material changes"
+                self._status(
+                    (
+                        "Material atualizado"
+                        if changed
+                        else "Nenhuma alteração no material"
+                    ),
+                    "Material updated" if changed else "No material changes",
+                )
             )
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _add_socket(self) -> None:
         layer_id = self.layer_combo.currentData()
         socket_id = self.socket_id.text().strip()
         if not layer_id or not socket_id:
-            self.status_message.emit("Socket ID and layer are required")
+            self.status_message.emit(
+                self._status(
+                    "ID do socket e camada são obrigatórios",
+                    "Socket ID and layer are required",
+                )
+            )
             return
         position = Point3Record(
             x=self.socket_x.value(), y=self.socket_y.value(), z=self.socket_z.value()
@@ -685,14 +726,21 @@ class SceneAuthoringInspector(QWidget):
                     size=Point3Record(x=32.0, y=32.0, z=1.0),
                 )
             self.session.add_socket(socket)
-            self.status_message.emit("Socket added")
+            self.status_message.emit(self._status("Socket adicionado", "Socket added"))
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _update_socket(self) -> None:
         socket_id = self.socket_combo.currentData()
         if not socket_id:
-            self.status_message.emit("Select a socket before editing")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um socket antes de editar",
+                    "Select a socket before editing",
+                )
+            )
             return
         try:
             self.session.update_socket_position(
@@ -703,25 +751,41 @@ class SceneAuthoringInspector(QWidget):
                     z=self.socket_z.value(),
                 ),
             )
-            self.status_message.emit("Socket updated")
+            self.status_message.emit(
+                self._status("Socket atualizado", "Socket updated")
+            )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _remove_socket(self) -> None:
         socket_id = self.socket_combo.currentData()
         if not socket_id:
-            self.status_message.emit("Select a socket before removing")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um socket antes de remover",
+                    "Select a socket before removing",
+                )
+            )
             return
         try:
             self.session.remove_socket(socket_id)
-            self.status_message.emit("Socket removed")
+            self.status_message.emit(self._status("Socket removido", "Socket removed"))
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def apply_transform(self) -> None:
         primary = self._primary()
         if primary is None:
-            self.status_message.emit("Select an object before editing its transform")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um objeto antes de editar sua transformação",
+                    "Select an object before editing its transform",
+                )
+            )
             return
         transform = SceneTransformRecord(
             position=Point3Record(
@@ -745,11 +809,19 @@ class SceneAuthoringInspector(QWidget):
         )
         try:
             if self.session.update_transform(primary.id, transform):
-                self.status_message.emit("Transform updated")
+                self.status_message.emit(
+                    self._status("Transformação atualizada", "Transform updated")
+                )
             else:
-                self.status_message.emit("No transform changes")
+                self.status_message.emit(
+                    self._status(
+                        "Nenhuma alteração na transformação", "No transform changes"
+                    )
+                )
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _apply_snap(self) -> None:
         try:
@@ -763,7 +835,9 @@ class SceneAuthoringInspector(QWidget):
                 )
             )
         except ValueError as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def update_language(self, language: str) -> None:
         for index, title in enumerate(
@@ -1013,7 +1087,9 @@ class SceneAuthoringInspector(QWidget):
         try:
             changed = self.session.delete_selected()
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
             return
         if changed:
             self.status_message.emit(

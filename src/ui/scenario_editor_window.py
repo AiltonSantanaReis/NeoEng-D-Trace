@@ -787,7 +787,11 @@ class ScenarioEditorWindow(QMainWindow):
             self.professional_session.mark_saved()
             if self.professional_viewport is not None:
                 self.professional_viewport.sync()
-            self.status_label.setText("Scenario reloaded")
+            self.status_label.setText(
+                "Cenário recarregado"
+                if self.current_lang == "pt"
+                else "Scenario reloaded"
+            )
             return True
         except (
             OSError,

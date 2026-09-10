@@ -69,6 +69,8 @@ def test_material_inspector_edit_is_transactional_and_undoable() -> None:
     session.set_selection(["lighting-receiver"])
     inspector = SceneAuthoringInspector(session)
     inspector.update_language("pt")
+    messages: list[str] = []
+    inspector.status_message.connect(messages.append)
     inspector.material_albedo.setText("#ff2200")
     inspector.material_normal_x.setValue(-0.4)
     inspector.material_normal_strength.setValue(0.9)
@@ -80,6 +82,7 @@ def test_material_inspector_edit_is_transactional_and_undoable() -> None:
     assert changed.material.albedo == "#ff2200"
     assert changed.material.normal_map_xy.x == -0.4
     assert session.can_undo is True
+    assert messages[-1] == "Material atualizado"
     assert session.undo() is True
     restored = next(
         item for item in session.document.objects if item.id == "lighting-receiver"

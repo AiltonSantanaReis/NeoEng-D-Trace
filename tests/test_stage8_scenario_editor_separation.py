@@ -149,6 +149,19 @@ def test_numeric_save_reload_and_export_are_real_v2_artifacts(
         _close(window, qt_app)
 
 
+def test_reload_status_is_localized_for_pt_br(tmp_path: Path, qt_app) -> None:
+    window, _scene = _window(tmp_path, qt_app)
+    try:
+        window.update_language("pt")
+        window.save_action.trigger()
+        qt_app.processEvents()
+        window.load_action.trigger()
+        qt_app.processEvents()
+        assert window.status_label.text() == "Cenário recarregado"
+    finally:
+        _close(window, qt_app)
+
+
 def test_camera_parallax_sockets_and_overlay_contracts_are_editable(
     tmp_path: Path, qt_app
 ) -> None:
