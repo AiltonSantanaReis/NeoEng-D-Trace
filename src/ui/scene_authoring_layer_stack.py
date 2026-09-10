@@ -145,6 +145,9 @@ class SceneAuthoringLayerStack(QWidget):
             if is_pt
             else "Select a layer to edit visibility, locking and order."
         )
+        # The initial widget construction is English by design, so a language
+        # switch must also rebuild the already-populated layer rows.
+        self.refresh()
 
     def _current_id(self) -> str | None:
         item = self.layer_list.currentItem()
@@ -233,13 +236,23 @@ class SceneAuthoringLayerStack(QWidget):
             parallax = next((p for p in getattr(self.session.document, "parallax_layers", ()) if p.layer_id == layer.id), None)
             count = sum(obj.layer_id == layer.id for obj in self.session.document.objects)
             depth = parallax.depth if parallax else 0
-            item = QListWidgetItem(f"Z{index:02d}  {layer.name}{suffix}\n{'Profundidade' if self.current_lang == 'pt' else 'Depth'} {depth:.2f} · {count} {'objetos' if self.current_lang == 'pt' else 'objects'}")
+            if self.current_lang == "pt":
+                object_label = "objeto" if count == 1 else "objetos"
+                depth_label = "Profundidade"
+                editability = "bloqueada" if layer.locked else "editável"
+                order_tooltip = f"Ordem da camada Z{index:02d} · {editability}"
+            else:
+                object_label = "object(s)"
+                depth_label = "Depth"
+                editability = "locked" if layer.locked else "editable"
+                order_tooltip = f"Layer order Z{index:02d} · {editability}"
+            item = QListWidgetItem(
+                f"Z{index:02d}  {layer.name}{suffix}\n"
+                f"{depth_label} {depth:.2f} · {count} {object_label}"
+            )
             item.setSizeHint(QSize(200, 64))
             item.setData(Qt.ItemDataRole.UserRole, layer.id)
-            item.setToolTip(
-                f"Layer order Z{index:02d} · "
-                f"{'locked' if layer.locked else 'editable'}"
-            )
+            item.setToolTip(order_tooltip)
             self.layer_list.addItem(item)
             if layer.id == selected:
                 selected_row = index

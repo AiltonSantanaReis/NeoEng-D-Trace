@@ -311,9 +311,14 @@ class SceneAssetLibrary(QWidget):
                         else _state_label(inspection.state)
                     )
                     size_text = f" · {size[0]}×{size[1]}" if size else ""
+                    object_count_text = (
+                        f"{uses} {'objeto' if uses == 1 else 'objetos'}"
+                        if self.current_lang == "pt"
+                        else f"{uses} object(s)"
+                    )
                     item = QListWidgetItem(
                         f"{state}  {asset.id} — {asset.path}"
-                        f" · {uses} object(s){size_text}"
+                        f" · {object_count_text}{size_text}"
                     )
                     item.setData(Qt.ItemDataRole.UserRole, asset.id)
                     item.setForeground(QBrush(QColor(_STATE_COLORS[inspection.state])))
@@ -503,9 +508,17 @@ class SceneAssetLibrary(QWidget):
             changed = self.session.add_asset(asset)
             self._select_id(asset.id)
             self.status_message.emit(
-                f"Asset imported into library: {asset.id}"
+                (
+                    f"Asset importado para a biblioteca: {asset.id}"
+                    if self.current_lang == "pt"
+                    else f"Asset imported into library: {asset.id}"
+                )
                 if changed
-                else "Asset import made no changes"
+                else (
+                    "A importação do asset não alterou a biblioteca"
+                    if self.current_lang == "pt"
+                    else "Asset import made no changes"
+                )
             )
             return changed
         except (OSError, ValueError) as exc:

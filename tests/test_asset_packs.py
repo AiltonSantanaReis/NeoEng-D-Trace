@@ -26,6 +26,8 @@ from src.persistence.scene_authoring_schema import (
 )
 from src.ui.asset_pack_dialog import AssetPackDialog
 from src.ui.scene_asset_panel import SceneAssetLibrary
+from src.ui.scene_authoring_inspector import SceneAuthoringInspector
+from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
 
@@ -163,6 +165,14 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
         assert len(library.session.document.assets) == 1
         assert len(list((library.project_root / "assets/scene").glob("*.png"))) == 1
         assert viewport.place_asset_from_library(imported.id)
+        assert "1 objeto" in library.asset_list.currentItem().text()
+        layer_stack = SceneAuthoringLayerStack(library.session)
+        layer_stack.update_language("pt")
+        assert "Profundidade" in layer_stack.layer_list.currentItem().text()
+        assert "1 objeto" in layer_stack.layer_list.currentItem().text()
+        layer_stack.close()
+        layer_stack.deleteLater()
+        app.processEvents()
         obj = library.session.document.objects[0]
         assert not viewport._items[obj.id]._pixmap.isNull()
         assert library.session.undo() and not library.session.document.objects
@@ -179,6 +189,18 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
     finally:
         dialog.close()
         viewport.close()
+        app.processEvents()
+
+
+def test_professional_inspector_empty_state_stays_localized(app, library):
+    inspector = SceneAuthoringInspector(library.session)
+    try:
+        inspector.update_language("pt")
+        assert inspector.selection_label.text() == "Nenhum objeto selecionado"
+        assert inspector.spatial_summary.text() == "Camada/profundidade: —"
+    finally:
+        inspector.close()
+        inspector.deleteLater()
         app.processEvents()
 
 

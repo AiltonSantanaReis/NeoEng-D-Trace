@@ -758,7 +758,9 @@ class ScenarioEditorWindow(QMainWindow):
                 self.professional_session.document, self.professional_scene_path
             )
             self.professional_session.mark_saved()
-            self.status_label.setText("Scenario saved")
+            self.status_label.setText(
+                "Cenário salvo" if self.current_lang == "pt" else "Scenario saved"
+            )
             return True
         except (OSError, ValueError, ProjectPersistenceError) as exc:
             self.status_label.setText(
@@ -973,7 +975,11 @@ class ScenarioEditorWindow(QMainWindow):
             and self.professional_session.is_dirty
             and "unsaved" not in message.lower()
         ):
-            suffix = " — unsaved changes"
+            suffix = (
+                " — alterações não salvas"
+                if self.current_lang == "pt"
+                else " — unsaved changes"
+            )
         self.status_label.setText(message + suffix)
 
     def _open_project_hint(self) -> None:

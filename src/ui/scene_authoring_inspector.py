@@ -329,12 +329,20 @@ class SceneAuthoringInspector(QWidget):
             self.selection_label.setText(
                 ", ".join(self.session.selection.ids)
                 if self.session.selection.ids
-                else "No object selected"
+                else (
+                    "Nenhum objeto selecionado"
+                    if self.current_lang == "pt"
+                    else "No object selected"
+                )
             )
             self.spatial_summary.setText(
                 self._spatial_summary(primary)
                 if primary is not None
-                else "Layer/depth: —"
+                else (
+                    "Camada/profundidade: —"
+                    if self.current_lang == "pt"
+                    else "Layer/depth: —"
+                )
             )
             for widget in self._transform_widgets():
                 widget.setEnabled(enabled)
@@ -967,14 +975,19 @@ class SceneAuthoringInspector(QWidget):
         self.parallax_repeat_y.setText(self.repeat_y_label)
         self.parallax_mirror_x.setText(self.mirror_x_label)
         self.parallax_mirror_y.setText(self.mirror_y_label)
+        self.refresh()
 
     def _undo(self) -> None:
         if self.session.undo():
-            self.status_message.emit("Undo applied")
+            self.status_message.emit(
+                "Desfazer aplicado" if self.current_lang == "pt" else "Undo applied"
+            )
 
     def _redo(self) -> None:
         if self.session.redo():
-            self.status_message.emit("Redo applied")
+            self.status_message.emit(
+                "Refazer aplicado" if self.current_lang == "pt" else "Redo applied"
+            )
 
     def _delete(self) -> None:
         count = len(self.session.selection.ids)
@@ -984,6 +997,16 @@ class SceneAuthoringInspector(QWidget):
             self.status_message.emit(user_error_message(exc, operation="edit"))
             return
         if changed:
-            self.status_message.emit(f"Deleted {count} object(s)")
+            self.status_message.emit(
+                (
+                    f"{count} objeto(s) excluído(s)"
+                    if self.current_lang == "pt"
+                    else f"Deleted {count} object(s)"
+                )
+            )
         else:
-            self.status_message.emit("No objects selected")
+            self.status_message.emit(
+                "Nenhum objeto selecionado"
+                if self.current_lang == "pt"
+                else "No objects selected"
+            )
