@@ -29,16 +29,16 @@ O procedimento foi orientado por:
 | AUDIT-UI-01 | Abrir projeto/editor e entrar no fluxo de autoria | `sequence-studio-v3/06-sequence-studio-camera.png` | PASS | Janela nativa e timeline visíveis. |
 | AUDIT-UI-02 | Biblioteca de assets e ferramenta vetorial | `vector-v4/13-vector-contour-created.png` | PASS | Asset selecionado, contorno detectado/corrigido e objeto criado. |
 | AUDIT-UI-03 | Criar tilemap, pintar, salvar e reabrir | `tilemap-v3/11-tilemap-reopened.png` | PASS | 2 células persistiram após reabertura; mensagens em PT-BR. |
-| AUDIT-UI-04 | Criar/editar tileset dedicado | — | PENDING_EVIDENCE | Há contratos/exportadores de tileset e o tilemap usa tipos internos, mas não foi encontrada uma tela nativa dedicada de autoria de tileset nesta build. Não classificar como PASS. |
+| AUDIT-UI-04 | Criar/editar tileset dedicado | `tileset-v5/10-tileset-reopened.png` | PASS | Atlas real, 300 tiles gerados, `tileset.json` salvo, limpo e reaberto com os 300 tiles preservados. |
 | AUDIT-UI-05 | Criar colisores box/circle, salvar e reabrir | `collider-v2/09-collider-reopened.png` | PASS | 2 colisores persistiram após reabertura. |
 | AUDIT-UI-06 | Criar região/obstáculo, fazer bake, salvar e reabrir | `navmesh-v3/09-navmesh-reopened.png` | PASS | Região e obstáculo persistem. Limitação observada: o bake é transitório e precisa ser executado novamente depois de reabrir. |
 | AUDIT-UI-07 | Criar entidade, prefab, instância, override, atualizar e desvincular | `entities-v8/15-prefab-detached-state.png` | PASS | Estados de override, versão do prefab e detach foram observados. |
 | AUDIT-UI-08 | Alternar renderer preview/authoring | `renderer-v2/08-renderer-authoring.png` | PASS | HUD nativo alternou `PREVIEW` e `AUTHORING`; preview ficou somente leitura. |
 | AUDIT-UI-09 | Selecionar objeto e editar material/albedo | `material-v6-v2object/12-material-applied.png` | PASS | Edição real com fixture de objeto V2 e mensagem de alteração não salva. Fixture V1 não editável foi preservada como diagnóstico, não como sucesso. |
-| AUDIT-UI-10 | Editar parallax de camada | `parallax-v5-v2object/07-parallax-applied.png` | PASS | Translação alterada para `0,7500` e aplicação confirmada. Limitação: o clique de profundidade não alterou o valor e não foi promovido a sucesso. |
+| AUDIT-UI-10 | Editar parallax de camada | `parallax-v6-depth-field/07-parallax-applied.png` | PASS | Profundidade e translação alteradas para `0,7500`; aplicação e mensagem de alteração não salva confirmadas. |
 | AUDIT-UI-11 | Timeline com câmera, luz, partículas/chuva e texto/cutscene | `sequence-studio-v3/09-sequence-studio-text-clip-real.png` | PASS | Quatro tracks visíveis; clips de Luz, Chuva e Texto/cutscene adicionados por fluxo real. |
-| AUDIT-UI-12 | Menu de contexto do mouse | `context-menu-v5/06-context-menu-layer.png` | PENDING_EVIDENCE | Clique direito e fallback `Shift+F10` foram tentados. O popup não foi exposto como janela top-level para a captura; a imagem é preservada, mas não comprova o menu. |
-| AUDIT-UI-13 | Localização PT-BR de painéis, controles e tooltips | Capturas `tilemap-v3`, `collider-v2`, `navmesh-v3`, `parallax-v5-v2object` | PASS | Textos visíveis dos painéis e mensagens verificadas em português. O menu de contexto permanece pendente. |
+| AUDIT-UI-12 | Menu de contexto do mouse | `context-menu-c21/06-context-menu-layer.png` | PASS | Clique direito nativo no primeiro objeto da lista principal abriu o popup real com `Propriedades`, `Modificar Forma` e `Exportar`. |
+| AUDIT-UI-13 | Localização PT-BR de painéis, controles e tooltips | Capturas `tilemap-v3`, `collider-v2`, `navmesh-v3`, `parallax-v6-depth-field`, `context-menu-c21` | PASS | Painéis, mensagens, popup de contexto e contratos de tooltip verificados em português. |
 | AUDIT-UI-14 | Build nova, execução do binário e smoke runtime | `release/user-flow-audit-final-20260910/smoke/portable-smoke-report.json` | PASS | 11 checks com status `SUCCESS`; ZIP final e hash confirmados. |
 
 ## Evidências principais
@@ -51,15 +51,20 @@ O procedimento foi orientado por:
 - [Renderer em preview](../../artifacts/user-flow-binary-20260910/renderer-v2/07-renderer-preview.png) — SHA-256 `0D6E25E9C9B77FF1DF42E1A0454269518584B60545968615CF915215AD309834`.
 - [Material aplicado](../../artifacts/user-flow-binary-20260910/material-v6-v2object/12-material-applied.png) — SHA-256 `33F53FC1B1DBACED8C2605B9DFF9CE99AA83C9B8198681F94FC8CD1607DBD3B3`.
 - [Parallax atualizado](../../artifacts/user-flow-binary-20260910/parallax-v5-v2object/07-parallax-applied.png) — SHA-256 `869731A04C426ED998CA6813F608AC69C3F8E689730EF8EEEE8A3A8906D6322D`.
+- [Parallax com profundidade e translação atualizadas](../../artifacts/user-flow-binary-20260910/parallax-v6-depth-field/07-parallax-applied.png) — SHA-256 `F5165D52539A322588D83A1E4871450BE207C3ED990B0DB9CD705B2004C819EE`.
+- [Tileset dedicado gerado](../../artifacts/user-flow-binary-20260910/tileset-v5/07-tileset-generated.png) — SHA-256 `1DE10F53E0FA93AEB4B5529611DAB4E64A4C7F9B06154EDB3F31E61C5B47A6C9`.
+- [Tileset dedicado salvo](../../artifacts/user-flow-binary-20260910/tileset-v5/08-tileset-saved.png) — SHA-256 `C6F5D5E23E02849DFA6C667D697082ACDB8A7D85AF4678A51FDE30D245D9C025`.
+- [Tileset dedicado reaberto](../../artifacts/user-flow-binary-20260910/tileset-v5/10-tileset-reopened.png) — SHA-256 `0889C84E25266F8748F5FE837535582587E585802C9E0CB87CD6783DA9BC9C9C`.
 - [Timeline com Texto/cutscene](../../artifacts/user-flow-binary-20260910/sequence-studio-v3/09-sequence-studio-text-clip-real.png) — SHA-256 `9C2004734FB53EF2E4FCD2A2F333BA2CE09A035B643B08A0D72E04B3E821A183`.
-- [Tentativa preservada do menu de contexto](../../artifacts/user-flow-binary-20260910/context-menu-v5/06-context-menu-layer.png) — SHA-256 `234D5DE7904A553AAE47C9DB9C9DD3550E39C9BF97BDFB769F4F341873B8C60C`; não comprova popup.
+- [Menu de contexto nativo em PT-BR](../../artifacts/user-flow-binary-20260910/context-menu-c21/06-context-menu-layer.png) — SHA-256 `C609C6AACA9F5A95D94619471F565A3E62E7F235863BA67757FDF1DF41C1C4DF`.
+- [Tentativa histórica preservada do menu](../../artifacts/user-flow-binary-20260910/context-menu-v5/06-context-menu-layer.png) — SHA-256 `234D5DE7904A553AAE47C9DB9C9DD3550E39C9BF97BDFB769F4F341873B8C60C`; mantida como diagnóstico anterior.
 
 ## Testes automatizados
 
 Com o interpretador correto da workspace:
 
 ```text
-2151 passed, 2 skipped, 1 warning in 69.80s
+2154 passed, 2 skipped, 1 warning in 64.04s
 ```
 
 Suíte focal pós-E13:
@@ -72,18 +77,15 @@ A única advertência registrada é a construção depreciada de `QMouseEvent` e
 
 ## Build final
 
-- Arquivo: [NeoEng-D-Trace-0.3.0-win64-portable.zip](../../release/user-flow-audit-final-20260910/NeoEng-D-Trace-0.3.0-win64-portable.zip)
-- SHA-256: `485CB2AA57A08071C9B6948FDDFFAD45FB19FE9709D26F052725813B270EEBB3`
-- Smoke: [portable-smoke-report.json](../../release/user-flow-audit-final-20260910/smoke/portable-smoke-report.json), `status: SUCCESS`, versão `0.3.0`.
+- Arquivo: [NeoEng-D-Trace-0.3.0-win64-portable.zip](../../release/user-flow-audit-c21bbac-20260910/NeoEng-D-Trace-0.3.0-win64-portable.zip)
+- SHA-256: `9E0C89C3F7743C3294D0C675EEF913A3169BA477DC935B3EF5F33BB102DB68D9`
+- Smoke: [portable-smoke-report.json](../../release/user-flow-audit-c21bbac-20260910/smoke/portable-smoke-report.json), `status: SUCCESS`, versão `0.3.0`.
 - O empacotamento emitiu o warning de hidden import `tzdata` não encontrado; o processo não falhou e o smoke passou, mas a observação deve permanecer para futura limpeza do empacotamento.
-- Commit auditado: `fe8b7238fe806a635dba3f7f4fe39acc433193ee` (`test: capture post-e13 binary user flows`).
+- Commit auditado: `c21bbacfac377e179edb57dc0c928f407ad9aedc` (`feat: add tileset authoring and native flow evidence`).
 
 ## Próximas ações obrigatórias
 
-1. Expor/capturar o menu de contexto como evidência nativa real, incluindo suas descrições em PT-BR.
-2. Definir se o produto terá um editor de tileset dedicado; se sim, implementar ou evidenciar o fluxo nativo de criar, editar, salvar e reabrir.
-3. Corrigir ou investigar o controle de profundidade do parallax, pois a alteração testada não modificou o valor.
-4. Decidir se o bake da NavMesh deve ser persistido ou se a necessidade de rebake após reabertura é comportamento documentado.
-5. Reexecutar a build e a captura completa após essas correções, preservando os artefatos desta auditoria.
+1. Decidir se o bake da NavMesh deve ser persistido ou se a necessidade de rebake após reabertura é comportamento documentado.
+2. Reexecutar a build e a captura completa após qualquer alteração adicional, preservando os artefatos desta auditoria.
 
-Esta auditoria não declara o projeto inteiro concluído. Os itens `AUDIT-UI-04` e `AUDIT-UI-12` permanecem `PENDING_EVIDENCE`, e as limitações registradas não foram ocultadas.
+Esta auditoria não declara o projeto inteiro concluído. A necessidade de rebake da NavMesh e o warning de `tzdata` permanecem documentados; nenhuma limitação foi ocultada.

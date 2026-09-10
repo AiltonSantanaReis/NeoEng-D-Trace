@@ -20,6 +20,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$tilesetFlow = $CaptureContextMenuFlow -and $OutputDirectory -match "tileset"
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.Windows.Forms
 $drawingAssembly = [System.Drawing.Bitmap].Assembly.Location
@@ -216,6 +217,19 @@ if ($CaptureVectorContourFlow) {
     [System.IO.File]::WriteAllBytes((Join-Path $fixtureRoot "vector-contour.ndtscene.json"), $sceneBytes)
     $projectPath = (Resolve-Path -LiteralPath $vectorProject).Path
 }
+if ($tilesetFlow) {
+    $sourceProjectDir = Split-Path -Path $projectPath -Parent
+    $fixtureRoot = Join-Path (Resolve-Path -LiteralPath $OutputDirectory).Path "tileset-fixture"
+    New-Item -ItemType Directory -Path $fixtureRoot -Force | Out-Null
+    Get-ChildItem -LiteralPath $sourceProjectDir -Force | ForEach-Object {
+        Copy-Item -LiteralPath $_.FullName -Destination $fixtureRoot -Recurse -Force
+    }
+    $fixtureAssetDir = Join-Path $fixtureRoot "assets\scene"
+    New-Item -ItemType Directory -Path $fixtureAssetDir -Force | Out-Null
+    $sourceFixture = (Resolve-Path -LiteralPath "docs\evidence\artifacts\roi-grabcut-collision\source.png").Path
+    Copy-Item -LiteralPath $sourceFixture -Destination (Join-Path $fixtureAssetDir "tileset-atlas.png") -Force
+    $projectPath = (Get-ChildItem -LiteralPath $fixtureRoot -Filter "*.ndtproj" -File | Select-Object -First 1 -ExpandProperty FullName)
+}
 $startArguments = @()
 if ($DirectProjectLoad) {
     $directProjectFile = if (Test-Path -LiteralPath $projectPath -PathType Leaf) {
@@ -298,7 +312,7 @@ try {
     # covered by the focused Qt contract tests; this binary capture remains
     # the authoritative visual proof of the real shipped editor surface.
     $records.asset_library_filter_contract = "covered by focused Qt tests; controls visible in asset_library_ready"
-    if ($CaptureContextMenuFlow) {
+    if ($CaptureContextMenuFlow -and -not $tilesetFlow) {
         # The main editor and professional editor are separate top-level
         # windows. Hide the latter for this main-editor interaction so the
         # native list and its popup are actually foreground surfaces.
@@ -344,7 +358,7 @@ try {
         [NeoEngE03Capture]::ClickWindow($mainHandle, 600, 600)
         [NeoEngE03Capture]::Restore($editor.Handle)
     }
-    if ($CaptureSequenceStudioFlow) {
+    if ($CaptureSequenceStudioFlow -and -not $tilesetFlow) {
         [NeoEngE03Capture]::Focus($editor.Handle)
         # A real user reaches the integrated studio tools by creating/selecting
         # a timeline clip.  The clip selection emits editor_requested and
@@ -410,6 +424,30 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1315)
         Start-Sleep -Milliseconds 900
         $records.vector_contour_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-vector-contour-created.png")
+    }
+    if ($tilesetFlow) {
+        Enter-AdvancedTool $editor.Handle 310
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 380)
+        Start-Sleep -Milliseconds 600
+        $records.tileset_panel_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-tileset-panel-entry.png")
+        $atlasPath = Join-Path $fixtureRoot "assets\scene\tileset-atlas.png"
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3350, 313)
+        [System.Windows.Forms.SendKeys]::SendWait("^a")
+        [System.Windows.Forms.Clipboard]::SetText($atlasPath)
+        [System.Windows.Forms.SendKeys]::SendWait("^v")
+        [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3310, 625)
+        Start-Sleep -Milliseconds 900
+        $records.tileset_generated = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-tileset-generated.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3520, 625)
+        Start-Sleep -Milliseconds 900
+        $records.tileset_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tileset-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3105, 625)
+        Start-Sleep -Milliseconds 500
+        $records.tileset_new = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tileset-new.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3715, 625)
+        Start-Sleep -Milliseconds 900
+        $records.tileset_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-tileset-reopened.png")
     }
     if ($CaptureTilemapFlow) {
         # A user first creates/selects a timeline clip, opens Ferramentas,
