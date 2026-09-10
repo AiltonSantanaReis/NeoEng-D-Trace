@@ -8,6 +8,7 @@ from typing import Any
 from PySide6.QtCore import QByteArray, QMimeData, QSignalBlocker, Qt, Signal
 from PySide6.QtGui import QBrush, QColor, QDrag, QIcon
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QComboBox,
     QFileDialog,
     QHBoxLayout,
@@ -119,6 +120,8 @@ class SceneAssetLibrary(QWidget):
         self.category_combo.addItem("Vector", "vector")
         self.asset_list = _AssetListWidget()
         self.asset_list.setDragEnabled(True)
+        self.asset_list.setDragDropMode(QAbstractItemView.DragDropMode.DragOnly)
+        self.asset_list.setDefaultDropAction(Qt.DropAction.CopyAction)
         self.asset_list.setObjectName("scene_asset_library_list")
         self.asset_list.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
         self.asset_list.setMinimumHeight(140)

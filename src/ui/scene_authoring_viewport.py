@@ -525,6 +525,10 @@ class SceneAuthoringViewport(QGraphicsView):
         self.setScene(self.graphics_scene)
         self.setObjectName("professional_scene_viewport")
         self.setAcceptDrops(True)
+        # QAbstractScrollArea routes native drag/drop through its viewport child.
+        # Keep both surfaces enabled so a real OS drag from the asset list reaches
+        # the same drop contract exercised by the direct event tests.
+        self.viewport().setAcceptDrops(True)
         self.setDragMode(QGraphicsView.DragMode.NoDrag)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QDropEvent, QImage
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QAbstractItemView, QApplication
 
 from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
@@ -244,6 +244,10 @@ def test_asset_library_search_categories_thumbnails_and_drag_contract(
     panel = SceneAssetLibrary(session, root)
     try:
         assert panel.asset_list.dragEnabled()
+        assert (
+            panel.asset_list.dragDropMode()
+            == QAbstractItemView.DragDropMode.DragOnly
+        )
         assert panel.asset_list.count() == 2
         assert not panel.asset_list.item(0).icon().isNull()
 
@@ -283,6 +287,8 @@ def test_asset_library_drag_drop_places_existing_asset_without_duplicate_record(
     viewport.show()
     qt_app.processEvents()
     try:
+        assert viewport.acceptDrops()
+        assert viewport.viewport().acceptDrops()
         mime = _AssetListWidget.mime_for_asset("hero")
         event = QDropEvent(
             QPointF(160, 140),

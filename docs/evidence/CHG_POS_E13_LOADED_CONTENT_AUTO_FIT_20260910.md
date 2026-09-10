@@ -1,7 +1,7 @@
 # Registro de mudança pós-E13 — enquadramento de conteúdo carregado
 
 **ID:** CHG-POS-E13-002  
-**Status:** `IN_PROGRESS`  
+**Status:** `PASS`
 **Data:** 2026-09-10  
 **Escopo:** ajuste fino do estúdio de cenários/parallax após o fechamento do E13  
 **Worktree:** `build/e01-independent-scene-20260908`  
@@ -73,8 +73,20 @@ preserva integralmente o transform e emite `Enquadrar Tudo` em português.
 A build nativa, a reabertura real após a correção e a suíte oficial completa
 continuam pendentes neste registro.
 
-## Aprovação e encerramento
+## Evidência final do commit e do build
 
-O estado permanece `IN_PROGRESS` até existir commit, build limpa identificada,
-execução nativa com cliques reais, captura humana, persistência/reabertura e
-revisão dos artefatos. E13 permanece fechado.
+- Commit auditado: `9e0c50cc5375a063e1322c38ebe0e5ace3fa49c9`.
+- Suíte focada: **31 passed**; suíte oficial sem filtros: **2168 passed, 2 skipped, 1 warning**.
+- Build limpa: `build/_clean-asset-fit-20260910/release/asset-fit-loaded-content-20260910/`.
+- SHA-256 do executável: `40BF5770A3AA25248BBBB3C922057F486FB27D8C2A8C0C70C101B37E95765C4F`.
+- Smoke portátil: `SUCCESS` em 11 checks; continuidade: `PASS`.
+
+Na execução nativa com cliques reais, o cenário com seis assets foi salvo e
+fechado. Na reabertura do mesmo projeto, a captura mostrou `Z00 Default · 1
+objeto`, o asset totalmente enquadrado no viewport e o status `Enquadrar Tudo:
+1 objeto(s) enquadrado(s)`. O inspetor não reintroduziu seleção nem transformou
+os dados; o sidecar manteve `schema_version: 2`, seis assets, um objeto, escala
+`1,1,1` e o mesmo SHA-256 antes/depois (`E9D056FD2E05FD1AF970B6C858A4F81D9FFA7A63F4BFDB29DFACAF7B9DDF41C1`).
+
+Os critérios desta mudança estão `PASS`. E13 permanece fechado; a classificação
+do piloto visual continua separada e ainda é `PENDING_EVIDENCE`.

@@ -74,6 +74,49 @@ sessão; não são mocks nem imagens de referência.
 
 O sidecar observado em `artifacts/native-asset-localization-project/floresta-localization-pilot.ndtscene.json` contém `schema_version: 2`, o asset com SHA-256, `layer_default`, um objeto em `objects` e uma entrada em `parallax_layers`. Isso comprova a persistência do estado salvo, não apenas a aparência da captura.
 
+## Evidência nativa do build pós-ajustes de enquadramento
+
+Esta é a execução atual do binário gerado a partir do commit
+`9e0c50cc5375a063e1322c38ebe0e5ace3fa49c9`; ela não substitui as evidências
+históricas acima.
+
+- Diretório: `build/_clean-asset-fit-20260910/release/asset-fit-loaded-content-20260910/`.
+- Executável SHA-256: `40BF5770A3AA25248BBBB3C922057F486FB27D8C2A8C0C70C101B37E95765C4F`.
+- Pacote portátil SHA-256: `2716086E85A67731245A2C97BD0463457A3710342E1D81588C141F82B163AFF8`.
+- `continuity-provenance.json`: `PASS`; `portable-smoke-report.json`: `SUCCESS` com 11 checks.
+
+No fluxo nativo em português, a coleção `Floresta · 0.1.0-piloto` apresentou
+seis miniaturas reais e suas prévias individuais:
+
+1. Pedra com musgo — `Rochas · 1254 × 1254 px`.
+2. Arbusto com flores — `Vegetação · 1254 × 1254 px`.
+3. Tronco caído — `Madeira · 1536 × 1024 px`.
+4. Samambaia — `Vegetação · 1254 × 1254 px`.
+5. Cogumelos — `Vegetação · 1254 × 1254 px`.
+6. Pinheiro — `Árvores · 1254 × 1254 px`.
+
+As descrições PT-BR foram exibidas nas seis prévias, incluindo canal alpha,
+dimensões e o aviso de revisão visual. Cada asset foi adicionado por clique em
+`Adicionar ao projeto`; a biblioteca chegou a `Assets: 6 · Exibindo: 6 ·
+Problemas: 0`. Em seguida, um asset foi inserido pela Biblioteca com clique real:
+o viewport mostrou o Cogumelos completamente enquadrado, o inspetor mostrou
+`Escala X/Y/Z = 1,0000`, a camada `Default` mostrou um objeto e o status exibiu
+`Asset colocado`.
+
+O cenário foi salvo, fechado e reaberto com o mesmo executável. A captura de
+reabertura mostrou `Z00 Default · 1 objeto` e o Cogumelos reenquadrado. O sidecar
+`artifacts/native-asset-human-review-loaded-content-20260910/floresta-human-review-loaded-content.ndtscene.json`
+foi comparado antes/depois: `schema_version: 2`, seis assets, um objeto, escala
+`1,1,1` e SHA-256
+`E9D056FD2E05FD1AF970B6C858A4F81D9FFA7A63F4BFDB29DFACAF7B9DDF41C1` nas duas
+leituras. As capturas foram produzidas pela janela nativa em execução e exibidas
+durante a sessão de validação; não são imagens de referência nem mock.
+
+A suíte oficial do commit atual registrou **2168 passed, 2 skipped, 1 warning**
+em `artifacts/asset-fit-loaded-content-pytest-20260910.log`. O warning de teste
+é a depreciação conhecida do construtor `QMouseEvent`; o empacotamento também
+registrou `Hidden import "tzdata" not found!`. Ambos permanecem explícitos.
+
 ## Pendências observadas na execução nativa
 
 - O arraste direto da linha da biblioteca para o viewport foi tentado na execução anterior e permaneceu em `0 object(s)`. O resultado foi preservado como falha observada; o botão de inserção é um fallback híbrido funcional, não uma correção declarada do arraste.
@@ -93,6 +136,12 @@ O validador nativo genérico continua `INCOMPLETE` porque espera eventos do edit
 de referência que não pertencem a este fluxo; portanto ele não é usado como prova
 de aceite do catálogo. Também permanecem pendentes a medição de DPI/desempenho e a
 revisão artística humana.
+
+A validação atual não transforma a aprovação funcional em aprovação artística: o
+halo/fringe nas bordas dos PNGs continua documentado. O caminho profissional é
+preservar estes originais e preparar uma revisão visual separada, com recorte
+alpha e iluminação aprovados por revisão humana; não aplicar limpeza automática
+destrutiva no catálogo atual.
 
 ## Próxima prova obrigatória
 

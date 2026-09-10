@@ -1,7 +1,7 @@
 # Registro de mudança pós-E13 — enquadramento inicial de asset
 
 **ID:** CHG-POS-E13-001  
-**Status:** `IN_PROGRESS`  
+**Status:** `PASS`
 **Data:** 2026-09-10  
 **Escopo:** ajuste fino do estúdio de cenários/parallax após o fechamento do E13  
 **Worktree:** `build/e01-independent-scene-20260908`  
@@ -61,27 +61,47 @@ Módulo alterado: `src/ui/scene_authoring_viewport.py`.
 
 ## Testes executados
 
-Execução focada (`DIAGNOSTIC_ONLY`):
+Execução focada (`DIAGNOSTIC_ONLY`) no commit `9e0c50cc5375a063e1322c38ebe0e5ace3fa49c9`:
 
 - `tests/test_asset_packs.py`
 - `tests/test_stage3_professional_scene_editor.py`
 - `tests/test_p2d_03c_viewport.py`
-- Resultado: **30 passed**.
+- Resultado: **31 passed**.
 
-Suíte oficial completa, sem filtros: **2167 passed, 2 skipped, 1 warning**.
+Suíte oficial completa, sem filtros: **2168 passed, 2 skipped, 1 warning**.
 
 O warning é a depreciação já conhecida do construtor `QMouseEvent` em
 `tests/test_merge_coverage_authoring_contracts.py:1341`; não foi ocultado nem
 reclassificado.
 
-Os testes novos cobrem escala 1:1, zoom transitório inferior a 1, mensagem PT-BR
-e importação real pelo caminho de drop. A build nativa e a captura humana do
-comportamento pós-mudança ainda estão pendentes neste registro.
+Os testes cobrem escala 1:1, zoom transitório, mensagem PT-BR, importação por
+arquivo e inserção pela biblioteca. O resultado oficial está preservado em
+`artifacts/asset-fit-loaded-content-pytest-20260910.log`.
+
+## Evidência nativa e artefatos
+
+- Build limpa gerada a partir do commit `9e0c50cc5375a063e1322c38ebe0e5ace3fa49c9`.
+- Executável: `build/_clean-asset-fit-20260910/release/asset-fit-loaded-content-20260910/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe`.
+- SHA-256 do executável: `40BF5770A3AA25248BBBB3C922057F486FB27D8C2A8C0C70C101B37E95765C4F`.
+- Pacote portátil SHA-256: `2716086E85A67731245A2C97BD0463457A3710342E1D81588C141F82B163AFF8`.
+- `continuity-provenance.json`: `PASS`; `portable-smoke-report.json`: `SUCCESS`, 11 checks.
+
+No executável nativo, com cliques reais, o primeiro asset foi inserido pela
+Biblioteca. O Cogumelos ficou totalmente visível no viewport, com `Escala X/Y/Z
+= 1,0000`, `1 objeto` na camada `Default` e status `Asset colocado`. O mesmo
+projeto foi salvo, fechado, reaberto e capturado novamente; o viewport reenquadrou
+o conteúdo carregado sem alterar o transform autoral.
+
+O sidecar da fixture de revisão foi conferido antes e depois da reabertura:
+`schema_version: 2`, seis assets, um objeto, escala `1,1,1` e SHA-256
+`E9D056FD2E05FD1AF970B6C858A4F81D9FFA7A63F4BFDB29DFACAF7B9DDF41C1` em ambas
+as leituras. As capturas foram exibidas pelo estado real da janela nativa durante
+a sessão; não foram substituídas por mock ou imagem de referência.
 
 ## Aprovação e encerramento
 
-A solicitação do usuário autoriza operacionalmente a aplicação do ajuste. O
-registro permanece `IN_PROGRESS` até haver um novo commit, build identificada,
-execução nativa com cliques reais, captura humana, persistência/reabertura e
-revisão dos artefatos. Não declarar este registro, o pacote de assets ou uma
-etapa do projeto como `COMPLETED` antes dessas evidências.
+A solicitação do usuário autorizou operacionalmente a aplicação do ajuste. Os
+critérios desta mudança estão `PASS` no commit, nos testes, no build, na execução
+nativa, na captura humana e na persistência/reabertura. Isso não aprova o pacote
+visual nem encerra uma etapa do projeto: a revisão artística dos PNGs e outras
+pendências de catálogo continuam governadas pelo registro do piloto.
