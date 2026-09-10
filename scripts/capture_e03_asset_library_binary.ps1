@@ -502,7 +502,10 @@ try {
         $records.collider_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-collider-reopened.png")
     }
     if ($CaptureNavMeshFlow) {
-        Enter-AdvancedTool $editor.Handle 650
+        # Tileset is now a first-class tab between Formas and Colisão.  Keep
+        # Navigation explicit at its observed native-DPI position instead of
+        # reusing the pre-Tileset coordinate that selected Colisão.
+        Enter-AdvancedTool $editor.Handle 800
         $records.navmesh_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "06-navmesh-entry.png")
         # The native panel places Região, Obstáculo, Bake, Salvar and Reabrir
         # on one action row near the lower half of the inspector.  Use the

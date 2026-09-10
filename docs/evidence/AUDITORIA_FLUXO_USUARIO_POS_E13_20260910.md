@@ -31,7 +31,7 @@ O procedimento foi orientado por:
 | AUDIT-UI-03 | Criar tilemap, pintar, salvar e reabrir | `tilemap-v3/11-tilemap-reopened.png` | PASS | 2 células persistiram após reabertura; mensagens em PT-BR. |
 | AUDIT-UI-04 | Criar/editar tileset dedicado | `tileset-v5/10-tileset-reopened.png` | PASS | Atlas real, 300 tiles gerados, `tileset.json` salvo, limpo e reaberto com os 300 tiles preservados. |
 | AUDIT-UI-05 | Criar colisores box/circle, salvar e reabrir | `collider-v2/09-collider-reopened.png` | PASS | 2 colisores persistiram após reabertura. |
-| AUDIT-UI-06 | Criar região/obstáculo, fazer bake, salvar e reabrir | `navmesh-v3/09-navmesh-reopened.png` | PASS | Região e obstáculo persistem. Limitação observada: o bake é transitório e precisa ser executado novamente depois de reabrir. |
+| AUDIT-UI-06 | Criar região/obstáculo, fazer bake, salvar e reabrir | `navmesh-c35-rerun/09-navmesh-reopened.png` | PASS | Região, obstáculo e bake persistem; a captura reaberta mostra `bake disponível` e a mensagem nativa `NavMesh reaberta; bake disponível`. |
 | AUDIT-UI-07 | Criar entidade, prefab, instância, override, atualizar e desvincular | `entities-v8/15-prefab-detached-state.png` | PASS | Estados de override, versão do prefab e detach foram observados. |
 | AUDIT-UI-08 | Alternar renderer preview/authoring | `renderer-v2/08-renderer-authoring.png` | PASS | HUD nativo alternou `PREVIEW` e `AUTHORING`; preview ficou somente leitura. |
 | AUDIT-UI-09 | Selecionar objeto e editar material/albedo | `material-v6-v2object/12-material-applied.png` | PASS | Edição real com fixture de objeto V2 e mensagem de alteração não salva. Fixture V1 não editável foi preservada como diagnóstico, não como sucesso. |
@@ -39,13 +39,13 @@ O procedimento foi orientado por:
 | AUDIT-UI-11 | Timeline com câmera, luz, partículas/chuva e texto/cutscene | `sequence-studio-v3/09-sequence-studio-text-clip-real.png` | PASS | Quatro tracks visíveis; clips de Luz, Chuva e Texto/cutscene adicionados por fluxo real. |
 | AUDIT-UI-12 | Menu de contexto do mouse | `context-menu-c21/06-context-menu-layer.png` | PASS | Clique direito nativo no primeiro objeto da lista principal abriu o popup real com `Propriedades`, `Modificar Forma` e `Exportar`. |
 | AUDIT-UI-13 | Localização PT-BR de painéis, controles e tooltips | Capturas `tilemap-v3`, `collider-v2`, `navmesh-v3`, `parallax-v6-depth-field`, `context-menu-c21` | PASS | Painéis, mensagens, popup de contexto e contratos de tooltip verificados em português. |
-| AUDIT-UI-14 | Build nova, execução do binário e smoke runtime | `release/user-flow-audit-final-20260910/smoke/portable-smoke-report.json` | PASS | 11 checks com status `SUCCESS`; ZIP final e hash confirmados. |
+| AUDIT-UI-14 | Build nova, execução do binário e smoke runtime | `release/user-flow-audit-c35d458e-20260910/smoke/portable-smoke-report.json` | PASS | 11 checks com status `SUCCESS`; ZIP e executável da build baseada em `35d458e` foram hash-confirmados. |
 
 ## Evidências principais
 
 - [Tilemap reaberto](../../artifacts/user-flow-binary-20260910/tilemap-v3/11-tilemap-reopened.png) — SHA-256 `ACDD3F7E2607135CE8ED670FA1579981AF2CC1ACD57DB453EC18E5EA1B8E87B8`.
 - [Colisores reabertos](../../artifacts/user-flow-binary-20260910/collider-v2/09-collider-reopened.png) — SHA-256 `9EEC0833D989ED819DDE4A6673C1181CB72095CCB5CF5D2CB3CAE39A129B4581`.
-- [NavMesh reaberta](../../artifacts/user-flow-binary-20260910/navmesh-v3/09-navmesh-reopened.png) — SHA-256 `533C6F3DFF9D5B219C3430B3A5EB301DC1B28B86380E845763264AB68F024A28`.
+- [NavMesh reaberta — bake persistido](../../artifacts/user-flow-binary-20260910/navmesh-c35-rerun/09-navmesh-reopened.png) — SHA-256 `E0B242E6A2A614BC70BCB834CF3D7B063C670A5BA89B48B75945203EE55350B8`.
 - [Prefab desvinculado](../../artifacts/user-flow-binary-20260910/entities-v8/15-prefab-detached-state.png) — SHA-256 `43738AC99529BAF9254719F8D45104A42D4D2FF85200E8BFE0A68DCF7EEAEAFE`.
 - [Objeto vetorial criado](../../artifacts/user-flow-binary-20260910/vector-v4/13-vector-contour-created.png) — SHA-256 `C6D906074C8038C39F7E1DCEC4A73464BCF44B42740D8E1827A7CDA6AB1B7FF6`.
 - [Renderer em preview](../../artifacts/user-flow-binary-20260910/renderer-v2/07-renderer-preview.png) — SHA-256 `0D6E25E9C9B77FF1DF42E1A0454269518584B60545968615CF915215AD309834`.
@@ -64,28 +64,30 @@ O procedimento foi orientado por:
 Com o interpretador correto da workspace:
 
 ```text
-2154 passed, 2 skipped, 1 warning in 64.04s
+2155 passed, 2 skipped, 1 warning in 62.81s
 ```
 
 Suíte focal pós-E13:
 
 ```text
-55 passed in 6.70s
+49 passed in 2.52s
 ```
 
 A única advertência registrada é a construção depreciada de `QMouseEvent` em `tests/test_merge_coverage_authoring_contracts.py:1341`; não houve falha de teste.
 
 ## Build final
 
-- Arquivo: [NeoEng-D-Trace-0.3.0-win64-portable.zip](../../release/user-flow-audit-c21bbac-20260910/NeoEng-D-Trace-0.3.0-win64-portable.zip)
-- SHA-256: `9E0C89C3F7743C3294D0C675EEF913A3169BA477DC935B3EF5F33BB102DB68D9`
-- Smoke: [portable-smoke-report.json](../../release/user-flow-audit-c21bbac-20260910/smoke/portable-smoke-report.json), `status: SUCCESS`, versão `0.3.0`.
+- Arquivo: [NeoEng-D-Trace-0.3.0-win64-portable.zip](../../release/user-flow-audit-c35d458e-20260910/NeoEng-D-Trace-0.3.0-win64-portable.zip)
+- SHA-256: `9EF4CE28E6D46D97FD83A22D83D47EC4FD40998EAE5107C7179DF6ECFE7214B1`
+- Executável: `NeoEng-D-Trace.exe`, SHA-256 `DE02A93AA983809A27E29AD4F25E76DB36BC49F5414745093F8C71DCE8D6B402`.
+- Smoke: [portable-smoke-report.json](../../release/user-flow-audit-c35d458e-20260910/smoke/portable-smoke-report.json), `status: SUCCESS`, versão `0.3.0`.
 - O empacotamento emitiu o warning de hidden import `tzdata` não encontrado; o processo não falhou e o smoke passou, mas a observação deve permanecer para futura limpeza do empacotamento.
-- Commit auditado: `c21bbacfac377e179edb57dc0c928f407ad9aedc` (`feat: add tileset authoring and native flow evidence`).
+- Commit de aplicação auditado: `35d458e` (`fix: persist valid navmesh bake`). A captura válida foi repetida com o binário desse commit; o harness também registra a correção da coordenada nativa após a inclusão da aba Tileset.
 
-## Próximas ações obrigatórias
+## Diagnóstico preservado e limitação remanescente
 
-1. Decidir se o bake da NavMesh deve ser persistido ou se a necessidade de rebake após reabertura é comportamento documentado.
-2. Reexecutar a build e a captura completa após qualquer alteração adicional, preservando os artefatos desta auditoria.
+- A primeira tentativa com o binário c35 foi preservada em `artifacts/user-flow-binary-20260910/navmesh-c35/`; ela selecionou `Colisores / Física` porque a nova aba Tileset deslocou a coordenada do harness. Não foi promovida a evidência de sucesso.
+- A captura corrigida em `navmesh-c35-rerun/` foi executada novamente por cliques nativos e é a evidência oficial de `AUDIT-UI-06`.
+- O empacotamento ainda emite o warning de hidden import `tzdata` não encontrado. O smoke passou, mas a limpeza desse warning permanece como melhoria de release; ele não foi ocultado.
 
-Esta auditoria não declara o projeto inteiro concluído. A necessidade de rebake da NavMesh e o warning de `tzdata` permanecem documentados; nenhuma limitação foi ocultada.
+Esta auditoria não declara o projeto inteiro concluído; registra o lote pós-E13 auditado com as limitações acima.
