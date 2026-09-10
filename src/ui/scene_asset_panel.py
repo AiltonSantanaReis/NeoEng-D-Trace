@@ -196,6 +196,8 @@ class SceneAssetLibrary(QWidget):
         inspection = inspect_scene_asset(asset, self.project_root)
         if inspection.state != "ready" or inspection.resolved_path is None:
             return inspection, None
+        if inspection.resolved_path.suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}:
+            return inspection, None
         try:
             pixmap = SceneAuthoringViewport._load_asset_pixmap(inspection.resolved_path)
             if pixmap.isNull() or pixmap.width() <= 0 or pixmap.height() <= 0:
@@ -354,7 +356,8 @@ class SceneAssetLibrary(QWidget):
         )
 
     def _choose_file(self, title: str) -> str:
-        path, _filter = QFileDialog.getOpenFileName(self, title, "", _ASSET_FILTER)
+        audio_selected = self.selected_asset is not None and Path(self.selected_asset.path).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}
+        path, _filter = QFileDialog.getOpenFileName(self, title, "", "Audio (*.wav *.mp3 *.ogg *.flac)" if audio_selected else _ASSET_FILTER)
         return path
 
     def _choose_import(self) -> None:
@@ -375,6 +378,8 @@ class SceneAssetLibrary(QWidget):
     def _prepare(self, path: str | Path) -> PreparedSceneAsset:
         if self.project_root is None:
             raise ValueError("Save the project before managing scene assets")
+        if self.selected_asset is not None and Path(self.selected_asset.path).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}:
+            return prepare_scene_asset(path, self.project_root, allow_audio=True)
         source = validate_scene_asset_source(Path(path))
         SceneAuthoringViewport._load_asset_pixmap(source)
         prepared = prepare_scene_asset(source, self.project_root)

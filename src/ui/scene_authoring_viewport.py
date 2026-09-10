@@ -1928,6 +1928,18 @@ class SceneAuthoringViewport(QGraphicsView):
         changed = self.session.redo()
         return changed
 
+    def set_active_layer(self, layer_id: str) -> None:
+        if layer_id not in {item.id for item in self.session.document.layers}:
+            raise ValueError("unknown destination layer")
+        self._active_layer_id = layer_id
+
+    def _destination_layer(self) -> str:
+        layers = self.session.document.layers
+        layer = next((item for item in layers if item.id == getattr(self, "_active_layer_id", None)), layers[0])
+        if layer.locked or not layer.visible:
+            raise ValueError("Mostre e desbloqueie a moldura de destino antes de inserir assets" if self.current_lang == "pt" else "Show and unlock the destination frame before placing assets")
+        return layer.id
+
     def dragEnterEvent(self, event) -> None:
         if not self._authoring_enabled:
             event.ignore()
@@ -2018,7 +2030,7 @@ class SceneAuthoringViewport(QGraphicsView):
                 return
             try:
                 width, height = self._image_size(resolved)
-                layer_id = self.session.document.layers[0].id
+                layer_id = self._destination_layer()
                 object_id = asset.id
                 while object_id in {item.id for item in self.session.document.objects}:
                     object_id += "_1"
@@ -2077,7 +2089,7 @@ class SceneAuthoringViewport(QGraphicsView):
             prepared = prepare_scene_asset(source, self.project_root)
             width, height = self._image_size(prepared.resolved_path)
             asset_id = "asset_" + prepared.sha256[:16]
-            layer_id = self.session.document.layers[0].id
+            layer_id = self._destination_layer()
             object_id = asset_id
             while asset_id in {asset.id for asset in self.session.document.assets}:
                 asset_id += "_1"
@@ -2151,7 +2163,7 @@ class SceneAuthoringViewport(QGraphicsView):
             return False
         try:
             width, height = self._image_size(resolved)
-            layer_id = self.session.document.layers[0].id
+            layer_id = self._destination_layer()
             object_id = asset.id
             while object_id in {item.id for item in self.session.document.objects}:
                 object_id += "_1"

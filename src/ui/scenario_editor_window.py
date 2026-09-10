@@ -15,12 +15,15 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup, QKeySequence
 from PySide6.QtWidgets import (
     QComboBox,
+    QDockWidget,
+    QTabWidget,
     QFileDialog,
     QHBoxLayout,
     QLabel,
     QMainWindow,
     QMenu,
     QMessageBox,
+    QPushButton,
     QScrollArea,
     QSplitter,
     QStackedWidget,
@@ -35,6 +38,7 @@ from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_asset_library import prepare_scene_asset, resolve_scene_asset
 from src.core.scene_render_plan import build_scene_render_plan
 from src.exporters.composition_export import (
     CompositionExportError,
@@ -62,6 +66,8 @@ from src.persistence.scene_authoring_io import (
 from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV1,
     SceneAuthoringDocumentV2,
+    SceneLayerAuthoringRecord,
+    SceneParallaxLayerRecord,
     upgrade_scene_authoring_document,
 )
 from src.ui.entity_prefab_panel import EntityPrefabPanel
@@ -75,6 +81,7 @@ from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
 from src.ui.vector_contour_panel import VectorContourPanel
+from src.ui.scene_sequence_panel import SceneSequencePanel
 
 
 class ScenarioEditorWindow(QMainWindow):
@@ -100,6 +107,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.resize(1280, 820)
 
         self.professional_session: SceneAuthoringSession | None = None
+        self.sequence_panel = None
+        self.studio_docks = []
         self.professional_viewport: SceneAuthoringViewport | None = None
         self._professional_initial_focus_applied = False
         self.professional_inspector: SceneAuthoringInspector | None = None
@@ -166,7 +175,7 @@ class ScenarioEditorWindow(QMainWindow):
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.setObjectName("scenario_editor_splitter")
         self.professional_pages.setMinimumWidth(420)
-        self.right_pages.setMinimumWidth(540)
+        self.right_pages.setMinimumWidth(340)
         splitter.setCollapsible(0, False)
         splitter.setCollapsible(1, False)
         splitter.addWidget(self.professional_pages)
@@ -317,7 +326,7 @@ class ScenarioEditorWindow(QMainWindow):
         if width <= 0 or width == self._last_splitter_width:
             return
         self._last_splitter_width = width
-        inspector_width = max(540, int(width * 0.40))
+        inspector_width = min(460, max(340, int(width * 0.28)))
         viewport_width = max(420, width - inspector_width)
         self.editor_splitter.setSizes([viewport_width, inspector_width])
 
@@ -474,14 +483,14 @@ class ScenarioEditorWindow(QMainWindow):
         inspector_layout = inspector.layout()
         if not isinstance(inspector_layout, QVBoxLayout):
             raise RuntimeError("professional inspector has no vertical layout")
-        inspector_layout.insertWidget(0, self.layer_stack)
-        inspector_layout.insertWidget(0, self.group_stack)
-        inspector_layout.insertWidget(0, self.asset_library)
-        inspector_layout.insertWidget(0, self.tilemap_panel)
-        inspector_layout.insertWidget(0, self.collider_panel)
-        inspector_layout.insertWidget(0, self.navmesh_panel)
-        inspector_layout.insertWidget(0, self.entity_prefab_panel)
-        inspector_layout.insertWidget(0, self.vector_contour_panel)
+        # Keep independent tools out of the numeric inspector. Existing panels
+        # retain their implementations, signals, history and persistence.
+        if self.sequence_panel is not None:
+            self.sequence_panel.stop()
+        for old_dock in self.studio_docks:
+            self.removeDockWidget(old_dock)
+            old_dock.deleteLater()
+        self.studio_docks = []
         self.layer_stack.status_message.connect(self._show_professional_status)
         self.group_stack.status_message.connect(self._show_professional_status)
         self.asset_library.status_message.connect(self._show_professional_status)
@@ -519,9 +528,89 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector_scroll = inspector_scroll
         self._professional_project = project_path
         self.professional_scene_path = scene_path
+        self._build_studio_panels(session, viewport, inspector_scroll, project_path.parent)
         self._configure_professional_tab_order(viewport, inspector)
         session.subscribe(self._update_professional_status)
         session.subscribe(self._emit_document_changed)
+
+    def _build_studio_panels(self, session, viewport, inspector_scroll, project_root):
+        pt = self.current_lang == "pt"
+        def scroll_for(panel):
+            scroll = QScrollArea()
+            scroll.setWidgetResizable(True)
+            scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            scroll.setWidget(panel)
+            return scroll
+
+        self.studio_library_tabs = QTabWidget()
+        self.studio_library_tabs.setObjectName("scene_studio_library_tabs")
+        for panel, title in ((self.layer_stack, "Molduras" if pt else "Frames"),
+                             (self.group_stack, "Hierarquia" if pt else "Hierarchy"),
+                             (self.asset_library, "Biblioteca" if pt else "Library")):
+            self.studio_library_tabs.addTab(scroll_for(panel), title)
+        dock = QDockWidget("Composição" if pt else "Composition", self)
+        dock.setObjectName("scene_studio_composition_dock")
+        dock.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        dock.setWidget(self.studio_library_tabs)
+        dock.setMinimumWidth(270)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock)
+        self.studio_docks.append(dock)
+        self.resizeDocks([dock], [290], Qt.Orientation.Horizontal)
+        self.layer_stack.update_language(self.current_lang)
+        self.group_stack.update_language(self.current_lang)
+        self.layer_stack.active_layer_changed.connect(viewport.set_active_layer)
+        self.layer_stack.active_layer_changed.connect(lambda layer_id: self.professional_inspector.layer_combo.setCurrentIndex(self.professional_inspector.layer_combo.findData(layer_id)))
+        def place(asset_id, layer_id):
+            viewport.set_active_layer(layer_id)
+            viewport.place_asset_from_library(asset_id)
+        self.layer_stack.asset_drop_requested.connect(place)
+        self.sequence_panel = SceneSequencePanel(session, viewport, self.professional_pages, project_root, self.current_lang, self)
+        self.sequence_panel.status_message.connect(self._show_professional_status)
+        self.studio_inspector_tabs = QTabWidget()
+        self.studio_inspector_tabs.setObjectName("scene_studio_inspector_tabs")
+        self.studio_inspector_tabs.addTab(self.sequence_panel.editor, "Clipe" if pt else "Clip")
+        advanced = QTabWidget()
+        advanced.setTabPosition(QTabWidget.TabPosition.West)
+        for panel, title in ((self.vector_contour_panel, "Formas" if pt else "Shapes"), (self.tilemap_panel, "Tiles"), (self.collider_panel, "Colisão" if pt else "Collision"), (self.navmesh_panel, "Navegação" if pt else "Navigation"), (self.entity_prefab_panel, "Entidades" if pt else "Entities")):
+            advanced.addTab(scroll_for(panel), title)
+        self.studio_inspector_tabs.addTab(advanced, "Ferramentas" if pt else "Tools")
+        inspector_bridge = QWidget()
+        inspector_bridge_layout = QVBoxLayout(inspector_bridge)
+        inspector_bridge_layout.addWidget(
+            QLabel(
+                "O inspetor numérico permanece na página principal."
+                if pt
+                else "The numeric inspector remains on the main page."
+            )
+        )
+        inspector_bridge_button = QPushButton("Abrir inspetor" if pt else "Open inspector")
+        inspector_bridge_button.clicked.connect(
+            lambda: self.right_pages.setCurrentWidget(inspector_scroll)
+        )
+        inspector_bridge_layout.addWidget(inspector_bridge_button)
+        inspector_bridge_layout.addStretch(1)
+        self.studio_inspector_tabs.insertTab(
+            0, inspector_bridge, "Inspetor" if pt else "Inspector"
+        )
+        self.right_pages.addWidget(self.studio_inspector_tabs)
+        # Preserve the initial inspector page contract while keeping the
+        # integrated tabs available when a timeline clip is selected.
+        self.right_pages.setCurrentWidget(inspector_scroll)
+        self.sequence_panel.editor_requested.connect(
+            lambda: (
+                self.studio_inspector_tabs.setCurrentIndex(1),
+                self.right_pages.setCurrentWidget(self.studio_inspector_tabs),
+            )
+        )
+        timeline_dock = QDockWidget("Linha do tempo" if pt else "Timeline", self)
+        timeline_dock.setObjectName("scene_studio_timeline_dock")
+        timeline_dock.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        timeline_dock.setWidget(self.sequence_panel)
+        self.setCorner(Qt.Corner.BottomLeftCorner, Qt.DockWidgetArea.BottomDockWidgetArea)
+        self.setCorner(Qt.Corner.BottomRightCorner, Qt.DockWidgetArea.BottomDockWidgetArea)
+        self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, timeline_dock)
+        self.studio_docks.append(timeline_dock)
+        self.resizeDocks([timeline_dock], [220], Qt.Orientation.Vertical)
 
     def _configure_professional_tab_order(
         self,
@@ -886,17 +975,31 @@ class ScenarioEditorWindow(QMainWindow):
     def _new_professional(self) -> bool:
         """Start an editable professional scene without requiring a project file."""
 
+        if self.professional_session is not None and self.professional_session.is_dirty:
+            answer = QMessageBox.question(self, "Novo cenário" if self.current_lang == "pt" else "New scene", "Descartar alterações não salvas do cenário atual?" if self.current_lang == "pt" else "Discard unsaved changes in the current scene?", QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel, QMessageBox.StandardButton.Cancel)
+            if answer != QMessageBox.StandardButton.Discard:
+                return False
         try:
+            if self.sequence_panel is not None:
+                self.sequence_panel.stop()
             if self._temporary_project_dir is not None:
                 self._temporary_project_dir.cleanup()
             self._temporary_project_dir = tempfile.TemporaryDirectory(
                 prefix="neoeng-d-trace-scenario-"
             )
             project_path = Path(self._temporary_project_dir.name) / "Untitled.ndtproj"
-            self.scene.save_project(str(project_path))
+            from src.models.scene import Scene
+            empty_scene = Scene()
+            empty_scene.save_project(str(project_path))
+            document = professional_document_from_scene(empty_scene, project_path)
+            document = document.model_copy(update={
+                "layers": [SceneLayerAuthoringRecord(id=key, name=name) for key, name in zip(("background", "midground", "foreground"), ("Fundo", "Meio", "Frente") if self.current_lang == "pt" else ("Background", "Midground", "Foreground"))],
+                "parallax_layers": [SceneParallaxLayerRecord(layer_id=key, depth=depth, scroll_x=ratio, scroll_y=ratio) for key, depth, ratio in (("background", .8, .2), ("midground", .4, .6), ("foreground", 0., 1.))],
+            })
             self._temporary_project_path = project_path
             self.authoring.bind_project(project_path)
-            self._build_professional_viewport()
+            self._build_professional_viewport(document=document, mark_unsaved=True)
+            self._set_editor_mode(preview=False)
             self.refresh()
             self.status_label.setText(
                 "New unsaved scenario — use Save Project to choose a location"
@@ -927,8 +1030,17 @@ class ScenarioEditorWindow(QMainWindow):
         if destination.suffix.lower() != ".ndtproj":
             destination = destination.with_suffix(".ndtproj")
         try:
-            self.scene.save_project(str(destination))
             document = self.professional_session.document
+            source_root = self._professional_project.parent
+            relocated_assets = []
+            for asset in document.assets:
+                source, issue = resolve_scene_asset(asset, source_root)
+                if source is None:
+                    raise ValueError(issue)
+                prepared = prepare_scene_asset(source, destination.parent, allow_audio=True)
+                relocated_assets.append(asset.model_copy(update={"path": prepared.path, "sha256": prepared.sha256}))
+            document = document.model_copy(update={"assets": relocated_assets})
+            self.scene.save_project(str(destination))
             if isinstance(document, SceneAuthoringDocumentV2):
                 document = document.model_copy(
                     update={"project": project_reference_for(destination)}
@@ -1110,6 +1222,13 @@ class ScenarioEditorWindow(QMainWindow):
     def update_language(self, language: str) -> None:
         self.current_lang = language if language in {"en", "pt"} else "en"
         self.setProperty("language", self.current_lang)
+        if self.sequence_panel is not None:
+            self.sequence_panel.update_language(self.current_lang)
+        if hasattr(self, "studio_library_tabs"):
+            for index, label in enumerate(("Molduras", "Hierarquia", "Biblioteca") if self.current_lang == "pt" else ("Frames", "Hierarchy", "Library")):
+                self.studio_library_tabs.setTabText(index, label)
+            for index, label in enumerate(("Inspetor", "Clipe", "Ferramentas") if self.current_lang == "pt" else ("Inspector", "Clip", "Tools")):
+                self.studio_inspector_tabs.setTabText(index, label)
         if self.current_lang == "pt":
             self.setWindowTitle("Editor de Cenário — NeoEng-D-Trace")
             labels = (
@@ -1268,6 +1387,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.refresh()
 
     def closeEvent(self, event) -> None:
+        if self.sequence_panel is not None:
+            self.sequence_panel.stop()
         self._professional_initial_focus_applied = False
         if self.professional_session is not None and self.professional_session.is_dirty:
             self.status_label.setText("Unsaved scenario changes preserved")

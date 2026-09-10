@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QVBoxLayout,
+    QTabWidget,
     QWidget,
 )
 
@@ -125,13 +126,17 @@ class SceneAuthoringInspector(QWidget):
         self.update_socket_button = QPushButton("Update Socket Position")
         self.remove_socket_button = QPushButton("Remove Socket")
         self.stage4_group = QGroupBox("Camera, Parallax & Sockets")
-        stage4_form = QFormLayout(self.stage4_group)
+        self.category_tabs = QTabWidget()
+        self.category_tabs.setObjectName("scene_inspector_categories")
+        camera_page, parallax_page, material_page, socket_page = (QWidget() for _ in range(4))
+        stage4_form = QFormLayout(camera_page)
         self._add_labeled_row(stage4_form, "camera_x", "Camera X", self.camera_x)
         self._add_labeled_row(stage4_form, "camera_y", "Camera Y", self.camera_y)
         self._add_labeled_row(
             stage4_form, "camera_zoom", "Camera Zoom", self.camera_zoom
         )
         stage4_form.addRow(self.camera_apply_button)
+        stage4_form = QFormLayout(parallax_page)
         self._add_labeled_row(stage4_form, "layer", "Layer", self.layer_combo)
         self._add_labeled_row(stage4_form, "depth", "Depth", self.parallax_depth)
         self._add_labeled_row(
@@ -155,6 +160,7 @@ class SceneAuthoringInspector(QWidget):
         stage4_form.addRow(self.parallax_mirror_x)
         stage4_form.addRow(self.parallax_mirror_y)
         stage4_form.addRow(self.parallax_apply_button)
+        stage4_form = QFormLayout(material_page)
         self._add_labeled_row(
             stage4_form, "material_albedo", "Albedo", self.material_albedo
         )
@@ -185,6 +191,7 @@ class SceneAuthoringInspector(QWidget):
         stage4_form.addRow(self.material_receives_shadow)
         stage4_form.addRow(self.material_casts_shadow)
         stage4_form.addRow(self.material_apply_button)
+        stage4_form = QFormLayout(socket_page)
         self._add_labeled_row(stage4_form, "socket", "Socket", self.socket_combo)
         self._add_labeled_row(stage4_form, "socket_type", "Type", self.socket_type)
         self._add_labeled_row(stage4_form, "socket_id", "ID", self.socket_id)
@@ -223,10 +230,12 @@ class SceneAuthoringInspector(QWidget):
         self._add_labeled_row(form, "grid_x", "Grid X", self.snap_spacing_x)
         self._add_labeled_row(form, "grid_y", "Grid Y", self.snap_spacing_y)
 
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.title)
-        layout.addWidget(self.selection_label)
-        layout.addWidget(self.spatial_summary)
+        root_layout = QVBoxLayout(self)
+        root_layout.addWidget(self.title)
+        root_layout.addWidget(self.spatial_summary)
+        root_layout.addWidget(self.category_tabs)
+        transform_page = QWidget()
+        layout = QVBoxLayout(transform_page)
         layout.addLayout(form)
         layout.addWidget(self.apply_button)
         layout.addWidget(self.undo_button)
@@ -234,8 +243,14 @@ class SceneAuthoringInspector(QWidget):
         layout.addWidget(self.delete_button)
         layout.addWidget(self.fit_button)
         layout.addWidget(self.fit_all_button)
-        layout.addWidget(self.stage4_group)
         layout.addStretch(1)
+        for page, title in ((transform_page, "Object"), (camera_page, "Camera"),
+                            (parallax_page, "Layer"), (material_page, "Material"), (socket_page, "Effects")):
+            self.category_tabs.addTab(page, title)
+        # Compatibility enable-state for callers; controls themselves live in
+        # categorized pages, no longer in a single unbounded inspector column.
+        self.stage4_group.setParent(self)
+        self.stage4_group.hide()
 
         self.apply_button.clicked.connect(self.apply_transform)
         self.undo_button.clicked.connect(self._undo)
@@ -405,6 +420,8 @@ class SceneAuthoringInspector(QWidget):
 
     def _refresh_stage4_controls(self) -> None:
         document = self.session.document
+        for index in range(1, self.category_tabs.count()):
+            self.category_tabs.setTabEnabled(index, isinstance(document, SceneAuthoringDocumentV2))
         if not isinstance(document, SceneAuthoringDocumentV2):
             self.stage4_group.setEnabled(False)
             return
@@ -726,6 +743,8 @@ class SceneAuthoringInspector(QWidget):
             self.status_message.emit(user_error_message(exc, operation="edit"))
 
     def update_language(self, language: str) -> None:
+        for index, title in enumerate(("Objeto", "Câmera", "Camada", "Material", "Efeitos") if language == "pt" else ("Object", "Camera", "Layer", "Material", "Effects")):
+            self.category_tabs.setTabText(index, title)
         """Translate the professional inspector without changing its model."""
 
         self.current_lang = language

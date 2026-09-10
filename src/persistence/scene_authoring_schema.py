@@ -547,6 +547,9 @@ def default_scene_authoring_metadata(
     )
 
 
+from src.persistence.scene_sequence_schema import SceneSequence
+
+
 class SceneAuthoringDocumentV2(StrictProjectModel):
     """Professional scenario contract with camera, parallax and sockets.
 
@@ -558,6 +561,7 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         "neoeng-d-trace-scene-authoring"
     )
     schema_version: Literal[2] = 2
+    sequence: SceneSequence | None = Field(default=None, exclude_if=lambda value: value is None)
     metadata: SceneAuthoringMetadataRecord
     project: ProjectReferenceRecord
     assets: list[AssetReferenceRecord] = Field(max_length=MAX_SCENE_ASSETS)
@@ -704,6 +708,14 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
             if layer_id not in known_layers:
                 raise ValueError(f"parallax references unknown layer {layer_id!r}")
         socket_ids = [item.id for item in self.sockets]
+        if self.sequence is not None:
+            for clip in self.sequence.clips:
+                if clip.target_id is not None and clip.target_id not in known_objects:
+                    raise ValueError(f"clip {clip.name!r}: remove or relink its object track first")
+                if clip.layer_id is not None and clip.layer_id not in known_layers:
+                    raise ValueError(f"clip {clip.name!r} references unknown layer")
+                if clip.asset_id is not None and clip.asset_id not in known_assets:
+                    raise ValueError(f"clip {clip.name!r} references unknown asset")
         if len(socket_ids) != len(set(socket_ids)):
             raise ValueError("socket IDs must be unique")
         for socket in self.sockets:

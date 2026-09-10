@@ -1,0 +1,97 @@
+{
+  "capabilities": {
+    "supported": [
+      "assets",
+      "layers",
+      "objects",
+      "groups",
+      "transforms",
+      "camera",
+      "parallax",
+      "sockets",
+      "snap_settings"
+    ],
+    "unsupported": [
+      "runtime_lighting",
+      "runtime_particles",
+      "runtime_shaders",
+      "runtime_post_processing"
+    ]
+  },
+  "coordinate_mapping": {
+    "position_y_sign": 1,
+    "rotation_sign": 1,
+    "rotation_unit": "degrees",
+    "source_origin": "top-left",
+    "target_origin": "top-left"
+  },
+  "format_id": "neoeng-d-trace-scene-authoring-export",
+  "generator": {
+    "id": "neoeng_d_trace",
+    "version": "0.3.0"
+  },
+  "scene": {
+    "assets": [],
+    "camera": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "zoom": 1.0
+    },
+    "format_id": "neoeng-d-trace-scene-authoring",
+    "groups": [],
+    "layers": [
+      {
+        "id": "layer_default",
+        "locked": false,
+        "name": "Default",
+        "visible": true
+      }
+    ],
+    "metadata": {
+      "app_version": "0.3.0",
+      "generator": "NeoEng-D-Trace",
+      "name": "release_smoke"
+    },
+    "objects": [],
+    "parallax_layers": [
+      {
+        "depth": 0.0,
+        "layer_id": "layer_default",
+        "mirror_x": false,
+        "mirror_y": false,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "repeat_x": false,
+        "repeat_y": false,
+        "scroll_x": 1.0,
+        "scroll_y": 1.0,
+        "translation_strength": 1.0,
+        "zoom_strength": 1.0
+      }
+    ],
+    "project": {
+      "format_id": "neoeng-d-trace-project",
+      "schema_version": 1,
+      "sha256": "f5578ddafc093c84fc513059e6704e15a8b259bbb087fbe0e21fe580d2d20b59"
+    },
+    "schema_version": 2,
+    "snap": {
+      "enabled": false,
+      "mode": "pixel",
+      "spacing": {
+        "x": 1.0,
+        "y": 1.0
+      }
+    },
+    "sockets": []
+  },
+  "schema_version": 1,
+  "source": {
+    "format_id": "neoeng-d-trace-scene-authoring",
+    "schema_version": 2,
+    "sha256": "ed41f01302279d29cdcc66ade938b917813c7500509519480168773c9cef0c0c"
+  },
+  "target": "generic"
+}
