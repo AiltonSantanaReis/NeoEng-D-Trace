@@ -436,7 +436,17 @@ class SceneSequencePanel(QWidget):
             if clip_id in self._audio_failures:
                 continue
             if clip_id not in self.players:
-                asset = next(a for a in self.session.document.assets if a.id == clip.asset_id)
+                asset = next((a for a in self.session.document.assets if a.id == clip.asset_id), None)
+                if asset is None:
+                    self._audio_failures.add(clip_id)
+                    self.status_message.emit(
+                        (
+                            "Áudio ausente/alterado; revincule na Biblioteca: asset não encontrado"
+                            if self.language == "pt"
+                            else "Missing/changed audio; relink in Library: asset not found"
+                        )
+                    )
+                    continue
                 path, issue = resolve_scene_asset(asset, self.project_root)
                 if path is None:
                     self._audio_failures.add(clip_id)

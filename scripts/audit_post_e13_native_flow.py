@@ -10,8 +10,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
+import struct
 import sys
+import wave
 from pathlib import Path
 
 from PySide6.QtCore import QSize, Qt
@@ -21,7 +24,11 @@ from PySide6.QtWidgets import QApplication
 
 from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
+from src.core.scene_asset_library import prepare_scene_asset
+from src.core.scene_sequence import set_sequence
 from src.models.scene import Scene
+from src.persistence.scene_authoring_schema import AssetReferenceRecord
+from src.persistence.scene_sequence_schema import SceneClip, SceneSequence
 from src.ui.main_window import MainWindow
 from src.ui.theme_qss import QSS
 
@@ -51,6 +58,19 @@ def _write_fixture_image(path: Path) -> None:
         raise RuntimeError(f"could not write fixture image: {path}")
 
 
+def _write_fixture_audio(path: Path) -> None:
+    sample_rate = 8000
+    frames = bytearray()
+    for index in range(sample_rate // 4):
+        sample = int(10000 * math.sin(2 * math.pi * 440 * index / sample_rate))
+        frames.extend(struct.pack("<h", sample))
+    with wave.open(str(path), "wb") as stream:
+        stream.setnchannels(1)
+        stream.setsampwidth(2)
+        stream.setframerate(sample_rate)
+        stream.writeframes(bytes(frames))
+
+
 def _snapshot(editor) -> dict[str, object]:
     session = editor.professional_session
     if session is None or editor.layer_stack is None or editor.sequence_panel is None:
@@ -64,6 +84,8 @@ def _snapshot(editor) -> dict[str, object]:
         if editor.layer_stack.layer_list.currentItem() is not None else None,
         "timeline_position": editor.sequence_panel.position,
         "preview_active": editor.sequence_panel.preview is not None,
+        "status_label": editor.status_label.text(),
+        "audio_failures": sorted(editor.sequence_panel._audio_failures),
         "window_visible": editor.isVisible(),
         "window_size": [editor.width(), editor.height()],
     }
@@ -76,8 +98,10 @@ def run(output: Path) -> dict[str, object]:
     fixture.mkdir(parents=True, exist_ok=True)
     project = fixture / "native-studio.ndtproj"
     image = fixture / "scene.png"
+    audio = fixture / "scene-tone.wav"
     project.write_bytes(b"post-e13-native-studio-fixture-v1\n")
     _write_fixture_image(image)
+    _write_fixture_audio(audio)
 
     scene = Scene()
     scene.cmd = CommandManager(max_history=40)
@@ -183,6 +207,88 @@ def run(output: Path) -> dict[str, object]:
         raise RuntimeError("timeline play did not advance the native position")
     capture("06-native-timeline-play-pause-stop.png", "play, pause and stop timeline")
 
+    # Native effects flow: real WAV asset plus light, fire and cutscene text.
+    session = editor.professional_session
+    if session is None:
+        raise RuntimeError("native session disappeared before effects flow")
+    prepared_audio = prepare_scene_asset(audio, project.parent, allow_audio=True)
+    audio_asset = AssetReferenceRecord(
+        id="audio_native_fixture",
+        path=prepared_audio.path,
+        sha256=prepared_audio.sha256,
+        source_path=prepared_audio.source_path,
+    )
+    if not session.add_asset(audio_asset):
+        raise RuntimeError("native audio asset was not added to the library")
+    current_sequence = sequence.sequence
+    extra_clips = [
+        SceneClip(id="light_native", name="Luz nativa", kind="light", start=0, duration=5, layer_id=layer_id, intensity=0.8, color="#ffd36a"),
+        SceneClip(id="fire_native", name="Fogo nativo", kind="fire", start=0, duration=5, layer_id=layer_id, intensity=0.6, loop=True, color="#ff9c40"),
+        SceneClip(id="text_native", name="Cutscene nativa", kind="text", start=0, duration=5, text="A cena começa", color="#ffffff"),
+        SceneClip(id="audio_native", name="Trilha nativa", kind="audio", start=0, duration=5, loop=True, opacity=0.4, asset_id=audio_asset.id),
+    ]
+    set_sequence(
+        session,
+        SceneSequence.model_validate(
+            {
+                **current_sequence.model_dump(),
+                "clips": [clip.model_dump() for clip in list(current_sequence.clips) + extra_clips],
+            }
+        ),
+    )
+    effects_sequence = SceneSequence.model_validate(sequence.sequence.model_dump())
+    app.processEvents()
+    sequence.seek(1.0)
+    app.processEvents()
+    if not sequence.preview:
+        raise RuntimeError("effects seek did not create a preview viewport")
+    if not sequence.players:
+        raise RuntimeError("native audio clip did not create a media player")
+    if sequence._audio_failures:
+        raise RuntimeError(f"native audio reported failures: {sequence._audio_failures}")
+    capture("07-native-effects-audio-cutscene.png", "render light, fire, text cutscene and real WAV audio")
+
+    # Native failure flow: an audio clip with a missing library asset must not
+    # crash the editor; it must expose an actionable relink message.
+    missing_asset = AssetReferenceRecord(
+        id="audio_asset_missing",
+        path="missing-audio.wav",
+        source_path="missing-audio.wav",
+        sha256="0" * 64,
+    )
+    if not session.add_asset(missing_asset):
+        raise RuntimeError("native missing-audio fixture was not added to the library")
+    missing_clip = SceneClip(
+        id="audio_native_missing",
+        name="Áudio ausente",
+        kind="audio",
+        start=0,
+        duration=5,
+        asset_id="audio_asset_missing",
+    )
+    missing_sequence = SceneSequence.model_validate(
+        {
+            **sequence.sequence.model_dump(),
+            "clips": [clip.model_dump() for clip in list(sequence.sequence.clips) + [missing_clip]],
+        }
+    )
+    sequence.stop()
+    set_sequence(session, missing_sequence)
+    sequence.seek(1.0)
+    app.processEvents()
+    if missing_clip.id not in sequence._audio_failures:
+        raise RuntimeError("missing native audio asset did not produce a recoverable failure")
+    status_text = editor.status_label.text()
+    if not ("Áudio ausente/alterado" in status_text or "Missing/changed audio" in status_text):
+        raise RuntimeError(f"missing native audio asset did not expose the relink status: {status_text!r}")
+    capture("08-native-audio-missing-recoverable.png", "handle missing audio asset without crashing")
+    sequence.stop()
+    set_sequence(session, effects_sequence)
+    sequence.seek(1.0)
+    app.processEvents()
+    if sequence._audio_failures:
+        raise RuntimeError("native audio recovery left stale audio failures")
+
     # Persistence flow: save, close the editor, reopen it and compare authored data.
     saved_before = _snapshot(editor)
     if not editor._save_professional():
@@ -209,7 +315,7 @@ def run(output: Path) -> dict[str, object]:
         raise RuntimeError("sequence data changed after native save/reopen")
     if not after_reopen["window_visible"]:
         raise RuntimeError("reopened native editor is not visible")
-    path = capture_dir / "07-native-reopened-persisted.png"
+    path = capture_dir / "09-native-reopened-persisted.png"
     if not reopened.grab().save(str(path), "PNG"):
         raise RuntimeError("could not save reopened native capture")
     events.append({"action": "save, close, reopen and verify persisted document", "capture": path.name, "sha256": _digest(path), "state": after_reopen})
@@ -222,6 +328,7 @@ def run(output: Path) -> dict[str, object]:
         "process_id": os.getpid(),
         "fixture_project": str(project.relative_to(output)),
         "fixture_asset": str(image.relative_to(output)),
+        "fixture_audio": str(audio.relative_to(output)),
         "sidecar": str(sidecar.relative_to(output)),
         "events": events,
         "source_commit": __import__("subprocess").check_output(["git", "rev-parse", "HEAD"], cwd=Path(__file__).resolve().parents[1], text=True).strip(),

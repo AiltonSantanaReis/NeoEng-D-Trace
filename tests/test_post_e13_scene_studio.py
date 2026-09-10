@@ -13,7 +13,7 @@ from src.core.scenario_authoring import ScenarioAuthoringState
 from src.core.scene_sequence import set_sequence, evaluate_sequence, particles_at, sequence_time
 from src.exporters.scene_authoring_export import build_scene_authoring_export, SceneAuthoringExportError
 from src.models.scene import Scene
-from src.persistence.scene_authoring_schema import SceneAuthoringDocumentV2, SceneLayerAuthoringRecord
+from src.persistence.scene_authoring_schema import AssetReferenceRecord, SceneAuthoringDocumentV2, SceneLayerAuthoringRecord
 from src.persistence.scene_sequence_schema import SceneClip, SceneSequence
 from src.persistence.scene_authoring_io import save_scene_authoring, load_scene_authoring_v2
 from src.ui.scenario_editor_window import ScenarioEditorWindow
@@ -216,3 +216,23 @@ def test_close_stops_playback(studio):
     window.close()
     assert not panel.timer.isActive()
     assert panel.preview is None
+
+
+def test_missing_audio_asset_is_actionable_and_nonfatal(studio):
+    window, app = studio
+    panel = window.sequence_panel
+    session = window.professional_session
+    assert session.add_asset(
+        AssetReferenceRecord(id="gone", path="missing-audio.wav", source_path="missing-audio.wav", sha256="0" * 64)
+    )
+    sequence = SceneSequence(
+        clips=[SceneClip(id="missing-audio", name="Áudio ausente", kind="audio", duration=5, asset_id="gone")]
+    )
+    assert set_sequence(session, sequence)
+    panel.seek(1.0)
+    app.processEvents()
+    assert "missing-audio" in panel._audio_failures
+    assert "Áudio ausente/alterado" in window.status_label.text()
+    assert panel.preview is not None
+    panel.stop()
+    assert not panel._audio_failures
