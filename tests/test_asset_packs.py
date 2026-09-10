@@ -139,6 +139,12 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
         imported = library.session.document.assets[0]
         copied = library.project_root / imported.path
         assert copied.is_file() and sha256_file(copied) == imported.sha256
+        requested: list[str] = []
+        library.asset_place_requested.connect(requested.append)
+        library._select_id(imported.id)
+        assert library.place_button.isEnabled()
+        QTest.mouseClick(library.place_button, Qt.MouseButton.LeftButton)
+        assert requested == [imported.id]
         QTest.mouseClick(dialog.add_button, Qt.MouseButton.LeftButton)
         assert "já disponível" in dialog.status.text()
         assert len(library.session.document.assets) == 1

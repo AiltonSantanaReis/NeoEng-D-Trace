@@ -7,6 +7,9 @@ artística permanecem pendentes. Não representa uma alegação de exclusividade
 
 Arquivos recebidos foram copiados sem alteração de pixels; seus hashes e identificadores
 de geração constam do manifesto. Todos os seis arquivos têm canal alpha real.
+Metadados C2PA que identificavam o provedor de geração foram removidos dos PNGs sem
+alteração dos pixels, dimensões, modo RGBA ou canal alpha, para cumprir a higiene de
+referências do repositório. Os hashes do manifesto refletem os arquivos limpos.
 Verificar acabamento de bordas e possíveis halos, especialmente no tronco, antes de
 aprovar a versão de distribuição. A escala relativa deve ser ajustada pelo usuário.
 

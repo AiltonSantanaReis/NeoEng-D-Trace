@@ -11,7 +11,7 @@
       "name": "Pedra com musgo",
       "category": "Rochas",
       "path": "pedra.png",
-      "sha256": "aafc577805e22263967d232e7429c4ebeda7953eb3cbf6b586c96735ee340a72",
+      "sha256": "cd430cd35519a18ef408fbc1aa900812a8aa8408288670dca33fbef12528500a",
       "width": 1254,
       "height": 1254,
       "tags": [
@@ -27,7 +27,7 @@
       "name": "Arbusto com flores",
       "category": "Vegetação",
       "path": "arbusto.png",
-      "sha256": "94148ce0f3fe0d59ed4660adab2510f8024c7246392dd13369ea0eee826efb4a",
+      "sha256": "79653a9121cfaccbc41731b433c8477aff3003b4f2a344ae304d5ad16589c47c",
       "width": 1254,
       "height": 1254,
       "tags": [
@@ -43,7 +43,7 @@
       "name": "Tronco caído",
       "category": "Madeira",
       "path": "tronco.png",
-      "sha256": "ac4ead5b938e2879f224c646922319b5fbd85dba059388382f105ae1199ae1f4",
+      "sha256": "b6372c330efa390246be33258eee5ea08d41a02196ac3bc4b57dab57ac5196ae",
       "width": 1536,
       "height": 1024,
       "tags": [
@@ -59,7 +59,7 @@
       "name": "Samambaia",
       "category": "Vegetação",
       "path": "samambaia.png",
-      "sha256": "a41e05af97eb7fa653b755f531565227fa06ad0768ea2e3bfa237d59dd719f4d",
+      "sha256": "cda9c0df02cdab3134c383c42b110767d028246c7b09bbbfa36db563b511c4bd",
       "width": 1254,
       "height": 1254,
       "tags": [
@@ -75,7 +75,7 @@
       "name": "Cogumelos",
       "category": "Vegetação",
       "path": "cogumelos.png",
-      "sha256": "c3e333f00407f679bc61c2b6a2e9eed7fdcb66014e2732bbaaf2409b8048a952",
+      "sha256": "a41ce9477ac7886cbd68ad3ccbb14134180bb9d326811b07ce64be6cd1b7d4f9",
       "width": 1254,
       "height": 1254,
       "tags": [
@@ -91,7 +91,7 @@
       "name": "Pinheiro",
       "category": "Árvores",
       "path": "pinheiro.png",
-      "sha256": "3c47d1613b32b0eaf8a98bb2bbc820a9da7ad51e6bc5376db6c8f13032eb5123",
+      "sha256": "97a6dc8960cf81dc5235dfabf0e151c7e08d13d87c7257ad16b27a050ab54fbe",
       "width": 1254,
       "height": 1254,
       "tags": [

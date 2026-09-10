@@ -571,6 +571,9 @@ class ScenarioEditorWindow(QMainWindow):
             viewport.set_active_layer(layer_id)
             viewport.place_asset_from_library(asset_id)
         self.layer_stack.asset_drop_requested.connect(place)
+        self.asset_library.asset_place_requested.connect(
+            viewport.place_asset_from_library
+        )
         self.sequence_panel = SceneSequencePanel(session, viewport, self.professional_pages, project_root, self.current_lang, self)
         self.sequence_panel.status_message.connect(self._show_professional_status)
         self.studio_inspector_tabs = QTabWidget()

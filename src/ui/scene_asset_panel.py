@@ -86,6 +86,7 @@ class SceneAssetLibrary(QWidget):
 
     status_message = Signal(str)
     asset_selected = Signal(object)
+    asset_place_requested = Signal(str)
 
     def __init__(
         self,
@@ -132,6 +133,10 @@ class SceneAssetLibrary(QWidget):
         self.replace_button.setObjectName("scene_asset_replace_button")
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.setObjectName("scene_asset_refresh_button")
+        self.place_button = QPushButton("Place in scene")
+        self.place_button.setObjectName("scene_asset_place_button")
+        self.place_button.setAutoDefault(False)
+        self.place_button.setMinimumWidth(128)
         self.packs_button = QPushButton("NeoEng Packs")
         self.packs_button.setObjectName("scene_asset_packs_button")
         self.packs_button.setAutoDefault(False)
@@ -160,6 +165,7 @@ class SceneAssetLibrary(QWidget):
         layout.addLayout(filters)
         layout.addWidget(self.asset_list)
         layout.addWidget(self.diagnostics_label)
+        layout.addWidget(self.place_button)
         layout.addLayout(actions)
 
         self.asset_list.currentRowChanged.connect(self._selection_changed)
@@ -169,6 +175,7 @@ class SceneAssetLibrary(QWidget):
         self.relink_button.clicked.connect(self._choose_relink)
         self.replace_button.clicked.connect(self._choose_replace)
         self.refresh_button.clicked.connect(self.refresh)
+        self.place_button.clicked.connect(self._place_selected_asset)
         self.session.subscribe(self.refresh)
         self.update_language("en")
         self.refresh()
@@ -366,6 +373,28 @@ class SceneAssetLibrary(QWidget):
         self.relink_button.setEnabled(
             has_project and selected is not None and state != "ready"
         )
+        self.place_button.setEnabled(
+            has_project and selected is not None and state == "ready"
+        )
+
+    def _place_selected_asset(self) -> None:
+        selected = self.selected_asset
+        if selected is None:
+            self.status_message.emit(
+                "Selecione um asset antes de inserir na cena"
+                if self.current_lang == "pt"
+                else "Select an asset before placing it in the scene"
+            )
+            return
+        inspection = self._inspections.get(selected.id)
+        if inspection is None or inspection.state != "ready":
+            self.status_message.emit(
+                "O asset selecionado não está pronto para inserção"
+                if self.current_lang == "pt"
+                else "The selected asset is not ready to place"
+            )
+            return
+        self.asset_place_requested.emit(selected.id)
 
     def _choose_file(self, title: str) -> str:
         audio_selected = self.selected_asset is not None and Path(self.selected_asset.path).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}
@@ -515,6 +544,7 @@ class SceneAssetLibrary(QWidget):
             self.relink_button.setText("Vincular novamente")
             self.replace_button.setText("Substituir")
             self.refresh_button.setText("Atualizar")
+            self.place_button.setText("Inserir na cena")
             self.search_edit.setPlaceholderText("Pesquisar assets por ID ou caminho")
             self.category_combo.setItemText(0, "Todas as categorias")
             self.category_combo.setItemText(1, "Raster")
@@ -523,6 +553,9 @@ class SceneAssetLibrary(QWidget):
             self.relink_button.setToolTip("Vincular novamente um asset ausente ou modificado")
             self.replace_button.setToolTip("Substituir o arquivo do asset selecionado")
             self.refresh_button.setToolTip("Atualizar a biblioteca e os diagnósticos")
+            self.place_button.setToolTip(
+                "Inserir o asset selecionado no centro da moldura ativa; o arraste continua disponível"
+            )
         else:
             self.title.setText("Scene Assets")
             self.packs_button.setText("NeoEng Packs")
@@ -531,6 +564,7 @@ class SceneAssetLibrary(QWidget):
             self.relink_button.setText("Relink")
             self.replace_button.setText("Replace")
             self.refresh_button.setText("Refresh")
+            self.place_button.setText("Place in scene")
             self.search_edit.setPlaceholderText("Search assets by ID or path")
             self.category_combo.setItemText(0, "All categories")
             self.category_combo.setItemText(1, "Raster")
@@ -539,6 +573,9 @@ class SceneAssetLibrary(QWidget):
             self.relink_button.setToolTip("Relink a missing or modified asset")
             self.replace_button.setToolTip("Replace the selected asset file")
             self.refresh_button.setToolTip("Refresh the library and diagnostics")
+            self.place_button.setToolTip(
+                "Place the selected asset at the active frame center; drag-and-drop remains available"
+            )
         self.refresh()
 
 
