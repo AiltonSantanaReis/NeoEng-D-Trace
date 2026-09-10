@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QTimer, Qt, Signal
 from PySide6.QtGui import QAction, QActionGroup, QKeySequence
 from PySide6.QtWidgets import (
     QComboBox,
@@ -539,6 +539,8 @@ class ScenarioEditorWindow(QMainWindow):
         self._configure_professional_tab_order(viewport, inspector)
         session.subscribe(self._update_professional_status)
         session.subscribe(self._emit_document_changed)
+        if document.objects:
+            QTimer.singleShot(0, viewport.frame_loaded_content)
 
     def _build_studio_panels(self, session, viewport, inspector_scroll, project_root):
         pt = self.current_lang == "pt"

@@ -782,6 +782,13 @@ class SceneAuthoringViewport(QGraphicsView):
             return False
         return self.fit_selection()
 
+    def frame_loaded_content(self) -> bool:
+        """Frame authored content when opening a scene without changing data."""
+
+        if not self.session.document.objects:
+            return False
+        return self.fit_all()
+
     def _paint_navigation_state(self) -> None:
         if not self.hasFocus() and self._pan_origin is None:
             return
