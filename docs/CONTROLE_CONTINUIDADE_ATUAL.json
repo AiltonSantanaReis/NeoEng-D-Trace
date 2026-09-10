@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "record_id": "CONTINUITY-NEOENG-20260908",
-  "updated_at": "2026-09-09",
+  "updated_at": "2026-09-10",
   "authority": {
     "governance": "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md",
     "master_plan_ref": "Ailton/e00-plan-adoption-20260907",
@@ -9,12 +9,18 @@
     "master_plan_status": "E00_IN_PROGRESS_PREPARATORY_ONLY"
   },
   "active_work": {
-    "stage": "E13",
+    "stage": "POST_E13",
     "status": "IN_PROGRESS",
-    "phase": "POST_E13_CORRECTIONS",
+    "phase": "POST_E13_SCENE_EDITOR_AND_ASSET_PACKS",
+    "closed_stage": "E13",
+    "closed_stage_status": "FROZEN_HISTORICAL_ONLY",
+    "closed_stage_evidence": [
+      "docs/evidence/BASE_ATIVA_POS_E13_2026-09-09.md",
+      "docs/evidence/E13_FECHAMENTO_PORTABILIDADE_EVIDENCIA_2026-09-09.md"
+    ],
     "active_base_policy": "ONLY_CURRENT_CHECKOUT",
     "previous_bases_are_historical_only": true,
-    "current_focus": "Seleção múltipla e contextual de objetos, polígonos e vértices; edição vetorial e captura nativa.",
+    "current_focus": "Fechamento sem regressão do editor de cenário, parallax, catálogo de assets, tilemap/tileset, partículas, áudio, timeline, menus, localização PT-BR e build nativa.",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "Correções finas pós-E13 em seleção, edição vetorial, UX e validação nativa; findings reproduzíveis continuam sujeitos a correção controlada.",
@@ -32,20 +38,20 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Concluir o lote pós-E13 com testes focados, build canônica e capturas reais; revisão humana permanece na auditoria final.",
+    "next_action": "Concluir o lote pós-E13 com testes de regressão, build canônica, fluxo nativo real, capturas, documentação e decisões finais do proprietário.",
     "active_lot": {
-      "id": "POST-E13-OBJECT-VERTEX-SELECTION",
+      "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
-      "scope": "Seleção única/múltipla de objetos, polígonos e vértices; exclusão contextual sem apagar o objeto; captura nativa.",
-      "evidence": "docs/evidence/PLANO_MESTRE_FILA_EXECUCAO_CENTRAL_2026-09-09.md",
+      "scope": "Ajustes finos de UX e fluxo para editor de cenário/parallax e pacote Floresta; testes nativos, persistência, localização e build final sem remoção de conteúdo.",
+      "evidence": "docs/evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md",
       "functional_implementation_allowed": true
     },
     "preparatory_next_stage": {
-      "stage": "E13",
+      "stage": "POST_E13",
       "status": "IN_PROGRESS",
-      "evidence": "docs/evidence/E13_FECHAMENTO_PORTABILIDADE_EVIDENCIA_2026-09-09.md",
+      "evidence": "docs/evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md",
       "functional_implementation_allowed": true,
-      "promotion_rule": "E13-A/B/C permanecem no mesmo worktree e só podem ser promovidos após evidências, hashes, testes e commit rastreável."
+      "promotion_rule": "E13 permanece fechado e histórico; somente o lote pós-E13 pode avançar no mesmo worktree após evidências, hashes, testes e commit rastreável."
     },
     "forbidden_until_final_audit": [
       "encerrar o plano sem auditoria final",
@@ -163,7 +169,7 @@
     "E10": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E11": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
     "E12": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
-    "E13": "IN_PROGRESS"
+    "E13": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING"
   },
   "handoff_requirements": [
     "Uma unica branch/base declarada antes de qualquer teste.",

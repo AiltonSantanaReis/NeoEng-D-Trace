@@ -36,6 +36,10 @@ class AssetPackDialog(QDialog):
         self.packs, errors = discover_packs(pack_root)
         self._cache = OrderedDict()
         self._pending = []
+        # Decode a small batch per event-loop turn.  This keeps the catalog
+        # responsive for large packs while making the first visible grid
+        # deterministic enough for a real user to inspect immediately.
+        self._thumbnail_batch_size = 4
         self.pack_combo = QComboBox()
         self.pack_combo.setObjectName("asset_pack_selector")
         for pack in self.packs:
@@ -70,7 +74,10 @@ class AssetPackDialog(QDialog):
         self.add_button.setEnabled(False)
         self.add_button.setToolTip(
             self.tr_text(
-                "Copia o asset para a biblioteca do projeto. Depois arraste-o para uma moldura.",
+                (
+                    "Copia o asset para a biblioteca do projeto. "
+                    "Depois arraste-o para uma moldura."
+                ),
                 "Copy the asset into the project library, then drag it into a frame.",
             )
         )
@@ -105,7 +112,7 @@ class AssetPackDialog(QDialog):
         layout.addWidget(splitter, 1)
         layout.addWidget(self.status)
         self.timer = QTimer(self)
-        self.timer.setInterval(10)
+        self.timer.setInterval(0)
         self.timer.timeout.connect(self._next_thumbnail)
         self.pack_combo.currentIndexChanged.connect(self._pack_changed)
         self.search.textChanged.connect(self._filter)
@@ -140,13 +147,16 @@ class AssetPackDialog(QDialog):
             for category in sorted({a.category for a in self.pack.assets}):
                 self.category.addItem(category, category)
             self.summary.setText(
-                f"{self.pack.description}\n{len(self.pack.assets)} assets · {self.pack.provenance}"
+                f"{self.pack.description}\n"
+                f"{len(self.pack.assets)} assets · {self.pack.provenance}"
             )
             for asset in self.pack.assets:
                 item = QListWidgetItem(asset.name)
                 item.setData(Qt.ItemDataRole.UserRole, asset)
                 item.setToolTip(
-                    f"{asset.name}\n{asset.width} × {asset.height} px\n{asset.description}"
+                    f"{asset.name}\n"
+                    f"{asset.width} × {asset.height} px\n"
+                    f"{asset.description}"
                 )
                 self.grid.addItem(item)
         self.category.blockSignals(False)
@@ -221,11 +231,16 @@ class AssetPackDialog(QDialog):
         if not self._pending:
             self.timer.stop()
             return
-        item = self._pending.pop(0)
-        try:
-            item.setIcon(QIcon(self._image(item.data(Qt.ItemDataRole.UserRole), 144)))
-        except (OSError, ValueError) as exc:
-            self.status.setText(str(exc))
+        for _ in range(min(self._thumbnail_batch_size, len(self._pending))):
+            item = self._pending.pop(0)
+            try:
+                item.setIcon(
+                    QIcon(self._image(item.data(Qt.ItemDataRole.UserRole), 144))
+                )
+            except (OSError, ValueError) as exc:
+                self.status.setText(str(exc))
+        if not self._pending:
+            self.timer.stop()
 
     def _selection_changed(self, current, *_):
         self.preview.clear()
@@ -237,7 +252,9 @@ class AssetPackDialog(QDialog):
         try:
             self.preview.setPixmap(self._image(asset, 280))
             self.details.setText(
-                f"{asset.name}\n{asset.category} · {asset.width} × {asset.height} px\n\n{asset.description}"
+                f"{asset.name}\n"
+                f"{asset.category} · {asset.width} × {asset.height} px\n\n"
+                f"{asset.description}"
             )
             self.add_button.setEnabled(self.library.project_root is not None)
             if self.library.project_root is None:
@@ -271,8 +288,17 @@ class AssetPackDialog(QDialog):
                 )
             self.status.setText(
                 self.tr_text(
-                    f"{asset.name}: {'adicionado' if changed else 'já disponível'} na biblioteca do projeto. Volte à biblioteca para arrastar até uma moldura.",
-                    f"{asset.name}: {'added to' if changed else 'already in'} the project library. Return to the library to drag it into a frame.",
+                    (
+                        f"{asset.name}: "
+                        f"{'adicionado' if changed else 'já disponível'} na biblioteca "
+                        "do projeto. Volte à biblioteca para arrastar até uma moldura."
+                    ),
+                    (
+                        f"{asset.name}: "
+                        f"{'added to' if changed else 'already in'} the "
+                        "project library. "
+                        "Return to the library to drag it into a frame."
+                    ),
                 )
             )
         except (OSError, ValueError) as exc:

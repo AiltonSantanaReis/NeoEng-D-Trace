@@ -6,15 +6,17 @@
 > podem ser usados como base de implementação, teste ou promoção.
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
-**Estado:** `POST_E13_CORRECTIONS_IN_PROGRESS / E13-D histórico`
+**Estado:** `POST_E13_IN_PROGRESS / E13 fechado e congelado como histórico`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
 **E10:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados em Godot 4.7 e Unity 6000.5.7f1
 **E11:** `TECHNICAL_CHECKPOINT_PASS` — composição, recovery, exportação, consumo e UX comprovados no r67
 **E12:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados tecnicamente no r69; auditoria final permanece pendente
-**Pós-E13:** correções finas de UX, seleção, edição vetorial e validação nativa
-continuam somente sobre o HEAD deste checkout.
+**Pós-E13:** correções finas do Editor de Cenário, parallax, catálogo de assets,
+localização e validação nativa continuam somente sobre o HEAD deste checkout.
+O registro formal da fronteira é
+`docs/evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`.
 
 Este documento é o ponto único de continuidade operacional. O JSON ao lado é
 a fonte estruturada consumida pela validação automática. Governança, decisões
@@ -25,7 +27,7 @@ registro não cria aceite funcional nem autorização de publicação.
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
 `Ailton/e08-renderer-20260908`. O HEAD ativo pós-E13 é `978fa6a`; a build
-canônica ativa foi gerada somente deste commit. A existência de outras
+canônica histórica foi gerada somente deste commit. A existência de outras
 branches, worktrees, builds ou pastas de captura não muda a base ativa. Nenhum
 artefato externo pode ser promovido sem `source_commit` verificável.
 
@@ -42,14 +44,14 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS_LOCAL` | 2104 aprovados, 2 skips, 1 warning |
+| Suíte oficial | `PASS_LOCAL` | 2170 aprovados, 2 skips, 1 warning no último gate executado |
 | Estática | `PASS_LOCAL` | compileall, mypy, Black, isort, Flake8 e diff check |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; sem revisão humana |
 | Auditoria nativa/humana | `PENDING_EVIDENCE` | revisão deferida por autorização; obrigatória na auditoria final |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS_LOCAL` | r72; hash do executável `909051E78F09BA009EEAD4082E2A5829F09DA285E62DC835CA0376024D2F9AF6`; smoke externo com 11 checks e CLI 0.3.0 |
+| Build oficial | `PENDENTE_REQUALIFICAÇÃO` | a build final do lote pós-E13 ainda será gerada após o commit das correções |
 | Runtime funcional | `PASS_LOCAL` | abertura PT, restauração de geometria, salvamento e fechamento; `failure_count=0` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -60,9 +62,9 @@ substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir o lote pós-E13 com testes focados, build canônica e capturas reais do
-binário. A revisão humana do proprietário permanece reservada para a auditoria
-final do plano.
+Concluir o lote pós-E13 com testes focados, build canônica, fluxo nativo real,
+capturas e documentação. A revisão humana do proprietário permanece reservada
+para a auditoria final do plano.
 A revisão visual/humana e a
 requalificação final de symlink permanecem deferidas por autorização explícita
 para a auditoria final; continuam obrigatórias antes de concluir o plano.

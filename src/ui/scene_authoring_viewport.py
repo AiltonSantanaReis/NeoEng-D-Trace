@@ -39,6 +39,7 @@ from PySide6.QtWidgets import (
     QGraphicsScene,
     QGraphicsSceneMouseEvent,
     QGraphicsView,
+    QMenu,
 )
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
@@ -98,6 +99,7 @@ from src.runtime.post_processing import (
     PostProcessingRuntime,
     PostProcessingSourceBindingRecord,
 )
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class SceneObjectGraphicsItem(QGraphicsObject):
@@ -588,6 +590,58 @@ class SceneAuthoringViewport(QGraphicsView):
 
         self.current_lang = language if language in {"en", "pt"} else "en"
 
+    def _text(self, pt: str, en: str) -> str:
+        """Return a localized viewport label without changing the EN contract."""
+
+        return pt if self.current_lang == "pt" else en
+
+    def _build_context_menu(self, object_id: str | None = None) -> QMenu:
+        """Build the non-destructive menu used by the professional viewport.
+
+        The viewport previously relied on keyboard shortcuts and the inspector
+        for these actions, leaving a real right-click without a useful native
+        affordance.  The menu intentionally contains only selection and framing
+        commands: it cannot delete or rewrite authored data accidentally.
+        """
+
+        menu = QMenu(self)
+        header = menu.addAction(
+            self._text(
+                f"Objeto: {object_id}" if object_id else "Nenhum objeto sob o cursor",
+                f"Object: {object_id}" if object_id else "No object under cursor",
+            )
+        )
+        header.setEnabled(False)
+        if object_id is not None:
+            properties = menu.addAction(
+                self._text("Mostrar propriedades", "Show properties")
+            )
+            properties.triggered.connect(
+                lambda _checked=False: self.selection_changed.emit()
+            )
+            menu.addSeparator()
+
+        fit_selection = menu.addAction(self._text("Enquadrar seleção", "Fit selection"))
+        fit_selection.setEnabled(bool(self.session.selection.ids))
+        fit_selection.triggered.connect(lambda _checked=False: self.fit_selection())
+        fit_all = menu.addAction(self._text("Enquadrar tudo", "Fit all"))
+        fit_all.setEnabled(bool(self._items))
+        fit_all.triggered.connect(lambda _checked=False: self.fit_all())
+        return menu
+
+    def contextMenuEvent(self, event) -> None:  # noqa: N802
+        """Expose safe native actions for object and empty-viewport clicks."""
+
+        target = self.itemAt(event.pos())
+        object_id = (
+            target.object_id if isinstance(target, SceneObjectGraphicsItem) else None
+        )
+        if object_id is not None:
+            self._set_selection((object_id,), object_id)
+        menu = self._build_context_menu(object_id)
+        fit_context_menu(menu).exec(event.globalPos())
+        event.accept()
+
     def set_geometry(
         self,
         object_id: str,
@@ -738,7 +792,12 @@ class SceneAuthoringViewport(QGraphicsView):
                 break
             requested_center += correction
             self._set_navigation_state(new_zoom, requested_center)
-        self.status_message.emit(f"Viewport zoom: {new_zoom:.2f}x")
+        self.status_message.emit(
+            self._text(
+                f"Zoom da janela: {new_zoom:.2f}x",
+                f"Viewport zoom: {new_zoom:.2f}x",
+            )
+        )
         return True
 
     def _fit_object_ids(self, object_ids: Iterable[str], label: str) -> bool:
@@ -1142,7 +1201,10 @@ class SceneAuthoringViewport(QGraphicsView):
                 marker.setZValue(self._overlay_z(100.0))
                 marker.pressed.connect(
                     lambda socket_id: self.status_message.emit(
-                        f"Socket selected: {socket_id}"
+                        self._text(
+                            f"Socket selecionado: {socket_id}",
+                            f"Socket selected: {socket_id}",
+                        )
                     )
                 )
                 self.graphics_scene.addItem(marker)
@@ -1195,7 +1257,11 @@ class SceneAuthoringViewport(QGraphicsView):
             self._last_asset_diagnostics = self._asset_diagnostics
             if self._asset_diagnostics:
                 self.status_message.emit(
-                    "Scene asset diagnostics: " + " | ".join(self._asset_diagnostics)
+                    self._text(
+                        "Diagnóstico dos assets da cena: ",
+                        "Scene asset diagnostics: ",
+                    )
+                    + " | ".join(self._asset_diagnostics)
                 )
 
     def _refresh_transforms(
@@ -1575,7 +1641,9 @@ class SceneAuthoringViewport(QGraphicsView):
         super().mouseReleaseEvent(event)
 
     def _edit_status_error(self, exc: Exception) -> None:
-        self.status_message.emit(user_error_message(exc, operation="edit"))
+        self.status_message.emit(
+            user_error_message(exc, operation="edit", language=self.current_lang)
+        )
 
     def _block_if_preview(self) -> bool:
         if self._authoring_enabled:
@@ -1629,9 +1697,17 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Duplicated {len(created)} object(s)"
-                if created
-                else "No objects selected"
+                (
+                    f"{len(created)} objeto(s) duplicado(s)"
+                    if created
+                    else "Nenhum objeto selecionado"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"Duplicated {len(created)} object(s)"
+                    if created
+                    else "No objects selected"
+                )
             )
         return True
 
@@ -1645,7 +1721,15 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Deleted {count} object(s)" if changed else "No objects selected"
+                (
+                    f"{count} objeto(s) excluído(s)"
+                    if changed
+                    else "Nenhum objeto selecionado"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"Deleted {count} object(s)" if changed else "No objects selected"
+                )
             )
         return True
 
@@ -1656,16 +1740,28 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
             return True
         if payload is None:
-            self.status_message.emit("No objects selected")
+            self.status_message.emit(
+                self._text("Nenhum objeto selecionado", "No objects selected")
+            )
             return True
         mime = QMimeData()
         mime.setData(SCENE_CLIPBOARD_MIME, payload)
         clipboard = QApplication.clipboard()
         if clipboard is None:
-            self.status_message.emit("Scene clipboard is unavailable")
+            self.status_message.emit(
+                self._text(
+                    "A área de transferência da cena está indisponível",
+                    "Scene clipboard is unavailable",
+                )
+            )
             return True
         clipboard.setMimeData(mime)
-        self.status_message.emit(f"Copied {len(self.session.selection.ids)} object(s)")
+        self.status_message.emit(
+            self._text(
+                f"{len(self.session.selection.ids)} objeto(s) copiado(s)",
+                f"Copied {len(self.session.selection.ids)} object(s)",
+            )
+        )
         return True
 
     def _handle_paste_key(self) -> bool:
@@ -1674,7 +1770,12 @@ class SceneAuthoringViewport(QGraphicsView):
         clipboard = QApplication.clipboard()
         mime = clipboard.mimeData() if clipboard is not None else None
         if mime is None or not mime.hasFormat(SCENE_CLIPBOARD_MIME):
-            self.status_message.emit("No compatible scene clipboard payload")
+            self.status_message.emit(
+                self._text(
+                    "Nenhum conteúdo compatível da cena na área de transferência",
+                    "No compatible scene clipboard payload",
+                )
+            )
             return True
         try:
             created = self.session.paste_payload(
@@ -1684,7 +1785,17 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Pasted {len(created)} object(s)" if created else "No objects pasted"
+                (
+                    f"{len(created)} objeto(s) colado(s)"
+                    if created
+                    else "Nenhum objeto colado"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"Pasted {len(created)} object(s)"
+                    if created
+                    else "No objects pasted"
+                )
             )
         return True
 
@@ -1693,9 +1804,17 @@ class SceneAuthoringViewport(QGraphicsView):
             return True
         changed = self.redo() if redo else self.undo()
         self.status_message.emit(
-            ("Redo applied" if redo else "Undo applied")
-            if changed
-            else ("Nothing to redo" if redo else "Nothing to undo")
+            (
+                ("Refazer aplicado" if redo else "Desfazer aplicado")
+                if changed
+                else ("Nada para refazer" if redo else "Nada para desfazer")
+            )
+            if self.current_lang == "pt"
+            else (
+                ("Redo applied" if redo else "Undo applied")
+                if changed
+                else ("Nothing to redo" if redo else "Nothing to undo")
+            )
         )
         return True
 
@@ -1776,7 +1895,10 @@ class SceneAuthoringViewport(QGraphicsView):
         if item is None:
             return None
         if item.locked:
-            return f"Cannot edit '{object_id}': the object is locked."
+            return self._text(
+                f"Não é possível editar '{object_id}': o objeto está bloqueado.",
+                f"Cannot edit '{object_id}': the object is locked.",
+            )
         layer = next(
             (
                 value
@@ -1786,10 +1908,19 @@ class SceneAuthoringViewport(QGraphicsView):
             None,
         )
         if layer is not None and layer.locked:
-            return f"Cannot edit '{object_id}': its layer is locked."
+            return self._text(
+                f"Não é possível editar '{object_id}': a camada está bloqueada.",
+                f"Cannot edit '{object_id}': its layer is locked.",
+            )
         locked_group = locked_group_for_object(self.session.document, object_id)
         if locked_group is not None:
-            return f"Cannot edit '{object_id}': group '{locked_group.name}' is locked."
+            return self._text(
+                (
+                    f"Não é possível editar '{object_id}': o grupo "
+                    f"'{locked_group.name}' está bloqueado."
+                ),
+                f"Cannot edit '{object_id}': group '{locked_group.name}' is locked.",
+            )
         return None
 
     def _selection_edit_block_reason(self) -> str | None:
@@ -1825,7 +1956,12 @@ class SceneAuthoringViewport(QGraphicsView):
         if object_id not in self.session.selection.ids:
             return
         if not self._authoring_enabled:
-            self.status_message.emit("Preview mode is read-only")
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
             return
         item = next(
             (value for value in self.session.document.objects if value.id == object_id),
@@ -1863,7 +1999,10 @@ class SceneAuthoringViewport(QGraphicsView):
             self._gesture_start = None
             self.status_message.emit(
                 self._edit_block_reason(object_id)
-                or f"Cannot move '{object_id}': editing is locked."
+                or self._text(
+                    f"Não é possível mover '{object_id}': a edição está bloqueada.",
+                    f"Cannot move '{object_id}': editing is locked.",
+                )
             )
             return
 
@@ -1882,7 +2021,12 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def _gizmo_started(self, mode: str, scene_pos: QPointF) -> None:
         if not self._authoring_enabled:
-            self.status_message.emit("Preview mode is read-only")
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
             return
         reason = self._selection_edit_block_reason()
         if reason is not None:
@@ -1945,7 +2089,10 @@ class SceneAuthoringViewport(QGraphicsView):
             self._gizmo_start = None
             self.status_message.emit(
                 self._selection_edit_block_reason()
-                or "Cannot transform the selection: editing is locked."
+                or self._text(
+                    "Não é possível transformar a seleção: a edição está bloqueada.",
+                    "Cannot transform the selection: editing is locked.",
+                )
             )
             return
 
@@ -1958,7 +2105,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self.session.finish_gesture(f"Apply {mode} gizmo transform")
         self._gesture_mode = None
         self._gizmo_start = None
-        self.status_message.emit("Transform applied")
+        self.status_message.emit(
+            self._text("Transformação aplicada", "Transform applied")
+        )
 
     def undo(self) -> bool:
         changed = self.session.undo()
@@ -2024,9 +2173,20 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def _destination_layer(self) -> str:
         layers = self.session.document.layers
-        layer = next((item for item in layers if item.id == getattr(self, "_active_layer_id", None)), layers[0])
+        layer = next(
+            (
+                item
+                for item in layers
+                if item.id == getattr(self, "_active_layer_id", None)
+            ),
+            layers[0],
+        )
         if layer.locked or not layer.visible:
-            raise ValueError("Mostre e desbloqueie a moldura de destino antes de inserir assets" if self.current_lang == "pt" else "Show and unlock the destination frame before placing assets")
+            raise ValueError(
+                "Mostre e desbloqueie a moldura de destino antes de inserir assets"
+                if self.current_lang == "pt"
+                else "Show and unlock the destination frame before placing assets"
+            )
         return layer.id
 
     def dragEnterEvent(self, event) -> None:
@@ -2096,7 +2256,12 @@ class SceneAuthoringViewport(QGraphicsView):
         self._drop_preview = None
         self.viewport().update()
         if not self._authoring_enabled:
-            self.status_message.emit("Preview mode is read-only")
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
             event.ignore()
             return
         asset_mime = "application/x-neoeng-scene-asset"
@@ -2107,13 +2272,22 @@ class SceneAuthoringViewport(QGraphicsView):
                 None,
             )
             if asset is None:
-                self.status_message.emit("The dragged scene asset is unavailable")
+                self.status_message.emit(
+                    self._text(
+                        "O asset arrastado da cena está indisponível",
+                        "The dragged scene asset is unavailable",
+                    )
+                )
                 event.ignore()
                 return
             resolved, issue = resolve_scene_asset(asset, self.project_root)
             if resolved is None:
                 self.status_message.emit(
-                    issue or "The dragged scene asset is unavailable"
+                    issue
+                    or self._text(
+                        "O asset arrastado da cena está indisponível",
+                        "The dragged scene asset is unavailable",
+                    )
                 )
                 event.ignore()
                 return
@@ -2156,7 +2330,11 @@ class SceneAuthoringViewport(QGraphicsView):
                 event.acceptProposedAction()
                 return
             except (OSError, ValueError) as exc:
-                self.status_message.emit(user_error_message(exc, operation="asset"))
+                self.status_message.emit(
+                    user_error_message(
+                        exc, operation="asset", language=self.current_lang
+                    )
+                )
                 event.ignore()
                 return
 
@@ -2168,12 +2346,22 @@ class SceneAuthoringViewport(QGraphicsView):
         if not paths and event.mimeData().hasText():
             paths = [Path(event.mimeData().text())]
         if not paths:
-            self.status_message.emit("Drop an image asset onto the viewport")
+            self.status_message.emit(
+                self._text(
+                    "Solte um asset de imagem no viewport",
+                    "Drop an image asset onto the viewport",
+                )
+            )
             event.ignore()
             return
         path = paths[0].resolve(strict=False)
         if self.project_root is None:
-            self.status_message.emit("Save the project before importing scene assets")
+            self.status_message.emit(
+                self._text(
+                    "Salve o projeto antes de importar assets da cena",
+                    "Save the project before importing scene assets",
+                )
+            )
             event.ignore()
             return
         try:
@@ -2230,7 +2418,9 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             event.acceptProposedAction()
         except (OSError, ValueError, SceneAssetError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="asset"))
+            self.status_message.emit(
+                user_error_message(exc, operation="asset", language=self.current_lang)
+            )
             event.ignore()
 
     def place_asset_from_library(
@@ -2240,9 +2430,10 @@ class SceneAuthoringViewport(QGraphicsView):
 
         if not self._authoring_enabled:
             self.status_message.emit(
-                "O modo de pré-visualização é somente leitura"
-                if self.current_lang == "pt"
-                else "Preview mode is read-only"
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
             )
             return False
         asset = next(
@@ -2251,14 +2442,17 @@ class SceneAuthoringViewport(QGraphicsView):
         )
         if asset is None:
             self.status_message.emit(
-                "Asset arrastado indisponível"
-                if self.current_lang == "pt"
-                else "The dragged scene asset is unavailable"
+                self._text(
+                    "O asset arrastado da cena está indisponível",
+                    "The dragged scene asset is unavailable",
+                )
             )
             return False
         resolved, issue = resolve_scene_asset(asset, self.project_root)
         if resolved is None:
-            self.status_message.emit(issue or "Asset indisponível")
+            self.status_message.emit(
+                issue or self._text("Asset indisponível", "Asset unavailable")
+            )
             return False
         try:
             width, height = self._image_size(resolved)
@@ -2309,7 +2503,9 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             return True
         except (OSError, ValueError, SceneAssetError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="asset"))
+            self.status_message.emit(
+                user_error_message(exc, operation="asset", language=self.current_lang)
+            )
             return False
 
     @staticmethod

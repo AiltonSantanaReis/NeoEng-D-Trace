@@ -439,29 +439,54 @@ class SceneAssetLibrary(QWidget):
         self.asset_place_requested.emit(selected.id)
 
     def _choose_file(self, title: str) -> str:
-        audio_selected = self.selected_asset is not None and Path(self.selected_asset.path).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}
-        path, _filter = QFileDialog.getOpenFileName(self, title, "", "Audio (*.wav *.mp3 *.ogg *.flac)" if audio_selected else _ASSET_FILTER)
+        audio_selected = self.selected_asset is not None and Path(
+            self.selected_asset.path
+        ).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}
+        path, _filter = QFileDialog.getOpenFileName(
+            self,
+            title,
+            "",
+            "Audio (*.wav *.mp3 *.ogg *.flac)" if audio_selected else _ASSET_FILTER,
+        )
         return path
 
     def _choose_import(self) -> None:
-        path = self._choose_file("Import scene asset")
+        path = self._choose_file(
+            "Importar asset da cena"
+            if self.current_lang == "pt"
+            else "Import scene asset"
+        )
         if path:
             self.import_asset_from_path(path)
 
     def _choose_relink(self) -> None:
-        path = self._choose_file("Relink scene asset")
+        path = self._choose_file(
+            "Vincular novamente asset da cena"
+            if self.current_lang == "pt"
+            else "Relink scene asset"
+        )
         if path:
             self.relink_asset_from_path(path)
 
     def _choose_replace(self) -> None:
-        path = self._choose_file("Replace scene asset")
+        path = self._choose_file(
+            "Substituir asset da cena"
+            if self.current_lang == "pt"
+            else "Replace scene asset"
+        )
         if path:
             self.replace_asset_from_path(path)
 
     def _prepare(self, path: str | Path) -> PreparedSceneAsset:
         if self.project_root is None:
-            raise ValueError("Save the project before managing scene assets")
-        if self.selected_asset is not None and Path(self.selected_asset.path).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}:
+            raise ValueError(
+                "Salve o projeto antes de gerenciar assets da cena"
+                if self.current_lang == "pt"
+                else "Save the project before managing scene assets"
+            )
+        if self.selected_asset is not None and Path(
+            self.selected_asset.path
+        ).suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}:
             return prepare_scene_asset(path, self.project_root, allow_audio=True)
         source = validate_scene_asset_source(Path(path))
         SceneAuthoringViewport._load_asset_pixmap(source)
@@ -499,7 +524,12 @@ class SceneAssetLibrary(QWidget):
             if existing is not None:
                 self._select_id(existing.id)
                 self.status_message.emit(
-                    f"Asset already in library: {existing.id}; no changes"
+                    (
+                        f"O asset já está na biblioteca: {existing.id}; "
+                        "nenhuma alteração"
+                        if self.current_lang == "pt"
+                        else f"Asset already in library: {existing.id}; no changes"
+                    )
                 )
                 return False
             asset = AssetReferenceRecord(
@@ -526,7 +556,11 @@ class SceneAssetLibrary(QWidget):
             return changed
         except (OSError, ValueError) as exc:
             self.status_message.emit(
-                "Asset import rejected: "
+                (
+                    "Importação de asset rejeitada: "
+                    if self.current_lang == "pt"
+                    else "Asset import rejected: "
+                )
                 + user_error_message(exc, operation="asset", language=self.current_lang)
             )
             return False
@@ -538,8 +572,18 @@ class SceneAssetLibrary(QWidget):
         operation: str,
     ) -> bool:
         selected = self.selected_asset
+        operation_pt = {
+            "Relink": "vincular novamente",
+            "Replace": "substituir",
+        }.get(operation, operation.lower())
         if selected is None:
-            self.status_message.emit(f"Select an asset before {operation.lower()}")
+            self.status_message.emit(
+                (
+                    f"Selecione um asset antes de {operation_pt}"
+                    if self.current_lang == "pt"
+                    else f"Select an asset before {operation.lower()}"
+                )
+            )
             return False
         try:
             prepared = self._prepare(path)
@@ -551,19 +595,40 @@ class SceneAssetLibrary(QWidget):
                 }
             )
             if replacement == selected:
-                self.status_message.emit(f"{operation} made no changes")
+                self.status_message.emit(
+                    (
+                        f"{operation_pt.capitalize()} não alterou nada"
+                        if self.current_lang == "pt"
+                        else f"{operation} made no changes"
+                    )
+                )
                 return False
             changed = self.session.update_asset(replacement)
             self._select_id(selected.id)
             self.status_message.emit(
-                f"{operation} applied to {selected.id}; object links preserved"
-                if changed
-                else f"{operation} made no changes"
+                (
+                    (
+                        f"{operation_pt.capitalize()} aplicado a {selected.id}; "
+                        "vínculos dos objetos preservados"
+                    )
+                    if changed
+                    else f"{operation_pt.capitalize()} não alterou nada"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"{operation} applied to {selected.id}; object links preserved"
+                    if changed
+                    else f"{operation} made no changes"
+                )
             )
             return changed
         except (OSError, ValueError) as exc:
             self.status_message.emit(
-                f"{operation} rejected: "
+                (
+                    f"{operation_pt.capitalize()} rejeitado: "
+                    if self.current_lang == "pt"
+                    else f"{operation} rejected: "
+                )
                 + user_error_message(exc, operation="asset", language=self.current_lang)
             )
             return False
@@ -571,12 +636,21 @@ class SceneAssetLibrary(QWidget):
     def relink_asset_from_path(self, path: str | Path) -> bool:
         selected = self.selected_asset
         if selected is None:
-            self.status_message.emit("Select an asset before relinking")
+            self.status_message.emit(
+                "Selecione um asset antes de vincular novamente"
+                if self.current_lang == "pt"
+                else "Select an asset before relinking"
+            )
             return False
         inspection = self._inspections.get(selected.id)
         if inspection is not None and inspection.state == "ready":
             self.status_message.emit(
-                "Relink is available only for missing or modified assets"
+                (
+                    "Vincular novamente só está disponível para assets ausentes "
+                    "ou modificados"
+                )
+                if self.current_lang == "pt"
+                else "Relink is available only for missing or modified assets"
             )
             return False
         return self._update_selected_from_path(path, operation="Relink")
@@ -589,7 +663,9 @@ class SceneAssetLibrary(QWidget):
         if self.current_lang == "pt":
             self.title.setText("Assets da Cena")
             self.packs_button.setText("Pacotes NeoEng")
-            self.packs_button.setToolTip("Explorar pacotes e adicionar assets ao projeto")
+            self.packs_button.setToolTip(
+                "Explorar pacotes e adicionar assets ao projeto"
+            )
             self.import_button.setText("Importar")
             self.relink_button.setText("Vincular novamente")
             self.replace_button.setText("Substituir")
@@ -600,11 +676,14 @@ class SceneAssetLibrary(QWidget):
             self.category_combo.setItemText(1, "Raster")
             self.category_combo.setItemText(2, "Vetorial")
             self.import_button.setToolTip("Importar um asset para a biblioteca da cena")
-            self.relink_button.setToolTip("Vincular novamente um asset ausente ou modificado")
+            self.relink_button.setToolTip(
+                "Vincular novamente um asset ausente ou modificado"
+            )
             self.replace_button.setToolTip("Substituir o arquivo do asset selecionado")
             self.refresh_button.setToolTip("Atualizar a biblioteca e os diagnósticos")
             self.place_button.setToolTip(
-                "Inserir o asset selecionado no centro da moldura ativa; o arraste continua disponível"
+                "Inserir o asset selecionado no centro da moldura ativa; "
+                "o arraste continua disponível"
             )
         else:
             self.title.setText("Scene Assets")
@@ -624,7 +703,8 @@ class SceneAssetLibrary(QWidget):
             self.replace_button.setToolTip("Replace the selected asset file")
             self.refresh_button.setToolTip("Refresh the library and diagnostics")
             self.place_button.setToolTip(
-                "Place the selected asset at the active frame center; drag-and-drop remains available"
+                "Place the selected asset at the active frame center; "
+                "drag-and-drop remains available"
             )
         self.refresh()
 

@@ -21,6 +21,10 @@ ALLOWED_STATUSES = {
     "SKIP_PRIVILEGE_LIMITATION",
     "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
 }
+ALLOWED_ACTIVE_STAGES = {
+    *(f"E{index:02d}" for index in range(14)),
+    "POST_E13",
+}
 
 
 def _require(data: dict[str, Any], key: str) -> Any:
@@ -39,8 +43,10 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         raise ValueError("master_plan_commit must be explicit")
 
     active = _require(data, "active_work")
-    if active["stage"] not in {f"E{index:02d}" for index in range(14)}:
-        raise ValueError("continuity registry must remain anchored at E00 through E13")
+    if active["stage"] not in ALLOWED_ACTIVE_STAGES:
+        raise ValueError(
+            "continuity registry must remain anchored at E00 through E13 or POST_E13"
+        )
     if active["stage"] == "E00" and active["implementation_allowed"]:
         raise ValueError("E00 preparatory registry cannot allow implementation")
     if active["stage"] in {"E01", "E02"} and not active.get(
@@ -249,6 +255,20 @@ def validate_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
         if tuple(stages.get(f"E{index:02d}") for index in range(10)) != expected:
             raise ValueError(
                 "stage progression is inconsistent with active E09 continuation state"
+            )
+    elif active["stage"] == "POST_E13":
+        if active.get("closed_stage") != "E13":
+            raise ValueError("POST_E13 must explicitly identify E13 as closed")
+        if stages.get("E13") != "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING":
+            raise ValueError(
+                "POST_E13 requires E13 to be closed at a technical checkpoint"
+            )
+        expected = tuple(
+            "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING" for _ in range(14)
+        )
+        if tuple(stages.get(f"E{index:02d}") for index in range(14)) != expected:
+            raise ValueError(
+                "stage progression is inconsistent with the POST_E13 continuation state"
             )
     else:
         active_index = int(active["stage"][1:])
