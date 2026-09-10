@@ -27,11 +27,13 @@ Produzir pequenas coleções coesas, cada uma capaz de montar uma cena utilizáv
 
 | Coleção proposta | Conteúdo inicial alvo | Uso |
 |---|---|---|
-| Bosque de Aurora | 6 planos de parallax, 20 elementos de vegetação/rochas, 24 peças de terreno, 1 cena exemplo | Plataforma, exploração, cenas naturais |
-| Ruínas de Âmbar | 6 planos, 20 módulos/objetos arquitetônicos, 24 peças de terreno, 1 cena exemplo | Templos, vilas antigas, aventura |
-| Distrito Neon | 6 planos, 20 módulos/objetos urbanos, 24 peças de terreno, 1 cena exemplo | Cidade, indústria, ficção científica |
+| Floresta | 6 planos de parallax, 20 elementos de vegetação/rochas, 24 peças de terreno, 1 cena exemplo | Plataforma, exploração, cenas naturais |
+| Ruínas | 6 planos, 20 módulos/objetos arquitetônicos, 24 peças de terreno, 1 cena exemplo | Templos, vilas antigas, aventura |
+| Cidade futurista | 6 planos, 20 módulos/objetos urbanos, 24 peças de terreno, 1 cena exemplo | Cidade, indústria, ficção científica |
 
-Quantidades são metas de produção, não inventário entregue. Variações de cor não devem inflar a contagem de peças distintas. Começar com um piloto do Bosque: 3 planos, 6 objetos, 9 peças de terreno e uma composição real. Validar a direção visual e a montagem antes de multiplicar a produção.
+Nomenclatura definida pelo usuário: usar nomes comuns e descritivos do conteúdo nos pacotes e assets. Aplicar essa regra às próximas coleções, às miniaturas e à busca.
+
+Quantidades são metas de produção, não inventário entregue. Variações de cor não devem inflar a contagem de peças distintas. Começar com um piloto de Floresta: 3 planos, 6 objetos, 9 peças de terreno e uma composição real. Validar a direção visual e a montagem antes de multiplicar a produção.
 
 Processo: guia visual por coleção → arquivos mestres editáveis → exportações individuais → validação técnica → composição de exemplo no editor → revisão visual → empacotamento versionado. Preservar mestres, histórico e identificação da origem de cada peça. Conteúdo assistido por IA deve registrar essa origem e passar por acabamento/revisão; não anunciar exclusividade jurídica apenas por ter sido gerado.
 
