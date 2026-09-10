@@ -10,7 +10,7 @@ from src.core.navmesh_2d import (
     bake_navmesh,
     find_path,
 )
-from src.persistence.navmesh_io import load_navmesh, save_navmesh
+from src.persistence.navmesh_io import load_navmesh, load_navmesh_with_bake, save_navmesh
 
 
 def test_bake_routes_around_obstacle_and_is_deterministic() -> None:
@@ -34,11 +34,24 @@ def test_source_change_obsoletes_bake_and_persistence_round_trip(tmp_path) -> No
     destination = save_navmesh(source, tmp_path / "scenario.navmesh.json")
     reopened = load_navmesh(destination)
     assert reopened.source_hash() == source.source_hash()
+    reopened_source, reopened_bake = load_navmesh_with_bake(destination)
+    assert reopened_source.source_hash() == source.source_hash()
+    assert reopened_bake is None
     source.obstacles.append(NavObstacle("crate", (16, 16, 8, 8)))
     source.touch()
     assert bake.is_obsolete(source)
     with pytest.raises(NavMeshError, match="obsolete_bake"):
         find_path(source, bake, (4, 4), (56, 56))
+
+
+def test_persisted_bake_reopens_when_source_is_unchanged(tmp_path) -> None:
+    source = NavMeshSource(regions=[NavRegion("room", (0, 0, 64, 64))], cell_size=8)
+    bake = bake_navmesh(source)
+    destination = save_navmesh(source, tmp_path / "baked.navmesh.json", bake=bake)
+    reopened, reopened_bake = load_navmesh_with_bake(destination)
+    assert reopened.source_hash() == source.source_hash()
+    assert reopened_bake == bake
+    assert find_path(reopened, reopened_bake, (4, 4), (56, 56)).points
 
 
 @pytest.mark.parametrize(

@@ -13,7 +13,7 @@ from src.core.navmesh_2d import (
     bake_navmesh,
     find_path,
 )
-from src.persistence.navmesh_io import load_navmesh, save_navmesh
+from src.persistence.navmesh_io import load_navmesh_with_bake, save_navmesh
 
 
 class NavMeshPanel(QWidget):
@@ -92,14 +92,17 @@ class NavMeshPanel(QWidget):
         self.status_message.emit(f"Bake concluído · caminho: {len(path.points)} pontos")
 
     def save_document(self) -> None:
-        save_navmesh(self.source, self.document_path)
+        save_navmesh(self.source, self.document_path, bake=self.bake)
         self.status_message.emit(f"NavMesh salva: {self.document_path.name}")
 
     def open_document(self) -> None:
-        self.source = load_navmesh(self.document_path)
-        self.bake = None
+        self.source, self.bake = load_navmesh_with_bake(self.document_path)
         self._refresh()
-        self.status_message.emit("NavMesh reaberta; bake precisa ser reexecutado")
+        self.status_message.emit(
+            "NavMesh reaberta; bake disponível"
+            if self.bake is not None
+            else "NavMesh reaberta; bake precisa ser reexecutado"
+        )
 
     def update_language(self, language: str) -> None:
         if language == "pt":

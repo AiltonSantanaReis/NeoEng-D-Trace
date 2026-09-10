@@ -17,6 +17,8 @@ def test_navmesh_panel_runs_surface_flow_and_persists(
     qt_app: QApplication, tmp_path: Path
 ) -> None:
     panel = NavMeshPanel(tmp_path)
+    messages: list[str] = []
+    panel.status_message.connect(messages.append)
     panel.add_region()
     panel.add_obstacle()
     panel.bake_source()
@@ -25,7 +27,8 @@ def test_navmesh_panel_runs_surface_flow_and_persists(
     panel.open_document()
     assert len(panel.source.regions) == 1
     assert len(panel.source.obstacles) == 1
-    assert panel.bake is None
+    assert panel.bake is not None
+    assert "bake disponível" in messages[-1]
 
 
 def test_navmesh_panel_marks_bake_obsolete_after_source_edit(
