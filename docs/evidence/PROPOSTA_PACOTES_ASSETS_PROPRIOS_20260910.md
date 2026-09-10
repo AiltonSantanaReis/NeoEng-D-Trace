@@ -1,7 +1,7 @@
 # Pacotes próprios de assets — proposta pós-E13
 
 Estado: IN_PROGRESS. Data: 2026-09-10.
-Base inspecionada: 8c14aac8c4dfcc7b30d2c966dc401845090c9033.
+Base inspecionada: 23cfed0f646cbe141a2e774da9ca7f3231105bc0.
 Escopo deste documento: análise, especificação e acompanhamento do lote adicional pós-E13.
 Autoridade: solicitação do usuário para analisar produção e disponibilização de pacotes próprios com miniaturas.
 
@@ -17,7 +17,7 @@ E13 permanece concluído conforme a decisão do usuário; o novo catálogo é um
 - O arraste usa `application/x-neoeng-scene-asset` com ID de um asset do documento. Um item do catálogo ainda não importado precisa primeiro virar asset do projeto; não pode ser tratado como ID já existente.
 - `src/ui/tileset_authoring_panel.py`: um destino fixo `assets/tilesets/scenario`, listagem textual de tiles e rótulos como Tile width/Spacing em inglês. Pacotes múltiplos precisam de destinos próprios e mapeamento explícito para o tilemap.
 - `packaging/NeoEng-D-Trace.spec`: a lista explícita de dados inclui o ícone de marca. A inclusão de pacotes e miniaturas na build precisa ser implementada e comprovada fora do checkout.
-- Persistem mensagens em inglês na biblioteca. A localização completa do novo fluxo deverá incluir diálogos, estados, mensagens, tooltips e menus.
+- A primeira correção de localização do fluxo pós-E13 foi incorporada no commit atual: contadores, estados de seleção, mensagens de importação/salvamento e o menu contextual da Biblioteca agora são observados em português. Ainda existem strings inglesas fora desse recorte, especialmente em áreas legadas; a localização completa deverá incluir diálogos, estados, mensagens, tooltips e menus remanescentes.
 
 Essas constatações são de inspeção de código, não testes de execução nesta análise. A auditoria anterior não comprova o futuro catálogo.
 
@@ -97,10 +97,12 @@ proveniência em `PROVENIENCIA.md`. O catálogo não altera o registro de assets
 cena até o usuário acionar `Adicionar ao projeto`.
 
 Estado de aceite deste incremento: `PENDING_EVIDENCE`.
-A build limpa foi auditada e o fluxo nativo por cliques reais foi capturado para
-catálogo, busca, prévia, importação, inserção por clique, salvamento, fechamento e
-reabertura. O arraste direto ainda falha na execução observada e o menu contextual
-do editor não foi comprovado em português; por isso não há `PASS` global. O piloto
-completo (3 planos, 6 objetos, 9 peças de terreno e composição real) ainda não foi
-entregue; os seis objetos são somente a primeira parte dessa meta. Ruínas e Cidade
-futurista continuam `PLANNED`.
+A build limpa atual foi auditada e o fluxo nativo por cliques reais foi capturado
+para catálogo, busca, prévia, importação, inserção pelo menu contextual localizado,
+salvamento, fechamento e reabertura. A localização desse recorte foi confirmada
+com `Cenário salvo`, `0 objetos`/`1 objeto` e `Inserir na cena`/`Atualizar`.
+O arraste direto ainda falha na execução observada e o menu contextual do viewport
+continua não comprovado; por isso não há `PASS` global. O piloto completo (3 planos,
+6 objetos, 9 peças de terreno e composição real) ainda não foi entregue; os seis
+objetos são somente a primeira parte dessa meta. Ruínas e Cidade futurista continuam
+`PLANNED`.
