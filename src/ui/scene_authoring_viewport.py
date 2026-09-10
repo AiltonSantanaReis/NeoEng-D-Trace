@@ -737,7 +737,11 @@ class SceneAuthoringViewport(QGraphicsView):
         ids = tuple(object_id for object_id in object_ids if object_id in self._items)
         bounds = self._content_bounds(ids)
         if bounds is None:
-            self.status_message.emit(f"{label}: no visible objects to frame")
+            self.status_message.emit(
+                f"{label}: nenhum objeto visível para enquadrar"
+                if self.current_lang == "pt"
+                else f"{label}: no visible objects to frame"
+            )
             return False
         width = max(1.0, bounds.width())
         height = max(1.0, bounds.height())
@@ -746,18 +750,37 @@ class SceneAuthoringViewport(QGraphicsView):
             (width, height),
         )
         self._set_navigation_state(zoom, bounds.center())
-        self.status_message.emit(f"{label}: framed {len(ids)} object(s) at {zoom:.2f}x")
+        self.status_message.emit(
+            (
+                f"{label}: {len(ids)} objeto(s) enquadrado(s) em {zoom:.2f}x"
+                if self.current_lang == "pt"
+                else f"{label}: framed {len(ids)} object(s) at {zoom:.2f}x"
+            )
+        )
         return True
 
     def fit_selection(self) -> bool:
         """Frame visible selected objects without changing authoring state."""
 
-        return self._fit_object_ids(self.session.selection.ids, "Fit Selection")
+        return self._fit_object_ids(
+            self.session.selection.ids,
+            "Enquadrar Seleção" if self.current_lang == "pt" else "Fit Selection",
+        )
 
     def fit_all(self) -> bool:
         """Frame all visible rendered objects, excluding sockets and overlays."""
 
-        return self._fit_object_ids(self._items.keys(), "Fit All")
+        return self._fit_object_ids(
+            self._items.keys(),
+            "Enquadrar Tudo" if self.current_lang == "pt" else "Fit All",
+        )
+
+    def _frame_initial_asset(self) -> bool:
+        """Frame the first inserted asset without mutating authored transforms."""
+
+        if len(self.session.document.objects) != 1:
+            return False
+        return self.fit_selection()
 
     def _paint_navigation_state(self) -> None:
         if not self.hasFocus() and self._pan_origin is None:
@@ -2060,7 +2083,12 @@ class SceneAuthoringViewport(QGraphicsView):
                 )
                 self.sync()
                 self.selection_changed.emit()
-                self.status_message.emit(f"Placed {asset.id}")
+                self._frame_initial_asset()
+                self.status_message.emit(
+                    f"Asset colocado: {asset.id}"
+                    if self.current_lang == "pt"
+                    else f"Placed {asset.id}"
+                )
                 event.acceptProposedAction()
                 return
             except (OSError, ValueError) as exc:
@@ -2130,7 +2158,12 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             self.sync()
             self.selection_changed.emit()
-            self.status_message.emit(f"Imported {path.name}")
+            self._frame_initial_asset()
+            self.status_message.emit(
+                f"Asset importado: {path.name}"
+                if self.current_lang == "pt"
+                else f"Imported {path.name}"
+            )
             event.acceptProposedAction()
         except (OSError, ValueError, SceneAssetError) as exc:
             self.status_message.emit(user_error_message(exc, operation="asset"))
@@ -2196,6 +2229,7 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             self.sync()
             self.selection_changed.emit()
+            self._frame_initial_asset()
             self.status_message.emit(
                 f"Asset colocado no grupo: {asset.id}"
                 if self.current_lang == "pt" and group_id is not None

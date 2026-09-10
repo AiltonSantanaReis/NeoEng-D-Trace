@@ -114,6 +114,9 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
     viewport = SceneAuthoringViewport(
         library.session, project_root=library.project_root
     )
+    viewport.update_language("pt")
+    viewport.resize(640, 480)
+    viewport.show()
     dialog.show()
     try:
         QTest.qWait(250)
@@ -164,8 +167,13 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
         assert "já disponível" in dialog.status.text()
         assert len(library.session.document.assets) == 1
         assert len(list((library.project_root / "assets/scene").glob("*.png"))) == 1
+        messages: list[str] = []
+        viewport.status_message.connect(messages.append)
+        assert viewport.navigation_zoom == pytest.approx(1.0)
         assert viewport.place_asset_from_library(imported.id)
         assert "1 objeto" in library.asset_list.currentItem().text()
+        assert viewport.navigation_zoom < 1.0
+        assert any("Enquadrar Seleção" in message for message in messages)
         layer_stack = SceneAuthoringLayerStack(library.session)
         layer_stack.update_language("pt")
         assert "Profundidade" in layer_stack.layer_list.currentItem().text()
@@ -174,6 +182,9 @@ def test_catalog_search_click_import_repeat_place_undo_and_reopen(
         layer_stack.deleteLater()
         app.processEvents()
         obj = library.session.document.objects[0]
+        assert obj.transform.scale.x == pytest.approx(1.0)
+        assert obj.transform.scale.y == pytest.approx(1.0)
+        assert obj.transform.scale.z == pytest.approx(1.0)
         assert not viewport._items[obj.id]._pixmap.isNull()
         assert library.session.undo() and not library.session.document.objects
         assert library.session.redo() and len(library.session.document.objects) == 1
