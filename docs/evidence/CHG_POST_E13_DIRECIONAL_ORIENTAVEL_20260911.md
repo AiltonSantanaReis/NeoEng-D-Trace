@@ -1,6 +1,6 @@
 # Mudança controlada — iluminação direcional e efeitos orientáveis
 
-**Estado:** IN_PROGRESS  
+**Estado:** TECHNICAL_CHECKPOINT_PASS / HUMAN_REVIEW_DEFERRED
 **Lote:** POST-E13-SCENE-EDITOR-ASSET-PACKS  
 **Data:** 2026-09-11  
 **Autoridade:** `docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`  
@@ -47,5 +47,13 @@ cenas existentes.
 6. salvar/reabrir preserva posição, rotação, tipo e preview observável;
 7. testes focados passam como diagnóstico e a suíte oficial completa requalifica
    sem filtro antes de qualquer build;
-8. build nativa limpa, execução real, captura e hashes serão produzidos somente
-   após o commit da implementação.
+8. build nativa limpa, execução real, captura e hashes foram produzidos após o
+   commit da implementação; a evidência completa está em
+   `docs/evidence/EVD_POST_E13_DIRECIONAL_ORIENTAVEL_NATIVE_20260911.md`.
+
+## Resultado
+
+Os oito critérios foram comprovados por testes, build limpa e fluxo nativo real.
+O incremento está tecnicamente fechado, mas o lote pós-E13 permanece aberto para
+partículas completas, tilemap/tileset e editor 3D. A revisão humana final segue
+`HUMAN_REVIEW_DEFERRED` conforme a decisão formal.
