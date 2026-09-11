@@ -27,7 +27,7 @@ registro não cria aceite funcional nem autorização de publicação.
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
 `Ailton/e08-renderer-20260908`. A fonte de produto da build pós-E13 de autoria
-profissional é o commit `5fe5d77aa223e248c883e22d0317d206619092c0`; o
+profissional é o commit `c1ea7bc`; o
 harness Win32 complementar de captura está preservado no checkout como arquivo
 não rastreado preexistente, SHA-256
 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`. A existência de outras branches,
@@ -47,15 +47,15 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2193 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `5fe5d77`; os testes de partículas e a regressão da conversão de socket para VFX passaram; o abort histórico do magnetic lasso e seus artefatos permanecem preservados |
+| Suíte oficial | `PASS` | 2196 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `c1ea7bc`; partículas, tilemap/tileset e a correção do auditor de atlas passaram; o abort histórico do magnetic lasso e a falha inicial do auditor permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; luz direcional, VFX orientável e partículas com preview, salvar/recarregar e capturas reais foram exercitados; por decisão do proprietário, a revisão humana fica deferida até equivalência externa de partículas quando aplicável, tilemap/tileset e 3D passarem |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; luz direcional, VFX orientável, partículas, tileset/tilemap com duas camadas e três grades foram exercitados com capturas reais; por decisão do proprietário, a revisão humana fica deferida até runtime aplicável de partículas, ferramentas completas de tilemap/tileset e 3D/híbrido passarem |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | build limpa `post-e13-particles-20260911-fix`, proveniência `PASS`, executável `AC96E89A6F1215A0136CF530257DF2B96F3C4AD519A594FF1E869D081086D164`, ZIP `1857459E3BAD3A773A68531ADC91144F63685B2C8106A66CCD014FBFCCA813B3` e smoke `SUCCESS` em 11 checks |
-| Runtime funcional | `PASS` | build pós-E13 corrigida abriu/fechou e executou smoke; o preview nativo de partículas foi exercitado com avanço temporal e a equivalência de engine externa continua explicitamente pendente |
+| Build oficial | `PASS` | build `post-e13-tilemap-tileset-20260911-fix`, proveniência `PASS`, executável `D033E4C6DEE0DBE1973038F8496B95230E7A4963E95404E4D9BF01AA482DA498`, ZIP `AC1CA958EA21C7746ECFFB10A103AEB7CE12DAE1945DBEDFFE7AF13A84FD4E7C` e smoke `SUCCESS` em 11 checks |
+| Runtime funcional | `PASS` | build pós-E13 corrigida abriu/fechou e executou smoke; autoria nativa de tileset/tilemap foi exercitada com persistência e a equivalência de engine externa continua explicitamente pendente |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
 A execução direta da build final10 gerou capturas reais em
@@ -68,11 +68,17 @@ vinculado a `docs/evidence/EVD_POST_E13_DIRECIONAL_ORIENTAVEL_NATIVE_20260911.md
 O incremento de partículas corrigido gerou
 `artifacts/post-e13-native-flow-20260911-particles-fix/`, vinculado a
 `docs/evidence/EVD_POST_E13_PARTICULAS_AUTORIA_RUNTIME_NATIVE_20260911.md`.
+A build `post-e13-tilemap-tileset-20260911-fix` gerou o fluxo nativo
+`artifacts/post-e13-native-flow-20260911-tilemap-tileset-fix/`, vinculado a
+`docs/evidence/EVD_POST_E13_TILEMAP_TILESET_NATIVE_20260911.md`, com atlas,
+6084 tiles, 12 células persistidas em duas camadas e grades ortogonal,
+isométrica e hexagonal.
 A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir e comprovar os itens funcionais ainda abertos antes de executar a
+Concluir e comprovar os itens funcionais ainda abertos — runtime aplicável de
+partículas, ferramentas avançadas de tilemap/tileset e editor 3D/híbrido — antes de executar a
 [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
 e a revisão humana final, conforme a
 [decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
