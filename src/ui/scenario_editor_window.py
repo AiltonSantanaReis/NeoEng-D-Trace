@@ -516,6 +516,13 @@ class ScenarioEditorWindow(QMainWindow):
         inspector_scroll.setWidget(inspector)
         inspector.status_message.connect(self._show_professional_status)
         viewport.status_message.connect(self._show_professional_status)
+        inspector.particle_preview_command.connect(
+            lambda command: (
+                viewport.play_particle_preview()
+                if command == "play"
+                else viewport.reset_particle_preview()
+            )
+        )
         inspector.request_fit.connect(viewport.fit_selection)
         inspector.request_fit_all.connect(viewport.fit_all)
         inspector.status_message.connect(lambda _message: viewport.sync())
@@ -679,6 +686,29 @@ class ScenarioEditorWindow(QMainWindow):
             inspector.socket_x,
             inspector.socket_y,
             inspector.socket_z,
+            inspector.socket_rotation_z,
+            inspector.socket_effect_id,
+            inspector.socket_scale,
+            inspector.socket_enabled,
+            inspector.particle_emitter_combo,
+            inspector.particle_emitter_id,
+            inspector.particle_seed,
+            inspector.particle_emission_rate,
+            inspector.particle_lifetime,
+            inspector.particle_max_particles,
+            inspector.particle_burst_count,
+            inspector.particle_velocity_x,
+            inspector.particle_velocity_y,
+            inspector.particle_spread_x,
+            inspector.particle_spread_y,
+            inspector.particle_acceleration_x,
+            inspector.particle_acceleration_y,
+            inspector.particle_loop,
+            inspector.particle_duration,
+            inspector.add_emitter_button,
+            inspector.remove_emitter_button,
+            inspector.particle_preview_button,
+            inspector.particle_reset_button,
             inspector.add_socket_button,
             inspector.update_socket_button,
             inspector.remove_socket_button,

@@ -87,6 +87,7 @@ from src.persistence.scene_authoring_schema import (
     SceneCameraAuthoringRecord,
     SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
+    SceneParticleSystemRecord,
     SceneTransformRecord,
 )
 from src.runtime.particles import (
@@ -654,20 +655,49 @@ class SceneSocketGraphicsItem(QGraphicsObject):
 
 
 class SceneParticleGraphicsItem(QGraphicsObject):
-    """Deterministic particle pixels resolved from one authored VFX socket."""
+    """Deterministic particle pixels resolved from an authored VFX system.
 
-    def __init__(self, effect_id: str, scale: float, parent=None) -> None:
+    ``system=None`` intentionally keeps the pre-particle-authoring fallback for
+    old scene files.  New VFX sockets pass a persisted
+    :class:`SceneParticleSystemRecord`, which is sampled through the same
+    fixed-step runtime simulator used by the runtime contract.
+    """
+
+    def __init__(
+        self,
+        effect_id: str,
+        scale: float,
+        parent=None,
+        *,
+        system: SceneParticleSystemRecord | None = None,
+    ) -> None:
         super().__init__(parent)
         self.effect_id = effect_id
         self._scale = max(0.01, float(scale))
+        self._system = system
+        self._preview_time = 0.125
         self._states: tuple[ParticleStateRecord, ...] = ()
+        self._lifetime_by_emitter: dict[str, float] = {}
+        self._runtime_document = self._build_document()
         self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
         self.setZValue(90.0)
         self._refresh_states()
 
-    def _refresh_states(self) -> None:
+    @property
+    def has_authored_system(self) -> bool:
+        return self._system is not None
+
+    @property
+    def preview_time(self) -> float:
+        return self._preview_time
+
+    @property
+    def particle_count(self) -> int:
+        return len(self._states)
+
+    def _fallback_document(self) -> ParticleDocumentV1:
         seed = sum((index + 1) * ord(char) for index, char in enumerate(self.effect_id))
-        document = ParticleDocumentV1(
+        return ParticleDocumentV1(
             source=ParticleSourceBindingRecord(sha256="0" * 64),
             fixed_dt=1.0 / 60.0,
             max_substeps=8,
@@ -686,10 +716,53 @@ class SceneParticleGraphicsItem(QGraphicsObject):
                 )
             ],
         )
-        simulation = ParticleSimulation(document)
+
+    def _build_document(self) -> ParticleDocumentV1:
+        return (
+            self._system.runtime_document()
+            if self._system is not None
+            else self._fallback_document()
+        )
+
+    def set_system(self, system: SceneParticleSystemRecord | None) -> None:
+        self._system = system
+        self.effect_id = system.id if system is not None else self.effect_id
+        self._runtime_document = self._build_document()
+        self._preview_time = min(
+            self._preview_time,
+            float(system.duration) if system is not None else self._preview_time,
+        )
+        self._refresh_states()
+
+    def set_preview_time(self, value: float) -> None:
+        if self._system is not None:
+            duration = max(0.000001, float(self._system.duration))
+            self._preview_time = (
+                float(value) % duration
+                if self._system.loop
+                else max(0.0, min(float(value), duration))
+            )
+        else:
+            self._preview_time = max(0.0, float(value))
+        self._refresh_states()
+
+    def advance_preview(self, elapsed: float) -> None:
+        self.set_preview_time(self._preview_time + max(0.0, float(elapsed)))
+
+    def _refresh_states(self) -> None:
+        simulation = ParticleSimulation(self._runtime_document)
         simulation.start()
-        simulation.advance(0.125)
+        remaining = max(0.0, float(self._preview_time))
+        catch_up = self._runtime_document.fixed_dt * self._runtime_document.max_substeps
+        while remaining > 0.0:
+            elapsed = min(remaining, catch_up)
+            simulation.advance(elapsed)
+            remaining -= elapsed
         self._states = simulation.states()
+        self._lifetime_by_emitter = {
+            emitter.id: float(emitter.lifetime)
+            for emitter in self._runtime_document.emitters
+        }
         self.prepareGeometryChange()
         self.update()
 
@@ -708,7 +781,8 @@ class SceneParticleGraphicsItem(QGraphicsObject):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         for state in self._states:
             position = state.position
-            age = min(1.0, max(0.0, float(state.age) / 1.2))
+            lifetime = self._lifetime_by_emitter.get(state.emitter_id, 1.0)
+            age = min(1.0, max(0.0, float(state.age) / lifetime))
             radius = max(1.5, (5.0 - 3.0 * age) * self._scale)
             alpha = max(48, int(235.0 * (1.0 - age)))
             painter.setBrush(QBrush(QColor(255, 196, 92, alpha)))
@@ -837,6 +911,10 @@ class SceneAuthoringViewport(QGraphicsView):
         self._post_process_items: dict[str, ScenePostProcessGraphicsItem] = {}
         self._camera_guide: SceneCameraGuide | None = None
         self._preview_enabled = False
+        self._particle_preview_time = 0.125
+        self._particle_preview_timer = QTimer(self)
+        self._particle_preview_timer.setInterval(33)
+        self._particle_preview_timer.timeout.connect(self._advance_particle_preview)
         self.current_lang = "en"
         self._render_plan: SceneRenderPlan | None = None
         self._lighting_settings = default_scene_lighting()
@@ -959,8 +1037,43 @@ class SceneAuthoringViewport(QGraphicsView):
             raise TypeError("preview enabled must be boolean")
         if enabled != self._preview_enabled:
             self._navigation_center = None
+            if enabled:
+                self._particle_preview_time = 0.0
         self._preview_enabled = enabled
         self.sync()
+
+    def _sync_particle_preview_timer(self) -> None:
+        authored_items = tuple(
+            item for item in self._particle_items.values() if item.has_authored_system
+        )
+        if self._preview_enabled and authored_items:
+            if not self._particle_preview_timer.isActive():
+                self._particle_preview_timer.start()
+        else:
+            self._particle_preview_timer.stop()
+
+    def _advance_particle_preview(self) -> None:
+        if not self._preview_enabled:
+            self._particle_preview_timer.stop()
+            return
+        elapsed = self._particle_preview_timer.interval() / 1000.0
+        self._particle_preview_time += elapsed
+        for item in self._particle_items.values():
+            if item.has_authored_system:
+                item.advance_preview(elapsed)
+        self.viewport().update()
+
+    def play_particle_preview(self) -> None:
+        """Start the read-only viewport preview without changing authored data."""
+
+        self._preview_enabled = True
+        self._sync_particle_preview_timer()
+
+    def reset_particle_preview(self) -> None:
+        self._particle_preview_time = 0.0
+        for item in self._particle_items.values():
+            item.set_preview_time(0.0)
+        self.viewport().update()
 
     def is_preview_enabled(self) -> bool:
         return self._preview_enabled
@@ -1349,6 +1462,10 @@ class SceneAuthoringViewport(QGraphicsView):
         sockets = tuple(
             socket.model_dump_json() for socket in getattr(document, "sockets", ())
         )
+        particle_systems = tuple(
+            system.model_dump_json()
+            for system in getattr(document, "particle_systems", ())
+        )
         return (
             tuple(
                 (item.id, item.asset_id, item.layer_id, item.visible)
@@ -1361,6 +1478,7 @@ class SceneAuthoringViewport(QGraphicsView):
             ),
             groups,
             sockets,
+            particle_systems,
             self.session.isolated_group_id,
         )
 
@@ -1516,6 +1634,7 @@ class SceneAuthoringViewport(QGraphicsView):
         document = self.session.document
         if isinstance(document, SceneAuthoringDocumentV2):
             visible_layers = {item.id for item in document.layers if item.visible}
+            particle_systems = {item.id: item for item in document.particle_systems}
             for socket in document.sockets:
                 if socket.layer_id not in visible_layers:
                     continue
@@ -1558,6 +1677,7 @@ class SceneAuthoringViewport(QGraphicsView):
                     particle_item = SceneParticleGraphicsItem(
                         socket.effect_id,
                         float(socket.scale),
+                        system=particle_systems.get(socket.effect_id),
                     )
                     particle_item.setZValue(self._overlay_z(90.0))
                     self.graphics_scene.addItem(particle_item)
@@ -1602,6 +1722,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._structure_snapshot = self._document_structure_snapshot()
         self._presentation_snapshot = self._document_presentation_snapshot()
         self._asset_diagnostics = tuple(dict.fromkeys(diagnostics))
+        self._sync_particle_preview_timer()
         if self._asset_diagnostics != self._last_asset_diagnostics:
             self._last_asset_diagnostics = self._asset_diagnostics
             if self._asset_diagnostics:

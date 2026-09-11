@@ -28,6 +28,7 @@ from src.persistence.scene_authoring_schema import (
     SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
+    SceneParticleSystemRecord,
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
@@ -715,10 +716,50 @@ class SceneAuthoringSession:
             "Edit layer parallax",
         )
 
-    def add_socket(self, socket: SceneSocketRecord) -> bool:
+    def add_socket(
+        self,
+        socket: SceneSocketRecord,
+        particle_system: SceneParticleSystemRecord | None = None,
+    ) -> bool:
         return self.apply(
-            lambda: self.model.add_socket(socket),
+            lambda: self.model.add_socket(socket, particle_system),
             "Add scene socket",
+        )
+
+    def update_vfx_socket(
+        self,
+        socket_id: str,
+        *,
+        position: Point3Record,
+        rotation: Point3Record,
+        effect_id: str,
+        scale: int | float,
+        enabled: bool,
+        particle_system: SceneParticleSystemRecord,
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.update_vfx_socket(
+                socket_id,
+                position=position,
+                rotation=rotation,
+                effect_id=effect_id,
+                scale=scale,
+                enabled=enabled,
+                particle_system=particle_system,
+            ),
+            "Edit VFX particle system",
+        )
+
+    def update_particle_system(self, system: SceneParticleSystemRecord) -> bool:
+        return self.apply(
+            lambda: self.model.update_particle_system(system),
+            "Update particle system",
+        )
+
+    def remove_particle_system(self, system_id: str) -> bool:
+        return self.apply(
+            lambda: self.model.remove_particle_system(system_id),
+            "Remove particle system",
         )
 
     def update_socket_position(self, socket_id: str, position: Point3Record) -> bool:

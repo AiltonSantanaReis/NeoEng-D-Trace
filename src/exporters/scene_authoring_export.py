@@ -254,6 +254,11 @@ def build_scene_authoring_export(
     if target not in _CAPABILITIES:
         raise SceneAuthoringExportError("unsupported scene export target")
     validated = SceneAuthoringDocumentV2.model_validate(document, strict=True)
+    if validated.particle_systems and target != "generic":
+        raise SceneAuthoringExportError(
+            "Particle systems are preserved by Generic export only; "
+            f"the {target} adapter does not consume authored particle systems yet."
+        )
     if validated.sequence is not None and validated.sequence.clips and target != "generic":
         raise SceneAuthoringExportError(
             "Timeline playback is not supported by this engine adapter. "

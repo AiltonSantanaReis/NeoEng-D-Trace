@@ -29,6 +29,7 @@ from src.persistence.scene_authoring_schema import (
     SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
+    SceneParticleSystemRecord,
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
@@ -526,11 +527,113 @@ class SceneAuthoringModel:
         ]
         self._replace(parallax_layers=[*records, parallax])
 
-    def add_socket(self, socket: SceneSocketRecord) -> None:
+    def add_socket(
+        self,
+        socket: SceneSocketRecord,
+        particle_system: SceneParticleSystemRecord | None = None,
+    ) -> None:
         document = self._stage4_document()
         if socket.layer_id not in {item.id for item in document.layers}:
             raise KeyError(socket.layer_id)
-        self._replace(sockets=[*document.sockets, socket])
+        if particle_system is not None:
+            if socket.type != "vfx":
+                raise ValueError("particle systems can only be attached to VFX sockets")
+            if particle_system.id != socket.effect_id:
+                raise ValueError("particle system ID must match the VFX effect ID")
+            if particle_system.id in {item.id for item in document.particle_systems}:
+                raise ValueError("particle system ID exists")
+        changes: dict[str, object] = {"sockets": [*document.sockets, socket]}
+        if particle_system is not None:
+            changes["particle_systems"] = [
+                *document.particle_systems,
+                particle_system,
+            ]
+        self._replace(**changes)
+
+    def set_particle_system(self, system: SceneParticleSystemRecord) -> None:
+        """Insert or replace one authored particle system atomically."""
+
+        document = self._stage4_document()
+        systems = [
+            system if item.id == system.id else item
+            for item in document.particle_systems
+        ]
+        if all(item.id != system.id for item in document.particle_systems):
+            systems.append(system)
+        self._replace(particle_systems=systems)
+
+    def update_vfx_socket(
+        self,
+        socket_id: str,
+        *,
+        position: Point3Record,
+        rotation: Point3Record,
+        effect_id: str,
+        scale: int | float,
+        enabled: bool,
+        particle_system: SceneParticleSystemRecord | None,
+    ) -> None:
+        """Apply VFX transform, presentation and particle authoring in one undo step."""
+
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        if socket.type != "vfx":
+            raise ValueError("only VFX sockets have particle properties")
+        if particle_system is None:
+            raise ValueError("VFX socket requires a particle system")
+        if particle_system.id != effect_id:
+            raise ValueError("particle system ID must match the VFX effect ID")
+        other_system_ids = {
+            item.id for item in document.particle_systems if item.id != effect_id
+        }
+        if effect_id in other_system_ids:
+            raise ValueError("particle system ID exists")
+        updated_socket = socket.model_copy(
+            update={
+                "position": position,
+                "rotation": rotation,
+                "effect_id": effect_id,
+                "scale": scale,
+                "enabled": bool(enabled),
+            }
+        )
+        sockets = [
+            updated_socket if item.id == socket_id else item
+            for item in document.sockets
+        ]
+        systems = [
+            particle_system if item.id == effect_id else item
+            for item in document.particle_systems
+        ]
+        if all(item.id != effect_id for item in document.particle_systems):
+            systems.append(particle_system)
+        self._replace(sockets=sockets, particle_systems=systems)
+
+    def update_particle_system(self, system: SceneParticleSystemRecord) -> None:
+        document = self._stage4_document()
+        if not any(item.id == system.id for item in document.particle_systems):
+            raise KeyError(system.id)
+        self._replace(
+            particle_systems=[
+                system if item.id == system.id else item
+                for item in document.particle_systems
+            ]
+        )
+
+    def remove_particle_system(self, system_id: str) -> None:
+        document = self._stage4_document()
+        if not any(item.id == system_id for item in document.particle_systems):
+            raise KeyError(system_id)
+        self._replace(
+            particle_systems=[
+                item for item in document.particle_systems if item.id != system_id
+            ]
+        )
 
     def update_socket_position(self, socket_id: str, position: Point3Record) -> None:
         document = self._stage4_document()

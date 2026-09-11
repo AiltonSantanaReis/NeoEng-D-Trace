@@ -33,12 +33,20 @@ from src.persistence.project_schema import (
     StrictProjectModel,
 )
 from src.persistence.scenario_schema import ProjectReferenceRecord
+from src.runtime.particles import (
+    MAX_PARTICLE_LIFETIME,
+    MAX_PARTICLE_SUBSTEPS,
+    ParticleDocumentV1,
+    ParticleEmitterRecord,
+    ParticleSourceBindingRecord,
+)
 
 SCENE_AUTHORING_FORMAT_ID = "neoeng-d-trace-scene-authoring"
 SCENE_AUTHORING_SCHEMA_VERSION = 1
 SCENE_AUTHORING_FILE_EXTENSION = ".ndtscene.json"
 MAX_SCENE_ASSETS = MAX_PROJECT_OBJECTS
 MAX_SCENE_SOCKETS = MAX_PROJECT_OBJECTS
+MAX_SCENE_PARTICLE_SYSTEMS = MAX_PROJECT_OBJECTS
 
 
 def _finite(value: int | float, field: str) -> int | float:
@@ -487,6 +495,71 @@ class SceneVfxSocketRecord(_SceneSocketBase):
         return _positive(value, "VFX socket scale")
 
 
+class SceneParticleSystemRecord(StrictProjectModel):
+    """Authored particle system embedded in a professional scene.
+
+    The runtime particle document remains the source of truth for simulation;
+    this scene record adds only the authoring identity and presentation controls
+    needed to place that runtime system on a VFX socket.  All fields are
+    optional at the V2 document level so legacy scenes keep their exact wire
+    shape when no authored systems exist.
+    """
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    fixed_dt: float = 1.0 / 60.0
+    max_substeps: int = MAX_PARTICLE_SUBSTEPS
+    loop: bool = True
+    duration: float = 2.0
+    emitters: list[ParticleEmitterRecord] = Field(
+        min_length=1,
+        max_length=MAX_SCENE_PARTICLE_SYSTEMS,
+    )
+
+    @field_validator("fixed_dt")
+    @classmethod
+    def validate_fixed_dt(cls, value: float) -> float:
+        return _bounded(value, "particle system fixed_dt", 0.000001, 1.0)
+
+    @field_validator("max_substeps")
+    @classmethod
+    def validate_max_substeps(cls, value: int) -> int:
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise ValueError("particle system max_substeps must be an integer")
+        if value < 1 or value > MAX_PARTICLE_SUBSTEPS:
+            raise ValueError(
+                "particle system max_substeps must be between 1 and "
+                f"{MAX_PARTICLE_SUBSTEPS}"
+            )
+        return value
+
+    @field_validator("duration")
+    @classmethod
+    def validate_duration(cls, value: float) -> float:
+        return _bounded(
+            value,
+            "particle system duration",
+            0.000001,
+            MAX_PARTICLE_LIFETIME,
+        )
+
+    @model_validator(mode="after")
+    def validate_emitters(self) -> "SceneParticleSystemRecord":
+        emitter_ids = [emitter.id for emitter in self.emitters]
+        if len(emitter_ids) != len(set(emitter_ids)):
+            raise ValueError("particle system emitter IDs must be unique")
+        return self
+
+    def runtime_document(self, source_sha256: str = "0" * 64) -> ParticleDocumentV1:
+        """Build the validated deterministic runtime document for this system."""
+
+        return ParticleDocumentV1(
+            source=ParticleSourceBindingRecord(sha256=source_sha256),
+            fixed_dt=self.fixed_dt,
+            max_substeps=self.max_substeps,
+            emitters=list(self.emitters),
+        )
+
+
 class SceneTriggerSocketRecord(_SceneSocketBase):
     type: Literal["trigger"] = "trigger"
     event_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
@@ -606,6 +679,11 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
     sockets: list[SceneSocketRecord] = Field(
         default_factory=list, max_length=MAX_SCENE_SOCKETS
     )
+    particle_systems: list[SceneParticleSystemRecord] = Field(
+        default_factory=list,
+        max_length=MAX_SCENE_PARTICLE_SYSTEMS,
+        exclude_if=lambda value: not value,
+    )
 
     @model_validator(mode="after")
     def validate_references(self) -> "SceneAuthoringDocumentV2":
@@ -723,6 +801,9 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
             if layer_id not in known_layers:
                 raise ValueError(f"parallax references unknown layer {layer_id!r}")
         socket_ids = [item.id for item in self.sockets]
+        particle_system_ids = [item.id for item in self.particle_systems]
+        if len(particle_system_ids) != len(set(particle_system_ids)):
+            raise ValueError("particle system IDs must be unique")
         if self.sequence is not None:
             for clip in self.sequence.clips:
                 if clip.target_id is not None and clip.target_id not in known_objects:
