@@ -71,6 +71,15 @@ explicitamente (`scene-authoring` v2 ou `scenario-runtime` v1), transformação
 derivada do `coordinate_mapping`, avanço manual no harness e modo automático
 somente no objeto nativo em runtime.
 
+## Compatibilidade de empacotamento
+
+A ponte nativa amplia conscientemente os contratos de distribuição: o pacote
+Godot passa a incluir `runtime_particles.gd`; o UPM Unity declara os módulos
+`com.unity.modules.jsonserialize` e `com.unity.modules.particlesystem`, e a
+assembly runtime referencia os módulos correspondentes. Os contratos de
+scaffold foram atualizados para exigir exatamente essa identidade source-only;
+nenhuma dependência anterior foi removida.
+
 ## Critério de saída
 
 Este registro só poderá mudar para `TECHNICAL_CHECKPOINT_PASS` depois de um
