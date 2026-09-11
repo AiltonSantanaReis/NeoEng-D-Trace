@@ -57,6 +57,9 @@ CONTENT_COLOR_FILES = {
     "src/ui/scene_authoring_viewport.py",
     # Tilemap cells and grid lines are scene content semantics, not chrome.
     "src/ui/tilemap_authoring_panel.py",
+    # Tileset atlas, slice and selection colors are scene content semantics,
+    # not application chrome.
+    "src/ui/tileset_authoring_panel.py",
     "src/ui/viewport_chrome.py",
     # Timeline clip colors encode scene-event semantics, not application chrome.
     "src/ui/scene_sequence_panel.py",
