@@ -362,6 +362,31 @@ class TileMapDocument:
             layer.opacity,
         )
 
+    def add_layer(self, layer: TileLayer) -> None:
+        """Add an empty authoring layer without changing existing cells."""
+
+        if not isinstance(layer, TileLayer):
+            raise TileMapError("layer must be a TileLayer")
+        if layer.id in self._layers:
+            raise TileMapError(f"duplicate layer ID: {layer.id}")
+        if len(self._layers) >= MAX_TILEMAP_LAYERS:
+            raise TileMapLimitError("tilemap exceeds the layer limit")
+        self._layers[layer.id] = layer
+        self._cells[layer.id] = {}
+
+    def set_layer_visibility(self, layer_id: str, visible: bool) -> None:
+        """Toggle rendering of a layer while preserving its cells."""
+
+        layer = self.layer(layer_id)
+        self._layers[layer_id] = TileLayer(
+            layer.id,
+            layer.name,
+            layer.order,
+            bool(visible),
+            layer.locked,
+            layer.opacity,
+        )
+
     def _validate_coordinate(self, coordinate: TileCoordinate) -> TileCoordinate:
         if len(coordinate) != 2:
             raise TileMapError("cell coordinate must contain two integers")

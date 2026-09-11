@@ -3,16 +3,20 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import QPoint, Qt, Signal
-from PySide6.QtGui import QColor, QPainter, QPen
+from PySide6.QtCore import QPoint, QRectF, Qt, Signal
+from PySide6.QtGui import QColor, QIcon, QImage, QPainter, QPen, QPixmap, QPolygonF
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QComboBox,
     QFrame,
     QHBoxLayout,
     QLabel,
+    QListWidget,
+    QListWidgetItem,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -43,11 +47,11 @@ def _default_tileset() -> TileSet:
     )
 
 
-def _default_document() -> TileMapDocument:
+def _default_document(tileset: TileSet | None = None) -> TileMapDocument:
     return TileMapDocument(
         id="scenario-terrain",
         name="Scenario Terrain",
-        tileset=_default_tileset(),
+        tileset=tileset or _default_tileset(),
         grid=GridKind.ORTHOGONAL,
         layers=(TileLayer("ground", "Ground", 0),),
         chunk_size=64,
@@ -68,6 +72,8 @@ class TileMapCanvas(QFrame):
         self.document: TileMapDocument | None = None
         self.grid_kind = GridKind.ORTHOGONAL
         self._last_cell: tuple[int, int] | None = None
+        self._tile_images: dict[str, QImage] = {}
+        self.active_layer_id: str | None = None
 
     def set_document(self, document: TileMapDocument | None) -> None:
         self.document = document
@@ -75,6 +81,14 @@ class TileMapCanvas(QFrame):
 
     def set_grid_kind(self, kind: GridKind) -> None:
         self.grid_kind = kind
+        self.update()
+
+    def set_tile_images(self, images: dict[str, QImage]) -> None:
+        self._tile_images = dict(images)
+        self.update()
+
+    def set_active_layer(self, layer_id: str | None) -> None:
+        self.active_layer_id = layer_id
         self.update()
 
     def _spec(self) -> GridSpec:
@@ -114,11 +128,7 @@ class TileMapCanvas(QFrame):
         painter = QPainter(self)
         painter.fillRect(self.rect(), QColor("#101820"))
         spec = self._spec()
-        painter.setPen(QPen(QColor("#253747"), 1))
-        for x in range(0, self.width() + 1, 32):
-            painter.drawLine(x, 0, x, self.height())
-        for y in range(0, self.height() + 1, 32):
-            painter.drawLine(0, y, self.width(), y)
+        self._draw_grid(painter, spec)
         if self.document is None:
             painter.setPen(QColor("#9aa9b5"))
             painter.drawText(
@@ -127,14 +137,77 @@ class TileMapCanvas(QFrame):
                 "Crie um tilemap para começar",
             )
             return
-        for _layer_id, coordinate, cell in self.document.iter_cells():
+        for layer_id, coordinate, cell in self.document.iter_cells():
+            if not self.document.layer(layer_id).visible:
+                continue
             center = spec.cell_to_world(coordinate)
-            x = int(center[0] - 16)
-            y = int(center[1] - 16)
-            color = QColor("#3aa675") if cell.tile_id == "grass" else QColor("#2989b8")
-            painter.fillRect(x, y, 31, 31, color)
+            shape = self._cell_shape(spec, center)
+            image = self._tile_images.get(cell.tile_id)
+            if image is not None and not image.isNull():
+                bounds = shape.boundingRect()
+                painter.drawImage(bounds, image)
+            else:
+                color = (
+                    QColor("#3aa675")
+                    if cell.tile_id in {"grass", "default"}
+                    else QColor("#2989b8")
+                )
+                painter.setBrush(color)
+                painter.setPen(Qt.PenStyle.NoPen)
+                painter.drawPolygon(shape)
+            painter.setBrush(Qt.BrushStyle.NoBrush)
             painter.setPen(QPen(QColor("#9bd7eb"), 1))
-            painter.drawRect(x, y, 31, 31)
+            painter.drawPolygon(shape)
+
+    def _cell_shape(self, spec: GridSpec, center: tuple[float, float]) -> QPolygonF:
+        cx, cy = center
+        if spec.kind == GridKind.ISOMETRIC:
+            half_w = spec.cell_width / 2.0
+            half_h = spec.cell_height / 2.0
+            return QPolygonF(
+                [
+                    QPoint(int(cx), int(cy - half_h)),
+                    QPoint(int(cx + half_w), int(cy)),
+                    QPoint(int(cx), int(cy + half_h)),
+                    QPoint(int(cx - half_w), int(cy)),
+                ]
+            )
+        if spec.kind == GridKind.HEXAGONAL:
+            radius_x = spec.cell_width / 2.0
+            radius_y = spec.cell_height / 2.0
+            return QPolygonF(
+                [
+                    QPoint(int(cx - radius_x * 0.5), int(cy - radius_y)),
+                    QPoint(int(cx + radius_x * 0.5), int(cy - radius_y)),
+                    QPoint(int(cx + radius_x), int(cy)),
+                    QPoint(int(cx + radius_x * 0.5), int(cy + radius_y)),
+                    QPoint(int(cx - radius_x * 0.5), int(cy + radius_y)),
+                    QPoint(int(cx - radius_x), int(cy)),
+                ]
+            )
+        return QPolygonF(
+            [
+                QPoint(int(cx - spec.cell_width / 2), int(cy - spec.cell_height / 2)),
+                QPoint(int(cx + spec.cell_width / 2), int(cy - spec.cell_height / 2)),
+                QPoint(int(cx + spec.cell_width / 2), int(cy + spec.cell_height / 2)),
+                QPoint(int(cx - spec.cell_width / 2), int(cy + spec.cell_height / 2)),
+            ]
+        )
+
+    def _draw_grid(self, painter: QPainter, spec: GridSpec) -> None:
+        painter.setPen(QPen(QColor("#253747"), 1))
+        if spec.kind == GridKind.ORTHOGONAL:
+            for x in range(0, self.width() + 1, int(spec.cell_width)):
+                painter.drawLine(x, 0, x, self.height())
+            for y in range(0, self.height() + 1, int(spec.cell_height)):
+                painter.drawLine(0, y, self.width(), y)
+            return
+        for row in range(-40, 41):
+            for column in range(-40, 41):
+                center = spec.cell_to_world((column, row))
+                shape = self._cell_shape(spec, center)
+                if shape.boundingRect().intersects(QRectF(self.rect())):
+                    painter.drawPolygon(shape)
 
 
 class TileMapAuthoringPanel(QWidget):
@@ -165,6 +238,18 @@ class TileMapAuthoringPanel(QWidget):
             self.grid_combo.addItem(label, kind.value)
         self.tile_combo = QComboBox(self)
         self.tile_combo.setObjectName("tilemap_tile_palette")
+        self.tile_palette = QListWidget(self)
+        self.tile_palette.setObjectName("tilemap_tile_palette_preview")
+        self.tile_palette.setViewMode(QListWidget.ViewMode.IconMode)
+        self.tile_palette.setResizeMode(QListWidget.ResizeMode.Adjust)
+        self.tile_palette.setMovement(QListWidget.Movement.Static)
+        self.tile_palette.setWrapping(True)
+        self.tile_palette.setIconSize(self._palette_icon_size())
+        self.tile_palette.setMinimumHeight(82)
+        self.tile_palette.setMaximumHeight(128)
+        self.tile_palette.setSelectionMode(
+            QAbstractItemView.SelectionMode.SingleSelection
+        )
         self.tool_combo = QComboBox(self)
         self.tool_combo.setObjectName("tilemap_tool_combo")
         for tool, label in (
@@ -175,14 +260,24 @@ class TileMapAuthoringPanel(QWidget):
         self.new_button = QPushButton(self)
         self.open_button = QPushButton(self)
         self.save_button = QPushButton(self)
+        self.reload_tileset_button = QPushButton(self)
+        self.add_layer_button = QPushButton(self)
+        self.layer_combo = QComboBox(self)
+        self.layer_combo.setObjectName("tilemap_layer_combo")
         self.undo_button = QPushButton(self)
         self.redo_button = QPushButton(self)
         self.canvas = TileMapCanvas(self)
+        self._tile_images: dict[str, QImage] = {}
         self.canvas.cell_painted.connect(self._paint_cells)
         self.grid_combo.currentIndexChanged.connect(self._grid_changed)
+        self.tile_combo.currentIndexChanged.connect(self._tile_combo_changed)
+        self.tile_palette.currentRowChanged.connect(self._tile_palette_changed)
+        self.layer_combo.currentIndexChanged.connect(self._layer_changed)
         self.new_button.clicked.connect(self.new_map)
         self.open_button.clicked.connect(self.open_map)
         self.save_button.clicked.connect(self.save_map)
+        self.reload_tileset_button.clicked.connect(self.reload_tileset)
+        self.add_layer_button.clicked.connect(self.add_layer)
         self.undo_button.clicked.connect(self.undo)
         self.redo_button.clicked.connect(self.redo)
         self._build_layout()
@@ -203,11 +298,25 @@ class TileMapAuthoringPanel(QWidget):
         controls.addWidget(self.tile_combo)
         controls.addWidget(self.tool_combo)
         layout.addLayout(controls)
+        palette_label = QLabel(self)
+        palette_label.setObjectName("tilemap_palette_label")
+        self.palette_label = palette_label
+        layout.addWidget(palette_label)
+        layout.addWidget(self.tile_palette)
+        layer_row = QHBoxLayout()
+        layer_label = QLabel(self)
+        layer_label.setObjectName("tilemap_layer_label")
+        self.layer_label = layer_label
+        layer_row.addWidget(layer_label)
+        layer_row.addWidget(self.layer_combo, 1)
+        layer_row.addWidget(self.add_layer_button)
+        layout.addLayout(layer_row)
         actions = QHBoxLayout()
         for button in (
             self.new_button,
             self.open_button,
             self.save_button,
+            self.reload_tileset_button,
             self.undo_button,
             self.redo_button,
         ):
@@ -221,9 +330,163 @@ class TileMapAuthoringPanel(QWidget):
 
     def _refresh_palette(self) -> None:
         self.tile_combo.clear()
+        self.tile_palette.clear()
         if self.document is not None:
             for tile in self.document.tileset.tiles:
                 self.tile_combo.addItem(tile.id, tile.id)
+                item = QListWidgetItem(tile.id)
+                image = self._tile_images.get(tile.id)
+                if image is not None and not image.isNull():
+                    item.setIcon(QIcon(QPixmap.fromImage(image)))
+                self.tile_palette.addItem(item)
+        if self.tile_combo.count():
+            self.tile_combo.setCurrentIndex(0)
+            self.tile_palette.setCurrentRow(0)
+
+    @staticmethod
+    def _palette_icon_size():
+        from PySide6.QtCore import QSize
+
+        return QSize(48, 48)
+
+    @property
+    def tileset_manifest_path(self) -> Path:
+        return self.project_root / "assets" / "tilesets" / "scenario" / "tileset.json"
+
+    def _load_saved_tileset(self) -> tuple[TileSet | None, dict[str, QImage]]:
+        path = self.tileset_manifest_path
+        if not path.is_file():
+            return None, {}
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            if payload.get("format_id") != "neoeng-d-trace-tileset":
+                return None, {}
+            entries = payload.get("tiles")
+            if not isinstance(entries, list) or not entries:
+                return None, {}
+            tiles: list[TileDefinition] = []
+            images: dict[str, QImage] = {}
+            manifest_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    return None, {}
+                rect = entry.get("source_rect")
+                if not isinstance(rect, dict):
+                    return None, {}
+                tile_id = str(entry.get("id", ""))
+                texture = entry.get("texture")
+                tiles.append(
+                    TileDefinition(
+                        tile_id,
+                        "scenario-tileset",
+                        (
+                            int(rect.get("x", 0)),
+                            int(rect.get("y", 0)),
+                            int(rect.get("w", 0)),
+                            int(rect.get("h", 0)),
+                        ),
+                    )
+                )
+                if isinstance(texture, str):
+                    image = QImage(str(path.parent / texture))
+                    if not image.isNull():
+                        images[tile_id] = image
+            tileset = TileSet(
+                id="scenario-tileset",
+                atlas_asset_id="scenario-tileset",
+                atlas_sha256=manifest_hash,
+                tiles=tuple(tiles),
+            )
+            return tileset, images
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return None, {}
+
+    def _sync_canvas(self) -> None:
+        self.canvas.set_document(self.document)
+        self.canvas.set_tile_images(self._tile_images)
+        self.canvas.set_active_layer(self.layer_combo.currentData())
+
+    def _refresh_layers(self) -> None:
+        self.layer_combo.blockSignals(True)
+        self.layer_combo.clear()
+        if self.document is not None:
+            for layer in self.document.layers:
+                self.layer_combo.addItem(
+                    f"{layer.name} · {'bloqueada' if layer.locked else 'editável'}",
+                    layer.id,
+                )
+        self.layer_combo.blockSignals(False)
+        if self.layer_combo.count():
+            self.layer_combo.setCurrentIndex(0)
+
+    def _tile_combo_changed(self, index: int) -> None:
+        if 0 <= index < self.tile_palette.count():
+            self.tile_palette.blockSignals(True)
+            self.tile_palette.setCurrentRow(index)
+            self.tile_palette.blockSignals(False)
+
+    def _tile_palette_changed(self, index: int) -> None:
+        if 0 <= index < self.tile_combo.count():
+            self.tile_combo.blockSignals(True)
+            self.tile_combo.setCurrentIndex(index)
+            self.tile_combo.blockSignals(False)
+
+    def _layer_changed(self) -> None:
+        self.canvas.set_active_layer(self.layer_combo.currentData())
+
+    def reload_tileset(self) -> None:
+        tileset, images = self._load_saved_tileset()
+        if tileset is None:
+            self.status_message.emit(
+                self._status(
+                    "Nenhum tileset salvo encontrado; mantendo o tileset atual",
+                    "No saved tileset found; keeping the current tileset",
+                )
+            )
+            return
+        if self.document is not None:
+            current_cells = tuple(self.document.iter_cells())
+            if any(
+                not tileset.has_tile(cell.tile_id)
+                for _layer, _coord, cell in current_cells
+            ):
+                self.status_message.emit(
+                    self._status(
+                        "Tileset não aplicado: há células incompatíveis",
+                        "Tileset not applied: incompatible cells exist",
+                    )
+                )
+                return
+            self.document.tileset = tileset
+        self._tile_images = images
+        self._refresh_palette()
+        self._sync_canvas()
+        self.status_message.emit(
+            self._status("Tileset atualizado", "Tileset updated")
+        )
+
+    def add_layer(self) -> None:
+        if self.document is None:
+            self.status_message.emit(
+                self._status(
+                    "Crie um tilemap antes de adicionar uma camada",
+                    "Create a tilemap before adding a layer",
+                )
+            )
+            return
+        existing = {layer.id for layer in self.document.layers}
+        index = 1
+        while f"layer_{index}" in existing:
+            index += 1
+        self.document.add_layer(
+            TileLayer(f"layer_{index}", f"Camada {index}", len(self.document.layers))
+        )
+        self._refresh_layers()
+        self.layer_combo.setCurrentIndex(self.layer_combo.count() - 1)
+        self._sync_canvas()
+        self.status_message.emit(
+            self._status("Camada adicionada", "Layer added")
+        )
 
     def _refresh_summary(self) -> None:
         if self.document is None:
@@ -252,17 +515,23 @@ class TileMapAuthoringPanel(QWidget):
     def _paint_cells(self, start: tuple[int, int], end: tuple[int, int]) -> None:
         if self.document is None or not self.tile_combo.currentData():
             return
-        layer_id = self.document.layers[0].id
-        if self.tool_combo.currentData() == TileTool.ERASER.value:
-            transaction = erase_line(self.document, layer_id, start, end)
-        else:
-            transaction = paint_line(
-                self.document,
-                layer_id,
-                start,
-                end,
-                str(self.tile_combo.currentData()),
+        layer_id = self.layer_combo.currentData() or self.document.layers[0].id
+        try:
+            if self.tool_combo.currentData() == TileTool.ERASER.value:
+                transaction = erase_line(self.document, layer_id, start, end)
+            else:
+                transaction = paint_line(
+                    self.document,
+                    layer_id,
+                    start,
+                    end,
+                    str(self.tile_combo.currentData()),
+                )
+        except ValueError as exc:
+            self.status_message.emit(
+                self._status(f"Edição não aplicada: {exc}", f"Edit not applied: {exc}")
             )
+            return
         if transaction.deltas:
             self._undo.append(transaction)
             self._redo.clear()
@@ -273,11 +542,14 @@ class TileMapAuthoringPanel(QWidget):
             )
 
     def new_map(self) -> None:
-        self.document = _default_document()
+        tileset, images = self._load_saved_tileset()
+        self._tile_images = images
+        self.document = _default_document(tileset)
         self._undo.clear()
         self._redo.clear()
-        self.canvas.set_document(self.document)
+        self._refresh_layers()
         self._refresh_palette()
+        self._sync_canvas()
         self._refresh_summary()
         self.status_message.emit(
             self._status("Novo tilemap criado", "New tilemap created")
@@ -298,8 +570,11 @@ class TileMapAuthoringPanel(QWidget):
         self._redo.clear()
         self.grid_combo.setCurrentIndex(self.grid_combo.findData(self.document.grid))
         self.canvas.set_grid_kind(GridKind(self.document.grid))
-        self.canvas.set_document(self.document)
+        _tileset, images = self._load_saved_tileset()
+        self._tile_images = images
+        self._refresh_layers()
         self._refresh_palette()
+        self._sync_canvas()
         self._refresh_summary()
         self.status_message.emit(self._status("Tilemap reaberto", "Tilemap reopened"))
 
@@ -351,18 +626,26 @@ class TileMapAuthoringPanel(QWidget):
             self.title_label.setText("Tilemap / Terreno")
             grid_labels = ("Ortogonal", "Isométrico", "Hexagonal")
             tool_labels = ("Pincel", "Borracha")
+            self.palette_label.setText("Paleta de tiles")
+            self.layer_label.setText("Camada")
             self.new_button.setText("Novo")
             self.open_button.setText("Reabrir")
             self.save_button.setText("Salvar")
+            self.reload_tileset_button.setText("Atualizar tileset")
+            self.add_layer_button.setText("Adicionar camada")
             self.undo_button.setText("Desfazer")
             self.redo_button.setText("Refazer")
         else:
             self.title_label.setText("Tilemap / Terrain")
             grid_labels = ("Orthogonal", "Isometric", "Hexagonal")
             tool_labels = ("Pencil", "Eraser")
+            self.palette_label.setText("Tile palette")
+            self.layer_label.setText("Layer")
             self.new_button.setText("New")
             self.open_button.setText("Reopen")
             self.save_button.setText("Save")
+            self.reload_tileset_button.setText("Reload tileset")
+            self.add_layer_button.setText("Add layer")
             self.undo_button.setText("Undo")
             self.redo_button.setText("Redo")
         for index, label in enumerate(grid_labels):
