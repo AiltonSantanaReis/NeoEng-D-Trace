@@ -63,10 +63,10 @@ _CAPABILITIES: dict[str, dict[str, tuple[str, ...]]] = {
             "parallax",
             "sockets",
             "snap_settings",
+            "runtime_particles",
         ),
         "unsupported": (
             "runtime_lighting",
-            "runtime_particles",
             "runtime_shaders",
             "runtime_post_processing",
         ),
@@ -82,10 +82,10 @@ _CAPABILITIES: dict[str, dict[str, tuple[str, ...]]] = {
             "parallax",
             "sockets",
             "snap_settings",
+            "runtime_particles",
         ),
         "unsupported": (
             "runtime_lighting",
-            "runtime_particles",
             "runtime_shaders",
             "runtime_post_processing",
         ),
@@ -137,6 +137,37 @@ def _canonical_json_bytes(payload: Mapping[str, Any]) -> bytes:
             f"serialized scene export exceeds {MAX_PROJECT_FILE_BYTES} bytes"
         )
     return encoded
+
+
+def _validate_particle_scene_binding(
+    scene: Mapping[str, Any], *, target: SceneExportTarget
+) -> None:
+    """Reject an engine export that could silently detach authored particles.
+
+    The generic export intentionally remains a lossless authoring boundary.  A
+    native engine export, however, must have exactly one VFX socket for every
+    authored particle system so the importer can place the runtime component
+    without guessing.
+    """
+
+    particle_systems = scene.get("particle_systems", [])
+    if not particle_systems or target == "generic":
+        return
+    sockets = scene.get("sockets", [])
+    for system in particle_systems:
+        system_id = system.get("id") if isinstance(system, Mapping) else None
+        matches = [
+            socket
+            for socket in sockets
+            if isinstance(socket, Mapping)
+            and socket.get("type") == "vfx"
+            and socket.get("effect_id") == system_id
+        ]
+        if len(matches) != 1:
+            raise SceneAuthoringExportError(
+                "native particle export requires exactly one VFX socket for "
+                f"particle system {system_id!r}; found {len(matches)}"
+            )
 
 
 def _hex_hash(value: Any, field: str) -> str:
@@ -235,6 +266,7 @@ def _validate_export(payload: Mapping[str, Any]) -> None:
         "unsupported": list(expected_capabilities["unsupported"]),
     }:
         raise SceneAuthoringExportError("scene export capability declaration drifted")
+    _validate_particle_scene_binding(payload["scene"], target=target)
     if mapping != _COORDINATE_MAPPINGS[target]:
         raise SceneAuthoringExportError("scene export coordinate mapping drifted")
     _canonical_json_bytes(payload)
@@ -254,11 +286,6 @@ def build_scene_authoring_export(
     if target not in _CAPABILITIES:
         raise SceneAuthoringExportError("unsupported scene export target")
     validated = SceneAuthoringDocumentV2.model_validate(document, strict=True)
-    if validated.particle_systems and target != "generic":
-        raise SceneAuthoringExportError(
-            "Particle systems are preserved by Generic export only; "
-            f"the {target} adapter does not consume authored particle systems yet."
-        )
     if validated.sequence is not None and validated.sequence.clips and target != "generic":
         raise SceneAuthoringExportError(
             "Timeline playback is not supported by this engine adapter. "
@@ -287,6 +314,7 @@ def build_scene_authoring_export(
     # portable export boundary. Consumers resolve only the safe relative path.
     for asset in scene_payload["assets"]:
         asset.pop("source_path", None)
+    _validate_particle_scene_binding(scene_payload, target=target)
     _validate_export(payload)
     return payload
 

@@ -84,6 +84,7 @@ static func import_bundle(bundle_path: String) -> Dictionary:
             "errors": [str(particles.get_meta("neoeng_particle_error", "particle sidecar is invalid"))],
         }
     particles.name = "NeoEngRuntimeParticles"
+    particles.set_auto_process(true)
     root.add_child(particles)
     root.set_meta("neoeng_particle_count", particles.get_particle_count())
     root.set_meta("neoeng_particle_emitter_count", particles.get_emitter_count())

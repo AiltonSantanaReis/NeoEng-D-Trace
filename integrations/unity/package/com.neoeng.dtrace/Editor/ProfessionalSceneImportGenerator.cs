@@ -173,6 +173,32 @@ namespace NeoEng.DTrace.Editor
                 metadata.objectId = source.object_id;
                 metadata.serializedData = JsonUtility.ToJson(source);
             }
+            foreach (ParticleSystemData source in export.scene.particle_systems ?? Array.Empty<ParticleSystemData>())
+            {
+                SocketData socket = export.scene.sockets.FirstOrDefault(
+                    item => item.type == "vfx" && item.effect_id == source.id);
+                if (socket == null)
+                    throw new InvalidDataException("professional scene particle system has no VFX socket: " + source.id);
+                GameObject particleObject = new GameObject("Particles_" + source.id);
+                particleObject.transform.SetParent(layers[socket.layer_id].transform, false);
+                particleObject.transform.localPosition = new Vector3(
+                    socket.position.x,
+                    socket.position.y * export.coordinate_mapping.position_y_sign,
+                    socket.position.z);
+                if (socket.rotation != null)
+                {
+                    particleObject.transform.localEulerAngles = new Vector3(
+                        socket.rotation.x,
+                        socket.rotation.y,
+                        socket.rotation.z * export.coordinate_mapping.rotation_sign);
+                }
+                particleObject.transform.localScale = Vector3.one * socket.scale;
+                particleObject.SetActive(socket.enabled);
+                NeoEngRuntimeParticles particles = particleObject.AddComponent<NeoEngRuntimeParticles>();
+                if (!particles.ConfigureFromJson(ParticleRuntimeJson(export, source), out string particleError))
+                    throw new InvalidDataException("professional scene particle system is invalid: " + particleError);
+                particles.autoAdvance = true;
+            }
             return root;
         }
 
@@ -186,6 +212,19 @@ namespace NeoEng.DTrace.Editor
                 int layerCount = root.GetComponentsInChildren<NeoEngProfessionalLayerMetadata>(true).Length;
                 Debug.Log("UNITY_PROFESSIONAL_SCENE_LAYERS=" + layerCount);
                 Debug.Log("UNITY_PROFESSIONAL_SCENE_OBJECTS=" + root.GetComponentsInChildren<NeoEngProfessionalObjectMetadata>().Length);
+                NeoEngRuntimeParticles[] particles = root.GetComponentsInChildren<NeoEngRuntimeParticles>(true);
+                int particleCount = 0;
+                foreach (NeoEngRuntimeParticles particle in particles)
+                {
+                    particle.autoAdvance = false;
+                    if (!particle.AdvanceFixedTicks(3))
+                        throw new InvalidDataException("professional scene particles did not advance");
+                    particleCount += particle.ParticleCount;
+                }
+                Debug.Log("UNITY_PROFESSIONAL_SCENE_PARTICLES=" + particles.Length);
+                Debug.Log("UNITY_PROFESSIONAL_SCENE_PARTICLE_COUNT=" + particleCount);
+                if (particles.Length > 0)
+                    Debug.Log("UNITY_NATIVE_PROFESSIONAL_SCENE_PARTICLE_EXPORT=SUCCESS");
                 UnityEngine.Object.DestroyImmediate(root);
                 AssetDatabase.SaveAssets();
                 EditorApplication.Exit(0);
@@ -258,7 +297,7 @@ namespace NeoEng.DTrace.Editor
             HashSet<string> socketIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (SocketData socket in export.scene.sockets)
             {
-                if (socket == null || string.IsNullOrWhiteSpace(socket.id) || !socketIds.Add(socket.id) || (socket.type != "light" && socket.type != "vfx" && socket.type != "trigger") || !layerIds.Contains(socket.layer_id) || (socket.object_id != null && !objectIds.Contains(socket.object_id)) || socket.position == null)
+                if (socket == null || string.IsNullOrWhiteSpace(socket.id) || !socketIds.Add(socket.id) || (socket.type != "light" && socket.type != "vfx" && socket.type != "trigger") || !layerIds.Contains(socket.layer_id) || (!string.IsNullOrWhiteSpace(socket.object_id) && !objectIds.Contains(socket.object_id)) || socket.position == null)
                     throw new InvalidDataException("professional scene sockets are invalid");
                 RequireFinite(socket.position.x, "socket.position.x");
                 RequireFinite(socket.position.y, "socket.position.y");
@@ -272,6 +311,76 @@ namespace NeoEng.DTrace.Editor
                 if (socket.type == "light" && socket.kind != null && socket.kind != "point" && socket.kind != "directional")
                     throw new InvalidDataException("professional scene light kind is invalid");
             }
+            HashSet<string> particleIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (ParticleSystemData particle in export.scene.particle_systems ?? Array.Empty<ParticleSystemData>())
+            {
+                ValidateParticleSystem(particle, particleIds);
+                int matchingSockets = export.scene.sockets.Count(
+                    socket => socket.type == "vfx" && socket.effect_id == particle.id);
+                if (matchingSockets != 1)
+                    throw new InvalidDataException("professional scene particle system must map to exactly one VFX socket");
+            }
+        }
+
+        private static void ValidateParticleSystem(ParticleSystemData particle, HashSet<string> particleIds)
+        {
+            if (particle == null || string.IsNullOrWhiteSpace(particle.id) || !particleIds.Add(particle.id))
+                throw new InvalidDataException("professional scene particle systems are invalid or duplicated");
+            RequireFinite(particle.fixed_dt, "particle.fixed_dt");
+            RequireFinite(particle.duration, "particle.duration");
+            if (particle.fixed_dt <= 0f || particle.fixed_dt > 1f || particle.duration <= 0f || particle.max_substeps < 1 || particle.max_substeps > 8)
+                throw new InvalidDataException("professional scene particle timing is invalid");
+            if (particle.emitters == null || particle.emitters.Length == 0)
+                throw new InvalidDataException("professional scene particle emitters are invalid");
+            HashSet<string> emitterIds = new HashSet<string>(StringComparer.Ordinal);
+            int totalCapacity = 0;
+            foreach (NeoEngRuntimeParticles.EmitterData emitter in particle.emitters)
+            {
+                if (emitter == null || string.IsNullOrWhiteSpace(emitter.id) || !emitterIds.Add(emitter.id))
+                    throw new InvalidDataException("professional scene particle emitter IDs are invalid");
+                if (emitter.seed < 0 || emitter.seed > 0xffffffffL || emitter.max_particles < 1 || emitter.max_particles > 100000 || emitter.burst_count < 0 || emitter.burst_count > emitter.max_particles)
+                    throw new InvalidDataException("professional scene particle emitter capacity is invalid");
+                RequireFinite(emitter.emission_rate, "particle.emission_rate");
+                RequireFinite(emitter.lifetime, "particle.lifetime");
+                if (emitter.emission_rate < 0f || emitter.lifetime <= 0f)
+                    throw new InvalidDataException("professional scene particle emitter timing is invalid");
+                RequireParticlePoint(emitter.origin, "particle.origin");
+                RequireParticlePoint(emitter.initial_velocity, "particle.initial_velocity");
+                RequireParticlePoint(emitter.velocity_spread, "particle.velocity_spread");
+                RequireParticlePoint(emitter.acceleration, "particle.acceleration");
+                totalCapacity += emitter.max_particles;
+                if (totalCapacity > 200000)
+                    throw new InvalidDataException("professional scene particle capacity exceeds the limit");
+            }
+        }
+
+        private static void RequireParticlePoint(NeoEngRuntimeParticles.Point3Data point, string field)
+        {
+            if (point == null)
+                throw new InvalidDataException(field + " is incomplete");
+            RequireFinite(point.x, field + ".x");
+            RequireFinite(point.y, field + ".y");
+            RequireFinite(point.z, field + ".z");
+        }
+
+        private static string ParticleRuntimeJson(SceneExport export, ParticleSystemData source)
+        {
+            NeoEngRuntimeParticles.ParticleDocumentData document = new NeoEngRuntimeParticles.ParticleDocumentData
+            {
+                format_id = "neoeng-d-trace-runtime-particles",
+                schema_version = 1,
+                algorithm_version = 1,
+                source = new NeoEngRuntimeParticles.SourceData
+                {
+                    format_id = "neoeng-d-trace-scene-authoring",
+                    schema_version = 2,
+                    sha256 = export.source.sha256,
+                },
+                fixed_dt = source.fixed_dt,
+                max_substeps = source.max_substeps,
+                emitters = source.emitters,
+            };
+            return JsonUtility.ToJson(document);
         }
 
         private static bool HasVectorGeometry(VectorGeometryData value)
@@ -362,6 +471,7 @@ namespace NeoEng.DTrace.Editor
             public CameraData camera;
             public ParallaxData[] parallax_layers;
             public SocketData[] sockets;
+            public ParticleSystemData[] particle_systems;
         }
         [Serializable] private sealed class MetadataData { public string name; }
         [Serializable] private sealed class ProjectData { public string sha256; }
@@ -378,5 +488,14 @@ namespace NeoEng.DTrace.Editor
         [Serializable] private sealed class Point3Data { public float x; public float y; public float z; }
         [Serializable] private sealed class ParallaxData { public string layer_id; public float depth; public float translation_strength; public float zoom_strength; }
         [Serializable] private sealed class SocketData { public string id; public string layer_id; public string object_id; public Point3Data position; public Point3Data rotation; public string type; public string kind; public string color; public float intensity; public float radius; public string effect_id; public float scale; public bool enabled; public string event_id; public Point3Data size; }
+        [Serializable] private sealed class ParticleSystemData
+        {
+            public string id;
+            public float fixed_dt;
+            public int max_substeps;
+            public bool loop;
+            public float duration;
+            public NeoEngRuntimeParticles.EmitterData[] emitters;
+        }
     }
 }

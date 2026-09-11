@@ -14,7 +14,9 @@ var _fixed_dt := 1.0 / 60.0
 var _max_substeps := 8
 var _tick_index := 0
 var _simulation_time := 0.0
+var _accumulator := 0.0
 var _running := true
+var _auto_process := false
 var _last_error := ""
 
 
@@ -40,8 +42,10 @@ func configure(document: Dictionary) -> bool:
         }
     _tick_index = 0
     _simulation_time = 0.0
+    _accumulator = 0.0
     _running = true
     _last_error = ""
+    set_process(_auto_process)
     _sync_metadata()
     queue_redraw()
     return true
@@ -59,6 +63,29 @@ func advance_fixed_ticks(ticks: int) -> bool:
     _sync_metadata()
     queue_redraw()
     return true
+
+
+func set_auto_process(value: bool) -> void:
+    _auto_process = value
+    set_process(value)
+
+
+func _process(delta: float) -> void:
+    if not _auto_process or _document.is_empty() or not _running:
+        return
+    _accumulator += maxf(delta, 0.0)
+    var steps := mini(
+        _max_substeps,
+        int(floor(_accumulator / _fixed_dt + 0.000000001)),
+    )
+    for _index in range(steps):
+        _step(_fixed_dt)
+    if steps > 0:
+        _accumulator -= float(steps) * _fixed_dt
+        _tick_index += steps
+        _simulation_time += float(steps) * _fixed_dt
+        _sync_metadata()
+        queue_redraw()
 
 
 func reset_simulation() -> bool:
@@ -111,7 +138,7 @@ func get_state_snapshot() -> Dictionary:
     var canonical := {
         "tick_index": _tick_index,
         "simulation_time": _simulation_time,
-        "accumulator": 0.0,
+        "accumulator": _accumulator,
         "emitters": emitters,
         "particles": particles,
     }
@@ -123,7 +150,7 @@ func get_state_snapshot() -> Dictionary:
         "fixed_dt": _fixed_dt,
         "tick_index": _tick_index,
         "simulation_time": _simulation_time,
-        "accumulator": 0.0,
+        "accumulator": _accumulator,
         "particle_count": particles.size(),
         "state_sha256": context.finish().hex_encode(),
     }
@@ -240,7 +267,14 @@ func _validate_document(value: Variant) -> String:
         return "particle document version is unsupported"
     if typeof(document["source"]) != TYPE_DICTIONARY or not _exact_keys(document["source"], ["format_id", "schema_version", "sha256"]):
         return "particle source binding is invalid"
-    if not _finite_positive(document["fixed_dt"]) or not _integer_number(document["max_substeps"]) or int(document["max_substeps"]) < 1:
+    var source: Dictionary = document["source"]
+    var source_valid: bool = (
+        (source["format_id"] == "neoeng-d-trace-scenario-runtime" and int(source["schema_version"]) == 1)
+        or (source["format_id"] == "neoeng-d-trace-scene-authoring" and int(source["schema_version"]) == 2)
+    )
+    if typeof(source["format_id"]) != TYPE_STRING or not _integer_number(source["schema_version"]) or not _lower_hex_hash(source["sha256"]) or not source_valid:
+        return "particle source binding is invalid"
+    if not _finite_positive(document["fixed_dt"]) or not _integer_number(document["max_substeps"]) or int(document["max_substeps"]) < 1 or int(document["max_substeps"]) > 8:
         return "particle fixed-step configuration is invalid"
     if typeof(document["emitters"]) != TYPE_ARRAY or document["emitters"].is_empty() or document["emitters"].size() > MAX_EMITTERS:
         return "particle emitters are invalid"
@@ -293,6 +327,16 @@ func _finite_positive(value: Variant) -> bool:
 
 func _finite_non_negative(value: Variant) -> bool:
     return _finite_number(value) and float(value) >= 0.0
+
+
+func _lower_hex_hash(value: Variant) -> bool:
+    if typeof(value) != TYPE_STRING or String(value).length() != 64:
+        return false
+    var text := String(value)
+    for character in text:
+        if not "0123456789abcdef".contains(character):
+            return false
+    return true
 
 
 func _exact_keys(value: Variant, expected: Array) -> bool:

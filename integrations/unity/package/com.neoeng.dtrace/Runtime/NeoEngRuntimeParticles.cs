@@ -334,7 +334,11 @@ namespace NeoEng.DTrace
         {
             if (document == null || document.format_id != "neoeng-d-trace-runtime-particles" || document.schema_version != 1 || document.algorithm_version != 1)
                 throw new InvalidDataException("unsupported particle sidecar");
-            if (document.source == null || document.source.format_id != "neoeng-d-trace-scenario-runtime" || document.source.schema_version != 1 || string.IsNullOrWhiteSpace(document.source.sha256))
+            bool sourceValid = document.source != null
+                && !string.IsNullOrWhiteSpace(document.source.sha256)
+                && ((document.source.format_id == "neoeng-d-trace-scenario-runtime" && document.source.schema_version == 1)
+                    || (document.source.format_id == "neoeng-d-trace-scene-authoring" && document.source.schema_version == 2));
+            if (!sourceValid)
                 throw new InvalidDataException("particle source binding is invalid");
             if (!FinitePositive(document.fixed_dt) || document.max_substeps < 1 || document.max_substeps > 8)
                 throw new InvalidDataException("particle fixed-step configuration is invalid");

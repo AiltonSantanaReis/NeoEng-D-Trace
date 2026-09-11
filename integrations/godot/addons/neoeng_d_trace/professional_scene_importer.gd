@@ -6,6 +6,7 @@ const FORMAT_ID := "neoeng-d-trace-scene-authoring-export"
 const SCHEMA_VERSION := 1
 const TARGET := "godot"
 const SCENE_FORMAT_ID := "neoeng-d-trace-scene-authoring"
+const RuntimeParticles = preload("res://addons/neoeng_d_trace/runtime_particles.gd")
 
 
 static func diagnose_export(export_path: String) -> Dictionary:
@@ -145,6 +146,34 @@ static func import_scene(export_path: String) -> Dictionary:
         marker.set_meta("neoeng_socket_type", str(socket["type"]))
         marker.set_meta("neoeng_socket_data", socket)
         layer.add_child(marker)
+    if scene_data.has("particle_systems"):
+        for system_value in scene_data["particle_systems"]:
+            var system: Dictionary = system_value
+            var particle_socket := _particle_socket_for(scene_data["sockets"], str(system["id"]))
+            if particle_socket.is_empty():
+                root.queue_free()
+                return {"status": "FAILED", "errors": ["particle system has no VFX socket: " + str(system["id"])]}
+            var particles := RuntimeParticles.new()
+            if not particles.configure(_particle_document(system, str(payload["source"]["sha256"]))):
+                var error := str(particles.get_meta("neoeng_particle_error", "particle system is invalid"))
+                particles.free()
+                root.queue_free()
+                return {"status": "FAILED", "errors": [error]}
+            particles.name = "Particles_" + str(system["id"])
+            particles.position = Vector2(
+                float(particle_socket["position"]["x"]),
+                float(particle_socket["position"]["y"]),
+            )
+            if particle_socket.has("rotation"):
+                particles.rotation = deg_to_rad(float(particle_socket["rotation"]["z"]))
+            particles.scale = Vector2.ONE * float(particle_socket.get("scale", 1.0))
+            particles.visible = bool(particle_socket.get("enabled", true))
+            particles.set_meta("neoeng_particle_system_id", str(system["id"]))
+            particles.set_meta("neoeng_particle_socket_id", str(particle_socket["id"]))
+            particles.set_meta("neoeng_particle_loop", bool(system["loop"]))
+            particles.set_meta("neoeng_particle_duration", float(system["duration"]))
+            particles.set_auto_process(true)
+            layers[particle_socket["layer_id"]].add_child(particles)
     return {"status": "SUCCESS", "root": root, "payload": payload}
 
 
@@ -154,6 +183,30 @@ static func _parallax_for(records: Array, layer_id: String) -> Dictionary:
         if str(record["layer_id"]) == layer_id:
             return record
     return {"layer_id": layer_id, "depth": 0.0, "translation_strength": 1.0, "zoom_strength": 1.0}
+
+
+static func _particle_socket_for(records: Array, system_id: String) -> Dictionary:
+    for socket_value in records:
+        var socket: Dictionary = socket_value
+        if socket.get("type", "") == "vfx" and socket.get("effect_id", "") == system_id:
+            return socket
+    return {}
+
+
+static func _particle_document(system: Dictionary, source_hash: String) -> Dictionary:
+    return {
+        "format_id": "neoeng-d-trace-runtime-particles",
+        "schema_version": 1,
+        "algorithm_version": 1,
+        "source": {
+            "format_id": "neoeng-d-trace-scene-authoring",
+            "schema_version": 2,
+            "sha256": source_hash,
+        },
+        "fixed_dt": system["fixed_dt"],
+        "max_substeps": system["max_substeps"],
+        "emitters": system["emitters"].duplicate(true),
+    }
 
 
 static func _validate_payload(payload: Dictionary, errors: Array) -> void:
@@ -169,7 +222,10 @@ static func _validate_payload(payload: Dictionary, errors: Array) -> void:
     if not _exact_keys(mapping, ["source_origin", "target_origin", "position_y_sign", "rotation_sign", "rotation_unit"]) or mapping["source_origin"] != "top-left" or mapping["target_origin"] != "godot-2d-y-down" or mapping["position_y_sign"] != 1 or mapping["rotation_sign"] != 1 or mapping["rotation_unit"] != "degrees":
         errors.append("professional scene coordinate mapping is invalid")
     var scene: Variant = payload["scene"]
-    if not _exact_keys(scene, ["format_id", "schema_version", "metadata", "project", "assets", "layers", "objects", "groups", "snap", "camera", "parallax_layers", "sockets"]) or scene["format_id"] != SCENE_FORMAT_ID or scene["schema_version"] != 2:
+    var legacy_scene_keys := ["format_id", "schema_version", "metadata", "project", "assets", "layers", "objects", "groups", "snap", "camera", "parallax_layers", "sockets"]
+    var particle_scene_keys := legacy_scene_keys.duplicate()
+    particle_scene_keys.append("particle_systems")
+    if (not _exact_keys(scene, legacy_scene_keys) and not _exact_keys(scene, particle_scene_keys)) or scene["format_id"] != SCENE_FORMAT_ID or scene["schema_version"] != 2:
         errors.append("professional scene document is invalid")
         return
     var asset_ids := {}
@@ -205,6 +261,48 @@ static func _validate_payload(payload: Dictionary, errors: Array) -> void:
         var socket: Variant = socket_value
         if not _valid_socket(socket, layer_ids, object_ids):
             errors.append("professional scene socket is invalid")
+    if scene.has("particle_systems"):
+        var systems: Variant = scene["particle_systems"]
+        var source_hash := ""
+        if typeof(source) == TYPE_DICTIONARY and source.has("sha256"):
+            source_hash = str(source["sha256"])
+        if typeof(systems) != TYPE_ARRAY or systems.is_empty():
+            errors.append("professional scene particle systems are invalid")
+        else:
+            var particle_ids := {}
+            for system_value in systems:
+                if not _valid_particle_system(system_value, source_hash):
+                    errors.append("professional scene particle system is invalid")
+                    continue
+                var system: Dictionary = system_value
+                var system_id := str(system["id"])
+                if particle_ids.has(system_id):
+                    errors.append("professional scene particle system IDs are duplicated")
+                    continue
+                particle_ids[system_id] = true
+                var matching_sockets := 0
+                for socket_value in scene["sockets"]:
+                    var socket: Dictionary = socket_value
+                    if socket.get("type", "") == "vfx" and socket.get("effect_id", "") == system_id:
+                        matching_sockets += 1
+                if matching_sockets != 1:
+                    errors.append("professional scene particle system must map to exactly one VFX socket")
+
+
+static func _valid_particle_system(value: Variant, source_hash: String) -> bool:
+    if typeof(value) != TYPE_DICTIONARY:
+        return false
+    var system: Dictionary = value
+    if not _exact_keys(system, ["id", "fixed_dt", "max_substeps", "loop", "duration", "emitters"]):
+        return false
+    if typeof(system["id"]) != TYPE_STRING or String(system["id"]).is_empty() or typeof(system["loop"]) != TYPE_BOOL:
+        return false
+    if not _finite_positive(system["fixed_dt"]) or float(system["fixed_dt"]) > 1.0 or not _integer_number(system["max_substeps"]) or int(system["max_substeps"]) < 1 or int(system["max_substeps"]) > 8 or not _finite_positive(system["duration"]):
+        return false
+    var probe := RuntimeParticles.new()
+    var valid := probe.configure(_particle_document(system, source_hash))
+    probe.free()
+    return valid
 
 
 static func _valid_transform(value: Variant) -> bool:
@@ -243,7 +341,7 @@ static func _polygon_from_points(value: Array) -> PackedVector2Array:
 static func _valid_socket(value: Variant, layer_ids: Dictionary, object_ids: Dictionary) -> bool:
     if typeof(value) != TYPE_DICTIONARY or not value.has("type") or not value.has("id") or not value.has("layer_id") or not value.has("position") or not value.has("object_id") or not layer_ids.has(value["layer_id"]) or (value["object_id"] != null and not object_ids.has(value["object_id"])) or not _vector3(value["position"]):
         return false
-    var has_rotation := value.has("rotation")
+    var has_rotation: bool = value.has("rotation")
     if has_rotation and not _vector3(value["rotation"]):
         return false
     if value["type"] == "light":
@@ -278,6 +376,14 @@ static func _vector3_positive(value: Variant) -> bool:
 
 static func _positive(value: Variant) -> bool:
     return _finite(value) and float(value) > 0.0
+
+
+static func _finite_positive(value: Variant) -> bool:
+    return _finite(value) and float(value) > 0.0
+
+
+static func _integer_number(value: Variant) -> bool:
+    return _finite(value) and floor(float(value)) == float(value)
 
 
 static func _exact_keys(value: Variant, expected: Array) -> bool:
