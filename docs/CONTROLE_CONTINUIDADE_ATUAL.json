@@ -38,7 +38,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Concluir e comprovar iluminação direcional, efeitos orientáveis, partículas completas, tilemap/tileset e editor 3D; depois executar a revisão humana final conforme a decisão formal de deferimento.",
+    "next_action": "Concluir e comprovar a equivalência de runtime das partículas quando aplicável, tilemap/tileset e editor 3D; depois executar a revisão humana final conforme a decisão formal de deferimento.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
@@ -68,22 +68,22 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "59a21a0818d27df33d1aad3acd93facb7472e445",
-    "head_role": "POST_E13_DIRECTIONAL_ORIENTABLE_NATIVE_EVIDENCE",
+    "head": "5fe5d77aa223e248c883e22d0317d206619092c0",
+    "head_role": "POST_E13_PARTICLES_NATIVE_EVIDENCE_WITH_ADD_FLOW_FIX",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_POST_E13_DIRECTIONAL_NATIVE_EVIDENCE_HUMAN_REVIEW_PENDING"
+    "status": "TRACKED_CLEAN_POST_E13_PARTICLES_NATIVE_EVIDENCE_HUMAN_REVIEW_PENDING"
   },
   "gates": {
     "official_suite": {
       "status": "PASS",
-      "collected": 2188,
-      "passed": 2186,
+      "collected": 2195,
+      "passed": 2193,
       "skipped": 2,
       "warnings": 1,
       "command": ".venv/Scripts/python.exe -m pytest -q",
-      "observation": "Requalificação sem filtros no commit 59a21a0 passou; os sete testes de iluminação direcional/efeitos orientáveis passaram e o abort histórico do magnetic lasso continua preservado como evidência histórica.",
-      "observation_artifact": "docs/evidence/EVD_POST_E13_DIRECIONAL_ORIENTAVEL_NATIVE_20260911.md",
+      "observation": "Requalificação sem filtros no commit 5fe5d77 passou; os testes de partículas e a regressão da transição de socket existente para VFX passaram. O abort histórico do magnetic lasso continua preservado como evidência histórica.",
+      "observation_artifact": "docs/evidence/EVD_POST_E13_PARTICULAS_AUTORIA_RUNTIME_NATIVE_20260911.md",
       "historical_failure_artifact": "artifacts/post-e13-binary-final10-20260910/official-suite-final10-observation.txt"
     },
     "static": {
@@ -117,38 +117,38 @@
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_decision": "docs/evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/post-e13-native-flow-20260911-directional/reload-saved-directional-vfx-real-18221036.png",
-      "latest_binary_capture_sha256": "3A965BA181E03ECC8E0A94588486B1DD4186C6321DAD22720372DBE299D723AC",
+      "latest_binary_capture": "artifacts/post-e13-native-flow-20260911-particles-fix/particle-inspector-scroll-up-reload-fix-real-15927728.png",
+      "latest_binary_capture_sha256": "ED55ED426AC7E7AA33B796E351C0028A72672B306F8A6639E5FEE9B81507A092",
       "latest_binary_capture_window": "3866x2090; editor nativo maximizado em tela 3840x2160",
-      "observed_finding": "Build pós-E13 executou alteração nativa de luz Ponto para Direcional, rotação 90°/270°, criação de VFX, drag real do handle para -56,6585° e salvar/recarregar com posição e rotação preservadas; por decisão do proprietário, a revisão humana fica deferida até partículas completas, tilemap/tileset e editor 3D passarem pelos gates.",
+      "observed_finding": "Build pós-E13 corrigida executou fluxo nativo de conversão de socket existente para VFX, criação de emissor com controles ativos, preview observável após 750 ms e salvar/recarregar com valores preservados. A equivalência externa de runtime, tilemap/tileset e editor 3D ainda permanecem no plano; a revisão humana continua deferida.",
       "final_audit": "docs/evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md",
-      "native_capture_root": "artifacts/post-e13-native-flow-20260911-directional",
+      "native_capture_root": "artifacts/post-e13-native-flow-20260911-particles-fix",
       "capture_fallback": "Win32 mouse_event/keybd_event/PrintWindow; CUA indisponível e declarado",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
       "status": "PASS",
-      "latest_observed_binary": "build/post-e13-directional-20260911/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "A561FAD41D048623D03BDFAF0E5EEE13916AC81A591F10E9E6BCD305A0C53B7D",
-      "latest_observed_binary_last_write": "2026-09-11T17:28:23.7435265Z",
-      "source_commit": "59a21a0818d27df33d1aad3acd93facb7472e445",
+      "latest_observed_binary": "build/post-e13-particles-20260911-fix/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "AC96E89A6F1215A0136CF530257DF2B96F3C4AD519A594FF1E869D081086D164",
+      "latest_observed_binary_last_write": "2026-09-11T18:47:19.6697187Z",
+      "source_commit": "5fe5d77aa223e248c883e22d0317d206619092c0",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
-      "continuity_registry_sha256": "56F713A3BAA1E689A9FC58F45CD6D3BD9464821F01CA6A3056C52C94E8A0C6EB",
+      "continuity_registry_sha256": "6334BE5A0C83D8F22123CD071838D3935E575EFAA394877C598DA97A639008EC",
       "current_registry_sha256_note": "Hash gravado no manifesto é o registro no instante da build; este JSON é atualizado depois da auditoria para preservar a proveniência temporal.",
-      "provenance_manifest": "build/post-e13-directional-20260911/continuity-provenance.json",
+      "provenance_manifest": "build/post-e13-particles-20260911-fix/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "B9145E56791EF5BD9CC3DEDE3D625C7B52EC0E7589904FF66E047CEADD28EBC0",
-      "portable_smoke_report": "build/post-e13-directional-20260911/smoke/portable-smoke-report.json",
-      "portable_smoke_report_sha256": "A3A9A451FAE16907232E76B84A2422399D202E9FD9D6EC0CC37C6F922F28BDAB",
+      "portable_archive_sha256": "1857459E3BAD3A773A68531ADC91144F63685B2C8106A66CCD014FBFCCA813B3",
+      "portable_smoke_report": "build/post-e13-particles-20260911-fix/smoke/portable-smoke-report.json",
+      "portable_smoke_report_sha256": "A12DC6DF56F059D2A8889D6AFC777266E9AC3C6F8BA0E2C9B76364079E4FEE4D",
       "warning": "Hidden import tzdata not found; smoke SUCCESS e aviso preservado.",
-      "reason": "Build pós-E13 limpa e hashada do commit 59a21a0; captura nativa real de luz direcional e VFX orientável, persistência e smoke de 11 checks concluídos. O aceite formal permanece pendente pela revisão humana e pelos blocos funcionais restantes."
+      "reason": "Build pós-E13 limpa e hashada do commit 5fe5d77; captura nativa real de autoria/preview de partículas, persistência e smoke de 11 checks concluídos. O wrapper oficial ficou fora por guard de árvore compartilhada e a limitação está preservada no manifesto; o aceite formal permanece pendente."
     },
     "functional_runtime": {
       "status": "PASS",
-      "binary": "build/post-e13-professional-clean-20260911-ux-camera/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "validation_log": "build/post-e13-professional-clean-20260911-ux-camera/smoke/portable-smoke-report.json",
+      "binary": "build/post-e13-particles-20260911-fix/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "validation_log": "build/post-e13-particles-20260911-fix/smoke/portable-smoke-report.json",
       "expected_events": ["application.opened", "window.geometry.restored", "application.state.saved", "application.closed"],
       "failure_count": 0,
       "warning": "Hidden import tzdata not found; smoke pós-E13 SUCCESS."

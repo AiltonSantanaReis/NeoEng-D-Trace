@@ -27,7 +27,7 @@ registro não cria aceite funcional nem autorização de publicação.
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
 `Ailton/e08-renderer-20260908`. A fonte de produto da build pós-E13 de autoria
-profissional é o commit `59a21a0818d27df33d1aad3acd93facb7472e445`; o
+profissional é o commit `5fe5d77aa223e248c883e22d0317d206619092c0`; o
 harness Win32 complementar de captura está preservado no checkout como arquivo
 não rastreado preexistente, SHA-256
 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`. A existência de outras branches,
@@ -47,15 +47,15 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2186 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `59a21a0`; o abort histórico do magnetic lasso e seus artefatos permanecem preservados, mas não é mais o resultado atual |
+| Suíte oficial | `PASS` | 2193 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `5fe5d77`; os testes de partículas e a regressão da conversão de socket para VFX passaram; o abort histórico do magnetic lasso e seus artefatos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; luz direcional, rotação 90°/270°, VFX orientável por drag real e salvar/recarregar foram exercitados com capturas reais; por decisão do proprietário, a revisão humana fica deferida até os itens abertos passarem |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; luz direcional, VFX orientável e partículas com preview, salvar/recarregar e capturas reais foram exercitados; por decisão do proprietário, a revisão humana fica deferida até equivalência externa de partículas quando aplicável, tilemap/tileset e 3D passarem |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | build limpa `post-e13-directional-20260911`, proveniência `PASS`, executável `A561FAD41D048623D03BDFAF0E5EEE13916AC81A591F10E9E6BCD305A0C53B7D`, ZIP `B9145E56791EF5BD9CC3DEDE3D625C7B52EC0E7589904FF66E047CEADD28EBC0` e smoke `SUCCESS` em 11 checks |
-| Runtime funcional | `PASS` | build pós-E13 abriu/fechou e executou smoke; câmera e timeline foram exercitadas pelo fluxo nativo separado |
+| Build oficial | `PASS` | build limpa `post-e13-particles-20260911-fix`, proveniência `PASS`, executável `AC96E89A6F1215A0136CF530257DF2B96F3C4AD519A594FF1E869D081086D164`, ZIP `1857459E3BAD3A773A68531ADC91144F63685B2C8106A66CCD014FBFCCA813B3` e smoke `SUCCESS` em 11 checks |
+| Runtime funcional | `PASS` | build pós-E13 corrigida abriu/fechou e executou smoke; o preview nativo de partículas foi exercitado com avanço temporal e a equivalência de engine externa continua explicitamente pendente |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
 A execução direta da build final10 gerou capturas reais em
@@ -65,6 +65,9 @@ parallax, timeline, menus e máscara. A build pós-E13 gerou a evidência
 específica em `artifacts/post-e13-native-flow-20260911-camera-timeline/`, e o
 incremento de iluminação/VFX gerou `artifacts/post-e13-native-flow-20260911-directional/`,
 vinculado a `docs/evidence/EVD_POST_E13_DIRECIONAL_ORIENTAVEL_NATIVE_20260911.md`.
+O incremento de partículas corrigido gerou
+`artifacts/post-e13-native-flow-20260911-particles-fix/`, vinculado a
+`docs/evidence/EVD_POST_E13_PARTICULAS_AUTORIA_RUNTIME_NATIVE_20260911.md`.
 A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
@@ -75,7 +78,9 @@ e a revisão humana final, conforme a
 [decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
 O trabalho técnico do lote, a build e as capturas nativas foram executados;
 revisão visual/humana, licença/proveniência de distribuição e os requisitos
-funcionais ainda abertos continuam explicitamente separados. O abort legado
+funcionais ainda abertos continuam explicitamente separados. O preview de
+partículas tem checkpoint técnico, mas a equivalência de runtime/exportação
+externa continua `PENDING_EVIDENCE`. O abort legado
 permanece como falha histórica preservada, não como resultado atual da suíte.
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
