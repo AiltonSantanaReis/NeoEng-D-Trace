@@ -37,6 +37,7 @@ from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
     QWidget,
 )
 
+from src.core.logger import logger
 from src.ui.context_menu_utils import fit_context_menu
 
 from .base_tool import BaseTool
@@ -369,7 +370,6 @@ class MagneticLassoTool(BaseTool):
         self._path_timeout_timer: Optional[QTimer] = None
         self._path_timeout_request_id: Optional[int] = None
         self._path_timeout_ms: Optional[int] = None
-        self._async_error_box: Optional[QMessageBox] = None
         if isinstance(canvas_view, QWidget):
             self._path_timeout_timer = QTimer(canvas_view)
             self._path_timeout_timer.setSingleShot(True)
@@ -677,25 +677,34 @@ class MagneticLassoTool(BaseTool):
             except RuntimeError:
                 pass
 
-    def _on_async_error_closed(self, *_args: Any) -> None:
-        self._async_error_box = None
-
     def _show_nonblocking_path_error(self) -> None:
+        """Expose a timeout through the host status channel without a dialog.
+
+        Timeout is a recoverable editing state, not a blocking command failure.
+        A modeless ``QMessageBox`` outlives the active canvas and can be
+        destroyed while Qt is processing the worker's late result. The host
+        status bar is persistent, actionable, and follows the canvas lifetime.
+        """
+
         if not isinstance(self.canvas_view, QWidget):
             return
         try:
-            if self._async_error_box is not None:
-                self._async_error_box.close()
-            box = QMessageBox(self.canvas_view)
-            box.setIcon(QMessageBox.Icon.Warning)
-            box.setWindowTitle(self.translations[self.current_lang]["title"])
-            box.setText(self.translations[self.current_lang]["path_error"])
-            box.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
-            box.finished.connect(self._on_async_error_closed)
-            self._async_error_box = box
-            box.open()
-        except Exception:
-            self._async_error_box = None
+            host = self.canvas_view.window()
+            status_bar_getter = getattr(host, "statusBar", None)
+            status_bar = status_bar_getter() if callable(status_bar_getter) else None
+            show_message = getattr(status_bar, "showMessage", None)
+            if callable(show_message):
+                show_message(
+                    self.translations[self.current_lang]["path_error"],
+                    5000,
+                )
+                return
+        except Exception as exc:
+            logger.warning("Magnetic lasso timeout status unavailable: %s", exc)
+        logger.warning(
+            "Magnetic lasso: %s",
+            self.translations[self.current_lang]["path_error"],
+        )
 
     def _request_async_path(self, purpose: str, start: Point, end: Point) -> None:
         request = {
