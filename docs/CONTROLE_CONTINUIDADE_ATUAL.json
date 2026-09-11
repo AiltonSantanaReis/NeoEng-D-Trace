@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "record_id": "CONTINUITY-NEOENG-20260908",
-  "updated_at": "2026-09-10",
+  "updated_at": "2026-09-11",
   "authority": {
     "governance": "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md",
     "master_plan_ref": "Ailton/e00-plan-adoption-20260907",
@@ -38,7 +38,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Registrar apenas as decisões finais do proprietário no relatório final pós-E13; manter o abort legado e os gates humanos/licença explicitamente separados.",
+    "next_action": "Registrar a revisão humana da evidência nativa pós-E13 e manter os requisitos funcionais, licença/proveniência e a falha histórica preservada explicitamente separados.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
@@ -68,21 +68,23 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "072427e",
-    "head_role": "FINAL_AUDIT_HARNESS_SNAPSHOT",
+    "head": "50cac24",
+    "head_role": "POST_E13_PROFESSIONAL_AUTHORING_NATIVE_VERIFICATION",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_POST_E13_FINAL10_AUDIT_PENDING"
+    "status": "TRACKED_CLEAN_POST_E13_NATIVE_VERIFICATION_PENDING_HUMAN_REVIEW"
   },
   "gates": {
     "official_suite": {
-      "status": "ABORTED_FATAL_PRESERVED",
-      "collected": 2176,
-      "abort_test": "tests/test_legacy_phase4_contracts.py::test_phase4_real_segment_timeout_cancels_and_discards_late_result",
-      "abort_stack": "src/tools/magnetic_lasso_engine.py::_astar_directional -> live_wire_path -> src/tools/magnetic_lasso.py::run",
-      "command": "canonical-project-python -m pytest -q",
-      "observation": "Execução sem filtros abortou no teste legado; nenhum filtro, skip, xfail ou reclassificação foi usado.",
-      "observation_artifact": "artifacts/post-e13-binary-final10-20260910/official-suite-final10-observation.txt"
+      "status": "PASS",
+      "collected": 2181,
+      "passed": 2179,
+      "skipped": 2,
+      "warnings": 1,
+      "command": ".venv311/Scripts/python.exe -m pytest -qq",
+      "observation": "Requalificação sem filtros no commit 19a16c3 passou; o abort histórico do magnetic lasso e sua observação anterior permanecem preservados como evidência histórica.",
+      "observation_artifact": "docs/evidence/EVD_POS_E13_PROFESSIONAL_AUTHORING_NATIVE_20260911.md",
+      "historical_failure_artifact": "artifacts/post-e13-binary-final10-20260910/official-suite-final10-observation.txt"
     },
     "static": {
       "status": "PASS_LOCAL",
@@ -111,44 +113,44 @@
     "visual": {
       "automated_capture_status": "PASS_AUTOMATED_CAPTURE_ONLY",
       "native_human_status": "PENDING_EVIDENCE",
-      "native_technical_status": "PASS_FINAL10_MATRIX",
+      "native_technical_status": "PASS",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_required_before_close": true,
-      "latest_binary_capture": "artifacts/post-e13-binary-final10-20260910/asset-pack/06-asset-pack-dialog.png",
-      "latest_binary_capture_sha256": "4C6AF75116A4E4478C90BB2C882C6BD10F19A69A7918DC4D385ACBA0E9E9B0FA",
-      "latest_binary_capture_window": "3853x2077; menu profissional em tela 3840x2160",
-      "observed_finding": "Matriz nativa final10 executou catálogo, vetor, tilemap, tileset, colisores, NavMesh, entidades/prefabs, renderer, material, parallax, timeline, menus e máscara; nenhuma falha funcional foi observada nos fluxos cobertos. Revisão humana formal, halos/licença, DPI/desempenho e warning tzdata continuam pendentes.",
+      "latest_binary_capture": "artifacts/post-e13-native-flow-20260911-camera-timeline/reload-camera-inspector-persisted-real-24053066.png",
+      "latest_binary_capture_sha256": "018BDBBD1DA6F613C117A10040A687205E415AEDA75275B3AA7EEFABADAEA329",
+      "latest_binary_capture_window": "3866x2090; editor nativo maximizado em tela 3840x2160",
+      "observed_finding": "Build pós-E13 executou câmera, guias Z00/Z01/Z02, clip de câmera, scrub contínuo e salvar/recarregar; inspeção humana formal, iluminação/efeitos direcionais, desempenho/DPI e requisitos funcionais restantes continuam pendentes.",
       "final_audit": "docs/evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md",
-      "native_capture_root": "artifacts/post-e13-binary-final10-20260910",
+      "native_capture_root": "artifacts/post-e13-native-flow-20260911-camera-timeline",
       "capture_fallback": "Win32 mouse_event/keybd_event/PrintWindow; CUA indisponível e declarado",
       "rule": "Captura de janela prova somente o estado visual capturado; nao substitui revisao humana."
     },
     "build_provenance": {
-      "status": "PASS_LOCAL",
-      "latest_observed_binary": "build/_clean-post-e13-final10-20260910/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "latest_observed_binary_sha256": "754B6EAD8E56FB87CEC09E4AFFFF7ABB5EC3E309C45933042C5B461B94E9F856",
-      "latest_observed_binary_last_write": "2026-09-10T17:20:37-03:00",
-      "source_commit": "cf829b7583c4a6a63fb86d8a0cafc5103808f498",
+      "status": "PASS",
+      "latest_observed_binary": "build/post-e13-professional-clean-20260911-ux-camera/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "latest_observed_binary_sha256": "65A970AE0E695DF47A7D35ED466585552C6214B73B4EA6F3B779085597E8F378",
+      "latest_observed_binary_last_write": "2026-09-11T13:23:48.7009856-03:00",
+      "source_commit": "19a16c373094d5b43a6b86cacaa5441f54dde1ae",
       "source_branch": "Ailton/e08-renderer-20260908",
       "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
       "continuity_registry_sha256": "4D46AD80DB0C71A6945D80ACCAB032900CF4832A476030F953F4176B3C1AE247",
       "current_registry_sha256_note": "Hash gravado no manifesto é o registro no instante da build; este JSON é atualizado depois da auditoria para preservar a proveniência temporal.",
-      "provenance_manifest": "build/e01-independent-scene-20260908/build/_clean-post-e13-final10-20260910/continuity-provenance.json",
+      "provenance_manifest": "build/post-e13-professional-clean-20260911-ux-camera/continuity-provenance.json",
       "portable_smoke_status": "SUCCESS",
       "portable_smoke_checks": 11,
-      "portable_archive_sha256": "C4831D3493671D512EDA2CA168A345F26A7430B159E08B04667E4B5E14D64F03",
-      "portable_smoke_report": "build/e01-independent-scene-20260908/build/_clean-post-e13-final10-20260910/smoke/portable-smoke-report.json",
-      "portable_smoke_report_sha256": "7B890789F9B46B6126AA4F8A2791E0633B8F7612E2B47F7E2674C842E99E3D54",
+      "portable_archive_sha256": "6F6316D5AA85A43E89FDEB8EAAF1D14677A664623D5E29CF61D3829A0FF2CA37",
+      "portable_smoke_report": "build/post-e13-professional-clean-20260911-ux-camera/smoke/portable-smoke-report.json",
+      "portable_smoke_report_sha256": "6A9608E610B6BD04A0CF0EBD532FE13A5E962DE414239F4729D3A0F46C7758E4",
       "warning": "Hidden import tzdata not found; smoke SUCCESS e aviso preservado.",
-      "reason": "Build final10 limpa e hashada do commit cf829b7; captura nativa final10 e smoke de 11 checks concluídos. O aceite formal permanece pendente pelo abort legado, revisão humana e decisões de licença/publicação."
+      "reason": "Build pós-E13 limpa e hashada do commit 19a16c3; captura nativa real e smoke de 11 checks concluídos. O aceite formal permanece pendente pela revisão humana, requisitos funcionais abertos e decisões de licença/publicação."
     },
     "functional_runtime": {
-      "status": "PASS_LOCAL",
-      "binary": "build/_clean-post-e13-final10-20260910/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
-      "validation_log": "build/_clean-post-e13-final10-20260910/smoke/portable-smoke-report.json",
+      "status": "PASS",
+      "binary": "build/post-e13-professional-clean-20260911-ux-camera/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+      "validation_log": "build/post-e13-professional-clean-20260911-ux-camera/smoke/portable-smoke-report.json",
       "expected_events": ["application.opened", "window.geometry.restored", "application.state.saved", "application.closed"],
       "failure_count": 0,
-      "warning": "Hidden import tzdata not found; smoke final10 SUCCESS."
+      "warning": "Hidden import tzdata not found; smoke pós-E13 SUCCESS."
     },
     "restoration": {
       "status": "PASS_LOCAL_TRACKED_CHECKOUT",

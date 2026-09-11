@@ -58,7 +58,7 @@ O salvamento nativo gerou [`persisted-camera-timeline.ndtscene.json`](../../arti
 
 ## Fallback e falhas preservadas
 
-- A automação CUA/`@oai/sky` não inicializou neste host por erro de infraestrutura (`failed to write kernel assets: path not found`). O fallback aprovado foi o harness Win32 versionado `scripts/audit_native_usability.ps1`, com entrada de mouse/janela real e captura `PrintWindow`.
+- A automação CUA/`@oai/sky` não inicializou neste host por erro de infraestrutura (`failed to write kernel assets: path not found`). O fallback aprovado foi o harness Win32 `scripts/audit_native_usability.ps1`, presente no checkout e preservado como arquivo não rastreado preexistente, com SHA-256 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`, entrada de mouse/janela real e captura `PrintWindow`.
 - A tentativa anterior com a fixture de texto inválida permanece preservada em `artifacts/post-e13-native-flow-20260911-professional/` e não foi usada como evidência de sucesso; ela produziu o erro real `invalid project JSON`.
 
 ## Pendências que permanecem abertas
