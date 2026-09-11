@@ -364,13 +364,20 @@ class SceneCameraGuide(QGraphicsObject):
         self._hover_mode: str | None = None
         self._label = "CAMERA"
 
+    def _label_width(self) -> float:
+        """Keep the authoring hint legible without clipping long translations."""
+
+        return max(188.0, min(320.0, 7.5 * len(self._label) + 36.0))
+
     def boundingRect(self) -> QRectF:
         half_width = self._frame_width / 2.0
         half_height = self._frame_height / 2.0
+        label_right = -half_width + 10.0 + self._label_width()
+        right = max(half_width + 18.0, label_right)
         return QRectF(
             -half_width - 18.0,
             -half_height - 46.0,
-            self._frame_width + 36.0,
+            right + half_width + 18.0,
             self._frame_height + 64.0,
         )
 
@@ -472,7 +479,12 @@ class SceneCameraGuide(QGraphicsObject):
             )
         )
 
-        label_rect = QRectF(frame.left() + 10.0, frame.top() + 10.0, 188.0, 26.0)
+        label_rect = QRectF(
+            frame.left() + 10.0,
+            frame.bottom() - 36.0,
+            self._label_width(),
+            26.0,
+        )
         painter.setBrush(QBrush(QColor(11, 31, 43, 215)))
         painter.setPen(QPen(QColor(92, 224, 239, 210), 1.0))
         painter.drawRoundedRect(label_rect, 6.0, 6.0)
@@ -3027,6 +3039,8 @@ class SceneAuthoringViewport(QGraphicsView):
         palette = ("#5bd8ed", "#f0bd68", "#c38cf2", "#78df9b", "#ff8d9f")
         painter = QPainter(self.viewport())
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        label_top = 34.0
+        previous_label: QRectF | None = None
         for index, layer in enumerate(document.layers):
             if not layer.visible:
                 continue
@@ -3061,13 +3075,17 @@ class SceneAuthoringViewport(QGraphicsView):
             anchor = screen_points[0]
             label_width = min(236.0, max(134.0, 8.0 * len(label) + 22.0))
             label_x = min(max(8.0, anchor.x() + 6.0), viewport_width - label_width - 8.0)
-            label_y = min(max(8.0, anchor.y() + 8.0 + index * 22.0), viewport_height - 25.0)
+            label_y = max(label_top + index * 24.0, anchor.y() + 8.0)
+            if previous_label is not None and label_y < previous_label.bottom() + 4.0:
+                label_y = previous_label.bottom() + 4.0
+            label_y = min(label_y, viewport_height - 25.0)
             label_rect = QRectF(label_x, label_y, label_width, 20.0)
             painter.setBrush(QBrush(QColor(9, 24, 34, 205)))
             painter.setPen(QPen(color, 1.0))
             painter.drawRoundedRect(label_rect, 4.0, 4.0)
             painter.setPen(QColor("#edfaff"))
             painter.drawText(label_rect, Qt.AlignmentFlag.AlignCenter, label)
+            previous_label = label_rect
         painter.end()
 
     def paintEvent(self, event) -> None:

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import pytest
-from PySide6.QtCore import QPoint, QPointF, Qt
+from PySide6.QtCore import QPoint, QPointF, QRectF, Qt
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QGraphicsScene
 
@@ -36,6 +36,21 @@ def test_camera_guide_exposes_distinct_translate_and_rotate_handles(qt_app) -> N
     assert guide._mode_for(QPointF(0.0, 100.0)) == "translate"
     assert guide._mode_for(guide._rotation_handle()) == "rotate"
     assert guide._mode_for(QPointF(0.0, 40.0)) is None
+
+
+def test_camera_guide_localized_hint_stays_inside_its_paint_bounds(qt_app) -> None:
+    guide = SceneCameraGuide()
+    guide.set_frame_size(640.0, 360.0)
+    guide.set_label("CÂMERA · ARRASTE PARA POSICIONAR")
+
+    label_rect = QRectF(
+        -320.0 + 10.0,
+        180.0 - 36.0,
+        guide._label_width(),
+        26.0,
+    )
+    assert guide._label_width() > 188.0
+    assert guide.boundingRect().contains(label_rect)
 
 
 def test_timeline_header_scrubs_continuously_during_drag(qt_app) -> None:
