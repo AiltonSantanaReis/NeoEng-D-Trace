@@ -167,6 +167,7 @@ class ScenarioEditorWindow(QMainWindow):
             "No scene selected yet.\n\n"
             "Choose New Scenario or open a project to populate the inspector."
         )
+        self.professional_inspector_empty = empty_label
         empty_layout.addStretch(1)
         empty_layout.addWidget(empty_label)
         empty_layout.addStretch(1)
@@ -1249,6 +1250,24 @@ class ScenarioEditorWindow(QMainWindow):
 
     def update_language(self, language: str) -> None:
         self.current_lang = language if language in {"en", "pt"} else "en"
+        if self.current_lang == "pt":
+            self.professional_empty.setText(
+                "Viewport profissional de cenários\n\n"
+                "Escolha Novo Cenário para começar em uma cena vazia ou abra um projeto salvo."
+            )
+            self.professional_inspector_empty.setText(
+                "Nenhuma cena selecionada.\n\n"
+                "Escolha Novo Cenário ou abra um projeto para preencher o inspetor."
+            )
+        else:
+            self.professional_empty.setText(
+                "Professional scene viewport\n\n"
+                "Choose New Scenario to start from an empty scene, or load a saved project."
+            )
+            self.professional_inspector_empty.setText(
+                "No scene selected yet.\n\n"
+                "Choose New Scenario or open a project to populate the inspector."
+            )
         self.setProperty("language", self.current_lang)
         if self.sequence_panel is not None:
             self.sequence_panel.update_language(self.current_lang)

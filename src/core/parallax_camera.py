@@ -165,6 +165,7 @@ class OrthographicCamera:
     viewport_size: Point2
     position: Point2 = (0.0, 0.0)
     zoom: float = 1.0
+    rotation: float = 0.0
 
     def __post_init__(self) -> None:
         viewport = _point(self.viewport_size, "viewport_size")
@@ -175,6 +176,7 @@ class OrthographicCamera:
         object.__setattr__(self, "zoom", _finite(self.zoom, "zoom"))
         if self.zoom <= 0.0:
             raise ValueError("zoom must be positive")
+        object.__setattr__(self, "rotation", _finite(self.rotation, "rotation"))
 
     @property
     def viewport_center(self) -> Point2:
@@ -201,9 +203,14 @@ class OrthographicCamera:
         camera_x = self.position[0] * resolved.camera_scroll_x - resolved.offset_x
         camera_y = self.position[1] * resolved.camera_scroll_y - resolved.offset_y
         center_x, center_y = self.viewport_center
+        relative_x = world[0] - camera_x
+        relative_y = world[1] - camera_y
+        angle = math.radians(self.rotation)
+        rotated_x = relative_x * math.cos(angle) - relative_y * math.sin(angle)
+        rotated_y = relative_x * math.sin(angle) + relative_y * math.cos(angle)
         return (
-            (world[0] - camera_x) * zoom + center_x,
-            (world[1] - camera_y) * zoom + center_y,
+            rotated_x * zoom + center_x,
+            rotated_y * zoom + center_y,
         )
 
     def unproject(
@@ -219,9 +226,14 @@ class OrthographicCamera:
         center_x, center_y = self.viewport_center
         camera_x = self.position[0] * resolved.camera_scroll_x - resolved.offset_x
         camera_y = self.position[1] * resolved.camera_scroll_y - resolved.offset_y
+        relative_x = (screen[0] - center_x) / zoom
+        relative_y = (screen[1] - center_y) / zoom
+        angle = math.radians(-self.rotation)
+        unrotated_x = relative_x * math.cos(angle) - relative_y * math.sin(angle)
+        unrotated_y = relative_x * math.sin(angle) + relative_y * math.cos(angle)
         return (
-            (screen[0] - center_x) / zoom + camera_x,
-            (screen[1] - center_y) / zoom + camera_y,
+            unrotated_x + camera_x,
+            unrotated_y + camera_y,
         )
 
     def project_points(
@@ -237,12 +249,28 @@ class OrthographicCamera:
         """Return a camera with a new position, preserving other fields."""
 
         return OrthographicCamera(
-            self.viewport_size, _point(position, "position"), self.zoom
+            self.viewport_size,
+            _point(position, "position"),
+            self.zoom,
+            self.rotation,
         )
 
     def with_zoom(self, zoom: float) -> "OrthographicCamera":
         """Return a camera with a new positive zoom, preserving other fields."""
 
         return OrthographicCamera(
-            self.viewport_size, self.position, _finite(zoom, "zoom")
+            self.viewport_size,
+            self.position,
+            _finite(zoom, "zoom"),
+            self.rotation,
+        )
+
+    def with_rotation(self, rotation: float) -> "OrthographicCamera":
+        """Return a camera with a new rotation in degrees."""
+
+        return OrthographicCamera(
+            self.viewport_size,
+            self.position,
+            self.zoom,
+            _finite(rotation, "rotation"),
         )

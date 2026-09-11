@@ -81,13 +81,43 @@ class ClipBlock(QGraphicsRectItem):
 
 
 class TimelineView(QGraphicsView):
-    def mousePressEvent(self, event):
+    def __init__(self, scene, parent=None):
+        super().__init__(scene, parent)
+        self._scrubbing = False
+        self.setMouseTracking(True)
+
+    def _seek_from_event(self, event) -> bool:
         position = self.mapToScene(event.position().toPoint())
-        if position.y() < 26 and position.x() >= 150:
-            self.parent_panel.seek((position.x() - 150) / self.parent_panel.pixels_per_second)
+        if position.x() < 150 or position.y() >= 26:
+            return False
+        self.parent_panel.seek(
+            (position.x() - 150) / self.parent_panel.pixels_per_second
+        )
+        return True
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton and self._seek_from_event(event):
+            self._scrubbing = True
+            self.setCursor(Qt.CursorShape.SizeHorCursor)
             event.accept()
         else:
             super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+        if self._scrubbing and event.buttons() & Qt.MouseButton.LeftButton:
+            self._seek_from_event(event)
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if self._scrubbing and event.button() == Qt.MouseButton.LeftButton:
+            self._seek_from_event(event)
+            self._scrubbing = False
+            self.unsetCursor()
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
 
 
 class SequenceViewport(SceneAuthoringViewport):
@@ -247,7 +277,7 @@ class SceneSequencePanel(QWidget):
             values = dict(id=uuid4().hex, name=(NAMES_PT if self.language == "pt" else NAMES_EN)[KINDS.index(kind)], kind=kind, start=min(self.position, max(0, self.sequence.duration - .05)), duration=min(5, self.sequence.duration - self.position), loop=kind in {"rain", "snow", "dust", "fire", "audio"}, layer_id=self.viewport._destination_layer())
             if kind == "camera":
                 camera = self.session.document.camera
-                values.update(x=camera.position.x, y=camera.position.y, end_x=camera.position.x + 200, end_y=camera.position.y, zoom=camera.zoom, end_zoom=camera.zoom)
+                values.update(x=camera.position.x, y=camera.position.y, end_x=camera.position.x + 200, end_y=camera.position.y, zoom=camera.zoom, end_zoom=camera.zoom, rotation=camera.rotation, end_rotation=camera.rotation)
             if kind == "motion":
                 obj = next((o for o in self.session.document.objects if o.id == self.session.selection.primary), None)
                 if obj is None:
@@ -285,6 +315,8 @@ class SceneSequencePanel(QWidget):
             relevant = {"name", "enabled", "start", "duration"}
             if clip.kind in {"camera", "motion"}:
                 relevant.update({"x", "y", "end_x", "end_y", "zoom", "end_zoom"})
+            if clip.kind == "camera":
+                relevant.update({"rotation", "end_rotation"})
             if clip.kind == "motion":
                 relevant.update({"target", "rotation", "end_rotation", "opacity", "end_opacity"})
             if clip.kind in {"light", "rain", "snow", "dust", "fire"}:

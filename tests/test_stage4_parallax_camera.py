@@ -69,6 +69,19 @@ def test_projection_round_trip_is_deterministic(
     assert all(math.isfinite(value) for value in projected)
 
 
+def test_camera_rotation_projects_and_unprojects_without_losing_parallax() -> None:
+    camera = OrthographicCamera(
+        (800, 600), position=(100.0, -50.0), zoom=1.75, rotation=37.0
+    )
+    layer = ParallaxLayer(depth=0.35, translation_strength=0.8, zoom_strength=0.7)
+    point = (13.25, -8.5)
+
+    projected = camera.project(point, layer)
+
+    assert camera.unproject(projected, layer) == pytest.approx(point)
+    assert camera.with_rotation(0.0).project(point, layer) != pytest.approx(projected)
+
+
 def test_project_points_preserves_order_and_does_not_mutate_input() -> None:
     points = [(0, 0), (10, 0), (10, 10)]
     camera = OrthographicCamera((100, 100), position=(5, 5), zoom=2.0)
@@ -84,6 +97,7 @@ def test_camera_updates_are_immutable_and_preserve_existing_contract() -> None:
 
     moved = original.with_position((30, 40))
     zoomed = original.with_zoom(2.0)
+    rotated = original.with_rotation(22.5)
 
     assert original.position == (10.0, 20.0)
     assert original.zoom == 1.5
@@ -92,6 +106,9 @@ def test_camera_updates_are_immutable_and_preserve_existing_contract() -> None:
     assert moved.zoom == original.zoom
     assert zoomed.position == original.position
     assert zoomed.zoom == 2.0
+    assert rotated.position == original.position
+    assert rotated.zoom == original.zoom
+    assert rotated.rotation == pytest.approx(22.5)
 
 
 @pytest.mark.parametrize(

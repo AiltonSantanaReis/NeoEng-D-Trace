@@ -57,6 +57,7 @@ def evaluate_sequence(document: SceneAuthoringDocumentV2, time: float) -> SceneA
             camera = SceneCameraAuthoringRecord(
                 position=PointRecord(x=lerp(clip.x, clip.end_x), y=lerp(clip.y, clip.end_y)),
                 zoom=lerp(clip.zoom, clip.end_zoom),
+                rotation=lerp(clip.rotation, clip.end_rotation),
             )
         elif clip.kind == "motion":
             for index, obj in enumerate(objects):

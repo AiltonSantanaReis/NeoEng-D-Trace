@@ -196,6 +196,7 @@ def build_scene_authoring_preview(
         viewport_size=viewport,
         position=(float(document.camera.position.x), float(document.camera.position.y)),
         zoom=float(document.camera.zoom),
+        rotation=float(document.camera.rotation),
     )
     layers, visible_objects = _build_visibility_index(document, isolated_group_id)
     parallax_by_layer = {

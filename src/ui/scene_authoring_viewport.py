@@ -15,6 +15,7 @@ from PySide6.QtCore import (
     QRect,
     QRectF,
     Qt,
+    QTimer,
     Signal,
 )
 from PySide6.QtGui import (
@@ -24,6 +25,7 @@ from PySide6.QtGui import (
     QKeyEvent,
     QMouseEvent,
     QPainter,
+    QPainterPath,
     QPen,
     QPixmap,
     QPolygonF,
@@ -81,6 +83,7 @@ from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocumentV2,
+    SceneCameraAuthoringRecord,
     SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneTransformRecord,
@@ -264,35 +267,47 @@ class SceneTransformGizmo(QGraphicsObject):
 
     def paint(self, painter, option, widget=None) -> None:
         del option, widget
+        painter.save()
         painter.setRenderHint(painter.RenderHint.Antialiasing, True)
+        # A restrained dark halo keeps the handles legible over both the grid
+        # and textured assets without changing the existing hit geometry.
+        painter.setPen(QPen(QColor(5, 12, 18, 180), 8.0))
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.drawEllipse(QRectF(-50.0, -50.0, 100.0, 100.0))
         painter.setPen(
-            QPen(self._color("translate_x", self._hover_mode, "#ff5d63"), 3.0)
+            QPen(self._color("translate_x", self._hover_mode, "#ff6b72"), 4.0)
         )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(42.0, 0.0))
         painter.setPen(
-            QPen(self._color("translate_y", self._hover_mode, "#59dc89"), 3.0)
+            QPen(self._color("translate_y", self._hover_mode, "#65e59a"), 4.0)
         )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(0.0, -42.0))
         painter.setPen(
             QPen(
-                self._color("rotate", self._hover_mode, "#b8c6d6"),
-                2.0,
-                Qt.PenStyle.DashLine,
+                self._color("rotate", self._hover_mode, "#c6d8e6"), 2.5
             )
         )
         painter.drawEllipse(QRectF(-48.0, -48.0, 96.0, 96.0))
-        painter.setBrush(QBrush(self._color("translate", self._hover_mode, "#dceeff")))
-        painter.setPen(QPen(QColor("#113044"), 1.5))
-        painter.drawRect(QRectF(-7.0, -7.0, 14.0, 14.0))
-        painter.setBrush(QBrush(self._color("scale", self._hover_mode, "#ffcf65")))
-        painter.drawRect(QRectF(33.0, 33.0, 12.0, 12.0))
+        painter.setBrush(QBrush(self._color("translate", self._hover_mode, "#ecf8ff")))
+        painter.setPen(QPen(QColor("#17384d"), 2.0))
+        painter.drawEllipse(QRectF(-8.0, -8.0, 16.0, 16.0))
+        painter.setBrush(QBrush(self._color("scale", self._hover_mode, "#ffd36a")))
+        painter.setPen(QPen(QColor("#4a3413"), 1.5))
+        painter.drawRoundedRect(QRectF(32.0, 32.0, 14.0, 14.0), 3.0, 3.0)
+        painter.setPen(QPen(QColor("#ff9a9f"), 1.0))
+        painter.setBrush(QBrush(self._color("translate_x", self._hover_mode, "#ff6b72")))
         painter.drawPolygon(
             QPolygonF([QPointF(42.0, 0.0), QPointF(32.0, -6.0), QPointF(32.0, 6.0)])
         )
-        painter.setBrush(QBrush(QColor("#59dc89")))
+        painter.setPen(QPen(QColor("#a6f3c5"), 1.0))
+        painter.setBrush(QBrush(self._color("translate_y", self._hover_mode, "#65e59a")))
         painter.drawPolygon(
             QPolygonF([QPointF(0.0, -42.0), QPointF(-6.0, -32.0), QPointF(6.0, -32.0)])
         )
+        painter.setPen(QPen(QColor("#e8f6ff"), 1.5))
+        painter.drawLine(QPointF(-3.0, 0.0), QPointF(3.0, 0.0))
+        painter.drawLine(QPointF(0.0, -3.0), QPointF(0.0, 3.0))
+        painter.restore()
 
     def hoverMoveEvent(self, event) -> None:
         mode = self._mode_for(event.pos())
@@ -326,10 +341,187 @@ class SceneTransformGizmo(QGraphicsObject):
             event.accept()
 
 
+class SceneCameraGuide(QGraphicsObject):
+    """Visible, non-exported camera frame with direct authoring handles.
+
+    The item deliberately accepts a press only on its center, outline or
+    rotation handle.  Empty pixels inside the frame are ignored so objects
+    underneath remain selectable in the normal viewport flow.
+    """
+
+    interaction_started = Signal(str, QPointF)
+    interaction_changed = Signal(str, QPointF)
+    interaction_finished = Signal(str, QPointF)
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
+        self.setAcceptHoverEvents(True)
+        self.setZValue(180.0)
+        self._frame_width = 640.0
+        self._frame_height = 360.0
+        self._mode: str | None = None
+        self._hover_mode: str | None = None
+        self._label = "CAMERA"
+
+    def boundingRect(self) -> QRectF:
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        return QRectF(
+            -half_width - 18.0,
+            -half_height - 46.0,
+            self._frame_width + 36.0,
+            self._frame_height + 64.0,
+        )
+
+    def shape(self) -> QPainterPath:
+        """Expose only handles and the frame stroke to scene hit testing."""
+
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        frame = QRectF(-half_width, -half_height, self._frame_width, self._frame_height)
+        outer = frame.adjusted(-9.0, -9.0, 9.0, 9.0)
+        inner = frame.adjusted(9.0, 9.0, -9.0, -9.0)
+        path = QPainterPath()
+        path.addRect(outer)
+        inner_path = QPainterPath()
+        inner_path.addRect(inner)
+        path = path.subtracted(inner_path)
+        path.addEllipse(QRectF(-17.0, -17.0, 34.0, 34.0))
+        handle = self._rotation_handle()
+        path.addEllipse(QRectF(handle.x() - 15.0, handle.y() - 15.0, 30.0, 30.0))
+        return path
+
+    def set_frame_size(self, width: float, height: float) -> None:
+        width = max(96.0, float(width))
+        height = max(64.0, float(height))
+        if (width, height) == (self._frame_width, self._frame_height):
+            return
+        self.prepareGeometryChange()
+        self._frame_width = width
+        self._frame_height = height
+        self.update()
+
+    def set_camera_state(self, position: QPointF, rotation: float) -> None:
+        self.setPos(position)
+        self.setRotation(float(rotation))
+        self.update()
+
+    def set_label(self, label: str) -> None:
+        if label != self._label:
+            self._label = label
+            self.update()
+
+    def _rotation_handle(self) -> QPointF:
+        return QPointF(0.0, -self._frame_height / 2.0 - 26.0)
+
+    def _mode_for(self, point: QPointF) -> str | None:
+        if not self.boundingRect().contains(point):
+            return None
+        rotation_handle = self._rotation_handle()
+        if math.hypot(point.x() - rotation_handle.x(), point.y() - rotation_handle.y()) <= 13.0:
+            return "rotate"
+        if math.hypot(point.x(), point.y()) <= 16.0:
+            return "translate"
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        edge_tolerance = 9.0
+        on_vertical = abs(abs(point.x()) - half_width) <= edge_tolerance and abs(point.y()) <= half_height + edge_tolerance
+        on_horizontal = abs(abs(point.y()) - half_height) <= edge_tolerance and abs(point.x()) <= half_width + edge_tolerance
+        if on_vertical or on_horizontal:
+            return "translate"
+        return None
+
+    def paint(self, painter: QPainter, option, widget=None) -> None:
+        del option, widget
+        painter.save()
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        frame = QRectF(-half_width, -half_height, self._frame_width, self._frame_height)
+        painter.setBrush(QBrush(QColor(34, 184, 214, 14)))
+        painter.setPen(QPen(QColor(45, 211, 235, 220), 2.0, Qt.PenStyle.DashLine))
+        painter.drawRect(frame)
+        safe = frame.adjusted(self._frame_width * 0.05, self._frame_height * 0.05, -self._frame_width * 0.05, -self._frame_height * 0.05)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.setPen(QPen(QColor(169, 234, 242, 150), 1.0, Qt.PenStyle.DotLine))
+        painter.drawRect(safe)
+
+        painter.setPen(QPen(QColor(184, 244, 252, 180), 1.0))
+        painter.drawLine(QPointF(-18.0, 0.0), QPointF(18.0, 0.0))
+        painter.drawLine(QPointF(0.0, -18.0), QPointF(0.0, 18.0))
+        painter.setBrush(QBrush(QColor(224, 250, 255, 235)))
+        painter.setPen(QPen(QColor("#123243"), 1.5))
+        painter.drawEllipse(QRectF(-7.0, -7.0, 14.0, 14.0))
+
+        handle = self._rotation_handle()
+        painter.setPen(QPen(QColor(195, 224, 234, 180), 1.5))
+        painter.drawLine(QPointF(0.0, -half_height), handle)
+        painter.setBrush(QBrush(QColor(255, 210, 102, 240)))
+        painter.setPen(QPen(QColor("#49371a"), 1.5))
+        painter.drawEllipse(QRectF(handle.x() - 7.0, handle.y() - 7.0, 14.0, 14.0))
+        painter.setBrush(QBrush(QColor(45, 211, 235, 220)))
+        painter.setPen(QPen(QColor("#123243"), 1.0))
+        painter.drawPolygon(
+            QPolygonF(
+                [
+                    QPointF(0.0, -half_height + 5.0),
+                    QPointF(-6.0, -half_height + 17.0),
+                    QPointF(6.0, -half_height + 17.0),
+                ]
+            )
+        )
+
+        label_rect = QRectF(frame.left() + 10.0, frame.top() + 10.0, 188.0, 26.0)
+        painter.setBrush(QBrush(QColor(11, 31, 43, 215)))
+        painter.setPen(QPen(QColor(92, 224, 239, 210), 1.0))
+        painter.drawRoundedRect(label_rect, 6.0, 6.0)
+        painter.setPen(QColor("#e9fbff"))
+        painter.drawText(label_rect, Qt.AlignmentFlag.AlignCenter, self._label)
+        painter.restore()
+
+    def hoverMoveEvent(self, event) -> None:
+        mode = self._mode_for(event.pos())
+        if mode != self._hover_mode:
+            self._hover_mode = mode
+            self.update()
+        event.accept()
+
+    def hoverLeaveEvent(self, event) -> None:
+        self._hover_mode = None
+        self.update()
+        event.accept()
+
+    def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        self._mode = self._mode_for(event.pos())
+        if self._mode is None:
+            event.ignore()
+            return
+        self.interaction_started.emit(self._mode, event.scenePos())
+        event.accept()
+
+    def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._mode is not None:
+            self.interaction_changed.emit(self._mode, event.scenePos())
+            event.accept()
+            return
+        event.ignore()
+
+    def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._mode is not None:
+            self.interaction_finished.emit(self._mode, event.scenePos())
+            self._mode = None
+            event.accept()
+            return
+        event.ignore()
+
+
 class SceneSocketGraphicsItem(QGraphicsObject):
     """Non-destructive visual marker for a declarative scene socket."""
 
     pressed = Signal(str)
+    moved = Signal(str, QPointF)
+    released = Signal(str, QPointF)
 
     def __init__(
         self, socket_id: str, socket_type: str, color: str, parent=None
@@ -338,6 +530,7 @@ class SceneSocketGraphicsItem(QGraphicsObject):
         self.socket_id = socket_id
         self.socket_type = socket_type
         self._color = QColor(color)
+        self._dragging = False
         self.setZValue(80.0)
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
 
@@ -359,10 +552,26 @@ class SceneSocketGraphicsItem(QGraphicsObject):
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
+            self._dragging = True
             self.pressed.emit(self.socket_id)
             event.accept()
             return
         super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._dragging and event.buttons() & Qt.MouseButton.LeftButton:
+            self.moved.emit(self.socket_id, event.scenePos())
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._dragging and event.button() == Qt.MouseButton.LeftButton:
+            self._dragging = False
+            self.released.emit(self.socket_id, event.scenePos())
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
 
 
 class SceneParticleGraphicsItem(QGraphicsObject):
@@ -547,6 +756,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
         self._particle_items: dict[str, SceneParticleGraphicsItem] = {}
         self._post_process_items: dict[str, ScenePostProcessGraphicsItem] = {}
+        self._camera_guide: SceneCameraGuide | None = None
         self._preview_enabled = False
         self.current_lang = "en"
         self._render_plan: SceneRenderPlan | None = None
@@ -563,6 +773,14 @@ class SceneAuthoringViewport(QGraphicsView):
         self._gesture_layer_id: str | None = None
         self._gesture_mode: str | None = None
         self._gizmo_start: QPointF | None = None
+        self._camera_gesture_mode: str | None = None
+        self._camera_gesture_start: QPointF | None = None
+        self._camera_gesture_position: QPointF | None = None
+        self._camera_gesture_rotation: float | None = None
+        self._socket_gesture_id: str | None = None
+        self._socket_gesture_layer_id: str | None = None
+        self._socket_gesture_start: QPointF | None = None
+        self._socket_gesture_end: QPointF | None = None
         self._marquee_origin: QPointF | None = None
         self._marquee_current: QPointF | None = None
         self._marquee_selection_before: tuple[str, ...] | None = None
@@ -589,6 +807,11 @@ class SceneAuthoringViewport(QGraphicsView):
         """Keep viewport status messages aligned with the editor language."""
 
         self.current_lang = language if language in {"en", "pt"} else "en"
+        if self._camera_guide is not None:
+            self._camera_guide.set_label(
+                self._text("CÂMERA · ARRASTE PARA POSICIONAR", "CAMERA · DRAG TO POSITION")
+            )
+        self.viewport().update()
 
     def _text(self, pt: str, en: str) -> str:
         """Return a localized viewport label without changing the EN contract."""
@@ -677,7 +900,10 @@ class SceneAuthoringViewport(QGraphicsView):
         if not isinstance(enabled, bool):
             raise TypeError("authoring enabled must be boolean")
         if not enabled and (
-            self._gesture_start is not None or self._gizmo_start is not None
+            self._gesture_start is not None
+            or self._gizmo_start is not None
+            or self._camera_gesture_start is not None
+            or self._socket_gesture_id is not None
         ):
             self.session.cancel_gesture()
             self._gesture_start = None
@@ -685,6 +911,14 @@ class SceneAuthoringViewport(QGraphicsView):
             self._gesture_layer_id = None
             self._gesture_mode = None
             self._gizmo_start = None
+            self._camera_gesture_mode = None
+            self._camera_gesture_start = None
+            self._camera_gesture_position = None
+            self._camera_gesture_rotation = None
+            self._socket_gesture_id = None
+            self._socket_gesture_layer_id = None
+            self._socket_gesture_start = None
+            self._socket_gesture_end = None
         self._authoring_enabled = enabled
         self._refresh_gizmo()
         self.viewport().update()
@@ -883,6 +1117,7 @@ class SceneAuthoringViewport(QGraphicsView):
             ),
             (float(document.camera.position.x), float(document.camera.position.y)),
             float(document.camera.zoom),
+            float(document.camera.rotation),
         )
 
     def _layer_parallax(self, layer_id: str) -> ParallaxLayer:
@@ -1050,6 +1285,7 @@ class SceneAuthoringViewport(QGraphicsView):
                 float(document.camera.position.x),
                 float(document.camera.position.y),
                 float(document.camera.zoom),
+                float(document.camera.rotation),
             ),
             tuple(
                 (
@@ -1130,6 +1366,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._socket_items.clear()
         self._particle_items.clear()
         self._post_process_items.clear()
+        self._camera_guide = None
         self._gizmo = None
         diagnostics: list[str] = []
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
@@ -1207,6 +1444,9 @@ class SceneAuthoringViewport(QGraphicsView):
                         )
                     )
                 )
+                marker.pressed.connect(self._socket_pressed)
+                marker.moved.connect(self._socket_moved)
+                marker.released.connect(self._socket_released)
                 self.graphics_scene.addItem(marker)
                 self._socket_items[socket.id] = marker
                 if (
@@ -1233,9 +1473,17 @@ class SceneAuthoringViewport(QGraphicsView):
                     post_process_item.setZValue(self._overlay_z(95.0))
                     self.graphics_scene.addItem(post_process_item)
                     self._post_process_items[socket.id] = post_process_item
+            camera_guide = SceneCameraGuide()
+            camera_guide.setZValue(self._overlay_z(150.0))
+            camera_guide.interaction_started.connect(self._camera_guide_started)
+            camera_guide.interaction_changed.connect(self._camera_guide_changed)
+            camera_guide.interaction_finished.connect(self._camera_guide_finished)
+            self.graphics_scene.addItem(camera_guide)
+            self._camera_guide = camera_guide
         self._prune_asset_pixmap_cache(active_asset_cache_keys)
         self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
+        self._refresh_camera_guide()
         self._refresh_selection()
         self._refresh_gizmo()
         self._apply_navigation_transform()
@@ -1393,6 +1641,190 @@ class SceneAuthoringViewport(QGraphicsView):
             if visual is not None:
                 visual.set_selected_style(object_id in selected_ids)
 
+    def _refresh_camera_guide(self) -> None:
+        """Keep the authoring camera frame aligned with the persisted camera."""
+
+        guide = self._camera_guide
+        document = self.session.document
+        if guide is None or not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        viewport_width = max(1.0, float(self.viewport().width()))
+        viewport_height = max(1.0, float(self.viewport().height()))
+        if self._preview_enabled:
+            center = QPointF(viewport_width / 2.0, viewport_height / 2.0)
+            frame_width = viewport_width
+            frame_height = viewport_height
+            rotation = 0.0
+        else:
+            center = QPointF(
+                float(document.camera.position.x),
+                float(document.camera.position.y),
+            )
+            frame_width = viewport_width / max(0.001, float(document.camera.zoom))
+            frame_height = viewport_height / max(0.001, float(document.camera.zoom))
+            rotation = float(document.camera.rotation)
+        guide.set_frame_size(frame_width, frame_height)
+        guide.set_camera_state(center, rotation)
+        guide.set_label(
+            self._text("CÂMERA · ARRASTE PARA POSICIONAR", "CAMERA · DRAG TO POSITION")
+        )
+
+    def _camera_guide_started(self, mode: str, scene_pos: QPointF) -> None:
+        if not self._authoring_enabled:
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
+            return
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        self._camera_gesture_mode = mode
+        self._camera_gesture_start = QPointF(scene_pos)
+        self._camera_gesture_position = QPointF(
+            float(document.camera.position.x), float(document.camera.position.y)
+        )
+        self._camera_gesture_rotation = float(document.camera.rotation)
+
+    def _camera_guide_changed(self, mode: str, scene_pos: QPointF) -> None:
+        if (
+            not self._authoring_enabled
+            or self._camera_gesture_mode != mode
+            or self._camera_gesture_start is None
+            or self._camera_gesture_position is None
+            or self._camera_gesture_rotation is None
+            or self._camera_guide is None
+        ):
+            return
+        position = QPointF(self._camera_gesture_position)
+        rotation = self._camera_gesture_rotation
+        if mode == "translate":
+            delta = scene_pos - self._camera_gesture_start
+            position += delta
+        elif mode == "rotate":
+            center = self._camera_gesture_position
+            rotation = math.degrees(
+                math.atan2(scene_pos.x() - center.x(), -(scene_pos.y() - center.y()))
+            )
+        self._camera_guide.set_camera_state(position, rotation)
+        self.viewport().update()
+
+    def _camera_guide_finished(self, mode: str, scene_pos: QPointF) -> None:
+        if self._camera_gesture_mode != mode:
+            return
+        self._camera_guide_changed(mode, scene_pos)
+        position = QPointF(self._camera_gesture_position or QPointF())
+        rotation = float(self._camera_gesture_rotation or 0.0)
+        if mode == "translate" and self._camera_gesture_start is not None:
+            position += scene_pos - self._camera_gesture_start
+        elif mode == "rotate" and self._camera_gesture_position is not None:
+            center = self._camera_gesture_position
+            rotation = math.degrees(
+                math.atan2(scene_pos.x() - center.x(), -(scene_pos.y() - center.y()))
+            )
+        self._camera_gesture_mode = None
+        self._camera_gesture_start = None
+        self._camera_gesture_position = None
+        self._camera_gesture_rotation = None
+        QTimer.singleShot(
+            0,
+            lambda: self._commit_camera_guide(position, rotation),
+        )
+
+    def _commit_camera_guide(self, position: QPointF, rotation: float) -> None:
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        try:
+            changed = self.session.set_camera(
+                SceneCameraAuthoringRecord(
+                    position=PointRecord(x=position.x(), y=position.y()),
+                    zoom=float(document.camera.zoom),
+                    rotation=rotation,
+                )
+            )
+            self.status_message.emit(
+                self._text(
+                    "Câmera reposicionada" if changed else "Nenhuma alteração na câmera",
+                    "Camera repositioned" if changed else "No camera changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            self._refresh_camera_guide()
+
+    def _socket_record(self, socket_id: str):
+        return next(
+            (item for item in getattr(self.session.document, "sockets", ()) if item.id == socket_id),
+            None,
+        )
+
+    def _socket_pressed(self, socket_id: str) -> None:
+        if not self._authoring_enabled:
+            return
+        socket = self._socket_record(socket_id)
+        if socket is None:
+            return
+        self._socket_gesture_id = socket_id
+        self._socket_gesture_layer_id = socket.layer_id
+        self._socket_gesture_start = QPointF(
+            float(socket.position.x), float(socket.position.y)
+        )
+        self._socket_gesture_end = QPointF(self._socket_gesture_start)
+
+    def _socket_moved(self, socket_id: str, scene_pos: QPointF) -> None:
+        if self._socket_gesture_id != socket_id:
+            return
+        marker = self._socket_items.get(socket_id)
+        if marker is None:
+            return
+        marker.setPos(scene_pos)
+        particle_item = self._particle_items.get(socket_id)
+        if particle_item is not None:
+            particle_item.setPos(scene_pos)
+        post_process_item = self._post_process_items.get(socket_id)
+        if post_process_item is not None:
+            post_process_item.setPos(scene_pos)
+        layer_id = self._socket_gesture_layer_id or ""
+        self._socket_gesture_end = self._world_position(scene_pos, layer_id)
+        self.viewport().update()
+
+    def _socket_released(self, socket_id: str, scene_pos: QPointF) -> None:
+        if self._socket_gesture_id != socket_id:
+            return
+        layer_id = self._socket_gesture_layer_id or ""
+        world = self._world_position(scene_pos, layer_id)
+        socket = self._socket_record(socket_id)
+        if socket is None:
+            self._socket_gesture_id = None
+            return
+        point = Point3Record(
+            x=float(world.x()), y=float(world.y()), z=float(socket.position.z)
+        )
+        start = self._socket_gesture_start or QPointF(point.x, point.y)
+        self._socket_gesture_id = None
+        self._socket_gesture_layer_id = None
+        self._socket_gesture_start = None
+        self._socket_gesture_end = None
+        if math.hypot(point.x - start.x(), point.y - start.y()) <= 0.01:
+            return
+        QTimer.singleShot(0, lambda: self._commit_socket_move(socket_id, point))
+
+    def _commit_socket_move(self, socket_id: str, position: Point3Record) -> None:
+        try:
+            changed = self.session.update_socket_position(socket_id, position)
+            self.status_message.emit(
+                self._text(
+                    "Efeito reposicionado" if changed else "Nenhuma alteração no efeito",
+                    "Effect repositioned" if changed else "No effect changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            self._refresh_transforms(refresh_sockets=True)
+
     def _refresh_gizmo(self) -> None:
         if self._gizmo is not None:
             self.graphics_scene.removeItem(self._gizmo)
@@ -1431,6 +1863,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self._refresh_selection(selection_ids)
         if refresh_gizmo:
             self._refresh_gizmo()
+        self._refresh_camera_guide()
         self.viewport().update()
 
     def _on_session_change(self) -> None:
@@ -2539,6 +2972,7 @@ class SceneAuthoringViewport(QGraphicsView):
         super().resizeEvent(event)
         self._refresh_navigation_scene_rect()
         self._apply_navigation_transform()
+        self._refresh_camera_guide()
         if self._preview_enabled:
             self._refresh_after_model_change()
 
@@ -2557,8 +2991,88 @@ class SceneAuthoringViewport(QGraphicsView):
             painter.drawLine(QPointF(rect.left(), y), QPointF(rect.right(), y))
             y += 32.0
 
+    @staticmethod
+    def _rotated_frame_points(
+        center: QPointF, width: float, height: float, rotation: float
+    ) -> list[QPointF]:
+        half_width = width / 2.0
+        half_height = height / 2.0
+        angle = math.radians(rotation)
+        cosine = math.cos(angle)
+        sine = math.sin(angle)
+        points: list[QPointF] = []
+        for x, y in (
+            (-half_width, -half_height),
+            (half_width, -half_height),
+            (half_width, half_height),
+            (-half_width, half_height),
+        ):
+            points.append(
+                QPointF(
+                    center.x() + x * cosine - y * sine,
+                    center.y() + x * sine + y * cosine,
+                )
+            )
+        return points
+
+    def _paint_parallax_guides(self) -> None:
+        """Render depth-aware authoring boundaries without exporting them."""
+
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2) or not document.layers:
+            return
+        viewport_width = max(1.0, float(self.viewport().width()))
+        viewport_height = max(1.0, float(self.viewport().height()))
+        camera = self._camera()
+        palette = ("#5bd8ed", "#f0bd68", "#c38cf2", "#78df9b", "#ff8d9f")
+        painter = QPainter(self.viewport())
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        for index, layer in enumerate(document.layers):
+            if not layer.visible:
+                continue
+            parallax = self._layer_parallax(layer.id)
+            if self._preview_enabled:
+                points = self._rotated_frame_points(
+                    QPointF(viewport_width / 2.0, viewport_height / 2.0),
+                    viewport_width,
+                    viewport_height,
+                    0.0,
+                )
+            else:
+                effective_zoom = max(0.001, camera.effective_zoom(parallax))
+                center = QPointF(
+                    camera.position[0] * parallax.camera_scroll_x - parallax.offset_x,
+                    camera.position[1] * parallax.camera_scroll_y - parallax.offset_y,
+                )
+                points = self._rotated_frame_points(
+                    center,
+                    viewport_width / effective_zoom,
+                    viewport_height / effective_zoom,
+                    camera.rotation,
+                )
+            screen_points = [self.mapFromScene(point) for point in points]
+            color = QColor(palette[index % len(palette)])
+            color.setAlpha(185)
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            painter.setPen(QPen(color, 1.5, Qt.PenStyle.DashLine))
+            painter.drawPolygon(QPolygonF(screen_points))
+            translation = parallax.translation_factor * 100.0
+            label = f"Z{index:02d} {layer.name} · {translation:.0f}%"
+            anchor = screen_points[0]
+            label_width = min(236.0, max(134.0, 8.0 * len(label) + 22.0))
+            label_x = min(max(8.0, anchor.x() + 6.0), viewport_width - label_width - 8.0)
+            label_y = min(max(8.0, anchor.y() + 8.0 + index * 22.0), viewport_height - 25.0)
+            label_rect = QRectF(label_x, label_y, label_width, 20.0)
+            painter.setBrush(QBrush(QColor(9, 24, 34, 205)))
+            painter.setPen(QPen(color, 1.0))
+            painter.drawRoundedRect(label_rect, 4.0, 4.0)
+            painter.setPen(QColor("#edfaff"))
+            painter.drawText(label_rect, Qt.AlignmentFlag.AlignCenter, label)
+        painter.end()
+
     def paintEvent(self, event) -> None:
         super().paintEvent(event)
+        self._paint_parallax_guides()
         if self._render_plan is not None:
             plan = self._render_plan
             painter = QPainter(self.viewport())

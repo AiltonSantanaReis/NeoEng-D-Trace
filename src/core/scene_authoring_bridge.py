@@ -75,6 +75,7 @@ def preview_camera_from_professional_document(
             float(document.camera.position.y),
         ),
         zoom=float(document.camera.zoom),
+        rotation=float(document.camera.rotation),
     )
 
 
@@ -169,6 +170,7 @@ def professional_document_from_scene(
                     y=float(legacy_document.camera.position.y),
                 ),
                 zoom=float(legacy_document.camera.zoom),
+                rotation=0.0,
             ),
             "parallax_layers": parallax_layers,
         }

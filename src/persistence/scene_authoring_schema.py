@@ -377,6 +377,7 @@ class SceneCameraAuthoringRecord(StrictProjectModel):
 
     position: PointRecord = PointRecord(x=0.0, y=0.0)
     zoom: int | float = 1.0
+    rotation: int | float = 0.0
 
     @field_validator("position")
     @classmethod
@@ -389,6 +390,11 @@ class SceneCameraAuthoringRecord(StrictProjectModel):
     @classmethod
     def validate_zoom(cls, value: int | float) -> int | float:
         return _positive(value, "camera.zoom")
+
+    @field_validator("rotation")
+    @classmethod
+    def validate_rotation(cls, value: int | float) -> int | float:
+        return _bounded(value, "camera.rotation", -36000.0, 36000.0)
 
 
 class SceneParallaxLayerRecord(StrictProjectModel):

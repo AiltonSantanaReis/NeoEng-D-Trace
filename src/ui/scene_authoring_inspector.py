@@ -89,6 +89,7 @@ class SceneAuthoringInspector(QWidget):
         self.camera_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.camera_y = self._spin(-1_000_000.0, 1_000_000.0)
         self.camera_zoom = self._spin(0.001, 1000.0, step=0.1)
+        self.camera_rotation = self._spin(-36000.0, 36000.0, step=1.0)
         self.camera_apply_button = QPushButton("Apply Camera")
         self.layer_combo = QComboBox()
         self.parallax_depth = self._spin(0.0, 1.0, step=0.05)
@@ -136,6 +137,12 @@ class SceneAuthoringInspector(QWidget):
         self._add_labeled_row(stage4_form, "camera_y", "Camera Y", self.camera_y)
         self._add_labeled_row(
             stage4_form, "camera_zoom", "Camera Zoom", self.camera_zoom
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "camera_rotation",
+            "Camera Rotation",
+            self.camera_rotation,
         )
         stage4_form.addRow(self.camera_apply_button)
         stage4_form = QFormLayout(parallax_page)
@@ -452,6 +459,8 @@ class SceneAuthoringInspector(QWidget):
             self.camera_y.setValue(float(document.camera.position.y))
         with QSignalBlocker(self.camera_zoom):
             self.camera_zoom.setValue(float(document.camera.zoom))
+        with QSignalBlocker(self.camera_rotation):
+            self.camera_rotation.setValue(float(document.camera.rotation))
         selected_layer = self.layer_combo.currentData()
         with QSignalBlocker(self.layer_combo):
             self.layer_combo.clear()
@@ -585,6 +594,7 @@ class SceneAuthoringInspector(QWidget):
                         x=self.camera_x.value(), y=self.camera_y.value()
                     ),
                     zoom=self.camera_zoom.value(),
+                    rotation=self.camera_rotation.value(),
                 )
             )
             self.status_message.emit(
@@ -869,6 +879,7 @@ class SceneAuthoringInspector(QWidget):
                 "camera_x": "Câmera X",
                 "camera_y": "Câmera Y",
                 "camera_zoom": "Zoom da Câmera",
+                "camera_rotation": "Rotação da Câmera",
                 "layer": "Camada",
                 "depth": "Profundidade",
                 "translation": "Translação",
@@ -910,6 +921,7 @@ class SceneAuthoringInspector(QWidget):
                 "camera_x": "Camera X",
                 "camera_y": "Camera Y",
                 "camera_zoom": "Camera Zoom",
+                "camera_rotation": "Camera Rotation",
                 "layer": "Layer",
                 "depth": "Depth",
                 "translation": "Translation",
@@ -948,7 +960,7 @@ class SceneAuthoringInspector(QWidget):
                 "redo": "Refazer a última alteração do inspetor",
                 "fit": "Enquadrar os objetos selecionados visíveis no viewport",
                 "fit_all": "Enquadrar todos os objetos visíveis no viewport",
-                "camera": "Aplicar a posição e o zoom da câmera",
+                "camera": "Aplicar posição, zoom e rotação da câmera",
                 "material": "Aplicar as propriedades visuais do material",
                 "parallax": "Aplicar a configuração de paralaxe da camada",
                 "socket_add": "Adicionar um socket à cena",
@@ -968,7 +980,7 @@ class SceneAuthoringInspector(QWidget):
                 "redo": "Redo the last inspector change",
                 "fit": "Frame the visible selected objects in the viewport",
                 "fit_all": "Frame all visible objects in the viewport",
-                "camera": "Apply the camera position and zoom",
+                "camera": "Apply the camera position, zoom and rotation",
                 "material": "Apply the material visual properties",
                 "parallax": "Apply the layer parallax settings",
                 "socket_add": "Add a socket to the scene",
@@ -996,6 +1008,7 @@ class SceneAuthoringInspector(QWidget):
             self.fit_button: tooltip_text["fit"],
             self.fit_all_button: tooltip_text["fit_all"],
             self.camera_apply_button: tooltip_text["camera"],
+            self.camera_rotation: tooltip_text["camera"],
             self.material_apply_button: tooltip_text["material"],
             self.parallax_apply_button: tooltip_text["parallax"],
             self.add_socket_button: tooltip_text["socket_add"],
