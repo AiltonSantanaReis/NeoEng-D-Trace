@@ -26,8 +26,9 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. A fonte de produto da build pós-E13 de autoria
-profissional é o commit `b2d2df4`; o
+`Ailton/e08-renderer-20260908`. A fonte de produto da build pós-E13 mais
+recente é o commit `73b7fccd`; os commits anteriores continuam apenas como
+proveniência dos checkpoints específicos; o
 harness Win32 complementar de captura está preservado no checkout como arquivo
 não rastreado preexistente, SHA-256
 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`. A existência de outras branches,
@@ -47,15 +48,17 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2201 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `b2d2df4`; o editor híbrido, partículas e tilemap/tileset passaram nos contratos aplicáveis; o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos do harness permanecem preservados |
+| Suíte oficial | `PASS` | 2208 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `73b7fcc`; a ponte de partículas autoradas, o editor híbrido e os contratos de tilemap/tileset passaram; o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos do harness permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; luz direcional, VFX orientável, partículas, tileset/tilemap com duas camadas e três grades e o editor híbrido 2D/2.5D/3D foram exercitados com capturas reais; runtime aplicável de partículas, ferramentas completas de tilemap/tileset, runtime 3D externo e a revisão humana final continuam pendentes por decisão formal |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou e o fluxo Win32 real foi capturado; runtime nativo de partículas e exportação profissional V2 passaram seus checkpoints; no workspace vazio, o clique em Cenário exibiu a affordance mas não abriu/criou cena; ferramentas completas de tilemap/tileset, runtime 3D externo e a revisão humana final continuam pendentes por decisão formal |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | build `post-e13-hybrid-3d-20260911`, proveniência `PASS`, executável `C3A884F7B81F3B07490762A0A86DD0F1C489F1CD3DC2F6EF93B2333E9AC6B2C9`, ZIP `E403C7CE0820B38E46FD2CA6BCBDBF02643B9CF436974DAA7B43F91D0CB57415` e smoke `SUCCESS` em 11 checks |
-| Runtime funcional | `PASS` | build pós-E13 híbrida abriu/fechou e executou smoke; a autoria híbrida nativa foi exercitada com persistência; consumo por runtime 3D externo e equivalência de engine continuam explicitamente pendentes |
+| Build oficial | `PASS` | build `post-e13-particle-scene-export-native-20260911`, proveniência `PASS`, executável `E6716E67305268F432FDB7536A96A22608C6408AD73099225ED2540C8FD5D80B`, ZIP `B72BB9C7034CB41D814BE90C56CF0A3522D8337FF596989A7CA03C912A50E5B5` e smoke `SUCCESS` em 11 checks |
+| Runtime funcional | `PASS` | build pós-E13 de partículas abriu/fechou e executou smoke; exportação V2, materialização nativa e contagem foram comprovadas em Godot/Unity; runtime 3D externo, tilemap/tileset completo e finding de início do zero continuam pendentes |
+| Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana permanece deferida |
+| Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo de Cenário em workspace vazio permanece `PENDING_EVIDENCE` |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
 A execução direta da build final10 gerou capturas reais em
@@ -79,21 +82,28 @@ A build `post-e13-hybrid-3d-20260911` gerou o fluxo nativo
 sem asset 2D obrigatório, plano, luz, câmeras, hierarquia, alvo PT-BR,
 arraste, órbita, 2.5D, projeção ortográfica, salvar/reabrir e sidecar
 `EDITOR_VERTICAL_SLICE` persistido.
+A build `post-e13-particle-scene-export-native-20260911` gerou a ponte nativa
+de partículas autoradas em
+`artifacts/post-e13-particle-scene-export-native-20260911-v15/`, vinculada a
+`docs/evidence/EVD_POST_E13_PARTICLE_SCENE_EXPORT_NATIVE_20260911.md`, com
+17/17 checks, captura Godot real, logs Godot/Unity, guards negativos, binário
+portátil e fluxo Win32 real. O finding do workspace vazio foi preservado.
 A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Concluir e comprovar os itens funcionais ainda abertos — runtime aplicável de
-partículas e ferramentas avançadas de tilemap/tileset; o editor híbrido possui
-checkpoint técnico de autoria, mas seu runtime 3D externo permanece pendente — antes de executar a
+Concluir e comprovar os itens funcionais ainda abertos — ferramentas avançadas
+de tilemap/tileset e o runtime 3D externo do editor híbrido — além de corrigir
+e requalificar o finding reproduzível de começar pelo workspace vazio ao abrir
+Cenário. A ponte de partículas já possui checkpoint técnico, mas isso não
+substitui a revisão humana. Só depois executar a
 [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
 e a revisão humana final, conforme a
 [decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
 O trabalho técnico do lote, a build e as capturas nativas foram executados;
 revisão visual/humana, licença/proveniência de distribuição e os requisitos
-funcionais ainda abertos continuam explicitamente separados. O preview de
-partículas tem checkpoint técnico, mas a equivalência de runtime/exportação
-externa continua `PENDING_EVIDENCE`. O abort legado
+funcionais ainda abertos continuam explicitamente separados. A equivalência
+V2→exportação Godot/Unity de partículas tem checkpoint técnico; o abort legado
 permanece como falha histórica preservada, não como resultado atual da suíte.
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e

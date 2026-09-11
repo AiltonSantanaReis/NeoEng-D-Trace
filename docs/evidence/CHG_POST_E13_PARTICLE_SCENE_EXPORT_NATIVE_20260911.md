@@ -1,6 +1,6 @@
 # Mudança controlada — exportação e consumo nativo de partículas autoradas
 
-**Estado:** `IN_PROGRESS`
+**Estado:** `TECHNICAL_CHECKPOINT_PASS`
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 **Data:** 2026-09-11
 **Autoridade:** `docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`
@@ -82,8 +82,8 @@ nenhuma dependência anterior foi removida.
 
 ## Critério de saída
 
-Este registro só poderá mudar para `TECHNICAL_CHECKPOINT_PASS` depois de um
-commit de código auditado, testes focados, suíte oficial sem filtros, build
-limpa, exportação real para os dois destinos, execução nativa, captura real
-quando suportada, persistência/hash, testes negativos e limitações declaradas.
-Até lá, o estado correto é `IN_PROGRESS` ou `PENDING_EVIDENCE`.
+O critério de saída foi atendido pela evidência vinculada: commit de código
+auditado, testes focados, suíte oficial sem filtros, build limpa, exportação
+real para os dois destinos, execução nativa, captura real quando suportada,
+persistência/hash, testes negativos e limitações declaradas. A revisão humana
+final continua deferida até os blocos restantes definidos na decisão formal.

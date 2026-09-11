@@ -1,12 +1,16 @@
 # Mudança controlada — consumo nativo do runtime de partículas
 
-**Estado:** `IN_PROGRESS`
+**Estado:** `TECHNICAL_CHECKPOINT_PASS`
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 **Data:** 2026-09-11
 **Autoridade:** `docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`
 **Decisão de continuidade:** `docs/evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`
 **Decisão de revisão humana:** `docs/evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md`
 **Base auditada:** `b20f2f1fa08824e87b8ddb090a893c3d4afb3f7a`
+
+**Fechamento técnico:** `73b7fccd61f2673b6c5479581cb1645912755e22`,
+requalificado junto da exportação profissional V2 em
+`docs/evidence/EVD_POST_E13_PARTICLE_SCENE_EXPORT_NATIVE_20260911.md`.
 
 ## Motivo e evidência de entrada
 
@@ -47,6 +51,11 @@ contagem/estado observáveis para o harness. A prova deverá incluir:
 - Se um engine não puder ser executado ou renderizado no host, o estado correto
   será `PENDING_EVIDENCE`; não haverá promoção por inspeção de código.
 
+O checkpoint foi fechado: Godot 4.7 e Unity 6000.5.7f1 consumiram o sidecar
+v1, avançaram três passos fixos, produziram sete partículas e passaram os
+guards de sidecar ausente/divergente. A extensão V2 autoria→exportação é
+registrada separadamente para não misturar os dois contratos.
+
 ## Análise de impacto
 
 **Módulos afetados:** adaptador Godot de runtime, script de sistema de
@@ -75,7 +84,7 @@ teste de falha passar.
 
 ## Critério de saída
 
-Este registro só poderá mudar para `TECHNICAL_CHECKPOINT_PASS` quando a
-evidência vinculada identificar commit, testes, build/engine, artefatos,
-hashes, resultado observado, falhas deliberadas e limitações. A revisão humana
-final continua deferida até os demais blocos previstos na decisão formal.
+O critério de saída foi atendido pela evidência vinculada, que identifica
+commit, testes, build/engine, artefatos, hashes, resultado observado, falhas
+deliberadas e limitações. A revisão humana final continua deferida até os
+demais blocos previstos na decisão formal.
