@@ -103,7 +103,10 @@ def dijkstra_pathfinding(
     max_y_local = max_y - min_y
 
     while open_set:
-        if cancel_check is not None and len(came_from) % 256 == 0 and cancel_check():
+        # A timeout/cancel request must stop before the next expansion. Sampling
+        # only every 256 discovered nodes allowed a large legacy search to keep
+        # growing its heap after the UI had already cancelled the request.
+        if cancel_check is not None and cancel_check():
             return []
         _, current_g, current = heapq.heappop(open_set)
         if current == end_local:
@@ -196,7 +199,30 @@ class _MagneticPathWorker(QRunnable):
         edge_map = self.edge_map
         edge_features = self.edge_features
         image_hash = None
-        cancelled = self._cancel_event.is_set()
+        timeout_ms = {
+            "prepare": self.settings.prepare_timeout_ms,
+            "preview": self.settings.preview_timeout_ms,
+            "segment": self.settings.segment_timeout_ms,
+            "finish": self.settings.finish_timeout_ms,
+        }.get(self.purpose, self.settings.segment_timeout_ms)
+        deadline = started_at + max(0, int(timeout_ms)) / 1000.0
+        timed_out = False
+
+        def cancellation_requested() -> bool:
+            """Combine explicit cancellation with a worker-side hard deadline."""
+
+            nonlocal timed_out
+            if self._cancel_event.is_set():
+                return True
+            if time.monotonic() >= deadline:
+                timed_out = True
+                # Keep the public cancellation state consistent for callers that
+                # inspect a worker after a timeout handled inside the pool.
+                self._cancel_event.set()
+                return True
+            return False
+
+        cancelled = cancellation_requested()
         try:
             if not cancelled and edge_map is None and self.image_array is not None:
                 image_hash = hashlib.sha1(
@@ -212,7 +238,7 @@ class _MagneticPathWorker(QRunnable):
                     edge_features = None
                     edge_map = normalize_array(sobel_magnitude(self.image_array))
 
-            cancelled = cancelled or self._cancel_event.is_set()
+            cancelled = cancellation_requested()
             if cancelled:
                 path = []
             elif self.purpose == "prepare":
@@ -222,7 +248,7 @@ class _MagneticPathWorker(QRunnable):
                     edge_map,
                     self.start,
                     self.end,
-                    cancel_check=self._cancel_event.is_set,
+                    cancel_check=cancellation_requested,
                 )
             elif edge_features is not None:
                 solver = (
@@ -235,14 +261,14 @@ class _MagneticPathWorker(QRunnable):
                     self.start,
                     self.end,
                     self.settings,
-                    cancel_check=self._cancel_event.is_set,
+                    cancel_check=cancellation_requested,
                 )
-            if self._cancel_event.is_set():
+            if cancellation_requested():
                 cancelled = True
                 path = []
         except Exception as exc:  # pragma: no cover - exercised by Qt integration tests
             error = f"{type(exc).__name__}: {exc}"
-        cancelled = cancelled or self._cancel_event.is_set()
+        cancelled = cancelled or cancellation_requested()
         self.signals.completed.emit(
             {
                 "request_id": self.request_id,
@@ -254,6 +280,8 @@ class _MagneticPathWorker(QRunnable):
                 "error": error,
                 "mode": self.mode,
                 "cancelled": cancelled,
+                "timed_out": timed_out,
+                "timeout_ms": int(timeout_ms),
                 "elapsed_ms": round((time.monotonic() - started_at) * 1000.0, 3),
                 "commit_safe": self.mode == "legacy" or self.purpose != "preview",
                 "edge_map": edge_map,
@@ -755,12 +783,34 @@ class MagneticLassoTool(BaseTool):
 
     def _on_async_path_result(self, payload) -> None:
         request_id = int(payload.get("request_id", -1))
+        was_active_request = self._active_path_request == request_id
         self._path_workers.pop(request_id, None)
         if self._active_path_request == request_id:
             self._active_path_request = None
         if self._canvas_closed:
             return
         self._stop_path_timeout(request_id)
+
+        # The GUI timer normally owns timeout handling.  Keep the same visible
+        # failure contract when the worker reaches its hard deadline first (for
+        # example while the GUI thread is busy processing another Qt event).
+        if (
+            payload.get("timed_out")
+            and was_active_request
+            and payload.get("revision") == self._state_revision
+        ):
+            purpose = str(payload.get("purpose") or "segment")
+            timeout_ms = int(payload.get("timeout_ms") or self._timeout_ms_for(purpose))
+            self._state_revision += 1
+            self._queued_preview_request = None
+            self._queued_action_request = None
+            self._segment_pending = False
+            self._handle_async_failure(
+                purpose, f"Timeout after {timeout_ms} ms", notify=False
+            )
+            self._show_nonblocking_path_error()
+            self._start_next_async_path()
+            return
 
         image_matches = payload.get("image_token") == self._current_image_token()
         edge_matches = payload.get("edge_signature") == self._current_edge_signature()
