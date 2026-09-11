@@ -4,7 +4,7 @@ import hashlib
 from pathlib import Path
 
 import pytest
-from PySide6.QtCore import QMimeData, QPointF, Qt
+from PySide6.QtCore import QCoreApplication, QEvent, QMimeData, QPointF, Qt
 from PySide6.QtGui import QDropEvent, QImage
 from PySide6.QtWidgets import QApplication
 
@@ -42,6 +42,8 @@ def studio(tmp_path):
     window.professional_session.mark_saved()
     window.close()
     window.deleteLater()
+    app.processEvents()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
     app.processEvents()
 
 

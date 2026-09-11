@@ -107,13 +107,12 @@ class TimelineView(QGraphicsView):
         """
         super().closeEvent(event)
         if self.parentWidget() is None:
-            # Detach the scene before the deferred native destruction.  This
-            # keeps a standalone view from retaining a raw scene pointer while
-            # Qt drains the close/deferred-delete events.
-            scene = self.scene()
+            # Detach the scene before the deferred native destruction.  The
+            # scene is a QObject child of this view, so the view is its single
+            # destruction owner; scheduling a second DeferredDelete for the
+            # child can make Qt process the same native object twice after a
+            # long test or authoring session.
             self.setScene(None)
-            if scene is not None and scene.parent() is self:
-                scene.deleteLater()
             self.deleteLater()
 
     def _seek_from_event(self, event) -> bool:

@@ -130,15 +130,15 @@ class SidePanel(QWidget):
         self.list.customContextMenuRequested.connect(self._show_context_menu)
 
         # --- Botões ---
-        self.btn_rename = QPushButton("Rename")
-        self.btn_delete = QPushButton("Delete")
+        self.btn_rename = QPushButton("Rename", self)
+        self.btn_delete = QPushButton("Delete", self)
 
-        self.btn_expand = QPushButton("Expand")
-        self.btn_contract = QPushButton("Contract")
-        self.btn_invert = QPushButton("Invert")
+        self.btn_expand = QPushButton("Expand", self)
+        self.btn_contract = QPushButton("Contract", self)
+        self.btn_invert = QPushButton("Invert", self)
 
         # Botão de forma de colisão
-        self.btn_collision = QPushButton("Collision: OFF")
+        self.btn_collision = QPushButton("Collision: OFF", self)
 
         self.transform_group = CollapsibleGroupBox("Transform", expanded=True)
         self.position_x = self._transform_spin(-1_000_000.0, 1_000_000.0)
@@ -189,11 +189,11 @@ class SidePanel(QWidget):
         self.slider.setMinimum(-50)
         self.slider.setMaximum(50)
         self.slider.setValue(0)
-        self.btn_apply = QPushButton("Apply")
-        self.btn_cancel = QPushButton("Cancel")
+        self.btn_apply = QPushButton("Apply", self)
+        self.btn_cancel = QPushButton("Cancel", self)
 
-        self.btn_export = QPushButton("Export Mask")
-        self.btn_export_now = QPushButton("Export Sprite")
+        self.btn_export = QPushButton("Export Mask", self)
+        self.btn_export_now = QPushButton("Export Sprite", self)
 
         # Keep legacy QPushButtons as stable command handles. The visible
         # presentation uses compact toolbars so the inspector remains usable

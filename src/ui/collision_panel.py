@@ -121,7 +121,7 @@ class CollisionPanel(QWidget):
 
         button_layout = QVBoxLayout()
 
-        self.batch_test_btn = QPushButton("Batch Test")
+        self.batch_test_btn = QPushButton("Batch Test", self)
         configure_widget(self.batch_test_btn, "collision_test")
         self.batch_test_btn.setIconSize(QSize(20, 20))
         self.batch_test_btn.setToolTip(
@@ -129,7 +129,7 @@ class CollisionPanel(QWidget):
         )
         self.batch_test_btn.clicked.connect(self._on_batch_test)
 
-        self.export_btn = QPushButton("Export Collisions")
+        self.export_btn = QPushButton("Export Collisions", self)
         configure_widget(self.export_btn, "export")
         self.export_btn.setIconSize(QSize(20, 20))
         self.export_btn.setToolTip("Export collision results to JSON file")
@@ -143,7 +143,7 @@ class CollisionPanel(QWidget):
             "Choose the collider representation used by the physics manager"
         )
 
-        self.auto_gen_btn = QPushButton("Auto-Generate from Scene Objects")
+        self.auto_gen_btn = QPushButton("Auto-Generate from Scene Objects", self)
         configure_widget(self.auto_gen_btn, "collision_auto_generate")
         self.auto_gen_btn.setIconSize(QSize(20, 20))
         self.auto_gen_btn.setToolTip(

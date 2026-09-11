@@ -29,28 +29,42 @@ def test_camera_authoring_rotation_is_backward_compatible_and_bounded() -> None:
 
 
 def test_camera_guide_exposes_distinct_translate_and_rotate_handles(qt_app) -> None:
+    scene = QGraphicsScene(qt_app)
     guide = SceneCameraGuide()
-    guide.set_frame_size(400.0, 200.0)
+    scene.addItem(guide)
+    try:
+        guide.set_frame_size(400.0, 200.0)
 
-    assert guide._mode_for(QPointF(0.0, 0.0)) == "translate"
-    assert guide._mode_for(QPointF(0.0, 100.0)) == "translate"
-    assert guide._mode_for(guide._rotation_handle()) == "rotate"
-    assert guide._mode_for(QPointF(0.0, 40.0)) is None
+        assert guide._mode_for(QPointF(0.0, 0.0)) == "translate"
+        assert guide._mode_for(QPointF(0.0, 100.0)) == "translate"
+        assert guide._mode_for(guide._rotation_handle()) == "rotate"
+        assert guide._mode_for(QPointF(0.0, 40.0)) is None
+    finally:
+        scene.clear()
+        guide = None
+        qt_app.processEvents()
 
 
 def test_camera_guide_localized_hint_stays_inside_its_paint_bounds(qt_app) -> None:
+    scene = QGraphicsScene(qt_app)
     guide = SceneCameraGuide()
-    guide.set_frame_size(640.0, 360.0)
-    guide.set_label("CÂMERA · ARRASTE PARA POSICIONAR")
+    scene.addItem(guide)
+    try:
+        guide.set_frame_size(640.0, 360.0)
+        guide.set_label("CÂMERA · ARRASTE PARA POSICIONAR")
 
-    label_rect = QRectF(
-        -320.0 + 10.0,
-        180.0 - 36.0,
-        guide._label_width(),
-        26.0,
-    )
-    assert guide._label_width() > 188.0
-    assert guide.boundingRect().contains(label_rect)
+        label_rect = QRectF(
+            -320.0 + 10.0,
+            180.0 - 36.0,
+            guide._label_width(),
+            26.0,
+        )
+        assert guide._label_width() > 188.0
+        assert guide.boundingRect().contains(label_rect)
+    finally:
+        scene.clear()
+        guide = None
+        qt_app.processEvents()
 
 
 def test_timeline_header_scrubs_continuously_during_drag(qt_app) -> None:

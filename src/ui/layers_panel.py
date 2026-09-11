@@ -87,12 +87,12 @@ class LayersPanel(QWidget):
         self.project_layers_layout.addWidget(self.list)
 
         buttons = QGridLayout()
-        self.btn_new = QPushButton("New")
-        self.btn_delete = QPushButton("Delete")
-        self.btn_up = QPushButton("Up")
-        self.btn_down = QPushButton("Down")
-        self.btn_vis = QPushButton("Toggle Vis")
-        self.btn_lock = QPushButton("Toggle Lock")
+        self.btn_new = QPushButton("New", self)
+        self.btn_delete = QPushButton("Delete", self)
+        self.btn_up = QPushButton("Up", self)
+        self.btn_down = QPushButton("Down", self)
+        self.btn_vis = QPushButton("Toggle Vis", self)
+        self.btn_lock = QPushButton("Toggle Lock", self)
 
         # Keep the legacy QPushButtons as stable public command handles, but
         # present the actions through a compact, reference-aligned toolbar.
