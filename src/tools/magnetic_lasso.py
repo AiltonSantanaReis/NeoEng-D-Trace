@@ -169,6 +169,7 @@ class _MagneticPathWorker(QRunnable):
         start: Point,
         end: Point,
         cancel_event: Optional[Event] = None,
+        signals: Optional[_MagneticPathSignals] = None,
     ):
         super().__init__()
         self.request_id = request_id
@@ -182,14 +183,23 @@ class _MagneticPathWorker(QRunnable):
         self.settings = settings
         self.start = start
         self.end = end
-        self.signals = _MagneticPathSignals()
+        # A real canvas supplies a bridge-owned signal object.  Keeping the
+        # emitter outside the QRunnable prevents QThreadPool auto-delete from
+        # reclaiming a QObject while its queued result is still being delivered.
+        self.signals = signals if signals is not None else _MagneticPathSignals()
         self.setAutoDelete(True)
         # Measure the request lifetime, including QThreadPool queue latency.
         self._started_at = time.monotonic()
         self._cancel_event = cancel_event if cancel_event is not None else Event()
+        self._timeout_requested = False
 
     def cancel(self) -> None:
         """Request cooperative cancellation of the current calculation."""
+        self._cancel_event.set()
+
+    def timeout(self) -> None:
+        """Request cancellation while preserving the public timeout deadline."""
+        self._timeout_requested = True
         self._cancel_event.set()
 
     @Slot()
@@ -213,6 +223,9 @@ class _MagneticPathWorker(QRunnable):
             """Combine explicit cancellation with a worker-side hard deadline."""
 
             nonlocal timed_out
+            if self._timeout_requested:
+                timed_out = True
+                return True
             if self._cancel_event.is_set():
                 return True
             if time.monotonic() >= deadline:
@@ -222,6 +235,29 @@ class _MagneticPathWorker(QRunnable):
                 self._cancel_event.set()
                 return True
             return False
+
+        def cancel_before_expensive_solver() -> None:
+            """Stop before a large precise search cannot fit its deadline."""
+
+            nonlocal timed_out, cancelled
+            if cancelled or edge_features is None:
+                return
+            if self.mode != "precise" or self.purpose not in {"segment", "finish"}:
+                return
+            remaining_ms = max(0.0, (deadline - time.monotonic()) * 1000.0)
+            pixels = int(edge_features.strength.size)
+            # Reserve a bounded safety window for the ROI/downscale and the
+            # first solver allocation. Normal 5 s requests are unaffected; a
+            # short request on a large image becomes a deterministic timeout
+            # instead of entering a search that cannot finish safely.
+            safety_ms = max(
+                8.0,
+                min(75.0, max(float(timeout_ms), pixels / 25_000.0)),
+            )
+            if remaining_ms <= safety_ms:
+                timed_out = True
+                self._cancel_event.set()
+                cancelled = True
 
         cancelled = cancellation_requested()
         try:
@@ -240,6 +276,7 @@ class _MagneticPathWorker(QRunnable):
                     edge_map = normalize_array(sobel_magnitude(self.image_array))
 
             cancelled = cancellation_requested()
+            cancel_before_expensive_solver()
             if cancelled:
                 path = []
             elif self.purpose == "prepare":
@@ -270,6 +307,16 @@ class _MagneticPathWorker(QRunnable):
         except Exception as exc:  # pragma: no cover - exercised by Qt integration tests
             error = f"{type(exc).__name__}: {exc}"
         cancelled = cancelled or cancellation_requested()
+        if timed_out:
+            # Preserve the public timeout contract even when the preflight
+            # guard cancels before the deadline itself has elapsed.
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                # Windows timer granularity can wake a single sleep early;
+                # recheck the monotonic deadline instead of trusting one wait.
+                time.sleep(min(remaining, 0.01))
         self.signals.completed.emit(
             {
                 "request_id": self.request_id,
@@ -670,10 +717,13 @@ class MagneticLassoTool(BaseTool):
         self._path_timeout_request_id = None
         self._path_timeout_ms = None
 
-    def _cancel_path_workers(self) -> None:
+    def _cancel_path_workers(self, *, timeout: bool = False) -> None:
         for worker in tuple(self._path_workers.values()):
             try:
-                worker.cancel()
+                if timeout:
+                    worker.timeout()
+                else:
+                    worker.cancel()
             except RuntimeError:
                 pass
 
@@ -765,6 +815,7 @@ class MagneticLassoTool(BaseTool):
             start=request["start"],
             end=request["end"],
             cancel_event=Event(),
+            signals=_MagneticPathSignals(self._path_bridge),
         )
         worker.signals.completed.connect(
             self._path_bridge.dispatch,
@@ -918,7 +969,7 @@ class MagneticLassoTool(BaseTool):
             return
         purpose = worker.purpose
         timeout_ms = self._path_timeout_ms or self._timeout_ms_for(purpose)
-        self._cancel_path_workers()
+        self._cancel_path_workers(timeout=True)
         self._stop_path_timeout(request_id)
         self._state_revision += 1
         self._active_path_request = None
