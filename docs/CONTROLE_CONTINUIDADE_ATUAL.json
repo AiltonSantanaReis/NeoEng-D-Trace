@@ -38,7 +38,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Concluir e comprovar as ferramentas restantes do tilemap/tileset e a integração/runtime externo do editor híbrido 3D; manter explícito o finding de workspace vazio ao abrir Cenário e depois executar a auditoria final e a revisão humana conforme a decisão formal de deferimento.",
+    "next_action": "Concluir e comprovar as ferramentas restantes do tilemap/tileset e a integração/runtime externo do editor híbrido 3D; depois executar a auditoria final e a revisão humana conforme a decisão formal de deferimento.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
@@ -122,7 +122,7 @@
       "latest_binary_capture": "artifacts/post-e13-native-binary-20260911-particles/launch-capture-6554212.png",
       "latest_binary_capture_sha256": "31AF6C1E3FEA86B64AD4E3AB5A85514CD2F2C0E51DDB2B64FD74E91FB28715DD",
       "latest_binary_capture_window": "3866x2090; editor nativo maximizado em tela 3840x2160",
-      "observed_finding": "O binário pós-E13 abriu com UI PT-BR em janela nativa real. Cliques Win32 em Colisão e Cenário foram registrados; no workspace vazio, Cenário exibiu a affordance de abertura mas não criou cena nem abriu editor. Esse finding de começar do zero permanece aberto. As capturas não são promovidas a revisão humana.",
+      "observed_finding": "O binário pós-E13 abriu com UI PT-BR em janela nativa real. A sequência histórica que clicou Colisão antes de Cenário deixou um popup em primeiro plano e foi preservada como diagnóstico. A requalificação v2 clicou diretamente em Cenário, criou uma cena vazia, salvou e recarregou o documento com capturas reais; revisão humana continua deferida.",
       "final_audit": "docs/evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md",
       "native_capture_root": "artifacts/post-e13-native-flow-20260911-hybrid-v9",
       "capture_fallback": "Win32 mouse_event/keybd_event/PrintWindow; CUA indisponível e declarado",
@@ -156,7 +156,12 @@
       "godot_capture_sha256": "56C8AAE8F52CE147FC7E19C92F9E1740608E6A74D8DDD8B69E781786D948C6EF",
       "unity_runtime_status": "PASS_BATCHMODE_NOGRAPHICS",
       "negative_socket_guard": "PASS",
-      "blank_workspace_flow": "PENDING_EVIDENCE",
+      "blank_workspace_flow": "PASS_NATIVE_FLOW",
+      "native_requalification_root": "artifacts/post-e13-native-binary-20260911-particles-requal-v2",
+      "native_requalification_manifest": "artifacts/post-e13-native-binary-20260911-particles-requal-v2/actions.jsonl",
+      "native_requalification_manifest_sha256": "BEC5C9EED229BF250A332762DCF154729100534DFBBA34FFC6DAE4DF4F1D9C56",
+      "native_requalification_scene_sha256": "B35DA0B1C3C918CA07101732B47C0F771E6687F8B01B446E07047F6B358ED166",
+      "historical_input_sequence_finding": "Colisão foi clicado antes de Cenário; o popup permaneceu em primeiro plano e o clique seguinte não atingiu a janela principal. Artefatos originais preservados.",
       "evidence": "docs/evidence/EVD_POST_E13_PARTICLE_SCENE_EXPORT_NATIVE_20260911.md"
     },
     "hybrid_editor_authoring": {

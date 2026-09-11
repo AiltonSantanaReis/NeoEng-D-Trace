@@ -70,6 +70,9 @@ Resultado: `PASS`, `17/17` checks.
   A execução anterior do mesmo código, preservada como histórico, permanece
   em `artifacts/post-e13-particle-scene-export-native-20260911-v14/official-pytest-v2.log`,
   SHA-256 `C89C46562EA80C4D8A0EC935819D31D8E7B242FB48EEB0239638ACB03A5410AA`.
+- Requalificação dos contratos documentais e do exportador: `49 passed` em
+  1,75 s; log `artifacts/post-e13-native-binary-20260911-particles-requal-v2/official-requalification-contracts.log`,
+  SHA-256 `BA12E4D682567E9C13E25CF82A0F421DD04864A5603BE60C0473DF71D439C19C`.
 - Build oficial com proveniência: `build/post-e13-particle-scene-export-native-20260911/continuity-provenance.json`,
   SHA-256 `830AA59792C12E949762046CD3CCBC16CA6984158640774D55D48D44384CA159`;
   `source_commit=73b7fccd61f2673b6c5479581cb1645912755e22`.
@@ -95,19 +98,52 @@ O executável foi aberto por handle Win32 real e capturado em 3866×2090. Pacote
 - cliques reais em `Colisão` e `Cenário` foram registrados em
   `scenario-click-6554212.png` e `scenario-editor-click-6554212.png`.
 
-O clique em `Cenário` no workspace vazio exibiu a affordance/status “Abrir o
-editor de cenários”, mas não criou uma cena nem abriu o editor. Isso é um
-finding de usabilidade do fluxo “começar do zero”, não uma evidência de PASS;
-fica aberto para a próxima subetapa do editor e não altera a prova do adapter
-nativo de partículas.
+O pacote original preserva uma sequência diagnóstica em que `Colisão` foi
+clicado primeiro e abriu uma janela/popup sobre o editor principal; o clique
+seguinte em `Cenário` ocorreu com essa janela ainda em primeiro plano. A
+captura e o finding permanecem preservados como resultado histórico dessa
+sequência, sem serem apagados nem promovidos a PASS.
+
+### Requalificação nativa do fluxo começar do zero
+
+Uma execução nova do mesmo binário foi iniciada sem projeto nem imagem. O
+primeiro clique foi diretamente em `Cenário` e abriu a janela nativa
+`Editor de Cenário — NeoEng-D-Trace` (handle `6753566`, captura
+`scenario-open-6753566.png`, SHA-256
+`CB9AA17F403C18A3E0FE4AEE0522BC339714CCAA05785B99115265E8A2C999C5`).
+Em seguida, o clique real em `Novo Cenário` materializou três molduras Z00/Z01/Z02,
+guias de câmera/parallax e timeline vazia (captura `scenario-new-6753566.png`,
+SHA-256 `86425D094761B93200D327405D82F29868173EF384971DA1CB39E1F1E63375FC`).
+
+O ciclo de persistência também foi executado por interação nativa: `Salvar
+Projeto` gravou `scenario-from-zero.ndtproj` e
+`scenario-from-zero.ndtscene.json`; `Recarregar` restaurou as molduras,
+câmera, guias e timeline. O manifesto de cliques `actions.jsonl` desta
+requalificação está em
+`artifacts/post-e13-native-binary-20260911-particles-requal-v2/`, SHA-256
+`BEC5C9EED229BF250A332762DCF154729100534DFBBA34FFC6DAE4DF4F1D9C56`.
+
+| Artefato da requalificação | SHA-256 | Observação |
+|---|---|---|
+| `scenario-new-6753566.png` | `86425D094761B93200D327405D82F29868173EF384971DA1CB39E1F1E63375FC` | cena vazia criada sem asset/imagem |
+| `scenario-save-confirm-6753566.png` | `55CE3A610801462D36F8C05694189F929A7A3ED105489AA3B82E26CBE1B218B7` | projeto salvo pelo diálogo nativo |
+| `scenario-reload-6753566.png` | `C95AE0F6F4417CA7C4473E1E812795544363E98CF1AECFDCE87F1306A292CA0F` | estado restaurado após recarregar |
+| `scenario-from-zero.ndtproj` | `EDE878C1799E551FF42E46C7BCC730314E7C6BC3FC0EC5CA6E7D054F65D4A21E` | projeto criado no caminho de artefato isolado |
+| `scenario-from-zero.ndtscene.json` | `B35DA0B1C3C918CA07101732B47C0F771E6687F8B01B446E07047F6B358ED166` | schema V2 com três camadas e câmera |
+
+![Cena vazia criada no editor nativo](../../artifacts/post-e13-native-binary-20260911-particles-requal-v2/scenario-new-6753566.png)
+
+O fluxo limpo atende o critério técnico de iniciar do zero; o finding
+histórico fica classificado como erro de sequência do harness nativo, não como
+limitação do produto.
 
 ## Limitações e fronteira de aceite
 
 - O modo headless Godot não fornece pixels; a captura visual foi obtida em
   execução Windows/OpenGL real e essa diferença permanece declarada.
-- A captura do binário principal mostra o estado do editor e o finding de
-  workspace vazio; ela não representa uma cena de partículas, pois o botão não
-  abriu o editor sem projeto/asset. Não há promoção desse fluxo a PASS.
+- A captura original do binário principal mostra o finding histórico da
+  sequência com popup; a requalificação v2 comprova separadamente a abertura,
+  criação, salvamento e recarga de uma cena vazia sem projeto/imagem.
 - A revisão humana final permanece `PENDING_EVIDENCE`/deferida até concluírem
   iluminação direcional, efeitos orientáveis, sistema completo de partículas,
   tilemap/tileset e editor 3D/híbrido conforme a decisão formal.

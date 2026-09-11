@@ -53,12 +53,12 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou e o fluxo Win32 real foi capturado; runtime nativo de partículas e exportação profissional V2 passaram seus checkpoints; no workspace vazio, o clique em Cenário exibiu a affordance mas não abriu/criou cena; ferramentas completas de tilemap/tileset, runtime 3D externo e a revisão humana final continuam pendentes por decisão formal |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou e o fluxo Win32 real foi capturado; runtime nativo de partículas, exportação profissional V2 e o fluxo limpo de criar/salvar/recarregar cenário vazio passaram checkpoints; a sequência histórica com popup de Colisão permanece preservada; ferramentas completas de tilemap/tileset, runtime 3D externo e a revisão humana final continuam pendentes por decisão formal |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build `post-e13-particle-scene-export-native-20260911`, proveniência `PASS`, executável `E6716E67305268F432FDB7536A96A22608C6408AD73099225ED2540C8FD5D80B`, ZIP `B72BB9C7034CB41D814BE90C56CF0A3522D8337FF596989A7CA03C912A50E5B5` e smoke `SUCCESS` em 11 checks |
 | Runtime funcional | `PASS` | build pós-E13 de partículas abriu/fechou e executou smoke; exportação V2, materialização nativa e contagem foram comprovadas em Godot/Unity; runtime 3D externo, tilemap/tileset completo e finding de início do zero continuam pendentes |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana permanece deferida |
-| Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo de Cenário em workspace vazio permanece `PENDING_EVIDENCE` |
+| Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
 A execução direta da build final10 gerou capturas reais em
@@ -88,15 +88,19 @@ de partículas autoradas em
 `docs/evidence/EVD_POST_E13_PARTICLE_SCENE_EXPORT_NATIVE_20260911.md`, com
 17/17 checks, captura Godot real, logs Godot/Unity, guards negativos, binário
 portátil e fluxo Win32 real. O finding do workspace vazio foi preservado.
+A requalificação nativa em
+`artifacts/post-e13-native-binary-20260911-particles-requal-v2/` confirmou o
+fluxo direto `Cenário → Novo Cenário → Salvar Projeto → Recarregar` sem
+projeto/imagem inicial. A sequência anterior que clicou primeiro em Colisão
+permanece preservada como finding de entrada sobre popup em primeiro plano.
 A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
 Concluir e comprovar os itens funcionais ainda abertos — ferramentas avançadas
-de tilemap/tileset e o runtime 3D externo do editor híbrido — além de corrigir
-e requalificar o finding reproduzível de começar pelo workspace vazio ao abrir
-Cenário. A ponte de partículas já possui checkpoint técnico, mas isso não
-substitui a revisão humana. Só depois executar a
+de tilemap/tileset e o runtime 3D externo do editor híbrido. A ponte de
+partículas e o início do cenário do zero já possuem checkpoints técnicos, mas
+isso não substitui a revisão humana. Só depois executar a
 [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
 e a revisão humana final, conforme a
 [decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
