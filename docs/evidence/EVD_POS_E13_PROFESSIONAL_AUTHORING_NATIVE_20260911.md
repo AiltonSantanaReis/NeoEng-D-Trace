@@ -52,6 +52,7 @@ O salvamento nativo gerou [`persisted-camera-timeline.ndtscene.json`](../../arti
 
 - Testes focados do lote: `51 passed in 13.77s`.
 - Suíte oficial sem filtros: `2179 passed, 2 skipped, 1 warning in 69.96s`.
+- Requalificação oficial pós-commit `849ecf2`: `2179 passed, 2 skipped, 1 warning in 88.28s`.
 - O warning é a depreciação já existente do construtor `QMouseEvent` em `tests/test_merge_coverage_authoring_contracts.py:1341`; não foi ocultado nem reclassificado.
 - O processo nativo foi encerrado por `Alt+F4` no editor e na janela principal; não permaneceu processo `NeoEng-D-Trace` com PID `964`.
 
