@@ -991,8 +991,13 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _open_project_hint(self) -> None:
         self.status_label.setText(
-            "Open and save a project in the main editor before authoring a scenario, "
-            "or choose New Scenario to start without one."
+            (
+                "Abra e salve um projeto no editor principal antes de editar um cenário, "
+                "ou escolha Novo Cenário para começar sem um projeto."
+                if self.current_lang == "pt"
+                else "Open and save a project in the main editor before authoring a scenario, "
+                "or choose New Scenario to start without one."
+            )
         )
 
     def _new_professional(self) -> bool:
@@ -1025,12 +1030,20 @@ class ScenarioEditorWindow(QMainWindow):
             self._set_editor_mode(preview=False)
             self.refresh()
             self.status_label.setText(
-                "New unsaved scenario — use Save Project to choose a location"
+                (
+                    "Novo cenário não salvo — use Salvar Projeto para escolher o local"
+                    if self.current_lang == "pt"
+                    else "New unsaved scenario — use Save Project to choose a location"
+                )
             )
             return True
         except (OSError, ValueError, ProjectPersistenceError) as exc:
             self.status_label.setText(
-                "New scenario failed: "
+                (
+                    "Falha ao criar cenário: "
+                    if self.current_lang == "pt"
+                    else "New scenario failed: "
+                )
                 + user_error_message(exc, operation="save", language=self.current_lang)
             )
             return False
@@ -1039,13 +1052,19 @@ class ScenarioEditorWindow(QMainWindow):
         """Persist a newly authored scene and its professional sidecar."""
 
         if self.professional_session is None:
-            self.status_label.setText("Create a scenario before saving")
+            self.status_label.setText(
+                "Crie um cenário antes de salvar"
+                if self.current_lang == "pt"
+                else "Create a scenario before saving"
+            )
             return False
         path_text, _ = QFileDialog.getSaveFileName(
             self,
-            "Save Project As",
-            "Untitled.ndtproj",
-            "NeoEng project (*.ndtproj)",
+            "Salvar Projeto Como" if self.current_lang == "pt" else "Save Project As",
+            "SemNome.ndtproj" if self.current_lang == "pt" else "Untitled.ndtproj",
+            "Projeto NeoEng (*.ndtproj)"
+            if self.current_lang == "pt"
+            else "NeoEng project (*.ndtproj)",
         )
         if not path_text:
             return False
@@ -1074,11 +1093,21 @@ class ScenarioEditorWindow(QMainWindow):
             self._temporary_project_path = None
             self._build_professional_viewport(document=document)
             self.professional_scene_path = scene_path
-            self.status_label.setText(f"Project saved: {destination.name}")
+            self.status_label.setText(
+                (
+                    f"Projeto salvo: {destination.name}"
+                    if self.current_lang == "pt"
+                    else f"Project saved: {destination.name}"
+                )
+            )
             return True
         except (OSError, ValueError, ProjectPersistenceError) as exc:
             self.status_label.setText(
-                "Project save failed: "
+                (
+                    "Falha ao salvar projeto: "
+                    if self.current_lang == "pt"
+                    else "Project save failed: "
+                )
                 + user_error_message(exc, operation="save", language=self.current_lang)
             )
             return False
