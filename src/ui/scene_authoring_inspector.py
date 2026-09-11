@@ -872,12 +872,31 @@ class SceneAuthoringInspector(QWidget):
             self._refresh_particle_emitter_fields()
 
     def _refresh_socket_type_fields(self) -> None:
-        """Update add-mode VFX affordances without clearing typed socket IDs."""
+        """Keep VFX controls usable while switching the socket add type.
 
-        if self.socket_combo.currentData() is None:
-            self._set_particle_widgets_enabled(
-                (self.socket_type.currentData() or self.socket_type.currentText()) == "vfx"
-            )
+        The inspector can keep an existing socket selected while the user
+        changes the type for a new socket.  Previously the particle controls
+        were only enabled when no socket was selected, so this valid add flow
+        silently kept ``effect_id=default`` and ``enabled=False``.  That made
+        the native add operation look successful while producing no runtime
+        preview.  Enable the controls for the selected add type and default a
+        newly requested VFX socket to enabled; an existing VFX socket keeps
+        its authored enabled state through ``_refresh_socket_fields``.
+        """
+
+        socket_type = self.socket_type.currentData() or self.socket_type.currentText()
+        is_vfx = socket_type == "vfx"
+        self._set_particle_widgets_enabled(is_vfx)
+        if not is_vfx:
+            return
+        socket_id = self.socket_combo.currentData()
+        selected = next(
+            (item for item in self.session.document.sockets if item.id == socket_id),
+            None,
+        )
+        if not isinstance(selected, SceneVfxSocketRecord):
+            with QSignalBlocker(self.socket_enabled):
+                self.socket_enabled.setChecked(True)
 
     def _apply_camera(self) -> None:
         try:
