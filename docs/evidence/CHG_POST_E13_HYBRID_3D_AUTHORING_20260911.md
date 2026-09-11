@@ -2,7 +2,7 @@
 
 **ID:** `CHG-P13-HYBRID-3D-AUTHORING-20260911`
 
-**Estado:** `IN_PROGRESS`
+**Estado:** `CHECKPOINT TÉCNICO PASS`
 
 **Data:** 2026-09-11
 
@@ -67,9 +67,21 @@ os requisitos finais antes de testes nativos, persistência, build e evidência.
   o viewport profissional 2D, tilemap e timeline.
 
 Esses findings permanecem rastreáveis nos testes e não foram convertidos em
-`PASS` por filtro. A promoção desta mudança continua aguardando build limpa,
-execução nativa com cliques, persistência, capturas hashadas e análise da
-limitação de runtime externo.
+`PASS` por filtro. A promoção do checkpoint técnico foi comprovada por build
+limpa, execução nativa com cliques, persistência, capturas hashadas e análise
+explícita da limitação de runtime externo. A implementação continua
+deliberadamente limitada ao estado `EDITOR_VERTICAL_SLICE`; isso não equivale
+a runtime 3D externo nem encerra a revisão humana final.
+
+## Evidência do checkpoint
+
+O fluxo nativo, a suíte oficial e os hashes estão registrados em
+[`EVD_POST_E13_HYBRID_3D_NATIVE_20260911.md`](EVD_POST_E13_HYBRID_3D_NATIVE_20260911.md).
+O escopo comprovado é autoria híbrida no editor: cena iniciada sem asset 2D,
+criação de plano/luz/câmera, seleção hierárquica, edição de alvo, arraste,
+órbita, modos 2.5D/3D, projeção ortográfica, salvar/reabrir e localização
+PT-BR. Permanecem `PENDING_EVIDENCE` a equivalência com runtime externo e a
+revisão humana final deferida pela decisão formal pós-E13.
 
 ## Critério de saída
 
