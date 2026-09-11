@@ -534,11 +534,59 @@ class SceneAuthoringModel:
 
     def update_socket_position(self, socket_id: str, position: Point3Record) -> None:
         document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        self.update_socket_transform(socket_id, position, socket.rotation)
+
+    def update_socket_rotation(self, socket_id: str, rotation: Point3Record) -> None:
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        self.update_socket_transform(socket_id, socket.position, rotation)
+
+    def update_socket_light_kind(self, socket_id: str, kind: str) -> None:
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        if socket.type != "light":
+            raise ValueError("only light sockets have a light kind")
+        if kind not in {"point", "directional"}:
+            raise ValueError("unsupported light kind")
+        self._replace(
+            sockets=[
+                (
+                    item.model_copy(update={"kind": kind})
+                    if item.id == socket_id
+                    else item
+                )
+                for item in document.sockets
+            ]
+        )
+
+    def update_socket_transform(
+        self,
+        socket_id: str,
+        position: Point3Record,
+        rotation: Point3Record,
+    ) -> None:
+        document = self._stage4_document()
         if not any(item.id == socket_id for item in document.sockets):
             raise KeyError(socket_id)
         sockets = [
             (
-                item.model_copy(update={"position": position})
+                item.model_copy(update={"position": position, "rotation": rotation})
                 if item.id == socket_id
                 else item
             )

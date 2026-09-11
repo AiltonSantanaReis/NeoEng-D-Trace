@@ -36,6 +36,8 @@ class ProjectedSceneSocket:
     socket_type: str
     position: Point2
     color: str
+    rotation_degrees: float = 0.0
+    socket_kind: str | None = None
 
 
 @dataclass(frozen=True)
@@ -254,6 +256,12 @@ def build_scene_authoring_preview(
                     parallax_by_layer.get(socket.layer_id, ParallaxLayer()),
                 ),
                 color=_socket_color(socket),
+                rotation_degrees=float(socket.rotation.z),
+                socket_kind=(
+                    socket.kind
+                    if socket.type == "light" and socket.kind != "point"
+                    else None
+                ),
             )
         )
     return SceneAuthoringPreviewFrame(

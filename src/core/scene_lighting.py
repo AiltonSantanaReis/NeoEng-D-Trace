@@ -104,12 +104,44 @@ class ScenePointLight:
 
 
 @dataclass(frozen=True)
+class SceneDirectionalLight:
+    """An infinite light with a stable 2D incoming direction.
+
+    ``direction_degrees`` is the vector from a shaded surface toward the
+    light source in screen coordinates (0 degrees is +X, 90 degrees is +Y).
+    This convention matches the editor's rotation Z and the reference
+    surface normal used by this raster backend.
+    """
+
+    id: str
+    direction_degrees: float = 90.0
+    color: Color3 = (1.0, 1.0, 1.0)
+    intensity: float = 1.0
+    enabled: bool = True
+
+    def __post_init__(self) -> None:
+        if not self.id:
+            raise ValueError("light id must not be empty")
+        object.__setattr__(
+            self,
+            "direction_degrees",
+            _finite(self.direction_degrees, "directional light direction"),
+        )
+        object.__setattr__(self, "color", _color(self.color, "light.color"))
+        object.__setattr__(
+            self, "intensity", _finite(self.intensity, "light.intensity")
+        )
+        if self.intensity < 0.0:
+            raise ValueError("light.intensity must be non-negative")
+
+
+@dataclass(frozen=True)
 class SceneLightingSettings:
     """Complete frame-independent lighting state for the raster backend."""
 
     ambient_color: Color3 = (1.0, 1.0, 1.0)
     ambient_intensity: float = 0.18
-    lights: tuple[ScenePointLight, ...] = ()
+    lights: tuple[ScenePointLight | SceneDirectionalLight, ...] = ()
     occluders: tuple[Polygon2, ...] = ()
 
     def __post_init__(self) -> None:
@@ -206,6 +238,25 @@ def _blocked(
     return False
 
 
+def _blocked_directional(
+    position: Point2, direction: Point2, occluders: Iterable[Polygon2]
+) -> bool:
+    """Check a finite approximation of the ray toward an infinite source."""
+
+    end = (
+        position[0] + direction[0] * 1_000_000.0,
+        position[1] + direction[1] * 1_000_000.0,
+    )
+    for polygon in occluders:
+        if len(polygon) < 3:
+            continue
+        for index, start in enumerate(polygon):
+            edge_end = polygon[(index + 1) % len(polygon)]
+            if _segments_intersect(position, end, start, edge_end):
+                return True
+    return False
+
+
 def shade_color(
     position: Point2,
     material: SceneLightingMaterial,
@@ -222,15 +273,24 @@ def shade_color(
     for light in settings.lights:
         if not light.enabled or light.intensity <= 0.0:
             continue
-        vector = (light.position[0] - point[0], light.position[1] - point[1])
-        distance = math.hypot(vector[0], vector[1])
-        if distance >= light.radius:
-            continue
-        if material.receives_shadow and _blocked(point, light, settings.occluders):
-            continue
-        direction = _normalize(vector)
+        if isinstance(light, SceneDirectionalLight):
+            angle = math.radians(light.direction_degrees)
+            direction = _normalize((math.cos(angle), math.sin(angle)))
+            if material.receives_shadow and _blocked_directional(
+                point, direction, settings.occluders
+            ):
+                continue
+            falloff = 1.0
+        else:
+            vector = (light.position[0] - point[0], light.position[1] - point[1])
+            distance = math.hypot(vector[0], vector[1])
+            if distance >= light.radius:
+                continue
+            if material.receives_shadow and _blocked(point, light, settings.occluders):
+                continue
+            direction = _normalize(vector)
+            falloff = max(0.0, 1.0 - distance / light.radius)
         diffuse = max(0.0, _dot(normal, direction))
-        falloff = max(0.0, 1.0 - distance / light.radius)
         strength = diffuse * falloff * light.intensity
         if strength <= 0.0:
             continue
@@ -272,6 +332,7 @@ __all__ = [
     "Polygon2",
     "SceneLightingMaterial",
     "SceneLightingSettings",
+    "SceneDirectionalLight",
     "ScenePointLight",
     "default_scene_lighting",
     "shade_color",

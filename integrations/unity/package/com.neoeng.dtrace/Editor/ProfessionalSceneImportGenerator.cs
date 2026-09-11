@@ -159,6 +159,13 @@ namespace NeoEng.DTrace.Editor
                     source.position.x,
                     source.position.y * export.coordinate_mapping.position_y_sign,
                     source.position.z);
+                if (source.rotation != null)
+                {
+                    marker.transform.localEulerAngles = new Vector3(
+                        source.rotation.x,
+                        source.rotation.y,
+                        source.rotation.z * export.coordinate_mapping.rotation_sign);
+                }
                 NeoEngProfessionalSocketMetadata metadata = marker.AddComponent<NeoEngProfessionalSocketMetadata>();
                 metadata.socketId = source.id;
                 metadata.socketType = source.type;
@@ -256,6 +263,14 @@ namespace NeoEng.DTrace.Editor
                 RequireFinite(socket.position.x, "socket.position.x");
                 RequireFinite(socket.position.y, "socket.position.y");
                 RequireFinite(socket.position.z, "socket.position.z");
+                if (socket.rotation != null)
+                {
+                    RequireFinite(socket.rotation.x, "socket.rotation.x");
+                    RequireFinite(socket.rotation.y, "socket.rotation.y");
+                    RequireFinite(socket.rotation.z, "socket.rotation.z");
+                }
+                if (socket.type == "light" && socket.kind != null && socket.kind != "point" && socket.kind != "directional")
+                    throw new InvalidDataException("professional scene light kind is invalid");
             }
         }
 
@@ -362,6 +377,6 @@ namespace NeoEng.DTrace.Editor
         [Serializable] private sealed class PointData { public float x; public float y; }
         [Serializable] private sealed class Point3Data { public float x; public float y; public float z; }
         [Serializable] private sealed class ParallaxData { public string layer_id; public float depth; public float translation_strength; public float zoom_strength; }
-        [Serializable] private sealed class SocketData { public string id; public string layer_id; public string object_id; public Point3Data position; public string type; public string color; public float intensity; public float radius; public string effect_id; public float scale; public bool enabled; public string event_id; public Point3Data size; }
+        [Serializable] private sealed class SocketData { public string id; public string layer_id; public string object_id; public Point3Data position; public Point3Data rotation; public string type; public string kind; public string color; public float intensity; public float radius; public string effect_id; public float scale; public bool enabled; public string event_id; public Point3Data size; }
     }
 }

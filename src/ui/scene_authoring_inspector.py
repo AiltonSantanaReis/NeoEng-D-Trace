@@ -119,10 +119,15 @@ class SceneAuthoringInspector(QWidget):
         self.socket_type.addItems(["light", "vfx", "trigger"])
         for index, socket_type in enumerate(("light", "vfx", "trigger")):
             self.socket_type.setItemData(index, socket_type)
+        self.socket_light_kind = QComboBox()
+        self.socket_light_kind.addItems(["point", "directional"])
+        for index, light_kind in enumerate(("point", "directional")):
+            self.socket_light_kind.setItemData(index, light_kind)
         self.socket_id = QLineEdit()
         self.socket_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.socket_y = self._spin(-1_000_000.0, 1_000_000.0)
         self.socket_z = self._spin(-1_000_000.0, 1_000_000.0)
+        self.socket_rotation_z = self._spin(-36000.0, 36000.0, step=1.0)
         self.add_socket_button = QPushButton("Add Socket")
         self.update_socket_button = QPushButton("Update Socket Position")
         self.remove_socket_button = QPushButton("Remove Socket")
@@ -203,10 +208,16 @@ class SceneAuthoringInspector(QWidget):
         stage4_form = QFormLayout(socket_page)
         self._add_labeled_row(stage4_form, "socket", "Socket", self.socket_combo)
         self._add_labeled_row(stage4_form, "socket_type", "Type", self.socket_type)
+        self._add_labeled_row(
+            stage4_form, "socket_light_kind", "Light Kind", self.socket_light_kind
+        )
         self._add_labeled_row(stage4_form, "socket_id", "ID", self.socket_id)
         self._add_labeled_row(stage4_form, "socket_x", "Socket X", self.socket_x)
         self._add_labeled_row(stage4_form, "socket_y", "Socket Y", self.socket_y)
         self._add_labeled_row(stage4_form, "socket_z", "Socket Z", self.socket_z)
+        self._add_labeled_row(
+            stage4_form, "socket_rotation_z", "Socket Rotation Z", self.socket_rotation_z
+        )
         stage4_form.addRow(self.add_socket_button)
         stage4_form.addRow(self.update_socket_button)
         stage4_form.addRow(self.remove_socket_button)
@@ -569,19 +580,37 @@ class SceneAuthoringInspector(QWidget):
         socket = next((item for item in document.sockets if item.id == socket_id), None)
         if socket is None:
             self.socket_id.clear()
-            for widget in (self.socket_x, self.socket_y, self.socket_z):
+            for widget in (
+                self.socket_x,
+                self.socket_y,
+                self.socket_z,
+                self.socket_rotation_z,
+            ):
                 with QSignalBlocker(widget):
                     widget.setValue(0.0)
+            self.socket_light_kind.setEnabled(False)
+            self.socket_rotation_z.setEnabled(False)
             return
         self.socket_id.setText(socket.id)
         with QSignalBlocker(self.socket_type):
             socket_index = self.socket_type.findData(socket.type)
             if socket_index >= 0:
                 self.socket_type.setCurrentIndex(socket_index)
+        if socket.type == "light":
+            with QSignalBlocker(self.socket_light_kind):
+                light_index = self.socket_light_kind.findData(socket.kind)
+                if light_index >= 0:
+                    self.socket_light_kind.setCurrentIndex(light_index)
+        self.socket_light_kind.setEnabled(socket.type == "light")
+        self.socket_rotation_z.setEnabled(
+            socket.type == "vfx"
+            or (socket.type == "light" and socket.kind == "directional")
+        )
         for widget, value in (
             (self.socket_x, socket.position.x),
             (self.socket_y, socket.position.y),
             (self.socket_z, socket.position.z),
+            (self.socket_rotation_z, socket.rotation.z),
         ):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))
@@ -706,6 +735,11 @@ class SceneAuthoringInspector(QWidget):
         position = Point3Record(
             x=self.socket_x.value(), y=self.socket_y.value(), z=self.socket_z.value()
         )
+        rotation = Point3Record(
+            x=0.0,
+            y=0.0,
+            z=self.socket_rotation_z.value(),
+        )
         socket_type = self.socket_type.currentData() or self.socket_type.currentText()
         object_id = self.session.selection.primary
         try:
@@ -716,6 +750,8 @@ class SceneAuthoringInspector(QWidget):
                     layer_id=layer_id,
                     object_id=object_id,
                     position=position,
+                    rotation=rotation,
+                    kind=self.socket_light_kind.currentData() or "point",
                     color="#ffffff",
                 )
             elif socket_type == "vfx":
@@ -724,6 +760,7 @@ class SceneAuthoringInspector(QWidget):
                     layer_id=layer_id,
                     object_id=object_id,
                     position=position,
+                    rotation=rotation,
                     effect_id="default",
                 )
             else:
@@ -732,6 +769,7 @@ class SceneAuthoringInspector(QWidget):
                     layer_id=layer_id,
                     object_id=object_id,
                     position=position,
+                    rotation=rotation,
                     event_id="default",
                     size=Point3Record(x=32.0, y=32.0, z=1.0),
                 )
@@ -753,13 +791,31 @@ class SceneAuthoringInspector(QWidget):
             )
             return
         try:
-            self.session.update_socket_position(
+            socket = next(
+                item
+                for item in self.session.document.sockets
+                if item.id == socket_id
+            )
+            position = Point3Record(
+                x=self.socket_x.value(),
+                y=self.socket_y.value(),
+                z=self.socket_z.value(),
+            )
+            rotation = Point3Record(
+                x=float(socket.rotation.x),
+                y=float(socket.rotation.y),
+                z=self.socket_rotation_z.value(),
+            )
+            light_kind = self.socket_light_kind.currentData() or "point"
+            if socket.type == "light":
+                self.session.update_socket_light_kind(
+                    socket_id,
+                    light_kind,
+                )
+            self.session.update_socket_transform(
                 socket_id,
-                Point3Record(
-                    x=self.socket_x.value(),
-                    y=self.socket_y.value(),
-                    z=self.socket_z.value(),
-                ),
+                position,
+                rotation,
             )
             self.status_message.emit(
                 self._status("Socket atualizado", "Socket updated")
@@ -890,10 +946,12 @@ class SceneAuthoringInspector(QWidget):
                 "offset_y": "Deslocamento Y",
                 "socket": "Socket",
                 "socket_type": "Tipo",
+                "socket_light_kind": "Tipo de luz",
                 "socket_id": "ID",
                 "socket_x": "Socket X",
                 "socket_y": "Socket Y",
                 "socket_z": "Socket Z",
+                "socket_rotation_z": "Rotação Z do socket",
                 "material_albedo": "Albedo",
                 "material_emission": "Emissão",
                 "material_normal_x": "Normal X",
@@ -932,10 +990,12 @@ class SceneAuthoringInspector(QWidget):
                 "offset_y": "Offset Y",
                 "socket": "Socket",
                 "socket_type": "Type",
+                "socket_light_kind": "Light Kind",
                 "socket_id": "ID",
                 "socket_x": "Socket X",
                 "socket_y": "Socket Y",
                 "socket_z": "Socket Z",
+                "socket_rotation_z": "Socket Rotation Z",
                 "material_albedo": "Albedo",
                 "material_emission": "Emission",
                 "material_normal_x": "Normal X",
@@ -964,7 +1024,7 @@ class SceneAuthoringInspector(QWidget):
                 "material": "Aplicar as propriedades visuais do material",
                 "parallax": "Aplicar a configuração de paralaxe da camada",
                 "socket_add": "Adicionar um socket à cena",
-                "socket_update": "Atualizar a posição do socket selecionado",
+                "socket_update": "Atualizar posição e orientação do socket selecionado",
                 "socket_remove": "Remover o socket selecionado",
             }
             if is_pt
@@ -984,7 +1044,7 @@ class SceneAuthoringInspector(QWidget):
                 "material": "Apply the material visual properties",
                 "parallax": "Apply the layer parallax settings",
                 "socket_add": "Add a socket to the scene",
-                "socket_update": "Update the selected socket position",
+                "socket_update": "Update the selected socket position and orientation",
                 "socket_remove": "Remove the selected socket",
             }
         )
@@ -1014,6 +1074,7 @@ class SceneAuthoringInspector(QWidget):
             self.add_socket_button: tooltip_text["socket_add"],
             self.update_socket_button: tooltip_text["socket_update"],
             self.remove_socket_button: tooltip_text["socket_remove"],
+            self.socket_rotation_z: tooltip_text["rotation"],
         }
         for widget, tooltip in widget_tooltips.items():
             widget.setToolTip(tooltip)
@@ -1044,6 +1105,8 @@ class SceneAuthoringInspector(QWidget):
             self.socket_type.setItemText(0, "Luz")
             self.socket_type.setItemText(1, "VFX")
             self.socket_type.setItemText(2, "Gatilho")
+            self.socket_light_kind.setItemText(0, "Ponto")
+            self.socket_light_kind.setItemText(1, "Direcional")
             self.repeat_x_label = "Repetir X"
             self.repeat_y_label = "Repetir Y"
             self.mirror_x_label = "Espelhar X"
@@ -1073,6 +1136,8 @@ class SceneAuthoringInspector(QWidget):
             self.socket_type.setItemText(0, "light")
             self.socket_type.setItemText(1, "vfx")
             self.socket_type.setItemText(2, "trigger")
+            self.socket_light_kind.setItemText(0, "point")
+            self.socket_light_kind.setItemText(1, "directional")
             self.repeat_x_label = "Repeat X"
             self.repeat_y_label = "Repeat Y"
             self.mirror_x_label = "Mirror X"

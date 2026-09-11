@@ -727,6 +727,29 @@ class SceneAuthoringSession:
             "Move scene socket",
         )
 
+    def update_socket_rotation(self, socket_id: str, rotation: Point3Record) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_rotation(socket_id, rotation),
+            "Rotate scene socket",
+        )
+
+    def update_socket_light_kind(self, socket_id: str, kind: str) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_light_kind(socket_id, kind),
+            "Change scene light kind",
+        )
+
+    def update_socket_transform(
+        self,
+        socket_id: str,
+        position: Point3Record,
+        rotation: Point3Record,
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_transform(socket_id, position, rotation),
+            "Transform scene socket",
+        )
+
     def remove_socket(self, socket_id: str) -> bool:
         return self.apply(
             lambda: self.model.remove_socket(socket_id),

@@ -138,6 +138,8 @@ static func import_scene(export_path: String) -> Dictionary:
         var marker := Node2D.new()
         marker.name = "Socket_" + str(socket["id"])
         marker.position = Vector2(float(socket["position"]["x"]), float(socket["position"]["y"]))
+        if socket.has("rotation"):
+            marker.rotation = deg_to_rad(float(socket["rotation"]["z"]))
         marker.z_index = int(round(float(socket["position"]["z"])))
         marker.set_meta("neoeng_socket_id", str(socket["id"]))
         marker.set_meta("neoeng_socket_type", str(socket["type"]))
@@ -239,14 +241,26 @@ static func _polygon_from_points(value: Array) -> PackedVector2Array:
 
 
 static func _valid_socket(value: Variant, layer_ids: Dictionary, object_ids: Dictionary) -> bool:
-    if typeof(value) != TYPE_DICTIONARY or not value.has("type") or not value.has("id") or not value.has("layer_id") or not value.has("position") or not layer_ids.has(value["layer_id"]) or (value["object_id"] != null and not object_ids.has(value["object_id"])) or not _vector3(value["position"]):
+    if typeof(value) != TYPE_DICTIONARY or not value.has("type") or not value.has("id") or not value.has("layer_id") or not value.has("position") or not value.has("object_id") or not layer_ids.has(value["layer_id"]) or (value["object_id"] != null and not object_ids.has(value["object_id"])) or not _vector3(value["position"]):
+        return false
+    var has_rotation := value.has("rotation")
+    if has_rotation and not _vector3(value["rotation"]):
         return false
     if value["type"] == "light":
-        return _exact_keys(value, ["id", "layer_id", "object_id", "position", "type", "color", "intensity", "radius"]) and typeof(value["color"]) == TYPE_STRING and String(value["color"]).is_valid_html_color() and _positive(value["intensity"]) and _positive(value["radius"])
+        var legacy_keys := ["id", "layer_id", "object_id", "position", "type", "color", "intensity", "radius"]
+        var oriented_keys := legacy_keys + ["rotation", "kind"]
+        var keys_valid := _exact_keys(value, oriented_keys) or _exact_keys(value, legacy_keys)
+        if value.has("kind") and (typeof(value["kind"]) != TYPE_STRING or (value["kind"] != "point" and value["kind"] != "directional")):
+            return false
+        return keys_valid and typeof(value["color"]) == TYPE_STRING and String(value["color"]).is_valid_html_color() and _positive(value["intensity"]) and _positive(value["radius"])
     if value["type"] == "vfx":
-        return _exact_keys(value, ["id", "layer_id", "object_id", "position", "type", "effect_id", "scale", "enabled"]) and typeof(value["effect_id"]) == TYPE_STRING and not String(value["effect_id"]).is_empty() and _positive(value["scale"]) and typeof(value["enabled"]) == TYPE_BOOL
+        var vfx_legacy_keys := ["id", "layer_id", "object_id", "position", "type", "effect_id", "scale", "enabled"]
+        var vfx_oriented_keys := vfx_legacy_keys + ["rotation"]
+        return (_exact_keys(value, vfx_oriented_keys) or _exact_keys(value, vfx_legacy_keys)) and typeof(value["effect_id"]) == TYPE_STRING and not String(value["effect_id"]).is_empty() and _positive(value["scale"]) and typeof(value["enabled"]) == TYPE_BOOL
     if value["type"] == "trigger":
-        return _exact_keys(value, ["id", "layer_id", "object_id", "position", "type", "event_id", "size"]) and typeof(value["event_id"]) == TYPE_STRING and not String(value["event_id"]).is_empty() and _vector3_positive(value["size"])
+        var trigger_legacy_keys := ["id", "layer_id", "object_id", "position", "type", "event_id", "size"]
+        var trigger_oriented_keys := trigger_legacy_keys + ["rotation"]
+        return (_exact_keys(value, trigger_oriented_keys) or _exact_keys(value, trigger_legacy_keys)) and typeof(value["event_id"]) == TYPE_STRING and not String(value["event_id"]).is_empty() and _vector3_positive(value["size"])
     return false
 
 

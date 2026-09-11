@@ -440,17 +440,26 @@ class _SceneSocketBase(StrictProjectModel):
     layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     object_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
     position: Point3Record
+    # Optional in the wire contract so documents created before orientable
+    # sockets remain valid.  Z is the 2D authoring heading; X/Y are reserved
+    # for the hybrid 2.5D/3D editor without changing the socket identity.
+    rotation: Point3Record = Field(
+        default_factory=lambda: Point3Record(x=0.0, y=0.0, z=0.0)
+    )
 
-    @field_validator("position")
+    @field_validator("position", "rotation")
     @classmethod
-    def validate_position(cls, value: Point3Record) -> Point3Record:
+    def validate_transform(cls, value: Point3Record) -> Point3Record:
         for coordinate in (value.x, value.y, value.z):
-            _finite(coordinate, "socket.position")
+            _finite(coordinate, "socket transform")
         return value
 
 
 class SceneLightSocketRecord(_SceneSocketBase):
     type: Literal["light"] = "light"
+    # ``point`` is the legacy default.  Directional lights use the socket
+    # rotation Z angle as the incoming light vector in screen space.
+    kind: Literal["point", "directional"] = "point"
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     intensity: int | float = 1.0
     radius: int | float = 64.0

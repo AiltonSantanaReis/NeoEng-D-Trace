@@ -64,6 +64,7 @@ from src.core.scene_authoring_order import (
 )
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.scene_lighting import (
+    SceneDirectionalLight,
     SceneLightingMaterial,
     SceneLightingSettings,
     ScenePointLight,
@@ -529,29 +530,60 @@ class SceneCameraGuide(QGraphicsObject):
 
 
 class SceneSocketGraphicsItem(QGraphicsObject):
-    """Non-destructive visual marker for a declarative scene socket."""
+    """Non-destructive marker with translation and orientation handles.
+
+    The compact marker keeps the legacy drag target intact.  Orientable sockets
+    add a modern direction stem/handle; rotating that handle emits a separate
+    signal so position and orientation remain independent undoable operations.
+    """
 
     pressed = Signal(str)
     moved = Signal(str, QPointF)
     released = Signal(str, QPointF)
+    rotated = Signal(str, float)
+    rotation_released = Signal(str, float)
 
     def __init__(
-        self, socket_id: str, socket_type: str, color: str, parent=None
+        self,
+        socket_id: str,
+        socket_type: str,
+        color: str,
+        parent=None,
+        *,
+        rotation: float = 0.0,
+        orientable: bool = False,
     ) -> None:
         super().__init__(parent)
         self.socket_id = socket_id
         self.socket_type = socket_type
         self._color = QColor(color)
-        self._dragging = False
+        self._orientable = bool(orientable)
+        self._interaction: str | None = None
+        self._rotation_start = float(rotation)
+        self._pointer_angle_start = 0.0
+        self.setRotation(float(rotation))
         self.setZValue(80.0)
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
 
     def boundingRect(self) -> QRectF:
+        if self._orientable:
+            return QRectF(-12.0, -12.0, 48.0, 24.0)
         return QRectF(-9.0, -9.0, 18.0, 18.0)
 
     def paint(self, painter, option, widget=None) -> None:
         del option, widget
         painter.setRenderHint(painter.RenderHint.Antialiasing, True)
+        if self._orientable:
+            painter.setPen(QPen(QColor(self._color), 2.0, Qt.PenStyle.SolidLine))
+            painter.drawLine(QPointF(6.0, 0.0), QPointF(28.0, 0.0))
+            arrow = QPolygonF(
+                [QPointF(28.0, 0.0), QPointF(20.0, -4.5), QPointF(20.0, 4.5)]
+            )
+            painter.setBrush(QBrush(self._color))
+            painter.drawPolygon(arrow)
+            painter.setBrush(QBrush(QColor("#f4fbff")))
+            painter.setPen(QPen(QColor("#10202b"), 1.25))
+            painter.drawEllipse(QRectF(25.0, -6.0, 12.0, 12.0))
         painter.setBrush(QBrush(self._color))
         painter.setPen(QPen(QColor("#f4fbff"), 2.0))
         painter.drawEllipse(QRectF(-7.0, -7.0, 14.0, 14.0))
@@ -562,25 +594,60 @@ class SceneSocketGraphicsItem(QGraphicsObject):
             self.socket_type[:1].upper(),
         )
 
+    def _interaction_for(self, point: QPointF) -> str | None:
+        if self._orientable and math.hypot(point.x() - 31.0, point.y()) <= 9.0:
+            return "rotate"
+        if math.hypot(point.x(), point.y()) <= 12.0:
+            return "move"
+        return None
+
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
-            self._dragging = True
+            self._interaction = self._interaction_for(event.pos())
+            if self._interaction is None:
+                event.ignore()
+                return
+            if self._interaction == "rotate":
+                pointer = event.scenePos() - self.scenePos()
+                self._rotation_start = float(self.rotation())
+                self._pointer_angle_start = math.degrees(
+                    math.atan2(pointer.y(), pointer.x())
+                )
             self.pressed.emit(self.socket_id)
             event.accept()
             return
         super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
-        if self._dragging and event.buttons() & Qt.MouseButton.LeftButton:
+        if self._interaction == "move" and event.buttons() & Qt.MouseButton.LeftButton:
             self.moved.emit(self.socket_id, event.scenePos())
+            event.accept()
+            return
+        if (
+            self._interaction == "rotate"
+            and event.buttons() & Qt.MouseButton.LeftButton
+        ):
+            pointer = event.scenePos() - self.scenePos()
+            angle = math.degrees(math.atan2(pointer.y(), pointer.x()))
+            rotation = self._rotation_start + angle - self._pointer_angle_start
+            self.setRotation(rotation)
+            self.rotated.emit(self.socket_id, float(rotation))
             event.accept()
             return
         super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
-        if self._dragging and event.button() == Qt.MouseButton.LeftButton:
-            self._dragging = False
+        if self._interaction == "move" and event.button() == Qt.MouseButton.LeftButton:
+            self._interaction = None
             self.released.emit(self.socket_id, event.scenePos())
+            event.accept()
+            return
+        if (
+            self._interaction == "rotate"
+            and event.button() == Qt.MouseButton.LeftButton
+        ):
+            self._interaction = None
+            self.rotation_released.emit(self.socket_id, float(self.rotation()))
             event.accept()
             return
         super().mouseReleaseEvent(event)
@@ -793,6 +860,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._socket_gesture_layer_id: str | None = None
         self._socket_gesture_start: QPointF | None = None
         self._socket_gesture_end: QPointF | None = None
+        self._socket_rotation_start: float | None = None
         self._marquee_origin: QPointF | None = None
         self._marquee_current: QPointF | None = None
         self._marquee_selection_before: tuple[str, ...] | None = None
@@ -1162,7 +1230,7 @@ class SceneAuthoringViewport(QGraphicsView):
         document = self.session.document
         if not isinstance(document, SceneAuthoringDocumentV2):
             return self._lighting_settings
-        lights: list[ScenePointLight] = []
+        lights: list[ScenePointLight | SceneDirectionalLight] = []
         for socket in document.sockets:
             if socket.type != "light":
                 continue
@@ -1172,15 +1240,25 @@ class SceneAuthoringViewport(QGraphicsView):
                 int(color_text[2:4], 16) / 255.0,
                 int(color_text[4:6], 16) / 255.0,
             )
-            lights.append(
-                ScenePointLight(
-                    id=socket.id,
-                    position=(float(socket.position.x), float(socket.position.y)),
-                    color=color,
-                    intensity=float(socket.intensity),
-                    radius=float(socket.radius),
+            if socket.kind == "directional":
+                lights.append(
+                    SceneDirectionalLight(
+                        id=socket.id,
+                        direction_degrees=float(socket.rotation.z),
+                        color=color,
+                        intensity=float(socket.intensity),
+                    )
                 )
-            )
+            else:
+                lights.append(
+                    ScenePointLight(
+                        id=socket.id,
+                        position=(float(socket.position.x), float(socket.position.y)),
+                        color=color,
+                        intensity=float(socket.intensity),
+                        radius=float(socket.radius),
+                    )
+                )
         if not lights:
             return self._lighting_settings
         return SceneLightingSettings(
@@ -1446,7 +1524,16 @@ class SceneAuthoringViewport(QGraphicsView):
                     if socket.type == "light"
                     else ("#c78cff" if socket.type == "vfx" else "#ffcf65")
                 )
-                marker = SceneSocketGraphicsItem(socket.id, socket.type, color)
+                orientable = socket.type == "vfx" or (
+                    socket.type == "light" and socket.kind == "directional"
+                )
+                marker = SceneSocketGraphicsItem(
+                    socket.id,
+                    socket.type,
+                    color,
+                    rotation=float(socket.rotation.z),
+                    orientable=orientable,
+                )
                 marker.setZValue(self._overlay_z(100.0))
                 marker.pressed.connect(
                     lambda socket_id: self.status_message.emit(
@@ -1459,6 +1546,8 @@ class SceneAuthoringViewport(QGraphicsView):
                 marker.pressed.connect(self._socket_pressed)
                 marker.moved.connect(self._socket_moved)
                 marker.released.connect(self._socket_released)
+                marker.rotated.connect(self._socket_rotated)
+                marker.rotation_released.connect(self._socket_rotation_released)
                 self.graphics_scene.addItem(marker)
                 self._socket_items[socket.id] = marker
                 if (
@@ -1632,13 +1721,16 @@ class SceneAuthoringViewport(QGraphicsView):
                     )
                     position = QPointF(x, y)
                 marker.setPos(position)
+                marker.setRotation(float(socket.rotation.z))
                 particle_item = self._particle_items.get(socket_id)
                 if particle_item is not None and socket.type == "vfx":
                     particle_item.setPos(position)
+                    particle_item.setRotation(float(socket.rotation.z))
                     particle_item.set_scale(float(socket.scale))
                 post_process_item = self._post_process_items.get(socket_id)
                 if post_process_item is not None and socket.type == "vfx":
                     post_process_item.setPos(position)
+                    post_process_item.setRotation(float(socket.rotation.z))
                     post_process_item.set_scale(float(socket.scale))
 
     def _refresh_selection(self, object_ids: Iterable[str] | None = None) -> None:
@@ -1785,6 +1877,7 @@ class SceneAuthoringViewport(QGraphicsView):
             float(socket.position.x), float(socket.position.y)
         )
         self._socket_gesture_end = QPointF(self._socket_gesture_start)
+        self._socket_rotation_start = float(socket.rotation.z)
 
     def _socket_moved(self, socket_id: str, scene_pos: QPointF) -> None:
         if self._socket_gesture_id != socket_id:
@@ -1820,6 +1913,7 @@ class SceneAuthoringViewport(QGraphicsView):
         self._socket_gesture_layer_id = None
         self._socket_gesture_start = None
         self._socket_gesture_end = None
+        self._socket_rotation_start = None
         if math.hypot(point.x - start.x(), point.y - start.y()) <= 0.01:
             return
         QTimer.singleShot(0, lambda: self._commit_socket_move(socket_id, point))
@@ -1831,6 +1925,61 @@ class SceneAuthoringViewport(QGraphicsView):
                 self._text(
                     "Efeito reposicionado" if changed else "Nenhuma alteração no efeito",
                     "Effect repositioned" if changed else "No effect changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            self._refresh_transforms(refresh_sockets=True)
+
+    def _socket_rotated(self, socket_id: str, rotation: float) -> None:
+        marker = self._socket_items.get(socket_id)
+        if marker is None:
+            return
+        marker.setRotation(float(rotation))
+        for visual in (
+            self._particle_items.get(socket_id),
+            self._post_process_items.get(socket_id),
+        ):
+            if visual is not None:
+                visual.setRotation(float(rotation))
+        self.viewport().update()
+
+    def _socket_rotation_released(self, socket_id: str, rotation: float) -> None:
+        socket = self._socket_record(socket_id)
+        start = self._socket_rotation_start
+        self._socket_rotation_start = None
+        self._socket_gesture_id = None
+        self._socket_gesture_layer_id = None
+        self._socket_gesture_start = None
+        self._socket_gesture_end = None
+        if socket is None:
+            return
+        if start is None:
+            start = float(socket.rotation.z)
+        if abs(float(rotation) - start) <= 0.01:
+            return
+        QTimer.singleShot(
+            0,
+            lambda: self._commit_socket_rotation(socket_id, float(rotation)),
+        )
+
+    def _commit_socket_rotation(self, socket_id: str, rotation: float) -> None:
+        socket = self._socket_record(socket_id)
+        if socket is None:
+            return
+        try:
+            changed = self.session.update_socket_rotation(
+                socket_id,
+                Point3Record(
+                    x=float(socket.rotation.x),
+                    y=float(socket.rotation.y),
+                    z=float(rotation),
+                ),
+            )
+            self.status_message.emit(
+                self._text(
+                    "Socket orientado" if changed else "Nenhuma alteração na orientação",
+                    "Socket oriented" if changed else "No orientation changes",
                 )
             )
         except (KeyError, PermissionError, ValueError) as exc:
