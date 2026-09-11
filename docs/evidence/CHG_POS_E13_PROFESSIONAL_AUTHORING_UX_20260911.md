@@ -14,6 +14,7 @@
 - [Requisitos obrigatórios do editor de cenários](../REQUISITOS_EDITOR_CENARIOS_COMPLETO_2026-08-30.md)
 - [Índice documental ativo](../INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md)
 - [Decisão de continuidade pós-E13](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
+- [Decisão de revisão humana final pós-E13](DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md)
 - Evidência nativa diagnóstica: `artifacts/usability-human-review-20260910/`
 - Evidência nativa pós-build: `artifacts/post-e13-native-flow-20260911-camera-timeline/`
 
@@ -77,4 +78,4 @@ O fluxo nativo realizado com o executável final10 registrou:
 
 ## Resultado
 
-Os testes, a build, as capturas nativas, os hashes e a requalificação do commit foram concluídos para a subetapa de câmera, guias de parallax e scrub contínuo, com critérios técnicos em `PASS`. A revisão humana final e os requisitos funcionais explicitamente preservados continuam pendentes. O estado formal permanece `IN_PROGRESS / OPEN`; falhas anteriores e limitações permanecem preservadas.
+Os testes, a build, as capturas nativas, os hashes e a requalificação do commit foram concluídos para a subetapa de câmera, guias de parallax e scrub contínuo, com critérios técnicos em `PASS`. Por decisão explícita do proprietário, a revisão humana final será realizada somente após a conclusão comprovada de iluminação direcional, efeitos orientáveis, partículas completas, tilemap/tileset e editor 3D. O estado formal permanece `IN_PROGRESS / OPEN`; falhas anteriores e limitações permanecem preservadas.

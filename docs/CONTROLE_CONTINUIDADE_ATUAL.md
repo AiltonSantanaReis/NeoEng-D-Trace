@@ -52,7 +52,7 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; câmera, guias de parallax, clip e scrub contínuo foram exercitados com capturas reais; revisão/aceite humano formal continua pendente |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | build pós-E13 abriu/fechou; câmera, guias de parallax, clip e scrub contínuo foram exercitados com capturas reais; por decisão do proprietário, a revisão humana fica deferida até os itens abertos passarem |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build limpa `post-e13-professional-clean-20260911-ux-camera`, proveniência `PASS`, executável/ZIP hashados e smoke `SUCCESS` em 11 checks |
 | Runtime funcional | `PASS` | build pós-E13 abriu/fechou e executou smoke; câmera e timeline foram exercitadas pelo fluxo nativo separado |
@@ -68,13 +68,14 @@ A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Registrar as decisões finais do proprietário e os gates formais da
-[auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md),
-incluindo a revisão da evidência nativa pós-E13. O trabalho técnico do lote,
-a build e as capturas nativas foram executados; revisão visual/humana,
-licença/proveniência de distribuição e os requisitos funcionais ainda abertos
-continuam explicitamente separados. O abort legado permanece como falha
-histórica preservada, não como resultado atual da suíte.
+Concluir e comprovar os itens funcionais ainda abertos antes de executar a
+[auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
+e a revisão humana final, conforme a
+[decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
+O trabalho técnico do lote, a build e as capturas nativas foram executados;
+revisão visual/humana, licença/proveniência de distribuição e os requisitos
+funcionais ainda abertos continuam explicitamente separados. O abort legado
+permanece como falha histórica preservada, não como resultado atual da suíte.
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada

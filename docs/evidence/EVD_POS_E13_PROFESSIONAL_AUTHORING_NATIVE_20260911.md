@@ -9,6 +9,7 @@
 - [Governança de integridade](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 - [Requisitos do editor de cenários](../REQUISITOS_EDITOR_CENARIOS_COMPLETO_2026-08-30.md)
 - [Mudança autorizada do lote](CHG_POS_E13_PROFESSIONAL_AUTHORING_UX_20260911.md)
+- [Decisão de revisão humana final](DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md)
 - Commit auditado: `19a16c373094d5b43a6b86cacaa5441f54dde1ae`
 - Branch: `Ailton/e08-renderer-20260908`
 
@@ -63,7 +64,7 @@ O salvamento nativo gerou [`persisted-camera-timeline.ndtscene.json`](../../arti
 
 ## Pendências que permanecem abertas
 
-- A revisão humana final das capturas ainda não foi registrada; por isso este documento não promove o lote inteiro a `PASS`.
+- A revisão humana final das capturas ainda não foi executada por decisão explícita do proprietário; ela será realizada depois dos itens abertos listados na decisão vinculada. Este documento não promove o lote inteiro a `PASS`.
 - Iluminação direcional com efeito de runtime, orientação editável dos efeitos, partículas completas, tilemap, colisão, NavMesh, exportação/round-trip e editor 3D continuam `OPEN`/`PENDING_EVIDENCE` conforme o lote autorizado.
 - Esta evidência comprova a subetapa de autoria de câmera, guias de parallax e scrub contínuo; não comprova maturidade completa 2D/2.5D/3D nem encerra E13.
 

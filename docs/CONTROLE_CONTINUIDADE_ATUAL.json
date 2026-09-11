@@ -38,7 +38,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Registrar a revisão humana da evidência nativa pós-E13 e manter os requisitos funcionais, licença/proveniência e a falha histórica preservada explicitamente separados.",
+    "next_action": "Concluir e comprovar iluminação direcional, efeitos orientáveis, partículas completas, tilemap/tileset e editor 3D; depois executar a revisão humana final conforme a decisão formal de deferimento.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
@@ -115,11 +115,12 @@
       "native_human_status": "PENDING_EVIDENCE",
       "native_technical_status": "PASS",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
+      "human_review_decision": "docs/evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md",
       "human_review_required_before_close": true,
       "latest_binary_capture": "artifacts/post-e13-native-flow-20260911-camera-timeline/reload-camera-inspector-persisted-real-24053066.png",
       "latest_binary_capture_sha256": "018BDBBD1DA6F613C117A10040A687205E415AEDA75275B3AA7EEFABADAEA329",
       "latest_binary_capture_window": "3866x2090; editor nativo maximizado em tela 3840x2160",
-      "observed_finding": "Build pós-E13 executou câmera, guias Z00/Z01/Z02, clip de câmera, scrub contínuo e salvar/recarregar; inspeção humana formal, iluminação/efeitos direcionais, desempenho/DPI e requisitos funcionais restantes continuam pendentes.",
+      "observed_finding": "Build pós-E13 executou câmera, guias Z00/Z01/Z02, clip de câmera, scrub contínuo e salvar/recarregar; por decisão do proprietário, a revisão humana fica deferida até iluminação direcional, efeitos orientáveis, partículas completas, tilemap/tileset e editor 3D passarem pelos gates.",
       "final_audit": "docs/evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md",
       "native_capture_root": "artifacts/post-e13-native-flow-20260911-camera-timeline",
       "capture_fallback": "Win32 mouse_event/keybd_event/PrintWindow; CUA indisponível e declarado",

@@ -61,6 +61,7 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `PLANO_INTERFACE_MODERNA_PROFISSIONAL_2026-08-21.md` | ATIVO / SUPORTE | requisitos visuais e UX | plano normativo |
 | `EVIDENCIA_AUDITORIA_PUBLICACAO_PRIVACIDADE_2026-08-30.md` | ATIVO / EVIDÊNCIA DE PUBLICAÇÃO | auditoria repository-wide, revisão dos commits locais e saneamento da linha publicada | governança e requisitos de escopo final |
 | `evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md` | ATIVO / DECISÃO APROVADA | continuidade pós-E13, lote ativo, escopo autorizado e decisões reservadas | governança, plano mestre e base pós-E13 |
+| `evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md` | ATIVO / DECISÃO APROVADA | revisão humana final deferida até os itens funcionais abertos passarem | governança, decisão de continuidade pós-E13 e evidência nativa profissional |
 | `evidence/CHG_POS_E13_MATERIAL_DEFAULT_EDIT_20260910.md` | ATIVO / REGISTRO DE MUDANÇA EM IMPLEMENTAÇÃO | correção controlada dos defaults editáveis do Material V2 | decisão de continuidade pós-E13, governança e E08-C.4 |
 | `evidence/CHG_POS_E13_PTBR_STATUS_20260910.md` | ATIVO / REGISTRO DE MUDANÇA EM IMPLEMENTAÇÃO | estados PT-BR do recarregamento e do Inspector | decisão de continuidade pós-E13, governança e P13-B |
 | `evidence/CHG_POS_E13_TILEMAP_VECTOR_FLOW_20260910.md` | ATIVO / REGISTRO DE MUDANÇA EM IMPLEMENTAÇÃO | localização do Tilemap e seleção vetorial no fluxo nativo | decisão de continuidade pós-E13, governança, REQ-F03, REQ-F04, REQ-F10 e REQ-F02 |
