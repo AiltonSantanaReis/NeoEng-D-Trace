@@ -53,6 +53,9 @@ REQUIRED_STATES = (
 )
 FORBIDDEN_COLORS = ("#FF4500", "#00BFFF")
 CONTENT_COLOR_FILES = {
+    # Hybrid 2D/2.5D/3D grid, gizmo and scene markers are content semantics,
+    # not application chrome.
+    "src/ui/hybrid_scene_viewport.py",
     "src/ui/scene_authoring_inspector.py",
     "src/ui/scene_authoring_viewport.py",
     # Tilemap cells and grid lines are scene content semantics, not chrome.

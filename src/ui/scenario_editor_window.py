@@ -83,6 +83,7 @@ from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
 from src.ui.tileset_authoring_panel import TilesetAuthoringPanel
 from src.ui.vector_contour_panel import VectorContourPanel
 from src.ui.scene_sequence_panel import SceneSequencePanel
+from src.ui.hybrid_scene_viewport import HybridSceneViewport
 
 
 class ScenarioEditorWindow(QMainWindow):
@@ -111,6 +112,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.sequence_panel = None
         self.studio_docks = []
         self.professional_viewport: SceneAuthoringViewport | None = None
+        self.hybrid_viewport: HybridSceneViewport | None = None
         self._professional_initial_focus_applied = False
         self.professional_inspector: SceneAuthoringInspector | None = None
         self.professional_inspector_scroll: QScrollArea | None = None
@@ -211,6 +213,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.overlay_action = QAction(self)
         self.preview_action = QAction(self)
         self.authoring_action = QAction(self)
+        self.hybrid_action = QAction(self)
         self.upgrade_action = QAction(self)
         self.recover_action = QAction(self)
         self.recover_action.setShortcut(QKeySequence("Ctrl+Alt+Shift+R"))
@@ -233,6 +236,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.overlay_action.setCheckable(True)
         self.preview_action.setCheckable(True)
         self.authoring_action.setCheckable(True)
+        self.hybrid_action.setCheckable(True)
         self.preview_action.setChecked(False)
         self.authoring_action.setChecked(True)
         self.mode_group = QActionGroup(self)
@@ -260,7 +264,12 @@ class ScenarioEditorWindow(QMainWindow):
         self._add_toolbar_menu(
             "view",
             "Visualizar",
-            (self.overlay_action, self.preview_action, self.authoring_action),
+            (
+                self.overlay_action,
+                self.preview_action,
+                self.authoring_action,
+                self.hybrid_action,
+            ),
         )
         self._add_toolbar_menu(
             "more",
@@ -299,6 +308,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.overlay_action.triggered.connect(self._toggle_overlays)
         self.preview_action.triggered.connect(self._toggle_professional_preview)
         self.authoring_action.triggered.connect(self._toggle_professional_authoring)
+        self.hybrid_action.triggered.connect(self._toggle_hybrid_view)
         self.authoring.subscribe(self.refresh)
         self.update_language(language)
         self.refresh()
@@ -368,6 +378,17 @@ class ScenarioEditorWindow(QMainWindow):
         if project_path is None:
             return
         scene_path = project_path.with_suffix(".ndtscene.json")
+        hybrid_path = project_path.with_suffix(".hybrid3d.json")
+        if (
+            self.hybrid_viewport is not None
+            and self.hybrid_viewport.scene_path != hybrid_path
+        ):
+            self.professional_pages.removeWidget(self.hybrid_viewport)
+            self.hybrid_viewport.deleteLater()
+            self.hybrid_viewport = None
+        self.hybrid_action.blockSignals(True)
+        self.hybrid_action.setChecked(False)
+        self.hybrid_action.blockSignals(False)
         self._professional_project = project_path
         self.professional_scene_path = scene_path
         if document is None and scene_path.is_file():
@@ -543,15 +564,39 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_inspector_scroll = inspector_scroll
         self._professional_project = project_path
         self.professional_scene_path = scene_path
-        self._build_studio_panels(session, viewport, inspector_scroll, project_path.parent)
+        self._build_studio_panels(
+            session, viewport, inspector_scroll, project_path.parent
+        )
         self._configure_professional_tab_order(viewport, inspector)
         session.subscribe(self._update_professional_status)
         session.subscribe(self._emit_document_changed)
         if document.objects:
             QTimer.singleShot(0, viewport.frame_loaded_content)
 
+    def _ensure_hybrid_viewport(self) -> HybridSceneViewport | None:
+        project_path = self._professional_project or self.authoring.project_path
+        if project_path is None:
+            return None
+        scene_path = project_path.with_suffix(".hybrid3d.json")
+        if self.hybrid_viewport is not None:
+            if self.hybrid_viewport.scene_path == scene_path:
+                return self.hybrid_viewport
+            self.professional_pages.removeWidget(self.hybrid_viewport)
+            self.hybrid_viewport.deleteLater()
+            self.hybrid_viewport = None
+        viewport = HybridSceneViewport(
+            scene_path,
+            language=self.current_lang,
+            parent=self.professional_pages,
+        )
+        viewport.status_message.connect(self._show_professional_status)
+        self.professional_pages.addWidget(viewport)
+        self.hybrid_viewport = viewport
+        return viewport
+
     def _build_studio_panels(self, session, viewport, inspector_scroll, project_root):
         pt = self.current_lang == "pt"
+
         def scroll_for(panel):
             scroll = QScrollArea()
             scroll.setWidgetResizable(True)
@@ -561,9 +606,11 @@ class ScenarioEditorWindow(QMainWindow):
 
         self.studio_library_tabs = QTabWidget()
         self.studio_library_tabs.setObjectName("scene_studio_library_tabs")
-        for panel, title in ((self.layer_stack, "Molduras" if pt else "Frames"),
-                             (self.group_stack, "Hierarquia" if pt else "Hierarchy"),
-                             (self.asset_library, "Biblioteca" if pt else "Library")):
+        for panel, title in (
+            (self.layer_stack, "Molduras" if pt else "Frames"),
+            (self.group_stack, "Hierarquia" if pt else "Hierarchy"),
+            (self.asset_library, "Biblioteca" if pt else "Library"),
+        ):
             self.studio_library_tabs.addTab(scroll_for(panel), title)
         dock = QDockWidget("Composição" if pt else "Composition", self)
         dock.setObjectName("scene_studio_composition_dock")
@@ -576,22 +623,44 @@ class ScenarioEditorWindow(QMainWindow):
         self.layer_stack.update_language(self.current_lang)
         self.group_stack.update_language(self.current_lang)
         self.layer_stack.active_layer_changed.connect(viewport.set_active_layer)
-        self.layer_stack.active_layer_changed.connect(lambda layer_id: self.professional_inspector.layer_combo.setCurrentIndex(self.professional_inspector.layer_combo.findData(layer_id)))
+        self.layer_stack.active_layer_changed.connect(
+            lambda layer_id: self.professional_inspector.layer_combo.setCurrentIndex(
+                self.professional_inspector.layer_combo.findData(layer_id)
+            )
+        )
+
         def place(asset_id, layer_id):
             viewport.set_active_layer(layer_id)
             viewport.place_asset_from_library(asset_id)
+
         self.layer_stack.asset_drop_requested.connect(place)
         self.asset_library.asset_place_requested.connect(
             viewport.place_asset_from_library
         )
-        self.sequence_panel = SceneSequencePanel(session, viewport, self.professional_pages, project_root, self.current_lang, self)
+        self.sequence_panel = SceneSequencePanel(
+            session,
+            viewport,
+            self.professional_pages,
+            project_root,
+            self.current_lang,
+            self,
+        )
         self.sequence_panel.status_message.connect(self._show_professional_status)
         self.studio_inspector_tabs = QTabWidget()
         self.studio_inspector_tabs.setObjectName("scene_studio_inspector_tabs")
-        self.studio_inspector_tabs.addTab(self.sequence_panel.editor, "Clipe" if pt else "Clip")
+        self.studio_inspector_tabs.addTab(
+            self.sequence_panel.editor, "Clipe" if pt else "Clip"
+        )
         advanced = QTabWidget()
         advanced.setTabPosition(QTabWidget.TabPosition.West)
-        for panel, title in ((self.vector_contour_panel, "Formas" if pt else "Shapes"), (self.tileset_panel, "Tileset"), (self.tilemap_panel, "Tilemap"), (self.collider_panel, "Colisão" if pt else "Collision"), (self.navmesh_panel, "Navegação" if pt else "Navigation"), (self.entity_prefab_panel, "Entidades" if pt else "Entities")):
+        for panel, title in (
+            (self.vector_contour_panel, "Formas" if pt else "Shapes"),
+            (self.tileset_panel, "Tileset"),
+            (self.tilemap_panel, "Tilemap"),
+            (self.collider_panel, "Colisão" if pt else "Collision"),
+            (self.navmesh_panel, "Navegação" if pt else "Navigation"),
+            (self.entity_prefab_panel, "Entidades" if pt else "Entities"),
+        ):
             advanced.addTab(scroll_for(panel), title)
         self.studio_inspector_tabs.addTab(advanced, "Ferramentas" if pt else "Tools")
         inspector_bridge = QWidget()
@@ -603,7 +672,9 @@ class ScenarioEditorWindow(QMainWindow):
                 else "The numeric inspector remains on the main page."
             )
         )
-        inspector_bridge_button = QPushButton("Abrir inspetor" if pt else "Open inspector")
+        inspector_bridge_button = QPushButton(
+            "Abrir inspetor" if pt else "Open inspector"
+        )
         inspector_bridge_button.clicked.connect(
             lambda: self.right_pages.setCurrentWidget(inspector_scroll)
         )
@@ -626,8 +697,12 @@ class ScenarioEditorWindow(QMainWindow):
         timeline_dock.setObjectName("scene_studio_timeline_dock")
         timeline_dock.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
         timeline_dock.setWidget(self.sequence_panel)
-        self.setCorner(Qt.Corner.BottomLeftCorner, Qt.DockWidgetArea.BottomDockWidgetArea)
-        self.setCorner(Qt.Corner.BottomRightCorner, Qt.DockWidgetArea.BottomDockWidgetArea)
+        self.setCorner(
+            Qt.Corner.BottomLeftCorner, Qt.DockWidgetArea.BottomDockWidgetArea
+        )
+        self.setCorner(
+            Qt.Corner.BottomRightCorner, Qt.DockWidgetArea.BottomDockWidgetArea
+        )
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, timeline_dock)
         self.studio_docks.append(timeline_dock)
         self.resizeDocks([timeline_dock], [220], Qt.Orientation.Vertical)
@@ -1034,7 +1109,17 @@ class ScenarioEditorWindow(QMainWindow):
         """Start an editable professional scene without requiring a project file."""
 
         if self.professional_session is not None and self.professional_session.is_dirty:
-            answer = QMessageBox.question(self, "Novo cenário" if self.current_lang == "pt" else "New scene", "Descartar alterações não salvas do cenário atual?" if self.current_lang == "pt" else "Discard unsaved changes in the current scene?", QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel, QMessageBox.StandardButton.Cancel)
+            answer = QMessageBox.question(
+                self,
+                "Novo cenário" if self.current_lang == "pt" else "New scene",
+                (
+                    "Descartar alterações não salvas do cenário atual?"
+                    if self.current_lang == "pt"
+                    else "Discard unsaved changes in the current scene?"
+                ),
+                QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Cancel,
+            )
             if answer != QMessageBox.StandardButton.Discard:
                 return False
         try:
@@ -1047,13 +1132,35 @@ class ScenarioEditorWindow(QMainWindow):
             )
             project_path = Path(self._temporary_project_dir.name) / "Untitled.ndtproj"
             from src.models.scene import Scene
+
             empty_scene = Scene()
             empty_scene.save_project(str(project_path))
             document = professional_document_from_scene(empty_scene, project_path)
-            document = document.model_copy(update={
-                "layers": [SceneLayerAuthoringRecord(id=key, name=name) for key, name in zip(("background", "midground", "foreground"), ("Fundo", "Meio", "Frente") if self.current_lang == "pt" else ("Background", "Midground", "Foreground"))],
-                "parallax_layers": [SceneParallaxLayerRecord(layer_id=key, depth=depth, scroll_x=ratio, scroll_y=ratio) for key, depth, ratio in (("background", .8, .2), ("midground", .4, .6), ("foreground", 0., 1.))],
-            })
+            document = document.model_copy(
+                update={
+                    "layers": [
+                        SceneLayerAuthoringRecord(id=key, name=name)
+                        for key, name in zip(
+                            ("background", "midground", "foreground"),
+                            (
+                                ("Fundo", "Meio", "Frente")
+                                if self.current_lang == "pt"
+                                else ("Background", "Midground", "Foreground")
+                            ),
+                        )
+                    ],
+                    "parallax_layers": [
+                        SceneParallaxLayerRecord(
+                            layer_id=key, depth=depth, scroll_x=ratio, scroll_y=ratio
+                        )
+                        for key, depth, ratio in (
+                            ("background", 0.8, 0.2),
+                            ("midground", 0.4, 0.6),
+                            ("foreground", 0.0, 1.0),
+                        )
+                    ],
+                }
+            )
             self._temporary_project_path = project_path
             self.authoring.bind_project(project_path)
             self._build_professional_viewport(document=document, mark_unsaved=True)
@@ -1092,9 +1199,11 @@ class ScenarioEditorWindow(QMainWindow):
             self,
             "Salvar Projeto Como" if self.current_lang == "pt" else "Save Project As",
             "SemNome.ndtproj" if self.current_lang == "pt" else "Untitled.ndtproj",
-            "Projeto NeoEng (*.ndtproj)"
-            if self.current_lang == "pt"
-            else "NeoEng project (*.ndtproj)",
+            (
+                "Projeto NeoEng (*.ndtproj)"
+                if self.current_lang == "pt"
+                else "NeoEng project (*.ndtproj)"
+            ),
         )
         if not path_text:
             return False
@@ -1109,8 +1218,14 @@ class ScenarioEditorWindow(QMainWindow):
                 source, issue = resolve_scene_asset(asset, source_root)
                 if source is None:
                     raise ValueError(issue)
-                prepared = prepare_scene_asset(source, destination.parent, allow_audio=True)
-                relocated_assets.append(asset.model_copy(update={"path": prepared.path, "sha256": prepared.sha256}))
+                prepared = prepare_scene_asset(
+                    source, destination.parent, allow_audio=True
+                )
+                relocated_assets.append(
+                    asset.model_copy(
+                        update={"path": prepared.path, "sha256": prepared.sha256}
+                    )
+                )
             document = document.model_copy(update={"assets": relocated_assets})
             self.scene.save_project(str(destination))
             if isinstance(document, SceneAuthoringDocumentV2):
@@ -1153,6 +1268,34 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _toggle_professional_authoring(self) -> None:
         self._set_editor_mode(preview=False)
+
+    def _toggle_hybrid_view(self) -> None:
+        if self.hybrid_action.isChecked():
+            viewport = self._ensure_hybrid_viewport()
+            if viewport is None:
+                self.hybrid_action.blockSignals(True)
+                self.hybrid_action.setChecked(False)
+                self.hybrid_action.blockSignals(False)
+                self.status_label.setText(
+                    "Abra ou crie um projeto antes do viewport 3D"
+                    if self.current_lang == "pt"
+                    else "Open or create a project before using the 3D viewport"
+                )
+                return
+            self.professional_pages.setCurrentWidget(viewport)
+            self.status_label.setText(
+                "Viewport 3D/híbrido — alterações salvas no sidecar"
+                if self.current_lang == "pt"
+                else "3D/hybrid viewport — changes are saved in a sidecar"
+            )
+            return
+        if self.professional_viewport is not None:
+            self.professional_pages.setCurrentWidget(self.professional_viewport)
+            self.status_label.setText(
+                "Viewport 2D profissional"
+                if self.current_lang == "pt"
+                else "Professional 2D viewport"
+            )
 
     def _set_editor_mode(self, *, preview: bool) -> None:
         self.preview_action.setChecked(preview)
@@ -1202,6 +1345,11 @@ class ScenarioEditorWindow(QMainWindow):
         self.overlay_action.setEnabled(available)
         self.preview_action.setEnabled(available)
         self.authoring_action.setEnabled(available)
+        self.hybrid_action.setEnabled(available)
+        if not available and self.hybrid_action.isChecked():
+            self.hybrid_action.blockSignals(True)
+            self.hybrid_action.setChecked(False)
+            self.hybrid_action.blockSignals(False)
         if self.professional_inspector is not None:
             self.professional_inspector.setEnabled(
                 available and not self.preview_action.isChecked()
@@ -1331,9 +1479,17 @@ class ScenarioEditorWindow(QMainWindow):
         if self.sequence_panel is not None:
             self.sequence_panel.update_language(self.current_lang)
         if hasattr(self, "studio_library_tabs"):
-            for index, label in enumerate(("Molduras", "Hierarquia", "Biblioteca") if self.current_lang == "pt" else ("Frames", "Hierarchy", "Library")):
+            for index, label in enumerate(
+                ("Molduras", "Hierarquia", "Biblioteca")
+                if self.current_lang == "pt"
+                else ("Frames", "Hierarchy", "Library")
+            ):
                 self.studio_library_tabs.setTabText(index, label)
-            for index, label in enumerate(("Inspetor", "Clipe", "Ferramentas") if self.current_lang == "pt" else ("Inspector", "Clip", "Tools")):
+            for index, label in enumerate(
+                ("Inspetor", "Clipe", "Ferramentas")
+                if self.current_lang == "pt"
+                else ("Inspector", "Clip", "Tools")
+            ):
                 self.studio_inspector_tabs.setTabText(index, label)
         if self.current_lang == "pt":
             self.setWindowTitle("Editor de Cenário — NeoEng-D-Trace")
@@ -1352,6 +1508,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Sobreposições",
                 "Pré-visualização de Paralaxe",
                 "Autoria",
+                "Viewport 3D/Híbrido",
             )
         else:
             self.setWindowTitle("Scenario Editor — NeoEng-D-Trace")
@@ -1370,6 +1527,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Overlays",
                 "Parallax Preview",
                 "Authoring",
+                "3D/Hybrid Viewport",
             )
         tooltips = (
             (
@@ -1387,6 +1545,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Sobreposições",
                 "Pré-visualização de Paralaxe",
                 "Autoria",
+                "Viewport 3D/Híbrido",
             )
             if self.current_lang == "pt"
             else (
@@ -1404,6 +1563,7 @@ class ScenarioEditorWindow(QMainWindow):
                 "Overlays",
                 "Parallax Preview",
                 "Authoring",
+                "3D/Hybrid Viewport",
             )
         )
         for action, label in zip(
@@ -1422,6 +1582,7 @@ class ScenarioEditorWindow(QMainWindow):
                 self.overlay_action,
                 self.preview_action,
                 self.authoring_action,
+                self.hybrid_action,
             ),
             labels,
         ):
@@ -1442,6 +1603,7 @@ class ScenarioEditorWindow(QMainWindow):
                 self.overlay_action,
                 self.preview_action,
                 self.authoring_action,
+                self.hybrid_action,
             ),
             tooltips,
         ):
@@ -1472,6 +1634,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.scenario_panel.update_language(self.current_lang)
         if self.professional_viewport is not None:
             self.professional_viewport.update_language(self.current_lang)
+        if self.hybrid_viewport is not None:
+            self.hybrid_viewport.update_language(self.current_lang)
         if self.professional_inspector is not None:
             self.professional_inspector.update_language(self.current_lang)
         if self.layer_stack is not None:
