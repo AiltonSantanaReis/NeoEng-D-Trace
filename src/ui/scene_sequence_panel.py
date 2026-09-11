@@ -83,8 +83,38 @@ class ClipBlock(QGraphicsRectItem):
 class TimelineView(QGraphicsView):
     def __init__(self, scene, parent=None):
         super().__init__(scene, parent)
+        # QGraphicsView does not take ownership of a scene supplied without a
+        # QObject parent.  Standalone timeline previews would therefore leave
+        # a native scene alive independently of the view, and PySide could
+        # destroy the two in an unsafe order after a close event.  The editor's
+        # embedded scene is already owned by SceneSequencePanel and is left
+        # untouched.
+        if parent is None and scene is not None and scene.parent() is None:
+            scene.setParent(self)
         self._scrubbing = False
         self.setMouseTracking(True)
+
+    def closeEvent(self, event):
+        """Release standalone timeline views after their native close event.
+
+        The editor embeds this view in ``SceneSequencePanel`` and therefore
+        lets the panel own its lifetime.  A standalone view (for example, a
+        focused interaction preview) has no QWidget parent, so merely hiding
+        it with ``close()`` leaves the native QGraphicsView alive across event
+        loops.  Deferring deletion until Qt finishes dispatching the close
+        event avoids destroying the receiver while it is still handling that
+        event, while keeping the embedded timeline untouched.
+        """
+        super().closeEvent(event)
+        if self.parentWidget() is None:
+            # Detach the scene before the deferred native destruction.  This
+            # keeps a standalone view from retaining a raw scene pointer while
+            # Qt drains the close/deferred-delete events.
+            scene = self.scene()
+            self.setScene(None)
+            if scene is not None and scene.parent() is self:
+                scene.deleteLater()
+            self.deleteLater()
 
     def _seek_from_event(self, event) -> bool:
         position = self.mapToScene(event.position().toPoint())
