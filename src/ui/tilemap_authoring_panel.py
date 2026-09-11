@@ -30,7 +30,14 @@ from src.core.tilemap_model import (
     TileMapDocument,
     TileSet,
 )
-from src.core.tilemap_tools import TileEditTransaction, TileTool, erase_line, paint_line
+from src.core.tilemap_tools import (
+    TileEditTransaction,
+    TileTool,
+    bucket_fill,
+    erase_line,
+    paint_line,
+    paint_rectangle,
+)
 from src.persistence.tilemap_io import load_tilemap, save_tilemap
 
 
@@ -63,6 +70,7 @@ class TileMapCanvas(QFrame):
     """Small interactive canvas that uses the same grid transform as picking."""
 
     cell_painted = Signal(tuple, tuple)
+    gesture_finished = Signal(tuple, tuple)
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -72,6 +80,7 @@ class TileMapCanvas(QFrame):
         self.document: TileMapDocument | None = None
         self.grid_kind = GridKind.ORTHOGONAL
         self._last_cell: tuple[int, int] | None = None
+        self._drag_start: tuple[int, int] | None = None
         self._tile_images: dict[str, QImage] = {}
         self.active_layer_id: str | None = None
 
@@ -100,12 +109,18 @@ class TileMapCanvas(QFrame):
             -self.height() / 2.0,
         )
 
+    def grid_spec(self) -> GridSpec:
+        """Return the exact grid transform used by pointer picking."""
+
+        return self._spec()
+
     def _cell_at(self, point: QPoint) -> tuple[int, int]:
         return self._spec().world_to_cell((float(point.x()), float(point.y())))
 
     def mousePressEvent(self, event: Any) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
             cell = self._cell_at(event.position().toPoint())
+            self._drag_start = cell
             self._last_cell = cell
             self.cell_painted.emit(cell, cell)
         super().mousePressEvent(event)
@@ -120,6 +135,11 @@ class TileMapCanvas(QFrame):
         super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event: Any) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            cell = self._cell_at(event.position().toPoint())
+            start = self._drag_start or cell
+            self.gesture_finished.emit(start, cell)
+            self._drag_start = None
         self._last_cell = None
         super().mouseReleaseEvent(event)
 
@@ -255,6 +275,9 @@ class TileMapAuthoringPanel(QWidget):
         for tool, label in (
             (TileTool.PENCIL, "Pincel"),
             (TileTool.ERASER, "Borracha"),
+            (TileTool.RECTANGLE, "Retângulo"),
+            (TileTool.BUCKET, "Balde"),
+            (TileTool.PICKER, "Conta-gotas"),
         ):
             self.tool_combo.addItem(label, tool.value)
         self.new_button = QPushButton(self)
@@ -269,6 +292,7 @@ class TileMapAuthoringPanel(QWidget):
         self.canvas = TileMapCanvas(self)
         self._tile_images: dict[str, QImage] = {}
         self.canvas.cell_painted.connect(self._paint_cells)
+        self.canvas.gesture_finished.connect(self._finish_gesture)
         self.grid_combo.currentIndexChanged.connect(self._grid_changed)
         self.tile_combo.currentIndexChanged.connect(self._tile_combo_changed)
         self.tile_palette.currentRowChanged.connect(self._tile_palette_changed)
@@ -512,12 +536,43 @@ class TileMapAuthoringPanel(QWidget):
         self.canvas.set_grid_kind(kind)
         self._refresh_summary()
 
+    def _select_tile(self, tile_id: str) -> bool:
+        index = self.tile_combo.findData(tile_id)
+        if index < 0:
+            return False
+        self.tile_combo.setCurrentIndex(index)
+        self.tile_palette.setCurrentRow(index)
+        return True
+
+    def _record_transaction(
+        self,
+        transaction: TileEditTransaction,
+        *,
+        pt_message: str = "Edição do tilemap aplicada",
+        en_message: str = "Tilemap edit applied",
+    ) -> None:
+        if not transaction.deltas:
+            self.status_message.emit(
+                self._status("Nenhuma célula alterada", "No cells changed")
+            )
+            return
+        self._undo.append(transaction)
+        self._redo.clear()
+        self._refresh_summary()
+        self.canvas.update()
+        self.status_message.emit(self._status(pt_message, en_message))
+
     def _paint_cells(self, start: tuple[int, int], end: tuple[int, int]) -> None:
-        if self.document is None or not self.tile_combo.currentData():
+        if self.document is None:
+            return
+        tool = self.tool_combo.currentData()
+        if tool not in {TileTool.PENCIL.value, TileTool.ERASER.value}:
+            return
+        if tool == TileTool.PENCIL.value and not self.tile_combo.currentData():
             return
         layer_id = self.layer_combo.currentData() or self.document.layers[0].id
         try:
-            if self.tool_combo.currentData() == TileTool.ERASER.value:
+            if tool == TileTool.ERASER.value:
                 transaction = erase_line(self.document, layer_id, start, end)
             else:
                 transaction = paint_line(
@@ -532,13 +587,77 @@ class TileMapAuthoringPanel(QWidget):
                 self._status(f"Edição não aplicada: {exc}", f"Edit not applied: {exc}")
             )
             return
-        if transaction.deltas:
-            self._undo.append(transaction)
-            self._redo.clear()
-            self._refresh_summary()
-            self.canvas.update()
+        self._record_transaction(transaction)
+
+    def _finish_gesture(
+        self, start: tuple[int, int], end: tuple[int, int]
+    ) -> None:
+        if self.document is None:
+            return
+        tool = self.tool_combo.currentData()
+        if tool not in {
+            TileTool.RECTANGLE.value,
+            TileTool.BUCKET.value,
+            TileTool.PICKER.value,
+        }:
+            return
+        layer_id = self.layer_combo.currentData() or self.document.layers[0].id
+        try:
+            if tool == TileTool.PICKER.value:
+                cell = self.document.get_cell(layer_id, start)
+                if cell is None:
+                    self.status_message.emit(
+                        self._status(
+                            "Conta-gotas: nenhuma célula ocupada",
+                            "Picker: no occupied cell",
+                        )
+                    )
+                    return
+                if not self._select_tile(cell.tile_id):
+                    self.status_message.emit(
+                        self._status(
+                            f"Conta-gotas: tile incompatível ({cell.tile_id})",
+                            f"Picker: incompatible tile ({cell.tile_id})",
+                        )
+                    )
+                    return
+                self.status_message.emit(
+                    self._status(
+                        f"Tile selecionado: {cell.tile_id}",
+                        f"Tile selected: {cell.tile_id}",
+                    )
+                )
+                return
+
+            tile_id = self.tile_combo.currentData()
+            if not tile_id:
+                return
+            if tool == TileTool.RECTANGLE.value:
+                transaction = paint_rectangle(
+                    self.document, layer_id, start, end, str(tile_id)
+                )
+                self._record_transaction(
+                    transaction,
+                    pt_message="Retângulo aplicado",
+                    en_message="Rectangle applied",
+                )
+                return
+
+            transaction = bucket_fill(
+                self.document,
+                layer_id,
+                start,
+                str(tile_id),
+                grid=self.canvas.grid_spec(),
+            )
+            self._record_transaction(
+                transaction,
+                pt_message="Preenchimento aplicado",
+                en_message="Bucket fill applied",
+            )
+        except ValueError as exc:
             self.status_message.emit(
-                self._status("Edição do tilemap aplicada", "Tilemap edit applied")
+                self._status(f"Edição não aplicada: {exc}", f"Edit not applied: {exc}")
             )
 
     def new_map(self) -> None:
@@ -625,7 +744,13 @@ class TileMapAuthoringPanel(QWidget):
         if self.current_lang == "pt":
             self.title_label.setText("Tilemap / Terreno")
             grid_labels = ("Ortogonal", "Isométrico", "Hexagonal")
-            tool_labels = ("Pincel", "Borracha")
+            tool_labels = (
+                "Pincel",
+                "Borracha",
+                "Retângulo",
+                "Balde",
+                "Conta-gotas",
+            )
             self.palette_label.setText("Paleta de tiles")
             self.layer_label.setText("Camada")
             self.new_button.setText("Novo")
@@ -638,7 +763,7 @@ class TileMapAuthoringPanel(QWidget):
         else:
             self.title_label.setText("Tilemap / Terrain")
             grid_labels = ("Orthogonal", "Isometric", "Hexagonal")
-            tool_labels = ("Pencil", "Eraser")
+            tool_labels = ("Pencil", "Eraser", "Rectangle", "Bucket", "Picker")
             self.palette_label.setText("Tile palette")
             self.layer_label.setText("Layer")
             self.new_button.setText("New")
@@ -652,6 +777,11 @@ class TileMapAuthoringPanel(QWidget):
             self.grid_combo.setItemText(index, label)
         for index, label in enumerate(tool_labels):
             self.tool_combo.setItemText(index, label)
+        self.tool_combo.setToolTip(
+            "Escolha a ferramenta e arraste no canvas"
+            if self.current_lang == "pt"
+            else "Choose a tool and drag on the canvas"
+        )
         self._refresh_summary()
 
 
