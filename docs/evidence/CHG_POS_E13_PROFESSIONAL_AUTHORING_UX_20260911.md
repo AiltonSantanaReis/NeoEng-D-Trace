@@ -4,6 +4,8 @@
 **Data:** 11/09/2026 (UTC-03)  
 **Base auditada:** `e9d24465bb1ff0212b9b68f07ea361953397da6e`  
 **Build de diagnóstico:** `build/_clean-post-e13-final10-20260910/`  
+**Código verificado nesta subetapa:** `19a16c373094d5b43a6b86cacaa5441f54dde1ae`
+**Evidência nativa desta subetapa:** [EVD-POS-E13-PROFESSIONAL-AUTHORING-NATIVE-20260911](EVD_POS_E13_PROFESSIONAL_AUTHORING_NATIVE_20260911.md)
 **Escopo:** lote controlado de melhorias de autoria profissional do editor de cenários, sem reabrir ou reinterpretar E13.
 
 ## Governança e autoridade
@@ -13,6 +15,7 @@
 - [Índice documental ativo](../INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md)
 - [Decisão de continuidade pós-E13](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 - Evidência nativa diagnóstica: `artifacts/usability-human-review-20260910/`
+- Evidência nativa pós-build: `artifacts/post-e13-native-flow-20260911-camera-timeline/`
 
 ## Motivação factual
 
@@ -74,4 +77,4 @@ O fluxo nativo realizado com o executável final10 registrou:
 
 ## Resultado
 
-`IN_PROGRESS` até que os testes, build, capturas, hashes, revisão humana e commit desta mudança sejam concluídos. Falhas anteriores e limitações permanecem preservadas.
+Os testes, a build, as capturas nativas, os hashes e a requalificação do commit foram concluídos para a subetapa de câmera, guias de parallax e scrub contínuo, com critérios técnicos em `PASS`. A revisão humana final e os requisitos funcionais explicitamente preservados continuam pendentes. O estado formal permanece `IN_PROGRESS / OPEN`; falhas anteriores e limitações permanecem preservadas.
