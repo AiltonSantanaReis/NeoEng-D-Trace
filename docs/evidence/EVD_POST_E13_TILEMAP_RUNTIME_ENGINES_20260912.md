@@ -112,6 +112,16 @@ A build foi produzida em worktree limpo a partir de `c39a867`:
 O warning de empacotamento `Hidden import "tzdata" not found!` permaneceu
 visível no log; não foi ocultado nem convertido em falha do produto.
 
+## Integração no exportador geral
+
+O commit `a7e22b3e625cd4190258f6ed44d2ef9a68aff7c1` integrou a emissão
+automática do payload ao `build_composition_package`. Com
+`auto_tilemap_runtime=True` e `atlas_path` válido, o pacote geral passa a
+incluir e validar o payload, a fonte e o atlas em `tilemap-runtime/`, com
+bindings hashados no `composition.json`. O teste focado passou com **8 passed**
+e cobre também o caminho legado sem atlas, que continua exportável com o estado
+explícito `not-emitted-legacy-atlas-missing`.
+
 ## Fluxos nativos reais no binário novo
 
 O executável recém-gerado foi aberto em janela nativa maximizada
@@ -155,10 +165,10 @@ Tileset: atlas real, gerar, salvar, novo e reabrir:
   `-batchmode -nographics`; sua captura usa o atlas decodificado após a
   materialização dos `SpriteRenderer`. Os relatórios e os casos negativos são
   a prova principal do runtime.
-- O payload/adapter está disponível como contrato explícito; a integração
-  automática dele no exportador geral de composição e o runtime externo do
-  editor híbrido 3D ainda são linhas posteriores, não foram declarados como
-  concluídos nesta evidência.
+- O payload/adapter e a integração automática no exportador geral estão
+  comprovados em contrato; o fluxo nativo dessa exportação no binário da build
+  final será registrado no gate pós-E13 correspondente. O runtime externo do
+  editor híbrido 3D permanece uma linha separada.
 - A revisão humana final continua deferida até iluminação direcional, efeitos
   orientáveis, partículas completas, Tilemap/Tileset e editor híbrido 3D
   estarem fechados conforme a decisão vigente.

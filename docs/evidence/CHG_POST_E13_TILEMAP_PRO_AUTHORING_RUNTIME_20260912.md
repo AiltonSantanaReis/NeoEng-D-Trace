@@ -8,7 +8,7 @@
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
-**Base de código do checkpoint atual:** `c39a8670cee23e4bdd423429e2eb65d6b1d7c534`
+**Base de código do checkpoint atual:** `a7e22b3e625cd4190258f6ed44d2ef9a68aff7c1`
 
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
@@ -105,7 +105,24 @@ fluxo Win32 do binário novo e auditoria real nos dois engines. O caso positivo
 materializou 27/27 células em cada engine; o caso negativo rejeitou o atlas
 alterado por hash/tamanho. O gate específico de runtime está `PASS`.
 
-O estado deste registro, porém, permanece `IN_PROGRESS / PENDING_EVIDENCE`:
-integração automática do payload ao exportador geral de composição, runtime
-externo do editor híbrido 3D e revisão humana final continuam linhas abertas
-do lote pós-E13. Nenhuma dessas pendências foi ocultada ou reclassificada.
+## Integração automática com composição
+
+O commit `a7e22b3e625cd4190258f6ed44d2ef9a68aff7c1` integrou o exportador de
+runtime ao `build_composition_package` de forma aditiva. A exportação do Editor
+de Cenário passa `auto_tilemap_runtime=True`; quando o Tilemap possui
+`atlas_path` válido, o pacote geral inclui `tilemap-runtime/tilemap-runtime.json`,
+`tilemap-runtime/tilemap.json` e o atlas copiado, todos com SHA-256 e validação
+no próprio `composition.json`. Documentos legados sem `atlas_path` continuam
+exportáveis e recebem o estado explícito
+`not-emitted-legacy-atlas-missing`, sem fallback silencioso.
+
+O teste de contrato dessa integração passou com **8 passed** em
+`tests/test_composition_export.py`, incluindo emissão, revalidação dos
+componentes e compatibilidade do documento legado.
+
+O estado deste registro permanece `IN_PROGRESS / PENDING_EVIDENCE`: o gate de
+runtime externo e a integração por contrato estão tecnicamente aprovados, mas
+o build limpo do checkpoint integrado e o fluxo nativo dessa exportação geral
+ainda são linhas abertas do lote pós-E13. O runtime externo do editor híbrido
+3D já possui gate técnico separado `PASS`. A revisão humana final continua
+deferida. Nenhuma pendência foi ocultada ou reclassificada.

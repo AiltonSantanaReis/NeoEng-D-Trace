@@ -2,7 +2,7 @@
 
 **ID:** `CHG-P13-HYBRID-3D-AUTHORING-20260911`
 
-**Estado:** `CHECKPOINT TÉCNICO PASS`
+**Estado:** `CHECKPOINT TÉCNICO PASS — RUNTIME EXTERNO PASS; LOTE GERAL PENDENTE`
 
 **Data:** 2026-09-11
 
@@ -43,8 +43,8 @@ os requisitos finais antes de testes nativos, persistência, build e evidência.
   câmera do editor e a câmera autorada da cena.
 - **Proteções:** sidecar versionado, validação fail-closed, câmera de editor
   separada da câmera autorada, controles localizados, teste de pintura e
-  round-trip, captura nativa e limitação explícita `PENDING_EVIDENCE` para
-  runtime externo.
+  round-trip, manifesto de runtime com hashes, adapters nativos Godot/Unity,
+  captura observável e teste negativo de drift.
 
 ## Implementação e findings reproduzíveis
 
@@ -65,13 +65,18 @@ os requisitos finais antes de testes nativos, persistência, build e evidência.
   estilo foi removido e os tons de grade, gizmo e marcadores foram classificados
   explicitamente como semântica de conteúdo 3D no auditor, como já ocorre com
   o viewport profissional 2D, tilemap e timeline.
+- O runtime externo foi fechado como gate técnico separado. O exportador gera
+  uma cena normalizada e um manifesto hash-bound; os adapters nativos criam
+  mesh, material, câmera, luz e animação no Godot e no Unity. Um pacote com a
+  cena normalizada alterada foi rejeitado pelos dois engines antes da criação
+  dos objetos.
 
 Esses findings permanecem rastreáveis nos testes e não foram convertidos em
-`PASS` por filtro. A promoção do checkpoint técnico foi comprovada por build
-limpa, execução nativa com cliques, persistência, capturas hashadas e análise
-explícita da limitação de runtime externo. A implementação continua
-deliberadamente limitada ao estado `EDITOR_VERTICAL_SLICE`; isso não equivale
-a runtime 3D externo nem encerra a revisão humana final.
+`PASS` por filtro. O runtime externo possui agora um gate técnico `PASS`,
+registrado em [`EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md`](EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md).
+A implementação continua deliberadamente limitada ao estado
+`VERTICAL_SLICE_ONLY`; isso não equivale ao runtime 3D completo nem encerra a
+revisão humana final.
 
 ## Evidência do checkpoint
 
@@ -80,12 +85,16 @@ O fluxo nativo, a suíte oficial e os hashes estão registrados em
 O escopo comprovado é autoria híbrida no editor: cena iniciada sem asset 2D,
 criação de plano/luz/câmera, seleção hierárquica, edição de alvo, arraste,
 órbita, modos 2.5D/3D, projeção ortográfica, salvar/reabrir e localização
-PT-BR. Permanecem `PENDING_EVIDENCE` a equivalência com runtime externo e a
-revisão humana final deferida pela decisão formal pós-E13.
+PT-BR. O runtime externo é detalhado em
+[`EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md`](EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md).
+Permanece `PENDING_EVIDENCE` o build final deste lote e o fluxo nativo da
+integração geral de composição; a revisão humana final continua deferida pela
+decisão formal pós-E13.
 
 ## Critério de saída
 
-O checkpoint só poderá ser promovido quando houver implementação, testes,
-suíte oficial sem filtros, build hashada, fluxo nativo real de criação/edição,
-capturas, salvar/reabrir e limitações. O aceite humano final permanece
-deferido até todos os blocos definidos pelo proprietário passarem.
+O gate de runtime foi promovido com implementação, testes de contrato, dois
+engines reais, captura, rejeição de drift e limitações. O registro geral só
+poderá ser encerrado quando a suíte oficial, build hashada, integração geral
+de composição e todos os blocos definidos pelo proprietário passarem. O aceite
+humano final permanece deferido.
