@@ -13,6 +13,8 @@ def build_qss(tokens: ThemeTokens = THEME_TOKENS) -> str:
 
     accent_soft = tokens.rgba(tokens.accent, 40)
     accent_hover_soft = tokens.rgba(tokens.accent, 18)
+    viewport_overlay_surface = tokens.rgba(tokens.surface_raised, 150)
+    viewport_overlay_border = tokens.rgba(tokens.border_strong, 170)
     return f"""
 QWidget {{
     background-color: {tokens.window};
@@ -40,22 +42,33 @@ QToolBar::separator {{
     width: 1px;
     margin: 5px 3px;
 }}
+QToolBar#scenario_editor_toolbar {{
+    spacing: 2px;
+    padding: 3px 4px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton {{
+    min-width: 0px;
+    padding: 3px 7px;
+    font-size: 14px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton::menu-button {{
+    width: 14px;
+}}
 QToolBar#reference_tool_palette {{
-    min-width: 96px;
-    max-width: 112px;
+    min-width: 148px;
+    max-width: 148px;
     padding: 2px 2px;
     spacing: 2px;
     background: {tokens.surface};
     border-right: 1px solid {tokens.border};
 }}
 QToolBar#reference_tool_palette QToolButton {{
-    min-width: 88px;
-    max-width: 88px;
-    min-height: 32px;
-    max-height: 32px;
+    min-width: 140px;
+    max-width: 140px;
+    min-height: 42px;
+    max-height: 46px;
     padding: 2px;
-    background: {tokens.surface_alt};
-    border: 1px solid {tokens.border};
+    border: 1px solid transparent;
     border-radius: 4px;
 }}
 QToolBar#reference_tool_palette QToolButton:hover {{
@@ -75,32 +88,16 @@ QToolBar#reference_tool_palette QToolButton:checked {{
     padding: 4px 8px;
     spacing: 6px;
     background: {tokens.surface};
-    border-bottom: 0px;
-}}
-QWidget#reference_top_toolbar_container {{
-    background: {tokens.surface};
     border-bottom: 1px solid {tokens.border};
 }}
 QToolBar#reference_top_toolbar QToolButton#reference_menu_button,
 QToolBar#reference_tool_palette QToolButton#reference_menu_button {{
-    min-width: 88px;
-    max-width: 88px;
-    min-height: 32px;
-    max-height: 32px;
+    min-width: 46px;
+    max-width: 46px;
     font-size: 20px;
     padding: 0px;
 }}
 QToolBar#reference_top_toolbar QToolButton {{
-    min-width: 60px;
-    min-height: 68px;
-    padding: 3px 5px 2px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}}
-QWidget#reference_history_container {{
-    background: {tokens.surface};
-}}
-QWidget#reference_history_container QToolButton {{
     min-width: 60px;
     min-height: 68px;
     padding: 3px 5px 2px;
@@ -112,6 +109,15 @@ QToolBar#reference_top_toolbar QToolButton::menu-button {{
     border: 0px;
 }}
 QToolBar#reference_top_toolbar QToolButton::menu-indicator {{
+    image: none;
+    width: 0px;
+    height: 0px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton::menu-button {{
+    width: 0px;
+    border: 0px;
+}}
+QToolBar#scenario_editor_toolbar QToolButton::menu-indicator {{
     image: none;
     width: 0px;
     height: 0px;
@@ -153,6 +159,17 @@ QLineEdit#reference_command_search {{
 QLineEdit#reference_command_search:focus {{
     border-color: {tokens.focus};
 }}
+QGroupBox QToolButton#inspector_section_toggle {{
+    text-align: left;
+    font-weight: 600;
+    color: {tokens.text_primary};
+    padding: 4px 6px;
+    border: 0px;
+    background: transparent;
+}}
+QGroupBox QToolButton#inspector_section_toggle:hover {{
+    background: {accent_hover_soft};
+}}
 QTabWidget#reference_panel_tabs {{
     background: {tokens.surface};
     border-left: 1px solid {tokens.border};
@@ -183,8 +200,8 @@ QWidget#viewport_horizontal_ruler, QWidget#viewport_vertical_ruler {{
     border: 0px;
 }}
 QWidget#viewport_overlay_bar {{
-    background: {tokens.surface_raised};
-    border: 1px solid {tokens.border_strong};
+    background: {viewport_overlay_surface};
+    border: 1px solid {viewport_overlay_border};
     border-radius: 4px;
 }}
 QWidget#viewport_overlay_bar QToolButton {{
@@ -327,6 +344,10 @@ QLabel#panel_section_title {{
     color: {tokens.text_primary};
     font-weight: bold;
     font-size: 14px;
+}}
+QLabel#scenario_group_drop_hint {{
+    color: {tokens.accent};
+    font-weight: 600;
 }}
 
 QScrollBar:vertical {{

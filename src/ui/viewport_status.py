@@ -21,12 +21,36 @@ def configure_viewport_status(window) -> QLabel:
     status.setMinimumWidth(160)
     status.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
     status.setAccessibleName("Viewport status")
-    status.setToolTip("Viewport, zoom, snap, grid, gizmo, selection and cursor state")
+    language = {"value": "en"}
+
+    def localized_details(state: ViewportState) -> str:
+        if language["value"] == "pt":
+            snap = "LIGADO" if state.snap_enabled else "DESLIGADO"
+            grid = "LIGADA" if state.grid_visible else "DESLIGADA"
+            gizmo = "LIGADO" if state.gizmo_enabled else "DESLIGADO"
+            selection = ",".join(state.selection_ids) if state.selection_ids else "NENHUM"
+            return (
+                f"VISUALIZAÇÃO: {state.view_mode} | ZOOM: {state.zoom:.2f}x | "
+                f"ENCAIXE: {snap} | GRADE: {grid} | EIXO: {gizmo} | "
+                f"PAN: {state.pan_x:.0f},{state.pan_y:.0f} | "
+                f"SELEÇÃO: {selection} | CURSOR: {state.cursor_x},{state.cursor_y}"
+            )
+        return format_viewport_details(state)
+
+    status.setToolTip(localized_details(window.canvas.viewport_state()))
     window.statusBar().addPermanentWidget(status)
 
     def update(state: ViewportState) -> None:
         status.setText(format_compact_viewport_details(state))
-        status.setToolTip(format_viewport_details(state))
+        status.setToolTip(localized_details(state))
+
+    def update_language(language_name: str) -> None:
+        language["value"] = language_name if language_name in {"en", "pt"} else "en"
+        canvas = getattr(window, "canvas", None)
+        if canvas is not None and hasattr(canvas, "viewport_state"):
+            update(canvas.viewport_state())
+
+    status.update_language = update_language
 
     window.viewport_status = status
     window.canvas.viewport_state_model_changed.connect(update)

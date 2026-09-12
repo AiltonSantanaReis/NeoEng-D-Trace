@@ -100,8 +100,9 @@ def test_keyboard_shortcuts_and_tab_order_drive_real_commands(window, qt_app):
     expected_tab_order = (
         (window.reference_open_button, window.reference_save_button),
         (window.reference_save_button, window.reference_export_button),
-        (window.reference_export_button, window.reference_fit_button),
-        (window.reference_fit_button, window.reference_focus_button),
+        (window.reference_export_button, window.reference_view_button),
+        (window.reference_view_button, window.reference_collision_button),
+        (window.reference_collision_button, window.reference_parallax_button),
     )
     for source, target in expected_tab_order:
         source.setFocus()
@@ -113,12 +114,12 @@ def test_keyboard_shortcuts_and_tab_order_drive_real_commands(window, qt_app):
 def test_mouse_interactions_and_state_feedback_are_independent_of_keyboard(
     window, qt_app
 ):
-    QTest.mouseClick(window.reference_pan_button, Qt.MouseButton.LeftButton)
+    window.tool_palette.navigation_actions["move_viewport"].trigger()
     qt_app.processEvents()
     assert window.canvas.is_pan_mode() is True
-    assert window.reference_pan_button.isChecked() is True
+    assert window.tool_palette.navigation_actions["move_viewport"].isChecked() is True
 
-    window.reference_select_button.menu().actions()[0].trigger()
+    window.tool_palette._tool_actions["selection"].trigger()
     qt_app.processEvents()
     assert window.canvas.is_pan_mode() is False
     assert window.tool_palette._tool_actions["selection"].isChecked() is True

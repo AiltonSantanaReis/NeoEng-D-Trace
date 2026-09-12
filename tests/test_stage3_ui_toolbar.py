@@ -112,6 +112,18 @@ def test_stage3_toolbar_preserves_real_selection_and_feedback(qt_app):
         qt_app.processEvents()
         assert toolbar.btn_lasso.text() == "Laço"
         assert "ferramenta" in toolbar.btn_lasso.toolTip().casefold()
+        for button in (
+            toolbar.btn_rect,
+            toolbar.btn_ellipse,
+            toolbar.btn_lasso,
+            toolbar.btn_polygonal_lasso,
+            toolbar.btn_magnetic_lasso,
+            toolbar.btn_pen,
+        ):
+            assert not any(
+                f"({shortcut})" in button.toolTip()
+                for shortcut in ("1", "2", "3", "4", "5", "6")
+            )
     finally:
         window.close()
         qt_app.processEvents()

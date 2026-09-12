@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "floresta",
+  "name": "Floresta",
+  "version": "0.1.0-piloto",
+  "description": "Objetos de floresta para composição 2D. Piloto visual: acabamento em revisão.",
+  "provenance": "Produzido para NeoEng-D-Trace com IA · uso interno de avaliação · licença de distribuição pendente",
+  "assets": [
+    {
+      "id": "pedra",
+      "name": "Pedra com musgo",
+      "category": "Rochas",
+      "path": "pedra.png",
+      "sha256": "cd430cd35519a18ef408fbc1aa900812a8aa8408288670dca33fbef12528500a",
+      "width": 1254,
+      "height": 1254,
+      "tags": [
+        "pedra",
+        "floresta",
+        "Rochas"
+      ],
+      "description": "PNG com canal alpha. Ajuste a escala ao inserir na cena. Piloto: revisar bordas e iluminação antes da distribuição.",
+      "source_generation": "exec-1989d4e2-2d2d-48d0-893f-c258a1392e3a.png"
+    },
+    {
+      "id": "arbusto",
+      "name": "Arbusto com flores",
+      "category": "Vegetação",
+      "path": "arbusto.png",
+      "sha256": "79653a9121cfaccbc41731b433c8477aff3003b4f2a344ae304d5ad16589c47c",
+      "width": 1254,
+      "height": 1254,
+      "tags": [
+        "arbusto",
+        "floresta",
+        "Vegetação"
+      ],
+      "description": "PNG com canal alpha. Ajuste a escala ao inserir na cena. Piloto: revisar bordas e iluminação antes da distribuição.",
+      "source_generation": "exec-ad32cd5f-c653-44cc-bfe5-c4a783a208cd.png"
+    },
+    {
+      "id": "tronco",
+      "name": "Tronco caído",
+      "category": "Madeira",
+      "path": "tronco.png",
+      "sha256": "b6372c330efa390246be33258eee5ea08d41a02196ac3bc4b57dab57ac5196ae",
+      "width": 1536,
+      "height": 1024,
+      "tags": [
+        "tronco",
+        "floresta",
+        "Madeira"
+      ],
+      "description": "PNG com canal alpha. Ajuste a escala ao inserir na cena. Piloto: revisar bordas e iluminação antes da distribuição.",
+      "source_generation": "exec-8cf35c93-4d58-4661-b6de-ba697075dffb.png"
+    },
+    {
+      "id": "samambaia",
+      "name": "Samambaia",
+      "category": "Vegetação",
+      "path": "samambaia.png",
+      "sha256": "cda9c0df02cdab3134c383c42b110767d028246c7b09bbbfa36db563b511c4bd",
+      "width": 1254,
+      "height": 1254,
+      "tags": [
+        "samambaia",
+        "floresta",
+        "Vegetação"
+      ],
+      "description": "PNG com canal alpha. Ajuste a escala ao inserir na cena. Piloto: revisar bordas e iluminação antes da distribuição.",
+      "source_generation": "exec-fb18c584-0ac5-45a8-9e78-30994a910ffb.png"
+    },
+    {
+      "id": "cogumelos",
+      "name": "Cogumelos",
+      "category": "Vegetação",
+      "path": "cogumelos.png",
+      "sha256": "a41ce9477ac7886cbd68ad3ccbb14134180bb9d326811b07ce64be6cd1b7d4f9",
+      "width": 1254,
+      "height": 1254,
+      "tags": [
+        "cogumelos",
+        "floresta",
+        "Vegetação"
+      ],
+      "description": "PNG com canal alpha. Ajuste a escala ao inserir na cena. Piloto: revisar bordas e iluminação antes da distribuição.",
+      "source_generation": "exec-18d57941-2e5f-415e-b1c2-9a24994d86c2.png"
+    },
+    {
+      "id": "pinheiro",
+      "name": "Pinheiro",
+      "category": "Árvores",
+      "path": "pinheiro.png",
+      "sha256": "97a6dc8960cf81dc5235dfabf0e151c7e08d13d87c7257ad16b27a050ab54fbe",
+      "width": 1254,
+      "height": 1254,
+      "tags": [
+        "pinheiro",
+        "floresta",
+        "Árvores"
+      ],
+      "description": "PNG com canal alpha. Ajuste a escala ao inserir na cena. Piloto: revisar bordas e iluminação antes da distribuição.",
+      "source_generation": "exec-7a250634-4a32-4617-80f2-4f819030e2e8.png"
+    }
+  ]
+}

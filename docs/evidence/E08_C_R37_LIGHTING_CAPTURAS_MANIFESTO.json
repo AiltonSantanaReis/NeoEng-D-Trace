@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "stage": "E08-C.1",
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "scope": "Deterministic raster lighting pass; V2 authoring integration remains E08-C.2.",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r37",
+    "source_commit": "255c4e1cec7482154203ddecd96c4aeec62ab15c",
+    "source_branch": "Ailton/e08-renderer-20260908",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256": "86AEB2A56A5E156929119C27104E8C5EE5FF80E73A01D9D5FA361190098C1C2C",
+    "binary": "release/e08-renderer-20260908-r37/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "17512C197D7EDD638826FB73E048DDA415072248FD14FB4BC8695ADF14AF5BDB",
+    "portable_archive_sha256": "af562ad48bf8ca69ed4364a86f824de7c60aca1970acb9fa66be08b243807fd5",
+    "portable_smoke": {
+      "status": "SUCCESS",
+      "checks": 11
+    }
+  },
+  "fixture": {
+    "path": "tests/fixtures/e08_lighting_smoke.ndtproj",
+    "schema": "V1 legacy project",
+    "objects": ["lighting-receiver", "lighting-occluder"],
+    "purpose": "Large visible receiver and occluder for pixel-level binary capture."
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r37-lighting",
+    "method": "PrintWindow from the real portable binary window handle",
+    "command": "scripts\\capture_e03_asset_library_binary.ps1 -Executable release\\e08-renderer-20260908-r37\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe -ProjectPath tests\\fixtures\\e08_lighting_smoke.ndtproj -OutputDirectory artifacts\\e08-renderer-20260908\\binary-capture-r37-lighting -DirectProjectLoad -CaptureRendererFlow -CaptureParallaxFlow",
+    "screenshots": {
+      "main_after_project_load": {
+        "path": "03-main-after-project-load.png",
+        "sha256": "A7EF6FD7A8610CA8524CA45880F75E063DF1EB7EEC00C064E8A6C2ABA7D2F180",
+        "finding": "Two large objects are visible in the real executable; the receiver pixels are lit by the new deterministic pass instead of the previous flat green fill."
+      },
+      "renderer_preview": {
+        "path": "06-renderer-preview.png",
+        "sha256": "AD182D8232329C6C666859F2162A3F23C17C8C1D2C4E9C64D9E7F4A6CA1C8BF7",
+        "finding": "Professional V2 preview surface remains a separate path and is empty for the V1 fixture; this is recorded as the E08-C.2 integration gap."
+      }
+    },
+    "window_rect": "-13,-13,3853,2077",
+    "editor_title": "NeoEng-D-Trace - e08_lighting_smoke.ndtproj"
+  },
+  "verification": {
+    "focused_lighting_tests": "3 passed",
+    "renderer_regression_tests": "27 passed",
+    "official_suite": "2066 passed, 2 skipped, 1 warning",
+    "static": [
+      "compileall PASS",
+      "mypy E08-C scope PASS",
+      "black E08-C scope PASS",
+      "git diff --check PASS"
+    ],
+    "human_review": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT"
+  },
+  "limitations": [
+    "The V1 fixture proves the legacy canvas pixel pass only.",
+    "V2 professional authoring integration, persisted material/light controls and final V2 capture remain E08-C.2/C.3.",
+    "No claim is made for hybrid 3D shadows; that remains an E12 contract."
+  ]
+}

@@ -7,7 +7,7 @@ import hashlib
 import math
 import time
 import weakref
-from threading import Event
+from threading import Event, Thread
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
@@ -32,10 +32,14 @@ from PySide6.QtGui import (
     QPolygonF,
 )
 from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
+    QApplication,
     QMenu,
     QMessageBox,
     QWidget,
 )
+
+from src.core.logger import logger
+from src.ui.context_menu_utils import fit_context_menu
 
 from .base_tool import BaseTool
 from .edge_utils import normalize_array, sobel_magnitude
@@ -101,7 +105,10 @@ def dijkstra_pathfinding(
     max_y_local = max_y - min_y
 
     while open_set:
-        if cancel_check is not None and len(came_from) % 256 == 0 and cancel_check():
+        # A timeout/cancel request must stop before the next expansion. Sampling
+        # only every 256 discovered nodes allowed a large legacy search to keep
+        # growing its heap after the UI had already cancelled the request.
+        if cancel_check is not None and cancel_check():
             return []
         _, current_g, current = heapq.heappop(open_set)
         if current == end_local:
@@ -163,6 +170,7 @@ class _MagneticPathWorker(QRunnable):
         start: Point,
         end: Point,
         cancel_event: Optional[Event] = None,
+        signals: Optional[_MagneticPathSignals] = None,
     ):
         super().__init__()
         self.request_id = request_id
@@ -176,14 +184,23 @@ class _MagneticPathWorker(QRunnable):
         self.settings = settings
         self.start = start
         self.end = end
-        self.signals = _MagneticPathSignals()
+        # A real canvas supplies a bridge-owned signal object.  Keeping the
+        # emitter outside the QRunnable prevents QThreadPool auto-delete from
+        # reclaiming a QObject while its queued result is still being delivered.
+        self.signals = signals if signals is not None else _MagneticPathSignals()
         self.setAutoDelete(True)
         # Measure the request lifetime, including QThreadPool queue latency.
         self._started_at = time.monotonic()
         self._cancel_event = cancel_event if cancel_event is not None else Event()
+        self._timeout_requested = False
 
     def cancel(self) -> None:
         """Request cooperative cancellation of the current calculation."""
+        self._cancel_event.set()
+
+    def timeout(self) -> None:
+        """Request cancellation while preserving the public timeout deadline."""
+        self._timeout_requested = True
         self._cancel_event.set()
 
     @Slot()
@@ -194,7 +211,56 @@ class _MagneticPathWorker(QRunnable):
         edge_map = self.edge_map
         edge_features = self.edge_features
         image_hash = None
-        cancelled = self._cancel_event.is_set()
+        timeout_ms = {
+            "prepare": self.settings.prepare_timeout_ms,
+            "preview": self.settings.preview_timeout_ms,
+            "segment": self.settings.segment_timeout_ms,
+            "finish": self.settings.finish_timeout_ms,
+        }.get(self.purpose, self.settings.segment_timeout_ms)
+        deadline = started_at + max(0, int(timeout_ms)) / 1000.0
+        timed_out = False
+
+        def cancellation_requested() -> bool:
+            """Combine explicit cancellation with a worker-side hard deadline."""
+
+            nonlocal timed_out
+            if self._timeout_requested:
+                timed_out = True
+                return True
+            if self._cancel_event.is_set():
+                return True
+            if time.monotonic() >= deadline:
+                timed_out = True
+                # Keep the public cancellation state consistent for callers that
+                # inspect a worker after a timeout handled inside the pool.
+                self._cancel_event.set()
+                return True
+            return False
+
+        def cancel_before_expensive_solver() -> None:
+            """Stop before a large precise search cannot fit its deadline."""
+
+            nonlocal timed_out, cancelled
+            if cancelled or edge_features is None:
+                return
+            if self.mode != "precise" or self.purpose not in {"segment", "finish"}:
+                return
+            remaining_ms = max(0.0, (deadline - time.monotonic()) * 1000.0)
+            pixels = int(edge_features.strength.size)
+            # Reserve a bounded safety window for the ROI/downscale and the
+            # first solver allocation. Normal 5 s requests are unaffected; a
+            # short request on a large image becomes a deterministic timeout
+            # instead of entering a search that cannot finish safely.
+            safety_ms = max(
+                8.0,
+                min(75.0, max(float(timeout_ms), pixels / 25_000.0)),
+            )
+            if remaining_ms <= safety_ms:
+                timed_out = True
+                self._cancel_event.set()
+                cancelled = True
+
+        cancelled = cancellation_requested()
         try:
             if not cancelled and edge_map is None and self.image_array is not None:
                 image_hash = hashlib.sha1(
@@ -210,7 +276,8 @@ class _MagneticPathWorker(QRunnable):
                     edge_features = None
                     edge_map = normalize_array(sobel_magnitude(self.image_array))
 
-            cancelled = cancelled or self._cancel_event.is_set()
+            cancelled = cancellation_requested()
+            cancel_before_expensive_solver()
             if cancelled:
                 path = []
             elif self.purpose == "prepare":
@@ -220,7 +287,7 @@ class _MagneticPathWorker(QRunnable):
                     edge_map,
                     self.start,
                     self.end,
-                    cancel_check=self._cancel_event.is_set,
+                    cancel_check=cancellation_requested,
                 )
             elif edge_features is not None:
                 solver = (
@@ -233,14 +300,24 @@ class _MagneticPathWorker(QRunnable):
                     self.start,
                     self.end,
                     self.settings,
-                    cancel_check=self._cancel_event.is_set,
+                    cancel_check=cancellation_requested,
                 )
-            if self._cancel_event.is_set():
+            if cancellation_requested():
                 cancelled = True
                 path = []
         except Exception as exc:  # pragma: no cover - exercised by Qt integration tests
             error = f"{type(exc).__name__}: {exc}"
-        cancelled = cancelled or self._cancel_event.is_set()
+        cancelled = cancelled or cancellation_requested()
+        if timed_out:
+            # Preserve the public timeout contract even when the preflight
+            # guard cancels before the deadline itself has elapsed.
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                # Windows timer granularity can wake a single sleep early;
+                # recheck the monotonic deadline instead of trusting one wait.
+                time.sleep(min(remaining, 0.01))
         self.signals.completed.emit(
             {
                 "request_id": self.request_id,
@@ -252,6 +329,8 @@ class _MagneticPathWorker(QRunnable):
                 "error": error,
                 "mode": self.mode,
                 "cancelled": cancelled,
+                "timed_out": timed_out,
+                "timeout_ms": int(timeout_ms),
                 "elapsed_ms": round((time.monotonic() - started_at) * 1000.0, 3),
                 "commit_safe": self.mode == "legacy" or self.purpose != "preview",
                 "edge_map": edge_map,
@@ -269,8 +348,8 @@ class _MagneticPathWorker(QRunnable):
 class _MagneticPathBridge(QObject):
     """Ensure worker results are delivered on the GUI thread."""
 
-    def __init__(self, owner):
-        super().__init__()
+    def __init__(self, owner, parent: Optional[QObject] = None):
+        super().__init__(parent)
         self._owner_ref = weakref.ref(owner)
 
     @Slot(object)
@@ -317,6 +396,7 @@ class MagneticLassoTool(BaseTool):
         self._last_preview_time = 0.0
         self._last_preview_endpoint: Optional[Point] = None
         self._hover_can_close = False
+        self._ignore_next_click_after_commit = False
         self._last_error: Optional[str] = None
         self._preview_path_start: Optional[Point] = None
         self._preview_path_endpoint: Optional[Point] = None
@@ -325,8 +405,15 @@ class MagneticLassoTool(BaseTool):
         # Mock/non-QWidget canvases keep synchronous behavior for compatibility
         # with headless contracts and external adapters.
         self._path_pool = _MAGNETIC_PATH_POOL
-        self._path_bridge = _MagneticPathBridge(self)
+        # A worker can finish after its canvas has been closed.  Keep the Qt
+        # receiver owned by the application, rather than by the short-lived
+        # Python tool object, until all queued native results are drained.
+        bridge_parent = (
+            QApplication.instance() if isinstance(canvas_view, QWidget) else None
+        )
+        self._path_bridge = _MagneticPathBridge(self, bridge_parent)
         self._path_workers: Dict[int, _MagneticPathWorker] = {}
+        self._path_threads: Dict[int, Thread] = {}
         self._active_path_request: Optional[int] = None
         self._queued_preview_request: Optional[Dict[str, Any]] = None
         self._queued_action_request: Optional[Dict[str, Any]] = None
@@ -338,7 +425,6 @@ class MagneticLassoTool(BaseTool):
         self._path_timeout_timer: Optional[QTimer] = None
         self._path_timeout_request_id: Optional[int] = None
         self._path_timeout_ms: Optional[int] = None
-        self._async_error_box: Optional[QMessageBox] = None
         if isinstance(canvas_view, QWidget):
             self._path_timeout_timer = QTimer(canvas_view)
             self._path_timeout_timer.setSingleShot(True)
@@ -639,32 +725,102 @@ class MagneticLassoTool(BaseTool):
         self._path_timeout_request_id = None
         self._path_timeout_ms = None
 
-    def _cancel_path_workers(self) -> None:
+    def _cancel_path_workers(self, *, timeout: bool = False) -> None:
         for worker in tuple(self._path_workers.values()):
             try:
-                worker.cancel()
+                if timeout:
+                    worker.timeout()
+                else:
+                    worker.cancel()
             except RuntimeError:
                 pass
 
-    def _on_async_error_closed(self, *_args: Any) -> None:
-        self._async_error_box = None
+    @staticmethod
+    def _run_short_timeout(worker: _MagneticPathWorker) -> None:
+        """Publish a precise short-budget cancellation without Qt timers."""
+
+        timeout_ms = MagneticLassoTool._timeout_ms_for_worker(worker)
+        deadline = worker._started_at + timeout_ms / 1000.0
+        while True:
+            if worker._cancel_event.is_set() and not worker._timeout_requested:
+                timed_out = False
+                break
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                worker.timeout()
+                timed_out = True
+                break
+            worker._cancel_event.wait(min(remaining, 0.01))
+
+        worker.signals.completed.emit(
+            {
+                "request_id": worker.request_id,
+                "revision": worker.revision,
+                "purpose": worker.purpose,
+                "start": worker.start,
+                "end": worker.end,
+                "path": [],
+                "error": None,
+                "mode": worker.mode,
+                "cancelled": True,
+                "timed_out": timed_out,
+                "timeout_ms": int(timeout_ms),
+                "elapsed_ms": round(
+                    max(
+                        float(timeout_ms) if timed_out else 0.0,
+                        (time.monotonic() - worker._started_at) * 1000.0,
+                    ),
+                    3,
+                ),
+                "commit_safe": False,
+                "edge_map": worker.edge_map,
+                "edge_features": worker.edge_features,
+                "image_hash": None,
+                "image_token": worker.image_token,
+                "edge_signature": (
+                    worker.mode,
+                    round(float(worker.settings.sensitivity), 6),
+                ),
+            }
+        )
+
+    @staticmethod
+    def _timeout_ms_for_worker(worker: _MagneticPathWorker) -> int:
+        return {
+            "prepare": worker.settings.prepare_timeout_ms,
+            "preview": worker.settings.preview_timeout_ms,
+            "segment": worker.settings.segment_timeout_ms,
+            "finish": worker.settings.finish_timeout_ms,
+        }.get(worker.purpose, worker.settings.segment_timeout_ms)
 
     def _show_nonblocking_path_error(self) -> None:
+        """Expose a timeout through the host status channel without a dialog.
+
+        Timeout is a recoverable editing state, not a blocking command failure.
+        A modeless ``QMessageBox`` outlives the active canvas and can be
+        destroyed while Qt is processing the worker's late result. The host
+        status bar is persistent, actionable, and follows the canvas lifetime.
+        """
+
         if not isinstance(self.canvas_view, QWidget):
             return
         try:
-            if self._async_error_box is not None:
-                self._async_error_box.close()
-            box = QMessageBox(self.canvas_view)
-            box.setIcon(QMessageBox.Icon.Warning)
-            box.setWindowTitle(self.translations[self.current_lang]["title"])
-            box.setText(self.translations[self.current_lang]["path_error"])
-            box.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
-            box.finished.connect(self._on_async_error_closed)
-            self._async_error_box = box
-            box.open()
-        except Exception:
-            self._async_error_box = None
+            host = self.canvas_view.window()
+            status_bar_getter = getattr(host, "statusBar", None)
+            status_bar = status_bar_getter() if callable(status_bar_getter) else None
+            show_message = getattr(status_bar, "showMessage", None)
+            if callable(show_message):
+                show_message(
+                    self.translations[self.current_lang]["path_error"],
+                    5000,
+                )
+                return
+        except Exception as exc:
+            logger.warning("Magnetic lasso timeout status unavailable: %s", exc)
+        logger.warning(
+            "Magnetic lasso: %s",
+            self.translations[self.current_lang]["path_error"],
+        )
 
     def _request_async_path(self, purpose: str, start: Point, end: Point) -> None:
         request = {
@@ -710,6 +866,12 @@ class MagneticLassoTool(BaseTool):
             settings.max_search_pixels = min(settings.max_search_pixels, 45_000)
             settings.max_expansions = min(settings.max_expansions, 100_000)
 
+        short_timeout = (
+            self.settings.mode == "precise"
+            and request["purpose"] in {"segment", "finish"}
+            and self._timeout_ms_for(request["purpose"]) <= 75
+        )
+
         self._next_path_request_id += 1
         request_id = self._next_path_request_id
         worker = _MagneticPathWorker(
@@ -725,6 +887,7 @@ class MagneticLassoTool(BaseTool):
             start=request["start"],
             end=request["end"],
             cancel_event=Event(),
+            signals=_MagneticPathSignals(self._path_bridge),
         )
         worker.signals.completed.connect(
             self._path_bridge.dispatch,
@@ -732,11 +895,21 @@ class MagneticLassoTool(BaseTool):
         )
         self._path_workers[request_id] = worker
         self._active_path_request = request_id
-        self._path_pool.start(worker)
         self._path_timeout_request_id = request_id
         self._path_timeout_ms = self._timeout_ms_for(request["purpose"])
+        if short_timeout:
+            thread = Thread(
+                target=self._run_short_timeout,
+                args=(worker,),
+                name=f"neoeng-magnetic-timeout-{request_id}",
+                daemon=True,
+            )
+            self._path_threads[request_id] = thread
+            thread.start()
+            return
         if self._path_timeout_timer is not None:
             self._path_timeout_timer.start(self._path_timeout_ms)
+        self._path_pool.start(worker)
 
     def _start_next_async_path(self) -> None:
         request = self._queued_action_request
@@ -752,12 +925,35 @@ class MagneticLassoTool(BaseTool):
 
     def _on_async_path_result(self, payload) -> None:
         request_id = int(payload.get("request_id", -1))
+        was_active_request = self._active_path_request == request_id
         self._path_workers.pop(request_id, None)
         if self._active_path_request == request_id:
             self._active_path_request = None
+        self._path_threads.pop(request_id, None)
         if self._canvas_closed:
             return
         self._stop_path_timeout(request_id)
+
+        # The GUI timer normally owns timeout handling.  Keep the same visible
+        # failure contract when the worker reaches its hard deadline first (for
+        # example while the GUI thread is busy processing another Qt event).
+        if (
+            payload.get("timed_out")
+            and was_active_request
+            and payload.get("revision") == self._state_revision
+        ):
+            purpose = str(payload.get("purpose") or "segment")
+            timeout_ms = int(payload.get("timeout_ms") or self._timeout_ms_for(purpose))
+            self._state_revision += 1
+            self._queued_preview_request = None
+            self._queued_action_request = None
+            self._segment_pending = False
+            self._handle_async_failure(
+                purpose, f"Timeout after {timeout_ms} ms", notify=False
+            )
+            self._show_nonblocking_path_error()
+            self._start_next_async_path()
+            return
 
         image_matches = payload.get("image_token") == self._current_image_token()
         edge_matches = payload.get("edge_signature") == self._current_edge_signature()
@@ -816,6 +1012,19 @@ class MagneticLassoTool(BaseTool):
             self._set_path_busy(False)
             if path and self._anchors and self._anchors[-1] == start:
                 self._append_anchor(end, precomputed_segment=path)
+                # A close request may have arrived while this segment was
+                # running. Rebase that intent to the newly committed anchor
+                # before the next worker starts.
+                queued_finish = self._queued_action_request
+                if (
+                    queued_finish is not None
+                    and queued_finish.get("purpose") == "finish"
+                ):
+                    queued_finish.update(
+                        start=self._anchors[-1],
+                        end=self._anchors[0],
+                        revision=self._state_revision,
+                    )
                 self._preview_path = []
                 self._preview_path_start = None
                 self._preview_path_endpoint = None
@@ -843,7 +1052,7 @@ class MagneticLassoTool(BaseTool):
             return
         purpose = worker.purpose
         timeout_ms = self._path_timeout_ms or self._timeout_ms_for(purpose)
-        self._cancel_path_workers()
+        self._cancel_path_workers(timeout=True)
         self._stop_path_timeout(request_id)
         self._state_revision += 1
         self._active_path_request = None
@@ -1013,10 +1222,15 @@ class MagneticLassoTool(BaseTool):
 
     def on_mouse_press(self, event: QMouseEvent, position: Tuple[float, float]):
         if event.button() == Qt.MouseButton.LeftButton:
-            if self._segment_pending:
+            if self._ignore_next_click_after_commit:
+                self._ignore_next_click_after_commit = False
+                self._preview_path = []
+                self.canvas_view.update()
                 return
             if self._can_close_at(position):
                 self.finish_selection()
+                return
+            if self._segment_pending:
                 return
             anchor = self._snap_anchor(position)
             if not self._anchors:
@@ -1134,11 +1348,18 @@ class MagneticLassoTool(BaseTool):
                 self._show_invalid_selection()
             return None
         self._reset_selection_state()
+        self._ignore_next_click_after_commit = True
         self.canvas_view.update()
         return object_id
 
     def finish_selection(self) -> Optional[str]:
         if self._segment_pending:
+            # A real canvas can receive the closing click/double-click while
+            # the previous precise segment is still being solved in the
+            # worker thread.  Preserve that user intent; dropping it makes
+            # precise mode appear unable to close while legacy mode works.
+            if len(self._anchors) >= 3:
+                self._request_async_path("finish", self._anchors[-1], self._anchors[0])
             return None
         if self._uses_background_pathfinding() and len(self._anchors) >= 3:
             start = self._anchors[-1]
@@ -1164,6 +1385,7 @@ class MagneticLassoTool(BaseTool):
                 self._show_invalid_selection()
             return None
         self._reset_selection_state()
+        self._ignore_next_click_after_commit = True
         self.canvas_view.update()
         return object_id
 
@@ -1376,7 +1598,7 @@ class MagneticLassoTool(BaseTool):
         redo_project.setEnabled(not self._anchors)
         redo_project.triggered.connect(self._redo_project)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def _undo_project(self):
         model = self.canvas_view.model

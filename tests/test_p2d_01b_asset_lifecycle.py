@@ -5,8 +5,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from PySide6.QtGui import QColor, QImage
-from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QColor, QDropEvent, QImage
+from PySide6.QtWidgets import QAbstractItemView, QApplication
 
 from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
@@ -27,7 +28,7 @@ from src.persistence.scene_authoring_schema import (
     upgrade_scene_authoring_document,
 )
 from src.ui.scenario_editor_window import ScenarioEditorWindow
-from src.ui.scene_asset_panel import SceneAssetLibrary
+from src.ui.scene_asset_panel import SceneAssetLibrary, _AssetListWidget
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
 
 
@@ -221,6 +222,119 @@ def test_professional_window_hosts_asset_library_and_refreshes_missing_state(
         assert library.relink_button.isEnabled() is True
     finally:
         window.close()
+        qt_app.processEvents()
+
+
+def test_asset_library_search_categories_thumbnails_and_drag_contract(
+    qt_app, tmp_path: Path
+) -> None:
+    root = tmp_path / "project"
+    raster_path = root / "assets" / "scene" / "hero.png"
+    vector_path = root / "assets" / "scene" / "marker.svg"
+    _write_image(raster_path, 18, 12, "#32a8ff")
+    vector_path.parent.mkdir(parents=True, exist_ok=True)
+    vector_path.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="10">'
+        '<rect width="12" height="10" fill="#ff8c32"/></svg>',
+        encoding="utf-8",
+    )
+    hero = _record("hero", raster_path)
+    marker = _record("marker", vector_path)
+    session = SceneAuthoringSession(SceneAuthoringModel(_document([hero, marker])))
+    panel = SceneAssetLibrary(session, root)
+    try:
+        assert panel.asset_list.dragEnabled()
+        assert (
+            panel.asset_list.dragDropMode()
+            == QAbstractItemView.DragDropMode.DragOnly
+        )
+        assert panel.asset_list.count() == 2
+        assert not panel.asset_list.item(0).icon().isNull()
+
+        panel.search_edit.setText("marker")
+        qt_app.processEvents()
+        assert panel.asset_list.count() == 1
+        assert panel.asset_list.item(0).data(Qt.ItemDataRole.UserRole) == "marker"
+
+        panel.search_edit.clear()
+        panel.category_combo.setCurrentIndex(1)
+        qt_app.processEvents()
+        assert panel.asset_list.count() == 1
+        assert panel.asset_list.item(0).data(Qt.ItemDataRole.UserRole) == "hero"
+
+        mime = _AssetListWidget.mime_for_asset("hero")
+        assert bytes(mime.data(_AssetListWidget.ASSET_MIME)) == b"hero"
+        assert mime.text() == "asset://hero"
+
+        panel.update_language("pt")
+        assert "Pesquisar" in panel.search_edit.placeholderText()
+        assert panel.category_combo.itemText(0) == "Todas as categorias"
+    finally:
+        panel.close()
+        qt_app.processEvents()
+
+
+def test_asset_library_drag_drop_places_existing_asset_without_duplicate_record(
+    qt_app, tmp_path: Path
+) -> None:
+    root = tmp_path / "project"
+    raster_path = root / "assets" / "scene" / "hero.png"
+    _write_image(raster_path, 18, 12, "#32a8ff")
+    hero = _record("hero", raster_path)
+    session = SceneAuthoringSession(SceneAuthoringModel(_document([hero])))
+    viewport = SceneAuthoringViewport(session, project_root=root)
+    viewport.resize(640, 480)
+    viewport.show()
+    qt_app.processEvents()
+    try:
+        assert viewport.acceptDrops()
+        assert viewport.viewport().acceptDrops()
+        mime = _AssetListWidget.mime_for_asset("hero")
+        event = QDropEvent(
+            QPointF(160, 140),
+            Qt.DropAction.CopyAction,
+            mime,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        viewport.dropEvent(event)
+        assert event.isAccepted()
+        assert len(session.document.assets) == 1
+        assert len(session.document.objects) == 3
+        assert session.document.objects[-1].asset_id == "hero"
+    finally:
+        viewport.close()
+        qt_app.processEvents()
+
+
+def test_asset_library_native_drop_surface_routes_to_viewport_contract(
+    qt_app, tmp_path: Path
+) -> None:
+    root = tmp_path / "project"
+    raster_path = root / "assets" / "scene" / "hero.png"
+    _write_image(raster_path, 18, 12, "#32a8ff")
+    hero = _record("hero", raster_path)
+    session = SceneAuthoringSession(SceneAuthoringModel(_document([hero])))
+    viewport = SceneAuthoringViewport(session, project_root=root)
+    viewport.resize(640, 480)
+    viewport.show()
+    qt_app.processEvents()
+    try:
+        mime = _AssetListWidget.mime_for_asset("hero")
+        event = QDropEvent(
+            QPointF(160, 140),
+            Qt.DropAction.CopyAction,
+            mime,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        assert viewport.viewportEvent(event)
+        assert event.isAccepted()
+        assert len(session.document.assets) == 1
+        assert len(session.document.objects) == 3
+        assert session.document.objects[-1].asset_id == "hero"
+    finally:
+        viewport.close()
         qt_app.processEvents()
 
 

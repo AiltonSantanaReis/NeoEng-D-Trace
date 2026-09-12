@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "stage": "E08-D3",
+  "feature": "Deterministic post-processing chain integrated into the V2 professional viewport",
+  "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+  "requirement": "The renderer must expose an ordered post-processing preview with explicit CPU fallback, preserve authored scene state, and provide real-binary visual evidence in Preview, Authoring, and Parallax flows.",
+  "source": {
+    "commit": "b5baf5c7676b85a7319e1280362e4b8d005909a7",
+    "branch": "Ailton/e08-renderer-20260908",
+    "worktree_clean_at_build": true,
+    "fixture_project": "tests/fixtures/e08_post_smoke.ndtproj",
+    "fixture_scene": "tests/fixtures/e08_post_smoke.ndtscene.json"
+  },
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r47",
+    "binary": "release/e08-renderer-20260908-r47/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "414DFE697F2095BA5996EF79D41CA3F8DF83085E5A38265F0B099FCED5FBDC52",
+    "archive": "release/e08-renderer-20260908-r47/NeoEng-D-Trace-0.3.0-win64-portable.zip",
+    "archive_sha256": "62c91373def4e3a898bc645d85fae7c1d4b2f6ef68ac6c1414ac6a149dcaf860",
+    "provenance": "release/e08-renderer-20260908-r47/continuity-provenance.json",
+    "portable_smoke": "PASS"
+  },
+  "runtime_audit": {
+    "command": "python -m scripts.audit_runtime_post_processing_phase5 --output artifacts/e08-renderer-20260908/runtime-post-audit-d3-r47",
+    "report": "artifacts/e08-renderer-20260908/runtime-post-audit-d3-r47/stage5-runtime-post-processing-report.json",
+    "status": "PASS",
+    "checks": [
+      "canonical_sidecar_roundtrip",
+      "source_binding_is_hash_bound",
+      "ordered_effects_are_deterministic",
+      "disabled_effect_is_reported",
+      "alpha_is_preserved",
+      "limits_are_enforced",
+      "fallback_is_explicit",
+      "atomic_persistence_preserves_previous_bytes",
+      "privacy"
+    ]
+  },
+  "automated_tests": {
+    "focused": "13 passed",
+    "official_suite": "2075 passed, 2 skipped, 1 warning",
+    "warning": "Known Qt deprecation warning in tests/test_merge_coverage_authoring_contracts.py",
+    "skips": "Governed integration skips; symlink verification remains deferred to final audit"
+  },
+  "real_binary_captures": {
+    "method": "PrintWindow from the shipped binary window handle",
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r47-post",
+    "editor_title": "Editor de Cenário — NeoEng-D-Trace",
+    "preview": {
+      "path": "artifacts/e08-renderer-20260908/binary-capture-r47-post/06-renderer-preview.png",
+      "sha256": "54BD892508DF62B2C1AD45D8F856E21E88226E7D144A613452261BDB5E22DB6D",
+      "result": "PASS: visible radial vignette, scene object remains legible, VFX marker remains visible"
+    },
+    "authoring": {
+      "path": "artifacts/e08-renderer-20260908/binary-capture-r47-post/07-renderer-authoring.png",
+      "sha256": "F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30",
+      "result": "PASS: same deterministic overlay in authoring mode without blocking the editor side panels"
+    },
+    "parallax_bottom": {
+      "path": "artifacts/e08-renderer-20260908/binary-capture-r47-post/08-parallax-controls-bottom.png",
+      "sha256": "A612AA2D2AABC6CD6D256017E3A2EA422E32203D0AF97ECF529B8CF2D094BF7D",
+      "result": "PASS: parallax controls remain reachable after renderer flow"
+    },
+    "parallax_pageup": {
+      "path": "artifacts/e08-renderer-20260908/binary-capture-r47-post/09-parallax-controls-pageup.png",
+      "sha256": "9D25D7214BC9C2499E0893FCB0B3A15D79A4CC36E7CBAAB4CF36A7FF8A707D62",
+      "result": "PASS: page navigation preserves the flow and controls remain available"
+    }
+  },
+  "correction_applied": {
+    "finding": "The first r46 capture was technically valid but visually too subtle because the overlay radius was oversized for the fixture.",
+    "fix_commit": "b5baf5c7676b85a7319e1280362e4b8d005909a7",
+    "fix": "Reduced the deterministic preview radius and added a low-alpha center stop so the effect is perceptible without obscuring authored geometry.",
+    "revalidation": "r47 real-binary captures above"
+  },
+  "limitations": [
+    "The implemented backend is a deterministic CPU preview and does not claim GPU rasterization.",
+    "Godot and Unity post-processing adapters are not implemented in this phase.",
+    "VRAM, driver-specific FPS, and backend-specific rendering remain outside this checkpoint.",
+    "Final human review and symlink verification remain intentionally deferred to the final audit."
+  ],
+  "final_audit_required": true
+}

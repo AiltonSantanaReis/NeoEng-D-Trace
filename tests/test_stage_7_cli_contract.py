@@ -339,12 +339,17 @@ class _ApplicationProbe:
 
 
 class _WindowProbe:
+    last_instance = None
+
     def __init__(self, scene, config):
+        _WindowProbe.last_instance = self
         self._last_folder = None
         self._current_tool = "polygonal_lasso"
         self.selected_tool = None
+        self.calls = []
 
     def show(self):
+        self.calls.append("show")
         self.visible = True
 
     def isVisible(self):
@@ -358,6 +363,7 @@ class _WindowProbe:
         self._current_tool = tool
 
     def restoreGeometry(self, data):
+        self.calls.append("restore_geometry")
         return data == b"geometry"
 
     def saveGeometry(self):
@@ -414,6 +420,10 @@ def test_main_gui_dispatch_restores_and_saves_state(tmp_path, monkeypatch):
     assert config.saved is True
     assert config.values["tool"] == "rect_selection"
     assert base64.b64decode(config.values["window_geometry"]) == b"saved-geometry"
+    assert _WindowProbe.last_instance.calls[:2] == [
+        "restore_geometry",
+        "show",
+    ]
     assert any(event[0] == "application.opened" for event in events)
     assert any(event[0] == "application.state.saved" for event in events)
     assert events[-1][0] == "stop"

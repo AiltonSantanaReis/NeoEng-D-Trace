@@ -96,13 +96,20 @@ def test_packaging_contract_is_versioned() -> None:
     assert "SkipClean" not in build
     assert '$env:PYTHONHASHSEED = "0"' in build
     assert build.index('$env:PYTHONHASHSEED = "0"') < build.index(
-        "pyinstaller --noconfirm"
+        '"-m" "PyInstaller" --noconfirm'
     )
+    assert "PythonExecutable" in build
+    assert "No project Python runner found" in build
     assert "package_portable_release.py" in build
     assert "validate_portable_release.py" in build
     assert build.index("validate_portable_release.py") < build.index(
         "package_portable_release.py"
     )
+    assert "validate_continuity_registry.py" in build
+    assert "continuity-provenance.json" in build
+    assert "master_plan_commit" in build
+    assert "continuity_registry_sha256" in build
+    assert "binarySha256" in build
     fixture = root / "tests" / "fixtures" / "release_smoke.ndtproj"
     assert fixture.is_file()
     local_user_prefix = "C:" + "\\Users\\"

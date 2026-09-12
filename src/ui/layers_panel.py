@@ -25,6 +25,7 @@ from src.core.commands import (
     ToggleLayerLockCommand,
     ToggleLayerVisibilityCommand,
 )
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.error_presentation import show_p2d05_error
 
 
@@ -35,6 +36,38 @@ class LayersPanel(QWidget):
         super().__init__(parent)
         self.scene = scene
         self.current_lang = "en"
+        self._ui_text = {
+            "en": {
+                "search": "Search layers",
+                "search_description": "Filter project layers by name or ID",
+                "project_layers": "Project Layers",
+                "scenario": "Scenario",
+            },
+            "pt": {
+                "search": "Pesquisar camadas",
+                "search_description": "Filtrar camadas do projeto por nome ou ID",
+                "project_layers": "Camadas do Projeto",
+                "scenario": "Cenário",
+            },
+        }
+        self._tooltip_text = {
+            "en": {
+                "add": "Create a new layer",
+                "remove": "Delete the selected layer",
+                "up": "Move the selected layer backward",
+                "down": "Move the selected layer forward",
+                "visible": "Toggle the selected layer visibility",
+                "lock": "Toggle the selected layer lock",
+            },
+            "pt": {
+                "add": "Criar uma nova camada",
+                "remove": "Excluir a camada selecionada",
+                "up": "Mover a camada selecionada para trás",
+                "down": "Mover a camada selecionada para frente",
+                "visible": "Alternar a visibilidade da camada selecionada",
+                "lock": "Alternar o bloqueio da camada selecionada",
+            },
+        }
         self.setMinimumWidth(200)
 
         self.main_layout = QVBoxLayout()
@@ -54,12 +87,12 @@ class LayersPanel(QWidget):
         self.project_layers_layout.addWidget(self.list)
 
         buttons = QGridLayout()
-        self.btn_new = QPushButton("New")
-        self.btn_delete = QPushButton("Delete")
-        self.btn_up = QPushButton("Up")
-        self.btn_down = QPushButton("Down")
-        self.btn_vis = QPushButton("Toggle Vis")
-        self.btn_lock = QPushButton("Toggle Lock")
+        self.btn_new = QPushButton("New", self)
+        self.btn_delete = QPushButton("Delete", self)
+        self.btn_up = QPushButton("Up", self)
+        self.btn_down = QPushButton("Down", self)
+        self.btn_vis = QPushButton("Toggle Vis", self)
+        self.btn_lock = QPushButton("Toggle Lock", self)
 
         # Keep the legacy QPushButtons as stable public command handles, but
         # present the actions through a compact, reference-aligned toolbar.
@@ -124,9 +157,25 @@ class LayersPanel(QWidget):
         self.current_lang = (
             lang if isinstance(lang, str) and lang in {"en", "pt"} else "en"
         )
+        text = self._ui_text[self.current_lang]
+        self.search_input.setPlaceholderText(text["search"])
+        self.search_input.setAccessibleName(text["search"])
+        self.search_input.setAccessibleDescription(text["search_description"])
+        self.search_input.setToolTip(text["search_description"])
         if self.tabs.count() >= 2:
-            self.tabs.setTabText(0, "Project Layers")
-            self.tabs.setTabText(1, "Scenario")
+            self.tabs.setTabText(0, text["project_layers"])
+            self.tabs.setTabText(1, text["scenario"])
+        for button, action in self._toolbar_actions.items():
+            command_key = action.property("commandKey")
+            action.setText(button.text())
+            tooltip = self._tooltip_text[self.current_lang][command_key]
+            action.setToolTip(tooltip)
+            action.setStatusTip(tooltip)
+            toolbar_button = self.action_toolbar.widgetForAction(action)
+            if toolbar_button is not None:
+                toolbar_button.setToolTip(tooltip)
+                toolbar_button.setStatusTip(tooltip)
+                toolbar_button.setAccessibleDescription(tooltip)
 
     def refresh(self):
         current_item = self.list.currentItem()
@@ -184,7 +233,7 @@ class LayersPanel(QWidget):
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self.list)
         for button, toolbar_action in self._toolbar_actions.items():
-            action = menu.addAction(toolbar_action.icon(), button.text())
+            action = menu.addAction(button.text())
             action.setToolTip(button.toolTip() or button.text())
             action.setProperty("commandKey", toolbar_action.property("commandKey"))
             action.setEnabled(toolbar_action.isEnabled())
@@ -196,7 +245,9 @@ class LayersPanel(QWidget):
         if item is None:
             return
         self.list.setCurrentRow(self.list.row(item))
-        self._build_context_menu().exec(self.list.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(
+            self.list.mapToGlobal(position)
+        )
 
     def _present_layer_error(
         self,

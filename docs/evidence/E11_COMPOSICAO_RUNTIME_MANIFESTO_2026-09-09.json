@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "stage": "E11",
+  "status": "IN_PROGRESS",
+  "source_commit": "2486cd1b7684b02f01aae483ca2440b5ab454004",
+  "binary": "release/e10-real-captures-20260909-r55/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+  "binary_sha256": "BB2C511E01C21D908EB2787F2CF9BAC34E968F9229566B26AFB55F21543E2B30",
+  "capture_package": "artifacts/e11-product-flow-r55-20260909",
+  "real_window_capture": true,
+  "flow": {
+    "independent_scene_opened": true,
+    "primitives": ["rectangle", "ellipse", "polygon"],
+    "object_count_after_primitives": 3,
+    "transform_duplicate_remove": true,
+    "point_edit_invalid_preview": true,
+    "point_edit_escape_cancel": true,
+    "point_edit_finalized": true,
+    "save_reopen": true,
+    "saved_scene_sha256": "6DE7F850AE0AA523B94AB13E290C0FE10361623B8FD6649D24E4C4A5F42AF2C9",
+    "after_save_capture_sha256": "34AC0707987AF593C78672F1E39E3175A90C225E27E904E6581C7C4A888B4F3F",
+    "after_reopen_capture_sha256": "34AC0707987AF593C78672F1E39E3175A90C225E27E904E6581C7C4A888B4F3F"
+  },
+  "captures": {
+    "02-independent-scene-after-shortcut.png": "EC2B0BF53137EE7988D111857613E4A70A5620AD55304FE094188EF4AEF3A2E0",
+    "03-independent-scene-primitives.png": "D9532FC383B8342E9ED7396F0ABBABB27274F4437BCFF261DCD45CF35F9257E4",
+    "04-independent-scene-after-transform.png": "8D2D23690F1BF59B93C78ACB951AAD957F288116B36F7A96C38973CD7A825CD6",
+    "05-independent-scene-after-duplicate.png": "1030ACCCEEC0C3951859B545E2FF2141F7DFFD47323BBDC017CCA902E4CDB279",
+    "06-independent-scene-after-remove.png": "1E2C13173553A694FD0DB6B5B59659C61313E4927E79C9311BD31EF605F01E7E",
+    "07-independent-scene-point-edit-finalized.png": "A85526E17F25ADAC58A148045F8873C71F1A5BA1E2C9FDE14572A8BFED4C27DD",
+    "08-independent-scene-after-save.png": "34AC0707987AF593C78672F1E39E3175A90C225E27E904E6581C7C4A888B4F3F",
+    "10-independent-scene-after-reopen.png": "34AC0707987AF593C78672F1E39E3175A90C225E27E904E6581C7C4A888B4F3F"
+  },
+  "tests": {
+    "focused_e11": "149 passed",
+    "independent_scene_and_user_flow": "32 passed",
+    "official_suite": "2098 passed, 2 skipped, 1 warning",
+    "runtime_adapter_closure": {
+      "status": "PASS",
+      "report": "artifacts/e11-runtime-adapters-clean-20260909/stage8-report.json",
+      "report_sha256": "C0D23E82D0A5F41453657CE5312A6C012DF5B297293F272C29C0AACACBEF1965",
+      "godot": "PASS",
+      "unity": "PASS",
+      "functional": "PASS",
+      "fixed_ticks": 3,
+      "sidecars": 6,
+      "clean_worktree": true
+    },
+    "symlink_policy": "deferred_until_final_audit"
+  },
+  "open_criteria": [
+    "single composed scene combining E03-E09 capabilities",
+    "recoverable error and preservation of a valid prior output",
+    "final export consumed in a complete runtime flow",
+    "end-to-end usability/accessibility evidence"
+  ]
+}

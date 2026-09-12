@@ -27,8 +27,6 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from src.core.operational_limits import MAX_PROJECT_FILE_BYTES
-from src.exporters.scenario_exporter import validate_scenario_runtime_export
-
 RUNTIME_HOST_FORMAT_ID = "neoeng-d-trace-runtime-host"
 RUNTIME_HOST_API_VERSION = 1
 _DEFAULT_FIXED_DT = 1.0 / 60.0
@@ -240,6 +238,8 @@ def _validated_manifest(payload: object) -> tuple[dict[str, Any], bytes, str]:
         raise RuntimeManifestValidationError("runtime manifest root must be an object")
     copied = copy.deepcopy(dict(payload))
     try:
+        from src.exporters.scenario_exporter import validate_scenario_runtime_export
+
         validate_scenario_runtime_export(copied)
     except (TypeError, ValueError, KeyError) as exc:
         raise RuntimeManifestValidationError(str(exc)) from exc

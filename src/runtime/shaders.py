@@ -313,17 +313,22 @@ def save_shader_runtime_export(
 
 def _candidate_compilers() -> list[Path]:
     candidates: list[Path] = []
-    for name in ("qsb", "qsb.exe", "pyside6-qsb", "pyside6-qsb.exe"):
-        located = shutil.which(name)
-        if located:
-            candidates.append(Path(located))
     prefix = Path(sys.prefix)
+    # Prefer the compiler shipped with the interpreter running NeoEng. A
+    # system-wide pyside6-qsb wrapper can target another Python installation
+    # and fail before Qt Shader Tools even starts.
     for relative in (
         Path("Lib/site-packages/PySide6/qsb.exe"),
         Path("Lib/site-packages/PySide6/qsb"),
         Path("lib/python3.11/site-packages/PySide6/qsb"),
+        Path("Scripts/pyside6-qsb.exe"),
+        Path("Scripts/pyside6-qsb"),
     ):
         candidates.append(prefix / relative)
+    for name in ("qsb", "qsb.exe", "pyside6-qsb", "pyside6-qsb.exe"):
+        located = shutil.which(name)
+        if located:
+            candidates.append(Path(located))
     return candidates
 
 

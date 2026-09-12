@@ -35,6 +35,10 @@ dist/
 # Evidence logs are reproducibility inputs, not disposable local logs.
 !/docs/evidence/artifacts/**/*.log
 
+# E01-B exploratory reruns stay local; the accepted r11 package is tracked.
+/artifacts/e01-independent-scene-20260908/backend-bench-*/
+/artifacts/e01-independent-scene-20260908/captures-r5-flow*/
+
 # Generated exports and local samples
 /*.glb
 /*.gltf
@@ -61,3 +65,20 @@ Thumbs.db
 Desktop.ini
 release/
 !packaging/*.spec
+# E02-C DPI calibration probes are reproducible diagnostics; final captures are
+# promoted explicitly in the evidence package instead of being auto-tracked.
+/artifacts/e02-primitives-20260908/probe-*/
+/artifacts/e02-primitives-20260908/captures-r9-point-edit/
+/artifacts/e02-primitives-20260908/captures-r9-point-edit-v*/
+/artifacts/e02-primitives-20260908/captures-r10-point-edit*/
+/artifacts/e02-primitives-20260908/captures-r11-point-edit*/
+/artifacts/e02-primitives-20260908/captures-r11-authoring-save/
+/artifacts/e03-assets-20260908/
+/artifacts/e04-tilemaps-20260908/
+/artifacts/e05-colliders-20260908/
+/artifacts/e06-navmesh-20260908/
+/artifacts/e07-entities-20260908/
+/artifacts/e08-renderer-20260908/
+/artifacts/e09-vectorization-20260908/
+/artifacts/e10-godot-*/
+/artifacts/e10-unity-*/

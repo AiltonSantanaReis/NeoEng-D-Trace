@@ -25,12 +25,20 @@ from src.persistence.scene_authoring_schema import (
     SceneGroupAuthoringRecord,
     SceneGroupAuthoringRecordV2,
     SceneLayerAuthoringRecord,
+    SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
+    SceneParticleSystemRecord,
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
+    SceneVectorGeometryRecord,
 )
+from src.core.vector_scene_resource import (
+    CollisionStrategy,
+    create_vector_scene_object,
+)
+from src.core.vectorization import VectorizationResult
 
 
 @dataclass(frozen=True)
@@ -409,6 +417,16 @@ class SceneAuthoringSession:
             "Edit object transform",
         )
 
+    def update_material(
+        self,
+        object_id: str,
+        material: SceneMaterialAuthoringRecord,
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.update_material(object_id, material),
+            "Edit object material",
+        )
+
     def add_asset(self, asset: AssetReferenceRecord) -> bool:
         return self.apply(
             lambda: self.model.add_asset(asset),
@@ -430,6 +448,41 @@ class SceneAuthoringSession:
         return self.apply(
             lambda: self.model.add_object(obj, select=select),
             "Add scene object",
+        )
+
+    def add_vector_object(
+        self,
+        result: VectorizationResult,
+        *,
+        object_id: str,
+        asset_id: str,
+        layer_id: str,
+        transform: SceneTransformRecord,
+        edited_polygon: object | None = None,
+        collision_strategy: CollisionStrategy = "polygon",
+        select: bool = True,
+    ) -> bool:
+        """Insert a vectorized object as one undoable authoring operation."""
+
+        record = create_vector_scene_object(
+            result,
+            object_id=object_id,
+            asset_id=asset_id,
+            layer_id=layer_id,
+            transform=transform,
+            edited_polygon=edited_polygon,
+            collision_strategy=collision_strategy,
+        )
+        return self.add_object(record, select=select)
+
+    def update_vector_geometry(
+        self, object_id: str, geometry: SceneVectorGeometryRecord
+    ) -> bool:
+        """Update a vector object and preserve Undo/Redo semantics."""
+
+        return self.apply(
+            lambda: self.model.update_vector_geometry(object_id, geometry),
+            "Update vector geometry",
         )
 
     def remove_object(self, object_id: str) -> bool:
@@ -663,16 +716,79 @@ class SceneAuthoringSession:
             "Edit layer parallax",
         )
 
-    def add_socket(self, socket: SceneSocketRecord) -> bool:
+    def add_socket(
+        self,
+        socket: SceneSocketRecord,
+        particle_system: SceneParticleSystemRecord | None = None,
+    ) -> bool:
         return self.apply(
-            lambda: self.model.add_socket(socket),
+            lambda: self.model.add_socket(socket, particle_system),
             "Add scene socket",
+        )
+
+    def update_vfx_socket(
+        self,
+        socket_id: str,
+        *,
+        position: Point3Record,
+        rotation: Point3Record,
+        effect_id: str,
+        scale: int | float,
+        enabled: bool,
+        particle_system: SceneParticleSystemRecord,
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.update_vfx_socket(
+                socket_id,
+                position=position,
+                rotation=rotation,
+                effect_id=effect_id,
+                scale=scale,
+                enabled=enabled,
+                particle_system=particle_system,
+            ),
+            "Edit VFX particle system",
+        )
+
+    def update_particle_system(self, system: SceneParticleSystemRecord) -> bool:
+        return self.apply(
+            lambda: self.model.update_particle_system(system),
+            "Update particle system",
+        )
+
+    def remove_particle_system(self, system_id: str) -> bool:
+        return self.apply(
+            lambda: self.model.remove_particle_system(system_id),
+            "Remove particle system",
         )
 
     def update_socket_position(self, socket_id: str, position: Point3Record) -> bool:
         return self.apply(
             lambda: self.model.update_socket_position(socket_id, position),
             "Move scene socket",
+        )
+
+    def update_socket_rotation(self, socket_id: str, rotation: Point3Record) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_rotation(socket_id, rotation),
+            "Rotate scene socket",
+        )
+
+    def update_socket_light_kind(self, socket_id: str, kind: str) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_light_kind(socket_id, kind),
+            "Change scene light kind",
+        )
+
+    def update_socket_transform(
+        self,
+        socket_id: str,
+        position: Point3Record,
+        rotation: Point3Record,
+    ) -> bool:
+        return self.apply(
+            lambda: self.model.update_socket_transform(socket_id, position, rotation),
+            "Transform scene socket",
         )
 
     def remove_socket(self, socket_id: str) -> bool:

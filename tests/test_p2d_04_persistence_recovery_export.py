@@ -304,6 +304,22 @@ def test_ui_recovery_and_target_fallback_paths_are_explicit(
         qt_app.processEvents()
 
 
+def test_scenario_editor_persistence_actions_have_explicit_keyboard_paths(
+    tmp_path: Path, qt_app: QApplication
+) -> None:
+    window = _window(tmp_path, qt_app)
+    try:
+        assert window.save_action.shortcut().toString() == "Ctrl+Alt+Shift+S"
+        assert window.load_action.shortcut().toString() == "Ctrl+Alt+Shift+L"
+        assert window.recover_action.shortcut().toString() == "Ctrl+Alt+Shift+R"
+        assert (
+            window.save_action.shortcutContext().name == "ApplicationShortcut"
+        )
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
 def test_export_rejects_unsupported_target_before_serialization(tmp_path: Path) -> None:
     document, _asset = _document(tmp_path)
     document_v2 = upgrade_scene_authoring_document(document)

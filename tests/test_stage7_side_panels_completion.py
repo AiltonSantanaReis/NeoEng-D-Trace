@@ -66,6 +66,7 @@ def _assert_context_menu_contract(menu, expected_count):
     assert len(actions) == expected_count
     for action in actions:
         assert action.text()
+        assert action.icon().isNull()
         assert action.toolTip()
         assert action.property("commandKey")
 
@@ -79,6 +80,8 @@ def test_objects_panel_has_compact_commands_and_real_selection(qt_app):
         qt_app.processEvents()
 
         _assert_toolbar_contract(panel.properties_action_toolbar, 3)
+        panel.modify_shape_group.setExpanded(True)
+        panel.export_group.setExpanded(True)
         _assert_toolbar_contract(panel.modify_action_toolbar, 5)
         _assert_toolbar_contract(panel.export_action_toolbar, 2)
         assert panel.scroll_area.verticalScrollBar().maximum() >= 0
@@ -239,6 +242,20 @@ def test_all_stage7_panels_are_reachable_at_compact_resolution(qt_app):
             is Qt.ContextMenuPolicy.CustomContextMenu
         )
         _assert_context_menu_contract(window.groups._build_context_menu(), 8)
+    finally:
+        window._mark_document_clean()
+        window.close()
+        qt_app.processEvents()
+
+
+def test_side_panel_context_menu_uses_portuguese_section_labels(qt_app):
+    scene = _scene()
+    window = _show_window(qt_app, scene)
+    try:
+        panel = window.side_panel
+        panel.update_language("pt")
+        labels = [action.text() for action in panel._build_context_menu().actions()]
+        assert labels == ["Propriedades", "Modificar Forma", "Exportar"]
     finally:
         window._mark_document_clean()
         window.close()

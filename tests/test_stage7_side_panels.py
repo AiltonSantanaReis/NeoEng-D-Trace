@@ -88,6 +88,10 @@ def test_groups_toolbar_preserves_action_handles_and_localized_labels(qt_app):
         panel.update_language("pt")
         assert panel.action_toolbar.actions()[0].text() == panel.btn_new.text()
         assert panel.action_toolbar.actions()[7].text() == panel.btn_lock.text()
+        assert panel.btn_vis.text() == "Alternar Visibilidade"
+        assert panel.btn_lock.text() == "Alternar Bloqueio"
+        assert panel.action_toolbar.actions()[6].toolTip() == "Alternar Visibilidade"
+        assert panel.action_toolbar.actions()[7].toolTip() == "Alternar Bloqueio"
         assert all(action.toolTip() for action in panel.action_toolbar.actions())
     finally:
         panel.close()

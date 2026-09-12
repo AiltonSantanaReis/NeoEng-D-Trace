@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "stage": "E08-D.1",
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "scope": "Conectar o simulador determinístico de partículas ao viewport V2 por sockets VFX persistidos, com seed, lifecycle, limites e pixels observáveis.",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r43",
+    "source_commit": "c5ca9f6fb559997ecdfa388a8244da68fb3bbc14",
+    "source_branch": "Ailton/e08-renderer-20260908",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256": "459AAAFDE60CE7D6B60B1B16E79CE641B3A53B26FBC63B34B93336E2D61CF244",
+    "binary": "release/e08-renderer-20260908-r43/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "692178B725846275B362B965E76CF03AE8630CFDF4F23A5CA412E36907D69AC1",
+    "portable_archive_sha256": "C86275C2521CCB045D4E033881AFE18423A458A13A52C950EAF081DAB467ED44",
+    "portable_smoke": {"status": "SUCCESS", "checks": 11}
+  },
+  "fixture": {
+    "project": "tests/fixtures/e08_fx_smoke.ndtproj",
+    "scene": "tests/fixtures/e08_fx_smoke.ndtscene.json",
+    "schema": "V2 scene authoring",
+    "vfx_socket": {
+      "id": "spark-fx",
+      "effect_id": "spark-fx",
+      "position": [180.0, 0.0, 0.0],
+      "scale": 1.25,
+      "enabled": true
+    },
+    "simulation": {
+      "fixed_dt": 0.0166666666666667,
+      "seed": "derived deterministically from effect_id",
+      "lifecycle": "ready -> running -> fixed-step snapshot",
+      "limit": "32 particles per preview emitter"
+    }
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r43-particles",
+    "method": "PrintWindow from the real portable binary window handle",
+    "command": "scripts\\capture_e03_asset_library_binary.ps1 -Executable release\\e08-renderer-20260908-r43\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe -ProjectPath tests\\fixtures\\e08_fx_smoke.ndtproj -OutputDirectory artifacts\\e08-renderer-20260908\\binary-capture-r43-particles -DirectProjectLoad -CaptureRendererFlow -CaptureParallaxFlow",
+    "screenshots": {
+      "renderer_preview": {
+        "path": "06-renderer-preview.png",
+        "sha256": "4F2D6FA0E88DD47D3A959F68E4E4883CF7CC99FA4FC6FC2131BD09AA3E87969B",
+        "finding": "Preview real mostra partículas amarelas visíveis no socket VFX e o HUD RENDERER RASTER | NATIVE | PREVIEW; status Scenario preview — read-only."
+      },
+      "renderer_authoring": {
+        "path": "07-renderer-authoring.png",
+        "sha256": "37267DD7FBD575D32B42EEE15A979E827FAF9401916A4FE2B810BE43E6395155",
+        "finding": "Autoria real preserva as partículas visíveis e deixa o socket VFX editável."
+      },
+      "parallax_controls_bottom": {
+        "path": "08-parallax-controls-bottom.png",
+        "sha256": "ECA0E01617833064840803B2153BF81EECD20EA3C40C720B4B79F0D2881ECEF8",
+        "finding": "Inspector real mostra socket spark-fx (vfx), ID spark-fx, tipo vfx e coordenada X 180,0000."
+      },
+      "parallax_controls_pageup": {
+        "path": "09-parallax-controls-pageup.png",
+        "sha256": "4EEFB3DC9B1AF5EF1B129D57F7371F7539B6F9C4882CB10D856C7D5CDC0F8D76",
+        "finding": "A navegação reversa do inspector produziu captura distinta; o fluxo continua no binário e o resultado foi preservado."
+      }
+    },
+    "window_rect": "-13,-13,3853,2077",
+    "editor_title": "Editor de Cenário — NeoEng-D-Trace"
+  },
+  "verification": {
+    "focused_tests": "46 passed",
+    "official_suite": "2072 passed, 2 skipped, 1 warning",
+    "static": ["black E08-D.1 scope PASS", "mypy E08-D.1 scope PASS", "git diff --check PASS"],
+    "human_review": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT"
+  },
+  "limitations": [
+    "A captura automatizada prova os pixels do fluxo no binário, mas não substitui a revisão humana final.",
+    "O efeito desta unidade usa o perfil determinístico de preview associado ao effect_id; edição avançada de parâmetros e integração de shaders/pós-processamento seguem nos sublotes E08-D.2 e E08-D.3.",
+    "Nenhum sucesso foi inferido para sockets VFX desconhecidos fora do perfil capturado."
+  ]
+}

@@ -47,6 +47,14 @@ def preview_layers_from_professional_document(
                     depth=float(parallax.depth),
                     translation_strength=float(parallax.translation_strength),
                     zoom_strength=float(parallax.zoom_strength),
+                    scroll_x=float(parallax.scroll_x),
+                    scroll_y=float(parallax.scroll_y),
+                    offset_x=float(parallax.offset_x),
+                    offset_y=float(parallax.offset_y),
+                    repeat_x=parallax.repeat_x,
+                    repeat_y=parallax.repeat_y,
+                    mirror_x=parallax.mirror_x,
+                    mirror_y=parallax.mirror_y,
                 ),
                 layer.visible,
             )
@@ -67,6 +75,7 @@ def preview_camera_from_professional_document(
             float(document.camera.position.y),
         ),
         zoom=float(document.camera.zoom),
+        rotation=float(document.camera.rotation),
     )
 
 
@@ -161,6 +170,7 @@ def professional_document_from_scene(
                     y=float(legacy_document.camera.position.y),
                 ),
                 zoom=float(legacy_document.camera.zoom),
+                rotation=0.0,
             ),
             "parallax_layers": parallax_layers,
         }

@@ -36,6 +36,8 @@ class ProjectedSceneSocket:
     socket_type: str
     position: Point2
     color: str
+    rotation_degrees: float = 0.0
+    socket_kind: str | None = None
 
 
 @dataclass(frozen=True)
@@ -67,6 +69,14 @@ def _parallax(document: SceneAuthoringDocumentV2, layer_id: str) -> ParallaxLaye
         depth=float(record.depth),
         translation_strength=float(record.translation_strength),
         zoom_strength=float(record.zoom_strength),
+        scroll_x=float(record.scroll_x),
+        scroll_y=float(record.scroll_y),
+        offset_x=float(record.offset_x),
+        offset_y=float(record.offset_y),
+        repeat_x=record.repeat_x,
+        repeat_y=record.repeat_y,
+        mirror_x=record.mirror_x,
+        mirror_y=record.mirror_y,
     )
 
 
@@ -188,6 +198,7 @@ def build_scene_authoring_preview(
         viewport_size=viewport,
         position=(float(document.camera.position.x), float(document.camera.position.y)),
         zoom=float(document.camera.zoom),
+        rotation=float(document.camera.rotation),
     )
     layers, visible_objects = _build_visibility_index(document, isolated_group_id)
     parallax_by_layer = {
@@ -195,6 +206,14 @@ def build_scene_authoring_preview(
             depth=float(record.depth),
             translation_strength=float(record.translation_strength),
             zoom_strength=float(record.zoom_strength),
+            scroll_x=float(record.scroll_x),
+            scroll_y=float(record.scroll_y),
+            offset_x=float(record.offset_x),
+            offset_y=float(record.offset_y),
+            repeat_x=record.repeat_x,
+            repeat_y=record.repeat_y,
+            mirror_x=record.mirror_x,
+            mirror_y=record.mirror_y,
         )
         for record in document.parallax_layers
     }
@@ -237,6 +256,12 @@ def build_scene_authoring_preview(
                     parallax_by_layer.get(socket.layer_id, ParallaxLayer()),
                 ),
                 color=_socket_color(socket),
+                rotation_degrees=float(socket.rotation.z),
+                socket_kind=(
+                    socket.kind
+                    if socket.type == "light" and socket.kind != "point"
+                    else None
+                ),
             )
         )
     return SceneAuthoringPreviewFrame(

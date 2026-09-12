@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import QMessageBox
 
 from src.core.scenario_authoring import ScenarioAuthoringState
@@ -243,6 +243,7 @@ def install_scenario_authoring(window: Any) -> None:
 
     menu = window.menuBar().addMenu("Scenario")
     window.scenario_open_action = QAction("Open Scenario Editor", window)
+    window.scenario_open_action.setShortcut(QKeySequence("Ctrl+Alt+S"))
     window.scenario_open_action.triggered.connect(open_editor)
     window.scenario_save_action = QAction("Save Scenario", window)
     window.scenario_save_action.triggered.connect(lambda: _save(window))

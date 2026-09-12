@@ -149,6 +149,19 @@ def test_numeric_save_reload_and_export_are_real_v2_artifacts(
         _close(window, qt_app)
 
 
+def test_reload_status_is_localized_for_pt_br(tmp_path: Path, qt_app) -> None:
+    window, _scene = _window(tmp_path, qt_app)
+    try:
+        window.update_language("pt")
+        window.save_action.trigger()
+        qt_app.processEvents()
+        window.load_action.trigger()
+        qt_app.processEvents()
+        assert window.status_label.text() == "Cenário recarregado"
+    finally:
+        _close(window, qt_app)
+
+
 def test_camera_parallax_sockets_and_overlay_contracts_are_editable(
     tmp_path: Path, qt_app
 ) -> None:
@@ -518,8 +531,24 @@ def test_existing_sidecar_and_failure_paths_remain_observable(
                     ValueError("load failure")
                 ),
             )
+            monkeypatch.setattr(
+                scenario_editor_window_module,
+                "load_scene_authoring",
+                lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                    ValueError("fallback load failure")
+                ),
+            )
             reopened._load_professional()
             assert "Scenario reload failed" in reopened.status_label.text()
+            assert reopened.professional_empty.width() <= reopened.professional_pages.width()
+            assert reopened.professional_empty.width() <= 720
+            assert any(
+                hint in reopened.professional_empty.text()
+                for hint in (
+                    "Recover Last Valid",
+                    "Repair the scenario file",
+                )
+            )
 
             monkeypatch.setattr(
                 scenario_editor_window_module,

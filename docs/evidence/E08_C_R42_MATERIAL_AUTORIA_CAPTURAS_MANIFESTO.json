@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "stage": "E08-C.4",
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "scope": "Autoria e persistência de material, albedo, normal map e parâmetros de sombra no fluxo V2, com seleção nativa no binário portátil e pixels observáveis.",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r42",
+    "source_commit": "175b2ec8a40c2dfa664deec5a3b16a1a33007d24",
+    "source_branch": "Ailton/e08-renderer-20260908",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256": "10F7FBCE37849B0558F0AF2D0361918C464E820AFA6D4E10BB86A8BBAE18E96E",
+    "binary": "release/e08-renderer-20260908-r42/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "10E2813F7FD4A3095E62007A89A3FF26A68917A76F1DD4B2E8E45DCF1A1C605C",
+    "portable_archive_sha256": "56C0053985EF6564172CC9AABB8C5C68AD2C764CB8E62C10F4B649B0BBF01487",
+    "portable_smoke": {"status": "SUCCESS", "checks": 11}
+  },
+  "fixture": {
+    "path": "tests/fixtures/e08_lighting_smoke.ndtscene.json",
+    "schema": "V2 scene authoring",
+    "objects": ["lighting-receiver", "lighting-occluder"],
+    "receiver_material": {
+      "albedo": "#405070",
+      "normal_map_xy": [0.7, -0.3],
+      "normal_strength": 0.8,
+      "emission": "#101820",
+      "emission_strength": 0.1,
+      "opacity": 0.92,
+      "receives_shadow": true,
+      "casts_shadow": true
+    },
+    "persisted_sockets": [{
+      "id": "key-light",
+      "type": "light",
+      "position": [160.0, 220.0, 0.0],
+      "color": "#ffdcad",
+      "intensity": 1.35,
+      "radius": 720.0
+    }],
+    "purpose": "Provar que a seleção nativa de um objeto V2 habilita os controles de material, preserva os valores do documento e mantém a aparência resultante no renderer.",
+    "authoring_flow": [
+      "abrir a fixture pelo fluxo direto do projeto",
+      "ativar Autoria",
+      "clicar no receptor no canvas nativo",
+      "capturar a seleção com gizmo",
+      "navegar o inspector e capturar os controles habilitados"
+    ]
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r42-material-v3",
+    "method": "PrintWindow from the real portable binary window handle; native canvas click at the receiver and native mouse-wheel inspector navigation",
+    "command": "scripts\\capture_e03_asset_library_binary.ps1 -Executable release\\e08-renderer-20260908-r42\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe -ProjectPath tests\\fixtures\\e08_lighting_smoke.ndtproj -OutputDirectory artifacts\\e08-renderer-20260908\\binary-capture-r42-material-v3 -DirectProjectLoad -CaptureRendererFlow -CaptureMaterialFlow -CaptureParallaxFlow",
+    "screenshots": {
+      "renderer_preview": {
+        "path": "06-renderer-preview.png",
+        "sha256": "B6F96BCB89D07E7008B8C269FA36614E3C22E727B34328A8337FDBF6889B0517",
+        "finding": "Preview real do binário mostra o HUD RENDERER RASTER | NATIVE | PREVIEW | 8 PASSES | R1 e os objetos com pixels resultantes do passe."
+      },
+      "renderer_authoring": {
+        "path": "07-renderer-authoring.png",
+        "sha256": "28D0A12D38566A0A9B349A0122FD333787A35E52A8A4CF960B4E9B611F043AF2",
+        "finding": "Autoria real preserva a composição iluminada e o painel profissional."
+      },
+      "material_selection": {
+        "path": "10-material-selection.png",
+        "sha256": "11C3FFF771B97E28975477D915E636E80E4D8E3587DA5FAA32892319FC5BF057",
+        "finding": "Clique nativo no receptor altera o estado visual: o objeto fica selecionado, o gizmo aparece e o status indica Objects moved."
+      },
+      "material_authoring_selected": {
+        "path": "11-material-authoring-selected.png",
+        "sha256": "B0A429074AF720CAD31D8D66FA5C0B0D226213B96316C32AFB9F58EB36ACD230",
+        "finding": "Inspector real mostra Albedo #405070, Emissão #101820, Normal X 0,7000, Normal Y -0,3000, Força da Normal 0,8000, Força da Emissão 0,1000, Opacidade 0,9200 e Recebe/Projeta sombras ativos; Aplicar Material está habilitado."
+      },
+      "parallax_controls_bottom": {
+        "path": "08-parallax-controls-bottom.png",
+        "sha256": "BBC7FCFAADC9A15CF24FEECFFB14EF24843F4AA8EEE269269B383C768E4CBEF9",
+        "finding": "O inspector mantém Câmera, Paralaxe e Sockets, com key-light (light) e coordenadas persistidas visíveis."
+      },
+      "parallax_controls_pageup": {
+        "path": "09-parallax-controls-pageup.png",
+        "sha256": "BBC7FCFAADC9A15CF24FEECFFB14EF24843F4AA8EEE269269B383C768E4CBEF9",
+        "finding": "O retorno por roda nativa não mudou o raster capturado neste layout; isso é registrado como observação do harness, sem claim de navegação adicional."
+      }
+    },
+    "window_rect": "-13,-13,3853,2077",
+    "editor_title": "Editor de Cenário — NeoEng-D-Trace"
+  },
+  "verification": {
+    "focused_material_tests": "40 passed",
+    "official_suite": "2070 passed, 2 skipped, 1 warning",
+    "static": ["black E08-C scope PASS", "mypy E08-C scope PASS", "git diff --check PASS"],
+    "human_review": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT"
+  },
+  "limitations": [
+    "A captura automatizada prova o estado visual observado no binário, mas não substitui a revisão humana final autorizadamente adiada.",
+    "O normal map desta etapa é um vetor autoral persistido; importação de textura normal e integração de sombras híbridas 3D permanecem em lotes posteriores, especialmente E12.",
+    "A captura pageup manteve o mesmo hash do estado inferior; a evidência não afirma uma mudança que não foi observada."
+  ]
+}

@@ -15,6 +15,8 @@ from src.core.object_geometry_gesture import (
     ObjectGeometryGestureTransaction,
 )
 from src.tools.base_tool import BaseTool
+from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class CollisionBrushTool(BaseTool):
@@ -39,30 +41,30 @@ class CollisionBrushTool(BaseTool):
         self.current_lang = "en"
         self.translations = {
             "en": {
-                "move": "🏃 Move",
-                "edit": "✏️ Edit",
-                "scale": "📏 Scale",
-                "undo": "↶ Undo",
-                "redo": "↷ Redo",
-                "remove": "🗑️ Remove",
-                "cancel": "❌ Cancel",
-                "center": "🎯 Center",
-                "increase": "➕ Increase",
-                "decrease": "➖ Decrease",
+                "move": "Move",
+                "edit": "Edit",
+                "scale": "Scale",
+                "undo": "Undo",
+                "redo": "Redo",
+                "remove": "Remove",
+                "cancel": "Cancel",
+                "center": "Center",
+                "increase": "Increase",
+                "decrease": "Decrease",
                 "remove_title": "Remove",
                 "remove_question": "Remove object {oid}?",
             },
             "pt": {
-                "move": "🏃 Mover",
-                "edit": "✏️ Editar",
-                "scale": "📏 Escalar",
-                "undo": "↶ Desfazer",
-                "redo": "↷ Refazer",
-                "remove": "🗑️ Remover",
-                "cancel": "❌ Cancelar",
-                "center": "🎯 Centro",
-                "increase": "➕ Aumentar",
-                "decrease": "➖ Diminuir",
+                "move": "Mover",
+                "edit": "Editar",
+                "scale": "Escalar",
+                "undo": "Desfazer",
+                "redo": "Refazer",
+                "remove": "Remover",
+                "cancel": "Cancelar",
+                "center": "Centro",
+                "increase": "Aumentar",
+                "decrease": "Diminuir",
                 "remove_title": "Remover",
                 "remove_question": "Remover objeto {oid}?",
             },
@@ -99,6 +101,7 @@ class CollisionBrushTool(BaseTool):
                             "Undo/Redo command history is unavailable.",
                         )
                         return
+                    self._select_object_for_gizmo(oid)
                     result = manager.execute(
                         ToggleCollisionCommand(oid),
                         self.canvas_view.model,
@@ -180,7 +183,7 @@ class CollisionBrushTool(BaseTool):
     def _show_hub_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
 
-        main_window = self.canvas_view.parent()
+        main_window = getattr(self.canvas_view, "window", lambda: None)()
 
         # Move
         act_move = menu.addAction(self.translations[self.current_lang]["move"])
@@ -188,7 +191,7 @@ class CollisionBrushTool(BaseTool):
 
         # Edit
         act_edit = menu.addAction(self.translations[self.current_lang]["edit"])
-        act_edit.triggered.connect(lambda: self._start_edit(main_window))
+        act_edit.triggered.connect(lambda: self._start_edit(oid, main_window))
 
         # Scale
         act_scale = menu.addAction(self.translations[self.current_lang]["scale"])
@@ -210,7 +213,7 @@ class CollisionBrushTool(BaseTool):
         act_remove = menu.addAction(self.translations[self.current_lang]["remove"])
         act_remove.triggered.connect(lambda: self._remove(oid))
 
-        menu.exec(pos)
+        fit_context_menu(menu).exec(pos)
 
     def _show_scale_menu(self, oid: str, pos):
         menu = QMenu(self.canvas_view)
@@ -222,7 +225,7 @@ class CollisionBrushTool(BaseTool):
         # Center
         act_center = menu.addAction(self.translations[self.current_lang]["center"])
         act_center.triggered.connect(
-            lambda: self.canvas_view.focus_on_object(oid)
+            lambda: self.canvas_view.center_on_object(oid)
         )  # type: ignore
 
         # Move
@@ -249,7 +252,7 @@ class CollisionBrushTool(BaseTool):
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self._redo)
 
-        menu.exec(pos)
+        fit_context_menu(menu).exec(pos)
 
     def _reset_transform_state(self) -> None:
         self._transform_transaction = None
@@ -544,15 +547,63 @@ class CollisionBrushTool(BaseTool):
             "Move",
         )
 
-    def _start_edit(self, main_window):
-        if hasattr(main_window, "tool_palette"):
-            main_window.tool_palette.select_tool_by_name("polygon_edit")
+    def _select_object_for_gizmo(self, oid: str) -> bool:
+        model = getattr(self.canvas_view, "model", None)
+        if model is None or oid not in getattr(model, "objects", {}):
+            return False
+        select_object = getattr(model, "select_object", None)
+        if callable(select_object):
+            select_object(oid)
+        set_gizmo_enabled = getattr(self.canvas_view, "set_gizmo_enabled", None)
+        if callable(set_gizmo_enabled):
+            set_gizmo_enabled(True)
+        update = getattr(self.canvas_view, "update", None)
+        if callable(update):
+            update()
+        return True
 
-    def _start_scale(self, oid: str, main_window):
-        self._begin_transform_gesture(
-            oid,
-            "Scale",
-        )
+    def _start_edit(self, oid_or_window=None, main_window=None):
+        """Enter polygon editing while preserving the object lifecycle.
+
+        The context menu is opened by the collision tool, but the new polygon
+        editor instance owns selection state.  Transfer the target after the
+        tool switch so Edit is an observable mode change rather than a no-op.
+        """
+
+        if main_window is None and not isinstance(oid_or_window, str):
+            oid = self.selected_polygon_id
+            main_window = oid_or_window
+        else:
+            oid = oid_or_window or self.selected_polygon_id
+        if oid is None:
+            return
+
+        self._select_object_for_gizmo(oid)
+        if main_window is None:
+            main_window = getattr(self.canvas_view, "window", lambda: None)()
+        palette = getattr(main_window, "tool_palette", None)
+        if palette is None or not hasattr(palette, "select_tool_by_name"):
+            return
+        palette.select_tool_by_name("polygon_edit")
+
+        active_tool = getattr(self.canvas_view, "_active_tool_object", lambda: None)()
+        if active_tool is not None and active_tool is not self:
+            active_tool.selected_polygon_id = oid
+            active_tool.selected_vertex = None
+            active_tool.selected_polygon_ids = {oid}
+            set_mode = getattr(active_tool, "set_mode", None)
+            if callable(set_mode):
+                set_mode("select")
+        update = getattr(self.canvas_view, "update", None)
+        if callable(update):
+            update()
+
+    def _start_scale(self, oid: str, main_window=None):
+        # Scaling is intentionally owned by CanvasView's contextual gizmo.
+        # The former path started a free mouse-drag transaction here, which
+        # bypassed axis handles and made sensitivity impossible to control.
+        self._reset_transform_state()
+        self._select_object_for_gizmo(oid)
 
     def _undo(self):
         if self._transform_transaction is not None:
@@ -660,20 +711,8 @@ class CollisionBrushTool(BaseTool):
             for oid in self.canvas_view.model.collision_shapes:
                 obj = self.canvas_view.model.objects.get(oid)
                 if obj and obj.polygon:
-                    # Vermelho para colisão aplicada, azul se selecionado, verde padrão
-                    if oid == self.selected_polygon_id:
-                        pen_selected = QPen(QColor(0, 128, 255), 3)
-                        pen_selected.setCosmetic(True)
-                        painter.setPen(pen_selected)
-                    elif self.canvas_view.model.has_collision(oid):
-                        pen_collision = QPen(QColor(255, 0, 0), 3)
-                        pen_collision.setCosmetic(True)
-                        painter.setPen(pen_collision)
-                    else:
-                        pen = QPen(QColor(0, 255, 0), 2)
-                        pen.setCosmetic(True)
-                        painter.setPen(pen)
-                    painter.setBrush(Qt.BrushStyle.NoBrush)
+                    painter.setPen(collision_outline_pen())
+                    painter.setBrush(collision_fill_brush())
                     points = [QPointF(float(x), float(y)) for x, y in obj.polygon]
                     painter.drawPolygon(QPolygonF(points))
 

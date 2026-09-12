@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "stage": "E06",
+  "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+  "source": {
+    "branch": "Ailton/e06-navmesh-20260908",
+    "commit": "3eba4cc461386f4a37bd03e0597400eb6feb68bf",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7"
+  },
+  "build": {
+    "release": "release/e06-navmesh-20260908-r22",
+    "binary": "release/e06-navmesh-20260908-r22/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "F704E4CAA552B352718FAC0AFC970B36226DAF9EBA14CB61F63F524FF4D3D7C3",
+    "archive_sha256": "E5E627F092F15B9AF0600FE235B5090B487EC872BA2070E1D548DD0AAE8415D6",
+    "registry_sha256_at_build": "786760395C59CE88012D958641A5D42E1A7DB16C552202CBBFDFB6E3EE0FF6E9",
+    "portable_smoke": "SUCCESS: 11 checks",
+    "provenance": "release/e06-navmesh-20260908-r22/continuity-provenance.json"
+  },
+  "capture": {
+    "directory": "artifacts/e06-navmesh-20260908/binary-capture-r22-final",
+    "window_rect": "-13,-13,3853,2077",
+    "method": "project binary direct GUI load + native PrintWindow with per-monitor DPI awareness",
+    "screens": {
+      "project_loaded": "2797C1F07B710D0D22EC9E7967CB6B18CFC390D1BEE6A50EE10F07530C03689E",
+      "asset_library_ready": "8F194DB6A201838358C79B97BBAD05A5169524A135DE54C109ABC8781E5B2D37",
+      "navmesh_baked": "ADB5ED273798712594F53AF82A308DE13340899C8A6B818364C3CBFF8F5B37A0",
+      "navmesh_saved": "2293318665619251F737CDBCE514C7B32414E7528CA5AC2601FBC26A09B29CA6",
+      "navmesh_reopened": "90AF2B8A82AFF3BB122E942D8459C6E22F18B8855BFF92C7CA606DB04C192835"
+    }
+  },
+  "observations": [
+    "O projeto foi carregado pelo binário r22 e o editor de cenário foi exibido.",
+    "O inspector lateral, a tradução em português e os controles NavMesh ficaram visíveis sem clipping.",
+    "Região e obstáculo foram criados; o bake exibiu 1 região, 1 obstáculo e caminho determinístico de 12 pontos.",
+    "Salvar exibiu o sidecar scenario.navmesh.json; reabrir preservou a fonte e informou corretamente que o bake precisa ser reexecutado.",
+    "As capturas automatizadas comprovam os estados visuais capturados; revisão humana permanece pendente para a auditoria final."
+  ],
+  "focused_tests": "7 passed",
+  "official_suite": "2040 passed, 2 skipped, 1 warning",
+  "static": "mypy PASS; compileall PASS; git diff --check PASS",
+  "sidecar": "artifacts/e03-assets-20260908/binary-fixture/assets/navmesh/scenario.navmesh.json"
+}

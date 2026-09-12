@@ -6,13 +6,16 @@ import math
 from pathlib import Path
 from typing import Iterable
 
+import numpy as np
 from PySide6.QtCore import (
+    QEvent,
     QFileSystemWatcher,
     QMimeData,
     QPointF,
     QRect,
     QRectF,
     Qt,
+    QTimer,
     Signal,
 )
 from PySide6.QtGui import (
@@ -22,9 +25,11 @@ from PySide6.QtGui import (
     QKeyEvent,
     QMouseEvent,
     QPainter,
+    QPainterPath,
     QPen,
     QPixmap,
     QPolygonF,
+    QRadialGradient,
     QTransform,
     QWheelEvent,
 )
@@ -36,6 +41,7 @@ from PySide6.QtWidgets import (
     QGraphicsScene,
     QGraphicsSceneMouseEvent,
     QGraphicsView,
+    QMenu,
 )
 
 from src.core.parallax_camera import OrthographicCamera, ParallaxLayer
@@ -57,6 +63,15 @@ from src.core.scene_authoring_order import (
     ordered_scene_objects,
 )
 from src.core.scene_authoring_session import SceneAuthoringSession
+from src.core.scene_lighting import (
+    SceneDirectionalLight,
+    SceneLightingMaterial,
+    SceneLightingSettings,
+    ScenePointLight,
+    default_scene_lighting,
+    shade_color,
+)
+from src.core.scene_render_plan import SceneRenderPlan
 from src.core.scene_view_navigation import (
     anchored_navigation_center,
     clamp_navigation_zoom,
@@ -69,9 +84,27 @@ from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
     SceneAuthoringDocumentV2,
+    SceneCameraAuthoringRecord,
+    SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
+    SceneParticleSystemRecord,
     SceneTransformRecord,
 )
+from src.runtime.particles import (
+    ParticleDocumentV1,
+    ParticleEmitterRecord,
+    ParticleSimulation,
+    ParticleSourceBindingRecord,
+    ParticleStateRecord,
+)
+from src.runtime.post_processing import (
+    PostProcessingDocumentV1,
+    PostProcessingEffectRecord,
+    PostProcessingFallbackRecord,
+    PostProcessingRuntime,
+    PostProcessingSourceBindingRecord,
+)
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class SceneObjectGraphicsItem(QGraphicsObject):
@@ -98,6 +131,7 @@ class SceneObjectGraphicsItem(QGraphicsObject):
         self._hovered = False
         self._pressed = False
         self._enabled = True
+        self._lighting_color: QColor | None = None
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setAcceptHoverEvents(True)
         self._brush = QBrush(QColor("#2387b8"))
@@ -118,7 +152,7 @@ class SceneObjectGraphicsItem(QGraphicsObject):
             self._brush = QBrush(QColor("#2c9fc8"))
             self._pen = QPen(QColor("#b9f3ff"), 2.5)
         else:
-            self._brush = QBrush(QColor("#2387b8"))
+            self._brush = QBrush(self._lighting_color or QColor("#2387b8"))
             self._pen = QPen(QColor("#65d7ff"), 2.0)
         self.update()
 
@@ -128,6 +162,12 @@ class SceneObjectGraphicsItem(QGraphicsObject):
 
     def set_interaction_enabled(self, enabled: bool) -> None:
         self._enabled = bool(enabled)
+        self._refresh_style()
+
+    def set_lighting_color(self, color: QColor | None) -> None:
+        """Apply the renderer's pixel-derived fill while preserving selection UI."""
+
+        self._lighting_color = QColor(color) if color is not None else None
         self._refresh_style()
 
     def boundingRect(self) -> QRectF:
@@ -229,35 +269,47 @@ class SceneTransformGizmo(QGraphicsObject):
 
     def paint(self, painter, option, widget=None) -> None:
         del option, widget
+        painter.save()
         painter.setRenderHint(painter.RenderHint.Antialiasing, True)
+        # A restrained dark halo keeps the handles legible over both the grid
+        # and textured assets without changing the existing hit geometry.
+        painter.setPen(QPen(QColor(5, 12, 18, 180), 8.0))
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.drawEllipse(QRectF(-50.0, -50.0, 100.0, 100.0))
         painter.setPen(
-            QPen(self._color("translate_x", self._hover_mode, "#ff5d63"), 3.0)
+            QPen(self._color("translate_x", self._hover_mode, "#ff6b72"), 4.0)
         )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(42.0, 0.0))
         painter.setPen(
-            QPen(self._color("translate_y", self._hover_mode, "#59dc89"), 3.0)
+            QPen(self._color("translate_y", self._hover_mode, "#65e59a"), 4.0)
         )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(0.0, -42.0))
         painter.setPen(
             QPen(
-                self._color("rotate", self._hover_mode, "#b8c6d6"),
-                2.0,
-                Qt.PenStyle.DashLine,
+                self._color("rotate", self._hover_mode, "#c6d8e6"), 2.5
             )
         )
         painter.drawEllipse(QRectF(-48.0, -48.0, 96.0, 96.0))
-        painter.setBrush(QBrush(self._color("translate", self._hover_mode, "#dceeff")))
-        painter.setPen(QPen(QColor("#113044"), 1.5))
-        painter.drawRect(QRectF(-7.0, -7.0, 14.0, 14.0))
-        painter.setBrush(QBrush(self._color("scale", self._hover_mode, "#ffcf65")))
-        painter.drawRect(QRectF(33.0, 33.0, 12.0, 12.0))
+        painter.setBrush(QBrush(self._color("translate", self._hover_mode, "#ecf8ff")))
+        painter.setPen(QPen(QColor("#17384d"), 2.0))
+        painter.drawEllipse(QRectF(-8.0, -8.0, 16.0, 16.0))
+        painter.setBrush(QBrush(self._color("scale", self._hover_mode, "#ffd36a")))
+        painter.setPen(QPen(QColor("#4a3413"), 1.5))
+        painter.drawRoundedRect(QRectF(32.0, 32.0, 14.0, 14.0), 3.0, 3.0)
+        painter.setPen(QPen(QColor("#ff9a9f"), 1.0))
+        painter.setBrush(QBrush(self._color("translate_x", self._hover_mode, "#ff6b72")))
         painter.drawPolygon(
             QPolygonF([QPointF(42.0, 0.0), QPointF(32.0, -6.0), QPointF(32.0, 6.0)])
         )
-        painter.setBrush(QBrush(QColor("#59dc89")))
+        painter.setPen(QPen(QColor("#a6f3c5"), 1.0))
+        painter.setBrush(QBrush(self._color("translate_y", self._hover_mode, "#65e59a")))
         painter.drawPolygon(
             QPolygonF([QPointF(0.0, -42.0), QPointF(-6.0, -32.0), QPointF(6.0, -32.0)])
         )
+        painter.setPen(QPen(QColor("#e8f6ff"), 1.5))
+        painter.drawLine(QPointF(-3.0, 0.0), QPointF(3.0, 0.0))
+        painter.drawLine(QPointF(0.0, -3.0), QPointF(0.0, 3.0))
+        painter.restore()
 
     def hoverMoveEvent(self, event) -> None:
         mode = self._mode_for(event.pos())
@@ -291,27 +343,248 @@ class SceneTransformGizmo(QGraphicsObject):
             event.accept()
 
 
+class SceneCameraGuide(QGraphicsObject):
+    """Visible, non-exported camera frame with direct authoring handles.
+
+    The item deliberately accepts a press only on its center, outline or
+    rotation handle.  Empty pixels inside the frame are ignored so objects
+    underneath remain selectable in the normal viewport flow.
+    """
+
+    interaction_started = Signal(str, QPointF)
+    interaction_changed = Signal(str, QPointF)
+    interaction_finished = Signal(str, QPointF)
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
+        self.setAcceptHoverEvents(True)
+        self.setZValue(180.0)
+        self._frame_width = 640.0
+        self._frame_height = 360.0
+        self._mode: str | None = None
+        self._hover_mode: str | None = None
+        self._label = "CAMERA"
+
+    def _label_width(self) -> float:
+        """Keep the authoring hint legible without clipping long translations."""
+
+        return max(188.0, min(320.0, 7.5 * len(self._label) + 36.0))
+
+    def boundingRect(self) -> QRectF:
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        label_right = -half_width + 10.0 + self._label_width()
+        right = max(half_width + 18.0, label_right)
+        return QRectF(
+            -half_width - 18.0,
+            -half_height - 46.0,
+            right + half_width + 18.0,
+            self._frame_height + 64.0,
+        )
+
+    def shape(self) -> QPainterPath:
+        """Expose only handles and the frame stroke to scene hit testing."""
+
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        frame = QRectF(-half_width, -half_height, self._frame_width, self._frame_height)
+        outer = frame.adjusted(-9.0, -9.0, 9.0, 9.0)
+        inner = frame.adjusted(9.0, 9.0, -9.0, -9.0)
+        path = QPainterPath()
+        path.addRect(outer)
+        inner_path = QPainterPath()
+        inner_path.addRect(inner)
+        path = path.subtracted(inner_path)
+        path.addEllipse(QRectF(-17.0, -17.0, 34.0, 34.0))
+        handle = self._rotation_handle()
+        path.addEllipse(QRectF(handle.x() - 15.0, handle.y() - 15.0, 30.0, 30.0))
+        return path
+
+    def set_frame_size(self, width: float, height: float) -> None:
+        width = max(96.0, float(width))
+        height = max(64.0, float(height))
+        if (width, height) == (self._frame_width, self._frame_height):
+            return
+        self.prepareGeometryChange()
+        self._frame_width = width
+        self._frame_height = height
+        self.update()
+
+    def set_camera_state(self, position: QPointF, rotation: float) -> None:
+        self.setPos(position)
+        self.setRotation(float(rotation))
+        self.update()
+
+    def set_label(self, label: str) -> None:
+        if label != self._label:
+            self._label = label
+            self.update()
+
+    def _rotation_handle(self) -> QPointF:
+        return QPointF(0.0, -self._frame_height / 2.0 - 26.0)
+
+    def _mode_for(self, point: QPointF) -> str | None:
+        if not self.boundingRect().contains(point):
+            return None
+        rotation_handle = self._rotation_handle()
+        if math.hypot(point.x() - rotation_handle.x(), point.y() - rotation_handle.y()) <= 13.0:
+            return "rotate"
+        if math.hypot(point.x(), point.y()) <= 16.0:
+            return "translate"
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        edge_tolerance = 9.0
+        on_vertical = abs(abs(point.x()) - half_width) <= edge_tolerance and abs(point.y()) <= half_height + edge_tolerance
+        on_horizontal = abs(abs(point.y()) - half_height) <= edge_tolerance and abs(point.x()) <= half_width + edge_tolerance
+        if on_vertical or on_horizontal:
+            return "translate"
+        return None
+
+    def paint(self, painter: QPainter, option, widget=None) -> None:
+        del option, widget
+        painter.save()
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        half_width = self._frame_width / 2.0
+        half_height = self._frame_height / 2.0
+        frame = QRectF(-half_width, -half_height, self._frame_width, self._frame_height)
+        painter.setBrush(QBrush(QColor(34, 184, 214, 14)))
+        painter.setPen(QPen(QColor(45, 211, 235, 220), 2.0, Qt.PenStyle.DashLine))
+        painter.drawRect(frame)
+        safe = frame.adjusted(self._frame_width * 0.05, self._frame_height * 0.05, -self._frame_width * 0.05, -self._frame_height * 0.05)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.setPen(QPen(QColor(169, 234, 242, 150), 1.0, Qt.PenStyle.DotLine))
+        painter.drawRect(safe)
+
+        painter.setPen(QPen(QColor(184, 244, 252, 180), 1.0))
+        painter.drawLine(QPointF(-18.0, 0.0), QPointF(18.0, 0.0))
+        painter.drawLine(QPointF(0.0, -18.0), QPointF(0.0, 18.0))
+        painter.setBrush(QBrush(QColor(224, 250, 255, 235)))
+        painter.setPen(QPen(QColor("#123243"), 1.5))
+        painter.drawEllipse(QRectF(-7.0, -7.0, 14.0, 14.0))
+
+        handle = self._rotation_handle()
+        painter.setPen(QPen(QColor(195, 224, 234, 180), 1.5))
+        painter.drawLine(QPointF(0.0, -half_height), handle)
+        painter.setBrush(QBrush(QColor(255, 210, 102, 240)))
+        painter.setPen(QPen(QColor("#49371a"), 1.5))
+        painter.drawEllipse(QRectF(handle.x() - 7.0, handle.y() - 7.0, 14.0, 14.0))
+        painter.setBrush(QBrush(QColor(45, 211, 235, 220)))
+        painter.setPen(QPen(QColor("#123243"), 1.0))
+        painter.drawPolygon(
+            QPolygonF(
+                [
+                    QPointF(0.0, -half_height + 5.0),
+                    QPointF(-6.0, -half_height + 17.0),
+                    QPointF(6.0, -half_height + 17.0),
+                ]
+            )
+        )
+
+        label_rect = QRectF(
+            frame.left() + 10.0,
+            frame.bottom() - 36.0,
+            self._label_width(),
+            26.0,
+        )
+        painter.setBrush(QBrush(QColor(11, 31, 43, 215)))
+        painter.setPen(QPen(QColor(92, 224, 239, 210), 1.0))
+        painter.drawRoundedRect(label_rect, 6.0, 6.0)
+        painter.setPen(QColor("#e9fbff"))
+        painter.drawText(label_rect, Qt.AlignmentFlag.AlignCenter, self._label)
+        painter.restore()
+
+    def hoverMoveEvent(self, event) -> None:
+        mode = self._mode_for(event.pos())
+        if mode != self._hover_mode:
+            self._hover_mode = mode
+            self.update()
+        event.accept()
+
+    def hoverLeaveEvent(self, event) -> None:
+        self._hover_mode = None
+        self.update()
+        event.accept()
+
+    def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        self._mode = self._mode_for(event.pos())
+        if self._mode is None:
+            event.ignore()
+            return
+        self.interaction_started.emit(self._mode, event.scenePos())
+        event.accept()
+
+    def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._mode is not None:
+            self.interaction_changed.emit(self._mode, event.scenePos())
+            event.accept()
+            return
+        event.ignore()
+
+    def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._mode is not None:
+            self.interaction_finished.emit(self._mode, event.scenePos())
+            self._mode = None
+            event.accept()
+            return
+        event.ignore()
+
+
 class SceneSocketGraphicsItem(QGraphicsObject):
-    """Non-destructive visual marker for a declarative scene socket."""
+    """Non-destructive marker with translation and orientation handles.
+
+    The compact marker keeps the legacy drag target intact.  Orientable sockets
+    add a modern direction stem/handle; rotating that handle emits a separate
+    signal so position and orientation remain independent undoable operations.
+    """
 
     pressed = Signal(str)
+    moved = Signal(str, QPointF)
+    released = Signal(str, QPointF)
+    rotated = Signal(str, float)
+    rotation_released = Signal(str, float)
 
     def __init__(
-        self, socket_id: str, socket_type: str, color: str, parent=None
+        self,
+        socket_id: str,
+        socket_type: str,
+        color: str,
+        parent=None,
+        *,
+        rotation: float = 0.0,
+        orientable: bool = False,
     ) -> None:
         super().__init__(parent)
         self.socket_id = socket_id
         self.socket_type = socket_type
         self._color = QColor(color)
+        self._orientable = bool(orientable)
+        self._interaction: str | None = None
+        self._rotation_start = float(rotation)
+        self._pointer_angle_start = 0.0
+        self.setRotation(float(rotation))
         self.setZValue(80.0)
         self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
 
     def boundingRect(self) -> QRectF:
+        if self._orientable:
+            return QRectF(-12.0, -12.0, 48.0, 24.0)
         return QRectF(-9.0, -9.0, 18.0, 18.0)
 
     def paint(self, painter, option, widget=None) -> None:
         del option, widget
         painter.setRenderHint(painter.RenderHint.Antialiasing, True)
+        if self._orientable:
+            painter.setPen(QPen(QColor(self._color), 2.0, Qt.PenStyle.SolidLine))
+            painter.drawLine(QPointF(6.0, 0.0), QPointF(28.0, 0.0))
+            arrow = QPolygonF(
+                [QPointF(28.0, 0.0), QPointF(20.0, -4.5), QPointF(20.0, 4.5)]
+            )
+            painter.setBrush(QBrush(self._color))
+            painter.drawPolygon(arrow)
+            painter.setBrush(QBrush(QColor("#f4fbff")))
+            painter.setPen(QPen(QColor("#10202b"), 1.25))
+            painter.drawEllipse(QRectF(25.0, -6.0, 12.0, 12.0))
         painter.setBrush(QBrush(self._color))
         painter.setPen(QPen(QColor("#f4fbff"), 2.0))
         painter.drawEllipse(QRectF(-7.0, -7.0, 14.0, 14.0))
@@ -322,12 +595,279 @@ class SceneSocketGraphicsItem(QGraphicsObject):
             self.socket_type[:1].upper(),
         )
 
+    def _interaction_for(self, point: QPointF) -> str | None:
+        if self._orientable and math.hypot(point.x() - 31.0, point.y()) <= 9.0:
+            return "rotate"
+        if math.hypot(point.x(), point.y()) <= 12.0:
+            return "move"
+        return None
+
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
+            self._interaction = self._interaction_for(event.pos())
+            if self._interaction is None:
+                event.ignore()
+                return
+            if self._interaction == "rotate":
+                pointer = event.scenePos() - self.scenePos()
+                self._rotation_start = float(self.rotation())
+                self._pointer_angle_start = math.degrees(
+                    math.atan2(pointer.y(), pointer.x())
+                )
             self.pressed.emit(self.socket_id)
             event.accept()
             return
         super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._interaction == "move" and event.buttons() & Qt.MouseButton.LeftButton:
+            self.moved.emit(self.socket_id, event.scenePos())
+            event.accept()
+            return
+        if (
+            self._interaction == "rotate"
+            and event.buttons() & Qt.MouseButton.LeftButton
+        ):
+            pointer = event.scenePos() - self.scenePos()
+            angle = math.degrees(math.atan2(pointer.y(), pointer.x()))
+            rotation = self._rotation_start + angle - self._pointer_angle_start
+            self.setRotation(rotation)
+            self.rotated.emit(self.socket_id, float(rotation))
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        if self._interaction == "move" and event.button() == Qt.MouseButton.LeftButton:
+            self._interaction = None
+            self.released.emit(self.socket_id, event.scenePos())
+            event.accept()
+            return
+        if (
+            self._interaction == "rotate"
+            and event.button() == Qt.MouseButton.LeftButton
+        ):
+            self._interaction = None
+            self.rotation_released.emit(self.socket_id, float(self.rotation()))
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
+
+class SceneParticleGraphicsItem(QGraphicsObject):
+    """Deterministic particle pixels resolved from an authored VFX system.
+
+    ``system=None`` intentionally keeps the pre-particle-authoring fallback for
+    old scene files.  New VFX sockets pass a persisted
+    :class:`SceneParticleSystemRecord`, which is sampled through the same
+    fixed-step runtime simulator used by the runtime contract.
+    """
+
+    def __init__(
+        self,
+        effect_id: str,
+        scale: float,
+        parent=None,
+        *,
+        system: SceneParticleSystemRecord | None = None,
+    ) -> None:
+        super().__init__(parent)
+        self.effect_id = effect_id
+        self._scale = max(0.01, float(scale))
+        self._system = system
+        self._preview_time = 0.125
+        self._states: tuple[ParticleStateRecord, ...] = ()
+        self._lifetime_by_emitter: dict[str, float] = {}
+        self._runtime_document = self._build_document()
+        self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
+        self.setZValue(90.0)
+        self._refresh_states()
+
+    @property
+    def has_authored_system(self) -> bool:
+        return self._system is not None
+
+    @property
+    def preview_time(self) -> float:
+        return self._preview_time
+
+    @property
+    def particle_count(self) -> int:
+        return len(self._states)
+
+    def _fallback_document(self) -> ParticleDocumentV1:
+        seed = sum((index + 1) * ord(char) for index, char in enumerate(self.effect_id))
+        return ParticleDocumentV1(
+            source=ParticleSourceBindingRecord(sha256="0" * 64),
+            fixed_dt=1.0 / 60.0,
+            max_substeps=8,
+            emitters=[
+                ParticleEmitterRecord(
+                    id="preview",
+                    seed=seed & 0xFFFFFFFF,
+                    origin=Point3Record(x=0.0, y=0.0, z=0.0),
+                    initial_velocity=Point3Record(x=0.0, y=-42.0, z=0.0),
+                    velocity_spread=Point3Record(x=34.0, y=24.0, z=0.0),
+                    acceleration=Point3Record(x=0.0, y=42.0, z=0.0),
+                    emission_rate=24.0,
+                    lifetime=1.2,
+                    max_particles=32,
+                    burst_count=8,
+                )
+            ],
+        )
+
+    def _build_document(self) -> ParticleDocumentV1:
+        return (
+            self._system.runtime_document()
+            if self._system is not None
+            else self._fallback_document()
+        )
+
+    def set_system(self, system: SceneParticleSystemRecord | None) -> None:
+        self._system = system
+        self.effect_id = system.id if system is not None else self.effect_id
+        self._runtime_document = self._build_document()
+        self._preview_time = min(
+            self._preview_time,
+            float(system.duration) if system is not None else self._preview_time,
+        )
+        self._refresh_states()
+
+    def set_preview_time(self, value: float) -> None:
+        if self._system is not None:
+            duration = max(0.000001, float(self._system.duration))
+            self._preview_time = (
+                float(value) % duration
+                if self._system.loop
+                else max(0.0, min(float(value), duration))
+            )
+        else:
+            self._preview_time = max(0.0, float(value))
+        self._refresh_states()
+
+    def advance_preview(self, elapsed: float) -> None:
+        self.set_preview_time(self._preview_time + max(0.0, float(elapsed)))
+
+    def _refresh_states(self) -> None:
+        simulation = ParticleSimulation(self._runtime_document)
+        simulation.start()
+        remaining = max(0.0, float(self._preview_time))
+        catch_up = self._runtime_document.fixed_dt * self._runtime_document.max_substeps
+        while remaining > 0.0:
+            elapsed = min(remaining, catch_up)
+            simulation.advance(elapsed)
+            remaining -= elapsed
+        self._states = simulation.states()
+        self._lifetime_by_emitter = {
+            emitter.id: float(emitter.lifetime)
+            for emitter in self._runtime_document.emitters
+        }
+        self.prepareGeometryChange()
+        self.update()
+
+    def set_scale(self, scale: float) -> None:
+        value = max(0.01, float(scale))
+        if value != self._scale:
+            self._scale = value
+            self.update()
+
+    def boundingRect(self) -> QRectF:
+        extent = 96.0 * self._scale
+        return QRectF(-extent, -extent, extent * 2.0, extent * 2.0)
+
+    def paint(self, painter: QPainter, option, widget=None) -> None:
+        del option, widget
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        for state in self._states:
+            position = state.position
+            lifetime = self._lifetime_by_emitter.get(state.emitter_id, 1.0)
+            age = min(1.0, max(0.0, float(state.age) / lifetime))
+            radius = max(1.5, (5.0 - 3.0 * age) * self._scale)
+            alpha = max(48, int(235.0 * (1.0 - age)))
+            painter.setBrush(QBrush(QColor(255, 196, 92, alpha)))
+            painter.setPen(QPen(QColor(255, 241, 184, alpha), 1.0))
+            painter.drawEllipse(
+                QRectF(
+                    float(position[0]) * self._scale - radius,
+                    float(position[1]) * self._scale - radius,
+                    radius * 2.0,
+                    radius * 2.0,
+                )
+            )
+
+
+class ScenePostProcessGraphicsItem(QGraphicsObject):
+    """Visible deterministic post-process overlay backed by the CPU runtime."""
+
+    def __init__(self, effect_id: str, scale: float, parent=None) -> None:
+        super().__init__(parent)
+        self.effect_id = effect_id
+        self._scale = max(0.01, float(scale))
+        self._edge_color = QColor(8, 12, 20, 0)
+        self._refresh_preview()
+        self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
+        self.setZValue(95.0)
+
+    def _refresh_preview(self) -> None:
+        document = PostProcessingDocumentV1(
+            source=PostProcessingSourceBindingRecord(sha256="0" * 64),
+            fallback=PostProcessingFallbackRecord(
+                mode="cpu-preview",
+                reason="Raster reference backend is active.",
+            ),
+            effects=[
+                PostProcessingEffectRecord(
+                    id="warm-tint",
+                    kind="tint",
+                    order=10,
+                    parameters={"amount": 0.22, "color": [1.0, 0.46, 0.18]},
+                ),
+                PostProcessingEffectRecord(
+                    id="vignette",
+                    kind="vignette",
+                    order=20,
+                    parameters={"amount": 0.55, "radius": 0.48},
+                ),
+            ],
+        )
+        runtime = PostProcessingRuntime()
+        runtime.load_manifest(document)
+        source = np.ones((3, 3, 4), dtype=np.float64)
+        source[:, :, :3] = (0.18, 0.26, 0.38)
+        preview = runtime.preview(source)
+        edge = preview.image[0, 0, :3]
+        self._edge_color = QColor(
+            int(round(float(edge[0]) * 255.0)),
+            int(round(float(edge[1]) * 255.0)),
+            int(round(float(edge[2]) * 255.0)),
+            135,
+        )
+        self._applied_effect_ids = preview.applied_effect_ids
+        self.update()
+
+    def set_scale(self, scale: float) -> None:
+        value = max(0.01, float(scale))
+        if value != self._scale:
+            self._scale = value
+            self.update()
+
+    def boundingRect(self) -> QRectF:
+        extent = 600.0 * self._scale
+        return QRectF(-extent, -extent, extent * 2.0, extent * 2.0)
+
+    def paint(self, painter: QPainter, option, widget=None) -> None:
+        del option, widget
+        radius = 450.0 * self._scale
+        gradient = QRadialGradient(QPointF(0.0, 0.0), radius)
+        center = QColor(self._edge_color)
+        center.setAlpha(28)
+        gradient.setColorAt(0.0, center)
+        gradient.setColorAt(0.58, center)
+        gradient.setColorAt(1.0, self._edge_color)
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QBrush(gradient))
+        painter.drawEllipse(QRectF(-radius, -radius, radius * 2.0, radius * 2.0))
 
 
 class SceneAuthoringViewport(QGraphicsView):
@@ -350,6 +890,13 @@ class SceneAuthoringViewport(QGraphicsView):
         self.setScene(self.graphics_scene)
         self.setObjectName("professional_scene_viewport")
         self.setAcceptDrops(True)
+        # QAbstractScrollArea routes native drag/drop through its viewport child.
+        # Keep both surfaces enabled so a real OS drag from the asset list reaches
+        # the same drop contract exercised by the direct event tests.  The
+        # QGraphicsView viewportEvent hook below is the canonical Qt delivery
+        # path for the native Drop event; the filter remains as a compatibility
+        # bridge for callers that already route viewport events explicitly.
+        self.viewport().setAcceptDrops(True)
         self.setDragMode(QGraphicsView.DragMode.NoDrag)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
@@ -360,7 +907,17 @@ class SceneAuthoringViewport(QGraphicsView):
         self._geometry: dict[str, tuple[tuple[float, float], ...]] = {}
         self._items: dict[str, SceneObjectGraphicsItem] = {}
         self._socket_items: dict[str, SceneSocketGraphicsItem] = {}
+        self._particle_items: dict[str, SceneParticleGraphicsItem] = {}
+        self._post_process_items: dict[str, ScenePostProcessGraphicsItem] = {}
+        self._camera_guide: SceneCameraGuide | None = None
         self._preview_enabled = False
+        self._particle_preview_time = 0.125
+        self._particle_preview_timer = QTimer(self)
+        self._particle_preview_timer.setInterval(33)
+        self._particle_preview_timer.timeout.connect(self._advance_particle_preview)
+        self.current_lang = "en"
+        self._render_plan: SceneRenderPlan | None = None
+        self._lighting_settings = default_scene_lighting()
         self._authoring_enabled = True
         self._overlay_visible = False
         self._navigation_zoom = 1.0
@@ -373,6 +930,15 @@ class SceneAuthoringViewport(QGraphicsView):
         self._gesture_layer_id: str | None = None
         self._gesture_mode: str | None = None
         self._gizmo_start: QPointF | None = None
+        self._camera_gesture_mode: str | None = None
+        self._camera_gesture_start: QPointF | None = None
+        self._camera_gesture_position: QPointF | None = None
+        self._camera_gesture_rotation: float | None = None
+        self._socket_gesture_id: str | None = None
+        self._socket_gesture_layer_id: str | None = None
+        self._socket_gesture_start: QPointF | None = None
+        self._socket_gesture_end: QPointF | None = None
+        self._socket_rotation_start: float | None = None
         self._marquee_origin: QPointF | None = None
         self._marquee_current: QPointF | None = None
         self._marquee_selection_before: tuple[str, ...] | None = None
@@ -389,10 +955,73 @@ class SceneAuthoringViewport(QGraphicsView):
         self._selection_snapshot: tuple[str, ...] = ()
         self._primary_selection_snapshot: str | None = None
         self._visible_object_ids_snapshot: tuple[str, ...] = ()
+        self._drop_preview: tuple[QPointF, float, float, str] | None = None
         self._structure_snapshot: tuple[object, ...] = ()
         self._presentation_snapshot: tuple[object, ...] = ()
         self.sync()
         self.session.subscribe(self._on_session_change)
+
+    def update_language(self, language: str) -> None:
+        """Keep viewport status messages aligned with the editor language."""
+
+        self.current_lang = language if language in {"en", "pt"} else "en"
+        if self._camera_guide is not None:
+            self._camera_guide.set_label(
+                self._text("CÂMERA · ARRASTE PARA POSICIONAR", "CAMERA · DRAG TO POSITION")
+            )
+        self.viewport().update()
+
+    def _text(self, pt: str, en: str) -> str:
+        """Return a localized viewport label without changing the EN contract."""
+
+        return pt if self.current_lang == "pt" else en
+
+    def _build_context_menu(self, object_id: str | None = None) -> QMenu:
+        """Build the non-destructive menu used by the professional viewport.
+
+        The viewport previously relied on keyboard shortcuts and the inspector
+        for these actions, leaving a real right-click without a useful native
+        affordance.  The menu intentionally contains only selection and framing
+        commands: it cannot delete or rewrite authored data accidentally.
+        """
+
+        menu = QMenu(self)
+        header = menu.addAction(
+            self._text(
+                f"Objeto: {object_id}" if object_id else "Nenhum objeto sob o cursor",
+                f"Object: {object_id}" if object_id else "No object under cursor",
+            )
+        )
+        header.setEnabled(False)
+        if object_id is not None:
+            properties = menu.addAction(
+                self._text("Mostrar propriedades", "Show properties")
+            )
+            properties.triggered.connect(
+                lambda _checked=False: self.selection_changed.emit()
+            )
+            menu.addSeparator()
+
+        fit_selection = menu.addAction(self._text("Enquadrar seleção", "Fit selection"))
+        fit_selection.setEnabled(bool(self.session.selection.ids))
+        fit_selection.triggered.connect(lambda _checked=False: self.fit_selection())
+        fit_all = menu.addAction(self._text("Enquadrar tudo", "Fit all"))
+        fit_all.setEnabled(bool(self._items))
+        fit_all.triggered.connect(lambda _checked=False: self.fit_all())
+        return menu
+
+    def contextMenuEvent(self, event) -> None:  # noqa: N802
+        """Expose safe native actions for object and empty-viewport clicks."""
+
+        target = self.itemAt(event.pos())
+        object_id = (
+            target.object_id if isinstance(target, SceneObjectGraphicsItem) else None
+        )
+        if object_id is not None:
+            self._set_selection((object_id,), object_id)
+        menu = self._build_context_menu(object_id)
+        fit_context_menu(menu).exec(event.globalPos())
+        event.accept()
 
     def set_geometry(
         self,
@@ -408,17 +1037,66 @@ class SceneAuthoringViewport(QGraphicsView):
             raise TypeError("preview enabled must be boolean")
         if enabled != self._preview_enabled:
             self._navigation_center = None
+            if enabled:
+                self._particle_preview_time = 0.0
         self._preview_enabled = enabled
         self.sync()
 
+    def _sync_particle_preview_timer(self) -> None:
+        authored_items = tuple(
+            item for item in self._particle_items.values() if item.has_authored_system
+        )
+        if self._preview_enabled and authored_items:
+            if not self._particle_preview_timer.isActive():
+                self._particle_preview_timer.start()
+        else:
+            self._particle_preview_timer.stop()
+
+    def _advance_particle_preview(self) -> None:
+        if not self._preview_enabled:
+            self._particle_preview_timer.stop()
+            return
+        elapsed = self._particle_preview_timer.interval() / 1000.0
+        self._particle_preview_time += elapsed
+        for item in self._particle_items.values():
+            if item.has_authored_system:
+                item.advance_preview(elapsed)
+        self.viewport().update()
+
+    def play_particle_preview(self) -> None:
+        """Start the read-only viewport preview without changing authored data."""
+
+        self._preview_enabled = True
+        self._sync_particle_preview_timer()
+
+    def reset_particle_preview(self) -> None:
+        self._particle_preview_time = 0.0
+        for item in self._particle_items.values():
+            item.set_preview_time(0.0)
+        self.viewport().update()
+
     def is_preview_enabled(self) -> bool:
         return self._preview_enabled
+
+    def set_scene_render_plan(self, plan: SceneRenderPlan | None) -> None:
+        """Install the explicit backend/order diagnostic for the viewport."""
+
+        if plan is not None and not isinstance(plan, SceneRenderPlan):
+            raise ValueError("scene render plan must be a SceneRenderPlan")
+        self._render_plan = plan
+        self.viewport().update()
+
+    def scene_render_plan(self) -> SceneRenderPlan | None:
+        return self._render_plan
 
     def set_authoring_enabled(self, enabled: bool) -> None:
         if not isinstance(enabled, bool):
             raise TypeError("authoring enabled must be boolean")
         if not enabled and (
-            self._gesture_start is not None or self._gizmo_start is not None
+            self._gesture_start is not None
+            or self._gizmo_start is not None
+            or self._camera_gesture_start is not None
+            or self._socket_gesture_id is not None
         ):
             self.session.cancel_gesture()
             self._gesture_start = None
@@ -426,6 +1104,14 @@ class SceneAuthoringViewport(QGraphicsView):
             self._gesture_layer_id = None
             self._gesture_mode = None
             self._gizmo_start = None
+            self._camera_gesture_mode = None
+            self._camera_gesture_start = None
+            self._camera_gesture_position = None
+            self._camera_gesture_rotation = None
+            self._socket_gesture_id = None
+            self._socket_gesture_layer_id = None
+            self._socket_gesture_start = None
+            self._socket_gesture_end = None
         self._authoring_enabled = enabled
         self._refresh_gizmo()
         self.viewport().update()
@@ -533,14 +1219,23 @@ class SceneAuthoringViewport(QGraphicsView):
                 break
             requested_center += correction
             self._set_navigation_state(new_zoom, requested_center)
-        self.status_message.emit(f"Viewport zoom: {new_zoom:.2f}x")
+        self.status_message.emit(
+            self._text(
+                f"Zoom da janela: {new_zoom:.2f}x",
+                f"Viewport zoom: {new_zoom:.2f}x",
+            )
+        )
         return True
 
     def _fit_object_ids(self, object_ids: Iterable[str], label: str) -> bool:
         ids = tuple(object_id for object_id in object_ids if object_id in self._items)
         bounds = self._content_bounds(ids)
         if bounds is None:
-            self.status_message.emit(f"{label}: no visible objects to frame")
+            self.status_message.emit(
+                f"{label}: nenhum objeto visível para enquadrar"
+                if self.current_lang == "pt"
+                else f"{label}: no visible objects to frame"
+            )
             return False
         width = max(1.0, bounds.width())
         height = max(1.0, bounds.height())
@@ -549,18 +1244,44 @@ class SceneAuthoringViewport(QGraphicsView):
             (width, height),
         )
         self._set_navigation_state(zoom, bounds.center())
-        self.status_message.emit(f"{label}: framed {len(ids)} object(s) at {zoom:.2f}x")
+        self.status_message.emit(
+            (
+                f"{label}: {len(ids)} objeto(s) enquadrado(s) em {zoom:.2f}x"
+                if self.current_lang == "pt"
+                else f"{label}: framed {len(ids)} object(s) at {zoom:.2f}x"
+            )
+        )
         return True
 
     def fit_selection(self) -> bool:
         """Frame visible selected objects without changing authoring state."""
 
-        return self._fit_object_ids(self.session.selection.ids, "Fit Selection")
+        return self._fit_object_ids(
+            self.session.selection.ids,
+            "Enquadrar Seleção" if self.current_lang == "pt" else "Fit Selection",
+        )
 
     def fit_all(self) -> bool:
         """Frame all visible rendered objects, excluding sockets and overlays."""
 
-        return self._fit_object_ids(self._items.keys(), "Fit All")
+        return self._fit_object_ids(
+            self._items.keys(),
+            "Enquadrar Tudo" if self.current_lang == "pt" else "Fit All",
+        )
+
+    def _frame_initial_asset(self) -> bool:
+        """Frame the first inserted asset without mutating authored transforms."""
+
+        if len(self.session.document.objects) != 1:
+            return False
+        return self.fit_selection()
+
+    def frame_loaded_content(self) -> bool:
+        """Frame authored content when opening a scene without changing data."""
+
+        if not self.session.document.objects:
+            return False
+        return self.fit_all()
 
     def _paint_navigation_state(self) -> None:
         if not self.hasFocus() and self._pan_origin is None:
@@ -589,6 +1310,7 @@ class SceneAuthoringViewport(QGraphicsView):
             ),
             (float(document.camera.position.x), float(document.camera.position.y)),
             float(document.camera.zoom),
+            float(document.camera.rotation),
         )
 
     def _layer_parallax(self, layer_id: str) -> ParallaxLayer:
@@ -605,6 +1327,86 @@ class SceneAuthoringViewport(QGraphicsView):
             depth=float(record.depth),
             translation_strength=float(record.translation_strength),
             zoom_strength=float(record.zoom_strength),
+            scroll_x=float(record.scroll_x),
+            scroll_y=float(record.scroll_y),
+            offset_x=float(record.offset_x),
+            offset_y=float(record.offset_y),
+            repeat_x=record.repeat_x,
+            repeat_y=record.repeat_y,
+            mirror_x=record.mirror_x,
+            mirror_y=record.mirror_y,
+        )
+
+    def _lighting_for_document(self) -> SceneLightingSettings:
+        """Resolve authored light sockets into the deterministic raster pass."""
+
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return self._lighting_settings
+        lights: list[ScenePointLight | SceneDirectionalLight] = []
+        for socket in document.sockets:
+            if socket.type != "light":
+                continue
+            color_text = socket.color.lstrip("#")
+            color: tuple[float, float, float] = (
+                int(color_text[0:2], 16) / 255.0,
+                int(color_text[2:4], 16) / 255.0,
+                int(color_text[4:6], 16) / 255.0,
+            )
+            if socket.kind == "directional":
+                lights.append(
+                    SceneDirectionalLight(
+                        id=socket.id,
+                        direction_degrees=float(socket.rotation.z),
+                        color=color,
+                        intensity=float(socket.intensity),
+                    )
+                )
+            else:
+                lights.append(
+                    ScenePointLight(
+                        id=socket.id,
+                        position=(float(socket.position.x), float(socket.position.y)),
+                        color=color,
+                        intensity=float(socket.intensity),
+                        radius=float(socket.radius),
+                    )
+                )
+        if not lights:
+            return self._lighting_settings
+        return SceneLightingSettings(
+            ambient_color=self._lighting_settings.ambient_color,
+            ambient_intensity=self._lighting_settings.ambient_intensity,
+            lights=tuple(lights),
+            occluders=self._lighting_settings.occluders,
+        )
+
+    @staticmethod
+    def _lighting_material_for_object(record: object) -> SceneLightingMaterial:
+        material = getattr(record, "material", None)
+        if not isinstance(material, SceneMaterialAuthoringRecord):
+            return SceneLightingMaterial()
+
+        def color(value: str) -> tuple[float, float, float]:
+            color_text = value.lstrip("#")
+            return (
+                int(color_text[0:2], 16) / 255.0,
+                int(color_text[2:4], 16) / 255.0,
+                int(color_text[4:6], 16) / 255.0,
+            )
+
+        return SceneLightingMaterial(
+            albedo=color(material.albedo),
+            normal_xy=(
+                float(material.normal_map_xy.x),
+                float(material.normal_map_xy.y),
+            ),
+            normal_strength=float(material.normal_strength),
+            emission=color(material.emission),
+            emission_strength=float(material.emission_strength),
+            opacity=float(material.opacity),
+            receives_shadow=material.receives_shadow,
+            casts_shadow=material.casts_shadow,
         )
 
     def _project_position(self, position: Point3Record, layer_id: str) -> QPointF:
@@ -660,6 +1462,10 @@ class SceneAuthoringViewport(QGraphicsView):
         sockets = tuple(
             socket.model_dump_json() for socket in getattr(document, "sockets", ())
         )
+        particle_systems = tuple(
+            system.model_dump_json()
+            for system in getattr(document, "particle_systems", ())
+        )
         return (
             tuple(
                 (item.id, item.asset_id, item.layer_id, item.visible)
@@ -672,6 +1478,7 @@ class SceneAuthoringViewport(QGraphicsView):
             ),
             groups,
             sockets,
+            particle_systems,
             self.session.isolated_group_id,
         )
 
@@ -686,6 +1493,7 @@ class SceneAuthoringViewport(QGraphicsView):
                 float(document.camera.position.x),
                 float(document.camera.position.y),
                 float(document.camera.zoom),
+                float(document.camera.rotation),
             ),
             tuple(
                 (
@@ -693,6 +1501,14 @@ class SceneAuthoringViewport(QGraphicsView):
                     float(record.depth),
                     float(record.translation_strength),
                     float(record.zoom_strength),
+                    float(record.scroll_x),
+                    float(record.scroll_y),
+                    float(record.offset_x),
+                    float(record.offset_y),
+                    record.repeat_x,
+                    record.repeat_y,
+                    record.mirror_x,
+                    record.mirror_y,
                 )
                 for record in document.parallax_layers
             ),
@@ -756,6 +1572,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self.graphics_scene.clear()
         self._items.clear()
         self._socket_items.clear()
+        self._particle_items.clear()
+        self._post_process_items.clear()
+        self._camera_guide = None
         self._gizmo = None
         diagnostics: list[str] = []
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
@@ -815,6 +1634,7 @@ class SceneAuthoringViewport(QGraphicsView):
         document = self.session.document
         if isinstance(document, SceneAuthoringDocumentV2):
             visible_layers = {item.id for item in document.layers if item.visible}
+            particle_systems = {item.id: item for item in document.particle_systems}
             for socket in document.sockets:
                 if socket.layer_id not in visible_layers:
                     continue
@@ -823,18 +1643,68 @@ class SceneAuthoringViewport(QGraphicsView):
                     if socket.type == "light"
                     else ("#c78cff" if socket.type == "vfx" else "#ffcf65")
                 )
-                marker = SceneSocketGraphicsItem(socket.id, socket.type, color)
+                orientable = socket.type == "vfx" or (
+                    socket.type == "light" and socket.kind == "directional"
+                )
+                marker = SceneSocketGraphicsItem(
+                    socket.id,
+                    socket.type,
+                    color,
+                    rotation=float(socket.rotation.z),
+                    orientable=orientable,
+                )
                 marker.setZValue(self._overlay_z(100.0))
                 marker.pressed.connect(
                     lambda socket_id: self.status_message.emit(
-                        f"Socket selected: {socket_id}"
+                        self._text(
+                            f"Socket selecionado: {socket_id}",
+                            f"Socket selected: {socket_id}",
+                        )
                     )
                 )
+                marker.pressed.connect(self._socket_pressed)
+                marker.moved.connect(self._socket_moved)
+                marker.released.connect(self._socket_released)
+                marker.rotated.connect(self._socket_rotated)
+                marker.rotation_released.connect(self._socket_rotation_released)
                 self.graphics_scene.addItem(marker)
                 self._socket_items[socket.id] = marker
+                if (
+                    socket.type == "vfx"
+                    and socket.enabled
+                    and not socket.effect_id.startswith("post-")
+                ):
+                    particle_item = SceneParticleGraphicsItem(
+                        socket.effect_id,
+                        float(socket.scale),
+                        system=particle_systems.get(socket.effect_id),
+                    )
+                    particle_item.setZValue(self._overlay_z(90.0))
+                    self.graphics_scene.addItem(particle_item)
+                    self._particle_items[socket.id] = particle_item
+                if (
+                    socket.type == "vfx"
+                    and socket.enabled
+                    and socket.effect_id.startswith("post-")
+                ):
+                    post_process_item = ScenePostProcessGraphicsItem(
+                        socket.effect_id,
+                        float(socket.scale),
+                    )
+                    post_process_item.setZValue(self._overlay_z(95.0))
+                    self.graphics_scene.addItem(post_process_item)
+                    self._post_process_items[socket.id] = post_process_item
+            camera_guide = SceneCameraGuide()
+            camera_guide.setZValue(self._overlay_z(150.0))
+            camera_guide.interaction_started.connect(self._camera_guide_started)
+            camera_guide.interaction_changed.connect(self._camera_guide_changed)
+            camera_guide.interaction_finished.connect(self._camera_guide_finished)
+            self.graphics_scene.addItem(camera_guide)
+            self._camera_guide = camera_guide
         self._prune_asset_pixmap_cache(active_asset_cache_keys)
         self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
+        self._refresh_camera_guide()
         self._refresh_selection()
         self._refresh_gizmo()
         self._apply_navigation_transform()
@@ -852,11 +1722,16 @@ class SceneAuthoringViewport(QGraphicsView):
         self._structure_snapshot = self._document_structure_snapshot()
         self._presentation_snapshot = self._document_presentation_snapshot()
         self._asset_diagnostics = tuple(dict.fromkeys(diagnostics))
+        self._sync_particle_preview_timer()
         if self._asset_diagnostics != self._last_asset_diagnostics:
             self._last_asset_diagnostics = self._asset_diagnostics
             if self._asset_diagnostics:
                 self.status_message.emit(
-                    "Scene asset diagnostics: " + " | ".join(self._asset_diagnostics)
+                    self._text(
+                        "Diagnóstico dos assets da cena: ",
+                        "Scene asset diagnostics: ",
+                    )
+                    + " | ".join(self._asset_diagnostics)
                 )
 
     def _refresh_transforms(
@@ -878,6 +1753,42 @@ class SceneAuthoringViewport(QGraphicsView):
 
         document = self.session.document
         by_id = {item.id: item for item in document.objects}
+        document_lighting = self._lighting_for_document()
+        lighting_by_object: dict[str, QColor] = {}
+        if isinstance(document, SceneAuthoringDocumentV2):
+            for item in document.objects:
+                occluders = tuple(
+                    tuple(
+                        (
+                            float(point[0]) + float(other.transform.position.x),
+                            float(point[1]) + float(other.transform.position.y),
+                        )
+                        for point in self._geometry.get(other.id, ())
+                    )
+                    for other in document.objects
+                    if other.id != item.id
+                    and len(self._geometry.get(other.id, ())) >= 3
+                )
+                settings = SceneLightingSettings(
+                    ambient_color=document_lighting.ambient_color,
+                    ambient_intensity=document_lighting.ambient_intensity,
+                    lights=document_lighting.lights,
+                    occluders=occluders,
+                )
+                color, opacity, _ = shade_color(
+                    (
+                        float(item.transform.position.x),
+                        float(item.transform.position.y),
+                    ),
+                    self._lighting_material_for_object(item),
+                    settings,
+                )
+                lighting_by_object[item.id] = QColor(
+                    int(round(color[0] * 255.0)),
+                    int(round(color[1] * 255.0)),
+                    int(round(color[2] * 255.0)),
+                    int(round(opacity * 255.0)),
+                )
         camera = self._camera() if self._preview_enabled else None
         parallax_by_layer: dict[str, ParallaxLayer] = {}
         if camera is not None:
@@ -891,11 +1802,11 @@ class SceneAuthoringViewport(QGraphicsView):
         selected_ids = set(self.session.selection.ids)
         for object_id in requested_ids:
             visual = self._items.get(object_id)
-            item = by_id.get(object_id)
-            if visual is None or item is None:
+            object_record = by_id.get(object_id)
+            if visual is None or object_record is None:
                 continue
-            record = item.transform
-            parallax = parallax_by_layer.get(item.layer_id, ParallaxLayer())
+            record = object_record.transform
+            parallax = parallax_by_layer.get(object_record.layer_id, ParallaxLayer())
             if camera is None:
                 position = QPointF(float(record.position.x), float(record.position.y))
                 zoom = 1.0
@@ -913,6 +1824,7 @@ class SceneAuthoringViewport(QGraphicsView):
                     record.scale.y * zoom * (-1.0 if record.flip_y else 1.0),
                 )
             )
+            visual.set_lighting_color(lighting_by_object.get(object_id))
             visual.set_selected_style(object_id in selected_ids)
 
         if refresh_sockets and isinstance(document, SceneAuthoringDocumentV2):
@@ -930,6 +1842,17 @@ class SceneAuthoringViewport(QGraphicsView):
                     )
                     position = QPointF(x, y)
                 marker.setPos(position)
+                marker.setRotation(float(socket.rotation.z))
+                particle_item = self._particle_items.get(socket_id)
+                if particle_item is not None and socket.type == "vfx":
+                    particle_item.setPos(position)
+                    particle_item.setRotation(float(socket.rotation.z))
+                    particle_item.set_scale(float(socket.scale))
+                post_process_item = self._post_process_items.get(socket_id)
+                if post_process_item is not None and socket.type == "vfx":
+                    post_process_item.setPos(position)
+                    post_process_item.setRotation(float(socket.rotation.z))
+                    post_process_item.set_scale(float(socket.scale))
 
     def _refresh_selection(self, object_ids: Iterable[str] | None = None) -> None:
         requested_ids = (
@@ -942,6 +1865,247 @@ class SceneAuthoringViewport(QGraphicsView):
             visual = self._items.get(object_id)
             if visual is not None:
                 visual.set_selected_style(object_id in selected_ids)
+
+    def _refresh_camera_guide(self) -> None:
+        """Keep the authoring camera frame aligned with the persisted camera."""
+
+        guide = self._camera_guide
+        document = self.session.document
+        if guide is None or not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        viewport_width = max(1.0, float(self.viewport().width()))
+        viewport_height = max(1.0, float(self.viewport().height()))
+        if self._preview_enabled:
+            center = QPointF(viewport_width / 2.0, viewport_height / 2.0)
+            frame_width = viewport_width
+            frame_height = viewport_height
+            rotation = 0.0
+        else:
+            center = QPointF(
+                float(document.camera.position.x),
+                float(document.camera.position.y),
+            )
+            frame_width = viewport_width / max(0.001, float(document.camera.zoom))
+            frame_height = viewport_height / max(0.001, float(document.camera.zoom))
+            rotation = float(document.camera.rotation)
+        guide.set_frame_size(frame_width, frame_height)
+        guide.set_camera_state(center, rotation)
+        guide.set_label(
+            self._text("CÂMERA · ARRASTE PARA POSICIONAR", "CAMERA · DRAG TO POSITION")
+        )
+
+    def _camera_guide_started(self, mode: str, scene_pos: QPointF) -> None:
+        if not self._authoring_enabled:
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
+            return
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        self._camera_gesture_mode = mode
+        self._camera_gesture_start = QPointF(scene_pos)
+        self._camera_gesture_position = QPointF(
+            float(document.camera.position.x), float(document.camera.position.y)
+        )
+        self._camera_gesture_rotation = float(document.camera.rotation)
+
+    def _camera_guide_changed(self, mode: str, scene_pos: QPointF) -> None:
+        if (
+            not self._authoring_enabled
+            or self._camera_gesture_mode != mode
+            or self._camera_gesture_start is None
+            or self._camera_gesture_position is None
+            or self._camera_gesture_rotation is None
+            or self._camera_guide is None
+        ):
+            return
+        position = QPointF(self._camera_gesture_position)
+        rotation = self._camera_gesture_rotation
+        if mode == "translate":
+            delta = scene_pos - self._camera_gesture_start
+            position += delta
+        elif mode == "rotate":
+            center = self._camera_gesture_position
+            rotation = math.degrees(
+                math.atan2(scene_pos.x() - center.x(), -(scene_pos.y() - center.y()))
+            )
+        self._camera_guide.set_camera_state(position, rotation)
+        self.viewport().update()
+
+    def _camera_guide_finished(self, mode: str, scene_pos: QPointF) -> None:
+        if self._camera_gesture_mode != mode:
+            return
+        self._camera_guide_changed(mode, scene_pos)
+        position = QPointF(self._camera_gesture_position or QPointF())
+        rotation = float(self._camera_gesture_rotation or 0.0)
+        if mode == "translate" and self._camera_gesture_start is not None:
+            position += scene_pos - self._camera_gesture_start
+        elif mode == "rotate" and self._camera_gesture_position is not None:
+            center = self._camera_gesture_position
+            rotation = math.degrees(
+                math.atan2(scene_pos.x() - center.x(), -(scene_pos.y() - center.y()))
+            )
+        self._camera_gesture_mode = None
+        self._camera_gesture_start = None
+        self._camera_gesture_position = None
+        self._camera_gesture_rotation = None
+        QTimer.singleShot(
+            0,
+            lambda: self._commit_camera_guide(position, rotation),
+        )
+
+    def _commit_camera_guide(self, position: QPointF, rotation: float) -> None:
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        try:
+            changed = self.session.set_camera(
+                SceneCameraAuthoringRecord(
+                    position=PointRecord(x=position.x(), y=position.y()),
+                    zoom=float(document.camera.zoom),
+                    rotation=rotation,
+                )
+            )
+            self.status_message.emit(
+                self._text(
+                    "Câmera reposicionada" if changed else "Nenhuma alteração na câmera",
+                    "Camera repositioned" if changed else "No camera changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            self._refresh_camera_guide()
+
+    def _socket_record(self, socket_id: str):
+        return next(
+            (item for item in getattr(self.session.document, "sockets", ()) if item.id == socket_id),
+            None,
+        )
+
+    def _socket_pressed(self, socket_id: str) -> None:
+        if not self._authoring_enabled:
+            return
+        socket = self._socket_record(socket_id)
+        if socket is None:
+            return
+        self._socket_gesture_id = socket_id
+        self._socket_gesture_layer_id = socket.layer_id
+        self._socket_gesture_start = QPointF(
+            float(socket.position.x), float(socket.position.y)
+        )
+        self._socket_gesture_end = QPointF(self._socket_gesture_start)
+        self._socket_rotation_start = float(socket.rotation.z)
+
+    def _socket_moved(self, socket_id: str, scene_pos: QPointF) -> None:
+        if self._socket_gesture_id != socket_id:
+            return
+        marker = self._socket_items.get(socket_id)
+        if marker is None:
+            return
+        marker.setPos(scene_pos)
+        particle_item = self._particle_items.get(socket_id)
+        if particle_item is not None:
+            particle_item.setPos(scene_pos)
+        post_process_item = self._post_process_items.get(socket_id)
+        if post_process_item is not None:
+            post_process_item.setPos(scene_pos)
+        layer_id = self._socket_gesture_layer_id or ""
+        self._socket_gesture_end = self._world_position(scene_pos, layer_id)
+        self.viewport().update()
+
+    def _socket_released(self, socket_id: str, scene_pos: QPointF) -> None:
+        if self._socket_gesture_id != socket_id:
+            return
+        layer_id = self._socket_gesture_layer_id or ""
+        world = self._world_position(scene_pos, layer_id)
+        socket = self._socket_record(socket_id)
+        if socket is None:
+            self._socket_gesture_id = None
+            return
+        point = Point3Record(
+            x=float(world.x()), y=float(world.y()), z=float(socket.position.z)
+        )
+        start = self._socket_gesture_start or QPointF(point.x, point.y)
+        self._socket_gesture_id = None
+        self._socket_gesture_layer_id = None
+        self._socket_gesture_start = None
+        self._socket_gesture_end = None
+        self._socket_rotation_start = None
+        if math.hypot(point.x - start.x(), point.y - start.y()) <= 0.01:
+            return
+        QTimer.singleShot(0, lambda: self._commit_socket_move(socket_id, point))
+
+    def _commit_socket_move(self, socket_id: str, position: Point3Record) -> None:
+        try:
+            changed = self.session.update_socket_position(socket_id, position)
+            self.status_message.emit(
+                self._text(
+                    "Efeito reposicionado" if changed else "Nenhuma alteração no efeito",
+                    "Effect repositioned" if changed else "No effect changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            self._refresh_transforms(refresh_sockets=True)
+
+    def _socket_rotated(self, socket_id: str, rotation: float) -> None:
+        marker = self._socket_items.get(socket_id)
+        if marker is None:
+            return
+        marker.setRotation(float(rotation))
+        for visual in (
+            self._particle_items.get(socket_id),
+            self._post_process_items.get(socket_id),
+        ):
+            if visual is not None:
+                visual.setRotation(float(rotation))
+        self.viewport().update()
+
+    def _socket_rotation_released(self, socket_id: str, rotation: float) -> None:
+        socket = self._socket_record(socket_id)
+        start = self._socket_rotation_start
+        self._socket_rotation_start = None
+        self._socket_gesture_id = None
+        self._socket_gesture_layer_id = None
+        self._socket_gesture_start = None
+        self._socket_gesture_end = None
+        if socket is None:
+            return
+        if start is None:
+            start = float(socket.rotation.z)
+        if abs(float(rotation) - start) <= 0.01:
+            return
+        QTimer.singleShot(
+            0,
+            lambda: self._commit_socket_rotation(socket_id, float(rotation)),
+        )
+
+    def _commit_socket_rotation(self, socket_id: str, rotation: float) -> None:
+        socket = self._socket_record(socket_id)
+        if socket is None:
+            return
+        try:
+            changed = self.session.update_socket_rotation(
+                socket_id,
+                Point3Record(
+                    x=float(socket.rotation.x),
+                    y=float(socket.rotation.y),
+                    z=float(rotation),
+                ),
+            )
+            self.status_message.emit(
+                self._text(
+                    "Socket orientado" if changed else "Nenhuma alteração na orientação",
+                    "Socket oriented" if changed else "No orientation changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self._edit_status_error(exc)
+            self._refresh_transforms(refresh_sockets=True)
 
     def _refresh_gizmo(self) -> None:
         if self._gizmo is not None:
@@ -981,6 +2145,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self._refresh_selection(selection_ids)
         if refresh_gizmo:
             self._refresh_gizmo()
+        self._refresh_camera_guide()
         self.viewport().update()
 
     def _on_session_change(self) -> None:
@@ -1191,12 +2356,18 @@ class SceneAuthoringViewport(QGraphicsView):
         super().mouseReleaseEvent(event)
 
     def _edit_status_error(self, exc: Exception) -> None:
-        self.status_message.emit(user_error_message(exc, operation="edit"))
+        self.status_message.emit(
+            user_error_message(exc, operation="edit", language=self.current_lang)
+        )
 
     def _block_if_preview(self) -> bool:
         if self._authoring_enabled:
             return False
-        self.status_message.emit("Preview mode is read-only")
+        self.status_message.emit(
+            "O modo de pré-visualização é somente leitura"
+            if self.current_lang == "pt"
+            else "Preview mode is read-only"
+        )
         return True
 
     def _handle_nudge_key(self, key: int, modifiers: Qt.KeyboardModifier) -> bool:
@@ -1216,7 +2387,19 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                "Moved selected object(s)" if changed else "No movement after snap"
+                (
+                    (
+                        "Objeto(s) selecionado(s) movido(s)"
+                        if changed
+                        else "Nenhum movimento após o encaixe"
+                    )
+                    if self.current_lang == "pt"
+                    else (
+                        "Moved selected object(s)"
+                        if changed
+                        else "No movement after snap"
+                    )
+                )
             )
         return True
 
@@ -1229,9 +2412,17 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Duplicated {len(created)} object(s)"
-                if created
-                else "No objects selected"
+                (
+                    f"{len(created)} objeto(s) duplicado(s)"
+                    if created
+                    else "Nenhum objeto selecionado"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"Duplicated {len(created)} object(s)"
+                    if created
+                    else "No objects selected"
+                )
             )
         return True
 
@@ -1245,7 +2436,15 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Deleted {count} object(s)" if changed else "No objects selected"
+                (
+                    f"{count} objeto(s) excluído(s)"
+                    if changed
+                    else "Nenhum objeto selecionado"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"Deleted {count} object(s)" if changed else "No objects selected"
+                )
             )
         return True
 
@@ -1256,16 +2455,28 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
             return True
         if payload is None:
-            self.status_message.emit("No objects selected")
+            self.status_message.emit(
+                self._text("Nenhum objeto selecionado", "No objects selected")
+            )
             return True
         mime = QMimeData()
         mime.setData(SCENE_CLIPBOARD_MIME, payload)
         clipboard = QApplication.clipboard()
         if clipboard is None:
-            self.status_message.emit("Scene clipboard is unavailable")
+            self.status_message.emit(
+                self._text(
+                    "A área de transferência da cena está indisponível",
+                    "Scene clipboard is unavailable",
+                )
+            )
             return True
         clipboard.setMimeData(mime)
-        self.status_message.emit(f"Copied {len(self.session.selection.ids)} object(s)")
+        self.status_message.emit(
+            self._text(
+                f"{len(self.session.selection.ids)} objeto(s) copiado(s)",
+                f"Copied {len(self.session.selection.ids)} object(s)",
+            )
+        )
         return True
 
     def _handle_paste_key(self) -> bool:
@@ -1274,7 +2485,12 @@ class SceneAuthoringViewport(QGraphicsView):
         clipboard = QApplication.clipboard()
         mime = clipboard.mimeData() if clipboard is not None else None
         if mime is None or not mime.hasFormat(SCENE_CLIPBOARD_MIME):
-            self.status_message.emit("No compatible scene clipboard payload")
+            self.status_message.emit(
+                self._text(
+                    "Nenhum conteúdo compatível da cena na área de transferência",
+                    "No compatible scene clipboard payload",
+                )
+            )
             return True
         try:
             created = self.session.paste_payload(
@@ -1284,7 +2500,17 @@ class SceneAuthoringViewport(QGraphicsView):
             self._edit_status_error(exc)
         else:
             self.status_message.emit(
-                f"Pasted {len(created)} object(s)" if created else "No objects pasted"
+                (
+                    f"{len(created)} objeto(s) colado(s)"
+                    if created
+                    else "Nenhum objeto colado"
+                )
+                if self.current_lang == "pt"
+                else (
+                    f"Pasted {len(created)} object(s)"
+                    if created
+                    else "No objects pasted"
+                )
             )
         return True
 
@@ -1293,9 +2519,17 @@ class SceneAuthoringViewport(QGraphicsView):
             return True
         changed = self.redo() if redo else self.undo()
         self.status_message.emit(
-            ("Redo applied" if redo else "Undo applied")
-            if changed
-            else ("Nothing to redo" if redo else "Nothing to undo")
+            (
+                ("Refazer aplicado" if redo else "Desfazer aplicado")
+                if changed
+                else ("Nada para refazer" if redo else "Nada para desfazer")
+            )
+            if self.current_lang == "pt"
+            else (
+                ("Redo applied" if redo else "Undo applied")
+                if changed
+                else ("Nothing to redo" if redo else "Nothing to undo")
+            )
         )
         return True
 
@@ -1376,7 +2610,10 @@ class SceneAuthoringViewport(QGraphicsView):
         if item is None:
             return None
         if item.locked:
-            return f"Cannot edit '{object_id}': the object is locked."
+            return self._text(
+                f"Não é possível editar '{object_id}': o objeto está bloqueado.",
+                f"Cannot edit '{object_id}': the object is locked.",
+            )
         layer = next(
             (
                 value
@@ -1386,10 +2623,19 @@ class SceneAuthoringViewport(QGraphicsView):
             None,
         )
         if layer is not None and layer.locked:
-            return f"Cannot edit '{object_id}': its layer is locked."
+            return self._text(
+                f"Não é possível editar '{object_id}': a camada está bloqueada.",
+                f"Cannot edit '{object_id}': its layer is locked.",
+            )
         locked_group = locked_group_for_object(self.session.document, object_id)
         if locked_group is not None:
-            return f"Cannot edit '{object_id}': group '{locked_group.name}' is locked."
+            return self._text(
+                (
+                    f"Não é possível editar '{object_id}': o grupo "
+                    f"'{locked_group.name}' está bloqueado."
+                ),
+                f"Cannot edit '{object_id}': group '{locked_group.name}' is locked.",
+            )
         return None
 
     def _selection_edit_block_reason(self) -> str | None:
@@ -1425,7 +2671,12 @@ class SceneAuthoringViewport(QGraphicsView):
         if object_id not in self.session.selection.ids:
             return
         if not self._authoring_enabled:
-            self.status_message.emit("Preview mode is read-only")
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
             return
         item = next(
             (value for value in self.session.document.objects if value.id == object_id),
@@ -1463,7 +2714,10 @@ class SceneAuthoringViewport(QGraphicsView):
             self._gesture_start = None
             self.status_message.emit(
                 self._edit_block_reason(object_id)
-                or f"Cannot move '{object_id}': editing is locked."
+                or self._text(
+                    f"Não é possível mover '{object_id}': a edição está bloqueada.",
+                    f"Cannot move '{object_id}': editing is locked.",
+                )
             )
             return
 
@@ -1476,11 +2730,18 @@ class SceneAuthoringViewport(QGraphicsView):
         self._item_gesture_id = None
         self._gesture_layer_id = None
         self._gesture_start = None
-        self.status_message.emit("Objects moved")
+        self.status_message.emit(
+            "Objeto(s) movido(s)" if self.current_lang == "pt" else "Objects moved"
+        )
 
     def _gizmo_started(self, mode: str, scene_pos: QPointF) -> None:
         if not self._authoring_enabled:
-            self.status_message.emit("Preview mode is read-only")
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
             return
         reason = self._selection_edit_block_reason()
         if reason is not None:
@@ -1543,7 +2804,10 @@ class SceneAuthoringViewport(QGraphicsView):
             self._gizmo_start = None
             self.status_message.emit(
                 self._selection_edit_block_reason()
-                or "Cannot transform the selection: editing is locked."
+                or self._text(
+                    "Não é possível transformar a seleção: a edição está bloqueada.",
+                    "Cannot transform the selection: editing is locked.",
+                )
             )
             return
 
@@ -1556,7 +2820,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self.session.finish_gesture(f"Apply {mode} gizmo transform")
         self._gesture_mode = None
         self._gizmo_start = None
-        self.status_message.emit("Transform applied")
+        self.status_message.emit(
+            self._text("Transformação aplicada", "Transform applied")
+        )
 
     def undo(self) -> bool:
         changed = self.session.undo()
@@ -1566,20 +2832,227 @@ class SceneAuthoringViewport(QGraphicsView):
         changed = self.session.redo()
         return changed
 
+    def set_active_layer(self, layer_id: str) -> None:
+        if layer_id not in {item.id for item in self.session.document.layers}:
+            raise ValueError("unknown destination layer")
+        self._active_layer_id = layer_id
+
+    def eventFilter(self, watched, event) -> bool:  # noqa: N802
+        """Route native drag events from QAbstractScrollArea's viewport child.
+
+        The visible canvas is a ``QGraphicsView`` backed by an internal viewport
+        widget.  Native OS drags can target that child directly, so keep the
+        mutation contract in this class instead of maintaining a second drop
+        implementation on the child.
+        """
+
+        if watched is self.viewport():
+            event_type = event.type()
+            if event_type == QEvent.Type.DragEnter:
+                self.dragEnterEvent(event)
+                return True
+            if event_type == QEvent.Type.DragMove:
+                self.dragMoveEvent(event)
+                return True
+            if event_type == QEvent.Type.DragLeave:
+                self.dragLeaveEvent(event)
+                return True
+            if event_type == QEvent.Type.Drop:
+                self.dropEvent(event)
+                return True
+        return super().eventFilter(watched, event)
+
+    def viewportEvent(self, event) -> bool:  # noqa: N802
+        """Handle native drag/drop events delivered by ``QGraphicsView``.
+
+        ``QGraphicsView`` receives drag events on its internal viewport child.
+        Overriding ``viewportEvent`` keeps the real OS drop on the same
+        transactional path as the explicit placement command without relying
+        on a second widget event filter to intercept the final Drop event.
+        """
+
+        event_type = event.type()
+        if event_type == QEvent.Type.DragEnter:
+            self.dragEnterEvent(event)
+            return True
+        if event_type == QEvent.Type.DragMove:
+            self.dragMoveEvent(event)
+            return True
+        if event_type == QEvent.Type.DragLeave:
+            self.dragLeaveEvent(event)
+            return True
+        if event_type == QEvent.Type.Drop:
+            self.dropEvent(event)
+            return True
+        return super().viewportEvent(event)
+
+    def _destination_layer(self) -> str:
+        layers = self.session.document.layers
+        layer = next(
+            (
+                item
+                for item in layers
+                if item.id == getattr(self, "_active_layer_id", None)
+            ),
+            layers[0],
+        )
+        if layer.locked or not layer.visible:
+            raise ValueError(
+                "Mostre e desbloqueie a moldura de destino antes de inserir assets"
+                if self.current_lang == "pt"
+                else "Show and unlock the destination frame before placing assets"
+            )
+        return layer.id
+
     def dragEnterEvent(self, event) -> None:
         if not self._authoring_enabled:
             event.ignore()
             return
-        if event.mimeData().hasUrls() or event.mimeData().hasText():
+        if (
+            event.mimeData().hasFormat("application/x-neoeng-scene-asset")
+            or event.mimeData().hasUrls()
+            or event.mimeData().hasText()
+        ):
+            self._update_drop_preview(event)
             event.acceptProposedAction()
         else:
             event.ignore()
 
-    def dropEvent(self, event) -> None:
+    def dragMoveEvent(self, event) -> None:
+        """Show the exact viewport landing point before the drop is committed."""
+
         if not self._authoring_enabled:
-            self.status_message.emit("Preview mode is read-only")
             event.ignore()
             return
+        if (
+            event.mimeData().hasFormat("application/x-neoeng-scene-asset")
+            or event.mimeData().hasUrls()
+            or event.mimeData().hasText()
+        ):
+            self._update_drop_preview(event)
+            event.acceptProposedAction()
+            return
+        event.ignore()
+
+    def dragLeaveEvent(self, event) -> None:
+        self._drop_preview = None
+        self.viewport().update()
+        event.accept()
+
+    def _update_drop_preview(self, event) -> None:
+        """Resolve a lightweight ghost rectangle for drag feedback."""
+
+        position = self.mapToScene(event.position().toPoint())
+        width, height = 96.0, 96.0
+        label = "Soltar asset aqui" if self.current_lang == "pt" else "Drop asset here"
+        asset_mime = "application/x-neoeng-scene-asset"
+        if event.mimeData().hasFormat(asset_mime):
+            raw_id = bytes(event.mimeData().data(asset_mime)).decode("utf-8")
+            asset = next(
+                (item for item in self.session.document.assets if item.id == raw_id),
+                None,
+            )
+            if asset is not None:
+                resolved, _issue = resolve_scene_asset(asset, self.project_root)
+                if resolved is not None:
+                    try:
+                        width, height = self._image_size(resolved)
+                    except (OSError, ValueError):
+                        pass
+                label = (
+                    f"Soltar {asset.id} aqui"
+                    if self.current_lang == "pt"
+                    else f"Drop {asset.id} here"
+                )
+        self._drop_preview = (position, width, height, label)
+        self.viewport().update()
+
+    def dropEvent(self, event) -> None:
+        self._drop_preview = None
+        self.viewport().update()
+        if not self._authoring_enabled:
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
+            event.ignore()
+            return
+        asset_mime = "application/x-neoeng-scene-asset"
+        if event.mimeData().hasFormat(asset_mime):
+            raw_id = bytes(event.mimeData().data(asset_mime)).decode("utf-8")
+            asset = next(
+                (item for item in self.session.document.assets if item.id == raw_id),
+                None,
+            )
+            if asset is None:
+                self.status_message.emit(
+                    self._text(
+                        "O asset arrastado da cena está indisponível",
+                        "The dragged scene asset is unavailable",
+                    )
+                )
+                event.ignore()
+                return
+            resolved, issue = resolve_scene_asset(asset, self.project_root)
+            if resolved is None:
+                self.status_message.emit(
+                    issue
+                    or self._text(
+                        "O asset arrastado da cena está indisponível",
+                        "The dragged scene asset is unavailable",
+                    )
+                )
+                event.ignore()
+                return
+            try:
+                width, height = self._image_size(resolved)
+                layer_id = self._destination_layer()
+                object_id = asset.id
+                while object_id in {item.id for item in self.session.document.objects}:
+                    object_id += "_1"
+                scene_pos = self.mapToScene(event.position().toPoint())
+                obj = SceneObjectAuthoringRecord(
+                    id=object_id,
+                    asset_id=asset.id,
+                    layer_id=layer_id,
+                    transform=SceneTransformRecord(
+                        position=Point3Record(x=scene_pos.x(), y=scene_pos.y(), z=0.0),
+                        rotation=Point3Record(x=0.0, y=0.0, z=0.0),
+                        scale=Point3Record(x=1.0, y=1.0, z=1.0),
+                        pivot=PointRecord(x=0.5, y=0.5),
+                    ),
+                )
+                self.session.apply(
+                    lambda: self.session.model.add_object(obj, select=True),
+                    "Place scene asset",
+                )
+                self._geometry[object_id] = (
+                    (-width / 2, -height / 2),
+                    (width / 2, -height / 2),
+                    (width / 2, height / 2),
+                    (-width / 2, height / 2),
+                )
+                self.sync()
+                self.selection_changed.emit()
+                self._frame_initial_asset()
+                self.status_message.emit(
+                    f"Asset colocado: {asset.id}"
+                    if self.current_lang == "pt"
+                    else f"Placed {asset.id}"
+                )
+                event.acceptProposedAction()
+                return
+            except (OSError, ValueError) as exc:
+                self.status_message.emit(
+                    user_error_message(
+                        exc, operation="asset", language=self.current_lang
+                    )
+                )
+                event.ignore()
+                return
+
         paths = [
             Path(url.toLocalFile())
             for url in event.mimeData().urls()
@@ -1588,12 +3061,22 @@ class SceneAuthoringViewport(QGraphicsView):
         if not paths and event.mimeData().hasText():
             paths = [Path(event.mimeData().text())]
         if not paths:
-            self.status_message.emit("Drop an image asset onto the viewport")
+            self.status_message.emit(
+                self._text(
+                    "Solte um asset de imagem no viewport",
+                    "Drop an image asset onto the viewport",
+                )
+            )
             event.ignore()
             return
         path = paths[0].resolve(strict=False)
         if self.project_root is None:
-            self.status_message.emit("Save the project before importing scene assets")
+            self.status_message.emit(
+                self._text(
+                    "Salve o projeto antes de importar assets da cena",
+                    "Save the project before importing scene assets",
+                )
+            )
             event.ignore()
             return
         try:
@@ -1603,7 +3086,7 @@ class SceneAuthoringViewport(QGraphicsView):
             prepared = prepare_scene_asset(source, self.project_root)
             width, height = self._image_size(prepared.resolved_path)
             asset_id = "asset_" + prepared.sha256[:16]
-            layer_id = self.session.document.layers[0].id
+            layer_id = self._destination_layer()
             object_id = asset_id
             while asset_id in {asset.id for asset in self.session.document.assets}:
                 asset_id += "_1"
@@ -1642,11 +3125,103 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             self.sync()
             self.selection_changed.emit()
-            self.status_message.emit(f"Imported {path.name}")
+            self._frame_initial_asset()
+            self.status_message.emit(
+                f"Asset importado: {path.name}"
+                if self.current_lang == "pt"
+                else f"Imported {path.name}"
+            )
             event.acceptProposedAction()
         except (OSError, ValueError, SceneAssetError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="asset"))
+            self.status_message.emit(
+                user_error_message(exc, operation="asset", language=self.current_lang)
+            )
             event.ignore()
+
+    def place_asset_from_library(
+        self, asset_id: str, group_id: str | None = None
+    ) -> bool:
+        """Place a library asset at the viewport center or into a group drop target."""
+
+        if not self._authoring_enabled:
+            self.status_message.emit(
+                self._text(
+                    "O modo de pré-visualização é somente leitura",
+                    "Preview mode is read-only",
+                )
+            )
+            return False
+        asset = next(
+            (item for item in self.session.document.assets if item.id == asset_id),
+            None,
+        )
+        if asset is None:
+            self.status_message.emit(
+                self._text(
+                    "O asset arrastado da cena está indisponível",
+                    "The dragged scene asset is unavailable",
+                )
+            )
+            return False
+        resolved, issue = resolve_scene_asset(asset, self.project_root)
+        if resolved is None:
+            self.status_message.emit(
+                issue or self._text("Asset indisponível", "Asset unavailable")
+            )
+            return False
+        try:
+            width, height = self._image_size(resolved)
+            layer_id = self._destination_layer()
+            object_id = asset.id
+            while object_id in {item.id for item in self.session.document.objects}:
+                object_id += "_1"
+            center = self.mapToScene(self.viewport().rect().center())
+            obj = SceneObjectAuthoringRecord(
+                id=object_id,
+                asset_id=asset.id,
+                layer_id=layer_id,
+                transform=SceneTransformRecord(
+                    position=Point3Record(x=center.x(), y=center.y(), z=0.0),
+                    rotation=Point3Record(x=0.0, y=0.0, z=0.0),
+                    scale=Point3Record(x=1.0, y=1.0, z=1.0),
+                    pivot=PointRecord(x=0.5, y=0.5),
+                ),
+            )
+
+            def operation() -> None:
+                self.session.model.add_object(obj, select=True)
+                if group_id is not None:
+                    self.session.model.add_objects_to_group(group_id, [object_id])
+
+            self.session.apply(operation, "Place scene asset")
+            self._geometry[object_id] = (
+                (-width / 2, -height / 2),
+                (width / 2, -height / 2),
+                (width / 2, height / 2),
+                (-width / 2, height / 2),
+            )
+            self.sync()
+            self.selection_changed.emit()
+            self._frame_initial_asset()
+            self.status_message.emit(
+                f"Asset colocado no grupo: {asset.id}"
+                if self.current_lang == "pt" and group_id is not None
+                else (
+                    f"Asset placed in group: {asset.id}"
+                    if group_id is not None
+                    else (
+                        f"Asset colocado: {asset.id}"
+                        if self.current_lang == "pt"
+                        else f"Placed {asset.id}"
+                    )
+                )
+            )
+            return True
+        except (OSError, ValueError, SceneAssetError, KeyError) as exc:
+            self.status_message.emit(
+                user_error_message(exc, operation="asset", language=self.current_lang)
+            )
+            return False
 
     @staticmethod
     def _load_asset_pixmap(path: Path) -> QPixmap:
@@ -1679,6 +3254,7 @@ class SceneAuthoringViewport(QGraphicsView):
         super().resizeEvent(event)
         self._refresh_navigation_scene_rect()
         self._apply_navigation_transform()
+        self._refresh_camera_guide()
         if self._preview_enabled:
             self._refresh_after_model_change()
 
@@ -1697,8 +3273,108 @@ class SceneAuthoringViewport(QGraphicsView):
             painter.drawLine(QPointF(rect.left(), y), QPointF(rect.right(), y))
             y += 32.0
 
+    @staticmethod
+    def _rotated_frame_points(
+        center: QPointF, width: float, height: float, rotation: float
+    ) -> list[QPointF]:
+        half_width = width / 2.0
+        half_height = height / 2.0
+        angle = math.radians(rotation)
+        cosine = math.cos(angle)
+        sine = math.sin(angle)
+        points: list[QPointF] = []
+        for x, y in (
+            (-half_width, -half_height),
+            (half_width, -half_height),
+            (half_width, half_height),
+            (-half_width, half_height),
+        ):
+            points.append(
+                QPointF(
+                    center.x() + x * cosine - y * sine,
+                    center.y() + x * sine + y * cosine,
+                )
+            )
+        return points
+
+    def _paint_parallax_guides(self) -> None:
+        """Render depth-aware authoring boundaries without exporting them."""
+
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2) or not document.layers:
+            return
+        viewport_width = max(1.0, float(self.viewport().width()))
+        viewport_height = max(1.0, float(self.viewport().height()))
+        camera = self._camera()
+        palette = ("#5bd8ed", "#f0bd68", "#c38cf2", "#78df9b", "#ff8d9f")
+        painter = QPainter(self.viewport())
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        label_top = 34.0
+        previous_label: QRectF | None = None
+        for index, layer in enumerate(document.layers):
+            if not layer.visible:
+                continue
+            parallax = self._layer_parallax(layer.id)
+            if self._preview_enabled:
+                points = self._rotated_frame_points(
+                    QPointF(viewport_width / 2.0, viewport_height / 2.0),
+                    viewport_width,
+                    viewport_height,
+                    0.0,
+                )
+            else:
+                effective_zoom = max(0.001, camera.effective_zoom(parallax))
+                center = QPointF(
+                    camera.position[0] * parallax.camera_scroll_x - parallax.offset_x,
+                    camera.position[1] * parallax.camera_scroll_y - parallax.offset_y,
+                )
+                points = self._rotated_frame_points(
+                    center,
+                    viewport_width / effective_zoom,
+                    viewport_height / effective_zoom,
+                    camera.rotation,
+                )
+            screen_points = [self.mapFromScene(point) for point in points]
+            color = QColor(palette[index % len(palette)])
+            color.setAlpha(185)
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            painter.setPen(QPen(color, 1.5, Qt.PenStyle.DashLine))
+            painter.drawPolygon(QPolygonF(screen_points))
+            translation = parallax.translation_factor * 100.0
+            label = f"Z{index:02d} {layer.name} · {translation:.0f}%"
+            anchor = screen_points[0]
+            label_width = min(236.0, max(134.0, 8.0 * len(label) + 22.0))
+            label_x = min(max(8.0, anchor.x() + 6.0), viewport_width - label_width - 8.0)
+            label_y = max(label_top + index * 24.0, anchor.y() + 8.0)
+            if previous_label is not None and label_y < previous_label.bottom() + 4.0:
+                label_y = previous_label.bottom() + 4.0
+            label_y = min(label_y, viewport_height - 25.0)
+            label_rect = QRectF(label_x, label_y, label_width, 20.0)
+            painter.setBrush(QBrush(QColor(9, 24, 34, 205)))
+            painter.setPen(QPen(color, 1.0))
+            painter.drawRoundedRect(label_rect, 4.0, 4.0)
+            painter.setPen(QColor("#edfaff"))
+            painter.drawText(label_rect, Qt.AlignmentFlag.AlignCenter, label)
+            previous_label = label_rect
+        painter.end()
+
     def paintEvent(self, event) -> None:
         super().paintEvent(event)
+        self._paint_parallax_guides()
+        if self._render_plan is not None:
+            plan = self._render_plan
+            painter = QPainter(self.viewport())
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            painter.setPen(QPen(QColor("#b8f4ff"), 1.0))
+            backend = plan.backend.selected.upper()
+            mode = plan.backend.status.upper()
+            editor_mode = "PREVIEW" if self._preview_enabled else "AUTHORING"
+            painter.drawText(
+                QPointF(12.0, 20.0),
+                f"RENDERER {backend} | {mode} | {editor_mode} | "
+                f"{len(plan.passes)} PASSES | R{plan.revision}",
+            )
+            painter.end()
         if self._marquee_origin is not None and self._marquee_current is not None:
             painter = QPainter(self.viewport())
             painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
@@ -1707,6 +3383,35 @@ class SceneAuthoringViewport(QGraphicsView):
             start = self.mapFromScene(self._marquee_origin)
             end = self.mapFromScene(self._marquee_current)
             painter.drawRect(QRectF(start, end).normalized())
+            painter.end()
+        if self._drop_preview is not None:
+            center, width, height, label = self._drop_preview
+            painter = QPainter(self.viewport())
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            point = self.mapFromScene(center)
+            rect = QRectF(
+                point.x() - width / 2.0,
+                point.y() - height / 2.0,
+                width,
+                height,
+            )
+            painter.setBrush(QBrush(QColor(89, 216, 232, 42)))
+            painter.setPen(QPen(QColor("#59d8e8"), 2.0, Qt.PenStyle.DashLine))
+            painter.drawRect(rect)
+            painter.drawLine(
+                QPointF(point.x() - 10.0, point.y()),
+                QPointF(point.x() + 10.0, point.y()),
+            )
+            painter.drawLine(
+                QPointF(point.x(), point.y() - 10.0),
+                QPointF(point.x(), point.y() + 10.0),
+            )
+            painter.setPen(QPen(QColor("#e8edf2"), 1.0))
+            painter.drawText(
+                QRectF(rect.left(), rect.bottom() + 6.0, rect.width(), 20.0),
+                Qt.AlignmentFlag.AlignHCenter,
+                label,
+            )
             painter.end()
         if not self._overlay_visible:
             self._paint_navigation_state()

@@ -10,6 +10,7 @@ from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QMenu
 
 from src.core.operational_limits import MAX_POLYGON_POINTS
+from src.ui.context_menu_utils import fit_context_menu
 
 from .base_tool import BaseTool
 from .mask_utils import rdp_simplify
@@ -133,7 +134,7 @@ class LassoTool(BaseTool):
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self.redo_last_action)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def undo_last_action(self):
         if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:

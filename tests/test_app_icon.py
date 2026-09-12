@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import ast
 import shutil
 import sys
 import xml.etree.ElementTree as ET
@@ -116,4 +117,19 @@ def test_wix_shortcut_references_installed_icon(tmp_path: Path) -> None:
 def test_pyinstaller_spec_bundles_icon_and_sets_gui_executable_icon() -> None:
     spec = (ROOT / "packaging" / "NeoEng-D-Trace.spec").read_text(encoding="utf-8")
     assert 'icon_path = repository_root / "assets" / "branding"' in spec
-    assert 'datas=[(str(icon_path), "assets/branding")]' in spec
+    # Check the contract, not a literal that forbids any additional bundled data.
+    tree = ast.parse(spec)
+    analysis = next(
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "Analysis"
+    )
+    data_expression = next(k.value for k in analysis.keywords if k.arg == "datas")
+    data = eval(
+        compile(ast.Expression(data_expression), "<spec-datas>", "eval"),
+        {"str": str, "icon_path": ICON_PATH, "repository_root": ROOT},
+    )
+    assert (str(ICON_PATH), "assets/branding") in data
+    assert (str(ROOT / "assets/scene/packs"), "assets/scene/packs") in data

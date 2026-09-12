@@ -40,6 +40,14 @@ namespace NeoEng.DTrace.Editor
             string baseDirectory = Path.GetDirectoryName(absolute);
             string scenarioPath = SafeCombine(Directory.GetCurrentDirectory(), bundle.source.path);
             ScenarioExport scenario = JsonUtility.FromJson<ScenarioExport>(File.ReadAllText(scenarioPath));
+            SidecarData particleSidecar = bundle.sidecars.First(item => item.capability == "runtime.particles");
+            string particlePath = SafeCombine(Directory.GetCurrentDirectory(), particleSidecar.path);
+            NeoEngRuntimeParticles particleRuntime = root.AddComponent<NeoEngRuntimeParticles>();
+            if (!particleRuntime.ConfigureFromJson(File.ReadAllText(particlePath), out string particleError))
+            {
+                UnityEngine.Object.DestroyImmediate(root);
+                throw new InvalidDataException("runtime particle sidecar could not be consumed: " + particleError);
+            }
             for (int index = 0; index < scenario.layers.Length; index++)
             {
                 ScenarioLayerData source = scenario.layers[index];
@@ -80,12 +88,20 @@ namespace NeoEng.DTrace.Editor
                 string path = Environment.GetEnvironmentVariable("NEOENG_RUNTIME_ADAPTER_BUNDLE");
                 GameObject root = Import(string.IsNullOrWhiteSpace(path) ? DefaultBundlePath : path);
                 NeoEngRuntimeAdapterMetadata metadata = root.GetComponent<NeoEngRuntimeAdapterMetadata>();
+                NeoEngRuntimeParticles particles = root.GetComponent<NeoEngRuntimeParticles>();
+                particles.autoAdvance = false;
+                if (!particles.AdvanceFixedTicks(3) || particles.ParticleCount <= 0)
+                    throw new InvalidDataException("runtime particles did not emit any native particles");
                 metadata.fixedTick = 3;
                 metadata.simulationTime = 3.0 / 60.0;
                 Debug.Log("RUNTIME_ADAPTER_UNITY=SUCCESS");
                 Debug.Log("RUNTIME_ADAPTER_LAYERS=" + root.transform.Cast<Transform>().Count(item => item.name.StartsWith("Layer_", StringComparison.Ordinal)));
                 Debug.Log("RUNTIME_ADAPTER_SIDECARS=" + root.transform.Cast<Transform>().Count(item => item.name.StartsWith("Sidecar_", StringComparison.Ordinal)));
                 Debug.Log("RUNTIME_ADAPTER_FIXED_TICK=" + metadata.fixedTick);
+                Debug.Log("RUNTIME_ADAPTER_PARTICLES=SUCCESS");
+                Debug.Log("RUNTIME_ADAPTER_PARTICLE_EMITTERS=" + particles.EmitterCount);
+                Debug.Log("RUNTIME_ADAPTER_PARTICLE_COUNT=" + particles.ParticleCount);
+                Debug.Log("RUNTIME_ADAPTER_PARTICLE_STATE_SHA256=" + particles.StateSha256);
                 UnityEngine.Object.DestroyImmediate(root);
                 AssetDatabase.SaveAssets();
                 EditorApplication.Exit(0);
@@ -93,6 +109,7 @@ namespace NeoEng.DTrace.Editor
             catch (Exception exception)
             {
                 Debug.LogException(exception);
+                Debug.LogError("RUNTIME_ADAPTER_FAILURE=" + exception.GetType().Name + ":" + exception.Message);
                 EditorApplication.Exit(1);
             }
         }

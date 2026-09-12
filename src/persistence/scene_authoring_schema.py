@@ -21,7 +21,9 @@ from src.core.operational_limits import (
     MAX_PROJECT_GROUPS,
     MAX_PROJECT_LAYERS,
     MAX_PROJECT_OBJECTS,
+    MAX_POLYGON_POINTS,
 )
+from src.core.polygon_validation import is_valid_polygon
 from src.persistence.project_schema import (
     MAX_ID_LENGTH,
     MAX_NAME_LENGTH,
@@ -31,12 +33,20 @@ from src.persistence.project_schema import (
     StrictProjectModel,
 )
 from src.persistence.scenario_schema import ProjectReferenceRecord
+from src.runtime.particles import (
+    MAX_PARTICLE_LIFETIME,
+    MAX_PARTICLE_SUBSTEPS,
+    ParticleDocumentV1,
+    ParticleEmitterRecord,
+    ParticleSourceBindingRecord,
+)
 
 SCENE_AUTHORING_FORMAT_ID = "neoeng-d-trace-scene-authoring"
 SCENE_AUTHORING_SCHEMA_VERSION = 1
 SCENE_AUTHORING_FILE_EXTENSION = ".ndtscene.json"
 MAX_SCENE_ASSETS = MAX_PROJECT_OBJECTS
 MAX_SCENE_SOCKETS = MAX_PROJECT_OBJECTS
+MAX_SCENE_PARTICLE_SYSTEMS = MAX_PROJECT_OBJECTS
 
 
 def _finite(value: int | float, field: str) -> int | float:
@@ -58,6 +68,18 @@ def _unit(value: int | float, field: str) -> int | float:
     number = _finite(value, field)
     if number < 0 or number > 1:
         raise ValueError(f"{field} must be between 0 and 1")
+    return number
+
+
+def _bounded(
+    value: int | float,
+    field: str,
+    lower: float,
+    upper: float,
+) -> int | float:
+    number = _finite(value, field)
+    if number < lower or number > upper:
+        raise ValueError(f"{field} must be between {lower} and {upper}")
     return number
 
 
@@ -135,6 +157,82 @@ class SceneLayerAuthoringRecord(StrictProjectModel):
     locked: bool = False
 
 
+class SceneMaterialAuthoringRecord(StrictProjectModel):
+    """Persisted material inputs consumed by the deterministic raster pass."""
+
+    albedo: str = Field(default="#ffffff", pattern=r"^#[0-9a-fA-F]{6}$")
+    normal_map_xy: PointRecord = PointRecord(x=0.0, y=0.0)
+    normal_strength: int | float = 1.0
+    emission: str = Field(default="#000000", pattern=r"^#[0-9a-fA-F]{6}$")
+    emission_strength: int | float = 0.0
+    opacity: int | float = 1.0
+    receives_shadow: bool = True
+    casts_shadow: bool = True
+
+    @field_validator("albedo", "emission")
+    @classmethod
+    def normalize_color(cls, value: str) -> str:
+        return value.lower()
+
+    @field_validator("normal_map_xy")
+    @classmethod
+    def validate_normal_map(cls, value: PointRecord) -> PointRecord:
+        _bounded(value.x, "material.normal_map_xy.x", -1.0, 1.0)
+        _bounded(value.y, "material.normal_map_xy.y", -1.0, 1.0)
+        return value
+
+    @field_validator("normal_strength", "opacity")
+    @classmethod
+    def validate_unit_material_values(cls, value: int | float) -> int | float:
+        return _unit(value, "material unit value")
+
+    @field_validator("emission_strength")
+    @classmethod
+    def validate_emission_strength(cls, value: int | float) -> int | float:
+        return _bounded(value, "material.emission_strength", 0.0, 16.0)
+
+
+class SceneVectorImageSizeRecord(StrictProjectModel):
+    """Decoded source dimensions retained with a vectorized object."""
+
+    width: int = Field(gt=0, le=8192)
+    height: int = Field(gt=0, le=8192)
+
+
+class SceneVectorGeometryRecord(StrictProjectModel):
+    """Portable vector geometry plus source/detection provenance."""
+
+    algorithm: str = Field(min_length=1, max_length=128)
+    source_sha256: str = Field(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")
+    image_size: SceneVectorImageSizeRecord
+    original_polygon: list[PointRecord] = Field(
+        min_length=3, max_length=MAX_POLYGON_POINTS
+    )
+    polygon: list[PointRecord] = Field(min_length=3, max_length=MAX_POLYGON_POINTS)
+    collision_polygon: list[PointRecord] = Field(
+        min_length=3, max_length=MAX_POLYGON_POINTS
+    )
+    detection_parameters: dict[str, str | int | float | bool] = Field(
+        default_factory=dict
+    )
+
+    @model_validator(mode="after")
+    def validate_geometry(self) -> "SceneVectorGeometryRecord":
+        for name, points in (
+            ("original_polygon", self.original_polygon),
+            ("polygon", self.polygon),
+            ("collision_polygon", self.collision_polygon),
+        ):
+            if not is_valid_polygon([(point.x, point.y) for point in points]):
+                raise ValueError(f"vector geometry {name} must be a valid polygon")
+        for key, value in self.detection_parameters.items():
+            if not key.strip() or len(key) > 128:
+                raise ValueError("vector detection parameter names must be non-empty")
+            if isinstance(value, float) and not math.isfinite(value):
+                raise ValueError("vector detection parameters must be finite")
+        return self
+
+
 class SceneObjectAuthoringRecord(StrictProjectModel):
     id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     asset_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
@@ -142,6 +240,12 @@ class SceneObjectAuthoringRecord(StrictProjectModel):
     transform: SceneTransformRecord
     visible: bool = True
     locked: bool = False
+    vector_geometry: SceneVectorGeometryRecord | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    material: SceneMaterialAuthoringRecord | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
 
 class SceneGroupAuthoringRecord(StrictProjectModel):
@@ -167,6 +271,102 @@ class SceneGroupAuthoringRecordV2(SceneGroupAuthoringRecord):
     parent_group_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
 
 
+class SceneComponentAuthoringRecord(StrictProjectModel):
+    """Versioned, data-only component attached to one authored entity."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    type: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
+    version: int = Field(ge=1, le=10_000)
+    properties: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_property_values(self) -> "SceneComponentAuthoringRecord":
+        for key, value in self.properties.items():
+            if not key.strip() or len(key) > MAX_NAME_LENGTH:
+                raise ValueError("component property names must be non-empty")
+            if isinstance(value, float) and not math.isfinite(value):
+                raise ValueError("component property numbers must be finite")
+        return self
+
+
+class SceneEntityAuthoringRecord(StrictProjectModel):
+    """Stable authored identity with typed components and optional instance source."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    name: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
+    layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    transform: SceneTransformRecord
+    components: list[SceneComponentAuthoringRecord] = Field(
+        default_factory=list, max_length=MAX_PROJECT_OBJECTS
+    )
+    instance_of: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
+    parent_entity_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
+    visible: bool = True
+    locked: bool = False
+
+    @model_validator(mode="after")
+    def validate_component_identity(self) -> "SceneEntityAuthoringRecord":
+        component_ids = [component.id for component in self.components]
+        if len(component_ids) != len(set(component_ids)):
+            raise ValueError("entity component IDs must be unique")
+        if self.instance_of == self.id:
+            raise ValueError("entity cannot instance itself")
+        if self.parent_entity_id == self.id:
+            raise ValueError("entity cannot parent itself")
+        return self
+
+
+class ScenePrefabOverrideRecord(StrictProjectModel):
+    """Scalar override kept separate from the prefab source definition."""
+
+    path: str = Field(min_length=1, max_length=MAX_PATH_LENGTH)
+    value: str | int | float | bool | None
+
+    @field_validator("value")
+    @classmethod
+    def validate_value(cls, value: str | int | float | bool | None):
+        if isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("prefab override numbers must be finite")
+        return value
+
+
+class ScenePrefabAuthoringRecord(StrictProjectModel):
+    """Versioned prefab asset referencing a stable source entity selection."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    name: str = Field(min_length=1, max_length=MAX_NAME_LENGTH)
+    source_entity_ids: list[str] = Field(min_length=1, max_length=MAX_PROJECT_OBJECTS)
+    version: int = Field(default=1, ge=1, le=10_000)
+
+    @field_validator("source_entity_ids")
+    @classmethod
+    def validate_source_ids(cls, values: list[str]) -> list[str]:
+        if any(not value.strip() for value in values):
+            raise ValueError("prefab source entity IDs must be non-empty")
+        if len(values) != len(set(values)):
+            raise ValueError("prefab source entity IDs must be unique")
+        return values
+
+
+class ScenePrefabInstanceAuthoringRecord(StrictProjectModel):
+    """Independent prefab instance identity with explicit overrides."""
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    prefab_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    root_entity_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    overrides: list[ScenePrefabOverrideRecord] = Field(
+        default_factory=list, max_length=MAX_PROJECT_OBJECTS
+    )
+    detached: bool = False
+
+    @model_validator(mode="after")
+    def validate_overrides(self) -> "ScenePrefabInstanceAuthoringRecord":
+        paths = [override.path for override in self.overrides]
+        if len(paths) != len(set(paths)):
+            raise ValueError("prefab override paths must be unique")
+        return self
+
+
 class SceneSnapRecord(StrictProjectModel):
     enabled: bool = False
     mode: Literal["pixel", "grid"] = "pixel"
@@ -185,6 +385,7 @@ class SceneCameraAuthoringRecord(StrictProjectModel):
 
     position: PointRecord = PointRecord(x=0.0, y=0.0)
     zoom: int | float = 1.0
+    rotation: int | float = 0.0
 
     @field_validator("position")
     @classmethod
@@ -198,19 +399,48 @@ class SceneCameraAuthoringRecord(StrictProjectModel):
     def validate_zoom(cls, value: int | float) -> int | float:
         return _positive(value, "camera.zoom")
 
+    @field_validator("rotation")
+    @classmethod
+    def validate_rotation(cls, value: int | float) -> int | float:
+        return _bounded(value, "camera.rotation", -36000.0, 36000.0)
+
 
 class SceneParallaxLayerRecord(StrictProjectModel):
-    """Versioned layer parameters for deterministic professional preview."""
+    """Versioned layer parameters for deterministic professional preview.
+
+    The original depth/strength fields remain unchanged.  E08-B adds signed
+    axis-specific scroll and manual offsets with defaults that reproduce the
+    previous projection exactly; repeat/mirror flags are explicit render
+    metadata and never reinterpret ``position.z``.
+    """
 
     layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     depth: int | float = 0.0
     translation_strength: int | float = 1.0
     zoom_strength: int | float = 1.0
+    scroll_x: int | float = 1.0
+    scroll_y: int | float = 1.0
+    offset_x: int | float = 0.0
+    offset_y: int | float = 0.0
+    repeat_x: bool = False
+    repeat_y: bool = False
+    mirror_x: bool = False
+    mirror_y: bool = False
 
     @field_validator("depth", "translation_strength", "zoom_strength")
     @classmethod
     def validate_normalized(cls, value: int | float) -> int | float:
         return _unit(value, "parallax parameter")
+
+    @field_validator("scroll_x", "scroll_y")
+    @classmethod
+    def validate_scroll(cls, value: int | float, info) -> int | float:
+        return _bounded(value, f"parallax.{info.field_name}", -4.0, 4.0)
+
+    @field_validator("offset_x", "offset_y")
+    @classmethod
+    def validate_offset(cls, value: int | float, info) -> int | float:
+        return _finite(value, f"parallax.{info.field_name}")
 
 
 class _SceneSocketBase(StrictProjectModel):
@@ -218,17 +448,26 @@ class _SceneSocketBase(StrictProjectModel):
     layer_id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
     object_id: str | None = Field(default=None, max_length=MAX_ID_LENGTH)
     position: Point3Record
+    # Optional in the wire contract so documents created before orientable
+    # sockets remain valid.  Z is the 2D authoring heading; X/Y are reserved
+    # for the hybrid 2.5D/3D editor without changing the socket identity.
+    rotation: Point3Record = Field(
+        default_factory=lambda: Point3Record(x=0.0, y=0.0, z=0.0)
+    )
 
-    @field_validator("position")
+    @field_validator("position", "rotation")
     @classmethod
-    def validate_position(cls, value: Point3Record) -> Point3Record:
+    def validate_transform(cls, value: Point3Record) -> Point3Record:
         for coordinate in (value.x, value.y, value.z):
-            _finite(coordinate, "socket.position")
+            _finite(coordinate, "socket transform")
         return value
 
 
 class SceneLightSocketRecord(_SceneSocketBase):
     type: Literal["light"] = "light"
+    # ``point`` is the legacy default.  Directional lights use the socket
+    # rotation Z angle as the incoming light vector in screen space.
+    kind: Literal["point", "directional"] = "point"
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     intensity: int | float = 1.0
     radius: int | float = 64.0
@@ -254,6 +493,71 @@ class SceneVfxSocketRecord(_SceneSocketBase):
     @classmethod
     def validate_scale(cls, value: int | float) -> int | float:
         return _positive(value, "VFX socket scale")
+
+
+class SceneParticleSystemRecord(StrictProjectModel):
+    """Authored particle system embedded in a professional scene.
+
+    The runtime particle document remains the source of truth for simulation;
+    this scene record adds only the authoring identity and presentation controls
+    needed to place that runtime system on a VFX socket.  All fields are
+    optional at the V2 document level so legacy scenes keep their exact wire
+    shape when no authored systems exist.
+    """
+
+    id: str = Field(min_length=1, max_length=MAX_ID_LENGTH)
+    fixed_dt: float = 1.0 / 60.0
+    max_substeps: int = MAX_PARTICLE_SUBSTEPS
+    loop: bool = True
+    duration: float = 2.0
+    emitters: list[ParticleEmitterRecord] = Field(
+        min_length=1,
+        max_length=MAX_SCENE_PARTICLE_SYSTEMS,
+    )
+
+    @field_validator("fixed_dt")
+    @classmethod
+    def validate_fixed_dt(cls, value: float) -> float:
+        return _bounded(value, "particle system fixed_dt", 0.000001, 1.0)
+
+    @field_validator("max_substeps")
+    @classmethod
+    def validate_max_substeps(cls, value: int) -> int:
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise ValueError("particle system max_substeps must be an integer")
+        if value < 1 or value > MAX_PARTICLE_SUBSTEPS:
+            raise ValueError(
+                "particle system max_substeps must be between 1 and "
+                f"{MAX_PARTICLE_SUBSTEPS}"
+            )
+        return value
+
+    @field_validator("duration")
+    @classmethod
+    def validate_duration(cls, value: float) -> float:
+        return _bounded(
+            value,
+            "particle system duration",
+            0.000001,
+            MAX_PARTICLE_LIFETIME,
+        )
+
+    @model_validator(mode="after")
+    def validate_emitters(self) -> "SceneParticleSystemRecord":
+        emitter_ids = [emitter.id for emitter in self.emitters]
+        if len(emitter_ids) != len(set(emitter_ids)):
+            raise ValueError("particle system emitter IDs must be unique")
+        return self
+
+    def runtime_document(self, source_sha256: str = "0" * 64) -> ParticleDocumentV1:
+        """Build the validated deterministic runtime document for this system."""
+
+        return ParticleDocumentV1(
+            source=ParticleSourceBindingRecord(sha256=source_sha256),
+            fixed_dt=self.fixed_dt,
+            max_substeps=self.max_substeps,
+            emitters=list(self.emitters),
+        )
 
 
 class SceneTriggerSocketRecord(_SceneSocketBase):
@@ -331,6 +635,9 @@ def default_scene_authoring_metadata(
     )
 
 
+from src.persistence.scene_sequence_schema import SceneSequence
+
+
 class SceneAuthoringDocumentV2(StrictProjectModel):
     """Professional scenario contract with camera, parallax and sockets.
 
@@ -342,12 +649,28 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         "neoeng-d-trace-scene-authoring"
     )
     schema_version: Literal[2] = 2
+    sequence: SceneSequence | None = Field(default=None, exclude_if=lambda value: value is None)
     metadata: SceneAuthoringMetadataRecord
     project: ProjectReferenceRecord
     assets: list[AssetReferenceRecord] = Field(max_length=MAX_SCENE_ASSETS)
     layers: list[SceneLayerAuthoringRecord] = Field(max_length=MAX_PROJECT_LAYERS)
     objects: list[SceneObjectAuthoringRecord] = Field(max_length=MAX_PROJECT_OBJECTS)
     groups: list[SceneGroupAuthoringRecordV2] = Field(max_length=MAX_PROJECT_GROUPS)
+    entities: list[SceneEntityAuthoringRecord] = Field(
+        default_factory=list,
+        max_length=MAX_PROJECT_OBJECTS,
+        exclude_if=lambda value: not value,
+    )
+    prefabs: list[ScenePrefabAuthoringRecord] = Field(
+        default_factory=list,
+        max_length=MAX_PROJECT_OBJECTS,
+        exclude_if=lambda value: not value,
+    )
+    prefab_instances: list[ScenePrefabInstanceAuthoringRecord] = Field(
+        default_factory=list,
+        max_length=MAX_PROJECT_OBJECTS,
+        exclude_if=lambda value: not value,
+    )
     snap: SceneSnapRecord = SceneSnapRecord()
     camera: SceneCameraAuthoringRecord = SceneCameraAuthoringRecord()
     parallax_layers: list[SceneParallaxLayerRecord] = Field(
@@ -355,6 +678,11 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
     )
     sockets: list[SceneSocketRecord] = Field(
         default_factory=list, max_length=MAX_SCENE_SOCKETS
+    )
+    particle_systems: list[SceneParticleSystemRecord] = Field(
+        default_factory=list,
+        max_length=MAX_SCENE_PARTICLE_SYSTEMS,
+        exclude_if=lambda value: not value,
     )
 
     @model_validator(mode="after")
@@ -371,6 +699,67 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         known_assets = {item.id for item in self.assets}
         known_layers = {item.id for item in self.layers}
         known_objects = {item.id for item in self.objects}
+        entity_ids = [item.id for item in self.entities]
+        if len(entity_ids) != len(set(entity_ids)):
+            raise ValueError("entity IDs must be unique")
+        known_entities = set(entity_ids)
+        prefab_ids = [item.id for item in self.prefabs]
+        if len(prefab_ids) != len(set(prefab_ids)):
+            raise ValueError("prefab IDs must be unique")
+        known_prefabs = set(prefab_ids)
+        for prefab in self.prefabs:
+            missing_sources = [
+                source_id
+                for source_id in prefab.source_entity_ids
+                if source_id not in known_entities
+            ]
+            if missing_sources:
+                raise ValueError(
+                    f"prefab {prefab.id!r} references unknown source entity"
+                )
+        instance_ids = [item.id for item in self.prefab_instances]
+        if len(instance_ids) != len(set(instance_ids)):
+            raise ValueError("prefab instance IDs must be unique")
+        if set(instance_ids) & known_entities:
+            raise ValueError("prefab instance IDs must not collide with entity IDs")
+        for instance in self.prefab_instances:
+            if instance.prefab_id not in known_prefabs:
+                raise ValueError(
+                    f"prefab instance {instance.id!r} references unknown prefab"
+                )
+            if instance.root_entity_id not in known_entities:
+                raise ValueError(
+                    f"prefab instance {instance.id!r} references unknown root entity"
+                )
+        for entity in self.entities:
+            if entity.layer_id not in known_layers:
+                raise ValueError(
+                    f"entity {entity.id!r} references unknown layer {entity.layer_id!r}"
+                )
+            if (
+                entity.instance_of is not None
+                and entity.instance_of not in known_entities
+            ):
+                raise ValueError(
+                    f"entity {entity.id!r} references unknown source entity"
+                )
+            if (
+                entity.parent_entity_id is not None
+                and entity.parent_entity_id not in known_entities
+            ):
+                raise ValueError(
+                    f"entity {entity.id!r} references unknown parent entity"
+                )
+            seen = {entity.id}
+            entity_current = entity.parent_entity_id
+            while entity_current is not None:
+                if entity_current in seen:
+                    raise ValueError("entity hierarchy contains a cycle")
+                seen.add(entity_current)
+                entity_parent = next(
+                    item for item in self.entities if item.id == entity_current
+                )
+                entity_current = entity_parent.parent_entity_id
         for item in self.objects:
             if item.asset_id not in known_assets:
                 raise ValueError(f"object {item.id!r} references unknown asset")
@@ -394,17 +783,17 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
                     f"group {group.id!r} references unknown parent group {parent_id!r}"
                 )
             seen = {group.id}
-            current: str | None = parent_id
-            while current is not None:
-                if current in seen:
+            group_current: str | None = parent_id
+            while group_current is not None:
+                if group_current in seen:
                     raise ValueError("group hierarchy contains a cycle")
-                seen.add(current)
-                parent = group_by_id.get(current)
+                seen.add(group_current)
+                parent = group_by_id.get(group_current)
                 if parent is None:
                     raise ValueError(
-                        f"group hierarchy references unknown parent {current!r}"
+                        f"group hierarchy references unknown parent {group_current!r}"
                     )
-                current = parent.parent_group_id
+                group_current = parent.parent_group_id
         parallax_ids = [item.layer_id for item in self.parallax_layers]
         if len(parallax_ids) != len(set(parallax_ids)):
             raise ValueError("parallax layer IDs must be unique")
@@ -412,6 +801,17 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
             if layer_id not in known_layers:
                 raise ValueError(f"parallax references unknown layer {layer_id!r}")
         socket_ids = [item.id for item in self.sockets]
+        particle_system_ids = [item.id for item in self.particle_systems]
+        if len(particle_system_ids) != len(set(particle_system_ids)):
+            raise ValueError("particle system IDs must be unique")
+        if self.sequence is not None:
+            for clip in self.sequence.clips:
+                if clip.target_id is not None and clip.target_id not in known_objects:
+                    raise ValueError(f"clip {clip.name!r}: remove or relink its object track first")
+                if clip.layer_id is not None and clip.layer_id not in known_layers:
+                    raise ValueError(f"clip {clip.name!r} references unknown layer")
+                if clip.asset_id is not None and clip.asset_id not in known_assets:
+                    raise ValueError(f"clip {clip.name!r} references unknown asset")
         if len(socket_ids) != len(set(socket_ids)):
             raise ValueError("socket IDs must be unique")
         for socket in self.sockets:

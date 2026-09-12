@@ -244,6 +244,100 @@ def test_viewport_copies_outside_and_rejects_unsupported_drop(
         qt_app.processEvents()
 
 
+def test_first_drop_frames_only_navigation_and_keeps_pt_status(
+    tmp_path: Path, qt_app
+) -> None:
+    project = tmp_path / "scene.ndtproj"
+    project.write_bytes(b"project bytes")
+    asset = tmp_path / "assets" / "large-tree.png"
+    asset.parent.mkdir()
+    image = QImage(1200, 800, QImage.Format.Format_RGBA8888)
+    image.fill(0xFF336699)
+    assert image.save(str(asset))
+
+    document = _document().model_copy(update={"assets": [], "objects": []})
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    viewport = SceneAuthoringViewport(session, project_root=tmp_path)
+    viewport.update_language("pt")
+    viewport.resize(640, 480)
+    viewport.show()
+    qt_app.processEvents()
+    messages: list[str] = []
+    viewport.status_message.connect(messages.append)
+    try:
+        mime = QMimeData()
+        mime.setUrls([QUrl.fromLocalFile(str(asset))])
+        event = QDropEvent(
+            QPointF(140.0, 120.0),
+            Qt.DropAction.CopyAction,
+            mime,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        viewport.dropEvent(event)
+        qt_app.processEvents()
+
+        assert len(session.document.objects) == 1
+        assert viewport.navigation_zoom < 1.0
+        transform = session.document.objects[0].transform
+        assert transform.scale.x == pytest.approx(1.0)
+        assert transform.scale.y == pytest.approx(1.0)
+        assert transform.scale.z == pytest.approx(1.0)
+        assert any("Enquadrar Seleção" in message for message in messages)
+        assert any("Asset importado: large-tree.png" in message for message in messages)
+    finally:
+        viewport.close()
+        qt_app.processEvents()
+
+
+def test_loaded_content_frames_only_navigation_and_keeps_transform(
+    tmp_path: Path, qt_app
+) -> None:
+    project = tmp_path / "scene.ndtproj"
+    project.write_bytes(b"project bytes")
+    asset = tmp_path / "assets" / "loaded-tree.png"
+    asset.parent.mkdir()
+    image = QImage(1200, 800, QImage.Format.Format_RGBA8888)
+    image.fill(0xFF336699)
+    assert image.save(str(asset))
+
+    document = _document().model_copy(update={"assets": [], "objects": []})
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    viewport = SceneAuthoringViewport(session, project_root=tmp_path)
+    viewport.update_language("pt")
+    viewport.resize(640, 480)
+    viewport.show()
+    qt_app.processEvents()
+    messages: list[str] = []
+    viewport.status_message.connect(messages.append)
+    try:
+        mime = QMimeData()
+        mime.setUrls([QUrl.fromLocalFile(str(asset))])
+        event = QDropEvent(
+            QPointF(140.0, 120.0),
+            Qt.DropAction.CopyAction,
+            mime,
+            Qt.MouseButton.LeftButton,
+            Qt.KeyboardModifier.NoModifier,
+        )
+        viewport.dropEvent(event)
+        qt_app.processEvents()
+        assert len(session.document.objects) == 1
+
+        viewport._set_navigation_state(1.0, QPointF(0.0, 0.0))
+        messages.clear()
+        transform_before = session.document.objects[0].transform
+        assert viewport.frame_loaded_content() is True
+        qt_app.processEvents()
+
+        assert viewport.navigation_zoom < 1.0
+        assert session.document.objects[0].transform == transform_before
+        assert any("Enquadrar Tudo" in message for message in messages)
+    finally:
+        viewport.close()
+        qt_app.processEvents()
+
+
 def test_window_binds_professional_editor_only_after_saved_project(
     tmp_path: Path, qt_app
 ) -> None:

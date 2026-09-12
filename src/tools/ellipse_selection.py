@@ -9,6 +9,8 @@ from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen
 from PySide6.QtWidgets import QMenu
 
+from src.ui.context_menu_utils import fit_context_menu
+
 from .base_tool import BaseTool
 
 
@@ -82,15 +84,30 @@ class EllipseSelectionTool(BaseTool):
             return None
 
         cx, cy = self._center
-        rx, ry = self._radius_x, self._radius_y
+        # A one-pixel drag can produce a subpixel radius.  Keep the smallest
+        # ellipse representable by the integer scene polygon instead of
+        # rounding every sample onto one line and rejecting it as degenerate.
+        rx = max(float(self._radius_x), 1.0)
+        ry = max(float(self._radius_y), 1.0)
 
         # Generate polygon points approximating the ellipse
-        polygon = []
-        for i in range(self._segments):
-            angle = 2 * math.pi * i / self._segments
-            x = cx + rx * math.cos(angle)
-            y = cy + ry * math.sin(angle)
-            polygon.append((int(round(x)), int(round(y))))
+        if self._radius_y < 1.5 or self._radius_x < 1.5:
+            left = int(round(cx - rx))
+            right = int(round(cx + rx))
+            top = int(round(cy - ry))
+            bottom = int(round(cy + ry))
+            polygon = [(left, top), (right, top), (right, bottom), (left, bottom)]
+        else:
+            polygon = []
+            for i in range(self._segments):
+                angle = 2 * math.pi * i / self._segments
+                x = cx + rx * math.cos(angle)
+                y = cy + ry * math.sin(angle)
+                point = (int(round(x)), int(round(y)))
+                if not polygon or point != polygon[-1]:
+                    polygon.append(point)
+            if len(polygon) > 1 and polygon[-1] == polygon[0]:
+                polygon.pop()
 
         return self.commit_polygon_command(
             polygon,
@@ -137,7 +154,7 @@ class EllipseSelectionTool(BaseTool):
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self.redo_last_action)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def undo_last_action(self):
         if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:

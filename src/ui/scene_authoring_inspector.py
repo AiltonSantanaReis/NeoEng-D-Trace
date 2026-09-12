@@ -12,6 +12,8 @@ from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
+    QSpinBox,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -23,13 +25,17 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
     SceneLightSocketRecord,
+    SceneMaterialAuthoringRecord,
     SceneParallaxLayerRecord,
+    SceneParticleSystemRecord,
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
     SceneTriggerSocketRecord,
     SceneVfxSocketRecord,
 )
+from src.runtime.particles import ParticleEmitterRecord
+from src.ui.numeric_controls import ProtectedDoubleSpinBox, ScrubbableLabel
 
 
 class SceneAuthoringInspector(QWidget):
@@ -38,17 +44,22 @@ class SceneAuthoringInspector(QWidget):
     status_message = Signal(str)
     request_fit = Signal()
     request_fit_all = Signal()
+    particle_preview_command = Signal(str)
 
     def __init__(self, session: SceneAuthoringSession, parent=None) -> None:
         super().__init__(parent)
         self.session = session
         self.setObjectName("professional_scene_inspector")
         self.setMinimumWidth(300)
+        self.current_lang = "en"
         self._refreshing = False
+        self._field_labels: dict[str, QLabel] = {}
 
         self.title = QLabel("Scene Inspector")
         self.selection_label = QLabel("No object selected")
         self.selection_label.setObjectName("scene_selection_summary")
+        self.spatial_summary = QLabel("Layer/depth: —")
+        self.spatial_summary.setObjectName("scene_spatial_summary")
 
         self.position_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.position_y = self._spin(-1_000_000.0, 1_000_000.0)
@@ -82,39 +93,243 @@ class SceneAuthoringInspector(QWidget):
         self.camera_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.camera_y = self._spin(-1_000_000.0, 1_000_000.0)
         self.camera_zoom = self._spin(0.001, 1000.0, step=0.1)
+        self.camera_rotation = self._spin(-36000.0, 36000.0, step=1.0)
         self.camera_apply_button = QPushButton("Apply Camera")
         self.layer_combo = QComboBox()
         self.parallax_depth = self._spin(0.0, 1.0, step=0.05)
         self.parallax_translation = self._spin(0.0, 1.0, step=0.05)
         self.parallax_zoom = self._spin(0.0, 1.0, step=0.05)
+        self.parallax_scroll_x = self._spin(-4.0, 4.0, step=0.1)
+        self.parallax_scroll_y = self._spin(-4.0, 4.0, step=0.1)
+        self.parallax_offset_x = self._spin(-1_000_000.0, 1_000_000.0)
+        self.parallax_offset_y = self._spin(-1_000_000.0, 1_000_000.0)
+        self.parallax_repeat_x = QCheckBox("Repeat X")
+        self.parallax_repeat_y = QCheckBox("Repeat Y")
+        self.parallax_mirror_x = QCheckBox("Mirror X")
+        self.parallax_mirror_y = QCheckBox("Mirror Y")
         self.parallax_apply_button = QPushButton("Apply Layer Parallax")
+        self.material_albedo = QLineEdit("#ffffff")
+        self.material_emission = QLineEdit("#000000")
+        self.material_normal_x = self._spin(-1.0, 1.0, step=0.05)
+        self.material_normal_y = self._spin(-1.0, 1.0, step=0.05)
+        self.material_normal_strength = self._spin(0.0, 1.0, step=0.05)
+        self.material_emission_strength = self._spin(0.0, 16.0, step=0.1)
+        self.material_opacity = self._spin(0.0, 1.0, step=0.05)
+        self.material_receives_shadow = QCheckBox("Receives shadows")
+        self.material_casts_shadow = QCheckBox("Casts shadows")
+        self.material_apply_button = QPushButton("Apply Material")
         self.socket_combo = QComboBox()
         self.socket_type = QComboBox()
         self.socket_type.addItems(["light", "vfx", "trigger"])
+        for index, socket_type in enumerate(("light", "vfx", "trigger")):
+            self.socket_type.setItemData(index, socket_type)
+        self.socket_light_kind = QComboBox()
+        self.socket_light_kind.addItems(["point", "directional"])
+        for index, light_kind in enumerate(("point", "directional")):
+            self.socket_light_kind.setItemData(index, light_kind)
         self.socket_id = QLineEdit()
         self.socket_x = self._spin(-1_000_000.0, 1_000_000.0)
         self.socket_y = self._spin(-1_000_000.0, 1_000_000.0)
         self.socket_z = self._spin(-1_000_000.0, 1_000_000.0)
+        self.socket_rotation_z = self._spin(-36000.0, 36000.0, step=1.0)
+        self.socket_effect_id = QLineEdit("default")
+        self.socket_scale = self._spin(0.01, 100.0, step=0.1)
+        self.socket_enabled = QCheckBox("Enabled")
+        self.particle_emitter_combo = QComboBox()
+        self.particle_emitter_id = QLineEdit("main")
+        self.particle_seed = self._int_spin(0, 2_147_483_647, 1)
+        self.particle_emission_rate = self._spin(0.0, 100_000.0, step=1.0)
+        self.particle_lifetime = self._spin(0.01, 3_600.0, step=0.1)
+        self.particle_max_particles = self._int_spin(1, 100_000, 1)
+        self.particle_burst_count = self._int_spin(0, 100_000, 1)
+        self.particle_velocity_x = self._spin(-1_000_000.0, 1_000_000.0, step=1.0)
+        self.particle_velocity_y = self._spin(-1_000_000.0, 1_000_000.0, step=1.0)
+        self.particle_spread_x = self._spin(-1_000_000.0, 1_000_000.0, step=1.0)
+        self.particle_spread_y = self._spin(-1_000_000.0, 1_000_000.0, step=1.0)
+        self.particle_acceleration_x = self._spin(-1_000_000.0, 1_000_000.0, step=1.0)
+        self.particle_acceleration_y = self._spin(-1_000_000.0, 1_000_000.0, step=1.0)
+        self.particle_loop = QCheckBox("Loop")
+        self.particle_duration = self._spin(0.01, 3_600.0, step=0.1)
+        self.add_emitter_button = QPushButton("Add Emitter")
+        self.remove_emitter_button = QPushButton("Remove Emitter")
+        self.particle_preview_button = QPushButton("Play Particle Preview")
+        self.particle_reset_button = QPushButton("Reset Particle Preview")
+        self.socket_scale.setValue(1.0)
+        self.particle_seed.setValue(1)
+        self.particle_emission_rate.setValue(24.0)
+        self.particle_lifetime.setValue(1.2)
+        self.particle_max_particles.setValue(64)
+        self.particle_burst_count.setValue(8)
+        self.particle_velocity_y.setValue(-42.0)
+        self.particle_spread_x.setValue(34.0)
+        self.particle_spread_y.setValue(24.0)
+        self.particle_acceleration_y.setValue(42.0)
+        self.particle_loop.setChecked(True)
+        self.particle_duration.setValue(2.0)
         self.add_socket_button = QPushButton("Add Socket")
         self.update_socket_button = QPushButton("Update Socket Position")
         self.remove_socket_button = QPushButton("Remove Socket")
         self.stage4_group = QGroupBox("Camera, Parallax & Sockets")
-        stage4_form = QFormLayout(self.stage4_group)
-        stage4_form.addRow("Camera X", self.camera_x)
-        stage4_form.addRow("Camera Y", self.camera_y)
-        stage4_form.addRow("Camera Zoom", self.camera_zoom)
+        self.category_tabs = QTabWidget()
+        self.category_tabs.setObjectName("scene_inspector_categories")
+        camera_page, parallax_page, material_page, socket_page = (
+            QWidget() for _ in range(4)
+        )
+        stage4_form = QFormLayout(camera_page)
+        self._add_labeled_row(stage4_form, "camera_x", "Camera X", self.camera_x)
+        self._add_labeled_row(stage4_form, "camera_y", "Camera Y", self.camera_y)
+        self._add_labeled_row(
+            stage4_form, "camera_zoom", "Camera Zoom", self.camera_zoom
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "camera_rotation",
+            "Camera Rotation",
+            self.camera_rotation,
+        )
         stage4_form.addRow(self.camera_apply_button)
-        stage4_form.addRow("Layer", self.layer_combo)
-        stage4_form.addRow("Depth", self.parallax_depth)
-        stage4_form.addRow("Translation", self.parallax_translation)
-        stage4_form.addRow("Zoom", self.parallax_zoom)
+        stage4_form = QFormLayout(parallax_page)
+        self._add_labeled_row(stage4_form, "layer", "Layer", self.layer_combo)
+        self._add_labeled_row(stage4_form, "depth", "Depth", self.parallax_depth)
+        self._add_labeled_row(
+            stage4_form, "translation", "Translation", self.parallax_translation
+        )
+        self._add_labeled_row(stage4_form, "zoom", "Zoom", self.parallax_zoom)
+        self._add_labeled_row(
+            stage4_form, "scroll_x", "Scroll X", self.parallax_scroll_x
+        )
+        self._add_labeled_row(
+            stage4_form, "scroll_y", "Scroll Y", self.parallax_scroll_y
+        )
+        self._add_labeled_row(
+            stage4_form, "offset_x", "Offset X", self.parallax_offset_x
+        )
+        self._add_labeled_row(
+            stage4_form, "offset_y", "Offset Y", self.parallax_offset_y
+        )
+        stage4_form.addRow(self.parallax_repeat_x)
+        stage4_form.addRow(self.parallax_repeat_y)
+        stage4_form.addRow(self.parallax_mirror_x)
+        stage4_form.addRow(self.parallax_mirror_y)
         stage4_form.addRow(self.parallax_apply_button)
-        stage4_form.addRow("Socket", self.socket_combo)
-        stage4_form.addRow("Type", self.socket_type)
-        stage4_form.addRow("ID", self.socket_id)
-        stage4_form.addRow("Socket X", self.socket_x)
-        stage4_form.addRow("Socket Y", self.socket_y)
-        stage4_form.addRow("Socket Z", self.socket_z)
+        stage4_form = QFormLayout(material_page)
+        self._add_labeled_row(
+            stage4_form, "material_albedo", "Albedo", self.material_albedo
+        )
+        self._add_labeled_row(
+            stage4_form, "material_emission", "Emission", self.material_emission
+        )
+        self._add_labeled_row(
+            stage4_form, "material_normal_x", "Normal X", self.material_normal_x
+        )
+        self._add_labeled_row(
+            stage4_form, "material_normal_y", "Normal Y", self.material_normal_y
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "material_normal_strength",
+            "Normal Strength",
+            self.material_normal_strength,
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "material_emission_strength",
+            "Emission Strength",
+            self.material_emission_strength,
+        )
+        self._add_labeled_row(
+            stage4_form, "material_opacity", "Opacity", self.material_opacity
+        )
+        stage4_form.addRow(self.material_receives_shadow)
+        stage4_form.addRow(self.material_casts_shadow)
+        stage4_form.addRow(self.material_apply_button)
+        stage4_form = QFormLayout(socket_page)
+        self._add_labeled_row(stage4_form, "socket", "Socket", self.socket_combo)
+        self._add_labeled_row(stage4_form, "socket_type", "Type", self.socket_type)
+        self._add_labeled_row(
+            stage4_form, "socket_light_kind", "Light Kind", self.socket_light_kind
+        )
+        self._add_labeled_row(stage4_form, "socket_id", "ID", self.socket_id)
+        self._add_labeled_row(stage4_form, "socket_x", "Socket X", self.socket_x)
+        self._add_labeled_row(stage4_form, "socket_y", "Socket Y", self.socket_y)
+        self._add_labeled_row(stage4_form, "socket_z", "Socket Z", self.socket_z)
+        self._add_labeled_row(
+            stage4_form, "socket_rotation_z", "Socket Rotation Z", self.socket_rotation_z
+        )
+        self._add_labeled_row(
+            stage4_form, "socket_effect_id", "Effect ID", self.socket_effect_id
+        )
+        self._add_labeled_row(stage4_form, "socket_scale", "Effect Scale", self.socket_scale)
+        stage4_form.addRow(self.socket_enabled)
+        self._add_labeled_row(
+            stage4_form,
+            "particle_emitter",
+            "Particle Emitter",
+            self.particle_emitter_combo,
+        )
+        self._add_labeled_row(
+            stage4_form, "particle_emitter_id", "Emitter ID", self.particle_emitter_id
+        )
+        self._add_labeled_row(stage4_form, "particle_seed", "Seed", self.particle_seed)
+        self._add_labeled_row(
+            stage4_form,
+            "particle_emission_rate",
+            "Emission Rate",
+            self.particle_emission_rate,
+        )
+        self._add_labeled_row(
+            stage4_form, "particle_lifetime", "Lifetime", self.particle_lifetime
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "particle_max_particles",
+            "Max Particles",
+            self.particle_max_particles,
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "particle_burst_count",
+            "Burst Count",
+            self.particle_burst_count,
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "particle_velocity_x",
+            "Initial Velocity X",
+            self.particle_velocity_x,
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "particle_velocity_y",
+            "Initial Velocity Y",
+            self.particle_velocity_y,
+        )
+        self._add_labeled_row(
+            stage4_form, "particle_spread_x", "Velocity Spread X", self.particle_spread_x
+        )
+        self._add_labeled_row(
+            stage4_form, "particle_spread_y", "Velocity Spread Y", self.particle_spread_y
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "particle_acceleration_x",
+            "Acceleration X",
+            self.particle_acceleration_x,
+        )
+        self._add_labeled_row(
+            stage4_form,
+            "particle_acceleration_y",
+            "Acceleration Y",
+            self.particle_acceleration_y,
+        )
+        stage4_form.addRow(self.particle_loop)
+        self._add_labeled_row(
+            stage4_form, "particle_duration", "Preview Duration", self.particle_duration
+        )
+        stage4_form.addRow(self.add_emitter_button)
+        stage4_form.addRow(self.remove_emitter_button)
+        stage4_form.addRow(self.particle_preview_button)
+        stage4_form.addRow(self.particle_reset_button)
         stage4_form.addRow(self.add_socket_button)
         stage4_form.addRow(self.update_socket_button)
         stage4_form.addRow(self.remove_socket_button)
@@ -129,26 +344,30 @@ class SceneAuthoringInspector(QWidget):
             button.setAutoDefault(False)
 
         form = QFormLayout()
-        form.addRow("Selection", self.selection_label)
-        form.addRow("Position X", self.position_x)
-        form.addRow("Position Y", self.position_y)
-        form.addRow("Depth Z", self.position_z)
-        form.addRow("Rotation X", self.rotation_x)
-        form.addRow("Rotation Y", self.rotation_y)
-        form.addRow("Rotation Z", self.rotation_z)
-        form.addRow("Scale X", self.scale_x)
-        form.addRow("Scale Y", self.scale_y)
-        form.addRow("Scale Z", self.scale_z)
-        form.addRow("Pivot X", self.pivot_x)
-        form.addRow("Pivot Y", self.pivot_y)
+        self._add_labeled_row(form, "selection", "Selection", self.selection_label)
+        self._add_labeled_row(form, "position_x", "Position X", self.position_x)
+        self._add_labeled_row(form, "position_y", "Position Y", self.position_y)
+        self._add_labeled_row(form, "position_z", "Depth Z", self.position_z)
+        self._add_labeled_row(form, "rotation_x", "Rotation X", self.rotation_x)
+        self._add_labeled_row(form, "rotation_y", "Rotation Y", self.rotation_y)
+        self._add_labeled_row(form, "rotation_z", "Rotation Z", self.rotation_z)
+        self._add_labeled_row(form, "scale_x", "Scale X", self.scale_x)
+        self._add_labeled_row(form, "scale_y", "Scale Y", self.scale_y)
+        self._add_labeled_row(form, "scale_z", "Scale Z", self.scale_z)
+        self._add_labeled_row(form, "pivot_x", "Pivot X", self.pivot_x)
+        self._add_labeled_row(form, "pivot_y", "Pivot Y", self.pivot_y)
         form.addRow(self.flip_x)
         form.addRow(self.flip_y)
         form.addRow(self.snap_enabled)
-        form.addRow("Grid X", self.snap_spacing_x)
-        form.addRow("Grid Y", self.snap_spacing_y)
+        self._add_labeled_row(form, "grid_x", "Grid X", self.snap_spacing_x)
+        self._add_labeled_row(form, "grid_y", "Grid Y", self.snap_spacing_y)
 
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.title)
+        root_layout = QVBoxLayout(self)
+        root_layout.addWidget(self.title)
+        root_layout.addWidget(self.spatial_summary)
+        root_layout.addWidget(self.category_tabs)
+        transform_page = QWidget()
+        layout = QVBoxLayout(transform_page)
         layout.addLayout(form)
         layout.addWidget(self.apply_button)
         layout.addWidget(self.undo_button)
@@ -156,8 +375,19 @@ class SceneAuthoringInspector(QWidget):
         layout.addWidget(self.delete_button)
         layout.addWidget(self.fit_button)
         layout.addWidget(self.fit_all_button)
-        layout.addWidget(self.stage4_group)
         layout.addStretch(1)
+        for page, title in (
+            (transform_page, "Object"),
+            (camera_page, "Camera"),
+            (parallax_page, "Layer"),
+            (material_page, "Material"),
+            (socket_page, "Effects"),
+        ):
+            self.category_tabs.addTab(page, title)
+        # Compatibility enable-state for callers; controls themselves live in
+        # categorized pages, no longer in a single unbounded inspector column.
+        self.stage4_group.setParent(self)
+        self.stage4_group.hide()
 
         self.apply_button.clicked.connect(self.apply_transform)
         self.undo_button.clicked.connect(self._undo)
@@ -167,16 +397,37 @@ class SceneAuthoringInspector(QWidget):
         self.fit_all_button.clicked.connect(self.request_fit_all)
         self.camera_apply_button.clicked.connect(self._apply_camera)
         self.parallax_apply_button.clicked.connect(self._apply_parallax)
+        self.material_apply_button.clicked.connect(self._apply_material)
         self.layer_combo.currentIndexChanged.connect(self._refresh_parallax_fields)
         self.socket_combo.currentIndexChanged.connect(self._refresh_socket_fields)
+        self.socket_type.currentIndexChanged.connect(self._refresh_socket_type_fields)
+        self.particle_emitter_combo.currentIndexChanged.connect(
+            self._refresh_particle_emitter_fields
+        )
         self.add_socket_button.clicked.connect(self._add_socket)
         self.update_socket_button.clicked.connect(self._update_socket)
         self.remove_socket_button.clicked.connect(self._remove_socket)
+        self.add_emitter_button.clicked.connect(self._add_emitter)
+        self.remove_emitter_button.clicked.connect(self._remove_emitter)
+        self.particle_preview_button.clicked.connect(
+            lambda: self.particle_preview_command.emit("play")
+        )
+        self.particle_reset_button.clicked.connect(
+            lambda: self.particle_preview_command.emit("reset")
+        )
         self.snap_enabled.toggled.connect(self._apply_snap)
         self.snap_spacing_x.editingFinished.connect(self._apply_snap)
         self.snap_spacing_y.editingFinished.connect(self._apply_snap)
         self.session.subscribe(self.refresh)
         self.refresh()
+
+    def _add_labeled_row(
+        self, layout: QFormLayout, key: str, text: str, widget: QWidget
+    ) -> None:
+        layout.addRow(ScrubbableLabel(text, widget), widget)
+        label = layout.labelForField(widget)
+        if isinstance(label, QLabel):
+            self._field_labels[key] = label
 
     @staticmethod
     def _spin(
@@ -184,10 +435,18 @@ class SceneAuthoringInspector(QWidget):
         maximum: float,
         step: float = 1.0,
     ) -> QDoubleSpinBox:
-        widget = QDoubleSpinBox()
+        widget = ProtectedDoubleSpinBox()
         widget.setRange(minimum, maximum)
         widget.setSingleStep(step)
         widget.setDecimals(4)
+        widget.setKeyboardTracking(False)
+        return widget
+
+    @staticmethod
+    def _int_spin(minimum: int, maximum: int, step: int = 1) -> QSpinBox:
+        widget = QSpinBox()
+        widget.setRange(minimum, maximum)
+        widget.setSingleStep(step)
         widget.setKeyboardTracking(False)
         return widget
 
@@ -199,6 +458,9 @@ class SceneAuthoringInspector(QWidget):
             (item for item in self.session.document.objects if item.id == primary),
             None,
         )
+
+    def _status(self, pt: str, en: str) -> str:
+        return pt if self.current_lang == "pt" else en
 
     def _transform_widgets(self):
         return (
@@ -227,7 +489,20 @@ class SceneAuthoringInspector(QWidget):
             self.selection_label.setText(
                 ", ".join(self.session.selection.ids)
                 if self.session.selection.ids
-                else "No object selected"
+                else (
+                    "Nenhum objeto selecionado"
+                    if self.current_lang == "pt"
+                    else "No object selected"
+                )
+            )
+            self.spatial_summary.setText(
+                self._spatial_summary(primary)
+                if primary is not None
+                else (
+                    "Camada/profundidade: —"
+                    if self.current_lang == "pt"
+                    else "Layer/depth: —"
+                )
             )
             for widget in self._transform_widgets():
                 widget.setEnabled(enabled)
@@ -284,8 +559,39 @@ class SceneAuthoringInspector(QWidget):
         finally:
             self._refreshing = False
 
+    def _spatial_summary(self, primary) -> str:
+        """Expose layer order and Z depth beside the active object ID."""
+
+        layer = next(
+            (
+                item
+                for item in self.session.document.layers
+                if item.id == primary.layer_id
+            ),
+            None,
+        )
+        layer_index = next(
+            (
+                index
+                for index, item in enumerate(self.session.document.layers)
+                if item.id == primary.layer_id
+            ),
+            0,
+        )
+        layer_name = layer.name if layer is not None else primary.layer_id
+        z_value = float(primary.transform.position.z)
+        if self.current_lang == "pt":
+            return (
+                f"Camada Z{layer_index:02d}: {layer_name} · Profundidade: {z_value:.2f}"
+            )
+        return f"Layer Z{layer_index:02d}: {layer_name} · Depth: {z_value:.2f}"
+
     def _refresh_stage4_controls(self) -> None:
         document = self.session.document
+        for index in range(1, self.category_tabs.count()):
+            self.category_tabs.setTabEnabled(
+                index, isinstance(document, SceneAuthoringDocumentV2)
+            )
         if not isinstance(document, SceneAuthoringDocumentV2):
             self.stage4_group.setEnabled(False)
             return
@@ -296,6 +602,8 @@ class SceneAuthoringInspector(QWidget):
             self.camera_y.setValue(float(document.camera.position.y))
         with QSignalBlocker(self.camera_zoom):
             self.camera_zoom.setValue(float(document.camera.zoom))
+        with QSignalBlocker(self.camera_rotation):
+            self.camera_rotation.setValue(float(document.camera.rotation))
         selected_layer = self.layer_combo.currentData()
         with QSignalBlocker(self.layer_combo):
             self.layer_combo.clear()
@@ -304,6 +612,7 @@ class SceneAuthoringInspector(QWidget):
             index = self.layer_combo.findData(selected_layer)
             self.layer_combo.setCurrentIndex(max(0, index))
         self._refresh_parallax_fields()
+        self._refresh_material_fields()
         selected_socket = self.socket_combo.currentData()
         with QSignalBlocker(self.socket_combo):
             self.socket_combo.clear()
@@ -314,6 +623,56 @@ class SceneAuthoringInspector(QWidget):
                 index = len(document.sockets) - 1
             self.socket_combo.setCurrentIndex(index)
         self._refresh_socket_fields()
+
+    def _material_widgets(self) -> tuple[QWidget, ...]:
+        return (
+            self.material_albedo,
+            self.material_emission,
+            self.material_normal_x,
+            self.material_normal_y,
+            self.material_normal_strength,
+            self.material_emission_strength,
+            self.material_opacity,
+            self.material_receives_shadow,
+            self.material_casts_shadow,
+            self.material_apply_button,
+        )
+
+    def _refresh_material_fields(self) -> None:
+        primary = self._primary()
+        material = getattr(primary, "material", None)
+        # A newly placed V2 object may intentionally have no material record
+        # yet.  Keep the authoring controls usable and materialize the typed
+        # defaults only when the user confirms Apply Material; V1 and the
+        # no-selection state remain read-only/disabled.
+        enabled = isinstance(self.session.document, SceneAuthoringDocumentV2) and (
+            primary is not None
+        )
+        for widget in self._material_widgets():
+            widget.setEnabled(enabled)
+        if not enabled:
+            return
+        if not isinstance(material, SceneMaterialAuthoringRecord):
+            material = SceneMaterialAuthoringRecord()
+        with QSignalBlocker(self.material_albedo):
+            self.material_albedo.setText(material.albedo)
+        with QSignalBlocker(self.material_emission):
+            self.material_emission.setText(material.emission)
+        for widget, value in (
+            (self.material_normal_x, material.normal_map_xy.x),
+            (self.material_normal_y, material.normal_map_xy.y),
+            (self.material_normal_strength, material.normal_strength),
+            (self.material_emission_strength, material.emission_strength),
+            (self.material_opacity, material.opacity),
+        ):
+            with QSignalBlocker(widget):
+                widget.setValue(float(value))
+        for widget, value in (
+            (self.material_receives_shadow, material.receives_shadow),
+            (self.material_casts_shadow, material.casts_shadow),
+        ):
+            with QSignalBlocker(widget):
+                widget.setChecked(bool(value))
 
     def _refresh_parallax_fields(self) -> None:
         document = self.session.document
@@ -329,9 +688,128 @@ class SceneAuthoringInspector(QWidget):
             (self.parallax_depth, values.depth),
             (self.parallax_translation, values.translation_strength),
             (self.parallax_zoom, values.zoom_strength),
+            (self.parallax_scroll_x, values.scroll_x),
+            (self.parallax_scroll_y, values.scroll_y),
+            (self.parallax_offset_x, values.offset_x),
+            (self.parallax_offset_y, values.offset_y),
         ):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))
+        for check_widget, value in (
+            (self.parallax_repeat_x, values.repeat_x),
+            (self.parallax_repeat_y, values.repeat_y),
+            (self.parallax_mirror_x, values.mirror_x),
+            (self.parallax_mirror_y, values.mirror_y),
+        ):
+            with QSignalBlocker(check_widget):
+                check_widget.setChecked(bool(value))
+
+    @staticmethod
+    def _default_particle_system(system_id: str) -> SceneParticleSystemRecord:
+        seed = sum((index + 1) * ord(char) for index, char in enumerate(system_id))
+        return SceneParticleSystemRecord(
+            id=system_id,
+            fixed_dt=1.0 / 60.0,
+            max_substeps=8,
+            loop=True,
+            duration=2.0,
+            emitters=[
+                ParticleEmitterRecord(
+                    id="main",
+                    seed=seed & 0x7FFFFFFF,
+                    initial_velocity=Point3Record(x=0.0, y=-42.0, z=0.0),
+                    velocity_spread=Point3Record(x=34.0, y=24.0, z=0.0),
+                    acceleration=Point3Record(x=0.0, y=42.0, z=0.0),
+                    emission_rate=24.0,
+                    lifetime=1.2,
+                    max_particles=64,
+                    burst_count=8,
+                )
+            ],
+        )
+
+    def _particle_widgets(self) -> tuple[QWidget, ...]:
+        return (
+            self.socket_effect_id,
+            self.socket_scale,
+            self.socket_enabled,
+            self.particle_emitter_combo,
+            self.particle_emitter_id,
+            self.particle_seed,
+            self.particle_emission_rate,
+            self.particle_lifetime,
+            self.particle_max_particles,
+            self.particle_burst_count,
+            self.particle_velocity_x,
+            self.particle_velocity_y,
+            self.particle_spread_x,
+            self.particle_spread_y,
+            self.particle_acceleration_x,
+            self.particle_acceleration_y,
+            self.particle_loop,
+            self.particle_duration,
+            self.add_emitter_button,
+            self.remove_emitter_button,
+            self.particle_preview_button,
+            self.particle_reset_button,
+        )
+
+    def _set_particle_widgets_enabled(self, enabled: bool) -> None:
+        for widget in self._particle_widgets():
+            widget.setEnabled(enabled)
+
+    def _particle_system_for_socket(
+        self, socket: SceneVfxSocketRecord
+    ) -> SceneParticleSystemRecord:
+        document = self.session.document
+        system = next(
+            (
+                item
+                for item in document.particle_systems
+                if item.id == socket.effect_id
+            ),
+            None,
+        )
+        return system or self._default_particle_system(socket.effect_id)
+
+    def _refresh_particle_emitter_fields(self) -> None:
+        document = self.session.document
+        if not isinstance(document, SceneAuthoringDocumentV2):
+            return
+        socket_id = self.socket_combo.currentData()
+        socket = next((item for item in document.sockets if item.id == socket_id), None)
+        if not isinstance(socket, SceneVfxSocketRecord):
+            return
+        system = self._particle_system_for_socket(socket)
+        emitter_id = self.particle_emitter_combo.currentData()
+        emitter = next(
+            (item for item in system.emitters if item.id == emitter_id),
+            system.emitters[0],
+        )
+        with QSignalBlocker(self.particle_emitter_combo):
+            index = self.particle_emitter_combo.findData(emitter.id)
+            if index >= 0:
+                self.particle_emitter_combo.setCurrentIndex(index)
+        self.particle_emitter_id.setText(emitter.id)
+        for widget, value in (
+            (self.particle_seed, emitter.seed),
+            (self.particle_emission_rate, emitter.emission_rate),
+            (self.particle_lifetime, emitter.lifetime),
+            (self.particle_max_particles, emitter.max_particles),
+            (self.particle_burst_count, emitter.burst_count),
+            (self.particle_velocity_x, emitter.initial_velocity.x),
+            (self.particle_velocity_y, emitter.initial_velocity.y),
+            (self.particle_spread_x, emitter.velocity_spread.x),
+            (self.particle_spread_y, emitter.velocity_spread.y),
+            (self.particle_acceleration_x, emitter.acceleration.x),
+            (self.particle_acceleration_y, emitter.acceleration.y),
+        ):
+            with QSignalBlocker(widget):
+                widget.setValue(float(value))
+        with QSignalBlocker(self.particle_loop):
+            self.particle_loop.setChecked(system.loop)
+        with QSignalBlocker(self.particle_duration):
+            self.particle_duration.setValue(float(system.duration))
 
     def _refresh_socket_fields(self) -> None:
         document = self.session.document
@@ -341,20 +819,84 @@ class SceneAuthoringInspector(QWidget):
         socket = next((item for item in document.sockets if item.id == socket_id), None)
         if socket is None:
             self.socket_id.clear()
-            for widget in (self.socket_x, self.socket_y, self.socket_z):
+            self.socket_effect_id.setText("default")
+            self.socket_enabled.setChecked(True)
+            self._set_particle_widgets_enabled(
+                (self.socket_type.currentData() or self.socket_type.currentText()) == "vfx"
+            )
+            for widget in (
+                self.socket_x,
+                self.socket_y,
+                self.socket_z,
+                self.socket_rotation_z,
+            ):
                 with QSignalBlocker(widget):
                     widget.setValue(0.0)
+            self.socket_light_kind.setEnabled(False)
+            self.socket_rotation_z.setEnabled(False)
             return
         self.socket_id.setText(socket.id)
         with QSignalBlocker(self.socket_type):
-            self.socket_type.setCurrentText(socket.type)
+            socket_index = self.socket_type.findData(socket.type)
+            if socket_index >= 0:
+                self.socket_type.setCurrentIndex(socket_index)
+        if socket.type == "light":
+            with QSignalBlocker(self.socket_light_kind):
+                light_index = self.socket_light_kind.findData(socket.kind)
+                if light_index >= 0:
+                    self.socket_light_kind.setCurrentIndex(light_index)
+        self.socket_light_kind.setEnabled(socket.type == "light")
+        self.socket_rotation_z.setEnabled(
+            socket.type == "vfx"
+            or (socket.type == "light" and socket.kind == "directional")
+        )
         for widget, value in (
             (self.socket_x, socket.position.x),
             (self.socket_y, socket.position.y),
             (self.socket_z, socket.position.z),
+            (self.socket_rotation_z, socket.rotation.z),
         ):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))
+        is_vfx = isinstance(socket, SceneVfxSocketRecord)
+        self._set_particle_widgets_enabled(is_vfx)
+        if is_vfx:
+            self.socket_effect_id.setText(socket.effect_id)
+            self.socket_scale.setValue(float(socket.scale))
+            self.socket_enabled.setChecked(bool(socket.enabled))
+            with QSignalBlocker(self.particle_emitter_combo):
+                self.particle_emitter_combo.clear()
+                system = self._particle_system_for_socket(socket)
+                for emitter in system.emitters:
+                    self.particle_emitter_combo.addItem(emitter.id, emitter.id)
+            self._refresh_particle_emitter_fields()
+
+    def _refresh_socket_type_fields(self) -> None:
+        """Keep VFX controls usable while switching the socket add type.
+
+        The inspector can keep an existing socket selected while the user
+        changes the type for a new socket.  Previously the particle controls
+        were only enabled when no socket was selected, so this valid add flow
+        silently kept ``effect_id=default`` and ``enabled=False``.  That made
+        the native add operation look successful while producing no runtime
+        preview.  Enable the controls for the selected add type and default a
+        newly requested VFX socket to enabled; an existing VFX socket keeps
+        its authored enabled state through ``_refresh_socket_fields``.
+        """
+
+        socket_type = self.socket_type.currentData() or self.socket_type.currentText()
+        is_vfx = socket_type == "vfx"
+        self._set_particle_widgets_enabled(is_vfx)
+        if not is_vfx:
+            return
+        socket_id = self.socket_combo.currentData()
+        selected = next(
+            (item for item in self.session.document.sockets if item.id == socket_id),
+            None,
+        )
+        if not isinstance(selected, SceneVfxSocketRecord):
+            with QSignalBlocker(self.socket_enabled):
+                self.socket_enabled.setChecked(True)
 
     def _apply_camera(self) -> None:
         try:
@@ -364,18 +906,29 @@ class SceneAuthoringInspector(QWidget):
                         x=self.camera_x.value(), y=self.camera_y.value()
                     ),
                     zoom=self.camera_zoom.value(),
+                    rotation=self.camera_rotation.value(),
                 )
             )
             self.status_message.emit(
-                "Camera updated" if changed else "No camera changes"
+                self._status(
+                    "Câmera atualizada" if changed else "Nenhuma alteração na câmera",
+                    "Camera updated" if changed else "No camera changes",
+                )
             )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _apply_parallax(self) -> None:
         layer_id = self.layer_combo.currentData()
         if not layer_id:
-            self.status_message.emit("Select a layer before editing parallax")
+            self.status_message.emit(
+                self._status(
+                    "Selecione uma camada antes de editar a paralaxe",
+                    "Select a layer before editing parallax",
+                )
+            )
             return
         try:
             changed = self.session.set_parallax_layer(
@@ -384,24 +937,226 @@ class SceneAuthoringInspector(QWidget):
                     depth=self.parallax_depth.value(),
                     translation_strength=self.parallax_translation.value(),
                     zoom_strength=self.parallax_zoom.value(),
+                    scroll_x=self.parallax_scroll_x.value(),
+                    scroll_y=self.parallax_scroll_y.value(),
+                    offset_x=self.parallax_offset_x.value(),
+                    offset_y=self.parallax_offset_y.value(),
+                    repeat_x=self.parallax_repeat_x.isChecked(),
+                    repeat_y=self.parallax_repeat_y.isChecked(),
+                    mirror_x=self.parallax_mirror_x.isChecked(),
+                    mirror_y=self.parallax_mirror_y.isChecked(),
                 )
             )
             self.status_message.emit(
-                "Parallax updated" if changed else "No parallax changes"
+                self._status(
+                    (
+                        "Paralaxe atualizada"
+                        if changed
+                        else "Nenhuma alteração na paralaxe"
+                    ),
+                    "Parallax updated" if changed else "No parallax changes",
+                )
             )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
+
+    def _apply_material(self) -> None:
+        primary = self._primary()
+        if primary is None:
+            self.status_message.emit(
+                self._status(
+                    "Selecione um objeto antes de editar o material",
+                    "Select an object before editing its material",
+                )
+            )
+            return
+        try:
+            changed = self.session.update_material(
+                primary.id,
+                SceneMaterialAuthoringRecord(
+                    albedo=self.material_albedo.text().strip(),
+                    emission=self.material_emission.text().strip(),
+                    normal_map_xy=PointRecord(
+                        x=self.material_normal_x.value(),
+                        y=self.material_normal_y.value(),
+                    ),
+                    normal_strength=self.material_normal_strength.value(),
+                    emission_strength=self.material_emission_strength.value(),
+                    opacity=self.material_opacity.value(),
+                    receives_shadow=self.material_receives_shadow.isChecked(),
+                    casts_shadow=self.material_casts_shadow.isChecked(),
+                ),
+            )
+            self.status_message.emit(
+                self._status(
+                    (
+                        "Material atualizado"
+                        if changed
+                        else "Nenhuma alteração no material"
+                    ),
+                    "Material updated" if changed else "No material changes",
+                )
+            )
+        except (KeyError, PermissionError, ValueError) as exc:
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
+
+    def _particle_system_from_fields(
+        self,
+        system_id: str,
+        base: SceneParticleSystemRecord | None = None,
+    ) -> SceneParticleSystemRecord:
+        system = base or self._default_particle_system(system_id)
+        selected_id = self.particle_emitter_combo.currentData()
+        if selected_id is None:
+            selected_id = system.emitters[0].id
+        selected_index = next(
+            (
+                index
+                for index, emitter in enumerate(system.emitters)
+                if emitter.id == selected_id
+            ),
+            0,
+        )
+        emitter = ParticleEmitterRecord(
+            id=self.particle_emitter_id.text().strip() or selected_id,
+            enabled=True,
+            seed=self.particle_seed.value(),
+            origin=system.emitters[selected_index].origin,
+            initial_velocity=Point3Record(
+                x=self.particle_velocity_x.value(),
+                y=self.particle_velocity_y.value(),
+                z=system.emitters[selected_index].initial_velocity.z,
+            ),
+            velocity_spread=Point3Record(
+                x=self.particle_spread_x.value(),
+                y=self.particle_spread_y.value(),
+                z=system.emitters[selected_index].velocity_spread.z,
+            ),
+            acceleration=Point3Record(
+                x=self.particle_acceleration_x.value(),
+                y=self.particle_acceleration_y.value(),
+                z=system.emitters[selected_index].acceleration.z,
+            ),
+            emission_rate=self.particle_emission_rate.value(),
+            lifetime=self.particle_lifetime.value(),
+            max_particles=self.particle_max_particles.value(),
+            burst_count=self.particle_burst_count.value(),
+        )
+        emitters = list(system.emitters)
+        emitters[selected_index] = emitter
+        return system.model_copy(
+            update={
+                "id": system_id,
+                "loop": self.particle_loop.isChecked(),
+                "duration": self.particle_duration.value(),
+                "emitters": emitters,
+            }
+        )
+
+    def _current_vfx_socket(self) -> SceneVfxSocketRecord | None:
+        socket_id = self.socket_combo.currentData()
+        if not socket_id:
+            return None
+        socket = next(
+            (item for item in self.session.document.sockets if item.id == socket_id),
+            None,
+        )
+        return socket if isinstance(socket, SceneVfxSocketRecord) else None
+
+    def _add_emitter(self) -> None:
+        socket = self._current_vfx_socket()
+        if socket is None:
+            self.status_message.emit(
+                self._status(
+                    "Selecione um socket VFX antes de adicionar um emissor",
+                    "Select a VFX socket before adding an emitter",
+                )
+            )
+            return
+        try:
+            system = self._particle_system_for_socket(socket)
+            if not any(item.id == socket.effect_id for item in self.session.document.particle_systems):
+                self._update_socket()
+                system = self._particle_system_for_socket(socket)
+            used = {item.id for item in system.emitters}
+            number = len(used) + 1
+            emitter_id = f"emitter-{number}"
+            while emitter_id in used:
+                number += 1
+                emitter_id = f"emitter-{number}"
+            emitter = ParticleEmitterRecord(
+                id=emitter_id,
+                seed=(number * 977) & 0x7FFFFFFF,
+                initial_velocity=Point3Record(x=0.0, y=-24.0, z=0.0),
+                velocity_spread=Point3Record(x=16.0, y=16.0, z=0.0),
+                acceleration=Point3Record(x=0.0, y=24.0, z=0.0),
+                emission_rate=12.0,
+                lifetime=1.0,
+                max_particles=32,
+                burst_count=2,
+            )
+            self.session.update_particle_system(
+                system.model_copy(update={"emitters": [*system.emitters, emitter]})
+            )
+            self.status_message.emit(
+                self._status("Emissor adicionado", "Emitter added")
+            )
+        except (ValueError, KeyError) as exc:
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
+
+    def _remove_emitter(self) -> None:
+        socket = self._current_vfx_socket()
+        if socket is None:
+            self.status_message.emit(
+                self._status(
+                    "Selecione um socket VFX antes de remover um emissor",
+                    "Select a VFX socket before removing an emitter",
+                )
+            )
+            return
+        try:
+            system = self._particle_system_for_socket(socket)
+            if len(system.emitters) <= 1:
+                raise ValueError("particle system must keep at least one emitter")
+            selected_id = self.particle_emitter_combo.currentData()
+            emitters = [item for item in system.emitters if item.id != selected_id]
+            self.session.update_particle_system(
+                system.model_copy(update={"emitters": emitters})
+            )
+            self.status_message.emit(
+                self._status("Emissor removido", "Emitter removed")
+            )
+        except (ValueError, KeyError) as exc:
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _add_socket(self) -> None:
         layer_id = self.layer_combo.currentData()
         socket_id = self.socket_id.text().strip()
         if not layer_id or not socket_id:
-            self.status_message.emit("Socket ID and layer are required")
+            self.status_message.emit(
+                self._status(
+                    "ID do socket e camada são obrigatórios",
+                    "Socket ID and layer are required",
+                )
+            )
             return
         position = Point3Record(
             x=self.socket_x.value(), y=self.socket_y.value(), z=self.socket_z.value()
         )
-        socket_type = self.socket_type.currentText()
+        rotation = Point3Record(
+            x=0.0,
+            y=0.0,
+            z=self.socket_rotation_z.value(),
+        )
+        socket_type = self.socket_type.currentData() or self.socket_type.currentText()
         object_id = self.session.selection.primary
         try:
             socket: SceneSocketRecord
@@ -411,15 +1166,21 @@ class SceneAuthoringInspector(QWidget):
                     layer_id=layer_id,
                     object_id=object_id,
                     position=position,
+                    rotation=rotation,
+                    kind=self.socket_light_kind.currentData() or "point",
                     color="#ffffff",
                 )
             elif socket_type == "vfx":
+                effect_id = self.socket_effect_id.text().strip() or socket_id
                 socket = SceneVfxSocketRecord(
                     id=socket_id,
                     layer_id=layer_id,
                     object_id=object_id,
                     position=position,
-                    effect_id="default",
+                    rotation=rotation,
+                    effect_id=effect_id,
+                    scale=self.socket_scale.value(),
+                    enabled=self.socket_enabled.isChecked(),
                 )
             else:
                 socket = SceneTriggerSocketRecord(
@@ -427,47 +1188,111 @@ class SceneAuthoringInspector(QWidget):
                     layer_id=layer_id,
                     object_id=object_id,
                     position=position,
+                    rotation=rotation,
                     event_id="default",
                     size=Point3Record(x=32.0, y=32.0, z=1.0),
                 )
-            self.session.add_socket(socket)
-            self.status_message.emit("Socket added")
+            particle_system = None
+            if socket_type == "vfx" and not socket.effect_id.startswith("post-"):
+                particle_system = self._particle_system_from_fields(socket.effect_id)
+            self.session.add_socket(socket, particle_system)
+            new_index = self.socket_combo.findData(socket.id)
+            if new_index >= 0:
+                self.socket_combo.setCurrentIndex(new_index)
+            self.status_message.emit(self._status("Socket adicionado", "Socket added"))
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _update_socket(self) -> None:
         socket_id = self.socket_combo.currentData()
         if not socket_id:
-            self.status_message.emit("Select a socket before editing")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um socket antes de editar",
+                    "Select a socket before editing",
+                )
+            )
             return
         try:
-            self.session.update_socket_position(
-                socket_id,
-                Point3Record(
-                    x=self.socket_x.value(),
-                    y=self.socket_y.value(),
-                    z=self.socket_z.value(),
-                ),
+            socket = next(
+                item
+                for item in self.session.document.sockets
+                if item.id == socket_id
             )
-            self.status_message.emit("Socket updated")
+            position = Point3Record(
+                x=self.socket_x.value(),
+                y=self.socket_y.value(),
+                z=self.socket_z.value(),
+            )
+            rotation = Point3Record(
+                x=float(socket.rotation.x),
+                y=float(socket.rotation.y),
+                z=self.socket_rotation_z.value(),
+            )
+            if isinstance(socket, SceneVfxSocketRecord):
+                effect_id = self.socket_effect_id.text().strip() or socket.id
+                system = self._particle_system_from_fields(
+                    effect_id,
+                    self._particle_system_for_socket(socket),
+                )
+                self.session.update_vfx_socket(
+                    socket_id,
+                    position=position,
+                    rotation=rotation,
+                    effect_id=effect_id,
+                    scale=self.socket_scale.value(),
+                    enabled=self.socket_enabled.isChecked(),
+                    particle_system=system,
+                )
+            else:
+                light_kind = self.socket_light_kind.currentData() or "point"
+                if socket.type == "light":
+                    self.session.update_socket_light_kind(
+                        socket_id,
+                        light_kind,
+                    )
+                self.session.update_socket_transform(
+                    socket_id,
+                    position,
+                    rotation,
+                )
+            self.status_message.emit(
+                self._status("Socket atualizado", "Socket updated")
+            )
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _remove_socket(self) -> None:
         socket_id = self.socket_combo.currentData()
         if not socket_id:
-            self.status_message.emit("Select a socket before removing")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um socket antes de remover",
+                    "Select a socket before removing",
+                )
+            )
             return
         try:
             self.session.remove_socket(socket_id)
-            self.status_message.emit("Socket removed")
+            self.status_message.emit(self._status("Socket removido", "Socket removed"))
         except (ValueError, KeyError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def apply_transform(self) -> None:
         primary = self._primary()
         if primary is None:
-            self.status_message.emit("Select an object before editing its transform")
+            self.status_message.emit(
+                self._status(
+                    "Selecione um objeto antes de editar sua transformação",
+                    "Select an object before editing its transform",
+                )
+            )
             return
         transform = SceneTransformRecord(
             position=Point3Record(
@@ -491,11 +1316,19 @@ class SceneAuthoringInspector(QWidget):
         )
         try:
             if self.session.update_transform(primary.id, transform):
-                self.status_message.emit("Transform updated")
+                self.status_message.emit(
+                    self._status("Transformação atualizada", "Transform updated")
+                )
             else:
-                self.status_message.emit("No transform changes")
+                self.status_message.emit(
+                    self._status(
+                        "Nenhuma alteração na transformação", "No transform changes"
+                    )
+                )
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
 
     def _apply_snap(self) -> None:
         try:
@@ -509,24 +1342,355 @@ class SceneAuthoringInspector(QWidget):
                 )
             )
         except ValueError as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
+
+    def update_language(self, language: str) -> None:
+        for index, title in enumerate(
+            ("Objeto", "Câmera", "Camada", "Material", "Efeitos")
+            if language == "pt"
+            else ("Object", "Camera", "Layer", "Material", "Effects")
+        ):
+            self.category_tabs.setTabText(index, title)
+        """Translate the professional inspector without changing its model."""
+
+        self.current_lang = language
+        is_pt = language == "pt"
+        labels = (
+            {
+                "selection": "Seleção",
+                "position_x": "Posição X",
+                "position_y": "Posição Y",
+                "position_z": "Profundidade Z",
+                "rotation_x": "Rotação X",
+                "rotation_y": "Rotação Y",
+                "rotation_z": "Rotação Z",
+                "scale_x": "Escala X",
+                "scale_y": "Escala Y",
+                "scale_z": "Escala Z",
+                "pivot_x": "Pivô X",
+                "pivot_y": "Pivô Y",
+                "grid_x": "Grade X",
+                "grid_y": "Grade Y",
+                "camera_x": "Câmera X",
+                "camera_y": "Câmera Y",
+                "camera_zoom": "Zoom da Câmera",
+                "camera_rotation": "Rotação da Câmera",
+                "layer": "Camada",
+                "depth": "Profundidade",
+                "translation": "Translação",
+                "zoom": "Zoom",
+                "scroll_x": "Rolagem X",
+                "scroll_y": "Rolagem Y",
+                "offset_x": "Deslocamento X",
+                "offset_y": "Deslocamento Y",
+                "socket": "Socket",
+                "socket_type": "Tipo",
+                "socket_light_kind": "Tipo de luz",
+                "socket_id": "ID",
+                "socket_x": "Socket X",
+                "socket_y": "Socket Y",
+                 "socket_z": "Socket Z",
+                 "socket_rotation_z": "Rotação Z do socket",
+                 "socket_effect_id": "ID do efeito",
+                 "socket_scale": "Escala do efeito",
+                 "particle_emitter": "Emissor de partículas",
+                 "particle_emitter_id": "ID do emissor",
+                 "particle_seed": "Semente",
+                 "particle_emission_rate": "Taxa de emissão",
+                 "particle_lifetime": "Vida útil",
+                 "particle_max_particles": "Máximo de partículas",
+                 "particle_burst_count": "Explosão inicial",
+                 "particle_velocity_x": "Velocidade inicial X",
+                 "particle_velocity_y": "Velocidade inicial Y",
+                 "particle_spread_x": "Variação de velocidade X",
+                 "particle_spread_y": "Variação de velocidade Y",
+                 "particle_acceleration_x": "Aceleração X",
+                 "particle_acceleration_y": "Aceleração Y",
+                 "particle_duration": "Duração da prévia",
+                 "material_albedo": "Albedo",
+                "material_emission": "Emissão",
+                "material_normal_x": "Normal X",
+                "material_normal_y": "Normal Y",
+                "material_normal_strength": "Força da Normal",
+                "material_emission_strength": "Força da Emissão",
+                "material_opacity": "Opacidade",
+            }
+            if is_pt
+            else {
+                "selection": "Selection",
+                "position_x": "Position X",
+                "position_y": "Position Y",
+                "position_z": "Depth Z",
+                "rotation_x": "Rotation X",
+                "rotation_y": "Rotation Y",
+                "rotation_z": "Rotation Z",
+                "scale_x": "Scale X",
+                "scale_y": "Scale Y",
+                "scale_z": "Scale Z",
+                "pivot_x": "Pivot X",
+                "pivot_y": "Pivot Y",
+                "grid_x": "Grid X",
+                "grid_y": "Grid Y",
+                "camera_x": "Camera X",
+                "camera_y": "Camera Y",
+                "camera_zoom": "Camera Zoom",
+                "camera_rotation": "Camera Rotation",
+                "layer": "Layer",
+                "depth": "Depth",
+                "translation": "Translation",
+                "zoom": "Zoom",
+                "scroll_x": "Scroll X",
+                "scroll_y": "Scroll Y",
+                "offset_x": "Offset X",
+                "offset_y": "Offset Y",
+                "socket": "Socket",
+                "socket_type": "Type",
+                "socket_light_kind": "Light Kind",
+                "socket_id": "ID",
+                "socket_x": "Socket X",
+                "socket_y": "Socket Y",
+                 "socket_z": "Socket Z",
+                 "socket_rotation_z": "Socket Rotation Z",
+                 "socket_effect_id": "Effect ID",
+                 "socket_scale": "Effect Scale",
+                 "particle_emitter": "Particle Emitter",
+                 "particle_emitter_id": "Emitter ID",
+                 "particle_seed": "Seed",
+                 "particle_emission_rate": "Emission Rate",
+                 "particle_lifetime": "Lifetime",
+                 "particle_max_particles": "Max Particles",
+                 "particle_burst_count": "Burst Count",
+                 "particle_velocity_x": "Initial Velocity X",
+                 "particle_velocity_y": "Initial Velocity Y",
+                 "particle_spread_x": "Velocity Spread X",
+                 "particle_spread_y": "Velocity Spread Y",
+                 "particle_acceleration_x": "Acceleration X",
+                 "particle_acceleration_y": "Acceleration Y",
+                 "particle_duration": "Preview Duration",
+                 "material_albedo": "Albedo",
+                "material_emission": "Emission",
+                "material_normal_x": "Normal X",
+                "material_normal_y": "Normal Y",
+                "material_normal_strength": "Normal Strength",
+                "material_emission_strength": "Emission Strength",
+                "material_opacity": "Opacity",
+            }
+        )
+        for key, label in self._field_labels.items():
+            label.setText(labels[key])
+        tooltip_text = (
+            {
+                "position": "Posição do objeto no espaço da cena",
+                "rotation": "Rotação do objeto em graus",
+                "scale": "Escala do objeto por eixo",
+                "pivot": "Ponto de pivô normalizado do objeto",
+                "depth": "Profundidade Z usada na ordenação de renderização",
+                "grid": "Espaçamento do encaixe na grade",
+                "apply": "Aplicar as alterações de transformação",
+                "undo": "Desfazer a última alteração do inspetor",
+                "redo": "Refazer a última alteração do inspetor",
+                "fit": "Enquadrar os objetos selecionados visíveis no viewport",
+                "fit_all": "Enquadrar todos os objetos visíveis no viewport",
+                "camera": "Aplicar posição, zoom e rotação da câmera",
+                "material": "Aplicar as propriedades visuais do material",
+                "parallax": "Aplicar a configuração de paralaxe da camada",
+                "socket_add": "Adicionar um socket à cena",
+                "socket_update": "Atualizar posição e orientação do socket selecionado",
+                "socket_remove": "Remover o socket selecionado",
+                "particle": "Configurar o emissor e a simulação determinística de partículas",
+                "particle_preview": "Executar a prévia de partículas no viewport",
+                "particle_reset": "Reiniciar a prévia de partículas",
+            }
+            if is_pt
+            else {
+                "position": "Object position in scene space",
+                "rotation": "Object rotation in degrees",
+                "scale": "Object scale by axis",
+                "pivot": "Normalized object pivot point",
+                "depth": "Z depth used for render ordering",
+                "grid": "Grid snap spacing",
+                "apply": "Apply transform changes",
+                "undo": "Undo the last inspector change",
+                "redo": "Redo the last inspector change",
+                "fit": "Frame the visible selected objects in the viewport",
+                "fit_all": "Frame all visible objects in the viewport",
+                "camera": "Apply the camera position, zoom and rotation",
+                "material": "Apply the material visual properties",
+                "parallax": "Apply the layer parallax settings",
+                "socket_add": "Add a socket to the scene",
+                "socket_update": "Update the selected socket position and orientation",
+                "socket_remove": "Remove the selected socket",
+                "particle": "Configure the deterministic particle emitter and simulation",
+                "particle_preview": "Play the particle preview in the viewport",
+                "particle_reset": "Reset the particle preview",
+            }
+        )
+        widget_tooltips = {
+            self.position_x: tooltip_text["position"],
+            self.position_y: tooltip_text["position"],
+            self.position_z: tooltip_text["depth"],
+            self.rotation_x: tooltip_text["rotation"],
+            self.rotation_y: tooltip_text["rotation"],
+            self.rotation_z: tooltip_text["rotation"],
+            self.scale_x: tooltip_text["scale"],
+            self.scale_y: tooltip_text["scale"],
+            self.scale_z: tooltip_text["scale"],
+            self.pivot_x: tooltip_text["pivot"],
+            self.pivot_y: tooltip_text["pivot"],
+            self.snap_spacing_x: tooltip_text["grid"],
+            self.snap_spacing_y: tooltip_text["grid"],
+            self.apply_button: tooltip_text["apply"],
+            self.undo_button: tooltip_text["undo"],
+            self.redo_button: tooltip_text["redo"],
+            self.fit_button: tooltip_text["fit"],
+            self.fit_all_button: tooltip_text["fit_all"],
+            self.camera_apply_button: tooltip_text["camera"],
+            self.camera_rotation: tooltip_text["camera"],
+            self.material_apply_button: tooltip_text["material"],
+            self.parallax_apply_button: tooltip_text["parallax"],
+            self.add_socket_button: tooltip_text["socket_add"],
+            self.update_socket_button: tooltip_text["socket_update"],
+            self.remove_socket_button: tooltip_text["socket_remove"],
+            self.socket_rotation_z: tooltip_text["rotation"],
+            self.socket_effect_id: tooltip_text["particle"],
+            self.socket_scale: tooltip_text["particle"],
+            self.particle_emitter_combo: tooltip_text["particle"],
+            self.particle_emitter_id: tooltip_text["particle"],
+            self.particle_seed: tooltip_text["particle"],
+            self.particle_emission_rate: tooltip_text["particle"],
+            self.particle_lifetime: tooltip_text["particle"],
+            self.particle_max_particles: tooltip_text["particle"],
+            self.particle_burst_count: tooltip_text["particle"],
+            self.particle_velocity_x: tooltip_text["particle"],
+            self.particle_velocity_y: tooltip_text["particle"],
+            self.particle_spread_x: tooltip_text["particle"],
+            self.particle_spread_y: tooltip_text["particle"],
+            self.particle_acceleration_x: tooltip_text["particle"],
+            self.particle_acceleration_y: tooltip_text["particle"],
+            self.particle_duration: tooltip_text["particle"],
+            self.add_emitter_button: tooltip_text["particle"],
+            self.remove_emitter_button: tooltip_text["particle"],
+            self.particle_preview_button: tooltip_text["particle_preview"],
+            self.particle_reset_button: tooltip_text["particle_reset"],
+        }
+        for widget, tooltip in widget_tooltips.items():
+            widget.setToolTip(tooltip)
+            widget.setStatusTip(tooltip)
+            widget.setAccessibleDescription(tooltip)
+        if is_pt:
+            self.title.setText("Inspetor da Cena")
+            self.selection_label.setText("Nenhum objeto selecionado")
+            self.spatial_summary.setText("Camada/profundidade: —")
+            self.stage4_group.setTitle("Câmera, Paralaxe e Sockets")
+            self.apply_button.setText("Aplicar Transformação")
+            self.undo_button.setText("Desfazer")
+            self.redo_button.setText("Refazer")
+            self.delete_button.setText("Excluir Selecionado")
+            self.fit_button.setText("Enquadrar Seleção")
+            self.fit_all_button.setText("Enquadrar Tudo")
+            self.camera_apply_button.setText("Aplicar Câmera")
+            self.parallax_apply_button.setText("Aplicar Paralaxe da Camada")
+            self.material_apply_button.setText("Aplicar Material")
+            self.material_receives_shadow.setText("Recebe sombras")
+            self.material_casts_shadow.setText("Projeta sombras")
+            self.flip_x.setText("Inverter X")
+            self.flip_y.setText("Inverter Y")
+            self.snap_enabled.setText("Snap habilitado")
+            self.add_socket_button.setText("Adicionar socket")
+            self.update_socket_button.setText("Atualizar posição do socket")
+            self.remove_socket_button.setText("Remover socket")
+            self.socket_enabled.setText("Efeito habilitado")
+            self.particle_loop.setText("Repetir em loop")
+            self.add_emitter_button.setText("Adicionar emissor")
+            self.remove_emitter_button.setText("Remover emissor")
+            self.particle_preview_button.setText("Reproduzir partículas")
+            self.particle_reset_button.setText("Reiniciar prévia")
+            self.socket_type.setItemText(0, "Luz")
+            self.socket_type.setItemText(1, "VFX")
+            self.socket_type.setItemText(2, "Gatilho")
+            self.socket_light_kind.setItemText(0, "Ponto")
+            self.socket_light_kind.setItemText(1, "Direcional")
+            self.repeat_x_label = "Repetir X"
+            self.repeat_y_label = "Repetir Y"
+            self.mirror_x_label = "Espelhar X"
+            self.mirror_y_label = "Espelhar Y"
+        else:
+            self.title.setText("Scene Inspector")
+            self.selection_label.setText("No object selected")
+            self.spatial_summary.setText("Layer/depth: —")
+            self.stage4_group.setTitle("Camera, Parallax & Sockets")
+            self.apply_button.setText("Apply Transform")
+            self.undo_button.setText("Undo")
+            self.redo_button.setText("Redo")
+            self.delete_button.setText("Delete Selected")
+            self.fit_button.setText("Fit Selection")
+            self.fit_all_button.setText("Fit All")
+            self.camera_apply_button.setText("Apply Camera")
+            self.parallax_apply_button.setText("Apply Layer Parallax")
+            self.material_apply_button.setText("Apply Material")
+            self.material_receives_shadow.setText("Receives shadows")
+            self.material_casts_shadow.setText("Casts shadows")
+            self.flip_x.setText("Flip X")
+            self.flip_y.setText("Flip Y")
+            self.snap_enabled.setText("Snap enabled")
+            self.add_socket_button.setText("Add Socket")
+            self.update_socket_button.setText("Update Socket Position")
+            self.remove_socket_button.setText("Remove Socket")
+            self.socket_enabled.setText("Effect enabled")
+            self.particle_loop.setText("Loop")
+            self.add_emitter_button.setText("Add Emitter")
+            self.remove_emitter_button.setText("Remove Emitter")
+            self.particle_preview_button.setText("Play Particle Preview")
+            self.particle_reset_button.setText("Reset Particle Preview")
+            self.socket_type.setItemText(0, "light")
+            self.socket_type.setItemText(1, "vfx")
+            self.socket_type.setItemText(2, "trigger")
+            self.socket_light_kind.setItemText(0, "point")
+            self.socket_light_kind.setItemText(1, "directional")
+            self.repeat_x_label = "Repeat X"
+            self.repeat_y_label = "Repeat Y"
+            self.mirror_x_label = "Mirror X"
+            self.mirror_y_label = "Mirror Y"
+        self.parallax_repeat_x.setText(self.repeat_x_label)
+        self.parallax_repeat_y.setText(self.repeat_y_label)
+        self.parallax_mirror_x.setText(self.mirror_x_label)
+        self.parallax_mirror_y.setText(self.mirror_y_label)
+        self.refresh()
 
     def _undo(self) -> None:
         if self.session.undo():
-            self.status_message.emit("Undo applied")
+            self.status_message.emit(
+                "Desfazer aplicado" if self.current_lang == "pt" else "Undo applied"
+            )
 
     def _redo(self) -> None:
         if self.session.redo():
-            self.status_message.emit("Redo applied")
+            self.status_message.emit(
+                "Refazer aplicado" if self.current_lang == "pt" else "Redo applied"
+            )
 
     def _delete(self) -> None:
         count = len(self.session.selection.ids)
         try:
             changed = self.session.delete_selected()
         except (KeyError, PermissionError, ValueError) as exc:
-            self.status_message.emit(user_error_message(exc, operation="edit"))
+            self.status_message.emit(
+                user_error_message(exc, operation="edit", language=self.current_lang)
+            )
             return
         if changed:
-            self.status_message.emit(f"Deleted {count} object(s)")
+            self.status_message.emit(
+                (
+                    f"{count} objeto(s) excluído(s)"
+                    if self.current_lang == "pt"
+                    else f"Deleted {count} object(s)"
+                )
+            )
         else:
-            self.status_message.emit("No objects selected")
+            self.status_message.emit(
+                "Nenhum objeto selecionado"
+                if self.current_lang == "pt"
+                else "No objects selected"
+            )

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from PySide6.QtCore import QRectF, QSize
+from PySide6.QtCore import QRectF, QSize, Qt
 from PySide6.QtGui import QImage, QPainter
 from PySide6.QtWidgets import QApplication
 
@@ -88,7 +88,8 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
         window.open_scenario_editor()
         qt_app.processEvents()
         editor = window.scenario_editor_window
-        assert editor is not None and editor.isVisible()
+        assert editor is not None
+        assert editor.isVisible()
         empty = editor.professional_pages.currentWidget()
         assert empty is not None and empty.isVisible()
         assert empty.objectName() == "professional_scene_viewport_empty"
@@ -101,6 +102,56 @@ def test_scenario_editor_has_explained_empty_state(qt_app):
         assert editor.scenario_panel.btn_add.isEnabled() is False
         assert window.layers.tabs.count() == 1
         assert window.scenario_open_action in window.view_menu.actions()
+    finally:
+        if window.scenario_editor_window is not None:
+            window.scenario_editor_window.close()
+        window.close()
+        qt_app.processEvents()
+
+
+def test_objects_inspector_remains_navigable_without_image(qt_app):
+    window = MainWindow(Scene(), _Config())
+    try:
+        assert window.side_panel.isEnabled()
+        assert window.side_panel.list.count() == 0
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_inspector_sections_are_collapsible_without_arrow_icons(qt_app):
+    window = MainWindow(_scene(), _Config())
+    try:
+        groups = (
+            window.side_panel.properties_group,
+            window.side_panel.transform_group,
+            window.side_panel.metadata_group,
+            window.side_panel.modify_shape_group,
+            window.side_panel.export_group,
+        )
+        assert all(
+            group.toggle_button.arrowType() == Qt.ArrowType.NoArrow for group in groups
+        )
+    finally:
+        window.close()
+        qt_app.processEvents()
+
+
+def test_scenario_editor_can_start_from_zero_without_saved_project(qt_app):
+    window = MainWindow(_scene(), _Config())
+    try:
+        window.open_scenario_editor()
+        qt_app.processEvents()
+        editor = window.scenario_editor_window
+        assert editor is not None
+        assert editor.professional_session is None
+        assert editor.open_action.text() == "New Scenario"
+        assert editor._new_professional() is True
+        qt_app.processEvents()
+        assert editor.professional_session is not None
+        assert editor.professional_viewport is not None
+        assert editor._temporary_project_path is not None
+        assert "unsaved" in editor.status_label.text().lower()
     finally:
         if window.scenario_editor_window is not None:
             window.scenario_editor_window.close()

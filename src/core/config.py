@@ -54,6 +54,7 @@ class ExportProfile(StrictConfigModel):
 
 class AppConfig(StrictConfigModel):
     config_version: Literal[1] = 1
+    language: Literal["auto", "en", "pt"] = "auto"
     last_folder: Optional[str] = Field(default=None, max_length=MAX_CONFIG_PATH_LENGTH)
     zoom: float = Field(default=1.0, ge=0.01, le=100.0)
     tool: str = Field(default="polygonal_lasso", max_length=MAX_CONFIG_TEXT_LENGTH)

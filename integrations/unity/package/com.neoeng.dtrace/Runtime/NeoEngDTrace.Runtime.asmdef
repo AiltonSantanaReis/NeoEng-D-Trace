@@ -1,7 +1,10 @@
 {
   "name": "NeoEngDTrace.Runtime",
   "rootNamespace": "NeoEng.DTrace",
-  "references": [],
+  "references": [
+    "UnityEngine.JSONSerializeModule",
+    "UnityEngine.ParticleSystemModule"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

@@ -12,6 +12,7 @@ import numpy as np
 from PySide6.QtCore import QObject, QPointF, QRectF, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import (
     QAction,
+    QActionGroup,
     QColor,
     QImage,
     QKeyEvent,
@@ -35,15 +36,19 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSlider,
     QSpinBox,
     QToolBar,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
 
 from src.core.operational_limits import MAX_POLYGON_POINTS
 from src.core.view_processor import ViewProcessor
+from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
+from src.ui.context_menu_utils import fit_context_menu
 
 logger = logging.getLogger(__name__)
 
@@ -664,7 +669,7 @@ class MaskViewer(QWidget):
             if hasattr(event, "globalPosition")
             else event.globalPos()
         )
-        menu.exec(global_position)
+        fit_context_menu(menu).exec(global_position)
         event.accept()
 
     def set_roi_mode(self, enabled: bool) -> None:
@@ -1150,12 +1155,8 @@ class MaskViewer(QWidget):
                                 QColor(255, 255, 0, 80)
                             )  # Semi-transparent yellow fill
                         else:
-                            pen = QPen(QColor(0, 255, 0), 2)  # Green outline
-                            pen.setCosmetic(True)
-                            painter.setPen(pen)
-                            painter.setBrush(
-                                QColor(0, 255, 0, 50)
-                            )  # Semi-transparent green fill
+                            painter.setPen(collision_outline_pen())
+                            painter.setBrush(collision_fill_brush())
 
                         painter.drawPolygon(qpoly)
 
@@ -1507,6 +1508,7 @@ class MaskViewerDialog(QDialog):
         self.param_labels: Dict[str, QLabel] = {}
         self.layer_checkboxes: Dict[str, QCheckBox] = {}
         self.preset_actions: Dict[str, QAction] = {}
+        self.preset_buttons: Dict[str, QToolButton] = {}
         self.view_mode_buttons: list[QPushButton] = []
         self.view_mode_button_group: QButtonGroup | None = None
 
@@ -1533,6 +1535,11 @@ class MaskViewerDialog(QDialog):
         control_layout.addWidget(self.toolbar)
         self._setup_explicit_view_modes()
         control_layout.addWidget(self.view_mode_group)
+        # The four explicit buttons above are the single visible control for
+        # the display mode. Keep the combo as an internal state bridge for
+        # detection-source compatibility and tests, but do not render a
+        # second, duplicate mode selector below the buttons.
+        self.view_mode_toolbar_row.setVisible(False)
         self._setup_layer_controls()
         control_layout.addWidget(self.layer_controls)
         self._setup_parameter_controls()
@@ -1666,26 +1673,51 @@ class MaskViewerDialog(QDialog):
 
     def _setup_toolbar(self):
         self.toolbar = QToolBar()
-        self.toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        self.toolbar.setObjectName("mask_detection_preset_toolbar")
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        self.preset_action_group = QActionGroup(self)
+        self.preset_action_group.setExclusive(True)
+        preset_container = QWidget(self.toolbar)
+        preset_container.setObjectName("mask_detection_preset_buttons")
+        preset_layout = QHBoxLayout(preset_container)
+        preset_layout.setContentsMargins(0, 0, 0, 0)
+        preset_layout.setSpacing(4)
         for preset_id in self.PRESET_ORDER:
-            action = self.toolbar.addAction("")
+            action = QAction(self)
             action.setData(preset_id)
+            action.setCheckable(True)
+            action.setProperty("uiRole", "mask_detection_preset")
+            self.preset_action_group.addAction(action)
             action.triggered.connect(
                 lambda checked=False, name=preset_id: self._apply_preset(name)
             )
             self.preset_actions[preset_id] = action
-        self.toolbar.addSeparator()
+            button = QToolButton(preset_container)
+            button.setDefaultAction(action)
+            button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+            button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            button.setToolTip(action.toolTip())
+            preset_layout.addWidget(button, 1)
+            self.preset_buttons[preset_id] = button
+        self.preset_actions["Basic"].setChecked(True)
+        self.toolbar.addWidget(preset_container)
         self.view_mode_label = QLabel()
-        self.toolbar.addWidget(self.view_mode_label)
         self.view_mode_combo = QComboBox()
+        self.view_mode_combo.setMinimumWidth(170)
         self.view_mode_combo.addItem("", 0)
         self.view_mode_combo.addItem("", 1)
         self.view_mode_combo.addItem("", 2)
         self.view_mode_combo.addItem("", 3)
         self.view_mode_combo.currentIndexChanged.connect(self._on_view_mode_changed)
-        self.toolbar.addWidget(self.view_mode_combo)
         self.perf_label = QLabel()
-        self.toolbar.addWidget(self.perf_label)
+        self.perf_label.setWordWrap(True)
+        self.view_mode_toolbar_row = QWidget(self)
+        self.view_mode_toolbar_row.setObjectName("mask_view_mode_toolbar_row")
+        row_layout = QHBoxLayout(self.view_mode_toolbar_row)
+        row_layout.setContentsMargins(0, 0, 0, 0)
+        row_layout.addWidget(self.view_mode_label)
+        row_layout.addWidget(self.view_mode_combo, 1)
+        row_layout.addWidget(self.perf_label, 1)
 
     def _setup_layer_controls(self):
         self.layer_controls = QGroupBox()
@@ -1854,7 +1886,20 @@ class MaskViewerDialog(QDialog):
         self.toolbar.setWindowTitle(t["toolbar"])
         for preset_id, action in self.preset_actions.items():
             label = t[self.PRESET_TEXT_KEYS[preset_id]]
-            action.setText(t["detection_action"].format(preset=label))
+            # Keep all four primary commands visible in the narrow controls
+            # rail. The full translated command remains discoverable through
+            # tooltip and accessibility text instead of QToolBar overflow.
+            compact_label = label
+            if preset_id == "Enhanced" and self.current_lang == "pt":
+                compact_label = "Aprim."
+            elif preset_id == "GrabCut":
+                compact_label = "GrabCut"
+            action.setText(compact_label)
+            action.setToolTip(t["detection_action"].format(preset=label))
+            button = self.preset_buttons.get(preset_id)
+            if button is not None:
+                button.setToolTip(t["detection_action"].format(preset=label))
+                button.setAccessibleName(label)
         self.view_mode_label.setText(t["view_mode"])
         self.view_mode_group.setTitle(t["view_mode"])
         view_keys = (
@@ -1865,7 +1910,18 @@ class MaskViewerDialog(QDialog):
         )
         for index, key in enumerate(view_keys):
             self.view_mode_combo.setItemText(index, t[key])
-            self.view_mode_buttons[index].setText(t[key])
+            full_label = t[key]
+            # The four-button rail is intentionally compact. Keep the full
+            # translated mode name in the combo, tooltip, and accessibility
+            # tree while using the algorithm name in the button so it cannot
+            # be visually elided at the narrow control-panel width.
+            compact_label = full_label
+            if index > 0:
+                compact_label = full_label.replace("Raio-X ", "").replace("X-Ray ", "")
+            button = self.view_mode_buttons[index]
+            button.setText(compact_label)
+            button.setToolTip(full_label)
+            button.setAccessibleName(full_label)
         self.layer_controls.setTitle(t["layer_visualization"])
         for layer_id, checkbox in self.layer_checkboxes.items():
             checkbox.setText(t[self.LAYER_TEXT_KEYS[layer_id]])
@@ -1957,6 +2013,8 @@ class MaskViewerDialog(QDialog):
 
     def _on_preset_changed(self, *_args):
         preset_id = self._selected_preset_id()
+        if preset_id in self.preset_actions:
+            self.preset_actions[preset_id].setChecked(True)
         self._apply_preset_params(DETECTION_PRESETS[preset_id]["params"])
         self._update_performance_label()
 
@@ -1974,6 +2032,8 @@ class MaskViewerDialog(QDialog):
         index = self.preset_combo.findData(preset_id)
         if index >= 0:
             self.preset_combo.setCurrentIndex(index)
+        if preset_id in self.preset_actions:
+            self.preset_actions[preset_id].setChecked(True)
         self._on_preset_changed()
 
     def _apply_preset_params(self, params):
