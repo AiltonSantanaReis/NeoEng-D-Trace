@@ -125,6 +125,9 @@ foi requalificado no executável v4 em
 `Novo → canvas → três células → Salvar → Reabrir`, com sidecar persistido de
 1 camada/3 células e SHA-256
 `282F5D8B094B1A2BA98BDE991FEECB642239D9F8C05F061F01A2D5185E339FC0`.
+O Tileset também foi requalificado no v2 no mesmo binário, com 300 tiles,
+salvar/reabrir nativos e sidecar `neoeng-d-trace-tileset` SHA-256
+`E052E41671B87914D0B7C4A31783AFE59D5AE91B1B6F8CC2E5C572FEA45D5E06`.
 O defeito de layout da recuperação foi corrigido no commit `dd344f47` sem
 remover conteúdo anterior; os resultados v1–v3 permanecem preservados.
 

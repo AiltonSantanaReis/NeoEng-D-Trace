@@ -175,17 +175,33 @@ nas capturas `08`–`11`. A causa foi coordenada obsoleta no harness, não uma
 alteração destrutiva no produto. O finding e seus hashes não foram apagados;
 somente a requalificação v3 é usada para o `PASS` técnico.
 
-Tileset: atlas real, gerar, salvar, novo e reabrir:
+### Tileset: atlas real, gerar, salvar, novo e reabrir
 
-- manifesto:
-  [`manifest.json`](../../artifacts/post-e13-tilemap-runtime-tileset-native-final-20260912/manifest.json)
-  — SHA-256 `BC723FBF74D300BCD10FD6CAFF7C9C25F6342734DAF64F77D411EC146C80E88B`;
-- gerar: [`07-tileset-generated.png`](../../artifacts/post-e13-tilemap-runtime-tileset-native-final-20260912/07-tileset-generated.png)
-  — SHA-256 `61F302029C1C1D1CF2C5A02351EEEC86EECFCA6854A5D2812B9631D85EE00BF0`;
-- salvar: [`08-tileset-saved.png`](../../artifacts/post-e13-tilemap-runtime-tileset-native-final-20260912/08-tileset-saved.png)
-  — SHA-256 `8B6128979FEDF3D7B739FB628610E94938AFE4C668B1DF41F719CB419DA481C2`;
-- reabrir: [`10-tileset-reopened.png`](../../artifacts/post-e13-tilemap-runtime-tileset-native-final-20260912/10-tileset-reopened.png)
-  — SHA-256 `4B9785DE4FC7F0E41C9092900444E4EF8C7E7AD3C2113D13FE73A2AD8CB19737`.
+O fluxo autoritativo foi requalificado no mesmo binário v4, com validação
+explícita do sidecar persistido:
+
+- manifesto v2:
+  [`manifest.json`](../../artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/manifest.json)
+  — SHA-256 `32DD9EDD62A89D8C9DFE6BF5FF8AA2E0788E3779EAC1175A0CCD5CBDCC206CD8`;
+- atlas gerado, mostrando `300 tiles · neoeng-d-trace-tileset v1`:
+  [`07-tileset-generated.png`](../../artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/07-tileset-generated.png)
+  — SHA-256 `362DF9B35893E8F3E9FD08C19B387F90F4C9784B98422EDD26DADC9AC9EE2095`;
+- salvar, com mensagem nativa `Tileset salvo: tileset.json`:
+  [`08-tileset-saved.png`](../../artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/08-tileset-saved.png)
+  — SHA-256 `4AB89D4A8679D6305C5622DE22FC83C5A23F151D8B0A591FB951584CC24FE1B7`;
+- reabrir, com mensagem nativa `Tileset reaberto` e os 300 tiles preservados:
+  [`10-tileset-reopened.png`](../../artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/10-tileset-reopened.png)
+  — SHA-256 `59BA1576F7CC3D4D6CB20B0DD1001CFD3DD1AD9550DB47FDB1E8851462D1470C`;
+- sidecar persistido:
+  `artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/tileset-fixture/assets/tilesets/scenario/tileset.json`
+  — SHA-256 `E052E41671B87914D0B7C4A31783AFE59D5AE91B1B6F8CC2E5C572FEA45D5E06`,
+  formato `neoeng-d-trace-tileset`, versão 1, 300 tiles, atlas
+  `source_atlas.png` com SHA-256
+  `4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18`.
+
+O harness falha se o sidecar não existir ou não contiver tiles; a persistência
+do Tileset é, portanto, uma condição observada e validada, não uma inferência
+da imagem.
 
 ## Método e limitações
 

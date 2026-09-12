@@ -42,6 +42,7 @@ o vertical slice híbrido em um editor 3D completo.
 - Fluxo integrado: `build/post-e13-final-build-recovery-v4-20260912/artifacts/post-e13-final-native-composition-recovery-v4-20260912/native-flow-output.json` — exportação, save/reopen, erro, recuperação e exportação pós-recuperação.
 - Prompt de recuperação: `composition-05-recovery-prompt.png` — SHA-256 `BE829AA548403F58EA6EC4B553CBCE645DC7056BB4ED7AA6629EE9FDF0C98B3B`.
 - Requalificação Tilemap nativa no mesmo executável: `artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/manifest.json` — SHA-256 `9D9A060173727C67ADCFC2DE3D8BA19EA671DBE1D9EA35A245BAD8DBAB1CB5F7`; três células pintadas, salvas e reabertas; sidecar SHA-256 `282F5D8B094B1A2BA98BDE991FEECB642239D9F8C05F061F01A2D5185E339FC0`.
+- Requalificação Tileset nativa no mesmo executável: `artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/manifest.json` — SHA-256 `32DD9EDD62A89D8C9DFE6BF5FF8AA2E0788E3779EAC1175A0CCD5CBDCC206CD8`; 300 tiles gerados, salvos e reabertos; sidecar SHA-256 `E052E41671B87914D0B7C4A31783AFE59D5AE91B1B6F8CC2E5C572FEA45D5E06`.
 - Runtime Tilemap: capturas Godot e Unity e relatório negativo de drift em `artifacts/post-e13-tilemap-runtime-engines-final-20260912/`.
 - Runtime híbrido: capturas Godot e Unity e relatório negativo de hash em `artifacts/post-e13-hybrid-runtime-engines-final-20260912/`.
 

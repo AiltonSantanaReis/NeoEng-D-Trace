@@ -210,6 +210,34 @@ function Read-NativeTilemapPersistence {
     }
 }
 
+function Read-NativeTilesetPersistence {
+    param([string]$ProjectPath)
+    $projectFile = if (Test-Path -LiteralPath $ProjectPath -PathType Leaf) {
+        (Resolve-Path -LiteralPath $ProjectPath).Path
+    } else {
+        Get-ChildItem -LiteralPath $ProjectPath -Filter "*.ndtproj" -File | Select-Object -First 1 -ExpandProperty FullName
+    }
+    if (-not $projectFile) { throw "native Tileset persistence requires a .ndtproj project file" }
+    $tilesetPath = Join-Path (Split-Path -Parent $projectFile) "assets\tilesets\scenario\tileset.json"
+    if (-not (Test-Path -LiteralPath $tilesetPath -PathType Leaf)) {
+        throw "native Tileset save did not produce the expected sidecar: $tilesetPath"
+    }
+    $tileset = Get-Content -LiteralPath $tilesetPath -Raw | ConvertFrom-Json
+    $tiles = @($tileset.tiles)
+    if ($tiles.Count -lt 1) {
+        throw "native Tileset sidecar contains no tiles: $tilesetPath"
+    }
+    return [ordered]@{
+        path = $tilesetPath
+        sha256 = (Get-FileHash -LiteralPath $tilesetPath -Algorithm SHA256).Hash
+        tile_count = $tiles.Count
+        format_id = $tileset.format_id
+        schema_version = $tileset.schema_version
+        atlas_path = $tileset.atlas_path
+        atlas_sha256 = $tileset.atlas_sha256
+    }
+}
+
 function Save-ScreenCapture {
     param([string]$Path)
     $bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
@@ -621,6 +649,7 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3520, 625)
         Start-Sleep -Milliseconds 900
         $records.tileset_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tileset-saved.png")
+        $records.tileset_persistence = Read-NativeTilesetPersistence $projectPath
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3105, 625)
         Start-Sleep -Milliseconds 500
         $records.tileset_new = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tileset-new.png")
