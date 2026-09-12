@@ -74,13 +74,19 @@ fluxo nativo com capturas reais e runtime externo executado. Até lá, este
 registro permanece `IN_PROGRESS / PENDING_EVIDENCE`; a revisão humana final
 continua formalmente deferida.
 
-## Checkpoint de implementação local
+## Checkpoint de implementação, build e fluxo nativo
 
-O núcleo e a UI do authoring profissional foram implementados no working tree
-sem ainda promover a mudança a `PASS`: seleção por gesto, cópia/colagem
+O núcleo e a UI do authoring profissional foram implementados no commit
+`2c87d21` e a correção responsiva de dock estreito foi concluída no commit
+`b9341c9`, sem remover o fluxo anterior. Seleção por gesto, cópia/colagem
 transacional, variação determinística, Rule Tiles persistíveis, validação
-fail-closed e referência/hash do atlas foram cobertos por 63 testes focados
-(incluindo composição, Tilemap, Tileset e Studio), todos aprovados. A build
-limpa, o fluxo nativo com cliques/capturas, o payload e a materialização real
-em Godot/Unity continuam pendentes e permanecem explicitamente fora deste
-checkpoint de código.
+fail-closed, referência/hash do atlas e o layout responsivo foram cobertos por
+62 testes focados, todos aprovados. A suíte oficial sem filtros passou com
+`2216 passed, 2 skipped, 1 warning`.
+
+A build limpa e dois fluxos nativos reais foram concluídos e documentados em
+[`EVD_POST_E13_TILEMAP_PRO_RESPONSIVE_NATIVE_20260911.md`](EVD_POST_E13_TILEMAP_PRO_RESPONSIVE_NATIVE_20260911.md):
+Tilemap com seleção/cópia/colagem/variação/Rule Tiles/salvar/reabrir e Tileset
+com atlas real/gerar/salvar/novo/reabrir. O payload de runtime e a
+materialização real em Godot/Unity continuam pendentes e permanecem
+explicitamente fora deste checkpoint.
