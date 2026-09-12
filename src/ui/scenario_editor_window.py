@@ -1027,6 +1027,7 @@ class ScenarioEditorWindow(QMainWindow):
             colliders=project_root / "assets" / "colliders" / "scenario.colliders.json",
             navmesh=project_root / "assets" / "navmesh" / "scenario.navmesh.json",
             runtime_bundle=runtime_bundle if runtime_bundle.is_file() else None,
+            auto_tilemap_runtime=True,
         )
         exports_root = project_root / "exports"
         exports_root.mkdir(parents=True, exist_ok=True)

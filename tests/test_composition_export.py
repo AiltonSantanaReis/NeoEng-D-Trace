@@ -1,5 +1,6 @@
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -96,6 +97,7 @@ def valid_composition_inputs(tmp_path: Path) -> CompositionInputs:
         atlas_asset_id="asset",
         atlas_sha256=asset_hash,
         tiles=(TileDefinition(id="grass", asset_id="asset", source_rect=(0, 0, 8, 8)),),
+        atlas_path="assets/asset.png",
     )
     tilemap = TileMapDocument(
         id="map",
@@ -153,6 +155,59 @@ def test_composition_binds_and_revalidates_components(
     tilemap.write_bytes(tilemap.read_bytes() + b"\n")
     with pytest.raises(CompositionExportError, match="hash mismatch"):
         validate_composition_package(package)
+
+
+def test_composition_automatically_emits_hash_bound_tilemap_runtime(
+    tmp_path: Path, valid_composition_inputs: CompositionInputs
+) -> None:
+    package = tmp_path / "composition-with-tilemap-runtime"
+    manifest = build_composition_package(
+        replace(valid_composition_inputs, auto_tilemap_runtime=True), package
+    )
+    assert manifest["capabilities"]["tilemap-runtime"] == "emitted-hash-bound"
+    kinds = {item["kind"] for item in manifest["components"]}
+    assert {
+        "tilemap-runtime-payload",
+        "tilemap-runtime-source",
+        "tilemap-runtime-asset",
+    } <= kinds
+    validate_composition_package(package)
+    payload = json.loads(
+        (package / "tilemap-runtime" / "tilemap-runtime.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert payload["source"]["path"] == "tilemap.json"
+    assert payload["atlas"]["path"] == "assets/asset.png"
+
+
+def test_composition_preserves_legacy_tilemap_without_atlas_runtime(
+    tmp_path: Path, valid_composition_inputs: CompositionInputs
+) -> None:
+    legacy_tilemap = tmp_path / "legacy-tilemap.json"
+    payload = json.loads(valid_composition_inputs.tilemap.read_text(encoding="utf-8"))
+    payload["tileset"].pop("atlas_path", None)
+    legacy_tilemap.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    package = tmp_path / "composition-legacy-tilemap"
+    manifest = build_composition_package(
+        replace(
+            valid_composition_inputs,
+            tilemap=legacy_tilemap,
+            auto_tilemap_runtime=True,
+        ),
+        package,
+    )
+    assert (
+        manifest["capabilities"]["tilemap-runtime"]
+        == "not-emitted-legacy-atlas-missing"
+    )
+    assert not any(
+        item["kind"] == "tilemap-runtime-payload" for item in manifest["components"]
+    )
 
 
 def _hybrid_scene() -> dict:

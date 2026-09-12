@@ -21,6 +21,11 @@ from src.exporters.scene_authoring_export import (
     SceneAuthoringExportError,
     build_scene_authoring_export,
 )
+from src.exporters.tilemap_runtime_export import (
+    TileMapRuntimeExportError,
+    build_tilemap_runtime_package,
+    validate_tilemap_runtime_payload,
+)
 from src.persistence.navmesh_io import load_navmesh
 from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.persistence.scenario_collider_io import load_colliders
@@ -43,6 +48,7 @@ class CompositionInputs:
     colliders: Path
     navmesh: Path
     runtime_bundle: Path | None = None
+    auto_tilemap_runtime: bool = False
 
 
 def _sha256(path: Path) -> str:
@@ -171,6 +177,43 @@ def build_composition_package(
         asset_component["path"] = relative.as_posix()
         components.append(asset_component)
 
+    tilemap_runtime_status = "disabled"
+    if inputs.auto_tilemap_runtime:
+        if validated["tilemap"].tileset.atlas_path is None:
+            tilemap_runtime_status = "not-emitted-legacy-atlas-missing"
+        else:
+            runtime_destination = target / "tilemap-runtime"
+            try:
+                runtime_package = build_tilemap_runtime_package(
+                    inputs.tilemap,
+                    project_root=inputs.scene.parent,
+                    destination=runtime_destination,
+                )
+            except TileMapRuntimeExportError as exc:
+                raise CompositionExportError(
+                    f"automatic tilemap runtime export failed: {exc}"
+                ) from exc
+            for path in sorted(runtime_package.directory.rglob("*")):
+                if not path.is_file():
+                    continue
+                relative = path.relative_to(target).as_posix()
+                if path.name == "tilemap-runtime.json":
+                    kind = "tilemap-runtime-payload"
+                elif path.name == "tilemap.json":
+                    kind = "tilemap-runtime-source"
+                else:
+                    kind = "tilemap-runtime-asset"
+                components.append(
+                    {
+                        "kind": kind,
+                        "path": relative,
+                        "bytes": path.stat().st_size,
+                        "sha256": _sha256(path),
+                        "required": True,
+                    }
+                )
+            tilemap_runtime_status = "emitted-hash-bound"
+
     if inputs.runtime_bundle is not None:
         components.append(
             _copy_bound(
@@ -191,6 +234,7 @@ def build_composition_package(
             "colliders": "validated-authored-document",
             "navmesh": "validated-authored-document",
             "runtime-adapters": "optional-runtime-bundle",
+            "tilemap-runtime": tilemap_runtime_status,
         },
     }
     (target / "composition.json").write_bytes(_canonical_json(manifest))
@@ -243,6 +287,19 @@ def validate_composition_package(package: str | os.PathLike[str]) -> dict[str, A
             _validate_json_file(path, kind)
         elif kind == "runtime-adapters":
             _validate_json_file(path, kind)
+        elif kind == "tilemap-runtime-payload":
+            payload = _validate_json_file(path, kind)
+            try:
+                validate_tilemap_runtime_payload(payload, project_root=path.parent)
+            except TileMapRuntimeExportError as exc:
+                raise CompositionExportError(
+                    f"invalid automatic tilemap runtime payload: {exc}"
+                ) from exc
+        elif kind == "tilemap-runtime-source":
+            load_tilemap(path)
+        elif kind == "tilemap-runtime-asset":
+            if path.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp", ".bin"}:
+                raise CompositionExportError("unsupported tilemap runtime asset type")
         elif kind == "asset":
             if path.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp", ".bin"}:
                 raise CompositionExportError("unsupported composition asset type")
