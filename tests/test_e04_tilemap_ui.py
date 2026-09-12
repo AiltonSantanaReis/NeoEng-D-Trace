@@ -213,6 +213,26 @@ def test_tilemap_actions_fit_narrow_professional_inspector(
         assert widget.isVisible()
         assert widget.geometry().right() <= panel.width()
 
+    for widget in (
+        panel.grid_combo,
+        panel.tile_combo,
+        panel.tool_combo,
+        panel.variation_seed_label,
+        panel.variation_seed_spin,
+        panel.rule_target_label,
+        panel.rule_target_combo,
+        panel.rule_neighbor_label,
+        panel.rule_neighbor_combo,
+        panel.rule_offset_label,
+        panel.rule_offset_combo,
+        panel.rule_fallback_label,
+        panel.rule_fallback_combo,
+        panel.add_rule_button,
+        panel.apply_rules_button,
+    ):
+        assert widget.isVisible()
+        assert widget.geometry().right() <= panel.width()
+
 
 def test_tilemap_advanced_tools_preserve_locked_layer_failure(
     qt_app: QApplication, tmp_path: Path

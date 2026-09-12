@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QPushButton,
+    QSizePolicy,
     QSpinBox,
     QVBoxLayout,
     QWidget,
@@ -346,7 +347,7 @@ class TileMapAuthoringPanel(QWidget):
         self.apply_rules_button = QPushButton(self)
         self.rules_list = QListWidget(self)
         self.rules_list.setMaximumHeight(30)
-        self.rules_group.setMaximumHeight(135)
+        self.rules_group.setMaximumHeight(260)
         for label, offset in (
             ("Direita", (1, 0)),
             ("Esquerda", (-1, 0)),
@@ -389,12 +390,56 @@ class TileMapAuthoringPanel(QWidget):
         header.addStretch(1)
         header.addWidget(self.summary_label)
         layout.addLayout(header)
-        controls = QHBoxLayout()
-        controls.addWidget(self.grid_combo)
-        controls.addWidget(self.tile_combo)
-        controls.addWidget(self.tool_combo)
-        controls.addWidget(self.variation_seed_label)
-        controls.addWidget(self.variation_seed_spin)
+        # The professional inspector is also used in the compact right dock.
+        # Keep every control inside the available width instead of relying on
+        # a horizontal row that becomes clipped when the dock is narrow.
+        responsive_controls = (
+            self.grid_combo,
+            self.tile_combo,
+            self.tool_combo,
+            self.variation_seed_label,
+            self.variation_seed_spin,
+            self.layer_combo,
+            self.rule_target_label,
+            self.rule_target_combo,
+            self.rule_neighbor_label,
+            self.rule_neighbor_combo,
+            self.rule_offset_label,
+            self.rule_offset_combo,
+            self.rule_fallback_label,
+            self.rule_fallback_combo,
+            self.new_button,
+            self.open_button,
+            self.save_button,
+            self.reload_tileset_button,
+            self.add_layer_button,
+            self.undo_button,
+            self.redo_button,
+            self.copy_button,
+            self.paste_button,
+            self.variation_button,
+            self.add_rule_button,
+            self.apply_rules_button,
+        )
+        for widget in responsive_controls:
+            widget.setMinimumWidth(0)
+            widget.setSizePolicy(
+                QSizePolicy.Policy.Expanding,
+                QSizePolicy.Policy.Fixed,
+            )
+
+        controls = QGridLayout()
+        controls.setHorizontalSpacing(6)
+        controls.addWidget(self.grid_combo, 0, 0)
+        controls.addWidget(self.tile_combo, 0, 1)
+        controls.addWidget(self.tool_combo, 1, 0)
+        variation_row = QHBoxLayout()
+        variation_row.setContentsMargins(0, 0, 0, 0)
+        variation_row.addWidget(self.variation_seed_label)
+        variation_row.addWidget(self.variation_seed_spin)
+        controls.addLayout(variation_row, 1, 1)
+        controls.setColumnStretch(0, 1)
+        controls.setColumnStretch(1, 1)
         layout.addLayout(controls)
         palette_label = QLabel(self)
         palette_label.setObjectName("tilemap_palette_label")
@@ -418,31 +463,30 @@ class TileMapAuthoringPanel(QWidget):
             self.reload_tileset_button,
             self.undo_button,
             self.redo_button,
-        )
-        for index, button in enumerate(action_buttons):
-            actions.addWidget(button, index // 3, index % 3)
-        extra_buttons = (
             self.copy_button,
             self.paste_button,
             self.variation_button,
         )
-        for offset, button in enumerate(extra_buttons, start=len(action_buttons)):
-            actions.addWidget(button, offset // 3, offset % 3)
+        for index, button in enumerate(action_buttons):
+            actions.addWidget(button, index // 2, index % 2)
+        actions.setColumnStretch(0, 1)
+        actions.setColumnStretch(1, 1)
         layout.addLayout(actions)
         rules_form = QGridLayout(self.rules_group)
         rules_form.addWidget(self.rule_target_label, 0, 0)
         rules_form.addWidget(self.rule_target_combo, 0, 1)
-        rules_form.addWidget(self.rule_neighbor_label, 0, 2)
-        rules_form.addWidget(self.rule_neighbor_combo, 0, 3)
-        rules_form.addWidget(self.rule_offset_label, 1, 0)
-        rules_form.addWidget(self.rule_offset_combo, 1, 1)
-        rules_form.addWidget(self.rule_fallback_label, 1, 2)
-        rules_form.addWidget(self.rule_fallback_combo, 1, 3)
+        rules_form.addWidget(self.rule_neighbor_label, 1, 0)
+        rules_form.addWidget(self.rule_neighbor_combo, 1, 1)
+        rules_form.addWidget(self.rule_offset_label, 2, 0)
+        rules_form.addWidget(self.rule_offset_combo, 2, 1)
+        rules_form.addWidget(self.rule_fallback_label, 3, 0)
+        rules_form.addWidget(self.rule_fallback_combo, 3, 1)
         rule_actions = QHBoxLayout()
         rule_actions.addWidget(self.add_rule_button)
         rule_actions.addWidget(self.apply_rules_button)
-        rules_form.addLayout(rule_actions, 2, 0, 1, 4)
-        rules_form.addWidget(self.rules_list, 3, 0, 1, 4)
+        rules_form.addLayout(rule_actions, 4, 0, 1, 2)
+        rules_form.addWidget(self.rules_list, 5, 0, 1, 2)
+        rules_form.setColumnStretch(1, 1)
         layout.addWidget(self.rules_group)
         layout.addWidget(self.canvas, 1)
 
