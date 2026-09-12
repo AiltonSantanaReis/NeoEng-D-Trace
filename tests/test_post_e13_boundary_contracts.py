@@ -2216,7 +2216,8 @@ def test_hybrid_exporter_numeric_and_path_helpers_fail_closed(value, message):
 
 
 @pytest.mark.parametrize(
-    "value", ["", "../escape", "folder\\file", "C:/absolute", "folder/../x"]
+    "value",
+    ["", "../escape", "folder\\file", "C:/absolute", "C:relative", "folder/../x"],
 )
 def test_hybrid_exporter_rejects_unsafe_relative_paths(value):
     with pytest.raises(HybridCompositionExportError, match="safe relative"):

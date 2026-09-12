@@ -10,7 +10,7 @@ import hashlib
 import json
 import math
 import shutil
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any, Mapping
 
 from src.exporters.composition_export import validate_composition_package
@@ -70,7 +70,13 @@ def _safe_relative_path(value: Any, name: str) -> str:
     if not isinstance(value, str) or not value or "\\" in value:
         raise HybridCompositionExportError(f"{name} must be a safe relative path")
     path = Path(value)
-    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+    windows_path = PureWindowsPath(value)
+    if (
+        path.is_absolute()
+        or windows_path.is_absolute()
+        or windows_path.drive
+        or any(part in {"", ".", ".."} for part in path.parts)
+    ):
         raise HybridCompositionExportError(f"{name} must be a safe relative path")
     return path.as_posix()
 
