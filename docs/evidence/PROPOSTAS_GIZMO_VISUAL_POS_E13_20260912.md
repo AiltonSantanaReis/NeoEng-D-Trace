@@ -1,10 +1,10 @@
 # Evidência — propostas visuais do gizmo pós-E13
 
-**ID:** `EVIDENCE-POS-E13-GIZMO-VISUAL-20260912`  
-**Status:** `PLANNED`  
-**Data:** 2026-09-12  
-**Commit dos vetores:** `c1090f5`  
-**Commit dos previews PNG:** `779513d`  
+**ID:** `EVIDENCE-POS-E13-GIZMO-VISUAL-20260912`
+**Status:** `PLANNED`
+**Data:** 2026-09-12
+**Commit dos vetores:** `c1090f5`
+**Commit dos previews PNG:** `779513d`
 **Integração no editor:** `PENDING_EVIDENCE`
 
 ## Escopo
@@ -70,4 +70,3 @@ feedback de estado sem depender de uma captura estática.
 - [Governança de integridade](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 - [ADR de descontinuação pública do editor independente](../ADR_POS_E13_DEPRECACAO_EDITOR_INDEPENDENTE_20260912.md)
 - [Matriz de limites Godot/Unity](MATRIZ_LIMITES_ENGINES_GODOT_UNITY_POS_E13_20260912.md)
-
