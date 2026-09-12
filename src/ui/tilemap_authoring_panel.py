@@ -69,6 +69,7 @@ def _default_document(tileset: TileSet | None = None) -> TileMapDocument:
 class TileMapCanvas(QFrame):
     """Small interactive canvas that uses the same grid transform as picking."""
 
+    gesture_started = Signal(tuple)
     cell_painted = Signal(tuple, tuple)
     gesture_finished = Signal(tuple, tuple)
 
@@ -122,6 +123,7 @@ class TileMapCanvas(QFrame):
             cell = self._cell_at(event.position().toPoint())
             self._drag_start = cell
             self._last_cell = cell
+            self.gesture_started.emit(cell)
             self.cell_painted.emit(cell, cell)
         super().mousePressEvent(event)
 
@@ -245,6 +247,7 @@ class TileMapAuthoringPanel(QWidget):
         self.document: TileMapDocument | None = None
         self._undo: list[TileEditTransaction] = []
         self._redo: list[TileEditTransaction] = []
+        self._active_gesture_transactions: list[TileEditTransaction] | None = None
         self.current_lang = "en"
         self.title_label = QLabel(self)
         self.summary_label = QLabel(self)
@@ -291,6 +294,7 @@ class TileMapAuthoringPanel(QWidget):
         self.redo_button = QPushButton(self)
         self.canvas = TileMapCanvas(self)
         self._tile_images: dict[str, QImage] = {}
+        self.canvas.gesture_started.connect(self._begin_gesture)
         self.canvas.cell_painted.connect(self._paint_cells)
         self.canvas.gesture_finished.connect(self._finish_gesture)
         self.grid_combo.currentIndexChanged.connect(self._grid_changed)
@@ -562,6 +566,11 @@ class TileMapAuthoringPanel(QWidget):
         self.canvas.update()
         self.status_message.emit(self._status(pt_message, en_message))
 
+    def _begin_gesture(self, _start: tuple[int, int]) -> None:
+        """Start collecting the incremental segments of one pointer gesture."""
+
+        self._active_gesture_transactions = []
+
     def _paint_cells(self, start: tuple[int, int], end: tuple[int, int]) -> None:
         if self.document is None:
             return
@@ -587,14 +596,32 @@ class TileMapAuthoringPanel(QWidget):
                 self._status(f"Edição não aplicada: {exc}", f"Edit not applied: {exc}")
             )
             return
+        if self._active_gesture_transactions is not None:
+            if transaction.deltas:
+                self._active_gesture_transactions.append(transaction)
+                self._refresh_summary()
+                self.canvas.update()
+            return
         self._record_transaction(transaction)
 
     def _finish_gesture(
         self, start: tuple[int, int], end: tuple[int, int]
     ) -> None:
+        pending = self._active_gesture_transactions
+        self._active_gesture_transactions = None
         if self.document is None:
             return
         tool = self.tool_combo.currentData()
+        if tool in {TileTool.PENCIL.value, TileTool.ERASER.value}:
+            if pending:
+                self._record_transaction(
+                    TileEditTransaction.group_applied(pending),
+                )
+            else:
+                self.status_message.emit(
+                    self._status("Nenhuma célula alterada", "No cells changed")
+                )
+            return
         if tool not in {
             TileTool.RECTANGLE.value,
             TileTool.BUCKET.value,
@@ -666,6 +693,7 @@ class TileMapAuthoringPanel(QWidget):
         self.document = _default_document(tileset)
         self._undo.clear()
         self._redo.clear()
+        self._active_gesture_transactions = None
         self._refresh_layers()
         self._refresh_palette()
         self._sync_canvas()
@@ -687,6 +715,7 @@ class TileMapAuthoringPanel(QWidget):
             return
         self._undo.clear()
         self._redo.clear()
+        self._active_gesture_transactions = None
         self.grid_combo.setCurrentIndex(self.grid_combo.findData(self.document.grid))
         self.canvas.set_grid_kind(GridKind(self.document.grid))
         _tileset, images = self._load_saved_tileset()

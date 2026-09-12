@@ -119,6 +119,29 @@ class TileEditTransaction:
     def redo(self) -> tuple[TileCellDelta, ...]:
         return self.apply()
 
+    @classmethod
+    def group_applied(
+        cls, transactions: Iterable["TileEditTransaction"]
+    ) -> "TileEditTransaction":
+        """Wrap already-applied gesture segments as one undoable operation.
+
+        Pointer painting is rendered incrementally, so one drag can produce
+        several transactions before the mouse is released.  The grouped
+        transaction keeps the original deltas (including repeated cells) and
+        starts in the applied state, making one Undo/Redo operate on the whole
+        gesture without changing the live painting behavior.
+        """
+
+        items = tuple(transactions)
+        if not items:
+            raise TileMapError("cannot group an empty transaction sequence")
+        document = items[0].document
+        if any(item.document is not document for item in items):
+            raise TileMapError("transactions must target the same document")
+        grouped = cls(document, (delta for item in items for delta in item.deltas))
+        grouped._applied = True
+        return grouped
+
 
 def _transaction_for_cells(
     document: TileMapDocument,
