@@ -1,10 +1,11 @@
 # Gate de produção — Kit Modular de Floresta 2D
 
 **ID:** `STAGE-POS-E13-MODELS-FOREST-2D-20260912`
-**Status:** `IN_PROGRESS`
+**Status:** `PLANNED`
 **Data de início:** 2026-09-12
 **Baseline protegida:** `checkpoint/canonical-post-e13-pre-gizmo-20260912`
-**Gizmo:** `DEFERRED`
+**Decisão de produto:** produção de modelos adiada até retomada explícita
+**Gizmo:** fora do escopo e adiado
 **Editor canônico:** protegido, sem alteração nesta etapa
 
 ## Objetivo
@@ -73,6 +74,10 @@ Cada master deverá chegar acompanhado de:
    incompatível devem falhar de forma explícita e recuperável.
 
 ## Estado atual do gate
+
+A produção material foi deliberadamente adiada. Este documento permanece como
+plano preparado para retomada; não há autorização para gerar, copiar ou
+promover masters nesta etapa.
 
 - definição do lote: `PASS`;
 - baseline de proteção: `PASS`;

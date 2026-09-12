@@ -1,11 +1,17 @@
 # Prompts de produção — Kit Modular de Floresta 2D
 
 **ID:** `PREP-POS-E13-FOREST-PROMPTS-20260912`
-**Status:** `IN_PROGRESS`
+**Status:** `PLANNED`
 **Execução:** `PREPARATORY_ONLY`
 **Data:** 2026-09-12
-**Gizmo:** `DEFERRED`
+**Gizmo:** fora do escopo e adiado
 **Destino dos masters:** ainda não promovido ao catálogo
+
+## Decisão de adiamento
+
+A geração dos masters foi adiada por decisão de produto. Os prompts ficam
+preservados para uma retomada futura, mas não constituem autorização ou
+evidência de geração nesta etapa.
 
 ## Direção comum
 
