@@ -27,6 +27,14 @@ def test_tilemap_panel_exposes_ptbr_flow_and_persists_user_edits(
     assert panel.title_label.text() == "Tilemap / Terreno"
     assert panel.document is not None
     assert panel.document.populated_cell_count == 3
+    assert len(panel._undo) == 1
+
+    panel.undo()
+    assert panel.document.populated_cell_count == 0
+    assert len(panel._redo) == 1
+
+    panel.redo()
+    assert panel.document.populated_cell_count == 3
     panel.save_map()
     assert panel.map_path.is_file()
     panel.document = None
@@ -126,14 +134,27 @@ def test_tilemap_drag_is_one_undoable_gesture(
 
     assert panel.document is not None
     assert panel.document.populated_cell_count == 3
-    assert len(panel._undo) == 1
 
-    panel.undo()
-    assert panel.document.populated_cell_count == 0
-    assert len(panel._redo) == 1
 
-    panel.redo()
-    assert panel.document.populated_cell_count == 3
+def test_tilemap_actions_fit_narrow_professional_inspector(
+    qt_app: QApplication, tmp_path: Path
+) -> None:
+    panel = TileMapAuthoringPanel(tmp_path)
+    panel.resize(520, 900)
+    panel.show()
+    qt_app.processEvents()
+
+    for widget in (
+        panel.new_button,
+        panel.open_button,
+        panel.save_button,
+        panel.reload_tileset_button,
+        panel.undo_button,
+        panel.redo_button,
+        panel.add_layer_button,
+    ):
+        assert widget.isVisible()
+        assert widget.geometry().right() <= panel.width()
 
 
 def test_tilemap_advanced_tools_preserve_locked_layer_failure(

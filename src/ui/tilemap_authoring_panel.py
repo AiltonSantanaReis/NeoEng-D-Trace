@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
     QFrame,
+    QGridLayout,
     QHBoxLayout,
     QLabel,
     QListWidget,
@@ -331,24 +332,26 @@ class TileMapAuthoringPanel(QWidget):
         self.palette_label = palette_label
         layout.addWidget(palette_label)
         layout.addWidget(self.tile_palette)
-        layer_row = QHBoxLayout()
+        layer_row = QGridLayout()
         layer_label = QLabel(self)
         layer_label.setObjectName("tilemap_layer_label")
         self.layer_label = layer_label
-        layer_row.addWidget(layer_label)
-        layer_row.addWidget(self.layer_combo, 1)
-        layer_row.addWidget(self.add_layer_button)
+        layer_row.addWidget(layer_label, 0, 0)
+        layer_row.addWidget(self.layer_combo, 0, 1)
+        layer_row.addWidget(self.add_layer_button, 1, 0, 1, 2)
+        layer_row.setColumnStretch(1, 1)
         layout.addLayout(layer_row)
-        actions = QHBoxLayout()
-        for button in (
+        actions = QGridLayout()
+        action_buttons = (
             self.new_button,
             self.open_button,
             self.save_button,
             self.reload_tileset_button,
             self.undo_button,
             self.redo_button,
-        ):
-            actions.addWidget(button)
+        )
+        for index, button in enumerate(action_buttons):
+            actions.addWidget(button, index // 3, index % 3)
         layout.addLayout(actions)
         layout.addWidget(self.canvas, 1)
 
