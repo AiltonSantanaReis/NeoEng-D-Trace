@@ -71,8 +71,8 @@
     "head": "dd344f47c1a631729f53a6370759fc449705fd0c",
     "head_role": "POST_E13_FINAL_PRODUCT_SOURCE_CHECKPOINT_HUMAN_REVIEW_PENDING",
     "product_source_commit": "dd344f47c1a631729f53a6370759fc449705fd0c",
-    "documentation_parent_head_at_recording": "9d0dd6e033401e10558985d29946a686857fc878",
-    "documentation_head_policy": "O commit que materializa esta versão do registro é o HEAD atual do Git; não é duplicado no próprio JSON para evitar autorreferência. Verificar com git rev-parse HEAD.",
+    "documentation_base_head": "9d0dd6e033401e10558985d29946a686857fc878",
+    "documentation_head_policy": "O commit que materializa a versão corrente do registro é o HEAD atual do Git; não é duplicado no próprio JSON para evitar autorreferência. Verificar com git rev-parse HEAD. documentation_base_head identifica apenas a base documental usada na auditoria de prontidão.",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
     "status": "TRACKED_CLEAN_POST_E13_FINAL_NATIVE_CHECKPOINT_HUMAN_REVIEW_PENDING"
