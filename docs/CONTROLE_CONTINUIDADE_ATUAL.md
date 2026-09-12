@@ -113,7 +113,10 @@ válido, o pacote `tilemap-runtime/` com payload, origem e atlas vinculados por
 hash; o teste de contrato passou com `8 passed` e o caminho legado sem atlas
 permanece explícito como `not-emitted-legacy-atlas-missing`. O runtime externo
 do híbrido 3D também passou no vertical slice em Godot e Unity, com capturas
-reais e rejeição de drift preservada. O build v4 e o fluxo nativo da composição
+reais e rejeição de drift preservada. A requalificação corrente está em
+`artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/`, com
+relatório SHA-256 `C163E8B103B67700B4F801078079E960B51AEDB9DBD9DDEC3C915984AB1E5F37`.
+O build v4 e o fluxo nativo da composição
 integrada estão documentados em
 `docs/evidence/EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md`, com
 capturas reais, persistência, recuperação, hashes, atlas e payload runtime.

@@ -64,18 +64,24 @@ primeiro frame real é decodificado.
 
 O pacote de entrada usado pelo auditor está em
 [`artifacts/post-e13-hybrid-runtime-fixture-20260912/package`](../../artifacts/post-e13-hybrid-runtime-fixture-20260912/package).
-O manifesto do auditor final está em
-[`hybrid-runtime-engine-audit.json`](../../artifacts/post-e13-hybrid-runtime-engines-final-20260912/hybrid-runtime-engine-audit.json)
+O manifesto autoritativo da requalificação v3 está em
+[`hybrid-runtime-engine-audit.json`](../../artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/hybrid-runtime-engine-audit.json)
 com SHA-256
-`A242BBD65C598141F086EA39B35A037B34184E7C440AC8387FD7A8063F46D712`.
+`C163E8B103B67700B4F801078079E960B51AEDB9DBD9DDEC3C915984AB1E5F37`.
+Ele foi executado com o ambiente oficial e os caminhos explícitos de Godot
+4.7 e Unity 6000.5.7f1; o comando foi:
+
+```text
+.venv311\Scripts\python.exe scripts\audit_post_e13_hybrid_runtime_engines.py --engine both --godot C:\ProgramData\chocolatey\bin\godot.exe --unity "C:\Program Files\Unity\Hub\Editor\6000.5.7f1\Editor\Unity.exe" --package artifacts\post-e13-hybrid-runtime-fixture-20260912\package --output artifacts\post-e13-hybrid-runtime-engines-requalified-v3-20260912
+```
 
 ## Evidência visual real
 
 As imagens foram geradas pelo processo dos engines, não por mock ou chamada
 interna do editor:
 
-- Godot: [`godot-hybrid-runtime-capture.png`](../../artifacts/post-e13-hybrid-runtime-engines-final-20260912/godot-hybrid-runtime-capture.png), 640×360, SHA-256 `0CB98627C0F4EA192FD0A6FDD65728A5FC8D9752D774D371981628C60701DCA8`;
-- Unity: [`unity-hybrid-runtime-capture.png`](../../artifacts/post-e13-hybrid-runtime-engines-final-20260912/unity-hybrid-runtime-capture.png), 640×360, SHA-256 `BE4F668ECFCC516EC834569B34EAD1ED4E89D7591E055F03F42B65C36D1AC0D0`.
+- Godot: [`godot-hybrid-runtime-capture.png`](../../artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/godot-hybrid-runtime-capture.png), 640×360, SHA-256 `0CB98627C0F4EA192FD0A6FDD65728A5FC8D9752D774D371981628C60701DCA8`;
+- Unity: [`unity-hybrid-runtime-capture.png`](../../artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/unity-hybrid-runtime-capture.png), 640×360, SHA-256 `BE4F668ECFCC516EC834569B34EAD1ED4E89D7591E055F03F42B65C36D1AC0D0`.
 
 A captura Godot foi revisada visualmente e contém fundo e triângulo renderizado;
 o auditor mediu `3.600` amostras não pretas. A captura Unity contém o mesmo

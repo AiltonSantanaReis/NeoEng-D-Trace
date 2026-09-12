@@ -44,7 +44,7 @@ o vertical slice híbrido em um editor 3D completo.
 - Requalificação Tilemap nativa no mesmo executável: `artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/manifest.json` — SHA-256 `9D9A060173727C67ADCFC2DE3D8BA19EA671DBE1D9EA35A245BAD8DBAB1CB5F7`; três células pintadas, salvas e reabertas; sidecar SHA-256 `282F5D8B094B1A2BA98BDE991FEECB642239D9F8C05F061F01A2D5185E339FC0`.
 - Requalificação Tileset nativa no mesmo executável: `artifacts/post-e13-tilemap-runtime-tileset-native-requalified-v2-20260912/manifest.json` — SHA-256 `32DD9EDD62A89D8C9DFE6BF5FF8AA2E0788E3779EAC1175A0CCD5CBDCC206CD8`; 300 tiles gerados, salvos e reabertos; sidecar SHA-256 `E052E41671B87914D0B7C4A31783AFE59D5AE91B1B6F8CC2E5C572FEA45D5E06`.
 - Runtime Tilemap: capturas Godot e Unity e relatório negativo de drift em `artifacts/post-e13-tilemap-runtime-engines-final-20260912/`.
-- Runtime híbrido: capturas Godot e Unity e relatório negativo de hash em `artifacts/post-e13-hybrid-runtime-engines-final-20260912/`.
+- Runtime híbrido requalificado: capturas Godot e Unity, casos negativos e relatório hashado em `artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/` — SHA-256 do relatório `C163E8B103B67700B4F801078079E960B51AEDB9DBD9DDEC3C915984AB1E5F37`.
 
 ## Limitações e findings preservados
 

@@ -194,11 +194,11 @@
       "sidecar_sha256": "E0205325768F9D59CF12F30D77AEC4EA3D75BD910E87E33B3526D5033640BF7B",
       "runtime_external_status": "PASS_TECHNICAL",
       "runtime_external_source_commit": "2226598927dbc91a664714069068aceca2dd2fa9",
-      "runtime_external_audit": "artifacts/post-e13-hybrid-runtime-engines-final-20260912/hybrid-runtime-engine-audit.json",
-      "runtime_external_audit_sha256": "A242BBD65C598141F086EA39B35A037B34184E7C440AC8387FD7A8063F46D712",
+      "runtime_external_audit": "artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/hybrid-runtime-engine-audit.json",
+      "runtime_external_audit_sha256": "C163E8B103B67700B4F801078079E960B51AEDB9DBD9DDEC3C915984AB1E5F37",
       "runtime_external_captures": [
-        "artifacts/post-e13-hybrid-runtime-engines-final-20260912/godot-hybrid-runtime-capture.png",
-        "artifacts/post-e13-hybrid-runtime-engines-final-20260912/unity-hybrid-runtime-capture.png"
+        "artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/godot-hybrid-runtime-capture.png",
+        "artifacts/post-e13-hybrid-runtime-engines-requalified-v3-20260912/unity-hybrid-runtime-capture.png"
       ],
       "runtime_external_negative": "Godot e Unity rejeitaram cena normalizada adulterada por mismatch de hash/tamanho antes da criação dos objetos.",
       "evidence": "docs/evidence/EVD_POST_E13_HYBRID_3D_NATIVE_20260911.md",
