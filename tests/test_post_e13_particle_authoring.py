@@ -10,13 +10,16 @@ from src.core.scene_authoring_session import SceneAuthoringSession
 from src.persistence.project_schema import Point3Record
 from src.persistence.scene_authoring_io import serialize_scene_authoring
 from src.persistence.scene_authoring_schema import (
-    SceneParticleSystemRecord,
     SceneLightSocketRecord,
+    SceneParticleSystemRecord,
     SceneVfxSocketRecord,
 )
 from src.runtime.particles import ParticleEmitterRecord, ParticleSimulation
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
-from src.ui.scene_authoring_viewport import SceneAuthoringViewport, SceneParticleGraphicsItem
+from src.ui.scene_authoring_viewport import (
+    SceneAuthoringViewport,
+    SceneParticleGraphicsItem,
+)
 from tests.test_e08_fx_authoring import _document
 
 
@@ -135,7 +138,10 @@ def test_inspector_can_create_and_edit_authored_vfx_in_portuguese(
         inspector.particle_emission_rate.setValue(48.0)
         inspector._update_socket()
         assert session.document.particle_systems[0].emitters[0].emission_rate == 48.0
-        assert inspector._field_labels["particle_emission_rate"].text() == "Taxa de emissão"
+        assert (
+            inspector._field_labels["particle_emission_rate"].text()
+            == "Taxa de emissão"
+        )
         assert inspector.particle_preview_button.text() == "Reproduzir partículas"
     finally:
         inspector.close()
@@ -169,9 +175,7 @@ def test_switching_existing_socket_to_vfx_enables_native_add_controls(
         inspector.socket_effect_id.setText("fountain")
         inspector._add_socket()
         socket = next(
-            item
-            for item in session.document.sockets
-            if item.id == "fountain-socket"
+            item for item in session.document.sockets if item.id == "fountain-socket"
         )
         assert isinstance(socket, SceneVfxSocketRecord)
         assert socket.enabled

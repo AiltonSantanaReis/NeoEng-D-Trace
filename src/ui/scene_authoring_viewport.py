@@ -284,11 +284,7 @@ class SceneTransformGizmo(QGraphicsObject):
             QPen(self._color("translate_y", self._hover_mode, "#65e59a"), 4.0)
         )
         painter.drawLine(QPointF(0.0, 0.0), QPointF(0.0, -42.0))
-        painter.setPen(
-            QPen(
-                self._color("rotate", self._hover_mode, "#c6d8e6"), 2.5
-            )
-        )
+        painter.setPen(QPen(self._color("rotate", self._hover_mode, "#c6d8e6"), 2.5))
         painter.drawEllipse(QRectF(-48.0, -48.0, 96.0, 96.0))
         painter.setBrush(QBrush(self._color("translate", self._hover_mode, "#ecf8ff")))
         painter.setPen(QPen(QColor("#17384d"), 2.0))
@@ -297,12 +293,16 @@ class SceneTransformGizmo(QGraphicsObject):
         painter.setPen(QPen(QColor("#4a3413"), 1.5))
         painter.drawRoundedRect(QRectF(32.0, 32.0, 14.0, 14.0), 3.0, 3.0)
         painter.setPen(QPen(QColor("#ff9a9f"), 1.0))
-        painter.setBrush(QBrush(self._color("translate_x", self._hover_mode, "#ff6b72")))
+        painter.setBrush(
+            QBrush(self._color("translate_x", self._hover_mode, "#ff6b72"))
+        )
         painter.drawPolygon(
             QPolygonF([QPointF(42.0, 0.0), QPointF(32.0, -6.0), QPointF(32.0, 6.0)])
         )
         painter.setPen(QPen(QColor("#a6f3c5"), 1.0))
-        painter.setBrush(QBrush(self._color("translate_y", self._hover_mode, "#65e59a")))
+        painter.setBrush(
+            QBrush(self._color("translate_y", self._hover_mode, "#65e59a"))
+        )
         painter.drawPolygon(
             QPolygonF([QPointF(0.0, -42.0), QPointF(-6.0, -32.0), QPointF(6.0, -32.0)])
         )
@@ -428,15 +428,24 @@ class SceneCameraGuide(QGraphicsObject):
         if not self.boundingRect().contains(point):
             return None
         rotation_handle = self._rotation_handle()
-        if math.hypot(point.x() - rotation_handle.x(), point.y() - rotation_handle.y()) <= 13.0:
+        if (
+            math.hypot(point.x() - rotation_handle.x(), point.y() - rotation_handle.y())
+            <= 13.0
+        ):
             return "rotate"
         if math.hypot(point.x(), point.y()) <= 16.0:
             return "translate"
         half_width = self._frame_width / 2.0
         half_height = self._frame_height / 2.0
         edge_tolerance = 9.0
-        on_vertical = abs(abs(point.x()) - half_width) <= edge_tolerance and abs(point.y()) <= half_height + edge_tolerance
-        on_horizontal = abs(abs(point.y()) - half_height) <= edge_tolerance and abs(point.x()) <= half_width + edge_tolerance
+        on_vertical = (
+            abs(abs(point.x()) - half_width) <= edge_tolerance
+            and abs(point.y()) <= half_height + edge_tolerance
+        )
+        on_horizontal = (
+            abs(abs(point.y()) - half_height) <= edge_tolerance
+            and abs(point.x()) <= half_width + edge_tolerance
+        )
         if on_vertical or on_horizontal:
             return "translate"
         return None
@@ -451,7 +460,12 @@ class SceneCameraGuide(QGraphicsObject):
         painter.setBrush(QBrush(QColor(34, 184, 214, 14)))
         painter.setPen(QPen(QColor(45, 211, 235, 220), 2.0, Qt.PenStyle.DashLine))
         painter.drawRect(frame)
-        safe = frame.adjusted(self._frame_width * 0.05, self._frame_height * 0.05, -self._frame_width * 0.05, -self._frame_height * 0.05)
+        safe = frame.adjusted(
+            self._frame_width * 0.05,
+            self._frame_height * 0.05,
+            -self._frame_width * 0.05,
+            -self._frame_height * 0.05,
+        )
         painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.setPen(QPen(QColor(169, 234, 242, 150), 1.0, Qt.PenStyle.DotLine))
         painter.drawRect(safe)
@@ -967,7 +981,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self.current_lang = language if language in {"en", "pt"} else "en"
         if self._camera_guide is not None:
             self._camera_guide.set_label(
-                self._text("CÂMERA · ARRASTE PARA POSICIONAR", "CAMERA · DRAG TO POSITION")
+                self._text(
+                    "CÂMERA · ARRASTE PARA POSICIONAR", "CAMERA · DRAG TO POSITION"
+                )
             )
         self.viewport().update()
 
@@ -1972,7 +1988,11 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             self.status_message.emit(
                 self._text(
-                    "Câmera reposicionada" if changed else "Nenhuma alteração na câmera",
+                    (
+                        "Câmera reposicionada"
+                        if changed
+                        else "Nenhuma alteração na câmera"
+                    ),
                     "Camera repositioned" if changed else "No camera changes",
                 )
             )
@@ -1982,7 +2002,11 @@ class SceneAuthoringViewport(QGraphicsView):
 
     def _socket_record(self, socket_id: str):
         return next(
-            (item for item in getattr(self.session.document, "sockets", ()) if item.id == socket_id),
+            (
+                item
+                for item in getattr(self.session.document, "sockets", ())
+                if item.id == socket_id
+            ),
             None,
         )
 
@@ -2044,7 +2068,11 @@ class SceneAuthoringViewport(QGraphicsView):
             changed = self.session.update_socket_position(socket_id, position)
             self.status_message.emit(
                 self._text(
-                    "Efeito reposicionado" if changed else "Nenhuma alteração no efeito",
+                    (
+                        "Efeito reposicionado"
+                        if changed
+                        else "Nenhuma alteração no efeito"
+                    ),
                     "Effect repositioned" if changed else "No effect changes",
                 )
             )
@@ -2099,7 +2127,11 @@ class SceneAuthoringViewport(QGraphicsView):
             )
             self.status_message.emit(
                 self._text(
-                    "Socket orientado" if changed else "Nenhuma alteração na orientação",
+                    (
+                        "Socket orientado"
+                        if changed
+                        else "Nenhuma alteração na orientação"
+                    ),
                     "Socket oriented" if changed else "No orientation changes",
                 )
             )
@@ -3344,7 +3376,9 @@ class SceneAuthoringViewport(QGraphicsView):
             label = f"Z{index:02d} {layer.name} · {translation:.0f}%"
             anchor = screen_points[0]
             label_width = min(236.0, max(134.0, 8.0 * len(label) + 22.0))
-            label_x = min(max(8.0, anchor.x() + 6.0), viewport_width - label_width - 8.0)
+            label_x = min(
+                max(8.0, anchor.x() + 6.0), viewport_width - label_width - 8.0
+            )
             label_y = max(label_top + index * 24.0, anchor.y() + 8.0)
             if previous_label is not None and label_y < previous_label.bottom() + 4.0:
                 label_y = previous_label.bottom() + 4.0

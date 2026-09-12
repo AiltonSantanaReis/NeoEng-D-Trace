@@ -93,9 +93,7 @@ class GroupsPanel(QWidget):
             self.translations[self.current_lang]["remove_selected"], self
         )
         self.btn_up = QPushButton(self.translations[self.current_lang]["up"], self)
-        self.btn_down = QPushButton(
-            self.translations[self.current_lang]["down"], self
-        )
+        self.btn_down = QPushButton(self.translations[self.current_lang]["down"], self)
         self.btn_vis = QPushButton(
             self.translations[self.current_lang]["toggle_vis"], self
         )

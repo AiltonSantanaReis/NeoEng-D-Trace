@@ -11,12 +11,11 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import QTimer, Qt, Signal
+from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtGui import QAction, QActionGroup, QKeySequence
 from PySide6.QtWidgets import (
     QComboBox,
     QDockWidget,
-    QTabWidget,
     QFileDialog,
     QHBoxLayout,
     QLabel,
@@ -28,6 +27,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QSplitter,
     QStackedWidget,
+    QTabWidget,
     QToolBar,
     QToolButton,
     QVBoxLayout,
@@ -36,10 +36,10 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.scenario_authoring import ScenarioAuthoringState
+from src.core.scene_asset_library import prepare_scene_asset, resolve_scene_asset
 from src.core.scene_authoring_bridge import professional_document_from_scene
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
-from src.core.scene_asset_library import prepare_scene_asset, resolve_scene_asset
 from src.core.scene_render_plan import build_scene_render_plan
 from src.exporters.composition_export import (
     CompositionExportError,
@@ -72,6 +72,7 @@ from src.persistence.scene_authoring_schema import (
     upgrade_scene_authoring_document,
 )
 from src.ui.entity_prefab_panel import EntityPrefabPanel
+from src.ui.hybrid_scene_viewport import HybridSceneViewport
 from src.ui.navmesh_panel import NavMeshPanel
 from src.ui.scenario_collider_panel import ScenarioColliderPanel
 from src.ui.scenario_panel import ScenarioPanel
@@ -80,11 +81,10 @@ from src.ui.scene_authoring_group_stack import SceneAuthoringGroupStack
 from src.ui.scene_authoring_inspector import SceneAuthoringInspector
 from src.ui.scene_authoring_layer_stack import SceneAuthoringLayerStack
 from src.ui.scene_authoring_viewport import SceneAuthoringViewport
+from src.ui.scene_sequence_panel import SceneSequencePanel
 from src.ui.tilemap_authoring_panel import TileMapAuthoringPanel
 from src.ui.tileset_authoring_panel import TilesetAuthoringPanel
 from src.ui.vector_contour_panel import VectorContourPanel
-from src.ui.scene_sequence_panel import SceneSequencePanel
-from src.ui.hybrid_scene_viewport import HybridSceneViewport
 
 
 class ScenarioEditorWindow(QMainWindow):
@@ -946,8 +946,7 @@ class ScenarioEditorWindow(QMainWindow):
                     "Use Recuperar Último Válido\n"
                     "para restaurar a última cópia válida."
                     if self.current_lang == "pt"
-                    else "Use Recover Last Valid\n"
-                    "to restore the last valid copy."
+                    else "Use Recover Last Valid\n" "to restore the last valid copy."
                 )
                 repair_hint = (
                     "Corrija o arquivo do cenário\nantes de recarregar."
@@ -1130,11 +1129,11 @@ class ScenarioEditorWindow(QMainWindow):
     def _open_project_hint(self) -> None:
         self.status_label.setText(
             (
-                "Abra e salve um projeto no editor principal antes de editar um cenário, "
-                "ou escolha Novo Cenário para começar sem um projeto."
+                "Abra e salve um projeto no editor principal antes de editar um "
+                "cenário, ou escolha Novo Cenário para começar sem um projeto."
                 if self.current_lang == "pt"
-                else "Open and save a project in the main editor before authoring a scenario, "
-                "or choose New Scenario to start without one."
+                else "Open and save a project in the main editor before authoring "
+                "a scenario, or choose New Scenario to start without one."
             )
         )
 
@@ -1493,7 +1492,8 @@ class ScenarioEditorWindow(QMainWindow):
         if self.current_lang == "pt":
             self.professional_empty.setText(
                 "Viewport profissional de cenários\n\n"
-                "Escolha Novo Cenário para começar em uma cena vazia ou abra um projeto salvo."
+                "Escolha Novo Cenário para começar em uma cena vazia ou abra um "
+                "projeto salvo."
             )
             self.professional_inspector_empty.setText(
                 "Nenhuma cena selecionada.\n\n"
@@ -1502,7 +1502,8 @@ class ScenarioEditorWindow(QMainWindow):
         else:
             self.professional_empty.setText(
                 "Professional scene viewport\n\n"
-                "Choose New Scenario to start from an empty scene, or load a saved project."
+                "Choose New Scenario to start from an empty scene, or load a saved "
+                "project."
             )
             self.professional_inspector_empty.setText(
                 "No scene selected yet.\n\n"

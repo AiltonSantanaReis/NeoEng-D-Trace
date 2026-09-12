@@ -18,9 +18,9 @@ from src.core.scene_lighting import (
     shade_color,
 )
 from src.exporters.scene_authoring_export import build_scene_authoring_export
-from src.persistence.scene_authoring_io import serialize_scene_authoring
 from src.persistence.project_schema import Point3Record
 from src.persistence.scenario_schema import ProjectReferenceRecord
+from src.persistence.scene_authoring_io import serialize_scene_authoring
 from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV1,
     SceneAuthoringDocumentV2,

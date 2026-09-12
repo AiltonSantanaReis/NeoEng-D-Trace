@@ -27,8 +27,8 @@ from src.exporters.tilemap_runtime_export import (
     validate_tilemap_runtime_payload,
 )
 from src.persistence.navmesh_io import load_navmesh
-from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.persistence.scenario_collider_io import load_colliders
+from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.persistence.tilemap_io import load_tilemap
 
 COMPOSITION_FORMAT_ID = "neoeng-d-trace-composition-package"

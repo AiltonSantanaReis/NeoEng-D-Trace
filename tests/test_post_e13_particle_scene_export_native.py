@@ -8,14 +8,12 @@ from src.exporters.scene_authoring_export import (
     SceneAuthoringExportError,
     build_scene_authoring_export,
 )
-from tests.test_post_e13_particle_authoring import _system
 from tests.test_e08_fx_authoring import _document
+from tests.test_post_e13_particle_authoring import _system
 
 
 def _authored_document():
-    return _document().model_copy(
-        update={"particle_systems": [_system("spark-fx")]}
-    )
+    return _document().model_copy(update={"particle_systems": [_system("spark-fx")]})
 
 
 def test_native_scene_exports_preserve_authored_particle_systems() -> None:
@@ -51,8 +49,8 @@ def test_native_importers_materialize_particle_components_from_scene_exports() -
         root / "integrations/godot/addons/neoeng_d_trace/runtime_particles.gd"
     ).read_text(encoding="utf-8")
     unity = (
-        root
-        / "integrations/unity/package/com.neoeng.dtrace/Editor/ProfessionalSceneImportGenerator.cs"
+        root / "integrations/unity/package/com.neoeng.dtrace/Editor/"
+        "ProfessionalSceneImportGenerator.cs"
     ).read_text(encoding="utf-8")
 
     assert "particle_systems" in godot

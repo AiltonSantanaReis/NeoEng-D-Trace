@@ -10,7 +10,9 @@ from src.persistence.project_schema import StrictProjectModel
 class SceneClip(StrictProjectModel):
     id: str = Field(min_length=1, max_length=128)
     name: str = Field(min_length=1, max_length=128)
-    kind: Literal["camera", "motion", "light", "rain", "snow", "dust", "fire", "audio", "text"]
+    kind: Literal[
+        "camera", "motion", "light", "rain", "snow", "dust", "fire", "audio", "text"
+    ]
     start: float = Field(default=0.0, ge=0, le=86400, allow_inf_nan=False)
     duration: float = Field(default=5.0, gt=0, le=86400, allow_inf_nan=False)
     enabled: bool = True
@@ -59,11 +61,15 @@ class SceneSequence(StrictProjectModel):
             if clip.start + clip.duration > self.duration + 1e-8:
                 raise ValueError("clip exceeds sequence duration")
         # Two simultaneous writers on a transform are ambiguous, not last-write-wins.
-        writers = [c for c in self.clips if c.enabled and c.kind in {"camera", "motion"}]
+        writers = [
+            c for c in self.clips if c.enabled and c.kind in {"camera", "motion"}
+        ]
         for index, clip in enumerate(writers):
-            for other in writers[index + 1:]:
+            for other in writers[index + 1 :]:
                 if (clip.kind, clip.target_id) != (other.kind, other.target_id):
                     continue
-                if max(clip.start, other.start) < min(clip.start + clip.duration, other.start + other.duration):
+                if max(clip.start, other.start) < min(
+                    clip.start + clip.duration, other.start + other.duration
+                ):
                     raise ValueError("overlapping transform clips share a target")
         return self

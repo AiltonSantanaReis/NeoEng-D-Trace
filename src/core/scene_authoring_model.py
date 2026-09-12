@@ -126,7 +126,7 @@ class SceneAuthoringModel:
         if not isinstance(self.document, SceneAuthoringDocumentV2):
             raise ValueError("entity authoring requires scene schema V2")
         document = self.document
-        entity = self._entity(entity_id)
+        self._entity(entity_id)
         if parent_entity_id == entity_id:
             raise ValueError("entity cannot parent itself")
         if parent_entity_id is not None:
@@ -315,7 +315,6 @@ class SceneAuthoringModel:
         if not isinstance(self.document, SceneAuthoringDocumentV2):
             raise ValueError("material authoring requires scene schema V2")
         self._assert_editable(object_id)
-        item = self._object(object_id)
         objects = [
             (
                 item.model_copy(update={"material": material})

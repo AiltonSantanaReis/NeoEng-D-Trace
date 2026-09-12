@@ -1,12 +1,15 @@
 """Deterministic sequence evaluation, independent of wall clock and UI."""
 
-from dataclasses import dataclass
 import math
 import random
+from dataclasses import dataclass
 
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import (
-    SceneAuthoringDocumentV2, SceneCameraAuthoringRecord, SceneLightSocketRecord, SceneMaterialAuthoringRecord,
+    SceneAuthoringDocumentV2,
+    SceneCameraAuthoringRecord,
+    SceneLightSocketRecord,
+    SceneMaterialAuthoringRecord,
 )
 from src.persistence.scene_sequence_schema import SceneClip, SceneSequence
 
@@ -19,20 +22,32 @@ def set_sequence(session, sequence: SceneSequence) -> bool:
     candidate = SceneAuthoringDocumentV2.model_validate(
         {**document.model_dump(), "sequence": sequence.model_dump()}, strict=True
     )
-    return session.apply(lambda: setattr(session.model, "document", candidate), "Edit sequence")
+    return session.apply(
+        lambda: setattr(session.model, "document", candidate), "Edit sequence"
+    )
 
 
 def sequence_time(elapsed: float, sequence: SceneSequence) -> float:
     if not math.isfinite(elapsed) or elapsed < 0:
         raise ValueError("time must be finite and non-negative")
-    return elapsed % sequence.duration if sequence.loop else min(elapsed, sequence.duration)
+    return (
+        elapsed % sequence.duration
+        if sequence.loop
+        else min(elapsed, sequence.duration)
+    )
 
 
 def active_clips(sequence: SceneSequence, time: float) -> tuple[SceneClip, ...]:
-    return tuple(c for c in sequence.clips if c.enabled and c.start <= time < c.start + c.duration)
+    return tuple(
+        c
+        for c in sequence.clips
+        if c.enabled and c.start <= time < c.start + c.duration
+    )
 
 
-def evaluate_sequence(document: SceneAuthoringDocumentV2, time: float) -> SceneAuthoringDocumentV2:
+def evaluate_sequence(
+    document: SceneAuthoringDocumentV2, time: float
+) -> SceneAuthoringDocumentV2:
     """Evaluate absolute time; authoring objects, camera and history stay intact.
 
     Transform endpoints hold after the clip ends. Text, audio, light and particles
@@ -52,10 +67,15 @@ def evaluate_sequence(document: SceneAuthoringDocumentV2, time: float) -> SceneA
         phase = min(1.0, (time - clip.start) / clip.duration)
         # Smoothstep avoids velocity jumps at camera/cutscene boundaries.
         phase = phase * phase * (3 - 2 * phase)
-        lerp = lambda a, b: a + (b - a) * phase
+
+        def lerp(a: float, b: float) -> float:
+            return a + (b - a) * phase
+
         if clip.kind == "camera":
             camera = SceneCameraAuthoringRecord(
-                position=PointRecord(x=lerp(clip.x, clip.end_x), y=lerp(clip.y, clip.end_y)),
+                position=PointRecord(
+                    x=lerp(clip.x, clip.end_x), y=lerp(clip.y, clip.end_y)
+                ),
                 zoom=lerp(clip.zoom, clip.end_zoom),
                 rotation=lerp(clip.rotation, clip.end_rotation),
             )
@@ -63,23 +83,52 @@ def evaluate_sequence(document: SceneAuthoringDocumentV2, time: float) -> SceneA
             for index, obj in enumerate(objects):
                 if obj.id != clip.target_id:
                     continue
-                transform = obj.transform.model_copy(update={
-                    "position": Point3Record(x=lerp(clip.x, clip.end_x), y=lerp(clip.y, clip.end_y), z=obj.transform.position.z),
-                    "rotation": Point3Record(x=obj.transform.rotation.x, y=obj.transform.rotation.y, z=lerp(clip.rotation, clip.end_rotation)),
-                    "scale": Point3Record(x=lerp(clip.zoom, clip.end_zoom), y=lerp(clip.zoom, clip.end_zoom), z=obj.transform.scale.z),
-                })
-                material = (obj.material or SceneMaterialAuthoringRecord()).model_copy(update={"opacity": lerp(clip.opacity, clip.end_opacity)})
-                objects[index] = obj.model_copy(update={"transform": transform, "material": material})
-        elif clip.kind == "light" and time < clip.start + clip.duration and clip.intensity > 0:
+                transform = obj.transform.model_copy(
+                    update={
+                        "position": Point3Record(
+                            x=lerp(clip.x, clip.end_x),
+                            y=lerp(clip.y, clip.end_y),
+                            z=obj.transform.position.z,
+                        ),
+                        "rotation": Point3Record(
+                            x=obj.transform.rotation.x,
+                            y=obj.transform.rotation.y,
+                            z=lerp(clip.rotation, clip.end_rotation),
+                        ),
+                        "scale": Point3Record(
+                            x=lerp(clip.zoom, clip.end_zoom),
+                            y=lerp(clip.zoom, clip.end_zoom),
+                            z=obj.transform.scale.z,
+                        ),
+                    }
+                )
+                material = (obj.material or SceneMaterialAuthoringRecord()).model_copy(
+                    update={"opacity": lerp(clip.opacity, clip.end_opacity)}
+                )
+                objects[index] = obj.model_copy(
+                    update={"transform": transform, "material": material}
+                )
+        elif (
+            clip.kind == "light"
+            and time < clip.start + clip.duration
+            and clip.intensity > 0
+        ):
             intensity = clip.intensity
             if clip.loop:
                 intensity *= 0.65 + 0.35 * math.cos((time - clip.start) * math.tau / 2)
-            sockets.append(SceneLightSocketRecord(
-                id=f"sequence_{clip.id}", layer_id=clip.layer_id or document.layers[0].id,
-                position=Point3Record(x=clip.x, y=clip.y, z=0),
-                color=clip.color, intensity=intensity, radius=128 * clip.zoom,
-            ))
-    return result.model_copy(update={"camera": camera, "objects": objects, "sockets": sockets})
+            sockets.append(
+                SceneLightSocketRecord(
+                    id=f"sequence_{clip.id}",
+                    layer_id=clip.layer_id or document.layers[0].id,
+                    position=Point3Record(x=clip.x, y=clip.y, z=0),
+                    color=clip.color,
+                    intensity=intensity,
+                    radius=128 * clip.zoom,
+                )
+            )
+    return result.model_copy(
+        update={"camera": camera, "objects": objects, "sockets": sockets}
+    )
 
 
 @dataclass(frozen=True)
@@ -114,10 +163,25 @@ def particles_at(clip: SceneClip, time: float) -> tuple[SequenceParticle, ...]:
         if clip.kind == "rain":
             x, y, size = initial_x + age * 18, -240 + age / lifetime * 480, 7
         elif clip.kind == "snow":
-            x, y, size = initial_x + math.sin(age * 2 + offset) * 15, -240 + age / lifetime * 480, 3
+            x, y, size = (
+                initial_x + math.sin(age * 2 + offset) * 15,
+                -240 + age / lifetime * 480,
+                3,
+            )
         elif clip.kind == "fire":
             x, y, size = initial_x * 0.12 * (1 - age / lifetime), -age * 65, 5
         else:
-            x, y, size = initial_x + age * 12, initial_y + math.sin(age + offset) * 15, 2
-        states.append(SequenceParticle(clip.x + x * clip.zoom, clip.y + y * clip.zoom, size * clip.zoom, 1 - age / lifetime))
+            x, y, size = (
+                initial_x + age * 12,
+                initial_y + math.sin(age + offset) * 15,
+                2,
+            )
+        states.append(
+            SequenceParticle(
+                clip.x + x * clip.zoom,
+                clip.y + y * clip.zoom,
+                size * clip.zoom,
+                1 - age / lifetime,
+            )
+        )
     return tuple(states)

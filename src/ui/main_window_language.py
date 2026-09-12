@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 ACTION_TOOLTIP_KEYS = {
     "open_project_action": "open_project",
     "open_image_action": "open_image",

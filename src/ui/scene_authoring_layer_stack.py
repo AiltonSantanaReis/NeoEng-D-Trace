@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import Qt, Signal, QSize
+from PySide6.QtCore import QSize, Qt, Signal
 from PySide6.QtWidgets import (
     QCheckBox,
     QHBoxLayout,
@@ -14,6 +14,9 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+from src.core.scene_authoring_session import SceneAuthoringSession
+from src.persistence.scene_authoring_schema import SceneLayerAuthoringRecord
 
 
 class LayerFrameList(QListWidget):
@@ -32,7 +35,9 @@ class LayerFrameList(QListWidget):
 
     def dragMoveEvent(self, event):
         item = self.itemAt(event.position().toPoint())
-        if item is not None and event.mimeData().hasFormat("application/x-neoeng-scene-asset"):
+        if item is not None and event.mimeData().hasFormat(
+            "application/x-neoeng-scene-asset"
+        ):
             self.setCurrentItem(item)
             event.acceptProposedAction()
         else:
@@ -40,15 +45,16 @@ class LayerFrameList(QListWidget):
 
     def dropEvent(self, event):
         item = self.itemAt(event.position().toPoint())
-        if item is not None and event.mimeData().hasFormat("application/x-neoeng-scene-asset"):
-            asset_id = bytes(event.mimeData().data("application/x-neoeng-scene-asset")).decode("utf-8")
+        if item is not None and event.mimeData().hasFormat(
+            "application/x-neoeng-scene-asset"
+        ):
+            asset_id = bytes(
+                event.mimeData().data("application/x-neoeng-scene-asset")
+            ).decode("utf-8")
             self.asset_dropped.emit(asset_id, item.data(Qt.ItemDataRole.UserRole))
             event.acceptProposedAction()
         else:
             event.ignore()
-
-from src.core.scene_authoring_session import SceneAuthoringSession
-from src.persistence.scene_authoring_schema import SceneLayerAuthoringRecord
 
 
 class SceneAuthoringLayerStack(QWidget):
@@ -119,7 +125,9 @@ class SceneAuthoringLayerStack(QWidget):
     def update_language(self, language: str) -> None:
         is_pt = language == "pt"
         self.current_lang = language
-        self.move_selection_button.setText("Mover seleção para a moldura" if is_pt else "Move selection to frame")
+        self.move_selection_button.setText(
+            "Mover seleção para a moldura" if is_pt else "Move selection to frame"
+        )
         self.title.setText("Pilha de Camadas" if is_pt else "Layer Stack")
         self.order_hint.setText(
             "Ordem de renderização: Trás → Frente"
@@ -172,13 +180,30 @@ class SceneAuthoringLayerStack(QWidget):
         layer_id = self._current_id()
         if layer_id is None:
             return
+
         def operation():
-            layer = next(item for item in self.session.document.layers if item.id == layer_id)
+            layer = next(
+                item for item in self.session.document.layers if item.id == layer_id
+            )
             if layer.locked:
-                raise PermissionError("Desbloqueie a moldura de destino" if self.current_lang == "pt" else "Unlock the destination frame")
+                raise PermissionError(
+                    "Desbloqueie a moldura de destino"
+                    if self.current_lang == "pt"
+                    else "Unlock the destination frame"
+                )
             for object_id in self.session.selection.ids:
                 self.session.model.assert_editable(object_id)
-            self.session.model._replace(objects=[item.model_copy(update={"layer_id": layer_id}) if item.id in self.session.selection.ids else item for item in self.session.document.objects])
+            self.session.model._replace(
+                objects=[
+                    (
+                        item.model_copy(update={"layer_id": layer_id})
+                        if item.id in self.session.selection.ids
+                        else item
+                    )
+                    for item in self.session.document.objects
+                ]
+            )
+
         self._run(lambda: self.session.apply(operation, "Move objects to depth frame"))
 
     def _rename_current(self) -> None:
@@ -206,7 +231,13 @@ class SceneAuthoringLayerStack(QWidget):
             layer_id = f"scenario_layer_{index}"
         self._run(
             lambda: self.session.add_layer(
-                SceneLayerAuthoringRecord(id=layer_id, name=f"{'Moldura' if self.current_lang == 'pt' else 'Frame'} {index}")
+                SceneLayerAuthoringRecord(
+                    id=layer_id,
+                    name=(
+                        f"{'Moldura' if self.current_lang == 'pt' else 'Frame'} "
+                        f"{index}"
+                    ),
+                )
             )
         )
 
@@ -232,9 +263,22 @@ class SceneAuthoringLayerStack(QWidget):
         self.layer_list.clear()
         selected_row = -1
         for index, layer in enumerate(self.session.document.layers):
-            suffix = ("  [bloqueada]" if self.current_lang == "pt" else "  [locked]") if layer.locked else ""
-            parallax = next((p for p in getattr(self.session.document, "parallax_layers", ()) if p.layer_id == layer.id), None)
-            count = sum(obj.layer_id == layer.id for obj in self.session.document.objects)
+            suffix = (
+                ("  [bloqueada]" if self.current_lang == "pt" else "  [locked]")
+                if layer.locked
+                else ""
+            )
+            parallax = next(
+                (
+                    p
+                    for p in getattr(self.session.document, "parallax_layers", ())
+                    if p.layer_id == layer.id
+                ),
+                None,
+            )
+            count = sum(
+                obj.layer_id == layer.id for obj in self.session.document.objects
+            )
             depth = parallax.depth if parallax else 0
             if self.current_lang == "pt":
                 object_label = "objeto" if count == 1 else "objetos"

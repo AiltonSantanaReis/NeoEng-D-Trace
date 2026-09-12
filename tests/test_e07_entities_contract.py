@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import pytest
 
-from src.persistence.project_schema import Point3Record, PointRecord
-from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.prefab_authoring import (
     create_prefab,
     detach_prefab_instance,
@@ -12,8 +10,13 @@ from src.core.prefab_authoring import (
     set_prefab_override,
     update_prefab_sources,
 )
+from src.core.scene_authoring_model import SceneAuthoringModel
+from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scenario_schema import ProjectReferenceRecord
-from src.persistence.scene_authoring_io import load_scene_authoring, save_scene_authoring
+from src.persistence.scene_authoring_io import (
+    load_scene_authoring,
+    save_scene_authoring,
+)
 from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocumentV2,
     SceneAuthoringMetadataRecord,
@@ -22,7 +25,6 @@ from src.persistence.scene_authoring_schema import (
     SceneLayerAuthoringRecord,
     SceneTransformRecord,
 )
-
 
 SHA = "1" * 64
 
@@ -73,7 +75,9 @@ def _entity(
 def test_e07_entities_roundtrip_preserves_identity_components_and_instance_source(
     tmp_path,
 ):
-    document = _document(_entity("prefab-source"), _entity("hero", instance_of="prefab-source"))
+    document = _document(
+        _entity("prefab-source"), _entity("hero", instance_of="prefab-source")
+    )
     path = tmp_path / "scene.ndtscene.json"
 
     save_scene_authoring(document, path)

@@ -7,13 +7,21 @@ import pytest
 from PIL import Image, ImageDraw
 
 from src.core.navmesh_2d import NavMeshSource, NavObstacle, NavRegion
+from src.core.scenario_colliders import Collider, ColliderDocument, ColliderKind
+from src.core.tilemap_model import (
+    TileCell,
+    TileDefinition,
+    TileLayer,
+    TileMapDocument,
+    TileSet,
+)
+from src.exporters.animation_batch import export_animation_frames
 from src.exporters.composition_export import (
     CompositionExportError,
     CompositionInputs,
     build_composition_package,
     validate_composition_package,
 )
-from src.exporters.animation_batch import export_animation_frames
 from src.exporters.hybrid_composition_export import (
     HybridCompositionExportError,
     build_hybrid_composition_package,
@@ -21,10 +29,11 @@ from src.exporters.hybrid_composition_export import (
     validate_hybrid_runtime_manifest,
     validate_hybrid_scene,
 )
+from src.launcher import build_parser, run_headless
 from src.persistence.navmesh_io import save_navmesh
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scenario_collider_io import save_colliders
-from src.core.scenario_colliders import Collider, ColliderDocument, ColliderKind
+from src.persistence.scenario_schema import ProjectReferenceRecord
 from src.persistence.scene_authoring_io import save_scene_authoring
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
@@ -34,15 +43,6 @@ from src.persistence.scene_authoring_schema import (
     SceneObjectAuthoringRecord,
     SceneTransformRecord,
 )
-from src.persistence.scenario_schema import ProjectReferenceRecord
-from src.core.tilemap_model import (
-    TileCell,
-    TileDefinition,
-    TileLayer,
-    TileMapDocument,
-    TileSet,
-)
-from src.launcher import build_parser, run_headless
 from src.persistence.tilemap_io import save_tilemap
 
 

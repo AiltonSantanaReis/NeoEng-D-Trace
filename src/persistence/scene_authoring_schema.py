@@ -18,10 +18,10 @@ from pydantic import Field, field_validator, model_validator
 from src.core.app_identity import APP_DISPLAY_NAME, APP_VERSION
 from src.core.operational_limits import (
     MAX_GROUP_MEMBERS,
+    MAX_POLYGON_POINTS,
     MAX_PROJECT_GROUPS,
     MAX_PROJECT_LAYERS,
     MAX_PROJECT_OBJECTS,
-    MAX_POLYGON_POINTS,
 )
 from src.core.polygon_validation import is_valid_polygon
 from src.persistence.project_schema import (
@@ -635,7 +635,9 @@ def default_scene_authoring_metadata(
     )
 
 
-from src.persistence.scene_sequence_schema import SceneSequence
+# Imported here intentionally: scene_sequence imports this schema, so moving
+# the type import to the module header would reintroduce a circular import.
+from src.persistence.scene_sequence_schema import SceneSequence  # noqa: E402
 
 
 class SceneAuthoringDocumentV2(StrictProjectModel):
@@ -649,7 +651,9 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         "neoeng-d-trace-scene-authoring"
     )
     schema_version: Literal[2] = 2
-    sequence: SceneSequence | None = Field(default=None, exclude_if=lambda value: value is None)
+    sequence: SceneSequence | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     metadata: SceneAuthoringMetadataRecord
     project: ProjectReferenceRecord
     assets: list[AssetReferenceRecord] = Field(max_length=MAX_SCENE_ASSETS)
@@ -807,7 +811,9 @@ class SceneAuthoringDocumentV2(StrictProjectModel):
         if self.sequence is not None:
             for clip in self.sequence.clips:
                 if clip.target_id is not None and clip.target_id not in known_objects:
-                    raise ValueError(f"clip {clip.name!r}: remove or relink its object track first")
+                    raise ValueError(
+                        f"clip {clip.name!r}: remove or relink its object track first"
+                    )
                 if clip.layer_id is not None and clip.layer_id not in known_layers:
                     raise ValueError(f"clip {clip.name!r} references unknown layer")
                 if clip.asset_id is not None and clip.asset_id not in known_assets:

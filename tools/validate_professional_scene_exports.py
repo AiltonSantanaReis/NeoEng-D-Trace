@@ -84,9 +84,9 @@ def _write_fixture(workspace: Path) -> tuple[Path, Path, Path]:
         SceneLayerAuthoringRecord,
         SceneObjectAuthoringRecord,
         SceneParallaxLayerRecord,
+        SceneTransformRecord,
         SceneVectorGeometryRecord,
         SceneVectorImageSizeRecord,
-        SceneTransformRecord,
         upgrade_scene_authoring_document,
     )
 

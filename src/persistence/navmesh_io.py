@@ -18,7 +18,9 @@ from src.core.navmesh_2d import (
 FORMAT_ID = "neoeng-d-trace-navmesh-2d"
 
 
-def _bake_payload(bake: NavMeshBake | None, source: NavMeshSource) -> dict[str, object] | None:
+def _bake_payload(
+    bake: NavMeshBake | None, source: NavMeshSource
+) -> dict[str, object] | None:
     if bake is None or bake.is_obsolete(source):
         return None
     return {
@@ -61,8 +63,7 @@ def save_navmesh(
 def _load_source(payload: dict[str, object]) -> NavMeshSource:
     return NavMeshSource(
         regions=[
-            NavRegion(item["id"], tuple(item["bounds"]))
-            for item in payload["regions"]
+            NavRegion(item["id"], tuple(item["bounds"])) for item in payload["regions"]
         ],
         obstacles=[
             NavObstacle(item["id"], tuple(item["bounds"]))

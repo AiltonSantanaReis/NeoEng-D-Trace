@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import hashlib
 import ast
+import hashlib
 import shutil
 import sys
 import xml.etree.ElementTree as ET

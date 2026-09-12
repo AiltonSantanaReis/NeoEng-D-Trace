@@ -1,7 +1,9 @@
-"""PACK pilot: contracts and real Qt import/persistence integration, not binary proof."""
+"""PACK pilot: contracts and real Qt import/persistence integration.
+
+The tests do not claim binary proof.
+"""
 
 import json
-from pathlib import Path
 import shutil
 
 import pytest

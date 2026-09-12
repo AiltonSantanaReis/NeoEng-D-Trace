@@ -83,7 +83,9 @@ def set_prefab_override(
         overrides.append(ScenePrefabOverrideRecord(path=path, value=value))
         instances[index] = instance.model_copy(update={"overrides": overrides})
         candidate = document.model_copy(update={"prefab_instances": instances})
-        return validate_scene_authoring_document(candidate)  # type: ignore[return-value]
+        return validate_scene_authoring_document(  # type: ignore[return-value]
+            candidate
+        )
     raise KeyError(instance_id)
 
 
@@ -97,13 +99,13 @@ def revert_prefab_override(
             continue
         instances[index] = instance.model_copy(
             update={
-                "overrides": [
-                    item for item in instance.overrides if item.path != path
-                ]
+                "overrides": [item for item in instance.overrides if item.path != path]
             }
         )
         candidate = document.model_copy(update={"prefab_instances": instances})
-        return validate_scene_authoring_document(candidate)  # type: ignore[return-value]
+        return validate_scene_authoring_document(  # type: ignore[return-value]
+            candidate
+        )
     raise KeyError(instance_id)
 
 
@@ -124,7 +126,9 @@ def update_prefab_sources(
             }
         )
         candidate = document.model_copy(update={"prefabs": prefabs})
-        return validate_scene_authoring_document(candidate)  # type: ignore[return-value]
+        return validate_scene_authoring_document(  # type: ignore[return-value]
+            candidate
+        )
     raise KeyError(prefab_id)
 
 
@@ -138,5 +142,7 @@ def detach_prefab_instance(
             continue
         instances[index] = instance.model_copy(update={"detached": True})
         candidate = document.model_copy(update={"prefab_instances": instances})
-        return validate_scene_authoring_document(candidate)  # type: ignore[return-value]
+        return validate_scene_authoring_document(  # type: ignore[return-value]
+            candidate
+        )
     raise KeyError(instance_id)

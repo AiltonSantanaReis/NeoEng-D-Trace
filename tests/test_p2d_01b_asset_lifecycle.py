@@ -245,8 +245,7 @@ def test_asset_library_search_categories_thumbnails_and_drag_contract(
     try:
         assert panel.asset_list.dragEnabled()
         assert (
-            panel.asset_list.dragDropMode()
-            == QAbstractItemView.DragDropMode.DragOnly
+            panel.asset_list.dragDropMode() == QAbstractItemView.DragDropMode.DragOnly
         )
         assert panel.asset_list.count() == 2
         assert not panel.asset_list.item(0).icon().isNull()

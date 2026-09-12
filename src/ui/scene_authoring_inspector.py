@@ -254,12 +254,17 @@ class SceneAuthoringInspector(QWidget):
         self._add_labeled_row(stage4_form, "socket_y", "Socket Y", self.socket_y)
         self._add_labeled_row(stage4_form, "socket_z", "Socket Z", self.socket_z)
         self._add_labeled_row(
-            stage4_form, "socket_rotation_z", "Socket Rotation Z", self.socket_rotation_z
+            stage4_form,
+            "socket_rotation_z",
+            "Socket Rotation Z",
+            self.socket_rotation_z,
         )
         self._add_labeled_row(
             stage4_form, "socket_effect_id", "Effect ID", self.socket_effect_id
         )
-        self._add_labeled_row(stage4_form, "socket_scale", "Effect Scale", self.socket_scale)
+        self._add_labeled_row(
+            stage4_form, "socket_scale", "Effect Scale", self.socket_scale
+        )
         stage4_form.addRow(self.socket_enabled)
         self._add_labeled_row(
             stage4_form,
@@ -305,10 +310,16 @@ class SceneAuthoringInspector(QWidget):
             self.particle_velocity_y,
         )
         self._add_labeled_row(
-            stage4_form, "particle_spread_x", "Velocity Spread X", self.particle_spread_x
+            stage4_form,
+            "particle_spread_x",
+            "Velocity Spread X",
+            self.particle_spread_x,
         )
         self._add_labeled_row(
-            stage4_form, "particle_spread_y", "Velocity Spread Y", self.particle_spread_y
+            stage4_form,
+            "particle_spread_y",
+            "Velocity Spread Y",
+            self.particle_spread_y,
         )
         self._add_labeled_row(
             stage4_form,
@@ -763,11 +774,7 @@ class SceneAuthoringInspector(QWidget):
     ) -> SceneParticleSystemRecord:
         document = self.session.document
         system = next(
-            (
-                item
-                for item in document.particle_systems
-                if item.id == socket.effect_id
-            ),
+            (item for item in document.particle_systems if item.id == socket.effect_id),
             None,
         )
         return system or self._default_particle_system(socket.effect_id)
@@ -822,7 +829,8 @@ class SceneAuthoringInspector(QWidget):
             self.socket_effect_id.setText("default")
             self.socket_enabled.setChecked(True)
             self._set_particle_widgets_enabled(
-                (self.socket_type.currentData() or self.socket_type.currentText()) == "vfx"
+                (self.socket_type.currentData() or self.socket_type.currentText())
+                == "vfx"
             )
             for widget in (
                 self.socket_x,
@@ -1079,7 +1087,10 @@ class SceneAuthoringInspector(QWidget):
             return
         try:
             system = self._particle_system_for_socket(socket)
-            if not any(item.id == socket.effect_id for item in self.session.document.particle_systems):
+            if not any(
+                item.id == socket.effect_id
+                for item in self.session.document.particle_systems
+            ):
                 self._update_socket()
                 system = self._particle_system_for_socket(socket)
             used = {item.id for item in system.emitters}
@@ -1217,9 +1228,7 @@ class SceneAuthoringInspector(QWidget):
             return
         try:
             socket = next(
-                item
-                for item in self.session.document.sockets
-                if item.id == socket_id
+                item for item in self.session.document.sockets if item.id == socket_id
             )
             position = Point3Record(
                 x=self.socket_x.value(),
@@ -1391,25 +1400,25 @@ class SceneAuthoringInspector(QWidget):
                 "socket_id": "ID",
                 "socket_x": "Socket X",
                 "socket_y": "Socket Y",
-                 "socket_z": "Socket Z",
-                 "socket_rotation_z": "Rotação Z do socket",
-                 "socket_effect_id": "ID do efeito",
-                 "socket_scale": "Escala do efeito",
-                 "particle_emitter": "Emissor de partículas",
-                 "particle_emitter_id": "ID do emissor",
-                 "particle_seed": "Semente",
-                 "particle_emission_rate": "Taxa de emissão",
-                 "particle_lifetime": "Vida útil",
-                 "particle_max_particles": "Máximo de partículas",
-                 "particle_burst_count": "Explosão inicial",
-                 "particle_velocity_x": "Velocidade inicial X",
-                 "particle_velocity_y": "Velocidade inicial Y",
-                 "particle_spread_x": "Variação de velocidade X",
-                 "particle_spread_y": "Variação de velocidade Y",
-                 "particle_acceleration_x": "Aceleração X",
-                 "particle_acceleration_y": "Aceleração Y",
-                 "particle_duration": "Duração da prévia",
-                 "material_albedo": "Albedo",
+                "socket_z": "Socket Z",
+                "socket_rotation_z": "Rotação Z do socket",
+                "socket_effect_id": "ID do efeito",
+                "socket_scale": "Escala do efeito",
+                "particle_emitter": "Emissor de partículas",
+                "particle_emitter_id": "ID do emissor",
+                "particle_seed": "Semente",
+                "particle_emission_rate": "Taxa de emissão",
+                "particle_lifetime": "Vida útil",
+                "particle_max_particles": "Máximo de partículas",
+                "particle_burst_count": "Explosão inicial",
+                "particle_velocity_x": "Velocidade inicial X",
+                "particle_velocity_y": "Velocidade inicial Y",
+                "particle_spread_x": "Variação de velocidade X",
+                "particle_spread_y": "Variação de velocidade Y",
+                "particle_acceleration_x": "Aceleração X",
+                "particle_acceleration_y": "Aceleração Y",
+                "particle_duration": "Duração da prévia",
+                "material_albedo": "Albedo",
                 "material_emission": "Emissão",
                 "material_normal_x": "Normal X",
                 "material_normal_y": "Normal Y",
@@ -1451,25 +1460,25 @@ class SceneAuthoringInspector(QWidget):
                 "socket_id": "ID",
                 "socket_x": "Socket X",
                 "socket_y": "Socket Y",
-                 "socket_z": "Socket Z",
-                 "socket_rotation_z": "Socket Rotation Z",
-                 "socket_effect_id": "Effect ID",
-                 "socket_scale": "Effect Scale",
-                 "particle_emitter": "Particle Emitter",
-                 "particle_emitter_id": "Emitter ID",
-                 "particle_seed": "Seed",
-                 "particle_emission_rate": "Emission Rate",
-                 "particle_lifetime": "Lifetime",
-                 "particle_max_particles": "Max Particles",
-                 "particle_burst_count": "Burst Count",
-                 "particle_velocity_x": "Initial Velocity X",
-                 "particle_velocity_y": "Initial Velocity Y",
-                 "particle_spread_x": "Velocity Spread X",
-                 "particle_spread_y": "Velocity Spread Y",
-                 "particle_acceleration_x": "Acceleration X",
-                 "particle_acceleration_y": "Acceleration Y",
-                 "particle_duration": "Preview Duration",
-                 "material_albedo": "Albedo",
+                "socket_z": "Socket Z",
+                "socket_rotation_z": "Socket Rotation Z",
+                "socket_effect_id": "Effect ID",
+                "socket_scale": "Effect Scale",
+                "particle_emitter": "Particle Emitter",
+                "particle_emitter_id": "Emitter ID",
+                "particle_seed": "Seed",
+                "particle_emission_rate": "Emission Rate",
+                "particle_lifetime": "Lifetime",
+                "particle_max_particles": "Max Particles",
+                "particle_burst_count": "Burst Count",
+                "particle_velocity_x": "Initial Velocity X",
+                "particle_velocity_y": "Initial Velocity Y",
+                "particle_spread_x": "Velocity Spread X",
+                "particle_spread_y": "Velocity Spread Y",
+                "particle_acceleration_x": "Acceleration X",
+                "particle_acceleration_y": "Acceleration Y",
+                "particle_duration": "Preview Duration",
+                "material_albedo": "Albedo",
                 "material_emission": "Emission",
                 "material_normal_x": "Normal X",
                 "material_normal_y": "Normal Y",
@@ -1499,7 +1508,9 @@ class SceneAuthoringInspector(QWidget):
                 "socket_add": "Adicionar um socket à cena",
                 "socket_update": "Atualizar posição e orientação do socket selecionado",
                 "socket_remove": "Remover o socket selecionado",
-                "particle": "Configurar o emissor e a simulação determinística de partículas",
+                "particle": (
+                    "Configurar o emissor e a simulação determinística de " "partículas"
+                ),
                 "particle_preview": "Executar a prévia de partículas no viewport",
                 "particle_reset": "Reiniciar a prévia de partículas",
             }
@@ -1522,7 +1533,9 @@ class SceneAuthoringInspector(QWidget):
                 "socket_add": "Add a socket to the scene",
                 "socket_update": "Update the selected socket position and orientation",
                 "socket_remove": "Remove the selected socket",
-                "particle": "Configure the deterministic particle emitter and simulation",
+                "particle": (
+                    "Configure the deterministic particle emitter and " "simulation"
+                ),
                 "particle_preview": "Play the particle preview in the viewport",
                 "particle_reset": "Reset the particle preview",
             }

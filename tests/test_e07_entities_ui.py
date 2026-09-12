@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+from PySide6.QtWidgets import QApplication
+
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.ui.entity_prefab_panel import EntityPrefabPanel
-from PySide6.QtWidgets import QApplication
-
 from tests.test_e07_entities_contract import _document, _entity
 
 

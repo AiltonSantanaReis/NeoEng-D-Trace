@@ -10,10 +10,6 @@ import cv2
 import numpy as np
 import pytest
 
-from src.exporters.scene_authoring_export import (
-    serialize_scene_authoring_export,
-    validate_scene_authoring_export,
-)
 from src.core.scene_authoring_model import SceneAuthoringModel
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.vector_scene_resource import (
@@ -21,6 +17,10 @@ from src.core.vector_scene_resource import (
     create_vector_scene_object,
 )
 from src.core.vectorization import VectorizationError, vectorize_image_file
+from src.exporters.scene_authoring_export import (
+    serialize_scene_authoring_export,
+    validate_scene_authoring_export,
+)
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scenario_schema import ProjectReferenceRecord
 from src.persistence.scene_authoring_io import (

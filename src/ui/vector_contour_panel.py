@@ -9,7 +9,6 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
     QDoubleSpinBox,
     QGridLayout,
-    QHBoxLayout,
     QLabel,
     QPushButton,
     QSpinBox,
@@ -25,9 +24,9 @@ from src.core.vectorization import (
     VectorizationRequest,
     vectorize_image_file,
 )
+from src.persistence.p2d05_errors import user_error_message
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scene_authoring_schema import SceneTransformRecord
-from src.persistence.p2d05_errors import user_error_message
 
 
 class VectorContourPanel(QWidget):
@@ -338,11 +337,15 @@ class VectorContourPanel(QWidget):
             self.create_button.setText("Criar objeto de cena")
             self.apply_vertex_button.setText("Aplicar vértice")
             self.detect_button.setToolTip("Detectar o contorno do asset selecionado")
-            self.simplify_button.setToolTip("Simplificar o contorno mantendo a geometria válida")
+            self.simplify_button.setToolTip(
+                "Simplificar o contorno mantendo a geometria válida"
+            )
             self.undo_button.setToolTip("Desfazer a última edição do contorno")
             self.redo_button.setToolTip("Refazer a última edição do contorno")
             self.cancel_button.setToolTip("Cancelar a detecção e preservar a origem")
-            self.create_button.setToolTip("Criar um objeto de cena a partir do contorno")
+            self.create_button.setToolTip(
+                "Criar um objeto de cena a partir do contorno"
+            )
             self.apply_vertex_button.setToolTip("Aplicar a posição do vértice editado")
             self.diagnostics_label.setText(
                 "A detecção é vinculada por hash ao asset selecionado."
@@ -363,7 +366,9 @@ class VectorContourPanel(QWidget):
             self.create_button.setText("Create scene object")
             self.apply_vertex_button.setText("Apply vertex")
             self.detect_button.setToolTip("Detect the contour of the selected asset")
-            self.simplify_button.setToolTip("Simplify the contour while preserving valid geometry")
+            self.simplify_button.setToolTip(
+                "Simplify the contour while preserving valid geometry"
+            )
             self.undo_button.setToolTip("Undo the last contour edit")
             self.redo_button.setToolTip("Redo the last contour edit")
             self.cancel_button.setToolTip("Cancel detection and preserve the source")

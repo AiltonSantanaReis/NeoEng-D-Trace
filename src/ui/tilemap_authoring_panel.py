@@ -34,6 +34,7 @@ from src.core.tilemap_model import (
     TileMapDocument,
     TileSet,
 )
+from src.core.tilemap_rules import NeighborCondition, TerrainRule, TileRuleSet
 from src.core.tilemap_tools import (
     TileClipboard,
     TileEditTransaction,
@@ -47,7 +48,6 @@ from src.core.tilemap_tools import (
     paste_cells,
     rectangle_cells,
 )
-from src.core.tilemap_rules import NeighborCondition, TerrainRule, TileRuleSet
 from src.persistence.tilemap_io import load_tilemap, save_tilemap
 
 
@@ -513,9 +513,11 @@ class TileMapAuthoringPanel(QWidget):
         self._refresh_rule_controls()
 
     def _refresh_rule_controls(self) -> None:
-        values = [] if self.document is None else [
-            tile.id for tile in self.document.tileset.tiles
-        ]
+        values = (
+            []
+            if self.document is None
+            else [tile.id for tile in self.document.tileset.tiles]
+        )
         for combo in (
             self.rule_target_combo,
             self.rule_neighbor_combo,
@@ -528,7 +530,9 @@ class TileMapAuthoringPanel(QWidget):
                 combo.addItem("<vazio>", None)
             for tile_id in values:
                 combo.addItem(tile_id, tile_id)
-            if current in values or (combo is self.rule_neighbor_combo and current is None):
+            if current in values or (
+                combo is self.rule_neighbor_combo and current is None
+            ):
                 combo.setCurrentIndex(combo.findData(current))
             elif combo.count():
                 combo.setCurrentIndex(0)
@@ -542,7 +546,10 @@ class TileMapAuthoringPanel(QWidget):
         self._refresh_rules_list()
 
     def _refresh_empty_neighbor_label(self) -> None:
-        if self.rule_neighbor_combo.count() and self.rule_neighbor_combo.currentData() is None:
+        if (
+            self.rule_neighbor_combo.count()
+            and self.rule_neighbor_combo.currentData() is None
+        ):
             self.rule_neighbor_combo.setItemText(
                 0,
                 "<vazio>" if self.current_lang == "pt" else "<empty>",
@@ -702,9 +709,7 @@ class TileMapAuthoringPanel(QWidget):
         self._tile_images = images
         self._refresh_palette()
         self._sync_canvas()
-        self.status_message.emit(
-            self._status("Tileset atualizado", "Tileset updated")
-        )
+        self.status_message.emit(self._status("Tileset atualizado", "Tileset updated"))
 
     def add_layer(self) -> None:
         if self.document is None:
@@ -725,9 +730,7 @@ class TileMapAuthoringPanel(QWidget):
         self._refresh_layers()
         self.layer_combo.setCurrentIndex(self.layer_combo.count() - 1)
         self._sync_canvas()
-        self.status_message.emit(
-            self._status("Camada adicionada", "Layer added")
-        )
+        self.status_message.emit(self._status("Camada adicionada", "Layer added"))
 
     def _refresh_summary(self) -> None:
         if self.document is None:
@@ -792,7 +795,10 @@ class TileMapAuthoringPanel(QWidget):
     def copy_selection(self) -> None:
         if self.document is None or self._selection is None:
             self.status_message.emit(
-                self._status("Selecione uma área antes de copiar", "Select an area before copying")
+                self._status(
+                    "Selecione uma área antes de copiar",
+                    "Select an area before copying",
+                )
             )
             return
         layer_id = self.layer_combo.currentData() or self.document.layers[0].id
@@ -816,7 +822,10 @@ class TileMapAuthoringPanel(QWidget):
     def paste_selection(self) -> None:
         if self.document is None or self._selection is None:
             self.status_message.emit(
-                self._status("Selecione um destino antes de colar", "Select a destination before pasting")
+                self._status(
+                    "Selecione um destino antes de colar",
+                    "Select a destination before pasting",
+                )
             )
             return
         if self._clipboard is None:
@@ -829,12 +838,12 @@ class TileMapAuthoringPanel(QWidget):
             self._selection[0][1], self._selection[1][1]
         )
         try:
-            transaction = paste_cells(
-                self.document, layer_id, anchor, self._clipboard
-            )
+            transaction = paste_cells(self.document, layer_id, anchor, self._clipboard)
         except ValueError as exc:
             self.status_message.emit(
-                self._status(f"Colagem não aplicada: {exc}", f"Paste not applied: {exc}")
+                self._status(
+                    f"Colagem não aplicada: {exc}", f"Paste not applied: {exc}"
+                )
             )
             return
         self._record_transaction(
@@ -870,7 +879,9 @@ class TileMapAuthoringPanel(QWidget):
             )
         except ValueError as exc:
             self.status_message.emit(
-                self._status(f"Variação não aplicada: {exc}", f"Variation not applied: {exc}")
+                self._status(
+                    f"Variação não aplicada: {exc}", f"Variation not applied: {exc}"
+                )
             )
             return
         self._record_transaction(
@@ -887,10 +898,16 @@ class TileMapAuthoringPanel(QWidget):
             not target
             or not isinstance(offset, (tuple, list))
             or len(offset) != 2
-            or any(isinstance(value, bool) or not isinstance(value, int) for value in offset)
+            or any(
+                isinstance(value, bool) or not isinstance(value, int)
+                for value in offset
+            )
         ):
             self.status_message.emit(
-                self._status("Configure a regra antes de adicionar", "Configure the rule before adding")
+                self._status(
+                    "Configure a regra antes de adicionar",
+                    "Configure the rule before adding",
+                )
             )
             return
         rule_id = f"rule_{len(self._rules) + 1}"
@@ -917,7 +934,9 @@ class TileMapAuthoringPanel(QWidget):
     def apply_rules(self) -> None:
         if self.document is None or not self._rules:
             self.status_message.emit(
-                self._status("Adicione uma regra antes de aplicar", "Add a rule before applying")
+                self._status(
+                    "Adicione uma regra antes de aplicar", "Add a rule before applying"
+                )
             )
             return
         fallback = self.rule_fallback_combo.currentData()
@@ -931,12 +950,16 @@ class TileMapAuthoringPanel(QWidget):
         if not coordinates:
             coordinates = tuple(
                 coordinate
-                for current_layer, coordinate, _cell in self.document.iter_cells(layer_id)
+                for current_layer, coordinate, _cell in self.document.iter_cells(
+                    layer_id
+                )
                 if current_layer == layer_id
             )
         if not coordinates:
             self.status_message.emit(
-                self._status("Não há células para autotiling", "There are no cells to autotile")
+                self._status(
+                    "Não há células para autotiling", "There are no cells to autotile"
+                )
             )
             return
         try:
@@ -950,7 +973,9 @@ class TileMapAuthoringPanel(QWidget):
             )
         except ValueError as exc:
             self.status_message.emit(
-                self._status(f"Autotiling não aplicado: {exc}", f"Autotiling not applied: {exc}")
+                self._status(
+                    f"Autotiling não aplicado: {exc}", f"Autotiling not applied: {exc}"
+                )
             )
             return
         self.document.rule_set_payload = rule_set.to_dict()
@@ -1017,9 +1042,7 @@ class TileMapAuthoringPanel(QWidget):
             return
         self._record_transaction(transaction)
 
-    def _finish_gesture(
-        self, start: tuple[int, int], end: tuple[int, int]
-    ) -> None:
+    def _finish_gesture(self, start: tuple[int, int], end: tuple[int, int]) -> None:
         pending = self._active_gesture_transactions
         self._active_gesture_transactions = None
         if self.document is None:

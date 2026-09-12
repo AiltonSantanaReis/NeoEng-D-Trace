@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from pathlib import Path
 import hashlib
 import json
+from pathlib import Path
 
 from PIL import Image
-from PySide6.QtCore import QPoint
 from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QApplication
 
@@ -66,7 +65,10 @@ def test_tilemap_uses_saved_tileset_textures_and_supports_layers(
     bundled_atlas = tmp_path / "assets" / "tilesets" / "scenario" / "source_atlas.png"
     assert manifest["atlas_path"] == "source_atlas.png"
     assert bundled_atlas.is_file()
-    assert manifest["atlas_sha256"] == hashlib.sha256(bundled_atlas.read_bytes()).hexdigest()
+    assert (
+        manifest["atlas_sha256"]
+        == hashlib.sha256(bundled_atlas.read_bytes()).hexdigest()
+    )
 
     panel = TileMapAuthoringPanel(tmp_path)
     panel.new_map()

@@ -12,7 +12,7 @@ import hashlib
 import json
 import math
 from dataclasses import dataclass
-from typing import Any, Literal, Sequence
+from typing import Literal, Sequence
 
 import numpy as np
 from pydantic import Field, field_validator, model_validator
@@ -252,15 +252,24 @@ def build_e08_capability_matrix() -> tuple[CapabilityMatrixEntry, ...]:
             if destination == "local-raster":
                 compatibility: Compatibility = "native"
                 mode = "deterministic-cpu-preview"
-                reason = "The approved local reference runtime executes this capability deterministically."
+                reason = (
+                    "The approved local reference runtime executes this capability "
+                    "deterministically."
+                )
             elif capability == "runtime.fixed_update":
                 compatibility = "native"
                 mode = "adapter-fixed-tick-contract"
-                reason = "The adapter contract records fixed-step semantics, but visual equivalence is separate."
+                reason = (
+                    "The adapter contract records fixed-step semantics, but visual "
+                    "equivalence is separate."
+                )
             else:
                 compatibility = "degraded"
                 mode = "validated-sidecar-metadata"
-                reason = "Destination adapter metadata is validated; native destination rendering is not implemented in E08-E."
+                reason = (
+                    "Destination adapter metadata is validated; native destination "
+                    "rendering is not implemented in E08-E."
+                )
             entries.append(
                 CapabilityMatrixEntry(
                     destination=destination,

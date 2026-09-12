@@ -66,7 +66,8 @@ class NavMeshPanel(QWidget):
             else ("bake disponível" if self.bake else "sem bake")
         )
         self.summary_label.setText(
-            f"Regiões: {len(self.source.regions)} · Obstáculos: {len(self.source.obstacles)} · {bake_state}"
+            f"Regiões: {len(self.source.regions)} · "
+            f"Obstáculos: {len(self.source.obstacles)} · {bake_state}"
         )
 
     def add_region(self) -> None:

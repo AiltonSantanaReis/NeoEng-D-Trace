@@ -5,7 +5,14 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QGridLayout, QLabel, QListWidget, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QGridLayout,
+    QLabel,
+    QListWidget,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from src.core.prefab_authoring import (
     create_prefab,
@@ -24,7 +31,9 @@ class EntityPrefabPanel(QWidget):
 
     status_message = Signal(str)
 
-    def __init__(self, session: SceneAuthoringSession, parent: QWidget | None = None) -> None:
+    def __init__(
+        self, session: SceneAuthoringSession, parent: QWidget | None = None
+    ) -> None:
         super().__init__(parent)
         self.session = session
         self.setObjectName("entity_prefab_panel")
@@ -93,7 +102,11 @@ class EntityPrefabPanel(QWidget):
         self.status_label.setText(message)
         self.status_message.emit(message)
 
-    def _apply(self, operation: Callable[[SceneAuthoringDocumentV2], SceneAuthoringDocumentV2], description: str) -> None:
+    def _apply(
+        self,
+        operation: Callable[[SceneAuthoringDocumentV2], SceneAuthoringDocumentV2],
+        description: str,
+    ) -> None:
         document = self._document()
         if document is None:
             return
@@ -110,13 +123,18 @@ class EntityPrefabPanel(QWidget):
         if document is None:
             return
         source = next(
-            (item for item in document.objects if item.id not in {entity.id for entity in document.entities}),
+            (
+                item
+                for item in document.objects
+                if item.id not in {entity.id for entity in document.entities}
+            ),
             None,
         )
         if source is None:
             self._status("Nenhum objeto disponível para nova entidade")
             return
         try:
+
             def operation() -> None:
                 self.session.model.add_entity_from_object(source.id)
 
@@ -151,7 +169,10 @@ class EntityPrefabPanel(QWidget):
         prefab_id = f"prefab-{len(document.prefabs) + 1}"
         self._apply(
             lambda current: create_prefab(
-                current, prefab_id, f"Prefab {len(current.prefabs) + 1}", [current.entities[0].id]
+                current,
+                prefab_id,
+                f"Prefab {len(current.prefabs) + 1}",
+                [current.entities[0].id],
             ),
             "Create prefab asset",
         )
@@ -231,10 +252,18 @@ class EntityPrefabPanel(QWidget):
 
     def update_language(self, language: str) -> None:
         portuguese = language == "pt"
-        self.title_label.setText("Entidades, Hierarquia e Prefabs" if portuguese else "Entities, Hierarchy & Prefabs")
-        self.add_entity_button.setText("Adicionar entidade" if portuguese else "Add entity")
+        self.title_label.setText(
+            "Entidades, Hierarquia e Prefabs"
+            if portuguese
+            else "Entities, Hierarchy & Prefabs"
+        )
+        self.add_entity_button.setText(
+            "Adicionar entidade" if portuguese else "Add entity"
+        )
         self.parent_button.setText("Definir parent" if portuguese else "Set parent")
-        self.create_prefab_button.setText("Criar prefab" if portuguese else "Create prefab")
+        self.create_prefab_button.setText(
+            "Criar prefab" if portuguese else "Create prefab"
+        )
         self.instantiate_button.setText("Instanciar" if portuguese else "Instantiate")
         self.override_button.setText("Override" if portuguese else "Override")
         self.revert_button.setText("Reverter" if portuguese else "Revert")
@@ -247,7 +276,9 @@ class EntityPrefabPanel(QWidget):
         if document is None:
             return
         self.summary_label.setText(
-            f"Entidades: {len(document.entities)} · Prefabs: {len(document.prefabs)} · Instâncias: {len(document.prefab_instances)}"
+            f"Entidades: {len(document.entities)} · "
+            f"Prefabs: {len(document.prefabs)} · "
+            f"Instâncias: {len(document.prefab_instances)}"
         )
 
     def refresh(self) -> None:

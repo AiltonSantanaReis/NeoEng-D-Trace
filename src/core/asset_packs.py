@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import json
-from pathlib import Path, PurePosixPath
 import re
 import sys
 import unicodedata
+from dataclasses import dataclass
+from pathlib import Path, PurePosixPath
 
 from src.core.scene_asset_library import SceneAssetError, sha256_file
 

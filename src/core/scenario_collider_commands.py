@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+
 from src.core.scenario_colliders import Collider, ColliderDocument, ColliderError, Point
 
 

@@ -124,7 +124,9 @@ def test_tilemap_selection_copy_paste_variation_rules_and_persistence(
     panel.rule_neighbor_combo.setCurrentIndex(0)
     panel.add_rule()
     assert panel._rules
-    panel.rule_fallback_combo.setCurrentIndex(panel.rule_fallback_combo.findData("grass"))
+    panel.rule_fallback_combo.setCurrentIndex(
+        panel.rule_fallback_combo.findData("grass")
+    )
     panel.apply_rules()
     assert panel.document.rule_set_payload is not None
     panel.save_map()

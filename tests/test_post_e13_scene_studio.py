@@ -1,8 +1,5 @@
 """Functional regression contracts for the post-E13 parallax studio."""
 
-import hashlib
-from pathlib import Path
-
 import pytest
 from PySide6.QtCore import QCoreApplication, QEvent, QMimeData, QPointF, Qt
 from PySide6.QtGui import QDropEvent, QImage
@@ -10,12 +7,26 @@ from PySide6.QtWidgets import QApplication
 
 from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
-from src.core.scene_sequence import set_sequence, evaluate_sequence, particles_at, sequence_time
-from src.exporters.scene_authoring_export import build_scene_authoring_export, SceneAuthoringExportError
+from src.core.scene_sequence import (
+    evaluate_sequence,
+    particles_at,
+    sequence_time,
+    set_sequence,
+)
+from src.exporters.scene_authoring_export import (
+    SceneAuthoringExportError,
+    build_scene_authoring_export,
+)
 from src.models.scene import Scene
-from src.persistence.scene_authoring_schema import AssetReferenceRecord, SceneAuthoringDocumentV2, SceneLayerAuthoringRecord
+from src.persistence.scene_authoring_io import (
+    load_scene_authoring_v2,
+    save_scene_authoring,
+)
+from src.persistence.scene_authoring_schema import (
+    AssetReferenceRecord,
+    SceneLayerAuthoringRecord,
+)
 from src.persistence.scene_sequence_schema import SceneClip, SceneSequence
-from src.persistence.scene_authoring_io import save_scene_authoring, load_scene_authoring_v2
 from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
@@ -24,7 +35,7 @@ def studio(tmp_path):
     app = QApplication.instance() or QApplication([])
     image = tmp_path / "sprite.png"
     pixels = QImage(120, 80, QImage.Format.Format_RGBA8888)
-    pixels.fill(0xff5b8890)
+    pixels.fill(0xFF5B8890)
     assert pixels.save(str(image))
     scene = Scene()
     scene.cmd = CommandManager(max_history=20)
@@ -55,7 +66,10 @@ def test_layout_preserves_existing_tools_and_categorizes_inspector(studio):
     assert window.professional_viewport.isVisible()
     assert window.sequence_panel.isVisible()
     assert not window.tilemap_panel.isVisible()
-    assert window.layer_stack.move_selection_button.text() == "Mover seleção para a moldura"
+    assert (
+        window.layer_stack.move_selection_button.text()
+        == "Mover seleção para a moldura"
+    )
 
 
 def test_asset_drop_uses_selected_depth_frame_and_undo(studio):
@@ -65,8 +79,16 @@ def test_asset_drop_uses_selected_depth_frame_and_undo(studio):
     window.layer_stack.layer_list.setCurrentRow(1)
     viewport = window.professional_viewport
     mime = QMimeData()
-    mime.setData("application/x-neoeng-scene-asset", session.document.assets[0].id.encode())
-    event = QDropEvent(QPointF(100, 100), Qt.DropAction.CopyAction, mime, Qt.MouseButton.LeftButton, Qt.KeyboardModifier.NoModifier)
+    mime.setData(
+        "application/x-neoeng-scene-asset", session.document.assets[0].id.encode()
+    )
+    event = QDropEvent(
+        QPointF(100, 100),
+        Qt.DropAction.CopyAction,
+        mime,
+        Qt.MouseButton.LeftButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
     before = session.undo_count
     viewport.dropEvent(event)
     assert event.isAccepted()
@@ -99,7 +121,9 @@ def test_locked_frame_rejects_drop_without_mutation(studio):
     session = window.professional_session
     session.set_layer_locked(session.document.layers[0].id, True)
     before = session.snapshot()
-    assert not window.professional_viewport.place_asset_from_library(session.document.assets[0].id)
+    assert not window.professional_viewport.place_asset_from_library(
+        session.document.assets[0].id
+    )
     assert session.snapshot() == before
 
 
@@ -153,12 +177,12 @@ def test_motion_animates_only_selected_object_and_opacity(studio):
     panel.add_clip("motion")
     assert len(panel.sequence.clips) == 1
     clip = panel.sequence.clips[0]
-    panel.change_clip(clip.id, {"end_rotation": 90., "end_opacity": 0.2})
+    panel.change_clip(clip.id, {"end_rotation": 90.0, "end_opacity": 0.2})
     initial = session.document.objects[0]
     result = evaluate_sequence(session.document, 2.5).objects[0]
     assert result.transform.position.x == initial.transform.position.x + 50
     assert result.transform.rotation.z == 45
-    assert result.material.opacity == pytest.approx(.6)
+    assert result.material.opacity == pytest.approx(0.6)
     assert session.document.objects[0] == initial
 
 
@@ -225,10 +249,23 @@ def test_missing_audio_asset_is_actionable_and_nonfatal(studio):
     panel = window.sequence_panel
     session = window.professional_session
     assert session.add_asset(
-        AssetReferenceRecord(id="gone", path="missing-audio.wav", source_path="missing-audio.wav", sha256="0" * 64)
+        AssetReferenceRecord(
+            id="gone",
+            path="missing-audio.wav",
+            source_path="missing-audio.wav",
+            sha256="0" * 64,
+        )
     )
     sequence = SceneSequence(
-        clips=[SceneClip(id="missing-audio", name="Áudio ausente", kind="audio", duration=5, asset_id="gone")]
+        clips=[
+            SceneClip(
+                id="missing-audio",
+                name="Áudio ausente",
+                kind="audio",
+                duration=5,
+                asset_id="gone",
+            )
+        ]
     )
     assert set_sequence(session, sequence)
     panel.seek(1.0)

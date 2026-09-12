@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import shutil
 from pathlib import Path
 from typing import Any
@@ -127,11 +127,10 @@ class TilesetAtlasPreview(QWidget):
         image_y = (point.y() - self._display_rect.y()) / self._scale
         for index, entry in enumerate(self._entries):
             rect = entry.get("source_rect", {})
-            if (
-                float(rect.get("x", 0)) <= image_x
-                < float(rect.get("x", 0)) + float(rect.get("w", 0))
-                and float(rect.get("y", 0)) <= image_y
-                < float(rect.get("y", 0)) + float(rect.get("h", 0))
+            if float(rect.get("x", 0)) <= image_x < float(rect.get("x", 0)) + float(
+                rect.get("w", 0)
+            ) and float(rect.get("y", 0)) <= image_y < float(rect.get("y", 0)) + float(
+                rect.get("h", 0)
             ):
                 self._selected_index = index
                 self.tile_selected.emit(index)

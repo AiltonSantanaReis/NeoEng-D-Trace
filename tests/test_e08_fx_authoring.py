@@ -17,8 +17,8 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringMetadataRecord,
     SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
-    SceneVfxSocketRecord,
     SceneTransformRecord,
+    SceneVfxSocketRecord,
     upgrade_scene_authoring_document,
 )
 from src.ui.scene_authoring_viewport import (

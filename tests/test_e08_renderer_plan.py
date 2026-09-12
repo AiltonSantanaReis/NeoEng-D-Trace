@@ -11,9 +11,9 @@ from src.core.scene_render_plan import (
 from src.persistence.project_schema import Point3Record, PointRecord
 from src.persistence.scenario_schema import ProjectReferenceRecord
 from src.persistence.scene_authoring_schema import (
+    AssetReferenceRecord,
     SceneAuthoringDocumentV2,
     SceneAuthoringMetadataRecord,
-    AssetReferenceRecord,
     SceneLayerAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,

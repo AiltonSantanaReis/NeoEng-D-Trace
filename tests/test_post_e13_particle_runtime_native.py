@@ -5,7 +5,6 @@ from pathlib import Path
 from scripts.audit_post_e13_particle_runtime import _native_payload
 from src.runtime.particles import ParticleSimulation, load_particle_runtime_export_bytes
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

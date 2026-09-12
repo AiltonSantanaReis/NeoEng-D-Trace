@@ -10,7 +10,11 @@ from src.core.navmesh_2d import (
     bake_navmesh,
     find_path,
 )
-from src.persistence.navmesh_io import load_navmesh, load_navmesh_with_bake, save_navmesh
+from src.persistence.navmesh_io import (
+    load_navmesh,
+    load_navmesh_with_bake,
+    save_navmesh,
+)
 
 
 def test_bake_routes_around_obstacle_and_is_deterministic() -> None:

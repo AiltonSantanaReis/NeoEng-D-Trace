@@ -16,6 +16,11 @@ from src.core.scene_authoring_model import (
     snap_transform,
 )
 from src.core.scene_authoring_order import ordered_scene_objects
+from src.core.vector_scene_resource import (
+    CollisionStrategy,
+    create_vector_scene_object,
+)
+from src.core.vectorization import VectorizationResult
 from src.persistence.project_schema import MAX_ID_LENGTH, MAX_NAME_LENGTH, Point3Record
 from src.persistence.scene_authoring_schema import (
     AssetReferenceRecord,
@@ -34,11 +39,6 @@ from src.persistence.scene_authoring_schema import (
     SceneTransformRecord,
     SceneVectorGeometryRecord,
 )
-from src.core.vector_scene_resource import (
-    CollisionStrategy,
-    create_vector_scene_object,
-)
-from src.core.vectorization import VectorizationResult
 
 
 @dataclass(frozen=True)

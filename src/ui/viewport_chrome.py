@@ -175,9 +175,10 @@ class ViewportOverlayBar(QWidget):
         self.snap_button.setChecked(state.snap_enabled)
         self.snap_button.blockSignals(False)
         snap_state = (
-            f"{'Ligado' if state.snap_enabled else 'Desligado'} ({state.snap_grid_size})"
+            f"{'Ligado' if state.snap_enabled else 'Desligado'} "
+            f"({state.snap_grid_size})"
             if is_pt
-            else f"{'On' if state.snap_enabled else 'Off'} ({state.snap_grid_size})"
+            else f"{'On' if state.snap_enabled else 'Off'} " f"({state.snap_grid_size})"
         )
         self.snap_button.setText(
             f"Encaixe {snap_state}"

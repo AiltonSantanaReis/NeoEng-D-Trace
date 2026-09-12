@@ -28,7 +28,9 @@ def configure_viewport_status(window) -> QLabel:
             snap = "LIGADO" if state.snap_enabled else "DESLIGADO"
             grid = "LIGADA" if state.grid_visible else "DESLIGADA"
             gizmo = "LIGADO" if state.gizmo_enabled else "DESLIGADO"
-            selection = ",".join(state.selection_ids) if state.selection_ids else "NENHUM"
+            selection = (
+                ",".join(state.selection_ids) if state.selection_ids else "NENHUM"
+            )
             return (
                 f"VISUALIZAÇÃO: {state.view_mode} | ZOOM: {state.zoom:.2f}x | "
                 f"ENCAIXE: {snap} | GRADE: {grid} | EIXO: {gizmo} | "

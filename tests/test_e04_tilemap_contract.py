@@ -376,7 +376,9 @@ def test_rule_tiles_round_trip_is_strict_and_tilemap_extensions_are_optional(
     reopened = load_tilemap(path)
     assert reopened.tileset.atlas_path == "assets/tilesets/scenario/source_atlas.png"
     assert reopened.rule_set_payload == rule_set.to_dict()
-    assert TileRuleSet.from_dict(reopened.rule_set_payload).to_dict() == rule_set.to_dict()
+    assert (
+        TileRuleSet.from_dict(reopened.rule_set_payload).to_dict() == rule_set.to_dict()
+    )
 
     invalid = document.to_dict()
     invalid["rules"] = {

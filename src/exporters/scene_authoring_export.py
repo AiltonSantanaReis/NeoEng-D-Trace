@@ -286,7 +286,11 @@ def build_scene_authoring_export(
     if target not in _CAPABILITIES:
         raise SceneAuthoringExportError("unsupported scene export target")
     validated = SceneAuthoringDocumentV2.model_validate(document, strict=True)
-    if validated.sequence is not None and validated.sequence.clips and target != "generic":
+    if (
+        validated.sequence is not None
+        and validated.sequence.clips
+        and target != "generic"
+    ):
         raise SceneAuthoringExportError(
             "Timeline playback is not supported by this engine adapter. "
             "Save the scene or export Generic to preserve the sequence; "

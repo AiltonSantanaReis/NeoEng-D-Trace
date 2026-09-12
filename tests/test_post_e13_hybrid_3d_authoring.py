@@ -9,6 +9,7 @@ from PySide6.QtGui import QColor, QImage
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 
+from src.core.commands import CommandManager
 from src.core.hybrid_scene_model import (
     HybridSceneError,
     default_hybrid_scene,
@@ -16,7 +17,6 @@ from src.core.hybrid_scene_model import (
     save_hybrid_scene,
     validate_hybrid_scene,
 )
-from src.core.commands import CommandManager
 from src.core.scenario_authoring import ScenarioAuthoringState
 from src.models.scene import Scene
 from src.ui.hybrid_scene_viewport import HybridSceneViewport
