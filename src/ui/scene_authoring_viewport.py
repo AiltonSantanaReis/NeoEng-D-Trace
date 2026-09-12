@@ -2297,10 +2297,12 @@ class SceneAuthoringViewport(QGraphicsView):
             selected = candidates
 
         primary = candidates[-1] if candidates else None
-        if primary is None and selected:
+        if selected and primary not in selected:
             primary = self._marquee_primary_before
             if primary not in selected:
                 primary = selected[-1]
+        elif not selected:
+            primary = None
         self._set_selection(selected, primary)
         return tuple(selected)
 

@@ -12793,8 +12793,8 @@
       "size": 12670
     },
     "src/ui/scene_authoring_viewport.py": {
-      "sha256": "fe0e086e3d76b26d3d52be02251aa39050006823865cc6f19660b4aa0e90d395",
-      "size": 138655
+      "sha256": "2e54258d7a1c0ac69069c5a6c7829f298a618dbe720aff03df90f152e02766df",
+      "size": 138717
     },
     "src/ui/scene_sequence_panel.py": {
       "sha256": "c4bacc805db0373700a3729f3dd8b964bee39f54cc9f6092435d14b3ded67ae9",
@@ -13328,13 +13328,17 @@
       "sha256": "3c9949f6f8efd357d2c6d8d9e26c3a2d1cd77a569d9778ca4a4d52b79273607d",
       "size": 4702
     },
+    "tests/test_post_e13_boundary_contracts.py": {
+      "sha256": "a23da573588675eac2ab956633c5f7b8dc74ddd6b6d0895c12f3895c6b65fd25",
+      "size": 184783
+    },
     "tests/test_post_e13_directional_orientable.py": {
       "sha256": "215c5fa6463bfde8ae8ce8ed317d85f64eea12914aa25e1d148b4baca20d0b5a",
       "size": 8551
     },
     "tests/test_post_e13_hybrid_3d_authoring.py": {
-      "sha256": "4f93a4046e87bc86454106f138cac42f08b6cef7730816402fee18d9a9cd268c",
-      "size": 5691
+      "sha256": "d803ad7c38d28e01518e745f33030ab6ff074ad03a4d70a076964a70793890ed",
+      "size": 13050
     },
     "tests/test_post_e13_particle_authoring.py": {
       "sha256": "2f48ed8e32e70a5621ee61df431a98ba526cfd278e0e6d26b414c28d0c49249b",
