@@ -918,7 +918,7 @@ class ScenarioEditorWindow(QMainWindow):
                 SceneAuthoringValidationError,
             ):
                 recovery = scene_authoring_recovery_path(self.professional_scene_path)
-                self.status_label.setText(
+                failure_status = (
                     "Scenario reload failed: "
                     + user_error_message(
                         exc, operation="reload", language=self.current_lang
@@ -931,7 +931,26 @@ class ScenarioEditorWindow(QMainWindow):
                     )
                 )
                 self._pending_recovery_path = recovery if recovery.is_file() else None
+                recovery_hint = (
+                    "Use Recuperar Último Válido para restaurar a última cópia válida."
+                    if self.current_lang == "pt"
+                    else "Use Recover Last Valid to restore the last valid copy."
+                )
+                repair_hint = (
+                    "Corrija o arquivo do cenário antes de recarregar."
+                    if self.current_lang == "pt"
+                    else "Repair the scenario file before reloading."
+                )
+                self._show_pending_document(
+                    (
+                        "O cenário salvo não pôde ser recarregado. "
+                        if self.current_lang == "pt"
+                        else "The saved scenario could not be reloaded. "
+                    )
+                    + (recovery_hint if self._pending_recovery_path else repair_hint)
+                )
                 self.refresh()
+                self.status_label.setText(failure_status)
                 return False
             if isinstance(candidate, SceneAuthoringDocumentV1):
                 self._pending_v1_document = candidate

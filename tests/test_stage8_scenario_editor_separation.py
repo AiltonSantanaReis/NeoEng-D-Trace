@@ -531,8 +531,22 @@ def test_existing_sidecar_and_failure_paths_remain_observable(
                     ValueError("load failure")
                 ),
             )
+            monkeypatch.setattr(
+                scenario_editor_window_module,
+                "load_scene_authoring",
+                lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                    ValueError("fallback load failure")
+                ),
+            )
             reopened._load_professional()
             assert "Scenario reload failed" in reopened.status_label.text()
+            assert any(
+                hint in reopened.professional_empty.text()
+                for hint in (
+                    "Recover Last Valid",
+                    "Repair the scenario file before reloading",
+                )
+            )
 
             monkeypatch.setattr(
                 scenario_editor_window_module,
