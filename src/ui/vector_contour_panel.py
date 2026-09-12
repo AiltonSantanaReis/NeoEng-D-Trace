@@ -20,8 +20,10 @@ from src.core.contour_editing import ContourEditSession
 from src.core.scene_asset_library import inspect_scene_asset
 from src.core.scene_authoring_session import SceneAuthoringSession
 from src.core.vectorization import (
+    VectorizationChannel,
     VectorizationError,
     VectorizationRequest,
+    VectorizationResult,
     vectorize_image_file,
 )
 from src.persistence.p2d05_errors import user_error_message
@@ -45,7 +47,7 @@ class VectorContourPanel(QWidget):
         self.project_root = project_root.resolve() if project_root else None
         self.current_lang = "en"
         self._asset_id: str | None = None
-        self._result = None
+        self._result: VectorizationResult | None = None
         self._editing: ContourEditSession | None = None
         self.setObjectName("professional_vector_contour_panel")
 
@@ -168,7 +170,9 @@ class VectorContourPanel(QWidget):
         try:
             path = self._asset_path()
             with Image.open(path) as image:
-                channel = "alpha" if "A" in image.getbands() else "luminance"
+                channel: VectorizationChannel = (
+                    "alpha" if "A" in image.getbands() else "luminance"
+                )
             result = vectorize_image_file(
                 path, VectorizationRequest(channel=channel, threshold=1)
             )
@@ -297,15 +301,16 @@ class VectorContourPanel(QWidget):
             self.create_button,
         ):
             button.setEnabled(editing)
-        if self._editing is not None:
+        result = self._result
+        if self._editing is not None and result is not None:
             polygon = self._editing.current_polygon
             self.state_label.setText(
                 (
                     f"Detectado · {len(polygon)} vértices · "
-                    f"origem {self._result.source_sha256[:12]}…"
+                    f"origem {result.source_sha256[:12]}…"
                     if self.current_lang == "pt"
                     else f"Detected · {len(polygon)} vertices · "
-                    f"source {self._result.source_sha256[:12]}…"
+                    f"source {result.source_sha256[:12]}…"
                 )
             )
             self.vertex_index.setRange(0, max(0, len(polygon) - 1))

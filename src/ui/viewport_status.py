@@ -52,7 +52,7 @@ def configure_viewport_status(window) -> QLabel:
         if canvas is not None and hasattr(canvas, "viewport_state"):
             update(canvas.viewport_state())
 
-    status.update_language = update_language
+    setattr(status, "update_language", update_language)
 
     window.viewport_status = status
     window.canvas.viewport_state_model_changed.connect(update)

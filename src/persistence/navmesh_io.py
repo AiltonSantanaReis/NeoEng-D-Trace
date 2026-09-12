@@ -6,6 +6,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
+from typing import Any, cast
 
 from src.core.navmesh_2d import (
     NavLink,
@@ -61,21 +62,21 @@ def save_navmesh(
 
 
 def _load_source(payload: dict[str, object]) -> NavMeshSource:
+    data = cast(dict[str, Any], payload)
     return NavMeshSource(
         regions=[
-            NavRegion(item["id"], tuple(item["bounds"])) for item in payload["regions"]
+            NavRegion(item["id"], tuple(item["bounds"])) for item in data["regions"]
         ],
         obstacles=[
-            NavObstacle(item["id"], tuple(item["bounds"]))
-            for item in payload["obstacles"]
+            NavObstacle(item["id"], tuple(item["bounds"])) for item in data["obstacles"]
         ],
         links=[
             NavLink(item["id"], tuple(item["start"]), tuple(item["end"]))
-            for item in payload.get("links", [])
+            for item in data.get("links", [])
         ],
-        agent_radius=float(payload["agent_radius"]),
-        cell_size=float(payload["cell_size"]),
-        revision=int(payload.get("revision", 0)),
+        agent_radius=float(data["agent_radius"]),
+        cell_size=float(data["cell_size"]),
+        revision=int(data.get("revision", 0)),
     )
 
 
@@ -83,7 +84,11 @@ def _load_bake(payload: object, source: NavMeshSource) -> NavMeshBake | None:
     if not isinstance(payload, dict):
         return None
     try:
-        nodes = tuple(tuple(int(value) for value in node) for node in payload["nodes"])
+        raw_nodes = cast(list[list[object]], payload["nodes"])
+        nodes = tuple(
+            (int(values[0]), int(values[1]))
+            for values in (cast(list[int], node) for node in raw_nodes)
+        )
         bake = NavMeshBake(
             str(payload["algorithm_version"]),
             str(payload["source_hash"]),

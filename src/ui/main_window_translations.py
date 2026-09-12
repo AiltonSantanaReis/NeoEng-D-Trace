@@ -1,8 +1,10 @@
 """Bilingual text catalog for the main application window."""
 
+from typing import Any
+
 from src.core.app_identity import build_window_title
 
-MAIN_WINDOW_TRANSLATIONS = {
+MAIN_WINDOW_TRANSLATIONS: dict[str, dict[str, Any]] = {
     "en": {
         "window_title": build_window_title("en"),
         "file_menu": "File",

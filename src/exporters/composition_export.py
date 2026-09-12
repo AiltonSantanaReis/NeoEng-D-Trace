@@ -196,7 +196,7 @@ def build_composition_package(
             for path in sorted(runtime_package.directory.rglob("*")):
                 if not path.is_file():
                     continue
-                relative = path.relative_to(target).as_posix()
+                runtime_relative = path.relative_to(target).as_posix()
                 if path.name == "tilemap-runtime.json":
                     kind = "tilemap-runtime-payload"
                 elif path.name == "tilemap.json":
@@ -206,7 +206,7 @@ def build_composition_package(
                 components.append(
                     {
                         "kind": kind,
-                        "path": relative,
+                        "path": runtime_relative,
                         "bytes": path.stat().st_size,
                         "sha256": _sha256(path),
                         "required": True,
@@ -277,6 +277,8 @@ def validate_composition_package(package: str | os.PathLike[str]) -> dict[str, A
                 f"composition component hash mismatch: {path.name}"
             )
         kind = component.get("kind")
+        if not isinstance(kind, str):
+            raise CompositionExportError("composition component kind is invalid")
         if kind == "tilemap":
             load_tilemap(path)
         elif kind == "colliders":

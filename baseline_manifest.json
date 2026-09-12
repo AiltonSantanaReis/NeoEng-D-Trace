@@ -12121,8 +12121,8 @@
       "size": 1114
     },
     "src/core/asset_packs.py": {
-      "sha256": "741273dc19c49e48f73f8ccae73a59eec481a3d242c98e8fd973c5ab75a93e3d",
-      "size": 5087
+      "sha256": "514c0e77d3f13a6790a14942ebd7c8ae14a540ecf29724166c758433b5308f64",
+      "size": 5119
     },
     "src/core/atomic_outputs.py": {
       "sha256": "b86eec120d88a67331c25278a8867d92c75e57a39c6fed36cd9d0c3d6d5b583a",
@@ -12141,8 +12141,8 @@
       "size": 6486
     },
     "src/core/contour_editing.py": {
-      "sha256": "509640cf3057dc55e312283a226ab970f868d176030efc7bd83a2910988715a7",
-      "size": 7837
+      "sha256": "b23b8a6cf304eea600162a84a7fb8310beae37625d5b7fe1ecca9ced2f779da2",
+      "size": 7848
     },
     "src/core/convex_decomp.py": {
       "sha256": "1a774f12eb5fdc901b2cc3b71d397a571791b0aaf7e45203ae3aa3144a05c073",
@@ -12293,8 +12293,8 @@
       "size": 19316
     },
     "src/core/tilemap_rules.py": {
-      "sha256": "f15d672624dd20772ea6fb3ffb1ec9ae54ca32ee0202eb8841333a22ea6c0f5e",
-      "size": 11719
+      "sha256": "37892a194352f6bff634091f9622b95e262b44cf1cb2f08fad81350c4c916e5b",
+      "size": 11775
     },
     "src/core/tilemap_tools.py": {
       "sha256": "610da7f4291b58d7f77796ad60a683b6c8e9528e732f104489f83075638d1b8e",
@@ -12317,8 +12317,8 @@
       "size": 4047
     },
     "src/core/vectorization.py": {
-      "sha256": "7d2718337815eb318e613211f41364158232ce13e0f335c32e6357b08f06a54c",
-      "size": 8190
+      "sha256": "47baa2b6faa4786f5028718a23051d77b36e10bce10385c2e812ee0fa6261d43",
+      "size": 8247
     },
     "src/core/view_processor.py": {
       "sha256": "87b20910bbaeb1fcd458fb3e5d0a7945bafc553cb38f0e3208b777204a5cabab",
@@ -12337,16 +12337,16 @@
       "size": 8611
     },
     "src/exporters/composition_export.py": {
-      "sha256": "a4d6156b124d3e67041dec5a637f58b0a7e68b7d279962f61f8aa7783fa6071b",
-      "size": 11727
+      "sha256": "7bafc4ebfd36da26b88a97d43ea113608f84cbd3f07ca35cedec3fa45d676784",
+      "size": 11863
     },
     "src/exporters/gltf_exporter.py": {
       "sha256": "81a55731775677686b2df05554bd9dca0b50dd937fad74016b289faa7a6daac1",
       "size": 10706
     },
     "src/exporters/hybrid_composition_export.py": {
-      "sha256": "ef4cbca12aea73d6773d13b81d0db51a106dcf3e533e1a3e36cd42612ef3e43a",
-      "size": 26386
+      "sha256": "a62fc1eb208032197e87f612105c39777054410ab9abe4b5fee80b6ce3cd2356",
+      "size": 26375
     },
     "src/exporters/integration_manifest.py": {
       "sha256": "ada796978315c9a7ad5b16553ae55106bf2b0fc342c0ef26b3cd8fc87d6d9362",
@@ -12437,8 +12437,8 @@
       "size": 13577
     },
     "src/persistence/navmesh_io.py": {
-      "sha256": "20875b651d97e31294811d7bf56bf52d4478ac495d1a306e851c779316c5bb35",
-      "size": 3626
+      "sha256": "02a2018a74fd0fc94518fbd3fd3dcd7001a670aabfec30cccf2555299a9fdb26",
+      "size": 3791
     },
     "src/persistence/p2d05_errors.py": {
       "sha256": "582b400237b1707a2660484a18bf3ea9a02c5092959fb581f77b4e5ec97050d0",
@@ -12577,8 +12577,8 @@
       "size": 5297
     },
     "src/tools/magnetic_lasso.py": {
-      "sha256": "b9484e696685471eb160989ac3ee02eff2c5ffb494e9fb7c9e694fcf0b5db5c0",
-      "size": 62712
+      "sha256": "b0e54fc64888b8575cf40fce1e1331591fc7414242cad656250549ae71ba604d",
+      "size": 62738
     },
     "src/tools/magnetic_lasso_engine.py": {
       "sha256": "f82dc9775cc55c3d7b3e8e92d3c5b95e5ec7e0dea9868e2198f211fcc2d92ac3",
@@ -12593,8 +12593,8 @@
       "size": 36632
     },
     "src/tools/polygon_edit_tool.py": {
-      "sha256": "2ce1f309a0a142bb7015cde0e37d8cbf48da7ee3a9f902242c71cf8e88b65526",
-      "size": 45915
+      "sha256": "5be7d11eb0c0c9ecb3246469f206a0ede346054f6491a0795db69a14eb8e15db",
+      "size": 45905
     },
     "src/tools/polygonal_lasso.py": {
       "sha256": "150ec4c03a7db73fe6f074753f1642ceecd6891badde9214ecc7d46f796a8641",
@@ -12657,16 +12657,16 @@
       "size": 2758
     },
     "src/ui/command_palette.py": {
-      "sha256": "94fbc1fb485c74e1c9d2f9f94f23fe377a4b18f0c0ba0595c836f444ea0b249d",
-      "size": 10142
+      "sha256": "d5197031ec3840276cd6a8bc9879f229bc9ff4b3fc91938cd1c3ae8c522fb6ba",
+      "size": 10193
     },
     "src/ui/command_registry.py": {
       "sha256": "110ba0143b396696b8f7871f4a56dc0ae0014ec19fd88a48e02777b9c180a69b",
       "size": 5019
     },
     "src/ui/context_menu_utils.py": {
-      "sha256": "fbfeed9e71b151d5778852c038b558958f36e3d8152b7a5b1b93d858332a9b54",
-      "size": 1738
+      "sha256": "76481c5a1b45a6155061aa0209044f87f9e9be92e3340558f81763102210ca15",
+      "size": 1776
     },
     "src/ui/entity_prefab_panel.py": {
       "sha256": "a56459ed90357d5961a8d8667fa3455071c4f42d8bc87a86840997b22f0385c5",
@@ -12697,8 +12697,8 @@
       "size": 14518
     },
     "src/ui/hybrid_scene_viewport.py": {
-      "sha256": "d225e9ac7da898cd94afb59cf52ab28aa9f299d795358fe5ae6e29056ff7d72c",
-      "size": 35547
+      "sha256": "762a74f7eecbd227845cd4c6f58bf2afe980941d66bea6a8c1d50c6d72465ef8",
+      "size": 35892
     },
     "src/ui/icon_library.py": {
       "sha256": "1eda48cbd3f4cb49cd52d627bc6243164af16cf546df5d6ae66494c10ab78967",
@@ -12721,20 +12721,20 @@
       "size": 13323
     },
     "src/ui/main_window.py": {
-      "sha256": "395b4963ad2ffa109fbc4e946806d4d1852c1c56394973c84a8257eb2f1b35e5",
-      "size": 46631
+      "sha256": "591234d2409b70d46a28c224615041766aeff11f12019878ad036b51232b11e7",
+      "size": 46698
     },
     "src/ui/main_window_language.py": {
       "sha256": "ed298326f3cfd6a2553529f04a2afa289543d8b660b4145cb9a8aef0be7cc929",
       "size": 2783
     },
     "src/ui/main_window_translations.py": {
-      "sha256": "228947cec43381074005e8225d178391f918a196d5d6bc849671276fabddfef9",
-      "size": 15130
+      "sha256": "828644623bef7d7715acd0cc3ec7c77f6d166941b5716bcba0d61d15ac6afa83",
+      "size": 15181
     },
     "src/ui/mask_viewer.py": {
-      "sha256": "81fbe615f01c4eae8a264c414e5c39c646907a2afb92a85563ee229102cbb52c",
-      "size": 91071
+      "sha256": "4cb9de312cd56099c082cfab2c8f96f232cecb8f3be0a1d1bab604d72cdf163a",
+      "size": 91119
     },
     "src/ui/navmesh_panel.py": {
       "sha256": "0ca8d010a6c049d0c45d5df8ad303da6f103aa48f2ce1b92d7fa1648e3d0e8ac",
@@ -12765,8 +12765,8 @@
       "size": 7667
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "0146adba6eb7a2c4c6eb96d45747cd35b632ca412647a42a45ca8fd61f447daf",
-      "size": 73912
+      "sha256": "4a16d5add530f1970390e36329878bd5322e4e556847009ffd68a970fe46319b",
+      "size": 74832
     },
     "src/ui/scenario_panel.py": {
       "sha256": "fb5a77ad46045b16e2f34a74f631056bcb7cd26c16fd04e12b4d58c3676b581e",
@@ -12781,12 +12781,12 @@
       "size": 29434
     },
     "src/ui/scene_authoring_group_stack.py": {
-      "sha256": "62b68296dbc4d0a5c1d3fd4b08a98d53072b6afa1d0f6b6db98b0b76a1d2ab0a",
-      "size": 21847
+      "sha256": "914a36d35eca0c13930ecb7a203ed8ec0b4e2ffc1d7817e48e1a8ca53cd974e9",
+      "size": 21853
     },
     "src/ui/scene_authoring_inspector.py": {
-      "sha256": "7f034349385aa8cd8157208a730d85e11d6616a91c9fd4dd3985fd636732ddcd",
-      "size": 75185
+      "sha256": "d08530bd4afb89c57ae048c88b6150099440287c03dd5bdb0cfe8c344a855861",
+      "size": 75793
     },
     "src/ui/scene_authoring_layer_stack.py": {
       "sha256": "c74d71db4c8eaceb191b41ffd55f4ce27ee38a8705551441ac6fed253a708f15",
@@ -12797,12 +12797,12 @@
       "size": 138655
     },
     "src/ui/scene_sequence_panel.py": {
-      "sha256": "47d44d0cbd335d03b8fe7a8ca66daf0bf0e16be96c1f21ab81c24a72b67552bc",
-      "size": 33928
+      "sha256": "c4bacc805db0373700a3729f3dd8b964bee39f54cc9f6092435d14b3ded67ae9",
+      "size": 34236
     },
     "src/ui/side_panel.py": {
-      "sha256": "f2a838de752c7bba79b78f92bdcad7453b9aa850b29f37aefa792e00970cccb5",
-      "size": 49116
+      "sha256": "8c98774d3fb6b7417b0c56cfd84e555cfcfee30a014fecff813afef88ab6cfcb",
+      "size": 49124
     },
     "src/ui/theme_qss.py": {
       "sha256": "4cd10bb8e527de3919d1284e5a0e483dbd5f904ce2b304e91969821fa8ce846c",
@@ -12829,16 +12829,16 @@
       "size": 1322
     },
     "src/ui/tool_palette_impl.py": {
-      "sha256": "c7db59590c7159ff4f1712c5a94a9e5c049cc3fee13e06f28be7c23c8e989265",
-      "size": 16730
+      "sha256": "b1daef1ab6e22fb1ba5307f671552670da47270e5143f61374c243e0333954e2",
+      "size": 16803
     },
     "src/ui/top_command_contract.py": {
       "sha256": "4fcfdcc33523a4885195a4a305da5d5ef6801b72bdc72b2d81d14e59ee4a7ec8",
       "size": 6338
     },
     "src/ui/vector_contour_panel.py": {
-      "sha256": "c2d5492e5e01f01ec3f5ce0b793c793df1928ce23d22b499e0530f2a29ad831d",
-      "size": 15317
+      "sha256": "abae236909d3190687bb892b75aef46b3506d940748360c2cc8482d3f25cf511",
+      "size": 15499
     },
     "src/ui/viewport_actions.py": {
       "sha256": "8d5013d1a7ac9a0b5da6718ee7a59425b37e224c03d37960a150c88623c168ed",
@@ -12857,8 +12857,8 @@
       "size": 2536
     },
     "src/ui/viewport_status.py": {
-      "sha256": "4dfea14075a565ee52a4ec8ca54b57380f32fabe862f13bf8835a1b9a2080877",
-      "size": 2343
+      "sha256": "05b3414e289ed63fd8f6f08ccc0f3fddfff6e3d4ce6bec042a4d9c7fc5fe20ed",
+      "size": 2354
     },
     "src/utils/packing.py": {
       "sha256": "5cafdf59abf318449422a8eb75b4a0f33532c51d7def8285a9b1ff7c93dce487",

@@ -85,7 +85,7 @@ def _binding(path: Path, root: Path) -> dict[str, Any]:
     }
 
 
-def _resolve_binding(root: Path, binding: Mapping[str, Any], name: str) -> Path:
+def _resolve_binding(root: Path, binding: object, name: str) -> Path:
     if not isinstance(binding, Mapping):
         raise HybridCompositionExportError(f"{name} binding is invalid")
     relative = _safe_relative_path(binding.get("path"), f"{name}.path")

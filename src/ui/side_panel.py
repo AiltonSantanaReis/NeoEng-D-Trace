@@ -598,7 +598,7 @@ class SidePanel(QWidget):
         )
         for key, (field, name, description) in zip(self._transform_form_labels, fields):
             label = self._transform_form_labels[key]
-            if label is not None:
+            if isinstance(label, QLabel):
                 label.setText(name)
             field.setObjectName(f"inspector_{name.lower().replace(' ', '_')}")
             field.setAccessibleName(name)

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from PySide6.QtGui import QFontMetrics
 from PySide6.QtWidgets import QMenu
 
@@ -33,7 +35,7 @@ def fit_context_menu(menu: QMenu) -> QMenu:
             longest = max(longest, metrics.horizontalAdvance(text))
         submenu = action.menu()
         if submenu is not None:
-            fit_context_menu(submenu)
+            fit_context_menu(cast(QMenu, submenu))
 
     # Account for the QMenu item padding, frame, and a small safety margin for
     # native font rounding without introducing a fixed global width.

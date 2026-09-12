@@ -40,6 +40,19 @@ def _color(value: str, fallback: str = "#5b9dcc") -> QColor:
     return color if color.isValid() else QColor(fallback)
 
 
+def _vec3(
+    value: Any, fallback: tuple[float, float, float] = (0.0, 0.0, 0.0)
+) -> tuple[float, float, float]:
+    if not isinstance(value, (list, tuple)) or len(value) < 3:
+        return fallback
+    return (float(value[0]), float(value[1]), float(value[2]))
+
+
+def _rotation(value: Any) -> list[float]:
+    vector = _vec3(value)
+    return [vector[0], vector[1], vector[2]]
+
+
 def _rotate(
     point: tuple[float, float, float], rotation: list[float]
 ) -> tuple[float, float, float]:
@@ -155,13 +168,14 @@ class HybridSceneCanvas(QWidget):
                 (1, 1, 1),
                 (-1, 1, 1),
             ]
-        scale = record.get("scale", [1, 1, 1])
-        rotation = record.get("rotation", [0, 0, 0])
-        position = record.get("position", [0, 0, 0])
+        scale = _vec3(record.get("scale", [1, 1, 1]), (1.0, 1.0, 1.0))
+        rotation = _rotation(record.get("rotation", [0, 0, 0]))
+        position = _vec3(record.get("position", [0, 0, 0]))
         return [
-            tuple(
-                float(position[index]) + rotated[index] * float(scale[index])
-                for index in range(3)
+            (
+                position[0] + rotated[0] * scale[0],
+                position[1] + rotated[1] * scale[1],
+                position[2] + rotated[2] * scale[2],
             )
             for point in local
             for rotated in (_rotate(point, rotation),)
@@ -209,7 +223,7 @@ class HybridSceneCanvas(QWidget):
             points = [projected[index][0] for index in face]
             depth = sum(projected[index][1] for index in face) / len(face)
             face_data.append((depth, points))
-        material = next(
+        material: dict[str, Any] = next(
             (
                 item
                 for item in self.document.get("materials", [])
@@ -234,28 +248,25 @@ class HybridSceneCanvas(QWidget):
             )
             painter.setBrush(QBrush(face_color))
             painter.drawPolygon(QPolygonF(points))
-        center, _ = self._world_to_screen(
-            tuple(float(value) for value in record["position"])
-        )
+        center, _ = self._world_to_screen(_vec3(record["position"]))
         painter.setPen(QPen(QColor("#e5f2f8"), 1))
         painter.drawText(center + QPointF(8, -8), str(record["name"]))
 
     def _draw_light(self, painter: QPainter, record: dict[str, Any]) -> None:
-        center, _ = self._world_to_screen(
-            tuple(float(value) for value in record["position"])
-        )
+        center, _ = self._world_to_screen(_vec3(record["position"]))
         radius = 12 if str(record["id"]) == self.owner.selected_id else 9
         color = _color(str(record.get("color", "#ffd58a")))
         painter.setPen(QPen(QColor("#fff1a8"), 2))
         painter.setBrush(QBrush(color))
         painter.drawEllipse(center, radius, radius)
         if record.get("light_type") == "directional":
-            rotation = record.get("rotation", [0, 0, 0])
+            rotation = _rotation(record.get("rotation", [0, 0, 0]))
             direction = _rotate((0.0, 0.0, -2.0), rotation)
             end, _ = self._world_to_screen(
-                tuple(
-                    float(center_value) + direction[index]
-                    for index, center_value in enumerate(record["position"])
+                (
+                    _vec3(record["position"])[0] + direction[0],
+                    _vec3(record["position"])[1] + direction[1],
+                    _vec3(record["position"])[2] + direction[2],
                 )
             )
             painter.drawLine(center, end)
@@ -266,18 +277,14 @@ class HybridSceneCanvas(QWidget):
         )
 
     def _draw_camera(self, painter: QPainter, record: dict[str, Any]) -> None:
-        center, _ = self._world_to_screen(
-            tuple(float(value) for value in record["position"])
-        )
-        target, _ = self._world_to_screen(
-            tuple(float(value) for value in record.get("target", [0, 0, 0]))
-        )
+        center, _ = self._world_to_screen(_vec3(record["position"]))
+        target, _ = self._world_to_screen(_vec3(record.get("target", [0, 0, 0])))
         direction = target - center
         if direction.manhattanLength() < 1:
             direction = QPointF(0, 50)
         normal = QPointF(-direction.y(), direction.x())
         length = max(1.0, math.hypot(direction.x(), direction.y()))
-        normal /= length
+        normal = QPointF(normal.x() / length, normal.y() / length)
         tip = center + direction * 0.35
         corners = [tip + normal * 22, tip - normal * 22]
         painter.setPen(QPen(QColor("#c59cff"), 2))
@@ -292,9 +299,7 @@ class HybridSceneCanvas(QWidget):
         )
 
     def _draw_gizmo(self, painter: QPainter, record: dict[str, Any]) -> None:
-        center, _ = self._world_to_screen(
-            tuple(float(value) for value in record["position"])
-        )
+        center, _ = self._world_to_screen(_vec3(record["position"]))
         length = 44
         painter.setPen(QPen(QColor("#ee6565"), 2))
         painter.drawLine(center, center + QPointF(length, 0))

@@ -219,6 +219,7 @@ class _MagneticPathWorker(QRunnable):
         }.get(self.purpose, self.settings.segment_timeout_ms)
         deadline = started_at + max(0, int(timeout_ms)) / 1000.0
         timed_out = False
+        cancelled = False
 
         def cancellation_requested() -> bool:
             """Combine explicit cancellation with a worker-side hard deadline."""

@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (  # noqa: F401 - public module compatibility
 )
 
 from src.core.commands import (
+    Command,
     CommandResult,
     CommandStatus,
     CompositeCommand,
@@ -626,12 +627,11 @@ class PolygonEditTool(BaseTool):
 
         # The target is captured at menu-open time; actions cannot fall back to
         # a stale selection after the menu is displayed.
-        has_selection = target is not None
         has_vertex = target is not None and target[0] == "vertex"
         vertex_count = len(self.selected_vertices)
         multiple_selected = len(self.selected_polygon_ids) > 1 and target is not None
 
-        if has_selection and not multiple_selected:
+        if target is not None and not multiple_selected:
             target_object_id = target[1]
             target_vertex_index = target[2]
             obj = self.canvas_view.model.objects.get(target_object_id)
@@ -936,7 +936,7 @@ class PolygonEditTool(BaseTool):
         for object_id, vertex_index in selections:
             grouped.setdefault(object_id, []).append(vertex_index)
 
-        commands = []
+        commands: list[Command] = []
         model = getattr(self.canvas_view, "model", None)
         manager = getattr(model, "cmd", None)
         if model is None or manager is None:

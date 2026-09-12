@@ -165,9 +165,8 @@ class ContourEditSession:
             )
         contour = np.asarray(self._current, dtype=np.float32).reshape((-1, 1, 2))
         simplified = cv2.approxPolyDP(contour, float(epsilon), True)
-        points = [
-            tuple(float(value) for value in point)
-            for point in simplified.reshape(-1, 2)
+        points: list[tuple[float, float]] = [
+            (float(point[0]), float(point[1])) for point in simplified.reshape(-1, 2)
         ]
         if len(points) > MAX_POLYGON_POINTS:
             raise VectorizationError(

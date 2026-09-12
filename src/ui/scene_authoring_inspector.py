@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from PySide6.QtCore import QSignalBlocker, Signal
 from PySide6.QtWidgets import (
     QCheckBox,
@@ -435,10 +437,15 @@ class SceneAuthoringInspector(QWidget):
     def _add_labeled_row(
         self, layout: QFormLayout, key: str, text: str, widget: QWidget
     ) -> None:
-        layout.addRow(ScrubbableLabel(text, widget), widget)
-        label = layout.labelForField(widget)
-        if isinstance(label, QLabel):
-            self._field_labels[key] = label
+        label: QLabel
+        if isinstance(widget, QDoubleSpinBox):
+            label = ScrubbableLabel(text, widget)
+        else:
+            label = QLabel(text)
+        layout.addRow(label, widget)
+        field_label = layout.labelForField(widget)
+        if isinstance(field_label, QLabel):
+            self._field_labels[key] = field_label
 
     @staticmethod
     def _spin(
@@ -772,7 +779,7 @@ class SceneAuthoringInspector(QWidget):
     def _particle_system_for_socket(
         self, socket: SceneVfxSocketRecord
     ) -> SceneParticleSystemRecord:
-        document = self.session.document
+        document = cast(SceneAuthoringDocumentV2, self.session.document)
         system = next(
             (item for item in document.particle_systems if item.id == socket.effect_id),
             None,
@@ -812,7 +819,10 @@ class SceneAuthoringInspector(QWidget):
             (self.particle_acceleration_y, emitter.acceleration.y),
         ):
             with QSignalBlocker(widget):
-                widget.setValue(float(value))
+                if isinstance(widget, QDoubleSpinBox):
+                    widget.setValue(float(value))
+                else:
+                    widget.setValue(int(value))
         with QSignalBlocker(self.particle_loop):
             self.particle_loop.setChecked(system.loop)
         with QSignalBlocker(self.particle_duration):
@@ -866,9 +876,8 @@ class SceneAuthoringInspector(QWidget):
         ):
             with QSignalBlocker(widget):
                 widget.setValue(float(value))
-        is_vfx = isinstance(socket, SceneVfxSocketRecord)
-        self._set_particle_widgets_enabled(is_vfx)
-        if is_vfx:
+        self._set_particle_widgets_enabled(isinstance(socket, SceneVfxSocketRecord))
+        if isinstance(socket, SceneVfxSocketRecord):
             self.socket_effect_id.setText(socket.effect_id)
             self.socket_scale.setValue(float(socket.scale))
             self.socket_enabled.setChecked(bool(socket.enabled))
@@ -898,8 +907,9 @@ class SceneAuthoringInspector(QWidget):
         if not is_vfx:
             return
         socket_id = self.socket_combo.currentData()
+        document = cast(SceneAuthoringDocumentV2, self.session.document)
         selected = next(
-            (item for item in self.session.document.sockets if item.id == socket_id),
+            (item for item in document.sockets if item.id == socket_id),
             None,
         )
         if not isinstance(selected, SceneVfxSocketRecord):
@@ -1069,8 +1079,9 @@ class SceneAuthoringInspector(QWidget):
         socket_id = self.socket_combo.currentData()
         if not socket_id:
             return None
+        document = cast(SceneAuthoringDocumentV2, self.session.document)
         socket = next(
-            (item for item in self.session.document.sockets if item.id == socket_id),
+            (item for item in document.sockets if item.id == socket_id),
             None,
         )
         return socket if isinstance(socket, SceneVfxSocketRecord) else None
@@ -1087,9 +1098,9 @@ class SceneAuthoringInspector(QWidget):
             return
         try:
             system = self._particle_system_for_socket(socket)
+            document = cast(SceneAuthoringDocumentV2, self.session.document)
             if not any(
-                item.id == socket.effect_id
-                for item in self.session.document.particle_systems
+                item.id == socket.effect_id for item in document.particle_systems
             ):
                 self._update_socket()
                 system = self._particle_system_for_socket(socket)
@@ -1204,7 +1215,9 @@ class SceneAuthoringInspector(QWidget):
                     size=Point3Record(x=32.0, y=32.0, z=1.0),
                 )
             particle_system = None
-            if socket_type == "vfx" and not socket.effect_id.startswith("post-"):
+            if isinstance(
+                socket, SceneVfxSocketRecord
+            ) and not socket.effect_id.startswith("post-"):
                 particle_system = self._particle_system_from_fields(socket.effect_id)
             self.session.add_socket(socket, particle_system)
             new_index = self.socket_combo.findData(socket.id)
@@ -1227,9 +1240,8 @@ class SceneAuthoringInspector(QWidget):
             )
             return
         try:
-            socket = next(
-                item for item in self.session.document.sockets if item.id == socket_id
-            )
+            document = cast(SceneAuthoringDocumentV2, self.session.document)
+            socket = next(item for item in document.sockets if item.id == socket_id)
             position = Point3Record(
                 x=self.socket_x.value(),
                 y=self.socket_y.value(),

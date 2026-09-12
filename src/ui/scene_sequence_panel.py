@@ -85,7 +85,7 @@ def spin(name, minimum, maximum, value=0):
 class ClipBlock(QGraphicsRectItem):
     def __init__(self, panel, clip, row):
         super().__init__(0, 0, max(6, clip.duration * panel.pixels_per_second), 24)
-        self.panel, self.clip = panel, clip
+        self._sequence_panel, self._scene_clip = panel, clip
         self.setPos(150 + clip.start * panel.pixels_per_second, 28 + row * 31)
         self.setBrush(QBrush(QColor(COLORS[KINDS.index(clip.kind)])))
         self.setPen(
@@ -103,53 +103,57 @@ class ClipBlock(QGraphicsRectItem):
         painter.drawText(
             self.rect().adjusted(6, 0, -6, 0),
             Qt.AlignmentFlag.AlignVCenter,
-            self.clip.name,
+            self._scene_clip.name,
         )
         painter.restore()
 
     def mousePressEvent(self, event):
-        self.origin = event.scenePos().x()
-        self.resizing = event.pos().x() >= self.rect().width() - 8
-        self.panel.select_clip(self.clip.id, redraw=False)
+        self._drag_origin = event.scenePos().x()
+        self._resizing = event.pos().x() >= self.rect().width() - 8
+        self._sequence_panel.select_clip(self._scene_clip.id, redraw=False)
         self.setPen(QPen(QColor("#53d4e8"), 2))
         event.accept()
 
     def mouseMoveEvent(self, event):
-        delta = (event.scenePos().x() - self.origin) / self.panel.pixels_per_second
-        if self.resizing:
+        delta = (
+            event.scenePos().x() - self._drag_origin
+        ) / self._sequence_panel.pixels_per_second
+        if self._resizing:
             duration = max(
                 0.05,
                 min(
-                    self.panel.sequence.duration - self.clip.start,
-                    self.clip.duration + delta,
+                    self._sequence_panel.sequence.duration - self._scene_clip.start,
+                    self._scene_clip.duration + delta,
                 ),
             )
-            self.setRect(0, 0, duration * self.panel.pixels_per_second, 24)
+            self.setRect(0, 0, duration * self._sequence_panel.pixels_per_second, 24)
         else:
             start = max(
                 0,
                 min(
-                    self.panel.sequence.duration - self.clip.duration,
-                    self.clip.start + delta,
+                    self._sequence_panel.sequence.duration - self._scene_clip.duration,
+                    self._scene_clip.start + delta,
                 ),
             )
-            self.setX(150 + start * self.panel.pixels_per_second)
+            self.setX(150 + start * self._sequence_panel.pixels_per_second)
         event.accept()
 
     def mouseReleaseEvent(self, event):
         # Deferred: rebuilding a QGraphicsScene while its item handles an event
         # destroys the native receiver and can crash Qt.
         patch = (
-            {"duration": self.rect().width() / self.panel.pixels_per_second}
-            if self.resizing
-            else {"start": (self.x() - 150) / self.panel.pixels_per_second}
+            {"duration": self.rect().width() / self._sequence_panel.pixels_per_second}
+            if self._resizing
+            else {"start": (self.x() - 150) / self._sequence_panel.pixels_per_second}
         )
-        clip_id = self.clip.id
-        QTimer.singleShot(0, lambda: self.panel.change_clip(clip_id, patch))
+        clip_id = self._scene_clip.id
+        QTimer.singleShot(0, lambda: self._sequence_panel.change_clip(clip_id, patch))
         event.accept()
 
 
 class TimelineView(QGraphicsView):
+    parent_panel: "SceneSequencePanel"
+
     def __init__(self, scene, parent=None):
         super().__init__(scene, parent)
         # QGraphicsView does not take ownership of a scene supplied without a
@@ -220,7 +224,7 @@ class TimelineView(QGraphicsView):
 
 class SequenceViewport(SceneAuthoringViewport):
     def __init__(self, session, project_root, parent=None):
-        self.sequence_clips = ()
+        self.sequence_clips: tuple[SceneClip, ...] = ()
         self.sequence_position = 0.0
         super().__init__(session, project_root=project_root, parent=parent)
 
@@ -486,8 +490,8 @@ class SceneSequencePanel(QWidget):
                 "Intensity",
             )
         )
-        for widget, label in zip(self.field_labels.values(), labels):
-            widget.setText(label)
+        for label_widget, label in zip(self.field_labels.values(), labels):
+            label_widget.setText(label)
 
     def _error(self, exc):
         self.status_message.emit(
@@ -613,7 +617,9 @@ class SceneSequencePanel(QWidget):
 
     def select_clip(self, clip_id, *, redraw=True):
         self.selected_id = clip_id
-        clip = next((c for c in self.sequence.clips if c.id == clip_id), None)
+        clip: SceneClip | None = next(
+            (c for c in self.sequence.clips if c.id == clip_id), None
+        )
         if clip:
             relevant = {"name", "enabled", "start", "duration"}
             if clip.kind in {"camera", "motion"}:

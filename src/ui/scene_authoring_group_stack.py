@@ -49,8 +49,8 @@ class _AssetDropTree(QTreeWidget):
     def _target_group(self, item: QTreeWidgetItem | None) -> str | None:
         current = item
         while current is not None:
-            if current.data(Qt.ItemDataRole.UserRole) == "group":
-                value = current.data(Qt.ItemDataRole.UserRole + 1)
+            if current.data(0, Qt.ItemDataRole.UserRole) == "group":
+                value = current.data(0, Qt.ItemDataRole.UserRole + 1)
                 return str(value) if value else None
             current = current.parent()
         return None

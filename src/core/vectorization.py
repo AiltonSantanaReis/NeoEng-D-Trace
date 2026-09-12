@@ -18,6 +18,7 @@ from PIL import Image
 
 from src.core.image_input import (
     ImageInputError,
+    ImageInputInfo,
     hash_validated_image_file,
     inspect_image_file,
     validate_decoded_image,
@@ -105,7 +106,7 @@ class VectorizationResult:
         return payload
 
 
-def _read_validated_image(path: str | Path) -> tuple[np.ndarray, object, str]:
+def _read_validated_image(path: str | Path) -> tuple[np.ndarray, ImageInputInfo, str]:
     try:
         info = inspect_image_file(path)
     except ImageInputError as exc:
@@ -146,7 +147,7 @@ def _mask_for_channel(image: np.ndarray, request: VectorizationRequest) -> np.nd
 
 def _detect_polygon(
     mask: np.ndarray, request: VectorizationRequest
-) -> tuple[list[tuple[int, int]], float]:
+) -> tuple[list[tuple[float, float]], float]:
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     if not contours or hierarchy is None:
         raise VectorizationError("empty_mask", "detection produced no contour")
@@ -179,8 +180,8 @@ def _detect_polygon(
     contour = contours[root]
     if request.approximation_epsilon > 0:
         contour = cv2.approxPolyDP(contour, request.approximation_epsilon, True)
-    points = [
-        tuple(int(value) for value in point)
+    points: list[tuple[float, float]] = [
+        (float(point[0]), float(point[1]))
         for point in np.asarray(contour).reshape(-1, 2)
     ]
     if len(points) > request.maximum_vertices:

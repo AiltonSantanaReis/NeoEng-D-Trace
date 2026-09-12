@@ -137,7 +137,8 @@ def read_pack(manifest: Path) -> AssetPack:
 
 
 def discover_packs(root: Path | None = None) -> tuple[list[AssetPack], list[str]]:
-    packs, errors = [], []
+    packs: list[AssetPack] = []
+    errors: list[str] = []
     for manifest in sorted((root or bundled_pack_root()).glob("*/manifest.json")):
         try:
             pack = read_pack(manifest)

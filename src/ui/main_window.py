@@ -2,6 +2,7 @@
 import os
 import time
 from pathlib import Path
+from typing import Any
 
 from PySide6.QtCore import QLocale, Qt, Signal
 from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
@@ -75,6 +76,7 @@ class MainWindow(QMainWindow):
     scenario_load_action: QAction
     scenario_reset_action: QAction
     scenario_export_action: QAction
+    translations: dict[str, dict[str, Any]]
 
     @property
     def _project_path(self) -> Path | None:

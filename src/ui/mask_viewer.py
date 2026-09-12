@@ -1896,10 +1896,10 @@ class MaskViewerDialog(QDialog):
                 compact_label = "GrabCut"
             action.setText(compact_label)
             action.setToolTip(t["detection_action"].format(preset=label))
-            button = self.preset_buttons.get(preset_id)
-            if button is not None:
-                button.setToolTip(t["detection_action"].format(preset=label))
-                button.setAccessibleName(label)
+            preset_button = self.preset_buttons.get(preset_id)
+            if preset_button is not None:
+                preset_button.setToolTip(t["detection_action"].format(preset=label))
+                preset_button.setAccessibleName(label)
         self.view_mode_label.setText(t["view_mode"])
         self.view_mode_group.setTitle(t["view_mode"])
         view_keys = (
@@ -1918,10 +1918,10 @@ class MaskViewerDialog(QDialog):
             compact_label = full_label
             if index > 0:
                 compact_label = full_label.replace("Raio-X ", "").replace("X-Ray ", "")
-            button = self.view_mode_buttons[index]
-            button.setText(compact_label)
-            button.setToolTip(full_label)
-            button.setAccessibleName(full_label)
+            view_button = self.view_mode_buttons[index]
+            view_button.setText(compact_label)
+            view_button.setToolTip(full_label)
+            view_button.setAccessibleName(full_label)
         self.layer_controls.setTitle(t["layer_visualization"])
         for layer_id, checkbox in self.layer_checkboxes.items():
             checkbox.setText(t[self.LAYER_TEXT_KEYS[layer_id]])

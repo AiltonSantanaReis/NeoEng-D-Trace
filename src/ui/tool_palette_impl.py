@@ -317,12 +317,12 @@ class ToolPalette(QToolBar):
             action.setToolTip(label)
             action.setStatusTip(label)
             action.setProperty("accessibleName", label)
-            button = self.widgetForAction(action)
-            if button is not None:
-                button.setToolTip(label)
-                button.setStatusTip(label)
-                button.setAccessibleName(label)
-                button.setAccessibleDescription(label)
+            auxiliary_button = self.widgetForAction(action)
+            if isinstance(auxiliary_button, QToolButton):
+                auxiliary_button.setToolTip(label)
+                auxiliary_button.setStatusTip(label)
+                auxiliary_button.setAccessibleName(label)
+                auxiliary_button.setAccessibleDescription(label)
 
     def select_next_tool(self) -> None:
         names = self.tool_names()

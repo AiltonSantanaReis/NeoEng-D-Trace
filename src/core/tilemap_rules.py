@@ -58,9 +58,11 @@ class NeighborCondition:
             raise TileMapError("neighbor condition offset must be an object")
         offset_x = offset.get("x")
         offset_y = offset.get("y")
-        if any(
-            isinstance(value, bool) or not isinstance(value, int)
-            for value in (offset_x, offset_y)
+        if (
+            isinstance(offset_x, bool)
+            or not isinstance(offset_x, int)
+            or isinstance(offset_y, bool)
+            or not isinstance(offset_y, int)
         ):
             raise TileMapError("neighbor condition offsets must be integers")
         allowed = payload.get("allowed_tile_ids", [])

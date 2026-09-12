@@ -110,8 +110,8 @@ class ScenarioEditorWindow(QMainWindow):
         self.resize(1280, 820)
 
         self.professional_session: SceneAuthoringSession | None = None
-        self.sequence_panel = None
-        self.studio_docks = []
+        self.sequence_panel: SceneSequencePanel | None = None
+        self.studio_docks: list[QDockWidget] = []
         self.professional_viewport: SceneAuthoringViewport | None = None
         self.hybrid_viewport: HybridSceneViewport | None = None
         self._professional_initial_focus_applied = False
@@ -607,8 +607,18 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _build_studio_panels(self, session, viewport, inspector_scroll, project_root):
         pt = self.current_lang == "pt"
+        assert self.layer_stack is not None
+        assert self.group_stack is not None
+        assert self.asset_library is not None
+        assert self.vector_contour_panel is not None
+        assert self.tileset_panel is not None
+        assert self.tilemap_panel is not None
+        assert self.collider_panel is not None
+        assert self.navmesh_panel is not None
+        assert self.entity_prefab_panel is not None
+        assert self.professional_inspector is not None
 
-        def scroll_for(panel):
+        def scroll_for(panel: QWidget) -> QScrollArea:
             scroll = QScrollArea()
             scroll.setWidgetResizable(True)
             scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -617,11 +627,12 @@ class ScenarioEditorWindow(QMainWindow):
 
         self.studio_library_tabs = QTabWidget()
         self.studio_library_tabs.setObjectName("scene_studio_library_tabs")
-        for panel, title in (
+        library_panels: tuple[tuple[QWidget, str], ...] = (
             (self.layer_stack, "Molduras" if pt else "Frames"),
             (self.group_stack, "Hierarquia" if pt else "Hierarchy"),
             (self.asset_library, "Biblioteca" if pt else "Library"),
-        ):
+        )
+        for panel, title in library_panels:
             self.studio_library_tabs.addTab(scroll_for(panel), title)
         dock = QDockWidget("Composição" if pt else "Composition", self)
         dock.setObjectName("scene_studio_composition_dock")
@@ -648,7 +659,7 @@ class ScenarioEditorWindow(QMainWindow):
         self.asset_library.asset_place_requested.connect(
             viewport.place_asset_from_library
         )
-        self.sequence_panel = SceneSequencePanel(
+        sequence_panel = SceneSequencePanel(
             session,
             viewport,
             self.professional_pages,
@@ -656,22 +667,24 @@ class ScenarioEditorWindow(QMainWindow):
             self.current_lang,
             self,
         )
-        self.sequence_panel.status_message.connect(self._show_professional_status)
+        self.sequence_panel = sequence_panel
+        sequence_panel.status_message.connect(self._show_professional_status)
         self.studio_inspector_tabs = QTabWidget()
         self.studio_inspector_tabs.setObjectName("scene_studio_inspector_tabs")
         self.studio_inspector_tabs.addTab(
-            self.sequence_panel.editor, "Clipe" if pt else "Clip"
+            sequence_panel.editor, "Clipe" if pt else "Clip"
         )
         advanced = QTabWidget()
         advanced.setTabPosition(QTabWidget.TabPosition.West)
-        for panel, title in (
+        advanced_panels: tuple[tuple[QWidget, str], ...] = (
             (self.vector_contour_panel, "Formas" if pt else "Shapes"),
             (self.tileset_panel, "Tileset"),
             (self.tilemap_panel, "Tilemap"),
             (self.collider_panel, "Colisão" if pt else "Collision"),
             (self.navmesh_panel, "Navegação" if pt else "Navigation"),
             (self.entity_prefab_panel, "Entidades" if pt else "Entities"),
-        ):
+        )
+        for panel, title in advanced_panels:
             advanced.addTab(scroll_for(panel), title)
         self.studio_inspector_tabs.addTab(advanced, "Ferramentas" if pt else "Tools")
         inspector_bridge = QWidget()
@@ -698,16 +711,16 @@ class ScenarioEditorWindow(QMainWindow):
         # Preserve the initial inspector page contract while keeping the
         # integrated tabs available when a timeline clip is selected.
         self.right_pages.setCurrentWidget(inspector_scroll)
-        self.sequence_panel.editor_requested.connect(
-            lambda: (
-                self.studio_inspector_tabs.setCurrentIndex(1),
-                self.right_pages.setCurrentWidget(self.studio_inspector_tabs),
-            )
-        )
+
+        def show_sequence_editor() -> None:
+            self.studio_inspector_tabs.setCurrentIndex(1)
+            self.right_pages.setCurrentWidget(self.studio_inspector_tabs)
+
+        sequence_panel.editor_requested.connect(show_sequence_editor)
         timeline_dock = QDockWidget("Linha do tempo" if pt else "Timeline", self)
         timeline_dock.setObjectName("scene_studio_timeline_dock")
         timeline_dock.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
-        timeline_dock.setWidget(self.sequence_panel)
+        timeline_dock.setWidget(sequence_panel)
         self.setCorner(
             Qt.Corner.BottomLeftCorner, Qt.DockWidgetArea.BottomDockWidgetArea
         )
@@ -1243,7 +1256,11 @@ class ScenarioEditorWindow(QMainWindow):
         if destination.suffix.lower() != ".ndtproj":
             destination = destination.with_suffix(".ndtproj")
         try:
-            document = self.professional_session.document
+            document = upgrade_scene_authoring_document(
+                self.professional_session.document
+            )
+            if self._professional_project is None:
+                raise ValueError("professional project path is unavailable")
             source_root = self._professional_project.parent
             relocated_assets = []
             for asset in document.assets:
