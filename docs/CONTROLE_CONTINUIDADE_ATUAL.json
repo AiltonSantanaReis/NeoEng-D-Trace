@@ -89,7 +89,17 @@
       "observation_artifact": "artifacts/post-e13-recovery-visible-official-v4-20260912.log",
       "historical_failure_artifact": "artifacts/post-e13-particle-scene-export-native-20260911-v14/official-pytest.log",
       "final_log": "artifacts/post-e13-recovery-visible-official-v4-20260912.log",
-      "final_log_sha256": "B1637DEFA413FFF05A5FD463109DB10D5962A563AF39FF0E4DB89C02F7CE2B0B"
+      "final_log_sha256": "B1637DEFA413FFF05A5FD463109DB10D5962A563AF39FF0E4DB89C02F7CE2B0B",
+      "current_checkout_revalidation": {
+        "status": "PASS",
+        "source_commit": "dd344f47c1a631729f53a6370759fc449705fd0c",
+        "code_diff_from_source": "NONE",
+        "command": ".venv311\\Scripts\\python.exe -m pytest -q",
+        "result": "2226 passed, 2 skipped, 1 warning",
+        "duration_seconds": 81.15,
+        "observed_at": "2026-09-12",
+        "warning": "DeprecationWarning em tests/test_merge_coverage_authoring_contracts.py:1341; preservado"
+      }
     },
     "static": {
       "status": "PASS_LOCAL",
@@ -121,6 +131,7 @@
       "native_technical_status": "PASS",
       "human_review_policy": "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION",
       "human_review_decision": "docs/evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md",
+      "readiness_audit": "docs/evidence/AUDITORIA_PRONTIDAO_REVISAO_HUMANA_POS_E13_20260912.md",
       "human_review_required_before_close": true,
       "latest_binary_capture": "build/post-e13-final-build-recovery-v4-20260912/artifacts/post-e13-final-native-composition-recovery-v4-20260912/composition-05-recovery-prompt.png",
       "latest_binary_capture_sha256": "BE829AA548403F58EA6EC4B553CBCE645DC7056BB4ED7AA6629EE9FDF0C98B3B",
