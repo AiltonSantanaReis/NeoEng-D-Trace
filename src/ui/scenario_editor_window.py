@@ -932,20 +932,22 @@ class ScenarioEditorWindow(QMainWindow):
                 )
                 self._pending_recovery_path = recovery if recovery.is_file() else None
                 recovery_hint = (
-                    "Use Recuperar Último Válido para restaurar a última cópia válida."
+                    "Use Recuperar Último Válido\n"
+                    "para restaurar a última cópia válida."
                     if self.current_lang == "pt"
-                    else "Use Recover Last Valid to restore the last valid copy."
+                    else "Use Recover Last Valid\n"
+                    "to restore the last valid copy."
                 )
                 repair_hint = (
-                    "Corrija o arquivo do cenário antes de recarregar."
+                    "Corrija o arquivo do cenário\nantes de recarregar."
                     if self.current_lang == "pt"
-                    else "Repair the scenario file before reloading."
+                    else "Repair the scenario file\nbefore reloading."
                 )
                 self._show_pending_document(
                     (
-                        "O cenário salvo não pôde ser recarregado. "
+                        "O cenário salvo não pôde ser recarregado.\n\n"
                         if self.current_lang == "pt"
-                        else "The saved scenario could not be reloaded. "
+                        else "The saved scenario could not be reloaded.\n\n"
                     )
                     + (recovery_hint if self._pending_recovery_path else repair_hint)
                 )

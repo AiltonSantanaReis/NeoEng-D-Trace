@@ -544,7 +544,7 @@ def test_existing_sidecar_and_failure_paths_remain_observable(
                 hint in reopened.professional_empty.text()
                 for hint in (
                     "Recover Last Valid",
-                    "Repair the scenario file before reloading",
+                    "Repair the scenario file",
                 )
             )
 
