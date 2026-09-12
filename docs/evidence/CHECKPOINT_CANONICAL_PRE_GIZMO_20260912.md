@@ -54,4 +54,3 @@ proposta visual e de seus critérios de interação.
 - [Governança de integridade](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 - [Auditoria pós-E13 do Editor de Cenário](AUDITORIA_EDITOR_CENARIO_TRIAGE_POS_E13_20260912.md)
 - [Propostas visuais do gizmo](PROPOSTAS_GIZMO_VISUAL_POS_E13_20260912.md)
-
