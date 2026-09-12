@@ -143,6 +143,12 @@ class ScenarioEditorWindow(QMainWindow):
             QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored
         )
         self.professional_empty.setMinimumSize(0, 0)
+        # A word-wrapped QLabel reports the longest unwrapped line as its
+        # size hint.  Bound the recovery page so a long localized message
+        # cannot expand the splitter beyond the native window and hide the
+        # inspector.  The label still expands vertically and wraps within
+        # the available viewport.
+        self.professional_empty.setMaximumWidth(720)
         self.professional_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.professional_empty.setText(
             "Professional scene viewport\n\n"

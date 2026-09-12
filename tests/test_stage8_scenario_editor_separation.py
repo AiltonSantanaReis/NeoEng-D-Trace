@@ -541,6 +541,7 @@ def test_existing_sidecar_and_failure_paths_remain_observable(
             reopened._load_professional()
             assert "Scenario reload failed" in reopened.status_label.text()
             assert reopened.professional_empty.width() <= reopened.professional_pages.width()
+            assert reopened.professional_empty.width() <= 720
             assert any(
                 hint in reopened.professional_empty.text()
                 for hint in (
