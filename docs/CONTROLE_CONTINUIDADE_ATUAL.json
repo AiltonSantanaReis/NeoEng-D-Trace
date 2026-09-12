@@ -68,8 +68,8 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "0689e72c9051c3daeb42d656b87e9128f2a736ba",
-    "head_role": "POST_E13_TILEMAP_ADVANCED_RESPONSIVE_NATIVE_EVIDENCE",
+    "head": "438d7d4847e027ccd336780ce9c62ed3d8eaffe0",
+    "head_role": "POST_E13_TILEMAP_ADVANCED_DOCUMENTATION_COMMITTED",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
     "status": "TRACKED_CLEAN_POST_E13_TILEMAP_ADVANCED_HUMAN_REVIEW_PENDING"
