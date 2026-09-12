@@ -26,9 +26,12 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. A fonte de produto do checkpoint integrado mais
-recente é o commit `dd344f47`; os commits anteriores continuam apenas como
-proveniência dos checkpoints específicos; o
+`Ailton/e08-renderer-20260908`. O HEAD atual do checkout é o commit de
+documentação `377fb1df`; a fonte de produto/build do checkpoint integrado mais
+recente continua sendo o commit `dd344f47`. Essa separação é intencional: o
+primeiro identifica o estado documental atual do checkout e o segundo preserva
+a proveniência exata da build v4 já executada. Os commits anteriores continuam
+apenas como proveniência dos checkpoints específicos; o
 harness Win32 complementar de captura está preservado no checkout como arquivo
 não rastreado preexistente, SHA-256
 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`. A existência de outras branches,

@@ -68,8 +68,9 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/e08-renderer-20260908",
-    "head": "dd344f47c1a631729f53a6370759fc449705fd0c",
-    "head_role": "POST_E13_FINAL_BUILD_NATIVE_COMPOSITION_CHECKPOINT_HUMAN_REVIEW_PENDING",
+    "head": "377fb1dff325decd910e0ff6aec2f95e177ee557",
+    "head_role": "POST_E13_FINAL_BUILD_NATIVE_COMPOSITION_CHECKPOINT_HUMAN_REVIEW_PENDING_DOCUMENTATION_HEAD",
+    "product_source_commit": "dd344f47c1a631729f53a6370759fc449705fd0c",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
     "status": "TRACKED_CLEAN_POST_E13_FINAL_NATIVE_CHECKPOINT_HUMAN_REVIEW_PENDING"
