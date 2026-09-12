@@ -93,4 +93,3 @@ gates passarem, o catálogo atual permanece intacto e o pacote continua interno.
 - [Auditoria do catálogo piloto](AUDITORIA_MODELOS_PILOTO_E_PLANO_PRODUCAO_POS_E13_20260912.md)
 - [Matriz de limites Godot/Unity](MATRIZ_LIMITES_ENGINES_GODOT_UNITY_POS_E13_20260912.md)
 - [Governança de integridade](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
-
