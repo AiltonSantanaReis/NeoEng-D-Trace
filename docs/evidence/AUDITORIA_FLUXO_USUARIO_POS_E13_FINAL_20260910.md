@@ -11,6 +11,13 @@
 
 **E13:** concluído e congelado como histórico; não foi reaberto.
 
+**Adendo técnico atual:** em 2026-09-12 a requalificação foi repetida no
+commit `dd344f47c1a631729f53a6370759fc449705fd0c`, com build v4, fluxo nativo
+de composição, erro/recuperação, persistência, Tilemap/runtime hash-bound e
+capturas reais. O adendo da seção 9 é o estado técnico atual; as seções 3–8
+mantêm o relatório final10 original como evidência histórica, inclusive o
+abort observado naquela execução.
+
 ## 1. Objetivo e limite
 
 Esta auditoria fecha a investigação técnica pós-E13 do Editor de Cenário,
@@ -20,8 +27,9 @@ salvamento e reabertura dos recursos, sem remover conteúdo existente ou
 promover uma evidência parcial a aceite global.
 
 As referências a E00–E13, builds antigas e tentativas que falharam continuam
-preservadas para rastreabilidade. A base de implementação deste relatório é
-somente o commit `cf829b7583c4a6a63fb86d8a0cafc5103808f498` e a build final10.
+preservadas para rastreabilidade. A matriz final10 deste relatório tem como
+base histórica somente o commit `cf829b7583c4a6a63fb86d8a0cafc5103808f498`;
+o checkpoint técnico atual está registrado no adendo da seção 9.
 
 ## 2. Governança e método de evidência
 
@@ -48,7 +56,7 @@ O harness de menu contextual profissional foi versionado no commit
 `072427e` (`test: capture professional viewport context menu`), sem alterar
 código de produto, schema, assets ou comportamento do usuário.
 
-## 3. Build final e proveniência
+## 3. Build final e proveniência — registro histórico final10
 
 - Diretório: `build/_clean-post-e13-final10-20260910/`.
 - Commit de produto/build: `cf829b7583c4a6a63fb86d8a0cafc5103808f498`.
@@ -124,9 +132,11 @@ O registro curto está em
 `artifacts/post-e13-binary-final10-20260910/official-suite-final10-observation.txt`,
 SHA-256 `41B240988E744EA010F3BC353E1A51E102E5E79ACD86CCB9DB12554A6323EC96`.
 
-Por isso, a auditoria técnica do lote passou nos fluxos cobertos, mas o gate
-global permanece `IN_PROGRESS`; não é legítimo declarar ausência de regressão
-global enquanto a suíte oficial não completa.
+Por isso, naquele relatório final10 a auditoria técnica do lote passou nos
+fluxos cobertos, mas o gate global permaneceu `IN_PROGRESS`; a ausência de
+regressão global não foi declarada naquela execução. A requalificação oficial
+posterior, sem filtros, está registrada no adendo atual da seção 9 e não apaga
+este finding histórico.
 
 Limitações adicionais registradas:
 
@@ -172,3 +182,54 @@ decisões de aceite:
 
 Até essas decisões e os gates formais, o estado correto deste relatório é
 `IN_PROGRESS`, nunca `COMPLETED`.
+
+## 9. Adendo técnico atual — checkpoint v4 de build e composição
+
+Esta seção atualiza o estado técnico sem sobrescrever a matriz final10 nem
+reclassificar o abort histórico. O commit auditado atual é
+`dd344f47c1a631729f53a6370759fc449705fd0c`; a suíte oficial sem filtros
+coletou 2228 testes e terminou com `2226 passed, 2 skipped, 1 warning`. O log
+é `artifacts/post-e13-recovery-visible-official-v4-20260912.log`, SHA-256
+`B1637DEFA413FFF05A5FD463109DB10D5962A563AF39FF0E4DB89C02F7CE2B0B`.
+
+A build portátil v4 tem executável SHA-256
+`CBC16B6425158362572848D59D847988F8300455E1AE973DB961A0C2162046A8`, ZIP
+SHA-256 `D942187979E6BA494256DCA7ADBB2D4FBFCBBAE346FD9D2F55988845028B7C4D`,
+proveniência `PASS`, smoke `SUCCESS` em 11 checks e warning de `tzdata`
+preservado. O relatório completo de build e fluxo está em
+[`EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md`](EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md).
+
+O fluxo nativo v4 abriu o projeto, abriu o Editor de Cenário, exportou,
+salvou, fechou/reabriu, corrompeu somente o fixture, recarregou, exibiu a
+mensagem PT-BR de recuperação sem corte, recuperou a última cópia válida,
+salvou e exportou novamente. O relatório bruto é
+`build/post-e13-final-build-recovery-v4-20260912/artifacts/post-e13-final-native-composition-recovery-v4-20260912/native-flow-output.json`,
+SHA-256 `60EBE0228865C2D6C90F03519753DE88307E1BAE915F61DBA43987AD256F58E6`.
+As capturas reais foram produzidas em janela `1933x1045`; a captura do estado
+de erro completo tem SHA-256
+`BE829AA548403F58EA6EC4B553CBCE645DC7056BB4ED7AA6629EE9FDF0C98B3B`.
+
+Os dois pacotes `composition-e11` e `composition-e11-r2` passaram
+`validate_composition_package`. O manifesto manteve
+`tilemap-runtime: emitted-hash-bound`, o atlas real tem SHA-256
+`4BFFD31518CB8EABCFBA2B2A4379BA54D6A1632EBD8836B1CBAE36F9B33A9A18`, o
+payload runtime tem SHA-256
+`B1F95AD22750D5ADC4CB2A331B241F822387CC5A2A8BC30C65B463A0E824BB93` e os
+manifestos antes/depois da recuperação têm SHA-256
+`EB53DFF5E71EE1F6BC338F3027A8C98D0526ED5E6E23D3050443B0FBECD51E2E`.
+
+### Estado atual e decisões restantes
+
+- Estado técnico do lote: `PASS` para build, composição, Tilemap/runtime,
+  persistência e recuperação observados; estado geral permanece `IN_PROGRESS`.
+- O abort da execução final10 continua como finding histórico. A suíte atual
+  completou; qualquer tratamento adicional do magnetic lasso permanece na
+  manutenção separada já decidida, sem reabrir E13.
+- A CUA não inicializou; o fallback Win32 está declarado no relatório e não é
+  apresentado como CUA.
+- A revisão humana final continua `PENDING_EVIDENCE` até o proprietário
+  validar visual, usabilidade, localização PT-BR, desempenho percebido,
+  assets/licença e a coerência do editor 2D/2.5D/3D.
+- Permanecem reservadas ao proprietário apenas a revisão humana, licença e
+  proveniência dos pacotes, aceitação do warning/fallback ambiental e decisão
+  de publicação. Nenhuma dessas decisões foi inferida ou executada.

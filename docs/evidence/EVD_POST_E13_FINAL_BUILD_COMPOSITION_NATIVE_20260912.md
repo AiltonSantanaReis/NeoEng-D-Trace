@@ -127,7 +127,7 @@ componentes, schema do tilemap, payload runtime e binding do atlas.
   estado normal e continua preservada no pacote histórico.
 - As versões v2 e v3 exibiram a mensagem, mas com o texto cortado; a captura
   v3 permanece em
-  `build/post-e13-final-build-recovery-v3-20260912/artifacts/post-e13-final-native-composition-recovery-v3-20260912/composition-05-recovery-prompt.png`
+  `../post-e13-final-build-recovery-v3-20260912/artifacts/post-e13-final-native-composition-recovery-v3-20260912/composition-05-recovery-prompt.png`
   com SHA-256 `112B91FD07D4ABEE7CE776C9F2967CB3D2DBC5FAA9CD64AAF2CD5927916924D1`.
 - A correção v4 produziu nova captura `BE829...`; nenhuma baseline anterior foi
   sobrescrita ou removida.

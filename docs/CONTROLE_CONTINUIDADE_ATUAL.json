@@ -38,7 +38,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Executar a auditoria final pós-E13 sobre a build v4 e a evidência nativa já hashada; depois solicitar a revisão humana conforme a decisão formal de deferimento.",
+    "next_action": "Solicitar e executar a revisão humana final sobre a build v4 e as evidências técnicas já hashadas; manter E13 fechado e registrar somente as decisões reservadas ao proprietário.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",

@@ -118,9 +118,8 @@ A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Executar a [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
-com base na build v4 e na evidência nativa já registrada, consolidar limitações
-e então solicitar a revisão humana final, conforme a
+Solicitar e executar a revisão humana final com base na [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md),
+na build v4 e na evidência nativa já registrada, conforme a
 [decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
 Os gates técnicos externos de Tilemap e híbrido 3D, a ponte de partículas, o
 início do cenário do zero, as ferramentas avançadas do tilemap, o build
