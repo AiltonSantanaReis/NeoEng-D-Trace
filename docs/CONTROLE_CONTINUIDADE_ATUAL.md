@@ -26,12 +26,14 @@ registro não cria aceite funcional nem autorização de publicação.
 ## Fronteira única
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
-`Ailton/e08-renderer-20260908`. O HEAD atual do checkout é o commit de
-documentação `377fb1df`; a fonte de produto/build do checkpoint integrado mais
-recente continua sendo o commit `dd344f47`. Essa separação é intencional: o
-primeiro identifica o estado documental atual do checkout e o segundo preserva
-a proveniência exata da build v4 já executada. Os commits anteriores continuam
-apenas como proveniência dos checkpoints específicos; o
+`Ailton/e08-renderer-20260908`. No JSON canônico, `checkout_under_audit.head`
+identifica a fonte imutável de produto/build do checkpoint integrado (`dd344f47`)
+e `documentation_parent_head_at_recording` identifica o último commit
+documental reconciliado (`bb9e72c`). Essa separação é intencional: o registro é
+versionado pelo próprio Git e, portanto, o commit que materializa esta versão
+deve ser verificado com `git rev-parse HEAD`, em vez de ser duplicado dentro do
+próprio arquivo. Os commits anteriores continuam apenas como proveniência dos
+checkpoints específicos; o
 harness Win32 complementar de captura está preservado no checkout como arquivo
 não rastreado preexistente, SHA-256
 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`. A existência de outras branches,
