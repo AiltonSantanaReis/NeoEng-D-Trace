@@ -87,9 +87,13 @@ criação de plano/luz/câmera, seleção hierárquica, edição de alvo, arrast
 órbita, modos 2.5D/3D, projeção ortográfica, salvar/reabrir e localização
 PT-BR. O runtime externo é detalhado em
 [`EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md`](EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md).
-Permanece `PENDING_EVIDENCE` o build final deste lote e o fluxo nativo da
-integração geral de composição; a revisão humana final continua deferida pela
-decisão formal pós-E13.
+O build final do lote e o fluxo nativo da integração geral de composição foram
+comprovados tecnicamente no commit `dd344f4`, com o fluxo de erro/recuperação
+do Editor de Cenário, persistência e composição hash-bound registrados em
+[`EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md`](EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md).
+A revisão humana final continua deferida pela decisão formal pós-E13; o
+viewport híbrido permanece `VERTICAL_SLICE_ONLY` e não é promovido a editor
+3D completo.
 
 ## Critério de saída
 

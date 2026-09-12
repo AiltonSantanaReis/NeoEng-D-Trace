@@ -2,13 +2,15 @@
 
 **ID:** `CHG_POST_E13_TILEMAP_PRO_AUTHORING_RUNTIME_20260912`
 
-**Estado:** `IN_PROGRESS / PENDING_EVIDENCE`
+**Estado:** `PASS` — checkpoint técnico; lote pós-E13 `IN_PROGRESS` e revisão humana `PENDING_EVIDENCE`
 
 **Data:** 2026-09-12
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
 **Base de código do checkpoint atual:** `a7e22b3e625cd4190258f6ed44d2ef9a68aff7c1`
+
+**Build/correção final auditada:** `dd344f47c1a631729f53a6370759fc449705fd0c`
 
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
@@ -120,9 +122,13 @@ O teste de contrato dessa integração passou com **8 passed** em
 `tests/test_composition_export.py`, incluindo emissão, revalidação dos
 componentes e compatibilidade do documento legado.
 
-O estado deste registro permanece `IN_PROGRESS / PENDING_EVIDENCE`: o gate de
-runtime externo e a integração por contrato estão tecnicamente aprovados, mas
-o build limpo do checkpoint integrado e o fluxo nativo dessa exportação geral
-ainda são linhas abertas do lote pós-E13. O runtime externo do editor híbrido
-3D já possui gate técnico separado `PASS`. A revisão humana final continua
-deferida. Nenhuma pendência foi ocultada ou reclassificada.
+O gate de runtime externo, a integração por contrato, a build limpa do
+checkpoint integrado e o fluxo nativo dessa exportação geral estão
+tecnicamente aprovados. A evidência final está em
+[`EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md`](EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md):
+ela comprova o binário v4, 11 checks de smoke, exportação hash-bound,
+salvar/reabrir, erro/recuperação e os dois pacotes de composição revalidados.
+O registro não encerra o lote pós-E13 nem a revisão humana final, que continuam
+explicitamente `IN_PROGRESS` e `PENDING_EVIDENCE`. Os findings v1–v3, o
+warning de `tzdata` e o fallback Win32 permanecem preservados; nenhuma
+pendência foi ocultada ou reclassificada.

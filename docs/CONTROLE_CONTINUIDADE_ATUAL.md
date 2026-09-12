@@ -27,7 +27,7 @@ registro não cria aceite funcional nem autorização de publicação.
 
 O trabalho em andamento está sendo auditado contra o worktree oficial
 `Ailton/e08-renderer-20260908`. A fonte de produto do checkpoint integrado mais
-recente é o commit `a7e22b3e`; os commits anteriores continuam apenas como
+recente é o commit `dd344f47`; os commits anteriores continuam apenas como
 proveniência dos checkpoints específicos; o
 harness Win32 complementar de captura está preservado no checkout como arquivo
 não rastreado preexistente, SHA-256
@@ -48,15 +48,15 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2226 passaram, 2 skips e 1 warning na requalificação sem filtros do checkpoint integrado `a7e22b3e`; os gates de Tilemap/runtime, adapters híbridos 3D e composição hash-bound passaram; o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
+| Suíte oficial | `PASS` | 2226 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `dd344f47`; a correção de layout da recuperação passou no teste focado e os gates de Tilemap/runtime, adapters híbridos 3D e composição hash-bound passaram; o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; os runtimes externos de Tilemap e híbrido 3D passaram com casos negativos, e a integração de composição passou em contrato; build limpa final do checkpoint integrado, fluxo nativo dessa exportação e revisão humana final ainda pendentes por decisão formal |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; os runtimes externos de Tilemap e híbrido 3D passaram com casos negativos; a build v4 e o fluxo nativo da composição integrada passaram tecnicamente com erro/recuperação e persistência; revisão humana final permanece pendente por decisão formal |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | último build comprovado antes do checkpoint integrado: `post-e13-tilemap-advanced-responsive-20260911`, proveniência `PASS`, executável `0F79231DE0F242F77EFE29BA1AA1F98749A2DC686B732E43A4C7BA9D68B1C423`, ZIP `A228EE9FEA349795922A4E224B6025F4022BA4F5CFA3819F43966A7B926D2C24` e smoke `SUCCESS` em 11 checks; o build final de `a7e22b3e` está pendente |
-| Runtime funcional | `PASS` | build pós-E13 de tilemap avançado abriu/fechou e executou smoke; ferramentas avançadas, undo/redo por gesto, persistência e localização foram comprovados no fluxo nativo; runtimes externos de Tilemap e híbrido 3D passaram tecnicamente; o fluxo nativo da composição integrada no build final ainda está pendente |
+| Build oficial | `PASS` | build v4 de `dd344f47`, proveniência `PASS`, executável `CBC16B6425158362572848D59D847988F8300455E1AE973DB961A0C2162046A8`, ZIP `D942187979E6BA494256DCA7ADBB2D4FBFCBBAE346FD9D2F55988845028B7C4D` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
+| Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana permanece deferida |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
@@ -107,22 +107,25 @@ válido, o pacote `tilemap-runtime/` com payload, origem e atlas vinculados por
 hash; o teste de contrato passou com `8 passed` e o caminho legado sem atlas
 permanece explícito como `not-emitted-legacy-atlas-missing`. O runtime externo
 do híbrido 3D também passou no vertical slice em Godot e Unity, com capturas
-reais e rejeição de drift preservada. O build final e o fluxo nativo dessa
-composição integrada ainda precisam ser executados neste checkout.
+reais e rejeição de drift preservada. O build v4 e o fluxo nativo da composição
+integrada estão documentados em
+`docs/evidence/EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md`, com
+capturas reais, persistência, recuperação, hashes, atlas e payload runtime.
+O defeito de layout da recuperação foi corrigido no commit `dd344f47` sem
+remover conteúdo anterior; os resultados v1–v3 permanecem preservados.
 
 A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Executar uma build limpa do checkpoint integrado `a7e22b3e`, operar o fluxo
-nativo de exportação geral com Tilemap/runtime e composição híbrida, registrar
-capturas, persistência, hashes e limitações, e só depois executar a
-[auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
-e a revisão humana final, conforme a
+Executar a [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md)
+com base na build v4 e na evidência nativa já registrada, consolidar limitações
+e então solicitar a revisão humana final, conforme a
 [decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
 Os gates técnicos externos de Tilemap e híbrido 3D, a ponte de partículas, o
-início do cenário do zero e as ferramentas avançadas do tilemap já possuem
-checkpoints; a build integrada e seu fluxo nativo ainda estão abertos.
+início do cenário do zero, as ferramentas avançadas do tilemap, o build
+integrado e seu fluxo nativo já possuem checkpoints técnicos; somente a
+auditoria/aceite humano e decisões reservadas permanecem abertas.
 revisão visual/humana, licença/proveniência de distribuição e os requisitos
 funcionais ainda abertos continuam explicitamente separados. A equivalência
 V2→exportação Godot/Unity de partículas tem checkpoint técnico; o abort legado
