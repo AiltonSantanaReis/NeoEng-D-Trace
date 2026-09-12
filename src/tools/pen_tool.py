@@ -27,6 +27,7 @@ from src.core.commands import (
     HandleMoveCommand,
 )
 from src.core.operational_limits import MAX_POLYGON_POINTS
+from src.ui.context_menu_utils import fit_context_menu
 
 from .base_tool import BaseTool
 
@@ -94,6 +95,10 @@ class PenTool(BaseTool):
         self._active_handle_edit: Optional[_HandleEditState] = None
         self._last_command_result = None
         self._last_error = ""
+        self._creation_undo_stack: List[List[BezierNode]] = []
+        self._creation_redo_stack: List[List[BezierNode]] = []
+        self._ignore_next_click_after_commit = False
+        self._ready_for_new_creation = False
 
         self.current_lang = "en"
         self.translations = {
@@ -553,10 +558,32 @@ class PenTool(BaseTool):
         return False
 
     def on_undo(self) -> bool:
-        return self._cancel_active_handle_edit() or self._cancel_creation_preview()
+        if self._cancel_active_handle_edit():
+            return True
+        if (
+            self._editing_object_id is None
+            and self._nodes
+            and self._creation_undo_stack
+        ):
+            self._creation_redo_stack.append(copy.deepcopy(self._nodes))
+            self._nodes = self._creation_undo_stack.pop()
+            self._selected_node = self._nodes[-1] if self._nodes else None
+            self._selected_handle = None
+            self.canvas_view.update()
+            return True
+        return self._cancel_creation_preview()
 
     def on_redo(self) -> bool:
-        return self._cancel_active_handle_edit() or self._cancel_creation_preview()
+        if self._cancel_active_handle_edit():
+            return True
+        if self._editing_object_id is None and self._creation_redo_stack:
+            self._creation_undo_stack.append(copy.deepcopy(self._nodes))
+            self._nodes = self._creation_redo_stack.pop()
+            self._selected_node = self._nodes[-1] if self._nodes else None
+            self._selected_handle = None
+            self.canvas_view.update()
+            return True
+        return self._cancel_creation_preview()
 
     def _cancel_creation_preview(self) -> bool:
         if self._editing_object_id is not None or not self._nodes:
@@ -591,6 +618,8 @@ class PenTool(BaseTool):
                 channel="status",
             )
             return
+        self._creation_undo_stack.append(copy.deepcopy(self._nodes))
+        self._creation_redo_stack.clear()
         new_node = BezierNode(point)
         # A click creates a corner. Only an explicit drag authors handles;
         # adding a neighbour must never rewrite controls already chosen.
@@ -885,7 +914,7 @@ class PenTool(BaseTool):
         act_undo.triggered.connect(self.undo_last_action)
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self.redo_last_action)
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def undo_last_action(self):
         if self.on_undo():
@@ -912,6 +941,10 @@ class PenTool(BaseTool):
         self._editing_object_id = None
         self._closed = False
         self._cursor_position = None
+        self._creation_undo_stack.clear()
+        self._creation_redo_stack.clear()
+        self._ignore_next_click_after_commit = False
+        self._ready_for_new_creation = False
         self.canvas_view.update()
 
     def on_cancel(self):

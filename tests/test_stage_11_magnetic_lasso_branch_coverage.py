@@ -411,6 +411,42 @@ def test_mouse_key_and_history_event_branches(monkeypatch) -> None:
     assert "finish" in actions
 
 
+def test_precise_close_click_is_queued_while_segment_is_pending(monkeypatch) -> None:
+    """A fast real-canvas close click must survive the async segment solve."""
+
+    tool = _tool(mode="precise", image=np.zeros((16, 16), dtype=np.uint8))
+    tool._anchors = [(1, 1), (12, 1), (12, 12)]
+    tool._segment_pending = True
+    requests = []
+    monkeypatch.setattr(
+        tool,
+        "_request_async_path",
+        lambda purpose, start, end: requests.append((purpose, start, end)),
+    )
+    tool.on_mouse_press(
+        _Event(button=Qt.MouseButton.LeftButton),
+        (1, 1),
+    )
+    assert requests == [("finish", (12, 12), (1, 1))]
+
+
+def test_precise_double_click_is_queued_while_segment_is_pending(monkeypatch) -> None:
+    tool = _tool(mode="precise", image=np.zeros((16, 16), dtype=np.uint8))
+    tool._anchors = [(1, 1), (12, 1), (12, 12)]
+    tool._segment_pending = True
+    requests = []
+    monkeypatch.setattr(
+        tool,
+        "_request_async_path",
+        lambda purpose, start, end: requests.append((purpose, start, end)),
+    )
+    tool.on_double_click(
+        _Event(button=Qt.MouseButton.LeftButton),
+        (9, 9),
+    )
+    assert requests == [("finish", (12, 12), (1, 1))]
+
+
 def test_candidate_finish_commit_success_and_validation_failures(monkeypatch) -> None:
     tool = _tool()
     assert tool._candidate_closed_path() == []

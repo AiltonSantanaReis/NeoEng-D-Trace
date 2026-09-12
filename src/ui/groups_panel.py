@@ -25,6 +25,7 @@ from src.core.commands import (
     ToggleGroupLockCommand,
     ToggleGroupVisibilityCommand,
 )
+from src.ui.context_menu_utils import fit_context_menu
 
 
 class GroupsPanel(QWidget):
@@ -42,7 +43,7 @@ class GroupsPanel(QWidget):
                 "remove_selected": "Remove Selected",
                 "up": "Up",
                 "down": "Down",
-                "toggle_vis": "Toggle Vis",
+                "toggle_vis": "Toggle Visibility",
                 "toggle_lock": "Toggle Lock",
                 "new_group_title": "New Group",
                 "name": "Name:",
@@ -61,8 +62,8 @@ class GroupsPanel(QWidget):
                 "remove_selected": "Remover Selecionado",
                 "up": "Cima",
                 "down": "Baixo",
-                "toggle_vis": "Alternar Vis",
-                "toggle_lock": "Alternar Bloq",
+                "toggle_vis": "Alternar Visibilidade",
+                "toggle_lock": "Alternar Bloqueio",
                 "new_group_title": "Novo Grupo",
                 "name": "Nome:",
                 "error": "Erro",
@@ -79,18 +80,26 @@ class GroupsPanel(QWidget):
         self.list = QListWidget()
         self.list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._show_context_menu)
-        self.btn_new = QPushButton(self.translations[self.current_lang]["new_group"])
+        self.btn_new = QPushButton(
+            self.translations[self.current_lang]["new_group"], self
+        )
         self.btn_delete = QPushButton(
-            self.translations[self.current_lang]["delete_group"]
+            self.translations[self.current_lang]["delete_group"], self
         )
-        self.btn_add = QPushButton(self.translations[self.current_lang]["add_selected"])
+        self.btn_add = QPushButton(
+            self.translations[self.current_lang]["add_selected"], self
+        )
         self.btn_remove = QPushButton(
-            self.translations[self.current_lang]["remove_selected"]
+            self.translations[self.current_lang]["remove_selected"], self
         )
-        self.btn_up = QPushButton(self.translations[self.current_lang]["up"])
-        self.btn_down = QPushButton(self.translations[self.current_lang]["down"])
-        self.btn_vis = QPushButton(self.translations[self.current_lang]["toggle_vis"])
-        self.btn_lock = QPushButton(self.translations[self.current_lang]["toggle_lock"])
+        self.btn_up = QPushButton(self.translations[self.current_lang]["up"], self)
+        self.btn_down = QPushButton(self.translations[self.current_lang]["down"], self)
+        self.btn_vis = QPushButton(
+            self.translations[self.current_lang]["toggle_vis"], self
+        )
+        self.btn_lock = QPushButton(
+            self.translations[self.current_lang]["toggle_lock"], self
+        )
 
         # Keep the legacy QPushButtons as stable public command handles while
         # presenting the same compact, icon-first action strip already used by
@@ -205,7 +214,7 @@ class GroupsPanel(QWidget):
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self.list)
         for button, toolbar_action in self._toolbar_actions.items():
-            action = menu.addAction(toolbar_action.icon(), button.text())
+            action = menu.addAction(button.text())
             action.setToolTip(button.toolTip() or button.text())
             action.setProperty("commandKey", toolbar_action.property("commandKey"))
             action.setEnabled(toolbar_action.isEnabled())
@@ -217,7 +226,9 @@ class GroupsPanel(QWidget):
         if item is None:
             return
         self.list.setCurrentRow(self.list.row(item))
-        self._build_context_menu().exec(self.list.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(
+            self.list.mapToGlobal(position)
+        )
 
     def _execute_edit_command(self, command) -> Optional[CommandResult]:
         manager = getattr(self.scene, "cmd", None)

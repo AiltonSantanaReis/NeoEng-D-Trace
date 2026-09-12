@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "stage": "E08-E",
+  "feature": "Temporal determinism and destination capability qualification",
+  "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+  "requirement": "Reuse fixed timestep and seed, compare states and frames at declared times under registered tolerances, and expose native/degraded/incompatible by backend and destination.",
+  "source": {
+    "commit": "18257a316708039228f8117d27fb521d92e096c6",
+    "branch": "Ailton/e08-renderer-20260908",
+    "worktree_clean": true,
+    "qualification_report": "artifacts/e08-renderer-20260908/runtime-temporal-audit-e8-18257/stage8-e-temporal-capabilities-report.json"
+  },
+  "tolerance": {
+    "fixed_dt": 0.016666666666666666,
+    "time_abs": 1e-9,
+    "frame_abs": 0.00392156862745098,
+    "max_frame_fraction": 0.0,
+    "state_exact": true
+  },
+  "audit": {
+    "command": "python -m scripts.audit_e08_temporal_capabilities_phase8 --output artifacts/e08-renderer-20260908/runtime-temporal-audit-e8-18257",
+    "status": "PASS",
+    "logical_checkpoints": 4,
+    "logical_state_mismatches": [],
+    "max_time_error": 0.0,
+    "visual_frames": 2,
+    "max_frame_error": 0.0,
+    "max_frame_fraction": 0.0,
+    "qualification_document_sha256": "d69f486e185f359bc236ffe556ea140a695fd25b0eb5c108823d55ce05831445"
+  },
+  "capability_matrix": {
+    "entries": 12,
+    "local_raster": "native deterministic CPU preview",
+    "godot": "fixed_update native contract; particles/shaders/post_processing degraded metadata",
+    "unity": "fixed_update native contract; particles/shaders/post_processing degraded metadata"
+  },
+  "official_regression": "2079 passed, 2 skipped, 1 warning",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r48",
+    "binary": "release/e08-renderer-20260908-r48/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "4EF02616209C4F9AD3F1ADFC277C0C9F9EF8B4179075338D01C7584AEA8BEF52",
+    "archive_sha256": "544b4042493b252bc39cddc51f941c5334ac932e7f465ebe34bd9599c44668a0",
+    "portable_smoke": "PASS"
+  },
+  "real_binary_captures": {
+    "method": "PrintWindow from the shipped binary window handle",
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r48-post",
+    "preview_sha256": "54BD892508DF62B2C1AD45D8F856E21E88226E7D144A613452261BDB5E22DB6D",
+    "authoring_sha256": "F7D6BF3E53947B5E1F1F5FD176AC5079A4BD30B85E72692E71748ED0D62BBE30",
+    "parallax_bottom_sha256": "A612AA2D2AABC6CD6D256017E3A2EA422E32203D0AF97ECF529B8CF2D094BF7D",
+    "parallax_pageup_sha256": "9D25D7214BC9C2499E0893FCB0B3A15D79A4CC36E7CBAAB4CF36A7FF8A707D62",
+    "result": "PASS: hashes match the r47 post-processing capture, so E08-E did not regress the visual flow."
+  },
+  "limitations": [
+    "Exact logical replay is proven only for the approved CPU fixed-step path.",
+    "Frame tolerance does not claim GPU equivalence across drivers or engines.",
+    "Godot and Unity FX destination execution remains degraded until real adapters execute the sidecars.",
+    "Final human review and symlink verification remain deferred to the final audit."
+  ],
+  "final_audit_required": true
+}

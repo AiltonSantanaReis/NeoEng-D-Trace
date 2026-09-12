@@ -106,7 +106,9 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     assert not window.menuBar().isVisibleTo(window)
     assert window.reference_panel_tabs.count() == 4
     assert window.reference_panel_tabs.isVisibleTo(window)
-    assert window.reference_tool_palette.width() <= 96
+    assert window.reference_tool_palette.width() == 148
+    assert window.reference_command_search.isVisibleTo(window)
+    assert window.reference_command_search.width() >= 240
 
     labels = {
         button.text()
@@ -142,16 +144,16 @@ def test_reference_shell_exposes_real_commands_and_stable_regions(qt_app):
     window.close()
 
 
-def test_reference_pan_and_select_controls_drive_existing_canvas_contract(qt_app):
+def test_left_rail_navigation_and_selection_drive_existing_canvas_contract(qt_app):
     window = MainWindow(Scene(), _ConfigStub())
     window.show()
     qt_app.processEvents()
 
-    window.reference_pan_button.click()
+    window.tool_palette.navigation_actions["move_viewport"].trigger()
     assert window.canvas.is_pan_mode() is True
-    assert window.reference_pan_button.isChecked() is True
+    assert window.tool_palette.navigation_actions["move_viewport"].isChecked() is True
 
-    window.reference_select_button.menu().actions()[0].trigger()
+    window.tool_palette._tool_actions["selection"].trigger()
     assert window.canvas.is_pan_mode() is False
-    assert window.reference_pan_button.isChecked() is False
+    assert window.tool_palette.navigation_actions["move_viewport"].isChecked() is False
     window.close()

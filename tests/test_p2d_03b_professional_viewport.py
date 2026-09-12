@@ -131,3 +131,46 @@ def test_shift_nudge_uses_ten_world_units_and_preview_is_read_only(qt_app):
         view.close()
         view.deleteLater()
         qt_app.processEvents()
+
+
+def test_viewport_context_menu_is_localized_and_non_destructive(qt_app):
+    view = _view()
+    try:
+        view.update_language("pt")
+        view.session.set_selection(["a"])
+        menu = view._build_context_menu("a")
+        try:
+            actions = [action for action in menu.actions() if not action.isSeparator()]
+            assert [action.text() for action in actions] == [
+                "Objeto: a",
+                "Mostrar propriedades",
+                "Enquadrar seleção",
+                "Enquadrar tudo",
+            ]
+            assert all(action.isEnabled() for action in actions[1:])
+            assert not any(
+                "excluir" in action.text().lower() or "delete" in action.text().lower()
+                for action in actions
+            )
+
+            view.update_language("en")
+            english = view._build_context_menu("a")
+            try:
+                assert [
+                    action.text()
+                    for action in english.actions()
+                    if not action.isSeparator()
+                ] == [
+                    "Object: a",
+                    "Show properties",
+                    "Fit selection",
+                    "Fit all",
+                ]
+            finally:
+                english.deleteLater()
+        finally:
+            menu.deleteLater()
+    finally:
+        view.close()
+        view.deleteLater()
+        qt_app.processEvents()

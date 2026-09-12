@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "stage": "E08",
+  "lot": "E08-A",
+  "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+  "source_commit": "2bd85fc52bf76edcbe0626718eaea839997e8e44",
+  "source_branch": "Ailton/e08-renderer-20260908",
+  "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+  "registry_sha256_at_build": "696A6952B9D9C195B2B5094FF513E3213A402BDD6D7B95154CE3A1EB740DAD0A",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r28",
+    "binary": "release/e08-renderer-20260908-r28/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "7F4F8E95DB57C7E6713CDAA9AA3F7E43A1CAD73F767809EC0FCBBC2567CF0199",
+    "portable_archive": "release/e08-renderer-20260908-r28/NeoEng-D-Trace-0.3.0-win64-portable.zip",
+    "portable_archive_sha256": "d58e581129fe9382f31ad71c17997771001ccb73212b8a2d3e6062d77e5fed2e",
+    "smoke_status": "SUCCESS",
+    "smoke_checks": 11
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r28-final",
+    "window_rect": "-13,-13,3853,2077",
+    "method": "capture_e03_asset_library_binary.ps1 -CaptureRendererFlow -DirectProjectLoad",
+    "screenshots": [
+      {"name":"06-renderer-preview.png","sha256":"401EAC2EFB744E418F4A37D79EDAF012F1C29A2EA2C37EFD98604D265B38377B","observation":"RENDERER RASTER | NATIVE | PREVIEW | 8 PASSES | R1; Scenario preview — read-only"},
+      {"name":"07-renderer-authoring.png","sha256":"05E18BD762548B7F521DE4C8CB63BAE80807AA16B3CBFC565101CC03C6C07B1E","observation":"RENDERER RASTER | NATIVE | AUTHORING | 8 PASSES | R1; Scenario authoring"}
+    ]
+  },
+  "verification": {
+    "official_suite": "2051 passed, 2 skipped, 1 warning",
+    "focused_e08_a": "4 passed",
+    "viewport_regression": "6 passed",
+    "mypy": "PASS",
+    "black": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "automated_visual_review": "PASS",
+    "human_review": "PENDING_FINAL_AUDIT",
+    "symlink": "DEFERRED_FINAL_AUDIT"
+  }
+}

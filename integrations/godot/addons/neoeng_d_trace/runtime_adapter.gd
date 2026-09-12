@@ -5,6 +5,7 @@ extends RefCounted
 const FORMAT_ID := "neoeng-d-trace-runtime-adapters"
 const SCHEMA_VERSION := 1
 const API_VERSION := 1
+const RuntimeParticles = preload("res://addons/neoeng_d_trace/runtime_particles.gd")
 const CAPABILITIES := [
     "runtime.scene_loading",
     "runtime.lifecycle",
@@ -73,17 +74,45 @@ static func import_bundle(bundle_path: String) -> Dictionary:
         layer.set_meta("neoeng_object_ids", PackedStringArray(layer_data["object_ids"]))
         layer.set_meta("neoeng_parallax", layer_data["parallax"])
         root.add_child(layer)
+    var particle_sidecar := _find_sidecar(payload, "runtime.particles")
+    var particle_path := "res://".path_join(str(particle_sidecar["path"]))
+    var particle_payload = JSON.parse_string(FileAccess.get_file_as_string(particle_path))
+    var particles := RuntimeParticles.new()
+    if not particles.configure(particle_payload):
+        return {
+            "status": "FAILED",
+            "errors": [str(particles.get_meta("neoeng_particle_error", "particle sidecar is invalid"))],
+        }
+    particles.name = "NeoEngRuntimeParticles"
+    particles.set_auto_process(true)
+    root.add_child(particles)
+    root.set_meta("neoeng_particle_count", particles.get_particle_count())
+    root.set_meta("neoeng_particle_emitter_count", particles.get_emitter_count())
+    root.set_meta("neoeng_particle_state_sha256", particles.get_state_snapshot()["state_sha256"])
     return {"status": "SUCCESS", "root": root, "payload": payload}
 
 
 static func advance_fixed_ticks(root: Node, ticks: int, fixed_dt: float = 1.0 / 60.0) -> bool:
     if root == null or ticks < 0 or not is_finite(fixed_dt) or fixed_dt <= 0.0:
         return false
+    var particles := root.get_node_or_null("NeoEngRuntimeParticles")
+    if particles != null and not particles.advance_fixed_ticks(ticks):
+        return false
     var current_tick := int(root.get_meta("neoeng_fixed_tick", 0))
     var current_time := float(root.get_meta("neoeng_simulation_time", 0.0))
     root.set_meta("neoeng_fixed_tick", current_tick + ticks)
     root.set_meta("neoeng_simulation_time", current_time + float(ticks) * fixed_dt)
+    if particles != null:
+        root.set_meta("neoeng_particle_count", particles.get_particle_count())
+        root.set_meta("neoeng_particle_state_sha256", particles.get_state_snapshot()["state_sha256"])
     return true
+
+
+static func _find_sidecar(payload: Dictionary, capability: String) -> Dictionary:
+    for sidecar_value in payload.get("sidecars", []):
+        if typeof(sidecar_value) == TYPE_DICTIONARY and sidecar_value.get("capability", "") == capability:
+            return sidecar_value
+    return {}
 
 
 static func _validate_bundle(payload: Dictionary, base_dir: String, errors: Array) -> void:

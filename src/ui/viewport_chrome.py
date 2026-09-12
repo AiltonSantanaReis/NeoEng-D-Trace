@@ -80,6 +80,7 @@ class ViewportOverlayBar(QWidget):
         self.host_window = window
         self.canvas = canvas
         self._compact = False
+        self._language = "en"
         self.setObjectName("viewport_overlay_bar")
         self.setFixedHeight(38)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
@@ -140,6 +141,10 @@ class ViewportOverlayBar(QWidget):
         canvas.viewport_state_model_changed.connect(self._sync)
         self._sync(canvas.viewport_state())
 
+    def update_language(self, language: str) -> None:
+        self._language = language if language in {"en", "pt"} else "en"
+        self._sync(self.canvas.viewport_state())
+
     def set_compact(self, compact: bool) -> None:
         self._compact = bool(compact)
         self._sync(self.canvas.viewport_state())
@@ -148,7 +153,18 @@ class ViewportOverlayBar(QWidget):
         self.canvas.set_vertex_snapping(enabled, grid_size=16)
 
     def _sync(self, state: ViewportState) -> None:
-        mode = state.view_mode.title()
+        is_pt = self._language == "pt"
+        mode_labels = {
+            "lit": "Iluminado",
+            "xray_1": "Raio-X 1",
+            "xray_2": "Raio-X 2",
+            "xray_3": "Raio-X 3",
+        }
+        mode = (
+            mode_labels.get(state.view_mode, state.view_mode.title())
+            if is_pt
+            else state.view_mode.title()
+        )
         if self._compact:
             self.view_button.setText(mode)
             self.zoom_button.setText(f"{state.zoom:.2f}x")
@@ -158,20 +174,49 @@ class ViewportOverlayBar(QWidget):
         self.snap_button.blockSignals(True)
         self.snap_button.setChecked(state.snap_enabled)
         self.snap_button.blockSignals(False)
-        snap_state = f"{'On' if state.snap_enabled else 'Off'} ({state.snap_grid_size})"
+        snap_state = (
+            f"{'Ligado' if state.snap_enabled else 'Desligado'} "
+            f"({state.snap_grid_size})"
+            if is_pt
+            else f"{'On' if state.snap_enabled else 'Off'} " f"({state.snap_grid_size})"
+        )
         self.snap_button.setText(
-            f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
+            f"Encaixe {snap_state}"
+            if is_pt and self._compact
+            else (
+                f"Encaixe: {snap_state}"
+                if is_pt
+                else f"Snap {snap_state}" if self._compact else f"Snap: {snap_state}"
+            )
         )
-        self.view_button.setAccessibleDescription(
-            f"Choose viewport rendering mode; current mode: {mode}"
-        )
-        self.zoom_button.setAccessibleDescription(
-            f"Choose viewport zoom; current zoom: {state.zoom:.2f}x"
-        )
-        self.snap_button.setAccessibleDescription(
-            "Enable or disable snapping edited vertices to the active grid; "
-            f"current state: {snap_state}"
-        )
+        if is_pt:
+            view_tip = "Escolher o modo de renderização da viewport"
+            zoom_tip = "Escolher o zoom da viewport"
+            snap_tip = "Alternar o encaixe de vértices na grade ativa"
+            view_description = f"Escolher o modo de renderização; modo atual: {mode}"
+            zoom_description = (
+                f"Escolher o zoom da viewport; zoom atual: {state.zoom:.2f}x"
+            )
+            snap_description = (
+                "Alternar o encaixe de vértices na grade ativa; "
+                f"estado atual: {snap_state}"
+            )
+        else:
+            view_tip = "Choose viewport rendering mode"
+            zoom_tip = "Choose viewport zoom"
+            snap_tip = "Toggle real vertex snapping"
+            view_description = f"Choose viewport rendering mode; current mode: {mode}"
+            zoom_description = f"Choose viewport zoom; current zoom: {state.zoom:.2f}x"
+            snap_description = (
+                "Enable or disable snapping edited vertices to the active grid; "
+                f"current state: {snap_state}"
+            )
+        self.view_button.setToolTip(view_tip)
+        self.zoom_button.setToolTip(zoom_tip)
+        self.snap_button.setToolTip(snap_tip)
+        self.view_button.setAccessibleDescription(view_description)
+        self.zoom_button.setAccessibleDescription(zoom_description)
+        self.snap_button.setAccessibleDescription(snap_description)
 
 
 class ViewportChrome(QWidget):
@@ -207,10 +252,16 @@ class ViewportChrome(QWidget):
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
         self.overlay.set_compact(self.canvas_stack.width() < 900)
+        self.overlay.adjustSize()
+        overlay_width = min(
+            max(self.overlay.sizeHint().width(), 320),
+            560,
+            max(1, self.canvas_stack.width() - 16),
+        )
         self.overlay.setGeometry(
             8,
             10,
-            max(1, self.canvas_stack.width() - 16),
+            overlay_width,
             self.overlay.height(),
         )
         self.overlay.raise_()

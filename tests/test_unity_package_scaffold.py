@@ -22,6 +22,10 @@ def test_unity_upm_package_has_stable_source_only_identity():
             "Source-only UPM package for the NeoEng-D-Trace integration contract."
         ),
         "unity": "2021.3",
+        "dependencies": {
+            "com.unity.modules.jsonserialize": "1.0.0",
+            "com.unity.modules.particlesystem": "1.0.0",
+        },
         "author": {"name": "NeoEng-D-Trace"},
         "keywords": ["neoeng", "d-trace", "sprites", "collision", "integration"],
     }
@@ -45,6 +49,7 @@ def test_unity_upm_package_contains_runtime_and_editor_assemblies():
     assert editor["includePlatforms"] == ["Editor"]
     assert editor["references"] == ["NeoEngDTrace.Runtime"]
     assert (PACKAGE_ROOT / "Runtime" / "PackageIdentity.cs").is_file()
+    assert (PACKAGE_ROOT / "Runtime" / "NeoEngRuntimeHybrid3D.cs").is_file()
     assert (PACKAGE_ROOT / "Editor" / "PackageDiagnostics.cs").is_file()
     assert (PACKAGE_ROOT / "Editor" / "AutoSyncPostprocessor.cs").is_file()
     assert (PACKAGE_ROOT / "Editor" / "AutoSyncPostprocessor.cs.meta").is_file()
@@ -108,4 +113,7 @@ def test_unity_stage3_optional_resources_have_native_contract_sources():
     assert "TilesetCollisionPaths" in editor_source
     assert "UnityOptionalResourceImporter.Import" in generator_source
     assert "ApplyOptionalGeometryArrays" in generator_source
-    assert runtime_asmdef["references"] == []
+    assert runtime_asmdef["references"] == [
+        "UnityEngine.JSONSerializeModule",
+        "UnityEngine.ParticleSystemModule",
+    ]

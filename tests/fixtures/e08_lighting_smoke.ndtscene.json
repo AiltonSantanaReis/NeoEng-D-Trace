@@ -1,0 +1,91 @@
+{
+  "format_id": "neoeng-d-trace-scene-authoring",
+  "schema_version": 2,
+  "metadata": {
+    "name": "E08-C Lighting V2 Fixture",
+    "generator": "NeoEng-D-Trace E08-C lighting fixture",
+    "app_version": "0.3.0"
+  },
+  "project": {"sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+  "assets": [
+    {
+      "id": "lighting-asset",
+      "path": "assets/e08-lighting.png",
+      "path_kind": "relative",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "layers": [
+    {"id": "layer_default", "name": "Default", "visible": true, "locked": false}
+  ],
+  "objects": [
+    {
+      "id": "lighting-receiver",
+      "asset_id": "lighting-asset",
+      "layer_id": "layer_default",
+      "transform": {
+        "position": {"x": -200.0, "y": -20.0, "z": 0.0},
+        "rotation": {"x": 0.0, "y": 0.0, "z": 0.0},
+        "scale": {"x": 1.0, "y": 1.0, "z": 1.0},
+        "pivot": {"x": 0.5, "y": 0.5},
+        "flip_x": false,
+        "flip_y": false
+      },
+      "visible": true,
+      "locked": false,
+      "material": {
+        "albedo": "#405070",
+        "normal_map_xy": {"x": 0.7, "y": -0.3},
+        "normal_strength": 0.8,
+        "emission": "#101820",
+        "emission_strength": 0.1,
+        "opacity": 0.92,
+        "receives_shadow": true,
+        "casts_shadow": true
+      }
+    },
+    {
+      "id": "lighting-occluder",
+      "asset_id": "lighting-asset",
+      "layer_id": "layer_default",
+      "transform": {
+        "position": {"x": 205.0, "y": 30.0, "z": 0.0},
+        "rotation": {"x": 0.0, "y": 0.0, "z": 0.0},
+        "scale": {"x": 1.0, "y": 1.0, "z": 1.0},
+        "pivot": {"x": 0.5, "y": 0.5},
+        "flip_x": false,
+        "flip_y": false
+      },
+      "visible": true,
+      "locked": false,
+      "material": {
+        "albedo": "#8b5a2b",
+        "normal_map_xy": {"x": -0.35, "y": 0.2},
+        "normal_strength": 0.65,
+        "emission": "#000000",
+        "emission_strength": 0.0,
+        "opacity": 1.0,
+        "receives_shadow": true,
+        "casts_shadow": true
+      }
+    }
+  ],
+  "groups": [],
+  "snap": {"enabled": false, "mode": "pixel", "spacing": {"x": 1.0, "y": 1.0}},
+  "camera": {"position": {"x": 0.0, "y": 0.0}, "zoom": 1.0},
+  "parallax_layers": [
+    {"layer_id": "layer_default", "depth": 0.0, "translation_strength": 1.0, "zoom_strength": 1.0}
+  ],
+  "sockets": [
+    {
+      "id": "key-light",
+      "type": "light",
+      "layer_id": "layer_default",
+      "object_id": null,
+      "position": {"x": 160.0, "y": 220.0, "z": 0.0},
+      "color": "#ffdcad",
+      "intensity": 1.35,
+      "radius": 720.0
+    }
+  ]
+}

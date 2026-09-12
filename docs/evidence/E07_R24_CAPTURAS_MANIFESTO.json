@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "stage": "E07",
+  "status": "TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING",
+  "source_commit": "7c44496a2e93ecfe54eb0612d8edbd389826d72b",
+  "source_branch": "Ailton/e07-entities-20260908",
+  "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+  "registry_sha256_at_build": "A35BEC915B452A9002BD68892DDF0EB7ECD25D7B0FD8D9AAD176A84A3433A018",
+  "build": {
+    "release_root": "release/e07-entities-20260908-r24",
+    "binary": "release/e07-entities-20260908-r24/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "AA335278578929CA5AAA7BAC73270C7752C7C711B4B922D2EE1F1D7790AF02A5",
+    "portable_archive": "release/e07-entities-20260908-r24/NeoEng-D-Trace-0.3.0-win64-portable.zip",
+    "portable_archive_sha256": "281660a1c98751141ce1ddcb1898667f9a394e4d0da0490c94b9d4f293ace988",
+    "smoke_status": "SUCCESS",
+    "smoke_checks": 11
+  },
+  "capture": {
+    "directory": "artifacts/e07-entities-20260908/binary-capture-r24-final",
+    "window_rect": "-13,-13,3853,2077",
+    "method": "capture_e03_asset_library_binary.ps1 -CaptureEntityPrefabFlow -DirectProjectLoad",
+    "screenshots": [
+      {"name":"06-entity-created.png","sha256":"E84F7F2ADB95F960778EDDDC015ECAFD15B22ECD1E14C1D267B8B4CD7BD69769","observation":"Entidades: 1; entidade criada: background_object"},
+      {"name":"07-prefab-instantiated.png","sha256":"3AD28000547B2682BAA218364531C8342772D7A20F30B262194EC29A8552462A","observation":"Prefab prefab-1 v1; instância criada; overrides=0"},
+      {"name":"08-prefab-override.png","sha256":"5EF66B3B1172C12135CDEA6E9439BF4689A264FC41F8570215A5461A03855DAF","observation":"Override aplicado: components.demo.value; overrides=1"},
+      {"name":"09-prefab-updated.png","sha256":"9D4A9A1B49F3DF7DBC416ACDAD862A5D837DFCB0F47C1ABD416F51E43C184A7D","observation":"Prefab atualizado: v2; override preservado"},
+      {"name":"10-prefab-detached.png","sha256":"D1F78297106F9E3DDDC2E1CDD26C3219E6A9D587EBD1E349682B7735BD97DB1F","observation":"Instância desvinculada; overrides=1"}
+    ]
+  },
+  "verification": {
+    "official_suite": "2047 passed, 2 skipped, 1 warning",
+    "focused_e07": "7 passed",
+    "mypy": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "automated_visual_review": "PASS",
+    "human_review": "PENDING_FINAL_AUDIT",
+    "symlink": "DEFERRED_FINAL_AUDIT"
+  }
+}

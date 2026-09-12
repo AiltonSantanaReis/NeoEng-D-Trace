@@ -12,6 +12,7 @@ from src.models.scene import Scene
 from src.ui.canvas_view import CanvasView
 from src.ui.main_window import MainWindow
 from src.ui.mask_viewer import MaskViewer, MaskViewerDialog
+from src.ui.theme_qss import build_qss
 
 
 class _ConfigStub:
@@ -29,6 +30,17 @@ def _bgr_fixture() -> np.ndarray:
     image[:, :] = (30, 20, 10)
     image[30:90, 40:120] = (0, 0, 255)
     return image
+
+
+def test_stage5_viewport_overlay_uses_translucent_surface(qt_app):
+    del qt_app
+    qss = build_qss()
+    assert "QWidget#viewport_overlay_bar" in qss
+    overlay_block = qss.split("QWidget#viewport_overlay_bar", 1)[1].split(
+        "QWidget#viewport_overlay_bar QToolButton", 1
+    )[0]
+    assert "background: rgba(45, 54, 62, 150);" in overlay_block
+    assert "background: #2d363e;" not in overlay_block
 
 
 def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_app):
@@ -58,6 +70,7 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
             assert overlay.rect().contains(child.geometry())
         initial_geometry = overlay.geometry()
         assert 0 <= initial_geometry.y() <= 16
+        assert initial_geometry.width() < window.viewport_chrome.canvas_stack.width()
         overlay.snap_button.click()
         qt_app.processEvents()
         assert overlay.geometry() == initial_geometry
@@ -68,6 +81,7 @@ def test_stage5_viewport_status_has_live_pan_and_overlay_responsive_labels(qt_ap
         assert overlay.view_button.text().startswith("View: ")
         assert overlay.zoom_button.text().startswith("Zoom: ")
         assert 0 <= overlay.geometry().y() <= 16
+        assert overlay.geometry().width() < window.viewport_chrome.canvas_stack.width()
     finally:
         window.close()
 
@@ -157,6 +171,8 @@ def test_stage5_mask_viewer_dialog_has_real_controls_and_no_clipping(qt_app, siz
         scroll = dialog.findChild(QScrollArea, "mask_controls_scroll")
         assert scroll is not None and scroll.isVisibleTo(dialog)
         assert dialog.viewer.isVisibleTo(dialog)
+        assert not dialog.view_mode_toolbar_row.isVisibleTo(dialog)
+        assert all(button.isVisibleTo(dialog) for button in dialog.view_mode_buttons)
         assert dialog.rect().contains(scroll.geometry())
         assert dialog.rect().contains(dialog.viewer.geometry())
         assert all(button.isEnabled() for button in dialog.view_mode_buttons)

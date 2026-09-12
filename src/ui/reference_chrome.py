@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import QSize, Qt, QTimer
+from PySide6.QtCore import QPoint, QSize, Qt, QTimer
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import (
-    QHBoxLayout,
     QLineEdit,
     QMenu,
     QSizePolicy,
@@ -22,26 +22,9 @@ from PySide6.QtWidgets import (
 
 from src.ui.icon_library import configure_widget
 
-_REFERENCE_TOP_BUTTON_COMPACT_WIDTH = 76
-_REFERENCE_TOP_BUTTON_DESKTOP_WIDTH = 140
-_REFERENCE_TOP_BUTTON_HEIGHT = 78
-_REFERENCE_RAIL_BUTTON_SIZE = QSize(88, 32)
-
-
-def _normalize_reference_top_toolbar_buttons(toolbar: QToolBar, *, width: int) -> None:
-    """Keep every visible top command on one geometry contract.
-
-    The toolbar extension control is owned by Qt and is intentionally excluded
-    from the application button contract. All application controls retain
-    their existing actions, menus and signals; only their presentation bounds
-    are normalized here.
-    """
-
-    for button in toolbar.findChildren(QToolButton):
-        if button.objectName() == "qt_toolbar_ext_button":
-            continue
-        button.setFixedSize(QSize(width, _REFERENCE_TOP_BUTTON_HEIGHT))
-        button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+REFERENCE_COMMAND_WIDTH = 140
+REFERENCE_TOOL_RAIL_WIDTH = 148
+REFERENCE_TOOL_BUTTON_WIDTH = 140
 
 
 def _add_action_group(toolbar: QToolBar, actions: tuple[Any, ...]) -> None:
@@ -81,40 +64,16 @@ def _style_action_button(
         )
     button.setText(display_text)
     button.setProperty("referenceShortText", display_text)
-    button.setFixedSize(QSize(width, _REFERENCE_TOP_BUTTON_HEIGHT))
+    button.setMinimumWidth(width)
+    button.setMaximumWidth(width)
+    button.setMinimumHeight(78)
+    button.setMaximumHeight(88)
     button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
     button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
     button.setAccessibleName(action.text().replace("\n", " "))
     button.setAccessibleDescription(action.toolTip() or action.text())
     button.setToolTip(action.toolTip())
     button.setStatusTip(action.statusTip())
-    return button
-
-
-def _style_standalone_action_button(
-    parent: QWidget,
-    action: Any,
-    *,
-    display_text: str,
-    width: int,
-) -> QToolButton:
-    """Style an action-backed button outside the native toolbar overflow."""
-
-    button = QToolButton(parent)
-    button.setDefaultAction(action)
-    button.setText(display_text)
-    button.setProperty("referenceShortText", display_text)
-    button.setFixedSize(QSize(width, _REFERENCE_TOP_BUTTON_HEIGHT))
-    button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-    button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
-    button.setAccessibleName(action.text().replace("\n", " "))
-    button.setAccessibleDescription(action.toolTip() or action.text())
-    button.setToolTip(action.toolTip())
-    button.setStatusTip(action.statusTip())
-    button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-    button.setAutoRaise(False)
-    button.setProperty("iconKey", action.property("iconKey"))
-    button.setProperty("uiRole", "reference_top_history_action")
     return button
 
 
@@ -129,6 +88,9 @@ def _command_button(
     button.setToolTip(text)
     button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     button.setProperty("uiRole", "reference_command_button")
+    # Compact mode still needs enough room for the text-under-icon command
+    # surface; 62 px clips localized labels.
+    button.setMinimumWidth(78)
     button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
     configure_widget(button, key, accessible_name=accessible_name)
     return button
@@ -165,6 +127,13 @@ class ReferenceToolPalette(QToolBar):
     def register_application_menu(self, button: QToolButton) -> None:
         self._application_menu_button = button
         button.destroyed.connect(self._on_application_menu_button_destroyed)
+        if button.menu() is not None:
+            button.menu().aboutToShow.connect(
+                lambda: QTimer.singleShot(
+                    0,
+                    lambda: self._position_application_menu_popup(button),
+                )
+            )
         self._application_menu_timer.start(0)
 
     def _on_application_menu_button_destroyed(self, *_args: Any) -> None:
@@ -180,6 +149,31 @@ class ReferenceToolPalette(QToolBar):
         y = max(0, self.height() - button.height() - 4)
         button.move(x, y)
 
+    @staticmethod
+    def _position_application_menu_popup(button: QToolButton) -> None:
+        """Keep the rail menu fully visible near the screen edges."""
+
+        menu = button.menu()
+        if menu is None or not menu.isVisible():
+            return
+        menu.adjustSize()
+        button_top_left = button.mapToGlobal(QPoint(0, 0))
+        menu_size = menu.sizeHint()
+        screen = QGuiApplication.screenAt(button_top_left)
+        if screen is None:
+            screen = QGuiApplication.primaryScreen()
+        if screen is None:
+            return
+        available = screen.availableGeometry()
+        x = button_top_left.x() + button.width()
+        y = button_top_left.y()
+        if x + menu_size.width() > available.right() + 1:
+            x = button_top_left.x() - menu_size.width()
+        if y + menu_size.height() > available.bottom() + 1:
+            y = button_top_left.y() + button.height() - menu_size.height()
+        y = max(available.top(), y)
+        menu.move(x, y)
+
     def resizeEvent(self, event: Any) -> None:
         super().resizeEvent(event)
         self._application_menu_timer.start(0)
@@ -190,6 +184,22 @@ class ReferenceToolPalette(QToolBar):
         super().setEnabled(True)
         for button in self._tool_buttons:
             button.setEnabled(bool(enabled))
+
+    def refresh_action_feedback(self) -> None:
+        """Copy localized QAction metadata to the rail buttons users see."""
+
+        for action in self.actions():
+            if action.isSeparator():
+                continue
+            button = self.widgetForAction(action)
+            if not isinstance(button, QToolButton):
+                continue
+            description = action.toolTip() or action.text()
+            button.setText(action.text())
+            button.setAccessibleName(action.text().replace("\n", " "))
+            button.setAccessibleDescription(description)
+            button.setToolTip(description)
+            button.setStatusTip(action.statusTip() or description)
 
 
 def configure_reference_tool_palette(window: Any) -> QToolBar:
@@ -203,8 +213,8 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
     toolbar.setIconSize(QSize(24, 24))
     # Keep the rail within the reference contract while leaving room for QSS.
-    toolbar.setMinimumWidth(96)
-    toolbar.setMaximumWidth(112)
+    toolbar.setMinimumWidth(REFERENCE_TOOL_RAIL_WIDTH)
+    toolbar.setMaximumWidth(REFERENCE_TOOL_RAIL_WIDTH)
     toolbar.setProperty("uiRole", "reference_tool_palette")
     for action in window.tool_palette.actions():
         if action.isSeparator():
@@ -213,9 +223,9 @@ def configure_reference_tool_palette(window: Any) -> QToolBar:
             toolbar.addAction(action)
             button = toolbar.widgetForAction(action)
             if isinstance(button, QToolButton):
-                button.setFixedSize(_REFERENCE_RAIL_BUTTON_SIZE)
+                button.setMinimumSize(QSize(REFERENCE_TOOL_BUTTON_WIDTH, 42))
+                button.setMaximumSize(QSize(REFERENCE_TOOL_BUTTON_WIDTH, 46))
                 button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-                button.setAutoRaise(False)
                 button.setIconSize(QSize(22, 22))
                 # The visible rail creates a new QToolButton for the shared
                 # QAction. QAction metadata is not guaranteed to populate
@@ -243,6 +253,8 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     toolbar.setMovable(False)
     toolbar.setFloatable(False)
     toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+    toolbar.setMinimumWidth(0)
+    toolbar.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
     toolbar.setIconSize(QSize(24, 24))
     toolbar.setProperty("uiRole", "reference_top_toolbar")
 
@@ -265,18 +277,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         ),
     )
     _add_action_group(toolbar, (open_button, save_button, export_button))
-
-    fit_action = window.tool_palette.navigation_actions["fit_view"]
-    focus_action = window.tool_palette.navigation_actions["focus_selected"]
-    _add_action_group(toolbar, (fit_action, focus_action))
-    fit_button = _style_action_button(
-        toolbar, fit_action, display_text="Fit View", width=82
-    )
-    reference_focus_button = _style_action_button(
-        toolbar, focus_action, display_text="Focus", width=72
-    )
-    fit_button.setObjectName("reference_fit_button")
-    reference_focus_button.setObjectName("reference_focus_button")
 
     view_button = _command_button(window, "view", "View", "View and navigation menu")
     _menu_button(
@@ -310,29 +310,15 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     view_button.setProperty("referenceActive", True)
     _add_action_group(toolbar, (view_button, collision_button, parallax_button))
 
-    pan_action = window.tool_palette.navigation_actions["move_viewport"]
-    _add_action_group(toolbar, (pan_action,))
-    pan_button = _style_action_button(toolbar, pan_action, display_text="Pan", width=64)
-    select_button = _command_button(
-        window, "selection", "Select", "Selection tools menu"
+    _add_action_group(toolbar, (window.undo_action, window.redo_action))
+    undo_button = _style_action_button(
+        toolbar, window.undo_action, display_text="Undo", width=68
     )
-    _menu_button(
-        select_button,
-        tuple(
-            window.tool_palette._tool_actions[name]
-            for name in (
-                "selection",
-                "rect_selection",
-                "ellipse_selection",
-                "lasso_tool",
-                "polygonal_lasso",
-                "magnetic_lasso",
-            )
-        ),
+    redo_button = _style_action_button(
+        toolbar, window.redo_action, display_text="Redo", width=68
     )
-    pan_button.setObjectName("reference_pan_button")
-    select_button.setObjectName("reference_select_button")
-    toolbar.addWidget(select_button)
+    undo_button.setObjectName("reference_undo_button")
+    redo_button.setObjectName("reference_redo_button")
 
     # Keep the complete application menu available to integrations and
     # keyboard/menu consumers without adding a control absent from the reference.
@@ -348,7 +334,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     menu_button.setMinimumSize(QSize(44, 32))
     menu_button.setMaximumSize(QSize(56, 36))
     menu_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-    menu_button.setAutoRaise(False)
     menu_button.setProperty("uiRole", "reference_application_menu")
     menu_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
     menu_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
@@ -374,61 +359,27 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_tool_palette.register_application_menu(menu_button)
     window.menuBar().setVisible(False)
 
-    top_toolbar_container = QWidget(window)
-    top_toolbar_container.setObjectName("reference_top_toolbar_container")
-    top_toolbar_layout = QHBoxLayout(top_toolbar_container)
-    top_toolbar_layout.setContentsMargins(0, 0, 0, 0)
-    top_toolbar_layout.setSpacing(0)
-    top_toolbar_layout.addWidget(toolbar, 1)
-
-    search = QLineEdit(top_toolbar_container)
+    search = QLineEdit(toolbar)
     search.setObjectName("reference_command_search")
     search.setPlaceholderText("Ctrl+K")
     search.setAccessibleName("Command search")
     search.setAccessibleDescription("Search and execute commands with text or Ctrl+K")
     search.setToolTip("Search commands (Ctrl+K)")
-    search.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-    search.setMinimumWidth(180)
-    search.setMaximumWidth(260)
+    search.setMinimumWidth(240)
+    search.setMaximumWidth(520)
+    search.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+    toolbar.addWidget(search)
 
-    # Undo/Redo are high-priority actions. Keep their buttons outside the
-    # native QToolBar overflow area so they remain directly available when
-    # the window is maximized or fullscreen at a compact display width. They
-    # follow the toolbar's final Select control and precede the search field.
-    history_container = QWidget(top_toolbar_container)
-    history_container.setObjectName("reference_history_container")
-    history_container.setSizePolicy(
-        QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
-    )
-    history_layout = QHBoxLayout(history_container)
-    history_layout.setContentsMargins(6, 0, 0, 0)
-    history_layout.setSpacing(6)
-    undo_button = _style_standalone_action_button(
-        history_container, window.undo_action, display_text="Undo", width=140
-    )
-    redo_button = _style_standalone_action_button(
-        history_container, window.redo_action, display_text="Redo", width=140
-    )
-    history_layout.addWidget(undo_button)
-    history_layout.addWidget(redo_button)
-    undo_button.setObjectName("reference_undo_button")
-    redo_button.setObjectName("reference_redo_button")
-
-    top_toolbar_layout.addWidget(history_container, 0, Qt.AlignmentFlag.AlignVCenter)
-    top_toolbar_layout.addWidget(search, 0, Qt.AlignmentFlag.AlignVCenter)
-
-    window.reference_top_toolbar_container = top_toolbar_container
     window.reference_top_toolbar = toolbar
     window.reference_command_search = search
-    window.reference_history_container = history_container
     window.reference_open_button = open_button
     window.reference_save_button = save_button
     window.reference_export_button = export_button
-    window.reference_fit_button = fit_button
+    window.reference_fit_button = None
     window.reference_pixel_button = None
-    window.reference_pan_button = pan_button
-    window.reference_select_button = select_button
-    window.reference_focus_button = reference_focus_button
+    window.reference_pan_button = None
+    window.reference_select_button = None
+    window.reference_focus_button = None
     window.reference_view_button = view_button
     # Compatibility alias: rendering/mask controls now belong to the View menu.
     window.reference_render_button = view_button
@@ -437,10 +388,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
     window.reference_edit_button = None
     window.reference_undo_button = undo_button
     window.reference_redo_button = redo_button
-
-    _normalize_reference_top_toolbar_buttons(
-        toolbar, width=_REFERENCE_TOP_BUTTON_DESKTOP_WIDTH
-    )
 
     # QAction remains the source of truth for localization. Refresh the short
     # visible labels whenever any source command changes, without enlarging
@@ -451,8 +398,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window.save_project_action,
         window.save_project_as_action,
         window.act_export,
-        window.act_fit,
-        focus_action,
         window.act_grid,
         window.act_snap,
         window.act_lit,
@@ -461,8 +406,6 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
         window.act_xray3,
         window.mask_viewer_action,
         window.collision_overlay_action,
-        pan_action,
-        window.tool_palette._tool_actions["selection"],
         window.undo_action,
         window.redo_action,
     )
@@ -528,57 +471,58 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
             "edit": "Edit",
         }
 
-    tooltips = {
+    descriptions = {
         "en": {
-            "open": "Open project or image",
-            "save": "Save project",
-            "export": "Export project data",
-            "fit": "Fit viewport to content",
-            "pixel": "View at 1:1 pixel scale",
-            "focus": "Focus selected object",
-            "view": "Open view and navigation menu",
-            "collision": "Open collision menu",
-            "parallax": "Open scenario editor",
-            "pan": "Move viewport",
-            "select": "Open selection tools menu",
-            "undo": "Undo last change",
-            "redo": "Redo last change",
-            "edit": "Open editing menu",
+            "open": "Open a project or image",
+            "save": "Save the current project",
+            "export": "Export the current project",
+            "fit": "Fit the image to the viewport",
+            "pixel": "Show the image at 1:1 pixels",
+            "focus": "Focus the selected object",
+            "view": "Open viewport and mask-view controls",
+            "collision": "Open collision export controls",
+            "parallax": "Open the scenario editor",
+            "pan": "Move the viewport",
+            "select": "Select objects and tools",
+            "undo": "Undo the last operation",
+            "redo": "Redo the last undone operation",
+            "edit": "Edit the selected object",
         },
         "pt": {
-            "open": "Abrir projeto ou imagem",
-            "save": "Salvar projeto",
-            "export": "Exportar dados do projeto",
-            "fit": "Ajustar a visualização ao conteúdo",
-            "pixel": "Visualizar na escala de pixels 1:1",
-            "focus": "Focar no objeto selecionado",
-            "view": "Abrir menu de visualização e navegação",
-            "collision": "Abrir menu de colisão",
-            "parallax": "Abrir editor de cenário",
-            "pan": "Mover a área de visualização",
-            "select": "Abrir menu de ferramentas de seleção",
-            "undo": "Desfazer a última alteração",
-            "redo": "Refazer a última alteração",
-            "edit": "Abrir menu de edição",
+            "open": "Abrir um projeto ou imagem",
+            "save": "Salvar o projeto atual",
+            "export": "Exportar o projeto atual",
+            "fit": "Ajustar a imagem à viewport",
+            "pixel": "Exibir a imagem em pixels 1:1",
+            "focus": "Focar o objeto selecionado",
+            "view": "Abrir controles da viewport e da máscara",
+            "collision": "Abrir controles de exportação de colisão",
+            "parallax": "Abrir o editor de cenários",
+            "pan": "Mover a viewport",
+            "select": "Selecionar objetos e ferramentas",
+            "undo": "Desfazer a última operação",
+            "redo": "Refazer a última operação desfeita",
+            "edit": "Editar o objeto selecionado",
         },
-    }.get(getattr(window, "current_lang", "en"), None)
-    if tooltips is None:
-        tooltips = {
-            "open": "Open project or image",
-            "save": "Save project",
-            "export": "Export project data",
-            "fit": "Fit viewport to content",
-            "pixel": "View at 1:1 pixel scale",
-            "focus": "Focus selected object",
-            "view": "Open view and navigation menu",
-            "collision": "Open collision menu",
-            "parallax": "Open scenario editor",
-            "pan": "Move viewport",
-            "select": "Open selection tools menu",
-            "undo": "Undo last change",
-            "redo": "Redo last change",
-            "edit": "Open editing menu",
-        }
+    }.get(getattr(window, "current_lang", "en"), {})
+
+    menu_button = getattr(window, "reference_menu_button", None)
+    if menu_button is not None:
+        if getattr(window, "current_lang", "en") == "pt":
+            menu_button.setAccessibleName("Menu do aplicativo")
+            menu_button.setAccessibleDescription(
+                "Abrir o menu do aplicativo com comandos de arquivo, edição, "
+                "visualização e cenário"
+            )
+            menu_button.setToolTip("Menu do aplicativo")
+            menu_button.setStatusTip("Abrir o menu do aplicativo")
+        else:
+            menu_button.setAccessibleName("Application menu")
+            menu_button.setAccessibleDescription(
+                "Open the application menu with file, edit, view and scenario commands"
+            )
+            menu_button.setToolTip("Application menu")
+            menu_button.setStatusTip("Open the application menu")
 
     for submenu, source in getattr(window, "reference_application_submenus", ()):
         submenu.setTitle(source.title())
@@ -587,15 +531,10 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
         ("reference_open_button", "open"),
         ("reference_save_button", "save"),
         ("reference_export_button", "export"),
-        ("reference_fit_button", "fit"),
-        ("reference_pixel_button", "pixel"),
-        ("reference_focus_button", "focus"),
         ("reference_view_button", "view"),
         ("reference_collision_button", "collision"),
         ("reference_parallax_button", "parallax"),
         ("reference_edit_button", "edit"),
-        ("reference_pan_button", "pan"),
-        ("reference_select_button", "select"),
         ("reference_undo_button", "undo"),
         ("reference_redo_button", "redo"),
     ):
@@ -603,8 +542,9 @@ def refresh_reference_top_toolbar_labels(window: Any) -> None:
         if button is not None:
             button.setText(labels[key])
             button.setAccessibleName(labels[key])
-            button.setToolTip(tooltips[key])
-            button.setAccessibleDescription(tooltips[key])
+            description = descriptions.get(key, labels[key])
+            button.setAccessibleDescription(description)
+            button.setToolTip(description)
             button.setProperty("referenceShortText", labels[key])
 
 

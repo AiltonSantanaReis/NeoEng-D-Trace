@@ -10,6 +10,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
+WORKTREE_ROOT = Path(__file__).resolve().parents[1]
+if str(WORKTREE_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKTREE_ROOT))
+
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import numpy as np
@@ -24,7 +28,7 @@ from src.models.scene import Scene
 from src.ui.main_window import MainWindow
 from src.ui.theme_qss import QSS
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = WORKTREE_ROOT
 DEFAULT_OUTPUT = ROOT / "docs" / "evidence" / "artifacts" / "ui-defect-fix-2026-08-18"
 VIEWPORTS = {
     "compact_1280x720": (1280, 720),

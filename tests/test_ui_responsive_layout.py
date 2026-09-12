@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 from PySide6.QtCore import QSize
-from PySide6.QtWidgets import QApplication, QSizePolicy
+from PySide6.QtWidgets import QApplication, QSizePolicy, QToolButton
 
 from src.core.commands import CommandManager
 from src.models.scene import Scene
@@ -83,10 +83,10 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
                 window.reference_top_toolbar.toolButtonStyle().name
                 == "ToolButtonIconOnly"
             )
-            assert window.main_splitter.sizes()[2] >= 450
-            assert window.compact_panel_tabs.width() >= 450
+            assert window.main_splitter.sizes()[2] >= 380
+            assert window.compact_panel_tabs.width() >= 380
             assert window.compact_panel_tabs.currentWidget() is window.side_panel
-            assert window.side_panel.width() >= 440
+            assert window.side_panel.width() >= 360
             assert (
                 window.panel_stack.sizePolicy().horizontalPolicy()
                 == QSizePolicy.Policy.Expanding
@@ -108,6 +108,12 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
             window.reference_top_toolbar.toolButtonStyle().name
             == "ToolButtonTextUnderIcon"
         )
+        desktop_buttons = window.reference_top_toolbar.findChildren(QToolButton)
+        assert all(
+            button.width() >= button.sizeHint().width()
+            for button in desktop_buttons
+            if button.objectName() != "reference_menu_button"
+        )
         assert window.compact_panel_tabs.count() == 0
         assert window.reference_panel_tabs.count() == 4
         assert window.desktop_panel_splitter.count() == 1
@@ -122,8 +128,8 @@ def test_compact_layout_fits_requested_resolutions_and_restores_desktop(qt_app):
             )
         )
         assert window.reference_tool_palette.isVisibleTo(window)
-        assert window.reference_tool_palette.width() <= 96
-        assert window.main_splitter.sizes()[2] >= 520
+        assert window.reference_tool_palette.width() == 148
+        assert window.main_splitter.sizes()[2] >= 400
         assert window.layers.width() >= window.layers.minimumSizeHint().width()
         assert window.desktop_panel_splitter.sizes()[0] > 0
         assert window.reference_panel_tabs.width() > 0
@@ -182,6 +188,46 @@ def test_panel_splitters_cannot_collapse_during_responsive_switch(qt_app):
             window.panel_stack.sizePolicy().verticalPolicy()
             == QSizePolicy.Policy.Expanding
         )
+    finally:
+        window._mark_document_clean()
+        window.close()
+
+
+def test_compact_layout_constrains_toolbar_and_inspector_content(qt_app):
+    window = _window()
+    window.resize(QSize(1280, 720))
+    window.show()
+    qt_app.processEvents()
+
+    try:
+        toolbar_rect = window.reference_top_toolbar.geometry()
+        panel_rect = window.compact_panel_tabs.geometry()
+        content = window.side_panel.scroll_area.widget()
+        viewport = window.side_panel.scroll_area.viewport()
+
+        assert toolbar_rect.right() <= window.centralWidget().rect().right()
+        assert panel_rect.right() <= window.main_splitter.rect().right()
+        assert content.width() <= viewport.width()
+        assert window.reference_top_toolbar.minimumWidth() == 0
+    finally:
+        window._mark_document_clean()
+        window.close()
+
+
+def test_compact_language_updates_search_prompts_and_scenario_menu(qt_app):
+    window = _window()
+    window.resize(QSize(1280, 720))
+    window.show()
+    qt_app.processEvents()
+
+    try:
+        window.set_language("pt")
+        qt_app.processEvents()
+        assert window.side_panel.search_input.placeholderText() == "Pesquisar objetos"
+        assert window.layers.search_input.placeholderText() == "Pesquisar camadas"
+        assert window.scenario_menu.title() == "Cenário"
+        assert window.scenario_open_action.text() == "Abrir Editor de Cenário"
+        assert window.reference_open_button.text() == "Abrir"
     finally:
         window._mark_document_clean()
         window.close()

@@ -368,7 +368,10 @@ def _astar_directional(
     expansions = 0
 
     while queue and expansions < settings.max_expansions:
-        if cancel_check is not None and expansions % 256 == 0 and cancel_check():
+        # The directional state space is substantially larger than the preview
+        # state space. Check every expansion so a timed-out worker cannot keep
+        # allocating states while the GUI is waiting for cooperative shutdown.
+        if cancel_check is not None and cancel_check():
             return []
         _, current_g, x, y, previous_direction = heapq.heappop(queue)
         state = (x, y, previous_direction)
@@ -475,7 +478,7 @@ def _astar_preview(
     expansions = 0
 
     while queue and expansions < settings.max_expansions:
-        if cancel_check is not None and expansions % 256 == 0 and cancel_check():
+        if cancel_check is not None and cancel_check():
             return []
         _, current_g, x, y = heapq.heappop(queue)
         if current_g > float(best[y, x]) + 1e-9:

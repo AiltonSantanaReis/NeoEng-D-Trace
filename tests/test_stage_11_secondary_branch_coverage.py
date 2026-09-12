@@ -12,6 +12,7 @@ from PySide6.QtWidgets import QApplication, QMessageBox, QWidget
 from src.core.commands import CommandManager, CommandResult, CommandStatus
 from src.models.scene import Scene
 from src.tools import magnetic_lasso as magnetic_module
+from src.tools import polygon_edit_tool as polygon_edit_module
 from src.tools.collision_brush_tool import CollisionBrushTool
 from src.tools.magnetic_lasso import MagneticLassoTool
 from src.tools.magnetic_lasso_engine import MagneticLassoSettings
@@ -537,6 +538,7 @@ def test_collision_brush_outcomes_remove_overlay_and_edit(qt_app, monkeypatch):
     warnings.assert_called()
     critical.assert_called()
 
+    tool.selected_polygon_id = "A"
     tool._start_edit(None)
     palette = SimpleNamespace(select_tool_by_name=Mock())
     tool._start_edit(SimpleNamespace(tool_palette=palette))
@@ -614,6 +616,49 @@ def test_polygon_edit_selection_hit_testing_overlay_and_events(qt_app, monkeypat
     tool.adding_new = True
     tool.on_mouse_press(right, (30, 30))
     assert tool.adding_new is False
+
+
+def test_polygon_edit_context_menu_uses_selected_language(qt_app, monkeypatch):
+    scene = scene_with_object()
+    canvas = CanvasProbe(scene)
+    tool = PolygonEditTool(canvas)
+    tool.selected_polygon_id = "A"
+    tool.selected_polygon_ids = {"A"}
+    tool.selected_vertex = 0
+    tool.update_language("pt")
+    actions = []
+
+    class ActionProbe:
+        def __init__(self, text):
+            self.text = text
+            self.triggered = SimpleNamespace(connect=lambda callback: None)
+
+    class MenuProbe:
+        def __init__(self, parent):
+            pass
+
+        def addAction(self, text):
+            action = ActionProbe(text)
+            actions.append(action)
+            return action
+
+        def addSeparator(self):
+            pass
+
+        def exec(self, position):
+            self.position = position
+
+    monkeypatch.setattr(polygon_edit_module, "QMenu", MenuProbe)
+    tool.show_context_menu(event(Qt.MouseButton.RightButton))
+
+    labels = [action.text for action in actions]
+    assert "Mover vértice" in labels
+    assert "Excluir vértice" in labels
+    # A vertex-targeted context menu must not expose the destructive
+    # object/polygon deletion action.
+    assert "Excluir polígono" not in labels
+    assert "Move Vertex" not in labels
+    assert "Delete Polygon" not in labels
 
 
 def test_polygon_edit_vertex_guards_deletion_and_history(qt_app, monkeypatch):

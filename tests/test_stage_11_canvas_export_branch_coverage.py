@@ -415,13 +415,22 @@ def test_canvas_context_menu_selection_and_manual_polygon(qt_app, monkeypatch):
         def setEnabled(self, enabled):
             self.enabled = enabled
 
+        def setStatusTip(self, value):
+            self.status_tip = value
+
     class MenuProbe:
         def __init__(self, parent):
             self.actions = []
             menus.append(self)
 
+        def setMinimumWidth(self, value):
+            self.minimum_width = value
+
         def setStyleSheet(self, value):
             self.style = value
+
+        def adjustSize(self):
+            self.adjusted = True
 
         def addAction(self, text):
             action = ActionProbe(text)
@@ -437,8 +446,28 @@ def test_canvas_context_menu_selection_and_manual_polygon(qt_app, monkeypatch):
     monkeypatch.setattr(canvas_module, "QMenu", MenuProbe)
     canvas.contextMenuEvent(event(position=(20, 20)))
     assert any(action and "Selected" in action.text for action in menus[-1].actions)
+    canvas.update_language("pt")
+    canvas.contextMenuEvent(event(position=(20, 20)))
+    portuguese_text = " ".join(
+        action.text for action in menus[-1].actions if action is not None
+    )
+    assert "Objeto selecionado" in portuguese_text
+    assert "Focar objeto" in portuguese_text
+    assert "Ativar forma de colisão" in portuguese_text
+    assert "Excluir objeto" in portuguese_text
+    assert "Ajustar imagem (F)" in portuguese_text
+    assert "Limpar todos os polígonos" in portuguese_text
+    assert not hasattr(menus[-1], "minimum_width")
+    scene.collision_shapes["A"] = list(scene.objects["A"].polygon)
+    canvas.contextMenuEvent(event(position=(20, 20)))
+    collision_text = " ".join(
+        action.text for action in menus[-1].actions if action is not None
+    )
+    assert "Desativar forma de colisão" in collision_text
     canvas.contextMenuEvent(event(position=(200, 200)))
-    assert not any(action and "Selected" in action.text for action in menus[-1].actions)
+    assert not any(
+        action and "Objeto selecionado" in action.text for action in menus[-1].actions
+    )
 
     canvas._tool = ToolInterface(on_mouse_press=Mock())
     canvas.contextMenuEvent(event())

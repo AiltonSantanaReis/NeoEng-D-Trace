@@ -1,0 +1,27 @@
+{
+  "stage": "E05",
+  "build": "release/e05-colliders-20260908-r15",
+  "source_commit": "79d768ab5b97403294a3f013c6c92aea15dd4ce5",
+  "source_branch": "Ailton/e05-colliders-20260908",
+  "binary_sha256": "A9E9EF4142A46B706F74A5B3B54A0508768C35DEE389124A8034AD1CC2774F29",
+  "portable_archive_sha256": "5267B370B0547C6C3DA1B0E5AC59497728AD13ED2ABBBBB154CE3B40A11EC201",
+  "capture_root": "artifacts/e05-colliders-20260908/binary-capture-r15-final3",
+  "capture_method": "PrintWindow from the latest project binary with Win32 input against the real editor window",
+  "screenshots": {
+    "ready": "F7467D0C380E4AA095D740A32264076D3ADCA7426C0031D09F927E838E3C1164",
+    "box_created": "F917D834D373B57B8E22E7C0C590FBAA342C1F1A841F0126031EA370AFC94D58",
+    "circle_created": "1695601945C244539252A894891AEA92A7097163073ED9119678AF5E0AB188B7",
+    "save_attempt_state": "74F772FD24768DBAB180711216E70DF5E40AADCCCA167E5B8A6CE9475AF00C70",
+    "reopen_attempt_state": "6889066FCC8EE117B6C1D6429944CA8BEACA1F4A55518E2D05EA0EAAAE866F3A"
+  },
+  "observed": [
+    "The shipped binary opened the independent scenario editor.",
+    "The real UI created a box and a circle and displayed both in the Colliders / Physics panel.",
+    "The panel remained translated in Portuguese, readable, and without clipping in the captured editor window.",
+    "Persistence and overlap/trigger consumption are covered by the 29-test focused integration set; the two final screenshots preserve the post-action list state, while the status text did not expose a distinct save/reopen transition in this DPI run."
+  ],
+  "limitations": [
+    "Automated PrintWindow capture is visual evidence only and is not human review.",
+    "Symlink verification and human review remain deferred to the final audit."
+  ]
+}

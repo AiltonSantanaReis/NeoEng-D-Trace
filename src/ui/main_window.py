@@ -2,8 +2,9 @@
 import os
 import time
 from pathlib import Path
+from typing import Any
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QLocale, Qt, Signal
 from PySide6.QtGui import QAction, QCloseEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -14,7 +15,7 @@ from PySide6.QtWidgets import (
 
 # Imports de lógica e colisão estática
 from src.collision import StaticCollisionManager
-from src.core.app_identity import build_window_title
+from src.core.app_identity import build_window_title, normalize_language
 from src.core.document_session import DocumentSession
 from src.core.image_input import (
     hash_validated_image_file,
@@ -44,10 +45,18 @@ from src.ui.command_registry import CommandRegistry
 from src.ui.export_dialog import ExportDialog
 from src.ui.groups_panel import GroupsPanel
 from src.ui.icon_library import configure_main_window_controls
+from src.ui.independent_scene_actions import install_independent_scene
 from src.ui.layers_panel import LayersPanel
+from src.ui.main_window_language import (
+    apply_action_tooltips,
+    refresh_language_components,
+)
 from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.mask_viewer import MaskViewerDialog
-from src.ui.reference_chrome import connect_reference_search
+from src.ui.reference_chrome import (
+    connect_reference_search,
+    refresh_reference_top_toolbar_labels,
+)
 from src.ui.responsive_layout import build_responsive_layout
 from src.ui.scenario_authoring_actions import install_scenario_authoring
 from src.ui.scenario_preview_actions import install_scenario_preview_actions
@@ -62,6 +71,12 @@ class MainWindow(QMainWindow):
     act_grid: QAction
     act_snap: QAction
     act_gizmo: QAction
+    scenario_open_action: QAction
+    scenario_save_action: QAction
+    scenario_load_action: QAction
+    scenario_reset_action: QAction
+    scenario_export_action: QAction
+    translations: dict[str, dict[str, Any]]
 
     @property
     def _project_path(self) -> Path | None:
@@ -191,7 +206,12 @@ class MainWindow(QMainWindow):
         self.autosave_timer = None
 
         # Configuração da Janela Principal
-        self.current_lang = "en"
+        configured_language = config.get("language", "en")
+        if configured_language == "auto":
+            configured_language = (
+                "pt" if QLocale.system().name().lower().startswith("pt") else "en"
+            )
+        self.current_lang = normalize_language(configured_language)
         self.setWindowTitle(build_window_title(self.current_lang))
         self.resize(1200, 800)
 
@@ -219,7 +239,10 @@ class MainWindow(QMainWindow):
         self.groups = GroupsPanel(scene)
 
         self.tool_palette.setEnabled(False)
-        self.side_panel.setEnabled(False)
+        # The Objects tab is useful as an empty-state surface before an image
+        # or project is opened. Individual object actions remain unavailable
+        # until a selection exists.
+        self.side_panel.setEnabled(True)
 
         self.collision_manager = StaticCollisionManager(grid_cell_size=64)
         self.collision_overlay = CollisionOverlay(scene)
@@ -236,6 +259,7 @@ class MainWindow(QMainWindow):
 
         self.canvas.set_collision_overlay(self.collision_overlay)
         install_scenario_authoring(self)
+        install_independent_scene(self)
         # Navigation/render commands remain stable canonical QActions.
         self.act_fit = QAction("Fit View", self)
         self.act_fit.setShortcut(QKeySequence("F"))
@@ -399,6 +423,7 @@ class MainWindow(QMainWindow):
     def _undo(self):
         if self.canvas.request_tool_undo():
             self.canvas.update()
+            self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
             self._update_undo_redo_actions()
             return None
         result = None
@@ -407,12 +432,14 @@ class MainWindow(QMainWindow):
         self.canvas.update()
         self.side_panel.refresh()
         self._on_scene_changed()
+        self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
         self._update_undo_redo_actions()
         return result
 
     def _redo(self):
         if self.canvas.request_tool_redo():
             self.canvas.update()
+            self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
             self._update_undo_redo_actions()
             return None
         result = None
@@ -421,6 +448,7 @@ class MainWindow(QMainWindow):
         self.canvas.update()
         self.side_panel.refresh()
         self._on_scene_changed()
+        self.canvas.setFocus(Qt.FocusReason.OtherFocusReason)
         self._update_undo_redo_actions()
         return result
 
@@ -516,6 +544,9 @@ class MainWindow(QMainWindow):
         try:
             self.current_lang = lang if lang in self.translations else "en"
             self.update_language()
+            config_set = getattr(self.config, "set", None)
+            if callable(config_set):
+                config_set("language", self.current_lang)
             expected_title = self._expected_window_title()
             applied = (
                 self.current_lang in self.translations
@@ -578,30 +609,34 @@ class MainWindow(QMainWindow):
         self.redo_action.setText(t["redo"])
         getattr(self, "settings_action").setText(t["view_settings"])
 
+        apply_action_tooltips(self, t)
+
         # View Menu
         self.view_menu.setTitle(t["view_menu"])
         self.mask_viewer_action.setText(t["mask_viewer"])
         self.collision_overlay_action.setText(t["collision_overlay"])
+        if hasattr(self, "scenario_menu"):
+            self.scenario_menu.setTitle(t["scenario_menu"])
+            self.scenario_open_action.setText(t["scenario_open"])
+            self.scenario_save_action.setText(t["scenario_save"])
+            self.scenario_load_action.setText(t["scenario_load"])
+            self.scenario_reset_action.setText(t["scenario_reset"])
+            self.scenario_export_action.setText(t["scenario_export"])
+
+        refresh_reference_top_toolbar_labels(self)
+        command_search = getattr(self, "reference_command_search", None)
+        if command_search is not None:
+            command_search.setAccessibleName(t["command_palette_search_name"])
+            command_search.setAccessibleDescription(
+                t["command_palette_search_description"]
+            )
+            command_search.setToolTip(t["command_palette_search_description"])
 
         self.command_palette.update_language(self.current_lang)
-        if hasattr(self.side_panel, "update_language"):
-            self.side_panel.update_language(self.current_lang)
-        if hasattr(self.tool_palette, "update_language"):
-            self.tool_palette.update_language(self.current_lang)
-        if hasattr(self.groups, "update_language"):
-            self.groups.update_language(self.current_lang)
-        if hasattr(self.canvas, "update_language"):
-            self.canvas.update_language(self.current_lang)
-        if (
-            hasattr(self.canvas, "_tool")
-            and self.canvas._tool
-            and hasattr(self.canvas._tool, "update_language")
-        ):
-            self.canvas._tool.update_language(self.current_lang)
-        if self._mask_viewer_dialog is not None and hasattr(
-            self._mask_viewer_dialog, "update_language"
-        ):
-            self._mask_viewer_dialog.update_language(self.current_lang)
+        canvas_update_language = getattr(self.canvas, "update_language", None)
+        if callable(canvas_update_language):
+            canvas_update_language(self.current_lang)
+        refresh_language_components(self)
 
     def set_last_folder(self, folder):
         self._last_folder = folder
@@ -660,7 +695,10 @@ class MainWindow(QMainWindow):
         has_image = self.scene.image is not None
         self.tool_palette.setEnabled(has_image)
         self.reference_tool_palette.setEnabled(has_image)
-        self.side_panel.setEnabled(project_loaded or has_image)
+        # Keep the inspector tab navigable in the empty state; its list and
+        # empty-state labels provide the correct affordance without blocking
+        # the user from switching panels.
+        self.side_panel.setEnabled(True)
         self.side_panel.refresh()
         if hasattr(self.layers, "refresh"):
             self.layers.refresh()
@@ -814,33 +852,35 @@ class MainWindow(QMainWindow):
         if not warnings:
             return
         t = self.translations[self.current_lang]
-        QMessageBox.warning(
-            self,
-            t["project_warnings_title"],
-            "\n".join(f"• {warning}" for warning in warnings),
+        # Recoverable asset diagnostics must not block the viewport or hide
+        # the relink workflow behind a modal dialog.
+        self.statusBar().showMessage(
+            f"{t['project_warnings_title']}: " + " | ".join(warnings),
+            0,
         )
 
-    def open_project(self) -> bool:
+    def open_project(self, path: str | os.PathLike[str] | None = None) -> bool:
         started_at = time.perf_counter()
         t = self.translations[self.current_lang]
-        initial_dir = (
-            str(self._project_path.parent)
-            if self._project_path is not None
-            else self._last_folder or ""
-        )
-        path, _ = QFileDialog.getOpenFileName(
-            self,
-            t["open_project_dialog"],
-            initial_dir,
-            t["project_files"],
-        )
-        if not path:
-            record_validation_event(
-                "project.opened",
-                "CANCELLED",
-                duration_ms=elapsed_ms(started_at),
+        # QAction.triggered emits its checked-state boolean when this method is
+        # connected directly.  It is not a project path; keep the same method
+        # usable both as a Qt slot and as the deterministic capture entrypoint.
+        if isinstance(path, bool):
+            path = None
+        if path is None:
+            initial_dir = (
+                str(self._project_path.parent)
+                if self._project_path is not None
+                else self._last_folder or ""
             )
-            return False
+            path, _ = QFileDialog.getOpenFileName(
+                self, t["open_project_dialog"], initial_dir, t["project_files"]
+            )
+            if not path:
+                record_validation_event(
+                    "project.opened", "CANCELLED", duration_ms=elapsed_ms(started_at)
+                )
+                return False
         if not self._confirm_unsaved_changes():
             record_validation_event(
                 "project.opened",

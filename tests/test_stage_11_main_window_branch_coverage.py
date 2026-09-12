@@ -565,7 +565,9 @@ def test_main_window_residual_image_warning_and_dialog_branches(
 
     warnings = []
     monkeypatch.setattr(
-        QMessageBox, "warning", lambda *args, **kwargs: warnings.append(args[2])
+        window.statusBar(),
+        "showMessage",
+        lambda message, timeout=0: warnings.append(message),
     )
     window._show_project_warnings([])
     window._show_project_warnings(["first", "second"])

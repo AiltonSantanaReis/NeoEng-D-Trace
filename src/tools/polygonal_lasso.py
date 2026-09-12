@@ -14,6 +14,7 @@ from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPen
 from PySide6.QtWidgets import QMenu
 
 from src.core.operational_limits import MAX_POLYGON_POINTS
+from src.ui.context_menu_utils import fit_context_menu
 
 from .base_tool import BaseTool
 
@@ -30,6 +31,7 @@ class PolygonalLassoTool(BaseTool):
         self._vertices: List[Tuple[float, float]] = []
         self._preview_point: Optional[Tuple[float, float]] = None
         self._close_tolerance = 10.0  # Pixels de tolerância para fechar o polígono
+        self._ignore_next_click_after_commit = False
 
         self.current_lang = "en"
         self.translations = {
@@ -50,6 +52,11 @@ class PolygonalLassoTool(BaseTool):
         Add vertex on mouse press or close polygon if near start.
         """
         if event.button() == Qt.MouseButton.LeftButton:
+            if self._ignore_next_click_after_commit:
+                self._ignore_next_click_after_commit = False
+                self._preview_point = None
+                self.canvas_view.update()
+                return
             try:
                 x, y = float(position[0]), float(position[1])
             except Exception:
@@ -74,6 +81,7 @@ class PolygonalLassoTool(BaseTool):
                     if object_id is not None:
                         self._vertices = []
                         self._preview_point = None
+                        self._ignore_next_click_after_commit = True
                     self.canvas_view.update()
                     return
 
@@ -112,6 +120,7 @@ class PolygonalLassoTool(BaseTool):
 
         self._vertices = []
         self._preview_point = None
+        self._ignore_next_click_after_commit = True
         self.canvas_view.update()
 
     def commit_selection(self):
@@ -202,7 +211,7 @@ class PolygonalLassoTool(BaseTool):
         act_redo = menu.addAction(self.translations[self.current_lang]["redo"])
         act_redo.triggered.connect(self.redo_last_action)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu).exec(event.globalPos())
 
     def undo_last_action(self):
         if hasattr(self.canvas_view.model, "cmd") and self.canvas_view.model.cmd:

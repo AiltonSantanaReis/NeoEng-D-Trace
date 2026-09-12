@@ -537,6 +537,8 @@ class ScenarioAuthoringState:
                     depth=float(item.parallax.depth),
                     translation_strength=float(item.parallax.translation_strength),
                     zoom_strength=float(item.parallax.zoom_strength),
+                    scroll_x=1.0,
+                    scroll_y=1.0,
                 ),
                 item.visible,
             )

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from PySide6.QtCore import QPoint, Qt, Signal
 from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import (
@@ -67,7 +69,7 @@ class CommandPaletteDialog(QDialog):
         registry: CommandRegistry,
         parent=None,
         *,
-        translations: dict[str, dict[str, str]] | None = None,
+        translations: dict[str, dict[str, Any]] | None = None,
     ) -> None:
         super().__init__(parent)
         if translations is None:
@@ -75,7 +77,7 @@ class CommandPaletteDialog(QDialog):
 
             translations = MAIN_WINDOW_TRANSLATIONS
         self.registry = registry
-        self.translations = translations
+        self.translations: dict[str, dict[str, Any]] = translations
         self.current_lang = "en"
         self._previous_focus: QWidget | None = None
 

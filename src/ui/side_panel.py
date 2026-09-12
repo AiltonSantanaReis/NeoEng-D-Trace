@@ -15,8 +15,10 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSlider,
     QToolBar,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -35,12 +37,75 @@ from src.core.transform_gesture import (
     transformed_snapshot,
 )
 from src.core.validation_events import object_token, record_validation_event
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.error_presentation import show_p2d05_error
+from src.ui.numeric_controls import ProtectedDoubleSpinBox, ScrubbableLabel
 from src.utils.selection_tools import (
     expand_contract_polygon,
     invert_selection,
     polygon_to_mask,
 )
+
+
+class CollapsibleGroupBox(QGroupBox):
+    """Inspector category with an engine-style expandable header."""
+
+    def __init__(self, title: str, parent=None, *, expanded: bool = True):
+        super().__init__(parent)
+        self._section_title = title
+        super().setTitle("")
+        self.toggle_button = QToolButton(self)
+        self.toggle_button.setObjectName("inspector_section_toggle")
+        self.toggle_button.setCheckable(True)
+        self.toggle_button.setAutoRaise(True)
+        self.toggle_button.setToolButtonStyle(
+            Qt.ToolButtonStyle.ToolButtonTextBesideIcon
+        )
+        self.toggle_button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.toggle_button.clicked.connect(self._on_toggled)
+
+        self.content_widget = QWidget(self)
+        self.content_widget.setObjectName("inspector_section_content")
+        self.content_layout = QVBoxLayout(self.content_widget)
+        self.content_layout.setContentsMargins(0, 0, 0, 0)
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(2)
+        layout.addWidget(self.toggle_button)
+        layout.addWidget(self.content_widget)
+        self.setTitle(title)
+        self.setExpanded(expanded)
+
+    def title(self) -> str:
+        return self._section_title
+
+    def setTitle(self, title: str) -> None:  # noqa: N802
+        self._section_title = title
+        if hasattr(self, "toggle_button"):
+            self.toggle_button.setText(title)
+            self.toggle_button.setAccessibleName(title)
+            self.toggle_button.setAccessibleDescription(
+                f"Expand or collapse the {title} inspector section"
+            )
+            self.toggle_button.setToolTip(self.toggle_button.accessibleDescription())
+
+    def setExpanded(self, expanded: bool) -> None:  # noqa: N802
+        expanded = bool(expanded)
+        self.toggle_button.blockSignals(True)
+        self.toggle_button.setChecked(expanded)
+        self.toggle_button.blockSignals(False)
+        # Keep the section collapsible without the extra arrow affordance. The
+        # checked state, accessible description and header emphasis already
+        # communicate the interaction without competing with property values.
+        self.toggle_button.setArrowType(Qt.ArrowType.NoArrow)
+        self.content_widget.setVisible(expanded)
+
+    def isExpanded(self) -> bool:  # noqa: N802
+        return self.toggle_button.isChecked()
+
+    def _on_toggled(self, expanded: bool) -> None:
+        self.setExpanded(expanded)
 
 
 class SidePanel(QWidget):
@@ -65,17 +130,17 @@ class SidePanel(QWidget):
         self.list.customContextMenuRequested.connect(self._show_context_menu)
 
         # --- Botões ---
-        self.btn_rename = QPushButton("Rename")
-        self.btn_delete = QPushButton("Delete")
+        self.btn_rename = QPushButton("Rename", self)
+        self.btn_delete = QPushButton("Delete", self)
 
-        self.btn_expand = QPushButton("Expand")
-        self.btn_contract = QPushButton("Contract")
-        self.btn_invert = QPushButton("Invert")
+        self.btn_expand = QPushButton("Expand", self)
+        self.btn_contract = QPushButton("Contract", self)
+        self.btn_invert = QPushButton("Invert", self)
 
         # Botão de forma de colisão
-        self.btn_collision = QPushButton("Collision: OFF")
+        self.btn_collision = QPushButton("Collision: OFF", self)
 
-        self.transform_group = QGroupBox("Transform")
+        self.transform_group = CollapsibleGroupBox("Transform", expanded=True)
         self.position_x = self._transform_spin(-1_000_000.0, 1_000_000.0)
         self.position_y = self._transform_spin(-1_000_000.0, 1_000_000.0)
         self.position_z = self._transform_spin(-1_000_000.0, 1_000_000.0)
@@ -94,18 +159,24 @@ class SidePanel(QWidget):
         )
         self.metadata_label = QLabel("No object selected")
         self.metadata_label.setObjectName("objects_metadata")
-        transform_form = QFormLayout(self.transform_group)
-        transform_form.addRow("Position X", self.position_x)
-        transform_form.addRow("Position Y", self.position_y)
-        transform_form.addRow("Position Z", self.position_z)
-        transform_form.addRow("Rotation X", self.rotation_x)
-        transform_form.addRow("Rotation Y", self.rotation_y)
-        transform_form.addRow("Rotation Z", self.rotation_z)
-        transform_form.addRow("Scale X", self.scale_x)
-        transform_form.addRow("Scale Y", self.scale_y)
-        transform_form.addRow("Scale Z", self.scale_z)
-        transform_form.addRow("Pivot X", self.pivot_x)
-        transform_form.addRow("Pivot Y", self.pivot_y)
+        transform_form = QFormLayout()
+        self.transform_group.content_layout.addLayout(transform_form)
+        self._transform_form_labels = {}
+        for key, text, field in (
+            ("position_x", "Position X", self.position_x),
+            ("position_y", "Position Y", self.position_y),
+            ("position_z", "Position Z", self.position_z),
+            ("rotation_x", "Rotation X", self.rotation_x),
+            ("rotation_y", "Rotation Y", self.rotation_y),
+            ("rotation_z", "Rotation Z", self.rotation_z),
+            ("scale_x", "Scale X", self.scale_x),
+            ("scale_y", "Scale Y", self.scale_y),
+            ("scale_z", "Scale Z", self.scale_z),
+            ("pivot_x", "Pivot X", self.pivot_x),
+            ("pivot_y", "Pivot Y", self.pivot_y),
+        ):
+            transform_form.addRow(ScrubbableLabel(text, field), field)
+            self._transform_form_labels[key] = transform_form.labelForField(field)
         transform_form.addRow(self.snap_enabled)
         self.btn_apply_transform = QPushButton("Apply Transform")
         self.btn_apply_transform.setObjectName("apply_transform")
@@ -118,11 +189,11 @@ class SidePanel(QWidget):
         self.slider.setMinimum(-50)
         self.slider.setMaximum(50)
         self.slider.setValue(0)
-        self.btn_apply = QPushButton("Apply")
-        self.btn_cancel = QPushButton("Cancel")
+        self.btn_apply = QPushButton("Apply", self)
+        self.btn_cancel = QPushButton("Cancel", self)
 
-        self.btn_export = QPushButton("Export Mask")
-        self.btn_export_now = QPushButton("Export Sprite")
+        self.btn_export = QPushButton("Export Mask", self)
+        self.btn_export_now = QPushButton("Export Sprite", self)
 
         # Keep legacy QPushButtons as stable command handles. The visible
         # presentation uses compact toolbars so the inspector remains usable
@@ -176,22 +247,28 @@ class SidePanel(QWidget):
 
         # Layout
         content = QWidget(self)
+        content.setMinimumWidth(0)
+        content.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Preferred,
+        )
         layout = QVBoxLayout(content)
-        layout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        # The scroll area's viewport owns the available width. A historical
+        # SetMinimumSize here kept the inspector at desktop width and caused
+        # clipping at compact resolutions.
+        layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
         self.scene_objects_label = QLabel("Scene Objects:")
         layout.addWidget(self.scene_objects_label)
         layout.addWidget(self.search_input)
         layout.addWidget(self.list)
 
         # Grupo 1: edição e colisão
-        self.properties_group = QGroupBox("Properties")
-        l_edit = QVBoxLayout()
-        l_edit.addWidget(self.properties_action_toolbar)
-        self.properties_group.setLayout(l_edit)
+        self.properties_group = CollapsibleGroupBox("Properties", expanded=True)
+        self.properties_group.content_layout.addWidget(self.properties_action_toolbar)
         layout.addWidget(self.properties_group)
         layout.addWidget(self.transform_group)
-        metadata_group = QGroupBox("Metadata / Scenario")
-        metadata_layout = QVBoxLayout(metadata_group)
+        self.metadata_group = CollapsibleGroupBox("Metadata / Scenario", expanded=False)
+        metadata_layout = self.metadata_group.content_layout
         metadata_layout.addWidget(self.metadata_label)
         scenario_button = QPushButton("Open Scenario Editor")
         scenario_button.setObjectName("open_scenario_editor_from_inspector")
@@ -206,27 +283,27 @@ class SidePanel(QWidget):
             lambda: getattr(self.window(), "open_scenario_editor", lambda: None)()
         )
         metadata_layout.addWidget(scenario_button)
-        layout.addWidget(metadata_group)
+        layout.addWidget(self.metadata_group)
 
         # Grupo 2: Modificadores
-        self.modify_shape_group = QGroupBox("Modify Shape")
-        l_tools = QVBoxLayout()
+        self.modify_shape_group = CollapsibleGroupBox("Modify Shape", expanded=False)
+        l_tools = self.modify_shape_group.content_layout
         l_tools.addWidget(self.modify_action_toolbar)
         l_tools.addWidget(self.slider_label)
         l_tools.addWidget(self.slider)
-        self.modify_shape_group.setLayout(l_tools)
         layout.addWidget(self.modify_shape_group)
 
         # Grupo 3: Exportação
-        self.export_group = QGroupBox("Export")
-        l_export = QVBoxLayout()
-        l_export.addWidget(self.export_action_toolbar)
-        self.export_group.setLayout(l_export)
+        self.export_group = CollapsibleGroupBox("Export", expanded=False)
+        self.export_group.content_layout.addWidget(self.export_action_toolbar)
         layout.addWidget(self.export_group)
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("side_panel_scroll")
         self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
         self.scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
         self.scroll_area.setWidget(content)
         root_layout = QVBoxLayout(self)
@@ -266,6 +343,11 @@ class SidePanel(QWidget):
         self.translations = {
             "en": {
                 "scene_objects": "Scene Objects:",
+                "search_objects": "Search objects",
+                "scenario_open": "Open Scenario Editor",
+                "scenario_open_description": (
+                    "Open the separate scenario authoring editor"
+                ),
                 "rename": "Rename",
                 "delete": "Delete",
                 "expand": "Expand",
@@ -298,6 +380,11 @@ class SidePanel(QWidget):
             },
             "pt": {
                 "scene_objects": "Objetos da Cena:",
+                "search_objects": "Pesquisar objetos",
+                "scenario_open": "Abrir Editor de Cenário",
+                "scenario_open_description": (
+                    "Abrir o editor separado de autoria de cenários"
+                ),
                 "rename": "Renomear",
                 "delete": "Excluir",
                 "expand": "Expandir",
@@ -367,20 +454,46 @@ class SidePanel(QWidget):
     def _configure_accessibility_controls(self) -> None:
         """Keep every inspector control usable by name and keyboard focus."""
 
-        labels = {
-            "rename": "Rename selected object",
-            "delete": "Delete selected object",
-            "expand": "Expand selected shape",
-            "contract": "Contract selected shape",
-            "invert": "Invert selected shape",
-            "collision": "Toggle collision for selected object",
-            "apply_transform": "Apply transform to selected object",
-            "apply": "Apply shape preview",
-            "cancel": "Cancel shape preview",
-            "export_mask": "Export selected mask",
-            "export_sprite": "Export selected sprite",
-            "slider": "Adjust shape expansion or contraction preview",
-        }
+        is_pt = getattr(self, "current_lang", "en") == "pt"
+        self.transform_group.setTitle("Transformação" if is_pt else "Transform")
+        if hasattr(self, "metadata_group"):
+            self.metadata_group.setTitle(
+                "Metadados / Cenário" if is_pt else "Metadata / Scenario"
+            )
+        self.btn_apply_transform.setText(
+            "Aplicar Transformação" if is_pt else "Apply Transform"
+        )
+        labels = (
+            {
+                "rename": "Renomear o objeto selecionado",
+                "delete": "Excluir o objeto selecionado",
+                "expand": "Expandir a forma selecionada",
+                "contract": "Contrair a forma selecionada",
+                "invert": "Inverter a forma selecionada",
+                "collision": "Alternar colisão do objeto selecionado",
+                "apply_transform": "Aplicar transformação ao objeto selecionado",
+                "apply": "Aplicar prévia da forma",
+                "cancel": "Cancelar prévia da forma",
+                "export_mask": "Exportar a máscara selecionada",
+                "export_sprite": "Exportar o sprite selecionado",
+                "slider": "Ajustar a prévia de expansão ou contração da forma",
+            }
+            if is_pt
+            else {
+                "rename": "Rename selected object",
+                "delete": "Delete selected object",
+                "expand": "Expand selected shape",
+                "contract": "Contract selected shape",
+                "invert": "Invert selected shape",
+                "collision": "Toggle collision for selected object",
+                "apply_transform": "Apply transform to selected object",
+                "apply": "Apply shape preview",
+                "cancel": "Cancel shape preview",
+                "export_mask": "Export selected mask",
+                "export_sprite": "Export selected sprite",
+                "slider": "Adjust shape expansion or contraction preview",
+            }
+        )
         buttons = (
             (self.btn_rename, labels["rename"]),
             (self.btn_delete, labels["delete"]),
@@ -400,20 +513,93 @@ class SidePanel(QWidget):
             button.setToolTip(description)
             button.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        fields = (
-            (self.position_x, "Position X", "Edit the selected object's X position"),
-            (self.position_y, "Position Y", "Edit the selected object's Y position"),
-            (self.position_z, "Position Z", "Edit the selected object's Z position"),
-            (self.rotation_x, "Rotation X", "Edit the selected object's X rotation"),
-            (self.rotation_y, "Rotation Y", "Edit the selected object's Y rotation"),
-            (self.rotation_z, "Rotation Z", "Edit the selected object's Z rotation"),
-            (self.scale_x, "Scale X", "Edit the selected object's X scale"),
-            (self.scale_y, "Scale Y", "Edit the selected object's Y scale"),
-            (self.scale_z, "Scale Z", "Edit the selected object's Z scale"),
-            (self.pivot_x, "Pivot X", "Edit the selected object's X pivot"),
-            (self.pivot_y, "Pivot Y", "Edit the selected object's Y pivot"),
+        field_names = (
+            (
+                self.position_x,
+                "Position X",
+                "Posição X",
+                "Edit the selected object's X position",
+                "Editar a posição X do objeto selecionado",
+            ),
+            (
+                self.position_y,
+                "Position Y",
+                "Posição Y",
+                "Edit the selected object's Y position",
+                "Editar a posição Y do objeto selecionado",
+            ),
+            (
+                self.position_z,
+                "Position Z",
+                "Posição Z",
+                "Edit the selected object's Z position",
+                "Editar a posição Z do objeto selecionado",
+            ),
+            (
+                self.rotation_x,
+                "Rotation X",
+                "Rotação X",
+                "Edit the selected object's X rotation",
+                "Editar a rotação X do objeto selecionado",
+            ),
+            (
+                self.rotation_y,
+                "Rotation Y",
+                "Rotação Y",
+                "Edit the selected object's Y rotation",
+                "Editar a rotação Y do objeto selecionado",
+            ),
+            (
+                self.rotation_z,
+                "Rotation Z",
+                "Rotação Z",
+                "Edit the selected object's Z rotation",
+                "Editar a rotação Z do objeto selecionado",
+            ),
+            (
+                self.scale_x,
+                "Scale X",
+                "Escala X",
+                "Edit the selected object's X scale",
+                "Editar a escala X do objeto selecionado",
+            ),
+            (
+                self.scale_y,
+                "Scale Y",
+                "Escala Y",
+                "Edit the selected object's Y scale",
+                "Editar a escala Y do objeto selecionado",
+            ),
+            (
+                self.scale_z,
+                "Scale Z",
+                "Escala Z",
+                "Edit the selected object's Z scale",
+                "Editar a escala Z do objeto selecionado",
+            ),
+            (
+                self.pivot_x,
+                "Pivot X",
+                "Pivô X",
+                "Edit the selected object's X pivot",
+                "Editar o pivô X do objeto selecionado",
+            ),
+            (
+                self.pivot_y,
+                "Pivot Y",
+                "Pivô Y",
+                "Edit the selected object's Y pivot",
+                "Editar o pivô Y do objeto selecionado",
+            ),
         )
-        for field, name, description in fields:
+        fields = tuple(
+            (field, pt_name if is_pt else en_name, pt_tip if is_pt else en_tip)
+            for field, en_name, pt_name, en_tip, pt_tip in field_names
+        )
+        for key, (field, name, description) in zip(self._transform_form_labels, fields):
+            label = self._transform_form_labels[key]
+            if isinstance(label, QLabel):
+                label.setText(name)
             field.setObjectName(f"inspector_{name.lower().replace(' ', '_')}")
             field.setAccessibleName(name)
             field.setAccessibleDescription(description)
@@ -425,13 +611,20 @@ class SidePanel(QWidget):
             line_edit.setToolTip(description)
             line_edit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        self.snap_enabled.setAccessibleName("Snap vertices to grid")
-        self.snap_enabled.setAccessibleDescription(
-            "Toggle snapping of edited vertices to the 16 pixel grid"
+        snap_name = "Encaixar vértices na grade" if is_pt else "Snap vertices to grid"
+        snap_description = (
+            "Alternar o encaixe dos vértices editados na grade de 16 pixels"
+            if is_pt
+            else "Toggle snapping of edited vertices to the 16 pixel grid"
         )
-        self.snap_enabled.setToolTip("Snap edited vertices to the 16 pixel grid")
+        self.snap_enabled.setAccessibleName(snap_name)
+        self.snap_enabled.setText(snap_name)
+        self.snap_enabled.setAccessibleDescription(snap_description)
+        self.snap_enabled.setToolTip(snap_description)
         self.slider.setObjectName("shape_expand_contract_slider")
-        self.slider.setAccessibleName("Shape expansion slider")
+        self.slider.setAccessibleName(
+            "Controle de expansão da forma" if is_pt else "Shape expansion slider"
+        )
         self.slider.setAccessibleDescription(labels["slider"])
         self.slider.setToolTip(labels["slider"])
         self.slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
@@ -440,28 +633,34 @@ class SidePanel(QWidget):
         for toolbar, buttons in self._toolbar_bindings:
             for action, button in zip(toolbar.actions(), buttons):
                 action.setText(button.text())
-                action.setToolTip(button.text())
-                action.setStatusTip(button.text())
+                action.setToolTip(button.toolTip() or button.text())
+                action.setStatusTip(button.toolTip() or button.text())
                 action.setEnabled(button.isEnabled())
                 action.setProperty("accessibleName", button.text())
                 toolbar_button = toolbar.widgetForAction(action)
                 if toolbar_button is not None:
                     toolbar_button.setAccessibleName(button.text())
-                    toolbar_button.setToolTip(button.text())
+                    toolbar_button.setAccessibleDescription(
+                        button.accessibleDescription()
+                        or button.toolTip()
+                        or button.text()
+                    )
+                    toolbar_button.setToolTip(button.toolTip() or button.text())
                 if button.isCheckable():
                     action.setChecked(button.isChecked())
 
     def _build_context_menu(self) -> QMenu:
         menu = QMenu(self.list)
+        labels = self.translations[self.current_lang]
         sections = (
-            ("Properties", self.properties_action_toolbar),
-            ("Modify Shape", self.modify_action_toolbar),
-            ("Export", self.export_action_toolbar),
+            (labels["properties"], self.properties_action_toolbar),
+            (labels["modify_shape"], self.modify_action_toolbar),
+            (labels["export"], self.export_action_toolbar),
         )
         for title, toolbar in sections:
             submenu = menu.addMenu(title)
             for toolbar_action in toolbar.actions():
-                action = submenu.addAction(toolbar_action.icon(), toolbar_action.text())
+                action = submenu.addAction(toolbar_action.text())
                 action.setToolTip(toolbar_action.toolTip())
                 action.setProperty("commandKey", toolbar_action.property("commandKey"))
                 action.setEnabled(toolbar_action.isEnabled())
@@ -475,13 +674,15 @@ class SidePanel(QWidget):
         if item is None:
             return
         self.list.setCurrentRow(self.list.row(item))
-        self._build_context_menu().exec(self.list.mapToGlobal(position))
+        fit_context_menu(self._build_context_menu()).exec(
+            self.list.mapToGlobal(position)
+        )
 
     @staticmethod
     def _transform_spin(
         minimum: float, maximum: float, step: float = 1.0
     ) -> QDoubleSpinBox:
-        widget = QDoubleSpinBox()
+        widget = ProtectedDoubleSpinBox()
         widget.setRange(minimum, maximum)
         widget.setSingleStep(step)
         widget.setDecimals(4)
@@ -560,11 +761,25 @@ class SidePanel(QWidget):
         self.transform_group.setEnabled(enabled)
         self.btn_apply_transform.setEnabled(enabled)
         if obj is None:
-            self.metadata_label.setText("No object selected")
+            self.metadata_label.setText(
+                "Nenhum objeto selecionado"
+                if self.current_lang == "pt"
+                else "No object selected"
+            )
             return
+        is_pt = self.current_lang == "pt"
+        collision = (
+            ("sim" if oid in self.scene.collision_shapes else "não")
+            if is_pt
+            else ("yes" if oid in self.scene.collision_shapes else "no")
+        )
+        metadata_labels = (
+            ("ID", "Vértices", "Colisão") if is_pt else ("ID", "Vertices", "Collision")
+        )
         self.metadata_label.setText(
-            f"ID: {obj.id} | Vertices: {len(obj.polygon)} | "
-            f"Collision: {'yes' if oid in self.scene.collision_shapes else 'no'}"
+            f"{metadata_labels[0]}: {obj.id} | "
+            f"{metadata_labels[1]}: {len(obj.polygon)} | "
+            f"{metadata_labels[2]}: {collision}"
         )
         values = (
             *tuple(obj.position),
@@ -993,6 +1208,20 @@ class SidePanel(QWidget):
         t = self.translations[self.current_lang]
         # Update labels
         self.scene_objects_label.setText(t["scene_objects"])
+        self.search_input.setPlaceholderText(t["search_objects"])
+        self.search_input.setAccessibleName(t["search_objects"])
+        self.search_input.setAccessibleDescription(t["search_objects"])
+        self.search_input.setToolTip(t["search_objects"])
+        self.list.setAccessibleName(
+            "Lista de objetos da cena"
+            if self.current_lang == "pt"
+            else "Scene objects list"
+        )
+        self.list.setAccessibleDescription(
+            "Selecione um objeto para inspecioná-lo ou editá-lo"
+            if self.current_lang == "pt"
+            else "Select an object to inspect or edit it"
+        )
         # Buttons
         self.btn_rename.setText(t["rename"])
         self.btn_delete.setText(t["delete"])
@@ -1008,10 +1237,12 @@ class SidePanel(QWidget):
         self.btn_cancel.setText(t["cancel"])
         self.btn_export.setText(t["export_mask"])
         self.btn_export_now.setText(t["export_sprite"])
-        self.open_scenario_editor_button.setAccessibleName(
-            self.open_scenario_editor_button.text()
+        self.open_scenario_editor_button.setText(t["scenario_open"])
+        self.open_scenario_editor_button.setAccessibleName(t["scenario_open"])
+        self.open_scenario_editor_button.setAccessibleDescription(
+            t["scenario_open_description"]
         )
-        self.open_scenario_editor_button.setToolTip("Open the scenario editor")
+        self.open_scenario_editor_button.setToolTip(t["scenario_open_description"])
         self._configure_accessibility_controls()
         # Update collision button state
         self._update_button_states()

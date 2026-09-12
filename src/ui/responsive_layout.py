@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import QSize, Qt, QTimer
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QSizePolicy,
     QSplitter,
@@ -15,12 +15,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from src.ui.reference_chrome import (
-    _REFERENCE_RAIL_BUTTON_SIZE,
-    _REFERENCE_TOP_BUTTON_COMPACT_WIDTH,
-    _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH,
-    _REFERENCE_TOP_BUTTON_HEIGHT,
-)
+from src.ui.reference_chrome import REFERENCE_COMMAND_WIDTH, REFERENCE_TOOL_RAIL_WIDTH
 from src.ui.viewport_chrome import ViewportChrome
 
 
@@ -28,8 +23,8 @@ class ResponsivePanelLayout:
     """Switch between the desktop splitters and compact panel tabs."""
 
     BREAKPOINT = 1450
-    COMPACT_PANEL_WIDTH = 460
-    DESKTOP_PANEL_WIDTH = 540
+    COMPACT_PANEL_WIDTH = 380
+    DESKTOP_PANEL_WIDTH = 420
 
     def __init__(
         self,
@@ -110,53 +105,69 @@ class ResponsivePanelLayout:
         toolbar = getattr(self.owner, "reference_top_toolbar", None)
         if toolbar is None:
             return
+        if hasattr(toolbar, "setMinimumWidth"):
+            toolbar.setMinimumWidth(0)
+        if hasattr(toolbar, "setSizePolicy"):
+            toolbar.setSizePolicy(
+                QSizePolicy.Policy.Ignored,
+                QSizePolicy.Policy.Fixed,
+            )
         style = (
             Qt.ToolButtonStyle.ToolButtonIconOnly
             if compact
             else Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         )
-        button_width = (
-            _REFERENCE_TOP_BUTTON_COMPACT_WIDTH
-            if compact
-            else _REFERENCE_TOP_BUTTON_DESKTOP_WIDTH
-        )
         toolbar.setToolButtonStyle(style)
         for button in toolbar.findChildren(QToolButton):
-            if button.objectName() == "qt_toolbar_ext_button":
+            if button.objectName() != "reference_menu_button":
+                button.setToolButtonStyle(style)
+
+        action_widths = {
+            "reference_undo_button": 78 if compact else REFERENCE_COMMAND_WIDTH,
+            "reference_redo_button": 78 if compact else REFERENCE_COMMAND_WIDTH,
+        }
+        for name, width in action_widths.items():
+            button = getattr(self.owner, name, None)
+            if button is None:
                 continue
-            button.setToolButtonStyle(style)
-            button.setFixedSize(QSize(button_width, _REFERENCE_TOP_BUTTON_HEIGHT))
-            button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+            button.setMinimumWidth(width)
+            button.setMaximumWidth(width)
+            button.setMinimumHeight(78)
+            button.setMaximumHeight(88)
+
+        if compact:
+            # Keep Qt's overflow affordance inside the window at compact
+            # resolutions instead of expanding the toolbar past the edge.
+            for button in toolbar.findChildren(QToolButton):
+                if button.objectName().startswith("reference_command_button_"):
+                    button.setMinimumWidth(78)
+                    button.setMaximumWidth(78)
+                elif button.objectName() != "reference_menu_button":
+                    button.setMinimumWidth(78)
+                    button.setMaximumWidth(78)
+        else:
+            # Full-screen/desktop mode uses one shared width so the top rail
+            # reads as a deliberate command grid instead of mixed-size cards.
+            # The compact mode above keeps its narrower overflow-safe sizing.
+            for button in toolbar.findChildren(QToolButton):
+                if button.objectName() == "reference_menu_button":
+                    continue
+                button.setMinimumWidth(REFERENCE_COMMAND_WIDTH)
+                button.setMaximumWidth(REFERENCE_COMMAND_WIDTH)
 
         menu_button = getattr(self.owner, "reference_menu_button", None)
         if menu_button is not None:
-            menu_button.setFixedSize(_REFERENCE_RAIL_BUTTON_SIZE)
+            menu_button.setMinimumWidth(51)
+            menu_button.setMaximumWidth(51)
 
         search = getattr(self.owner, "reference_command_search", None)
         if search is not None:
-            search.setMinimumWidth(180)
-            search.setMaximumWidth(240 if compact else 180)
-
-        history_container = getattr(self.owner, "reference_history_container", None)
-        if history_container is not None:
-            history_buttons = history_container.findChildren(QToolButton)
-            for button in history_buttons:
-                button.setToolButtonStyle(style)
-                button.setFixedSize(QSize(button_width, _REFERENCE_TOP_BUTTON_HEIGHT))
-                button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-            layout = history_container.layout()
-            if layout is not None:
-                margins = layout.contentsMargins()
-                history_container.setFixedWidth(
-                    (button_width * len(history_buttons))
-                    + layout.spacing() * max(0, len(history_buttons) - 1)
-                    + margins.left()
-                    + margins.right()
-                )
-
-        focus_button = getattr(self.owner, "reference_focus_button", None)
-        if focus_button is not None:
-            focus_button.setText("Focus")
+            search.setSizePolicy(
+                QSizePolicy.Policy.Expanding,
+                QSizePolicy.Policy.Fixed,
+            )
+            search.setMinimumWidth(128 if compact else 240)
+            search.setMaximumWidth(240 if compact else 520)
 
     def _apply_geometry(self) -> None:
         """Reserve the visible reference palette, viewport and inspector dock."""
@@ -233,6 +244,16 @@ class ResponsivePanelLayout:
                 continue
             for index, title in enumerate(titles):
                 tabs.setTabText(index, title)
+        language = translations.get("language", "Language")
+        is_pt = language == "Idioma"
+        description = (
+            "Alternar entre os painéis de objetos, camadas, grupos e colisão"
+            if is_pt
+            else "Switch between objects, layers, groups and collision panels"
+        )
+        for tabs in (self.compact_panel_tabs, self.reference_panel_tabs):
+            tabs.setAccessibleDescription(description)
+            tabs.tabBar().setAccessibleDescription(description)
 
 
 def build_responsive_layout(owner) -> ResponsivePanelLayout:
@@ -289,6 +310,7 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
         QSizePolicy.Policy.Expanding,
         QSizePolicy.Policy.Expanding,
     )
+    compact_panel_tabs.setMinimumWidth(0)
 
     panel_stack = QStackedWidget()
     panel_stack.setSizePolicy(
@@ -308,13 +330,15 @@ def build_responsive_layout(owner) -> ResponsivePanelLayout:
 
     main_splitter.addWidget(panel_stack)
     main_splitter.setChildrenCollapsible(False)
-    main_splitter.setSizes([owner.reference_tool_palette.minimumWidth(), 800, 460])
+    main_splitter.setSizes(
+        [REFERENCE_TOOL_RAIL_WIDTH, 800, ResponsivePanelLayout.DESKTOP_PANEL_WIDTH]
+    )
     main_splitter.setStretchFactor(1, 1)
     central_container = QWidget(owner)
     central_layout = QVBoxLayout(central_container)
     central_layout.setContentsMargins(0, 0, 0, 0)
     central_layout.setSpacing(0)
-    central_layout.addWidget(owner.reference_top_toolbar_container)
+    central_layout.addWidget(owner.reference_top_toolbar)
     central_layout.addWidget(main_splitter, 1)
     owner.reference_central_container = central_container
     owner.setCentralWidget(central_container)

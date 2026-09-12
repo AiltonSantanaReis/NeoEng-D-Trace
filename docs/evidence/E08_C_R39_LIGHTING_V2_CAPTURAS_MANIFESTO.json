@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "stage": "E08-C.2/C.3",
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "scope": "Integração do passe de iluminação determinístico ao viewport profissional V2, resolução de socket de luz persistido, build portátil e captura real.",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r39",
+    "source_commit": "bd8101d6c39f6d140b104fe68c685a582de380a6",
+    "source_branch": "Ailton/e08-renderer-20260908",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256": "EE35B069D1C42223222F0D62369FA1BA9CD11C887A3684D4F0AE895AE5B9F339",
+    "binary": "release/e08-renderer-20260908-r39/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "10EF967993EA2C5578356C28E57A006BAF692A28EBC64C66737A80C9015DDE51",
+    "portable_archive_sha256": "9DCFE4FF5BAD9DE3B6DD283AF527F3ECEEADB13BB477623B7CDB1A0AFF319E7B",
+    "portable_smoke": {"status": "SUCCESS", "checks": 11}
+  },
+  "fixture": {
+    "path": "tests/fixtures/e08_lighting_smoke.ndtscene.json",
+    "schema": "V2 scene authoring",
+    "objects": ["lighting-receiver", "lighting-occluder"],
+    "persisted_sockets": [{
+      "id": "key-light",
+      "type": "light",
+      "position": [160.0, 220.0, 0.0],
+      "color": "#ffdcad",
+      "intensity": 1.35,
+      "radius": 720.0
+    }],
+    "purpose": "Provar que um socket de luz V2 persistido chega ao passe raster e que os controles de autoria permanecem acessíveis."
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r39-lighting-v2",
+    "method": "PrintWindow from the real portable binary window handle",
+    "command": "scripts\\capture_e03_asset_library_binary.ps1 -Executable release\\e08-renderer-20260908-r39\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe -ProjectPath tests\\fixtures\\e08_lighting_smoke.ndtproj -OutputDirectory artifacts\\e08-renderer-20260908\\binary-capture-r39-lighting-v2 -DirectProjectLoad -CaptureRendererFlow -CaptureParallaxFlow",
+    "screenshots": {
+      "renderer_preview": {
+        "path": "06-renderer-preview.png",
+        "sha256": "02E03498E2561B7691365703EA362285760345E6439C29A09E086F765FFB7F81",
+        "finding": "O HUD identifica RENDERER RASTER, NATIVE, PREVIEW e 8 PASSES; o receptor e o occluder aparecem com cores resultantes do passe e o marcador da luz está visível."
+      },
+      "renderer_authoring": {
+        "path": "07-renderer-authoring.png",
+        "sha256": "75C0436360DE53D646577E0E00A2C5CB137C94CE7722FD35F2957077913136BA",
+        "finding": "O modo AUTHORING preserva os mesmos pixels iluminados, com viewport e painel profissional ativos."
+      },
+      "parallax_controls_bottom": {
+        "path": "08-parallax-controls-bottom.png",
+        "sha256": "E51A93043061401A95EE3688B533D5F6CC06A475E5C5C43C515B6CB347F69BF2",
+        "finding": "O inspector mostra Câmera, Paralaxe e Sockets, os campos Rolagem/Deslocamento/Repetir/Espelhar e o socket key-light (light) com X 160 e Y 220."
+      },
+      "parallax_controls_pageup": {
+        "path": "09-parallax-controls-pageup.png",
+        "sha256": "B59F97BC070BCE5CE5C49F8C4B9F78CB72B96849BD09D7FC8CB59CB08BF079D2",
+        "finding": "A navegação vertical do painel mantém os controles de socket acessíveis no fluxo real."
+      }
+    },
+    "window_rect": "-13,-13,3853,2077",
+    "editor_title": "Editor de Cenário — NeoEng-D-Trace"
+  },
+  "verification": {
+    "focused_lighting_tests": "4 passed",
+    "focused_renderer_tests": "15 passed",
+    "official_suite": "2067 passed, 2 skipped, 1 warning",
+    "official_suite_incident": "A primeira execução completa terminou em access violation no teste test_stage4_ui_top_toolbar.py; o teste isolado passou, o conjunto adjacente passou 33/33 e a repetição completa passou 2067/2067 sem crash. O incidente foi preservado como transitório e não foi convertido em PASS silencioso.",
+    "static": ["mypy E08-C scope PASS", "black E08-C scope PASS", "git diff --check PASS"],
+    "human_review": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT"
+  },
+  "limitations": [
+    "C2/C3 comprovam a luz persistida no viewport V2; o sublote C4 ainda precisa expor e persistir autoria de material, albedo e normal map no fluxo completo.",
+    "A captura automatizada prova o estado visual observado, mas não substitui a revisão humana final autorizadamente adiada.",
+    "Sombras híbridas 3D e destinos de engine permanecem contratos posteriores, especialmente E12."
+  ]
+}

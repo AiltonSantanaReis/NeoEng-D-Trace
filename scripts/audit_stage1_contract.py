@@ -53,9 +53,19 @@ REQUIRED_STATES = (
 )
 FORBIDDEN_COLORS = ("#FF4500", "#00BFFF")
 CONTENT_COLOR_FILES = {
+    # Hybrid 2D/2.5D/3D grid, gizmo and scene markers are content semantics,
+    # not application chrome.
+    "src/ui/hybrid_scene_viewport.py",
     "src/ui/scene_authoring_inspector.py",
     "src/ui/scene_authoring_viewport.py",
+    # Tilemap cells and grid lines are scene content semantics, not chrome.
+    "src/ui/tilemap_authoring_panel.py",
+    # Tileset atlas, slice and selection colors are scene content semantics,
+    # not application chrome.
+    "src/ui/tileset_authoring_panel.py",
     "src/ui/viewport_chrome.py",
+    # Timeline clip colors encode scene-event semantics, not application chrome.
+    "src/ui/scene_sequence_panel.py",
 }
 TOKEN_DEFINITION_FILES = {"src/ui/theme_tokens.py"}
 

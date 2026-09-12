@@ -61,6 +61,15 @@ def test_application_version_matches_pyproject():
     assert data["project"]["version"] == APP_VERSION
 
 
+def test_windows_executable_description_is_portuguese_and_current():
+    metadata = (ROOT / "packaging/windows_version_info.txt").read_text(encoding="utf-8")
+    assert "Ferramenta de preparação de recursos de jogos NeoEng-D-Trace" in metadata
+    assert "NeoEng-D-Trace Game Asset Preparation Tool" not in metadata
+    assert "filevers=(0, 3, 0, 0)" in metadata
+    assert "prodvers=(0, 3, 0, 0)" in metadata
+    assert "u'041604B0'" in metadata
+
+
 def test_global_logger_uses_new_identity():
     assert isinstance(logger, logging.Logger)
     assert logger.name == LOGGER_NAME

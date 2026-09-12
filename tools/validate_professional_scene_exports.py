@@ -9,6 +9,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,8 @@ from PIL import Image, ImageDraw
 
 # fmt: off
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 GODOT_IMPORTER = (
     ROOT / "integrations/godot/addons/neoeng_d_trace/professional_scene_importer.gd"
 )
@@ -82,6 +85,8 @@ def _write_fixture(workspace: Path) -> tuple[Path, Path, Path]:
         SceneObjectAuthoringRecord,
         SceneParallaxLayerRecord,
         SceneTransformRecord,
+        SceneVectorGeometryRecord,
+        SceneVectorImageSizeRecord,
         upgrade_scene_authoring_document,
     )
 
@@ -152,6 +157,38 @@ def _write_fixture(workspace: Path) -> tuple[Path, Path, Path]:
                     zoom_strength=0.85,
                 ),
             ],
+        }
+    )
+    vector_geometry = SceneVectorGeometryRecord(
+        algorithm="fixture-vector-contour-v1",
+        source_sha256=asset_hash,
+        image_size=SceneVectorImageSizeRecord(width=64, height=32),
+        original_polygon=[
+            {"x": 4.0, "y": 4.0},
+            {"x": 59.0, "y": 4.0},
+            {"x": 59.0, "y": 27.0},
+            {"x": 4.0, "y": 27.0},
+        ],
+        polygon=[
+            {"x": 4.0, "y": 4.0},
+            {"x": 59.0, "y": 4.0},
+            {"x": 59.0, "y": 27.0},
+            {"x": 4.0, "y": 27.0},
+        ],
+        collision_polygon=[
+            {"x": 4.0, "y": 4.0},
+            {"x": 59.0, "y": 4.0},
+            {"x": 59.0, "y": 27.0},
+            {"x": 4.0, "y": 27.0},
+        ],
+    )
+    document = document.model_copy(
+        update={
+            "objects": [
+                document.objects[0].model_copy(
+                    update={"vector_geometry": vector_geometry}
+                )
+            ]
         }
     )
     source = workspace / "scene.ndtscene.json"
@@ -299,6 +336,49 @@ def _validate_unity(executable: str, project: Path) -> dict[str, Any]:
     )
 
 
+def _validate_unity_negative_hash(
+    executable: str, project: Path, original_asset: bytes
+) -> dict[str, Any]:
+    """Run the same Unity importer against a tampered asset and require rejection."""
+
+    command = [
+        executable,
+        "-batchmode",
+        "-force-d3d11",
+        "-projectPath",
+        str(project),
+        "-executeMethod",
+        "NeoEng.DTrace.Editor.ProfessionalSceneValidation.Run",
+        "-logFile",
+        str(project.parent / "unity-negative-hash.log"),
+    ]
+    asset_path = project / "Assets" / "assets" / "hero.png"
+    result_path = project / "unity-professional-validation-result.txt"
+    negative_result_path = project / "unity-professional-negative-hash-result.txt"
+    asset_path.write_bytes(original_asset + b"\nneoeng-tamper")
+    try:
+        attempt = _run(command, timeout=1200, check=False)
+        result_text = (
+            result_path.read_text(encoding="utf-8") if result_path.is_file() else ""
+        )
+        negative_result_path.write_text(result_text, encoding="utf-8", newline="\n")
+        rejected = (
+            attempt["returncode"] != 0
+            and "P2D04_UNITY_VALIDATION=FAILED" in result_text
+            and "asset hash does not match" in result_text
+        )
+        if not rejected:
+            raise RuntimeError(
+                "Unity did not reject the tampered professional-scene asset: "
+                + (result_text[-4000:] or attempt["output"][-4000:])
+            )
+        attempt["output"] += result_text
+        attempt["rejected"] = True
+        return attempt
+    finally:
+        asset_path.write_bytes(original_asset)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--engine", choices=("godot", "unity"), required=True)
@@ -334,6 +414,16 @@ def main() -> int:
                 raise RuntimeError(
                     "Godot professional validator did not emit success marker"
                 )
+            capture = workspace / "godot-professional-capture.png"
+            if not capture.is_file() or not capture.stat().st_size:
+                raise RuntimeError(
+                    "Godot professional validator did not produce a real capture"
+                )
+            with Image.open(capture) as rendered:
+                report["capture_size"] = list(rendered.size)
+                report["capture_sha256"] = hashlib.sha256(
+                    capture.read_bytes()
+                ).hexdigest()
             report["capture"] = "godot-professional-capture.png"
             report["artifacts"] = [
                 "assets/hero.png",
@@ -353,12 +443,34 @@ def main() -> int:
                     f"Unity professional validator failed: {details[-4000:]}"
                 )
             commands = [validation]
+            original_asset = (
+                unity_project / "Assets" / "assets" / "hero.png"
+            ).read_bytes()
+            negative_hash = _validate_unity_negative_hash(
+                args.executable, unity_project, original_asset
+            )
+            commands.append(negative_hash)
+            capture = unity_project / "unity-professional-capture.png"
+            if not capture.is_file() or not capture.stat().st_size:
+                raise RuntimeError(
+                    "Unity professional validator did not produce a real capture"
+                )
+            with Image.open(capture) as rendered:
+                report["capture_size"] = list(rendered.size)
+                report["capture_sha256"] = hashlib.sha256(
+                    capture.read_bytes()
+                ).hexdigest()
             report["capture"] = "unity-professional-capture.png"
             report["artifacts"] = [
                 "Assets/assets/hero.png",
                 "unity-professional-capture.png",
                 "unity-professional-validation-result.txt",
+                "unity-professional-negative-hash-result.txt",
             ]
+            report["negative_hash"] = {
+                "rejected": bool(negative_hash["rejected"]),
+                "result": "unity-professional-negative-hash-result.txt",
+            }
         report["status"] = "SUCCESS"
         version_match = re.search(
             rf"P2D04_{args.engine.upper()}_VERSION=([^\r\n]+)",

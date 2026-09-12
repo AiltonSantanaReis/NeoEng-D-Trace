@@ -113,7 +113,9 @@ def _preview_move(tool):
 
 
 def _preview_scale(tool, delta_y=100):
-    tool._start_scale("A", None)
+    # These cases validate the legacy transaction's absolute preview. The
+    # user-facing context-menu path is now owned by CanvasView's gizmo.
+    tool._begin_transform_gesture("A", "Scale")
     tool.on_mouse_move(_MouseEventStub(), (200, 200))
     tool.on_mouse_move(
         _MouseEventStub(),
@@ -196,7 +198,7 @@ def test_scale_mouse_preview_is_absolute_not_compounded():
     tool = _tool(scene)
     origin = _snapshot(scene)
 
-    tool._start_scale("A", None)
+    tool._begin_transform_gesture("A", "Scale")
     center = tool.scale_center
     assert center is not None
 
@@ -276,7 +278,7 @@ def test_scale_menu_steps_preview_from_origin_and_commit_once():
     tool = _tool(scene)
     origin = _snapshot(scene)
 
-    tool._start_scale("A", None)
+    tool._begin_transform_gesture("A", "Scale")
     center = tool.scale_center
     assert center is not None
 
@@ -452,7 +454,7 @@ def test_missing_manager_blocks_move_and_scale(monkeypatch):
     )
 
     tool._start_move("A", None)
-    tool._start_scale("A", None)
+    tool._begin_transform_gesture("A", "Scale")
 
     assert _snapshot(scene) == origin
     assert tool._transform_transaction is None

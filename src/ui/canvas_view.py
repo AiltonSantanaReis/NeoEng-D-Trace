@@ -45,9 +45,19 @@ from src.core.scenario_preview import (
     build_overlay_geometry,
     project_layer_points,
 )
+from src.core.scene_lighting import (
+    SceneLightingMaterial,
+    SceneLightingSettings,
+    default_scene_lighting,
+    shade_color,
+)
+from src.core.scene_render_plan import SceneRenderPlan
 from src.core.snapping import SnapSettings
 from src.core.transform_gesture import TransformGestureTransaction
+from src.ui.collision_visuals import collision_fill_brush, collision_outline_pen
+from src.ui.context_menu_utils import fit_context_menu
 from src.ui.image_conversion import to_qimage
+from src.ui.main_window_translations import MAIN_WINDOW_TRANSLATIONS
 from src.ui.viewport_state import (
     ViewportState,
     format_compact_viewport_details,
@@ -161,6 +171,9 @@ class CanvasView(QWidget):
     VIEW_XRAY_2 = 2  # Canny edges
     VIEW_XRAY_3 = 3  # Laplacian edges
     VIEW_COLLISION = 4
+    # Screen-space distance required for a predictable 2x/0.5x scale change.
+    # The previous arm-length-only divisor made axis scaling too aggressive.
+    GIZMO_SCALE_PIXELS_PER_DOUBLING = 190.0
 
     def _active_tool_object(self):
         tool = self._tool
@@ -354,6 +367,9 @@ class CanvasView(QWidget):
         self._scenario_safe_fraction = 0.9
         self._scenario_camera: Optional[OrthographicCamera] = None
         self._scenario_layers: tuple[ScenarioPreviewLayer, ...] = ()
+        self._scenario_render_plan: SceneRenderPlan | None = None
+        self._scenario_lighting = default_scene_lighting()
+        self._scenario_lighting_enabled = True
         self._scenario_overlay_geometry: Optional[ScenarioOverlayGeometry] = None
 
         # --- Configurações Críticas de Interação ---
@@ -411,13 +427,19 @@ class CanvasView(QWidget):
             self.update_image()
 
     def contextMenuEvent(self, event):
+        self.show_context_menu_at(event.pos(), event.globalPos())
+
+    def show_context_menu_at(self, pos, global_pos) -> None:
+        """Show the localized canvas menu for a screen position.
+
+        The selection tool consumes mouse presses before Qt emits the widget
+        context-menu event, so both paths must share the same menu builder.
+        """
         if self._scenario_preview_enabled:
-            event.accept()
             return
-        if self._tool or len(self._current_polygon) > 0:
+        if len(self._current_polygon) > 0:
             return
 
-        pos = event.pos()
         transform_inv, ok = self.get_transform().inverted()
         if not ok:
             return
@@ -425,14 +447,20 @@ class CanvasView(QWidget):
 
         clicked_obj_id = self._find_object_at(img_pt)
 
+        labels = MAIN_WINDOW_TRANSLATIONS.get(
+            self.current_lang, MAIN_WINDOW_TRANSLATIONS["en"]
+        )
         menu = QMenu(self)
 
         if clicked_obj_id:
-            label = menu.addAction(f"Selected: {clicked_obj_id[:8]}...")
+            label = menu.addAction(
+                f"{labels['context_selected_object']}: {clicked_obj_id[:8]}..."
+            )
             label.setEnabled(False)
             menu.addSeparator()
 
-            act_focus = menu.addAction("🔍 Focus Object")
+            act_focus = menu.addAction(labels["context_focus_object"])
+            act_focus.setStatusTip(labels["context_focus_object"])
             act_focus.triggered.connect(lambda: self.focus_on_object(clicked_obj_id))
 
             # Forma de colisão
@@ -440,32 +468,38 @@ class CanvasView(QWidget):
                 self.model, "has_collision"
             ) and self.model.has_collision(clicked_obj_id)
             collision_text = (
-                "Disable Collision Shape" if has_collision else "Enable Collision Shape"
+                labels["context_disable_collision"]
+                if has_collision
+                else labels["context_enable_collision"]
             )
-            collision_action = menu.addAction(f"⚛️ {collision_text}")
+            collision_action = menu.addAction(collision_text)
+            collision_action.setStatusTip(collision_text)
             collision_action.triggered.connect(
                 lambda: self._toggle_collision(clicked_obj_id)
             )
 
             menu.addSeparator()
 
-            act_del = menu.addAction("❌ Delete Object")
+            act_del = menu.addAction(labels["context_delete_object"])
+            act_del.setStatusTip(labels["context_delete_object"])
             act_del.triggered.connect(lambda: self._delete_object(clicked_obj_id))
 
             menu.addSeparator()
 
-        act_fit = menu.addAction("Fit Image (F)")
+        act_fit = menu.addAction(labels["context_fit_image"])
+        act_fit.setStatusTip(labels["context_fit_image"])
         act_fit.triggered.connect(self.fit_to_window)
 
-        act_100 = menu.addAction("Zoom 100%")
+        act_100 = menu.addAction(labels["context_zoom_100"])
+        act_100.setStatusTip(labels["context_zoom_100"])
         act_100.triggered.connect(lambda: self.set_zoom(1.0))
 
-        menu.addSeparator()
-
-        act_clean = menu.addAction("🗑️ Clean All Polygons")
+        act_clean = menu.addAction(labels["context_clean_all_polygons"])
+        act_clean.setStatusTip(labels["context_clean_all_polygons"])
         act_clean.triggered.connect(self.clean_all)
 
-        menu.exec(event.globalPos())
+        fit_context_menu(menu)
+        menu.exec(global_pos)
 
     def _find_object_at(self, point: QPointF) -> Optional[str]:
         objects = getattr(self.model, "objects", {})
@@ -485,10 +519,14 @@ class CanvasView(QWidget):
             self.center_on_polygon(obj.polygon, margin=50)
 
     def focus_on_object(self, oid: str):
-        obj = self.model.objects.get(oid)
-        if obj and obj.polygon:
-            self.center_on_polygon(obj.polygon, margin=50)
-            self.flash_effect(QColor(0, 255, 255, 100), 300)
+        """Use the same quiet framing behavior as the toolbar Focus action.
+
+        The old contextual path added a full-viewport cyan flash, which made
+        the context-menu action visually different from the toolbar and could
+        be mistaken for a modal overlay.
+        """
+
+        self.center_on_object(oid)
 
     def _execute_edit_command(self, command):
         manager = getattr(self.model, "cmd", None)
@@ -731,6 +769,13 @@ class CanvasView(QWidget):
             f"S: ({values[0]:.2f}, {values[1]:.2f}, {values[2]:.2f})  "
             f"Z-Depth: {position[2]:.1f}"
         )
+
+    def _gizmo_scale_factor(self, screen_delta: float) -> float:
+        """Map screen-space drag distance to a controlled multiplicative scale."""
+
+        reference = max(1.0, float(self.GIZMO_SCALE_PIXELS_PER_DOUBLING))
+        factor = math.exp(float(screen_delta) * math.log(2.0) / reference)
+        return max(0.05, min(20.0, factor))
 
     def _preview_gizmo_transform(
         self, *, translation=(0.0, 0.0), rotation=0.0, scale=(1.0, 1.0)
@@ -1075,6 +1120,9 @@ class CanvasView(QWidget):
         if self._tool and self._tool.on_cancel:
             self._tool.on_cancel()
         self._tool = tool
+        # Tools are recreated when the user changes the rail selection. Apply
+        # the canvas language at installation time so context menus never
+        # regress to English after the application is already in Portuguese.
         if self._tool and self._tool.update_language:
             self._tool.update_language(self.current_lang)
         self.update()
@@ -1195,6 +1243,31 @@ class CanvasView(QWidget):
         if not isinstance(camera, OrthographicCamera):
             raise ValueError("scenario camera must be an OrthographicCamera")
         self._scenario_camera = camera
+        self.update()
+
+    def set_scenario_render_plan(self, plan: SceneRenderPlan | None) -> None:
+        """Install the immutable render ordering used by the preview backend."""
+
+        if plan is not None and not isinstance(plan, SceneRenderPlan):
+            raise ValueError("scenario render plan must be a SceneRenderPlan")
+        self._scenario_render_plan = plan
+        self.update()
+
+    def set_scenario_lighting(
+        self, settings: SceneLightingSettings | None, *, enabled: bool = True
+    ) -> None:
+        """Install deterministic material/light state for the raster preview."""
+
+        if settings is not None and not isinstance(settings, SceneLightingSettings):
+            raise ValueError("scenario lighting must be SceneLightingSettings")
+        self._scenario_lighting = settings or default_scene_lighting()
+        self._scenario_lighting_enabled = bool(enabled)
+        self.update()
+
+    def set_scenario_lighting_enabled(self, enabled: bool) -> None:
+        """Toggle the lighting pass without mutating authored scene data."""
+
+        self._scenario_lighting_enabled = bool(enabled)
         self.update()
 
     def set_scenario_overlays_visible(
@@ -1435,7 +1508,7 @@ class CanvasView(QWidget):
                     ),
                     1.0,
                 )
-                factor = max(0.05, min(20.0, current_radius / start_radius))
+                factor = self._gizmo_scale_factor(current_radius - start_radius)
                 self._preview_gizmo_transform(scale=(factor, factor))
             elif operation == self.gizmo.ROTATE_Z:
                 center_screen = self.gizmo.screen_pos
@@ -1454,33 +1527,12 @@ class CanvasView(QWidget):
                 while angle < -180.0:
                     angle += 360.0
                 self._preview_gizmo_transform(rotation=angle)
-            elif operation == self.gizmo.SCALE_UNIFORM:
-                start_radius = max(
-                    math.hypot(
-                        self._gizmo_press_vector.x(), self._gizmo_press_vector.y()
-                    ),
-                    1.0,
-                )
-                current_radius = max(
-                    math.hypot(
-                        (pos - self.gizmo.screen_pos).x(),
-                        (pos - self.gizmo.screen_pos).y(),
-                    ),
-                    1.0,
-                )
-                factor = max(0.05, min(20.0, current_radius / start_radius))
-                self._preview_gizmo_transform(scale=(factor, factor))
             elif operation == self.gizmo.SCALE_X:
-                factor = max(0.05, min(20.0, 1.0 + dx / self.gizmo.arm_length))
+                factor = self._gizmo_scale_factor(delta_screen.x())
                 self._preview_gizmo_transform(scale=(factor, 1.0))
             elif operation == self.gizmo.SCALE_Y:
-                factor = max(
-                    0.05,
-                    min(
-                        20.0,
-                        1.0
-                        - dy * self._gizmo_y_screen_direction / self.gizmo.arm_length,
-                    ),
+                factor = self._gizmo_scale_factor(
+                    -delta_screen.y() * self._gizmo_y_screen_direction
                 )
                 self._preview_gizmo_transform(scale=(1.0, factor))
             self.update()
@@ -1605,7 +1657,23 @@ class CanvasView(QWidget):
             for layer in self._scenario_layers
             for object_id in layer.object_ids
         }
-        for oid, obj in getattr(self.model, "objects", {}).items():
+        render_order = (
+            self._scenario_render_plan.object_order()
+            if self._scenario_render_plan is not None
+            else {}
+        )
+        objects = sorted(
+            getattr(self.model, "objects", {}).items(),
+            key=lambda item: render_order.get(item[0], (10_000, 10_000, 0.0)),
+        )
+        world_polygons = {
+            oid: tuple(
+                (float(point[0]), float(point[1]))
+                for point in getattr(obj, "polygon", [])
+            )
+            for oid, obj in objects
+        }
+        for oid, obj in objects:
             poly = getattr(obj, "polygon", [])
             if len(poly) <= 1:
                 continue
@@ -1618,12 +1686,41 @@ class CanvasView(QWidget):
             projected = project_layer_points(camera, resolved_layer, poly)
             if len(projected) <= 1:
                 continue
+            if self._scenario_lighting_enabled:
+                center = (
+                    sum(point[0] for point in world_polygons[oid])
+                    / len(world_polygons[oid]),
+                    sum(point[1] for point in world_polygons[oid])
+                    / len(world_polygons[oid]),
+                )
+                settings = SceneLightingSettings(
+                    ambient_color=self._scenario_lighting.ambient_color,
+                    ambient_intensity=self._scenario_lighting.ambient_intensity,
+                    lights=self._scenario_lighting.lights,
+                    occluders=tuple(
+                        polygon
+                        for other_id, polygon in world_polygons.items()
+                        if other_id != oid and len(polygon) >= 3
+                    ),
+                )
+                color, opacity, _ = shade_color(
+                    center, SceneLightingMaterial(opacity=1.0), settings
+                )
+                brush = QColor(
+                    int(round(color[0] * 255.0)),
+                    int(round(color[1] * 255.0)),
+                    int(round(color[2] * 255.0)),
+                    int(round(opacity * 210.0)),
+                )
+            else:
+                brush = (
+                    self._brush_selected if oid in selected_oids else self._brush_poly
+                )
             if oid in selected_oids:
                 painter.setPen(self._pen_selected)
-                painter.setBrush(self._brush_selected)
             else:
                 painter.setPen(self._pen_poly)
-                painter.setBrush(self._brush_poly)
+            painter.setBrush(brush)
             painter.drawPolygon(QPolygonF([QPointF(x, y) for x, y in projected]))
 
     def _draw_scenario_overlays(self, painter: QPainter) -> None:
@@ -1677,6 +1774,16 @@ class CanvasView(QWidget):
         painter.setPen(QColor(170, 245, 255))
         painter.setFont(QFont("Consolas", 9, QFont.Weight.Bold))
         painter.drawText(10, 62, "SCENARIO PREVIEW | READ-ONLY")
+        plan = self._scenario_render_plan
+        if plan is not None:
+            backend = plan.backend.selected.upper()
+            mode = plan.backend.status.upper()
+            painter.drawText(
+                10,
+                80,
+                f"RENDERER {backend} | {mode} | {len(plan.passes)} PASSES | "
+                f"R{plan.revision}",
+            )
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -1774,18 +1881,61 @@ class CanvasView(QWidget):
 
     def _draw_scene_objects(self, painter: QPainter):
         selected_oids = set(self._selected_object_ids())
+        objects = list(getattr(self.model, "objects", {}).items())
+        world_polygons = {
+            oid: tuple(
+                (float(point[0]), float(point[1]))
+                for point in getattr(obj, "polygon", [])
+            )
+            for oid, obj in objects
+        }
 
         # Otimização: Itera apenas objetos visíveis se possível, mas aqui iteramos tudo
-        for oid, obj in getattr(self.model, "objects", {}).items():
+        for oid, obj in objects:
             poly = getattr(obj, "polygon", [])
             if len(poly) > 1:
-                # Estilo
+                if self._scenario_lighting_enabled and len(world_polygons[oid]) >= 3:
+                    center = (
+                        sum(point[0] for point in world_polygons[oid])
+                        / len(world_polygons[oid]),
+                        sum(point[1] for point in world_polygons[oid])
+                        / len(world_polygons[oid]),
+                    )
+                    settings = SceneLightingSettings(
+                        ambient_color=self._scenario_lighting.ambient_color,
+                        ambient_intensity=self._scenario_lighting.ambient_intensity,
+                        lights=self._scenario_lighting.lights,
+                        occluders=tuple(
+                            polygon
+                            for other_id, polygon in world_polygons.items()
+                            if other_id != oid and len(polygon) >= 3
+                        ),
+                    )
+                    color, opacity, _ = shade_color(
+                        center, SceneLightingMaterial(), settings
+                    )
+                    brush = QColor(
+                        int(round(color[0] * 255.0)),
+                        int(round(color[1] * 255.0)),
+                        int(round(color[2] * 255.0)),
+                        int(round(opacity * 210.0)),
+                    )
+                elif hasattr(self.model, "has_collision") and self.model.has_collision(
+                    oid
+                ):
+                    brush = collision_fill_brush()
+                    painter.setPen(collision_outline_pen())
+                else:
+                    brush = (
+                        self._brush_selected
+                        if oid in selected_oids
+                        else self._brush_poly
+                    )
                 if oid in selected_oids:
                     painter.setPen(self._pen_selected)
-                    painter.setBrush(self._brush_selected)
                 else:
                     painter.setPen(self._pen_poly)
-                    painter.setBrush(self._brush_poly)
+                painter.setBrush(brush)
 
                 qpoly = QPolygonF([QPointF(x, y) for x, y in poly])
                 painter.drawPolygon(qpoly)
@@ -1917,6 +2067,6 @@ class CanvasView(QWidget):
         painter.restore()
 
     def update_language(self, lang):
-        self.current_lang = lang
+        self.current_lang = lang if lang in MAIN_WINDOW_TRANSLATIONS else "en"
         if self._tool and self._tool.update_language:
             self._tool.update_language(lang)

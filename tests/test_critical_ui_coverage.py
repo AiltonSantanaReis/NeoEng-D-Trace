@@ -13,6 +13,7 @@ from src.tools.lasso_tool import LassoTool
 from src.tools.polygonal_lasso import PolygonalLassoTool
 from src.tools.rect_selection import RectSelectionTool
 from src.tools.selection_tool import SelectionTool
+from src.ui.canvas_view import CanvasView
 from src.ui.collision_overlay import CollisionOverlay
 from src.ui.gizmo import TransformGizmo
 
@@ -86,6 +87,80 @@ def test_selection_tool_ignores_non_left_and_short_polygons(qt_app):
 
     assert canvas.updated == 0
     assert tool._find_object_at(QPointF(0, 0)) is None
+
+
+def test_selection_tool_routes_right_click_to_canvas_context_menu(qt_app):
+    canvas = CanvasProbe()
+    canvas.show_context_menu_at = Mock()
+    tool = SelectionTool(canvas)
+    right = _event(Qt.MouseButton.RightButton)
+    right.position.return_value = QPointF(12, 14)
+    right.globalPosition.return_value = QPointF(120, 140)
+
+    tool.on_mouse_press(right, (12, 14))
+
+    canvas.show_context_menu_at.assert_called_once_with(
+        QPointF(12, 14), QPoint(120, 140)
+    )
+
+
+def test_new_tool_inherits_canvas_language_for_context_menus(qt_app):
+    canvas = CanvasView(Scene())
+    canvas.current_lang = "pt"
+    tool = RectSelectionTool(canvas)
+
+    canvas.set_tool(tool.interface())
+
+    assert tool.current_lang == "pt"
+
+
+def test_global_canvas_context_menu_does_not_add_empty_separator(qt_app, monkeypatch):
+    canvas = CanvasProbe()
+    from src.ui import canvas_view as canvas_module
+
+    menus = []
+
+    class ActionProbe:
+        def __init__(self, text):
+            self.text = text
+            self.triggered = Mock()
+
+        def setStatusTip(self, value):
+            self.status_tip = value
+
+    class MenuProbe:
+        def __init__(self, parent):
+            menus.append(self)
+            self.actions = []
+
+        def addAction(self, text):
+            action = ActionProbe(text)
+            self.actions.append(action)
+            return action
+
+        def addSeparator(self):
+            self.actions.append(None)
+
+        def setMinimumWidth(self, value):
+            self.minimum_width = value
+
+        def adjustSize(self):
+            self.adjusted = True
+
+        def exec(self, position):
+            self.position = position
+
+    real_canvas = CanvasView(canvas.model)
+    real_canvas.resize(320, 240)
+    real_canvas.get_transform = lambda: QTransform()
+    monkeypatch.setattr(canvas_module, "QMenu", MenuProbe)
+    context_event = _event()
+    context_event.pos.return_value = QPoint(20, 20)
+    context_event.globalPos.return_value = QPoint(20, 20)
+    real_canvas.contextMenuEvent(context_event)
+
+    assert menus
+    assert None not in menus[-1].actions
 
 
 def test_lasso_mouse_flow_sampling_commit_undo_redo_and_cancel(qt_app):

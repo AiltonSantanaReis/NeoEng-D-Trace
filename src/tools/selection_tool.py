@@ -34,14 +34,58 @@ class SelectionTool(BaseTool):
             # Find object at position
             clicked_id = self._find_object_at(QPointF(x, y))
             if clicked_id:
-                if hasattr(self.canvas_view.model, "select_object"):
-                    self.canvas_view.model.select_object(clicked_id)
+                model = self.canvas_view.model
+                try:
+                    additive = bool(
+                        event.modifiers()
+                        & (
+                            Qt.KeyboardModifier.ControlModifier
+                            | Qt.KeyboardModifier.ShiftModifier
+                        )
+                    )
+                except (AttributeError, TypeError):
+                    additive = False
+
+                if additive and hasattr(model, "select_objects"):
+                    current = list(getattr(model, "selected_ids", []) or [])
+                    if clicked_id in current:
+                        current = [oid for oid in current if oid != clicked_id]
+                    else:
+                        current.append(clicked_id)
+                    model.select_objects(
+                        current,
+                        primary=clicked_id if clicked_id in current else None,
+                    )
+                elif hasattr(model, "select_object"):
+                    model.select_object(clicked_id)
                 self.canvas_view.update()
             else:
                 # Deselect if clicked on empty
-                if hasattr(self.canvas_view.model, "select_object"):
+                try:
+                    additive = bool(
+                        event.modifiers()
+                        & (
+                            Qt.KeyboardModifier.ControlModifier
+                            | Qt.KeyboardModifier.ShiftModifier
+                        )
+                    )
+                except (AttributeError, TypeError):
+                    additive = False
+                if not additive and hasattr(self.canvas_view.model, "select_object"):
                     self.canvas_view.model.select_object(None)
                 self.canvas_view.update()
+        elif event.button() == Qt.MouseButton.RightButton:
+            show_menu = getattr(self.canvas_view, "show_context_menu_at", None)
+            if callable(show_menu):
+                local_pos = (
+                    event.position() if hasattr(event, "position") else event.pos()
+                )
+                global_position = getattr(event, "globalPosition", None)
+                if callable(global_position):
+                    global_pos = global_position().toPoint()
+                else:
+                    global_pos = event.globalPos()
+                show_menu(local_pos, global_pos)
 
     def on_mouse_move(self, event: QMouseEvent, position: tuple):
         pass

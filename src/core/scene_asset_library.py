@@ -156,7 +156,10 @@ def _copy_content_addressed(source: Path, project_root: Path, digest: str) -> Pa
 
 
 def prepare_scene_asset(
-    source_path: str | os.PathLike[str], project_root: Path
+    source_path: str | os.PathLike[str],
+    project_root: Path,
+    *,
+    allow_audio: bool = False,
 ) -> PreparedSceneAsset:
     """Validate and make a source asset project-controlled.
 
@@ -166,7 +169,18 @@ def prepare_scene_asset(
     """
 
     root = project_root.resolve(strict=False)
-    source = validate_scene_asset_source(Path(source_path))
+    candidate = Path(source_path).resolve(strict=False)
+    if allow_audio and candidate.suffix.lower() in {".wav", ".mp3", ".ogg", ".flac"}:
+        if (
+            not candidate.is_file()
+            or not 0 < candidate.stat().st_size <= 256 * 1024 * 1024
+        ):
+            raise SceneAssetError(
+                "Audio must be a readable file between 1 byte and 256 MiB"
+            )
+        source = candidate
+    else:
+        source = validate_scene_asset_source(candidate)
     relative = _relative_to_project(root, source)
     digest = sha256_file(source)
     if relative is not None:

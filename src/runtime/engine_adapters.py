@@ -20,7 +20,6 @@ from typing import Any, Callable, Mapping
 
 from src.core.app_identity import APP_ID, APP_VERSION
 from src.core.operational_limits import MAX_PROJECT_FILE_BYTES
-from src.exporters.scenario_exporter import validate_scenario_runtime_export
 from src.runtime.lighting import (
     LIGHTING_FORMAT_ID,
     LIGHTING_SCHEMA_VERSION,
@@ -379,6 +378,8 @@ def build_adapter_bundle(
         raise AdapterBundleValidationError("source bytes exceed the file limit")
     source_path = _safe_relative_path(source_path, "source_path")
     try:
+        from src.exporters.scenario_exporter import validate_scenario_runtime_export
+
         source_payload = _decode_canonical(source_bytes)
         validate_scenario_runtime_export(source_payload)
     except (AdapterBundleError, TypeError, ValueError, KeyError) as exc:
@@ -550,6 +551,8 @@ def _resolve_reference(root: Path, relative: str) -> Path:
 def _validate_source_bytes(raw: bytes) -> None:
     payload = _decode_canonical(raw)
     try:
+        from src.exporters.scenario_exporter import validate_scenario_runtime_export
+
         validate_scenario_runtime_export(payload)
     except (TypeError, ValueError, KeyError) as exc:
         raise AdapterBundleValidationError(

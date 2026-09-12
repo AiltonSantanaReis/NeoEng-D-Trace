@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "stage": "E08-D.2",
+  "status": "PASS_TECHNICAL_CHECKPOINT_FINAL_AUDIT_PENDING",
+  "scope": "Contrato de shader, compilação real Qt Shader Tools, diagnóstico de falha e preservação atômica do último estado válido; fallback raster permanece explícito no binário.",
+  "build": {
+    "release_root": "release/e08-renderer-20260908-r44",
+    "source_commit": "6c39412219a62531eda341fc6fea0d84371a37eb",
+    "source_branch": "Ailton/e08-renderer-20260908",
+    "master_plan_commit": "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256": "96C43314EAF150C8867960E69177734919652463F0655F9686D3482AC48BA498",
+    "binary": "release/e08-renderer-20260908-r44/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+    "binary_sha256": "DB7BB062C46F5BB7D092F3DB1A5C486ACDF0D5411B4099ACC303A25580FF034F",
+    "portable_archive_sha256": "6A7BC6FD6F48D52738092FF401CB2F1F5E2B6944D90D03E077933AAE4D6E1029",
+    "portable_smoke": {"status": "SUCCESS", "checks": 11}
+  },
+  "runtime_audit": {
+    "report": "artifacts/e08-renderer-20260908/runtime-shader-audit-d2-r44-clean2/stage3-runtime-shaders-report.json",
+    "command": "python -m scripts.audit_runtime_shaders_phase3 --output artifacts/e08-renderer-20260908/runtime-shader-audit-d2-r44-clean2",
+    "status": "PASS",
+    "source_tree_clean": true,
+    "compiler": "qsb.exe from active PySide6 environment",
+    "checks": [
+      "canonical sidecar roundtrip",
+      "real qsb resolved",
+      "vertex and fragment stages compiled",
+      "invalid fragment rejected",
+      "previous compiled outputs preserved",
+      "privacy audit"
+    ],
+    "compiled_stage_hashes": {
+      "vertex": "a423babf7303038a9a609ba30f460ca981e2f6782f3e7c09f2cebda216a74e1a",
+      "fragment": "f922f9d64a646c1a38ad40fee0dafc20dd04bbfae4165cbfa09c9db7fb133272"
+    }
+  },
+  "capture": {
+    "directory": "artifacts/e08-renderer-20260908/binary-capture-r44-shader-fallback",
+    "method": "PrintWindow from the real portable binary window handle",
+    "command": "scripts\\capture_e03_asset_library_binary.ps1 -Executable release\\e08-renderer-20260908-r44\\portable\\NeoEng-D-Trace\\NeoEng-D-Trace.exe -ProjectPath tests\\fixtures\\e08_fx_smoke.ndtproj -OutputDirectory artifacts\\e08-renderer-20260908\\binary-capture-r44-shader-fallback -DirectProjectLoad -CaptureRendererFlow -CaptureParallaxFlow",
+    "screenshots": {
+      "renderer_preview": {
+        "path": "06-renderer-preview.png",
+        "sha256": "4F2D6FA0E88DD47D3A959F68E4E4883CF7CC99FA4FC6FC2131BD09AA3E87969B",
+        "finding": "O binário mantém RENDERER RASTER | NATIVE | PREVIEW e partículas visíveis; shader acelerado não é anunciado sem backend aplicado."
+      },
+      "renderer_authoring": {
+        "path": "07-renderer-authoring.png",
+        "sha256": "37267DD7FBD575D32B42EEE15A979E827FAF9401916A4FE2B810BE43E6395155",
+        "finding": "Autoria preserva o fallback raster e os pixels do fluxo VFX."
+      },
+      "parallax_controls_bottom": {
+        "path": "08-parallax-controls-bottom.png",
+        "sha256": "ECA0E01617833064840803B2153BF81EECD20EA3C40C720B4B79F0D2881ECEF8",
+        "finding": "Socket spark-fx (vfx) permanece observável no inspector; o caminho autoral não é destruído pela capacidade de shader."
+      },
+      "parallax_controls_pageup": {
+        "path": "09-parallax-controls-pageup.png",
+        "sha256": "4EEFB3DC9B1AF5EF1B129D57F7371F7539B6F9C4882CB10D856C7D5CDC0F8D76",
+        "finding": "Navegação reversa do inspector produziu captura distinta e preservou o estado."
+      }
+    },
+    "window_rect": "-13,-13,3853,2077",
+    "editor_title": "Editor de Cenário — NeoEng-D-Trace"
+  },
+  "verification": {
+    "focused_shader_tests": "15 passed",
+    "official_suite": "2073 passed, 2 skipped, 1 warning",
+    "static": ["black D2 scope PASS", "mypy D2 scope PASS", "git diff --check PASS"],
+    "human_review": "DEFERRED_UNTIL_FINAL_AUDIT",
+    "symlink": "DEFERRED_UNTIL_FINAL_AUDIT"
+  },
+  "findings_and_limits": [
+    "A primeira auditoria revelou que o PATH resolvia um wrapper pyside6-qsb do Python 3.13 sem PySide6; o finding foi preservado nos artefatos runtime-shader-audit-d2-r44 e r44-retry.",
+    "A resolução foi corrigida para priorizar o qsb.exe do PySide6 pertencente ao sys.prefix ativo, com regressão automatizada.",
+    "A captura visual comprova o fallback raster observável; não declara um shader GPU aplicado ao viewport Qt raster.",
+    "A captura automatizada não substitui a revisão humana final."
+  ]
+}

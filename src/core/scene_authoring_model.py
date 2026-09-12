@@ -23,13 +23,17 @@ from src.persistence.scene_authoring_schema import (
     SceneAuthoringDocument,
     SceneAuthoringDocumentV2,
     SceneCameraAuthoringRecord,
+    SceneEntityAuthoringRecord,
     SceneGroupAuthoringRecord,
     SceneLayerAuthoringRecord,
+    SceneMaterialAuthoringRecord,
     SceneObjectAuthoringRecord,
     SceneParallaxLayerRecord,
+    SceneParticleSystemRecord,
     SceneSnapRecord,
     SceneSocketRecord,
     SceneTransformRecord,
+    SceneVectorGeometryRecord,
     validate_scene_authoring_document,
 )
 
@@ -107,6 +111,59 @@ class SceneAuthoringModel:
             if item.id == object_id:
                 return item
         raise KeyError(object_id)
+
+    def _entity(self, entity_id: str) -> SceneEntityAuthoringRecord:
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("entity authoring requires scene schema V2")
+        for item in self.document.entities:
+            if item.id == entity_id:
+                return item
+        raise KeyError(entity_id)
+
+    def set_entity_parent(self, entity_id: str, parent_entity_id: str | None) -> None:
+        """Set spatial parent while preserving group membership semantics."""
+
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("entity authoring requires scene schema V2")
+        document = self.document
+        self._entity(entity_id)
+        if parent_entity_id == entity_id:
+            raise ValueError("entity cannot parent itself")
+        if parent_entity_id is not None:
+            self._entity(parent_entity_id)
+        updated = [
+            (
+                item.model_copy(update={"parent_entity_id": parent_entity_id})
+                if item.id == entity_id
+                else item
+            )
+            for item in document.entities
+        ]
+        self._replace(entities=updated)
+
+    def add_entity_from_object(
+        self, object_id: str, entity_id: str | None = None
+    ) -> str:
+        """Create one stable entity identity from an existing authored object."""
+
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("entity authoring requires scene schema V2")
+        source = self._object(object_id)
+        used = {item.id for item in self.document.entities}
+        used.update(item.id for item in self.document.prefab_instances)
+        candidate_id = entity_id or object_id
+        if candidate_id in used:
+            raise ValueError("entity ID already exists")
+        entity = SceneEntityAuthoringRecord(
+            id=candidate_id,
+            name=object_id,
+            layer_id=source.layer_id,
+            transform=source.transform,
+            visible=source.visible,
+            locked=source.locked,
+        )
+        self._replace(entities=[*self.document.entities, entity])
+        return candidate_id
 
     def _assert_editable(self, object_id: str) -> None:
         item = self._object(object_id)
@@ -223,6 +280,44 @@ class SceneAuthoringModel:
         objects = [
             (
                 item.model_copy(update={"transform": transform})
+                if item.id == object_id
+                else item
+            )
+            for item in self.document.objects
+        ]
+        self._replace(objects=objects)
+
+    def update_vector_geometry(
+        self, object_id: str, geometry: SceneVectorGeometryRecord
+    ) -> None:
+        """Replace one vector object geometry after strict pre-validation."""
+
+        self._assert_editable(object_id)
+        objects = [
+            (
+                item.model_copy(update={"vector_geometry": geometry})
+                if item.id == object_id
+                else item
+            )
+            for item in self.document.objects
+        ]
+        if not any(item.id == object_id for item in self.document.objects):
+            raise KeyError(object_id)
+        self._replace(objects=objects)
+
+    def update_material(
+        self,
+        object_id: str,
+        material: SceneMaterialAuthoringRecord,
+    ) -> None:
+        """Replace one V2 object's persisted material after edit preflight."""
+
+        if not isinstance(self.document, SceneAuthoringDocumentV2):
+            raise ValueError("material authoring requires scene schema V2")
+        self._assert_editable(object_id)
+        objects = [
+            (
+                item.model_copy(update={"material": material})
                 if item.id == object_id
                 else item
             )
@@ -431,19 +526,169 @@ class SceneAuthoringModel:
         ]
         self._replace(parallax_layers=[*records, parallax])
 
-    def add_socket(self, socket: SceneSocketRecord) -> None:
+    def add_socket(
+        self,
+        socket: SceneSocketRecord,
+        particle_system: SceneParticleSystemRecord | None = None,
+    ) -> None:
         document = self._stage4_document()
         if socket.layer_id not in {item.id for item in document.layers}:
             raise KeyError(socket.layer_id)
-        self._replace(sockets=[*document.sockets, socket])
+        if particle_system is not None:
+            if socket.type != "vfx":
+                raise ValueError("particle systems can only be attached to VFX sockets")
+            if particle_system.id != socket.effect_id:
+                raise ValueError("particle system ID must match the VFX effect ID")
+            if particle_system.id in {item.id for item in document.particle_systems}:
+                raise ValueError("particle system ID exists")
+        changes: dict[str, object] = {"sockets": [*document.sockets, socket]}
+        if particle_system is not None:
+            changes["particle_systems"] = [
+                *document.particle_systems,
+                particle_system,
+            ]
+        self._replace(**changes)
+
+    def set_particle_system(self, system: SceneParticleSystemRecord) -> None:
+        """Insert or replace one authored particle system atomically."""
+
+        document = self._stage4_document()
+        systems = [
+            system if item.id == system.id else item
+            for item in document.particle_systems
+        ]
+        if all(item.id != system.id for item in document.particle_systems):
+            systems.append(system)
+        self._replace(particle_systems=systems)
+
+    def update_vfx_socket(
+        self,
+        socket_id: str,
+        *,
+        position: Point3Record,
+        rotation: Point3Record,
+        effect_id: str,
+        scale: int | float,
+        enabled: bool,
+        particle_system: SceneParticleSystemRecord | None,
+    ) -> None:
+        """Apply VFX transform, presentation and particle authoring in one undo step."""
+
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        if socket.type != "vfx":
+            raise ValueError("only VFX sockets have particle properties")
+        if particle_system is None:
+            raise ValueError("VFX socket requires a particle system")
+        if particle_system.id != effect_id:
+            raise ValueError("particle system ID must match the VFX effect ID")
+        other_system_ids = {
+            item.id for item in document.particle_systems if item.id != effect_id
+        }
+        if effect_id in other_system_ids:
+            raise ValueError("particle system ID exists")
+        updated_socket = socket.model_copy(
+            update={
+                "position": position,
+                "rotation": rotation,
+                "effect_id": effect_id,
+                "scale": scale,
+                "enabled": bool(enabled),
+            }
+        )
+        sockets = [
+            updated_socket if item.id == socket_id else item
+            for item in document.sockets
+        ]
+        systems = [
+            particle_system if item.id == effect_id else item
+            for item in document.particle_systems
+        ]
+        if all(item.id != effect_id for item in document.particle_systems):
+            systems.append(particle_system)
+        self._replace(sockets=sockets, particle_systems=systems)
+
+    def update_particle_system(self, system: SceneParticleSystemRecord) -> None:
+        document = self._stage4_document()
+        if not any(item.id == system.id for item in document.particle_systems):
+            raise KeyError(system.id)
+        self._replace(
+            particle_systems=[
+                system if item.id == system.id else item
+                for item in document.particle_systems
+            ]
+        )
+
+    def remove_particle_system(self, system_id: str) -> None:
+        document = self._stage4_document()
+        if not any(item.id == system_id for item in document.particle_systems):
+            raise KeyError(system_id)
+        self._replace(
+            particle_systems=[
+                item for item in document.particle_systems if item.id != system_id
+            ]
+        )
 
     def update_socket_position(self, socket_id: str, position: Point3Record) -> None:
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        self.update_socket_transform(socket_id, position, socket.rotation)
+
+    def update_socket_rotation(self, socket_id: str, rotation: Point3Record) -> None:
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        self.update_socket_transform(socket_id, socket.position, rotation)
+
+    def update_socket_light_kind(self, socket_id: str, kind: str) -> None:
+        document = self._stage4_document()
+        socket = next(
+            (item for item in document.sockets if item.id == socket_id),
+            None,
+        )
+        if socket is None:
+            raise KeyError(socket_id)
+        if socket.type != "light":
+            raise ValueError("only light sockets have a light kind")
+        if kind not in {"point", "directional"}:
+            raise ValueError("unsupported light kind")
+        self._replace(
+            sockets=[
+                (
+                    item.model_copy(update={"kind": kind})
+                    if item.id == socket_id
+                    else item
+                )
+                for item in document.sockets
+            ]
+        )
+
+    def update_socket_transform(
+        self,
+        socket_id: str,
+        position: Point3Record,
+        rotation: Point3Record,
+    ) -> None:
         document = self._stage4_document()
         if not any(item.id == socket_id for item in document.sockets):
             raise KeyError(socket_id)
         sockets = [
             (
-                item.model_copy(update={"position": position})
+                item.model_copy(update={"position": position, "rotation": rotation})
                 if item.id == socket_id
                 else item
             )
