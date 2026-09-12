@@ -25,6 +25,7 @@ def test_tilemap_panel_exposes_ptbr_flow_and_persists_user_edits(
     panel.new_map()
     panel._paint_cells((0, 0), (2, 0))
     assert panel.title_label.text() == "Tilemap / Terreno"
+    assert panel.rule_neighbor_combo.itemText(0) == "<vazio>"
     assert panel.document is not None
     assert panel.document.populated_cell_count == 3
     assert len(panel._undo) == 1
@@ -58,7 +59,7 @@ def test_tilemap_panel_exposes_advanced_tools_and_real_gestures(
     ] == [tool.value for tool in TileTool]
     assert [
         panel.tool_combo.itemText(index) for index in range(panel.tool_combo.count())
-    ] == ["Pincel", "Borracha", "Retângulo", "Balde", "Conta-gotas"]
+    ] == ["Pincel", "Borracha", "Retângulo", "Balde", "Conta-gotas", "Seleção"]
 
     panel.tool_combo.setCurrentIndex(
         panel.tool_combo.findData(TileTool.RECTANGLE.value)
@@ -79,9 +80,65 @@ def test_tilemap_panel_exposes_advanced_tools_and_real_gestures(
     assert panel.document.get_cell("ground", start_cell) is not None
 
     panel.update_language("en")
+    assert panel.rule_neighbor_combo.itemText(0) == "<empty>"
     assert [
         panel.tool_combo.itemText(index) for index in range(panel.tool_combo.count())
-    ] == ["Pencil", "Eraser", "Rectangle", "Bucket", "Picker"]
+    ] == ["Pencil", "Eraser", "Rectangle", "Bucket", "Picker", "Select"]
+
+
+def test_tilemap_selection_copy_paste_variation_rules_and_persistence(
+    qt_app: QApplication, tmp_path: Path
+) -> None:
+    panel = TileMapAuthoringPanel(tmp_path)
+    panel.new_map()
+    assert panel.document is not None
+
+    panel.tile_combo.setCurrentIndex(0)
+    panel.tool_combo.setCurrentIndex(
+        panel.tool_combo.findData(TileTool.RECTANGLE.value)
+    )
+    panel._finish_gesture((0, 0), (1, 1))
+    panel.tool_combo.setCurrentIndex(panel.tool_combo.findData(TileTool.SELECT.value))
+    panel._finish_gesture((0, 0), (1, 1))
+    assert panel._selection == ((0, 0), (1, 1))
+    panel.copy_selection()
+    assert panel._clipboard is not None
+    assert panel.paste_button.isEnabled()
+
+    panel._finish_gesture((3, 3), (4, 4))
+    panel.paste_selection()
+    assert panel.document.get_cell("ground", (3, 3)).tile_id == "grass"
+    assert panel.document.get_cell("ground", (4, 4)).tile_id == "grass"
+
+    panel.tile_palette.item(0).setSelected(True)
+    panel.tile_palette.item(1).setSelected(True)
+    panel.variation_seed_spin.setValue(7)
+    panel._finish_gesture((6, 6), (7, 7))
+    panel.apply_variation()
+    assert all(
+        panel.document.get_cell("ground", coordinate) is not None
+        for coordinate in ((6, 6), (6, 7), (7, 6), (7, 7))
+    )
+
+    panel.rule_target_combo.setCurrentIndex(panel.rule_target_combo.findData("water"))
+    panel.rule_neighbor_combo.setCurrentIndex(0)
+    panel.add_rule()
+    assert panel._rules
+    panel.rule_fallback_combo.setCurrentIndex(panel.rule_fallback_combo.findData("grass"))
+    panel.apply_rules()
+    assert panel.document.rule_set_payload is not None
+    panel.save_map()
+
+    reopened = TileMapAuthoringPanel(tmp_path)
+    reopened.open_map()
+    assert reopened.document is not None
+    assert reopened.document.rule_set_payload == panel.document.rule_set_payload
+    assert len(reopened._rules) == 1
+    assert reopened.rules_list.count() == 1
+    assert reopened.rules_group.title() == "Autotiling / Rule Tiles"
+    reopened.update_language("en")
+    assert reopened.copy_button.text() == "Copy"
+    assert reopened.rules_group.title() == "Autotiling / Rule Tiles"
 
 
 def test_tilemap_advanced_tools_are_transactional_and_picker_selects_tile(

@@ -27,6 +27,7 @@ from src.core.tilemap_tools import (
     erase_line,
     paint_line,
     paint_rectangle,
+    paint_variation,
     paste_cells,
 )
 from src.persistence.tilemap_io import (
@@ -255,6 +256,24 @@ def test_copy_paste_is_relative_and_deterministic_variation_is_order_independent
         deterministic_tile_id((), seed=1, coordinate=(0, 0))
 
 
+def test_variation_paints_only_selected_rectangle_and_is_reproducible() -> None:
+    first = _map()
+    second = _map()
+    first_tx = paint_variation(
+        first, "ground", (-1, -1), (1, 1), ("grass", "water"), seed=7
+    )
+    second_tx = paint_variation(
+        second, "ground", (-1, -1), (1, 1), ("grass", "water"), seed=7
+    )
+    assert first.to_dict() == second.to_dict()
+    assert len(first_tx.deltas) == 9
+    assert len(second_tx.deltas) == 9
+    assert {cell.tile_id for _layer, _coordinate, cell in first.iter_cells()} <= {
+        "grass",
+        "water",
+    }
+
+
 def test_rule_tiles_use_priority_fallback_and_neighbor_invalidation() -> None:
     document = _map(bounds=TileMapBounds(-2, -2, 2, 2))
     rules = TileRuleSet(
@@ -321,6 +340,64 @@ def test_rule_tiles_reject_ambiguity_unknown_dependency_and_cycles() -> None:
             (TerrainRule("a", "grass", depends_on=("missing",)),),
             fallback_tile_id="grass",
         )
+
+
+def test_rule_tiles_round_trip_is_strict_and_tilemap_extensions_are_optional(
+    tmp_path,
+) -> None:
+    base = _tileset()
+    tileset = TileSet(
+        id=base.id,
+        atlas_asset_id=base.atlas_asset_id,
+        atlas_sha256=base.atlas_sha256,
+        tiles=base.tiles,
+        atlas_path="assets/tilesets/scenario/source_atlas.png",
+    )
+    rule_set = TileRuleSet(
+        (
+            TerrainRule(
+                "water-edge",
+                "water",
+                conditions=(NeighborCondition((1, 0), ("grass",)),),
+                priority=4,
+            ),
+        ),
+        fallback_tile_id="grass",
+    )
+    document = TileMapDocument(
+        id="map",
+        name="Terrain",
+        tileset=tileset,
+        grid="orthogonal",
+        layers=(TileLayer("ground", "Ground", 0),),
+        rule_set_payload=rule_set.to_dict(),
+    )
+    path = save_tilemap(document, tmp_path / "extensions.ndttilemap.json")
+    reopened = load_tilemap(path)
+    assert reopened.tileset.atlas_path == "assets/tilesets/scenario/source_atlas.png"
+    assert reopened.rule_set_payload == rule_set.to_dict()
+    assert TileRuleSet.from_dict(reopened.rule_set_payload).to_dict() == rule_set.to_dict()
+
+    invalid = document.to_dict()
+    invalid["rules"] = {
+        "fallback_tile_id": "grass",
+        "rules": [
+            {
+                "id": "broken",
+                "target_tile_id": "water",
+                "conditions": [
+                    {
+                        "offset": {"x": "1", "y": 0},
+                        "allowed_tile_ids": ["grass"],
+                    }
+                ],
+            }
+        ],
+    }
+    invalid_path = tmp_path / "invalid-rules.ndttilemap.json"
+    invalid_path.write_text(json.dumps(invalid), encoding="utf-8")
+    with pytest.raises(TileMapPersistenceError, match="invalid tilemap rules"):
+        load_tilemap(invalid_path)
 
 
 def test_tilemap_save_reopen_preserves_cells_layers_and_lock(tmp_path) -> None:

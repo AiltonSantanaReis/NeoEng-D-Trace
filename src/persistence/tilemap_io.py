@@ -17,6 +17,7 @@ from src.core.tilemap_model import (
     TileMapError,
     TileSet,
 )
+from src.core.tilemap_rules import TileRuleSet
 
 TILEMAP_FORMAT_ID = "neoeng-d-trace-tilemap"
 TILEMAP_SCHEMA_VERSION = 1
@@ -104,6 +105,11 @@ def _tileset(value: object) -> TileSet:
         atlas_sha256=_text(payload.get("atlas_sha256"), "tileset.atlas_sha256"),
         tiles=tuple(_tile_definition(item) for item in tiles),
         version=_integer(payload.get("version"), "tileset.version"),
+        atlas_path=(
+            None
+            if payload.get("atlas_path") is None
+            else _text(payload.get("atlas_path"), "tileset.atlas_path")
+        ),
     )
 
 
@@ -153,6 +159,14 @@ def load_tilemap(path: str | os.PathLike[str]) -> TileMapDocument:
     if not isinstance(layers, list) or not isinstance(cells, list):
         raise TileMapPersistenceError("tilemap layers and cells must be lists")
     loaded_layers = tuple(_layer(item) for item in layers)
+    rule_set_payload = root.get("rules")
+    if rule_set_payload is not None:
+        try:
+            rule_set_payload = TileRuleSet.from_dict(
+                _mapping(rule_set_payload, "tilemap.rules")
+            ).to_dict()
+        except (TypeError, ValueError, TileMapError) as exc:
+            raise TileMapPersistenceError(f"invalid tilemap rules: {exc}") from exc
     document = TileMapDocument(
         id=_text(root.get("id"), "tilemap.id"),
         name=_text(root.get("name"), "tilemap.name"),
@@ -171,6 +185,7 @@ def load_tilemap(path: str | os.PathLike[str]) -> TileMapDocument:
         ),
         chunk_size=_integer(root.get("chunk_size"), "tilemap.chunk_size"),
         bounds=bounds,
+        rule_set_payload=rule_set_payload,
     )
     seen: set[tuple[str, int, int]] = set()
     for item in cells:

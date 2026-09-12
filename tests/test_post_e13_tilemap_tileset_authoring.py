@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
+import json
 
 from PIL import Image
+from PySide6.QtCore import QPoint
 from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QApplication
 
@@ -55,11 +58,21 @@ def test_tilemap_uses_saved_tileset_textures_and_supports_layers(
     tileset.height_spin.setValue(32)
     tileset.generate_tileset()
     tileset.save_current()
+    manifest = json.loads(
+        (tmp_path / "assets" / "tilesets" / "scenario" / "tileset.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    bundled_atlas = tmp_path / "assets" / "tilesets" / "scenario" / "source_atlas.png"
+    assert manifest["atlas_path"] == "source_atlas.png"
+    assert bundled_atlas.is_file()
+    assert manifest["atlas_sha256"] == hashlib.sha256(bundled_atlas.read_bytes()).hexdigest()
 
     panel = TileMapAuthoringPanel(tmp_path)
     panel.new_map()
     assert panel.document is not None
     assert panel.document.tileset.id == "scenario-tileset"
+    assert panel.document.tileset.atlas_path == "source_atlas.png"
     assert set(panel._tile_images) == {"tile_0000", "tile_0001"}
     assert panel.tile_palette.count() == 2
     assert panel.tile_palette.item(1).icon().isNull() is False
@@ -76,6 +89,7 @@ def test_tilemap_uses_saved_tileset_textures_and_supports_layers(
     assert reopened.document is not None
     assert [layer.id for layer in reopened.document.layers] == ["ground", "layer_1"]
     assert reopened.document.populated_cell_count == 2
+    assert reopened.document.tileset.atlas_path == "source_atlas.png"
     assert set(reopened._tile_images) == {"tile_0000", "tile_0001"}
 
 
@@ -94,7 +108,8 @@ def test_tilemap_canvas_renders_loaded_texture_instead_of_only_placeholder_color
     panel = TileMapAuthoringPanel(tmp_path)
     panel.new_map()
     panel.canvas.resize(640, 320)
-    panel._paint_cells((12, 5), (12, 5))
+    visible_cell = panel.canvas._cell_at(QPoint(320, 160))
+    panel._paint_cells(visible_cell, visible_cell)
     panel.canvas.show()
     _app().processEvents()
     image = panel.canvas.grab().toImage().convertToFormat(QImage.Format.Format_RGBA8888)

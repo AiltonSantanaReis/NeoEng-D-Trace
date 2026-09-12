@@ -23,6 +23,7 @@ class TileTool(StrEnum):
     RECTANGLE = "rectangle"
     BUCKET = "bucket"
     PICKER = "picker"
+    SELECT = "select"
 
 
 def _dedupe_coordinates(
@@ -214,6 +215,34 @@ def paint_rectangle(
     return transaction
 
 
+def paint_variation(
+    document: TileMapDocument,
+    layer_id: str,
+    start: tuple[int, int],
+    end: tuple[int, int],
+    tile_ids: Sequence[str],
+    *,
+    seed: int = 0,
+) -> TileEditTransaction:
+    """Paint a reproducible mixture of tiles across a rectangular selection."""
+
+    choices = tuple(tile_ids)
+    if not choices:
+        raise TileMapError("variation requires at least one tile ID")
+    if any(not document.tileset.has_tile(tile_id) for tile_id in choices):
+        raise TileMapError("variation contains an unknown tile ID")
+    transaction = _transaction_for_cells(
+        document,
+        layer_id,
+        rectangle_cells(start, end),
+        lambda coordinate, _before: TileCell(
+            deterministic_tile_id(choices, seed=seed, coordinate=coordinate)
+        ),
+    )
+    transaction.apply()
+    return transaction
+
+
 def bucket_fill(
     document: TileMapDocument,
     layer_id: str,
@@ -305,6 +334,7 @@ __all__ = [
     "erase_line",
     "paint_line",
     "paint_rectangle",
+    "paint_variation",
     "paste_cells",
     "rectangle_cells",
 ]

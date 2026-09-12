@@ -77,6 +77,23 @@ def _check_properties(
     return tuple(sorted(values.items()))
 
 
+def _check_relative_path(value: object, field: str) -> str | None:
+    """Validate an optional project-relative path without touching the filesystem."""
+
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise TileMapError(f"{field} must be a relative path")
+    normalized = value.replace("\\", "/")
+    if (
+        normalized.startswith("/")
+        or ":" in normalized
+        or any(part in {"", ".", ".."} for part in normalized.split("/"))
+    ):
+        raise TileMapError(f"{field} must be a safe relative path")
+    return normalized
+
+
 @dataclass(frozen=True)
 class TileDefinition:
     """Stable tile identity and versioned atlas metadata."""
@@ -138,6 +155,7 @@ class TileSet:
     atlas_sha256: str
     tiles: tuple[TileDefinition, ...]
     version: int = 1
+    atlas_path: str | None = None
 
     def __post_init__(self) -> None:
         _check_id(self.id, "tileset id")
@@ -154,6 +172,7 @@ class TileSet:
         version = _check_int(self.version, "tileset version")
         if version <= 0:
             raise TileMapError("tileset version must be positive")
+        _check_relative_path(self.atlas_path, "tileset atlas_path")
 
     def tile(self, tile_id: str) -> TileDefinition:
         for tile in self.tiles:
@@ -170,13 +189,16 @@ class TileSet:
         return hashlib.sha256(actual_bytes).hexdigest() == self.atlas_sha256
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "id": self.id,
             "atlas_asset_id": self.atlas_asset_id,
             "atlas_sha256": self.atlas_sha256,
             "version": self.version,
             "tiles": [tile.to_dict() for tile in self.tiles],
         }
+        if self.atlas_path is not None:
+            payload["atlas_path"] = self.atlas_path
+        return payload
 
 
 @dataclass(frozen=True)
@@ -291,6 +313,7 @@ class TileMapDocument:
         layers: Iterable[TileLayer],
         chunk_size: int = 64,
         bounds: TileMapBounds | None = None,
+        rule_set_payload: Mapping[str, Any] | None = None,
     ) -> None:
         _check_id(id, "map id")
         if not isinstance(name, str) or not name.strip():
@@ -318,6 +341,9 @@ class TileMapDocument:
         self.grid = grid
         self.chunk_size = chunk
         self.bounds = bounds
+        self.rule_set_payload = (
+            None if rule_set_payload is None else dict(rule_set_payload)
+        )
         self._layers: dict[str, TileLayer] = {layer.id: layer for layer in layer_tuple}
         self._cells: dict[
             str, dict[ChunkCoordinate, dict[TileCoordinate, TileCell]]
@@ -483,7 +509,7 @@ class TileMapDocument:
                     yield current_layer, coordinate, cell
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "format_id": "neoeng-d-trace-tilemap",
             "schema_version": 1,
             "id": self.id,
@@ -503,3 +529,6 @@ class TileMapDocument:
                 for current_layer, coordinate, cell in self.iter_cells()
             ],
         }
+        if self.rule_set_payload is not None:
+            payload["rules"] = self.rule_set_payload
+        return payload

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -320,6 +322,7 @@ class TilesetAuthoringPanel(QWidget):
             self.status_message.emit(f"Falha ao criar tileset: {exc}")
             return
         self.prepared = prepared
+        self.prepared["_source_atlas_path"] = str(source)
         self._render_tiles(prepared["tiles"])
         self.atlas_preview.set_atlas(source, prepared["tiles"])
         self.status_label.setText("Tileset preparado; clique em Salvar")
@@ -333,7 +336,20 @@ class TilesetAuthoringPanel(QWidget):
             )
             return
         try:
-            result = save_tileset(self.prepared, self.tileset_dir)
+            source = Path(str(self.prepared.get("_source_atlas_path", "")))
+            if not source.is_file():
+                raise ValueError("atlas de origem não está disponível")
+            self.tileset_dir.mkdir(parents=True, exist_ok=True)
+            source_name = f"source_atlas{source.suffix.lower() or '.png'}"
+            bundled_atlas = self.tileset_dir / source_name
+            shutil.copy2(source, bundled_atlas)
+            prepared = dict(self.prepared)
+            prepared.pop("_source_atlas_path", None)
+            prepared["atlas_path"] = source_name
+            prepared["atlas_sha256"] = hashlib.sha256(
+                bundled_atlas.read_bytes()
+            ).hexdigest()
+            result = save_tileset(prepared, self.tileset_dir)
         except (OSError, ValueError) as exc:
             self.status_label.setText(f"Falha ao salvar tileset: {exc}")
             self.status_message.emit(f"Falha ao salvar tileset: {exc}")
@@ -354,6 +370,11 @@ class TilesetAuthoringPanel(QWidget):
             if not isinstance(entries, list) or not entries:
                 raise ValueError("tileset sem tiles")
             loaded_entries: list[dict[str, Any]] = []
+            atlas_reference = payload.get("atlas_path")
+            if isinstance(atlas_reference, str):
+                atlas_path = self.manifest_path.parent / atlas_reference
+                if atlas_path.is_file():
+                    self.atlas_path_edit.setText(str(atlas_path))
             for entry in entries:
                 current = dict(entry)
                 texture = current.get("texture")

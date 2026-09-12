@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass
-from typing import Iterable
+from typing import Any, Iterable, Mapping
 
 from src.core.tilemap_grids import GridSpec
 from src.core.tilemap_model import (
@@ -42,6 +42,41 @@ class NeighborCondition:
             return self.allow_empty
         return cell.tile_id in self.allowed_tile_ids
 
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "offset": {"x": self.offset[0], "y": self.offset[1]},
+            "allowed_tile_ids": list(self.allowed_tile_ids),
+            "allow_empty": self.allow_empty,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "NeighborCondition":
+        if not isinstance(payload, Mapping):
+            raise TileMapError("neighbor condition must be an object")
+        offset = payload.get("offset")
+        if not isinstance(offset, Mapping):
+            raise TileMapError("neighbor condition offset must be an object")
+        offset_x = offset.get("x")
+        offset_y = offset.get("y")
+        if any(
+            isinstance(value, bool) or not isinstance(value, int)
+            for value in (offset_x, offset_y)
+        ):
+            raise TileMapError("neighbor condition offsets must be integers")
+        allowed = payload.get("allowed_tile_ids", [])
+        if not isinstance(allowed, list) or any(
+            not isinstance(value, str) for value in allowed
+        ):
+            raise TileMapError("neighbor condition tile IDs must be a list")
+        allow_empty = payload.get("allow_empty", False)
+        if not isinstance(allow_empty, bool):
+            raise TileMapError("neighbor condition allow_empty must be boolean")
+        return cls(
+            (offset_x, offset_y),
+            tuple(allowed),
+            allow_empty,
+        )
+
 
 @dataclass(frozen=True)
 class TerrainRule:
@@ -67,6 +102,47 @@ class TerrainRule:
         if len(offsets) != len(set(offsets)):
             raise TileMapError("terrain rule conditions must use unique offsets")
 
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "target_tile_id": self.target_tile_id,
+            "conditions": [condition.to_dict() for condition in self.conditions],
+            "priority": self.priority,
+            "weight": self.weight,
+            "depends_on": list(self.depends_on),
+        }
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "TerrainRule":
+        if not isinstance(payload, Mapping):
+            raise TileMapError("terrain rule must be an object")
+        conditions = payload.get("conditions", [])
+        depends_on = payload.get("depends_on", [])
+        if not isinstance(conditions, list) or not isinstance(depends_on, list):
+            raise TileMapError("terrain rule conditions and dependencies must be lists")
+        if any(not isinstance(value, str) for value in depends_on):
+            raise TileMapError("terrain rule dependencies must be strings")
+        identifier = payload.get("id", "")
+        target_tile_id = payload.get("target_tile_id", "")
+        priority = payload.get("priority", 0)
+        weight = payload.get("weight", 1)
+        if not isinstance(identifier, str) or not isinstance(target_tile_id, str):
+            raise TileMapError("terrain rule IDs must be strings")
+        if isinstance(priority, bool) or not isinstance(priority, int):
+            raise TileMapError("terrain rule priority must be an integer")
+        if isinstance(weight, bool) or not isinstance(weight, int):
+            raise TileMapError("terrain rule weight must be an integer")
+        return cls(
+            id=identifier,
+            target_tile_id=target_tile_id,
+            conditions=tuple(
+                NeighborCondition.from_dict(condition) for condition in conditions
+            ),
+            priority=priority,
+            weight=weight,
+            depends_on=tuple(depends_on),
+        )
+
 
 @dataclass(frozen=True)
 class RuleResolution:
@@ -86,7 +162,7 @@ class TileRuleSet:
         fallback_tile_id: str,
     ) -> None:
         self.rules = tuple(rules)
-        if not fallback_tile_id:
+        if not isinstance(fallback_tile_id, str) or not fallback_tile_id:
             raise TileMapError("rule fallback tile ID is required")
         ids = [rule.id for rule in self.rules]
         if len(ids) != len(set(ids)):
@@ -209,6 +285,27 @@ class TileRuleSet:
         transaction = TileEditTransaction(document, deltas)
         transaction.apply()
         return resolutions, transaction
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "fallback_tile_id": self.fallback_tile_id,
+            "rules": [rule.to_dict() for rule in self.rules],
+        }
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "TileRuleSet":
+        if not isinstance(payload, Mapping):
+            raise TileMapError("terrain rule set must be an object")
+        rules = payload.get("rules", [])
+        if not isinstance(rules, list):
+            raise TileMapError("terrain rule set rules must be a list")
+        fallback = payload.get("fallback_tile_id")
+        if not isinstance(fallback, str):
+            raise TileMapError("terrain rule fallback tile ID must be a string")
+        return cls(
+            tuple(TerrainRule.from_dict(rule) for rule in rules),
+            fallback_tile_id=fallback,
+        )
 
 
 __all__ = [
