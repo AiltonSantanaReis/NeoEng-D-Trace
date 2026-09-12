@@ -25,6 +25,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSplitter,
     QStackedWidget,
     QToolBar,
@@ -138,6 +139,10 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_empty = QLabel(self.professional_pages)
         self.professional_empty.setObjectName("professional_scene_viewport_empty")
         self.professional_empty.setWordWrap(True)
+        self.professional_empty.setSizePolicy(
+            QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored
+        )
+        self.professional_empty.setMinimumSize(0, 0)
         self.professional_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.professional_empty.setText(
             "Professional scene viewport\n\n"
