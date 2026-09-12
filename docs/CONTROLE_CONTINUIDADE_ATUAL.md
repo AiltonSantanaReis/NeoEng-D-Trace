@@ -99,8 +99,9 @@ A build `post-e13-tilemap-advanced-responsive-20260911` gerou a evidência
 real expôs Retângulo, Balde, Conta-gotas e Borracha, comprovou `8 → 12 → 8`
 células com um Desfazer/Refazer por gesto, manteve as ações visíveis no painel
 estreito e salvou/reabriu o mapa com hash preservado. Autotiling/Rule Tiles,
-variação avançada, seleção/cópia/colagem completas, runtime externo e snapping
-avançado continuam explicitamente `PENDING_EVIDENCE`.
+variação avançada, seleção/cópia/colagem completas e runtime externo foram
+comprovados nos checkpoints correspondentes; somente refinamentos avançados de
+snapping e a revisão humana final continuam explicitamente `PENDING_EVIDENCE`.
 A integração do exportador geral no commit `a7e22b3e` emite, quando há atlas
 válido, o pacote `tilemap-runtime/` com payload, origem e atlas vinculados por
 hash; o teste de contrato passou com `8 passed` e o caminho legado sem atlas
