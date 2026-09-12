@@ -49,6 +49,7 @@ def test_unity_upm_package_contains_runtime_and_editor_assemblies():
     assert editor["includePlatforms"] == ["Editor"]
     assert editor["references"] == ["NeoEngDTrace.Runtime"]
     assert (PACKAGE_ROOT / "Runtime" / "PackageIdentity.cs").is_file()
+    assert (PACKAGE_ROOT / "Runtime" / "NeoEngRuntimeHybrid3D.cs").is_file()
     assert (PACKAGE_ROOT / "Editor" / "PackageDiagnostics.cs").is_file()
     assert (PACKAGE_ROOT / "Editor" / "AutoSyncPostprocessor.cs").is_file()
     assert (PACKAGE_ROOT / "Editor" / "AutoSyncPostprocessor.cs.meta").is_file()

@@ -23,6 +23,7 @@ def test_godot_addon_is_source_only_and_has_stable_identity():
     assert (ADDON_ROOT / "import_generator.gd").is_file()
     assert (ADDON_ROOT / "scenario_importer.gd").is_file()
     assert (ADDON_ROOT / "tilemap_runtime.gd").is_file()
+    assert (ADDON_ROOT / "hybrid3d_runtime.gd").is_file()
     assert (ADDON_ROOT / "professional_scene_importer.gd").is_file()
     assert (ADDON_ROOT / "README.md").is_file()
     plugin = (ADDON_ROOT / "plugin.gd").read_text(encoding="utf-8")
@@ -48,6 +49,7 @@ def test_godot_addon_package_is_deterministic_and_contains_only_sources(tmp_path
         assert names == [
             "neoeng-d-trace-godot/addons/neoeng_d_trace/README.md",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/animation_collision_driver.gd",
+            "neoeng-d-trace-godot/addons/neoeng_d_trace/hybrid3d_runtime.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/import_generator.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/manifest_diagnostic.gd",
             "neoeng-d-trace-godot/addons/neoeng_d_trace/plugin.cfg",

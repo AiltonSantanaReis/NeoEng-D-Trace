@@ -17,6 +17,10 @@ from src.exporters.composition_export import validate_composition_package
 
 HYBRID_FORMAT_ID = "neoeng-d-trace-hybrid-composition"
 HYBRID_SCHEMA_VERSION = 1
+HYBRID_RUNTIME_FORMAT_ID = "neoeng-d-trace-hybrid-runtime"
+HYBRID_RUNTIME_SCHEMA_VERSION = 1
+HYBRID_RUNTIME_SCENE_FORMAT_ID = "neoeng-d-trace-hybrid-runtime-scene"
+HYBRID_RUNTIME_SCENE_SCHEMA_VERSION = 1
 
 
 class HybridCompositionExportError(ValueError):
@@ -60,6 +64,132 @@ def _vector(value: Any, name: str, size: int) -> list[float]:
     if not isinstance(value, list) or len(value) != size:
         raise HybridCompositionExportError(f"{name} must contain {size} values")
     return [_number(item, f"{name}[{index}]") for index, item in enumerate(value)]
+
+
+def _safe_relative_path(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value or "\\" in value:
+        raise HybridCompositionExportError(f"{name} must be a safe relative path")
+    path = Path(value)
+    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+        raise HybridCompositionExportError(f"{name} must be a safe relative path")
+    return path.as_posix()
+
+
+def _binding(path: Path, root: Path) -> dict[str, Any]:
+    relative = path.relative_to(root).as_posix()
+    return {
+        "path": relative,
+        "bytes": path.stat().st_size,
+        "sha256": _sha256(path),
+        "required": True,
+    }
+
+
+def _resolve_binding(root: Path, binding: Mapping[str, Any], name: str) -> Path:
+    if not isinstance(binding, Mapping):
+        raise HybridCompositionExportError(f"{name} binding is invalid")
+    relative = _safe_relative_path(binding.get("path"), f"{name}.path")
+    path = root / relative
+    try:
+        path.relative_to(root)
+    except ValueError as exc:
+        raise HybridCompositionExportError(f"{name} path escapes package") from exc
+    if not path.is_file() or path.is_symlink():
+        raise HybridCompositionExportError(f"{name} file is missing or unsafe")
+    if path.stat().st_size != binding.get("bytes") or _sha256(path) != binding.get(
+        "sha256"
+    ):
+        raise HybridCompositionExportError(
+            f"{name} file hash mismatch or size mismatch"
+        )
+    return path
+
+
+def _point(value: list[float]) -> dict[str, float]:
+    return {"x": float(value[0]), "y": float(value[1]), "z": float(value[2])}
+
+
+def _runtime_scene_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Normalize array-heavy authoring JSON for native engine runtimes.
+
+    Unity's source-only runtime contract intentionally consumes objects with
+    named scalar fields rather than relying on nested JSON arrays.  Godot uses
+    the same normalized contract, so both adapters receive identical data.
+    The original ``hybrid3d.json`` remains in the package and is hash-bound by
+    the runtime manifest.
+    """
+
+    camera = payload["camera"]
+    materials = []
+    for material in payload["materials"]:
+        materials.append(
+            {
+                "id": material["id"],
+                "metallic": float(material["metallic"]),
+                "roughness": float(material["roughness"]),
+                "base_color": material.get("base_color", [0.15, 0.72, 0.95, 1.0]),
+            }
+        )
+    meshes = []
+    for mesh in payload["meshes"]:
+        meshes.append(
+            {
+                "id": mesh["id"],
+                "material_id": mesh["material_id"],
+                "position": _point(mesh.get("position", [0.0, 0.0, 0.0])),
+                "vertices": [_point(vertex) for vertex in mesh["vertices"]],
+                "triangles": [
+                    {
+                        "a": int(triangle[0]),
+                        "b": int(triangle[1]),
+                        "c": int(triangle[2]),
+                    }
+                    for triangle in mesh["triangles"]
+                ],
+            }
+        )
+    lights = []
+    for light in payload["lights"]:
+        lights.append(
+            {
+                "id": light["id"],
+                "type": light["type"],
+                "intensity": float(light["intensity"]),
+                "position": _point(light.get("position", [0.0, 0.0, 0.0])),
+            }
+        )
+    clips = []
+    for clip in payload["animation_clips"]:
+        clips.append(
+            {
+                "id": clip.get("id", "clip"),
+                "mesh_id": clip["mesh_id"],
+                "keyframes": [
+                    {
+                        "time": float(keyframe["time"]),
+                        "position": _point(keyframe["position"]),
+                    }
+                    for keyframe in clip["keyframes"]
+                ],
+            }
+        )
+    return {
+        "format_id": HYBRID_RUNTIME_SCENE_FORMAT_ID,
+        "schema_version": HYBRID_RUNTIME_SCENE_SCHEMA_VERSION,
+        "support_status": payload["support_status"],
+        "camera": {
+            "projection": camera["projection"],
+            "fov_degrees": float(camera["fov_degrees"]),
+            "near": float(camera["near"]),
+            "far": float(camera["far"]),
+            "position": _point(camera["position"]),
+            "target": _point(camera["target"]),
+        },
+        "materials": materials,
+        "meshes": meshes,
+        "lights": lights,
+        "animation_clips": clips,
+    }
 
 
 def validate_hybrid_scene(payload: Mapping[str, Any]) -> dict[str, Any]:
@@ -270,6 +400,68 @@ def build_hybrid_composition_package(
             "required": True,
         }
     )
+    runtime_scene_path = target / "hybrid-runtime-scene.json"
+    runtime_scene_path.write_bytes(
+        _canonical_json(_runtime_scene_payload(hybrid_payload))
+    )
+    components.append(
+        {
+            "kind": "hybrid-runtime-scene",
+            "path": "hybrid-runtime-scene.json",
+            "bytes": runtime_scene_path.stat().st_size,
+            "sha256": _sha256(runtime_scene_path),
+            "required": True,
+        }
+    )
+    animation_manifest_path = target / "animation" / "animation.json"
+    animation_manifest = _read_json(animation_manifest_path, "animation manifest")
+    first_frame_path = (
+        target
+        / "animation"
+        / Path(
+            _safe_relative_path(
+                animation_manifest["frames"][0]["texture"],
+                "animation.frames[0].texture",
+            )
+        )
+    )
+    try:
+        first_frame_path.relative_to(target / "animation")
+    except ValueError as exc:
+        raise HybridCompositionExportError(
+            "animation first frame escapes package"
+        ) from exc
+    runtime_manifest = {
+        "format_id": HYBRID_RUNTIME_FORMAT_ID,
+        "schema_version": HYBRID_RUNTIME_SCHEMA_VERSION,
+        "support_status": "VERTICAL_SLICE_ONLY",
+        "scene": {
+            "authoring": _binding(hybrid_path, target),
+            "normalized": _binding(runtime_scene_path, target),
+        },
+        "animation": {
+            "manifest": _binding(animation_manifest_path, target),
+            "first_frame": _binding(first_frame_path, target),
+            "frame_count": animation_manifest["frame_count"],
+        },
+        "capabilities": {
+            "camera": "perspective",
+            "geometry": "inline-mesh-triangles",
+            "lighting": ["directional", "point"],
+            "animation": "position-keyframes",
+        },
+    }
+    runtime_manifest_path = target / "hybrid-runtime.json"
+    runtime_manifest_path.write_bytes(_canonical_json(runtime_manifest))
+    components.append(
+        {
+            "kind": "hybrid-runtime-manifest",
+            "path": "hybrid-runtime.json",
+            "bytes": runtime_manifest_path.stat().st_size,
+            "sha256": _sha256(runtime_manifest_path),
+            "required": True,
+        }
+    )
     manifest = {
         "format_id": HYBRID_FORMAT_ID,
         "schema_version": HYBRID_SCHEMA_VERSION,
@@ -277,14 +469,82 @@ def build_hybrid_composition_package(
         "generator": {"id": "neoeng_d_trace", "version": "0.3.0"},
         "composition_manifest_sha256": _sha256(composition_root / "composition.json"),
         "animation_manifest_sha256": _sha256(animation_root / "animation.json"),
+        "runtime_manifest_sha256": _sha256(runtime_manifest_path),
         "components": sorted(components, key=lambda item: item["path"]),
         "capabilities": {
             "composition_2d_25d": "preserved-e11-package",
             "animation": "coherent-frame-playback",
             "hybrid_3d": "perspective-mesh-material-light-vertical-slice",
+            "hybrid_3d_runtime": "native-godot-unity-vertical-slice",
         },
     }
     (target / "hybrid-composition.json").write_bytes(_canonical_json(manifest))
+    return manifest
+
+
+def validate_hybrid_runtime_manifest(package: str | Path) -> dict[str, Any]:
+    """Validate the hash-bound payload consumed by native 3D adapters."""
+
+    root = Path(package)
+    manifest = _read_json(root / "hybrid-runtime.json", "hybrid runtime manifest")
+    if (
+        manifest.get("format_id") != HYBRID_RUNTIME_FORMAT_ID
+        or manifest.get("schema_version") != HYBRID_RUNTIME_SCHEMA_VERSION
+        or manifest.get("support_status") != "VERTICAL_SLICE_ONLY"
+    ):
+        raise HybridCompositionExportError("hybrid runtime manifest schema is invalid")
+    scene = manifest.get("scene")
+    if not isinstance(scene, Mapping):
+        raise HybridCompositionExportError("hybrid runtime scene bindings are invalid")
+    authoring_path = _resolve_binding(root, scene.get("authoring"), "scene.authoring")
+    normalized_path = _resolve_binding(
+        root, scene.get("normalized"), "scene.normalized"
+    )
+    validate_hybrid_scene(_read_json(authoring_path, "hybrid scene"))
+    normalized = _read_json(normalized_path, "hybrid runtime scene")
+    if (
+        normalized.get("format_id") != HYBRID_RUNTIME_SCENE_FORMAT_ID
+        or normalized.get("schema_version") != HYBRID_RUNTIME_SCENE_SCHEMA_VERSION
+        or normalized.get("support_status") != "VERTICAL_SLICE_ONLY"
+    ):
+        raise HybridCompositionExportError("hybrid runtime scene schema is invalid")
+    for key in ("camera", "materials", "meshes", "lights", "animation_clips"):
+        if key not in normalized:
+            raise HybridCompositionExportError(f"hybrid runtime scene is missing {key}")
+    animation = manifest.get("animation")
+    if not isinstance(animation, Mapping):
+        raise HybridCompositionExportError(
+            "hybrid runtime animation bindings are invalid"
+        )
+    animation_manifest_path = _resolve_binding(
+        root, animation.get("manifest"), "animation.manifest"
+    )
+    first_frame_path = _resolve_binding(
+        root, animation.get("first_frame"), "animation.first_frame"
+    )
+    animation_manifest = _read_json(animation_manifest_path, "animation manifest")
+    frames = animation_manifest.get("frames")
+    if (
+        animation_manifest.get("format_id") != "neoeng-d-trace-animation"
+        or animation_manifest.get("schema_version") != 1
+        or not isinstance(frames, list)
+        or not frames
+        or animation.get("frame_count") != animation_manifest.get("frame_count")
+    ):
+        raise HybridCompositionExportError(
+            "hybrid runtime animation contract is invalid"
+        )
+    expected_first = (
+        root
+        / "animation"
+        / Path(
+            _safe_relative_path(frames[0].get("texture"), "animation.frames[0].texture")
+        )
+    )
+    if expected_first != first_frame_path:
+        raise HybridCompositionExportError(
+            "hybrid runtime first animation frame binding is inconsistent"
+        )
     return manifest
 
 
@@ -334,6 +594,11 @@ def validate_hybrid_composition_package(package: str | Path) -> dict[str, Any]:
     }
     if expected_hashes != actual_hashes:
         raise HybridCompositionExportError("nested manifest hash mismatch")
+    runtime_path = root / "hybrid-runtime.json"
+    if manifest.get("runtime_manifest_sha256") is not None or runtime_path.exists():
+        if manifest.get("runtime_manifest_sha256") != _sha256(runtime_path):
+            raise HybridCompositionExportError("runtime manifest hash mismatch")
+        validate_hybrid_runtime_manifest(root)
     seen_paths: set[str] = set()
     for component in manifest.get("components", []):
         if not isinstance(component, dict) or not component.get("required"):
@@ -365,8 +630,13 @@ def validate_hybrid_composition_package(package: str | Path) -> dict[str, Any]:
 __all__ = [
     "HYBRID_FORMAT_ID",
     "HYBRID_SCHEMA_VERSION",
+    "HYBRID_RUNTIME_FORMAT_ID",
+    "HYBRID_RUNTIME_SCHEMA_VERSION",
+    "HYBRID_RUNTIME_SCENE_FORMAT_ID",
+    "HYBRID_RUNTIME_SCENE_SCHEMA_VERSION",
     "HybridCompositionExportError",
     "build_hybrid_composition_package",
     "validate_hybrid_scene",
+    "validate_hybrid_runtime_manifest",
     "validate_hybrid_composition_package",
 ]

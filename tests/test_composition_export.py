@@ -17,6 +17,7 @@ from src.exporters.hybrid_composition_export import (
     HybridCompositionExportError,
     build_hybrid_composition_package,
     validate_hybrid_composition_package,
+    validate_hybrid_runtime_manifest,
     validate_hybrid_scene,
 )
 from src.persistence.navmesh_io import save_navmesh
@@ -226,8 +227,10 @@ def test_hybrid_package_preserves_animation_and_validates_3d_slice(
 
     assert manifest["support_status"] == "VERTICAL_SLICE_ONLY"
     assert validate_hybrid_composition_package(package)["schema_version"] == 1
+    assert validate_hybrid_runtime_manifest(package)["schema_version"] == 1
     assert (package / "composition" / "composition.json").is_file()
     assert (package / "animation" / "frame_0001.png").is_file()
+    assert (package / "hybrid-runtime-scene.json").is_file()
     assert (
         validate_hybrid_scene(_hybrid_scene())["camera"]["projection"] == "perspective"
     )
@@ -253,6 +256,27 @@ def test_hybrid_package_rejects_tampered_component_and_invalid_scene(
     invalid["camera"]["projection"] = "orthographic"
     with pytest.raises(HybridCompositionExportError, match="perspective"):
         validate_hybrid_scene(invalid)
+
+
+def test_hybrid_runtime_manifest_rejects_tampered_normalized_scene(
+    tmp_path: Path, valid_composition_inputs: CompositionInputs
+) -> None:
+    composition = tmp_path / "composition"
+    build_composition_package(valid_composition_inputs, composition)
+    package = tmp_path / "hybrid"
+    build_hybrid_composition_package(
+        composition, _animation_directory(tmp_path), _hybrid_scene(), package
+    )
+    normalized = package / "hybrid-runtime-scene.json"
+    normalized.write_text(
+        normalized.read_text(encoding="utf-8").replace(
+            "hero-mesh", "hero-mesh-mutated", 1
+        ),
+        encoding="utf-8",
+        newline="\n",
+    )
+    with pytest.raises(HybridCompositionExportError, match="hash mismatch"):
+        validate_hybrid_runtime_manifest(package)
 
 
 def test_hybrid_export_is_available_through_product_cli(
