@@ -41,6 +41,7 @@ o vertical slice híbrido em um editor 3D completo.
 - Executável: `build/post-e13-final-build-recovery-v4-20260912/release/post-e13-final-recovery-v4-20260912/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe` — SHA-256 `CBC16B6425158362572848D59D847988F8300455E1AE973DB961A0C2162046A8`.
 - Fluxo integrado: `build/post-e13-final-build-recovery-v4-20260912/artifacts/post-e13-final-native-composition-recovery-v4-20260912/native-flow-output.json` — exportação, save/reopen, erro, recuperação e exportação pós-recuperação.
 - Prompt de recuperação: `composition-05-recovery-prompt.png` — SHA-256 `BE829AA548403F58EA6EC4B553CBCE645DC7056BB4ED7AA6629EE9FDF0C98B3B`.
+- Requalificação Tilemap nativa no mesmo executável: `artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/manifest.json` — SHA-256 `9D9A060173727C67ADCFC2DE3D8BA19EA671DBE1D9EA35A245BAD8DBAB1CB5F7`; três células pintadas, salvas e reabertas; sidecar SHA-256 `282F5D8B094B1A2BA98BDE991FEECB642239D9F8C05F061F01A2D5185E339FC0`.
 - Runtime Tilemap: capturas Godot e Unity e relatório negativo de drift em `artifacts/post-e13-tilemap-runtime-engines-final-20260912/`.
 - Runtime híbrido: capturas Godot e Unity e relatório negativo de hash em `artifacts/post-e13-hybrid-runtime-engines-final-20260912/`.
 
@@ -58,7 +59,10 @@ o vertical slice híbrido em um editor 3D completo.
 - O warning `Hidden import "tzdata" not found!` e os skips locais de privilégio
   continuam registrados e não foram convertidos em PASS.
 - Capturas v1–v3, aborts diagnósticos e falhas históricas permanecem
-  preservados; somente os artefatos finais são usados para os gates `PASS`.
+  preservados. A antiga captura nativa de Tilemap em
+  `artifacts/post-e13-tilemap-runtime-native-final-20260912/` foi rebaixada a
+  finding depois da inspeção visual (`Sem mapa`, sem células); somente a
+  requalificação v3 corrigida é usada para o gate `PASS`.
 
 ## O que ainda exige decisão humana
 

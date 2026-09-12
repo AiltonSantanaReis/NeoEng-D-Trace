@@ -117,6 +117,14 @@ reais e rejeição de drift preservada. O build v4 e o fluxo nativo da composiç
 integrada estão documentados em
 `docs/evidence/EVD_POST_E13_FINAL_BUILD_COMPOSITION_NATIVE_20260912.md`, com
 capturas reais, persistência, recuperação, hashes, atlas e payload runtime.
+Durante a auditoria visual, a captura nativa de Tilemap anterior foi
+rebaixada a finding porque todas as imagens mostravam `Sem mapa` e não
+comprovavam pintura. O harness foi corrigido sem tocar no produto e o fluxo
+foi requalificado no executável v4 em
+`artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/`:
+`Novo → canvas → três células → Salvar → Reabrir`, com sidecar persistido de
+1 camada/3 células e SHA-256
+`282F5D8B094B1A2BA98BDE991FEECB642239D9F8C05F061F01A2D5185E339FC0`.
 O defeito de layout da recuperação foi corrigido no commit `dd344f47` sem
 remover conteúdo anterior; os resultados v1–v3 permanecem preservados.
 

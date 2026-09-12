@@ -122,23 +122,58 @@ bindings hashados no `composition.json`. O teste focado passou com **8 passed**
 e cobre também o caminho legado sem atlas, que continua exportável com o estado
 explícito `not-emitted-legacy-atlas-missing`.
 
-## Fluxos nativos reais no binário novo
+## Fluxos nativos reais no binário final requalificado
 
-O executável recém-gerado foi aberto em janela nativa maximizada
-`3866x2090` e operado com cliques Win32 reais. O título observado foi
-`Editor de Cenário — NeoEng-D-Trace`.
+O executável v4 foi aberto em janela nativa maximizada `3866x2090` e operado
+com cliques Win32 reais. O título observado foi
+`Editor de Cenário — NeoEng-D-Trace`. A requalificação foi necessária porque a
+inspeção visual encontrou coordenadas obsoletas no harness anterior.
 
-Tilemap: entrada, mapa novo, pintura, salvar e reabrir:
+### Tilemap: entrada, mapa novo, canvas, pintura, salvar e reabrir
 
-- manifesto:
-  [`manifest.json`](../../artifacts/post-e13-tilemap-runtime-native-final-20260912/manifest.json)
-  — SHA-256 `32F673E54F50EF42431F3198DC64E868F26258381A4896934D7397DF06404AC5`;
-- pintura: [`09-tilemap-painted.png`](../../artifacts/post-e13-tilemap-runtime-native-final-20260912/09-tilemap-painted.png)
-  — SHA-256 `3157BF6F380AF0E221BB95CDDFA985E3717C2ADA92B21F948A6C9CCEF10B7554`;
-- salvar: [`10-tilemap-saved.png`](../../artifacts/post-e13-tilemap-runtime-native-final-20260912/10-tilemap-saved.png)
-  — SHA-256 `B4C330E8CB07CDEA9EEE8503BBB0099868271827F26E30E3F17EC175396F647E`;
-- reabrir: [`11-tilemap-reopened.png`](../../artifacts/post-e13-tilemap-runtime-native-final-20260912/11-tilemap-reopened.png)
-  — SHA-256 `B4C330E8CB07CDEA9EEE8503BBB0099868271827F26E30E3F17EC175396F647E`.
+O fluxo autoritativo é o v3, executado no binário final v4:
+
+- executável:
+  [`NeoEng-D-Trace.exe`](../../build/post-e13-final-build-recovery-v4-20260912/release/post-e13-final-recovery-v4-20260912/portable/NeoEng-D-Trace/NeoEng-D-Trace.exe)
+  — SHA-256 `CBC16B6425158362572848D59D847988F8300455E1AE973DB961A0C2162046A8`;
+- harness usado:
+  [`capture_e03_asset_library_binary.ps1`](../../scripts/capture_e03_asset_library_binary.ps1)
+  — SHA-256 `BDD56A5A8413CCB0F45CB6ACA2D63053BC8A4F21CBC06C58851C0CA81B9D4390`;
+- manifesto v3:
+  [`manifest.json`](../../artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/manifest.json)
+  — SHA-256 `9D9A060173727C67ADCFC2DE3D8BA19EA671DBE1D9EA35A245BAD8DBAB1CB5F7`;
+- mapa novo, com paleta e canvas visíveis:
+  [`08-tilemap-new.png`](../../artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/08-tilemap-new.png)
+  — SHA-256 `231189A01A5A750213BFDC5B1EAF852632865ADD1338F24FBCA59359EFF7E130`;
+- canvas antes da edição:
+  [`08-tilemap-canvas-visible.png`](../../artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/08-tilemap-canvas-visible.png)
+  — SHA-256 `68E6614908BD1EE688ABA4AAC1ED0BD55811F1A8807AA8741F05DAD515A6B9F4`;
+- pintura de três células adjacentes:
+  [`09-tilemap-painted.png`](../../artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/09-tilemap-painted.png)
+  — SHA-256 `939ED67DE479B548525BBA6B4C388AA9CC3C8C702D7693EEC519CEBA9F7BDED5`;
+- salvar, com mensagem nativa `Tilemap salvo: scenario.tilemap.json`:
+  [`10-tilemap-saved.png`](../../artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/10-tilemap-saved.png)
+  — SHA-256 `5D1358D5E6068B66CCA1854F4DED2E6EBA487EDF892E0F7609226D600386891A`;
+- reabrir, com mensagem nativa `Tilemap reaberto` e as três células
+  preservadas:
+  [`11-tilemap-reopened.png`](../../artifacts/post-e13-tilemap-runtime-native-requalified-v3-20260912/11-tilemap-reopened.png)
+  — SHA-256 `443CA4BD0B4D26C7D814A4797A18878619D2007C1CAA1C493FA696EFE25D836E`;
+- sidecar persistido:
+  `build/post-e13-final-build-recovery-v4-20260912/artifacts/post-e13-final-native-composition-recovery-v4-20260912/fixture/assets/tilemaps/scenario.tilemap.json`
+  — SHA-256 `282F5D8B094B1A2BA98BDE991FEECB642239D9F8C05F061F01A2D5185E339FC0`,
+  formato `neoeng-d-trace-tilemap`, versão 1, 1 camada e 3 células.
+
+O harness agora falha se o sidecar esperado não existir ou se contiver zero
+células; portanto a persistência não é inferida apenas pela captura visual.
+
+### Finding histórico preservado
+
+Os artefatos `artifacts/post-e13-tilemap-runtime-native-final-20260912/`
+continuam preservados, mas foram retirados do gate autoritativo: a inspeção
+humana mostrou `Sem mapa`, painel/paleta vazios e ausência de edição efetiva
+nas capturas `08`–`11`. A causa foi coordenada obsoleta no harness, não uma
+alteração destrutiva no produto. O finding e seus hashes não foram apagados;
+somente a requalificação v3 é usada para o `PASS` técnico.
 
 Tileset: atlas real, gerar, salvar, novo e reabrir:
 

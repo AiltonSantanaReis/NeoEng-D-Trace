@@ -182,6 +182,34 @@ function Save-Capture {
     return [ordered]@{ path = $Path; sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash }
 }
 
+function Read-NativeTilemapPersistence {
+    param([string]$ProjectPath)
+    $projectFile = if (Test-Path -LiteralPath $ProjectPath -PathType Leaf) {
+        (Resolve-Path -LiteralPath $ProjectPath).Path
+    } else {
+        Get-ChildItem -LiteralPath $ProjectPath -Filter "*.ndtproj" -File | Select-Object -First 1 -ExpandProperty FullName
+    }
+    if (-not $projectFile) { throw "native Tilemap persistence requires a .ndtproj project file" }
+    $tilemapDirectory = Join-Path (Split-Path -Parent $projectFile) "assets\tilemaps"
+    $tilemapPath = Join-Path $tilemapDirectory "scenario.tilemap.json"
+    if (-not (Test-Path -LiteralPath $tilemapPath -PathType Leaf)) {
+        throw "native Tilemap save did not produce the expected sidecar: $tilemapPath"
+    }
+    $tilemap = Get-Content -LiteralPath $tilemapPath -Raw | ConvertFrom-Json
+    $cells = @($tilemap.cells)
+    if ($cells.Count -lt 1) {
+        throw "native Tilemap sidecar contains no painted cells: $tilemapPath"
+    }
+    return [ordered]@{
+        path = $tilemapPath
+        sha256 = (Get-FileHash -LiteralPath $tilemapPath -Algorithm SHA256).Hash
+        cell_count = $cells.Count
+        layer_count = @($tilemap.layers).Count
+        format_id = $tilemap.format_id
+        schema_version = $tilemap.schema_version
+    }
+}
+
 function Save-ScreenCapture {
     param([string]$Path)
     $bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
@@ -614,21 +642,39 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 2970, 520)
         Start-Sleep -Milliseconds 500
         $records.tilemap_panel_entry = Save-Capture $editor.Handle (Join-Path $OutputDirectory "07-tilemap-panel-entry.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3110, 320)
+        # The tilemap inspector is a scrollable dock.  In the current
+        # responsive layout the action row is below the palette and layer
+        # controls; y=320 reaches the grid/tool controls and must not be used
+        # as a substitute for the user-visible Novo button.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3180, 750)
         Start-Sleep -Milliseconds 500
         $records.tilemap_new = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tilemap-new.png")
-        # Paint three cells, save the sidecar, then reopen it through the
-        # same shipped controls.  Coordinates are native offsets in the
-        # maximized editor rect recorded above.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3210, 550)
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 550)
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3270, 550)
+        # Scroll the same dock to the embedded TileMapCanvas.  The canvas is
+        # below the rule editor and is not reachable while the dock is at its
+        # initial top position.  Capture the visible canvas before painting so
+        # the manifest can distinguish navigation from an actual edit.
+        for ($scrollStep = 0; $scrollStep -lt 30; $scrollStep++) {
+            [NeoEngE03Capture]::ScrollWindowFraction($editor.Handle, 0.99, 0.75, -120)
+            Start-Sleep -Milliseconds 70
+        }
+        Start-Sleep -Milliseconds 500
+        $records.tilemap_canvas_visible = Save-Capture $editor.Handle (Join-Path $OutputDirectory "08-tilemap-canvas-visible.png")
+        # Paint three adjacent cells in the now-visible native TileMapCanvas,
+        # save the sidecar, then reopen it through the same shipped controls.
+        # These are window offsets for the maximized 3866x2090 capture host.
+        # The capture host is DPI-scaled; one logical 32px cell occupies
+        # roughly 64 physical pixels in the Win32 coordinate space.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3200, 1435)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3264, 1435)
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3328, 1435)
         Start-Sleep -Milliseconds 500
         $records.tilemap_painted = Save-Capture $editor.Handle (Join-Path $OutputDirectory "09-tilemap-painted.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3395, 320)
+        # After scrolling, the action row is visible near the top of the dock.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3180, 290)
         Start-Sleep -Milliseconds 700
         $records.tilemap_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-tilemap-saved.png")
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3240, 320)
+        $records.tilemap_persistence = Read-NativeTilemapPersistence $projectPath
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 3600, 228)
         Start-Sleep -Milliseconds 700
         $records.tilemap_reopened = Save-Capture $editor.Handle (Join-Path $OutputDirectory "11-tilemap-reopened.png")
     }
