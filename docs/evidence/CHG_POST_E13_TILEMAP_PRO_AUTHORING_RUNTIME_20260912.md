@@ -8,7 +8,7 @@
 
 **Lote:** `POST-E13-SCENE-EDITOR-ASSET-PACKS`
 
-**Base de código:** `cad5f56b61e22e2646d48b113208d8af5f8408eb`
+**Base de código do checkpoint atual:** `c39a8670cee23e4bdd423429e2eb65d6b1d7c534`
 
 **Base normativa:** [`DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`](DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md)
 
@@ -87,6 +87,25 @@ fail-closed, referência/hash do atlas e o layout responsivo foram cobertos por
 A build limpa e dois fluxos nativos reais foram concluídos e documentados em
 [`EVD_POST_E13_TILEMAP_PRO_RESPONSIVE_NATIVE_20260911.md`](EVD_POST_E13_TILEMAP_PRO_RESPONSIVE_NATIVE_20260911.md):
 Tilemap com seleção/cópia/colagem/variação/Rule Tiles/salvar/reabrir e Tileset
-com atlas real/gerar/salvar/novo/reabrir. O payload de runtime e a
-materialização real em Godot/Unity continuam pendentes e permanecem
-explicitamente fora deste checkpoint.
+com atlas real/gerar/salvar/novo/reabrir. Esse checkpoint histórico permanece
+preservado como `PENDING_EVIDENCE` porque ainda não incluía runtime externo.
+
+## Checkpoint de runtime externo — PASS técnico
+
+O commit `c39a867` implementou o payload versionado
+`neoeng-d-trace-tilemap-runtime`, com bindings seguros/hashados do tilemap e do
+atlas, células, camadas, variantes, regras e contagens. Os adaptadores
+Godot/Unity materializam as células com `Sprite2D`/`SpriteRenderer` reais e
+rejeitam drift físico do atlas antes da criação da cena.
+
+A evidência [`EVD_POST_E13_TILEMAP_RUNTIME_ENGINES_20260912.md`](EVD_POST_E13_TILEMAP_RUNTIME_ENGINES_20260912.md)
+registra **69 testes focados**, suíte oficial final **2223 passed, 2 skipped,
+1 warning**, build limpa `c39a867`, smoke portátil `SUCCESS` com 11 checks,
+fluxo Win32 do binário novo e auditoria real nos dois engines. O caso positivo
+materializou 27/27 células em cada engine; o caso negativo rejeitou o atlas
+alterado por hash/tamanho. O gate específico de runtime está `PASS`.
+
+O estado deste registro, porém, permanece `IN_PROGRESS / PENDING_EVIDENCE`:
+integração automática do payload ao exportador geral de composição, runtime
+externo do editor híbrido 3D e revisão humana final continuam linhas abertas
+do lote pós-E13. Nenhuma dessas pendências foi ocultada ou reclassificada.
