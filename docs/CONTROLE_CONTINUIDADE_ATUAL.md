@@ -97,7 +97,7 @@ requalificação corrente de runtime está em
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa está `PASS` no soak controlado, GPU/janela QGraphicsView está `NOT_APPLICABLE` por ausência de contador; Unity r12 iniciou em Sandbox com rede habilitada, transportou o candidato atualizado e alcançou o LicensingClient, mas encontrou zero entitlements aplicáveis; a inconsistência de metadado do r11 foi preservada; licensing limpo e shutdown limpo permanecem `BLOCKED` |
+| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa e workload CUDA dedicado estão qualificados em ambiente controlado, enquanto o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por ausência de instrumentação; Unity r12 iniciou em Sandbox com rede habilitada, transportou o candidato atualizado e alcançou o LicensingClient, mas encontrou zero entitlements aplicáveis; a inconsistência de metadado do r11 foi preservada; licensing limpo e shutdown limpo permanecem `BLOCKED` |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
@@ -236,7 +236,9 @@ atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial,
 qualificou a memória em soak controlado e registrou a limitação objetiva de GPU;
 permanece somente a qualificação Unity de licensing/shutdown limpos, atualmente
 `BLOCKED` porque r9, r10 e a execução coerente r12 não forneceram entitlement válido na
-sandbox. O carregamento Unity e o shutdown da sandbox já foram comprovados. A revisão humana já foi
+sandbox. O workload CUDA dedicado foi qualificado (`PASS_CONTROLLED_GPU_WORKLOAD`), mas
+o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por não ser
+exposto pelo caminho offscreen/software. O carregamento Unity e o shutdown da sandbox já foram comprovados. A revisão humana já foi
 aprovada; o gizmo e a produção de modelos/asset packs permanecem adiados por
 decisão do proprietário.
 Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de

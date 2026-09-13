@@ -23,10 +23,12 @@ escala permanece `FAIL`; a redução não pode ser promovida a `PASS` por si só
 
 ## Lacunas mantidas
 
-- **Memória longa:** `PENDING_EVIDENCE`; as 20 observações curtas não são soak
-  prolongado nem prova de estabilidade nativa.
-- **GPU/janela nativa:** `PENDING_EVIDENCE`; o caminho `QGraphicsView` medido
-  não fornece contador integrado e o benchmark não inventa um valor.
+- **Memória longa:** `PASS` no ambiente controlado; o relatório dedicado registra
+  26 workloads, 250 ciclos por workload e observações de RSS/private.
+- **GPU/janela nativa:** o workload CUDA dedicado está
+  `PASS_CONTROLLED_GPU_WORKLOAD`, mas o contador de frames/GPU do caminho
+  `QGraphicsView` continua `NOT_APPLICABLE`; não há equivalência de renderer ou
+  FPS declarada.
 - **Equivalência runtime:** permanece separada das medições estruturais e não
   é concluída por CuPy ou pelo smoke portátil.
 
@@ -71,9 +73,12 @@ limitações e hashes, está em
 `docs/evidence/EVD_POST_E13_SOAK_MEMORIA_GPU_CONTROLADO_20260913.md`.
 
 O gate de memória longa passa a `PASS` para o ambiente controlado qualificado.
-O gate GPU deste caminho passa a `NOT_APPLICABLE`, pois a probe com
-`--gpus all` não recebeu dispositivo NVIDIA e o `QGraphicsView` não expõe
-contador GPU; isso não é uma aprovação de desempenho GPU. O limite estrutural
+O gate de workload GPU dedicado passa a `PASS_CONTROLLED_GPU_WORKLOAD`: a
+qualificação CUDA em container sem rede executou 36.408 operações em 20 segundos,
+coletou 38 amostras reais e observou até 91% de utilização na RTX 3070 Ti, sem
+erros. O contador de frames/GPU do `QGraphicsView` continua `NOT_APPLICABLE`,
+porque o caminho do editor é offscreen/software e não oferece essa métrica; isso
+não é uma aprovação de equivalência visual ou de FPS do editor. O limite estrutural
 medido continua `FAIL` no relatório e `APPROVED_BY_OWNER` como decisão de escopo.
 
 O gate restante desta frente é a execução real de licensing/shutdown do Unity em

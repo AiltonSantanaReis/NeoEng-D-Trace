@@ -2,6 +2,7 @@
 
 **ID:** `EVD-POST-E13-SOAK-MEMORIA-GPU-CONTROLADO-20260913`
 **Status do soak de memória:** `PASS`
+**Status do workload GPU controlado:** `PASS_CONTROLLED_GPU_WORKLOAD`
 **Status GPU do caminho QGraphicsView:** `NOT_APPLICABLE`
 **Data:** 2026-09-13
 **Commit da fonte montada:** `e727e9d470b3256b05800cda59d9aa2401a1959f`
@@ -82,27 +83,58 @@ hashes dos produtores usados no pacote:
 - `tests/test_post_e13_process_memory.py`:
   `186A2CA4ABB8B43C9658D76BDB54255154547718871164FF3726E058215F5EB5`.
 
-## GPU — limitação objetiva
+## GPU controlada — workload de driver
 
-Foi feita probe controlada com `--gpus all`. A imagem contém o executável
-`nvidia-smi`, mas o container não recebeu `/dev/nvidia0` nem `/dev/nvidiactl`;
-CuPy e `psutil` também não estão instalados nessa imagem. O próprio produtor
-registra:
+Uma qualificação separada foi executada em `python:3.11-slim`, com a RTX 3070 Ti
+transportada para o container por `--gpus all`. O runner hashado executou uma
+alocação CUDA de 256 MiB e repetiu `cuMemsetD8` síncrono por 20 segundos,
+enquanto `nvidia-smi` coletava telemetria a cada 0,5 segundo.
+
+Relatório:
+`artifacts/audit-post-e13-performance-gpu-controlled-20260913-r1/report.json`
+
+SHA-256 do relatório:
+`E0B368982ED14A69A21410B1480E31799552857AB6CE14590CB96E5F1B98423E`
+
+| Critério | Resultado |
+|---|---:|
+| Status | `PASS_CONTROLLED_GPU_WORKLOAD` |
+| Driver CUDA | `cuInit`, contexto, alocação e liberação: `0` |
+| Dispositivo | `NVIDIA GeForce RTX 3070 Ti`, 1 dispositivo |
+| Operações | `36.408` em `20,0 s` |
+| Amostras | `38`, sem erros de telemetria |
+| Utilização GPU | `37%`–`91%` |
+| Memória observada | `2865 MiB` de `8192 MiB` |
+| Utilização de memória | `34%`–`100%` |
+
+O container foi executado sem rede, com filesystem read-only, workspace read-only,
+limite de memória de 1 GiB e `pids-limit=128`. As duas tentativas preliminares
+contra a imagem do produtor Qt terminaram com exit `127` porque ela não expõe
+`python` nem `python3` no entrypoint; nenhum workload foi executado nessas
+tentativas. A execução corrigida usou a imagem Python já presente localmente e
+passou; os exits preliminares ficam registrados como limitação do harness.
+
+## GPU do viewport — limitação objetiva
+
+O workload acima prova transporte CUDA, alocação, execução e telemetria reais no
+ambiente controlado. Ele não mede a renderização do editor. O produtor Qt
+continua configurado com `QT_QPA_PLATFORM=offscreen` e `QT_OPENGL=software`, e
+o próprio relatório registra:
 
 ```text
 gpu.status=not_measured
 gpu.reason=no GPU counter is part of the controlled QGraphicsView path
 ```
 
-Assim, o gate GPU/janela nativa é `NOT_APPLICABLE` para este ambiente isolado,
-com justificativa e autorização formal, e não é promovido a `PASS`. A probe
-CuPy anterior comprovou apenas o kernel opcional X-Ray em GPU do host; ela não é
-equivalente à telemetria do viewport Qt e não autoriza tornar CuPy dependência
-oficial.
+Assim, o contador de frames/GPU do viewport é `NOT_APPLICABLE` neste ambiente,
+com justificativa e autorização formal. O workload GPU dedicado é um PASS
+separado e não é promovido a equivalência de renderer/FPS. A probe CuPy anterior
+comprovou apenas o kernel opcional X-Ray em GPU; ela não autoriza tornar CuPy
+dependência oficial.
 
 ## Regra de reexecução
 
-Reexecutar este soak somente se o helper de medição, o produtor de benchmark, o
-contrato de memória, a imagem/digest/ambiente controlado ou o caminho real do
-viewport mudar. Alterações apenas de documentação, localização, assets ou UI
-sem impacto no caminho medido não exigem repetição.
+Reexecutar o soak de memória ou o workload GPU somente se o helper/runner, o
+produtor, o contrato medido, a imagem/digest/ambiente controlado, o driver ou o
+caminho real do viewport mudar. Alterações apenas de documentação, localização,
+assets ou UI sem impacto no caminho medido não exigem repetição.
