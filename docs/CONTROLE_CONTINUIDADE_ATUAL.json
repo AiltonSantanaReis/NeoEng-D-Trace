@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "record_id": "CONTINUITY-NEOENG-20260908",
-  "updated_at": "2026-09-12",
+  "updated_at": "2026-09-13",
   "authority": {
     "governance": "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md",
     "master_plan_ref": "Ailton/e00-plan-adoption-20260907",
@@ -20,7 +20,7 @@
     ],
     "active_base_policy": "ONLY_CURRENT_CHECKOUT",
     "previous_bases_are_historical_only": true,
-    "current_focus": "Reconciliação final sem regressão do editor de cenário, parallax, catálogo de assets, tilemap/tileset, partículas, áudio, timeline, menus e localização PT-BR; os gates técnicos externos de Tilemap e híbrido 3D e a integração hash-bound no exportador geral estão comprovados; E13 permanece fechado.",
+    "current_focus": "Reconciliação pós-E13 sem regressão do editor de cenário canônico, parallax, tilemap/tileset, partículas, áudio, timeline, menus, localização PT-BR, desempenho e runtime externo; E13 permanece fechado e os gates técnicos já comprovados continuam separados dos itens ainda abertos.",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "Correções finas pós-E13 em seleção, edição vetorial, UX e validação nativa; findings reproduzíveis continuam sujeitos a correção controlada.",
@@ -38,11 +38,11 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Solicitar e executar a revisão humana final sobre a build v4 e as evidências técnicas já hashadas; manter E13 fechado e registrar somente as decisões reservadas ao proprietário.",
+    "next_action": "Continuar a auditoria dos requisitos funcionais residuais, qualificar desempenho em escala e diagnósticos Unity, manter limites do vertical slice explícitos e solicitar revisão humana somente após os itens exigidos possuírem implementação, suíte oficial, build, fluxo nativo, captura, persistência e hash.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
-      "scope": "Ajustes finos de UX e fluxo para editor de cenário/parallax e pacote Floresta; testes nativos, persistência, localização e build final sem remoção de conteúdo.",
+      "scope": "Ajustes finos de UX e fluxo para editor de cenário/parallax, Tilemap/Tileset, partículas, runtime e localização; produção de novos modelos/asset packs e redesign do gizmo permanecem adiados; testes nativos, persistência e builds sem remoção de conteúdo.",
       "evidence": "docs/evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md",
       "functional_implementation_allowed": true
     },
@@ -67,38 +67,39 @@
     ]
   },
   "checkout_under_audit": {
-    "branch": "Ailton/e08-renderer-20260908",
-    "head": "dd344f47c1a631729f53a6370759fc449705fd0c",
-    "head_role": "POST_E13_FINAL_PRODUCT_SOURCE_CHECKPOINT_HUMAN_REVIEW_PENDING",
-    "product_source_commit": "dd344f47c1a631729f53a6370759fc449705fd0c",
+    "branch": "Ailton/audit-post-e13-scenario-editor-20260912",
+    "head": "9e2d2a20cdf49d82172e46bc959d9ef271cce4f4",
+    "head_role": "POST_E13_CURRENT_AUDIT_RUNTIME_REQUALIFICATION_HUMAN_REVIEW_PENDING",
+    "product_source_commit": "422483e2b25f541fe3f1b4fdcf850ecb0147a744",
+    "audit_harness_commit": "d7ddbefba24706f071c6d89cf539558adfe214c4",
     "documentation_base_head": "9d0dd6e033401e10558985d29946a686857fc878",
     "documentation_head_policy": "O commit que materializa a versão corrente do registro é o HEAD atual do Git; não é duplicado no próprio JSON para evitar autorreferência. Verificar com git rev-parse HEAD. documentation_base_head identifica apenas a base documental usada na auditoria de prontidão.",
     "tracked_changes_present": false,
     "untracked_artifacts_present": true,
-    "status": "TRACKED_CLEAN_POST_E13_FINAL_NATIVE_CHECKPOINT_HUMAN_REVIEW_PENDING"
+    "status": "TRACKED_CLEAN_POST_E13_RUNTIME_REQUALIFICATION_HUMAN_REVIEW_PENDING"
   },
   "gates": {
     "official_suite": {
       "status": "PASS",
-      "collected": 2228,
-      "passed": 2226,
+      "collected": 2627,
+      "passed": 2625,
       "skipped": 2,
-      "warnings": 1,
-      "command": ".venv311\\Scripts\\python.exe -m pytest -q",
-      "observation": "Requalificação oficial sem filtros no commit dd344f47c1a631729f53a6370759fc449705fd0c passou após a correção do layout do estado de recuperação; os gates de Tilemap/runtime, adapters híbridos 3D e emissão hash-bound na composição continuam cobertos. O finding histórico do magnetic lasso, as falhas iniciais de auditoria, os aborts diagnósticos dos harnesses e as capturas v1-v3 de recuperação permanecem preservados.",
+      "warnings": 5,
+      "command": ".venv\\Scripts\\python.exe -m pytest -q",
+      "observation": "Requalificação oficial sem filtros na árvore que originou o commit d7ddbef passou com 2625 testes, 2 skips e 5 warnings; o commit contém somente a correção do status interno do auditor Tilemap e seu teste. O resultado histórico do commit dd344f47, o finding do magnetic lasso, as falhas iniciais de auditoria e os aborts diagnósticos dos harnesses permanecem preservados.",
       "observation_artifact": "artifacts/post-e13-recovery-visible-official-v4-20260912.log",
       "historical_failure_artifact": "artifacts/post-e13-particle-scene-export-native-20260911-v14/official-pytest.log",
       "final_log": "artifacts/post-e13-recovery-visible-official-v4-20260912.log",
       "final_log_sha256": "B1637DEFA413FFF05A5FD463109DB10D5962A563AF39FF0E4DB89C02F7CE2B0B",
       "current_checkout_revalidation": {
         "status": "PASS",
-        "source_commit": "dd344f47c1a631729f53a6370759fc449705fd0c",
+        "source_commit": "d7ddbefba24706f071c6d89cf539558adfe214c4",
         "code_diff_from_source": "NONE",
         "command": ".venv311\\Scripts\\python.exe -m pytest -q",
-        "result": "2226 passed, 2 skipped, 1 warning",
-        "duration_seconds": 81.15,
-        "observed_at": "2026-09-12",
-        "warning": "DeprecationWarning em tests/test_merge_coverage_authoring_contracts.py:1341; preservado"
+        "result": "2625 passed, 2 skipped, 5 warnings",
+        "duration_seconds": 266.23,
+        "observed_at": "2026-09-13",
+        "warning": "Cinco DeprecationWarning de QMouseEvent; preservados"
       }
     },
     "static": {
@@ -202,7 +203,11 @@
       ],
       "runtime_external_negative": "Godot e Unity rejeitaram cena normalizada adulterada por mismatch de hash/tamanho antes da criação dos objetos.",
       "evidence": "docs/evidence/EVD_POST_E13_HYBRID_3D_NATIVE_20260911.md",
-      "runtime_external_evidence": "docs/evidence/EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md"
+      "runtime_external_evidence": "docs/evidence/EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md",
+      "current_runtime_requalification_status": "PASS_TECHNICAL",
+      "current_runtime_requalification_audit": "artifacts/post-e13-hybrid-runtime-engines-postperf-20260913/hybrid-runtime-engine-audit.json",
+      "current_runtime_requalification_audit_sha256": "4BD4572C4477B9309C310307DDDD2355E7B4512CBC54C5BE83DC991F8F19C382",
+      "current_runtime_requalification_evidence": "docs/evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md"
     },
     "tilemap_advanced_tools": {
       "status": "PASS",
@@ -260,7 +265,13 @@
       "recovered_composition_manifest_sha256": "EB53DFF5E71EE1F6BC338F3027A8C98D0526ED5E6E23D3050443B0FBECD51E2E",
       "tilemap_runtime_payload_sha256": "B1F95AD22750D5ADC4CB2A331B241F822387CC5A2A8BC30C65B463A0E824BB93",
       "atlas_sha256": "4BFFD31518CB8EABCFBA2B2A4379BA54D6A1632EBD8836B1CBAE36F9B33A9A18",
-      "remaining": "Auditoria final e revisão humana deferida; warning de tzdata e limitações do vertical slice híbrido permanecem documentados."
+      "remaining": "Auditoria final e revisão humana deferida; warning de tzdata, diagnósticos de licensing/shutdown do Unity, desempenho em escala e limitações do vertical slice híbrido permanecem documentados.",
+      "current_runtime_requalification_status": "PASS_TECHNICAL",
+      "current_runtime_requalification_source_commit": "d7ddbefba24706f071c6d89cf539558adfe214c4",
+      "current_runtime_requalification_audit": "artifacts/post-e13-tilemap-runtime-engines-postperf-20260913-r3/tilemap-runtime-engine-audit.json",
+      "current_runtime_requalification_audit_sha256": "B712EC8833F97295A924B25AAB32251DEE58825694EC6B7864305684EFD1EA43",
+      "current_runtime_requalification_evidence": "docs/evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md",
+      "unity_environment_diagnostics_status": "PENDING_EVIDENCE"
     },
     "build_provenance": {
       "status": "PASS",

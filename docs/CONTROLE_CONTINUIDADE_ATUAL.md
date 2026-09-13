@@ -1,11 +1,14 @@
 # Controle de continuidade atual — NeoEng-D-Trace
 
 > **Base ativa única (pós-E13):** este checkout e o branch
-> `Ailton/e08-renderer-20260908`. Todas as referências a E00–E13, branches,
+> `Ailton/audit-post-e13-scenario-editor-20260912`. Todas as referências a E00–E13, branches,
 > worktrees e builds anteriores neste documento são somente histórico e não
 > podem ser usados como base de implementação, teste ou promoção.
 
 **Registro canônico da sessão:** `CONTINUITY-NEOENG-20260908`  
+**Reconciliado em 2026-09-13:** branch atual, HEAD documental, produto/harness,
+suíte corrente e próxima ação estão registrados em
+`docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md`.
 **Estado:** `POST_E13_IN_PROGRESS / E13 fechado e congelado como histórico`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
@@ -52,16 +55,23 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 ## Status atual
 
+O ponteiro histórico abaixo é preservado para proveniência. Para a execução
+atual, o checkout é `Ailton/audit-post-e13-scenario-editor-20260912`, o produto
+está no commit `422483e`, o harness de auditoria está no commit `d7ddbef` e o
+HEAD documental deve ser obtido por `git rev-parse HEAD`. A requalificação
+corrente de runtime está em
+`evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md`.
+
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2226 passaram, 2 skips e 1 warning na requalificação sem filtros do commit `dd344f47`; a correção de layout da recuperação passou no teste focado e os gates de Tilemap/runtime, adapters híbridos 3D e composição hash-bound passaram; o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
+| Suíte oficial | `PASS` | 2625 passaram, 2 skips e 5 warnings na requalificação sem filtros da árvore que originou o commit do harness `d7ddbef`; os resultados anteriores do commit `dd344f47`, o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; os runtimes externos de Tilemap e híbrido 3D passaram com casos negativos; a build v4 e o fluxo nativo da composição integrada passaram tecnicamente com erro/recuperação e persistência; revisão humana final permanece pendente por decisão formal |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a requalificação r3 dos runtimes externos de Tilemap e híbrido 3D passou com casos negativos; a build/performance e o fluxo nativo da composição integrada passaram tecnicamente, mas diagnósticos Unity, escala de desempenho e revisão humana permanecem pendentes |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | build v4 de `dd344f47`, proveniência `PASS`, executável `CBC16B6425158362572848D59D847988F8300455E1AE973DB961A0C2162046A8`, ZIP `D942187979E6BA494256DCA7ADBB2D4FBFCBBAE346FD9D2F55988845028B7C4D` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
+| Build oficial | `PASS` | build v4 histórica de `dd344f47` preservada; build pós-performance de `8f5bbb5` tem executável `245A66B8E2C29A2180B9514F8579DB3679899A6C1EE4F06F13B863ACF9055238`, ZIP `F46A7481D94194A0BA143FEB9A6A960059D772270094C752FA8440DA3EBF86A0` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana permanece deferida |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
@@ -138,16 +148,16 @@ A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Solicitar e executar a revisão humana final com base na [auditoria final pós-E13](evidence/AUDITORIA_FLUXO_USUARIO_POS_E13_FINAL_20260910.md),
-na [auditoria de prontidão para revisão humana](evidence/AUDITORIA_PRONTIDAO_REVISAO_HUMANA_POS_E13_20260912.md),
-na build v4 e na evidência nativa já registrada, conforme a
-[decisão de deferimento](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md).
-Os gates técnicos externos de Tilemap e híbrido 3D, a ponte de partículas, o
-início do cenário do zero, as ferramentas avançadas do tilemap, o build
-integrado e seu fluxo nativo já possuem checkpoints técnicos; somente a
-auditoria/aceite humano e decisões reservadas permanecem abertas.
-revisão visual/humana, licença/proveniência de distribuição e os requisitos
-funcionais ainda abertos continuam explicitamente separados. A equivalência
+Continuar a auditoria e o fechamento dos requisitos funcionais ainda abertos:
+reconciliar a escala de desempenho, qualificar os diagnósticos de licensing/
+shutdown do Unity, manter os limites do vertical slice explícitos e completar
+as evidências do editor canônico. Somente depois que todos os itens exigidos
+pela [decisão de revisão humana](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md)
+forem implementados, testados, executados no binário e comprovados com captura,
+persistência e hash será permitido solicitar a revisão humana final. O gizmo e
+a produção de modelos/asset packs permanecem adiados por decisão do proprietário.
+Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de
+distribuição continuam explicitamente separados. A equivalência
 V2→exportação Godot/Unity de partículas tem checkpoint técnico; o abort legado
 permanece como falha histórica preservada, não como resultado atual da suíte.
 
