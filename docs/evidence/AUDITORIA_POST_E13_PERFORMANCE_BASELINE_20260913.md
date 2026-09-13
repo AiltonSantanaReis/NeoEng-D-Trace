@@ -2,7 +2,7 @@
 
 **ID:** `AUD-POST-E13-PERFORMANCE-BASELINE-20260913`
 
-**Versão:** `1.2`
+**Versão:** `1.3`
 
 **Data:** `2026-09-13`
 
@@ -10,19 +10,19 @@
 
 **Source commit da baseline:** `caba951b8e62c33acd0e5d00fb1f795dc04856fc`
 
-**Source commit qualificado após as correções estreitas:** `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e`
+**Source commit qualificado após as correções estreitas:** `7f5c0477b3f4594928751aec6b97a4b1e9c0178b`
 
-**Commits de correção qualificados:** `9599ae3625cde4c3c967e04688af8cea2de9f3af` (cache/resolução e iluminação incremental) e `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e` (snapshot de estrutura e repintura condicional)
+**Commits de correção qualificados:** `9599ae3625cde4c3c967e04688af8cea2de9f3af` (cache/resolução e iluminação incremental), `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e` (snapshot de estrutura e repintura condicional) e `7f5c0477b3f4594928751aec6b97a4b1e9c0178b` (retenção da validação de assets durante isolamento)
 
-**Build nativa qualificada usada na verificação:** `build/post-e13-performance-build-20260913-r2`
+**Build nativa qualificada usada na verificação:** `C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_release-post-e13-20260913-r1\release\post-e13-performance-20260913-r3`
 
-**SHA-256 do executável:** `245A66B8E2C29A2180B9514F8579DB3679899A6C1EE4F06F13B863ACF9055238` (`10.879.926` bytes)
+**SHA-256 do executável:** `F56E7E45534087F2E103FD5DD455C8E402DBA9864B40C060A985DFDE58CFCCBD` (`10.880.001` bytes)
 
-**SHA-256 do pacote portátil:** `F46A7481D94194A0BA143FEB9A6A960059D772270094C752FA8440DA3EBF86A0` (`142.942.057` bytes)
+**SHA-256 do pacote portátil:** `4CF2E538C1D7B22B48D6376B07C1CED5BC8841E801E29C4A7ABA5B6E5A860106` (`142.938.504` bytes)
 
-**SHA-256 do manifesto de release:** `AAB0FDFFD264BE85D5333A33C6EAFDF5451ECF46681B9F89039DEC58A57B7F50`
+**SHA-256 do manifesto de release:** `3EDFB4FCD96C9E9E7A9C49C047E0C5CFAE751A63BCC7028C1F15CE712AA04162`
 
-**SHA-256 da proveniência de continuidade:** `9942EECF23A60CCCDD377609C460B918FD7EB29F4395CC4AA26CC5C615254237`
+**SHA-256 da proveniência de continuidade:** `644472F5CAEB36EDA1ABC9FFF348F94DF66A47E98314D12F72C85B7DF0733DA0`
 
 **Status da proveniência/build:** `PASS` (`continuity-provenance.json`) e `SUCCESS` (`smoke/portable-smoke-report.json`)
 
@@ -79,6 +79,7 @@ modo de asset específico.
 - saída da baseline: `artifacts/audit-post-e13-performance-20260913-r1/`;
 - saída pós-correção inicial: `artifacts/audit-post-e13-performance-20260913-r2/`;
 - saída pós-correção de visibilidade/repintura: `artifacts/audit-post-e13-performance-20260913-r5/`;
+- saída pós-correção de retenção no isolamento: `artifacts/audit-post-e13-performance-20260913-r9/`;
 - source commit, ambiente e hashes serão registrados após a execução.
 
 O resultado só poderá ser classificado como `PASS` se a matriz completa
@@ -334,7 +335,80 @@ permanece preservado. Ele foi executado em árvore com `tracked_changes=2` sobre
 `0973b36`; por isso serve como evidência histórica, não como qualificação do
 commit corrente.
 
-## Captura real no build qualificado
+## Terceira correção estreita: retenção da validação no isolamento
+
+O perfil do caminho estrutural ainda mostrava chamadas reais de
+`resolve_scene_asset` quando o isolamento de grupo ocultava objetos que
+continuavam pertencendo ao documento. A correção no commit
+`7f5c0477b3f4594928751aec6b97a4b1e9c0178b` preserva no cache as chaves de
+resolução de todos os assets ainda declarados no documento, mesmo quando seus
+objetos ficam temporariamente fora do conjunto visível. Assets removidos do
+documento continuam sujeitos à poda normal; a validação não foi desligada nem
+o resultado foi aceito por fallback.
+
+Proteções executadas:
+
+- teste focado para garantir que um asset ocultado por isolamento não seja
+  revalidado ao isolar e limpar o grupo: `12 passed` em `1,59 s`;
+- suíte oficial sem filtros: `2626 passed, 2 skipped, 5 warnings` em `83,32 s`;
+  log `artifacts/audit-post-e13-official-suite-20260913-r4/official-pytest.log`,
+  SHA-256 `706CF7F90A96971AFC42058B20F4F49656E6A9674314D6A87C9C57BDE5607A07`;
+- `git diff --check` e `py_compile` sem erro antes da qualificação.
+
+### Benchmark limpo no commit `7f5c047`
+
+O produtor canônico foi executado com
+`--expected-source-commit 7f5c0477b3f4594928751aec6b97a4b1e9c0178b`, sem
+alterações rastreadas durante a medição. O relatório é
+`artifacts/audit-post-e13-performance-20260913-r9/o2-after-isolation-cache-fix-clean.json`,
+SHA-256
+`3F7E6DEE0EC8088C69E452EC089B616AA59BCD0A7DDD7A30A36C3504A57531A8`, com
+`26/26` workloads, zero erros de operação, zero falhas de determinismo, zero
+erros de observação de memória e estado do produtor `PASS`.
+
+No mesmo workload estrutural de `512` objetos, assets `unique` e resolução
+`1920×1080`, a comparação com o benchmark limpo `r5` foi:
+
+| Operação | p95 r5 | p95 r9 | Variação observada |
+|---|---:|---:|---:|
+| `full_sync` | `875,00 ms` | `249,28 ms` | `-71,51%` |
+| `asset_update` | `1002,61 ms` | `318,31 ms` | `-68,25%` |
+| `group_isolation_toggle` | `975,39 ms` | `309,14 ms` | `-68,31%` |
+| `group_membership_toggle` | `970,44 ms` | `320,54 ms` | `-66,97%` |
+| `group_visibility_toggle` | `1034,35 ms` | `365,29 ms` | `-64,68%` |
+| `layer_reorder_toggle` | `973,33 ms` | `316,71 ms` | `-67,46%` |
+| `layer_visibility_toggle` | `1041,52 ms` | `398,73 ms` | `-61,72%` |
+| `object_add_remove` | `977,32 ms` | `318,56 ms` | `-67,40%` |
+
+Essa tabela comprova a redução do custo de revalidação no cenário estrutural
+de assets únicos, mas não transforma o resultado em aprovação de desempenho:
+o p95 residual ainda chega a `398,73 ms`, portanto o requisito de
+responsividade em alta escala permanece `FAIL`. Nos workloads compartilhados
+do r5 para r9, `full_sync` variou de `103,14 ms` para `170,89 ms` e
+`incremental_refresh` de `52,93 ms` para `122,35 ms`; essa execução isolada é
+ruidosa e não autoriza afirmar ganho nem regressão global nesse perfil.
+
+### Profiling causal após a terceira correção
+
+Os perfis locais da execução r9 permanecem fora do commit porque podem conter
+caminhos internos, mas seus hashes e observações são:
+
+| Perfil | SHA-256 | Observação causal |
+|---|---|---|
+| `profiles/o2-full-sync-512-unique.prof` | `F177099D82A3C3AB8F479FF329E00E722AA5CA4629CC36873A60F488FE250F45` | `2560` chamadas de resolução cacheada/fingerprint; nenhuma chamada real adicional de `resolve_scene_asset` apareceu no perfil |
+| `profiles/o2-incremental-512-shared.prof` | `DC02FF38C995238DE72CC4D6BB07BA6269238430F3DF547AD351B7B782635BF8` | caminho incremental e eventos Qt continuam sendo o custo dominante do perfil compartilhado |
+| `profiles/o2-preview-frame-512-shared.prof` | `07CEEB4CCE0D473B2140C2FB81653E5012AE73E59AEA2F2F2696C9DE6BA2FF54` | projeção/produção do frame continua separada da resolução estrutural de assets |
+| `profiles/o2-structural-isolation-512-unique.prof` | `E65742EBF172A9EA6B32408F0376AA7C1A0C57AF59C7A96EAF9956FE8D1984D2` | `1792` resoluções cacheadas/fingerprint; nenhuma chamada real adicional de `resolve_scene_asset`; `sync` acumulou `1,439 s` |
+
+O perfil confirma que o hot spot de revalidação repetida foi removido do
+caminho de isolamento sem alterar a semântica de visibilidade. O custo
+residual é reconstrução/snapshot e permanece fora do contrato permitido para
+reabrir `SceneAuthoringSession`; qualquer otimização seguinte exige novo
+contrato, equivalência e aceite.
+
+## Capturas reais dos builds qualificados
+
+### Fluxo canônico 2D/contorno no build `r2` (evidência anterior)
 
 O binário `r2` foi executado com automação Win32 real usando a janela nativa e
 captura por handle/`PrintWindow`, sem substituir a aplicação por mock. O pacote
@@ -369,6 +443,57 @@ visual do clipe. Ela não fornece contador nativo de frame/GPU nem substitui o
 soak test de memória ou a equivalência de runtime Godot/Unity; esses itens
 continuam explicitamente abertos.
 
+### Fluxo nativo 3D/híbrido no build `r3`
+
+O executável do commit `7f5c047` foi iniciado novamente com o fixture copiado
+para uma pasta temporária. O fluxo usou cliques físicos por `SetCursorPos` e
+`mouse_event`, captura do editor por `PrintWindow` e `CopyFromScreen` apenas
+para os menus popup. Não foi usado `QTest`, mock de janela ou chamada direta de
+slot como substituto da operação do usuário.
+
+O pacote é `artifacts/audit-post-e13-binary-performance-20260913-r4/`; possui
+`14` PNGs e `actions.json` com SHA-256
+`CBBE3711D4D24E336B6E349E7D659C502C9F640C24ED40207FF81FA98387D3AA`, estado
+`PASS_NATIVE_FLOW`, título `Editor de Cenário — NeoEng-D-Trace`, retângulo
+`-13,-13,3853,2077` e sidecar persistido com SHA-256
+`E0205325768F9D59CF12F30D77AEC4EA3D75BD910E87E33B3526D5033640BF7B`.
+
+Fluxo observado e comprovado nas capturas:
+
+1. abertura direta do projeto no editor canônico 2D;
+2. menu `Ver` aberto e opção `Viewport 3D/Híbrido` visível;
+3. entrada no viewport híbrido com hierarquia 3D, grid, câmera e luz;
+4. adição nativa de plano, luz pontual e câmera;
+5. seleção da câmera, edição real do alvo para `X=2,500` e `Y=1,250`;
+6. arraste do cubo e órbita do viewport com botão do meio;
+7. alteração do modo para `2.5D` e da projeção para `Ortográfica`;
+8. salvamento do sidecar, encerramento, relançamento e reabertura do mesmo
+   sidecar no binário.
+
+| Evidência | Arquivo | SHA-256 |
+|---|---|---|
+| menu `Ver` e entrada híbrida | `02-view-menu.png` | `5BD12F23D16ECD35800114E0B0565FE09965CEE0E65FF50FF59974486EA20A99` |
+| viewport 3D/híbrido inicial | `03-hybrid-entry.png` | `B82DC5AF428188B9F991A96C8F7E30D0CBC98041CFEE01B4B55C89192AAA45ED` |
+| plano, luz e câmera adicionados | `06-hybrid-camera.png` | `6F5AC3C984117E9BD218D05CE1BC7D692C53BFE31FFD3B0142B2401C0D070693` |
+| alvo da câmera alterado | `08-camera-target.png` | `4FA6A33252027EE646FB0754B445D0765B0CCC9B4C5892B2861B35E870A0A344` |
+| órbita do viewport | `10-viewport-orbit.png` | `2A9A33BF7872C534728CD2908A57AAFB89229F1F4216A7FF8C385DD86D5EF36C` |
+| menu de projeção | `11-projection-menu.png` | `6B5F1365051EF084CC15DE306B18AA9FFB8EC9891FACB2B68169C8B817D1B5CB` |
+| modo 2.5D e ortográfica aplicados | `11-mode-25d-orthographic.png` | `B6D2151236AC88466B160F3BA2CC00D2D7BD27E286DA4AA42E3AC888DFA6DF58` |
+| sidecar salvo | `12-hybrid-saved.png` | `24074150E122A5A6DEA67FCD3E11974A1F3AF643FEE99D57D3F3A54940FBBB12` |
+| sidecar carregado após relançamento | `13-hybrid-reopened.png` | `C2620EB18393BA3B048CAB78D117BAB63349FC9C48B402FA38D20A15F1ACBF89` |
+
+O sidecar contém `6` objetos: cubo, plano, luz direcional, luz pontual,
+câmera principal e câmera adicionada; a projeção persistida é `orthographic`
+e o alvo da câmera adicionada é `[2.5, 1.25, 0]`. A revisão visual não
+encontrou janela externa sobre as capturas de menu; a barra do sistema aparece
+nas duas capturas `CopyFromScreen` por serem evidências de tela inteira.
+
+A tentativa anterior `r3`, em
+`artifacts/audit-post-e13-binary-performance-20260913-r3/`, permanece
+preservada como falha de automação: o editor abriu, mas a janela não recebeu
+foco e o sidecar não foi criado. Ela não foi sobrescrita nem usada para
+declarar sucesso.
+
 A captura anterior do build `r1` permanece em
 `artifacts/audit-post-e13-binary-performance-20260913-r1/` com `13` PNGs e
 execução `0`; ela é referência histórica e não foi sobrescrita.
@@ -389,19 +514,26 @@ teste focado e pelos cinco perfis hashados na seção anterior.
 | Alvo | Estado atual | Conclusão permitida |
 |---|---|---|
 | matriz de medição | `PASS` | baseline reproduzível no commit registrado |
-| correções estreitas de cache/iluminação, snapshot de estrutura e repintura condicional | `PASS` | redução reproduzível, cobertura de equivalência protegida, regressão oficial aprovada e benchmark qualificado no commit limpo |
-| desempenho perceptível em 512 unique | `FAIL` | houve redução de `67%`–`79%`, mas os p95 estruturais ainda excedem centenas de milissegundos |
+| correções estreitas de cache/iluminação, snapshot de estrutura, repintura condicional e retenção no isolamento | `PASS` | redução reproduzível, cache protegido por teste, regressão oficial aprovada e benchmark qualificado no commit limpo `7f5c047` |
+| investigação estrutural em 512 unique | `PASS` | hot spot de revalidação identificado e removido do isolamento; a investigação está fechada, mas o requisito de responsividade permanece separado como `FAIL` |
+| desempenho perceptível em 512 unique | `FAIL` | no r9 houve redução de `61,72%`–`71,51%` contra r5, mas o p95 residual ainda chega a `398,73 ms` |
 | determinismo/erros | `PASS` | nenhuma falha funcional foi encontrada nesta matriz |
 | memória curta | `PENDING_EVIDENCE` | observação pequena, sem prova de estabilidade longa |
 | GPU/runtime externo | `PENDING_EVIDENCE` | não medidos nesta etapa |
 | profiler histórico | `FAIL` | falha da baseline preservada; o tooling atual corrigido possui execução `PASS` separada |
-| build portátil qualificada pós-correção | `PASS` | `r2` identificada no commit `8f5bbb5`, proveniência `PASS`, smoke `SUCCESS` e fluxo Win32 coberto sem abort/erro |
+| build portátil qualificada pós-correção | `PASS` | `r3` identificada no commit `7f5c047`, proveniência `PASS`, smoke `SUCCESS` e fluxo nativo 3D/híbrido com persistência comprovado |
+| evidência nativa do editor canônico 2D + 3D/híbrido | `PASS` | build `r3`, pacote `r4`, 14 capturas hashadas, entrada, manipulação, projeção, salvamento e reabertura comprovados |
 | equivalência runtime Godot/Unity | `PENDING_EVIDENCE` | não comprovada pelo fluxo editorial nem pelo benchmark offscreen |
 
-O próximo subestágio autorizado é a otimização do custo residual de
-visibilidade/grupos e do caminho estrutural, condicionada a perfil causal,
-teste de equivalência, benchmark antes/depois e nova captura real. A etapa
-permanece `IN_PROGRESS` enquanto memória longa, GPU/janela nativa, runtime
-Godot/Unity e responsividade estrutural em alta escala não tiverem evidência
-adequada. O gizmo, a produção de modelos, a decisão sobre o editor independente
-e os demais itens fora da fronteira continuam adiados.
+A investigação estrutural em escala está formalmente encerrada como auditoria:
+o custo de revalidação repetida foi isolado, corrigido de forma estreita e
+retestado no commit limpo; o restante foi delimitado como reconstrução/snapshot
+com p95 ainda reprovado. A próxima otimização só deve ocorrer com novo
+contrato, perfil causal, teste de equivalência, benchmark antes/depois e nova
+captura real.
+
+Este relatório permanece `IN_PROGRESS` porque memória longa, GPU/janela nativa e
+equivalência de runtime Godot/Unity ainda estão `PENDING_EVIDENCE`, e a
+responsividade estrutural em alta escala permanece `FAIL`. O gizmo, a produção
+de modelos, a decisão sobre o editor independente e os demais itens fora da
+fronteira continuam adiados.
