@@ -63,12 +63,12 @@ rastreado pelo Git foi restaurado; a auditoria está em
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
 A regressão oficial segura mais recente foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-safe-host-20260913-r3/official-pytest.log`,
-com SHA-256 `300CF0299F863EF3518191B089C23524D5FED517DA15803F3A66299B61979C33`:
-`2626 passed, 2 skipped, 0 warnings` em 80,09 s. O JUnit tem SHA-256
-`7133498F9B043AA46DF88773AD7103ED375131A5D9D50142E5AF0CBA31FABDBB`.
-Os pacotes anteriores, inclusive o log com cinco warnings, permanecem
-preservados para comparação histórica.
+`artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-pytest.log`,
+com SHA-256 `42DDC5779276493987C3A9010765C26FCB530C8AAEB64A0EF43055AC586534C7`:
+`2630 passed, 2 skipped, 0 warnings` em 84,68 s. O JUnit tem SHA-256
+`B0919A12CDA76364973599B0851178002496C428946B6AA4E5A9BA4F7972BA72`.
+O pacote r3 anterior, inclusive o log com cinco warnings preservado antes
+da correção, permanece disponível para comparação histórica.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
@@ -92,7 +92,7 @@ requalificação corrente de runtime está em
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2626 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
+| Suíte oficial | `PASS` | 2630 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
