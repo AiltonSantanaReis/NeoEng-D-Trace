@@ -78,22 +78,23 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 ## Status atual
 
 O ponteiro histórico abaixo é preservado para proveniência. Para a execução
-atual, o checkout é `Ailton/audit-post-e13-scenario-editor-20260912`, o produto
-está no commit `422483e`, o harness de auditoria está no commit `d7ddbef` e o
-HEAD documental deve ser obtido por `git rev-parse HEAD`. A requalificação
-corrente de runtime está em
+atual, o checkout é `Ailton/audit-post-e13-scenario-editor-20260912`, a fonte
+de produto qualificada está no commit `7f5c047`, a documentação corrente está
+no HEAD `c433960`, o harness de captura nativa está no commit `b20f2f1` e o
+HEAD documental completo deve ser obtido por `git rev-parse HEAD`. A
+requalificação corrente de runtime está em
 `evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md`.
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2625 passaram, 2 skips e 5 warnings na requalificação sem filtros da árvore que originou o commit do harness `d7ddbef`; os resultados anteriores do commit `dd344f47`, o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
+| Suíte oficial | `PASS` | 2626 passaram, 2 skips e 5 warnings na requalificação sem filtros da fonte de produto `7f5c047`; os resultados anteriores, o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
 | Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a requalificação r3 dos runtimes externos de Tilemap e híbrido 3D passou com casos negativos; a build/performance e o fluxo nativo da composição integrada passaram tecnicamente, mas diagnósticos Unity, escala de desempenho e revisão humana permanecem pendentes |
+| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a requalificação r3 dos runtimes externos de Tilemap e híbrido 3D passou com casos negativos; a investigação estrutural em escala e o fluxo nativo canônico 2D/3D/híbrido passaram tecnicamente, os diagnósticos Unity foram reexecutados e classificados sem ocultação, mas a responsividade residual, diagnóstico de ambiente Unity e revisão humana permanecem pendentes |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | build v4 histórica de `dd344f47` preservada; build pós-performance de `8f5bbb5` tem executável `245A66B8E2C29A2180B9514F8579DB3679899A6C1EE4F06F13B863ACF9055238`, ZIP `F46A7481D94194A0BA143FEB9A6A960059D772270094C752FA8440DA3EBF86A0` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
+| Build oficial | `PASS` | builds históricas preservadas; build pós-performance r3 da fonte `7f5c047` tem executável `F56E7E45534087F2E103FD5DD455C8E402DBA9864B40C060A985DFDE58CFCCBD`, ZIP `4CF2E538C1D7B22B48D6376B07C1CED5BC8841E801E29C4A7ABA5B6E5A860106` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana permanece deferida |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
@@ -166,14 +167,34 @@ salvar/reabrir nativos e sidecar `neoeng-d-trace-tileset` SHA-256
 O defeito de layout da recuperação foi corrigido no commit `dd344f47` sem
 remover conteúdo anterior; os resultados v1–v3 permanecem preservados.
 
+A investigação estrutural em escala foi fechada tecnicamente no commit
+`7f5c047`: o benchmark limpo r9 (`26/26`, zero erros e zero falhas de
+determinismo) comprovou a redução de `61,72%`–`71,51%` no workload de `512`
+assets únicos, mas manteve `FAIL` de responsividade pelo p95 residual de
+`249,28`–`398,73 ms`. O relatório e os quatro perfis causais estão em
+`evidence/AUDITORIA_POST_E13_PERFORMANCE_BASELINE_20260913.md`, e o fluxo
+nativo atual do editor canônico está em
+`artifacts/audit-post-e13-binary-performance-20260913-r4/actions.json`, com
+`PASS_NATIVE_FLOW`, 14 capturas e sidecar reaberto após relançamento.
+
+O Unity 6000.5.7f1 foi executado duas vezes em `batchmode/nographics`: os
+gates positivo/negativo passaram com retorno `0`, enquanto `Code 10` do
+Licensing Client, token ausente, timeout/Curl e `abort_threads` foram
+preservados e classificados como `PENDING_EVIDENCE` para a causa/estabilidade
+do ambiente. O entitlement `Unity Personal` foi resolvido nos dois logs. A
+qualificação está em
+`evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md`.
+
 A captura automatizada não substitui a revisão humana final.
 
 ## Próximo passo permitido
 
-Continuar a auditoria e o fechamento dos requisitos funcionais ainda abertos:
-reconciliar a escala de desempenho, qualificar os diagnósticos de licensing/
-shutdown do Unity, manter os limites do vertical slice explícitos e completar
-as evidências do editor canônico. Somente depois que todos os itens exigidos
+O subestágio de investigação estrutural em escala, qualificação dos
+diagnósticos Unity e evidência nativa 2D/3D/híbrida do editor canônico está
+tecnicamente fechado e não deve ser refeito sobre base anterior. Permanecem
+como próximos itens apenas a responsividade residual em escala, memória longa,
+GPU/janela nativa, diagnóstico de ambiente Unity, limites do vertical slice e
+revisão humana final. Somente depois que todos os itens exigidos
 pela [decisão de revisão humana](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md)
 forem implementados, testados, executados no binário e comprovados com captura,
 persistência e hash será permitido solicitar a revisão humana final. O gizmo e
