@@ -49,7 +49,7 @@
   },
   "runtime_requalification": {
     "status": "BLOCKED",
-    "latest_attempt_id": "r8",
+    "latest_attempt_id": "r9",
     "attempts": [
       {
         "id": "r1",
@@ -133,14 +133,61 @@
           "request_marker_present": true,
           "processes_terminal_after_poll": true,
           "status": "PASS",
-          "scope": "disposable sandbox only"
-        },
-        "observed": "Unity loaded and reached the real LicensingClient; package method was not reached because the controlled sandbox had no valid license"
-      }
+        "scope": "disposable sandbox only"
+      },
+      "observed": "Unity loaded and reached the real LicensingClient; package method was not reached because the controlled sandbox had no valid license"
+    },
+    {
+      "id": "r9",
+      "output_dir": "output-r9",
+      "status": "BLOCKED",
+      "result_sha256": "C770D760743CC36F08DB863C8DCBD3AB6A5C62D3562092E6188F7A74FA5D227E",
+      "raw_log_sha256": "DEC8C7C2529BD4B2BDFDA139E92C92F0498D8B530912517532561681B9F1FD5A",
+      "sanitized_log_sha256": "E7AFC86CE5D4427668496E1E3D379CB4C7052C2ABA39C34F8D57ACE21E2D04C0",
+      "shutdown_marker_sha256": "0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D",
+      "runner_sha256": "A35F1E416A947396294AB94FA578876AC83E9D9C4B726DFDEDCDA4C5819DBF25",
+      "config_sha256": "2B79174A90FD0986A973C955F8534E8DC9030DC7B9882859E089629641C5BCC0",
+      "license_source_sha256": "89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926",
+      "license_source_bytes": 6731,
+      "license_copied_inside_sandbox": true,
+      "license_target_sha256": "89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926",
+      "unity_process_started": true,
+      "unity_exit_code": 198,
+      "timed_out": false,
+      "package_report_present": false,
+      "licensing": {
+        "module_seen": true,
+        "license_client_seen": true,
+        "code_10": true,
+        "access_token_unavailable": true,
+        "code_404_entitlement": true,
+        "zero_entitlement_groups": true,
+        "zero_free_entitlements": true,
+        "no_valid_editor_license": true
+      },
+      "unity_shutdown": {
+        "batchmode_quit_signal": false,
+        "clean_return_code_zero": false,
+        "abort_threads": false,
+        "memory_leaks": false,
+        "remaining_unity_process_count_before_sandbox_shutdown": 2,
+        "status": "BLOCKED",
+        "reason": "Unity terminated on missing entitlement before clean -quit completion"
+      },
+      "sandbox_shutdown": {
+        "request_marker_present": true,
+        "processes_terminal_after_poll": true,
+        "status": "PASS",
+        "scope": "disposable sandbox only"
+      },
+      "observed": "The authorized candidate was copied inside the disposable sandbox with matching SHA-256, but Unity reported zero matching entitlement groups/free entitlements and terminated with code 198 before the package method and clean -quit completion"
+    }
     ],
     "latest_harness": {
-      "sandbox_runner_sha256": "00395FD00E509454687080866C0B9AA11913CAC1FF88286BE61AF8A8D0EA7B27",
-      "sandbox_config_sha256": "B3479E3AC6AA41C4C4823ABE34E53BDF2E097DCD7F9B1E374CAFB75D65969D87",
+    "sandbox_runner_sha256": "A35F1E416A947396294AB94FA578876AC83E9D9C4B726DFDEDCDA4C5819DBF25",
+    "sandbox_config_sha256": "2B79174A90FD0986A973C955F8534E8DC9030DC7B9882859E089629641C5BCC0",
+    "license_source_sha256": "89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926",
+    "license_source_used_in_r9": true,
       "runtime_overlay": {
         "msvcp100.dll": "934D882EFD3C0F3F1EFBC238EF87708F3879F5BB456D30AF62F3368D58B6AA4C",
         "msvcr100.dll": "AE3CB6C6AFBA9A4AA5C85F66023C35338CA579B30326DD02918F9D55259503D5",
@@ -150,7 +197,7 @@
         "vcruntime140_1.dll": "A7146C08F89FE5B04541AB507CDB59FF7B44534D4BA3C668A426C6450A03434E"
       }
     },
-    "reexecution_condition": "Only after an authorized Unity license/activation is available in the disposable environment, or the controlled harness/engine version changes; do not rerun symlink or host shutdown tests."
+    "reexecution_condition": "Only after a different valid Unity license/activation or dedicated license fixture is available in the disposable environment, or the controlled harness/engine version changes; the same candidate was used in r9 and produced zero entitlements; do not rerun symlink or host shutdown tests."
   },
   "alternative_environment_probe": {
     "docker_server": "29.5.3",
@@ -169,6 +216,6 @@
     "unity_shutdown": "BLOCKED",
     "sandbox_shutdown": "PASS",
     "native_unity_run": "BLOCKED",
-    "next_action": "Provide an authorized Unity license/activation in the disposable environment, then rerun the same fixture with the current hash-registered harness; do not rerun symlink or host shutdown tests."
+    "next_action": "Provide a valid Unity license/activation or dedicated license fixture for the disposable environment, then rerun the same fixture with the current hash-registered harness; the authorized candidate was already used in r9 and produced zero entitlements; do not rerun symlink or host shutdown tests."
   }
 }

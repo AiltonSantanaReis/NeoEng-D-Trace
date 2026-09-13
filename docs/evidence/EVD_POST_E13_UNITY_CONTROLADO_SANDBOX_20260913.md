@@ -38,7 +38,7 @@ encerrar processos ou solicitar shutdown do sistema para este ensaio.
 | Versão WindowsSandbox.exe | `10.0.26100.8875` |
 | SHA-256 WindowsSandbox.exe | `7BB5667331572C8A725A3A799AE7DED2912648B4F6EB7380FB51864C804C3E36` |
 | Manifesto do pacote na fixture | `D267EBDDBDE32F78C146C194FCC083F2A36457EAEB73A6D3593F2CE28CC21F25` |
-| Execução real Unity | comprovada no r8: `process_started=true` |
+| Execução real Unity | comprovada no r9: `process_started=true`; licença autorizada transportada, zero entitlements aplicáveis |
 
 ## Histórico da requalificação controlada
 
@@ -55,6 +55,7 @@ foi sobrescrita.
 | r6 | `FAIL` | busca no diretório do Editor corrigiu `embree`/`OpenRL`; `Unity.dll` em erro 126 |
 | r7 | `FAIL` | `MSVCP140_CODECVT_IDS.dll` identificado como dependência ausente |
 | r8 | `BLOCKED` | Unity carregou e alcançou LicensingClient; licença válida ausente |
+| r9 | `BLOCKED` | candidato autorizado foi copiado com hash correspondente; Unity encontrou zero entitlements aplicáveis e saiu com código 198 |
 
 ## Execução real r8
 
@@ -83,11 +84,35 @@ Resultado do runner:
 O Unity, portanto, chegou ao ciclo real de licensing, mas saiu pelo caminho de
 licença ausente antes de completar o método do pacote e o encerramento limpo.
 
+## Execução real r9 com licença autorizada
+
+No r9, a pasta de licença do host foi mapeada em modo read-only para a sandbox.
+O runner validou o SHA-256 esperado, copiou o arquivo para o caminho local do
+usuário descartável e confirmou o mesmo hash no destino. O Unity iniciou em
+`batchmode/nographics`, conectou-se ao LicensingClient e chegou ao handshake,
+mas o LicensingClient reportou `0` grupos de entitlement e `0` free
+entitlements correspondentes.
+
+Resultado objetivo do r9:
+
+- `process_started=true`, `timed_out=false` e `process_exit_code=198`;
+- origem e destino da licença: `89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926`;
+- `package-report.json` ausente; método `RunHeadless` não alcançado;
+- `Code 10`, token indisponível, `Code 404` e “No valid Unity Editor license found”: observados;
+- sinais de `-quit` limpo, retorno zero, `abort_threads` e `MemoryLeaks`: não observados;
+- dois processos Unity/licensing ainda estavam presentes no instante anterior ao shutdown da sandbox;
+- marcador de shutdown presente e todos os processos `WindowsSandbox*` terminaram naturalmente;
+- nenhum processo foi encerrado nem o host foi desligado.
+
+O r9 elimina a dúvida sobre o transporte do arquivo: a licença chegou ao local
+esperado dentro do ambiente controlado. Ele não elimina a falha de entitlement;
+o candidato autorizado não é uma licença válida/aplicável para essa execução.
+
 ## Evidências e hashes
 
 O resultado completo, incluindo os hashes da configuração e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `AE773A27728C59D37C8D3A4033840BC0FD81DCEFAE4DC17BA0B7C31157B08671`).
+(SHA-256 `C6B9F211C2D307D44549D77A3F09258A20C88B201760E6F83ACCE9846EE30A02`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`
@@ -102,6 +127,19 @@ IDs/PIDs/caminhos voláteis, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/unity-sanitized.log`
 (SHA-256 `FA80B56C7850C0945F405D7254576F0501927EC439AB5300863BB7028FDC1819`).
 
+O resultado r9 está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r9/sandbox-result.json`
+(SHA-256 `C770D760743CC36F08DB863C8DCBD3AB6A5C62D3562092E6188F7A74FA5D227E`).
+O log bruto r9 permanece preservado localmente com SHA-256
+`DEC8C7C2529BD4B2BDFDA139E92C92F0498D8B530912517532561681B9F1FD5A`; a projeção
+sanitizada está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r9/unity-sanitized.log`
+(SHA-256 `E7AFC86CE5D4427668496E1E3D379CB4C7052C2ABA39C34F8D57ACE21E2D04C0`).
+O runner r9 tem SHA-256
+`A35F1E416A947396294AB94FA578876AC83E9D9C4B726DFDEDCDA4C5819DBF25` e a
+configuração WSB r9 tem SHA-256
+`2B79174A90FD0986A973C955F8534E8DC9030DC7B9882859E089629641C5BCC0`.
+
 ## Alternativas seguras verificadas
 
 Foram feitas apenas sondagens read-only de alternativas. O Docker Desktop ativo
@@ -115,38 +153,42 @@ Windows dentro do Docker Linux.
 Uma inspeção estrutural read-only encontrou no host um possível arquivo de
 entitlement em
 `C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`.
-Nenhum valor de elemento, token ou identificador foi exposto. O arquivo não foi
-copiado, montado, alterado ou usado pelo Unity na sandbox.
+Nenhum valor de elemento, token ou identificador foi exposto. Após autorização
+explícita, ele foi somente mapeado read-only e copiado para o ambiente
+descartável no r9; não foi alterado no host.
 
 | Metadado | Resultado |
 |---|---|
-| Estado | `CANDIDATE_METADATA_ONLY_NOT_USED` |
+| Estado | `USED_CONTROLLED_NO_VALID_ENTITLEMENT` |
 | Tamanho | `6731` bytes |
 | SHA-256 | `89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926` |
 | Raiz XML | `root` |
 | Estrutura | inclui `Entitlement`, `License`, `Signature`, `SignedInfo`, `StartDate` e `UpdateDate` |
 | Valores expostos | não |
-| Cópia/montagem na sandbox | não |
-| Prova de licença Unity válida | não — a estrutura, isoladamente, não confirma ativação para `6000.5.7f1` |
+| Cópia/montagem na sandbox | mapeamento read-only e cópia interna r9; hash confirmado |
+| Verificação estrutural local | assinatura XML retornou `INVALID` no verificador read-only; resultado não foi usado como prova de ativação |
+| Resultado Unity r9 | zero grupos de entitlement e zero free entitlements; retorno `198` |
+| Prova de licença Unity válida | não — o Unity recusou o entitlement para `6000.5.7f1` |
 
-O uso desse candidato exige autorização explícita do proprietário para uma
-montagem/cópia controlada somente dentro da sandbox descartável, ou uma fixture
-de licença própria para o ambiente. Até essa decisão, ele é apenas uma pista
-documental e não altera o estado `BLOCKED`.
+O candidato já foi usado uma vez sob autorização explícita e não deve ser
+repetido. A próxima tentativa exige uma licença/ativação válida diferente ou
+uma fixture própria para o ambiente; isso não autoriza qualquer execução nativa
+no host.
 
 ## Classificação
 
 | Gate | Estado | Evidência |
 |---|---|---|
-| carregamento/execução real do Unity | `PASS` | r8 iniciou o Unity x64 e alcançou o LicensingClient |
-| licensing limpo | `BLOCKED` | falha observada: código 198, token ausente e nenhuma licença válida |
+| carregamento/execução real do Unity | `PASS` | r9 iniciou o Unity x64, copiou a licença autorizada e alcançou o LicensingClient |
+| licensing limpo | `BLOCKED` | r9 observou zero entitlements aplicáveis, token ausente, `Code 404` e código 198 |
 | método/relatório do pacote | `BLOCKED` | execução interrompida pelo licensing antes do método |
-| shutdown limpo do Unity/`-quit` | `BLOCKED` | Unity saiu por licença ausente; sinais de encerramento limpo não ocorreram |
+| shutdown limpo do Unity/`-quit` | `BLOCKED` | Unity saiu por entitlement inválido/ausente antes dos sinais de encerramento limpo |
 | shutdown da sandbox descartável | `PASS` | marcador interno presente e processos terminaram após polling |
 | segurança do host | `PASS` | não houve Unity, shutdown ou terminação forçada no host |
 
 O `BLOCKED` atual é ambiental/de credencial e não representa falha funcional do
-pacote: o pacote não chegou a ser avaliado porque o Unity não possuía licença.
+pacote: mesmo com o candidato autorizado transportado corretamente, o Unity
+não reconheceu entitlement aplicável e o pacote não chegou a ser avaliado.
 O `FAIL` de licensing observado é mantido explicitamente. Os diagnósticos
 históricos continuam separados e não foram reutilizados como prova de ambiente
 limpo.
@@ -154,10 +196,10 @@ limpo.
 ## Risco e próxima condição de reexecução
 
 Não alterar o pacote para contornar a licença. A próxima reexecução só é válida
-quando uma licença/ativação Unity autorizada estiver disponível dentro do
+quando uma licença/ativação Unity válida diferente estiver disponível dentro do
 ambiente descartável, ou quando o harness/versão do Unity mudar. Nesse caso,
 usar a mesma fixture, registrar novo output e repetir o ciclo completo. Não
-repetir symlink nem shutdown do host.
+repetir o candidato r9, symlink nem shutdown do host.
 
 Até essa condição, o gate Unity permanece `BLOCKED` e a meta pós-E13 continua
 `IN_PROGRESS`; o carregamento e o shutdown da sandbox estão comprovados, mas
