@@ -127,6 +127,9 @@ class VectorContourPanel(QWidget):
         self.session.subscribe(self._refresh)
         self._refresh()
 
+    def _status(self, pt: str, en: str) -> str:
+        return pt if self.current_lang == "pt" else en
+
     def set_selected_asset(self, asset_id: str | None) -> None:
         self._asset_id = asset_id
         self._result = None
@@ -179,7 +182,12 @@ class VectorContourPanel(QWidget):
             self._result = result
             self._editing = ContourEditSession(result)
             self.status_message.emit(
-                f"Contour detected for {self._asset_id}: {len(result.polygon)} vertices"
+                self._status(
+                    f"Contorno detectado para {self._asset_id}: "
+                    f"{len(result.polygon)} vértices",
+                    f"Contour detected for {self._asset_id}: "
+                    f"{len(result.polygon)} vertices",
+                )
             )
             self._refresh()
             return True
@@ -190,7 +198,12 @@ class VectorContourPanel(QWidget):
                 exc, operation="vectorization", language=self.current_lang
             )
             self.diagnostics_label.setText(message)
-            self.status_message.emit("Contour detection rejected: " + message)
+            self.status_message.emit(
+                self._status(
+                    "Detecção de contorno rejeitada: " + message,
+                    "Contour detection rejected: " + message,
+                )
+            )
             self._refresh()
             return False
 
@@ -202,12 +215,19 @@ class VectorContourPanel(QWidget):
                 self.vertex_index.value(),
                 (self.vertex_x.value(), self.vertex_y.value()),
             )
-            self.status_message.emit("Contour vertex corrected")
+            self.status_message.emit(
+                self._status("Vértice do contorno corrigido", "Contour vertex corrected")
+            )
             self._refresh()
             return True
         except VectorizationError as exc:
             self.diagnostics_label.setText(str(exc))
-            self.status_message.emit("Contour correction rejected: " + str(exc))
+            self.status_message.emit(
+                self._status(
+                    "Correção de contorno rejeitada: " + str(exc),
+                    "Contour correction rejected: " + str(exc),
+                )
+            )
             return False
 
     def simplify(self) -> bool:
@@ -215,19 +235,31 @@ class VectorContourPanel(QWidget):
             return False
         try:
             self._editing.simplify(1.0)
-            self.status_message.emit("Contour simplified with geometry validation")
+            self.status_message.emit(
+                self._status(
+                    "Contorno simplificado com validação geométrica",
+                    "Contour simplified with geometry validation",
+                )
+            )
             self._refresh()
             return True
         except VectorizationError as exc:
             self.diagnostics_label.setText(str(exc))
-            self.status_message.emit("Contour simplification rejected: " + str(exc))
+            self.status_message.emit(
+                self._status(
+                    "Simplificação de contorno rejeitada: " + str(exc),
+                    "Contour simplification rejected: " + str(exc),
+                )
+            )
             return False
 
     def undo(self) -> bool:
         if self._editing is None or not self._editing.can_undo:
             return False
         self._editing.undo()
-        self.status_message.emit("Contour edit undone")
+        self.status_message.emit(
+            self._status("Edição de contorno desfeita", "Contour edit undone")
+        )
         self._refresh()
         return True
 
@@ -235,7 +267,9 @@ class VectorContourPanel(QWidget):
         if self._editing is None or not self._editing.can_redo:
             return False
         self._editing.redo()
-        self.status_message.emit("Contour edit redone")
+        self.status_message.emit(
+            self._status("Edição de contorno refeita", "Contour edit redone")
+        )
         self._refresh()
         return True
 
@@ -244,7 +278,10 @@ class VectorContourPanel(QWidget):
             return False
         self._editing.cancel()
         self.status_message.emit(
-            "Contour detection cancelled; original source preserved"
+            self._status(
+                "Detecção de contorno cancelada; origem preservada",
+                "Contour detection cancelled; original source preserved",
+            )
         )
         self._refresh()
         return True
@@ -253,7 +290,12 @@ class VectorContourPanel(QWidget):
         if self._editing is None or self._result is None or self._asset_id is None:
             return False
         if not self.session.document.layers:
-            self.status_message.emit("Create object rejected: scene has no layer")
+            self.status_message.emit(
+                self._status(
+                    "Criação rejeitada: a cena não possui camada",
+                    "Create object rejected: scene has no layer",
+                )
+            )
             return False
         base = f"vector_{self._asset_id}"
         used = {item.id for item in self.session.document.objects}
@@ -277,12 +319,22 @@ class VectorContourPanel(QWidget):
                 edited_polygon=self._editing.current_polygon,
             )
         except (OSError, ValueError) as exc:
-            self.status_message.emit("Create object rejected: " + str(exc))
+            self.status_message.emit(
+                self._status(
+                    "Criação de objeto rejeitada: " + str(exc),
+                    "Create object rejected: " + str(exc),
+                )
+            )
             return False
         self.status_message.emit(
-            f"Vector scene object created: {object_id}"
-            if changed
-            else "No object created"
+            self._status(
+                f"Objeto vetorial de cena criado: {object_id}"
+                if changed
+                else "Nenhum objeto criado",
+                f"Vector scene object created: {object_id}"
+                if changed
+                else "No object created",
+            )
         )
         self._refresh()
         return changed

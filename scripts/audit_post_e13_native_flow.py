@@ -34,7 +34,12 @@ from src.ui.theme_qss import QSS
 
 
 class AuditConfig:
+    def __init__(self, language: str = "en"):
+        self.language = language
+
     def get(self, _key: str, default=None):
+        if _key == "language":
+            return self.language
         return default
 
     def set(self, _key: str, _value) -> None:
@@ -91,7 +96,7 @@ def _snapshot(editor) -> dict[str, object]:
     }
 
 
-def run(output: Path) -> dict[str, object]:
+def run(output: Path, *, language: str = "en") -> dict[str, object]:
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     fixture = output / "fixture"
@@ -116,7 +121,7 @@ def run(output: Path) -> dict[str, object]:
 
     app = QApplication.instance() or QApplication(sys.argv)
     app.setStyleSheet(QSS)
-    main = MainWindow(scene, AuditConfig())
+    main = MainWindow(scene, AuditConfig(language))
     main._project_path = project
     main.scenario_authoring.bind_project(project)
     main.scenario_authoring.reset()
@@ -323,6 +328,7 @@ def run(output: Path) -> dict[str, object]:
     manifest = {
         "status": "PASS",
         "scope": "post-E13 studio native source execution and user-flow harness",
+        "language": language,
         "qt_platform": os.environ.get("QT_QPA_PLATFORM", "native-default"),
         "native_window": True,
         "process_id": os.getpid(),
@@ -343,8 +349,9 @@ def run(output: Path) -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--language", choices=("en", "pt"), default="en")
     args = parser.parse_args()
-    print(json.dumps(run(args.output), indent=2, sort_keys=True))
+    print(json.dumps(run(args.output, language=args.language), indent=2, sort_keys=True))
     return 0
 
 
