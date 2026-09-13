@@ -48,3 +48,16 @@ Sem uma dessas decisões e seus testes correspondentes, esta evidência deve
 permanecer `IN_PROGRESS`. Nenhum threshold foi reduzido e nenhum finding foi
 apagado.
 
+## Decisões recebidas em 2026-09-13
+
+O responsável pelo projeto aceitou formalmente o limite estrutural medido para
+este ciclo e autorizou ambiente dedicado para soak de memória/GPU e qualificação
+de licensing/shutdown do Unity. A decisão está registrada em
+`docs/evidence/DECISAO_POST_E13_LIMITE_PERFORMANCE_SOAK_CONTROLADO_20260913.md`.
+
+O valor observado continua sendo `FAIL` no relatório r9; a aceitação é uma
+decisão de escopo, não uma promoção artificial para `PASS`. Não haverá alteração
+de threshold nem nova otimização estrutural nesta etapa. O gate de soak passa a
+`IN_PROGRESS` e será fechado somente com evidência controlada, mantendo GPU e
+Unity como `NOT_APPLICABLE`/`PENDING_EVIDENCE` quando a instrumentação ou o
+runtime real não estiverem disponíveis.
