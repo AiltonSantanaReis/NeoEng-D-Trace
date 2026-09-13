@@ -125,7 +125,7 @@
         "latest_revalidation_artifact": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-pytest.log",
         "latest_revalidation_artifact_sha256": "0EEE691A67DEABE331B591DFC3D4455DB66A278A97266DC25811CCD9EC365F6C",
         "latest_revalidation_metadata": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/run-metadata.txt",
-        "latest_revalidation_metadata_sha256": "28CC7D7213C37E0AEB011F000C7A9B46F9CCC35A6114CC6E4515650A8259C855",
+        "latest_revalidation_metadata_sha256": "CB6DD4926B5687A1336471448DB63F8BC12C342A8ACB67ABC83CFC4B848473CB",
         "latest_revalidation_duration_seconds": 84.68,
         "junit": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-junit.xml",
       "junit_sha256": "BF0176EB03CD54A68F89FD1DBC9105EB477D76C2815D68F4CE1977C118276E18",

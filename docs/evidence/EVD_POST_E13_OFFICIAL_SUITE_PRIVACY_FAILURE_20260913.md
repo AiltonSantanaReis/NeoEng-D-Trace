@@ -69,3 +69,29 @@ O log r4 corrigido tem SHA-256
 O finding `WinError 5` continua aberto até uma qualificação focada e uma
 nova suíte completa demonstrarem substituição atômica estável; nenhuma
 permissão, threshold ou teste foi relaxado.
+
+## Reexecução r7 preservada
+
+Após o retry controlado do atlas e antes da higienização do metadata r4, a
+suíte oficial r7 terminou com:
+
+```text
+2632 passed, 2 skipped, 1 failed in 81.58s
+```
+
+O único teste que falhou foi novamente
+`test_tracked_files_and_nested_archives_have_no_prohibited_references`, agora
+por um caminho absoluto no `run-metadata.txt` r4. O JUnit raw r7 tem SHA-256
+`97C9307494397FA0F9FCAC8C452AAABD8E381B38BAE06F425BB003F7588EF9A2` e o log
+raw tem SHA-256
+`6C336E861D9B73C3AA826B14EC5D5900B19E84AFDC55C38A7471517898130EE8`.
+As versões sanitizadas preservadas têm JUnit SHA-256
+`5678673487968A46664FABD855B2E896A58336E42E17D2893E0632D079B90AC2` e
+log SHA-256 `2E10FEA2259BAB35211184370ACD6204A4B295D21510EA5E66ED4C26938B340B`.
+O metadata r4 raw tinha SHA-256
+`28CC7D7213C37E0AEB011F000C7A9B46F9CCC35A6114CC6E4515650A8259C855` e a
+versão sanitizada tem SHA-256
+`CB6DD4926B5687A1336471448DB63F8BC12C342A8ACB67ABC83CFC4B848473CB`.
+
+Os artefatos r7 continuam como `FAIL` preservado; o próximo run deve avaliar
+somente a árvore já higienizada e o retry atômico commitado.

@@ -1,6 +1,6 @@
 run_id=POST-E13-OFFICIAL-SUITE-SAFE-HOST-20260913-R4
 status=PASS
-checkout=C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_merge-main-20260912
+checkout=WORKSPACE
 source_commit=783b385e17506bd898910d4a96fa44db2d7bf1c9
 branch=Ailton/audit-post-e13-scenario-editor-20260912
 command=..\..\.venv\Scripts\python.exe -m pytest -q --junitxml=artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-junit.xml
