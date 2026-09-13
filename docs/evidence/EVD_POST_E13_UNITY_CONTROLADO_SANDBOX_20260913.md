@@ -59,7 +59,15 @@ ocupado. A nova sessão foi criada pelo launcher, porém não montou a fixture:
 
 O resultado completo, incluindo os hashes da configuração e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `193C380D7C7D6F5DEF3E022F4A2E450DFC0C4BFE680FD6A55E2121FAAC4777FF`).
+(SHA-256 `230C2093A760F167B6C50B0C0A3643731A61C4A3D5C6655EEF8D166B2CD0B271`).
+
+## Alternativas seguras verificadas
+
+Depois do bloqueio, foram feitas apenas sondagens read-only. O Docker Desktop
+ativo é `29.5.3` com daemon `linux` sobre WSL2; não há daemon Windows ativo.
+Também não foram encontrados Windows VMs no Hyper-V, VirtualBox ou VMware.
+Nenhuma alternativa foi iniciada, e não há base técnica para executar o
+`Unity.exe` Windows dentro do Docker Linux.
 
 ## Classificação
 

@@ -47,6 +47,17 @@
     "host_shutdown_requested": false,
     "reason": "A preexisting disposable Windows Sandbox session kept the single sandbox VM occupied; the new configuration was accepted by the launcher but did not mount the fixture or start Unity before the allowed graceful cleanup window ended."
   },
+  "alternative_environment_probe": {
+    "docker_server": "29.5.3",
+    "docker_ostype": "linux",
+    "docker_kernel": "5.15.167.4-microsoft-standard-WSL2",
+    "docker_windows_daemon_available": false,
+    "hyperv_windows_vms_available": false,
+    "virtualbox_available": false,
+    "vmware_available": false,
+    "alternative_environment_started": false,
+    "conclusion": "No authorized Windows runtime alternative is available on this host; Docker Linux cannot execute the Windows Unity editor."
+  },
   "classification": {
     "licensing": "BLOCKED",
     "unity_shutdown": "BLOCKED",
