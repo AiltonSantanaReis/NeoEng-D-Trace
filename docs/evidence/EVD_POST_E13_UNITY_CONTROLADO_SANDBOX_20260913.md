@@ -357,6 +357,25 @@ O `FAIL` de licensing observado é mantido explicitamente. Os diagnósticos
 históricos continuam separados e não foram reutilizados como prova de ambiente
 limpo.
 
+## Auditoria da suíte e evento transitório
+
+- A primeira suíte completa após o commit `523f0d9` terminou com `2633 passed,
+  2 skipped, 1 failed`: o teste de higiene encontrou caminhos locais nos
+  resultados e documentos recém-versionados. A redação foi aplicada e os
+  hashes foram atualizados no commit `5bac7e3`.
+- A primeira suíte completa após a redação terminou com `2633 passed, 2
+  skipped, 1 failed`: o teste de exportação atômica recebeu `WinError 5` no
+  `os.replace` do arquivo temporário. O teste isolado passou em cinco
+  execuções (`5/5`), sem alteração no exportador; o evento foi classificado
+  como lock/acesso transitório do host e não foi mascarado.
+- A execução completa seguinte, com os mesmos bytes staged que foram
+  consolidados em `5bac7e3`, terminou com `2634 passed, 2 skipped, 0 failed`
+  em `78,30 s`, sem warnings. A validação focada pós-commit terminou com
+  `62/62` e os validadores de continuidade/integridade passaram.
+- Os dois skips restantes são exclusivamente os testes de symlink protegidos
+  no host; a cobertura definitiva correspondente foi executada no Windows
+  Sandbox (`31/31 passed`) e não deve ser repetida sem alteração relevante.
+
 ## Risco e próxima condição de reexecução
 
 Não alterar o pacote para contornar a licença. A próxima reexecução só é válida
