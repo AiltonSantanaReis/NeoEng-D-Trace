@@ -48,9 +48,9 @@ diretório temporário, a árvore limpa foi validada e todos foram restaurados n
 
 ## Fluxo Win32 real
 
-Script: `scripts/capture_e03_asset_library_binary.ps1`  
-Pacote: `artifacts/audit-post-e13-binary-vector-contour-20260912-r3/`  
-Manifesto de capturas: `artifacts/audit-post-e13-binary-vector-contour-20260912-r3/manifest.json`  
+Script: `scripts/capture_e03_asset_library_binary.ps1`
+Pacote: `artifacts/audit-post-e13-binary-vector-contour-20260912-r3/`
+Manifesto de capturas: `artifacts/audit-post-e13-binary-vector-contour-20260912-r3/manifest.json`
 SHA-256 do manifesto:
 `67CC4848E40EF23406214FC060043A61D86B7EA421CB7FB438D8AF14D6CED03A`
 
@@ -78,7 +78,7 @@ controles continuam operacionais.
 
 ## Persistência observada
 
-Arquivo: `artifacts/audit-post-e13-binary-vector-contour-20260912-r3/vector-contour-fixture/vector-contour.ndtscene.json`  
+Arquivo: `artifacts/audit-post-e13-binary-vector-contour-20260912-r3/vector-contour-fixture/vector-contour.ndtscene.json`
 SHA-256:
 `EC8CFF2F2A8BA79A08254224B064BFEA0957E832E4A4F52E52C4FBAA7A4CF393`
 
@@ -118,4 +118,3 @@ Não é PASS para:
 - equivalência de runtime Godot/Unity;
 - revisão humana final, gizmo, produção de modelos ou encerramento da
   auditoria pós-E13.
-
