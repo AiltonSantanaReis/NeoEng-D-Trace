@@ -1,8 +1,8 @@
 # Registro de mudança — fallback opcional CuPy sem warning esperado
 
-**ID:** `CHG-POST-E13-CUPY-FALLBACK-LOG-20260913`  
-**Status:** `IN_PROGRESS`  
-**Data:** 2026-09-13  
+**ID:** `CHG-POST-E13-CUPY-FALLBACK-LOG-20260913`
+**Status:** `IN_PROGRESS`
+**Data:** 2026-09-13
 **Escopo:** observabilidade do fallback CPU na build portátil
 
 ## Autoridade e motivo
