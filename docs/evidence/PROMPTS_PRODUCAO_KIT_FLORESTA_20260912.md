@@ -181,7 +181,7 @@ Para cada saída real, registrar imediatamente:
 Nenhum prompt deste documento é evidência de asset gerado. A geração permanece
 `PENDING_EVIDENCE` até que o arquivo real seja produzido, inspecionado e
 hashado. O fallback CLI só poderá ser usado após autorização explícita do
-usuário e configuração local de `OPENAI_API_KEY`.
+usuário e configuração local de uma chave de API do provedor configurado.
 
 ## Dependências
 
