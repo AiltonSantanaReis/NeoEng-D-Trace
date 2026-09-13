@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import tempfile
+import time
 from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Protocol, Tuple, cast
 
@@ -30,6 +31,20 @@ except ImportError:
 
 from src.core.logger import logger
 
+_ATOMIC_REPLACE_RETRY_DELAYS = (0.05, 0.1, 0.2)
+
+
+def _atomic_replace(staged: str, destination: str) -> None:
+    """Atomically replace a file, tolerating short Windows sharing races."""
+    for attempt, delay in enumerate((*_ATOMIC_REPLACE_RETRY_DELAYS, None)):
+        try:
+            os.replace(staged, destination)
+            return
+        except PermissionError:
+            if delay is None:
+                raise
+            time.sleep(delay)
+
 
 def _commit_staged_files(staged_files: List[Tuple[str, str]]) -> None:
     """Commit staged files as one rollback-protected output set."""
@@ -50,7 +65,7 @@ def _commit_staged_files(staged_files: List[Tuple[str, str]]) -> None:
             shutil.copy2(destination, backup_path)
 
         for staged, destination in staged_files:
-            os.replace(staged, destination)
+            _atomic_replace(staged, destination)
             committed.append(destination)
     except Exception:
         for destination in reversed(committed):
@@ -59,7 +74,7 @@ def _commit_staged_files(staged_files: List[Tuple[str, str]]) -> None:
                 if os.path.exists(destination):
                     os.remove(destination)
             else:
-                os.replace(stored_backup, destination)
+                _atomic_replace(stored_backup, destination)
                 backups[destination] = None
         raise
     finally:

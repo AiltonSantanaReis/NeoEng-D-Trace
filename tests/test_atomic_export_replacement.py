@@ -69,6 +69,32 @@ def test_atlas_replaces_existing_outputs_without_predelete(tmp_path, monkeypatch
     assert not list(tmp_path.glob("tmp_atlas_*"))
 
 
+def test_atlas_retries_transient_windows_replace_denial(tmp_path, monkeypatch):
+    atlas_path = tmp_path / "atlas.png"
+    json_path = tmp_path / "atlas.json"
+    attempts = []
+    real_replace = atlas_exporter.os.replace
+
+    def flaky_replace(staged, destination):
+        attempts.append((staged, destination))
+        if len(attempts) <= 2:
+            raise PermissionError(5, "sharing race")
+        return real_replace(staged, destination)
+
+    monkeypatch.setattr(atlas_exporter.os, "replace", flaky_replace)
+    atlas_exporter.save_atlas(
+        Image.new("RGBA", (8, 8), (0, 255, 0, 255)),
+        [{"name": "item"}],
+        str(atlas_path),
+        str(json_path),
+    )
+
+    assert len(attempts) == 4
+    assert atlas_path.exists()
+    assert json.loads(json_path.read_text(encoding="utf-8")) == [{"name": "item"}]
+    assert not list(tmp_path.glob("tmp_atlas_*"))
+
+
 def test_gltf_replaces_existing_destination_without_predelete(tmp_path, monkeypatch):
     destination = tmp_path / "scene.glb"
     destination.write_bytes(b"old")
