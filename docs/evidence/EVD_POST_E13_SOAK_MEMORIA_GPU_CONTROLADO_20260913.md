@@ -96,6 +96,9 @@ Relatório:
 SHA-256 do relatório:
 `E0B368982ED14A69A21410B1480E31799552857AB6CE14590CB96E5F1B98423E`
 
+Commit que promoveu runner, relatório e ponteiros:
+`8db308df6bcef380a22ef362f28b6d403f9032a7`.
+
 | Critério | Resultado |
 |---|---:|
 | Status | `PASS_CONTROLLED_GPU_WORKLOAD` |
