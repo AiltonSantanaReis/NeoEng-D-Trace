@@ -1,0 +1,58 @@
+{
+  "main": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\01-main.png",
+    "sha256": "94F26FE3A7DBA7BC1771CC62D17F9D0EB664FD248440C76CA64D3A154D5995D0"
+  },
+  "main_after_project_load": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\03-main-after-project-load.png",
+    "sha256": "7184A27AD3B6DD15D64BCB1B91E51E8A35EAB3E94DA2CF857301E4F3AFE403A8"
+  },
+  "asset_library_ready": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\05-asset-library-ready.png",
+    "sha256": "C2852055F9D1A7D15F619F9E550458AFAE0860586834DFF5F4631BD7BD3099D3"
+  },
+  "asset_library_filter_contract": "covered by focused Qt tests; controls visible in asset_library_ready",
+  "vector_contour_initial": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\06-vector-contour-initial.png",
+    "sha256": "4BA5522B1DCAD05AF571CC52427335CDDCE8343F0CD0C2169B8F150746FCF8C0"
+  },
+  "vector_library_open": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\07-vector-library-open.png",
+    "sha256": "7E040800C03758CAD8C83CD97FED2AA96C6E5EAF6A2F769E9D8C53CEE3353887"
+  },
+  "vector_library_selected": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\08-vector-library-selected.png",
+    "sha256": "8ACB151D072BC219289E06189AF9E83EDC0A50B45EB2FC1CADA3583187961261"
+  },
+  "vector_contour_asset": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\09-vector-contour-asset.png",
+    "sha256": "FD95FB815E77E77A03649D9C9359F0009DAA5820D203F3019622C1DB48C634C0"
+  },
+  "vector_contour_selected": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\10-vector-contour-selected.png",
+    "sha256": "8ACB151D072BC219289E06189AF9E83EDC0A50B45EB2FC1CADA3583187961261"
+  },
+  "vector_contour_detected": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\11-vector-contour-detected.png",
+    "sha256": "25228B72E61E69DAC46566B1DE0AE458838776D3B2E218EF65C7D632F4B8A611"
+  },
+  "vector_contour_edited": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\12-vector-contour-edited.png",
+    "sha256": "0C8EF5E3D211A81CB9D6C375CF18C3AA28E198D2A9FB52704190FF5BA27601A8"
+  },
+  "vector_contour_created": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\13-vector-contour-created.png",
+    "sha256": "52C852D785F3B2412204B37A38C970A3021DCFDDCC2E49065B5682111E6FFB27"
+  },
+  "vector_contour_saved": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\14-vector-contour-saved.png",
+    "sha256": "A409652280A14EB3C5875CF7B2409DA3968EE757A3D60DA3FB9D0FF5AB3AEC7E"
+  },
+  "vector_contour_reloaded": {
+    "path": "artifacts\\audit-post-e13-binary-vector-contour-20260912-r3\\15-vector-contour-reloaded.png",
+    "sha256": "792244DAA3B09B208FB1900868D6A7A68C9208C77D881D0C631E6750F66360B0"
+  },
+  "editor_title": "Editor de Cenário — NeoEng-D-Trace",
+  "editor_window_rect_before_tilemap_flow": "-13,-13,3853,2077",
+  "window": "captured by PrintWindow from binary window handle"
+}
