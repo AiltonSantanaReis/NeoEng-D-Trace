@@ -71,11 +71,13 @@ $triggerObserved = Test-Path -LiteralPath $triggerPath -PathType Leaf
 
 $licenseLocalAppData = $env:LOCALAPPDATA
 if ([string]::IsNullOrWhiteSpace($licenseLocalAppData)) {
-    $licenseLocalAppData = 'C:\Users\WDAGUtilityAccount\AppData\Local'
+    $sandboxSystemDrive = if ([string]::IsNullOrWhiteSpace($env:SystemDrive)) { 'C:' } else { $env:SystemDrive }
+    $licenseLocalAppData = Join-Path $sandboxSystemDrive 'Users\WDAGUtilityAccount\AppData\Local'
 }
 $roamingAppData = $env:APPDATA
 if ([string]::IsNullOrWhiteSpace($roamingAppData)) {
-    $roamingAppData = 'C:\Users\WDAGUtilityAccount\AppData\Roaming'
+    $sandboxSystemDrive = if ([string]::IsNullOrWhiteSpace($env:SystemDrive)) { 'C:' } else { $env:SystemDrive }
+    $roamingAppData = Join-Path $sandboxSystemDrive 'Users\WDAGUtilityAccount\AppData\Roaming'
 }
 $licenseDirectory = Join-Path $licenseLocalAppData 'Unity\licenses'
 $roamingUnityDirectory = Join-Path $roamingAppData 'Unity'

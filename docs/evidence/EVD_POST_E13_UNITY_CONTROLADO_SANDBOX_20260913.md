@@ -259,8 +259,11 @@ válida diferente ou fixture própria autorizada.
 ## Execução real r14 — handoff manual, compilação e shutdown da Sandbox
 
 O WSB r14 foi preparado no perfil descartável, com rede habilitada, sem mapear
-arquivo de licença do host. A configuração tem SHA-256
-`4286CC2042E634A070576BCFB76901D852E07C71CEDFAC0C22034F3401787430`;
+arquivo de licença do host. A configuração efetivamente executada tem SHA-256
+`4286CC2042E634A070576BCFB76901D852E07C71CEDFAC0C22034F3401787430`; a cópia
+rastreada foi sanitizada com referências de caractere XML que preservam o mesmo
+caminho após o parse e tem SHA-256
+`3F8C550565296B5DC46073C6F75DD80BB1BDC886873918D7840680BFB1847904`.
 o runner tem SHA-256 `78D5A49E477D5AA44BE1F33FB7F40DA4661C890ED8BEA3DE0AEF7E35629C2624`
 e o wrapper de navegador tem SHA-256
 `93C3D9005E38723C81CB13A6E22AA2C489D7DD503325131F266D9E3BC096E618`.
@@ -303,8 +306,11 @@ uma nova execução Unity.
 
 ## Handoff r15 — instalação/autenticação não concluídas
 
-O r15 usou o fixture corrigido e foi preparado com WSB SHA-256
-`3042ACC8577DD67C2FC5EEF52035A72CDFA38DA852C9C398EDDA00ED9B4EC80F`, o mesmo
+O r15 usou o fixture corrigido e foi preparado com WSB SHA-256 efetivamente
+executado `3042ACC8577DD67C2FC5EEF52035A72CDFA38DA852C9C398EDDA00ED9B4EC80F`.
+A cópia rastreada, sanitizada com referências de caractere XML semanticamente
+equivalentes, tem SHA-256
+`0502D7062471ACA43B922A7028F527B63FBB22C36ECFC3B3615741DDA30E506B`; o mesmo
 runner (`78D5A49E477D5AA44BE1F33FB7F40DA4661C890ED8BEA3DE0AEF7E35629C2624`) e
 wrapper SHA-256 `5041552F9DE72D0F1AB9C79B10D3E7E53EA92AE619CEFD4285CD3A580EA8D8F5`.
 O Hub iniciou dentro da VM e os marcadores do navegador foram produzidos, mas
@@ -331,9 +337,9 @@ novo ciclo descartável, sem reutilizar o r15.
 ## Evidências e hashes
 
 O resultado completo das tentativas r1–r15, incluindo os hashes da configuração
-e do runner, está em
+efetivamente executada, da cópia sanitizada rastreada e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `4B6FC18F3BA36C26CF9A135DA2CA75C7BE6E7EC0A6475F7E00C5B38EC4CA0EA8`).
+(SHA-256 `0A6113928A17C9B70F490286A6FA16D43871074C1797C207F13CC16DF02AF1B1`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`
