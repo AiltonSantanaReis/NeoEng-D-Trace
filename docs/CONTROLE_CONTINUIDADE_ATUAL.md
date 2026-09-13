@@ -63,10 +63,10 @@ rastreado pelo Git foi restaurado; a auditoria está em
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
 A regressão oficial segura mais recente foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-safe-host-20260913-r8/official-pytest.log`,
-com SHA-256 `4488F0EFA77707192A6CC93BC513D26F524FC650C6CF6436DA57EE44EF2C0BA4`:
-`2633 passed, 2 skipped, 0 warnings` em 81,64 s. O JUnit tem SHA-256
-`B4ADB31031532294659AD1BB88E68EFE9F5B56788BA81C98D72852789A4DD874`.
+`artifacts/audit-post-e13-official-suite-safe-host-20260913-r9/official-pytest.log`,
+com SHA-256 `C9BEE6739BAFBD83A65D8295A98F2532ECEE9968D052DDFF09269CCCC028252D`:
+`2633 passed, 2 skipped, 0 warnings` em 81,84 s. O JUnit tem SHA-256
+`ED4586936DF8A41DB2FABC93DD15AA3DAD0F095FDA17E420A82327B417CA06D3`.
 O pacote r3 anterior, inclusive o log com cinco warnings preservado antes
 da correção, permanece disponível para comparação histórica.
 
@@ -92,7 +92,7 @@ requalificação corrente de runtime está em
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | r8: 2633 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
+| Suíte oficial | `PASS` | r9: 2633 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
@@ -209,7 +209,7 @@ registrada como aprovada pelo proprietário em
 
 O subestágio de investigação estrutural em escala e a evidência nativa 2D/3D/
 híbrida do editor canônico estão tecnicamente fechados e não devem ser refeitos
-sobre base anterior. A meta vigente fechou a suíte r8 sem warnings, o retry
+sobre base anterior. A meta vigente fechou a suíte r9 sem warnings, o retry
 atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial e
 qualificou o diagnóstico controlado de Unity/shutdown; permanecem as medições
 restantes de desempenho, memória e GPU/janela e a classificação de um ambiente
