@@ -1,0 +1,21 @@
+run_id=post-e13-official-suite-safe-host-20260913-r8
+status=PASS
+checkout=WORKSPACE
+source_commit=74e8ad9
+branch=Ailton/audit-post-e13-scenario-editor-20260912
+command=python -m pytest --tb=short --junitxml=WORKSPACE/artifacts/audit-post-e13-official-suite-safe-host-20260913-r8/official-junit.xml
+selection=all tests discovered by pytest.ini testpaths=tests; no filters
+controlled_symlink_guard=NEOENG_ALLOW_CONTROLLED_SYMLINK_TEST=0
+result=2633 passed, 2 skipped, 0 warnings, 0 failures, 0 errors
+duration=81.64s
+skips=test_plan_rejects_symlink_escape;test_plan_rejects_symlink_destination
+skip_reason=symlink creation is controlled-only; run in the approved sandbox
+raw_preserved_outside_repository=yes
+raw_junit_sha256=CECCC450397B711F2E1F9A9B618294BD990F49793A34C68D358D0202A26B454F
+raw_log_sha256=7AFBCA6F2ECD3ACE3E2FDDAFAC27FFCA4F175D6330BB13E0F7C1F561E3759EF7
+sanitized_junit_sha256=B4ADB31031532294659AD1BB88E68EFE9F5B56788BA81C98D72852789A4DD874
+sanitized_log_sha256=4488F0EFA77707192A6CC93BC513D26F524FC650C6CF6436DA57EE44EF2C0BA4
+junit_xml_validation=PASS
+repository_reference_hygiene=PASS
+native_dangerous_tests=not executed
+notes=The two host skips remain explicit controlled-only skips; definitive symlink behavior is evidenced by the sandbox r4 package.
