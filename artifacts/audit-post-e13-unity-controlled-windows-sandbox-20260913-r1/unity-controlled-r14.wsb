@@ -1,0 +1,44 @@
+<Configuration>
+  <VGpu>Disable</VGpu>
+  <Networking>Enable</Networking>
+  <ClipboardRedirection>Disable</ClipboardRedirection>
+  <PrinterRedirection>Disable</PrinterRedirection>
+  <AudioInput>Disable</AudioInput>
+  <VideoInput>Disable</VideoInput>
+  <MemoryInMB>8192</MemoryInMB>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_merge-main-20260912\artifacts\audit-post-e13-unity-controlled-windows-sandbox-20260913-r1\fixture</HostFolder>
+      <SandboxFolder>C:\input</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_merge-main-20260912\artifacts\audit-post-e13-unity-controlled-windows-sandbox-20260913-r1\control-r14</HostFolder>
+      <SandboxFolder>C:\control-r14</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_merge-main-20260912\artifacts\audit-post-e13-unity-controlled-windows-sandbox-20260913-r1\control\runtime</HostFolder>
+      <SandboxFolder>C:\runtime</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_merge-main-20260912\artifacts\audit-post-e13-unity-controlled-windows-sandbox-20260913-r1\output-r14</HostFolder>
+      <SandboxFolder>C:\output</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\atnco\AppData\Local\Programs\Unity Hub</HostFolder>
+      <SandboxFolder>C:\UnityHub</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Program Files\Unity\Hub\Editor\6000.5.7f1\Editor</HostFolder>
+      <SandboxFolder>C:\Unity\Editor</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\control-r14\prepare-browser-and-run.ps1</Command>
+  </LogonCommand>
+</Configuration>

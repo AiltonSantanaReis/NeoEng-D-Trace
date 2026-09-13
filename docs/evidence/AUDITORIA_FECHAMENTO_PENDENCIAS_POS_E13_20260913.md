@@ -3,7 +3,7 @@
 **ID:** `AUD-POST-E13-CLOSURE-AUDIT-20260913`
 **Status do registro:** `IN_PROGRESS / ONE_OWNER_DECISION_REMAINING`
 **Data:** 2026-09-13
-**HEAD de entrada auditado:** `1b7fedd0fe4e898c3b240c5767688e142ecd7e49`
+**HEAD de entrada auditado:** `541d48cbcb4557330b6be47225233cc1114d0ad9`
 **Branch:** `Ailton/audit-post-e13-scenario-editor-20260912`
 **Governança:** `docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`
 **SHA-256 da governança:** `D933DB005B7110C391CF776CDA3014CE348D61A91A5E9902AEEA619185EC3EA0`
@@ -34,7 +34,7 @@ artefatos funcionais foram preservados.
 | CuPy | `PASS / NOT_APPLICABLE` para adoção oficial | `docs/evidence/ADR_POST_E13_CUPY_AVALIACAO_20260913.md` e diagnóstico hashado | Suporte opcional e fallback CPU permanecem; não há base causal para incluir CuPy na dependência ou na build portátil |
 | Fluxo nativo do editor canônico e revisão humana | `PASS` no escopo qualificado | `artifacts/audit-post-e13-binary-performance-20260913-r4/actions.json` — SHA-256 `CBBE3711D4D24E336B6E349E7D659C502C9F640C24ED40207FF81FA98387D3AA` e decisão de revisão aprovada | Capturas reais, fluxo nativo e aprovação humana estão registrados; isso não encerra o gate externo do Unity |
 | Arquivo legado e higiene | `PASS` | `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md` e manifesto `archive/legacy/artifacts/post-e13-historical-20260913/archive-manifest.json` — SHA-256 `2E89672381BEF30BFAFD5E773D41FF0BDBDF742F99379B23A9A800CA5529F666` | Movimento reversível; `0` exclusões permanentes; históricos preservados e separados da base ativa |
-| Unity real em Windows Sandbox | `PASS` de inicialização / `BLOCKED` de licensing e shutdown limpo | r12 em `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; resultado SHA-256 `E95995806B98A263F44C43FE487FF3615447B88B24DD27CEA95933A6079BC960` | Unity iniciou dentro da sandbox e alcançou o LicensingClient, mas encontrou zero entitlements aplicáveis e saiu com `198`; pacote e shutdown limpo não foram alcançados |
+| Unity real em Windows Sandbox | `PASS` de inicialização/compilação alcançada / `BLOCKED` de requalificação do pacote, licensing limpo e shutdown limpo | r14 em `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; resultado SHA-256 `A9A7EC3DD68A8E807BACD1500F9DDEA4D91013E842E94649875DB3BBCC6562A7`, log sanitizado SHA-256 `E27EA506CD2AD2F115F7CBE065A9CC8AC7914584BDE1AE50DD65AF99A0751278`; r15 timeout SHA-256 `A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276` | r14 iniciou o Unity dentro da sandbox, alcançou a compilação real e preservou os erros dos módulos `ImageConversion`/`Animation`; a correção declarativa foi aplicada no pacote, mas ainda não foi requalificada. O r15 não iniciou Unity porque a instalação/handoff manual não foi concluída no limite de 1800 s; nenhum diagnóstico de licensing é atribuído a ele |
 
 ## Falhas, warnings e skips preservados
 
@@ -48,23 +48,41 @@ artefatos funcionais foram preservados.
 - O warning de empacotamento `tzdata` e a correção subsequente permanecem
   hashados nos registros próprios.
 - A divergência de metadado de rede do Unity r11 tem estado `FAIL` no harness e
-  foi preservada. O r12 corrigiu o metadado e é a execução coerente usada para
-  a conclusão de rede habilitada.
+  foi preservada. O r12 corrigiu o metadado; o r13 repetiu a configuração
+  coerente com um candidato de hash novo.
 - Os warnings `SUCCEEDED(hr)` e `wmiOpened`, o `Code 10`, o token ausente, o
   `Code 404`, os entitlements zerados e o retorno `198` do Unity permanecem no
   log sanitizado. Não foram substituídos por diagnósticos históricos positivos.
+- O r14 preserva os cinco grupos de erros de compilação observados: `Texture2D.LoadImage`
+  sem `ImageConversionModule` e tipos `AnimationClip`, `Animation` e
+  `AnimationState` sem `AnimationModule`; o processo terminou com código `1`.
+  A correção mínima foi aplicada em `NeoEngDTrace.Runtime.asmdef` e
+  `package.json`, mas permanece pendente de confirmação por uma nova execução
+  real do Unity. O r15 preserva o timeout `124` aguardando a instalação/handoff
+  manual e não é evidência de sucesso nem de falha do pacote.
 
 ## Estado da única pendência dependente do proprietário
 
 Todas as frentes seguras desta meta estão qualificadas, aceitas em escopo ou
-explicitamente limitadas. Resta uma decisão externa única:
+explicitamente limitadas. O r14 revelou uma falha concreta de compilação do
+contrato do pacote; a declaração dos módulos necessários já foi corrigida no
+checkout, mas ainda precisa de requalificação. O r15 expirou aguardando a
+instalação/handoff manual e não substitui o r14. Resta uma decisão externa
+única:
 
 1. disponibilizar uma licença/ativação Unity válida para `6000.5.7f1`, ou uma
    fixture de entitlement própria e autorizada, dentro da sandbox descartável;
-   então executar uma nova tentativa com o harness hashado para alcançar o
-   método do pacote e observar o shutdown limpo; ou
+   para Personal isso exige autenticação online no Hub, enquanto o fluxo
+   offline de license request não é aplicável; então executar uma nova tentativa
+   com o harness hashado para alcançar o método do pacote e observar o shutdown
+   limpo; ou
 2. aceitar que licensing, relatório do pacote e shutdown limpo do Unity
    permaneçam `BLOCKED` neste ciclo.
+
+A confirmação explícita do proprietário de que a instalação do Editor terminou
+é uma pré-condição operacional para uma nova tentativa descartável; não é uma
+decisão técnica adicional. Sem essa confirmação, nenhum gatilho deve ser criado
+e nenhum Unity deve ser iniciado.
 
 A opção 2 não é uma promoção técnica nem autorização de release. Sem uma
    dessas decisões, a meta permanece `IN_PROGRESS`; não há autorização para
@@ -79,16 +97,21 @@ A opção 2 não é uma promoção técnica nem autorização de release. Sem um
   imagem/digest, driver ou caminho real qualificado.
 - CuPy: somente após mudança da integração X-Ray, contrato de desempenho,
   deployment/CI ou política de empacotamento.
-- Unity: somente com licença/fixture válida diferente ou mudança material no
-  engine, harness ou configuração de rede; a próxima execução deve permanecer
-  dentro da sandbox descartável.
+- Unity: somente com licença/fixture válida diferente, mudança material no
+  engine/harness/rede ou mudança material no contrato do pacote. A correção dos
+  módulos aplicada após o r14 é uma mudança relevante; a próxima execução,
+  depois da confirmação de instalação, deve ser um ciclo descartável novo e
+  deve registrar o resultado real sem reaproveitar o timeout r15.
 
 ## Conclusão formal da auditoria
 
 O resultado atual é tecnicamente consistente com o objetivo: o soak controlado,
 symlink controlado, CuPy, integridade documental, preservação de artefatos e
 fluxos do editor canônico foram fechados sem regressão observada. O limite de
-responsividade foi aceito formalmente sem mascarar o `FAIL`. A única condição
-que impede o encerramento integral da meta é o entitlement Unity externo; ela
-está isolada, reproduzida em ambiente controlado e documentada como
-`BLOCKED`, sem qualquer ação perigosa no host.
+responsividade foi aceito formalmente sem mascarar o `FAIL`. O encerramento
+integral do gate Unity continua impedido por licensing/ativação e pela
+requalificação da correção de compilação aplicada após o r14; a hipótese de
+cópia incompleta foi eliminada pela r13, a causa compatível com Personal foi
+registrada com fonte oficial, e o timeout r15 foi separado da execução real.
+Todos os bloqueios permanecem isolados, reproduzidos ou explicitamente
+qualificados em ambiente controlado, sem qualquer ação perigosa no host.

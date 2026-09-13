@@ -1,0 +1,52 @@
+{
+    "schema_version":  2,
+    "environment":  "windows-sandbox",
+    "networking":  "enabled",
+    "authentication_mode":  "manual-unity-hub-login-inside-sandbox",
+    "editor_path":  "C:\\Unity\\Editor\\Unity.exe",
+    "editor_working_directory":  "C:\\Unity\\Editor",
+    "project_path":  "C:\\work\\project",
+    "runtime_overlay":  "C:\\runtime",
+    "hub_started":  true,
+    "hub_start_error":  "",
+    "trigger_observed":  false,
+    "activation_wait_seconds":  1800,
+    "activation_inventory":  {
+                                 "local_unity_licenses_directory_present":  true,
+                                 "local_unity_license_file_count":  1,
+                                 "local_unity_license_extensions":  [
+                                                                        ".xml"
+                                                                    ],
+                                 "roaming_unity_directory_present":  false,
+                                 "roaming_unity_file_count":  0,
+                                 "content_collected":  false,
+                                 "note":  "Only presence, counts, and extensions are recorded; activation contents remain inside the disposable sandbox."
+                             },
+    "process_started":  false,
+    "process_exit_code":  124,
+    "timed_out":  true,
+    "start_error":  "manual Hub login trigger was not received before the controlled wait limit",
+    "started_utc":  "2026-09-13T21:22:33.4551137Z",
+    "ended_utc":  "2026-09-13T21:52:43.1969234Z",
+    "report_present":  false,
+    "success_marker":  false,
+    "failure_marker":  false,
+    "licensing_signals":  {
+                              "module_seen":  false,
+                              "access_token_error":  false,
+                              "code_10":  false,
+                              "license_client_seen":  false,
+                              "no_valid_editor_license":  false,
+                              "code_404_entitlement":  false
+                          },
+    "shutdown_signals":  {
+                             "batchmode_quit":  false,
+                             "shut_down":  false,
+                             "exited_batchmode":  false,
+                             "return_code_zero":  false,
+                             "abort_threads":  false,
+                             "memory_leaks":  false
+                         },
+    "remaining_unity_process_count_before_sandbox_shutdown":  8,
+    "shutdown_request":  "sandbox-only: shutdown.exe /s /t 0 /f"
+}

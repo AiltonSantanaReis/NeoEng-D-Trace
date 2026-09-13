@@ -11,8 +11,11 @@ suíte corrente e próxima ação estão registrados em
 `docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md`.
 **Auditoria corrente de fechamento:**
 `docs/evidence/AUDITORIA_FECHAMENTO_PENDENCIAS_POS_E13_20260913.md` consolida
-os gates pós-E13; resta somente a decisão do proprietário sobre uma licença ou
-fixture Unity válida para retirar o bloqueio externo.
+os gates pós-E13; o Unity r14 alcançou a compilação real e revelou uma falha de
+referências do pacote que já foi corrigida, mas ainda requer requalificação. O
+r15 expirou aguardando instalação/handoff manual. Resta a decisão do
+proprietário sobre uma licença/fixture Unity válida e a confirmação operacional
+de que o Editor terminou de instalar antes de qualquer novo ciclo.
 **Arquivo legado reconciliado em 2026-09-13:** execuções históricas não
 referenciadas foram movidas de forma reversível para
 `archive/legacy/artifacts/post-e13-historical-20260913/`, com manifesto e
@@ -101,13 +104,13 @@ requalificação corrente de runtime está em
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa e workload CUDA dedicado estão qualificados em ambiente controlado, enquanto o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por ausência de instrumentação; Unity r12 iniciou em Sandbox com rede habilitada, transportou o candidato atualizado e alcançou o LicensingClient, mas encontrou zero entitlements aplicáveis; a inconsistência de metadado do r11 foi preservada; licensing limpo e shutdown limpo permanecem `BLOCKED` |
+| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa e workload CUDA dedicado estão qualificados em ambiente controlado, enquanto o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por ausência de instrumentação; Unity r14 iniciou em Sandbox com rede habilitada e alcançou a compilação real, preservando erros de referências dos módulos `ImageConversion`/`Animation`; a correção declarativa está aplicada, mas não validada; r15 expirou sem iniciar Unity; licensing limpo, método do pacote e shutdown limpo permanecem `BLOCKED` |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
-| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker; o r12 iniciou Unity real em Windows Sandbox com rede habilitada, copiou o candidato atualizado com SHA confirmado, observou LicensingClient, `Code 10`, token ausente, `404` com zero entitlements e código 198; o r11 ficou preservado como falha de metadado do harness; a sandbox encerrou, mas licensing limpo, método do pacote e shutdown limpo do Unity continuam não comprovados |
+| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker; o r14 iniciou Unity real em Windows Sandbox com rede habilitada, alcançou a compilação, resolveu `Unity Personal`, preservou `Code 10`/token indisponível e saiu com código 1 por referências de módulos; o r15 expirou aguardando handoff manual sem iniciar Unity; o r11 ficou preservado como falha de metadado do harness; a sandbox encerrou, mas licensing limpo, método do pacote e shutdown limpo do Unity continuam não comprovados |
 | CuPy | `PASS` da avaliação; `NOT_APPLICABLE` como dependência oficial | caminho opcional X-Ray comprovado no ambiente local, ganho somente no workload grande medido; não há evidência de que o gargalo do editor seja CuPy e a build portátil continua CPU/fallback |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -210,9 +213,14 @@ r11 repetiu a fixture em WSB com rede habilitada, mas o runner herdado registrou
 `networking=disabled` no resultado; essa inconsistência de instrumentação foi
 mantida como `FAIL` do harness e não foi corrigida retroativamente. O r12
 corrigiu somente esse metadado, repetiu a execução com rede habilitada registrada
-de forma coerente e obteve o mesmo `Code 198`/zero entitlement. O shutdown da
-sandbox foi comprovado em todas as tentativas, e a evidência hashada de r1–r12
-está em `evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
+de forma coerente e obteve o mesmo `Code 198`/zero entitlement. O r14, após
+handoff/login manual, iniciou Unity e alcançou a compilação real, onde revelou
+`Texture2D.LoadImage` sem `ImageConversionModule` e tipos de animação sem
+`AnimationModule`; a correção declarativa foi aplicada no pacote, mas ainda não
+foi validada. O r15 usou a fixture corrigida, porém expirou aguardando a
+instalação/handoff manual e não iniciou Unity. O shutdown da sandbox foi
+comprovado nas tentativas finalizadas, e a evidência hashada de r1–r15 está em
+`evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
 
 O r11 possui resultado `AE1D1B036AF836A1EE069A24D2A8E6D06A5D21AEDF11A1B9BF114A3B2665F07D`,
 log bruto local `FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153`,
@@ -237,18 +245,25 @@ O subestágio de investigação estrutural em escala e a evidência nativa 2D/3D
 híbrida do editor canônico estão tecnicamente fechados e não devem ser refeitos
 sobre base anterior. A meta vigente fechou a suíte r12 sem warnings, o retry
 atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial,
-qualificou a memória em soak controlado e registrou a limitação objetiva de GPU;
-permanece somente a qualificação Unity de licensing/shutdown limpos, atualmente
-`BLOCKED` porque r9, r10 e a execução coerente r12 não forneceram entitlement válido na
-sandbox. O workload CUDA dedicado foi qualificado (`PASS_CONTROLLED_GPU_WORKLOAD`), mas
-o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por não ser
-exposto pelo caminho offscreen/software. O carregamento Unity e o shutdown da sandbox já foram comprovados. A revisão humana já foi
-aprovada; o gizmo e a produção de modelos/asset packs permanecem adiados por
-decisão do proprietário.
+qualificou a memória em soak controlado e registrou a limitação objetiva de GPU.
+O Unity r14 iniciou e chegou à compilação real, mas o método do pacote e o
+shutdown limpo permanecem `BLOCKED`; a correção dos módulos foi aplicada e
+aguarda requalificação. O r15 não substitui essa execução porque expirou sem
+iniciar Unity. O workload CUDA dedicado foi qualificado
+(`PASS_CONTROLLED_GPU_WORKLOAD`), mas o contador de frames/GPU do QGraphicsView
+permanece `NOT_APPLICABLE` por não ser exposto pelo caminho offscreen/software.
+O carregamento Unity e o shutdown da sandbox já foram comprovados. A revisão
+humana já foi aprovada; o gizmo e a produção de modelos/asset packs permanecem
+adiados por decisão do proprietário.
 Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de
 distribuição continuam explicitamente separados. A equivalência
 V2→exportação Godot/Unity de partículas tem checkpoint técnico; o abort legado
 permanece como falha histórica preservada, não como resultado atual da suíte.
+
+Enquanto a instalação do Editor não for confirmada como concluída pelo
+proprietário, não criar gatilho nem iniciar Unity. Após essa confirmação, a
+requalificação deverá usar um ciclo descartável novo, com handoff/login manual e
+evidência própria; o timeout r15 não é prova de execução do pacote.
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada

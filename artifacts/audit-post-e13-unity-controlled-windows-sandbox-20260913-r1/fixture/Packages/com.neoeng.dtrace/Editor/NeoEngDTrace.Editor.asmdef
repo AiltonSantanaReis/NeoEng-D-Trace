@@ -1,13 +1,12 @@
 {
-  "name": "NeoEngDTrace.Runtime",
-  "rootNamespace": "NeoEng.DTrace",
+  "name": "NeoEngDTrace.Editor",
+  "rootNamespace": "NeoEng.DTrace.Editor",
   "references": [
-    "UnityEngine.JSONSerializeModule",
-    "UnityEngine.ParticleSystemModule",
-    "UnityEngine.ImageConversionModule",
-    "UnityEngine.AnimationModule"
+    "NeoEngDTrace.Runtime"
   ],
-  "includePlatforms": [],
+  "includePlatforms": [
+    "Editor"
+  ],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
   "overrideReferences": false,
