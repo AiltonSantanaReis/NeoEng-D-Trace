@@ -14,7 +14,9 @@
 
 **Checkpoint protegido:** `ec94530fcba39be3bbce0439fc56aa48957442c0`
 
-**Última verificação oficial:** `72df498c3ad9c332500b82f29e9e97fc3a68edaf`
+**Última verificação oficial:** `72df4985641f7bd75cfc890d0909feea8a99a21b`
+
+**Build distribuível verificada:** `5ae2db3e72dba4b730afce79dbe56daf08ae7a87`
 
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 
@@ -172,6 +174,61 @@ detecção, edição, simplificação, undo/redo, cancelamento e criação mant�
 mesma lógica e os mesmos textos em inglês. Os testes não foram removidos nem
 alterados para esconder a falha.
 
+## Catalogação dos caminhos de borda após a correção
+
+Foi feita uma inspeção estática dos caminhos de recuperação, exportação,
+reset, undo/redo e dos adaptadores de `scenario_authoring_actions`, seguida de
+uma reprodução `DIAGNOSTIC_ONLY` em Qt com o idioma PT-BR. O diagnóstico
+observou, entre outros, `Nenhum cenário recuperável está disponível`,
+`Nenhum cenário V1 aguarda atualização`, `Cenário redefinido a partir do
+projeto`, `Cenário salvo`, `Cenário recarregado` e a mensagem de exportação
+genérica em português. A suíte focada também contém a proteção
+`test_professional_edge_statuses_are_localized_for_pt_br`.
+
+O limite foi mantido explícito: o campo técnico `Detail:` de erros P2D05 ainda
+preserva detalhes de diagnóstico em inglês para investigação de engenharia.
+Isso não foi reclassificado como localização completa de todos os detalhes
+técnicos nem como falha do fluxo principal; permanece uma recomendação
+separada para uma futura camada de tradução de exceções.
+
+## Build distribuível e fluxo Win32 pós-correção
+
+A nova build foi gerada depois da suíte oficial e executada com entrada real de
+mouse Win32 e captura por `PrintWindow` da janela do binário. O pacote não usa
+CUA porque o controle nativo CUA não estava disponível nesta sessão; esse
+fallback está declarado e não é apresentado como equivalente a CUA.
+
+| Item | Evidência | Resultado |
+|---|---|---|
+| fonte da build | `build/post-e13-localization-build-20260913-r2/continuity-provenance.json` | `PASS`; commit `5ae2db3e72dba4b730afce79dbe56daf08ae7a87`, branch auditada e proveniência encadeada |
+| executável | `portable/NeoEng-D-Trace/NeoEng-D-Trace.exe` | SHA-256 `EC11E2D757D7FE6974573E5C791BE5432B1BA725FDFE348342C0FAD4E0F22093`; 10.878.627 bytes |
+| manifesto do release | `portable/NeoEng-D-Trace/release-manifest.json` | SHA-256 `38CF6BE8C77DB361E50CB14B76E566C1535B15C6B0080A40EF5D7D22645A636F` |
+| arquivo portátil | `NeoEng-D-Trace-0.3.0-win64-portable.zip` | SHA-256 `4068C1FCF2FD946CBF945330F7F3B274144AB69408F33208A8F6DC2416735763`; 142.939.578 bytes |
+| fluxo executado | `artifacts/audit-post-e13-binary-vector-contour-20260913-r2/manifest.json` | janela real `Editor de Cenário — NeoEng-D-Trace`, captura via `PrintWindow`, status do manifesto `PASS` |
+
+O fluxo distribuído foi: abrir o projeto de fixture, abrir a biblioteca de
+assets, selecionar o asset vetorial, detectar o contorno, editar um vértice,
+criar o objeto vetorial, salvar, fechar/recarregar e verificar o estado
+persistido. O pacote registra o manifesto com SHA-256
+`5C95042F5E709EEF95BD2BBB21407F699E795D0525B9A2B293378EA8E94D97A6`.
+
+| Passo real no binário | Captura | SHA-256 | Resultado observado |
+|---|---|---|---|
+| entrada após carga do projeto | `03-main-after-project-load.png` | `D7896E2827FFE3D980AEAA39AF9CF2875BD48053CB2BD273B7BFC75947A6A4A6` | editor canônico nativo com toolbar e painel em PT-BR |
+| biblioteca de assets | `07-vector-library-open.png` | `7E040800C03758CAD8C83CD97FED2AA96C6E5EAF6A2F769E9D8C53CEE3353887` | biblioteca aberta no binário distribuído |
+| contorno detectado | `11-vector-contour-detected.png` | `25228B72E61E69DAC46566B1DE0AE458838776D3B2E218EF65C7D632F4B8A611` | status PT-BR: `Contorno detectado para vector-source: 4 vértices` |
+| objeto criado | `13-vector-contour-created.png` | `52C852D785F3B2412204B37A38C970A3021DCFDDCC2E49065B5682111E6FFB27` | status PT-BR: `Objeto vetorial de cena criado: vector_vector-source` |
+| salvo | `14-vector-contour-saved.png` | `A409652280A14EB3C5875CF7B2409DA3968EE757A3D60DA3FB9D0FF5AB3AEC7E` | operação de salvar concluída |
+| recarregado | `15-vector-contour-reloaded.png` | `792244DAA3B09B208FB1900868D6A7A68C9208C77D881D0C631E6750F66360B0` | editor reaberto com status `Cenário recarregado` |
+
+O sidecar persistido
+`artifacts/audit-post-e13-binary-vector-contour-20260913-r2/vector-contour-fixture/vector-contour.ndtscene.json`
+tem SHA-256
+`04D4BCDD6430ED53A15AB3FE51EE5073F9FC295D370FD7CC817D629485435E80` e
+registra um objeto, geometria `opencv-contour-tree-r1`, quatro vértices de
+polígono/colisão e o clip de sequência `Câmera`. Isso comprova o round-trip do
+fluxo vetorial nessa build; não comprova, por si só, runtime de engine externa.
+
 ## Testes e achados
 
 Execução focada, sem `skip`, `xfail` ou filtro para converter resultado:
@@ -190,8 +247,8 @@ recurso vetorial, painel vetorial, vetorização e edição de contorno.
 | `LOC-POST-E13-02` | Menu `Ver`, contexto do viewport e tooltip renderizado estão em PT-BR | `PASS` | manifesto/capturas r10; metadados e pixels coerentes |
 | `LOC-POST-E13-03` | Fluxo nativo de autoria em PT-BR, incluindo erro recuperável e persistência, executou sem abortar | `PASS` | manifesto/capturas `native-source-r4` |
 | `LOC-POST-E13-04` | O disparo automático do hover não foi comprovado pela automação neste desktop | `PENDING_EVIDENCE` | r10 registra `automatic_hover_visible=false`; apresentação nativa explícita foi capturada e declarada |
-| `LOC-POST-E13-05` | Caminhos menos frequentes de exportação, recuperação e alguns status de `scenario_authoring_actions` ainda têm strings inglesas a catalogar | `IN_PROGRESS` | inspeção estática e cobertura nativa atual não fecham esses caminhos; não foram declarados PASS |
-| `LOC-POST-E13-06` | Confirmação da correção no produto distribuído depende de nova build | `PASS` | build `post-e13-localization-build-20260912-r1`, SHA-256 `96053F3334CB114E9AF1BA156209D3F6E65F5EEA06FD67165B0A773A1BC92F4B`, fluxo Win32 vetorial r3 e suíte oficial sem falhas |
+| `LOC-POST-E13-05` | Caminhos menos frequentes de exportação, recuperação e status do adaptador precisavam de catalogação | `PASS` | inspeção estática, diagnóstico PT-BR e teste `test_professional_edge_statuses_are_localized_for_pt_br`; detalhes técnicos `Detail:` permanecem explicitamente fora do escopo de tradução completa |
+| `LOC-POST-E13-06` | Confirmação da correção no produto distribuído dependia de nova build | `PASS` | build `post-e13-localization-build-20260913-r2`, executável SHA-256 `EC11E2D757D7FE6974573E5C791BE5432B1BA725FDFE348342C0FAD4E0F22093`, fluxo Win32 real r2 e suíte oficial no commit `72df4985641f7bd75cfc890d0909feea8a99a21b` sem falhas |
 | `LOC-POST-E13-07` | O harness CUA não controlou a janela nativa nesta sessão | `PENDING_EVIDENCE` | limitação ambiental registrada; harness Qt e capturas de tela não foram apresentados como equivalentes |
 
 ## Observações de experiência preservadas
@@ -208,17 +265,14 @@ recurso vetorial, painel vetorial, vetorização e edição de contorno.
 
 ## Próxima etapa planejada
 
-1. Relendo a governança antes da etapa, concluir a catalogação dos caminhos
-   menos frequentes de recuperação/exportação e verificar a nova build em
-   execução nativa; qualquer lacuna restante deve continuar explícita.
-2. Executar a auditoria de desempenho do viewport com cenário vazio, cenário
+1. Executar a auditoria de desempenho do viewport com cenário vazio, cenário
    com múltiplos objetos e efeitos ativos, registrando tempo de frame, memória,
    escala e degradação percebida; qualquer ajuste deverá ter teste de proteção
    e captura antes/depois.
-3. Fechar as pendências de comportamento real de câmera, luz direcional,
+2. Fechar as pendências de comportamento real de câmera, luz direcional,
    efeitos orientáveis, partículas, tilemap/tileset e runtime Godot/Unity,
    separando suporte comprovado, limitação da engine e lacuna do produto.
-4. O gizmo, a produção de modelos e a decisão sobre o editor independente
+3. O gizmo, a produção de modelos e a decisão sobre o editor independente
    continuam reservados para o momento aprovado. A auditoria geral permanece
    `IN_PROGRESS`.
 
