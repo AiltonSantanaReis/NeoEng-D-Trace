@@ -295,7 +295,11 @@ Após r14, a correção mínima foi aplicada somente ao contrato do pacote:
 `package.json` passou a declarar os módulos correspondentes. A fonte e o fixture
 corrigidos têm, respectivamente, SHA-256 `2C8230059CD6AD18881A2FD6DB2F859264D16BAE394DBC50BF49D117CA45F35A`
 e `26FDCDD428068DF4F149798FA7B01DC6E26E22723ABD284F25C8386580F6352B`.
-Essa correção ainda não foi validada por uma nova execução Unity.
+O fixture r15 está vinculado ao commit-fonte
+`f61e185a978561dbf5d213032c120ba34f7bba81`; o commit-base
+`b58519693b65b17492d414d63cacb67d28446137` permanece registrado como a origem
+histórica do candidato anterior/r14. Essa correção ainda não foi validada por
+uma nova execução Unity.
 
 ## Handoff r15 — instalação/autenticação não concluídas
 
@@ -323,7 +327,7 @@ o r15 terminal.
 O resultado completo das tentativas r1–r15, incluindo os hashes da configuração
 e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `F9511C37EBFD6D6B502275019EADB9D2AFE770A0E5ADB1169B51763DDB251ED8`).
+(SHA-256 `3F0797AF5057C5C980276092E78032C79F677D64613F9683BB883995AAA710F3`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`
