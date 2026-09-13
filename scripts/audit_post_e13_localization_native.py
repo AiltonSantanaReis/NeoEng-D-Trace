@@ -176,9 +176,21 @@ def run(output: Path) -> dict[str, object]:
         if QToolTip.isVisible():
             break
     tooltip = inspector.fit_all_button.toolTip()
+    automatic_hover_visible = QToolTip.isVisible()
+    display_mode = "cursor-hover"
+    if not automatic_hover_visible:
+        # The native cursor hover is not deterministic when this source harness
+        # runs behind a host desktop.  Keep that fact in the manifest, then
+        # render the same native Qt tooltip explicitly so the localized pixels
+        # are still captured without pretending the hover trigger was proven.
+        QToolTip.showText(hover_pos, tooltip, inspector.fit_all_button)
+        _settle(app, 180)
+        display_mode = "native-tooltip-explicit"
     records["hover_pt"] = {
         "object_name": inspector.fit_all_button.objectName(),
         "tooltip": tooltip,
+        "automatic_hover_visible": automatic_hover_visible,
+        "display_mode": display_mode,
         "tooltip_visible": QToolTip.isVisible(),
     }
     if not tooltip or "enquadrar" not in tooltip.casefold():
