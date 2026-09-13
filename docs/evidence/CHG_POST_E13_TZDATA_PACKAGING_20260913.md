@@ -1,11 +1,11 @@
 # Registro de mudança — tzdata no runtime portátil pós-E13
 
 **ID:** `CHG-POST-E13-TZDATA-PACKAGING-20260913`
-**Status:** `IN_PROGRESS`
+**Status:** `PASS`
 **Tipo:** correção de dependência e empacotamento
 **Data:** 2026-09-13
-**Checkout:** `72e60784d90030219a5300a4d6677726f5d0815e` antes do commit desta etapa
-**Fonte de produto:** `7f5c0477b3f4594928751aec6b97a4b1e9c0178b`
+**Checkout de diagnóstico:** `72e60784d90030219a5300a4d6677726f5d0815e` antes do commit desta etapa
+**Fonte qualificada:** `98ee5b4ea437d35b89f8767a03e26769636f5f99`
 
 ## Autoridade e motivo
 
@@ -39,9 +39,15 @@ tzdata=2026.4
 utc=UTC
 ```
 
-`poetry check --lock` retornou `All set!`. A suíte focada e a suíte oficial,
-além da nova build portátil e do smoke, ainda precisam ser executados para
-promover este registro a `PASS`.
+`poetry check --lock` retornou `All set!`. O teste de contrato
+`tests/test_post_e13_tzdata_packaging.py` foi incluído na suíte oficial r8,
+que terminou com `2633 passed, 2 skipped, 0 warnings`. A build portátil limpa
+r5 observou o hook `tzdata` carregado, sem `Hidden import tzdata not found`, e
+o smoke real terminou `SUCCESS` com 11 checks. A evidência hashada está em
+`EVD_POST_E13_BUILD_CUPY_ATOMIC_20260913.md`.
+
+O warning histórico da build anterior permanece preservado nos artefatos de
+comparação; não foi apagado nem reclassificado.
 
 ## Não regressão e reexecução
 

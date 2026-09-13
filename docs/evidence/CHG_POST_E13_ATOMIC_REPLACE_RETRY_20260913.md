@@ -1,7 +1,7 @@
 # Registro de mudança — retry controlado de replace atômico do atlas
 
 **ID:** `CHG-POST-E13-ATOMIC-REPLACE-RETRY-20260913`
-**Status:** `IN_PROGRESS`
+**Status:** `PASS`
 **Data:** 2026-09-13
 **Escopo:** robustez do commit atômico de atlas PNG/JSON no Windows
 
@@ -39,6 +39,19 @@ limpeza dos temporários.
 
 Esta mudança não altera symlink, shutdown, Unity, CuPy ou o schema de cena.
 Nenhum teste de symlink/shutdown será executado nativamente no host.
+
+## Gates concluídos
+
+- teste focado do exporter e regressões: `15 passed`;
+- repetição do caso atômico: `12/12` execuções aprovadas;
+- suíte oficial r8 sem filtros: `2633 passed, 2 skipped, 0 warnings`;
+- build portátil limpa r5 e smoke real de 11 checks: `SUCCESS`.
+
+O `WinError 5` da execução r6 permanece preservado como falha histórica em
+`EVD_POST_E13_OFFICIAL_SUITE_PRIVACY_FAILURE_20260913.md`. Após o retry
+controlado, não houve nova falha atômica na suíte r7/r8; o retry não relaxa o
+contrato de substituição, não faz predelete e relança a exceção após esgotar
+as tentativas.
 
 ## Regra de reexecução
 

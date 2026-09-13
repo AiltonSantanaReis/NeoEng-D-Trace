@@ -63,10 +63,10 @@ rastreado pelo Git foi restaurado; a auditoria está em
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
 A regressão oficial segura mais recente foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-pytest.log`,
-com SHA-256 `42DDC5779276493987C3A9010765C26FCB530C8AAEB64A0EF43055AC586534C7`:
-`2630 passed, 2 skipped, 0 warnings` em 84,68 s. O JUnit tem SHA-256
-`B0919A12CDA76364973599B0851178002496C428946B6AA4E5A9BA4F7972BA72`.
+`artifacts/audit-post-e13-official-suite-safe-host-20260913-r8/official-pytest.log`,
+com SHA-256 `4488F0EFA77707192A6CC93BC513D26F524FC650C6CF6436DA57EE44EF2C0BA4`:
+`2633 passed, 2 skipped, 0 warnings` em 81,64 s. O JUnit tem SHA-256
+`B4ADB31031532294659AD1BB88E68EFE9F5B56788BA81C98D72852789A4DD874`.
 O pacote r3 anterior, inclusive o log com cinco warnings preservado antes
 da correção, permanece disponível para comparação histórica.
 
@@ -92,14 +92,14 @@ requalificação corrente de runtime está em
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2630 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
+| Suíte oficial | `PASS` | r8: 2633 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
 | Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual, memória longa, GPU/janela nativa e diagnóstico de ambiente Unity/shutdown permanecem gates técnicos separados |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
-| Build oficial | `PASS` | builds históricas preservadas; build pós-performance r3 da fonte `7f5c047` tem executável `F56E7E45534087F2E103FD5DD455C8E402DBA9864B40C060A985DFDE58CFCCBD`, ZIP `4CF2E538C1D7B22B48D6376B07C1CED5BC8841E801E29C4A7ABA5B6E5A860106` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
+| Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
@@ -209,10 +209,11 @@ registrada como aprovada pelo proprietário em
 
 O subestágio de investigação estrutural em escala e a evidência nativa 2D/3D/
 híbrida do editor canônico estão tecnicamente fechados e não devem ser refeitos
-sobre base anterior. A meta vigente já tratou warnings, avaliou CuPy sem adoção
-oficial e qualificou o diagnóstico controlado de Unity/shutdown; permanecem as
-medições restantes de desempenho, memória e GPU/janela e a classificação de um
-ambiente Unity limpo. A revisão humana já foi aprovada; o gizmo e a produção de
+sobre base anterior. A meta vigente fechou a suíte r8 sem warnings, o retry
+atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial e
+qualificou o diagnóstico controlado de Unity/shutdown; permanecem as medições
+restantes de desempenho, memória e GPU/janela e a classificação de um ambiente
+Unity limpo. A revisão humana já foi aprovada; o gizmo e a produção de
 modelos/asset packs permanecem adiados por decisão do proprietário.
 Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de
 distribuição continuam explicitamente separados. A equivalência

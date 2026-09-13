@@ -1,7 +1,7 @@
 # Registro de mudança — fallback opcional CuPy sem warning esperado
 
 **ID:** `CHG-POST-E13-CUPY-FALLBACK-LOG-20260913`
-**Status:** `IN_PROGRESS`
+**Status:** `PASS`
 **Data:** 2026-09-13
 **Escopo:** observabilidade do fallback CPU na build portátil
 
@@ -28,15 +28,24 @@ CPU, a seleção de `HAS_GPU`, a cadeia X-Ray ou o contrato de empacotamento.
 Foram adicionados testes de severidade e de erro anormal em
 `tests/test_post_e13_cupy_logging.py`.
 
-## Verificação pendente desta mudança
+## Verificação concluída
 
-O pacote final deve conter:
+Os gates desta mudança foram concluídos:
 
-1. os testes focados e a suíte oficial sem warnings de pytest;
-2. uma build limpa com o warning `tzdata` ausente já corrigido;
-3. smoke real do executável portátil, com `python.log` sem `WARNING` para a
-   ausência esperada de CuPy;
-4. registro hashado do relatório PyInstaller, manifestos e smoke.
+1. os testes focados de logging passaram (`48 passed` no pacote diagnóstico);
+2. a suíte oficial r8 passou sem filtros com `2633 passed, 2 skipped,
+   0 warnings`;
+3. a build limpa r5 passou com smoke real de 11 checks, janela visível em PT,
+   salvamento de estado e fechamento com `exit_code=0`;
+4. o relatório PyInstaller r5 não contém `cupy`, `cupyx` ou `tzdata` como
+   hidden import ausente, e os manifestos/smoke estão hashados em
+   `EVD_POST_E13_BUILD_CUPY_ATOMIC_20260913.md`.
+
+Como a ausência de CuPy passou a `INFO`, a validação GUI não emitiu evento
+`python.log` de warning. Isso é compatível com a mudança e não significa que
+o fallback foi removido: a política CPU-first continua ativa e os testes de
+severidade preservam `WARNING` para inicialização anormal e `ERROR` para falha
+de processamento.
 
 Nenhum CuPy será adicionado ao `pyproject.toml` por esta mudança, nenhum
 driver será instalado/alterado e nenhum teste de symlink/shutdown será feito
