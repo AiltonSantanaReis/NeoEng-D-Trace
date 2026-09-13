@@ -1,0 +1,126 @@
+{
+  "assets": [
+    {
+      "id": "project_image",
+      "path": "source.png",
+      "path_kind": "relative",
+      "sha256": "fb0465a67e6d89a8b31a7134b91bdf16f353fdfe673db2c642a6622c9a2c67ff"
+    }
+  ],
+  "camera": {
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "rotation": 0.0,
+    "zoom": 1.0
+  },
+  "format_id": "neoeng-d-trace-scene-authoring",
+  "groups": [],
+  "layers": [
+    {
+      "id": "layer_default",
+      "locked": false,
+      "name": "Default",
+      "visible": true
+    }
+  ],
+  "metadata": {
+    "app_version": "0.3.0",
+    "generator": "NeoEng-D-Trace",
+    "name": "compound-project"
+  },
+  "objects": [
+    {
+      "asset_id": "project_image",
+      "id": "pivot-object",
+      "layer_id": "layer_default",
+      "locked": false,
+      "transform": {
+        "flip_x": false,
+        "flip_y": false,
+        "pivot": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "position": {
+          "x": 12.0,
+          "y": 70.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "visible": true
+    },
+    {
+      "asset_id": "project_image",
+      "id": "concave-object",
+      "layer_id": "layer_default",
+      "locked": false,
+      "transform": {
+        "flip_x": false,
+        "flip_y": false,
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 107.5,
+          "y": 50.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "visible": true
+    }
+  ],
+  "parallax_layers": [
+    {
+      "depth": 0.0,
+      "layer_id": "layer_default",
+      "mirror_x": false,
+      "mirror_y": false,
+      "offset_x": 0.0,
+      "offset_y": 0.0,
+      "repeat_x": false,
+      "repeat_y": false,
+      "scroll_x": 1.0,
+      "scroll_y": 1.0,
+      "translation_strength": 1.0,
+      "zoom_strength": 1.0
+    }
+  ],
+  "project": {
+    "format_id": "neoeng-d-trace-project",
+    "schema_version": 1,
+    "sha256": "b2e83bc2ca6126acf746e52c8215f105f871e2fa3671e97f21d0157b70dc887e"
+  },
+  "schema_version": 2,
+  "snap": {
+    "enabled": false,
+    "mode": "pixel",
+    "spacing": {
+      "x": 1.0,
+      "y": 1.0
+    }
+  },
+  "sockets": []
+}

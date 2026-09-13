@@ -852,11 +852,11 @@ try {
         # Select the large receiver through the real canvas, as a user would
         # before editing its persisted material in the inspector.
         # The PrintWindow output is commonly previewed downscaled, while the
-        # native surface is DPI-aware (3866x2090 on the capture host).  Use a
-        # point well inside the receiver's native bounds rather than a point
-        # inferred from the resized preview; this keeps the test deterministic
-        # and proves the real user click reaches the graphics item.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1760, 860)
+        # native surface is DPI-aware (3866x2090 on the capture host).  The
+        # left receiver occupies the native rectangle around x=826..1484,
+        # y=308..1234; click its blue center so the real user action reaches
+        # the graphics item instead of the empty gutter between objects.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1300, 780)
         Start-Sleep -Milliseconds 700
         $records.material_selection = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-material-selection.png")
         # Material is an explicit inspector category. Select it after the
