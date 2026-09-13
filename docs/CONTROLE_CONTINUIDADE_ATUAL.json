@@ -128,7 +128,7 @@
         "latest_revalidation_metadata_sha256": "28CC7D7213C37E0AEB011F000C7A9B46F9CCC35A6114CC6E4515650A8259C855",
         "latest_revalidation_duration_seconds": 84.68,
         "junit": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-junit.xml",
-        "junit_sha256": "B0919A12CDA76364973599B0851178002496C428946B6AA4E5A9BA4F7972BA72",
+      "junit_sha256": "BF0176EB03CD54A68F89FD1DBC9105EB477D76C2815D68F4CE1977C118276E18",
         "host_symlink_or_shutdown_executed": false
       }
     },

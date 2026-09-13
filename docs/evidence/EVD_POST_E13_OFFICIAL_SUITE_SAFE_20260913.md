@@ -54,7 +54,11 @@ Pacote vigente: `artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/`
 | Artefato | SHA-256 |
 |---|---|
 | `official-pytest.log` | `42DDC5779276493987C3A9010765C26FCB530C8AAEB64A0EF43055AC586534C7` |
-| `official-junit.xml` | `B0919A12CDA76364973599B0851178002496C428946B6AA4E5A9BA4F7972BA72` |
+| `official-junit.xml` | `BF0176EB03CD54A68F89FD1DBC9105EB477D76C2815D68F4CE1977C118276E18` |
+
+O hash do XML bruto produzido pelo pytest antes da normalização foi
+`B0919A12CDA76364973599B0851178002496C428946B6AA4E5A9BA4F7972BA72`; a
+normalização remove somente o prefixo local exigido pelo contrato de higiene.
 
 O pacote r3 anterior permanece preservado com os hashes
 `300CF0299F863EF3518191B089C23524D5FED517DA15803F3A66299B61979C33` e
