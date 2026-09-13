@@ -76,6 +76,12 @@ repositório com SHA-256
 `51375AAA895ABF18BC462C0000A6ECFD0D080F0983E7FEE2AEF989CCA9D6246A`; a
 versão rastreada remove somente o caminho local e tem SHA-256
 `E19D399FBDF1E1639BBA17FB0EDFF0F5C1298DC5440222BCA61961A83D45CBC2`.
+Na classificação reproduzível do arquivo versionado, as 257 linhas contêm
+240 declarações de módulo ausente, 229 explicitamente opcionais/diferidas,
+zero linhas de `Hidden import`, zero sinais `WARNING:`/`ERROR:` e zero
+ocorrências de `tzdata`, `cupy` ou `cupyx`. O estado é
+`OPTIONAL_ANALYSIS_WARNINGS_ONLY`; a ausência de sinais acionáveis é
+corroborada pelo smoke e pelos eventos GUI, não pela remoção do relatório.
 
 ## Limitações e reexecução
 
@@ -84,4 +90,3 @@ substitui a evidência sandbox definitiva de symlink nem qualifica licensing,
 shutdown ou soak limpo do Unity nativo. Reexecutar a build após alteração de
 código, dependência, spec, governança de empacotamento ou contrato de release;
 os testes de symlink permanecem sujeitos à regra específica do sandbox.
-
