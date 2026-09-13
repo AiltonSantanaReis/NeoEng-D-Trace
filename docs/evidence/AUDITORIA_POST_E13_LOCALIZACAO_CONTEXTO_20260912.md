@@ -47,8 +47,8 @@ binário antigo permanece preservada abaixo; a nova captura não a substitui.
 
 ## Evidência nativa do fluxo completo em PT-BR
 
-Pacote: `artifacts/audit-post-e13-native-source-20260912-r4/`  
-Manifesto: `artifacts/audit-post-e13-native-source-20260912-r4/manifest.json`  
+Pacote: `artifacts/audit-post-e13-native-source-20260912-r4/`
+Manifesto: `artifacts/audit-post-e13-native-source-20260912-r4/manifest.json`
 SHA-256 do manifesto:
 `80E709FF29701C3BF67296285D594C23EA2F35334CD165E693508A6C5C810744`
 
@@ -73,8 +73,8 @@ salvar, fechar, reabrir e verificar persistência.
 
 ## Evidência de menus, contexto, tooltip e troca de idioma
 
-Pacote: `artifacts/audit-post-e13-localization-native-20260912-r10/`  
-Manifesto: `artifacts/audit-post-e13-localization-native-20260912-r10/manifest.json`  
+Pacote: `artifacts/audit-post-e13-localization-native-20260912-r10/`
+Manifesto: `artifacts/audit-post-e13-localization-native-20260912-r10/manifest.json`
 SHA-256 do manifesto:
 `9BB770841F14F00188EBB3A74C5ADB99796C057B4BB9390C575BB25A91CAC900`
 
@@ -166,4 +166,3 @@ recurso vetorial, painel vetorial, vetorização e edição de contorno.
 Até o cumprimento desses itens, a auditoria geral permanece `IN_PROGRESS`; a
 governança não permite declarar encerramento apenas porque esta superfície
 parcial passou.
-
