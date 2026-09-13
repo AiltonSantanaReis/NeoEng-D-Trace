@@ -104,7 +104,7 @@ Execução integral, sem filtros, sem usar mecanismos `skip`, `xfail`,
 
 ```text
 Get-Content -Raw docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md | Out-Null
-& C:\Users\atnco\Pictures\NeoEng-D-Trace\.venv\Scripts\python.exe -m pytest -q
+& <workspace>\.venv\Scripts\python.exe -m pytest -q
 2620 passed, 2 skipped, 5 warnings in 77.18s (0:01:17)
 ```
 
@@ -116,6 +116,27 @@ registrados como limitação ambiental. Os cinco avisos são
 não houve falha de teste nem aviso ocultado. A regressão foi executada sobre o
 commit `e4e85487f5bbf8c21bf7e0ffe6b7c33244a37a80`, após a correção de produto e
 a nova build distribuível.
+
+## Falha oficial preservada durante a correção de bordas
+
+A primeira execução integral após `7135b6c` foi preservada como falha de
+regressão:
+
+```text
+2619 passed, 2 skipped, 5 warnings, 2 failed in 83.08s (0:01:23)
+```
+
+As duas falhas foram concretas e independentes da lógica do cenário:
+
+- `test_repository_reference_hygiene.py` detectou um caminho absoluto de
+  usuário inserido no próprio registro de evidência;
+- `test_stage4b3_scenario_authoring.py` detectou quebra de compatibilidade
+  porque o adaptador `_report` recebeu um argumento nomeado que o callback de
+  teste legado não aceita.
+
+O caminho foi genericizado e as chamadas voltaram a respeitar a assinatura
+existente, sem excluir testes ou alterar thresholds. A correção aguarda nova
+execução oficial integral.
 
 ## Falha histórica reproduzida e correção controlada
 

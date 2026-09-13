@@ -77,7 +77,7 @@ def _save(window: Any) -> bool:
     try:
         window.scenario_authoring.save()
     except Exception as exc:
-        _report(window, "Scenario save failed", exc, operation="save")
+        _report(window, "Scenario save failed", exc)
         return False
     window.statusBar().showMessage(
         _ui_text(window, "Cenário salvo com sucesso.", "Scenario saved successfully."),
@@ -103,7 +103,7 @@ def _load(window: Any) -> bool:
     try:
         window.scenario_authoring.load()
     except Exception as exc:
-        _report(window, "Scenario load failed", exc, operation="load")
+        _report(window, "Scenario load failed", exc)
         return False
     window.statusBar().showMessage(
         _ui_text(
@@ -136,7 +136,7 @@ def _reset(window: Any) -> bool:
     try:
         window.scenario_authoring.reset()
     except Exception as exc:
-        _report(window, "Scenario reset failed", exc, operation="edit")
+        _report(window, "Scenario reset failed", exc)
         return False
     editor = _open_professional_editor(window, only_if_canonical=True)
     if editor is not None and editor.professional_session is not None:
@@ -229,7 +229,7 @@ def _export(window: Any) -> bool:
     try:
         destination = window.scenario_authoring.export_runtime()
     except Exception as exc:
-        _report(window, "Scenario export failed", exc, operation="export")
+        _report(window, "Scenario export failed", exc)
         return False
     window.statusBar().showMessage(
         _ui_text(
@@ -335,7 +335,7 @@ def install_scenario_authoring(window: Any) -> None:
             state.bind_project(window._project_path if project_loaded else None)
         except Exception as exc:
             state.bind_project(None)
-            _report(window, "Scenario load failed", exc, operation="load")
+            _report(window, "Scenario load failed", exc)
 
     window._refresh_document_views = refresh_document_views
 
