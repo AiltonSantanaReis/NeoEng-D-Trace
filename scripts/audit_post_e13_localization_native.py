@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 from PySide6.QtCore import QPoint, QSize, Qt
+from PySide6.QtGui import QCursor
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QToolTip, QWidget
 
@@ -161,8 +162,19 @@ def run(output: Path) -> dict[str, object]:
     inspector = editor.professional_inspector
     if inspector is None:
         raise RuntimeError("canonical professional inspector is missing")
-    QTest.mouseMove(inspector.fit_all_button, inspector.fit_all_button.rect().center())
-    _settle(app, 900)
+    inspector_scroll = editor.professional_inspector_scroll
+    if inspector_scroll is None:
+        raise RuntimeError("canonical professional inspector scroll area is missing")
+    inspector_scroll.ensureWidgetVisible(inspector.fit_all_button)
+    _settle(app)
+    if not inspector.fit_all_button.isVisibleTo(editor):
+        raise RuntimeError("canonical PT-BR fit-all control is not visible")
+    hover_pos = inspector.fit_all_button.mapToGlobal(inspector.fit_all_button.rect().center())
+    QCursor.setPos(hover_pos)
+    for _ in range(10):
+        _settle(app, 180)
+        if QToolTip.isVisible():
+            break
     tooltip = inspector.fit_all_button.toolTip()
     records["hover_pt"] = {
         "object_name": inspector.fit_all_button.objectName(),
