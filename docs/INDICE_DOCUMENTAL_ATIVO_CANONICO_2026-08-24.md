@@ -1,7 +1,7 @@
 # Índice Documental Ativo Canônico — NeoEng-D-Trace
 
-**Versão:** 2.3
-**Data:** 2026-09-05
+**Versão:** 2.4
+**Data:** 2026-09-13
 **ID:** DOC-INDEX-ACTIVE-CANONICAL-20260829
 **Status:** ativo e prevalente
 
@@ -85,6 +85,7 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | `evidence/EVD_POST_E13_TILEMAP_RUNTIME_ENGINES_20260912.md` | ATIVO / EVIDÊNCIA DE CHECKPOINT — PASS TÉCNICO | payload versionado, Godot/Unity reais, 27/27 células, drift de atlas rejeitado, build `c39a867`, integração hash-bound no exportador geral em `a7e22b3e` e fluxo Win32 do binário novo; build final da composição e lote pós-E13 continuam abertos | CHG_POST_E13_TILEMAP_PRO_AUTHORING_RUNTIME_20260912.md, governança, decisão de continuidade e decisão de revisão humana |
 | `evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md` | ATIVO / REQUALIFICAÇÃO TÉCNICA — GATES POSITIVOS PASS; LOG UNITY PENDING_EVIDENCE; LOTE IN_PROGRESS | reexecução pós-commit dos runtimes Tilemap e híbrido em Godot/Unity, capturas reais, hashes, rejeição de drift e correção do status interno do harness | governança, CHG de Tilemap, CHG híbrido, decisão de continuidade, decisão de revisão humana e commit `d7ddbef` |
 | `evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md` | ATIVO / REGISTRO DE MUDANÇA — PASS | reconciliação controlada da branch, HEAD, produto/harness, suíte corrente e próxima ação no registro de continuidade, preservando histórico | governança, `CONTROLE_CONTINUIDADE_ATUAL.md/.json`, decisão de continuidade, requalificação pós-E13 e commit `9e2d2a2` |
+| `evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md` | ATIVO / REGISTRO DE LIMPEZA REVERSÍVEL — PASS | movimentação hashada de execuções históricas não referenciadas para `archive/legacy`, sem exclusão e sem alteração do produto | governança, `CONTROLE_CONTINUIDADE_ATUAL.md/.json`, requalificação pós-E13 e manifesto de preservação |
 | `evidence/CHG_POST_E13_HYBRID_3D_AUTHORING_20260911.md` | ATIVO / REGISTRO DE MUDANÇA — RUNTIME EXTERNO PASS; LOTE GERAL PENDENTE | viewport híbrido 2D/2.5D/3D, cena vazia, câmera, meshes, luzes, gizmo, sidecar não destrutivo e adapters nativos Godot/Unity | decisão pós-E13, governança, REQ-F03/REQ-F04/REQ-F10/REQ-F02 e escopo 3D |
 | `evidence/EVD_POST_E13_HYBRID_3D_NATIVE_20260911.md` | ATIVO / EVIDÊNCIA DE CHECKPOINT TÉCNICO | suíte 2201/2/1, build hashada, cliques/arrastes/orbita reais, modos 2.5D/3D, projeção, salvar/reabrir e limitações | CHG_POST_E13_HYBRID_3D_AUTHORING_20260911.md, build `b2d2df4` e decisão de revisão humana |
 | `evidence/EVD_POST_E13_HYBRID_3D_RUNTIME_ENGINES_20260912.md` | ATIVO / EVIDÊNCIA DE GATE TÉCNICO PASS | adapters nativos Godot/Unity, capturas reais 640×360, animação observada, rejeição de drift por hash e findings preservados | CHG_POST_E13_HYBRID_3D_AUTHORING_20260911.md, commit `2226598`, decisão de revisão humana |

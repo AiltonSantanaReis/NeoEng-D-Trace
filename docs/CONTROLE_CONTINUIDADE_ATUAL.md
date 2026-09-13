@@ -9,6 +9,10 @@
 **Reconciliado em 2026-09-13:** branch atual, HEAD documental, produto/harness,
 suíte corrente e próxima ação estão registrados em
 `docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md`.
+**Arquivo legado reconciliado em 2026-09-13:** execuções históricas não
+referenciadas foram movidas de forma reversível para
+`archive/legacy/artifacts/post-e13-historical-20260913/`, com manifesto e
+hashes em `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md`.
 **Estado:** `POST_E13_IN_PROGRESS / E13 fechado e congelado como histórico`
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
@@ -44,6 +48,23 @@ não rastreado preexistente, SHA-256
 `A288D676E446E201E814AC396FEF71793FC2B61C5575B03CCBC8F0E25332E008`. A existência de outras branches,
 worktrees, builds ou pastas de captura não muda a base ativa. Nenhum artefato
 externo pode ser promovido sem `source_commit` verificável.
+
+Os artefatos históricos que não tinham referência na árvore rastreada foram
+preservados, sem exclusão, em
+`archive/legacy/artifacts/post-e13-historical-20260913/`. O manifesto final
+hashado é `archive-manifest.json` (SHA-256
+`2E89672381BEF30BFAFD5E773D41FF0BDBDF742F99379B23A9A800CA5529F666`), com
+22 diretórios e 541 arquivos. O diretório inicialmente selecionado que era
+rastreado pelo Git foi restaurado; a auditoria está em
+`restoration-audit-mask-viewer-r3.json` (SHA-256
+`0C9E05251F4F973B04520A1D3A497BDBCBC64EDA12B2BF2CD4FEF17C4E72BE7B`). O
+pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
+
+A revalidação oficial pós-commit foi capturada sem filtros em
+`artifacts/audit-post-e13-official-suite-20260913-r1/official-pytest.log`, com
+SHA-256 `065E565085828EB3F1702CE210AC0BD75B7001D321173A2EBF9AFBD55556E7C0`:
+`2625 passed, 2 skipped, 5 warnings` em 77,51 s. O metadata da execução tem
+SHA-256 `962D963030F4DA19EBBA85632E4500946CD499A19738933B2FD761C86CA7115F`.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
