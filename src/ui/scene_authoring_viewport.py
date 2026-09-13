@@ -2235,6 +2235,7 @@ class SceneAuthoringViewport(QGraphicsView):
         refresh_sockets: bool | None = None,
         selection_ids: Iterable[str] | None = None,
         refresh_gizmo: bool = True,
+        repaint_viewport: bool = True,
     ) -> None:
         self._refresh_transforms(object_ids, refresh_sockets=refresh_sockets)
         if selection_ids is None:
@@ -2244,22 +2245,10 @@ class SceneAuthoringViewport(QGraphicsView):
         if refresh_gizmo:
             self._refresh_gizmo()
         self._refresh_camera_guide()
-        self.viewport().update()
+        if repaint_viewport:
+            self.viewport().update()
 
     def _on_session_change(self) -> None:
-        current_visible_ids = tuple(
-            item.id
-            for item in ordered_scene_objects(self.session.document)
-            if object_is_effectively_visible(
-                self.session.document,
-                item.id,
-                isolated_group_id=self.session.isolated_group_id,
-            )
-        )
-        if current_visible_ids != self._visible_object_ids_snapshot:
-            self.sync()
-            return
-
         current_structure = self._document_structure_snapshot()
         if current_structure != self._structure_snapshot:
             self.sync()
@@ -2297,6 +2286,7 @@ class SceneAuthoringViewport(QGraphicsView):
             refresh_gizmo=presentation_changed
             or primary_changed
             or self.session.selection.primary in changed_object_ids,
+            repaint_viewport=presentation_changed,
         )
         self._object_transform_snapshot = current_transforms
         self._selection_snapshot = current_selection

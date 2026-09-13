@@ -397,6 +397,58 @@ def test_viewport_selection_refresh_does_not_rebuild_scene(
         qt_app.processEvents()
 
 
+def test_viewport_transform_change_reuses_structure_snapshot(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    asset_path = tmp_path / "project" / "assets" / "a.png"
+    _write_png(asset_path, "#2aa7ff")
+    asset = AssetReferenceRecord(
+        id="asset", path="assets/a.png", sha256=sha256_file(asset_path)
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(asset)))
+    session.set_selection(["a"], "a")
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    visibility_calls: list[str] = []
+    repaint_calls: list[bool] = []
+    original_visibility = viewport_module.object_is_effectively_visible
+
+    def counted_visibility(*args: object, **kwargs: object) -> bool:
+        visibility_calls.append(str(args[1]))
+        return original_visibility(*args, **kwargs)
+
+    monkeypatch.setattr(
+        viewport_module, "object_is_effectively_visible", counted_visibility
+    )
+    original_viewport_update = view.viewport().update
+
+    def counted_update(*args: object, **kwargs: object) -> None:
+        repaint_calls.append(True)
+        original_viewport_update(*args, **kwargs)
+
+    monkeypatch.setattr(view.viewport(), "update", counted_update)
+    try:
+        session.begin_gesture()
+        session.preview_transform_selected(
+            translation=Point3Record(x=3.0, y=1.0, z=0.0)
+        )
+        assert visibility_calls == []
+        assert repaint_calls == []
+        assert view._items["a"].pos().x() == pytest.approx(3.0)
+        assert view._items["a"].pos().y() == pytest.approx(1.0)
+        session.cancel_gesture()
+        repaint_calls.clear()
+        assert session.set_camera(
+            SceneCameraAuthoringRecord(
+                position=PointRecord(x=8.0, y=4.0), zoom=1.5
+            )
+        ) is True
+        assert repaint_calls == [True]
+    finally:
+        session.cancel_gesture()
+        view.close()
+        qt_app.processEvents()
+
+
 def test_viewport_group_membership_uses_structural_fallback(
     qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
