@@ -40,6 +40,8 @@ alterar código de produto:
 - próxima ação autorizada, mantendo revisão humana em `PENDING_EVIDENCE`;
 - referências atuais para a requalificação de Tilemap/híbrido e para a baseline
   de desempenho;
+- correção da seção narrativa da fronteira única, que ainda apresentava uma
+  branch/worktree histórico como sujeito da auditoria;
 - escopo do lote, deixando a produção de novos modelos/asset packs e o gizmo
   para etapas explicitamente adiadas.
 
@@ -58,6 +60,12 @@ proveniência do build/checkpoint em que foi produzido.
 | Suíte corrente | `2226/2/1` | `2625/2/5` |
 | Próxima ação | solicitar revisão humana | fechar evidências funcionais/residuais; revisão humana somente após os gates exigidos |
 | Modelos/gizmo | não explicitado no ponteiro corrente | adiado, sem alteração nesta mudança |
+
+Após a primeira reconciliação, uma leitura integral do documento ativo encontrou
+um resíduo textual na seção “Fronteira única”. O resíduo não alterava o JSON nem
+o produto, mas podia contradizer a tabela acima. A redação foi ajustada para
+deixar a branch atual como única base operacional e preservar
+`Ailton/e08-renderer-20260908`/`dd344f47` somente como proveniência histórica.
 
 ## Verificação
 
