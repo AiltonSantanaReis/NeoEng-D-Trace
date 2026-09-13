@@ -1341,6 +1341,8 @@ def test_viewport_remaining_policy_paths(
             QMouseEvent(
                 QEvent.Type.MouseButtonPress,
                 QPointF(620.0, 460.0),
+                QPointF(620.0, 460.0),
+                QPointF(620.0, 460.0),
                 Qt.MouseButton.RightButton,
                 Qt.MouseButton.RightButton,
                 Qt.KeyboardModifier.NoModifier,

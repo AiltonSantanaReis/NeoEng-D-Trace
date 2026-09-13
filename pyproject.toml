@@ -24,6 +24,7 @@ opencv-python = "4.12.0.88"
 Pillow = "12.3.0"
 pydantic = "2.12.5"
 pygltflib = "1.16.5"  # Exportação GLTF/GLB
+tzdata = "2026.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "9.1.1"

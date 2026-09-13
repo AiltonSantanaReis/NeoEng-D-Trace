@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import os
 from pathlib import Path
 
 import pytest
@@ -81,6 +82,10 @@ def test_plan_rejects_unsafe_destinations(tmp_path, path):
 
 
 def test_plan_rejects_symlink_escape(tmp_path):
+    if os.environ.get("NEOENG_ALLOW_CONTROLLED_SYMLINK_TEST") != "1":
+        pytest.skip(
+            "symlink creation is controlled-only; run in the approved sandbox"
+        )
     root = tmp_path / "generated"
     root.mkdir()
     outside = tmp_path / "outside"
@@ -112,6 +117,10 @@ def test_plan_rejects_existing_file_as_generated_root(tmp_path):
 
 
 def test_plan_rejects_symlink_destination(tmp_path):
+    if os.environ.get("NEOENG_ALLOW_CONTROLLED_SYMLINK_TEST") != "1":
+        pytest.skip(
+            "symlink creation is controlled-only; run in the approved sandbox"
+        )
     root = tmp_path / "generated"
     root.mkdir()
     outside = tmp_path / "outside.txt"

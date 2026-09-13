@@ -22,6 +22,8 @@ hashes em `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md`.
 **E12:** `TECHNICAL_CHECKPOINT_PASS_FINAL_AUDIT_PENDING` — A/B/C/D/E comprovados tecnicamente no r69; auditoria final permanece pendente
 **Pós-E13:** correções finas do Editor de Cenário, parallax, catálogo de assets,
 localização e validação nativa continuam somente sobre o HEAD deste checkout.
+Nesta meta, a revisão humana foi aprovada pelo proprietário; os gates técnicos
+restantes continuam independentes e não são encerrados por essa aprovação.
 O registro formal da fronteira é
 `docs/evidence/DECISAO_CONTINUIDADE_POS_E13_2026-09-10.md`.
 
@@ -60,11 +62,13 @@ rastreado pelo Git foi restaurado; a auditoria está em
 `0C9E05251F4F973B04520A1D3A497BDBCBC64EDA12B2BF2CD4FEF17C4E72BE7B`). O
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
-A revalidação oficial pós-commit foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-20260913-r1/official-pytest.log`, com
-SHA-256 `065E565085828EB3F1702CE210AC0BD75B7001D321173A2EBF9AFBD55556E7C0`:
-`2625 passed, 2 skipped, 5 warnings` em 77,51 s. O metadata da execução tem
-SHA-256 `962D963030F4DA19EBBA85632E4500946CD499A19738933B2FD761C86CA7115F`.
+A regressão oficial segura mais recente foi capturada sem filtros em
+`artifacts/audit-post-e13-official-suite-safe-host-20260913-r3/official-pytest.log`,
+com SHA-256 `300CF0299F863EF3518191B089C23524D5FED517DA15803F3A66299B61979C33`:
+`2626 passed, 2 skipped, 0 warnings` em 80,09 s. O JUnit tem SHA-256
+`7133498F9B043AA46DF88773AD7103ED375131A5D9D50142E5AF0CBA31FABDBB`.
+Os pacotes anteriores, inclusive o log com cinco warnings, permanecem
+preservados para comparação histórica.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
@@ -88,17 +92,19 @@ requalificação corrente de runtime está em
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | 2626 passaram, 2 skips e 5 warnings na requalificação sem filtros da fonte de produto `7f5c047`; os resultados anteriores, o abort histórico do magnetic lasso, as falhas iniciais do auditor e os aborts diagnósticos dos harnesses permanecem preservados |
+| Suíte oficial | `PASS` | 2626 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
-| Symlink no Sandbox | `PASS_SANDBOX` | reexecução final no SHA `f8fa83e`: 2/2 casos passaram, 0 skips, JUnit e `report.json` preservados |
-| Symlink no checkout local | `SKIP_PRIVILEGE_LIMITATION` | 2 skips preservados, não convertidos em PASS |
+| Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r3 no checkout/harness atual: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r3/` |
+| Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PENDING_EVIDENCE` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a requalificação r3 dos runtimes externos de Tilemap e híbrido 3D passou com casos negativos; a investigação estrutural em escala e o fluxo nativo canônico 2D/3D/híbrido passaram tecnicamente, os diagnósticos Unity foram reexecutados e classificados sem ocultação, mas a responsividade residual, diagnóstico de ambiente Unity e revisão humana permanecem pendentes |
+| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual, memória longa, GPU/janela nativa e diagnóstico de ambiente Unity/shutdown permanecem gates técnicos separados |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | builds históricas preservadas; build pós-performance r3 da fonte `7f5c047` tem executável `F56E7E45534087F2E103FD5DD455C8E402DBA9864B40C060A985DFDE58CFCCBD`, ZIP `4CF2E538C1D7B22B48D6376B07C1CED5BC8841E801E29C4A7ABA5B6E5A860106` e smoke `SUCCESS` em 11 checks; warning de `tzdata` preservado |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
-| Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana permanece deferida |
+| Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
+| Diagnósticos Unity controlados | `PASS` do classificador; `PENDING_EVIDENCE` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker sem iniciar Unity; `Code 10`, token, Curl, `abort_threads` e `MemoryLeaks` continuam preservados; shutdown/soak limpo não foi inferido |
+| CuPy | `PASS` da avaliação; `NOT_APPLICABLE` como dependência oficial | caminho opcional X-Ray comprovado no ambiente local, ganho somente no workload grande medido; não há evidência de que o gargalo do editor seja CuPy e a build portátil continua CPU/fallback |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
 A execução direta da build final10 gerou capturas reais em
@@ -141,7 +147,8 @@ células com um Desfazer/Refazer por gesto, manteve as ações visíveis no pain
 estreito e salvou/reabriu o mapa com hash preservado. Autotiling/Rule Tiles,
 variação avançada, seleção/cópia/colagem completas e runtime externo foram
 comprovados nos checkpoints correspondentes; somente refinamentos avançados de
-snapping e a revisão humana final continuam explicitamente `PENDING_EVIDENCE`.
+snapping continuam explicitamente `PENDING_EVIDENCE`. A revisão humana foi
+aprovada separadamente pelo proprietário.
 A integração do exportador geral no commit `a7e22b3e` emite, quando há atlas
 válido, o pacote `tilemap-runtime/` com payload, origem e atlas vinculados por
 hash; o teste de contrato passou com `8 passed` e o caminho legado sem atlas
@@ -178,7 +185,8 @@ nativo atual do editor canônico está em
 `artifacts/audit-post-e13-binary-performance-20260913-r4/actions.json`, com
 `PASS_NATIVE_FLOW`, 14 capturas e sidecar reaberto após relançamento.
 
-O Unity 6000.5.7f1 foi executado duas vezes em `batchmode/nographics`: os
+O Unity 6000.5.7f1 foi executado duas vezes em `batchmode/nographics` antes da
+política de segurança desta meta: os
 gates positivo/negativo passaram com retorno `0`, enquanto `Code 10` do
 Licensing Client, token ausente, timeout/Curl e `abort_threads` foram
 preservados e classificados como `PENDING_EVIDENCE` para a causa/estabilidade
@@ -186,20 +194,26 @@ do ambiente. O entitlement `Unity Personal` foi resolvido nos dois logs. A
 qualificação está em
 `evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md`.
 
-A captura automatizada não substitui a revisão humana final.
+Nesta meta, o classificador somente leitura foi executado em Docker sem rede,
+sem iniciar Unity e sem solicitar `-quit`; passou nos testes focados e
+classificou os logs preservados. O resultado está em
+`evidence/EVD_POST_E13_UNITY_DIAGNOSTICOS_CONTROLADOS_20260913.md`. Isso fecha
+a observabilidade do diagnóstico, mas não converte a ausência de um ambiente
+Unity limpo ou de um shutdown/soak limpo em `PASS`.
+
+A captura automatizada não substitui a revisão humana final; essa revisão foi
+registrada como aprovada pelo proprietário em
+`evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`.
 
 ## Próximo passo permitido
 
-O subestágio de investigação estrutural em escala, qualificação dos
-diagnósticos Unity e evidência nativa 2D/3D/híbrida do editor canônico está
-tecnicamente fechado e não deve ser refeito sobre base anterior. Permanecem
-como próximos itens apenas a responsividade residual em escala, memória longa,
-GPU/janela nativa, diagnóstico de ambiente Unity, limites do vertical slice e
-revisão humana final. Somente depois que todos os itens exigidos
-pela [decisão de revisão humana](evidence/DECISAO_REVISAO_HUMANA_FINAL_POS_E13_20260911.md)
-forem implementados, testados, executados no binário e comprovados com captura,
-persistência e hash será permitido solicitar a revisão humana final. O gizmo e
-a produção de modelos/asset packs permanecem adiados por decisão do proprietário.
+O subestágio de investigação estrutural em escala e a evidência nativa 2D/3D/
+híbrida do editor canônico estão tecnicamente fechados e não devem ser refeitos
+sobre base anterior. A meta vigente já tratou warnings, avaliou CuPy sem adoção
+oficial e qualificou o diagnóstico controlado de Unity/shutdown; permanecem as
+medições restantes de desempenho, memória e GPU/janela e a classificação de um
+ambiente Unity limpo. A revisão humana já foi aprovada; o gizmo e a produção de
+modelos/asset packs permanecem adiados por decisão do proprietário.
 Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de
 distribuição continuam explicitamente separados. A equivalência
 V2→exportação Godot/Unity de partículas tem checkpoint técnico; o abort legado
@@ -209,7 +223,9 @@ Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em ou
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada
 em duas linhas: `PASS_SANDBOX` quando os 31 casos passarem no Sandbox e
 `SKIP_LOCAL` quando o checkout não tiver privilégio; uma linha nunca substitui
-a outra.
+a outra. Por segurança, symlink e shutdown não devem ser executados nativamente
+neste host; a execução controlada atual só deve ser repetida após mudança
+relevante conforme `EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md`.
 
 ## Critério de encerramento de E00
 

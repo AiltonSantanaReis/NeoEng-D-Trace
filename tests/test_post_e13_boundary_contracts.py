@@ -4137,6 +4137,8 @@ def test_tilemap_authoring_panel_flow_and_canvas_boundaries(tmp_path):
         QMouseEvent(
             QEvent.Type.MouseButtonPress,
             QPointF(10, 10),
+            QPointF(10, 10),
+            QPointF(10, 10),
             Qt.MouseButton.LeftButton,
             Qt.MouseButton.LeftButton,
             Qt.KeyboardModifier.NoModifier,
@@ -4145,6 +4147,8 @@ def test_tilemap_authoring_panel_flow_and_canvas_boundaries(tmp_path):
     canvas.mouseMoveEvent(
         QMouseEvent(
             QEvent.Type.MouseMove,
+            QPointF(20, 20),
+            QPointF(20, 20),
             QPointF(20, 20),
             Qt.MouseButton.NoButton,
             Qt.MouseButton.LeftButton,
@@ -4155,6 +4159,8 @@ def test_tilemap_authoring_panel_flow_and_canvas_boundaries(tmp_path):
         QMouseEvent(
             QEvent.Type.MouseButtonRelease,
             QPointF(20, 20),
+            QPointF(20, 20),
+            QPointF(20, 20),
             Qt.MouseButton.LeftButton,
             Qt.MouseButton.NoButton,
             Qt.KeyboardModifier.NoModifier,
@@ -4163,6 +4169,8 @@ def test_tilemap_authoring_panel_flow_and_canvas_boundaries(tmp_path):
     canvas.mousePressEvent(
         QMouseEvent(
             QEvent.Type.MouseButtonPress,
+            QPointF(10, 10),
+            QPointF(10, 10),
             QPointF(10, 10),
             Qt.MouseButton.RightButton,
             Qt.MouseButton.RightButton,

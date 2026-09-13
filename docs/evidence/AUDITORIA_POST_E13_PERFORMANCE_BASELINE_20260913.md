@@ -14,7 +14,7 @@
 
 **Commits de correção qualificados:** `9599ae3625cde4c3c967e04688af8cea2de9f3af` (cache/resolução e iluminação incremental), `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e` (snapshot de estrutura e repintura condicional) e `7f5c0477b3f4594928751aec6b97a4b1e9c0178b` (retenção da validação de assets durante isolamento)
 
-**Build nativa qualificada usada na verificação:** `C:\Users\atnco\Pictures\NeoEng-D-Trace\build\_release-post-e13-20260913-r1\release\post-e13-performance-20260913-r3`
+**Build nativa qualificada usada na verificação:** `build/_release-post-e13-20260913-r1/release/post-e13-performance-20260913-r3`
 
 **SHA-256 do executável:** `F56E7E45534087F2E103FD5DD455C8E402DBA9864B40C060A985DFDE58CFCCBD` (`10.880.001` bytes)
 

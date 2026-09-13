@@ -1,0 +1,72 @@
+{
+  "document_id": "ART-POST-E13-CUPY-DIAGNOSTIC-20260913-R1",
+  "status": "PASS",
+  "classification": "DIAGNOSTIC_ONLY",
+  "requirement_id": "REQ-POST-E13-OPTIONAL-ACCELERATOR-20260913",
+  "feature_id": "FEAT-POST-E13-CUPY-OPTIONAL-XRAY",
+  "repository_commit": "72e60784d90030219a5300a4d6677726f5d0815e",
+  "product_source_commit": "7f5c0477b3f4594928751aec6b97a4b1e9c0178b",
+  "environment": {
+    "os": "Windows host",
+    "python": "3.11.9",
+    "network": "not_required",
+    "project_dependency_declaration": "CuPy is not declared in pyproject.toml or requirements files",
+    "environment_only_installation": "cupy-cuda12x 14.2.0 in the local virtual environment"
+  },
+  "gpu_observation": {
+    "device_count": 1,
+    "device_id": 0,
+    "compute_capability": "86",
+    "memory_free_bytes": 7454326784,
+    "memory_total_bytes": 8589279232,
+    "cuda_runtime_version": 12090,
+    "driver_version": 13030,
+    "device_class": "NVIDIA GeForce RTX 3070 Ti"
+  },
+  "project_probe": {
+    "module": "src/core/view_processor.py",
+    "has_gpu": true,
+    "mode": 1,
+    "input_shape": [512, 512, 3],
+    "output_shape": [512, 512, 3],
+    "output_dtype": "uint8",
+    "output_finite": true,
+    "selected_path": "gpu",
+    "fallback_contract": "CPU path is selected when CuPy is unavailable or when the GPU path raises"
+  },
+  "microbenchmark": {
+    "purpose": "Compare the existing X-Ray GPU path, including transfers, with the existing CPU implementation",
+    "warmups_per_path": 1,
+    "samples_per_path": 3,
+    "metric": "median milliseconds",
+    "input": "deterministic uint8 array generated from arange modulo 256; mode 1",
+    "results": [
+      {"size": 256, "cpu_median_ms": 0.314, "gpu_selected_median_ms": 1.649, "cpu_over_gpu_ratio": 0.19},
+      {"size": 512, "cpu_median_ms": 0.696, "gpu_selected_median_ms": 1.779, "cpu_over_gpu_ratio": 0.391},
+      {"size": 1024, "cpu_median_ms": 3.7, "gpu_selected_median_ms": 3.644, "cpu_over_gpu_ratio": 1.016},
+      {"size": 2048, "cpu_median_ms": 14.639, "gpu_selected_median_ms": 10.594, "cpu_over_gpu_ratio": 1.382}
+    ]
+  },
+  "source_hashes": {
+    "src/core/view_processor.py": "87B20910BBAEB1FCD458FB3E5D0A7945BAFC553CB38F0E3208B777204A5CABAB",
+    "src/ui/scene_authoring_viewport.py": "27B58B808C8441BC12B81FA590B5E04CCFC863926DA0EE674114FEBD070026F9",
+    "pyproject.toml": "3C61AE95789F4FF289071F5BF108CD067AFE0E73DE74A4B849952CF1C9A64707",
+    "packaging/NeoEng-D-Trace.spec": "951DC3901E001FAAA5766F180676D26024BBCE6EA8C6BF1D52BFC624DC39E5AF",
+    "performance_report": "3F7E6DEE0EC8088C69E452EC089B616AA59BCD0A7DDD7A30A36C3504A57531A8"
+  },
+  "observed_conclusion": {
+    "optional_path_is_functional": true,
+    "small_and_medium_images_benefit": false,
+    "large_image_probe_benefit": "measured_only_in_this_diagnostic_XRay_workload",
+    "editor_viewport_hotspot": "QGraphicsScene rebuild/painting and structural refresh; not demonstrated to be CuPy-bound",
+    "official_dependency_recommended": false,
+    "portable_build_policy": "keep excludes=[cupy, cupyx] and deterministic CPU fallback"
+  },
+  "limitations": [
+    "This is not the official editor performance matrix and does not establish a frame-time budget.",
+    "Only the existing X-Ray kernel was measured; the parallax viewport path has no GPU counter in the current contract.",
+    "The local GPU environment is not a supported deployment baseline for all users, CI agents, or portable builds.",
+    "No dependency, package, source, schema, or runtime behavior was changed by this diagnostic."
+  ],
+  "reexecution_rule": "Reexecute only if the CuPy integration, X-Ray implementation, supported-kernel performance contract, deployment/CI matrix, or portable packaging policy changes; unrelated UI, localization, documentation, or asset changes do not justify rerunning it."
+}
