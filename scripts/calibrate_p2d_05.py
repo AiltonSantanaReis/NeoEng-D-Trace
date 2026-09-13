@@ -209,6 +209,34 @@ def _measure(
 
 def _process_memory() -> dict[str, int | None]:
     if os.name != "nt":
+        if platform.system() == "Linux":
+            try:
+                values: dict[str, int] = {}
+                for line in Path("/proc/self/smaps_rollup").read_text(
+                    encoding="utf-8", errors="replace"
+                ).splitlines():
+                    name, separator, remainder = line.partition(":")
+                    if not separator:
+                        continue
+                    fields = remainder.strip().split()
+                    if not fields or not fields[0].isdigit():
+                        continue
+                    values[name] = int(fields[0]) * 1024
+                private_keys = ("Private_Clean", "Private_Dirty")
+                private_available = any(key in values for key in private_keys)
+                working_set = values.get("Rss")
+                private_bytes = (
+                    sum(values.get(key, 0) for key in private_keys)
+                    if private_available
+                    else None
+                )
+                if working_set is not None:
+                    return {
+                        "working_set_bytes": working_set,
+                        "private_bytes": private_bytes,
+                    }
+            except (OSError, ValueError):
+                pass
         return {"working_set_bytes": None, "private_bytes": None}
     import ctypes
     from ctypes import wintypes
