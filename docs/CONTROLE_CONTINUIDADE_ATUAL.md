@@ -79,9 +79,10 @@ Antes de qualquer nova build, registrar no mesmo pacote:
 
 O ponteiro histórico abaixo é preservado para proveniência. Para a execução
 atual, o checkout é `Ailton/audit-post-e13-scenario-editor-20260912`, a fonte
-de produto qualificada está no commit `7f5c047`, a documentação corrente está
-no HEAD `c433960`, o harness de captura nativa está no commit `b20f2f1` e o
-HEAD documental completo deve ser obtido por `git rev-parse HEAD`. A
+de produto qualificada e o `product_source_commit` estão no commit `7f5c047`,
+o harness de captura nativa está no commit `b20f2f1` e o HEAD documental
+completo deve ser obtido por `git rev-parse HEAD`; o campo `head` do JSON não
+é uma auto-referência do commit documental. A
 requalificação corrente de runtime está em
 `evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md`.
 

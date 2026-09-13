@@ -68,7 +68,7 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/audit-post-e13-scenario-editor-20260912",
-    "head": "c43396087630f023fa6a862e0461d23070b57140",
+    "head": "7f5c0477b3f4594928751aec6b97a4b1e9c0178b",
     "head_role": "POST_E13_CURRENT_PRODUCT_SOURCE_7F5_PERFORMANCE_AND_CANONICAL_NATIVE_EVIDENCE_CHECKPOINT_HUMAN_REVIEW_PENDING",
     "product_source_commit": "7f5c0477b3f4594928751aec6b97a4b1e9c0178b",
     "audit_harness_commit": "b20f2f1fa08824e87b8ddb090a893c3d4afb3f7a",
