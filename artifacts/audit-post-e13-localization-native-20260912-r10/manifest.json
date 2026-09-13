@@ -1,0 +1,469 @@
+{
+  "context_menu_pt": [
+    {
+      "enabled": false,
+      "status_tip": "",
+      "text": "Nenhum objeto sob o cursor",
+      "tooltip": "Nenhum objeto sob o cursor",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "status_tip": "",
+      "text": "Enquadrar sele\u00e7\u00e3o",
+      "tooltip": "Enquadrar sele\u00e7\u00e3o",
+      "visible": true
+    },
+    {
+      "enabled": true,
+      "status_tip": "",
+      "text": "Enquadrar tudo",
+      "tooltip": "Enquadrar tudo",
+      "visible": true
+    }
+  ],
+  "events": [
+    {
+      "action": "canonical editor opened in PT-BR",
+      "capture": "01-pt-editor.png",
+      "sha256": "d27cbfeaa8d4e78c412e3acb44058d35d6f73fe7f8c884a7b1c49b450b53987e"
+    },
+    {
+      "action": "open canonical Visualizar menu",
+      "capture": "02-pt-view-menu.png",
+      "sha256": "580c29d08bc1f91585e6a30bce0f6faeb325b1ad54aa4ee91a9dd7bccc4fc73a"
+    },
+    {
+      "action": "open canonical viewport context menu",
+      "capture": "03-pt-viewport-context-menu.png",
+      "sha256": "9ad956a7ac42fe21047493d4ab42dfe7f73e7fd2b86d33d67304066ea560ecf6"
+    },
+    {
+      "action": "hover canonical Enquadrar Tudo control",
+      "capture": "04-pt-fit-tooltip.png",
+      "sha256": "2441d871a8721bbd7fd21cfab966986cd988cef9a17ddbcb9cc0939c1b28f038"
+    },
+    {
+      "action": "restore PT-BR after language round-trip",
+      "capture": "05-pt-editor-after-language-roundtrip.png",
+      "sha256": "8f11f62f97c91d0ab31499ea5e21583e8723c4cc34f56c3bb2ebcaff94f4cd11"
+    }
+  ],
+  "hover_pt": {
+    "automatic_hover_visible": false,
+    "display_mode": "native-tooltip-explicit",
+    "object_name": "scene_fit_all_button",
+    "tooltip": "Enquadrar todos os objetos vis\u00edveis no viewport",
+    "tooltip_visible": true
+  },
+  "language": "pt",
+  "language_switch_back_pt": {
+    "language": "pt",
+    "view_menu": [
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Sobreposi\u00e7\u00f5es",
+        "tooltip": "Sobreposi\u00e7\u00f5es",
+        "visible": true
+      },
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Pr\u00e9-visualiza\u00e7\u00e3o de Paralaxe",
+        "tooltip": "Pr\u00e9-visualiza\u00e7\u00e3o de Paralaxe",
+        "visible": true
+      },
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Autoria",
+        "tooltip": "Autoria",
+        "visible": true
+      },
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Viewport 3D/H\u00edbrido",
+        "tooltip": "Viewport 3D/H\u00edbrido",
+        "visible": true
+      }
+    ]
+  },
+  "language_switch_en": {
+    "language": "en",
+    "view_menu": [
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Overlays",
+        "tooltip": "Overlays",
+        "visible": true
+      },
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Parallax Preview",
+        "tooltip": "Parallax Preview",
+        "visible": true
+      },
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "Authoring",
+        "tooltip": "Authoring",
+        "visible": true
+      },
+      {
+        "enabled": true,
+        "status_tip": "",
+        "text": "3D/Hybrid Viewport",
+        "tooltip": "3D/Hybrid Viewport",
+        "visible": true
+      }
+    ]
+  },
+  "native_window": true,
+  "qt_platform": "native-default",
+  "scope": "canonical scenario editor PT-BR menus, context menu, hover and language round-trip",
+  "source_commit": "556d1182a86ab20f55601afa3d51967070408c38",
+  "status": "PASS",
+  "view_menu_pt": [
+    {
+      "enabled": true,
+      "status_tip": "",
+      "text": "Sobreposi\u00e7\u00f5es",
+      "tooltip": "Sobreposi\u00e7\u00f5es",
+      "visible": true
+    },
+    {
+      "enabled": true,
+      "status_tip": "",
+      "text": "Pr\u00e9-visualiza\u00e7\u00e3o de Paralaxe",
+      "tooltip": "Pr\u00e9-visualiza\u00e7\u00e3o de Paralaxe",
+      "visible": true
+    },
+    {
+      "enabled": true,
+      "status_tip": "",
+      "text": "Autoria",
+      "tooltip": "Autoria",
+      "visible": true
+    },
+    {
+      "enabled": true,
+      "status_tip": "",
+      "text": "Viewport 3D/H\u00edbrido",
+      "tooltip": "Viewport 3D/H\u00edbrido",
+      "visible": true
+    }
+  ],
+  "visible_hover_metadata_pt": [
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Posi\u00e7\u00e3o do objeto no espa\u00e7o da cena",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Posi\u00e7\u00e3o do objeto no espa\u00e7o da cena"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Posi\u00e7\u00e3o do objeto no espa\u00e7o da cena",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Posi\u00e7\u00e3o do objeto no espa\u00e7o da cena"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Profundidade Z usada na ordena\u00e7\u00e3o de renderiza\u00e7\u00e3o",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Profundidade Z usada na ordena\u00e7\u00e3o de renderiza\u00e7\u00e3o"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Rota\u00e7\u00e3o do objeto em graus",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Rota\u00e7\u00e3o do objeto em graus"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Rota\u00e7\u00e3o do objeto em graus",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Rota\u00e7\u00e3o do objeto em graus"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Rota\u00e7\u00e3o do objeto em graus",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Rota\u00e7\u00e3o do objeto em graus"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Escala do objeto por eixo",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Escala do objeto por eixo"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Escala do objeto por eixo",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Escala do objeto por eixo"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Escala do objeto por eixo",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Escala do objeto por eixo"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Ponto de piv\u00f4 normalizado do objeto",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Ponto de piv\u00f4 normalizado do objeto"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Ponto de piv\u00f4 normalizado do objeto",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Ponto de piv\u00f4 normalizado do objeto"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Espa\u00e7amento do encaixe na grade",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Espa\u00e7amento do encaixe na grade"
+    },
+    {
+      "accessible_description": "Arraste horizontalmente para ajustar este valor; rolagem n\u00e3o altera o valor",
+      "class": "ScrubbableLabel",
+      "object_name": "",
+      "tooltip": "Arraste horizontalmente para ajustar; wheel protegido"
+    },
+    {
+      "accessible_description": "Espa\u00e7amento do encaixe na grade",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "",
+      "tooltip": "Espa\u00e7amento do encaixe na grade"
+    },
+    {
+      "accessible_description": "Aplicar as altera\u00e7\u00f5es de transforma\u00e7\u00e3o",
+      "class": "QPushButton",
+      "object_name": "",
+      "tooltip": "Aplicar as altera\u00e7\u00f5es de transforma\u00e7\u00e3o"
+    },
+    {
+      "accessible_description": "Desfazer a \u00faltima altera\u00e7\u00e3o do inspetor",
+      "class": "QPushButton",
+      "object_name": "",
+      "tooltip": "Desfazer a \u00faltima altera\u00e7\u00e3o do inspetor"
+    },
+    {
+      "accessible_description": "Refazer a \u00faltima altera\u00e7\u00e3o do inspetor",
+      "class": "QPushButton",
+      "object_name": "",
+      "tooltip": "Refazer a \u00faltima altera\u00e7\u00e3o do inspetor"
+    },
+    {
+      "accessible_description": "Enquadrar os objetos selecionados vis\u00edveis no viewport",
+      "class": "QPushButton",
+      "object_name": "scene_fit_selection_button",
+      "tooltip": "Enquadrar os objetos selecionados vis\u00edveis no viewport"
+    },
+    {
+      "accessible_description": "Enquadrar todos os objetos vis\u00edveis no viewport",
+      "class": "QPushButton",
+      "object_name": "scene_fit_all_button",
+      "tooltip": "Enquadrar todos os objetos vis\u00edveis no viewport"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "",
+      "tooltip": "Novo Cen\u00e1rio"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "",
+      "tooltip": "Salvar Projeto Como"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "",
+      "tooltip": "Salvar Cen\u00e1rio"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "",
+      "tooltip": "Recarregar Cen\u00e1rio"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "",
+      "tooltip": "Redefinir Cen\u00e1rio"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "scenario_toolbar_menu_export",
+      "tooltip": "Exportar"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "scenario_toolbar_menu_edit",
+      "tooltip": "Editar"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "scenario_toolbar_menu_view",
+      "tooltip": "Ver"
+    },
+    {
+      "accessible_description": "",
+      "class": "QToolButton",
+      "object_name": "scenario_toolbar_menu_more",
+      "tooltip": "Mais"
+    },
+    {
+      "accessible_description": "",
+      "class": "QLabel",
+      "object_name": "scenario_layer_order_hint",
+      "tooltip": "As camadas s\u00e3o renderizadas da primeira linha (tr\u00e1s) para a \u00faltima (frente)."
+    },
+    {
+      "accessible_description": "",
+      "class": "LayerFrameList",
+      "object_name": "scenario_layer_stack_list",
+      "tooltip": "Selecione uma camada para editar visibilidade, bloqueio e ordem."
+    },
+    {
+      "accessible_description": "",
+      "class": "QPushButton",
+      "object_name": "scene_sequence_play",
+      "tooltip": "Reproduzir"
+    },
+    {
+      "accessible_description": "",
+      "class": "QPushButton",
+      "object_name": "scene_sequence_stop",
+      "tooltip": "Parar"
+    },
+    {
+      "accessible_description": "",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "scene_sequence_duration",
+      "tooltip": "Dura\u00e7\u00e3o da cena (segundos)"
+    },
+    {
+      "accessible_description": "",
+      "class": "QCheckBox",
+      "object_name": "",
+      "tooltip": "Repetir"
+    },
+    {
+      "accessible_description": "",
+      "class": "ProtectedDoubleSpinBox",
+      "object_name": "scene_sequence_speed",
+      "tooltip": "Velocidade de reprodu\u00e7\u00e3o"
+    },
+    {
+      "accessible_description": "",
+      "class": "QPushButton",
+      "object_name": "scene_sequence_add",
+      "tooltip": "Adicionar"
+    },
+    {
+      "accessible_description": "",
+      "class": "QPushButton",
+      "object_name": "",
+      "tooltip": "Excluir clipe"
+    },
+    {
+      "accessible_description": "",
+      "class": "QPushButton",
+      "object_name": "",
+      "tooltip": "Desfazer"
+    },
+    {
+      "accessible_description": "",
+      "class": "QPushButton",
+      "object_name": "",
+      "tooltip": "Refazer"
+    }
+  ]
+}
