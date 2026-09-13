@@ -10,7 +10,7 @@
 
 **Branch atual:** `Ailton/audit-post-e13-scenario-editor-20260912`
 
-**HEAD após a mudança:** `9e2d2a20cdf49d82172e46bc959d9ef271cce4f4`
+**Ponto de partida documental da mudança:** `9e2d2a20cdf49d82172e46bc959d9ef271cce4f4`
 
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 
@@ -54,7 +54,7 @@ proveniência do build/checkpoint em que foi produzido.
 | Branch ativa | `Ailton/e08-renderer-20260908` | `Ailton/audit-post-e13-scenario-editor-20260912` |
 | Produto sob auditoria | `dd344f47` | `422483e` |
 | Harness de auditoria | não identificado no registro ativo | `d7ddbef` |
-| HEAD documental | `dd344f47` | `9e2d2a2` |
+| HEAD documental | `dd344f47` | verificado dinamicamente por `git rev-parse HEAD`; o ponto de partida desta mudança foi `9e2d2a2` |
 | Suíte corrente | `2226/2/1` | `2625/2/5` |
 | Próxima ação | solicitar revisão humana | fechar evidências funcionais/residuais; revisão humana somente após os gates exigidos |
 | Modelos/gizmo | não explicitado no ponteiro corrente | adiado, sem alteração nesta mudança |
