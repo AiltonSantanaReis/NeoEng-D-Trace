@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "feature_id": "AUD-POST-E13-UNITY-CONTROLLED-SANDBOX-20260913",
+  "status": "BLOCKED",
+  "execution": "controlled_windows_sandbox_attempt",
+  "source": {
+    "checkout_commit": "b58519693b65b17492d414d63cacb67d28446137",
+    "governance_sha256": "D933DB005B7110C391CF776CDA3014CE348D61A91A5E9902AEEA619185EC3EA0",
+    "package_manifest_sha256": "D267EBDDBDE32F78C146C194FCC083F2A36457EAEB73A6D3593F2CE28CC21F25",
+    "sandbox_runner_sha256": "ABDA2A496017B9F628C94F406B74030C140FB663B076FF6C5CC7310A6588B9C5",
+    "sandbox_config_sha256": "6C356C2302D07EB0DE96EC85227EBF8095A4B484CA84CD17045D857D3093A3FB9"
+  },
+  "environment": {
+    "windows_sandbox_feature_install_state": 1,
+    "windows_sandbox_version": "10.0.26100.8875",
+    "windows_sandbox_binary_sha256": "7BB5667331572C8A725A3A799AE7DED2912648B4F6EB7380FB51864C804C3E36",
+    "networking": "disabled",
+    "vgpu": "disabled",
+    "input_mapping": "read_only",
+    "unity_mapping": "read_only",
+    "output_mapping": "isolated_read_write"
+  },
+  "unity_inventory": {
+    "version": "6000.5.7f1",
+    "executable_sha256": "BD70ECAA1F700D934628F943B36035D0E88F0C9E05A5F30549D1E92F90F6299C",
+    "execution_observed": false,
+    "inventory_only": true
+  },
+  "attempt": {
+    "launcher_exit_code": 0,
+    "launcher_acceptance_is_runtime_proof": false,
+    "fixture_config_xml": "valid",
+    "fixture_package_files": 44,
+    "output_file_count_after_wait": 0,
+    "unity_log_present": false,
+    "package_report_present": false,
+    "unity_success_marker_observed": false,
+    "unity_failure_marker_observed": false
+  },
+  "blocker": {
+    "kind": "preexisting_windows_sandbox_vm_not_released",
+    "vmmem_windows_sandbox_present": true,
+    "preexisting_session_present": true,
+    "graceful_window_close_requested": true,
+    "graceful_window_close_completed": false,
+    "forced_host_termination": false,
+    "host_shutdown_requested": false,
+    "reason": "A preexisting disposable Windows Sandbox session kept the single sandbox VM occupied; the new configuration was accepted by the launcher but did not mount the fixture or start Unity before the allowed graceful cleanup window ended."
+  },
+  "classification": {
+    "licensing": "BLOCKED",
+    "unity_shutdown": "BLOCKED",
+    "native_unity_run": "BLOCKED",
+    "next_action": "Release the preexisting Windows Sandbox session by an explicitly controlled external action, then rerun this unchanged fixture only if the environment is available."
+  }
+}

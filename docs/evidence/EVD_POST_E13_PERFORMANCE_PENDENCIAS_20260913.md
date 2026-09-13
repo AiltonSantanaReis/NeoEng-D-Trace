@@ -1,9 +1,9 @@
 # Evidência pós-E13 — pendências de desempenho estrutural
 
-**ID da feature:** `AUD-POST-E13-PERFORMANCE-PENDENCIAS-20260913`  
-**Status:** `IN_PROGRESS`  
-**Data:** 2026-09-13  
-**Requisito:** `REQ-POST-E13-VIEWPORT-SCALE-20260913`  
+**ID da feature:** `AUD-POST-E13-PERFORMANCE-PENDENCIAS-20260913`
+**Status:** `IN_PROGRESS`
+**Data:** 2026-09-13
+**Requisito:** `REQ-POST-E13-VIEWPORT-SCALE-20260913`
 **Contrato:** `DECISAO_P2D_05_OTIMIZACAO_PERFORMANCE_2026-08-30.md`
 
 ## Resultado comprovado
@@ -77,6 +77,10 @@ contador GPU; isso não é uma aprovação de desempenho GPU. O limite estrutura
 medido continua `FAIL` no relatório e `APPROVED_BY_OWNER` como decisão de escopo.
 
 O gate restante desta frente é a execução real de licensing/shutdown do Unity em
-ambiente Windows dedicado. A classificação de logs históricos permanece
-`PASS` funcional com ambiente limpo/shutdown `PENDING_EVIDENCE`; nenhuma execução
-nativa será feita neste host.
+ambiente Windows dedicado. A primeira tentativa controlada está registrada como
+`BLOCKED` em
+`docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`: uma VM
+Windows Sandbox preexistente manteve o recurso ocupado, a fixture não foi
+montada e nenhum Unity foi executado. A classificação de logs históricos
+permanece `PASS` funcional com ambiente limpo/shutdown `PENDING_EVIDENCE`; não
+houve execução nativa do Unity neste host.
