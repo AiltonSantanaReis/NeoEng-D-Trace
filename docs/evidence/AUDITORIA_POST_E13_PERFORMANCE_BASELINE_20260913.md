@@ -2,7 +2,7 @@
 
 **ID:** `AUD-POST-E13-PERFORMANCE-BASELINE-20260913`
 
-**Versão:** `1.1`
+**Versão:** `1.2`
 
 **Data:** `2026-09-13`
 
@@ -10,23 +10,33 @@
 
 **Source commit da baseline:** `caba951b8e62c33acd0e5d00fb1f795dc04856fc`
 
-**Source commit qualificado após a correção estreita:** `9599ae3625cde4c3c967e04688af8cea2de9f3af`
+**Source commit qualificado após as correções estreitas:** `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e`
 
-**Build nativa usada na verificação:** `build/post-e13-performance-build-20260913-r1`
+**Commits de correção qualificados:** `9599ae3625cde4c3c967e04688af8cea2de9f3af` (cache/resolução e iluminação incremental) e `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e` (snapshot de estrutura e repintura condicional)
 
-**SHA-256 do executável:** `F467B2FE6CA1FF1744D40A582143D08A250CFE9CC2732A4444A687FE55025728` (`10.880.038` bytes)
+**Build nativa qualificada usada na verificação:** `build/post-e13-performance-build-20260913-r2`
 
-**SHA-256 do pacote portátil:** `64BC1530218E677399B6ED3D5545783AE673546E9A677D72AF484727CFDB6B07` (`142.942.287` bytes)
+**SHA-256 do executável:** `245A66B8E2C29A2180B9514F8579DB3679899A6C1EE4F06F13B863ACF9055238` (`10.879.926` bytes)
 
-**SHA-256 do manifesto de release:** `8C90F57AF160185EA56B5FDB3178BFC3291FC60AEBDA96F4B10BF96FECE90318`
+**SHA-256 do pacote portátil:** `F46A7481D94194A0BA143FEB9A6A960059D772270094C752FA8440DA3EBF86A0` (`142.942.057` bytes)
 
-**SHA-256 da proveniência de continuidade:** `5F81C9B8EDF9FD81B758A5FC812A3AD69CA48CBE9DADFC367C54F9D0E4132305`
+**SHA-256 do manifesto de release:** `AAB0FDFFD264BE85D5333A33C6EAFDF5451ECF46681B9F89039DEC58A57B7F50`
+
+**SHA-256 da proveniência de continuidade:** `9942EECF23A60CCCDD377609C460B918FD7EB29F4395CC4AA26CC5C615254237`
+
+**Status da proveniência/build:** `PASS` (`continuity-provenance.json`) e `SUCCESS` (`smoke/portable-smoke-report.json`)
 
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 
 **Contrato técnico:** [`DECISAO_P2D_05_OTIMIZACAO_PERFORMANCE_2026-08-30.md`](../DECISAO_P2D_05_OTIMIZACAO_PERFORMANCE_2026-08-30.md)
 
 **Contrato de viewport:** [`DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md`](../DECISAO_P2D_05_O2_PREVIEW_VIEWPORT_2026-08-30.md)
+
+O build e a captura anteriores permanecem preservados para comparação histórica:
+`build/post-e13-performance-build-20260913-r1`, executável SHA-256
+`F467B2FE6CA1FF1744D40A582143D08A250CFE9CC2732A4444A687FE55025728`, pacote
+SHA-256 `64BC1530218E677399B6ED3D5545783AE673546E9A677D72AF484727CFDB6B07`.
+Eles não são a qualificação corrente desta versão.
 
 ## Fronteira da etapa
 
@@ -67,7 +77,8 @@ modo de asset específico.
 - p50, p95, p99, pior caso, erros, determinismo e memória Python/nativa;
 - profiling CPU somente local e sanitizado, sem publicar caminhos pessoais;
 - saída da baseline: `artifacts/audit-post-e13-performance-20260913-r1/`;
-- saída pós-correção: `artifacts/audit-post-e13-performance-20260913-r2/`;
+- saída pós-correção inicial: `artifacts/audit-post-e13-performance-20260913-r2/`;
+- saída pós-correção de visibilidade/repintura: `artifacts/audit-post-e13-performance-20260913-r5/`;
 - source commit, ambiente e hashes serão registrados após a execução.
 
 O resultado só poderá ser classificado como `PASS` se a matriz completa
@@ -238,14 +249,100 @@ pois podem conter referências internas; seus hashes são:
 | `profiles/o2-structural-isolation-512-unique.prof` | `D06F57822F040562BCAB1E9B44C9E034E620EE4F0BB9C9F6D9A4F3DC2631A5F3` | o caminho que invalida/repopula o cache permanece mais caro, porém abaixo da baseline |
 | `profiles/o2-post-e13-gesture-512-shared.prof` | `9726B2CF0EA2C8F97D23736FD613BE8284DD1368E455E7A196C86B239755B8AB` | `refresh_transforms` ficou em `0,016529 s` acumulado no gesto; o próximo custo dominante é a verificação de visibilidade/grupos |
 
-## Captura real no build pós-correção
+## Segunda correção estreita: snapshot de estrutura e repintura condicional
 
-O binário acima foi executado com automação Win32 real usando a janela nativa e
+No commit `8f5bbb5002bc94ecb7106858b2de36fcf4ba794e` foi aplicada uma segunda
+correção limitada ao viewport, após confirmar que o custo de repintura e uma
+varredura redundante de visibilidade ainda apareciam no caminho incremental.
+Nenhuma alteração foi feita em `SceneAuthoringSession`, no schema, na
+persistência, no QSS/layout ou nos adapters de engine.
+
+- `_on_session_change` passou a usar o snapshot estrutural já calculado para
+  decidir se a apresentação mudou, sem recalcular a visibilidade efetiva de
+  todos os objetos antes da comparação;
+- `_refresh_after_model_change` recebeu `repaint_viewport`, e a notificação de
+  sessão só força repintura global quando há mudança de apresentação; gestos de
+  transformação/seleção dependem da invalidação de item do Qt, enquanto chamadas
+  diretas e resize preservam o padrão de repintura global;
+- a semântica de visibilidade, isolamento, ordem, seleção, gizmo, parallax e
+  oclusores foi mantida; o teste focado confirmou que transformação não faz
+  repintura global e que mutação de câmera continua fazendo.
+
+Os testes focados do viewport/O-2 totalizaram `11 passed`; `py_compile` e
+`git diff --check` passaram. A suíte oficial completa, sem filtros, terminou
+com `2624 passed, 2 skipped, 5 warnings` em `79,71 s`. Os dois skips e os cinco
+avisos continuam pertencendo ao pacote oficial existente; não foram usados
+como bypass.
+
+### Benchmark qualificado no commit limpo
+
+O produtor canônico foi executado novamente com `--expected-source-commit
+8f5bbb5002bc94ecb7106858b2de36fcf4ba794e`. O relatório é
+`artifacts/audit-post-e13-performance-20260913-r5/o2-after-second-viewport-fix.json`,
+com SHA-256
+`2BB6FD6AFDF0406960864D31E2F6DF492F41DEC0E44A15AF351D79FC342D780E`.
+
+| Verificação | Resultado observado |
+|---|---|
+| estado do produtor | `PASS` |
+| source commit esperado/observado | `8f5bbb5...` / `8f5bbb5...` |
+| workloads | `26/26` (24 principais + 2 estruturais) |
+| erros de operação | `0` |
+| falhas de determinismo | `0` |
+| memória | `20` observações separadas por workload, sem erro de medição |
+| alterações rastreadas durante a medição | `0` |
+
+P95s representativos do workload compartilhado de `512` objetos em `1280×720`:
+
+| Caminho | p95 |
+|---|---:|
+| `full_sync` | `103,14 ms` |
+| `incremental_refresh` | `52,93 ms` |
+| `preview_frame_build` | `7,73 ms` |
+| `preview_toggle` | `58,65 ms` |
+| `user_gesture_cycle` | `145,85 ms` |
+
+Nos workloads estruturais de `512` objetos em `1920×1080`, a maior medição
+compartilhada foi `object_add_remove` em `232,75 ms`; com assets únicos, a maior
+foi `layer_visibility_toggle` em `1041,52 ms` (seguida de
+`group_visibility_toggle` em `1034,35 ms`). Assim, a melhoria de repintura é
+comprovada, mas a degradação estrutural com assets únicos continua sendo um
+`FAIL` de desempenho percebido em alta escala, não um orçamento normativo.
+
+### Profiling causal no mesmo commit
+
+Os quatro perfis locais foram gerados pelo profiler corrigido, com o commit
+esperado exato. Permanecem fora do commit por poderem conter caminhos internos;
+seus hashes e sinais causais são:
+
+| Perfil | SHA-256 | Sinal causal observado |
+|---|---|---|
+| `profiles/o2-full-sync-512-unique.prof` | `3CB0E653C6C209694679084324B3098FB273FFBB3B879C56B196C94AE95D594D` | `resolve_scene_asset` acumulou `3,992 s`; `Path.resolve` `2,051 s`, hash `1,489 s` e leitura `0,872 s` em cinco reconstruções |
+| `profiles/o2-incremental-refresh-512-shared.prof` | `7908960E297F8988157DD7ED407AA726D16AAD384A2B3FE8367CA7C1F36D340B` | `processEvents` acumulou `0,534 s`, `paintEvent` `0,476 s`, refresh pós-modelo `0,283 s` e transformação `0,212 s` em vinte operações |
+| `profiles/o2-preview-frame-512-shared.prof` | `572403C6F962C7E990521C6BCC1E7838137A362BF0249B1CE836BB89425DA886` | `build_scene_authoring_preview` acumulou `1,527 s`; `parallax_camera.project` `0,696 s` em cinquenta frames |
+| `profiles/o2-structural-isolation-512-unique.prof` | `D9475CA4975BC0C240A815C6B3113B97437A39A7D1E767A104461A882C3345AF` | isolamento acionou `sync` por `3,465 s`; resolução de assets acumulou `2,781 s` — custo residual fora da fronteira de `SceneAuthoringSession` |
+
+O profile confirma que a segunda correção reduziu o trabalho de pintura do
+viewport, mas não autoriza reabrir O-1: o custo dominante restante no gesto é o
+snapshot/histórico (`begin_gesture`/`snapshot`), tratado como fronteira do
+contrato O-2. O caminho estrutural de assets únicos continua candidato a uma
+etapa posterior somente com novo contrato, perfil, equivalência e aceitação.
+
+O benchmark intermediário `r4`, SHA-256
+`C93D99E9E3C780F402E59319734A72748EFA21EFEBB9CE5BE09F266E4A5DF6D9`, também
+permanece preservado. Ele foi executado em árvore com `tracked_changes=2` sobre
+`0973b36`; por isso serve como evidência histórica, não como qualificação do
+commit corrente.
+
+## Captura real no build qualificado
+
+O binário `r2` foi executado com automação Win32 real usando a janela nativa e
 captura por handle/`PrintWindow`, sem substituir a aplicação por mock. O pacote
-de evidências é `artifacts/audit-post-e13-binary-performance-20260913-r1/` e
-contém `13` capturas PNG hashadas e o manifesto `manifest.json`. A execução
-retornou código `0` e registrou: `window: captured by PrintWindow from binary
-window handle`.
+de evidências é `artifacts/audit-post-e13-binary-performance-20260913-r2/` e
+contém `15` capturas PNG hashadas e o manifesto `manifest.json` (SHA-256
+`959A96B95351A9A7780D53E389E6D3F66975281E93454DFA5FCCCF27972363D6`). A
+execução retornou código `0` e registrou: `window: captured by PrintWindow from
+binary window handle`.
 
 Fluxo observado nas capturas:
 
@@ -272,6 +369,10 @@ visual do clipe. Ela não fornece contador nativo de frame/GPU nem substitui o
 soak test de memória ou a equivalência de runtime Godot/Unity; esses itens
 continuam explicitamente abertos.
 
+A captura anterior do build `r1` permanece em
+`artifacts/audit-post-e13-binary-performance-20260913-r1/` com `13` PNGs e
+execução `0`; ela é referência histórica e não foi sobrescrita.
+
 ## Falha de tooling histórica preservada
 
 Na baseline, o script legado
@@ -288,13 +389,13 @@ teste focado e pelos cinco perfis hashados na seção anterior.
 | Alvo | Estado atual | Conclusão permitida |
 |---|---|---|
 | matriz de medição | `PASS` | baseline reproduzível no commit registrado |
-| correção de cache de asset e iluminação incremental | `PASS` | redução reproduzível, invalidação protegida e regressão oficial aprovada |
+| correções estreitas de cache/iluminação, snapshot de estrutura e repintura condicional | `PASS` | redução reproduzível, cobertura de equivalência protegida, regressão oficial aprovada e benchmark qualificado no commit limpo |
 | desempenho perceptível em 512 unique | `FAIL` | houve redução de `67%`–`79%`, mas os p95 estruturais ainda excedem centenas de milissegundos |
 | determinismo/erros | `PASS` | nenhuma falha funcional foi encontrada nesta matriz |
 | memória curta | `PENDING_EVIDENCE` | observação pequena, sem prova de estabilidade longa |
 | GPU/runtime externo | `PENDING_EVIDENCE` | não medidos nesta etapa |
 | profiler histórico | `FAIL` | falha da baseline preservada; o tooling atual corrigido possui execução `PASS` separada |
-| build portátil pós-correção | `PASS` | build identificada, proveniência `SUCCESS` e fluxo Win32 coberto sem abort/erro |
+| build portátil qualificada pós-correção | `PASS` | `r2` identificada no commit `8f5bbb5`, proveniência `PASS`, smoke `SUCCESS` e fluxo Win32 coberto sem abort/erro |
 | equivalência runtime Godot/Unity | `PENDING_EVIDENCE` | não comprovada pelo fluxo editorial nem pelo benchmark offscreen |
 
 O próximo subestágio autorizado é a otimização do custo residual de
