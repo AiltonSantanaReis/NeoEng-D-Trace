@@ -1,11 +1,21 @@
 # Índice Documental Ativo Canônico — NeoEng-D-Trace
 
-**Versão:** 2.4
+**Versão:** 2.5
 **Data:** 2026-09-13
 **ID:** DOC-INDEX-ACTIVE-CANONICAL-20260829
 **Status:** ativo e prevalente
 
 Este é o índice documental consolidado e prevalente. O índice `INDICE_DOCUMENTAL_ATIVO_2026-08-24.md` permanece **ATIVO** e integra o conjunto documental vigente. Em caso de divergência, este índice canônico prevalece e a execução deve ser bloqueada até a resolução formal do conflito.
+
+Para a fotografia corrente do fechamento pós-E13 em 2026-09-13, a autoridade
+operacional é
+`evidence/AUDITORIA_FECHAMENTO_PENDENCIAS_POS_E13_20260913.md`. Os relatórios
+com `PENDING_EVIDENCE`, `IN_PROGRESS` ou `HUMAN_REVIEW_PENDING` anteriores a
+essa auditoria são snapshots históricos: seus achados, warnings e limitações
+continuam preservados, mas não devem ser interpretados como uma segunda base
+ativa nem como conflito com a matriz corrente. A auditoria de fechamento não
+promove `FAIL`, `SKIP` ou `BLOCKED`; ela apenas reconcilia o estado temporal e
+indica o único bloqueio externo restante.
 
 
 ## 1. Prevalência
