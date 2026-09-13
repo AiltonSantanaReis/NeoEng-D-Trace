@@ -8,7 +8,7 @@
     "runtime_overlay":  "C:\\runtime",
     "license_preflight":  {
                               "mapped_source":  "C:\\license-input\\UnityEntitlementLicense.xml",
-                              "target":  "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\Unity\\licenses\\UnityEntitlementLicense.xml",
+                              "target":  "<redacted-sandbox-user-profile>/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml",
                               "expected_sha256":  "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
                               "source_present":  true,
                               "source_bytes":  6731,

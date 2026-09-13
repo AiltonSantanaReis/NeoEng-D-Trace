@@ -161,7 +161,7 @@ O marcador de shutdown existiu, os processos terminaram após polling e nenhum
 processo/ shutdown foi executado no host.
 
 Hashes do r11: resultado
-`21429CA41A3BFB2293C70A63A831BFF3EC53100A04B3CC58AA6E905B7F0C3017`; log bruto
+`AE1D1B036AF836A1EE069A24D2A8E6D06A5D21AEDF11A1B9BF114A3B2665F07D`; log bruto
 local `FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153`;
 projeção sanitizada
 `97441BA7E373BDB435D6817A5B4C3A086D68C963078D0703D3133A9B6D21EAF1`; runner
@@ -193,7 +193,7 @@ O marcador de shutdown foi produzido e a Sandbox terminou naturalmente; nenhum
 processo foi encerrado nem o host foi desligado.
 
 Hashes do r12: resultado
-`3F91FC2E5E82D9FCA7702289B686D28DEEE276658C1F377E9B9ED8E29743E0B8`; log bruto
+`E95995806B98A263F44C43FE487FF3615447B88B24DD27CEA95933A6079BC960`; log bruto
 local `96E220638A19A677ADF9D6F81381E2EFE4A887D7B08A60A75E1E13B33DD01E8A`;
 projeção sanitizada
 `7D0FDC95E631C30EFD00535D33E9BD6DCEE9166FFAF813B3600826F90E873598`; runner
@@ -205,7 +205,7 @@ projeção sanitizada
 O resultado completo das tentativas r1–r12, incluindo os hashes da configuração
 e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `48A32C7D6C2DC5D766567271BD12BF98E388CCE7AED0B5DB08C55085FDA84BCD`).
+(SHA-256 `B372556C39A32CCAF295C64DBB3FC45910EE02E8A844FFFABC0AF0C42EEDC3C4`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`
@@ -222,7 +222,7 @@ IDs/PIDs/caminhos voláteis, está em
 
 O resultado r9 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r9/sandbox-result.json`
-(SHA-256 `C770D760743CC36F08DB863C8DCBD3AB6A5C62D3562092E6188F7A74FA5D227E`).
+(SHA-256 `1D454F48223C295381D81BB1575022DFB7A4D1B70A9D9BBE4B58230D01FE1B4F`).
 O log bruto r9 permanece preservado localmente com SHA-256
 `DEC8C7C2529BD4B2BDFDA139E92C92F0498D8B530912517532561681B9F1FD5A`; a projeção
 sanitizada está em
@@ -235,7 +235,7 @@ configuração WSB r9 tem SHA-256
 
 O resultado r10 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r10/sandbox-result.json`
-(SHA-256 `8FC3E5A983C25CC548BFE18ED18892121D3318310AA7A2573ADA4A58BEC2FF1F`).
+(SHA-256 `DAB84CC6C3D1045AE8027F3CA4E75579053C701DBC0FD47B8BDC415FBE095661`).
 O log bruto r10 permanece preservado localmente com SHA-256
 `08F959B0772783090937C7F215216589DE4CAC02A04E4E325880FD6CD8333A2B`; a
 projeção sanitizada está em
@@ -248,7 +248,7 @@ configuração WSB r10 tem SHA-256
 
 O resultado r11 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r11/sandbox-result.json`
-(SHA-256 `21429CA41A3BFB2293C70A63A831BFF3EC53100A04B3CC58AA6E905B7F0C3017`).
+(SHA-256 `AE1D1B036AF836A1EE069A24D2A8E6D06A5D21AEDF11A1B9BF114A3B2665F07D`).
 O log bruto r11 permanece localmente com SHA-256
 `FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153`; a
 projeção sanitizada está em
@@ -261,7 +261,7 @@ configuração WSB r11 tem SHA-256
 
 O resultado r12 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r12/sandbox-result.json`
-(SHA-256 `3F91FC2E5E82D9FCA7702289B686D28DEEE276658C1F377E9B9ED8E29743E0B8`).
+(SHA-256 `E95995806B98A263F44C43FE487FF3615447B88B24DD27CEA95933A6079BC960`).
 O log bruto r12 permanece localmente com SHA-256
 `96E220638A19A677ADF9D6F81381E2EFE4A887D7B08A60A75E1E13B33DD01E8A`; a
 projeção sanitizada está em
@@ -284,7 +284,7 @@ Windows dentro do Docker Linux.
 
 Uma inspeção estrutural read-only encontrou no host um possível arquivo de
 entitlement em
-`C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`.
+`<redacted-host-license-fixture>/UnityEntitlementLicense.xml`.
 Nenhum valor de elemento, token ou identificador foi exposto. Após autorização
 explícita, o arquivo foi somente mapeado read-only e copiado para o ambiente
 descartável no r9, r10, r11 e r12; não foi alterado pelo harness no host. Entre
