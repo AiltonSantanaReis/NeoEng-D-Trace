@@ -963,6 +963,9 @@ class SceneAuthoringViewport(QGraphicsView):
         self._asset_state_snapshot: tuple[tuple[str, str, str, str | None], ...] = ()
         self._layer_order_snapshot: tuple[str, ...] = ()
         self._asset_pixmap_cache: dict[tuple[str, str, str], QPixmap] = {}
+        self._asset_resolution_cache: dict[
+            tuple[str, str, str], tuple[Path, tuple[int, int, int, int, int]]
+        ] = {}
         self._asset_watcher = QFileSystemWatcher(self)
         self._asset_watcher.fileChanged.connect(self._on_asset_file_changed)
         self._object_transform_snapshot: dict[str, tuple[float | bool, ...]] = {}
@@ -1563,6 +1566,62 @@ class SceneAuthoringViewport(QGraphicsView):
     def _asset_cache_key(asset: AssetReferenceRecord) -> tuple[str, str, str]:
         return asset.id, asset.path, asset.sha256
 
+    @staticmethod
+    def _asset_file_fingerprint(path: Path) -> tuple[int, int, int, int, int] | None:
+        """Return file identity metadata for the validated-asset cache."""
+
+        try:
+            stat = path.stat()
+        except OSError:
+            return None
+        return (
+            int(getattr(stat, "st_dev", 0)),
+            int(getattr(stat, "st_ino", 0)),
+            int(stat.st_size),
+            int(stat.st_mtime_ns),
+            int(stat.st_ctime_ns),
+        )
+
+    def _resolve_scene_asset_cached(
+        self, asset: AssetReferenceRecord
+    ) -> tuple[Path | None, str | None]:
+        """Reuse validation only while the previously checked file is unchanged."""
+
+        cache_key = self._asset_cache_key(asset)
+        cached = self._asset_resolution_cache.get(cache_key)
+        if cached is not None:
+            cached_path, cached_fingerprint = cached
+            if self._asset_file_fingerprint(cached_path) == cached_fingerprint:
+                return cached_path, None
+            self._asset_resolution_cache.pop(cache_key, None)
+            self._asset_pixmap_cache.pop(cache_key, None)
+
+        resolved, issue = resolve_scene_asset(asset, self.project_root)
+        if issue is None and resolved is not None:
+            fingerprint = self._asset_file_fingerprint(resolved)
+            if fingerprint is not None:
+                self._asset_resolution_cache[cache_key] = (resolved, fingerprint)
+        return resolved, issue
+
+    def _prune_asset_resolution_cache(
+        self, active_keys: set[tuple[str, str, str]]
+    ) -> None:
+        for key in tuple(self._asset_resolution_cache):
+            if key not in active_keys:
+                del self._asset_resolution_cache[key]
+
+    def _invalidate_asset_cache_for_path(self, path: str) -> None:
+        try:
+            changed_path = Path(path).resolve(strict=False)
+        except (OSError, RuntimeError):
+            changed_path = Path(path)
+        for key, (cached_path, _fingerprint) in tuple(
+            self._asset_resolution_cache.items()
+        ):
+            if cached_path == changed_path:
+                self._asset_resolution_cache.pop(key, None)
+                self._asset_pixmap_cache.pop(key, None)
+
     def _prune_asset_pixmap_cache(self, active_keys: set[tuple[str, str, str]]) -> None:
         for key in tuple(self._asset_pixmap_cache):
             if key not in active_keys:
@@ -1581,7 +1640,7 @@ class SceneAuthoringViewport(QGraphicsView):
     def _on_asset_file_changed(self, path: str) -> None:
         """Revalidate a displayed asset after an external filesystem change."""
 
-        del path
+        self._invalidate_asset_cache_for_path(path)
         self.sync()
 
     def sync(self) -> None:
@@ -1596,6 +1655,7 @@ class SceneAuthoringViewport(QGraphicsView):
         assets_by_id = {asset.id: asset for asset in self.session.document.assets}
         pixmap_cache: dict[str, QPixmap | None] = {}
         active_asset_cache_keys: set[tuple[str, str, str]] = set()
+        active_asset_resolution_keys: set[tuple[str, str, str]] = set()
         watched_asset_paths: list[Path] = []
         ordered_objects = ordered_scene_objects(self.session.document)
         layer_order = layer_index_by_id(self.session.document)
@@ -1613,13 +1673,15 @@ class SceneAuthoringViewport(QGraphicsView):
             if asset is None:
                 diagnostics.append(f"{item.id}: asset record is missing")
             elif asset.id not in pixmap_cache:
-                asset_path, issue = resolve_scene_asset(asset, self.project_root)
+                cache_key = self._asset_cache_key(asset)
+                active_asset_resolution_keys.add(cache_key)
+                asset_path, issue = self._resolve_scene_asset_cached(asset)
                 if issue is not None:
                     diagnostics.append(f"{item.id}: {issue}")
+                    pixmap_cache[asset.id] = None
                 else:
                     assert asset_path is not None
                     watched_asset_paths.append(asset_path)
-                    cache_key = self._asset_cache_key(asset)
                     try:
                         pixmap = self._asset_pixmap_cache.get(cache_key)
                         if pixmap is None:
@@ -1718,6 +1780,7 @@ class SceneAuthoringViewport(QGraphicsView):
             self.graphics_scene.addItem(camera_guide)
             self._camera_guide = camera_guide
         self._prune_asset_pixmap_cache(active_asset_cache_keys)
+        self._prune_asset_resolution_cache(active_asset_resolution_keys)
         self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
         self._refresh_camera_guide()
@@ -1772,7 +1835,10 @@ class SceneAuthoringViewport(QGraphicsView):
         document_lighting = self._lighting_for_document()
         lighting_by_object: dict[str, QColor] = {}
         if isinstance(document, SceneAuthoringDocumentV2):
+            requested_set = set(requested_ids)
             for item in document.objects:
+                if item.id not in requested_set:
+                    continue
                 occluders = tuple(
                     tuple(
                         (

@@ -154,6 +154,69 @@ def test_viewport_reuses_only_validated_pixmap_and_reloads_after_revision(
         qt_app.processEvents()
 
 
+def test_viewport_reuses_asset_validation_until_file_fingerprint_changes(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    asset_path = tmp_path / "project" / "assets" / "a.png"
+    _write_png(asset_path, "#2aa7ff")
+    asset = AssetReferenceRecord(
+        id="asset", path="assets/a.png", sha256=sha256_file(asset_path)
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(asset)))
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    resolver_calls: list[str] = []
+    original_resolver = viewport_module.resolve_scene_asset
+
+    def counted_resolver(record, project_root):
+        resolver_calls.append(record.id)
+        return original_resolver(record, project_root)
+
+    monkeypatch.setattr(viewport_module, "resolve_scene_asset", counted_resolver)
+    try:
+        view.sync()
+        view.sync()
+        assert resolver_calls == []
+
+        # Disable the asynchronous watcher so the fingerprint path is tested
+        # directly as well as through the normal QFileSystemWatcher callback.
+        view._asset_watcher.removePaths(view._asset_watcher.files())
+        qt_app.processEvents()
+        resolver_calls.clear()
+        _write_png(asset_path, "#ff5d63")
+        view.sync()
+        assert resolver_calls == ["asset"]
+        assert any("hash mismatch" in message for message in view._asset_diagnostics)
+    finally:
+        view.close()
+        qt_app.processEvents()
+
+
+def test_incremental_transform_refresh_shades_only_changed_object(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    asset_path = tmp_path / "project" / "assets" / "a.png"
+    _write_png(asset_path, "#2aa7ff")
+    asset = AssetReferenceRecord(
+        id="asset", path="assets/a.png", sha256=sha256_file(asset_path)
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(asset)))
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    shade_calls: list[tuple[float, float]] = []
+    original_shade = viewport_module.shade_color
+
+    def counted_shade(position, material, settings):
+        shade_calls.append((float(position[0]), float(position[1])))
+        return original_shade(position, material, settings)
+
+    monkeypatch.setattr(viewport_module, "shade_color", counted_shade)
+    try:
+        assert session.update_transform("a", _transform(44.0, 12.0)) is True
+        assert shade_calls == [(44.0, 12.0)]
+    finally:
+        view.close()
+        qt_app.processEvents()
+
+
 def test_viewport_transform_refresh_touches_only_changed_object(
     qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
