@@ -276,9 +276,9 @@ src\exporters\atlas_exporter.py:389: in save_atlas
     _commit_staged_files([(tmp_img, atlas_path), (tmp_json, json_path)])
 src\exporters\atlas_exporter.py:53: in _commit_staged_files
     os.replace(staged, destination)
-E   PermissionError: [WinError 5] Acesso negado: 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\tmp_atlas_lak8kyrq.png' -> 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\atlas.png'
+E   PermissionError: [WinError 5] Acesso negado: 'WORKSPACE\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\tmp_atlas_lak8kyrq.png' -> 'WORKSPACE\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\atlas.png'
 ------------------------------ Captured log call ------------------------------
-ERROR    NeoEng-D-Trace:atlas_exporter.py:393 Failed to save atlas outputs: [WinError 5] Acesso negado: 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\tmp_atlas_lak8kyrq.png' -> 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\atlas.png'
+ERROR    NeoEng-D-Trace:atlas_exporter.py:393 Failed to save atlas outputs: [WinError 5] Acesso negado: 'WORKSPACE\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\tmp_atlas_lak8kyrq.png' -> 'WORKSPACE\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\atlas.png'
 ____ test_tracked_files_and_nested_archives_have_no_prohibited_references _____
 tests\test_repository_reference_hygiene.py:97: in test_tracked_files_and_nested_archives_have_no_prohibited_references
     assert violations == []
