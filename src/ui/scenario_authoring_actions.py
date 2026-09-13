@@ -18,6 +18,12 @@ from src.persistence.scene_authoring_io import load_scene_authoring_v2
 from src.ui.scenario_editor_window import ScenarioEditorWindow
 
 
+def _ui_text(window: Any, portuguese: str, english: str) -> str:
+    """Return user-facing copy for the main window language."""
+
+    return portuguese if getattr(window, "current_lang", "en") == "pt" else english
+
+
 def _report(
     window: Any,
     title: str,
@@ -38,7 +44,16 @@ def _report(
         )
     QMessageBox.critical(
         window,
-        title,
+        _ui_text(
+            window,
+            {
+                "Scenario save failed": "Falha ao salvar o cenário",
+                "Scenario load failed": "Falha ao carregar o cenário",
+                "Scenario reset failed": "Falha ao redefinir o cenário",
+                "Scenario export failed": "Falha ao exportar o cenário",
+            }.get(title, title),
+            title,
+        ),
         user_error_message(
             exc,
             operation=operation,
@@ -52,14 +67,22 @@ def _save(window: Any) -> bool:
     if editor is not None and editor.professional_session is not None:
         if not editor._save_professional():
             return False
-        window.statusBar().showMessage("Scenario saved successfully.", 5000)
+        window.statusBar().showMessage(
+            _ui_text(
+                window, "Cenário salvo com sucesso.", "Scenario saved successfully."
+            ),
+            5000,
+        )
         return True
     try:
         window.scenario_authoring.save()
     except Exception as exc:
-        _report(window, "Scenario save failed", exc)
+        _report(window, "Scenario save failed", exc, operation="save")
         return False
-    window.statusBar().showMessage("Scenario saved successfully.", 5000)
+    window.statusBar().showMessage(
+        _ui_text(window, "Cenário salvo com sucesso.", "Scenario saved successfully."),
+        5000,
+    )
     return True
 
 
@@ -68,14 +91,26 @@ def _load(window: Any) -> bool:
     if editor is not None and editor.professional_session is not None:
         if not editor._load_professional():
             return False
-        window.statusBar().showMessage("Scenario loaded successfully.", 5000)
+        window.statusBar().showMessage(
+            _ui_text(
+                window,
+                "Cenário carregado com sucesso.",
+                "Scenario loaded successfully.",
+            ),
+            5000,
+        )
         return True
     try:
         window.scenario_authoring.load()
     except Exception as exc:
-        _report(window, "Scenario load failed", exc)
+        _report(window, "Scenario load failed", exc, operation="load")
         return False
-    window.statusBar().showMessage("Scenario loaded successfully.", 5000)
+    window.statusBar().showMessage(
+        _ui_text(
+            window, "Cenário carregado com sucesso.", "Scenario loaded successfully."
+        ),
+        5000,
+    )
     return True
 
 
@@ -89,21 +124,30 @@ def _reset(window: Any) -> bool:
     if window.scenario_authoring.is_dirty or professional_dirty:
         answer = QMessageBox.question(
             window,
-            "Reset scenario",
-            "Discard unsaved professional scenario authoring changes?",
+            _ui_text(window, "Redefinir cenário", "Reset scenario"),
+            _ui_text(
+                window,
+                "Descartar as alterações não salvas da autoria profissional do cenário?",
+                "Discard unsaved professional scenario authoring changes?",
+            ),
         )
         if answer != QMessageBox.StandardButton.Yes:
             return False
     try:
         window.scenario_authoring.reset()
     except Exception as exc:
-        _report(window, "Scenario reset failed", exc)
+        _report(window, "Scenario reset failed", exc, operation="edit")
         return False
     editor = _open_professional_editor(window, only_if_canonical=True)
     if editor is not None and editor.professional_session is not None:
         if not editor._reset_professional(confirm=False):
             return False
-    window.statusBar().showMessage("Scenario reset successfully.", 5000)
+    window.statusBar().showMessage(
+        _ui_text(
+            window, "Cenário redefinido com sucesso.", "Scenario reset successfully."
+        ),
+        5000,
+    )
     return True
 
 
@@ -117,7 +161,11 @@ def _sync_preview(window: Any) -> None:
     except Exception as exc:
         window.canvas.set_scenario_preview_layers(())
         window.statusBar().showMessage(
-            "Scenario preview unavailable: "
+            _ui_text(
+                window,
+                "Prévia do cenário indisponível: ",
+                "Scenario preview unavailable: ",
+            )
             + user_error_message(
                 exc,
                 operation="preview",
@@ -169,15 +217,27 @@ def _export(window: Any) -> bool:
     if editor is not None and editor.professional_session is not None:
         if not editor._export_professional():
             return False
-        window.statusBar().showMessage("Scenario runtime export completed.", 5000)
+        window.statusBar().showMessage(
+            _ui_text(
+                window,
+                "Exportação de runtime do cenário concluída.",
+                "Scenario runtime export completed.",
+            ),
+            5000,
+        )
         return True
     try:
         destination = window.scenario_authoring.export_runtime()
     except Exception as exc:
-        _report(window, "Scenario export failed", exc)
+        _report(window, "Scenario export failed", exc, operation="export")
         return False
     window.statusBar().showMessage(
-        f"Scenario runtime export written to {destination.name}.", 5000
+        _ui_text(
+            window,
+            f"Exportação de runtime do cenário gravada em {destination.name}.",
+            f"Scenario runtime export written to {destination.name}.",
+        ),
+        5000,
     )
     return True
 
@@ -275,7 +335,7 @@ def install_scenario_authoring(window: Any) -> None:
             state.bind_project(window._project_path if project_loaded else None)
         except Exception as exc:
             state.bind_project(None)
-            _report(window, "Scenario load failed", exc)
+            _report(window, "Scenario load failed", exc, operation="load")
 
     window._refresh_document_views = refresh_document_views
 

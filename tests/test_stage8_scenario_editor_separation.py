@@ -162,6 +162,43 @@ def test_reload_status_is_localized_for_pt_br(tmp_path: Path, qt_app) -> None:
         _close(window, qt_app)
 
 
+def test_professional_edge_statuses_are_localized_for_pt_br(
+    tmp_path: Path, qt_app
+) -> None:
+    window, _scene = _window(tmp_path, qt_app)
+    try:
+        window.update_language("pt")
+
+        assert window._recover_professional() is False
+        assert (
+            window.status_label.text() == "Nenhum cenário recuperável está disponível"
+        )
+        assert window._upgrade_professional() is False
+        assert window.status_label.text() == "Nenhum cenário V1 aguarda atualização"
+
+        assert window._reset_professional(confirm=False) is True
+        assert window.status_label.text() == "Cenário redefinido a partir do projeto"
+        assert window._save_professional() is True
+        assert window.status_label.text() == "Cenário salvo"
+        assert window._export_professional() is True
+        assert window.status_label.text().startswith(
+            "Exportação genérica do cenário gravada"
+        )
+
+        inspector = window.professional_inspector
+        session = window.professional_session
+        assert inspector is not None and session is not None
+        session.set_selection(["scene_object"])
+        inspector.position_x.setValue(19.0)
+        inspector.apply_transform()
+        window._undo_professional()
+        assert window.status_label.text() == "Desfazer aplicado"
+        window._redo_professional()
+        assert window.status_label.text() == "Refazer aplicado"
+    finally:
+        _close(window, qt_app)
+
+
 def test_camera_parallax_sockets_and_overlay_contracts_are_editable(
     tmp_path: Path, qt_app
 ) -> None:
