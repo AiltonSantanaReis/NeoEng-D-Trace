@@ -1656,6 +1656,9 @@ class SceneAuthoringViewport(QGraphicsView):
         pixmap_cache: dict[str, QPixmap | None] = {}
         active_asset_cache_keys: set[tuple[str, str, str]] = set()
         active_asset_resolution_keys: set[tuple[str, str, str]] = set()
+        document_asset_resolution_keys = {
+            self._asset_cache_key(asset) for asset in assets_by_id.values()
+        }
         watched_asset_paths: list[Path] = []
         ordered_objects = ordered_scene_objects(self.session.document)
         layer_order = layer_index_by_id(self.session.document)
@@ -1780,7 +1783,9 @@ class SceneAuthoringViewport(QGraphicsView):
             self.graphics_scene.addItem(camera_guide)
             self._camera_guide = camera_guide
         self._prune_asset_pixmap_cache(active_asset_cache_keys)
-        self._prune_asset_resolution_cache(active_asset_resolution_keys)
+        self._prune_asset_resolution_cache(
+            active_asset_resolution_keys | document_asset_resolution_keys
+        )
         self._sync_asset_watcher(watched_asset_paths)
         self._refresh_transforms()
         self._refresh_camera_guide()

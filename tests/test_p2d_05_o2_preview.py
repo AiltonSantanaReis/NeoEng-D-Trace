@@ -67,6 +67,7 @@ def _transform(x: float = 0.0, y: float = 0.0) -> SceneTransformRecord:
 def _document(
     asset: AssetReferenceRecord,
     *,
+    assets: list[AssetReferenceRecord] | None = None,
     objects: list[SceneObjectAuthoringRecord] | None = None,
     groups: list[SceneGroupAuthoringRecordV2] | None = None,
     sockets: list[SceneSocketRecord] | None = None,
@@ -76,7 +77,7 @@ def _document(
             name="o2", generator="tests", app_version="0"
         ),
         project=ProjectReferenceRecord(sha256="a" * 64),
-        assets=[asset],
+        assets=assets or [asset],
         layers=[
             SceneLayerAuthoringRecord(id="back", name="Back"),
             SceneLayerAuthoringRecord(id="front", name="Front"),
@@ -186,6 +187,58 @@ def test_viewport_reuses_asset_validation_until_file_fingerprint_changes(
         view.sync()
         assert resolver_calls == ["asset"]
         assert any("hash mismatch" in message for message in view._asset_diagnostics)
+    finally:
+        view.close()
+        qt_app.processEvents()
+
+
+def test_viewport_retains_validation_for_assets_hidden_by_group_isolation(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    first_path = tmp_path / "project" / "assets" / "first.png"
+    second_path = tmp_path / "project" / "assets" / "second.png"
+    _write_png(first_path, "#2aa7ff")
+    _write_png(second_path, "#ff5d63")
+    first_asset = AssetReferenceRecord(
+        id="first", path="assets/first.png", sha256=sha256_file(first_path)
+    )
+    second_asset = AssetReferenceRecord(
+        id="second", path="assets/second.png", sha256=sha256_file(second_path)
+    )
+    document = _document(
+        first_asset,
+        objects=[
+            SceneObjectAuthoringRecord(
+                id="a", asset_id="first", layer_id="back", transform=_transform()
+            ),
+            SceneObjectAuthoringRecord(
+                id="b",
+                asset_id="second",
+                layer_id="front",
+                transform=_transform(20, 10),
+            ),
+        ],
+        assets=[first_asset, second_asset],
+        groups=[SceneGroupAuthoringRecordV2(id="group", name="Group", members=["a"])],
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    resolver_calls: list[str] = []
+    original_resolver = viewport_module.resolve_scene_asset
+
+    def counted_resolver(record, project_root):
+        resolver_calls.append(record.id)
+        return original_resolver(record, project_root)
+
+    monkeypatch.setattr(viewport_module, "resolve_scene_asset", counted_resolver)
+    try:
+        assert len(view._asset_resolution_cache) == 2
+        assert session.set_isolated_group("group") is True
+        assert resolver_calls == []
+        assert len(view._asset_resolution_cache) == 2
+        assert session.clear_isolation() is True
+        assert resolver_calls == []
+        assert len(view._asset_resolution_cache) == 2
     finally:
         view.close()
         qt_app.processEvents()
