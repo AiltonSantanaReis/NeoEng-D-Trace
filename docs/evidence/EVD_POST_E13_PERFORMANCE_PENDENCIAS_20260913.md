@@ -61,3 +61,22 @@ de threshold nem nova otimização estrutural nesta etapa. O gate de soak passa 
 `IN_PROGRESS` e será fechado somente com evidência controlada, mantendo GPU e
 Unity como `NOT_APPLICABLE`/`PENDING_EVIDENCE` quando a instrumentação ou o
 runtime real não estiverem disponíveis.
+
+## Resultado após a autorização formal
+
+O soak controlado de memória foi concluído com `PASS` no relatório r2:
+`26/26` workloads, `0` erros, `0` determinismos falsos, `250` ciclos por carga e
+RSS/private observados em todas as cargas. A evidência completa, incluindo
+limitações e hashes, está em
+`docs/evidence/EVD_POST_E13_SOAK_MEMORIA_GPU_CONTROLADO_20260913.md`.
+
+O gate de memória longa passa a `PASS` para o ambiente controlado qualificado.
+O gate GPU deste caminho passa a `NOT_APPLICABLE`, pois a probe com
+`--gpus all` não recebeu dispositivo NVIDIA e o `QGraphicsView` não expõe
+contador GPU; isso não é uma aprovação de desempenho GPU. O limite estrutural
+medido continua `FAIL` no relatório e `APPROVED_BY_OWNER` como decisão de escopo.
+
+O gate restante desta frente é a execução real de licensing/shutdown do Unity em
+ambiente Windows dedicado. A classificação de logs históricos permanece
+`PASS` funcional com ambiente limpo/shutdown `PENDING_EVIDENCE`; nenhuma execução
+nativa será feita neste host.
