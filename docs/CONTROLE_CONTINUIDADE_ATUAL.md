@@ -97,13 +97,13 @@ requalificação corrente de runtime está em
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa está `PASS` no soak controlado, GPU/janela QGraphicsView está `NOT_APPLICABLE` por ausência de contador; Unity r10 iniciou, transportou o candidato atualizado e alcançou o LicensingClient, mas encontrou zero entitlements aplicáveis; licensing limpo e shutdown limpo permanecem `BLOCKED` |
+| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa está `PASS` no soak controlado, GPU/janela QGraphicsView está `NOT_APPLICABLE` por ausência de contador; Unity r12 iniciou em Sandbox com rede habilitada, transportou o candidato atualizado e alcançou o LicensingClient, mas encontrou zero entitlements aplicáveis; a inconsistência de metadado do r11 foi preservada; licensing limpo e shutdown limpo permanecem `BLOCKED` |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
-| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker; o r10 iniciou Unity real em Windows Sandbox, copiou o candidato atualizado com SHA confirmado, observou LicensingClient, `Code 10`, token ausente, `404` com zero entitlements e código 198; a sandbox encerrou, mas licensing limpo, método do pacote e shutdown limpo do Unity continuam não comprovados |
+| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker; o r12 iniciou Unity real em Windows Sandbox com rede habilitada, copiou o candidato atualizado com SHA confirmado, observou LicensingClient, `Code 10`, token ausente, `404` com zero entitlements e código 198; o r11 ficou preservado como falha de metadado do harness; a sandbox encerrou, mas licensing limpo, método do pacote e shutdown limpo do Unity continuam não comprovados |
 | CuPy | `PASS` da avaliação; `NOT_APPLICABLE` como dependência oficial | caminho opcional X-Ray comprovado no ambiente local, ganho somente no workload grande medido; não há evidência de que o gargalo do editor seja CuPy e a build portátil continua CPU/fallback |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -202,8 +202,26 @@ shutdown/soak limpo em `PASS`. Após a VM preexistente ser liberada, o r9 inicio
 Unity real em Windows Sandbox e preservou o primeiro resultado. O r10 usou um
 candidato atualizado, copiou-o com hash confirmado e alcançou o LicensingClient;
 zero entitlements aplicáveis novamente encerrou a execução antes do pacote. O
-shutdown da sandbox foi comprovado, e a evidência hashada de r1–r10 está em
-`evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
+r11 repetiu a fixture em WSB com rede habilitada, mas o runner herdado registrou
+`networking=disabled` no resultado; essa inconsistência de instrumentação foi
+mantida como `FAIL` do harness e não foi corrigida retroativamente. O r12
+corrigiu somente esse metadado, repetiu a execução com rede habilitada registrada
+de forma coerente e obteve o mesmo `Code 198`/zero entitlement. O shutdown da
+sandbox foi comprovado em todas as tentativas, e a evidência hashada de r1–r12
+está em `evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
+
+O r11 possui resultado `21429CA41A3BFB2293C70A63A831BFF3EC53100A04B3CC58AA6E905B7F0C3017`,
+log bruto local `FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153`,
+projeção sanitizada `97441BA7E373BDB435D6817A5B4C3A086D68C963078D0703D3133A9B6D21EAF1`,
+runner `4D8243FEFE284C310FD91C5C1506135CA644E525933CABAC88B8D4AF5FFEA261` e WSB
+`6E61952B3ED34F8AE2ABC812DC5BCF02C391246B39FE4F1B8C7A0372F1999060`. O r12
+possui resultado `3F91FC2E5E82D9FCA7702289B686D28DEEE276658C1F377E9B9ED8E29743E0B8`,
+log bruto local `96E220638A19A677ADF9D6F81381E2EFE4A887D7B08A60A75E1E13B33DD01E8A`,
+projeção sanitizada `7D0FDC95E631C30EFD00535D33E9BD6DCEE9166FFAF813B3600826F90E873598`,
+runner `1ACA40E88B8DDEC7D3C16CF4C1EED8C95C2ED869A5BC2E31DA86A1EC4BEC781D` e WSB
+`22400D86B5C909D7267FC2B19A99BAEE1B20FD9BD92B78600A2F625D7913C96B`. Os logs
+brutos permanecem fora do Git; as projeções sanitizadas preservam os warnings,
+erros e sinais funcionais necessários para auditoria.
 
 A captura automatizada não substitui a revisão humana final; essa revisão foi
 registrada como aprovada pelo proprietário em
@@ -217,7 +235,7 @@ sobre base anterior. A meta vigente fechou a suíte r12 sem warnings, o retry
 atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial,
 qualificou a memória em soak controlado e registrou a limitação objetiva de GPU;
 permanece somente a qualificação Unity de licensing/shutdown limpos, atualmente
-`BLOCKED` porque os candidatos r9/r10 não forneceram entitlement válido na
+`BLOCKED` porque r9, r10 e a execução coerente r12 não forneceram entitlement válido na
 sandbox. O carregamento Unity e o shutdown da sandbox já foram comprovados. A revisão humana já foi
 aprovada; o gizmo e a produção de modelos/asset packs permanecem adiados por
 decisão do proprietário.
@@ -237,13 +255,15 @@ relevante conforme `EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md`.
 ## Candidato local de licença Unity
 
 Uma inspeção estrutural read-only encontrou um possível entitlement local em
-`C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`
-(6.731 bytes; SHA-256
-`89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926`). O
-arquivo está classificado como `USED_CONTROLLED_NO_VALID_ENTITLEMENT`: nenhum
-valor foi exposto, o mapeamento foi read-only e a cópia ocorreu somente dentro
-da sandbox descartável. O Unity confirmou zero entitlements aplicáveis; não é
-prova de licença válida para `6000.5.7f1`.
+`C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`.
+O candidato histórico usado no r9 tinha 6.731 bytes e SHA-256
+`89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926`; o
+candidato corrente usado em r10, r11 e r12 tem 6.731 bytes e SHA-256
+`C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498`.
+Nenhum valor foi exposto, os mapeamentos foram read-only e as cópias ocorreram
+somente dentro da sandbox descartável. O Unity confirmou zero entitlements
+aplicáveis nos ensaios correntes; o arquivo não é prova de licença válida para
+`6000.5.7f1`.
 
 ## Critério de encerramento de E00
 

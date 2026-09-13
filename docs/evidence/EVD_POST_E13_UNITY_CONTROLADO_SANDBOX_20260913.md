@@ -5,7 +5,7 @@
 **Data:** 2026-09-13
 **Requisito:** `REQ-POST-E13-UNITY-LICENSING-SHUTDOWN-20260913`
 **Decisão habilitadora:** `DECISAO-POST-E13-LIMITE-PERFORMANCE-SOAK-CONTROLADO-20260913`
-**Commit auditado:** `b58519693b65b17492d414d63cacb67d28446137`
+**Commit auditado:** `adc4db85ffc1c6dc1c5cfb0331c97043423600d0`
 
 ## Escopo
 
@@ -23,8 +23,10 @@ encerrar processos ou solicitar shutdown do sistema para este ensaio.
 - Fixture mínima fora do produto: Unity `6000.5.7f1`, pacote
   `com.neoeng.dtrace` com 44 arquivos, entrada e editor somente leitura, saída
   isolada e timeout interno de 240 s.
-- Configuração: rede e VGPU desabilitados, clipboard/impressora/áudio/vídeo
-  desabilitados, memória limitada a 8192 MB.
+- Configuração-base r8–r10: rede e VGPU desabilitados, clipboard/impressora/
+  áudio/vídeo desabilitados, memória limitada a 8192 MB. As requalificações r11
+  e r12 usaram rede habilitada somente dentro da Sandbox descartável; VGPU e
+  demais redirecionamentos permaneceram desabilitados.
 - O overlay de runtime x64 foi usado somente para o ensaio e contém DLLs
   Microsoft verificadas; não foi adicionado ao produto ou ao pacote UPM.
 
@@ -38,7 +40,7 @@ encerrar processos ou solicitar shutdown do sistema para este ensaio.
 | Versão WindowsSandbox.exe | `10.0.26100.8875` |
 | SHA-256 WindowsSandbox.exe | `7BB5667331572C8A725A3A799AE7DED2912648B4F6EB7380FB51864C804C3E36` |
 | Manifesto do pacote na fixture | `D267EBDDBDE32F78C146C194FCC083F2A36457EAEB73A6D3593F2CE28CC21F25` |
-| Execução real Unity | comprovada no r10: `process_started=true`; candidato atualizado transportado, zero entitlements aplicáveis |
+| Execução real Unity | comprovada no r12: `process_started=true`; candidato atualizado transportado com rede habilitada, zero entitlements aplicáveis |
 
 ## Histórico da requalificação controlada
 
@@ -57,6 +59,8 @@ foi sobrescrita.
 | r8 | `BLOCKED` | Unity carregou e alcançou LicensingClient; licença válida ausente |
 | r9 | `BLOCKED` | candidato autorizado foi copiado com hash correspondente; Unity encontrou zero entitlements aplicáveis e saiu com código 198 |
 | r10 | `BLOCKED` | candidato local atualizado foi copiado com hash correspondente; Unity novamente encontrou zero entitlements aplicáveis e saiu com código 198 |
+| r11 | `BLOCKED` | WSB com rede habilitada executou Unity, mas o runner herdado registrou `networking=disabled`; zero entitlements e código 198; falha de metadado preservada |
+| r12 | `BLOCKED` | WSB e runner registraram rede habilitada; candidato foi copiado com hash correspondente; Unity novamente encontrou zero entitlements e saiu com código 198 |
 
 ## Execução real r8
 
@@ -138,12 +142,70 @@ O r10 demonstra que a mudança do arquivo local não resolveu o entitlement: doi
 candidatos distintos foram transportados com hash confirmado e ambos foram
 recusados pelo LicensingClient antes da execução do pacote.
 
+## Execução real r11 com rede habilitada — metadado inconsistente
+
+O r11 foi uma requalificação controlada para verificar se a validação offline
+era a causa do bloqueio. O manifesto WSB tinha `<Networking>Enable</Networking>`
+e SHA-256 `6E61952B3ED34F8AE2ABC812DC5BCF02C391246B39FE4F1B8C7A0372F1999060`;
+o runner herdado ainda serializou `networking=disabled` no resultado. Essa
+divergência é uma falha de instrumentação (`harness_metadata_status=FAIL`), não
+foi corrigida retroativamente e não é usada como prova final de rede.
+
+O Unity, contudo, foi executado dentro da Sandbox: `process_started=true`,
+`timed_out=false`, retorno `198`, LicensingClient alcançado, `Code 10`, token
+indisponível, `Code 404`, zero grupos/free entitlements e ausência de
+`com.unity.editor.headless`. O `package-report.json` não foi produzido; os
+warnings `SUCCEEDED(hr)` e `wmiOpened` permaneceram no log sanitizado; sinais de
+`-quit` limpo, retorno zero, `abort_threads` e `MemoryLeaks` não foram observados.
+O marcador de shutdown existiu, os processos terminaram após polling e nenhum
+processo/ shutdown foi executado no host.
+
+Hashes do r11: resultado
+`21429CA41A3BFB2293C70A63A831BFF3EC53100A04B3CC58AA6E905B7F0C3017`; log bruto
+local `FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153`;
+projeção sanitizada
+`97441BA7E373BDB435D6817A5B4C3A086D68C963078D0703D3133A9B6D21EAF1`; runner
+`4D8243FEFE284C310FD91C5C1506135CA644E525933CABAC88B8D4AF5FFEA261`; licença
+`C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498` na origem
+e destino dentro da Sandbox. O log bruto não é versionado.
+
+## Execução real r12 com rede habilitada e runner corrigido
+
+Para eliminar a ambiguidade do r11, o runner r12 alterou somente o metadado do
+resultado para `networking=enabled`; o manifesto WSB permaneceu com rede
+habilitada e foi separado em `output-r12`. A validação estática passou com XML
+válido, seis mapeamentos, somente `C:\output` gravável, runner PowerShell sem
+erros de parse, nenhum processo Unity/Sandbox no host e licença com hash
+esperado.
+
+O resultado r12 confirmou `networking=enabled`, `process_started=true`,
+`timed_out=false` e `process_exit_code=198`. A licença de `6731` bytes foi
+copiada dentro da Sandbox com SHA-256
+`C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498` na origem
+e no destino. O Unity alcançou o LicensingClient, mas registrou `Code 10`,
+token indisponível, `Code 404`, zero entitlement groups/free entitlements e
+`com.unity.editor.headless` ausente. `package-report.json` não existe e
+`RunHeadless` não foi alcançado; o retorno `198` ocorreu antes do pacote.
+
+Os warnings `SUCCEEDED(hr)` e `wmiOpened` foram preservados. Os sinais de
+`-quit` limpo, retorno zero, `abort_threads` e `MemoryLeaks` não apareceram.
+O marcador de shutdown foi produzido e a Sandbox terminou naturalmente; nenhum
+processo foi encerrado nem o host foi desligado.
+
+Hashes do r12: resultado
+`3F91FC2E5E82D9FCA7702289B686D28DEEE276658C1F377E9B9ED8E29743E0B8`; log bruto
+local `96E220638A19A677ADF9D6F81381E2EFE4A887D7B08A60A75E1E13B33DD01E8A`;
+projeção sanitizada
+`7D0FDC95E631C30EFD00535D33E9BD6DCEE9166FFAF813B3600826F90E873598`; runner
+`1ACA40E88B8DDEC7D3C16CF4C1EED8C95C2ED869A5BC2E31DA86A1EC4BEC781D`; WSB
+`22400D86B5C909D7267FC2B19A99BAEE1B20FD9BD92B78600A2F625D7913C96B`.
+
 ## Evidências e hashes
 
-O resultado completo das tentativas r1–r10, incluindo os hashes da configuração
+O resultado completo das tentativas r1–r12, incluindo os hashes da configuração
 e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `960D1E096B22456AB07A745DD084EAA33532EA460CF68BD3596F6E762C579EF5`).
+(SHA-256 `48A32C7D6C2DC5D766567271BD12BF98E388CCE7AED0B5DB08C55085FDA84BCD`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`
@@ -184,6 +246,32 @@ O runner r10 tem SHA-256
 configuração WSB r10 tem SHA-256
 `F1FE66DAE51CD0AD1792DAF181E2B6F6FC757F814DD1BE365F1675970DCDC0B6`.
 
+O resultado r11 está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r11/sandbox-result.json`
+(SHA-256 `21429CA41A3BFB2293C70A63A831BFF3EC53100A04B3CC58AA6E905B7F0C3017`).
+O log bruto r11 permanece localmente com SHA-256
+`FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153`; a
+projeção sanitizada está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r11/unity-sanitized.log`
+(SHA-256 `97441BA7E373BDB435D6817A5B4C3A086D68C963078D0703D3133A9B6D21EAF1`).
+O runner r11 tem SHA-256
+`4D8243FEFE284C310FD91C5C1506135CA644E525933CABAC88B8D4AF5FFEA261` e a
+configuração WSB r11 tem SHA-256
+`6E61952B3ED34F8AE2ABC812DC5BCF02C391246B39FE4F1B8C7A0372F1999060`.
+
+O resultado r12 está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r12/sandbox-result.json`
+(SHA-256 `3F91FC2E5E82D9FCA7702289B686D28DEEE276658C1F377E9B9ED8E29743E0B8`).
+O log bruto r12 permanece localmente com SHA-256
+`96E220638A19A677ADF9D6F81381E2EFE4A887D7B08A60A75E1E13B33DD01E8A`; a
+projeção sanitizada está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r12/unity-sanitized.log`
+(SHA-256 `7D0FDC95E631C30EFD00535D33E9BD6DCEE9166FFAF813B3600826F90E873598`).
+O runner r12 tem SHA-256
+`1ACA40E88B8DDEC7D3C16CF4C1EED8C95C2ED869A5BC2E31DA86A1EC4BEC781D` e a
+configuração WSB r12 tem SHA-256
+`22400D86B5C909D7267FC2B19A99BAEE1B20FD9BD92B78600A2F625D7913C96B`.
+
 ## Alternativas seguras verificadas
 
 Foram feitas apenas sondagens read-only de alternativas. O Docker Desktop ativo
@@ -199,9 +287,10 @@ entitlement em
 `C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`.
 Nenhum valor de elemento, token ou identificador foi exposto. Após autorização
 explícita, o arquivo foi somente mapeado read-only e copiado para o ambiente
-descartável no r9 e no r10; não foi alterado pelo harness no host. Entre as duas
-execuções, o mesmo caminho apresentou novo SHA-256 e foi tratado como candidato
-distinto.
+descartável no r9, r10, r11 e r12; não foi alterado pelo harness no host. Entre
+r9 e r10, o mesmo caminho apresentou novo SHA-256 e foi tratado como candidato
+distinto; r11 e r12 reutilizaram o candidato corrente para qualificar o efeito
+da rede e do harness, sem copiar credenciais ou tokens.
 
 ### Candidato r9 — hash histórico usado no r9
 
@@ -231,25 +320,39 @@ distinto.
 | Resultado Unity r10 | zero grupos de entitlement e zero free entitlements; retorno `198` |
 | Prova de licença Unity válida | não — o Unity recusou o entitlement para `6000.5.7f1` |
 
-Os candidatos r9 e r10 já foram usados sob autorização explícita e não devem ser
-repetidos. A próxima tentativa exige uma licença/ativação válida diferente ou
-uma fixture própria para o ambiente; isso não autoriza qualquer execução nativa
-no host.
+### Requalificação r11/r12 com o mesmo candidato corrente
+
+| Tentativa | Configuração de rede | Integridade do metadado | Resultado |
+|---|---|---|---|
+| r11 | WSB `Enable` | `FAIL`: o runner registrou `disabled` | Unity alcançou LicensingClient, encontrou zero entitlements e saiu `198` |
+| r12 | WSB `Enable` | `PASS`: WSB e resultado registraram `enabled` | Unity alcançou LicensingClient, encontrou zero entitlements e saiu `198` |
+
+O hash do candidato foi `C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498`
+nas duas cópias internas. O resultado r11 não é usado para afirmar que a rede
+estava desabilitada; ele comprova uma execução real com falha de instrumentação.
+O r12 é a prova coerente para a requalificação com rede e mantém o gate de
+licensing `BLOCKED`.
+
+Os ensaios r9–r12 já foram usados sob autorização explícita e não devem ser
+repetidos sem mudança relevante. A próxima tentativa exige uma licença/ativação
+válida diferente, uma fixture própria ou alteração material do harness/engine/
+configuração; isso não autoriza qualquer execução nativa no host.
 
 ## Classificação
 
 | Gate | Estado | Evidência |
 |---|---|---|
-| carregamento/execução real do Unity | `PASS` | r10 iniciou o Unity x64, copiou o candidato atualizado e alcançou o LicensingClient |
-| licensing limpo | `BLOCKED` | r10 observou zero entitlements aplicáveis, token ausente, `Code 404` e código 198 |
+| carregamento/execução real do Unity | `PASS` | r12 iniciou o Unity x64 em Sandbox com rede habilitada, copiou o candidato atualizado e alcançou o LicensingClient |
+| licensing limpo | `BLOCKED` | r12 observou zero entitlements aplicáveis, token ausente, `Code 404` e código 198; r11 mantém falha de metadado do harness |
 | método/relatório do pacote | `BLOCKED` | execução interrompida pelo licensing antes do método |
 | shutdown limpo do Unity/`-quit` | `BLOCKED` | Unity saiu por entitlement inválido/ausente antes dos sinais de encerramento limpo |
 | shutdown da sandbox descartável | `PASS` | marcador interno presente e processos terminaram após polling |
 | segurança do host | `PASS` | não houve Unity, shutdown ou terminação forçada no host |
 
 O `BLOCKED` atual é ambiental/de credencial e não representa falha funcional do
-pacote: mesmo com dois candidatos transportados corretamente, o Unity não
-reconheceu entitlement aplicável e o pacote não chegou a ser avaliado.
+pacote: mesmo com o candidato transportado corretamente em quatro execuções e
+com a rede habilitada de forma coerente no r12, o Unity não reconheceu
+entitlement aplicável e o pacote não chegou a ser avaliado.
 O `FAIL` de licensing observado é mantido explicitamente. Os diagnósticos
 históricos continuam separados e não foram reutilizados como prova de ambiente
 limpo.
@@ -258,9 +361,11 @@ limpo.
 
 Não alterar o pacote para contornar a licença. A próxima reexecução só é válida
 quando uma licença/ativação Unity válida diferente estiver disponível dentro do
-ambiente descartável, ou quando o harness/versão do Unity mudar. Nesse caso,
-usar a mesma fixture, registrar novo output e repetir o ciclo completo. Não
-repetir os candidatos r9/r10, symlink nem shutdown do host.
+ambiente descartável, ou quando houver mudança material no harness, configuração
+de rede ou versão do Unity. Nesse caso, usar a mesma fixture, registrar novo
+output e repetir o ciclo completo. Não repetir r9/r10/r12 sem mudança relevante,
+nem symlink ou shutdown do host; o r11 não precisa ser repetido porque seu
+metadado inválido já foi corrigido e preservado.
 
 Até essa condição, o gate Unity permanece `BLOCKED` e a meta pós-E13 continua
 `IN_PROGRESS`; o carregamento e o shutdown da sandbox estão comprovados, mas

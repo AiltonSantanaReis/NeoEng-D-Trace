@@ -14,7 +14,7 @@
     "windows_sandbox_feature_install_state": 1,
     "windows_sandbox_version": "10.0.26100.8875",
     "windows_sandbox_binary_sha256": "7BB5667331572C8A725A3A799AE7DED2912648B4F6EB7380FB51864C804C3E36",
-    "networking": "disabled",
+    "networking": "enabled",
     "vgpu": "disabled",
     "input_mapping": "read_only",
     "unity_mapping": "read_only",
@@ -49,7 +49,7 @@
   },
   "runtime_requalification": {
     "status": "BLOCKED",
-    "latest_attempt_id": "r10",
+    "latest_attempt_id": "r12",
     "attempts": [
       {
         "id": "r1",
@@ -227,14 +227,121 @@
         "scope": "disposable sandbox only"
       },
       "observed": "A newer local candidate was copied inside the disposable sandbox with matching SHA-256, but Unity again reported zero matching entitlement groups/free entitlements and terminated with code 198 before the package method and clean -quit completion"
+    },
+    {
+      "id": "r11",
+      "output_dir": "output-r11",
+      "status": "BLOCKED",
+      "result_sha256": "21429CA41A3BFB2293C70A63A831BFF3EC53100A04B3CC58AA6E905B7F0C3017",
+      "raw_log_sha256": "FEAD966D64FFE466E8D7E062F32CD904F0B010946D3CA5F02A5065A7C1094153",
+      "sanitized_log_sha256": "97441BA7E373BDB435D6817A5B4C3A086D68C963078D0703D3133A9B6D21EAF1",
+      "shutdown_marker_sha256": "0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D",
+      "runner_sha256": "4D8243FEFE284C310FD91C5C1506135CA644E525933CABAC88B8D4AF5FFEA261",
+      "config_sha256": "6E61952B3ED34F8AE2ABC812DC5BCF02C391246B39FE4F1B8C7A0372F1999060",
+      "networking": "enabled",
+      "networking_enabled_in_config": true,
+      "networking_recorded_in_result": false,
+      "static_validation_status": "PASS",
+      "harness_metadata_status": "FAIL",
+      "harness_metadata_issue": "The r11 WSB enabled networking, but the cloned runner serialized networking=disabled; this attempt is preserved and is not used as the final network-coherence proof.",
+      "license_source_sha256": "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+      "license_source_bytes": 6731,
+      "license_copied_inside_sandbox": true,
+      "license_target_sha256": "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+      "unity_process_started": true,
+      "unity_exit_code": 198,
+      "timed_out": false,
+      "package_report_present": false,
+      "licensing": {
+        "module_seen": true,
+        "license_client_seen": true,
+        "code_10": true,
+        "access_token_unavailable": true,
+        "code_404_entitlement": true,
+        "zero_entitlement_groups": true,
+        "zero_free_entitlements": true,
+        "no_valid_editor_license": true,
+        "headless_entitlement_missing": true
+      },
+      "unity_shutdown": {
+        "batchmode_quit_signal": false,
+        "clean_return_code_zero": false,
+        "abort_threads": false,
+        "memory_leaks": false,
+        "remaining_unity_process_count_before_sandbox_shutdown": 2,
+        "status": "BLOCKED",
+        "reason": "Unity terminated on missing entitlement before clean -quit completion"
+      },
+      "sandbox_shutdown": {
+        "request_marker_present": true,
+        "processes_terminal_after_poll": true,
+        "status": "PASS",
+        "scope": "disposable sandbox only"
+      },
+      "observed": "Network-enabled WSB execution reached the real LicensingClient, but the stale runner metadata conflicted with the config; Unity still found zero entitlements and exited with code 198 before the package method. The inconsistency is preserved as a harness failure."
+    },
+    {
+      "id": "r12",
+      "output_dir": "output-r12",
+      "status": "BLOCKED",
+      "result_sha256": "3F91FC2E5E82D9FCA7702289B686D28DEEE276658C1F377E9B9ED8E29743E0B8",
+      "raw_log_sha256": "96E220638A19A677ADF9D6F81381E2EFE4A887D7B08A60A75E1E13B33DD01E8A",
+      "sanitized_log_sha256": "7D0FDC95E631C30EFD00535D33E9BD6DCEE9166FFAF813B3600826F90E873598",
+      "shutdown_marker_sha256": "0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D",
+      "runner_sha256": "1ACA40E88B8DDEC7D3C16CF4C1EED8C95C2ED869A5BC2E31DA86A1EC4BEC781D",
+      "config_sha256": "22400D86B5C909D7267FC2B19A99BAEE1B20FD9BD92B78600A2F625D7913C96B",
+      "networking": "enabled",
+      "networking_enabled_in_config": true,
+      "networking_recorded_in_result": true,
+      "static_validation_status": "PASS",
+      "harness_metadata_status": "PASS",
+      "license_source_sha256": "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+      "license_source_bytes": 6731,
+      "license_copied_inside_sandbox": true,
+      "license_target_sha256": "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+      "unity_process_started": true,
+      "unity_exit_code": 198,
+      "timed_out": false,
+      "package_report_present": false,
+      "licensing": {
+        "module_seen": true,
+        "license_client_seen": true,
+        "code_10": true,
+        "access_token_unavailable": true,
+        "code_404_entitlement": true,
+        "zero_entitlement_groups": true,
+        "zero_free_entitlements": true,
+        "no_valid_editor_license": true,
+        "headless_entitlement_missing": true
+      },
+      "unity_shutdown": {
+        "batchmode_quit_signal": false,
+        "clean_return_code_zero": false,
+        "abort_threads": false,
+        "memory_leaks": false,
+        "remaining_unity_process_count_before_sandbox_shutdown": 2,
+        "status": "BLOCKED",
+        "reason": "Unity terminated on missing entitlement before clean -quit completion"
+      },
+      "sandbox_shutdown": {
+        "request_marker_present": true,
+        "processes_terminal_after_poll": true,
+        "status": "PASS",
+        "scope": "disposable sandbox only"
+      },
+      "observed": "With networking enabled in both the WSB and the corrected runner result, the same candidate copied with matching SHA-256 still produced zero matching entitlement groups/free entitlements; Unity exited with code 198 before the package method and clean -quit completion."
     }
     ],
     "latest_harness": {
-    "sandbox_runner_sha256": "4D8243FEFE284C310FD91C5C1506135CA644E525933CABAC88B8D4AF5FFEA261",
-    "sandbox_config_sha256": "F1FE66DAE51CD0AD1792DAF181E2B6F6FC757F814DD1BE365F1675970DCDC0B6",
+    "sandbox_runner_sha256": "1ACA40E88B8DDEC7D3C16CF4C1EED8C95C2ED869A5BC2E31DA86A1EC4BEC781D",
+    "sandbox_config_sha256": "22400D86B5C909D7267FC2B19A99BAEE1B20FD9BD92B78600A2F625D7913C96B",
     "license_source_sha256": "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+    "networking": "enabled",
+    "harness_metadata_status": "PASS",
     "license_source_used_in_r9": true,
     "license_source_used_in_r10": true,
+    "license_source_used_in_r11": true,
+    "license_source_used_in_r12": true,
       "runtime_overlay": {
         "msvcp100.dll": "934D882EFD3C0F3F1EFBC238EF87708F3879F5BB456D30AF62F3368D58B6AA4C",
         "msvcr100.dll": "AE3CB6C6AFBA9A4AA5C85F66023C35338CA579B30326DD02918F9D55259503D5",
@@ -244,7 +351,7 @@
         "vcruntime140_1.dll": "A7146C08F89FE5B04541AB507CDB59FF7B44534D4BA3C668A426C6450A03434E"
       }
     },
-    "reexecution_condition": "Only after a different valid Unity license/activation or dedicated license fixture is available in the disposable environment, or the controlled harness/engine version changes; the r9 and r10 candidates both produced zero entitlements; do not rerun symlink or host shutdown tests."
+    "reexecution_condition": "Only after a different valid Unity license/activation or dedicated license fixture is available in the disposable environment, or the controlled harness/engine/network configuration changes materially; r12 is the coherent network-enabled qualification and produced zero entitlements; do not rerun symlink or host shutdown tests."
   },
   "alternative_environment_probe": {
     "docker_server": "29.5.3",
