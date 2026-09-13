@@ -110,6 +110,30 @@ não foram encontrados VMs Windows no Hyper-V, VirtualBox ou VMware. Nenhuma
 alternativa foi iniciada, e não há base técnica para executar o `Unity.exe`
 Windows dentro do Docker Linux.
 
+## Candidato local de licença — somente metadados
+
+Uma inspeção estrutural read-only encontrou no host um possível arquivo de
+entitlement em
+`C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`.
+Nenhum valor de elemento, token ou identificador foi exposto. O arquivo não foi
+copiado, montado, alterado ou usado pelo Unity na sandbox.
+
+| Metadado | Resultado |
+|---|---|
+| Estado | `CANDIDATE_METADATA_ONLY_NOT_USED` |
+| Tamanho | `6731` bytes |
+| SHA-256 | `89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926` |
+| Raiz XML | `root` |
+| Estrutura | inclui `Entitlement`, `License`, `Signature`, `SignedInfo`, `StartDate` e `UpdateDate` |
+| Valores expostos | não |
+| Cópia/montagem na sandbox | não |
+| Prova de licença Unity válida | não — a estrutura, isoladamente, não confirma ativação para `6000.5.7f1` |
+
+O uso desse candidato exige autorização explícita do proprietário para uma
+montagem/cópia controlada somente dentro da sandbox descartável, ou uma fixture
+de licença própria para o ambiente. Até essa decisão, ele é apenas uma pista
+documental e não altera o estado `BLOCKED`.
+
 ## Classificação
 
 | Gate | Estado | Evidência |

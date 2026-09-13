@@ -233,6 +233,17 @@ a outra. Por segurança, symlink e shutdown não devem ser executados nativament
 neste host; a execução controlada atual só deve ser repetida após mudança
 relevante conforme `EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md`.
 
+## Candidato local de licença Unity
+
+Uma inspeção estrutural read-only encontrou um possível entitlement local em
+`C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml`
+(6.731 bytes; SHA-256
+`89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926`). O
+arquivo está classificado como `CANDIDATE_METADATA_ONLY_NOT_USED`: nenhum valor
+foi exposto e nenhuma cópia, montagem ou alteração foi realizada. Ele não é
+prova de licença válida; o uso no sandbox depende de autorização explícita do
+proprietário ou de uma fixture própria para o ambiente.
+
 ## Critério de encerramento de E00
 
 E00 somente pode mudar do checkpoint técnico para `PASS` após a mesma revisão possuir proveniência,

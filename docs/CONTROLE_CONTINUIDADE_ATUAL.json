@@ -20,7 +20,7 @@
     ],
     "active_base_policy": "ONLY_CURRENT_CHECKOUT",
     "previous_bases_are_historical_only": true,
-    "current_focus": "Meta pós-E13 para eliminar warnings, reduzir pendências e preservar o editor de cenário canônico: symlink foi requalificado definitivamente em sandbox controlado, a revisão humana foi aprovada pelo proprietário, CuPy foi avaliado sem recomendação de adoção oficial, a memória longa foi qualificada em Docker, GPU do caminho QGraphicsView ficou NOT_APPLICABLE por ausência de contador, e o Unity controlado permanece BLOCKED por uma VM Windows Sandbox preexistente.",
+    "current_focus": "Meta pós-E13 para eliminar warnings, reduzir pendências e preservar o editor de cenário canônico: symlink foi requalificado definitivamente em sandbox controlado, a revisão humana foi aprovada pelo proprietário, CuPy foi avaliado sem recomendação de adoção oficial, a memória longa foi qualificada em Docker, GPU do caminho QGraphicsView ficou NOT_APPLICABLE por ausência de contador, e o Unity controlado r8 iniciou em Windows Sandbox, alcançou o LicensingClient e permanece BLOCKED somente pela ausência de licença válida para completar o pacote e o shutdown limpo.",
     "implementation_allowed": true,
     "controlled_corrections_allowed": true,
     "controlled_correction_scope": "Correções finas pós-E13 em seleção, edição vetorial, UX e validação nativa; findings reproduzíveis continuam sujeitos a correção controlada.",
@@ -38,7 +38,7 @@
       "canonical_requirements": 21,
       "functional_acceptance": false
     },
-    "next_action": "Liberar a VM Windows Sandbox preexistente por ação controlada externa e reexecutar a fixture Unity sem alterações; manter memória PASS, GPU NOT_APPLICABLE, responsividade estrutural FAIL aceita formalmente, preservar falhas históricas e não executar symlink ou shutdown nativamente no host.",
+    "next_action": "Obter autorização explícita para usar no sandbox descartável o candidato local de entitlement Unity somente em modo controlado, ou receber uma fixture de licença própria para o sandbox; então reexecutar a mesma fixture para completar licensing, método do pacote e shutdown limpo. Até lá, manter memória PASS, GPU NOT_APPLICABLE, responsividade estrutural FAIL aceita formalmente, preservar falhas históricas e não executar Unity, symlink ou shutdown nativamente no host.",
     "active_lot": {
       "id": "POST-E13-SCENE-EDITOR-ASSET-PACKS",
       "status": "IN_PROGRESS",
@@ -445,7 +445,21 @@
       "unity_controlled_sandbox_shutdown_status": "PASS",
       "unity_controlled_unity_shutdown_status": "BLOCKED",
       "unity_controlled_reexecution_condition": "Licença/ativação Unity autorizada disponível dentro da sandbox descartável; manter fixture e harness hashados e não repetir symlink/shutdown do host.",
-      "unity_native_safety_rule": "Não executar Unity/shutdown nativamente neste host; qualquer requalificação futura deve ser controlada, com licença autorizada dentro da sandbox e pacote próprio de evidências."
+      "unity_native_safety_rule": "Não executar Unity/shutdown nativamente neste host; qualquer requalificação futura deve ser controlada, com licença autorizada dentro da sandbox e pacote próprio de evidências.",
+      "unity_controlled_license_candidate": {
+        "status": "CANDIDATE_METADATA_ONLY_NOT_USED",
+        "host_artifact": "C:/Users/atnco/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml",
+        "size_bytes": 6731,
+        "sha256": "89525CC063037191D198C1D3FF19FF566AB32BD6E3D3D917274EFCC8665B8926",
+        "root_element": "root",
+        "element_names": "CanonicalizationMethod,Context,DigestMethod,DigestValue,Entitlement,EntitlementGroup,EntitlementGroups,Entitlements,Identifier,Identifiers,License,Organization,Reference,root,Signature,SignatureMethod,SignatureValue,SignedInfo,StartDate,Transform,Transforms,UpdateDate,User",
+        "attribute_names": "Algorithm,Id,IssueDate,Namespace,Product,SubsGroup,Tag,Type,URI,Version",
+        "values_exposed": false,
+        "copied_or_mounted_to_sandbox": false,
+        "modified": false,
+        "authorization_required": "Autorização explícita do proprietário para usar este arquivo local em modo somente leitura dentro da sandbox descartável, ou uma fixture de licença própria para o sandbox.",
+        "reexecution_rule": "Não copiar, montar, inspecionar valores ou repetir o ensaio até existir autorização explícita ou fixture dedicada."
+      }
     },
     "build_provenance": {
       "status": "PASS",
