@@ -159,6 +159,67 @@ licensing/telemetria e encerramento, incluindo falha de validação do cliente,
 ocorrem no mesmo processo que retorna 0 e, no positivo, depois da emissão de
 `TILEMAP_RUNTIME_UNITY=SUCCESS` e da contagem de 27 células.
 
+### Repetição controlada no Unity 6000.5.7f1
+
+Para qualificar a recorrência, o mesmo auditor foi executado novamente duas
+vezes, cada uma com projeto temporário, pacote novo, logs separados e os
+mesmos argumentos nativos `-batchmode -nographics -quit`. Os auditores são:
+
+- `artifacts/post-e13-unity-diagnostics-20260913-r1/`;
+- `artifacts/post-e13-unity-diagnostics-20260913-r2/`.
+
+| Execução | Positivo | Negativo | Retorno dos processos | Estado do gate funcional |
+|---|---|---|---|---|
+| r1 | `SUCCESS`, 2 camadas, 4 tiles, 27 células, 27 sprites, 1 regra | `REJECTED`, `atlas file size mismatch` | `0 / 0` | `PASS` |
+| r2 | `SUCCESS`, 2 camadas, 4 tiles, 27 células, 27 sprites, 1 regra | `REJECTED`, `atlas file size mismatch` | `0 / 0` | `PASS` |
+
+Os marcadores de produto aparecem antes dos diagnósticos de encerramento:
+no positivo, `TILEMAP_RUNTIME_UNITY=SUCCESS` está na linha 928 e
+`TILEMAP_RUNTIME_UNITY_CELLS=27` na linha 939 de ambos os logs; no negativo,
+`TILEMAP_RUNTIME_UNITY_DRIFT=REJECTED` está na linha 308 (r1) e 306 (r2).
+Os dois relatórios persistidos têm os mesmos hashes de conteúdo e os mesmos
+campos funcionais; a diferença nos hashes dos logs decorre de IDs, portas,
+timestamps e threads nativos.
+
+Os sinais repetidos foram medidos sem reclassificação silenciosa:
+
+| Sinal observado | Recorrência | Posição/ordem | Classificação |
+|---|---:|---|---|
+| `Code 10 while verifying Licensing Client signature` | 1 por log | início do bootstrap | `PENDING_EVIDENCE` para ambiente limpo; não impediu a conexão posterior |
+| `LicensingClient has failed validation; ignoring` | 1 por log | imediatamente após `Code 10` | `PENDING_EVIDENCE` para causa/mitigação do cliente |
+| `Access token is unavailable; failed to update` | 1 por log | antes de `License group` | `PENDING_EVIDENCE`; o entitlement foi resolvido depois |
+| `License group: Unity Personal`, `Type: Assigned`, `Expiration: Unlimited` | 1 por log | bootstrap | `PASS` como evidência do entitlement usado nesta máquina |
+| `Curl error 42: Callback aborted` + timeout do CDN público | 1 por log | depois do marcador funcional | `PENDING_EVIDENCE` de rede/telemetria, não falha do payload |
+| `abort_threads: Failed aborting id` | 4 por log | após `Cleanup mono`/saída solicitada | `PENDING_EVIDENCE` para shutdown limpo |
+| `Found no leaked weakptrs` | 1 por log | final | evidência limitada; não converte o relatório `MemoryLeaks` em veredicto de soak |
+
+O primeiro bootstrap positivo também registra `ExitCode: 4` de uma etapa
+interna do Bee que solicita uma execução frontend e depois registra compilação
+bem-sucedida; o processo Unity observado pelo auditor retorna `0`. Esse sinal é
+diagnóstico do pipeline interno de compilação e não deve ser confundido com o
+código de saída do Unity.
+
+Uma varredura adicional dos quatro logs, para `Fatal`, `Unhandled`,
+`CrashHandler`, `StackOverflow`, `Assertion failed`, `segmentation` e
+`Aborted`, não encontrou ocorrências. Isso não prova ausência universal de
+falha em outras máquinas; apenas delimita o que foi observado nestas quatro
+execuções.
+
+### Hashes da requalificação repetida
+
+| Artefato | SHA-256 |
+|---|---|
+| `r1/tilemap-runtime-engine-audit.json` | `BC9179A2ABD70EAB70AE70A4A55EFAAD308082137729D1CEA4F4C706427CE5E5` |
+| `r1/unity-tilemap-runtime-report.json` | `0AC1F823B58A99C8CFB764460F95E6826C85F11E18D5228419F05D4D2BF42313` |
+| `r1/unity-tilemap-runtime-negative-report.json` | `F88DB50A318B0C01E8476492A6E0BE4487EE3B75B436992D0ABAAF7596D8C682` |
+| `r1/unity-positive.log` | `3D85F201EAA18EB64C612D1C96EB2BCC40DC14974302F52D2237A3DF3BF631F4` |
+| `r1/unity-negative.log` | `25312BB4A8143E77CF77E67943E8D8EBE0380349854C0A2EB907EF46749ED546` |
+| `r2/tilemap-runtime-engine-audit.json` | `479736FE12C9051212022E3DB9840C3B1757DAB2EE390A5033533B61536AAD8C` |
+| `r2/unity-tilemap-runtime-report.json` | `0AC1F823B58A99C8CFB764460F95E6826C85F11E18D5228419F05D4D2BF42313` |
+| `r2/unity-tilemap-runtime-negative-report.json` | `F88DB50A318B0C01E8476492A6E0BE4487EE3B75B436992D0ABAAF7596D8C682` |
+| `r2/unity-positive.log` | `007008BA03F2853F04D34DB56615D32DB6938589CD0F069B8E89EA39D20732E7` |
+| `r2/unity-negative.log` | `81609EE56ABBD740EE232557716756D7B245270595E7972FC41A67F51D541EC6` |
+
 A classificação correta é:
 
 - funcionamento do payload positivo e da rejeição negativa: `PASS`, porque o
