@@ -63,10 +63,10 @@ rastreado pelo Git foi restaurado; a auditoria está em
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
 A regressão oficial segura mais recente foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-safe-host-20260913-r9/official-pytest.log`,
-com SHA-256 `C9BEE6739BAFBD83A65D8295A98F2532ECEE9968D052DDFF09269CCCC028252D`:
-`2633 passed, 2 skipped, 0 warnings` em 81,84 s. O JUnit tem SHA-256
-`ED4586936DF8A41DB2FABC93DD15AA3DAD0F095FDA17E420A82327B417CA06D3`.
+`artifacts/audit-post-e13-official-suite-safe-host-20260913-r12/official-pytest.log`,
+com SHA-256 `171F156EDDA800951356FB4244459CAE08CE20D18B5E1E3CA870399CE4B1A0A3`:
+`2634 passed, 2 skipped, 0 warnings` em 84,83 s. O JUnit tem SHA-256
+`D75ECAB717E4752250FE85E0EEE9EB3F2336EEB239A23C161D80E304AACA2113`.
 O pacote r3 anterior, inclusive o log com cinco warnings preservado antes
 da correção, permanece disponível para comparação histórica.
 
@@ -92,18 +92,18 @@ requalificação corrente de runtime está em
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | r9: 2633 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
+| Suíte oficial | `PASS` | r12: 2634 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual, memória longa, GPU/janela nativa e diagnóstico de ambiente Unity/shutdown permanecem gates técnicos separados |
+| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa está `PASS` no soak controlado, GPU/janela QGraphicsView está `NOT_APPLICABLE` por ausência de contador e Unity limpo/shutdown permanece `BLOCKED` pelo recurso Windows Sandbox ocupado |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
-| Diagnósticos Unity controlados | `PASS` do classificador; `PENDING_EVIDENCE` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker sem iniciar Unity; `Code 10`, token, Curl, `abort_threads` e `MemoryLeaks` continuam preservados; shutdown/soak limpo não foi inferido |
+| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker sem iniciar Unity; `Code 10`, token, Curl, `abort_threads` e `MemoryLeaks` continuam preservados; a tentativa real em Windows Sandbox não montou a fixture por VM preexistente, portanto licensing/shutdown limpo não foi inferido |
 | CuPy | `PASS` da avaliação; `NOT_APPLICABLE` como dependência oficial | caminho opcional X-Ray comprovado no ambiente local, ganho somente no workload grande medido; não há evidência de que o gargalo do editor seja CuPy e a build portátil continua CPU/fallback |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -186,20 +186,23 @@ nativo atual do editor canônico está em
 `PASS_NATIVE_FLOW`, 14 capturas e sidecar reaberto após relançamento.
 
 O Unity 6000.5.7f1 foi executado duas vezes em `batchmode/nographics` antes da
-política de segurança desta meta: os
-gates positivo/negativo passaram com retorno `0`, enquanto `Code 10` do
-Licensing Client, token ausente, timeout/Curl e `abort_threads` foram
-preservados e classificados como `PENDING_EVIDENCE` para a causa/estabilidade
-do ambiente. O entitlement `Unity Personal` foi resolvido nos dois logs. A
-qualificação está em
-`evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md`.
+política de segurança desta meta: os gates positivo/negativo passaram com
+retorno `0`, enquanto `Code 10` do Licensing Client, token ausente, timeout/Curl
+e `abort_threads` foram preservados e classificados como `PENDING_EVIDENCE`
+para a causa/estabilidade do ambiente. O entitlement `Unity Personal` foi
+resolvido nos dois logs. Essa qualificação histórica está em
+`evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md` e não substitui o
+ensaio controlado desta meta.
 
 Nesta meta, o classificador somente leitura foi executado em Docker sem rede,
 sem iniciar Unity e sem solicitar `-quit`; passou nos testes focados e
 classificou os logs preservados. O resultado está em
 `evidence/EVD_POST_E13_UNITY_DIAGNOSTICOS_CONTROLADOS_20260913.md`. Isso fecha
 a observabilidade do diagnóstico, mas não converte a ausência de um ambiente
-Unity limpo ou de um shutdown/soak limpo em `PASS`.
+Unity limpo ou de um shutdown/soak limpo em `PASS`. A tentativa em Windows
+Sandbox desta meta ficou `BLOCKED` porque a VM preexistente não foi liberada por
+fechamento gracioso; nenhum Unity foi executado e a evidência está em
+`evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
 
 A captura automatizada não substitui a revisão humana final; essa revisão foi
 registrada como aprovada pelo proprietário em
@@ -209,12 +212,13 @@ registrada como aprovada pelo proprietário em
 
 O subestágio de investigação estrutural em escala e a evidência nativa 2D/3D/
 híbrida do editor canônico estão tecnicamente fechados e não devem ser refeitos
-sobre base anterior. A meta vigente fechou a suíte r9 sem warnings, o retry
-atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial e
-qualificou o diagnóstico controlado de Unity/shutdown; permanecem as medições
-restantes de desempenho, memória e GPU/janela e a classificação de um ambiente
-Unity limpo. A revisão humana já foi aprovada; o gizmo e a produção de
-modelos/asset packs permanecem adiados por decisão do proprietário.
+sobre base anterior. A meta vigente fechou a suíte r12 sem warnings, o retry
+atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial,
+qualificou a memória em soak controlado e registrou a limitação objetiva de GPU;
+permanece somente a qualificação Unity de licensing/shutdown, atualmente
+`BLOCKED` pela VM Windows Sandbox preexistente. A revisão humana já foi
+aprovada; o gizmo e a produção de modelos/asset packs permanecem adiados por
+decisão do proprietário.
 Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de
 distribuição continuam explicitamente separados. A equivalência
 V2→exportação Godot/Unity de partículas tem checkpoint técnico; o abort legado
