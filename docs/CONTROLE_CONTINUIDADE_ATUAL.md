@@ -9,6 +9,10 @@
 **Reconciliado em 2026-09-13:** branch atual, HEAD documental, produto/harness,
 suíte corrente e próxima ação estão registrados em
 `docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md`.
+**Auditoria corrente de fechamento:**
+`docs/evidence/AUDITORIA_FECHAMENTO_PENDENCIAS_POS_E13_20260913.md` consolida
+os gates pós-E13; resta somente a decisão do proprietário sobre uma licença ou
+fixture Unity válida para retirar o bloqueio externo.
 **Arquivo legado reconciliado em 2026-09-13:** execuções históricas não
 referenciadas foram movidas de forma reversível para
 `archive/legacy/artifacts/post-e13-historical-20260913/`, com manifesto e
