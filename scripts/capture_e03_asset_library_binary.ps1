@@ -631,6 +631,14 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1315)
         Start-Sleep -Milliseconds 900
         $records.vector_contour_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-vector-contour-created.png")
+        # Persist the newly created vector scene object through the same
+        # toolbar path a user uses, then reload it to prove the round-trip.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 557, 90)
+        Start-Sleep -Milliseconds 800
+        $records.vector_contour_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "14-vector-contour-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 708, 90)
+        Start-Sleep -Milliseconds 1000
+        $records.vector_contour_reloaded = Save-Capture $editor.Handle (Join-Path $OutputDirectory "15-vector-contour-reloaded.png")
     }
     if ($tilesetFlow) {
         Enter-AdvancedTool $editor.Handle 310
