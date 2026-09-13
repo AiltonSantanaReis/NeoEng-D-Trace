@@ -26,7 +26,7 @@
     "execution_observed": false,
     "inventory_only": true
   },
-  "attempt": {
+  "initial_blocked_attempt": {
     "launcher_exit_code": 0,
     "launcher_acceptance_is_runtime_proof": false,
     "fixture_config_xml": "valid",
@@ -37,7 +37,7 @@
     "unity_success_marker_observed": false,
     "unity_failure_marker_observed": false
   },
-  "blocker": {
+  "initial_blocker": {
     "kind": "preexisting_windows_sandbox_vm_not_released",
     "vmmem_windows_sandbox_present": true,
     "preexisting_session_present": true,
@@ -46,6 +46,111 @@
     "forced_host_termination": false,
     "host_shutdown_requested": false,
     "reason": "A preexisting disposable Windows Sandbox session kept the single sandbox VM occupied; the new configuration was accepted by the launcher but did not mount the fixture or start Unity before the allowed graceful cleanup window ended."
+  },
+  "runtime_requalification": {
+    "status": "BLOCKED",
+    "latest_attempt_id": "r8",
+    "attempts": [
+      {
+        "id": "r1",
+        "output_dir": "output",
+        "status": "BLOCKED",
+        "result_sha256": "1210ECCBE57394305355015DC7DBA27187D7AC99B843D19CFBEEEC6818C1FD6F",
+        "observed": "launcher accepted configuration, but preexisting sandbox VM prevented fixture mount; Unity not observed"
+      },
+      {
+        "id": "r2",
+        "output_dir": "output-r2",
+        "status": "FAIL",
+        "result_sha256": "5D167ECEBCD1E17E3563F53692B90BFB09AABE877F39DEE2E47E68307B975817",
+        "observed": "Unity process start attempted; loader exited 0x8007007E before log"
+      },
+      {
+        "id": "r3",
+        "output_dir": "output-r3",
+        "status": "FAIL",
+        "result_sha256": "476A47D62B63F2C8488245F2ACAE1E0B320F00FF2DA46EEDCEA5A9CB310D0D00",
+        "observed": "MSVCP100/MSVCR100 loaded, but OpenRL and Unity.dll returned loader error 126"
+      },
+      {
+        "id": "r4",
+        "output_dir": "output-r4",
+        "status": "FAIL",
+        "result_sha256": "C059522BEAAECFA8A3671503713CDDFF56E34D2D1E00434C2E72F845045FA293",
+        "observed": "VC14 runtime overlay loaded, but OpenRL and Unity.dll still returned loader error 126"
+      },
+      {
+        "id": "r5",
+        "output_dir": "output-r5",
+        "status": "FAIL",
+        "result_sha256": "6852F4D1F7C320EFEEC0677929282C6402A3CE9E5C6084D63A5116C48EF34EF8",
+        "observed": "tbb loaded, embree/OpenRL/Unity.dll still returned loader error 126"
+      },
+      {
+        "id": "r6",
+        "output_dir": "output-r6",
+        "status": "FAIL",
+        "result_sha256": "B2134FBA20F4A78BBEBBD8394EF61F5B638A8876D2347B1E3805E23BBD39E473",
+        "observed": "editor directory search path fixed embree/OpenRL, but Unity.dll still returned loader error 126"
+      },
+      {
+        "id": "r7",
+        "output_dir": "output-r7",
+        "status": "FAIL",
+        "result_sha256": "781A73AF46FFD4A7FFB13112BF141F68B2128D60A31D55594B8B489659753C60",
+        "observed": "MSVCP140_CODECVT_IDS identified as missing; Unity.dll still returned loader error 126"
+      },
+      {
+        "id": "r8",
+        "output_dir": "output-r8",
+        "status": "BLOCKED",
+        "result_sha256": "C22C9E1895EBBEB0CB1B879441EA7B0C10F6DFE344C5379B3917723FA7940C03",
+        "raw_log_sha256": "DE61E9A5587615A077D1826F8864663AFB292D2CBC08B5B368209078EE3423E4",
+        "sanitized_log_sha256": "FA80B56C7850C0945F405D7254576F0501927EC439AB5300863BB7028FDC1819",
+        "shutdown_marker_sha256": "0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D",
+        "runner_sha256": "00395FD00E509454687080866C0B9AA11913CAC1FF88286BE61AF8A8D0EA7B27",
+        "config_sha256": "B3479E3AC6AA41C4C4823ABE34E53BDF2E097DCD7F9B1E374CAFB75D65969D87",
+        "unity_process_started": true,
+        "unity_exit_code": 198,
+        "package_report_present": false,
+        "licensing": {
+          "module_seen": true,
+          "license_client_seen": true,
+          "code_10": true,
+          "access_token_unavailable": true,
+          "code_404_entitlement": true,
+          "no_valid_editor_license": true
+        },
+        "unity_shutdown": {
+          "batchmode_quit_signal": false,
+          "clean_return_code_zero": false,
+          "abort_threads": false,
+          "memory_leaks": false,
+          "status": "BLOCKED",
+          "reason": "Unity terminated on missing license before clean -quit completion"
+        },
+        "sandbox_shutdown": {
+          "request_marker_present": true,
+          "processes_terminal_after_poll": true,
+          "status": "PASS",
+          "scope": "disposable sandbox only"
+        },
+        "observed": "Unity loaded and reached the real LicensingClient; package method was not reached because the controlled sandbox had no valid license"
+      }
+    ],
+    "latest_harness": {
+      "sandbox_runner_sha256": "00395FD00E509454687080866C0B9AA11913CAC1FF88286BE61AF8A8D0EA7B27",
+      "sandbox_config_sha256": "B3479E3AC6AA41C4C4823ABE34E53BDF2E097DCD7F9B1E374CAFB75D65969D87",
+      "runtime_overlay": {
+        "msvcp100.dll": "934D882EFD3C0F3F1EFBC238EF87708F3879F5BB456D30AF62F3368D58B6AA4C",
+        "msvcr100.dll": "AE3CB6C6AFBA9A4AA5C85F66023C35338CA579B30326DD02918F9D55259503D5",
+        "msvcp140.dll": "7C26614E1D733892C2DEAC7E245CE115504B1D80592DD0A01B08E3E5A55F89CA",
+        "msvcp140_codecvt_ids.dll": "8A65C7596EF2E6938731F5A1058E7E40145B6D97967CC649231A076B9A608D78",
+        "vcruntime140.dll": "D1F4225DF2CD877DBF130D5668A021DCE3F94118455FF5EC952061C30AFC9CE7",
+        "vcruntime140_1.dll": "A7146C08F89FE5B04541AB507CDB59FF7B44534D4BA3C668A426C6450A03434E"
+      }
+    },
+    "reexecution_condition": "Only after an authorized Unity license/activation is available in the disposable environment, or the controlled harness/engine version changes; do not rerun symlink or host shutdown tests."
   },
   "alternative_environment_probe": {
     "docker_server": "29.5.3",
@@ -60,8 +165,10 @@
   },
   "classification": {
     "licensing": "BLOCKED",
+    "licensing_observed_failure": "FAIL",
     "unity_shutdown": "BLOCKED",
+    "sandbox_shutdown": "PASS",
     "native_unity_run": "BLOCKED",
-    "next_action": "Release the preexisting Windows Sandbox session by an explicitly controlled external action, then rerun this unchanged fixture only if the environment is available."
+    "next_action": "Provide an authorized Unity license/activation in the disposable environment, then rerun the same fixture with the current hash-registered harness; do not rerun symlink or host shutdown tests."
   }
 }

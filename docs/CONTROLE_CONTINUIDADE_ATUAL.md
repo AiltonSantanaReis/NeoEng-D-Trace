@@ -97,13 +97,13 @@ requalificação corrente de runtime está em
 | Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa está `PASS` no soak controlado, GPU/janela QGraphicsView está `NOT_APPLICABLE` por ausência de contador e Unity limpo/shutdown permanece `BLOCKED` pelo recurso Windows Sandbox ocupado |
+| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa está `PASS` no soak controlado, GPU/janela QGraphicsView está `NOT_APPLICABLE` por ausência de contador; Unity r8 iniciou e alcançou o LicensingClient, mas licensing limpo e shutdown limpo permanecem `BLOCKED` por ausência de licença válida |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
-| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker sem iniciar Unity; `Code 10`, token, Curl, `abort_threads` e `MemoryLeaks` continuam preservados; a tentativa real em Windows Sandbox não montou a fixture por VM preexistente, portanto licensing/shutdown limpo não foi inferido |
+| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker; o r8 iniciou Unity real em Windows Sandbox, observou LicensingClient, `Code 10`, token ausente, `404` de entitlement e código 198; a sandbox encerrou, mas licensing limpo, método do pacote e shutdown limpo do Unity continuam não comprovados |
 | CuPy | `PASS` da avaliação; `NOT_APPLICABLE` como dependência oficial | caminho opcional X-Ray comprovado no ambiente local, ganho somente no workload grande medido; não há evidência de que o gargalo do editor seja CuPy e a build portátil continua CPU/fallback |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -194,14 +194,14 @@ resolvido nos dois logs. Essa qualificação histórica está em
 `evidence/EVD_POST_E13_RUNTIME_REQUALIFICACAO_20260913.md` e não substitui o
 ensaio controlado desta meta.
 
-Nesta meta, o classificador somente leitura foi executado em Docker sem rede,
-sem iniciar Unity e sem solicitar `-quit`; passou nos testes focados e
-classificou os logs preservados. O resultado está em
-`evidence/EVD_POST_E13_UNITY_DIAGNOSTICOS_CONTROLADOS_20260913.md`. Isso fecha
-a observabilidade do diagnóstico, mas não converte a ausência de um ambiente
-Unity limpo ou de um shutdown/soak limpo em `PASS`. A tentativa em Windows
-Sandbox desta meta ficou `BLOCKED` porque a VM preexistente não foi liberada por
-fechamento gracioso; nenhum Unity foi executado e a evidência está em
+Nesta meta, o classificador somente leitura foi executado em Docker sem rede e
+passou nos testes focados, classificando os logs preservados. O resultado está
+em `evidence/EVD_POST_E13_UNITY_DIAGNOSTICOS_CONTROLADOS_20260913.md`. Isso
+fecha a observabilidade do diagnóstico, mas não converte licensing limpo ou
+shutdown/soak limpo em `PASS`. Após a VM preexistente ser liberada, o r8 iniciou
+Unity real em Windows Sandbox e alcançou o LicensingClient; a ausência de
+licença encerrou a execução antes do pacote. O shutdown da sandbox foi
+comprovado, e a evidência está em
 `evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
 
 A captura automatizada não substitui a revisão humana final; essa revisão foi
@@ -215,8 +215,9 @@ híbrida do editor canônico estão tecnicamente fechados e não devem ser refei
 sobre base anterior. A meta vigente fechou a suíte r12 sem warnings, o retry
 atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial,
 qualificou a memória em soak controlado e registrou a limitação objetiva de GPU;
-permanece somente a qualificação Unity de licensing/shutdown, atualmente
-`BLOCKED` pela VM Windows Sandbox preexistente. A revisão humana já foi
+permanece somente a qualificação Unity de licensing/shutdown limpos, atualmente
+`BLOCKED` pela ausência de licença válida na sandbox. O carregamento Unity e o
+shutdown da sandbox já foram comprovados. A revisão humana já foi
 aprovada; o gizmo e a produção de modelos/asset packs permanecem adiados por
 decisão do proprietário.
 Os requisitos funcionais, a revisão visual/humana e a licença/proveniência de
