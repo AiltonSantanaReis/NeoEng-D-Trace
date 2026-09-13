@@ -1,0 +1,20 @@
+﻿{
+    "schema_version":  1,
+    "status":  "PASS",
+    "source_commit":  "98ee5b4ea437d35b89f8767a03e26769636f5f99",
+    "source_branch":  "Ailton/audit-post-e13-scenario-editor-20260912",
+    "master_plan_commit":  "52e9896d2ecf1bc928fb27aca5b8091890c580d7",
+    "continuity_registry_sha256":  "5CFA67097AE289AE898CC19D042F20E89C2F549FD2634D3CEFE97393A8B74396",
+    "python_command":  "canonical-project-python",
+    "python_prefix":  [
+
+                      ],
+    "binary":  {
+                   "path":  "portable/NeoEng-D-Trace/NeoEng-D-Trace.exe",
+                   "sha256":  "1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403",
+                   "size":  10883963
+               },
+    "release_root":  "build/release-post-e13-cupy-atomic-20260913-r5",
+    "portable_smoke_report":  "smoke/portable-smoke-report.json",
+    "generated_at_utc":  "2026-09-13T12:46:37.2040338Z"
+}

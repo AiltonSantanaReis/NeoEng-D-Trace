@@ -1,0 +1,68 @@
+{
+  "checks": [
+    "cli-version",
+    "versioned-project-input",
+    "headless-project",
+    "headless-json",
+    "headless-glb",
+    "godot-profile-json",
+    "godot-release-glb",
+    "unity-profile-json",
+    "unity-release-glb",
+    "gui-open-close",
+    "user-state-directory"
+  ],
+  "outputs": {
+    "engine-godot/engine-input.ndtproj": {
+      "sha256": "1a2efecf339b1d452a38aaef66fdc963b7e121e29f2cef0994daf424f552a706",
+      "size": 1096
+    },
+    "engine-godot/probe-godot.json": {
+      "sha256": "61c36b6ea5627572ae96b693862e7a2c101f40c212eec8541b04125ce1097fb7",
+      "size": 1404
+    },
+    "engine-godot/scene.glb": {
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "size": 968
+    },
+    "engine-godot/source.png": {
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "size": 229
+    },
+    "engine-unity/engine-input.ndtproj": {
+      "sha256": "1a2efecf339b1d452a38aaef66fdc963b7e121e29f2cef0994daf424f552a706",
+      "size": 1096
+    },
+    "engine-unity/probe-unity.json": {
+      "sha256": "fa3c12ced1e2d767a6c2b4d497f48b0777dd9c09a0d9c956e0aaada20b1ad6c9",
+      "size": 1447
+    },
+    "engine-unity/scene.glb": {
+      "sha256": "de8ece4d8259af59f7ff61abd783b869eae8767771fc4c5256f5c842e5125fde",
+      "size": 968
+    },
+    "engine-unity/source.png": {
+      "sha256": "06285ffb8f9c4b564f4f9624858a729c067693df4677273f70270259cf9554cc",
+      "size": 229
+    },
+    "gui-validation.jsonl": {
+      "sha256": "273a7d2d6a1db2f99839c993e07cdd2671fa57585137359143f9eb0afdb67190",
+      "size": 1649
+    },
+    "smoke.glb": {
+      "sha256": "084e8c4bfbb0a421df24967b36e7776824a9506a7ee353fdf45914c2f230037a",
+      "size": 956
+    },
+    "smoke.json": {
+      "sha256": "99c2e85247bf4c9fc1b2eda2ac298c2dc56b73e9b412793db25273f4c679e58b",
+      "size": 1311
+    },
+    "smoke.ndtproj": {
+      "sha256": "97bf1ddb4b8f963de52712e33bf82a0270367e160a999f3783f87323467aeae9",
+      "size": 1119
+    }
+  },
+  "schema_version": 1,
+  "status": "SUCCESS",
+  "version": "0.3.0"
+}
