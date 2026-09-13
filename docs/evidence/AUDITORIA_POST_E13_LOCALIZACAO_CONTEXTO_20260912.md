@@ -14,7 +14,7 @@
 
 **Checkpoint protegido:** `ec94530fcba39be3bbce0439fc56aa48957442c0`
 
-**Última verificação oficial:** `e4e85487f5bbf8c21bf7e0ffe6b7c33244a37a80`
+**Última verificação oficial:** `72df498c3ad9c332500b82f29e9e97fc3a68edaf`
 
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 
@@ -97,7 +97,7 @@ Portanto, o texto e a renderização estão comprovados; o gatilho automático p
 hover físico permanece `PENDING_EVIDENCE` neste ambiente. Não há base para
 afirmar que esse detalhe foi validado por clique/hover Win32.
 
-## Regressão oficial pós-correção
+## Regressão oficial da build de localização
 
 Execução integral, sem filtros, sem usar mecanismos `skip`, `xfail`,
 `--ignore` ou bypass para alterar o resultado:
@@ -135,8 +135,22 @@ As duas falhas foram concretas e independentes da lógica do cenário:
   teste legado não aceita.
 
 O caminho foi genericizado e as chamadas voltaram a respeitar a assinatura
-existente, sem excluir testes ou alterar thresholds. A correção aguarda nova
-execução oficial integral.
+existente, sem excluir testes ou alterar thresholds. A correção foi confirmada
+pela nova execução oficial integral abaixo.
+
+## Regressão oficial pós-correção de bordas
+
+Após as correções, a execução integral no commit
+`72df498c3ad9c332500b82f29e9e97fc3a68edaf` produziu:
+
+```text
+2621 passed, 2 skipped, 5 warnings in 78.66s (0:01:18)
+```
+
+Foram coletados `2623` itens. Os mesmos dois testes ambientais de sincronização
+permaneceram `skipped`, sem uso de mecanismo para mascarar resultado; os cinco
+`DeprecationWarning` de `QMouseEvent` permaneceram os mesmos. Não houve falha
+de regressão após a correção.
 
 ## Falha histórica reproduzida e correção controlada
 
@@ -194,10 +208,9 @@ recurso vetorial, painel vetorial, vetorização e edição de contorno.
 
 ## Próxima etapa planejada
 
-1. Relendo a governança antes da etapa, catalogar os caminhos menos frequentes
-   ainda com strings inglesas em `scenario_authoring_actions` e fluxos de
-   recuperação/exportação, localizando somente o que for comprovado e
-   preservando o inglês e os contratos existentes.
+1. Relendo a governança antes da etapa, concluir a catalogação dos caminhos
+   menos frequentes de recuperação/exportação e verificar a nova build em
+   execução nativa; qualquer lacuna restante deve continuar explícita.
 2. Executar a auditoria de desempenho do viewport com cenário vazio, cenário
    com múltiplos objetos e efeitos ativos, registrando tempo de frame, memória,
    escala e degradação percebida; qualquer ajuste deverá ter teste de proteção
