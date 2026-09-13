@@ -94,7 +94,7 @@ requalificação corrente de runtime está em
 |---|---|---|
 | Suíte oficial | `PASS` | 2626 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
 | Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
-| Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r3 no checkout/harness atual: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r3/` |
+| Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
 | Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
 | Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
 | Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual, memória longa, GPU/janela nativa e diagnóstico de ambiente Unity/shutdown permanecem gates técnicos separados |

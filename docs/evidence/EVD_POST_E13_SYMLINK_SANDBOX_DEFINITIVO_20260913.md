@@ -7,9 +7,9 @@
 **Escopo:** requalificação definitiva dos testes de segurança de integração que
 dependem de criação de symlink.
 **Fonte de produto:** `7f5c0477b3f4594928751aec6b97a4b1e9c0178b`
-**Checkout montado durante a execução:** `72e60784d90030219a5300a4d6677726f5d0815e`
-**Requalificação vigente:** `r3`, após a barreira de segurança controlada dos
-testes; o pacote `r2` permanece preservado como evidência anterior.
+**Checkout montado durante a execução:** `6a759f476cd7f0d756bec3172ce0a5896ceeb88e`
+**Requalificação vigente:** `r4`, após o commit da etapa e a barreira de
+segurança controlada dos testes; os pacotes `r1`–`r3` permanecem preservados.
 
 ## Autoridade e decisão de segurança
 
@@ -30,7 +30,7 @@ testes; o pacote `r2` permanece preservado como evidência anterior.
 |---|---|
 | Runtime | Docker Desktop / WSL2 Linux |
 | Imagem de dependências | `python:3.11-slim@sha256:9534e5a8e315485d4061ed659af0fd78a284c015f9b73661b41d6bab25604534` |
-| Imagem de auditoria | `neoeng-dtrace-symlink-audit:20260913-r3` |
+| Imagem de auditoria | `neoeng-dtrace-symlink-audit:20260913-r4` |
 | ID da imagem construída | `sha256:5015b1a1b3a29c75f95523a45e30ed6db5c7536ab6571c6f3a71a16edde79376` |
 | Python no container | `3.11.16` |
 | Pytest | `9.1.1` |
@@ -80,13 +80,13 @@ suporte real a symlink; não promove o teste local do Windows a `PASS`.
 
 ## Artefatos e hashes
 
-Pacote vigente: `artifacts/audit-post-e13-symlink-sandbox-20260913-r3/`
+Pacote vigente: `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/`
 
 | Artefato | SHA-256 |
 |---|---|
-| `report.json` | `2702093D2FB5F1223B3F38F231B70F2BE3246658AF9117145B1567B2A0FCF92F` |
-| `symlink-junit.xml` | `DF5A1ADC15D9B5A54407B2B9D648A0AD62F3C806523D346629AB607E5362E45F` |
-| `pytest-output.txt` | `24CC9AE6108B89BE2869DB8C907FD84084BEDB37F1ACF3A6BB178372218438A3` |
+| `report.json` | `9545FED02BCAC558CDCF96A0E02DE16D33FA62DAE49E964C511099961AD399C3` |
+| `symlink-junit.xml` | `E38BF7E3D1E3DD8199988385539FF76252CB414A6ABDA30D48DF6B632F0F4256` |
+| `pytest-output.txt` | `2BD0CDA5D1548904EA984612E3015FC7A1E7149ADBF5DA5C712726067A8E60BA` |
 | `runner/symlink_audit.py` | `CCDDFBB62DBAF1788D879997D2C4ECE061B14026BC94C24C02F845AAAB503A7D` |
 | `runner/Dockerfile` | `B5B336CADB1E1097E771B8F25DD699C4595A1F85B6778344D991731B307A81C0` |
 
@@ -103,8 +103,10 @@ A tentativa `r1` não foi apagada. Ela passou pelo probe de symlink, mas
 terminou com `FAIL` e exit `1` porque o `conftest.py` importou PySide6, ausente
 na imagem mínima. O JUnit não foi produzido nessa tentativa. A execução `r2`
 passou antes da introdução do guard de segurança; depois dessa alteração no
-teste, a execução vigente `r3` confirmou novamente os 31 casos. Os pacotes
-`r1` e `r2` continuam disponíveis para auditoria histórica.
+teste, a execução `r3` confirmou novamente os 31 casos. Após o commit
+`6a759f4`, a execução vigente `r4` confirmou os mesmos 31 casos com o commit
+reportado no próprio JSON. Os pacotes `r1`–`r3` continuam disponíveis para
+auditoria histórica.
 
 ## Relação com o checkout local
 
@@ -133,5 +135,6 @@ este gate somente se ocorrer pelo menos uma destas condições:
 Até uma dessas condições, o resultado `PASS` deste pacote é a evidência
 definitiva do gate de symlink para a fonte indicada, enquanto o skip local é
 mantido como barreira de segurança do host. A repetição `r3` ocorreu porque o
-teste foi alterado para impedir execução nativa; alterações que não toquem o
-contrato, a barreira ou a infraestrutura controlada não exigem nova execução.
+teste foi alterado para impedir execução nativa; a repetição `r4` vinculou a
+prova ao commit consolidado. Alterações que não toquem o contrato, a barreira
+ou a infraestrutura controlada não exigem nova execução.
