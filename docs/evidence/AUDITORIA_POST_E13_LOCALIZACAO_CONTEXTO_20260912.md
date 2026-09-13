@@ -14,6 +14,8 @@
 
 **Checkpoint protegido:** `ec94530fcba39be3bbce0439fc56aa48957442c0`
 
+**Última verificação oficial:** `e4e85487f5bbf8c21bf7e0ffe6b7c33244a37a80`
+
 **Governança:** [`GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md)
 
 ## Fronteira da auditoria
@@ -95,6 +97,26 @@ Portanto, o texto e a renderização estão comprovados; o gatilho automático p
 hover físico permanece `PENDING_EVIDENCE` neste ambiente. Não há base para
 afirmar que esse detalhe foi validado por clique/hover Win32.
 
+## Regressão oficial pós-correção
+
+Execução integral, sem filtros, sem usar mecanismos `skip`, `xfail`,
+`--ignore` ou bypass para alterar o resultado:
+
+```text
+Get-Content -Raw docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md | Out-Null
+& C:\Users\atnco\Pictures\NeoEng-D-Trace\.venv\Scripts\python.exe -m pytest -q
+2620 passed, 2 skipped, 5 warnings in 77.18s (0:01:17)
+```
+
+O pacote oficial coletou `2622` itens. Os dois `skipped` são os testes de
+integração de sincronização que dependem do ambiente de links simbólicos; não
+foram introduzidos nesta etapa, não foram convertidos em sucesso e permanecem
+registrados como limitação ambiental. Os cinco avisos são
+`DeprecationWarning` do construtor legado de `QMouseEvent` em testes existentes;
+não houve falha de teste nem aviso ocultado. A regressão foi executada sobre o
+commit `e4e85487f5bbf8c21bf7e0ffe6b7c33244a37a80`, após a correção de produto e
+a nova build distribuível.
+
 ## Falha histórica reproduzida e correção controlada
 
 O binário usado no lote vetorial anterior tinha SHA-256
@@ -129,12 +151,12 @@ recurso vetorial, painel vetorial, vetorização e edição de contorno.
 
 | ID | Achado | Estado | Evidência / ação |
 |---|---|---|---|
-| `LOC-POST-E13-01` | Status do contorno vetorial vazava inglês no binário anterior | `PENDING_EVIDENCE` | fonte corrigida em `c0989cd`; r2 antigo preservado; build nova e reteste binário ainda necessários |
+| `LOC-POST-E13-01` | Status do contorno vetorial vazava inglês no binário anterior | `PASS` | fonte corrigida em `c0989cd`; binário novo e fluxo Win32 PT-BR comprovados em `audit-post-e13-binary-vector-contour-20260912-r3`; r2 antigo preservado |
 | `LOC-POST-E13-02` | Menu `Ver`, contexto do viewport e tooltip renderizado estão em PT-BR | `PASS` | manifesto/capturas r10; metadados e pixels coerentes |
 | `LOC-POST-E13-03` | Fluxo nativo de autoria em PT-BR, incluindo erro recuperável e persistência, executou sem abortar | `PASS` | manifesto/capturas `native-source-r4` |
 | `LOC-POST-E13-04` | O disparo automático do hover não foi comprovado pela automação neste desktop | `PENDING_EVIDENCE` | r10 registra `automatic_hover_visible=false`; apresentação nativa explícita foi capturada e declarada |
 | `LOC-POST-E13-05` | Caminhos menos frequentes de exportação, recuperação e alguns status de `scenario_authoring_actions` ainda têm strings inglesas a catalogar | `IN_PROGRESS` | inspeção estática e cobertura nativa atual não fecham esses caminhos; não foram declarados PASS |
-| `LOC-POST-E13-06` | Confirmação da correção no produto distribuído depende de nova build | `PENDING_EVIDENCE` | executável antigo é anterior a `c0989cd`; nova build não foi promovida nesta etapa |
+| `LOC-POST-E13-06` | Confirmação da correção no produto distribuído depende de nova build | `PASS` | build `post-e13-localization-build-20260912-r1`, SHA-256 `96053F3334CB114E9AF1BA156209D3F6E65F5EEA06FD67165B0A773A1BC92F4B`, fluxo Win32 vetorial r3 e suíte oficial sem falhas |
 | `LOC-POST-E13-07` | O harness CUA não controlou a janela nativa nesta sessão | `PENDING_EVIDENCE` | limitação ambiental registrada; harness Qt e capturas de tela não foram apresentados como equivalentes |
 
 ## Observações de experiência preservadas
@@ -151,17 +173,20 @@ recurso vetorial, painel vetorial, vetorização e edição de contorno.
 
 ## Próxima etapa planejada
 
-1. Relendo a governança antes da etapa, gerar build nova a partir de
-   `c0989cd`/`556d118`, identificá-la por hash e executar o fluxo Win32 do
-   contorno vetorial para comprovar os status PT-BR no produto distribuído.
-2. Reexecutar a suíte oficial completa, sem filtros, preservando qualquer
-   falha/warning/skipped ambiental.
-3. Catalogar e, somente se necessário, localizar os caminhos menos frequentes
-   com branches PT-BR preservando o inglês e os contratos existentes.
-4. Depois, voltar à auditoria de desempenho e aos contratos de câmera, luz,
-   partículas, tilemap/tileset e runtime Godot/Unity. O gizmo, os modelos e a
-   decisão sobre o editor independente continuam reservados para o momento
-   aprovado.
+1. Relendo a governança antes da etapa, catalogar os caminhos menos frequentes
+   ainda com strings inglesas em `scenario_authoring_actions` e fluxos de
+   recuperação/exportação, localizando somente o que for comprovado e
+   preservando o inglês e os contratos existentes.
+2. Executar a auditoria de desempenho do viewport com cenário vazio, cenário
+   com múltiplos objetos e efeitos ativos, registrando tempo de frame, memória,
+   escala e degradação percebida; qualquer ajuste deverá ter teste de proteção
+   e captura antes/depois.
+3. Fechar as pendências de comportamento real de câmera, luz direcional,
+   efeitos orientáveis, partículas, tilemap/tileset e runtime Godot/Unity,
+   separando suporte comprovado, limitação da engine e lacuna do produto.
+4. O gizmo, a produção de modelos e a decisão sobre o editor independente
+   continuam reservados para o momento aprovado. A auditoria geral permanece
+   `IN_PROGRESS`.
 
 Até o cumprimento desses itens, a auditoria geral permanece `IN_PROGRESS`; a
 governança não permite declarar encerramento apenas porque esta superfície
