@@ -44,3 +44,28 @@ JUnit r5 normalizado tem SHA-256
 O r5 permanece preservado como execução que falhou e não será promovido a
 PASS. Uma nova suíte completa, com o artefato versionado higienizado, é
 obrigatória para fechar este finding.
+
+## Reexecução r6 preservada
+
+Após a correção de logging do fallback CuPy, a suíte oficial r6 sem filtros
+terminou com:
+
+```text
+2630 passed, 2 skipped, 2 failed in 80.91s
+```
+
+Falharam `test_atlas_replaces_existing_outputs_without_predelete`, por
+`PermissionError: WinError 5` em `os.replace`, e novamente o contrato de
+higiene por causa do log r4 versionado antes da sanitização final. O raw r6
+tem JUnit SHA-256
+`B34DFDEB3772AB085BBFCF697DD07351687F036637B4630627ECB22E6F346B04` e log
+SHA-256 `3BB5365C36A9D1B0C37D095C8B4773A94611CC39EB766A1CF46A8DFC0FB5CA69`.
+As representações sanitizadas preservadas têm JUnit SHA-256
+`D4A9964E369317D7EFB858782E4AC61D470213BC9893E8E79B1A41A8DA77BAE3` e
+log SHA-256 `32A8FF6C5E52BCED1453914A5C50F629A619533B602D30A2072938538624EFAC`.
+
+O log r4 corrigido tem SHA-256
+`0EEE691A67DEABE331B591DFC3D4455DB66A278A97266DC25811CCD9EC365F6C`.
+O finding `WinError 5` continua aberto até uma qualificação focada e uma
+nova suíte completa demonstrarem substituição atômica estável; nenhuma
+permissão, threshold ou teste foi relaxado.

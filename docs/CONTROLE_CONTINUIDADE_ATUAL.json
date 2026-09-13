@@ -112,7 +112,7 @@
       "observation_artifact": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r3/official-pytest.log",
       "historical_failure_artifact": "artifacts/post-e13-particle-scene-export-native-20260911-v14/official-pytest.log",
       "final_log": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-pytest.log",
-      "final_log_sha256": "42DDC5779276493987C3A9010765C26FCB530C8AAEB64A0EF43055AC586534C7",
+      "final_log_sha256": "0EEE691A67DEABE331B591DFC3D4455DB66A278A97266DC25811CCD9EC365F6C",
       "current_checkout_revalidation": {
         "status": "PASS",
         "source_commit": "783b385e17506bd898910d4a96fa44db2d7bf1c9",
@@ -123,7 +123,7 @@
         "observed_at": "2026-09-13",
         "warning": "none",
         "latest_revalidation_artifact": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-pytest.log",
-        "latest_revalidation_artifact_sha256": "42DDC5779276493987C3A9010765C26FCB530C8AAEB64A0EF43055AC586534C7",
+        "latest_revalidation_artifact_sha256": "0EEE691A67DEABE331B591DFC3D4455DB66A278A97266DC25811CCD9EC365F6C",
         "latest_revalidation_metadata": "artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/run-metadata.txt",
         "latest_revalidation_metadata_sha256": "28CC7D7213C37E0AEB011F000C7A9B46F9CCC35A6114CC6E4515650A8259C855",
         "latest_revalidation_duration_seconds": 84.68,

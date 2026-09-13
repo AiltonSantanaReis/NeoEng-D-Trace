@@ -4,12 +4,12 @@ rootdir: WORKSPACE
 configfile: pytest.ini
 testpaths: tests
 plugins: anyio-4.14.2, cov-7.1.0
-collected 2632 items
+collected 2634 items
 
 tests\test_app_icon.py .......                                           [  0%]
 tests\test_app_identity.py ...........                                   [  0%]
 tests\test_asset_packs.py ...........                                    [  1%]
-tests\test_atomic_export_replacement.py ....                             [  1%]
+tests\test_atomic_export_replacement.py ..F.                             [  1%]
 tests\test_atomic_outputs.py ..........                                  [  1%]
 tests\test_audit_closure_contracts.py ...................                [  2%]
 tests\test_auto_detect.py ......                                         [  2%]
@@ -31,7 +31,7 @@ tests\test_creation_auto_selection.py ...                                [  6%]
 tests\test_critical_numeric_coverage.py .............................    [  7%]
 tests\test_critical_ui_coverage.py ....................                  [  7%]
 tests\test_document_index_canonical_contract.py .                        [  7%]
-tests\test_documentation_state_contracts.py ............................ [  9%]
+tests\test_documentation_state_contracts.py ............................ [  8%]
 ........                                                                 [  9%]
 tests\test_e01_backend_bench.py ..                                       [  9%]
 tests\test_e04_tilemap_contract.py ..........................            [ 10%]
@@ -95,7 +95,7 @@ tests\test_mask_viewer_compatibility.py ..                               [ 25%]
 tests\test_merge_coverage_authoring_contracts.py ............            [ 25%]
 tests\test_p2d05_status_notice.py ..............                         [ 26%]
 tests\test_p2d_01_assets.py ......                                       [ 26%]
-tests\test_p2d_01b_asset_lifecycle.py .........                          [ 27%]
+tests\test_p2d_01b_asset_lifecycle.py .........                          [ 26%]
 tests\test_p2d_02a_layer_flow.py ..                                      [ 27%]
 tests\test_p2d_02b_group_hierarchy_flow.py ...                           [ 27%]
 tests\test_p2d_03a_professional_selection.py .....                       [ 27%]
@@ -119,6 +119,7 @@ tests\test_post_e13_boundary_contracts.py .............................. [ 32%]
 ........................................................................ [ 41%]
 ........................................................................ [ 43%]
 .........                                                                [ 44%]
+tests\test_post_e13_cupy_logging.py ..                                   [ 44%]
 tests\test_post_e13_directional_orientable.py .......                    [ 44%]
 tests\test_post_e13_hybrid_3d_authoring.py ......                        [ 44%]
 tests\test_post_e13_particle_authoring.py .......                        [ 45%]
@@ -136,13 +137,13 @@ tests\test_project_persistence_failures.py ..................            [ 47%]
 tests\test_project_persistence_roundtrip.py ......                       [ 47%]
 tests\test_project_schema_contract.py ......................             [ 48%]
 tests\test_qt_lifecycle_regression.py .....                              [ 48%]
-tests\test_quality_gate_integrity.py .......                             [ 48%]
+tests\test_quality_gate_integrity.py .......                             [ 49%]
 tests\test_reference_gizmo.py ..                                         [ 49%]
 tests\test_regression_core_contracts.py ........                         [ 49%]
-tests\test_repository_reference_hygiene.py ..                            [ 49%]
+tests\test_repository_reference_hygiene.py F.                            [ 49%]
 tests\test_sanitize_evidence_archives.py .                               [ 49%]
 tests\test_scenario_preview.py ...........                               [ 49%]
-tests\test_scenario_schema_io.py .............................           [ 50%]
+tests\test_scenario_schema_io.py .............................           [ 51%]
 tests\test_scene_repair.py ...                                           [ 51%]
 tests\test_selection_invariants.py ..                                    [ 51%]
 tests\test_single_source_tree.py .....                                   [ 51%]
@@ -267,5 +268,26 @@ tests\test_viewport_state_contract.py ....                               [ 99%]
 tests\test_visual_artifact_auditor.py ............                       [ 99%]
 tests\test_windows_coverage_shards.py ....                               [100%]
 
-- generated xml file: WORKSPACE\artifacts\audit-post-e13-official-suite-safe-host-20260913-r4\official-junit.xml -
-================= 2630 passed, 2 skipped in 84.68s (0:01:24) ==================
+================================== FAILURES ===================================
+___________ test_atlas_replaces_existing_outputs_without_predelete ____________
+tests\test_atomic_export_replacement.py:59: in test_atlas_replaces_existing_outputs_without_predelete
+    atlas_exporter.save_atlas(
+src\exporters\atlas_exporter.py:389: in save_atlas
+    _commit_staged_files([(tmp_img, atlas_path), (tmp_json, json_path)])
+src\exporters\atlas_exporter.py:53: in _commit_staged_files
+    os.replace(staged, destination)
+E   PermissionError: [WinError 5] Acesso negado: 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\tmp_atlas_lak8kyrq.png' -> 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\atlas.png'
+------------------------------ Captured log call ------------------------------
+ERROR    NeoEng-D-Trace:atlas_exporter.py:393 Failed to save atlas outputs: [WinError 5] Acesso negado: 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\tmp_atlas_lak8kyrq.png' -> 'C:\\Users\\atnco\\AppData\\Local\\Temp\\pytest-of-atnco\\pytest-5543\\test_atlas_replaces_existing_o0\\atlas.png'
+____ test_tracked_files_and_nested_archives_have_no_prohibited_references _____
+tests\test_repository_reference_hygiene.py:97: in test_tracked_files_and_nested_archives_have_no_prohibited_references
+    assert violations == []
+E   AssertionError: assert ['artifacts/a...al user path'] == []
+E
+E     Left contains 2 more items, first extra item: 'artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-pytest.log: local user path'
+E     Use -v to get more diff
+- generated xml file: WORKSPACE\artifacts\audit-post-e13-official-suite-safe-host-20260913-r6\official-junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_atomic_export_replacement.py::test_atlas_replaces_existing_outputs_without_predelete
+FAILED tests/test_repository_reference_hygiene.py::test_tracked_files_and_nested_archives_have_no_prohibited_references
+============ 2 failed, 2630 passed, 2 skipped in 80.91s (0:01:20) =============
