@@ -429,6 +429,28 @@ try {
             throw "Mask Viewer was not exposed by portable binary; observed windows: $($titles -join ' | ')"
         }
         $records.mask_viewer = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer.png")
+        # Exercise the visible processing modes with the image loaded.  These
+        # are native clicks in the dialog and each capture is kept separate so
+        # a later mode cannot hide an earlier visual result.
+        [NeoEngE03Capture]::Focus($mask.Handle)
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 320, 130)
+        Start-Sleep -Milliseconds 900
+        $records.mask_viewer_perfeito = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-perfeito.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 500, 130)
+        Start-Sleep -Milliseconds 900
+        $records.mask_viewer_aprim = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-aprim.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 670, 130)
+        Start-Sleep -Milliseconds 1200
+        $records.mask_viewer_grabcut = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-grabcut.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 320, 285)
+        Start-Sleep -Milliseconds 500
+        $records.mask_viewer_sobel = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-sobel.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 500, 285)
+        Start-Sleep -Milliseconds 500
+        $records.mask_viewer_canny = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-canny.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 670, 285)
+        Start-Sleep -Milliseconds 500
+        $records.mask_viewer_laplaciano = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-laplaciano.png")
     }
     [NeoEngE03Capture]::Focus($editor.Handle)
     Start-Sleep -Milliseconds 800
