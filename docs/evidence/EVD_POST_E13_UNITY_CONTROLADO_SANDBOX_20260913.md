@@ -308,26 +308,32 @@ O r15 usou o fixture corrigido e foi preparado com WSB SHA-256
 runner (`78D5A49E477D5AA44BE1F33FB7F40DA4661C890ED8BEA3DE0AEF7E35629C2624`) e
 wrapper SHA-256 `5041552F9DE72D0F1AB9C79B10D3E7E53EA92AE619CEFD4285CD3A580EA8D8F5`.
 O Hub iniciou dentro da VM e os marcadores do navegador foram produzidos, mas
-nenhuma confirmação manual/gatilho chegou em `1800` segundos. O runner encerrou
-com código `124`, sem iniciar Unity, sem log de licensing e sem qualquer claim
-de shutdown limpo do Editor. A solicitação de shutdown permaneceu restrita à
-Sandbox.
+nenhuma confirmação manual/gatilho chegou em `1800` segundos. A mesma espera
+controlada foi observada novamente e também terminou sem gatilho. O runner
+encerrou cada espera com código `124`, sem iniciar Unity, sem log de licensing e
+sem qualquer claim de shutdown limpo do Editor. A solicitação de shutdown
+permaneceu restrita à Sandbox.
 
-O resultado r15 está em
-`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r15/sandbox-result.json`
-(SHA-256 `A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276`);
-seu bruto local é `output-r15/sandbox-result.raw.json` com o mesmo SHA-256.
-Esse timeout não substitui a execução r14 e não prova o comportamento do fixture
-corrigido. Após nova confirmação explícita do proprietário de que a instalação
-terminou, a próxima execução deverá ser um novo ciclo descartável, sem reutilizar
-o r15 terminal.
+O primeiro resultado r15 está preservado no bruto local
+`output-r15/sandbox-result.raw.json` com SHA-256
+`A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276`. A saída
+mais recente, no mesmo caminho controlado
+`output-r15/sandbox-result.json`, tem SHA-256
+`C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D` e registra
+`roaming_unity_directory_present=true` e `33` processos correspondentes antes
+do shutdown da Sandbox. Esses campos são preservados como diagnóstico do
+harness; não comprovam instalação concluída, autenticação, execução Unity ou
+shutdown limpo. O timeout r15 não substitui a execução r14 nem prova o
+comportamento do fixture corrigido. Após nova confirmação explícita do
+proprietário de que a instalação terminou, a próxima execução deverá ser um
+novo ciclo descartável, sem reutilizar o r15.
 
 ## Evidências e hashes
 
 O resultado completo das tentativas r1–r15, incluindo os hashes da configuração
 e do runner, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `3F0797AF5057C5C980276092E78032C79F677D64613F9683BB883995AAA710F3`).
+(SHA-256 `4B6FC18F3BA36C26CF9A135DA2CA75C7BE6E7EC0A6475F7E00C5B38EC4CA0EA8`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`

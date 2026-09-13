@@ -457,8 +457,10 @@
       "id": "r15",
       "output_dir": "output-r15",
       "status": "TIMEOUT_WAITING_FOR_MANUAL_AUTHENTICATION",
-      "result_sha256": "A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276",
+      "result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
+      "initial_result_sha256": "A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276",
       "raw_result_sha256": "A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276",
+      "raw_result_path": "output-r15/sandbox-result.raw.json",
       "shutdown_marker_sha256": "0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D",
       "runner_sha256": "78D5A49E477D5AA44BE1F33FB7F40DA4661C890ED8BEA3DE0AEF7E35629C2624",
       "config_sha256": "3042ACC8577DD67C2FC5EEF52035A72CDFA38DA852C9C398EDDA00ED9B4EC80F",
@@ -497,7 +499,11 @@
         "status": "PASS",
         "scope": "disposable sandbox only"
       },
-      "observed": "The corrected fixture and r15 harness were prepared and the Hub started inside the disposable Sandbox, but no manual authentication confirmation/gate trigger arrived within 1800 seconds. Unity was not started and no licensing conclusion is made."
+      "followup_observed_at": "2026-09-13T19:29:59-03:00",
+      "followup_result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
+      "followup_roaming_unity_directory_present": true,
+      "followup_remaining_unity_process_count_before_sandbox_shutdown": 33,
+      "observed": "The corrected fixture and r15 harness were prepared and the Hub started inside the disposable Sandbox. The first wait ended without a manual authentication confirmation/gate trigger; the same controlled wait was observed again and also ended at 1800 seconds without a trigger. Unity was not started and no licensing conclusion is made. The second result recorded roaming Unity directory presence and 33 matching processes before sandbox shutdown; these are preserved as harness diagnostics, not as proof of Editor installation or clean Unity shutdown."
     }
     ],
     "manual_handoff_r14": {
@@ -546,8 +552,14 @@
       "trigger_present": false,
       "activation_wait_seconds": 1800,
       "host_unity_process_count_observed": 0,
-      "result_sha256": "A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276",
-      "classification": "Handoff preparation and controlled timeout proved; no authentication, Unity execution, licensing, or clean Unity shutdown claim is made."
+      "result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
+      "initial_result_sha256": "A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276",
+      "raw_result_sha256": "A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276",
+      "followup_observed_at": "2026-09-13T19:29:59-03:00",
+      "followup_result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
+      "followup_roaming_unity_directory_present": true,
+      "followup_remaining_unity_process_count_before_sandbox_shutdown": 33,
+      "classification": "Two controlled waits ended at 1800 seconds without the manual authentication/gate trigger; no authentication, Unity execution, licensing, or clean Unity shutdown claim is made. The second output's roaming-directory/process-count differences are preserved as harness diagnostics only."
     },
     "latest_harness": {
     "sandbox_runner_sha256": "78D5A49E477D5AA44BE1F33FB7F40DA4661C890ED8BEA3DE0AEF7E35629C2624",
@@ -563,6 +575,7 @@
     "license_source_used_in_r14": false,
     "latest_executed_attempt_id": "r14",
       "latest_prepared_attempt_id": "r15",
+      "r15_latest_result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
       "r15_fixture_runtime_asmdef_sha256": "2C8230059CD6AD18881A2FD6DB2F859264D16BAE394DBC50BF49D117CA45F35A",
       "r15_fixture_package_json_sha256": "26FDCDD428068DF4F149798FA7B01DC6E26E22723ABD284F25C8386580F6352B",
       "r15_fixture_source_commit": "f61e185a978561dbf5d213032c120ba34f7bba81",

@@ -17,7 +17,7 @@
                                  "local_unity_license_extensions":  [
                                                                         ".xml"
                                                                     ],
-                                 "roaming_unity_directory_present":  false,
+                                 "roaming_unity_directory_present":  true,
                                  "roaming_unity_file_count":  0,
                                  "content_collected":  false,
                                  "note":  "Only presence, counts, and extensions are recorded; activation contents remain inside the disposable sandbox."
@@ -26,8 +26,8 @@
     "process_exit_code":  124,
     "timed_out":  true,
     "start_error":  "manual Hub login trigger was not received before the controlled wait limit",
-    "started_utc":  "2026-09-13T21:22:33.4551137Z",
-    "ended_utc":  "2026-09-13T21:52:43.1969234Z",
+    "started_utc":  "2026-09-13T21:59:49.4845483Z",
+    "ended_utc":  "2026-09-13T22:29:59.7799043Z",
     "report_present":  false,
     "success_marker":  false,
     "failure_marker":  false,
@@ -47,6 +47,6 @@
                              "abort_threads":  false,
                              "memory_leaks":  false
                          },
-    "remaining_unity_process_count_before_sandbox_shutdown":  8,
+    "remaining_unity_process_count_before_sandbox_shutdown":  33,
     "shutdown_request":  "sandbox-only: shutdown.exe /s /t 0 /f"
 }
