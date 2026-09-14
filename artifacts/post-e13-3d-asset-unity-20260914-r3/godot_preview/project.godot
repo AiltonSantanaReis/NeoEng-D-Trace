@@ -1,0 +1,14 @@
+[application]
+config/name="NeoEng Eclipse Warden Preview"
+run/main_scene="res://main.tscn"
+
+[display]
+window/size/viewport_width=1152
+window/size/viewport_height=768
+window/size/window_width_override=1152
+window/size/window_height_override=768
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.015, 0.024, 0.045, 1)

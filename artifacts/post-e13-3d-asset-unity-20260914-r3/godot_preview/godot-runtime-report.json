@@ -1,0 +1,18 @@
+{
+	"animation_players": 1,
+	"captures": [
+		"preview_front.png",
+		"preview_three_quarter.png",
+		"preview_side.png",
+		"preview_idle.png"
+	],
+	"engine": "Godot",
+	"engine_version": "4.7-stable (official)",
+	"errors": [],
+	"imported_model_name": "EclipseWardenImportedGLB",
+	"mesh_instance_count": 23,
+	"model_path": "res://eclipse_warden.glb",
+	"status": "PASS",
+	"surface_count": 23,
+	"warnings": []
+}
