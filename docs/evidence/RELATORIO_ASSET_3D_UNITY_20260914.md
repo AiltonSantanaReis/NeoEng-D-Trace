@@ -73,7 +73,7 @@ O log nativo do Godot também mostrou o warning não bloqueante NVAPI_EXECUTABLE
 
 ## Correção aplicada
 
-A primeira saída, em artifacts/post-e13-3d-asset-unity-20260914, foi preservada como histórico. O importador Godot rejeitou o GLB porque imagens embarcadas com bufferView não tinham mimeType. O gerador foi corrigido para declarar image/png; r2 comprovou a correção e r3 foi regenerada a partir do commit com a ferramenta de limpeza de cache. A importação e o runtime real da r3 passaram.
+A primeira saída, em artifacts/post-e13-3d-asset-unity-20260914, foi preservada como histórico. O importador Godot rejeitou o GLB porque imagens embarcadas com bufferView não tinham mimeType. O gerador foi corrigido para declarar image/png; r2 comprovou a correção e r3 foi gerada com proveniência no commit 4bef2a4. A limpeza de cache foi consolidada depois no commit 01a3dc1. A importação e o runtime real da r3 passaram.
 
 Os sidecars .godot, .import, .uid e PNGs extraídos automaticamente pelo importador foram removidos somente do diretório nomeado de preview r3. O GLB embarca suas imagens e as texturas abertas permanecem na pasta principal do asset.
 
@@ -90,6 +90,20 @@ O asset demonstra o fluxo técnico solicitado, mas não deve ser classificado co
 - sem LODs, colisores, sockets, mapas de detalhe, retargeting ou variantes de produção.
 
 Esses itens são melhorias futuras registradas, não falhas escondidas da validação estrutural.
+
+## Build atualizada e probe do binário
+
+A build foi gerada depois das alterações no commit 01a3dc1:
+
+- diretório: release/post-e13-user-asset-build-20260914-r2;
+- proveniência: PASS, source_commit 01a3dc16e23fef1e4c11987f75f237ce8c39c6cf;
+- executável: portable/NeoEng-D-Trace/NeoEng-D-Trace.exe;
+- tamanho: 10.883.963 bytes;
+- SHA-256: 92B3639CCA47243A71E80BF2FC4B3674E73F6B59AE3AF1CE57B202CA485ECB72;
+- smoke oficial: SUCCESS, 11 checks, incluindo cli-version, headless-project, headless-glb, gui-open-close e user-state-directory;
+- probe manual: --version exibiu 0.3.0, --help exibiu o contrato CLI e o processo aceitou CloseMainWindow e encerrou.
+
+O probe manual teve Responding false e título de janela vazio no instante de três segundos; por isso isso fica registrado como observação, não como aprovação de usabilidade. O smoke gui-open-close é evidência de ciclo de abertura/fechamento do harness, não substitui cliques reais do usuário.
 
 ## Unity e usabilidade do editor
 
