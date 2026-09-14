@@ -308,6 +308,9 @@ def test_dialog_reports_unavailable_hub_failed_launch_and_url(
     monkeypatch.setattr(QProcess, "startDetached", lambda *_args: False)
     monkeypatch.setattr(QDesktopServices, "openUrl", lambda _url: False)
     try:
+        missing_hub = tmp_path / "missing" / "Unity Hub.exe"
+        assert not missing_hub.exists()
+        dialog.hub_path.setText(str(missing_hub))
         dialog._open_hub()
         dialog.hub_path.setText(str(hub))
         dialog._open_hub()

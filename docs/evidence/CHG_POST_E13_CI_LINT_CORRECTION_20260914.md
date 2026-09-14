@@ -107,6 +107,16 @@ suíte: o passo de sincronização das dependências terminou com
 preservados como evidência; a correção da asserção não altera o comportamento
 do produto e a nova execução deverá repetir os gates completos.
 
+Na execução `34900838985` (`b8dc409`), Linux passou integralmente. Windows
+chegou a `239/247` arquivos e falhou somente no novo cenário de Hub ausente:
+a descoberta automática encontrou um Hub instalado no runner, portanto a
+mensagem observada foi `Could not open Unity Hub`, não `Unity Hub not found`.
+O teste agora fornece um caminho temporário explicitamente inexistente,
+verificado por `exists()`, antes de tentar abrir o Hub. Isso preserva a
+descoberta real do produto e torna a entrada do teste independente do software
+instalado no runner. A sincronização com `main` incorpora somente o histórico
+do merge #173; o diff de conteúdo staged desse merge foi vazio.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -160,6 +170,15 @@ e dos testes pytest não está disponível neste
 checkout porque `poetry`, Black e pytest não estão instalados. O novo CI deverá
 executar os comandos oficiais nos dois ambientes e será a prova final desta
 mudança; ausência local não será tratada como sucesso.
+
+Atualização da retomada: foi localizado o ambiente existente
+`C:/Users/atnco/Pictures/NeoEng-D-Trace/.venv/Scripts/python.exe`, com Python
+3.11.9, pytest 9.1.1 e PySide6 6.10.1. A execução focada
+`-m pytest tests/test_unity_integration_flow.py` passou os 13 testes em 5,61 s;
+Black e isort também passaram para esse arquivo. Essa evidência é
+`DIAGNOSTIC_ONLY`, anterior ao CI completo, e corrige a limitação de descoberta
+do ambiente relatada acima. Não houve ativação de licença ou abertura real do
+Hub/navegador nessa execução de contratos.
 
 ## Impacto e não regressão
 
