@@ -42,7 +42,7 @@
       "closure_audit": {
       "status": "IN_PROGRESS",
       "evidence": "docs/evidence/AUDITORIA_FECHAMENTO_PENDENCIAS_POS_E13_20260913.md",
-      "evidence_sha256": "FD2BF6FD419900BB4214CE50960C68ED8574C45B7B7DAAC8796383EAE0E1ED8C",
+      "evidence_sha256": "296E26604D401CF086961464FE1EA6D9D60869D6D1CBFA051BB6DE1E8DE29774",
       "entry_head": "1b7fedd0fe4e898c3b240c5767688e142ecd7e49",
       "scope": "Fechamento documental e técnico de symlink controlado, soak de memória/CUDA, CuPy, integridade, preservação e fluxos do editor canônico; os gates de licensing/shutdown do Unity permanecem isolados como bloqueio externo.",
       "owner_decision": "Disponibilizar licença/ativação Unity válida ou fixture autorizada para nova execução controlada; alternativamente aceitar licensing, método do pacote e shutdown limpo como BLOCKED neste ciclo.",
@@ -77,13 +77,13 @@
   },
   "checkout_under_audit": {
     "branch": "Ailton/audit-post-e13-scenario-editor-20260912",
-    "head": "8d531e02ee62ba0089c7ffa9b45f0a857edac6cd",
-    "head_role": "POST_E13_AUDIT_META_OFFICIAL_SUITE_BUILD_AND_DIAGNOSTICS_RECONCILED",
+    "head": "70ea28984f25fc388ddbb70cbfcccf2bd1381a",
+    "head_role": "POST_E13_AUDIT_DOCUMENTATION_RECONCILIATION_BASE_QUALIFIED",
     "product_source_commit": "7f5c0477b3f4594928751aec6b97a4b1e9c0178b",
     "audit_harness_commit": "b20f2f1fa08824e87b8ddb090a893c3d4afb3f7a",
     "documentation_base_head": "9d0dd6e033401e10558985d29946a686857fc878",
     "documentation_head_policy": "O commit que materializa a versão corrente do registro é o HEAD atual do Git; não é duplicado no próprio JSON para evitar autorreferência. Verificar com git rev-parse HEAD. documentation_base_head identifica apenas a base documental usada na auditoria de prontidão.",
-    "tracked_changes_present": true,
+    "tracked_changes_present": false,
     "untracked_artifacts_present": true,
     "legacy_archive": {
       "status": "PASS",
@@ -107,7 +107,7 @@
       "restoration_audit_sha256": "0C9E05251F4F973B04520A1D3A497BDBCBC64EDA12B2BF2CD4FEF17C4E72BE7B",
       "current_evidence_excluded": true
     },
-    "status": "TRACKED_MODIFIED_POST_E13_AUDIT_META_IN_PROGRESS"
+    "status": "TRACKED_CLEAN_POST_E13_AUDIT_META_IN_PROGRESS"
   },
   "gates": {
     "official_suite": {
@@ -121,7 +121,7 @@
       "observation_artifact": "docs/evidence/EVD_POST_E13_SUITE_RECONCILIACAO_20260914.md",
       "historical_failure_artifact": "artifacts/audit-post-e13-doc-reconciliation-20260914/official-junit.xml",
       "final_log": "docs/evidence/EVD_POST_E13_SUITE_RECONCILIACAO_20260914.md",
-      "final_log_sha256": "3052DE0727BC1EAD937DE10AA17CAF27377E409D7A82C7870E173DA78F321BE9",
+      "final_log_sha256": "2F6A9B20D672D129C6016DE6C377E2E7F6722B5089651327C3BCFE4F37CD066E",
       "historical_baseline": {
         "run": "r12",
         "collected": 2636,
