@@ -59,6 +59,20 @@ defeito funcional no gerador do asset. O `parts.append(boot)` estava fora do
 laço bilateral, portanto somente `Boot_R` era publicado e `Boot_L` era
 silenciosamente perdido.
 
+Na execução `34889646296`, os gates de baseline, evidências, lock, qualidade
+estática, tipagem e teste funcional passaram até os gates finais, mas ainda
+houve dois bloqueios independentes. No Linux (`104128799195`), a suíte completa
+passou, porém a política integrada reprovou a cobertura de branches em
+`84.92%`, abaixo do mínimo previamente definido de `85.00%`. No Windows
+(`104128799376`), o executor encerrou `test_post_e13_boundary_contracts.py`
+sem erro e falhou em
+`tests/test_legacy_phase4_contracts.py::`
+`test_phase4_real_segment_timeout_cancels_and_discards_late_result`:
+o teste observou `0` payloads onde esperava `1`. O log oficial identifica uma
+condição de corrida: o worker de timeout curto podia publicar o sinal antes de
+o teste registrar o observador. O prazo não era estendido nem o teste era
+ignorado; a falha ocorreu no ciclo de entrega do resultado terminal.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -75,6 +89,14 @@ silenciosamente perdido.
   cada bota agora ocorre dentro do laço `L/R`, restaurando as duas malhas e o
   contrato de 23 componentes; o teste também fixa explicitamente a presença de
   `Boot_L` e `Boot_R`.
+- Início adiado por um turno do Qt para o worker de timeout curto, permitindo
+  que consumidores legítimos registrem seus observadores antes da emissão do
+  payload terminal; o deadline continua ancorado no instante de criação do
+  worker e não é ampliado.
+- Ampliação dos contratos de preflight do Unity para cobrir rejeição de caminho
+  acima do limite, executável inválido e deduplicação de candidatos vindos do
+  ambiente e do `PATH`; esses testes exercitam comportamento defensivo real e
+  não alteram a política de cobertura.
 - Remoção somente do import `os` comprovadamente não utilizado.
 - Renomeação de um identificador de teste excessivamente longo, sem mudar o
   cenário, as asserções ou o contrato verificado.
@@ -103,12 +125,14 @@ mudança; ausência local não será tratada como sucesso.
 
 ## Impacto e não regressão
 
-A mudança combina correções de qualidade estática com uma correção funcional
-localizada no gerador de asset de referência. Ela não altera schemas,
-persistência, renderer, UI, seleção oficial de testes ou limites de cobertura;
-apenas deixa de descartar a bota esquerda que já fazia parte do contrato
-esperado. O baseline será regenerado a partir do conteúdo staged e verificado
-contra blobs Git para incluir os hashes dos arquivos corrigidos.
+A mudança combina correções de qualidade estática com correções funcionais
+localizadas no gerador de asset de referência, no ciclo de entrega assíncrona
+do laço magnético e nos contratos defensivos de preflight do Unity. Ela não
+altera schemas, persistência, renderer, UI, seleção oficial de testes ou limites
+de cobertura; restaura a bota esquerda já prevista, elimina a corrida de
+observadores no timeout e aumenta a eficácia dos testes de descoberta. O
+baseline será regenerado a partir do conteúdo staged e verificado contra blobs
+Git para incluir os hashes dos arquivos corrigidos.
 
 ## Dependências documentais
 

@@ -2265,8 +2265,8 @@
       "size": 2813
     },
     "docs/evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md": {
-      "sha256": "589f471109b373280fb07a043c90da4aa99c7393b7038e312912353a79a39712",
-      "size": 6049
+      "sha256": "80a958ed2670cd64659bf5f250e727ddcce2d8ca107ff80b0c64fbbe64ac80fe",
+      "size": 7644
     },
     "docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md": {
       "sha256": "2d6463f80dfdf923365b79c7b4f2d59e2aad388cf25f36da36e2974025903441",
@@ -14153,8 +14153,8 @@
       "size": 5297
     },
     "src/tools/magnetic_lasso.py": {
-      "sha256": "b0e54fc64888b8575cf40fce1e1331591fc7414242cad656250549ae71ba604d",
-      "size": 62738
+      "sha256": "846ef1b0d2c00b48e334da072865727f6f3f63839c263ed89328d3e919d425ee",
+      "size": 63061
     },
     "src/tools/magnetic_lasso_engine.py": {
       "sha256": "f82dc9775cc55c3d7b3e8e92d3c5b95e5ec7e0dea9868e2198f211fcc2d92ac3",
@@ -15445,8 +15445,8 @@
       "size": 1401
     },
     "tests/test_unity_integration_flow.py": {
-      "sha256": "b36fcb1f9122ae5e30257418d3c8a3468c483925147dbdda879744e8dd2b68bb",
-      "size": 8086
+      "sha256": "d107c1aa57a639f15237d8b9cbef4768169f0454860a57557794a2e28ad3f761",
+      "size": 9177
     },
     "tests/test_unity_package_scaffold.py": {
       "sha256": "71710d511844037e3437ffad159735c64b19e8a21535b5f51e970aeceaaae12a",

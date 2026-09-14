@@ -9,6 +9,7 @@ from PySide6.QtWidgets import QApplication, QDialog
 
 from scripts.audit_ui_capture import AuditConfig
 from src.core.config import ConfigManager
+from src.core.operational_limits import MAX_CONFIG_PATH_LENGTH
 from src.core.unity_integration import (
     build_unity_integration_snapshot,
     discover_unity_editor_executables,
@@ -82,6 +83,13 @@ def test_external_path_normalization_is_bounded_and_does_not_read_content(
     assert normalize_external_path("   ") is None
     with pytest.raises(ValueError, match="NUL"):
         normalize_external_path("bad\x00path")
+    with pytest.raises(ValueError, match="length limit"):
+        normalize_external_path("x" * (MAX_CONFIG_PATH_LENGTH + 1))
+    assert inspect_executable(None, "hub") == "not_configured"
+
+    invalid = tmp_path / "not-unity.exe"
+    invalid.write_bytes(b"not-a-unity-executable")
+    assert inspect_executable(invalid, "hub") == "invalid"
 
 
 def test_unity_discovery_finds_hub_and_latest_editor_without_launching(
@@ -99,6 +107,29 @@ def test_unity_discovery_finds_hub_and_latest_editor_without_launching(
     assert snapshot.editor_path == editor.resolve()
     assert snapshot.hub_state == "available"
     assert snapshot.editor_state == "available"
+
+
+def test_unity_hub_discovery_deduplicates_environment_and_path_candidates(
+    tmp_path: Path,
+    monkeypatch,
+):
+    program_files = tmp_path / "Program Files"
+    hub = program_files / "Unity Hub" / "Unity Hub.exe"
+    hub.parent.mkdir(parents=True)
+    hub.write_bytes(b"hub-placeholder")
+    environment = {
+        "PROGRAMFILES": str(program_files),
+        "ProgramW6432": str(program_files),
+        "PROGRAMFILES(X86)": "",
+        "LOCALAPPDATA": "",
+    }
+
+    monkeypatch.setattr(
+        "src.core.unity_integration.shutil.which",
+        lambda name: str(hub) if name == "Unity Hub.exe" else None,
+    )
+
+    assert discover_unity_hub_executables(environment) == (hub,)
 
 
 def test_explicit_missing_path_is_visible_as_missing_not_silently_replaced(
