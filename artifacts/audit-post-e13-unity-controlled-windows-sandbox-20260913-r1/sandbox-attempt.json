@@ -49,8 +49,8 @@
   },
   "runtime_requalification": {
     "status": "BLOCKED",
-    "latest_attempt_id": "r14",
-    "latest_functional_requalification_id": "r13",
+    "latest_attempt_id": "r16",
+    "latest_functional_requalification_id": "r16",
     "latest_prepared_attempt_id": "r16",
     "attempts": [
       {
@@ -506,6 +506,69 @@
       "followup_roaming_unity_directory_present": true,
       "followup_remaining_unity_process_count_before_sandbox_shutdown": 33,
       "observed": "The corrected fixture and r15 harness were prepared and the Hub started inside the disposable Sandbox. The first wait ended without a manual authentication confirmation/gate trigger; the same controlled wait was observed again and also ended at 1800 seconds without a trigger. Unity was not started and no licensing conclusion is made. The second result recorded roaming Unity directory presence and 33 matching processes before sandbox shutdown; these are preserved as harness diagnostics, not as proof of Editor installation or clean Unity shutdown."
+    },
+    {
+      "id": "r16",
+      "output_dir": "output-r16-real-20260914-0122",
+      "status": "PASS_PARTIAL",
+      "result_sha256": "00F5B3997331E957674B43A05D0A9E9855BF80696D7DAE1A7D32AB2931D084DB",
+      "source_result_sha256": "ECD0247241D50CCB0964E4429ECAD6768EAA88EA83A9AEFA9EE563B87357BA00",
+      "raw_log_sha256": "B519EF5C46E20F94D2088F99730CFD47039C4E0684BA588DD0488D6329581CC5",
+      "sanitized_log_sha256": "1AE9D29017AC7BF3AAB978B22F48460D7623A000115D1298275306C84A8FC4E2",
+      "package_report_sha256": "9D4DE5C4459A88BAD7CDD65A9307862B13F44205CC29FAB14CE372D058FBF508",
+      "editor_selection_sha256": "49587944758A218FE188A17631C75FA845F35F614C4915C615CC5A1B4F1420A6",
+      "source_editor_selection_sha256": "7EEB1C83D082BA934825D2426F9EAC888A4F762EAFD4590D4C4ED9379E260C81",
+      "trigger_sha256": "6BE88F3D8EF163DA43243E4EE8E40BB22ED650B8B2F759B00E618AD2F6AA8CC6",
+      "shutdown_marker_sha256": "0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D",
+      "runner_sha256": "8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E",
+      "config_sha256": "3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6",
+      "browser_wrapper_sha256": "B0C3A11DA6D9282307AA5A3C9EB7270CB73BBC98821AB9E1A113E5049FCF3EBD",
+      "networking": "enabled",
+      "networking_enabled_in_config": true,
+      "networking_recorded_in_result": true,
+      "static_validation_status": "PASS",
+      "harness_metadata_status": "PASS",
+      "trigger_observed": true,
+      "activation_wait_seconds": 2466,
+      "activation_wait_limit_seconds": null,
+      "automatic_timeout": false,
+      "automatic_shutdown_before_trigger": false,
+      "unity_process_started": true,
+      "unity_exit_code": 0,
+      "timed_out": false,
+      "package_report_present": true,
+      "package_method_status": "PASS",
+      "package_report_success": true,
+      "licensing": {
+        "module_seen": true,
+        "license_client_seen": true,
+        "code_10": true,
+        "access_token_unavailable": true,
+        "code_404_entitlement": false,
+        "no_valid_editor_license": false,
+        "entitlement_group_resolved": true,
+        "product": "Unity Personal",
+        "expiration": "Unlimited"
+      },
+      "warnings_preserved": ["SUCCEEDED(hr)", "wmiOpened"],
+      "errors_preserved": ["Failed to open WMI", "Curl error 42: Callback aborted"],
+      "unity_shutdown": {
+        "batchmode_quit_signal": true,
+        "clean_return_code_zero": true,
+        "exited_batchmode": true,
+        "abort_threads": false,
+        "memory_leaks": false,
+        "remaining_unity_process_count_before_sandbox_shutdown": 29,
+        "status": "PARTIAL",
+        "reason": "Unity exited batchmode successfully with return code 0, but the runner observed 29 matching Unity/Hub/PackageManager/LicensingClient process entries before Sandbox shutdown and no exact 'Shut down.' signal"
+      },
+      "sandbox_shutdown": {
+        "request_marker_present": true,
+        "processes_terminal_after_poll": true,
+        "status": "PASS",
+        "scope": "disposable sandbox only"
+      },
+      "observed": "Real Unity 6000.5.7f1 run inside the disposable Sandbox reached the corrected package method and produced Success=true. Unity Personal entitlement resolved as Unlimited; Code 10 and unavailable access token remained preserved. Batchmode quit/return code 0 completed; full clean Unity shutdown remains unproven because matching process entries remained at the pre-Sandbox-shutdown snapshot. The 6000.6 installation was not visible in C:\\UnityInstall and was not attributed to this run."
     }
     ],
     "manual_handoff_r14": {
@@ -591,7 +654,7 @@
       "classification": "Latest controlled repeat confirmed the r15 runner's deterministic timeout and old-flow shutdown request; the raw file in the repeat directory belongs to the first r15 wait and is explicitly not paired."
     },
     "manual_handoff_r16": {
-      "status": "PREPARATORY_ONLY",
+      "status": "EXECUTED_RUNTIME_PARTIAL",
       "output_dir": "output-r16",
       "wsb_path": "unity-controlled-r16.wsb",
       "wsb_sha256": "3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6",
@@ -601,10 +664,25 @@
       "automatic_wait_timeout": false,
       "automatic_shutdown_before_trigger": false,
       "persistent_install_mount": "unity-install-r16 -> C:\\UnityInstall (read-write inside disposable Sandbox only)",
-      "trigger_present": false,
-      "test_started_marker": false,
-      "result_present": false,
-      "classification": "New disposable harness prepared; no Sandbox or Unity process has been started by r16."
+      "trigger_present": true,
+      "test_started_marker": true,
+      "result_present": true,
+      "result_path": "output-r16-real-20260914-0122/sandbox-result.json",
+      "result_sha256": "00F5B3997331E957674B43A05D0A9E9855BF80696D7DAE1A7D32AB2931D084DB",
+      "source_result_sha256": "ECD0247241D50CCB0964E4429ECAD6768EAA88EA83A9AEFA9EE563B87357BA00",
+      "package_report_sha256": "9D4DE5C4459A88BAD7CDD65A9307862B13F44205CC29FAB14CE372D058FBF508",
+      "editor_selection_sha256": "49587944758A218FE188A17631C75FA845F35F614C4915C615CC5A1B4F1420A6",
+      "source_editor_selection_sha256": "7EEB1C83D082BA934825D2426F9EAC888A4F762EAFD4590D4C4ED9379E260C81",
+      "trigger_sha256": "6BE88F3D8EF163DA43243E4EE8E40BB22ED650B8B2F759B00E618AD2F6AA8CC6",
+      "shutdown_marker_present": true,
+      "editor_version": "6000.5.7f1",
+      "editor_selection": "mapped_fallback",
+      "persistent_install_observed": false,
+      "package_method_status": "PASS",
+      "unity_exit_code": 0,
+      "unity_shutdown_status": "PARTIAL",
+      "sandbox_shutdown_status": "PASS_SANDBOX_ONLY",
+      "classification": "Manual Hub login/trigger and real Unity execution completed inside the disposable Sandbox. The corrected package method returned Success=true and exit code 0; licensing retained Code 10/access-token diagnostics and the clean Unity shutdown gate remains partial because 29 matching process entries were present before Sandbox shutdown."
     },
     "latest_prepared_harness": {
       "sandbox_runner_sha256": "8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E",
@@ -631,9 +709,9 @@
     "license_source_used_in_r12": true,
     "license_source_used_in_r13": true,
     "license_source_used_in_r14": false,
-      "latest_executed_attempt_id": "r14",
+      "latest_executed_attempt_id": "r16",
       "latest_prepared_attempt_id": "r16",
-      "latest_prepared_harness_status": "PREPARATORY_ONLY",
+      "latest_prepared_harness_status": "EXECUTED_RUNTIME_PARTIAL",
       "latest_prepared_harness_runner_sha256": "8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E",
       "latest_prepared_harness_config_sha256": "3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6",
       "r15_latest_result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
@@ -641,6 +719,20 @@
       "r15_fixture_package_json_sha256": "26FDCDD428068DF4F149798FA7B01DC6E26E22723ABD284F25C8386580F6352B",
       "r15_fixture_source_commit": "f61e185a978561dbf5d213032c120ba34f7bba81",
       "r15_preparation_config_sha256": "3042ACC8577DD67C2FC5EEF52035A72CDFA38DA852C9C398EDDA00ED9B4EC80F",
+      "r16_result_sha256": "00F5B3997331E957674B43A05D0A9E9855BF80696D7DAE1A7D32AB2931D084DB",
+      "r16_source_result_sha256": "ECD0247241D50CCB0964E4429ECAD6768EAA88EA83A9AEFA9EE563B87357BA00",
+      "r16_raw_log_sha256": "B519EF5C46E20F94D2088F99730CFD47039C4E0684BA588DD0488D6329581CC5",
+      "r16_sanitized_log_sha256": "1AE9D29017AC7BF3AAB978B22F48460D7623A000115D1298275306C84A8FC4E2",
+      "r16_package_report_sha256": "9D4DE5C4459A88BAD7CDD65A9307862B13F44205CC29FAB14CE372D058FBF508",
+      "r16_editor_selection_sha256": "49587944758A218FE188A17631C75FA845F35F614C4915C615CC5A1B4F1420A6",
+      "r16_source_editor_selection_sha256": "7EEB1C83D082BA934825D2426F9EAC888A4F762EAFD4590D4C4ED9379E260C81",
+      "r16_trigger_sha256": "6BE88F3D8EF163DA43243E4EE8E40BB22ED650B8B2F759B00E618AD2F6AA8CC6",
+      "r16_package_method_status": "PASS",
+      "r16_licensing_status": "PARTIAL_CODE10_ACCESS_TOKEN_UNAVAILABLE_ENTITLEMENT_RESOLVED",
+      "r16_unity_shutdown_status": "BLOCKED_PARTIAL",
+      "r16_sandbox_shutdown_status": "PASS_SANDBOX_ONLY",
+      "r16_editor_version": "6000.5.7f1",
+      "r16_persistent_install_observed": false,
       "runtime_overlay": {
         "msvcp100.dll": "934D882EFD3C0F3F1EFBC238EF87708F3879F5BB456D30AF62F3368D58B6AA4C",
         "msvcr100.dll": "AE3CB6C6AFBA9A4AA5C85F66023C35338CA579B30326DD02918F9D55259503D5",
@@ -650,7 +742,7 @@
         "vcruntime140_1.dll": "A7146C08F89FE5B04541AB507CDB59FF7B44534D4BA3C668A426C6450A03434E"
       }
     },
-    "reexecution_condition": "The r16 harness is prepared but not executed. The owner must complete the Unity Editor installation inside the Sandbox, preferably with Hub targeting C:\\UnityInstall, and then explicitly confirm readiness. Only after that confirmation may the manual handoff/login be observed and the exact run-test.trigger be created. The material package-contract correction for ImageConversion/Animation justifies requalification of the corrected fixture; a valid licensing/activation state is still required to complete the package method and clean Unity shutdown. r14 remains the latest real Unity execution and stopped at compilation; all r15 waits remain non-functional evidence. Do not repeat r9/r10/r12/r13 without a relevant change and do not rerun symlink or host shutdown tests."
+    "reexecution_condition": "O r16 foi executado após a confirmação explícita do proprietário: o método corrigido do pacote passou e o Unity saiu do batchmode com código 0 dentro da Sandbox. O resultado ainda não encerra licensing/shutdown limpos: Code 10 e token indisponível foram preservados, não houve sinal exato 'Shut down.' e 29 entradas de processos Unity/Hub/PackageManager/LicensingClient permaneceram no snapshot anterior ao shutdown da Sandbox. A instalação Unity 6000.6 não foi observada no mount persistente C:\\UnityInstall; o Editor selecionado foi o fallback 6000.5.7f1 e não se atribui a ele a instalação 6000.6. Um novo ciclo somente é justificável se for necessário qualificar 6000.6 especificamente, resolver licensing/Code10 ou comprovar shutdown limpo com mudança de ambiente/harness/licença; manter login manual e Sandbox descartável. Não repetir r9/r10/r12/r13 sem mudança relevante e não rerun symlink ou shutdown do host."
   },
   "alternative_environment_probe": {
     "docker_server": "29.5.3",
@@ -664,12 +756,12 @@
     "conclusion": "No authorized Windows runtime alternative is available on this host; Docker Linux cannot execute the Windows Unity editor."
   },
   "classification": {
-    "licensing": "BLOCKED",
+    "licensing": "BLOCKED_PARTIAL",
     "licensing_observed_failure": "FAIL",
-    "unity_shutdown": "BLOCKED",
+    "unity_shutdown": "BLOCKED_PARTIAL",
     "sandbox_shutdown": "PASS",
-    "native_unity_run": "PASS_COMPILATION_REACHED",
-    "package_method": "BLOCKED_COMPILATION_R14_FIX_APPLIED_NOT_VALIDATED",
-    "next_action": "Wait for explicit owner confirmation that Unity Editor installation is complete; then prepare a new disposable r16 cycle, wait for manual Hub handoff/login, create the controlled trigger only after confirmation, and validate the corrected package modules before licensing/package-method/clean-shutdown conclusions. Do not execute Unity or dangerous tests natively on the host."
+    "native_unity_run": "PASS_PACKAGE_METHOD",
+    "package_method": "PASS",
+    "next_action": "Preserve r16 as the latest real package-method evidence. Keep licensing and clean Unity shutdown as BLOCKED_PARTIAL; only run another disposable Sandbox cycle if the owner needs a 6000.6-specific qualification, a licensing/Code10 requalification or a clean-shutdown proof after a relevant change. Do not execute Unity or dangerous tests natively on the host."
   }
 }

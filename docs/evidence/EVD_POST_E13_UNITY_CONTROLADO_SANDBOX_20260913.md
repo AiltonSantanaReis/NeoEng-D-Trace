@@ -6,6 +6,7 @@
 **Requisito:** `REQ-POST-E13-UNITY-LICENSING-SHUTDOWN-20260913`
 **Decisão habilitadora:** `DECISAO-POST-E13-LIMITE-PERFORMANCE-SOAK-CONTROLADO-20260913`
 **Commit auditado:** `adc4db85ffc1c6dc1c5cfb0331c97043423600d0`
+**Execução r16 registrada após:** `c59a528898bb4d84ef863dcac1410c9bdeef9740`
 
 ## Escopo
 
@@ -40,7 +41,7 @@ encerrar processos ou solicitar shutdown do sistema para este ensaio.
 | Versão WindowsSandbox.exe | `10.0.26100.8875` |
 | SHA-256 WindowsSandbox.exe | `7BB5667331572C8A725A3A799AE7DED2912648B4F6EB7380FB51864C804C3E36` |
 | Manifesto do pacote na fixture | `D267EBDDBDE32F78C146C194FCC083F2A36457EAEB73A6D3593F2CE28CC21F25` |
-| Execução real Unity | comprovada no r14: `process_started=true`; o Hub foi autenticado manualmente e o Editor alcançou a compilação do projeto; a execução terminou com erro de compilação |
+| Execução real Unity | comprovada no r16: `process_started=true`; o Hub foi autenticado manualmente, o Editor alcançou o método corrigido do pacote e produziu `Success=true`; o processo saiu com código `0`, com licensing/shutdown limpos ainda parciais |
 
 ## Histórico da requalificação controlada
 
@@ -66,6 +67,7 @@ foi sobrescrita.
 | r15 | `TIMEOUT` | fixture corrigida preparada; Hub iniciou, mas nenhum gatilho de autenticação foi recebido em 1800 s; Unity não iniciou e a Sandbox encerrou de forma controlada |
 | r15 repetição de referência | `TIMEOUT` | a saída do follow-up observado às 19:29 foi preservada separadamente em `output-r15-repeat-20260913-1929/sandbox-result.json` (`C5CDE...`); continua sem Unity/licensing |
 | r15 repetição mais recente | `TIMEOUT` | a saída observada às 20:37 foi preservada em `output-r15-repeat-20260913-2037/sandbox-result.json` (`E7CD...`); o runner atingiu 1.800 s e pediu shutdown |
+| r16 | `PASS_PARTIAL` | confirmação manual recebida; Unity real `6000.5.7f1` executou dentro da Sandbox, o `package-report.json` retornou `Success=true` e o processo saiu `0`; `Code 10`, token indisponível, warnings WMI/erro Curl e evidência parcial de shutdown foram preservados |
 
 ## Execução real r8
 
@@ -356,13 +358,54 @@ O WSB adiciona o mount dedicado `unity-install-r16` → `C:\UnityInstall` com
 escrita permitida somente no ambiente controlado. Assim, o usuário pode apontar
 o destino do Editor no Hub para `C:\UnityInstall` e não perder a instalação por
 causa do descarte da VM. O Editor conhecido `6000.5.7f1` continua montado
-read-only em `C:\Unity\Editor` como fallback. O r16 ainda é
-`PREPARATORY_ONLY`: nenhum Unity foi iniciado e nenhuma conclusão de licensing,
-package report ou shutdown limpo é atribuída a ele.
+read-only em `C:\Unity\Editor` como fallback. O r16 foi executado após o
+proprietário confirmar que a instalação estava concluída; o resultado real está
+documentado na seção seguinte.
 
 Hashes da preparação: runner `8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E`,
 wrapper `B0C3A11DA6D9282307AA5A3C9EB7270CB73BBC98821AB9E1A113E5049FCF3EBD`,
 WSB `3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6`.
+
+## Execução real r16 — pacote corrigido e gates parciais
+
+O runner r16 permaneceu vivo por `2466` segundos sem timeout automático e só
+prosseguiu depois do gatilho manual
+`MANUAL_HUB_LOGIN_CONFIRMED_BY_USER=true`. O marcador de início foi produzido e
+o Editor selecionado foi o fallback conhecido `6000.5.7f1`, porque o inventário
+não encontrou um Editor instalado no mount persistente `C:\UnityInstall`. A
+instalação `6000.6` observada na interface do Hub não foi atribuída a este teste.
+
+Resultado funcional objetivo:
+
+- `process_started=true`, `timed_out=false`, `process_exit_code=0`;
+- `package-report.json` presente, com pacote `com.neoeng.dtrace`, versão `0.3.0`,
+  `SourcePolicy=source-only` e todos os sete checks em `Success=true`;
+- o contrato corrigido dos módulos `ImageConversion` e `Animation` foi aceito;
+  não reapareceram os cinco erros de compilação que bloquearam o r14;
+- `Unity Personal` foi resolvido com expiração `Unlimited`; ainda foram
+  preservados `Code 10` e token de acesso indisponível. Não houve `Code 404` nem
+  “No valid Unity Editor license found” no r16;
+- warnings `SUCCEEDED(hr)` e `wmiOpened` permaneceram no log. Os erros
+  `Failed to open WMI` e `Curl error 42: Callback aborted` também foram
+  preservados, sem mascaramento;
+- `batchmode quit`, saída de batchmode e retorno zero foram observados; não houve
+  `abort_threads` nem `MemoryLeaks`, mas o sinal textual exato `Shut down.` não
+  apareceu;
+- o runner registrou `29` entradas de processos com nomes compatíveis com
+  `Unity`, `UnityHub`, `UnityPackageManager` ou `UnityLicensingClient` no snapshot
+  anterior ao shutdown da Sandbox. Como os nomes individuais não foram
+  registrados, isso não prova que eram instâncias do Editor; por isso o shutdown
+  limpo do Unity permanece `BLOCKED_PARTIAL`;
+- `sandbox-shutdown-requested.txt` foi produzido somente dentro da VM e os
+  processos da Sandbox terminaram no polling posterior. Esse gate é
+  `PASS_SANDBOX_ONLY`.
+
+O resultado r16, a seleção do Editor, o relatório do pacote e a projeção
+sanitizada do log foram copiados para
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r16-real-20260914-0122/`.
+O log bruto não é versionado porque contém identificadores voláteis; a projeção
+sanitizada passou por varredura de privacidade sem IDs, PIDs, caminhos Windows ou
+endereços IPv4 não redigidos.
 
 O primeiro resultado r15 está preservado no bruto local
 `output-r15/sandbox-result.raw.json` com SHA-256
@@ -387,7 +430,7 @@ O resultado completo das tentativas r1–r15 e a preparação r16, incluindo os
 hashes da configuração efetivamente executada, da cópia sanitizada rastreada e
 dos runners, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `98502F173BE7D809759F61CC39C92F471A30685BEDC3D535A81FB3730E8D0F05`).
+(SHA-256 do blob versionado `E995A3BE73006EF74764483CD4DD186A8E2F1FD900E51FB263B1731B9F82D388`; cópia de trabalho antes da normalização `9E538C41F4BEB444BC7D2F0A345C4BBE10A37B41F085FFE6BFDBAEDD4F6A9339`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`
@@ -454,6 +497,26 @@ O runner r12 tem SHA-256
 configuração WSB r12 tem SHA-256
 `22400D86B5C909D7267FC2B19A99BAEE1B20FD9BD92B78600A2F625D7913C96B`.
 
+O resultado r16 está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r16-real-20260914-0122/sandbox-result.json`
+(SHA-256 do blob versionado `00F5B3997331E957674B43A05D0A9E9855BF80696D7DAE1A7D32AB2931D084DB`; a cópia de execução tinha SHA-256 `ECD0247241D50CCB0964E4429ECAD6768EAA88EA83A9AEFA9EE563B87357BA00`).
+O `package-report.json` tem SHA-256
+`9D4DE5C4459A88BAD7CDD65A9307862B13F44205CC29FAB14CE372D058FBF508`; a
+seleção do Editor tem SHA-256
+`49587944758A218FE188A17631C75FA845F35F614C4915C615CC5A1B4F1420A6` no blob
+versionado (a cópia de execução tinha SHA-256
+`7EEB1C83D082BA934825D2426F9EAC888A4F762EAFD4590D4C4ED9379E260C81`); o
+gatilho manual tem SHA-256
+`6BE88F3D8EF163DA43243E4EE8E40BB22ED650B8B2F759B00E618AD2F6AA8CC6`; e o
+marcador de shutdown da Sandbox tem SHA-256
+`0B278D52B26FFDD0E9C2470BD90F958D93B6C40F6468AF9920FF24B3B23A1D5D`. A
+projeção sanitizada está em
+`artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r16-real-20260914-0122/unity-sanitized.log`
+(SHA-256 `1AE9D29017AC7BF3AAB978B22F48460D7623A000115D1298275306C84A8FC4E2`).
+O log bruto r16 permanece somente local com SHA-256
+`B519EF5C46E20F94D2088F99730CFD47039C4E0684BA588DD0488D6329581CC5`; ele não
+é versionado por conter identificadores voláteis.
+
 ## Alternativas seguras verificadas
 
 Foram feitas apenas sondagens read-only de alternativas. O Docker Desktop ativo
@@ -511,6 +574,7 @@ da rede e do harness, sem copiar credenciais ou tokens.
 | r13 | WSB `Enable` | `PASS`: wrapper e resultado registraram `enabled` | candidato com hash novo foi transportado com coincidência origem/destino; Unity alcançou LicensingClient, encontrou zero entitlements e saiu `198` |
 | r14 | WSB `Enable` | `PASS`: WSB e resultado registraram `enabled` | login manual foi aceito; Unity alcançou a compilação, resolveu `Unity Personal`, preservou `Code 10`/token indisponível e saiu `1` por referências de módulos ausentes |
 | r15 | WSB `Enable` | `PASS`: WSB e resultado registraram `enabled` | timeout `124` sem gatilho manual; Unity não iniciou e nenhum diagnóstico de licensing é atribuído |
+| r16 | WSB `Enable` | `PASS`: WSB e resultado registraram `enabled` | login/gatilho manual aceitos; Unity `6000.5.7f1` validou o pacote (`Success=true`, código `0`), resolveu `Unity Personal`/`Unlimited`, preservou `Code 10`/token indisponível e deixou shutdown limpo apenas parcial |
 
 O hash do candidato foi `C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498`
 nas duas cópias internas. O resultado r11 não é usado para afirmar que a rede
@@ -527,7 +591,9 @@ mantém `licensing=FAIL` observado e `shutdown limpo=BLOCKED`.
 No r14, a autenticação manual permitiu que o Unity resolvesse o grupo `Unity
 Personal` e avançasse até a compilação, mas os erros de módulos do pacote
 impediram o método e o shutdown limpo. O r15 não é uma requalificação funcional:
-expirou no gate manual antes de iniciar Unity.
+expirou no gate manual antes de iniciar Unity. No r16, a correção dos módulos foi
+aceita e o método do pacote passou; os sinais de licensing e o snapshot de
+processos ainda impedem declarar licensing/shutdown limpos.
 
 Os ensaios r9–r14 já foram usados sob autorização explícita e não devem ser
 repetidos sem mudança relevante. A correção declarativa do pacote constitui a
@@ -539,19 +605,19 @@ autoriza qualquer execução nativa no host.
 
 | Gate | Estado | Evidência |
 |---|---|---|
-| carregamento/execução real do Unity | `PASS` | r14 iniciou o Unity x64 em Sandbox com rede habilitada e alcançou a compilação real do projeto; r15 não iniciou por timeout manual |
-| licensing limpo | `BLOCKED / PARTIAL_DIAGNOSTIC` | r13 observou zero entitlements; r14 resolveu `Unity Personal`, mas preservou `Code 10` e token indisponível; não há prova de licensing limpo |
-| método/relatório do pacote | `BLOCKED` | r14 foi interrompido por cinco grupos de erros de compilação; a correção dos módulos está aplicada, mas ainda não validada |
-| shutdown limpo do Unity/`-quit` | `BLOCKED` | r14 saiu com código `1` antes dos sinais de encerramento limpo; r15 não iniciou Unity |
-| shutdown da sandbox descartável | `PASS` | r14 e r15 produziram marcador interno e as VMs terminaram dentro do escopo descartável |
+| carregamento/execução real do Unity | `PASS` | r16 iniciou o Unity x64 em Sandbox com rede habilitada, alcançou o método do pacote e saiu com código `0`; r15 permanece como timeout histórico |
+| licensing limpo | `BLOCKED / PARTIAL_DIAGNOSTIC` | r16 resolveu `Unity Personal`/`Unlimited`, mas preservou `Code 10` e token indisponível; não há prova de licensing limpo |
+| método/relatório do pacote | `PASS` | r16 produziu `package-report.json` com `Success=true`, pacote `com.neoeng.dtrace` `0.3.0` e sete checks aprovados |
+| shutdown limpo do Unity/`-quit` | `BLOCKED_PARTIAL` | r16 observou quit de batchmode, retorno `0` e saída de batchmode, mas não o sinal exato `Shut down.`; havia 29 entradas de processos compatíveis no snapshot anterior à Sandbox terminar |
+| shutdown da sandbox descartável | `PASS` | r16 produziu marcador interno e a VM terminou no polling posterior; o shutdown foi somente da Sandbox descartável |
 | segurança do host | `PASS` | não houve Unity, shutdown ou terminação forçada no host |
 
-O estado atual combina dois bloqueios distintos e não deve ser reduzido a um
-único diagnóstico: r13 manteve o bloqueio de entitlement, enquanto r14 revelou
-uma falha concreta de compilação do contrato do pacote, já corrigida no checkout
-e ainda pendente de requalificação. O `FAIL`/`BLOCKED` de licensing, os erros de
-compilação, o timeout r15 e todos os warnings continuam explícitos; nenhum
-diagnóstico histórico positivo foi reutilizado como prova do fixture corrigido.
+O estado atual combina gates distintos e não deve ser reduzido a um único
+diagnóstico: r13 manteve o bloqueio de entitlement, r14 revelou uma falha
+concreta de compilação do contrato do pacote e r16 comprovou a correção no método
+do pacote. O `BLOCKED_PARTIAL` de licensing/shutdown, o timeout r15, os warnings
+WMI, o erro Curl e o snapshot de processos continuam explícitos; nenhum
+diagnóstico histórico positivo foi reutilizado como prova de shutdown limpo.
 
 ## Auditoria da suíte e evento transitório
 
@@ -568,24 +634,35 @@ diagnóstico histórico positivo foi reutilizado como prova do fixture corrigido
   consolidados em `5bac7e3`, terminou com `2634 passed, 2 skipped, 0 failed`
   em `78,30 s`, sem warnings. A validação focada pós-commit terminou com
   `62/62` e os validadores de continuidade/integridade passaram.
+- A primeira suíte após a inclusão do teste de evidência r16 encontrou dois
+  eventos não determinísticos: `WinError 5` no `os.replace` e um caminho local
+  no XML/log de evidência. O teste atômico passou isoladamente; os artefatos
+  JUnit/log foram sanitizados e o conteúdo funcional foi preservado.
+- A segunda repetição encontrou uma falha transitória no cache de pixmap do
+  preview e o mesmo caminho local no log r13; o preview passou isoladamente e a
+  higiene passou após a sanitização. Nenhuma dessas ocorrências foi mascarada ou
+  convertida em sucesso sem rerun.
+- A suíte final r14, depois das correções documentais e sanitização, terminou
+  com `2639 passed, 2 skipped, 0 failed, 0 warnings` em `77,95 s`. O novo teste
+  do r16 está incluído nessa contagem.
 - Os dois skips restantes são exclusivamente os testes de symlink protegidos
   no host; a cobertura definitiva correspondente foi executada no Windows
   Sandbox (`31/31 passed`) e não deve ser repetida sem alteração relevante.
 
 ## Risco e próxima condição de reexecução
 
-Não alterar o pacote para contornar a licença. A próxima reexecução só é válida
-quando uma licença/ativação Unity válida diferente estiver disponível dentro do
-ambiente descartável, ou quando houver mudança material no contrato do pacote,
-harness, configuração de rede ou versão do Unity. A correção declarativa dos
-módulos `ImageConversion` e `Animation` aplicada após o r14 é uma mudança
-material legítima e justifica um ciclo descartável novo, mas a instalação do
-Editor deve estar concluída e o handoff/login continua manual. Nesse caso,
-registrar novo output e repetir o ciclo completo; não reutilizar o resultado do
-timeout r15. Não repetir r9/r10/r12/r13 sem mudança relevante, nem symlink ou
-shutdown do host; o r11 não precisa ser repetido porque seu metadado inválido já
-foi corrigido e preservado.
+Não alterar o pacote para contornar a licença. O r16 já consumiu a mudança
+material legítima dos módulos `ImageConversion` e `Animation` e validou o método
+do pacote. Uma nova reexecução só é válida se houver necessidade de qualificar a
+versão `6000.6` que não apareceu no mount `C:\UnityInstall`, resolver
+licensing/Code10 ou comprovar shutdown limpo após mudança relevante de licença,
+harness, configuração de rede ou versão do Unity. Nesse caso, registrar novo
+output, manter handoff/login manual e repetir o ciclo completo em Sandbox
+descartável; não reutilizar o resultado do timeout r15. Não repetir r9/r10/r12/r13
+sem mudança relevante, nem symlink ou shutdown do host; o r11 não precisa ser
+repetido porque seu metadado inválido já foi corrigido e preservado.
 
-Até essa condição, o gate Unity permanece `BLOCKED` e a meta pós-E13 continua
-`IN_PROGRESS`; o carregamento e o shutdown da sandbox estão comprovados, mas
-licensing limpo, método do pacote e shutdown limpo do Unity não estão.
+Até essa condição, o gate Unity permanece `BLOCKED_PARTIAL` e a meta pós-E13
+continua `IN_PROGRESS`; o carregamento, o método do pacote e o shutdown da Sandbox
+estão comprovados, mas licensing limpo e shutdown limpo completo do Unity não
+estão.

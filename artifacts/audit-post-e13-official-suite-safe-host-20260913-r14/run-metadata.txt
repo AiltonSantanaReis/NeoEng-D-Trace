@@ -1,0 +1,13 @@
+Official post-E13 suite r14
+source_checkout=build/_merge-main-20260912
+source_branch=Ailton/audit-post-e13-scenario-editor-20260912
+command=.venv\Scripts\python.exe -m pytest -q --tb=short --junitxml=artifacts/audit-post-e13-official-suite-safe-host-20260913-r14/official-junit.xml
+collected=2641
+passed=2639
+skipped=2
+failed=0
+warnings=0
+duration_seconds=77.95
+observed_at=2026-09-14
+host_symlink_or_shutdown_executed=false
+notes=The two skips remain the protected host symlink cases; no Unity, symlink, or shutdown was executed natively on the host. JUnit and log paths were sanitized before promotion to versioned evidence.

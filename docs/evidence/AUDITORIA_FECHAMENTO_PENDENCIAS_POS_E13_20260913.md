@@ -24,7 +24,7 @@ artefatos funcionais foram preservados.
 
 | Frente | Estado corrente | Evidência autorizada | Conclusão |
 |---|---|---|---|
-| Suíte oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-pytest.log` — SHA-256 do blob `9420B5B092E56031DF81DC88281AF36328E4665E2D0D08E3ACAFE9B0F35C442A` (captura Windows `4A85E6AC5E67C7B56AF4C6E951291003462A5FD7A86E1E246E8944955D3D1835`) | `2638 passed`, `2 skipped`, `0 failed`, `0 warnings`; o r12 permanece preservado como baseline histórica e o resultado r13 é a requalificação corrente do checkout |
+| Suíte oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r14/official-pytest.log` — SHA-256 do blob sanitizado `920C7189382C9606AD08A1A36A4000510340A3316E8025D666712338CE1CE222`; JUnit sanitizado `E0E4C70D0A93E1AC45DA5537D423DA15290DDD2F67482E16F156DCF56AB057CB` | `2639 passed`, `2 skipped`, `0 failed`, `0 warnings`; o r13 permanece preservado como baseline anterior e o resultado r14 é a requalificação corrente do checkout |
 | Symlink no host | `SKIP_CONTROLLED_ONLY` | Os dois skips protegidos da suíte oficial; a barreira impede a operação antes do filesystem | Não executar nativamente; o skip é intencional e não é falha mascarada |
 | Symlink em ambiente controlado | `PASS_SANDBOX` | `docs/evidence/EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md` e relatório/JUnit hashados | `31/31` passaram, sem skip, falha ou erro; não repetir sem mudança relevante |
 | Responsividade estrutural em escala | `FAIL / APPROVED_BY_OWNER` | `artifacts/audit-post-e13-performance-20260913-r9/o2-after-isolation-cache-fix-clean.json` — SHA-256 `3F7E6DEE0EC8088C69E452EC089B616AA59BCD0A7DDD7A30A36C3504A57531A8` e decisão formal do limite | p95 residual de `249,28–398,73 ms` em 512 objetos únicos; o limite foi aceito formalmente, sem reduzir threshold e sem declarar 60 FPS |
@@ -34,7 +34,7 @@ artefatos funcionais foram preservados.
 | CuPy | `PASS / NOT_APPLICABLE` para adoção oficial | `docs/evidence/ADR_POST_E13_CUPY_AVALIACAO_20260913.md` e diagnóstico hashado | Suporte opcional e fallback CPU permanecem; não há base causal para incluir CuPy na dependência ou na build portátil |
 | Fluxo nativo do editor canônico e revisão humana | `PASS` no escopo qualificado | `artifacts/audit-post-e13-binary-performance-20260913-r4/actions.json` — SHA-256 `CBBE3711D4D24E336B6E349E7D659C502C9F640C24ED40207FF81FA98387D3AA` e decisão de revisão aprovada | Capturas reais, fluxo nativo e aprovação humana estão registrados; isso não encerra o gate externo do Unity |
 | Arquivo legado e higiene | `PASS` | `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md` e manifesto `archive/legacy/artifacts/post-e13-historical-20260913/archive-manifest.json` — SHA-256 `2E89672381BEF30BFAFD5E773D41FF0BDBDF742F99379B23A9A800CA5529F666` | Movimento reversível; `0` exclusões permanentes; históricos preservados e separados da base ativa |
-| Unity real em Windows Sandbox | `PASS` de inicialização/compilação alcançada / `BLOCKED` de requalificação do pacote, licensing limpo e shutdown limpo | r14 em `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; resultado SHA-256 `A9A7EC3DD68A8E807BACD1500F9DDEA4D91013E842E94649875DB3BBCC6562A7`, log sanitizado SHA-256 `E27EA506CD2AD2F115F7CBE065A9CC8AC7914584BDE1AE50DD65AF99A0751278`; r15/repetições `C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D` e `E7CD1D7AFD9036F031E17B10437CEEEA2DEAED86F413E3B17412084606C6E530`; r16 preparado com runner/WSB hashados | r14 iniciou o Unity dentro da sandbox, alcançou a compilação real e preservou os erros dos módulos `ImageConversion`/`Animation`; a correção declarativa foi aplicada no pacote, mas ainda não foi requalificada. As esperas r15 não iniciaram Unity: o harness expirou em 1800 s e executou shutdown condicionado por seu desenho antigo; a causa foi corrigida no r16, ainda não executado. Nenhum diagnóstico de licensing é atribuído às esperas |
+| Unity real em Windows Sandbox | `PASS` no método do pacote / `BLOCKED_PARTIAL` em licensing e shutdown limpos | r16 em `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; resultado SHA-256 do blob versionado `00F5B3997331E957674B43A05D0A9E9855BF80696D7DAE1A7D32AB2931D084DB` (cópia de execução `ECD0247241D50CCB0964E4429ECAD6768EAA88EA83A9AEFA9EE563B87357BA00`), pacote `9D4DE5C4459A88BAD7CDD65A9307862B13F44205CC29FAB14CE372D058FBF508`, log sanitizado `1AE9D29017AC7BF3AAB978B22F48460D7623A000115D1298275306C84A8FC4E2`; r14/r15 permanecem preservados e o relatório de tentativa versionado tem SHA-256 `E995A3BE73006EF74764483CD4DD186A8E2F1FD900E51FB263B1731B9F82D388` (cópia de trabalho antes da normalização `9E538C41F4BEB444BC7D2F0A345C4BBE10A37B41F085FFE6BFDBAEDD4F6A9339`) | r16 iniciou Unity real `6000.5.7f1`, validou o contrato corrigido e produziu `Success=true` com retorno `0`; `Unity Personal`/`Unlimited` foi resolvido, mas `Code 10`, token indisponível, warnings WMI/erro Curl e 29 entradas de processos compatíveis foram preservados, portanto licensing/shutdown limpos não são declarados. A instalação `6000.6` não apareceu no mount `C:\UnityInstall` e não foi atribuída ao teste; o shutdown da Sandbox passou exclusivamente dentro do ambiente descartável |
 
 ## Falhas, warnings e skips preservados
 
@@ -51,8 +51,10 @@ artefatos funcionais foram preservados.
   foi preservada. O r12 corrigiu o metadado; o r13 repetiu a configuração
   coerente com um candidato de hash novo.
 - Os warnings `SUCCEEDED(hr)` e `wmiOpened`, o `Code 10`, o token ausente, o
-  `Code 404`, os entitlements zerados e o retorno `198` do Unity permanecem no
-  log sanitizado. Não foram substituídos por diagnósticos históricos positivos.
+  `Code 404`, os entitlements zerados e os retornos `198` históricos permanecem
+  no log sanitizado. No r16 também foram preservados o grupo `Unity Personal`/
+  `Unlimited`, o erro WMI e `Curl error 42: Callback aborted`; nenhum diagnóstico
+  histórico positivo foi usado para declarar licensing limpo.
 - O r14 preserva os cinco grupos de erros de compilação observados: `Texture2D.LoadImage`
   sem `ImageConversionModule` e tipos `AnimationClip`, `Animation` e
   `AnimationState` sem `AnimationModule`; o processo terminou com código `1`.
@@ -69,23 +71,20 @@ artefatos funcionais foram preservados.
 Todas as frentes seguras desta meta estão qualificadas, aceitas em escopo ou
 explicitamente limitadas. O r14 revelou uma falha concreta de compilação do
 contrato do pacote; a declaração dos módulos necessários já foi corrigida no
-checkout, mas ainda precisa de requalificação. O r15 expirou aguardando a
-instalação/handoff manual e não substitui o r14. Resta uma decisão externa
-única:
+  checkout e foi validada no método do pacote pelo r16. O r15 expirou aguardando a
+  instalação/handoff manual e não substitui o r16. Resta uma decisão externa
+  única sobre o nível de fechamento desejado para os gates residuais:
 
-1. disponibilizar uma licença/ativação Unity válida para `6000.5.7f1`, ou uma
-   fixture de entitlement própria e autorizada, dentro da sandbox descartável;
-   para Personal isso exige autenticação online no Hub, enquanto o fluxo
-   offline de license request não é aplicável; então executar uma nova tentativa
-   com o harness hashado para alcançar o método do pacote e observar o shutdown
-   limpo; ou
-2. aceitar que licensing, relatório do pacote e shutdown limpo do Unity
-   permaneçam `BLOCKED` neste ciclo.
+1. solicitar um novo ciclo descartável específico para qualificar a instalação
+   `6000.6` (que não ficou visível em `C:\UnityInstall`) e/ou investigar a
+   remoção de `Code 10`/token indisponível e o shutdown limpo completo; ou
+2. aceitar que licensing e shutdown limpos permaneçam `BLOCKED_PARTIAL` neste
+   ciclo, mantendo o método do pacote em `PASS` e o shutdown da Sandbox em
+   `PASS_SANDBOX_ONLY`.
 
-A confirmação explícita do proprietário de que a instalação do Editor terminou
-é uma pré-condição operacional para uma nova tentativa descartável; não é uma
-decisão técnica adicional. Sem essa confirmação, nenhum gatilho deve ser criado
-e nenhum Unity deve ser iniciado.
+A confirmação de instalação já foi recebida e consumida pelo r16; não há novo
+gatilho autorizado neste registro. Uma nova execução exige a decisão acima e
+deve continuar restrita à Sandbox descartável, com login manual.
 
 A opção 2 não é uma promoção técnica nem autorização de release. Sem uma
    dessas decisões, a meta permanece `IN_PROGRESS`; não há autorização para
@@ -100,21 +99,22 @@ A opção 2 não é uma promoção técnica nem autorização de release. Sem um
   imagem/digest, driver ou caminho real qualificado.
 - CuPy: somente após mudança da integração X-Ray, contrato de desempenho,
   deployment/CI ou política de empacotamento.
-- Unity: somente com licença/fixture válida diferente, mudança material no
-  engine/harness/rede ou mudança material no contrato do pacote. A correção dos
-  módulos aplicada após o r14 é uma mudança relevante; a próxima execução,
-  depois da confirmação de instalação, deve ser um ciclo descartável novo e
-  deve registrar o resultado real sem reaproveitar o timeout r15.
+- Unity: o r16 já consumiu a mudança material do contrato do pacote e validou o
+  método. Nova execução somente com licença/fixture diferente, mudança material
+  no engine/harness/rede, necessidade de qualificar `6000.6` ou necessidade de
+  comprovar shutdown limpo; deve ser um ciclo descartável novo e registrar o
+  resultado real sem reaproveitar o timeout r15.
 
 ## Conclusão formal da auditoria
 
 O resultado atual é tecnicamente consistente com o objetivo: o soak controlado,
 symlink controlado, CuPy, integridade documental, preservação de artefatos e
 fluxos do editor canônico foram fechados sem regressão observada. O limite de
-responsividade foi aceito formalmente sem mascarar o `FAIL`. O encerramento
-integral do gate Unity continua impedido por licensing/ativação e pela
-requalificação da correção de compilação aplicada após o r14; a hipótese de
-cópia incompleta foi eliminada pela r13, a causa compatível com Personal foi
-registrada com fonte oficial, e o timeout r15 foi separado da execução real.
+responsividade foi aceito formalmente sem mascarar o `FAIL`. O r16 comprovou a
+correção do pacote em execução real, mas o encerramento integral do gate Unity
+continua impedido por Code 10/token indisponível e pela prova incompleta de
+shutdown limpo; a ausência da instalação 6000.6 no mount foi registrada, a causa
+do timeout r15 foi separada da execução real e todos os warnings/erros foram
+preservados.
 Todos os bloqueios permanecem isolados, reproduzidos ou explicitamente
 qualificados em ambiente controlado, sem qualquer ação perigosa no host.

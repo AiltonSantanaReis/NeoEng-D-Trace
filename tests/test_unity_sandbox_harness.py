@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -13,6 +14,7 @@ HARNESS_ROOT = (
 R15_RUNNER = HARNESS_ROOT / "control-r15" / "run.ps1"
 R16_RUNNER = HARNESS_ROOT / "control-r16" / "run.ps1"
 R16_WSB = HARNESS_ROOT / "unity-controlled-r16.wsb"
+R16_REAL_OUTPUT = HARNESS_ROOT / "output-r16-real-20260914-0122"
 
 
 def test_r15_timeout_and_shutdown_remain_preserved_as_historical_evidence():
@@ -61,3 +63,25 @@ def test_r16_keeps_product_fixture_and_known_editor_read_only():
     assert tree.findtext("./LogonCommand/Command") == (
         r"powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\control-r16\prepare-browser-and-run.ps1"
     )
+
+
+def test_r16_real_evidence_proves_corrected_package_method_without_overclaiming_shutdown():
+    result = json.loads((R16_REAL_OUTPUT / "sandbox-result.json").read_text())
+    package = json.loads((R16_REAL_OUTPUT / "package-report.json").read_text())
+
+    assert result["trigger_observed"] is True
+    assert result["automatic_timeout"] is False
+    assert result["process_started"] is True
+    assert result["process_exit_code"] == 0
+    assert result["report_present"] is True
+    assert result["success_marker"] is True
+    assert package["Success"] is True
+    assert package["PackageName"] == "com.neoeng.dtrace"
+    assert package["PackageVersion"] == "0.3.0"
+    assert all(check["Success"] for check in package["Checks"])
+    assert result["licensing_signals"]["code_10"] is True
+    assert result["licensing_signals"]["access_token_error"] is True
+    assert result["shutdown_signals"]["batchmode_quit"] is True
+    assert result["shutdown_signals"]["return_code_zero"] is True
+    assert result["shutdown_signals"]["shut_down"] is False
+    assert result["remaining_unity_process_count_before_sandbox_shutdown"] == 29

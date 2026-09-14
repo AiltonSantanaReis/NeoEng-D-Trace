@@ -1,0 +1,14 @@
+{
+    "observed_utc":  "2026-09-14T01:22:00.7795074Z",
+    "persistent_install_mount":  "C:\\UnityInstall",
+    "known_editor_mount":  "C:\\Unity\\Editor",
+    "editors":  [
+                    {
+                        "path":  "C:\\Unity\\Editor\\Unity.exe",
+                        "product_version":  "6000.5.7f1_017862109af0",
+                        "file_version":  "6000.5.7.96354",
+                        "length":  282536
+                    }
+                ],
+    "note":  "Inventory only; no Unity process is started until the explicit manual trigger is valid."
+}

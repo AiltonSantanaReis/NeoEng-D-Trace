@@ -70,9 +70,31 @@ O ciclo novo r16 foi preparado com:
 - fallback preservado para o Editor conhecido `6000.5.7f1` montado em
   `C:\Unity\Editor`.
 
-O r16 não declara que a instalação, o licensing, o método do pacote ou o
-shutdown limpo do Unity passaram. Esses critérios continuam `PENDING_EVIDENCE`
-até uma execução real após confirmação manual do proprietário.
+O r16 foi executado depois da confirmação manual do proprietário. O método do
+pacote passou, mas a instalação persistida 6000.6 não foi observada no mount
+`C:\UnityInstall`; o fallback conhecido 6000.5.7f1 foi selecionado. Licensing e
+shutdown limpos do Unity continuam `BLOCKED_PARTIAL` pelos diagnósticos
+preservados no resultado real.
+
+## Resultado da execução r16
+
+O runner aguardou `2466` segundos sem timeout automático e só iniciou o teste
+após `MANUAL_HUB_LOGIN_CONFIRMED_BY_USER=true`. O Unity real executou dentro da
+Sandbox com rede habilitada, alcançou o pacote corrigido e retornou `0`. O
+`package-report.json` registrou `Success=true`, pacote `com.neoeng.dtrace`,
+versão `0.3.0`, política `source-only` e sete checks aprovados.
+
+O log sanitizado preservou `Unity Personal`/`Unlimited`, `Code 10`, token
+indisponível, warnings `SUCCEEDED(hr)`/`wmiOpened`, erro `Failed to open WMI` e
+`Curl error 42: Callback aborted`. O Unity produziu quit de batchmode e saída de
+batchmode, mas não o sinal textual exato `Shut down.`; o runner observou 29
+entradas de processos compatíveis antes do encerramento da Sandbox. Por isso o
+shutdown limpo do Unity não é promovido a `PASS`. A Sandbox descartável terminou
+no polling posterior e o host não executou Unity, shutdown ou terminação forçada.
+
+Evidências versionáveis do r16 estão em
+`output-r16-real-20260914-0122/`; o log bruto permanece local, sem ser
+versionado, e a projeção sanitizada passou na varredura de privacidade.
 
 ## Gates desta mudança
 
@@ -80,18 +102,22 @@ até uma execução real após confirmação manual do proprietário.
 |---|---|---|
 | causa do fechamento prematuro | `PASS` | resultado r15 com timeout 1.800 s e runner r15 com shutdown incondicional |
 | preservação da repetição r15 | `PASS` | diretório `output-r15-repeat-20260913-2037` e hashes acima |
-| contrato estático do r16 | `PASS` | `tests/test_unity_sandbox_harness.py`: 4 testes, `4 passed` |
+| contrato estático e evidência real do r16 | `PASS` | `tests/test_unity_sandbox_harness.py`: 5 testes, `5 passed`; o quinto valida o resultado real sem promover shutdown parcial a PASS |
 | parse PowerShell/XML | `PASS` | r15/r16/wrapper sem erro de parse; WSB r16 XML válido com 7 mapeamentos |
-| regressão oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-pytest.log`: `2638 passed`, `2 skipped`, `0 failed`, `0 warnings`; blob do log `9420B5B092E56031DF81DC88281AF36328E4665E2D0D08E3ACAFE9B0F35C442A`, JUnit `EBAF912E1A84CA42DEABB77F61488EA6C3B3C38DF7F05D85CF039E6C8A503011` |
-| instalação persistida no Sandbox | `PENDING_EVIDENCE` | requer execução manual do Hub dentro do r16 |
-| Unity/licensing/package report/shutdown limpo | `PENDING_EVIDENCE` | requer `run-test.trigger` após instalação/login confirmados |
+| regressão oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r14/official-pytest.log`: `2639 passed`, `2 skipped`, `0 failed`, `0 warnings`; log sanitizado `920C7189382C9606AD08A1A36A4000510340A3316E8025D666712338CE1CE222`, JUnit sanitizado `E0E4C70D0A93E1AC45DA5537D423DA15290DDD2F67482E16F156DCF56AB057CB`, metadata `D06F8FC9FFE4EB105ADB233D6E242E9DF74B9770AA66822602FEED2DDFE7FD99` |
+| instalação persistida no Sandbox | `PENDING_EVIDENCE` | `C:\UnityInstall` estava vazio no inventário r16; a instalação 6000.6 não foi atribuída, e o fallback 6000.5.7f1 foi usado |
+| método/relatório do pacote | `PASS` | resultado r16 e `package-report.json`: `Success=true`, processo com código `0` |
+| Unity/licensing limpo | `BLOCKED_PARTIAL` | r16 resolveu `Unity Personal`/`Unlimited`, mas preservou `Code 10` e token indisponível |
+| shutdown limpo do Unity | `BLOCKED_PARTIAL` | quit/retorno `0` presentes, mas 29 entradas compatíveis no snapshot e nenhum `Shut down.` exato |
+| shutdown da Sandbox | `PASS_SANDBOX_ONLY` | marcador interno e processos da Sandbox terminaram no polling posterior |
 
 ## Regra de avanço
 
-Não criar `run-test.trigger` nem iniciar Unity até o proprietário confirmar que
-o Editor terminou de instalar. A próxima execução deve ser uma VM descartável
-nova com o WSB r16, handoff/login manual, captura dos marcadores e logs reais,
-seguida de validação da correção `ImageConversionModule`/`AnimationModule`.
+O r16 já consumiu a confirmação e validou a correção
+`ImageConversionModule`/`AnimationModule`. Não criar novo `run-test.trigger` sem
+mudança relevante ou uma decisão explícita para qualificar 6000.6, investigar
+`Code 10`/token ou comprovar shutdown limpo; qualquer novo ciclo deve ser uma VM
+descartável nova, com handoff/login manual e evidência própria.
 
 Symlink, shutdown e qualquer teste potencialmente danoso continuam proibidos no
 host; o `shutdown.exe` desta mudança existe apenas dentro do Windows Sandbox.
