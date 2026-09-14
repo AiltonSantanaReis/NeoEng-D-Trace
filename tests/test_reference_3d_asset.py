@@ -19,7 +19,10 @@ def test_reference_asset_generation_and_contract(tmp_path):
     assert report["checks"]["joint_count"] == 18
     assert report["checks"]["gltf_version"] == "2.0"
     assert report["unity_contract"]["status"] == "PENDING_EVIDENCE"
-    assert json.loads((output / "structural-validation.json").read_text(encoding="utf-8"))["status"] == "PASS"
+    structural = json.loads(
+        (output / "structural-validation.json").read_text(encoding="utf-8")
+    )
+    assert structural["status"] == "PASS"
     assert _run_tamper_test(output)["status"] == "PASS"
 
 

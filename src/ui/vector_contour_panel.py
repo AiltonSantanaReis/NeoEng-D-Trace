@@ -216,7 +216,9 @@ class VectorContourPanel(QWidget):
                 (self.vertex_x.value(), self.vertex_y.value()),
             )
             self.status_message.emit(
-                self._status("Vértice do contorno corrigido", "Contour vertex corrected")
+                self._status(
+                    "Vértice do contorno corrigido", "Contour vertex corrected"
+                )
             )
             self._refresh()
             return True

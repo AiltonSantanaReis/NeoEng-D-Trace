@@ -14,7 +14,6 @@ import hashlib
 import io
 import json
 import math
-import os
 import struct
 import subprocess
 import sys
@@ -138,7 +137,12 @@ class MeshPart:
         index = len(self.positions)
         self.positions.append(_finite_tuple(position))
         self.normals.append(_normalize(normal))
-        self.uvs.append((min(1.0, max(0.0, float(uv[0]))), min(1.0, max(0.0, float(uv[1])))))
+        self.uvs.append(
+            (
+                min(1.0, max(0.0, float(uv[0]))),
+                min(1.0, max(0.0, float(uv[1]))),
+            )
+        )
         self.influences.append(tuple(influence))
         return index
 
@@ -163,7 +167,12 @@ class MeshPart:
         uv_corners: Sequence[Sequence[float]],
         influence: Influence,
     ) -> None:
-        self.add_face(corners, _normal(corners[0], corners[1], corners[2]), uv_corners, influence)
+        self.add_face(
+            corners,
+            _normal(corners[0], corners[1], corners[2]),
+            uv_corners,
+            influence,
+        )
 
 
 def add_box(
@@ -219,7 +228,9 @@ def add_cylinder(
             part.add_vertex(position, normal, uv, influence)
         part.indices.extend((start, start + 1, start + 2, start, start + 2, start + 3))
     top_center = part.add_vertex((cx, cy + half, cz), (0, 1, 0), (0.5, 0.5), influence)
-    bottom_center = part.add_vertex((cx, cy - half, cz), (0, -1, 0), (0.5, 0.5), influence)
+    bottom_center = part.add_vertex(
+        (cx, cy - half, cz), (0, -1, 0), (0.5, 0.5), influence
+    )
     for index in range(segments):
         a0 = 2.0 * math.pi * index / segments
         a1 = 2.0 * math.pi * (index + 1) / segments
@@ -343,7 +354,10 @@ def _basis_point(
     y: float,
     z: float,
 ) -> tuple[float, float, float]:
-    return _add(origin, _add(_mul(basis[0], x), _add(_mul(basis[1], y), _mul(basis[2], z))))
+    return _add(
+        origin,
+        _add(_mul(basis[0], x), _add(_mul(basis[1], y), _mul(basis[2], z))),
+    )
 
 
 def add_cylinder_between(
@@ -361,13 +375,25 @@ def add_cylinder_between(
         a0 = 2.0 * math.pi * index / segments
         a1 = 2.0 * math.pi * (index + 1) / segments
         points = [
-            _basis_point(start, basis, radius * math.cos(a0), 0.0, radius * math.sin(a0)),
-            _basis_point(start, basis, radius * math.cos(a1), 0.0, radius * math.sin(a1)),
-            _basis_point(end, basis, radius * math.cos(a1), length, radius * math.sin(a1)),
-            _basis_point(end, basis, radius * math.cos(a0), length, radius * math.sin(a0)),
+            _basis_point(
+                start, basis, radius * math.cos(a0), 0.0, radius * math.sin(a0)
+            ),
+            _basis_point(
+                start, basis, radius * math.cos(a1), 0.0, radius * math.sin(a1)
+            ),
+            _basis_point(
+                end, basis, radius * math.cos(a1), length, radius * math.sin(a1)
+            ),
+            _basis_point(
+                end, basis, radius * math.cos(a0), length, radius * math.sin(a0)
+            ),
         ]
-        n0 = _normalize(_add(_mul(basis[0], math.cos(a0)), _mul(basis[2], math.sin(a0))))
-        n1 = _normalize(_add(_mul(basis[0], math.cos(a1)), _mul(basis[2], math.sin(a1))))
+        n0 = _normalize(
+            _add(_mul(basis[0], math.cos(a0)), _mul(basis[2], math.sin(a0)))
+        )
+        n1 = _normalize(
+            _add(_mul(basis[0], math.cos(a1)), _mul(basis[2], math.sin(a1)))
+        )
         start_index = len(part.positions)
         for position, normal, uv in (
             (points[0], n0, (index / segments, 0.0)),
@@ -377,7 +403,14 @@ def add_cylinder_between(
         ):
             part.add_vertex(position, normal, uv, influence)
         part.indices.extend(
-            (start_index, start_index + 1, start_index + 2, start_index, start_index + 2, start_index + 3)
+            (
+                start_index,
+                start_index + 1,
+                start_index + 2,
+                start_index,
+                start_index + 2,
+                start_index + 3,
+            )
         )
 
 
@@ -444,14 +477,35 @@ def build_parts() -> list[MeshPart]:
 
     for side, label in ((-1, "L"), (1, "R")):
         shoulder = _make_part(f"Shoulder_{label}", armor)
-        add_uv_sphere(shoulder, (side * 0.72, 3.68, 0.0), (0.42, 0.28, 0.48), ((f"upper_arm_{'l' if side < 0 else 'r'}", 1.0),))
+        add_uv_sphere(
+            shoulder,
+            (side * 0.72, 3.68, 0.0),
+            (0.42, 0.28, 0.48),
+            ((f"upper_arm_{'l' if side < 0 else 'r'}", 1.0),),
+        )
         parts.append(shoulder)
         upper = _make_part(f"UpperArm_Armor_{label}", armor)
-        add_box(upper, (side * 0.94, 3.30, 0.0), (0.38, 0.78, 0.46), ((f"upper_arm_{'l' if side < 0 else 'r'}", 1.0),))
+        add_box(
+            upper,
+            (side * 0.94, 3.30, 0.0),
+            (0.38, 0.78, 0.46),
+            ((f"upper_arm_{'l' if side < 0 else 'r'}", 1.0),),
+        )
         parts.append(upper)
         gauntlet = _make_part(f"Gauntlet_{label}", armor)
-        add_box(gauntlet, (side * 1.10, 2.63, 0.08), (0.36, 0.50, 0.44), ((f"hand_{'l' if side < 0 else 'r'}", 1.0),))
-        add_cylinder(gauntlet, (side * 1.10, 2.38, 0.08), 0.14, 0.16, ((f"hand_{'l' if side < 0 else 'r'}", 1.0),))
+        add_box(
+            gauntlet,
+            (side * 1.10, 2.63, 0.08),
+            (0.36, 0.50, 0.44),
+            ((f"hand_{'l' if side < 0 else 'r'}", 1.0),),
+        )
+        add_cylinder(
+            gauntlet,
+            (side * 1.10, 2.38, 0.08),
+            0.14,
+            0.16,
+            ((f"hand_{'l' if side < 0 else 'r'}", 1.0),),
+        )
         parts.append(gauntlet)
 
     belt = _make_part("Belt", leather)
@@ -460,7 +514,17 @@ def build_parts() -> list[MeshPart]:
     parts.append(belt)
 
     skirt = _make_part("Cloth_Skirt_Front", cloth)
-    add_panel(skirt, 0.0, 2.30, 1.08, 1.15, 0.44, (("pelvis", 1.0),), (("pelvis", 1.0),), wave=0.04)
+    add_panel(
+        skirt,
+        0.0,
+        2.30,
+        1.08,
+        1.15,
+        0.44,
+        (("pelvis", 1.0),),
+        (("pelvis", 1.0),),
+        wave=0.04,
+    )
     parts.append(skirt)
 
     for side, label in ((-1, "L"), (1, "R")):
@@ -479,15 +543,40 @@ def build_parts() -> list[MeshPart]:
         parts.append(side_skirt)
 
         thigh = _make_part(f"Thigh_Armor_{label}", armor)
-        add_box(thigh, (side * 0.29, 1.49, 0.0), (0.44, 0.76, 0.56), ((f"upper_leg_{'l' if side < 0 else 'r'}", 1.0),))
+        add_box(
+            thigh,
+            (side * 0.29, 1.49, 0.0),
+            (0.44, 0.76, 0.56),
+            ((f"upper_leg_{'l' if side < 0 else 'r'}", 1.0),),
+        )
         parts.append(thigh)
         boot = _make_part(f"Boot_{label}", boots)
-        add_box(boot, (side * 0.29, 0.57, 0.03), (0.49, 0.80, 0.66), ((f"lower_leg_{'l' if side < 0 else 'r'}", 1.0),))
-        add_box(boot, (side * 0.29, 0.14, 0.32), (0.54, 0.24, 0.88), ((f"foot_{'l' if side < 0 else 'r'}", 1.0),))
-        parts.append(boot)
+        add_box(
+            boot,
+            (side * 0.29, 0.57, 0.03),
+            (0.49, 0.80, 0.66),
+            ((f"lower_leg_{'l' if side < 0 else 'r'}", 1.0),),
+        )
+        add_box(
+            boot,
+            (side * 0.29, 0.14, 0.32),
+            (0.54, 0.24, 0.88),
+            ((f"foot_{'l' if side < 0 else 'r'}", 1.0),),
+        )
+    parts.append(boot)
 
     cape = _make_part("Cape_Center", cloth)
-    add_panel(cape, 0.0, 3.90, 1.04, 0.92, -0.46, (("chest", 1.0),), (("pelvis", 1.0),), wave=0.12)
+    add_panel(
+        cape,
+        0.0,
+        3.90,
+        1.04,
+        0.92,
+        -0.46,
+        (("chest", 1.0),),
+        (("pelvis", 1.0),),
+        wave=0.12,
+    )
     for vertex_index, influence in enumerate(cape.influences):
         row = vertex_index // 6
         if row <= 1:
@@ -522,8 +611,16 @@ def build_parts() -> list[MeshPart]:
     direction = _normalize(_sub(blade_tip, blade_base))
     guard_start = _add(blade_base, _mul(direction, -0.09))
     guard_end = _add(guard_start, (0.0, 0.0, 0.48))
-    add_cylinder_between(hilt, _add(blade_base, _mul(direction, 0.16)), _add(blade_base, _mul(direction, -0.30)), 0.075, (("hand_r", 1.0),))
-    add_cylinder_between(hilt, guard_start, guard_end, 0.045, (("hand_r", 1.0),), segments=8)
+    add_cylinder_between(
+        hilt,
+        _add(blade_base, _mul(direction, 0.16)),
+        _add(blade_base, _mul(direction, -0.30)),
+        0.075,
+        (("hand_r", 1.0),),
+    )
+    add_cylinder_between(
+        hilt, guard_start, guard_end, 0.045, (("hand_r", 1.0),), segments=8
+    )
     parts.append(hilt)
 
     rune = _make_part("Energy_Rune", energy)
@@ -543,8 +640,14 @@ def _world_joint_transforms() -> list[tuple[float, float, float]]:
     return [value or (0.0, 0.0, 0.0) for value in result]
 
 
-def _influence_arrays(influence: Influence) -> tuple[tuple[int, int, int, int], tuple[float, float, float, float]]:
-    ordered = [(JOINT_INDEX[name], float(weight)) for name, weight in influence if name in JOINT_INDEX and weight > 0]
+def _influence_arrays(
+    influence: Influence,
+) -> tuple[tuple[int, int, int, int], tuple[float, float, float, float]]:
+    ordered = [
+        (JOINT_INDEX[name], float(weight))
+        for name, weight in influence
+        if name in JOINT_INDEX and weight > 0
+    ]
     if not ordered:
         ordered = [(0, 1.0)]
     total = sum(weight for _, weight in ordered)
@@ -612,10 +715,18 @@ class BinaryBuilder:
         return len(self.accessors) - 1
 
 
-def _minmax(values: Sequence[Sequence[float]]) -> tuple[list[float], list[float]]:
+def _minmax(
+    values: Sequence[Sequence[float]],
+) -> tuple[list[float], list[float]]:
     dimensions = len(values[0])
-    minimum = [min(float(value[dimension]) for value in values) for dimension in range(dimensions)]
-    maximum = [max(float(value[dimension]) for value in values) for dimension in range(dimensions)]
+    minimum = [
+        min(float(value[dimension]) for value in values)
+        for dimension in range(dimensions)
+    ]
+    maximum = [
+        max(float(value[dimension]) for value in values)
+        for dimension in range(dimensions)
+    ]
     return minimum, maximum
 
 
@@ -627,8 +738,16 @@ def _encode_geometry(parts: Sequence[MeshPart]) -> tuple[bytes, list[dict], list
         positions = [value for vertex in part.positions for value in vertex]
         normals = [value for vertex in part.normals for value in vertex]
         uvs = [value for vertex in part.uvs for value in vertex]
-        joints = [value for influence in part.influences for value in _influence_arrays(influence)[0]]
-        weights = [value for influence in part.influences for value in _influence_arrays(influence)[1]]
+        joints = [
+            value
+            for influence in part.influences
+            for value in _influence_arrays(influence)[0]
+        ]
+        weights = [
+            value
+            for influence in part.influences
+            for value in _influence_arrays(influence)[1]
+        ]
         position_view = builder.append(_pack_floats(positions), target=34962)
         normal_view = builder.append(_pack_floats(normals), target=34962)
         uv_view = builder.append(_pack_floats(uvs), target=34962)
@@ -637,12 +756,30 @@ def _encode_geometry(parts: Sequence[MeshPart]) -> tuple[bytes, list[dict], list
         index_view = builder.append(_pack_u16(part.indices), target=34963)
         position_min, position_max = _minmax(part.positions)
         uv_min, uv_max = _minmax(part.uvs)
-        position_accessor = builder.accessor(position_view, 5126, "VEC3", len(part.positions), position_min, position_max)
+        position_accessor = builder.accessor(
+            position_view,
+            5126,
+            "VEC3",
+            len(part.positions),
+            position_min,
+            position_max,
+        )
         normal_accessor = builder.accessor(normal_view, 5126, "VEC3", len(part.normals))
-        uv_accessor = builder.accessor(uv_view, 5126, "VEC2", len(part.uvs), uv_min, uv_max)
+        uv_accessor = builder.accessor(
+            uv_view, 5126, "VEC2", len(part.uvs), uv_min, uv_max
+        )
         joint_accessor = builder.accessor(joint_view, 5121, "VEC4", len(part.positions))
-        weight_accessor = builder.accessor(weight_view, 5126, "VEC4", len(part.positions))
-        index_accessor = builder.accessor(index_view, 5123, "SCALAR", len(part.indices), [0], [max(part.indices)])
+        weight_accessor = builder.accessor(
+            weight_view, 5126, "VEC4", len(part.positions)
+        )
+        index_accessor = builder.accessor(
+            index_view,
+            5123,
+            "SCALAR",
+            len(part.indices),
+            [0],
+            [max(part.indices)],
+        )
         primitive = {
             "attributes": {
                 "POSITION": position_accessor,
@@ -744,14 +881,36 @@ def _write_texture_set(output: Path) -> tuple[list[dict], dict[str, dict[str, st
 
 
 def _translation_matrix_inverse(position: Sequence[float]) -> list[float]:
-    return [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -position[0], -position[1], -position[2], 1.0]
+    return [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        -position[0],
+        -position[1],
+        -position[2],
+        1.0,
+    ]
 
 
 def _quaternion(axis: Sequence[float], angle: float) -> list[float]:
     normalized = _normalize(axis)
     half = angle / 2.0
     sine = math.sin(half)
-    return [normalized[0] * sine, normalized[1] * sine, normalized[2] * sine, math.cos(half)]
+    return [
+        normalized[0] * sine,
+        normalized[1] * sine,
+        normalized[2] * sine,
+        math.cos(half),
+    ]
 
 
 def _build_gltf(
@@ -762,7 +921,13 @@ def _build_gltf(
     images: list[dict],
     texture_files: dict[str, dict[str, str]],
 ) -> tuple[dict, bytes]:
-    material_order = ["Armor_Metal", "Cloth_Cape", "Leather_Belts", "Leather_Boots", "Energy_Rune"]
+    material_order = [
+        "Armor_Metal",
+        "Cloth_Cape",
+        "Leather_Belts",
+        "Leather_Boots",
+        "Energy_Rune",
+    ]
     material_kind = {
         "Armor_Metal": "armor",
         "Cloth_Cape": "cloth",
@@ -778,7 +943,9 @@ def _build_gltf(
         for role in ("basecolor", "orm", "normal"):
             uri = texture_files[kind][role]
             texture_index[f"{kind}:{role}"] = len(textures)
-            textures.append({"sampler": 0, "source": image_index[uri], "name": f"{kind}_{role}"})
+            textures.append(
+                {"sampler": 0, "source": image_index[uri], "name": f"{kind}_{role}"}
+            )
     materials = []
     for material_name in material_order:
         kind = material_kind[material_name]
@@ -814,7 +981,9 @@ def _build_gltf(
         if parent is None:
             nodes[0]["children"].append(joint_nodes[index])
         else:
-            nodes[joint_nodes[JOINT_INDEX[parent]]]["children"].append(joint_nodes[index])
+            nodes[joint_nodes[JOINT_INDEX[parent]]]["children"].append(
+                joint_nodes[index]
+            )
     mesh_node_indices: list[int] = []
     for mesh_index, part in enumerate(parts):
         index = len(nodes)
@@ -830,9 +999,14 @@ def _build_gltf(
         nodes[0]["children"].append(index)
 
     world_transforms = _world_joint_transforms()
-    inverse_bind_payload = b"".join(_pack_floats(_translation_matrix_inverse(position)) for position in world_transforms)
+    inverse_bind_payload = b"".join(
+        _pack_floats(_translation_matrix_inverse(position))
+        for position in world_transforms
+    )
     inverse_bind_view = builder.append(inverse_bind_payload)
-    inverse_bind_accessor = builder.accessor(inverse_bind_view, 5126, "MAT4", len(JOINT_SPECS))
+    inverse_bind_accessor = builder.accessor(
+        inverse_bind_view, 5126, "MAT4", len(JOINT_SPECS)
+    )
 
     gltf = {
         "asset": {
@@ -851,7 +1025,9 @@ def _build_gltf(
         "materials": materials,
         "textures": textures,
         "images": images,
-        "samplers": [{"magFilter": 9729, "minFilter": 9987, "wrapS": 10497, "wrapT": 10497}],
+        "samplers": [
+            {"magFilter": 9729, "minFilter": 9987, "wrapS": 10497, "wrapT": 10497}
+        ],
         "skins": [
             {
                 "name": "EclipseWarden_Skeleton",
@@ -887,7 +1063,9 @@ def _build_gltf(
             _quaternion(axis, 0.025),
             _quaternion(axis, -0.025),
         )
-        value_view = builder.append(_pack_floats(value for value in values for value in value))
+        value_view = builder.append(
+            _pack_floats(value for value in values for value in value)
+        )
         value_accessor = builder.accessor(value_view, 5126, "VEC4", 3)
         sampler_index = len(animation["samplers"])
         animation["samplers"].append(
@@ -898,7 +1076,10 @@ def _build_gltf(
             }
         )
         animation["channels"].append(
-            {"sampler": sampler_index, "target": {"node": node_index, "path": "rotation"}}
+            {
+                "sampler": sampler_index,
+                "target": {"node": node_index, "path": "rotation"},
+            }
         )
     gltf["buffers"][0]["byteLength"] = len(builder.data)
     gltf["bufferViews"] = builder.views
@@ -918,10 +1099,14 @@ def _make_glb(gltf: dict, geometry: bytes, texture_payloads: Sequence[bytes]) ->
         binary.extend(payload)
         image["bufferView"] = len(glb_gltf["bufferViews"])
         image.pop("uri", None)
-        glb_gltf["bufferViews"].append({"buffer": 0, "byteOffset": offset, "byteLength": len(payload)})
+        glb_gltf["bufferViews"].append(
+            {"buffer": 0, "byteOffset": offset, "byteLength": len(payload)}
+        )
     glb_gltf["buffers"][0].pop("uri", None)
     glb_gltf["buffers"][0]["byteLength"] = len(binary)
-    json_payload = json.dumps(glb_gltf, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    json_payload = json.dumps(
+        glb_gltf, ensure_ascii=False, separators=(",", ":")
+    ).encode("utf-8")
     while len(json_payload) % 4:
         json_payload += b" "
     while len(binary) % 4:
@@ -937,7 +1122,10 @@ def _make_glb(gltf: dict, geometry: bytes, texture_payloads: Sequence[bytes]) ->
 
 
 def _write_obj(output: Path, parts: Sequence[MeshPart]) -> None:
-    obj_lines = ["# Eclipse Warden static diagnostic export", "mtllib eclipse_warden.mtl"]
+    obj_lines = [
+        "# Eclipse Warden static diagnostic export",
+        "mtllib eclipse_warden.mtl",
+    ]
     vertex_offset = 1
     uv_offset = 1
     normal_offset = 1
@@ -954,13 +1142,17 @@ def _write_obj(output: Path, parts: Sequence[MeshPart]) -> None:
             face = []
             for local_index in part.indices[index : index + 3]:
                 face.append(
-                    f"{vertex_offset + local_index}/{uv_offset + local_index}/{normal_offset + local_index}"
+                    f"{vertex_offset + local_index}/"
+                    f"{uv_offset + local_index}/"
+                    f"{normal_offset + local_index}"
                 )
             obj_lines.append("f " + " ".join(face))
         vertex_offset += len(part.positions)
         uv_offset += len(part.uvs)
         normal_offset += len(part.normals)
-    (output / "eclipse_warden.obj").write_text("\n".join(obj_lines) + "\n", encoding="utf-8")
+    (output / "eclipse_warden.obj").write_text(
+        "\n".join(obj_lines) + "\n", encoding="utf-8"
+    )
     mtl_lines = ["# PBR texture references for the OBJ diagnostic export"]
     for material, kind in (
         ("Armor_Metal", "armor"),
@@ -1063,13 +1255,17 @@ def generate(output: Path) -> dict:
         for record in images
     ]
     geometry, mesh_records, part_records, builder = _encode_geometry(parts)
-    gltf, binary = _build_gltf(parts, geometry, mesh_records, builder, images, texture_files)
+    gltf, binary = _build_gltf(
+        parts, geometry, mesh_records, builder, images, texture_files
+    )
     (output / "eclipse_warden.bin").write_bytes(binary)
     (output / "eclipse_warden.gltf").write_text(
         json.dumps(gltf, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    (output / "eclipse_warden.glb").write_bytes(_make_glb(gltf, binary, texture_payloads))
+    (output / "eclipse_warden.glb").write_bytes(
+        _make_glb(gltf, binary, texture_payloads)
+    )
     _write_obj(output, parts)
     manifest = {
         "schema": "neoeng-d-trace-reference-3d-asset",
@@ -1103,7 +1299,11 @@ def generate(output: Path) -> dict:
                 "base_color": texture_files[kind]["basecolor"],
                 "metallic_roughness": texture_files[kind]["orm"],
                 "normal": texture_files[kind]["normal"],
-                "emissive": texture_files[kind]["basecolor"] if name == "Energy_Rune" else None,
+                "emissive": (
+                    texture_files[kind]["basecolor"]
+                    if name == "Energy_Rune"
+                    else None
+                ),
             }
             for name, kind in (
                 ("Armor_Metal", "armor"),
@@ -1120,12 +1320,21 @@ def generate(output: Path) -> dict:
             "joints": [name for name, _, _ in JOINT_SPECS],
             "inverse_bind_matrices": True,
         },
-        "animations": [{"name": "Idle", "duration_seconds": 2.0, "loop": True, "channels": 3}],
+        "animations": [
+            {
+                "name": "Idle",
+                "duration_seconds": 2.0,
+                "loop": True,
+                "channels": 3,
+            }
+        ],
         "compatibility": {
             "unity": {
                 "status": "PENDING_EVIDENCE",
                 "format": "glTF 2.0 / GLB",
-                "rig_import_hint": "Generic first; Humanoid requires manual mapping validation",
+                "rig_import_hint": (
+                    "Generic first; Humanoid requires manual mapping validation"
+                ),
                 "urp_hdrp_material_remap": "required per project pipeline",
             },
             "godot": {"status": "PLANNED", "version_tested": "4.7"},
@@ -1143,7 +1352,9 @@ def generate(output: Path) -> dict:
         if path.name == "SHA256SUMS.txt":
             continue
         checksums.append(f"{_sha256_file(path)}  {path.relative_to(output).as_posix()}")
-    (output / "SHA256SUMS.txt").write_text("\n".join(checksums) + "\n", encoding="utf-8")
+    (output / "SHA256SUMS.txt").write_text(
+        "\n".join(checksums) + "\n", encoding="utf-8"
+    )
     return manifest
 
 
@@ -1157,7 +1368,16 @@ def main() -> int:
     except Exception as exc:
         print(f"asset generation failed: {exc}", file=sys.stderr)
         return 2
-    print(json.dumps({"status": "IN_PROGRESS", "output": str(output), "components": len(manifest["components"])}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {
+                "status": "IN_PROGRESS",
+                "output": str(output),
+                "components": len(manifest["components"]),
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 

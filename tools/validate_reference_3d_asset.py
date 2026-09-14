@@ -100,7 +100,9 @@ def _accessor_values(
         element_end = element_start + element_size
         if element_end > len(binary):
             raise ValidationError("accessor reads beyond the binary buffer")
-        unpacked = struct.unpack_from("<" + fmt * component_count, binary, element_start)
+        unpacked = struct.unpack_from(
+            "<" + fmt * component_count, binary, element_start
+        )
         values.append(tuple(float(value) for value in unpacked))
     return values
 
@@ -131,14 +133,35 @@ def _validate_glb_consistency(
     glb_gltf: dict[str, Any],
     glb_binary: bytes,
 ) -> None:
-    _assert(gltf.get("asset", {}).get("version") == "2.0", "external glTF is not version 2.0")
-    _assert(glb_gltf.get("asset", {}).get("version") == "2.0", "GLB is not version 2.0")
-    _assert(len(gltf.get("meshes", [])) == len(glb_gltf.get("meshes", [])), "GLB mesh count differs from glTF")
-    _assert(len(gltf.get("nodes", [])) == len(glb_gltf.get("nodes", [])), "GLB node count differs from glTF")
-    _assert(len(gltf.get("materials", [])) == len(glb_gltf.get("materials", [])), "GLB material count differs from glTF")
-    _assert(glb_gltf.get("buffers", [{}])[0].get("byteLength") == len(glb_binary), "GLB buffer length is invalid")
+    _assert(
+        gltf.get("asset", {}).get("version") == "2.0",
+        "external glTF is not version 2.0",
+    )
+    _assert(
+        glb_gltf.get("asset", {}).get("version") == "2.0",
+        "GLB is not version 2.0",
+    )
+    _assert(
+        len(gltf.get("meshes", [])) == len(glb_gltf.get("meshes", [])),
+        "GLB mesh count differs from glTF",
+    )
+    _assert(
+        len(gltf.get("nodes", [])) == len(glb_gltf.get("nodes", [])),
+        "GLB node count differs from glTF",
+    )
+    _assert(
+        len(gltf.get("materials", [])) == len(glb_gltf.get("materials", [])),
+        "GLB material count differs from glTF",
+    )
+    _assert(
+        glb_gltf.get("buffers", [{}])[0].get("byteLength") == len(glb_binary),
+        "GLB buffer length is invalid",
+    )
     for image in glb_gltf.get("images", []):
-        _assert("bufferView" in image and "uri" not in image, "GLB image is not embedded")
+        _assert(
+            "bufferView" in image and "uri" not in image,
+            "GLB image is not embedded",
+        )
         view = glb_gltf.get("bufferViews", [])[int(image["bufferView"])]
         end = int(view.get("byteOffset", 0)) + int(view["byteLength"])
         _assert(end <= len(glb_binary), "embedded GLB image exceeds binary buffer")
@@ -154,51 +177,98 @@ def _validate_materials(gltf: dict[str, Any]) -> int:
         for field in ("baseColorTexture", "metallicRoughnessTexture"):
             _assert(field in pbr, f"material {material.get('name')} misses {field}")
             texture_index = int(pbr[field]["index"])
-            _assert(0 <= texture_index < len(textures), f"material {material.get('name')} has invalid texture index")
+            _assert(
+                0 <= texture_index < len(textures),
+                f"material {material.get('name')} has invalid texture index",
+            )
             source = int(textures[texture_index]["source"])
             _assert(0 <= source < len(images), "texture source index is invalid")
-        _assert("normalTexture" in material, f"material {material.get('name')} misses normalTexture")
+        _assert(
+            "normalTexture" in material,
+            f"material {material.get('name')} misses normalTexture",
+        )
         normal_source = int(textures[int(material["normalTexture"]["index"])]["source"])
-        _assert(0 <= normal_source < len(images), "normal texture source index is invalid")
+        _assert(
+            0 <= normal_source < len(images),
+            "normal texture source index is invalid",
+        )
     return len(materials)
 
 
-def _validate_geometry(gltf: dict[str, Any], binary: bytes, manifest: dict[str, Any]) -> tuple[int, int]:
+def _validate_geometry(
+    gltf: dict[str, Any], binary: bytes, manifest: dict[str, Any]
+) -> tuple[int, int]:
     meshes = gltf.get("meshes", [])
     nodes = gltf.get("nodes", [])
     _assert(len(meshes) >= 10, "asset has too few separate meshes")
     names = [str(mesh.get("name", "")) for mesh in meshes]
-    _assert(all(names) and len(names) == len(set(names)), "mesh names must be non-empty and unique")
+    _assert(
+        all(names) and len(names) == len(set(names)),
+        "mesh names must be non-empty and unique",
+    )
     mesh_nodes = [node for node in nodes if "mesh" in node]
     _assert(len(mesh_nodes) == len(meshes), "every mesh must have one visible node")
-    _assert(all("skin" in node for node in mesh_nodes), "every visible mesh node must be skinned")
+    _assert(
+        all("skin" in node for node in mesh_nodes),
+        "every visible mesh node must be skinned",
+    )
     component_names = {item["name"] for item in manifest.get("components", [])}
-    _assert(component_names == set(names), "manifest component names differ from glTF mesh names")
+    _assert(
+        component_names == set(names),
+        "manifest component names differ from glTF mesh names",
+    )
     total_triangles = 0
     for mesh in meshes:
         primitives = mesh.get("primitives", [])
-        _assert(len(primitives) == 1, f"mesh {mesh.get('name')} must have one primitive")
+        _assert(
+            len(primitives) == 1,
+            f"mesh {mesh.get('name')} must have one primitive",
+        )
         primitive = primitives[0]
-        _assert(int(primitive.get("mode", 4)) == 4, "all asset primitives must be triangles")
+        _assert(
+            int(primitive.get("mode", 4)) == 4,
+            "all asset primitives must be triangles",
+        )
         attributes = primitive.get("attributes", {})
         required = ("POSITION", "NORMAL", "TEXCOORD_0", "JOINTS_0", "WEIGHTS_0")
-        _assert(all(name in attributes for name in required), f"mesh {mesh.get('name')} misses a required attribute")
+        _assert(
+            all(name in attributes for name in required),
+            f"mesh {mesh.get('name')} misses a required attribute",
+        )
         positions = _accessor_values(gltf, int(attributes["POSITION"]), binary)
         normals = _accessor_values(gltf, int(attributes["NORMAL"]), binary)
         uvs = _accessor_values(gltf, int(attributes["TEXCOORD_0"]), binary)
         joints = _accessor_values(gltf, int(attributes["JOINTS_0"]), binary)
         weights = _accessor_values(gltf, int(attributes["WEIGHTS_0"]), binary)
         _assert(len(positions) >= 4, f"mesh {mesh.get('name')} is too small")
-        _assert(len(positions) == len(normals) == len(uvs) == len(joints) == len(weights), "mesh attribute counts differ")
+        _assert(
+            len(positions) == len(normals) == len(uvs) == len(joints) == len(weights),
+            "mesh attribute counts differ",
+        )
         for normal in normals:
-            _assert(all(math.isfinite(value) for value in normal), "normal contains a non-finite value")
+            _assert(
+                all(math.isfinite(value) for value in normal),
+                "normal contains a non-finite value",
+            )
         for uv in uvs:
-            _assert(all(-1e-6 <= value <= 1.000001 for value in uv), f"mesh {mesh.get('name')} has UV outside 0..1")
+            _assert(
+                all(-1e-6 <= value <= 1.000001 for value in uv),
+                f"mesh {mesh.get('name')} has UV outside 0..1",
+            )
         for weight in weights:
-            _assert(abs(sum(weight) - 1.0) <= 1e-4, f"mesh {mesh.get('name')} has unnormalized skin weights")
+            _assert(
+                abs(sum(weight) - 1.0) <= 1e-4,
+                f"mesh {mesh.get('name')} has unnormalized skin weights",
+            )
         indices = _accessor_values(gltf, int(primitive["indices"]), binary)
-        _assert(len(indices) % 3 == 0 and indices, f"mesh {mesh.get('name')} has invalid triangle indices")
-        _assert(max(int(value[0]) for value in indices) < len(positions), "mesh index exceeds vertex count")
+        _assert(
+            len(indices) % 3 == 0 and indices,
+            f"mesh {mesh.get('name')} has invalid triangle indices",
+        )
+        _assert(
+            max(int(value[0]) for value in indices) < len(positions),
+            "mesh index exceeds vertex count",
+        )
         total_triangles += len(indices) // 3
     return len(meshes), total_triangles
 
@@ -211,11 +281,17 @@ def _validate_rig(gltf: dict[str, Any]) -> tuple[int, int]:
     _assert(len(joints) >= 8, "skeleton has too few joints")
     _assert("inverseBindMatrices" in skin, "skin misses inverse bind matrices")
     inverse_count = int(gltf["accessors"][int(skin["inverseBindMatrices"])]["count"])
-    _assert(inverse_count == len(joints), "inverse bind matrix count differs from joint count")
+    _assert(
+        inverse_count == len(joints),
+        "inverse bind matrix count differs from joint count",
+    )
     animations = gltf.get("animations", [])
     idle = next((item for item in animations if item.get("name") == "Idle"), None)
     _assert(idle is not None, "Idle animation is missing")
-    _assert(idle.get("samplers") and idle.get("channels"), "Idle animation has no channels")
+    _assert(
+        idle.get("samplers") and idle.get("channels"),
+        "Idle animation has no channels",
+    )
     return len(joints), len(idle["channels"])
 
 
@@ -228,7 +304,10 @@ def _validate_obj(asset_dir: Path, mesh_count: int) -> None:
     object_count = sum(line.startswith("o ") for line in obj.splitlines())
     material_count = sum(line.startswith("newmtl ") for line in mtl.splitlines())
     _assert(object_count == mesh_count, "OBJ object count differs from glTF mesh count")
-    _assert(material_count >= 4 and obj.count("usemtl ") >= mesh_count, "OBJ material assignments are incomplete")
+    _assert(
+        material_count >= 4 and obj.count("usemtl ") >= mesh_count,
+        "OBJ material assignments are incomplete",
+    )
 
 
 def _validate_no_machine_paths(value: Any) -> None:
@@ -287,12 +366,18 @@ def validate(asset_dir: Path, *, write_report: bool = True) -> dict[str, Any]:
         "unity_contract": {
             "format": "glTF 2.0 / GLB",
             "status": "PENDING_EVIDENCE",
-            "note": "Structural readiness only; no native Unity import is claimed by this report.",
+            "note": (
+                "Structural readiness only; no native Unity import is claimed "
+                "by this report."
+            ),
         },
     }
     if write_report:
         report_path = asset_dir / "structural-validation.json"
-        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        report_path.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
         _refresh_checksums(asset_dir)
     return report
 
@@ -329,7 +414,11 @@ def _run_tamper_test(asset_dir: Path) -> dict[str, Any]:
             validate(copy_dir, write_report=False)
         except ValidationError as error:
             return {"status": "PASS", "detected": True, "error": str(error)}
-        return {"status": "FAIL", "detected": False, "error": "tampered texture was accepted"}
+        return {
+            "status": "FAIL",
+            "detected": False,
+            "error": "tampered texture was accepted",
+        }
 
 
 def main() -> int:
@@ -351,7 +440,10 @@ def main() -> int:
         print(json.dumps(report, ensure_ascii=False))
         return 0
     except (OSError, KeyError, IndexError, ValueError, ValidationError) as error:
-        print(json.dumps({"status": "FAIL", "error": str(error)}, ensure_ascii=False), file=sys.stderr)
+        print(
+            json.dumps({"status": "FAIL", "error": str(error)}, ensure_ascii=False),
+            file=sys.stderr,
+        )
         return 2
 
 

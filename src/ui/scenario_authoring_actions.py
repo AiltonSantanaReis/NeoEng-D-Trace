@@ -127,7 +127,10 @@ def _reset(window: Any) -> bool:
             _ui_text(window, "Redefinir cenário", "Reset scenario"),
             _ui_text(
                 window,
-                "Descartar as alterações não salvas da autoria profissional do cenário?",
+                (
+                    "Descartar as alterações não salvas da autoria profissional "
+                    "do cenário?"
+                ),
                 "Discard unsaved professional scenario authoring changes?",
             ),
         )

@@ -35,7 +35,9 @@ def test_r16_wait_is_manual_and_has_no_automatic_shutdown_path():
     shutdown = "shutdown.exe /s /t 0 /f"
     assert source.count(shutdown) == 2
     assert "if ($triggerObserved -or $waitAborted)" in source
-    assert source.rfind("if ($triggerObserved -or $waitAborted)") < source.rfind(shutdown)
+    assert source.rfind("if ($triggerObserved -or $waitAborted)") < source.rfind(
+        shutdown
+    )
 
 
 def test_r16_persists_installation_in_a_dedicated_writable_mount():
@@ -47,7 +49,9 @@ def test_r16_persists_installation_in_a_dedicated_writable_mount():
     install_host = next(
         host for host in mappings if host and host.endswith("\\unity-install-r16")
     )
-    output_host = next(host for host in mappings if host and host.endswith("\\output-r16"))
+    output_host = next(
+        host for host in mappings if host and host.endswith("\\output-r16")
+    )
     assert mappings[install_host].findtext("SandboxFolder") == r"C:\UnityInstall"
     assert mappings[install_host].findtext("ReadOnly") == "false"
     assert mappings[output_host].findtext("ReadOnly") == "false"
@@ -56,16 +60,24 @@ def test_r16_persists_installation_in_a_dedicated_writable_mount():
 def test_r16_keeps_product_fixture_and_known_editor_read_only():
     tree = ET.parse(R16_WSB)
     mappings = tree.findall("./MappedFolders/MappedFolder")
-    fixture = next(node for node in mappings if node.findtext("SandboxFolder") == r"C:\input")
-    editor = next(node for node in mappings if node.findtext("SandboxFolder") == r"C:\Unity\Editor")
+    fixture = next(
+        node for node in mappings if node.findtext("SandboxFolder") == r"C:\input"
+    )
+    editor = next(
+        node
+        for node in mappings
+        if node.findtext("SandboxFolder") == r"C:\Unity\Editor"
+    )
     assert fixture.findtext("ReadOnly") == "true"
     assert editor.findtext("ReadOnly") == "true"
     assert tree.findtext("./LogonCommand/Command") == (
-        r"powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\control-r16\prepare-browser-and-run.ps1"
+        r"powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
+        r"C:\control-r16\prepare-browser-and-run.ps1"
     )
 
 
-def test_r16_real_evidence_proves_corrected_package_method_without_overclaiming_shutdown():
+def test_r16_corrected_package_method_evidence_without_overclaiming_shutdown(
+):
     result = json.loads((R16_REAL_OUTPUT / "sandbox-result.json").read_text())
     package = json.loads((R16_REAL_OUTPUT / "package-report.json").read_text())
 

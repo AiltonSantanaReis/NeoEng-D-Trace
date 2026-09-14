@@ -1957,8 +1957,8 @@
       "size": 5827
     },
     "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md": {
-      "sha256": "ad4b4566eaccaea16857affc99fee978591518169a29345528a04787446126a1",
-      "size": 35556
+      "sha256": "2db0cc30673c25a059129ebfabf4e0b799ab87cfe8dc60f3b5af908f6da16f24",
+      "size": 35822
     },
     "docs/INTEGRIDADE_P2D_05_O2_0_2026-08-30.md": {
       "sha256": "1379336b40d3142b63e7d674739bee1efc25e069cdf793652876f0e76bed680e",
@@ -2077,8 +2077,8 @@
       "size": 6968
     },
     "docs/REGISTRO_IDS_PRODUTO_PROFISSIONAL_CANONICO_2026-08-24.yaml": {
-      "sha256": "b1d3fa46bb91de41f878eb90a7c392adb08aaf4300395f3e2e08fafa07349968",
-      "size": 4342
+      "sha256": "30364e15564544e3007d19e215b8d42a5115bf1c57f6b75e5815ff5659bd564d",
+      "size": 4391
     },
     "docs/RELEASE_INICIAL_VALIDACAO.md": {
       "sha256": "7a1e60ed426cedfdd744e9deb71897c0ad6f30dced53e4c961b39b9b1e124b9c",
@@ -2263,6 +2263,10 @@
     "docs/evidence/CHG_POST_E13_BASELINE_RECONCILIACAO_20260914.md": {
       "sha256": "137444042f8da76d986c304057e1fd382600c09a1f74d1675b0f6454b745a4b4",
       "size": 2813
+    },
+    "docs/evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md": {
+      "sha256": "72af954fc6a00411a3ac3e8f8056bd97b2de66e0cefba08071ae8cb5c9d05f38",
+      "size": 3131
     },
     "docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md": {
       "sha256": "2d6463f80dfdf923365b79c7b4f2d59e2aad388cf25f36da36e2974025903441",
@@ -14329,16 +14333,16 @@
       "size": 14237
     },
     "src/ui/scenario_authoring_actions.py": {
-      "sha256": "31350092de4b4f047b71f185233e183b6e224c6a3d53f9d779f490f3dd4e5bc9",
-      "size": 12395
+      "sha256": "e36ce5051925c2b27c5edcb8b036dacbb6fbb6e02f23755f496fefa73d4ff227",
+      "size": 12458
     },
     "src/ui/scenario_collider_panel.py": {
       "sha256": "c6ade389e6daf99a7ed5b01c67b52dc1feec8e6d9c42e34134bfb82db8781f80",
       "size": 7667
     },
     "src/ui/scenario_editor_window.py": {
-      "sha256": "941dab941e658d7dd5eab3b3bb4e61c255c743b67102ed4350e45b7348495c5c",
-      "size": 80788
+      "sha256": "f29631dc6b7cda00e2739d3035ddd2ca25ec5bdd29e569d63f28a4a373672c99",
+      "size": 80819
     },
     "src/ui/scenario_panel.py": {
       "sha256": "fb5a77ad46045b16e2f34a74f631056bcb7cd26c16fd04e12b4d58c3676b581e",
@@ -14413,8 +14417,8 @@
       "size": 17421
     },
     "src/ui/vector_contour_panel.py": {
-      "sha256": "c9f6a6c7af4e61d0671f6330dd43f5c11c28a3267eea7be405410e6f2731abcc",
-      "size": 17239
+      "sha256": "70979e22f1ed8d43cb710de7f71d8530a0aee06e16d23a4443f8a0948958b9d6",
+      "size": 17277
     },
     "src/ui/viewport_actions.py": {
       "sha256": "cf171455224674ba3fc096d8c0e7d003c9400e89ddab4eb6e82a387466159da0",
@@ -14989,8 +14993,8 @@
       "size": 5194
     },
     "tests/test_reference_3d_asset.py": {
-      "sha256": "0f9a7f1b158f9ec47f90495cd790a6d01b3d87a631bbbcf7ddeb61bc5eaf7016",
-      "size": 1020
+      "sha256": "dc41d124e3f2093c12ef068f2666f75a0d89e44a6088b21737ee8cce311bcce6",
+      "size": 1062
     },
     "tests/test_reference_gizmo.py": {
       "sha256": "9aa382bc9a484c500a9f3b32466a3d306298bf2f7b6b878ca455b56ddc6bfaa5",
@@ -15449,8 +15453,8 @@
       "size": 4725
     },
     "tests/test_unity_sandbox_harness.py": {
-      "sha256": "c63226e8bdb1b895ec006cb88d796b206f1be74ddea6f894eaafe3c1a5c97b0b",
-      "size": 3888
+      "sha256": "a228f8470d2d44185617762f52b2dce62c94bfa5dcea8def6a77e46e20898abf",
+      "size": 3961
     },
     "tests/test_validation_events.py": {
       "sha256": "794b6e7429262469cfd393a17151f1ba23cbdacb527402901fa105c4a1f37af4",
@@ -15497,8 +15501,8 @@
       "size": 3165
     },
     "tools/create_reference_3d_asset.py": {
-      "sha256": "872473ca3cef8c45c8ee5a10ebd900ea63d490de87fde9100f11d608255b092f",
-      "size": 45646
+      "sha256": "c7614fbd58bcb348484e0a8e42c77b9087b3f95b99581d6aea044cc999b47361",
+      "size": 48010
     },
     "tools/evidence_integrity.py": {
       "sha256": "ef8c46c8558693221c18749c41b6f111d870bcbf3b6ef3ddde6a10354c47bf88",
@@ -15605,8 +15609,8 @@
       "size": 17874
     },
     "tools/validate_reference_3d_asset.py": {
-      "sha256": "5774d46d6b2f975ddd16ca1d1157ceb3ac01b236e0e224441ab21e17dc59e796",
-      "size": 16413
+      "sha256": "cd31a2b513cf6f42a45339f82b0da5e4742d61c317b44ccf085bce02b53065a6",
+      "size": 17388
     },
     "tools/validate_windows_installer.py": {
       "sha256": "d5dcdebaa92528445fd91f261e7cebc0abdfb0d37f19cb02b6e3031b5e8bcbcd",

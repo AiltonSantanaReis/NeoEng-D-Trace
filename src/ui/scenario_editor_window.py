@@ -462,7 +462,8 @@ class ScenarioEditorWindow(QMainWindow):
                     self._show_pending_document(
                         self._ui_text(
                             "Esquema V1 detectado. Escolha Atualizar V1 para V2 "
-                            "para editar. O arquivo V1 permanece inalterado até Salvar.",
+                            "para editar. O arquivo V1 permanece inalterado até "
+                            "Salvar.",
                             "Schema V1 detected. Choose Upgrade V1 to V2 to edit. "
                             "The V1 file remains unchanged until Save.",
                         )
