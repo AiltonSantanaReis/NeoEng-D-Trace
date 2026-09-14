@@ -289,7 +289,20 @@ def validate(asset_dir: Path, *, write_report: bool = True) -> dict[str, Any]:
 
 def _refresh_checksums(asset_dir: Path) -> None:
     lines = []
-    for path in sorted(item for item in asset_dir.rglob("*") if item.is_file() and item.name != "SHA256SUMS.txt"):
+    for path in sorted(
+        item
+        for item in asset_dir.rglob("*")
+        if item.is_file()
+        and item.name != "SHA256SUMS.txt"
+        and ".godot" not in item.parts
+        and not item.name.endswith(".import")
+        and item.suffix.lower() != ".uid"
+        and not (
+            item.parent.name == "godot_preview"
+            and item.name.startswith("eclipse_warden_")
+            and item.suffix.lower() == ".png"
+        )
+    ):
         lines.append(f"{_sha256(path)}  {path.relative_to(asset_dir).as_posix()}")
     (asset_dir / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

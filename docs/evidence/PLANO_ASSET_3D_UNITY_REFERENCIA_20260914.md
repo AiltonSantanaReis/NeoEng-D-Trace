@@ -112,8 +112,8 @@ O plano só poderá ser encerrado após os critérios executáveis terem evidên
 
 ## Resultado da execução desta etapa
 
-O gerador foi implementado em tools/create_reference_3d_asset.py e o validador em tools/validate_reference_3d_asset.py. A entrega r2 está em artifacts/post-e13-3d-asset-unity-20260914-r2. O relatório detalhado está em docs/evidence/RELATORIO_ASSET_3D_UNITY_20260914.md.
+O gerador foi implementado em tools/create_reference_3d_asset.py e o validador em tools/validate_reference_3d_asset.py. A entrega r3 está em artifacts/post-e13-3d-asset-unity-20260914-r3. O relatório detalhado está em docs/evidence/RELATORIO_ASSET_3D_UNITY_20260914.md.
 
-O primeiro artefato foi preservado como histórico de FAIL de importação Godot por ausência de mimeType em imagens embarcadas. A correção foi aplicada na fonte e comprovada pela importação posterior do GLB r2. O preview Godot real passou com 23 MeshInstance3D, 23 superfícies, AnimationPlayer e quatro capturas PNG.
+O primeiro artefato foi preservado como histórico de FAIL de importação Godot por ausência de mimeType em imagens embarcadas. A correção foi aplicada na fonte e comprovada pela importação posterior do GLB r2; a entrega r3 reproduz o resultado a partir do commit da ferramenta. O preview Godot real passou com 23 MeshInstance3D, 23 superfícies, AnimationPlayer e quatro capturas PNG. O cache regenerável do importador foi excluído do pacote.
 
 Os critérios estruturais e de preview Godot estão PASS. O Unity nativo, a classificação Generic/Humanoid, o remapeamento URP/HDRP e os cliques reais do editor permanecem PENDING_EVIDENCE pelos limites aprovados e pela indisponibilidade da ponte CUA. A qualidade visual foi classificada como protótipo técnico low-poly/procedural, não como asset artístico final.

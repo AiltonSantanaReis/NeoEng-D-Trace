@@ -1,12 +1,12 @@
 # Relatório de validação — asset 3D para Unity
 
 **Status geral:** IN_PROGRESS
-**Base funcional:** asset r2
+**Base funcional:** asset r3
 **Objetivo:** validar autoria modular, exportação, integridade, importação/renderização real e prontidão do contrato Unity.
 
 ## Resultado executivo
 
-A entrega r2 é um asset original procedural chamado Eclipse Warden, com 23 componentes separados, 2.144 triângulos, 5 materiais PBR, UV0, skin glTF com 18 joints, inverse bind matrices e animação Idle. O GLB e o glTF aberto passaram a validação estrutural; o OBJ estático também passou.
+A entrega r3 é um asset original procedural chamado Eclipse Warden, com 23 componentes separados, 2.144 triângulos, 5 materiais PBR, UV0, skin glTF com 18 joints, inverse bind matrices e animação Idle. O GLB e o glTF aberto passaram a validação estrutural; o OBJ estático também passou.
 
 O Godot 4.7 importou o GLB pela etapa real do editor e o runtime com driver OpenGL/NVIDIA renderizou quatro capturas reais: frontal, três-quartos, lateral e pose Idle. O relatório do runtime registrou 23 MeshInstance3D, 23 superfícies, um AnimationPlayer, nenhuma falha e nenhum warning produzido pelo script.
 
@@ -14,10 +14,10 @@ O status de importação Unity permanece PENDING_EVIDENCE. A entrega está prepa
 
 ## Evidência estrutural
 
-Arquivo principal: artifacts/post-e13-3d-asset-unity-20260914-r2/eclipse_warden.glb
-Arquivo aberto: artifacts/post-e13-3d-asset-unity-20260914-r2/eclipse_warden.gltf
-Manifesto: artifacts/post-e13-3d-asset-unity-20260914-r2/manifest.json
-Relatório: artifacts/post-e13-3d-asset-unity-20260914-r2/structural-validation.json
+Arquivo principal: artifacts/post-e13-3d-asset-unity-20260914-r3/eclipse_warden.glb
+Arquivo aberto: artifacts/post-e13-3d-asset-unity-20260914-r3/eclipse_warden.gltf
+Manifesto: artifacts/post-e13-3d-asset-unity-20260914-r3/manifest.json
+Relatório: artifacts/post-e13-3d-asset-unity-20260914-r3/structural-validation.json
 
 Checks observados:
 
@@ -43,7 +43,7 @@ Hashes principais:
 
 ## Evidência real de engine
 
-Projeto de preview: artifacts/post-e13-3d-asset-unity-20260914-r2/godot_preview
+Projeto de preview: artifacts/post-e13-3d-asset-unity-20260914-r3/godot_preview
 Relatório: godot_preview/godot-runtime-report.json
 
 Etapas:
@@ -73,7 +73,9 @@ O log nativo do Godot também mostrou o warning não bloqueante NVAPI_EXECUTABLE
 
 ## Correção aplicada
 
-A primeira saída, em artifacts/post-e13-3d-asset-unity-20260914, foi preservada como histórico. O importador Godot rejeitou o GLB porque imagens embarcadas com bufferView não tinham mimeType. O gerador foi corrigido para declarar image/png e a r2 foi criada em diretório novo. A segunda importação e o runtime real passaram.
+A primeira saída, em artifacts/post-e13-3d-asset-unity-20260914, foi preservada como histórico. O importador Godot rejeitou o GLB porque imagens embarcadas com bufferView não tinham mimeType. O gerador foi corrigido para declarar image/png; r2 comprovou a correção e r3 foi regenerada a partir do commit com a ferramenta de limpeza de cache. A importação e o runtime real da r3 passaram.
+
+Os sidecars .godot, .import, .uid e PNGs extraídos automaticamente pelo importador foram removidos somente do diretório nomeado de preview r3. O GLB embarca suas imagens e as texturas abertas permanecem na pasta principal do asset.
 
 ## Avaliação visual humana
 
