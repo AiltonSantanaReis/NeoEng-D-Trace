@@ -2,8 +2,8 @@
 
 **ID:** `AUD-POST-E13-CLOSURE-AUDIT-20260913`
 **Status do registro:** `IN_PROGRESS`
-**Data:** 2026-09-13
-**HEAD de entrada auditado:** `541d48cbcb4557330b6be47225233cc1114d0ad9`
+**Data:** 2026-09-14
+**HEAD de entrada auditado:** `70ea28984f25fc388ddbb70cbfcccf2bd1381a`
 **Branch:** `Ailton/audit-post-e13-scenario-editor-20260912`
 **Governança:** `docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md`
 **SHA-256 da governança:** `D933DB005B7110C391CF776CDA3014CE348D61A91A5E9902AEEA619185EC3EA0`
@@ -24,7 +24,7 @@ artefatos funcionais foram preservados.
 
 | Frente | Estado corrente | Evidência autorizada | Conclusão |
 |---|---|---|---|
-| Suíte oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r14/official-pytest.log` — SHA-256 do blob sanitizado `920C7189382C9606AD08A1A36A4000510340A3316E8025D666712338CE1CE222`; JUnit sanitizado `E0E4C70D0A93E1AC45DA5537D423DA15290DDD2F67482E16F156DCF56AB057CB` | `2639 passed`, `2 skipped`, `0 failed`, `0 warnings`; o r13 permanece preservado como baseline anterior e o resultado r14 é a requalificação corrente do checkout |
+| Suíte oficial sem filtros | `PASS` | `docs/evidence/EVD_POST_E13_SUITE_RECONCILIACAO_20260914.md` — SHA-256 `2F6A9B20D672D129C6016DE6C377E2E7F6722B5089651327C3BCFE4F37CD066E`; metadado `run-metadata.txt` — SHA-256 `46013D42EF2D7204479A183601F1A641E1817BEBD2DF84821D9511B37AE77AF1` | `2641 passed`, `2 skipped`, `0 failed`, `0 warnings`; as tentativas com falha de ambiente/fingerprint e o r14 permanecem preservadas como histórico |
 | Symlink no host | `NOT_APPLICABLE` | Os dois testes da suíte oficial são registrados como `skipped` pelo guard antes do filesystem | Não executar nativamente; o resultado `skipped` é intencional e não é falha mascarada |
 | Symlink em ambiente controlado | `PASS` | `docs/evidence/EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md` e relatório/JUnit hashados | `31/31` passaram no escopo da Sandbox, sem skip, falha ou erro; não repetir sem mudança relevante |
 | Responsividade estrutural em escala | `FAIL / APPROVED_BY_OWNER` | `artifacts/audit-post-e13-performance-20260913-r9/o2-after-isolation-cache-fix-clean.json` — SHA-256 `3F7E6DEE0EC8088C69E452EC089B616AA59BCD0A7DDD7A30A36C3504A57531A8` e decisão formal do limite | p95 residual de `249,28–398,73 ms` em 512 objetos únicos; o limite foi aceito formalmente, sem reduzir threshold e sem declarar 60 FPS |
@@ -36,12 +36,15 @@ artefatos funcionais foram preservados.
 | Arquivo legado e higiene | `PASS` | `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md` e manifesto `archive/legacy/artifacts/post-e13-historical-20260913/archive-manifest.json` — SHA-256 `2E89672381BEF30BFAFD5E773D41FF0BDBDF742F99379B23A9A800CA5529F666` | Movimento reversível; `0` exclusões permanentes; históricos preservados e separados da base ativa |
 | Unity real em Windows Sandbox | `PASS` | r16 em `docs/evidence/EVD_POST_E13_UNITY_R16_RESULTADO_20260914.md`; resultado SHA-256 da cópia de execução `ECD0247241D50CCB0964E4429ECAD6768EAA88EA83A9AEFA9EE563B87357BA00`, pacote `9D4DE5C4459A88BAD7CDD65A9307862B13F44205CC29FAB14CE372D058FBF508`, log sanitizado `1AE9D29017AC7BF3AAB978B22F48460D7623A000115D1298275306C84A8FC4E2` | r16 iniciou Unity real `6000.5.7f1`, validou o contrato corrigido e produziu `Success=true` com retorno `0`; os gates específicos de licensing limpo e shutdown limpo são classificados separadamente como `BLOCKED`. A instalação `6000.6` não apareceu no mount `C:\UnityInstall` e não foi atribuída ao teste |
 | Unity licensing/shutdown limpos | `BLOCKED` | `docs/evidence/EVD_POST_E13_UNITY_R16_RESULTADO_20260914.md` e log sanitizado hashado | `Code 10`, token indisponível, warnings WMI/erro Curl, ausência de `Shut down.` e snapshot não individualizado de 29 processos; nenhum sinal foi ocultado |
+| Importação nativa do asset 3D no Unity | `PENDING_EVIDENCE` | `docs/evidence/RELATORIO_ASSET_3D_UNITY_20260914.md` e `artifacts/post-e13-3d-asset-unity-20260914-r3/manifest.json` | o r16 qualificou o pacote UPM, mas não abriu GLB/OBJ; Generic/Humanoid, importer glTF/OBJ, materiais, escala e retargeting não são afirmados sem ciclo nativo específico |
 
 ## Falhas, warnings e skips preservados
 
-- A suíte corrente terminou sem warnings e sem failures. Os dois skips são
-  exclusivamente os testes de symlink protegidos no host e têm cobertura
-  definitiva no Sandbox.
+- A suíte corrente terminou com `2641 passed`, `2 skipped`, sem warnings ou
+  failures. Os dois skips são exclusivamente os testes de symlink protegidos
+  no host e têm cobertura definitiva no Sandbox; a requalificação corrente e
+  suas tentativas intermediárias estão em
+  `docs/evidence/EVD_POST_E13_SUITE_RECONCILIACAO_20260914.md`.
 - A falha transitória `WinError 5` em `os.replace` e a falha inicial de higiene
   por caminhos locais estão documentadas em
   `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; os reruns
@@ -81,7 +84,11 @@ contrato do pacote; a declaração dos módulos necessários já foi corrigida n
    remoção de `Code 10`/token indisponível e o shutdown limpo completo; ou
 2. aceitar que licensing e shutdown limpos permaneçam `BLOCKED` neste ciclo,
    mantendo o método do pacote em `PASS` e o shutdown da Sandbox em `PASS` no
-   escopo descartável.
+   escopo descartável; ou
+3. decidir se a aceitação para uso do asset no Unity exige uma nova prova de
+   importação nativa de OBJ/GLB, com importer/fixture compatível e novo ciclo
+   controlado, ou se a entrega atual preparada por arquivos exportáveis é
+   suficiente para este ciclo.
 
 A confirmação de instalação já foi recebida e consumida pelo r16; não há novo
 gatilho autorizado neste registro. Uma nova execução exige a decisão acima e

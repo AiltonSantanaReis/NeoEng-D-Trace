@@ -42,10 +42,10 @@
       "closure_audit": {
       "status": "IN_PROGRESS",
       "evidence": "docs/evidence/AUDITORIA_FECHAMENTO_PENDENCIAS_POS_E13_20260913.md",
-      "evidence_sha256": "296E26604D401CF086961464FE1EA6D9D60869D6D1CBFA051BB6DE1E8DE29774",
+      "evidence_sha256": "B218509C96A49246A5C2F73AF618B36F586F5359839AE5740780EF1D3FC11D77",
       "entry_head": "1b7fedd0fe4e898c3b240c5767688e142ecd7e49",
       "scope": "Fechamento documental e técnico de symlink controlado, soak de memória/CUDA, CuPy, integridade, preservação e fluxos do editor canônico; os gates de licensing/shutdown do Unity permanecem isolados como bloqueio externo.",
-      "owner_decision": "Disponibilizar licença/ativação Unity válida ou fixture autorizada para nova execução controlada; alternativamente aceitar licensing, método do pacote e shutdown limpo como BLOCKED neste ciclo.",
+      "owner_decision": "Escolher entre disponibilizar licença/ativação Unity válida ou fixture autorizada para novo ciclo controlado, aceitar licensing/shutdown limpos como BLOCKED neste ciclo, e decidir se o uso do asset exige prova nativa OBJ/GLB no Unity ou se os arquivos exportáveis/guia atuais são suficientes.",
       "native_unsafe_actions": false
     },
     "active_lot": {
