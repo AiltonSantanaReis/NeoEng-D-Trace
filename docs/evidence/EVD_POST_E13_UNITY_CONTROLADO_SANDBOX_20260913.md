@@ -64,6 +64,8 @@ foi sobrescrita.
 | r13 | `BLOCKED` | candidato mudou após r12; wrapper isolado atualizou apenas o hash esperado em memória; cópia origem/destino coincidiu, mas Unity novamente encontrou zero entitlements e saiu com código 198 |
 | r14 | `FAIL_COMPILATION` | handoff manual concluído; Unity iniciou e alcançou a compilação, mas faltavam referências aos módulos `ImageConversion` e `Animation`; saiu com código 1 |
 | r15 | `TIMEOUT` | fixture corrigida preparada; Hub iniciou, mas nenhum gatilho de autenticação foi recebido em 1800 s; Unity não iniciou e a Sandbox encerrou de forma controlada |
+| r15 repetição de referência | `TIMEOUT` | a saída do follow-up observado às 19:29 foi preservada separadamente em `output-r15-repeat-20260913-1929/sandbox-result.json` (`C5CDE...`); continua sem Unity/licensing |
+| r15 repetição mais recente | `TIMEOUT` | a saída observada às 20:37 foi preservada em `output-r15-repeat-20260913-2037/sandbox-result.json` (`E7CD...`); o runner atingiu 1.800 s e pediu shutdown |
 
 ## Execução real r8
 
@@ -320,26 +322,72 @@ encerrou cada espera com código `124`, sem iniciar Unity, sem log de licensing 
 sem qualquer claim de shutdown limpo do Editor. A solicitação de shutdown
 permaneceu restrita à Sandbox.
 
+### Causa do fechamento prematuro
+
+O fechamento não foi espontâneo. O runner r15 continha um limite fixo de
+`$activationWaitLimitSeconds = 1800`; ao expirar, entrava no ramo sem gatilho,
+gravava `timed_out=true`/`process_exit_code=124` e depois executava o bloco final
+incondicional `shutdown.exe /s /t 0 /f`. O resultado mais recente confirma
+`activation_wait_seconds=1800`, `trigger_observed=false`, ausência de
+`test-started.txt` e presença de `sandbox-shutdown-requested.txt`.
+
+A saída do follow-up de referência, anteriormente registrada apenas por hash,
+foi recuperada exatamente do checkpoint em
+`output-r15-repeat-20260913-1929/sandbox-result.json` (SHA-256
+`C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D`, 2.614
+bytes, CRLF). A nova repetição foi preservada em
+`output-r15-repeat-20260913-2037/sandbox-result.json` (SHA-256
+`E7CD1D7AFD9036F031E17B10437CEEEA2DEAED86F413E3B17412084606C6E530`). O bruto
+`sandbox-result.raw.json` nessa última pasta é o bruto da primeira espera r15
+(`A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276`) e não é
+tratado como bruto pareado da repetição mais recente.
+
+## Preparação r16 — espera sem encerramento automático
+
+O r16 foi preparado como um harness novo e não altera o produto nem reutiliza a
+VM r15. Enquanto não houver o marcador válido
+`MANUAL_HUB_LOGIN_CONFIRMED_BY_USER=true`, o runner permanece vivo e atualiza
+`waiting-for-user-login.json` com heartbeat e inventário de Editor. Não há
+timeout automático nem `shutdown.exe` nesse estado. Um encerramento antecipado
+só pode ocorrer por `MANUAL_WAIT_ABORT_REQUESTED_BY_USER=true` ou depois do
+gatilho manual válido.
+
+O WSB adiciona o mount dedicado `unity-install-r16` → `C:\UnityInstall` com
+escrita permitida somente no ambiente controlado. Assim, o usuário pode apontar
+o destino do Editor no Hub para `C:\UnityInstall` e não perder a instalação por
+causa do descarte da VM. O Editor conhecido `6000.5.7f1` continua montado
+read-only em `C:\Unity\Editor` como fallback. O r16 ainda é
+`PREPARATORY_ONLY`: nenhum Unity foi iniciado e nenhuma conclusão de licensing,
+package report ou shutdown limpo é atribuída a ele.
+
+Hashes da preparação: runner `8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E`,
+wrapper `B0C3A11DA6D9282307AA5A3C9EB7270CB73BBC98821AB9E1A113E5049FCF3EBD`,
+WSB `3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6`.
+
 O primeiro resultado r15 está preservado no bruto local
 `output-r15/sandbox-result.raw.json` com SHA-256
 `A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276`. A saída
-mais recente, no mesmo caminho controlado
-`output-r15/sandbox-result.json`, tem SHA-256
-`C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D` e registra
-`roaming_unity_directory_present=true` e `33` processos correspondentes antes
-do shutdown da Sandbox. Esses campos são preservados como diagnóstico do
+do follow-up de referência está em
+`output-r15-repeat-20260913-1929/sandbox-result.json` com SHA-256
+`C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D`; a saída
+mais recente está em
+`output-r15-repeat-20260913-2037/sandbox-result.json` com SHA-256
+`E7CD1D7AFD9036F031E17B10437CEEEA2DEAED86F413E3B17412084606C6E530`. Os
+campos de presença de diretórios/processos são preservados como diagnóstico do
 harness; não comprovam instalação concluída, autenticação, execução Unity ou
-shutdown limpo. O timeout r15 não substitui a execução r14 nem prova o
-comportamento do fixture corrigido. Após nova confirmação explícita do
-proprietário de que a instalação terminou, a próxima execução deverá ser um
-novo ciclo descartável, sem reutilizar o r15.
+shutdown limpo. Os timeouts r15 não substituem a execução r14 nem provam o
+comportamento do fixture corrigido. Após confirmação explícita do proprietário
+de que a instalação terminou, a próxima execução deverá ser o r16 novo, com a
+instalação apontada para `C:\UnityInstall` quando aplicável e sem reutilizar a
+VM r15.
 
 ## Evidências e hashes
 
-O resultado completo das tentativas r1–r15, incluindo os hashes da configuração
-efetivamente executada, da cópia sanitizada rastreada e do runner, está em
+O resultado completo das tentativas r1–r15 e a preparação r16, incluindo os
+hashes da configuração efetivamente executada, da cópia sanitizada rastreada e
+dos runners, está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/sandbox-attempt.json`
-(SHA-256 `0A6113928A17C9B70F490286A6FA16D43871074C1797C207F13CC16DF02AF1B1`).
+(SHA-256 `98502F173BE7D809759F61CC39C92F471A30685BEDC3D535A81FB3730E8D0F05`).
 
 O resultado r8 está em
 `artifacts/audit-post-e13-unity-controlled-windows-sandbox-20260913-r1/output-r8/sandbox-result.json`

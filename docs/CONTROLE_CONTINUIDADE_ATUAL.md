@@ -12,10 +12,13 @@ suíte corrente e próxima ação estão registrados em
 **Auditoria corrente de fechamento:**
 `docs/evidence/AUDITORIA_FECHAMENTO_PENDENCIAS_POS_E13_20260913.md` consolida
 os gates pós-E13; o Unity r14 alcançou a compilação real e revelou uma falha de
-referências do pacote que já foi corrigida, mas ainda requer requalificação. O
-r15 expirou aguardando instalação/handoff manual. Resta a decisão do
-proprietário sobre uma licença/fixture Unity válida e a confirmação operacional
-de que o Editor terminou de instalar antes de qualquer novo ciclo.
+referências do pacote que já foi corrigida, mas ainda requer requalificação. As
+esperas r15 expiraram porque o runner antigo tinha limite fixo de 1.800 s e
+solicitava shutdown sem gatilho; a causa foi comprovada, preservada e corrigida
+no harness r16, que aguarda sem timeout e usa um mount dedicado para instalação.
+Resta a decisão do proprietário sobre uma licença/fixture Unity válida e a
+confirmação operacional de que o Editor terminou de instalar antes de qualquer
+execução Unity.
 **Arquivo legado reconciliado em 2026-09-13:** execuções históricas não
 referenciadas foram movidas de forma reversível para
 `archive/legacy/artifacts/post-e13-historical-20260913/`, com manifesto e
@@ -70,12 +73,15 @@ rastreado pelo Git foi restaurado; a auditoria está em
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
 A regressão oficial segura mais recente foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-safe-host-20260913-r12/official-pytest.log`,
-com SHA-256 `171F156EDDA800951356FB4244459CAE08CE20D18B5E1E3CA870399CE4B1A0A3`:
-`2634 passed, 2 skipped, 0 warnings` em 84,83 s. O JUnit tem SHA-256
-`D75ECAB717E4752250FE85E0EEE9EB3F2336EEB239A23C161D80E304AACA2113`.
-O pacote r3 anterior, inclusive o log com cinco warnings preservado antes
-da correção, permanece disponível para comparação histórica.
+`artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-pytest.log`,
+com SHA-256 `9420B5B092E56031DF81DC88281AF36328E4665E2D0D08E3ACAFE9B0F35C442A` no
+blob commitável (a captura Windows CRLF tem SHA-256
+`4A85E6AC5E67C7B56AF4C6E951291003462A5FD7A86E1E246E8944955D3D1835`):
+`2638 passed, 2 skipped, 0 warnings` em 79,71 s. O JUnit tem SHA-256
+`EBAF912E1A84CA42DEABB77F61488EA6C3B3C38DF7F05D85CF039E6C8A503011`.
+O pacote r12 anterior permanece registrado como baseline histórica, e o r3
+anterior, inclusive o log com cinco warnings preservado antes da correção,
+continua disponível para comparação.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
@@ -218,7 +224,8 @@ handoff/login manual, iniciou Unity e alcançou a compilação real, onde revelo
 `Texture2D.LoadImage` sem `ImageConversionModule` e tipos de animação sem
 `AnimationModule`; a correção declarativa foi aplicada no pacote, mas ainda não
 foi validada. O r15 usou a fixture corrigida, porém expirou aguardando a
-instalação/handoff manual e não iniciou Unity. O shutdown da sandbox foi
+instalação/handoff manual e não iniciou Unity; o fechamento prematuro foi causado
+pelo timeout/shutdown do runner antigo. O shutdown da sandbox foi
 comprovado nas tentativas finalizadas, e a evidência hashada de r1–r15 está em
 `evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`.
 
@@ -262,8 +269,9 @@ permanece como falha histórica preservada, não como resultado atual da suíte.
 
 Enquanto a instalação do Editor não for confirmada como concluída pelo
 proprietário, não criar gatilho nem iniciar Unity. Após essa confirmação, a
-requalificação deverá usar um ciclo descartável novo, com handoff/login manual e
-evidência própria; o timeout r15 não é prova de execução do pacote.
+requalificação deverá usar o ciclo descartável r16, com handoff/login manual,
+instalação persistida em `C:\UnityInstall` quando aplicável e evidência própria;
+os timeouts r15 não são prova de execução do pacote.
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada

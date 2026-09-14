@@ -51,7 +51,7 @@
     "status": "BLOCKED",
     "latest_attempt_id": "r14",
     "latest_functional_requalification_id": "r13",
-    "latest_prepared_attempt_id": "r15",
+    "latest_prepared_attempt_id": "r16",
     "attempts": [
       {
         "id": "r1",
@@ -565,6 +565,59 @@
       "followup_remaining_unity_process_count_before_sandbox_shutdown": 33,
       "classification": "Two controlled waits ended at 1800 seconds without the manual authentication/gate trigger; no authentication, Unity execution, licensing, or clean Unity shutdown claim is made. The second output's roaming-directory/process-count differences are preserved as harness diagnostics only."
     },
+    "manual_handoff_r15_reference_repeat": {
+      "status": "TIMEOUT_WAITING_FOR_MANUAL_AUTHENTICATION",
+      "output_dir": "output-r15-repeat-20260913-1929",
+      "observed_at": "2026-09-13T19:29:59-03:00",
+      "result_path": "output-r15-repeat-20260913-1929/sandbox-result.json",
+      "result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
+      "activation_wait_seconds": 1800,
+      "trigger_observed": false,
+      "unity_process_started": false,
+      "shutdown_marker_present": true,
+      "classification": "Reference follow-up result recovered with its original CRLF bytes; no Unity or licensing claim."
+    },
+    "manual_handoff_r15_latest_repeat": {
+      "status": "TIMEOUT_WAITING_FOR_MANUAL_AUTHENTICATION",
+      "output_dir": "output-r15-repeat-20260913-2037",
+      "observed_at": "2026-09-13T20:37:35-03:00",
+      "result_path": "output-r15-repeat-20260913-2037/sandbox-result.json",
+      "result_sha256": "E7CD1D7AFD9036F031E17B10437CEEEA2DEAED86F413E3B17412084606C6E530",
+      "activation_wait_seconds": 1800,
+      "trigger_observed": false,
+      "unity_process_started": false,
+      "shutdown_marker_present": true,
+      "raw_result_paired": false,
+      "classification": "Latest controlled repeat confirmed the r15 runner's deterministic timeout and old-flow shutdown request; the raw file in the repeat directory belongs to the first r15 wait and is explicitly not paired."
+    },
+    "manual_handoff_r16": {
+      "status": "PREPARATORY_ONLY",
+      "output_dir": "output-r16",
+      "wsb_path": "unity-controlled-r16.wsb",
+      "wsb_sha256": "3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6",
+      "runner_sha256": "8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E",
+      "browser_wrapper_sha256": "B0C3A11DA6D9282307AA5A3C9EB7270CB73BBC98821AB9E1A113E5049FCF3EBD",
+      "networking": "enabled",
+      "automatic_wait_timeout": false,
+      "automatic_shutdown_before_trigger": false,
+      "persistent_install_mount": "unity-install-r16 -> C:\\UnityInstall (read-write inside disposable Sandbox only)",
+      "trigger_present": false,
+      "test_started_marker": false,
+      "result_present": false,
+      "classification": "New disposable harness prepared; no Sandbox or Unity process has been started by r16."
+    },
+    "latest_prepared_harness": {
+      "sandbox_runner_sha256": "8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E",
+      "sandbox_config_sha256": "3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6",
+      "browser_wrapper_sha256": "B0C3A11DA6D9282307AA5A3C9EB7270CB73BBC98821AB9E1A113E5049FCF3EBD",
+      "fixture_runtime_asmdef_sha256": "2C8230059CD6AD18881A2FD6DB2F859264D16BAE394DBC50BF49D117CA45F35A",
+      "fixture_package_json_sha256": "26FDCDD428068DF4F149798FA7B01DC6E26E22723ABD284F25C8386580F6352B",
+      "fixture_source_commit": "f61e185a978561dbf5d213032c120ba34f7bba81",
+      "networking": "enabled",
+      "status": "PREPARATORY_ONLY",
+      "automatic_wait_timeout": false,
+      "persistent_install_mount": "unity-install-r16 -> C:\\UnityInstall"
+    },
     "latest_harness": {
     "sandbox_runner_sha256": "78D5A49E477D5AA44BE1F33FB7F40DA4661C890ED8BEA3DE0AEF7E35629C2624",
     "sandbox_config_sha256": "3042ACC8577DD67C2FC5EEF52035A72CDFA38DA852C9C398EDDA00ED9B4EC80F",
@@ -578,8 +631,11 @@
     "license_source_used_in_r12": true,
     "license_source_used_in_r13": true,
     "license_source_used_in_r14": false,
-    "latest_executed_attempt_id": "r14",
-      "latest_prepared_attempt_id": "r15",
+      "latest_executed_attempt_id": "r14",
+      "latest_prepared_attempt_id": "r16",
+      "latest_prepared_harness_status": "PREPARATORY_ONLY",
+      "latest_prepared_harness_runner_sha256": "8C4D22543EED175507370B71C974289F4D997D1CE30FF47B2B156365260A950E",
+      "latest_prepared_harness_config_sha256": "3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6",
       "r15_latest_result_sha256": "C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D",
       "r15_fixture_runtime_asmdef_sha256": "2C8230059CD6AD18881A2FD6DB2F859264D16BAE394DBC50BF49D117CA45F35A",
       "r15_fixture_package_json_sha256": "26FDCDD428068DF4F149798FA7B01DC6E26E22723ABD284F25C8386580F6352B",
@@ -594,7 +650,7 @@
         "vcruntime140_1.dll": "A7146C08F89FE5B04541AB507CDB59FF7B44534D4BA3C668A426C6450A03434E"
       }
     },
-    "reexecution_condition": "After the owner explicitly confirms that the Editor installation is complete, prepare a new disposable cycle (r16), keep Hub authentication manual, and create the trigger only after the handoff is confirmed. The material package-contract correction for ImageConversion/Animation justifies requalification of the corrected fixture; a valid licensing/activation state is still required to complete the package method and clean Unity shutdown. r14 is the latest real Unity execution and stopped at compilation; r15 timed out before Unity and is not functional evidence. Do not repeat r9/r10/r12/r13 without a relevant change and do not rerun symlink or host shutdown tests."
+    "reexecution_condition": "The r16 harness is prepared but not executed. The owner must complete the Unity Editor installation inside the Sandbox, preferably with Hub targeting C:\\UnityInstall, and then explicitly confirm readiness. Only after that confirmation may the manual handoff/login be observed and the exact run-test.trigger be created. The material package-contract correction for ImageConversion/Animation justifies requalification of the corrected fixture; a valid licensing/activation state is still required to complete the package method and clean Unity shutdown. r14 remains the latest real Unity execution and stopped at compilation; all r15 waits remain non-functional evidence. Do not repeat r9/r10/r12/r13 without a relevant change and do not rerun symlink or host shutdown tests."
   },
   "alternative_environment_probe": {
     "docker_server": "29.5.3",

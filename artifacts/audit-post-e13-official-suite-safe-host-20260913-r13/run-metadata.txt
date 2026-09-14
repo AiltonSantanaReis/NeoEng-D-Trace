@@ -1,0 +1,18 @@
+suite=official
+status=PASS
+branch=Ailton/audit-post-e13-scenario-editor-20260912
+source_commit=824971879dfb6a50251cc7fda19d67fb5294fbd8
+working_tree_scope=r16 controlled Sandbox harness, contract test and linked evidence reconciliation
+command=.venv\Scripts\python.exe -m pytest -q --tb=short --junitxml=artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-junit.xml
+collected=2640
+passed=2638
+skipped=2
+failed=0
+warnings=0
+duration_seconds=79.71
+log=artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-pytest.log
+log_sha256=9420B5B092E56031DF81DC88281AF36328E4665E2D0D08E3ACAFE9B0F35C442A
+log_worktree_sha256=4A85E6AC5E67C7B56AF4C6E951291003462A5FD7A86E1E246E8944955D3D1835
+junit=artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-junit.xml
+junit_sha256=EBAF912E1A84CA42DEABB77F61488EA6C3B3C38DF7F05D85CF039E6C8A503011
+host_symlink_or_shutdown_executed=false

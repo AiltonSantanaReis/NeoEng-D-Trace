@@ -24,7 +24,7 @@ artefatos funcionais foram preservados.
 
 | Frente | Estado corrente | Evidência autorizada | Conclusão |
 |---|---|---|---|
-| Suíte oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r12/official-pytest.log` — SHA-256 `171F156EDDA800951356FB4244459CAE08CE20D18B5E1E3CA870399CE4B1A0A3` | `2634 passed`, `2 skipped`, `0 failed`, `0 warnings`; o resultado é a requalificação corrente do checkout |
+| Suíte oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r13/official-pytest.log` — SHA-256 do blob `9420B5B092E56031DF81DC88281AF36328E4665E2D0D08E3ACAFE9B0F35C442A` (captura Windows `4A85E6AC5E67C7B56AF4C6E951291003462A5FD7A86E1E246E8944955D3D1835`) | `2638 passed`, `2 skipped`, `0 failed`, `0 warnings`; o r12 permanece preservado como baseline histórica e o resultado r13 é a requalificação corrente do checkout |
 | Symlink no host | `SKIP_CONTROLLED_ONLY` | Os dois skips protegidos da suíte oficial; a barreira impede a operação antes do filesystem | Não executar nativamente; o skip é intencional e não é falha mascarada |
 | Symlink em ambiente controlado | `PASS_SANDBOX` | `docs/evidence/EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md` e relatório/JUnit hashados | `31/31` passaram, sem skip, falha ou erro; não repetir sem mudança relevante |
 | Responsividade estrutural em escala | `FAIL / APPROVED_BY_OWNER` | `artifacts/audit-post-e13-performance-20260913-r9/o2-after-isolation-cache-fix-clean.json` — SHA-256 `3F7E6DEE0EC8088C69E452EC089B616AA59BCD0A7DDD7A30A36C3504A57531A8` e decisão formal do limite | p95 residual de `249,28–398,73 ms` em 512 objetos únicos; o limite foi aceito formalmente, sem reduzir threshold e sem declarar 60 FPS |
@@ -34,7 +34,7 @@ artefatos funcionais foram preservados.
 | CuPy | `PASS / NOT_APPLICABLE` para adoção oficial | `docs/evidence/ADR_POST_E13_CUPY_AVALIACAO_20260913.md` e diagnóstico hashado | Suporte opcional e fallback CPU permanecem; não há base causal para incluir CuPy na dependência ou na build portátil |
 | Fluxo nativo do editor canônico e revisão humana | `PASS` no escopo qualificado | `artifacts/audit-post-e13-binary-performance-20260913-r4/actions.json` — SHA-256 `CBBE3711D4D24E336B6E349E7D659C502C9F640C24ED40207FF81FA98387D3AA` e decisão de revisão aprovada | Capturas reais, fluxo nativo e aprovação humana estão registrados; isso não encerra o gate externo do Unity |
 | Arquivo legado e higiene | `PASS` | `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md` e manifesto `archive/legacy/artifacts/post-e13-historical-20260913/archive-manifest.json` — SHA-256 `2E89672381BEF30BFAFD5E773D41FF0BDBDF742F99379B23A9A800CA5529F666` | Movimento reversível; `0` exclusões permanentes; históricos preservados e separados da base ativa |
-| Unity real em Windows Sandbox | `PASS` de inicialização/compilação alcançada / `BLOCKED` de requalificação do pacote, licensing limpo e shutdown limpo | r14 em `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; resultado SHA-256 `A9A7EC3DD68A8E807BACD1500F9DDEA4D91013E842E94649875DB3BBCC6562A7`, log sanitizado SHA-256 `E27EA506CD2AD2F115F7CBE065A9CC8AC7914584BDE1AE50DD65AF99A0751278`; primeira espera r15 SHA-256 `A693E73CFAA03B1488C71B97D4086109D13EBC030D388C0293D26B7AB8918276`, saída mais recente SHA-256 `C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D` | r14 iniciou o Unity dentro da sandbox, alcançou a compilação real e preservou os erros dos módulos `ImageConversion`/`Animation`; a correção declarativa foi aplicada no pacote, mas ainda não foi requalificada. As duas esperas r15 não iniciaram Unity porque nenhum gatilho de autenticação manual chegou no limite de 1800 s; nenhum diagnóstico de licensing é atribuído a elas |
+| Unity real em Windows Sandbox | `PASS` de inicialização/compilação alcançada / `BLOCKED` de requalificação do pacote, licensing limpo e shutdown limpo | r14 em `docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`; resultado SHA-256 `A9A7EC3DD68A8E807BACD1500F9DDEA4D91013E842E94649875DB3BBCC6562A7`, log sanitizado SHA-256 `E27EA506CD2AD2F115F7CBE065A9CC8AC7914584BDE1AE50DD65AF99A0751278`; r15/repetições `C5CDEFE1717E1388E93EC2CD354327FDDB45514801C982D37AA0A906357C3F9D` e `E7CD1D7AFD9036F031E17B10437CEEEA2DEAED86F413E3B17412084606C6E530`; r16 preparado com runner/WSB hashados | r14 iniciou o Unity dentro da sandbox, alcançou a compilação real e preservou os erros dos módulos `ImageConversion`/`Animation`; a correção declarativa foi aplicada no pacote, mas ainda não foi requalificada. As esperas r15 não iniciaram Unity: o harness expirou em 1800 s e executou shutdown condicionado por seu desenho antigo; a causa foi corrigida no r16, ainda não executado. Nenhum diagnóstico de licensing é atribuído às esperas |
 
 ## Falhas, warnings e skips preservados
 
@@ -59,7 +59,10 @@ artefatos funcionais foram preservados.
   A correção mínima foi aplicada em `NeoEngDTrace.Runtime.asmdef` e
   `package.json`, mas permanece pendente de confirmação por uma nova execução
   real do Unity. O r15 preserva o timeout `124` aguardando a instalação/handoff
-  manual e não é evidência de sucesso nem de falha do pacote.
+  manual e não é evidência de sucesso nem de falha do pacote. A causa do
+  fechamento prematuro — limite fixo de 1.800 s seguido de `shutdown.exe` sem
+  gatilho — está documentada e foi isolada no novo harness r16; não foi
+  reclassificada como falha do Unity.
 
 ## Estado da única pendência dependente do proprietário
 
