@@ -169,8 +169,8 @@ def test_dialog_selection_covers_cancel_invalid_and_valid_paths(
 
         assert len(warnings) == 2
         assert dialog.hub_path.text() == str(valid_hub.resolve())
-        assert "missing" in dialog._format_state("missing", invalid)
-        assert "invalid" in dialog._format_state("invalid", invalid)
+        assert str(invalid) in dialog._format_state("missing", invalid)
+        assert str(invalid) in dialog._format_state("invalid", invalid)
     finally:
         dialog.deleteLater()
         window.close()

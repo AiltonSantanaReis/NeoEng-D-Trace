@@ -82,6 +82,14 @@ na política integrada de branches, com `84.96%` no Linux (`104128075383`) e
 `85.00%`. A execução permanece `IN_PROGRESS` até uma execução oficial superar
 esse gate.
 
+Na execução `34894893066`, o novo contrato de seleção encontrou uma falha de
+asserção em ambos os ambientes durante `test_unity_integration_flow.py`: o
+teste comparava a palavra inglesa `missing`, embora a tradução efetiva do
+estado fosse `Not found`. O log Windows confirmou `11 passed, 1 failed`; o
+Linux também falhou no passo de testes antes de produzir cobertura. A falha é
+corrigida ajustando a expectativa para a saída observável e o caminho
+selecionado, sem alterar a tradução nem o comportamento do diálogo.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
