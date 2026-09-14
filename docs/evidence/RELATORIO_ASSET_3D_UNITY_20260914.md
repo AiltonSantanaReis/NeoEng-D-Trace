@@ -93,13 +93,13 @@ Esses itens são melhorias futuras registradas, não falhas escondidas da valida
 
 ## Build atualizada e probe do binário
 
-A build foi gerada depois das alterações no commit 01a3dc1:
+A build final foi gerada depois das alterações no commit 985345c:
 
-- diretório: release/post-e13-user-asset-build-20260914-r2;
-- proveniência: PASS, source_commit 01a3dc16e23fef1e4c11987f75f237ce8c39c6cf;
+- diretório: release/post-e13-user-asset-build-20260914-r3;
+- proveniência: PASS, source_commit 985345cd21341aeb65197a6b878d26eb32768518;
 - executável: portable/NeoEng-D-Trace/NeoEng-D-Trace.exe;
 - tamanho: 10.883.963 bytes;
-- SHA-256: 92B3639CCA47243A71E80BF2FC4B3674E73F6B59AE3AF1CE57B202CA485ECB72;
+- SHA-256: F0FC4C12EB2540492E99DEF89003D05DD55827A1D044494271DF04B22975EAD7;
 - smoke oficial: SUCCESS, 11 checks, incluindo cli-version, headless-project, headless-glb, gui-open-close e user-state-directory;
 - probe manual: --version exibiu 0.3.0, --help exibiu o contrato CLI e o processo aceitou CloseMainWindow e encerrou.
 
