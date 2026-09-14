@@ -2265,8 +2265,8 @@
       "size": 2813
     },
     "docs/evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md": {
-      "sha256": "6f2680bbc63a024bea2af774a7fcac47923c3e8fbf756ab9c08b8dbef7fb26b7",
-      "size": 4921
+      "sha256": "589f471109b373280fb07a043c90da4aa99c7393b7038e312912353a79a39712",
+      "size": 6049
     },
     "docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md": {
       "sha256": "2d6463f80dfdf923365b79c7b4f2d59e2aad388cf25f36da36e2974025903441",
@@ -14993,8 +14993,8 @@
       "size": 5194
     },
     "tests/test_reference_3d_asset.py": {
-      "sha256": "dc41d124e3f2093c12ef068f2666f75a0d89e44a6088b21737ee8cce311bcce6",
-      "size": 1062
+      "sha256": "faa22d6b89713d45257884a358812d871feaa39dda6d37594bab2698b8c1bf10",
+      "size": 1195
     },
     "tests/test_reference_gizmo.py": {
       "sha256": "9aa382bc9a484c500a9f3b32466a3d306298bf2f7b6b878ca455b56ddc6bfaa5",
@@ -15501,8 +15501,8 @@
       "size": 3165
     },
     "tools/create_reference_3d_asset.py": {
-      "sha256": "0a70987a0157014d765f00f26ac4393f0dc05d6eae31408ca5675cb51c22f795",
-      "size": 47947
+      "sha256": "0d8d4ab734d23522c3ae2776f2ea4967bd0d237b9c61ec2db2c42fab42948bf8",
+      "size": 47951
     },
     "tools/evidence_integrity.py": {
       "sha256": "ef8c46c8558693221c18749c41b6f111d870bcbf3b6ef3ddde6a10354c47bf88",

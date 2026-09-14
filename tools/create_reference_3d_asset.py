@@ -562,7 +562,7 @@ def build_parts() -> list[MeshPart]:
             (0.54, 0.24, 0.88),
             ((f"foot_{'l' if side < 0 else 'r'}", 1.0),),
         )
-    parts.append(boot)
+        parts.append(boot)
 
     cape = _make_part("Cape_Center", cloth)
     add_panel(

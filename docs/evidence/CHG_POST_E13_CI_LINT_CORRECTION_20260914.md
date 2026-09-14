@@ -47,6 +47,18 @@ isort foi a ordem dos nomes na importação de `src/ui/unity_integration_setting
 as constantes `UNITY_*` devem preceder `ExecutableKind` conforme o perfil
 canônico do projeto.
 
+Na execução `34887077924`, os gates anteriores passaram, mas o passo oficial de
+cobertura funcional falhou nos jobs Linux `104120265823` e Windows
+`104120265537`. O Linux executou `2651` testes (`2650 passed, 1 failed,
+2 skipped`), atingiu `91.29%` de cobertura e reprovou a asserção de
+`tests/test_reference_3d_asset.py::test_reference_asset_generation_and_contract`
+(`mesh_count == 23`; observado `22`). O Windows reproduziu a mesma causa no
+shard `test_post_e13_boundary_contracts.py`, encerrando com `839` testes,
+`0` failures, `1` error e `2` skips. A falha não era de threshold: era um
+defeito funcional no gerador do asset. O `parts.append(boot)` estava fora do
+laço bilateral, portanto somente `Boot_R` era publicado e `Boot_L` era
+silenciosamente perdido.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -59,6 +71,10 @@ canônico do projeto.
   de descoberta e seleção permanece o mesmo.
 - Reordenação da importação Unity conforme o diff oficial do isort; nenhum
   símbolo foi adicionado ou removido.
+- Correção da publicação bilateral de botas em `build_parts`: o registro de
+  cada bota agora ocorre dentro do laço `L/R`, restaurando as duas malhas e o
+  contrato de 23 componentes; o teste também fixa explicitamente a presença de
+  `Boot_L` e `Boot_R`.
 - Remoção somente do import `os` comprovadamente não utilizado.
 - Renomeação de um identificador de teste excessivamente longo, sem mudar o
   cenário, as asserções ou o contrato verificado.
@@ -75,7 +91,7 @@ git diff --check
 python -m compileall -q -f app.py src tests pack_for_ai.py tools
 verificação de comprimento: nenhum arquivo tocado possui linha > 88 colunas
 tools/baseline_integrity.py --verify --git-blob
-Baseline verified: 3901 files
+Baseline verified: 3902 files
 ```
 
 PENDENTE DE EVIDÊNCIA: a execução local de `poetry run flake8`,
@@ -87,11 +103,12 @@ mudança; ausência local não será tratada como sucesso.
 
 ## Impacto e não regressão
 
-A mudança é restrita à apresentação do código e à remoção de um import morto.
-Não altera contratos de runtime, schemas, persistência, renderer, UI, formato
-de asset, seleção oficial de testes ou limites de cobertura. O baseline foi
-regenerado a partir do conteúdo staged e verificado contra blobs Git para
-incluir os hashes dos arquivos corrigidos.
+A mudança combina correções de qualidade estática com uma correção funcional
+localizada no gerador de asset de referência. Ela não altera schemas,
+persistência, renderer, UI, seleção oficial de testes ou limites de cobertura;
+apenas deixa de descartar a bota esquerda que já fazia parte do contrato
+esperado. O baseline será regenerado a partir do conteúdo staged e verificado
+contra blobs Git para incluir os hashes dos arquivos corrigidos.
 
 ## Dependências documentais
 

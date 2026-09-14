@@ -16,6 +16,8 @@ def test_reference_asset_generation_and_contract(tmp_path):
     assert manifest["asset"]["name"] == "Eclipse Warden"
     assert report["status"] == "PASS"
     assert report["checks"]["mesh_count"] == 23
+    component_names = {component["name"] for component in manifest["components"]}
+    assert {"Boot_L", "Boot_R"} <= component_names
     assert report["checks"]["joint_count"] == 18
     assert report["checks"]["gltf_version"] == "2.0"
     assert report["unity_contract"]["status"] == "PENDING_EVIDENCE"
