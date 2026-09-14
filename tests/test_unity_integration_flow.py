@@ -132,6 +132,51 @@ def test_unity_hub_discovery_deduplicates_environment_and_path_candidates(
     assert discover_unity_hub_executables(environment) == (hub,)
 
 
+def test_dialog_selection_covers_cancel_invalid_and_valid_paths(
+    qt_app,
+    tmp_path: Path,
+    monkeypatch,
+):
+    window = MainWindow(Scene(), AuditConfig())
+    dialog = UnityIntegrationDialog(window)
+    valid_hub = tmp_path / "Unity Hub.exe"
+    invalid = tmp_path / "not-unity.exe"
+    valid_hub.write_bytes(b"hub-placeholder")
+    invalid.write_bytes(b"not-a-unity-executable")
+    selected = iter(
+        (
+            ("", ""),
+            ("x" * (MAX_CONFIG_PATH_LENGTH + 1), ""),
+            (str(invalid), ""),
+            (str(valid_hub), ""),
+        )
+    )
+    warnings: list[tuple[object, ...]] = []
+    monkeypatch.setattr(
+        "src.ui.unity_integration_settings.QFileDialog.getOpenFileName",
+        lambda *_args: next(selected),
+    )
+    monkeypatch.setattr(
+        "src.ui.unity_integration_settings.QMessageBox.warning",
+        lambda *args: warnings.append(args),
+    )
+
+    try:
+        dialog._select_executable("hub")
+        dialog._select_executable("hub")
+        dialog._select_executable("editor")
+        dialog._select_executable("hub")
+
+        assert len(warnings) == 2
+        assert dialog.hub_path.text() == str(valid_hub.resolve())
+        assert "missing" in dialog._format_state("missing", invalid)
+        assert "invalid" in dialog._format_state("invalid", invalid)
+    finally:
+        dialog.deleteLater()
+        window.close()
+        qt_app.processEvents()
+
+
 def test_explicit_missing_path_is_visible_as_missing_not_silently_replaced(
     tmp_path: Path,
 ):

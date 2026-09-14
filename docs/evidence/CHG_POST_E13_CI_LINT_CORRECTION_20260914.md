@@ -73,6 +73,15 @@ condição de corrida: o worker de timeout curto podia publicar o sinal antes de
 o teste registrar o observador. O prazo não era estendido nem o teste era
 ignorado; a falha ocorreu no ciclo de entrega do resultado terminal.
 
+Na execução `34892412623`, a correção do ciclo assíncrono foi confirmada pelo
+Windows: `247/247` arquivos, `2654` testes, `0` falhas, `0` erros e `2` skips
+controlados, sem repetição do erro de payload. O Linux também concluiu a suíte,
+com `2652 passed` e `2 skipped`; os dois ambientes, contudo, reprovaram somente
+na política integrada de branches, com `84.96%` no Linux (`104128075383`) e
+`84.94%` no Windows (`104138075326`), abaixo do mínimo não alterado de
+`85.00%`. A execução permanece `IN_PROGRESS` até uma execução oficial superar
+esse gate.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
