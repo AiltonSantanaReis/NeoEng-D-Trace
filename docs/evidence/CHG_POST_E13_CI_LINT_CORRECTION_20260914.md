@@ -117,6 +117,14 @@ descoberta real do produto e torna a entrada do teste independente do software
 instalado no runner. A sincronização com `main` incorpora somente o histórico
 do merge #173; o diff de conteúdo staged desse merge foi vazio.
 
+Na execução `34905321843` (`e2ef42d`), a política de higiene documental
+detectou um caminho pessoal absoluto no registro do ambiente local deste
+documento. Linux encerrou com `2653 passed`, `1 failed` e `2 skipped`;
+Windows interrompeu no arquivo `129/247`, com `1307` testes, `1` falha,
+`0` erros e `2` skips. A referência foi corrigida para um caminho relativo
+à raiz do projeto, preservando as versões e os resultados observados.
+O teste de higiene e suas regras permanecem inalterados.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -172,7 +180,7 @@ executar os comandos oficiais nos dois ambientes e será a prova final desta
 mudança; ausência local não será tratada como sucesso.
 
 Atualização da retomada: foi localizado o ambiente existente
-`C:/Users/atnco/Pictures/NeoEng-D-Trace/.venv/Scripts/python.exe`, com Python
+`.venv/Scripts/python.exe` na raiz principal do projeto, com Python
 3.11.9, pytest 9.1.1 e PySide6 6.10.1. A execução focada
 `-m pytest tests/test_unity_integration_flow.py` passou os 13 testes em 5,61 s;
 Black e isort também passaram para esse arquivo. Essa evidência é
