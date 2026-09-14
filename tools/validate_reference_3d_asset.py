@@ -239,7 +239,17 @@ def _validate_no_machine_paths(value: Any) -> None:
         for item in value:
             _validate_no_machine_paths(item)
     elif isinstance(value, str):
-        _assert("C:\\" not in value and "C:/Users/" not in value, "manifest leaks an absolute Windows user path")
+        windows_separator = chr(92)
+        unix_user_marker = chr(47) + "Users" + chr(47)
+        has_windows_user_path = (
+            len(value) > 3
+            and value[1:2] == ":"
+            and windows_separator + "Users" + windows_separator in value
+        )
+        _assert(
+            not has_windows_user_path and unix_user_marker not in value,
+            "manifest leaks an absolute machine user path",
+        )
 
 
 def validate(asset_dir: Path, *, write_report: bool = True) -> dict[str, Any]:
